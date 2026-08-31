@@ -457,6 +457,14 @@ bool g_raiktor_emit_unknown_forwarded_argument = false;
 bool g_raiktor_lookup_returns_fallback = false;
 bool g_raiktor_drift_database = false;
 bool g_raiktor_drift_loaded_root = false;
+bool g_raiktor_gold_emit_primary = true;
+bool g_raiktor_gold_emit_duplicate_primary = false;
+bool g_raiktor_gold_emit_reverse_primary = false;
+bool g_raiktor_gold_emit_malformed_payload = false;
+bool g_raiktor_gold_mutate_finance_during_preview = false;
+bool g_raiktor_gold_mutate_cb_key_during_second_preview = false;
+std::int64_t g_raiktor_gold_transfer_raw = 15'000'000;
+std::int32_t g_raiktor_gold_traverse_calls = 0;
 std::byte *g_war_bound_cleanup_drift_target = nullptr;
 std::array<std::byte, sizeof(void *)>
     g_war_bound_cleanup_drift_payload{};
@@ -556,6 +564,10 @@ Value LoadBytes(const void *source, std::size_t offset) {
 
 void FixtureMutateRaiktorPowJailerBetweenSamples() noexcept {
   Store(g_dead_prison_relation, 0x00, std::int32_t{0x01000002});
+}
+
+void FixtureMutateRaiktorGoldBetweenSamples() noexcept {
+  ++g_raiktor_gold_transfer_raw;
 }
 
 void FixtureSetGlobalNumeric(std::size_t index, std::int64_t raw) {
@@ -2112,6 +2124,64 @@ void FixtureTraverseRaiktorFavorHook(void *loaded_effect,
   if (g_raiktor_drift_loaded_root) {
     Store(g_raiktor_loaded_effect, 0x00,
           static_cast<void *>(g_raiktor_add_hook_effect_vtable.data()));
+  }
+}
+
+void FixtureTraverseRaiktorGold(void *loaded_effect,
+                                void *effect_context,
+                                void *collector) {
+  ++g_raiktor_gold_traverse_calls;
+  auto **const collector_vtable =
+      collector == nullptr ? nullptr
+                           : LoadBytes<void **>(collector, 0x00);
+  if (loaded_effect != g_casus_belli_type_1.data() + 0xA28 ||
+      effect_context != g_exit_terms_effect_context ||
+      collector_vtable == nullptr || collector_vtable[1] == nullptr) {
+    g_exit_terms_collector_lifecycle_valid = false;
+    return;
+  }
+  const auto callback = reinterpret_cast<FixtureEffectPreviewCallback>(
+      collector_vtable[1]);
+
+  // A primary prestige row proves the gold observer forwards and ignores
+  // other visible-root effect families.
+  const FixturePreviewFixedPayload prestige{1, 0, -70'000'000};
+  callback(collector, g_exit_attacker_scope.data(), nullptr, &prestige,
+           g_prestige_effect_node.data(), nullptr);
+
+  const auto emit_gold = [&](bool reverse) {
+    const FixturePreviewFixedPayload gold{
+        g_raiktor_gold_emit_malformed_payload ? 2U : 1U, 0,
+        g_raiktor_gold_transfer_raw};
+    callback(collector,
+             reverse ? static_cast<const void *>(
+                           g_exit_defender_scope.data())
+                     : static_cast<const void *>(
+                           g_exit_attacker_scope.data()),
+             reverse ? static_cast<const void *>(
+                           g_exit_attacker_scope.data())
+                     : static_cast<const void *>(
+                           g_exit_defender_scope.data()),
+             &gold, g_gold_transfer_effect_node.data(), nullptr);
+  };
+  if (g_raiktor_gold_emit_primary) {
+    emit_gold(g_raiktor_gold_emit_reverse_primary);
+  }
+  if (g_raiktor_gold_emit_duplicate_primary) {
+    emit_gold(false);
+  }
+  if (g_raiktor_gold_mutate_finance_during_preview) {
+    const auto current = LoadBytes<std::int64_t>(
+        g_played_character_extension.data(), 0x100);
+    Store(g_played_character_extension, 0x100, current + 1);
+  }
+  if (g_raiktor_gold_mutate_cb_key_during_second_preview &&
+      g_raiktor_gold_traverse_calls == 2) {
+    Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+    Store(g_casus_belli_type_1, 0x28,
+          std::size_t{sizeof(g_casus_belli_key_1) - 1});
+    Store(g_casus_belli_type_1, 0x30,
+          std::size_t{sizeof(g_casus_belli_key_1) - 1});
   }
 }
 
@@ -9184,6 +9254,211 @@ int main() {
     return Fail("Raiktor favor-hook observer accepted ABI/source drift");
   }
   reset_raiktor_hook_fixture();
+
+  // GEN-034 actual-gold is a second isolated production observer over the
+  // same original visible attacker-defeat root. It publishes exactly one
+  // primary attacker->defender final callback plus the two current balances
+  // and authoritative monthly-income evaluator results. Other effect
+  // families are forwarded, and the broad hidden-truce reader stays unused.
+  Bindings raiktor_gold_bindings = bindings;
+  raiktor_gold_bindings.traverse_loaded_effect =
+      FixtureTraverseRaiktorGold;
+  Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+  Store(g_casus_belli_type_1, 0xA28,
+        static_cast<void *>(g_defeat_loaded_effect_vtable.data()));
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_1.data()));
+
+  const auto reset_raiktor_gold_fixture = [&] {
+    g_raiktor_gold_emit_primary = true;
+    g_raiktor_gold_emit_duplicate_primary = false;
+    g_raiktor_gold_emit_reverse_primary = false;
+    g_raiktor_gold_emit_malformed_payload = false;
+    g_raiktor_gold_mutate_finance_during_preview = false;
+    g_raiktor_gold_mutate_cb_key_during_second_preview = false;
+    g_raiktor_gold_transfer_raw = 15'000'000;
+    g_raiktor_gold_traverse_calls = 0;
+    g_exit_terms_collector_lifecycle_valid = true;
+    g_exit_terms_context_lifecycle_valid = true;
+    g_exit_terms_effect_context_construct_calls = 0;
+    g_exit_terms_effect_context_populate_calls = 0;
+    g_exit_terms_collector_construct_calls = 0;
+    g_exit_terms_collector_destroy_calls = 0;
+    g_exit_terms_traverse_calls = 0;
+    g_exit_terms_forward_calls = 0;
+    g_exit_terms_projected_root_preview_calls = 0;
+    g_exit_terms_hidden_truce_preview_calls = 0;
+    g_exit_terms_context_teardown_stage = 0;
+    g_exit_terms_monthly_income_calls = 0;
+    // The callable is authoritative even when it differs from the known
+    // lagging extension+0x2B0 cached leaf.
+    g_exit_terms_income_mismatch = true;
+    g_submit_called = false;
+    Store(g_played_character_extension, 0x100,
+          std::int64_t{35'000'000});
+    Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);
+    Store(g_casus_belli_type_1, 0x28,
+          std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+    Store(g_casus_belli_type_1, 0x30,
+          std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+    g_defeat_loaded_effect_vtable[11] =
+        reinterpret_cast<void *>(&FixtureLoadedEffectSlot58);
+    Store(g_casus_belli_type_1, 0xA28,
+          static_cast<void *>(g_defeat_loaded_effect_vtable.data()));
+  };
+
+  reset_raiktor_gold_fixture();
+  xar::ck3_11906::RaiktorSurrenderGoldObservation raiktor_gold{};
+  if (xar::ck3_11906::ReadRaiktorSurrenderGold(
+          raiktor_gold_bindings, active_war_id, raiktor_gold) !=
+          xar::ck3_11906::ReadRaiktorSurrenderGoldResult::available ||
+      raiktor_gold.war_id != active_war_id ||
+      raiktor_gold.date_raw != 43'823'104 ||
+      raiktor_gold.active_casus_belli_database_index != 1 ||
+      raiktor_gold.active_casus_belli_key != "raiktor_claim_cb" ||
+      raiktor_gold.primary_attacker_character_id != played_character_id ||
+      raiktor_gold.primary_defender_character_id != enemy_character_id ||
+      raiktor_gold.claimant_character_id != played_character_id ||
+      raiktor_gold.attacker_current_gold !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              played_character_id, {35'000'000, 100'000}} ||
+      raiktor_gold.defender_current_gold !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              enemy_character_id, {80'000'000, 100'000}} ||
+      raiktor_gold.attacker_authoritative_monthly_gold_income !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              played_character_id, {500'001, 100'000}} ||
+      raiktor_gold.defender_authoritative_monthly_gold_income !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              enemy_character_id, {800'000, 100'000}} ||
+      raiktor_gold.actual_transfer !=
+          xar::game::WarExitGoldTransferSnapshot{
+              played_character_id, enemy_character_id,
+              {15'000'000, 100'000}} ||
+      !raiktor_gold.exact_primary_transfer_observed ||
+      !raiktor_gold.same_frame_stable ||
+      g_exit_terms_effect_context_construct_calls != 2 ||
+      g_exit_terms_effect_context_populate_calls != 2 ||
+      g_exit_terms_collector_construct_calls != 2 ||
+      g_exit_terms_collector_destroy_calls != 2 ||
+      g_raiktor_gold_traverse_calls != 2 ||
+      g_exit_terms_traverse_calls != 0 ||
+      g_exit_terms_forward_calls != 4 ||
+      g_exit_terms_projected_root_preview_calls != 0 ||
+      g_exit_terms_hidden_truce_preview_calls != 0 ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      g_exit_terms_monthly_income_calls != 8 ||
+      !g_exit_terms_collector_lifecycle_valid ||
+      !g_exit_terms_context_lifecycle_valid || g_submit_called) {
+    return Fail("Raiktor gold observer lost the exact primary transfer");
+  }
+
+  const auto rejects_raiktor_gold =
+      [&](auto configure,
+          xar::ck3_11906::RaiktorGoldBetweenSamplesHook between_samples,
+          std::string_view case_name) {
+        reset_raiktor_gold_fixture();
+        configure();
+        raiktor_gold = {};
+        const auto result = xar::ck3_11906::
+            ReadRaiktorSurrenderGoldForOfflineReFixture(
+                raiktor_gold_bindings, active_war_id, raiktor_gold,
+                between_samples);
+        if (result !=
+                xar::ck3_11906::ReadRaiktorSurrenderGoldResult::
+                    unavailable ||
+            raiktor_gold !=
+                xar::ck3_11906::RaiktorSurrenderGoldObservation{} ||
+            !g_exit_terms_collector_lifecycle_valid ||
+            !g_exit_terms_context_lifecycle_valid || g_submit_called) {
+          std::cerr << "Raiktor gold drift accepted: " << case_name
+                    << '\n';
+          return false;
+        }
+        return true;
+      };
+
+  reset_raiktor_gold_fixture();
+  g_defeat_loaded_effect_vtable[11] = nullptr;
+  raiktor_gold = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderGold(
+          raiktor_gold_bindings, active_war_id, raiktor_gold) !=
+          xar::ck3_11906::ReadRaiktorSurrenderGoldResult::unavailable ||
+      raiktor_gold !=
+          xar::ck3_11906::RaiktorSurrenderGoldObservation{} ||
+      g_raiktor_gold_traverse_calls != 0 ||
+      g_exit_terms_collector_construct_calls != 0 ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      !g_exit_terms_context_lifecycle_valid || g_submit_called) {
+    return Fail("Raiktor gold observer entered a null root preview slot");
+  }
+
+  if (!rejects_raiktor_gold(
+          [] { g_raiktor_gold_emit_primary = false; }, nullptr,
+          "missing_primary") ||
+      !rejects_raiktor_gold(
+          [] { g_raiktor_gold_emit_duplicate_primary = true; }, nullptr,
+          "duplicate_primary") ||
+      !rejects_raiktor_gold(
+          [] { g_raiktor_gold_emit_reverse_primary = true; }, nullptr,
+          "reverse_primary") ||
+      !rejects_raiktor_gold(
+          [] { g_raiktor_gold_transfer_raw = -1; }, nullptr,
+          "negative_amount") ||
+      !rejects_raiktor_gold(
+          [] { g_raiktor_gold_emit_malformed_payload = true; }, nullptr,
+          "payload_tag") ||
+      !rejects_raiktor_gold(
+          [] { g_raiktor_gold_mutate_finance_during_preview = true; },
+          nullptr, "preview_finance_mutation") ||
+      !rejects_raiktor_gold(
+          [] {
+            g_raiktor_gold_mutate_cb_key_during_second_preview = true;
+          },
+          nullptr, "completion_cb_key_drift") ||
+      !rejects_raiktor_gold(
+          [] {}, FixtureMutateRaiktorGoldBetweenSamples,
+          "same_frame_amount_drift")) {
+    return Fail("Raiktor gold observer accepted malformed actual terms");
+  }
+
+  reset_raiktor_gold_fixture();
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadRaiktorSurrenderGold(
+          raiktor_gold_bindings, active_war_id, raiktor_gold) !=
+          xar::ck3_11906::ReadRaiktorSurrenderGoldResult::
+              requires_paused ||
+      raiktor_gold !=
+          xar::ck3_11906::RaiktorSurrenderGoldObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_gold_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor gold observer read a running frame");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+
+  reset_raiktor_gold_fixture();
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_0.data()));
+  if (xar::ck3_11906::ReadRaiktorSurrenderGold(
+          raiktor_gold_bindings, active_war_id, raiktor_gold) !=
+          xar::ck3_11906::ReadRaiktorSurrenderGoldResult::
+              unsupported_casus_belli ||
+      raiktor_gold !=
+          xar::ck3_11906::RaiktorSurrenderGoldObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_gold_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor gold observer accepted another CB");
+  }
+  Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  g_exit_terms_income_mismatch = false;
 
   // GEN-034 war-bound troop identity is the owner-scoped persistent
   // CRegimentID plus the exact full WarID and keep=false. It is deliberately

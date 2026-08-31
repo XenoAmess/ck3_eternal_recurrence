@@ -626,6 +626,43 @@ struct RaiktorSurrenderPrisonerReleaseObservation {
       const RaiktorSurrenderPrisonerReleaseObservation &) = default;
 };
 
+enum class ReadRaiktorSurrenderGoldResult : std::uint8_t {
+  available = 0,
+  requires_paused = 1,
+  no_played_character = 2,
+  war_not_found = 3,
+  player_not_primary_attacker = 4,
+  unsupported_casus_belli = 5,
+  unavailable = 6,
+};
+
+// Exact, read-only primary gold slice for raiktor_claim_cb attacker
+// surrender. The transfer is the unique final preview callback from the
+// original visible attacker-defeat root. Current gold and the authoritative
+// monthly-income evaluator are retained so a consumer cannot confuse formula
+// inputs with the observed transfer.
+struct RaiktorSurrenderGoldObservation {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t active_casus_belli_database_index = -1;
+  std::string active_casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::int32_t claimant_character_id = -1;
+  game::WarExitCharacterFixedPointSnapshot attacker_current_gold;
+  game::WarExitCharacterFixedPointSnapshot defender_current_gold;
+  game::WarExitCharacterFixedPointSnapshot
+      attacker_authoritative_monthly_gold_income;
+  game::WarExitCharacterFixedPointSnapshot
+      defender_authoritative_monthly_gold_income;
+  game::WarExitGoldTransferSnapshot actual_transfer;
+  bool exact_primary_transfer_observed = false;
+  bool same_frame_stable = false;
+
+  friend bool operator==(const RaiktorSurrenderGoldObservation &,
+                         const RaiktorSurrenderGoldObservation &) = default;
+};
+
 // The generic registry hashes the process image once and passes an exact-match
 // decision into the selected version adapter. False returns disabled bindings.
 Bindings BindCurrentProcess(bool executable_matches) noexcept;
@@ -935,6 +972,14 @@ ReadRaiktorSurrenderPrisonerReleases(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderPrisonerReleaseObservation &output) noexcept;
 
+// Reads only the primary attacker->defender final gold callback from
+// raiktor_claim_cb's original visible attacker-defeat root. It never enters
+// the disabled broad exit reader or hidden-truce projection and never
+// executes an effect or submits a command.
+ReadRaiktorSurrenderGoldResult ReadRaiktorSurrenderGold(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderGoldObservation &output) noexcept;
+
 // Exact-build, primary-attacker-owner observation of persistent regiments
 // bound to one full-generation active WarID with keep=false. Each of the seven
 // persistent composition rows is generation-resolved to its current
@@ -986,6 +1031,17 @@ ReadRaiktorSurrenderPrisonerReleasesForOfflineReFixture(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderPrisonerReleaseObservation &output,
     RaiktorPrisonerReleaseBetweenSamplesHook between_samples) noexcept;
+
+using RaiktorGoldBetweenSamplesHook = void (*)() noexcept;
+
+// Offline mutation seam for the exact same production implementation. It can
+// force finance, identity or final preview-row drift between the two paused
+// samples; production always supplies no hook.
+ReadRaiktorSurrenderGoldResult
+ReadRaiktorSurrenderGoldForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderGoldObservation &output,
+    RaiktorGoldBetweenSamplesHook between_samples) noexcept;
 
 using WarBoundCleanupBetweenSamplesHook = void (*)() noexcept;
 

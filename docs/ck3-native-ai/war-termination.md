@@ -1541,7 +1541,7 @@ flowchart TD
     I -->|no| U["typed unsupported"]
     I -->|yes| C["[native] claimant / targets / claim rows"]
     C --> S["[static] remove claimant claims<br/>legitimacy=0 / influence=0"]
-    S --> G["[pending native] actual gold transfer"]
+    S --> G["[fixture-confirmed native; pending MCP/live] actual gold transfer"]
     S --> F["[pending native] final F / prestige delta"]
     S --> T["[pending native] truce days / expiry"]
     S --> P["[fixture-confirmed native; pending MCP/live] actual PoW pairs"]
@@ -1599,17 +1599,18 @@ settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects
 
 | 六域 | exact-build 复用入口 | 本次输出与 fail-closed 条件 | 当前缺口 |
 |---|---|---|---|
-| gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；`ReadPrimaryExitResources` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | 无新 ABI；待专用 reader/fixture/live |
+| gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；current gold `extension+0x100` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | F / prestige | `CaptureWarExitPrestigeFactor` 读取 `wrapper+0x18` 的唯一 identifier `82` final row；已有 prestige callback | 发布 `cb_prestige_factor` 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow 或公式不符均 unavailable | 无新 ABI；待专用 materializer/fixture/live |
 | truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致，检查非负天数与 `date_raw+24×days` int32 边界 | 一次 pointer-only Raiktor loaded-root shape probe；不得执行 ContextEffect |
 | PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`；新生产 helper `ReadRaiktorSurrenderPrisonerReleases` | 双方完整 participant 列表、primary 与前三继承人候选列表，以及实际由对方参与者关押的 generation-safe release pairs；两次 paused 同日样本必须逐项相同。完整扫描后的空 pairs 是合法零 | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook` | claimant=attacker 时精确 false；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **reverse gap 1**：闭合 `add_hook` effect vtable、preview callback/collector slot 与 favor-hook type identity；不得套用 interaction-only `0x334C510` |
 | war-bound army | 现有 generation-safe CUnit↔CArmy↔CRegiment backlink、regiment storage 与 native soldier helper | 完整 storage scan 后按 `bound WarID + source=norman_highwaymen + keep=false` 选来源 regiments；发布当前 RegimentID、合并后的 Army/CUnit grouping 与 current soldiers lost | **reverse gap 2**：从 `spawn_army` factory/execute 和 save serializer 闭合持久 origin/war-lifetime 字段 |
 
-Gold/F/hook 的 preview 必须新增独立 `DryPreviewRaiktorAttackerDefeatVisibleRoot`：它在真实 WarEffectContext 中遍历**原始** loaded
-root，所有 callback 继续 forward 给 stock collector；它绝不调用 `ResolveWarExitHiddenTrucePath`、
-`BuildWarExitHiddenTruceProjection` 或 production-disabled broad reader。原始 WarOverview 路径会自然跳过 hidden truce，因此 truce
-只用 pointer walker 加直接 evaluator。这个隔离是两次真实 `0x334C668` crash 后的必要回归边界，不是理论性防御。
+Gold/F/hook 的 preview 必须走独立的 Raiktor visible-root observer：它在真实 WarEffectContext 中遍历**原始** loaded root，所有 callback
+继续 forward 给 stock collector；它绝不调用 `ResolveWarExitHiddenTrucePath`、`BuildWarExitHiddenTruceProjection` 或
+production-disabled broad reader。gold 的 `DryPreviewRaiktorGoldVisibleRoot` 与 favor-hook 原子已按此边界 fixture-confirmed；F/prestige
+仍待同类专用 materializer。原始 WarOverview 路径会自然跳过 hidden truce，因此 truce 只用 pointer walker 加直接 evaluator。这个隔离是
+两次真实 `0x334C668` crash 后的必要回归边界，不是理论性防御。
 
 War-bound 军队不能用 ArmyID、owner 是战争参与者、军队名称或脚本初始 `6×500=3000` 猜。军队可合并且 public CArmy ID
 可能消失，来源 regiment 仍存在；空结果也只有在完整 storage scan 成功后才是合法零。当前 snapshot 的 public ArmyID
@@ -1624,6 +1625,16 @@ paused date 双采样一致才发布；fixture 已覆盖一条真实 pair、完�
 stale full WarID、非 Raiktor CB 与零 command submission。它尚未接 mailbox/JSON/MCP，也没有 paused CK3 artifact，故只关闭
 PoW 原生 core/fixture 缺口，不把六域 `decision_terms_ready` 提前置真。
 
+[fixture-confirmed / pending wire+live] actual-gold 域现有独立 production 只读 helper `ReadRaiktorSurrenderGold`。它只接受 paused、
+exact `raiktor_claim_cb`、玩家为 primary attacker 的 full-generation WarID；读取双方 `extension+0x100` current gold，并且只把
+`0x28DBE90` callable 当 authoritative monthly income，已知会滞后的 `extension+0x2B0` cache 不参与 readiness。每次采样构造并销毁
+真实 WarEffectContext，遍历原始 `CB+0xA28` visible root，克隆 stock collector 后转发全部 callback，只接受唯一、非负、方向严格为
+primary attacker→primary defender 的 final gold row。preview 前后 finance 与 War/CB/primary/claimant 必须一致；两次完整采样及第二次后的
+final paused Snapshot/CB-key 也必须一致。fixture 覆盖 callable≠cache 仍发布 callable、missing/duplicate/reverse/negative/malformed row、
+preview 中 finance mutation、第二次 preview 后 CB-key drift、null root slot、running frame、非 Raiktor CB、context/collector 成对 teardown、
+零 hidden projection 与零 command submission。它尚未接 mailbox/JSON/MCP，也没有 paused CK3 artifact，故只关闭 gold 原生
+core/fixture 缺口，不改变六域 readiness。
+
 建议的 native helper 边界如下；名称是施工合同，不表示已经实现：
 
 ```text
@@ -1632,6 +1643,7 @@ ReadRaiktorSurrenderDynamicTerms
 DryPreviewRaiktorAttackerDefeatVisibleRoot
 CaptureRaiktorSurrenderPreviewRow
 MaterializeRaiktorGoldAndFame
+ReadRaiktorSurrenderGold
 ProbeRaiktorDefeatShape
 ResolveRaiktorDefeatTruceNode
 ReadFavorHookPresence
@@ -1668,8 +1680,8 @@ continue-vs-surrender policy。terms readiness 只证明“条款可用于决策
 path；六域逐项缺失/重复/错 scope/错 generation；F tag/公式/overflow；truce shape/vtable/双读/expiry；PoW succession/jailer；hook
 false/true/type/scope；war-origin/keep/bound-WarID/regiment backlink/merge/full-scan；collector/context ctor/dtor 成对；零 game-object write。
 另加 source contract，证明 Raiktor production path 不引用 hidden-truce projection，且 production-disabled broad reader 仍在 preview 前退出。
-其中 favor-hook、active/postwar war-bound regiment 与本节 PoW native core 已各自 fixture-confirmed；它们仍未组成统一 terms wire，
-gold/F/truce、统一 same-frame reader、Python policy/postcondition 与一次启动 live matrix 继续 pending。
+其中 actual gold、favor-hook、active/postwar war-bound regiment 与 PoW native core 已各自 fixture-confirmed；它们仍未组成统一 terms wire，
+F/truce、统一 same-frame reader、Python policy/postcondition 与一次启动 live matrix 继续 pending。
 
 实机只跑一次批量矩阵，复用 CharacterID `29829` / WarID `50331699` 的冻结 checkpoint，MCP-first、英文 HKL、不用 OCR：
 

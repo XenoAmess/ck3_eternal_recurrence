@@ -465,6 +465,11 @@ faction/opinion/feud/Mandala/LAAMP 等 broad rows 继续作为显式能力债，
 完整扫描后的空 pairs 与 unavailable 明确区分；同一 paused date 双采样必须一致。该原子尚未进入 terms JSON 或策略输入，所以此处的
 动作门、`decision_terms_ready` 与 `automatic_surrender_ready` 均保持 false，不得因单域 fixture GREEN 广告投降 literal。
 
+[fixture-confirmed / pending MCP+live] actual-gold 原生 core 已由 `ReadRaiktorSurrenderGold` 闭合：它发布唯一 final
+attacker→defender transfer、双方 current gold 与 authoritative monthly income，并以 preview 前后 finance、两次完整样本及最终
+paused Snapshot/CB-key 三层稳定门拒绝漂移。cached monthly leaf 不参与结果。该原子同样尚未进入 terms JSON 或策略输入；单域
+fixture GREEN 不改变动作门、`decision_terms_ready` 或 `automatic_surrender_ready`。
+
 ### Readiness 与动作分层
 
 Native 只允许发布 `decision_terms_ready`，不能发布或暗示 `automatic_surrender_ready`。Python 的

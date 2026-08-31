@@ -909,6 +909,17 @@ struct RaiktorFavorHookPreviewCapture {
   bool failed = false;
 };
 
+struct RaiktorGoldPreviewCapture {
+  const Bindings *bindings = nullptr;
+  EffectPreviewCollectorSlot8 original_slot8 = nullptr;
+  void *collector = nullptr;
+  std::int32_t attacker_character_id = -1;
+  std::int32_t defender_character_id = -1;
+  std::int64_t transfer_raw = 0;
+  std::size_t primary_rows = 0;
+  bool failed = false;
+};
+
 struct WarExitHiddenTrucePath {
   void *root_effect = nullptr;
   void *root_children = nullptr;
@@ -933,6 +944,8 @@ struct alignas(16) WarExitHiddenTruceProjection {
 thread_local WarExitPreviewCapture *g_war_exit_preview_capture = nullptr;
 thread_local RaiktorFavorHookPreviewCapture
     *g_raiktor_favor_hook_preview_capture = nullptr;
+thread_local RaiktorGoldPreviewCapture *g_raiktor_gold_preview_capture =
+    nullptr;
 
 struct alignas(8) SendCharacterInteractionCommandStorage {
   std::array<std::byte, 0x368> bytes{};
@@ -2393,6 +2406,139 @@ bool DryPreviewRaiktorFavorHookVisibleRoot(
     return false;
   }
   applies = capture.primary_rows == 1;
+  return true;
+}
+
+void CaptureRaiktorGoldPreviewRow(
+    void *collector, const void *first_scope, const void *second_scope,
+    const PreviewFixedPayload *payload, void *effect_node,
+    void *forwarded_argument) noexcept {
+  RaiktorGoldPreviewCapture *const capture =
+      g_raiktor_gold_preview_capture;
+  if (capture == nullptr || capture->bindings == nullptr ||
+      capture->original_slot8 == nullptr) {
+    return;
+  }
+
+  if (collector != capture->collector) {
+    capture->failed = true;
+  }
+  const auto &bindings = *capture->bindings;
+  const auto effect_vtable =
+      effect_node == nullptr ? std::uintptr_t{0}
+                             : LoadAt<std::uintptr_t>(effect_node, 0x00);
+  if (effect_vtable == bindings.gold_transfer_effect_vtable) {
+    std::int32_t from_character_id = -1;
+    std::int32_t to_character_id = -1;
+    const bool valid =
+        payload != nullptr && payload->tag == 1 &&
+        forwarded_argument == nullptr &&
+        ReadPreviewCharacterScope(bindings, first_scope,
+                                  from_character_id) &&
+        ReadPreviewCharacterScope(bindings, second_scope,
+                                  to_character_id);
+    if (!valid) {
+      capture->failed = true;
+    } else {
+      const bool touches_primary =
+          from_character_id == capture->attacker_character_id ||
+          from_character_id == capture->defender_character_id ||
+          to_character_id == capture->attacker_character_id ||
+          to_character_id == capture->defender_character_id;
+      if (touches_primary) {
+        if (from_character_id != capture->attacker_character_id ||
+            to_character_id != capture->defender_character_id ||
+            payload->raw < 0 || capture->primary_rows != 0) {
+          capture->failed = true;
+        } else {
+          capture->transfer_raw = payload->raw;
+          ++capture->primary_rows;
+        }
+      }
+    }
+  }
+
+  // Preserve the native collector's complete presentation behavior. Rows
+  // outside this primary-gold slice are deliberately ignored only after
+  // forwarding; malformed gold rows remain fail-closed above.
+  capture->original_slot8(collector, first_scope, second_scope, payload,
+                          effect_node, forwarded_argument);
+}
+
+bool DryPreviewRaiktorGoldVisibleRoot(
+    const Bindings &bindings, void *loaded_effect, void *effect_context,
+    std::int32_t attacker_character_id,
+    std::int32_t defender_character_id,
+    std::int64_t &transfer_raw) noexcept {
+  transfer_raw = 0;
+  if (!bindings.enabled || loaded_effect == nullptr ||
+      effect_context == nullptr || attacker_character_id <= 0 ||
+      defender_character_id <= 0 ||
+      attacker_character_id == defender_character_id ||
+      ResolveTermsCharacter(bindings, attacker_character_id) == nullptr ||
+      ResolveTermsCharacter(bindings, defender_character_id) == nullptr ||
+      bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0 ||
+      bindings.gold_transfer_effect_vtable == 0 ||
+      g_war_exit_preview_capture != nullptr ||
+      g_raiktor_favor_hook_preview_capture != nullptr ||
+      g_raiktor_gold_preview_capture != nullptr) {
+    return false;
+  }
+
+  auto **const original_effect_vtable =
+      LoadAt<void **>(loaded_effect, 0x00);
+  if (original_effect_vtable == nullptr ||
+      original_effect_vtable[11] == nullptr) {
+    return false;
+  }
+  EffectPreviewCollectorStorage collector_storage{};
+  void *const collector = collector_storage.bytes.data();
+  if (bindings.construct_effect_preview_collector(collector) != collector) {
+    return false;
+  }
+  auto **const original_collector_vtable =
+      LoadAt<void **>(collector, 0x00);
+  if (original_collector_vtable == nullptr ||
+      reinterpret_cast<std::uintptr_t>(original_collector_vtable) !=
+          bindings.effect_preview_collector_vtable ||
+      original_collector_vtable[1] == nullptr) {
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+
+  constexpr std::size_t kPreviewVtableCloneSlots = 128;
+  std::array<void *, kPreviewVtableCloneSlots> cloned_vtable{};
+  std::copy_n(original_collector_vtable, cloned_vtable.size(),
+              cloned_vtable.begin());
+  auto *const original_slot8 =
+      reinterpret_cast<EffectPreviewCollectorSlot8>(
+          original_collector_vtable[1]);
+  cloned_vtable[1] =
+      reinterpret_cast<void *>(&CaptureRaiktorGoldPreviewRow);
+
+  RaiktorGoldPreviewCapture capture{};
+  capture.bindings = &bindings;
+  capture.original_slot8 = original_slot8;
+  capture.collector = collector;
+  capture.attacker_character_id = attacker_character_id;
+  capture.defender_character_id = defender_character_id;
+  StoreAt(collector, 0x00, cloned_vtable.data());
+  g_raiktor_gold_preview_capture = &capture;
+  // Traverse the exact original visible root. This deliberately cannot enter
+  // the disabled broad reader or its hidden-truce projection.
+  bindings.traverse_loaded_effect(loaded_effect, effect_context, collector);
+  g_raiktor_gold_preview_capture = nullptr;
+  StoreAt(collector, 0x00, original_collector_vtable);
+  bindings.destroy_effect_preview_collector(collector);
+
+  if (LoadAt<void **>(loaded_effect, 0x00) != original_effect_vtable ||
+      capture.failed || capture.primary_rows != 1) {
+    return false;
+  }
+  transfer_raw = capture.transfer_raw;
   return true;
 }
 
@@ -3916,6 +4062,7 @@ ReadRaiktorSurrenderPrisonerReleasesCore(
                              casus_belli_key_after) ||
       casus_belli_key_after != casus_belli_key ||
       !ReadSnapshot(bindings, after) || !after.paused ||
+      !after.has_played_character || !after.played_character_alive ||
       after.date_raw != before.date_raw ||
       after.played_character_id != before.played_character_id ||
       std::none_of(after.active_wars.begin(), after.active_wars.end(),
@@ -3933,6 +4080,314 @@ ReadRaiktorSurrenderPrisonerReleasesCore(
   second.same_frame_stable = true;
   output = std::move(second);
   return ReadRaiktorSurrenderPrisonerReleasesResult::available;
+}
+
+bool ReadRaiktorGoldFinanceCharacter(
+    const Bindings &bindings, void *character,
+    std::int32_t character_id,
+    game::WarExitCharacterFixedPointSnapshot &current_gold,
+    game::WarExitCharacterFixedPointSnapshot
+        &authoritative_monthly_income) noexcept {
+  current_gold = {};
+  authoritative_monthly_income = {};
+  if (character == nullptr || character_id <= 0 ||
+      bindings.read_monthly_gold_income == nullptr ||
+      ResolveTermsCharacter(bindings, character_id) != character) {
+    return false;
+  }
+  void *const extension =
+      LoadAt<void *>(character, kCharacterExtensionOffset);
+  const auto current_gold_raw =
+      extension == nullptr
+          ? std::int64_t{0}
+          : LoadAt<std::int64_t>(extension, kCharacterGoldOffset);
+  std::int64_t monthly_income_raw = 0;
+  if (bindings.read_monthly_gold_income(
+          &monthly_income_raw, character, nullptr, nullptr) !=
+      &monthly_income_raw) {
+    return false;
+  }
+  if (ResolveTermsCharacter(bindings, character_id) != character) {
+    return false;
+  }
+  current_gold = {character_id,
+                  {current_gold_raw, kFixedPointScale}};
+  authoritative_monthly_income = {
+      character_id, {monthly_income_raw, kFixedPointScale}};
+  return true;
+}
+
+bool ReadRaiktorSurrenderGoldOnce(
+    const Bindings &bindings, void *game_state, void *war,
+    void *casus_belli_type, std::int32_t war_id,
+    std::int32_t date_raw, std::int32_t casus_belli_database_index,
+    std::int32_t primary_attacker_character_id,
+    std::int32_t primary_defender_character_id,
+    std::int32_t claimant_character_id,
+    RaiktorSurrenderGoldObservation &output) noexcept {
+  output = {};
+  if (game_state == nullptr || war == nullptr ||
+      casus_belli_type == nullptr || war_id == -1 ||
+      primary_attacker_character_id <= 0 ||
+      primary_defender_character_id <= 0 || claimant_character_id <= 0 ||
+      primary_attacker_character_id == primary_defender_character_id) {
+    return false;
+  }
+  void *const attacker =
+      ResolveTermsCharacter(bindings, primary_attacker_character_id);
+  void *const defender =
+      ResolveTermsCharacter(bindings, primary_defender_character_id);
+  void *const claimant =
+      ResolveTermsCharacter(bindings, claimant_character_id);
+  if (attacker == nullptr || defender == nullptr || claimant == nullptr ||
+      attacker == defender) {
+    return false;
+  }
+
+  RaiktorSurrenderGoldObservation candidate{};
+  candidate.war_id = war_id;
+  candidate.date_raw = date_raw;
+  candidate.active_casus_belli_database_index =
+      casus_belli_database_index;
+  candidate.primary_attacker_character_id =
+      primary_attacker_character_id;
+  candidate.primary_defender_character_id =
+      primary_defender_character_id;
+  candidate.claimant_character_id = claimant_character_id;
+  try {
+    candidate.active_casus_belli_key = "raiktor_claim_cb";
+  } catch (...) {
+    return false;
+  }
+  if (!ReadRaiktorGoldFinanceCharacter(
+          bindings, attacker, primary_attacker_character_id,
+          candidate.attacker_current_gold,
+          candidate.attacker_authoritative_monthly_gold_income) ||
+      !ReadRaiktorGoldFinanceCharacter(
+          bindings, defender, primary_defender_character_id,
+          candidate.defender_current_gold,
+          candidate.defender_authoritative_monthly_gold_income)) {
+    return false;
+  }
+
+  WarEffectContextStorage effect_context_storage{};
+  void *const effect_context = effect_context_storage.bytes.data();
+  if (bindings.construct_war_effect_context(effect_context) !=
+      effect_context) {
+    return false;
+  }
+  bindings.populate_war_effect_context(effect_context, war, false);
+  std::int64_t transfer_raw = 0;
+  const bool previewed = DryPreviewRaiktorGoldVisibleRoot(
+      bindings,
+      static_cast<std::byte *>(casus_belli_type) +
+          kWarEffectAttackerDefeatOffset,
+      effect_context, primary_attacker_character_id,
+      primary_defender_character_id, transfer_raw);
+  const bool context_destroyed =
+      DestroyWarEffectContext(bindings, effect_context);
+  if (!previewed || !context_destroyed) {
+    return false;
+  }
+  game::WarExitCharacterFixedPointSnapshot attacker_gold_after{};
+  game::WarExitCharacterFixedPointSnapshot defender_gold_after{};
+  game::WarExitCharacterFixedPointSnapshot attacker_income_after{};
+  game::WarExitCharacterFixedPointSnapshot defender_income_after{};
+  if (!ReadRaiktorGoldFinanceCharacter(
+          bindings, attacker, primary_attacker_character_id,
+          attacker_gold_after, attacker_income_after) ||
+      !ReadRaiktorGoldFinanceCharacter(
+          bindings, defender, primary_defender_character_id,
+          defender_gold_after, defender_income_after) ||
+      attacker_gold_after != candidate.attacker_current_gold ||
+      defender_gold_after != candidate.defender_current_gold ||
+      attacker_income_after !=
+          candidate.attacker_authoritative_monthly_gold_income ||
+      defender_income_after !=
+          candidate.defender_authoritative_monthly_gold_income) {
+    return false;
+  }
+  candidate.actual_transfer = {
+      primary_attacker_character_id, primary_defender_character_id,
+      {transfer_raw, kFixedPointScale}};
+
+  if (ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::int32_t>(
+          casus_belli_type, kCasusBelliTypeDatabaseIndexOffset) !=
+          casus_belli_database_index ||
+      LoadAt<std::int32_t>(
+          war, kWarPrimaryAttackerCharacterIdOffset) !=
+          primary_attacker_character_id ||
+      LoadAt<std::int32_t>(
+          war, kWarPrimaryDefenderCharacterIdOffset) !=
+          primary_defender_character_id ||
+      LoadAt<std::int32_t>(war, kWarClaimantCharacterIdOffset) !=
+          claimant_character_id ||
+      ResolveTermsCharacter(bindings,
+                            primary_attacker_character_id) != attacker ||
+      ResolveTermsCharacter(bindings,
+                            primary_defender_character_id) != defender ||
+      ResolveTermsCharacter(bindings, claimant_character_id) != claimant) {
+    return false;
+  }
+  candidate.exact_primary_transfer_observed = true;
+  output = std::move(candidate);
+  return true;
+}
+
+ReadRaiktorSurrenderGoldResult ReadRaiktorSurrenderGoldCore(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderGoldObservation &output,
+    void (*between_samples)() noexcept) noexcept {
+  output = {};
+  if (!bindings.enabled || war_id == -1 ||
+      bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.read_monthly_gold_income == nullptr ||
+      bindings.construct_war_effect_context == nullptr ||
+      bindings.populate_war_effect_context == nullptr ||
+      bindings.destroy_effect_context_118 == nullptr ||
+      bindings.destroy_effect_context_array_row == nullptr ||
+      bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0 ||
+      bindings.gold_transfer_effect_vtable == 0) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  if (!before.paused) {
+    return ReadRaiktorSurrenderGoldResult::requires_paused;
+  }
+  if (!before.has_played_character || !before.played_character_alive) {
+    return ReadRaiktorSurrenderGoldResult::no_played_character;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const jomini_state = *bindings.jomini_state_slot;
+  if (game_state == nullptr || jomini_state == nullptr) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) {
+    return ReadRaiktorSurrenderGoldResult::war_not_found;
+  }
+  if (std::none_of(before.active_wars.begin(), before.active_wars.end(),
+                   [war_id](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == war_id;
+                   })) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  const auto primary_attacker_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryAttackerCharacterIdOffset);
+  const auto primary_defender_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryDefenderCharacterIdOffset);
+  if (primary_attacker_character_id != before.played_character_id) {
+    return ReadRaiktorSurrenderGoldResult::
+        player_not_primary_attacker;
+  }
+
+  void *const casus_belli_type =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (casus_belli_type == nullptr) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  const auto casus_belli_database_index = LoadAt<std::int32_t>(
+      casus_belli_type, kCasusBelliTypeDatabaseIndexOffset);
+  std::string casus_belli_key;
+  if (casus_belli_database_index < 0 ||
+      casus_belli_database_index >= kMaximumCasusBelliTypes ||
+      !ReadCasusBelliTypeKey(casus_belli_type, casus_belli_key) ||
+      casus_belli_key.empty()) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  if (casus_belli_key != "raiktor_claim_cb") {
+    if (ResolveWar(bindings, game_state, war_id) != war ||
+        LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+            casus_belli_type ||
+        LoadAt<std::int32_t>(
+            casus_belli_type, kCasusBelliTypeDatabaseIndexOffset) !=
+            casus_belli_database_index) {
+      return ReadRaiktorSurrenderGoldResult::unavailable;
+    }
+    return ReadRaiktorSurrenderGoldResult::unsupported_casus_belli;
+  }
+  const auto claimant_character_id =
+      LoadAt<std::int32_t>(war, kWarClaimantCharacterIdOffset);
+
+  RaiktorSurrenderGoldObservation first{};
+  RaiktorSurrenderGoldObservation second{};
+  if (!ReadRaiktorSurrenderGoldOnce(
+          bindings, game_state, war, casus_belli_type, war_id,
+          before.date_raw, casus_belli_database_index,
+          primary_attacker_character_id, primary_defender_character_id,
+          claimant_character_id, first)) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  if (between_samples != nullptr) {
+    between_samples();
+  }
+
+  Snapshot after{};
+  std::string casus_belli_key_after;
+  if (*bindings.game_state_slot != game_state ||
+      *bindings.jomini_state_slot != jomini_state ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::int32_t>(
+          casus_belli_type, kCasusBelliTypeDatabaseIndexOffset) !=
+          casus_belli_database_index ||
+      !ReadCasusBelliTypeKey(casus_belli_type,
+                             casus_belli_key_after) ||
+      casus_belli_key_after != casus_belli_key ||
+      !ReadSnapshot(bindings, after) || !after.paused ||
+      after.date_raw != before.date_raw ||
+      after.played_character_id != before.played_character_id ||
+      std::none_of(after.active_wars.begin(), after.active_wars.end(),
+                   [war_id](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == war_id;
+                   }) ||
+      !ReadRaiktorSurrenderGoldOnce(
+          bindings, game_state, war, casus_belli_type, war_id,
+          after.date_raw, casus_belli_database_index,
+          primary_attacker_character_id, primary_defender_character_id,
+          claimant_character_id, second) ||
+      first != second) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  Snapshot final{};
+  std::string casus_belli_key_final;
+  if (*bindings.game_state_slot != game_state ||
+      *bindings.jomini_state_slot != jomini_state ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::int32_t>(
+          casus_belli_type, kCasusBelliTypeDatabaseIndexOffset) !=
+          casus_belli_database_index ||
+      !ReadCasusBelliTypeKey(casus_belli_type,
+                             casus_belli_key_final) ||
+      casus_belli_key_final != casus_belli_key ||
+      !ReadSnapshot(bindings, final) || !final.paused ||
+      !final.has_played_character || !final.played_character_alive ||
+      final.date_raw != before.date_raw ||
+      final.played_character_id != before.played_character_id ||
+      std::none_of(final.active_wars.begin(), final.active_wars.end(),
+                   [war_id](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == war_id;
+                   })) {
+    return ReadRaiktorSurrenderGoldResult::unavailable;
+  }
+  second.same_frame_stable = true;
+  output = std::move(second);
+  return ReadRaiktorSurrenderGoldResult::available;
 }
 
 void ReadWarTerminationAcceptance(
@@ -14055,6 +14510,13 @@ ReadRaiktorSurrenderPrisonerReleases(
       bindings, war_id, output, nullptr);
 }
 
+ReadRaiktorSurrenderGoldResult ReadRaiktorSurrenderGold(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderGoldObservation &output) noexcept {
+  return ReadRaiktorSurrenderGoldCore(
+      bindings, war_id, output, nullptr);
+}
+
 bool ReadPrimaryAttackerWarBoundRegimentObservation(
     const Bindings &bindings, std::int32_t war_id,
     std::int32_t owner_character_id,
@@ -14138,6 +14600,15 @@ ReadRaiktorSurrenderPrisonerReleasesForOfflineReFixture(
     RaiktorSurrenderPrisonerReleaseObservation &output,
     RaiktorPrisonerReleaseBetweenSamplesHook between_samples) noexcept {
   return ReadRaiktorSurrenderPrisonerReleasesCore(
+      bindings, war_id, output, between_samples);
+}
+
+ReadRaiktorSurrenderGoldResult
+ReadRaiktorSurrenderGoldForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderGoldObservation &output,
+    RaiktorGoldBetweenSamplesHook between_samples) noexcept {
+  return ReadRaiktorSurrenderGoldCore(
       bindings, war_id, output, between_samples);
 }
 
