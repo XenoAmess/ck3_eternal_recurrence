@@ -13,7 +13,8 @@
 - `ck3_save_checkpoint`、`ck3_restore_checkpoint`；
 - `ck3_query_campaign_root_context_v1`、`ck3_query_loaded_feature_manifest_v1`；
 - `ck3_query_current_event_window_context_v1`、`ck3_select_event_option`、`ck3_resolve_active_event`；
-- `ck3_center_map_on_landed_title_v1`。
+- `ck3_center_map_on_landed_title_v1`；
+- `ck3_query_zhongguo_scoreboard_state_v1`。
 
 本轮又加入了首个窄域 source/fixture provider：
 `ck3_query_zhongguo_case_snapshot_v1(case_kind, request_nonce, expected_revision, subject_character_id?, owner_character_id?)`。
@@ -53,6 +54,31 @@ result provider 仍独立读取 current result owner 并核对二者。B1 case s
 raw comment、recusal、quota、calibration 或 compensation。native application-main mailbox 使用固定第十五槽
 `permitted_executor_quindenary`；当前仅为 **static/fixture-ready**，取得 exact-build paused artifact 前不得写 production-live。
 
+`fd0682e` 又提交了独立的考核榜只读查询
+`ck3_query_zhongguo_scoreboard_state_v1(request_nonce, expected_revision)`，capability 为
+`game.command.query-zhongguo-scoreboard-state-v1`。caller 只能提交 nonce 与 expected revision，不能提交 widget/变量名、角色 scope、
+屏幕坐标或动作。provider 在同一 application-main paused revision 内固定查询四个真实 runtime instance：
+`zg361_open_scoreboard -> zg361_scoreboard_toggle`、`zg361_scoreboard_window`、`zg361_scoreboard_modal`、
+`zg361_scoreboard_panel`；并只从 played character 双读以下 20-key ACL allowlist：
+`zg361_sb_m_01_char`、`zg361_scoreboard_managed_owner`、`zg361_sb_r_01_char`、`zg361_sb_self_char`、
+`zg361_scoreboard_received_owner`、`zg361_scoreboard_received_cycle_serial`、`zg361_scoreboard_received_case_serial`、
+`zg361_sb_self_case_owner`、`zg361_sb_self_cycle_serial`、`zg361_sb_self_case_serial`、
+`zg361_sb_self_b1_case_owner`、`zg361_sb_self_b1_cycle_serial`、`zg361_sb_self_b1_case_serial`、
+`zg361_sb_self_disclosure_acl_mode`、`zg361_sb_self_disclosure_policy_available`、
+`zg361_sb_self_disclosure_policy_id`、`zg361_sb_self_disclosure_self_mode`、`zg361_sb_self_disclosure_team_mode`、
+`zg361_sb_self_disclosure_evaluator_identity_mode`、`zg361_sb_self_disclosure_blackbox_risk`。managed ACL 只能由真实 materialized
+managed surface 推导，不按爵位猜权限；received-self 必须与当前玩家、result tuple 和独立 B1 policy tuple 完整 join。
+
+该 v1 只冻结 instance exists 与 local/effective visibility，以及上述 current-player ACL。`enabled`、`focused`、
+`modal_blocking`、`screen_x/y/width/height`、`scroll_min/max/value` 均固定返回 typed unavailable；`activate`、`close`、
+`reopen` 也固定为 `read_only_provider_action_not_exposed`，不暴露写动作。`full_widget_gate_ready=false` 与
+`production_live_ready=false` 是当前 schema 的固定不变量。native/serializer/mailbox、Python contract/service/MCP、schema 与离线 fixture
+已通过 fresh MSVC/Ninja 和正常/`-O` 测试，但尚无真实 CK3 paused response artifact，因此能力只能记为
+**static exact-build / live-unverified**。下一步晋级门是在真实 managed 与 received-only 角色各保存同一 paused revision 的 MCP response，
+核对四实例、20-key ACL、player/date/revision/connection binding；在此之前不得解除 runner 的 scoreboard live RED。enabled/focus/
+blocking/rect/scroll 与 activate/close/reopen 还必须分别冻结 exact-build ABI、实现 typed query/action 并取得动作后新 revision 证据，
+不能由这个只读切片外推。
+
 该切片目前只有 Python contract/schema、native/provider source 与离线 fixture 证据，状态为 **static/fixture-ready**；尚未在 exact-build CK3
 中取得 paused response artifact，因此不能写 production-live，也不能解除正式 runner 的 capability RED。上述既有能力与本轮窄切片足以在
 不使用 OCR 的情况下识别/操作当前原生事件、绑定玩家与构建、等待独立 revision，并保存或恢复测试现场；它们**不能**因此被扩写成
@@ -61,7 +87,8 @@ raw comment、recusal、quota、calibration 或 compensation。native applicatio
 - B1 之外的 allowlisted ZhongGuo case/receipt/deadline snapshot，以及 B1 provider 的 exact-build paused 实机证据；
 - 产品 decision 枚举与 stable-key 执行；
 - 任意受评者的个人金币、直属上司国库、modifier、opinion pair 与来源快照；
-- named scripted widget 查询、activate/close/reopen 与 scoreboard ACL 数据投影；
+- scoreboard 四固定实例/current-player ACL 已有 static read-only provider，但尚无 paused artifact；完整 enabled/focus/blocking/rect/scroll
+  查询、activate/close/reopen 和内页数据/动作仍未 live 闭合；
 - AI-owned ZhongGuo case snapshot；
 - B4–B8 的 vacancy/position/project/incident/workforce/cross-cycle domain-object 查询。
 
@@ -115,6 +142,12 @@ target/case 绑定时不得判 GREEN；这正是首纵切 `.52` 尚未闭合的�
 scripted window/widget 返回：stable widget identity、存在、visible、focus、modal/blocking、screen rect、outer/inner active tab、
 close/reopen ability、selected source/slot/cycle/case 与 revision。提供 activate/close/reopen 的 typed action 和独立 ACK；动作参数只允许
 stable identity，不接受坐标。
+
+当前 `fd0682e` 已冻结的 `game.command.query-zhongguo-scoreboard-state-v1` 只是本节的最小只读前缀：四个固定 runtime instance 的
+exists/local/effective visibility 加 played-character 20-key ACL。它不等价于上述完整 named-widget/action 合同；所有未冻结 widget 字段
+与三个动作必须 typed unavailable，`full_widget_gate_ready`、`production_live_ready` 必须保持 false。只有 managed 与 received-only
+真实角色的 exact-build paused artifact 通过四实例、ACL 和同帧 binding 核对后，才允许把这个最小 read-only primitive 单独提升为 live；
+其余完整 GUI gate 继续 RED。
 
 考核榜 B1 最小 allowlist 必须覆盖：toggle、modal、panel、managed/received/system 外层页、list/detail、facts/peer/quota/audit、
 back/close、`m_01`、`m_80` 与当前玩家 received-self 案卷按钮。状态查询还要证明：
@@ -192,8 +225,10 @@ pause/resume/speed-1 timeline，event option action+ACK capability，save-checkp
 B2 PIP snapshot、Incident snapshot，以及相应 query support flag、materialized action step、pure-native/无视觉 fallback、连接 PID/
 generation、checkpoint materialization 与 managed restore lifecycle 配置。
 
-Workforce collective + 三周期、AI-owned case、scoreboard named-widget state/action/ACL 的正式 ABI 尚未冻结。runner 不猜测或擅自
-冻结 provider capability 名，而是把这三项记录为 `abi_not_frozen` requirement；所以当前完整二期启动门必然产出
+Workforce collective + 三周期、AI-owned case、scoreboard 完整 named-widget/action gate 的正式 ABI 尚未冻结。scoreboard 的
+四实例/current-player ACL 只读 ABI 与 capability 名虽已由 `fd0682e` 冻结并实现，但尚无 paused artifact，且 enabled/focus/blocking/
+rect/scroll/action 仍为 typed unavailable。runner 不把该最小 static primitive 冒充完整 GUI gate；其余未冻结项仍记录为
+`abi_not_frozen` requirement，所以当前完整二期启动门必然产出
 `MCP capability RED`，且总报告强制 `gameplay_green_claimed=false`。即使测试替身伪造 cell `result=GREEN`，只要缺少完整的
 MCP-only scenario proof，总结果也会降为 RED。
 
