@@ -1,6 +1,6 @@
 {
   "contract": "zhongguo_scoreboard_state_v1",
-  "status": "static_exact_build_live_unverified",
+  "status": "read_only_static_exact_build_action_paused_probe_required_live_unverified",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.query-zhongguo-scoreboard-state-v1",
@@ -51,6 +51,95 @@
       "scroll_min",
       "scroll_max",
       "scroll_value"
+    ]
+  },
+  "typed_action_reverse_evidence": {
+    "public_action_abi_ready": false,
+    "paused_probe_required": true,
+    "rtti": {
+      "CPdxGuiWidget": {
+        "type_descriptor_rva": "0x518CFE0",
+        "complete_object_locator_rva": "0x4B93CB0",
+        "vtable_rva": "0x4504EA0"
+      },
+      "CPdxGuiButtonBase": {
+        "type_descriptor_rva": "0x56026B8",
+        "complete_object_locator_rva": "0x4B955B0",
+        "vtable_rva": "0x4505B98"
+      },
+      "CPdxGuiPushButton": {
+        "type_descriptor_rva": "0x50A9930",
+        "complete_object_locator_rva": "0x4B95560",
+        "vtable_rva": "0x4506020"
+      }
+    },
+    "exact_build_candidate_spans": [
+      {
+        "name": "widget_filter_mouse_bit_mapper",
+        "start_rva": "0x369E140",
+        "end_rva": "0x369E16F",
+        "byte_length": "0x2F",
+        "sha256": "185B063A28C5AE61126ED1EA6833ECA72B5A0C0EFF9D92293B5BD15F9099AC98",
+        "property_key_rva": "0x4294DE8",
+        "property_id": "0x3EE",
+        "parser_caller_rva": "0x36A23BC",
+        "claim": "filter_mouse mask setter: input bit 0 maps to widget +0xD1 bit 7, bits 1..3 map to +0xD2 bits 0..2, and bits 4+ are discarded; script token all and modal-stack/top-receiver semantics remain unbound"
+      },
+      {
+        "name": "push_button_slot_36_primary_left_release_callback_candidate",
+        "start_rva": "0x36C6A90",
+        "end_rva": "0x36C6BD0",
+        "byte_length": "0x140",
+        "sha256": "70AE9CC44C6A7D8E147978014411935E2E675E8E532E501105DACB8CB3CF9765",
+        "runtime_property_id": "0x11B",
+        "runtime_definition_offset": "0x3F8",
+        "runtime_widget_offset": "0x7F8",
+        "definition_onclick_property_id": "0x307",
+        "definition_onclick_offset": "0x338",
+        "claim": "when +0xD0 mask 0x02 is clear and +0x7F8 is non-null, obtains the callback object and executes it with Position2D context; definition onclick 0x307/+0x338 is not yet bound to runtime 0x11B/+0x3F8/+0x7F8, and a direct call bypasses upstream hit-test, capture, modal, shortcut, and complete effective-enabled admission"
+      },
+      {
+        "name": "push_button_slot_37_state_release_candidate",
+        "start_rva": "0x36C6BD0",
+        "end_rva": "0x36C6C92",
+        "byte_length": "0xC2",
+        "sha256": "799A369355F371B9396BEDC3682CEF3BAE3360D0C08792190495F4BEBB14D350",
+        "claim": "observed state release counterpart; not independently a click or close action"
+      },
+      {
+        "name": "button_event_trigger_predicate",
+        "start_rva": "0x36C6CA0",
+        "end_rva": "0x36C6EEB",
+        "byte_length": "0x24B",
+        "sha256": "5B522D1F7F0BEF050F13424BFC32EB73798DC94B14C4BA60D850FE940821BEB5",
+        "claim": "filters event +0x24 against ButtonBase +0x810/+0x814 trigger modes; not an enabled getter"
+      }
+    ],
+    "runtime_identity_blockers": [
+      "the named scoreboard toggle is a container with three unnamed managed/received/system button descendants",
+      "the backdrop close control is unnamed; the header close inherits generic template name button_close but lacks a scoreboard-specific identity and paused runtime expansion proof",
+      "reopen has no independent control and must be a verified close then activate composition"
+    ],
+    "unfrozen_action_fields": [
+      "exact_runtime_entry_push_button",
+      "exact_runtime_close_push_button",
+      "enabled_semantics_for_widget_flags_plus_0xD0_mask_0x02",
+      "filter_mouse_all_numeric_encoding",
+      "modal_blocking_runtime_predicate",
+      "scoreboard_onclick_callback_binding"
+    ],
+    "typed_unavailable_summary": {
+      "enabled": "+0xD0 mask 0x02 is observed in button-event/callback gates, but its complete effective-enabled semantics are unproven",
+      "modal_blocking": "filter_mouse encoding is frozen, but filter_mouse=all and modal-stack/top-receiver semantics are not",
+      "activate_close_reopen": "a primary/left-release callback candidate exists, but exact onclick identity, safe direct-call admission, stable target identity, and paused postcondition are not closed"
+    },
+    "forbidden_shortcuts": [
+      "direct_call_to_candidate_rva_without_paused_probe",
+      "button_state_propagation_slot_as_click",
+      "definition_presence_as_runtime_identity",
+      "ocr_or_screen_coordinates",
+      "ack_as_postcondition",
+      "query_sequence_as_state_revision"
     ]
   },
   "fixed_widgets": [
@@ -127,6 +216,8 @@
   "readiness": {
     "state_acl_query_ready": "may become true only for a coherent same-frame fixed-widget plus player-ACL result",
     "full_widget_gate_ready": false,
+    "action_abi_ready": false,
+    "action_postcondition_revision_ready": false,
     "production_live_ready": false
   },
   "actions": {
@@ -145,5 +236,5 @@
     "full_runner_capability_gate",
     "production_live_acceptance"
   ],
-  "next_live_evidence": "query the four real instances and current-player ACL from one paused CK3 revision, preserve the artifact, then separately reverse enabled/focus/scroll/action before advertising a full gate"
+  "next_live_evidence": "assign scoreboard-specific identities to the three entry and backdrop-close controls and bind inherited button_close relative to the scoreboard panel; statically close definition onclick 0x307/+0x338 to runtime 0x11B/+0x3F8/+0x7F8 plus slot 36 upstream admission; then batch managed and received-only paused artifacts for the real dispatcher-to-PushButton-callback trace, enabled disabled contrast, and modal-stack/top-receiver contrast; add a scoreboard_state_revision that changes only with canonical scoreboard state; finally require independent ACK plus a later-pump query with a larger scoreboard revision before advertising activate, close, or reopen"
 }

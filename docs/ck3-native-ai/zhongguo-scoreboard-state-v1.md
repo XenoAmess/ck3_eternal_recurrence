@@ -1,6 +1,6 @@
 # 天朝二期考核榜 named-widget state + ACL v1
 
-状态：**static exact-build ready，live-unverified**。本文记录的是最小只读 provider，不能据此声称考核榜完整 GUI gate 或 production-live 已完成。
+状态：**read-only query static exact-build ready；typed action paused-probe blocked；live-unverified**。本文记录的是最小只读 provider，以及尚未达到公开条件的动作 ABI 候选证据；不能据此声称考核榜完整 GUI gate、动作 provider 或 production-live 已完成。
 
 ## 目标与边界
 
@@ -52,6 +52,35 @@
 - scroll min/max/value。
 
 因此 `full_widget_gate_ready=false` 固定不变。root lookup 不能代替上述字段，更不能代替动作能力。
+
+## Typed action 的 exact-build 静态账本
+
+本轮只冻结了候选调用链，没有把它公开成能力。CK3 `1.19.0.6` 的静态证据如下：
+
+- `CPdxGuiWidget` RTTI/type descriptor、COL、vftable 分别为 `0x518CFE0`、`0x4B93CB0`、`0x4504EA0`；
+- `CPdxGuiButtonBase` 分别为 `0x56026B8`、`0x4B955B0`、`0x4505B98`；
+- `CPdxGuiPushButton` 分别为 `0x50A9930`、`0x4B95560`、`0x4506020`；
+- PushButton vtable slot 36 指向 `[0x36C6A90,0x36C6BD0)`。它在 `+0xD0` mask `0x02` 未置位且 `+0x7F8` callback 非空时取得 callback 对象、构造 `Position2D/Position2DX/Position2DY` 上下文并执行；`+0x7F8` 由 runtime property ID `0x11B` / definition `+0x3F8` 刷新，静态上只能命名为 primary/left-release callback dispatch candidate。GUI `onclick` 的 definition property ID `0x307` / `+0x338` 尚未与这条 runtime 链闭合；
+- slot 37 指向 `[0x36C6BD0,0x36C6C92)`，只看到对应状态回落；
+- `[0x36C6CA0,0x36C6EEB)` 根据 event `+0x24` 与 ButtonBase `+0x810/+0x814` 的 trigger mode 判定事件，不是可独立复用的 enabled getter；
+- `[0x369E140,0x369E16F)` 是 `filter_mouse` mask setter：property key `filter_mouse` 在 `0x4294DE8`、ID 为 `0x3EE`；input bit 0 映射到 widget `+0xD1` bit 7，bits 1..3 映射到 `+0xD2` bits 0..2，bits 4+ 被丢弃。所以只能确认“若输入 `0x0F`，则 mask 为 `D1:80/D2:07`”；脚本 token `all` 的 exact numeric value 及 modal-stack/top-receiver 语义都尚未闭合，也没有真实 modal hidden/visible 对照样本，因此不能公开命名为 `modal_blocking=true`。
+
+上述 span 的 SHA-256 已写入机器 ABI 账本。它们足以确定下一次 probe 应观察什么，不足以完成动作，原因有四项：
+
+1. `zg361_scoreboard_toggle` 是容器；managed、received 与 system 三个真实入口按钮都无名。静态源码不能替代 paused runtime 中“恰有一个可见 PushButton”的实例证据；
+2. modal 背景关闭按钮无名；header 关闭按钮会从原版 `buttons_window_control` 模板继承通用名 `button_close`，但它尚没有 scoreboard-specific identity，也没有 paused runtime 展开实例证据；当前不存在独立 reopen 控件；
+3. `0x36C6A90` 的 callback 执行形状尚未由真实 scoreboard event trace 闭合到该按钮的完整 `onclick` 序列；直调还会绕过上游 hit-test、capture、modal、shortcut 与完整 enabled admission。`+0xD0` mask `0x02` 只能说已在 button-event/callback gate 中观测到，没有 enabled/disabled 对照前不能对外命名为 enabled；
+4. 当前 public/native snapshot revision 不包含 GUI/VariableSystem 独立变化，`query_sequence` 又是每次查询都会变化的运输序号。它不能冒充“动作后状态发生变化”的新 revision。
+
+因此当前 wire 必须继续返回 `read_only_provider_action_not_exposed`，`action_abi_ready=false`、`action_postcondition_revision_ready=false`、`production_live_ready=false`。禁止直接调用候选 RVA、ButtonBase 状态传播槽，禁止用源码 definition presence、OCR、屏幕坐标或一次 ACK 补齐证据。
+
+下一次允许占用 CK3 的最小 paused probe 必须一次批量保存 managed 与 received-only 两种真实玩家现场，并完成：
+
+1. 给三入口和背景关闭控件建立 scoreboard-specific runtime identity，将 header 的通用 `button_close` 名绑定到 scoreboard panel 相对路径；查询实际 pointer/vtable/祖先可见性，证明每种现场只有一个合法入口；
+2. 先静态闭合 definition `onclick` ID `0x307` / `+0x338` 与 runtime ID `0x11B` / `+0x3F8` / `+0x7F8`，以及 slot 36 的上游 event admission；再对真实 scoreboard 按钮记录受控 native event trace，闭合 dispatcher → PushButton action slot → `onclick` callback 序列，并用 enabled/disabled 对照冻结 admission bit；
+3. 在 modal hidden/open/closed 三态读取 `+0xD1/+0xD2`，把实际 hit-test/filter 状态与 blocking 语义闭合；
+4. 引入只在 canonical scoreboard GUI/变量状态变化时更新的独立 `scoreboard_state_revision`，动作只先返回独立 `submitted/verification_pending` ACK；later pump 必须重新查询更大的 scoreboard revision 并验证后置条件；
+5. `activate` 后验证 modal/panel 可见与正确 tab/list/facts，`close` 后验证 open 变量不存在与 modal/panel 隐藏；`reopen` 必须是 close 已经由新 revision 证明后再重新定位入口并 activate 的两阶段组合，不能用两次 toggle 或同泵读回冒充成功。
 
 ## 当前玩家 ACL
 
