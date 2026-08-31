@@ -698,6 +698,40 @@ struct RaiktorSurrenderPrestigeObservation {
       default;
 };
 
+enum class ReadRaiktorSurrenderFavorHookResult : std::uint8_t {
+  available = 0,
+  requires_paused = 1,
+  no_played_character = 2,
+  war_not_found = 3,
+  player_not_primary_attacker = 4,
+  unsupported_casus_belli = 5,
+  unavailable = 6,
+};
+
+// Exact, read-only conditional favor-hook slice for raiktor_claim_cb
+// attacker surrender.  claimant_distinct_from_attacker=false is an authored
+// exact false and therefore performs no loaded-effect traversal.  The
+// distinct branch traverses the original visible attacker-defeat root and
+// accepts either one exact ordinary favor_hook row or a fully scanned empty
+// result.  It never executes an effect or submits a command.
+struct RaiktorSurrenderFavorHookObservation {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t active_casus_belli_database_index = -1;
+  std::string active_casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::int32_t claimant_character_id = -1;
+  bool claimant_distinct_from_attacker = false;
+  bool original_visible_root_traversed = false;
+  bool conditional_favor_hook_applies = false;
+  bool same_frame_stable = false;
+
+  friend bool operator==(const RaiktorSurrenderFavorHookObservation &,
+                         const RaiktorSurrenderFavorHookObservation &) =
+      default;
+};
+
 // The generic registry hashes the process image once and passes an exact-match
 // decision into the selected version adapter. False returns disabled bindings.
 Bindings BindCurrentProcess(bool executable_matches) noexcept;
@@ -1023,6 +1057,14 @@ ReadRaiktorSurrenderPrestigeResult ReadRaiktorSurrenderPrestige(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderPrestigeObservation &output) noexcept;
 
+// Reads whether raiktor_claim_cb's authored conditional favor_hook will be
+// applied by the original visible attacker-defeat root.  Exact War/CB/role,
+// loaded-root vtable and slot11 identities are frozen across two samples in
+// one paused date.  claimant==attacker is exact false without traversal.
+ReadRaiktorSurrenderFavorHookResult ReadRaiktorSurrenderFavorHook(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderFavorHookObservation &output) noexcept;
+
 // Exact-build, primary-attacker-owner observation of persistent regiments
 // bound to one full-generation active WarID with keep=false. Each of the seven
 // persistent composition rows is generation-resolved to its current
@@ -1096,6 +1138,17 @@ ReadRaiktorSurrenderPrestigeForOfflineReFixture(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderPrestigeObservation &output,
     RaiktorPrestigeBetweenSamplesHook between_samples) noexcept;
+
+using RaiktorFavorHookBetweenSamplesHook = void (*)() noexcept;
+
+// Offline mutation seam for the production favor-hook implementation.  It
+// can force hook-presence, runtime hook-type or War/CB/root identity drift
+// between samples; production always supplies no hook.
+ReadRaiktorSurrenderFavorHookResult
+ReadRaiktorSurrenderFavorHookForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderFavorHookObservation &output,
+    RaiktorFavorHookBetweenSamplesHook between_samples) noexcept;
 
 using WarBoundCleanupBetweenSamplesHook = void (*)() noexcept;
 

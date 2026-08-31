@@ -271,7 +271,7 @@ std::array<std::byte, 0x118> g_gold_transfer_effect_node{};
 std::array<std::byte, 0x118> g_truce_effect_node{};
 std::array<std::byte, 0x118> g_unknown_effect_node{};
 std::array<void *, 128> g_raiktor_preview_collector_vtable{};
-std::array<void *, 1> g_raiktor_loaded_effect_vtable{};
+std::array<void *, 12> g_raiktor_loaded_effect_vtable{};
 std::array<void *, 1> g_raiktor_add_hook_effect_vtable{};
 std::array<void *, 1> g_raiktor_add_hook_no_toast_effect_vtable{};
 std::array<void *, 1> g_raiktor_hook_type_vtable{};
@@ -614,6 +614,34 @@ void FixtureSwapRaiktorPrestigeRootBetweenSamples() noexcept {
   Store(g_casus_belli_type_1, 0xA28,
         static_cast<void *>(
             g_raiktor_prestige_equivalent_loaded_effect_vtable.data()));
+}
+
+void FixtureRemoveRaiktorFavorHookBetweenSamples() noexcept {
+  g_raiktor_emit_primary = false;
+  g_raiktor_emit_theocracy = false;
+}
+
+void FixtureMutateRaiktorFavorClaimantBetweenSamples() noexcept {
+  Store(g_war, 0x290, LoadBytes<std::int32_t>(g_war.data(), 0x288));
+}
+
+void FixtureSwapRaiktorFavorRootBetweenSamples() noexcept {
+  Store(g_casus_belli_type_1, 0xA28,
+        static_cast<void *>(
+            g_raiktor_prestige_equivalent_loaded_effect_vtable.data()));
+}
+
+void FixtureMutateRaiktorFavorHookDatabaseBetweenSamples() noexcept {
+  g_raiktor_hook_type_database_pointer =
+      g_raiktor_hook_type_database_after.data();
+}
+
+void FixtureMutateRaiktorFavorCbKeyBetweenSamples() noexcept {
+  Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
 }
 
 void FixtureSetGlobalNumeric(std::size_t index, std::int64_t raw) {
@@ -2115,8 +2143,13 @@ void FixtureTraverseRaiktorFavorHook(void *loaded_effect,
   auto **const collector_vtable =
       collector == nullptr ? nullptr
                            : LoadBytes<void **>(collector, 0x00);
-  if (loaded_effect != g_raiktor_loaded_effect.data() ||
-      effect_context != g_raiktor_effect_context.data() ||
+  const bool valid_loaded_effect =
+      loaded_effect == g_raiktor_loaded_effect.data() ||
+      loaded_effect == g_casus_belli_type_1.data() + 0xA28;
+  const bool valid_effect_context =
+      effect_context == g_raiktor_effect_context.data() ||
+      effect_context == g_exit_terms_effect_context;
+  if (!valid_loaded_effect || !valid_effect_context ||
       collector_vtable == nullptr || collector_vtable[1] == nullptr) {
     g_raiktor_collector_lifecycle_valid = false;
     return;
@@ -9279,6 +9312,9 @@ int main() {
         g_raiktor_hook_type_database.data();
     g_raiktor_hook_type_fallback_pointer =
         g_raiktor_hook_type_fallback.data();
+    g_raiktor_loaded_effect_vtable[11] =
+        reinterpret_cast<void *>(
+            &FixtureOriginalRaiktorPreviewCallback);
     Store(g_raiktor_loaded_effect, 0x00,
           static_cast<void *>(g_raiktor_loaded_effect_vtable.data()));
     Store(g_raiktor_add_hook_effect_node, 0x00,
@@ -9440,6 +9476,265 @@ int main() {
   }
   reset_raiktor_hook_fixture();
 
+  // The isolated favor-hook atom above now has a production WarID wrapper.
+  // It freezes the exact Raiktor root and hook-type identity across two
+  // paused samples. claimant==attacker remains an authored exact false and
+  // must not construct a context, collector, or loaded-effect traversal.
+  const auto reset_raiktor_favor_production_fixture = [&] {
+    reset_raiktor_hook_fixture();
+    g_exit_terms_collector_lifecycle_valid = true;
+    g_exit_terms_context_lifecycle_valid = true;
+    g_exit_terms_effect_context_construct_calls = 0;
+    g_exit_terms_effect_context_populate_calls = 0;
+    g_exit_terms_collector_construct_calls = 0;
+    g_exit_terms_collector_destroy_calls = 0;
+    g_exit_terms_traverse_calls = 0;
+    g_exit_terms_forward_calls = 0;
+    g_exit_terms_projected_root_preview_calls = 0;
+    g_exit_terms_hidden_truce_preview_calls = 0;
+    g_exit_terms_context_teardown_stage = 0;
+    g_submit_called = false;
+    Store(jomini_state, 0x20, std::uint8_t{1});
+    Store(g_war, 0x100,
+          static_cast<void *>(g_casus_belli_type_1.data()));
+    Store(g_war, 0x288, played_character_id);
+    Store(g_war, 0x28C, enemy_character_id);
+    Store(g_war, 0x290, enemy_character_id);
+    Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);
+    Store(g_casus_belli_type_1, 0x28,
+          std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+    Store(g_casus_belli_type_1, 0x30,
+          std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+    g_raiktor_loaded_effect_vtable[11] =
+        reinterpret_cast<void *>(
+            &FixtureOriginalRaiktorPreviewCallback);
+    g_raiktor_prestige_equivalent_loaded_effect_vtable[11] =
+        reinterpret_cast<void *>(
+            &FixtureOriginalRaiktorPreviewCallback);
+    Store(g_casus_belli_type_1, 0xA28,
+          static_cast<void *>(g_raiktor_loaded_effect_vtable.data()));
+  };
+
+  reset_raiktor_favor_production_fixture();
+  xar::ck3_11906::RaiktorSurrenderFavorHookObservation
+      raiktor_favor{};
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id, raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::available ||
+      raiktor_favor.war_id != active_war_id ||
+      raiktor_favor.date_raw != 43'823'104 ||
+      raiktor_favor.active_casus_belli_database_index != 1 ||
+      raiktor_favor.active_casus_belli_key != "raiktor_claim_cb" ||
+      raiktor_favor.primary_attacker_character_id !=
+          played_character_id ||
+      raiktor_favor.primary_defender_character_id != enemy_character_id ||
+      raiktor_favor.claimant_character_id != enemy_character_id ||
+      !raiktor_favor.claimant_distinct_from_attacker ||
+      !raiktor_favor.original_visible_root_traversed ||
+      !raiktor_favor.conditional_favor_hook_applies ||
+      !raiktor_favor.same_frame_stable ||
+      g_exit_terms_effect_context_construct_calls != 2 ||
+      g_exit_terms_effect_context_populate_calls != 2 ||
+      g_raiktor_collector_construct_calls != 2 ||
+      g_raiktor_collector_destroy_calls != 2 ||
+      g_raiktor_traverse_calls != 2 || g_raiktor_forward_calls != 6 ||
+      g_raiktor_hash_calls != 7 || g_raiktor_lookup_calls != 7 ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      !g_raiktor_collector_lifecycle_valid ||
+      !g_exit_terms_context_lifecycle_valid ||
+      g_exit_terms_projected_root_preview_calls != 0 ||
+      g_exit_terms_hidden_truce_preview_calls != 0 ||
+      g_exit_terms_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor production favor-hook observer lost exact terms");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  g_raiktor_emit_primary = false;
+  g_raiktor_emit_theocracy = false;
+  raiktor_favor = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id, raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::available ||
+      !raiktor_favor.claimant_distinct_from_attacker ||
+      !raiktor_favor.original_visible_root_traversed ||
+      raiktor_favor.conditional_favor_hook_applies ||
+      !raiktor_favor.same_frame_stable ||
+      g_raiktor_traverse_calls != 2 || g_raiktor_forward_calls != 2 ||
+      g_exit_terms_effect_context_construct_calls != 2 ||
+      g_exit_terms_context_teardown_stage != 4 || g_submit_called) {
+    return Fail("Raiktor production favor-hook fabricated an absent row");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  Store(g_war, 0x290, played_character_id);
+  Bindings raiktor_same_claimant_bindings = raiktor_hook_bindings;
+  raiktor_same_claimant_bindings.construct_war_effect_context = nullptr;
+  raiktor_same_claimant_bindings.populate_war_effect_context = nullptr;
+  raiktor_same_claimant_bindings.construct_effect_preview_collector =
+      nullptr;
+  raiktor_same_claimant_bindings.destroy_effect_preview_collector =
+      nullptr;
+  raiktor_same_claimant_bindings.traverse_loaded_effect = nullptr;
+  raiktor_same_claimant_bindings.hash_stable_key = nullptr;
+  raiktor_same_claimant_bindings.lookup_hook_type = nullptr;
+  raiktor_favor = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_same_claimant_bindings, active_war_id,
+          raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::available ||
+      raiktor_favor.claimant_character_id != played_character_id ||
+      raiktor_favor.claimant_distinct_from_attacker ||
+      raiktor_favor.original_visible_root_traversed ||
+      raiktor_favor.conditional_favor_hook_applies ||
+      !raiktor_favor.same_frame_stable ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_collector_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_raiktor_hash_calls != 0 ||
+      g_raiktor_lookup_calls != 0 || g_submit_called) {
+    return Fail(
+        "Raiktor production same-claimant branch entered preview code");
+  }
+
+  const auto rejects_raiktor_favor_production =
+      [&](auto configure,
+          xar::ck3_11906::RaiktorFavorHookBetweenSamplesHook
+              between_samples,
+          std::string_view case_name) {
+        reset_raiktor_favor_production_fixture();
+        configure();
+        raiktor_favor = {};
+        const auto result = xar::ck3_11906::
+            ReadRaiktorSurrenderFavorHookForOfflineReFixture(
+                raiktor_hook_bindings, active_war_id,
+                raiktor_favor, between_samples);
+        if (result !=
+                xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::
+                    unavailable ||
+            raiktor_favor !=
+                xar::ck3_11906::
+                    RaiktorSurrenderFavorHookObservation{} ||
+            !g_raiktor_collector_lifecycle_valid ||
+            !g_exit_terms_context_lifecycle_valid ||
+            g_exit_terms_projected_root_preview_calls != 0 ||
+            g_exit_terms_hidden_truce_preview_calls != 0 ||
+            g_exit_terms_traverse_calls != 0 || g_submit_called) {
+          std::cerr << "Raiktor production favor drift accepted: "
+                    << case_name << '\n';
+          return false;
+        }
+        return true;
+      };
+
+  if (!rejects_raiktor_favor_production(
+          [] {
+            g_raiktor_emit_primary = false;
+            g_raiktor_emit_theocracy = true;
+          },
+          nullptr, "missing_primary_with_optional") ||
+      !rejects_raiktor_favor_production(
+          [] { g_raiktor_emit_duplicate_primary = true; }, nullptr,
+          "duplicate_primary") ||
+      !rejects_raiktor_favor_production(
+          [] { g_raiktor_emit_wrong_first_scope = true; }, nullptr,
+          "attacker_scope") ||
+      !rejects_raiktor_favor_production(
+          [] { g_raiktor_emit_wrong_second_scope = true; }, nullptr,
+          "claimant_scope") ||
+      !rejects_raiktor_favor_production(
+          [] { g_raiktor_emit_no_toast = true; }, nullptr,
+          "no_toast_family") ||
+      !rejects_raiktor_favor_production(
+          [] {
+            Store(g_raiktor_add_hook_effect_node, 0x60,
+                  static_cast<void *>(
+                      g_raiktor_hook_type_fallback.data()));
+          },
+          nullptr, "node_type_pointer") ||
+      !rejects_raiktor_favor_production(
+          [] {
+            Store(g_raiktor_favor_hook_type, 0x14,
+                  std::int32_t{0});
+          },
+          nullptr, "hook_type_identity") ||
+      !rejects_raiktor_favor_production(
+          [] {}, FixtureRemoveRaiktorFavorHookBetweenSamples,
+          "same_frame_application_drift") ||
+      !rejects_raiktor_favor_production(
+          [] {}, FixtureMutateRaiktorFavorClaimantBetweenSamples,
+          "same_frame_claimant_drift") ||
+      !rejects_raiktor_favor_production(
+          [] {}, FixtureSwapRaiktorFavorRootBetweenSamples,
+          "same_frame_root_identity_drift") ||
+      !rejects_raiktor_favor_production(
+          [] {}, FixtureMutateRaiktorFavorHookDatabaseBetweenSamples,
+          "same_frame_hook_database_drift") ||
+      !rejects_raiktor_favor_production(
+          [] {}, FixtureMutateRaiktorFavorCbKeyBetweenSamples,
+          "same_frame_cb_key_drift")) {
+    return Fail("Raiktor production favor observer accepted drift");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  g_raiktor_loaded_effect_vtable[11] = nullptr;
+  raiktor_favor = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id, raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::unavailable ||
+      raiktor_favor !=
+          xar::ck3_11906::RaiktorSurrenderFavorHookObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_collector_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_raiktor_hash_calls != 0 ||
+      g_raiktor_lookup_calls != 0 || g_submit_called) {
+    return Fail("Raiktor production favor entered a null root slot");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id, raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::
+              requires_paused ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor production favor read a running frame");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  Store(g_war, 0x288, enemy_character_id);
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id, raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::
+              player_not_primary_attacker ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor production favor accepted another war role");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id ^ 0x01000000,
+          raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::
+              war_not_found ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor production favor accepted a stale War generation");
+  }
+
+  reset_raiktor_favor_production_fixture();
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_0.data()));
+  if (xar::ck3_11906::ReadRaiktorSurrenderFavorHook(
+          raiktor_hook_bindings, active_war_id, raiktor_favor) !=
+          xar::ck3_11906::ReadRaiktorSurrenderFavorHookResult::
+              unsupported_casus_belli ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor production favor accepted another CB");
+  }
+  reset_raiktor_favor_production_fixture();
+
   // GEN-034 actual-gold is a second isolated production observer over the
   // same original visible attacker-defeat root. It publishes exactly one
   // primary attacker->defender final callback plus the two current balances
@@ -9483,6 +9778,12 @@ int main() {
     // lagging extension+0x2B0 cached leaf.
     g_exit_terms_income_mismatch = true;
     g_submit_called = false;
+    Store(jomini_state, 0x20, std::uint8_t{1});
+    Store(g_war, 0x100,
+          static_cast<void *>(g_casus_belli_type_1.data()));
+    Store(g_war, 0x288, played_character_id);
+    Store(g_war, 0x28C, enemy_character_id);
+    Store(g_war, 0x290, played_character_id);
     Store(g_played_character_extension, 0x100,
           std::int64_t{35'000'000});
     Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);

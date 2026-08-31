@@ -478,6 +478,12 @@ attacker-defeat visible-root traversal 中，collector 捕获并完整 forward �
 Snapshot/CB-key/role 一致。它不由 delta 反推 F、不读取 defender 的动态 scale，也不进入 hidden-truce/broad reader 或提交
 命令。该原子尚未进入 terms JSON/MCP；没有 paused CK3 artifact，单域 fixture GREEN 不改变任何统一 readiness 或动作门。
 
+[fixture-confirmed / pending MCP+live] favor-hook 原生 core 已由 `ReadRaiktorSurrenderFavorHook` 闭合。它冻结 exact paused
+WarID、Raiktor CB、primary roles、claimant、original root vtable 与非空 slot11；claimant=attacker 时按 authored outer gate 精确发布
+false 且零 traversal。claimant 不同时，两次真实只读 WarEffectContext traversal 必须对 exact ordinary `favor_hook` row、runtime hook
+type identity 及全部 frame identity 得出相同结果，再经 final paused Snapshot 才发布 true 或 proven false。该原子不执行 hook、不进入
+hidden-truce/broad reader，也尚未进入 terms JSON/MCP；因此不改变 `decision_terms_ready` 或 surrender 动作门。
+
 ### Readiness 与动作分层
 
 Native 只允许发布 `decision_terms_ready`，不能发布或暗示 `automatic_surrender_ready`。Python 的
