@@ -28,6 +28,31 @@ paused date/player、public/native revision、subject 与实际 owner 绑定到�
 `not_scheduled` 是完整的 typed negative observation，故其 identity/due 两个 gate 都为 true；pending/expired 则只有在显式
 `due_date_raw` 可用时才打开 due gate，`open_date_raw` 不参与推算或替代。
 
+本轮同时新增了与上述 B1 manager-owned provider **完全独立**的收件结果查询：
+`ck3_query_zhongguo_result_case_snapshot_v1(request_nonce, expected_revision, owner_character_id)`，capability 为
+`game.command.query-zhongguo-result-case-snapshot-v1`，固定 `case_kind=zhongguo.result.received-self`。它不接受
+`subject_character_id`、`case_kind`、变量名或其他未知字段；subject 永远是同一 paused frame 的 played character。
+必填 `owner_character_id` 只是 expected filter，实际 owner 只能从玩家 scope 的 `zg361_result_case_owner` kind-4 character target
+解码；实际 owner 必须等于 filter 且不得等于玩家。错 owner 返回 `owner_filter_mismatch`，owner 为玩家返回
+`not_received_self`，两者以及其他顶层 unavailable 都必须把 case/notice/delivery 语义字段全量清成 typed unavailable。
+
+该 provider 只双读以下 13 项固定 allowlist，且前后 frame、行集合必须一致：
+`zg361_result_case_owner`、`zg361_result_cycle_serial`、`zg361_result_case_serial`、
+`zg361_result_case_state`、`zg361_result_grade`、`zg361_result_absolute_grade`、
+`zg361_result_kpi_frozen`、`zg361_result_rank_frozen`、`zg361_result_cohort_n_frozen`、
+`zg361_result_delivery_method`、`zg361_result_objection_recorded`、
+`zg361_result_settlement_posted_serial`、`zg361_result_appeal_open`。其中 KPI 保留原始 Q100000；
+`objection_recorded` 缺失按产品语义解释为 false，其他缺失仍是 typed unavailable。产品状态矩阵冻结为：open
+`state=1/method=0/settlement=0/appeal=false/objection=false`；A 签收
+`3/1/case_serial/true/false`；B 签收 `3/2/case_serial/true/true`；C 拒签
+`2/3/0/false/false`。`rank_frozen > cohort_n_frozen` 只关闭 notice/aggregate readiness，不伪造新名次。
+
+`.50` 同帧调用时 expected owner 来自现有 event-window saved scope `zg361_notice_prompt_owner`，event root 为玩家；
+result provider 仍独立读取 current result owner 并核对二者。B1 case serial 与 result case serial **不得比较**，例如
+`41/903` 可以同时合法。本查询不证明 owner 的 AI 身份或考核资格，不证明 scoreboard #013 ACL，也不暴露 evaluator、peer、
+raw comment、recusal、quota、calibration 或 compensation。native application-main mailbox 使用固定第十五槽
+`permitted_executor_quindenary`；当前仅为 **static/fixture-ready**，取得 exact-build paused artifact 前不得写 production-live。
+
 该切片目前只有 Python contract/schema、native/provider source 与离线 fixture 证据，状态为 **static/fixture-ready**；尚未在 exact-build CK3
 中取得 paused response artifact，因此不能写 production-live，也不能解除正式 runner 的 capability RED。上述既有能力与本轮窄切片足以在
 不使用 OCR 的情况下识别/操作当前原生事件、绑定玩家与构建、等待独立 revision，并保存或恢复测试现场；它们**不能**因此被扩写成

@@ -1,0 +1,119 @@
+{
+  "contract": "zhongguo_result_case_snapshot_v1",
+  "status": "static_and_fixture_ready_not_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-zhongguo-result-case-snapshot-v1",
+  "step": "query-zhongguo-result-case-snapshot-v1",
+  "case_kind": "zhongguo.result.received-self",
+  "mailbox_executor": "ExecuteZhongguoResultCaseSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "permitted_executor_quindenary",
+  "request": {
+    "public_inputs": [
+      "request_nonce",
+      "expected_revision",
+      "owner_character_id"
+    ],
+    "owner_character_id": "required_positive_int32_expected_filter_only",
+    "forbidden_inputs": [
+      "subject_character_id",
+      "case_kind",
+      "variable_name",
+      "arbitrary_extra_field"
+    ]
+  },
+  "subject_acl": {
+    "scope": "paused_played_character_only",
+    "subject_source": "same_frame_snapshot.played_character_id",
+    "owner_source": "kind_4_character_target_in_zg361_result_case_owner_on_player_scope",
+    "required_binding": "actual_owner_equals_expected_owner_and_actual_owner_differs_from_player",
+    "owner_scope_read": false,
+    "third_party_subject_read": false
+  },
+  "native_variable_abi": {
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "numeric_kind": 1,
+    "character_kind": 4,
+    "fixed_scale": 100000,
+    "kpi_wire": "retain_exact_kind_1_payload_as_q100000"
+  },
+  "allowlist": [
+    "zg361_result_case_owner",
+    "zg361_result_cycle_serial",
+    "zg361_result_case_serial",
+    "zg361_result_case_state",
+    "zg361_result_grade",
+    "zg361_result_absolute_grade",
+    "zg361_result_kpi_frozen",
+    "zg361_result_rank_frozen",
+    "zg361_result_cohort_n_frozen",
+    "zg361_result_delivery_method",
+    "zg361_result_objection_recorded",
+    "zg361_result_settlement_posted_serial",
+    "zg361_result_appeal_open"
+  ],
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox",
+    "two_complete_allowlist_reads": true,
+    "frame_before_after_equal": true,
+    "raw_rows_first_second_equal": true,
+    "engine_pointers_retained": false
+  },
+  "semantic_groups": {
+    "case": [
+      "owner_character_id",
+      "subject_character_id",
+      "cycle_serial",
+      "case_serial",
+      "state",
+      "grade"
+    ],
+    "notice": [
+      "absolute_grade",
+      "kpi_frozen_q100000",
+      "rank_frozen",
+      "cohort_n_frozen"
+    ],
+    "delivery": [
+      "method",
+      "objection_recorded",
+      "settlement_posted_serial",
+      "appeal_open"
+    ]
+  },
+  "typed_negatives": {
+    "core_all_absent": "case_not_found",
+    "core_partial_type_or_range_failure": "case_inconsistent",
+    "actual_owner_differs_from_expected": "owner_filter_mismatch",
+    "actual_owner_equals_player": "not_received_self",
+    "double_read_or_frame_drift": "state_changed",
+    "objection_absent": "available_false",
+    "rank_greater_than_cohort": "notice_facts_ready_false"
+  },
+  "delivery_matrix": [
+    {"label": "open", "state": 1, "grade": 1, "method": 0, "settlement": 0, "appeal": false, "objection": false},
+    {"label": "signed_a", "state": 3, "grade": 1, "method": 1, "settlement": "case_serial", "appeal": true, "objection": false},
+    {"label": "signed_b", "state": 3, "grade": 1, "method": 2, "settlement": "case_serial", "appeal": true, "objection": true},
+    {"label": "refused_c", "state": 2, "grade": 1, "method": 3, "settlement": 0, "appeal": false, "objection": false}
+  ],
+  "event_50_binding": {
+    "event_root": "played_recipient",
+    "same_frame_owner_saved_scope": "zg361_notice_prompt_owner",
+    "visible_cross_check_scope": "zg361_reviewing_superior",
+    "provider_actual_owner_must_equal_same_frame_saved_scope": true,
+    "compare_manager_case_serial_to_result_case_serial": false
+  },
+  "unsupported_claims": [
+    "owner_is_ai_or_is_an_eligible_superior",
+    "scoreboard_acl_or_a_b_c_visibility",
+    "arbitrary_ai_owned_subject_query",
+    "evaluator_or_peer_identity",
+    "raw_comment_or_recusal_or_quota_or_calibration_or_compensation",
+    "production_live_acceptance"
+  ]
+}

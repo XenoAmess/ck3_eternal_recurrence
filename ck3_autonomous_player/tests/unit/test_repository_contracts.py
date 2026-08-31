@@ -70,14 +70,41 @@ class RepositoryContractTests(unittest.TestCase):
     def test_all_json_contracts_parse(self) -> None:
         paths = sorted((ROOT / "schemas").glob("*.json"))
         paths.append(ROOT / "strategies" / "growth_100_v1.json")
-        self.assertEqual(len(paths), 9)
+        self.assertEqual(
+            {
+                path.name
+                for path in paths
+            },
+            {
+                "action-v1.schema.json",
+                "environment-v1.schema.json",
+                "episode-v1.schema.json",
+                "observation-v1.schema.json",
+                "observation-v2.schema.json",
+                "reflection-v1.schema.json",
+                "strategy-v1.schema.json",
+                "visible-control-action-receipt-v2.schema.json",
+                "zhongguo-case-snapshot-v1.schema.json",
+                "zhongguo-result-case-snapshot-v1.schema.json",
+                "growth_100_v1.json",
+            },
+        )
         for path in paths:
             with self.subTest(path=path.name):
                 payload = json.loads(path.read_text(encoding="utf-8"))
                 if path.parent.name == "schemas":
                     expected_version = 2 if "-v2." in path.name else 1
+                    version_property = (
+                        "schema_version"
+                        if path.name
+                        in {
+                            "zhongguo-case-snapshot-v1.schema.json",
+                            "zhongguo-result-case-snapshot-v1.schema.json",
+                        }
+                        else "format_version"
+                    )
                     self.assertEqual(
-                        payload["properties"]["format_version"]["const"],
+                        payload["properties"][version_property]["const"],
                         expected_version,
                     )
                 else:

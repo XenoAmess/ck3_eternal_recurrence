@@ -1,0 +1,56 @@
+{
+  "fixture": "zhongguo_result_case_snapshot_v1_source_contract",
+  "capability": "game.command.query-zhongguo-result-case-snapshot-v1",
+  "step": "query-zhongguo-result-case-snapshot-v1",
+  "case_kind": "zhongguo.result.received-self",
+  "allowlist_count": 13,
+  "allowlist": [
+    "zg361_result_case_owner",
+    "zg361_result_cycle_serial",
+    "zg361_result_case_serial",
+    "zg361_result_case_state",
+    "zg361_result_grade",
+    "zg361_result_absolute_grade",
+    "zg361_result_kpi_frozen",
+    "zg361_result_rank_frozen",
+    "zg361_result_cohort_n_frozen",
+    "zg361_result_delivery_method",
+    "zg361_result_objection_recorded",
+    "zg361_result_settlement_posted_serial",
+    "zg361_result_appeal_open"
+  ],
+  "request_fields": [
+    "request_nonce",
+    "expected_revision",
+    "owner_character_id"
+  ],
+  "mailbox_executor": "ExecuteZhongguoResultCaseSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "permitted_executor_quindenary",
+  "result_payload_key": "zhongguo_result_case_snapshot",
+  "required_source_properties": [
+    "played_character_is_only_subject",
+    "actual_owner_decoded_from_kind_4_result_owner",
+    "expected_owner_is_filter_not_scope",
+    "two_allowlist_reads",
+    "before_after_frame_equality",
+    "raw_row_equality",
+    "objection_absence_becomes_false",
+    "kpi_payload_retains_q100000"
+  ],
+  "forbidden_request_fields": [
+    "subject_character_id",
+    "case_kind",
+    "variable_name",
+    "unknown_field"
+  ],
+  "excluded_semantics": [
+    "evaluator",
+    "peer",
+    "raw_comment",
+    "recusal",
+    "quota",
+    "calibration",
+    "compensation"
+  ],
+  "readiness": "static_and_fixture_ready_not_live"
+}

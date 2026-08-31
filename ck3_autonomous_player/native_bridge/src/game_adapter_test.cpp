@@ -462,6 +462,10 @@ int main() {
       !exact_adapter->supports_step("query-zhongguo-case-snapshot-v1") ||
       exact_adapter->supports_step(
           "query-zhongguo-case-snapshot-v1-b1") ||
+      !exact_adapter->supports_step(
+          "query-zhongguo-result-case-snapshot-v1") ||
+      exact_adapter->supports_step(
+          "query-zhongguo-result-case-snapshot-v1-received-self") ||
       !exact_adapter->supports_step("query-loaded-feature-manifest-v1") ||
       !exact_adapter->supports_step(
           "query-pending-character-interaction-context-v1") ||

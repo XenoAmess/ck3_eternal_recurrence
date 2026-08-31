@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/title_map_navigation_v1.hpp"
 #include "xar_bridge/zhongguo_case_snapshot_v1.hpp"
+#include "xar_bridge/zhongguo_result_case_snapshot_v1.hpp"
 
 #include <array>
 #include <memory>
@@ -10,7 +11,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 66> kCapabilities{
+constexpr std::array<std::string_view, 67> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -63,6 +64,7 @@ constexpr std::array<std::string_view, 66> kCapabilities{
     "game.command.query-army-strengths-v1",
     "game.command.query-campaign-root-context-v1",
     ck3_11906::kZhongguoCaseSnapshotV1Capability,
+    ck3_11906::kZhongguoResultCaseSnapshotV1Capability,
     "game.command.query-loaded-feature-manifest-v1",
     "game.command.query-pending-character-interaction-context-v1",
     "game.command.query-current-event-window-context-v1",

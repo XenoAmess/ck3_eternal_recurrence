@@ -216,6 +216,20 @@ def _ck3_query_zhongguo_case_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_result_case_snapshot_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+    owner_character_id: int,
+) -> dict[str, object]:
+    """Observe the paused player's received result from one expected owner."""
+    return service.query_zhongguo_result_case_snapshot_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+        owner_character_id=owner_character_id,
+    )
+
+
 def _ck3_center_map_on_landed_title_v1(
     service: GameplayBridgeService,
     title_key: str,
@@ -296,6 +310,35 @@ def _ck3_order_active_combat_retreat_v1(
         target_province_id=target_province_id,
         candidate_token=candidate_token,
     )
+
+
+def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
+    """Freeze one pinned MCP 2.0 tool to an exact top-level input object."""
+    manager = getattr(server, "_tool_manager", None)
+    tools = getattr(manager, "_tools", None)
+    tool = tools.get(tool_name) if isinstance(tools, dict) else None
+    metadata = getattr(tool, "fn_metadata", None)
+    argument_model = getattr(metadata, "arg_model", None)
+    model_config = getattr(argument_model, "model_config", None)
+    model_rebuild = getattr(argument_model, "model_rebuild", None)
+    model_json_schema = getattr(argument_model, "model_json_schema", None)
+    if not (
+        isinstance(model_config, dict)
+        and callable(model_rebuild)
+        and callable(model_json_schema)
+    ):
+        raise RuntimeError(
+            "pinned MCP tool metadata cannot enforce exact v1 arguments"
+        )
+    model_config["extra"] = "forbid"
+    model_rebuild(force=True)
+    parameters = model_json_schema()
+    if not (
+        isinstance(parameters, dict)
+        and parameters.get("additionalProperties") is False
+    ):
+        raise RuntimeError("MCP exact-argument schema did not become closed")
+    tool.parameters = parameters
 
 
 def create_server(driver: GameplayBridgeDriver):
@@ -631,6 +674,20 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_result_case_snapshot_v1(
+        request_nonce: str,
+        expected_revision: int,
+        owner_character_id: int,
+    ) -> dict[str, object]:
+        """Read the player's received result; owner is an equality filter."""
+        return _ck3_query_zhongguo_result_case_snapshot_v1(
+            service,
+            request_nonce,
+            expected_revision,
+            owner_character_id,
+        )
+
+    @server.tool()
     def ck3_center_map_on_landed_title_v1(
         title_key: str,
         expected_revision: int,
@@ -844,6 +901,9 @@ def create_server(driver: GameplayBridgeDriver):
     def ck3_current_state_resource() -> dict[str, object]:
         return service.snapshot()
 
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_result_case_snapshot_v1"
+    )
     return server
 
 

@@ -105,6 +105,9 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_case_snapshot_v1.cpp
   src/zhongguo_case_snapshot_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1_serializer.cpp
+  src/zhongguo_result_case_snapshot_v1.cpp
+  src/zhongguo_result_case_snapshot_v1_mailbox.cpp
+  src/zhongguo_result_case_snapshot_v1_serializer.cpp
 )
 target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
 target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -263,6 +266,8 @@ if(BUILD_TESTING)
     src/war_entry_assessments_v1.cpp
     src/zhongguo_case_snapshot_v1.cpp
     src/zhongguo_case_snapshot_v1_mailbox.cpp
+    src/zhongguo_result_case_snapshot_v1.cpp
+    src/zhongguo_result_case_snapshot_v1_mailbox.cpp
     src/game_adapter_test.cpp
   )
   target_include_directories(xar_ck3_adapter_registry_test PRIVATE include)
@@ -731,6 +736,73 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/zhongguo_case_snapshot_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/zhongguo_case_snapshot_v1_source_contract.json
       ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/tools/gen_361_b1_runtime.py
+  )
+
+  add_executable(xar_ck3_zhongguo_result_case_snapshot_v1_test
+    src/zhongguo_case_snapshot_v1.cpp
+    src/zhongguo_result_case_snapshot_v1.cpp
+    src/zhongguo_result_case_snapshot_v1_serializer.cpp
+    src/zhongguo_result_case_snapshot_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_result_case_snapshot_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_result_case_snapshot_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_result_case_snapshot_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_result_case_snapshot_v1
+    COMMAND xar_ck3_zhongguo_result_case_snapshot_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test
+    src/zhongguo_result_case_snapshot_v1_mailbox.cpp
+    src/zhongguo_result_case_snapshot_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_result_case_snapshot_v1_mailbox
+    COMMAND xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_zhongguo_result_case_snapshot_v1_source_contract_test
+    src/zhongguo_result_case_snapshot_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_result_case_snapshot_v1_source_contract_test
+    PRIVATE include)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_result_case_snapshot_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_result_case_snapshot_v1_source_contract
+    COMMAND xar_ck3_zhongguo_result_case_snapshot_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/zhongguo_result_case_snapshot_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_result_case_snapshot_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_result_case_snapshot_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_result_case_snapshot_v1_mailbox.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/zhongguo_result_case_snapshot_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/zhongguo_result_case_snapshot_v1_source_contract.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_effects.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/events/zg361_events.txt
   )
 
   add_executable(xar_ck3_title_map_navigation_v1_test

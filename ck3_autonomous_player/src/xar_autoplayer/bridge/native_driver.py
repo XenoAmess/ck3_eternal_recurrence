@@ -142,6 +142,14 @@ from .zhongguo_case_snapshot_contract import (
     normalize_native_zhongguo_case_snapshot_v1,
     parse_query_zhongguo_case_snapshot_v1_step,
 )
+from .zhongguo_result_case_snapshot_contract import (
+    QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
+    QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP_PREFIX,
+    ZhongguoResultCaseQueryV1,
+    normalize_native_zhongguo_result_case_snapshot_v1,
+    parse_query_zhongguo_result_case_snapshot_v1_step,
+)
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -1476,6 +1484,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_result_case_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "loaded_feature_manifest_v1_query_supported": (
                 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
                 in bridge_capabilities
@@ -1767,6 +1779,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_case_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_result_case_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "loaded_feature_manifest_v1_query_supported": (
@@ -2979,6 +2995,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo case snapshot v1 query step"
             )
+        zhongguo_result_case_query = (
+            parse_query_zhongguo_result_case_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP_PREFIX
+            )
+            and zhongguo_result_case_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo result-case snapshot v1 query step"
+            )
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if (
             isinstance(step, str)
@@ -3126,6 +3155,22 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_case_snapshot_v1_query(
                 zhongguo_case_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_result_case_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the received-self ZhongGuo "
+                    "result case"
+                )
+            return self._execute_zhongguo_result_case_snapshot_v1_query(
+                zhongguo_result_case_query,
                 expected_revision=expected_revision,
             )
         if active_retreat_preview is not None:
@@ -7722,6 +7767,158 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": connection_generation,
         }
 
+    def _execute_zhongguo_result_case_snapshot_v1_query(
+        self,
+        query: ZhongguoResultCaseQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read the paused player's received result from one expected owner."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query requires a paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo result-case starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query lacks a signed int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query lacks a native revision"
+            )
+        snapshot_id = starting.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query lacks a snapshot identity"
+            )
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query lacks the played character"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query lacks a connection "
+                "generation"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "snapshot_revision",
+                "zhongguo_result_case_snapshot",
+                "backend_id",
+            }
+            or result.get("step")
+            != QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query returned a malformed "
+                "envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_result_case_snapshot_v1(
+                result.get("zhongguo_result_case_snapshot"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query returned a malformed "
+                f"frame: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case envelope status disagrees with "
+                "frame"
+            )
+        current = self.take_snapshot()
+        current_played_character = current.get("played_character")
+        current_player_character_id = (
+            current_played_character.get("character_id")
+            if isinstance(current_played_character, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_character_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo result-case query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_result_case_snapshot": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
     def _execute_loaded_feature_manifest_v1_query(
         self,
         *,
@@ -11197,6 +11394,19 @@ class ConfiguredHybridFallbackDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo case snapshot v1 query step"
             )
+        zhongguo_result_case_query = (
+            parse_query_zhongguo_result_case_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP_PREFIX
+            )
+            and zhongguo_result_case_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo result-case snapshot v1 query step"
+            )
         if zhongguo_case_query is not None:
             native_bridge_capabilities = set(
                 _string_list(
@@ -11268,6 +11478,87 @@ class ConfiguredHybridFallbackDriver:
             ):
                 raise BridgeUnavailableError(
                     "hybrid ZhongGuo case query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+                "queried_connection_generation": connection_generation,
+            }
+        if zhongguo_result_case_query is not None:
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "ZhongGuo result-case queries are pure native and will "
+                    "not use fallback"
+                )
+            starting = self.take_snapshot()
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            starting_diagnostics = starting.get("diagnostics")
+            connection_generation = (
+                starting_diagnostics.get("connection_generation")
+                if isinstance(starting_diagnostics, dict)
+                else None
+            )
+            if (
+                isinstance(connection_generation, bool)
+                or not isinstance(connection_generation, int)
+                or not 1 <= connection_generation <= 2**64 - 1
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid ZhongGuo result-case query lacks a connection "
+                    "generation"
+                )
+            native_public_revision = None
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_public_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step,
+                expected_revision=native_public_revision,
+            )
+            if (
+                result.get("queried_connection_generation")
+                != connection_generation
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid ZhongGuo result-case result crossed a connection"
+                )
+            ending = self.take_snapshot()
+            ending_diagnostics = ending.get("diagnostics")
+            if not (
+                ending.get("paused") is True
+                and ending.get("snapshot_id") == starting.get("snapshot_id")
+                and ending.get("revision") == starting.get("revision")
+                and ending.get("native_revision")
+                == starting.get("native_revision")
+                and ending.get("date_raw") == starting.get("date_raw")
+                and ending.get("played_character")
+                == starting.get("played_character")
+                and isinstance(ending_diagnostics, dict)
+                and ending_diagnostics.get("connection_generation")
+                == connection_generation
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid ZhongGuo result-case query crossed a snapshot "
+                    "revision"
                 )
             return {
                 **result,
@@ -15097,6 +15388,13 @@ def _action_steps(
         elif capability == QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY:
             # The case selector and request nonce are explicit MCP inputs.
             # Never expose the fixed native command as a planner action.
+            continue
+        elif (
+            capability
+            == QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+        ):
+            # The expected owner and request nonce are explicit MCP inputs;
+            # the paused played character is the only subject.
             continue
         elif capability == QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY:
             advertise_loaded_feature_manifest = True

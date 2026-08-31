@@ -51,6 +51,12 @@ Its current first gameplay slice is intentionally small:
   generation-bound pair; exact-build snapshots additionally expose the Mod's
   completed Rogue one-life death settlement without depending on the current
   played character or a visible game window;
+- the fifteenth fixed application-main slot now carries a separate, read-only
+  `query-zhongguo-result-case-snapshot-v1` provider. It reads exactly thirteen
+  `zg361_result_*` rows from the paused played character, treats the required
+  superior ID only as an equality filter against the real kind-4 owner row,
+  and never opens the older manager-owned B1 provider to AI-owned cases. This
+  provider is static/fixture-ready and has no CK3 live claim yet;
 - `xar_ck3_bridge_host.exe` creates a minimal target with
   `CREATE_SUSPENDED`, runs the PID injector, verifies the complete
   hello/heartbeat/ping/pong exchange from inside that target, deliberately
