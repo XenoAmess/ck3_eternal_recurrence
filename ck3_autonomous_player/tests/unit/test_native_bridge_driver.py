@@ -28,6 +28,7 @@ from xar_autoplayer.bridge.driver import (
     UnsupportedStepError,
 )
 from xar_autoplayer.bridge.native_driver import (
+    _battle_sentinel_matches_committed_route,
     _battle_sentinel_has_active_retreat,
     ConfiguredHybridFallbackDriver,
     DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
@@ -6847,6 +6848,62 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             driver.execute_step(
                 "query-route-contact-horizon-v1-101-to-2585-h-1-41"
             )
+
+    def test_route_contact_failure_detail_reaches_python_error(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        player = _army(101, province_id=2603, route_province_ids=[])
+        enemy = _army(31, province_id=2583, controllable=False)
+        endpoint.publish(
+            _snapshot(
+                40,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        war_objective_province_ids=[2585],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+        step = "query-route-contact-horizon-v1-101-to-2585-h-1-31"
+        native_error = (
+            "CK3 route arrival timeline is unavailable "
+            "(role=hostile, army_id=31, path=hostile_active, "
+            "stage=current_edge_speed)"
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": False,
+                        "error": native_error,
+                    }
+                )
+
+        endpoint.send_hook = answer
+        with self.assertRaises(BridgeUnavailableError) as raised:
+            driver.execute_step(step)
+        self.assertEqual(
+            getattr(raised.exception, "native_error", None), native_error
+        )
 
     def test_fresh_contact_proof_advertises_and_consumes_exact_day_once(
         self,
@@ -13815,12 +13872,29 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         target = start + 45 * 24
         stop = start + 3 * 24
         player = _army(
-            201_326_874,
-            province_id=8753,
-            move_target_province_id=2635,
-            army_state="moving",
-            army_state_code=7,
-            route_province_ids=[2626, 2627, 2633, 2634, 2635],
+            150_995_107,
+            province_id=8_652,
+            move_target_province_id=5_715,
+            army_state="embarked",
+            army_state_code=4,
+            route_province_ids=[
+                1_038,
+                1_037,
+                8_658,
+                1_017,
+                942,
+                1_111,
+                8_665,
+                947,
+                8_668,
+                950,
+                951,
+                8_672,
+                5_696,
+                5_709,
+                704,
+                5_715,
+            ],
         )
         war = _war(allied_armies=[player])
         endpoint.publish(
@@ -13931,8 +14005,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.send_hook = answer
         result = driver.execute_step(
             committed_route_sentinel_advance_step(
-                201_326_874,
-                2635,
+                150_995_107,
+                5_715,
                 target,
                 timeline_speed=5,
             ),
@@ -14511,6 +14585,18 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 ),
                 "does not match the requested subject",
             ),
+            "empty_subject_route": (
+                [
+                    {
+                        **subject,
+                        "route_province_ids": [],
+                    }
+                ],
+                committed_route_sentinel_advance_step(
+                    501, 2635, target_date
+                ),
+                "does not match the requested subject",
+            ),
             "watched_active_combat": (
                 [subject, _army(502, in_combat=True)],
                 committed_route_sentinel_advance_step(
@@ -14564,6 +14650,60 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     any(
                         frame.get("type") == "execute_step"
                         for frame in endpoint.frames
+                    )
+                )
+
+    def test_committed_route_scope_admits_embarked_artifact_route(self) -> None:
+        subject = _army(
+            150_995_107,
+            province_id=8_652,
+            move_target_province_id=5_715,
+            army_state="embarked",
+            army_state_code=4,
+            in_combat=False,
+            retreating=False,
+            route_province_ids=[
+                1_038,
+                1_037,
+                8_658,
+                1_017,
+                942,
+                1_111,
+                8_665,
+                947,
+                8_668,
+                950,
+                951,
+                8_672,
+                5_696,
+                5_709,
+                704,
+                5_715,
+            ],
+        )
+        snapshot = _snapshot(player_armies=[subject])["state"]
+
+        self.assertTrue(
+            _battle_sentinel_matches_committed_route(
+                snapshot,
+                (150_995_107,),
+                subject_army_id=150_995_107,
+                target_province_id=5_715,
+            )
+        )
+        for label, overrides in {
+            "wrong_target": {"move_target_province_id": 5_716},
+            "empty_route": {"route_province_ids": []},
+        }.items():
+            with self.subTest(label=label):
+                invalid = {**subject, **overrides}
+                invalid_snapshot = _snapshot(player_armies=[invalid])["state"]
+                self.assertFalse(
+                    _battle_sentinel_matches_committed_route(
+                        invalid_snapshot,
+                        (150_995_107,),
+                        subject_army_id=150_995_107,
+                        target_province_id=5_715,
                     )
                 )
 

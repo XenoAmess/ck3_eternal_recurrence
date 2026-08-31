@@ -2906,6 +2906,33 @@ int main() {
           "route-contact completion snapshot changed") {
     return Fail("route-contact failure stages collapsed into a generic error");
   }
+  xar::game::RouteContactHorizonSnapshot diagnostic_route_failure{};
+  diagnostic_route_failure.status = RouteStatus::timeline_unavailable;
+  diagnostic_route_failure.timeline_failure.role =
+      xar::game::RouteContactTimelineFailureRole::subject;
+  diagnostic_route_failure.timeline_failure.army_id = 150'995'107;
+  diagnostic_route_failure.timeline_failure.path_kind =
+      xar::game::RouteContactTimelinePathKind::committed_active;
+  diagnostic_route_failure.timeline_failure.stage =
+      xar::game::RouteContactTimelineFailureStage::current_edge_speed;
+  if (xar::ck3_11906::RouteContactHorizonFailureDetailV1(
+          RouteWait::completed, RouteCompletion::query_unavailable,
+          diagnostic_route_failure, false) !=
+          "CK3 route arrival timeline is unavailable (role=subject, "
+          "army_id=150995107, path=committed_active, "
+          "stage=current_edge_speed)" ||
+      xar::ck3_11906::RouteContactHorizonFailureDetailV1(
+          RouteWait::infrastructure_failed, RouteCompletion::query_unavailable,
+          diagnostic_route_failure, false) !=
+          "application-main route-contact boundary drifted after execution" ||
+      xar::ck3_11906::RouteContactHorizonFailureDetailV1(
+          RouteWait::completed, RouteCompletion::query_unavailable,
+          diagnostic_route_failure, false)
+              .size() >
+          xar::ck3_11906::
+              kRouteContactHorizonV1FailureDetailMaximumBytes) {
+    return Fail("route-contact timeline provenance was not failure-only");
+  }
 
   std::array<std::byte, 0xA8> game_state{};
   std::array<std::byte, 0x28> jomini_state{};
@@ -7212,6 +7239,42 @@ int main() {
     return Fail("stationary same-current route-contact was not observable");
   }
 
+  // A valid stationary subject must still report which hostile active
+  // timeline failed.  Model a progressed hostile edge whose cached and
+  // recalculated current-edge speeds are both zero; the public error must not
+  // collapse this into an unattributed timeline_unavailable result.
+  Store(g_enemy_move_route_info_0, 0x00, std::int32_t{2});
+  g_enemy_move_path = {g_enemy_move_route_info_0.data()};
+  Store(g_enemy_army, 0x38,
+        static_cast<void *>(g_enemy_move_path.data()));
+  Store(g_enemy_army, 0x40, std::int32_t{1});
+  Store(g_enemy_army, 0x44, std::int32_t{1});
+  Store(g_enemy_army, 0x168, std::int64_t{1});
+  Store(g_enemy_army, 0x190, std::int64_t{0});
+  g_enemy_army_state_code = 7;
+  g_route_current_edge_speed_raw = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      !route_contact.subject_route.timeline_observable ||
+      route_contact.timeline_failure.role !=
+          xar::game::RouteContactTimelineFailureRole::hostile ||
+      route_contact.timeline_failure.army_id != enemy_army_id ||
+      route_contact.timeline_failure.path_kind !=
+          xar::game::RouteContactTimelinePathKind::hostile_active ||
+      route_contact.timeline_failure.stage !=
+          xar::game::RouteContactTimelineFailureStage::current_edge_speed) {
+    return Fail("hostile route-timeline failure provenance was unavailable");
+  }
+  Store(g_enemy_army, 0x38, static_cast<void *>(nullptr));
+  Store(g_enemy_army, 0x40, std::int32_t{0});
+  Store(g_enemy_army, 0x44, std::int32_t{0});
+  Store(g_enemy_army, 0x168, std::int64_t{0});
+  Store(g_enemy_army, 0x190, std::int64_t{100'000});
+  g_enemy_army_state_code = 1;
+  g_route_current_edge_speed_raw = 100'000;
+
   Store(g_player_army, 0x38,
         static_cast<void *>(g_player_move_path.data()));
   Store(g_player_army, 0x40, std::int32_t{3});
@@ -7331,8 +7394,73 @@ int main() {
           bindings, route_contact_request, route_contact) !=
           xar::game::RouteContactHorizonStatus::timeline_unavailable ||
       route_contact.subject_route.timeline_observable ||
+      route_contact.timeline_failure.role !=
+          xar::game::RouteContactTimelineFailureRole::subject ||
+      route_contact.timeline_failure.army_id != player_army_id ||
+      route_contact.timeline_failure.path_kind !=
+          xar::game::RouteContactTimelinePathKind::committed_active ||
+      route_contact.timeline_failure.stage !=
+          xar::game::RouteContactTimelineFailureStage::current_edge_speed ||
       g_route_edge_duration_calls != 0 || g_route_duration_calls != 0) {
     return Fail("progressed route accepted a zero current-edge speed");
+  }
+
+  // Exercise the real typed executor reset path, not just the direct reader:
+  // unavailable business data is cleared, while the first attributed
+  // timeline failure must survive for the worker's bounded error detail.
+  xar::ck3_11906::MainThreadQueryMailboxV1 route_failure_mailbox{};
+  xar::ck3_11906::RouteContactHorizonMailboxContextV1 route_failure_query{};
+  route_failure_query.mailbox = &route_failure_mailbox;
+  route_failure_query.ticket.sequence = 1;
+  route_failure_query.bindings = bindings;
+  route_failure_query.request = route_contact_request;
+  const auto fixture_thread_id = GetCurrentThreadId();
+  route_failure_mailbox.state.store(
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::executing);
+  route_failure_mailbox.published_sequence.store(1);
+  route_failure_mailbox.owner_thread_id.store(fixture_thread_id);
+  route_failure_mailbox.paused_owner_verified_pump_epochs.store(
+      xar::ck3_11906::
+          kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs);
+  route_failure_mailbox.executor =
+      &xar::ck3_11906::ExecuteRouteContactHorizonMailboxQueryV1;
+  route_failure_mailbox.executor_context = &route_failure_query;
+  xar::ck3_11906::MainThreadExecutionStampV1 route_failure_stamp{};
+  route_failure_stamp.pump_epoch = 1;
+  route_failure_stamp.thread_id = fixture_thread_id;
+  route_failure_stamp.tls_initialized_flag_address = 1;
+  route_failure_stamp.tls_initialized = 1;
+  route_failure_stamp.tls_context = 1;
+  route_failure_stamp.tls_main_thread_marker = 1;
+  route_failure_stamp.jomini_state = 1;
+  route_failure_stamp.game_state = 1;
+  route_failure_stamp.date_raw = 43'823'104;
+  route_failure_stamp.paused = true;
+  if (!xar::ck3_11906::ExecuteRouteContactHorizonMailboxQueryV1(
+          &route_failure_query, route_failure_stamp) ||
+      route_failure_query.completion !=
+          xar::ck3_11906::RouteContactHorizonMailboxCompletionV1::
+              query_unavailable ||
+      route_failure_query.result.status !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_failure_query.result.subject_army_id != -1 ||
+      !route_failure_query.result.hostile_army_ids.empty() ||
+      route_failure_query.result.subject_route.timeline_observable ||
+      !route_failure_query.result.hostile_routes.empty() ||
+      route_failure_query.result.timeline_failure.role !=
+          xar::game::RouteContactTimelineFailureRole::subject ||
+      route_failure_query.result.timeline_failure.army_id != player_army_id ||
+      route_failure_query.result.timeline_failure.path_kind !=
+          xar::game::RouteContactTimelinePathKind::committed_active ||
+      route_failure_query.result.timeline_failure.stage !=
+          xar::game::RouteContactTimelineFailureStage::current_edge_speed ||
+      xar::ck3_11906::RouteContactHorizonFailureDetailV1(
+          RouteWait::completed, RouteCompletion::query_unavailable,
+          route_failure_query.result, false) !=
+          "CK3 route arrival timeline is unavailable (role=subject, "
+          "army_id=16777217, path=committed_active, "
+          "stage=current_edge_speed)") {
+    return Fail("route-contact mailbox erased timeline failure provenance");
   }
 
   Store(g_player_army, 0x38,

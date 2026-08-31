@@ -12058,9 +12058,9 @@ def _battle_sentinel_matches_committed_route(
             and (
                 (
                     isinstance(named_state, str)
-                    and named_state.casefold() == "moving"
+                    and named_state.casefold() in {"moving", "embarked"}
                 )
-                or state_code == 7
+                or state_code in {4, 7}
             )
         ):
             continue

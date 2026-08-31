@@ -2422,6 +2422,110 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(default_closed["selected_step"], query_step)
 
+    def test_embarked_committed_route_uses_sentinel_and_keeps_route_gates(
+        self,
+    ) -> None:
+        date_raw = 53_218_080
+        route = [
+            1_038,
+            1_037,
+            8_658,
+            1_017,
+            942,
+            1_111,
+            8_665,
+            947,
+            8_668,
+            950,
+            951,
+            8_672,
+            5_696,
+            5_709,
+            704,
+            5_715,
+        ]
+        player = _army(
+            150_995_107,
+            soldiers=4_100,
+            province_id=8_652,
+            controllable=True,
+            move_target_province_id=5_715,
+            army_state="embarked",
+            army_state_code=4,
+            in_combat=False,
+            retreating=False,
+            route_province_ids=route,
+        )
+        enemy = _army(
+            83_886_281,
+            soldiers=3_300,
+            province_id=5_935,
+            controllable=False,
+            move_target_province_id=2_619,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[5_910, 945, 946, 8_661, 1_017, 2_619],
+        )
+        query_step = query_route_contact_horizon_step(
+            150_995_107, 5_715, (83_886_281,)
+        )
+        steps = (
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            query_step,
+            "life-advance",
+        )
+        readiness = {
+            "decision_sentinel_live_ready": True,
+            "committed_route_sentinel_live_ready": True,
+            "terminal_sentinel_live_ready": False,
+            "overwhelming_matrix_live_ready": False,
+        }
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=-37,
+            date_raw=date_raw,
+            steps=steps,
+            route_contact_horizon_supported=True,
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(
+            plan["phase"], "native_war_committed_route_sentinel_progress"
+        )
+        self.assertEqual(
+            plan["selected_step"],
+            committed_route_sentinel_advance_step(
+                150_995_107,
+                5_715,
+                date_raw + 45 * 24,
+            ),
+        )
+
+        for label, overrides in {
+            "wrong_target": {"move_target_province_id": 5_716},
+            "empty_route": {"route_province_ids": []},
+        }.items():
+            with self.subTest(label=label):
+                invalid_plan = _native_war_plan(
+                    player={**player, **overrides},
+                    enemies=[enemy],
+                    score=-37,
+                    date_raw=date_raw,
+                    steps=steps,
+                    route_contact_horizon_supported=True,
+                    battle_speed_readiness=readiness,
+                )
+                self.assertNotEqual(
+                    invalid_plan["phase"],
+                    "native_war_committed_route_sentinel_progress",
+                )
+                self.assertFalse(
+                    str(invalid_plan["selected_step"]).startswith(
+                        "committed-route-sentinel-advance"
+                    )
+                )
+
     def test_committed_route_speed_five_is_policy_neutral_and_gated(
         self,
     ) -> None:

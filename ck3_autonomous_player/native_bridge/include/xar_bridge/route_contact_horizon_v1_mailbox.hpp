@@ -4,6 +4,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
+#include <string>
 #include <string_view>
 #include <type_traits>
 
@@ -22,6 +23,8 @@ inline constexpr std::uint32_t
     kRouteContactHorizonV1QueuedWaitBudgetMilliseconds = 8'000;
 inline constexpr std::uint32_t
     kRouteContactHorizonV1ExecutingWaitSliceMilliseconds = 2'000;
+inline constexpr std::size_t
+    kRouteContactHorizonV1FailureDetailMaximumBytes = 256;
 
 bool ParseRouteContactHorizonV1Step(
     std::string_view step,
@@ -86,6 +89,14 @@ std::string_view RouteContactHorizonFailureMessageV1(
     RouteContactHorizonMailboxCompletionV1 completion,
     game::RouteContactHorizonStatus status,
     bool completion_snapshot_stable) noexcept;
+
+// Adds structured failure-only route provenance to the stable base message.
+// Successful route-contact frames never call or serialize this diagnostic.
+std::string RouteContactHorizonFailureDetailV1(
+    MainThreadQueryWaitResultV1 wait,
+    RouteContactHorizonMailboxCompletionV1 completion,
+    const game::RouteContactHorizonSnapshot &result,
+    bool completion_snapshot_stable);
 
 static_assert(
     std::is_same_v<decltype(&ExecuteRouteContactHorizonMailboxQueryV1),

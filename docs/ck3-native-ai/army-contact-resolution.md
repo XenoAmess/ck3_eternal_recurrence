@@ -549,6 +549,109 @@ flowchart TD
     class H unknown;
 ```
 
+### 2026-08-31 G2 alternate-seed production RED：timeline 失败角色仍为 unknown
+
+[production-live RED] exact build 仍为 CK3 `1.19.0.6`、EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。冻结 run
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-route-diagnostic-C78CD-20260831-v1\g2-runs\20260830T193023Z-next-episode-27de27cd\`
+的 `first-blocker.json` SHA-256 为
+`B4BF9AFEA65A43FA73E4BC7DF542624C6FDFBF9D9B9D9A95A26337B805FB3202`，`report.json` SHA-256 为
+`DDF72DA418FBD5DF0D4A9DADB2191C94DDC0B04176EE5903F54A9A041A6FBF94`。CharacterID `29829` 在同一 episode
+中对 `150995107 -> 5715` 连续完成 9 次 exact one-day route-contact query；随后 committed-route sentinel 从
+`53217360` 推进到 `53218080`，subject 从 `moving @ 3575` 变为 `embarked @ 8652`，target 仍为 `5715`，并因
+`route_target_changed` 当日停表。可恢复 checkpoint SHA-256 为
+`C78CD16A627DD530F0842733FB9FC01CD71DC273D50949CAEC7613E54CDFC529`。
+
+紧邻 checkpoint 的 war-termination query 成功；下一条同 subject/target 的 route-contact query 则返回
+`CK3 route arrival timeline is unavailable`。该帧 subject 的 committed suffix 为
+`[1038,1037,8658,1017,942,1111,8665,947,8668,950,951,8672,5696,5709,704,5715]`；请求还包含 hostile
+`83886281 / 100663502 / 134217777`，其中 `83886281` 与 subject 已有同点及反向边交叉。失败发生在 paused native
+query；blocker 的 `result`、`after` 均为 `null`，CK3 `debug.log/error.log` 没有对应引擎错误。
+
+[unknown] 这份生产证据只证明 failure 出现在 subject 进入 embarked 后，**不能**证明失败者就是 subject。
+当前 reader 将 subject committed-path 的 `BuildActiveRouteTimeline` 失败，以及任一 hostile 的同函数失败，全都折叠为
+`timeline_unavailable`；mailbox 又只发布同一条 generic error。因而 subject/hostile 角色、具体 ArmyID 和构建阶段在该
+artifact 中不可恢复。[implementation-confirmed] failure path 已增加 bounded `role + ArmyID + path + stage` 诊断，最大
+256 bytes，并沿现有 command error 交给 Python。各 projector/validator 只在原有 `return false` 短路点记录第一个
+failure stage；`stage != none` 后不再覆盖，未请求诊断的共享 caller 仍传空指针，成功求值顺序、返回条件及响应
+serializer/schema 均保持不变。
+
+[production-live cold replay] 从同一 C78CD checkpoint 冷恢复的三回合 run
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-c78cd-replay-3turn-20260831-0928\runs\20260831T012828Z-one-generation-0852a36e\report.json`
+SHA-256 为 `5AD0F16A51AE683A73DCEF365BFE7876D92A2D6867069A05CE6B125ACEE527DB`；该 run 使用的 bridge DLL
+SHA-256 为 `270264A950833F324E205288C8500BE5B8E458A665BDD9680B40B539EA1D4E5D`。在 `53218080`，同一
+`150995107 -> 5715`、同一 hostile set 的 query 返回 `status=available / accepted=true / query_sequence=1`，没有进入
+新 failure diagnostic；随后 exact one-day contact-free composite 以 speed 3 从 `53218080` 推进到 `53218104`，
+`progress_status=postcondition`。subject 前后均为 `embarked/state 4 @ 8652`，target `5715` 且上述 committed suffix
+不变；新 checkpoint SHA-256 为 `4AB0BB2A4AA35C5E731F4AE829C6BBA9174E7510AEE3E802E7B5A0160C66DE25`。
+
+[evidence boundary] cold replay 证明旧 timeline RED 不能从冷存档稳定复现，并解除该 checkpoint 的即时一日 continuation
+blocker；它没有触发 failure path，故不能反推历史 failing role、ArmyID、stage 或 root cause。该 run 最终仍是
+`turn_limit / bounded_incomplete`，first blocker 为 `run_bound_exhausted`，不能称为一代闭环；report 内 CK3 EXE SHA
+仍为 `null`，exact-build 绑定继续引用外层冻结证据，不能由本报告单独声称。
+
+[counter-policy] 该 artifact 同时确定暴露一处独立 admission gap：subject 已有非空 committed route、尾点仍精确等于
+target，且没有 combat/retreat，但 strategy 与 native driver 都只接受 `moving/state 7`，因此 `embarked/state 4` 被迫回退
+到 exact one-day query。两层现同时接受 `moving/state 7` 或 `embarked/state 4`；paused/map-ready、完整 watch、无玩家决策、
+无 combat/retreat/assault、正整数非空 route 和 `route[-1] == target` 等门禁均保持不变。
+
+[production-live primitive] 修复 admission 后，从上一段 `4AB0BB2A...DE25` checkpoint 冷恢复的两回合 run
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-altseed-after-embarked-fix-20260831-0937\runs\20260831T013746Z-one-generation-9644124d\`
+不再为该 embarked subject 发起 exact one-day route-contact query：首回合只读 War `50331699` 的 termination options；第二回合
+直接选择 `committed-route-sentinel-advance-army-150995107-to-5715-until-53219184`。`report.json` SHA-256 为
+`3F5432FDD6D26D69F33FDCFC49CC5259A801B5C960A921ED94BDA6C450147B1D`，`first-blocker.json` SHA-256 为
+`33BA0D95B01BA0398D7BBA947F2A4B8656ABB8EEE3F82FD45BE931953F5986ED`。speed-3 sentinel 将 paused date 从
+`53218104` 推进至 `53218176`；Army `150995107` 从 `embarked/state 4 @ 8652` 移至 `embarked/state 4 @ 1038`，
+move target 与 committed route 尾点都仍为 `5715`。它在第三个 daily tick 以 `route_target_changed` 当日停表，
+`intermediate_pause_count=0`、`overshoot_days=0`、`zero_intermediate_pause=true`，结束帧保持 paused。
+
+最终续跑 checkpoint SHA-256 为 `B322B1DA403D23D6CCF2ABF7C5CBBF1CF8478AD0FCB22A07F6B1CC1A3DFFD7AC`
+（`date_raw=53218176 / history_index=997`）。cleanup 的
+`session_report_ok / shutdown_ok / tree_gone / cleanup_proven / driver_closed / ok` 全为 `true`，session
+`restart_count=0`。这把“embarked/state 4 进入既有
+committed-route sentinel”从 static-ready 升为 production-live primitive；它没有放宽 route/watch/combat/retreat/assault
+门禁。run 总体仍是 `turn_limit / bounded_incomplete`，first blocker 仅为 `run_bound_exhausted`，角色仍存活、未发生死亡结算，
+因此不能写成 G2 或 one-generation complete。
+
+```mermaid
+flowchart TD
+    C["[production-live] C78CD checkpoint<br/>53218080 / paused"] --> Q["[implementation-confirmed] route-contact reader<br/>150995107 -> 5715"]
+    S["[production-live] subject 150995107<br/>embarked / committed suffix"] --> Q
+    H["[production-live] hostile set<br/>83886281 / 100663502 / 134217777"] --> Q
+    Q --> SB["[implementation-confirmed] subject<br/>BuildSubjectRouteTimeline"]
+    Q --> HB["[implementation-confirmed] each hostile<br/>BuildActiveRouteTimeline"]
+    SB -. "[unknown] subject timeline failed?" .-> U["[production-live RED] timeline_unavailable<br/>generic command error"]
+    HB -. "[unknown] which hostile timeline failed?" .-> U
+    U --> D["[implementation-confirmed] failure-only diagnostic<br/>role + ArmyID + path + stage; <= 256 bytes"]
+    C --> R["[production-live] C78CD cold replay<br/>query available; +1 day to 53218104"]
+    R --> A["[counter-policy] admit committed-route<br/>embarked/state 4 alongside moving/state 7"]
+    A --> P["[production-live primitive] fixed admission selects sentinel<br/>53218104 -> 53218176; 8652 -> 1038"]
+    P --> V["[production-live] target/route tail 5715<br/>route_target_changed; paused; cleanup proven"]
+    P --> B["[evidence boundary] turn_limit / bounded_incomplete<br/>not G2 or one-generation complete"]
+    R -. "failure path did not reproduce" .-> O["[unknown] historical failing<br/>role / ArmyID / stage / root cause"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class SB,HB,O unknown;
+```
+
+#### 2026-08-31 100-turn continuation：embarked sentinel soak 未复发 timeline RED
+
+[production-live] 后续 run
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-altseed-after-embarked-fix-20260831-0937\runs\20260831T015622Z-one-generation-a809dec5\report.json`
+SHA-256 为 `142AD4E357733C575453181A7B06AC044B28A299CAFCD82F388F59D0DD11E50C`。100-turn 上限内实际
+attempt `79` 次、成功 `78` 次；其中 `43` 次 committed-route sentinel 合计推进 `205` 个游戏日，`43/43`
+均为 `zero_intermediate_pause=true`，没有正 overshoot（`40` 次为 `0`，`3` 次为 `-1` / not applicable）。
+
+[production-live] 全 run 只有 turn `13` 发出一次 route-contact query：subject `167772444 -> 5715`，hostile
+`83886281 / 100663502 / 134217777`；返回 `status=available / accepted=true`，subject 与三支 hostile 的 timeline
+均 observable，exact one-day 结果为 contact-free。报告中新增的 bounded timeline failure diagnostic 字符串出现次数为
+`0`。因此这份 soak 只能证明此前 RED 在本次 `205` 日 continuation 内**没有复发**，不能把历史 failure 的 role、stage
+或 root cause 从 `unknown` 升级为已闭合。
+
+[production-live boundary] 最后 durable checkpoint SHA-256 为
+`F79BD6718A76CC7C50B5CA913FE61EE52F4BA5357EC7DE8397516A1099DD2461`，`date_raw=53223072`，且
+`cleanup_proven=true`。turn `79` 的最终 blocker 是未 allowlist 的 `call_ally_interaction` pending-interaction policy，属于
+interaction 专题；它不构成 route/sentinel 回归证据，也不改变本节 timeline 根因仍为 unknown 的结论。
+
 ## `0x2208320`：同省接触 resolver
 
 ### 入口与前置门

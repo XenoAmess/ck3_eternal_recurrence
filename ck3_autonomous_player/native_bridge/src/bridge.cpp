@@ -5598,8 +5598,8 @@ void RunConnectedSession(
                 }
                 if (response.empty()) {
                   const auto error = xar::ck3_11906::
-                      RouteContactHorizonFailureMessageV1(
-                          wait, query.completion, query.result.status,
+                      RouteContactHorizonFailureDetailV1(
+                          wait, query.completion, query.result,
                           completion_snapshot_stable);
                   response =
                       CommandResultFrame(request_id, step, false, error);

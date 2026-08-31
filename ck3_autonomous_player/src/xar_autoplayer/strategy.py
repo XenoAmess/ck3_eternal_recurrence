@@ -7201,11 +7201,12 @@ def choose_one_life_turn(
                     )
                     and committed_route[-1] == observed_route_target
                     and (
-                        _army_tactical_state(pursuit_army) == "moving"
+                        _army_tactical_state(pursuit_army)
+                        in {"moving", "embarked"}
                         or _native_int(
                             pursuit_army.get("army_state_code")
                         )
-                        == 7
+                        in {4, 7}
                     )
                     and route_sentinel_start_date_raw is not None
                 ):

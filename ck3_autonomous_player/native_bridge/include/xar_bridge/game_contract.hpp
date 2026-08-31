@@ -898,6 +898,60 @@ enum class RouteContactHorizonStatus {
   unavailable,
 };
 
+// Failure-only provenance for the internal route-contact reader.  These
+// fields are deliberately not serialized by the successful horizon wire
+// frame; they exist so one paused exact-build replay identifies which native
+// timeline failed and at which read-only projection gate.
+enum class RouteContactTimelineFailureRole {
+  none,
+  subject,
+  hostile,
+};
+
+enum class RouteContactTimelinePathKind {
+  none,
+  stationary_active,
+  committed_active,
+  constructed,
+  hostile_active,
+};
+
+enum class RouteContactTimelineFailureStage {
+  none,
+  invalid_input,
+  active_identity,
+  path_header,
+  route_speed_read,
+  route_origin,
+  route_entry,
+  route_adjacency,
+  land_speed,
+  naval_speed,
+  current_edge_speed,
+  zero_progress_boundary,
+  edge_duration_read,
+  route_duration_read,
+  route_duration_value,
+  route_duration_order,
+  arrival_date,
+  route_mismatch,
+  timeline_shape,
+};
+
+struct RouteContactTimelineFailureDiagnostic {
+  RouteContactTimelineFailureRole role =
+      RouteContactTimelineFailureRole::none;
+  std::int32_t army_id = -1;
+  RouteContactTimelinePathKind path_kind =
+      RouteContactTimelinePathKind::none;
+  RouteContactTimelineFailureStage stage =
+      RouteContactTimelineFailureStage::none;
+
+  friend bool operator==(const RouteContactTimelineFailureDiagnostic &,
+                         const RouteContactTimelineFailureDiagnostic &) =
+      default;
+};
+
 struct RouteContactHorizonSnapshot {
   RouteContactHorizonStatus status = RouteContactHorizonStatus::unavailable;
   std::uint64_t snapshot_revision = 0;
@@ -911,6 +965,7 @@ struct RouteContactHorizonSnapshot {
   std::int32_t horizon_end_date_raw = 0;
   bool one_day_contact_free = false;
   std::vector<RouteContactConflictSnapshot> conflicts;
+  RouteContactTimelineFailureDiagnostic timeline_failure;
 
   friend bool operator==(const RouteContactHorizonSnapshot &,
                          const RouteContactHorizonSnapshot &) = default;

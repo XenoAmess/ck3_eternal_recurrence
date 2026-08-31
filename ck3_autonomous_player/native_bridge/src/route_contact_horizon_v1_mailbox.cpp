@@ -241,8 +241,10 @@ bool ExecuteRouteContactHorizonMailboxQueryV1(
       query->completion = RouteContactHorizonMailboxCompletionV1::available;
       return true;
     }
+    const auto timeline_failure = query->result.timeline_failure;
     query->result = {};
     query->result.status = status;
+    query->result.timeline_failure = timeline_failure;
     query->completion =
         RouteContactHorizonMailboxCompletionV1::query_unavailable;
     return true;
@@ -328,6 +330,133 @@ std::string_view RouteContactHorizonFailureMessageV1(
     return "CK3 route-contact reader is unavailable";
   }
   return "application-main route-contact failure state is unknown";
+}
+
+std::string RouteContactHorizonFailureDetailV1(
+    MainThreadQueryWaitResultV1 wait,
+    RouteContactHorizonMailboxCompletionV1 completion,
+    const game::RouteContactHorizonSnapshot &result,
+    bool completion_snapshot_stable) {
+  std::string detail(RouteContactHorizonFailureMessageV1(
+      wait, completion, result.status, completion_snapshot_stable));
+  const auto &failure = result.timeline_failure;
+  if (wait != MainThreadQueryWaitResultV1::completed ||
+      completion != RouteContactHorizonMailboxCompletionV1::query_unavailable ||
+      result.status != game::RouteContactHorizonStatus::timeline_unavailable ||
+      failure.army_id <= 0 ||
+      failure.role == game::RouteContactTimelineFailureRole::none ||
+      failure.path_kind == game::RouteContactTimelinePathKind::none ||
+      failure.stage == game::RouteContactTimelineFailureStage::none) {
+    return detail;
+  }
+
+  std::string_view role = "unknown";
+  switch (failure.role) {
+  case game::RouteContactTimelineFailureRole::none:
+    break;
+  case game::RouteContactTimelineFailureRole::subject:
+    role = "subject";
+    break;
+  case game::RouteContactTimelineFailureRole::hostile:
+    role = "hostile";
+    break;
+  }
+
+  std::string_view path_kind = "unknown";
+  switch (failure.path_kind) {
+  case game::RouteContactTimelinePathKind::none:
+    break;
+  case game::RouteContactTimelinePathKind::stationary_active:
+    path_kind = "stationary_active";
+    break;
+  case game::RouteContactTimelinePathKind::committed_active:
+    path_kind = "committed_active";
+    break;
+  case game::RouteContactTimelinePathKind::constructed:
+    path_kind = "constructed";
+    break;
+  case game::RouteContactTimelinePathKind::hostile_active:
+    path_kind = "hostile_active";
+    break;
+  }
+
+  std::string_view stage = "unknown";
+  switch (failure.stage) {
+  case game::RouteContactTimelineFailureStage::none:
+    break;
+  case game::RouteContactTimelineFailureStage::invalid_input:
+    stage = "invalid_input";
+    break;
+  case game::RouteContactTimelineFailureStage::active_identity:
+    stage = "active_identity";
+    break;
+  case game::RouteContactTimelineFailureStage::path_header:
+    stage = "path_header";
+    break;
+  case game::RouteContactTimelineFailureStage::route_speed_read:
+    stage = "route_speed_read";
+    break;
+  case game::RouteContactTimelineFailureStage::route_origin:
+    stage = "route_origin";
+    break;
+  case game::RouteContactTimelineFailureStage::route_entry:
+    stage = "route_entry";
+    break;
+  case game::RouteContactTimelineFailureStage::route_adjacency:
+    stage = "route_adjacency";
+    break;
+  case game::RouteContactTimelineFailureStage::land_speed:
+    stage = "land_speed";
+    break;
+  case game::RouteContactTimelineFailureStage::naval_speed:
+    stage = "naval_speed";
+    break;
+  case game::RouteContactTimelineFailureStage::current_edge_speed:
+    stage = "current_edge_speed";
+    break;
+  case game::RouteContactTimelineFailureStage::zero_progress_boundary:
+    stage = "zero_progress_boundary";
+    break;
+  case game::RouteContactTimelineFailureStage::edge_duration_read:
+    stage = "edge_duration_read";
+    break;
+  case game::RouteContactTimelineFailureStage::route_duration_read:
+    stage = "route_duration_read";
+    break;
+  case game::RouteContactTimelineFailureStage::route_duration_value:
+    stage = "route_duration_value";
+    break;
+  case game::RouteContactTimelineFailureStage::route_duration_order:
+    stage = "route_duration_order";
+    break;
+  case game::RouteContactTimelineFailureStage::arrival_date:
+    stage = "arrival_date";
+    break;
+  case game::RouteContactTimelineFailureStage::route_mismatch:
+    stage = "route_mismatch";
+    break;
+  case game::RouteContactTimelineFailureStage::timeline_shape:
+    stage = "timeline_shape";
+    break;
+  }
+
+  std::string suffix = " (role=";
+  suffix += role;
+  suffix += ", army_id=";
+  suffix += std::to_string(failure.army_id);
+  suffix += ", path=";
+  suffix += path_kind;
+  suffix += ", stage=";
+  suffix += stage;
+  suffix += ')';
+  if (detail.size() > kRouteContactHorizonV1FailureDetailMaximumBytes) {
+    detail.resize(kRouteContactHorizonV1FailureDetailMaximumBytes);
+  } else if (suffix.size() <=
+             kRouteContactHorizonV1FailureDetailMaximumBytes -
+                 detail.size()) {
+    detail += suffix;
+  }
+  return detail;
 }
 
 } // namespace xar::ck3_11906
