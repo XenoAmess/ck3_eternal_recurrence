@@ -4714,10 +4714,10 @@ zg361_comp_m086_core_effect = {
                 var:zg361_comp_bonus_clawback_status = 0
                 gold >= 2
                 var:zg361_case_l_owner = { has_treasury = yes }
-                var:zg361_comp_bonus_immediate_receipt_owner = var:zg361_case_l_owner
-                var:zg361_comp_bonus_immediate_receipt_subject = this
-                var:zg361_comp_bonus_immediate_receipt_cycle = var:zg361_case_l_cycle_serial
-                var:zg361_comp_bonus_immediate_receipt_case = var:zg361_case_l_case_serial
+                var:zg361_comp_bonus_immediate_receipt_frozen_owner = var:zg361_case_l_owner
+                var:zg361_comp_bonus_immediate_receipt_frozen_subject = this
+                var:zg361_comp_bonus_immediate_receipt_frozen_cycle = var:zg361_case_l_cycle_serial
+                var:zg361_comp_bonus_immediate_receipt_frozen_case = var:zg361_case_l_case_serial
             }
             trigger_else = { always = yes }
         }

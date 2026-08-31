@@ -570,6 +570,16 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("gold >= 2", clawback)
         self.assertIn("remove_short_term_gold = 2", clawback)
         self.assertIn("value = var:zg361_comp_bonus_immediate_receipt_serial", clawback)
+        clawback_case = top_level_block(self.effects, "zg361_comp_m086_core_effect")
+        for suffix in ("owner", "subject", "cycle", "case"):
+            self.assertIn(
+                f"var:zg361_comp_bonus_immediate_receipt_frozen_{suffix}",
+                clawback_case,
+            )
+            self.assertNotIn(
+                f"var:zg361_comp_bonus_immediate_receipt_{suffix} =",
+                clawback_case,
+            )
 
     def test_deferred_statement_freezes_amount_and_both_payer_shares_before_deadline(self) -> None:
         freezer = top_level_block(

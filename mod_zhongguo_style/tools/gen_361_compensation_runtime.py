@@ -865,10 +865,10 @@ def finance_guard(mechanism_id: int, domain: str) -> str:
                 var:zg361_comp_bonus_clawback_status = 0
                 gold >= 2
                 var:{row["owner"]} = {{ has_treasury = yes }}
-                var:zg361_comp_bonus_immediate_receipt_owner = var:{row["owner"]}
-                var:zg361_comp_bonus_immediate_receipt_subject = this
-                var:zg361_comp_bonus_immediate_receipt_cycle = var:{row["cycle"]}
-                var:zg361_comp_bonus_immediate_receipt_case = var:{row["case"]}
+                var:zg361_comp_bonus_immediate_receipt_frozen_owner = var:{row["owner"]}
+                var:zg361_comp_bonus_immediate_receipt_frozen_subject = this
+                var:zg361_comp_bonus_immediate_receipt_frozen_cycle = var:{row["cycle"]}
+                var:zg361_comp_bonus_immediate_receipt_frozen_case = var:{row["case"]}
             }}
             trigger_else = {{ always = yes }}'''
     if mechanism_id == 281:
