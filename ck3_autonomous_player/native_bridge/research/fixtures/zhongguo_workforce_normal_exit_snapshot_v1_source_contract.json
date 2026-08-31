@@ -1,0 +1,63 @@
+{
+  "fixture": "zhongguo_workforce_normal_exit_snapshot_v1_source_contract",
+  "capability": "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+  "step": "query-zhongguo-workforce-normal-exit-snapshot-v1",
+  "case_kind": "zhongguo.workforce.normal-exit.received-self",
+  "result_payload_key": "zhongguo_workforce_normal_exit_snapshot",
+  "allowlist_symbol": "kZhongguoWorkforceNormalExitVariableAllowlist",
+  "allowlist_count": 94,
+  "allowlist_groups": {
+    "m075_source": 16,
+    "normal_exit_workflow": 14,
+    "live_hc": 8,
+    "sealed_receipt": 30,
+    "rehire_capture": 26
+  },
+  "request_fields": [
+    "request_nonce",
+    "expected_revision",
+    "owner_character_id"
+  ],
+  "forbidden_request_fields": [
+    "subject_character_id",
+    "case_kind",
+    "lifecycle",
+    "variable_name",
+    "read_scope",
+    "unknown_field"
+  ],
+  "subject_acl": {
+    "scope": "paused_played_character_only",
+    "owner_is_equality_filter_only": true,
+    "owner_scope_reads": 0,
+    "third_party_subject_reads": 0
+  },
+  "lifecycle_order": [
+    "pre",
+    "migrating",
+    "sealed",
+    "rehire_captured"
+  ],
+  "stage_rules": {
+    "highest_complete_stage_wins": true,
+    "partial_higher_stage": "case_inconsistent",
+    "hc_conservation": "authorized_equals_available_plus_reserved_plus_occupied_plus_frozen_plus_reclaimed",
+    "migration": "occupied_minus_one_frozen_plus_one_other_bins_unchanged",
+    "immutable_receipt_independent_of_later_live_hc": true,
+    "live_match_is_independent_readiness": true
+  },
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox_unvigintary_fixed_slot",
+    "two_complete_allowlist_reads": true,
+    "frame_before_after_equal": true,
+    "raw_rows_first_second_equal": true
+  },
+  "shared_wiring": {
+    "mailbox_executor": "ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1",
+    "mailbox_fixed_slot": "permitted_executor_unvigintary_twenty_first_slot",
+    "bridge_dispatch": true,
+    "service_method": true,
+    "mcp_tool": true
+  },
+  "readiness": "provider_shared_wiring_static_and_fixture_ready_not_live"
+}

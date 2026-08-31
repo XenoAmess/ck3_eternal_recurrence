@@ -1,0 +1,145 @@
+{
+  "contract": "zhongguo_workforce_normal_exit_snapshot_v1",
+  "status": "provider_shared_wiring_static_and_fixture_ready_not_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+  "step": "query-zhongguo-workforce-normal-exit-snapshot-v1",
+  "case_kind": "zhongguo.workforce.normal-exit.received-self",
+  "result_payload_key": "zhongguo_workforce_normal_exit_snapshot",
+  "request": {
+    "public_inputs": [
+      "request_nonce",
+      "expected_revision",
+      "owner_character_id"
+    ],
+    "owner_character_id": "required_positive_int32_expected_filter_only",
+    "forbidden_inputs": [
+      "subject_character_id",
+      "case_kind",
+      "lifecycle",
+      "variable_name",
+      "read_scope",
+      "arbitrary_extra_field"
+    ]
+  },
+  "subject_acl": {
+    "scope": "paused_played_character_only",
+    "subject_source": "same_frame_snapshot.played_character_id",
+    "owner_source": "kind_4_character_target_in_m075_source_on_player_scope",
+    "required_binding": "all_stage_owners_equal_expected_owner_and_all_stage_subjects_equal_player_and_owner_differs_from_player",
+    "owner_scope_read": false,
+    "third_party_subject_read": false
+  },
+  "native_variable_abi": {
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "numeric_kind": 1,
+    "character_kind": 4,
+    "fixed_scale": 100000
+  },
+  "allowlist": {
+    "scope": "played_character_only",
+    "total_count": 94,
+    "owner_scope_count": 0,
+    "groups": [
+      {
+        "name": "m075_source",
+        "offset": 0,
+        "count": 16
+      },
+      {
+        "name": "normal_exit_workflow",
+        "offset": 16,
+        "count": 14
+      },
+      {
+        "name": "live_hc",
+        "offset": 30,
+        "count": 8
+      },
+      {
+        "name": "sealed_receipt",
+        "offset": 38,
+        "count": 30
+      },
+      {
+        "name": "rehire_capture",
+        "offset": 68,
+        "count": 26
+      }
+    ],
+    "canonical_symbol": "kZhongguoWorkforceNormalExitVariableAllowlist"
+  },
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox_unvigintary_fixed_slot",
+    "two_complete_allowlist_reads": true,
+    "frame_before_after_equal": true,
+    "raw_rows_first_second_equal": true,
+    "engine_pointers_retained": false
+  },
+  "lifecycle": {
+    "ordered_stages": [
+      "pre",
+      "migrating",
+      "sealed",
+      "rehire_captured"
+    ],
+    "highest_complete_stage_wins": true,
+    "partial_higher_stage": "case_inconsistent",
+    "pre": "canonical_route_a_m075_offer_with_optional_complete_pending_snapshot_or_accepted_before_migration",
+    "migrating": "source_consumed_pending_retained_workflow_state_3_and_live_occupied_to_frozen_delta",
+    "sealed": "pending_cleared_workflow_state_4_and_complete_immutable_hc_receipt",
+    "rehire_captured": "complete_rehire_tuple_exactly_copies_the_sealed_receipt",
+    "live_hc_after_seal": "conserved_but_allowed_to_differ_from_immutable_receipt_after_later_legitimate_business"
+  },
+  "hc_invariants": {
+    "partition": "all_bins_nonnegative_and_authorized_equals_sum_of_five_state_bins",
+    "normal_exit_delta": "authorized_available_reserved_reclaimed_unchanged_occupied_minus_one_frozen_plus_one",
+    "formal_hc": "active_true_to_false_and_case_lineage_retained",
+    "current_match": "independent_readiness_not_receipt_validity"
+  },
+  "readiness": [
+    "player_subject_binding_ready",
+    "owner_binding_ready",
+    "source_object_ready",
+    "pending_snapshot_ready",
+    "current_hc_partition_ready",
+    "migration_delta_ready",
+    "sealed_receipt_ready",
+    "rehire_capture_ready",
+    "current_hc_matches_stage_ready",
+    "lifecycle_ready",
+    "same_frame_ready",
+    "ready"
+  ],
+  "ready_formula": "player_subject_binding_ready_and_owner_binding_ready_and_lifecycle_ready_and_same_frame_ready",
+  "typed_negatives": {
+    "source_all_absent": "case_not_found",
+    "partial_source_or_higher_stage": "case_inconsistent",
+    "actual_owner_differs_from_expected": "owner_filter_mismatch",
+    "actual_owner_equals_player_or_subject_differs": "not_received_self",
+    "partition_or_delta_failure": "case_inconsistent",
+    "double_read_or_frame_drift": "state_changed"
+  },
+  "shared_wiring": {
+    "mailbox_executor": "ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1",
+    "mailbox_fixed_slot": "permitted_executor_unvigintary_twenty_first_slot",
+    "bridge_dispatch": true,
+    "game_adapter_step": true,
+    "python_native_driver": true,
+    "python_service": true,
+    "mcp_tool": true
+  },
+  "unsupported_claims": [
+    "mcp_query_live",
+    "ck3_loader_live",
+    "save_load_live",
+    "multi_cycle_live",
+    "production_live_acceptance"
+  ]
+}

@@ -280,6 +280,9 @@ int main() {
       !Contains(
           known.capabilities,
           "game.command.query-zhongguo-ai-owned-case-snapshot-v1") ||
+      !Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1") ||
       !Contains(known.capabilities,
                 "game.command.query-loaded-feature-manifest-v1") ||
       !Contains(known.capabilities,
@@ -488,6 +491,10 @@ int main() {
           "query-zhongguo-ai-owned-case-snapshot-v1") ||
       exact_adapter->supports_step(
           "query-zhongguo-ai-owned-case-snapshot-v1-x") ||
+      !exact_adapter->supports_step(
+          "query-zhongguo-workforce-normal-exit-snapshot-v1") ||
+      exact_adapter->supports_step(
+          "query-zhongguo-workforce-normal-exit-snapshot-v1-x") ||
       !exact_adapter->supports_step("query-loaded-feature-manifest-v1") ||
       !exact_adapter->supports_step(
           "query-pending-character-interaction-context-v1") ||

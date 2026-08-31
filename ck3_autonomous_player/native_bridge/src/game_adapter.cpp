@@ -19,6 +19,7 @@
 #include "xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_result_case_snapshot_v1_mailbox.hpp"
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
@@ -331,6 +332,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (
       ck3_11906::ParseZhongguoAiOwnedCaseSnapshotV1Step(step)) {
     capability = ck3_11906::kZhongguoAiOwnedCaseSnapshotV1Capability;
+  } else if (ck3_11906::
+                 ParseZhongguoWorkforceNormalExitSnapshotV1Step(step)) {
+    capability =
+        ck3_11906::kZhongguoWorkforceNormalExitSnapshotV1Capability;
   } else if (ck3_11906::ParseLoadedFeatureManifestV1Step(step)) {
     capability = ck3_11906::kLoadedFeatureManifestV1Capability;
   } else if (ck3_11906::

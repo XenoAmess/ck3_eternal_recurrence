@@ -174,6 +174,14 @@ from .zhongguo_workforce_collective_snapshot_contract import (
     normalize_native_zhongguo_workforce_collective_snapshot_v1,
     parse_query_zhongguo_workforce_collective_snapshot_v1_step,
 )
+from .zhongguo_workforce_normal_exit_snapshot_contract import (
+    QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_STEP,
+    QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_STEP_PREFIX,
+    ZhongguoWorkforceNormalExitQueryV1,
+    normalize_native_zhongguo_workforce_normal_exit_snapshot_v1,
+    parse_query_zhongguo_workforce_normal_exit_snapshot_v1_step,
+)
 from .zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_STEP,
@@ -1540,6 +1548,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_workforce_normal_exit_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "zhongguo_incident_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
@@ -1855,6 +1867,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_workforce_collective_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_workforce_normal_exit_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "zhongguo_incident_snapshot_v1_query_supported": (
@@ -3128,6 +3144,20 @@ class NativeHeadlessGameplayDriver:
                 "malformed ZhongGuo Workforce collective snapshot v1 query "
                 "step"
             )
+        zhongguo_workforce_normal_exit_query = (
+            parse_query_zhongguo_workforce_normal_exit_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_STEP_PREFIX
+            )
+            and zhongguo_workforce_normal_exit_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo Workforce normal-exit snapshot v1 "
+                "query step"
+            )
         zhongguo_incident_query = (
             parse_query_zhongguo_incident_snapshot_v1_step(step)
         )
@@ -3364,6 +3394,22 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_workforce_collective_snapshot_v1_query(
                 zhongguo_workforce_collective_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_workforce_normal_exit_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the received-self ZhongGuo "
+                    "Workforce normal-exit lifecycle"
+                )
+            return self._execute_zhongguo_workforce_normal_exit_snapshot_v1_query(
+                zhongguo_workforce_normal_exit_query,
                 expected_revision=expected_revision,
             )
         if zhongguo_incident_query is not None:
@@ -8605,6 +8651,167 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": connection_generation,
         }
 
+    def _execute_zhongguo_workforce_normal_exit_snapshot_v1_query(
+        self,
+        query: ZhongguoWorkforceNormalExitQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read the paused player's Workforce normal-exit/HC lifecycle."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query requires a "
+                "paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo Workforce normal-exit starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query lacks a signed "
+                "int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query lacks a native "
+                "revision"
+            )
+        snapshot_id = starting.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query lacks a "
+                "snapshot identity"
+            )
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query lacks the "
+                "played character"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query lacks a "
+                "connection generation"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        expected_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "zhongguo_workforce_normal_exit_snapshot",
+            "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query returned a "
+                "malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query lacks "
+                "query_sequence"
+            )
+        try:
+            normalized = (
+                normalize_native_zhongguo_workforce_normal_exit_snapshot_v1(
+                    result.get("zhongguo_workforce_normal_exit_snapshot"),
+                    expected_query=query,
+                    expected_snapshot_revision=native_revision,
+                    expected_date_raw=date_raw,
+                    expected_player_character_id=player_character_id,
+                )
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query returned a "
+                f"malformed frame: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit envelope status "
+                "disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_played_character = current.get("played_character")
+        current_player_character_id = (
+            current_played_character.get("character_id")
+            if isinstance(current_played_character, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_character_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce normal-exit query crossed a "
+                "snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_workforce_normal_exit_snapshot": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
     def _execute_zhongguo_incident_snapshot_v1_query(
         self,
         query: ZhongguoIncidentQueryV1,
@@ -12185,6 +12392,7 @@ class ConfiguredHybridFallbackDriver:
             QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
+            QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
         ):
             if pure_native_capability not in native_bridge_capabilities:
@@ -12439,6 +12647,20 @@ class ConfiguredHybridFallbackDriver:
                 "malformed ZhongGuo Workforce collective snapshot v1 query "
                 "step"
             )
+        zhongguo_workforce_normal_exit_query = (
+            parse_query_zhongguo_workforce_normal_exit_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_STEP_PREFIX
+            )
+            and zhongguo_workforce_normal_exit_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo Workforce normal-exit snapshot v1 "
+                "query step"
+            )
         zhongguo_incident_query = (
             parse_query_zhongguo_incident_snapshot_v1_step(step)
         )
@@ -12549,6 +12771,7 @@ class ConfiguredHybridFallbackDriver:
             or zhongguo_result_case_query is not None
             or zhongguo_b2_pip_query is not None
             or zhongguo_workforce_collective_query is not None
+            or zhongguo_workforce_normal_exit_query is not None
             or zhongguo_incident_query is not None
             or zhongguo_scoreboard_query is not None
         ):
@@ -12561,19 +12784,23 @@ class ConfiguredHybridFallbackDriver:
                 QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
                 if zhongguo_ai_owned_case_query is not None
                 else (
-                    QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
-                    if zhongguo_workforce_collective_query is not None
+                    QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY
+                    if zhongguo_workforce_normal_exit_query is not None
                     else (
-                        QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
-                        if zhongguo_scoreboard_query is not None
+                        QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
+                        if zhongguo_workforce_collective_query is not None
                         else (
-                            QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
-                            if zhongguo_incident_query is not None
+                            QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
+                            if zhongguo_scoreboard_query is not None
                             else (
-                                QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
-                                if zhongguo_b2_pip_query is not None
+                                QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
+                                if zhongguo_incident_query is not None
                                 else (
-                                    QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                                    QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
+                                    if zhongguo_b2_pip_query is not None
+                                    else (
+                                        QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                                    )
                                 )
                             )
                         )
@@ -16500,6 +16727,13 @@ def _action_steps(
         ):
             # Owner is an equality filter, nonce is explicit, and the paused
             # played character is the provider-owned subject.
+            continue
+        elif (
+            capability
+            == QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY
+        ):
+            # Owner is an equality filter and nonce is explicit. The fixed
+            # received-self lifecycle query is never a planner action.
             continue
         elif capability == QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY:
             # Owner, profile and nonce are explicit MCP inputs. The paused
