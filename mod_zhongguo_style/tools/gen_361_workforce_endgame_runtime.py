@@ -30,6 +30,8 @@ PREFIX = "zg361_we"
 NAMESPACE = "zg361we"
 APPOINTMENT_WRAPPER = "zg361_workforce_appointment_fact_m274_appoint_and_consume_effect"
 APPOINTMENT_STATUS_VAR = "zg361_workforce_appointment_fact_status"
+PROBATION_ARM_EFFECT = "zg361_workforce_probation_fact_arm_hire_effect"
+PROBATION_STATUS_VAR = "zg361_workforce_probation_fact_adapter_status"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -2422,7 +2424,25 @@ if = {{
 \t\thas_variable = {APPOINTMENT_STATUS_VAR}
 \t\tvar:{APPOINTMENT_STATUS_VAR} = 6
 \t}}
-{indent(after_appointment)}
+\t{PREFIX}_m274_postconsume_fact_handoff_effect = {{
+\t\tTICKET_OWNER = scope:{PREFIX}_{domain}_owner
+\t\tTICKET_SUBJECT = scope:{PREFIX}_{domain}_subject
+\t\tTICKET_CYCLE = scope:{PREFIX}_{domain}_cycle
+\t\tTICKET_CASE = scope:{PREFIX}_{domain}_case
+\t}}
+\tif = {{
+\t\tlimit = {{
+\t\t\tOR = {{
+\t\t\t\tvar:{PREFIX}_m274_postconsume_handoff_status = 1
+\t\t\t\tvar:{PREFIX}_m274_postconsume_handoff_status = 2
+\t\t\t}}
+\t\t}}
+{indent(after_appointment, 2)}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_runtime_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_last_red_code value = 27493 }}
+\t}}
 }}"""
     else:
         calls = "\n".join(call(spec) for spec in specs)
@@ -2431,6 +2451,71 @@ if = {{
 \tif = {{
 \t\tlimit = {{ root = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
 {indent(calls, 2)}
+\t}}
+}}"""
+
+
+def render_m274_postconsume_fact_handoff() -> str:
+    return f"""# Subject-scope handoff after the native appointment receipt and
+# Workforce #274 have both been consumed.  This is the only core seam that
+# arms downstream hire facts; callers must stop unless status is 1/2.
+{PREFIX}_m274_postconsume_fact_handoff_effect = {{
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_status
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_red_code
+\tif = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\thas_variable = {PREFIX}_m274_business_object_created
+\t\t\thas_variable = {PREFIX}_m274_object_owner
+\t\t\thas_variable = {PREFIX}_m274_object_subject
+\t\t\thas_variable = {PREFIX}_m274_object_cycle
+\t\t\thas_variable = {PREFIX}_m274_object_case
+\t\t\thas_variable = {PREFIX}_m274_object_consumed
+\t\t\tvar:{PREFIX}_m274_business_object_created = 1
+\t\t\tvar:{PREFIX}_m274_object_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_object_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_object_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_object_case = $TICKET_CASE$
+\t\t\tvar:{PREFIX}_m274_object_consumed = 1
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_active
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_published
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed_operation
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_owner
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_subject
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_cycle
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_case
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_state
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_result
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_active = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_published = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed_operation = 274
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_state = 4
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_result = 1
+\t\t}}
+\t\t{PROBATION_ARM_EFFECT} = {{ OWNER = $TICKET_OWNER$ }}
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\tOR = {{
+\t\t\t\t\tvar:{PROBATION_STATUS_VAR} = 1
+\t\t\t\t\tvar:{PROBATION_STATUS_VAR} = 2
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = var:{PROBATION_STATUS_VAR} }}
+\t\t}}
+\t\telse = {{
+\t\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27494 }}
+\t\t}}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27493 }}
 \t}}
 }}"""
 
@@ -2513,7 +2598,7 @@ def render_m274_native_resume() -> str:
 				var:{PREFIX}_m274_object_case = $TICKET_CASE$
 				var:{PREFIX}_m274_object_consumed = 1
 			}}
-			{PREFIX}_m275_route_a_effect = {{
+			{PREFIX}_m274_postconsume_fact_handoff_effect = {{
 				TICKET_OWNER = $TICKET_OWNER$
 				TICKET_SUBJECT = $TICKET_SUBJECT$
 				TICKET_CYCLE = $TICKET_CYCLE$
@@ -2521,43 +2606,61 @@ def render_m274_native_resume() -> str:
 			}}
 			if = {{
 				limit = {{
-					has_variable = {PREFIX}_runtime_applied
-					var:{PREFIX}_runtime_applied = 1
-					var:zg361_case_ad_state = 5
-					has_variable = {PREFIX}_m275_business_object_created
-					var:{PREFIX}_m275_business_object_created = 1
-					var:{PREFIX}_m275_object_owner = $TICKET_OWNER$
-					var:{PREFIX}_m275_object_subject = $TICKET_SUBJECT$
-					var:{PREFIX}_m275_object_cycle = $TICKET_CYCLE$
-					var:{PREFIX}_m275_object_case = $TICKET_CASE$
-					var:{PREFIX}_m275_object_consumed = 1
+					OR = {{
+						var:{PREFIX}_m274_postconsume_handoff_status = 1
+						var:{PREFIX}_m274_postconsume_handoff_status = 2
+					}}
 				}}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_consumed value = 1 }}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_owner value = $TICKET_OWNER$ }}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_subject value = $TICKET_SUBJECT$ }}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_cycle value = $TICKET_CYCLE$ }}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_case value = $TICKET_CASE$ }}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_status value = 1 }}
+				{PREFIX}_m275_route_a_effect = {{
+					TICKET_OWNER = $TICKET_OWNER$
+					TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$
+					TICKET_CASE = $TICKET_CASE$
+				}}
 				if = {{
-					limit = {{ $TICKET_OWNER$ = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
-					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_mode value = 2 }}
-					{PREFIX}_m269_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
-					{PREFIX}_m276_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
-					{PREFIX}_m277_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+					limit = {{
+						has_variable = {PREFIX}_runtime_applied
+						var:{PREFIX}_runtime_applied = 1
+						var:zg361_case_ad_state = 5
+						has_variable = {PREFIX}_m275_business_object_created
+						var:{PREFIX}_m275_business_object_created = 1
+						var:{PREFIX}_m275_object_owner = $TICKET_OWNER$
+						var:{PREFIX}_m275_object_subject = $TICKET_SUBJECT$
+						var:{PREFIX}_m275_object_cycle = $TICKET_CYCLE$
+						var:{PREFIX}_m275_object_case = $TICKET_CASE$
+						var:{PREFIX}_m275_object_consumed = 1
+					}}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_consumed value = 1 }}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_owner value = $TICKET_OWNER$ }}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_subject value = $TICKET_SUBJECT$ }}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_cycle value = $TICKET_CYCLE$ }}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_case value = $TICKET_CASE$ }}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_status value = 1 }}
+					if = {{
+						limit = {{ $TICKET_OWNER$ = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
+						set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_mode value = 2 }}
+						{PREFIX}_m269_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+						{PREFIX}_m276_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+						{PREFIX}_m277_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+					}}
+					else_if = {{
+						limit = {{ $TICKET_OWNER$ = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
+						set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_mode value = 1 }}
+						$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_ad_owner }}
+						save_scope_as = {PREFIX}_ad_subject
+						save_scope_value_as = {{ name = {PREFIX}_ad_cycle value = $TICKET_CYCLE$ }}
+						save_scope_value_as = {{ name = {PREFIX}_ad_case value = $TICKET_CASE$ }}
+						$TICKET_OWNER$ = {{ trigger_event = {{ id = {NAMESPACE}.269 }} }}
+					}}
 				}}
-				else_if = {{
-					limit = {{ $TICKET_OWNER$ = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
-					set_variable = {{ name = {PREFIX}_m274_native_resume_continuation_mode value = 1 }}
-					$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_ad_owner }}
-					save_scope_as = {PREFIX}_ad_subject
-					save_scope_value_as = {{ name = {PREFIX}_ad_cycle value = $TICKET_CYCLE$ }}
-					save_scope_value_as = {{ name = {PREFIX}_ad_case value = $TICKET_CASE$ }}
-					$TICKET_OWNER$ = {{ trigger_event = {{ id = {NAMESPACE}.269 }} }}
+				else = {{
+					set_variable = {{ name = {PREFIX}_m274_native_resume_status value = 4 }}
+					set_variable = {{ name = {PREFIX}_m274_native_resume_red_code value = 27492 }}
 				}}
 			}}
 			else = {{
 				set_variable = {{ name = {PREFIX}_m274_native_resume_status value = 4 }}
-				set_variable = {{ name = {PREFIX}_m274_native_resume_red_code value = 27492 }}
+				set_variable = {{ name = {PREFIX}_m274_native_resume_red_code value = 27493 }}
 			}}
 		}}
 		else_if = {{
@@ -5054,6 +5157,7 @@ def render_effects() -> bytes:
         render_completed_cycle_ledger(),
         render_ac_real_fact_producers(),
         render_external_fact_adapters(),
+        render_m274_postconsume_fact_handoff(),
         render_m274_native_resume(),
         render_future_consumers(),
         render_due_debt_consumers(),
@@ -5199,11 +5303,38 @@ def render_option(spec: Mechanism, choice: int) -> str:
             if choice == 1
             else ""
         )
+        postconsume_handoff = (
+            f"""
+		scope:{PREFIX}_{d}_subject = {{
+			{PREFIX}_m274_postconsume_fact_handoff_effect = {{
+				TICKET_OWNER = scope:{PREFIX}_{d}_owner
+				TICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+				TICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+				TICKET_CASE = scope:{PREFIX}_{d}_case
+			}}
+		}}"""
+            if choice == 1
+            else ""
+        )
+        handoff_ack = (
+            f" has_variable = {PREFIX}_m274_postconsume_handoff_status "
+            f"OR = {{ var:{PREFIX}_m274_postconsume_handoff_status = 1 "
+            f"var:{PREFIX}_m274_postconsume_handoff_status = 2 }}"
+            if choice == 1
+            else ""
+        )
+        m274_fallback = (
+            f"scope:{PREFIX}_{d}_subject = {{ "
+            f"set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} "
+            f"set_variable = {{ name = {PREFIX}_last_red_code value = 27493 }} }}"
+            if choice == 1
+            else f"trigger_event = {{ id = {NAMESPACE}.275 }}"
+        )
         next_event = f"""
 	if = {{
-		limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1{appointment_ack} }} }}
+		limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1{appointment_ack} }} }}{postconsume_handoff}
 		if = {{
-			limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_m274_business_object_created var:{PREFIX}_m274_business_object_created = 1 has_variable = {PREFIX}_m274_object_owner var:{PREFIX}_m274_object_owner = scope:{PREFIX}_{d}_owner has_variable = {PREFIX}_m274_object_subject var:{PREFIX}_m274_object_subject = scope:{PREFIX}_{d}_subject has_variable = {PREFIX}_m274_object_cycle var:{PREFIX}_m274_object_cycle = scope:{PREFIX}_{d}_cycle has_variable = {PREFIX}_m274_object_case var:{PREFIX}_m274_object_case = scope:{PREFIX}_{d}_case has_variable = {PREFIX}_m274_hired var:{PREFIX}_m274_hired = 1 }} }}
+			limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_m274_business_object_created var:{PREFIX}_m274_business_object_created = 1 has_variable = {PREFIX}_m274_object_owner var:{PREFIX}_m274_object_owner = scope:{PREFIX}_{d}_owner has_variable = {PREFIX}_m274_object_subject var:{PREFIX}_m274_object_subject = scope:{PREFIX}_{d}_subject has_variable = {PREFIX}_m274_object_cycle var:{PREFIX}_m274_object_cycle = scope:{PREFIX}_{d}_cycle has_variable = {PREFIX}_m274_object_case var:{PREFIX}_m274_object_case = scope:{PREFIX}_{d}_case has_variable = {PREFIX}_m274_hired var:{PREFIX}_m274_hired = 1{handoff_ack} }} }}
 			scope:{PREFIX}_{d}_subject = {{
 				{PREFIX}_m275_route_a_effect = {{
 					TICKET_OWNER = scope:{PREFIX}_{d}_owner
@@ -5217,7 +5348,7 @@ def render_option(spec: Mechanism, choice: int) -> str:
 				trigger_event = {{ id = {NAMESPACE}.269 }}
 			}}
 		}}
-		else = {{ trigger_event = {{ id = {NAMESPACE}.275 }} }}
+		else = {{ {m274_fallback} }}
 	}}"""
     elif mid == 275 and next_mid == 269:
         # A refusal has no probation outcome to write back.  Close #269 with

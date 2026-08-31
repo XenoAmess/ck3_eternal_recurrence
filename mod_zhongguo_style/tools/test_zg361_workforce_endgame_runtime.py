@@ -490,16 +490,61 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         ack_index = authorized_ai.index(
             "var:zg361_workforce_appointment_fact_status = 6"
         )
+        handoff_call = "zg361_we_m274_postconsume_fact_handoff_effect = {"
+        ai_handoff_index = authorized_ai.index(handoff_call)
         later_route_index = authorized_ai.index("zg361_we_m275_route_a_effect = {")
         self.assertLess(authorized_ai.index("zg361_we_m273_route_a_effect = {"), wrapper_index)
         self.assertLess(wrapper_index, ack_index)
-        self.assertLess(ack_index, later_route_index)
+        self.assertLess(ack_index, ai_handoff_index)
+        self.assertLess(ai_handoff_index, later_route_index)
+        self.assertEqual(1, authorized_ai.count(handoff_call))
+
+        player_ack_index = appointment.index(
+            "var:zg361_workforce_appointment_fact_status = 6"
+        )
+        player_handoff_index = appointment.index(handoff_call)
+        player_later_route_index = appointment.index(
+            "zg361_we_m275_route_a_effect = {"
+        )
+        self.assertLess(player_ack_index, player_handoff_index)
+        self.assertLess(player_handoff_index, player_later_route_index)
+        self.assertEqual(1, appointment.count(handoff_call))
+
+        handoff = block(
+            self.effects, "zg361_we_m274_postconsume_fact_handoff_effect"
+        )
+        for field in ("owner", "subject", "cycle", "case"):
+            self.assertIn(
+                f"zg361_workforce_appointment_fact_receipt_{field} = "
+                f"$TICKET_{field.upper()}$",
+                handoff,
+            )
+        self.assertIn(
+            "zg361_workforce_appointment_fact_receipt_consumed_operation = 274",
+            handoff,
+        )
+        self.assertIn(
+            "zg361_workforce_probation_fact_arm_hire_effect = { OWNER = $TICKET_OWNER$ }",
+            handoff,
+        )
+        self.assertIn(
+            "var:zg361_workforce_probation_fact_adapter_status = 1",
+            handoff,
+        )
+        self.assertIn(
+            "var:zg361_workforce_probation_fact_adapter_status = 2",
+            handoff,
+        )
+        self.assertIn("m274_postconsume_handoff_red_code value = 27494", handoff)
 
     def test_23b_delayed_native_appointment_resumes_exactly_once(self) -> None:
         resume = block(
             self.effects, "zg361_we_resume_m274_after_native_appointment_effect"
         )
         wrapper_index = resume.index(f"{gen.APPOINTMENT_WRAPPER} = {{")
+        handoff_index = resume.index(
+            "zg361_we_m274_postconsume_fact_handoff_effect = {"
+        )
         hired_disposition_index = resume.index("zg361_we_m275_route_a_effect = {")
         continuation_index = resume.index(
             "name = zg361_we_m274_native_resume_continuation_consumed value = 1"
@@ -520,7 +565,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 resume,
             )
         self.assertIn("m274_native_resume_status value = 2", resume[:wrapper_index])
-        self.assertLess(wrapper_index, hired_disposition_index)
+        self.assertLess(wrapper_index, handoff_index)
+        self.assertLess(handoff_index, hired_disposition_index)
         self.assertLess(hired_disposition_index, continuation_index)
         self.assertIn("var:zg361_workforce_appointment_fact_status = 6", resume)
         self.assertIn("m274_native_resume_status value = 5", resume)
@@ -855,7 +901,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             "没有中央 `on_action`",
             "没有 CK3 parser/error.log",
             "paused snapshot",
-            "没有 MCP named action/query",
+            "没有 Workforce/跨周期",
+            "考核榜 typed action",
             "357–359",
             "其余七语是英文结构占位",
         ):

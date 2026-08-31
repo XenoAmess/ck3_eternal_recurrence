@@ -47,7 +47,8 @@ charter version）、object id、五元身份、consumer callable、资源账与
 变量、未消费对象及前序 C debt 都不能冒充业务前置。缺业务前置时 A/B 在 receipt 前 typed RED，C 仍只登记本项 debt。
 
 中央、B1、Manager/Governance 与 Workforce 之间现已有静态生成的 #360 调用链，但当前没有中央 `on_action`、
-decision、interaction、GUI 或 scoreboard 接线；没有 CK3 parser/error.log；没有 paused snapshot；没有 MCP named action/query；
+decision、interaction、GUI 或 scoreboard 业务接线；没有 CK3 parser/error.log；没有 paused snapshot；没有 Workforce/跨周期
+MCP query 或考核榜 typed action（固定四实例/current-player ACL 的只读 query 已存在但尚未 live）；
 没有 CK3 实机事件点击、存读档或 Steam build 证据。因此
 不得写成 fixture-live、production-live primitive、production-live loop 或 complete。
 
@@ -127,7 +128,9 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
   返回时按原路径继续；若返回 `status=5`，任命包的 hidden single-flight audit 在 callback、holder/employer、title/HC
   与 strict adapter 全部闭合后，用 immutable receipt 的 exact tuple 调
   `zg361_we_resume_m274_after_native_appointment_effect`。resume 只消费一次 #274、内部关闭 hired #275，再为玩家恢复
-  #269 事件或为授权 AI 恢复后台链；WAIT 只保留一条次日重试，RED/complete 不推进也不重排。
+  #269 事件或为授权 AI 恢复后台链。三条成功路径随后都必须经过唯一
+  `zg361_we_m274_postconsume_fact_handoff_effect`：它重新核对已消费的 #274 object 与 native appointment receipt，调用
+  `zg361_workforce_probation_fact_arm_hire_effect`，只有 arm status 1/2 才允许继续 #275/#269；WAIT/RED 不推进也不重排。
 - #277 不再接收 caller 复述的 PIP case/closure。它直接读取 B2 已提交、尚未消费的 11 字段 PIP settlement 槽，
   再与独立 native exit receipt 联结；position type 与 HC lineage 分别从 #274 和当前 formal HC 对象重导。只有 A/B
   在 case-kernel operation receipt 成功后才消费两个来源，C、RED、stale、幂等和 route collision 都不消费 B2。
@@ -310,7 +313,8 @@ RED `9098`。
    旧 opener 不会提前排 `zg361we.360`。
 2. AD 已提供严格 adapter：#274 的玩家与授权 AI caller 均已接入真实 custom court-position provider；只有原生
    callback、employer/holder/title/HC 后置条件和 sealed receipt 闭合后才消费，异步 callback 由 hidden audit 调 exact-tuple
-   resume，不会让原事件关闭后卡死。#276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；
+   resume，不会让原事件关闭后卡死；同 tick 玩家、同 tick AI 与 D+1 resume 都已在同一个 post-consume seam arm probation fact。
+   #276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；
    #277 直接 join B2 已提交的 11 字段 PIP settlement 槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC
    lineage。#274 仍需 CK3 loader/paused live 证明真实任命、撤任、WAIT 重试和玩家/AI续跑；#277 的离任 provider 仍须
    实机证明。没有真实事实时分别以 2741/2771 blocked，绝不伪造角色或职位。

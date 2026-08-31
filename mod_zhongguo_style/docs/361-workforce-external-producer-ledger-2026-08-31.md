@@ -217,10 +217,11 @@ zg361_we_ad_external_position_type_id
 和 exact case，最后通过既有 strict adapter 发布。玩家 `zg361we.274.a` 与授权 AI 的 AD runner 都已改走 wrapper，
 不再直接调用 #274 route A。若 callback 非同 tick 完成，hidden single-flight audit 释放有界试任岗位后，以 sealed
 receipt exact tuple 调 Workforce resume；resume 只消费一次 #274/#275，并分别恢复玩家 #269 事件或授权 AI 后台链。
-`status=5` 只保留一个次日 retry，RED/complete 不推进。当前仅为 script static-ready，仍待 loader/paused live 证明
+同 tick 玩家、同 tick AI 与 D+1 resume 在继续前还统一调用 post-consume fact seam：复核 #274 object 与 appointment
+receipt 都已消费后才 arm probation fact，arm 失败即停链。`status=5` 只保留一个次日 retry，RED/complete 不推进。当前仅为 script static-ready，仍待 loader/paused live 证明
 任命、撤任、WAIT 重试及玩家/AI续跑。
 
-### 3.7 剩余 Career/HC 或 native producer：26
+### 3.7 尚未全链/live 闭合的 Career/HC 字段：26
 
 Career/HC probation outcome（12；第一份 bps 已由 §3.4 推导）：
 
@@ -239,12 +240,19 @@ zg361_we_ad_external_outcome_observed_cycle
 zg361_we_ad_external_outcome_quality
 ```
 
-Career/HC remediation（2；布尔 sentinel 仍不能冒充 receipt，后续必须升级为 ID/hash/五元事实）：
+独立 probation fact package 已存在，#274 真实 hire arm 与 B2 PIP terminal source 均已接到 core；PIP 路可以静态生成并
+一次消费这 12 项。普通 result 路仍必须等待真实 attribution signature（不能补 3333），整组仍是 static-ready/not-live，
+不得从 PIP 单一路径外推为所有结果均已闭合。
+
+Career/HC remediation（2）：
 
 ```text
 zg361_we_ad_external_m275_remediation_receipt
 zg361_we_ad_external_m275_remediated_reason_id
 ```
+
+独立 remediation fact package 已把布尔 sentinel 升级为 exact 五元 receipt/reason producer，但尚未接入 #275 B 的到期
+consumer；所以本表仍按 core-unwired 计，不把独立包测试冒充业务闭环。
 
 Career/HC rehire history（7）：
 

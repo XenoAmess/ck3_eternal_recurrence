@@ -2429,8 +2429,16 @@ zg361we.274 = {
 		}
 		if = {
 			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 has_variable = zg361_workforce_appointment_fact_status var:zg361_workforce_appointment_fact_status = 6 } }
+			scope:zg361_we_ad_subject = {
+				zg361_we_m274_postconsume_fact_handoff_effect = {
+					TICKET_OWNER = scope:zg361_we_ad_owner
+					TICKET_SUBJECT = scope:zg361_we_ad_subject
+					TICKET_CYCLE = scope:zg361_we_ad_cycle
+					TICKET_CASE = scope:zg361_we_ad_case
+				}
+			}
 			if = {
-				limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_m274_business_object_created var:zg361_we_m274_business_object_created = 1 has_variable = zg361_we_m274_object_owner var:zg361_we_m274_object_owner = scope:zg361_we_ad_owner has_variable = zg361_we_m274_object_subject var:zg361_we_m274_object_subject = scope:zg361_we_ad_subject has_variable = zg361_we_m274_object_cycle var:zg361_we_m274_object_cycle = scope:zg361_we_ad_cycle has_variable = zg361_we_m274_object_case var:zg361_we_m274_object_case = scope:zg361_we_ad_case has_variable = zg361_we_m274_hired var:zg361_we_m274_hired = 1 } }
+				limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_m274_business_object_created var:zg361_we_m274_business_object_created = 1 has_variable = zg361_we_m274_object_owner var:zg361_we_m274_object_owner = scope:zg361_we_ad_owner has_variable = zg361_we_m274_object_subject var:zg361_we_m274_object_subject = scope:zg361_we_ad_subject has_variable = zg361_we_m274_object_cycle var:zg361_we_m274_object_cycle = scope:zg361_we_ad_cycle has_variable = zg361_we_m274_object_case var:zg361_we_m274_object_case = scope:zg361_we_ad_case has_variable = zg361_we_m274_hired var:zg361_we_m274_hired = 1 has_variable = zg361_we_m274_postconsume_handoff_status OR = { var:zg361_we_m274_postconsume_handoff_status = 1 var:zg361_we_m274_postconsume_handoff_status = 2 } } }
 				scope:zg361_we_ad_subject = {
 					zg361_we_m275_route_a_effect = {
 						TICKET_OWNER = scope:zg361_we_ad_owner
@@ -2444,7 +2452,7 @@ zg361we.274 = {
 					trigger_event = { id = zg361we.269 }
 				}
 			}
-			else = { trigger_event = { id = zg361we.275 } }
+			else = { scope:zg361_we_ad_subject = { set_variable = { name = zg361_we_runtime_status value = 4 } set_variable = { name = zg361_we_last_red_code value = 27493 } } }
 		}
 	}
 	option = {
