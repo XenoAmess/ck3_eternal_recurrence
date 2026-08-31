@@ -92,7 +92,7 @@ class ManagerGovernanceModelTests(unittest.TestCase):
             32: dict(snapshot_id="team-19", direct_liege_id="emperor", source_team_serial=19, metrics=team_metrics(), grandchild_ids=()),
             33: dict(profile="data", weight_version=1, reason_inputs={"calibration": 3, "appeal": -2, "pip": 4, "delivery": 25, "hc": 6}, before=2, relationship_override=1),
             34: dict(history=(70, 80), potential=85),
-            35: dict(cohort=10, frozen_scores=(80,) * 10),
+            35: dict(cohort=10, ratio_override=None, game_rule="zg361_ratio_strict"),
             36: dict(logs=annual_logs(), current_snapshot={"top": 3, "bottom": 1}, government_eligible=True, generated_day=4000),
             345: dict(effective_cycle=21),
             346: dict(materiality=80, signal_id="signal-1", official_id="manager", signal_type="achievement", evidence_ids=("e-1",), recorded_day=100, original_board_version="board-19", action="reward"),
@@ -103,7 +103,7 @@ class ManagerGovernanceModelTests(unittest.TestCase):
             351: dict(metrics=("quality",), outcomes={"p1": {"quality": 80}, "p2": {"quality": 90}, "c1": {"quality": 60}, "c2": {"quality": 70}}, pilots=("p1", "p2"), controls=("c1", "c2"), regions=("p1", "p2", "c1", "c2"), end_cycle=22),
             352: dict(records=({"record_id": "r1", "original_value": 3, "original_formula": "old", "original_policy_version": "v1"},), mapping_version="map-v2", factor=100),
             353: dict(form_hours=10, meeting_hours=5, appeal_hours=4, calibration_hours=3, interruption_hours=2, available_hours=100, error_rate=2, overturn_rate=1, simplified=("duplicate-form",)),
-            354: dict(delivered=10, appeals=4, overturns=2, exits=4, healthy_exits=1, reported=(0.2, 0.25, 0.5), self_disclosed=True, remediated=True, remediation_plan_id="plan-1"),
+            354: dict(delivered=10, appeals=4, overturns=2, exits=4, healthy_exits=1, reported=(0.2, 0.25, 0.5)),
         }
         for mechanism_id, facts in builders.items():
             for route in model.Choice:
@@ -193,7 +193,7 @@ class ManagerGovernanceModelTests(unittest.TestCase):
             32: dict(snapshot_id="s", direct_liege_id="usurper", source_team_serial=19, metrics=team_metrics()),
             33: dict(profile="unknown", weight_version=1, reason_inputs={"calibration": 0, "appeal": 0, "pip": 0, "delivery": 0, "hc": 0}),
             34: dict(history=(), potential=80),
-            35: dict(cohort=-1, frozen_scores=()),
+            35: dict(cohort=-1, ratio_override=None, game_rule="zg361_ratio_strict"),
             36: dict(logs=annual_logs()[:-1], government_eligible=True, generated_day=4000),
             345: dict(effective_cycle=99),
             346: dict(materiality=49, signal_id="minor", action="reward"),
@@ -289,6 +289,68 @@ class ManagerGovernanceModelTests(unittest.TestCase):
         with self.assertRaisesRegex(model.ModelRed, "grandchild_ids"):
             model.GovernanceLedger().apply(32, 2, identity(), snapshot_id="s", direct_liege_id="emperor", source_team_serial=19, metrics=dict.fromkeys(model.TEAM_METRIC_NAMES, 0), grandchild_ids=("baron",))
 
+    def test_032_next_cycle_settles_once_inside_official_organization_component(self) -> None:
+        ledger = model.GovernanceLedger()
+        source = identity(cycle=20, case=32)
+        business = ledger.apply(
+            32,
+            model.Choice.A,
+            source,
+            snapshot_id="team-19",
+            direct_liege_id="emperor",
+            source_team_serial=19,
+            metrics=team_metrics(),
+            grandchild_ids=(),
+        ).business
+        pending = ledger.manager_organization_pending[source]
+        self.assertEqual((pending.due_cycle, pending.score, pending.component_number), (21, business.get("score"), 8))
+        components = (1, 2, 3, 4, 5, 6, 7, 8)
+        with self.assertRaisesRegex(model.ModelRed, "not due until next cycle"):
+            ledger.consume_manager_organization_score(
+                source,
+                current_cycle=20,
+                settled_by_owner_id="emperor",
+                current_direct_liege_id="emperor",
+                official_components=components,
+            )
+        with self.assertRaisesRegex(model.ModelRed, "exactly eight components"):
+            ledger.consume_manager_organization_score(
+                source,
+                current_cycle=21,
+                settled_by_owner_id="emperor",
+                current_direct_liege_id="emperor",
+                official_components=(*components, 9),
+            )
+        receipt = ledger.consume_manager_organization_score(
+            source,
+            current_cycle=21,
+            settled_by_owner_id="new-emperor",
+            current_direct_liege_id="new-emperor",
+            official_components=components,
+        )
+        self.assertEqual(len(receipt.components_after), 8)
+        self.assertEqual(receipt.components_after[:7], components[:7])
+        self.assertEqual(receipt.components_after[7], components[7] + business.get("score"))
+        self.assertEqual(receipt.official_kpi_after - receipt.official_kpi_before, business.get("score"))
+        self.assertNotIn(source, ledger.manager_organization_pending)
+        self.assertIsNone(
+            ledger.consume_manager_organization_score(
+                source,
+                current_cycle=21,
+                settled_by_owner_id="new-emperor",
+                current_direct_liege_id="new-emperor",
+                official_components=components,
+            )
+        )
+        with self.assertRaisesRegex(model.ModelRed, "settled organization evidence cannot be rewritten"):
+            ledger.consume_manager_organization_score(
+                source,
+                current_cycle=22,
+                settled_by_owner_id="new-emperor",
+                current_direct_liege_id="new-emperor",
+                official_components=components,
+            )
+
     def test_033_b_override_is_bounded_visible_and_does_not_erase_evidence(self) -> None:
         facts = dict(profile="political", weight_version=4, reason_inputs={"calibration": 99, "appeal": -99, "pip": 1, "delivery": 2, "hc": 3}, before=2, relationship_override=1)
         business = model.GovernanceLedger().apply(33, 2, identity(), **facts).business
@@ -309,43 +371,64 @@ class ManagerGovernanceModelTests(unittest.TestCase):
         self.assertEqual(first_cycle.get("box"), 0)
         self.assertEqual(first_cycle.get("status"), "insufficient-frozen-history")
 
-    def test_035_mixed_and_strict_conserve_but_have_different_consequence(self) -> None:
-        a = model.GovernanceLedger().apply(35, 1, identity(), cohort=10, frozen_scores=(80,) * 10).business
-        b = model.GovernanceLedger().apply(35, 2, identity(), cohort=10, frozen_scores=(80,) * 10).business
+    def test_035_actual_relaxed_producer_and_forced_strict_conserve(self) -> None:
+        facts = dict(cohort=10, ratio_override=None, game_rule="zg361_ratio_relaxed")
+        a = model.GovernanceLedger().apply(35, 1, identity(), **facts).business
+        b = model.GovernanceLedger().apply(35, 2, identity(), **facts).business
         for business in (a, b):
             self.assertEqual(business.get("top") + business.get("middle") + business.get("bottom"), 10)
-            self.assertGreaterEqual(business.get("bottom"), 1)
-        self.assertEqual((a.get("mode"), a.get("bottom_consequence")), ("mixed", "light"))
+            self.assertEqual(business.get("effective_cycle"), 21)
+        self.assertEqual((a.get("mode"), a.get("bottom"), a.get("rule_source")), ("relaxed", 0, "game-rule"))
         self.assertEqual((b.get("mode"), b.get("bottom_consequence")), ("strict", "normal"))
+        self.assertEqual(b.get("bottom"), 1)
 
-    def test_035_all_four_policy_modes_freeze_and_ignore_later_switches(self) -> None:
+    def test_035_exact_override_precedence_and_three_modes_freeze(self) -> None:
         snapshots = {
-            mode: model.compute_distribution_snapshot(
-                mode=mode,
+            value: model.compute_distribution_snapshot(
+                ratio_override=value,
+                game_rule="zg361_ratio_off",
                 cohort=20,
-                frozen_scores=(80,) * 20,
-                absolute_threshold=60,
-                rule_source="policy-v1",
                 review_serial=20,
             )
-            for mode in ("strict", "relaxed", "off", "mixed")
+            for value in (10, 5, 0)
         }
-        self.assertEqual(snapshots["strict"]["bottom"], 2)
-        self.assertEqual(snapshots["relaxed"]["bottom"], 1)
-        self.assertEqual(snapshots["off"]["bottom"], 0)
-        self.assertEqual(snapshots["mixed"]["bottom_consequence"], "light")
-        self.assertTrue(all(row["top"] + row["middle"] + row["bottom"] == 20 for row in snapshots.values()))
-        frozen_hash = snapshots["strict"]["snapshot_hash"]
-        later_policy = model.compute_distribution_snapshot(
-            mode="off",
+        self.assertEqual({snapshots[value]["mode"] for value in snapshots}, {"strict", "relaxed", "off"})
+        self.assertTrue(all(row["rule_source"] == "liege-override" for row in snapshots.values()))
+        self.assertEqual(snapshots[10]["bottom"], 2)
+        self.assertEqual(snapshots[5]["bottom"], 1)
+        self.assertEqual(snapshots[0]["bottom"], 0)
+        game_rule = model.compute_distribution_snapshot(
+            ratio_override=None,
+            game_rule="zg361_ratio_relaxed",
             cohort=20,
-            frozen_scores=(80,) * 20,
-            absolute_threshold=60,
-            rule_source="policy-v2",
+            review_serial=20,
+        )
+        self.assertEqual((game_rule["mode"], game_rule["rule_source"], game_rule["producer_value"]), ("relaxed", "game-rule", "zg361_ratio_relaxed"))
+        self.assertEqual(snapshots[10]["top"], 6)
+        self.assertTrue(all(row["top"] + row["middle"] + row["bottom"] == 20 for row in snapshots.values()))
+        frozen_hash = snapshots[10]["snapshot_hash"]
+        later_policy = model.compute_distribution_snapshot(
+            ratio_override=0,
+            game_rule="zg361_ratio_strict",
+            cohort=20,
             review_serial=21,
         )
-        self.assertEqual(snapshots["strict"]["snapshot_hash"], frozen_hash)
+        self.assertEqual(snapshots[10]["snapshot_hash"], frozen_hash)
         self.assertNotEqual(later_policy["snapshot_hash"], frozen_hash)
+        with self.assertRaisesRegex(model.ModelRed, "actual override must be 10/5/0"):
+            model.compute_distribution_snapshot(
+                ratio_override=7,
+                game_rule="zg361_ratio_strict",
+                cohort=20,
+                review_serial=20,
+            )
+        with self.assertRaisesRegex(model.ModelRed, "strict/relaxed/off game rule"):
+            model.compute_distribution_snapshot(
+                ratio_override=None,
+                game_rule="invented-mixed",
+                cohort=20,
+                review_serial=20,
+            )
 
     def test_036_a_is_real_ten_year_report_b_is_explicit_snapshot(self) -> None:
         a = model.GovernanceLedger().apply(36, 1, identity(), logs=annual_logs(), government_eligible=True, generated_day=4000).business
@@ -389,6 +472,84 @@ class ManagerGovernanceModelTests(unittest.TestCase):
         self.assertCountEqual(b.get("algorithmic_order"), b.get("final_order"))
         self.assertEqual(len(b.get("audit")), 3)
         self.assertTrue(b.get("uncapped"))
+
+    def test_offcycle_override_and_fairness_inputs_have_typed_one_shot_receipts(self) -> None:
+        source = identity(cycle=20, case=900)
+        pending_inputs = (
+            model.OffcyclePendingInput(
+                source,
+                2,
+                "signal-team-19",
+                "achievement",
+                75,
+                ("appeal-case-7", "pip-case-4"),
+            ),
+            model.OverridePendingInput(
+                source,
+                3,
+                "beneficiary",
+                "bearer",
+                2,
+                3,
+                701,
+                702,
+            ),
+            model.FairnessPendingInput(
+                source,
+                4,
+                delivered=10,
+                appeals=4,
+                overturns=2,
+                exits=3,
+                healthy_exits=1,
+            ),
+        )
+        ledger = model.GovernanceLedger()
+        for index, pending in enumerate(pending_inputs):
+            with self.subTest(kind=pending.kind):
+                consumer_id = model.PENDING_INPUT_CONSUMERS[pending.kind]
+                consumer = identity(cycle=21, case=consumer_id + index)
+                self.assertTrue(ledger.publish_pending_input(pending))
+                self.assertFalse(ledger.publish_pending_input(pending))
+                with self.assertRaisesRegex(model.ModelRed, f"belongs to {consumer_id}"):
+                    ledger.consume_pending_input(
+                        pending,
+                        consumer_mechanism_id=999,
+                        consumer_identity=consumer,
+                    )
+                receipt = ledger.consume_pending_input(
+                    pending,
+                    consumer_mechanism_id=consumer_id,
+                    consumer_identity=consumer,
+                )
+                self.assertEqual(receipt.kind, pending.kind)
+                self.assertEqual(receipt.input_revision, pending.input_revision)
+                self.assertEqual(receipt.source_identity, source)
+                self.assertNotIn(ledger._pending_input_key(pending), ledger.pending_inputs)
+                self.assertIsNone(
+                    ledger.consume_pending_input(
+                        pending,
+                        consumer_mechanism_id=consumer_id,
+                        consumer_identity=consumer,
+                    )
+                )
+                self.assertFalse(ledger.publish_pending_input(pending))
+                with self.assertRaisesRegex(model.ModelRed, "cannot be settled twice"):
+                    ledger.consume_pending_input(
+                        pending,
+                        consumer_mechanism_id=consumer_id,
+                        consumer_identity=identity(cycle=22, case=consumer_id + index + 100),
+                    )
+
+        with self.assertRaisesRegex(model.ModelRed, "actual lift/rescue result reason"):
+            model.OverridePendingInput(source, 5, "beneficiary", "bearer", 99, 3, 701, 702)
+        with self.assertRaisesRegex(model.ModelRed, "actual push result reason"):
+            model.OverridePendingInput(source, 5, "beneficiary", "bearer", 2, 99, 701, 702)
+
+    def test_manager_runtime_model_has_no_dead_regrade_or_m016_reads(self) -> None:
+        source = Path(model.__file__).read_text(encoding="utf-8-sig")
+        self.assertNotIn("zg361_result_regrade_delta", source)
+        self.assertNotIn("zg361_b2_m016_outcome", source)
 
     def test_348_expiry_and_grandfather_are_distinct(self) -> None:
         a = model.GovernanceLedger().apply(348, 1, identity(), exception_id="ex", granted_day=100, resolved_day=465, new_evidence=False, jingcha_batch_id="jc").business
@@ -441,17 +602,30 @@ class ManagerGovernanceModelTests(unittest.TestCase):
         self.assertEqual(b.get("capacity_remaining"), 76)
 
     def test_354_raw_audit_detects_b_suppression_and_gates_trust(self) -> None:
-        facts = dict(delivered=10, appeals=4, overturns=2, exits=4, healthy_exits=1, reported=(0.2, 0.25, 0.5), self_disclosed=True, remediated=True, remediation_plan_id="plan-1")
+        facts = dict(delivered=10, appeals=4, overturns=2, exits=4, healthy_exits=1, reported=(0.2, 0.25, 0.5))
         a = model.GovernanceLedger().apply(354, 1, identity(), **facts).business
         b = model.GovernanceLedger().apply(354, 2, identity(case=8), **facts).business
         self.assertTrue(a.get("gaming"))
         self.assertTrue(a.get("suppression_flag"))
         self.assertTrue(a.get("reclassification_flag"))
-        self.assertEqual(a.get("long_term_trust_delta"), 5)
+        self.assertEqual(a.get("long_term_trust_delta"), 0)
+        self.assertEqual(a.get("raw_counts"), (("appeals", 4), ("delivered", 10), ("exits", 4), ("healthy_exits", 1), ("overturns", 2)))
         self.assertTrue(b.get("gaming"))
         self.assertTrue(b.get("suppression_flag"))
         self.assertTrue(b.get("reclassification_flag"))
         self.assertEqual(b.get("long_term_trust_delta"), 0)
+
+        zero = model.GovernanceLedger().apply(
+            354,
+            1,
+            identity(case=9),
+            delivered=0,
+            appeals=0,
+            overturns=0,
+            exits=0,
+            healthy_exits=0,
+        ).business
+        self.assertEqual(zero.get("raw"), (0.0, 0.0, 0.0))
 
     def test_q_projection_requires_authoritative_consumed_receipt_and_is_idempotent(self) -> None:
         ledger = model.GovernanceLedger()

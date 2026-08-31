@@ -21,8 +21,11 @@ from gen_361_manager_governance_runtime import (
     INPUT_FINGERPRINT_RAW_VALUES,
     INPUT_FINGERPRINT_VARS,
     MOD_ROOT,
+    DISTRIBUTION_DUE_GUARD,
+    ORGANIZATION_DUE_GUARD,
     Q_PROJECTION_IDS,
     READINESS,
+    SHARED_HOOK_CONTRACT,
     TARGET_IDS,
     outputs,
 )
@@ -114,6 +117,9 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         )
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.values = read("common/script_values/zg361_values.txt")
+        cls.manager_values = read(
+            "common/script_values/zg361_manager_governance_runtime_values.txt"
+        )
         cls.loc_en = read(
             "localization/english/zg361_manager_governance_l_english.yml"
         )
@@ -141,9 +147,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
     def test_generated_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = outputs()
-        self.assertEqual(len(rendered), 11)
+        self.assertEqual(len(rendered), 12)
         allowed_roots = {
             "common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
+            "common/script_values/zg361_manager_governance_runtime_values.txt",
             "events/zg361_manager_governance_runtime_events.txt",
         }
         for path, payload in rendered.items():
@@ -177,10 +184,157 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
     def test_ck3_files_are_balanced_and_top_level_keys_unique(self) -> None:
         assert_balanced(self, self.effects, "effects")
         assert_balanced(self, self.events, "events")
-        for text, label in ((self.effects, "effects"), (self.events, "events")):
+        assert_balanced(self, self.manager_values, "manager_values")
+        for text, label in (
+            (self.effects, "effects"),
+            (self.events, "events"),
+            (self.manager_values, "manager_values"),
+        ):
             keys = re.findall(r"(?m)^([A-Za-z0-9_.]+)\s*=\s*\{", text)
             duplicates = sorted({key for key in keys if keys.count(key) > 1})
             self.assertEqual(duplicates, [], label)
+
+    def test_f032_is_due_once_inside_official_component_eight(self) -> None:
+        official = top_level_block(self.values, "zg361_kpi_value")
+        organization = top_level_block(
+            self.values, "zg361_kpi_organization_evidence_value"
+        )
+        due_value = top_level_block(
+            self.manager_values, "zg361_mg_due_organization_kpi_value"
+        )
+        scorer = top_level_block(self.effects, "zg361_mg_m032_score_manager_effect")
+        settle = top_level_block(
+            self.effects, "zg361_mg_settle_due_organization_kpi_effect"
+        )
+        official_addends = re.findall(r"(?m)^\s*add = (zg361_kpi_[a-z_]+_evidence_value)$", official)
+        self.assertEqual(len(official_addends), 8)
+        self.assertEqual(official_addends[-1], "zg361_kpi_organization_evidence_value")
+        self.assertNotIn("zg361_mg_due_organization_kpi_value", official)
+        self.assertIn("zg361_mg_organization_input_component value = 8", scorer)
+        self.assertIn("zg361_mg_organization_input_due_cycle", scorer)
+        self.assertIn("zg361_mg_organization_input_status value = 1", scorer)
+        self.assertIn("var:zg361_mg_organization_input_status = 1", due_value)
+        self.assertIn("add = var:zg361_mg_organization_input_value", due_value)
+        self.assertIn("zg361_mg_organization_input_status value = 2", settle)
+        self.assertIn("zg361_mg_organization_settlement_receipt", settle)
+        # The shared file is root-owned.  Pin its unique insertion block without
+        # requiring this isolated package to mutate it before integration.
+        self.assertEqual(organization.count("zg361_team_mechanism_kpi_value"), 1)
+        self.assertEqual(
+            SHARED_HOOK_CONTRACT["organization_component"],
+            ("common/script_values/zg361_values.txt", "zg361_kpi_organization_evidence_value"),
+        )
+
+    def test_f032_due_guard_matches_b1_precompute_and_legacy_postcompute_cycles(self) -> None:
+        due_value = top_level_block(
+            self.manager_values, "zg361_mg_due_organization_kpi_value"
+        )
+        settle = top_level_block(
+            self.effects, "zg361_mg_settle_due_organization_kpi_effect"
+        )
+        canonical = ORGANIZATION_DUE_GUARD.strip()
+        self.assertEqual(due_value.count(canonical), 1)
+        self.assertEqual(settle.count(canonical), 1)
+        for block in (due_value, settle):
+            self.assertIn(
+                "var:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }",
+                block,
+            )
+            self.assertIn(
+                "var:zg361_b1_cycle_serial >= var:zg361_mg_organization_input_due_cycle",
+                block,
+            )
+            self.assertIn(
+                "var:zg361_review_serial >= var:zg361_mg_organization_input_source_cycle",
+                block,
+            )
+            self.assertNotIn("organization_input_due_cycle <= liege.var:zg361_review_serial", block)
+        self.assertIn(
+            "zg361_mg_organization_settled_cycle value = var:zg361_mg_organization_input_due_cycle",
+            settle,
+        )
+        self.assertIn(
+            "zg361_mg_organization_settled_cycle value = var:zg361_b1_cycle_serial",
+            settle,
+        )
+
+    def test_distribution_shared_adapter_is_exact_and_core_preserving(self) -> None:
+        apply_due = top_level_block(
+            self.effects, "zg361_mg_apply_due_distribution_policy_effect"
+        )
+        selector = top_level_block(self.effects, "zg361_mg_set_bottom_slots_effect")
+        effective = top_level_block(
+            self.manager_values, "zg361_mg_effective_bottom_slots_value"
+        )
+        self.assertIn("zg361_mg_distribution_policy_status = 1", apply_due)
+        self.assertIn("zg361_mg_distribution_policy_status value = 2", apply_due)
+        self.assertIn("zg361_mg_distribution_policy_settlement_receipt", apply_due)
+        self.assertEqual(apply_due.count(DISTRIBUTION_DUE_GUARD.strip()), 1)
+        self.assertIn("zg361_mg_distribution_policy_applied_this_rank value = 1", apply_due)
+        self.assertNotIn("distribution_policy_due_cycle <= var:zg361_review_serial", apply_due)
+        self.assertLess(
+            selector.index("zg361_mg_distribution_policy_applied_this_rank value = 0"),
+            selector.index("zg361_mg_apply_due_distribution_policy_effect = yes"),
+        )
+        self.assertLess(
+            selector.index("zg361_mg_apply_due_distribution_policy_effect = yes"),
+            selector.index("name = zg361_bottom_slots value = zg361_bottom_slots_value"),
+        )
+        self.assertIn("value = zg361_mg_effective_bottom_slots_value", selector)
+        self.assertIn("remove_variable = zg361_mg_distribution_policy_applied_this_rank", selector)
+        self.assertIn("multiply = 0.10", effective)
+        self.assertIn("multiply = 0.05", effective)
+        self.assertEqual(
+            SHARED_HOOK_CONTRACT["distribution_settlement"][1],
+            "set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }",
+        )
+
+    def test_shared_hooks_are_unmerged_or_atomically_match_the_contract(self) -> None:
+        organization = top_level_block(
+            self.values, "zg361_kpi_organization_evidence_value"
+        )
+        compute = top_level_block(self.core, "zg361_compute_kpi_effect")
+        rank = top_level_block(self.core, "zg361_rank_cohort_effect")
+        markers = (
+            "add = zg361_mg_due_organization_kpi_value" in organization,
+            "zg361_mg_settle_due_organization_kpi_effect = yes" in compute,
+            "zg361_mg_set_bottom_slots_effect = yes" in rank,
+        )
+        self.assertIn(markers, ((False, False, False), (True, True, True)))
+        if all(markers):
+            self.assertLess(
+                organization.index("add = zg361_manager_mechanism_kpi_value"),
+                organization.index("add = zg361_mg_due_organization_kpi_value"),
+            )
+            self.assertLess(
+                compute.index("zg361_b2_consume_management_debt_effect = yes"),
+                compute.index("zg361_mg_settle_due_organization_kpi_effect = yes"),
+            )
+            self.assertNotIn(
+                "set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }",
+                rank,
+            )
+
+    def test_team_snapshot_uses_actual_receipts_and_exact_replay_wrapper(self) -> None:
+        wrapper = top_level_block(self.effects, "zg361_mg_freeze_team_snapshot_effect")
+        snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
+        self.assertIn("zg361_mg_build_team_snapshot_effect = yes", wrapper)
+        for identity in ("owner", "subject", "cycle", "case"):
+            self.assertIn(f"zg361_mg_team_snapshot_{identity}", wrapper + snapshot)
+        self.assertIn("zg361_mg_team_snapshot_revision add = 1", snapshot)
+        for source in (
+            "zg361_result_delivery_method",
+            "zg361_result_appeal_outcome",
+            "zg361_result_grade_reason",
+            "zg361_b2_pip_state",
+            "zg361_b2_pip_graduation_receipt",
+            "zg361_b2_m075_state",
+            "zg361_b2_m075_actual_exit",
+            "zg361_b2_m075_neutral_record",
+        ):
+            self.assertIn(source, snapshot + self.effects)
+        self.assertNotIn("zg361_result_regrade_delta", self.effects)
+        self.assertNotIn("zg361_b2_m016_outcome", self.effects)
 
     def test_every_id_has_effect_receipt_consumer_and_caller(self) -> None:
         caller_surface = self.effects + "\n" + self.events
@@ -243,10 +397,16 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                     f"NOT = {{ var:{stem}_requested_route = var:{stem}_route }}",
                     block,
                 )
-                self.assertIn(
-                    f"has_variable = zg361_mechanism_{row.mechanism_id:03d}_input_revision",
+                self.assertNotIn(
+                    f"zg361_mechanism_{row.mechanism_id:03d}_input_revision",
                     block,
                 )
+                for variable in INPUT_FINGERPRINT_VARS[row.mechanism_id]:
+                    self.assertIn(f"has_variable = {variable}", block)
+                for variable in INPUT_FINGERPRINT_OPAQUE_VARS[row.mechanism_id]:
+                    self.assertIn(f"has_variable = {variable}", block)
+                for raw_value in INPUT_FINGERPRINT_RAW_VALUES[row.mechanism_id]:
+                    self.assertIn(f"value = {raw_value}", block)
                 self.assertIn(f"{stem}_requested_input_fingerprint", block)
                 self.assertIn(
                     f"NOT = {{ var:{stem}_requested_input_fingerprint = var:{stem}_object_input_fingerprint }}",
@@ -285,9 +445,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         opener = top_level_block(
             self.effects, "zg361_mg_open_manager_governance_cases_effect"
         )
-        snapshot = top_level_block(
-            self.effects, "zg361_mg_freeze_team_snapshot_effect"
-        )
+        snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
         self.assertIn("zg361_mg_consume_due_policy_debts_effect = yes", opener)
         self.assertIn("liege = root", opener)
         self.assertIn(
@@ -305,8 +463,14 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                 self.assertIn(f"{stem}_debt_manager_score_delta value = -3", consumer)
                 self.assertIn(f"{stem}_debt_remediation_code value = 1", consumer)
         self.assertEqual(consumer.count("change_variable = { name = zg361_mg_manager_score_delta add = -3 }"), len(TARGET_IDS))
+        self.assertEqual(
+            consumer.count("zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial"),
+            len(TARGET_IDS),
+        )
         self.assertIn("add = var:zg361_mg_manager_score_delta", snapshot)
+        self.assertIn("var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial", snapshot)
         self.assertIn("remove_variable = zg361_mg_manager_score_delta", snapshot)
+        self.assertIn("remove_variable = zg361_mg_manager_score_delta_due_cycle", snapshot)
 
     def test_q121_128_are_strict_read_only_career_hc_projections(self) -> None:
         adapter = top_level_block(
@@ -484,9 +648,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         opener = top_level_block(
             self.effects, "zg361_mg_open_manager_governance_cases_effect"
         )
-        snapshot = top_level_block(
-            self.effects, "zg361_mg_freeze_team_snapshot_effect"
-        )
+        snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
         self.assertIn("liege = root", opener)
         self.assertIn("zg361_case_f_open_effect = yes", opener)
         self.assertIn("zg361_case_ak_open_effect = yes", opener)
@@ -578,9 +740,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_zh)
 
     def test_f032_uses_only_strictly_prior_seven_metric_aggregate(self) -> None:
-        snapshot = top_level_block(
-            self.effects, "zg361_mg_freeze_team_snapshot_effect"
-        )
+        snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
         scorer = top_level_block(self.effects, "zg361_mg_m032_score_manager_effect")
         metrics = (
             "targets",
@@ -641,19 +801,39 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("multiply = 0.10", block)
         self.assertIn("multiply = 0.05", block)
         self.assertIn("zg361_mg_distribution_bottom_slots value = 0", block)
-        self.assertIn("has_variable = zg361_distribution_mode", block)
-        self.assertIn("value = var:zg361_distribution_mode", block)
+        self.assertIn("has_variable = zg361_ratio_override", block)
+        for ratio in (10, 5, 0):
+            self.assertIn(f"var:zg361_ratio_override = {ratio}", block)
+        for rule in ("strict", "relaxed", "off"):
+            self.assertIn(f"has_game_rule = zg361_ratio_{rule}", block)
+        self.assertNotIn("has_variable = zg361_distribution_absolute_threshold", block)
+        self.assertNotIn("has_variable = zg361_distribution_mode", block)
         self.assertIn("zg361_mg_distribution_rule_source", block)
         self.assertIn("zg361_mg_distribution_review_serial", block)
         self.assertIn("zg361_mg_distribution_bottom_consequence value = 0", block)
         self.assertIn("var:zg361_mg_team_n >= 5", block)
-        self.assertIn("zg361_mg_distribution_bottom_consequence value = 2", block)
+        self.assertNotIn("zg361_mg_distribution_bottom_consequence value = 2", block)
         self.assertIn(
             "add = var:zg361_mg_distribution_middle_slots add = var:zg361_mg_distribution_bottom_slots",
             block,
         )
+        for field in (
+            "status",
+            "owner",
+            "subject",
+            "source_reviewer",
+            "source_cycle",
+            "source_case",
+            "source_revision",
+            "input_revision",
+            "mode",
+            "rule_source",
+            "due_cycle",
+        ):
+            self.assertIn(f"zg361_mg_distribution_policy_{field}", block)
         scorer = top_level_block(self.effects, "zg361_mg_m032_score_manager_effect")
         self.assertIn("zg361_mg_m035_receipt_choice = 3", scorer)
+        self.assertIn("var:zg361_mg_distribution_policy_available = 1", scorer)
         self.assertIn(
             "var:zg361_mg_distribution_conserved = var:zg361_mg_team_n", scorer
         )
@@ -694,24 +874,41 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_mg_calendar_fatigue value = 30", block)
 
     def test_ak346_material_signal_is_once_and_never_reruns_cohort(self) -> None:
-        record = top_level_block(self.effects, "zg361_mg_record_offcycle_signal_effect")
+        record = top_level_block(self.effects, "zg361_mg_produce_offcycle_signal_effect")
         consume = top_level_block(
             self.effects, "zg361_mg_m346_consume_offcycle_signal_effect"
         )
-        self.assertIn("$MATERIALITY$ >= 50", record)
-        self.assertIn("NOT = { has_variable = zg361_mg_offcycle_pending }", record)
+        for actual in ("zg361_mg_team_overturn_n", "zg361_mg_team_pip_success", "zg361_mg_team_calibration"):
+            self.assertIn(actual, record)
+        for identity in ("source_owner", "source_subject", "source_cycle", "source_case", "input_revision"):
+            self.assertIn(f"zg361_mg_offcycle_{identity}", record + consume)
+        self.assertNotIn("$MATERIALITY$", record)
+        self.assertIn("zg361_mg_offcycle_input_status value = 1", record)
         self.assertIn("zg361_mg_offcycle_cohort_reruns value = 0", consume)
-        self.assertIn("remove_variable = zg361_mg_offcycle_pending", consume)
+        self.assertIn("zg361_mg_offcycle_input_status value = 2", consume)
+        self.assertIn("zg361_mg_offcycle_input_status value = 3", consume)
+        self.assertIn("zg361_mg_offcycle_pending value = 0", consume)
         self.assertIn("zg361_mg_offcycle_consumed_cycle", consume)
+        self.assertIn("zg361_mg_offcycle_settlement_receipt", consume)
 
     def test_ak347_override_has_three_part_receipt_and_quota_neutrality(self) -> None:
+        producer = top_level_block(self.effects, "zg361_mg_produce_override_pair_effect")
         block = top_level_block(self.effects, "zg361_mg_m347_consume_override_effect")
+        for reason in (1, 2, 3, 4):
+            self.assertIn(f"var:zg361_result_grade_reason = {reason}", producer)
+        self.assertEqual(producer.count("ordered_vassal = {"), 2)
+        self.assertIn("zg361_mg_override_source_beneficiary_case", producer + block)
+        self.assertIn("zg361_mg_override_source_bearer_case", producer + block)
+        self.assertIn("zg361_mg_override_input_revision", producer + block)
         for token in ("beneficiary", "bearer", "reason"):
             self.assertIn(f"zg361_mg_override_{token}", block)
         self.assertIn("var:zg361_mg_override_used < var:zg361_mg_override_budget", block)
         self.assertIn("zg361_mg_override_quota_before", block)
         self.assertIn("zg361_mg_override_quota_after", block)
         self.assertIn("zg361_mg_override_quota_neutral value = 1", block)
+        self.assertIn("zg361_mg_override_input_status value = 2", block)
+        self.assertIn("zg361_mg_override_input_status value = 3", block)
+        self.assertIn("zg361_mg_override_settlement_receipt", block)
         stage = top_level_block(self.effects, "zg361_mg_ak_stage_2_effect")
         self.assertIn("var:zg361_mg_override_quota_neutral = 1", stage)
 
@@ -784,10 +981,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_case_kernel_settle_transaction_effect", block)
         self.assertIn("zg361_case_kernel_refund_transaction_effect", refund)
         self.assertIn("zg361_mg_manager_score_delta", block)
-        snapshot = top_level_block(
-            self.effects, "zg361_mg_freeze_team_snapshot_effect"
-        )
+        self.assertIn("zg361_mg_manager_score_delta_due_cycle", block)
+        snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
         self.assertIn("add = var:zg361_mg_manager_score_delta", snapshot)
+        self.assertIn("remove_variable = zg361_mg_manager_score_delta_due_cycle", snapshot)
 
     def test_ak354_recomputes_raw_rates_and_gates_long_term_trust(self) -> None:
         block = top_level_block(self.effects, "zg361_mg_m354_audit_fairness_effect")
@@ -795,11 +992,22 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             self.assertIn(f"zg361_mg_fairness_raw_{raw}", block)
         for gap in ("appeal", "overturn", "exit"):
             self.assertIn(f"zg361_mg_fairness_gap_{gap}", block)
+        for raw in ("delivered", "appeals", "overturns", "exits", "healthy_exits"):
+            self.assertIn(f"value = var:zg361_mg_fairness_input_{raw}", block)
+        self.assertIn("zg361_mg_fairness_delivery_denominator", block)
+        self.assertIn("zg361_mg_fairness_exit_denominator", block)
         self.assertIn("zg361_mg_fairness_gaming value = 1", block)
         trust_branch = block.split("zg361_mg_fairness_trust_delta value = 0", 1)[1]
-        self.assertIn("zg361_mg_fairness_self_disclosed = 1", trust_branch)
-        self.assertIn("zg361_mg_fairness_remediation_completed = 1", trust_branch)
+        self.assertNotIn("zg361_mg_fairness_self_disclosed", trust_branch)
+        self.assertNotIn("zg361_mg_fairness_remediation_completed = 1", trust_branch)
+        self.assertIn("zg361_mg_fairness_remediation_status = 2", trust_branch)
+        self.assertIn("zg361_mg_fairness_remediation_completion_receipt", trust_branch)
         self.assertIn("zg361_mg_fairness_trust_delta value = 5", trust_branch)
+        self.assertIn("zg361_mg_fairness_input_status value = 2", block)
+        self.assertIn("zg361_mg_fairness_input_status value = 3", block)
+        self.assertIn("zg361_mg_fairness_settlement_receipt", block)
+        audit = top_level_block(self.effects, "zg361_mg_m349_run_audit_effect")
+        self.assertIn("zg361_mg_fairness_remediation_status value = 2", audit)
 
     def test_all_delayed_stage_events_bind_full_ticket_and_stale_noop(self) -> None:
         for event_id, domain, state in (

@@ -57,6 +57,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -80,6 +81,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -103,6 +105,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -126,6 +129,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -149,6 +153,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -172,6 +177,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -195,6 +201,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -218,6 +225,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -241,6 +249,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -264,6 +273,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -287,6 +297,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -310,6 +321,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -333,6 +345,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -356,6 +369,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 	if = {
 		limit = {
@@ -379,6 +393,7 @@ zg361_mg_consume_due_policy_debts_effect = {
 		change_variable = { name = zg361_mg_policy_debt add = -1 }
 		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
 }
 
@@ -1323,6 +1338,95 @@ zg361_mg_project_career_hc_q_receipts_effect = {
 	}
 }
 
+# Called immediately after the official KPI/debt write.  The input was
+# already read by component 8, so this only settles the exact source once.
+zg361_mg_settle_due_organization_kpi_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_organization_input_status
+			var:zg361_mg_organization_input_status = 1
+			has_variable = zg361_mg_organization_input_owner
+			has_variable = zg361_mg_organization_input_subject
+			has_variable = zg361_mg_organization_input_value
+			var:zg361_mg_organization_input_owner = liege
+			var:zg361_mg_organization_input_subject = this
+			has_variable = zg361_mg_organization_input_source_cycle
+			has_variable = zg361_mg_organization_input_due_cycle
+			var:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }
+			OR = {
+				AND = {
+					has_variable = zg361_b1_cycle_serial
+					var:zg361_b1_cycle_serial >= var:zg361_mg_organization_input_due_cycle
+				}
+				AND = {
+					NOT = { has_variable = zg361_b1_cycle_serial }
+					has_variable = zg361_review_serial
+					var:zg361_review_serial >= var:zg361_mg_organization_input_source_cycle
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_organization_input_status value = 2 }
+		set_variable = { name = zg361_mg_organization_settled_by_owner value = liege }
+		set_variable = { name = zg361_mg_organization_settled_cycle value = var:zg361_mg_organization_input_due_cycle }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_organization_settled_cycle value = var:zg361_b1_cycle_serial } }
+		set_variable = { name = zg361_mg_organization_settled_value value = var:zg361_mg_organization_input_value }
+		set_variable = { name = zg361_mg_organization_settlement_receipt value = var:zg361_mg_organization_input_source_case }
+	}
+}
+
+# Consume an F035 policy only at its declared next review.  A retained old
+# effective mode cannot leak because the selector below requires this cycle.
+zg361_mg_apply_due_distribution_policy_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_status
+			var:zg361_mg_distribution_policy_status = 1
+			has_variable = zg361_mg_distribution_policy_owner
+			var:zg361_mg_distribution_policy_owner = this
+			has_variable = zg361_mg_distribution_policy_source_cycle
+			has_variable = zg361_mg_distribution_policy_due_cycle
+			var:zg361_mg_distribution_policy_due_cycle = { value = var:zg361_mg_distribution_policy_source_cycle add = 1 }
+			OR = {
+				AND = {
+					has_variable = zg361_b1_cycle_serial
+					var:zg361_b1_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
+				}
+				AND = {
+					NOT = { has_variable = zg361_b1_cycle_serial }
+					has_variable = zg361_review_serial
+					var:zg361_review_serial >= var:zg361_mg_distribution_policy_source_cycle
+				}
+			}
+			has_variable = zg361_mg_distribution_policy_mode
+			var:zg361_mg_distribution_policy_mode >= 1
+			var:zg361_mg_distribution_policy_mode <= 3
+		}
+		set_variable = { name = zg361_mg_distribution_effective_mode value = var:zg361_mg_distribution_policy_mode }
+		set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_mg_distribution_policy_due_cycle }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_cycle_serial } }
+		set_variable = { name = zg361_mg_distribution_effective_source_cycle value = var:zg361_mg_distribution_policy_source_cycle }
+		set_variable = { name = zg361_mg_distribution_effective_source_case value = var:zg361_mg_distribution_policy_source_case }
+		set_variable = { name = zg361_mg_distribution_effective_input_revision value = var:zg361_mg_distribution_policy_input_revision }
+		set_variable = { name = zg361_mg_distribution_policy_applied_this_rank value = 1 }
+		set_variable = { name = zg361_mg_distribution_policy_status value = 2 }
+		set_variable = { name = zg361_mg_distribution_policy_settled_cycle value = var:zg361_mg_distribution_effective_cycle }
+		set_variable = { name = zg361_mg_distribution_policy_settlement_receipt value = var:zg361_mg_distribution_policy_source_case }
+	}
+}
+
+# Replacement for the one core bottom-slot assignment.  It preserves the core
+# value unless a fully bound F035 policy was consumed for this exact cycle.
+zg361_mg_set_bottom_slots_effect = {
+	set_variable = { name = zg361_mg_distribution_policy_applied_this_rank value = 0 }
+	zg361_mg_apply_due_distribution_policy_effect = yes
+	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
+	if = {
+		limit = { var:zg361_mg_distribution_policy_applied_this_rank = 1 }
+		set_variable = { name = zg361_bottom_slots value = zg361_mg_effective_bottom_slots_value }
+	}
+	remove_variable = zg361_mg_distribution_policy_applied_this_rank
+}
+
 # The existing Jingcha is free/default-mandatory.  Its explicit player-refusal
 # option calls this product effect directly.  Freeze the mandate business token
 # before lifecycle cleanup, then apply exactly one -25 opinion instance and one
@@ -1454,9 +1558,32 @@ zg361_mg_open_manager_governance_cases_effect = {
 	else = { zg361_mg_set_red_effect = { CODE = 1 MECHANISM = 32 } }
 }
 
-# Freeze exactly seven aggregate team facts from a strictly earlier manager
-# cycle.  No grandchild character ID is projected into the superior's roster.
+# Exact replay of the same F case reuses the frozen snapshot; it never consumes
+# a subordinate result/PIP/exit producer twice.
 zg361_mg_freeze_team_snapshot_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_mg_team_snapshot_status }
+				OR = {
+					NOT = { var:zg361_mg_team_snapshot_status = 1 }
+					NOT = { var:zg361_mg_team_snapshot_owner = var:zg361_case_f_owner }
+					NOT = { var:zg361_mg_team_snapshot_subject = this }
+					NOT = { var:zg361_mg_team_snapshot_cycle = var:zg361_case_f_cycle_serial }
+					NOT = { var:zg361_mg_team_snapshot_case = var:zg361_case_f_case_serial }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_mg_build_team_snapshot_effect = yes
+	}
+}
+
+# Freeze seven score aggregates plus auditable raw counters from a strictly
+# earlier manager cycle.  No grandchild ID is copied into the superior roster.
+zg361_mg_build_team_snapshot_effect = {
+	if = { limit = { NOT = { has_variable = zg361_mg_team_snapshot_revision } } set_variable = { name = zg361_mg_team_snapshot_revision value = 0 } }
+	change_variable = { name = zg361_mg_team_snapshot_revision add = 1 }
 	set_variable = { name = zg361_mg_snapshot_source_serial value = var:zg361_review_serial }
 	set_variable = { name = zg361_mg_snapshot_current_serial value = root.var:zg361_review_serial }
 	set_variable = { name = zg361_mg_team_n value = 0 }
@@ -1503,6 +1630,11 @@ zg361_mg_freeze_team_snapshot_effect = {
 	set_variable = { name = zg361_mg_team_appeal_overturn value = 0 }
 	set_variable = { name = zg361_mg_team_retention value = 0 }
 	set_variable = { name = zg361_mg_team_hc_efficiency value = 0 }
+	set_variable = { name = zg361_mg_team_delivered_n value = 0 }
+	set_variable = { name = zg361_mg_team_appeal_n value = 0 }
+	set_variable = { name = zg361_mg_team_overturn_n value = 0 }
+	set_variable = { name = zg361_mg_team_exit_n value = 0 }
+	set_variable = { name = zg361_mg_team_healthy_exit_n value = 0 }
 	save_scope_as = zg361_mg_snapshot_manager
 	every_vassal = {
 		limit = {
@@ -1513,16 +1645,52 @@ zg361_mg_freeze_team_snapshot_effect = {
 		}
 		scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_retention add = 2 } }
 		if = {
-			limit = { has_variable = zg361_result_grade_reason var:zg361_result_grade_reason > 0 }
+			limit = { has_variable = zg361_result_delivery_method var:zg361_result_delivery_method > 0 }
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_delivered_n add = 1 } }
+		}
+		if = {
+			limit = { has_variable = zg361_result_grade_reason var:zg361_result_grade_reason >= 1 var:zg361_result_grade_reason <= 4 }
 			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_calibration add = -5 } }
 		}
 		if = {
-			limit = { has_variable = zg361_result_regrade_delta var:zg361_result_regrade_delta > 0 }
-			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_appeal_overturn add = -5 } }
+			limit = { has_variable = zg361_result_appeal_outcome var:zg361_result_appeal_outcome >= 1 var:zg361_result_appeal_outcome <= 2 }
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_appeal_n add = 1 } }
+			if = {
+				limit = { var:zg361_result_appeal_outcome = 1 }
+				scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_overturn_n add = 1 } change_variable = { name = zg361_mg_team_appeal_overturn add = -5 } }
+			}
 		}
 		if = {
-			limit = { has_variable = zg361_b2_m016_outcome var:zg361_b2_m016_outcome = 1 }
+			limit = {
+				has_variable = zg361_b2_pip_owner
+				has_variable = zg361_b2_pip_cycle
+				has_variable = zg361_b2_pip_case
+				has_variable = zg361_b2_pip_state
+				has_variable = zg361_b2_pip_graduation_receipt
+				var:zg361_b2_pip_owner = scope:zg361_mg_snapshot_manager
+				var:zg361_b2_pip_cycle = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+				var:zg361_b2_pip_state = 3
+				var:zg361_b2_pip_graduation_receipt = var:zg361_b2_pip_case
+			}
 			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_pip_success add = 5 } }
+		}
+		if = {
+			limit = {
+				has_variable = zg361_b2_m075_owner
+				has_variable = zg361_b2_m075_cycle
+				has_variable = zg361_b2_m075_case
+				has_variable = zg361_b2_m075_state
+				has_variable = zg361_b2_m075_actual_exit
+				var:zg361_b2_m075_owner = scope:zg361_mg_snapshot_manager
+				var:zg361_b2_m075_cycle = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+				var:zg361_b2_m075_state = 3
+				var:zg361_b2_m075_actual_exit = 1
+			}
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_exit_n add = 1 } change_variable = { name = zg361_mg_team_retention add = -2 } }
+			if = {
+				limit = { has_variable = zg361_b2_m075_neutral_record var:zg361_b2_m075_neutral_record = 1 }
+				scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_healthy_exit_n add = 1 } }
+			}
 		}
 	}
 	set_variable = {
@@ -1530,16 +1698,40 @@ zg361_mg_freeze_team_snapshot_effect = {
 		value = { value = var:zg361_mg_team_top_n subtract = var:zg361_mg_team_bottom_n multiply = 3 }
 	}
 	if = {
-		limit = { has_variable = zg361_mg_manager_score_delta }
+		limit = {
+			has_variable = zg361_mg_manager_score_delta
+			has_variable = zg361_mg_manager_score_delta_due_cycle
+			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial
+		}
 		change_variable = { name = zg361_mg_team_hc_efficiency add = var:zg361_mg_manager_score_delta }
-		set_variable = { name = zg361_mg_manager_score_delta_consumed_cycle value = var:zg361_review_serial }
+		set_variable = { name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_review_serial }
 		remove_variable = zg361_mg_manager_score_delta
+		remove_variable = zg361_mg_manager_score_delta_due_cycle
 	}
 	set_variable = { name = zg361_mg_snapshot_grandchild_id_count value = 0 }
+	set_variable = { name = zg361_mg_team_snapshot_status value = 1 }
+	set_variable = { name = zg361_mg_team_snapshot_owner value = var:zg361_case_f_owner }
+	set_variable = { name = zg361_mg_team_snapshot_subject value = this }
+	set_variable = { name = zg361_mg_team_snapshot_cycle value = var:zg361_case_f_cycle_serial }
+	set_variable = { name = zg361_mg_team_snapshot_case value = var:zg361_case_f_case_serial }
+	set_variable = { name = zg361_mg_team_snapshot_source_cycle value = var:zg361_review_serial }
+	set_variable = { name = zg361_mg_fairness_input_status value = 1 }
+	set_variable = { name = zg361_mg_fairness_input_revision value = var:zg361_mg_team_snapshot_revision }
+	set_variable = { name = zg361_mg_fairness_input_source_owner value = root }
+	set_variable = { name = zg361_mg_fairness_input_source_subject value = this }
+	set_variable = { name = zg361_mg_fairness_input_source_cycle value = var:zg361_review_serial }
+	set_variable = { name = zg361_mg_fairness_input_source_case value = var:zg361_case_f_case_serial }
+	set_variable = { name = zg361_mg_fairness_input_delivered value = var:zg361_mg_team_delivered_n }
+	set_variable = { name = zg361_mg_fairness_input_appeals value = var:zg361_mg_team_appeal_n }
+	set_variable = { name = zg361_mg_fairness_input_overturns value = var:zg361_mg_team_overturn_n }
+	set_variable = { name = zg361_mg_fairness_input_exits value = var:zg361_mg_team_exit_n }
+	set_variable = { name = zg361_mg_fairness_input_healthy_exits value = var:zg361_mg_team_healthy_exit_n }
+	zg361_mg_produce_offcycle_signal_effect = yes
+	zg361_mg_produce_override_pair_effect = yes
 }
 
-# 035 — strict/relaxed/off/mixed distribution semantics are frozen before the
-# manager score.  Counts must conserve the frozen cohort exactly.
+# 035 — freeze only the real ratio override/game-rule producer.  A/B publish a
+# fully bound next-cycle policy; C publishes no distribution object.
 zg361_mg_m035_freeze_distribution_effect = {
 	remove_variable = zg361_mg_m035_replay_route_conflict
 	set_variable = { name = zg361_mg_m035_requested_route value = 1 }
@@ -1552,11 +1744,6 @@ zg361_mg_m035_freeze_distribution_effect = {
 		set_variable = { name = zg361_mg_m035_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m035_requested_input_fingerprint value = 35315 }
-	if = {
-		limit = { has_variable = zg361_mechanism_035_input_revision }
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = var:zg361_mechanism_035_input_revision multiply = 7919 } }
-	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_snapshot_source_serial
@@ -1587,25 +1774,13 @@ zg361_mg_m035_freeze_distribution_effect = {
 	}
 	if = {
 		limit = {
-		has_variable = zg361_distribution_mode
+		has_variable = zg361_ratio_override
 	}
 		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = 1185 }
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = var:zg361_distribution_mode multiply = 366 } }
+		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = var:zg361_ratio_override multiply = 366 } }
 	}
-	if = {
-		limit = {
-		has_variable = zg361_distribution_rule_source
-	}
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = 1222 }
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = var:zg361_distribution_rule_source multiply = 419 } }
-	}
-	if = {
-		limit = {
-		has_variable = zg361_distribution_absolute_threshold
-	}
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = 1259 }
-		change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = var:zg361_distribution_absolute_threshold multiply = 472 } }
-	}
+	change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = zg361_mg_distribution_source_mode_value multiply = 419 } }
+	change_variable = { name = zg361_mg_m035_requested_input_fingerprint add = { value = zg361_mg_distribution_source_kind_value multiply = 472 } }
 	if = {
 		limit = {
 			has_variable = zg361_mg_m035_route
@@ -1783,42 +1958,68 @@ zg361_mg_m035_freeze_distribution_effect = {
 		set_variable = { name = zg361_mg_m035_object_kind value = 3501 }
 		set_variable = { name = zg361_mg_m035_object_input_fingerprint value = var:zg361_mg_m035_requested_input_fingerprint }
 		set_variable = { name = zg361_mg_m035_object_id value = { value = var:zg361_case_f_case_serial multiply = 1000 add = 35 } }
-		# A freezes the explicit global/liege policy (default mixed); B forces
-		# strict 10%.  C was consumed above and never creates this snapshot.
-		set_variable = { name = zg361_mg_distribution_mode value = 4 }
+		set_variable = { name = zg361_mg_distribution_policy_available value = 0 }
+		remove_variable = zg361_mg_distribution_mode
+		remove_variable = zg361_mg_distribution_rule_source
+		# source 1 = the manager's 10/5/0 decision override; source 2 = the
+		# exact game rule; source 3 = mechanism route B forced strict.
 		if = {
 			limit = {
 				var:zg361_mg_m035_route = 1
-				has_variable = zg361_distribution_mode
-				var:zg361_distribution_mode >= 1
-				var:zg361_distribution_mode <= 4
+				has_variable = zg361_ratio_override
+				var:zg361_ratio_override = 10
 			}
-			set_variable = { name = zg361_mg_distribution_mode value = var:zg361_distribution_mode }
-		}
-		if = { limit = { var:zg361_mg_m035_route = 2 } set_variable = { name = zg361_mg_distribution_mode value = 1 } }
-		set_variable = { name = zg361_mg_distribution_rule_source value = 1 }
-		if = { limit = { has_variable = zg361_distribution_rule_source } set_variable = { name = zg361_mg_distribution_rule_source value = var:zg361_distribution_rule_source } }
-		set_variable = { name = zg361_mg_distribution_review_serial value = var:zg361_case_f_cycle_serial }
-		set_variable = { name = zg361_mg_distribution_absolute_threshold value = 60 }
-		if = { limit = { has_variable = zg361_distribution_absolute_threshold } set_variable = { name = zg361_mg_distribution_absolute_threshold value = { value = var:zg361_distribution_absolute_threshold max = 100 min = 0 } } }
-		if = { limit = { NOT = { var:zg361_mg_distribution_mode = 4 } } remove_variable = zg361_mg_distribution_absolute_threshold }
-		set_variable = { name = zg361_mg_distribution_top_slots value = { value = var:zg361_mg_team_n multiply = 0.30 floor = yes } }
-		set_variable = { name = zg361_mg_distribution_bottom_slots value = { value = var:zg361_mg_team_n multiply = 0.10 floor = yes } }
-		if = {
-			limit = { var:zg361_mg_distribution_mode = 2 }
-			set_variable = { name = zg361_mg_distribution_bottom_slots value = { value = var:zg361_mg_team_n multiply = 0.05 floor = yes } }
+			set_variable = { name = zg361_mg_distribution_mode value = 1 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 1 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
 		}
 		else_if = {
-			limit = { var:zg361_mg_distribution_mode = 3 }
-			set_variable = { name = zg361_mg_distribution_bottom_slots value = 0 }
+			limit = { var:zg361_mg_m035_route = 1 has_variable = zg361_ratio_override var:zg361_ratio_override = 5 }
+			set_variable = { name = zg361_mg_distribution_mode value = 2 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 1 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
 		}
+		else_if = {
+			limit = { var:zg361_mg_m035_route = 1 has_variable = zg361_ratio_override var:zg361_ratio_override = 0 }
+			set_variable = { name = zg361_mg_distribution_mode value = 3 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 1 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_mg_m035_route = 1 NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_strict }
+			set_variable = { name = zg361_mg_distribution_mode value = 1 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 2 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_mg_m035_route = 1 NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_relaxed }
+			set_variable = { name = zg361_mg_distribution_mode value = 2 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 2 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_mg_m035_route = 1 NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_off }
+			set_variable = { name = zg361_mg_distribution_mode value = 3 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 2 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_mg_m035_route = 2 }
+			set_variable = { name = zg361_mg_distribution_mode value = 1 }
+			set_variable = { name = zg361_mg_distribution_rule_source value = 3 }
+			set_variable = { name = zg361_mg_distribution_policy_available value = 1 }
+		}
+		set_variable = { name = zg361_mg_distribution_review_serial value = var:zg361_case_f_cycle_serial }
+		set_variable = { name = zg361_mg_distribution_top_slots value = { value = var:zg361_mg_team_n multiply = 0.30 floor = yes } }
+		set_variable = { name = zg361_mg_distribution_bottom_slots value = 0 }
 		if = {
-			limit = {
-				var:zg361_mg_team_n >= 5
-				OR = { var:zg361_mg_distribution_mode = 1 var:zg361_mg_distribution_mode = 2 var:zg361_mg_distribution_mode = 4 }
-				var:zg361_mg_distribution_bottom_slots < 1
-			}
-			set_variable = { name = zg361_mg_distribution_bottom_slots value = 1 }
+			limit = { var:zg361_mg_distribution_policy_available = 1 var:zg361_mg_distribution_mode = 1 }
+			set_variable = { name = zg361_mg_distribution_bottom_slots value = { value = var:zg361_mg_team_n multiply = 0.10 floor = yes } }
+			if = { limit = { var:zg361_mg_team_n >= 5 } set_variable = { name = zg361_mg_distribution_bottom_slots value = { value = var:zg361_mg_distribution_bottom_slots max = 1 } } }
+		}
+		else_if = {
+			limit = { var:zg361_mg_distribution_policy_available = 1 var:zg361_mg_distribution_mode = 2 }
+			set_variable = { name = zg361_mg_distribution_bottom_slots value = { value = var:zg361_mg_team_n multiply = 0.05 floor = yes } }
 		}
 		set_variable = {
 			name = zg361_mg_distribution_middle_slots
@@ -1826,13 +2027,23 @@ zg361_mg_m035_freeze_distribution_effect = {
 		}
 		set_variable = { name = zg361_mg_distribution_bottom_consequence value = 1 }
 		if = { limit = { var:zg361_mg_distribution_mode = 3 } set_variable = { name = zg361_mg_distribution_bottom_consequence value = 0 } }
-		else_if = {
-			limit = { var:zg361_mg_distribution_mode = 4 var:zg361_mg_team_bottom_n = 0 }
-			set_variable = { name = zg361_mg_distribution_bottom_consequence value = 2 }
-		}
 		set_variable = {
 			name = zg361_mg_distribution_conserved
 			value = { value = var:zg361_mg_distribution_top_slots add = var:zg361_mg_distribution_middle_slots add = var:zg361_mg_distribution_bottom_slots }
+		}
+		if = {
+			limit = { var:zg361_mg_distribution_policy_available = 1 }
+			set_variable = { name = zg361_mg_distribution_policy_status value = 1 }
+			set_variable = { name = zg361_mg_distribution_policy_owner value = this }
+			set_variable = { name = zg361_mg_distribution_policy_subject value = this }
+			set_variable = { name = zg361_mg_distribution_policy_source_reviewer value = var:zg361_case_f_owner }
+			set_variable = { name = zg361_mg_distribution_policy_source_cycle value = var:zg361_case_f_cycle_serial }
+			set_variable = { name = zg361_mg_distribution_policy_source_case value = var:zg361_case_f_case_serial }
+			set_variable = { name = zg361_mg_distribution_policy_source_revision value = var:zg361_case_f_revision }
+			set_variable = { name = zg361_mg_distribution_policy_input_revision value = var:zg361_mg_team_snapshot_revision }
+			set_variable = { name = zg361_mg_distribution_policy_mode value = var:zg361_mg_distribution_mode }
+			set_variable = { name = zg361_mg_distribution_policy_rule_source value = var:zg361_mg_distribution_rule_source }
+			set_variable = { name = zg361_mg_distribution_policy_due_cycle value = { value = var:zg361_case_f_cycle_serial add = 1 } }
 		}
 		zg361_case_kernel_record_operation_effect = {
 			OWNER_VAR = zg361_case_f_owner
@@ -1897,11 +2108,6 @@ zg361_mg_m032_score_manager_effect = {
 	}
 	set_variable = { name = zg361_mg_m032_requested_input_fingerprint value = 32288 }
 	if = {
-		limit = { has_variable = zg361_mechanism_032_input_revision }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mechanism_032_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
 		has_variable = zg361_mg_snapshot_source_serial
 	}
@@ -1910,59 +2116,66 @@ zg361_mg_m032_score_manager_effect = {
 	}
 	if = {
 		limit = {
-		has_variable = zg361_mg_team_targets
+		has_variable = zg361_mg_team_snapshot_revision
 	}
 		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1074 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_targets multiply = 207 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_snapshot_revision multiply = 207 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_team_targets
+	}
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1111 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_targets multiply = 260 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_jingcha
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1111 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_jingcha multiply = 260 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1148 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_jingcha multiply = 313 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_calibration
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1148 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_calibration multiply = 313 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1185 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_calibration multiply = 366 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_pip_success
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1185 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_pip_success multiply = 366 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1222 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_pip_success multiply = 419 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_appeal_overturn
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1222 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_appeal_overturn multiply = 419 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1259 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_appeal_overturn multiply = 472 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_retention
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1259 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_retention multiply = 472 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1296 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_retention multiply = 525 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_hc_efficiency
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1296 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_hc_efficiency multiply = 525 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1333 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_team_hc_efficiency multiply = 578 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_refusal_match
 	}
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1333 }
-		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_refusal_match multiply = 578 } }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = 1370 }
+		change_variable = { name = zg361_mg_m032_requested_input_fingerprint add = { value = var:zg361_mg_refusal_match multiply = 631 } }
 	}
 	if = {
 		limit = {
@@ -2160,7 +2373,10 @@ zg361_mg_m032_score_manager_effect = {
 		}
 			OR = {
 				var:zg361_mg_m035_receipt_choice = 3
-				var:zg361_mg_distribution_conserved = var:zg361_mg_team_n
+				AND = {
+					var:zg361_mg_distribution_policy_available = 1
+					var:zg361_mg_distribution_conserved = var:zg361_mg_team_n
+				}
 			}
 			NOT = { has_variable = zg361_mg_m032_replay_route_conflict }
 		NOT = {
@@ -2261,6 +2477,18 @@ zg361_mg_m032_score_manager_effect = {
 			}
 			set_variable = { name = zg361_mg_refusal_opinion_normalized_cycle value = var:zg361_case_f_cycle_serial }
 		}
+		# Producer for the next official KPI write.  The shared hook adds this
+		# value inside organization (component 8), then settles this exact token.
+		set_variable = { name = zg361_mg_organization_input_status value = 1 }
+		set_variable = { name = zg361_mg_organization_input_owner value = var:zg361_case_f_owner }
+		set_variable = { name = zg361_mg_organization_input_subject value = this }
+		set_variable = { name = zg361_mg_organization_input_source_cycle value = var:zg361_case_f_cycle_serial }
+		set_variable = { name = zg361_mg_organization_input_source_case value = var:zg361_case_f_case_serial }
+		set_variable = { name = zg361_mg_organization_input_source_revision value = var:zg361_case_f_revision }
+		set_variable = { name = zg361_mg_organization_input_revision value = var:zg361_mg_team_snapshot_revision }
+		set_variable = { name = zg361_mg_organization_input_component value = 8 }
+		set_variable = { name = zg361_mg_organization_input_value value = var:zg361_mg_manager_score }
+		set_variable = { name = zg361_mg_organization_input_due_cycle value = { value = var:zg361_case_f_cycle_serial add = 1 } }
 		zg361_case_kernel_record_operation_effect = {
 			OWNER_VAR = zg361_case_f_owner
 			SUBJECT_VAR = zg361_case_f_subject
@@ -2332,11 +2560,6 @@ zg361_mg_m033_reason_code_effect = {
 		set_variable = { name = zg361_mg_m033_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m033_requested_input_fingerprint value = 33297 }
-	if = {
-		limit = { has_variable = zg361_mechanism_033_input_revision }
-		change_variable = { name = zg361_mg_m033_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m033_requested_input_fingerprint add = { value = var:zg361_mechanism_033_input_revision multiply = 7919 } }
-	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_manager_score
@@ -2712,11 +2935,6 @@ zg361_mg_m034_freeze_nine_box_effect = {
 		set_variable = { name = zg361_mg_m034_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m034_requested_input_fingerprint value = 34306 }
-	if = {
-		limit = { has_variable = zg361_mechanism_034_input_revision }
-		change_variable = { name = zg361_mg_m034_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m034_requested_input_fingerprint add = { value = var:zg361_mechanism_034_input_revision multiply = 7919 } }
-	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_manager_score
@@ -3137,11 +3355,6 @@ zg361_mg_m036_append_decade_log_effect = {
 		set_variable = { name = zg361_mg_m036_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m036_requested_input_fingerprint value = 36324 }
-	if = {
-		limit = { has_variable = zg361_mechanism_036_input_revision }
-		change_variable = { name = zg361_mg_m036_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m036_requested_input_fingerprint add = { value = var:zg361_mechanism_036_input_revision multiply = 7919 } }
-	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_team_top_n
@@ -3590,11 +3803,6 @@ zg361_mg_m345_freeze_calendar_effect = {
 	}
 	set_variable = { name = zg361_mg_m345_requested_input_fingerprint value = 348105 }
 	if = {
-		limit = { has_variable = zg361_mechanism_345_input_revision }
-		change_variable = { name = zg361_mg_m345_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m345_requested_input_fingerprint add = { value = var:zg361_mechanism_345_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
 			has_variable = zg361_mg_m345_route
 			has_variable = zg361_mg_m345_route_cycle
@@ -3826,24 +4034,36 @@ zg361_mg_m345_freeze_calendar_effect = {
 		} } zg361_mg_set_red_effect = { CODE = 3 MECHANISM = 345 } }
 }
 
-# External consumers may freeze one material signal.  The stage consumer below
-# consumes it once without rerunning the cohort.
-zg361_mg_record_offcycle_signal_effect = {
+# The frozen team snapshot is the only producer.  It emits at most one actual
+# material signal, with appeal overturn > PIP graduation > calibration change.
+zg361_mg_produce_offcycle_signal_effect = {
 	if = {
 		limit = {
 			zg361_is_celestial_liege_trigger = yes
-			NOT = { has_variable = zg361_mg_offcycle_pending }
-			$MATERIALITY$ >= 50
-			$ACTION$ >= 1
-			$ACTION$ <= 3
+			OR = {
+				NOT = { has_variable = zg361_mg_offcycle_input_status }
+				NOT = { var:zg361_mg_offcycle_input_status = 1 }
+			}
+			OR = {
+				var:zg361_mg_team_overturn_n > 0
+				var:zg361_mg_team_pip_success > 0
+				var:zg361_mg_team_calibration < 0
+			}
 		}
 		set_variable = { name = zg361_mg_offcycle_pending value = 1 }
-		set_variable = { name = zg361_mg_offcycle_materiality value = $MATERIALITY$ }
-		set_variable = { name = zg361_mg_offcycle_signal_serial value = $SIGNAL_SERIAL$ }
-		set_variable = { name = zg361_mg_offcycle_action value = $ACTION$ }
+		set_variable = { name = zg361_mg_offcycle_input_status value = 1 }
+		set_variable = { name = zg361_mg_offcycle_input_revision value = var:zg361_mg_team_snapshot_revision }
+		set_variable = { name = zg361_mg_offcycle_source_owner value = root }
+		set_variable = { name = zg361_mg_offcycle_source_subject value = this }
+		set_variable = { name = zg361_mg_offcycle_source_cycle value = var:zg361_review_serial }
+		set_variable = { name = zg361_mg_offcycle_source_case value = var:zg361_case_f_case_serial }
+		set_variable = { name = zg361_mg_offcycle_materiality value = 50 }
+		set_variable = { name = zg361_mg_offcycle_action value = 3 }
+		if = { limit = { var:zg361_mg_team_pip_success > 0 } set_variable = { name = zg361_mg_offcycle_materiality value = 75 } set_variable = { name = zg361_mg_offcycle_action value = 2 } }
+		if = { limit = { var:zg361_mg_team_overturn_n > 0 } set_variable = { name = zg361_mg_offcycle_materiality value = 100 } set_variable = { name = zg361_mg_offcycle_action value = 1 } }
+		set_variable = { name = zg361_mg_offcycle_signal_serial value = var:zg361_mg_team_snapshot_revision }
 		set_variable = { name = zg361_mg_offcycle_recorded_year value = current_year }
 	}
-	else = { zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 346 } }
 }
 
 zg361_mg_m346_consume_offcycle_signal_effect = {
@@ -3859,37 +4079,75 @@ zg361_mg_m346_consume_offcycle_signal_effect = {
 	}
 	set_variable = { name = zg361_mg_m346_requested_input_fingerprint value = 349114 }
 	if = {
-		limit = { has_variable = zg361_mechanism_346_input_revision }
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mechanism_346_input_revision multiply = 7919 } }
+		limit = {
+		has_variable = zg361_mg_offcycle_pending
+	}
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1037 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_pending multiply = 154 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_offcycle_input_status
+	}
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1074 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_input_status multiply = 207 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_offcycle_input_revision
+	}
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1111 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_input_revision multiply = 260 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_offcycle_source_cycle
+	}
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1148 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_source_cycle multiply = 313 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_offcycle_source_case
+	}
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1185 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_source_case multiply = 366 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_offcycle_materiality
 	}
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1037 }
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_materiality multiply = 154 } }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1222 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_materiality multiply = 419 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_offcycle_signal_serial
 	}
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1074 }
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_signal_serial multiply = 207 } }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1259 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_signal_serial multiply = 472 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_offcycle_action
 	}
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1111 }
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_action multiply = 260 } }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1296 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_action multiply = 525 } }
 	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_offcycle_recorded_year
 	}
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1148 }
-		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_recorded_year multiply = 313 } }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1333 }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = { value = var:zg361_mg_offcycle_recorded_year multiply = 578 } }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_offcycle_source_owner }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1370 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_offcycle_source_subject }
+		change_variable = { name = zg361_mg_m346_requested_input_fingerprint add = 1407 }
 	}
 	if = {
 		limit = {
@@ -4035,6 +4293,25 @@ zg361_mg_m346_consume_offcycle_signal_effect = {
 		}
 	}
 	if = {
+		limit = { var:zg361_mg_m346_route = 3 zg361_case_kernel_receipt_is_current_trigger = {
+			RECEIPT_OWNER_VAR = zg361_mg_m346_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m346_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m346_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m346_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m346_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m346_receipt_choice
+			EXPECTED_OWNER = var:zg361_case_ak_owner
+			EXPECTED_SUBJECT = this
+			EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+			EXPECTED_CASE = var:zg361_case_ak_case_serial
+			EXPECTED_STATE = 1
+			EXPECTED_CHOICE = var:zg361_mg_m346_route
+		} has_variable = zg361_mg_offcycle_input_status var:zg361_mg_offcycle_input_status = 1 }
+		set_variable = { name = zg361_mg_offcycle_input_status value = 3 }
+		set_variable = { name = zg361_mg_offcycle_pending value = 0 }
+		set_variable = { name = zg361_mg_offcycle_discarded_cycle value = var:zg361_case_ak_cycle_serial }
+	}
+	if = {
 		limit = { var:zg361_case_ak_state = 1 var:zg361_case_ak_active = 1 NOT = { has_variable = zg361_mg_m346_replay_route_conflict }
 		NOT = {
 			zg361_case_kernel_receipt_is_current_trigger = {
@@ -4070,10 +4347,26 @@ zg361_mg_m346_consume_offcycle_signal_effect = {
 		set_variable = { name = zg361_mg_offcycle_recency_bias value = 0 }
 		if = { limit = { var:zg361_mg_m346_route = 2 } set_variable = { name = zg361_mg_offcycle_cohort_reruns value = 1 } set_variable = { name = zg361_mg_offcycle_disruption value = 20 } set_variable = { name = zg361_mg_offcycle_recency_bias value = 15 } }
 		if = {
-			limit = { has_variable = zg361_mg_offcycle_pending var:zg361_mg_offcycle_pending = 1 has_variable = zg361_mg_offcycle_materiality var:zg361_mg_offcycle_materiality >= 50 }
+			limit = {
+				has_variable = zg361_mg_offcycle_input_status
+				var:zg361_mg_offcycle_input_status = 1
+				has_variable = zg361_mg_offcycle_pending
+				var:zg361_mg_offcycle_pending = 1
+				has_variable = zg361_mg_offcycle_source_owner
+				has_variable = zg361_mg_offcycle_source_subject
+				var:zg361_mg_offcycle_source_owner = var:zg361_case_ak_owner
+				var:zg361_mg_offcycle_source_subject = this
+				has_variable = zg361_mg_offcycle_materiality
+				var:zg361_mg_offcycle_materiality >= 50
+			}
 			set_variable = { name = zg361_mg_offcycle_consumed value = 1 }
 			set_variable = { name = zg361_mg_offcycle_consumed_cycle value = var:zg361_case_ak_cycle_serial }
-			remove_variable = zg361_mg_offcycle_pending
+			set_variable = { name = zg361_mg_offcycle_consumed_source_cycle value = var:zg361_mg_offcycle_source_cycle }
+			set_variable = { name = zg361_mg_offcycle_consumed_source_case value = var:zg361_mg_offcycle_source_case }
+			set_variable = { name = zg361_mg_offcycle_consumed_input_revision value = var:zg361_mg_offcycle_input_revision }
+			set_variable = { name = zg361_mg_offcycle_settlement_receipt value = var:zg361_mg_offcycle_source_case }
+			set_variable = { name = zg361_mg_offcycle_input_status value = 2 }
+			set_variable = { name = zg361_mg_offcycle_pending value = 0 }
 		}
 		zg361_case_kernel_record_operation_effect = {
 			OWNER_VAR = zg361_case_ak_owner
@@ -4162,6 +4455,76 @@ zg361_mg_ak_stage_1_effect = {
 	}
 }
 
+# Reconstruct one real calibration swap from the frozen result producer.  The
+# beneficiary was lifted (reason 2/4); the bearer was pushed (reason 1/3).
+zg361_mg_produce_override_pair_effect = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_mg_override_input_status }
+				NOT = { var:zg361_mg_override_input_status = 1 }
+			}
+		}
+		remove_variable = zg361_mg_override_pending_beneficiary
+		remove_variable = zg361_mg_override_pending_bearer
+		remove_variable = zg361_mg_override_source_beneficiary_case
+		remove_variable = zg361_mg_override_source_bearer_case
+		save_scope_as = zg361_mg_override_manager
+		ordered_vassal = {
+			limit = {
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_grade_reason
+				var:zg361_result_case_owner = scope:zg361_mg_override_manager
+				var:zg361_result_cycle_serial = scope:zg361_mg_override_manager.var:zg361_review_serial
+				OR = { var:zg361_result_grade_reason = 2 var:zg361_result_grade_reason = 4 }
+			}
+			order_by = age
+			position = 0
+			save_temporary_scope_as = zg361_mg_override_beneficiary_candidate
+			scope:zg361_mg_override_manager = {
+				set_variable = { name = zg361_mg_override_pending_beneficiary value = scope:zg361_mg_override_beneficiary_candidate }
+				set_variable = { name = zg361_mg_override_source_beneficiary_case value = scope:zg361_mg_override_beneficiary_candidate.var:zg361_result_case_serial }
+				set_variable = { name = zg361_mg_override_beneficiary_reason value = scope:zg361_mg_override_beneficiary_candidate.var:zg361_result_grade_reason }
+			}
+		}
+		ordered_vassal = {
+			limit = {
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_grade_reason
+				var:zg361_result_case_owner = scope:zg361_mg_override_manager
+				var:zg361_result_cycle_serial = scope:zg361_mg_override_manager.var:zg361_review_serial
+				OR = { var:zg361_result_grade_reason = 1 var:zg361_result_grade_reason = 3 }
+			}
+			order_by = age
+			position = 0
+			save_temporary_scope_as = zg361_mg_override_bearer_candidate
+			scope:zg361_mg_override_manager = {
+				set_variable = { name = zg361_mg_override_pending_bearer value = scope:zg361_mg_override_bearer_candidate }
+				set_variable = { name = zg361_mg_override_source_bearer_case value = scope:zg361_mg_override_bearer_candidate.var:zg361_result_case_serial }
+				set_variable = { name = zg361_mg_override_bearer_reason value = scope:zg361_mg_override_bearer_candidate.var:zg361_result_grade_reason }
+			}
+		}
+		if = {
+			limit = {
+				has_variable = zg361_mg_override_pending_beneficiary
+				has_variable = zg361_mg_override_pending_bearer
+				NOT = { var:zg361_mg_override_pending_beneficiary = var:zg361_mg_override_pending_bearer }
+			}
+			set_variable = { name = zg361_mg_override_pending value = 1 }
+			set_variable = { name = zg361_mg_override_input_status value = 1 }
+			set_variable = { name = zg361_mg_override_input_revision value = var:zg361_mg_team_snapshot_revision }
+			set_variable = { name = zg361_mg_override_source_owner value = root }
+			set_variable = { name = zg361_mg_override_source_subject value = this }
+			set_variable = { name = zg361_mg_override_source_cycle value = var:zg361_review_serial }
+			set_variable = { name = zg361_mg_override_pending_reason value = { value = var:zg361_mg_override_beneficiary_reason multiply = 10 add = var:zg361_mg_override_bearer_reason } }
+		}
+	}
+}
+
 # 347 — one bounded override records beneficiary, bearer and reason while the
 # frozen ranking multiset and quota counts remain unchanged.
 zg361_mg_m347_consume_override_effect = {
@@ -4177,11 +4540,6 @@ zg361_mg_m347_consume_override_effect = {
 	}
 	set_variable = { name = zg361_mg_m347_requested_input_fingerprint value = 350123 }
 	if = {
-		limit = { has_variable = zg361_mechanism_347_input_revision }
-		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mechanism_347_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
 		has_variable = zg361_mg_team_n
 	}
@@ -4189,16 +4547,69 @@ zg361_mg_m347_consume_override_effect = {
 		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_team_n multiply = 154 } }
 	}
 	if = {
-		limit = { has_variable = zg361_mg_override_beneficiary }
+		limit = {
+		has_variable = zg361_mg_override_pending
+	}
 		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1074 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_pending multiply = 207 } }
 	}
 	if = {
-		limit = { has_variable = zg361_mg_override_bearer }
+		limit = {
+		has_variable = zg361_mg_override_input_status
+	}
 		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1111 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_input_status multiply = 260 } }
 	}
 	if = {
-		limit = { has_variable = zg361_mg_override_reason }
+		limit = {
+		has_variable = zg361_mg_override_input_revision
+	}
 		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1148 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_input_revision multiply = 313 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_override_source_cycle
+	}
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1185 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_source_cycle multiply = 366 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_override_source_beneficiary_case
+	}
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1222 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_source_beneficiary_case multiply = 419 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_override_source_bearer_case
+	}
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1259 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_source_bearer_case multiply = 472 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_override_pending_reason
+	}
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1296 }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = { value = var:zg361_mg_override_pending_reason multiply = 525 } }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_override_source_owner }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1333 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_override_source_subject }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1370 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_override_pending_beneficiary }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1407 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_override_pending_bearer }
+		change_variable = { name = zg361_mg_m347_requested_input_fingerprint add = 1444 }
 	}
 	if = {
 		limit = {
@@ -4344,6 +4755,25 @@ zg361_mg_m347_consume_override_effect = {
 		}
 	}
 	if = {
+		limit = { var:zg361_mg_m347_route = 3 zg361_case_kernel_receipt_is_current_trigger = {
+			RECEIPT_OWNER_VAR = zg361_mg_m347_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m347_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m347_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m347_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m347_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m347_receipt_choice
+			EXPECTED_OWNER = var:zg361_case_ak_owner
+			EXPECTED_SUBJECT = this
+			EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+			EXPECTED_CASE = var:zg361_case_ak_case_serial
+			EXPECTED_STATE = 2
+			EXPECTED_CHOICE = var:zg361_mg_m347_route
+		} has_variable = zg361_mg_override_input_status var:zg361_mg_override_input_status = 1 }
+		set_variable = { name = zg361_mg_override_input_status value = 3 }
+		set_variable = { name = zg361_mg_override_pending value = 0 }
+		set_variable = { name = zg361_mg_override_discarded_cycle value = var:zg361_case_ak_cycle_serial }
+	}
+	if = {
 		limit = { var:zg361_case_ak_state = 2 var:zg361_case_ak_active = 1 NOT = { has_variable = zg361_mg_m347_replay_route_conflict }
 		NOT = {
 			zg361_case_kernel_receipt_is_current_trigger = {
@@ -4374,7 +4804,7 @@ zg361_mg_m347_consume_override_effect = {
 		set_variable = { name = zg361_mg_m347_object_id value = { value = var:zg361_case_ak_case_serial multiply = 1000 add = 347 } }
 		set_variable = { name = zg361_mg_override_budget value = 2 }
 		if = { limit = { var:zg361_mg_m347_route = 2 } set_variable = { name = zg361_mg_override_budget value = 999 } }
-		if = { limit = { NOT = { has_variable = zg361_mg_override_used } } set_variable = { name = zg361_mg_override_used value = 0 } }
+		set_variable = { name = zg361_mg_override_used value = 0 }
 		set_variable = { name = zg361_mg_override_uncapped value = 0 }
 		set_variable = { name = zg361_mg_override_appeal_risk value = 0 }
 		if = { limit = { var:zg361_mg_m347_route = 2 } set_variable = { name = zg361_mg_override_uncapped value = 1 } set_variable = { name = zg361_mg_override_appeal_risk value = 10 } }
@@ -4382,14 +4812,32 @@ zg361_mg_m347_consume_override_effect = {
 		set_variable = { name = zg361_mg_override_quota_before value = var:zg361_mg_team_n }
 		if = {
 			limit = {
-				has_variable = zg361_mg_override_beneficiary
-				has_variable = zg361_mg_override_bearer
-				has_variable = zg361_mg_override_reason
-				NOT = { var:zg361_mg_override_beneficiary = var:zg361_mg_override_bearer }
+				has_variable = zg361_mg_override_input_status
+				var:zg361_mg_override_input_status = 1
+				has_variable = zg361_mg_override_pending
+				var:zg361_mg_override_pending = 1
+				has_variable = zg361_mg_override_source_owner
+				has_variable = zg361_mg_override_source_subject
+				var:zg361_mg_override_source_owner = var:zg361_case_ak_owner
+				var:zg361_mg_override_source_subject = this
+				has_variable = zg361_mg_override_pending_beneficiary
+				has_variable = zg361_mg_override_pending_bearer
+				has_variable = zg361_mg_override_pending_reason
+				NOT = { var:zg361_mg_override_pending_beneficiary = var:zg361_mg_override_pending_bearer }
 				var:zg361_mg_override_used < var:zg361_mg_override_budget
 			}
 			change_variable = { name = zg361_mg_override_used add = 1 }
 			set_variable = { name = zg361_mg_override_applied value = 1 }
+			set_variable = { name = zg361_mg_override_beneficiary value = var:zg361_mg_override_pending_beneficiary }
+			set_variable = { name = zg361_mg_override_bearer value = var:zg361_mg_override_pending_bearer }
+			set_variable = { name = zg361_mg_override_reason value = var:zg361_mg_override_pending_reason }
+			set_variable = { name = zg361_mg_override_consumed_source_cycle value = var:zg361_mg_override_source_cycle }
+			set_variable = { name = zg361_mg_override_consumed_beneficiary_case value = var:zg361_mg_override_source_beneficiary_case }
+			set_variable = { name = zg361_mg_override_consumed_bearer_case value = var:zg361_mg_override_source_bearer_case }
+			set_variable = { name = zg361_mg_override_consumed_input_revision value = var:zg361_mg_override_input_revision }
+			set_variable = { name = zg361_mg_override_settlement_receipt value = var:zg361_case_ak_case_serial }
+			set_variable = { name = zg361_mg_override_input_status value = 2 }
+			set_variable = { name = zg361_mg_override_pending value = 0 }
 		}
 		set_variable = { name = zg361_mg_override_quota_after value = var:zg361_mg_team_n }
 		set_variable = { name = zg361_mg_override_quota_neutral value = 1 }
@@ -4457,11 +4905,6 @@ zg361_mg_m348_bind_exception_effect = {
 		set_variable = { name = zg361_mg_m348_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m348_requested_input_fingerprint value = 351132 }
-	if = {
-		limit = { has_variable = zg361_mechanism_348_input_revision }
-		change_variable = { name = zg361_mg_m348_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m348_requested_input_fingerprint add = { value = var:zg361_mechanism_348_input_revision multiply = 7919 } }
-	}
 	change_variable = { name = zg361_mg_m348_requested_input_fingerprint add = { value = current_year multiply = 154 } }
 	if = {
 		limit = {
@@ -4770,11 +5213,6 @@ zg361_mg_m349_run_audit_effect = {
 	}
 	set_variable = { name = zg361_mg_m349_requested_input_fingerprint value = 352141 }
 	if = {
-		limit = { has_variable = zg361_mechanism_349_input_revision }
-		change_variable = { name = zg361_mg_m349_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m349_requested_input_fingerprint add = { value = var:zg361_mechanism_349_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
 		has_variable = zg361_mg_team_n
 	}
@@ -4999,6 +5437,25 @@ zg361_mg_m349_run_audit_effect = {
 				if = { limit = { var:zg361_mg_m349_route = 2 } set_variable = { name = zg361_mg_audit_method value = 2 } set_variable = { name = zg361_mg_audit_severe_penalty_risk value = 1 } }
 				if = { limit = { NOT = { has_variable = zg361_mg_policy_trust } } set_variable = { name = zg361_mg_policy_trust value = 0 } }
 				if = { limit = { var:zg361_mg_m349_route = 1 } change_variable = { name = zg361_mg_policy_trust add = var:zg361_mg_audit_clean } }
+				# A completed reproducible audit is the sole remediation producer.
+				if = {
+					limit = {
+						var:zg361_mg_m349_route = 1
+						has_variable = zg361_mg_fairness_remediation_status
+						var:zg361_mg_fairness_remediation_status = 1
+						has_variable = zg361_mg_fairness_remediation_owner
+						has_variable = zg361_mg_fairness_remediation_subject
+						var:zg361_mg_fairness_remediation_owner = var:zg361_case_ak_owner
+						var:zg361_mg_fairness_remediation_subject = this
+						has_variable = zg361_mg_fairness_remediation_due_cycle
+						var:zg361_mg_fairness_remediation_due_cycle <= var:zg361_case_ak_cycle_serial
+					}
+					set_variable = { name = zg361_mg_fairness_remediation_status value = 2 }
+					set_variable = { name = zg361_mg_fairness_remediation_completed_cycle value = var:zg361_case_ak_cycle_serial }
+					set_variable = { name = zg361_mg_fairness_remediation_completed_case value = var:zg361_case_ak_case_serial }
+					set_variable = { name = zg361_mg_fairness_remediation_completed_revision value = var:zg361_mg_fairness_remediation_revision }
+					set_variable = { name = zg361_mg_fairness_remediation_completion_receipt value = var:zg361_mg_fairness_remediation_plan_id }
+				}
 				zg361_case_kernel_record_operation_effect = {
 			OWNER_VAR = zg361_case_ak_owner
 			SUBJECT_VAR = zg361_case_ak_subject
@@ -5075,11 +5532,6 @@ zg361_mg_m350_version_benchmark_effect = {
 		set_variable = { name = zg361_mg_m350_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m350_requested_input_fingerprint value = 353150 }
-	if = {
-		limit = { has_variable = zg361_mechanism_350_input_revision }
-		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = { value = var:zg361_mechanism_350_input_revision multiply = 7919 } }
-	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_manager_score
@@ -5436,11 +5888,6 @@ zg361_mg_m351_measure_pilot_effect = {
 	}
 	set_variable = { name = zg361_mg_m351_requested_input_fingerprint value = 354159 }
 	if = {
-		limit = { has_variable = zg361_mechanism_351_input_revision }
-		change_variable = { name = zg361_mg_m351_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m351_requested_input_fingerprint add = { value = var:zg361_mechanism_351_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
 		has_variable = zg361_mg_team_n
 	}
@@ -5718,11 +6165,6 @@ zg361_mg_m352_map_history_effect = {
 		set_variable = { name = zg361_mg_m352_requested_route value = 1 }
 	}
 	set_variable = { name = zg361_mg_m352_requested_input_fingerprint value = 355168 }
-	if = {
-		limit = { has_variable = zg361_mechanism_352_input_revision }
-		change_variable = { name = zg361_mg_m352_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m352_requested_input_fingerprint add = { value = var:zg361_mechanism_352_input_revision multiply = 7919 } }
-	}
 	if = {
 		limit = {
 		has_variable = zg361_mg_benchmark_history_score_available
@@ -6110,11 +6552,6 @@ zg361_mg_m353_charge_admin_capacity_effect = {
 	}
 	set_variable = { name = zg361_mg_m353_requested_input_fingerprint value = 356177 }
 	if = {
-		limit = { has_variable = zg361_mechanism_353_input_revision }
-		change_variable = { name = zg361_mg_m353_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m353_requested_input_fingerprint add = { value = var:zg361_mechanism_353_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
 		has_variable = zg361_mg_team_n
 	}
@@ -6432,8 +6869,8 @@ zg361_mg_refund_admin_capacity_effect = {
 	else = { debug_log = "ZG361MG: stale or duplicate admin-capacity refund ignored" }
 }
 
-# 354 — fairness is recomputed from raw delivered/appeal/overturn/exit counts.
-# Long-term trust is awarded only when disclosure and remediation are both true.
+# 354 — consume the snapshot's real raw counts exactly once.  Zero is a valid
+# count; separate denominators guard division without rewriting source facts.
 zg361_mg_m354_audit_fairness_effect = {
 	remove_variable = zg361_mg_m354_replay_route_conflict
 	set_variable = { name = zg361_mg_m354_requested_route value = 1 }
@@ -6447,30 +6884,67 @@ zg361_mg_m354_audit_fairness_effect = {
 	}
 	set_variable = { name = zg361_mg_m354_requested_input_fingerprint value = 357186 }
 	if = {
-		limit = { has_variable = zg361_mechanism_354_input_revision }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 104729 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mechanism_354_input_revision multiply = 7919 } }
-	}
-	if = {
 		limit = {
-		has_variable = zg361_mg_team_n
+		has_variable = zg361_mg_fairness_input_status
 	}
 		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1037 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_team_n multiply = 154 } }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_status multiply = 154 } }
 	}
 	if = {
 		limit = {
-		has_variable = zg361_mg_team_appeal_overturn
+		has_variable = zg361_mg_fairness_input_revision
 	}
 		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1074 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_team_appeal_overturn multiply = 207 } }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_revision multiply = 207 } }
 	}
 	if = {
 		limit = {
-		has_variable = zg361_mg_team_retention
+		has_variable = zg361_mg_fairness_input_source_cycle
 	}
 		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1111 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_team_retention multiply = 260 } }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_source_cycle multiply = 260 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_fairness_input_source_case
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1148 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_source_case multiply = 313 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_fairness_input_delivered
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1185 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_delivered multiply = 366 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_fairness_input_appeals
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1222 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_appeals multiply = 419 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_fairness_input_overturns
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1259 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_overturns multiply = 472 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_fairness_input_exits
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1296 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_exits multiply = 525 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_fairness_input_healthy_exits
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1333 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_input_healthy_exits multiply = 578 } }
 	}
 	if = {
 		limit = {
@@ -6478,26 +6952,45 @@ zg361_mg_m354_audit_fairness_effect = {
 		has_variable = zg361_mg_m352_receipt_choice
 					NOT = { var:zg361_mg_m352_receipt_choice = 3 }
 	}
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1148 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_history_mapping_version multiply = 313 } }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1370 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_history_mapping_version multiply = 631 } }
 	}
 	if = {
 		limit = {
-		has_variable = zg361_mg_fairness_self_disclosed
+		has_variable = zg361_mg_fairness_remediation_status
 	}
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1185 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_self_disclosed multiply = 366 } }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1407 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_remediation_status multiply = 684 } }
 	}
 	if = {
 		limit = {
-		has_variable = zg361_mg_fairness_remediation_completed
+		has_variable = zg361_mg_fairness_remediation_revision
 	}
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1222 }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_remediation_completed multiply = 419 } }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1444 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_remediation_revision multiply = 737 } }
 	}
 	if = {
-		limit = { has_variable = zg361_mg_fairness_remediation_plan }
-		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1259 }
+		limit = {
+		has_variable = zg361_mg_fairness_remediation_plan_id
+	}
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1481 }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = { value = var:zg361_mg_fairness_remediation_plan_id multiply = 790 } }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_fairness_input_source_owner }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1518 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_fairness_input_source_subject }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1555 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_fairness_remediation_owner }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1592 }
+	}
+	if = {
+		limit = { has_variable = zg361_mg_fairness_remediation_subject }
+		change_variable = { name = zg361_mg_m354_requested_input_fingerprint add = 1629 }
 	}
 	if = {
 		limit = {
@@ -6643,7 +7136,28 @@ zg361_mg_m354_audit_fairness_effect = {
 		}
 	}
 	if = {
-		limit = { var:zg361_case_ak_state = 5 var:zg361_case_ak_active = 1 NOT = { has_variable = zg361_mg_m354_replay_route_conflict }
+		limit = { var:zg361_mg_m354_route = 3 zg361_case_kernel_receipt_is_current_trigger = {
+			RECEIPT_OWNER_VAR = zg361_mg_m354_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m354_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m354_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m354_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m354_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m354_receipt_choice
+			EXPECTED_OWNER = var:zg361_case_ak_owner
+			EXPECTED_SUBJECT = this
+			EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+			EXPECTED_CASE = var:zg361_case_ak_case_serial
+			EXPECTED_STATE = 5
+			EXPECTED_CHOICE = var:zg361_mg_m354_route
+		} has_variable = zg361_mg_fairness_input_status var:zg361_mg_fairness_input_status = 1 }
+		set_variable = { name = zg361_mg_fairness_input_status value = 3 }
+		set_variable = { name = zg361_mg_fairness_input_discarded_cycle value = var:zg361_case_ak_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_case_ak_state = 5
+			var:zg361_case_ak_active = 1
+			NOT = { has_variable = zg361_mg_m354_replay_route_conflict }
 		NOT = {
 			zg361_case_kernel_receipt_is_current_trigger = {
 						RECEIPT_OWNER_VAR = zg361_mg_m354_receipt_owner
@@ -6659,7 +7173,20 @@ zg361_mg_m354_audit_fairness_effect = {
 						EXPECTED_STATE = 5
 						EXPECTED_CHOICE = var:zg361_mg_m354_route
 					}
-		} }
+		}
+			has_variable = zg361_mg_fairness_input_status
+			var:zg361_mg_fairness_input_status = 1
+			has_variable = zg361_mg_fairness_input_source_owner
+			has_variable = zg361_mg_fairness_input_source_subject
+			var:zg361_mg_fairness_input_source_owner = var:zg361_case_ak_owner
+			var:zg361_mg_fairness_input_source_subject = this
+			has_variable = zg361_mg_fairness_input_revision
+			has_variable = zg361_mg_fairness_input_delivered
+			has_variable = zg361_mg_fairness_input_appeals
+			has_variable = zg361_mg_fairness_input_overturns
+			has_variable = zg361_mg_fairness_input_exits
+			has_variable = zg361_mg_fairness_input_healthy_exits
+		}
 		set_variable = { name = zg361_mg_m354_business_object_created value = 1 }
 		set_variable = { name = zg361_mg_m354_object_owner value = var:zg361_case_ak_owner }
 		set_variable = { name = zg361_mg_m354_object_subject value = this }
@@ -6682,15 +7209,17 @@ zg361_mg_m354_audit_fairness_effect = {
 			set_variable = { name = zg361_mg_fairness_history_mapping_basis value = var:zg361_mg_history_mapping_version }
 			set_variable = { name = zg361_mg_fairness_history_mapping_available value = 1 }
 		}
-		set_variable = { name = zg361_mg_fairness_delivered value = { value = var:zg361_mg_team_n max = 1 } }
-		set_variable = { name = zg361_mg_fairness_raw_appeals value = { value = 0 subtract = var:zg361_mg_team_appeal_overturn divide = 5 max = 0 } }
-		set_variable = { name = zg361_mg_fairness_raw_overturns value = var:zg361_mg_fairness_raw_appeals }
-		set_variable = { name = zg361_mg_fairness_raw_exits value = { value = var:zg361_mg_team_n subtract = { value = var:zg361_mg_team_retention divide = 2 } max = 1 } }
-		set_variable = { name = zg361_mg_fairness_raw_healthy_exits value = 0 }
-		set_variable = { name = zg361_mg_fairness_raw_appeal_rate value = { value = var:zg361_mg_fairness_raw_appeals divide = var:zg361_mg_fairness_delivered } }
+		set_variable = { name = zg361_mg_fairness_delivered value = var:zg361_mg_fairness_input_delivered }
+		set_variable = { name = zg361_mg_fairness_raw_appeals value = var:zg361_mg_fairness_input_appeals }
+		set_variable = { name = zg361_mg_fairness_raw_overturns value = var:zg361_mg_fairness_input_overturns }
+		set_variable = { name = zg361_mg_fairness_raw_exits value = var:zg361_mg_fairness_input_exits }
+		set_variable = { name = zg361_mg_fairness_raw_healthy_exits value = var:zg361_mg_fairness_input_healthy_exits }
+		set_variable = { name = zg361_mg_fairness_delivery_denominator value = { value = var:zg361_mg_fairness_delivered max = 1 } }
+		set_variable = { name = zg361_mg_fairness_exit_denominator value = { value = var:zg361_mg_fairness_raw_exits max = 1 } }
+		set_variable = { name = zg361_mg_fairness_raw_appeal_rate value = { value = var:zg361_mg_fairness_raw_appeals divide = var:zg361_mg_fairness_delivery_denominator } }
 		set_variable = { name = zg361_mg_fairness_raw_overturn_rate value = 0 }
 		if = { limit = { var:zg361_mg_fairness_raw_appeals > 0 } set_variable = { name = zg361_mg_fairness_raw_overturn_rate value = { value = var:zg361_mg_fairness_raw_overturns divide = var:zg361_mg_fairness_raw_appeals } } }
-		set_variable = { name = zg361_mg_fairness_raw_healthy_exit_rate value = { value = var:zg361_mg_fairness_raw_healthy_exits divide = var:zg361_mg_fairness_raw_exits } }
+		set_variable = { name = zg361_mg_fairness_raw_healthy_exit_rate value = { value = var:zg361_mg_fairness_raw_healthy_exits divide = var:zg361_mg_fairness_exit_denominator } }
 		set_variable = { name = zg361_mg_fairness_reported_appeal_rate value = var:zg361_mg_fairness_raw_appeal_rate }
 		set_variable = { name = zg361_mg_fairness_reported_overturn_rate value = var:zg361_mg_fairness_raw_overturn_rate }
 		set_variable = { name = zg361_mg_fairness_reported_healthy_exit_rate value = var:zg361_mg_fairness_raw_healthy_exit_rate }
@@ -6712,7 +7241,43 @@ zg361_mg_m354_audit_fairness_effect = {
 		if = { limit = { OR = { NOT = { var:zg361_mg_fairness_gap_appeal = 0 } NOT = { var:zg361_mg_fairness_gap_overturn = 0 } NOT = { var:zg361_mg_fairness_gap_exit = 0 } } } set_variable = { name = zg361_mg_fairness_gaming value = 1 } }
 		set_variable = { name = zg361_mg_fairness_trust_delta value = 0 }
 		set_variable = { name = zg361_mg_fairness_history_mapping_version value = var:zg361_mg_fairness_history_mapping_basis }
-		if = { limit = { var:zg361_mg_m354_route = 1 var:zg361_mg_fairness_gaming = 1 has_variable = zg361_mg_fairness_self_disclosed var:zg361_mg_fairness_self_disclosed = 1 has_variable = zg361_mg_fairness_remediation_completed var:zg361_mg_fairness_remediation_completed = 1 has_variable = zg361_mg_fairness_remediation_plan } set_variable = { name = zg361_mg_fairness_trust_delta value = 5 } change_variable = { name = zg361_mg_policy_trust add = 5 } set_variable = { name = zg361_mg_fairness_trust_settled_cycle value = var:zg361_case_ak_cycle_serial } }
+		# Route A may reward only an earlier plan that M349 actually completed.
+		if = {
+			limit = {
+				var:zg361_mg_m354_route = 1
+				has_variable = zg361_mg_fairness_remediation_status
+				var:zg361_mg_fairness_remediation_status = 2
+				has_variable = zg361_mg_fairness_remediation_owner
+				has_variable = zg361_mg_fairness_remediation_subject
+				var:zg361_mg_fairness_remediation_owner = var:zg361_case_ak_owner
+				var:zg361_mg_fairness_remediation_subject = this
+				has_variable = zg361_mg_fairness_remediation_completion_receipt
+				var:zg361_mg_fairness_remediation_completion_receipt = var:zg361_mg_fairness_remediation_plan_id
+			}
+			set_variable = { name = zg361_mg_fairness_trust_delta value = 5 }
+			change_variable = { name = zg361_mg_policy_trust add = 5 }
+			set_variable = { name = zg361_mg_fairness_trust_settled_cycle value = var:zg361_case_ak_cycle_serial }
+			set_variable = { name = zg361_mg_fairness_remediation_status value = 3 }
+			set_variable = { name = zg361_mg_fairness_remediation_reward_receipt value = var:zg361_mg_fairness_remediation_plan_id }
+		}
+		# Route B's observable mismatch creates the next-cycle remediation plan;
+		# no unsupported external self-disclosure/remediation knobs are read.
+		if = {
+			limit = { var:zg361_mg_m354_route = 2 var:zg361_mg_fairness_gaming = 1 }
+			set_variable = { name = zg361_mg_fairness_remediation_status value = 1 }
+			set_variable = { name = zg361_mg_fairness_remediation_revision value = var:zg361_mg_fairness_input_revision }
+			set_variable = { name = zg361_mg_fairness_remediation_plan_id value = { value = var:zg361_case_ak_case_serial multiply = 1000 add = 354 } }
+			set_variable = { name = zg361_mg_fairness_remediation_owner value = var:zg361_case_ak_owner }
+			set_variable = { name = zg361_mg_fairness_remediation_subject value = this }
+			set_variable = { name = zg361_mg_fairness_remediation_source_cycle value = var:zg361_case_ak_cycle_serial }
+			set_variable = { name = zg361_mg_fairness_remediation_source_case value = var:zg361_case_ak_case_serial }
+			set_variable = { name = zg361_mg_fairness_remediation_due_cycle value = { value = var:zg361_case_ak_cycle_serial add = 1 } }
+		}
+		set_variable = { name = zg361_mg_fairness_input_status value = 2 }
+		set_variable = { name = zg361_mg_fairness_consumed_source_cycle value = var:zg361_mg_fairness_input_source_cycle }
+		set_variable = { name = zg361_mg_fairness_consumed_source_case value = var:zg361_mg_fairness_input_source_case }
+		set_variable = { name = zg361_mg_fairness_consumed_input_revision value = var:zg361_mg_fairness_input_revision }
+		set_variable = { name = zg361_mg_fairness_settlement_receipt value = var:zg361_case_ak_case_serial }
 		zg361_case_kernel_record_operation_effect = {
 			OWNER_VAR = zg361_case_ak_owner
 			SUBJECT_VAR = zg361_case_ak_subject

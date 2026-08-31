@@ -20,6 +20,58 @@ BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py\n"
 READINESS = "static-ready"
 
+# These are insertion contracts, not generator-owned files.  The shared KPI
+# and rank effects are intentionally left to their current owners; tests pin
+# each unique anchor so the package can be merged without inventing a ninth
+# KPI component or silently replacing another package's dirty work.
+SHARED_HOOK_CONTRACT: dict[str, tuple[str, str]] = {
+    "organization_component": (
+        "common/script_values/zg361_values.txt",
+        "zg361_kpi_organization_evidence_value",
+    ),
+    "organization_settlement": (
+        "common/scripted_effects/zg361_effects.txt",
+        "zg361_b2_consume_management_debt_effect = yes",
+    ),
+    "distribution_settlement": (
+        "common/scripted_effects/zg361_effects.txt",
+        "set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }",
+    ),
+}
+
+# One canonical due guard is injected byte-for-byte into the component-8 value
+# and its post-write settler.  Active B1 advances b1_cycle_serial before KPI
+# computation while legacy/no-B1 advances review_serial after computation.
+ORGANIZATION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_organization_input_source_cycle
+\t\t\thas_variable = zg361_mg_organization_input_due_cycle
+\t\t\tvar:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }
+\t\t\tOR = {
+\t\t\t\tAND = {
+\t\t\t\t\thas_variable = zg361_b1_cycle_serial
+\t\t\t\t\tvar:zg361_b1_cycle_serial >= var:zg361_mg_organization_input_due_cycle
+\t\t\t\t}
+\t\t\t\tAND = {
+\t\t\t\t\tNOT = { has_variable = zg361_b1_cycle_serial }
+\t\t\t\t\thas_variable = zg361_review_serial
+\t\t\t\t\tvar:zg361_review_serial >= var:zg361_mg_organization_input_source_cycle
+\t\t\t\t}
+\t\t\t}"""
+
+DISTRIBUTION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_distribution_policy_source_cycle
+\t\t\thas_variable = zg361_mg_distribution_policy_due_cycle
+\t\t\tvar:zg361_mg_distribution_policy_due_cycle = { value = var:zg361_mg_distribution_policy_source_cycle add = 1 }
+\t\t\tOR = {
+\t\t\t\tAND = {
+\t\t\t\t\thas_variable = zg361_b1_cycle_serial
+\t\t\t\t\tvar:zg361_b1_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
+\t\t\t\t}
+\t\t\t\tAND = {
+\t\t\t\t\tNOT = { has_variable = zg361_b1_cycle_serial }
+\t\t\t\t\thas_variable = zg361_review_serial
+\t\t\t\t\tvar:zg361_review_serial >= var:zg361_mg_distribution_policy_source_cycle
+\t\t\t\t}
+\t\t\t}"""
+
 
 @dataclass(frozen=True)
 class MechanismBinding:
@@ -58,6 +110,7 @@ Q_PROJECTION_IDS = tuple(range(121, 129))
 INPUT_FINGERPRINT_VARS: dict[int, tuple[str, ...]] = {
     32: (
         "zg361_mg_snapshot_source_serial",
+        "zg361_mg_team_snapshot_revision",
         "zg361_mg_team_targets",
         "zg361_mg_team_jingcha",
         "zg361_mg_team_calibration",
@@ -89,9 +142,7 @@ INPUT_FINGERPRINT_VARS: dict[int, tuple[str, ...]] = {
         "zg361_mg_snapshot_current_serial",
         "zg361_mg_team_n",
         "zg361_mg_team_bottom_n",
-        "zg361_distribution_mode",
-        "zg361_distribution_rule_source",
-        "zg361_distribution_absolute_threshold",
+        "zg361_ratio_override",
     ),
     36: (
         "zg361_mg_team_top_n",
@@ -106,12 +157,26 @@ INPUT_FINGERPRINT_VARS: dict[int, tuple[str, ...]] = {
     ),
     345: (),
     346: (
+        "zg361_mg_offcycle_pending",
+        "zg361_mg_offcycle_input_status",
+        "zg361_mg_offcycle_input_revision",
+        "zg361_mg_offcycle_source_cycle",
+        "zg361_mg_offcycle_source_case",
         "zg361_mg_offcycle_materiality",
         "zg361_mg_offcycle_signal_serial",
         "zg361_mg_offcycle_action",
         "zg361_mg_offcycle_recorded_year",
     ),
-    347: ("zg361_mg_team_n",),
+    347: (
+        "zg361_mg_team_n",
+        "zg361_mg_override_pending",
+        "zg361_mg_override_input_status",
+        "zg361_mg_override_input_revision",
+        "zg361_mg_override_source_cycle",
+        "zg361_mg_override_source_beneficiary_case",
+        "zg361_mg_override_source_bearer_case",
+        "zg361_mg_override_pending_reason",
+    ),
     348: (),
     349: ("zg361_mg_team_n", "zg361_mg_team_bottom_n"),
     350: (
@@ -137,30 +202,51 @@ INPUT_FINGERPRINT_VARS: dict[int, tuple[str, ...]] = {
         "zg361_mg_offcycle_consumed",
     ),
     354: (
-        "zg361_mg_team_n",
-        "zg361_mg_team_appeal_overturn",
-        "zg361_mg_team_retention",
+        "zg361_mg_fairness_input_status",
+        "zg361_mg_fairness_input_revision",
+        "zg361_mg_fairness_input_source_cycle",
+        "zg361_mg_fairness_input_source_case",
+        "zg361_mg_fairness_input_delivered",
+        "zg361_mg_fairness_input_appeals",
+        "zg361_mg_fairness_input_overturns",
+        "zg361_mg_fairness_input_exits",
+        "zg361_mg_fairness_input_healthy_exits",
         "zg361_mg_history_mapping_version",
-        "zg361_mg_fairness_self_disclosed",
-        "zg361_mg_fairness_remediation_completed",
+        "zg361_mg_fairness_remediation_status",
+        "zg361_mg_fairness_remediation_revision",
+        "zg361_mg_fairness_remediation_plan_id",
     ),
 }
 
-# Some inputs are not character variables.  Opaque scope payloads contribute
-# their presence bit; callers must bump mechanism_NNN_input_revision when the
-# referenced identity changes.  Raw values can be folded directly.
+# Some inputs are opaque character references.  Their producer-owned numeric
+# revision is folded above; the opaque scope itself contributes a presence bit.
+# Raw values can be folded directly.
 INPUT_FINGERPRINT_OPAQUE_VARS: dict[int, tuple[str, ...]] = {
     mechanism_id: () for mechanism_id in TARGET_IDS
 }
 INPUT_FINGERPRINT_OPAQUE_VARS[347] = (
-    "zg361_mg_override_beneficiary",
-    "zg361_mg_override_bearer",
-    "zg361_mg_override_reason",
+    "zg361_mg_override_source_owner",
+    "zg361_mg_override_source_subject",
+    "zg361_mg_override_pending_beneficiary",
+    "zg361_mg_override_pending_bearer",
 )
-INPUT_FINGERPRINT_OPAQUE_VARS[354] = ("zg361_mg_fairness_remediation_plan",)
+INPUT_FINGERPRINT_OPAQUE_VARS[346] = (
+    "zg361_mg_offcycle_source_owner",
+    "zg361_mg_offcycle_source_subject",
+)
+INPUT_FINGERPRINT_OPAQUE_VARS[354] = (
+    "zg361_mg_fairness_input_source_owner",
+    "zg361_mg_fairness_input_source_subject",
+    "zg361_mg_fairness_remediation_owner",
+    "zg361_mg_fairness_remediation_subject",
+)
 INPUT_FINGERPRINT_RAW_VALUES: dict[int, tuple[str, ...]] = {
     mechanism_id: () for mechanism_id in TARGET_IDS
 }
+INPUT_FINGERPRINT_RAW_VALUES[35] = (
+    "zg361_mg_distribution_source_mode_value",
+    "zg361_mg_distribution_source_kind_value",
+)
 INPUT_FINGERPRINT_RAW_VALUES[36] = ("current_year",)
 INPUT_FINGERPRINT_RAW_VALUES[348] = ("current_year",)
 
@@ -211,6 +297,12 @@ def validate_bindings() -> None:
         raise ValueError("manager opaque input-fingerprint coverage drift")
     if set(INPUT_FINGERPRINT_RAW_VALUES) != set(TARGET_IDS):
         raise ValueError("manager raw input-fingerprint coverage drift")
+    if set(SHARED_HOOK_CONTRACT) != {
+        "organization_component",
+        "organization_settlement",
+        "distribution_settlement",
+    }:
+        raise ValueError("manager shared-hook contract coverage drift")
     known_fields = {
         (mechanism_id, variable)
         for mechanism_id, variables in INPUT_FINGERPRINT_VARS.items()
@@ -299,14 +391,8 @@ def input_fingerprint_prelude(mechanism_id: int) -> str:
     """Render a deterministic CK3 checksum of the operation's requested facts."""
 
     stem = f"zg361_mg_m{mechanism_id:03d}"
-    revision = f"zg361_mechanism_{mechanism_id:03d}_input_revision"
     lines = [
         f"set_variable = {{ name = {stem}_requested_input_fingerprint value = {mechanism_id * 1009} }}",
-        "if = {",
-        f"\tlimit = {{ has_variable = {revision} }}",
-        f"\tchange_variable = {{ name = {stem}_requested_input_fingerprint add = 104729 }}",
-        f"\tchange_variable = {{ name = {stem}_requested_input_fingerprint add = {{ value = var:{revision} multiply = 7919 }} }}",
-        "}",
     ]
     ordinal = 0
     for variable in INPUT_FINGERPRINT_VARS[mechanism_id]:
@@ -550,6 +636,7 @@ def render_policy_debt_consumer() -> str:
 		change_variable = {{ name = zg361_mg_policy_debt add = -1 }}
 		change_variable = {{ name = zg361_mg_policy_debt_settled add = 1 }}
 		change_variable = {{ name = zg361_mg_manager_score_delta add = -3 }}
+		set_variable = {{ name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }}
 	}}"""
         )
     joined = "\n\t".join(blocks)
@@ -692,6 +779,170 @@ zg361_mg_project_career_hc_q_receipts_effect = {{
 }}"""
 
 
+def render_values() -> bytes:
+    """Render package-owned inputs consumed by the shared eight-KPI core."""
+
+    body = r'''
+# Freeze the only real distribution producers into F035's input fingerprint.
+# mode 0 is typed unavailable; kind 1/2 means decision override/game rule.
+zg361_mg_distribution_source_mode_value = {
+	value = 0
+	if = { limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 10 } add = 1 }
+	else_if = { limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 5 } add = 2 }
+	else_if = { limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 0 } add = 3 }
+	else_if = { limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_strict } add = 1 }
+	else_if = { limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_relaxed } add = 2 }
+	else_if = { limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_off } add = 3 }
+}
+
+zg361_mg_distribution_source_kind_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_ratio_override
+			OR = { var:zg361_ratio_override = 10 var:zg361_ratio_override = 5 var:zg361_ratio_override = 0 }
+		}
+		add = 1
+	}
+	else_if = {
+		limit = {
+			NOT = { has_variable = zg361_ratio_override }
+			OR = {
+				has_game_rule = zg361_ratio_strict
+				has_game_rule = zg361_ratio_relaxed
+				has_game_rule = zg361_ratio_off
+			}
+		}
+		add = 2
+	}
+}
+
+# F032 is folded into official component 8 (organization) on the next review.
+# This value is deliberately not referenced as a ninth addend by zg361_kpi_value.
+zg361_mg_due_organization_kpi_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_mg_organization_input_status
+			var:zg361_mg_organization_input_status = 1
+			has_variable = zg361_mg_organization_input_owner
+			has_variable = zg361_mg_organization_input_subject
+			has_variable = zg361_mg_organization_input_value
+			var:zg361_mg_organization_input_owner = liege
+			var:zg361_mg_organization_input_subject = this
+$ORGANIZATION_DUE_GUARD$
+		}
+		add = var:zg361_mg_organization_input_value
+	}
+}
+
+# Exact 10/5/0 next-cycle policy.  Relaxed mode intentionally has no minimum
+# slot; strict mode keeps the core cohort>=5 minimum of one.
+zg361_mg_effective_bottom_slots_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_applied_this_rank
+			var:zg361_mg_distribution_policy_applied_this_rank = 1
+			var:zg361_mg_distribution_effective_mode = 2
+		}
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.05
+			floor = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_applied_this_rank
+			var:zg361_mg_distribution_policy_applied_this_rank = 1
+			var:zg361_mg_distribution_effective_mode = 1
+		}
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.10
+			floor = yes
+		}
+		if = {
+			limit = { var:zg361_cohort_n >= 5 }
+			min = 1
+		}
+	}
+}
+'''
+    return generated(body.replace("$ORGANIZATION_DUE_GUARD$", ORGANIZATION_DUE_GUARD))
+
+
+def render_shared_hook_adapters() -> str:
+    """Effects called by the three root-owned shared insertion points."""
+
+    body = r'''# Called immediately after the official KPI/debt write.  The input was
+# already read by component 8, so this only settles the exact source once.
+zg361_mg_settle_due_organization_kpi_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_organization_input_status
+			var:zg361_mg_organization_input_status = 1
+			has_variable = zg361_mg_organization_input_owner
+			has_variable = zg361_mg_organization_input_subject
+			has_variable = zg361_mg_organization_input_value
+			var:zg361_mg_organization_input_owner = liege
+			var:zg361_mg_organization_input_subject = this
+$ORGANIZATION_DUE_GUARD$
+		}
+		set_variable = { name = zg361_mg_organization_input_status value = 2 }
+		set_variable = { name = zg361_mg_organization_settled_by_owner value = liege }
+		set_variable = { name = zg361_mg_organization_settled_cycle value = var:zg361_mg_organization_input_due_cycle }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_organization_settled_cycle value = var:zg361_b1_cycle_serial } }
+		set_variable = { name = zg361_mg_organization_settled_value value = var:zg361_mg_organization_input_value }
+		set_variable = { name = zg361_mg_organization_settlement_receipt value = var:zg361_mg_organization_input_source_case }
+	}
+}
+
+# Consume an F035 policy only at its declared next review.  A retained old
+# effective mode cannot leak because the selector below requires this cycle.
+zg361_mg_apply_due_distribution_policy_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_status
+			var:zg361_mg_distribution_policy_status = 1
+			has_variable = zg361_mg_distribution_policy_owner
+			var:zg361_mg_distribution_policy_owner = this
+$DISTRIBUTION_DUE_GUARD$
+			has_variable = zg361_mg_distribution_policy_mode
+			var:zg361_mg_distribution_policy_mode >= 1
+			var:zg361_mg_distribution_policy_mode <= 3
+		}
+		set_variable = { name = zg361_mg_distribution_effective_mode value = var:zg361_mg_distribution_policy_mode }
+		set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_mg_distribution_policy_due_cycle }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_cycle_serial } }
+		set_variable = { name = zg361_mg_distribution_effective_source_cycle value = var:zg361_mg_distribution_policy_source_cycle }
+		set_variable = { name = zg361_mg_distribution_effective_source_case value = var:zg361_mg_distribution_policy_source_case }
+		set_variable = { name = zg361_mg_distribution_effective_input_revision value = var:zg361_mg_distribution_policy_input_revision }
+		set_variable = { name = zg361_mg_distribution_policy_applied_this_rank value = 1 }
+		set_variable = { name = zg361_mg_distribution_policy_status value = 2 }
+		set_variable = { name = zg361_mg_distribution_policy_settled_cycle value = var:zg361_mg_distribution_effective_cycle }
+		set_variable = { name = zg361_mg_distribution_policy_settlement_receipt value = var:zg361_mg_distribution_policy_source_case }
+	}
+}
+
+# Replacement for the one core bottom-slot assignment.  It preserves the core
+# value unless a fully bound F035 policy was consumed for this exact cycle.
+zg361_mg_set_bottom_slots_effect = {
+	set_variable = { name = zg361_mg_distribution_policy_applied_this_rank value = 0 }
+	zg361_mg_apply_due_distribution_policy_effect = yes
+	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
+	if = {
+		limit = { var:zg361_mg_distribution_policy_applied_this_rank = 1 }
+		set_variable = { name = zg361_bottom_slots value = zg361_mg_effective_bottom_slots_value }
+	}
+	remove_variable = zg361_mg_distribution_policy_applied_this_rank
+}'''
+    return body.replace("$ORGANIZATION_DUE_GUARD$", ORGANIZATION_DUE_GUARD).replace(
+        "$DISTRIBUTION_DUE_GUARD$", DISTRIBUTION_DUE_GUARD
+    )
+
+
 def render_effects() -> bytes:
     bindings = "\n".join(
         f"# {row.mechanism_id:03d} {row.operation}: {row.effect} -> {row.consumer}"
@@ -719,6 +970,8 @@ zg361_mg_clear_red_effect = {{
 {render_policy_debt_consumer()}
 
 {render_q_projection_adapter()}
+
+{render_shared_hook_adapters()}
 
 # The existing Jingcha is free/default-mandatory.  Its explicit player-refusal
 # option calls this product effect directly.  Freeze the mandate business token
@@ -851,9 +1104,32 @@ zg361_mg_open_manager_governance_cases_effect = {{
 	else = {{ zg361_mg_set_red_effect = {{ CODE = 1 MECHANISM = 32 }} }}
 }}
 
-# Freeze exactly seven aggregate team facts from a strictly earlier manager
-# cycle.  No grandchild character ID is projected into the superior's roster.
+# Exact replay of the same F case reuses the frozen snapshot; it never consumes
+# a subordinate result/PIP/exit producer twice.
 zg361_mg_freeze_team_snapshot_effect = {{
+	if = {{
+		limit = {{
+			trigger_if = {{
+				limit = {{ has_variable = zg361_mg_team_snapshot_status }}
+				OR = {{
+					NOT = {{ var:zg361_mg_team_snapshot_status = 1 }}
+					NOT = {{ var:zg361_mg_team_snapshot_owner = var:zg361_case_f_owner }}
+					NOT = {{ var:zg361_mg_team_snapshot_subject = this }}
+					NOT = {{ var:zg361_mg_team_snapshot_cycle = var:zg361_case_f_cycle_serial }}
+					NOT = {{ var:zg361_mg_team_snapshot_case = var:zg361_case_f_case_serial }}
+				}}
+			}}
+			trigger_else = {{ always = yes }}
+		}}
+		zg361_mg_build_team_snapshot_effect = yes
+	}}
+}}
+
+# Freeze seven score aggregates plus auditable raw counters from a strictly
+# earlier manager cycle.  No grandchild ID is copied into the superior roster.
+zg361_mg_build_team_snapshot_effect = {{
+	if = {{ limit = {{ NOT = {{ has_variable = zg361_mg_team_snapshot_revision }} }} set_variable = {{ name = zg361_mg_team_snapshot_revision value = 0 }} }}
+	change_variable = {{ name = zg361_mg_team_snapshot_revision add = 1 }}
 	set_variable = {{ name = zg361_mg_snapshot_source_serial value = var:zg361_review_serial }}
 	set_variable = {{ name = zg361_mg_snapshot_current_serial value = root.var:zg361_review_serial }}
 	set_variable = {{ name = zg361_mg_team_n value = 0 }}
@@ -900,6 +1176,11 @@ zg361_mg_freeze_team_snapshot_effect = {{
 	set_variable = {{ name = zg361_mg_team_appeal_overturn value = 0 }}
 	set_variable = {{ name = zg361_mg_team_retention value = 0 }}
 	set_variable = {{ name = zg361_mg_team_hc_efficiency value = 0 }}
+	set_variable = {{ name = zg361_mg_team_delivered_n value = 0 }}
+	set_variable = {{ name = zg361_mg_team_appeal_n value = 0 }}
+	set_variable = {{ name = zg361_mg_team_overturn_n value = 0 }}
+	set_variable = {{ name = zg361_mg_team_exit_n value = 0 }}
+	set_variable = {{ name = zg361_mg_team_healthy_exit_n value = 0 }}
 	save_scope_as = zg361_mg_snapshot_manager
 	every_vassal = {{
 		limit = {{
@@ -910,16 +1191,52 @@ zg361_mg_freeze_team_snapshot_effect = {{
 		}}
 		scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_retention add = 2 }} }}
 		if = {{
-			limit = {{ has_variable = zg361_result_grade_reason var:zg361_result_grade_reason > 0 }}
+			limit = {{ has_variable = zg361_result_delivery_method var:zg361_result_delivery_method > 0 }}
+			scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_delivered_n add = 1 }} }}
+		}}
+		if = {{
+			limit = {{ has_variable = zg361_result_grade_reason var:zg361_result_grade_reason >= 1 var:zg361_result_grade_reason <= 4 }}
 			scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_calibration add = -5 }} }}
 		}}
 		if = {{
-			limit = {{ has_variable = zg361_result_regrade_delta var:zg361_result_regrade_delta > 0 }}
-			scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_appeal_overturn add = -5 }} }}
+			limit = {{ has_variable = zg361_result_appeal_outcome var:zg361_result_appeal_outcome >= 1 var:zg361_result_appeal_outcome <= 2 }}
+			scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_appeal_n add = 1 }} }}
+			if = {{
+				limit = {{ var:zg361_result_appeal_outcome = 1 }}
+				scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_overturn_n add = 1 }} change_variable = {{ name = zg361_mg_team_appeal_overturn add = -5 }} }}
+			}}
 		}}
 		if = {{
-			limit = {{ has_variable = zg361_b2_m016_outcome var:zg361_b2_m016_outcome = 1 }}
+			limit = {{
+				has_variable = zg361_b2_pip_owner
+				has_variable = zg361_b2_pip_cycle
+				has_variable = zg361_b2_pip_case
+				has_variable = zg361_b2_pip_state
+				has_variable = zg361_b2_pip_graduation_receipt
+				var:zg361_b2_pip_owner = scope:zg361_mg_snapshot_manager
+				var:zg361_b2_pip_cycle = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+				var:zg361_b2_pip_state = 3
+				var:zg361_b2_pip_graduation_receipt = var:zg361_b2_pip_case
+			}}
 			scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_pip_success add = 5 }} }}
+		}}
+		if = {{
+			limit = {{
+				has_variable = zg361_b2_m075_owner
+				has_variable = zg361_b2_m075_cycle
+				has_variable = zg361_b2_m075_case
+				has_variable = zg361_b2_m075_state
+				has_variable = zg361_b2_m075_actual_exit
+				var:zg361_b2_m075_owner = scope:zg361_mg_snapshot_manager
+				var:zg361_b2_m075_cycle = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+				var:zg361_b2_m075_state = 3
+				var:zg361_b2_m075_actual_exit = 1
+			}}
+			scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_exit_n add = 1 }} change_variable = {{ name = zg361_mg_team_retention add = -2 }} }}
+			if = {{
+				limit = {{ has_variable = zg361_b2_m075_neutral_record var:zg361_b2_m075_neutral_record = 1 }}
+				scope:zg361_mg_snapshot_manager = {{ change_variable = {{ name = zg361_mg_team_healthy_exit_n add = 1 }} }}
+			}}
 		}}
 	}}
 	set_variable = {{
@@ -927,16 +1244,40 @@ zg361_mg_freeze_team_snapshot_effect = {{
 		value = {{ value = var:zg361_mg_team_top_n subtract = var:zg361_mg_team_bottom_n multiply = 3 }}
 	}}
 	if = {{
-		limit = {{ has_variable = zg361_mg_manager_score_delta }}
+		limit = {{
+			has_variable = zg361_mg_manager_score_delta
+			has_variable = zg361_mg_manager_score_delta_due_cycle
+			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial
+		}}
 		change_variable = {{ name = zg361_mg_team_hc_efficiency add = var:zg361_mg_manager_score_delta }}
-		set_variable = {{ name = zg361_mg_manager_score_delta_consumed_cycle value = var:zg361_review_serial }}
+		set_variable = {{ name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_review_serial }}
 		remove_variable = zg361_mg_manager_score_delta
+		remove_variable = zg361_mg_manager_score_delta_due_cycle
 	}}
 	set_variable = {{ name = zg361_mg_snapshot_grandchild_id_count value = 0 }}
+	set_variable = {{ name = zg361_mg_team_snapshot_status value = 1 }}
+	set_variable = {{ name = zg361_mg_team_snapshot_owner value = var:zg361_case_f_owner }}
+	set_variable = {{ name = zg361_mg_team_snapshot_subject value = this }}
+	set_variable = {{ name = zg361_mg_team_snapshot_cycle value = var:zg361_case_f_cycle_serial }}
+	set_variable = {{ name = zg361_mg_team_snapshot_case value = var:zg361_case_f_case_serial }}
+	set_variable = {{ name = zg361_mg_team_snapshot_source_cycle value = var:zg361_review_serial }}
+	set_variable = {{ name = zg361_mg_fairness_input_status value = 1 }}
+	set_variable = {{ name = zg361_mg_fairness_input_revision value = var:zg361_mg_team_snapshot_revision }}
+	set_variable = {{ name = zg361_mg_fairness_input_source_owner value = root }}
+	set_variable = {{ name = zg361_mg_fairness_input_source_subject value = this }}
+	set_variable = {{ name = zg361_mg_fairness_input_source_cycle value = var:zg361_review_serial }}
+	set_variable = {{ name = zg361_mg_fairness_input_source_case value = var:zg361_case_f_case_serial }}
+	set_variable = {{ name = zg361_mg_fairness_input_delivered value = var:zg361_mg_team_delivered_n }}
+	set_variable = {{ name = zg361_mg_fairness_input_appeals value = var:zg361_mg_team_appeal_n }}
+	set_variable = {{ name = zg361_mg_fairness_input_overturns value = var:zg361_mg_team_overturn_n }}
+	set_variable = {{ name = zg361_mg_fairness_input_exits value = var:zg361_mg_team_exit_n }}
+	set_variable = {{ name = zg361_mg_fairness_input_healthy_exits value = var:zg361_mg_team_healthy_exit_n }}
+	zg361_mg_produce_offcycle_signal_effect = yes
+	zg361_mg_produce_override_pair_effect = yes
 }}
 
-# 035 — strict/relaxed/off/mixed distribution semantics are frozen before the
-# manager score.  Counts must conserve the frozen cohort exactly.
+# 035 — freeze only the real ratio override/game-rule producer.  A/B publish a
+# fully bound next-cycle policy; C publishes no distribution object.
 zg361_mg_m035_freeze_distribution_effect = {{
 	{route_prelude("F", 35)}
 	{c_route_receipt("F", 35, 1)}
@@ -948,42 +1289,68 @@ zg361_mg_m035_freeze_distribution_effect = {{
 			{receipt_not_current("F", 35, 1)}
 		}}
 		{business_object_prelude("F", 35, 3501)}
-		# A freezes the explicit global/liege policy (default mixed); B forces
-		# strict 10%.  C was consumed above and never creates this snapshot.
-		set_variable = {{ name = zg361_mg_distribution_mode value = 4 }}
+		set_variable = {{ name = zg361_mg_distribution_policy_available value = 0 }}
+		remove_variable = zg361_mg_distribution_mode
+		remove_variable = zg361_mg_distribution_rule_source
+		# source 1 = the manager's 10/5/0 decision override; source 2 = the
+		# exact game rule; source 3 = mechanism route B forced strict.
 		if = {{
 			limit = {{
 				var:zg361_mg_m035_route = 1
-				has_variable = zg361_distribution_mode
-				var:zg361_distribution_mode >= 1
-				var:zg361_distribution_mode <= 4
+				has_variable = zg361_ratio_override
+				var:zg361_ratio_override = 10
 			}}
-			set_variable = {{ name = zg361_mg_distribution_mode value = var:zg361_distribution_mode }}
-		}}
-		if = {{ limit = {{ var:zg361_mg_m035_route = 2 }} set_variable = {{ name = zg361_mg_distribution_mode value = 1 }} }}
-		set_variable = {{ name = zg361_mg_distribution_rule_source value = 1 }}
-		if = {{ limit = {{ has_variable = zg361_distribution_rule_source }} set_variable = {{ name = zg361_mg_distribution_rule_source value = var:zg361_distribution_rule_source }} }}
-		set_variable = {{ name = zg361_mg_distribution_review_serial value = var:zg361_case_f_cycle_serial }}
-		set_variable = {{ name = zg361_mg_distribution_absolute_threshold value = 60 }}
-		if = {{ limit = {{ has_variable = zg361_distribution_absolute_threshold }} set_variable = {{ name = zg361_mg_distribution_absolute_threshold value = {{ value = var:zg361_distribution_absolute_threshold max = 100 min = 0 }} }} }}
-		if = {{ limit = {{ NOT = {{ var:zg361_mg_distribution_mode = 4 }} }} remove_variable = zg361_mg_distribution_absolute_threshold }}
-		set_variable = {{ name = zg361_mg_distribution_top_slots value = {{ value = var:zg361_mg_team_n multiply = 0.30 floor = yes }} }}
-		set_variable = {{ name = zg361_mg_distribution_bottom_slots value = {{ value = var:zg361_mg_team_n multiply = 0.10 floor = yes }} }}
-		if = {{
-			limit = {{ var:zg361_mg_distribution_mode = 2 }}
-			set_variable = {{ name = zg361_mg_distribution_bottom_slots value = {{ value = var:zg361_mg_team_n multiply = 0.05 floor = yes }} }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
 		}}
 		else_if = {{
-			limit = {{ var:zg361_mg_distribution_mode = 3 }}
-			set_variable = {{ name = zg361_mg_distribution_bottom_slots value = 0 }}
+			limit = {{ var:zg361_mg_m035_route = 1 has_variable = zg361_ratio_override var:zg361_ratio_override = 5 }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
 		}}
+		else_if = {{
+			limit = {{ var:zg361_mg_m035_route = 1 has_variable = zg361_ratio_override var:zg361_ratio_override = 0 }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 3 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
+		}}
+		else_if = {{
+			limit = {{ var:zg361_mg_m035_route = 1 NOT = {{ has_variable = zg361_ratio_override }} has_game_rule = zg361_ratio_strict }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
+		}}
+		else_if = {{
+			limit = {{ var:zg361_mg_m035_route = 1 NOT = {{ has_variable = zg361_ratio_override }} has_game_rule = zg361_ratio_relaxed }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
+		}}
+		else_if = {{
+			limit = {{ var:zg361_mg_m035_route = 1 NOT = {{ has_variable = zg361_ratio_override }} has_game_rule = zg361_ratio_off }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 3 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
+		}}
+		else_if = {{
+			limit = {{ var:zg361_mg_m035_route = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_mode value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_rule_source value = 3 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_available value = 1 }}
+		}}
+		set_variable = {{ name = zg361_mg_distribution_review_serial value = var:zg361_case_f_cycle_serial }}
+		set_variable = {{ name = zg361_mg_distribution_top_slots value = {{ value = var:zg361_mg_team_n multiply = 0.30 floor = yes }} }}
+		set_variable = {{ name = zg361_mg_distribution_bottom_slots value = 0 }}
 		if = {{
-			limit = {{
-				var:zg361_mg_team_n >= 5
-				OR = {{ var:zg361_mg_distribution_mode = 1 var:zg361_mg_distribution_mode = 2 var:zg361_mg_distribution_mode = 4 }}
-				var:zg361_mg_distribution_bottom_slots < 1
-			}}
-			set_variable = {{ name = zg361_mg_distribution_bottom_slots value = 1 }}
+			limit = {{ var:zg361_mg_distribution_policy_available = 1 var:zg361_mg_distribution_mode = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_bottom_slots value = {{ value = var:zg361_mg_team_n multiply = 0.10 floor = yes }} }}
+			if = {{ limit = {{ var:zg361_mg_team_n >= 5 }} set_variable = {{ name = zg361_mg_distribution_bottom_slots value = {{ value = var:zg361_mg_distribution_bottom_slots max = 1 }} }} }}
+		}}
+		else_if = {{
+			limit = {{ var:zg361_mg_distribution_policy_available = 1 var:zg361_mg_distribution_mode = 2 }}
+			set_variable = {{ name = zg361_mg_distribution_bottom_slots value = {{ value = var:zg361_mg_team_n multiply = 0.05 floor = yes }} }}
 		}}
 		set_variable = {{
 			name = zg361_mg_distribution_middle_slots
@@ -991,13 +1358,23 @@ zg361_mg_m035_freeze_distribution_effect = {{
 		}}
 		set_variable = {{ name = zg361_mg_distribution_bottom_consequence value = 1 }}
 		if = {{ limit = {{ var:zg361_mg_distribution_mode = 3 }} set_variable = {{ name = zg361_mg_distribution_bottom_consequence value = 0 }} }}
-		else_if = {{
-			limit = {{ var:zg361_mg_distribution_mode = 4 var:zg361_mg_team_bottom_n = 0 }}
-			set_variable = {{ name = zg361_mg_distribution_bottom_consequence value = 2 }}
-		}}
 		set_variable = {{
 			name = zg361_mg_distribution_conserved
 			value = {{ value = var:zg361_mg_distribution_top_slots add = var:zg361_mg_distribution_middle_slots add = var:zg361_mg_distribution_bottom_slots }}
+		}}
+		if = {{
+			limit = {{ var:zg361_mg_distribution_policy_available = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_status value = 1 }}
+			set_variable = {{ name = zg361_mg_distribution_policy_owner value = this }}
+			set_variable = {{ name = zg361_mg_distribution_policy_subject value = this }}
+			set_variable = {{ name = zg361_mg_distribution_policy_source_reviewer value = var:zg361_case_f_owner }}
+			set_variable = {{ name = zg361_mg_distribution_policy_source_cycle value = var:zg361_case_f_cycle_serial }}
+			set_variable = {{ name = zg361_mg_distribution_policy_source_case value = var:zg361_case_f_case_serial }}
+			set_variable = {{ name = zg361_mg_distribution_policy_source_revision value = var:zg361_case_f_revision }}
+			set_variable = {{ name = zg361_mg_distribution_policy_input_revision value = var:zg361_mg_team_snapshot_revision }}
+			set_variable = {{ name = zg361_mg_distribution_policy_mode value = var:zg361_mg_distribution_mode }}
+			set_variable = {{ name = zg361_mg_distribution_policy_rule_source value = var:zg361_mg_distribution_rule_source }}
+			set_variable = {{ name = zg361_mg_distribution_policy_due_cycle value = {{ value = var:zg361_case_f_cycle_serial add = 1 }} }}
 		}}
 		{receipt_call("F", 35, 1)}
 	}}
@@ -1021,7 +1398,10 @@ zg361_mg_m032_score_manager_effect = {{
 			{receipt_current("F", 35, 1)}
 			OR = {{
 				var:zg361_mg_m035_receipt_choice = 3
-				var:zg361_mg_distribution_conserved = var:zg361_mg_team_n
+				AND = {{
+					var:zg361_mg_distribution_policy_available = 1
+					var:zg361_mg_distribution_conserved = var:zg361_mg_team_n
+				}}
 			}}
 			{receipt_not_current("F", 32, 1)}
 			has_variable = zg361_mg_team_targets
@@ -1096,6 +1476,18 @@ zg361_mg_m032_score_manager_effect = {{
 			}}
 			set_variable = {{ name = zg361_mg_refusal_opinion_normalized_cycle value = var:zg361_case_f_cycle_serial }}
 		}}
+		# Producer for the next official KPI write.  The shared hook adds this
+		# value inside organization (component 8), then settles this exact token.
+		set_variable = {{ name = zg361_mg_organization_input_status value = 1 }}
+		set_variable = {{ name = zg361_mg_organization_input_owner value = var:zg361_case_f_owner }}
+		set_variable = {{ name = zg361_mg_organization_input_subject value = this }}
+		set_variable = {{ name = zg361_mg_organization_input_source_cycle value = var:zg361_case_f_cycle_serial }}
+		set_variable = {{ name = zg361_mg_organization_input_source_case value = var:zg361_case_f_case_serial }}
+		set_variable = {{ name = zg361_mg_organization_input_source_revision value = var:zg361_case_f_revision }}
+		set_variable = {{ name = zg361_mg_organization_input_revision value = var:zg361_mg_team_snapshot_revision }}
+		set_variable = {{ name = zg361_mg_organization_input_component value = 8 }}
+		set_variable = {{ name = zg361_mg_organization_input_value value = var:zg361_mg_manager_score }}
+		set_variable = {{ name = zg361_mg_organization_input_due_cycle value = {{ value = var:zg361_case_f_cycle_serial add = 1 }} }}
 		{receipt_call("F", 32, 1)}
 		{transition_call("F", 1)}
 		if = {{
@@ -1400,29 +1792,47 @@ zg361_mg_m345_freeze_calendar_effect = {{
 	else_if = {{ limit = {{ NOT = {{ var:zg361_mg_m345_route = 3 }} {receipt_not_current("AK", 345, 1)} }} zg361_mg_set_red_effect = {{ CODE = 3 MECHANISM = 345 }} }}
 }}
 
-# External consumers may freeze one material signal.  The stage consumer below
-# consumes it once without rerunning the cohort.
-zg361_mg_record_offcycle_signal_effect = {{
+# The frozen team snapshot is the only producer.  It emits at most one actual
+# material signal, with appeal overturn > PIP graduation > calibration change.
+zg361_mg_produce_offcycle_signal_effect = {{
 	if = {{
 		limit = {{
 			zg361_is_celestial_liege_trigger = yes
-			NOT = {{ has_variable = zg361_mg_offcycle_pending }}
-			$MATERIALITY$ >= 50
-			$ACTION$ >= 1
-			$ACTION$ <= 3
+			OR = {{
+				NOT = {{ has_variable = zg361_mg_offcycle_input_status }}
+				NOT = {{ var:zg361_mg_offcycle_input_status = 1 }}
+			}}
+			OR = {{
+				var:zg361_mg_team_overturn_n > 0
+				var:zg361_mg_team_pip_success > 0
+				var:zg361_mg_team_calibration < 0
+			}}
 		}}
 		set_variable = {{ name = zg361_mg_offcycle_pending value = 1 }}
-		set_variable = {{ name = zg361_mg_offcycle_materiality value = $MATERIALITY$ }}
-		set_variable = {{ name = zg361_mg_offcycle_signal_serial value = $SIGNAL_SERIAL$ }}
-		set_variable = {{ name = zg361_mg_offcycle_action value = $ACTION$ }}
+		set_variable = {{ name = zg361_mg_offcycle_input_status value = 1 }}
+		set_variable = {{ name = zg361_mg_offcycle_input_revision value = var:zg361_mg_team_snapshot_revision }}
+		set_variable = {{ name = zg361_mg_offcycle_source_owner value = root }}
+		set_variable = {{ name = zg361_mg_offcycle_source_subject value = this }}
+		set_variable = {{ name = zg361_mg_offcycle_source_cycle value = var:zg361_review_serial }}
+		set_variable = {{ name = zg361_mg_offcycle_source_case value = var:zg361_case_f_case_serial }}
+		set_variable = {{ name = zg361_mg_offcycle_materiality value = 50 }}
+		set_variable = {{ name = zg361_mg_offcycle_action value = 3 }}
+		if = {{ limit = {{ var:zg361_mg_team_pip_success > 0 }} set_variable = {{ name = zg361_mg_offcycle_materiality value = 75 }} set_variable = {{ name = zg361_mg_offcycle_action value = 2 }} }}
+		if = {{ limit = {{ var:zg361_mg_team_overturn_n > 0 }} set_variable = {{ name = zg361_mg_offcycle_materiality value = 100 }} set_variable = {{ name = zg361_mg_offcycle_action value = 1 }} }}
+		set_variable = {{ name = zg361_mg_offcycle_signal_serial value = var:zg361_mg_team_snapshot_revision }}
 		set_variable = {{ name = zg361_mg_offcycle_recorded_year value = current_year }}
 	}}
-	else = {{ zg361_mg_set_red_effect = {{ CODE = 4 MECHANISM = 346 }} }}
 }}
 
 zg361_mg_m346_consume_offcycle_signal_effect = {{
 	{route_prelude("AK", 346)}
 	{c_route_receipt("AK", 346, 1)}
+	if = {{
+		limit = {{ var:zg361_mg_m346_route = 3 {receipt_current("AK", 346, 1)} has_variable = zg361_mg_offcycle_input_status var:zg361_mg_offcycle_input_status = 1 }}
+		set_variable = {{ name = zg361_mg_offcycle_input_status value = 3 }}
+		set_variable = {{ name = zg361_mg_offcycle_pending value = 0 }}
+		set_variable = {{ name = zg361_mg_offcycle_discarded_cycle value = var:zg361_case_ak_cycle_serial }}
+	}}
 	if = {{
 		limit = {{ var:zg361_case_ak_state = 1 var:zg361_case_ak_active = 1 {receipt_not_current("AK", 346, 1)} }}
 		{business_object_prelude("AK", 346, 34601)}
@@ -1433,10 +1843,26 @@ zg361_mg_m346_consume_offcycle_signal_effect = {{
 		set_variable = {{ name = zg361_mg_offcycle_recency_bias value = 0 }}
 		if = {{ limit = {{ var:zg361_mg_m346_route = 2 }} set_variable = {{ name = zg361_mg_offcycle_cohort_reruns value = 1 }} set_variable = {{ name = zg361_mg_offcycle_disruption value = 20 }} set_variable = {{ name = zg361_mg_offcycle_recency_bias value = 15 }} }}
 		if = {{
-			limit = {{ has_variable = zg361_mg_offcycle_pending var:zg361_mg_offcycle_pending = 1 has_variable = zg361_mg_offcycle_materiality var:zg361_mg_offcycle_materiality >= 50 }}
+			limit = {{
+				has_variable = zg361_mg_offcycle_input_status
+				var:zg361_mg_offcycle_input_status = 1
+				has_variable = zg361_mg_offcycle_pending
+				var:zg361_mg_offcycle_pending = 1
+				has_variable = zg361_mg_offcycle_source_owner
+				has_variable = zg361_mg_offcycle_source_subject
+				var:zg361_mg_offcycle_source_owner = var:zg361_case_ak_owner
+				var:zg361_mg_offcycle_source_subject = this
+				has_variable = zg361_mg_offcycle_materiality
+				var:zg361_mg_offcycle_materiality >= 50
+			}}
 			set_variable = {{ name = zg361_mg_offcycle_consumed value = 1 }}
 			set_variable = {{ name = zg361_mg_offcycle_consumed_cycle value = var:zg361_case_ak_cycle_serial }}
-			remove_variable = zg361_mg_offcycle_pending
+			set_variable = {{ name = zg361_mg_offcycle_consumed_source_cycle value = var:zg361_mg_offcycle_source_cycle }}
+			set_variable = {{ name = zg361_mg_offcycle_consumed_source_case value = var:zg361_mg_offcycle_source_case }}
+			set_variable = {{ name = zg361_mg_offcycle_consumed_input_revision value = var:zg361_mg_offcycle_input_revision }}
+			set_variable = {{ name = zg361_mg_offcycle_settlement_receipt value = var:zg361_mg_offcycle_source_case }}
+			set_variable = {{ name = zg361_mg_offcycle_input_status value = 2 }}
+			set_variable = {{ name = zg361_mg_offcycle_pending value = 0 }}
 		}}
 		{receipt_call("AK", 346, 1)}
 	}}
@@ -1453,17 +1879,93 @@ zg361_mg_ak_stage_1_effect = {{
 	}}
 }}
 
+# Reconstruct one real calibration swap from the frozen result producer.  The
+# beneficiary was lifted (reason 2/4); the bearer was pushed (reason 1/3).
+zg361_mg_produce_override_pair_effect = {{
+	if = {{
+		limit = {{
+			OR = {{
+				NOT = {{ has_variable = zg361_mg_override_input_status }}
+				NOT = {{ var:zg361_mg_override_input_status = 1 }}
+			}}
+		}}
+		remove_variable = zg361_mg_override_pending_beneficiary
+		remove_variable = zg361_mg_override_pending_bearer
+		remove_variable = zg361_mg_override_source_beneficiary_case
+		remove_variable = zg361_mg_override_source_bearer_case
+		save_scope_as = zg361_mg_override_manager
+		ordered_vassal = {{
+			limit = {{
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_grade_reason
+				var:zg361_result_case_owner = scope:zg361_mg_override_manager
+				var:zg361_result_cycle_serial = scope:zg361_mg_override_manager.var:zg361_review_serial
+				OR = {{ var:zg361_result_grade_reason = 2 var:zg361_result_grade_reason = 4 }}
+			}}
+			order_by = age
+			position = 0
+			save_temporary_scope_as = zg361_mg_override_beneficiary_candidate
+			scope:zg361_mg_override_manager = {{
+				set_variable = {{ name = zg361_mg_override_pending_beneficiary value = scope:zg361_mg_override_beneficiary_candidate }}
+				set_variable = {{ name = zg361_mg_override_source_beneficiary_case value = scope:zg361_mg_override_beneficiary_candidate.var:zg361_result_case_serial }}
+				set_variable = {{ name = zg361_mg_override_beneficiary_reason value = scope:zg361_mg_override_beneficiary_candidate.var:zg361_result_grade_reason }}
+			}}
+		}}
+		ordered_vassal = {{
+			limit = {{
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_grade_reason
+				var:zg361_result_case_owner = scope:zg361_mg_override_manager
+				var:zg361_result_cycle_serial = scope:zg361_mg_override_manager.var:zg361_review_serial
+				OR = {{ var:zg361_result_grade_reason = 1 var:zg361_result_grade_reason = 3 }}
+			}}
+			order_by = age
+			position = 0
+			save_temporary_scope_as = zg361_mg_override_bearer_candidate
+			scope:zg361_mg_override_manager = {{
+				set_variable = {{ name = zg361_mg_override_pending_bearer value = scope:zg361_mg_override_bearer_candidate }}
+				set_variable = {{ name = zg361_mg_override_source_bearer_case value = scope:zg361_mg_override_bearer_candidate.var:zg361_result_case_serial }}
+				set_variable = {{ name = zg361_mg_override_bearer_reason value = scope:zg361_mg_override_bearer_candidate.var:zg361_result_grade_reason }}
+			}}
+		}}
+		if = {{
+			limit = {{
+				has_variable = zg361_mg_override_pending_beneficiary
+				has_variable = zg361_mg_override_pending_bearer
+				NOT = {{ var:zg361_mg_override_pending_beneficiary = var:zg361_mg_override_pending_bearer }}
+			}}
+			set_variable = {{ name = zg361_mg_override_pending value = 1 }}
+			set_variable = {{ name = zg361_mg_override_input_status value = 1 }}
+			set_variable = {{ name = zg361_mg_override_input_revision value = var:zg361_mg_team_snapshot_revision }}
+			set_variable = {{ name = zg361_mg_override_source_owner value = root }}
+			set_variable = {{ name = zg361_mg_override_source_subject value = this }}
+			set_variable = {{ name = zg361_mg_override_source_cycle value = var:zg361_review_serial }}
+			set_variable = {{ name = zg361_mg_override_pending_reason value = {{ value = var:zg361_mg_override_beneficiary_reason multiply = 10 add = var:zg361_mg_override_bearer_reason }} }}
+		}}
+	}}
+}}
+
 # 347 — one bounded override records beneficiary, bearer and reason while the
 # frozen ranking multiset and quota counts remain unchanged.
 zg361_mg_m347_consume_override_effect = {{
 	{route_prelude("AK", 347)}
 	{c_route_receipt("AK", 347, 2)}
 	if = {{
+		limit = {{ var:zg361_mg_m347_route = 3 {receipt_current("AK", 347, 2)} has_variable = zg361_mg_override_input_status var:zg361_mg_override_input_status = 1 }}
+		set_variable = {{ name = zg361_mg_override_input_status value = 3 }}
+		set_variable = {{ name = zg361_mg_override_pending value = 0 }}
+		set_variable = {{ name = zg361_mg_override_discarded_cycle value = var:zg361_case_ak_cycle_serial }}
+	}}
+	if = {{
 		limit = {{ var:zg361_case_ak_state = 2 var:zg361_case_ak_active = 1 {receipt_not_current("AK", 347, 2)} }}
 		{business_object_prelude("AK", 347, 34701)}
 		set_variable = {{ name = zg361_mg_override_budget value = 2 }}
 		if = {{ limit = {{ var:zg361_mg_m347_route = 2 }} set_variable = {{ name = zg361_mg_override_budget value = 999 }} }}
-		if = {{ limit = {{ NOT = {{ has_variable = zg361_mg_override_used }} }} set_variable = {{ name = zg361_mg_override_used value = 0 }} }}
+		set_variable = {{ name = zg361_mg_override_used value = 0 }}
 		set_variable = {{ name = zg361_mg_override_uncapped value = 0 }}
 		set_variable = {{ name = zg361_mg_override_appeal_risk value = 0 }}
 		if = {{ limit = {{ var:zg361_mg_m347_route = 2 }} set_variable = {{ name = zg361_mg_override_uncapped value = 1 }} set_variable = {{ name = zg361_mg_override_appeal_risk value = 10 }} }}
@@ -1471,14 +1973,32 @@ zg361_mg_m347_consume_override_effect = {{
 		set_variable = {{ name = zg361_mg_override_quota_before value = var:zg361_mg_team_n }}
 		if = {{
 			limit = {{
-				has_variable = zg361_mg_override_beneficiary
-				has_variable = zg361_mg_override_bearer
-				has_variable = zg361_mg_override_reason
-				NOT = {{ var:zg361_mg_override_beneficiary = var:zg361_mg_override_bearer }}
+				has_variable = zg361_mg_override_input_status
+				var:zg361_mg_override_input_status = 1
+				has_variable = zg361_mg_override_pending
+				var:zg361_mg_override_pending = 1
+				has_variable = zg361_mg_override_source_owner
+				has_variable = zg361_mg_override_source_subject
+				var:zg361_mg_override_source_owner = var:zg361_case_ak_owner
+				var:zg361_mg_override_source_subject = this
+				has_variable = zg361_mg_override_pending_beneficiary
+				has_variable = zg361_mg_override_pending_bearer
+				has_variable = zg361_mg_override_pending_reason
+				NOT = {{ var:zg361_mg_override_pending_beneficiary = var:zg361_mg_override_pending_bearer }}
 				var:zg361_mg_override_used < var:zg361_mg_override_budget
 			}}
 			change_variable = {{ name = zg361_mg_override_used add = 1 }}
 			set_variable = {{ name = zg361_mg_override_applied value = 1 }}
+			set_variable = {{ name = zg361_mg_override_beneficiary value = var:zg361_mg_override_pending_beneficiary }}
+			set_variable = {{ name = zg361_mg_override_bearer value = var:zg361_mg_override_pending_bearer }}
+			set_variable = {{ name = zg361_mg_override_reason value = var:zg361_mg_override_pending_reason }}
+			set_variable = {{ name = zg361_mg_override_consumed_source_cycle value = var:zg361_mg_override_source_cycle }}
+			set_variable = {{ name = zg361_mg_override_consumed_beneficiary_case value = var:zg361_mg_override_source_beneficiary_case }}
+			set_variable = {{ name = zg361_mg_override_consumed_bearer_case value = var:zg361_mg_override_source_bearer_case }}
+			set_variable = {{ name = zg361_mg_override_consumed_input_revision value = var:zg361_mg_override_input_revision }}
+			set_variable = {{ name = zg361_mg_override_settlement_receipt value = var:zg361_case_ak_case_serial }}
+			set_variable = {{ name = zg361_mg_override_input_status value = 2 }}
+			set_variable = {{ name = zg361_mg_override_pending value = 0 }}
 		}}
 		set_variable = {{ name = zg361_mg_override_quota_after value = var:zg361_mg_team_n }}
 		set_variable = {{ name = zg361_mg_override_quota_neutral value = 1 }}
@@ -1594,6 +2114,25 @@ zg361_mg_m349_run_audit_effect = {{
 				if = {{ limit = {{ var:zg361_mg_m349_route = 2 }} set_variable = {{ name = zg361_mg_audit_method value = 2 }} set_variable = {{ name = zg361_mg_audit_severe_penalty_risk value = 1 }} }}
 				if = {{ limit = {{ NOT = {{ has_variable = zg361_mg_policy_trust }} }} set_variable = {{ name = zg361_mg_policy_trust value = 0 }} }}
 				if = {{ limit = {{ var:zg361_mg_m349_route = 1 }} change_variable = {{ name = zg361_mg_policy_trust add = var:zg361_mg_audit_clean }} }}
+				# A completed reproducible audit is the sole remediation producer.
+				if = {{
+					limit = {{
+						var:zg361_mg_m349_route = 1
+						has_variable = zg361_mg_fairness_remediation_status
+						var:zg361_mg_fairness_remediation_status = 1
+						has_variable = zg361_mg_fairness_remediation_owner
+						has_variable = zg361_mg_fairness_remediation_subject
+						var:zg361_mg_fairness_remediation_owner = var:zg361_case_ak_owner
+						var:zg361_mg_fairness_remediation_subject = this
+						has_variable = zg361_mg_fairness_remediation_due_cycle
+						var:zg361_mg_fairness_remediation_due_cycle <= var:zg361_case_ak_cycle_serial
+					}}
+					set_variable = {{ name = zg361_mg_fairness_remediation_status value = 2 }}
+					set_variable = {{ name = zg361_mg_fairness_remediation_completed_cycle value = var:zg361_case_ak_cycle_serial }}
+					set_variable = {{ name = zg361_mg_fairness_remediation_completed_case value = var:zg361_case_ak_case_serial }}
+					set_variable = {{ name = zg361_mg_fairness_remediation_completed_revision value = var:zg361_mg_fairness_remediation_revision }}
+					set_variable = {{ name = zg361_mg_fairness_remediation_completion_receipt value = var:zg361_mg_fairness_remediation_plan_id }}
+				}}
 				{receipt_call("AK", 349, 3)}
 			}}
 		}}
@@ -1883,13 +2422,34 @@ zg361_mg_refund_admin_capacity_effect = {{
 	else = {{ debug_log = "ZG361MG: stale or duplicate admin-capacity refund ignored" }}
 }}
 
-# 354 — fairness is recomputed from raw delivered/appeal/overturn/exit counts.
-# Long-term trust is awarded only when disclosure and remediation are both true.
+# 354 — consume the snapshot's real raw counts exactly once.  Zero is a valid
+# count; separate denominators guard division without rewriting source facts.
 zg361_mg_m354_audit_fairness_effect = {{
 	{route_prelude("AK", 354)}
 	{c_route_receipt("AK", 354, 5)}
 	if = {{
-		limit = {{ var:zg361_case_ak_state = 5 var:zg361_case_ak_active = 1 {receipt_not_current("AK", 354, 5)} }}
+		limit = {{ var:zg361_mg_m354_route = 3 {receipt_current("AK", 354, 5)} has_variable = zg361_mg_fairness_input_status var:zg361_mg_fairness_input_status = 1 }}
+		set_variable = {{ name = zg361_mg_fairness_input_status value = 3 }}
+		set_variable = {{ name = zg361_mg_fairness_input_discarded_cycle value = var:zg361_case_ak_cycle_serial }}
+	}}
+	if = {{
+		limit = {{
+			var:zg361_case_ak_state = 5
+			var:zg361_case_ak_active = 1
+			{receipt_not_current("AK", 354, 5)}
+			has_variable = zg361_mg_fairness_input_status
+			var:zg361_mg_fairness_input_status = 1
+			has_variable = zg361_mg_fairness_input_source_owner
+			has_variable = zg361_mg_fairness_input_source_subject
+			var:zg361_mg_fairness_input_source_owner = var:zg361_case_ak_owner
+			var:zg361_mg_fairness_input_source_subject = this
+			has_variable = zg361_mg_fairness_input_revision
+			has_variable = zg361_mg_fairness_input_delivered
+			has_variable = zg361_mg_fairness_input_appeals
+			has_variable = zg361_mg_fairness_input_overturns
+			has_variable = zg361_mg_fairness_input_exits
+			has_variable = zg361_mg_fairness_input_healthy_exits
+		}}
 		{business_object_prelude("AK", 354, 35401)}
 		set_variable = {{ name = zg361_mg_fairness_history_mapping_basis value = 0 }}
 		set_variable = {{ name = zg361_mg_fairness_history_mapping_available value = 0 }}
@@ -1902,15 +2462,17 @@ zg361_mg_m354_audit_fairness_effect = {{
 			set_variable = {{ name = zg361_mg_fairness_history_mapping_basis value = var:zg361_mg_history_mapping_version }}
 			set_variable = {{ name = zg361_mg_fairness_history_mapping_available value = 1 }}
 		}}
-		set_variable = {{ name = zg361_mg_fairness_delivered value = {{ value = var:zg361_mg_team_n max = 1 }} }}
-		set_variable = {{ name = zg361_mg_fairness_raw_appeals value = {{ value = 0 subtract = var:zg361_mg_team_appeal_overturn divide = 5 max = 0 }} }}
-		set_variable = {{ name = zg361_mg_fairness_raw_overturns value = var:zg361_mg_fairness_raw_appeals }}
-		set_variable = {{ name = zg361_mg_fairness_raw_exits value = {{ value = var:zg361_mg_team_n subtract = {{ value = var:zg361_mg_team_retention divide = 2 }} max = 1 }} }}
-		set_variable = {{ name = zg361_mg_fairness_raw_healthy_exits value = 0 }}
-		set_variable = {{ name = zg361_mg_fairness_raw_appeal_rate value = {{ value = var:zg361_mg_fairness_raw_appeals divide = var:zg361_mg_fairness_delivered }} }}
+		set_variable = {{ name = zg361_mg_fairness_delivered value = var:zg361_mg_fairness_input_delivered }}
+		set_variable = {{ name = zg361_mg_fairness_raw_appeals value = var:zg361_mg_fairness_input_appeals }}
+		set_variable = {{ name = zg361_mg_fairness_raw_overturns value = var:zg361_mg_fairness_input_overturns }}
+		set_variable = {{ name = zg361_mg_fairness_raw_exits value = var:zg361_mg_fairness_input_exits }}
+		set_variable = {{ name = zg361_mg_fairness_raw_healthy_exits value = var:zg361_mg_fairness_input_healthy_exits }}
+		set_variable = {{ name = zg361_mg_fairness_delivery_denominator value = {{ value = var:zg361_mg_fairness_delivered max = 1 }} }}
+		set_variable = {{ name = zg361_mg_fairness_exit_denominator value = {{ value = var:zg361_mg_fairness_raw_exits max = 1 }} }}
+		set_variable = {{ name = zg361_mg_fairness_raw_appeal_rate value = {{ value = var:zg361_mg_fairness_raw_appeals divide = var:zg361_mg_fairness_delivery_denominator }} }}
 		set_variable = {{ name = zg361_mg_fairness_raw_overturn_rate value = 0 }}
 		if = {{ limit = {{ var:zg361_mg_fairness_raw_appeals > 0 }} set_variable = {{ name = zg361_mg_fairness_raw_overturn_rate value = {{ value = var:zg361_mg_fairness_raw_overturns divide = var:zg361_mg_fairness_raw_appeals }} }} }}
-		set_variable = {{ name = zg361_mg_fairness_raw_healthy_exit_rate value = {{ value = var:zg361_mg_fairness_raw_healthy_exits divide = var:zg361_mg_fairness_raw_exits }} }}
+		set_variable = {{ name = zg361_mg_fairness_raw_healthy_exit_rate value = {{ value = var:zg361_mg_fairness_raw_healthy_exits divide = var:zg361_mg_fairness_exit_denominator }} }}
 		set_variable = {{ name = zg361_mg_fairness_reported_appeal_rate value = var:zg361_mg_fairness_raw_appeal_rate }}
 		set_variable = {{ name = zg361_mg_fairness_reported_overturn_rate value = var:zg361_mg_fairness_raw_overturn_rate }}
 		set_variable = {{ name = zg361_mg_fairness_reported_healthy_exit_rate value = var:zg361_mg_fairness_raw_healthy_exit_rate }}
@@ -1932,7 +2494,43 @@ zg361_mg_m354_audit_fairness_effect = {{
 		if = {{ limit = {{ OR = {{ NOT = {{ var:zg361_mg_fairness_gap_appeal = 0 }} NOT = {{ var:zg361_mg_fairness_gap_overturn = 0 }} NOT = {{ var:zg361_mg_fairness_gap_exit = 0 }} }} }} set_variable = {{ name = zg361_mg_fairness_gaming value = 1 }} }}
 		set_variable = {{ name = zg361_mg_fairness_trust_delta value = 0 }}
 		set_variable = {{ name = zg361_mg_fairness_history_mapping_version value = var:zg361_mg_fairness_history_mapping_basis }}
-		if = {{ limit = {{ var:zg361_mg_m354_route = 1 var:zg361_mg_fairness_gaming = 1 has_variable = zg361_mg_fairness_self_disclosed var:zg361_mg_fairness_self_disclosed = 1 has_variable = zg361_mg_fairness_remediation_completed var:zg361_mg_fairness_remediation_completed = 1 has_variable = zg361_mg_fairness_remediation_plan }} set_variable = {{ name = zg361_mg_fairness_trust_delta value = 5 }} change_variable = {{ name = zg361_mg_policy_trust add = 5 }} set_variable = {{ name = zg361_mg_fairness_trust_settled_cycle value = var:zg361_case_ak_cycle_serial }} }}
+		# Route A may reward only an earlier plan that M349 actually completed.
+		if = {{
+			limit = {{
+				var:zg361_mg_m354_route = 1
+				has_variable = zg361_mg_fairness_remediation_status
+				var:zg361_mg_fairness_remediation_status = 2
+				has_variable = zg361_mg_fairness_remediation_owner
+				has_variable = zg361_mg_fairness_remediation_subject
+				var:zg361_mg_fairness_remediation_owner = var:zg361_case_ak_owner
+				var:zg361_mg_fairness_remediation_subject = this
+				has_variable = zg361_mg_fairness_remediation_completion_receipt
+				var:zg361_mg_fairness_remediation_completion_receipt = var:zg361_mg_fairness_remediation_plan_id
+			}}
+			set_variable = {{ name = zg361_mg_fairness_trust_delta value = 5 }}
+			change_variable = {{ name = zg361_mg_policy_trust add = 5 }}
+			set_variable = {{ name = zg361_mg_fairness_trust_settled_cycle value = var:zg361_case_ak_cycle_serial }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_status value = 3 }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_reward_receipt value = var:zg361_mg_fairness_remediation_plan_id }}
+		}}
+		# Route B's observable mismatch creates the next-cycle remediation plan;
+		# no unsupported external self-disclosure/remediation knobs are read.
+		if = {{
+			limit = {{ var:zg361_mg_m354_route = 2 var:zg361_mg_fairness_gaming = 1 }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_status value = 1 }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_revision value = var:zg361_mg_fairness_input_revision }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_plan_id value = {{ value = var:zg361_case_ak_case_serial multiply = 1000 add = 354 }} }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_owner value = var:zg361_case_ak_owner }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_subject value = this }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_source_cycle value = var:zg361_case_ak_cycle_serial }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_source_case value = var:zg361_case_ak_case_serial }}
+			set_variable = {{ name = zg361_mg_fairness_remediation_due_cycle value = {{ value = var:zg361_case_ak_cycle_serial add = 1 }} }}
+		}}
+		set_variable = {{ name = zg361_mg_fairness_input_status value = 2 }}
+		set_variable = {{ name = zg361_mg_fairness_consumed_source_cycle value = var:zg361_mg_fairness_input_source_cycle }}
+		set_variable = {{ name = zg361_mg_fairness_consumed_source_case value = var:zg361_mg_fairness_input_source_case }}
+		set_variable = {{ name = zg361_mg_fairness_consumed_input_revision value = var:zg361_mg_fairness_input_revision }}
+		set_variable = {{ name = zg361_mg_fairness_settlement_receipt value = var:zg361_case_ak_case_serial }}
 		{receipt_call("AK", 354, 5)}
 	}}
 	else_if = {{ limit = {{ NOT = {{ var:zg361_mg_m354_route = 3 }} {receipt_not_current("AK", 354, 5)} }} zg361_mg_set_red_effect = {{ CODE = 3 MECHANISM = 354 }} }}
@@ -2190,6 +2788,7 @@ def outputs() -> dict[Path, bytes]:
     validate_bindings()
     rendered = {
         MOD_ROOT / "common" / "scripted_effects" / "zg361_manager_governance_runtime_effects.txt": render_effects(),
+        MOD_ROOT / "common" / "script_values" / "zg361_manager_governance_runtime_values.txt": render_values(),
         MOD_ROOT / "events" / "zg361_manager_governance_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_manager_governance_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_manager_governance_l_simp_chinese.yml": render_simp_chinese_localization(),

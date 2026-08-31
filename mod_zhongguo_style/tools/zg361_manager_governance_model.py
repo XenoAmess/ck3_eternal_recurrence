@@ -59,6 +59,27 @@ ANNUAL_METRIC_NAMES: Final[tuple[str, ...]] = (
     "bonus_out",
     "hc_efficiency",
 )
+OFFICIAL_KPI_COMPONENT_NAMES: Final[tuple[str, ...]] = (
+    "governance",
+    "capability",
+    "growth",
+    "superior",
+    "values",
+    "collaboration",
+    "jingcha",
+    "organization",
+)
+ORGANIZATION_COMPONENT_INDEX: Final[int] = 7
+GAME_RULE_DISTRIBUTION_MODES: Final[dict[str, str]] = {
+    "zg361_ratio_strict": "strict",
+    "zg361_ratio_relaxed": "relaxed",
+    "zg361_ratio_off": "off",
+}
+RATIO_OVERRIDE_DISTRIBUTION_MODES: Final[dict[int, str]] = {
+    10: "strict",
+    5: "relaxed",
+    0: "off",
+}
 
 
 class Choice(IntEnum):
@@ -74,6 +95,12 @@ class RedCode(str, Enum):
     RESOURCE = "resource"
     MISSING = "missing"
     PERMISSION = "permission"
+
+
+class PendingInputKind(str, Enum):
+    OFFCYCLE = "offcycle"
+    OVERRIDE = "override"
+    FAIRNESS = "fairness"
 
 
 class ModelRed(ValueError):
@@ -211,48 +238,199 @@ def _unique(name: str, values: Iterable[str], *, minimum: int = 1) -> tuple[str,
     return result
 
 
-def compute_distribution_snapshot(
+@dataclass(frozen=True)
+class PendingManagerOrganizationScore:
+    """F032 score awaiting its one official component-8 consumer."""
+
+    source_identity: CaseIdentity
+    due_cycle: int
+    score: int
+    input_revision: int
+    component_number: int = 8
+
+    def __post_init__(self) -> None:
+        _integer("due_cycle", self.due_cycle, minimum=self.source_identity.cycle_serial + 1)
+        _integer("score", self.score)
+        _integer("input_revision", self.input_revision, minimum=1)
+        if self.component_number != ORGANIZATION_COMPONENT_INDEX + 1:
+            raise ModelRed(RedCode.INVARIANT, "component_number", "manager score belongs to organization component 8")
+
+
+@dataclass(frozen=True)
+class ManagerOrganizationSettlement:
+    source_identity: CaseIdentity
+    due_cycle: int
+    settled_cycle: int
+    settled_by_owner_id: str
+    input_revision: int
+    score: int
+    components_before: tuple[int, ...]
+    components_after: tuple[int, ...]
+
+    @property
+    def official_kpi_before(self) -> int:
+        return sum(self.components_before)
+
+    @property
+    def official_kpi_after(self) -> int:
+        return sum(self.components_after)
+
+
+@dataclass(frozen=True)
+class OffcyclePendingInput:
+    """Producer-owned material team signal for AK346."""
+
+    source_identity: CaseIdentity
+    input_revision: int
+    signal_id: str
+    signal_type: str
+    materiality: int
+    evidence_ids: tuple[str, ...]
+    kind: PendingInputKind = field(default=PendingInputKind.OFFCYCLE, init=False)
+
+    def __post_init__(self) -> None:
+        _integer("input_revision", self.input_revision, minimum=1)
+        _text("signal_id", self.signal_id)
+        if _text("signal_type", self.signal_type) not in {"achievement", "misconduct", "goal-change"}:
+            raise ModelRed(RedCode.INVALID, "signal_type", "known material signal type required")
+        _integer("materiality", self.materiality, minimum=50, maximum=100)
+        _unique("evidence_ids", self.evidence_ids)
+
+
+@dataclass(frozen=True)
+class OverridePendingInput:
+    """Actual paired grade reasons awaiting the AK347 override book."""
+
+    source_identity: CaseIdentity
+    input_revision: int
+    beneficiary_id: str
+    bearer_id: str
+    beneficiary_grade_reason: int
+    bearer_grade_reason: int
+    beneficiary_result_case: int
+    bearer_result_case: int
+    kind: PendingInputKind = field(default=PendingInputKind.OVERRIDE, init=False)
+
+    def __post_init__(self) -> None:
+        _integer("input_revision", self.input_revision, minimum=1)
+        beneficiary = _text("beneficiary_id", self.beneficiary_id)
+        bearer = _text("bearer_id", self.bearer_id)
+        if beneficiary == bearer:
+            raise ModelRed(RedCode.INVARIANT, "override_pair", "beneficiary and bearer must differ")
+        if _integer("beneficiary_grade_reason", self.beneficiary_grade_reason) not in {2, 4}:
+            raise ModelRed(RedCode.INVALID, "beneficiary_grade_reason", "actual lift/rescue result reason required")
+        if _integer("bearer_grade_reason", self.bearer_grade_reason) not in {1, 3}:
+            raise ModelRed(RedCode.INVALID, "bearer_grade_reason", "actual push result reason required")
+        _integer("beneficiary_result_case", self.beneficiary_result_case, minimum=1)
+        _integer("bearer_result_case", self.bearer_result_case, minimum=1)
+
+
+@dataclass(frozen=True)
+class FairnessPendingInput:
+    """Actual frozen delivery/appeal/exit counters awaiting AK354."""
+
+    source_identity: CaseIdentity
+    input_revision: int
+    delivered: int
+    appeals: int
+    overturns: int
+    exits: int
+    healthy_exits: int
+    kind: PendingInputKind = field(default=PendingInputKind.FAIRNESS, init=False)
+
+    def __post_init__(self) -> None:
+        _integer("input_revision", self.input_revision, minimum=1)
+        delivered = _integer("delivered", self.delivered, minimum=0)
+        appeals = _integer("appeals", self.appeals, minimum=0, maximum=delivered)
+        _integer("overturns", self.overturns, minimum=0, maximum=appeals)
+        exits = _integer("exits", self.exits, minimum=0)
+        _integer("healthy_exits", self.healthy_exits, minimum=0, maximum=exits)
+
+
+GovernancePendingInput = OffcyclePendingInput | OverridePendingInput | FairnessPendingInput
+PENDING_INPUT_CONSUMERS: Final[dict[PendingInputKind, int]] = {
+    PendingInputKind.OFFCYCLE: 346,
+    PendingInputKind.OVERRIDE: 347,
+    PendingInputKind.FAIRNESS: 354,
+}
+
+
+@dataclass(frozen=True)
+class PendingInputConsumptionReceipt:
+    kind: PendingInputKind
+    source_identity: CaseIdentity
+    input_revision: int
+    consumer_identity: CaseIdentity
+    consumer_mechanism_id: int
+    payload_hash: str
+
+
+def _distribution_snapshot(
     *,
     mode: str,
     cohort: int,
-    frozen_scores: Sequence[int],
-    absolute_threshold: int,
     rule_source: str,
+    producer_value: int | str,
     review_serial: int,
 ) -> dict[str, Any]:
-    """Freeze strict/relaxed/off/mixed without consulting later policy state."""
+    """Freeze the actual three-mode quota inputs used by the rank consumer."""
 
-    if mode not in {"strict", "relaxed", "off", "mixed"}:
-        raise ModelRed(RedCode.INVALID, "mode", "strict/relaxed/off/mixed required")
+    if mode not in {"strict", "relaxed", "off"}:
+        raise ModelRed(RedCode.INVALID, "mode", "strict/relaxed/off required")
     size = _integer("cohort", cohort, minimum=0)
-    scores = tuple(_integer("frozen_score", value) for value in frozen_scores)
-    if len(scores) != size:
-        raise ModelRed(RedCode.INVARIANT, "frozen_scores", "one frozen score per cohort member required")
-    threshold = _integer("absolute_threshold", absolute_threshold)
     source = _text("rule_source", rule_source)
     serial = _integer("review_serial", review_serial, minimum=1)
-    bottom_rate = {"strict": 0.10, "relaxed": 0.05, "off": 0.0, "mixed": 0.10}[mode]
-    top = math.floor(size * 0.30)
-    bottom = math.floor(size * bottom_rate)
-    if size >= 5 and mode != "off":
+    top = 0 if size == 0 else min(size, max(1, math.floor(size * 0.30 + 0.5)))
+    bottom = math.floor(size * {"strict": 0.10, "relaxed": 0.05, "off": 0.0}[mode])
+    if size >= 5 and mode == "strict":
         bottom = max(1, bottom)
+    bottom = min(bottom, max(0, size - top))
     middle = size - top - bottom
-    all_pass = bool(scores) and all(value >= threshold for value in scores)
-    consequence = "none" if mode == "off" else "light" if mode == "mixed" and all_pass else "normal"
     frozen = {
         "mode": mode,
         "rule_source": source,
+        "producer_value": producer_value,
         "review_serial": serial,
         "cohort": size,
         "top": top,
         "middle": middle,
         "bottom": bottom,
-        "absolute_threshold": threshold if mode == "mixed" else None,
-        "all_pass": all_pass,
-        "bottom_consequence": consequence,
+        "bottom_consequence": "none" if mode == "off" else "normal",
     }
     frozen["snapshot_hash"] = hashlib.sha256(repr(_freeze(frozen)).encode("utf-8")).hexdigest()
     return frozen
+
+
+def compute_distribution_snapshot(
+    *,
+    ratio_override: int | None,
+    game_rule: str,
+    cohort: int,
+    review_serial: int,
+) -> dict[str, Any]:
+    """Freeze the real producer precedence: liege override, then game rule."""
+
+    if ratio_override is not None:
+        override = _integer("ratio_override", ratio_override)
+        if override not in RATIO_OVERRIDE_DISTRIBUTION_MODES:
+            raise ModelRed(RedCode.INVALID, "ratio_override", "actual override must be 10/5/0")
+        return _distribution_snapshot(
+            mode=RATIO_OVERRIDE_DISTRIBUTION_MODES[override],
+            cohort=cohort,
+            rule_source="liege-override",
+            producer_value=override,
+            review_serial=review_serial,
+        )
+    rule = _text("game_rule", game_rule)
+    if rule not in GAME_RULE_DISTRIBUTION_MODES:
+        raise ModelRed(RedCode.INVALID, "game_rule", "actual strict/relaxed/off game rule required")
+    return _distribution_snapshot(
+        mode=GAME_RULE_DISTRIBUTION_MODES[rule],
+        cohort=cohort,
+        rule_source="game-rule",
+        producer_value=rule,
+        review_serial=review_serial,
+    )
 
 
 @dataclass
@@ -267,6 +445,10 @@ class GovernanceLedger:
     latest_cases: dict[tuple[int, str], CaseIdentity] = field(default_factory=dict)
     manager_score_adjustments: dict[str, int] = field(default_factory=dict)
     manager_scores: dict[CaseIdentity, int] = field(default_factory=dict)
+    manager_organization_pending: dict[CaseIdentity, PendingManagerOrganizationScore] = field(default_factory=dict)
+    manager_organization_settlements: dict[CaseIdentity, ManagerOrganizationSettlement] = field(default_factory=dict)
+    pending_inputs: dict[tuple[PendingInputKind, CaseIdentity, int], GovernancePendingInput] = field(default_factory=dict)
+    pending_input_receipts: dict[tuple[PendingInputKind, CaseIdentity, int], PendingInputConsumptionReceipt] = field(default_factory=dict)
     signal_ids: set[str] = field(default_factory=set)
     jingcha_consumed: set[tuple[str, int]] = field(default_factory=set)
     q_projections: dict[tuple[int, str, str, int, int, int], tuple[tuple[str, Any], ...]] = field(default_factory=dict)
@@ -352,6 +534,12 @@ class GovernanceLedger:
         if mechanism_id == 32:
             self.manager_scores[identity] = int(fields["score"])
             self.manager_score_adjustments[identity.subject_id] = 0
+            self.manager_organization_pending[identity] = PendingManagerOrganizationScore(
+                source_identity=identity,
+                due_cycle=identity.cycle_serial + 1,
+                score=int(fields["score"]),
+                input_revision=identity.revision,
+            )
         if mechanism_id == 346:
             self.signal_ids.add(str(fields["signal_id"]))
         return Outcome(True, selected, business)
@@ -420,6 +608,125 @@ class GovernanceLedger:
             + settlement.manager_score_delta
         )
         return settlement
+
+    def consume_manager_organization_score(
+        self,
+        source_identity: CaseIdentity,
+        *,
+        current_cycle: int,
+        settled_by_owner_id: str,
+        current_direct_liege_id: str,
+        official_components: Sequence[int],
+    ) -> ManagerOrganizationSettlement | None:
+        """Settle F032 once into organization, preserving exactly eight KPI components."""
+
+        components = tuple(_integer("official_component", value) for value in official_components)
+        if len(components) != len(OFFICIAL_KPI_COMPONENT_NAMES):
+            raise ModelRed(RedCode.INVARIANT, "official_components", "official KPI must contain exactly eight components")
+        cycle = _integer("current_cycle", current_cycle, minimum=1)
+        settlement_owner = _text("settled_by_owner_id", settled_by_owner_id)
+        if settlement_owner != _text("current_direct_liege_id", current_direct_liege_id):
+            raise ModelRed(RedCode.PERMISSION, "settled_by_owner_id", "current direct superior must settle manager score")
+        if settlement_owner == source_identity.subject_id:
+            raise ModelRed(RedCode.INVARIANT, "settled_by_owner_id", "manager cannot settle own organization evidence")
+        prior = self.manager_organization_settlements.get(source_identity)
+        if prior is not None:
+            if (
+                cycle == prior.settled_cycle
+                and settlement_owner == prior.settled_by_owner_id
+                and components == prior.components_before
+            ):
+                return None
+            raise ModelRed(RedCode.STALE, "manager_score_settlement", "settled organization evidence cannot be rewritten")
+        pending = self.manager_organization_pending.get(source_identity)
+        if pending is None:
+            raise ModelRed(RedCode.MISSING, "manager_score_pending", "exact F032 score does not exist")
+        if cycle < pending.due_cycle:
+            raise ModelRed(RedCode.STALE, "current_cycle", "manager score is not due until next cycle")
+        updated = list(components)
+        updated[ORGANIZATION_COMPONENT_INDEX] += pending.score
+        settlement = ManagerOrganizationSettlement(
+            source_identity=source_identity,
+            due_cycle=pending.due_cycle,
+            settled_cycle=cycle,
+            settled_by_owner_id=settlement_owner,
+            input_revision=pending.input_revision,
+            score=pending.score,
+            components_before=components,
+            components_after=tuple(updated),
+        )
+        self.manager_organization_settlements[source_identity] = settlement
+        del self.manager_organization_pending[source_identity]
+        return settlement
+
+    @staticmethod
+    def _pending_input_key(pending: GovernancePendingInput) -> tuple[PendingInputKind, CaseIdentity, int]:
+        return pending.kind, pending.source_identity, pending.input_revision
+
+    @staticmethod
+    def _pending_input_hash(pending: GovernancePendingInput) -> str:
+        return hashlib.sha256(repr(pending).encode("utf-8")).hexdigest()
+
+    def publish_pending_input(self, pending: GovernancePendingInput) -> bool:
+        """Publish one producer-owned typed input revision without fabricating defaults."""
+
+        if not isinstance(pending, (OffcyclePendingInput, OverridePendingInput, FairnessPendingInput)):
+            raise ModelRed(RedCode.INVALID, "pending", "typed offcycle/override/fairness input required")
+        key = self._pending_input_key(pending)
+        prior_receipt = self.pending_input_receipts.get(key)
+        if prior_receipt is not None:
+            if prior_receipt.payload_hash == self._pending_input_hash(pending):
+                return False
+            raise ModelRed(RedCode.STALE, "pending", "consumed input revision cannot be rewritten")
+        prior = self.pending_inputs.get(key)
+        if prior is not None:
+            if prior == pending:
+                return False
+            raise ModelRed(RedCode.STALE, "pending", "published input revision cannot be rewritten")
+        self.pending_inputs[key] = pending
+        return True
+
+    def consume_pending_input(
+        self,
+        pending: GovernancePendingInput,
+        *,
+        consumer_mechanism_id: int,
+        consumer_identity: CaseIdentity,
+    ) -> PendingInputConsumptionReceipt | None:
+        """Consume an exact typed producer revision once and leave an immutable receipt."""
+
+        if not isinstance(pending, (OffcyclePendingInput, OverridePendingInput, FairnessPendingInput)):
+            raise ModelRed(RedCode.INVALID, "pending", "typed offcycle/override/fairness input required")
+        expected_consumer = PENDING_INPUT_CONSUMERS[pending.kind]
+        if consumer_mechanism_id != expected_consumer:
+            raise ModelRed(RedCode.INVARIANT, "consumer_mechanism_id", f"{pending.kind.value} input belongs to {expected_consumer}")
+        if consumer_identity.subject_id != pending.source_identity.subject_id:
+            raise ModelRed(RedCode.INVARIANT, "consumer_identity", "producer and consumer subjects must match")
+        if consumer_identity.cycle_serial < pending.source_identity.cycle_serial:
+            raise ModelRed(RedCode.STALE, "consumer_identity", "consumer cannot predate its producer")
+        key = self._pending_input_key(pending)
+        payload_hash = self._pending_input_hash(pending)
+        receipt = PendingInputConsumptionReceipt(
+            kind=pending.kind,
+            source_identity=pending.source_identity,
+            input_revision=pending.input_revision,
+            consumer_identity=consumer_identity,
+            consumer_mechanism_id=consumer_mechanism_id,
+            payload_hash=payload_hash,
+        )
+        prior_receipt = self.pending_input_receipts.get(key)
+        if prior_receipt is not None:
+            if prior_receipt == receipt:
+                return None
+            raise ModelRed(RedCode.STALE, "pending_receipt", "consumed input cannot be settled twice")
+        published = self.pending_inputs.get(key)
+        if published is None:
+            raise ModelRed(RedCode.MISSING, "pending", "exact input revision was not published")
+        if published != pending:
+            raise ModelRed(RedCode.STALE, "pending", "consumer payload differs from producer revision")
+        self.pending_input_receipts[key] = receipt
+        del self.pending_inputs[key]
+        return receipt
 
     def project_manager_certification(self, receipt: ManagerCertificationReceipt) -> bool:
         """Consume a Q121-128 receipt without owning or mutating its case."""
@@ -772,18 +1079,28 @@ class GovernanceLedger:
 
     def _m035(self, route: Choice, identity: CaseIdentity, facts: Mapping[str, Any]) -> tuple[str, dict[str, Any]]:
         cohort = _integer("cohort", facts.get("cohort"), minimum=0)
-        requested_mode = _text("distribution_mode", facts.get("distribution_mode", "mixed"))
-        snapshot = compute_distribution_snapshot(
-            mode=requested_mode if route is Choice.A else "strict",
-            cohort=cohort,
-            frozen_scores=facts.get("frozen_scores", ()),
-            absolute_threshold=_integer("absolute_threshold", facts.get("absolute_threshold", 60)),
-            rule_source=_text("rule_source", facts.get("rule_source", "global")),
-            review_serial=identity.cycle_serial,
-        )
+        if route is Choice.A:
+            snapshot = compute_distribution_snapshot(
+                ratio_override=facts.get("ratio_override"),
+                game_rule=facts.get("game_rule"),
+                cohort=cohort,
+                review_serial=identity.cycle_serial,
+            )
+        else:
+            snapshot = _distribution_snapshot(
+                mode="strict",
+                cohort=cohort,
+                rule_source="mechanism-035-route-b",
+                producer_value=10,
+                review_serial=identity.cycle_serial,
+            )
         if min(snapshot["top"], snapshot["middle"], snapshot["bottom"]) < 0 or snapshot["top"] + snapshot["middle"] + snapshot["bottom"] != cohort:
             raise ModelRed(RedCode.INVARIANT, "quota", "3/6/1 slots must conserve cohort")
-        return "distribution-snapshot", {**snapshot, "frozen_cycle": identity.cycle_serial}
+        return "distribution-snapshot", {
+            **snapshot,
+            "frozen_cycle": identity.cycle_serial,
+            "effective_cycle": identity.cycle_serial + 1,
+        }
 
     def _m036(self, route: Choice, identity: CaseIdentity, facts: Mapping[str, Any]) -> tuple[str, dict[str, Any]]:
         eligible = facts.get("government_eligible")
@@ -1131,12 +1448,16 @@ class GovernanceLedger:
         }
 
     def _m354(self, route: Choice, identity: CaseIdentity, facts: Mapping[str, Any]) -> tuple[str, dict[str, Any]]:
-        delivered = _integer("delivered", facts.get("delivered"), minimum=1)
+        delivered = _integer("delivered", facts.get("delivered"), minimum=0)
         appeals = _integer("appeals", facts.get("appeals"), minimum=0, maximum=delivered)
         overturns = _integer("overturns", facts.get("overturns"), minimum=0, maximum=appeals)
-        exits = _integer("exits", facts.get("exits"), minimum=1)
+        exits = _integer("exits", facts.get("exits"), minimum=0)
         healthy = _integer("healthy_exits", facts.get("healthy_exits"), minimum=0, maximum=exits)
-        raw = (appeals / delivered, overturns / appeals if appeals else 0.0, healthy / exits)
+        raw = (
+            appeals / delivered if delivered else 0.0,
+            overturns / appeals if appeals else 0.0,
+            healthy / exits if exits else 0.0,
+        )
         if route is Choice.A:
             reported = tuple(_number("reported", value, minimum=0, maximum=1) for value in facts.get("reported", raw))
         else:
@@ -1144,15 +1465,16 @@ class GovernanceLedger:
             reported = (max(0.0, raw[0] / 2), max(0.0, raw[1] / 2), min(1.0, raw[2] + 0.25))
         gap = tuple(round(reported[index] - raw[index], 6) for index in range(3))
         gaming = any(abs(value) > 1e-9 for value in gap)
-        disclosed = bool(facts.get("self_disclosed", False))
-        remediated = bool(facts.get("remediated", False))
-        remediation_plan = facts.get("remediation_plan_id")
-        if remediated:
-            remediation_plan = _text("remediation_plan_id", remediation_plan)
         suppression = raw[0] > reported[0] or raw[1] > reported[1]
         reclassification = raw[2] < reported[2]
-        trust = 5 if route is Choice.A and gaming and disclosed and remediated else 0
         return "fairness-meta-audit", {
+            "raw_counts": {
+                "delivered": delivered,
+                "appeals": appeals,
+                "overturns": overturns,
+                "exits": exits,
+                "healthy_exits": healthy,
+            },
             "raw": raw,
             "reported": reported,
             "gap": gap,
@@ -1160,10 +1482,9 @@ class GovernanceLedger:
             "reclassification_flag": reclassification,
             "gaming": gaming,
             "raw_archive_preserved": True,
-            "self_disclosed": disclosed,
-            "remediated": remediated,
-            "remediation_plan_id": remediation_plan,
-            "long_term_trust_delta": trust,
+            # Trust requires a separately produced and consumed remediation
+            # receipt; raw audit inputs cannot self-award it.
+            "long_term_trust_delta": 0,
         }
 
 
@@ -1174,6 +1495,10 @@ def assert_contract() -> None:
         raise AssertionError("owned manager/governance IDs drifted")
     if Q_PROJECTION_IDS != tuple(range(121, 129)):
         raise AssertionError("manager-certification projection drifted")
+    if len(OFFICIAL_KPI_COMPONENT_NAMES) != 8 or OFFICIAL_KPI_COMPONENT_NAMES[ORGANIZATION_COMPONENT_INDEX] != "organization":
+        raise AssertionError("manager evidence must remain inside official organization component 8")
+    if set(PENDING_INPUT_CONSUMERS.values()) != {346, 347, 354}:
+        raise AssertionError("typed producer/consumer map drifted")
 
 
 assert_contract()

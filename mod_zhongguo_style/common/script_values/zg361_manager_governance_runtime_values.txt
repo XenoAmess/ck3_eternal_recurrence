@@ -1,0 +1,100 @@
+﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
+# Freeze the only real distribution producers into F035's input fingerprint.
+# mode 0 is typed unavailable; kind 1/2 means decision override/game rule.
+zg361_mg_distribution_source_mode_value = {
+	value = 0
+	if = { limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 10 } add = 1 }
+	else_if = { limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 5 } add = 2 }
+	else_if = { limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 0 } add = 3 }
+	else_if = { limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_strict } add = 1 }
+	else_if = { limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_relaxed } add = 2 }
+	else_if = { limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_off } add = 3 }
+}
+
+zg361_mg_distribution_source_kind_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_ratio_override
+			OR = { var:zg361_ratio_override = 10 var:zg361_ratio_override = 5 var:zg361_ratio_override = 0 }
+		}
+		add = 1
+	}
+	else_if = {
+		limit = {
+			NOT = { has_variable = zg361_ratio_override }
+			OR = {
+				has_game_rule = zg361_ratio_strict
+				has_game_rule = zg361_ratio_relaxed
+				has_game_rule = zg361_ratio_off
+			}
+		}
+		add = 2
+	}
+}
+
+# F032 is folded into official component 8 (organization) on the next review.
+# This value is deliberately not referenced as a ninth addend by zg361_kpi_value.
+zg361_mg_due_organization_kpi_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_mg_organization_input_status
+			var:zg361_mg_organization_input_status = 1
+			has_variable = zg361_mg_organization_input_owner
+			has_variable = zg361_mg_organization_input_subject
+			has_variable = zg361_mg_organization_input_value
+			var:zg361_mg_organization_input_owner = liege
+			var:zg361_mg_organization_input_subject = this
+			has_variable = zg361_mg_organization_input_source_cycle
+			has_variable = zg361_mg_organization_input_due_cycle
+			var:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }
+			OR = {
+				AND = {
+					has_variable = zg361_b1_cycle_serial
+					var:zg361_b1_cycle_serial >= var:zg361_mg_organization_input_due_cycle
+				}
+				AND = {
+					NOT = { has_variable = zg361_b1_cycle_serial }
+					has_variable = zg361_review_serial
+					var:zg361_review_serial >= var:zg361_mg_organization_input_source_cycle
+				}
+			}
+		}
+		add = var:zg361_mg_organization_input_value
+	}
+}
+
+# Exact 10/5/0 next-cycle policy.  Relaxed mode intentionally has no minimum
+# slot; strict mode keeps the core cohort>=5 minimum of one.
+zg361_mg_effective_bottom_slots_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_applied_this_rank
+			var:zg361_mg_distribution_policy_applied_this_rank = 1
+			var:zg361_mg_distribution_effective_mode = 2
+		}
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.05
+			floor = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_applied_this_rank
+			var:zg361_mg_distribution_policy_applied_this_rank = 1
+			var:zg361_mg_distribution_effective_mode = 1
+		}
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.10
+			floor = yes
+		}
+		if = {
+			limit = { var:zg361_cohort_n >= 5 }
+			min = 1
+		}
+	}
+}
