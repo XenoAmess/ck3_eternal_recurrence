@@ -24,9 +24,6 @@ zg361_independent_refusal_prestige_cost_value = 200
 
 zg361_kpi_striving_bonus_value = 10			# 玩家封臣"奋发"：下期 KPI 加成
 zg361_kpi_slacking_malus_value = 10			# 玩家封臣"摆烂"：下期 KPI 减成
-zg361_kpi_recommended_bonus_value = 10		# 被举荐：下期 KPI 加成
-zg361_kpi_slandered_malus_value = 15		# 被攻讦：下期 KPI 减成
-zg361_kpi_slander_backfire_malus_value = 15	# 攻讦失败反噬：下期 KPI 减成
 
 # 3.75 绩效奖金（国库，按贤能品级缩放：60 + 品级×15）
 zg361_perf_bonus_scaled_value = {
@@ -181,7 +178,7 @@ zg361_kpi_values_evidence_value = {
 	}
 }
 
-# 6. 上期奋斗/摆烂与同僚举荐/攻讦信号。
+# 6. 上期奋斗/摆烂与 B1 密封同僚互评信号。
 zg361_kpi_collaboration_evidence_value = {
 	value = 0
 	if = {
@@ -193,24 +190,6 @@ zg361_kpi_collaboration_evidence_value = {
 		add = {
 			value = 0
 			subtract = zg361_kpi_slacking_malus_value
-		}
-	}
-	if = {
-		limit = { has_variable = zg361_recommended }
-		add = zg361_kpi_recommended_bonus_value
-	}
-	if = {
-		limit = { has_variable = zg361_slandered }
-		add = {
-			value = 0
-			subtract = zg361_kpi_slandered_malus_value
-		}
-	}
-	if = {
-		limit = { has_variable = zg361_slander_backfire }
-		add = {
-			value = 0
-			subtract = zg361_kpi_slander_backfire_malus_value
 		}
 	}
 	# B1 peer records are sealed evaluator/subject/cycle facts. Their bounded

@@ -2114,13 +2114,13 @@ zg361_b1_submit_shadow_supplement_ticket_effect = {
 # remains the blind calibration score; a material rank delta creates a manager
 # audit instead of silently changing the hard facts.
 zg361_b1_freeze_blind_named_diff_effect = {
-	if = {
-		limit = { has_variable_list = zg361_b1_blind_named_candidates }
-		clear_variable_list = zg361_b1_blind_named_candidates
-	}
 	set_variable = { name = zg361_b1_blind_named_n value = 0 }
 	set_variable = { name = zg361_b1_blind_bias_audit_n value = 0 }
 	save_temporary_scope_as = zg361_b1_blind_named_manager
+	# This is an event-target list, not a persistent variable list.  Seed it
+	# with the real manager character so the zero-candidate path still has a
+	# loader-visible object setter.  Both business passes exclude the anchor.
+	add_to_list = zg361_b1_blind_named_candidates
 	every_in_list = {
 		variable = zg361_b1_subjects
 		if = {
@@ -2160,6 +2160,7 @@ zg361_b1_freeze_blind_named_diff_effect = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_blind_score
 		max = { value = var:zg361_b1_blind_named_n max = 80 }
+		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_blind_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_blind_rank value = root.var:zg361_b1_blind_rank_cursor }
 	}
@@ -2168,6 +2169,7 @@ zg361_b1_freeze_blind_named_diff_effect = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_named_score
 		max = { value = var:zg361_b1_blind_named_n max = 80 }
+		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_named_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_named_rank value = root.var:zg361_b1_named_rank_cursor }
 		set_variable = { name = zg361_b1_blind_named_rank_delta value = { value = var:zg361_b1_named_rank subtract = var:zg361_b1_blind_rank } }
@@ -2183,6 +2185,9 @@ zg361_b1_freeze_blind_named_diff_effect = {
 			root = { change_variable = { name = zg361_b1_blind_bias_audit_n add = 1 } }
 		}
 		set_variable = { name = zg361_b1_m044_receipt_serial value = var:zg361_b1_case_serial }
+	}
+	scope:zg361_b1_blind_named_manager = {
+		remove_from_list = zg361_b1_blind_named_candidates
 	}
 }
 

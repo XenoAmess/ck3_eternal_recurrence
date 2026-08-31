@@ -460,6 +460,43 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             close.index("zg361_b1_submit_quota_book_effect = yes"),
         )
 
+    def test_blind_named_list_uses_a_real_character_anchor_only_as_container(self) -> None:
+        blind = top_level_block(
+            self.effects, "zg361_b1_freeze_blind_named_diff_effect"
+        )
+        list_name = "zg361_b1_blind_named_candidates"
+        anchor = "zg361_b1_blind_named_manager"
+
+        # add_to_list/list is an event-target list.  Mixing in variable-list
+        # existence or clear effects recreates the loader warning and does not
+        # initialize the transient character container.
+        self.assertNotIn(f"has_variable_list = {list_name}", blind)
+        self.assertNotIn(f"clear_variable_list = {list_name}", blind)
+        anchor_save = blind.index(f"save_temporary_scope_as = {anchor}")
+        anchor_add = blind.index(f"add_to_list = {list_name}", anchor_save)
+        subject_walk = blind.index("every_in_list = {", anchor_add)
+        self.assertLess(anchor_save, anchor_add)
+        self.assertLess(anchor_add, subject_walk)
+        self.assertEqual(blind.count(f"add_to_list = {list_name}"), 2)
+
+        # The manager object keeps even a zero-candidate list loadable, but it
+        # must not receive a blind/named rank or advance either cursor.
+        exclusion = f"limit = {{ NOT = {{ this = scope:{anchor} }} }}"
+        reader = f"\n\t\tlist = {list_name}\n"
+        self.assertEqual(blind.count(reader), 2)
+        self.assertEqual(blind.count(exclusion), 2)
+        self.assertNotIn("change_variable", blind[anchor_add:subject_walk])
+
+        # Keep the anchor until both ordered readers have completed, then
+        # remove that exact character unconditionally.
+        cleanup = (
+            f"scope:{anchor} = {{\n"
+            f"\t\tremove_from_list = {list_name}\n"
+            "\t}"
+        )
+        self.assertEqual(blind.count(cleanup), 1)
+        self.assertGreater(blind.index(cleanup), blind.rindex(reader))
+
     def test_135_shadow_routes_have_stable_objects_and_honest_receipts(self) -> None:
         open_shadow = top_level_block(self.effects, "zg361_b1_open_shadow_effect")
         publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
@@ -1200,6 +1237,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "set_variable = { name = zg361_slandered value = 1 }",
             self.interactions,
         )
+        for legacy_signal in (
+            "zg361_recommended",
+            "zg361_slandered",
+            "zg361_slander_backfire",
+        ):
+            self.assertNotIn(legacy_signal, self.values)
         for effect_name, raw in (
             ("zg361_b1_submit_peer_positive_effect", "10"),
             ("zg361_b1_submit_peer_negative_effect", "-15"),
