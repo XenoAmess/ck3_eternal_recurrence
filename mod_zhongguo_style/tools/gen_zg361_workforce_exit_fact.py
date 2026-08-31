@@ -290,6 +290,22 @@ def render_effects() -> bytes:
     }}
     else_if = {{
         limit = {{
+            has_variable = zg361_workforce_normal_exit_fact_pending
+            var:zg361_workforce_normal_exit_fact_pending = 1
+            var:zg361_workforce_normal_exit_fact_pending_subject = this
+            var:zg361_workforce_normal_exit_fact_pending_owner = scope:liege
+            has_variable = zg361_workforce_normal_exit_fact_request_authorized
+            has_variable = zg361_workforce_normal_exit_fact_request_dispatched
+            var:zg361_workforce_normal_exit_fact_request_authorized = 1
+            var:zg361_workforce_normal_exit_fact_request_dispatched = 1
+            $END_REASON$ = 1
+        }}
+        set_variable = {{ name = zg361_workforce_normal_exit_fact_native_revoke_callback_seen value = 1 }}
+        set_variable = {{ name = zg361_workforce_normal_exit_fact_native_revoke_callback_owner value = scope:liege }}
+        set_variable = {{ name = zg361_workforce_normal_exit_fact_native_revoke_callback_subject value = this }}
+    }}
+    else_if = {{
+        limit = {{
             has_variable = {PREFIX}_cleanup_revoke_requested
             var:{PREFIX}_cleanup_revoke_requested = 1
         }}
@@ -1274,7 +1290,7 @@ def render_spec() -> bytes:
 <!-- GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py -->
 # Workforce #277 Career/native exit 真实事实包
 
-状态：**CK3 script static-ready; not loader-live or production-live**。本包仅新增独立生成器、脚本、事件、court position、九语言结构投影、L0 与本文；不修改 Workforce core、B2、共享 external-producer ledger 或 provider。简体中文与英文为日常开发原创，其余七语只是英文结构占位。
+状态：**CK3 script core-wired/static-ready; not loader-live or production-live**。本包由共享 Workforce core 的 #274 post-consume seam 调用 arm；其余生成器、脚本、事件、court position、九语言结构投影与 L0 仍由本包独立维护。简体中文与英文为日常开发原创，其余七语只是英文结构占位。
 
 ## 1. 为什么不能复用 #274 的撤职回调
 
@@ -1317,7 +1333,7 @@ seal 后的下一事件才调用既有严格 `zg361_we_submit_m277_closed_pip_ex
 {PREFIX}_consume_after_m277_effect = {{ TICKET_OWNER TICKET_SUBJECT TICKET_CYCLE TICKET_CASE }}
 ```
 
-当前 core 尚未调用 arm/request/consume，也未把 #277 玩家事件延迟到 publish ACK；所以本包仍是 `static-ready / core-unwired / not live`。L0 只证明 deterministic generation、BOM、九语结构、真实 native action/callback 门、D+1 分阶段、不可 caller 伪造、B2/HC 守恒与详细 receipt 合同；loader、存读档、paused MCP snapshot 与多周期实机仍待批量验收。
+当前 core 已在 #274 exact post-consume seam 调用 arm；request/consume 与 #277 玩家事件等待 publish ACK 的链仍待另一工作包闭合，所以本包仍是 `core-wired / static-ready / not live`。正常离职对同一 carrier 的合法撤任会由 exact normal-exit authorization branch 识别，不再同时写 unexpected end；它仍不能冒充失败 PIP #277。L0 只证明 deterministic generation、BOM、九语结构、真实 native action/callback 门、D+1 分阶段、不可 caller 伪造、B2/HC 守恒与详细 receipt 合同；loader、存读档、paused MCP snapshot 与多周期实机仍待批量验收。
 """
     )
 

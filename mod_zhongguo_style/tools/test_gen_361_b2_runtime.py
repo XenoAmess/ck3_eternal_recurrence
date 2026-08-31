@@ -393,6 +393,18 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_b2_m075_object_active = 1", offer)
         self.assertIn("var:zg361_b2_m075_state = 1", offer)
 
+    def test_075_funded_option_starts_canonical_normal_exit_before_accept(self) -> None:
+        offer = top_level_block(self.events, "zg361b2.60")
+        accept = top_level_block(
+            self.effects, "zg361_b2_m075_accept_exit_offer_effect"
+        )
+        self.assertIn(
+            "zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect = yes",
+            offer,
+        )
+        self.assertNotIn("zg361_b2_m075_accept_exit_offer_effect = yes", offer)
+        self.assertIn("force_step_down_landed_titles = yes", accept)
+
     def test_077_rotation_has_real_conflict_recusal_and_history_consumer(self) -> None:
         assign = top_level_block(
             self.effects, "zg361_b2_m077_assign_reviewer_effect"

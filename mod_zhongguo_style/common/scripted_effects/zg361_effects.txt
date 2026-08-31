@@ -674,6 +674,44 @@ zg361_freeze_result_case_effect = {
 			set_variable = { name = zg361_result_delivery_method value = 4 } # automatic publication
 			set_variable = { name = zg361_result_delivered_year value = current_year }
 			set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
+			# The signed Workforce slot is stable before this settlement chain.
+			# Publish reads the new result only from a subject-root D+1 relay.
+			if = {
+				limit = {
+					has_variable = zg361_we_m269_outcome_pending
+					has_variable = zg361_we_m269_outcome_settled
+					has_variable = zg361_we_m269_receipt_choice
+					has_variable = zg361_we_m269_write_owner
+					has_variable = zg361_we_m269_write_subject
+					has_variable = zg361_we_m269_write_cycle
+					has_variable = zg361_we_m269_write_case
+					var:zg361_we_m269_outcome_pending = 1
+					var:zg361_we_m269_outcome_settled = 0
+					var:zg361_we_m269_write_subject = this
+					OR = { var:zg361_we_m269_receipt_choice = 1 var:zg361_we_m269_receipt_choice = 2 }
+					has_variable = zg361_workforce_attribution_fact_signature_committed
+					has_variable = zg361_workforce_attribution_fact_state
+					has_variable = zg361_workforce_attribution_fact_consumed
+					has_variable = zg361_workforce_attribution_fact_subject
+					has_variable = zg361_workforce_attribution_fact_owner
+					has_variable = zg361_workforce_attribution_fact_cycle
+					has_variable = zg361_workforce_attribution_fact_case
+					var:zg361_workforce_attribution_fact_signature_committed = 1
+					var:zg361_workforce_attribution_fact_state = 2
+					var:zg361_workforce_attribution_fact_consumed = 0
+					var:zg361_workforce_attribution_fact_subject = this
+					var:zg361_workforce_attribution_fact_owner = var:zg361_we_m269_write_owner
+					var:zg361_workforce_attribution_fact_cycle = var:zg361_we_m269_write_cycle
+					var:zg361_workforce_attribution_fact_case = var:zg361_we_m269_write_case
+					trigger_if = {
+						limit = { has_variable = zg361_we_m269_result_relay_queued }
+						var:zg361_we_m269_result_relay_queued = 0
+					}
+					trigger_else = { always = yes }
+				}
+				trigger_event = { id = zg361we.52747 days = 1 }
+				set_variable = { name = zg361_we_m269_result_relay_queued value = 1 }
+			}
 		}
 		zg361_b2_on_result_frozen_effect = yes
 		debug_log = "ZG361P2: result case frozen"
@@ -978,6 +1016,44 @@ zg361_settle_delivered_325_effect = {
 		}
 
 		set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
+		# 3.25 delivery uses the same next-frame signed attribution relay; PIP
+		# may keep probation waiting, but #269 cannot advance on WAIT/RED.
+		if = {
+			limit = {
+				has_variable = zg361_we_m269_outcome_pending
+				has_variable = zg361_we_m269_outcome_settled
+				has_variable = zg361_we_m269_receipt_choice
+				has_variable = zg361_we_m269_write_owner
+				has_variable = zg361_we_m269_write_subject
+				has_variable = zg361_we_m269_write_cycle
+				has_variable = zg361_we_m269_write_case
+				var:zg361_we_m269_outcome_pending = 1
+				var:zg361_we_m269_outcome_settled = 0
+				var:zg361_we_m269_write_subject = this
+				OR = { var:zg361_we_m269_receipt_choice = 1 var:zg361_we_m269_receipt_choice = 2 }
+				has_variable = zg361_workforce_attribution_fact_signature_committed
+				has_variable = zg361_workforce_attribution_fact_state
+				has_variable = zg361_workforce_attribution_fact_consumed
+				has_variable = zg361_workforce_attribution_fact_subject
+				has_variable = zg361_workforce_attribution_fact_owner
+				has_variable = zg361_workforce_attribution_fact_cycle
+				has_variable = zg361_workforce_attribution_fact_case
+				var:zg361_workforce_attribution_fact_signature_committed = 1
+				var:zg361_workforce_attribution_fact_state = 2
+				var:zg361_workforce_attribution_fact_consumed = 0
+				var:zg361_workforce_attribution_fact_subject = this
+				var:zg361_workforce_attribution_fact_owner = var:zg361_we_m269_write_owner
+				var:zg361_workforce_attribution_fact_cycle = var:zg361_we_m269_write_cycle
+				var:zg361_workforce_attribution_fact_case = var:zg361_we_m269_write_case
+				trigger_if = {
+					limit = { has_variable = zg361_we_m269_result_relay_queued }
+					var:zg361_we_m269_result_relay_queued = 0
+				}
+				trigger_else = { always = yes }
+			}
+			trigger_event = { id = zg361we.52747 days = 1 }
+			set_variable = { name = zg361_we_m269_result_relay_queued value = 1 }
+		}
 		set_variable = { name = zg361_result_appeal_open value = 1 }
 		zg361_update_settled_325_scoreboard_slots_effect = yes
 		zg361_b2_on_notice_delivered_effect = yes

@@ -32,6 +32,15 @@ APPOINTMENT_WRAPPER = "zg361_workforce_appointment_fact_m274_appoint_and_consume
 APPOINTMENT_STATUS_VAR = "zg361_workforce_appointment_fact_status"
 PROBATION_ARM_EFFECT = "zg361_workforce_probation_fact_arm_hire_effect"
 PROBATION_STATUS_VAR = "zg361_workforce_probation_fact_adapter_status"
+PROBATION_FINALIZE_EFFECT = "zg361_workforce_probation_fact_finalize_consumption_receipt_effect"
+ATTRIBUTION_BEGIN_EFFECT = "zg361_workforce_attribution_fact_begin_signature_effect"
+ATTRIBUTION_PUBLISH_EFFECT = "zg361_workforce_attribution_fact_publish_result_effect"
+ATTRIBUTION_CANCEL_EFFECT = "zg361_workforce_attribution_fact_cancel_from_m269_debt_effect"
+ATTRIBUTION_STATUS_VAR = "zg361_workforce_attribution_fact_status"
+CAREER_SLOT_ARM_EFFECT = "zg361_workforce_exit_fact_arm_from_m274_effect"
+REHIRE_CAPTURE_GROWTH_EFFECT = "zg361_workforce_rehire_fact_capture_growth_effect"
+REHIRE_PREPARE_EFFECT = "zg361_workforce_rehire_fact_prepare_m276_effect"
+REHIRE_FINALIZE_EFFECT = "zg361_workforce_rehire_fact_finalize_m276_effect"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -130,6 +139,18 @@ FUTURE_EVENT = {
 }
 REMEDIATION_OPEN_EVENT = 5276
 REMEDIATION_CONSUME_EVENT = 5277
+M274_NATIVE_ACK_EVENT = 52739
+M274_PROBATION_AUDIT_EVENT = 52740
+M274_SIGNATURE_AUDIT_EVENT = 52741
+M274_DISPOSITION_AUDIT_EVENT = 52742
+M269_DEBT_CANCEL_EVENT = 52743
+M269_DEBT_CANCEL_ACK_EVENT = 52744
+M269_DEBT_ADVANCE_AUDIT_EVENT = 52745
+M269_POSTSETTLEMENT_EVENT = 52746
+M269_RESULT_PUBLISH_EVENT = 52747
+M276_PREPARE_AUDIT_EVENT = 52748
+M276_FINALIZE_EVENT = 52749
+M276_FINALIZE_AUDIT_EVENT = 52750
 FUTURE_PENDING = {
     257: "m257_conversion_pending",
     262: "m262_review_pending",
@@ -222,6 +243,18 @@ RETIRED_AD_EXTERNAL_ALIASES = frozenset({
     "zg361_we_ad_external_pip_closure_receipt_hash",
     "zg361_we_ad_external_pip_closure_receipt_id",
     "zg361_we_ad_external_attribution_bps_1",
+    "zg361_we_ad_external_attribution_bps_2",
+    "zg361_we_ad_external_attribution_bps_3",
+    "zg361_we_ad_external_outcome_dimension_1",
+    "zg361_we_ad_external_outcome_dimension_2",
+    "zg361_we_ad_external_outcome_dimension_3",
+    "zg361_we_ad_external_outcome_evidence_count",
+    "zg361_we_ad_external_outcome_evidence_hash",
+    "zg361_we_ad_external_outcome_evidence_id",
+    "zg361_we_ad_external_outcome_exclusion_reason",
+    "zg361_we_ad_external_outcome_id",
+    "zg361_we_ad_external_outcome_observed_cycle",
+    "zg361_we_ad_external_outcome_quality",
     "zg361_we_ad_external_exit_hc_lineage_case",
     "zg361_we_ad_external_exit_position_type_id",
 })
@@ -2149,6 +2182,12 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 \t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$
 \t\t\t\tTICKET_CASE = $TICKET_CASE$
 \t\t\t}}"""
+    elif mid == 269 and choice == 3:
+        post_consume = f"""
+\t\t\tif = {{
+\t\t\t\tlimit = {{ has_variable = {PREFIX}_m274_hired var:{PREFIX}_m274_hired = 1 }}
+\t\t\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_DEBT_CANCEL_EVENT} days = 1 }}
+\t\t\t}}"""
     value_prelude = ""
     if mid == 262 and choice in (1, 2):
         value_prelude = f"""{PREFIX}_ac_freeze_m262_host_manager_effect = {{
@@ -2175,7 +2214,7 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     # #263 route B and a real #269 hire outcome are future-settled.  Their
     # delayed consumers, rather than the write-side receipt, advance the case.
     if mid in STAGE_LAST[d] and not (
-        (mid == 263 and choice == 2) or (mid == 269 and choice in (1, 2))
+        (mid == 263 and choice == 2) or mid == 269
     ):
         barrier = stage_barrier(spec)
         edge = STAGE_LAST[d][mid]
@@ -2226,6 +2265,36 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 {indent(after, 5)}
 				}}
 			}}
+"""
+    elif mid == 269 and choice == 3:
+        # A no-hire debt owns no attribution slot and may advance normally.
+        # A real hire remains at state 5 until the signed slot has recorded
+        # the exact debt/cancel receipt on later hidden frames.
+        barrier = stage_barrier(spec)
+        edge = STAGE_LAST[d][mid]
+        after = _after_advance(spec)
+        deadline = deadline_prefix(d, edge)
+        advance = f"""
+\t\t\tif = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\thas_variable = {PREFIX}_m275_refusal
+\t\t\t\t\tvar:{PREFIX}_m275_refusal = 1
+\t\t\t\t\thas_variable = {PREFIX}_m274_hired
+\t\t\t\t\tvar:{PREFIX}_m274_hired = 0
+{indent(barrier, 5)}
+\t\t\t\t}}
+\t\t\t\tset_variable = {{ name = {deadline}_pending value = 0 }}
+\t\t\t\tzg361_case_{d}_advance_{edge:02d}_effect = {{
+\t\t\t\t\tTICKET_OWNER = $TICKET_OWNER$
+\t\t\t\t\tTICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$
+\t\t\t\t\tTICKET_CASE = $TICKET_CASE$
+\t\t\t\t}}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
+{indent(after, 5)}
+\t\t\t\t}}
+\t\t\t}}
 """
     red_code = mid * 10 + choice
     return f"""# #{mid:03d} route {letter.upper()}: guard -> atomic precheck -> receipt -> write -> consumer.
@@ -2420,34 +2489,12 @@ def render_ai(domain: str) -> str:
     if domain == "ad":
         appointment_index = next(index for index, spec in enumerate(specs) if spec.mid == 274)
         before_and_appointment = "\n".join(call(spec) for spec in specs[: appointment_index + 1])
-        after_appointment = "\n".join(call(spec) for spec in specs[appointment_index + 1 :])
         calls = f"""{before_and_appointment}
-if = {{
-\tlimit = {{
-\t\thas_variable = {PREFIX}_runtime_applied
-\t\tvar:{PREFIX}_runtime_applied = 1
-\t\thas_variable = {APPOINTMENT_STATUS_VAR}
-\t\tvar:{APPOINTMENT_STATUS_VAR} = 6
-\t}}
-\t{PREFIX}_m274_postconsume_fact_handoff_effect = {{
-\t\tTICKET_OWNER = scope:{PREFIX}_{domain}_owner
-\t\tTICKET_SUBJECT = scope:{PREFIX}_{domain}_subject
-\t\tTICKET_CYCLE = scope:{PREFIX}_{domain}_cycle
-\t\tTICKET_CASE = scope:{PREFIX}_{domain}_case
-\t}}
-\tif = {{
-\t\tlimit = {{
-\t\t\tOR = {{
-\t\t\t\tvar:{PREFIX}_m274_postconsume_handoff_status = 1
-\t\t\t\tvar:{PREFIX}_m274_postconsume_handoff_status = 2
-\t\t\t}}
-\t\t}}
-{indent(after_appointment, 2)}
-\t}}
-\telse = {{
-\t\tset_variable = {{ name = {PREFIX}_runtime_status value = 4 }}
-\t\tset_variable = {{ name = {PREFIX}_last_red_code value = 27493 }}
-\t}}
+{PREFIX}_queue_m274_appointment_ack_effect = {{
+\tTICKET_OWNER = scope:{PREFIX}_{domain}_owner
+\tTICKET_SUBJECT = scope:{PREFIX}_{domain}_subject
+\tTICKET_CYCLE = scope:{PREFIX}_{domain}_cycle
+\tTICKET_CASE = scope:{PREFIX}_{domain}_case
 }}"""
     else:
         calls = "\n".join(call(spec) for spec in specs)
@@ -2681,6 +2728,485 @@ def render_m274_native_resume() -> str:
 		set_variable = {{ name = {PREFIX}_m274_native_resume_status value = 4 }}
 		set_variable = {{ name = {PREFIX}_m274_native_resume_red_code value = 27490 }}
 	}}
+}}"""
+
+
+def render_m274_attribution_pipeline() -> str:
+    """Render the committed #274 -> probation -> attribution pipeline.
+
+    The older helper renderers above are retained only as source history; this
+    renderer is the sole projection included by render_effects().
+    """
+
+    return f"""# Queue one subject-root audit after any appointment-wrapper call.
+# No appointment value written by that call is read in the same effect chain.
+{PREFIX}_queue_m274_appointment_ack_effect = {{
+\tremove_variable = {PREFIX}_m274_native_resume_status
+\tif = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\tzg361_case_kernel_full_guard_trigger = {{
+\t\t\t\tOWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+\t\t\t\tCYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+\t\t\t\tSTATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+\t\t\t\tEXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tEXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+\t\t\t}}
+\t\t\t$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes highest_held_title_tier >= tier_duchy }}
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{ has_variable = {PREFIX}_m274_native_resume_audit_scheduled }}
+\t\t\t\tvar:{PREFIX}_m274_native_resume_audit_scheduled = 0
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = yes }}
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_pending_owner value = $TICKET_OWNER$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_pending_subject value = $TICKET_SUBJECT$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_pending_cycle value = $TICKET_CYCLE$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_pending_case value = $TICKET_CASE$ }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M274_NATIVE_ACK_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_status value = 5 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_audit_scheduled value = 1 }} # commit last
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m274_native_resume_audit_scheduled = 1
+\t\t\tvar:{PREFIX}_m274_native_resume_pending_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_native_resume_pending_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_native_resume_pending_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_native_resume_pending_case = $TICKET_CASE$
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_status value = 5 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_red_code value = 27490 }}
+\t}}
+}}
+
+# The appointment ACK audit either observes a committed #274 receipt, asks the
+# wrapper to consume a published native receipt, or waits for the provider.
+{PREFIX}_resume_m274_after_native_appointment_effect = {{
+\tremove_variable = {PREFIX}_m274_native_resume_status
+\tremove_variable = {PREFIX}_m274_native_resume_red_code
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m274_native_resume_continuation_consumed
+\t\t\thas_variable = {PREFIX}_m274_native_resume_continuation_owner
+\t\t\thas_variable = {PREFIX}_m274_native_resume_continuation_subject
+\t\t\thas_variable = {PREFIX}_m274_native_resume_continuation_cycle
+\t\t\thas_variable = {PREFIX}_m274_native_resume_continuation_case
+\t\t\thas_variable = {PREFIX}_m274_native_resume_continuation_mode
+\t\t\tvar:{PREFIX}_m274_native_resume_continuation_consumed = 1
+\t\t\tvar:{PREFIX}_m274_native_resume_continuation_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_native_resume_continuation_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_native_resume_continuation_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_native_resume_continuation_case = $TICKET_CASE$
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_status value = 2 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\thas_variable = {PREFIX}_m274_business_object_created
+\t\t\thas_variable = {PREFIX}_m274_object_owner
+\t\t\thas_variable = {PREFIX}_m274_object_subject
+\t\t\thas_variable = {PREFIX}_m274_object_cycle
+\t\t\thas_variable = {PREFIX}_m274_object_case
+\t\t\thas_variable = {PREFIX}_m274_object_consumed
+\t\t\tvar:{PREFIX}_m274_business_object_created = 1
+\t\t\tvar:{PREFIX}_m274_object_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_object_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_object_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_object_case = $TICKET_CASE$
+\t\t\tvar:{PREFIX}_m274_object_consumed = 1
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed_operation
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed_operation = 274
+\t\t}}
+\t\t{PREFIX}_m274_postconsume_fact_handoff_effect = {{
+\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_active
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_published
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_active = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_published = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed = 0
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+\t\t}}
+\t\t{APPOINTMENT_WRAPPER} = {{
+\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t}}
+\t\t{PREFIX}_queue_m274_appointment_ack_effect = {{
+\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t}}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{ has_variable = {APPOINTMENT_STATUS_VAR} }}
+\t\t\t\tNOT = {{ var:{APPOINTMENT_STATUS_VAR} = 4 }}
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = yes }}
+\t\t}}
+\t\t{PREFIX}_queue_m274_appointment_ack_effect = {{
+\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t}}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_red_code value = 27491 }}
+\t}}
+}}
+
+# The only post-consume seam.  It arms the persistent career slot and
+# probation now, then commits a D+1 audit; the attribution producer is never
+# called in this write chain.
+{PREFIX}_m274_postconsume_fact_handoff_effect = {{
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_status
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_red_code
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_completed
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_completed = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_case = $TICKET_CASE$
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 2 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_case = $TICKET_CASE$
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\t$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+\t\t\thas_variable = {PREFIX}_m274_business_object_created
+\t\t\thas_variable = {PREFIX}_m274_object_owner
+\t\t\thas_variable = {PREFIX}_m274_object_subject
+\t\t\thas_variable = {PREFIX}_m274_object_cycle
+\t\t\thas_variable = {PREFIX}_m274_object_case
+\t\t\thas_variable = {PREFIX}_m274_object_consumed
+\t\t\thas_variable = {PREFIX}_m274_position_receipt_id
+\t\t\thas_variable = {PREFIX}_m274_position_receipt_hash
+\t\t\thas_variable = {PREFIX}_m274_position_type_id
+\t\t\thas_variable = {PREFIX}_m274_probation_due_cycle
+\t\t\tvar:{PREFIX}_m274_business_object_created = 1
+\t\t\tvar:{PREFIX}_m274_object_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m274_object_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m274_object_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m274_object_case = $TICKET_CASE$
+\t\t\tvar:{PREFIX}_m274_object_consumed = 1
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_active
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_published
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_consumed_operation
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_owner
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_subject
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_cycle
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_case
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_state
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_result
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_id
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_hash
+\t\t\thas_variable = zg361_workforce_appointment_fact_receipt_position_type_id
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_active = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_published = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_consumed_operation = 274
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_state = 4
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_result = 1
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_id = var:{PREFIX}_m274_position_receipt_id
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_hash = var:{PREFIX}_m274_position_receipt_hash
+\t\t\tvar:zg361_workforce_appointment_fact_receipt_position_type_id = var:{PREFIX}_m274_position_type_id
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_owner value = $TICKET_OWNER$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_subject value = $TICKET_SUBJECT$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_cycle value = $TICKET_CYCLE$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_case value = $TICKET_CASE$ }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_phase value = 1 }}
+\t\tif = {{
+\t\t\tlimit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+\t\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_mode value = 2 }}
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_m274_postconsume_handoff_mode value = 1 }} }}
+\t\t{CAREER_SLOT_ARM_EFFECT} = {{
+\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t}}
+\t\t{PROBATION_ARM_EFFECT} = {{ OWNER = $TICKET_OWNER$ }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M274_PROBATION_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_pending value = 1 }} # commit last
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27493 }}
+\t}}
+}}
+
+{PREFIX}_m274_audit_probation_and_arm_attribution_effect = {{
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_pending
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_phase
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_owner
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_subject
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_cycle
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_case
+\t\t\thas_variable = {PREFIX}_m274_probation_due_cycle
+\t\t\thas_variable = {PREFIX}_m274_position_receipt_id
+\t\t\thas_variable = {PREFIX}_m274_position_receipt_hash
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\thas_variable = {PROBATION_STATUS_VAR}
+\t\t\thas_variable = zg361_workforce_probation_fact_state
+\t\t\thas_variable = zg361_workforce_probation_fact_owner
+\t\t\thas_variable = zg361_workforce_probation_fact_subject
+\t\t\thas_variable = zg361_workforce_probation_fact_hire_cycle
+\t\t\thas_variable = zg361_workforce_probation_fact_hire_case
+\t\t\thas_variable = zg361_workforce_probation_fact_probation_due_cycle
+\t\t\thas_variable = zg361_workforce_probation_fact_position_receipt_id
+\t\t\thas_variable = zg361_workforce_probation_fact_position_receipt_hash
+\t\t\tOR = {{ var:{PROBATION_STATUS_VAR} = 1 var:{PROBATION_STATUS_VAR} = 2 }}
+\t\t\tvar:zg361_workforce_probation_fact_state >= 1
+\t\t\tvar:zg361_workforce_probation_fact_owner = var:{PREFIX}_m274_postconsume_handoff_owner
+\t\t\tvar:zg361_workforce_probation_fact_subject = this
+\t\t\tvar:zg361_workforce_probation_fact_hire_cycle = var:{PREFIX}_m274_postconsume_handoff_cycle
+\t\t\tvar:zg361_workforce_probation_fact_hire_case = var:{PREFIX}_m274_postconsume_handoff_case
+\t\t\tvar:zg361_workforce_probation_fact_probation_due_cycle = var:{PREFIX}_m274_probation_due_cycle
+\t\t\tvar:zg361_workforce_probation_fact_position_receipt_id = var:{PREFIX}_m274_position_receipt_id
+\t\t\tvar:zg361_workforce_probation_fact_position_receipt_hash = var:{PREFIX}_m274_position_receipt_hash
+\t\t\thas_variable = zg361_workforce_probation_fact_arm_receipt_id
+\t\t\thas_variable = zg361_workforce_probation_fact_arm_receipt_hash
+\t\t\tvar:zg361_workforce_probation_fact_arm_receipt_id > 0
+\t\t\tvar:zg361_workforce_probation_fact_arm_receipt_hash > 0
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_phase value = 2 }}
+\t\t{ATTRIBUTION_BEGIN_EFFECT} = {{
+\t\t\tTICKET_OWNER = var:{PREFIX}_m274_postconsume_handoff_owner
+\t\t\tTICKET_SUBJECT = this
+\t\t\tTICKET_CYCLE = var:{PREFIX}_m274_postconsume_handoff_cycle
+\t\t\tTICKET_CASE = var:{PREFIX}_m274_postconsume_handoff_case
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M274_SIGNATURE_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\thas_variable = {PROBATION_STATUS_VAR}
+\t\t\tvar:{PROBATION_STATUS_VAR} = 5
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27494 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\tNOT = {{ has_variable = {PROBATION_STATUS_VAR} }}
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M274_PROBATION_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27495 }}
+\t}}
+}}
+
+{PREFIX}_m274_audit_signature_and_dispatch_disposition_effect = {{
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_pending
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_phase
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_owner
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_subject
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_cycle
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_case
+\t\t\thas_variable = {PREFIX}_m272_offer_approver
+\t\t\thas_variable = {PREFIX}_m267_interviewer_1
+\t\t\thas_variable = {PREFIX}_m267_interviewer_2
+\t\t\thas_variable = {PREFIX}_m267_interviewer_3
+\t\t\thas_variable = {PREFIX}_m267_vote_evidence_1
+\t\t\thas_variable = {PREFIX}_m267_vote_evidence_2
+\t\t\thas_variable = {PREFIX}_m267_vote_evidence_3
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 2
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\thas_variable = zg361_workforce_attribution_fact_signature_committed
+\t\t\thas_variable = zg361_workforce_attribution_fact_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_consumed
+\t\t\thas_variable = zg361_workforce_attribution_fact_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_case
+\t\t\thas_variable = zg361_workforce_attribution_fact_final_approver
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_signer
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_interviewer_1
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_interviewer_2
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_interviewer_3
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_evidence_1
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_evidence_2
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_evidence_3
+\t\t\thas_variable = zg361_workforce_attribution_fact_attribution_total_bps
+\t\t\tvar:zg361_workforce_attribution_fact_signature_committed = 1
+\t\t\tvar:zg361_workforce_attribution_fact_state = 2
+\t\t\tvar:zg361_workforce_attribution_fact_consumed = 0
+\t\t\tvar:zg361_workforce_attribution_fact_owner = var:{PREFIX}_m274_postconsume_handoff_owner
+\t\t\tvar:zg361_workforce_attribution_fact_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_cycle = var:{PREFIX}_m274_postconsume_handoff_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_case = var:{PREFIX}_m274_postconsume_handoff_case
+\t\t\tvar:zg361_workforce_attribution_fact_final_approver = var:{PREFIX}_m272_offer_approver
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_signer = var:zg361_workforce_attribution_fact_final_approver
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_interviewer_1 = var:{PREFIX}_m267_interviewer_1
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_interviewer_2 = var:{PREFIX}_m267_interviewer_2
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_interviewer_3 = var:{PREFIX}_m267_interviewer_3
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_evidence_1 = var:{PREFIX}_m267_vote_evidence_1
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_evidence_2 = var:{PREFIX}_m267_vote_evidence_2
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_evidence_3 = var:{PREFIX}_m267_vote_evidence_3
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_id
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_hash
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_id > 0
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_hash > 0
+\t\t\tvar:zg361_workforce_attribution_fact_attribution_total_bps = 10000
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_phase value = 3 }}
+\t\t{PREFIX}_m275_route_a_effect = {{
+\t\t\tTICKET_OWNER = var:{PREFIX}_m274_postconsume_handoff_owner
+\t\t\tTICKET_SUBJECT = this
+\t\t\tTICKET_CYCLE = var:{PREFIX}_m274_postconsume_handoff_cycle
+\t\t\tTICKET_CASE = var:{PREFIX}_m274_postconsume_handoff_case
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M274_DISPOSITION_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 2
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\thas_variable = zg361_workforce_attribution_fact_signature_pending
+\t\t\tvar:zg361_workforce_attribution_fact_signature_pending = 1
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M274_SIGNATURE_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 2
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\thas_variable = {ATTRIBUTION_STATUS_VAR}
+\t\t\tvar:{ATTRIBUTION_STATUS_VAR} = 4
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27496 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27497 }}
+\t}}
+}}
+
+{PREFIX}_m274_audit_disposition_and_launch_m269_effect = {{
+\tremove_variable = {PREFIX}_m274_postconsume_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_pending
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_phase
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_owner
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_subject
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_cycle
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_case
+\t\t\thas_variable = {PREFIX}_m274_postconsume_handoff_mode
+\t\t\thas_variable = zg361_case_ad_state
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_pending = 1
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_phase = 3
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_subject = this
+\t\t\tvar:zg361_case_ad_state = 5
+\t\t\thas_variable = {PREFIX}_m275_business_object_created
+\t\t\thas_variable = {PREFIX}_m275_object_owner
+\t\t\thas_variable = {PREFIX}_m275_object_subject
+\t\t\thas_variable = {PREFIX}_m275_object_cycle
+\t\t\thas_variable = {PREFIX}_m275_object_case
+\t\t\thas_variable = {PREFIX}_m275_object_consumed
+\t\t\thas_variable = {PREFIX}_m275_receipt_choice
+\t\t\thas_variable = {PREFIX}_m275_not_applicable_hired
+\t\t\thas_variable = {PREFIX}_m275_hold_pending
+\t\t\tvar:{PREFIX}_m275_business_object_created = 1
+\t\t\tvar:{PREFIX}_m275_object_owner = var:{PREFIX}_m274_postconsume_handoff_owner
+\t\t\tvar:{PREFIX}_m275_object_subject = this
+\t\t\tvar:{PREFIX}_m275_object_cycle = var:{PREFIX}_m274_postconsume_handoff_cycle
+\t\t\tvar:{PREFIX}_m275_object_case = var:{PREFIX}_m274_postconsume_handoff_case
+\t\t\tvar:{PREFIX}_m275_object_consumed = 1
+\t\t\tvar:{PREFIX}_m275_receipt_choice = 1
+\t\t\tvar:{PREFIX}_m275_not_applicable_hired = 1
+\t\t\tvar:{PREFIX}_m275_hold_pending = 0
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_continuation_owner value = var:{PREFIX}_m274_postconsume_handoff_owner }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_continuation_subject value = this }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_continuation_cycle value = var:{PREFIX}_m274_postconsume_handoff_cycle }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_continuation_case value = var:{PREFIX}_m274_postconsume_handoff_case }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_continuation_mode value = var:{PREFIX}_m274_postconsume_handoff_mode }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_completed value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_pending value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_continuation_consumed value = 1 }} # continuation commit last
+\t\tif = {{
+\t\t\tlimit = {{ var:{PREFIX}_m274_postconsume_handoff_mode = 2 }}
+\t\t\t{PREFIX}_m269_route_a_effect = {{
+\t\t\t\tTICKET_OWNER = var:{PREFIX}_m274_postconsume_handoff_owner TICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:{PREFIX}_m274_postconsume_handoff_cycle
+\t\t\t\tTICKET_CASE = var:{PREFIX}_m274_postconsume_handoff_case
+\t\t\t}}
+\t\t}}
+\t\telse = {{
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_owner = {{ save_scope_as = {PREFIX}_ad_owner }}
+\t\t\tsave_scope_as = {PREFIX}_ad_subject
+\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_cycle value = var:{PREFIX}_m274_postconsume_handoff_cycle }}
+\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_case value = var:{PREFIX}_m274_postconsume_handoff_case }}
+\t\t\tvar:{PREFIX}_m274_postconsume_handoff_owner = {{ trigger_event = {{ id = {NAMESPACE}.269 }} }}
+\t\t}}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m274_postconsume_handoff_red_code value = 27498 }}
+\t}}
 }}"""
 
 
@@ -3253,6 +3779,841 @@ def render_future_consumers() -> str:
 \t\ttrigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[361]} days = 90 }}
 \t}}
 \telse = {{ set_variable = {{ name = {PREFIX}_future_red_code value = 3611 }} }}
+}}"""
+
+
+def render_m269_attribution_consumer() -> str:
+    """Replace the legacy alias consumer with the signed fact join."""
+
+    return f"""{PREFIX}_m269_future_consume_effect = {{
+\tremove_variable = {PREFIX}_future_status
+\tif = {{
+\t\tlimit = {{
+{indent(_future_tuple_guard(269), 3)}
+\t\t\tvar:{PREFIX}_m269_outcome_pending = 0
+\t\t\tvar:{PREFIX}_m269_outcome_settled = 1
+\t\t\thas_variable = {PREFIX}_m269_last_outcome_id
+\t\t\thas_variable = {PREFIX}_m269_consumed_hire_case
+\t\t\thas_variable = {PREFIX}_m269_consumed_candidate
+\t\t\thas_variable = {PREFIX}_m269_outcome_evidence_id
+\t\t\thas_variable = {PREFIX}_m269_outcome_evidence_hash
+\t\t\thas_variable = {PREFIX}_m269_outcome_evidence_count
+\t\t\thas_variable = {PREFIX}_m269_final_quality
+\t\t\thas_variable = {PREFIX}_m269_outcome_provenance_locked
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_id
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_hash
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_id
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_quality
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_id
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_hash
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_count
+\t\t\tvar:{PREFIX}_m269_last_outcome_id = var:zg361_workforce_probation_fact_outcome_id
+\t\t\tvar:{PREFIX}_m269_consumed_hire_case = var:{PREFIX}_m269_write_case
+\t\t\tvar:{PREFIX}_m269_consumed_candidate = this
+\t\t\tvar:{PREFIX}_m269_outcome_evidence_id = var:zg361_workforce_probation_fact_outcome_evidence_id
+\t\t\tvar:{PREFIX}_m269_outcome_evidence_hash = var:zg361_workforce_probation_fact_outcome_evidence_hash
+\t\t\tvar:{PREFIX}_m269_outcome_evidence_count = var:zg361_workforce_probation_fact_outcome_evidence_count
+\t\t\tvar:{PREFIX}_m269_final_quality = var:zg361_workforce_probation_fact_outcome_quality
+\t\t\tvar:{PREFIX}_m269_outcome_provenance_locked = 1
+\t\t\thas_variable = {PREFIX}_m269_attribution_signature_receipt_id
+\t\t\thas_variable = {PREFIX}_m269_attribution_signature_receipt_hash
+\t\t\tvar:{PREFIX}_m269_attribution_signature_receipt_id = var:zg361_workforce_attribution_fact_receipt_id
+\t\t\tvar:{PREFIX}_m269_attribution_signature_receipt_hash = var:zg361_workforce_attribution_fact_receipt_hash
+\t\t}}
+\t\tremove_variable = {PREFIX}_m269_waiting_for_outcome_evidence
+\t\tremove_variable = {PREFIX}_m269_waiting_for_attribution_fact
+\t\tset_variable = {{ name = {PREFIX}_future_status value = 2 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+{indent(_future_tuple_guard(269), 3)}
+\t\t\tvar:{PREFIX}_m269_outcome_pending = 1
+\t\t\tvar:{PREFIX}_m269_outcome_settled = 0
+\t\t\tvar:{PREFIX}_m269_write_state = 5
+\t\t\tOR = {{ var:{PREFIX}_m269_receipt_choice = 1 var:{PREFIX}_m269_receipt_choice = 2 }}
+\t\t\thas_variable = zg361_workforce_attribution_fact_signature_committed
+\t\t\thas_variable = zg361_workforce_attribution_fact_consumed
+\t\t\thas_variable = zg361_workforce_attribution_fact_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_case
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_id
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_hash
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_signer
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_interviewer_1
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_interviewer_2
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_interviewer_3
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_evidence_1
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_evidence_2
+\t\t\thas_variable = zg361_workforce_attribution_fact_receipt_evidence_3
+\t\t\thas_variable = zg361_workforce_attribution_fact_attribution_bps_1
+\t\t\thas_variable = zg361_workforce_attribution_fact_attribution_bps_2
+\t\t\thas_variable = zg361_workforce_attribution_fact_attribution_bps_3
+\t\t\thas_variable = zg361_workforce_attribution_fact_attribution_total_bps
+\t\t\thas_variable = {PREFIX}_m272_offer_approver
+\t\t\thas_variable = {PREFIX}_m267_interviewer_1
+\t\t\thas_variable = {PREFIX}_m267_interviewer_2
+\t\t\thas_variable = {PREFIX}_m267_interviewer_3
+\t\t\thas_variable = {PREFIX}_m267_vote_evidence_1
+\t\t\thas_variable = {PREFIX}_m267_vote_evidence_2
+\t\t\thas_variable = {PREFIX}_m267_vote_evidence_3
+\t\t\tvar:zg361_workforce_attribution_fact_signature_committed = 1
+\t\t\tvar:zg361_workforce_attribution_fact_state = 3
+\t\t\tvar:zg361_workforce_attribution_fact_consumed = 1
+\t\t\ttrigger_if = {{ limit = {{ has_variable = zg361_workforce_attribution_fact_canceled }} var:zg361_workforce_attribution_fact_canceled = 0 }}
+\t\t\ttrigger_else = {{ always = yes }}
+\t\t\tvar:zg361_workforce_attribution_fact_owner = var:{PREFIX}_m269_write_owner
+\t\t\tvar:zg361_workforce_attribution_fact_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_cycle = var:{PREFIX}_m269_write_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_case = var:{PREFIX}_m269_write_case
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_signer = var:{PREFIX}_m272_offer_approver
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_interviewer_1 = var:{PREFIX}_m267_interviewer_1
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_interviewer_2 = var:{PREFIX}_m267_interviewer_2
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_interviewer_3 = var:{PREFIX}_m267_interviewer_3
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_evidence_1 = var:{PREFIX}_m267_vote_evidence_1
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_evidence_2 = var:{PREFIX}_m267_vote_evidence_2
+\t\t\tvar:zg361_workforce_attribution_fact_receipt_evidence_3 = var:{PREFIX}_m267_vote_evidence_3
+\t\t\tvar:zg361_workforce_attribution_fact_attribution_total_bps = 10000
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_hire_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_hire_case
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_probation_receipt_id
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_probation_receipt_hash
+\t\t\tvar:zg361_workforce_attribution_fact_consume_hire_cycle = var:{PREFIX}_m269_write_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_consume_hire_case = var:{PREFIX}_m269_write_case
+\t\t\thas_variable = zg361_workforce_probation_fact_state
+\t\t\thas_variable = zg361_workforce_probation_fact_published
+\t\t\thas_variable = zg361_workforce_probation_fact_consumed
+\t\t\thas_variable = zg361_workforce_probation_fact_owner
+\t\t\thas_variable = zg361_workforce_probation_fact_subject
+\t\t\thas_variable = zg361_workforce_probation_fact_hire_cycle
+\t\t\thas_variable = zg361_workforce_probation_fact_hire_case
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_id
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_quality
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_id
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_hash
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_count
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_observed_cycle
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_dimension_1
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_dimension_2
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_dimension_3
+\t\t\thas_variable = zg361_workforce_probation_fact_attribution_bps_1
+\t\t\thas_variable = zg361_workforce_probation_fact_attribution_bps_2
+\t\t\thas_variable = zg361_workforce_probation_fact_attribution_bps_3
+\t\t\thas_variable = zg361_workforce_probation_fact_attribution_receipt_id
+\t\t\thas_variable = zg361_workforce_probation_fact_attribution_receipt_hash
+\t\t\tvar:zg361_workforce_probation_fact_state = 3
+\t\t\tvar:zg361_workforce_probation_fact_published = 1
+\t\t\tvar:zg361_workforce_probation_fact_consumed = 0
+\t\t\tvar:zg361_workforce_probation_fact_owner = var:{PREFIX}_m269_write_owner
+\t\t\tvar:zg361_workforce_probation_fact_subject = this
+\t\t\tvar:zg361_workforce_probation_fact_hire_cycle = var:{PREFIX}_m269_write_cycle
+\t\t\tvar:zg361_workforce_probation_fact_hire_case = var:{PREFIX}_m269_write_case
+\t\t\tvar:zg361_workforce_probation_fact_outcome_id > 0
+\t\t\tOR = {{ var:zg361_workforce_probation_fact_outcome_quality = 1 var:zg361_workforce_probation_fact_outcome_quality = 2 }}
+\t\t\tvar:zg361_workforce_probation_fact_outcome_evidence_count >= 1
+\t\t\tvar:zg361_workforce_probation_fact_outcome_observed_cycle > var:{PREFIX}_m269_write_cycle
+\t\t\tvar:zg361_workforce_probation_fact_outcome_dimension_1 = var:zg361_workforce_attribution_fact_receipt_evidence_1
+\t\t\tvar:zg361_workforce_probation_fact_outcome_dimension_2 = var:zg361_workforce_attribution_fact_receipt_evidence_2
+\t\t\tvar:zg361_workforce_probation_fact_outcome_dimension_3 = var:zg361_workforce_attribution_fact_receipt_evidence_3
+\t\t\tvar:zg361_workforce_probation_fact_attribution_bps_1 = var:zg361_workforce_attribution_fact_attribution_bps_1
+\t\t\tvar:zg361_workforce_probation_fact_attribution_bps_2 = var:zg361_workforce_attribution_fact_attribution_bps_2
+\t\t\tvar:zg361_workforce_probation_fact_attribution_bps_3 = var:zg361_workforce_attribution_fact_attribution_bps_3
+\t\t\tvar:zg361_workforce_attribution_fact_consume_probation_receipt_id = var:zg361_workforce_probation_fact_attribution_receipt_id
+\t\t\tvar:zg361_workforce_attribution_fact_consume_probation_receipt_hash = var:zg361_workforce_probation_fact_attribution_receipt_hash
+\t\t\thas_variable = {PREFIX}_m274_hired
+\t\t\tvar:{PREFIX}_m274_hired = 1
+\t\t\tvar:{PREFIX}_m274_hire_case = var:{PREFIX}_m269_write_case
+\t\t\thas_variable = {PREFIX}_formal_hc_active
+\t\t\tvar:{PREFIX}_formal_hc_active = 1
+\t\t\tvar:{PREFIX}_formal_hc_active_case = var:{PREFIX}_m269_write_case
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_original_votes_preserved value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_last_outcome_id value = var:zg361_workforce_probation_fact_outcome_id }}
+\t\tset_variable = {{ name = {PREFIX}_m269_consumed_hire_case value = var:{PREFIX}_m269_write_case }}
+\t\tset_variable = {{ name = {PREFIX}_m269_consumed_candidate value = this }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_id value = var:zg361_workforce_probation_fact_outcome_evidence_id }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_hash value = var:zg361_workforce_probation_fact_outcome_evidence_hash }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_count value = var:zg361_workforce_probation_fact_outcome_evidence_count }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_observed_cycle value = var:zg361_workforce_probation_fact_outcome_observed_cycle }}
+\t\tset_variable = {{ name = {PREFIX}_m269_final_quality value = var:zg361_workforce_probation_fact_outcome_quality }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_provenance_locked value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_signature_receipt_id value = var:zg361_workforce_attribution_fact_receipt_id }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_signature_receipt_hash value = var:zg361_workforce_attribution_fact_receipt_hash }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_actor value = var:zg361_workforce_attribution_fact_receipt_signer }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_interviewer_1 value = var:zg361_workforce_attribution_fact_receipt_interviewer_1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_interviewer_2 value = var:zg361_workforce_attribution_fact_receipt_interviewer_2 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_interviewer_3 value = var:zg361_workforce_attribution_fact_receipt_interviewer_3 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_evidence_1 value = var:zg361_workforce_attribution_fact_receipt_evidence_1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_evidence_2 value = var:zg361_workforce_attribution_fact_receipt_evidence_2 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_evidence_3 value = var:zg361_workforce_attribution_fact_receipt_evidence_3 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_bps_1 value = var:zg361_workforce_attribution_fact_attribution_bps_1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_bps_2 value = var:zg361_workforce_attribution_fact_attribution_bps_2 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_signed_bps_3 value = var:zg361_workforce_attribution_fact_attribution_bps_3 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_probation_receipt_id value = var:zg361_workforce_probation_fact_attribution_receipt_id }}
+\t\tset_variable = {{ name = {PREFIX}_m269_probation_receipt_hash value = var:zg361_workforce_probation_fact_attribution_receipt_hash }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 10000 }}
+\t\tif = {{
+\t\t\tlimit = {{ var:{PREFIX}_m269_receipt_choice = 1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_1 value = var:zg361_workforce_attribution_fact_receipt_evidence_1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_2 value = var:zg361_workforce_attribution_fact_receipt_evidence_2 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_3 value = var:zg361_workforce_attribution_fact_receipt_evidence_3 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_1 value = var:zg361_workforce_attribution_fact_receipt_interviewer_1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_2 value = var:zg361_workforce_attribution_fact_receipt_interviewer_2 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_3 value = var:zg361_workforce_attribution_fact_receipt_interviewer_3 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = var:zg361_workforce_attribution_fact_attribution_bps_1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_2 value = var:zg361_workforce_attribution_fact_attribution_bps_2 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_3 value = var:zg361_workforce_attribution_fact_attribution_bps_3 }}
+\t\t}}
+\t\telse = {{
+\t\t\tset_variable = {{ name = {PREFIX}_m269_blamed_final_approver value = var:{PREFIX}_m272_offer_approver }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_approver_blame_bps value = 10000 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_premature_approver_blame value = 1 }}
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_workforce_probation_fact_outcome_quality = 1 has_variable = {PREFIX}_m271_reward_due_after_probation var:{PREFIX}_m271_reward_due_after_probation = 1 has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 has_variable = {PREFIX}_m271_referrer }}
+\t\t\tchange_variable = {{ name = {PREFIX}_referral_gold_reserved add = -5 }}
+\t\t\tchange_variable = {{ name = {PREFIX}_gold_reserved add = -5 }}
+\t\t\tchange_variable = {{ name = {PREFIX}_referral_gold_paid add = 5 }}
+\t\t\tchange_variable = {{ name = {PREFIX}_gold_paid add = 5 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m271_reward_payee value = var:{PREFIX}_m271_referrer }}
+\t\t\tset_variable = {{ name = {PREFIX}_m271_reward_settled value = 1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m271_reward_escrowed value = 0 }}
+\t\t\tvar:{PREFIX}_m271_referrer = {{ add_gold = 5 }}
+\t\t}}
+\t\telse = {{
+\t\t\tif = {{ limit = {{ has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 }} change_variable = {{ name = {PREFIX}_referral_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_available add = 5 }} set_variable = {{ name = {PREFIX}_m271_reward_refunded value = 1 }} set_variable = {{ name = {PREFIX}_m271_reward_escrowed value = 0 }} var:{PREFIX}_m269_write_owner = {{ add_gold = 5 }} }}
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_requisition_released value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_pending value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_owner value = var:{PREFIX}_m269_write_owner }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_subject value = this }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_cycle value = var:{PREFIX}_m269_write_cycle }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_case value = var:{PREFIX}_m269_write_case }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_phase value = 1 }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_POSTSETTLEMENT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_pending value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_settled value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_future_status value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_pending value = 0 }} # outcome commit last
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+{indent(_future_tuple_guard(269), 3)}
+\t\t\tvar:{PREFIX}_m269_outcome_pending = 1
+\t\t\tOR = {{
+\t\t\t\tAND = {{ has_variable = zg361_workforce_attribution_fact_signature_pending var:zg361_workforce_attribution_fact_signature_pending = 1 }}
+\t\t\t\tAND = {{ has_variable = zg361_workforce_attribution_fact_dispatch_pending var:zg361_workforce_attribution_fact_dispatch_pending = 1 }}
+\t\t\t\tAND = {{ has_variable = zg361_workforce_probation_fact_state var:zg361_workforce_probation_fact_state <= 2 }}
+\t\t\t\tNOT = {{ has_variable = zg361_workforce_probation_fact_outcome_id }}
+\t\t\t}}
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_waiting_for_attribution_fact value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_future_status value = 5 }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[269]} days = 30 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+{indent(_future_tuple_guard(269), 3)}
+\t\t\tvar:{PREFIX}_m269_outcome_pending = 1
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_future_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_future_red_code value = 2692 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_future_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_future_red_code value = 2691 }}
+\t}}
+}}"""
+
+
+def render_future_consumers_integrated() -> str:
+    legacy = render_future_consumers()
+    start = legacy.index(f"{PREFIX}_m269_future_consume_effect = {{")
+    end = legacy.index(f"\n\n{PREFIX}_m275_hold_due_effect = {{", start)
+    return legacy[:start] + render_m269_attribution_consumer() + legacy[end:]
+
+
+def render_m269_attribution_handoffs() -> str:
+    return f"""# D+1 relay from canonical result settlement.  Public
+# attribution publish accepts no bps; this effect never reads its write result.
+{PREFIX}_m269_publish_signed_result_effect = {{
+\tremove_variable = {PREFIX}_m269_result_relay_status
+\tremove_variable = {PREFIX}_m269_result_relay_red_code
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_result_relay_pending
+\t\t\thas_variable = {PREFIX}_m269_result_relay_phase
+\t\t\thas_variable = {PREFIX}_m269_result_relay_owner
+\t\t\thas_variable = {PREFIX}_m269_result_relay_subject
+\t\t\thas_variable = {PREFIX}_m269_result_relay_cycle
+\t\t\thas_variable = {PREFIX}_m269_result_relay_case
+\t\t\thas_variable = {PREFIX}_m269_result_relay_state
+\t\t\thas_variable = {PREFIX}_m269_result_relay_settlement
+\t\t\tvar:{PREFIX}_m269_result_relay_pending = 1
+\t\t\tvar:{PREFIX}_m269_result_relay_phase = 1
+\t\t\tvar:{PREFIX}_m269_result_relay_subject = this
+\t\t\thas_variable = zg361_workforce_attribution_fact_consumed
+\t\t\thas_variable = zg361_workforce_attribution_fact_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_result_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_result_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_result_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_result_case
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_result_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_consume_result_settlement_receipt
+\t\t\tvar:zg361_workforce_attribution_fact_consumed = 1
+\t\t\tvar:zg361_workforce_attribution_fact_state = 3
+\t\t\tvar:zg361_workforce_attribution_fact_owner = var:{PREFIX}_m269_result_relay_owner
+\t\t\tvar:zg361_workforce_attribution_fact_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_consume_result_owner = var:{PREFIX}_m269_result_relay_owner
+\t\t\tvar:zg361_workforce_attribution_fact_consume_result_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_consume_result_cycle = var:{PREFIX}_m269_result_relay_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_consume_result_case = var:{PREFIX}_m269_result_relay_case
+\t\t\tvar:zg361_workforce_attribution_fact_consume_result_state = var:{PREFIX}_m269_result_relay_state
+\t\t\tvar:zg361_workforce_attribution_fact_consume_result_settlement_receipt = var:{PREFIX}_m269_result_relay_settlement
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_status value = 2 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_pending value = 0 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_result_relay_pending
+\t\t\thas_variable = {PREFIX}_m269_result_relay_phase
+\t\t\thas_variable = {PREFIX}_m269_result_relay_subject
+\t\t\tvar:{PREFIX}_m269_result_relay_pending = 1
+\t\t\tvar:{PREFIX}_m269_result_relay_phase = 1
+\t\t\tvar:{PREFIX}_m269_result_relay_subject = this
+\t\t\thas_variable = zg361_workforce_attribution_fact_dispatch_pending
+\t\t\tvar:zg361_workforce_attribution_fact_dispatch_pending = 1
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_RESULT_PUBLISH_EVENT} days = 2 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\ttrigger_if = {{ limit = {{ has_variable = {PREFIX}_m269_result_relay_pending }} var:{PREFIX}_m269_result_relay_pending = 0 }}
+\t\t\ttrigger_else = {{ always = yes }}
+{indent(_future_tuple_guard(269), 3)}
+\t\t\thas_variable = {PREFIX}_m269_outcome_pending
+\t\t\thas_variable = {PREFIX}_m269_outcome_settled
+\t\t\tvar:{PREFIX}_m269_outcome_pending = 1
+\t\t\tvar:{PREFIX}_m269_outcome_settled = 0
+\t\t\tOR = {{ var:{PREFIX}_m269_receipt_choice = 1 var:{PREFIX}_m269_receipt_choice = 2 }}
+\t\t\thas_variable = zg361_workforce_attribution_fact_signature_committed
+\t\t\thas_variable = zg361_workforce_attribution_fact_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_consumed
+\t\t\thas_variable = zg361_workforce_attribution_fact_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_case
+\t\t\tvar:zg361_workforce_attribution_fact_signature_committed = 1
+\t\t\tvar:zg361_workforce_attribution_fact_state = 2
+\t\t\tvar:zg361_workforce_attribution_fact_consumed = 0
+\t\t\tvar:zg361_workforce_attribution_fact_owner = var:{PREFIX}_m269_write_owner
+\t\t\tvar:zg361_workforce_attribution_fact_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_cycle = var:{PREFIX}_m269_write_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_case = var:{PREFIX}_m269_write_case
+\t\t\thas_variable = zg361_result_case_owner
+\t\t\thas_variable = zg361_result_cycle_serial
+\t\t\thas_variable = zg361_result_case_serial
+\t\t\thas_variable = zg361_result_case_state
+\t\t\thas_variable = zg361_result_settlement_posted_serial
+\t\t\thas_variable = zg361_result_grade
+\t\t\thas_variable = zg361_result_grade_reason
+\t\t\thas_variable = zg361_result_kpi_frozen
+\t\t\thas_variable = zg361_result_rank_frozen
+\t\t\tvar:zg361_result_case_owner = var:{PREFIX}_m269_write_owner
+\t\t\tvar:zg361_result_cycle_serial > var:{PREFIX}_m269_write_cycle
+\t\t\tvar:zg361_result_case_serial > 0
+\t\t\tOR = {{ var:zg361_result_case_state = 3 var:zg361_result_case_state = 5 }}
+\t\t\tvar:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+\t\t\tOR = {{ var:zg361_result_grade = 1 var:zg361_result_grade = 2 var:zg361_result_grade = 3 }}
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_owner value = var:{PREFIX}_m269_write_owner }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_subject value = this }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_cycle value = var:zg361_result_cycle_serial }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_case value = var:zg361_result_case_serial }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_state value = var:zg361_result_case_state }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_settlement value = var:zg361_result_settlement_posted_serial }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_phase value = 1 }}
+\t\t{ATTRIBUTION_PUBLISH_EFFECT} = {{ OWNER = var:{PREFIX}_m269_write_owner }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_RESULT_PUBLISH_EVENT} days = 2 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_status value = 5 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_pending value = 1 }} # dispatch commit last
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\thas_variable = {ATTRIBUTION_STATUS_VAR}
+\t\t\tvar:{ATTRIBUTION_STATUS_VAR} = 4
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_red_code value = 26941 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_status value = 5 }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_RESULT_PUBLISH_EVENT} days = 2 }}
+\t}}
+}}
+
+# A hired route-C debt closes the signed attribution slot on a later frame.
+{PREFIX}_m269_begin_attribution_debt_cancel_effect = {{
+\tremove_variable = {PREFIX}_m269_debt_attribution_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_business_object_created
+\t\t\thas_variable = {PREFIX}_m269_receipt_choice
+\t\t\thas_variable = {PREFIX}_m269_debt_visible_to_settlement
+\t\t\thas_variable = {PREFIX}_m269_debt_open
+\t\t\thas_variable = {PREFIX}_m269_debt_consumed
+\t\t\thas_variable = {PREFIX}_m269_debt_escalation_count
+\t\t\thas_variable = {PREFIX}_m269_debt_owner
+\t\t\thas_variable = {PREFIX}_m269_debt_subject
+\t\t\thas_variable = {PREFIX}_m269_debt_cycle
+\t\t\thas_variable = {PREFIX}_m269_debt_case
+\t\t\thas_variable = {PREFIX}_m269_debt_state
+\t\t\thas_variable = {PREFIX}_m269_debt_type_code
+\t\t\thas_variable = {PREFIX}_m269_debt_consumer_contract
+\t\t\thas_variable = {PREFIX}_m269_debt_id
+\t\t\thas_variable = {PREFIX}_m269_debt_due_cycle
+\t\t\tvar:{PREFIX}_m269_business_object_created = 0
+\t\t\tvar:{PREFIX}_m269_receipt_choice = 3
+\t\t\tvar:{PREFIX}_m269_debt_visible_to_settlement = 1
+\t\t\tvar:{PREFIX}_m269_debt_open = 1
+\t\t\tvar:{PREFIX}_m269_debt_consumed = 0
+\t\t\tvar:{PREFIX}_m269_debt_escalation_count = 0
+\t\t\tvar:{PREFIX}_m269_debt_owner = var:zg361_workforce_attribution_fact_owner
+\t\t\tvar:{PREFIX}_m269_debt_subject = this
+\t\t\tvar:{PREFIX}_m269_debt_cycle = var:zg361_workforce_attribution_fact_cycle
+\t\t\tvar:{PREFIX}_m269_debt_case = var:zg361_workforce_attribution_fact_case
+\t\t\tvar:{PREFIX}_m269_debt_state = 5
+\t\t\tvar:{PREFIX}_m269_debt_type_code = 269
+\t\t\tvar:{PREFIX}_m269_debt_consumer_contract = 269
+\t\t\thas_variable = zg361_workforce_attribution_fact_signature_committed
+\t\t\thas_variable = zg361_workforce_attribution_fact_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_consumed
+\t\t\thas_variable = zg361_workforce_attribution_fact_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_case
+\t\t\tvar:zg361_workforce_attribution_fact_signature_committed = 1
+\t\t\tvar:zg361_workforce_attribution_fact_state = 2
+\t\t\tvar:zg361_workforce_attribution_fact_consumed = 0
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_owner value = var:{PREFIX}_m269_debt_owner }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_subject value = this }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_cycle value = var:{PREFIX}_m269_debt_cycle }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_case value = var:{PREFIX}_m269_debt_case }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_id value = var:{PREFIX}_m269_debt_id }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_due_cycle value = var:{PREFIX}_m269_debt_due_cycle }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_escalation value = var:{PREFIX}_m269_debt_escalation_count }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_phase value = 1 }}
+\t\t{ATTRIBUTION_CANCEL_EFFECT} = {{ OWNER = var:{PREFIX}_m269_debt_owner }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_DEBT_CANCEL_ACK_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 5 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_pending value = 1 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\thas_variable = {ATTRIBUTION_STATUS_VAR}
+\t\t\tvar:{ATTRIBUTION_STATUS_VAR} = 4
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_red_code value = 26951 }}
+\t}}
+\telse = {{ set_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 5 }} }}
+}}
+
+{PREFIX}_m269_ack_attribution_debt_cancel_effect = {{
+\tremove_variable = {PREFIX}_m269_debt_attribution_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_pending
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_phase
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_owner
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_subject
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_cycle
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_case
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_id
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_due_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_state
+\t\t\thas_variable = zg361_workforce_attribution_fact_consumed
+\t\t\thas_variable = zg361_workforce_attribution_fact_canceled
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_owner
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_subject
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_case
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_debt_id
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_debt_due_cycle
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_debt_escalation_count
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_choice
+\t\t\thas_variable = {PREFIX}_m269_debt_open
+\t\t\thas_variable = {PREFIX}_m269_debt_consumed
+\t\t\thas_variable = {PREFIX}_m269_debt_escalation_count
+\t\t\tvar:{PREFIX}_m269_debt_attribution_pending = 1
+\t\t\tvar:{PREFIX}_m269_debt_attribution_phase = 1
+\t\t\tvar:{PREFIX}_m269_debt_attribution_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_state = 3
+\t\t\tvar:zg361_workforce_attribution_fact_consumed = 1
+\t\t\tvar:zg361_workforce_attribution_fact_canceled = 1
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_owner = var:{PREFIX}_m269_debt_attribution_owner
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_subject = this
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_cycle = var:{PREFIX}_m269_debt_attribution_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_case = var:{PREFIX}_m269_debt_attribution_case
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_debt_id = var:{PREFIX}_m269_debt_attribution_id
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_debt_due_cycle = var:{PREFIX}_m269_debt_attribution_due_cycle
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_debt_escalation_count = 0
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_m269_receipt_choice = 3
+\t\t\tvar:{PREFIX}_m269_debt_open = 1
+\t\t\tvar:{PREFIX}_m269_debt_consumed = 0
+\t\t\tvar:{PREFIX}_m269_debt_escalation_count = 0
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_phase value = 2 }}
+\t\tzg361_case_ad_advance_05_effect = {{
+\t\t\tTICKET_OWNER = var:{PREFIX}_m269_debt_attribution_owner TICKET_SUBJECT = this
+\t\t\tTICKET_CYCLE = var:{PREFIX}_m269_debt_attribution_cycle
+\t\t\tTICKET_CASE = var:{PREFIX}_m269_debt_attribution_case
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_DEBT_ADVANCE_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 5 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_red_code value = 26952 }}
+\t}}
+}}
+
+{PREFIX}_m269_audit_attribution_debt_advance_effect = {{
+\tremove_variable = {PREFIX}_m269_debt_attribution_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_pending
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_phase
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_owner
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_subject
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_cycle
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_case
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_id
+\t\t\thas_variable = {PREFIX}_m269_debt_attribution_due_cycle
+\t\t\thas_variable = zg361_case_ad_state
+\t\t\thas_variable = zg361_case_ad_owner
+\t\t\thas_variable = zg361_case_ad_subject
+\t\t\thas_variable = zg361_case_ad_cycle_serial
+\t\t\thas_variable = zg361_case_ad_case_serial
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_debt_id
+\t\t\thas_variable = zg361_workforce_attribution_fact_cancel_debt_escalation_count
+\t\t\tvar:{PREFIX}_m269_debt_attribution_pending = 1
+\t\t\tvar:{PREFIX}_m269_debt_attribution_phase = 2
+\t\t\tvar:{PREFIX}_m269_debt_attribution_subject = this
+\t\t\tvar:zg361_case_ad_state = 6
+\t\t\tvar:zg361_case_ad_owner = var:{PREFIX}_m269_debt_attribution_owner
+\t\t\tvar:zg361_case_ad_subject = this
+\t\t\tvar:zg361_case_ad_cycle_serial = var:{PREFIX}_m269_debt_attribution_cycle
+\t\t\tvar:zg361_case_ad_case_serial = var:{PREFIX}_m269_debt_attribution_case
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_debt_id = var:{PREFIX}_m269_debt_attribution_id
+\t\t\tvar:zg361_workforce_attribution_fact_cancel_debt_escalation_count = 0
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_debt_registered_id value = var:{PREFIX}_m269_debt_attribution_id }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_debt_registered_due_cycle value = var:{PREFIX}_m269_debt_attribution_due_cycle }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_debt_registered_escalation value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_attribution_debt_registered value = 1 }}
+\t\t{PREFIX}_ad_schedule_stage_06_deadline_effect = yes
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_pending value = 0 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_debt_attribution_red_code value = 26953 }}
+\t}}
+}}
+
+# D+1 post-settlement seam for rehire-history integration.  It proves state 6
+# on a second frame, captures eligible external growth, or prepares #276 after
+# the subject later returns to the immutable old owner.
+{PREFIX}_m269_postsettlement_handoff_effect = {{
+\tremove_variable = {PREFIX}_m269_postsettlement_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_pending
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_phase
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_owner
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_subject
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_cycle
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_case
+\t\t\thas_variable = {PREFIX}_m269_outcome_settled
+\t\t\thas_variable = {PREFIX}_m269_outcome_pending
+\t\t\thas_variable = {PREFIX}_m269_write_owner
+\t\t\thas_variable = {PREFIX}_m269_write_cycle
+\t\t\thas_variable = {PREFIX}_m269_write_case
+\t\t\thas_variable = zg361_case_ad_state
+\t\t\tvar:{PREFIX}_m269_postsettlement_pending = 1
+\t\t\tvar:{PREFIX}_m269_postsettlement_phase = 1
+\t\t\tvar:{PREFIX}_m269_postsettlement_subject = this
+\t\t\tvar:zg361_case_ad_state = 5
+\t\t\tvar:{PREFIX}_m269_outcome_settled = 1
+\t\t\tvar:{PREFIX}_m269_outcome_pending = 0
+\t\t\tvar:{PREFIX}_m269_postsettlement_owner = var:{PREFIX}_m269_write_owner
+\t\t\tvar:{PREFIX}_m269_postsettlement_cycle = var:{PREFIX}_m269_write_cycle
+\t\t\tvar:{PREFIX}_m269_postsettlement_case = var:{PREFIX}_m269_write_case
+\t\t\thas_variable = {PREFIX}_m269_attribution_signature_receipt_id
+\t\t\thas_variable = {PREFIX}_m269_attribution_signature_receipt_hash
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_phase value = 2 }}
+\t\t{PROBATION_FINALIZE_EFFECT} = yes
+\t\tzg361_case_ad_advance_05_effect = {{
+\t\t\tTICKET_OWNER = var:{PREFIX}_m269_postsettlement_owner TICKET_SUBJECT = this
+\t\t\tTICKET_CYCLE = var:{PREFIX}_m269_postsettlement_cycle
+\t\t\tTICKET_CASE = var:{PREFIX}_m269_postsettlement_case
+\t\t}}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_POSTSETTLEMENT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_status value = 5 }}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_pending
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_phase
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_owner
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_subject
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_cycle
+\t\t\thas_variable = {PREFIX}_m269_postsettlement_case
+\t\t\thas_variable = zg361_case_ad_state
+\t\t\thas_variable = zg361_case_ad_owner
+\t\t\thas_variable = zg361_case_ad_subject
+\t\t\thas_variable = zg361_case_ad_cycle_serial
+\t\t\thas_variable = zg361_case_ad_case_serial
+\t\t\tvar:{PREFIX}_m269_postsettlement_pending = 1
+\t\t\tvar:{PREFIX}_m269_postsettlement_phase = 2
+\t\t\tvar:{PREFIX}_m269_postsettlement_subject = this
+\t\t\tvar:zg361_case_ad_state = 6
+\t\t\tvar:zg361_case_ad_owner = var:{PREFIX}_m269_postsettlement_owner
+\t\t\tvar:zg361_case_ad_subject = this
+\t\t\tvar:zg361_case_ad_cycle_serial = var:{PREFIX}_m269_postsettlement_cycle
+\t\t\tvar:zg361_case_ad_case_serial = var:{PREFIX}_m269_postsettlement_case
+\t\t}}
+\t\t{PREFIX}_ad_schedule_stage_06_deadline_effect = yes
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = zg361_workforce_rehire_fact_state
+\t\t\t\tvar:zg361_workforce_rehire_fact_state = 1
+\t\t\t}}
+\t\t\t{REHIRE_CAPTURE_GROWTH_EFFECT} = yes
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = zg361_workforce_rehire_fact_state
+\t\t\t\thas_variable = zg361_workforce_rehire_fact_published
+\t\t\t\thas_variable = zg361_workforce_rehire_fact_consumed
+\t\t\t\thas_variable = zg361_workforce_rehire_fact_exit_owner
+\t\t\t\tvar:zg361_workforce_rehire_fact_state = 2
+\t\t\t\tvar:zg361_workforce_rehire_fact_published = 1
+\t\t\t\tvar:zg361_workforce_rehire_fact_consumed = 0
+\t\t\t\tvar:zg361_workforce_rehire_fact_exit_owner = var:{PREFIX}_m269_postsettlement_owner
+\t\t\t}}
+\t\t\tset_variable = {{ name = {PREFIX}_m276_rehire_prepare_owner value = var:{PREFIX}_m269_postsettlement_owner }}
+\t\t\tset_variable = {{ name = {PREFIX}_m276_rehire_prepare_subject value = this }}
+\t\t\tset_variable = {{ name = {PREFIX}_m276_rehire_prepare_cycle value = var:{PREFIX}_m269_postsettlement_cycle }}
+\t\t\tset_variable = {{ name = {PREFIX}_m276_rehire_prepare_case value = var:{PREFIX}_m269_postsettlement_case }}
+\t\t\t{REHIRE_PREPARE_EFFECT} = yes
+\t\t\ttrigger_event = {{ id = {NAMESPACE}.{M276_PREPARE_AUDIT_EVENT} days = 1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m276_rehire_prepare_pending value = 1 }} # commit last
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_ready value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_status value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_pending value = 0 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m269_postsettlement_red_code value = 26961 }}
+\t}}
+}}
+
+# D+1 gate between the source package's prepare write and the visible/AI #276
+# operation.  Ordinary subjects without a sealed rehire history never enter it.
+{PREFIX}_m276_audit_prepared_rehire_effect = {{
+\tremove_variable = {PREFIX}_m276_rehire_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m276_rehire_prepare_pending
+\t\t\thas_variable = {PREFIX}_m276_rehire_prepare_owner
+\t\t\thas_variable = {PREFIX}_m276_rehire_prepare_subject
+\t\t\thas_variable = {PREFIX}_m276_rehire_prepare_cycle
+\t\t\thas_variable = {PREFIX}_m276_rehire_prepare_case
+\t\t\tvar:{PREFIX}_m276_rehire_prepare_pending = 1
+\t\t\tvar:{PREFIX}_m276_rehire_prepare_subject = this
+\t\t\tzg361_case_kernel_full_guard_trigger = {{
+\t\t\t\tOWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+\t\t\t\tCYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+\t\t\t\tSTATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+\t\t\t\tEXPECTED_OWNER = var:{PREFIX}_m276_rehire_prepare_owner EXPECTED_SUBJECT = this
+\t\t\t\tEXPECTED_CYCLE = var:{PREFIX}_m276_rehire_prepare_cycle
+\t\t\t\tEXPECTED_CASE = var:{PREFIX}_m276_rehire_prepare_case EXPECTED_STATE = 6
+\t\t\t}}
+\t\t\thas_variable = zg361_workforce_rehire_fact_state
+\t\t\thas_variable = zg361_workforce_rehire_fact_published
+\t\t\thas_variable = zg361_workforce_rehire_fact_consumed
+\t\t\thas_variable = zg361_workforce_rehire_fact_prepared_owner
+\t\t\thas_variable = zg361_workforce_rehire_fact_prepared_subject
+\t\t\thas_variable = zg361_workforce_rehire_fact_prepared_cycle
+\t\t\thas_variable = zg361_workforce_rehire_fact_prepared_case
+\t\t\tvar:zg361_workforce_rehire_fact_state = 3
+\t\t\tvar:zg361_workforce_rehire_fact_published = 1
+\t\t\tvar:zg361_workforce_rehire_fact_consumed = 0
+\t\t\tvar:zg361_workforce_rehire_fact_prepared_owner = var:{PREFIX}_m276_rehire_prepare_owner
+\t\t\tvar:zg361_workforce_rehire_fact_prepared_subject = this
+\t\t\tvar:zg361_workforce_rehire_fact_prepared_cycle = var:{PREFIX}_m276_rehire_prepare_cycle
+\t\t\tvar:zg361_workforce_rehire_fact_prepared_case = var:{PREFIX}_m276_rehire_prepare_case
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_prepare_pending value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 1 }}
+\t\tif = {{
+\t\t\tlimit = {{ var:{PREFIX}_m276_rehire_prepare_owner = {{ is_ai = yes }} }}
+\t\t\t{PREFIX}_m276_route_a_effect = {{
+\t\t\t\tTICKET_OWNER = var:{PREFIX}_m276_rehire_prepare_owner TICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:{PREFIX}_m276_rehire_prepare_cycle
+\t\t\t\tTICKET_CASE = var:{PREFIX}_m276_rehire_prepare_case
+\t\t\t}}
+\t\t\t{PREFIX}_queue_m276_rehire_finalize_effect = {{
+\t\t\t\tTICKET_OWNER = var:{PREFIX}_m276_rehire_prepare_owner TICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:{PREFIX}_m276_rehire_prepare_cycle
+\t\t\t\tTICKET_CASE = var:{PREFIX}_m276_rehire_prepare_case CHOICE = 1
+\t\t\t}}
+\t\t}}
+\t\telse = {{
+\t\t\tvar:{PREFIX}_m276_rehire_prepare_owner = {{ save_scope_as = {PREFIX}_ad_owner }}
+\t\t\tsave_scope_as = {PREFIX}_ad_subject
+\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_cycle value = var:{PREFIX}_m276_rehire_prepare_cycle }}
+\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_case value = var:{PREFIX}_m276_rehire_prepare_case }}
+\t\t\tvar:{PREFIX}_m276_rehire_prepare_owner = {{ trigger_event = {{ id = {NAMESPACE}.276 }} }}
+\t\t}}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_red_code value = 27661 }}
+\t}}
+}}
+
+# Route A/B writes are observed only by a later subject event.  Route C never
+# calls this queue because it has not consumed the rehire history.
+{PREFIX}_queue_m276_rehire_finalize_effect = {{
+\tremove_variable = {PREFIX}_m276_rehire_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\tthis = $TICKET_SUBJECT$
+\t\t\tzg361_case_kernel_full_guard_trigger = {{
+\t\t\t\tOWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+\t\t\t\tCYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+\t\t\t\tSTATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+\t\t\t\tEXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tEXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+\t\t\t}}
+\t\t\tOR = {{ $CHOICE$ = 1 $CHOICE$ = 2 }}
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{ has_variable = {PREFIX}_m276_rehire_finalize_pending }}
+\t\t\t\tvar:{PREFIX}_m276_rehire_finalize_pending = 0
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = yes }}
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_owner value = $TICKET_OWNER$ }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_subject value = $TICKET_SUBJECT$ }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_cycle value = $TICKET_CYCLE$ }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_case value = $TICKET_CASE$ }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_choice value = $CHOICE$ }}
+\t\tif = {{
+\t\t\tlimit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+\t\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_mode value = 2 }}
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_m276_rehire_finalize_mode value = 1 }} }}
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M276_FINALIZE_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 5 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_pending value = 1 }} # commit last
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_pending = 1
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_owner = $TICKET_OWNER$
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_subject = $TICKET_SUBJECT$
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_cycle = $TICKET_CYCLE$
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_case = $TICKET_CASE$
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_choice = $CHOICE$
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 5 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_red_code value = 27662 }}
+\t}}
+}}
+
+{PREFIX}_m276_finalize_rehire_effect = {{
+\tremove_variable = {PREFIX}_m276_rehire_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_pending = 1
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_subject = this
+\t\t\tOR = {{ var:{PREFIX}_m276_rehire_finalize_choice = 1 var:{PREFIX}_m276_rehire_finalize_choice = 2 }}
+\t\t}}
+\t\t{REHIRE_FINALIZE_EFFECT} = yes
+\t\ttrigger_event = {{ id = {NAMESPACE}.{M276_FINALIZE_AUDIT_EVENT} days = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 5 }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_red_code value = 27663 }}
+\t}}
+}}
+
+{PREFIX}_m276_audit_rehire_finalize_effect = {{
+\tremove_variable = {PREFIX}_m276_rehire_handoff_status
+\tif = {{
+\t\tlimit = {{
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_pending = 1
+\t\t\tvar:{PREFIX}_m276_rehire_finalize_subject = this
+\t\t\thas_variable = zg361_workforce_rehire_fact_state
+\t\t\thas_variable = zg361_workforce_rehire_fact_consumed
+\t\t\thas_variable = zg361_workforce_rehire_fact_consume_owner
+\t\t\thas_variable = zg361_workforce_rehire_fact_consume_subject
+\t\t\thas_variable = zg361_workforce_rehire_fact_consume_cycle
+\t\t\thas_variable = zg361_workforce_rehire_fact_consume_case
+\t\t\thas_variable = zg361_workforce_rehire_fact_consume_choice
+\t\t\tvar:zg361_workforce_rehire_fact_state = 4
+\t\t\tvar:zg361_workforce_rehire_fact_consumed = 1
+\t\t\tvar:zg361_workforce_rehire_fact_consume_owner = var:{PREFIX}_m276_rehire_finalize_owner
+\t\t\tvar:zg361_workforce_rehire_fact_consume_subject = this
+\t\t\tvar:zg361_workforce_rehire_fact_consume_cycle = var:{PREFIX}_m276_rehire_finalize_cycle
+\t\t\tvar:zg361_workforce_rehire_fact_consume_case = var:{PREFIX}_m276_rehire_finalize_case
+\t\t\tvar:zg361_workforce_rehire_fact_consume_choice = var:{PREFIX}_m276_rehire_finalize_choice
+\t\t}}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_completed value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_finalize_pending value = 0 }} # completion commit last
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = {PREFIX}_ad_external_pip_exit_ready
+\t\t\t\tvar:{PREFIX}_ad_external_pip_exit_ready = 1
+\t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:{PREFIX}_m276_rehire_finalize_mode = 2 }}
+\t\t\t\t{PREFIX}_m277_route_a_effect = {{
+\t\t\t\t\tTICKET_OWNER = var:{PREFIX}_m276_rehire_finalize_owner TICKET_SUBJECT = this
+\t\t\t\t\tTICKET_CYCLE = var:{PREFIX}_m276_rehire_finalize_cycle
+\t\t\t\t\tTICKET_CASE = var:{PREFIX}_m276_rehire_finalize_case
+\t\t\t\t}}
+\t\t\t}}
+\t\t\telse = {{
+\t\t\t\tvar:{PREFIX}_m276_rehire_finalize_owner = {{ save_scope_as = {PREFIX}_ad_owner }}
+\t\t\t\tsave_scope_as = {PREFIX}_ad_subject
+\t\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_cycle value = var:{PREFIX}_m276_rehire_finalize_cycle }}
+\t\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_case value = var:{PREFIX}_m276_rehire_finalize_case }}
+\t\t\t\tvar:{PREFIX}_m276_rehire_finalize_owner = {{ trigger_event = {{ id = {NAMESPACE}.277 }} }}
+\t\t\t}}
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_m276_waiting_for_m277_provider value = 1 }} }}
+\t}}
+\telse = {{
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_status value = 4 }}
+\t\tset_variable = {{ name = {PREFIX}_m276_rehire_handoff_red_code value = 27664 }}
+\t}}
 }}"""
 
 
@@ -5163,9 +6524,9 @@ def render_effects() -> bytes:
         render_completed_cycle_ledger(),
         render_ac_real_fact_producers(),
         render_external_fact_adapters(),
-        render_m274_postconsume_fact_handoff(),
-        render_m274_native_resume(),
-        render_future_consumers(),
+        render_m274_attribution_pipeline(),
+        render_future_consumers_integrated(),
+        render_m269_attribution_handoffs(),
         render_due_debt_consumers(),
         render_abandoned_resource_release(),
         render_nonmanager_na_finalize(),
@@ -5301,60 +6662,21 @@ def render_option(spec: Mechanism, choice: int) -> str:
     # #262 opens a due-cycle review; it must not immediately ask #263 in the
     # same cycle.  The hidden due consumer queues that player event later.
     if mid == 274 and next_mid == 275:
-        # Accepted counteroffers cannot also be refused.  Close #275 through
-        # its internal no-hold projection and never show a contradictory
-        # refusal window; only a still-open offer exposes #275 A/B/C.
-        appointment_ack = (
-            f" has_variable = {APPOINTMENT_STATUS_VAR} var:{APPOINTMENT_STATUS_VAR} = 6"
-            if choice == 1
-            else ""
-        )
-        postconsume_handoff = (
-            f"""
-		scope:{PREFIX}_{d}_subject = {{
-			{PREFIX}_m274_postconsume_fact_handoff_effect = {{
-				TICKET_OWNER = scope:{PREFIX}_{d}_owner
-				TICKET_SUBJECT = scope:{PREFIX}_{d}_subject
-				TICKET_CYCLE = scope:{PREFIX}_{d}_cycle
-				TICKET_CASE = scope:{PREFIX}_{d}_case
-			}}
-		}}"""
-            if choice == 1
-            else ""
-        )
-        handoff_ack = (
-            f" has_variable = {PREFIX}_m274_postconsume_handoff_status "
-            f"OR = {{ var:{PREFIX}_m274_postconsume_handoff_status = 1 "
-            f"var:{PREFIX}_m274_postconsume_handoff_status = 2 }}"
-            if choice == 1
-            else ""
-        )
-        m274_fallback = (
-            f"scope:{PREFIX}_{d}_subject = {{ "
-            f"set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} "
-            f"set_variable = {{ name = {PREFIX}_last_red_code value = 27493 }} }}"
-            if choice == 1
-            else f"trigger_event = {{ id = {NAMESPACE}.275 }}"
-        )
-        next_event = f"""
-	if = {{
-		limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1{appointment_ack} }} }}{postconsume_handoff}
-		if = {{
-			limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_m274_business_object_created var:{PREFIX}_m274_business_object_created = 1 has_variable = {PREFIX}_m274_object_owner var:{PREFIX}_m274_object_owner = scope:{PREFIX}_{d}_owner has_variable = {PREFIX}_m274_object_subject var:{PREFIX}_m274_object_subject = scope:{PREFIX}_{d}_subject has_variable = {PREFIX}_m274_object_cycle var:{PREFIX}_m274_object_cycle = scope:{PREFIX}_{d}_cycle has_variable = {PREFIX}_m274_object_case var:{PREFIX}_m274_object_case = scope:{PREFIX}_{d}_case has_variable = {PREFIX}_m274_hired var:{PREFIX}_m274_hired = 1{handoff_ack} }} }}
-			scope:{PREFIX}_{d}_subject = {{
-				{PREFIX}_m275_route_a_effect = {{
-					TICKET_OWNER = scope:{PREFIX}_{d}_owner
-					TICKET_SUBJECT = scope:{PREFIX}_{d}_subject
-					TICKET_CYCLE = scope:{PREFIX}_{d}_cycle
-					TICKET_CASE = scope:{PREFIX}_{d}_case
-				}}
-			}}
-			if = {{
-				limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_{d}_state = 5 }} }}
-				trigger_event = {{ id = {NAMESPACE}.269 }}
-			}}
+        if choice == 1:
+            next_event = f"""
+	scope:{PREFIX}_{d}_subject = {{
+		{PREFIX}_queue_m274_appointment_ack_effect = {{
+			TICKET_OWNER = scope:{PREFIX}_{d}_owner
+			TICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+			TICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+			TICKET_CASE = scope:{PREFIX}_{d}_case
 		}}
-		else = {{ {m274_fallback} }}
+	}}"""
+        else:
+            next_event = f"""
+	if = {{
+		limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }} }}
+		trigger_event = {{ id = {NAMESPACE}.275 }}
 	}}"""
     elif mid == 275 and next_mid == 269:
         # A refusal has no probation outcome to write back.  Close #269 with
@@ -5399,6 +6721,25 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t\t\tvar:{PREFIX}_m264_handoff_response = {choice}
 \t\t}}
 \t}}"""
+    if mid == 276 and choice in (1, 2):
+        return f"""option = {{
+\tname = {NAMESPACE}.{mid}.{letter}
+\tscope:{PREFIX}_{d}_subject = {{
+\t\t{PREFIX}_m{mid}_route_{letter}_effect = {{
+\t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
+\t\t\tTICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+\t\t\tTICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+\t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case
+\t\t}}
+\t\t{PREFIX}_queue_m276_rehire_finalize_effect = {{
+\t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
+\t\t\tTICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+\t\t\tTICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+\t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case
+\t\t\tCHOICE = {choice}
+\t\t}}
+\t}}
+}}"""
     if not (mid == 360 and choice in (1, 2)):
         route_effect = (
             APPOINTMENT_WRAPPER
@@ -5533,6 +6874,100 @@ def render_future_event(mid: int) -> str:
 }}"""
 
 
+def render_attribution_integration_events() -> str:
+    return f"""{NAMESPACE}.{M274_NATIVE_ACK_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{
+\t\tset_variable = {{ name = {PREFIX}_m274_native_resume_audit_scheduled value = 0 }}
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = {PREFIX}_m274_native_resume_pending_owner
+\t\t\t\thas_variable = {PREFIX}_m274_native_resume_pending_subject
+\t\t\t\thas_variable = {PREFIX}_m274_native_resume_pending_cycle
+\t\t\t\thas_variable = {PREFIX}_m274_native_resume_pending_case
+\t\t\t\tvar:{PREFIX}_m274_native_resume_pending_subject = this
+\t\t\t}}
+\t\t\t{PREFIX}_resume_m274_after_native_appointment_effect = {{
+\t\t\t\tTICKET_OWNER = var:{PREFIX}_m274_native_resume_pending_owner
+\t\t\t\tTICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:{PREFIX}_m274_native_resume_pending_cycle
+\t\t\t\tTICKET_CASE = var:{PREFIX}_m274_native_resume_pending_case
+\t\t\t}}
+\t\t}}
+\t}}
+}}
+
+{NAMESPACE}.{M274_PROBATION_AUDIT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m274_audit_probation_and_arm_attribution_effect = yes }}
+}}
+
+{NAMESPACE}.{M274_SIGNATURE_AUDIT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m274_audit_signature_and_dispatch_disposition_effect = yes }}
+}}
+
+{NAMESPACE}.{M274_DISPOSITION_AUDIT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m274_audit_disposition_and_launch_m269_effect = yes }}
+}}
+
+{NAMESPACE}.{M269_DEBT_CANCEL_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m269_begin_attribution_debt_cancel_effect = yes }}
+}}
+
+{NAMESPACE}.{M269_DEBT_CANCEL_ACK_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m269_ack_attribution_debt_cancel_effect = yes }}
+}}
+
+{NAMESPACE}.{M269_DEBT_ADVANCE_AUDIT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m269_audit_attribution_debt_advance_effect = yes }}
+}}
+
+{NAMESPACE}.{M269_POSTSETTLEMENT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m269_postsettlement_handoff_effect = yes }}
+}}
+
+{NAMESPACE}.{M269_RESULT_PUBLISH_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{
+\t\tset_variable = {{ name = {PREFIX}_m269_result_relay_queued value = 0 }}
+\t\t{PREFIX}_m269_publish_signed_result_effect = yes
+\t}}
+}}
+
+{NAMESPACE}.{M276_PREPARE_AUDIT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m276_audit_prepared_rehire_effect = yes }}
+}}
+
+{NAMESPACE}.{M276_FINALIZE_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m276_finalize_rehire_effect = yes }}
+}}
+
+{NAMESPACE}.{M276_FINALIZE_AUDIT_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m276_audit_rehire_finalize_effect = yes }}
+}}"""
+
+
 def render_remediation_handoff_events() -> str:
     return f"""# D+1 commit boundaries for the real #275-B remediation fact.
 {NAMESPACE}.{REMEDIATION_OPEN_EVENT} = {{
@@ -5652,6 +7087,7 @@ def render_events() -> bytes:
             sections.append(render_deadline_event(domain, state))
     for mid in FUTURE_EVENT:
         sections.append(render_future_event(mid))
+    sections.append(render_attribution_integration_events())
     sections.append(render_remediation_handoff_events())
     for mid in sorted(DEBT_EVENT):
         sections.append(render_debt_event(mid))

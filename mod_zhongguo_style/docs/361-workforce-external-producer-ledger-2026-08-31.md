@@ -1,6 +1,6 @@
 ﻿# Workforce external producer 责任账本（2026-08-31）
 
-状态：**逐字段分类完成；AC #264、AD #274 native appointment、AL #360 与 AL #361 product vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
+状态：**逐字段分类完成；AC #264、AD #274→signed attribution→#269、AL #360 与 AL #361 product vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
 
 ## 1. 冻结证据与分类规则
 
@@ -97,10 +97,11 @@ celestial manager vassal；host 必须不同于 owner 与 subject。伯爵/男�
 上述 20 个旧告警字段中，19 个 `ac_external_handoff_*` 已没有生产 read，`secondment_host_manager` 有真实可达 setter
 与 A/B caller。因此**静态预期**下一轮 loader 消掉 AC 20 项；在新 artifact 出现前仍不得写成 loader-live。
 
-## 3. AD：42 项仍需 producer；35 项旧 external alias 已静态退役，3 项 native appointment 已静态闭合
+## 3. AD：30 项仍需 producer；47 项旧 external alias 已静态退役，3 项 native appointment 已静态闭合
 
-旧 loader 的 AD 80 项没有被笼统“补 setter”。35 项能够由现有真对象重导、重复表达同一 envelope，或已经由
-B2 权威发布；原剩余 45 项中的 3 项现由真实 custom court-position callback producer 静态闭合，其余 42 项继续作为
+旧 loader 的 AD 80 项没有被笼统“补 setter”。47 项能够由现有真对象、signed attribution/probation facts 重导，
+重复表达同一 envelope，或已经由 B2 权威发布；余下 33 项中的 3 项现由真实 custom court-position callback producer
+静态闭合，其余 30 项继续作为
 真实施工债保留。新 loader 运行前只能称为静态预期，不能称为 live。
 
 ### 3.1 同案对象直接重导：10
@@ -119,7 +120,7 @@ zg361_we_ad_external_responsible_interviewer_3
 ```
 
 候选人、hire case、最终批准人和三位责任面试官分别从本案 #267/#269/#272 对象读取；referral present、固定 5 金
-奖励和 referrer 是否参评由 #271 路线本身派生。#269 的第一份 attribution bps 不属于本组，见 §3.4。
+奖励和 referrer 是否参评由 #271 路线本身派生。#269 的三份 attribution bps 见 §3.5。
 
 ### 3.2 current-case / strict-adapter envelope 重导：18
 
@@ -177,10 +178,34 @@ zg361_we_ad_external_exit_hc_lineage_case
 zg361_we_ad_external_exit_position_type_id
 ```
 
-归因第一份固定由 `10000-bps_2-bps_3` 推导，并先拒绝负数；排除结果三份均为零。离任岗位类型复用已确认任命的
-`m274_position_type_id`，HC lineage 复用当前 `formal_hc_active_case`，外部 exit producer 无权重新声明这两个值。
+`attribution_bps_1` external alias 已被 signed attribution receipt 取代；共享 core 直接核对三份 bps 与
+`total_bps=10000`，不再从调用者裸传的 bps_2/3 推导第一份。离任岗位类型复用已确认任命的 `m274_position_type_id`，
+HC lineage 复用当前 `formal_hc_active_case`，外部 exit producer 无权重新声明这两个值。
 
-### 3.5 剩余 Workforce 同域缺真实 producer：16
+### 3.5 Signed attribution / probation 重复投影退役：12
+
+```text
+zg361_we_ad_external_attribution_bps_2
+zg361_we_ad_external_attribution_bps_3
+zg361_we_ad_external_outcome_dimension_1
+zg361_we_ad_external_outcome_dimension_2
+zg361_we_ad_external_outcome_dimension_3
+zg361_we_ad_external_outcome_evidence_count
+zg361_we_ad_external_outcome_evidence_hash
+zg361_we_ad_external_outcome_evidence_id
+zg361_we_ad_external_outcome_exclusion_reason
+zg361_we_ad_external_outcome_id
+zg361_we_ad_external_outcome_observed_cycle
+zg361_we_ad_external_outcome_quality
+```
+
+真实 #274 appointment ACK 后，共享 core 先跨帧 arm probation，再跨帧 arm attribution。玩家明确选择主责席，或 AI 依据
+冻结原票与公开最小 slot tie rule 签署 `6000/2000/2000`；receipt 永久绑定 final approver、三位互异 interviewer、三份
+逐票 evidence、三份 bps 与 `total_bps=10000`。两个 canonical result 写点只排 D+1 relay，attribution adapter 再把相同
+签署事实交给 probation。ordinary #269 直接 join 两个 detailed fact package，不读取本组 12 alias；WAIT/RED 不推进，
+相同 settled watchdog 重放先返回幂等 status 2。故本组从 loader external 合同静态退役，而不是以 3333/3333 或默认值消债。
+
+### 3.6 剩余 Workforce 同域缺真实 producer：16
 
 ```text
 zg361_we_ad_external_interviewer_1
@@ -204,7 +229,7 @@ zg361_we_ad_external_vote_evidence_3
 施工入口必须是实际 referral 提交、三位互异 interviewer 的玩家/AI panel 选择、逐票 evidence、真实 subject refusal
 和真实 runner-up；没有候选时应 N/A/延后，不得把 subject 重复塞进三个 identity slot。
 
-### 3.6 Native/Career appointment：3，真实 callback producer 与两个 caller 已接通
+### 3.7 Native/Career appointment：3，真实 callback producer 与两个 caller 已接通
 
 ```text
 zg361_we_ad_external_position_receipt_hash
@@ -216,33 +241,12 @@ zg361_we_ad_external_position_type_id
 `appoint_court_position`，再等 engine-owned `on_court_position_received`，复核 employer/holder、title、#266 HC lineage
 和 exact case，最后通过既有 strict adapter 发布。玩家 `zg361we.274.a` 与授权 AI 的 AD runner 都已改走 wrapper，
 不再直接调用 #274 route A。若 callback 非同 tick 完成，hidden single-flight audit 释放有界试任岗位后，以 sealed
-receipt exact tuple 调 Workforce resume；resume 只消费一次 #274/#275，并分别恢复玩家 #269 事件或授权 AI 后台链。
-同 tick 玩家、同 tick AI 与 D+1 resume 在继续前还统一调用 post-consume fact seam：复核 #274 object 与 appointment
-receipt 都已消费后才 arm probation fact，arm 失败即停链。`status=5` 只保留一个次日 retry，RED/complete 不推进。当前仅为 script static-ready，仍待 loader/paused live 证明
+receipt exact tuple 调 Workforce resume；所有 caller 都只排 D+1 appointment ACK，不在 wrapper 写入链读 status。ACK 消费
+#274 后统一进入 post-consume seam：先 arm probation，下一帧核 status 1/2 才 arm attribution；签署完成后跨帧提交 hired
+#275 disposition，再核对后恢复玩家 #269 事件或授权 AI 后台链。WAIT/RED 均不推进。当前仅为 script static-ready，仍待 loader/paused live 证明
 任命、撤任、WAIT 重试及玩家/AI续跑。
 
-### 3.7 尚未全链/live 闭合的 Career/HC 字段：26
-
-Career/HC probation outcome（12；第一份 bps 已由 §3.4 推导）：
-
-```text
-zg361_we_ad_external_attribution_bps_2
-zg361_we_ad_external_attribution_bps_3
-zg361_we_ad_external_outcome_dimension_1
-zg361_we_ad_external_outcome_dimension_2
-zg361_we_ad_external_outcome_dimension_3
-zg361_we_ad_external_outcome_evidence_count
-zg361_we_ad_external_outcome_evidence_hash
-zg361_we_ad_external_outcome_evidence_id
-zg361_we_ad_external_outcome_exclusion_reason
-zg361_we_ad_external_outcome_id
-zg361_we_ad_external_outcome_observed_cycle
-zg361_we_ad_external_outcome_quality
-```
-
-独立 probation fact package 已存在，#274 真实 hire arm 与 B2 PIP terminal source 均已接到 core；PIP 路可以静态生成并
-一次消费这 12 项。普通 result 路仍必须等待真实 attribution signature（不能补 3333），整组仍是 static-ready/not-live，
-不得从 PIP 单一路径外推为所有结果均已闭合。
+### 3.8 尚未全链/live 闭合的 Career/HC 字段：14
 
 Career/HC remediation（2）：
 
@@ -412,10 +416,10 @@ portfolio”当作历史 receipt 的前置条件，又把三张历史 receipt �
 
 ## 5. 收口数字与下一步
 
-- 本包累计静态改动目标：AC 20 项、AL collective 167 项、AL charter 28 项、AD 35 项旧 external alias 和
+- 本包累计静态改动目标：AC 20 项、AL collective 167 项、AL charter 28 项、AD 47 项旧 external alias 和
   AD appointment 3 项真实 callback producer，精确名单见 §2、§3、§4.2、§4.3。
 - 另有既存、待复验的 AL stage 8 项，见 §4.1。
-- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+167+28+35+3=261`，剩余 42：全部是 AD 42。
-- 这 42 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
+- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+167+28+47+3=273`，剩余 30：全部是 AD 30。
+- 这 30 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
 - 下一轮实机必须 MCP-first：先看 loader 唯一字段差集，再用 paused snapshot 验 #262 real host、#264 三次玩家
   选项、两个 30 日 gap、一次支付/退款、AI 无玩家事件。OCR 不是首选路径。

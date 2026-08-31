@@ -1,0 +1,69 @@
+﻿# GENERATED FILE — edit tools/gen_zg361_workforce_normal_exit_fact.py
+namespace = zg361workforcenormalexitfact
+
+zg361workforcenormalexitfact.9100 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_normal_exit_fact_pending
+        var:zg361_workforce_normal_exit_fact_pending = 1
+        var:zg361_workforce_normal_exit_fact_pending_subject = this
+        var:zg361_workforce_normal_exit_fact_request_authorized = 1
+    }
+    immediate = { zg361_workforce_normal_exit_fact_dispatch_native_revoke_effect = yes }
+}
+
+zg361workforcenormalexitfact.9101 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_normal_exit_fact_pending
+        var:zg361_workforce_normal_exit_fact_pending = 1
+        var:zg361_workforce_normal_exit_fact_pending_subject = this
+        var:zg361_workforce_normal_exit_fact_request_dispatched = 1
+    }
+    immediate = { zg361_workforce_normal_exit_fact_audit_native_then_accept_m075_effect = yes }
+}
+
+zg361workforcenormalexitfact.9102 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_normal_exit_fact_pending
+        var:zg361_workforce_normal_exit_fact_pending = 1
+        var:zg361_workforce_normal_exit_fact_pending_subject = this
+        var:zg361_workforce_normal_exit_fact_state = 2
+    }
+    immediate = { zg361_workforce_normal_exit_fact_finalize_receipt_effect = yes }
+}
+
+zg361workforcenormalexitfact.9103 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        var:zg361_workforce_normal_exit_fact_receipt_active = 1
+        var:zg361_workforce_normal_exit_fact_receipt_sealed = 1
+        var:zg361_workforce_normal_exit_fact_receipt_published = 1
+        var:zg361_workforce_normal_exit_fact_receipt_consumed = 1
+        var:zg361_workforce_normal_exit_fact_receipt_subject = this
+    }
+    immediate = { zg361_workforce_rehire_fact_capture_exit_effect = yes }
+}
+
+zg361workforcenormalexitfact.1 = {
+    type = character_event
+    title = zg361workforcenormalexitfact.1.t
+    desc = zg361workforcenormalexitfact.1.desc
+    trigger = {
+        is_ai = no
+        var:zg361_workforce_normal_exit_fact_receipt_active = 1
+        var:zg361_workforce_normal_exit_fact_receipt_sealed = 1
+        var:zg361_workforce_normal_exit_fact_receipt_consumed = 1
+        var:zg361_workforce_normal_exit_fact_receipt_subject = this
+        var:zg361_workforce_normal_exit_fact_receipt_exit_source_kind = 75
+    }
+    option = {
+        name = zg361workforcenormalexitfact.1.a
+        set_variable = { name = zg361_workforce_normal_exit_fact_notice_seen value = 1 }
+    }
+}

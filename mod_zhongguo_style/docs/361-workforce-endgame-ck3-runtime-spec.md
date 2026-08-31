@@ -121,20 +121,20 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
   完成 HC 释放、`reason_remediated=1` 与 owner flight 清除后，再由另一个 D+1 subject event 精确消费同一
   detailed receipt。两处调用都在已提交边界读取，不用同 effect 链写后读；当前仅为 core-wired static-ready，
   仍待 loader、paused snapshot 与实机事件点击证明。
-- #269 只结算 probation outcome、归因和 referral 金币，不拥有 HC release。相同 outcome id 不能重复结算；
-  `outcome_id` 已出现但字段不完整时写 typed future RED，尚无 `outcome_id` 才重排。candidate/hire case、三位责任面试官与
-  最终批准人从本案 #267/#269/#272 重导；第一份 attribution bps 由 `10000-bps_2-bps_3` 守恒推导。真实录用的 #269 A/B 在 future consumer 完成前不推进
-  AD state 5；成功结算后才推进 state 6 并向玩家排 #276，或让 AI 从 callback 续跑 #276/#277。
+- #269 只结算 probation outcome、已签归因和 referral 金币，不拥有 HC release。ordinary consumer 直接 join attribution
+  fact 的 signer、三位 interviewer、逐票 evidence、三份 bps、`total_bps=10000` 与 receipt id/hash，再 join probation fact
+  的 result/outcome/attribution receipt；不再读取 12 个旧 `ad_external_*` outcome/bps alias，也不接受调用者裸传比例。
+  WAIT 只重排，RED 不推进；成功后先提交 `outcome_settled`，再由 D+1 seam 完成 probation consume receipt 与 state 5→6，
+  第二帧只冻结 `m269_postsettlement_ready=1`。该 seam 是后续 #276/#277 的明确插入点，本工作包不提前派发退出链。
+  旧 watchdog 首先识别完全相同的已结算 tuple 并返回幂等 status 2，不能在晚到重放时误报 2691。
 - #274 录用与 #275 拒绝是互斥结果。录用成功后内部写 #275 `hold=0` disposition，玩家不会看到矛盾的拒绝窗；
   未录用才展示 #275 A/B/C。真实拒绝后内部写 #269 `no_hire=1` disposition，不创建 probation watch，也不展示
   延迟质量回写窗。这两种 disposition 是可追溯的同案业务结论，不是 C debt，且资源变化为零。
-- #274 A 的玩家事件与授权 AI 路径都必须先调用真实任命 wrapper，不能直接调用招聘 route。原生 callback 同 tick
-  返回时按原路径继续；若返回 `status=5`，任命包的 hidden single-flight audit 在 callback、holder/employer、title/HC
-  与 strict adapter 全部闭合后，用 immutable receipt 的 exact tuple 调
-  `zg361_we_resume_m274_after_native_appointment_effect`。resume 只消费一次 #274、内部关闭 hired #275，再为玩家恢复
-  #269 事件或为授权 AI 恢复后台链。三条成功路径随后都必须经过唯一
-  `zg361_we_m274_postconsume_fact_handoff_effect`：它重新核对已消费的 #274 object 与 native appointment receipt，调用
-  `zg361_workforce_probation_fact_arm_hire_effect`，只有 arm status 1/2 才允许继续 #275/#269；WAIT/RED 不推进也不重排。
+- #274 A 的玩家事件与授权 AI 路径都必须先调用真实任命 wrapper，不能直接调用招聘 route。caller 不在 wrapper 写入链
+  读取 status；它只冻结 exact ticket 并排 D+1 ACK。ACK 消费 appointment receipt 后进入唯一 post-consume seam，先 arm
+  probation，再下一帧只在 arm status 1/2 与 exact receipt 成立时 arm attribution；玩家签署或 AI deterministic rule 提交
+  detailed attribution receipt 后，再下一帧内部关闭 hired #275，最后一帧核对 disposition 才派 #269。任一 WAIT 保持原
+  case state，任一 RED 不推进；整个链没有同 effect 写后读，也不会在 #269 结算前触发 #276/#277。
 - #277 不再接收 caller 复述的 PIP case/closure。它直接读取 B2 已提交、尚未消费的 11 字段 PIP settlement 槽，
   再与独立 native exit receipt 联结；position type 与 HC lineage 分别从 #274 和当前 formal HC 对象重导。只有 A/B
   在 case-kernel operation receipt 成功后才消费两个来源，C、RED、stale、幂等和 route collision 都不消费 B2。
@@ -194,7 +194,7 @@ owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退�
 | AD | 272 | 3 | 消费 owner/vote/calibration/policy 同案对象，冻结 unique offer terms/level/approver/premium due → bounded offer reserve |
 | AD | 274 | 4 | 玩家/授权 AI 的 A 都经原生 court-position wrapper；消费同案 offer/HC lineage 与 callback 后封存的 position receipt，appointed character 直接绑定本案 subject；A one counter 后精确结算 15 金币并 reserved→occupied；异步 callback 由 exact-tuple single-flight resume 恢复；B 保持 Offer 进入拒绝分支 |
 | AD | 275 | 4 | 未录用时 refusal reason/runner evidence/HC lineage → held/reopen/release；已录用则内部写 hold=0 disposition，不弹拒绝窗、不改资源 |
-| AD | 269 | 5 | 已录用时 pending outcome + unique evidence → 同案身份重导、bps 守恒后 future one-shot 才 advance；已拒绝则内部写 no-hire disposition，不建 watch |
+| AD | 269 | 5 | 已录用时 signed attribution receipt + canonical probation outcome → detailed exact join 后 D+1 advance；route C 先登记 exact attribution debt/cancel；已拒绝则内部写 no-hire disposition，不建 watch |
 | AD | 276 | 6 | old case hash/exit/growth → candidate 绑定当前 subject 的 append-only rehire review；HC untouched |
 | AD | 277 | 6 | B2 pending 11-tuple + 独立 exit receipt + 内部 position/HC lineage → occupied→frozen vacancy；只在成功 A/B 消费 B2，不回 available、不铸 HC |
 | AL | 355 | 1 | prior 100/actual 150/repeatable 20/windfall 30 → limited 120 或 PEAK 150+risk |
@@ -316,9 +316,17 @@ RED `9098`。
 1. 中央层选择真实 assessed subject 并调用初始 portfolio adapter；#360 只允许走本节冻结的 resume/N/A seam，
    旧 opener 不会提前排 `zg361we.360`。
 2. AD 已提供严格 adapter：#274 的玩家与授权 AI caller 均已接入真实 custom court-position provider；只有原生
-   callback、employer/holder/title/HC 后置条件和 sealed receipt 闭合后才消费，异步 callback 由 hidden audit 调 exact-tuple
-   resume，不会让原事件关闭后卡死；同 tick 玩家、同 tick AI 与 D+1 resume 都已在同一个 post-consume seam arm probation fact。
-   #276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；
+   callback、employer/holder/title/HC 后置条件和 sealed receipt 闭合后才消费。共享 core 已把 appointment ACK、probation arm、
+   attribution arm/signature、hired disposition 与 #269 拆成逐帧 exact-ticket 链；两处 canonical result settlement 也只排 D+1
+   relay，由 attribution adapter 发布详细签署事实。#269 ordinary success、route C cancel/debt 与 post-settlement seam 均已
+   core-wired static-ready。#274 post-consume 同时调用长期 career-slot arm；B2 #075 A 先进入 normal-exit producer，
+   seal 后 D+1 捕获 exit。#269 post-settlement 在已有 exit history 时尝试 later-growth capture；完整 history 回到旧
+   owner 后才 prepare #276，D+1 audit 再开放玩家/授权 AI，route A/B 又隔两帧 finalize。正常撤任 callback 有独立
+   exact authorization branch，不再额外标记 unexpected native end。仍需 loader/paused live 证明事件顺序、WAIT/RED
+   停链、幂等重放与 10000bp 守恒。
+   #276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；当前 probation fact 是单槽，旧
+   owner consumed tombstone 尚无不清洗旧案的跨 owner 轮转 ABI，所以 later-growth caller 虽已接线，自然多雇主链仍
+   fail-closed；这是明确 residual blocker，不得以清变量绕过。
    #277 直接 join B2 已提交的 11 字段 PIP settlement 槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC
    lineage。#274 仍需 CK3 loader/paused live 证明真实任命、撤任、WAIT 重试和玩家/AI续跑；#277 的离任 provider 仍须
    实机证明。没有真实事实时分别以 2741/2771 blocked，绝不伪造角色或职位。
@@ -341,5 +349,6 @@ RED `9098`。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
 8. 2026-08-31 旧 loader 的 303 项 Workforce external warning 已逐字段归责于
    `docs/361-workforce-external-producer-ledger-2026-08-31.md`。静态预期已消掉 AC 20、AL stage 8、AL collective
-   167、已删除的 AL charter 28 与 AD 35 个重复 alias，共 `20+8+167+28+35=258` 项；仍余 AD 45 项。该数字必须由
+   167、已删除的 AL charter 28、AD 47 个重复 alias 与 AD appointment 3 项，共
+   `20+8+167+28+47+3=273` 项；仍余 AD 30 项。该数字必须由
    新 loader artifact 复验，不能把静态可达性称为 live GREEN。

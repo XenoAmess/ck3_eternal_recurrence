@@ -55,6 +55,18 @@ EXPECTED_RETIRED_AD_EXTERNAL_ALIASES = {
     "zg361_we_ad_external_pip_closure_receipt_hash",
     "zg361_we_ad_external_pip_closure_receipt_id",
     "zg361_we_ad_external_attribution_bps_1",
+    "zg361_we_ad_external_attribution_bps_2",
+    "zg361_we_ad_external_attribution_bps_3",
+    "zg361_we_ad_external_outcome_dimension_1",
+    "zg361_we_ad_external_outcome_dimension_2",
+    "zg361_we_ad_external_outcome_dimension_3",
+    "zg361_we_ad_external_outcome_evidence_count",
+    "zg361_we_ad_external_outcome_evidence_hash",
+    "zg361_we_ad_external_outcome_evidence_id",
+    "zg361_we_ad_external_outcome_exclusion_reason",
+    "zg361_we_ad_external_outcome_id",
+    "zg361_we_ad_external_outcome_observed_cycle",
+    "zg361_we_ad_external_outcome_quality",
     "zg361_we_ad_external_exit_hc_lineage_case",
     "zg361_we_ad_external_exit_position_type_id",
 }
@@ -457,14 +469,23 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 expected_max = 2 if spec.mid in (274, 275) else 1
                 self.assertLessEqual(option.count("trigger_event = { id = zg361we."), expected_max)
         accepted = block(self.events, "zg361we.274")
-        self.assertIn("m274_hired = 1", accepted)
-        self.assertIn("zg361_we_m275_route_a_effect", accepted)
-        self.assertIn("id = zg361we.269", accepted)
+        self.assertIn(gen.APPOINTMENT_WRAPPER, accepted)
+        self.assertIn("zg361_we_queue_m274_appointment_ack_effect", accepted)
+        self.assertNotIn("zg361_we_m275_route_a_effect", accepted)
+        self.assertNotIn("id = zg361we.269", accepted)
         self.assertIn("id = zg361we.275", accepted)
         refused = block(self.events, "zg361we.275")
         self.assertIn("m275_refusal = 1", refused)
         self.assertIn("zg361_we_m269_route_a_effect", refused)
         self.assertIn("id = zg361we.276", refused)
+        for event_id in (
+            gen.M274_NATIVE_ACK_EVENT,
+            gen.M274_PROBATION_AUDIT_EVENT,
+            gen.M274_SIGNATURE_AUDIT_EVENT,
+            gen.M274_DISPOSITION_AUDIT_EVENT,
+        ):
+            hidden = block(self.events, f"zg361we.{event_id}")
+            self.assertIn("hidden = yes", hidden)
         for domain in gen.DOMAIN_ORDER:
             ai = block(self.effects, f"zg361_we_{domain}_run_authorized_ai_effect")
             self.assertIn("is_ai = yes zg361_is_celestial_liege_trigger = yes", ai)
@@ -478,37 +499,18 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
 
         self.assertEqual(1, appointment.count(wrapper_call))
         self.assertNotIn(direct_call, appointment)
-        self.assertIn(
-            "has_variable = zg361_workforce_appointment_fact_status "
-            "var:zg361_workforce_appointment_fact_status = 6",
-            appointment,
-        )
+        self.assertEqual(1, appointment.count("zg361_we_queue_m274_appointment_ack_effect = {"))
+        self.assertNotIn("zg361_workforce_appointment_fact_status = 6", appointment)
+        self.assertNotIn("zg361_we_m274_postconsume_fact_handoff_effect", appointment)
 
         self.assertEqual(1, authorized_ai.count(wrapper_call))
         self.assertNotIn(direct_call, authorized_ai)
         wrapper_index = authorized_ai.index(wrapper_call)
-        ack_index = authorized_ai.index(
-            "var:zg361_workforce_appointment_fact_status = 6"
-        )
-        handoff_call = "zg361_we_m274_postconsume_fact_handoff_effect = {"
-        ai_handoff_index = authorized_ai.index(handoff_call)
-        later_route_index = authorized_ai.index("zg361_we_m275_route_a_effect = {")
+        queue_index = authorized_ai.index("zg361_we_queue_m274_appointment_ack_effect = {")
         self.assertLess(authorized_ai.index("zg361_we_m273_route_a_effect = {"), wrapper_index)
-        self.assertLess(wrapper_index, ack_index)
-        self.assertLess(ack_index, ai_handoff_index)
-        self.assertLess(ai_handoff_index, later_route_index)
-        self.assertEqual(1, authorized_ai.count(handoff_call))
-
-        player_ack_index = appointment.index(
-            "var:zg361_workforce_appointment_fact_status = 6"
-        )
-        player_handoff_index = appointment.index(handoff_call)
-        player_later_route_index = appointment.index(
-            "zg361_we_m275_route_a_effect = {"
-        )
-        self.assertLess(player_ack_index, player_handoff_index)
-        self.assertLess(player_handoff_index, player_later_route_index)
-        self.assertEqual(1, appointment.count(handoff_call))
+        self.assertLess(wrapper_index, queue_index)
+        self.assertNotIn("zg361_workforce_appointment_fact_status = 6", authorized_ai)
+        self.assertNotIn("zg361_we_m275_route_a_effect = {", authorized_ai[wrapper_index:])
 
         handoff = block(
             self.effects, "zg361_we_m274_postconsume_fact_handoff_effect"
@@ -527,61 +529,46 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             "zg361_workforce_probation_fact_arm_hire_effect = { OWNER = $TICKET_OWNER$ }",
             handoff,
         )
-        self.assertIn(
-            "var:zg361_workforce_probation_fact_adapter_status = 1",
-            handoff,
-        )
-        self.assertIn(
-            "var:zg361_workforce_probation_fact_adapter_status = 2",
-            handoff,
-        )
-        self.assertIn("m274_postconsume_handoff_red_code value = 27494", handoff)
+        self.assertIn(f"id = zg361we.{gen.M274_PROBATION_AUDIT_EVENT} days = 1", handoff)
+        self.assertNotIn("zg361_workforce_attribution_fact_begin_signature_effect", handoff)
 
     def test_23b_delayed_native_appointment_resumes_exactly_once(self) -> None:
         resume = block(
             self.effects, "zg361_we_resume_m274_after_native_appointment_effect"
         )
-        wrapper_index = resume.index(f"{gen.APPOINTMENT_WRAPPER} = {{")
-        handoff_index = resume.index(
-            "zg361_we_m274_postconsume_fact_handoff_effect = {"
-        )
-        hired_disposition_index = resume.index("zg361_we_m275_route_a_effect = {")
-        continuation_index = resume.index(
-            "name = zg361_we_m274_native_resume_continuation_consumed value = 1"
-        )
-
-        self.assertIn("EXPECTED_STATE = 4", resume[:wrapper_index])
-        self.assertIn(
-            "zg361_workforce_appointment_fact_receipt_published = 1",
-            resume[:wrapper_index],
-        )
+        handoff_index = resume.index("zg361_we_m274_postconsume_fact_handoff_effect = {")
         for field in ("owner", "subject", "cycle", "case"):
             self.assertIn(
-                f"zg361_workforce_appointment_fact_receipt_{field} = $TICKET_{field.upper()}$",
-                resume[:wrapper_index],
+                f"m274_object_{field} = $TICKET_{field.upper()}$",
+                resume[:handoff_index],
             )
-            self.assertIn(
-                f"m274_native_resume_continuation_{field} = $TICKET_{field.upper()}$",
-                resume,
-            )
-        self.assertIn("m274_native_resume_status value = 2", resume[:wrapper_index])
-        self.assertLess(wrapper_index, handoff_index)
-        self.assertLess(handoff_index, hired_disposition_index)
-        self.assertLess(hired_disposition_index, continuation_index)
-        self.assertIn("var:zg361_workforce_appointment_fact_status = 6", resume)
+        self.assertIn("m274_native_resume_status value = 2", resume[:handoff_index])
         self.assertIn("m274_native_resume_status value = 5", resume)
         self.assertIn("m274_native_resume_status value = 4", resume)
-        continuation_red = resume.index("m274_native_resume_red_code value = 27492")
-        self.assertIn(
-            "m274_native_resume_status value = 4",
-            resume[:continuation_red],
-        )
-        self.assertIn("is_ai = no zg361_is_celestial_liege_trigger = yes", resume)
-        self.assertIn("trigger_event = { id = zg361we.269 }", resume)
-        self.assertIn("is_ai = yes zg361_is_celestial_liege_trigger = yes", resume)
-        for mid in (269, 276, 277):
-            self.assertIn(f"zg361_we_m{mid}_route_a_effect = {{", resume)
+        wrapper_index = resume.index(f"{gen.APPOINTMENT_WRAPPER} = {{", handoff_index)
+        queue_index = resume.index("zg361_we_queue_m274_appointment_ack_effect = {", wrapper_index)
+        self.assertLess(wrapper_index, queue_index)
+        self.assertNotIn("zg361_workforce_appointment_fact_status = 6", resume)
+        self.assertNotIn("zg361_we_m275_route_a_effect", resume)
+        self.assertNotIn("zg361_we_m269_route_a_effect", resume)
         self.assertNotIn("appoint_court_position", resume)
+
+        probation = block(self.effects, "zg361_we_m274_audit_probation_and_arm_attribution_effect")
+        signature = block(self.effects, "zg361_we_m274_audit_signature_and_dispatch_disposition_effect")
+        disposition = block(self.effects, "zg361_we_m274_audit_disposition_and_launch_m269_effect")
+        self.assertIn("OR = { var:zg361_workforce_probation_fact_adapter_status = 1 var:zg361_workforce_probation_fact_adapter_status = 2 }", probation)
+        self.assertIn("zg361_workforce_attribution_fact_begin_signature_effect", probation)
+        self.assertIn(f"id = zg361we.{gen.M274_SIGNATURE_AUDIT_EVENT} days = 1", probation)
+        self.assertIn("zg361_workforce_attribution_fact_signature_committed = 1", signature)
+        self.assertIn("zg361_workforce_attribution_fact_attribution_total_bps = 10000", signature)
+        self.assertIn("zg361_we_m275_route_a_effect", signature)
+        self.assertIn(f"id = zg361we.{gen.M274_DISPOSITION_AUDIT_EVENT} days = 1", signature)
+        commit = disposition.index("m274_native_resume_continuation_consumed value = 1")
+        self.assertLess(disposition.index("m274_native_resume_continuation_mode value"), commit)
+        self.assertIn("trigger_event = { id = zg361we.269 }", disposition)
+        self.assertIn("zg361_we_m269_route_a_effect = {", disposition)
+        self.assertNotIn("zg361_we_m276_route_a_effect", disposition)
+        self.assertNotIn("zg361_we_m277_route_a_effect", disposition)
 
     def test_24_replay_cannot_reset_same_cycle_or_active_cases(self) -> None:
         entry = block(self.effects, "zg361_we_open_portfolio_effect")
@@ -1160,21 +1147,32 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     def test_67_outcome_is_evidence_bound_duplicate_safe_and_clears_pending_last(self) -> None:
         outcome = block(self.effects, "zg361_we_m269_future_consume_effect")
         for name in (
-            "outcome_id", "outcome_quality",
-            "outcome_evidence_id", "outcome_evidence_hash", "outcome_evidence_count",
-            "outcome_observed_cycle",
+            "outcome_id", "outcome_quality", "outcome_evidence_id",
+            "outcome_evidence_hash", "outcome_evidence_count", "outcome_observed_cycle",
+            "outcome_dimension_1", "outcome_dimension_2", "outcome_dimension_3",
+            "attribution_bps_1", "attribution_bps_2", "attribution_bps_3",
+            "attribution_receipt_id", "attribution_receipt_hash",
         ):
-            self.assertIn(f"has_variable = zg361_we_ad_external_{name}", outcome)
-        self.assertIn("m267_candidate_frozen = this", outcome)
+            self.assertIn(f"has_variable = zg361_workforce_probation_fact_{name}", outcome)
+        for name in (
+            "receipt_id", "receipt_hash", "receipt_signer",
+            "receipt_interviewer_1", "receipt_interviewer_2", "receipt_interviewer_3",
+            "receipt_evidence_1", "receipt_evidence_2", "receipt_evidence_3",
+            "attribution_bps_1", "attribution_bps_2", "attribution_bps_3",
+            "attribution_total_bps",
+        ):
+            self.assertIn(f"has_variable = zg361_workforce_attribution_fact_{name}", outcome)
+        self.assertIn("zg361_workforce_attribution_fact_attribution_total_bps = 10000", outcome)
+        self.assertIn("zg361_workforce_attribution_fact_receipt_interviewer_1 = var:zg361_we_m267_interviewer_1", outcome)
+        self.assertIn("zg361_workforce_probation_fact_outcome_dimension_1 = var:zg361_workforce_attribution_fact_receipt_evidence_1", outcome)
         self.assertIn("m269_consumed_hire_case value = var:zg361_we_m269_write_case", outcome)
-        self.assertIn("m269_consumed_candidate value = var:zg361_we_m267_candidate_frozen", outcome)
-        self.assertIn("name = zg361_we_expected_attribution_bps_1", outcome)
-        self.assertIn("m269_dimension_bps_1 value = scope:zg361_we_expected_attribution_bps_1", outcome)
-        self.assertIn("NOT = { var:zg361_we_m269_last_outcome_id = var:zg361_we_ad_external_outcome_id }", outcome)
-        self.assertIn("ad_external_outcome_id > 0", outcome)
-        self.assertIn("ad_external_outcome_quality >= 1", outcome)
-        self.assertIn("ad_external_outcome_quality <= 4", outcome)
+        self.assertIn("m269_consumed_candidate value = this", outcome)
+        self.assertIn("m269_signed_bps_1 value = var:zg361_workforce_attribution_fact_attribution_bps_1", outcome)
+        self.assertNotIn("zg361_we_ad_external_", outcome)
         self.assertLess(outcome.index("m269_outcome_settled value = 1"), outcome.index("m269_outcome_pending value = 0"))
+        self.assertLess(outcome.index("m269_outcome_pending = 0"), outcome.index("future_red_code value = 2691"))
+        self.assertIn("m269_waiting_for_attribution_fact value = 1", outcome)
+        self.assertIn("future_status value = 5", outcome)
         self.assertIn("future_red_code value = 2692", outcome)
 
     def test_68_refusal_hold_keeps_or_releases_exact_hc_lineage(self) -> None:
@@ -1422,15 +1420,21 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
 
     def test_76_offer_outcomes_are_mutually_exclusive_and_hidden_when_inapplicable(self) -> None:
         counter = block(self.events, "zg361we.274")
+        postconsume = block(self.effects, "zg361_we_m274_postconsume_fact_handoff_effect")
+        signature = block(self.effects, "zg361_we_m274_audit_signature_and_dispatch_disposition_effect")
+        disposition = block(self.effects, "zg361_we_m274_audit_disposition_and_launch_m269_effect")
         refusal = block(self.events, "zg361we.275")
         route_275 = block(self.effects, "zg361_we_m275_route_a_effect")
         route_269 = block(self.effects, "zg361_we_m269_route_a_effect")
-        self.assertIn("m274_hired = 1", counter)
-        self.assertIn("m274_business_object_created = 1", counter)
-        self.assertIn("m274_object_cycle = scope:zg361_we_ad_cycle", counter)
-        self.assertIn("m274_object_case = scope:zg361_we_ad_case", counter)
-        self.assertIn("zg361_we_m275_route_a_effect", counter)
-        self.assertIn("else = { trigger_event = { id = zg361we.275 } }", counter)
+        self.assertIn(gen.APPOINTMENT_WRAPPER, counter)
+        self.assertIn("zg361_we_queue_m274_appointment_ack_effect", counter)
+        self.assertNotIn("m274_hired = 1", counter)
+        self.assertIn("m274_business_object_created = 1", postconsume)
+        self.assertIn("m274_object_cycle = $TICKET_CYCLE$", postconsume)
+        self.assertIn("m274_object_case = $TICKET_CASE$", postconsume)
+        self.assertIn("zg361_we_m275_route_a_effect", signature)
+        self.assertIn("trigger_event = { id = zg361we.269 }", disposition)
+        self.assertNotIn("trigger_event = { id = zg361we.275 }", disposition)
         self.assertIn("m275_not_applicable_hired value = 1", route_275)
         self.assertIn("m275_resources_touched value = 0", route_275)
         self.assertIn("m275_refusal = 1", refusal)
@@ -1463,6 +1467,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     def test_78_real_269_waits_for_future_settlement_then_resumes_stage_6(self) -> None:
         route = block(self.effects, "zg361_we_m269_route_a_effect")
         future = block(self.effects, "zg361_we_m269_future_consume_effect")
+        postsettlement = block(self.effects, "zg361_we_m269_postsettlement_handoff_effect")
         hired_branch = route[route.index("m269_not_applicable_no_hire value = 0"):]
         self.assertIn("m269_outcome_pending value = 1", hired_branch)
         self.assertIn("ad_s05_deadline_pending value = 0", hired_branch)
@@ -1470,15 +1475,89 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             route.index("m269_not_applicable_no_hire value = 1"),
             route.index("zg361_case_ad_advance_05_effect"),
         )
-        self.assertLess(
-            future.index("m269_outcome_settled value = 1"),
-            future.index("zg361_case_ad_advance_05_effect"),
-        )
-        self.assertLess(
-            future.index("zg361_case_ad_advance_05_effect"),
-            future.index("zg361_we_m276_route_a_effect"),
-        )
-        self.assertIn("else = { var:zg361_we_m269_write_owner = { trigger_event = { id = zg361we.276 } } }", future)
+        self.assertIn(f"id = zg361we.{gen.M269_POSTSETTLEMENT_EVENT} days = 1", future)
+        self.assertNotIn("zg361_case_ad_advance_05_effect", future)
+        self.assertNotIn("zg361_we_m276_route_a_effect", future)
+        self.assertNotIn("zg361_we_m277_route_a_effect", future)
+        finalize = postsettlement.index(gen.PROBATION_FINALIZE_EFFECT)
+        advance = postsettlement.index("zg361_case_ad_advance_05_effect")
+        self.assertLess(finalize, advance)
+        self.assertIn("var:zg361_case_ad_state = 6", postsettlement)
+        self.assertIn("m269_postsettlement_ready value = 1", postsettlement)
+        self.assertNotIn("zg361_we_m276_route_a_effect", postsettlement)
+        self.assertNotIn("zg361_we_m277_route_a_effect", postsettlement)
+
+    def test_78a_result_relay_publishes_without_caller_bps_and_acks_later(self) -> None:
+        relay = block(self.effects, "zg361_we_m269_publish_signed_result_effect")
+        event = block(self.events, f"zg361we.{gen.M269_RESULT_PUBLISH_EVENT}")
+        publish = f"{gen.ATTRIBUTION_PUBLISH_EFFECT} = {{ OWNER = var:zg361_we_m269_write_owner }}"
+        self.assertEqual(1, relay.count(publish))
+        self.assertNotIn("ATTRIBUTION_BPS", relay)
+        for field in (
+            "zg361_result_case_owner", "zg361_result_cycle_serial",
+            "zg361_result_case_serial", "zg361_result_case_state",
+            "zg361_result_settlement_posted_serial", "zg361_result_grade",
+            "zg361_result_grade_reason", "zg361_result_kpi_frozen",
+            "zg361_result_rank_frozen",
+        ):
+            self.assertIn(f"has_variable = {field}", relay)
+        publish_index = relay.index(publish)
+        self.assertLess(publish_index, relay.index(f"id = zg361we.{gen.M269_RESULT_PUBLISH_EVENT} days = 2", publish_index))
+        self.assertIn("zg361_workforce_attribution_fact_consumed = 1", relay)
+        self.assertIn("zg361_workforce_attribution_fact_consume_result_settlement_receipt", relay)
+        self.assertIn("m269_result_relay_pending value = 0", relay)
+        self.assertIn("hidden = yes", event)
+        self.assertIn("m269_result_relay_queued value = 0", event)
+
+    def test_78b_hired_route_c_cancels_exact_signed_slot_before_advancing(self) -> None:
+        route = block(self.effects, "zg361_we_m269_route_c_effect")
+        begin = block(self.effects, "zg361_we_m269_begin_attribution_debt_cancel_effect")
+        ack = block(self.effects, "zg361_we_m269_ack_attribution_debt_cancel_effect")
+        audit = block(self.effects, "zg361_we_m269_audit_attribution_debt_advance_effect")
+        self.assertIn(f"id = zg361we.{gen.M269_DEBT_CANCEL_EVENT} days = 1", route)
+        self.assertIn("m274_hired = 1", route)
+        self.assertIn(gen.ATTRIBUTION_CANCEL_EFFECT, begin)
+        for field in ("debt_id", "debt_due_cycle", "debt_escalation_count"):
+            self.assertIn(field, begin)
+            self.assertIn(field, ack)
+        self.assertIn("zg361_workforce_attribution_fact_canceled = 1", ack)
+        self.assertIn("cancel_m269_receipt_choice = 3", ack)
+        self.assertIn("zg361_case_ad_advance_05_effect", ack)
+        self.assertIn(f"id = zg361we.{gen.M269_DEBT_ADVANCE_AUDIT_EVENT} days = 1", ack)
+        self.assertIn("var:zg361_case_ad_state = 6", audit)
+        self.assertIn("m269_attribution_debt_registered value = 1", audit)
+        self.assertLess(audit.index("m269_attribution_debt_registered value = 1"), audit.index("m269_debt_attribution_pending value = 0"))
+
+    def test_78c_m274_arms_the_persistent_career_slot_once(self) -> None:
+        handoff = block(self.effects, "zg361_we_m274_postconsume_fact_handoff_effect")
+        arm = f"{gen.CAREER_SLOT_ARM_EFFECT} = {{"
+        probation = f"{gen.PROBATION_ARM_EFFECT} = {{ OWNER = $TICKET_OWNER$ }}"
+        self.assertEqual(1, handoff.count(arm))
+        self.assertLess(handoff.index(arm), handoff.index(probation))
+        for field in ("OWNER", "SUBJECT", "CYCLE", "CASE"):
+            self.assertIn(f"TICKET_{field} = $TICKET_{field}$", handoff)
+
+    def test_78d_rehire_growth_prepare_and_ab_finalize_cross_event_frames(self) -> None:
+        post = block(self.effects, "zg361_we_m269_postsettlement_handoff_effect")
+        prepared = block(self.effects, "zg361_we_m276_audit_prepared_rehire_effect")
+        queue = block(self.effects, "zg361_we_queue_m276_rehire_finalize_effect")
+        finalize = block(self.effects, "zg361_we_m276_finalize_rehire_effect")
+        audit = block(self.effects, "zg361_we_m276_audit_rehire_finalize_effect")
+        event = block(self.events, "zg361we.276")
+
+        self.assertIn(f"{gen.REHIRE_CAPTURE_GROWTH_EFFECT} = yes", post)
+        self.assertIn(f"{gen.REHIRE_PREPARE_EFFECT} = yes", post)
+        self.assertIn(f"id = zg361we.{gen.M276_PREPARE_AUDIT_EVENT} days = 1", post)
+        self.assertIn("zg361_workforce_rehire_fact_state = 3", prepared)
+        self.assertIn("zg361_we_m276_route_a_effect", prepared)
+        self.assertIn(f"id = zg361we.{gen.M276_FINALIZE_EVENT} days = 1", queue)
+        self.assertIn(f"{gen.REHIRE_FINALIZE_EFFECT} = yes", finalize)
+        self.assertIn(f"id = zg361we.{gen.M276_FINALIZE_AUDIT_EVENT} days = 1", finalize)
+        self.assertIn("zg361_workforce_rehire_fact_state = 4", audit)
+        self.assertIn("m276_rehire_finalize_completed value = 1", audit)
+        self.assertEqual(2, event.count("zg361_we_queue_m276_rehire_finalize_effect"))
+        self.assertEqual(1, event.count("zg361_we_m276_route_c_effect"))
+        self.assertEqual(1, event.count("trigger_event = { id = zg361we.277 }"))
 
     def test_79_offer_and_pip_paths_reject_stale_branch_flags(self) -> None:
         counter_a = block(self.effects, "zg361_we_m274_route_a_effect")
@@ -1604,9 +1683,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for code, adapter in ((2741, appointment), (2752, runner), (2761, rehire), (2771, pip_exit)):
             self.assertIn(f"adapter_blocked_reason value = {code}", adapter)
 
-    def test_82e_ad35_aliases_are_retired_and_277_consumes_b2_only_after_success(self) -> None:
+    def test_82e_ad47_aliases_are_retired_and_277_consumes_b2_only_after_success(self) -> None:
         self.assertEqual(EXPECTED_RETIRED_AD_EXTERNAL_ALIASES, set(gen.RETIRED_AD_EXTERNAL_ALIASES))
-        self.assertEqual(35, len(gen.RETIRED_AD_EXTERNAL_ALIASES))
+        self.assertEqual(47, len(gen.RETIRED_AD_EXTERNAL_ALIASES))
         for alias in EXPECTED_RETIRED_AD_EXTERNAL_ALIASES:
             with self.subTest(alias=alias):
                 self.assertNotIn(alias, self.effects)
@@ -1841,17 +1920,17 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(80, len(ad))
         self.assertEqual(EXPECTED_RETIRED_AD_EXTERNAL_ALIASES, ad & set(gen.RETIRED_AD_EXTERNAL_ALIASES))
         remaining_ad = ad - EXPECTED_RETIRED_AD_EXTERNAL_ALIASES
-        self.assertEqual(45, len(remaining_ad))
+        self.assertEqual(33, len(remaining_ad))
         self.assertTrue(STATIC_CLOSED_APPOINTMENT_ALIASES <= remaining_ad)
-        self.assertEqual(42, len(remaining_ad - STATIC_CLOSED_APPOINTMENT_ALIASES))
+        self.assertEqual(30, len(remaining_ad - STATIC_CLOSED_APPOINTMENT_ALIASES))
         for field in remaining_ad:
             self.assertIn(field, self.effects, field)
-        self.assertIn("AD：42 项", self.ledger_text)
-        self.assertIn("35 项旧 external alias", self.ledger_text)
+        self.assertIn("AD：30 项", self.ledger_text)
+        self.assertIn("47 项旧 external alias", self.ledger_text)
         self.assertIn("3×(14+36)+17=167", self.ledger_text)
         self.assertIn("AL charter 28 项", self.ledger_text)
-        self.assertIn("20+8+167+28+35+3=261", self.ledger_text)
-        self.assertIn("剩余 42：全部是 AD 42", self.ledger_text)
+        self.assertIn("20+8+167+28+47+3=273", self.ledger_text)
+        self.assertIn("剩余 30：全部是 AD 30", self.ledger_text)
         self.assertIn("尚无变更后的 loader/live 证据", self.ledger_text)
 
         cohort_fields = (

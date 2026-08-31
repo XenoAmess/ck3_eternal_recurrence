@@ -449,19 +449,18 @@ class WorkforceProbationFactTests(unittest.TestCase):
                 ).read_text(encoding="utf-8-sig")
                 self.assertEqual(text.replace(f"l_{language}:", "l_english:", 1), english)
 
-    def test_22_spec_freezes_scope_idempotency_and_unwired_boundary(self) -> None:
+    def test_22_spec_freezes_scope_idempotency_and_core_wired_boundary(self) -> None:
         for token in (
             "CK3 script static-ready",
-            "B2 PIP settlement 已接入",
-            "#274 arm 与普通 result attribution 仍未接入",
+            "B2 PIP settlement 均已接入",
+            "#274 post-consume D+1 arm",
             "ROOT=this=subject",
             "zg361_workforce_probation_fact_arm_hire_effect",
             "zg361_workforce_probation_fact_publish_from_result_effect",
             "zg361_workforce_probation_fact_publish_from_pip_settlement_effect",
             "ATTRIBUTION_BPS_2",
             "ATTRIBUTION_BPS_3",
-            "当前没有真实",
-            "禁止写 3333/3333、全零或从档位反推伪值",
+            "不传 3333/3333、全零、随机值或从档位反推的伪值",
             "zg361b2.101",
             "zg361b2.102",
             "zg361b2.103",
@@ -470,13 +469,13 @@ class WorkforceProbationFactTests(unittest.TestCase):
             "幂等键",
             "不发布 quality 3/4",
             "继续 fail-closed",
-            "12 alias 保持不存在",
+            "不再读取这 12 个名字",
             "新 loader",
             "MCP-first paused snapshot",
         ):
             self.assertIn(token, self.spec)
         self.assertIn(generator.READINESS, self.spec)
-        self.assertIn("尚无 loader / paused snapshot / 实机证据", self.spec)
+        self.assertIn("尚无变更后的 loader / paused snapshot / 实机证据", self.spec)
         self.assertIn("当前 scope (`this`) 必须是真实 hired subject", self.spec)
         self.assertIn("`OWNER` 参数必须是真实 #274 owner", self.spec)
         self.assertIn("`ROOT` 被明确\n忽略，不参与身份、权限或幂等键", self.spec)

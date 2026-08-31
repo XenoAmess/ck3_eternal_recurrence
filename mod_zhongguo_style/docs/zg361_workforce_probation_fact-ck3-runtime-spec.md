@@ -1,6 +1,6 @@
 # Workforce probation/PIP 结局事实 CK3 运行合同
 
-状态：**CK3 script static-ready；B2 PIP settlement 已接入，#274 arm 与普通 result attribution 仍未接入；尚无 loader / paused snapshot / 实机证据**。
+状态：**CK3 script static-ready；#274 arm、signed attribution 普通 result 与 B2 PIP settlement 均已接入；尚无变更后的 loader / paused snapshot / 实机证据**。
 生成器常量固定为 `ck3-script-static-ready-not-live`；本包不得写成 fixture-live、production-live 或完整 #269。
 
 ## 1. 独立文件与责任边界
@@ -17,7 +17,7 @@
 它不修改 Workforce、B1、B2、Career/HC、中央 dispatcher、native provider、runner 或 case kernel。简中、英文为本轮
 创作文案；法、德、日、韩、波、俄、西只是英文结构占位，不算发布翻译。
 
-本包只偿还旧 Workforce #269 等待的 12 个 probation outcome alias：
+本包保留旧 Workforce #269 曾等待的 12 个 probation outcome compatibility alias：
 
 ```text
 zg361_we_ad_external_attribution_bps_2
@@ -34,8 +34,9 @@ zg361_we_ad_external_outcome_observed_cycle
 zg361_we_ad_external_outcome_quality
 ```
 
-这些名字不是新的权威事实槽。权威事实均留在 subject 的 `zg361_workforce_probation_fact_*` 单槽中；12 个旧名只在
-调用 `zg361_we_m269_future_consume_effect` 前短暂物化，得到 exact ACK 后立即删除，防止下一案误读旧值。
+这些名字不是新的权威事实槽。权威事实均留在 subject 的 `zg361_workforce_probation_fact_*` 单槽中；共享 core 的 ordinary
+#269 consumer 现直接 join probation + attribution detailed receipt，不再读取这 12 个名字。probation 包仍可在调用 core 前
+短暂物化兼容投影，并在 D+1 consume receipt 后删除；它们只用于旧包的碰撞/清理兼容，不能授权结算。
 
 ## 2. 真实对象与状态机
 
@@ -66,15 +67,15 @@ owner + subject + hire cycle/case + position receipt
 消费成功后另写 `consume_owner/subject/hire_cycle/hire_case/result_cycle/result_case/outcome_id`、Workforce route choice、
 owner 单调消费序号和消费 fingerprint。ACK、canonical source 与消费回执三者缺一，state 不得变成 4。
 
-## 3. 三个待接 ABI 与 scope 约定
+## 3. 三个 ABI 与 scope 约定
 
 所有 public hook 的**当前 scope (`this`) 必须是真实 hired subject**；`OWNER` 参数必须是真实 #274 owner。`ROOT` 被明确
 忽略，不参与身份、权限或幂等键。消费 legacy #269 前，本包通过 subject 上的 hidden character event 重新建立
 `ROOT=this=subject`，以满足旧 consumer 内部的 `root.var:*` 读取；外部 caller 的 ROOT 不会泄漏进消费语义。
 
-### 3.1 #274 arm adapter
+### 3.1 已接 #274 arm adapter
 
-待在 #274 A 成功、业务对象和 native position receipt 已消费后接入：
+共享 core 已在 #274 A 成功、业务对象和 native position receipt 已消费后，通过 D+1 post-consume seam 接入：
 
 ```text
 # current scope = hired subject
@@ -92,9 +93,10 @@ owner / subject / m274_write_cycle / m274_write_case
 
 完全相同重放为 status 2；不同 tuple 撞到同一 active/consumed slot 为 RED 1001，不覆盖旧案。
 
-### 3.2 待接 hook 1：普通 result settlement
+### 3.2 已接 hook 1：普通 result settlement
 
-待在 B1/通用结果的 canonical settlement 最后一个真实写点接入：
+B1/通用结果的两个 canonical settlement 写点现只排 D+1 relay；relay 不直接调用本 ABI，而是调用 signed attribution adapter，
+后者从已签 receipt 提取 bps 并以本包的内部 ABI 发布：
 
 ```text
 # current scope = result subject = hired subject
@@ -106,8 +108,9 @@ zg361_workforce_probation_fact_publish_from_result_effect = {
 ```
 
 第一份 bps 固定从 `10000-bps_2-bps_3` 推导，并在任何写入前拒绝负数。三个 dimension 不由 caller 自报，直接取同一
-hire case 已封存且互异的 `m267_vote_evidence_1..3`；三位 interviewer 也必须存在且互异。caller 仍负责从真实面试
-归因算法提供 bps_2/3，本包不会写 3333/3333、全零或 subject 身份充数。
+hire case 已封存且互异的 `m267_vote_evidence_1..3`；三位 interviewer 也必须存在且互异。唯一合法 caller 是 attribution
+fact 包：玩家明确签署哪一席主责，或 AI 依冻结原票与公开 tie rule 产生 `6000/2000/2000`，并留下 actor/evidence/receipt。
+共享 core 不传 3333/3333、全零、随机值或从档位反推的伪值。
 
 结果 guard 要求：result owner/subject 匹配；cycle 不早于 probation due 且严格晚于 hire cycle；case/settlement receipt
 相等；state 为 3 或 5；grade/reason/KPI/rank 完整；owner 的权威 review serial 已到 observed cycle；Workforce #269
@@ -184,29 +187,26 @@ join；在该生产点出现前继续 fail-closed。
 4. 12 alias 要么全不存在，要么全都等于 canonical fact；部分残留或不同值拒绝；
 5. canonical outcome 还没有消费。
 
-随后调用 `zg361_we_m269_future_consume_effect`。只有核到
+随后调用 `zg361_we_m269_future_consume_effect`；compatibility alias 不参与该 consumer 的成功 guard。consumer 直接核对
+本槽与 signed attribution receipt，只有核到
 `outcome_settled=1,pending=0,last_outcome_id=canonical outcome_id,consumed_hire_case/candidate/evidence/quality`，并存在有效
-`receipt_choice` 后，才发独立消费回执、state 3→4 并删除 12 alias。无论是本次调用后的即时 ACK，还是重放时观察到的既有 ACK，
+`receipt_choice` 后，才允许发独立消费回执、state 3→4 并删除 12 alias。若 probation 的 D+1 consumer 先于 attribution ACK
+到达，core 只返回 WAIT；attribution ACK 完成后由 #269 watchdog 精确重试，core settle 后的 D+1 post-settlement seam 再调用
+本包 finalizer，避免事件队列先后顺序留下未消费事实。无论是本次调用后的即时 ACK，还是重放时观察到的既有 ACK，
 删除前都再次要求 12 alias 全不存在或全等于 canonical；部分/外来 envelope 永远不会被本包清除。consumer 未 ACK 时 canonical
 source 保留、state 不推进；hidden event 只重试消费，不发布或补全任何事实。
 
 普通 result 与 PIP 不会二次结算：新 result 只允许 state 1，PIP 只允许 state 2；canonical commit 要求 outcome ID 尚未
 签发；state 3/4 只接受完整幂等键重放。owner outcome serial 与 consume serial 分开单调增加。
 
-## 6. 仍需接线与验收
+## 6. 已接线与待验收
 
-当前 B2 PIP hook 已改入其共享所有者，并通过跨事件首读与一次有界重放到达；其余两个入口仍未闭合，因此本包仍只是
-**部分可达的 producer/consumer API 与事件链，不是完整业务链**：
+三个入口现均为 core-wired static-ready：#274 post-consume D+1 arm；canonical result → attribution adapter → 本包 result ABI；
+B2 PIP 的四段跨事件 handoff。ordinary #269 直接消费 detailed facts，WAIT/RED 不推进；route C 不发布 outcome，而由独立
+attribution cancel receipt 清槽。没有先冻结普通 3.25 result 与真实三维签署归因时，PIP handoff 仍只会 no-op，不能凭 B2
+settlement 反向制造试用期事实。
 
-1. #274 成功点调用 arm；
-2. canonical result settlement 调 result hook，并从真实面试归因 producer 提供 bps_2/3。当前没有真实
-   `ATTRIBUTION_BPS_2/3` producer，必须继续明确阻塞；禁止写 3333/3333、全零或从档位反推伪值。
-
-已闭合的 B2 调用点不改变这一 blocker：没有先冻结普通 3.25 result 与真实三维归因时，PIP handoff 只会 no-op，不能凭
-B2 settlement 反向制造试用期事实。缺任一剩余接线时，12 alias 保持不存在，旧 #269 继续等待并 fail-closed。
-
-全部接线后还必须用新 loader 证明 12 个
-`used but never set` 告警归零，再做 MCP-first paused snapshot：普通 pass、3.25 等待、PIP graduation、PIP failure、
+下一步仍必须用新 loader 证明旧 12 个 `used but never set` 告警归零，再做 MCP-first paused snapshot：普通 pass、3.25 等待、PIP graduation、PIP failure、
 重放幂等、错 tuple RED、一次消费和 alias 清理。本文没有替代这些 live 证据。
 
 L0 命令：
@@ -215,5 +215,7 @@ L0 命令：
 py tools/gen_zg361_workforce_probation_fact.py --check
 py tools/test_zg361_workforce_probation_fact.py -v
 py -O tools/test_zg361_workforce_probation_fact.py -v
+py tools/test_zg361_workforce_attribution_fact.py -v
+py tools/test_zg361_workforce_endgame_runtime.py -v
 py tools/validate_local.py
 ```

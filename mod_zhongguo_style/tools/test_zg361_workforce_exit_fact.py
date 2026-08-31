@@ -323,6 +323,27 @@ class WorkforceExitFactTests(unittest.TestCase):
         self.assertNotIn(f"native_invalidated_seen = 1", audit)
         self.assertNotIn(f"native_vacated_seen = 1", audit)
 
+    def test_normal_exit_revoke_is_authorized_not_unexpected(self) -> None:
+        callback = block(self.effects, f"{gen.PREFIX}_on_native_slot_ended_effect")
+        authorized = callback.index(
+            "has_variable = zg361_workforce_normal_exit_fact_pending"
+        )
+        unexpected = callback.index(
+            f"set_variable = {{ name = {gen.PREFIX}_unexpected_native_end_seen value = 1 }}"
+        )
+        self.assertLess(authorized, unexpected)
+        for needle in (
+            "zg361_workforce_normal_exit_fact_pending = 1",
+            "zg361_workforce_normal_exit_fact_pending_subject = this",
+            "zg361_workforce_normal_exit_fact_pending_owner = scope:liege",
+            "zg361_workforce_normal_exit_fact_request_authorized = 1",
+            "zg361_workforce_normal_exit_fact_request_dispatched = 1",
+            "zg361_workforce_normal_exit_fact_native_revoke_callback_seen value = 1",
+            "zg361_workforce_normal_exit_fact_native_revoke_callback_owner value = scope:liege",
+            "zg361_workforce_normal_exit_fact_native_revoke_callback_subject value = this",
+        ):
+            self.assertIn(needle, callback)
+
     def test_hours_and_cost_are_derived_from_real_ledgers(self) -> None:
         request = block(self.effects, f"{gen.PREFIX}_request_closed_pip_exit_effect")
         self.assertIn("zg361_we_hours_output >= 0", request)
@@ -549,9 +570,9 @@ class WorkforceExitFactTests(unittest.TestCase):
             self.assertIn("hidden = yes", event)
             self.assertIn(call, event)
 
-    def test_spec_is_honest_about_scope_and_core_unwired_status(self) -> None:
+    def test_spec_is_honest_about_scope_and_core_wired_status(self) -> None:
         for needle in (
-            "CK3 script static-ready; not loader-live or production-live",
+            "CK3 script core-wired/static-ready; not loader-live or production-live",
             "不能复用 #274 的撤职回调",
             "长期存在",
             "只有本次 exact intent 之后的新 revoked callback",
@@ -560,7 +581,8 @@ class WorkforceExitFactTests(unittest.TestCase):
             "state=3 graduation 不会撤职",
             "不能冒充正常离职或外部成长",
             "native 岗位结束不等于先释放 HC",
-            "static-ready / core-unwired / not live",
+            "core-wired / static-ready / not live",
+            "exact normal-exit authorization branch",
         ):
             self.assertIn(needle, self.spec)
 

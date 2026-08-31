@@ -1,0 +1,25 @@
+﻿# GENERATED FILE — edit tools/gen_zg361_workforce_rehire_fact.py
+namespace = zg361wrf
+
+# Subject-only archive notice.  It grants no manager action and is
+# never shown to an AI subject.
+zg361wrf.1 = {
+    type = character_event
+    title = zg361wrf.1.t
+    desc = zg361wrf.1.desc
+    trigger = {
+        is_ai = no
+        has_variable = zg361_workforce_rehire_fact_state
+        has_variable = zg361_workforce_rehire_fact_published
+        has_variable = zg361_workforce_rehire_fact_consumed
+        has_variable = zg361_workforce_rehire_fact_consume_subject
+        var:zg361_workforce_rehire_fact_state = 4
+        var:zg361_workforce_rehire_fact_published = 1
+        var:zg361_workforce_rehire_fact_consumed = 1
+        var:zg361_workforce_rehire_fact_consume_subject = this
+    }
+    option = {
+        name = zg361wrf.1.a
+        set_variable = { name = zg361_workforce_rehire_fact_notice_seen value = 1 }
+    }
+}

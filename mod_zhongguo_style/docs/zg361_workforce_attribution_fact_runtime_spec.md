@@ -1,10 +1,10 @@
 # Workforce #269 面试归因签署事实 CK3 运行合同
 
-状态：**CK3 script static-ready/not-live；尚未接入共享 Workforce 调用点，尚无 loader / paused snapshot / 实机证据**。
+状态：**CK3 script static-ready/not-live；三个共享 Workforce 调用边界均已接入，尚无变更后的 loader / paused snapshot / 实机证据**。
 
-本包只新增自己的生成器、静态测试、scripted effects、character event、九语言结构文件与本规格，不修改 Workforce
-core、probation、referral/panel、appointment、B2、Career/HC 或 case kernel。简体中文与英文是本轮创作文案；法、德、日、韩、
-波、俄、西沿用英文占位，只保证可加载结构，不算发布翻译。
+归因事实包本身仍只拥有自己的生成器、静态测试、scripted effects、character event、九语言结构文件与本规格；共享
+Workforce core 现通过公开 ABI 接线，不复制签署算法，也不允许 caller 提供 bps。简体中文与英文是本轮创作文案；法、德、
+日、韩、波、俄、西沿用英文占位，只保证可加载结构，不算发布翻译。
 
 ## 1. 为什么不能再裸传 bps
 
@@ -113,16 +113,22 @@ cycle/case/state/type/id/consumer、`due_cycle=cycle+1`、`escalation_count=0`�
 `canceled=1, reason=1` 并清槽。它不会调用 probation，也不会把
 政策债伪装成录用质量事实。
 
-## 6. 待接线与验收
+## 6. 已接线边界与待验收
 
-当前仍需串行接入三个共享调用点：
+共享 core 已完成三个调用点，且每次调用与读侧 ACK 都跨事件：
 
-1. 把当前 `resume_m274_after_native_appointment` 中同帧继续 #275/#269 的部分拆到一个新的 post-#274 事件；真实 #274 ACK
-   完整提交后，下一帧先在仍为 `case state=4` 的 subject 上调用 arm，签署完成才继续 #275/#269；
-2. canonical result settlement 的下一事件/帧通过 attribution adapter 调 probation，禁止继续裸传 bps；再由本包自己的 D+1 ACK 消费归因槽；
-3. #269 route C debt 下一帧调用 cancel adapter。
+1. #274 appointment ACK 后先进入 post-consume seam；D+1 核 probation arm status 1/2 才调用 attribution arm，再等待玩家签署或
+   AI deterministic signature，随后跨帧提交 hired #275 disposition 并派 #269；
+2. 自动 3.5/3.75 与已送达 3.25 两个 canonical settlement 写点只排 subject-scope D+1 relay；relay 调用不带 bps 的
+   attribution adapter，后续 ACK 精确核对 result tuple。ordinary #269 直接消费 attribution + probation detailed receipt，
+   不读取旧 12 个 outcome/bps alias；WAIT/RED 不推进；
+3. hired #269 route C 在 debt manifest 已提交的下一帧调用 cancel adapter，D+1 核 exact cancel receipt，再跨帧登记相同
+   debt id/due cycle/escalation=0 后才把 case 推到 state 6；no-hire route C 没有 attribution slot；
+4. ordinary success 只进入独立 post-settlement seam：第一帧完成 probation consume receipt 与 state 5→6，第二帧冻结
+   `m269_postsettlement_ready=1`。这里是 #276/#277 后续包的插入点，本工作包没有提前派发退出链。旧 5269 watchdog 对相同
+   settled tuple 先返回幂等 status 2，晚到重放不再误报 2691。
 
-接线后先跑新 loader，确认新增 effects/events 可加载且相关 `used but never set` 消失；再按 MCP-first 规则取得 paused snapshot，批量覆盖：
+下一步先跑新 loader，确认新增 effects/events 可加载且相关 `used but never set` 消失；再按 MCP-first 规则取得 paused snapshot，批量覆盖：
 
 - 玩家分别签 lead 1/2/3；
 - AI 三个 unique max、slot 1/2/3 并列与三票全同；
@@ -139,5 +145,8 @@ L0：
 py tools/gen_zg361_workforce_attribution_fact.py --check
 py tools/test_zg361_workforce_attribution_fact.py -v
 py -O tools/test_zg361_workforce_attribution_fact.py -v
+py tools/gen_361_workforce_endgame_runtime.py --check
+py tools/test_zg361_workforce_endgame_runtime.py -v
+py -O tools/test_zg361_workforce_endgame_runtime.py -v
 py tools/validate_local.py
 ```

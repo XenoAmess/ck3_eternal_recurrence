@@ -117,6 +117,22 @@ zg361_workforce_exit_fact_on_native_slot_ended_effect = {
     }
     else_if = {
         limit = {
+            has_variable = zg361_workforce_normal_exit_fact_pending
+            var:zg361_workforce_normal_exit_fact_pending = 1
+            var:zg361_workforce_normal_exit_fact_pending_subject = this
+            var:zg361_workforce_normal_exit_fact_pending_owner = scope:liege
+            has_variable = zg361_workforce_normal_exit_fact_request_authorized
+            has_variable = zg361_workforce_normal_exit_fact_request_dispatched
+            var:zg361_workforce_normal_exit_fact_request_authorized = 1
+            var:zg361_workforce_normal_exit_fact_request_dispatched = 1
+            $END_REASON$ = 1
+        }
+        set_variable = { name = zg361_workforce_normal_exit_fact_native_revoke_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_native_revoke_callback_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_normal_exit_fact_native_revoke_callback_subject value = this }
+    }
+    else_if = {
+        limit = {
             has_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
             var:zg361_workforce_exit_fact_cleanup_revoke_requested = 1
         }

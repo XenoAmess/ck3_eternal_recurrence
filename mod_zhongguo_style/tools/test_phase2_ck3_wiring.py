@@ -161,6 +161,38 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         self.assertIn("zg361_deliver_325_notice_effect = yes", grade)
         self.assertIn("trigger_event = { id = zg361.50 days = 1 }", grade)
 
+    def test_both_canonical_settlements_queue_the_signed_attribution_relay(self) -> None:
+        freeze = self.effects.split("zg361_freeze_result_case_effect = {", 1)[1].split(
+            "zg361_apply_grade_effect = {", 1
+        )[0]
+        delivered = self.effects.split("zg361_settle_delivered_325_effect = {", 1)[1].split(
+            "zg361_appeal_regrade_to_35_effect = {", 1
+        )[0]
+        dispatch = "trigger_event = { id = zg361we.52747 days = 1 }"
+        commit = "set_variable = { name = zg361_we_m269_result_relay_queued value = 1 }"
+        for settlement in (freeze, delivered):
+            posted = settlement.index(
+                "set_variable = { name = zg361_result_settlement_posted_serial "
+                "value = var:zg361_result_case_serial }"
+            )
+            dispatch_index = settlement.index(dispatch)
+            commit_index = settlement.index(commit)
+            self.assertLess(posted, dispatch_index)
+            self.assertLess(dispatch_index, commit_index)
+            for field in (
+                "zg361_we_m269_outcome_pending", "zg361_we_m269_outcome_settled",
+                "zg361_we_m269_receipt_choice", "zg361_we_m269_write_owner",
+                "zg361_we_m269_write_subject", "zg361_we_m269_write_cycle",
+                "zg361_we_m269_write_case",
+                "zg361_workforce_attribution_fact_signature_committed",
+                "zg361_workforce_attribution_fact_state",
+                "zg361_workforce_attribution_fact_consumed",
+            ):
+                self.assertIn(f"has_variable = {field}", settlement)
+            self.assertIn("var:zg361_we_m269_write_subject = this", settlement)
+        self.assertEqual(2, self.effects.count(dispatch))
+        self.assertEqual(2, self.effects.count(commit))
+
     def test_appeal_uses_frozen_case_and_refunds_once(self) -> None:
         appeal = self.effects.split("zg361_appeal_regrade_to_35_effect = {", 1)[1].split(
             "zg361_publish_scoreboard_effect = {", 1

@@ -79,7 +79,7 @@ zg361b2.60 = {
 				treasury >= 50
 			}
 		}
-		zg361_b2_m075_accept_exit_offer_effect = yes
+		zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect = yes
 	}
 	option = { name = zg361b2.60.b zg361_b2_m075_reject_exit_offer_effect = yes }
 }

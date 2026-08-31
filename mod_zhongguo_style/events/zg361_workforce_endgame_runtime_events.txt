@@ -2427,32 +2427,13 @@ zg361we.274 = {
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
 		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 has_variable = zg361_workforce_appointment_fact_status var:zg361_workforce_appointment_fact_status = 6 } }
-			scope:zg361_we_ad_subject = {
-				zg361_we_m274_postconsume_fact_handoff_effect = {
-					TICKET_OWNER = scope:zg361_we_ad_owner
-					TICKET_SUBJECT = scope:zg361_we_ad_subject
-					TICKET_CYCLE = scope:zg361_we_ad_cycle
-					TICKET_CASE = scope:zg361_we_ad_case
-				}
+		scope:zg361_we_ad_subject = {
+			zg361_we_queue_m274_appointment_ack_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
 			}
-			if = {
-				limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_m274_business_object_created var:zg361_we_m274_business_object_created = 1 has_variable = zg361_we_m274_object_owner var:zg361_we_m274_object_owner = scope:zg361_we_ad_owner has_variable = zg361_we_m274_object_subject var:zg361_we_m274_object_subject = scope:zg361_we_ad_subject has_variable = zg361_we_m274_object_cycle var:zg361_we_m274_object_cycle = scope:zg361_we_ad_cycle has_variable = zg361_we_m274_object_case var:zg361_we_m274_object_case = scope:zg361_we_ad_case has_variable = zg361_we_m274_hired var:zg361_we_m274_hired = 1 has_variable = zg361_we_m274_postconsume_handoff_status OR = { var:zg361_we_m274_postconsume_handoff_status = 1 var:zg361_we_m274_postconsume_handoff_status = 2 } } }
-				scope:zg361_we_ad_subject = {
-					zg361_we_m275_route_a_effect = {
-						TICKET_OWNER = scope:zg361_we_ad_owner
-						TICKET_SUBJECT = scope:zg361_we_ad_subject
-						TICKET_CYCLE = scope:zg361_we_ad_cycle
-						TICKET_CASE = scope:zg361_we_ad_case
-					}
-				}
-				if = {
-					limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 5 } }
-					trigger_event = { id = zg361we.269 }
-				}
-			}
-			else = { scope:zg361_we_ad_subject = { set_variable = { name = zg361_we_runtime_status value = 4 } set_variable = { name = zg361_we_last_red_code value = 27493 } } }
 		}
 	}
 	option = {
@@ -2467,22 +2448,7 @@ zg361we.274 = {
 		}
 		if = {
 			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 } }
-			if = {
-				limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_m274_business_object_created var:zg361_we_m274_business_object_created = 1 has_variable = zg361_we_m274_object_owner var:zg361_we_m274_object_owner = scope:zg361_we_ad_owner has_variable = zg361_we_m274_object_subject var:zg361_we_m274_object_subject = scope:zg361_we_ad_subject has_variable = zg361_we_m274_object_cycle var:zg361_we_m274_object_cycle = scope:zg361_we_ad_cycle has_variable = zg361_we_m274_object_case var:zg361_we_m274_object_case = scope:zg361_we_ad_case has_variable = zg361_we_m274_hired var:zg361_we_m274_hired = 1 } }
-				scope:zg361_we_ad_subject = {
-					zg361_we_m275_route_a_effect = {
-						TICKET_OWNER = scope:zg361_we_ad_owner
-						TICKET_SUBJECT = scope:zg361_we_ad_subject
-						TICKET_CYCLE = scope:zg361_we_ad_cycle
-						TICKET_CASE = scope:zg361_we_ad_case
-					}
-				}
-				if = {
-					limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 5 } }
-					trigger_event = { id = zg361we.269 }
-				}
-			}
-			else = { trigger_event = { id = zg361we.275 } }
+			trigger_event = { id = zg361we.275 }
 		}
 	}
 	option = {
@@ -2498,22 +2464,7 @@ zg361we.274 = {
 		}
 		if = {
 			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 } }
-			if = {
-				limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_m274_business_object_created var:zg361_we_m274_business_object_created = 1 has_variable = zg361_we_m274_object_owner var:zg361_we_m274_object_owner = scope:zg361_we_ad_owner has_variable = zg361_we_m274_object_subject var:zg361_we_m274_object_subject = scope:zg361_we_ad_subject has_variable = zg361_we_m274_object_cycle var:zg361_we_m274_object_cycle = scope:zg361_we_ad_cycle has_variable = zg361_we_m274_object_case var:zg361_we_m274_object_case = scope:zg361_we_ad_case has_variable = zg361_we_m274_hired var:zg361_we_m274_hired = 1 } }
-				scope:zg361_we_ad_subject = {
-					zg361_we_m275_route_a_effect = {
-						TICKET_OWNER = scope:zg361_we_ad_owner
-						TICKET_SUBJECT = scope:zg361_we_ad_subject
-						TICKET_CYCLE = scope:zg361_we_ad_cycle
-						TICKET_CASE = scope:zg361_we_ad_case
-					}
-				}
-				if = {
-					limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 5 } }
-					trigger_event = { id = zg361we.269 }
-				}
-			}
-			else = { trigger_event = { id = zg361we.275 } }
+			trigger_event = { id = zg361we.275 }
 		}
 	}
 }
@@ -2758,10 +2709,13 @@ zg361we.276 = {
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 6 } }
-			trigger_event = { id = zg361we.277 }
+			zg361_we_queue_m276_rehire_finalize_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
+				CHOICE = 1
+			}
 		}
 	}
 	option = {
@@ -2773,10 +2727,13 @@ zg361we.276 = {
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 6 } }
-			trigger_event = { id = zg361we.277 }
+			zg361_we_queue_m276_rehire_finalize_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
+				CHOICE = 2
+			}
 		}
 	}
 	option = {
@@ -4839,6 +4796,98 @@ zg361we.5361 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m361_future_default_install_effect = yes }
+}
+
+zg361we.52739 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		set_variable = { name = zg361_we_m274_native_resume_audit_scheduled value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_we_m274_native_resume_pending_owner
+				has_variable = zg361_we_m274_native_resume_pending_subject
+				has_variable = zg361_we_m274_native_resume_pending_cycle
+				has_variable = zg361_we_m274_native_resume_pending_case
+				var:zg361_we_m274_native_resume_pending_subject = this
+			}
+			zg361_we_resume_m274_after_native_appointment_effect = {
+				TICKET_OWNER = var:zg361_we_m274_native_resume_pending_owner
+				TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_we_m274_native_resume_pending_cycle
+				TICKET_CASE = var:zg361_we_m274_native_resume_pending_case
+			}
+		}
+	}
+}
+
+zg361we.52740 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_audit_probation_and_arm_attribution_effect = yes }
+}
+
+zg361we.52741 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_audit_signature_and_dispatch_disposition_effect = yes }
+}
+
+zg361we.52742 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_audit_disposition_and_launch_m269_effect = yes }
+}
+
+zg361we.52743 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_begin_attribution_debt_cancel_effect = yes }
+}
+
+zg361we.52744 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_ack_attribution_debt_cancel_effect = yes }
+}
+
+zg361we.52745 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_audit_attribution_debt_advance_effect = yes }
+}
+
+zg361we.52746 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_postsettlement_handoff_effect = yes }
+}
+
+zg361we.52747 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		set_variable = { name = zg361_we_m269_result_relay_queued value = 0 }
+		zg361_we_m269_publish_signed_result_effect = yes
+	}
+}
+
+zg361we.52748 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m276_audit_prepared_rehire_effect = yes }
+}
+
+zg361we.52749 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m276_finalize_rehire_effect = yes }
+}
+
+zg361we.52750 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m276_audit_rehire_finalize_effect = yes }
 }
 
 # D+1 commit boundaries for the real #275-B remediation fact.
