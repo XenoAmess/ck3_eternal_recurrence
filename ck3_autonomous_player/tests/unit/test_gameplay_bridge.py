@@ -314,6 +314,75 @@ def _negotiate_alliance_context_result(
     return result
 
 
+def _call_ally_context_result(
+    *,
+    legality: dict[str, dict[str, object]] | None = None,
+) -> dict[str, object]:
+    if legality is None:
+        legality = {
+            action: {"status": "available", "allowed": True, "reason": None}
+            for action in ("accept", "reject", "block")
+        }
+        legality["acknowledge"] = {
+            "status": "available",
+            "allowed": False,
+            "reason": "normal_reply_channel",
+        }
+    result = _pending_context_result(
+        pending_id=-1_811_939_304,
+        revision=327,
+        native_revision=326,
+        date_raw=53_223_096,
+        definition_key="call_ally_interaction",
+        actor_character_id=30_287,
+        recipient_character_id=29_829,
+        legality=legality,
+        special_data_present=False,
+    )
+    context = result["pending_character_interaction_context"]
+    assert isinstance(context, dict)
+    definition = context["definition"]
+    assert isinstance(definition, dict)
+    definition["deterministic_key_hash"] = 936_306_703
+    context["build"] = {
+        "version": "1.19.0.6",
+        "exe_sha256": (
+            "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        ),
+    }
+    context["provenance"] = {
+        "backend_id": (
+            "ck3-1.19.0.6-native-pending-character-interaction-context-v1"
+        )
+    }
+    context["target"] = {
+        "present": True,
+        "raw_type_index": 16,
+        "raw_16_bytes_hex": "10000000000000005200000400000000",
+        "type_key_status": "available",
+        "type_key": "war",
+        "type_key_reason": None,
+        "typed_identity_status": "unavailable",
+        "typed_identity": None,
+        "typed_identity_reason": (
+            "generic_scope_payload_identity_not_closed"
+        ),
+    }
+    context["send_options"] = {
+        "exclusive": True,
+        "definition_count": 0,
+        "context_count": 0,
+        "rows": [],
+    }
+    context["deadline"] = {
+        "age_days": 0,
+        "expiration_days": 60,
+        "remaining_days": 60,
+        "expiry_boundary_status": "not_reached",
+    }
+    return result
+
+
 def _raiktor_inbound_white_peace_context_result(
     *,
     legality: dict[str, dict[str, object]] | None = None,
@@ -5550,6 +5619,261 @@ class GameplayBridgeTests(unittest.TestCase):
             "negotiate_alliance_accept_not_native_legal",
             plan["decision"]["blocked_reasons"],
         )
+
+    def test_planner_rejects_exact_busy_player_call_ally_shape(self) -> None:
+        active_war = _war(
+            war_id=50_331_699,
+            allied_armies=[],
+            enemy_armies=[],
+            score=-48,
+            player_side="attacker",
+        )
+        plan = _plan_for_pending_context(
+            _call_ally_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+                "block-pending-character-interaction",
+            ),
+            active_wars=[active_war],
+        )
+
+        self.assertEqual(plan["phase"], "pending_call_ally_busy_reject")
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(
+            decision["classification"], "known_call_ally_busy_reject"
+        )
+        self.assertEqual(decision["rule_id"], "call-ally-busy-reject-v1")
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["native_ai_equivalent"])
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertFalse(decision["interaction_semantic_decision_ready"])
+        assessment = decision["call_ally_busy_reject"]
+        self.assertEqual(assessment["status"], "ready")
+        evidence = assessment["evidence"]
+        self.assertEqual(evidence["active_war_ids_before_reply"], [50_331_699])
+        self.assertFalse(evidence["target_raw_token_consumed"])
+        self.assertFalse(evidence["target_typed_identity_consumed"])
+        self.assertFalse(evidence["target_war_id_resolved"])
+        self.assertFalse(evidence["native_ai_equivalent"])
+        self.assertFalse(evidence["semantic_optimal"])
+        self.assertFalse(evidence["interaction_semantic_decision_ready"])
+
+    def test_call_ally_busy_reject_requires_frozen_definition_identity(
+        self,
+    ) -> None:
+        for mutation, expected_reason in (
+            (
+                lambda context: context["build"].update(
+                    {"version": "1.19.0.7"}
+                ),
+                "call_ally_frozen_exact_build_mismatch",
+            ),
+            (
+                lambda context: context["definition"].update(
+                    {"deterministic_key_hash": 12345}
+                ),
+                "call_ally_definition_identity_mismatch",
+            ),
+        ):
+            with self.subTest(expected_reason=expected_reason):
+                context_result = _call_ally_context_result()
+                context = context_result[
+                    "pending_character_interaction_context"
+                ]
+                assert isinstance(context, dict)
+                mutation(context)
+                plan = _plan_for_pending_context(
+                    context_result,
+                    action_steps=("reject-pending-character-interaction",),
+                    active_wars=[
+                        _war(allied_armies=[], enemy_armies=[], score=-48)
+                    ],
+                )
+
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    expected_reason, plan["decision"]["blocked_reasons"]
+                )
+
+    def test_call_ally_busy_reject_requires_exact_roles_and_war_target_shape(
+        self,
+    ) -> None:
+        mutations = (
+            (
+                lambda context: context["roles"].update(
+                    {"secondary_actor_character_id": 40_001}
+                ),
+                "call_ally_direct_roles_mismatch",
+            ),
+            (
+                lambda context: context["routing"].update({"kind": 1}),
+                "call_ally_direct_local_route_mismatch",
+            ),
+            (
+                lambda context: context["target"].update(
+                    {"type_key": "title"}
+                ),
+                "call_ally_stable_war_target_type_mismatch",
+            ),
+            (
+                lambda context: context["send_options"].update(
+                    {"definition_count": 1}
+                ),
+                "call_ally_zero_option_vector_mismatch",
+            ),
+            (
+                lambda context: context["send_options"].update(
+                    {"exclusive": False}
+                ),
+                "call_ally_zero_option_vector_mismatch",
+            ),
+            (
+                lambda context: context["terms"].update(
+                    {"special_data_present": True}
+                ),
+                "call_ally_non_special_shape_mismatch",
+            ),
+        )
+        for mutation, expected_reason in mutations:
+            with self.subTest(expected_reason=expected_reason):
+                context_result = _call_ally_context_result()
+                context = context_result[
+                    "pending_character_interaction_context"
+                ]
+                assert isinstance(context, dict)
+                mutation(context)
+                plan = _plan_for_pending_context(
+                    context_result,
+                    action_steps=("reject-pending-character-interaction",),
+                    active_wars=[
+                        _war(allied_armies=[], enemy_armies=[], score=-48)
+                    ],
+                )
+
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    expected_reason, plan["decision"]["blocked_reasons"]
+                )
+
+    def test_call_ally_busy_reject_requires_existing_war_and_legal_reply(
+        self,
+    ) -> None:
+        no_war = _plan_for_pending_context(
+            _call_ally_context_result(),
+            action_steps=("reject-pending-character-interaction",),
+            active_wars=[],
+        )
+        self.assertIsNone(no_war["selected_step"])
+        self.assertIn(
+            "call_ally_existing_active_war_required",
+            no_war["decision"]["blocked_reasons"],
+        )
+
+        legality = {
+            "accept": {"status": "available", "allowed": True, "reason": None},
+            "reject": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "block": {"status": "available", "allowed": True, "reason": None},
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "normal_reply_channel",
+            },
+        }
+        illegal = _plan_for_pending_context(
+            _call_ally_context_result(legality=legality),
+            action_steps=("reject-pending-character-interaction",),
+            active_wars=[_war(allied_armies=[], enemy_armies=[], score=-48)],
+        )
+        self.assertIsNone(illegal["selected_step"])
+        self.assertIn(
+            "call_ally_reject_not_native_legal",
+            illegal["decision"]["blocked_reasons"],
+        )
+
+    def test_call_ally_busy_reject_requires_unexpired_deadline(self) -> None:
+        context_result = _call_ally_context_result()
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        context["deadline"] = {
+            "age_days": 60,
+            "expiration_days": 60,
+            "remaining_days": 0,
+            "expiry_boundary_status": "at_or_past_daily_expiry_queue_threshold",
+        }
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=("reject-pending-character-interaction",),
+            active_wars=[_war(allied_armies=[], enemy_armies=[], score=-48)],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "call_ally_unexpired_deadline_required",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_call_ally_busy_reject_does_not_decode_raw_target_token(self) -> None:
+        context_result = _call_ally_context_result()
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        target = context["target"]
+        assert isinstance(target, dict)
+        target["raw_16_bytes_hex"] = "10" * 16
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=("reject-pending-character-interaction",),
+            active_wars=[_war(allied_armies=[], enemy_armies=[], score=-48)],
+        )
+
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        evidence = plan["decision"]["call_ally_busy_reject"]["evidence"]
+        self.assertFalse(evidence["target_raw_token_consumed"])
+        self.assertNotIn("raw_16_bytes_hex", evidence)
+
+    def test_other_call_ally_definition_does_not_enter_busy_fallback(self) -> None:
+        context_result = _call_ally_context_result()
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        definition = context["definition"]
+        assert isinstance(definition, dict)
+        definition["canonical_key"] = "call_ally_by_house_member_interaction"
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=("reject-pending-character-interaction",),
+            active_wars=[_war(allied_armies=[], enemy_armies=[], score=-48)],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["decision"]["classification"], "definition_unclassified"
+        )
+        self.assertNotEqual(
+            plan["decision"]["rule_id"], "call-ally-busy-reject-v1"
+        )
+
+    def test_enforce_demands_precedes_call_ally_busy_reject(self) -> None:
+        plan = _plan_for_pending_context(
+            _call_ally_context_result(),
+            action_steps=(
+                "reject-pending-character-interaction",
+                "enforce-demands-88",
+            ),
+            active_wars=[_war(allied_armies=[], enemy_armies=[], score=100)],
+        )
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-88")
+        self.assertNotIn("decision", plan)
 
     def test_enforce_demands_precedes_marriage_reject_only(self) -> None:
         plan = _plan_for_pending_context(

@@ -1594,6 +1594,149 @@ class NativeAutoRunTests(unittest.TestCase):
             )
         )
 
+    def test_call_ally_busy_reject_requires_no_new_active_war_id(self) -> None:
+        existing_war = _white_peace_war()
+        expected_signature = (
+            native_auto_run_module.war_termination_active_war_signature(
+                [existing_war]
+            )
+        )
+        self.assertIsNotNone(expected_signature)
+        before = {
+            "_semantic": {
+                "pending_character_interaction": {
+                    "instance_id": _SIGNED_PENDING_ID,
+                    "sender_character_id": 30_287,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [existing_war],
+            }
+        }
+        result = {
+            "interaction_result": {
+                "status": "rejected",
+                "instance_id": _SIGNED_PENDING_ID,
+                "sender_character_id": 30_287,
+            },
+            "remaining_pending_character_interaction": None,
+            "paused": True,
+        }
+        plan = {
+            "decision": {
+                "rule_id": "call-ally-busy-reject-v1",
+                "selected_action": "reject",
+                "native_ai_equivalent": False,
+                "semantic_optimal": False,
+                "interaction_semantic_decision_ready": False,
+                "call_ally_busy_reject": {
+                    "status": "ready",
+                    "evidence": {
+                        "active_war_signature_before_reply": (
+                            expected_signature
+                        ),
+                        "target_raw_token_consumed": False,
+                        "target_war_id_resolved": False,
+                    },
+                },
+            }
+        }
+        after = {
+            "pending_character_interaction": None,
+            "active_wars": [copy.deepcopy(existing_war)],
+            "paused": True,
+        }
+        lifecycle_evidence = ["pending_interaction_changed"]
+
+        self.assertTrue(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "reject-pending-character-interaction",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=lifecycle_evidence,
+                plan=plan,
+            )
+        )
+        self.assertIn(
+            "call_ally_active_war_signature_not_increased",
+            lifecycle_evidence,
+        )
+
+        added_war = copy.deepcopy(existing_war)
+        added_war["war_id"] = 67_108_946
+        after_with_target = {
+            **after,
+            "active_wars": [copy.deepcopy(existing_war), added_war],
+        }
+        self.assertFalse(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "reject-pending-character-interaction",
+                result,
+                before=before,
+                after_snapshot=after_with_target,
+                evidence=["pending_interaction_changed", "war_changed"],
+                plan=plan,
+            )
+        )
+
+    def test_call_ally_busy_reject_binds_planned_active_war_signature(
+        self,
+    ) -> None:
+        existing_war = _white_peace_war()
+        stale_war = copy.deepcopy(existing_war)
+        stale_war["player_relative_war_score"] = 36
+        stale_signature = (
+            native_auto_run_module.war_termination_active_war_signature(
+                [stale_war]
+            )
+        )
+        before = {
+            "_semantic": {
+                "pending_character_interaction": {
+                    "instance_id": _SIGNED_PENDING_ID,
+                    "sender_character_id": 30_287,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [existing_war],
+            }
+        }
+        result = {
+            "interaction_result": {
+                "status": "rejected",
+                "instance_id": _SIGNED_PENDING_ID,
+                "sender_character_id": 30_287,
+            },
+            "remaining_pending_character_interaction": None,
+            "paused": True,
+        }
+        plan = {
+            "decision": {
+                "rule_id": "call-ally-busy-reject-v1",
+                "selected_action": "reject",
+                "call_ally_busy_reject": {
+                    "status": "ready",
+                    "evidence": {
+                        "active_war_signature_before_reply": stale_signature,
+                    },
+                },
+            }
+        }
+
+        self.assertFalse(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "reject-pending-character-interaction",
+                result,
+                before=before,
+                after_snapshot={
+                    "pending_character_interaction": None,
+                    "active_wars": [copy.deepcopy(existing_war)],
+                    "paused": True,
+                },
+                evidence=["pending_interaction_changed"],
+                plan=plan,
+            )
+        )
+
     def test_white_peace_applied_preserves_bounded_semantic_evidence(
         self,
     ) -> None:

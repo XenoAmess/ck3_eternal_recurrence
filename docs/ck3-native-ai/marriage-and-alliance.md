@@ -344,7 +344,8 @@ production-live loop；由于 wire 仍无 `is_allied_to`，不升级联盟关系
 本节只处理同一第二角色长跑在 turn 79 首次真实出现的 stock `call_ally_interaction`。它是
 **war-bound normal recipient pending**：不是上文的联盟建立提议，也不是三个 war-exit special，更不能加入
 `ordinary-reject-unique-accept-v1` 的非战争 allowlist。当前只完成原生 definition、AI 发送/接受树、动态代价和拒绝后果的
-exact-build 账本，并提出最小 counter-policy；尚未实现 reply，也没有重新启动 CK3。
+exact-build 账本，并已将最小 counter-policy 与 reply 后置门落入 Python planner/runner；尚未重新启动 CK3，因而本节仍是
+`static-ready`，不是新的 production-live reply 证据。
 
 ### 冻结来源与 production RED
 
@@ -484,8 +485,8 @@ contract/house 状态均未发布，因此本次不能声称实际拒绝代价�
 call-to-war，并用 UI 快捷键无条件接受；它只验证弹窗消失、回到 map 且暂停，没有 exact definition、WarID、native legality 或
 participant postcondition。因此它可以说明早期产品倾向，却不能作为当前 typed/native accept policy 的证据。
 
-[counter-policy proposal] 当前 definition 应分类为 `war_call`，绝不加入 ordinary/nonreligious allowlist。为只解除这个已经有
-production artifact 的 blocker，可实现一条 definition-bound `call-ally-busy-reject-v1`，仅在以下条件全部成立时拒绝：
+[static-ready counter-policy] 当前 definition 分类为 `war_call`，绝不加入 ordinary/nonreligious allowlist。为只解除这个已经有
+production artifact 的 blocker，Python planner 实现一条 definition-bound `call-ally-busy-reject-v1`，仅在以下条件全部成立时拒绝：
 
 1. exact build、canonical key `call_ally_interaction`、deterministic key hash `936306703`、full pending ID 与 same-frame
    binding 完全匹配；runtime ordinal 不得跨进程作为身份；
@@ -496,6 +497,12 @@ production artifact 的 blocker，可实现一条 definition-bound `call-ally-bu
 5. 先保留现有 100% enforce-demands 优先级；没有该动作后，reject 原生合法且 command 可达，deadline 未到期；
 6. reply 后等待旧 signed full ID 消失，并在下一 paused snapshot 验证玩家 active WarID signature 没有新增 target war；
    若 pending 未推进或 active wars 意外增加，立即 capability RED，而不是只信 ACK。
+
+[static-ready] `strategy.py` 只按 exact build、canonical definition/hash、同帧角色/路由、稳定 `war` type key、零 option、
+非 special、未过期 deadline、已有完整 active-war signature 与 native reject legality 进入本规则；runtime ordinal 与 target raw
+16-byte token 均不参与身份或 WarID 推断。`native_auto_run.py` 在 typed old-pending lifecycle 之外，把计划时完整 active-war
+signature 重新绑定到 reply 前观测，并要求下一 paused frame 的 WarID 集合不得出现任何新成员。相关 planner/runner 测试的
+normal 与 `python -O` 矩阵均为 GREEN；这只是确定性 L0，不替代从上述冻结 checkpoint 做一次 fresh production replay。
 
 该规则明确选择“继续当前 WarID `50331699`、暂不进入第二战”，因此能解除本次 G2 blocker；同时必须记录已知但未量化的
 opinion/fame/contract 代价，并保持 `native_ai_equivalent=false`、`semantic_optimal=false`、

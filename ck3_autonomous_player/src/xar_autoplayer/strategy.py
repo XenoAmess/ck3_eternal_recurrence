@@ -45,6 +45,9 @@ from .bridge.marriage_contract import (
 )
 from .bridge.pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
+    PENDING_CHARACTER_INTERACTION_CONTEXT_V1_BACKEND_ID,
+    PENDING_CHARACTER_INTERACTION_CONTEXT_V1_EXECUTABLE_SHA256,
+    PENDING_CHARACTER_INTERACTION_CONTEXT_V1_GAME_VERSION,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
     normalize_pending_interaction_id,
 )
@@ -209,6 +212,23 @@ _NEGOTIATE_ALLIANCE_INBOUND_POLICY = {
     "known_decline_effects": [
         "actor:refused_alliance_opinion:toward_recipient",
         "minor_clan_unity_loss",
+    ],
+}
+_CALL_ALLY_BUSY_REJECT_POLICY = {
+    "rule_id": "call-ally-busy-reject-v1",
+    "definition_key": "call_ally_interaction",
+    "deterministic_key_hash": 936_306_703,
+    "domain": "war_call",
+    "source": "common/character_interactions/00_alliance.txt",
+    "source_sha256": (
+        "919ED408EC735F64ED972E23A376CD618A2E207A0EA273F973C5B1F89440E39D"
+    ),
+    "known_decline_effects": [
+        "actor:rejected_call_to_offensive_war_opinion:-20",
+        "actor:rejected_call_to_defensive_war_opinion:-50",
+        "recipient:prestige_experience_or_mandala_penalty",
+        "target_war:set_called_to",
+        "conditional_contract_house_blood_brother_penalties",
     ],
 }
 
@@ -1039,6 +1059,223 @@ def _negotiate_alliance_inbound_assessment(
     }
 
 
+def _call_ally_busy_reject_assessment(
+    context: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    available_steps: set[str],
+    candidate_replies: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    """Reject only the frozen busy-player inbound call-to-war shape."""
+
+    policy = _CALL_ALLY_BUSY_REJECT_POLICY
+    definition = context.get("definition")
+    definition_key = (
+        definition.get("canonical_key")
+        if isinstance(definition, dict)
+        else None
+    )
+    if definition_key != policy["definition_key"]:
+        return {"status": "not_applicable", "rule_id": policy["rule_id"]}
+
+    blocked: list[str] = []
+    build = context.get("build")
+    provenance = context.get("provenance")
+    if build != {
+        "version": PENDING_CHARACTER_INTERACTION_CONTEXT_V1_GAME_VERSION,
+        "exe_sha256": (
+            PENDING_CHARACTER_INTERACTION_CONTEXT_V1_EXECUTABLE_SHA256
+        ),
+    } or not (
+        isinstance(provenance, dict)
+        and provenance.get("backend_id")
+        == PENDING_CHARACTER_INTERACTION_CONTEXT_V1_BACKEND_ID
+    ):
+        blocked.append("call_ally_frozen_exact_build_mismatch")
+    if not (
+        isinstance(definition, dict)
+        and definition.get("deterministic_key_hash")
+        == policy["deterministic_key_hash"]
+    ):
+        blocked.append("call_ally_definition_identity_mismatch")
+    pending_id = context.get("pending_interaction_id")
+    if not _valid_pending_interaction_id(pending_id):
+        blocked.append("call_ally_full_pending_identity_unavailable")
+
+    roles = context.get("roles")
+    actor_id = (
+        roles.get("actor_character_id") if isinstance(roles, dict) else None
+    )
+    recipient_id = (
+        roles.get("recipient_character_id")
+        if isinstance(roles, dict)
+        else None
+    )
+    if not (
+        isinstance(actor_id, int)
+        and not isinstance(actor_id, bool)
+        and actor_id > 0
+        and isinstance(recipient_id, int)
+        and not isinstance(recipient_id, bool)
+        and recipient_id > 0
+        and actor_id != recipient_id
+        and isinstance(roles, dict)
+        and roles.get("secondary_actor_character_id") == -1
+        and roles.get("secondary_recipient_character_id") == -1
+        and roles.get("intermediary_character_id") == -1
+    ):
+        blocked.append("call_ally_direct_roles_mismatch")
+
+    routing = context.get("routing")
+    if not (
+        isinstance(routing, dict)
+        and routing.get("kind") == 0
+        and routing.get("played_character_id") == recipient_id
+        and routing.get("current_responder_role") == "recipient"
+        and routing.get("reply_execution_channel") == "recipient"
+        and routing.get("local_route") is True
+        and routing.get("auto_accept_notification") is False
+    ):
+        blocked.append("call_ally_direct_local_route_mismatch")
+
+    target = context.get("target")
+    if not (
+        isinstance(target, dict)
+        and target.get("present") is True
+        and target.get("type_key_status") == "available"
+        and target.get("type_key") == "war"
+        and target.get("type_key_reason") is None
+    ):
+        blocked.append("call_ally_stable_war_target_type_mismatch")
+
+    send_options = context.get("send_options")
+    if not (
+        isinstance(send_options, dict)
+        and send_options.get("exclusive") is True
+        and send_options.get("definition_count") == 0
+        and send_options.get("context_count") == 0
+        and send_options.get("rows") == []
+    ):
+        blocked.append("call_ally_zero_option_vector_mismatch")
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    if not (
+        isinstance(terms, dict)
+        and terms.get("special_data_present") is False
+        and isinstance(special, dict)
+        and special.get("status") == "unavailable"
+        and special.get("value") is None
+        and special.get("reason") == "special_war_binding_not_applicable"
+    ):
+        blocked.append("call_ally_non_special_shape_mismatch")
+
+    deadline = context.get("deadline")
+    age_days = deadline.get("age_days") if isinstance(deadline, dict) else None
+    expiration_days = (
+        deadline.get("expiration_days") if isinstance(deadline, dict) else None
+    )
+    remaining_days = (
+        deadline.get("remaining_days") if isinstance(deadline, dict) else None
+    )
+    if not (
+        isinstance(age_days, int)
+        and not isinstance(age_days, bool)
+        and isinstance(expiration_days, int)
+        and not isinstance(expiration_days, bool)
+        and isinstance(remaining_days, int)
+        and not isinstance(remaining_days, bool)
+        and 0 <= age_days < expiration_days
+        and remaining_days == expiration_days - age_days
+        and remaining_days > 0
+        and isinstance(deadline, dict)
+        and deadline.get("expiry_boundary_status") == "not_reached"
+    ):
+        blocked.append("call_ally_unexpired_deadline_required")
+
+    active_war_signature = war_termination_active_war_signature(active_wars)
+    if not active_war_signature:
+        blocked.append("call_ally_existing_active_war_required")
+    if any(
+        isinstance(war.get("player_relative_war_score"), int)
+        and not isinstance(war.get("player_relative_war_score"), bool)
+        and int(war["player_relative_war_score"]) >= 100
+        for war in active_wars
+        if isinstance(war, dict)
+    ):
+        blocked.append("call_ally_enforce_demands_priority_not_cleared")
+
+    reject = candidate_replies.get("reject")
+    if not isinstance(reject, dict) or reject.get("native_legal") is not True:
+        blocked.append("call_ally_reject_not_native_legal")
+    elif reject.get("action_reachable") is not True:
+        blocked.append("call_ally_reject_command_unavailable")
+
+    evidence = {
+        "source": policy["source"],
+        "source_sha256": policy["source_sha256"],
+        "build": dict(build) if isinstance(build, dict) else None,
+        "backend_id": (
+            provenance.get("backend_id")
+            if isinstance(provenance, dict)
+            else None
+        ),
+        "definition_key": definition_key,
+        "deterministic_key_hash": (
+            definition.get("deterministic_key_hash")
+            if isinstance(definition, dict)
+            else None
+        ),
+        "runtime_ordinal_consumed_as_identity": False,
+        "pending_interaction_id": pending_id,
+        "actor_character_id": actor_id,
+        "recipient_character_id": recipient_id,
+        "target_type_key": (
+            target.get("type_key") if isinstance(target, dict) else None
+        ),
+        "target_raw_token_consumed": False,
+        "target_typed_identity_consumed": False,
+        "target_war_id_resolved": False,
+        "selected_option_count": (
+            sum(
+                1
+                for row in send_options.get("rows", [])
+                if isinstance(row, dict) and row.get("selected") is True
+            )
+            if isinstance(send_options, dict)
+            and isinstance(send_options.get("rows"), list)
+            else None
+        ),
+        "deadline_remaining_days": remaining_days,
+        "active_war_signature_before_reply": (
+            active_war_signature if active_war_signature is not None else None
+        ),
+        "active_war_ids_before_reply": (
+            [row["war_id"] for row in active_war_signature]
+            if active_war_signature is not None
+            else None
+        ),
+        "enforce_demands_priority_cleared": not any(
+            reason == "call_ally_enforce_demands_priority_not_cleared"
+            for reason in blocked
+        ),
+        "known_decline_effects": list(policy["known_decline_effects"]),
+        "postcondition": (
+            "old_pending_full_id_absent_and_no_new_active_war_id_in_"
+            "next_paused_frame"
+        ),
+        "native_ai_equivalent": False,
+        "semantic_optimal": False,
+        "interaction_semantic_decision_ready": False,
+    }
+    return {
+        "status": "ready" if not blocked else "blocked",
+        "rule_id": policy["rule_id"],
+        "evidence": evidence,
+        "blocked_reasons": blocked,
+    }
+
+
 def _special_war_snapshot_binding(
     context: dict[str, object],
     active_wars: list[dict[str, object]],
@@ -1374,6 +1611,11 @@ def _degraded_pending_interaction_decision(
         == _NEGOTIATE_ALLIANCE_INBOUND_POLICY["definition_key"]
         else None
     )
+    call_ally_evidence = (
+        _CALL_ALLY_BUSY_REJECT_POLICY
+        if definition_key == _CALL_ALLY_BUSY_REJECT_POLICY["definition_key"]
+        else None
+    )
     if evidence_gaps:
         classification = "evidence_invalid"
     elif special_status == "available":
@@ -1387,6 +1629,8 @@ def _degraded_pending_interaction_decision(
         and special_present is False
     ):
         classification = "known_negotiate_alliance_inbound"
+    elif isinstance(call_ally_evidence, dict):
+        classification = "known_call_ally_busy_reject"
     elif (
         special_status == "unavailable"
         and special_reason == "special_war_binding_not_applicable"
@@ -1431,17 +1675,31 @@ def _degraded_pending_interaction_decision(
         if classification == "known_negotiate_alliance_inbound"
         else None
     )
+    call_ally_busy_reject = (
+        _call_ally_busy_reject_assessment(
+            context,
+            active_wars=active_wars,
+            available_steps=available_steps,
+            candidate_replies=by_action,
+        )
+        if classification == "known_call_ally_busy_reject"
+        else None
+    )
     classification_evidence = (
         dict(_RAIKTOR_INBOUND_WHITE_PEACE_POLICY)
         if isinstance(raiktor_white_peace, dict)
         and raiktor_white_peace.get("status") != "not_applicable"
         else (
-            negotiate_alliance_evidence
-            if classification == "known_negotiate_alliance_inbound"
+            call_ally_evidence
+            if classification == "known_call_ally_busy_reject"
             else (
-                marriage_allowlist_evidence
-                if classification == "known_marriage_special"
-                else definition_allowlist_evidence
+                negotiate_alliance_evidence
+                if classification == "known_negotiate_alliance_inbound"
+                else (
+                    marriage_allowlist_evidence
+                    if classification == "known_marriage_special"
+                    else definition_allowlist_evidence
+                )
             )
         )
     )
@@ -1459,6 +1717,7 @@ def _degraded_pending_interaction_decision(
         "native_ai_equivalent": False,
         "semantic_optimal": False,
         "semantic_decision_ready": False,
+        "interaction_semantic_decision_ready": False,
         "context_semantic_decision_ready": summary.get(
             "context_semantic_decision_ready"
         ),
@@ -1473,18 +1732,28 @@ def _degraded_pending_interaction_decision(
         "special_war_snapshot_binding": special_binding_audit,
         "raiktor_inbound_white_peace": raiktor_white_peace,
         "negotiate_alliance_inbound": negotiate_alliance,
+        "call_ally_busy_reject": call_ally_busy_reject,
         "definition_classification": {
             "policy": (
                 "ck3-1.19.0.6-exact-raiktor-inbound-white-peace-v1"
                 if isinstance(raiktor_white_peace, dict)
                 and raiktor_white_peace.get("status") != "not_applicable"
                 else (
-                    "ck3-1.19.0.6-exact-negotiate-alliance-inbound-v1"
-                    if classification == "known_negotiate_alliance_inbound"
+                    "ck3-1.19.0.6-exact-call-ally-busy-reject-v1"
+                    if classification == "known_call_ally_busy_reject"
                     else (
-                        "ck3-1.19.0.6-explicit-marriage-special-reject-only-v1"
-                        if classification == "known_marriage_special"
-                        else "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1"
+                        "ck3-1.19.0.6-exact-negotiate-alliance-inbound-v1"
+                        if classification
+                        == "known_negotiate_alliance_inbound"
+                        else (
+                            "ck3-1.19.0.6-explicit-marriage-special-reject-"
+                            "only-v1"
+                            if classification == "known_marriage_special"
+                            else (
+                                "ck3-1.19.0.6-explicit-ordinary-"
+                                "nonreligious-v1"
+                            )
+                        )
                     )
                 )
             ),
@@ -1514,11 +1783,20 @@ def _degraded_pending_interaction_decision(
             )
             if classification == "known_marriage_special"
             else (
-                "for an exact same-frame request whose definition is explicitly "
-                "allowlisted as ordinary non-war and nonreligious, reject when "
-                "native reject is legal and executable; accept only when reject, "
-                "block, and acknowledge are each natively illegal and accept is "
-                "the sole legal executable reply; otherwise submit nothing"
+                "for the exact frozen call_ally_interaction shape, reject only "
+                "while the player already has a completely observed active-war "
+                "signature, the target is stably typed as war without decoding "
+                "its raw token, no enforce-demands action is pending, and native "
+                "reject is legal and executable"
+                if classification == "known_call_ally_busy_reject"
+                else (
+                    "for an exact same-frame request whose definition is "
+                    "explicitly allowlisted as ordinary non-war and "
+                    "nonreligious, reject when native reject is legal and "
+                    "executable; accept only when reject, block, and "
+                    "acknowledge are each natively illegal and accept is the "
+                    "sole legal executable reply; otherwise submit nothing"
+                )
             )
         ),
     }
@@ -1636,6 +1914,32 @@ def _degraded_pending_interaction_decision(
         decision["selected_action"] = "accept"
         decision["selected_step"] = _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP
         return {"summary": summary, "decision": decision}
+    if classification == "known_call_ally_busy_reject":
+        decision["rule_id"] = _CALL_ALLY_BUSY_REJECT_POLICY["rule_id"]
+        decision["deterministic_rule"] = (
+            "reject only the frozen exact-build, direct, zero-option inbound "
+            "call_ally_interaction while the player already has a complete "
+            "active-war signature, no 100% enforce-demands action is pending, "
+            "the unexpired same-frame target is stably typed as war without "
+            "decoding its raw token, and native reject is legal and reachable; "
+            "then require the old pending ID to disappear and no new active "
+            "WarID to appear in the next paused snapshot"
+        )
+        if not (
+            isinstance(call_ally_busy_reject, dict)
+            and call_ally_busy_reject.get("status") == "ready"
+        ):
+            if isinstance(call_ally_busy_reject, dict):
+                blocked_reasons.extend(
+                    call_ally_busy_reject.get("blocked_reasons", [])
+                )
+            else:
+                blocked_reasons.append("call_ally_busy_assessment_unavailable")
+            return {"summary": summary, "decision": decision}
+        decision["recommended_action"] = "reject"
+        decision["selected_action"] = "reject"
+        decision["selected_step"] = _REJECT_PENDING_CHARACTER_INTERACTION_STEP
+        return {"summary": summary, "decision": decision}
     if classification == "definition_unclassified":
         blocked_reasons.append(
             "interaction_definition_not_explicitly_classified_"
@@ -1705,7 +2009,15 @@ def _degraded_pending_interaction_plan(
             "Raiktor request"
         )
     elif selected_action == "reject":
-        if decision.get("classification") == "known_marriage_special":
+        if rule_id == _CALL_ALLY_BUSY_REJECT_POLICY["rule_id"]:
+            phase = "pending_call_ally_busy_reject"
+            reason = (
+                "reject this exact inbound call to a second war while the "
+                "player is still busy in at least one observed active war; "
+                "the target raw token remains opaque, and the next paused "
+                "frame must show no added active WarID"
+            )
+        elif decision.get("classification") == "known_marriage_special":
             phase = "pending_arrange_marriage_reject_only"
             reason = (
                 "reject this exact direct zero-option marriage proposal: "
@@ -1746,7 +2058,12 @@ def _degraded_pending_interaction_plan(
         phase = (
             "pending_war_interaction_evidence_required"
             if decision.get("classification") == "known_war_exit"
-            else "pending_character_interaction_degraded_blocked"
+            else (
+                "pending_call_ally_busy_reject_blocked"
+                if decision.get("classification")
+                == "known_call_ally_busy_reject"
+                else "pending_character_interaction_degraded_blocked"
+            )
         )
         reasons = decision.get("blocked_reasons")
         reason = (
@@ -1783,6 +2100,7 @@ def _degraded_pending_interaction_plan(
         elif decision.get("classification") not in {
             "ordinary_non_war",
             "known_negotiate_alliance_inbound",
+            "known_call_ally_busy_reject",
         }:
             plan["required_capabilities"] = [
                 "game.state.pending-character-interaction-structured-terms",

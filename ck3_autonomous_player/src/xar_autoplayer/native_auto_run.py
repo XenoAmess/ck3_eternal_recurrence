@@ -39,6 +39,7 @@ from .bridge.settlement_contract import (
 from .bridge.war_contract import (
     is_life_advance_step,
     parse_offer_white_peace_step,
+    war_termination_active_war_signature,
 )
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
@@ -2223,6 +2224,61 @@ def _pending_interaction_lifecycle_verified(
         return False
 
     decision = plan.get("decision") if isinstance(plan, dict) else None
+    call_ally_assessment = (
+        decision.get("call_ally_busy_reject")
+        if isinstance(decision, dict)
+        else None
+    )
+    if (
+        isinstance(decision, dict)
+        and decision.get("rule_id") == "call-ally-busy-reject-v1"
+    ):
+        evidence_row = (
+            call_ally_assessment.get("evidence")
+            if isinstance(call_ally_assessment, dict)
+            else None
+        )
+        expected_before_signature = (
+            evidence_row.get("active_war_signature_before_reply")
+            if isinstance(evidence_row, dict)
+            else None
+        )
+        before_signature = war_termination_active_war_signature(before_wars)
+        after_signature = war_termination_active_war_signature(
+            after_snapshot.get("active_wars")
+        )
+        if not isinstance(call_ally_assessment, dict) or not (
+            step == "reject-pending-character-interaction"
+            and decision.get("selected_action") == "reject"
+            and call_ally_assessment.get("status") == "ready"
+        ):
+            return False
+        if not (
+            isinstance(expected_before_signature, list)
+            and expected_before_signature
+            and before_signature == expected_before_signature
+            and isinstance(after_signature, list)
+        ):
+            return False
+        before_war_ids = {
+            row.get("war_id")
+            for row in before_signature
+            if isinstance(row, dict)
+        }
+        after_war_ids = {
+            row.get("war_id")
+            for row in after_signature
+            if isinstance(row, dict)
+        }
+        no_new_active_war = bool(
+            before_war_ids
+            and len(after_signature) <= len(before_signature)
+            and after_war_ids.issubset(before_war_ids)
+        )
+        if no_new_active_war:
+            evidence.append("call_ally_active_war_signature_not_increased")
+        return no_new_active_war
+
     assessment = (
         decision.get("raiktor_inbound_white_peace")
         if isinstance(decision, dict)
