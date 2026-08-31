@@ -409,7 +409,8 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertIn("NOT = { var:zg361_pp_m161_filler_candidate = this }", m161)
         self.assertIn("zg361_pp_m161_nomination_slot_status", m161)
         self.assertIn("zg361_pp_m161_capacity_hours_status", m161)
-        self.assertIn("zg361_pp_fairness_credit", m161)
+        self.assertIn("zg361_pp_m161_fairness_debt value = 1", m161)
+        self.assertIn("zg361_pp_m161_filler_disclosed value = 1", m161)
 
         m166 = effect_block(self.effects, "zg361_pp_m166_core_effect")
         for token in (
@@ -424,10 +425,21 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         audit_167 = effect_block(self.events, "zg361pp.2167")
         audit_168 = effect_block(self.events, "zg361pp.2168")
         self.assertIn("zg361_pp_m167_observation_settled = 0", audit_167)
-        self.assertIn("zg361_pp_sponsor_credit", audit_167)
+        self.assertIn("zg361_pp_m167_sponsor_credit_delta", audit_167)
         self.assertIn("zg361_pp_m168_sample_pending = 1", audit_168)
-        self.assertIn("zg361_pp_u_hit_denominator", audit_168)
         self.assertIn("zg361_pp_u_next_quota_pending value = 1", audit_168)
+
+        dead_aggregate_ledgers = (
+            "zg361_pp_fairness_credit",
+            "zg361_pp_management_debt",
+            "zg361_pp_management_talent_score",
+            "zg361_pp_primary_packet_legitimacy",
+            "zg361_pp_sponsor_credit",
+            "zg361_pp_u_hit_denominator",
+            "zg361_pp_u_hit_numerator",
+        )
+        for dead in dead_aggregate_ledgers:
+            self.assertNotIn(dead, self.effects + self.events)
 
     def test_v_panel_blind_vote_feedback_and_retry_are_real_consumers(self) -> None:
         open_v = effect_block(self.effects, "zg361_pp_open_v_case_effect")

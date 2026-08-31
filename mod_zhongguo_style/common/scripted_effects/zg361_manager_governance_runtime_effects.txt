@@ -54,8 +54,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m032_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m032_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m032_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -78,8 +76,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m033_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m033_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m033_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -102,8 +98,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m034_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m034_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m034_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -126,8 +120,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m035_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m035_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m035_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -150,8 +142,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m036_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m036_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m036_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -174,8 +164,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m345_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m345_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m345_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -198,8 +186,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m346_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m346_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m346_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -222,8 +208,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m347_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m347_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m347_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -246,8 +230,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m348_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m348_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m348_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -270,8 +252,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m349_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m349_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m349_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -294,8 +274,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m350_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m350_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m350_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -318,8 +296,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m351_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m351_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m351_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -342,8 +318,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m352_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m352_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m352_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -366,8 +340,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m353_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m353_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m353_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -390,8 +362,6 @@ zg361_mg_consume_due_policy_debts_effect = {
 		set_variable = { name = zg361_mg_m354_debt_settled_by_owner value = root }
 		set_variable = { name = zg361_mg_m354_debt_manager_score_delta value = -3 }
 		set_variable = { name = zg361_mg_m354_debt_remediation_code value = 1 }
-		change_variable = { name = zg361_mg_policy_debt add = -1 }
-		change_variable = { name = zg361_mg_policy_debt_settled add = 1 }
 		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
 		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
 	}
@@ -1885,7 +1855,6 @@ zg361_mg_m035_freeze_distribution_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m035_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m035_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m035_debt_owner value = var:zg361_case_f_owner }
@@ -2281,7 +2250,6 @@ zg361_mg_m032_score_manager_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m032_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m032_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m032_debt_owner value = var:zg361_case_f_owner }
@@ -2708,7 +2676,6 @@ zg361_mg_m033_reason_code_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m033_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m033_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m033_debt_owner value = var:zg361_case_f_owner }
@@ -3102,7 +3069,6 @@ zg361_mg_m034_freeze_nine_box_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m034_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m034_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m034_debt_owner value = var:zg361_case_f_owner }
@@ -3529,7 +3495,6 @@ zg361_mg_m036_append_decade_log_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m036_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m036_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m036_debt_owner value = var:zg361_case_f_owner }
@@ -3906,7 +3871,6 @@ zg361_mg_m345_freeze_calendar_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m345_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m345_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m345_debt_owner value = var:zg361_case_ak_owner }
@@ -4253,7 +4217,6 @@ zg361_mg_m346_consume_offcycle_signal_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m346_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m346_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m346_debt_owner value = var:zg361_case_ak_owner }
@@ -4715,7 +4678,6 @@ zg361_mg_m347_consume_override_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m347_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m347_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m347_debt_owner value = var:zg361_case_ak_owner }
@@ -5010,7 +4972,6 @@ zg361_mg_m348_bind_exception_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m348_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m348_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m348_debt_owner value = var:zg361_case_ak_owner }
@@ -5330,7 +5291,6 @@ zg361_mg_m349_run_audit_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m349_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m349_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m349_debt_owner value = var:zg361_case_ak_owner }
@@ -5668,7 +5628,6 @@ zg361_mg_m350_version_benchmark_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m350_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m350_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m350_debt_owner value = var:zg361_case_ak_owner }
@@ -5998,7 +5957,6 @@ zg361_mg_m351_measure_pilot_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m351_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m351_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m351_debt_owner value = var:zg361_case_ak_owner }
@@ -6323,7 +6281,6 @@ zg361_mg_m352_map_history_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m352_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m352_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m352_debt_owner value = var:zg361_case_ak_owner }
@@ -6694,7 +6651,6 @@ zg361_mg_m353_charge_admin_capacity_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m353_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m353_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m353_debt_owner value = var:zg361_case_ak_owner }
@@ -7096,7 +7052,6 @@ zg361_mg_m354_audit_fairness_effect = {
 					}
 		}
 		}
-		change_variable = { name = zg361_mg_policy_debt add = 1 }
 		set_variable = { name = zg361_mg_m354_policy_debt value = 1 }
 		set_variable = { name = zg361_mg_m354_debt_status value = 1 }
 		set_variable = { name = zg361_mg_m354_debt_owner value = var:zg361_case_ak_owner }
@@ -7387,7 +7342,6 @@ zg361_mg_resolve_exception_due_effect = {
 		if = {
 			limit = { var:zg361_mg_exception_new_evidence = 1 }
 			set_variable = { name = zg361_mg_exception_expiry_year value = { value = current_year add = 1 } }
-			change_variable = { name = zg361_mg_exception_renewal_count add = 1 }
 			set_variable = { name = zg361_mg_exception_new_evidence value = 0 }
 		}
 		else = {

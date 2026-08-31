@@ -1633,7 +1633,7 @@ zg361_pp_resolve_t_outcome_effect = {
 		}
 		set_variable = { name = zg361_pp_t_outcome value = 0 }
 		if = { limit = { var:zg361_pp_t_evidence_led > var:zg361_pp_t_political } set_variable = { name = zg361_pp_t_outcome value = 1 } add_prestige = 25 }
-		else_if = { limit = { var:zg361_pp_t_political > var:zg361_pp_t_evidence_led } set_variable = { name = zg361_pp_t_outcome value = -1 } add_stress = minor_stress_gain var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
+		else_if = { limit = { var:zg361_pp_t_political > var:zg361_pp_t_evidence_led } set_variable = { name = zg361_pp_t_outcome value = -1 } add_stress = minor_stress_gain }
 		set_variable = { name = zg361_pp_t_visible_receipt_revision value = var:zg361_case_t_revision }
 		set_variable = { name = zg361_pp_t_portfolio_done_cycle value = var:zg361_case_t_cycle_serial }
 		if = {
@@ -2376,8 +2376,6 @@ zg361_pp_open_u_case_effect = {
 						}
 						trigger_else = { always = no }
 					}
-					change_variable = { name = zg361_pp_management_talent_score add = -1 }
-					change_variable = { name = zg361_pp_management_debt add = 1 }
 					set_variable = { name = zg361_pp_u_shelving_last_penalty_cycle value = var:zg361_review_serial }
 				}
 			}
@@ -3012,7 +3010,7 @@ zg361_pp_resolve_u_outcome_effect = {
 		}
 		set_variable = { name = zg361_pp_u_outcome value = 0 }
 		if = { limit = { var:zg361_pp_u_evidence_led > var:zg361_pp_u_political } set_variable = { name = zg361_pp_u_outcome value = 1 } add_prestige = 25 }
-		else_if = { limit = { var:zg361_pp_u_political > var:zg361_pp_u_evidence_led } set_variable = { name = zg361_pp_u_outcome value = -1 } add_stress = minor_stress_gain var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
+		else_if = { limit = { var:zg361_pp_u_political > var:zg361_pp_u_evidence_led } set_variable = { name = zg361_pp_u_outcome value = -1 } add_stress = minor_stress_gain }
 		set_variable = { name = zg361_pp_u_visible_receipt_revision value = var:zg361_case_u_revision }
 		set_variable = { name = zg361_pp_u_portfolio_done_cycle value = var:zg361_case_u_cycle_serial }
 		if = {
@@ -4482,7 +4480,7 @@ zg361_pp_resolve_v_outcome_effect = {
 		}
 		set_variable = { name = zg361_pp_v_outcome value = 0 }
 		if = { limit = { var:zg361_pp_v_evidence_led > var:zg361_pp_v_political } set_variable = { name = zg361_pp_v_outcome value = 1 } add_prestige = 25 }
-		else_if = { limit = { var:zg361_pp_v_political > var:zg361_pp_v_evidence_led } set_variable = { name = zg361_pp_v_outcome value = -1 } add_stress = minor_stress_gain var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
+		else_if = { limit = { var:zg361_pp_v_political > var:zg361_pp_v_evidence_led } set_variable = { name = zg361_pp_v_outcome value = -1 } add_stress = minor_stress_gain }
 		set_variable = { name = zg361_pp_v_visible_receipt_revision value = var:zg361_case_v_revision }
 		set_variable = { name = zg361_pp_v_portfolio_done_cycle value = var:zg361_case_v_cycle_serial }
 		if = {
@@ -6002,7 +6000,7 @@ zg361_pp_resolve_w_outcome_effect = {
 		}
 		set_variable = { name = zg361_pp_w_outcome value = 0 }
 		if = { limit = { var:zg361_pp_w_evidence_led > var:zg361_pp_w_political } set_variable = { name = zg361_pp_w_outcome value = 1 } add_prestige = 25 }
-		else_if = { limit = { var:zg361_pp_w_political > var:zg361_pp_w_evidence_led } set_variable = { name = zg361_pp_w_outcome value = -1 } add_stress = minor_stress_gain var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
+		else_if = { limit = { var:zg361_pp_w_political > var:zg361_pp_w_evidence_led } set_variable = { name = zg361_pp_w_outcome value = -1 } add_stress = minor_stress_gain }
 		set_variable = { name = zg361_pp_w_visible_receipt_revision value = var:zg361_case_w_revision }
 		set_variable = { name = zg361_pp_w_portfolio_done_cycle value = var:zg361_case_w_cycle_serial }
 		if = {
@@ -11803,10 +11801,6 @@ var:zg361_pp_u_capacity_hours_available >= 1
 						set_variable = { name = zg361_pp_m161_preparation_hours value = 12 }
 						set_variable = { name = zg361_pp_m161_fairness_debt value = 1 }
 						set_variable = { name = zg361_pp_m161_filler_disclosed value = 1 }
-						var:zg361_case_u_owner = {
-							change_variable = { name = zg361_pp_fairness_credit add = -1 }
-							change_variable = { name = zg361_pp_primary_packet_legitimacy add = -1 }
-						}
 					}
 					set_variable = { name = zg361_pp_m161_quota_used_after value = var:zg361_pp_u_nomination_slot_reserved }
 					change_variable = { name = zg361_pp_m161_quota_used_after add = var:zg361_pp_u_nomination_slot_settled }
@@ -12194,7 +12188,7 @@ zg361_pp_m162_core_effect = {
 					set_variable = { name = zg361_pp_m162_admission_vote_frozen value = 1 }
 					set_variable = { name = zg361_pp_m162_exception_admitted value = 1 }
 					set_variable = { name = zg361_pp_m162_capability_review_open value = 1 }
-					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m162_credibility_debt value = 1 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_sponsor_credit add = -1 } } }
+					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m162_credibility_debt value = 1 } }
 
 				}
 

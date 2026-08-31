@@ -332,8 +332,52 @@ zg361b2.130 = {
 	}
 	option = {
 		name = zg361b2.130.a
-		trigger = { has_variable = zg361_b2_quota_reserve var:zg361_b2_quota_reserve >= 1 }
-		scope:zg361_b2_quota_return_subject = { zg361_b2_m359_consume_reserve_effect = yes }
+		trigger = {
+			scope:zg361_b2_quota_return_subject = {
+				has_variable = zg361_pp_m157_packet_candidate
+				has_variable = zg361_pp_m157_nomination_slot_owner
+				has_variable = zg361_pp_m157_nomination_slot_cycle
+				has_variable = zg361_pp_m157_nomination_slot_case
+				has_variable = zg361_pp_m157_nomination_slot_amount
+				has_variable = zg361_pp_m157_nomination_slot_status
+				has_variable = zg361_case_u_owner
+				has_variable = zg361_case_u_subject
+				has_variable = zg361_case_u_cycle_serial
+				has_variable = zg361_case_u_case_serial
+				has_variable = zg361_case_u_state
+				has_variable = zg361_case_u_revision
+				has_variable = zg361_case_u_active
+				var:zg361_case_u_active = 1
+				has_variable = zg361_pp_u_nomination_slot_available
+				has_variable = zg361_pp_u_nomination_slot_reserved
+				has_variable = zg361_pp_u_nomination_slot_settled
+				var:zg361_pp_m157_packet_candidate = this
+				var:zg361_case_u_owner = scope:zg361_b2_quota_return_owner
+				var:zg361_case_u_subject = this
+				var:zg361_case_u_cycle_serial = var:zg361_b2_case_cycle
+				var:zg361_pp_m157_nomination_slot_owner = var:zg361_case_u_owner
+				var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial
+				var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial
+				var:zg361_pp_m157_nomination_slot_amount = 1
+				OR = {
+					AND = {
+						var:zg361_pp_m157_nomination_slot_status = 1
+						var:zg361_pp_u_nomination_slot_reserved >= var:zg361_pp_m157_nomination_slot_amount
+					}
+					AND = {
+						var:zg361_pp_m157_nomination_slot_status = 2
+						var:zg361_pp_u_nomination_slot_settled >= var:zg361_pp_m157_nomination_slot_amount
+					}
+				}
+			}
+		}
+		scope:zg361_b2_quota_return_subject = {
+			zg361_b2_m359_return_pp_nomination_slot_effect = yes
+			if = {
+				limit = { NOT = { var:zg361_b2_m359_refund_applied = 1 } }
+				zg361_b2_m359_post_next_cycle_debt_effect = yes
+			}
+		}
 	}
 	option = {
 		name = zg361b2.130.b

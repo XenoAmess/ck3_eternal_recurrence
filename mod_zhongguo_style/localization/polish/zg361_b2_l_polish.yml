@@ -21,7 +21,7 @@
  zg361b2.110.d:0 "Accept a funded, neutral redundancy exit."
  zg361b2.130.t:0 "Return the Corrected Quota"
  zg361b2.130.desc:0 "A corrected appeal releases one bottom-slot obligation. Consume a reserve, reopen the boundary with fresh notice and appeal, or post the obligation to the next real review."
- zg361b2.130.a:0 "Consume one frozen reserve slot."
+ zg361b2.130.a:0 "Return the exact PP #157 nomination-slot receipt."
  zg361b2.130.b:0 "Reopen and re-serve the boundary case."
  zg361b2.130.c:0 "Post one slot to the next cycle."
  zg361b2.131.t:0 "Fresh Boundary Notice"

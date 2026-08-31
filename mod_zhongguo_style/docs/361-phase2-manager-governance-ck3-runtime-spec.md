@@ -95,6 +95,10 @@ status = pending(1) -> settled(2)
 
 `zg361_mg_consume_due_policy_debts_effect` 只在下一轮及以后、由当时的直属上司入口消费一次；到期判断与 `settled_cycle` 都使用 `root.var:zg361_review_serial`，不能误用受评经理自己的旧 serial。原 source owner 永不改写，另记 `settled_by_owner`。每项债向下一轮 032 团队快照写 `manager_score_delta = -3` 及真实 due cycle；快照只在 due 到达后消费，并同时删除 delta 与 due，避免提前或重复扣分。精确重复 settlement 是 no-op，改写已结清债为 stale RED。
 
+旧的全局 `mg_policy_debt`、`mg_policy_debt_settled` 与 `mg_exception_renewal_count` 只有累加写入、没有任何决策 reader，现已退役，
+不得用初始化零值掩盖。制度债的权威仍是每个机制独立的 source identity、due/status/settled receipt；例外续期的权威仍是 #348
+expiry token、evidence 与 outcome。经理分只消费这些可追溯业务对象。
+
 F032/F033/F034/F036 的 C receipt 与 A/B 一样调用共享 stage transition 并安排下一张 ticket；C 只是“不造该编号业务对象”，不是“把整份经理案卷卡死”。混合路线也必须继续走：035C 后的 032A/B 不读取旧 `distribution_conserved`；032C 后的 033/034/036 用显式 `available=0, basis=0`，不会拿上一周期经理分冒充本周期；033C/034C 在最终报告中同样显示 unavailable，而不是漏字段或回显旧案。
 
 AK 的 stage barrier 同样 route-aware：347C 以“未做覆盖天然保持 quota neutral”通过守恒门，349C 以“未启动审计、没有未结 capacity”通过结算门；其余 C receipt 与配对编号共同推进正常阶段。跨阶段 consumer 也按 receipt choice 选源：345C/346C 让 350/353 使用显式默认 basis；350C 让 352 建立 `new_series=1`、`source_available=0` 的新序列对象；352C 让 354 使用 mapping basis 0。历史 A/B 变量可以继续留作档案，但 C 路径绝不读取它们。

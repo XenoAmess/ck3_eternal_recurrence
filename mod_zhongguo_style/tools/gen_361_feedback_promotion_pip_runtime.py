@@ -1060,10 +1060,6 @@ if = {{
 \tset_variable = {{ name = {p}_preparation_hours value = 12 }}
 \tset_variable = {{ name = {p}_fairness_debt value = 1 }}
 \tset_variable = {{ name = {p}_filler_disclosed value = 1 }}
-\tvar:zg361_case_u_owner = {{
-\t\tchange_variable = {{ name = zg361_pp_fairness_credit add = -1 }}
-\t\tchange_variable = {{ name = zg361_pp_primary_packet_legitimacy add = -1 }}
-\t}}
 }}
 set_variable = {{ name = {p}_quota_used_after value = var:zg361_pp_u_nomination_slot_reserved }}
 change_variable = {{ name = {p}_quota_used_after add = var:zg361_pp_u_nomination_slot_settled }}
@@ -1084,7 +1080,7 @@ set_variable = {{ name = {p}_exception_slots_used value = 1 }}
 set_variable = {{ name = {p}_admission_vote_frozen value = 1 }}
 set_variable = {{ name = {p}_exception_admitted value = 1 }}
 set_variable = {{ name = {p}_capability_review_open value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_credibility_debt value = 1 }} var:zg361_case_u_owner = {{ change_variable = {{ name = zg361_pp_sponsor_credit add = -1 }} }} }}''',
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_credibility_debt value = 1 }} }}''',
         163: f'''set_variable = {{ name = {p}_window_cycles value = 2 }}
 set_variable = {{ name = {p}_window_frozen_cycle value = var:zg361_case_u_cycle_serial }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_window_cycles value = 1 }} set_variable = {{ name = {p}_window_audit_diff value = 1 }} }}''',
@@ -1732,8 +1728,6 @@ root = {
 \t\t\t}
 \t\t\ttrigger_else = { always = no }
 \t\t}
-\t\tchange_variable = { name = zg361_pp_management_talent_score add = -1 }
-\t\tchange_variable = { name = zg361_pp_management_debt add = 1 }
 \t\tset_variable = { name = zg361_pp_u_shelving_last_penalty_cycle value = var:zg361_review_serial }
 \t}
 }
@@ -2634,7 +2628,7 @@ def render_outcome(domain: DomainSpec, completion_event: int) -> str:
 \t\t}}
 \t\tset_variable = {{ name = zg361_pp_{domain.key}_outcome value = 0 }}
 \t\tif = {{ limit = {{ var:zg361_pp_{domain.key}_evidence_led > var:zg361_pp_{domain.key}_political }} set_variable = {{ name = zg361_pp_{domain.key}_outcome value = 1 }} add_prestige = 25 }}
-\t\telse_if = {{ limit = {{ var:zg361_pp_{domain.key}_political > var:zg361_pp_{domain.key}_evidence_led }} set_variable = {{ name = zg361_pp_{domain.key}_outcome value = -1 }} add_stress = minor_stress_gain var:{row["owner"]} = {{ change_variable = {{ name = zg361_pp_management_debt add = 1 }} }} }}
+\t\telse_if = {{ limit = {{ var:zg361_pp_{domain.key}_political > var:zg361_pp_{domain.key}_evidence_led }} set_variable = {{ name = zg361_pp_{domain.key}_outcome value = -1 }} add_stress = minor_stress_gain }}
 \t\tset_variable = {{ name = zg361_pp_{domain.key}_visible_receipt_revision value = var:{row["revision"]} }}
 \t\tset_variable = {{ name = zg361_pp_{domain.key}_portfolio_done_cycle value = var:{row["cycle"]} }}
 \t\tif = {{
@@ -2883,7 +2877,6 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\tif = {{ limit = {{ stewardship >= 10 }} set_variable = {{ name = {p}_competent value = 1 }} }}
 \t\t\t\tset_variable = {{ name = {p}_sponsor_credit_delta value = {{ value = var:{p}_sponsor_strength multiply = -1 }} }}
 \t\t\t\tif = {{ limit = {{ var:{p}_competent = 1 }} set_variable = {{ name = {p}_sponsor_credit_delta value = var:{p}_sponsor_strength }} }}
-\t\t\t\tvar:zg361_case_u_owner = {{ change_variable = {{ name = zg361_pp_sponsor_credit add = root.var:{p}_sponsor_credit_delta }} }}
 \t\t\t\tset_variable = {{ name = {p}_observation_settled value = 1 }}
 \t\t\t}}'''
     elif mechanism.mechanism_id == 168:
@@ -2892,9 +2885,6 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\tset_variable = {{ name = {p}_competent value = 0 }}
 \t\t\t\tif = {{ limit = {{ stewardship >= 10 }} set_variable = {{ name = {p}_competent value = 1 }} }}
 \t\t\t\tvar:zg361_case_u_owner = {{
-\t\t\t\t\tchange_variable = {{ name = zg361_pp_u_hit_denominator add = root.var:{p}_difficulty }}
-\t\t\t\t\tchange_variable = {{ name = zg361_pp_u_hit_denominator add = root.var:{p}_omitted_qualified }}
-\t\t\t\t\tif = {{ limit = {{ root.var:{p}_prescreen_pass_snapshot = 1 root.var:{p}_competent = 1 }} change_variable = {{ name = zg361_pp_u_hit_numerator add = root.var:{p}_difficulty }} }}
 \t\t\t\t\tset_variable = {{ name = zg361_pp_u_next_quota_delta value = -1 }}
 \t\t\t\t\tif = {{ limit = {{ root.var:{p}_prescreen_pass_snapshot = 1 root.var:{p}_competent = 1 }} set_variable = {{ name = zg361_pp_u_next_quota_delta value = 1 }} }}
 \t\t\t\t\tset_variable = {{ name = zg361_pp_u_next_quota_pending value = 1 }}
@@ -3126,7 +3116,7 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\tchange_variable = {{ name = {p}_audit_revision add = 1 }}
 \t\t\tif = {{ limit = {{ NOT = {{ var:{p}_route = 3 }} }} set_variable = {{ name = {p}_audit_{index}_consumer_value value = var:{p}_{mechanism.field} }} }}
 \t\t\tif = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_audit_{index}_outcome value = 1 }} }}
-\t\t\telse_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_audit_{index}_outcome value = 2 }} var:zg361_case_{mechanism.domain}_owner = {{ change_variable = {{ name = zg361_pp_management_debt add = 1 }} }} }}
+\t\t\telse_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_audit_{index}_outcome value = 2 }} }}
 \t\t\telse = {{ set_variable = {{ name = {p}_audit_{index}_outcome value = 3 }} }}
 \t\t\t{special_audit}
 \t\t\t{typed_audit}

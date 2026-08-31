@@ -110,6 +110,11 @@ P1 的 C 审计为 D+90；P2 的 #147、#149、#154、#155、#161、#162、#166�
 
 #159 的 A 路线识别同一 subject 已在 #157 获得本轮提名，因此立即关闭雪藏义务；B 路线才在 manager scope 留下持久 `candidate/due_cycle/active/last_penalty_cycle`，后续 U 周期每周期至多扣一次，直到同一人被 #157 提名。#167/#168 的 D+365 样本在成熟审计前会阻止 U receipt 变量复用；#168 只写 manager 的 `next_quota_pending/delta`，下一次 U open 才一次性消费并把额度钳制在 1–3。
 
+旧的 `fairness_credit`、`management_debt`、`management_talent_score`、`primary_packet_legitimacy`、`sponsor_credit` 与
+`u_hit_numerator/denominator` 都只有累计写入、没有业务 reader，现已退役而不是补零。权威事实继续由 #159 雪藏案的逐周期 penalty、
+#161 filler 的 fairness debt/disclosure、#167 sponsor observation/delta、#168 下一轮 quota ticket，以及各机制自己的 typed receipt 保存；
+这些可追溯对象不能再被一组无人消费的影子总数替代。
+
 旧 Python 模型有一处已知缺陷：`withdraw_packet()` 把包留在 `packets`，而 `prescreen()` 会再次遍历它，可能把 WITHDRAWN 包“复活”并复制额度。本 CK3 runtime 不复用该行为；#166 只 refund #157 的唯一 nomination receipt，预审 consumer 只读取 active 包。
 
 ### V：评委、盲审、答辩与重试

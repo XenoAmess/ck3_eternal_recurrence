@@ -1038,6 +1038,17 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertEqual(self.effects.count("zg361_case_kernel_settle_transaction_effect"), 2)
         self.assertEqual(self.effects.count("zg361_case_kernel_refund_transaction_effect"), 2)
 
+    def test_dead_aggregate_ledgers_are_not_mutated(self) -> None:
+        # Per-mechanism debt receipts, expiry years and manager-score deltas are
+        # authoritative.  These three former totals had no reader and an
+        # uninitialised change_variable write only.
+        for dead in (
+            "zg361_mg_exception_renewal_count",
+            "zg361_mg_policy_debt",
+            "zg361_mg_policy_debt_settled",
+        ):
+            self.assertNotIn(dead, self.effects + self.events)
+
     def test_no_new_top_level_gui_or_central_surface(self) -> None:
         rendered_paths = {path.relative_to(MOD_ROOT).as_posix() for path in outputs()}
         forbidden = {

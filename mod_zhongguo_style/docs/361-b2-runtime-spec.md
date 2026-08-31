@@ -17,6 +17,8 @@
   脚本，也不代表 B2 generator 对 T/W 的所有权。
 - `tools/zg361_b2_semantic_model.py` 只覆盖上述 19 个原生 ID，以可执行方式证明 choice→稳定案卷→consumer、C 路不建案、
   duplicate/stale no-op；它同样不是 CK3 live 证据。
+- 旧的 `m072_denied_reads`、`m077_reviewer_revision`、`reviewer_case_n` 只有累加写入、没有任何业务 reader，现已退役；
+  #072 以最后一次真实读取来源/年份为准，#077 以结论 receipt 与最后案号为准。不得为消除 unset 报告而补零或保留影子累计数。
 - 本包固定 `CK3_IMPLEMENTED=false`、`runtime_evidence=python-reference-only`、`readiness_change=none`。
   单元测试 GREEN 不得写成 fixture-live、production-live，亦不得提升 `domain_runtime` 或
   `player_visible_loop`。
@@ -58,7 +60,7 @@ owner/subject/cycle/case 与 hook，防止批次身份漂移。
 | 080 | 唯一 defect ID、type、证据 hash、D+90 修复/接受风险/压案及下一版本验证 | A 修复或具理由接受，B 压案后同缺陷复发落责任，C 不建缺陷单 |
 | 081 | subject/直属/隔级/中央 ACL、读取 receipt、原始证据与摘要压缩标记 | 权限只改信息流；grade writer 永远保持冻结直属 owner；C 不建权限投影 |
 | 358 | 原 grade 与国库/个人/贤能处分向量冻结；后续新事实只能另案送达 | A 同案不加重，B 加重必须显式披露并记报复风险，C 不建宪制案 |
-| 359 | 预留位、边界人重审+新 case ID/新 D+90、或下一周期 quota debt 三路守恒 | A 可审计选择，B 暗调保留 audit diff 且强制重送，C 不建配额回流案 |
+| 359 | 精确退回 corrected subject 的 PP #157 nomination receipt、边界人重审+新 case ID/新 D+90、或下一周期 quota debt 三路守恒 | A 可审计选择，B 暗调保留 audit diff 且强制重送，C 不建配额回流案 |
 
 ## #069 shared-hook ABI 与静态接线
 
@@ -95,7 +97,9 @@ PREPARED
 - 送达后才允许处罚 receipt 结算，并以实际可扣金额为准；重放不重复扣款。
 - 退款逐 receipt 计算，不能超过该 receipt 的实际 settled amount；部分减罚只退差额。
 - 新违纪只能链接新的 case identity，不能偷偷并入原申诉造成同案加重。
-- 翻案后的配额回流只允许预留位、边界复核或下一周期债三条可审计路线；受影响边界对象必须重新送达并获得新的
+- 翻案后的配额回流不再维护 B2 `quota_reserve` 别名。第一条路线必须在 corrected subject 上逐字段核对 PP #157 nomination
+  receipt 的 owner/cycle/case/status/amount 与同一 PP-U 案卷，再调用共享 reserve/settle/refund transaction 把精确一格退回；
+  其余只允许边界复核或下一周期债。受影响边界对象必须重新送达并获得新的
   target-bound 申诉时钟。隐藏重排保留 audit diff，审计补救只重送一次。
 
 ### #358/#359 真实来源票据与 Workforce handoff
@@ -103,9 +107,13 @@ PREPARED
 - #358 的 `m358_external_receipt_*` 只由真实申诉案卷 consumer 在 `object_consumed=1/state=3` 后发布。它还要求
   同案申诉已经形成 upheld outcome，或 corrected outcome + exact refund receipt；尚未裁决、仅到期而没有 outcome、错案与
   policy route C 均不能发布。
-- #359 只在 corrected outcome + exact refund 后发布，并且必须已经实际消费预留位、完成边界复核后的新案重送，或写入下一周期
+- #359 只在 corrected outcome + exact refund 后发布。route 1 必须保存 PP #157 原 owner/cycle/case/amount、退款前
+  `status=reserved(1)/settled(2)` 与退款后 `status=refunded(3)`；不存在任何 B2 自造的 quota reserve。除此之外，必须已经完成
+  边界复核后的新案重送，或写入下一周期
   quota debt 三者之一。这里 `return_route=3` 是业务内的“下周期配额债”，不等于 `m359_route=3` 的 policy route C；后者仍然
   只写 policy debt，永远没有 external receipt。
+- PP #157 案卷已经正常关闭时，route 1 不得绕过共享 case guard 去改写旧资源账；玩家按钮只在该 U 案仍 active 时可见。
+  若按钮展示后案卷发生状态漂移而退款事务未应用，同一次点击必须自动落下一周期 quota debt，不能形成无回执的静默死路。
 - `zg361_b2_submit_completed_al_receipts_effect` 是唯一产品 adapter。中央 stage 11 只传当前 AL 五元组；adapter 自行读取 B1 #357
   和 B2 #358/#359 的真实来源 ID/hash，核对 B1/result adapter、corrected result、三组同 owner/subject/cycle 与互异 ID/hash，
   再调用 Workforce 的 strict receipt bridge。调用者不能注入或伪造来源 ID/hash；任一来源未完成时保持等待。
@@ -140,6 +148,10 @@ FAILED / RELAPSED → 新案号二次 PIP | 真实空缺转岗 | 有成本 recei
 - 开案前原子核对经理容量、支持工时、导师和支持预算；任一不足不得部分占用容量或扣款。
 - D+180 中检只把已实际预留的导师、12 工时和 25 国库预算记为资源交付。当前没有真实任务进度 producer，因此进度保持 `status=0/red_code=1`；支持交付绝不能冒充员工进步。
 - D+365 resolver 只判定 outcome，`zg361_b2_settle_pip_outcome_effect` 是唯一毕业/失败 writer：它一次性移除 modifier、释放支持、消费 #015/#016，并在失败时打开 #017。独立复核尚无真实 producer，保持 `independent_review_status=0/red_code=2`，不能用经理选择硬编码通过。
+- 同一真实 settlement 落地且 `state=3/4` 后，B2 只发布一格 Workforce #277 source：
+  `pending/consumed + owner/subject/cycle/case/state + case_id/case_hash/closure_receipt_id/closure_receipt_hash`。case truth 来自 PIP object，
+  closure truth 来自 settlement receipt 并显式绑定 `outcome_result_cycle/case`，四项都大于零且两组不复用；未消费旧 source 必须守恒。B2 不调用 Workforce、不开退出、
+  不改 HC，后续消费者必须另取独立 native exit/position receipt。
 - `no_support_liability` 只在“支持确实缺失且最终失败”时写入，不能在开案时预判。
 - 毕业、失败、本人拒绝分别发布 `+10/-10/-15` 的唯一 next-cycle performance evidence；下一次真实 KPI 计算只消费一次并同步进入 growth/KPI。该证据不回写旧档位，也不能在同周期重复处罚。
 - 毕业后只观察一个周期；同类别复发才升级原链，不同类别必须另建新问题案。

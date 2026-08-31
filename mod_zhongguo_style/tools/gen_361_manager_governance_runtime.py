@@ -541,7 +541,6 @@ def c_route_receipt(domain: str, mechanism_id: int, state: int) -> str:
 			var:zg361_case_{prefix}_subject = this
 			{receipt_not_current(domain, mechanism_id, state)}
 		}}
-		change_variable = {{ name = zg361_mg_policy_debt add = 1 }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_policy_debt value = 1 }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_status value = 1 }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_owner value = var:zg361_case_{prefix}_owner }}
@@ -633,8 +632,6 @@ def render_policy_debt_consumer() -> str:
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_settled_by_owner value = root }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_manager_score_delta value = -3 }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_remediation_code value = 1 }}
-		change_variable = {{ name = zg361_mg_policy_debt add = -1 }}
-		change_variable = {{ name = zg361_mg_policy_debt_settled add = 1 }}
 		change_variable = {{ name = zg361_mg_manager_score_delta add = -3 }}
 		set_variable = {{ name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }}
 	}}"""
@@ -2568,7 +2565,6 @@ zg361_mg_resolve_exception_due_effect = {{
 		if = {{
 			limit = {{ var:zg361_mg_exception_new_evidence = 1 }}
 			set_variable = {{ name = zg361_mg_exception_expiry_year value = {{ value = current_year add = 1 }} }}
-			change_variable = {{ name = zg361_mg_exception_renewal_count add = 1 }}
 			set_variable = {{ name = zg361_mg_exception_new_evidence value = 0 }}
 		}}
 		else = {{

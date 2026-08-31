@@ -132,7 +132,23 @@ class B2CK3RuntimeTests(unittest.TestCase):
                         b"# GENERATED FILE \xe2\x80\x94 edit tools/gen_361_b2_runtime.py",
                         payload,
                     )
-        self.assertNotIn("zg361_case_kernel", self.effects + self.events)
+        # B2 remains independent except for #359's deliberately narrow reuse
+        # of the canonical PP-U nomination transaction.  No other B2 path may
+        # open, advance, settle, or refund a shared-kernel case.
+        m359_refund = top_level_block(
+            self.effects, "zg361_b2_m359_return_pp_nomination_slot_effect"
+        )
+        m359_open = top_level_block(
+            self.effects, "zg361_b2_m359_open_quota_return_effect"
+        )
+        self.assertIn(
+            "zg361_case_kernel_refund_transaction_effect = {", m359_refund
+        )
+        self.assertNotIn(
+            "zg361_case_kernel",
+            self.effects.replace(m359_refund, "").replace(m359_open, "")
+            + self.events,
+        )
 
     def test_all_scheduled_events_exist_once_and_braces_close(self) -> None:
         definition_list = re.findall(
@@ -409,7 +425,17 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         for block in (corrected, upheld):
             self.assertIn("zg361_b2_m077_conclusion_receipt", block)
-            self.assertIn("zg361_b2_reviewer_case_n", block)
+            self.assertIn("zg361_b2_reviewer_last_case", block)
+
+    def test_write_only_b2_aggregate_ledgers_are_retired(self) -> None:
+        combined = self.effects + self.events
+        for dead_ledger in (
+            "zg361_b2_m072_denied_reads",
+            "zg361_b2_m077_reviewer_revision",
+            "zg361_b2_quota_reserve",
+            "zg361_b2_reviewer_case_n",
+        ):
+            self.assertNotIn(dead_ledger, combined)
 
     def test_078_uses_full_cohort_dimensions_and_never_auto_grades(self) -> None:
         baseline = top_level_block(
@@ -506,6 +532,59 @@ class B2CK3RuntimeTests(unittest.TestCase):
         manager_event = top_level_block(self.events, "zg361b2.130")
         self.assertIn("var:zg361_b2_m359_object_active = 1", manager_event)
         self.assertIn("var:zg361_b2_m359_route = 1", manager_event)
+        for required in (
+            "has_variable = zg361_pp_m157_nomination_slot_owner",
+            "has_variable = zg361_pp_m157_nomination_slot_cycle",
+            "has_variable = zg361_pp_m157_nomination_slot_case",
+            "has_variable = zg361_pp_m157_nomination_slot_amount",
+            "has_variable = zg361_pp_m157_nomination_slot_status",
+            "var:zg361_case_u_active = 1",
+            "var:zg361_pp_m157_packet_candidate = this",
+            "var:zg361_pp_m157_nomination_slot_owner = var:zg361_case_u_owner",
+            "var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial",
+            "var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial",
+            "var:zg361_pp_m157_nomination_slot_amount = 1",
+            "var:zg361_pp_m157_nomination_slot_status = 1",
+            "var:zg361_pp_m157_nomination_slot_status = 2",
+            "zg361_b2_m359_return_pp_nomination_slot_effect = yes",
+            "NOT = { var:zg361_b2_m359_refund_applied = 1 }",
+            "zg361_b2_m359_post_next_cycle_debt_effect = yes",
+        ):
+            self.assertIn(required, manager_event)
+
+        refund = top_level_block(
+            self.effects, "zg361_b2_m359_return_pp_nomination_slot_effect"
+        )
+        for required in (
+            "var:zg361_b2_case_subject = this",
+            "var:zg361_b2_m359_route = 1",
+            "var:zg361_b2_m359_object_owner = var:zg361_b2_case_owner",
+            "var:zg361_b2_m359_object_subject = this",
+            "var:zg361_b2_m359_object_cycle = var:zg361_b2_case_cycle",
+            "var:zg361_b2_m359_object_receipt_case = var:zg361_b2_case_serial",
+            "var:zg361_case_u_owner = var:zg361_b2_case_owner",
+            "var:zg361_case_u_subject = this",
+            "var:zg361_case_u_cycle_serial = var:zg361_b2_case_cycle",
+            "var:zg361_pp_m157_nomination_slot_owner = var:zg361_case_u_owner",
+            "var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial",
+            "var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial",
+            "var:zg361_pp_m157_nomination_slot_amount = 1",
+            "zg361_case_kernel_refund_transaction_effect = {",
+            "AVAILABLE_VAR = zg361_pp_u_nomination_slot_available",
+            "RESERVED_VAR = zg361_pp_u_nomination_slot_reserved",
+            "SETTLED_VAR = zg361_pp_u_nomination_slot_settled",
+            "RECEIPT_AMOUNT_VAR = zg361_pp_m157_nomination_slot_amount",
+            "RECEIPT_STATUS_VAR = zg361_pp_m157_nomination_slot_status",
+            "var:zg361_case_kernel_applied = 1",
+            "zg361_b2_m359_refund_applied value = 0",
+            "zg361_b2_m359_refund_applied value = 1",
+            "zg361_b2_m359_pp_nomination_status_before",
+            "zg361_b2_m359_pp_nomination_status_after",
+            "zg361_b2_m359_reserved_consumed value = 1",
+        ):
+            self.assertIn(required, refund)
+        self.assertNotIn("zg361_b2_quota_reserve", refund)
+        self.assertNotIn("zg361_b2_m359_consume_reserve_effect", self.effects)
         redelivery = top_level_block(
             self.effects, "zg361_b2_apply_boundary_redelivery_effect"
         )
@@ -562,6 +641,12 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "var:zg361_result_appeal_outcome = 1",
             "has_variable = zg361_b2_m359_reserved_consumed",
             "var:zg361_b2_m359_return_route = 1",
+            "var:zg361_b2_m359_pp_nomination_owner = var:zg361_b2_case_owner",
+            "var:zg361_b2_m359_pp_nomination_cycle = var:zg361_b2_case_cycle",
+            "var:zg361_b2_m359_pp_nomination_amount = 1",
+            "var:zg361_b2_m359_pp_nomination_status_before = 1",
+            "var:zg361_b2_m359_pp_nomination_status_before = 2",
+            "var:zg361_b2_m359_pp_nomination_status_after = 3",
             "has_variable = zg361_b2_m359_redelivery_receipt",
             "var:zg361_b2_m359_return_route = 2",
             "has_variable = zg361_b2_m359_debt_added",
@@ -570,6 +655,101 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "zg361_b2_m359_external_receipt_hash",
         ):
             self.assertIn(required, reflow)
+
+    def test_277_publishes_only_a_real_terminal_pip_settlement_tuple(self) -> None:
+        producer = top_level_block(
+            self.effects, "zg361_b2_publish_workforce_pip_settlement_effect"
+        )
+        for source in (
+            "zg361_b2_pip_owner",
+            "zg361_b2_pip_subject",
+            "zg361_b2_pip_cycle",
+            "zg361_b2_pip_case",
+            "zg361_b2_pip_state",
+            "zg361_b2_pip_settlement_receipt",
+            "zg361_b2_pip_outcome_code",
+            "zg361_b2_pip_outcome_result_cycle",
+            "zg361_b2_pip_outcome_result_case",
+        ):
+            self.assertIn(f"has_variable = {source}", producer)
+        for terminal_state in (3, 4):
+            self.assertIn(
+                f"var:zg361_b2_pip_state = {terminal_state}", producer
+            )
+        self.assertIn(
+            "var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case",
+            producer,
+        )
+        for field in (
+            "pending",
+            "consumed",
+            "owner",
+            "subject",
+            "cycle",
+            "case",
+            "state",
+            "case_id",
+            "case_hash",
+            "closure_receipt_id",
+            "closure_receipt_hash",
+        ):
+            self.assertIn(f"zg361_b2_workforce_pip_{field}", producer)
+        self.assertIn("zg361_b2_workforce_pip_pending value = 1", producer)
+        self.assertIn("zg361_b2_workforce_pip_consumed value = 0", producer)
+        self.assertIn(
+            "value = var:zg361_b2_pip_case multiply = 1000 add = 15",
+            producer,
+        )
+        self.assertIn(
+            "value = var:zg361_b2_pip_settlement_receipt multiply = 1000 add = 17",
+            producer,
+        )
+        for guard in (
+            "var:zg361_b2_pip_cycle > 0",
+            "var:zg361_b2_pip_policy_route = 1",
+            "var:zg361_b2_pip_policy_route = 2",
+            "var:zg361_b2_pip_task_kind > 0",
+            "var:zg361_b2_pip_outcome_code = 1",
+            "var:zg361_b2_pip_outcome_code = 2",
+            "var:zg361_b2_pip_outcome_result_cycle > 0",
+            "var:zg361_b2_pip_outcome_result_case > 0",
+        ):
+            self.assertIn(guard, producer)
+        for hash_component in (
+            "value = var:zg361_b2_workforce_pip_case_hash",
+            "value = var:zg361_b2_pip_outcome_result_case multiply = 100000",
+            "value = var:zg361_b2_pip_outcome_result_cycle multiply = 1000",
+            "value = var:zg361_b2_pip_outcome_code multiply = 100",
+            "value = var:zg361_b2_pip_state multiply = 10",
+            "add = 17",
+        ):
+            self.assertIn(hash_component, producer)
+        self.assertNotIn("zg361_we_", producer)
+        for forbidden in (
+            "zg361_eliminate_",
+            "change_court_position",
+            "remove_court_position",
+            "headcount",
+        ):
+            self.assertNotIn(forbidden, producer)
+
+        settlement = top_level_block(
+            self.effects, "zg361_b2_settle_pip_outcome_effect"
+        )
+        self.assertEqual(
+            settlement.count(
+                "zg361_b2_publish_workforce_pip_settlement_effect = yes"
+            ),
+            1,
+        )
+        self.assertLess(
+            settlement.index(
+                "zg361_b2_pip_settlement_receipt value = var:zg361_b2_pip_case"
+            ),
+            settlement.index(
+                "zg361_b2_publish_workforce_pip_settlement_effect = yes"
+            ),
+        )
 
     def test_workforce_adapter_reads_but_never_fabricates_357_359_sources(self) -> None:
         adapter = top_level_block(

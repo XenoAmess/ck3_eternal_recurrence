@@ -215,7 +215,6 @@ zg361_b2_record_case_access_effect = {
 			var:zg361_b2_case_subject = this
 			var:zg361_b2_notice_state = 1
 		}
-		change_variable = { name = zg361_b2_m072_denied_reads add = 1 }
 		set_variable = { name = zg361_b2_m072_last_denied_reader value = this }
 		set_variable = { name = zg361_b2_m072_last_denied_year value = current_year }
 		set_variable = { name = zg361_b2_m072_acl_enforced value = 1 }
@@ -724,6 +723,91 @@ zg361_b2_resolve_pip_due_effect = {
 
 # The only graduation/failure writer.  PP may project this receipt but never
 # calls it and never releases capacity or signs for the assessed official.
+# B2 owns the PIP lifecycle.  A future Workforce #277 consumer may copy this
+# one-slot source only after a real D+365 settlement.  The five-tuple is the
+# immutable PIP object; the four truth fields are derived from that object and
+# the settlement receipt rather than caller-supplied values.
+zg361_b2_publish_workforce_pip_settlement_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b2_pip_owner
+			has_variable = zg361_b2_pip_subject
+			has_variable = zg361_b2_pip_cycle
+			has_variable = zg361_b2_pip_case
+			has_variable = zg361_b2_pip_state
+			has_variable = zg361_b2_pip_policy_route
+			has_variable = zg361_b2_pip_task_kind
+			has_variable = zg361_b2_pip_settlement_receipt
+			has_variable = zg361_b2_pip_outcome_code
+			has_variable = zg361_b2_pip_outcome_result_cycle
+			has_variable = zg361_b2_pip_outcome_result_case
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_case > 0
+			var:zg361_b2_pip_cycle > 0
+			OR = {
+				var:zg361_b2_pip_policy_route = 1
+				var:zg361_b2_pip_policy_route = 2
+			}
+			var:zg361_b2_pip_task_kind > 0
+			var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+			OR = {
+				var:zg361_b2_pip_outcome_code = 1
+				var:zg361_b2_pip_outcome_code = 2
+			}
+			var:zg361_b2_pip_outcome_result_cycle > 0
+			var:zg361_b2_pip_outcome_result_case > 0
+			OR = {
+				var:zg361_b2_pip_state = 3
+				var:zg361_b2_pip_state = 4
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_b2_workforce_pip_pending }
+				OR = {
+					var:zg361_b2_workforce_pip_pending = 0
+					AND = {
+						has_variable = zg361_b2_workforce_pip_consumed
+						var:zg361_b2_workforce_pip_consumed = 1
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_b2_workforce_pip_pending value = 1 }
+		set_variable = { name = zg361_b2_workforce_pip_consumed value = 0 }
+		set_variable = { name = zg361_b2_workforce_pip_owner value = var:zg361_b2_pip_owner }
+		set_variable = { name = zg361_b2_workforce_pip_subject value = this }
+		set_variable = { name = zg361_b2_workforce_pip_cycle value = var:zg361_b2_pip_cycle }
+		set_variable = { name = zg361_b2_workforce_pip_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_workforce_pip_state value = var:zg361_b2_pip_state }
+		set_variable = { name = zg361_b2_workforce_pip_case_id value = { value = var:zg361_b2_pip_case multiply = 1000 add = 15 } }
+		set_variable = {
+			name = zg361_b2_workforce_pip_case_hash
+			value = {
+				value = var:zg361_b2_pip_case
+				multiply = 100000
+				add = { value = var:zg361_b2_pip_cycle multiply = 1000 }
+				add = { value = var:zg361_b2_pip_policy_route multiply = 100 }
+				add = { value = var:zg361_b2_pip_task_kind multiply = 10 }
+				add = var:zg361_b2_pip_state
+			}
+		}
+		set_variable = { name = zg361_b2_workforce_pip_closure_receipt_id value = { value = var:zg361_b2_pip_settlement_receipt multiply = 1000 add = 17 } }
+		set_variable = {
+			name = zg361_b2_workforce_pip_closure_receipt_hash
+			value = {
+				value = var:zg361_b2_workforce_pip_case_hash
+				add = { value = var:zg361_b2_pip_outcome_result_case multiply = 100000 }
+				add = { value = var:zg361_b2_pip_outcome_result_cycle multiply = 1000 }
+				add = { value = var:zg361_b2_pip_outcome_code multiply = 100 }
+				add = { value = var:zg361_b2_pip_state multiply = 10 }
+				add = 17
+			}
+		}
+		debug_log = "ZG361B2: real PIP settlement published for Workforce #277"
+	}
+	else = { debug_log = "ZG361B2: unconsumed Workforce #277 PIP settlement conserved" }
+}
+
 zg361_b2_settle_pip_outcome_effect = {
 	if = {
 		limit = {
@@ -779,6 +863,7 @@ zg361_b2_settle_pip_outcome_effect = {
 		zg361_b2_m016_consume_business_object_effect = yes
 		zg361_b2_m017_open_disposition_effect = yes
 		}
+		zg361_b2_publish_workforce_pip_settlement_effect = yes
 		zg361_b2_publish_pip_performance_evidence_effect = yes
 	}
 }
@@ -1067,7 +1152,6 @@ zg361_b2_m077_pick_replacement_effect = {
 	if = {
 		limit = { exists = scope:zg361_b2_replacement_reviewer }
 		set_variable = { name = zg361_b2_m077_reviewer value = scope:zg361_b2_replacement_reviewer }
-		change_variable = { name = zg361_b2_m077_reviewer_revision add = 1 }
 	}
 	else = {
 		set_variable = { name = zg361_b2_m077_replacement_unavailable value = 1 }
@@ -1184,9 +1268,24 @@ zg361_b2_m359_publish_workforce_receipt_effect = {
 			OR = {
 				AND = {
 					has_variable = zg361_b2_m359_reserved_consumed
+					has_variable = zg361_b2_m359_pp_nomination_owner
+					has_variable = zg361_b2_m359_pp_nomination_cycle
+					has_variable = zg361_b2_m359_pp_nomination_case
+					has_variable = zg361_b2_m359_pp_nomination_amount
+					has_variable = zg361_b2_m359_pp_nomination_status_before
+					has_variable = zg361_b2_m359_pp_nomination_status_after
 					var:zg361_b2_m359_state = 2
 					var:zg361_b2_m359_return_route = 1
 					var:zg361_b2_m359_reserved_consumed = 1
+					var:zg361_b2_m359_pp_nomination_owner = var:zg361_b2_case_owner
+					var:zg361_b2_m359_pp_nomination_cycle = var:zg361_b2_case_cycle
+					var:zg361_b2_m359_pp_nomination_case > 0
+					var:zg361_b2_m359_pp_nomination_amount = 1
+					OR = {
+						var:zg361_b2_m359_pp_nomination_status_before = 1
+						var:zg361_b2_m359_pp_nomination_status_before = 2
+					}
+					var:zg361_b2_m359_pp_nomination_status_after = 3
 				}
 				AND = {
 					var:zg361_b2_m359_state = 3
@@ -1398,7 +1497,6 @@ zg361_b2_on_appeal_upheld_effect = {
 		if = {
 			limit = { has_variable = zg361_b2_m077_reviewer }
 			var:zg361_b2_m077_reviewer = {
-				change_variable = { name = zg361_b2_reviewer_case_n add = 1 }
 				set_variable = { name = zg361_b2_reviewer_last_case value = root.var:zg361_b2_case_serial }
 			}
 		}
@@ -1469,7 +1567,6 @@ zg361_b2_on_appeal_corrected_effect = {
 		if = {
 			limit = { has_variable = zg361_b2_m077_reviewer }
 			var:zg361_b2_m077_reviewer = {
-				change_variable = { name = zg361_b2_reviewer_case_n add = 1 }
 				set_variable = { name = zg361_b2_reviewer_last_case value = root.var:zg361_b2_case_serial }
 			}
 		}
@@ -2178,7 +2275,8 @@ zg361_b2_execute_pending_adverse_action_effect = {
 }
 
 # ---------------------------------------------------------------------------
-# #359 quota return: reserve, boundary review/redelivery, or next-cycle debt.
+# #359 quota return: an exact PP #157 nomination receipt,
+# boundary review/redelivery, or next-cycle debt.
 # ---------------------------------------------------------------------------
 
 zg361_b2_m359_open_quota_return_effect = {
@@ -2207,34 +2305,109 @@ zg361_b2_m359_open_quota_return_effect = {
 		else_if = {
 			limit = {
 				var:zg361_b2_m359_route = 1
-				var:zg361_b2_case_owner = { has_variable = zg361_b2_quota_reserve var:zg361_b2_quota_reserve >= 1 }
+				var:zg361_b2_case_owner = { is_ai = yes }
 			}
-			zg361_b2_m359_consume_reserve_effect = yes
+			zg361_b2_m359_return_pp_nomination_slot_effect = yes
+			if = {
+				limit = { NOT = { var:zg361_b2_m359_refund_applied = 1 } }
+				zg361_b2_m359_post_next_cycle_debt_effect = yes
+			}
 		}
 		else = { zg361_b2_m359_post_next_cycle_debt_effect = yes }
 	}
 }
 
-zg361_b2_m359_consume_reserve_effect = {
-	save_temporary_scope_as = zg361_b2_reserve_subject
+zg361_b2_m359_return_pp_nomination_slot_effect = {
+	remove_variable = zg361_case_kernel_applied
+	set_variable = { name = zg361_b2_m359_refund_applied value = 0 }
 	if = {
 		limit = {
+			has_variable = zg361_b2_case_owner
+			has_variable = zg361_b2_case_subject
+			has_variable = zg361_b2_case_cycle
+			has_variable = zg361_b2_case_serial
+			has_variable = zg361_b2_m359_route
+			has_variable = zg361_b2_m359_object_owner
+			has_variable = zg361_b2_m359_object_subject
+			has_variable = zg361_b2_m359_object_cycle
+			has_variable = zg361_b2_m359_object_receipt_case
 			var:zg361_b2_m359_object_active = 1
 			var:zg361_b2_m359_state = 1
+			var:zg361_b2_m359_route = 1
 			var:zg361_b2_m359_receipt_serial = var:zg361_b2_case_serial
-		}
-	var:zg361_b2_case_owner = {
-		if = {
-			limit = { has_variable = zg361_b2_quota_reserve var:zg361_b2_quota_reserve >= 1 }
-			change_variable = { name = zg361_b2_quota_reserve add = -1 }
-			scope:zg361_b2_reserve_subject = {
-				set_variable = { name = zg361_b2_m359_state value = 2 }
-				set_variable = { name = zg361_b2_m359_return_route value = 1 }
-				set_variable = { name = zg361_b2_m359_reserved_consumed value = 1 }
-				zg361_b2_m359_consume_business_object_effect = yes
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_m359_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m359_object_subject = this
+			var:zg361_b2_m359_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m359_object_receipt_case = var:zg361_b2_case_serial
+			has_variable = zg361_pp_m157_packet_candidate
+			has_variable = zg361_pp_m157_nomination_slot_owner
+			has_variable = zg361_pp_m157_nomination_slot_cycle
+			has_variable = zg361_pp_m157_nomination_slot_case
+			has_variable = zg361_pp_m157_nomination_slot_amount
+			has_variable = zg361_pp_m157_nomination_slot_status
+			has_variable = zg361_case_u_owner
+			has_variable = zg361_case_u_subject
+			has_variable = zg361_case_u_cycle_serial
+			has_variable = zg361_case_u_case_serial
+			has_variable = zg361_case_u_state
+			has_variable = zg361_case_u_revision
+			has_variable = zg361_case_u_active
+			has_variable = zg361_pp_u_nomination_slot_available
+			has_variable = zg361_pp_u_nomination_slot_reserved
+			has_variable = zg361_pp_u_nomination_slot_settled
+			var:zg361_pp_m157_packet_candidate = this
+			var:zg361_case_u_owner = var:zg361_b2_case_owner
+			var:zg361_case_u_subject = this
+			var:zg361_case_u_cycle_serial = var:zg361_b2_case_cycle
+			var:zg361_pp_m157_nomination_slot_owner = var:zg361_case_u_owner
+			var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial
+			var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial
+			var:zg361_pp_m157_nomination_slot_amount = 1
+			OR = {
+				AND = {
+					var:zg361_pp_m157_nomination_slot_status = 1
+					var:zg361_pp_u_nomination_slot_reserved >= var:zg361_pp_m157_nomination_slot_amount
+				}
+				AND = {
+					var:zg361_pp_m157_nomination_slot_status = 2
+					var:zg361_pp_u_nomination_slot_settled >= var:zg361_pp_m157_nomination_slot_amount
+				}
 			}
 		}
-	}
+		set_variable = { name = zg361_b2_m359_pp_nomination_owner value = var:zg361_pp_m157_nomination_slot_owner }
+		set_variable = { name = zg361_b2_m359_pp_nomination_cycle value = var:zg361_pp_m157_nomination_slot_cycle }
+		set_variable = { name = zg361_b2_m359_pp_nomination_case value = var:zg361_pp_m157_nomination_slot_case }
+		set_variable = { name = zg361_b2_m359_pp_nomination_amount value = var:zg361_pp_m157_nomination_slot_amount }
+		set_variable = { name = zg361_b2_m359_pp_nomination_status_before value = var:zg361_pp_m157_nomination_slot_status }
+		zg361_case_kernel_refund_transaction_effect = {
+			OWNER_VAR = zg361_case_u_owner
+			SUBJECT_VAR = zg361_case_u_subject
+			CYCLE_VAR = zg361_case_u_cycle_serial
+			CASE_VAR = zg361_case_u_case_serial
+			STATE_VAR = zg361_case_u_state
+			ACTIVE_VAR = zg361_case_u_active
+			REVISION_VAR = zg361_case_u_revision
+			AVAILABLE_VAR = zg361_pp_u_nomination_slot_available
+			RESERVED_VAR = zg361_pp_u_nomination_slot_reserved
+			SETTLED_VAR = zg361_pp_u_nomination_slot_settled
+			RECEIPT_AMOUNT_VAR = zg361_pp_m157_nomination_slot_amount
+			RECEIPT_STATUS_VAR = zg361_pp_m157_nomination_slot_status
+			TICKET_OWNER = var:zg361_pp_m157_nomination_slot_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_pp_m157_nomination_slot_cycle
+			TICKET_CASE = var:zg361_pp_m157_nomination_slot_case
+			TICKET_STATE = var:zg361_case_u_state
+		}
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_b2_m359_refund_applied value = 1 }
+			set_variable = { name = zg361_b2_m359_pp_nomination_status_after value = var:zg361_pp_m157_nomination_slot_status }
+			set_variable = { name = zg361_b2_m359_state value = 2 }
+			set_variable = { name = zg361_b2_m359_return_route value = 1 }
+			set_variable = { name = zg361_b2_m359_reserved_consumed value = 1 }
+			zg361_b2_m359_consume_business_object_effect = yes
+		}
 	}
 }
 
