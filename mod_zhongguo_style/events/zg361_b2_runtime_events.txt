@@ -108,6 +108,30 @@ zg361b2.61 = {
 	}
 }
 
+# #016 D+180 support receipt.  The event records real delivery facts and keeps
+# missing task-progress observation RED; it never manufactures improvement.
+zg361b2.99 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_pip_deadline_owner
+				exists = scope:zg361_b2_pip_deadline_subject
+				this = scope:zg361_b2_pip_deadline_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_pip_deadline_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_pip_deadline_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_pip_deadline_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_pip_deadline_case
+				var:zg361_b2_pip_state = scope:zg361_b2_pip_deadline_state
+				var:zg361_b2_pip_state = 2
+			}
+			zg361_b2_record_pip_midpoint_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale PIP D+180 ticket ignored" }
+	}
+}
+
 # #015/#016 D+365 outcome. Every component of the immutable ticket must match.
 zg361b2.100 = {
 	type = character_event

@@ -65,7 +65,7 @@ DOMAINS: tuple[DomainSpec, ...] = (
     # #189 on D+367.  Its case deadline is D+368 so neither same-day event
     # ordering nor timeout can choose the terminal fork for the player.  A
     # failed first PIP skips #188 as not applicable and enters #189 directly.
-    DomainSpec("W", "w", ((181, 182, 183), (184, 185), (186, 187), (188, 189), (190, 191)), (30, 30, 180, 368, 30), "PIP 启动、毕业与复发", "PIP initiation, graduation and relapse", "operation_capacity"),
+    DomainSpec("W", "w", ((181, 182, 183), (184, 185), (186, 187), (188, 189), (190, 191)), (30, 30, 367, 368, 30), "PIP 启动、毕业与复发", "PIP initiation, graduation and relapse", "operation_capacity"),
 )
 DOMAIN_BY_KEY = {domain.key: domain for domain in DOMAINS}
 DOMAIN_BY_ID = {
@@ -152,7 +152,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(184, "w", "pip_caseload", "经理的 PIP 承载量", "Manager PIP caseload", "预留经理工时，或增加导师与错峰容量。", "Reserve manager hours or add mentor and staggered capacity.", "超载开案，并把支持失败责任回写经理。", "Overbook cases and assign support-failure liability to the manager.", 1, "容量面板按终态一次释放每案预留"),
     _m(185, "w", "pip_midpoint", "PIP 中期检查", "PIP midpoint review", "只做一次中检，并允许一次有证据修正。", "Run one midpoint and allow one evidence-backed correction.", "跳过中检，随后不得倒造资源或目标更正。", "Skip the midpoint; later resource or goal corrections become invalid.", 180, "PIP 时间线消费进度、资源交付和目标有效性"),
     _m(186, "w", "goal_creep_lock", "PIP 目标膨胀锁", "PIP goal-creep lock", "加任务必须等量替换、延期或获紧急复核。", "Add work only with equal replacement, extension or emergency review.", "直接加码，并生成目标膨胀违规。", "Add workload directly and post a goal-creep violation.", 7, "变更账比较基线、当前工作量和补偿路线"),
-    _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "关键里程碑、稳定期、独立复核全过才毕业。", "Graduate only after key milestones, stability and independent review all pass.", "经理不透明延长，并增加申诉权重。", "Let the manager extend opaquely and increase appeal weight.", 90, "毕业关闭升级并释放容量，但绝不直接写 3.75"),
+    _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "读取唯一案卷的毕业或失败回执；经理只能选择复核程序。", "Read the unique case's graduation or failure receipt; the manager chooses only the review procedure.", "要求程序复核，但不能替本人签字或替结算器宣布毕业。", "Request procedural review without signing for the subject or declaring graduation for the settler.", 366, "毕业或失败只读取 B2 唯一结算回执，绝不直接写档位"),
     _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "贴长期标签，并记录过度披露风险。", "Apply a long-lived label and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
     _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer or exit", "按支持、错岗和真实空缺只选一条合法路线。", "Choose one legal route from support sufficiency, role mismatch and real vacancy.", "强制退出，并结算空缺、交接和补员成本。", "Force exit and settle vacancy, handover and replacement costs.", 30, "终局决定页只接受一个排他终态"),
     _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "只向真实接收经理披露目标、支持、结果和本人陈述。", "Disclose goals, support, outcome and the subject statement only to the real receiving manager.", "贴粗糙标签，但不得编造细节或改旧档位。", "Apply a coarse label without inventing details or rewriting the old rating.", 30, "转岗包按 ACL 投影最小字段"),
@@ -162,7 +162,7 @@ MECHANISM_BY_ID = {mechanism.mechanism_id: mechanism for mechanism in MECHANISMS
 EXPECTED_IDS = tuple(range(146, 192))
 DUAL_COST_ROUTE_BY_ID = {149: 1, 150: 1, 165: 1, 189: 2, 191: 1}
 DUAL_COST_IDS = frozenset(DUAL_COST_ROUTE_BY_ID)
-SUBJECT_RESPONSE_IDS = frozenset({151, 166, 183, 190})
+SUBJECT_RESPONSE_IDS = frozenset({151, 166, 190})
 P2_DEFER_IDS = frozenset({147, 149, 154, 155, 161, 162, 166, 170, 172, 173})
 EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
     **{mechanism_id: ("capacity_hours",) for mechanism_id in (*range(146, 155), 156)},
@@ -182,7 +182,6 @@ EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
 # supported second-PIP/transfer path must not post an exit-cost receipt.
 ROUTE_A_EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
     160: ("promotion_slot",),
-    184: ("pip_capacity",),
 }
 
 # #161 only spends a second real nomination slot and preparation hours on the
@@ -269,11 +268,18 @@ AUDIT_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
     167: ("competent", "sponsor_credit_delta"),
     168: ("competent",),
     180: ("retry_unlock_reason", "retry_settled_receipt"),
-    185: ("progress_snapshot", "resource_delivery_valid", "late_correction_invalid"),
+    185: (
+        "progress_snapshot",
+        "progress_truth_status",
+        "progress_red_code",
+        "resource_delivery_valid",
+        "late_correction_invalid",
+    ),
     187: (
         "key_milestones_met",
         "stability_days_observed",
         "independent_review_pass",
+        "independent_review_red_code",
         "appeal_weight",
     ),
     188: (
@@ -500,17 +506,20 @@ var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1''',
         182: '''has_variable = zg361_pp_m181_primary_category
 has_variable = zg361_pp_m181_evidence_id
 var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade''',
-        183: "has_variable = zg361_pp_m182_gate_status",
-        184: '''OR = {
-\tvar:zg361_pp_m182_gate_status = 1
-\tvar:zg361_pp_m182_gate_status = 2
-}
+        183: '''var:zg361_pp_m182_gate_status = 1
+var:zg361_b2_pip_owner = var:zg361_case_w_owner
+var:zg361_b2_pip_subject = this
+var:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+var:zg361_b2_pip_case = var:zg361_case_w_case_serial''',
+        184: '''var:zg361_pp_m182_gate_status = 1
 var:zg361_pp_m183_goals_frozen = 1
 var:zg361_pp_m183_manager_signed = 1
 OR = {
-\tvar:zg361_pp_m183_subject_signed = 1
-\tvar:zg361_pp_m183_independent_review_pass = 1
-}''',
+\tvar:zg361_b2_pip_state = 2
+\tvar:zg361_b2_pip_state = 3
+\tvar:zg361_b2_pip_state = 4
+}
+var:zg361_pp_m183_subject_signed = 1''',
         185: "var:zg361_pp_m184_active_case = 1",
         186: '''var:zg361_pp_m185_audit_1_consumed = 1
 OR = {
@@ -522,9 +531,14 @@ has_variable = zg361_pp_m186_baseline_workload''',
         188: "var:zg361_pp_m187_graduation_status = 1",
         189: '''OR = {
 \tAND = {
-\t\tvar:zg361_pp_m187_route = 2
 \t\tvar:zg361_pp_m187_graduation_status = 2
 \t\tvar:zg361_pp_m188_skipped_first_failure = 1
+\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
+\t\tvar:zg361_b2_pip_subject = this
+\t\tvar:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+\t\tvar:zg361_b2_pip_case = var:zg361_case_w_case_serial
+\t\tvar:zg361_b2_pip_state = 4
+\t\tvar:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
 \t}
 \tAND = {
 \t\tvar:zg361_pp_m188_audit_1_consumed = 1
@@ -595,17 +609,9 @@ NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_1 }
 NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_2 }
 NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_3 }'''
     if mechanism_id == 182:
-        result += (
-            "\nvar:zg361_pp_w_pip_gate_candidate = 1"
-            if route == 1
-            else "\nvar:zg361_pp_w_frozen_grade = 1"
-        )
+        result += "\nvar:zg361_pp_w_pip_gate_candidate = 1"
     if mechanism_id == 183:
-        result += (
-            "\nvar:zg361_pp_m182_gate_status = 1"
-            if route == 1
-            else "\nvar:zg361_pp_m182_gate_status = 2"
-        )
+        result += "\nvar:zg361_pp_m182_gate_status = 1"
     if mechanism_id == 188 and route == 2:
         # The political route may label a successfully graduated subject too,
         # but it still cannot invent a relapse before the D+365 observation.
@@ -614,7 +620,6 @@ NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_3 }'''
         result += '''
 OR = {
 \tAND = {
-\t\tvar:zg361_pp_m187_route = 2
 \t\tvar:zg361_pp_m187_graduation_status = 2
 \t\tvar:zg361_pp_m188_skipped_first_failure = 1
 \t}
@@ -788,58 +793,6 @@ set_variable = {{ name = {p}_object_case value = var:{row["case"]} }}
 set_variable = {{ name = {p}_object_state value = {state} }}'''
 
 
-def pip_capacity_release_write(state: int, reason: int) -> str:
-    """Release #184's one real capacity receipt exactly once.
-
-    Graduation releases it from the D+90 #187 consumer; a failed/relapsed case
-    releases it only after #189 chooses its exclusive terminal.  The shared
-    refund primitive rechecks the live W five-tuple and receipt status, so a
-    duplicate or stale audit cannot mint capacity.
-    """
-
-    return f'''if = {{
-\tlimit = {{
-\t\tvar:zg361_pp_w_capacity_released = 0
-\t\tvar:zg361_pp_m184_pip_capacity_status = 1
-\t}}
-\tzg361_case_kernel_refund_transaction_effect = {{
-\t\tOWNER_VAR = zg361_case_w_owner
-\t\tSUBJECT_VAR = zg361_case_w_subject
-\t\tCYCLE_VAR = zg361_case_w_cycle_serial
-\t\tCASE_VAR = zg361_case_w_case_serial
-\t\tSTATE_VAR = zg361_case_w_state
-\t\tACTIVE_VAR = zg361_case_w_active
-\t\tREVISION_VAR = zg361_case_w_revision
-\t\tAVAILABLE_VAR = zg361_pp_w_pip_capacity_available
-\t\tRESERVED_VAR = zg361_pp_w_pip_capacity_reserved
-\t\tSETTLED_VAR = zg361_pp_w_pip_capacity_settled
-\t\tRECEIPT_AMOUNT_VAR = zg361_pp_m184_pip_capacity_amount
-\t\tRECEIPT_STATUS_VAR = zg361_pp_m184_pip_capacity_status
-\t\tTICKET_OWNER = var:zg361_case_w_owner
-\t\tTICKET_SUBJECT = this
-\t\tTICKET_CYCLE = var:zg361_case_w_cycle_serial
-\t\tTICKET_CASE = var:zg361_case_w_case_serial
-\t\tTICKET_STATE = {state}
-\t}}
-\tif = {{
-\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
-\t\tset_variable = {{ name = zg361_pp_w_capacity_released value = 1 }}
-\t\tset_variable = {{ name = zg361_pp_w_capacity_release_reason value = {reason} }}
-\t\tset_variable = {{ name = zg361_pp_m184_capacity_reserved value = 0 }}
-\t\tset_variable = {{ name = zg361_pp_m184_active_case value = 0 }}
-\t\tset_variable = {{ name = zg361_pp_m184_release_once value = 0 }}
-\t}}
-}}
-else_if = {{
-\tlimit = {{ var:zg361_pp_w_capacity_released = 0 NOT = {{ var:zg361_pp_m184_pip_capacity_status = 1 }} }}
-\t# Political overbooking never reserved capacity, so terminal closure records
-\t# a no-release receipt rather than manufacturing one.
-\tset_variable = {{ name = zg361_pp_w_capacity_released value = 1 }}
-\tset_variable = {{ name = zg361_pp_w_capacity_release_reason value = {reason} }}
-\tset_variable = {{ name = zg361_pp_m184_active_case value = 0 }}
-}}'''
-
-
 def render_m189_no_relapse_skip() -> str:
     """Close the conditional terminal mechanism when the observation is clean.
 
@@ -913,8 +866,9 @@ def render_m188_first_failure_skip() -> str:
 \t\t\t\tEXPECTED_CASE = var:zg361_case_w_case_serial
 \t\t\t\tEXPECTED_STATE = 4
 \t\t\t}
-\t\t\tvar:zg361_pp_m187_route = 2
 \t\t\tvar:zg361_pp_m187_graduation_status = 2
+\t\t\tvar:zg361_b2_pip_state = 4
+\t\t\tvar:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
 \t\t\tvar:zg361_pp_m188_receipt_active = 0
 \t\t}
 \t\tset_variable = { name = zg361_pp_m188_receipt_owner value = var:zg361_case_w_owner }
@@ -978,15 +932,16 @@ set_variable = {{ name = {p}_funded value = 1 }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_written value = 0 }} set_variable = {{ name = {p}_funded value = 0 }} }}''',
         151: f'''set_variable = {{ name = {p}_delivered value = 1 }}
 set_variable = {{ name = {p}_agreed value = 0 }}
-set_variable = {{ name = {p}_disputed value = 1 }}
+set_variable = {{ name = {p}_disputed value = 0 }}
 set_variable = {{ name = {p}_witness_required value = 0 }}
 set_variable = {{ name = {p}_appeal_eligible value = 1 }}
 set_variable = {{ name = {p}_appeal_due_days value = 90 }}
 set_variable = {{ name = {p}_grade_at_delivery value = var:zg361_pp_t_frozen_grade }}
 set_variable = {{ name = {p}_non_aggravation_grade value = var:zg361_pp_t_frozen_grade }}
-set_variable = {{ name = {p}_appeal_filed value = 0 }}
 set_variable = {{ name = {p}_non_aggravation_ok value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_agreed value = 1 }} set_variable = {{ name = {p}_suppressed_objection value = 1 }} set_variable = {{ name = {p}_procedural_debt value = 1 }} }}''',
+if = {{ limit = {{ var:{p}_subject_response = 1 }} set_variable = {{ name = {p}_agreed value = 1 }} }}
+else_if = {{ limit = {{ var:{p}_subject_response = 2 }} set_variable = {{ name = {p}_disputed value = 1 }} set_variable = {{ name = {p}_appeal_filed value = 1 }} }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_suppressed_objection value = 1 }} set_variable = {{ name = {p}_procedural_debt value = 1 }} }}''',
         152: f'''set_variable = {{ name = {p}_specificity value = 25 }}
 set_variable = {{ name = {p}_controllability value = 25 }}
 set_variable = {{ name = {p}_deadline_quality value = 25 }}
@@ -1338,72 +1293,78 @@ set_variable = {{ name = {p}_result_state_snapshot value = var:zg361_pp_w_result
 set_variable = {{ name = {p}_result_grade_snapshot value = var:zg361_pp_w_frozen_grade }}
 set_variable = {{ name = {p}_result_reason_snapshot value = var:zg361_pp_w_frozen_reason }}
 set_variable = {{ name = {p}_evidence_component_count value = var:zg361_pp_w_evidence_component_count }}
-set_variable = {{ name = {p}_primary_category value = 1 }}
-if = {{ limit = {{ var:zg361_pp_w_frozen_reason = 5 }} set_variable = {{ name = {p}_primary_category value = 3 }} }}
+set_variable = {{ name = {p}_primary_category value = 0 }}
+set_variable = {{ name = {p}_triage_truth_status value = 0 }}
+set_variable = {{ name = {p}_triage_red_code value = 1 }}
+set_variable = {{ name = {p}_manager_proposed_category value = scope:zg361_pp_route }}
 set_variable = {{ name = {p}_current_rating_unchanged value = 1 }}
-set_variable = {{ name = {p}_misdiagnosis_risk value = 0 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_primary_category value = 2 }} set_variable = {{ name = {p}_misdiagnosis_risk value = 1 }} }}''',
+set_variable = {{ name = {p}_misdiagnosis_risk value = 1 }}''',
         182: f'''set_variable = {{ name = {p}_evidence_bundle_id value = var:zg361_pp_m181_evidence_id }}
-set_variable = {{ name = {p}_evidence_component_count value = var:zg361_pp_m181_evidence_component_count }}
-set_variable = {{ name = {p}_threshold_required value = 3 }}
-set_variable = {{ name = {p}_evidence_threshold_met value = 0 }}
+set_variable = {{ name = {p}_evidence_component_count value = var:zg361_b2_pip_gate_component_count }}
+set_variable = {{ name = {p}_threshold_required value = var:zg361_b2_pip_gate_threshold }}
+set_variable = {{ name = {p}_evidence_threshold_met value = 1 }}
 set_variable = {{ name = {p}_grade_only_autostart value = 0 }}
-set_variable = {{ name = {p}_gate_status value = 0 }}
+set_variable = {{ name = {p}_gate_status value = var:zg361_b2_pip_gate_status }}
+set_variable = {{ name = {p}_gate_owner value = var:zg361_b2_pip_gate_owner }}
+set_variable = {{ name = {p}_gate_cycle value = var:zg361_b2_pip_gate_cycle }}
+set_variable = {{ name = {p}_gate_case value = var:zg361_b2_pip_gate_case }}
 set_variable = {{ name = {p}_misconduct_routed_separately value = 1 }}
 set_variable = {{ name = {p}_false_positive_risk value = 0 }}
-if = {{
-\tlimit = {{ scope:zg361_pp_route = 1 var:zg361_pp_w_pip_gate_candidate = 1 }}
-\tset_variable = {{ name = {p}_evidence_threshold_met value = 1 }}
-\tset_variable = {{ name = {p}_gate_status value = 1 }}
-}}
-else_if = {{
-\tlimit = {{ scope:zg361_pp_route = 2 var:zg361_pp_w_frozen_grade = 1 }}
-\tset_variable = {{ name = {p}_grade_only_autostart value = 1 }}
-\tset_variable = {{ name = {p}_gate_status value = 2 }}
-\tset_variable = {{ name = {p}_false_positive_risk value = 1 }}
-}}''',
+set_variable = {{ name = {p}_manager_gate_review_route value = scope:zg361_pp_route }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_override_attempted value = 1 }} }}''',
         183: f'''set_variable = {{ name = {p}_goal_bundle_id value = {{ value = var:zg361_case_w_case_serial multiply = 1000 add = 183 }} }}
 set_variable = {{ name = {p}_goals_frozen value = 1 }}
-set_variable = {{ name = {p}_resources_frozen value = 1 }}
-set_variable = {{ name = {p}_deadline_days value = 180 }}
+set_variable = {{ name = {p}_resources_frozen value = var:zg361_b2_pip_support_reserved }}
+set_variable = {{ name = {p}_deadline_days value = 365 }}
 set_variable = {{ name = {p}_manager_signed value = 1 }}
-set_variable = {{ name = {p}_subject_signed value = 1 }}
+set_variable = {{ name = {p}_subject_signed value = 0 }}
 set_variable = {{ name = {p}_independent_review_pass value = 0 }}
-set_variable = {{ name = {p}_acknowledgement_status value = 1 }}
-set_variable = {{ name = {p}_subject_statement_code value = 1 }}
-set_variable = {{ name = {p}_subject_statement_author value = this }}
+set_variable = {{ name = {p}_acknowledgement_status value = var:zg361_b2_pip_subject_response }}
+set_variable = {{ name = {p}_subject_statement_code value = var:zg361_b2_pip_subject_response }}
+set_variable = {{ name = {p}_subject_statement_author value = var:zg361_b2_pip_subject_response_author }}
+set_variable = {{ name = {p}_subject_response_case value = var:zg361_b2_pip_subject_response_case }}
 set_variable = {{ name = {p}_revision_remaining value = 1 }}
+set_variable = {{ name = {p}_revision_used value = var:zg361_b2_pip_goal_revision_used }}
 set_variable = {{ name = {p}_refusal_is_failure value = 0 }}
 set_variable = {{ name = {p}_non_aggravation_grade value = var:zg361_pp_w_non_aggravation_grade }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_subject_signed value = 0 }} set_variable = {{ name = {p}_independent_review_pass value = 1 }} set_variable = {{ name = {p}_acknowledgement_status value = 2 }} set_variable = {{ name = {p}_subject_statement_code value = 2 }} set_variable = {{ name = {p}_refusal_reason value = 1 }} }}''',
+set_variable = {{ name = {p}_manager_process_route value = scope:zg361_pp_route }}
+if = {{ limit = {{ OR = {{ var:zg361_b2_pip_subject_response = 1 var:zg361_b2_pip_subject_response = 2 }} }} set_variable = {{ name = {p}_subject_signed value = 1 }} }}
+if = {{ limit = {{ var:zg361_b2_pip_subject_response = 3 }} set_variable = {{ name = {p}_refusal_reason value = 1 }} }}''',
         184: f'''set_variable = {{ name = {p}_active_case value = 1 }}
-set_variable = {{ name = {p}_capacity_reserved value = 0 }}
+set_variable = {{ name = {p}_capacity_reserved value = var:zg361_b2_pip_support_reserved }}
 set_variable = {{ name = {p}_support_status value = 2 }}
-set_variable = {{ name = {p}_release_once value = 1 }}
-set_variable = {{ name = {p}_overload_liability value = 0 }}
-if = {{ limit = {{ scope:zg361_pp_route = 1 }} set_variable = {{ name = {p}_capacity_reserved value = 1 }} set_variable = {{ name = {p}_support_status value = 1 }} }}
-else_if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_overload_liability value = 1 }} }}''',
+set_variable = {{ name = {p}_release_once value = 0 }}
+set_variable = {{ name = {p}_overload_liability value = var:zg361_b2_pip_support_absent }}
+set_variable = {{ name = {p}_support_hours value = var:zg361_b2_pip_support_hours }}
+set_variable = {{ name = {p}_support_budget_spent value = var:zg361_b2_pip_support_budget_spent }}
+set_variable = {{ name = {p}_support_case value = var:zg361_b2_m016_receipt_serial }}
+set_variable = {{ name = {p}_manager_support_route value = scope:zg361_pp_route }}
+if = {{ limit = {{ var:zg361_b2_pip_support_reserved = 1 }} set_variable = {{ name = {p}_support_status value = 1 }} }}''',
         185: f'''set_variable = {{ name = {p}_midpoint_due_days value = 180 }}
 set_variable = {{ name = {p}_midpoint_status value = 0 }}
 set_variable = {{ name = {p}_midpoint_pending value = 1 }}
 set_variable = {{ name = {p}_midpoint_completed value = 0 }}
 set_variable = {{ name = {p}_corrections_remaining value = 1 }}
 set_variable = {{ name = {p}_skipped_midpoint value = 0 }}
+set_variable = {{ name = {p}_manager_midpoint_route value = scope:zg361_pp_route }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_corrections_remaining value = 0 }} set_variable = {{ name = {p}_skipped_midpoint value = 1 }} }}''',
-        186: f'''set_variable = {{ name = {p}_baseline_workload value = 100 }}
-set_variable = {{ name = {p}_current_workload value = 100 }}
+        186: f'''set_variable = {{ name = {p}_baseline_workload value = 0 }}
+set_variable = {{ name = {p}_current_workload value = 0 }}
 set_variable = {{ name = {p}_replacement_workload value = 0 }}
 set_variable = {{ name = {p}_deadline_extension_days value = 0 }}
 set_variable = {{ name = {p}_goal_creep_violation value = 0 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_current_workload value = 130 }} set_variable = {{ name = {p}_goal_creep_violation value = 1 }} }}''',
-        187: f'''set_variable = {{ name = {p}_milestone_evidence_submitted value = 1 }}
-set_variable = {{ name = {p}_stability_days_required value = 90 }}
+set_variable = {{ name = {p}_workload_truth_status value = 0 }}
+set_variable = {{ name = {p}_workload_red_code value = 1 }}
+set_variable = {{ name = {p}_manager_workload_route value = scope:zg361_pp_route }}''',
+        187: f'''set_variable = {{ name = {p}_milestone_evidence_submitted value = 0 }}
+set_variable = {{ name = {p}_stability_days_required value = 365 }}
 set_variable = {{ name = {p}_independent_review_required value = 1 }}
 set_variable = {{ name = {p}_evaluation_pending value = 1 }}
 set_variable = {{ name = {p}_graduation_status value = 0 }}
 set_variable = {{ name = {p}_writes_top_grade value = 0 }}
 set_variable = {{ name = {p}_opaque_extension value = 0 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_opaque_extension value = 1 }} }}''',
+set_variable = {{ name = {p}_manager_review_route value = scope:zg361_pp_route }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_procedural_review_requested value = 1 }} }}''',
         188: f'''set_variable = {{ name = {p}_observation_days value = 365 }}
 set_variable = {{ name = {p}_observation_start_cycle value = root.var:zg361_review_serial }}
 set_variable = {{ name = {p}_observation_due_cycle value = {{ value = root.var:zg361_review_serial add = 1 }} }}
@@ -1449,10 +1410,11 @@ set_variable = {{ name = {p}_receiving_manager value = var:zg361_pp_m189_receivi
 set_variable = {{ name = {p}_acl_subject value = this }}
 set_variable = {{ name = {p}_acl_receiver value = var:zg361_pp_m189_receiving_manager }}
 set_variable = {{ name = {p}_vacancy_id_snapshot value = var:zg361_pp_w_transfer_vacancy_id }}
-set_variable = {{ name = {p}_goal_snapshot value = var:zg361_pp_m183_goal_bundle_id }}
-set_variable = {{ name = {p}_support_snapshot value = var:zg361_pp_m184_support_status }}
-set_variable = {{ name = {p}_completion_snapshot value = var:zg361_pp_m187_graduation_status }}
-set_variable = {{ name = {p}_subject_statement_snapshot value = var:zg361_pp_m183_subject_statement_code }}
+set_variable = {{ name = {p}_goal_snapshot value = var:zg361_b2_pip_case }}
+set_variable = {{ name = {p}_support_snapshot value = var:zg361_b2_pip_support_reserved }}
+set_variable = {{ name = {p}_completion_snapshot value = var:zg361_b2_pip_state }}
+set_variable = {{ name = {p}_subject_statement_snapshot value = var:{p}_subject_statement_code }}
+set_variable = {{ name = {p}_subject_statement_receiver value = var:{p}_acl_receiver }}
 set_variable = {{ name = {p}_disclosed_fields value = 4 }}
 set_variable = {{ name = {p}_private_ids_excluded value = 1 }}
 set_variable = {{ name = {p}_old_rating_snapshot value = var:zg361_pp_w_non_aggravation_grade }}
@@ -1499,22 +1461,41 @@ if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_net_
     return snippets[mechanism.mechanism_id]
 
 
-def queue_decision_call(mechanism_id: int) -> str:
+def queue_manager_decision_call(mechanism_id: int) -> str:
     mechanism = MECHANISM_BY_ID[mechanism_id]
     row = case_vars(mechanism.domain)
     state = mechanism_stage(mechanism_id)
-    intent = (
-        "set_variable = { name = zg361_pp_m166_withdraw_intent value = 1 }\n"
-        if mechanism_id == 166
-        else ""
-    )
-    return f'''{intent}save_scope_as = zg361_pp_prompt_subject
+    return f'''save_scope_as = zg361_pp_prompt_subject
 var:{row["owner"]} = {{ save_scope_as = zg361_pp_prompt_owner }}
 save_scope_value_as = {{ name = zg361_pp_prompt_cycle value = var:{row["cycle"]} }}
 save_scope_value_as = {{ name = zg361_pp_prompt_case value = var:{row["case"]} }}
 save_scope_value_as = {{ name = zg361_pp_prompt_state value = {state} }}
 save_scope_value_as = {{ name = zg361_pp_prompt_mechanism value = {mechanism_id} }}
 var:{row["owner"]} = {{ trigger_event = {{ id = {EVENT_NAMESPACE}.{mechanism_id} days = 1 }} }}'''
+
+
+def queue_subject_response_call(mechanism_id: int) -> str:
+    mechanism = MECHANISM_BY_ID[mechanism_id]
+    row = case_vars(mechanism.domain)
+    state = mechanism_stage(mechanism_id)
+    ai_route = 2 if mechanism_id == 166 else 1
+    return f'''save_scope_as = zg361_pp_subject_prompt_subject
+var:{row["owner"]} = {{ save_scope_as = zg361_pp_subject_prompt_owner }}
+save_scope_value_as = {{ name = zg361_pp_subject_prompt_cycle value = var:{row["cycle"]} }}
+save_scope_value_as = {{ name = zg361_pp_subject_prompt_case value = var:{row["case"]} }}
+save_scope_value_as = {{ name = zg361_pp_subject_prompt_state value = {state} }}
+if = {{
+\tlimit = {{ is_ai = yes }}
+\tzg361_pp_m{mechanism_id:03d}_subject_response_effect = {{ ROUTE = {ai_route} }}
+\tzg361_pp_m{mechanism_id:03d}_resume_after_subject_effect = yes
+}}
+else = {{ trigger_event = {{ id = {EVENT_NAMESPACE}.{5000 + mechanism_id} days = 1 }} }}'''
+
+
+def queue_decision_call(mechanism_id: int) -> str:
+    if mechanism_id in SUBJECT_RESPONSE_IDS:
+        return queue_subject_response_call(mechanism_id)
+    return queue_manager_decision_call(mechanism_id)
 
 
 def portfolio_done_trigger(domain: str, expected: bool = True) -> str:
@@ -1653,8 +1634,6 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
             f"{p}_receipt_case",
             f"{p}_receipt_state",
             f"{p}_receipt_route",
-            f"{p}_subject_response",
-            f"{p}_withdraw_intent",
             f"{p}_object_owner",
             f"{p}_object_subject",
             f"{p}_object_cycle",
@@ -1662,6 +1641,10 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
             f"{p}_object_state",
         }
     )
+    if mechanism.mechanism_id in SUBJECT_RESPONSE_IDS:
+        owned.add(f"{p}_subject_response")
+    if mechanism.mechanism_id == 166:
+        owned.add(f"{p}_withdraw_intent")
     owned.update(f"{p}_{suffix}" for suffix in AUDIT_ONLY_FIELDS_BY_ID.get(mechanism.mechanism_id, ()))
     owned.update(f"{p}_{suffix}" for suffix in RESPONSE_ONLY_FIELDS_BY_ID.get(mechanism.mechanism_id, ()))
     controls[f"{p}_visible_outcome_code"] = 0
@@ -1821,9 +1804,9 @@ root = {{
 }}
 {chr(10).join(assignments)}'''
     if domain.key == "w":
-        return '''# A PIP begins from the delivered result's exact five-tuple and a
-# distinct real receiving-manager candidate.  Grade 3.25 is one signal, never
-# the whole evidence gate, and this runtime never rewrites result_grade.
+        return '''# W is a read/supplement projection over B2's unique PIP case.  It
+# never starts, signs, settles or releases that case.  Grade 3.25 is not a gate:
+# the exact B2 evidence receipt below is authoritative.
 set_variable = { name = zg361_pp_w_result_owner value = var:zg361_result_case_owner }
 set_variable = { name = zg361_pp_w_result_subject value = this }
 set_variable = { name = zg361_pp_w_result_cycle value = var:zg361_result_cycle_serial }
@@ -1835,16 +1818,14 @@ set_variable = { name = zg361_pp_w_frozen_kpi value = var:zg361_result_kpi_froze
 set_variable = { name = zg361_pp_w_frozen_rank value = var:zg361_result_rank_frozen }
 set_variable = { name = zg361_pp_w_case_open_grade value = var:zg361_pp_w_frozen_grade }
 set_variable = { name = zg361_pp_w_non_aggravation_grade value = var:zg361_pp_w_frozen_grade }
-set_variable = { name = zg361_pp_w_evidence_component_count value = 0 }
-if = { limit = { var:zg361_pp_w_frozen_grade = 1 } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
-if = { limit = { var:zg361_pp_w_frozen_reason > 0 } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
-if = { limit = { has_variable = zg361_result_evidence_governance } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
-if = { limit = { has_variable = zg361_result_evidence_capability } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
-set_variable = { name = zg361_pp_w_pip_gate_candidate value = 0 }
-if = {
-	limit = { var:zg361_pp_w_frozen_grade = 1 var:zg361_pp_w_evidence_component_count >= 3 }
-	set_variable = { name = zg361_pp_w_pip_gate_candidate value = 1 }
-}
+set_variable = { name = zg361_pp_w_b2_pip_owner value = var:zg361_b2_pip_owner }
+set_variable = { name = zg361_pp_w_b2_pip_subject value = var:zg361_b2_pip_subject }
+set_variable = { name = zg361_pp_w_b2_pip_cycle value = var:zg361_b2_pip_cycle }
+set_variable = { name = zg361_pp_w_b2_pip_case value = var:zg361_b2_pip_case }
+set_variable = { name = zg361_pp_w_b2_pip_state_at_open value = var:zg361_b2_pip_state }
+set_variable = { name = zg361_pp_w_evidence_component_count value = var:zg361_b2_pip_gate_component_count }
+set_variable = { name = zg361_pp_w_pip_gate_threshold value = var:zg361_b2_pip_gate_threshold }
+set_variable = { name = zg361_pp_w_pip_gate_candidate value = var:zg361_b2_pip_gate_status }
 # A receiving manager does not prove that a vacancy exists.  The central
 # career/HC adapter must bind an exact active vacancy ID and its receiver on
 # this subject; this package only freezes and verifies that input.
@@ -1920,8 +1901,6 @@ if = {
 	set_variable = { name = zg361_pp_w_transfer_vacancy_active value = 1 }
 	set_variable = { name = zg361_pp_w_real_vacancy value = 1 }
 }
-set_variable = { name = zg361_pp_w_capacity_released value = 0 }
-set_variable = { name = zg361_pp_w_capacity_release_reason value = 0 }
 set_variable = { name = zg361_pp_w_visible_case_revision value = 0 }'''
     return "# no domain-specific prework"
 
@@ -1966,7 +1945,32 @@ has_variable = zg361_result_grade
 var:zg361_result_grade = 1
 has_variable = zg361_result_grade_reason
 has_variable = zg361_result_kpi_frozen
-has_variable = zg361_result_rank_frozen'''
+has_variable = zg361_result_rank_frozen
+has_variable = zg361_b2_pip_gate_owner
+var:zg361_b2_pip_gate_owner = root
+has_variable = zg361_b2_pip_gate_subject
+var:zg361_b2_pip_gate_subject = this
+has_variable = zg361_b2_pip_gate_cycle
+var:zg361_b2_pip_gate_cycle = var:zg361_result_cycle_serial
+has_variable = zg361_b2_pip_gate_case
+var:zg361_b2_pip_gate_case = var:zg361_result_case_serial
+var:zg361_b2_pip_gate_status = 1
+has_variable = zg361_b2_pip_owner
+var:zg361_b2_pip_owner = root
+has_variable = zg361_b2_pip_subject
+var:zg361_b2_pip_subject = this
+has_variable = zg361_b2_pip_cycle
+var:zg361_b2_pip_cycle = var:zg361_result_cycle_serial
+has_variable = zg361_b2_pip_case
+var:zg361_b2_pip_case = var:zg361_result_case_serial
+OR = {
+	var:zg361_b2_pip_state = 1
+	var:zg361_b2_pip_state = 2
+	var:zg361_b2_pip_state = 3
+	var:zg361_b2_pip_state = 4
+	var:zg361_b2_pip_state = 5
+}
+var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case'''
     raise AssertionError(domain.key)
 
 
@@ -2089,55 +2093,53 @@ def render_subject_response(mechanism: MechanismSpec) -> str:
 \t\telse_if = {{
 \t\t\tlimit = {{ scope:zg361_pp_subject_route = 2 }}
 \t\t\tset_variable = {{ name = {p}_appeal_filed value = 1 }}
-\t\t\tset_variable = {{ name = {p}_appeal_snapshot_grade value = var:{p}_non_aggravation_grade }}
+\t\t\tset_variable = {{ name = {p}_appeal_snapshot_grade value = var:zg361_pp_t_frozen_grade }}
 \t\t\tset_variable = {{ name = {p}_disputed value = 1 }}
 \t\t}}
 \t\tchange_variable = {{ name = zg361_case_t_feedback_revision add = 1 }}'''
     elif mechanism.mechanism_id == 166:
-        response_action = f'''set_variable = {{ name = {p}_withdraw_intent value = 1 }}
-\t\tzg361_pp_m166_core_effect = {{
-\t\t\tROUTE = 1
-\t\t\tTICKET_OWNER = var:zg361_case_u_owner
-\t\t\tTICKET_SUBJECT = this
-\t\t\tTICKET_CYCLE = var:zg361_case_u_cycle_serial
-\t\t\tTICKET_CASE = var:zg361_case_u_case_serial
-\t\t\tTICKET_STATE = 3
-\t\t}}'''
-    elif mechanism.mechanism_id == 183:
         response_action = f'''if = {{
 \t\t\tlimit = {{ scope:zg361_pp_subject_route = 1 }}
-\t\t\tset_variable = {{ name = {p}_subject_signed value = 1 }}
-\t\t\tset_variable = {{ name = {p}_acknowledgement_status value = 1 }}
-\t\t\tset_variable = {{ name = {p}_subject_statement_code value = 1 }}
-\t\t\tset_variable = {{ name = {p}_subject_statement_author value = this }}
+\t\t\tset_variable = {{ name = {p}_withdraw_intent value = 1 }}
+\t\t\tzg361_pp_m166_core_effect = {{
+\t\t\t\tROUTE = 1
+\t\t\t\tTICKET_OWNER = var:zg361_case_u_owner
+\t\t\t\tTICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:zg361_case_u_cycle_serial
+\t\t\t\tTICKET_CASE = var:zg361_case_u_case_serial
+\t\t\t\tTICKET_STATE = 3
+\t\t\t}}
 \t\t}}
-\t\telse_if = {{
-\t\t\tlimit = {{ scope:zg361_pp_subject_route = 2 }}
-\t\t\tset_variable = {{ name = {p}_subject_signed value = 0 }}
-\t\t\tset_variable = {{ name = {p}_acknowledgement_status value = 2 }}
-\t\t\tset_variable = {{ name = {p}_subject_statement_code value = 2 }}
-\t\t\tset_variable = {{ name = {p}_subject_statement_author value = this }}
-\t\t\tset_variable = {{ name = {p}_refusal_reason value = 1 }}
-\t\t}}
-\t\tchange_variable = {{ name = zg361_case_w_feedback_revision add = 1 }}'''
+\t\telse = {{ set_variable = {{ name = {p}_withdraw_intent value = 0 }} }}
+\t\tchange_variable = {{ name = zg361_case_u_feedback_revision add = 1 }}'''
     elif mechanism.mechanism_id == 190:
         response_action = f'''set_variable = {{ name = {p}_subject_statement_author value = this }}
-\t\tset_variable = {{ name = {p}_subject_statement_receiver value = var:{p}_acl_receiver }}
 \t\tset_variable = {{ name = {p}_subject_statement_version value = 1 }}
 \t\tset_variable = {{ name = {p}_subject_statement_private_ids value = 0 }}
 \t\tset_variable = {{ name = {p}_subject_statement_code value = scope:zg361_pp_subject_route }}
-\t\tset_variable = {{ name = {p}_subject_statement_snapshot value = scope:zg361_pp_subject_route }}
-\t\tsave_temporary_scope_as = zg361_pp_m190_statement_subject
-\t\tvar:{p}_acl_receiver = {{ set_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_statement_subject.var:{p}_subject_statement_snapshot }} }}
 \t\tif = {{ limit = {{ scope:zg361_pp_subject_route = 2 }} set_variable = {{ name = {p}_subject_disclosure_refused value = 1 }} }}
 \t\tchange_variable = {{ name = zg361_case_w_feedback_revision add = 1 }}'''
+    resume_guard = (
+        f"NOT = {{ var:{p}_subject_response = 1 }}"
+        if mechanism.mechanism_id == 166
+        else f"has_variable = {p}_subject_response"
+    )
+    ai_route = (
+        f'''set_variable = {{ name = zg361_pp_ai_route value = 2 }}'''
+        if mechanism.mechanism_id == 166
+        else f'''set_variable = {{ name = zg361_pp_ai_route value = 1 }}
+\t\tif = {{ limit = {{ var:zg361_case_{mechanism.domain}_owner = {{ is_at_war = yes }} }} set_variable = {{ name = zg361_pp_ai_route value = 3 }} }}
+\t\telse_if = {{ limit = {{ var:zg361_case_{mechanism.domain}_owner = {{ OR = {{ has_trait = arbitrary has_trait = ambitious }} }} }} set_variable = {{ name = zg361_pp_ai_route value = 2 }} }}'''
+    )
+    if mechanism.mechanism_id == 190:
+        ai_route += "\n\t\tif = { limit = { NOT = { var:zg361_pp_m189_terminal_code = 2 } } set_variable = { name = zg361_pp_ai_route value = 3 } }"
+    manager_queue = queue_manager_decision_call(mechanism.mechanism_id)
     return f'''# The assessed official may respond only to their own packet.  This grants no
 # cohort, nomination, panel, PIP-initiation or assessment authority.
 zg361_pp_m{mechanism.mechanism_id:03d}_subject_response_effect = {{
 \tsave_temporary_scope_value_as = {{ name = zg361_pp_subject_route value = $ROUTE$ }}
 \tif = {{
 \t\tlimit = {{
-\t\t\tis_ai = no
 \t\t\tOR = {{ scope:zg361_pp_subject_route = 1 scope:zg361_pp_subject_route = 2 }}
 \t\t\tzg361_case_kernel_subject_self_guard_trigger = {{
 \t\t\t\tSUBJECT_VAR = zg361_case_{mechanism.domain}_subject
@@ -2148,6 +2150,35 @@ zg361_pp_m{mechanism.mechanism_id:03d}_subject_response_effect = {{
 \t\t}}
 \t\tset_variable = {{ name = {p}_subject_response value = scope:zg361_pp_subject_route }}
 \t\t{response_action or f"change_variable = {{ name = zg361_case_{mechanism.domain}_feedback_revision add = 1 }}"}
+\t}}
+}}
+
+zg361_pp_m{mechanism.mechanism_id:03d}_resume_after_subject_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\t{resume_guard}
+\t\t\tzg361_case_kernel_subject_self_guard_trigger = {{
+\t\t\t\tSUBJECT_VAR = zg361_case_{mechanism.domain}_subject
+\t\t\t\tACTIVE_VAR = zg361_case_{mechanism.domain}_active
+\t\t\t}}
+\t\t\tvar:zg361_case_{mechanism.domain}_state = {state}
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_case_{mechanism.domain}_owner = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
+\t\t\t{ai_route}
+\t\t\tzg361_pp_m{mechanism.mechanism_id:03d}_core_effect = {{
+\t\t\t\tROUTE = var:zg361_pp_ai_route
+\t\t\t\tTICKET_OWNER = var:zg361_case_{mechanism.domain}_owner
+\t\t\t\tTICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:zg361_case_{mechanism.domain}_cycle_serial
+\t\t\t\tTICKET_CASE = var:zg361_case_{mechanism.domain}_case_serial
+\t\t\t\tTICKET_STATE = {state}
+\t\t\t}}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ var:zg361_case_{mechanism.domain}_owner = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
+\t\t\t{indent(manager_queue, 3).lstrip()}
+\t\t}}
 \t}}
 }}'''
 
@@ -2216,10 +2247,9 @@ trigger_else = {{ always = yes }}'''
         (business_object_identity_write(mechanism, state), semantic_write(mechanism))
     )
     payment = dual_cost_write(mechanism)
-    # Terminal closure must release #184's exact reservation even when #189
-    # itself is route C.  Keeping this outside the A/B semantic block avoids a
-    # conserved-but-never-reusable capacity leak.
-    post_operation = pip_capacity_release_write(4, 2) if mechanism.mechanism_id == 189 else ""
+    # B2 is the only PIP-capacity owner.  PP records manager procedure and
+    # projects the B2 receipt; it never reserves or releases a second slot.
+    post_operation = ""
     deadline_calls = "\n\t\t\t".join(
         f"zg361_pp_m{mechanism.mechanism_id:03d}_schedule_audit_{index}_effect = yes"
         for index, _ in enumerate(mechanism.deadlines, start=1)
@@ -2428,11 +2458,13 @@ def render_stage_dispatch(domain: DomainSpec, state: int, stage: tuple[int, ...]
         if mechanism_id == 189:
             # #188's D+365 audit owns this dispatch for both player and AI.
             continue
-        ai_pre = (
-            "if = { limit = { var:zg361_pp_ai_route = 1 } set_variable = { name = zg361_pp_m166_withdraw_intent value = 1 } }\n"
-            if mechanism_id == 166
-            else ""
-        )
+        if mechanism_id in SUBJECT_RESPONSE_IDS:
+            # The assessed official owns this response even under an AI
+            # manager. Players receive one exact-ticket event; AI subjects take
+            # the same self-guarded effect silently and then resume the manager.
+            ai_calls.append(queue_subject_response_call(mechanism_id))
+            continue
+        ai_pre = ""
         if mechanism_id == 190:
             ai_pre += "if = { limit = { NOT = { var:zg361_pp_m189_terminal_code = 2 } } set_variable = { name = zg361_pp_ai_route value = 3 } }\n"
         elif mechanism_id == 191:
@@ -2454,8 +2486,9 @@ else_if = {{ limit = {{ var:zg361_case_{domain.key}_owner = {{ OR = {{ has_trait
     queue = queue_decision_call(first)
     if domain.key == "w" and state == 4:
         terminal_queue = queue_decision_call(189)
-        first_failure_guard = '''var:zg361_pp_m187_route = 2
-var:zg361_pp_m187_graduation_status = 2
+        first_failure_guard = '''var:zg361_pp_m187_graduation_status = 2
+var:zg361_b2_pip_state = 4
+var:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
 var:zg361_pp_m188_receipt_active = 0'''
         return f'''zg361_pp_dispatch_w_stage_04_effect = {{
 \tif = {{
@@ -2752,6 +2785,46 @@ zg361pp.{mechanism.mechanism_id} = {{
 }}'''
 
 
+def render_subject_response_event(mechanism: MechanismSpec) -> str:
+    state = mechanism_stage(mechanism.mechanism_id)
+    row = case_vars(mechanism.domain)
+    p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
+    event_id = 5000 + mechanism.mechanism_id
+    return f'''# {mechanism.mechanism_id:03d}: the assessed official, never the manager,
+# owns this response. AI subjects use the same effect silently at the queue.
+zg361pp.{event_id} = {{
+\ttype = character_event
+\ttheme = vassal
+\ttitle = zg361pp.{mechanism.mechanism_id}.t
+\tdesc = zg361pp.{mechanism.mechanism_id}.desc
+\ttrigger = {{
+\t\tis_ai = no
+\t\thas_game_rule = zg361_on
+\t\texists = scope:zg361_pp_subject_prompt_owner
+\t\texists = scope:zg361_pp_subject_prompt_subject
+\t\tthis = scope:zg361_pp_subject_prompt_subject
+\t\tvar:{row["owner"]} = scope:zg361_pp_subject_prompt_owner
+\t\tvar:{row["subject"]} = this
+\t\tvar:{row["cycle"]} = scope:zg361_pp_subject_prompt_cycle
+\t\tvar:{row["case"]} = scope:zg361_pp_subject_prompt_case
+\t\tvar:{row["state"]} = scope:zg361_pp_subject_prompt_state
+\t\tvar:{row["state"]} = {state}
+\t\tvar:{row["active"]} = 1
+\t\tNOT = {{ has_variable = {p}_subject_response }}
+\t}}
+\toption = {{
+\t\tname = zg361pp.{mechanism.mechanism_id}.subject.a
+\t\tzg361_pp_m{mechanism.mechanism_id:03d}_subject_response_effect = {{ ROUTE = 1 }}
+\t\tzg361_pp_m{mechanism.mechanism_id:03d}_resume_after_subject_effect = yes
+\t}}
+\toption = {{
+\t\tname = zg361pp.{mechanism.mechanism_id}.subject.b
+\t\tzg361_pp_m{mechanism.mechanism_id:03d}_subject_response_effect = {{ ROUTE = 2 }}
+\t\tzg361_pp_m{mechanism.mechanism_id:03d}_resume_after_subject_effect = yes
+\t}}
+}}'''
+
+
 def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
     event_id = 2000 + mechanism.mechanism_id + (1000 if index > 1 else 0)
@@ -2845,16 +2918,45 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\tset_variable = {{ name = {p}_retry_unlock_reason value = 2 }}
 \t\t\t\tset_variable = {{ name = {p}_retry_settled_receipt value = var:{p}_prior_gap_id }}
 \t\t\t}}'''
+    elif mechanism.mechanism_id == 183:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
+\t\t\t\t\tvar:zg361_b2_pip_subject = this
+\t\t\t\t\tvar:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+\t\t\t\t\tvar:zg361_b2_pip_case = var:zg361_case_w_case_serial
+\t\t\t\t\tvar:zg361_b2_pip_subject_response_case = var:zg361_b2_pip_case
+\t\t\t\t}}
+\t\t\t\tset_variable = {{ name = {p}_acknowledgement_status value = var:zg361_b2_pip_subject_response }}
+\t\t\t\tset_variable = {{ name = {p}_subject_statement_code value = var:zg361_b2_pip_subject_response }}
+\t\t\t\tset_variable = {{ name = {p}_subject_statement_author value = var:zg361_b2_pip_subject_response_author }}
+\t\t\t\tset_variable = {{ name = {p}_subject_signed value = 0 }}
+\t\t\t\tif = {{ limit = {{ OR = {{ var:zg361_b2_pip_subject_response = 1 var:zg361_b2_pip_subject_response = 2 }} }} set_variable = {{ name = {p}_subject_signed value = 1 }} }}
+\t\t\t}}'''
     elif mechanism.mechanism_id == 185:
         special_audit = f'''if = {{
 \t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
 \t\t\t\tset_variable = {{ name = {p}_midpoint_pending value = 0 }}
 \t\t\t\tset_variable = {{ name = {p}_midpoint_completed value = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_progress_snapshot value = 0 }}
+\t\t\t\tset_variable = {{ name = {p}_progress_truth_status value = 0 }}
+\t\t\t\tset_variable = {{ name = {p}_progress_red_code value = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_resource_delivery_valid value = 0 }}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
+\t\t\t\t\t\tvar:zg361_b2_pip_subject = this
+\t\t\t\t\t\tvar:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+\t\t\t\t\t\tvar:zg361_b2_pip_case = var:zg361_case_w_case_serial
+\t\t\t\t\t\tvar:zg361_b2_pip_support_reserved = 1
+\t\t\t\t\t\tvar:zg361_b2_pip_support_budget_spent = 25
+\t\t\t\t\t\tvar:zg361_b2_pip_support_hours = 12
+\t\t\t\t\t}}
+\t\t\t\t\tset_variable = {{ name = {p}_resource_delivery_valid value = 1 }}
+\t\t\t\t}}
 \t\t\t\tif = {{
 \t\t\t\t\tlimit = {{ var:{p}_route = 1 }}
 \t\t\t\t\tset_variable = {{ name = {p}_midpoint_status value = 1 }}
-\t\t\t\t\tset_variable = {{ name = {p}_progress_snapshot value = 1 }}
-\t\t\t\t\tset_variable = {{ name = {p}_resource_delivery_valid value = 1 }}
 \t\t\t\t}}
 \t\t\t\telse_if = {{
 \t\t\t\t\tlimit = {{ var:{p}_route = 2 }}
@@ -2867,18 +2969,35 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
         special_audit = f'''if = {{
 \t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
 \t\t\t\tset_variable = {{ name = {p}_evaluation_pending value = 0 }}
+\t\t\t\tset_variable = {{ name = {p}_graduation_status value = 0 }}
 \t\t\t\tif = {{
-\t\t\t\t\tlimit = {{ var:{p}_route = 1 }}
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
+\t\t\t\t\t\tvar:zg361_b2_pip_subject = this
+\t\t\t\t\t\tvar:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+\t\t\t\t\t\tvar:zg361_b2_pip_case = var:zg361_case_w_case_serial
+\t\t\t\t\t\tvar:zg361_b2_pip_state = 3
+\t\t\t\t\t\tvar:zg361_b2_pip_graduation_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t\tvar:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t}}
 \t\t\t\t\tset_variable = {{ name = {p}_key_milestones_met value = 1 }}
-\t\t\t\t\tset_variable = {{ name = {p}_stability_days_observed value = 90 }}
-\t\t\t\t\tset_variable = {{ name = {p}_independent_review_pass value = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_stability_days_observed value = var:zg361_b2_pip_stability_days_observed }}
+\t\t\t\t\tset_variable = {{ name = {p}_independent_review_pass value = var:zg361_b2_pip_independent_review_status }}
+\t\t\t\t\tset_variable = {{ name = {p}_independent_review_red_code value = var:zg361_b2_pip_independent_review_red_code }}
 \t\t\t\t\tset_variable = {{ name = {p}_graduation_status value = 1 }}
-\t\t\t\t\t{indent(pip_capacity_release_write(3, 1), 5).lstrip()}
 \t\t\t\t}}
 \t\t\t\telse_if = {{
-\t\t\t\t\tlimit = {{ var:{p}_route = 2 }}
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
+\t\t\t\t\t\tvar:zg361_b2_pip_subject = this
+\t\t\t\t\t\tvar:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+\t\t\t\t\t\tvar:zg361_b2_pip_case = var:zg361_case_w_case_serial
+\t\t\t\t\t\tvar:zg361_b2_pip_state = 4
+\t\t\t\t\t\tvar:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t\tvar:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t}}
 \t\t\t\t\tset_variable = {{ name = {p}_graduation_status value = 2 }}
-\t\t\t\t\tset_variable = {{ name = {p}_appeal_weight value = 1 }}
+\t\t\t\t\tif = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_appeal_weight value = 1 }} }}
 \t\t\t\t}}
 \t\t\t}}
 \t\t\tzg361_pp_w_try_advance_03_effect = yes'''
@@ -3087,6 +3206,10 @@ def render_completion_event(domain: DomainSpec, event_id: int) -> str:
 def render_events() -> bytes:
     sections = ["namespace = zg361pp"]
     sections.extend(render_player_event(mechanism) for mechanism in MECHANISMS)
+    sections.extend(
+        render_subject_response_event(MECHANISM_BY_ID[mechanism_id])
+        for mechanism_id in sorted(SUBJECT_RESPONSE_IDS)
+    )
     for mechanism in MECHANISMS:
         for index, _ in enumerate(mechanism.deadlines, start=1):
             sections.append(render_audit_event(mechanism, index))
@@ -3132,6 +3255,30 @@ def localization_rows(language: str) -> list[str]:
                 ' zg361pp.terminal.graduated:0 "Terminal: no same-category relapse. The improvement plan did not renew its subscription this time."',
                 ' zg361pp.terminal.transfer:0 "Terminal: real transfer. This moves a vacancy and receiving manager, not merely the problem into another chat."',
                 ' zg361pp.terminal.exit:0 "Terminal: exit. Vacancy, handover, overtime and replacement costs all survived the optimization."',
+            )
+        )
+    subject_response_rows = {
+        151: (
+            ("确认收到并同意。", "确认收到，但保留异议并提出申诉。")
+            if chinese
+            else ("Acknowledge receipt and agree.", "Acknowledge receipt, preserve my objection, and appeal.")
+        ),
+        166: (
+            ("撤回我的晋升包。", "继续参评，由经理处理后续程序。")
+            if chinese
+            else ("Withdraw my promotion packet.", "Continue; let the manager handle the remaining procedure.")
+        ),
+        190: (
+            ("同意附上我的最小披露陈述。", "拒绝扩散本人陈述，只保留程序回执。")
+            if chinese
+            else ("Attach my minimum-disclosure statement.", "Withhold my statement and retain only the procedural receipt.")
+        ),
+    }
+    for mechanism_id, options in subject_response_rows.items():
+        rows.extend(
+            (
+                f' zg361pp.{mechanism_id}.subject.a:0 "{escape_loc(options[0])}"',
+                f' zg361pp.{mechanism_id}.subject.b:0 "{escape_loc(options[1])}"',
             )
         )
     for mechanism in MECHANISMS:

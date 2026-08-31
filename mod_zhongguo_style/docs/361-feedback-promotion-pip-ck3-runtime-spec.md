@@ -36,7 +36,7 @@ adapter 当前 scope 必须是：在世、有地、天朝制、公爵及以上�
 - 玩家经理：每次只排入当前阶段的第一张决策卡；选完一张，所选 option 才会在 D+1 排下一张。
 - 授权 AI 经理：这是项目所有者确认的第二 AI 例外；同样必须过天朝制公爵以上门槛，只走后台 resolver，绝不打开事件或 GUI。
 - 伯爵、男爵：可以成为直属受评 subject；不能成为 adapter ROOT，不能提名、组评委、发起 PIP 或考核别人。
-- #151、#166、#183、#190 另有 subject-self response，仅允许本人签收/撤包/拒签理由/转岗披露回应；这些 effect 不授予任何管理权限。
+- #151、#166、#190 另有 PP subject-self response event（`zg361pp.5151/5166/5190`），仅允许本人签收、撤包或决定是否附上转岗陈述；这些 effect 不授予任何管理权限。#183 不再另造一套本人签字：它只读取 B2 唯一 PIP 案的 `subject_response/author/case`，真正的接受/协商/拒绝发生在 `zg361b2.40`。玩家 subject 只看到自己的 exact-ticket 两选项，AI subject 则静默走同一 self guard 后恢复经理后台流程。
 
 `zg361_pp_portfolio_queue_active` 在经理身上锁住当前可见队列。玩家路线在领域终态后仍保持锁，直到玩家确认唯一一张 completion card 才释放；AI 后台路线没有可见卡，领域终态立即释放。这样中央调用即使与终态同日发生，也不能把下一域首卡和完成卡叠在一起。因而即使本包包含 46 张玩家卡，任意时点也只会出现至多一张，不存在“一次弹 46 窗”。
 
@@ -135,20 +135,20 @@ P1 的 C 审计为 D+90；P2 的 #147、#149、#154、#155、#161、#162、#166�
 
 | ID | A/B 真实写入 | 下游 consumer |
 |---:|---|---|
-| 181 | 唯一主分诊类别、证据、错岗/误诊 | PIP 入口选择训练、纪律、改目标或真实转岗 |
-| 182 | 启动证据组合、误伤风险、违纪分流 | 正式开案门；3.25 本身不是充分条件 |
-| 183 | 目标/资源/期限、双签/拒签理由、一次修订 | 任务页分开送达、认同与拒签；拒签不等于失败 |
-| 184 | active case、pip capacity、导师/错峰、过载责任 | 终态一次释放容量 |
-| 185 | 唯一中检、进度、资源交付、一次修正 | PIP 时间线；未做中检不得倒造更正 |
-| 186 | 基线/当前工作量、替换/延期/复核、膨胀违规 | 变更账消费同一冻结基线 |
-| 187 | 关键里程碑、稳定期、独立复核/延期 | 毕业释放容量；绝不直接写 3.75 |
+| 181 | 冻结 B2/result 证据案号与经理建议类别；真实分诊 producer 缺失时类别保持 0、`triage_truth_status=0/red_code=1` | 只留下可审计建议，不能把经理选项冒充“诊断真相” |
+| 182 | 只投影 B2 唯一 evidence gate 的 count/threshold/status 与五元身份 | 正式开案门由 B2 决定；3.25 本身不是充分条件，经理只能审阅或记录 override attempt |
+| 183 | 目标/资源/期限与经理程序签署；本人签字只读取 B2 `subject_response/author/case` | 经理不能替员工签字、不能把路线选择硬编码为进步；拒签也只由 B2 结算后果 |
+| 184 | 只投影 B2 已预留的支持容量、导师工时、预算与 support receipt | PP 不再拥有第二份 `pip_capacity`，不负责预留或释放容量 |
+| 185 | D+180 记录 B2 真实资源交付；真实任务进度缺失时 `progress_truth_status=0/red_code=1` | 经理路线只决定中检程序，不能制造进步或毕业 |
+| 186 | 工作量三个数值保持 0，`workload_truth_status=0/red_code=1`，直至有真实 workload producer | 经理可记录程序选择，但不能用常数伪造基线或膨胀 |
+| 187 | D+366 只读取 B2 唯一 settlement 的毕业/失败 receipt、365 日稳定值与独立复核 typed RED | PP 不结算、不释放容量、不写 3.75；经理路线只决定审阅程序 |
 | 188 | 一周期观察、问题类别、过度标签风险 | 只对同类复发升级；新问题另开案 |
 | 189 | 二次 PIP/真实空缺转岗/退出三选一、成本 | 终局页只接受一个互斥终态 |
 | 190 | 接收经理 ACL、最小字段、本人陈述 | 转岗包不改旧档位、不扩散私人 ID |
 | 191 | 空缺、交接、加班、补员付款与净额 | 团队成本单和经理记分卡消费同一净成本 |
 
-W 的时间不是卡片标题上的装饰：#185 选项只建立中检义务，D+180 audit 才写中检终态并放行下一阶段；#187
-只提交毕业证据，D+90 audit 才冻结里程碑、稳定期与独立复核结果；#188 卡在阶段开启 D+1 作答，D+365 audit
+W 的时间不是卡片标题上的装饰：#185 选项只建立中检义务，D+180 audit 才记录 B2 资源交付并放行下一阶段；#187
+只建立经理审阅程序，D+366 audit 才读取已经由 B2 D+365 settlement 写成的毕业/失败、稳定期与独立复核状态；#188 卡在阶段开启 D+1 作答，D+365 audit
 因此发生在阶段 D+366，并逐项冻结下一轮 result 五元身份、档位、理由与派生问题类别。证据路线只有同类 3.25 才算
 复发，政治路线把任意新 3.25 贴为复发但留下过度标签风险；没有复发时 #189 以明确 `not-applicable` receipt 关闭，
 不会硬塞二次 PIP。首轮 PIP 已失败时则反过来：#188 以 `not-applicable/first-failure` receipt 立即关闭，不伪造“毕业后
@@ -157,8 +157,9 @@ deadline 为 D+368，和观察路径的弹窗不再同日竞争。
 若第四阶段最终走 deadline fallback，#188 C 的延迟 policy-debt audit 会在关闭后再次调用阶段 barrier；这样即使
 #189 C 已在 D+368 同日消费，D+90 的 #188 audit 仍能把案卷推进到第五阶段，不会永久卡在 state 4。
 
-#189 先把 `second_pip/transfer/exit` 全部清零，再只写一个终态并校验和为 1；无论 A/B/C，终局关闭都按 #184
-原票据释放容量一次。#190 不再把“找到另一个经理”冒充空缺：Career/HC 必须先在 subject 上发布完整的
+#189 先把 `second_pip/transfer/exit` 全部清零，再只写一个终态并校验和为 1；首轮失败分支还必须再次核对 B2 的 exact
+owner/subject/cycle/case、`state=4` 与 failure receipt。它只决定后续二次 PIP/转岗/退出程序，不触碰 B2 支持容量；容量已由 B2
+唯一 settlement 释放。#190 不再把“找到另一个经理”冒充空缺：Career/HC 必须先在 subject 上发布完整的
 `vacancy_id/owner/subject/source_cycle/source_case/receiver/title/maturity_cycle/active/status`，且独立 transfer-HC 账满足
 `authorized=reserved` 与 conservation。W 只接受 `source_cycle < current review`、`maturity_cycle <= current review` 的
 跨周期成熟 ticket；title holder、subject 当前 `primary_title`、接收经理和全部来源身份任一不符，`real_vacancy` 保持 0。
@@ -183,10 +184,9 @@ external-blocked RED 并延迟重试；duplicate、stale、no-vacancy 或 native
 | `tenure_exception_slot` | #162 | 破格准入先占独立额度，能力评审不等于准入投票 |
 | `promotion_slot` | 仅 #160 的 A 通过路线 | 政治淘汰不提前占席；V 开案才把同一预留票据结算 |
 | `panel_vote` | #169/#170/#173/#174/#176–180 | active panel、权重、盲分、答辩和反馈均引用同一冻结席位 |
-| `pip_capacity` | 仅 #184 的 A 支持路线 | B 过载只写经理责任，不伪造容量；毕业或终局（含 #189 C）按原票据释放一次 |
 | `exit_cost` | #189 的 B 退出路线与 #191 成本单 | second-PIP/transfer 不产生 #189 退出成本；终态与成本单各一次 |
 
-其中 V 的资源绑定刻意区分：#172 冻结决策规则消耗 `capacity_hours`，#174 才消耗答辩 `panel_vote`；#180 重试不再扣 nomination slot。共享资源的 A 路线保持 `reserved/status=1`，B 路线同步 settle 为 `status=2`；仅 A 或仅 B 才合法的 route-specific 资源只在对应路线核对和记账，另一条路线不存在空票据。C 路线不生成业务 transaction，延迟 audit 也只关闭 policy-debt timer，不写 midpoint/graduation/relapse 等业务对象。新周期只在全部延迟审计终态后清零 amount/status/owner/cycle/case；U prework 还会先删除旧 #161 filler，再尝试绑定新 alternate，因此不会把上一周期的人继续当本轮填充包。
+其中 V 的资源绑定刻意区分：#172 冻结决策规则消耗 `capacity_hours`，#174 才消耗答辩 `panel_vote`；#180 重试不再扣 nomination slot。共享资源的 A 路线保持 `reserved/status=1`，B 路线同步 settle 为 `status=2`；仅 A 或仅 B 才合法的 route-specific 资源只在对应路线核对和记账，另一条路线不存在空票据。W 的支持容量完全属于 B2；PP #184 只复制 B2 receipt，因此本表和 PP transaction ledger 都不再出现 `pip_capacity`。C 路线不生成业务 transaction，延迟 audit 也只关闭 policy-debt timer，不写 midpoint/graduation/relapse 等业务对象。新周期只在全部延迟审计终态后清零 amount/status/owner/cycle/case；U prework 还会先删除旧 #161 filler，再尝试绑定新 alternate，因此不会把上一周期的人继续当本轮填充包。
 
 #149、#150、#165、#191 的 A 路线，以及 #189 的 B 强制退出路线，先原子核对经理国库 ≥5 且个人金币 ≥5，随后才同时扣国库 5、个人金币 5，并给 subject 10。任一不足则不发生部分付款。receipt 明列 `treasury_paid=5 + personal_paid=5 = subject_received=10`。这把“组织预算”和“经理自己画饼的成本”同时落到了 CK3 资源，而不是再造一枚 PPT 货币。
 
@@ -227,6 +227,6 @@ py tools/validate_local.py
 
 `tools/test_zg361_b2_runtime.py` 仍可作为 T/W Python reference 回归运行。本独立包不越权修改 B2 或中央 manifest；最终中央合并时必须由对应 owner 统一 readiness 口径。
 
-L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#184/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W 证据门/D+368 竞态边界/同类复发/无复发 skip/所有终局容量释放/互斥终态、Career 空缺完整身份与成熟门、#190 exact request、四字段 receiver ACL、D+30 settlement 调用与 external typed RED、申诉不加重、manager/subject 权限、第二 AI 例外、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
+L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W exact B2 evidence gate、B2-only subject signature/support/settlement、D+180 与 D+366 typed projection、D+368 竞态边界、同类复发/无复发 skip、互斥终态、Career 空缺完整身份与成熟门、#190 exact request、四字段 receiver ACL、D+30 settlement 调用与 external typed RED、申诉不加重、manager/subject 权限、第二 AI 例外、三张 subject-self 事件、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
 
 中央已经调用 `zg361_pp_manager_portfolio_adapter_effect`，Career/HC→PP external chain 的脚本 ABI 已闭合。下一步仍必须以 CK3 实机覆盖：玩家公爵/国王/皇帝、授权 AI 公爵、伯爵/男爵 subject-only、非天朝 manager RED、A/B/C、无接收经理/无 vassal capacity、duplicate、stale、中央忙时重试、真实转封前后 title/liege 回读、D+7/30/90/180/365 与存读档。没有 paused snapshot、error/debug log 和真实 title/liege 证据前，本包保持 `static-ready`；strict adapter/RED 不能称为 production-live 成功。

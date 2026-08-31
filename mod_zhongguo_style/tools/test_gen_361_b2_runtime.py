@@ -710,12 +710,147 @@ class B2CK3RuntimeTests(unittest.TestCase):
         pip = top_level_block(self.effects, "zg361_b2_m015_open_pip_effect")
         self.assertIn("zg361_result_grade = 1", pip)
         self.assertIn("highest_held_title_tier >= tier_county", pip)
+        self.assertIn("zg361_b2_pip_gate_threshold value = 3", pip)
+        self.assertIn("zg361_b2_pip_gate_evidence_complete value = 0", pip)
+        for token in (
+            "var:zg361_result_absolute_grade = 1",
+            "var:zg361_result_kpi_frozen < 0",
+            "var:zg361_result_evidence_governance < 0",
+            "var:zg361_result_evidence_capability < 0",
+            "var:zg361_result_evidence_growth < 0",
+            "var:zg361_result_evidence_superior < 0",
+            "var:zg361_result_evidence_values < 0",
+            "var:zg361_result_evidence_collaboration < 0",
+            "var:zg361_result_evidence_jingcha < 0",
+            "var:zg361_result_evidence_organization < 0",
+            "zg361_b2_pip_gate_component_count >= var:zg361_b2_pip_gate_threshold",
+        ):
+            self.assertIn(token, pip)
+        self.assertNotIn("zg361_result_grade_reason = 5", pip)
         self.assertIn("limit = { is_ai = yes }", pip)
         self.assertIn("zg361_b2_accept_pip_effect = yes", pip)
+        for suffix in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"remove_variable = zg361_b2_pip_{suffix}", pip)
+        self.assertIn("Route C records only its bounded policy debt", pip)
+        phase1_settlement = top_level_block(
+            self.core, "zg361_settle_delivered_325_effect"
+        )
+        self.assertNotIn("modifier = zg361_pip", phase1_settlement)
+        self.assertNotIn(
+            "remove_character_modifier = zg361_pip",
+            top_level_block(self.core, "zg361_apply_grade_effect"),
+        )
         resolve = top_level_block(self.effects, "zg361_b2_resolve_pip_due_effect")
         self.assertIn("zg361_result_cycle_serial > var:zg361_b2_pip_cycle", resolve)
-        self.assertIn("zg361_b2_pip_graduation_receipt", resolve)
-        self.assertIn("zg361_b2_m017_open_disposition_effect = yes", resolve)
+        self.assertIn("zg361_b2_settle_pip_outcome_effect = yes", resolve)
+        self.assertNotIn("zg361_b2_pip_graduation_receipt", resolve)
+        settlement = top_level_block(
+            self.effects, "zg361_b2_settle_pip_outcome_effect"
+        )
+        for token in (
+            "zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case",
+            "remove_character_modifier = zg361_pip",
+            "zg361_b2_release_pip_support_effect = yes",
+            "zg361_b2_pip_graduation_receipt",
+            "zg361_b2_pip_failure_receipt",
+            "zg361_b2_pip_performance_evidence_delta value = 10",
+            "zg361_b2_pip_performance_evidence_delta value = -10",
+            "zg361_b2_publish_pip_performance_evidence_effect = yes",
+            "zg361_b2_m017_open_disposition_effect = yes",
+        ):
+            self.assertIn(token, settlement)
+        refusal = top_level_block(self.effects, "zg361_b2_refuse_pip_effect")
+        self.assertIn(
+            "zg361_b2_pip_performance_evidence_delta value = -15", refusal
+        )
+        self.assertIn("zg361_b2_publish_pip_performance_evidence_effect = yes", refusal)
+        consumer = top_level_block(
+            self.effects, "zg361_b2_consume_pip_performance_evidence_effect"
+        )
+        self.assertIn("zg361_evidence_growth add = var:zg361_b2_pip_performance_evidence_delta", consumer)
+        self.assertIn("zg361_kpi add = var:zg361_b2_pip_performance_evidence_delta", consumer)
+        self.assertIn("zg361_b2_pip_performance_evidence_status value = 2", consumer)
+        self.assertIn(
+            "zg361_b2_consume_pip_performance_evidence_effect = yes",
+            top_level_block(self.core, "zg361_compute_kpi_effect"),
+        )
+
+    def test_pip_evidence_uses_prospective_cycle_and_is_consumed_once(self) -> None:
+        producer = top_level_block(
+            self.effects, "zg361_b2_publish_pip_performance_evidence_effect"
+        )
+        consumer = top_level_block(
+            self.effects, "zg361_b2_consume_pip_performance_evidence_effect"
+        )
+        self.assertIn(
+            "zg361_b2_pip_performance_evidence_source_cycle value = var:zg361_b2_pip_cycle",
+            producer,
+        )
+        self.assertIn(
+            "zg361_b2_pip_performance_evidence_due_cycle value = var:zg361_b2_pip_cycle",
+            producer,
+        )
+        self.assertIn(
+            "zg361_b2_pip_performance_evidence_due_cycle add = 1", producer
+        )
+        for token in (
+            "has_character_flag = zg361_b1_cycle_active",
+            "root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle",
+            "NOT = { has_character_flag = zg361_b1_cycle_active }",
+            "root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_source_cycle",
+            "zg361_b2_pip_performance_evidence_consumed_cycle value = var:zg361_b2_pip_performance_evidence_due_cycle",
+            "zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_cycle_serial",
+        ):
+            self.assertIn(token, consumer)
+        self.assertNotIn(
+            "root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_due_cycle",
+            consumer,
+        )
+
+        # Executable truth table for the two engine orderings.  On active B1,
+        # the current frozen serial must reach source+1.  On legacy, the next
+        # compute still sees review_serial==source because increment happens
+        # after compute; the pending receipt itself does not exist earlier.
+        def eligible(
+            *, active_b1: bool, b1_serial: int, review_serial: int,
+            source_cycle: int, pending: bool = True,
+        ) -> bool:
+            due_cycle = source_cycle + 1
+            if not pending:
+                return False
+            if active_b1:
+                return b1_serial >= due_cycle
+            return review_serial >= source_cycle
+
+        self.assertFalse(
+            eligible(active_b1=True, b1_serial=7, review_serial=7, source_cycle=7)
+        )
+        self.assertTrue(
+            eligible(active_b1=True, b1_serial=8, review_serial=7, source_cycle=7)
+        )
+        self.assertFalse(
+            eligible(
+                active_b1=False,
+                b1_serial=0,
+                review_serial=7,
+                source_cycle=7,
+                pending=False,
+            )
+        )
+        self.assertTrue(
+            eligible(active_b1=False, b1_serial=0, review_serial=7, source_cycle=7)
+        )
+        self.assertEqual(consumer.count(
+            "zg361_b2_pip_performance_evidence_status value = 2"
+        ), 1)
+        midpoint = top_level_block(self.effects, "zg361_b2_record_pip_midpoint_effect")
+        self.assertIn("zg361_b2_pip_midpoint_resource_delivery_valid value = 1", midpoint)
+        self.assertIn("zg361_b2_pip_midpoint_progress_status value = 0", midpoint)
+        self.assertIn("zg361_b2_pip_midpoint_progress_red_code value = 1", midpoint)
+        midpoint_event = top_level_block(self.events, "zg361b2.99")
+        for suffix in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b2_pip_{suffix} = scope:zg361_b2_pip_deadline_{suffix}", midpoint_event)
+        self.assertIn("zg361_b2_record_pip_midpoint_effect = yes", midpoint_event)
         escalation = top_level_block(
             self.effects, "zg361_b2_publish_evidence_escalation_effect"
         )
@@ -759,6 +894,38 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         self.assertIn("zg361_b2_m359_corrected_grade_before value = 1", quota_open)
         self.assertIn("zg361_b2_m359_boundary_grade_after value = 1", quota_open)
+
+    def test_active_pip_identity_survives_later_result_freezes(self) -> None:
+        frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
+        self.assertIn("NOT = { var:zg361_b2_m015_object_active = 1 }", frozen)
+        self.assertIn("NOT = { var:zg361_b2_m016_object_active = 1 }", frozen)
+        self.assertIn("NOT = { var:zg361_b2_m017_object_active = 1 }", frozen)
+        for mechanism_id in (15, 16, 17):
+            opened = top_level_block(
+                self.effects,
+                f"zg361_b2_m{mechanism_id:03d}_open_business_object_effect",
+            )
+            consumed = top_level_block(
+                self.effects,
+                f"zg361_b2_m{mechanism_id:03d}_consume_business_object_effect",
+            )
+            for suffix in ("owner", "cycle"):
+                self.assertIn(
+                    f"zg361_b2_m{mechanism_id:03d}_object_{suffix} value = var:zg361_b2_pip_{suffix}",
+                    opened,
+                )
+                self.assertIn(
+                    f"zg361_b2_m{mechanism_id:03d}_object_{suffix} = var:zg361_b2_pip_{suffix}",
+                    consumed,
+                )
+            self.assertIn(
+                f"zg361_b2_m{mechanism_id:03d}_object_receipt_case value = var:zg361_b2_pip_case",
+                opened,
+            )
+            self.assertIn(
+                f"zg361_b2_m{mechanism_id:03d}_object_receipt_case = var:zg361_b2_pip_case",
+                consumed,
+            )
 
     def test_358_route_b_aggravates_with_an_actual_bounded_receipt(self) -> None:
         aggravate = top_level_block(

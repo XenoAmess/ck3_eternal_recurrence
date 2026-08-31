@@ -136,9 +136,6 @@ zg361_run_review_effect = {
 			else = { set_variable = { name = zg361_prev_merit_level value = 0 } }
 			remove_variable = zg361_slacking
 			remove_variable = zg361_striving
-			remove_variable = zg361_recommended
-			remove_variable = zg361_slandered
-			remove_variable = zg361_slander_backfire
 		}
 
 		# 4. B1 先开 30 日影子档；旧存档即时链才直接进入校准/结算。
@@ -195,9 +192,6 @@ zg361_run_review_effect = {
 					else = { set_variable = { name = zg361_prev_merit_level value = 0 } }
 					remove_variable = zg361_slacking
 					remove_variable = zg361_striving
-					remove_variable = zg361_recommended
-					remove_variable = zg361_slandered
-					remove_variable = zg361_slander_backfire
 				}
 				if = {
 					limit = { has_character_flag = zg361_b1_cycle_active }
@@ -241,6 +235,9 @@ zg361_compute_kpi_effect = {
 	set_variable = { name = zg361_evidence_jingcha value = zg361_kpi_jingcha_evidence_value }
 	set_variable = { name = zg361_evidence_organization value = zg361_kpi_organization_evidence_value }
 	set_variable = { name = zg361_kpi value = zg361_kpi_value }
+	# A terminal B2 PIP receipt contributes once to the next eligible real KPI
+	# computation. The unique B2 settlement owns the amount and source case.
+	zg361_b2_consume_pip_performance_evidence_effect = yes
 	# B2 management/fairness debt is consumed only by this next real KPI write.
 	zg361_b2_consume_management_debt_effect = yes
 	# #357 最小事实层：先按冻结 KPI 得出绝对档，再由排名/配额/校准决定终档。
@@ -689,7 +686,6 @@ zg361_apply_grade_effect = {
 	remove_character_modifier = zg361_grade_375
 	remove_character_modifier = zg361_grade_35
 	remove_character_modifier = zg361_grade_325
-	remove_character_modifier = zg361_pip
 	zg361_freeze_result_case_effect = yes
 
 	if = {
@@ -910,7 +906,6 @@ zg361_settle_delivered_325_effect = {
 		}
 
 		add_character_modifier = { modifier = zg361_grade_325 years = 1 }
-		add_character_modifier = { modifier = zg361_pip years = 1 }
 		set_variable = { name = zg361_result_salary_cut_active value = 1 }
 
 		# 地方国库 receipt：冻结扣前/扣后差额，不再把应扣常量冒充实扣金额。

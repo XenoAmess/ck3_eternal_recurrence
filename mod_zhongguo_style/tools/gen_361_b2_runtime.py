@@ -96,6 +96,12 @@ zg361_b2_consume_due_policy_debts_effect = {
 
     for mechanism_id in CORE_IDS:
         key = f"{mechanism_id:03d}"
+        pip_owned = mechanism_id in (15, 16, 17)
+        object_owner = "var:zg361_b2_pip_owner" if pip_owned else "var:zg361_b2_case_owner"
+        object_cycle = "var:zg361_b2_pip_cycle" if pip_owned else "var:zg361_b2_case_cycle"
+        object_case = "var:zg361_b2_pip_case" if pip_owned else "var:zg361_b2_case_serial"
+        object_state = "var:zg361_b2_pip_state" if pip_owned else "var:zg361_b2_notice_state"
+        policy_owner = "var:zg361_b2_pip_owner" if pip_owned else "var:zg361_b2_case_owner"
         workforce_receipt_publish = (
             f"\n\t\tzg361_b2_m{key}_publish_workforce_receipt_effect = yes"
             if mechanism_id in (358, 359)
@@ -105,8 +111,8 @@ zg361_b2_consume_due_policy_debts_effect = {
 zg361_b2_m{key}_resolve_policy_effect = {{
 \tset_variable = {{ name = zg361_b2_m{key}_route value = 1 }}
 \tif = {{
-\t\tlimit = {{ var:zg361_b2_case_owner = {{ has_variable = zg361_mechanism_{key}_choice }} }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_route value = var:zg361_b2_case_owner.var:zg361_mechanism_{key}_choice }}
+\t\tlimit = {{ {policy_owner} = {{ has_variable = zg361_mechanism_{key}_choice }} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_route value = {policy_owner}.var:zg361_mechanism_{key}_choice }}
 \t}}
 }}
 
@@ -143,15 +149,15 @@ zg361_b2_m{key}_open_business_object_effect = {{
 \t\tlimit = {{
 \t\t\tOR = {{
 \t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
-\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = var:zg361_b2_case_serial }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = {object_case} }}
 \t\t\t}}
 \t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
 \t\t}}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = var:zg361_b2_case_owner }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = {object_owner} }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_subject value = this }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_cycle value = var:zg361_b2_case_cycle }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_receipt_case value = var:zg361_b2_case_serial }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_state value = var:zg361_b2_notice_state }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_cycle value = {object_cycle} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_receipt_case value = {object_case} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_state value = {object_state} }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_route value = var:zg361_b2_m{key}_route }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_active value = 1 }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_consumed value = 0 }}
@@ -168,15 +174,15 @@ zg361_b2_m{key}_consume_business_object_effect = {{
 \t\tlimit = {{
 \t\t\tvar:zg361_b2_m{key}_object_active = 1
 \t\t\tvar:zg361_b2_m{key}_object_consumed = 0
-\t\t\tvar:zg361_b2_m{key}_object_owner = var:zg361_b2_case_owner
+\t\t\tvar:zg361_b2_m{key}_object_owner = {object_owner}
 \t\t\tvar:zg361_b2_m{key}_object_subject = this
-\t\t\tvar:zg361_b2_m{key}_object_cycle = var:zg361_b2_case_cycle
-\t\t\tvar:zg361_b2_m{key}_object_receipt_case = var:zg361_b2_case_serial
+\t\t\tvar:zg361_b2_m{key}_object_cycle = {object_cycle}
+\t\t\tvar:zg361_b2_m{key}_object_receipt_case = {object_case}
 \t\t}}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_consumed value = 1 }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_active value = 0 }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_consumer_revision value = var:zg361_b2_case_feedback_revision }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_consumer_receipt_case value = var:zg361_b2_case_serial }}{workforce_receipt_publish}
+\t\tset_variable = {{ name = zg361_b2_m{key}_consumer_receipt_case value = {object_case} }}{workforce_receipt_publish}
 \t}}
 }}
 ''')
@@ -477,11 +483,27 @@ zg361_b2_on_result_frozen_effect = {
 		set_variable = { name = zg361_b2_case_feedback_revision value = 1 }
 
 		# A new result case resets its own B2 rows, but a one-year retaliation
-		# observation has separate identity and survives the next result freeze.
+		# observation and an active PIP have their own immutable identities.  The
+		# latter must survive a later result freeze until its D+365 settlement and
+		# exact capacity release have closed.
 		set_variable = { name = zg361_b2_m014_state value = 0 }
-		set_variable = { name = zg361_b2_m015_state value = 0 }
-		set_variable = { name = zg361_b2_m016_state value = 0 }
-		set_variable = { name = zg361_b2_m017_state value = 0 }
+		if = {
+			limit = {
+				NOT = { var:zg361_b2_m015_object_active = 1 }
+				NOT = { var:zg361_b2_m016_object_active = 1 }
+				NOT = { var:zg361_b2_m017_object_active = 1 }
+				NOT = {
+					OR = {
+						var:zg361_b2_pip_state = 1
+						var:zg361_b2_pip_state = 2
+						var:zg361_b2_pip_state = 4
+					}
+				}
+			}
+			set_variable = { name = zg361_b2_m015_state value = 0 }
+			set_variable = { name = zg361_b2_m016_state value = 0 }
+			set_variable = { name = zg361_b2_m017_state value = 0 }
+		}
 		set_variable = { name = zg361_b2_m069_state value = 0 }
 		set_variable = { name = zg361_b2_m069_receipt_serial value = 0 }
 		set_variable = { name = zg361_b2_m071_state value = 0 }
@@ -689,18 +711,73 @@ zg361_b2_m081_publish_case_projection_effect = {
 # ---------------------------------------------------------------------------
 
 zg361_b2_m015_open_pip_effect = {
-	zg361_b2_m015_open_business_object_effect = yes
+	# #182 and every later PP projection consume this frozen gate.  Presence of
+	# an evidence field is not evidence: forced-distribution 3.25 with a healthy
+	# absolute result therefore does not silently become a PIP.
+	set_variable = { name = zg361_b2_pip_gate_owner value = var:zg361_b2_case_owner }
+	set_variable = { name = zg361_b2_pip_gate_subject value = this }
+	set_variable = { name = zg361_b2_pip_gate_cycle value = var:zg361_b2_case_cycle }
+	set_variable = { name = zg361_b2_pip_gate_case value = var:zg361_b2_case_serial }
+	set_variable = { name = zg361_b2_pip_gate_threshold value = 3 }
+	set_variable = { name = zg361_b2_pip_gate_component_count value = 0 }
+	set_variable = { name = zg361_b2_pip_gate_evidence_complete value = 0 }
+	set_variable = { name = zg361_b2_pip_gate_status value = 0 } # typed RED until the frozen facts exist
 	if = {
 		limit = {
-			var:zg361_b2_m015_object_active = 1
-			var:zg361_result_grade = 1
-			var:zg361_b2_m015_state = 0
+			has_variable = zg361_result_absolute_grade
+			has_variable = zg361_result_kpi_frozen
+			has_variable = zg361_result_evidence_governance
+			has_variable = zg361_result_evidence_capability
+			has_variable = zg361_result_evidence_growth
+			has_variable = zg361_result_evidence_superior
+			has_variable = zg361_result_evidence_values
+			has_variable = zg361_result_evidence_collaboration
+			has_variable = zg361_result_evidence_jingcha
+			has_variable = zg361_result_evidence_organization
+		}
+		set_variable = { name = zg361_b2_pip_gate_evidence_complete value = 1 }
+		if = { limit = { var:zg361_result_absolute_grade = 1 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_kpi_frozen < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_governance < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_capability < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_growth < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_superior < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_values < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_collaboration < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_jingcha < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		if = { limit = { var:zg361_result_evidence_organization < 0 } change_variable = { name = zg361_b2_pip_gate_component_count add = 1 } }
+		set_variable = { name = zg361_b2_pip_gate_status value = 2 } # evidence complete, below threshold
+		if = {
+			limit = {
+				var:zg361_result_grade = 1
+				var:zg361_b2_pip_gate_component_count >= var:zg361_b2_pip_gate_threshold
+			}
+			set_variable = { name = zg361_b2_pip_gate_status value = 1 }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_b2_pip_gate_status = 1
+			NOT = { var:zg361_b2_m015_object_active = 1 }
+			NOT = { var:zg361_b2_m016_object_active = 1 }
+			NOT = { var:zg361_b2_m017_object_active = 1 }
+			NOT = {
+				OR = {
+					var:zg361_b2_pip_state = 1
+					var:zg361_b2_pip_state = 2
+					var:zg361_b2_pip_state = 4
+				}
+			}
 		}
 		set_variable = { name = zg361_b2_pip_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_pip_subject value = this }
 		set_variable = { name = zg361_b2_pip_cycle value = var:zg361_b2_case_cycle }
 		set_variable = { name = zg361_b2_pip_case value = var:zg361_b2_case_serial }
-		set_variable = { name = zg361_b2_pip_state value = 1 } # acknowledgement pending
+		set_variable = { name = zg361_b2_pip_state value = 0 } # provisional until policy/object gate
+		zg361_b2_m015_open_business_object_effect = yes
+		if = {
+			limit = { var:zg361_b2_m015_object_active = 1 }
+			set_variable = { name = zg361_b2_pip_state value = 1 } # acknowledgement pending
 		set_variable = { name = zg361_b2_pip_task_kind value = 3 } # collaboration/default
 		if = {
 			limit = { is_governor = yes }
@@ -724,8 +801,12 @@ zg361_b2_m015_open_pip_effect = {
 			add_stress = minor_stress_gain
 		}
 		set_variable = { name = zg361_b2_pip_refusal_receipt value = 0 }
+		set_variable = { name = zg361_b2_pip_subject_response value = 0 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = 0 }
+		set_variable = { name = zg361_b2_pip_goal_revision_used value = 0 }
 		set_variable = { name = zg361_b2_m015_state value = 1 }
 		set_variable = { name = zg361_b2_m015_receipt_serial value = var:zg361_b2_pip_case }
+		add_character_modifier = { modifier = zg361_pip years = 1 }
 		if = {
 			limit = { is_ai = yes }
 			zg361_b2_accept_pip_effect = yes
@@ -738,6 +819,20 @@ zg361_b2_m015_open_pip_effect = {
 			save_scope_value_as = { name = zg361_b2_pip_prompt_state value = var:zg361_b2_pip_state }
 			trigger_event = { id = zg361b2.40 days = 2 }
 		}
+		}
+		else = {
+			# Route C records only its bounded policy debt; it cannot leave a
+			# provisional PIP identity for PP to mistake for a real case.
+			remove_variable = zg361_b2_pip_owner
+			remove_variable = zg361_b2_pip_subject
+			remove_variable = zg361_b2_pip_cycle
+			remove_variable = zg361_b2_pip_case
+			remove_variable = zg361_b2_pip_state
+		}
+	}
+	else_if = {
+		limit = { var:zg361_b2_pip_gate_status = 1 }
+		set_variable = { name = zg361_b2_pip_gate_status value = 3 } # qualified but another PIP is active
 	}
 }
 
@@ -745,9 +840,16 @@ zg361_b2_accept_pip_effect = {
 	if = {
 		limit = {
 			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_owner = var:zg361_b2_m015_object_owner
+			var:zg361_b2_pip_cycle = var:zg361_b2_m015_object_cycle
+			var:zg361_b2_pip_case = var:zg361_b2_m015_object_receipt_case
 			var:zg361_b2_pip_state = 1
 			var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case
+			var:zg361_b2_pip_subject_response = 0
 		}
+		set_variable = { name = zg361_b2_pip_subject_response value = 1 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_subject_response_author value = this }
 		set_variable = { name = zg361_b2_pip_state value = 2 } # executing
 		set_variable = { name = zg361_b2_m015_state value = 2 }
 		zg361_b2_m016_commit_support_effect = yes
@@ -757,7 +859,18 @@ zg361_b2_accept_pip_effect = {
 
 zg361_b2_negotiate_pip_effect = {
 	if = {
-		limit = { var:zg361_b2_pip_state = 1 }
+		limit = {
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_owner = var:zg361_b2_m015_object_owner
+			var:zg361_b2_pip_cycle = var:zg361_b2_m015_object_cycle
+			var:zg361_b2_pip_case = var:zg361_b2_m015_object_receipt_case
+			var:zg361_b2_pip_state = 1
+			var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case
+			var:zg361_b2_pip_subject_response = 0
+		}
+		set_variable = { name = zg361_b2_pip_subject_response value = 2 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_subject_response_author value = this }
 		set_variable = { name = zg361_b2_pip_goal_revision_used value = 1 }
 		set_variable = { name = zg361_b2_pip_state value = 2 }
 		set_variable = { name = zg361_b2_m015_state value = 2 }
@@ -769,13 +882,23 @@ zg361_b2_negotiate_pip_effect = {
 zg361_b2_refuse_pip_effect = {
 	if = {
 		limit = {
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_owner = var:zg361_b2_m015_object_owner
+			var:zg361_b2_pip_cycle = var:zg361_b2_m015_object_cycle
+			var:zg361_b2_pip_case = var:zg361_b2_m015_object_receipt_case
 			var:zg361_b2_pip_state = 1
 			var:zg361_b2_pip_refusal_receipt = 0
+			var:zg361_b2_pip_subject_response = 0
 		}
+		set_variable = { name = zg361_b2_pip_subject_response value = 3 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_subject_response_author value = this }
 		set_variable = { name = zg361_b2_pip_refusal_receipt value = var:zg361_b2_pip_case }
 		set_variable = { name = zg361_b2_pip_state value = 5 } # refused terminal
 		set_variable = { name = zg361_b2_m015_state value = 5 }
-		set_variable = { name = zg361_b2_next_cycle_pip_refusal_evidence value = 1 }
+		set_variable = { name = zg361_b2_pip_performance_evidence_delta value = -15 }
+		zg361_b2_publish_pip_performance_evidence_effect = yes
+		remove_character_modifier = zg361_pip
 		zg361_b2_m015_consume_business_object_effect = yes
 		# Refusal is next-cycle evidence only; it does not settle another current penalty.
 		debug_log = "ZG361B2: PIP refusal recorded without current-cycle double penalty"
@@ -877,28 +1000,125 @@ zg361_b2_release_pip_support_effect = {
 	}
 }
 
+zg361_b2_publish_pip_performance_evidence_effect = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_pip_performance_evidence_status }
+				NOT = { var:zg361_b2_pip_performance_evidence_status = 1 }
+			}
+			OR = {
+				var:zg361_b2_pip_performance_evidence_delta = 10
+				var:zg361_b2_pip_performance_evidence_delta = -10
+				var:zg361_b2_pip_performance_evidence_delta = -15
+			}
+		}
+		set_variable = { name = zg361_b2_pip_performance_evidence_owner value = var:zg361_b2_pip_owner }
+		set_variable = { name = zg361_b2_pip_performance_evidence_subject value = this }
+		set_variable = { name = zg361_b2_pip_performance_evidence_source_cycle value = var:zg361_b2_pip_cycle }
+		set_variable = { name = zg361_b2_pip_performance_evidence_source_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_performance_evidence_due_cycle value = var:zg361_b2_pip_cycle }
+		change_variable = { name = zg361_b2_pip_performance_evidence_due_cycle add = 1 }
+		set_variable = { name = zg361_b2_pip_performance_evidence_status value = 1 }
+	}
+	else = { debug_log = "ZG361B2: pending PIP performance evidence conserved; duplicate publish ignored" }
+}
+
+zg361_b2_record_pip_midpoint_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_state = 2
+			OR = {
+				NOT = { has_variable = zg361_b2_pip_midpoint_receipt }
+				NOT = { var:zg361_b2_pip_midpoint_receipt = var:zg361_b2_pip_case }
+			}
+		}
+		set_variable = { name = zg361_b2_pip_midpoint_receipt value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_midpoint_resource_delivery_valid value = 0 }
+		if = {
+			limit = {
+				var:zg361_b2_pip_support_reserved = 1
+				var:zg361_b2_pip_support_budget_spent = 25
+				var:zg361_b2_pip_support_hours = 12
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_resource_delivery_valid value = 1 }
+		}
+		# CK3 currently exposes no real task-progress producer for this product.
+		# Keep that missing observation typed and visible; support delivery is not
+		# allowed to masquerade as employee progress.
+		set_variable = { name = zg361_b2_pip_midpoint_progress_status value = 0 }
+		set_variable = { name = zg361_b2_pip_midpoint_progress_red_code value = 1 }
+		set_variable = { name = zg361_b2_pip_midpoint_state value = 2 }
+	}
+}
+
 zg361_b2_schedule_pip_deadline_effect = {
 	var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_pip_deadline_owner }
 	save_scope_as = zg361_b2_pip_deadline_subject
 	save_scope_value_as = { name = zg361_b2_pip_deadline_cycle value = var:zg361_b2_pip_cycle }
 	save_scope_value_as = { name = zg361_b2_pip_deadline_case value = var:zg361_b2_pip_case }
 	save_scope_value_as = { name = zg361_b2_pip_deadline_state value = var:zg361_b2_pip_state }
+	trigger_event = { id = zg361b2.99 days = 180 }
 	trigger_event = { id = zg361b2.100 days = 365 }
 }
 
 zg361_b2_resolve_pip_due_effect = {
 	if = {
 		limit = {
+			var:zg361_b2_pip_state = 2
+			OR = {
+				NOT = { has_variable = zg361_b2_pip_settlement_receipt }
+				NOT = { var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case }
+			}
+		}
+		set_variable = { name = zg361_b2_pip_outcome_code value = 2 }
+		if = {
+			limit = {
 			has_variable = zg361_result_cycle_serial
 			var:zg361_result_cycle_serial > var:zg361_b2_pip_cycle
 			has_variable = zg361_last_grade
 			var:zg361_last_grade >= 2
 		}
-		set_variable = { name = zg361_b2_pip_state value = 3 } # graduated
+			set_variable = { name = zg361_b2_pip_outcome_code value = 1 }
+		}
+		zg361_b2_settle_pip_outcome_effect = yes
+	}
+	else = { debug_log = "ZG361B2: duplicate or stale PIP settlement ignored" }
+}
+
+# The only graduation/failure writer.  PP may project this receipt but never
+# calls it and never releases capacity or signs for the assessed official.
+zg361_b2_settle_pip_outcome_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_state = 2
+			var:zg361_b2_m015_object_owner = var:zg361_b2_pip_owner
+			var:zg361_b2_m015_object_cycle = var:zg361_b2_pip_cycle
+			var:zg361_b2_m015_object_receipt_case = var:zg361_b2_pip_case
+			OR = {
+				var:zg361_b2_pip_outcome_code = 1
+				var:zg361_b2_pip_outcome_code = 2
+			}
+			OR = {
+				NOT = { has_variable = zg361_b2_pip_settlement_receipt }
+				NOT = { var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case }
+			}
+		}
+		set_variable = { name = zg361_b2_pip_settlement_receipt value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_outcome_result_cycle value = var:zg361_result_cycle_serial }
+		set_variable = { name = zg361_b2_pip_outcome_result_case value = var:zg361_result_case_serial }
+		set_variable = { name = zg361_b2_pip_outcome_result_grade value = var:zg361_last_grade }
+		set_variable = { name = zg361_b2_pip_stability_days_observed value = 365 }
+		set_variable = { name = zg361_b2_pip_independent_review_status value = 0 }
+		set_variable = { name = zg361_b2_pip_independent_review_red_code value = 2 }
+		remove_character_modifier = zg361_pip
+		if = {
+			limit = { var:zg361_b2_pip_outcome_code = 1 }
+			set_variable = { name = zg361_b2_pip_state value = 3 } # graduated
 		set_variable = { name = zg361_b2_m015_state value = 3 }
 		set_variable = { name = zg361_b2_m016_state value = 3 }
 		set_variable = { name = zg361_b2_pip_graduation_receipt value = var:zg361_b2_pip_case }
-		remove_character_modifier = zg361_pip
+		set_variable = { name = zg361_b2_pip_performance_evidence_delta value = 10 }
 		if = {
 			limit = { has_variable = zg361_streak_bottom var:zg361_streak_bottom >= 1 }
 			change_variable = { name = zg361_streak_bottom add = -1 }
@@ -906,11 +1126,13 @@ zg361_b2_resolve_pip_due_effect = {
 		zg361_b2_release_pip_support_effect = yes
 		zg361_b2_m015_consume_business_object_effect = yes
 		zg361_b2_m016_consume_business_object_effect = yes
-	}
-	else = {
+		}
+		else = {
 		set_variable = { name = zg361_b2_pip_state value = 4 } # failed/timeout
 		set_variable = { name = zg361_b2_m015_state value = 4 }
 		set_variable = { name = zg361_b2_m016_state value = 4 }
+		set_variable = { name = zg361_b2_pip_failure_receipt value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_performance_evidence_delta value = -10 }
 		if = {
 			limit = { var:zg361_b2_pip_support_absent = 1 }
 			set_variable = { name = zg361_b2_pip_no_support_liability value = 1 }
@@ -920,6 +1142,8 @@ zg361_b2_resolve_pip_due_effect = {
 		zg361_b2_m015_consume_business_object_effect = yes
 		zg361_b2_m016_consume_business_object_effect = yes
 		zg361_b2_m017_open_disposition_effect = yes
+		}
+		zg361_b2_publish_pip_performance_evidence_effect = yes
 	}
 }
 
@@ -2569,6 +2793,59 @@ zg361_b2_apply_due_quota_debt_effect = {
 
 # Management responsibility and metric-risk debts are consumed by the next
 # real KPI computation of that manager, never by the appealed subject's case.
+zg361_b2_consume_pip_performance_evidence_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_performance_evidence_status = 1
+			var:zg361_b2_pip_performance_evidence_subject = this
+			has_variable = zg361_b2_pip_performance_evidence_source_cycle
+			has_variable = zg361_b2_pip_performance_evidence_due_cycle
+			# The KPI hook runs before either cycle path publishes its new serial.
+			# Active B1 therefore consumes against its prospective frozen serial;
+			# legacy/no-B1 consumes when the previous serial reaches source_cycle.
+			OR = {
+				AND = {
+					root = {
+						has_character_flag = zg361_b1_cycle_active
+						has_variable = zg361_b1_cycle_serial
+					}
+					root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+				}
+				AND = {
+					root = {
+						NOT = { has_character_flag = zg361_b1_cycle_active }
+						has_variable = zg361_review_serial
+					}
+					root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_source_cycle
+				}
+			}
+			OR = {
+				var:zg361_b2_pip_performance_evidence_delta = 10
+				var:zg361_b2_pip_performance_evidence_delta = -10
+				var:zg361_b2_pip_performance_evidence_delta = -15
+			}
+		}
+		change_variable = { name = zg361_evidence_growth add = var:zg361_b2_pip_performance_evidence_delta }
+		change_variable = { name = zg361_kpi add = var:zg361_b2_pip_performance_evidence_delta }
+		set_variable = { name = zg361_b2_pip_performance_evidence_status value = 2 }
+		# Legacy records the producer's due cycle. Active B1 records the actual
+		# frozen serial that admitted this compute (including a safe catch-up).
+		set_variable = { name = zg361_b2_pip_performance_evidence_consumed_cycle value = var:zg361_b2_pip_performance_evidence_due_cycle }
+		if = {
+			limit = {
+				root = {
+					has_character_flag = zg361_b1_cycle_active
+					has_variable = zg361_b1_cycle_serial
+				}
+				root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+			}
+			set_variable = { name = zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+		}
+		set_variable = { name = zg361_b2_pip_performance_evidence_consumed_case value = var:zg361_b2_pip_performance_evidence_source_case }
+		debug_log = "ZG361B2: terminal PIP evidence consumed once by a later KPI computation"
+	}
+}
+
 zg361_b2_consume_management_debt_effect = {
 	if = {
 		limit = { has_variable = zg361_b2_management_debt var:zg361_b2_management_debt >= 1 }
@@ -2690,6 +2967,30 @@ zg361b2.61 = {
 			zg361_b2_m075_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale voluntary-exit D+30 ticket ignored" }
+	}
+}
+
+# #016 D+180 support receipt.  The event records real delivery facts and keeps
+# missing task-progress observation RED; it never manufactures improvement.
+zg361b2.99 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_pip_deadline_owner
+				exists = scope:zg361_b2_pip_deadline_subject
+				this = scope:zg361_b2_pip_deadline_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_pip_deadline_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_pip_deadline_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_pip_deadline_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_pip_deadline_case
+				var:zg361_b2_pip_state = scope:zg361_b2_pip_deadline_state
+				var:zg361_b2_pip_state = 2
+			}
+			zg361_b2_record_pip_midpoint_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale PIP D+180 ticket ignored" }
 	}
 }
 
