@@ -512,6 +512,23 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertIn(f"has_variable = zg361_case_{domain}_active", adapter)
             self.assertIn(f"var:zg361_case_{domain}_active = 0", adapter)
 
+    def test_portfolio_subject_has_a_reachable_persistent_producer(self) -> None:
+        initializer = block(self.effects, "zg361_p3_initialize_portfolio_effect")
+        aa_launch = block(self.effects, "zg361_p3_aa_launch_effect")
+        self.assertEqual(
+            initializer.count("set_variable = { name = zg361_p3_portfolio_subject value = this }"),
+            1,
+        )
+        self.assertIn("save_temporary_scope_as = zg361_p3_portfolio_subject_scope", initializer)
+        self.assertNotIn("save_scope_as = zg361_p3_portfolio_subject\n", initializer)
+        self.assertNotIn("scope:zg361_p3_portfolio_subject =", initializer)
+        self.assertIn("scope:zg361_p3_portfolio_subject_scope =", initializer)
+        self.assertIn("zg361_p3_initialize_portfolio_effect = yes", aa_launch)
+        for event_id in (gen.QUEUE_EVENTS["aa"], gen.QUEUE_EVENTS["ag"]):
+            queued = block(self.events, f"zg361p3.{event_id}")
+            self.assertIn("has_variable = zg361_p3_portfolio_subject", queued)
+            self.assertIn("var:zg361_p3_portfolio_subject = scope:", queued)
+
     def test_only_aa_launch_initializes_portfolio_after_successful_open(self) -> None:
         for domain in gen.DOMAIN_ORDER:
             launch = block(self.effects, f"zg361_p3_{domain}_launch_effect")

@@ -51,6 +51,8 @@ ROOT 必须通过既有 `zg361_is_celestial_liege_trigger`，也就是在世、�
 
 玩家只会在首案打开时收到第一张卡。每个编号的下一张卡均通过 `days = 1` 排队；E→I、I→J、J→R 三条跨案卷边使用带完整关闭身份校验的 hidden D+1 queue event。故 adapter 不会在同一游戏日弹出 27 个窗口；AI 仍只有无 GUI 的后台队列。
 
+initializer 必须同时保存两种不同生命周期的 subject 引用：`zg361_cp_portfolio_subject_scope` 只是在当前调用内供跨 scope 写值的 temporary saved scope；`zg361_cp_portfolio_subject` 必须用 `set_variable ... value = this` 写成受评人身上的持久 character variable，供下一周期 deferred cleanup 在存读档后继续做身份核验。saved scope 不能替代持久 variable。
+
 本包不新增 on_action 或中央调度；中央现已通过同一个公开 adapter 调用本包，包内只拥有一次 due pass，避免多入口重复扣分。
 
 ## 五元身份、receipt 与 A/B 事务

@@ -505,6 +505,22 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
         self.assertEqual(entry.count("zg361_cp_consume_due_policy_debts_effect = yes"), 1)
         self.assertIn("zg361_cp_policy_debt_consumer_blocked", entry)
 
+    def test_portfolio_subject_has_a_reachable_persistent_producer(self) -> None:
+        initializer = block(self.effects, "zg361_cp_initialize_portfolio_effect")
+        launch = block(self.effects, "zg361_cp_e_launch_effect")
+        cleanup = block(self.effects, "zg361_cp_settle_deferred_portfolio_effect")
+        self.assertEqual(
+            initializer.count("set_variable = { name = zg361_cp_portfolio_subject value = this }"),
+            1,
+        )
+        self.assertIn("save_temporary_scope_as = zg361_cp_portfolio_subject_scope", initializer)
+        self.assertNotIn("save_scope_as = zg361_cp_portfolio_subject\n", initializer)
+        self.assertNotIn("scope:zg361_cp_portfolio_subject =", initializer)
+        self.assertIn("scope:zg361_cp_portfolio_subject_scope =", initializer)
+        self.assertIn("zg361_cp_initialize_portfolio_effect = yes", launch)
+        self.assertIn("has_variable = zg361_cp_portfolio_subject", cleanup)
+        self.assertIn("var:zg361_cp_portfolio_subject = this", cleanup)
+
     def test_first_c_makes_later_player_business_routes_unavailable(self) -> None:
         for spec in gen.MECHANISMS:
             event = block(self.events, f"zg361cp.{spec.mid}")

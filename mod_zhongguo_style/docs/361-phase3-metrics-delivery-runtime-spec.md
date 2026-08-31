@@ -241,6 +241,8 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 
 成功打开 AA 后，initializer 一次性冻结 portfolio owner/subject/cycle 和结果案卷 owner/subject/cycle/case/state，并在管理者侧写同周期 marker。相同管理者或相同受评人在同一制度周期重放入口均为 no-op；不得重置账本、债务字段、另开第二条长链或覆盖旧案卷。AA/AG/AJ 的 `launch_effect` 是包内 domain 入口，不是供 central、GUI 或 MCP 绕过 adapter 调用的公开 ABI。
 
+其中 `zg361_p3_portfolio_subject_scope` 只是 initializer 当前调用内的 temporary saved scope；跨日 hidden queue 与存读档后的身份核验必须读取由 `set_variable ... value = this` 写入受评人的持久 `zg361_p3_portfolio_subject` character variable。两者生命周期和命名空间不得混用。
+
 窗口节流合同如下：
 
 - adapter 只在 AA launch 前同步消费一次恰好到期的 C 债 aggregate，并只打开 AA；玩家当日只收到 AA 第一张业务卡，不会同时打开 AG 或 AJ。

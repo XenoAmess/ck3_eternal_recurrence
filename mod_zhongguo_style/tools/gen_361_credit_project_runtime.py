@@ -1320,7 +1320,8 @@ zg361_cp_{domain}_launch_effect = {{
 def render_portfolio_entries() -> str:
     return r'''# Freeze portfolio actors and finite books exactly once, then execute E -> I -> J -> R.
 zg361_cp_initialize_portfolio_effect = {
-	save_scope_as = zg361_cp_portfolio_subject
+	save_temporary_scope_as = zg361_cp_portfolio_subject_scope
+	set_variable = { name = zg361_cp_portfolio_subject value = this }
 	set_variable = { name = zg361_cp_portfolio_cycle value = root.var:zg361_review_serial }
 	root = { set_variable = { name = zg361_cp_manager_portfolio_cycle value = var:zg361_review_serial } }
 	set_variable = { name = zg361_cp_historical_owner value = root }
@@ -1333,7 +1334,7 @@ zg361_cp_initialize_portfolio_effect = {
 		if = {
 			limit = { exists = liege liege = { zg361_is_celestial_liege_trigger = yes } }
 			liege = { save_temporary_scope_as = zg361_cp_successor_candidate }
-			scope:zg361_cp_portfolio_subject = {
+			scope:zg361_cp_portfolio_subject_scope = {
 				set_variable = { name = zg361_cp_successor_manager value = scope:zg361_cp_successor_candidate }
 				set_variable = { name = zg361_cp_successor_valid value = 1 }
 				set_variable = { name = zg361_cp_cross_reviewer value = scope:zg361_cp_successor_candidate }
@@ -1343,12 +1344,12 @@ zg361_cp_initialize_portfolio_effect = {
 		ordered_vassal = {
 			limit = {
 				zg361_is_reviewable_vassal_trigger = yes
-				NOT = { this = scope:zg361_cp_portfolio_subject }
+				NOT = { this = scope:zg361_cp_portfolio_subject_scope }
 			}
 			order_by = stewardship
 			position = 0
 			save_temporary_scope_as = zg361_cp_cross_candidate
-			scope:zg361_cp_portfolio_subject = {
+			scope:zg361_cp_portfolio_subject_scope = {
 				set_variable = { name = zg361_cp_cross_reviewer value = scope:zg361_cp_cross_candidate }
 				set_variable = { name = zg361_cp_cross_reviewer_valid value = 1 }
 			}
