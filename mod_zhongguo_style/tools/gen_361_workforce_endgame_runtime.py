@@ -150,6 +150,7 @@ HANDOFF_EVENT = {1: 52640, 2: 52641, 3: 52642}
 HANDOFF_RELAY_EVENT = {2: 52650, 3: 52651}
 NONMANAGER_NA_IDS = frozenset({360, 361})
 NONMANAGER_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS - NONMANAGER_NA_IDS)
+CHARTER_HISTORY_ACCRUAL_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS) - 1
 
 
 def _load_mechanisms() -> tuple[Mechanism, ...]:
@@ -591,59 +592,86 @@ def _collective_business_writes(choice: int) -> list[str]:
     return lines
 
 
-def _charter_external_checks() -> list[str]:
+def _charter_evidence_checks() -> list[str]:
+    """Validate the product-owned report projected from three real stage receipts."""
+
     checks = [
-        f"has_variable = {PREFIX}_al_external_long_report_hash",
-        f"has_variable = {PREFIX}_al_external_charter_id",
-        f"has_variable = {PREFIX}_al_external_charter_previous_id",
-        f"has_variable = {PREFIX}_al_external_charter_adopted_day",
-        f"has_variable = {PREFIX}_al_external_completed_cycles_hash",
-        f"has_variable = {PREFIX}_al_external_report_completed_cycles_hash",
-        f"has_variable = {PREFIX}_al_external_charter_previous_history_hash",
-        f"has_variable = {PREFIX}_al_external_charter_new_history_hash",
-        f"var:{PREFIX}_al_external_report_completed_cycles_hash = var:{PREFIX}_al_external_completed_cycles_hash",
-        f"NOT = {{ var:{PREFIX}_al_external_charter_new_history_hash = var:{PREFIX}_al_external_charter_previous_history_hash }}",
-    ]
-    for slot in (1, 2, 3):
-        for name in ("cycle", "receipt_id", "receipt_hash", "previous_hash"):
-            checks.append(f"has_variable = {PREFIX}_al_external_completed_{name}_{slot}")
-        checks += [
-            f"var:{PREFIX}_al_external_completed_cycle_{slot} >= 1",
-            f"var:{PREFIX}_al_external_completed_cycle_{slot} <= $TICKET_CYCLE$",
-            f"var:{PREFIX}_al_external_completed_receipt_id_{slot} > 0",
-            f"var:{PREFIX}_al_external_completed_receipt_hash_{slot} > 0",
-        ]
-    checks += [
-        f"var:{PREFIX}_al_external_completed_cycle_1 < var:{PREFIX}_al_external_completed_cycle_2",
-        f"var:{PREFIX}_al_external_completed_cycle_2 < var:{PREFIX}_al_external_completed_cycle_3",
-        f"var:{PREFIX}_al_external_completed_previous_hash_2 = var:{PREFIX}_al_external_completed_receipt_hash_1",
-        f"var:{PREFIX}_al_external_completed_previous_hash_3 = var:{PREFIX}_al_external_completed_receipt_hash_2",
-        f"var:{PREFIX}_al_external_completed_cycle_max = var:{PREFIX}_al_external_completed_cycle_3",
-        f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_id_1 = var:{PREFIX}_al_external_completed_receipt_id_2 }}",
-        f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_id_1 = var:{PREFIX}_al_external_completed_receipt_id_3 }}",
-        f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_id_2 = var:{PREFIX}_al_external_completed_receipt_id_3 }}",
-        f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_hash_1 = var:{PREFIX}_al_external_completed_receipt_hash_2 }}",
-        f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_hash_1 = var:{PREFIX}_al_external_completed_receipt_hash_3 }}",
-        f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_hash_2 = var:{PREFIX}_al_external_completed_receipt_hash_3 }}",
+        f"has_variable = {PREFIX}_m361_evidence_count",
+        f"has_variable = {PREFIX}_m361_evidence_ready",
+        f"has_variable = {PREFIX}_m361_evidence_consumed",
+        f"has_variable = {PREFIX}_m361_evidence_owner",
+        f"has_variable = {PREFIX}_m361_evidence_subject",
+        f"has_variable = {PREFIX}_m361_evidence_cycle",
+        f"has_variable = {PREFIX}_m361_evidence_case",
+        f"has_variable = {PREFIX}_m361_evidence_state",
+        f"has_variable = {PREFIX}_m361_prepared_report_id",
+        f"has_variable = {PREFIX}_m361_prepared_charter_id",
+        f"has_variable = {PREFIX}_m361_prepared_previous_charter_id",
+        f"has_variable = {PREFIX}_m361_prepared_previous_version",
+        f"has_variable = {PREFIX}_m361_prepared_adopted_cycle",
+        f"has_variable = {PREFIX}_m361_prepared_effective_cycle",
+        f"var:{PREFIX}_m361_evidence_count = 3",
+        f"var:{PREFIX}_m361_evidence_ready = 1",
+        f"var:{PREFIX}_m361_evidence_consumed = 0",
+        f"var:{PREFIX}_m361_evidence_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_m361_evidence_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m361_evidence_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m361_evidence_case = $TICKET_CASE$",
+        f"var:{PREFIX}_m361_evidence_state = 5",
+        f"var:{PREFIX}_m361_prepared_report_id > 0",
+        f"var:{PREFIX}_m361_prepared_charter_id > 0",
+        f"var:{PREFIX}_m361_prepared_adopted_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m361_prepared_effective_cycle = scope:{PREFIX}_expected_ticket_next_cycle",
         f"var:zg361_case_al_owner = {{",
+        f"\thas_variable = {PREFIX}_realm_charter_current_version",
         f"\thas_variable = {PREFIX}_realm_charter_current_id",
-        f"\thas_variable = {PREFIX}_realm_charter_current_cycle_hash",
         f"\thas_variable = {PREFIX}_realm_charter_current_report_id",
-        f"\thas_variable = {PREFIX}_realm_charter_current_adopted_day",
+        f"\thas_variable = {PREFIX}_realm_charter_current_adopted_cycle",
         f"\thas_variable = {PREFIX}_realm_charter_current_effective_cycle",
-        f"\thas_variable = {PREFIX}_realm_charter_history_tail_hash",
         f"\thas_variable = {PREFIX}_realm_charter_history_count",
+        f"\thas_variable = {PREFIX}_realm_charter_report_serial",
+        f"\thas_variable = {PREFIX}_realm_charter_id_serial",
         f"\tvar:{PREFIX}_realm_charter_history_count = var:{PREFIX}_realm_charter_current_version",
+        f"\tvar:{PREFIX}_realm_charter_current_version = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_previous_version",
+        f"\tvar:{PREFIX}_realm_charter_current_id = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_previous_charter_id",
+        f"\tvar:{PREFIX}_realm_charter_report_serial = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_report_id",
+        f"\tvar:{PREFIX}_realm_charter_id_serial = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_charter_id",
         "}",
         f"trigger_if = {{ limit = {{ var:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_version > 0 }} }}",
-        f"\tvar:{PREFIX}_al_external_charter_previous_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id",
-        f"\tvar:{PREFIX}_al_external_charter_previous_history_hash = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_history_tail_hash",
-        f"\tvar:{PREFIX}_al_external_charter_adopted_day > var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_adopted_day",
-        f"\tNOT = {{ var:{PREFIX}_al_external_completed_cycles_hash = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_cycle_hash }}",
-        f"\tNOT = {{ var:{PREFIX}_al_external_long_report_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_report_id }}",
-        f"\tvar:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_effective_cycle < scope:zg361_we_expected_ticket_next_cycle }}",
-        f"}} trigger_else = {{ var:{PREFIX}_al_external_charter_previous_id = 0 var:{PREFIX}_al_external_charter_previous_history_hash = 0 }}",
-        f"NOT = {{ var:{PREFIX}_al_external_charter_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}",
+        f"\tvar:{PREFIX}_m361_prepared_adopted_cycle > var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_adopted_cycle",
+        f"\tNOT = {{ var:{PREFIX}_m361_prepared_report_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_report_id }}",
+        f"\tNOT = {{ var:{PREFIX}_m361_prepared_charter_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}",
+        f"\tvar:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_effective_cycle < scope:{PREFIX}_expected_ticket_next_cycle }}",
+        f"}} trigger_else = {{ var:{PREFIX}_m361_prepared_previous_charter_id = 0 }}",
+    ]
+    for slot in (1, 2, 3):
+        for name in ("owner", "subject", "cycle", "case"):
+            checks += [
+                f"has_variable = {PREFIX}_m361_evidence_{name}_{slot}",
+                f"var:{PREFIX}_m361_evidence_{name}_{slot} = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_{name}_{slot}",
+            ]
+        for mid in (357, 358, 359):
+            for kind in ("id", "hash"):
+                checks += [
+                    f"has_variable = {PREFIX}_m361_evidence_m{mid}_receipt_{kind}_{slot}",
+                    f"var:{PREFIX}_m361_evidence_m{mid}_receipt_{kind}_{slot} = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_m{mid}_receipt_{kind}_{slot}",
+                ]
+        checks += [
+            f"var:{PREFIX}_m361_evidence_owner_{slot} = $TICKET_OWNER$",
+            f"var:{PREFIX}_m361_evidence_cycle_{slot} >= 1",
+            f"var:{PREFIX}_m361_evidence_case_{slot} > 0",
+        ]
+        for mid in (357, 358, 359):
+            checks += [
+                f"var:{PREFIX}_m361_evidence_m{mid}_receipt_id_{slot} > 0",
+                f"var:{PREFIX}_m361_evidence_m{mid}_receipt_hash_{slot} > 0",
+            ]
+    checks += [
+        f"var:{PREFIX}_m361_evidence_cycle_1 < var:{PREFIX}_m361_evidence_cycle_2",
+        f"var:{PREFIX}_m361_evidence_cycle_2 < var:{PREFIX}_m361_evidence_cycle_3",
+        f"var:{PREFIX}_m361_evidence_cycle_3 = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m361_evidence_subject_3 = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m361_evidence_case_3 = $TICKET_CASE$",
     ]
     return checks
 
@@ -656,38 +684,40 @@ def _charter_business_writes(choice: int) -> list[str]:
         _change("gold_available", -cost),
         _change("gold_paid", cost),
         _set("m361_previous_version", f"var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_version"),
-        _set("m361_previous_charter_id", f"var:{PREFIX}_al_external_charter_previous_id"),
-        _set("m361_charter_id", f"var:{PREFIX}_al_external_charter_id"),
-        _set("m361_adopted_day", f"var:{PREFIX}_al_external_charter_adopted_day"),
+        _set("m361_previous_charter_id", f"var:{PREFIX}_m361_prepared_previous_charter_id"),
+        _set("m361_charter_id", f"var:{PREFIX}_m361_prepared_charter_id"),
+        _set("m361_adopted_cycle", f"var:{PREFIX}_m361_prepared_adopted_cycle"),
         _set("m361_effective_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"),
         _set("m361_amendment_due_cycle", "{ value = $TICKET_CYCLE$ add = 3 }"),
         _set("m361_completed_evidence_count", 3),
-        _set("m361_completed_cycles_hash", f"var:{PREFIX}_al_external_completed_cycles_hash"),
-        _set("m361_long_report_id", f"var:{PREFIX}_al_external_long_report_id"),
-        _set("m361_long_report_hash", f"var:{PREFIX}_al_external_long_report_hash"),
-        _set("m361_report_completed_cycles_hash", f"var:{PREFIX}_al_external_report_completed_cycles_hash"),
-        _set("m361_previous_history_hash", f"var:{PREFIX}_al_external_charter_previous_history_hash"),
-        _set("m361_new_history_hash", f"var:{PREFIX}_al_external_charter_new_history_hash"),
-        _set("m361_long_report_frozen", 1),
+        _set("m361_report_id", f"var:{PREFIX}_m361_prepared_report_id"),
+        _set("m361_report_frozen", 1),
         _set("m361_visible_cost_gold", cost),
         _set("m361_history_reset", 0),
         _set("m361_future_install_pending", 1),
     ]
     for slot in (1, 2, 3):
-        for name in ("cycle", "receipt_id", "receipt_hash", "previous_hash"):
-            lines.append(_set(f"m361_completed_{name}_{slot}", f"var:{PREFIX}_al_external_completed_{name}_{slot}"))
+        for name in ("owner", "subject", "cycle", "case"):
+            lines.append(_set(f"m361_completed_{name}_{slot}", f"var:{PREFIX}_m361_evidence_{name}_{slot}"))
+        for mid in (357, 358, 359):
+            for kind in ("id", "hash"):
+                lines.append(
+                    _set(
+                        f"m361_completed_m{mid}_receipt_{kind}_{slot}",
+                        f"var:{PREFIX}_m361_evidence_m{mid}_receipt_{kind}_{slot}",
+                    )
+                )
     lines += [
-        f"var:zg361_case_al_owner = {{ if = {{ limit = {{ var:{PREFIX}_realm_charter_current_version = 0 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycle_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycle_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycle_3 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_id_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_id_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_id_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_id_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_id_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_id_3 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_hash_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_hash_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_hash_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_hash_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_hash_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_hash_3 }} set_variable = {{ name = {PREFIX}_realm_charter_long_report_anchor value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_long_report_id }} }} }}",
-        f"var:zg361_case_al_owner = {{ set_variable = {{ name = {PREFIX}_realm_charter_previous_version value = var:{PREFIX}_realm_charter_current_version }} set_variable = {{ name = {PREFIX}_realm_charter_previous_id value = var:{PREFIX}_realm_charter_current_id }} set_variable = {{ name = {PREFIX}_realm_charter_previous_cycle_hash value = var:{PREFIX}_realm_charter_current_cycle_hash }} set_variable = {{ name = {PREFIX}_realm_charter_previous_report_id value = var:{PREFIX}_realm_charter_current_report_id }} change_variable = {{ name = {PREFIX}_realm_charter_current_version add = 1 }} change_variable = {{ name = {PREFIX}_realm_charter_history_count add = 1 }} set_variable = {{ name = {PREFIX}_realm_charter_current_id value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_charter_id }} set_variable = {{ name = {PREFIX}_realm_charter_current_cycle_hash value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycles_hash }} set_variable = {{ name = {PREFIX}_realm_charter_current_report_id value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_long_report_id }} set_variable = {{ name = {PREFIX}_realm_charter_current_adopted_day value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_charter_adopted_day }} set_variable = {{ name = {PREFIX}_realm_charter_current_effective_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }} set_variable = {{ name = {PREFIX}_realm_charter_history_tail_hash value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_charter_new_history_hash }} set_variable = {{ name = {PREFIX}_realm_charter_last_case value = $TICKET_CASE$ }} set_variable = {{ name = {PREFIX}_realm_charter_last_report value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_long_report_id }} }}",
+        f"var:zg361_case_al_owner = {{ if = {{ limit = {{ var:{PREFIX}_realm_charter_current_version = 0 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_evidence_cycle_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_evidence_cycle_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_evidence_cycle_3 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_case_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_evidence_case_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_case_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_evidence_case_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_case_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_evidence_case_3 }} set_variable = {{ name = {PREFIX}_realm_charter_report_anchor value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_report_id }} }} }}",
+        f"var:zg361_case_al_owner = {{ set_variable = {{ name = {PREFIX}_realm_charter_previous_version value = var:{PREFIX}_realm_charter_current_version }} set_variable = {{ name = {PREFIX}_realm_charter_previous_id value = var:{PREFIX}_realm_charter_current_id }} set_variable = {{ name = {PREFIX}_realm_charter_previous_report_id value = var:{PREFIX}_realm_charter_current_report_id }} change_variable = {{ name = {PREFIX}_realm_charter_current_version add = 1 }} change_variable = {{ name = {PREFIX}_realm_charter_history_count add = 1 }} set_variable = {{ name = {PREFIX}_realm_charter_current_id value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_charter_id }} set_variable = {{ name = {PREFIX}_realm_charter_current_report_id value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_report_id }} set_variable = {{ name = {PREFIX}_realm_charter_current_adopted_cycle value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_adopted_cycle }} set_variable = {{ name = {PREFIX}_realm_charter_current_effective_cycle value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_effective_cycle }} set_variable = {{ name = {PREFIX}_realm_charter_last_case value = $TICKET_CASE$ }} set_variable = {{ name = {PREFIX}_realm_charter_last_report value = scope:{PREFIX}_al_subject.var:{PREFIX}_m361_prepared_report_id }} }}",
         _set("m361_adopted_version", f"var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_version"),
         _set("m361_previous_charter_version", f"var:zg361_case_al_owner.var:{PREFIX}_realm_charter_previous_version"),
-        _set("al_external_charter_evidence_consumed", 1),
-        _set("al_external_charter_evidence_ready", 0),
+        _set("m361_evidence_consumed", 1),
+        _set("m361_evidence_ready", 0),
         f"var:zg361_case_al_owner = {{ remove_short_term_gold = {cost} }}",
         f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[361]} days = 365 }}",
     ]
     return lines
-
 
 def _current_object_checks(spec: Mechanism) -> list[str]:
     """Require every semantic input to be a consumed object of this case.
@@ -1144,29 +1174,10 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         checks += _gold_check(5 if choice == 1 else 10) + [
             f"has_variable = {PREFIX}_al_external_stage_receipts_verified",
             f"var:{PREFIX}_al_external_stage_receipts_verified = 1",
-            f"has_variable = {PREFIX}_al_external_completed_cycle_receipt_count",
-            f"var:{PREFIX}_al_external_completed_cycle_receipt_count = 3",
-            f"has_variable = {PREFIX}_al_external_completed_cycle_max",
-            f"var:{PREFIX}_al_external_completed_cycle_max <= $TICKET_CYCLE$",
-            f"has_variable = {PREFIX}_al_external_long_report_id",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_ready",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_consumed",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_owner",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_subject",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_cycle",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_case",
-            f"has_variable = {PREFIX}_al_external_charter_evidence_state",
-            f"var:{PREFIX}_al_external_charter_evidence_ready = 1",
-            f"var:{PREFIX}_al_external_charter_evidence_consumed = 0",
-            f"var:{PREFIX}_al_external_charter_evidence_owner = $TICKET_OWNER$",
-            f"var:{PREFIX}_al_external_charter_evidence_subject = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_al_external_charter_evidence_cycle = $TICKET_CYCLE$",
-            f"var:{PREFIX}_al_external_charter_evidence_case = $TICKET_CASE$",
-            f"var:{PREFIX}_al_external_charter_evidence_state = 5",
             f"var:zg361_case_{d}_owner = {{ zg361_is_celestial_liege_trigger = yes }}",
             f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_realm_charter_current_version has_variable = zg361_review_serial var:zg361_review_serial >= 3 }}",
             f"var:zg361_case_{d}_owner = {{ trigger_if = {{ limit = {{ exists = liege }} NOT = {{ liege = {{ zg361_is_celestial_liege_trigger = yes }} }} }} trigger_else = {{ always = yes }} }}",
-            *_charter_external_checks(),
+            *_charter_evidence_checks(),
         ]
     return checks
 
@@ -1229,6 +1240,12 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             _change("policy_debt", 1),
             f"trigger_event = {{ id = {NAMESPACE}.{DEBT_EVENT[mid]} days = 365 }}",
         ]
+        if mid == 361:
+            lines += [
+                _set("m361_evidence_ready", 0),
+                _set("m361_evidence_consumed", 0),
+                _set("m361_evidence_deferred", 1),
+            ]
         return lines
 
     lines += [
@@ -1747,16 +1764,7 @@ else = {{
 	set_variable = {{ name = {PREFIX}_portfolio_status value = 5 }} # external dependency, not success
 }}"""
     if d == "al" and mid == 360:
-        return f"""{PREFIX}_al_schedule_stage_05_deadline_effect = yes
-if = {{
-\tlimit = {{ root = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
-\t{PREFIX}_m361_route_a_effect = {{
-\t\tTICKET_OWNER = var:zg361_case_al_owner
-\t\tTICKET_SUBJECT = this
-\t\tTICKET_CYCLE = var:zg361_case_al_cycle_serial
-\t\tTICKET_CASE = var:zg361_case_al_case_serial
-\t}}
-}}"""
+        return f"{PREFIX}_after_m360_history_gate_effect = yes"
     if d == "al" and mid == 361:
         return f"{PREFIX}_finalize_portfolio_effect = yes"
     if state < 6:
@@ -2019,11 +2027,11 @@ def render_portfolio_initialize() -> str:
 \t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_history_count }} }} set_variable = {{ name = {PREFIX}_realm_charter_history_count value = 0 }} }}
 \t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_current_id }} }} set_variable = {{ name = {PREFIX}_realm_charter_current_id value = 0 }} }}
 \t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_previous_id }} }} set_variable = {{ name = {PREFIX}_realm_charter_previous_id value = 0 }} }}
-\t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_current_cycle_hash }} }} set_variable = {{ name = {PREFIX}_realm_charter_current_cycle_hash value = 0 }} }}
 \t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_current_report_id }} }} set_variable = {{ name = {PREFIX}_realm_charter_current_report_id value = 0 }} }}
-\t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_current_adopted_day }} }} set_variable = {{ name = {PREFIX}_realm_charter_current_adopted_day value = 0 }} }}
+\t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_current_adopted_cycle }} }} set_variable = {{ name = {PREFIX}_realm_charter_current_adopted_cycle value = 0 }} }}
 \t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_current_effective_cycle }} }} set_variable = {{ name = {PREFIX}_realm_charter_current_effective_cycle value = 0 }} }}
-\t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_history_tail_hash }} }} set_variable = {{ name = {PREFIX}_realm_charter_history_tail_hash value = 0 }} }}
+\t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_report_serial }} }} set_variable = {{ name = {PREFIX}_realm_charter_report_serial value = 0 }} }}
+\t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_id_serial }} }} set_variable = {{ name = {PREFIX}_realm_charter_id_serial value = 0 }} }}
 \t\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_realm_current_default_quota }} }} set_variable = {{ name = {PREFIX}_realm_current_default_quota value = 0 }} set_variable = {{ name = {PREFIX}_realm_current_default_appeal value = 0 }} set_variable = {{ name = {PREFIX}_realm_current_default_bonus value = 0 }} set_variable = {{ name = {PREFIX}_realm_current_default_hc value = 0 }} set_variable = {{ name = {PREFIX}_realm_current_default_manager_accountability value = 0 }} set_variable = {{ name = {PREFIX}_realm_current_default_transparency value = 0 }} }}
 \t\tif = {{
 \t\t\tlimit = {{
@@ -2046,6 +2054,8 @@ def render_portfolio_initialize() -> str:
 \tset_variable = {{ name = {PREFIX}_portfolio_default_transparency value = root.var:{PREFIX}_realm_current_default_transparency }}
 \tset_variable = {{ name = {PREFIX}_portfolio_status value = 1 }}
 \tset_variable = {{ name = {PREFIX}_portfolio_closed value = 0 }}
+\tremove_variable = {PREFIX}_portfolio_terminal_history_accruing
+\tremove_variable = {PREFIX}_portfolio_history_cycle_count
 \tremove_variable = {PREFIX}_awaiting_al_357_359
 }}"""
 
@@ -3011,110 +3021,193 @@ def render_collective_producer() -> str:
 
 
 def render_completed_cycle_ledger() -> str:
-    """Persist an owner-scoped rolling three-cycle receipt/hash chain."""
+    """Own the rolling #357-359 history and the product-generated #361 report."""
 
-    return f"""# Append one genuinely closed portfolio cycle to the realm's
-# rolling three-cycle ledger.  Receipt/hash authenticity is a typed caller
-# input; this product persists and chains it, but does not claim cryptography.
-{PREFIX}_append_completed_cycle_receipt_effect = {{
+    identity_fields = ("owner", "subject", "cycle", "case")
+    receipt_fields = tuple(
+        f"m{mid}_receipt_{kind}"
+        for mid in (357, 358, 359)
+        for kind in ("id", "hash")
+    )
+    ledger_fields = (*identity_fields, *receipt_fields)
+
+    shift_one = "\n".join(
+        f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_{field}_1 value = var:{PREFIX}_completed_cycle_ledger_{field}_2 }}"
+        for field in ledger_fields
+    )
+    shift_two = "\n".join(
+        f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_{field}_2 value = var:{PREFIX}_completed_cycle_ledger_{field}_3 }}"
+        for field in ledger_fields
+    )
+
+    def slot_writes(slot: int) -> str:
+        rows = [
+            f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_owner_{slot} value = $TICKET_OWNER$ }}",
+            f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_{slot} value = $TICKET_SUBJECT$ }}",
+            f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_{slot} value = $TICKET_CYCLE$ }}",
+            f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_{slot} value = $TICKET_CASE$ }}",
+        ]
+        for mid in (357, 358, 359):
+            for kind in ("id", "hash"):
+                rows.append(
+                    f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_m{mid}_receipt_{kind}_{slot} "
+                    f"value = scope:{PREFIX}_history_subject.var:{PREFIX}_al_external_m{mid}_receipt_{kind} }}"
+                )
+        return "\n".join(rows)
+
+    last_writes = [
+        f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_owner value = $TICKET_OWNER$ }}",
+        f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_subject value = $TICKET_SUBJECT$ }}",
+        f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_cycle value = $TICKET_CYCLE$ }}",
+        f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_case value = $TICKET_CASE$ }}",
+    ]
+    for mid in (357, 358, 359):
+        for kind in ("id", "hash"):
+            last_writes.append(
+                f"set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_m{mid}_receipt_{kind} "
+                f"value = scope:{PREFIX}_history_subject.var:{PREFIX}_al_external_m{mid}_receipt_{kind} }}"
+            )
+
+    source_checks: list[str] = []
+    for mid, state in ((357, 2), (358, 3), (359, 3)):
+        for field in ("owner", "subject", "cycle", "case", "state", "receipt_id", "receipt_hash"):
+            source_checks.append(f"has_variable = {PREFIX}_al_external_m{mid}_{field}")
+        source_checks += [
+            f"var:{PREFIX}_al_external_m{mid}_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_al_external_m{mid}_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_al_external_m{mid}_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_al_external_m{mid}_case = $TICKET_CASE$",
+            f"var:{PREFIX}_al_external_m{mid}_state = {state}",
+            f"var:{PREFIX}_al_external_m{mid}_receipt_id > 0",
+            f"var:{PREFIX}_al_external_m{mid}_receipt_hash > 0",
+        ]
+    source_checks += [
+        f"NOT = {{ var:{PREFIX}_al_external_m357_receipt_id = var:{PREFIX}_al_external_m358_receipt_id }}",
+        f"NOT = {{ var:{PREFIX}_al_external_m357_receipt_id = var:{PREFIX}_al_external_m359_receipt_id }}",
+        f"NOT = {{ var:{PREFIX}_al_external_m358_receipt_id = var:{PREFIX}_al_external_m359_receipt_id }}",
+        f"NOT = {{ var:{PREFIX}_al_external_m357_receipt_hash = var:{PREFIX}_al_external_m358_receipt_hash }}",
+        f"NOT = {{ var:{PREFIX}_al_external_m357_receipt_hash = var:{PREFIX}_al_external_m359_receipt_hash }}",
+        f"NOT = {{ var:{PREFIX}_al_external_m358_receipt_hash = var:{PREFIX}_al_external_m359_receipt_hash }}",
+    ]
+
+    idempotent_checks = [
+        f"has_variable = {PREFIX}_completed_cycle_ledger_last_{field}"
+        for field in ledger_fields
+    ] + [
+        f"var:{PREFIX}_completed_cycle_ledger_last_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_completed_cycle_ledger_last_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_completed_cycle_ledger_last_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_completed_cycle_ledger_last_case = $TICKET_CASE$",
+    ]
+    for mid in (357, 358, 359):
+        for kind in ("id", "hash"):
+            idempotent_checks.append(
+                f"var:{PREFIX}_completed_cycle_ledger_last_m{mid}_receipt_{kind} = "
+                f"scope:{PREFIX}_history_subject.var:{PREFIX}_al_external_m{mid}_receipt_{kind}"
+            )
+
+    ledger_required: list[str] = []
+    ledger_semantics: list[str] = [
+        f"var:{PREFIX}_completed_cycle_ledger_count = 3",
+        f"var:{PREFIX}_completed_cycle_ledger_cycle_1 < var:{PREFIX}_completed_cycle_ledger_cycle_2",
+        f"var:{PREFIX}_completed_cycle_ledger_cycle_2 < var:{PREFIX}_completed_cycle_ledger_cycle_3",
+        f"var:{PREFIX}_completed_cycle_ledger_cycle_3 = $TICKET_CYCLE$",
+        f"var:{PREFIX}_completed_cycle_ledger_subject_3 = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_completed_cycle_ledger_case_3 = $TICKET_CASE$",
+    ]
+    for slot in (1, 2, 3):
+        for field in ledger_fields:
+            ledger_required.append(f"has_variable = {PREFIX}_completed_cycle_ledger_{field}_{slot}")
+        ledger_semantics += [
+            f"var:{PREFIX}_completed_cycle_ledger_owner_{slot} = $TICKET_OWNER$",
+            f"var:{PREFIX}_completed_cycle_ledger_cycle_{slot} >= 1",
+            f"var:{PREFIX}_completed_cycle_ledger_case_{slot} > 0",
+        ]
+        for mid in (357, 358, 359):
+            ledger_semantics += [
+                f"var:{PREFIX}_completed_cycle_ledger_m{mid}_receipt_id_{slot} > 0",
+                f"var:{PREFIX}_completed_cycle_ledger_m{mid}_receipt_hash_{slot} > 0",
+            ]
+
+    evidence_writes: list[str] = []
+    for slot in (1, 2, 3):
+        for field in identity_fields:
+            evidence_writes.append(
+                f"set_variable = {{ name = {PREFIX}_m361_evidence_{field}_{slot} "
+                f"value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_{field}_{slot} }}"
+            )
+        for mid in (357, 358, 359):
+            for kind in ("id", "hash"):
+                evidence_writes.append(
+                    f"set_variable = {{ name = {PREFIX}_m361_evidence_m{mid}_receipt_{kind}_{slot} "
+                    f"value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_m{mid}_receipt_{kind}_{slot} }}"
+                )
+
+    record = f"""# Product-owned rolling history.  The only source facts are the
+# three strict #357-359 receipts already consumed by this live AL case.
+{PREFIX}_record_completed_357_359_history_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
+	save_scope_as = {PREFIX}_history_subject
 	if = {{
 		limit = {{
-			has_variable = {PREFIX}_portfolio_closed
-			has_variable = {PREFIX}_portfolio_status
-			has_variable = {PREFIX}_final_conservation_ok
-			var:{PREFIX}_portfolio_closed = 1
-			var:{PREFIX}_portfolio_status = 6
-			var:{PREFIX}_final_conservation_ok = 1
-			var:zg361_case_al_active = 0
-			var:zg361_case_al_state = 6
-			var:zg361_case_al_owner = $TICKET_OWNER$
-			var:zg361_case_al_subject = $TICKET_SUBJECT$
-			var:zg361_case_al_cycle_serial = $TICKET_CYCLE$
-			var:zg361_case_al_case_serial = $TICKET_CASE$
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}}
 			$TICKET_SUBJECT$ = this
+{indent(chr(10).join(source_checks), 3)}
 			$TICKET_OWNER$ = {{
 				zg361_is_celestial_liege_trigger = yes
 				trigger_if = {{
 					limit = {{ has_variable = {PREFIX}_completed_cycle_ledger_count var:{PREFIX}_completed_cycle_ledger_count > 0 }}
-					has_variable = {PREFIX}_completed_cycle_ledger_tail_hash
 					has_variable = {PREFIX}_completed_cycle_ledger_last_cycle
-					var:{PREFIX}_completed_cycle_ledger_tail_hash = $PREVIOUS_CHAIN_HASH$
 					var:{PREFIX}_completed_cycle_ledger_last_cycle < $TICKET_CYCLE$
 				}}
-				trigger_else = {{ $PREVIOUS_CHAIN_HASH$ = 0 }}
+				trigger_else = {{ always = yes }}
 			}}
-			$RECEIPT_ID$ > 0 $RECEIPT_HASH$ > 0 $NEW_CHAIN_HASH$ > 0
-			NOT = {{ $NEW_CHAIN_HASH$ = $PREVIOUS_CHAIN_HASH$ }}
 		}}
 		$TICKET_OWNER$ = {{
 			if = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_completed_cycle_ledger_count }} }} set_variable = {{ name = {PREFIX}_completed_cycle_ledger_count value = 0 }} }}
 			if = {{
 				limit = {{ var:{PREFIX}_completed_cycle_ledger_count >= 3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_1 value = var:{PREFIX}_completed_cycle_ledger_cycle_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_1 value = var:{PREFIX}_completed_cycle_ledger_subject_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_1 value = var:{PREFIX}_completed_cycle_ledger_case_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_1 value = var:{PREFIX}_completed_cycle_ledger_receipt_id_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_1 value = var:{PREFIX}_completed_cycle_ledger_previous_hash_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_1 value = var:{PREFIX}_completed_cycle_ledger_receipt_hash_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_1 value = var:{PREFIX}_completed_cycle_ledger_chain_hash_2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_2 value = var:{PREFIX}_completed_cycle_ledger_cycle_3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_2 value = var:{PREFIX}_completed_cycle_ledger_subject_3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_2 value = var:{PREFIX}_completed_cycle_ledger_case_3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_2 value = var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_2 value = var:{PREFIX}_completed_cycle_ledger_previous_hash_3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_2 value = var:{PREFIX}_completed_cycle_ledger_receipt_hash_3 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_2 value = var:{PREFIX}_completed_cycle_ledger_chain_hash_3 }}
+{indent(shift_one, 4)}
+{indent(shift_two, 4)}
 			}}
 			if = {{ limit = {{ var:{PREFIX}_completed_cycle_ledger_count < 3 }} change_variable = {{ name = {PREFIX}_completed_cycle_ledger_count add = 1 }} }}
 			if = {{
 				limit = {{ var:{PREFIX}_completed_cycle_ledger_count = 1 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_1 value = $TICKET_CYCLE$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_1 value = $TICKET_SUBJECT$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_1 value = $TICKET_CASE$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_1 value = $RECEIPT_ID$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_1 value = $PREVIOUS_CHAIN_HASH$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_1 value = $RECEIPT_HASH$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_1 value = $NEW_CHAIN_HASH$ }}
+{indent(slot_writes(1), 4)}
 			}}
 			else_if = {{
 				limit = {{ var:{PREFIX}_completed_cycle_ledger_count = 2 }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_2 value = $TICKET_CYCLE$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_2 value = $TICKET_SUBJECT$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_2 value = $TICKET_CASE$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_2 value = $RECEIPT_ID$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_2 value = $PREVIOUS_CHAIN_HASH$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_2 value = $RECEIPT_HASH$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_2 value = $NEW_CHAIN_HASH$ }}
+{indent(slot_writes(2), 4)}
 			}}
 			else = {{
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_3 value = $TICKET_CYCLE$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_3 value = $TICKET_SUBJECT$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_3 value = $TICKET_CASE$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_3 value = $RECEIPT_ID$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_3 value = $PREVIOUS_CHAIN_HASH$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_3 value = $RECEIPT_HASH$ }}
-				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_3 value = $NEW_CHAIN_HASH$ }}
+{indent(slot_writes(3), 4)}
 			}}
-			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_cycle value = $TICKET_CYCLE$ }}
-			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_tail_hash value = $NEW_CHAIN_HASH$ }}
-			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_subject value = $TICKET_SUBJECT$ }}
-			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_case value = $TICKET_CASE$ }}
-			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_receipt_id value = $RECEIPT_ID$ }}
-			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_receipt_hash value = $RECEIPT_HASH$ }}
+{indent(chr(10).join(last_writes), 3)}
 		}}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 	}}
 	else_if = {{
-		limit = {{ $TICKET_OWNER$ = {{ has_variable = {PREFIX}_completed_cycle_ledger_last_cycle has_variable = {PREFIX}_completed_cycle_ledger_tail_hash has_variable = {PREFIX}_completed_cycle_ledger_last_subject has_variable = {PREFIX}_completed_cycle_ledger_last_case has_variable = {PREFIX}_completed_cycle_ledger_last_receipt_id has_variable = {PREFIX}_completed_cycle_ledger_last_receipt_hash var:{PREFIX}_completed_cycle_ledger_last_cycle = $TICKET_CYCLE$ var:{PREFIX}_completed_cycle_ledger_tail_hash = $NEW_CHAIN_HASH$ var:{PREFIX}_completed_cycle_ledger_last_subject = $TICKET_SUBJECT$ var:{PREFIX}_completed_cycle_ledger_last_case = $TICKET_CASE$ var:{PREFIX}_completed_cycle_ledger_last_receipt_id = $RECEIPT_ID$ var:{PREFIX}_completed_cycle_ledger_last_receipt_hash = $RECEIPT_HASH$ }} }}
+		limit = {{
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = {{
+{indent(chr(10).join(idempotent_checks), 4)}
+			}}
+		}}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
 	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3611 }} }}
-}}
+}}"""
 
-# Project the rolling chain into the exact #361 evidence object while AL is in
-# state 5.  The report/charter hashes remain explicit caller receipts.
+    prepare = f"""# Once the rolling ledger contains three distinct real cycles, this
+# product projects its own report and charter IDs.  No caller hash or prefilled
+# charter field participates in the decision.
 {PREFIX}_prepare_m361_charter_evidence_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
@@ -3128,62 +3221,265 @@ def render_completed_cycle_ledger() -> str:
 				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 5
 			}}
 			$TICKET_SUBJECT$ = this
-			{_zero_or_missing(f'{PREFIX}_al_external_charter_evidence_ready')}
+			{_zero_or_missing(f'{PREFIX}_m361_evidence_ready')}
 			$TICKET_OWNER$ = {{
 				zg361_is_celestial_liege_trigger = yes
-				has_variable = {PREFIX}_completed_cycle_ledger_count
-				var:{PREFIX}_completed_cycle_ledger_count = 3
-				var:{PREFIX}_completed_cycle_ledger_cycle_1 < var:{PREFIX}_completed_cycle_ledger_cycle_2
-				var:{PREFIX}_completed_cycle_ledger_cycle_2 < var:{PREFIX}_completed_cycle_ledger_cycle_3
-				var:{PREFIX}_completed_cycle_ledger_cycle_3 < $TICKET_CYCLE$
-				var:{PREFIX}_completed_cycle_ledger_previous_hash_2 = var:{PREFIX}_completed_cycle_ledger_chain_hash_1
-				var:{PREFIX}_completed_cycle_ledger_previous_hash_3 = var:{PREFIX}_completed_cycle_ledger_chain_hash_2
-				var:{PREFIX}_completed_cycle_ledger_tail_hash = var:{PREFIX}_completed_cycle_ledger_chain_hash_3
-				NOT = {{ var:{PREFIX}_completed_cycle_ledger_receipt_id_1 = var:{PREFIX}_completed_cycle_ledger_receipt_id_2 }}
-				NOT = {{ var:{PREFIX}_completed_cycle_ledger_receipt_id_1 = var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
-				NOT = {{ var:{PREFIX}_completed_cycle_ledger_receipt_id_2 = var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
-				trigger_if = {{ limit = {{ var:{PREFIX}_realm_charter_current_version > 0 }} NOT = {{ $CHARTER_ID$ = var:{PREFIX}_realm_charter_current_id }} $ADOPTED_DAY$ > var:{PREFIX}_realm_charter_current_adopted_day }}
+				trigger_if = {{
+					limit = {{ exists = liege }}
+					NOT = {{ liege = {{ zg361_is_celestial_liege_trigger = yes }} }}
+				}}
 				trigger_else = {{ always = yes }}
+				has_variable = {PREFIX}_realm_charter_current_version
+				has_variable = {PREFIX}_realm_charter_current_id
+				has_variable = {PREFIX}_realm_charter_current_report_id
+				has_variable = {PREFIX}_realm_charter_current_adopted_cycle
+				has_variable = {PREFIX}_realm_charter_current_effective_cycle
+				has_variable = {PREFIX}_realm_charter_history_count
+				has_variable = {PREFIX}_realm_charter_report_serial
+				has_variable = {PREFIX}_realm_charter_id_serial
+				var:{PREFIX}_realm_charter_history_count = var:{PREFIX}_realm_charter_current_version
+{indent(chr(10).join(ledger_required), 4)}
+{indent(chr(10).join(ledger_semantics), 4)}
 			}}
-			$LONG_REPORT_ID$ > 0 $LONG_REPORT_HASH$ > 0
-			$COMPLETED_CYCLES_HASH$ > 0 $CHARTER_ID$ > 0 $ADOPTED_DAY$ > 0
-			$NEW_HISTORY_HASH$ > 0
-			NOT = {{ $NEW_HISTORY_HASH$ = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_history_tail_hash }}
 		}}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_ready value = 1 }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_consumed value = 0 }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_owner value = $TICKET_OWNER$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_subject value = $TICKET_SUBJECT$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_state value = 5 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_receipt_count value = 3 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_max value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_3 }}
-		set_variable = {{ name = {PREFIX}_al_external_long_report_id value = $LONG_REPORT_ID$ }}
-		set_variable = {{ name = {PREFIX}_al_external_long_report_hash value = $LONG_REPORT_HASH$ }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_cycles_hash value = $COMPLETED_CYCLES_HASH$ }}
-		set_variable = {{ name = {PREFIX}_al_external_report_completed_cycles_hash value = $COMPLETED_CYCLES_HASH$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_id value = $CHARTER_ID$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_previous_id value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_adopted_day value = $ADOPTED_DAY$ }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_previous_history_hash value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_history_tail_hash }}
-		set_variable = {{ name = {PREFIX}_al_external_charter_new_history_hash value = $NEW_HISTORY_HASH$ }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_1 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_2 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_3 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_id_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_receipt_id_1 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_id_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_receipt_id_2 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_id_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_hash_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_chain_hash_1 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_hash_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_chain_hash_2 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_hash_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_chain_hash_3 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_previous_hash_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_previous_hash_1 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_previous_hash_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_previous_hash_2 }}
-		set_variable = {{ name = {PREFIX}_al_external_completed_previous_hash_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_previous_hash_3 }}
+		$TICKET_OWNER$ = {{
+			change_variable = {{ name = {PREFIX}_realm_charter_report_serial add = 1 }}
+			change_variable = {{ name = {PREFIX}_realm_charter_id_serial add = 1 }}
+		}}
+		set_variable = {{ name = {PREFIX}_m361_evidence_count value = 3 }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_ready value = 1 }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_m361_evidence_state value = 5 }}
+		set_variable = {{ name = {PREFIX}_m361_prepared_report_id value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_report_serial }}
+		set_variable = {{ name = {PREFIX}_m361_prepared_charter_id value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_id_serial }}
+		set_variable = {{ name = {PREFIX}_m361_prepared_previous_charter_id value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}
+		set_variable = {{ name = {PREFIX}_m361_prepared_previous_version value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_version }}
+		set_variable = {{ name = {PREFIX}_m361_prepared_adopted_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_m361_prepared_effective_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }}
+{indent(chr(10).join(evidence_writes), 2)}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{
+			has_variable = {PREFIX}_m361_evidence_ready
+			var:{PREFIX}_m361_evidence_ready = 1
+			var:{PREFIX}_m361_evidence_owner = $TICKET_OWNER$
+			var:{PREFIX}_m361_evidence_subject = $TICKET_SUBJECT$
+			var:{PREFIX}_m361_evidence_cycle = $TICKET_CYCLE$
+			var:{PREFIX}_m361_evidence_case = $TICKET_CASE$
+			var:{PREFIX}_m361_evidence_state = 5
+		}}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
 	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3612 }} }}
 }}"""
+
+    history_finalize = f"""# The first two distinct cycles have no three-cycle
+# report yet.  After #360 they close as an honest history-accruing terminal;
+# no #361 receipt, business object, charter or success is fabricated.
+{PREFIX}_finalize_history_accruing_effect = {{
+	remove_variable = {PREFIX}_runtime_applied
+	save_scope_as = {PREFIX}_history_finalize_subject
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = var:zg361_case_al_owner EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_al_cycle_serial EXPECTED_CASE = var:zg361_case_al_case_serial
+				EXPECTED_STATE = 5
+			}}
+			var:zg361_case_al_owner = {{
+				has_variable = {PREFIX}_completed_cycle_ledger_count
+				var:{PREFIX}_completed_cycle_ledger_count >= 1
+				var:{PREFIX}_completed_cycle_ledger_count <= 3
+				var:{PREFIX}_completed_cycle_ledger_last_owner = this
+				var:{PREFIX}_completed_cycle_ledger_last_subject = scope:{PREFIX}_history_finalize_subject
+				var:{PREFIX}_completed_cycle_ledger_last_cycle = scope:{PREFIX}_history_finalize_subject.var:zg361_case_al_cycle_serial
+				var:{PREFIX}_completed_cycle_ledger_last_case = scope:{PREFIX}_history_finalize_subject.var:zg361_case_al_case_serial
+				OR = {{
+					var:{PREFIX}_completed_cycle_ledger_count < 3
+					AND = {{ exists = liege liege = {{ zg361_is_celestial_liege_trigger = yes }} }}
+				}}
+			}}
+			has_variable = {PREFIX}_operation_total
+			has_variable = {PREFIX}_operation_used
+			has_variable = {PREFIX}_gold_total
+			has_variable = {PREFIX}_gold_available
+			has_variable = {PREFIX}_gold_reserved
+			has_variable = {PREFIX}_gold_paid
+			has_variable = {PREFIX}_hours_total
+			has_variable = {PREFIX}_hours_available
+			has_variable = {PREFIX}_hours_output
+			has_variable = {PREFIX}_hours_on_call
+			has_variable = {PREFIX}_hours_meeting
+			has_variable = {PREFIX}_hours_leave
+			has_variable = {PREFIX}_hours_governance
+			has_variable = {PREFIX}_shadow_hc_total
+			has_variable = {PREFIX}_shadow_hc_available
+			has_variable = {PREFIX}_shadow_hc_active
+			has_variable = zg361_ch_hc_authorized
+			has_variable = zg361_ch_hc_available
+			has_variable = zg361_ch_hc_reserved
+			has_variable = zg361_ch_hc_occupied
+			has_variable = zg361_ch_hc_frozen
+			has_variable = zg361_ch_hc_reclaimed
+			var:{PREFIX}_operation_total = 40
+			var:{PREFIX}_operation_used = {CHARTER_HISTORY_ACCRUAL_OPERATION_COUNT}
+		}}
+		set_variable = {{ name = {PREFIX}_portfolio_closed value = 0 }}
+		set_variable = {{ name = {PREFIX}_portfolio_status value = 4 }}
+		set_variable = {{ name = {PREFIX}_final_operation_check value = var:{PREFIX}_operation_used }}
+		set_variable = {{ name = {PREFIX}_final_gold_check value = var:{PREFIX}_gold_available }}
+		change_variable = {{ name = {PREFIX}_final_gold_check add = var:{PREFIX}_gold_reserved }}
+		change_variable = {{ name = {PREFIX}_final_gold_check add = var:{PREFIX}_gold_paid }}
+		set_variable = {{ name = {PREFIX}_final_hours_check value = var:{PREFIX}_hours_available }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_output }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_on_call }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_meeting }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_leave }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_governance }}
+		set_variable = {{ name = {PREFIX}_final_shadow_hc_check value = var:{PREFIX}_shadow_hc_available }}
+		change_variable = {{ name = {PREFIX}_final_shadow_hc_check add = var:{PREFIX}_shadow_hc_active }}
+		set_variable = {{ name = {PREFIX}_final_formal_hc_check value = var:zg361_ch_hc_available }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_reserved }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_occupied }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_frozen }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_reclaimed }}
+		set_variable = {{ name = {PREFIX}_final_conservation_ok value = 0 }}
+		if = {{
+			limit = {{
+				var:{PREFIX}_final_operation_check = {CHARTER_HISTORY_ACCRUAL_OPERATION_COUNT}
+				var:{PREFIX}_gold_available >= 0
+				var:{PREFIX}_gold_reserved >= 0
+				var:{PREFIX}_gold_paid >= 0
+				var:{PREFIX}_final_gold_check = var:{PREFIX}_gold_total
+				var:{PREFIX}_hours_available >= 0
+				var:{PREFIX}_hours_output >= 0
+				var:{PREFIX}_hours_on_call >= 0
+				var:{PREFIX}_hours_meeting >= 0
+				var:{PREFIX}_hours_leave >= 0
+				var:{PREFIX}_hours_governance >= 0
+				var:{PREFIX}_final_hours_check = var:{PREFIX}_hours_total
+				var:{PREFIX}_shadow_hc_available >= 0
+				var:{PREFIX}_shadow_hc_active >= 0
+				var:{PREFIX}_final_shadow_hc_check = var:{PREFIX}_shadow_hc_total
+				var:zg361_ch_hc_available >= 0
+				var:zg361_ch_hc_reserved >= 0
+				var:zg361_ch_hc_occupied >= 0
+				var:zg361_ch_hc_frozen >= 0
+				var:zg361_ch_hc_reclaimed >= 0
+				var:{PREFIX}_final_formal_hc_check = var:zg361_ch_hc_authorized
+			}}
+			zg361_case_kernel_transition_effect = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state REVISION_VAR = zg361_case_al_revision
+				ACTIVE_VAR = zg361_case_al_active TIMELINE_VAR = zg361_case_al_timeline_serial
+				FEEDBACK_VAR = zg361_case_al_feedback_revision LAST_HOOK_VAR = zg361_case_al_last_hook
+				TICKET_OWNER = var:zg361_case_al_owner TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_case_al_cycle_serial TICKET_CASE = var:zg361_case_al_case_serial
+				TICKET_STATE = 5 NEXT_STATE = 8 HOOK_ID = 9362 CLOSE_CASE = yes
+			}}
+			if = {{
+				limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_active = 0 var:zg361_case_al_state = 8 }}
+				set_variable = {{ name = {PREFIX}_final_conservation_ok value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_history_accruing value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_history_cycle_count value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_count }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_owned_operations value = {CHARTER_HISTORY_ACCRUAL_OPERATION_COUNT} }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_skipped_charter value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_success value = 0 }}
+				set_variable = {{ name = {PREFIX}_portfolio_closed value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_status value = 8 }}
+				set_variable = {{ name = {PREFIX}_runtime_applied value = 1 }}
+				set_variable = {{ name = {PREFIX}_runtime_status value = 1 }}
+				debug_log = "ZG361WE: portfolio closed after #360 while official history accrues"
+			}}
+			else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 9097 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+		}}
+		else = {{
+			set_variable = {{ name = {PREFIX}_last_red_code value = 9097 }}
+			set_variable = {{ name = {PREFIX}_runtime_status value = 4 }}
+			debug_log = "ZG361WE RED: history-accruing conservation failed; AL remains active"
+		}}
+	}}
+	else_if = {{
+		limit = {{ has_variable = {PREFIX}_portfolio_terminal_history_accruing var:{PREFIX}_portfolio_terminal_history_accruing = 1 var:{PREFIX}_portfolio_closed = 1 var:{PREFIX}_portfolio_status = 8 var:zg361_case_al_active = 0 }}
+		set_variable = {{ name = {PREFIX}_runtime_status value = 2 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 9097 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+}}"""
+
+    gate = f"""# #360 is the history gate: cycles one and two close honestly;
+# cycle three (and later rolling windows) alone prepares and exposes #361.
+{PREFIX}_after_m360_history_gate_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	save_scope_as = {PREFIX}_history_gate_subject
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = var:zg361_case_al_owner EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_al_cycle_serial EXPECTED_CASE = var:zg361_case_al_case_serial
+				EXPECTED_STATE = 5
+			}}
+			var:zg361_case_al_owner = {{
+				has_variable = {PREFIX}_completed_cycle_ledger_count
+				var:{PREFIX}_completed_cycle_ledger_count >= 1
+				var:{PREFIX}_completed_cycle_ledger_count <= 3
+				var:{PREFIX}_completed_cycle_ledger_last_owner = this
+				var:{PREFIX}_completed_cycle_ledger_last_subject = scope:{PREFIX}_history_gate_subject
+				var:{PREFIX}_completed_cycle_ledger_last_cycle = scope:{PREFIX}_history_gate_subject.var:zg361_case_al_cycle_serial
+				var:{PREFIX}_completed_cycle_ledger_last_case = scope:{PREFIX}_history_gate_subject.var:zg361_case_al_case_serial
+			}}
+		}}
+		if = {{
+			limit = {{
+				var:zg361_case_al_owner = {{
+					var:{PREFIX}_completed_cycle_ledger_count = 3
+					trigger_if = {{ limit = {{ exists = liege }} NOT = {{ liege = {{ zg361_is_celestial_liege_trigger = yes }} }} }}
+					trigger_else = {{ always = yes }}
+				}}
+			}}
+			{PREFIX}_prepare_m361_charter_evidence_effect = {{
+				TICKET_OWNER = var:zg361_case_al_owner TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_case_al_cycle_serial TICKET_CASE = var:zg361_case_al_case_serial
+			}}
+			if = {{
+				limit = {{
+					OR = {{ var:{PREFIX}_adapter_status = 1 var:{PREFIX}_adapter_status = 2 }}
+					has_variable = {PREFIX}_m361_evidence_ready
+					var:{PREFIX}_m361_evidence_ready = 1
+					var:{PREFIX}_m361_evidence_owner = var:zg361_case_al_owner
+					var:{PREFIX}_m361_evidence_subject = this
+					var:{PREFIX}_m361_evidence_cycle = var:zg361_case_al_cycle_serial
+					var:{PREFIX}_m361_evidence_case = var:zg361_case_al_case_serial
+				}}
+				{PREFIX}_al_schedule_stage_05_deadline_effect = yes
+				if = {{
+					limit = {{ var:zg361_case_al_owner = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
+					{PREFIX}_m361_route_a_effect = {{
+						TICKET_OWNER = var:zg361_case_al_owner TICKET_SUBJECT = this
+						TICKET_CYCLE = var:zg361_case_al_cycle_serial TICKET_CASE = var:zg361_case_al_case_serial
+					}}
+				}}
+			}}
+			else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 3613 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+		}}
+		else = {{ {PREFIX}_finalize_history_accruing_effect = yes }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 3614 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+}}"""
+
+    return "\n\n".join((record, prepare, history_finalize, gate))
 
 
 def render_al_357_359_receipt_bridge() -> str:
@@ -3210,6 +3506,14 @@ def render_al_357_359_receipt_bridge() -> str:
 				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 2
 			}}
 			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_OWNER$ = {{
+				trigger_if = {{
+					limit = {{ has_variable = {PREFIX}_completed_cycle_ledger_count var:{PREFIX}_completed_cycle_ledger_count > 0 }}
+					has_variable = {PREFIX}_completed_cycle_ledger_last_cycle
+					var:{PREFIX}_completed_cycle_ledger_last_cycle < $TICKET_CYCLE$
+				}}
+				trigger_else = {{ always = yes }}
+			}}
 			$TICKET_SUBJECT$ = this
 			{_zero_or_missing(f'{PREFIX}_al_external_stage_receipts_verified')}
 			$M357_OWNER$ = $TICKET_OWNER$ $M357_SUBJECT$ = $TICKET_SUBJECT$
@@ -3255,16 +3559,23 @@ def render_al_357_359_receipt_bridge() -> str:
 			zg361_case_al_advance_03_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
 			if = {{
 				limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_state = 4 }}
-				set_variable = {{ name = {PREFIX}_al_external_stage_receipts_verified value = 1 }}
-				set_variable = {{ name = {PREFIX}_al_external_receipt_owner value = $TICKET_OWNER$ }}
-				set_variable = {{ name = {PREFIX}_al_external_receipt_subject value = $TICKET_SUBJECT$ }}
-				set_variable = {{ name = {PREFIX}_al_external_receipt_cycle value = $TICKET_CYCLE$ }}
-				set_variable = {{ name = {PREFIX}_al_external_receipt_case value = $TICKET_CASE$ }}
-				set_variable = {{ name = {PREFIX}_al_external_receipt_state value = 4 }}
-				set_variable = {{ name = {PREFIX}_al_external_receipt_count value = 3 }}
-				set_variable = {{ name = {PREFIX}_al_external_last_operation value = 359 }}
-				set_variable = {{ name = {PREFIX}_awaiting_al_357_359 value = 0 }}
-				set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+				{PREFIX}_record_completed_357_359_history_effect = {{
+					TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+				}}
+				if = {{
+					limit = {{ has_variable = {PREFIX}_adapter_status var:{PREFIX}_adapter_status = 1 }}
+					set_variable = {{ name = {PREFIX}_al_external_stage_receipts_verified value = 1 }}
+					set_variable = {{ name = {PREFIX}_al_external_receipt_owner value = $TICKET_OWNER$ }}
+					set_variable = {{ name = {PREFIX}_al_external_receipt_subject value = $TICKET_SUBJECT$ }}
+					set_variable = {{ name = {PREFIX}_al_external_receipt_cycle value = $TICKET_CYCLE$ }}
+					set_variable = {{ name = {PREFIX}_al_external_receipt_case value = $TICKET_CASE$ }}
+					set_variable = {{ name = {PREFIX}_al_external_receipt_state value = 4 }}
+					set_variable = {{ name = {PREFIX}_al_external_receipt_count value = 3 }}
+					set_variable = {{ name = {PREFIX}_al_external_last_operation value = 359 }}
+					set_variable = {{ name = {PREFIX}_awaiting_al_357_359 value = 0 }}
+				}}
+				else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3594 }} }}
 			}}
 			else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3593 }} }}
 		}}
@@ -3939,7 +4250,7 @@ def render_effects() -> bytes:
         "# ZhongGuo 361 workforce/endgame: AB/AC/AD plus AL 355/356/360/361.\n"
         f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n"
         f"# Public manager ABI: {PREFIX}_open_portfolio_effect = {{ SUBJECT = <direct vassal> }}.\n"
-        "# Stable status: 1=applied, 2=idempotent, 3=stale, 4=typed RED, 5=external dependency, 6=complete, 7=honest N/A terminal.",
+        "# Stable status: 1=applied, 2=idempotent, 3=stale, 4=typed RED, 5=external dependency, 6=complete, 7=honest N/A terminal, 8=history-accruing terminal.",
         render_portfolio_initialize(),
         render_portfolio_entry(),
         render_al_357_359_receipt_bridge(),
@@ -3985,11 +4296,18 @@ scope:{PREFIX}_{d}_subject = {{
     if spec.mid == 361:
         completed = f"""
 scope:{PREFIX}_{d}_subject = {{
-\thas_variable = {PREFIX}_al_external_completed_cycle_receipt_count
-\tvar:{PREFIX}_al_external_completed_cycle_receipt_count >= 3
-\thas_variable = {PREFIX}_al_external_completed_cycle_max
-\tvar:{PREFIX}_al_external_completed_cycle_max <= scope:{PREFIX}_{d}_cycle
-\thas_variable = {PREFIX}_al_external_long_report_id
+\thas_variable = {PREFIX}_m361_evidence_count
+\tvar:{PREFIX}_m361_evidence_count = 3
+\thas_variable = {PREFIX}_m361_evidence_ready
+\tvar:{PREFIX}_m361_evidence_ready = 1
+\thas_variable = {PREFIX}_m361_evidence_consumed
+\tvar:{PREFIX}_m361_evidence_consumed = 0
+\tvar:{PREFIX}_m361_evidence_owner = scope:{PREFIX}_{d}_owner
+\tvar:{PREFIX}_m361_evidence_subject = this
+\tvar:{PREFIX}_m361_evidence_cycle = scope:{PREFIX}_{d}_cycle
+\tvar:{PREFIX}_m361_evidence_case = scope:{PREFIX}_{d}_case
+\thas_variable = {PREFIX}_m361_prepared_report_id
+\thas_variable = {PREFIX}_m361_prepared_charter_id
 }}"""
     return f"""is_ai = no
 exists = scope:{PREFIX}_{d}_owner

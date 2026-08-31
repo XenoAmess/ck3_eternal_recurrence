@@ -3105,11 +3105,18 @@ zg361we.361 = {
 			var:zg361_we_al_external_stage_receipts_verified = 1
 		}
 		scope:zg361_we_al_subject = {
-			has_variable = zg361_we_al_external_completed_cycle_receipt_count
-			var:zg361_we_al_external_completed_cycle_receipt_count >= 3
-			has_variable = zg361_we_al_external_completed_cycle_max
-			var:zg361_we_al_external_completed_cycle_max <= scope:zg361_we_al_cycle
-			has_variable = zg361_we_al_external_long_report_id
+			has_variable = zg361_we_m361_evidence_count
+			var:zg361_we_m361_evidence_count = 3
+			has_variable = zg361_we_m361_evidence_ready
+			var:zg361_we_m361_evidence_ready = 1
+			has_variable = zg361_we_m361_evidence_consumed
+			var:zg361_we_m361_evidence_consumed = 0
+			var:zg361_we_m361_evidence_owner = scope:zg361_we_al_owner
+			var:zg361_we_m361_evidence_subject = this
+			var:zg361_we_m361_evidence_cycle = scope:zg361_we_al_cycle
+			var:zg361_we_m361_evidence_case = scope:zg361_we_al_case
+			has_variable = zg361_we_m361_prepared_report_id
+			has_variable = zg361_we_m361_prepared_charter_id
 		}
 		scope:zg361_we_al_subject = {
 			zg361_case_kernel_full_guard_trigger = {

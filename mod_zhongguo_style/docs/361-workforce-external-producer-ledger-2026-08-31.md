@@ -1,6 +1,6 @@
 ﻿# Workforce external producer 责任账本（2026-08-31）
 
-状态：**逐字段分类完成；AC #264 同域 vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
+状态：**逐字段分类完成；AC #264 与 AL #361 同域 vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
 
 ## 1. 冻结证据与分类规则
 
@@ -294,7 +294,7 @@ zg361_we_al_external_collective_total_quota
 agenda、quota、例外批准与 forced outcome evidence；没有 cohort 时应 N/A/延后。现有 begin/append/seal ABI 没有
 caller，不应为了消 warning 自调用。
 
-### 4.3 #361 charter：28，明确启动环 blocker
+### 4.3 #361 charter：旧 28 项 read 已退役，由真实三周期产品账本闭环
 
 ```text
 zg361_we_al_external_charter_adopted_day
@@ -327,16 +327,29 @@ zg361_we_al_external_long_report_id
 zg361_we_al_external_report_completed_cycles_hash
 ```
 
-当前 `append_completed_cycle_receipt` 要求 `portfolio_closed=1`，而首个 portfolio 又要 #361 拿到三张历史 receipt
-才能关闭，构成明确启动环。正确 producer 必须读取中央正式考核历史或既有三周期官方记录；Workforce 不得自造 receipt、
-hash 或 report。未解除前 #361 保持 blocker。
+以上 28 个名字只保留为旧 loader 现场的历史清单；生产 effects/events 已不再读取它们。旧实现把“关闭
+portfolio”当作历史 receipt 的前置条件，又把三张历史 receipt 当作首个 portfolio 关闭的前置条件，确实形成启动环。
+现在改为由 Workforce 自己记录**已经严格验真的业务事实**，而不是让外部 producer 预填结论：
+
+1. 每个 portfolio 的 #357、#358、#359 三份真实 source receipt 通过 strict bridge、案件状态到达 4 后，立即把
+   `owner/subject/cycle/case` 以及三份 receipt 的 `id/hash` 追加到 owner 的 rolling history；历史入口不接收 caller
+   自报的 receipt/hash 参数。
+2. 新周期必须严格大于该 owner 的历史尾周期；完全相同的 tuple 只允许幂等确认，不能制造第二条历史。
+3. 第一、第二个真实周期走完 #360 后，以 39 个已执行机制、守恒后的 gold/hour/HC 账本关闭为
+   `history-accruing`（AL state 8，`portfolio_status=8`，`terminal_success=0`），诚实等待下一周期。
+4. 第三个互异真实周期走完 #360 后，只有当前 top charter authority 才由产品自己的单调 serial 生成 report ID 与
+   charter ID，把 rolling 三槽投影为 #361 evidence，然后展示 #361；既有 celestial AI second exception 仍只静默走
+   route A，不获得玩家事件入口。
+5. #361 的 route C 只延期并清空本次 prepared evidence；不会补零、伪造 hash、伪造人物或提前制造 charter。
+
+因此旧 AL charter 28 项从生产依赖中静态消除，但这仍不是 loader/live 证明；下一轮实机应分别验证前两轮 state 8 和
+第三个真实周期出现 #361。
 
 ## 5. 收口数字与下一步
 
-- 本包实际改动目标：AC 20 项，精确名单见 §2。
+- 本包实际改动目标：AC 20 项与 AL charter 28 项，精确名单见 §2、§4.3。
 - 另有既存、待复验的 AL stage 8 项，见 §4.1。
-- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8=28`，仍余 275：AD 80 + AL collective 167 +
-  AL charter 28。
-- 这 275 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
+- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+28=56`，仍余 247：AD 80 + AL collective 167。
+- 这 247 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
 - 下一轮实机必须 MCP-first：先看 loader 唯一字段差集，再用 paused snapshot 验 #262 real host、#264 三次玩家
   选项、两个 30 日 gap、一次支付/退款、AI 无玩家事件。OCR 不是首选路径。

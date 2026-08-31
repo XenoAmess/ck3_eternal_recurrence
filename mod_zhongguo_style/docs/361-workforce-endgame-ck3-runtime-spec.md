@@ -13,7 +13,7 @@
 - `common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt`
 - `events/zg361_workforce_endgame_runtime_events.txt`
 - `localization/*/zg361_workforce_endgame_l_*.yml`
-- `docs/361-workforce-external-producer-ledger-2026-08-31.md`（303 项 loader 告警责任账本）
+- `docs/361-workforce-external-producer-ledger-2026-08-31.md`（旧现场 303 项 loader 告警责任与消债账本）
 
 它复用共享 case kernel 的五元 guard、operation receipt、stage dispatcher 与 exact deadline ABI，但不修改
 kernel。本包只有一个对中央层公开的 manager-scope adapter：
@@ -63,7 +63,7 @@ full_guard
 ```
 
 状态码固定：`1=applied`、`2=同 route 幂等 no-op`、`3=stale no-op`、`4=typed RED`、
-`5=等待外部阶段依赖`。RED 在 receipt 和业务写之前返回；旧 owner/subject/cycle/case/state 或重复路线不得
+`5=等待外部阶段依赖`、`6=完整成功`、`7=非 manager 的诚实 N/A`、`8=三周期历史积累终态`。RED 在 receipt 和业务写之前返回；旧 owner/subject/cycle/case/state 或重复路线不得
 改资源；同一五元案改选另一 route 是稳定 collision RED，不冒充幂等。C 路线只写 choice、五元 debt provenance、`due_cycle = created_cycle + 1`、`debt_open=1` 与一次 policy debt，
 `business_object_created=0`。每个编号另有独立 hidden due consumer：完整核对 debt 与原 write 五元身份后，
 以 `available_hours -2 / governance_hours +2 / policy_debt -1` 等量偿债；容量不足时只对冻结且仍有管理资格的
@@ -170,7 +170,7 @@ owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退�
 | AL | 355 | 1 | prior 100/actual 150/repeatable 20/windfall 30 → limited 120 或 PEAK 150+risk |
 | AL | 356 | 1 | completion/report/cutoff/timestamp/actual → actual-cycle credit 与 duplicate reversal |
 | AL | 360 | 4 | 3 个 cohort 的 manager/member/agenda/quota/evidence/exception/forced-C → 逐 cohort agenda=members、exception+forced=quota、真实 manager/trust 成本 |
-| AL | 361 | 5 | exact 3 completed receipts + immutable anchor/report + monotonic version/history/adopted day → append-only future defaults |
+| AL | 361 | 5 | 最近三个 distinct 周期的真实 #357/#358/#359 receipt → 产品生成 report/charter serial、单调版本与 next-cycle defaults |
 
 ## 5. AL receipt bridge、三 cohort producer 与最高领主门
 
@@ -212,14 +212,33 @@ partition 防止把 cohort 1 声明的两个 forced 结果全部伪标到 cohort
 #360 route 在所有语义预检通过后写自己的 `m360_*` receipt，并只把 submission 标成 consumed/settled，
 不改写已冻结的 cohort 身份。
 
-#361 的 `append_completed_cycle_receipt` 在 realm owner 上维护一个最多三项的滚动链：新 cycle 必须严格
-晚于 tail，`previous_hash=tail_hash`，重复的同 subject/case/receipt/hash 为 status 2，其他同周期碰撞 RED。
-`prepare_m361_charter_evidence` 只在 AL state 5 投影最近**恰好三个**严格递增 cycle，且验证
-`previous_hash_2=chain_hash_1`、`previous_hash_3=chain_hash_2`；long-run report 与 charter/history hash
-仍是显式调用者 receipt，产品只持久化和核对链，不宣称提供密码学真实性。realm owner 上继续维护
-`history_count=current_version` 的前置一致性、
-`previous_version → current_version → history_count` 的单调递增、previous charter/history hash 链，以及严格
-变大的 adopted day；已生效版本可修订，但新版本仍只能 `effective_cycle=current+1`，不会改当前 portfolio。
+#361 不再读取调用者预填的 28 个 `al_external_charter/completed/long_report` 字段。每次 strict bridge 真正
+消费 #357/#358/#359 并从 state 2 经两个 kernel ACK 到达 state 4 后，产品立即调用
+`record_completed_357_359_history`，在 owner scope 的 rolling-3 ledger 追加：
+
+```text
+owner / subject / cycle / case
++ m357 receipt id/hash
++ m358 receipt id/hash
++ m359 receipt id/hash
+```
+
+三组来源票据仍必须来自 B1/B2 的真实业务 producer；Workforce 只复制已经通过 strict bridge 验证的原票，
+不生成、不补零、不重签 receipt/hash。新 cycle 必须严格晚于 owner 的 last cycle；同一完整 tuple 重入是
+status 2，其他同周期碰撞在 advance 前 RED。rolling ledger 满三项后才保持最近三个严格递增 cycle；每个 slot
+都保留 owner/subject/case 与三来源票据，而不是把整轮历史压成一个无法追责的 caller hash。
+
+#360 的 sealed collective 被 route A/B/C 真实消费并推进到 state 5 后，`after_m360_history_gate` 才决定终态：
+
+- ledger 只有 1 或 2 个 distinct 周期：按 39 个 owned operation 做完整 gold/hours/shadow-HC/formal-HC
+  守恒，以 state 8、`portfolio_status=8`、`terminal_success=0` 关闭；不写 #361 receipt/object，也不弹 #361。
+- ledger 已有 3 个 distinct 周期且 owner 具有既有最高宪章权限：产品递增 owner-scope
+  `realm_charter_report_serial` 与 `realm_charter_id_serial`，从 rolling ledger 投影 report/charter evidence，随后才
+  排 #361 玩家事件；授权 AI 仍只走项目既有第二例外的静默 A 路。
+- #361 A/B 采用 prepared serial，保持 `history_count=current_version` 的前置一致性和
+  `previous_version → current_version → history_count` 单调递增；adopted cycle 必须晚于上一版本，
+  `effective_cycle=current+1`，不会改写当前 portfolio。C 只登记 debt，并明确撤下本案 prepared evidence，
+  不创建 charter。
 
 A 路至少两项非竞争价值排在
 competition 前且使用长期 delivery horizon；B 路 competition 第一且使用即时 horizon。A/B 都只写
@@ -257,8 +276,8 @@ RED `9098`。
    的 rehire history；#277 只接受独立 closed-PIP 与 exit/position receipt。仍需原生岗位 provider 真正执行并
    证明 court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
 3. 357–359 已有 B1/B2 真实业务 producer、中央调用与本包 strict bridge 接线；仍需 MCP-first CK3 paused/live 证明三张来源
-   确实在可达业务路径生成并推进 AL。#360 cohort 成员、#361 report/hash 的真实性仍由对应外域/原生 producer 负责。本包可以
-   核对五元身份、顺序、唯一性、守恒与持久化链，不能单独证明外部哈希来源。
+   确实在可达业务路径生成并推进 AL。#360 cohort 成员仍需对应业务 producer；#361 report/charter 已改为本包从三轮
+   原始 receipt ledger 生成 serial，不再有外部 report/hash producer。必须实机证明前两轮只落 state 8、第三轮才弹 #361。
 4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
    `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身与真实任命仍是外部调用者责任。
 5. C debt 到期 consumer 已落地；#264 已改为产品自有三步玩家交接链，不再有 caller-supplied waiver/hash
@@ -271,6 +290,6 @@ RED `9098`。
    这 8 条确实归零，不能以静态可达性代替实机结论。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
 8. 2026-08-31 旧 loader 的 303 项 Workforce external warning 已逐字段归责于
-   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。本包静态预期消掉 AC 20 项；另有既存 AL stage
-   8 项待复验。AD 80、AL collective 167、AL charter 28 仍必须由真实同域/跨域/native producer 闭合；#361
-   首个三周期历史 receipt 启动环是明确 blocker，禁止用假 receipt/hash 绕过。
+   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。本包静态预期消掉 AC 20、AL stage 8 与已删除的
+   AL charter 28，共 56 项；仍余 AD 80 + AL collective 167 = 247 项。该数字必须由新 loader artifact 复验，
+   不能把静态可达性称为 live GREEN。
