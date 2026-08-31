@@ -246,6 +246,8 @@ std::array<std::uintptr_t, 1> g_character_claim_vtable{};
 std::array<void *, 128> g_effect_preview_collector_vtable{};
 std::array<void *, 12> g_white_peace_loaded_effect_vtable{};
 std::array<void *, 12> g_defeat_loaded_effect_vtable{};
+std::array<void *, 12>
+    g_raiktor_prestige_equivalent_loaded_effect_vtable{};
 std::array<void *, 12> g_scripted_effect_vtable{};
 std::array<void *, 12> g_context_effect_vtable{};
 std::array<void *, 1> g_scripted_effect_template_vtable{};
@@ -286,12 +288,15 @@ std::array<std::byte, 0x08> g_raiktor_unknown_forwarded_argument{};
 std::array<std::byte, 0x10> g_exit_attacker_scope{};
 std::array<std::byte, 0x10> g_exit_defender_scope{};
 std::array<std::byte, 0x10> g_exit_ally_scope{};
+std::array<std::byte, 0x10> g_exit_invalid_scope{};
 std::array<std::byte, 0x08> g_effect_context_data_100{};
 std::array<std::byte, 0x08> g_effect_context_data_18{};
 std::array<void *, 3> g_effect_context_allocator_vtable{};
 std::array<std::byte, sizeof(void *)> g_effect_context_allocator{};
 std::array<std::byte, 0x20> g_exit_terms_variable_container{};
 std::array<std::byte, 0x20> g_exit_terms_variable_row{};
+std::array<std::byte, 0x20> g_raiktor_prestige_variable_container{};
+std::array<std::byte, 2 * 0x20> g_raiktor_prestige_variable_rows{};
 std::array<std::byte, 0x20> g_global_variable_container{};
 std::array<std::byte, 12 * 0x20> g_global_variable_entries{};
 std::array<std::byte, 8> g_string_table_marker{};
@@ -465,6 +470,26 @@ bool g_raiktor_gold_mutate_finance_during_preview = false;
 bool g_raiktor_gold_mutate_cb_key_during_second_preview = false;
 std::int64_t g_raiktor_gold_transfer_raw = 15'000'000;
 std::int32_t g_raiktor_gold_traverse_calls = 0;
+bool g_raiktor_prestige_emit_attacker = true;
+bool g_raiktor_prestige_emit_duplicate_attacker = false;
+bool g_raiktor_prestige_emit_wrong_attacker_scope = false;
+bool g_raiktor_prestige_emit_malformed_payload = false;
+bool g_raiktor_prestige_emit_forwarded_argument = false;
+bool g_raiktor_prestige_emit_second_scope = false;
+bool g_raiktor_prestige_emit_null_payload = false;
+bool g_raiktor_prestige_emit_wrong_vtable = false;
+bool g_raiktor_prestige_emit_factor = true;
+bool g_raiktor_prestige_emit_duplicate_factor = false;
+bool g_raiktor_prestige_factor_bad_tag = false;
+bool g_raiktor_prestige_factor_bad_subtag = false;
+bool g_raiktor_prestige_factor_bad_flag = false;
+bool g_raiktor_prestige_factor_bad_span = false;
+bool g_raiktor_prestige_mutate_balance_during_preview = false;
+bool g_raiktor_prestige_mutate_cb_key_during_second_preview = false;
+bool g_raiktor_prestige_mutate_root_during_preview = false;
+std::int64_t g_raiktor_prestige_factor_raw = 700'000;
+std::int64_t g_raiktor_prestige_delta_raw = -7'000'000;
+std::int32_t g_raiktor_prestige_traverse_calls = 0;
 std::byte *g_war_bound_cleanup_drift_target = nullptr;
 std::array<std::byte, sizeof(void *)>
     g_war_bound_cleanup_drift_payload{};
@@ -568,6 +593,27 @@ void FixtureMutateRaiktorPowJailerBetweenSamples() noexcept {
 
 void FixtureMutateRaiktorGoldBetweenSamples() noexcept {
   ++g_raiktor_gold_transfer_raw;
+}
+
+void FixtureMutateRaiktorPrestigeBetweenSamples() noexcept {
+  ++g_raiktor_prestige_factor_raw;
+  g_raiktor_prestige_delta_raw -= 10;
+}
+
+void FixtureMutateRaiktorPrestigeIdentifierBetweenSamples() noexcept {
+  ++g_exit_terms_factor_identifier_id;
+}
+
+void FixtureMutateRaiktorPrestigeBalanceBetweenSamples() noexcept {
+  const auto current = LoadBytes<std::int64_t>(
+      g_played_character_extension.data(), 0x130);
+  Store(g_played_character_extension, 0x130, current + 1);
+}
+
+void FixtureSwapRaiktorPrestigeRootBetweenSamples() noexcept {
+  Store(g_casus_belli_type_1, 0xA28,
+        static_cast<void *>(
+            g_raiktor_prestige_equivalent_loaded_effect_vtable.data()));
 }
 
 void FixtureSetGlobalNumeric(std::size_t index, std::int64_t raw) {
@@ -2183,6 +2229,145 @@ void FixtureTraverseRaiktorGold(void *loaded_effect,
     Store(g_casus_belli_type_1, 0x30,
           std::size_t{sizeof(g_casus_belli_key_1) - 1});
   }
+}
+
+void FixtureRaiktorPrestigeLoadedEffectSlot58(
+    void *loaded_effect, void *wrapper, std::uint32_t mode,
+    void *collector) {
+  auto **const collector_vtable =
+      collector == nullptr ? nullptr
+                           : LoadBytes<void **>(collector, 0x00);
+  if (loaded_effect != g_casus_belli_type_1.data() + 0xA28 ||
+      wrapper == nullptr ||
+      LoadBytes<void *>(wrapper, 0x18) !=
+          g_raiktor_prestige_variable_container.data() ||
+      mode != 0 || collector_vtable == nullptr ||
+      collector_vtable[1] == nullptr) {
+    g_exit_terms_collector_lifecycle_valid = false;
+    return;
+  }
+  const auto callback = reinterpret_cast<FixtureEffectPreviewCallback>(
+      collector_vtable[1]);
+  const auto emit_prestige =
+      [callback, collector](const void *scope, std::uint32_t tag,
+                            std::int64_t raw,
+                            void *forwarded_argument,
+                            const void *second_scope, bool null_payload,
+                            void *effect_node) {
+        const FixturePreviewFixedPayload payload{tag, 0, raw};
+        callback(collector, scope, second_scope,
+                 null_payload ? nullptr : &payload, effect_node,
+                 forwarded_argument);
+      };
+
+  // Both rows prove that the narrow observer forwards the complete stock
+  // presentation stream while selecting only attacker prestige.
+  const FixturePreviewFixedPayload unrelated{1, 0, 123};
+  callback(collector, g_exit_attacker_scope.data(), nullptr, &unrelated,
+           g_unknown_effect_node.data(), nullptr);
+  emit_prestige(g_exit_defender_scope.data(), 1, 7'000'000, nullptr,
+                nullptr, false, g_prestige_effect_node.data());
+  if (g_raiktor_prestige_emit_attacker) {
+    emit_prestige(
+        g_raiktor_prestige_emit_wrong_attacker_scope
+            ? static_cast<const void *>(g_exit_invalid_scope.data())
+            : static_cast<const void *>(g_exit_attacker_scope.data()),
+        g_raiktor_prestige_emit_malformed_payload ? 2U : 1U,
+        g_raiktor_prestige_delta_raw,
+        g_raiktor_prestige_emit_forwarded_argument
+            ? static_cast<void *>(g_string_table_marker.data())
+            : nullptr,
+        g_raiktor_prestige_emit_second_scope
+            ? static_cast<const void *>(g_exit_defender_scope.data())
+            : nullptr,
+        g_raiktor_prestige_emit_null_payload,
+        g_raiktor_prestige_emit_wrong_vtable
+            ? static_cast<void *>(g_legitimacy_effect_node.data())
+            : static_cast<void *>(g_prestige_effect_node.data()));
+  }
+  if (g_raiktor_prestige_emit_duplicate_attacker) {
+    emit_prestige(g_exit_attacker_scope.data(), 1,
+                  g_raiktor_prestige_delta_raw, nullptr, nullptr, false,
+                  g_prestige_effect_node.data());
+  }
+  if (g_raiktor_prestige_mutate_balance_during_preview) {
+    const auto current = LoadBytes<std::int64_t>(
+        g_played_character_extension.data(), 0x130);
+    Store(g_played_character_extension, 0x130, current + 1);
+  }
+  if (g_raiktor_prestige_mutate_cb_key_during_second_preview &&
+      g_raiktor_prestige_traverse_calls == 2) {
+    Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+    Store(g_casus_belli_type_1, 0x28,
+          std::size_t{sizeof(g_casus_belli_key_1) - 1});
+    Store(g_casus_belli_type_1, 0x30,
+          std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  }
+  if (g_raiktor_prestige_mutate_root_during_preview) {
+    Store(g_casus_belli_type_1, 0xA28,
+          static_cast<void *>(g_white_peace_loaded_effect_vtable.data()));
+  }
+}
+
+void FixtureTraverseRaiktorPrestige(void *loaded_effect,
+                                     void *effect_context,
+                                     void *collector) {
+  ++g_raiktor_prestige_traverse_calls;
+  auto **const root_vtable =
+      loaded_effect == nullptr ? nullptr
+                               : LoadBytes<void **>(loaded_effect, 0x00);
+  if (effect_context != g_exit_terms_effect_context ||
+      root_vtable == nullptr || root_vtable[11] == nullptr) {
+    g_exit_terms_collector_lifecycle_valid = false;
+    return;
+  }
+
+  std::memset(g_raiktor_prestige_variable_container.data(), 0,
+              g_raiktor_prestige_variable_container.size());
+  std::memset(g_raiktor_prestige_variable_rows.data(), 0,
+              g_raiktor_prestige_variable_rows.size());
+  const auto factor_count =
+      g_raiktor_prestige_emit_factor
+          ? (g_raiktor_prestige_emit_duplicate_factor ? 2 : 1)
+          : 1;
+  Store(g_raiktor_prestige_variable_container, 0x00,
+        static_cast<void *>(g_raiktor_prestige_variable_rows.data()));
+  Store(g_raiktor_prestige_variable_container, 0x08,
+        std::int32_t{g_raiktor_prestige_factor_bad_span ? 0
+                                                        : factor_count});
+  Store(g_raiktor_prestige_variable_container, 0x0C,
+        std::int32_t{factor_count});
+  const auto write_factor_row = [](std::byte *row,
+                                   std::int32_t identifier) {
+    StoreBytes(row, 0x00, identifier);
+    StoreBytes(row, 0x08,
+               static_cast<std::uint16_t>(
+                   g_raiktor_prestige_factor_bad_tag ? 2 : 1));
+    StoreBytes(row, 0x0A,
+               static_cast<std::uint16_t>(
+                   g_raiktor_prestige_factor_bad_subtag ? 1 : 0));
+    StoreBytes(row, 0x10, g_raiktor_prestige_factor_raw);
+    StoreBytes(row, 0x18,
+               static_cast<std::uint8_t>(
+                   g_raiktor_prestige_factor_bad_flag ? 1 : 0));
+  };
+  write_factor_row(
+      g_raiktor_prestige_variable_rows.data(),
+      g_raiktor_prestige_emit_factor
+          ? g_exit_terms_factor_identifier_id
+          : g_exit_terms_factor_identifier_id + 1);
+  if (g_raiktor_prestige_emit_duplicate_factor) {
+    write_factor_row(g_raiktor_prestige_variable_rows.data() + 0x20,
+                     g_exit_terms_factor_identifier_id);
+  }
+
+  std::array<std::byte, 0x30> wrapper{};
+  Store(wrapper, 0x18,
+        static_cast<void *>(
+            g_raiktor_prestige_variable_container.data()));
+  using LoadedEffectSlot58 = void (*)(void *, void *, std::uint32_t, void *);
+  reinterpret_cast<LoadedEffectSlot58>(root_vtable[11])(
+      loaded_effect, wrapper.data(), 0, collector);
 }
 
 void FixtureFreeEffectContextArray(void *allocator, void *data,
@@ -9453,6 +9638,329 @@ int main() {
       g_raiktor_gold_traverse_calls != 0 || g_submit_called) {
     return Fail("Raiktor gold observer accepted another CB");
   }
+
+  // GEN-034 F/prestige captures identifier-82 F and the primary attacker's
+  // prestige callback from the same original Raiktor visible-root traversal.
+  Bindings raiktor_prestige_bindings = bindings;
+  raiktor_prestige_bindings.traverse_loaded_effect =
+      FixtureTraverseRaiktorPrestige;
+  const auto reset_raiktor_prestige_fixture = [&] {
+    g_raiktor_prestige_emit_attacker = true;
+    g_raiktor_prestige_emit_duplicate_attacker = false;
+    g_raiktor_prestige_emit_wrong_attacker_scope = false;
+    g_raiktor_prestige_emit_malformed_payload = false;
+    g_raiktor_prestige_emit_forwarded_argument = false;
+    g_raiktor_prestige_emit_second_scope = false;
+    g_raiktor_prestige_emit_null_payload = false;
+    g_raiktor_prestige_emit_wrong_vtable = false;
+    g_raiktor_prestige_emit_factor = true;
+    g_raiktor_prestige_emit_duplicate_factor = false;
+    g_raiktor_prestige_factor_bad_tag = false;
+    g_raiktor_prestige_factor_bad_subtag = false;
+    g_raiktor_prestige_factor_bad_flag = false;
+    g_raiktor_prestige_factor_bad_span = false;
+    g_raiktor_prestige_mutate_balance_during_preview = false;
+    g_raiktor_prestige_mutate_cb_key_during_second_preview = false;
+    g_raiktor_prestige_mutate_root_during_preview = false;
+    g_raiktor_prestige_factor_raw = 700'000;
+    g_raiktor_prestige_delta_raw = -7'000'000;
+    g_raiktor_prestige_traverse_calls = 0;
+    g_exit_terms_factor_identifier_id = 82;
+    g_exit_terms_collector_lifecycle_valid = true;
+    g_exit_terms_context_lifecycle_valid = true;
+    g_exit_terms_effect_context_construct_calls = 0;
+    g_exit_terms_effect_context_populate_calls = 0;
+    g_exit_terms_collector_construct_calls = 0;
+    g_exit_terms_collector_destroy_calls = 0;
+    g_exit_terms_traverse_calls = 0;
+    g_exit_terms_forward_calls = 0;
+    g_exit_terms_projected_root_preview_calls = 0;
+    g_exit_terms_hidden_truce_preview_calls = 0;
+    g_exit_terms_context_teardown_stage = 0;
+    g_exit_terms_monthly_income_calls = 0;
+    g_submit_called = false;
+    Store(g_played_character_extension, 0x130,
+          std::int64_t{12'345'678});
+    Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);
+    Store(g_casus_belli_type_1, 0x28,
+          std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+    Store(g_casus_belli_type_1, 0x30,
+          std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+    g_defeat_loaded_effect_vtable[11] = reinterpret_cast<void *>(
+        &FixtureRaiktorPrestigeLoadedEffectSlot58);
+    g_raiktor_prestige_equivalent_loaded_effect_vtable[11] =
+        reinterpret_cast<void *>(
+            &FixtureRaiktorPrestigeLoadedEffectSlot58);
+    Store(g_casus_belli_type_1, 0xA28,
+          static_cast<void *>(g_defeat_loaded_effect_vtable.data()));
+    Store(g_war, 0x100,
+          static_cast<void *>(g_casus_belli_type_1.data()));
+    Store(g_war, 0x288, played_character_id);
+  };
+
+  reset_raiktor_prestige_fixture();
+  xar::ck3_11906::RaiktorSurrenderPrestigeObservation
+      raiktor_prestige{};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::available ||
+      raiktor_prestige.war_id != active_war_id ||
+      raiktor_prestige.date_raw != 43'823'104 ||
+      raiktor_prestige.active_casus_belli_database_index != 1 ||
+      raiktor_prestige.active_casus_belli_key != "raiktor_claim_cb" ||
+      raiktor_prestige.primary_attacker_character_id !=
+          played_character_id ||
+      raiktor_prestige.primary_defender_character_id !=
+          enemy_character_id ||
+      raiktor_prestige.claimant_character_id != played_character_id ||
+      raiktor_prestige.attacker_current_prestige !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              played_character_id, {12'345'678, 100'000}} ||
+      raiktor_prestige.cb_prestige_factor !=
+          xar::game::FixedPointValue{700'000, 100'000} ||
+      raiktor_prestige.attacker_prestige_delta !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              played_character_id, {-7'000'000, 100'000}} ||
+      !raiktor_prestige.exact_factor_and_attacker_delta_observed ||
+      !raiktor_prestige.same_frame_stable ||
+      g_exit_terms_effect_context_construct_calls != 2 ||
+      g_exit_terms_effect_context_populate_calls != 2 ||
+      g_exit_terms_collector_construct_calls != 2 ||
+      g_exit_terms_collector_destroy_calls != 2 ||
+      g_raiktor_prestige_traverse_calls != 2 ||
+      g_exit_terms_traverse_calls != 0 ||
+      g_exit_terms_forward_calls != 6 ||
+      g_exit_terms_projected_root_preview_calls != 0 ||
+      g_exit_terms_hidden_truce_preview_calls != 0 ||
+      g_exit_terms_context_teardown_stage != 4 ||
+      g_exit_terms_monthly_income_calls != 0 ||
+      !g_exit_terms_collector_lifecycle_valid ||
+      !g_exit_terms_context_lifecycle_valid || g_submit_called) {
+    return Fail("Raiktor F/prestige observer lost the exact terms");
+  }
+
+  reset_raiktor_prestige_fixture();
+  g_raiktor_prestige_factor_raw = 0;
+  g_raiktor_prestige_delta_raw = 0;
+  raiktor_prestige = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::available ||
+      raiktor_prestige.cb_prestige_factor !=
+          xar::game::FixedPointValue{0, 100'000} ||
+      raiktor_prestige.attacker_prestige_delta !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              played_character_id, {0, 100'000}} ||
+      g_submit_called) {
+    return Fail("Raiktor F/prestige observer rejected a real zero");
+  }
+
+  // The authored min=-1000 branch is part of the exact formula contract.
+  reset_raiktor_prestige_fixture();
+  g_raiktor_prestige_factor_raw = 200'000'000;
+  g_raiktor_prestige_delta_raw = -100'000'000;
+  raiktor_prestige = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::available ||
+      raiktor_prestige.cb_prestige_factor !=
+          xar::game::FixedPointValue{200'000'000, 100'000} ||
+      raiktor_prestige.attacker_prestige_delta !=
+          xar::game::WarExitCharacterFixedPointSnapshot{
+              played_character_id, {-100'000'000, 100'000}} ||
+      g_submit_called) {
+    return Fail("Raiktor F/prestige observer lost the -1000 cap");
+  }
+
+  const auto rejects_raiktor_prestige =
+      [&](auto configure,
+          xar::ck3_11906::RaiktorPrestigeBetweenSamplesHook
+              between_samples,
+          std::string_view case_name) {
+        reset_raiktor_prestige_fixture();
+        configure();
+        raiktor_prestige = {};
+        const auto result = xar::ck3_11906::
+            ReadRaiktorSurrenderPrestigeForOfflineReFixture(
+                raiktor_prestige_bindings, active_war_id,
+                raiktor_prestige, between_samples);
+        if (result !=
+                xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::
+                    unavailable ||
+            raiktor_prestige !=
+                xar::ck3_11906::RaiktorSurrenderPrestigeObservation{} ||
+            !g_exit_terms_collector_lifecycle_valid ||
+            !g_exit_terms_context_lifecycle_valid || g_submit_called) {
+          std::cerr << "Raiktor F/prestige drift accepted: " << case_name
+                    << '\n';
+          return false;
+        }
+        return true;
+      };
+
+  if (!rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_attacker = false; }, nullptr,
+          "missing_attacker") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_duplicate_attacker = true; },
+          nullptr, "duplicate_attacker") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_wrong_attacker_scope = true; },
+          nullptr, "invalid_attacker_scope") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_malformed_payload = true; },
+          nullptr, "prestige_payload_tag") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_forwarded_argument = true; },
+          nullptr, "prestige_forwarded_argument") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_second_scope = true; }, nullptr,
+          "prestige_second_scope") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_null_payload = true; }, nullptr,
+          "prestige_null_payload") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_wrong_vtable = true; }, nullptr,
+          "prestige_wrong_vtable") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_factor = false; }, nullptr,
+          "missing_factor") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_emit_duplicate_factor = true; },
+          nullptr, "duplicate_factor") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_factor_bad_tag = true; }, nullptr,
+          "factor_tag") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_factor_bad_subtag = true; }, nullptr,
+          "factor_subtag") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_factor_bad_flag = true; }, nullptr,
+          "factor_flag") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_factor_bad_span = true; }, nullptr,
+          "factor_span") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_factor_raw = -1; }, nullptr,
+          "negative_factor") ||
+      !rejects_raiktor_prestige(
+          [] {
+            g_raiktor_prestige_factor_raw =
+                std::numeric_limits<std::int64_t>::max() / 10 + 1;
+            g_raiktor_prestige_delta_raw = -100'000'000;
+          },
+          nullptr, "factor_overflow") ||
+      !rejects_raiktor_prestige(
+          [] { ++g_raiktor_prestige_delta_raw; }, nullptr,
+          "formula_mismatch") ||
+      !rejects_raiktor_prestige(
+          [] {
+            g_raiktor_prestige_mutate_balance_during_preview = true;
+          },
+          nullptr, "preview_balance_mutation") ||
+      !rejects_raiktor_prestige(
+          [] {
+            g_raiktor_prestige_mutate_cb_key_during_second_preview = true;
+          },
+          nullptr, "completion_cb_key_drift") ||
+      !rejects_raiktor_prestige(
+          [] { g_raiktor_prestige_mutate_root_during_preview = true; },
+          nullptr, "loaded_root_vtable_drift") ||
+      !rejects_raiktor_prestige(
+          [] {}, FixtureMutateRaiktorPrestigeBetweenSamples,
+          "same_frame_terms_drift") ||
+      !rejects_raiktor_prestige(
+          [] {}, FixtureMutateRaiktorPrestigeBalanceBetweenSamples,
+          "same_frame_balance_drift") ||
+      !rejects_raiktor_prestige(
+          [] {}, FixtureSwapRaiktorPrestigeRootBetweenSamples,
+          "same_frame_loaded_root_identity_drift") ||
+      !rejects_raiktor_prestige(
+          [] {}, FixtureMutateRaiktorPrestigeIdentifierBetweenSamples,
+          "identifier_drift") ||
+      !rejects_raiktor_prestige(
+          [] { g_exit_terms_factor_identifier_id = 83; }, nullptr,
+          "wrong_exact_identifier")) {
+    return Fail("Raiktor F/prestige observer accepted malformed terms");
+  }
+
+  reset_raiktor_prestige_fixture();
+  g_defeat_loaded_effect_vtable[11] = nullptr;
+  raiktor_prestige = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::unavailable ||
+      raiktor_prestige !=
+          xar::ck3_11906::RaiktorSurrenderPrestigeObservation{} ||
+      g_raiktor_prestige_traverse_calls != 0 ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_exit_terms_collector_construct_calls != 0 ||
+      g_exit_terms_context_teardown_stage != 0 ||
+      !g_exit_terms_context_lifecycle_valid || g_submit_called) {
+    return Fail("Raiktor F/prestige observer entered a null root slot");
+  }
+
+  reset_raiktor_prestige_fixture();
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::
+              requires_paused ||
+      raiktor_prestige !=
+          xar::ck3_11906::RaiktorSurrenderPrestigeObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_prestige_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor F/prestige observer read a running frame");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+
+  reset_raiktor_prestige_fixture();
+  Store(g_war, 0x288, enemy_character_id);
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::
+              player_not_primary_attacker ||
+      raiktor_prestige !=
+          xar::ck3_11906::RaiktorSurrenderPrestigeObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_prestige_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor F/prestige observer accepted another war role");
+  }
+  Store(g_war, 0x288, played_character_id);
+
+  reset_raiktor_prestige_fixture();
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings,
+          active_war_id ^ 0x01000000, raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::war_not_found ||
+      raiktor_prestige !=
+          xar::ck3_11906::RaiktorSurrenderPrestigeObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_prestige_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor F/prestige observer accepted a stale War generation");
+  }
+
+  reset_raiktor_prestige_fixture();
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_0.data()));
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrestige(
+          raiktor_prestige_bindings, active_war_id,
+          raiktor_prestige) !=
+          xar::ck3_11906::ReadRaiktorSurrenderPrestigeResult::
+              unsupported_casus_belli ||
+      raiktor_prestige !=
+          xar::ck3_11906::RaiktorSurrenderPrestigeObservation{} ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_raiktor_prestige_traverse_calls != 0 || g_submit_called) {
+    return Fail("Raiktor F/prestige observer accepted another CB");
+  }
+
   Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
   Store(g_casus_belli_type_1, 0x28,
         std::size_t{sizeof(g_casus_belli_key_1) - 1});

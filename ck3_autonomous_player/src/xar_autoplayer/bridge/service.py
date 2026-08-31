@@ -87,6 +87,15 @@ from .zhongguo_case_snapshot_contract import (
     parse_query_zhongguo_case_snapshot_v1_step,
     query_zhongguo_case_snapshot_v1_step,
 )
+from .zhongguo_ai_owned_case_snapshot_contract import (
+    QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_STEP,
+    ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CONSUMER_ID,
+    normalize_native_zhongguo_ai_owned_case_snapshot_v1,
+    normalize_zhongguo_ai_owned_case_snapshot_v1_response,
+    parse_query_zhongguo_ai_owned_case_snapshot_v1_step,
+    query_zhongguo_ai_owned_case_snapshot_v1_step,
+)
 from .zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
@@ -104,6 +113,15 @@ from .zhongguo_b2_pip_snapshot_contract import (
     normalize_zhongguo_b2_pip_snapshot_v1_response,
     parse_query_zhongguo_b2_pip_snapshot_v1_step,
     query_zhongguo_b2_pip_snapshot_v1_step,
+)
+from .zhongguo_workforce_collective_snapshot_contract import (
+    QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_STEP,
+    ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CONSUMER_ID,
+    normalize_native_zhongguo_workforce_collective_snapshot_v1,
+    normalize_zhongguo_workforce_collective_snapshot_v1_response,
+    parse_query_zhongguo_workforce_collective_snapshot_v1_step,
+    query_zhongguo_workforce_collective_snapshot_v1_step,
 )
 from .zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
@@ -1766,6 +1784,303 @@ class GameplayBridgeService:
                 f"ZhongGuo case response projection is malformed: {error}"
             ) from error
 
+    def query_zhongguo_ai_owned_case_snapshot_v1(
+        self,
+        owner_character_id: int,
+        subject_character_id: int,
+        request_nonce: str,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read one AI manager's B1 case from one paused exact frame."""
+        if expected_revision is not None and (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError(
+                "expected_revision must be None or a non-negative uint64"
+            )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or not 0 <= revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case query lacks a valid public revision"
+            )
+        selected_revision = (
+            revision if expected_revision is None else expected_revision
+        )
+        if selected_revision != revision:
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case revision mismatch: expected "
+                f"{selected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case query lacks a stable native snapshot "
+                "binding"
+            )
+        played_character = snapshot.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case query lacks the played character "
+                "identity"
+            )
+        step = query_zhongguo_ai_owned_case_snapshot_v1_step(
+            owner_character_id,
+            subject_character_id,
+            request_nonce,
+        )
+        query = parse_query_zhongguo_ai_owned_case_snapshot_v1_step(step)
+        if query is None:  # pragma: no cover - builder/parser invariant
+            raise AssertionError("AI-owned case query builder violated v1")
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        bridge_version = (
+            diagnostics.get("bridge_version")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if not isinstance(bridge_version, str) or not bridge_version:
+            bridge_version = (
+                hello.get("bridge_version")
+                if isinstance(hello, dict)
+                else None
+            )
+        game_adapter_id = (
+            hello.get("game_adapter_id")
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+            or not isinstance(bridge_version, str)
+            or not bridge_version
+            or not isinstance(game_adapter_id, str)
+            or not game_adapter_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case query lacks its bridge connection "
+                "binding"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query AI-owned ZhongGuo cases"
+            )
+        result = self.execute_step(
+            step,
+            expected_revision=selected_revision,
+        )
+        expected_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "zhongguo_ai_owned_case_snapshot",
+            "backend_id",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            "queried_connection_generation",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_result_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        backend_id = result.get("backend_id")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+            or not isinstance(backend_id, str)
+            or not backend_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case result lacks its native query identity"
+            )
+        try:
+            normalized = normalize_native_zhongguo_ai_owned_case_snapshot_v1(
+                result.get("zhongguo_ai_owned_case_snapshot"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"ZhongGuo AI-owned case result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case envelope status disagrees with its "
+                "frame"
+            )
+        if (
+            result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+            or result.get("queried_connection_generation")
+            != connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case result is bound to another snapshot"
+            )
+        provenance = normalized.get("provenance")
+        if not isinstance(provenance, dict):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case lacks exact-build provenance"
+            )
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get("expected_ck3_sha256", hello.get("executable_sha256"))
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != provenance["game_version"]
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != str(provenance["executable_sha256"]).upper()
+            or provenance.get("consumer_id")
+            != ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CONSUMER_ID
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case build mirror disagrees with bridge "
+                "hello"
+            )
+        current = self.snapshot()
+        current_diagnostics = current.get("diagnostics")
+        current_played_character = current.get("played_character")
+        current_player_character_id = (
+            current_played_character.get("character_id")
+            if isinstance(current_played_character, dict)
+            else None
+        )
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+            and current_player_character_id == player_character_id
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation")
+            == connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case query crossed its paused snapshot "
+                "binding"
+            )
+        response = {
+            **normalized,
+            "build": {
+                "version": provenance["game_version"],
+                "exe_sha256": provenance["executable_sha256"],
+            },
+            "source": {
+                "bridge_version": bridge_version,
+                "game_adapter_id": game_adapter_id,
+                "backend_id": backend_id,
+                "consumer_id": provenance["consumer_id"],
+                "connection_generation": connection_generation,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+            },
+            "binding": {
+                "request_nonce": query.request_nonce,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "connection_generation": connection_generation,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+                "owner_character_id": query.owner_character_id,
+                "subject_character_id": query.subject_character_id,
+                "expected_revision": selected_revision,
+            },
+        }
+        try:
+            return normalize_zhongguo_ai_owned_case_snapshot_v1_response(
+                response,
+                expected_query=query,
+                expected_snapshot_id=snapshot_id,
+                expected_revision=revision,
+                expected_native_revision=native_revision,
+                expected_connection_generation=connection_generation,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "ZhongGuo AI-owned case response projection is malformed: "
+                f"{error}"
+            ) from error
+
     def query_zhongguo_result_case_snapshot_v1(
         self,
         request_nonce: str,
@@ -2359,6 +2674,297 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "ZhongGuo B2 PIP response projection is malformed: "
                 f"{error}"
+            ) from error
+
+    def query_zhongguo_workforce_collective_snapshot_v1(
+        self,
+        request_nonce: str,
+        *,
+        expected_revision: int,
+        owner_character_id: int,
+    ) -> dict[str, object]:
+        """Read the player's received Workforce collective and owner ledger."""
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective queries require a paused CK3 "
+                "snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or not 0 <= revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective query lacks a valid public "
+                "revision"
+            )
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective query lacks a stable native "
+                "snapshot binding"
+            )
+        played_character = snapshot.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective query lacks the played "
+                "character identity"
+            )
+        step = query_zhongguo_workforce_collective_snapshot_v1_step(
+            owner_character_id, request_nonce
+        )
+        query = parse_query_zhongguo_workforce_collective_snapshot_v1_step(
+            step
+        )
+        if query is None:  # pragma: no cover - builder/parser invariant
+            raise AssertionError("Workforce collective query builder violated v1")
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        )
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        bridge_version = (
+            diagnostics.get("bridge_version")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if not isinstance(bridge_version, str) or not bridge_version:
+            bridge_version = (
+                hello.get("bridge_version") if isinstance(hello, dict) else None
+            )
+        game_adapter_id = (
+            hello.get("game_adapter_id") if isinstance(hello, dict) else None
+        )
+        if (
+            isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+            or not isinstance(bridge_version, str)
+            or not bridge_version
+            or not isinstance(game_adapter_id, str)
+            or not game_adapter_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective query lacks its bridge "
+                "connection binding"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query received-self ZhongGuo "
+                "Workforce collective state"
+            )
+        result = self.execute_step(step, expected_revision=expected_revision)
+        expected_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "zhongguo_workforce_collective_snapshot",
+            "backend_id",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            "queried_connection_generation",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_result_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective backend returned a malformed "
+                "result"
+            )
+        query_sequence = result.get("query_sequence")
+        backend_id = result.get("backend_id")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+            or not isinstance(backend_id, str)
+            or not backend_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective result lacks its native query "
+                "identity"
+            )
+        try:
+            normalized = (
+                normalize_native_zhongguo_workforce_collective_snapshot_v1(
+                    result.get("zhongguo_workforce_collective_snapshot"),
+                    expected_query=query,
+                    expected_snapshot_revision=native_revision,
+                    expected_date_raw=date_raw,
+                    expected_player_character_id=player_character_id,
+                )
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"ZhongGuo Workforce collective result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective envelope status disagrees "
+                "with its frame"
+            )
+        if (
+            result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+            or result.get("queried_connection_generation")
+            != connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective result is bound to another "
+                "snapshot"
+            )
+        provenance = normalized["provenance"]
+        assert isinstance(provenance, dict)
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get("expected_ck3_sha256", hello.get("executable_sha256"))
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != provenance["game_version"]
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != str(provenance["executable_sha256"]).upper()
+            or provenance.get("consumer_id")
+            != ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CONSUMER_ID
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective build mirror disagrees with "
+                "bridge hello"
+            )
+        current = self.snapshot()
+        current_diagnostics = current.get("diagnostics")
+        current_played_character = current.get("played_character")
+        current_player_character_id = (
+            current_played_character.get("character_id")
+            if isinstance(current_played_character, dict)
+            else None
+        )
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id") == snapshot.get("episode_run_id")
+            and current_player_character_id == player_character_id
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation")
+            == connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective query crossed its paused "
+                "snapshot binding"
+            )
+        actual_owner_character_id = (
+            query.owner_character_id
+            if normalized["status"] == "available"
+            else None
+        )
+        response = {
+            **normalized,
+            "build": {
+                "version": provenance["game_version"],
+                "exe_sha256": provenance["executable_sha256"],
+            },
+            "source": {
+                "bridge_version": bridge_version,
+                "game_adapter_id": game_adapter_id,
+                "backend_id": backend_id,
+                "consumer_id": provenance["consumer_id"],
+                "connection_generation": connection_generation,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+            },
+            "binding": {
+                "request_nonce": query.request_nonce,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "connection_generation": connection_generation,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+                "subject_character_id": player_character_id,
+                "owner_character_id": actual_owner_character_id,
+                "expected_revision": expected_revision,
+            },
+        }
+        try:
+            return normalize_zhongguo_workforce_collective_snapshot_v1_response(
+                response,
+                expected_query=query,
+                expected_snapshot_id=snapshot_id,
+                expected_revision=revision,
+                expected_native_revision=native_revision,
+                expected_connection_generation=connection_generation,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "ZhongGuo Workforce collective response projection is "
+                f"malformed: {error}"
             ) from error
 
     def query_zhongguo_incident_snapshot_v1(

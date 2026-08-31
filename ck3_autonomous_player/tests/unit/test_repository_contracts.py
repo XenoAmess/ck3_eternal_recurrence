@@ -84,11 +84,14 @@ class RepositoryContractTests(unittest.TestCase):
                 "reflection-v1.schema.json",
                 "strategy-v1.schema.json",
                 "visible-control-action-receipt-v2.schema.json",
+                "zhongguo-ai-owned-case-snapshot-v1.schema.json",
                 "zhongguo-b2-pip-snapshot-v1.schema.json",
                 "zhongguo-case-snapshot-v1.schema.json",
                 "zhongguo-incident-snapshot-v1.schema.json",
                 "zhongguo-manager-governance-snapshot-v1.schema.json",
                 "zhongguo-result-case-snapshot-v1.schema.json",
+                "zhongguo-scoreboard-state-v1.schema.json",
+                "zhongguo-workforce-collective-snapshot-v1.schema.json",
                 "growth_100_v1.json",
             },
         )
@@ -101,11 +104,14 @@ class RepositoryContractTests(unittest.TestCase):
                         "schema_version"
                         if path.name
                         in {
+                            "zhongguo-ai-owned-case-snapshot-v1.schema.json",
                             "zhongguo-b2-pip-snapshot-v1.schema.json",
                             "zhongguo-case-snapshot-v1.schema.json",
                             "zhongguo-incident-snapshot-v1.schema.json",
                             "zhongguo-manager-governance-snapshot-v1.schema.json",
                             "zhongguo-result-case-snapshot-v1.schema.json",
+                            "zhongguo-scoreboard-state-v1.schema.json",
+                            "zhongguo-workforce-collective-snapshot-v1.schema.json",
                         }
                         else "format_version"
                     )

@@ -254,10 +254,10 @@ loaded effect。调用前后仍要复核 WarID、CB pointer、root pointer 与 p
 tag 不符或 container 边界不合法都使整个 strict v2 unavailable。该 ABI 已经静态闭合，但尚未经过
 production paused query 回读，所以当前 `F` 仍是 `pending-live`，不是 `live-confirmed`。
 
-[fixture-confirmed] native fixture 已让原 helper 经栈上 proxy 两次遍历 WP/defeat，并从独立构造的
-`identifier=82,tag=1,subtag=0,raw=700000,flag=0` row 直接取得同一 `F`；malformed tag 会令整个 v2
-unavailable。fixture 同时断言两次 collector construct/destroy、一次 effect-context construct/populate、
-原顺序 teardown 与零 write submission。它证明 reader/生命周期合同，不冒充当前 WarID 的 live `F`。
+[historical fixture / superseded boundary] 旧 broad v2 fixture 曾把 WP/defeat 写成“两次均经原 root traversal”；
+这不再描述当前代码。两次 `0x334C668` 实机 crash 后，broad `CaptureWarExitLoadedEffect` 的 attacker-defeat
+分支只记录 shape 并在调用 original slot 前 fail closed，不能引用旧 fixture 宣称 defeat preview 已恢复。
+当前有效证据是下文独立 `ReadRaiktorSurrenderPrestige` 的 original-visible-root fixture；它不重新启用 broad reader。
 
 [fixture-confirmed] canonical v2 production reader 已编入待部署 DLL
 `SHA256=D7B87EA01A82FD70EBA0089F21F95ACCCBF9410710825974B9AA949B9165C8DE`
@@ -1542,10 +1542,10 @@ flowchart TD
     I -->|yes| C["[native] claimant / targets / claim rows"]
     C --> S["[static] remove claimant claims<br/>legitimacy=0 / influence=0"]
     S --> G["[fixture-confirmed native; pending MCP/live] actual gold transfer"]
-    S --> F["[pending native] final F / prestige delta"]
+    S --> F["[fixture-confirmed native; pending MCP/live] final F / prestige delta"]
     S --> T["[pending native] truce days / expiry"]
     S --> P["[fixture-confirmed native; pending MCP/live] actual PoW pairs"]
-    S --> H["[pending native] favor-hook bool"]
+    S --> H["[fixture-confirmed isolated core;<br/>pending production wrapper/MCP/live] favor-hook bool"]
     S --> R["[pending native] faction / opinion / feud / Mandala rows"]
     S --> A["[pending native] current war-bound armies lost"]
     G --> D{"all decision fields same-frame stable?"}
@@ -1553,8 +1553,8 @@ flowchart TD
     T --> D
     P --> D
     H --> D
-    R --> D
     A --> D
+    R -. "broad debt; outside narrow gate" .-> B["later complete outcome utility"]
     D -->|no| X["decision_ready=false; no surrender action"]
     D -->|yes| E["compare surrender vs continue"]
     classDef pending stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
@@ -1600,16 +1600,16 @@ settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects
 | 六域 | exact-build 复用入口 | 本次输出与 fail-closed 条件 | 当前缺口 |
 |---|---|---|---|
 | gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；current gold `extension+0x100` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
-| F / prestige | `CaptureWarExitPrestigeFactor` 读取 `wrapper+0x18` 的唯一 identifier `82` final row；已有 prestige callback | 发布 `cb_prestige_factor` 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow 或公式不符均 unavailable | 无新 ABI；待专用 materializer/fixture/live |
+| F / prestige | root proxy 在 original attacker-defeat root 返回后、`0x3380170` 销毁临时 wrapper 前读取 `wrapper+0x18` 的唯一 identifier `82` final row；collector 同次捕获 prestige vptr `0x446C7B0` callback | 发布 `cb_prestige_factor`、attacker current prestige 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow、公式或同帧 identity 不符均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致，检查非负天数与 `date_raw+24×days` int32 边界 | 一次 pointer-only Raiktor loaded-root shape probe；不得执行 ContextEffect |
 | PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`；新生产 helper `ReadRaiktorSurrenderPrisonerReleases` | 双方完整 participant 列表、primary 与前三继承人候选列表，以及实际由对方参与者关押的 generation-safe release pairs；两次 paused 同日样本必须逐项相同。完整扫描后的空 pairs 是合法零 | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
-| favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook` | claimant=attacker 时精确 false；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **reverse gap 1**：闭合 `add_hook` effect vtable、preview callback/collector slot 与 favor-hook type identity；不得套用 interaction-only `0x334C510` |
+| favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook`；ordinary/no-toast vtable、preview callback 与 `favor_hook` runtime identity 已闭合 | claimant=attacker 时精确 false；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **fixture-confirmed isolated core**；仍缺 production WarID wrapper、双采样稳定门、terms wire 与 paused live；接 production 前还要给 root slot11 加非空门 |
 | war-bound army | 现有 generation-safe CUnit↔CArmy↔CRegiment backlink、regiment storage 与 native soldier helper | 完整 storage scan 后按 `bound WarID + source=norman_highwaymen + keep=false` 选来源 regiments；发布当前 RegimentID、合并后的 Army/CUnit grouping 与 current soldiers lost | **reverse gap 2**：从 `spawn_army` factory/execute 和 save serializer 闭合持久 origin/war-lifetime 字段 |
 
 Gold/F/hook 的 preview 必须走独立的 Raiktor visible-root observer：它在真实 WarEffectContext 中遍历**原始** loaded root，所有 callback
 继续 forward 给 stock collector；它绝不调用 `ResolveWarExitHiddenTrucePath`、`BuildWarExitHiddenTruceProjection` 或
-production-disabled broad reader。gold 的 `DryPreviewRaiktorGoldVisibleRoot` 与 favor-hook 原子已按此边界 fixture-confirmed；F/prestige
-仍待同类专用 materializer。原始 WarOverview 路径会自然跳过 hidden truce，因此 truce 只用 pointer walker 加直接 evaluator。这个隔离是
+production-disabled broad reader。gold 的 `DryPreviewRaiktorGoldVisibleRoot`、F/prestige 的 local-root-proxy observer 与 favor-hook 原子均已按此边界
+fixture-confirmed。原始 WarOverview 路径会自然跳过 hidden truce，因此 truce 只用 pointer walker 加直接 evaluator。这个隔离是
 两次真实 `0x334C668` crash 后的必要回归边界，不是理论性防御。
 
 War-bound 军队不能用 ArmyID、owner 是战争参与者、军队名称或脚本初始 `6×500=3000` 猜。军队可合并且 public CArmy ID
@@ -1635,7 +1635,19 @@ preview 中 finance mutation、第二次 preview 后 CB-key drift、null root sl
 零 hidden projection 与零 command submission。它尚未接 mailbox/JSON/MCP，也没有 paused CK3 artifact，故只关闭 gold 原生
 core/fixture 缺口，不改变六域 readiness。
 
-建议的 native helper 边界如下；名称是施工合同，不表示已经实现：
+[fixture-confirmed / pending wire+live] F/prestige 域现有独立 production helper `ReadRaiktorSurrenderPrestige`。它只接受 paused、
+exact `raiktor_claim_cb`、玩家为 primary attacker、identifier 指针当前值仍精确为 `82` 的 full-generation WarID；每次采样先读
+attacker `extension+0x130` current prestige，再构造真实 WarEffectContext。`0x3380170` 接收仅替换 original-root slot11 的栈上 proxy；
+trampoline 调回原始 `CB+0xA28` visible root，同一次 traversal 的 collector 仅替换 slot1 并把每条 callback 恰好 forward 一次。它只接受
+唯一 primary-attacker prestige vptr `0x446C7B0` row（typed Character scope、second scope=null、tag=1、forwarded=null），并在原 root
+返回后、临时 wrapper 尚存时读取唯一 `identifier=82,tag=1,subtag=0,flag=0` 的 final `F`。`F>=0`、`10F` 不溢出且 callback 必须等于
+`max(-10F,-1000×100000)`；sample one 前冻结 original loaded-root vtable identity 与 slot11 callable，并在 sample two 前及 final publication
+再次复核。preview 后 current prestige 与 War/CB/primary/claimant/identifier 必须不变，两次完整样本和 final paused Snapshot/CB-key/role
+也必须一致。fixture 覆盖真实零、cap、row/factor 缺失或重复、scope/payload/vptr/forwarded/container 错形、负数、overflow、公式错误、
+preview 内余额/CB/root 漂移、跨样本 terms/balance/identifier 漂移及“另一 root 返回同值”的 identity swap、running、stale WarID、错 role/CB、成对 teardown、
+零 hidden projection/broad traversal/command。它尚未接 mailbox/JSON/MCP，也没有 paused CK3 artifact，故单域仍不改变六域 readiness。
+
+native helper 边界如下；其中 PoW、gold、F/prestige 与 war-bound regiment 已有独立 core，列表不表示统一 wire 已实现：
 
 ```text
 HasRaiktorSurrenderDynamicBindings
@@ -1644,6 +1656,7 @@ DryPreviewRaiktorAttackerDefeatVisibleRoot
 CaptureRaiktorSurrenderPreviewRow
 MaterializeRaiktorGoldAndFame
 ReadRaiktorSurrenderGold
+ReadRaiktorSurrenderPrestige
 ProbeRaiktorDefeatShape
 ResolveRaiktorDefeatTruceNode
 ReadFavorHookPresence

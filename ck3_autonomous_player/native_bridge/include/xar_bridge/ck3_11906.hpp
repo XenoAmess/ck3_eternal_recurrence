@@ -663,6 +663,41 @@ struct RaiktorSurrenderGoldObservation {
                          const RaiktorSurrenderGoldObservation &) = default;
 };
 
+enum class ReadRaiktorSurrenderPrestigeResult : std::uint8_t {
+  available = 0,
+  requires_paused = 1,
+  no_played_character = 2,
+  war_not_found = 3,
+  player_not_primary_attacker = 4,
+  unsupported_casus_belli = 5,
+  unavailable = 6,
+};
+
+// Exact, read-only F/prestige slice for raiktor_claim_cb attacker surrender.
+// cb_prestige_factor is the unique identifier-82 final row captured before
+// 0x3380170 destroys its temporary variable container.  The prestige delta
+// is the unique primary-attacker callback from that same visible-root
+// traversal and must equal max(-10F, -1000).  Current prestige brackets each
+// preview so a read-only traversal cannot silently mutate the observed state.
+struct RaiktorSurrenderPrestigeObservation {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t active_casus_belli_database_index = -1;
+  std::string active_casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::int32_t claimant_character_id = -1;
+  game::WarExitCharacterFixedPointSnapshot attacker_current_prestige;
+  game::FixedPointValue cb_prestige_factor;
+  game::WarExitCharacterFixedPointSnapshot attacker_prestige_delta;
+  bool exact_factor_and_attacker_delta_observed = false;
+  bool same_frame_stable = false;
+
+  friend bool operator==(const RaiktorSurrenderPrestigeObservation &,
+                         const RaiktorSurrenderPrestigeObservation &) =
+      default;
+};
+
 // The generic registry hashes the process image once and passes an exact-match
 // decision into the selected version adapter. False returns disabled bindings.
 Bindings BindCurrentProcess(bool executable_matches) noexcept;
@@ -980,6 +1015,14 @@ ReadRaiktorSurrenderGoldResult ReadRaiktorSurrenderGold(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderGoldObservation &output) noexcept;
 
+// Reads the final cb_prestige_factor accumulator and the primary attacker's
+// actual prestige callback from one traversal of raiktor_claim_cb's original
+// visible attacker-defeat root.  The root proxy exists only to observe the
+// helper-owned temporary variable container; no effect or command executes.
+ReadRaiktorSurrenderPrestigeResult ReadRaiktorSurrenderPrestige(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderPrestigeObservation &output) noexcept;
+
 // Exact-build, primary-attacker-owner observation of persistent regiments
 // bound to one full-generation active WarID with keep=false. Each of the seven
 // persistent composition rows is generation-resolved to its current
@@ -1042,6 +1085,17 @@ ReadRaiktorSurrenderGoldForOfflineReFixture(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderGoldObservation &output,
     RaiktorGoldBetweenSamplesHook between_samples) noexcept;
+
+using RaiktorPrestigeBetweenSamplesHook = void (*)() noexcept;
+
+// Offline mutation seam for the production F/prestige implementation.  It
+// can force final-row, callback, balance or identity drift between samples;
+// production always supplies no hook.
+ReadRaiktorSurrenderPrestigeResult
+ReadRaiktorSurrenderPrestigeForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderPrestigeObservation &output,
+    RaiktorPrestigeBetweenSamplesHook between_samples) noexcept;
 
 using WarBoundCleanupBetweenSamplesHook = void (*)() noexcept;
 

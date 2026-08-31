@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-workforce-collective-snapshot-v1.schema.json",
+  "title": "ZhongGuo Workforce collective and rolling-three-cycle snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "case_kind", "request_nonce",
+    "snapshot_revision", "date_raw", "paused", "player_character_id",
+    "subject_character_id", "requested_owner_character_id", "al_case",
+    "m360_receipt", "collective", "cohorts", "route_c_debt", "history",
+    "charter_gate", "readiness", "unavailable_reason", "provenance",
+    "build", "source", "binding"
+  ],
+  "$defs": {
+    "fieldReason": {
+      "enum": [
+        "case_unavailable", "variable_absent", "value_type_mismatch",
+        "value_out_of_range", "not_applicable", "lifecycle_not_reached",
+        "receipt_not_recorded"
+      ]
+    },
+    "topReason": {
+      "enum": [
+        "unsupported_build", "requires_application_main", "requires_paused",
+        "map_not_ready", "case_not_found", "case_inconsistent",
+        "owner_filter_mismatch", "variable_identifier_unavailable",
+        "variable_context_unavailable", "collective_inconsistent",
+        "history_inconsistent", "state_changed", "internal_error"
+      ]
+    },
+    "typedInteger": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"}, "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldReason"}
+          }
+        }
+      ]
+    },
+    "typedBoolean": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"}, "value": {"type": "boolean"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"}, "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldReason"}
+          }
+        }
+      ]
+    },
+    "case": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "active", "revision"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"}, "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"}, "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"}, "active": {"$ref": "#/$defs/typedBoolean"},
+        "revision": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "choice"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"}, "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"}, "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"}, "choice": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "cohort": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "cohort_id", "manager_character_id", "member_count", "member_hash",
+        "quota", "forced_count", "exception_count", "manager_cost",
+        "partition_verified", "approval_verified", "b1_cycle_serial",
+        "b1_case_serial", "b1_source_id", "b1_source_hash", "mg_cycle_serial",
+        "mg_case_serial", "mg_snapshot_source_serial", "mg_snapshot_revision"
+      ],
+      "properties": {
+        "cohort_id": {"$ref": "#/$defs/typedInteger"}, "manager_character_id": {"$ref": "#/$defs/typedInteger"},
+        "member_count": {"$ref": "#/$defs/typedInteger"}, "member_hash": {"$ref": "#/$defs/typedInteger"},
+        "quota": {"$ref": "#/$defs/typedInteger"}, "forced_count": {"$ref": "#/$defs/typedInteger"},
+        "exception_count": {"$ref": "#/$defs/typedInteger"}, "manager_cost": {"$ref": "#/$defs/typedInteger"},
+        "partition_verified": {"$ref": "#/$defs/typedBoolean"}, "approval_verified": {"$ref": "#/$defs/typedBoolean"},
+        "b1_cycle_serial": {"$ref": "#/$defs/typedInteger"}, "b1_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "b1_source_id": {"$ref": "#/$defs/typedInteger"}, "b1_source_hash": {"$ref": "#/$defs/typedInteger"},
+        "mg_cycle_serial": {"$ref": "#/$defs/typedInteger"}, "mg_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "mg_snapshot_source_serial": {"$ref": "#/$defs/typedInteger"}, "mg_snapshot_revision": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "debt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "open", "consumed", "due_cycle_serial"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"}, "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"}, "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"}, "open": {"$ref": "#/$defs/typedBoolean"},
+        "consumed": {"$ref": "#/$defs/typedBoolean"}, "due_cycle_serial": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "historySlot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "m357_receipt_id", "m357_receipt_hash", "m358_receipt_id", "m358_receipt_hash", "m359_receipt_id", "m359_receipt_hash"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"}, "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"}, "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "m357_receipt_id": {"$ref": "#/$defs/typedInteger"}, "m357_receipt_hash": {"$ref": "#/$defs/typedInteger"},
+        "m358_receipt_id": {"$ref": "#/$defs/typedInteger"}, "m358_receipt_hash": {"$ref": "#/$defs/typedInteger"},
+        "m359_receipt_id": {"$ref": "#/$defs/typedInteger"}, "m359_receipt_hash": {"$ref": "#/$defs/typedInteger"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1}, "status": {"enum": ["available", "unavailable"]},
+    "case_kind": {"const": "zhongguo.workforce-collective"},
+    "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+    "snapshot_revision": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "paused": {"type": "boolean"}, "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "subject_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "requested_owner_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "al_case": {"$ref": "#/$defs/case"}, "m360_receipt": {"$ref": "#/$defs/receipt"},
+    "collective": {
+      "type": "object", "additionalProperties": false,
+      "required": ["phase", "submission_active", "submission_sealed", "submission_consumed", "owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "collective_case_serial", "submitted_cycle_serial", "cohort_count", "settlement_id", "settlement_hash", "settled", "route", "total_members", "total_quota", "forced_count", "exception_count", "manager_cost_total"],
+      "properties": {
+        "phase": {"enum": ["unavailable", "not_reached", "route_a_exception", "route_b_forced", "route_c_debt"]},
+        "submission_active": {"$ref": "#/$defs/typedBoolean"}, "submission_sealed": {"$ref": "#/$defs/typedBoolean"}, "submission_consumed": {"$ref": "#/$defs/typedBoolean"},
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"}, "subject_character_id": {"$ref": "#/$defs/typedInteger"}, "cycle_serial": {"$ref": "#/$defs/typedInteger"}, "case_serial": {"$ref": "#/$defs/typedInteger"}, "state": {"$ref": "#/$defs/typedInteger"},
+        "collective_case_serial": {"$ref": "#/$defs/typedInteger"}, "submitted_cycle_serial": {"$ref": "#/$defs/typedInteger"}, "cohort_count": {"$ref": "#/$defs/typedInteger"},
+        "settlement_id": {"$ref": "#/$defs/typedInteger"}, "settlement_hash": {"$ref": "#/$defs/typedInteger"}, "settled": {"$ref": "#/$defs/typedBoolean"}, "route": {"$ref": "#/$defs/typedInteger"},
+        "total_members": {"$ref": "#/$defs/typedInteger"}, "total_quota": {"$ref": "#/$defs/typedInteger"}, "forced_count": {"$ref": "#/$defs/typedInteger"}, "exception_count": {"$ref": "#/$defs/typedInteger"}, "manager_cost_total": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "cohorts": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/cohort"}},
+    "route_c_debt": {"$ref": "#/$defs/debt"},
+    "history": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "count", "effective_count", "slots"],
+      "properties": {
+        "status": {"enum": ["unavailable", "empty", "partial", "three_cycle"]},
+        "count": {"$ref": "#/$defs/typedInteger"}, "effective_count": {"type": "integer", "minimum": -1, "maximum": 3},
+        "slots": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/historySlot"}}
+      }
+    },
+    "charter_gate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "evidence_count", "evidence_ready", "evidence_consumed", "owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "prepared_report_id", "prepared_charter_id", "previous_charter_id", "previous_version", "adopted_cycle_serial", "effective_cycle_serial", "portfolio_status", "portfolio_closed", "terminal_history_accruing", "portfolio_history_cycle_count", "terminal_success"],
+      "properties": {
+        "status": {"enum": ["unavailable", "not_eligible", "awaiting_gate", "ready", "consumed"]},
+        "evidence_count": {"$ref": "#/$defs/typedInteger"}, "evidence_ready": {"$ref": "#/$defs/typedBoolean"}, "evidence_consumed": {"$ref": "#/$defs/typedBoolean"},
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"}, "subject_character_id": {"$ref": "#/$defs/typedInteger"}, "cycle_serial": {"$ref": "#/$defs/typedInteger"}, "case_serial": {"$ref": "#/$defs/typedInteger"}, "state": {"$ref": "#/$defs/typedInteger"},
+        "prepared_report_id": {"$ref": "#/$defs/typedInteger"}, "prepared_charter_id": {"$ref": "#/$defs/typedInteger"}, "previous_charter_id": {"$ref": "#/$defs/typedInteger"}, "previous_version": {"$ref": "#/$defs/typedInteger"},
+        "adopted_cycle_serial": {"$ref": "#/$defs/typedInteger"}, "effective_cycle_serial": {"$ref": "#/$defs/typedInteger"}, "portfolio_status": {"$ref": "#/$defs/typedInteger"}, "portfolio_closed": {"$ref": "#/$defs/typedBoolean"},
+        "terminal_history_accruing": {"$ref": "#/$defs/typedBoolean"}, "portfolio_history_cycle_count": {"$ref": "#/$defs/typedInteger"}, "terminal_success": {"$ref": "#/$defs/typedBoolean"}
+      }
+    },
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["player_subject_binding_ready", "owner_binding_ready", "case_identity_ready", "m360_receipt_projection_ready", "collective_lifecycle_ready", "cohort_identity_ready", "cohort_conservation_ready", "route_conservation_ready", "history_ledger_ready", "history_order_ready", "three_cycle_ready", "charter_gate_lifecycle_ready", "same_frame_ready", "ready"],
+      "properties": {
+        "player_subject_binding_ready": {"type": "boolean"}, "owner_binding_ready": {"type": "boolean"}, "case_identity_ready": {"type": "boolean"}, "m360_receipt_projection_ready": {"type": "boolean"},
+        "collective_lifecycle_ready": {"type": "boolean"}, "cohort_identity_ready": {"type": "boolean"}, "cohort_conservation_ready": {"type": "boolean"}, "route_conservation_ready": {"type": "boolean"},
+        "history_ledger_ready": {"type": "boolean"}, "history_order_ready": {"type": "boolean"}, "three_cycle_ready": {"type": "boolean"}, "charter_gate_lifecycle_ready": {"type": "boolean"}, "same_frame_ready": {"type": "boolean"}, "ready": {"type": "boolean"}
+      }
+    },
+    "unavailable_reason": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/topReason"}]},
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["game_version", "executable_sha256", "backend_id", "consumer_id", "allowlist_id", "variable_context_for_scope_rva", "variable_identifier_table_rva", "variable_identifier_lookup_rva", "variable_identifier_name_rva", "character_storage_slot_rva", "subject_allowlist_count", "owner_allowlist_count", "query_scope"],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"}, "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+        "backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-workforce-collective-snapshot-v1"}, "consumer_id": {"const": "xar-autoplayer-zhongguo-workforce-collective-snapshot-v1"}, "allowlist_id": {"const": "zg361-workforce-collective-received-self-v1"},
+        "variable_context_for_scope_rva": {"const": "0x3329A40"}, "variable_identifier_table_rva": {"const": "0x3B971A0"}, "variable_identifier_lookup_rva": {"const": "0x3B97020"}, "variable_identifier_name_rva": {"const": "0x3B97090"}, "character_storage_slot_rva": {"const": "0x570C130"},
+        "subject_allowlist_count": {"const": 144}, "owner_allowlist_count": {"const": 31}, "query_scope": {"const": "paused_received_self_al_case_plus_owner_rolling_three_cycle"}
+      }
+    },
+    "build": {
+      "type": "object", "additionalProperties": false, "required": ["version", "exe_sha256"],
+      "properties": {"version": {"const": "1.19.0.6"}, "exe_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"}}
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bridge_version", "game_adapter_id", "backend_id", "consumer_id", "connection_generation", "snapshot_id", "revision", "native_revision", "date_raw", "paused", "player_character_id"],
+      "properties": {
+        "bridge_version": {"const": "0.1.0"}, "game_adapter_id": {"const": "ck3-1.19.0.6-msvc-x64"}, "backend_id": {"const": "native-headless"}, "consumer_id": {"const": "xar-autoplayer-zhongguo-workforce-collective-snapshot-v1"},
+        "connection_generation": {"type": "integer", "minimum": 1}, "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256}, "revision": {"type": "integer", "minimum": 0}, "native_revision": {"type": "integer", "minimum": 1},
+        "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647}, "paused": {"const": true}, "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647}
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request_nonce", "snapshot_id", "revision", "native_revision", "connection_generation", "date_raw", "paused", "player_character_id", "subject_character_id", "owner_character_id", "expected_revision"],
+      "properties": {
+        "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"}, "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {"type": "integer", "minimum": 0}, "native_revision": {"type": "integer", "minimum": 1}, "connection_generation": {"type": "integer", "minimum": 1}, "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+        "paused": {"const": true}, "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647}, "subject_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "owner_character_id": {"type": ["integer", "null"], "minimum": 1, "maximum": 2147483647}, "expected_revision": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "available"}}},
+    "then": {"properties": {"unavailable_reason": {"type": "null"}}},
+    "else": {"properties": {"unavailable_reason": {"$ref": "#/$defs/topReason"}}}
+  }]
+}

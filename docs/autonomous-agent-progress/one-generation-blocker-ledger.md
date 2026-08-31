@@ -67,7 +67,7 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 | GEN-031 | B1 native capability | war-termination options query 未绑定已发布 paused revision | 历史 RED `33876238` 在 `53278752 / native:25 / revision=26` 的第二个 WarID query 发生 row mismatch。`fc0f878` 让 native handler 消费 expected revision，并在 admission/completion 进行完整 snapshot sandwich；只在稳定成功后推进 query sequence。Python 只把明确 stale/admission-changed/completion-changed 的零写入拒绝映射为既有一次 whole-turn replan，真实四字段 mismatch 继续硬 RED并留最小 diff | `9186bfa3` turn 11/12 已在同一 paused native revision 26 连续成功查询 WarID `83886203 / 134217852`，跨过原失败边界；后续查询至 turn 20 持续成功，cleanup 全绿 | 2026-08-28 resolved；`fc0f878` blocker-removal production-live，report `2C764FEC...6C83` |
 | GEN-032 | B1 | 玩家自然死亡先于 tactical sentinel 正常 stop，terminal 边界不能稳定化 | 三次早期 attempt 先关闭 terminal 识别与日期漂移；formal G2 attempt 01 又证明同一 bound episode 的 terminal surface 在 pause 服务期间可从死亡角色演化为继承人。最终合同只固定 bridge/connection/episode owner；played-character、alive 与 `dead→changed` terminal reason 可单调演化。event/pending interaction 的 exact identity 不变 | formal G2 attempt 03 已在相同生产边界返回 `death-terminal`，随后继续完成 GEN-009；driver 回归 `196 passed + 212 subtests`，相关聚合 `468 passed + 287 subtests` | 2026-08-30 resolved；terminal sentinel blocker-removal production-live；边界由 G2 live 再校准 |
 | GEN-033 | B1（G2） | 新接触战斗的 full CombatID/BattleResultID 为负，被旧 consumer 当成未物化 | attempts 08/09 在 `53291904` 分别报 `active_combat_identity_failed` / `subject_combat_id_invalid`；attempt10 唯一一次 `+24h` 后仍因“缺 positive CombatID”停止。exact-build 证明两类 ID 均为 opaque signed full dword、low24 仅选槽、`-1` 唯一 missing。attempt11 先穿过 CombatID 后暴露 BattleResultID，同一修复后 attempt12 双查询稳定读到 `-2147483647 / -2046820351` | signed identity 原样贯穿 reader、wire、contracts、planner literal、battle action/transition/terminal journal 与 sentinel；同 checkpoint 做真实 action 后 paused requery 并保存 durable checkpoint | 2026-08-31 resolved；attempt16 production-live loop slice，完整 G2 第二寿命仍进行中 |
-| GEN-034 | B1（G2） | Raiktor 特殊战争可合法投降，但 CB-specific actual terms 不可观测 | frozen continuation 的 CharacterID `29829` / WarID `50331699` 为 primary attacker，`raiktor_claim_cb`、1281 日、战分 `-50`；surrender validator/available/auto-accept/`would_accept_now` 全真。`05ae0bf` 只发布 claimant/targets/claims 与静态 formula；actual gold、favor-hook、war-bound regiment（active/cleanup）和 PoW 已有相互独立且 fixture-confirmed 的 native core，但尚未组成统一 terms wire，dynamic/decision/action readiness 全 false | 实现 gold、F/prestige、truce、PoW、favor hook、war-bound army 六域 same-frame reader；静态闭合 add-hook preview 与 regiment origin/lifetime 两个 reverse gap；普通 `claim_cb` 不变，旧 crash reader 继续禁用；一次 CK3 启动完成双查询、typed surrender、六域 postcondition、postwar checkpoint | partial native implementation/fixture；统一 wire、policy、MCP 与 live pending |
+| GEN-034 | B1（G2） | Raiktor 特殊战争可合法投降，但 CB-specific actual terms 不可观测 | frozen continuation 的 CharacterID `29829` / WarID `50331699` 为 primary attacker，`raiktor_claim_cb`、1281 日、战分 `-50`；surrender validator/available/auto-accept/`would_accept_now` 全真。`05ae0bf` 只发布 claimant/targets/claims 与静态 formula；actual gold、F/prestige、PoW、favor-hook isolated atom 与 war-bound regiment（active/cleanup）已有相互独立且 fixture-confirmed 的 native core，但尚未组成统一 terms wire，dynamic/decision/action readiness 全 false | 完成 truce pointer/evaluator、favor production WarID wrapper/double-sample 与 regiment source/lifetime 缺口；随后把 gold、F/prestige、truce、PoW、favor hook、war-bound army 组成六域 same-frame reader/MCP。普通 `claim_cb` 不变，旧 crash reader继续禁用；一次 CK3 启动完成双查询、typed surrender、六域 postcondition、postwar checkpoint | partial native implementation/fixture；统一 wire、policy、MCP 与 live pending |
 
 ## Degraded heuristic 纪律
 
@@ -691,14 +691,23 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   fixture 已覆盖 row 缺失/重复/反向/负数/malformed、preview finance mutation、completion CB-key drift、null root slot、running frame、
   非 Raiktor CB、成对 teardown、零 hidden projection 与零 command submission。它尚未接 mailbox、terms JSON/MCP 或策略输入，故不改变
   六域 readiness，也没有取代一次启动 live matrix。
+- [fixture-confirmed native core / pending wire+live] F/prestige 独立 production helper `ReadRaiktorSurrenderPrestige` 已把 final F 与 attacker
+  prestige delta 原子闭合：同一次 original `CB+0xA28` visible-root traversal 中，collector 捕获唯一 typed primary-attacker prestige callback
+  并将全部 callback 恰好 forward 一次；root slot11 proxy 在 `0x3380170` 销毁临时 wrapper 前读取唯一 identifier-82 final row。它要求
+  `F>=0`、`10F` 不溢出、delta=`max(-10F,-1000×100000)`，冻结并跨两次 sample/final 复核 original root vtable+slot11 identity，且每次 preview
+  前后 current prestige/identity 相同，两次完整样本及 final paused Snapshot/CB-key/role 相同。fixture 覆盖 zero/cap、factor/callback/container
+  错形、公式/overflow、preview 与跨样本 drift（含返回同值的 root identity swap）、running、stale WarID、
+  错 role/CB、成对 teardown、零 hidden/broad/command。它尚未进入 mailbox、terms JSON/MCP 或策略输入，没有 paused CK3 artifact，故不改变
+  六域 readiness，也没有恢复 production-disabled broad exit reader。
 - [static design] GEN-034 的最小解除范围固定为六域：actual gold；`cb_prestige_factor` 与 attacker prestige delta；truce days/expiry；
   实际 PoW release pairs；conditional favor-hook application；按来源 regiment 读取的 current war-bound army losses。faction/opinion/feud/
   Mandala/LAAMP 留作显式 broad 能力债，不伪装为零，也不阻塞这个窄 `decision_terms_ready`。完整 reader 与策略合同分别见
   [war-termination.md](../ck3-native-ai/war-termination.md) 和
   [player-war-exit-policy.md](../ck3-native-ai/player-war-exit-policy.md)。
-- [static design] gold/F/PoW 可复用既有 exact ABI；truce 复用 `0x3373000`，只差一次 pointer-only Raiktor root shape probe，并且绝不执行
-  ContextEffect。剩余两个 reverse gap 是：（1）`add_hook` effect vtable、preview callback/collector slot 与 favor-hook type identity；
-  （2）`spawn_army war=scope:war` 在 CRegiment/special-troop 对象上的持久 origin、bound-WarID、keep=false 字段及 serializer。
+- [partial native implementation] gold/F/PoW 已有 production core；favor 的 effect vtable、preview callback/collector slot 与 runtime type identity
+  已闭合到 isolated fixture atom，但还缺 WarID-bound production wrapper与双采样。truce 复用 `0x3373000`，只差一次 pointer-only Raiktor root
+  shape probe，并且绝不执行 ContextEffect。仍未闭合的来源 reverse gap 是 `spawn_army war=scope:war` 在
+  CRegiment/special-troop 对象上的持久 origin、bound-WarID、keep=false 字段及 serializer。
   ArmyID、参战方、名称或初始 3000 人都不能替代来源字段；合并后的军队必须按 surviving regiment 追踪。
 - [non-regression] 普通 `claim_cb_claim_disposition` 的 schema、JSON、readiness、GEN-004 white-peace 路径不得改变，也不得被新增 Raiktor
   binding 反向门禁。历史 broad `ReadWarTerminationExitTerms` 继续在任何 preview 前返回

@@ -450,14 +450,14 @@ life advance，不能称新门 production-live。固定 G1 source `480f287` + �
 
 ## 2026-08-31 Raiktor primary-attacker surrender：六域策略合同
 
-[static design / not implemented / not live] G2 当前实例已经由 paused native options 证明：WarID `50331699`、玩家
+[static contract / partial native implementation / not live] G2 当前实例已经由 paused native options 证明：WarID `50331699`、玩家
 CharacterID `29829` 是 primary attacker、CB=`raiktor_claim_cb`、战争 1281 日、战分 `-50`，surrender 的 context、validator、
 available、auto-accept 与 `would_accept_now` 均为真。它只证明 surrender 是合法且会被接受的候选，不证明该候选优于继续战争。
 现有 typed partial 只发布 claimant/targets/claims 与原版 formula，`ready=false`；因此当前仍不得广告或执行 surrender literal。
 
 本窄策略的 structured decision terms 固定为六域：actual gold、`cb_prestige_factor` 与 attacker prestige delta、truce days/expiry、实际
-PoW release pairs、conditional favor-hook application、当前 war-bound source regiments/armies lost。原生 reader、readiness、两个 reverse
-gap 和一次启动验收矩阵见 [war-termination.md](war-termination.md)。“六域 terms ready”只解除 CB-specific 条款观测 blocker；
+PoW release pairs、conditional favor-hook application、当前 war-bound source regiments/armies lost。原生 reader、readiness、剩余 production
+封装/逆向缺口和一次启动验收矩阵见 [war-termination.md](war-termination.md)。“六域 terms ready”只解除 CB-specific 条款观测 blocker；
 faction/opinion/feud/Mandala/LAAMP 等 broad rows 继续作为显式能力债，不得从 payload 中悄悄删除或伪装成零。
 
 [fixture-confirmed / pending MCP+live] 六域中的 PoW 原生 core 已由
@@ -469,6 +469,14 @@ faction/opinion/feud/Mandala/LAAMP 等 broad rows 继续作为显式能力债，
 attacker→defender transfer、双方 current gold 与 authoritative monthly income，并以 preview 前后 finance、两次完整样本及最终
 paused Snapshot/CB-key 三层稳定门拒绝漂移。cached monthly leaf 不参与结果。该原子同样尚未进入 terms JSON 或策略输入；单域
 fixture GREEN 不改变动作门、`decision_terms_ready` 或 `automatic_surrender_ready`。
+
+[fixture-confirmed / pending MCP+live] F/prestige 原生 core 已由 `ReadRaiktorSurrenderPrestige` 原子闭合：同一次 original
+attacker-defeat visible-root traversal 中，collector 捕获并完整 forward 唯一 primary-attacker prestige callback；root slot11 proxy 在
+`0x3380170` 销毁临时 wrapper 前直接读取唯一 identifier-82 final `F`，并校验 callback 等于
+`max(-10F,-1000×100000)`。sample one 前冻结 original loaded-root vtable identity 与 slot11 callable，sample two 前和 final publication
+再次复核；每次 traversal 前后 current prestige 与 War/CB/primary/claimant/identifier 必须一致，再要求两次完整样本和 final paused
+Snapshot/CB-key/role 一致。它不由 delta 反推 F、不读取 defender 的动态 scale，也不进入 hidden-truce/broad reader 或提交
+命令。该原子尚未进入 terms JSON/MCP；没有 paused CK3 artifact，单域 fixture GREEN 不改变任何统一 readiness 或动作门。
 
 ### Readiness 与动作分层
 

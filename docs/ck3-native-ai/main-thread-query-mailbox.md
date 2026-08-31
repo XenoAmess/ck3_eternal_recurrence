@@ -2,7 +2,7 @@
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has seventeen bounded production uses:
+`main_thread_query_mailbox_v1` now has twenty bounded production uses:
 `query-war-entry-assessments-v1`, `query-route-contact-horizon-v1-N`,
 `query-actual-contact-scope-v1-N`, `query-combat-simulation-inputs-v3-N`,
 `query-battle-control-snapshot-v1-N`, `query-battle-transition-v1-N`,
@@ -15,9 +15,11 @@
 `query-zhongguo-case-snapshot-v1` and
 `query-zhongguo-result-case-snapshot-v1`,
 `query-zhongguo-b2-pip-snapshot-v1` and
-`query-zhongguo-incident-snapshot-v1`. The candidate identity
+`query-zhongguo-incident-snapshot-v1`, `query-zhongguo-scoreboard-state-v1`
+and `query-zhongguo-workforce-collective-snapshot-v1`, plus
+`query-zhongguo-ai-owned-case-snapshot-v1`. The candidate identity
 remains `application_main_thread_war_entry_v1`; the heartbeat query scope is
-`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot`.
+`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot`.
 It is not a general native-call, effect, or scripted-VM executor.
 
 The first paused live counter run reached SDL `PeekMessageW` return
@@ -34,7 +36,7 @@ and the new by-CombatID lifecycle query still require their own paused live
 acceptance. Title-map navigation completed its paused camera dispatch, cross-pump
 settled readback, already-centered and typed unknown-key matrix in the 2026-08-30
 ZhongGuo full acceptance. Production admits at
-most one request per pump and only seventeen named callbacks:
+most one request per pump and only twenty named callbacks:
 `ExecuteWarEntryAssessmentMailboxQueryV1`,
 `ExecuteRouteContactHorizonMailboxQueryV1`,
 `ExecuteActualContactScopeMailboxQueryV1`,
@@ -51,8 +53,12 @@ most one request per pump and only seventeen named callbacks:
 `ExecuteZhongguoCaseSnapshotMailboxQueryV1` and
 `ExecuteZhongguoResultCaseSnapshotMailboxQueryV1`,
 `ExecuteZhongguoB2PipSnapshotMailboxQueryV1` and
-`ExecuteZhongguoIncidentSnapshotMailboxQueryV1`. The four ZhongGuo case readers are only
-static/fixture-ready here; none has a paused live CK3 artifact yet. War-entry remains limited to
+`ExecuteZhongguoIncidentSnapshotMailboxQueryV1`,
+`ExecuteZhongguoScoreboardStateMailboxQueryV1`,
+`ExecuteZhongguoWorkforceCollectiveSnapshotMailboxQueryV1` and
+`ExecuteZhongguoAiOwnedCaseSnapshotMailboxQueryV1`. These ZhongGuo readers are
+only static/fixture-ready here; none of the newly added providers has a paused
+live CK3 artifact yet. War-entry remains limited to
 one target per request; route-contact is limited to one controllable subject
 and the exact complete hostile scope, at most 64 ArmyIDs.
 
@@ -111,7 +117,7 @@ flowchart TD
     E --> F[Observe exact return 0x3CE4222]
     F --> G{TLS + paused + date + identity stable twice?}
     G -- no --> F
-    G -- yes --> H[Ten typed read-only executors ready]
+    G -- yes --> H[Twenty typed read-only executors ready]
     H --> I[Stop]
     I --> J[Restore original IAT and drain counted hooks]
     J --> K[Detached; process-pinned storage retained]
@@ -136,7 +142,12 @@ fixed to `ExecuteBattleReinforcementAssignmentMailboxQueryV1` and
 `ExecuteBattleTerminalTransitionMailboxQueryV1`; the nonary and denary slots
 are fixed to `ExecuteCampaignRootContextMailboxQueryV1` and
 `ExecuteLoadedFeatureManifestMailboxQueryV1`; the undenary slot is fixed to
-`ExecutePendingCharacterInteractionContextMailboxQueryV1`.
+`ExecutePendingCharacterInteractionContextMailboxQueryV1`; the duodenary
+through octodenary slots are fixed to current-event, title-map, ZhongGuo B1,
+received-self result, B2 PIP, incident and scoreboard queries respectively;
+the novemdenary slot is fixed to
+`ExecuteZhongguoWorkforceCollectiveSnapshotMailboxQueryV1`; the vigintary slot
+is fixed to `ExecuteZhongguoAiOwnedCaseSnapshotMailboxQueryV1`.
 `TrySubmitMainThreadQueryV1` rejects every other callback. The war-entry bridge
 additionally requires exactly one target. Timeout can cancel a queued request
 only. Once state is `executing`, the worker retains the caller-owned context
@@ -974,7 +985,7 @@ unobserved.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executors | true in build | seventeen fixed production slots plus submit identity gate |
+| Only permitted executors | true in build | twenty fixed production slots plus submit identity gate |
 | Ongoing battle-control executor | true | fifth typed slot; cold checkpoint maneuver→main ledger acceptance and managed cleanup are live-confirmed in [ongoing-battle-frame.md](ongoing-battle-frame.md) |
 | By-CombatID lifecycle executor | true in build | sixth typed slot; direct full-ID combat resolution, stable double sample, phase/winner/result and ordered sides; live acceptance pending |
 | Campaign-root executor | true | ninth typed slot; exact-build player/title/capital/liege/government/rules query is production-live confirmed in [campaign-root-context.md](campaign-root-context.md) |
@@ -986,6 +997,9 @@ unobserved.
 | ZhongGuo received-self result snapshot executor | static/fixture-ready | fifteenth typed slot; the paused played character is the only subject, the actual superior comes from the fixed kind-4 result owner row, and the required owner input is only an equality filter; no live claim |
 | ZhongGuo received-self B2 PIP snapshot executor | static/fixture-ready | sixteenth typed slot; fixed 73-key player-subject allowlist plus one owner-capacity key after exact owner binding; D+180/D+365 ticket dates and modifier presence remain typed unavailable; no live claim |
 | ZhongGuo received-self Incident X/Y/Z snapshot executor | static/fixture-ready | seventeenth typed slot; three fixed 50-key profiles, player-only subject, expected-owner equality filter, exact N/A/incident/KPI unions and Q100000 resource payloads; no live claim |
+| ZhongGuo scoreboard-state snapshot executor | static/fixture-ready | eighteenth typed slot; fixed scoreboard variables and stable row identity; no live claim |
+| ZhongGuo Workforce collective/rolling-three-cycle snapshot executor | static/fixture-ready | nineteenth typed slot; fixed subject/owner allowlists, route A/B/C conservation, ordered three-cycle receipts and #361 charter gate; no live claim |
+| ZhongGuo AI-owned B1 case snapshot executor | static/fixture-ready | twentieth typed slot; proves a living AI `celestial_government` duke+ owner and direct subject, then returns the fixed B1 identity/stage/background route/roster-lock receipt projection; no live claim |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | true | P0 live frame and cold restore preserve CombatID, Province and native side order |

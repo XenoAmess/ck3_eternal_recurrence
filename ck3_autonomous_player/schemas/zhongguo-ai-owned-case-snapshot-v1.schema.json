@@ -1,0 +1,429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-ai-owned-case-snapshot-v1.schema.json",
+  "title": "ZhongGuo AI-owned B1 performance case snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "case_kind", "request_nonce",
+    "snapshot_revision", "date_raw", "paused", "player_character_id",
+    "requested_owner_character_id", "subject_character_id",
+    "owner_eligibility", "case", "stage", "route", "policy",
+    "operation", "receipt", "readiness", "unavailable_reason",
+    "provenance", "build", "source", "binding"
+  ],
+  "$defs": {
+    "fieldUnavailableReason": {
+      "enum": [
+        "case_unavailable", "variable_absent", "value_type_mismatch",
+        "value_out_of_range", "stage_inconsistent",
+        "no_operation_recorded", "unknown_allowlisted_operation",
+        "receipt_not_recorded", "receipt_inconsistent", "not_applicable"
+      ]
+    },
+    "topLevelUnavailableReason": {
+      "enum": [
+        "unsupported_build", "requires_application_main", "requires_paused",
+        "map_not_ready", "owner_is_played_character",
+        "owner_eligibility_unavailable", "owner_not_alive", "owner_not_ai",
+        "owner_not_celestial", "owner_not_landed_duke_plus",
+        "subject_not_direct_subject", "case_not_found",
+        "owner_filter_mismatch", "variable_identifier_unavailable",
+        "variable_context_unavailable", "state_changed", "internal_error",
+        "subject_not_found"
+      ]
+    },
+    "typedInteger": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {
+              "type": "integer",
+              "minimum": -9223372036854775808,
+              "maximum": 9223372036854775807
+            },
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {
+              "$ref": "#/$defs/fieldUnavailableReason"
+            }
+          }
+        }
+      ]
+    },
+    "typedBoolean": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "boolean"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {
+              "$ref": "#/$defs/fieldUnavailableReason"
+            }
+          }
+        }
+      ]
+    },
+    "typedString": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {
+              "$ref": "#/$defs/fieldUnavailableReason"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "case_kind": {"const": "zhongguo.b1.performance"},
+    "request_nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+    },
+    "snapshot_revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 18446744073709551615
+    },
+    "date_raw": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+    },
+    "paused": {"const": true},
+    "player_character_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "requested_owner_character_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "subject_character_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "owner_eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_character_id", "owner_alive", "owner_is_ai",
+        "primary_title_id", "primary_title_tier_raw",
+        "primary_title_tier_key", "government_key",
+        "subject_immediate_liege_character_id",
+        "subject_is_direct_subject", "authorized"
+      ],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "owner_alive": {"$ref": "#/$defs/typedBoolean"},
+        "owner_is_ai": {"$ref": "#/$defs/typedBoolean"},
+        "primary_title_id": {"$ref": "#/$defs/typedInteger"},
+        "primary_title_tier_raw": {"$ref": "#/$defs/typedInteger"},
+        "primary_title_tier_key": {"$ref": "#/$defs/typedString"},
+        "government_key": {"$ref": "#/$defs/typedString"},
+        "subject_immediate_liege_character_id": {
+          "$ref": "#/$defs/typedInteger"
+        },
+        "subject_is_direct_subject": {"$ref": "#/$defs/typedBoolean"},
+        "authorized": {"$ref": "#/$defs/typedBoolean"}
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_character_id", "subject_character_id", "cycle_serial",
+        "case_serial", "state", "active", "revision", "timeline_serial",
+        "feedback_revision"
+      ],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "active": {"$ref": "#/$defs/typedBoolean"},
+        "revision": {"$ref": "#/$defs/typedInteger"},
+        "timeline_serial": {"$ref": "#/$defs/typedInteger"},
+        "feedback_revision": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "key", "active"],
+      "properties": {
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "key": {"$ref": "#/$defs/typedString"},
+        "active": {"$ref": "#/$defs/typedBoolean"}
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind", "visible_event_allowed", "owner_is_ai",
+        "manager_eligible", "direct_subject_eligible"
+      ],
+      "properties": {
+        "kind": {"$ref": "#/$defs/typedString"},
+        "visible_event_allowed": {"$ref": "#/$defs/typedBoolean"},
+        "owner_is_ai": {"$ref": "#/$defs/typedBoolean"},
+        "manager_eligible": {"$ref": "#/$defs/typedBoolean"},
+        "direct_subject_eligible": {"$ref": "#/$defs/typedBoolean"}
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "choice"],
+      "properties": {
+        "policy_id": {"$ref": "#/$defs/typedString"},
+        "choice": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id", "operation_key", "hook", "pre_state", "post_state"
+      ],
+      "properties": {
+        "operation_id": {"$ref": "#/$defs/typedInteger"},
+        "operation_key": {"$ref": "#/$defs/typedString"},
+        "hook": {"$ref": "#/$defs/typedString"},
+        "pre_state": {"$ref": "#/$defs/typedInteger"},
+        "post_state": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "key", "owner_character_id", "subject_character_id",
+        "cycle_serial", "case_serial", "state", "choice"
+      ],
+      "properties": {
+        "status": {"enum": ["recorded", "not_recorded", "unavailable"]},
+        "key": {"$ref": "#/$defs/typedString"},
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "choice": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_eligibility_ready", "case_identity_ready", "stage_ready",
+        "route_ready", "receipt_ready", "same_frame_ready", "ready"
+      ],
+      "properties": {
+        "owner_eligibility_ready": {"type": "boolean"},
+        "case_identity_ready": {"type": "boolean"},
+        "stage_ready": {"type": "boolean"},
+        "route_ready": {"type": "boolean"},
+        "receipt_ready": {"type": "boolean"},
+        "same_frame_ready": {"type": "boolean"},
+        "ready": {"type": "boolean"}
+      }
+    },
+    "unavailable_reason": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/topLevelUnavailableReason"}
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "game_version", "executable_sha256", "backend_id", "consumer_id",
+        "allowlist_id", "variable_context_for_scope_rva",
+        "character_storage_slot_rva", "primary_title_rva",
+        "immediate_liege_rva", "government_rva", "is_human_player_rva"
+      ],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {
+          "const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        },
+        "backend_id": {
+          "const": "ck3-1.19.0.6-native-zhongguo-ai-owned-case-snapshot-v1"
+        },
+        "consumer_id": {
+          "const": "xar-autoplayer-zhongguo-ai-owned-case-snapshot-v1"
+        },
+        "allowlist_id": {"const": "zg361-b1-ai-owned-case-v1"},
+        "variable_context_for_scope_rva": {"const": "0x3329A40"},
+        "character_storage_slot_rva": {"const": "0x570C130"},
+        "primary_title_rva": {"const": "0x25F3350"},
+        "immediate_liege_rva": {"const": "0x2613480"},
+        "government_rva": {"const": "0x26165B0"},
+        "is_human_player_rva": {"const": "0x28BCEB0"}
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "exe_sha256"],
+      "properties": {
+        "version": {"const": "1.19.0.6"},
+        "exe_sha256": {
+          "const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bridge_version", "game_adapter_id", "backend_id", "consumer_id",
+        "connection_generation", "snapshot_id", "revision",
+        "native_revision", "date_raw", "paused", "player_character_id"
+      ],
+      "properties": {
+        "bridge_version": {"const": "0.1.0"},
+        "game_adapter_id": {"const": "ck3-1.19.0.6-msvc-x64"},
+        "backend_id": {"const": "native-headless"},
+        "consumer_id": {
+          "const": "xar-autoplayer-zhongguo-ai-owned-case-snapshot-v1"
+        },
+        "connection_generation": {
+          "type": "integer", "minimum": 1,
+          "maximum": 18446744073709551615
+        },
+        "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {
+          "type": "integer", "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "native_revision": {
+          "type": "integer", "minimum": 1,
+          "maximum": 18446744073709551615
+        },
+        "date_raw": {
+          "type": "integer", "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "paused": {"const": true},
+        "player_character_id": {
+          "type": "integer", "minimum": 1, "maximum": 2147483647
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_nonce", "snapshot_id", "revision", "native_revision",
+        "connection_generation", "date_raw", "paused",
+        "player_character_id", "subject_character_id", "owner_character_id",
+        "expected_revision"
+      ],
+      "properties": {
+        "request_nonce": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+        },
+        "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {
+          "type": "integer", "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "native_revision": {
+          "type": "integer", "minimum": 1,
+          "maximum": 18446744073709551615
+        },
+        "connection_generation": {
+          "type": "integer", "minimum": 1,
+          "maximum": 18446744073709551615
+        },
+        "date_raw": {
+          "type": "integer", "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "paused": {"const": true},
+        "player_character_id": {
+          "type": "integer", "minimum": 1, "maximum": 2147483647
+        },
+        "subject_character_id": {
+          "type": "integer", "minimum": 1, "maximum": 2147483647
+        },
+        "owner_character_id": {
+          "type": "integer", "minimum": 1, "maximum": 2147483647
+        },
+        "expected_revision": {
+          "type": "integer", "minimum": 0,
+          "maximum": 18446744073709551615
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "available"}}},
+      "then": {"properties": {"unavailable_reason": {"type": "null"}}},
+      "else": {
+        "properties": {
+          "unavailable_reason": {
+            "$ref": "#/$defs/topLevelUnavailableReason"
+          }
+        }
+      }
+    }
+  ]
+}

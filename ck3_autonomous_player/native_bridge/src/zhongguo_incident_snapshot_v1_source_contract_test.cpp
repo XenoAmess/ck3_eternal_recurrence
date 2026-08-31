@@ -174,7 +174,7 @@ int main(int argc, char **argv) {
           "mailbox") ||
       !require_tokens(
           adapter,
-          {"std::array<std::string_view, 70>",
+          {"std::array<std::string_view, 72>",
            "kZhongguoIncidentSnapshotV1Capability"},
           "adapter") ||
       !require_tokens(
