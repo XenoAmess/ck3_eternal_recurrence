@@ -2316,6 +2316,7 @@ def main() -> int:
                     "pause-map",
                     "resume-map",
                     "set-speed-1",
+                    "life-advance",
                     "save-checkpoint",
                     "query-loaded-feature-manifest-v1",
                 ],
@@ -2648,6 +2649,7 @@ def main() -> int:
                 restored_sha256: str = "a" * 64,
                 restored_player: int = 9001,
                 action_revision: int | None = None,
+                action_date_raw: int = 777,
             ) -> None:
                 self.second_pid = second_pid
                 self.second_generation = second_generation
@@ -2657,13 +2659,13 @@ def main() -> int:
                     phase2_snapshot(pid=4321, generation=4, revision=11),
                 ]
                 if action_revision is not None:
-                    self.snapshots.append(
-                        phase2_snapshot(
-                            pid=4321,
-                            generation=4,
-                            revision=action_revision,
-                        )
+                    action_snapshot = phase2_snapshot(
+                        pid=4321,
+                        generation=4,
+                        revision=action_revision,
                     )
+                    action_snapshot["date_raw"] = action_date_raw
+                    self.snapshots.append(action_snapshot)
                 self.snapshots.append(
                     phase2_snapshot(
                         pid=second_pid,
@@ -2782,9 +2784,80 @@ def main() -> int:
         assert action_lineage["checkpointed_gameplay_action"] == (
             checkpointed_action_evidence
         )
-        assert action_lineage["checks"]["checkpointed_action_green"] is True
+        assert action_lineage["checkpointed_gameplay_action_green"] is True
         assert action_lineage["checks"]["action_stayed_on_first_pid"] is True
-        assert action_lineage["checks"]["action_date_did_not_advance"] is True
+        assert action_lineage["checks"]["action_date_contract_matches"] is True
+
+        timeline_action_evidence = {
+            "schema_version": 1,
+            "result": "GREEN",
+            "timeline_advance_expected": True,
+            "ai_owned_case_gameplay_action_cell": {
+                "result": "GREEN",
+                "background_business_complete": True,
+            },
+        }
+        timeline_lineage_artifacts = (
+            temporary_root / "phase2-timeline-action-lineage-green"
+        )
+        timeline_lineage_artifacts.mkdir()
+        timeline_lineage = capture.run_phase2_save_restore_lineage(
+            Phase2RestoreService(
+                action_revision=15,
+                action_date_raw=801,
+            ),
+            timeline_lineage_artifacts,
+            tracked_ck3_pid=4321,
+            checkpointed_gameplay_action=lambda: copy.deepcopy(
+                timeline_action_evidence
+            ),
+        )
+        assert timeline_lineage["before_restore"]["date_raw"] == 801
+        assert timeline_lineage["after_restore"]["date_raw"] == 777
+        assert timeline_lineage["checks"]["action_date_not_before_checkpoint"]
+        assert timeline_lineage["checks"]["action_date_contract_matches"]
+
+        restored_red_artifacts = (
+            temporary_root / "phase2-checkpointed-action-red-restored"
+        )
+        restored_red_artifacts.mkdir()
+
+        def checkpointed_action_red() -> dict[str, object]:
+            raise capture.acceptance.RunnerError(
+                "fixture checkpointed gameplay action RED"
+            )
+
+        try:
+            capture.run_phase2_save_restore_lineage(
+                Phase2RestoreService(
+                    action_revision=16,
+                    action_date_raw=801,
+                ),
+                restored_red_artifacts,
+                tracked_ck3_pid=4321,
+                checkpointed_gameplay_action=checkpointed_action_red,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "fixture checkpointed gameplay action RED" in str(error)
+        else:
+            raise AssertionError(
+                "checkpointed action RED did not propagate after restore"
+            )
+        restored_red_lineage = json.loads(
+            (
+                restored_red_artifacts
+                / "06_phase2_save_restore_lineage.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert restored_red_lineage["result"] == "GREEN"
+        assert restored_red_lineage[
+            "restore_completed_after_action_failure"
+        ] is True
+        assert restored_red_lineage["restore_result"]["status"] == "restored"
+        assert restored_red_lineage["two_pid_lineage_proven"] is True
+        assert restored_red_lineage[
+            "checkpointed_gameplay_action_green"
+        ] is False
 
         lineage_red_cases = {
             "second_pid_is_distinct": {"second_pid": 4321},
@@ -3401,6 +3474,10 @@ def main() -> int:
         assert capture._phase2_unimplemented_domain_cells() == [
             "scoreboard_named_widget_and_acl_matrix",
         ]
+        assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
+            "workforce_collective_gameplay_action_and_postcondition_matrix",
+            "scoreboard_named_widget_action_and_postcondition_matrix",
+        )
         for cell_id in (
             "b2_pip_snapshot_query_matrix",
             "incident_xyz_snapshot_query_matrix",
@@ -3417,6 +3494,7 @@ def main() -> int:
                 in {
                     "b2_pip_snapshot_query_matrix",
                     "incident_xyz_snapshot_query_matrix",
+                    "ai_owned_case_matrix",
                 }
             )
 
@@ -4013,6 +4091,55 @@ def main() -> int:
             "ack_is_postcondition": False,
             "postcondition_query_green": True,
         }
+        ai_owned_action_evidence = {
+            "schema_version": 1,
+            "kind": "zg361_ai_owned_case_background_action",
+            "result": "GREEN",
+            "mcp_only": True,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "test_ui_used": False,
+            "gameplay_action_executed": True,
+            "gameplay_action_complete": True,
+            "background_business_complete": True,
+            "action_ack_is_business_postcondition": False,
+            "timeline_actions": [
+                {
+                    "ordinal": 1,
+                    "step": "life-advance",
+                    "acknowledgement": {
+                        "accepted": False,
+                        "status": "ack_not_authoritative",
+                    },
+                    "business_postcondition": True,
+                }
+            ],
+            "provider_observations": [
+                {
+                    "phase": "pre",
+                    "classification": "pending",
+                    "reason": "case_not_found",
+                },
+                {
+                    "phase": "after_1",
+                    "classification": "postcondition",
+                    "reason": None,
+                    "receipt_signature": [9400, 9500, 8, 904, 39, 1],
+                },
+            ],
+            "current_event_observation": None,
+            "terminal_condition": "new_allowlisted_roster_lock_receipt",
+            "failure_reason": None,
+        }
+        checkpointed_batch_evidence = {
+            "schema_version": 1,
+            "result": "GREEN",
+            "scope": "phase2_checkpointed_gameplay_action_batch",
+            "mcp_only": True,
+            "timeline_advance_expected": True,
+            "b2_pip_gameplay_action_cell": b2_action_evidence,
+            "ai_owned_case_gameplay_action_cell": ai_owned_action_evidence,
+        }
 
         def fake_incident_action(
             _service: object,
@@ -4040,6 +4167,24 @@ def main() -> int:
             wired_service.calls.append(("b2-action", 4))
             return copy.deepcopy(b2_action_evidence)
 
+        def fake_ai_owned_action(
+            _service: object,
+            *,
+            owner_character_id: int,
+            subject_character_id: int,
+            require_transition: bool,
+        ) -> dict[str, object]:
+            assert _service is wired_service
+            assert owner_character_id == domain_owner_contract[
+                "ai_owned_case_owner_character_id"
+            ]
+            assert subject_character_id == domain_owner_contract[
+                "ai_owned_case_subject_character_id"
+            ]
+            assert require_transition is True
+            wired_service.calls.append(("ai-owned-action", 4))
+            return copy.deepcopy(ai_owned_action_evidence)
+
         def fake_domain_lineage(
             _service: object,
             _artifacts: Path,
@@ -4053,7 +4198,7 @@ def main() -> int:
             assert callable(checkpointed_gameplay_action)
             wired_service.calls.append(("lineage-save", 4))
             action_evidence = checkpointed_gameplay_action()
-            assert action_evidence == b2_action_evidence
+            assert action_evidence == checkpointed_batch_evidence
             wired_service.calls.append(("lineage-restore", 4, 5))
             wired_service.binding = post_domain_binding
             return {
@@ -4092,6 +4237,11 @@ def main() -> int:
                 "run_b2_pip_gameplay_action_cell",
                 side_effect=fake_b2_action,
             ),
+            mock.patch.object(
+                capture,
+                "run_zhongguo_ai_owned_case_background_action",
+                side_effect=fake_ai_owned_action,
+            ),
         ):
             try:
                 capture.run_phase2_live_scenario(
@@ -4101,10 +4251,10 @@ def main() -> int:
                     seed_contract=wired_seed_contract,
                 )
             except capture.acceptance.RunnerError as error:
-                assert "Incident and B2 gameplay actions" in str(error)
+                assert "Incident, B2, and AI-owned gameplay" in str(error)
             else:
                 raise AssertionError(
-                    "Incident+B2 action cells claimed the full batch GREEN"
+                    "three action cells claimed the full batch GREEN"
                 )
         wired_scenario = json.loads(
             (
@@ -4120,9 +4270,13 @@ def main() -> int:
         assert wired_scenario["b2_pip_gameplay_action_cell"] == (
             b2_action_evidence
         )
+        assert wired_scenario["ai_owned_case_gameplay_action_cell"] == (
+            ai_owned_action_evidence
+        )
         assert wired_scenario["completed_gameplay_action_cells"] == [
             "incident_xyz_gameplay_action_and_postcondition_matrix",
             "b2_pip_gameplay_action_and_postcondition_matrix",
+            "ai_owned_case_gameplay_action_and_postcondition_matrix",
         ]
         assert wired_scenario["completed_observation_only_cells"] == [
             "b2_pip_snapshot_query_matrix",
@@ -4144,6 +4298,10 @@ def main() -> int:
             "b2_pip_gameplay_action_and_postcondition_matrix"
             not in wired_scenario["missing_gameplay_action_cells"]
         )
+        assert (
+            "ai_owned_case_gameplay_action_and_postcondition_matrix"
+            not in wired_scenario["missing_gameplay_action_cells"]
+        )
         preserved_action = json.loads(
             (
                 wired_scenario_artifacts
@@ -4158,6 +4316,13 @@ def main() -> int:
             ).read_text(encoding="utf-8")
         )
         assert preserved_b2_action == b2_action_evidence
+        preserved_ai_owned_action = json.loads(
+            (
+                wired_scenario_artifacts
+                / "05_phase2_ai_owned_case_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert preserved_ai_owned_action == ai_owned_action_evidence
         assert wired_scenario["pre_restore_domain_queries"]["result"] == (
             "GREEN"
         )
@@ -4175,6 +4340,9 @@ def main() -> int:
         )
         lineage_save_call = wired_service.calls.index(("lineage-save", 4))
         b2_action_call = wired_service.calls.index(("b2-action", 4))
+        ai_owned_action_call = wired_service.calls.index(
+            ("ai-owned-action", 4)
+        )
         lineage_restore_call = wired_service.calls.index(
             ("lineage-restore", 4, 5)
         )
@@ -4189,6 +4357,7 @@ def main() -> int:
             < first_pre_query
             < lineage_save_call
             < b2_action_call
+            < ai_owned_action_call
             < lineage_restore_call
             < first_post_query
         )
@@ -4271,6 +4440,77 @@ def main() -> int:
                 / "05_phase2_b2_pip_gameplay_action_cell.json"
             ).read_text(encoding="utf-8")
         ) == b2_red_evidence
+
+        ai_owned_red_artifacts = temporary_root / "phase2-ai-owned-action-red"
+        ai_owned_red_artifacts.mkdir()
+        ai_owned_red_evidence = {
+            "schema_version": 1,
+            "kind": "zg361_ai_owned_case_background_action",
+            "result": "RED",
+            "mcp_only": True,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "test_ui_used": False,
+            "gameplay_action_executed": True,
+            "gameplay_action_complete": False,
+            "background_business_complete": False,
+            "action_ack_is_business_postcondition": False,
+            "timeline_actions": [
+                {
+                    "ordinal": 1,
+                    "step": "life-advance",
+                    "acknowledgement": {
+                        "accepted": True,
+                        "status": "submitted",
+                    },
+                    "business_postcondition": False,
+                }
+            ],
+            "provider_observations": [
+                {"phase": "pre", "classification": "pending"}
+            ],
+            "current_event_observation": {
+                "status": "available",
+                "event_definition_key": "unrelated.player.event.1",
+                "response": {
+                    "status": "available",
+                    "event_definition_key": "unrelated.player.event.1",
+                },
+            },
+            "terminal_condition": "player_visible_event_interrupted",
+            "failure_reason": (
+                "a player-visible event interrupted the hidden AI-owned path; "
+                "no event option was selected"
+            ),
+        }
+        with mock.patch.object(
+            capture,
+            "run_zhongguo_ai_owned_case_background_action",
+            return_value=copy.deepcopy(ai_owned_red_evidence),
+        ) as ai_owned_red_helper:
+            try:
+                capture.run_phase2_ai_owned_case_gameplay_action_cell(
+                    wired_service,
+                    ai_owned_red_artifacts,
+                    owner_character_id=domain_owner_contract[
+                        "ai_owned_case_owner_character_id"
+                    ],
+                    subject_character_id=domain_owner_contract[
+                        "ai_owned_case_subject_character_id"
+                    ],
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "player_visible_event_interrupted" in str(error)
+                assert "result_green" in str(error)
+            else:
+                raise AssertionError("AI-owned current-event RED was accepted")
+        assert ai_owned_red_helper.call_count == 1
+        assert json.loads(
+            (
+                ai_owned_red_artifacts
+                / "05_phase2_ai_owned_case_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        ) == ai_owned_red_evidence
 
         class MissingLoaderSnapshotService(LoaderReadinessService):
             def snapshot(self) -> dict[str, object]:

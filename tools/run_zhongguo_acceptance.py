@@ -63,6 +63,9 @@ from xar_autoplayer.bridge.zhongguo_ai_owned_case_snapshot_contract import (
     ZhongguoAiOwnedCaseQueryV1,
     normalize_zhongguo_ai_owned_case_snapshot_v1_response,
 )
+from xar_autoplayer.bridge.zhongguo_ai_owned_case_action import (
+    run_zhongguo_ai_owned_case_background_action,
+)
 from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_INCIDENT_KIND_V1,
@@ -414,6 +417,7 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "pause_timeline": "pause-map",
     "resume_timeline": "resume-map",
     "bounded_timeline_speed": "set-speed-1",
+    "bounded_life_advance": "life-advance",
     "save_checkpoint": "save-checkpoint",
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
 }
@@ -473,7 +477,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
             "zhongguo_ai_owned_case_snapshot_v1_query_supported"
         ),
         "observation_only": True,
-        "gameplay_action_complete": False,
+        "gameplay_action_complete": True,
     },
     "scoreboard_named_widget_and_acl_matrix": {
         "implementation": "provider_pending",
@@ -487,7 +491,6 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
 }
 PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
     "workforce_collective_gameplay_action_and_postcondition_matrix",
-    "ai_owned_case_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
 )
 
@@ -5139,6 +5142,95 @@ def run_phase2_b2_pip_gameplay_action_cell(
     return evidence
 
 
+def run_phase2_ai_owned_case_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    owner_character_id: int,
+    subject_character_id: int,
+) -> dict[str, object]:
+    """Advance a real bounded timeline until the AI manager posts a receipt."""
+
+    evidence_path = artifacts / (
+        "05_phase2_ai_owned_case_gameplay_action_cell.json"
+    )
+    try:
+        evidence = run_zhongguo_ai_owned_case_background_action(
+            service,
+            owner_character_id=owner_character_id,
+            subject_character_id=subject_character_id,
+            require_transition=True,
+        )
+    except BaseException as error:
+        failure = {
+            "schema_version": 1,
+            "kind": "zg361_ai_owned_case_background_action",
+            "result": "RED",
+            "mcp_only": True,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "test_ui_used": False,
+            "owner_character_id": owner_character_id,
+            "subject_character_id": subject_character_id,
+            "failure_reason": f"{type(error).__name__}: {error}",
+        }
+        write_json(evidence_path, failure)
+        raise acceptance.RunnerError(
+            "phase-two AI-owned case gameplay action cell failed before a "
+            f"typed result: {error}"
+        ) from error
+
+    if not isinstance(evidence, dict):
+        raise acceptance.RunnerError(
+            "phase-two AI-owned case gameplay action returned a non-object"
+        )
+    write_json(evidence_path, evidence)
+    timeline_actions = evidence.get("timeline_actions")
+    provider_observations = evidence.get("provider_observations")
+    checks = {
+        "result_green": evidence.get("result") == "GREEN",
+        "gameplay_action_executed": evidence.get(
+            "gameplay_action_executed"
+        )
+        is True,
+        "gameplay_action_complete": evidence.get(
+            "gameplay_action_complete"
+        )
+        is True,
+        "background_business_complete": evidence.get(
+            "background_business_complete"
+        )
+        is True,
+        "ack_not_business_postcondition": evidence.get(
+            "action_ack_is_business_postcondition"
+        )
+        is False,
+        "new_roster_lock_receipt": evidence.get("terminal_condition")
+        == "new_allowlisted_roster_lock_receipt",
+        "bounded_life_advance_executed": isinstance(timeline_actions, list)
+        and bool(timeline_actions)
+        and all(
+            isinstance(row, dict) and row.get("step") == "life-advance"
+            for row in timeline_actions
+        ),
+        "provider_postcondition_observed": isinstance(
+            provider_observations, list
+        )
+        and bool(provider_observations)
+        and isinstance(provider_observations[-1], dict)
+        and provider_observations[-1].get("classification") == "postcondition",
+    }
+    failed = [label for label, passed in checks.items() if passed is not True]
+    if failed:
+        raise acceptance.RunnerError(
+            "phase-two AI-owned case gameplay action cell RED: "
+            + ", ".join(failed)
+            + f"; terminal={evidence.get('terminal_condition')!r}; "
+            f"reason={evidence.get('failure_reason')!r}"
+        )
+    return evidence
+
+
 def wait_for_phase2_paused_snapshot(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -5406,6 +5498,9 @@ def run_phase2_save_restore_lineage(
         "before": None,
         "after_save": None,
         "checkpointed_gameplay_action": None,
+        "checkpointed_gameplay_action_green": None,
+        "checkpointed_gameplay_action_failure": None,
+        "restore_completed_after_action_failure": False,
         "before_restore": None,
         "after_restore": None,
         "save_result": None,
@@ -5475,19 +5570,33 @@ def run_phase2_save_restore_lineage(
             )
 
         before_restore = after_save
+        action_failure: BaseException | None = None
         if checkpointed_gameplay_action is not None:
-            action_evidence = checkpointed_gameplay_action()
-            evidence["checkpointed_gameplay_action"] = action_evidence
-            if not (
-                isinstance(action_evidence, dict)
-                and action_evidence.get("result") == "GREEN"
-            ):
-                raise acceptance.RunnerError(
-                    "checkpointed gameplay action returned a non-GREEN result"
-                )
+            try:
+                action_evidence = checkpointed_gameplay_action()
+                evidence["checkpointed_gameplay_action"] = action_evidence
+                if not (
+                    isinstance(action_evidence, dict)
+                    and action_evidence.get("result") == "GREEN"
+                ):
+                    action_failure = acceptance.RunnerError(
+                        "checkpointed gameplay action returned a non-GREEN result"
+                    )
+                    evidence["checkpointed_gameplay_action_failure"] = {
+                        "error_type": type(action_failure).__name__,
+                        "error": str(action_failure),
+                    }
+            except BaseException as error:
+                action_failure = error
+                evidence["checkpointed_gameplay_action_failure"] = {
+                    "error_type": type(error).__name__,
+                    "error": str(error),
+                }
             # The action helper proves its own product postcondition.  Take a
-            # new paused binding so restore is revision-bound to the state
-            # that actually follows the action, never to the pre-action ACK.
+            # new paused binding even after a typed action RED, so restore is
+            # revision-bound to the state that actually follows the attempt,
+            # never to a pre-action ACK.  This keeps a failed mutation from
+            # escaping its frozen checkpoint transaction.
             before_restore_snapshot = service.snapshot()
             if not isinstance(before_restore_snapshot, dict):
                 raise acceptance.RunnerError(
@@ -5538,6 +5647,21 @@ def run_phase2_save_restore_lineage(
             if isinstance(final_capabilities, dict)
             else None
         )
+        checkpointed_action_value = evidence.get(
+            "checkpointed_gameplay_action"
+        )
+        timeline_advance_expected = (
+            isinstance(checkpointed_action_value, dict)
+            and checkpointed_action_value.get("timeline_advance_expected")
+            is True
+        )
+        evidence["checkpointed_gameplay_action_green"] = (
+            checkpointed_gameplay_action is None
+            or (
+                isinstance(checkpointed_action_value, dict)
+                and checkpointed_action_value.get("result") == "GREEN"
+            )
+        )
         checks = {
             "first_pid_matches_tracked": before["bridge_pid"]
             == tracked_ck3_pid,
@@ -5547,16 +5671,6 @@ def run_phase2_save_restore_lineage(
                 "connection_generation"
             ]
             == before["connection_generation"],
-            "checkpointed_action_green": (
-                checkpointed_gameplay_action is None
-                or (
-                    isinstance(
-                        evidence.get("checkpointed_gameplay_action"), dict
-                    )
-                    and evidence["checkpointed_gameplay_action"].get("result")
-                    == "GREEN"
-                )
-            ),
             "action_stayed_on_first_pid": before_restore["bridge_pid"]
             == before["bridge_pid"],
             "action_stayed_on_first_generation": before_restore[
@@ -5567,8 +5681,17 @@ def run_phase2_save_restore_lineage(
                 "player_character_id"
             ]
             == before["player_character_id"],
-            "action_date_did_not_advance": before_restore["date_raw"]
-            == before["date_raw"],
+            "action_date_not_before_checkpoint": before_restore["date_raw"]
+            >= before["date_raw"],
+            "action_date_contract_matches": (
+                before_restore["date_raw"] >= before["date_raw"]
+                if action_failure is not None
+                else (
+                    before_restore["date_raw"] > before["date_raw"]
+                    if timeline_advance_expected
+                    else before_restore["date_raw"] == before["date_raw"]
+                )
+            ),
             "second_pid_is_distinct": after_restore["bridge_pid"]
             != before["bridge_pid"],
             "lifecycle_previous_pid_matches": lifecycle.get("previous_pid")
@@ -5612,12 +5735,14 @@ def run_phase2_save_restore_lineage(
             == after_restore["connection_generation"],
         }
         evidence["checks"] = checks
-        failed = [label for label, passed in checks.items() if passed is not True]
-        if failed:
+        topology_failed = [
+            label for label, passed in checks.items() if passed is not True
+        ]
+        if topology_failed:
             raise acceptance.RunnerError(
-                "phase-two save/restore lineage RED: " + ", ".join(failed)
+                "phase-two save/restore lineage RED: "
+                + ", ".join(topology_failed)
             )
-        evidence["result"] = "GREEN"
         evidence["first_pid"] = before["bridge_pid"]
         evidence["second_pid"] = after_restore["bridge_pid"]
         evidence["pid_lineage"] = [
@@ -5635,10 +5760,26 @@ def run_phase2_save_restore_lineage(
             after_restore["connection_generation"],
         ]
         evidence["two_pid_lineage_proven"] = True
+        evidence["result"] = "GREEN"
         evidence["failure_reason"] = None
+        if action_failure is not None:
+            evidence["restore_completed_after_action_failure"] = True
+            write_json(evidence_path, evidence)
+            if isinstance(action_failure, acceptance.RunnerError):
+                raise action_failure
+            raise acceptance.RunnerError(
+                "checkpointed gameplay action failed after its baseline was "
+                f"restored: {action_failure}"
+            ) from action_failure
         write_json(evidence_path, evidence)
         return evidence
     except BaseException as error:
+        if evidence.get("restore_completed_after_action_failure") is True:
+            if isinstance(error, acceptance.RunnerError):
+                raise
+            raise acceptance.RunnerError(
+                f"checkpointed gameplay action failed: {error}"
+            ) from error
         evidence["result"] = "RED"
         evidence["failure_reason"] = f"{type(error).__name__}: {error}"
         write_json(evidence_path, evidence)
@@ -10626,6 +10767,7 @@ def run_phase2_live_scenario(
         "domain_owner_contract": None,
         "incident_gameplay_action_cell": None,
         "b2_pip_gameplay_action_cell": None,
+        "ai_owned_case_gameplay_action_cell": None,
         "post_incident_paused_binding": None,
         "b2_pip_prompt_readiness": None,
         "completed_gameplay_action_cells": [],
@@ -10737,23 +10879,57 @@ def run_phase2_live_scenario(
         )
         evidence["pre_restore_domain_queries"] = pre_restore_queries
 
-        def run_checkpointed_b2_accept() -> dict[str, object]:
-            return run_phase2_b2_pip_gameplay_action_cell(
+        def run_checkpointed_phase2_actions() -> dict[str, object]:
+            b2_action = run_phase2_b2_pip_gameplay_action_cell(
                 service,
                 artifacts,
                 owner_character_id=owner_contract[
                     "b2_pip_owner_character_id"
                 ],
             )
+            # The frozen baseline contains the real player B2 prompt.  Only
+            # its already-proven product selection clears that window; the
+            # AI-owned helper itself never selects player events.  The
+            # following life-advance and receipt therefore remain inside the
+            # same restorable checkpoint transaction.
+            ai_owned_action = run_phase2_ai_owned_case_gameplay_action_cell(
+                service,
+                artifacts,
+                owner_character_id=owner_contract[
+                    "ai_owned_case_owner_character_id"
+                ],
+                subject_character_id=owner_contract[
+                    "ai_owned_case_subject_character_id"
+                ],
+            )
+            return {
+                "schema_version": 1,
+                "result": "GREEN",
+                "scope": "phase2_checkpointed_gameplay_action_batch",
+                "mcp_only": True,
+                "timeline_advance_expected": True,
+                "b2_pip_gameplay_action_cell": b2_action,
+                "ai_owned_case_gameplay_action_cell": ai_owned_action,
+            }
 
         lineage = run_phase2_save_restore_lineage(
             service,
             artifacts,
             tracked_ck3_pid=tracked_ck3_pid,
-            checkpointed_gameplay_action=run_checkpointed_b2_accept,
+            checkpointed_gameplay_action=run_checkpointed_phase2_actions,
         )
         evidence["save_restore_lineage"] = lineage
-        b2_action = lineage.get("checkpointed_gameplay_action")
+        checkpointed_actions = lineage.get("checkpointed_gameplay_action")
+        b2_action = (
+            checkpointed_actions.get("b2_pip_gameplay_action_cell")
+            if isinstance(checkpointed_actions, dict)
+            else None
+        )
+        ai_owned_action = (
+            checkpointed_actions.get("ai_owned_case_gameplay_action_cell")
+            if isinstance(checkpointed_actions, dict)
+            else None
+        )
         if not (
             isinstance(b2_action, dict)
             and b2_action.get("result") == "GREEN"
@@ -10761,9 +10937,22 @@ def run_phase2_live_scenario(
             raise acceptance.RunnerError(
                 "phase-two save/restore lineage lacks its GREEN B2 action"
             )
+        if not (
+            isinstance(ai_owned_action, dict)
+            and ai_owned_action.get("result") == "GREEN"
+            and ai_owned_action.get("background_business_complete") is True
+        ):
+            raise acceptance.RunnerError(
+                "phase-two save/restore lineage lacks its GREEN AI-owned "
+                "business postcondition"
+            )
         evidence["b2_pip_gameplay_action_cell"] = b2_action
+        evidence["ai_owned_case_gameplay_action_cell"] = ai_owned_action
         evidence["completed_gameplay_action_cells"].append(
             "b2_pip_gameplay_action_and_postcondition_matrix"
+        )
+        evidence["completed_gameplay_action_cells"].append(
+            "ai_owned_case_gameplay_action_and_postcondition_matrix"
         )
         restored_binding = lineage.get("after_restore")
         if not isinstance(restored_binding, dict):
@@ -10791,14 +10980,15 @@ def run_phase2_live_scenario(
         write_json(evidence_path, evidence)
 
         # All four frozen domain providers now run as real pre/restore/post
-        # read-only matrices, and the Incident plus B2 product actions have
-        # been proven.  The remaining three product cells are still absent,
-        # so the batch must remain RED instead of inflating two completed
-        # cells into phase-two.
+        # read-only matrices, and the Incident, B2, and AI-owned product
+        # actions have been proven.  The remaining two product cells are
+        # still absent, so the batch must remain RED instead of inflating
+        # three completed cells into phase-two.
         raise acceptance.RunnerError(
-            "phase-two MCP matrix RED: Incident and B2 gameplay actions and "
+            "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
+            "actions and "
             "B2/Incident/Workforce/AI-owned observations passed, but the "
-            "remaining Workforce/AI-owned/scoreboard gameplay action "
+            "remaining Workforce/scoreboard gameplay action "
             "cells are unimplemented"
         )
     except BaseException as error:
@@ -10838,6 +11028,37 @@ def run_phase2_live_scenario(
                     ):
                         completed.append(
                             "b2_pip_gameplay_action_and_postcondition_matrix"
+                        )
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
+        ai_owned_path = artifacts / (
+            "05_phase2_ai_owned_case_gameplay_action_cell.json"
+        )
+        if ai_owned_path.is_file():
+            try:
+                ai_owned_value = json.loads(
+                    ai_owned_path.read_text(encoding="utf-8")
+                )
+                if isinstance(ai_owned_value, dict):
+                    evidence["ai_owned_case_gameplay_action_cell"] = (
+                        ai_owned_value
+                    )
+                    evidence["gameplay_acceptance_executed"] = bool(
+                        evidence["gameplay_acceptance_executed"]
+                        or ai_owned_value.get("gameplay_action_executed")
+                        is True
+                    )
+                    completed = evidence["completed_gameplay_action_cells"]
+                    if (
+                        ai_owned_value.get("result") == "GREEN"
+                        and ai_owned_value.get("background_business_complete")
+                        is True
+                        and isinstance(completed, list)
+                        and "ai_owned_case_gameplay_action_and_postcondition_matrix"
+                        not in completed
+                    ):
+                        completed.append(
+                            "ai_owned_case_gameplay_action_and_postcondition_matrix"
                         )
             except (OSError, ValueError, json.JSONDecodeError):
                 pass

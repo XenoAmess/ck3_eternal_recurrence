@@ -2,7 +2,7 @@
 
 ## 状态与目的
 
-- 当前状态：`static-ready / unit-tested / production-live pending`
+- 当前状态：`static-ready / unit-tested / runner-wired / production-live pending`
 - 实现：`ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_ai_owned_case_action.py`
 - 测试：`ck3_autonomous_player/tests/unit/test_zhongguo_ai_owned_case_action.py`
 - 只读后置条件：`game.command.query-zhongguo-ai-owned-case-snapshot-v1`
@@ -62,7 +62,8 @@ action cell 既不选择事件，也不清理“一选项事件”。如果推�
 
 仓库现有 `tools/zg361_phase2_seed_contract.json` 只冻结：
 
-- paused 玩家 CharacterID `32904`（历史角色 `han_8052`）；
+- paused 玩家 CharacterID `29037`（历史角色 `han_6875`）；旧证据中的 `32904` 是其上司，
+  不是 played root；
 - `date_raw=53147016`；
 - 存档、EXE 与 mod tree identity。
 
@@ -71,22 +72,46 @@ action cell 既不选择事件，也不清理“一选项事件”。如果推�
 ```json
 {
   "domain_query_matrix": {
-    "ai_owned_case": {
-      "owner_character_id": 0,
-      "subject_character_id": 0,
-      "owner_primary_title_tier": 3,
-      "owner_government_key": "celestial_government",
-      "owner_is_ai": true,
-      "subject_is_direct_subject": true,
-      "discovery_artifact": "<paused MCP artifact path>",
-      "discovery_artifact_sha256": "<sha256>"
-    }
+    "schema_version": 1,
+    "b2_pip_owner_character_id": 0,
+    "incident_owner_character_id": 0,
+    "workforce_owner_character_id": 0,
+    "ai_owned_case_owner_character_id": 0,
+    "ai_owned_case_subject_character_id": 0
   }
 }
 ```
 
-两个 CharacterID 的 `0` 只是此处 schema 示意，不得写进 ready seed。正式 seed 必须保存非零 ID、paused MCP 原始响应和哈希。若在 bounded horizon 内 provider 始终返回 `case_not_found`，helper 会给出 `ai_owned_case_producer_seed_unreachable`，表示应调整到可达生日/周期的真实 seed，而不是放宽资格或伪造 receipt。
+这些 `0` 只是此处 schema 示意，不得写进 ready seed；当前 blocked contract 实际使用 `null` 明示尚未发现。正式 seed 必须保存非零 ID、paused MCP 原始响应和哈希。若在 bounded horizon 内 provider 始终返回 `case_not_found`，helper 会给出 `ai_owned_case_producer_seed_unreachable`，表示应调整到可达生日/周期的真实 seed，而不是放宽资格或伪造 receipt。
 
 ## 批量实机建议
 
-同一次 CK3 启动中先跑现有 phase-two read-only provider 矩阵，再运行本 action cell。默认 horizon 为 370 个 `life-advance` / 370 日，覆盖默认年度 pulse；若启用了三年周期规则，应该另备靠近第三年到期点的真实种子，不能简单把长跑超时记成产品失败。每一步和每次 provider 响应都保留在返回报告，caller 负责原子写入本轮 artifact 目录。
+正式 `--phase2-live-batch` 已接入本 action cell。当前批次的单次 restore 事务为：
+
+```text
+pre-restore 四域 provider
+  -> save-checkpoint（真实 B2 prompt 仍在）
+  -> B2 accept + B2 provider 后置条件（只为清除已冻结的玩家 prompt）
+  -> AI-owned bounded life-advance
+  -> 新 mechanism_039 / roster_lock receipt
+  -> fresh paused binding
+  -> restore-checkpoint
+  -> post-restore 四域 provider 与 pre 语义投影比较
+```
+
+AI-owned helper 仍然不选择任何玩家事件。B2 是前一项已经独立证明的产品 action，放在同一冻结事务内是因为 checkpoint 本身含有该 prompt；B2 清除后才允许 AI-owned helper 进入 event-free timeline。此后如果出现任何玩家事件，helper 只调用 current-event MCP，把完整 typed identity 写进 RED evidence，然后停止，绝不自动点选。
+
+action 原始报告保存在 `05_phase2_ai_owned_case_gameplay_action_cell.json`。runner 只在同时看到以下事实时把该 cell 记为完成：至少一次真实 `life-advance`、`gameplay_action_executed=true`、新 roster-lock receipt、`background_business_complete=true`，以及 `action_ack_is_business_postcondition=false`。ACK 即使 accepted 也不能替代业务回读；RED 返回报告原样保存。恢复使用 AI 业务后置条件之后的 fresh public revision，而不是任一 action ACK 的 revision。
+
+若 action 返回 typed RED（包括玩家事件阻塞），外层仍先从该 RED 后的新 paused revision 执行 restore，再把原始 action RED 传播给 batch；因此失败尝试不会绕过冻结基线恢复，lineage artifact 会分别标出“restore topology GREEN”和“checkpointed action RED”。
+
+默认 horizon 仍为 370 个 `life-advance` / 370 日，覆盖默认年度 pulse；若启用了三年周期规则，应该另备靠近第三年到期点的真实种子，不能简单把长跑超时记成产品失败。每一步和每次 provider 响应都保留在返回报告。AI-owned 成功后，phase-two missing action 只剩 Workforce collective 与 scoreboard named-widget；二者未完成前总结果继续保持 RED/incomplete。
+
+离线回归：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\tests\unit\test_zhongguo_ai_owned_case_action.py"
+& "tools\.venv\Scripts\python.exe" "tools\test_run_zhongguo_promo_capture.py"
+```
+
+普通与 `-O` 都必须通过；它们只证明 helper/runner/fake MCP 合同，不把结果升级为 live。真实 paused artifact 仍待 seed-generation 实机槽释放后取得。
