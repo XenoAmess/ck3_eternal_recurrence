@@ -3965,6 +3965,119 @@ def main() -> int:
             assert cleanup_red["result"] == "RED"
             assert cleanup_red["checks"][failed_check] is False
 
+        workforce_gate_artifacts = temporary_root / (
+            "phase2-workforce-m360-pre-mutation-red"
+        )
+        workforce_gate_artifacts.mkdir()
+
+        class WorkforceGateService:
+            def __init__(self) -> None:
+                self.calls: list[str] = []
+
+            def capabilities(self) -> dict[str, object]:
+                self.calls.append("capabilities")
+                return {
+                    "bridge_capabilities": [
+                        capture.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+                        "game.command.select-event-option-N",
+                    ],
+                    "action_steps": [
+                        "save-checkpoint",
+                        "restore-checkpoint",
+                    ],
+                }
+
+            def snapshot(self) -> dict[str, object]:
+                raise AssertionError("Workforce gate mutated through snapshot")
+
+            def save_checkpoint(self, **_kwargs: object) -> dict[str, object]:
+                raise AssertionError("Workforce gate created a checkpoint")
+
+            def restore_checkpoint(self, **_kwargs: object) -> dict[str, object]:
+                raise AssertionError("Workforce gate restored a checkpoint")
+
+            def select_event_option(
+                self, *_args: object, **_kwargs: object
+            ) -> dict[str, object]:
+                raise AssertionError("Workforce gate selected #360")
+
+        workforce_gate_service = WorkforceGateService()
+        workforce_prior_lineage = {
+            "scope": "phase2_one_save_one_restore_two_pid_lineage",
+            "pid_lineage": [4321, 5432],
+        }
+        workforce_helper_calls: list[str] = []
+
+        def forbidden_workforce_helper(
+            *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            workforce_helper_calls.append("called")
+            raise AssertionError("M360 helper must not run before rebind")
+
+        with mock.patch.object(
+            capture,
+            "run_m360_action_and_postcondition",
+            new=forbidden_workforce_helper,
+        ):
+            try:
+                capture.preflight_phase2_workforce_m360_gameplay_action_cell(
+                    workforce_gate_service,
+                    workforce_gate_artifacts,
+                    owner_character_id=9200,
+                    subject_character_id=9001,
+                    seed_contract=ready_seed_contract,
+                    prior_lineage=workforce_prior_lineage,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "RED before mutation" in str(error)
+                assert "exact_owner_subject_player_transition" in str(error)
+                assert "same_checkpoint_three_route_restore_lineage" in str(
+                    error
+                )
+            else:
+                raise AssertionError(
+                    "Workforce #360 gate ran without a real player transition"
+                )
+        assert workforce_helper_calls == []
+        assert workforce_gate_service.calls == ["capabilities"]
+        workforce_gate = json.loads(
+            (
+                workforce_gate_artifacts
+                / "08_phase2_workforce_m360_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert workforce_gate["result"] == "RED"
+        assert workforce_gate["stage"] == (
+            "pre_mutation_owner_subject_transition_gate"
+        )
+        assert workforce_gate["gameplay_action_executed"] is False
+        assert workforce_gate["checkpoint_created_for_workforce"] is False
+        assert workforce_gate["helper_invoked"] is False
+        assert workforce_gate["expected_event_definition_key"] == (
+            "zg361we.360"
+        )
+        assert workforce_gate["owner_character_id"] == 9200
+        assert workforce_gate["subject_character_id"] == 9001
+        assert workforce_gate["prior_lineage"] == workforce_prior_lineage
+        assert set(workforce_gate["routes"]) == {"A", "B", "C"}
+        assert all(
+            row["result"] == "NOT_RUN"
+            and row["action_ack"] is None
+            and row["business_postcondition"] is None
+            and row["restore_from_shared_pre_m360_checkpoint"] is False
+            for row in workforce_gate["routes"].values()
+        )
+        assert [
+            row["id"] for row in workforce_gate["missing_requirements"]
+        ] == [
+            "exact_owner_subject_player_transition",
+            "same_checkpoint_three_route_restore_lineage",
+        ]
+        assert workforce_gate["ocr_used"] is False
+        assert workforce_gate["coordinates_used"] is False
+        assert workforce_gate["console_used"] is False
+        assert workforce_gate["test_decision_used"] is False
+
         scenario_artifacts = temporary_root / "phase2-independent-scenario-red"
         scenario_artifacts.mkdir()
 
@@ -4203,6 +4316,7 @@ def main() -> int:
             wired_service.binding = post_domain_binding
             return {
                 "result": "GREEN",
+                "scope": "phase2_one_save_one_restore_two_pid_lineage",
                 "checkpointed_gameplay_action": copy.deepcopy(
                     action_evidence
                 ),
@@ -4251,10 +4365,13 @@ def main() -> int:
                     seed_contract=wired_seed_contract,
                 )
             except capture.acceptance.RunnerError as error:
-                assert "Incident, B2, and AI-owned gameplay" in str(error)
+                assert "Workforce #360 gameplay action cell RED before mutation" in str(
+                    error
+                )
+                assert "exact_owner_subject_player_transition" in str(error)
             else:
                 raise AssertionError(
-                    "three action cells claimed the full batch GREEN"
+                    "Workforce #360 missing rebind claimed the full batch GREEN"
                 )
         wired_scenario = json.loads(
             (
@@ -4272,6 +4389,18 @@ def main() -> int:
         )
         assert wired_scenario["ai_owned_case_gameplay_action_cell"] == (
             ai_owned_action_evidence
+        )
+        workforce_scenario_gate = wired_scenario[
+            "workforce_collective_gameplay_action_cell"
+        ]
+        assert workforce_scenario_gate["result"] == "RED"
+        assert workforce_scenario_gate["gameplay_action_executed"] is False
+        assert workforce_scenario_gate["helper_invoked"] is False
+        assert workforce_scenario_gate["owner_character_id"] == (
+            domain_owner_contract["workforce_owner_character_id"]
+        )
+        assert workforce_scenario_gate["subject_character_id"] == (
+            post_domain_binding["player_character_id"]
         )
         assert wired_scenario["completed_gameplay_action_cells"] == [
             "incident_xyz_gameplay_action_and_postcondition_matrix",
@@ -4323,6 +4452,13 @@ def main() -> int:
             ).read_text(encoding="utf-8")
         )
         assert preserved_ai_owned_action == ai_owned_action_evidence
+        preserved_workforce_gate = json.loads(
+            (
+                wired_scenario_artifacts
+                / "08_phase2_workforce_m360_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert preserved_workforce_gate == workforce_scenario_gate
         assert wired_scenario["pre_restore_domain_queries"]["result"] == (
             "GREEN"
         )

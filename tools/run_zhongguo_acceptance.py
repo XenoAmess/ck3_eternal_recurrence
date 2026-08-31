@@ -81,6 +81,10 @@ from zg361_phase2_b2_action_cell import (
     B2PipActionCellError,
     run_b2_pip_gameplay_action_cell,
 )
+from zhongguo_phase2_workforce_action import (
+    M360_EVENT_DEFINITION_KEY,
+    run_m360_action_and_postcondition,
+)
 from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_WORKFORCE_COLLECTIVE_CASE_KIND_V1,
@@ -5229,6 +5233,193 @@ def run_phase2_ai_owned_case_gameplay_action_cell(
             f"reason={evidence.get('failure_reason')!r}"
         )
     return evidence
+
+
+def preflight_phase2_workforce_m360_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    owner_character_id: int,
+    subject_character_id: int,
+    seed_contract: dict[str, object],
+    prior_lineage: dict[str, object],
+) -> dict[str, object]:
+    """Record the exact missing owner/subject transition before any M360 action.
+
+    The reusable helper already proves one owner-side option ACK and one
+    subject-side business postcondition.  The current public bridge and seed,
+    however, expose no revision-bound way to play the exact owner and then the
+    exact received-self subject.  They also expose only the one restore already
+    consumed by the B2/AI-owned lineage, not three independent A/B/C restores
+    from one pre-M360 checkpoint.  Fail before calling the mutating helper; a
+    legacy acceptance-fixture switch or an ACK is not an acceptable substitute.
+    """
+
+    evidence_path = artifacts / (
+        "08_phase2_workforce_m360_gameplay_action_cell.json"
+    )
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "cell_id": (
+            "workforce_collective_gameplay_action_and_postcondition_matrix"
+        ),
+        "result": "RED",
+        "stage": "pre_mutation_owner_subject_transition_gate",
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "console_used": False,
+        "test_decision_used": False,
+        "gameplay_action_executed": False,
+        "checkpoint_created_for_workforce": False,
+        "helper_invoked": False,
+        "helper_entrypoint": (
+            f"{run_m360_action_and_postcondition.__module__}."
+            f"{run_m360_action_and_postcondition.__name__}"
+        ),
+        "expected_event_definition_key": M360_EVENT_DEFINITION_KEY,
+        "owner_character_id": owner_character_id,
+        "subject_character_id": subject_character_id,
+        "required_routes": ["A", "B", "C"],
+        "routes": {
+            route: {
+                "result": "NOT_RUN",
+                "action_ack": None,
+                "business_postcondition": None,
+                "restore_from_shared_pre_m360_checkpoint": False,
+            }
+            for route in ("A", "B", "C")
+        },
+        "runtime_enabled_mods": None,
+        "observed_public_surface": None,
+        "prior_lineage": prior_lineage,
+        "checks": {},
+        "missing_requirements": [],
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        for value, label in (
+            (owner_character_id, "owner_character_id"),
+            (subject_character_id, "subject_character_id"),
+        ):
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, int)
+                or not 1 <= value <= 2**31 - 1
+            ):
+                raise acceptance.RunnerError(
+                    f"phase-two Workforce #360 {label} is not a positive "
+                    "CharacterID"
+                )
+        if owner_character_id == subject_character_id:
+            raise acceptance.RunnerError(
+                "phase-two Workforce #360 owner and received-self subject "
+                "must differ"
+            )
+
+        capabilities = service.capabilities()
+        if not isinstance(capabilities, dict):
+            raise acceptance.RunnerError(
+                "phase-two Workforce #360 capability surface is not an object"
+            )
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        action_steps = capabilities.get("action_steps")
+        public_capabilities = (
+            {
+                value
+                for value in bridge_capabilities
+                if isinstance(value, str)
+            }
+            if isinstance(bridge_capabilities, list)
+            else set()
+        )
+        public_steps = (
+            {value for value in action_steps if isinstance(value, str)}
+            if isinstance(action_steps, list)
+            else set()
+        )
+        runtime = seed_contract.get("runtime")
+        enabled_mods = (
+            runtime.get("enabled_mods")
+            if isinstance(runtime, dict)
+            else None
+        )
+        evidence["runtime_enabled_mods"] = enabled_mods
+        evidence["observed_public_surface"] = {
+            "bridge_capabilities": sorted(public_capabilities),
+            "action_steps": sorted(public_steps),
+            "has_exact_character_player_rebind_method": callable(
+                getattr(service, "set_player_character_v1", None)
+            ),
+            "has_dedicated_workforce_action_fixture_contract": False,
+            "legacy_fixture_switch_accepted": False,
+        }
+        prior_scope = prior_lineage.get("scope")
+        prior_pid_lineage = prior_lineage.get("pid_lineage")
+        checks = {
+            "helper_entrypoint_available": callable(
+                run_m360_action_and_postcondition
+            ),
+            "owner_subject_distinct": owner_character_id
+            != subject_character_id,
+            "current_event_context_available": (
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+                in public_capabilities
+            ),
+            "exact_event_option_ack_available": (
+                "game.command.select-event-option-N" in public_capabilities
+            ),
+            "save_checkpoint_available": "save-checkpoint" in public_steps,
+            "public_exact_character_player_rebind_available": False,
+            "dedicated_action_fixture_exact_scope_switch_available": False,
+            "same_pre_m360_checkpoint_three_route_restore_available": False,
+            "prior_lineage_is_not_a_workforce_three_branch_lineage": (
+                prior_scope == "phase2_one_save_one_restore_two_pid_lineage"
+                and isinstance(prior_pid_lineage, list)
+                and len(prior_pid_lineage) == 2
+            ),
+        }
+        evidence["checks"] = checks
+        missing = [
+            {
+                "id": "exact_owner_subject_player_transition",
+                "reason": (
+                    "no public revision-bound exact-CharacterID player rebind "
+                    "and no dedicated phase-two action fixture exposes a typed "
+                    "owner-to-subject switch through current-event MCP"
+                ),
+            },
+            {
+                "id": "same_checkpoint_three_route_restore_lineage",
+                "reason": (
+                    "the current runner lineage is one save/one restore/two "
+                    "PIDs; A/B/C require three independent restores from one "
+                    "pre-zg361we.360 checkpoint"
+                ),
+            },
+        ]
+        evidence["missing_requirements"] = missing
+        reason = "; ".join(
+            f"{row['id']}: {row['reason']}" for row in missing
+        )
+        raise acceptance.RunnerError(
+            "phase-two Workforce #360 gameplay action cell RED before "
+            f"mutation: {reason}"
+        )
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["gameplay_action_executed"] = False
+        evidence["helper_invoked"] = False
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            "phase-two Workforce #360 pre-mutation gate failed: "
+            f"{error}"
+        ) from error
 
 
 def wait_for_phase2_paused_snapshot(
@@ -10768,6 +10959,7 @@ def run_phase2_live_scenario(
         "incident_gameplay_action_cell": None,
         "b2_pip_gameplay_action_cell": None,
         "ai_owned_case_gameplay_action_cell": None,
+        "workforce_collective_gameplay_action_cell": None,
         "post_incident_paused_binding": None,
         "b2_pip_prompt_readiness": None,
         "completed_gameplay_action_cells": [],
@@ -10979,6 +11171,31 @@ def run_phase2_live_scenario(
         )
         write_json(evidence_path, evidence)
 
+        # The reusable Workforce helper is intentionally reached only after
+        # the already-completed action/restore cells have returned to their
+        # frozen baseline.  Its current runner gate fails before creating a
+        # Workforce checkpoint or selecting #360: the public session has no
+        # exact owner-to-subject player transition, and the existing lineage
+        # cannot provide three independent A/B/C restores.  Never fall back to
+        # the legacy fixture's hard-wired test choreography.
+        workforce_action = (
+            preflight_phase2_workforce_m360_gameplay_action_cell(
+                service,
+                artifacts,
+                owner_character_id=owner_contract[
+                    "workforce_owner_character_id"
+                ],
+                subject_character_id=int(
+                    restored_binding["player_character_id"]
+                ),
+                seed_contract=seed_contract,
+                prior_lineage=lineage,
+            )
+        )
+        evidence["workforce_collective_gameplay_action_cell"] = (
+            workforce_action
+        )
+
         # All four frozen domain providers now run as real pre/restore/post
         # read-only matrices, and the Incident, B2, and AI-owned product
         # actions have been proven.  The remaining two product cells are
@@ -11060,6 +11277,20 @@ def run_phase2_live_scenario(
                         completed.append(
                             "ai_owned_case_gameplay_action_and_postcondition_matrix"
                         )
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
+        workforce_path = artifacts / (
+            "08_phase2_workforce_m360_gameplay_action_cell.json"
+        )
+        if workforce_path.is_file():
+            try:
+                workforce_value = json.loads(
+                    workforce_path.read_text(encoding="utf-8")
+                )
+                if isinstance(workforce_value, dict):
+                    evidence["workforce_collective_gameplay_action_cell"] = (
+                        workforce_value
+                    )
             except (OSError, ValueError, json.JSONDecodeError):
                 pass
         lineage_path = artifacts / "06_phase2_save_restore_lineage.json"

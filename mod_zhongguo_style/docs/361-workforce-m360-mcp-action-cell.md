@@ -1,6 +1,6 @@
 # Workforce #360 MCP-first 动作单元
 
-状态：`static-ready + fixture-ready`；`not-live`
+状态：`static-ready + fixture-ready + runner-fail-fast-wired`；`not-live`
 
 实现入口：
 
@@ -91,4 +91,53 @@ CharacterID 与 save lineage 仍由主 runner 保存和核对，本 helper 不�
 - 覆盖 A/B/C option ACK、三路线业务事实、显式身份接缝、缺接缝 blocker、错误
   receipt 不得被 ACK 掩盖、received-self ACL、有界时间推进，以及 active event
   禁止自动点击；
-- 尚无 CK3 paused live artifact，因此状态仍是 `static-ready + fixture-ready`。
+- 尚无 CK3 paused live artifact，因此动作 helper 仍是
+  `static-ready + fixture-ready`；主 runner 只新增诚实的 fail-fast 接线，不提升 live
+  readiness。
+
+### 4.1 主 batch 的动作前 RED
+
+`--phase2-live-batch` 现已在完成既有 Incident、B2、AI-owned 动作及四域
+pre-save/post-restore 查询后，进入 Workforce #360 专用 gate。该 gate 保存：
+
+- `08_phase2_workforce_m360_gameplay_action_cell.json`；
+- exact owner（seed selector）与 received-self subject（恢复后的 played character）；
+- helper 入口、期望事件 `zg361we.360`、A/B/C 三条未运行路线；
+- `gameplay_action_executed=false`、`checkpoint_created_for_workforce=false`、
+  `helper_invoked=false`；
+- 两个独立缺口：`exact_owner_subject_player_transition` 与
+  `same_checkpoint_three_route_restore_lineage`。
+
+这是 **pre-mutation typed RED**：当前 batch 不会因为缺接缝而先点某一路，再发现无法
+以 subject 身份读回执。已有三项动作和四域恢复证据仍原样保留；Workforce 继续留在
+`PHASE2_MISSING_GAMEPLAY_ACTION_CELLS`，scoreboard 也仍为 RED。
+
+### 4.2 为什么现有切人路径不能复用
+
+当前公开 `GameplayBridgeService` / native action surface 没有 revision-bound 的 exact
+CharacterID 玩家切换命令。phase-two seed fixture 还显式禁止
+`set_player_character`，只负责用真实人物和 shipped public effects 生成 seed。
+
+普通一期验收 fixture 虽然包含一次 `set_player_character`，但它绑定“宋帝 → 既定排序
+尾部官员”的固定宣传编排，依赖 fixture flag、延时事件与测试流程；它既不接受 #360
+saved-scope subject，也不是 MCP 可调用的通用切换动作。把它当成 owner→subject
+接缝会把测试编排冒充产品事实，因此 runner 明确记录
+`legacy_fixture_switch_accepted=false`，不调用它。
+
+此外，当前 phase-two lineage 的冻结合同是一次 save、一次 restore、两个 PID，且这次
+restore 已用于 B2/AI-owned 后恢复。#360 的 A/B/C 互斥矩阵需要另一个共同的
+pre-`zg361we.360` checkpoint，并让三条路线各自从该 checkpoint 独立恢复；现有
+lineage 不能靠重复利用一条已消费的两 PID 证据来声称满足。
+
+下一可施工接缝应提供以下最小真实能力：
+
+1. 从 typed owner/subject scope 出发，通过 MCP 可观测、可选择的正式动作把玩家精确
+   切到 owner，再在 option ACK 后精确切到 subject；每次切换后必须由 native
+   `played_character.character_id` 验证，不能相信动作 ACK；
+2. 保存一个共同 pre-#360 checkpoint，A/B/C 各自独立恢复并保存 PID、connection
+   generation、checkpoint hash 和 route evidence；
+3. 每一路只在 subject-side provider 同时证明 M360 receipt、路线对象、三周期历史和
+   #361 charter ready 后 GREEN；最后再恢复冻结基线；
+4. 全程不用 OCR、坐标、控制台或测试决议。若采用 acceptance-only 动作 fixture，它
+   必须与 seed fixture 分离，并以 current-event MCP + exact option 暴露 typed scope
+   切换，而不是增加不可审计的后台捷径。
