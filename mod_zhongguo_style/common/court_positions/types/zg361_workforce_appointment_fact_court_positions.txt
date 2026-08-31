@@ -1,0 +1,90 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_appointment_fact.py
+# This bounded probationary position is intentionally hidden outside the exact
+# native request tick.  It is nevertheless a real CK3 court position: the
+# engine owns appointment, employer/holder state, revocation and invalidation.
+zg361_workforce_appointment_fact_court_position = {
+    sort_order = 361
+    max_available_positions = 1
+    minimum_rank = duchy
+    skill = stewardship
+
+    opinion = { value = 0 }
+    aptitude_level_breakpoints = { 20 40 60 80 }
+    aptitude = {
+        value = stewardship
+    }
+
+    is_shown = {
+        has_variable = zg361_workforce_appointment_fact_window_open
+        var:zg361_workforce_appointment_fact_window_open = 1
+        government_has_flag = government_is_celestial
+        highest_held_title_tier >= tier_duchy
+    }
+
+    valid_position = {
+        government_has_flag = government_is_celestial
+        highest_held_title_tier >= tier_duchy
+    }
+
+    is_shown_character = {
+        scope:employee = {
+            is_alive = yes
+            is_landed = yes
+            liege = scope:liege
+            has_variable = zg361_workforce_appointment_fact_eligibility_open
+            var:zg361_workforce_appointment_fact_eligibility_open = 1
+            var:zg361_workforce_appointment_fact_pending_owner = scope:liege
+        }
+    }
+
+    valid_character = {
+        scope:employee = {
+            is_alive = yes
+            is_landed = yes
+            liege = scope:liege
+            OR = {
+                AND = {
+                    has_variable = zg361_workforce_appointment_fact_eligibility_open
+                    var:zg361_workforce_appointment_fact_eligibility_open = 1
+                    var:zg361_workforce_appointment_fact_pending_owner = scope:liege
+                }
+                AND = {
+                    has_variable = zg361_workforce_appointment_fact_position_active
+                    var:zg361_workforce_appointment_fact_position_active = 1
+                    has_variable = zg361_workforce_appointment_fact_receipt_owner
+                    var:zg361_workforce_appointment_fact_receipt_owner = scope:liege
+                }
+            }
+        }
+    }
+
+    revoke_cost = {}
+    salary = { gold = 0 }
+    received_salary = { gold = 0 }
+
+    on_court_position_received = {
+        scope:employee = {
+            zg361_workforce_appointment_fact_on_native_position_received_effect = yes
+        }
+    }
+    on_court_position_revoked = {
+        scope:employee = {
+            zg361_workforce_appointment_fact_on_native_position_ended_effect = { END_REASON = 1 }
+        }
+    }
+    on_court_position_invalidated = {
+        scope:employee = {
+            zg361_workforce_appointment_fact_on_native_position_ended_effect = { END_REASON = 2 }
+        }
+    }
+    on_court_position_vacated = {
+        scope:employee = {
+            zg361_workforce_appointment_fact_on_native_position_ended_effect = { END_REASON = 3 }
+        }
+    }
+
+    # The position is only opened by the exact package request.  The vanilla
+    # AI must never independently use it as a generic court vacancy.
+    ai_position_score = { value = -1000 }
+    ai_candidate_score = { value = -1000 }
+}

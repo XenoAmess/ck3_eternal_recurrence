@@ -1,0 +1,13 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_appointment_fact.py
+namespace = zg361workforceappointmentfact
+
+# Reconcile native callback ordering and save/load without creating a success
+# fact.  The effect remains fail-closed unless the engine callback and live
+# holder/employer postcondition both exist.
+zg361workforceappointmentfact.9001 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_workforce_appointment_fact_audit_pending_effect = yes
+    }
+}

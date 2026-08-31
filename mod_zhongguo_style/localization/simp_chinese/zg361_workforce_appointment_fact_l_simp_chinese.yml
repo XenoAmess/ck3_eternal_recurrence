@@ -1,0 +1,3 @@
+﻿l_simp_chinese:
+ zg361_workforce_appointment_fact_court_position:0 "三六一试任编制"
+ zg361_workforce_appointment_fact_court_position_desc:0 "用于三六一招聘交割的有界试任岗位。CK3 原生任命成功后岗位才成立；同案 Workforce 回执消费后立即原生撤任，阻断时最迟由次日审计释放。"
