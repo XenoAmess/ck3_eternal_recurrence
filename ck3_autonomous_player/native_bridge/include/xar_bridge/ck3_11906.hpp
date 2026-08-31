@@ -522,6 +522,73 @@ struct WarBoundRegimentObservation {
                          const WarBoundRegimentObservation &) = default;
 };
 
+// Post-termination state of one full-generation ID frozen by
+// WarBoundRegimentObservation. `destroyed` means that exact generation no
+// longer resolves from the still-valid exact-build store; it does not mean
+// merely that the WarID stopped resolving.
+enum class FrozenWarBoundIdState : std::uint8_t {
+  not_present = 0,
+  unavailable = 1,
+  destroyed = 2,
+  still_alive = 3,
+};
+
+enum class FrozenWarBoundArmyRosterEvidence : std::uint8_t {
+  not_present = 0,
+  unavailable = 1,
+  frozen_army_destroyed = 2,
+  detached = 3,
+  still_attached = 4,
+};
+
+enum class WarBoundRegimentCleanupStatus : std::uint8_t {
+  unavailable = 0,
+  destroyed = 1,
+  still_alive = 2,
+};
+
+struct FrozenWarBoundCurrentCleanupSnapshot {
+  std::int32_t current_army_regiment_id = -1;
+  std::int32_t raised_carmy_id = -1;
+  FrozenWarBoundIdState current_army_regiment_state =
+      FrozenWarBoundIdState::not_present;
+  FrozenWarBoundIdState raised_carmy_state =
+      FrozenWarBoundIdState::not_present;
+  FrozenWarBoundArmyRosterEvidence frozen_carmy_roster_evidence =
+      FrozenWarBoundArmyRosterEvidence::not_present;
+
+  friend bool operator==(const FrozenWarBoundCurrentCleanupSnapshot &,
+                         const FrozenWarBoundCurrentCleanupSnapshot &) =
+      default;
+};
+
+struct FrozenWarBoundPersistentCleanupSnapshot {
+  std::int32_t persistent_regiment_id = -1;
+  FrozenWarBoundIdState persistent_regiment_state =
+      FrozenWarBoundIdState::unavailable;
+  std::array<FrozenWarBoundCurrentCleanupSnapshot,
+             kWarBoundRegimentCompositionRowCount>
+      current_rows{};
+
+  friend bool operator==(const FrozenWarBoundPersistentCleanupSnapshot &,
+                         const FrozenWarBoundPersistentCleanupSnapshot &) =
+      default;
+};
+
+struct FrozenWarBoundRegimentCleanupObservation {
+  WarBoundRegimentProvenance provenance =
+      WarBoundRegimentProvenance::unavailable;
+  WarBoundRegimentCleanupStatus status =
+      WarBoundRegimentCleanupStatus::unavailable;
+  std::int32_t owner_character_id = -1;
+  std::int32_t war_id = -1;
+  std::vector<FrozenWarBoundPersistentCleanupSnapshot> regiments;
+
+  friend bool operator==(const FrozenWarBoundRegimentCleanupObservation &,
+                         const FrozenWarBoundRegimentCleanupObservation &) =
+      default;
+};
+
 // The generic registry hashes the process image once and passes an exact-match
 // decision into the selected version adapter. False returns disabled bindings.
 Bindings BindCurrentProcess(bool executable_matches) noexcept;
@@ -833,6 +900,17 @@ bool ReadPrimaryAttackerWarBoundRegimentObservation(
     std::int32_t owner_character_id,
     WarBoundRegimentObservation &output) noexcept;
 
+// Independent postwar observation over the full-generation IDs frozen by the
+// active-war query above. The War may already be gone. The query instead
+// requires a paused, stable game/Jomini pair and exact persistent/current/
+// CArmy stores, then proves per-ID liveness and frozen-CArmy roster
+// attachment twice. A surviving CArmy alone is not surviving special troops.
+// Provenance remains war_bound_not_event_specific.
+bool ReadFrozenWarBoundRegimentCleanupObservation(
+    const Bindings &bindings,
+    const WarBoundRegimentObservation &frozen,
+    FrozenWarBoundRegimentCleanupObservation &output) noexcept;
+
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
 // Offline-only entry point for the exact-build loaded-effect fixtures.  The
 // production entry point remains disabled until the native visitor/scope ABI
@@ -850,6 +928,16 @@ bool ReadRaiktorFavorHookPresenceForOfflineReFixture(
     const Bindings &bindings, void *loaded_effect, void *effect_context,
     std::int32_t attacker_character_id,
     std::int32_t claimant_character_id, bool &applies) noexcept;
+
+using WarBoundCleanupBetweenSamplesHook = void (*)() noexcept;
+
+// Test seam used only to force a mutation between the two native samples.
+// Production always supplies no hook.
+bool ReadFrozenWarBoundRegimentCleanupObservationForOfflineReFixture(
+    const Bindings &bindings,
+    const WarBoundRegimentObservation &frozen,
+    FrozenWarBoundRegimentCleanupObservation &output,
+    WarBoundCleanupBetweenSamplesHook between_samples) noexcept;
 #endif
 
 // Error-only stage name from the immediately preceding exit-terms read on the

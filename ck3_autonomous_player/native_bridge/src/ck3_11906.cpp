@@ -4710,6 +4710,334 @@ bool ReadWarBoundRegimentObservationOnce(
   return true;
 }
 
+struct FrozenWarBoundComponentStorageView {
+  void *storage = nullptr;
+  void *slots = nullptr;
+  std::int32_t capacity = 0;
+
+  friend bool operator==(const FrozenWarBoundComponentStorageView &,
+                         const FrozenWarBoundComponentStorageView &) =
+      default;
+};
+
+bool ReadFrozenWarBoundComponentStorageView(
+    void **storage_slot,
+    FrozenWarBoundComponentStorageView &output) noexcept {
+  output = {};
+  if (storage_slot == nullptr) {
+    return false;
+  }
+  void *const storage = *storage_slot;
+  if (storage == nullptr) {
+    return false;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) {
+    return false;
+  }
+  output = {storage, slots, capacity};
+  return true;
+}
+
+struct FrozenWarBoundComponentProbe {
+  FrozenWarBoundIdState state = FrozenWarBoundIdState::unavailable;
+  void *exact_component = nullptr;
+};
+
+FrozenWarBoundComponentProbe ProbeFrozenWarBoundComponent(
+    const FrozenWarBoundComponentStorageView &storage,
+    std::int32_t frozen_id, std::size_t component_id_offset) noexcept {
+  if (frozen_id == -1 || storage.storage == nullptr ||
+      storage.slots == nullptr || storage.capacity <= 0 ||
+      storage.capacity > kMaximumComponentCapacity) {
+    return {};
+  }
+  const auto index =
+      static_cast<std::uint32_t>(frozen_id) & 0x00FFFFFFU;
+  if (index >= static_cast<std::uint32_t>(storage.capacity)) {
+    return {};
+  }
+  const auto slot_offset = static_cast<std::size_t>(index) *
+                               kComponentStorageSlotSize +
+                           kComponentStorageSlotObjectOffset;
+  void *const component = LoadAt<void *>(storage.slots, slot_offset);
+  if (component == nullptr ||
+      LoadAt<std::int32_t>(component, component_id_offset) != frozen_id) {
+    // A null slot or an object with the same low 24-bit slot and a different
+    // generation both prove only that the frozen exact generation is gone.
+    return {FrozenWarBoundIdState::destroyed, nullptr};
+  }
+  return {FrozenWarBoundIdState::still_alive, component};
+}
+
+struct FrozenWarBoundCurrentCleanupNativeIdentity {
+  void *current_army_regiment = nullptr;
+  void *raised_carmy = nullptr;
+  std::int32_t observed_current_carmy_id = -1;
+  std::vector<std::int32_t> frozen_carmy_roster;
+
+  friend bool operator==(
+      const FrozenWarBoundCurrentCleanupNativeIdentity &,
+      const FrozenWarBoundCurrentCleanupNativeIdentity &) = default;
+};
+
+struct FrozenWarBoundPersistentCleanupNativeIdentity {
+  void *persistent_regiment = nullptr;
+  std::array<FrozenWarBoundCurrentCleanupNativeIdentity,
+             kWarBoundRegimentCompositionRowCount>
+      current_rows{};
+
+  friend bool operator==(
+      const FrozenWarBoundPersistentCleanupNativeIdentity &,
+      const FrozenWarBoundPersistentCleanupNativeIdentity &) = default;
+};
+
+struct FrozenWarBoundCleanupNativeIdentity {
+  FrozenWarBoundComponentStorageView persistent_regiment_storage{};
+  FrozenWarBoundComponentStorageView current_regiment_storage{};
+  FrozenWarBoundComponentStorageView current_army_storage{};
+  std::vector<FrozenWarBoundPersistentCleanupNativeIdentity> regiments;
+
+  friend bool operator==(const FrozenWarBoundCleanupNativeIdentity &,
+                         const FrozenWarBoundCleanupNativeIdentity &) =
+      default;
+};
+
+bool ValidateFrozenWarBoundRegimentObservation(
+    const WarBoundRegimentObservation &frozen) noexcept {
+  if (frozen.provenance !=
+          WarBoundRegimentProvenance::war_bound_not_event_specific ||
+      frozen.owner_character_id == -1 || frozen.war_id == -1 ||
+      frozen.regiments.empty() ||
+      frozen.regiments.size() >
+          static_cast<std::size_t>(kMaximumArmyRegiments)) {
+    return false;
+  }
+  std::vector<std::int32_t> persistent_ids;
+  persistent_ids.reserve(frozen.regiments.size());
+  for (const auto &persistent : frozen.regiments) {
+    if (persistent.persistent_regiment_id == -1 ||
+        persistent.bound_war_id != frozen.war_id ||
+        persistent.war_keep_on_attacker_victory ||
+        std::find(persistent_ids.begin(), persistent_ids.end(),
+                  persistent.persistent_regiment_id) !=
+            persistent_ids.end()) {
+      return false;
+    }
+    persistent_ids.push_back(persistent.persistent_regiment_id);
+    for (const auto &current : persistent.current_rows) {
+      if ((current.current_army_regiment_id == -1) !=
+          (current.raised_carmy_id == -1)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool ReadFrozenWarBoundRegimentCleanupObservationOnce(
+    const Bindings &bindings,
+    const WarBoundRegimentObservation &frozen,
+    FrozenWarBoundRegimentCleanupObservation &output,
+    FrozenWarBoundCleanupNativeIdentity &native_identity) noexcept {
+  output = {};
+  native_identity = {};
+  if (!ReadFrozenWarBoundComponentStorageView(
+          bindings.persistent_regiment_storage_slot,
+          native_identity.persistent_regiment_storage) ||
+      !ReadFrozenWarBoundComponentStorageView(
+          bindings.regiment_storage_slot,
+          native_identity.current_regiment_storage) ||
+      !ReadFrozenWarBoundComponentStorageView(
+          bindings.army_internal_storage_slot,
+          native_identity.current_army_storage)) {
+    return false;
+  }
+
+  FrozenWarBoundRegimentCleanupObservation observed{};
+  observed.provenance =
+      WarBoundRegimentProvenance::war_bound_not_event_specific;
+  observed.owner_character_id = frozen.owner_character_id;
+  observed.war_id = frozen.war_id;
+  observed.regiments.reserve(frozen.regiments.size());
+  native_identity.regiments.reserve(frozen.regiments.size());
+  bool any_frozen_regiment_still_alive = false;
+
+  for (const auto &frozen_persistent : frozen.regiments) {
+    FrozenWarBoundPersistentCleanupSnapshot persistent{};
+    FrozenWarBoundPersistentCleanupNativeIdentity persistent_identity{};
+    persistent.persistent_regiment_id =
+        frozen_persistent.persistent_regiment_id;
+    const auto persistent_probe = ProbeFrozenWarBoundComponent(
+        native_identity.persistent_regiment_storage,
+        frozen_persistent.persistent_regiment_id,
+        kPersistentRegimentIdOffset);
+    if (persistent_probe.state == FrozenWarBoundIdState::unavailable) {
+      return false;
+    }
+    persistent.persistent_regiment_state = persistent_probe.state;
+    persistent_identity.persistent_regiment =
+        persistent_probe.exact_component;
+    if (persistent_probe.state == FrozenWarBoundIdState::still_alive) {
+      any_frozen_regiment_still_alive = true;
+      for (std::size_t composition_index = 0;
+           composition_index < kWarBoundRegimentCompositionRowCount;
+           ++composition_index) {
+        const void *const composition_row =
+            static_cast<const std::byte *>(
+                persistent_probe.exact_component) +
+            kPersistentRegimentCompositionRowsOffset +
+            composition_index * kPersistentRegimentCompositionRowStride;
+        if (LoadAt<std::int32_t>(
+                composition_row, kPersistentRegimentRowOwnerIdOffset) !=
+                frozen_persistent.persistent_regiment_id ||
+            LoadAt<std::int32_t>(
+                composition_row, kPersistentRegimentRowOrdinalOffset) !=
+                static_cast<std::int32_t>(composition_index)) {
+          return false;
+        }
+      }
+    }
+
+    for (std::size_t composition_index = 0;
+         composition_index < kWarBoundRegimentCompositionRowCount;
+         ++composition_index) {
+      const auto &frozen_current =
+          frozen_persistent.current_rows[composition_index];
+      auto &current = persistent.current_rows[composition_index];
+      auto &current_identity =
+          persistent_identity.current_rows[composition_index];
+      current.current_army_regiment_id =
+          frozen_current.current_army_regiment_id;
+      current.raised_carmy_id = frozen_current.raised_carmy_id;
+      if (frozen_current.current_army_regiment_id == -1) {
+        continue;
+      }
+
+      const auto current_probe = ProbeFrozenWarBoundComponent(
+          native_identity.current_regiment_storage,
+          frozen_current.current_army_regiment_id, kRegimentIdOffset);
+      const auto carmy_probe = ProbeFrozenWarBoundComponent(
+          native_identity.current_army_storage,
+          frozen_current.raised_carmy_id, kInternalArmyIdOffset);
+      if (current_probe.state == FrozenWarBoundIdState::unavailable ||
+          carmy_probe.state == FrozenWarBoundIdState::unavailable) {
+        return false;
+      }
+      current.current_army_regiment_state = current_probe.state;
+      current.raised_carmy_state = carmy_probe.state;
+      current_identity.current_army_regiment =
+          current_probe.exact_component;
+      current_identity.raised_carmy = carmy_probe.exact_component;
+      if (current_probe.state == FrozenWarBoundIdState::still_alive) {
+        any_frozen_regiment_still_alive = true;
+        current_identity.observed_current_carmy_id =
+            LoadAt<std::int32_t>(current_probe.exact_component,
+                                 kRegimentArmyIdOffset);
+      }
+
+      bool frozen_roster_contains_current = false;
+      if (carmy_probe.state == FrozenWarBoundIdState::destroyed) {
+        current.frozen_carmy_roster_evidence =
+            FrozenWarBoundArmyRosterEvidence::frozen_army_destroyed;
+      } else {
+        if (!ReadNativeIntArray(
+                static_cast<const std::byte *>(carmy_probe.exact_component) +
+                    kInternalArmyRegimentIdsOffset,
+                current_identity.frozen_carmy_roster,
+                kMaximumArmyRegiments)) {
+          return false;
+        }
+        frozen_roster_contains_current =
+            std::find(current_identity.frozen_carmy_roster.begin(),
+                      current_identity.frozen_carmy_roster.end(),
+                      frozen_current.current_army_regiment_id) !=
+            current_identity.frozen_carmy_roster.end();
+        current.frozen_carmy_roster_evidence =
+            frozen_roster_contains_current
+                ? FrozenWarBoundArmyRosterEvidence::still_attached
+                : FrozenWarBoundArmyRosterEvidence::detached;
+      }
+
+      if (current_probe.state == FrozenWarBoundIdState::destroyed) {
+        if (frozen_roster_contains_current) {
+          // A valid live CArmy roster cannot retain a full ID whose exact
+          // CArmyRegiment generation no longer resolves.
+          return false;
+        }
+      } else {
+        const bool still_points_to_frozen_carmy =
+            current_identity.observed_current_carmy_id ==
+            frozen_current.raised_carmy_id;
+        if ((still_points_to_frozen_carmy &&
+             (carmy_probe.state != FrozenWarBoundIdState::still_alive ||
+              !frozen_roster_contains_current)) ||
+            (!still_points_to_frozen_carmy &&
+             frozen_roster_contains_current)) {
+          return false;
+        }
+      }
+    }
+    observed.regiments.push_back(std::move(persistent));
+    native_identity.regiments.push_back(std::move(persistent_identity));
+  }
+
+  observed.status = any_frozen_regiment_still_alive
+                        ? WarBoundRegimentCleanupStatus::still_alive
+                        : WarBoundRegimentCleanupStatus::destroyed;
+  output = std::move(observed);
+  return true;
+}
+
+using FrozenWarBoundCleanupBetweenSamplesHook = void (*)() noexcept;
+
+bool ReadFrozenWarBoundRegimentCleanupObservationCore(
+    const Bindings &bindings,
+    const WarBoundRegimentObservation &frozen,
+    FrozenWarBoundRegimentCleanupObservation &output,
+    FrozenWarBoundCleanupBetweenSamplesHook between_samples) noexcept {
+  output = {};
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.persistent_regiment_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      !ValidateFrozenWarBoundRegimentObservation(frozen)) {
+    return false;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const jomini_state = *bindings.jomini_state_slot;
+  if (game_state == nullptr || jomini_state == nullptr ||
+      LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 1) {
+    return false;
+  }
+
+  FrozenWarBoundRegimentCleanupObservation first{};
+  FrozenWarBoundRegimentCleanupObservation second{};
+  FrozenWarBoundCleanupNativeIdentity first_identity{};
+  FrozenWarBoundCleanupNativeIdentity second_identity{};
+  if (!ReadFrozenWarBoundRegimentCleanupObservationOnce(
+          bindings, frozen, first, first_identity)) {
+    return false;
+  }
+  if (between_samples != nullptr) {
+    between_samples();
+  }
+  if (*bindings.game_state_slot != game_state ||
+      *bindings.jomini_state_slot != jomini_state ||
+      LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 1 ||
+      !ReadFrozenWarBoundRegimentCleanupObservationOnce(
+          bindings, frozen, second, second_identity) ||
+      first != second || first_identity != second_identity) {
+    return false;
+  }
+  output = std::move(second);
+  return true;
+}
+
 bool CheckedAddNonnegative(std::int64_t &sum,
                            std::int32_t value) noexcept {
   if (value < 0 ||
@@ -13511,7 +13839,24 @@ bool ReadPrimaryAttackerWarBoundRegimentObservation(
   return true;
 }
 
+bool ReadFrozenWarBoundRegimentCleanupObservation(
+    const Bindings &bindings,
+    const WarBoundRegimentObservation &frozen,
+    FrozenWarBoundRegimentCleanupObservation &output) noexcept {
+  return ReadFrozenWarBoundRegimentCleanupObservationCore(
+      bindings, frozen, output, nullptr);
+}
+
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+bool ReadFrozenWarBoundRegimentCleanupObservationForOfflineReFixture(
+    const Bindings &bindings,
+    const WarBoundRegimentObservation &frozen,
+    FrozenWarBoundRegimentCleanupObservation &output,
+    WarBoundCleanupBetweenSamplesHook between_samples) noexcept {
+  return ReadFrozenWarBoundRegimentCleanupObservationCore(
+      bindings, frozen, output, between_samples);
+}
+
 bool ReadRaiktorFavorHookPresenceForOfflineReFixture(
     const Bindings &bindings, void *loaded_effect, void *effect_context,
     std::int32_t attacker_character_id,

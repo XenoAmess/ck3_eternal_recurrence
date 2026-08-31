@@ -457,6 +457,21 @@ bool g_raiktor_emit_unknown_forwarded_argument = false;
 bool g_raiktor_lookup_returns_fallback = false;
 bool g_raiktor_drift_database = false;
 bool g_raiktor_drift_loaded_root = false;
+std::byte *g_war_bound_cleanup_drift_target = nullptr;
+std::array<std::byte, sizeof(void *)>
+    g_war_bound_cleanup_drift_payload{};
+std::size_t g_war_bound_cleanup_drift_size = 0;
+
+void ApplyWarBoundCleanupBetweenSamplesDrift() noexcept {
+  if (g_war_bound_cleanup_drift_target != nullptr &&
+      g_war_bound_cleanup_drift_size > 0 &&
+      g_war_bound_cleanup_drift_size <=
+          g_war_bound_cleanup_drift_payload.size()) {
+    std::memcpy(g_war_bound_cleanup_drift_target,
+                g_war_bound_cleanup_drift_payload.data(),
+                g_war_bound_cleanup_drift_size);
+  }
+}
 bool g_raiktor_collector_lifecycle_valid = true;
 std::int32_t g_raiktor_collector_construct_calls = 0;
 std::int32_t g_raiktor_collector_destroy_calls = 0;
@@ -9066,8 +9081,9 @@ int main() {
   std::array<std::byte, 3 * 0x10> war_bound_carmy_slots{};
   std::array<std::byte, 0x50> merged_carmy{};
   std::array<std::byte, 0x50> split_carmy{};
-  std::array<std::int32_t, 2> merged_carmy_regiment_ids{
-      current_regiment_a0_id, current_regiment_a3_id};
+  std::array<std::int32_t, 3> merged_carmy_regiment_ids{
+      current_regiment_a0_id, current_regiment_a3_id,
+      same_slot_stale_current_id};
   std::array<std::int32_t, 1> split_carmy_regiment_ids{
       current_regiment_b6_id};
   std::array<std::byte, 0x2A0> war_bound_military_state{};
@@ -9152,7 +9168,7 @@ int main() {
   Store(merged_carmy, 0x10, merged_carmy_id);
   Store(merged_carmy, 0x38,
         static_cast<void *>(merged_carmy_regiment_ids.data()));
-  Store(merged_carmy, 0x40, std::int32_t{2});
+  Store(merged_carmy, 0x40, std::int32_t{3});
   Store(merged_carmy, 0x44, std::int32_t{2});
   Store(split_carmy, 0x10, split_carmy_id);
   Store(split_carmy, 0x38,
@@ -9228,6 +9244,291 @@ int main() {
               current_regiment_b6_id, split_carmy_id}) {
     return Fail(
         "war-bound regiment observer lost full identity, seven rows or merge state");
+  }
+
+  // The cleanup observer consumes only the frozen full-generation IDs. An
+  // ended/missing War is deliberately neither its selector nor its success
+  // criterion.
+  Store(g_war, 0x358, static_cast<void *>(g_war.data()));
+  xar::ck3_11906::FrozenWarBoundRegimentCleanupObservation cleanup{};
+  const auto cleanup_absent_current =
+      xar::ck3_11906::FrozenWarBoundCurrentCleanupSnapshot{};
+  if (!xar::ck3_11906::
+          ReadFrozenWarBoundRegimentCleanupObservation(
+              war_bound_bindings, war_bound, cleanup) ||
+      cleanup.provenance !=
+          xar::ck3_11906::WarBoundRegimentProvenance::
+              war_bound_not_event_specific ||
+      cleanup.status !=
+          xar::ck3_11906::WarBoundRegimentCleanupStatus::still_alive ||
+      cleanup.owner_character_id != played_character_id ||
+      cleanup.war_id != active_war_id || cleanup.regiments.size() != 2 ||
+      cleanup.regiments[0].persistent_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[0]
+              .current_army_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[0].raised_carmy_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[0]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::
+              still_attached ||
+      cleanup.regiments[0].current_rows[1] !=
+          cleanup_absent_current ||
+      cleanup.regiments[0].current_rows[3]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::
+              still_attached ||
+      cleanup.regiments[1].current_rows[6].raised_carmy_id !=
+          split_carmy_id ||
+      cleanup.regiments[1].current_rows[6]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::
+              still_attached) {
+    return Fail(
+        "frozen war-bound cleanup observer treated war_not_found as cleanup");
+  }
+  Store(g_war, 0x358, static_cast<void *>(nullptr));
+
+  // A new generation in the same low-24-bit persistent slot means the exact
+  // frozen persistent ID was destroyed; current raised rows can still prove
+  // that cleanup as a whole is incomplete.
+  Store(persistent_regiment_a, 0x10,
+        same_slot_stale_persistent_id);
+  cleanup = {};
+  const bool persistent_slot_reuse_returned =
+      xar::ck3_11906::ReadFrozenWarBoundRegimentCleanupObservation(
+          war_bound_bindings, war_bound, cleanup);
+  Store(persistent_regiment_a, 0x10, persistent_regiment_a_id);
+  if (!persistent_slot_reuse_returned ||
+      cleanup.status !=
+          xar::ck3_11906::WarBoundRegimentCleanupStatus::still_alive ||
+      cleanup.regiments[0].persistent_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[0].current_rows[0]
+              .current_army_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive) {
+    return Fail(
+        "frozen cleanup confused persistent low-24 reuse with exact survival");
+  }
+
+  // The same rule independently applies to a frozen CArmyRegiment ID. The
+  // live frozen CArmy must also prove that the old full ID left its roster.
+  Store(current_regiment_a3, 0x10,
+        same_slot_stale_current_id);
+  merged_carmy_regiment_ids[1] = same_slot_stale_current_id;
+  cleanup = {};
+  const bool current_generation_reuse_returned =
+      xar::ck3_11906::ReadFrozenWarBoundRegimentCleanupObservation(
+          war_bound_bindings, war_bound, cleanup);
+  Store(current_regiment_a3, 0x10, current_regiment_a3_id);
+  merged_carmy_regiment_ids[1] = current_regiment_a3_id;
+  if (!current_generation_reuse_returned ||
+      cleanup.regiments[0].current_rows[3]
+              .current_army_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[0].current_rows[3].raised_carmy_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[3]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::detached) {
+    return Fail(
+        "frozen cleanup accepted a stale current-regiment generation");
+  }
+
+  // CArmy generation is frozen independently. Here the current regiment IDs
+  // survive and now point at a new generation in the same low-24 slot; that
+  // cannot resurrect the frozen CArmy generation.
+  Store(merged_carmy, 0x10, same_slot_stale_carmy_id);
+  Store(current_regiment_a0, 0x140, same_slot_stale_carmy_id);
+  Store(current_regiment_a3, 0x140, same_slot_stale_carmy_id);
+  cleanup = {};
+  const bool carmy_generation_reuse_returned =
+      xar::ck3_11906::ReadFrozenWarBoundRegimentCleanupObservation(
+          war_bound_bindings, war_bound, cleanup);
+  Store(merged_carmy, 0x10, merged_carmy_id);
+  Store(current_regiment_a0, 0x140, merged_carmy_id);
+  Store(current_regiment_a3, 0x140, merged_carmy_id);
+  if (!carmy_generation_reuse_returned ||
+      cleanup.regiments[0].current_rows[0]
+              .current_army_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[0].raised_carmy_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[0].current_rows[0]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::
+              frozen_army_destroyed) {
+    return Fail("frozen cleanup accepted a stale CArmy generation");
+  }
+
+  // Partial destruction remains still_alive and publishes the exact split:
+  // persistent A and row A0 are gone, row A3 is still attached to the merged
+  // CArmy, and the unrelated/shared CArmy object itself stays alive.
+  Store(persistent_regiment_slots, 0x18, static_cast<void *>(nullptr));
+  Store(current_regiment_slots, 0x18, static_cast<void *>(nullptr));
+  merged_carmy_regiment_ids[0] = current_regiment_a3_id;
+  Store(merged_carmy, 0x44, std::int32_t{1});
+  cleanup = {};
+  const bool partial_cleanup_returned =
+      xar::ck3_11906::ReadFrozenWarBoundRegimentCleanupObservation(
+          war_bound_bindings, war_bound, cleanup);
+  Store(persistent_regiment_slots, 0x18,
+        static_cast<void *>(persistent_regiment_a.data()));
+  Store(current_regiment_slots, 0x18,
+        static_cast<void *>(current_regiment_a0.data()));
+  merged_carmy_regiment_ids[0] = current_regiment_a0_id;
+  merged_carmy_regiment_ids[1] = current_regiment_a3_id;
+  Store(merged_carmy, 0x44, std::int32_t{2});
+  if (!partial_cleanup_returned ||
+      cleanup.status !=
+          xar::ck3_11906::WarBoundRegimentCleanupStatus::still_alive ||
+      cleanup.regiments[0].persistent_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[0].current_rows[0]
+              .current_army_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[0].current_rows[0]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::detached ||
+      cleanup.regiments[0].current_rows[3]
+              .current_army_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[3]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::
+              still_attached) {
+    return Fail("frozen cleanup collapsed partial destruction");
+  }
+
+  // Complete frozen-ID cleanup does not require a merged CArmy to disappear;
+  // it requires every persistent/current exact generation to be gone and
+  // every surviving frozen CArmy roster to be detached from those IDs.
+  Store(persistent_regiment_slots, 0x18, static_cast<void *>(nullptr));
+  Store(persistent_regiment_slots, 0x28, static_cast<void *>(nullptr));
+  Store(current_regiment_slots, 0x18, static_cast<void *>(nullptr));
+  Store(current_regiment_slots, 0x28, static_cast<void *>(nullptr));
+  Store(current_regiment_slots, 0x38, static_cast<void *>(nullptr));
+  Store(merged_carmy, 0x44, std::int32_t{0});
+  Store(split_carmy, 0x44, std::int32_t{0});
+  cleanup = {};
+  const bool destroyed_cleanup_returned =
+      xar::ck3_11906::ReadFrozenWarBoundRegimentCleanupObservation(
+          war_bound_bindings, war_bound, cleanup);
+  Store(persistent_regiment_slots, 0x18,
+        static_cast<void *>(persistent_regiment_a.data()));
+  Store(persistent_regiment_slots, 0x28,
+        static_cast<void *>(persistent_regiment_b.data()));
+  Store(current_regiment_slots, 0x18,
+        static_cast<void *>(current_regiment_a0.data()));
+  Store(current_regiment_slots, 0x28,
+        static_cast<void *>(current_regiment_a3.data()));
+  Store(current_regiment_slots, 0x38,
+        static_cast<void *>(current_regiment_b6.data()));
+  Store(merged_carmy, 0x44, std::int32_t{2});
+  Store(split_carmy, 0x44, std::int32_t{1});
+  if (!destroyed_cleanup_returned ||
+      cleanup.status !=
+          xar::ck3_11906::WarBoundRegimentCleanupStatus::destroyed ||
+      cleanup.regiments[0].persistent_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[1].persistent_regiment_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::destroyed ||
+      cleanup.regiments[0].current_rows[0].raised_carmy_state !=
+          xar::ck3_11906::FrozenWarBoundIdState::still_alive ||
+      cleanup.regiments[0].current_rows[0]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::detached ||
+      cleanup.regiments[1].current_rows[6]
+              .frozen_carmy_roster_evidence !=
+          xar::ck3_11906::FrozenWarBoundArmyRosterEvidence::detached) {
+    return Fail(
+        "frozen cleanup inferred survival from an empty merged CArmy shell");
+  }
+
+  const auto rejects_frozen_cleanup =
+      [&](auto configure, auto restore, std::string_view case_name) {
+        configure();
+        auto rejected = cleanup;
+        const bool returned =
+            xar::ck3_11906::
+                ReadFrozenWarBoundRegimentCleanupObservation(
+                    war_bound_bindings, war_bound, rejected);
+        restore();
+        if (returned ||
+            rejected != xar::ck3_11906::
+                            FrozenWarBoundRegimentCleanupObservation{}) {
+          std::cerr << "Frozen war-bound cleanup drift accepted: "
+                    << case_name << '\n';
+          return false;
+        }
+        return true;
+      };
+  if (!rejects_frozen_cleanup(
+          [&] {
+            Store(current_regiment_storage, 0x2C,
+                  std::int32_t{1'000'001});
+          },
+          [&] {
+            Store(current_regiment_storage, 0x2C, std::int32_t{4});
+          },
+          "current_store_header") ||
+      !rejects_frozen_cleanup(
+          [&] { Store(merged_carmy, 0x44, std::int32_t{4}); },
+          [&] { Store(merged_carmy, 0x44, std::int32_t{2}); },
+          "frozen_carmy_roster_header") ||
+      !rejects_frozen_cleanup(
+          [&] { Store(jomini_state, 0x20, std::uint8_t{0}); },
+          [&] { Store(jomini_state, 0x20, std::uint8_t{1}); },
+          "running_frame")) {
+    return Fail("frozen cleanup accepted unavailable native state");
+  }
+
+  // Force an unrelated roster addition between otherwise identical samples.
+  // The public state remains still_attached, so only the captured native
+  // identity/roster sample can detect this drift.
+  const std::int32_t drifted_merged_roster_count = 3;
+  g_war_bound_cleanup_drift_target = merged_carmy.data() + 0x44;
+  g_war_bound_cleanup_drift_size = sizeof(drifted_merged_roster_count);
+  std::memcpy(g_war_bound_cleanup_drift_payload.data(),
+              &drifted_merged_roster_count,
+              sizeof(drifted_merged_roster_count));
+  cleanup = {};
+  const bool roster_drift_returned =
+      xar::ck3_11906::
+          ReadFrozenWarBoundRegimentCleanupObservationForOfflineReFixture(
+              war_bound_bindings, war_bound, cleanup,
+              &ApplyWarBoundCleanupBetweenSamplesDrift);
+  Store(merged_carmy, 0x44, std::int32_t{2});
+  g_war_bound_cleanup_drift_target = nullptr;
+  g_war_bound_cleanup_drift_size = 0;
+  if (roster_drift_returned ||
+      cleanup != xar::ck3_11906::
+                     FrozenWarBoundRegimentCleanupObservation{}) {
+    return Fail("frozen cleanup published a drifting CArmy roster");
+  }
+
+  // The same seam proves game_state identity is rechecked between samples.
+  void *const null_game_state = nullptr;
+  g_war_bound_cleanup_drift_target =
+      reinterpret_cast<std::byte *>(&game_state_pointer);
+  g_war_bound_cleanup_drift_size = sizeof(null_game_state);
+  std::memcpy(g_war_bound_cleanup_drift_payload.data(), &null_game_state,
+              sizeof(null_game_state));
+  cleanup = {};
+  const bool game_state_drift_returned =
+      xar::ck3_11906::
+          ReadFrozenWarBoundRegimentCleanupObservationForOfflineReFixture(
+              war_bound_bindings, war_bound, cleanup,
+              &ApplyWarBoundCleanupBetweenSamplesDrift);
+  game_state_pointer = game_state.data();
+  g_war_bound_cleanup_drift_target = nullptr;
+  g_war_bound_cleanup_drift_size = 0;
+  if (game_state_drift_returned ||
+      cleanup != xar::ck3_11906::
+                     FrozenWarBoundRegimentCleanupObservation{}) {
+    return Fail("frozen cleanup published across game_state drift");
   }
 
   const auto rejects_war_bound_drift =
