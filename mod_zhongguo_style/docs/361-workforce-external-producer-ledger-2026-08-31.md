@@ -97,14 +97,16 @@ celestial manager vassal；host 必须不同于 owner 与 subject。伯爵/男�
 上述 20 个旧告警字段中，19 个 `ac_external_handoff_*` 已没有生产 read，`secondment_host_manager` 有真实可达 setter
 与 A/B caller。因此**静态预期**下一轮 loader 消掉 AC 20 项；在新 artifact 出现前仍不得写成 loader-live。
 
-## 3. AD：80 项，当前只记责任，不新增无 caller adapter
+## 3. AD：45 项仍需 producer；35 项旧 external alias 已静态退役
 
-### 3.1 废弃 read / 同案重导：11
+旧 loader 的 AD 80 项没有被笼统“补 setter”。本批只删除能够由现有真对象重导、重复表达同一 envelope，或已经由
+B2 权威发布的 35 项；其余 45 项继续作为真实施工债保留。新 loader 运行前只能称为静态预期，不能称为 live。
+
+### 3.1 同案对象直接重导：10
 
 ```text
 zg361_we_ad_external_candidate
 zg361_we_ad_external_final_approver
-zg361_we_ad_external_m275_remediation_receipt
 zg361_we_ad_external_outcome_candidate
 zg361_we_ad_external_outcome_hire_case
 zg361_we_ad_external_referral_present
@@ -115,10 +117,69 @@ zg361_we_ad_external_responsible_interviewer_2
 zg361_we_ad_external_responsible_interviewer_3
 ```
 
-candidate/hire case/approver/interviewer 可从同案候选、offer、panel 对象重导；present/reward/referrer-voted 是派生值。
-`m275_remediation_receipt` 是错误的布尔 sentinel，不能冒充 remediation receipt；未来需要 ID/hash/五元 receipt。
+候选人、hire case、最终批准人和三位责任面试官分别从本案 #267/#269/#272 对象读取；referral present、固定 5 金
+奖励和 referrer 是否参评由 #271 路线本身派生。#269 的第一份 attribution bps 不属于本组，见 §3.4。
 
-### 3.2 Workforce 同域缺真实 producer：16
+### 3.2 current-case / strict-adapter envelope 重导：18
+
+```text
+zg361_we_ad_external_appointed_character
+zg361_we_ad_external_appointment_case
+zg361_we_ad_external_appointment_cycle
+zg361_we_ad_external_appointment_owner
+zg361_we_ad_external_appointment_state
+zg361_we_ad_external_appointment_subject
+zg361_we_ad_external_outcome_ready
+zg361_we_ad_external_pip_case
+zg361_we_ad_external_pip_cycle
+zg361_we_ad_external_pip_owner
+zg361_we_ad_external_pip_state
+zg361_we_ad_external_pip_subject
+zg361_we_ad_external_rehire_candidate
+zg361_we_ad_external_rehire_case
+zg361_we_ad_external_rehire_cycle
+zg361_we_ad_external_rehire_owner
+zg361_we_ad_external_rehire_state
+zg361_we_ad_external_rehire_subject
+```
+
+appointment 与 rehire 的 owner/subject/cycle/case/state 已由 full case guard 冻结，character 就是当前受评者；outcome
+是否已到达改由唯一 `outcome_id` 的存在性区分“尚未发布”和“已发布但字段非法”。PIP 的五元身份不再复制到
+Workforce `external_*`，而是直接读取 B2 的不可变来源槽。
+
+### 3.3 B2 PIP 重复投影退役：4
+
+```text
+zg361_we_ad_external_pip_case_hash
+zg361_we_ad_external_pip_case_id
+zg361_we_ad_external_pip_closure_receipt_hash
+zg361_we_ad_external_pip_closure_receipt_id
+```
+
+#277 现在直接 join B2 已提交的一格 11 字段来源：
+
+```text
+zg361_b2_workforce_pip_pending / consumed
++ owner / subject / cycle / case / state
++ case_id / case_hash / closure_receipt_id / closure_receipt_hash
+```
+
+Workforce 的提交 adapter 只冻结独立 native exit receipt，不复制、不重签也不消费 B2 事实。#277 A/B 在共享
+case-kernel operation receipt 成功后才同时把 exit 槽与 B2 槽标为 consumed；#277 C、typed RED、stale、幂等和
+route collision 均不得消费 B2。
+
+### 3.4 内部守恒或既有对象重导：3
+
+```text
+zg361_we_ad_external_attribution_bps_1
+zg361_we_ad_external_exit_hc_lineage_case
+zg361_we_ad_external_exit_position_type_id
+```
+
+归因第一份固定由 `10000-bps_2-bps_3` 推导，并先拒绝负数；排除结果三份均为零。离任岗位类型复用已确认任命的
+`m274_position_type_id`，HC lineage 复用当前 `formal_hc_active_case`，外部 exit producer 无权重新声明这两个值。
+
+### 3.5 剩余 Workforce 同域缺真实 producer：16
 
 ```text
 zg361_we_ad_external_interviewer_1
@@ -142,39 +203,11 @@ zg361_we_ad_external_vote_evidence_3
 施工入口必须是实际 referral 提交、三位互异 interviewer 的玩家/AI panel 选择、逐票 evidence、真实 subject refusal
 和真实 runner-up；没有候选时应 N/A/延后，不得把 subject 重复塞进三个 identity slot。
 
-### 3.3 现有 strict adapter envelope 无真实 caller：18
+### 3.6 剩余 Career/HC 或 native producer：29
+
+Career/HC probation outcome（12；第一份 bps 已由 §3.4 推导）：
 
 ```text
-zg361_we_ad_external_appointed_character
-zg361_we_ad_external_appointment_case
-zg361_we_ad_external_appointment_cycle
-zg361_we_ad_external_appointment_owner
-zg361_we_ad_external_appointment_state
-zg361_we_ad_external_appointment_subject
-zg361_we_ad_external_outcome_ready
-zg361_we_ad_external_pip_case
-zg361_we_ad_external_pip_cycle
-zg361_we_ad_external_pip_owner
-zg361_we_ad_external_pip_state
-zg361_we_ad_external_pip_subject
-zg361_we_ad_external_rehire_candidate
-zg361_we_ad_external_rehire_case
-zg361_we_ad_external_rehire_cycle
-zg361_we_ad_external_rehire_owner
-zg361_we_ad_external_rehire_state
-zg361_we_ad_external_rehire_subject
-```
-
-精确集合为 appointment 6 + outcome-ready 1 + rehire owner/subject/cycle/case/state/candidate 6 +
-PIP owner/subject/cycle/case/state 5。后续应删除可由 live tuple 重导的 envelope 字段，并只在真实外部动作成功后
-调用消费口。
-
-### 3.4 确需 Career/HC、PP/B2 或 native producer：35
-
-Career/HC probation outcome（13）：
-
-```text
-zg361_we_ad_external_attribution_bps_1
 zg361_we_ad_external_attribution_bps_2
 zg361_we_ad_external_attribution_bps_3
 zg361_we_ad_external_outcome_dimension_1
@@ -197,9 +230,10 @@ zg361_we_ad_external_position_receipt_id
 zg361_we_ad_external_position_type_id
 ```
 
-Career/HC remediation 原因（1；另需新增真实 remediation receipt ID/hash/tuple）：
+Career/HC remediation（2；布尔 sentinel 仍不能冒充 receipt，后续必须升级为 ID/hash/五元事实）：
 
 ```text
+zg361_we_ad_external_m275_remediation_receipt
 zg361_we_ad_external_m275_remediated_reason_id
 ```
 
@@ -215,23 +249,12 @@ zg361_we_ad_external_rehire_historical_cycle
 zg361_we_ad_external_rehire_id
 ```
 
-PP/B2 PIP truth（4）：
-
-```text
-zg361_we_ad_external_pip_case_hash
-zg361_we_ad_external_pip_case_id
-zg361_we_ad_external_pip_closure_receipt_hash
-zg361_we_ad_external_pip_closure_receipt_id
-```
-
-Career/native exit（7）：
+Career/native exit（5；position type 与 HC lineage 已由 §3.4 重导）：
 
 ```text
 zg361_we_ad_external_exit_displaced_cost_receipt
 zg361_we_ad_external_exit_displaced_hours
 zg361_we_ad_external_exit_former_slot_id
-zg361_we_ad_external_exit_hc_lineage_case
-zg361_we_ad_external_exit_position_type_id
 zg361_we_ad_external_exit_receipt_hash
 zg361_we_ad_external_exit_receipt_id
 ```
@@ -347,9 +370,9 @@ portfolio”当作历史 receipt 的前置条件，又把三张历史 receipt �
 
 ## 5. 收口数字与下一步
 
-- 本包实际改动目标：AC 20 项与 AL charter 28 项，精确名单见 §2、§4.3。
+- 本包累计静态改动目标：AC 20 项、AL charter 28 项和 AD 35 项旧 external alias，精确名单见 §2、§3、§4.3。
 - 另有既存、待复验的 AL stage 8 项，见 §4.1。
-- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+28=56`，仍余 247：AD 80 + AL collective 167。
-- 这 247 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
+- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+28+35=91`，仍余 212：AD 45 + AL collective 167。
+- 这 212 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
 - 下一轮实机必须 MCP-first：先看 loader 唯一字段差集，再用 paused snapshot 验 #262 real host、#264 三次玩家
   选项、两个 30 日 gap、一次支付/退款、AI 无玩家事件。OCR 不是首选路径。

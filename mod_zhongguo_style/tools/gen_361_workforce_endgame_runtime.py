@@ -151,6 +151,52 @@ HANDOFF_RELAY_EVENT = {2: 52650, 3: 52651}
 NONMANAGER_NA_IDS = frozenset({360, 361})
 NONMANAGER_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS - NONMANAGER_NA_IDS)
 CHARTER_HISTORY_ACCRUAL_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS) - 1
+B2_PIP_SOURCE_FIELDS = (
+    "pending", "consumed", "owner", "subject", "cycle", "case", "state",
+    "case_id", "case_hash", "closure_receipt_id", "closure_receipt_hash",
+)
+# These names came from the frozen AD80 loader artifact, but they are not
+# independent external facts.  They are either current-case identity aliases,
+# facts already committed by this product, or the redundant projection of the
+# B2 one-slot PIP source.  Keep the exact set executable so tests can prove we
+# did not retire a genuine provider field by accident.
+RETIRED_AD_EXTERNAL_ALIASES = frozenset({
+    "zg361_we_ad_external_candidate",
+    "zg361_we_ad_external_final_approver",
+    "zg361_we_ad_external_outcome_candidate",
+    "zg361_we_ad_external_outcome_hire_case",
+    "zg361_we_ad_external_referral_present",
+    "zg361_we_ad_external_referral_reward",
+    "zg361_we_ad_external_referrer_voted",
+    "zg361_we_ad_external_responsible_interviewer_1",
+    "zg361_we_ad_external_responsible_interviewer_2",
+    "zg361_we_ad_external_responsible_interviewer_3",
+    "zg361_we_ad_external_appointed_character",
+    "zg361_we_ad_external_appointment_case",
+    "zg361_we_ad_external_appointment_cycle",
+    "zg361_we_ad_external_appointment_owner",
+    "zg361_we_ad_external_appointment_state",
+    "zg361_we_ad_external_appointment_subject",
+    "zg361_we_ad_external_outcome_ready",
+    "zg361_we_ad_external_pip_case",
+    "zg361_we_ad_external_pip_cycle",
+    "zg361_we_ad_external_pip_owner",
+    "zg361_we_ad_external_pip_state",
+    "zg361_we_ad_external_pip_subject",
+    "zg361_we_ad_external_rehire_candidate",
+    "zg361_we_ad_external_rehire_case",
+    "zg361_we_ad_external_rehire_cycle",
+    "zg361_we_ad_external_rehire_owner",
+    "zg361_we_ad_external_rehire_state",
+    "zg361_we_ad_external_rehire_subject",
+    "zg361_we_ad_external_pip_case_hash",
+    "zg361_we_ad_external_pip_case_id",
+    "zg361_we_ad_external_pip_closure_receipt_hash",
+    "zg361_we_ad_external_pip_closure_receipt_id",
+    "zg361_we_ad_external_attribution_bps_1",
+    "zg361_we_ad_external_exit_hc_lineage_case",
+    "zg361_we_ad_external_exit_position_type_id",
+})
 
 
 def _load_mechanisms() -> tuple[Mechanism, ...]:
@@ -920,28 +966,20 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         ]
     if mid == 267:
         checks += [
-            f"has_variable = {PREFIX}_ad_external_candidate",
-            f"has_variable = {PREFIX}_ad_external_referral_present",
-            f"has_variable = {PREFIX}_ad_external_referrer_voted",
-            f"var:{PREFIX}_ad_external_candidate = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_ad_external_referral_present >= 0",
-            f"var:{PREFIX}_ad_external_referral_present <= 1",
-            f"var:{PREFIX}_ad_external_referrer_voted >= 0",
-            f"var:{PREFIX}_ad_external_referrer_voted <= 1",
-            f"trigger_if = {{ limit = {{ var:{PREFIX}_ad_external_referral_present = 1 }} has_variable = {PREFIX}_ad_external_referral_id has_variable = {PREFIX}_ad_external_referrer has_variable = {PREFIX}_ad_external_referral_relationship has_variable = {PREFIX}_ad_external_referral_evidence_receipt has_variable = {PREFIX}_ad_external_referral_reward var:{PREFIX}_ad_external_referral_reward = 5 NOT = {{ var:{PREFIX}_ad_external_referrer = var:{PREFIX}_ad_external_candidate }} }} trigger_else = {{ always = yes }}",
             f"has_variable = {PREFIX}_m271_candidate",
             f"has_variable = {PREFIX}_m271_referral_id",
             f"has_variable = {PREFIX}_m271_referrer",
             f"has_variable = {PREFIX}_m271_relationship_ref",
             f"has_variable = {PREFIX}_m271_evidence_receipt",
             f"has_variable = {PREFIX}_m271_reward_gold",
-            f"var:{PREFIX}_ad_external_referral_present = 1",
-            f"var:{PREFIX}_ad_external_candidate = var:{PREFIX}_m271_candidate",
-            f"var:{PREFIX}_ad_external_referral_id = var:{PREFIX}_m271_referral_id",
-            f"var:{PREFIX}_ad_external_referrer = var:{PREFIX}_m271_referrer",
-            f"var:{PREFIX}_ad_external_referral_relationship = var:{PREFIX}_m271_relationship_ref",
-            f"var:{PREFIX}_ad_external_referral_evidence_receipt = var:{PREFIX}_m271_evidence_receipt",
-            f"var:{PREFIX}_ad_external_referral_reward = var:{PREFIX}_m271_reward_gold",
+            f"has_variable = {PREFIX}_m271_referrer_vote_policy",
+            f"var:{PREFIX}_m271_candidate = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_m271_referral_id > 0",
+            f"var:{PREFIX}_m271_evidence_receipt > 0",
+            f"var:{PREFIX}_m271_reward_gold = 5",
+            f"var:{PREFIX}_m271_referrer_vote_policy >= 0",
+            f"var:{PREFIX}_m271_referrer_vote_policy <= 1",
+            f"NOT = {{ var:{PREFIX}_m271_referrer = var:{PREFIX}_m271_candidate }}",
         ]
         for slot in (1, 2, 3):
             checks += [
@@ -957,31 +995,21 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"NOT = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_ad_external_interviewer_3 }}",
             f"NOT = {{ var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_ad_external_interviewer_3 }}",
             (
-                f"trigger_if = {{ limit = {{ var:{PREFIX}_ad_external_referral_present = 1 }} "
-                + (
-                    f"var:{PREFIX}_ad_external_referrer_voted = 0 NOT = {{ OR = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_ad_external_referrer var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_ad_external_referrer var:{PREFIX}_ad_external_interviewer_3 = var:{PREFIX}_ad_external_referrer }} }}"
-                    if choice == 1 else
-                    f"var:{PREFIX}_ad_external_referrer_voted = 1 OR = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_ad_external_referrer var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_ad_external_referrer var:{PREFIX}_ad_external_interviewer_3 = var:{PREFIX}_ad_external_referrer }}"
-                )
-                + f" }} trigger_else = {{ var:{PREFIX}_ad_external_referrer_voted = 0 }}"
+                f"var:{PREFIX}_m271_referrer_vote_policy = 0 NOT = {{ OR = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_3 = var:{PREFIX}_m271_referrer }} }}"
+                if choice == 1 else
+                f"var:{PREFIX}_m271_referrer_vote_policy = 1 OR = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_3 = var:{PREFIX}_m271_referrer }}"
             ),
         ]
     if mid == 271:
         checks += _gold_check(5) + [
             f"var:zg361_case_{d}_owner = {{ gold >= 5 }}",
-            f"has_variable = {PREFIX}_ad_external_candidate",
-            f"has_variable = {PREFIX}_ad_external_referral_present",
             f"has_variable = {PREFIX}_ad_external_referral_id",
             f"has_variable = {PREFIX}_ad_external_referrer",
             f"has_variable = {PREFIX}_ad_external_referral_relationship",
             f"has_variable = {PREFIX}_ad_external_referral_evidence_receipt",
-            f"has_variable = {PREFIX}_ad_external_referral_reward",
-            f"has_variable = {PREFIX}_ad_external_referrer_voted",
-            f"var:{PREFIX}_ad_external_candidate = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_ad_external_referral_present = 1",
-            f"var:{PREFIX}_ad_external_referral_reward = 5",
-            f"var:{PREFIX}_ad_external_referrer_voted = {0 if choice == 1 else 1}",
-            f"NOT = {{ var:{PREFIX}_ad_external_referrer = var:{PREFIX}_ad_external_candidate }}",
+            f"var:{PREFIX}_ad_external_referral_id > 0",
+            f"var:{PREFIX}_ad_external_referral_evidence_receipt > 0",
+            f"NOT = {{ var:{PREFIX}_ad_external_referrer = $TICKET_SUBJECT$ }}",
         ]
     if mid == 272:
         checks += _gold_check(10) + [f"var:zg361_case_{d}_owner = {{ gold >= 10 }}"]
@@ -1007,26 +1035,26 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             checks += [
                 f"has_variable = {PREFIX}_ad_external_appointment_ready",
                 f"has_variable = {PREFIX}_ad_external_appointment_consumed",
-                f"has_variable = {PREFIX}_ad_external_appointment_owner",
-                f"has_variable = {PREFIX}_ad_external_appointment_subject",
-                f"has_variable = {PREFIX}_ad_external_appointment_cycle",
-                f"has_variable = {PREFIX}_ad_external_appointment_case",
-                f"has_variable = {PREFIX}_ad_external_appointment_state",
-                f"has_variable = {PREFIX}_ad_external_appointed_character",
+                f"has_variable = {PREFIX}_ad_external_appointing_owner",
                 f"has_variable = {PREFIX}_ad_external_position_type_id",
                 f"has_variable = {PREFIX}_ad_external_position_receipt_id",
                 f"has_variable = {PREFIX}_ad_external_position_receipt_hash",
+                f"has_variable = {PREFIX}_ad_appointment_receipt_owner",
+                f"has_variable = {PREFIX}_ad_appointment_receipt_subject",
+                f"has_variable = {PREFIX}_ad_appointment_receipt_cycle",
+                f"has_variable = {PREFIX}_ad_appointment_receipt_case",
+                f"has_variable = {PREFIX}_ad_appointment_receipt_state",
                 f"var:{PREFIX}_ad_external_appointment_ready = 1",
                 f"var:{PREFIX}_ad_external_appointment_consumed = 0",
-                f"var:{PREFIX}_ad_external_appointment_owner = $TICKET_OWNER$",
-                f"var:{PREFIX}_ad_external_appointment_subject = $TICKET_SUBJECT$",
-                f"var:{PREFIX}_ad_external_appointment_cycle = $TICKET_CYCLE$",
-                f"var:{PREFIX}_ad_external_appointment_case = $TICKET_CASE$",
-                f"var:{PREFIX}_ad_external_appointment_state = 4",
-                f"var:{PREFIX}_ad_external_appointed_character = $TICKET_SUBJECT$",
+                f"var:{PREFIX}_ad_external_appointing_owner = $TICKET_OWNER$",
                 f"var:{PREFIX}_ad_external_position_type_id > 0",
                 f"var:{PREFIX}_ad_external_position_receipt_id > 0",
                 f"var:{PREFIX}_ad_external_position_receipt_hash > 0",
+                f"var:{PREFIX}_ad_appointment_receipt_owner = $TICKET_OWNER$",
+                f"var:{PREFIX}_ad_appointment_receipt_subject = $TICKET_SUBJECT$",
+                f"var:{PREFIX}_ad_appointment_receipt_cycle = $TICKET_CYCLE$",
+                f"var:{PREFIX}_ad_appointment_receipt_case = $TICKET_CASE$",
+                f"var:{PREFIX}_ad_appointment_receipt_state = 4",
             ]
     if mid == 273:
         checks += [
@@ -1071,21 +1099,16 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         )
     if mid == 276:
         for name in (
-            "ready", "consumed", "owner", "subject", "cycle", "case", "state",
-            "id", "candidate", "historical_case_id", "historical_case_hash",
+            "ready", "consumed", "id", "historical_case_id", "historical_case_hash",
             "historical_cycle", "growth_evidence_id", "growth_evidence_hash",
             "future_cohort_cycle",
         ):
             checks.append(f"has_variable = {PREFIX}_ad_external_rehire_{name}")
+        for name in ("owner", "subject", "cycle", "case", "state"):
+            checks.append(f"has_variable = {PREFIX}_ad_rehire_history_{name}")
         checks += [
             f"var:{PREFIX}_ad_external_rehire_ready = 1",
             f"var:{PREFIX}_ad_external_rehire_consumed = 0",
-            f"var:{PREFIX}_ad_external_rehire_owner = $TICKET_OWNER$",
-            f"var:{PREFIX}_ad_external_rehire_subject = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_ad_external_rehire_cycle = $TICKET_CYCLE$",
-            f"var:{PREFIX}_ad_external_rehire_case = $TICKET_CASE$",
-            f"var:{PREFIX}_ad_external_rehire_state = 6",
-            f"var:{PREFIX}_ad_external_rehire_candidate = $TICKET_SUBJECT$",
             f"var:{PREFIX}_ad_external_rehire_historical_case_id > 0",
             f"NOT = {{ var:{PREFIX}_ad_external_rehire_historical_case_id = $TICKET_CASE$ }}",
             f"var:{PREFIX}_ad_external_rehire_historical_case_hash > 0",
@@ -1093,6 +1116,11 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:{PREFIX}_ad_external_rehire_growth_evidence_id > 0",
             f"var:{PREFIX}_ad_external_rehire_growth_evidence_hash > 0",
             f"var:{PREFIX}_ad_external_rehire_future_cohort_cycle > $TICKET_CYCLE$",
+            f"var:{PREFIX}_ad_rehire_history_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_ad_rehire_history_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_ad_rehire_history_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_ad_rehire_history_case = $TICKET_CASE$",
+            f"var:{PREFIX}_ad_rehire_history_state = 6",
         ]
     if mid == 277:
         checks += [
@@ -1110,15 +1138,14 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:{PREFIX}_formal_hc_active_case = $TICKET_CASE$",
             "has_variable = zg361_ch_hc_occupied",
             "var:zg361_ch_hc_occupied >= 1",
+            f"has_variable = {PREFIX}_m274_position_type_id",
+            f"var:{PREFIX}_m274_position_type_id > 0",
         ]
+        for name in B2_PIP_SOURCE_FIELDS:
+            checks.append(f"has_variable = zg361_b2_workforce_pip_{name}")
         for name in (
-            "owner", "subject", "cycle", "case", "state", "case_id",
-            "case_hash", "closure_receipt_id", "closure_receipt_hash",
-        ):
-            checks.append(f"has_variable = {PREFIX}_ad_external_pip_{name}")
-        for name in (
-            "receipt_id", "receipt_hash", "position_type_id", "former_slot_id",
-            "hc_lineage_case", "displaced_hours", "displaced_cost_receipt",
+            "receipt_id", "receipt_hash", "former_slot_id", "displaced_hours",
+            "displaced_cost_receipt",
         ):
             checks.append(f"has_variable = {PREFIX}_ad_external_exit_{name}")
         checks += [
@@ -1126,23 +1153,29 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"has_variable = {PREFIX}_ad_external_pip_exit_consumed",
             f"var:{PREFIX}_ad_external_pip_exit_ready = 1",
             f"var:{PREFIX}_ad_external_pip_exit_consumed = 0",
-            f"var:{PREFIX}_ad_external_pip_owner = $TICKET_OWNER$",
-            f"var:{PREFIX}_ad_external_pip_subject = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_ad_external_pip_cycle = $TICKET_CYCLE$",
-            f"var:{PREFIX}_ad_external_pip_case = $TICKET_CASE$",
-            f"var:{PREFIX}_ad_external_pip_state = 6",
-            f"var:{PREFIX}_ad_external_pip_case_id > 0",
-            f"NOT = {{ var:{PREFIX}_ad_external_pip_case_id = $TICKET_CASE$ }}",
-            f"var:{PREFIX}_ad_external_pip_case_hash > 0",
-            f"var:{PREFIX}_ad_external_pip_closure_receipt_id > 0",
-            f"var:{PREFIX}_ad_external_pip_closure_receipt_hash > 0",
+            "var:zg361_b2_workforce_pip_pending = 1",
+            "var:zg361_b2_workforce_pip_consumed = 0",
+            "var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$",
+            "var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$",
+            "var:zg361_b2_workforce_pip_cycle > 0",
+            "var:zg361_b2_workforce_pip_case > 0",
+            "OR = { var:zg361_b2_workforce_pip_state = 3 var:zg361_b2_workforce_pip_state = 4 }",
+            "var:zg361_b2_workforce_pip_case_id > 0",
+            "NOT = { var:zg361_b2_workforce_pip_case_id = $TICKET_CASE$ }",
+            "var:zg361_b2_workforce_pip_case_hash > 0",
+            "var:zg361_b2_workforce_pip_closure_receipt_id > 0",
+            "var:zg361_b2_workforce_pip_closure_receipt_hash > 0",
+            "NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }",
+            "NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }",
             f"var:{PREFIX}_ad_external_exit_receipt_id > 0",
             f"var:{PREFIX}_ad_external_exit_receipt_hash > 0",
-            f"var:{PREFIX}_ad_external_exit_position_type_id > 0",
             f"var:{PREFIX}_ad_external_exit_former_slot_id > 0",
-            f"var:{PREFIX}_ad_external_exit_hc_lineage_case = var:{PREFIX}_formal_hc_active_case",
             f"var:{PREFIX}_ad_external_exit_displaced_hours >= 0",
             f"var:{PREFIX}_ad_external_exit_displaced_cost_receipt > 0",
+            f"NOT = {{ var:{PREFIX}_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_case_id }}",
+            f"NOT = {{ var:{PREFIX}_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_closure_receipt_id }}",
+            f"NOT = {{ var:{PREFIX}_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_case_hash }}",
+            f"NOT = {{ var:{PREFIX}_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }}",
         ]
     if mid == 355 and choice == 1:
         checks += _gold_check(10) + [f"var:zg361_case_{d}_owner = {{ gold >= 10 }}"]
@@ -1377,7 +1410,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 266:
         lines += ["change_variable = { name = zg361_ch_hc_available add = -1 }", "change_variable = { name = zg361_ch_hc_reserved add = 1 }", _set("m266_standard_bar", 70), _set("m266_selected_bar", 70 if choice == 1 else 60), _set("m266_urgency_level", 2 if choice == 1 else 4), _set("m266_hc_receipt", "$TICKET_CASE$"), _set("m266_hc_reservation_active", 1), _set("m266_vacancy_serial", "$TICKET_CASE$"), f"var:zg361_case_{d}_owner = {{ set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 1 }} set_variable = {{ name = {PREFIX}_ad_hc_flight_subject value = $TICKET_SUBJECT$ }} set_variable = {{ name = {PREFIX}_ad_hc_flight_cycle value = $TICKET_CYCLE$ }} set_variable = {{ name = {PREFIX}_ad_hc_flight_case value = $TICKET_CASE$ }} }}"]
     elif mid == 267:
-        lines += [_set("m267_vote_count", 3), _set("m267_evidence_count", 3), _set("m267_anchor_before_votes", 0 if choice == 1 else 1), _set("m267_candidate_frozen", f"var:{PREFIX}_m271_candidate"), _set("m267_referral_present", 1), _set("m267_referrer_voted", f"var:{PREFIX}_m271_referrer_voted"), _set("m267_referral_frozen_case", "$TICKET_CASE$")]
+        lines += [_set("m267_vote_count", 3), _set("m267_evidence_count", 3), _set("m267_anchor_before_votes", 0 if choice == 1 else 1), _set("m267_candidate_frozen", f"var:{PREFIX}_m271_candidate"), _set("m267_referral_present", 1), _set("m267_referrer_voted", 0 if choice == 1 else 1), _set("m267_referral_frozen_case", "$TICKET_CASE$")]
         lines += [_set("m267_referral_id", f"var:{PREFIX}_m271_referral_id"), _set("m267_referrer_frozen", f"var:{PREFIX}_m271_referrer"), _set("m267_referral_relationship", f"var:{PREFIX}_m271_relationship_ref"), _set("m267_referral_evidence_receipt", f"var:{PREFIX}_m271_evidence_receipt"), _set("m267_referral_reward", f"var:{PREFIX}_m271_reward_gold"), _set("m267_referrer_excluded_before_seal", 1 if choice == 1 else 0)]
         for slot in (1, 2, 3):
             lines += [_set(f"m267_interviewer_{slot}", f"var:{PREFIX}_ad_external_interviewer_{slot}"), _set(f"m267_vote_{slot}", f"var:{PREFIX}_ad_external_vote_{slot}"), _set(f"m267_vote_evidence_{slot}", f"var:{PREFIX}_ad_external_vote_evidence_{slot}")]
@@ -1397,7 +1430,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 270:
         lines += [_set("m270_role_class", 1 if choice == 1 else 4), _set("m270_threshold", 75 if choice == 1 else 85), _set("m270_policy_version", "$TICKET_CYCLE$"), _set("m270_raw_votes_rewritten", 0)]
     elif mid == 271:
-        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", f"var:{PREFIX}_ad_external_candidate"), _set("m271_referral_id", f"var:{PREFIX}_ad_external_referral_id"), _set("m271_referrer", f"var:{PREFIX}_ad_external_referrer"), _set("m271_relationship_ref", f"var:{PREFIX}_ad_external_referral_relationship"), _set("m271_evidence_receipt", f"var:{PREFIX}_ad_external_referral_evidence_receipt"), _set("m271_reward_gold", f"var:{PREFIX}_ad_external_referral_reward"), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_voted", f"var:{PREFIX}_ad_external_referrer_voted"), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 5 }}"]
+        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", "$TICKET_SUBJECT$"), _set("m271_referral_id", f"var:{PREFIX}_ad_external_referral_id"), _set("m271_referrer", f"var:{PREFIX}_ad_external_referrer"), _set("m271_relationship_ref", f"var:{PREFIX}_ad_external_referral_relationship"), _set("m271_evidence_receipt", f"var:{PREFIX}_ad_external_referral_evidence_receipt"), _set("m271_reward_gold", 5), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_vote_policy", 0 if choice == 1 else 1), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 5 }}"]
         if choice == 2:
             lines += [_change("gold_reserved", -5), _change("gold_paid", 5), _change("referral_gold_reserved", -5), _change("referral_gold_paid", 5), _set("m271_internal_owner_credit", 5), _set("m271_reward_paid_before_probation", 1), _set("m271_reward_payee", f"var:{PREFIX}_m271_referrer"), _set("m271_reward_escrowed", 0), f"var:{PREFIX}_m271_referrer = {{ add_gold = 5 }}"]
     elif mid == 272:
@@ -1408,7 +1441,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("offer_gold_reserved", 5), _set("m274_counter_used", 1), _set("m274_counter_amount", 5 if choice == 1 else 15), _set("m274_fairness_cap", 10), _set("m274_offer_acceptance_candidate", 1 if choice == 1 else 0), _set("m274_hired", 0)]
         if choice == 1:
             lines += [
-                _set("m274_appointed_character", f"var:{PREFIX}_ad_external_appointed_character"),
+                _set("m274_appointed_character", "$TICKET_SUBJECT$"),
                 _set("m274_position_type_id", f"var:{PREFIX}_ad_external_position_type_id"),
                 _set("m274_position_receipt_id", f"var:{PREFIX}_ad_external_position_receipt_id"),
                 _set("m274_position_receipt_hash", f"var:{PREFIX}_ad_external_position_receipt_hash"),
@@ -1451,7 +1484,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 276:
         lines += [
             _set("m276_rehire_id", f"var:{PREFIX}_ad_external_rehire_id"),
-            _set("m276_rehire_candidate", f"var:{PREFIX}_ad_external_rehire_candidate"),
+            _set("m276_rehire_candidate", "$TICKET_SUBJECT$"),
             _set("m276_old_case_id", f"var:{PREFIX}_ad_external_rehire_historical_case_id"),
             _set("m276_old_case_hash", f"var:{PREFIX}_ad_external_rehire_historical_case_hash"),
             _set("m276_old_cycle", f"var:{PREFIX}_ad_external_rehire_historical_cycle"),
@@ -1470,15 +1503,15 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             "change_variable = { name = zg361_ch_hc_occupied add = -1 }",
             "change_variable = { name = zg361_ch_hc_frozen add = 1 }",
             _set("formal_hc_active", 0),
-            _set("m277_pip_case_frozen", f"var:{PREFIX}_ad_external_pip_case_id"),
-            _set("m277_pip_case_hash", f"var:{PREFIX}_ad_external_pip_case_hash"),
-            _set("m277_pip_closure_receipt_id", f"var:{PREFIX}_ad_external_pip_closure_receipt_id"),
-            _set("m277_pip_closure_receipt_hash", f"var:{PREFIX}_ad_external_pip_closure_receipt_hash"),
+            _set("m277_pip_case_frozen", "var:zg361_b2_workforce_pip_case_id"),
+            _set("m277_pip_case_hash", "var:zg361_b2_workforce_pip_case_hash"),
+            _set("m277_pip_closure_receipt_id", "var:zg361_b2_workforce_pip_closure_receipt_id"),
+            _set("m277_pip_closure_receipt_hash", "var:zg361_b2_workforce_pip_closure_receipt_hash"),
             _set("m277_exit_receipt_id", f"var:{PREFIX}_ad_external_exit_receipt_id"),
             _set("m277_exit_receipt_hash", f"var:{PREFIX}_ad_external_exit_receipt_hash"),
-            _set("m277_position_type_id", f"var:{PREFIX}_ad_external_exit_position_type_id"),
+            _set("m277_position_type_id", f"var:{PREFIX}_m274_position_type_id"),
             _set("m277_former_slot_id", f"var:{PREFIX}_ad_external_exit_former_slot_id"),
-            _set("m277_former_hc_lineage", f"var:{PREFIX}_ad_external_exit_hc_lineage_case"),
+            _set("m277_former_hc_lineage", f"var:{PREFIX}_formal_hc_active_case"),
             _set("m277_displaced_subject", "$TICKET_SUBJECT$"),
             _set("m277_displaced_hours", f"var:{PREFIX}_ad_external_exit_displaced_hours"),
             _set("m277_displaced_cost_provenance", f"var:{PREFIX}_ad_external_exit_displaced_cost_receipt"),
@@ -1487,6 +1520,8 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             _set("m277_vacant_frozen", 1), _set("m277_hc_minted", 0),
             _set("ad_external_pip_exit_consumed", 1),
             _set("ad_external_pip_exit_ready", 0),
+            "set_variable = { name = zg361_b2_workforce_pip_consumed value = 1 }",
+            "set_variable = { name = zg361_b2_workforce_pip_pending value = 0 }",
         ]
     # AL: immutable multi-cycle facts, quota conservation and future-only charter.
     elif mid == 355:
@@ -2423,24 +2458,21 @@ def render_future_consumers() -> str:
 \t\tlimit = {{
 {indent(_future_tuple_guard(269), 3)}
 \t\t\tvar:{PREFIX}_m269_outcome_pending = 1
-\t\t\thas_variable = {PREFIX}_ad_external_outcome_ready
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_id
-\t\t\thas_variable = {PREFIX}_ad_external_outcome_hire_case
-\t\t\thas_variable = {PREFIX}_ad_external_outcome_candidate
+\t\t\tvar:{PREFIX}_ad_external_outcome_id > 0
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_quality
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_evidence_id
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_evidence_hash
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_evidence_count
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_observed_cycle
-\t\t\tvar:{PREFIX}_ad_external_outcome_ready = 1
-\t\t\tvar:{PREFIX}_ad_external_outcome_hire_case = var:{PREFIX}_m269_write_case
-\t\t\tvar:{PREFIX}_ad_external_outcome_candidate = var:{PREFIX}_m267_candidate_frozen
 \t\t\tvar:{PREFIX}_ad_external_outcome_quality >= 1
 \t\t\tvar:{PREFIX}_ad_external_outcome_quality <= 4
 \t\t\tvar:{PREFIX}_ad_external_outcome_evidence_count >= 1
 \t\t\tvar:{PREFIX}_ad_external_outcome_observed_cycle > var:{PREFIX}_m269_write_cycle
 \t\t\thas_variable = {PREFIX}_m274_hired
 \t\t\tvar:{PREFIX}_m274_hired = 1
+\t\t\thas_variable = {PREFIX}_m267_candidate_frozen
+\t\t\tvar:{PREFIX}_m267_candidate_frozen = this
 \t\t\tvar:{PREFIX}_m274_hire_case = var:{PREFIX}_m269_write_case
 \t\t\thas_variable = {PREFIX}_formal_hc_active
 \t\t\tvar:{PREFIX}_formal_hc_active = 1
@@ -2453,32 +2485,26 @@ def render_future_consumers() -> str:
 \t\t\t\thas_variable = {PREFIX}_ad_external_outcome_dimension_1
 \t\t\t\thas_variable = {PREFIX}_ad_external_outcome_dimension_2
 \t\t\t\thas_variable = {PREFIX}_ad_external_outcome_dimension_3
-\t\t\t\thas_variable = {PREFIX}_ad_external_responsible_interviewer_1
-\t\t\t\thas_variable = {PREFIX}_ad_external_responsible_interviewer_2
-\t\t\t\thas_variable = {PREFIX}_ad_external_responsible_interviewer_3
-\t\t\t\thas_variable = {PREFIX}_ad_external_attribution_bps_1
+\t\t\t\thas_variable = {PREFIX}_m267_interviewer_1
+\t\t\t\thas_variable = {PREFIX}_m267_interviewer_2
+\t\t\t\thas_variable = {PREFIX}_m267_interviewer_3
 \t\t\t\thas_variable = {PREFIX}_ad_external_attribution_bps_2
 \t\t\t\thas_variable = {PREFIX}_ad_external_attribution_bps_3
-\t\t\t\tvar:{PREFIX}_ad_external_responsible_interviewer_1 = var:{PREFIX}_m267_interviewer_1
-\t\t\t\tvar:{PREFIX}_ad_external_responsible_interviewer_2 = var:{PREFIX}_m267_interviewer_2
-\t\t\t\tvar:{PREFIX}_ad_external_responsible_interviewer_3 = var:{PREFIX}_m267_interviewer_3
-\t\t\t\tvar:{PREFIX}_ad_external_attribution_bps_1 >= 0
 \t\t\t\tvar:{PREFIX}_ad_external_attribution_bps_2 >= 0
 \t\t\t\tvar:{PREFIX}_ad_external_attribution_bps_3 >= 0
-\t\t\t\ttrigger_if = {{ limit = {{ var:{PREFIX}_ad_external_outcome_quality = 4 }} var:{PREFIX}_ad_external_attribution_bps_1 = 0 var:{PREFIX}_ad_external_attribution_bps_2 = 0 var:{PREFIX}_ad_external_attribution_bps_3 = 0 has_variable = {PREFIX}_ad_external_outcome_exclusion_reason }}
-\t\t\t\ttrigger_else = {{ var:{PREFIX}_ad_external_attribution_bps_1 = scope:{PREFIX}_expected_attribution_bps_1 }}
+\t\t\t\ttrigger_if = {{ limit = {{ var:{PREFIX}_ad_external_outcome_quality = 4 }} var:{PREFIX}_ad_external_attribution_bps_2 = 0 var:{PREFIX}_ad_external_attribution_bps_3 = 0 has_variable = {PREFIX}_ad_external_outcome_exclusion_reason }}
+\t\t\t\ttrigger_else = {{ scope:{PREFIX}_expected_attribution_bps_1 >= 0 }}
 \t\t\t}}
 \t\t\ttrigger_else = {{
 \t\t\t\tvar:{PREFIX}_m269_receipt_choice = 2
-\t\t\t\thas_variable = {PREFIX}_ad_external_final_approver
 \t\t\t\thas_variable = {PREFIX}_m272_offer_approver
-\t\t\t\tvar:{PREFIX}_ad_external_final_approver = var:{PREFIX}_m272_offer_approver
+\t\t\t\tvar:{PREFIX}_m272_offer_approver = var:{PREFIX}_m269_write_owner
 \t\t\t}}
 \t\t}}
 \t\tset_variable = {{ name = {PREFIX}_m269_original_votes_preserved value = 1 }}
 \t\tset_variable = {{ name = {PREFIX}_m269_last_outcome_id value = var:{PREFIX}_ad_external_outcome_id }}
-\t\tset_variable = {{ name = {PREFIX}_m269_consumed_hire_case value = var:{PREFIX}_ad_external_outcome_hire_case }}
-\t\tset_variable = {{ name = {PREFIX}_m269_consumed_candidate value = var:{PREFIX}_ad_external_outcome_candidate }}
+\t\tset_variable = {{ name = {PREFIX}_m269_consumed_hire_case value = var:{PREFIX}_m269_write_case }}
+\t\tset_variable = {{ name = {PREFIX}_m269_consumed_candidate value = var:{PREFIX}_m267_candidate_frozen }}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_id value = var:{PREFIX}_ad_external_outcome_evidence_id }}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_hash value = var:{PREFIX}_ad_external_outcome_evidence_hash }}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_count value = var:{PREFIX}_ad_external_outcome_evidence_count }}
@@ -2490,17 +2516,24 @@ def render_future_consumers() -> str:
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_1 value = var:{PREFIX}_ad_external_outcome_dimension_1 }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_2 value = var:{PREFIX}_ad_external_outcome_dimension_2 }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_3 value = var:{PREFIX}_ad_external_outcome_dimension_3 }}
-\t\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_1 value = var:{PREFIX}_ad_external_responsible_interviewer_1 }}
-\t\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_2 value = var:{PREFIX}_ad_external_responsible_interviewer_2 }}
-\t\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_3 value = var:{PREFIX}_ad_external_responsible_interviewer_3 }}
-\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = var:{PREFIX}_ad_external_attribution_bps_1 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_1 value = var:{PREFIX}_m267_interviewer_1 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_2 value = var:{PREFIX}_m267_interviewer_2 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_3 value = var:{PREFIX}_m267_interviewer_3 }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_2 value = var:{PREFIX}_ad_external_attribution_bps_2 }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_3 value = var:{PREFIX}_ad_external_attribution_bps_3 }}
-\t\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = {{ value = var:{PREFIX}_ad_external_attribution_bps_1 add = var:{PREFIX}_ad_external_attribution_bps_2 add = var:{PREFIX}_ad_external_attribution_bps_3 }} }}
-\t\t\t\tif = {{ limit = {{ var:{PREFIX}_ad_external_outcome_quality = 4 }} set_variable = {{ name = {PREFIX}_m269_exclusion_reason value = var:{PREFIX}_ad_external_outcome_exclusion_reason }} }}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ var:{PREFIX}_ad_external_outcome_quality = 4 }}
+\t\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = 0 }}
+\t\t\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 0 }}
+\t\t\t\t\tset_variable = {{ name = {PREFIX}_m269_exclusion_reason value = var:{PREFIX}_ad_external_outcome_exclusion_reason }}
+\t\t\t\t}}
+\t\t\t\telse = {{
+\t\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = scope:{PREFIX}_expected_attribution_bps_1 }}
+\t\t\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 10000 }}
+\t\t\t\t}}
 \t\t\t}}
 \t\t\telse = {{
-\t\t\t\tset_variable = {{ name = {PREFIX}_m269_blamed_final_approver value = var:{PREFIX}_ad_external_final_approver }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_blamed_final_approver value = var:{PREFIX}_m272_offer_approver }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_approver_blame_bps value = 10000 }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_premature_approver_blame value = 1 }}
 \t\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 10000 }}
@@ -2545,7 +2578,7 @@ def render_future_consumers() -> str:
 \t\t\tvar:{PREFIX}_m269_outcome_pending = 1
 \t\t}}
 \t\tif = {{
-\t\t\tlimit = {{ has_variable = {PREFIX}_ad_external_outcome_ready var:{PREFIX}_ad_external_outcome_ready = 1 }}
+\t\t\tlimit = {{ has_variable = {PREFIX}_ad_external_outcome_id }}
 \t\t\tset_variable = {{ name = {PREFIX}_future_red_code value = 2692 }} # typed invalid outcome; pending remains inspectable
 \t\t}}
 \t\telse = {{
@@ -3855,9 +3888,8 @@ def render_external_fact_adapters() -> str:
 			{_zero_or_missing(f'{PREFIX}_ad_external_appointment_ready')}
 			has_variable = {PREFIX}_m272_offer_candidate
 			has_variable = {PREFIX}_m273_candidate_fingerprint
-			var:{PREFIX}_m272_offer_candidate = $APPOINTED_CHARACTER$
-			var:{PREFIX}_m273_candidate_fingerprint = $APPOINTED_CHARACTER$
-			$APPOINTED_CHARACTER$ = $TICKET_SUBJECT$
+			var:{PREFIX}_m272_offer_candidate = $TICKET_SUBJECT$
+			var:{PREFIX}_m273_candidate_fingerprint = $TICKET_SUBJECT$
 			$APPOINTING_OWNER$ = $TICKET_OWNER$
 			$APPOINTMENT_CONFIRMED$ = 1
 			$POSITION_TYPE_ID$ > 0
@@ -3866,16 +3898,15 @@ def render_external_fact_adapters() -> str:
 		}}
 		set_variable = {{ name = {PREFIX}_ad_external_appointment_ready value = 1 }}
 		set_variable = {{ name = {PREFIX}_ad_external_appointment_consumed value = 0 }}
-		set_variable = {{ name = {PREFIX}_ad_external_appointment_owner value = $TICKET_OWNER$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_appointment_subject value = $TICKET_SUBJECT$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_appointment_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_appointment_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_appointment_state value = 4 }}
-		set_variable = {{ name = {PREFIX}_ad_external_appointed_character value = $APPOINTED_CHARACTER$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_appointing_owner value = $APPOINTING_OWNER$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_position_type_id value = $POSITION_TYPE_ID$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_position_receipt_id value = $POSITION_RECEIPT_ID$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_position_receipt_hash value = $POSITION_RECEIPT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ad_appointment_receipt_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ad_appointment_receipt_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_ad_appointment_receipt_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_appointment_receipt_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ad_appointment_receipt_state value = 4 }}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2741 }} }}
@@ -3963,29 +3994,31 @@ def render_external_fact_adapters() -> str:
 			$GROWTH_EVIDENCE_ID$ > 0 $GROWTH_EVIDENCE_HASH$ > 0
 			$FUTURE_COHORT_CYCLE$ > $TICKET_CYCLE$
 			$HISTORY_RETAINED$ = 1 $MISCONDUCT_HISTORY_RETAINED$ = 1
-			$REHIRE_CANDIDATE$ = $TICKET_SUBJECT$
 		}}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_ready value = 1 }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_consumed value = 0 }}
-		set_variable = {{ name = {PREFIX}_ad_external_rehire_owner value = $TICKET_OWNER$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_rehire_subject value = $TICKET_SUBJECT$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_rehire_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_rehire_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_rehire_state value = 6 }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_id value = $REHIRE_ID$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_rehire_candidate value = $REHIRE_CANDIDATE$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_historical_case_id value = $HISTORICAL_CASE_ID$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_historical_case_hash value = $HISTORICAL_CASE_HASH$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_historical_cycle value = $HISTORICAL_CYCLE$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_growth_evidence_id value = $GROWTH_EVIDENCE_ID$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_growth_evidence_hash value = $GROWTH_EVIDENCE_HASH$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_rehire_future_cohort_cycle value = $FUTURE_COHORT_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_rehire_history_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ad_rehire_history_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_ad_rehire_history_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_rehire_history_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ad_rehire_history_state value = 6 }}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2761 }} }}
 }}
 
-# #277 consumes a closed PIP plus a native-confirmed exit/position receipt.
+# #277 joins B2's committed one-slot PIP settlement directly with an
+# independent native-confirmed exit receipt.  The adapter freezes only the
+# native exit half: it never copies, signs or consumes the B2 source.  A/B
+# consume both sources atomically after the case-kernel operation receipt;
+# route C never enters this adapter or touches either source.
 {PREFIX}_submit_m277_closed_pip_exit_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
@@ -4001,32 +4034,55 @@ def render_external_fact_adapters() -> str:
 			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
 			$TICKET_SUBJECT$ = this
 			{_zero_or_missing(f'{PREFIX}_ad_external_pip_exit_ready')}
+			has_variable = {PREFIX}_m274_hired
+			has_variable = {PREFIX}_m274_position_type_id
+			has_variable = {PREFIX}_formal_hc_active
 			has_variable = {PREFIX}_formal_hc_active_case
-			var:{PREFIX}_formal_hc_active_case = $HC_LINEAGE_CASE$
-			$PIP_CASE_ID$ > 0 $PIP_CASE_HASH$ > 0
-			NOT = {{ $PIP_CASE_ID$ = $TICKET_CASE$ }}
-			$PIP_CLOSED$ = 1 $PIP_CLOSURE_RECEIPT_ID$ > 0 $PIP_CLOSURE_RECEIPT_HASH$ > 0
+			var:{PREFIX}_m274_hired = 1
+			var:{PREFIX}_m274_position_type_id > 0
+			var:{PREFIX}_formal_hc_active = 1
+			var:{PREFIX}_formal_hc_active_case = $TICKET_CASE$
+			has_variable = zg361_b2_workforce_pip_pending
+			has_variable = zg361_b2_workforce_pip_consumed
+			has_variable = zg361_b2_workforce_pip_owner
+			has_variable = zg361_b2_workforce_pip_subject
+			has_variable = zg361_b2_workforce_pip_cycle
+			has_variable = zg361_b2_workforce_pip_case
+			has_variable = zg361_b2_workforce_pip_state
+			has_variable = zg361_b2_workforce_pip_case_id
+			has_variable = zg361_b2_workforce_pip_case_hash
+			has_variable = zg361_b2_workforce_pip_closure_receipt_id
+			has_variable = zg361_b2_workforce_pip_closure_receipt_hash
+			var:zg361_b2_workforce_pip_pending = 1
+			var:zg361_b2_workforce_pip_consumed = 0
+			var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+			var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+			var:zg361_b2_workforce_pip_cycle > 0
+			var:zg361_b2_workforce_pip_case > 0
+			OR = {{
+				var:zg361_b2_workforce_pip_state = 3
+				var:zg361_b2_workforce_pip_state = 4
+			}}
+			var:zg361_b2_workforce_pip_case_id > 0
+			var:zg361_b2_workforce_pip_case_hash > 0
+			var:zg361_b2_workforce_pip_closure_receipt_id > 0
+			var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+			NOT = {{ var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }}
+			NOT = {{ var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }}
 			$EXIT_CONFIRMED$ = 1 $EXIT_RECEIPT_ID$ > 0 $EXIT_RECEIPT_HASH$ > 0
-			$POSITION_TYPE_ID$ > 0 $FORMER_SLOT_ID$ > 0
+			$FORMER_SLOT_ID$ > 0
 			$DISPLACED_HOURS$ >= 0 $DISPLACED_COST_RECEIPT$ > 0
 			$EXITED_CHARACTER$ = $TICKET_SUBJECT$
+			NOT = {{ $EXIT_RECEIPT_ID$ = var:zg361_b2_workforce_pip_case_id }}
+			NOT = {{ $EXIT_RECEIPT_ID$ = var:zg361_b2_workforce_pip_closure_receipt_id }}
+			NOT = {{ $EXIT_RECEIPT_HASH$ = var:zg361_b2_workforce_pip_case_hash }}
+			NOT = {{ $EXIT_RECEIPT_HASH$ = var:zg361_b2_workforce_pip_closure_receipt_hash }}
 		}}
 		set_variable = {{ name = {PREFIX}_ad_external_pip_exit_ready value = 1 }}
 		set_variable = {{ name = {PREFIX}_ad_external_pip_exit_consumed value = 0 }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_owner value = $TICKET_OWNER$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_subject value = $TICKET_SUBJECT$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_state value = 6 }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_case_id value = $PIP_CASE_ID$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_case_hash value = $PIP_CASE_HASH$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_closure_receipt_id value = $PIP_CLOSURE_RECEIPT_ID$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_pip_closure_receipt_hash value = $PIP_CLOSURE_RECEIPT_HASH$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_exit_receipt_id value = $EXIT_RECEIPT_ID$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_exit_receipt_hash value = $EXIT_RECEIPT_HASH$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_exit_position_type_id value = $POSITION_TYPE_ID$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_exit_former_slot_id value = $FORMER_SLOT_ID$ }}
-		set_variable = {{ name = {PREFIX}_ad_external_exit_hc_lineage_case value = $HC_LINEAGE_CASE$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_exit_displaced_hours value = $DISPLACED_HOURS$ }}
 		set_variable = {{ name = {PREFIX}_ad_external_exit_displaced_cost_receipt value = $DISPLACED_COST_RECEIPT$ }}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}

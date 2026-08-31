@@ -3576,9 +3576,8 @@ zg361_we_submit_ad_appointment_receipt_effect = {
 			trigger_if = { limit = { has_variable = zg361_we_ad_external_appointment_ready } var:zg361_we_ad_external_appointment_ready = 0 } trigger_else = { always = yes }
 			has_variable = zg361_we_m272_offer_candidate
 			has_variable = zg361_we_m273_candidate_fingerprint
-			var:zg361_we_m272_offer_candidate = $APPOINTED_CHARACTER$
-			var:zg361_we_m273_candidate_fingerprint = $APPOINTED_CHARACTER$
-			$APPOINTED_CHARACTER$ = $TICKET_SUBJECT$
+			var:zg361_we_m272_offer_candidate = $TICKET_SUBJECT$
+			var:zg361_we_m273_candidate_fingerprint = $TICKET_SUBJECT$
 			$APPOINTING_OWNER$ = $TICKET_OWNER$
 			$APPOINTMENT_CONFIRMED$ = 1
 			$POSITION_TYPE_ID$ > 0
@@ -3587,16 +3586,15 @@ zg361_we_submit_ad_appointment_receipt_effect = {
 		}
 		set_variable = { name = zg361_we_ad_external_appointment_ready value = 1 }
 		set_variable = { name = zg361_we_ad_external_appointment_consumed value = 0 }
-		set_variable = { name = zg361_we_ad_external_appointment_owner value = $TICKET_OWNER$ }
-		set_variable = { name = zg361_we_ad_external_appointment_subject value = $TICKET_SUBJECT$ }
-		set_variable = { name = zg361_we_ad_external_appointment_cycle value = $TICKET_CYCLE$ }
-		set_variable = { name = zg361_we_ad_external_appointment_case value = $TICKET_CASE$ }
-		set_variable = { name = zg361_we_ad_external_appointment_state value = 4 }
-		set_variable = { name = zg361_we_ad_external_appointed_character value = $APPOINTED_CHARACTER$ }
 		set_variable = { name = zg361_we_ad_external_appointing_owner value = $APPOINTING_OWNER$ }
 		set_variable = { name = zg361_we_ad_external_position_type_id value = $POSITION_TYPE_ID$ }
 		set_variable = { name = zg361_we_ad_external_position_receipt_id value = $POSITION_RECEIPT_ID$ }
 		set_variable = { name = zg361_we_ad_external_position_receipt_hash value = $POSITION_RECEIPT_HASH$ }
+		set_variable = { name = zg361_we_ad_appointment_receipt_owner value = $TICKET_OWNER$ }
+		set_variable = { name = zg361_we_ad_appointment_receipt_subject value = $TICKET_SUBJECT$ }
+		set_variable = { name = zg361_we_ad_appointment_receipt_cycle value = $TICKET_CYCLE$ }
+		set_variable = { name = zg361_we_ad_appointment_receipt_case value = $TICKET_CASE$ }
+		set_variable = { name = zg361_we_ad_appointment_receipt_state value = 4 }
 		set_variable = { name = zg361_we_adapter_status value = 1 }
 	}
 	else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 2741 } }
@@ -3684,29 +3682,31 @@ zg361_we_submit_m276_rehire_history_effect = {
 			$GROWTH_EVIDENCE_ID$ > 0 $GROWTH_EVIDENCE_HASH$ > 0
 			$FUTURE_COHORT_CYCLE$ > $TICKET_CYCLE$
 			$HISTORY_RETAINED$ = 1 $MISCONDUCT_HISTORY_RETAINED$ = 1
-			$REHIRE_CANDIDATE$ = $TICKET_SUBJECT$
 		}
 		set_variable = { name = zg361_we_ad_external_rehire_ready value = 1 }
 		set_variable = { name = zg361_we_ad_external_rehire_consumed value = 0 }
-		set_variable = { name = zg361_we_ad_external_rehire_owner value = $TICKET_OWNER$ }
-		set_variable = { name = zg361_we_ad_external_rehire_subject value = $TICKET_SUBJECT$ }
-		set_variable = { name = zg361_we_ad_external_rehire_cycle value = $TICKET_CYCLE$ }
-		set_variable = { name = zg361_we_ad_external_rehire_case value = $TICKET_CASE$ }
-		set_variable = { name = zg361_we_ad_external_rehire_state value = 6 }
 		set_variable = { name = zg361_we_ad_external_rehire_id value = $REHIRE_ID$ }
-		set_variable = { name = zg361_we_ad_external_rehire_candidate value = $REHIRE_CANDIDATE$ }
 		set_variable = { name = zg361_we_ad_external_rehire_historical_case_id value = $HISTORICAL_CASE_ID$ }
 		set_variable = { name = zg361_we_ad_external_rehire_historical_case_hash value = $HISTORICAL_CASE_HASH$ }
 		set_variable = { name = zg361_we_ad_external_rehire_historical_cycle value = $HISTORICAL_CYCLE$ }
 		set_variable = { name = zg361_we_ad_external_rehire_growth_evidence_id value = $GROWTH_EVIDENCE_ID$ }
 		set_variable = { name = zg361_we_ad_external_rehire_growth_evidence_hash value = $GROWTH_EVIDENCE_HASH$ }
 		set_variable = { name = zg361_we_ad_external_rehire_future_cohort_cycle value = $FUTURE_COHORT_CYCLE$ }
+		set_variable = { name = zg361_we_ad_rehire_history_owner value = $TICKET_OWNER$ }
+		set_variable = { name = zg361_we_ad_rehire_history_subject value = $TICKET_SUBJECT$ }
+		set_variable = { name = zg361_we_ad_rehire_history_cycle value = $TICKET_CYCLE$ }
+		set_variable = { name = zg361_we_ad_rehire_history_case value = $TICKET_CASE$ }
+		set_variable = { name = zg361_we_ad_rehire_history_state value = 6 }
 		set_variable = { name = zg361_we_adapter_status value = 1 }
 	}
 	else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 2761 } }
 }
 
-# #277 consumes a closed PIP plus a native-confirmed exit/position receipt.
+# #277 joins B2's committed one-slot PIP settlement directly with an
+# independent native-confirmed exit receipt.  The adapter freezes only the
+# native exit half: it never copies, signs or consumes the B2 source.  A/B
+# consume both sources atomically after the case-kernel operation receipt;
+# route C never enters this adapter or touches either source.
 zg361_we_submit_m277_closed_pip_exit_effect = {
 	remove_variable = zg361_we_adapter_status
 	remove_variable = zg361_we_adapter_blocked_reason
@@ -3722,32 +3722,55 @@ zg361_we_submit_m277_closed_pip_exit_effect = {
 			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
 			$TICKET_SUBJECT$ = this
 			trigger_if = { limit = { has_variable = zg361_we_ad_external_pip_exit_ready } var:zg361_we_ad_external_pip_exit_ready = 0 } trigger_else = { always = yes }
+			has_variable = zg361_we_m274_hired
+			has_variable = zg361_we_m274_position_type_id
+			has_variable = zg361_we_formal_hc_active
 			has_variable = zg361_we_formal_hc_active_case
-			var:zg361_we_formal_hc_active_case = $HC_LINEAGE_CASE$
-			$PIP_CASE_ID$ > 0 $PIP_CASE_HASH$ > 0
-			NOT = { $PIP_CASE_ID$ = $TICKET_CASE$ }
-			$PIP_CLOSED$ = 1 $PIP_CLOSURE_RECEIPT_ID$ > 0 $PIP_CLOSURE_RECEIPT_HASH$ > 0
+			var:zg361_we_m274_hired = 1
+			var:zg361_we_m274_position_type_id > 0
+			var:zg361_we_formal_hc_active = 1
+			var:zg361_we_formal_hc_active_case = $TICKET_CASE$
+			has_variable = zg361_b2_workforce_pip_pending
+			has_variable = zg361_b2_workforce_pip_consumed
+			has_variable = zg361_b2_workforce_pip_owner
+			has_variable = zg361_b2_workforce_pip_subject
+			has_variable = zg361_b2_workforce_pip_cycle
+			has_variable = zg361_b2_workforce_pip_case
+			has_variable = zg361_b2_workforce_pip_state
+			has_variable = zg361_b2_workforce_pip_case_id
+			has_variable = zg361_b2_workforce_pip_case_hash
+			has_variable = zg361_b2_workforce_pip_closure_receipt_id
+			has_variable = zg361_b2_workforce_pip_closure_receipt_hash
+			var:zg361_b2_workforce_pip_pending = 1
+			var:zg361_b2_workforce_pip_consumed = 0
+			var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+			var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+			var:zg361_b2_workforce_pip_cycle > 0
+			var:zg361_b2_workforce_pip_case > 0
+			OR = {
+				var:zg361_b2_workforce_pip_state = 3
+				var:zg361_b2_workforce_pip_state = 4
+			}
+			var:zg361_b2_workforce_pip_case_id > 0
+			var:zg361_b2_workforce_pip_case_hash > 0
+			var:zg361_b2_workforce_pip_closure_receipt_id > 0
+			var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+			NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+			NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 			$EXIT_CONFIRMED$ = 1 $EXIT_RECEIPT_ID$ > 0 $EXIT_RECEIPT_HASH$ > 0
-			$POSITION_TYPE_ID$ > 0 $FORMER_SLOT_ID$ > 0
+			$FORMER_SLOT_ID$ > 0
 			$DISPLACED_HOURS$ >= 0 $DISPLACED_COST_RECEIPT$ > 0
 			$EXITED_CHARACTER$ = $TICKET_SUBJECT$
+			NOT = { $EXIT_RECEIPT_ID$ = var:zg361_b2_workforce_pip_case_id }
+			NOT = { $EXIT_RECEIPT_ID$ = var:zg361_b2_workforce_pip_closure_receipt_id }
+			NOT = { $EXIT_RECEIPT_HASH$ = var:zg361_b2_workforce_pip_case_hash }
+			NOT = { $EXIT_RECEIPT_HASH$ = var:zg361_b2_workforce_pip_closure_receipt_hash }
 		}
 		set_variable = { name = zg361_we_ad_external_pip_exit_ready value = 1 }
 		set_variable = { name = zg361_we_ad_external_pip_exit_consumed value = 0 }
-		set_variable = { name = zg361_we_ad_external_pip_owner value = $TICKET_OWNER$ }
-		set_variable = { name = zg361_we_ad_external_pip_subject value = $TICKET_SUBJECT$ }
-		set_variable = { name = zg361_we_ad_external_pip_cycle value = $TICKET_CYCLE$ }
-		set_variable = { name = zg361_we_ad_external_pip_case value = $TICKET_CASE$ }
-		set_variable = { name = zg361_we_ad_external_pip_state value = 6 }
-		set_variable = { name = zg361_we_ad_external_pip_case_id value = $PIP_CASE_ID$ }
-		set_variable = { name = zg361_we_ad_external_pip_case_hash value = $PIP_CASE_HASH$ }
-		set_variable = { name = zg361_we_ad_external_pip_closure_receipt_id value = $PIP_CLOSURE_RECEIPT_ID$ }
-		set_variable = { name = zg361_we_ad_external_pip_closure_receipt_hash value = $PIP_CLOSURE_RECEIPT_HASH$ }
 		set_variable = { name = zg361_we_ad_external_exit_receipt_id value = $EXIT_RECEIPT_ID$ }
 		set_variable = { name = zg361_we_ad_external_exit_receipt_hash value = $EXIT_RECEIPT_HASH$ }
-		set_variable = { name = zg361_we_ad_external_exit_position_type_id value = $POSITION_TYPE_ID$ }
 		set_variable = { name = zg361_we_ad_external_exit_former_slot_id value = $FORMER_SLOT_ID$ }
-		set_variable = { name = zg361_we_ad_external_exit_hc_lineage_case value = $HC_LINEAGE_CASE$ }
 		set_variable = { name = zg361_we_ad_external_exit_displaced_hours value = $DISPLACED_HOURS$ }
 		set_variable = { name = zg361_we_ad_external_exit_displaced_cost_receipt value = $DISPLACED_COST_RECEIPT$ }
 		set_variable = { name = zg361_we_adapter_status value = 1 }
@@ -4043,24 +4066,21 @@ zg361_we_m269_future_consume_effect = {
 			}
 			trigger_else = { always = no }
 			var:zg361_we_m269_outcome_pending = 1
-			has_variable = zg361_we_ad_external_outcome_ready
 			has_variable = zg361_we_ad_external_outcome_id
-			has_variable = zg361_we_ad_external_outcome_hire_case
-			has_variable = zg361_we_ad_external_outcome_candidate
+			var:zg361_we_ad_external_outcome_id > 0
 			has_variable = zg361_we_ad_external_outcome_quality
 			has_variable = zg361_we_ad_external_outcome_evidence_id
 			has_variable = zg361_we_ad_external_outcome_evidence_hash
 			has_variable = zg361_we_ad_external_outcome_evidence_count
 			has_variable = zg361_we_ad_external_outcome_observed_cycle
-			var:zg361_we_ad_external_outcome_ready = 1
-			var:zg361_we_ad_external_outcome_hire_case = var:zg361_we_m269_write_case
-			var:zg361_we_ad_external_outcome_candidate = var:zg361_we_m267_candidate_frozen
 			var:zg361_we_ad_external_outcome_quality >= 1
 			var:zg361_we_ad_external_outcome_quality <= 4
 			var:zg361_we_ad_external_outcome_evidence_count >= 1
 			var:zg361_we_ad_external_outcome_observed_cycle > var:zg361_we_m269_write_cycle
 			has_variable = zg361_we_m274_hired
 			var:zg361_we_m274_hired = 1
+			has_variable = zg361_we_m267_candidate_frozen
+			var:zg361_we_m267_candidate_frozen = this
 			var:zg361_we_m274_hire_case = var:zg361_we_m269_write_case
 			has_variable = zg361_we_formal_hc_active
 			var:zg361_we_formal_hc_active = 1
@@ -4073,32 +4093,26 @@ zg361_we_m269_future_consume_effect = {
 				has_variable = zg361_we_ad_external_outcome_dimension_1
 				has_variable = zg361_we_ad_external_outcome_dimension_2
 				has_variable = zg361_we_ad_external_outcome_dimension_3
-				has_variable = zg361_we_ad_external_responsible_interviewer_1
-				has_variable = zg361_we_ad_external_responsible_interviewer_2
-				has_variable = zg361_we_ad_external_responsible_interviewer_3
-				has_variable = zg361_we_ad_external_attribution_bps_1
+				has_variable = zg361_we_m267_interviewer_1
+				has_variable = zg361_we_m267_interviewer_2
+				has_variable = zg361_we_m267_interviewer_3
 				has_variable = zg361_we_ad_external_attribution_bps_2
 				has_variable = zg361_we_ad_external_attribution_bps_3
-				var:zg361_we_ad_external_responsible_interviewer_1 = var:zg361_we_m267_interviewer_1
-				var:zg361_we_ad_external_responsible_interviewer_2 = var:zg361_we_m267_interviewer_2
-				var:zg361_we_ad_external_responsible_interviewer_3 = var:zg361_we_m267_interviewer_3
-				var:zg361_we_ad_external_attribution_bps_1 >= 0
 				var:zg361_we_ad_external_attribution_bps_2 >= 0
 				var:zg361_we_ad_external_attribution_bps_3 >= 0
-				trigger_if = { limit = { var:zg361_we_ad_external_outcome_quality = 4 } var:zg361_we_ad_external_attribution_bps_1 = 0 var:zg361_we_ad_external_attribution_bps_2 = 0 var:zg361_we_ad_external_attribution_bps_3 = 0 has_variable = zg361_we_ad_external_outcome_exclusion_reason }
-				trigger_else = { var:zg361_we_ad_external_attribution_bps_1 = scope:zg361_we_expected_attribution_bps_1 }
+				trigger_if = { limit = { var:zg361_we_ad_external_outcome_quality = 4 } var:zg361_we_ad_external_attribution_bps_2 = 0 var:zg361_we_ad_external_attribution_bps_3 = 0 has_variable = zg361_we_ad_external_outcome_exclusion_reason }
+				trigger_else = { scope:zg361_we_expected_attribution_bps_1 >= 0 }
 			}
 			trigger_else = {
 				var:zg361_we_m269_receipt_choice = 2
-				has_variable = zg361_we_ad_external_final_approver
 				has_variable = zg361_we_m272_offer_approver
-				var:zg361_we_ad_external_final_approver = var:zg361_we_m272_offer_approver
+				var:zg361_we_m272_offer_approver = var:zg361_we_m269_write_owner
 			}
 		}
 		set_variable = { name = zg361_we_m269_original_votes_preserved value = 1 }
 		set_variable = { name = zg361_we_m269_last_outcome_id value = var:zg361_we_ad_external_outcome_id }
-		set_variable = { name = zg361_we_m269_consumed_hire_case value = var:zg361_we_ad_external_outcome_hire_case }
-		set_variable = { name = zg361_we_m269_consumed_candidate value = var:zg361_we_ad_external_outcome_candidate }
+		set_variable = { name = zg361_we_m269_consumed_hire_case value = var:zg361_we_m269_write_case }
+		set_variable = { name = zg361_we_m269_consumed_candidate value = var:zg361_we_m267_candidate_frozen }
 		set_variable = { name = zg361_we_m269_outcome_evidence_id value = var:zg361_we_ad_external_outcome_evidence_id }
 		set_variable = { name = zg361_we_m269_outcome_evidence_hash value = var:zg361_we_ad_external_outcome_evidence_hash }
 		set_variable = { name = zg361_we_m269_outcome_evidence_count value = var:zg361_we_ad_external_outcome_evidence_count }
@@ -4110,17 +4124,24 @@ zg361_we_m269_future_consume_effect = {
 				set_variable = { name = zg361_we_m269_dimension_1 value = var:zg361_we_ad_external_outcome_dimension_1 }
 				set_variable = { name = zg361_we_m269_dimension_2 value = var:zg361_we_ad_external_outcome_dimension_2 }
 				set_variable = { name = zg361_we_m269_dimension_3 value = var:zg361_we_ad_external_outcome_dimension_3 }
-				set_variable = { name = zg361_we_m269_responsible_interviewer_1 value = var:zg361_we_ad_external_responsible_interviewer_1 }
-				set_variable = { name = zg361_we_m269_responsible_interviewer_2 value = var:zg361_we_ad_external_responsible_interviewer_2 }
-				set_variable = { name = zg361_we_m269_responsible_interviewer_3 value = var:zg361_we_ad_external_responsible_interviewer_3 }
-				set_variable = { name = zg361_we_m269_dimension_bps_1 value = var:zg361_we_ad_external_attribution_bps_1 }
+				set_variable = { name = zg361_we_m269_responsible_interviewer_1 value = var:zg361_we_m267_interviewer_1 }
+				set_variable = { name = zg361_we_m269_responsible_interviewer_2 value = var:zg361_we_m267_interviewer_2 }
+				set_variable = { name = zg361_we_m269_responsible_interviewer_3 value = var:zg361_we_m267_interviewer_3 }
 				set_variable = { name = zg361_we_m269_dimension_bps_2 value = var:zg361_we_ad_external_attribution_bps_2 }
 				set_variable = { name = zg361_we_m269_dimension_bps_3 value = var:zg361_we_ad_external_attribution_bps_3 }
-				set_variable = { name = zg361_we_m269_attribution_total_bps value = { value = var:zg361_we_ad_external_attribution_bps_1 add = var:zg361_we_ad_external_attribution_bps_2 add = var:zg361_we_ad_external_attribution_bps_3 } }
-				if = { limit = { var:zg361_we_ad_external_outcome_quality = 4 } set_variable = { name = zg361_we_m269_exclusion_reason value = var:zg361_we_ad_external_outcome_exclusion_reason } }
+				if = {
+					limit = { var:zg361_we_ad_external_outcome_quality = 4 }
+					set_variable = { name = zg361_we_m269_dimension_bps_1 value = 0 }
+					set_variable = { name = zg361_we_m269_attribution_total_bps value = 0 }
+					set_variable = { name = zg361_we_m269_exclusion_reason value = var:zg361_we_ad_external_outcome_exclusion_reason }
+				}
+				else = {
+					set_variable = { name = zg361_we_m269_dimension_bps_1 value = scope:zg361_we_expected_attribution_bps_1 }
+					set_variable = { name = zg361_we_m269_attribution_total_bps value = 10000 }
+				}
 			}
 			else = {
-				set_variable = { name = zg361_we_m269_blamed_final_approver value = var:zg361_we_ad_external_final_approver }
+				set_variable = { name = zg361_we_m269_blamed_final_approver value = var:zg361_we_m272_offer_approver }
 				set_variable = { name = zg361_we_m269_approver_blame_bps value = 10000 }
 				set_variable = { name = zg361_we_m269_premature_approver_blame value = 1 }
 				set_variable = { name = zg361_we_m269_attribution_total_bps value = 10000 }
@@ -4188,7 +4209,7 @@ zg361_we_m269_future_consume_effect = {
 			var:zg361_we_m269_outcome_pending = 1
 		}
 		if = {
-			limit = { has_variable = zg361_we_ad_external_outcome_ready var:zg361_we_ad_external_outcome_ready = 1 }
+			limit = { has_variable = zg361_we_ad_external_outcome_id }
 			set_variable = { name = zg361_we_future_red_code value = 2692 } # typed invalid outcome; pending remains inspectable
 		}
 		else = {
@@ -44459,14 +44480,10 @@ zg361_we_m271_route_a_effect = {
 					has_variable = zg361_we_m273_object_consumed
 					has_variable = zg361_we_m273_consumer_assign_candidate_owner_273
 					has_variable = zg361_we_gold_available
-					has_variable = zg361_we_ad_external_candidate
-					has_variable = zg361_we_ad_external_referral_present
 					has_variable = zg361_we_ad_external_referral_id
 					has_variable = zg361_we_ad_external_referrer
 					has_variable = zg361_we_ad_external_referral_relationship
 					has_variable = zg361_we_ad_external_referral_evidence_receipt
-					has_variable = zg361_we_ad_external_referral_reward
-					has_variable = zg361_we_ad_external_referrer_voted
 				}
 				var:zg361_we_operation_used < var:zg361_we_operation_total
 				var:zg361_we_m266_business_object_created = 1
@@ -44487,11 +44504,9 @@ zg361_we_m271_route_a_effect = {
 				var:zg361_we_m273_consumer_assign_candidate_owner_273 = 1
 				var:zg361_we_gold_available >= 5
 				var:zg361_case_ad_owner = { gold >= 5 }
-				var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_referral_present = 1
-				var:zg361_we_ad_external_referral_reward = 5
-				var:zg361_we_ad_external_referrer_voted = 0
-				NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate }
+				var:zg361_we_ad_external_referral_id > 0
+				var:zg361_we_ad_external_referral_evidence_receipt > 0
+				NOT = { var:zg361_we_ad_external_referrer = $TICKET_SUBJECT$ }
 			}
 			trigger_else = { always = no }
 		}
@@ -44544,16 +44559,16 @@ zg361_we_m271_route_a_effect = {
 			change_variable = { name = zg361_we_gold_available add = -5 }
 			change_variable = { name = zg361_we_gold_reserved add = 5 }
 			change_variable = { name = zg361_we_referral_gold_reserved add = 5 }
-			set_variable = { name = zg361_we_m271_candidate value = var:zg361_we_ad_external_candidate }
+			set_variable = { name = zg361_we_m271_candidate value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m271_referral_id value = var:zg361_we_ad_external_referral_id }
 			set_variable = { name = zg361_we_m271_referrer value = var:zg361_we_ad_external_referrer }
 			set_variable = { name = zg361_we_m271_relationship_ref value = var:zg361_we_ad_external_referral_relationship }
 			set_variable = { name = zg361_we_m271_evidence_receipt value = var:zg361_we_ad_external_referral_evidence_receipt }
-			set_variable = { name = zg361_we_m271_reward_gold value = var:zg361_we_ad_external_referral_reward }
+			set_variable = { name = zg361_we_m271_reward_gold value = 5 }
 			set_variable = { name = zg361_we_m271_referrer_not_candidate value = 1 }
 			set_variable = { name = zg361_we_m271_relationship_disclosed value = 1 }
 			set_variable = { name = zg361_we_m271_referrer_recused_before_vote value = 1 }
-			set_variable = { name = zg361_we_m271_referrer_voted value = var:zg361_we_ad_external_referrer_voted }
+			set_variable = { name = zg361_we_m271_referrer_vote_policy value = 0 }
 			set_variable = { name = zg361_we_m271_reward_due_after_probation value = 1 }
 			set_variable = { name = zg361_we_m271_reward_escrowed value = 1 }
 			var:zg361_case_ad_owner = { remove_short_term_gold = 5 }
@@ -44652,14 +44667,10 @@ zg361_we_m271_route_a_effect = {
 						has_variable = zg361_we_m273_object_consumed
 						has_variable = zg361_we_m273_consumer_assign_candidate_owner_273
 						has_variable = zg361_we_gold_available
-						has_variable = zg361_we_ad_external_candidate
-						has_variable = zg361_we_ad_external_referral_present
 						has_variable = zg361_we_ad_external_referral_id
 						has_variable = zg361_we_ad_external_referrer
 						has_variable = zg361_we_ad_external_referral_relationship
 						has_variable = zg361_we_ad_external_referral_evidence_receipt
-						has_variable = zg361_we_ad_external_referral_reward
-						has_variable = zg361_we_ad_external_referrer_voted
 					}
 					var:zg361_we_operation_used < var:zg361_we_operation_total
 					var:zg361_we_m266_business_object_created = 1
@@ -44680,11 +44691,9 @@ zg361_we_m271_route_a_effect = {
 					var:zg361_we_m273_consumer_assign_candidate_owner_273 = 1
 					var:zg361_we_gold_available >= 5
 					var:zg361_case_ad_owner = { gold >= 5 }
-					var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_referral_present = 1
-					var:zg361_we_ad_external_referral_reward = 5
-					var:zg361_we_ad_external_referrer_voted = 0
-					NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate }
+					var:zg361_we_ad_external_referral_id > 0
+					var:zg361_we_ad_external_referral_evidence_receipt > 0
+					NOT = { var:zg361_we_ad_external_referrer = $TICKET_SUBJECT$ }
 				}
 				trigger_else = { always = no }
 			}
@@ -44877,14 +44886,10 @@ zg361_we_m271_route_b_effect = {
 					has_variable = zg361_we_m273_object_consumed
 					has_variable = zg361_we_m273_consumer_assign_candidate_owner_273
 					has_variable = zg361_we_gold_available
-					has_variable = zg361_we_ad_external_candidate
-					has_variable = zg361_we_ad_external_referral_present
 					has_variable = zg361_we_ad_external_referral_id
 					has_variable = zg361_we_ad_external_referrer
 					has_variable = zg361_we_ad_external_referral_relationship
 					has_variable = zg361_we_ad_external_referral_evidence_receipt
-					has_variable = zg361_we_ad_external_referral_reward
-					has_variable = zg361_we_ad_external_referrer_voted
 				}
 				var:zg361_we_operation_used < var:zg361_we_operation_total
 				var:zg361_we_m266_business_object_created = 1
@@ -44905,11 +44910,9 @@ zg361_we_m271_route_b_effect = {
 				var:zg361_we_m273_consumer_assign_candidate_owner_273 = 1
 				var:zg361_we_gold_available >= 5
 				var:zg361_case_ad_owner = { gold >= 5 }
-				var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_referral_present = 1
-				var:zg361_we_ad_external_referral_reward = 5
-				var:zg361_we_ad_external_referrer_voted = 1
-				NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate }
+				var:zg361_we_ad_external_referral_id > 0
+				var:zg361_we_ad_external_referral_evidence_receipt > 0
+				NOT = { var:zg361_we_ad_external_referrer = $TICKET_SUBJECT$ }
 			}
 			trigger_else = { always = no }
 		}
@@ -44962,16 +44965,16 @@ zg361_we_m271_route_b_effect = {
 			change_variable = { name = zg361_we_gold_available add = -5 }
 			change_variable = { name = zg361_we_gold_reserved add = 5 }
 			change_variable = { name = zg361_we_referral_gold_reserved add = 5 }
-			set_variable = { name = zg361_we_m271_candidate value = var:zg361_we_ad_external_candidate }
+			set_variable = { name = zg361_we_m271_candidate value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m271_referral_id value = var:zg361_we_ad_external_referral_id }
 			set_variable = { name = zg361_we_m271_referrer value = var:zg361_we_ad_external_referrer }
 			set_variable = { name = zg361_we_m271_relationship_ref value = var:zg361_we_ad_external_referral_relationship }
 			set_variable = { name = zg361_we_m271_evidence_receipt value = var:zg361_we_ad_external_referral_evidence_receipt }
-			set_variable = { name = zg361_we_m271_reward_gold value = var:zg361_we_ad_external_referral_reward }
+			set_variable = { name = zg361_we_m271_reward_gold value = 5 }
 			set_variable = { name = zg361_we_m271_referrer_not_candidate value = 1 }
 			set_variable = { name = zg361_we_m271_relationship_disclosed value = 0 }
 			set_variable = { name = zg361_we_m271_referrer_recused_before_vote value = 0 }
-			set_variable = { name = zg361_we_m271_referrer_voted value = var:zg361_we_ad_external_referrer_voted }
+			set_variable = { name = zg361_we_m271_referrer_vote_policy value = 1 }
 			set_variable = { name = zg361_we_m271_reward_due_after_probation value = 0 }
 			set_variable = { name = zg361_we_m271_reward_escrowed value = 1 }
 			var:zg361_case_ad_owner = { remove_short_term_gold = 5 }
@@ -45079,14 +45082,10 @@ zg361_we_m271_route_b_effect = {
 						has_variable = zg361_we_m273_object_consumed
 						has_variable = zg361_we_m273_consumer_assign_candidate_owner_273
 						has_variable = zg361_we_gold_available
-						has_variable = zg361_we_ad_external_candidate
-						has_variable = zg361_we_ad_external_referral_present
 						has_variable = zg361_we_ad_external_referral_id
 						has_variable = zg361_we_ad_external_referrer
 						has_variable = zg361_we_ad_external_referral_relationship
 						has_variable = zg361_we_ad_external_referral_evidence_receipt
-						has_variable = zg361_we_ad_external_referral_reward
-						has_variable = zg361_we_ad_external_referrer_voted
 					}
 					var:zg361_we_operation_used < var:zg361_we_operation_total
 					var:zg361_we_m266_business_object_created = 1
@@ -45107,11 +45106,9 @@ zg361_we_m271_route_b_effect = {
 					var:zg361_we_m273_consumer_assign_candidate_owner_273 = 1
 					var:zg361_we_gold_available >= 5
 					var:zg361_case_ad_owner = { gold >= 5 }
-					var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_referral_present = 1
-					var:zg361_we_ad_external_referral_reward = 5
-					var:zg361_we_ad_external_referrer_voted = 1
-					NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate }
+					var:zg361_we_ad_external_referral_id > 0
+					var:zg361_we_ad_external_referral_evidence_receipt > 0
+					NOT = { var:zg361_we_ad_external_referrer = $TICKET_SUBJECT$ }
 				}
 				trigger_else = { always = no }
 			}
@@ -45739,15 +45736,13 @@ zg361_we_m267_route_a_effect = {
 					has_variable = zg361_we_m271_object_case
 					has_variable = zg361_we_m271_object_consumed
 					has_variable = zg361_we_m271_consumer_register_referral_271
-					has_variable = zg361_we_ad_external_candidate
-					has_variable = zg361_we_ad_external_referral_present
-					has_variable = zg361_we_ad_external_referrer_voted
 					has_variable = zg361_we_m271_candidate
 					has_variable = zg361_we_m271_referral_id
 					has_variable = zg361_we_m271_referrer
 					has_variable = zg361_we_m271_relationship_ref
 					has_variable = zg361_we_m271_evidence_receipt
 					has_variable = zg361_we_m271_reward_gold
+					has_variable = zg361_we_m271_referrer_vote_policy
 					has_variable = zg361_we_ad_external_interviewer_1
 					has_variable = zg361_we_ad_external_vote_1
 					has_variable = zg361_we_ad_external_vote_evidence_1
@@ -45783,19 +45778,13 @@ zg361_we_m267_route_a_effect = {
 				var:zg361_we_m271_object_case = $TICKET_CASE$
 				var:zg361_we_m271_object_consumed = 1
 				var:zg361_we_m271_consumer_register_referral_271 = 1
-				var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_referral_present >= 0
-				var:zg361_we_ad_external_referral_present <= 1
-				var:zg361_we_ad_external_referrer_voted >= 0
-				var:zg361_we_ad_external_referrer_voted <= 1
-				trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } has_variable = zg361_we_ad_external_referral_id has_variable = zg361_we_ad_external_referrer has_variable = zg361_we_ad_external_referral_relationship has_variable = zg361_we_ad_external_referral_evidence_receipt has_variable = zg361_we_ad_external_referral_reward var:zg361_we_ad_external_referral_reward = 5 NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate } } trigger_else = { always = yes }
-				var:zg361_we_ad_external_referral_present = 1
-				var:zg361_we_ad_external_candidate = var:zg361_we_m271_candidate
-				var:zg361_we_ad_external_referral_id = var:zg361_we_m271_referral_id
-				var:zg361_we_ad_external_referrer = var:zg361_we_m271_referrer
-				var:zg361_we_ad_external_referral_relationship = var:zg361_we_m271_relationship_ref
-				var:zg361_we_ad_external_referral_evidence_receipt = var:zg361_we_m271_evidence_receipt
-				var:zg361_we_ad_external_referral_reward = var:zg361_we_m271_reward_gold
+				var:zg361_we_m271_candidate = $TICKET_SUBJECT$
+				var:zg361_we_m271_referral_id > 0
+				var:zg361_we_m271_evidence_receipt > 0
+				var:zg361_we_m271_reward_gold = 5
+				var:zg361_we_m271_referrer_vote_policy >= 0
+				var:zg361_we_m271_referrer_vote_policy <= 1
+				NOT = { var:zg361_we_m271_referrer = var:zg361_we_m271_candidate }
 				var:zg361_we_ad_external_vote_1 >= 1
 				var:zg361_we_ad_external_vote_1 <= 3
 				var:zg361_we_ad_external_interviewer_1 = { zg361_is_celestial_liege_trigger = yes }
@@ -45808,7 +45797,7 @@ zg361_we_m267_route_a_effect = {
 				NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_2 }
 				NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_3 }
 				NOT = { var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_interviewer_3 }
-				trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } var:zg361_we_ad_external_referrer_voted = 0 NOT = { OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_ad_external_referrer } } } trigger_else = { var:zg361_we_ad_external_referrer_voted = 0 }
+				var:zg361_we_m271_referrer_vote_policy = 0 NOT = { OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_m271_referrer } }
 			}
 			trigger_else = { always = no }
 		}
@@ -45862,7 +45851,7 @@ zg361_we_m267_route_a_effect = {
 			set_variable = { name = zg361_we_m267_anchor_before_votes value = 0 }
 			set_variable = { name = zg361_we_m267_candidate_frozen value = var:zg361_we_m271_candidate }
 			set_variable = { name = zg361_we_m267_referral_present value = 1 }
-			set_variable = { name = zg361_we_m267_referrer_voted value = var:zg361_we_m271_referrer_voted }
+			set_variable = { name = zg361_we_m267_referrer_voted value = 0 }
 			set_variable = { name = zg361_we_m267_referral_frozen_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_we_m267_referral_id value = var:zg361_we_m271_referral_id }
 			set_variable = { name = zg361_we_m267_referrer_frozen value = var:zg361_we_m271_referrer }
@@ -46173,15 +46162,13 @@ zg361_we_m267_route_a_effect = {
 						has_variable = zg361_we_m271_object_case
 						has_variable = zg361_we_m271_object_consumed
 						has_variable = zg361_we_m271_consumer_register_referral_271
-						has_variable = zg361_we_ad_external_candidate
-						has_variable = zg361_we_ad_external_referral_present
-						has_variable = zg361_we_ad_external_referrer_voted
 						has_variable = zg361_we_m271_candidate
 						has_variable = zg361_we_m271_referral_id
 						has_variable = zg361_we_m271_referrer
 						has_variable = zg361_we_m271_relationship_ref
 						has_variable = zg361_we_m271_evidence_receipt
 						has_variable = zg361_we_m271_reward_gold
+						has_variable = zg361_we_m271_referrer_vote_policy
 						has_variable = zg361_we_ad_external_interviewer_1
 						has_variable = zg361_we_ad_external_vote_1
 						has_variable = zg361_we_ad_external_vote_evidence_1
@@ -46217,19 +46204,13 @@ zg361_we_m267_route_a_effect = {
 					var:zg361_we_m271_object_case = $TICKET_CASE$
 					var:zg361_we_m271_object_consumed = 1
 					var:zg361_we_m271_consumer_register_referral_271 = 1
-					var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_referral_present >= 0
-					var:zg361_we_ad_external_referral_present <= 1
-					var:zg361_we_ad_external_referrer_voted >= 0
-					var:zg361_we_ad_external_referrer_voted <= 1
-					trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } has_variable = zg361_we_ad_external_referral_id has_variable = zg361_we_ad_external_referrer has_variable = zg361_we_ad_external_referral_relationship has_variable = zg361_we_ad_external_referral_evidence_receipt has_variable = zg361_we_ad_external_referral_reward var:zg361_we_ad_external_referral_reward = 5 NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate } } trigger_else = { always = yes }
-					var:zg361_we_ad_external_referral_present = 1
-					var:zg361_we_ad_external_candidate = var:zg361_we_m271_candidate
-					var:zg361_we_ad_external_referral_id = var:zg361_we_m271_referral_id
-					var:zg361_we_ad_external_referrer = var:zg361_we_m271_referrer
-					var:zg361_we_ad_external_referral_relationship = var:zg361_we_m271_relationship_ref
-					var:zg361_we_ad_external_referral_evidence_receipt = var:zg361_we_m271_evidence_receipt
-					var:zg361_we_ad_external_referral_reward = var:zg361_we_m271_reward_gold
+					var:zg361_we_m271_candidate = $TICKET_SUBJECT$
+					var:zg361_we_m271_referral_id > 0
+					var:zg361_we_m271_evidence_receipt > 0
+					var:zg361_we_m271_reward_gold = 5
+					var:zg361_we_m271_referrer_vote_policy >= 0
+					var:zg361_we_m271_referrer_vote_policy <= 1
+					NOT = { var:zg361_we_m271_referrer = var:zg361_we_m271_candidate }
 					var:zg361_we_ad_external_vote_1 >= 1
 					var:zg361_we_ad_external_vote_1 <= 3
 					var:zg361_we_ad_external_interviewer_1 = { zg361_is_celestial_liege_trigger = yes }
@@ -46242,7 +46223,7 @@ zg361_we_m267_route_a_effect = {
 					NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_2 }
 					NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_3 }
 					NOT = { var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_interviewer_3 }
-					trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } var:zg361_we_ad_external_referrer_voted = 0 NOT = { OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_ad_external_referrer } } } trigger_else = { var:zg361_we_ad_external_referrer_voted = 0 }
+					var:zg361_we_m271_referrer_vote_policy = 0 NOT = { OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_m271_referrer } }
 				}
 				trigger_else = { always = no }
 			}
@@ -46442,15 +46423,13 @@ zg361_we_m267_route_b_effect = {
 					has_variable = zg361_we_m271_object_case
 					has_variable = zg361_we_m271_object_consumed
 					has_variable = zg361_we_m271_consumer_register_referral_271
-					has_variable = zg361_we_ad_external_candidate
-					has_variable = zg361_we_ad_external_referral_present
-					has_variable = zg361_we_ad_external_referrer_voted
 					has_variable = zg361_we_m271_candidate
 					has_variable = zg361_we_m271_referral_id
 					has_variable = zg361_we_m271_referrer
 					has_variable = zg361_we_m271_relationship_ref
 					has_variable = zg361_we_m271_evidence_receipt
 					has_variable = zg361_we_m271_reward_gold
+					has_variable = zg361_we_m271_referrer_vote_policy
 					has_variable = zg361_we_ad_external_interviewer_1
 					has_variable = zg361_we_ad_external_vote_1
 					has_variable = zg361_we_ad_external_vote_evidence_1
@@ -46486,19 +46465,13 @@ zg361_we_m267_route_b_effect = {
 				var:zg361_we_m271_object_case = $TICKET_CASE$
 				var:zg361_we_m271_object_consumed = 1
 				var:zg361_we_m271_consumer_register_referral_271 = 1
-				var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_referral_present >= 0
-				var:zg361_we_ad_external_referral_present <= 1
-				var:zg361_we_ad_external_referrer_voted >= 0
-				var:zg361_we_ad_external_referrer_voted <= 1
-				trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } has_variable = zg361_we_ad_external_referral_id has_variable = zg361_we_ad_external_referrer has_variable = zg361_we_ad_external_referral_relationship has_variable = zg361_we_ad_external_referral_evidence_receipt has_variable = zg361_we_ad_external_referral_reward var:zg361_we_ad_external_referral_reward = 5 NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate } } trigger_else = { always = yes }
-				var:zg361_we_ad_external_referral_present = 1
-				var:zg361_we_ad_external_candidate = var:zg361_we_m271_candidate
-				var:zg361_we_ad_external_referral_id = var:zg361_we_m271_referral_id
-				var:zg361_we_ad_external_referrer = var:zg361_we_m271_referrer
-				var:zg361_we_ad_external_referral_relationship = var:zg361_we_m271_relationship_ref
-				var:zg361_we_ad_external_referral_evidence_receipt = var:zg361_we_m271_evidence_receipt
-				var:zg361_we_ad_external_referral_reward = var:zg361_we_m271_reward_gold
+				var:zg361_we_m271_candidate = $TICKET_SUBJECT$
+				var:zg361_we_m271_referral_id > 0
+				var:zg361_we_m271_evidence_receipt > 0
+				var:zg361_we_m271_reward_gold = 5
+				var:zg361_we_m271_referrer_vote_policy >= 0
+				var:zg361_we_m271_referrer_vote_policy <= 1
+				NOT = { var:zg361_we_m271_referrer = var:zg361_we_m271_candidate }
 				var:zg361_we_ad_external_vote_1 >= 1
 				var:zg361_we_ad_external_vote_1 <= 3
 				var:zg361_we_ad_external_interviewer_1 = { zg361_is_celestial_liege_trigger = yes }
@@ -46511,7 +46484,7 @@ zg361_we_m267_route_b_effect = {
 				NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_2 }
 				NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_3 }
 				NOT = { var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_interviewer_3 }
-				trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } var:zg361_we_ad_external_referrer_voted = 1 OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_ad_external_referrer } } trigger_else = { var:zg361_we_ad_external_referrer_voted = 0 }
+				var:zg361_we_m271_referrer_vote_policy = 1 OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_m271_referrer }
 			}
 			trigger_else = { always = no }
 		}
@@ -46565,7 +46538,7 @@ zg361_we_m267_route_b_effect = {
 			set_variable = { name = zg361_we_m267_anchor_before_votes value = 1 }
 			set_variable = { name = zg361_we_m267_candidate_frozen value = var:zg361_we_m271_candidate }
 			set_variable = { name = zg361_we_m267_referral_present value = 1 }
-			set_variable = { name = zg361_we_m267_referrer_voted value = var:zg361_we_m271_referrer_voted }
+			set_variable = { name = zg361_we_m267_referrer_voted value = 1 }
 			set_variable = { name = zg361_we_m267_referral_frozen_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_we_m267_referral_id value = var:zg361_we_m271_referral_id }
 			set_variable = { name = zg361_we_m267_referrer_frozen value = var:zg361_we_m271_referrer }
@@ -46876,15 +46849,13 @@ zg361_we_m267_route_b_effect = {
 						has_variable = zg361_we_m271_object_case
 						has_variable = zg361_we_m271_object_consumed
 						has_variable = zg361_we_m271_consumer_register_referral_271
-						has_variable = zg361_we_ad_external_candidate
-						has_variable = zg361_we_ad_external_referral_present
-						has_variable = zg361_we_ad_external_referrer_voted
 						has_variable = zg361_we_m271_candidate
 						has_variable = zg361_we_m271_referral_id
 						has_variable = zg361_we_m271_referrer
 						has_variable = zg361_we_m271_relationship_ref
 						has_variable = zg361_we_m271_evidence_receipt
 						has_variable = zg361_we_m271_reward_gold
+						has_variable = zg361_we_m271_referrer_vote_policy
 						has_variable = zg361_we_ad_external_interviewer_1
 						has_variable = zg361_we_ad_external_vote_1
 						has_variable = zg361_we_ad_external_vote_evidence_1
@@ -46920,19 +46891,13 @@ zg361_we_m267_route_b_effect = {
 					var:zg361_we_m271_object_case = $TICKET_CASE$
 					var:zg361_we_m271_object_consumed = 1
 					var:zg361_we_m271_consumer_register_referral_271 = 1
-					var:zg361_we_ad_external_candidate = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_referral_present >= 0
-					var:zg361_we_ad_external_referral_present <= 1
-					var:zg361_we_ad_external_referrer_voted >= 0
-					var:zg361_we_ad_external_referrer_voted <= 1
-					trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } has_variable = zg361_we_ad_external_referral_id has_variable = zg361_we_ad_external_referrer has_variable = zg361_we_ad_external_referral_relationship has_variable = zg361_we_ad_external_referral_evidence_receipt has_variable = zg361_we_ad_external_referral_reward var:zg361_we_ad_external_referral_reward = 5 NOT = { var:zg361_we_ad_external_referrer = var:zg361_we_ad_external_candidate } } trigger_else = { always = yes }
-					var:zg361_we_ad_external_referral_present = 1
-					var:zg361_we_ad_external_candidate = var:zg361_we_m271_candidate
-					var:zg361_we_ad_external_referral_id = var:zg361_we_m271_referral_id
-					var:zg361_we_ad_external_referrer = var:zg361_we_m271_referrer
-					var:zg361_we_ad_external_referral_relationship = var:zg361_we_m271_relationship_ref
-					var:zg361_we_ad_external_referral_evidence_receipt = var:zg361_we_m271_evidence_receipt
-					var:zg361_we_ad_external_referral_reward = var:zg361_we_m271_reward_gold
+					var:zg361_we_m271_candidate = $TICKET_SUBJECT$
+					var:zg361_we_m271_referral_id > 0
+					var:zg361_we_m271_evidence_receipt > 0
+					var:zg361_we_m271_reward_gold = 5
+					var:zg361_we_m271_referrer_vote_policy >= 0
+					var:zg361_we_m271_referrer_vote_policy <= 1
+					NOT = { var:zg361_we_m271_referrer = var:zg361_we_m271_candidate }
 					var:zg361_we_ad_external_vote_1 >= 1
 					var:zg361_we_ad_external_vote_1 <= 3
 					var:zg361_we_ad_external_interviewer_1 = { zg361_is_celestial_liege_trigger = yes }
@@ -46945,7 +46910,7 @@ zg361_we_m267_route_b_effect = {
 					NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_2 }
 					NOT = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_interviewer_3 }
 					NOT = { var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_interviewer_3 }
-					trigger_if = { limit = { var:zg361_we_ad_external_referral_present = 1 } var:zg361_we_ad_external_referrer_voted = 1 OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_ad_external_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_ad_external_referrer } } trigger_else = { var:zg361_we_ad_external_referrer_voted = 0 }
+					var:zg361_we_m271_referrer_vote_policy = 1 OR = { var:zg361_we_ad_external_interviewer_1 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_2 = var:zg361_we_m271_referrer var:zg361_we_ad_external_interviewer_3 = var:zg361_we_m271_referrer }
 				}
 				trigger_else = { always = no }
 			}
@@ -51937,15 +51902,15 @@ zg361_we_m274_route_a_effect = {
 					has_variable = zg361_we_candidate_active
 					has_variable = zg361_we_ad_external_appointment_ready
 					has_variable = zg361_we_ad_external_appointment_consumed
-					has_variable = zg361_we_ad_external_appointment_owner
-					has_variable = zg361_we_ad_external_appointment_subject
-					has_variable = zg361_we_ad_external_appointment_cycle
-					has_variable = zg361_we_ad_external_appointment_case
-					has_variable = zg361_we_ad_external_appointment_state
-					has_variable = zg361_we_ad_external_appointed_character
+					has_variable = zg361_we_ad_external_appointing_owner
 					has_variable = zg361_we_ad_external_position_type_id
 					has_variable = zg361_we_ad_external_position_receipt_id
 					has_variable = zg361_we_ad_external_position_receipt_hash
+					has_variable = zg361_we_ad_appointment_receipt_owner
+					has_variable = zg361_we_ad_appointment_receipt_subject
+					has_variable = zg361_we_ad_appointment_receipt_cycle
+					has_variable = zg361_we_ad_appointment_receipt_case
+					has_variable = zg361_we_ad_appointment_receipt_state
 				}
 				var:zg361_we_operation_used < var:zg361_we_operation_total
 				var:zg361_we_m266_business_object_created = 1
@@ -51985,15 +51950,15 @@ zg361_we_m274_route_a_effect = {
 				var:zg361_case_ad_owner = { has_variable = zg361_we_ad_hc_flight_pending var:zg361_we_ad_hc_flight_pending = 1 var:zg361_we_ad_hc_flight_subject = $TICKET_SUBJECT$ var:zg361_we_ad_hc_flight_cycle = $TICKET_CYCLE$ var:zg361_we_ad_hc_flight_case = $TICKET_CASE$ }
 				var:zg361_we_ad_external_appointment_ready = 1
 				var:zg361_we_ad_external_appointment_consumed = 0
-				var:zg361_we_ad_external_appointment_owner = $TICKET_OWNER$
-				var:zg361_we_ad_external_appointment_subject = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_appointment_cycle = $TICKET_CYCLE$
-				var:zg361_we_ad_external_appointment_case = $TICKET_CASE$
-				var:zg361_we_ad_external_appointment_state = 4
-				var:zg361_we_ad_external_appointed_character = $TICKET_SUBJECT$
+				var:zg361_we_ad_external_appointing_owner = $TICKET_OWNER$
 				var:zg361_we_ad_external_position_type_id > 0
 				var:zg361_we_ad_external_position_receipt_id > 0
 				var:zg361_we_ad_external_position_receipt_hash > 0
+				var:zg361_we_ad_appointment_receipt_owner = $TICKET_OWNER$
+				var:zg361_we_ad_appointment_receipt_subject = $TICKET_SUBJECT$
+				var:zg361_we_ad_appointment_receipt_cycle = $TICKET_CYCLE$
+				var:zg361_we_ad_appointment_receipt_case = $TICKET_CASE$
+				var:zg361_we_ad_appointment_receipt_state = 4
 			}
 			trigger_else = { always = no }
 		}
@@ -52051,7 +52016,7 @@ zg361_we_m274_route_a_effect = {
 			set_variable = { name = zg361_we_m274_fairness_cap value = 10 }
 			set_variable = { name = zg361_we_m274_offer_acceptance_candidate value = 1 }
 			set_variable = { name = zg361_we_m274_hired value = 0 }
-			set_variable = { name = zg361_we_m274_appointed_character value = var:zg361_we_ad_external_appointed_character }
+			set_variable = { name = zg361_we_m274_appointed_character value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m274_position_type_id value = var:zg361_we_ad_external_position_type_id }
 			set_variable = { name = zg361_we_m274_position_receipt_id value = var:zg361_we_ad_external_position_receipt_id }
 			set_variable = { name = zg361_we_m274_position_receipt_hash value = var:zg361_we_ad_external_position_receipt_hash }
@@ -52183,15 +52148,15 @@ zg361_we_m274_route_a_effect = {
 						has_variable = zg361_we_candidate_active
 						has_variable = zg361_we_ad_external_appointment_ready
 						has_variable = zg361_we_ad_external_appointment_consumed
-						has_variable = zg361_we_ad_external_appointment_owner
-						has_variable = zg361_we_ad_external_appointment_subject
-						has_variable = zg361_we_ad_external_appointment_cycle
-						has_variable = zg361_we_ad_external_appointment_case
-						has_variable = zg361_we_ad_external_appointment_state
-						has_variable = zg361_we_ad_external_appointed_character
+						has_variable = zg361_we_ad_external_appointing_owner
 						has_variable = zg361_we_ad_external_position_type_id
 						has_variable = zg361_we_ad_external_position_receipt_id
 						has_variable = zg361_we_ad_external_position_receipt_hash
+						has_variable = zg361_we_ad_appointment_receipt_owner
+						has_variable = zg361_we_ad_appointment_receipt_subject
+						has_variable = zg361_we_ad_appointment_receipt_cycle
+						has_variable = zg361_we_ad_appointment_receipt_case
+						has_variable = zg361_we_ad_appointment_receipt_state
 					}
 					var:zg361_we_operation_used < var:zg361_we_operation_total
 					var:zg361_we_m266_business_object_created = 1
@@ -52231,15 +52196,15 @@ zg361_we_m274_route_a_effect = {
 					var:zg361_case_ad_owner = { has_variable = zg361_we_ad_hc_flight_pending var:zg361_we_ad_hc_flight_pending = 1 var:zg361_we_ad_hc_flight_subject = $TICKET_SUBJECT$ var:zg361_we_ad_hc_flight_cycle = $TICKET_CYCLE$ var:zg361_we_ad_hc_flight_case = $TICKET_CASE$ }
 					var:zg361_we_ad_external_appointment_ready = 1
 					var:zg361_we_ad_external_appointment_consumed = 0
-					var:zg361_we_ad_external_appointment_owner = $TICKET_OWNER$
-					var:zg361_we_ad_external_appointment_subject = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_appointment_cycle = $TICKET_CYCLE$
-					var:zg361_we_ad_external_appointment_case = $TICKET_CASE$
-					var:zg361_we_ad_external_appointment_state = 4
-					var:zg361_we_ad_external_appointed_character = $TICKET_SUBJECT$
+					var:zg361_we_ad_external_appointing_owner = $TICKET_OWNER$
 					var:zg361_we_ad_external_position_type_id > 0
 					var:zg361_we_ad_external_position_receipt_id > 0
 					var:zg361_we_ad_external_position_receipt_hash > 0
+					var:zg361_we_ad_appointment_receipt_owner = $TICKET_OWNER$
+					var:zg361_we_ad_appointment_receipt_subject = $TICKET_SUBJECT$
+					var:zg361_we_ad_appointment_receipt_cycle = $TICKET_CYCLE$
+					var:zg361_we_ad_appointment_receipt_case = $TICKET_CASE$
+					var:zg361_we_ad_appointment_receipt_state = 4
 				}
 				trigger_else = { always = no }
 			}
@@ -56500,29 +56465,22 @@ zg361_we_m276_route_a_effect = {
 					has_variable = zg361_we_operation_used
 					has_variable = zg361_we_ad_external_rehire_ready
 					has_variable = zg361_we_ad_external_rehire_consumed
-					has_variable = zg361_we_ad_external_rehire_owner
-					has_variable = zg361_we_ad_external_rehire_subject
-					has_variable = zg361_we_ad_external_rehire_cycle
-					has_variable = zg361_we_ad_external_rehire_case
-					has_variable = zg361_we_ad_external_rehire_state
 					has_variable = zg361_we_ad_external_rehire_id
-					has_variable = zg361_we_ad_external_rehire_candidate
 					has_variable = zg361_we_ad_external_rehire_historical_case_id
 					has_variable = zg361_we_ad_external_rehire_historical_case_hash
 					has_variable = zg361_we_ad_external_rehire_historical_cycle
 					has_variable = zg361_we_ad_external_rehire_growth_evidence_id
 					has_variable = zg361_we_ad_external_rehire_growth_evidence_hash
 					has_variable = zg361_we_ad_external_rehire_future_cohort_cycle
+					has_variable = zg361_we_ad_rehire_history_owner
+					has_variable = zg361_we_ad_rehire_history_subject
+					has_variable = zg361_we_ad_rehire_history_cycle
+					has_variable = zg361_we_ad_rehire_history_case
+					has_variable = zg361_we_ad_rehire_history_state
 				}
 				var:zg361_we_operation_used < var:zg361_we_operation_total
 				var:zg361_we_ad_external_rehire_ready = 1
 				var:zg361_we_ad_external_rehire_consumed = 0
-				var:zg361_we_ad_external_rehire_owner = $TICKET_OWNER$
-				var:zg361_we_ad_external_rehire_subject = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_rehire_cycle = $TICKET_CYCLE$
-				var:zg361_we_ad_external_rehire_case = $TICKET_CASE$
-				var:zg361_we_ad_external_rehire_state = 6
-				var:zg361_we_ad_external_rehire_candidate = $TICKET_SUBJECT$
 				var:zg361_we_ad_external_rehire_historical_case_id > 0
 				NOT = { var:zg361_we_ad_external_rehire_historical_case_id = $TICKET_CASE$ }
 				var:zg361_we_ad_external_rehire_historical_case_hash > 0
@@ -56530,6 +56488,11 @@ zg361_we_m276_route_a_effect = {
 				var:zg361_we_ad_external_rehire_growth_evidence_id > 0
 				var:zg361_we_ad_external_rehire_growth_evidence_hash > 0
 				var:zg361_we_ad_external_rehire_future_cohort_cycle > $TICKET_CYCLE$
+				var:zg361_we_ad_rehire_history_owner = $TICKET_OWNER$
+				var:zg361_we_ad_rehire_history_subject = $TICKET_SUBJECT$
+				var:zg361_we_ad_rehire_history_cycle = $TICKET_CYCLE$
+				var:zg361_we_ad_rehire_history_case = $TICKET_CASE$
+				var:zg361_we_ad_rehire_history_state = 6
 			}
 			trigger_else = { always = no }
 		}
@@ -56580,7 +56543,7 @@ zg361_we_m276_route_a_effect = {
 			set_variable = { name = zg361_we_m276_resource_rehire value = 1 }
 			set_variable = { name = zg361_we_m276_resource_formal_hc value = 1 }
 			set_variable = { name = zg361_we_m276_rehire_id value = var:zg361_we_ad_external_rehire_id }
-			set_variable = { name = zg361_we_m276_rehire_candidate value = var:zg361_we_ad_external_rehire_candidate }
+			set_variable = { name = zg361_we_m276_rehire_candidate value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m276_old_case_id value = var:zg361_we_ad_external_rehire_historical_case_id }
 			set_variable = { name = zg361_we_m276_old_case_hash value = var:zg361_we_ad_external_rehire_historical_case_hash }
 			set_variable = { name = zg361_we_m276_old_cycle value = var:zg361_we_ad_external_rehire_historical_cycle }
@@ -56673,29 +56636,22 @@ zg361_we_m276_route_a_effect = {
 						has_variable = zg361_we_operation_used
 						has_variable = zg361_we_ad_external_rehire_ready
 						has_variable = zg361_we_ad_external_rehire_consumed
-						has_variable = zg361_we_ad_external_rehire_owner
-						has_variable = zg361_we_ad_external_rehire_subject
-						has_variable = zg361_we_ad_external_rehire_cycle
-						has_variable = zg361_we_ad_external_rehire_case
-						has_variable = zg361_we_ad_external_rehire_state
 						has_variable = zg361_we_ad_external_rehire_id
-						has_variable = zg361_we_ad_external_rehire_candidate
 						has_variable = zg361_we_ad_external_rehire_historical_case_id
 						has_variable = zg361_we_ad_external_rehire_historical_case_hash
 						has_variable = zg361_we_ad_external_rehire_historical_cycle
 						has_variable = zg361_we_ad_external_rehire_growth_evidence_id
 						has_variable = zg361_we_ad_external_rehire_growth_evidence_hash
 						has_variable = zg361_we_ad_external_rehire_future_cohort_cycle
+						has_variable = zg361_we_ad_rehire_history_owner
+						has_variable = zg361_we_ad_rehire_history_subject
+						has_variable = zg361_we_ad_rehire_history_cycle
+						has_variable = zg361_we_ad_rehire_history_case
+						has_variable = zg361_we_ad_rehire_history_state
 					}
 					var:zg361_we_operation_used < var:zg361_we_operation_total
 					var:zg361_we_ad_external_rehire_ready = 1
 					var:zg361_we_ad_external_rehire_consumed = 0
-					var:zg361_we_ad_external_rehire_owner = $TICKET_OWNER$
-					var:zg361_we_ad_external_rehire_subject = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_rehire_cycle = $TICKET_CYCLE$
-					var:zg361_we_ad_external_rehire_case = $TICKET_CASE$
-					var:zg361_we_ad_external_rehire_state = 6
-					var:zg361_we_ad_external_rehire_candidate = $TICKET_SUBJECT$
 					var:zg361_we_ad_external_rehire_historical_case_id > 0
 					NOT = { var:zg361_we_ad_external_rehire_historical_case_id = $TICKET_CASE$ }
 					var:zg361_we_ad_external_rehire_historical_case_hash > 0
@@ -56703,6 +56659,11 @@ zg361_we_m276_route_a_effect = {
 					var:zg361_we_ad_external_rehire_growth_evidence_id > 0
 					var:zg361_we_ad_external_rehire_growth_evidence_hash > 0
 					var:zg361_we_ad_external_rehire_future_cohort_cycle > $TICKET_CYCLE$
+					var:zg361_we_ad_rehire_history_owner = $TICKET_OWNER$
+					var:zg361_we_ad_rehire_history_subject = $TICKET_SUBJECT$
+					var:zg361_we_ad_rehire_history_cycle = $TICKET_CYCLE$
+					var:zg361_we_ad_rehire_history_case = $TICKET_CASE$
+					var:zg361_we_ad_rehire_history_state = 6
 				}
 				trigger_else = { always = no }
 			}
@@ -56880,29 +56841,22 @@ zg361_we_m276_route_b_effect = {
 					has_variable = zg361_we_operation_used
 					has_variable = zg361_we_ad_external_rehire_ready
 					has_variable = zg361_we_ad_external_rehire_consumed
-					has_variable = zg361_we_ad_external_rehire_owner
-					has_variable = zg361_we_ad_external_rehire_subject
-					has_variable = zg361_we_ad_external_rehire_cycle
-					has_variable = zg361_we_ad_external_rehire_case
-					has_variable = zg361_we_ad_external_rehire_state
 					has_variable = zg361_we_ad_external_rehire_id
-					has_variable = zg361_we_ad_external_rehire_candidate
 					has_variable = zg361_we_ad_external_rehire_historical_case_id
 					has_variable = zg361_we_ad_external_rehire_historical_case_hash
 					has_variable = zg361_we_ad_external_rehire_historical_cycle
 					has_variable = zg361_we_ad_external_rehire_growth_evidence_id
 					has_variable = zg361_we_ad_external_rehire_growth_evidence_hash
 					has_variable = zg361_we_ad_external_rehire_future_cohort_cycle
+					has_variable = zg361_we_ad_rehire_history_owner
+					has_variable = zg361_we_ad_rehire_history_subject
+					has_variable = zg361_we_ad_rehire_history_cycle
+					has_variable = zg361_we_ad_rehire_history_case
+					has_variable = zg361_we_ad_rehire_history_state
 				}
 				var:zg361_we_operation_used < var:zg361_we_operation_total
 				var:zg361_we_ad_external_rehire_ready = 1
 				var:zg361_we_ad_external_rehire_consumed = 0
-				var:zg361_we_ad_external_rehire_owner = $TICKET_OWNER$
-				var:zg361_we_ad_external_rehire_subject = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_rehire_cycle = $TICKET_CYCLE$
-				var:zg361_we_ad_external_rehire_case = $TICKET_CASE$
-				var:zg361_we_ad_external_rehire_state = 6
-				var:zg361_we_ad_external_rehire_candidate = $TICKET_SUBJECT$
 				var:zg361_we_ad_external_rehire_historical_case_id > 0
 				NOT = { var:zg361_we_ad_external_rehire_historical_case_id = $TICKET_CASE$ }
 				var:zg361_we_ad_external_rehire_historical_case_hash > 0
@@ -56910,6 +56864,11 @@ zg361_we_m276_route_b_effect = {
 				var:zg361_we_ad_external_rehire_growth_evidence_id > 0
 				var:zg361_we_ad_external_rehire_growth_evidence_hash > 0
 				var:zg361_we_ad_external_rehire_future_cohort_cycle > $TICKET_CYCLE$
+				var:zg361_we_ad_rehire_history_owner = $TICKET_OWNER$
+				var:zg361_we_ad_rehire_history_subject = $TICKET_SUBJECT$
+				var:zg361_we_ad_rehire_history_cycle = $TICKET_CYCLE$
+				var:zg361_we_ad_rehire_history_case = $TICKET_CASE$
+				var:zg361_we_ad_rehire_history_state = 6
 			}
 			trigger_else = { always = no }
 		}
@@ -56960,7 +56919,7 @@ zg361_we_m276_route_b_effect = {
 			set_variable = { name = zg361_we_m276_resource_rehire value = 1 }
 			set_variable = { name = zg361_we_m276_resource_formal_hc value = 1 }
 			set_variable = { name = zg361_we_m276_rehire_id value = var:zg361_we_ad_external_rehire_id }
-			set_variable = { name = zg361_we_m276_rehire_candidate value = var:zg361_we_ad_external_rehire_candidate }
+			set_variable = { name = zg361_we_m276_rehire_candidate value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m276_old_case_id value = var:zg361_we_ad_external_rehire_historical_case_id }
 			set_variable = { name = zg361_we_m276_old_case_hash value = var:zg361_we_ad_external_rehire_historical_case_hash }
 			set_variable = { name = zg361_we_m276_old_cycle value = var:zg361_we_ad_external_rehire_historical_cycle }
@@ -57053,29 +57012,22 @@ zg361_we_m276_route_b_effect = {
 						has_variable = zg361_we_operation_used
 						has_variable = zg361_we_ad_external_rehire_ready
 						has_variable = zg361_we_ad_external_rehire_consumed
-						has_variable = zg361_we_ad_external_rehire_owner
-						has_variable = zg361_we_ad_external_rehire_subject
-						has_variable = zg361_we_ad_external_rehire_cycle
-						has_variable = zg361_we_ad_external_rehire_case
-						has_variable = zg361_we_ad_external_rehire_state
 						has_variable = zg361_we_ad_external_rehire_id
-						has_variable = zg361_we_ad_external_rehire_candidate
 						has_variable = zg361_we_ad_external_rehire_historical_case_id
 						has_variable = zg361_we_ad_external_rehire_historical_case_hash
 						has_variable = zg361_we_ad_external_rehire_historical_cycle
 						has_variable = zg361_we_ad_external_rehire_growth_evidence_id
 						has_variable = zg361_we_ad_external_rehire_growth_evidence_hash
 						has_variable = zg361_we_ad_external_rehire_future_cohort_cycle
+						has_variable = zg361_we_ad_rehire_history_owner
+						has_variable = zg361_we_ad_rehire_history_subject
+						has_variable = zg361_we_ad_rehire_history_cycle
+						has_variable = zg361_we_ad_rehire_history_case
+						has_variable = zg361_we_ad_rehire_history_state
 					}
 					var:zg361_we_operation_used < var:zg361_we_operation_total
 					var:zg361_we_ad_external_rehire_ready = 1
 					var:zg361_we_ad_external_rehire_consumed = 0
-					var:zg361_we_ad_external_rehire_owner = $TICKET_OWNER$
-					var:zg361_we_ad_external_rehire_subject = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_rehire_cycle = $TICKET_CYCLE$
-					var:zg361_we_ad_external_rehire_case = $TICKET_CASE$
-					var:zg361_we_ad_external_rehire_state = 6
-					var:zg361_we_ad_external_rehire_candidate = $TICKET_SUBJECT$
 					var:zg361_we_ad_external_rehire_historical_case_id > 0
 					NOT = { var:zg361_we_ad_external_rehire_historical_case_id = $TICKET_CASE$ }
 					var:zg361_we_ad_external_rehire_historical_case_hash > 0
@@ -57083,6 +57035,11 @@ zg361_we_m276_route_b_effect = {
 					var:zg361_we_ad_external_rehire_growth_evidence_id > 0
 					var:zg361_we_ad_external_rehire_growth_evidence_hash > 0
 					var:zg361_we_ad_external_rehire_future_cohort_cycle > $TICKET_CYCLE$
+					var:zg361_we_ad_rehire_history_owner = $TICKET_OWNER$
+					var:zg361_we_ad_rehire_history_subject = $TICKET_SUBJECT$
+					var:zg361_we_ad_rehire_history_cycle = $TICKET_CYCLE$
+					var:zg361_we_ad_rehire_history_case = $TICKET_CASE$
+					var:zg361_we_ad_rehire_history_state = 6
 				}
 				trigger_else = { always = no }
 			}
@@ -57710,20 +57667,21 @@ zg361_we_m277_route_a_effect = {
 					has_variable = zg361_we_formal_hc_active
 					has_variable = zg361_we_formal_hc_active_case
 					has_variable = zg361_ch_hc_occupied
-					has_variable = zg361_we_ad_external_pip_owner
-					has_variable = zg361_we_ad_external_pip_subject
-					has_variable = zg361_we_ad_external_pip_cycle
-					has_variable = zg361_we_ad_external_pip_case
-					has_variable = zg361_we_ad_external_pip_state
-					has_variable = zg361_we_ad_external_pip_case_id
-					has_variable = zg361_we_ad_external_pip_case_hash
-					has_variable = zg361_we_ad_external_pip_closure_receipt_id
-					has_variable = zg361_we_ad_external_pip_closure_receipt_hash
+					has_variable = zg361_we_m274_position_type_id
+					has_variable = zg361_b2_workforce_pip_pending
+					has_variable = zg361_b2_workforce_pip_consumed
+					has_variable = zg361_b2_workforce_pip_owner
+					has_variable = zg361_b2_workforce_pip_subject
+					has_variable = zg361_b2_workforce_pip_cycle
+					has_variable = zg361_b2_workforce_pip_case
+					has_variable = zg361_b2_workforce_pip_state
+					has_variable = zg361_b2_workforce_pip_case_id
+					has_variable = zg361_b2_workforce_pip_case_hash
+					has_variable = zg361_b2_workforce_pip_closure_receipt_id
+					has_variable = zg361_b2_workforce_pip_closure_receipt_hash
 					has_variable = zg361_we_ad_external_exit_receipt_id
 					has_variable = zg361_we_ad_external_exit_receipt_hash
-					has_variable = zg361_we_ad_external_exit_position_type_id
 					has_variable = zg361_we_ad_external_exit_former_slot_id
-					has_variable = zg361_we_ad_external_exit_hc_lineage_case
 					has_variable = zg361_we_ad_external_exit_displaced_hours
 					has_variable = zg361_we_ad_external_exit_displaced_cost_receipt
 					has_variable = zg361_we_ad_external_pip_exit_ready
@@ -57753,25 +57711,32 @@ zg361_we_m277_route_a_effect = {
 				var:zg361_we_formal_hc_active = 1
 				var:zg361_we_formal_hc_active_case = $TICKET_CASE$
 				var:zg361_ch_hc_occupied >= 1
+				var:zg361_we_m274_position_type_id > 0
 				var:zg361_we_ad_external_pip_exit_ready = 1
 				var:zg361_we_ad_external_pip_exit_consumed = 0
-				var:zg361_we_ad_external_pip_owner = $TICKET_OWNER$
-				var:zg361_we_ad_external_pip_subject = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_pip_cycle = $TICKET_CYCLE$
-				var:zg361_we_ad_external_pip_case = $TICKET_CASE$
-				var:zg361_we_ad_external_pip_state = 6
-				var:zg361_we_ad_external_pip_case_id > 0
-				NOT = { var:zg361_we_ad_external_pip_case_id = $TICKET_CASE$ }
-				var:zg361_we_ad_external_pip_case_hash > 0
-				var:zg361_we_ad_external_pip_closure_receipt_id > 0
-				var:zg361_we_ad_external_pip_closure_receipt_hash > 0
+				var:zg361_b2_workforce_pip_pending = 1
+				var:zg361_b2_workforce_pip_consumed = 0
+				var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+				var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+				var:zg361_b2_workforce_pip_cycle > 0
+				var:zg361_b2_workforce_pip_case > 0
+				OR = { var:zg361_b2_workforce_pip_state = 3 var:zg361_b2_workforce_pip_state = 4 }
+				var:zg361_b2_workforce_pip_case_id > 0
+				NOT = { var:zg361_b2_workforce_pip_case_id = $TICKET_CASE$ }
+				var:zg361_b2_workforce_pip_case_hash > 0
+				var:zg361_b2_workforce_pip_closure_receipt_id > 0
+				var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+				NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+				NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 				var:zg361_we_ad_external_exit_receipt_id > 0
 				var:zg361_we_ad_external_exit_receipt_hash > 0
-				var:zg361_we_ad_external_exit_position_type_id > 0
 				var:zg361_we_ad_external_exit_former_slot_id > 0
-				var:zg361_we_ad_external_exit_hc_lineage_case = var:zg361_we_formal_hc_active_case
 				var:zg361_we_ad_external_exit_displaced_hours >= 0
 				var:zg361_we_ad_external_exit_displaced_cost_receipt > 0
+				NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_case_id }
+				NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+				NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_case_hash }
+				NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 			}
 			trigger_else = { always = no }
 		}
@@ -57824,15 +57789,15 @@ zg361_we_m277_route_a_effect = {
 			change_variable = { name = zg361_ch_hc_occupied add = -1 }
 			change_variable = { name = zg361_ch_hc_frozen add = 1 }
 			set_variable = { name = zg361_we_formal_hc_active value = 0 }
-			set_variable = { name = zg361_we_m277_pip_case_frozen value = var:zg361_we_ad_external_pip_case_id }
-			set_variable = { name = zg361_we_m277_pip_case_hash value = var:zg361_we_ad_external_pip_case_hash }
-			set_variable = { name = zg361_we_m277_pip_closure_receipt_id value = var:zg361_we_ad_external_pip_closure_receipt_id }
-			set_variable = { name = zg361_we_m277_pip_closure_receipt_hash value = var:zg361_we_ad_external_pip_closure_receipt_hash }
+			set_variable = { name = zg361_we_m277_pip_case_frozen value = var:zg361_b2_workforce_pip_case_id }
+			set_variable = { name = zg361_we_m277_pip_case_hash value = var:zg361_b2_workforce_pip_case_hash }
+			set_variable = { name = zg361_we_m277_pip_closure_receipt_id value = var:zg361_b2_workforce_pip_closure_receipt_id }
+			set_variable = { name = zg361_we_m277_pip_closure_receipt_hash value = var:zg361_b2_workforce_pip_closure_receipt_hash }
 			set_variable = { name = zg361_we_m277_exit_receipt_id value = var:zg361_we_ad_external_exit_receipt_id }
 			set_variable = { name = zg361_we_m277_exit_receipt_hash value = var:zg361_we_ad_external_exit_receipt_hash }
-			set_variable = { name = zg361_we_m277_position_type_id value = var:zg361_we_ad_external_exit_position_type_id }
+			set_variable = { name = zg361_we_m277_position_type_id value = var:zg361_we_m274_position_type_id }
 			set_variable = { name = zg361_we_m277_former_slot_id value = var:zg361_we_ad_external_exit_former_slot_id }
-			set_variable = { name = zg361_we_m277_former_hc_lineage value = var:zg361_we_ad_external_exit_hc_lineage_case }
+			set_variable = { name = zg361_we_m277_former_hc_lineage value = var:zg361_we_formal_hc_active_case }
 			set_variable = { name = zg361_we_m277_displaced_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m277_displaced_hours value = var:zg361_we_ad_external_exit_displaced_hours }
 			set_variable = { name = zg361_we_m277_displaced_cost_provenance value = var:zg361_we_ad_external_exit_displaced_cost_receipt }
@@ -57842,6 +57807,8 @@ zg361_we_m277_route_a_effect = {
 			set_variable = { name = zg361_we_m277_hc_minted value = 0 }
 			set_variable = { name = zg361_we_ad_external_pip_exit_consumed value = 1 }
 			set_variable = { name = zg361_we_ad_external_pip_exit_ready value = 0 }
+			set_variable = { name = zg361_b2_workforce_pip_consumed value = 1 }
+			set_variable = { name = zg361_b2_workforce_pip_pending value = 0 }
 			set_variable = { name = zg361_we_m277_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_m277_write_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m277_write_cycle value = $TICKET_CYCLE$ }
@@ -58047,20 +58014,21 @@ zg361_we_m277_route_a_effect = {
 						has_variable = zg361_we_formal_hc_active
 						has_variable = zg361_we_formal_hc_active_case
 						has_variable = zg361_ch_hc_occupied
-						has_variable = zg361_we_ad_external_pip_owner
-						has_variable = zg361_we_ad_external_pip_subject
-						has_variable = zg361_we_ad_external_pip_cycle
-						has_variable = zg361_we_ad_external_pip_case
-						has_variable = zg361_we_ad_external_pip_state
-						has_variable = zg361_we_ad_external_pip_case_id
-						has_variable = zg361_we_ad_external_pip_case_hash
-						has_variable = zg361_we_ad_external_pip_closure_receipt_id
-						has_variable = zg361_we_ad_external_pip_closure_receipt_hash
+						has_variable = zg361_we_m274_position_type_id
+						has_variable = zg361_b2_workforce_pip_pending
+						has_variable = zg361_b2_workforce_pip_consumed
+						has_variable = zg361_b2_workforce_pip_owner
+						has_variable = zg361_b2_workforce_pip_subject
+						has_variable = zg361_b2_workforce_pip_cycle
+						has_variable = zg361_b2_workforce_pip_case
+						has_variable = zg361_b2_workforce_pip_state
+						has_variable = zg361_b2_workforce_pip_case_id
+						has_variable = zg361_b2_workforce_pip_case_hash
+						has_variable = zg361_b2_workforce_pip_closure_receipt_id
+						has_variable = zg361_b2_workforce_pip_closure_receipt_hash
 						has_variable = zg361_we_ad_external_exit_receipt_id
 						has_variable = zg361_we_ad_external_exit_receipt_hash
-						has_variable = zg361_we_ad_external_exit_position_type_id
 						has_variable = zg361_we_ad_external_exit_former_slot_id
-						has_variable = zg361_we_ad_external_exit_hc_lineage_case
 						has_variable = zg361_we_ad_external_exit_displaced_hours
 						has_variable = zg361_we_ad_external_exit_displaced_cost_receipt
 						has_variable = zg361_we_ad_external_pip_exit_ready
@@ -58090,25 +58058,32 @@ zg361_we_m277_route_a_effect = {
 					var:zg361_we_formal_hc_active = 1
 					var:zg361_we_formal_hc_active_case = $TICKET_CASE$
 					var:zg361_ch_hc_occupied >= 1
+					var:zg361_we_m274_position_type_id > 0
 					var:zg361_we_ad_external_pip_exit_ready = 1
 					var:zg361_we_ad_external_pip_exit_consumed = 0
-					var:zg361_we_ad_external_pip_owner = $TICKET_OWNER$
-					var:zg361_we_ad_external_pip_subject = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_pip_cycle = $TICKET_CYCLE$
-					var:zg361_we_ad_external_pip_case = $TICKET_CASE$
-					var:zg361_we_ad_external_pip_state = 6
-					var:zg361_we_ad_external_pip_case_id > 0
-					NOT = { var:zg361_we_ad_external_pip_case_id = $TICKET_CASE$ }
-					var:zg361_we_ad_external_pip_case_hash > 0
-					var:zg361_we_ad_external_pip_closure_receipt_id > 0
-					var:zg361_we_ad_external_pip_closure_receipt_hash > 0
+					var:zg361_b2_workforce_pip_pending = 1
+					var:zg361_b2_workforce_pip_consumed = 0
+					var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+					var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+					var:zg361_b2_workforce_pip_cycle > 0
+					var:zg361_b2_workforce_pip_case > 0
+					OR = { var:zg361_b2_workforce_pip_state = 3 var:zg361_b2_workforce_pip_state = 4 }
+					var:zg361_b2_workforce_pip_case_id > 0
+					NOT = { var:zg361_b2_workforce_pip_case_id = $TICKET_CASE$ }
+					var:zg361_b2_workforce_pip_case_hash > 0
+					var:zg361_b2_workforce_pip_closure_receipt_id > 0
+					var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+					NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+					NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 					var:zg361_we_ad_external_exit_receipt_id > 0
 					var:zg361_we_ad_external_exit_receipt_hash > 0
-					var:zg361_we_ad_external_exit_position_type_id > 0
 					var:zg361_we_ad_external_exit_former_slot_id > 0
-					var:zg361_we_ad_external_exit_hc_lineage_case = var:zg361_we_formal_hc_active_case
 					var:zg361_we_ad_external_exit_displaced_hours >= 0
 					var:zg361_we_ad_external_exit_displaced_cost_receipt > 0
+					NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_case_id }
+					NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+					NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_case_hash }
+					NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 				}
 				trigger_else = { always = no }
 			}
@@ -58307,20 +58282,21 @@ zg361_we_m277_route_b_effect = {
 					has_variable = zg361_we_formal_hc_active
 					has_variable = zg361_we_formal_hc_active_case
 					has_variable = zg361_ch_hc_occupied
-					has_variable = zg361_we_ad_external_pip_owner
-					has_variable = zg361_we_ad_external_pip_subject
-					has_variable = zg361_we_ad_external_pip_cycle
-					has_variable = zg361_we_ad_external_pip_case
-					has_variable = zg361_we_ad_external_pip_state
-					has_variable = zg361_we_ad_external_pip_case_id
-					has_variable = zg361_we_ad_external_pip_case_hash
-					has_variable = zg361_we_ad_external_pip_closure_receipt_id
-					has_variable = zg361_we_ad_external_pip_closure_receipt_hash
+					has_variable = zg361_we_m274_position_type_id
+					has_variable = zg361_b2_workforce_pip_pending
+					has_variable = zg361_b2_workforce_pip_consumed
+					has_variable = zg361_b2_workforce_pip_owner
+					has_variable = zg361_b2_workforce_pip_subject
+					has_variable = zg361_b2_workforce_pip_cycle
+					has_variable = zg361_b2_workforce_pip_case
+					has_variable = zg361_b2_workforce_pip_state
+					has_variable = zg361_b2_workforce_pip_case_id
+					has_variable = zg361_b2_workforce_pip_case_hash
+					has_variable = zg361_b2_workforce_pip_closure_receipt_id
+					has_variable = zg361_b2_workforce_pip_closure_receipt_hash
 					has_variable = zg361_we_ad_external_exit_receipt_id
 					has_variable = zg361_we_ad_external_exit_receipt_hash
-					has_variable = zg361_we_ad_external_exit_position_type_id
 					has_variable = zg361_we_ad_external_exit_former_slot_id
-					has_variable = zg361_we_ad_external_exit_hc_lineage_case
 					has_variable = zg361_we_ad_external_exit_displaced_hours
 					has_variable = zg361_we_ad_external_exit_displaced_cost_receipt
 					has_variable = zg361_we_ad_external_pip_exit_ready
@@ -58350,25 +58326,32 @@ zg361_we_m277_route_b_effect = {
 				var:zg361_we_formal_hc_active = 1
 				var:zg361_we_formal_hc_active_case = $TICKET_CASE$
 				var:zg361_ch_hc_occupied >= 1
+				var:zg361_we_m274_position_type_id > 0
 				var:zg361_we_ad_external_pip_exit_ready = 1
 				var:zg361_we_ad_external_pip_exit_consumed = 0
-				var:zg361_we_ad_external_pip_owner = $TICKET_OWNER$
-				var:zg361_we_ad_external_pip_subject = $TICKET_SUBJECT$
-				var:zg361_we_ad_external_pip_cycle = $TICKET_CYCLE$
-				var:zg361_we_ad_external_pip_case = $TICKET_CASE$
-				var:zg361_we_ad_external_pip_state = 6
-				var:zg361_we_ad_external_pip_case_id > 0
-				NOT = { var:zg361_we_ad_external_pip_case_id = $TICKET_CASE$ }
-				var:zg361_we_ad_external_pip_case_hash > 0
-				var:zg361_we_ad_external_pip_closure_receipt_id > 0
-				var:zg361_we_ad_external_pip_closure_receipt_hash > 0
+				var:zg361_b2_workforce_pip_pending = 1
+				var:zg361_b2_workforce_pip_consumed = 0
+				var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+				var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+				var:zg361_b2_workforce_pip_cycle > 0
+				var:zg361_b2_workforce_pip_case > 0
+				OR = { var:zg361_b2_workforce_pip_state = 3 var:zg361_b2_workforce_pip_state = 4 }
+				var:zg361_b2_workforce_pip_case_id > 0
+				NOT = { var:zg361_b2_workforce_pip_case_id = $TICKET_CASE$ }
+				var:zg361_b2_workforce_pip_case_hash > 0
+				var:zg361_b2_workforce_pip_closure_receipt_id > 0
+				var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+				NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+				NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 				var:zg361_we_ad_external_exit_receipt_id > 0
 				var:zg361_we_ad_external_exit_receipt_hash > 0
-				var:zg361_we_ad_external_exit_position_type_id > 0
 				var:zg361_we_ad_external_exit_former_slot_id > 0
-				var:zg361_we_ad_external_exit_hc_lineage_case = var:zg361_we_formal_hc_active_case
 				var:zg361_we_ad_external_exit_displaced_hours >= 0
 				var:zg361_we_ad_external_exit_displaced_cost_receipt > 0
+				NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_case_id }
+				NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+				NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_case_hash }
+				NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 			}
 			trigger_else = { always = no }
 		}
@@ -58421,15 +58404,15 @@ zg361_we_m277_route_b_effect = {
 			change_variable = { name = zg361_ch_hc_occupied add = -1 }
 			change_variable = { name = zg361_ch_hc_frozen add = 1 }
 			set_variable = { name = zg361_we_formal_hc_active value = 0 }
-			set_variable = { name = zg361_we_m277_pip_case_frozen value = var:zg361_we_ad_external_pip_case_id }
-			set_variable = { name = zg361_we_m277_pip_case_hash value = var:zg361_we_ad_external_pip_case_hash }
-			set_variable = { name = zg361_we_m277_pip_closure_receipt_id value = var:zg361_we_ad_external_pip_closure_receipt_id }
-			set_variable = { name = zg361_we_m277_pip_closure_receipt_hash value = var:zg361_we_ad_external_pip_closure_receipt_hash }
+			set_variable = { name = zg361_we_m277_pip_case_frozen value = var:zg361_b2_workforce_pip_case_id }
+			set_variable = { name = zg361_we_m277_pip_case_hash value = var:zg361_b2_workforce_pip_case_hash }
+			set_variable = { name = zg361_we_m277_pip_closure_receipt_id value = var:zg361_b2_workforce_pip_closure_receipt_id }
+			set_variable = { name = zg361_we_m277_pip_closure_receipt_hash value = var:zg361_b2_workforce_pip_closure_receipt_hash }
 			set_variable = { name = zg361_we_m277_exit_receipt_id value = var:zg361_we_ad_external_exit_receipt_id }
 			set_variable = { name = zg361_we_m277_exit_receipt_hash value = var:zg361_we_ad_external_exit_receipt_hash }
-			set_variable = { name = zg361_we_m277_position_type_id value = var:zg361_we_ad_external_exit_position_type_id }
+			set_variable = { name = zg361_we_m277_position_type_id value = var:zg361_we_m274_position_type_id }
 			set_variable = { name = zg361_we_m277_former_slot_id value = var:zg361_we_ad_external_exit_former_slot_id }
-			set_variable = { name = zg361_we_m277_former_hc_lineage value = var:zg361_we_ad_external_exit_hc_lineage_case }
+			set_variable = { name = zg361_we_m277_former_hc_lineage value = var:zg361_we_formal_hc_active_case }
 			set_variable = { name = zg361_we_m277_displaced_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m277_displaced_hours value = var:zg361_we_ad_external_exit_displaced_hours }
 			set_variable = { name = zg361_we_m277_displaced_cost_provenance value = var:zg361_we_ad_external_exit_displaced_cost_receipt }
@@ -58439,6 +58422,8 @@ zg361_we_m277_route_b_effect = {
 			set_variable = { name = zg361_we_m277_hc_minted value = 0 }
 			set_variable = { name = zg361_we_ad_external_pip_exit_consumed value = 1 }
 			set_variable = { name = zg361_we_ad_external_pip_exit_ready value = 0 }
+			set_variable = { name = zg361_b2_workforce_pip_consumed value = 1 }
+			set_variable = { name = zg361_b2_workforce_pip_pending value = 0 }
 			set_variable = { name = zg361_we_m277_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_m277_write_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m277_write_cycle value = $TICKET_CYCLE$ }
@@ -58644,20 +58629,21 @@ zg361_we_m277_route_b_effect = {
 						has_variable = zg361_we_formal_hc_active
 						has_variable = zg361_we_formal_hc_active_case
 						has_variable = zg361_ch_hc_occupied
-						has_variable = zg361_we_ad_external_pip_owner
-						has_variable = zg361_we_ad_external_pip_subject
-						has_variable = zg361_we_ad_external_pip_cycle
-						has_variable = zg361_we_ad_external_pip_case
-						has_variable = zg361_we_ad_external_pip_state
-						has_variable = zg361_we_ad_external_pip_case_id
-						has_variable = zg361_we_ad_external_pip_case_hash
-						has_variable = zg361_we_ad_external_pip_closure_receipt_id
-						has_variable = zg361_we_ad_external_pip_closure_receipt_hash
+						has_variable = zg361_we_m274_position_type_id
+						has_variable = zg361_b2_workforce_pip_pending
+						has_variable = zg361_b2_workforce_pip_consumed
+						has_variable = zg361_b2_workforce_pip_owner
+						has_variable = zg361_b2_workforce_pip_subject
+						has_variable = zg361_b2_workforce_pip_cycle
+						has_variable = zg361_b2_workforce_pip_case
+						has_variable = zg361_b2_workforce_pip_state
+						has_variable = zg361_b2_workforce_pip_case_id
+						has_variable = zg361_b2_workforce_pip_case_hash
+						has_variable = zg361_b2_workforce_pip_closure_receipt_id
+						has_variable = zg361_b2_workforce_pip_closure_receipt_hash
 						has_variable = zg361_we_ad_external_exit_receipt_id
 						has_variable = zg361_we_ad_external_exit_receipt_hash
-						has_variable = zg361_we_ad_external_exit_position_type_id
 						has_variable = zg361_we_ad_external_exit_former_slot_id
-						has_variable = zg361_we_ad_external_exit_hc_lineage_case
 						has_variable = zg361_we_ad_external_exit_displaced_hours
 						has_variable = zg361_we_ad_external_exit_displaced_cost_receipt
 						has_variable = zg361_we_ad_external_pip_exit_ready
@@ -58687,25 +58673,32 @@ zg361_we_m277_route_b_effect = {
 					var:zg361_we_formal_hc_active = 1
 					var:zg361_we_formal_hc_active_case = $TICKET_CASE$
 					var:zg361_ch_hc_occupied >= 1
+					var:zg361_we_m274_position_type_id > 0
 					var:zg361_we_ad_external_pip_exit_ready = 1
 					var:zg361_we_ad_external_pip_exit_consumed = 0
-					var:zg361_we_ad_external_pip_owner = $TICKET_OWNER$
-					var:zg361_we_ad_external_pip_subject = $TICKET_SUBJECT$
-					var:zg361_we_ad_external_pip_cycle = $TICKET_CYCLE$
-					var:zg361_we_ad_external_pip_case = $TICKET_CASE$
-					var:zg361_we_ad_external_pip_state = 6
-					var:zg361_we_ad_external_pip_case_id > 0
-					NOT = { var:zg361_we_ad_external_pip_case_id = $TICKET_CASE$ }
-					var:zg361_we_ad_external_pip_case_hash > 0
-					var:zg361_we_ad_external_pip_closure_receipt_id > 0
-					var:zg361_we_ad_external_pip_closure_receipt_hash > 0
+					var:zg361_b2_workforce_pip_pending = 1
+					var:zg361_b2_workforce_pip_consumed = 0
+					var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+					var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+					var:zg361_b2_workforce_pip_cycle > 0
+					var:zg361_b2_workforce_pip_case > 0
+					OR = { var:zg361_b2_workforce_pip_state = 3 var:zg361_b2_workforce_pip_state = 4 }
+					var:zg361_b2_workforce_pip_case_id > 0
+					NOT = { var:zg361_b2_workforce_pip_case_id = $TICKET_CASE$ }
+					var:zg361_b2_workforce_pip_case_hash > 0
+					var:zg361_b2_workforce_pip_closure_receipt_id > 0
+					var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+					NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+					NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 					var:zg361_we_ad_external_exit_receipt_id > 0
 					var:zg361_we_ad_external_exit_receipt_hash > 0
-					var:zg361_we_ad_external_exit_position_type_id > 0
 					var:zg361_we_ad_external_exit_former_slot_id > 0
-					var:zg361_we_ad_external_exit_hc_lineage_case = var:zg361_we_formal_hc_active_case
 					var:zg361_we_ad_external_exit_displaced_hours >= 0
 					var:zg361_we_ad_external_exit_displaced_cost_receipt > 0
+					NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_case_id }
+					NOT = { var:zg361_we_ad_external_exit_receipt_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+					NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_case_hash }
+					NOT = { var:zg361_we_ad_external_exit_receipt_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
 				}
 				trigger_else = { always = no }
 			}

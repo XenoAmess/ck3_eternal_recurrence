@@ -103,11 +103,15 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
   flight。#275 A 在到期时保留原 HC lineage 并打开 runner-up pending；#275 B 只有拿到与冻结拒绝理由一致的
   remediation receipt 后才 `reserved→available` 并清 flight。没有证据就继续等待，不能因计时到期自动释放。
 - #269 只结算 probation outcome、归因和 referral 金币，不拥有 HC release。相同 outcome id 不能重复结算；
-  invalid-ready 输入写 typed future RED，尚未 ready 才重排。真实录用的 #269 A/B 在 future consumer 完成前不推进
+  `outcome_id` 已出现但字段不完整时写 typed future RED，尚无 `outcome_id` 才重排。candidate/hire case、三位责任面试官与
+  最终批准人从本案 #267/#269/#272 重导；第一份 attribution bps 由 `10000-bps_2-bps_3` 守恒推导。真实录用的 #269 A/B 在 future consumer 完成前不推进
   AD state 5；成功结算后才推进 state 6 并向玩家排 #276，或让 AI 从 callback 续跑 #276/#277。
 - #274 录用与 #275 拒绝是互斥结果。录用成功后内部写 #275 `hold=0` disposition，玩家不会看到矛盾的拒绝窗；
   未录用才展示 #275 A/B/C。真实拒绝后内部写 #269 `no_hire=1` disposition，不创建 probation watch，也不展示
   延迟质量回写窗。这两种 disposition 是可追溯的同案业务结论，不是 C debt，且资源变化为零。
+- #277 不再接收 caller 复述的 PIP case/closure。它直接读取 B2 已提交、尚未消费的 11 字段 PIP settlement 槽，
+  再与独立 native exit receipt 联结；position type 与 HC lineage 分别从 #274 和当前 formal HC 对象重导。只有 A/B
+  在 case-kernel operation receipt 成功后才消费两个来源，C、RED、stale、幂等和 route collision 都不消费 B2。
 
 ### AC #262/#264 的真实人物与交接 vertical
 
@@ -157,16 +161,16 @@ owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退�
 | AC | 265 | 6 | A 只凭既有 incident/executor/payment evidence 冻结 actor/payee 并精确反向追偿；B 仅记录 suspicion/investigation，零追回 |
 | AD | 266 | 1 | vacancy/bar/urgency/HC receipt → shared available→reserved，一岗一槽并建立 owner-scope single flight |
 | AD | 273 | 1 | 消费同案 #266，unique candidate owner/allocation/credit split → 10000bp ownership；不再扣 HC |
-| AD | 271 | 1 | 消费同案 #266/#273，并在投票前冻结 external referral/referrer/evidence；owner 托管 5 金，合格 probation 才付 |
+| AD | 271 | 1 | 消费同案 #266/#273，并在投票前冻结 referral/referrer/evidence；candidate、固定 5 金与参评状态由本案重导，owner 托管 5 金，合格 probation 才付 |
 | AD | 267 | 1 | 消费同案 #271 referral disposition、3 位互异 interviewer、3 票/证据 → 身份/票据全复制后最后封存 raw-vote snapshot |
 | AD | 268 | 2 | calibration snapshot/bounded adjustment → normalized result；raw votes 不改 |
 | AD | 270 | 2 | 消费同案 #266/#267，role class/risk threshold/version → future hiring policy；raw votes 不改 |
 | AD | 272 | 3 | 消费 owner/vote/calibration/policy 同案对象，冻结 unique offer terms/level/approver/premium due → bounded offer reserve |
-| AD | 274 | 4 | 消费同案 offer/HC lineage；A one counter 后精确结算 15 金币并 reserved→occupied，B 保持 Offer 进入拒绝分支 |
+| AD | 274 | 4 | 消费同案 offer/HC lineage 与真实 position receipt；appointed character 直接绑定本案 subject；A one counter 后精确结算 15 金币并 reserved→occupied，B 保持 Offer 进入拒绝分支 |
 | AD | 275 | 4 | 未录用时 refusal reason/runner evidence/HC lineage → held/reopen/release；已录用则内部写 hold=0 disposition，不弹拒绝窗、不改资源 |
-| AD | 269 | 5 | 已录用时 pending outcome + unique evidence → future one-shot 后才 advance；已拒绝则内部写 no-hire disposition，不建 watch |
-| AD | 276 | 6 | old case hash/exit/growth → append-only rehire review；HC untouched |
-| AD | 277 | 6 | PIP/old slot/work proof/backfill route → occupied→frozen vacancy；不回 available、不铸 HC |
+| AD | 269 | 5 | 已录用时 pending outcome + unique evidence → 同案身份重导、bps 守恒后 future one-shot 才 advance；已拒绝则内部写 no-hire disposition，不建 watch |
+| AD | 276 | 6 | old case hash/exit/growth → candidate 绑定当前 subject 的 append-only rehire review；HC untouched |
+| AD | 277 | 6 | B2 pending 11-tuple + 独立 exit receipt + 内部 position/HC lineage → occupied→frozen vacancy；只在成功 A/B 消费 B2，不回 available、不铸 HC |
 | AL | 355 | 1 | prior 100/actual 150/repeatable 20/windfall 30 → limited 120 或 PEAK 150+risk |
 | AL | 356 | 1 | completion/report/cutoff/timestamp/actual → actual-cycle credit 与 duplicate reversal |
 | AL | 360 | 4 | 3 个 cohort 的 manager/member/agenda/quota/evidence/exception/forced-C → 逐 cohort agenda=members、exception+forced=quota、真实 manager/trust 成本 |
@@ -272,9 +276,10 @@ RED `9098`。
 ## 6. 仍需完成的 CK3/live 工作
 
 1. 中央层选择真实 assessed subject 并调用唯一 portfolio adapter；本包不自行弹窗。
-2. AD 已提供严格 adapter：#274 只消费外部已确认的真实角色/position receipt；#276 只接受旧 cycle/旧 case
-   的 rehire history；#277 只接受独立 closed-PIP 与 exit/position receipt。仍需原生岗位 provider 真正执行并
-   证明 court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
+2. AD 已提供严格 adapter：#274 只消费外部已确认的 position receipt，角色直接绑定当前 subject；#276 只接受旧
+   cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；#277 直接 join B2 已提交的 11 字段 PIP settlement
+   槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC lineage。仍需原生岗位 provider 真正执行并证明
+   court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
 3. 357–359 已有 B1/B2 真实业务 producer、中央调用与本包 strict bridge 接线；仍需 MCP-first CK3 paused/live 证明三张来源
    确实在可达业务路径生成并推进 AL。#360 cohort 成员仍需对应业务 producer；#361 report/charter 已改为本包从三轮
    原始 receipt ledger 生成 serial，不再有外部 report/hash producer。必须实机证明前两轮只落 state 8、第三轮才弹 #361。
@@ -290,6 +295,6 @@ RED `9098`。
    这 8 条确实归零，不能以静态可达性代替实机结论。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
 8. 2026-08-31 旧 loader 的 303 项 Workforce external warning 已逐字段归责于
-   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。本包静态预期消掉 AC 20、AL stage 8 与已删除的
-   AL charter 28，共 56 项；仍余 AD 80 + AL collective 167 = 247 项。该数字必须由新 loader artifact 复验，
+   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。本包静态预期消掉 AC 20、AL stage 8、已删除的
+   AL charter 28 与 AD 35 个重复 alias，共 91 项；仍余 AD 45 + AL collective 167 = 212 项。该数字必须由新 loader artifact 复验，
    不能把静态可达性称为 live GREEN。

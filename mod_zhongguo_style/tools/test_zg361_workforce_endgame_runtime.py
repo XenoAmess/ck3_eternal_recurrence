@@ -21,6 +21,43 @@ EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-workforce-endgame-ck3-runtime-spec.md"
 LEDGER_PATH = MOD_ROOT / "docs" / "361-workforce-external-producer-ledger-2026-08-31.md"
 EXPECTED_IDS = set(range(242, 278)) | {355, 356, 360, 361}
+EXPECTED_RETIRED_AD_EXTERNAL_ALIASES = {
+    "zg361_we_ad_external_candidate",
+    "zg361_we_ad_external_final_approver",
+    "zg361_we_ad_external_outcome_candidate",
+    "zg361_we_ad_external_outcome_hire_case",
+    "zg361_we_ad_external_referral_present",
+    "zg361_we_ad_external_referral_reward",
+    "zg361_we_ad_external_referrer_voted",
+    "zg361_we_ad_external_responsible_interviewer_1",
+    "zg361_we_ad_external_responsible_interviewer_2",
+    "zg361_we_ad_external_responsible_interviewer_3",
+    "zg361_we_ad_external_appointed_character",
+    "zg361_we_ad_external_appointment_case",
+    "zg361_we_ad_external_appointment_cycle",
+    "zg361_we_ad_external_appointment_owner",
+    "zg361_we_ad_external_appointment_state",
+    "zg361_we_ad_external_appointment_subject",
+    "zg361_we_ad_external_outcome_ready",
+    "zg361_we_ad_external_pip_case",
+    "zg361_we_ad_external_pip_cycle",
+    "zg361_we_ad_external_pip_owner",
+    "zg361_we_ad_external_pip_state",
+    "zg361_we_ad_external_pip_subject",
+    "zg361_we_ad_external_rehire_candidate",
+    "zg361_we_ad_external_rehire_case",
+    "zg361_we_ad_external_rehire_cycle",
+    "zg361_we_ad_external_rehire_owner",
+    "zg361_we_ad_external_rehire_state",
+    "zg361_we_ad_external_rehire_subject",
+    "zg361_we_ad_external_pip_case_hash",
+    "zg361_we_ad_external_pip_case_id",
+    "zg361_we_ad_external_pip_closure_receipt_hash",
+    "zg361_we_ad_external_pip_closure_receipt_id",
+    "zg361_we_ad_external_attribution_bps_1",
+    "zg361_we_ad_external_exit_hc_lineage_case",
+    "zg361_we_ad_external_exit_position_type_id",
+}
 ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
     r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
     r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
@@ -529,7 +566,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         future = block(self.effects, "zg361_we_m269_future_consume_effect")
         self.assertIn("referral_gold_reserved add = 5", referral)
         self.assertIn("m271_referrer_recused_before_vote value = 1", referral)
-        self.assertIn("m271_referrer_voted value = var:zg361_we_ad_external_referrer_voted", referral)
+        self.assertIn("m271_referrer_vote_policy value = 0", referral)
+        self.assertIn("m271_referrer_vote_policy value = 1", undisclosed)
         self.assertIn("m271_referral_id value = var:zg361_we_ad_external_referral_id", referral)
         self.assertLess(gen.DOMAIN_ORDER["ad"].index(271), gen.DOMAIN_ORDER["ad"].index(267))
         self.assertIn("m271_reward_due_after_probation value = 1", referral)
@@ -904,8 +942,10 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertNotIn("zg361_ch_hc_available add", exit_route)
         self.assertIn("m277_displaced_subject value = $TICKET_SUBJECT$", exit_route)
         self.assertIn("m277_displaced_cost_provenance value = var:zg361_we_ad_external_exit_displaced_cost_receipt", exit_route)
-        self.assertIn("m277_pip_case_frozen value = var:zg361_we_ad_external_pip_case_id", exit_route)
+        self.assertIn("m277_pip_case_frozen value = var:zg361_b2_workforce_pip_case_id", exit_route)
         self.assertIn("ad_external_pip_exit_consumed value = 1", exit_route)
+        self.assertIn("zg361_b2_workforce_pip_consumed value = 1", exit_route)
+        self.assertIn("zg361_b2_workforce_pip_pending value = 0", exit_route)
 
     def test_62_charter_future_defaults_are_read_by_later_portfolio_init(self) -> None:
         init = block(self.effects, "zg361_we_initialize_portfolio_effect")
@@ -958,18 +998,24 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 self.assertIn(f"m267_interviewer_{slot} value = var:zg361_we_ad_external_interviewer_{slot}", route)
                 self.assertIn(f"m267_vote_{slot} value = var:zg361_we_ad_external_vote_{slot}", route)
                 self.assertIn(f"m267_vote_evidence_{slot} value = var:zg361_we_ad_external_vote_evidence_{slot}", route)
-            self.assertIn(f"ad_external_referrer_voted = {referrer_voted}", route)
+            self.assertIn(f"m267_referrer_voted value = {referrer_voted}", route)
             self.assertGreater(route.index("m267_raw_votes_frozen value = 1"), route.index("m267_vote_evidence_3 value"))
 
     def test_67_outcome_is_evidence_bound_duplicate_safe_and_clears_pending_last(self) -> None:
         outcome = block(self.effects, "zg361_we_m269_future_consume_effect")
         for name in (
-            "outcome_id", "outcome_hire_case", "outcome_candidate", "outcome_quality",
+            "outcome_id", "outcome_quality",
             "outcome_evidence_id", "outcome_evidence_hash", "outcome_evidence_count",
             "outcome_observed_cycle",
         ):
             self.assertIn(f"has_variable = zg361_we_ad_external_{name}", outcome)
+        self.assertIn("m267_candidate_frozen = this", outcome)
+        self.assertIn("m269_consumed_hire_case value = var:zg361_we_m269_write_case", outcome)
+        self.assertIn("m269_consumed_candidate value = var:zg361_we_m267_candidate_frozen", outcome)
+        self.assertIn("name = zg361_we_expected_attribution_bps_1", outcome)
+        self.assertIn("m269_dimension_bps_1 value = scope:zg361_we_expected_attribution_bps_1", outcome)
         self.assertIn("NOT = { var:zg361_we_m269_last_outcome_id = var:zg361_we_ad_external_outcome_id }", outcome)
+        self.assertIn("ad_external_outcome_id > 0", outcome)
         self.assertIn("ad_external_outcome_quality >= 1", outcome)
         self.assertIn("ad_external_outcome_quality <= 4", outcome)
         self.assertLess(outcome.index("m269_outcome_settled value = 1"), outcome.index("m269_outcome_pending value = 0"))
@@ -1283,18 +1329,77 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         pip_exit = block(self.effects, "zg361_we_submit_m277_closed_pip_exit_effect")
         self.assertNotIn("zg361_we_submit_m264_handoff_fact_effect", self.effects)
         self.assertIn("$APPOINTMENT_CONFIRMED$ = 1", appointment)
-        self.assertIn("$APPOINTED_CHARACTER$ = $TICKET_SUBJECT$", appointment)
+        self.assertNotIn("$APPOINTED_CHARACTER$", appointment)
+        self.assertIn("m272_offer_candidate = $TICKET_SUBJECT$", appointment)
         self.assertIn("ad_external_position_receipt_hash", appointment)
+        for field, value in (
+            ("owner", "$TICKET_OWNER$"),
+            ("subject", "$TICKET_SUBJECT$"),
+            ("cycle", "$TICKET_CYCLE$"),
+            ("case", "$TICKET_CASE$"),
+            ("state", "4"),
+        ):
+            self.assertIn(f"ad_appointment_receipt_{field} value = {value}", appointment)
         self.assertIn("$CENTRAL_REQUISITION_OPENED$ = 1", runner)
         self.assertIn("NOT = { $NEW_REQUISITION_CASE$ = $TICKET_CASE$ }", runner)
         self.assertIn("m275_runner_reopen_consumed value = 1", runner)
         self.assertIn("$HISTORICAL_CYCLE$ < $TICKET_CYCLE$", rehire)
         self.assertIn("NOT = { $HISTORICAL_CASE_ID$ = $TICKET_CASE$ }", rehire)
-        self.assertIn("$PIP_CLOSED$ = 1", pip_exit)
+        for field, value in (
+            ("owner", "$TICKET_OWNER$"),
+            ("subject", "$TICKET_SUBJECT$"),
+            ("cycle", "$TICKET_CYCLE$"),
+            ("case", "$TICKET_CASE$"),
+            ("state", "6"),
+        ):
+            self.assertIn(f"ad_rehire_history_{field} value = {value}", rehire)
+        self.assertIn("zg361_b2_workforce_pip_pending = 1", pip_exit)
+        self.assertIn("zg361_b2_workforce_pip_consumed = 0", pip_exit)
+        self.assertIn("zg361_b2_workforce_pip_owner = $TICKET_OWNER$", pip_exit)
+        self.assertIn("zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$", pip_exit)
         self.assertIn("$EXIT_CONFIRMED$ = 1", pip_exit)
         self.assertIn("$EXITED_CHARACTER$ = $TICKET_SUBJECT$", pip_exit)
+        for retired_parameter in (
+            "$PIP_CASE_ID$", "$PIP_CASE_HASH$", "$PIP_CLOSED$",
+            "$PIP_CLOSURE_RECEIPT_ID$", "$PIP_CLOSURE_RECEIPT_HASH$",
+            "$POSITION_TYPE_ID$", "$HC_LINEAGE_CASE$",
+        ):
+            self.assertNotIn(retired_parameter, pip_exit)
         for code, adapter in ((2741, appointment), (2752, runner), (2761, rehire), (2771, pip_exit)):
             self.assertIn(f"adapter_blocked_reason value = {code}", adapter)
+
+    def test_82e_ad35_aliases_are_retired_and_277_consumes_b2_only_after_success(self) -> None:
+        self.assertEqual(EXPECTED_RETIRED_AD_EXTERNAL_ALIASES, set(gen.RETIRED_AD_EXTERNAL_ALIASES))
+        self.assertEqual(35, len(gen.RETIRED_AD_EXTERNAL_ALIASES))
+        for alias in EXPECTED_RETIRED_AD_EXTERNAL_ALIASES:
+            with self.subTest(alias=alias):
+                self.assertNotIn(alias, self.effects)
+                self.assertNotIn(alias, self.events)
+
+        expected_b2_fields = (
+            "pending", "consumed", "owner", "subject", "cycle", "case", "state",
+            "case_id", "case_hash", "closure_receipt_id", "closure_receipt_hash",
+        )
+        self.assertEqual(expected_b2_fields, gen.B2_PIP_SOURCE_FIELDS)
+        adapter = block(self.effects, "zg361_we_submit_m277_closed_pip_exit_effect")
+        self.assertNotIn("name = zg361_b2_workforce_pip_", adapter)
+        for field in expected_b2_fields:
+            self.assertIn(f"has_variable = zg361_b2_workforce_pip_{field}", adapter)
+
+        for letter in "ab":
+            route = block(self.effects, f"zg361_we_m277_route_{letter}_effect")
+            receipt = route.index("zg361_case_kernel_record_operation_effect")
+            consume = route.index("name = zg361_b2_workforce_pip_consumed value = 1")
+            self.assertGreater(consume, receipt)
+            self.assertGreater(route.index("name = zg361_b2_workforce_pip_pending value = 0"), receipt)
+            for field in expected_b2_fields:
+                self.assertLess(route.index(f"has_variable = zg361_b2_workforce_pip_{field}"), receipt)
+            self.assertIn("m277_position_type_id value = var:zg361_we_m274_position_type_id", route)
+            self.assertIn("m277_former_hc_lineage value = var:zg361_we_formal_hc_active_case", route)
+
+        route_c = block(self.effects, "zg361_we_m277_route_c_effect")
+        self.assertNotIn("zg361_b2_workforce_pip_", route_c)
+        self.assertNotIn("zg361_we_ad_external_pip_exit_", route_c)
 
     def test_82a_m262_real_host_selector_accepts_count_subject_but_not_count_manager(self) -> None:
         selector = block(self.effects, "zg361_we_ac_freeze_m262_host_manager_effect")
@@ -1443,10 +1548,17 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         ad = set(re.findall(r"zg361_we_ad_external_[a-z0-9_]+", self.ledger_text))
         self.assertEqual(20, len(ac))
         self.assertEqual(80, len(ad))
+        self.assertEqual(EXPECTED_RETIRED_AD_EXTERNAL_ALIASES, ad & set(gen.RETIRED_AD_EXTERNAL_ALIASES))
+        remaining_ad = ad - EXPECTED_RETIRED_AD_EXTERNAL_ALIASES
+        self.assertEqual(45, len(remaining_ad))
+        for field in remaining_ad:
+            self.assertIn(field, self.effects, field)
+        self.assertIn("AD：45 项", self.ledger_text)
+        self.assertIn("35 项旧 external alias", self.ledger_text)
         self.assertIn("3×(14+36)+17=167", self.ledger_text)
         self.assertIn("AL charter 28 项", self.ledger_text)
-        self.assertIn("20+8+28=56", self.ledger_text)
-        self.assertIn("仍余 247：AD 80 + AL collective 167", self.ledger_text)
+        self.assertIn("20+8+28+35=91", self.ledger_text)
+        self.assertIn("仍余 212：AD 45 + AL collective 167", self.ledger_text)
         self.assertIn("尚无变更后的 loader/live 证据", self.ledger_text)
 
 
