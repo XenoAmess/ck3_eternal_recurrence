@@ -2368,9 +2368,11 @@ bool DryPreviewRaiktorFavorHookVisibleRoot(
   }
   auto **const original_effect_vtable =
       LoadAt<void **>(loaded_effect, 0x00);
-  if (original_effect_vtable == nullptr) {
+  if (original_effect_vtable == nullptr ||
+      original_effect_vtable[11] == nullptr) {
     return false;
   }
+  void *const original_effect_slot58 = original_effect_vtable[11];
 
   EffectPreviewCollectorStorage collector_storage{};
   void *const collector = collector_storage.bytes.data();
@@ -2416,6 +2418,7 @@ bool DryPreviewRaiktorFavorHookVisibleRoot(
 
   HookTypeIdentity identity_after{};
   if (LoadAt<void **>(loaded_effect, 0x00) != original_effect_vtable ||
+      original_effect_vtable[11] != original_effect_slot58 ||
       !ResolveFavorHookTypeIdentity(bindings, identity_after) ||
       identity_after.database != identity_before.database ||
       identity_after.fallback != identity_before.fallback ||
