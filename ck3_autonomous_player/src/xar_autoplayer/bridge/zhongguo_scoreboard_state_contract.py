@@ -1,7 +1,7 @@
 """Fixed-name, read-only ZhongGuo scoreboard state and player ACL contract.
 
 The caller supplies only a nonce. Widget names and character-variable keys are
-provider-owned allowlists. Nine fixed runtime instances expose their stable
+provider-owned allowlists. Fifteen fixed runtime instances expose their stable
 identity, instance/vtable pointer and visibility for a later paused action
 probe. The v1 query intentionally reports focus, enabled, rect, scroll and
 every action as typed unavailable until their exact-build ABI and paused live
@@ -55,6 +55,12 @@ _WIDGET_IDENTITIES: Final = (
     ("zg361_scoreboard_entry_managed", "zg361_scoreboard_entry_managed"),
     ("zg361_scoreboard_entry_received", "zg361_scoreboard_entry_received"),
     ("zg361_scoreboard_entry_system", "zg361_scoreboard_entry_system"),
+    ("zg361_scoreboard_tab_managed", "zg361_scoreboard_tab_managed"),
+    ("zg361_scoreboard_tab_received", "zg361_scoreboard_tab_received"),
+    ("zg361_scoreboard_tab_system", "zg361_scoreboard_tab_system"),
+    ("zg361_scoreboard_page_managed", "zg361_scoreboard_page_managed"),
+    ("zg361_scoreboard_page_received", "zg361_scoreboard_page_received"),
+    ("zg361_scoreboard_page_system", "zg361_scoreboard_page_system"),
     (
         "zg361_scoreboard_modal_backdrop_close",
         "zg361_scoreboard_modal_backdrop_close",

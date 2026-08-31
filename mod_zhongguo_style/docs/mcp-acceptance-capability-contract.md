@@ -57,9 +57,10 @@ raw comment、recusal、quota、calibration 或 compensation。native applicatio
 `fd0682e` 又提交了独立的考核榜只读查询
 `ck3_query_zhongguo_scoreboard_state_v1(request_nonce, expected_revision)`，capability 为
 `game.command.query-zhongguo-scoreboard-state-v1`。caller 只能提交 nonce 与 expected revision，不能提交 widget/变量名、角色 scope、
-屏幕坐标或动作。provider 在同一 application-main paused revision 内固定查询四个真实 runtime instance：
+屏幕坐标或动作。provider 在同一 application-main paused revision 内固定查询十五个真实 runtime instance：
 `zg361_open_scoreboard -> zg361_scoreboard_toggle`、`zg361_scoreboard_window`、`zg361_scoreboard_modal`、
-`zg361_scoreboard_panel`；并只从 played character 双读以下 20-key ACL allowlist：
+`zg361_scoreboard_panel`，managed/received/system 三个入口、三个外层 tab、三个外层 page，以及 backdrop/header 两个关闭目标；
+并只从 played character 双读以下 20-key ACL allowlist：
 `zg361_sb_m_01_char`、`zg361_scoreboard_managed_owner`、`zg361_sb_r_01_char`、`zg361_sb_self_char`、
 `zg361_scoreboard_received_owner`、`zg361_scoreboard_received_cycle_serial`、`zg361_scoreboard_received_case_serial`、
 `zg361_sb_self_case_owner`、`zg361_sb_self_cycle_serial`、`zg361_sb_self_case_serial`、
@@ -75,7 +76,7 @@ managed surface 推导，不按爵位猜权限；received-self 必须与当前�
 `production_live_ready=false` 是当前 schema 的固定不变量。native/serializer/mailbox、Python contract/service/MCP、schema 与离线 fixture
 已通过 fresh MSVC/Ninja 和正常/`-O` 测试，但尚无真实 CK3 paused response artifact，因此能力只能记为
 **static exact-build / live-unverified**。下一步晋级门是在真实 managed 与 received-only 角色各保存同一 paused revision 的 MCP response，
-核对四实例、20-key ACL、player/date/revision/connection binding；在此之前不得解除 runner 的 scoreboard live RED。enabled/focus/
+核对十五实例、20-key ACL、player/date/revision/connection binding；在此之前不得解除 runner 的 scoreboard live RED。enabled/focus/
 blocking/rect/scroll 与 activate/close/reopen 还必须分别冻结 exact-build ABI、实现 typed query/action 并取得动作后新 revision 证据，
 不能由这个只读切片外推。
 
@@ -91,7 +92,7 @@ blocking/rect/scroll 与 activate/close/reopen 还必须分别冻结 exact-build
 - B1 之外的 allowlisted ZhongGuo case/receipt/deadline snapshot，以及 B1 provider 的 exact-build paused 实机证据；
 - 产品 decision 枚举与 stable-key 执行；
 - 任意受评者的个人金币、直属上司国库、modifier、opinion pair 与来源快照；
-- scoreboard 四固定实例/current-player ACL 已有 static read-only provider，但尚无 paused artifact；完整 enabled/focus/blocking/rect/scroll
+- scoreboard 十五个固定实例/current-player ACL 已有 static read-only provider，但尚无 paused artifact；完整 enabled/focus/blocking/rect/scroll
   查询、activate/close/reopen 和内页数据/动作仍未 live 闭合；
 - AI-owned ZhongGuo case snapshot；
 - B4–B8 的 vacancy/position/project/incident/workforce/cross-cycle domain-object 查询。
@@ -147,10 +148,10 @@ scripted window/widget 返回：stable widget identity、存在、visible、focu
 close/reopen ability、selected source/slot/cycle/case 与 revision。提供 activate/close/reopen 的 typed action 和独立 ACK；动作参数只允许
 stable identity，不接受坐标。
 
-当前 `fd0682e` 已冻结的 `game.command.query-zhongguo-scoreboard-state-v1` 只是本节的最小只读前缀：四个固定 runtime instance 的
+当前 `fd0682e` 起步、现已扩展的 `game.command.query-zhongguo-scoreboard-state-v1` 只是本节的最小只读前缀：十五个固定 runtime instance 的
 exists/local/effective visibility 加 played-character 20-key ACL。它不等价于上述完整 named-widget/action 合同；所有未冻结 widget 字段
-与三个动作必须 typed unavailable，`full_widget_gate_ready`、`production_live_ready` 必须保持 false。只有 managed 与 received-only
-真实角色的 exact-build paused artifact 通过四实例、ACL 和同帧 binding 核对后，才允许把这个最小 read-only primitive 单独提升为 live；
+与动作必须 typed unavailable，`full_widget_gate_ready`、`production_live_ready` 必须保持 false。只有 managed 与 received-only
+真实角色的 exact-build paused artifact 通过十五实例、ACL 和同帧 binding 核对后，才允许把这个最小 read-only primitive 单独提升为 live；
 其余完整 GUI gate 继续 RED。
 
 考核榜 B1 最小 allowlist 必须覆盖：toggle、modal、panel、managed/received/system 外层页、list/detail、facts/peer/quota/audit、
@@ -230,7 +231,7 @@ B2 PIP snapshot、Incident snapshot，以及相应 query support flag、material
 generation、checkpoint materialization 与 managed restore lifecycle 配置。
 
 Workforce collective + 三周期、AI-owned case、scoreboard 完整 named-widget/action gate 的正式 ABI 尚未冻结。scoreboard 的
-四实例/current-player ACL 只读 ABI 与 capability 名虽已由 `fd0682e` 冻结并实现，但尚无 paused artifact，且 enabled/focus/blocking/
+十五实例/current-player ACL 只读 ABI 与 capability 名已冻结并实现，但尚无 paused artifact，且 enabled/focus/blocking/
 rect/scroll/action 仍为 typed unavailable。runner 不把该最小 static primitive 冒充完整 GUI gate；其余未冻结项仍记录为
 `abi_not_frozen` requirement，所以当前完整二期启动门必然产出
 `MCP capability RED`，且总报告强制 `gameplay_green_claimed=false`。即使测试替身伪造 cell `result=GREEN`，只要缺少完整的
@@ -269,10 +270,11 @@ fake-supervisor/static 证据；seed installer 虽已 static-ready，但在取�
 ### Scoreboard stable-target paused-probe prerequisite (2026-08-31)
 
 The generated scoreboard GUI now assigns unique scoreboard-only names to the
-managed, received-self, and system entry buttons, the modal backdrop close
-button, and the header close button. The fixed read-only scoreboard provider
-queries those five targets together with the existing window/container/modal/
-panel instances. For each of the nine fixed targets it returns the stable
+managed, received-self, and system entry buttons, the three outer tab buttons,
+the three list-page postcondition witnesses, the modal backdrop close button,
+and the header close button. The fixed read-only scoreboard provider queries
+those eleven targets together with the existing window/container/modal/panel
+instances. For each of the fifteen fixed targets it returns the stable
 identity, same-query instance pointer, vtable pointer, existence, and local/
 effective visibility. Pointer values are diagnostic uppercase hexadecimal
 strings bound to the same paused revision; they are not durable identities and
@@ -282,7 +284,47 @@ This closes only the static prerequisite for one bounded MCP paused probe. It
 does not expose `activate`, `close`, `reopen`, a generic widget-name argument,
 or any click path. Enabled/focus/modal-blocking/geometry/scroll remain typed
 unavailable, `full_widget_gate_ready=false`, and
-`production_live_ready=false`. The five names still require exact-build paused
-proof that CK3 materializes them on the intended PushButton instances before
+`production_live_ready=false`. The eleven names still require exact-build paused
+proof that CK3 materializes them on the intended PushButton/page instances before
 the callback candidate can be investigated. No action readiness or live claim
 is implied by this contract expansion.
+
+### Scoreboard named-widget action static cell (2026-09-01)
+
+The dedicated, not-yet-registered capability is frozen as
+`game.command.activate-zhongguo-scoreboard-v1`. Its public action allowlist is
+exactly `open`, `switch-managed`, `switch-received`, `switch-system`, `close`,
+and `reopen`. A request contains no widget name, screen coordinate, character
+scope, variable name, or arbitrary callback. It binds an action nonce, public
+and native expected revisions, connection generation, played character, the
+observed scoreboard-window instance, and the observed target instance/vtable.
+The provider owns the action-to-target mapping.
+
+Admission fails closed before dispatch when the source is not a same-frame
+paused player query, the expected binding is stale, a fixed instance is
+missing or rebound, the target is not effectively visible, enabled is
+unavailable/false, or the materialized managed/received ACL denies the tab.
+The current exact-build provider still returns
+`enabled_state_abi_not_frozen`, so this is intentionally a static contract and
+fixture primitive, not a callable production action.
+
+An accepted dispatch returns only
+`status=acknowledged_verification_pending`, `accepted=true`, the exact source
+and target binding, and a typed expected postcondition. The ACK always carries
+`postcondition_verified=false`. PASS requires a second query with a distinct
+nonce, larger public and native revisions, the same connection/player/date and
+window instance, the expected modal visibility, and exactly the expected
+managed/received/system list-page witness. Close has no observable list-page
+claim while the modal is hidden; reopen must restore one visible list page.
+The ACK schema is
+`ck3_autonomous_player/schemas/zhongguo-scoreboard-action-v1.schema.json`.
+
+Static evidence now includes normal and `-O` Python contract tests plus a
+fresh MSVC `/W4 /WX /O2` native fixture. This does **not** change
+`full_widget_gate_ready=false` or `production_live_ready=false`. Remaining
+exact-build work is: freeze effective-enabled semantics, bind a safe
+dispatcher-to-PushButton callback path including upstream admission, prove
+modal stack/top-receiver behavior, publish a scoreboard-specific revision,
+wire the dedicated mailbox/driver/service/MCP surface, and retain real paused
+open/switch/close/reopen ACK plus later-query artifacts. Until all of that is
+done, the phase-two scoreboard action gate remains RED.

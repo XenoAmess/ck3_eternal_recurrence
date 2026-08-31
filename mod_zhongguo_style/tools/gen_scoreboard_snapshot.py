@@ -1918,7 +1918,7 @@ def tab_gui(prefix: str) -> list[str]:
         f"GetScriptedGui('{detail_source}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))))]"
     )
     lines = [
-        "vbox = {",
+        f"vbox = {{ name = \"zg361_scoreboard_page_{source}\"",
         "\tlayoutpolicy_horizontal = expanding",
         "\tlayoutpolicy_vertical = expanding",
         "\tspacing = 8",
@@ -2091,7 +2091,7 @@ def ledger_tab_gui() -> list[str]:
         ("budget_pressure", "zg361_ledger_budget_pressure"),
     )
     lines = [
-        "vbox = {",
+        "vbox = { name = \"zg361_scoreboard_page_system\"",
         "\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8",
         "\tvisible = \"[And(GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'system'))]\"",
         "\tscrollbox = {",
@@ -2197,9 +2197,9 @@ def render_gui() -> bytes:
         "\t\t\t\tusing = Window_Margins spacing = 8",
         f"\t\t\t\theader_pattern = {{ layoutpolicy_horizontal = expanding blockoverride \"header_text\" {{ text = \"zg361_scoreboard_title\" }} blockoverride \"button_close\" {{ name = \"zg361_scoreboard_header_close\" onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window }} }}",
         "\t\t\t\thbox = { layoutpolicy_horizontal = expanding",
-        "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_managed\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')]\" }",
-        "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_received\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received')]\" }",
-        "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_system\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'system')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'system')]\" }",
+        "\t\t\t\t\tbutton_tab = { name = \"zg361_scoreboard_tab_managed\" layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_managed\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')]\" }",
+        "\t\t\t\t\tbutton_tab = { name = \"zg361_scoreboard_tab_received\" layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_received\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received')]\" }",
+        "\t\t\t\t\tbutton_tab = { name = \"zg361_scoreboard_tab_system\" layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_system\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'system')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'system')]\" }",
         "\t\t\t\t}",
     ]
     lines.extend("\t\t\t\t" + line for line in tab_gui("m"))

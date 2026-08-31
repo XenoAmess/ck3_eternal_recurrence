@@ -17,7 +17,9 @@ struct Fixture {
                                        101};
   bool main_thread = true;
   std::unordered_map<std::string, ZhongguoRawVariableV1> rows;
-  std::array<std::array<std::uint8_t, 0x200>, 9> widgets{};
+  std::array<std::array<std::uint8_t, 0x200>,
+             xar::ck3_11906::kZhongguoScoreboardStateV1WidgetNames.size()>
+      widgets{};
 };
 
 ZhongguoRawVariableV1 Integer(std::int64_t value) {
@@ -136,8 +138,14 @@ int main() {
   SetParent(fixture.widgets[4], fixture.widgets[0].data());
   SetParent(fixture.widgets[5], fixture.widgets[0].data());
   SetParent(fixture.widgets[6], fixture.widgets[0].data());
-  SetParent(fixture.widgets[7], fixture.widgets[2].data());
+  SetParent(fixture.widgets[7], fixture.widgets[3].data());
   SetParent(fixture.widgets[8], fixture.widgets[3].data());
+  SetParent(fixture.widgets[9], fixture.widgets[3].data());
+  SetParent(fixture.widgets[10], fixture.widgets[3].data());
+  SetParent(fixture.widgets[11], fixture.widgets[3].data());
+  SetParent(fixture.widgets[12], fixture.widgets[3].data());
+  SetParent(fixture.widgets[13], fixture.widgets[2].data());
+  SetParent(fixture.widgets[14], fixture.widgets[3].data());
   // The modal and panel are locally hidden in the initial closed state.
   fixture.widgets[2][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetHiddenMask;
@@ -145,6 +153,14 @@ int main() {
   fixture.widgets[4][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetHiddenMask;
   fixture.widgets[6][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
+      xar::ck3_11906::kZhongguoWidgetHiddenMask;
+  fixture.widgets[7][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
+      xar::ck3_11906::kZhongguoWidgetHiddenMask;
+  fixture.widgets[9][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
+      xar::ck3_11906::kZhongguoWidgetHiddenMask;
+  fixture.widgets[10][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
+      xar::ck3_11906::kZhongguoWidgetHiddenMask;
+  fixture.widgets[12][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetHiddenMask;
   PopulateReceivedA(fixture);
 
@@ -183,14 +199,26 @@ int main() {
                    result.widgets[6].runtime_name ==
                        "zg361_scoreboard_entry_system" &&
                    result.widgets[7].runtime_name ==
-                       "zg361_scoreboard_modal_backdrop_close" &&
+                       "zg361_scoreboard_tab_managed" &&
                    result.widgets[8].runtime_name ==
+                       "zg361_scoreboard_tab_received" &&
+                   result.widgets[9].runtime_name ==
+                       "zg361_scoreboard_tab_system" &&
+                   result.widgets[10].runtime_name ==
+                       "zg361_scoreboard_page_managed" &&
+                   result.widgets[11].runtime_name ==
+                       "zg361_scoreboard_page_received" &&
+                   result.widgets[12].runtime_name ==
+                       "zg361_scoreboard_page_system" &&
+                   result.widgets[13].runtime_name ==
+                       "zg361_scoreboard_modal_backdrop_close" &&
+                   result.widgets[14].runtime_name ==
                        "zg361_scoreboard_header_close" &&
                    result.widgets[5].instance_pointer.available &&
                    result.widgets[5].vtable_pointer.value == "0x14506020" &&
                    result.widgets[5].local_visible.value == true &&
                    result.widgets[4].local_visible.value == false,
-               "five action-probe targets must expose identity, pointers and "
+               "eleven action/postcondition probes must expose identity, pointers and "
                "visibility");
   ok &= Expect(!result.widgets[0].enabled.available &&
                    result.widgets[0].enabled.unavailable_reason ==

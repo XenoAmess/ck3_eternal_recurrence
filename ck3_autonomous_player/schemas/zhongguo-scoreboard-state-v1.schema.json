@@ -20,7 +20,7 @@
     "paused": {"const": true},
     "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
     "widgets": {
-      "type": "array", "minItems": 9, "maxItems": 9,
+      "type": "array", "minItems": 15, "maxItems": 15,
       "prefixItems": [
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_open_scoreboard"}, "runtime_name": {"const": "zg361_scoreboard_toggle"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_window"}, "runtime_name": {"const": "zg361_scoreboard_window"}}}]},
@@ -29,6 +29,12 @@
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_entry_managed"}, "runtime_name": {"const": "zg361_scoreboard_entry_managed"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_entry_received"}, "runtime_name": {"const": "zg361_scoreboard_entry_received"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_entry_system"}, "runtime_name": {"const": "zg361_scoreboard_entry_system"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_tab_managed"}, "runtime_name": {"const": "zg361_scoreboard_tab_managed"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_tab_received"}, "runtime_name": {"const": "zg361_scoreboard_tab_received"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_tab_system"}, "runtime_name": {"const": "zg361_scoreboard_tab_system"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_page_managed"}, "runtime_name": {"const": "zg361_scoreboard_page_managed"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_page_received"}, "runtime_name": {"const": "zg361_scoreboard_page_received"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_page_system"}, "runtime_name": {"const": "zg361_scoreboard_page_system"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_modal_backdrop_close"}, "runtime_name": {"const": "zg361_scoreboard_modal_backdrop_close"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_header_close"}, "runtime_name": {"const": "zg361_scoreboard_header_close"}}}]}
       ]

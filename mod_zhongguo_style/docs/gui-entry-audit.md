@@ -274,3 +274,31 @@ cursor 的问题。合法正例固定为 B1 case `41`、result case `903`；两�
 严格限定为生成语法和确定性几何合同；当前 SHA 尚未启动 CK3，更没有 MCP named-widget rect/visible/focus/modal/
 blocking 证据。正式 GREEN 必须按 G1–G3 批量读取 9 格，并在三格“必须出现”中实证最右案卷按钮可达，在其余格子
 实证无不必要水平热区；不得改用 OCR 首判。
+
+## 11. 2026-09-01 named-widget action identity 候选
+
+本轮没有新增任何可见按钮、顶层 window、modal、scrollbar 或业务动作；只给
+既有三个外层页签与三个 list-page 容器补稳定 runtime name，以便 MCP 不靠坐标
+执行并独立查询后置。当前 GUI SHA-256 为
+`B10A83B96E70ADBC91777B9EC1E46C5CE672559931A679CCF8910FEAF2E24C62`，
+生成器 SHA-256 为
+`71FAF2886E0B319965C6419ED444E511242EC00515368B30033C1D08DC30CE89`。
+
+新增 identity 恰为：
+
+- `zg361_scoreboard_tab_managed`、`zg361_scoreboard_tab_received`、
+  `zg361_scoreboard_tab_system`；
+- `zg361_scoreboard_page_managed`、`zg361_scoreboard_page_received`、
+  `zg361_scoreboard_page_system`。
+
+这 6 个名字不改变 onclick、visible、down、尺寸、层级、阻塞、锚点或滚动合同，
+按钮总数仍保持上一节的 `332/333`。只读 provider 的固定实例由 9 个扩为 15 个，
+仍只冻结 exists、local/effective visibility 和 same-query instance/vtable。动作
+contract 可据此规划 open、三切页、close、reopen，但当前 enabled 仍 typed
+unavailable，生产 dispatch 未接线，所以动作 gate 继续 RED。
+
+静态 fixture 只能证明名字唯一、provider-owned allowlist、stale instance/ACL/
+visible/enabled 的 fail-closed，以及 ACK 与 later-query 分离。当前精确 GUI 字节仍
+没有 CK3 paused artifact；不得继承旧 GUI SHA 的鼠标证据，也不得用 OCR 或固定
+坐标补 action GREEN。完整合同和后续接线清单见
+`361-scoreboard-mcp-action-cell.md`。

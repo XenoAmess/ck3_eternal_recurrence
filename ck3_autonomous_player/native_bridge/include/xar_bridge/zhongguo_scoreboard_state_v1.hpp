@@ -104,7 +104,7 @@ struct ZhongguoScoreboardStateV1 {
   std::int32_t date_raw = 0;
   bool paused = false;
   std::int32_t player_character_id = -1;
-  std::array<ZhongguoScoreboardWidgetStateV1, 9> widgets;
+  std::array<ZhongguoScoreboardWidgetStateV1, 15> widgets;
   ZhongguoScoreboardManagedAclV1 managed_acl;
   ZhongguoScoreboardReceivedSelfAclV1 received_self_acl;
   ZhongguoScoreboardUnsupportedActionsV1 actions;
@@ -150,20 +150,26 @@ inline constexpr std::size_t kZhongguoWidgetChildrenOffset = 0xF0;
 inline constexpr std::size_t kZhongguoWidgetChildCountOffset = 0xFC;
 inline constexpr std::size_t kZhongguoWidgetNameOffset = 0x1B8;
 
-inline constexpr std::array<std::string_view, 9>
+inline constexpr std::array<std::string_view, 15>
     kZhongguoScoreboardStateV1WidgetNames{
         "zg361_scoreboard_toggle", "zg361_scoreboard_window",
         "zg361_scoreboard_modal", "zg361_scoreboard_panel",
         "zg361_scoreboard_entry_managed", "zg361_scoreboard_entry_received",
         "zg361_scoreboard_entry_system",
+        "zg361_scoreboard_tab_managed", "zg361_scoreboard_tab_received",
+        "zg361_scoreboard_tab_system", "zg361_scoreboard_page_managed",
+        "zg361_scoreboard_page_received", "zg361_scoreboard_page_system",
         "zg361_scoreboard_modal_backdrop_close",
         "zg361_scoreboard_header_close"};
-inline constexpr std::array<std::string_view, 9>
+inline constexpr std::array<std::string_view, 15>
     kZhongguoScoreboardStateV1WidgetIdentities{
         "zg361_open_scoreboard", "zg361_scoreboard_window",
         "zg361_scoreboard_modal", "zg361_scoreboard_panel",
         "zg361_scoreboard_entry_managed", "zg361_scoreboard_entry_received",
         "zg361_scoreboard_entry_system",
+        "zg361_scoreboard_tab_managed", "zg361_scoreboard_tab_received",
+        "zg361_scoreboard_tab_system", "zg361_scoreboard_page_managed",
+        "zg361_scoreboard_page_received", "zg361_scoreboard_page_system",
         "zg361_scoreboard_modal_backdrop_close",
         "zg361_scoreboard_header_close"};
 

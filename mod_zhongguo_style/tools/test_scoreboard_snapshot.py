@@ -226,6 +226,12 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             "zg361_scoreboard_entry_managed",
             "zg361_scoreboard_entry_received",
             "zg361_scoreboard_entry_system",
+            "zg361_scoreboard_tab_managed",
+            "zg361_scoreboard_tab_received",
+            "zg361_scoreboard_tab_system",
+            "zg361_scoreboard_page_managed",
+            "zg361_scoreboard_page_received",
+            "zg361_scoreboard_page_system",
             "zg361_scoreboard_modal_backdrop_close",
             "zg361_scoreboard_header_close",
         ):

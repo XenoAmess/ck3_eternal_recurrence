@@ -99,6 +99,36 @@ def native_frame() -> dict[str, object]:
                 visible=False,
             ),
             widget(
+                "zg361_scoreboard_tab_managed",
+                "zg361_scoreboard_tab_managed",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_tab_received",
+                "zg361_scoreboard_tab_received",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_tab_system",
+                "zg361_scoreboard_tab_system",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_page_managed",
+                "zg361_scoreboard_page_managed",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_page_received",
+                "zg361_scoreboard_page_received",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_page_system",
+                "zg361_scoreboard_page_system",
+                visible=False,
+            ),
+            widget(
                 "zg361_scoreboard_modal_backdrop_close",
                 "zg361_scoreboard_modal_backdrop_close",
                 visible=False,

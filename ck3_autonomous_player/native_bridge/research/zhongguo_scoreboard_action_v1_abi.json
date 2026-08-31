@@ -1,0 +1,103 @@
+{
+  "contract": "zhongguo_scoreboard_action_v1",
+  "status": "static_action_contract_executor_unwired_live_unverified",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.activate-zhongguo-scoreboard-v1",
+  "step": "activate-zhongguo-scoreboard-v1",
+  "allowlist_id": "zg361-scoreboard-named-widget-action-v1",
+  "actions": [
+    "open",
+    "switch-managed",
+    "switch-received",
+    "switch-system",
+    "close",
+    "reopen"
+  ],
+  "request": {
+    "public_inputs": [
+      "request_nonce",
+      "action",
+      "expected_revision",
+      "expected_native_revision",
+      "expected_connection_generation",
+      "expected_player_character_id",
+      "expected_window_instance_pointer",
+      "expected_target_instance_pointer",
+      "expected_target_vtable_pointer"
+    ],
+    "forbidden_inputs": [
+      "widget_name",
+      "runtime_name",
+      "scope_character_id",
+      "owner_character_id",
+      "screen_x",
+      "screen_y",
+      "variable_name",
+      "callback_address",
+      "unknown_field"
+    ]
+  },
+  "provider_owned_action_targets": {
+    "open": "exactly_one_effectively_visible_entry",
+    "switch-managed": "zg361_scoreboard_tab_managed",
+    "switch-received": "zg361_scoreboard_tab_received",
+    "switch-system": "zg361_scoreboard_tab_system",
+    "close": "zg361_scoreboard_header_close",
+    "reopen": "exactly_one_effectively_visible_entry"
+  },
+  "postcondition_witnesses": {
+    "modal": "zg361_scoreboard_modal",
+    "managed": "zg361_scoreboard_page_managed",
+    "received": "zg361_scoreboard_page_received",
+    "system": "zg361_scoreboard_page_system"
+  },
+  "ack": {
+    "status": "acknowledged_verification_pending",
+    "postcondition_verified": false,
+    "schema": "schemas/zhongguo-scoreboard-action-v1.schema.json",
+    "independent_query_required": true,
+    "minimum_public_revision_delta": 1,
+    "minimum_native_revision_delta": 1
+  },
+  "admission": [
+    "same_paused_player_frame",
+    "public_native_revision_and_connection_match",
+    "window_and_target_instance_vtable_match",
+    "target_exists_effectively_visible_and_enabled",
+    "managed_and_received_acl_match",
+    "modal_source_state_matches_action"
+  ],
+  "mechanically_implemented": [
+    "python_request_admission_ack_normalization_and_post_query_verifier",
+    "native_admission_and_injected_dispatch_primitive",
+    "native_ack_serializer",
+    "normal_and_optimized_python_fixture",
+    "fresh_msvc_native_fixture"
+  ],
+  "unwired_shared_layers": [
+    "application_main_mailbox_slot",
+    "game_contract_and_adapter",
+    "bridge_capability_registration",
+    "native_driver",
+    "service",
+    "mcp_server",
+    "phase2_runner"
+  ],
+  "exact_build_blockers": [
+    "effective_enabled_semantics",
+    "dispatcher_to_pushbutton_callback_and_upstream_admission",
+    "filter_mouse_all_modal_stack_and_top_receiver",
+    "scoreboard_canonical_state_revision",
+    "paused_identity_and_action_artifacts_for_current_gui_sha"
+  ],
+  "forbidden_shortcuts": [
+    "direct_call_to_candidate_rva_without_paused_trace",
+    "ocr",
+    "screen_coordinates",
+    "arbitrary_widget_name",
+    "ack_as_postcondition",
+    "query_sequence_as_scoreboard_revision",
+    "old_gui_sha_live_evidence"
+  ]
+}

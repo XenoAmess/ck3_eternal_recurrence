@@ -118,7 +118,7 @@
       }
     ],
     "runtime_identity_blockers": [
-      "the five new scoreboard-specific names still require paused proof that CK3 materializes the generated names on the intended PushButton instances",
+      "the eleven scoreboard-specific action/postcondition names still require paused proof that CK3 materializes the generated names on the intended PushButton or page-witness instances",
       "reopen has no independent control and must be a verified close then activate composition"
     ],
     "unfrozen_action_fields": [
@@ -172,6 +172,30 @@
     {
       "stable_identity": "zg361_scoreboard_entry_system",
       "runtime_name": "zg361_scoreboard_entry_system"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_tab_managed",
+      "runtime_name": "zg361_scoreboard_tab_managed"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_tab_received",
+      "runtime_name": "zg361_scoreboard_tab_received"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_tab_system",
+      "runtime_name": "zg361_scoreboard_tab_system"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_page_managed",
+      "runtime_name": "zg361_scoreboard_page_managed"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_page_received",
+      "runtime_name": "zg361_scoreboard_page_received"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_page_system",
+      "runtime_name": "zg361_scoreboard_page_system"
     },
     {
       "stable_identity": "zg361_scoreboard_modal_backdrop_close",
@@ -258,5 +282,5 @@
     "full_runner_capability_gate",
     "production_live_acceptance"
   ],
-  "next_live_evidence": "use one bounded paused query to prove the five generated scoreboard-specific names resolve to the intended PushButton instances and capture their instance/vtable contrast; then statically close definition onclick 0x307/+0x338 to runtime 0x11B/+0x3F8/+0x7F8 plus slot 36 upstream admission, batch managed and received-only paused artifacts for the real dispatcher-to-PushButton-callback trace, enabled disabled contrast, and modal-stack/top-receiver contrast; add a scoreboard_state_revision that changes only with canonical scoreboard state; finally require independent ACK plus a later-pump query with a larger scoreboard revision before advertising activate, close, or reopen"
+  "next_live_evidence": "use one bounded paused query to prove the eleven generated scoreboard-specific action/postcondition names resolve to the intended PushButton or page-witness instances and capture their instance/vtable contrast; then statically close definition onclick 0x307/+0x338 to runtime 0x11B/+0x3F8/+0x7F8 plus slot 36 upstream admission, batch managed and received-only paused artifacts for the real dispatcher-to-PushButton-callback trace, enabled disabled contrast, and modal-stack/top-receiver contrast; add a scoreboard_state_revision that changes only with canonical scoreboard state; finally require independent ACK plus a later-pump query with a larger scoreboard revision before advertising open, switch-managed, switch-received, switch-system, close, or reopen"
 }

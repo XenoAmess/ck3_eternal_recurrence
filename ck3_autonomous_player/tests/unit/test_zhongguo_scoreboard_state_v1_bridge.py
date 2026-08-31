@@ -338,7 +338,7 @@ class ZhongguoScoreboardStateV1ServiceTests(unittest.TestCase):
         )
         self.assertFalse(result["readiness"]["full_widget_gate_ready"])
         self.assertFalse(result["readiness"]["production_live_ready"])
-        self.assertEqual(len(result["widgets"]), 9)
+        self.assertEqual(len(result["widgets"]), 15)
         self.assertEqual(
             result["widgets"][5]["stable_identity"],
             "zg361_scoreboard_entry_received",
@@ -422,11 +422,11 @@ class ZhongguoScoreboardStateV1McpTests(unittest.IsolatedAsyncioTestCase):
             accepted.structured_content["readiness"]["production_live_ready"]
         )
         self.assertEqual(
-            accepted.structured_content["widgets"][7]["runtime_name"],
+            accepted.structured_content["widgets"][13]["runtime_name"],
             "zg361_scoreboard_modal_backdrop_close",
         )
         self.assertEqual(
-            accepted.structured_content["widgets"][8]["vtable_pointer"][
+            accepted.structured_content["widgets"][14]["vtable_pointer"][
                 "value"
             ],
             "0x14506020",

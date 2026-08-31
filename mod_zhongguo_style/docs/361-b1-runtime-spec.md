@@ -424,12 +424,15 @@ manager cost、realm-trust 或结算结果。本节仍是 static-ready，
 
 ### 5.2 GUI 实机阻塞项
 
-当前仓库对 named scripted widget 的查询/动作仍只有 MCP 能力合同，既有 runner 的 scoreboard 审计主要依赖 OCR 与坐标。因此五页
-只能先做到 static-ready，不能据现有 runner 签 MCP-first GREEN。正式 L1 前 MCP 夹具至少需要：
+当前仓库已有 15 个固定 scoreboard identity 的只读 state provider，以及
+`open/switch-managed/switch-received/switch-system/close/reopen` 的独立 static
+action contract/fixture；但 enabled/callback/revision 和共享 MCP wiring 尚未
+exact-build/live 闭合。既有 OCR/坐标 runner 仍不能签 MCP-first GREEN。完整 action
+边界见 `361-scoreboard-mcp-action-cell.md`。正式 L1 前 MCP 夹具至少需要：
 
 1. allowlist 内 named widget 状态：identity、rect、visible、focus、modal/blocking、外层/内层 tab、selected
    source/slot/cycle/case 与 revision；
-2. named widget activate/close/reopen 的独立 ACK；
+2. 六个 allowlisted named-widget action 的独立 ACK 与 later-query 后置；
 3. bounded scoreboard/case snapshot，返回 ACL 过滤后的冻结字段；
 4. 公爵玩家 managed、伯爵/男爵 self-only、AI 公爵后台案卷无 HUD 三角色矩阵；
 5. list/detail/back、四内页、X/Escape/backdrop、人物页跳转、原生窗互斥、100/125/150% UI scale 与

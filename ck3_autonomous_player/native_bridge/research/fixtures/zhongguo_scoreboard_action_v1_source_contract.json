@@ -1,0 +1,48 @@
+{
+  "fixture": "zhongguo_scoreboard_action_v1_source_contract",
+  "capability": "game.command.activate-zhongguo-scoreboard-v1",
+  "step": "activate-zhongguo-scoreboard-v1",
+  "action_count": 6,
+  "actions": [
+    "open",
+    "switch-managed",
+    "switch-received",
+    "switch-system",
+    "close",
+    "reopen"
+  ],
+  "required_source_properties": [
+    "fixed_15_widget_projection",
+    "same_paused_player_frame",
+    "public_and_native_revision_binding",
+    "connection_generation_binding",
+    "window_instance_binding",
+    "target_instance_and_vtable_binding",
+    "exists_effective_visibility_and_enabled_admission",
+    "managed_and_received_acl_admission",
+    "provider_owned_action_target_mapping",
+    "injected_dispatch_only_after_admission",
+    "ack_is_verification_pending",
+    "postcondition_verified_is_false",
+    "independent_later_query_required"
+  ],
+  "postcondition_witnesses": [
+    "zg361_scoreboard_modal",
+    "zg361_scoreboard_page_managed",
+    "zg361_scoreboard_page_received",
+    "zg361_scoreboard_page_system"
+  ],
+  "forbidden_request_fields": [
+    "widget_name",
+    "runtime_name",
+    "scope_character_id",
+    "owner_character_id",
+    "screen_x",
+    "screen_y",
+    "variable_name",
+    "callback_address",
+    "unknown_field"
+  ],
+  "production_executor": "unwired_fail_closed",
+  "readiness": "static_action_contract_live_unverified"
+}

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.invalid/schemas/zhongguo-scoreboard-action-v1.schema.json",
+  "title": "ZhongGuo scoreboard named-widget action ACK v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "accepted", "capability", "step",
+    "request_nonce", "action", "source", "target",
+    "expected_postcondition", "postcondition_verified", "provenance"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"const": "acknowledged_verification_pending"},
+    "accepted": {"const": true},
+    "capability": {"const": "game.command.activate-zhongguo-scoreboard-v1"},
+    "step": {"const": "activate-zhongguo-scoreboard-v1"},
+    "request_nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+    },
+    "action": {
+      "enum": [
+        "open", "switch-managed", "switch-received", "switch-system",
+        "close", "reopen"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "revision", "native_revision", "connection_generation", "date_raw",
+        "player_character_id", "window_instance_pointer"
+      ],
+      "properties": {
+        "revision": {"type": "integer", "minimum": 0},
+        "native_revision": {"type": "integer", "minimum": 1},
+        "connection_generation": {"type": "integer", "minimum": 1},
+        "date_raw": {
+          "type": "integer", "minimum": -2147483648, "maximum": 2147483647
+        },
+        "player_character_id": {
+          "type": "integer", "minimum": 1, "maximum": 2147483647
+        },
+        "window_instance_pointer": {"$ref": "#/$defs/pointer"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stable_identity", "runtime_name", "instance_pointer", "vtable_pointer"
+      ],
+      "properties": {
+        "stable_identity": {
+          "enum": [
+            "zg361_scoreboard_entry_managed",
+            "zg361_scoreboard_entry_received",
+            "zg361_scoreboard_entry_system",
+            "zg361_scoreboard_tab_managed",
+            "zg361_scoreboard_tab_received",
+            "zg361_scoreboard_tab_system",
+            "zg361_scoreboard_header_close"
+          ]
+        },
+        "runtime_name": {"type": "string"},
+        "instance_pointer": {"$ref": "#/$defs/pointer"},
+        "vtable_pointer": {"$ref": "#/$defs/pointer"}
+      }
+    },
+    "expected_postcondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_independent_query", "minimum_revision",
+        "minimum_native_revision", "modal_effective_visible", "active_tab",
+        "list_view_required", "expected_window_instance_pointer"
+      ],
+      "properties": {
+        "requires_independent_query": {"const": true},
+        "minimum_revision": {"type": "integer", "minimum": 1},
+        "minimum_native_revision": {"type": "integer", "minimum": 2},
+        "modal_effective_visible": {"type": "boolean"},
+        "active_tab": {
+          "type": ["string", "null"],
+          "enum": ["managed", "received", "system", null]
+        },
+        "list_view_required": {"type": "boolean"},
+        "expected_window_instance_pointer": {"$ref": "#/$defs/pointer"}
+      }
+    },
+    "postcondition_verified": {"const": false},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "game_version", "executable_sha256", "backend_id", "consumer_id",
+        "allowlist_id", "contract_stage"
+      ],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {
+          "const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        },
+        "backend_id": {
+          "const": "ck3-1.19.0.6-native-zhongguo-scoreboard-action-v1"
+        },
+        "consumer_id": {
+          "const": "xar-autoplayer-zhongguo-scoreboard-action-v1"
+        },
+        "allowlist_id": {"const": "zg361-scoreboard-named-widget-action-v1"},
+        "contract_stage": {"const": "static_action_contract_live_unverified"}
+      }
+    }
+  },
+  "$defs": {
+    "pointer": {"type": "string", "pattern": "^0x[0-9A-F]+$"}
+  }
+}
