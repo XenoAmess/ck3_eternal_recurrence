@@ -55,6 +55,9 @@ from xar_autoplayer.bridge.zhongguo_b2_pip_snapshot_contract import (
 from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
 )
+from xar_autoplayer.bridge.zhongguo_scoreboard_state_contract import (
+    QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+)
 from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_RESULT_CASE_KIND_V1,
@@ -348,10 +351,14 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     "b2_pip_snapshot": QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
     "incident_snapshot": QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+    "scoreboard_state_acl": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
 }
 PHASE2_REQUIRED_QUERY_FLAGS = {
     "b2_pip_snapshot": "zhongguo_b2_pip_snapshot_v1_query_supported",
     "incident_snapshot": "zhongguo_incident_snapshot_v1_query_supported",
+    "scoreboard_state_acl": (
+        "zhongguo_scoreboard_state_v1_query_supported"
+    ),
     "loaded_feature_manifest": "loaded_feature_manifest_v1_query_supported",
     "current_event_context": "current_event_window_context_v1_query_supported",
 }
@@ -371,8 +378,9 @@ PHASE2_UNFROZEN_REQUIREMENTS = {
         "ABI/provider capability not frozen"
     ),
     "ai_owned_case_snapshot": "ABI/provider capability not frozen",
-    "scoreboard_named_widget_state_action_and_acl": (
-        "ABI/provider capability not frozen"
+    "scoreboard_named_widget_action_and_geometry": (
+        "fixed state/ACL query is frozen; action, enabled, focus, modal, "
+        "geometry and scroll ABI still require exact-build live proof"
     ),
 }
 # The runner-side map-entry path is now wired through a strict seed contract.

@@ -2291,11 +2291,24 @@ def main() -> int:
             for row in phase2_current_red["missing_requirements"]
             if row["kind"] == "abi_not_frozen"
         } == set(capture.PHASE2_UNFROZEN_REQUIREMENTS)
-        assert all(
-            row["value"] == "ABI/provider capability not frozen"
+        assert {
+            row["label"]: row["value"]
             for row in phase2_current_red["missing_requirements"]
             if row["kind"] == "abi_not_frozen"
+        } == capture.PHASE2_UNFROZEN_REQUIREMENTS
+        assert (
+            "scoreboard_named_widget_state_action_and_acl"
+            not in capture.PHASE2_UNFROZEN_REQUIREMENTS
         )
+        assert "scoreboard_named_widget_action_and_geometry" in (
+            capture.PHASE2_UNFROZEN_REQUIREMENTS
+        )
+        assert capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+            "scoreboard_state_acl"
+        ] == "game.command.query-zhongguo-scoreboard-state-v1"
+        assert capture.PHASE2_REQUIRED_QUERY_FLAGS[
+            "scoreboard_state_acl"
+        ] == "zhongguo_scoreboard_state_v1_query_supported"
         assert {
             row["label"]
             for row in phase2_current_red["missing_requirements"]

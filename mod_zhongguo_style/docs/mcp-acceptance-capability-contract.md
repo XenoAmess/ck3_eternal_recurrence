@@ -79,6 +79,10 @@ managed surface 推导，不按爵位猜权限；received-self 必须与当前�
 blocking/rect/scroll 与 activate/close/reopen 还必须分别冻结 exact-build ABI、实现 typed query/action 并取得动作后新 revision 证据，
 不能由这个只读切片外推。
 
+二期 runner 已把该 capability 与 `zhongguo_scoreboard_state_v1_query_supported` 纳入强制 preflight；原先笼统的
+“scoreboard state/action/ACL 全部未冻结”RED 已缩窄为 action、enabled/focus/blocking、geometry 与 scroll 的真实剩余缺口。
+这只证明当前代码不会漏装只读 provider，不会把尚未执行过的 paused query 或尚不存在的动作写成 GREEN。
+
 该切片目前只有 Python contract/schema、native/provider source 与离线 fixture 证据，状态为 **static/fixture-ready**；尚未在 exact-build CK3
 中取得 paused response artifact，因此不能写 production-live，也不能解除正式 runner 的 capability RED。上述既有能力与本轮窄切片足以在
 不使用 OCR 的情况下识别/操作当前原生事件、绑定玩家与构建、等待独立 revision，并保存或恢复测试现场；它们**不能**因此被扩写成
