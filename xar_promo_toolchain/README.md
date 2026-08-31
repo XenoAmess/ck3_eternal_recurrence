@@ -21,6 +21,12 @@ There is no `publish` or upload command. `audit`, `review`, and `signoff` are in
 
 Python 3.11 or later is required.
 
+For Windows, Linux, macOS, wheel/sdist/source/editable installs, optional
+dependencies, offline wheelhouses, verification, upgrades, and uninstall, see
+[Installation and cross-machine delivery](docs/installation.md). Automation can
+read the installed machine contract at
+`xar_promo/schemas/install-contract-v1.json` through `importlib.resources`.
+
 ```powershell
 py -m pip install -e .
 py -m xar_promo --help
