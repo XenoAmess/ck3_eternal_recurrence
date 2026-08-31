@@ -92,4 +92,3 @@ CharacterID 与 save lineage 仍由主 runner 保存和核对，本 helper 不�
   receipt 不得被 ACK 掩盖、received-self ACL、有界时间推进，以及 active event
   禁止自动点击；
 - 尚无 CK3 paused live artifact，因此状态仍是 `static-ready + fixture-ready`。
-
