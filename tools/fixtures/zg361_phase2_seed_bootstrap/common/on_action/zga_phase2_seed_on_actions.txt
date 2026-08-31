@@ -1,0 +1,23 @@
+﻿# Acceptance-only seed generator. This tree is never mounted by promo/release.
+# Extend the vanilla hook rather than replacing its effects or events.
+on_game_start_after_lobby = {
+	on_actions = {
+		zga_phase2_seed_on_game_start
+	}
+}
+zga_phase2_seed_on_game_start = {
+	effect = {
+		every_player = {
+			limit = {
+				this = character:han_6875
+				is_ai = no
+				is_alive = yes
+				is_landed = yes
+				zg361_is_reviewable_vassal_trigger = yes
+				NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }
+			}
+			add_character_flag = zga_phase2_seed_bootstrap_started
+			trigger_event = zga_phase2_seed.100
+		}
+	}
+}

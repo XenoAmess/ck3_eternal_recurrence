@@ -1586,13 +1586,26 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as temporary:
         temporary_root = Path(temporary)
         canonical_seed_contract = capture.load_phase2_seed_contract()
-        assert canonical_seed_contract["status"] == "ready"
-        assert canonical_seed_contract["ready"] is True
-        assert canonical_seed_contract["blocker"] == ""
-        assert canonical_seed_contract["provenance"]["limitations"]
-        assert capture.preflight_phase2_seed_contract() == (
-            canonical_seed_contract
+        assert canonical_seed_contract["status"] == (
+            "blocked_seed_generation_required"
         )
+        assert canonical_seed_contract["ready"] is False
+        assert canonical_seed_contract["blocker"]
+        assert canonical_seed_contract["provenance"]["limitations"]
+        assert canonical_seed_contract["saved_state"]["played_character_id"] == 29037
+        assert canonical_seed_contract["saved_state"]["player_history_id"] == (
+            capture.PHASE2_SEED_PLAYER_HISTORY_ID
+        )
+        assert set(canonical_seed_contract["domain_query_matrix"].values()) == {
+            1,
+            None,
+        }
+        try:
+            capture.preflight_phase2_seed_contract()
+        except capture.acceptance.RunnerError as error:
+            assert "phase-two seed preflight RED" in str(error)
+        else:
+            raise AssertionError("blocked canonical phase-two seed passed preflight")
 
         blocked_seed_contract = copy.deepcopy(canonical_seed_contract)
         blocked_seed_contract["status"] = "blocked_runtime_tree_mismatch"
@@ -1619,6 +1632,14 @@ def main() -> int:
         seed_source_stat = seed_source_save.stat()
         seed_product_tree = "b" * 64
         seed_fixture_tree = "c" * 64
+        seed_domain_query_matrix = {
+            "schema_version": 1,
+            "b2_pip_owner_character_id": 9100,
+            "incident_owner_character_id": 9200,
+            "workforce_owner_character_id": 9300,
+            "ai_owned_case_owner_character_id": 9400,
+            "ai_owned_case_subject_character_id": 9001,
+        }
         seed_enabled_mods = [
             f"mod/{capture.PRODUCT_OUTER}",
             f"mod/{capture.FIXTURE_OUTER}",
@@ -1644,22 +1665,42 @@ def main() -> int:
                 "runtime_trees_unchanged": True,
                 "isolated_userdir_path": str(seed_source_profile.resolve()),
                 "scenario_evidence": {
-                    "player_history_id": capture.EXPECTED_PLAYER_HISTORY_ID,
+                    "player_history_id": (
+                        capture.PHASE2_SEED_PLAYER_HISTORY_ID
+                    ),
                     "historical_subjects_manufactured_by_fixture": False,
-                    "real_character_runtime_attestation": {
-                        "song_emperor_exact_build_marker_count": 1,
-                        "song_emperor_player_switch_marker_count": 1,
+                    "ocr_used": False,
+                    "test_decision_used": False,
+                    "phase2_seed_bootstrap_attestation": {
+                        "event_definition_key": "zga_phase2_seed.1",
+                        "player_history_id": (
+                            capture.PHASE2_SEED_PLAYER_HISTORY_ID
+                        ),
+                        "played_character_id": 9001,
+                        "domain_query_matrix": seed_domain_query_matrix,
+                        "mcp_only": True,
+                        "event_close": {
+                            "step": "select-event-option-1",
+                            "postcondition_verified": True,
+                        },
+                        "checkpoint": {
+                            "status": "saved",
+                            "path": str(seed_source_save.resolve()),
+                            "size": seed_source_stat.st_size,
+                            "sha256": capture.isolated.sha256_file(
+                                seed_source_save
+                            ),
+                            "date_raw": 777,
+                            "episode_character_id": 9001,
+                        },
                     },
-                    "title_navigation_mcp_matrix": {
-                        "readiness": {
-                            "snapshot": {
-                                "paused": True,
-                                "map_ready": True,
-                                "played_character": {
-                                    "character_id": 9001,
-                                    "alive": True,
-                                },
-                            }
+                    "phase2_seed_snapshot": {
+                        "paused": True,
+                        "map_ready": True,
+                        "date_raw": 777,
+                        "played_character": {
+                            "character_id": 9001,
+                            "alive": True,
                         }
                     },
                 },
@@ -1698,7 +1739,7 @@ def main() -> int:
                 ),
                 "source_git_commit": "f" * 40,
                 "real_character_proof": (
-                    "typed save-checkpoint binds han_8052 to CharacterID 9001"
+                    "typed save-checkpoint binds han_6875 to CharacterID 9001"
                 ),
                 "limitations": [
                     "synthetic fixture records source-tree provenance only"
@@ -1714,7 +1755,7 @@ def main() -> int:
             "saved_state": {
                 "date_raw": 777,
                 "played_character_id": 9001,
-                "player_history_id": capture.EXPECTED_PLAYER_HISTORY_ID,
+                "player_history_id": capture.PHASE2_SEED_PLAYER_HISTORY_ID,
                 "played_character_alive": True,
                 "paused_on_load": True,
                 "map_ready": True,
@@ -1724,6 +1765,7 @@ def main() -> int:
                 "last_save_relative_path": "last_save.ck3",
                 "launch_mode": "native_session_continue_last_save",
             },
+            "domain_query_matrix": seed_domain_query_matrix,
         }
         ready_seed_path = temporary_root / "ready-seed-contract.json"
         ready_seed_path.write_text(
@@ -1822,6 +1864,36 @@ def main() -> int:
             assert "must not retain a blocker" in str(error)
         else:
             raise AssertionError("ready seed retained a contradictory blocker")
+
+        uncaptured_ready_contract = copy.deepcopy(ready_seed_contract)
+        uncaptured_ready_contract["domain_query_matrix"][
+            "incident_owner_character_id"
+        ] = None
+        uncaptured_ready_path = temporary_root / "uncaptured-ready-seed.json"
+        uncaptured_ready_path.write_text(
+            json.dumps(uncaptured_ready_contract), encoding="utf-8"
+        )
+        try:
+            capture.load_phase2_seed_contract(uncaptured_ready_path)
+        except capture.acceptance.RunnerError as error:
+            assert "not a captured CharacterID" in str(error)
+        else:
+            raise AssertionError("ready seed accepted an uncaptured selector")
+
+        misbound_history_contract = copy.deepcopy(ready_seed_contract)
+        misbound_history_contract["saved_state"]["player_history_id"] = (
+            capture.EXPECTED_PLAYER_HISTORY_ID
+        )
+        misbound_history_path = temporary_root / "misbound-history-seed.json"
+        misbound_history_path.write_text(
+            json.dumps(misbound_history_contract), encoding="utf-8"
+        )
+        try:
+            capture.load_phase2_seed_contract(misbound_history_path)
+        except capture.acceptance.RunnerError as error:
+            assert "saved-state identity is invalid" in str(error)
+        else:
+            raise AssertionError("phase-two seed accepted promo emperor history")
 
         dll = temporary_root / "bridge.dll"
         injector = temporary_root / "injector.exe"
@@ -3625,6 +3697,8 @@ def main() -> int:
         scenario_snapshot = phase2_snapshot(
             pid=4321, generation=4, revision=10
         )
+        missing_domain_seed = copy.deepcopy(ready_seed_contract)
+        missing_domain_seed.pop("domain_query_matrix")
         with (
             mock.patch.object(
                 capture,
@@ -3662,7 +3736,7 @@ def main() -> int:
                     Phase2ManifestService(),
                     scenario_artifacts,
                     tracked_ck3_pid=4321,
-                    seed_contract=ready_seed_contract,
+                    seed_contract=missing_domain_seed,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "domain matrix RED" in str(error)
@@ -4658,6 +4732,7 @@ def main() -> int:
     )
 
     assert capture.EXPECTED_PLAYER_HISTORY_ID == "han_8052"
+    assert capture.PHASE2_SEED_PLAYER_HISTORY_ID == "han_6875"
     for late_marker in capture.REQUIRED_LATE_FIXTURE_MARKERS:
         assert late_marker not in capture.REQUIRED_FIXTURE_MARKERS
     assert capture.HISTORICAL_TARGET_PASS_MARKER in (

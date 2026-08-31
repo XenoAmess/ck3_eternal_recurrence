@@ -1,71 +1,124 @@
 # 361 二期 MCP-only 存档种子合同
 
-状态（2026-08-31）：runner 能力已实现，固定种子合同为 **ready**；是否真的能由
-当前版本加载仍须首次 MCP-only 实机给出 GREEN。这不是 production-live 证据。
+状态（2026-09-01）：仓库中的固定种子合同是
+`blocked_seed_generation_required`，不是 ready，也不是 production-live 证据。它可以作为
+旧存档来源账本，但不得启动二期正式批量验收。权威机器合同是仓库根的
+`tools/zg361_phase2_seed_contract.json`。
 
-## 为什么需要固定种子
+## 已纠正的旧存档身份
 
-二期正式批量验收不能使用 OCR、坐标、lobby 导航、旧一期 scenario 或
-acceptance-only 测试决议进入地图。因此 runner 只允许 `native_session` 的
-`continue_last_save` 路径，并在创建 native driver 与 lifecycle supervisor 以前完成
-不可变种子校验。`-continuelastsave` 的既有实机结论仍适用：目标 bytes 必须至少
-物化到隔离 profile 的 `save games/autosave.ck3`；本 runner 同时写入根目录
-`last_save.ck3`，二者逐字节相同。
+旧合同把事件保存作用域里的上司误当成事件 root：
 
-权威机器合同是仓库根的 `tools/zg361_phase2_seed_contract.json`。它固定：
+- 来源运行：
+  `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-worktrees\v0.4-main_process_assets\zg361\runs\zga_20260830_191131_7e82d061`
+- `report.json` 的 `witnessed_result_identity` 中，事件 `zg361.4` 的
+  `root_scope.typed_identity.character_id` 是 **29037**；这才是当时实际扮演的历史角色
+  `han_6875`。
+- 同一窗口的 `saved_scopes[name=zga_reviewing_superior]` 是 **32904**；它是上司
+  `han_8052`，不是玩家。
+- `cell/10_phase2_witnessed_result_identity_01_prequery_pause_gate.json` 也绑定玩家
+  CharacterID 29037；`cell/10_phase2_result_accept_speed_one_gate.json` 的
+  `starting_character_id` 同样是 29037。
+- 原版 `Crusader Kings III/game/history/titles/e_china.txt` 的 1066 段把
+  `k_hedong` holder 绑定为 `han_6875`。
 
-- source profile、相对/绝对存档路径、bytes、SHA-256 与 mtime；
-- CK3 `1.19.0.6`、EXE SHA-256、两项 enabled mod ID，以及来源
-  product/fixture tree SHA-256（后两项只作 provenance）；
-- paused/map-ready 状态、`date_raw`、native CharacterID、历史角色 `han_8052`；
-- 两个隔离安装槽和 `native_session_continue_last_save` 启动方式。
+因此旧合同现声明 `date_raw=53147016 / CharacterID=29037 / han_6875`。旧 autosave
+不是 typed `save-checkpoint` ACK 的产物，日期仍只是待验证的来源假设。
 
-安装成功后仍不能只信文件合同。首次 paused MCP snapshot 必须再次精确匹配
-`date_raw` 与 native CharacterID；结果写入 `04_phase2_seed_loaded.json`。任何差异都
-是 RED，不得回退视觉判断。
+## 为什么旧存档不能继续冒充 ready
 
-## 2026-08-31 本机候选清点
+该存档早于现有 B1、B2、Incident、Workforce 产品状态。当前 runner 又需要五个真实
+selector：B2、Incident、Workforce 三个 received-self owner，以及 AI-owned B1 case
+的 owner/direct-subject。旧 MCP 没有枚举这些关系的通用查询，旧 artifact 也没有捕获
+这些五项。故机器合同的 `domain_query_matrix` 目前精确保留五个 `null`；blocked 合同
+允许 `null`，ready 合同必须五项都是正 int32 CharacterID，且 owner 不能是玩家、
+AI owner 不能等于 subject。禁止填假 ID 只为让 loader 通过。
 
-共找到四组唯一 save bytes；每组保留的 `autosave.ck3` 与 `last_save.ck3` 相同。
+旧 save、报告与索引仍保留如下来源信息：
 
-| 来源（均位于 `Z:\ck3_mod_rewrite_process_assets\zg361`） | bytes | SHA-256 | product tree / 报告 |
-|---|---:|---|---|
-| `phase2-worktrees/.../zga_20260830_191131_7e82d061_native_state/profile` | 52,902,730 | `98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3` | `ddac4703...` / GREEN |
-| `promo/captures/zga_20260830_0930_clean_2fa2ac8_mcp_native_state/profile` | 52,779,998 | `6b583d73d7a4cc1e5c17fcbc4da329900cf7b235f2de1afce099571dac6420fe` | `450e0abc...` / GREEN |
-| `promo/captures/zga_20260830_0651_current_cdda2f5_mcp_native_state/profile` | 52,758,400 | `3e6fd8a54541cd260701cf702d060a3fd839b9c3ee305a2261d512b74db11424` | `450e0abc...` / RED |
-| `promo/captures/20260829-071346-core-live-take02_userdir` | 53,001,534 | `be9b76bfd6b9c927cf63c85930e8b094f9b633f3c5c1b0676b8b31bbf4dbdab1` | `4c43a339...` / RED |
+- save：52,902,730 bytes，SHA-256
+  `98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3`；
+- product tree：`ddac4703...`，fixture tree：`e2c092a4...`；两者只作 provenance；
+- 当前代码加载后仍必须用 mount inventory、loaded-feature manifest 和 paused MCP
+  snapshot 验证当前 runtime，不能用 OCR 猜测。
 
-最新候选的 save、顶层 `report.json` 与 `evidence-index.json` 哈希仍与合同一致，
-并作为当前 bootstrap seed。它有两项必须诚实保留、但不应凭空升级为安装门禁的
-provenance 限制：
+## 最小 MCP-first bootstrap
 
-1. 它产生于 product tree `ddac4703...`；2026-08-31 18:41 对当时施工树做的一次
-   只读 bootstrap 得到 `bc9b37ff...`。CK3 存档本来就应能随相同 mod ID 的更新加载，
-   且目前没有旧树存档无法加载的实证。因此来源树只记录 provenance，绝不要求与
-   当前代码逐字节相等；当前树由本次 bootstrap digest、加载后 mount inventory 与
-   loaded-feature manifest 验证。
-2. 该 autosave 不是 typed `save-checkpoint` ACK 的产物。报告能证明真实宋帝
-   `han_8052` 曾映射到 CharacterID `32904`，也能看到最终 `date_raw=53147016`，
-   但只能按文件时间相关联，不能证明这两个字段属于这份 exact save bytes。
-3. 更早三组候选的 product tree 更旧，其中两份顶层报告本身为 RED。
+专用外部 fixture 位于
+`tools/fixtures/zg361_phase2_seed_bootstrap/`。它与普通
+`tools/fixtures/zg361_acceptance/` 分离，只有 seed-generation acceptance 可以挂载，
+发布构建和宣传运行时永远不能加载。它没有 decision、GUI、角色/头衔/关系创建命令，
+也不直接写任何 `zg361_*` 产品变量、receipt 或 Workforce history。
+seed-generation profile 应把此树单独复制到既有外层 mod ID
+`zga_acceptance_fixture.mod` 的目标目录；不得与普通 acceptance fixture 同时合并，且
+candidate runtime 中记录的是本专用树的实际 SHA-256。
 
-因此当前合同为 `ready / blocker=""`。安装阶段校验 save hash/size/mtime/header、
-exact game/EXE、相同 mod ID、source report/index 哈希、来源树 provenance，以及
-source report 中 `han_8052 -> CharacterID 32904` 的真实角色绑定；**不比较来源树和
-当前树是否相等**。任一实际安装条件不符时，`--phase2-live-batch` 会在创建 native
-driver、supervisor 或 CK3 进程以前写 `00_phase2_seed_install.json` RED；纯
-`--preflight` 会在一次性临时 profile 中执行同一 dry-install 后清理，全程不启动 CK3。
+流程如下：
 
-## 加载后的判定与替换条件
+1. 从旧存档继续，fixture 只接受真实历史玩家 `han_6875` 与其现存直属 AI 天朝上司。
+2. 在 manager-root 隐藏事件中调用 shipped B1、Incident X、Workforce public entry；
+   若旧存档确有真实已交付 3.25 result，则在 player-root 隐藏事件中调用 shipped B2
+   adapters。缺少前置事实时 shipped effect 自行 no-op，fixture 不补造输出。
+3. 打开唯一可见事件 `zga_phase2_seed.1`。该事件保存：
+   `zga_phase2_b2_owner`、`zga_phase2_incident_owner`、
+   `zga_phase2_workforce_owner`、`zga_phase2_ai_owned_owner`、
+   `zga_phase2_ai_owned_subject`。
+4. MCP 调 `query-current-event-window-context-v1`，严格读取 root 与五个 typed character
+   scopes，并保存同帧 paused/map-ready 玩家 snapshot；不使用 OCR。
+5. MCP 选择唯一的 `select-event-option-1`，要求 postcondition ACK，然后调
+   `save-checkpoint`。
+6. `tools/zg361_phase2_seed_bootstrap.py` 验证事件定义、scope 唯一性、真实正整数 ID、
+   paused snapshot、close ACK、checkpoint path/size/SHA/date/player，并保留原始四份
+   JSON、report、index
+   与 candidate contract。helper 永远先输出 blocked candidate；selector 捕获不能替代
+   四个产品 provider 的状态证明。
 
-本合同声明 `date_raw=53147016 / CharacterID=32904`，但旧 autosave 没有 typed
-save-checkpoint ACK，故日期只是待验证假设。首次加载后必须先通过当前 mount 与
-loaded-feature manifest，再由 paused MCP snapshot 精确核对 date/player；不一致就
-立即 RED，不得 OCR 猜测或偷偷换存档。
+已有 native session runner 可直接调用 helper 的 `capture_mcp_evidence(service,
+artifacts)`：它只使用现有 `snapshot`、`query_current_event_window_context_v1`、
+`select_event_option`、`save_checkpoint` 四个 MCP 方法，严格保持“同帧查询 → 唯一选项
+关闭 ACK → paused checkpoint”的顺序；它不负责启动 CK3、lobby 或视觉导航。
 
-若 CK3 实机证明旧 save 无法加载、date/player 不符，或当前功能所需状态确实缺失，
-再用真实角色和 typed `save-checkpoint` 捕获新 seed，冻结新的 save、report/index、
-game/EXE、mod IDs、source trees 与 date/player。没有这类实际故障时，不得仅因普通
-开发改变 product tree 就反复废弃种子。synthetic 正负回归覆盖：来源树与当前树不同
-仍可安装、来源报告真实角色绑定、矛盾 ready/blocker 拒绝，以及 load 后 date/player
-不一致 RED；真正的 production-live 仍必须由新的 exact-build 实机 artifact 给出。
+完成一次 MCP 捕获后的物化命令为：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "tools\zg361_phase2_seed_bootstrap.py" `
+  --event-context "<run>\event-context.json" `
+  --paused-snapshot "<run>\paused-snapshot.json" `
+  --event-close "<run>\event-close.json" `
+  --checkpoint-response "<run>\save-checkpoint.json" `
+  --profile "<isolated-profile>" `
+  --output-dir "<new-empty-run-dir>" `
+  --source-git-commit "<40-hex-commit>" `
+  --product-tree-sha256 "<64-hex-product-tree>" `
+  --fixture-tree-sha256 "<64-hex-seed-fixture-tree>"
+```
+
+fixture/loader/helper 的静态验收：
+
+```powershell
+py tools/test_zg361_phase2_seed_fixture.py
+py tools/test_zg361_phase2_seed_bootstrap.py
+py tools/test_run_zhongguo_promo_capture.py
+```
+
+## 仍不能由 seed fixture 消除的两项产品阻塞
+
+### Incident mixed matrix
+
+当前 X/Y/Z 都写同一 subject 的 `zg361_ip_probe_*`。native provider 的 N/A validator
+要求共享 probe result/source/consequence 全为 0；positive validator 要求同一 tuple 为
+positive。每次 public open 又会覆盖共享 probe。runner 在同一 paused snapshot、同一
+玩家上要求 terminal kind 集合精确为 `{na, incident}`，因此现合同不可达；直接写变量
+也无法让一组 tuple 同时为 0 和 1。应在产品/provider 冻结 profile-specific terminal
+probe，或把 acceptance 改为聚合两个 checkpoint/snapshot。fixture 不得伪造。
+
+### Workforce 三周期 charter
+
+Workforce ready 必须完整跑三个严格递增真实 review cycle；每周期消费 shipped B1/B2
+生成的 #357/#358/#359 receipt，通过 #360 history gate，第三周期才由产品生成 #361
+charter。不存在诚实的一键 effect。fixture 只能调用 public entry；直接写 receipt ID、
+rolling history 或 charter 输出都属于制造产品证据，禁止。
+
+只有 Incident 合同变为可达、Workforce 三周期真实跑完，且 B1/B2/Incident/Workforce
+四个 provider 在新 checkpoint 上独立 GREEN 后，才可把 candidate 改为 `ready` 并进入
+一次二期批量实机。宣传视频仍只加载真实产品 runtime，不得出现或挂载这个 fixture。

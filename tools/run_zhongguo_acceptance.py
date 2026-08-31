@@ -120,6 +120,12 @@ LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
 LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
 EXPECTED_PLAYER_HISTORY_ID = real_characters.MANAGER_HISTORY_ID
+# The phase-two bootstrap resumes the real historical official selected by the
+# phase-one personal-result flow, not the Song emperor used by the clean promo.
+# Keep the two identities separate: conflating the saved event root with its
+# saved reviewing-superior scope previously bound CharacterID 32904 to the
+# wrong history character.
+PHASE2_SEED_PLAYER_HISTORY_ID = "han_6875"
 EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS = tuple(
     real_characters.REVIEWED_OFFICIAL_CONTRACT
 )
@@ -2066,6 +2072,7 @@ def load_phase2_seed_contract(
             "runtime",
             "saved_state",
             "install",
+            "domain_query_matrix",
         },
         "root",
     )
@@ -2126,13 +2133,30 @@ def load_phase2_seed_contract(
         },
         "install",
     )
+    domain_query_matrix = exact_object(
+        contract.get("domain_query_matrix"),
+        {
+            "schema_version",
+            "b2_pip_owner_character_id",
+            "incident_owner_character_id",
+            "workforce_owner_character_id",
+            "ai_owned_case_owner_character_id",
+            "ai_owned_case_subject_character_id",
+        },
+        "domain_query_matrix",
+    )
     status = contract.get("status")
     ready = contract.get("ready")
     if (
         contract.get("schema_version") != 1
         or isinstance(contract.get("schema_version"), bool)
         or contract.get("kind") != "zg361_phase2_paused_seed"
-        or status not in {"ready", "blocked_runtime_tree_mismatch"}
+        or status
+        not in {
+            "ready",
+            "blocked_runtime_tree_mismatch",
+            "blocked_seed_generation_required",
+        }
         or not isinstance(ready, bool)
         or (status == "ready") is not ready
         or not isinstance(contract.get("blocker"), str)
@@ -2216,7 +2240,8 @@ def load_phase2_seed_contract(
         or not isinstance(character_id, int)
         or isinstance(character_id, bool)
         or character_id <= 0
-        or saved_state.get("player_history_id") != EXPECTED_PLAYER_HISTORY_ID
+        or saved_state.get("player_history_id")
+        != PHASE2_SEED_PLAYER_HISTORY_ID
         or saved_state.get("played_character_alive") is not True
         or saved_state.get("paused_on_load") is not True
         or saved_state.get("map_ready") is not True
@@ -2231,6 +2256,48 @@ def load_phase2_seed_contract(
     }:
         raise acceptance.RunnerError(
             "phase-two seed contract install slots/launch mode are invalid"
+        )
+    if domain_query_matrix.get("schema_version") != 1:
+        raise acceptance.RunnerError(
+            "phase-two seed contract domain_query_matrix schema is invalid"
+        )
+    selector_keys = (
+        "b2_pip_owner_character_id",
+        "incident_owner_character_id",
+        "workforce_owner_character_id",
+        "ai_owned_case_owner_character_id",
+        "ai_owned_case_subject_character_id",
+    )
+    for key in selector_keys:
+        selector = domain_query_matrix.get(key)
+        if selector is None and ready is False:
+            continue
+        if (
+            isinstance(selector, bool)
+            or not isinstance(selector, int)
+            or not 1 <= selector <= 2**31 - 1
+        ):
+            raise acceptance.RunnerError(
+                f"phase-two seed contract {key} is not a captured "
+                "CharacterID"
+            )
+    if ready is True and any(
+        domain_query_matrix.get(key) is None for key in selector_keys
+    ):
+        raise acceptance.RunnerError(
+            "phase-two ready seed contract has an uncaptured domain selector"
+        )
+    for key in selector_keys[:-1]:
+        selector = domain_query_matrix.get(key)
+        if selector is not None and selector == character_id:
+            raise acceptance.RunnerError(
+                f"phase-two seed contract {key} is the played CharacterID"
+            )
+    ai_owner = domain_query_matrix.get("ai_owned_case_owner_character_id")
+    ai_subject = domain_query_matrix.get("ai_owned_case_subject_character_id")
+    if ai_owner is not None and ai_owner == ai_subject:
+        raise acceptance.RunnerError(
+            "phase-two seed contract AI-owned owner and subject are identical"
         )
     return contract
 
@@ -2330,19 +2397,25 @@ def install_phase2_seed(
             if isinstance(source_scenario_value, dict)
             else {}
         )
-        source_matrix_value = source_scenario.get(
-            "title_navigation_mcp_matrix"
-        )
-        source_matrix = (
-            source_matrix_value if isinstance(source_matrix_value, dict) else {}
-        )
-        source_readiness_value = source_matrix.get("readiness")
-        source_readiness = (
-            source_readiness_value
-            if isinstance(source_readiness_value, dict)
-            else {}
-        )
-        source_snapshot_value = source_readiness.get("snapshot")
+        source_snapshot_value = source_scenario.get("phase2_seed_snapshot")
+        if not isinstance(source_snapshot_value, dict):
+            # Read-only compatibility for the superseded phase-one source
+            # report. A ready replacement must use phase2_seed_snapshot.
+            source_matrix_value = source_scenario.get(
+                "title_navigation_mcp_matrix"
+            )
+            source_matrix = (
+                source_matrix_value
+                if isinstance(source_matrix_value, dict)
+                else {}
+            )
+            source_readiness_value = source_matrix.get("readiness")
+            source_readiness = (
+                source_readiness_value
+                if isinstance(source_readiness_value, dict)
+                else {}
+            )
+            source_snapshot_value = source_readiness.get("snapshot")
         source_snapshot = (
             source_snapshot_value
             if isinstance(source_snapshot_value, dict)
@@ -2355,11 +2428,23 @@ def install_phase2_seed(
             else {}
         )
         source_attestation_value = source_scenario.get(
-            "real_character_runtime_attestation"
+            "phase2_seed_bootstrap_attestation"
         )
         source_attestation = (
             source_attestation_value
             if isinstance(source_attestation_value, dict)
+            else {}
+        )
+        source_event_close_value = source_attestation.get("event_close")
+        source_event_close = (
+            source_event_close_value
+            if isinstance(source_event_close_value, dict)
+            else {}
+        )
+        source_checkpoint_value = source_attestation.get("checkpoint")
+        source_checkpoint = (
+            source_checkpoint_value
+            if isinstance(source_checkpoint_value, dict)
             else {}
         )
         source_tree_before_value = source_cell.get(
@@ -2469,18 +2554,37 @@ def install_phase2_seed(
             )
             is True
             and source_snapshot.get("map_ready") is True,
-            "source_real_character_markers_present": source_attestation.get(
-                "song_emperor_exact_build_marker_count"
+            "source_native_snapshot_date_matches": source_snapshot.get(
+                "date_raw"
             )
-            == 1
-            and source_attestation.get(
-                "song_emperor_player_switch_marker_count"
+            == contract["saved_state"].get("date_raw"),
+            "source_real_character_bootstrap_attested": source_attestation.get(
+                "event_definition_key"
             )
-            == 1
+            == "zga_phase2_seed.1"
+            and source_attestation.get("player_history_id")
+            == contract["saved_state"].get("player_history_id")
+            and source_attestation.get("played_character_id")
+            == contract["saved_state"].get("played_character_id")
+            and source_attestation.get("domain_query_matrix")
+            == contract.get("domain_query_matrix")
+            and source_attestation.get("mcp_only") is True
+            and source_event_close.get("step") == "select-event-option-1"
+            and source_event_close.get("postcondition_verified") is True
+            and source_checkpoint.get("status") == "saved"
+            and source_checkpoint.get("path") == str(source_save)
+            and source_checkpoint.get("size") == source_contract.get("bytes")
+            and source_checkpoint.get("sha256") == source_contract.get("sha256")
+            and source_checkpoint.get("date_raw")
+            == contract["saved_state"].get("date_raw")
+            and source_checkpoint.get("episode_character_id")
+            == contract["saved_state"].get("played_character_id")
             and source_scenario.get(
                 "historical_subjects_manufactured_by_fixture"
             )
-            is False,
+            is False
+            and source_scenario.get("ocr_used") is False
+            and source_scenario.get("test_decision_used") is False,
             "observed_game_version_matches": observed_game_version
             == runtime_contract.get("game_version"),
             "observed_executable_matches": observed_executable_sha256

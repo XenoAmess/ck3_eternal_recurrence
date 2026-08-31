@@ -1,0 +1,4 @@
+﻿l_simp_chinese:
+ zga_phase2_seed.1.t:0 "二期 MCP 种子捕获"
+ zga_phase2_seed.1.desc:0 "此窗口仅供验收：把真实上下级关系中的角色作用域交给 MCP 类型化事件查询。它不是玩法，也不得进入宣传或发布运行时。"
+ zga_phase2_seed.1.a:0 "记录类型化身份并关闭。"

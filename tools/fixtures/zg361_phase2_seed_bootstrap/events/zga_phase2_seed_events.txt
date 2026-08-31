@@ -1,0 +1,143 @@
+﻿namespace = zga_phase2_seed
+
+# Root is the real historical player han_6875.
+zga_phase2_seed.100 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		zga_phase2_seed_begin_effect = yes
+	}
+}
+
+# Root is the player's real AI celestial liege. Calling shipped public effects
+# here preserves their manager-root semantics. No title, character, relation,
+# receipt, history or provider output is manufactured by this fixture.
+zga_phase2_seed.101 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = yes
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				exists = scope:zga_phase2_seed_player
+				scope:zga_phase2_seed_player = {
+					this = character:han_6875
+					is_ai = no
+					is_alive = yes
+					is_landed = yes
+					liege = root
+					zg361_is_reviewable_vassal_trigger = yes
+				}
+			}
+			# B1: open the shipped manager cycle over real direct subjects.
+			zg361_b1_open_cycle_effect = yes
+			# Incident: take one real X applicability observation. The current
+			# mixed X/Y/Z terminal acceptance contract is intentionally not forged.
+			zg361_ip_open_x_case_effect = {
+				SUBJECT = scope:zga_phase2_seed_player
+			}
+			# Workforce: exercise only the shipped public entry. It can proceed
+			# only if genuine HC and prior product receipts already exist.
+			zg361_we_open_portfolio_effect = {
+				SUBJECT = scope:zga_phase2_seed_player
+			}
+			scope:zga_phase2_seed_player = {
+				trigger_event = zga_phase2_seed.102
+			}
+		}
+		else = {
+			debug_log = "ZGAP2SEED: RED real manager/direct-subject binding unavailable"
+		}
+	}
+}
+
+# Root returns to the real played subject. If the preserved save contains a
+# genuine delivered 3.25 result, adapt that existing product fact into B2 and
+# let the shipped PIP gate decide. Missing upstream facts remain missing.
+zga_phase2_seed.102 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				this = character:han_6875
+				is_ai = no
+				exists = liege
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_case_state
+				has_variable = zg361_result_settlement_posted_serial
+				has_variable = zg361_result_grade
+				has_variable = zg361_result_grade_reason
+				has_variable = zg361_result_delivery_method
+				has_variable = zg361_result_absolute_grade
+				has_variable = zg361_result_kpi_frozen
+				has_variable = zg361_result_evidence_governance
+				has_variable = zg361_result_evidence_capability
+				has_variable = zg361_result_evidence_growth
+				has_variable = zg361_result_evidence_superior
+				has_variable = zg361_result_evidence_values
+				has_variable = zg361_result_evidence_collaboration
+				has_variable = zg361_result_evidence_jingcha
+				has_variable = zg361_result_evidence_organization
+				var:zg361_result_case_owner = liege
+				var:zg361_result_case_state = 3
+				var:zg361_result_grade = 1
+				var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							has_variable = zg361_b2_case_owner
+							has_variable = zg361_b2_case_subject
+							has_variable = zg361_b2_case_cycle
+							has_variable = zg361_b2_case_serial
+						}
+						OR = {
+							NOT = { var:zg361_b2_case_owner = var:zg361_result_case_owner }
+							NOT = { var:zg361_b2_case_subject = this }
+							NOT = { var:zg361_b2_case_cycle = var:zg361_result_cycle_serial }
+							NOT = { var:zg361_b2_case_serial = var:zg361_result_case_serial }
+						}
+					}
+					trigger_else = { always = yes }
+				}
+				zg361_b2_on_result_frozen_effect = yes
+			}
+			zg361_b2_on_notice_delivered_effect = yes
+		}
+		trigger_event = zga_phase2_seed.1
+	}
+}
+
+# The only visible fixture card. MCP must query this exact window, read the
+# five typed saved character scopes, choose its sole option, and save-checkpoint.
+zga_phase2_seed.1 = {
+	type = character_event
+	title = zga_phase2_seed.1.t
+	desc = zga_phase2_seed.1.desc
+	left_portrait = root
+
+	immediate = {
+		save_scope_as = zga_phase2_ai_owned_subject
+		liege = {
+			save_scope_as = zga_phase2_b2_owner
+			save_scope_as = zga_phase2_incident_owner
+			save_scope_as = zga_phase2_workforce_owner
+			save_scope_as = zga_phase2_ai_owned_owner
+		}
+		debug_log = "ZGAP2SEED: typed selector capture window ready"
+	}
+
+	option = {
+		name = zga_phase2_seed.1.a
+		debug_log = "ZGAP2SEED: typed selector capture window closed"
+	}
+}

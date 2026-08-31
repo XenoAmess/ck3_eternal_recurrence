@@ -1,0 +1,27 @@
+﻿# Acceptance-only orchestration. The fixture selects only real history and
+# existing liege/vassal relations. Product state is written solely by shipped
+# public effects; this file never writes a zg361_* variable or receipt.
+zga_phase2_seed_begin_effect = {
+	if = {
+		limit = {
+			this = character:han_6875
+			is_ai = no
+			is_alive = yes
+			is_landed = yes
+			zg361_is_reviewable_vassal_trigger = yes
+			exists = liege
+			liege = {
+				is_ai = yes
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+		}
+		save_scope_as = zga_phase2_seed_player
+		liege = {
+			trigger_event = zga_phase2_seed.101
+		}
+	}
+	else = {
+		debug_log = "ZGAP2SEED: RED historical han_6875/player/liege binding unavailable"
+	}
+}

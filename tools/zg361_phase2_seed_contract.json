@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "kind": "zg361_phase2_paused_seed",
-  "status": "ready",
-  "ready": true,
-  "blocker": "",
+  "status": "blocked_seed_generation_required",
+  "ready": false,
+  "blocker": "The preserved save predates B1/B2/Incident/Workforce state and has no captured domain selectors. Generate a new MCP-only seed from the acceptance-only phase-two bootstrap fixture; do not guess CharacterIDs. Incident mixed N/A+positive and Workforce three-cycle charter readiness remain separate product/acceptance blockers.",
   "source": {
     "profile": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061_native_state/profile",
     "relative_save": "save games/autosave.ck3",
@@ -18,10 +18,11 @@
     "source_report_sha256": "409cf4366a7a96801cfe56c91792d11c7b779a6deecb1d2dddf4876c87d8dd6b",
     "source_evidence_index_sha256": "140e5ff79f37717b25d1233e02427ade7f2031fac6b7944b2accda6af979b450",
     "source_git_commit": "fa5c78dd4b524037d8b113d0498328437085825c",
-    "real_character_proof": "source report GREEN binds historical han_8052 to native CharacterID 32904; the first paused MCP snapshot after loading must independently confirm CharacterID 32904 and date_raw 53147016",
+    "real_character_proof": "source report witnessed-result event zg361.4 has root_scope CharacterID 29037 for historical han_6875 and saved scope zga_reviewing_superior CharacterID 32904; the earlier contract incorrectly treated the superior as the played root",
     "limitations": [
-      "The preserved autosave predates typed save-checkpoint ACK materialization, so its declared saved date is a load-time hypothesis rather than source-ACK proof; this does not block bootstrap and must be accepted or rejected by the first paused MCP snapshot.",
-      "The source product and fixture tree hashes are provenance only; current runtime identity is verified from the newly bootstrapped trees, mount inventory, and loaded-feature manifest after launch."
+      "The preserved autosave predates typed save-checkpoint ACK materialization, so its declared saved date is a load-time hypothesis rather than source-ACK proof.",
+      "The preserved autosave predates the current B1/B2/Incident/Workforce product state and cannot be promoted to a ready phase-two seed merely by adding selector IDs.",
+      "The source product and fixture tree hashes are provenance only; a replacement seed must bind the current runtime by MCP event context plus typed save-checkpoint evidence."
     ]
   },
   "runtime": {
@@ -36,8 +37,8 @@
   },
   "saved_state": {
     "date_raw": 53147016,
-    "played_character_id": 32904,
-    "player_history_id": "han_8052",
+    "played_character_id": 29037,
+    "player_history_id": "han_6875",
     "played_character_alive": true,
     "paused_on_load": true,
     "map_ready": true
@@ -46,5 +47,13 @@
     "continue_save_relative_path": "save games/autosave.ck3",
     "last_save_relative_path": "last_save.ck3",
     "launch_mode": "native_session_continue_last_save"
+  },
+  "domain_query_matrix": {
+    "schema_version": 1,
+    "b2_pip_owner_character_id": null,
+    "incident_owner_character_id": null,
+    "workforce_owner_character_id": null,
+    "ai_owned_case_owner_character_id": null,
+    "ai_owned_case_subject_character_id": null
   }
 }
