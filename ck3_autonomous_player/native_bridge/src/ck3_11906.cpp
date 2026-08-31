@@ -12866,7 +12866,9 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
   output.war_id = war_id;
   output.active_casus_belli_database_index = casus_belli_database_index;
   output.active_casus_belli_key = casus_belli_key;
-  if (casus_belli_key != "claim_cb") {
+  const bool is_claim_cb = casus_belli_key == "claim_cb";
+  const bool is_raiktor_claim_cb = casus_belli_key == "raiktor_claim_cb";
+  if (!is_claim_cb && !is_raiktor_claim_cb) {
     if (ResolveWar(bindings, game_state, war_id) != war ||
         LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
             casus_belli_type) {
@@ -12956,15 +12958,68 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
     return ReadWarTerminationTermsResult::unavailable;
   }
 
-  output.attacker_victory.declared_title_disposition =
-      "transfer_to_claimant_via_conquest_claim";
-  output.attacker_victory.claim_disposition =
-      "resolve_with_add_claim_on_loss";
-  output.white_peace.declared_title_disposition = "unchanged";
-  output.white_peace.claim_disposition = "retain_and_strengthen_weak";
-  output.attacker_defeat.declared_title_disposition = "unchanged";
-  output.attacker_defeat.claim_disposition =
-      "remove_declared_target_claims";
+  if (is_claim_cb) {
+    output.attacker_victory.declared_title_disposition =
+        "transfer_to_claimant_via_conquest_claim";
+    output.attacker_victory.claim_disposition =
+        "resolve_with_add_claim_on_loss";
+    output.white_peace.declared_title_disposition = "unchanged";
+    output.white_peace.claim_disposition = "retain_and_strengthen_weak";
+    output.attacker_defeat.declared_title_disposition = "unchanged";
+    output.attacker_defeat.claim_disposition =
+        "remove_declared_target_claims";
+  } else {
+    game::WarRaiktorSurrenderTermsSnapshot surrender{};
+    surrender.claim_disposition.declared_title_disposition = "unchanged";
+    surrender.claim_disposition.claim_disposition =
+        "remove_declared_target_claims";
+    surrender.gold_reparations_factor = 3;
+    surrender.gold_reparations_direction =
+        "primary_attacker_to_primary_defender";
+    surrender.gold_reparations_positive_income_basis =
+        "primary_attacker_yearly_income";
+    surrender.gold_reparations_fallback_condition =
+        "landless_adventurer_or_nonpositive_monthly_income";
+    surrender.gold_reparations_fallback_basis =
+        "primary_attacker_medium_gold_value";
+    surrender.gold_reparations_defender_culture_multiplier =
+        "2_if_primary_defender_has_more_gold_for_successful_defensive_wars_else_1";
+    surrender.attacker_fame_scale = -10;
+    surrender.attacker_fame_base = "cb_prestige_factor";
+    surrender.attacker_fame_resource = "prestige";
+    surrender.attacker_fame_limit_rule = "loss_capped_at_1000";
+    surrender.truce_direction =
+        "primary_attacker_toward_primary_defender";
+    surrender.truce_result = "defeat";
+    surrender.prisoner_release_rule =
+        "war_result_primary_and_first_three_heirs";
+    surrender.conditional_favor_hook_rule =
+        "attacker_on_claimant_if_distinct_and_can_add_favor_hook";
+    // Unlike stock claim_cb defeat, raiktor_claim_cb does not call either
+    // add_legitimacy_attacker_defeat_effect or
+    // add_influence_attacker_defeat_effect. These are exact authored zeroes,
+    // not failed dynamic observations.
+    surrender.attacker_legitimacy_delta = {0, kFixedPointScale};
+    surrender.attacker_influence_delta = {0, kFixedPointScale};
+    surrender.hostages_allowed = false;
+    surrender.unobserved_dynamic_effects = {
+        "actual_gold_transfer",
+        "actual_prestige_delta",
+        "actual_truce_expiry",
+        "actual_prisoner_release_pairs",
+        "conditional_favor_hook_application",
+        "targeting_faction_discontent_delta",
+        "glory_hound_vassal_opinion_rows",
+        "antagonistic_clan_vassal_opinion_rows",
+        "existing_house_feud_score_delta",
+        "attacker_mandala_piety_experience_delta",
+        "defender_mandala_serenity",
+        "defender_accolade_glory",
+        "laamp_actual_settlement_outside_cb_effect",
+        "war_bound_army_losses"};
+    output.attacker_defeat = surrender.claim_disposition;
+    output.raiktor_surrender = std::move(surrender);
+  }
   return ReadWarTerminationTermsResult::available;
 }
 

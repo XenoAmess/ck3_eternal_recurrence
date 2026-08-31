@@ -81,9 +81,28 @@ _TERMINATION_TERMS_EXECUTABLE_SHA256 = (
 _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256 = (
     "D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1"
 )
+_TERMINATION_TERMS_RAIKTOR_EVENT_WAR_SCRIPT_SHA256 = (
+    "BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707"
+)
+_TERMINATION_TERMS_CASUS_BELLI_EFFECTS_SCRIPT_SHA256 = (
+    "9F7C77CC9342B1197B1C802A2D465E56F7521458B103DEC84F5EB7222E45F18C"
+)
+_TERMINATION_TERMS_WAR_EFFECTS_SCRIPT_SHA256 = (
+    "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D"
+)
+_TERMINATION_TERMS_WAR_INTERACTIONS_SCRIPT_SHA256 = (
+    "5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F"
+)
+_TERMINATION_TERMS_BOOKMARK_EVENTS_SCRIPT_SHA256 = (
+    "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF"
+)
 _TERMINATION_TERMS_NATIVE_READER = "CWar+0x270/+0x290;0x28B1AA0"
 _TERMINATION_TERMS_CLAIM_LIFECYCLE = (
     "present_only_vtable_slot_0_delete_flags_0"
+)
+_TERMINATION_TERMS_CLAIM_SLICE = "claim_cb_claim_disposition"
+_TERMINATION_TERMS_RAIKTOR_SLICE = (
+    "raiktor_claim_cb_attacker_defeat_disposition"
 )
 _TERMINATION_TERMS_OUTCOMES = {
     "attacker_victory": {
@@ -100,6 +119,59 @@ _TERMINATION_TERMS_OUTCOMES = {
         "declared_title_disposition": "unchanged",
         "claim_disposition": "remove_declared_target_claims",
     },
+}
+_TERMINATION_TERMS_RAIKTOR_UNOBSERVED_DYNAMIC_EFFECTS = [
+    "actual_gold_transfer",
+    "actual_prestige_delta",
+    "actual_truce_expiry",
+    "actual_prisoner_release_pairs",
+    "conditional_favor_hook_application",
+    "targeting_faction_discontent_delta",
+    "glory_hound_vassal_opinion_rows",
+    "antagonistic_clan_vassal_opinion_rows",
+    "existing_house_feud_score_delta",
+    "attacker_mandala_piety_experience_delta",
+    "defender_mandala_serenity",
+    "defender_accolade_glory",
+    "laamp_actual_settlement_outside_cb_effect",
+    "war_bound_army_losses",
+]
+_TERMINATION_TERMS_RAIKTOR_ATTACKER_DEFEAT = {
+    "declared_title_disposition": "unchanged",
+    "claim_disposition": "remove_declared_target_claims",
+}
+_TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS = {
+    "direction": "primary_attacker_to_primary_defender",
+    "factor": 3,
+    "positive_income_basis": "primary_attacker_yearly_income",
+    "fallback_condition": (
+        "landless_adventurer_or_nonpositive_monthly_income"
+    ),
+    "fallback_basis": "primary_attacker_medium_gold_value",
+    "defender_culture_multiplier": (
+        "2_if_primary_defender_has_more_gold_for_successful_defensive_wars_else_1"
+    ),
+    "actual_amount_observable": False,
+}
+_TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME = {
+    "resource": "prestige",
+    "base": "cb_prestige_factor",
+    "scale": -10,
+    "limit_rule": "loss_capped_at_1000",
+    "actual_delta_observable": False,
+}
+_TERMINATION_TERMS_RAIKTOR_TRUCE = {
+    "direction": "primary_attacker_toward_primary_defender",
+    "result": "defeat",
+    "actual_expiry_observable": False,
+}
+_TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE = {
+    "rule": "war_result_primary_and_first_three_heirs",
+    "actual_pairs_observable": False,
+}
+_TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK = {
+    "rule": "attacker_on_claimant_if_distinct_and_can_add_favor_hook",
+    "actual_applies_observable": False,
 }
 
 _ARMY_STRENGTH_ROW_KEYS = {
@@ -1971,7 +2043,7 @@ def normalize_war_termination_terms(
     *,
     expected_war_id: int | None = None,
 ) -> dict[str, object]:
-    """Normalize the complete, narrow claim-CB disposition slice."""
+    """Normalize one strict claim or Raiktor narrow terms union."""
     if not isinstance(value, dict):
         raise ValueError("native war_termination_terms must be an object")
     status = value.get("status")
@@ -1984,12 +2056,33 @@ def normalize_war_termination_terms(
         "readiness",
         "provenance",
     }
-    if status == "available":
+    supported_slice = value.get("supported_slice")
+    if status == "available" and supported_slice == (
+        _TERMINATION_TERMS_CLAIM_SLICE
+    ):
         expected_keys = common_keys | {
             "claimant_character_id",
             "target_title_ids",
             "claims",
             "outcomes",
+        }
+    elif status == "available" and supported_slice == (
+        _TERMINATION_TERMS_RAIKTOR_SLICE
+    ):
+        expected_keys = common_keys | {
+            "claimant_character_id",
+            "target_title_ids",
+            "claims",
+            "attacker_defeat",
+            "gold_reparations",
+            "attacker_fame",
+            "truce",
+            "prisoner_release",
+            "conditional_favor_hook",
+            "attacker_legitimacy_delta",
+            "attacker_influence_delta",
+            "hostages_allowed",
+            "unobserved_dynamic_effects",
         }
     elif status == "unsupported":
         expected_keys = common_keys | {"reason"}
@@ -2026,17 +2119,27 @@ def normalize_war_termination_terms(
         raise ValueError(
             "native war_termination_terms CB canonical key is malformed"
         )
-    if value.get("supported_slice") != "claim_cb_claim_disposition":
+    if supported_slice not in {
+        _TERMINATION_TERMS_CLAIM_SLICE,
+        _TERMINATION_TERMS_RAIKTOR_SLICE,
+    }:
         raise ValueError(
             "native war_termination_terms supported slice drifted"
         )
     provenance = _normalize_war_termination_terms_provenance(
-        value.get("provenance")
+        value.get("provenance"),
+        supported_slice=(
+            _TERMINATION_TERMS_CLAIM_SLICE
+            if status == "unsupported"
+            else supported_slice
+        ),
     )
 
     if status == "unsupported":
-        if canonical_key == "claim_cb" or value.get("reason") != (
-            "casus_belli_not_claim_cb"
+        if (
+            supported_slice != _TERMINATION_TERMS_CLAIM_SLICE
+            or canonical_key in {"claim_cb", "raiktor_claim_cb"}
+            or value.get("reason") != "casus_belli_not_claim_cb"
         ):
             raise ValueError(
                 "native war_termination_terms unsupported branch malformed"
@@ -2054,15 +2157,24 @@ def normalize_war_termination_terms(
                 "database_index": database_index,
                 "canonical_key": canonical_key,
             },
-            "supported_slice": "claim_cb_claim_disposition",
+            "supported_slice": _TERMINATION_TERMS_CLAIM_SLICE,
             "reason": "casus_belli_not_claim_cb",
             "readiness": {"ready": False},
             "provenance": provenance,
         }
 
-    if canonical_key != "claim_cb":
+    if supported_slice == _TERMINATION_TERMS_CLAIM_SLICE and (
+        canonical_key != "claim_cb"
+    ):
         raise ValueError(
             "native war_termination_terms available branch is not claim_cb"
+        )
+    if supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE and (
+        canonical_key != "raiktor_claim_cb"
+    ):
+        raise ValueError(
+            "native war_termination_terms available branch is not "
+            "raiktor_claim_cb"
         )
     claimant_character_id = _positive_int32_id(
         value.get("claimant_character_id"),
@@ -2127,6 +2239,85 @@ def normalize_war_termination_terms(
             }
         )
 
+    if supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE:
+        expected_readiness = {
+            "identity_ready": True,
+            "targets_ready": True,
+            "claim_rows_ready": True,
+            "attacker_defeat_rule_ready": True,
+            "static_formula_ready": True,
+            "dynamic_deltas_ready": False,
+            "decision_ready": False,
+            "automatic_surrender_ready": False,
+            "ready": False,
+        }
+        exact_fields: tuple[tuple[str, object], ...] = (
+            (
+                "attacker_defeat",
+                _TERMINATION_TERMS_RAIKTOR_ATTACKER_DEFEAT,
+            ),
+            (
+                "gold_reparations",
+                _TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS,
+            ),
+            ("attacker_fame", _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME),
+            ("truce", _TERMINATION_TERMS_RAIKTOR_TRUCE),
+            (
+                "prisoner_release",
+                _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE,
+            ),
+            (
+                "conditional_favor_hook",
+                _TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK,
+            ),
+            (
+                "attacker_legitimacy_delta",
+                {"raw": 0, "scale": 100_000},
+            ),
+            (
+                "attacker_influence_delta",
+                {"raw": 0, "scale": 100_000},
+            ),
+            (
+                "unobserved_dynamic_effects",
+                _TERMINATION_TERMS_RAIKTOR_UNOBSERVED_DYNAMIC_EFFECTS,
+            ),
+            ("readiness", expected_readiness),
+        )
+        for field, expected in exact_fields:
+            if value.get(field) != expected:
+                raise ValueError(
+                    "native raiktor war_termination_terms "
+                    f"{field} drifted"
+                )
+        if value.get("hostages_allowed") is not False:
+            raise ValueError(
+                "native raiktor war_termination_terms hostages drifted"
+            )
+        return {
+            "schema_version": 1,
+            "status": "available",
+            "war_id": war_id,
+            "casus_belli": {
+                "database_index": database_index,
+                "canonical_key": "raiktor_claim_cb",
+            },
+            "supported_slice": _TERMINATION_TERMS_RAIKTOR_SLICE,
+            "claimant_character_id": claimant_character_id,
+            "target_title_ids": target_title_ids,
+            "claims": claims,
+            **{
+                field: (
+                    dict(expected)
+                    if isinstance(expected, dict)
+                    else list(expected)
+                )
+                for field, expected in exact_fields
+            },
+            "hostages_allowed": False,
+            "provenance": provenance,
+        }
+
     outcomes = value.get("outcomes")
     if not isinstance(outcomes, dict) or set(outcomes) != set(
         _TERMINATION_TERMS_OUTCOMES
@@ -2162,7 +2353,7 @@ def normalize_war_termination_terms(
             "database_index": database_index,
             "canonical_key": "claim_cb",
         },
-        "supported_slice": "claim_cb_claim_disposition",
+        "supported_slice": _TERMINATION_TERMS_CLAIM_SLICE,
         "claimant_character_id": claimant_character_id,
         "target_title_ids": target_title_ids,
         "claims": claims,
@@ -2174,14 +2365,43 @@ def normalize_war_termination_terms(
 
 def _normalize_war_termination_terms_provenance(
     value: object,
+    *,
+    supported_slice: str,
 ) -> dict[str, str]:
-    expected = {
+    common = {
         "game_version": _TERMINATION_TERMS_GAME_VERSION,
         "executable_sha256": _TERMINATION_TERMS_EXECUTABLE_SHA256,
         "native_reader": _TERMINATION_TERMS_NATIVE_READER,
         "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
-        "claim_script_sha256": _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256,
     }
+    if supported_slice == _TERMINATION_TERMS_CLAIM_SLICE:
+        expected = {
+            **common,
+            "claim_script_sha256": _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256,
+        }
+    elif supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE:
+        expected = {
+            **common,
+            "event_war_script_sha256": (
+                _TERMINATION_TERMS_RAIKTOR_EVENT_WAR_SCRIPT_SHA256
+            ),
+            "casus_belli_effects_script_sha256": (
+                _TERMINATION_TERMS_CASUS_BELLI_EFFECTS_SCRIPT_SHA256
+            ),
+            "war_effects_script_sha256": (
+                _TERMINATION_TERMS_WAR_EFFECTS_SCRIPT_SHA256
+            ),
+            "war_interactions_script_sha256": (
+                _TERMINATION_TERMS_WAR_INTERACTIONS_SCRIPT_SHA256
+            ),
+            "bookmark_events_script_sha256": (
+                _TERMINATION_TERMS_BOOKMARK_EVENTS_SCRIPT_SHA256
+            ),
+        }
+    else:
+        raise ValueError(
+            "native war_termination_terms provenance slice is malformed"
+        )
     if not isinstance(value, dict) or value != expected:
         raise ValueError(
             "native war_termination_terms provenance is malformed"

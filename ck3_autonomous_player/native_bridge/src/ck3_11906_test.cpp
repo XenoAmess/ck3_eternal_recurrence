@@ -223,6 +223,7 @@ std::array<std::byte, 0x1720> g_casus_belli_type_0{};
 std::array<std::byte, 0x1720> g_casus_belli_type_1{};
 constexpr char g_casus_belli_key_0[] = "claim_cb";
 constexpr char g_casus_belli_key_1[] = "county_conquest_cb";
+constexpr char g_raiktor_casus_belli_key[] = "raiktor_claim_cb";
 std::array<std::byte, 0x220> g_casus_belli_rule_0{};
 std::array<std::byte, 0x220> g_casus_belli_rule_1{};
 std::array<std::byte, 0x18> g_casus_belli_scratch{};
@@ -8465,9 +8466,65 @@ int main() {
     return Fail("claim terms lost native claimant/target/claim semantics");
   }
 
-  const auto claim_calls_before_unsupported = g_character_claim_read_calls;
+  const auto claim_reads_before_raiktor = g_character_claim_read_calls;
+  const auto claim_destroys_before_raiktor =
+      g_character_claim_destroy_calls;
+  Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
   Store(g_war, 0x100,
         static_cast<void *>(g_casus_belli_type_1.data()));
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::available ||
+      termination_terms.active_casus_belli_database_index != 1 ||
+      termination_terms.active_casus_belli_key != "raiktor_claim_cb" ||
+      termination_terms.claimant_character_id != played_character_id ||
+      termination_terms.target_title_ids !=
+          std::vector<std::int32_t>{
+              targeted_title_id, targeted_duchy_a_title_id,
+              second_county_title_id, third_capital_barony_title_id} ||
+      termination_terms.claims.size() != 4 ||
+      !termination_terms.attacker_victory.declared_title_disposition.empty() ||
+      !termination_terms.white_peace.claim_disposition.empty() ||
+      termination_terms.attacker_defeat.declared_title_disposition !=
+          "unchanged" ||
+      termination_terms.attacker_defeat.claim_disposition !=
+          "remove_declared_target_claims" ||
+      !termination_terms.raiktor_surrender.has_value() ||
+      termination_terms.raiktor_surrender->claim_disposition !=
+          termination_terms.attacker_defeat ||
+      termination_terms.raiktor_surrender->gold_reparations_factor != 3 ||
+      termination_terms.raiktor_surrender->gold_reparations_direction !=
+          "primary_attacker_to_primary_defender" ||
+      termination_terms.raiktor_surrender->attacker_fame_scale != -10 ||
+      termination_terms.raiktor_surrender->attacker_fame_resource !=
+          "prestige" ||
+      termination_terms.raiktor_surrender->attacker_legitimacy_delta.raw !=
+          0 ||
+      termination_terms.raiktor_surrender->attacker_legitimacy_delta.scale !=
+          100'000 ||
+      termination_terms.raiktor_surrender->attacker_influence_delta.raw != 0 ||
+      termination_terms.raiktor_surrender->attacker_influence_delta.scale !=
+          100'000 ||
+      termination_terms.raiktor_surrender->hostages_allowed ||
+      termination_terms.raiktor_surrender->unobserved_dynamic_effects.size() !=
+          14 ||
+      g_character_claim_read_calls != claim_reads_before_raiktor + 4 ||
+      g_character_claim_destroy_calls !=
+          claim_destroys_before_raiktor + 3 ||
+      g_submit_called) {
+    return Fail("raiktor surrender terms lost the narrow source-bound slice");
+  }
+
+  Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  const auto claim_calls_before_unsupported = g_character_claim_read_calls;
   if (xar::ck3_11906::ReadWarTerminationTerms(
           bindings, active_war_id, termination_terms) !=
           xar::ck3_11906::ReadWarTerminationTermsResult::

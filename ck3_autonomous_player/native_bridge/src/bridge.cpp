@@ -1365,7 +1365,7 @@ void AppendWarClaimDisposition(
   result += '}';
 }
 
-void AppendWarTerminationTermsProvenance(std::string &result) {
+void AppendClaimWarTerminationTermsProvenance(std::string &result) {
   result +=
       "{\"game_version\":\"1.19.0.6\","
       "\"executable_sha256\":"
@@ -1375,6 +1375,26 @@ void AppendWarTerminationTermsProvenance(std::string &result) {
       "\"present_only_vtable_slot_0_delete_flags_0\","
       "\"claim_script_sha256\":"
       "\"D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1\"}";
+}
+
+void AppendRaiktorWarTerminationTermsProvenance(std::string &result) {
+  result +=
+      "{\"game_version\":\"1.19.0.6\","
+      "\"executable_sha256\":"
+      "\"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\","
+      "\"native_reader\":\"CWar+0x270/+0x290;0x28B1AA0\","
+      "\"present_claim_lifecycle\":"
+      "\"present_only_vtable_slot_0_delete_flags_0\","
+      "\"event_war_script_sha256\":"
+      "\"BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707\","
+      "\"casus_belli_effects_script_sha256\":"
+      "\"9F7C77CC9342B1197B1C802A2D465E56F7521458B103DEC84F5EB7222E45F18C\","
+      "\"war_effects_script_sha256\":"
+      "\"A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D\","
+      "\"war_interactions_script_sha256\":"
+      "\"5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F\","
+      "\"bookmark_events_script_sha256\":"
+      "\"75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF\"}";
 }
 
 void AppendWarTerminationTerms(
@@ -1389,13 +1409,17 @@ void AppendWarTerminationTerms(
   result += SignedNumber(terms.active_casus_belli_database_index);
   result += ",\"canonical_key\":";
   AppendJsonString(result, terms.active_casus_belli_key);
-  result +=
-      "},\"supported_slice\":\"claim_cb_claim_disposition\",";
+  result += "},\"supported_slice\":";
+  AppendJsonString(
+      result, supported && terms.active_casus_belli_key == "raiktor_claim_cb"
+                  ? "raiktor_claim_cb_attacker_defeat_disposition"
+                  : "claim_cb_claim_disposition");
+  result += ',';
   if (!supported) {
     result +=
         "\"reason\":\"casus_belli_not_claim_cb\","
         "\"readiness\":{\"ready\":false},\"provenance\":";
-    AppendWarTerminationTermsProvenance(result);
+    AppendClaimWarTerminationTermsProvenance(result);
     result += '}';
     return;
   }
@@ -1429,7 +1453,75 @@ void AppendWarTerminationTerms(
     AppendJsonString(result, claim.state);
     result += '}';
   }
-  result += "],\"outcomes\":{\"attacker_victory\":";
+  result += "]";
+  if (terms.active_casus_belli_key == "raiktor_claim_cb") {
+    const auto &surrender = terms.raiktor_surrender.value();
+    result += ",\"attacker_defeat\":";
+    AppendWarClaimDisposition(result, surrender.claim_disposition);
+    result += ",\"gold_reparations\":{\"direction\":";
+    AppendJsonString(result, surrender.gold_reparations_direction);
+    result += ",\"factor\":";
+    result += SignedNumber(surrender.gold_reparations_factor);
+    result += ",\"positive_income_basis\":";
+    AppendJsonString(result,
+                     surrender.gold_reparations_positive_income_basis);
+    result += ",\"fallback_condition\":";
+    AppendJsonString(result, surrender.gold_reparations_fallback_condition);
+    result += ",\"fallback_basis\":";
+    AppendJsonString(result, surrender.gold_reparations_fallback_basis);
+    result += ",\"defender_culture_multiplier\":";
+    AppendJsonString(
+        result, surrender.gold_reparations_defender_culture_multiplier);
+    result += ",\"actual_amount_observable\":false}";
+    result += ",\"attacker_fame\":{\"resource\":";
+    AppendJsonString(result, surrender.attacker_fame_resource);
+    result += ",\"base\":";
+    AppendJsonString(result, surrender.attacker_fame_base);
+    result += ",\"scale\":";
+    result += SignedNumber(surrender.attacker_fame_scale);
+    result += ",\"limit_rule\":";
+    AppendJsonString(result, surrender.attacker_fame_limit_rule);
+    result += ",\"actual_delta_observable\":false}";
+    result += ",\"truce\":{\"direction\":";
+    AppendJsonString(result, surrender.truce_direction);
+    result += ",\"result\":";
+    AppendJsonString(result, surrender.truce_result);
+    result += ",\"actual_expiry_observable\":false}";
+    result += ",\"prisoner_release\":{\"rule\":";
+    AppendJsonString(result, surrender.prisoner_release_rule);
+    result += ",\"actual_pairs_observable\":false}";
+    result += ",\"conditional_favor_hook\":{\"rule\":";
+    AppendJsonString(result, surrender.conditional_favor_hook_rule);
+    result += ",\"actual_applies_observable\":false}";
+    result += ",\"attacker_legitimacy_delta\":";
+    AppendFixedPoint(result, surrender.attacker_legitimacy_delta);
+    result += ",\"attacker_influence_delta\":";
+    AppendFixedPoint(result, surrender.attacker_influence_delta);
+    result += ",\"hostages_allowed\":";
+    result += surrender.hostages_allowed ? "true" : "false";
+    result += ",\"unobserved_dynamic_effects\":[";
+    for (std::size_t index = 0;
+         index < surrender.unobserved_dynamic_effects.size(); ++index) {
+      if (index != 0) {
+        result += ',';
+      }
+      AppendJsonString(result, surrender.unobserved_dynamic_effects[index]);
+    }
+    result +=
+        "],\"readiness\":{\"identity_ready\":true,"
+        "\"targets_ready\":true,\"claim_rows_ready\":true,"
+        "\"attacker_defeat_rule_ready\":true,"
+        "\"static_formula_ready\":true,"
+        "\"dynamic_deltas_ready\":false,"
+        "\"decision_ready\":false,"
+        "\"automatic_surrender_ready\":false,\"ready\":false},"
+        "\"provenance\":";
+    AppendRaiktorWarTerminationTermsProvenance(result);
+    result += '}';
+    return;
+  }
+
+  result += ",\"outcomes\":{\"attacker_victory\":";
   AppendWarClaimDisposition(result, terms.attacker_victory);
   result += ",\"white_peace\":";
   AppendWarClaimDisposition(result, terms.white_peace);
@@ -1440,7 +1532,7 @@ void AppendWarTerminationTerms(
       "\"targets_ready\":true,\"claim_rows_ready\":true,"
       "\"claim_disposition_ready\":true,\"ready\":true},"
       "\"provenance\":";
-  AppendWarTerminationTermsProvenance(result);
+  AppendClaimWarTerminationTermsProvenance(result);
   result += '}';
 }
 

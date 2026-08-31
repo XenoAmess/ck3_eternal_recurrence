@@ -1492,3 +1492,93 @@ ACK 自身永不等于战争结束。pending 的同日下一 turn 只推进一�
   不得先用 dynamic terms 或 campaign forecast 包装错误 label。普通新防守战的继续作战也不消费这些完整退出输入；
   集结、stance、共同 wargoal 与最小 continuation 树见
   [primary-defensive-war-response.md](primary-defensive-war-response.md)。
+
+## 2026-08-31 `raiktor_claim_cb` 进攻方投降：原版树与 typed partial
+
+### production-live 输入与 blocker
+
+- [production-live loop] bounded continuation
+  `C:\Users\xenoa\AppData\Local\Temp\xar-g2-post-call-ally-continuation-07acdfe-20260831T0425Z`
+  从冻结 checkpoint 连续运行 25/25 turns：10 次 query、15 次 gameplay、14 次 visible、4 次 checkpoint、0 次 recovery，
+  `first_blocker=null`；日期从 `53223120` 前进到 `53223936`，WarID `50331699` 的玩家战分由 `-48` 到 `-50`。
+  最终 checkpoint SHA-256 为
+  `60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164`，driver state SHA-256 为
+  `4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E`。
+- [production-live primitive] 同一 paused 状态的 termination options 已确认玩家是 primary attacker，CB 为
+  `raiktor_claim_cb`，战争 1281 日，surrender 的 validator / available / auto-accept / would-accept-now 均为真；旧 terms v1
+  返回 `unsupported / cb_specific_terms_not_observable`。因此下一项不是重复跑局，而是给这个 exact CB 补原生只读条款。
+- [harness RED, not gameplay RED] 开局前和中途 HKL 均为 `0x04090409`；CK3 已退出后的第三次 probe 因前台窗口已不存在而 RED。
+  这是 post-cleanup timing，不是游戏过程中输入法回切，也不能覆盖上述 gameplay GREEN。
+
+### exact-build 与原版终局树
+
+本节冻结 CK3 `1.19.0.6 (Scribe)`、`ck3.exe`
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。主要 source：
+
+| source | SHA-256 | 作用 |
+|---|---|---|
+| `00_event_war.txt` | `BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707` | Raiktor CB 与 `on_defeat` |
+| `00_claim.txt` | `D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1` | 普通 claim defeat 对照 |
+| `00_war_effects.txt` | `A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D` | 赔款、停战、战俘与内部政治 helper |
+| `00_casus_belli_effects.txt` | `9F7C77CC9342B1197B1C802A2D465E56F7521458B103DEC84F5EB7222E45F18C` | claim setup / fame helper 输入 |
+| `00_war.txt` | `5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F` | surrender 接受链与实际 PoW 释放 |
+| `bookmark_events.txt` | `75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF` | Raiktor war-bound 六支事件军队 |
+
+[static-confirmed] `00_event_war.txt:2547-2620` 与普通 `claim_cb` defeat 主干相同：移除 claimant 对全部 declared targets
+的 claims；条件性由 attacker 获得 claimant 的 favor hook；attacker 向 defender 支付 factor `3` 的短期赔款；
+`setup_claim_cb` 后以 `-10 × cb_prestige_factor`（损失上限 1000）结算 attacker prestige；添加 attacker→defender 的
+单向 defeat truce；处理 faction、Mandala 与 shared war-end 分支。Raiktor 唯一重要的资源差异是没有调用普通 claim defeat 的
+legitimacy / influence helper，所以这两项是 source-authored 精确零，不是读取失败。CB 还明确 `allow_hostages=no`。
+
+[static-confirmed] `show_pow_release_message_effect` 与 `laamp_as_mercenary_payout_tooltip_effect` 都只是 tooltip；真实战俘释放来自
+surrender interaction 接受链，LAAMP 的实际结算也不能从 tooltip 推导。`bookmark_events.txt:1515-1627` 创建六支、每支 500 人的
+war-bound 军队且没有 keep flag；初始总数 3000 只证明来源，决策必须读取当前仍存活/合并后的 ArmyID 与兵数，不能把 3000
+写成当前损失。
+
+```mermaid
+flowchart TD
+    W["paused full-generation WarID"] --> I{"CB=raiktor_claim_cb<br/>player=primary attacker?"}
+    I -->|no| U["typed unsupported"]
+    I -->|yes| C["[native] claimant / targets / claim rows"]
+    C --> S["[static] remove claimant claims<br/>legitimacy=0 / influence=0"]
+    S --> G["[pending native] actual gold transfer"]
+    S --> F["[pending native] final F / prestige delta"]
+    S --> T["[pending native] truce days / expiry"]
+    S --> P["[pending native] actual PoW pairs"]
+    S --> H["[pending native] favor-hook bool"]
+    S --> R["[pending native] faction / opinion / feud / Mandala rows"]
+    S --> A["[pending native] current war-bound armies lost"]
+    G --> D{"all decision fields same-frame stable?"}
+    F --> D
+    T --> D
+    P --> D
+    H --> D
+    R --> D
+    A --> D
+    D -->|no| X["decision_ready=false; no surrender action"]
+    D -->|yes| E["compare surrender vs continue"]
+    classDef pending stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+    class G,F,T,P,H,R,A pending;
+```
+
+### 本轮 provider 原子与 readiness 边界
+
+[fixture-confirmed / pending-live] `query-war-termination-terms-v1-<WarID>` 新增 distinct
+`supported_slice=raiktor_claim_cb_attacker_defeat_disposition`。它复用 generation-safe `CWar+0x270/+0x290` 与
+`0x28B1AA0` claim getter，发布真实 claimant、target order、逐 title claim 四态，并发布上述 exact source formula、
+`legitimacy_delta=0`、`influence_delta=0`、`hostages_allowed=false`。普通 `claim_cb` 的原三结局 wire 与 readiness 未改。
+
+该 slice 只把 `identity/targets/claim_rows/attacker_defeat_rule/static_formula` 标 true；actual gold、prestige/F、truce、PoW、hook、
+faction/opinion/feud/Mandala、LAAMP actual settlement 与 war-bound army loss 全部逐名留在
+`unobserved_dynamic_effects`。因此 `dynamic_deltas_ready=false`、`decision_ready=false`、
+`automatic_surrender_ready=false`、总 `ready=false`。它把旧的泛化 `unsupported` 变成可施工的 typed partial，但不广告投降动作，
+也不把 formula 冒充 actual terms。
+
+fresh Release build 位于
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-raiktor-partial-efb4130-20260831T1310Z`：source fingerprint
+`D87C7FEB74BE74229C0F4FFE534CFC34916107DA084EA813CBE8CE95CBECFF14`，DLL SHA-256
+`E02150A0A3929F3D11461B0DA87283FCEAE98C4574C8369246A5BF71FFE91B9D`，injector SHA-256
+`541DBA10AC260462EFBD05CF2EF057BE7D9951ED0D407C57A85FB3A44D7D2C49`；MSVC dependency 模式为
+`direct-2052-utf8`，公共 header 依赖门通过，fresh CTest `50/50` GREEN。Python dedicated contract 与 gameplay/native-driver
+在 normal / `-O` 下分别 `6/6`、`418/418` GREEN。尚未启动第二局 CK3；下一次 loader 之后必须用上述冻结 checkpoint 做
+same-frame MCP query，先验收 partial wire，再继续补 actual dynamic reader。

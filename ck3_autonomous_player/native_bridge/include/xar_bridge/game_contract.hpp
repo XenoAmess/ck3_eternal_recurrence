@@ -581,10 +581,11 @@ struct WarTerminationOptionsSnapshot {
                          const WarTerminationOptionsSnapshot &) = default;
 };
 
-// Narrow, complete claim-CB terms projection. This intentionally does not
-// widen WarTerminationOptionsSnapshot: gold, prestige, truce and prisoner
-// effects require separately versioned readers once their native ABIs are
-// closed. The rows preserve the CWar target-title order.
+// Narrow, source-pinned terms projection. The claim_cb branch remains the
+// complete claim-disposition slice. The raiktor_claim_cb branch publishes
+// only its attacker-defeat disposition and authored formulas; it explicitly
+// does not claim that dynamic resource deltas or conditional effects were
+// evaluated. The rows preserve the CWar target-title order.
 struct WarClaimSnapshot {
   std::int32_t title_id = -1;
   bool present = false;
@@ -604,6 +605,31 @@ struct WarClaimDispositionSnapshot {
                          const WarClaimDispositionSnapshot &) = default;
 };
 
+struct WarRaiktorSurrenderTermsSnapshot {
+  WarClaimDispositionSnapshot claim_disposition;
+  std::int32_t gold_reparations_factor = 0;
+  std::string gold_reparations_direction;
+  std::string gold_reparations_positive_income_basis;
+  std::string gold_reparations_fallback_condition;
+  std::string gold_reparations_fallback_basis;
+  std::string gold_reparations_defender_culture_multiplier;
+  std::int32_t attacker_fame_scale = 0;
+  std::string attacker_fame_base;
+  std::string attacker_fame_resource;
+  std::string attacker_fame_limit_rule;
+  std::string truce_direction;
+  std::string truce_result;
+  std::string prisoner_release_rule;
+  std::string conditional_favor_hook_rule;
+  FixedPointValue attacker_legitimacy_delta;
+  FixedPointValue attacker_influence_delta;
+  bool hostages_allowed = false;
+  std::vector<std::string> unobserved_dynamic_effects;
+
+  friend bool operator==(const WarRaiktorSurrenderTermsSnapshot &,
+                         const WarRaiktorSurrenderTermsSnapshot &) = default;
+};
+
 struct WarTerminationTermsSnapshot {
   std::int32_t war_id = -1;
   std::int32_t active_casus_belli_database_index = -1;
@@ -614,6 +640,7 @@ struct WarTerminationTermsSnapshot {
   WarClaimDispositionSnapshot attacker_victory;
   WarClaimDispositionSnapshot white_peace;
   WarClaimDispositionSnapshot attacker_defeat;
+  std::optional<WarRaiktorSurrenderTermsSnapshot> raiktor_surrender;
 
   friend bool operator==(const WarTerminationTermsSnapshot &,
                          const WarTerminationTermsSnapshot &) = default;
