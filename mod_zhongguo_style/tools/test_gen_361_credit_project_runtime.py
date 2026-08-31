@@ -28,6 +28,10 @@ EVENTS_PATH = MOD_ROOT / "events" / "zg361_credit_project_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-phase3-credit-project-ck3-runtime-spec.md"
 EXPECTED_IDS = set(range(26, 32)) | set(range(54, 69)) | set(range(129, 135))
 DEBT_IDENTITY = ("owner", "subject", "cycle", "case", "state")
+ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
+    r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
+    r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
+)
 
 
 def read(path: Path) -> str:
@@ -161,6 +165,14 @@ class RegistryAndGenerationTests(unittest.TestCase):
             with self.subTest(path=path):
                 text = read(path)
                 self.assertEqual(text.count("{"), text.count("}"))
+
+    def test_generated_triggers_never_use_inline_arithmetic_rhs(self) -> None:
+        # CK3 1.19.0.6 reports this shape as wildcard value plus unknown
+        # value/add triggers, so arithmetic must happen in effect statements.
+        self.assertIsNone(
+            ILLEGAL_TRIGGER_ARITHMETIC_RHS.search(self.effects),
+            "CK3 scripted-effect loader treats RHS value arithmetic as triggers",
+        )
 
     def test_debt_reads_are_existence_gated_before_comparison(self) -> None:
         for spec in gen.MECHANISMS:
@@ -337,9 +349,10 @@ class ReceiptAndConsumerTests(unittest.TestCase):
                     self.assertEqual(route.count(setter), 1)
                 self.assertEqual(route.count(f"name = {stem}_mechanism value = {spec.mid}"), 1)
                 self.assertEqual(
-                    route.count(f"name = {stem}_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }}"),
+                    route.count(f"name = {stem}_due_cycle value = $TICKET_CYCLE$"),
                     1,
                 )
+                self.assertEqual(route.count(f"name = {stem}_due_cycle add = 1"), 1)
                 self.assertEqual(route.count(f"name = {stem}_status value = 1"), 1)
                 self.assertEqual(route.count(f"name = {stem}_audit_state value = 1"), 1)
                 self.assertEqual(route.count(f"name = {stem}_business_object_created value = 0"), 1)
@@ -540,6 +553,7 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
             "zg361_cp_historical_owner",
             "zg361_cp_portfolio_subject",
             "zg361_cp_portfolio_cycle",
+            "zg361_cp_deferred_cleanup_due_cycle",
             "zg361_cp_project_active",
             "zg361_cp_capacity_available",
             "zg361_cp_capacity_remaining",
@@ -555,9 +569,15 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
             "var:zg361_cp_portfolio_closed = 1",
             "var:zg361_cp_historical_owner = root",
             "var:zg361_cp_portfolio_subject = this",
-            "root.var:zg361_review_serial = { value = var:zg361_cp_portfolio_cycle add = 1 }",
+            "root.var:zg361_review_serial = var:zg361_cp_deferred_cleanup_due_cycle",
         ):
             self.assertIn(check, cleanup)
+        aggregate = block(self.effects, "zg361_cp_consume_due_policy_debts_effect")
+        self.assertIn(
+            "name = zg361_cp_deferred_cleanup_due_cycle value = var:zg361_cp_portfolio_cycle",
+            aggregate,
+        )
+        self.assertIn("name = zg361_cp_deferred_cleanup_due_cycle add = 1", aggregate)
         self.assertIn("limit = { var:zg361_cp_project_active = 1 }", cleanup)
         self.assertEqual(
             cleanup.count("change_variable = { name = zg361_cp_capacity_available add = var:zg361_cp_capacity_remaining }"),

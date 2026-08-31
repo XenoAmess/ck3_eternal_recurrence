@@ -130,6 +130,121 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         b1_path = self.core.split("has_character_flag = zg361_b1_cycle_active", 1)[1]
         self.assertIn("variable = zg361_b1_subjects", b1_path)
 
+    def test_delayed_event_variable_lists_have_loader_visible_write_anchors(self) -> None:
+        """Freeze the Jomini event/list registration boundary seen in live CK3.
+
+        A write that exists only in a scripted effect does not satisfy the
+        loader when a loaded event directly reads the same variable list.
+        CK3 1.19.0.6 also ignores an event-root write hidden behind
+        ``always = no`` or reverted before its consumer. A legal flag target
+        must remain in the list through the business read, be excluded from
+        character-only work, and only then restore members and container
+        existence.
+        """
+
+        subjects = top_level_block(self.events, "zg361b1.103")
+        subject_target = "zg361_b1_subjects"
+        subject_had = f"{subject_target}_event_loader_had_list"
+        subject_anchor = f"flag:{subject_target}_event_loader_anchor"
+        subject_add = (
+            f"add_to_variable_list = {{ name = {subject_target} "
+            f"target = {subject_anchor} }}"
+        )
+        subject_remove = (
+            f"remove_list_variable = {{ name = {subject_target} "
+            f"target = {subject_anchor} }}"
+        )
+        subject_clear = f"clear_variable_list = {subject_target}"
+        subject_record = (
+            f"\t\tremove_character_flag = {subject_had}\n"
+            f"\t\tif = {{\n"
+            f"\t\t\tlimit = {{ has_variable_list = {subject_target} }}\n"
+            f"\t\t\tadd_character_flag = {subject_had}\n"
+            f"\t\t}}\n"
+            f"\t\t{subject_add}"
+        )
+        subject_cleanup = re.compile(
+            rf"{re.escape(subject_remove)}\s+"
+            rf"if = \{{\s+"
+            rf"limit = \{{ NOT = \{{ has_character_flag = {subject_had} \}} \}}\s+"
+            rf"{re.escape(subject_clear)}\s+"
+            rf"\}}\s+remove_character_flag = {subject_had}"
+        )
+        self.assertNotIn("always = no", subjects)
+        self.assertIn(subject_record, subjects)
+        self.assertIn(
+            "variable = zg361_b1_subjects\n"
+            "\t\t\t\t\tlimit = { NOT = { this = "
+            f"{subject_anchor} }} }}",
+            subjects,
+        )
+        subject_read = subjects.index("variable = zg361_b1_subjects")
+        subject_first_cleanup = subjects.index(subject_remove)
+        self.assertLess(subjects.index(subject_add), subject_read)
+        self.assertLess(subject_read, subject_first_cleanup)
+        self.assertLess(
+            subject_first_cleanup,
+            subjects.index("zg361_b1_submit_quota_book_effect = yes"),
+        )
+        self.assertEqual(subjects.count(subject_add), 1)
+        self.assertEqual(subjects.count(subject_remove), 3)
+        self.assertEqual(subjects.count(subject_clear), 3)
+        self.assertEqual(len(subject_cleanup.findall(subjects)), 3)
+
+        ready = top_level_block(self.events, "zg361b1.110")
+        ready_target = "zg361_b1_ready_managers"
+        ready_had = f"{ready_target}_event_loader_had_list"
+        ready_anchor = f"flag:{ready_target}_event_loader_anchor"
+        ready_add = (
+            f"add_to_variable_list = {{ name = {ready_target} "
+            f"target = {ready_anchor} }}"
+        )
+        ready_remove = (
+            f"remove_list_variable = {{ name = {ready_target} "
+            f"target = {ready_anchor} }}"
+        )
+        ready_clear = f"clear_variable_list = {ready_target}"
+        ready_record = (
+            f"\t\tremove_character_flag = {ready_had}\n"
+            f"\t\tif = {{\n"
+            f"\t\t\tlimit = {{ has_variable_list = {ready_target} }}\n"
+            f"\t\t\tadd_character_flag = {ready_had}\n"
+            f"\t\t}}\n"
+            f"\t\t{ready_add}"
+        )
+        ready_business_gate = (
+            f"\t\t\t\t\tlimit = {{\n"
+            f"\t\t\t\t\t\thas_character_flag = {ready_had}\n"
+            f"\t\t\t\t\t\thas_variable_list = {ready_target}\n"
+            f"\t\t\t\t\t}}"
+        )
+        ready_cleanup = re.compile(
+            rf"{re.escape(ready_remove)}\s+"
+            rf"if = \{{\s+"
+            rf"limit = \{{ NOT = \{{ has_character_flag = {ready_had} \}} \}}\s+"
+            rf"{re.escape(ready_clear)}\s+"
+            rf"\}}\s+remove_character_flag = {ready_had}"
+        )
+        self.assertNotIn("always = no", ready)
+        self.assertIn(ready_record, ready)
+        self.assertIn(ready_business_gate, ready)
+        ready_gate = ready.index(ready_business_gate)
+        ready_close_cleanup = ready.index(ready_remove, ready_gate)
+        ready_close = ready.index("zg361_b1_close_common_superior_bank_effect = yes")
+        self.assertLess(ready.index(ready_add), ready_gate)
+        self.assertLess(ready_gate, ready_close_cleanup)
+        self.assertLess(ready_close_cleanup, ready_close)
+        self.assertIn(
+            f"{ready_remove}\n"
+            f"\t\t\t\t\tremove_character_flag = {ready_had}\n"
+            "\t\t\t\t\tzg361_b1_close_common_superior_bank_effect = yes",
+            ready,
+        )
+        self.assertEqual(ready.count(ready_add), 1)
+        self.assertEqual(ready.count(ready_remove), 4)
+        self.assertEqual(ready.count(ready_clear), 3)
+        self.assertEqual(len(ready_cleanup.findall(ready)), 3)
+
     def test_newcomer_policy_is_applied_after_newcomer_detection(self) -> None:
         detection = self.effects.index(
             "set_variable = { name = zg361_b1_newcomer_route value = 1 }"

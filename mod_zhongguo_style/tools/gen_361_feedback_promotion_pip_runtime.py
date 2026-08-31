@@ -630,11 +630,11 @@ def routed_dependency_guard(mechanism_id: int) -> str:
 \tlimit = {{ scope:zg361_pp_route = 1 }}
 \t{indent(business_dependency_conditions(mechanism_id, 1), 1).lstrip()}
 }}
-else_if = {{
+trigger_else_if = {{
 \tlimit = {{ scope:zg361_pp_route = 2 }}
 \t{indent(business_dependency_conditions(mechanism_id, 2), 1).lstrip()}
 }}
-else = {{ always = yes }}'''
+trigger_else = {{ always = yes }}'''
 
 
 def record_operation(mechanism: MechanismSpec, state: int) -> str:
@@ -760,7 +760,7 @@ def dual_cost_write(mechanism: MechanismSpec) -> str:
 \tlimit = {{ scope:zg361_pp_route = {route} }}
 \tvar:zg361_case_{mechanism.domain}_owner = {{
 \t\tremove_treasury = 5
-\t\tremove_gold = 5
+\t\tremove_short_term_gold = 5
 \t}}
 \tadd_gold = 10
 \tset_variable = {{ name = {p}_treasury_paid value = 5 }}
@@ -2189,11 +2189,11 @@ def render_core(mechanism: MechanismSpec) -> str:
 \tlimit = {{ scope:zg361_pp_route = 1 }}
 \tvar:{p}_{resource}_status = 1
 }}
-else_if = {{
+trigger_else_if = {{
 \tlimit = {{ scope:zg361_pp_route = 2 }}
 \tvar:{p}_{resource}_status = 2
 }}
-else = {{ always = yes }}'''
+trigger_else = {{ always = yes }}'''
         for resource in all_resources
     )
     route_b_status = "\n".join(

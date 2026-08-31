@@ -15,6 +15,10 @@ import gen_361_incident_platform_runtime as gen
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
+ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
+    r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
+    r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
+)
 
 
 def text(path: Path) -> str:
@@ -149,6 +153,15 @@ class GeneratedFileTests(unittest.TestCase):
         for path, payload in gen.outputs().items():
             self.assertTrue(path.read_bytes().startswith(gen.BOM), path)
             self.assertEqual(path.read_bytes(), payload, path)
+
+    def test_trigger_arithmetic_never_uses_a_value_block_rhs(self) -> None:
+        self.assertIsNone(
+            ILLEGAL_TRIGGER_ARITHMETIC_RHS.search(self.effects),
+            "CK3 scripted-effect loader treats RHS value/add/multiply as triggers",
+        )
+        due = block(self.effects, "zg361_ip_m192_consume_due_debt_effect")
+        self.assertIn("save_temporary_scope_value_as", due)
+        self.assertIn("debt_id = scope:zg361_ip_expected_debt_id", due)
 
     def test_balanced_effect_and_event_braces(self) -> None:
         for source in (self.effects, self.events):
@@ -286,6 +299,21 @@ class GeneratedFileTests(unittest.TestCase):
                 else:
                     self.assertIn(f"zg361_ip_finalize_{domain.slug}_effect", body)
 
+    def test_initial_dispatch_calls_bind_loader_required_ticket_state(self) -> None:
+        for domain in gen.DOMAINS:
+            case = f"zg361_case_{domain.slug}"
+            entry = block(self.effects, f"zg361_ip_open_{domain.slug}_case_on_subject_effect")
+            expected_call = f"""zg361_ip_{domain.slug}_dispatch_01_effect = {{
+\t\t\t\tTICKET_OWNER = var:{case}_owner
+\t\t\t\tTICKET_SUBJECT = var:{case}_subject
+\t\t\t\tTICKET_CYCLE = var:{case}_cycle_serial
+\t\t\t\tTICKET_CASE = var:{case}_case_serial
+\t\t\t\tTICKET_STATE = 1
+\t\t\t}}"""
+            self.assertIn(expected_call, entry, domain.code)
+            dispatcher = block(self.effects, f"zg361_ip_{domain.slug}_dispatch_01_effect")
+            self.assertIn("_done_state = $TICKET_STATE$", dispatcher, domain.code)
+
     def test_delayed_events_expire_frozen_ticket_before_dispatch(self) -> None:
         expected_hidden = 0
         for domain in gen.DOMAINS:
@@ -350,19 +378,25 @@ class GeneratedFileTests(unittest.TestCase):
             (hazard, "zg361_case_y_owner"),
         ):
             self.assertIn(f"var:{owner} = {{ government_has_flag = government_has_treasury treasury >= 6 gold >= 4 }}", body)
-            self.assertIn(f"var:{owner} = {{ remove_treasury = 6 remove_gold = 4 }}", body)
+            self.assertIn(f"var:{owner} = {{ remove_treasury = 6 remove_short_term_gold = 4 }}", body)
             self.assertIn("add_gold = 10", body)
             self.assertIn("recipient_credit value = 10", body)
             self.assertIn("ledger_status value = 2", body)
             self.assertIn("ledger_status value = 3", body)
         self.assertIn("treasury >= var:zg361_ip_m220_treasury_cost", platform)
         self.assertIn("gold >= var:zg361_ip_m220_personal_cost", platform)
+        self.assertIn("remove_short_term_gold = var:zg361_ip_m220_personal_cost", platform)
         self.assertIn("treasury_paid value = var:zg361_ip_m220_treasury_cost", platform)
         self.assertIn("personal_paid value = var:zg361_ip_m220_personal_cost", platform)
         self.assertIn("cost_debt value = var:zg361_ip_m220_showback_cost", platform)
         debit = platform.index("remove_treasury = var:zg361_ip_m220_treasury_cost")
         precheck = platform.index("treasury >= var:zg361_ip_m220_treasury_cost")
         self.assertLess(precheck, debit)
+        self.assertEqual(self.effects.count("remove_short_term_gold ="), 3)
+        self.assertIsNone(
+            re.search(r"(?<!short_term_)\bremove_gold\s*=", self.effects),
+            "CK3 1.19.0.6 does not register the bare remove_gold effect",
+        )
 
     def test_incident_platform_and_maintenance_domain_specific_consumers_exist(self) -> None:
         expected = {

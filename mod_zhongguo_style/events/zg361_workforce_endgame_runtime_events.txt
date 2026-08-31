@@ -69,6 +69,7 @@ zg361we.242 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -146,6 +147,7 @@ zg361we.243 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -223,6 +225,7 @@ zg361we.244 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 2
 			}
 		}
 		if = {
@@ -300,6 +303,7 @@ zg361we.245 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 2
 			}
 		}
 		if = {
@@ -377,6 +381,7 @@ zg361we.246 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 3
 			}
 		}
 		if = {
@@ -454,6 +459,7 @@ zg361we.247 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 3
 			}
 		}
 		if = {
@@ -531,6 +537,7 @@ zg361we.248 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -608,6 +615,7 @@ zg361we.249 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -685,6 +693,7 @@ zg361we.250 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 5
 			}
 		}
 		if = {
@@ -762,6 +771,7 @@ zg361we.251 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 5
 			}
 		}
 		if = {
@@ -839,6 +849,7 @@ zg361we.252 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 6
 			}
 		}
 		if = {
@@ -908,6 +919,7 @@ zg361we.253 = {
 				TICKET_SUBJECT = scope:zg361_we_ab_subject
 				TICKET_CYCLE = scope:zg361_we_ab_cycle
 				TICKET_CASE = scope:zg361_we_ab_case
+				TICKET_STATE = 6
 			}
 		}
 	}
@@ -981,6 +993,7 @@ zg361we.254 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -1058,6 +1071,7 @@ zg361we.255 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -1135,6 +1149,7 @@ zg361we.260 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 2
 			}
 		}
 		if = {
@@ -1212,6 +1227,7 @@ zg361we.261 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 2
 			}
 		}
 		if = {
@@ -1289,6 +1305,7 @@ zg361we.256 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 3
 			}
 		}
 		if = {
@@ -1366,6 +1383,7 @@ zg361we.258 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 3
 			}
 		}
 		if = {
@@ -1443,6 +1461,7 @@ zg361we.259 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 3
 			}
 		}
 		if = {
@@ -1520,6 +1539,7 @@ zg361we.257 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -1589,6 +1609,7 @@ zg361we.262 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -1666,6 +1687,7 @@ zg361we.263 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 5
 			}
 		}
 		if = {
@@ -1743,6 +1765,7 @@ zg361we.264 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 6
 			}
 		}
 		if = {
@@ -1812,6 +1835,7 @@ zg361we.265 = {
 				TICKET_SUBJECT = scope:zg361_we_ac_subject
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
+				TICKET_STATE = 6
 			}
 		}
 	}
@@ -1885,6 +1909,7 @@ zg361we.266 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -1962,6 +1987,7 @@ zg361we.273 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -2039,6 +2065,7 @@ zg361we.271 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -2116,6 +2143,7 @@ zg361we.267 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -2193,6 +2221,7 @@ zg361we.268 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 2
 			}
 		}
 		if = {
@@ -2270,6 +2299,7 @@ zg361we.270 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 2
 			}
 		}
 		if = {
@@ -2347,6 +2377,7 @@ zg361we.272 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 3
 			}
 		}
 		if = {
@@ -2454,6 +2485,7 @@ zg361we.274 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -2576,6 +2608,7 @@ zg361we.275 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -2668,6 +2701,7 @@ zg361we.269 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 5
 			}
 		}
 		if = {
@@ -2745,6 +2779,7 @@ zg361we.276 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 6
 			}
 		}
 		if = {
@@ -2814,6 +2849,7 @@ zg361we.277 = {
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
+				TICKET_STATE = 6
 			}
 		}
 	}
@@ -2887,6 +2923,7 @@ zg361we.355 = {
 				TICKET_SUBJECT = scope:zg361_we_al_subject
 				TICKET_CYCLE = scope:zg361_we_al_cycle
 				TICKET_CASE = scope:zg361_we_al_case
+				TICKET_STATE = 1
 			}
 		}
 		if = {
@@ -2956,6 +2993,7 @@ zg361we.356 = {
 				TICKET_SUBJECT = scope:zg361_we_al_subject
 				TICKET_CYCLE = scope:zg361_we_al_cycle
 				TICKET_CASE = scope:zg361_we_al_case
+				TICKET_STATE = 1
 			}
 		}
 	}
@@ -3033,6 +3071,7 @@ zg361we.360 = {
 				TICKET_SUBJECT = scope:zg361_we_al_subject
 				TICKET_CYCLE = scope:zg361_we_al_cycle
 				TICKET_CASE = scope:zg361_we_al_case
+				TICKET_STATE = 4
 			}
 		}
 		if = {
@@ -3118,6 +3157,7 @@ zg361we.361 = {
 				TICKET_SUBJECT = scope:zg361_we_al_subject
 				TICKET_CYCLE = scope:zg361_we_al_cycle
 				TICKET_CASE = scope:zg361_we_al_case
+				TICKET_STATE = 5
 			}
 		}
 	}

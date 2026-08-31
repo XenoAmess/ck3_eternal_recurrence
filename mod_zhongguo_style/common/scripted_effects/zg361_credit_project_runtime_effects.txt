@@ -85,6 +85,7 @@ zg361_cp_settle_deferred_portfolio_effect = {
 			has_variable = zg361_cp_historical_owner
 			has_variable = zg361_cp_portfolio_subject
 			has_variable = zg361_cp_portfolio_cycle
+			has_variable = zg361_cp_deferred_cleanup_due_cycle
 			has_variable = zg361_cp_project_active
 			has_variable = zg361_cp_capacity_available
 			has_variable = zg361_cp_capacity_remaining
@@ -109,7 +110,7 @@ zg361_cp_settle_deferred_portfolio_effect = {
 			var:zg361_cp_final_deferred = 1
 			var:zg361_cp_final_conservation_ok = 1
 			var:zg361_cp_final_deferred_capacity_check = 100
-			root.var:zg361_review_serial = { value = var:zg361_cp_portfolio_cycle add = 1 }
+			root.var:zg361_review_serial = var:zg361_cp_deferred_cleanup_due_cycle
 			trigger_if = {
 				limit = { var:zg361_cp_project_active = 1 }
 				has_variable = zg361_cp_project_object_status
@@ -2702,6 +2703,12 @@ zg361_cp_m134_consume_due_policy_debt_effect = {
 
 # The public portfolio adapter is the sole package-owned due pass.
 zg361_cp_consume_due_policy_debts_effect = {
+	remove_variable = zg361_cp_deferred_cleanup_due_cycle
+	if = {
+		limit = { has_variable = zg361_cp_portfolio_cycle }
+		set_variable = { name = zg361_cp_deferred_cleanup_due_cycle value = var:zg361_cp_portfolio_cycle }
+		change_variable = { name = zg361_cp_deferred_cleanup_due_cycle add = 1 }
+	}
 	remove_variable = zg361_cp_policy_debt_consumer_blocked
 	zg361_cp_m26_consume_due_policy_debt_effect = yes
 	zg361_cp_m27_consume_due_policy_debt_effect = yes
@@ -4605,7 +4612,8 @@ zg361_cp_m26_route_c_effect = {
 			set_variable = { name = zg361_cp_m26_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m26_debt_state value = 1 }
 			set_variable = { name = zg361_cp_m26_debt_mechanism value = 26 }
-			set_variable = { name = zg361_cp_m26_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m26_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m26_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m26_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m26_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m26_debt_business_object_created value = 0 }
@@ -5616,7 +5624,8 @@ zg361_cp_m27_route_c_effect = {
 			set_variable = { name = zg361_cp_m27_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m27_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m27_debt_mechanism value = 27 }
-			set_variable = { name = zg361_cp_m27_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m27_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m27_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m27_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m27_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m27_debt_business_object_created value = 0 }
@@ -6645,7 +6654,8 @@ zg361_cp_m28_route_c_effect = {
 			set_variable = { name = zg361_cp_m28_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m28_debt_state value = 3 }
 			set_variable = { name = zg361_cp_m28_debt_mechanism value = 28 }
-			set_variable = { name = zg361_cp_m28_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m28_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m28_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m28_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m28_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m28_debt_business_object_created value = 0 }
@@ -7709,7 +7719,8 @@ zg361_cp_m29_route_c_effect = {
 			set_variable = { name = zg361_cp_m29_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m29_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m29_debt_mechanism value = 29 }
-			set_variable = { name = zg361_cp_m29_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m29_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m29_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m29_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m29_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m29_debt_business_object_created value = 0 }
@@ -8656,7 +8667,8 @@ zg361_cp_m30_route_c_effect = {
 			set_variable = { name = zg361_cp_m30_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m30_debt_state value = 1 }
 			set_variable = { name = zg361_cp_m30_debt_mechanism value = 30 }
-			set_variable = { name = zg361_cp_m30_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m30_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m30_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m30_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m30_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m30_debt_business_object_created value = 0 }
@@ -9750,7 +9762,8 @@ zg361_cp_m31_route_c_effect = {
 			set_variable = { name = zg361_cp_m31_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m31_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m31_debt_mechanism value = 31 }
-			set_variable = { name = zg361_cp_m31_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m31_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m31_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m31_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m31_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m31_debt_business_object_created value = 0 }
@@ -10994,7 +11007,8 @@ zg361_cp_m54_route_c_effect = {
 			set_variable = { name = zg361_cp_m54_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m54_debt_state value = 1 }
 			set_variable = { name = zg361_cp_m54_debt_mechanism value = 54 }
-			set_variable = { name = zg361_cp_m54_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m54_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m54_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m54_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m54_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m54_debt_business_object_created value = 0 }
@@ -12054,7 +12068,8 @@ zg361_cp_m55_route_c_effect = {
 			set_variable = { name = zg361_cp_m55_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m55_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m55_debt_mechanism value = 55 }
-			set_variable = { name = zg361_cp_m55_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m55_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m55_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m55_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m55_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m55_debt_business_object_created value = 0 }
@@ -13011,7 +13026,8 @@ zg361_cp_m56_route_c_effect = {
 			set_variable = { name = zg361_cp_m56_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m56_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m56_debt_mechanism value = 56 }
-			set_variable = { name = zg361_cp_m56_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m56_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m56_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m56_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m56_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m56_debt_business_object_created value = 0 }
@@ -14160,7 +14176,8 @@ zg361_cp_m57_route_c_effect = {
 			set_variable = { name = zg361_cp_m57_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m57_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m57_debt_mechanism value = 57 }
-			set_variable = { name = zg361_cp_m57_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m57_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m57_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m57_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m57_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m57_debt_business_object_created value = 0 }
@@ -15216,7 +15233,8 @@ zg361_cp_m58_route_c_effect = {
 			set_variable = { name = zg361_cp_m58_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m58_debt_state value = 3 }
 			set_variable = { name = zg361_cp_m58_debt_mechanism value = 58 }
-			set_variable = { name = zg361_cp_m58_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m58_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m58_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m58_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m58_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m58_debt_business_object_created value = 0 }
@@ -16357,7 +16375,8 @@ zg361_cp_m59_route_c_effect = {
 			set_variable = { name = zg361_cp_m59_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m59_debt_state value = 3 }
 			set_variable = { name = zg361_cp_m59_debt_mechanism value = 59 }
-			set_variable = { name = zg361_cp_m59_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m59_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m59_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m59_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m59_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m59_debt_business_object_created value = 0 }
@@ -17608,7 +17627,8 @@ zg361_cp_m60_route_c_effect = {
 			set_variable = { name = zg361_cp_m60_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m60_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m60_debt_mechanism value = 60 }
-			set_variable = { name = zg361_cp_m60_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m60_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m60_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m60_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m60_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m60_debt_business_object_created value = 0 }
@@ -18594,7 +18614,8 @@ zg361_cp_m61_route_c_effect = {
 			set_variable = { name = zg361_cp_m61_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m61_debt_state value = 1 }
 			set_variable = { name = zg361_cp_m61_debt_mechanism value = 61 }
-			set_variable = { name = zg361_cp_m61_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m61_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m61_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m61_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m61_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m61_debt_business_object_created value = 0 }
@@ -19483,7 +19504,8 @@ zg361_cp_m62_route_c_effect = {
 			set_variable = { name = zg361_cp_m62_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m62_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m62_debt_mechanism value = 62 }
-			set_variable = { name = zg361_cp_m62_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m62_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m62_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m62_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m62_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m62_debt_business_object_created value = 0 }
@@ -20482,7 +20504,8 @@ zg361_cp_m63_route_c_effect = {
 			set_variable = { name = zg361_cp_m63_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m63_debt_state value = 1 }
 			set_variable = { name = zg361_cp_m63_debt_mechanism value = 63 }
-			set_variable = { name = zg361_cp_m63_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m63_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m63_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m63_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m63_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m63_debt_business_object_created value = 0 }
@@ -21543,7 +21566,8 @@ zg361_cp_m64_route_c_effect = {
 			set_variable = { name = zg361_cp_m64_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m64_debt_state value = 3 }
 			set_variable = { name = zg361_cp_m64_debt_mechanism value = 64 }
-			set_variable = { name = zg361_cp_m64_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m64_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m64_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m64_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m64_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m64_debt_business_object_created value = 0 }
@@ -22685,7 +22709,8 @@ zg361_cp_m65_route_c_effect = {
 			set_variable = { name = zg361_cp_m65_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m65_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m65_debt_mechanism value = 65 }
-			set_variable = { name = zg361_cp_m65_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m65_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m65_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m65_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m65_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m65_debt_business_object_created value = 0 }
@@ -23686,7 +23711,8 @@ zg361_cp_m66_route_c_effect = {
 			set_variable = { name = zg361_cp_m66_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m66_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m66_debt_mechanism value = 66 }
-			set_variable = { name = zg361_cp_m66_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m66_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m66_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m66_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m66_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m66_debt_business_object_created value = 0 }
@@ -24578,7 +24604,8 @@ zg361_cp_m67_route_c_effect = {
 			set_variable = { name = zg361_cp_m67_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m67_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m67_debt_mechanism value = 67 }
-			set_variable = { name = zg361_cp_m67_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m67_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m67_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m67_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m67_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m67_debt_business_object_created value = 0 }
@@ -25776,7 +25803,8 @@ zg361_cp_m68_route_c_effect = {
 			set_variable = { name = zg361_cp_m68_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m68_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m68_debt_mechanism value = 68 }
-			set_variable = { name = zg361_cp_m68_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m68_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m68_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m68_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m68_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m68_debt_business_object_created value = 0 }
@@ -26823,7 +26851,8 @@ zg361_cp_m129_route_c_effect = {
 			set_variable = { name = zg361_cp_m129_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m129_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m129_debt_mechanism value = 129 }
-			set_variable = { name = zg361_cp_m129_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m129_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m129_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m129_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m129_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m129_debt_business_object_created value = 0 }
@@ -27831,7 +27860,8 @@ zg361_cp_m130_route_c_effect = {
 			set_variable = { name = zg361_cp_m130_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m130_debt_state value = 3 }
 			set_variable = { name = zg361_cp_m130_debt_mechanism value = 130 }
-			set_variable = { name = zg361_cp_m130_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m130_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m130_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m130_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m130_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m130_debt_business_object_created value = 0 }
@@ -28889,7 +28919,8 @@ zg361_cp_m131_route_c_effect = {
 			set_variable = { name = zg361_cp_m131_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m131_debt_state value = 1 }
 			set_variable = { name = zg361_cp_m131_debt_mechanism value = 131 }
-			set_variable = { name = zg361_cp_m131_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m131_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m131_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m131_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m131_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m131_debt_business_object_created value = 0 }
@@ -29973,7 +30004,8 @@ zg361_cp_m132_route_c_effect = {
 			set_variable = { name = zg361_cp_m132_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m132_debt_state value = 4 }
 			set_variable = { name = zg361_cp_m132_debt_mechanism value = 132 }
-			set_variable = { name = zg361_cp_m132_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m132_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m132_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m132_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m132_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m132_debt_business_object_created value = 0 }
@@ -31040,7 +31072,8 @@ zg361_cp_m133_route_c_effect = {
 			set_variable = { name = zg361_cp_m133_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m133_debt_state value = 5 }
 			set_variable = { name = zg361_cp_m133_debt_mechanism value = 133 }
-			set_variable = { name = zg361_cp_m133_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m133_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m133_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m133_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m133_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m133_debt_business_object_created value = 0 }
@@ -32185,7 +32218,8 @@ zg361_cp_m134_route_c_effect = {
 			set_variable = { name = zg361_cp_m134_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_cp_m134_debt_state value = 2 }
 			set_variable = { name = zg361_cp_m134_debt_mechanism value = 134 }
-			set_variable = { name = zg361_cp_m134_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_cp_m134_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_cp_m134_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_cp_m134_debt_status value = 1 }
 			set_variable = { name = zg361_cp_m134_debt_audit_state value = 1 }
 			set_variable = { name = zg361_cp_m134_debt_business_object_created value = 0 }

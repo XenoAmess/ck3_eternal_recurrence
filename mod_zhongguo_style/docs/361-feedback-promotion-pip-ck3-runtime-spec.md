@@ -202,6 +202,18 @@ owner + subject + cycle_serial + case_serial + expected_local_state
 
 同票重复、旧上司、旧周期、旧案号、已消费或状态不符都只写 stale debug，不重复扣钱、占槽、写债或加经理责任。
 
+### 2026-08-31 CK3 loader RED：trigger 分支关键字
+
+首次二期实机加载在 `Z:\zg361_phase2_b1_live_20260831_0921\cell\final_error.log` 暴露了 600 条
+`Unknown trigger: else_if` 与 600 条 `Unknown trigger: else`。去重后是 240 个源码位置：46 条 A/B
+业务依赖链和 74 条资源 receipt 状态链，共 120 条条件链、每链两个非法关键字；同一文件被 loader 多次读取，
+所以日志计数不是 600 个不同业务缺陷。
+
+这些链位于 effect 内的 `if.limit`，因此链体本身处于 **trigger context**。首分支使用 `trigger_if` 后，
+后续分支必须同样使用 `trigger_else_if` / `trigger_else`；`else_if` / `else` 是 effect context 的分支关键字，
+放进 `limit` 会被解释为未知 trigger。生成器现在对 120 条链统一输出 trigger 语法，并由 L0 精确校验
+46 条依赖链、74 条资源状态链及生成物中的 `trigger_else_if` 总数，覆盖本次实机错误形态。
+
 ## 八、L0 验证与下一道门
 
 ```powershell

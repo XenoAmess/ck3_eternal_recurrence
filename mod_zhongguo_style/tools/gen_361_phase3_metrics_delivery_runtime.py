@@ -1232,10 +1232,17 @@ def render_due_debt_consumer(spec: Mechanism) -> str:
     return f"""# #{mid:03d} next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 {p}_consume_due_debt_effect = {{
+\tremove_variable = {p}_debt_expected_due_cycle
+\tif = {{
+\t\tlimit = {{ has_variable = {p}_debt_cycle }}
+\t\tset_variable = {{ name = {p}_debt_expected_due_cycle value = var:{p}_debt_cycle }}
+\t\tchange_variable = {{ name = {p}_debt_expected_due_cycle add = 1 }}
+\t}}
 \tif = {{
 \t\tlimit = {{
 {exact_required}
 {receipt_required}
+\t\t\thas_variable = {p}_debt_expected_due_cycle
 \t\t\thas_variable = zg361_p3_policy_debt_open_n
 \t\t\thas_variable = zg361_p3_policy_debt_settled_n
 \t\t\troot = {{
@@ -1253,7 +1260,7 @@ def render_due_debt_consumer(spec: Mechanism) -> str:
 \t\t\tvar:{p}_debt_subject = this
 {tuple_compare}
 \t\t\tvar:{p}_receipt_choice = 3
-\t\t\tvar:{p}_debt_due_cycle = {{ value = var:{p}_debt_cycle add = 1 }}
+\t\t\tvar:{p}_debt_due_cycle = var:{p}_debt_expected_due_cycle
 \t\t\troot.var:zg361_review_serial = var:{p}_debt_due_cycle
 \t\t}}
 \t\tvar:{p}_debt_owner = {{
@@ -1297,6 +1304,7 @@ def render_due_debt_consumer(spec: Mechanism) -> str:
 \t\tlimit = {{
 {future_required}
 {receipt_required}
+\t\t\thas_variable = {p}_debt_expected_due_cycle
 \t\t\troot = {{
 \t\t\t\tzg361_is_celestial_liege_trigger = yes
 \t\t\t\thas_variable = zg361_review_serial
@@ -1311,7 +1319,7 @@ def render_due_debt_consumer(spec: Mechanism) -> str:
 \t\t\tvar:{p}_debt_subject = this
 {tuple_compare}
 \t\t\tvar:{p}_receipt_choice = 3
-\t\t\tvar:{p}_debt_due_cycle = {{ value = var:{p}_debt_cycle add = 1 }}
+\t\t\tvar:{p}_debt_due_cycle = var:{p}_debt_expected_due_cycle
 \t\t\troot.var:zg361_review_serial < var:{p}_debt_due_cycle
 \t\t}}
 \t\tset_variable = {{ name = {p}_debt_consumer_status value = 5 }}
@@ -1348,6 +1356,12 @@ def render_due_debt_aggregate() -> str:
     return f"""# The sole next-cycle debt route.  It is called once by the public
 # portfolio adapter before a new AA case can overwrite any per-ID history.
 zg361_p3_consume_due_policy_debts_effect = {{
+\tremove_variable = zg361_p3_deferred_cleanup_due_cycle
+\tif = {{
+\t\tlimit = {{ has_variable = zg361_p3_portfolio_cycle }}
+\t\tset_variable = {{ name = zg361_p3_deferred_cleanup_due_cycle value = var:zg361_p3_portfolio_cycle }}
+\t\tchange_variable = {{ name = zg361_p3_deferred_cleanup_due_cycle add = 1 }}
+\t}}
 \tif = {{
 \t\tlimit = {{ NOT = {{ has_variable = zg361_p3_policy_debt_open_n }} }}
 \t\tset_variable = {{ name = zg361_p3_policy_debt_open_n value = 0 }}
@@ -1382,6 +1396,7 @@ zg361_p3_settle_deferred_portfolio_effect = {
 			has_variable = zg361_p3_portfolio_owner
 			has_variable = zg361_p3_portfolio_subject
 			has_variable = zg361_p3_portfolio_cycle
+			has_variable = zg361_p3_deferred_cleanup_due_cycle
 			has_variable = zg361_p3_final_owner
 			has_variable = zg361_p3_final_subject
 			has_variable = zg361_p3_final_cycle
@@ -1412,7 +1427,7 @@ zg361_p3_settle_deferred_portfolio_effect = {
 			var:zg361_p3_final_deferred = 1
 			var:zg361_p3_final_conservation_ok = 1
 			var:zg361_p3_final_current_capacity_check = var:zg361_p3_aj_capacity_total
-			root.var:zg361_review_serial = { value = var:zg361_p3_portfolio_cycle add = 1 }
+			root.var:zg361_review_serial = var:zg361_p3_deferred_cleanup_due_cycle
 			trigger_if = {
 				limit = {
 					OR = {
@@ -1537,7 +1552,8 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 \t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_case value = $TICKET_CASE$ }}
 \t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_state value = {spec.state} }}
 \t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_mechanism value = {mid} }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_due_cycle value = $TICKET_CYCLE$ }}
+\t\t\tchange_variable = {{ name = zg361_p3_m{mid}_debt_due_cycle add = 1 }}
 \t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_status value = 1 }}
 \t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_audit_state value = 1 }}
 \t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_business_object_created value = 0 }}

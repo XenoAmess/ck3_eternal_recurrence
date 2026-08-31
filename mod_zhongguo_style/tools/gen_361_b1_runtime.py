@@ -7718,6 +7718,16 @@ zg361b1.103 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		# Keep one exact-build-valid flag target alive through the list read: the
+		# loader discards setters that are reverted before their consumer. Record
+		# whether the owner originally had a container so cleanup restores both
+		# membership and has_variable_list semantics.
+		remove_character_flag = zg361_b1_subjects_event_loader_had_list
+		if = {
+			limit = { has_variable_list = zg361_b1_subjects }
+			add_character_flag = zg361_b1_subjects_event_loader_had_list
+		}
+		add_to_variable_list = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
 		if = {
 			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
 			if = {
@@ -7730,6 +7740,7 @@ zg361b1.103 = {
 				}
 				every_in_list = {
 					variable = zg361_b1_subjects
+					limit = { NOT = { this = flag:zg361_b1_subjects_event_loader_anchor } }
 					if = {
 						limit = {
 							has_variable = zg361_b1_case_owner
@@ -7740,12 +7751,34 @@ zg361b1.103 = {
 						zg361_b1_record_shadow_accept_effect = yes
 					}
 				}
+				remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+				if = {
+					limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
+					clear_variable_list = zg361_b1_subjects
+				}
+				remove_character_flag = zg361_b1_subjects_event_loader_had_list
 				set_variable = { name = zg361_b1_cycle_state value = 6 }
 				zg361_b1_submit_quota_book_effect = yes
 			}
-			else = { debug_log = "ZG361B1: stale shadow-close ticket ignored" }
+			else = {
+				remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+				if = {
+					limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
+					clear_variable_list = zg361_b1_subjects
+				}
+				remove_character_flag = zg361_b1_subjects_event_loader_had_list
+				debug_log = "ZG361B1: stale shadow-close ticket ignored"
+			}
 		}
-		else = { debug_log = "ZG361B1: incomplete shadow-close ticket ignored" }
+		else = {
+			remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+			if = {
+				limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
+				clear_variable_list = zg361_b1_subjects
+			}
+			remove_character_flag = zg361_b1_subjects_event_loader_had_list
+			debug_log = "ZG361B1: incomplete shadow-close ticket ignored"
+		}
 	}
 }
 
@@ -7755,6 +7788,16 @@ zg361b1.110 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		# Keep the flag anchor alive through the business has-list read, while a
+		# character flag preserves the pre-anchor branch decision. The anchor is
+		# removed before the close effect, so no character-only manager iterator
+		# can consume it.
+		remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
+		if = {
+			limit = { has_variable_list = zg361_b1_ready_managers }
+			add_character_flag = zg361_b1_ready_managers_event_loader_had_list
+		}
+		add_to_variable_list = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
 		if = {
 			limit = {
 				exists = scope:zg361_b1_bank_ticket_owner
@@ -7771,19 +7814,46 @@ zg361b1.110 = {
 					var:zg361_b1_bank_state = 1
 				}
 				if = {
-					limit = { has_variable_list = zg361_b1_ready_managers }
+					limit = {
+						has_character_flag = zg361_b1_ready_managers_event_loader_had_list
+						has_variable_list = zg361_b1_ready_managers
+					}
+					remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+					remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
 					zg361_b1_close_common_superior_bank_effect = yes
 				}
 				else = {
+					remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+					if = {
+						limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
+						clear_variable_list = zg361_b1_ready_managers
+					}
+					remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
 					# A deadline may legitimately outlive every expected manager.
 					# Close the bank without evaluating an unset ready list.
 					set_variable = { name = zg361_b1_bank_state value = 2 }
 					debug_log = "ZG361B1: common-superior bank closed with no ready managers"
 				}
 			}
-			else = { debug_log = "ZG361B1: stale common-superior bank ticket ignored" }
+			else = {
+				remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+				if = {
+					limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
+					clear_variable_list = zg361_b1_ready_managers
+				}
+				remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
+				debug_log = "ZG361B1: stale common-superior bank ticket ignored"
+			}
 		}
-		else = { debug_log = "ZG361B1: incomplete common-superior bank ticket ignored" }
+		else = {
+			remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+			if = {
+				limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
+				clear_variable_list = zg361_b1_ready_managers
+			}
+			remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
+			debug_log = "ZG361B1: incomplete common-superior bank ticket ignored"
+		}
 	}
 }
 

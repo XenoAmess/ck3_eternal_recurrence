@@ -20,6 +20,10 @@ EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_endga
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-workforce-endgame-ck3-runtime-spec.md"
 EXPECTED_IDS = set(range(242, 278)) | {355, 356, 360, 361}
+ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
+    r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
+    r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
+)
 
 
 def read(path: Path) -> str:
@@ -64,6 +68,27 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     def test_01_readiness_is_honest(self) -> None:
         self.assertEqual("ck3-script-static-ready-not-live", gen.READINESS)
         self.assertIn("No CK3 parser, paused snapshot or live evidence", self.effects)
+
+    def test_trigger_arithmetic_never_uses_a_value_block_rhs(self) -> None:
+        self.assertIsNone(
+            ILLEGAL_TRIGGER_ARITHMETIC_RHS.search(self.effects),
+            "CK3 scripted-effect loader treats RHS value/add/multiply/subtract as triggers",
+        )
+        debt = block(self.effects, "zg361_we_m242_consume_due_debt_effect")
+        self.assertIn("debt_id = scope:zg361_we_m242_expected_debt_id", debt)
+        collective = block(self.effects, "zg361_we_m360_route_a_effect")
+        self.assertIn("name = zg361_we_expected_collective_total_quota", collective)
+        self.assertIn(
+            "external_collective_total_quota = scope:zg361_we_expected_collective_total_quota",
+            collective,
+        )
+
+    def test_gold_debits_use_registered_short_term_effect(self) -> None:
+        self.assertEqual(self.effects.count("remove_short_term_gold ="), 11)
+        self.assertIsNone(
+            re.search(r"(?<!short_term_)\bremove_gold\s*=", self.effects),
+            "CK3 1.19.0.6 does not register the bare remove_gold effect",
+        )
 
     def test_02_catalogue_is_exact_40(self) -> None:
         gen.validate_specs()
@@ -288,6 +313,62 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 self.assertIn("EXPECTED_SUBJECT = this", relay)
                 self.assertIn(f"zg361_we_{domain}_timeout_stage_{state:02d}_effect", relay)
 
+    def test_19a_all_route_c_calls_bind_loader_required_ticket_state(self) -> None:
+        bound_calls = 0
+        for spec in gen.MECHANISMS:
+            timeout = block(
+                self.effects,
+                f"zg361_we_{spec.domain}_timeout_stage_{spec.state:02d}_effect",
+            )
+            expected_call = f"""zg361_we_m{spec.mid}_route_c_effect = {{
+\t\tTICKET_OWNER = var:zg361_case_{spec.domain}_owner
+\t\tTICKET_SUBJECT = this
+\t\tTICKET_CYCLE = var:zg361_case_{spec.domain}_cycle_serial
+\t\tTICKET_CASE = var:zg361_case_{spec.domain}_case_serial
+\t\tTICKET_STATE = {spec.state}
+\t}}"""
+            self.assertIn(expected_call, timeout, spec.mid)
+
+            event = block(self.events, f"zg361we.{spec.mid}")
+            expected_player_call = f"""zg361_we_m{spec.mid}_route_c_effect = {{
+\t\t\t\tTICKET_OWNER = scope:zg361_we_{spec.domain}_owner
+\t\t\t\tTICKET_SUBJECT = scope:zg361_we_{spec.domain}_subject
+\t\t\t\tTICKET_CYCLE = scope:zg361_we_{spec.domain}_cycle
+\t\t\t\tTICKET_CASE = scope:zg361_we_{spec.domain}_case
+\t\t\t\tTICKET_STATE = {spec.state}
+\t\t\t}}"""
+            self.assertIn(expected_player_call, event, spec.mid)
+
+            route_c = block(self.effects, f"zg361_we_m{spec.mid}_route_c_effect")
+            self.assertIn(
+                f"name = zg361_we_m{spec.mid}_debt_state value = $TICKET_STATE$",
+                route_c,
+                spec.mid,
+            )
+            bound_calls += 2
+
+        call_pattern = re.compile(
+            r"(?m)^[ \t]+zg361_we_m(\d+)_route_c_effect = \{$"
+        )
+        timeout_call_ids = [int(mid) for mid in call_pattern.findall(self.effects)]
+        player_call_ids = [int(mid) for mid in call_pattern.findall(self.events)]
+        expected_ids = sorted(EXPECTED_IDS)
+        self.assertEqual(expected_ids, sorted(timeout_call_ids))
+        self.assertEqual(expected_ids, sorted(player_call_ids))
+        self.assertEqual(80, bound_calls)
+        self.assertEqual(80, len(timeout_call_ids) + len(player_call_ids))
+
+        all_route_c_rows: list[tuple[Path, str]] = []
+        for path in MOD_ROOT.rglob("*.txt"):
+            for line in read(path).splitlines():
+                if re.match(r"^\s*zg361_we_m\d+_route_c_effect = \{$", line):
+                    all_route_c_rows.append((path, line))
+        self.assertEqual(120, len(all_route_c_rows))
+        self.assertEqual(
+            {EFFECTS_PATH.resolve(), EVENTS_PATH.resolve()},
+            {path.resolve() for path, _ in all_route_c_rows},
+        )
+
     def test_20_all_event_references_are_closed(self) -> None:
         referenced = {int(mid) for mid in re.findall(r"(?:id|EVENT) = zg361we\.(\d+)", self.effects + self.events)}
         defined = {int(mid) for mid in re.findall(r"^zg361we\.(\d+) = \{$", self.events, re.MULTILINE)}
@@ -352,7 +433,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         leave = block(self.effects, "zg361_we_m246_route_b_effect")
         self.assertIn("overtime_pending add = 5", overtime)
         self.assertIn("overtime_pending add = -5", gold)
-        self.assertIn("remove_gold = 15", gold)
+        self.assertIn("remove_short_term_gold = 15", gold)
         self.assertIn("add_gold = 15", gold)
         self.assertIn("leave_bank add = 5", leave)
 
@@ -397,10 +478,10 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         handoff = block(self.effects, "zg361_we_m264_route_a_effect")
         recovery = block(self.effects, "zg361_we_m265_route_a_effect")
         self.assertIn("contract_gold_reserved add = -20", handoff)
-        self.assertIn("remove_gold = 20", handoff)
+        self.assertIn("remove_short_term_gold = 20", handoff)
         self.assertIn("add_gold = 20", handoff)
         self.assertIn("contract_gold_paid add = -5", recovery)
-        self.assertIn("remove_gold = 5", recovery)
+        self.assertIn("remove_short_term_gold = 5", recovery)
         self.assertIn("add_gold = 5", recovery)
 
     def test_32_ad_reserves_shared_hc_once_and_candidate_does_not_duplicate_it(self) -> None:
@@ -441,7 +522,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("m271_referral_id value = var:zg361_we_ad_external_referral_id", referral)
         self.assertLess(gen.DOMAIN_ORDER["ad"].index(271), gen.DOMAIN_ORDER["ad"].index(267))
         self.assertIn("m271_reward_due_after_probation value = 1", referral)
-        self.assertIn("var:zg361_case_ad_owner = { remove_gold = 5 }", referral)
+        self.assertIn("var:zg361_case_ad_owner = { remove_short_term_gold = 5 }", referral)
         self.assertIn("m271_reward_paid_before_probation value = 1", undisclosed)
         self.assertIn("var:zg361_we_m271_referrer = { add_gold = 5 }", undisclosed)
         self.assertIn("referral_gold_reserved add = -5", future)
@@ -518,7 +599,10 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertNotIn("set_variable = { name = zg361_we_al_external_collective_1_cohort_id", route)
             self.assertIn("al_external_collective_submission_consumed value = 1", route)
             self.assertIn("al_external_collective_submission_active value = 0", route)
-        self.assertIn("al_external_collective_reform_effective_cycle = { value = $TICKET_CYCLE$ add = 1 }", exception)
+        self.assertIn(
+            "al_external_collective_reform_effective_cycle = scope:zg361_we_expected_ticket_next_cycle",
+            exception,
+        )
         self.assertIn("m360_reform_proposal_id value = var:zg361_we_al_external_collective_reform_proposal_id", exception)
         for slot in (1, 2, 3):
             self.assertIn(f"var:zg361_we_al_external_collective_{slot}_exception_count = 0", forced)
@@ -685,11 +769,11 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("m264_payee value = var:zg361_we_ac_external_handoff_payee", pay)
         self.assertIn("m264_accepted_by value = var:zg361_we_ac_external_handoff_accepted_by", pay)
         self.assertIn("m264_payment_settled value = 1", pay)
-        self.assertIn("remove_gold = 20", pay)
+        self.assertIn("remove_short_term_gold = 20", pay)
         self.assertIn("add_gold = 20", pay)
         self.assertIn("m264_payment_settled value = 0", terminate)
         self.assertIn("m264_payment_refunded value = 20", terminate)
-        self.assertNotIn("remove_gold = 20", terminate)
+        self.assertNotIn("remove_short_term_gold = 20", terminate)
         for route in (pay, terminate):
             self.assertIn("shadow_hc_active add = -1", route)
             self.assertIn("shadow_hc_available add = 1", route)
@@ -833,11 +917,11 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         proven = block(self.effects, "zg361_we_m265_route_a_effect")
         suspicion = block(self.effects, "zg361_we_m265_route_b_effect")
         self.assertIn("m265_evidence_count value = 2", proven)
-        self.assertIn("remove_gold = 5", proven)
+        self.assertIn("remove_short_term_gold = 5", proven)
         self.assertIn("m265_investigation_pending value = 1", suspicion)
         self.assertIn("m265_suspicion_only value = 1", suspicion)
         self.assertIn("m265_recovery_gold value = 0", suspicion)
-        self.assertNotIn("remove_gold", suspicion)
+        self.assertNotIn("remove_short_term_gold", suspicion)
         self.assertNotIn("contract_gold_recovered add", suspicion)
 
     def test_66_interview_identity_votes_and_evidence_are_complete_before_seal(self) -> None:
@@ -910,7 +994,10 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("realm_charter_history_count = var:zg361_we_realm_charter_current_version", route)
         self.assertIn("realm_charter_current_version > 0", route)
         self.assertIn("al_external_charter_adopted_day > var:zg361_case_al_owner.var:zg361_we_realm_charter_current_adopted_day", route)
-        self.assertIn("realm_charter_current_effective_cycle < { value = $TICKET_CYCLE$ add = 1 }", route)
+        self.assertIn(
+            "realm_charter_current_effective_cycle < scope:zg361_we_expected_ticket_next_cycle",
+            route,
+        )
         self.assertIn("if = { limit = { var:zg361_we_realm_charter_current_version = 0 } set_variable = { name = zg361_we_realm_charter_anchor_cycle_1", route)
         self.assertNotIn("remove_variable = zg361_we_realm_charter_anchor_", route)
         self.assertIn("completed_cycle_ledger_previous_hash_2 = var:zg361_we_completed_cycle_ledger_chain_hash_1", prepare)

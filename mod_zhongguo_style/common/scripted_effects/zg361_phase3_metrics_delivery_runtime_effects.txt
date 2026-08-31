@@ -210,6 +210,12 @@ zg361_p3_finalize_portfolio_effect = {
 # The sole next-cycle debt route.  It is called once by the public
 # portfolio adapter before a new AA case can overwrite any per-ID history.
 zg361_p3_consume_due_policy_debts_effect = {
+	remove_variable = zg361_p3_deferred_cleanup_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_portfolio_cycle }
+		set_variable = { name = zg361_p3_deferred_cleanup_due_cycle value = var:zg361_p3_portfolio_cycle }
+		change_variable = { name = zg361_p3_deferred_cleanup_due_cycle add = 1 }
+	}
 	if = {
 		limit = { NOT = { has_variable = zg361_p3_policy_debt_open_n } }
 		set_variable = { name = zg361_p3_policy_debt_open_n value = 0 }
@@ -274,6 +280,7 @@ zg361_p3_settle_deferred_portfolio_effect = {
 			has_variable = zg361_p3_portfolio_owner
 			has_variable = zg361_p3_portfolio_subject
 			has_variable = zg361_p3_portfolio_cycle
+			has_variable = zg361_p3_deferred_cleanup_due_cycle
 			has_variable = zg361_p3_final_owner
 			has_variable = zg361_p3_final_subject
 			has_variable = zg361_p3_final_cycle
@@ -304,7 +311,7 @@ zg361_p3_settle_deferred_portfolio_effect = {
 			var:zg361_p3_final_deferred = 1
 			var:zg361_p3_final_conservation_ok = 1
 			var:zg361_p3_final_current_capacity_check = var:zg361_p3_aj_capacity_total
-			root.var:zg361_review_serial = { value = var:zg361_p3_portfolio_cycle add = 1 }
+			root.var:zg361_review_serial = var:zg361_p3_deferred_cleanup_due_cycle
 			trigger_if = {
 				limit = {
 					OR = {
@@ -1335,6 +1342,12 @@ zg361_p3_aj_launch_effect = {
 # #229 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m229_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m229_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m229_debt_cycle }
+		set_variable = { name = zg361_p3_m229_debt_expected_due_cycle value = var:zg361_p3_m229_debt_cycle }
+		change_variable = { name = zg361_p3_m229_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m229_debt_owner
@@ -1353,6 +1366,7 @@ zg361_p3_m229_consume_due_debt_effect = {
 			has_variable = zg361_p3_m229_receipt_case
 			has_variable = zg361_p3_m229_receipt_state
 			has_variable = zg361_p3_m229_receipt_choice
+			has_variable = zg361_p3_m229_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -1374,7 +1388,7 @@ zg361_p3_m229_consume_due_debt_effect = {
 		var:zg361_p3_m229_debt_case = var:zg361_p3_m229_receipt_case
 		var:zg361_p3_m229_debt_state = var:zg361_p3_m229_receipt_state
 			var:zg361_p3_m229_receipt_choice = 3
-			var:zg361_p3_m229_debt_due_cycle = { value = var:zg361_p3_m229_debt_cycle add = 1 }
+			var:zg361_p3_m229_debt_due_cycle = var:zg361_p3_m229_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m229_debt_due_cycle
 		}
 		var:zg361_p3_m229_debt_owner = {
@@ -1432,6 +1446,7 @@ zg361_p3_m229_consume_due_debt_effect = {
 			has_variable = zg361_p3_m229_receipt_case
 			has_variable = zg361_p3_m229_receipt_state
 			has_variable = zg361_p3_m229_receipt_choice
+			has_variable = zg361_p3_m229_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -1450,7 +1465,7 @@ zg361_p3_m229_consume_due_debt_effect = {
 		var:zg361_p3_m229_debt_case = var:zg361_p3_m229_receipt_case
 		var:zg361_p3_m229_debt_state = var:zg361_p3_m229_receipt_state
 			var:zg361_p3_m229_receipt_choice = 3
-			var:zg361_p3_m229_debt_due_cycle = { value = var:zg361_p3_m229_debt_cycle add = 1 }
+			var:zg361_p3_m229_debt_due_cycle = var:zg361_p3_m229_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m229_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m229_debt_consumer_status value = 5 }
@@ -2217,7 +2232,8 @@ zg361_p3_m229_route_c_effect = {
 			set_variable = { name = zg361_p3_m229_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m229_debt_state value = 1 }
 			set_variable = { name = zg361_p3_m229_debt_mechanism value = 229 }
-			set_variable = { name = zg361_p3_m229_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m229_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m229_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m229_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m229_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m229_debt_business_object_created value = 0 }
@@ -2381,6 +2397,12 @@ zg361_p3_m229_route_c_effect = {
 # #230 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m230_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m230_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m230_debt_cycle }
+		set_variable = { name = zg361_p3_m230_debt_expected_due_cycle value = var:zg361_p3_m230_debt_cycle }
+		change_variable = { name = zg361_p3_m230_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m230_debt_owner
@@ -2399,6 +2421,7 @@ zg361_p3_m230_consume_due_debt_effect = {
 			has_variable = zg361_p3_m230_receipt_case
 			has_variable = zg361_p3_m230_receipt_state
 			has_variable = zg361_p3_m230_receipt_choice
+			has_variable = zg361_p3_m230_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -2420,7 +2443,7 @@ zg361_p3_m230_consume_due_debt_effect = {
 		var:zg361_p3_m230_debt_case = var:zg361_p3_m230_receipt_case
 		var:zg361_p3_m230_debt_state = var:zg361_p3_m230_receipt_state
 			var:zg361_p3_m230_receipt_choice = 3
-			var:zg361_p3_m230_debt_due_cycle = { value = var:zg361_p3_m230_debt_cycle add = 1 }
+			var:zg361_p3_m230_debt_due_cycle = var:zg361_p3_m230_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m230_debt_due_cycle
 		}
 		var:zg361_p3_m230_debt_owner = {
@@ -2478,6 +2501,7 @@ zg361_p3_m230_consume_due_debt_effect = {
 			has_variable = zg361_p3_m230_receipt_case
 			has_variable = zg361_p3_m230_receipt_state
 			has_variable = zg361_p3_m230_receipt_choice
+			has_variable = zg361_p3_m230_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -2496,7 +2520,7 @@ zg361_p3_m230_consume_due_debt_effect = {
 		var:zg361_p3_m230_debt_case = var:zg361_p3_m230_receipt_case
 		var:zg361_p3_m230_debt_state = var:zg361_p3_m230_receipt_state
 			var:zg361_p3_m230_receipt_choice = 3
-			var:zg361_p3_m230_debt_due_cycle = { value = var:zg361_p3_m230_debt_cycle add = 1 }
+			var:zg361_p3_m230_debt_due_cycle = var:zg361_p3_m230_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m230_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m230_debt_consumer_status value = 5 }
@@ -3477,7 +3501,8 @@ zg361_p3_m230_route_c_effect = {
 			set_variable = { name = zg361_p3_m230_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m230_debt_state value = 1 }
 			set_variable = { name = zg361_p3_m230_debt_mechanism value = 230 }
-			set_variable = { name = zg361_p3_m230_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m230_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m230_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m230_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m230_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m230_debt_business_object_created value = 0 }
@@ -3739,6 +3764,12 @@ zg361_p3_m230_route_c_effect = {
 # #231 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m231_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m231_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m231_debt_cycle }
+		set_variable = { name = zg361_p3_m231_debt_expected_due_cycle value = var:zg361_p3_m231_debt_cycle }
+		change_variable = { name = zg361_p3_m231_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m231_debt_owner
@@ -3757,6 +3788,7 @@ zg361_p3_m231_consume_due_debt_effect = {
 			has_variable = zg361_p3_m231_receipt_case
 			has_variable = zg361_p3_m231_receipt_state
 			has_variable = zg361_p3_m231_receipt_choice
+			has_variable = zg361_p3_m231_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -3778,7 +3810,7 @@ zg361_p3_m231_consume_due_debt_effect = {
 		var:zg361_p3_m231_debt_case = var:zg361_p3_m231_receipt_case
 		var:zg361_p3_m231_debt_state = var:zg361_p3_m231_receipt_state
 			var:zg361_p3_m231_receipt_choice = 3
-			var:zg361_p3_m231_debt_due_cycle = { value = var:zg361_p3_m231_debt_cycle add = 1 }
+			var:zg361_p3_m231_debt_due_cycle = var:zg361_p3_m231_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m231_debt_due_cycle
 		}
 		var:zg361_p3_m231_debt_owner = {
@@ -3836,6 +3868,7 @@ zg361_p3_m231_consume_due_debt_effect = {
 			has_variable = zg361_p3_m231_receipt_case
 			has_variable = zg361_p3_m231_receipt_state
 			has_variable = zg361_p3_m231_receipt_choice
+			has_variable = zg361_p3_m231_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -3854,7 +3887,7 @@ zg361_p3_m231_consume_due_debt_effect = {
 		var:zg361_p3_m231_debt_case = var:zg361_p3_m231_receipt_case
 		var:zg361_p3_m231_debt_state = var:zg361_p3_m231_receipt_state
 			var:zg361_p3_m231_receipt_choice = 3
-			var:zg361_p3_m231_debt_due_cycle = { value = var:zg361_p3_m231_debt_cycle add = 1 }
+			var:zg361_p3_m231_debt_due_cycle = var:zg361_p3_m231_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m231_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m231_debt_consumer_status value = 5 }
@@ -4643,7 +4676,8 @@ zg361_p3_m231_route_c_effect = {
 			set_variable = { name = zg361_p3_m231_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m231_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m231_debt_mechanism value = 231 }
-			set_variable = { name = zg361_p3_m231_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m231_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m231_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m231_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m231_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m231_debt_business_object_created value = 0 }
@@ -4807,6 +4841,12 @@ zg361_p3_m231_route_c_effect = {
 # #232 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m232_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m232_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m232_debt_cycle }
+		set_variable = { name = zg361_p3_m232_debt_expected_due_cycle value = var:zg361_p3_m232_debt_cycle }
+		change_variable = { name = zg361_p3_m232_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m232_debt_owner
@@ -4825,6 +4865,7 @@ zg361_p3_m232_consume_due_debt_effect = {
 			has_variable = zg361_p3_m232_receipt_case
 			has_variable = zg361_p3_m232_receipt_state
 			has_variable = zg361_p3_m232_receipt_choice
+			has_variable = zg361_p3_m232_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -4846,7 +4887,7 @@ zg361_p3_m232_consume_due_debt_effect = {
 		var:zg361_p3_m232_debt_case = var:zg361_p3_m232_receipt_case
 		var:zg361_p3_m232_debt_state = var:zg361_p3_m232_receipt_state
 			var:zg361_p3_m232_receipt_choice = 3
-			var:zg361_p3_m232_debt_due_cycle = { value = var:zg361_p3_m232_debt_cycle add = 1 }
+			var:zg361_p3_m232_debt_due_cycle = var:zg361_p3_m232_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m232_debt_due_cycle
 		}
 		var:zg361_p3_m232_debt_owner = {
@@ -4904,6 +4945,7 @@ zg361_p3_m232_consume_due_debt_effect = {
 			has_variable = zg361_p3_m232_receipt_case
 			has_variable = zg361_p3_m232_receipt_state
 			has_variable = zg361_p3_m232_receipt_choice
+			has_variable = zg361_p3_m232_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -4922,7 +4964,7 @@ zg361_p3_m232_consume_due_debt_effect = {
 		var:zg361_p3_m232_debt_case = var:zg361_p3_m232_receipt_case
 		var:zg361_p3_m232_debt_state = var:zg361_p3_m232_receipt_state
 			var:zg361_p3_m232_receipt_choice = 3
-			var:zg361_p3_m232_debt_due_cycle = { value = var:zg361_p3_m232_debt_cycle add = 1 }
+			var:zg361_p3_m232_debt_due_cycle = var:zg361_p3_m232_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m232_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m232_debt_consumer_status value = 5 }
@@ -5711,7 +5753,8 @@ zg361_p3_m232_route_c_effect = {
 			set_variable = { name = zg361_p3_m232_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m232_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m232_debt_mechanism value = 232 }
-			set_variable = { name = zg361_p3_m232_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m232_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m232_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m232_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m232_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m232_debt_business_object_created value = 0 }
@@ -5875,6 +5918,12 @@ zg361_p3_m232_route_c_effect = {
 # #233 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m233_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m233_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m233_debt_cycle }
+		set_variable = { name = zg361_p3_m233_debt_expected_due_cycle value = var:zg361_p3_m233_debt_cycle }
+		change_variable = { name = zg361_p3_m233_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m233_debt_owner
@@ -5893,6 +5942,7 @@ zg361_p3_m233_consume_due_debt_effect = {
 			has_variable = zg361_p3_m233_receipt_case
 			has_variable = zg361_p3_m233_receipt_state
 			has_variable = zg361_p3_m233_receipt_choice
+			has_variable = zg361_p3_m233_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -5914,7 +5964,7 @@ zg361_p3_m233_consume_due_debt_effect = {
 		var:zg361_p3_m233_debt_case = var:zg361_p3_m233_receipt_case
 		var:zg361_p3_m233_debt_state = var:zg361_p3_m233_receipt_state
 			var:zg361_p3_m233_receipt_choice = 3
-			var:zg361_p3_m233_debt_due_cycle = { value = var:zg361_p3_m233_debt_cycle add = 1 }
+			var:zg361_p3_m233_debt_due_cycle = var:zg361_p3_m233_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m233_debt_due_cycle
 		}
 		var:zg361_p3_m233_debt_owner = {
@@ -5972,6 +6022,7 @@ zg361_p3_m233_consume_due_debt_effect = {
 			has_variable = zg361_p3_m233_receipt_case
 			has_variable = zg361_p3_m233_receipt_state
 			has_variable = zg361_p3_m233_receipt_choice
+			has_variable = zg361_p3_m233_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -5990,7 +6041,7 @@ zg361_p3_m233_consume_due_debt_effect = {
 		var:zg361_p3_m233_debt_case = var:zg361_p3_m233_receipt_case
 		var:zg361_p3_m233_debt_state = var:zg361_p3_m233_receipt_state
 			var:zg361_p3_m233_receipt_choice = 3
-			var:zg361_p3_m233_debt_due_cycle = { value = var:zg361_p3_m233_debt_cycle add = 1 }
+			var:zg361_p3_m233_debt_due_cycle = var:zg361_p3_m233_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m233_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m233_debt_consumer_status value = 5 }
@@ -7055,7 +7106,8 @@ zg361_p3_m233_route_c_effect = {
 			set_variable = { name = zg361_p3_m233_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m233_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m233_debt_mechanism value = 233 }
-			set_variable = { name = zg361_p3_m233_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m233_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m233_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m233_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m233_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m233_debt_business_object_created value = 0 }
@@ -7361,6 +7413,12 @@ zg361_p3_m233_route_c_effect = {
 # #234 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m234_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m234_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m234_debt_cycle }
+		set_variable = { name = zg361_p3_m234_debt_expected_due_cycle value = var:zg361_p3_m234_debt_cycle }
+		change_variable = { name = zg361_p3_m234_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m234_debt_owner
@@ -7379,6 +7437,7 @@ zg361_p3_m234_consume_due_debt_effect = {
 			has_variable = zg361_p3_m234_receipt_case
 			has_variable = zg361_p3_m234_receipt_state
 			has_variable = zg361_p3_m234_receipt_choice
+			has_variable = zg361_p3_m234_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -7400,7 +7459,7 @@ zg361_p3_m234_consume_due_debt_effect = {
 		var:zg361_p3_m234_debt_case = var:zg361_p3_m234_receipt_case
 		var:zg361_p3_m234_debt_state = var:zg361_p3_m234_receipt_state
 			var:zg361_p3_m234_receipt_choice = 3
-			var:zg361_p3_m234_debt_due_cycle = { value = var:zg361_p3_m234_debt_cycle add = 1 }
+			var:zg361_p3_m234_debt_due_cycle = var:zg361_p3_m234_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m234_debt_due_cycle
 		}
 		var:zg361_p3_m234_debt_owner = {
@@ -7458,6 +7517,7 @@ zg361_p3_m234_consume_due_debt_effect = {
 			has_variable = zg361_p3_m234_receipt_case
 			has_variable = zg361_p3_m234_receipt_state
 			has_variable = zg361_p3_m234_receipt_choice
+			has_variable = zg361_p3_m234_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -7476,7 +7536,7 @@ zg361_p3_m234_consume_due_debt_effect = {
 		var:zg361_p3_m234_debt_case = var:zg361_p3_m234_receipt_case
 		var:zg361_p3_m234_debt_state = var:zg361_p3_m234_receipt_state
 			var:zg361_p3_m234_receipt_choice = 3
-			var:zg361_p3_m234_debt_due_cycle = { value = var:zg361_p3_m234_debt_cycle add = 1 }
+			var:zg361_p3_m234_debt_due_cycle = var:zg361_p3_m234_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m234_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m234_debt_consumer_status value = 5 }
@@ -8267,7 +8327,8 @@ zg361_p3_m234_route_c_effect = {
 			set_variable = { name = zg361_p3_m234_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m234_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m234_debt_mechanism value = 234 }
-			set_variable = { name = zg361_p3_m234_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m234_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m234_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m234_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m234_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m234_debt_business_object_created value = 0 }
@@ -8431,6 +8492,12 @@ zg361_p3_m234_route_c_effect = {
 # #235 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m235_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m235_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m235_debt_cycle }
+		set_variable = { name = zg361_p3_m235_debt_expected_due_cycle value = var:zg361_p3_m235_debt_cycle }
+		change_variable = { name = zg361_p3_m235_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m235_debt_owner
@@ -8449,6 +8516,7 @@ zg361_p3_m235_consume_due_debt_effect = {
 			has_variable = zg361_p3_m235_receipt_case
 			has_variable = zg361_p3_m235_receipt_state
 			has_variable = zg361_p3_m235_receipt_choice
+			has_variable = zg361_p3_m235_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -8470,7 +8538,7 @@ zg361_p3_m235_consume_due_debt_effect = {
 		var:zg361_p3_m235_debt_case = var:zg361_p3_m235_receipt_case
 		var:zg361_p3_m235_debt_state = var:zg361_p3_m235_receipt_state
 			var:zg361_p3_m235_receipt_choice = 3
-			var:zg361_p3_m235_debt_due_cycle = { value = var:zg361_p3_m235_debt_cycle add = 1 }
+			var:zg361_p3_m235_debt_due_cycle = var:zg361_p3_m235_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m235_debt_due_cycle
 		}
 		var:zg361_p3_m235_debt_owner = {
@@ -8528,6 +8596,7 @@ zg361_p3_m235_consume_due_debt_effect = {
 			has_variable = zg361_p3_m235_receipt_case
 			has_variable = zg361_p3_m235_receipt_state
 			has_variable = zg361_p3_m235_receipt_choice
+			has_variable = zg361_p3_m235_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -8546,7 +8615,7 @@ zg361_p3_m235_consume_due_debt_effect = {
 		var:zg361_p3_m235_debt_case = var:zg361_p3_m235_receipt_case
 		var:zg361_p3_m235_debt_state = var:zg361_p3_m235_receipt_state
 			var:zg361_p3_m235_receipt_choice = 3
-			var:zg361_p3_m235_debt_due_cycle = { value = var:zg361_p3_m235_debt_cycle add = 1 }
+			var:zg361_p3_m235_debt_due_cycle = var:zg361_p3_m235_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m235_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m235_debt_consumer_status value = 5 }
@@ -9339,7 +9408,8 @@ zg361_p3_m235_route_c_effect = {
 			set_variable = { name = zg361_p3_m235_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m235_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m235_debt_mechanism value = 235 }
-			set_variable = { name = zg361_p3_m235_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m235_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m235_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m235_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m235_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m235_debt_business_object_created value = 0 }
@@ -9503,6 +9573,12 @@ zg361_p3_m235_route_c_effect = {
 # #236 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m236_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m236_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m236_debt_cycle }
+		set_variable = { name = zg361_p3_m236_debt_expected_due_cycle value = var:zg361_p3_m236_debt_cycle }
+		change_variable = { name = zg361_p3_m236_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m236_debt_owner
@@ -9521,6 +9597,7 @@ zg361_p3_m236_consume_due_debt_effect = {
 			has_variable = zg361_p3_m236_receipt_case
 			has_variable = zg361_p3_m236_receipt_state
 			has_variable = zg361_p3_m236_receipt_choice
+			has_variable = zg361_p3_m236_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -9542,7 +9619,7 @@ zg361_p3_m236_consume_due_debt_effect = {
 		var:zg361_p3_m236_debt_case = var:zg361_p3_m236_receipt_case
 		var:zg361_p3_m236_debt_state = var:zg361_p3_m236_receipt_state
 			var:zg361_p3_m236_receipt_choice = 3
-			var:zg361_p3_m236_debt_due_cycle = { value = var:zg361_p3_m236_debt_cycle add = 1 }
+			var:zg361_p3_m236_debt_due_cycle = var:zg361_p3_m236_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m236_debt_due_cycle
 		}
 		var:zg361_p3_m236_debt_owner = {
@@ -9600,6 +9677,7 @@ zg361_p3_m236_consume_due_debt_effect = {
 			has_variable = zg361_p3_m236_receipt_case
 			has_variable = zg361_p3_m236_receipt_state
 			has_variable = zg361_p3_m236_receipt_choice
+			has_variable = zg361_p3_m236_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -9618,7 +9696,7 @@ zg361_p3_m236_consume_due_debt_effect = {
 		var:zg361_p3_m236_debt_case = var:zg361_p3_m236_receipt_case
 		var:zg361_p3_m236_debt_state = var:zg361_p3_m236_receipt_state
 			var:zg361_p3_m236_receipt_choice = 3
-			var:zg361_p3_m236_debt_due_cycle = { value = var:zg361_p3_m236_debt_cycle add = 1 }
+			var:zg361_p3_m236_debt_due_cycle = var:zg361_p3_m236_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m236_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m236_debt_consumer_status value = 5 }
@@ -10401,7 +10479,8 @@ zg361_p3_m236_route_c_effect = {
 			set_variable = { name = zg361_p3_m236_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m236_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m236_debt_mechanism value = 236 }
-			set_variable = { name = zg361_p3_m236_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m236_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m236_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m236_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m236_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m236_debt_business_object_created value = 0 }
@@ -10565,6 +10644,12 @@ zg361_p3_m236_route_c_effect = {
 # #237 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m237_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m237_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m237_debt_cycle }
+		set_variable = { name = zg361_p3_m237_debt_expected_due_cycle value = var:zg361_p3_m237_debt_cycle }
+		change_variable = { name = zg361_p3_m237_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m237_debt_owner
@@ -10583,6 +10668,7 @@ zg361_p3_m237_consume_due_debt_effect = {
 			has_variable = zg361_p3_m237_receipt_case
 			has_variable = zg361_p3_m237_receipt_state
 			has_variable = zg361_p3_m237_receipt_choice
+			has_variable = zg361_p3_m237_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -10604,7 +10690,7 @@ zg361_p3_m237_consume_due_debt_effect = {
 		var:zg361_p3_m237_debt_case = var:zg361_p3_m237_receipt_case
 		var:zg361_p3_m237_debt_state = var:zg361_p3_m237_receipt_state
 			var:zg361_p3_m237_receipt_choice = 3
-			var:zg361_p3_m237_debt_due_cycle = { value = var:zg361_p3_m237_debt_cycle add = 1 }
+			var:zg361_p3_m237_debt_due_cycle = var:zg361_p3_m237_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m237_debt_due_cycle
 		}
 		var:zg361_p3_m237_debt_owner = {
@@ -10662,6 +10748,7 @@ zg361_p3_m237_consume_due_debt_effect = {
 			has_variable = zg361_p3_m237_receipt_case
 			has_variable = zg361_p3_m237_receipt_state
 			has_variable = zg361_p3_m237_receipt_choice
+			has_variable = zg361_p3_m237_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -10680,7 +10767,7 @@ zg361_p3_m237_consume_due_debt_effect = {
 		var:zg361_p3_m237_debt_case = var:zg361_p3_m237_receipt_case
 		var:zg361_p3_m237_debt_state = var:zg361_p3_m237_receipt_state
 			var:zg361_p3_m237_receipt_choice = 3
-			var:zg361_p3_m237_debt_due_cycle = { value = var:zg361_p3_m237_debt_cycle add = 1 }
+			var:zg361_p3_m237_debt_due_cycle = var:zg361_p3_m237_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m237_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m237_debt_consumer_status value = 5 }
@@ -11839,7 +11926,8 @@ zg361_p3_m237_route_c_effect = {
 			set_variable = { name = zg361_p3_m237_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m237_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m237_debt_mechanism value = 237 }
-			set_variable = { name = zg361_p3_m237_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m237_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m237_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m237_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m237_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m237_debt_business_object_created value = 0 }
@@ -12189,6 +12277,12 @@ zg361_p3_m237_route_c_effect = {
 # #240 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m240_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m240_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m240_debt_cycle }
+		set_variable = { name = zg361_p3_m240_debt_expected_due_cycle value = var:zg361_p3_m240_debt_cycle }
+		change_variable = { name = zg361_p3_m240_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m240_debt_owner
@@ -12207,6 +12301,7 @@ zg361_p3_m240_consume_due_debt_effect = {
 			has_variable = zg361_p3_m240_receipt_case
 			has_variable = zg361_p3_m240_receipt_state
 			has_variable = zg361_p3_m240_receipt_choice
+			has_variable = zg361_p3_m240_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -12228,7 +12323,7 @@ zg361_p3_m240_consume_due_debt_effect = {
 		var:zg361_p3_m240_debt_case = var:zg361_p3_m240_receipt_case
 		var:zg361_p3_m240_debt_state = var:zg361_p3_m240_receipt_state
 			var:zg361_p3_m240_receipt_choice = 3
-			var:zg361_p3_m240_debt_due_cycle = { value = var:zg361_p3_m240_debt_cycle add = 1 }
+			var:zg361_p3_m240_debt_due_cycle = var:zg361_p3_m240_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m240_debt_due_cycle
 		}
 		var:zg361_p3_m240_debt_owner = {
@@ -12286,6 +12381,7 @@ zg361_p3_m240_consume_due_debt_effect = {
 			has_variable = zg361_p3_m240_receipt_case
 			has_variable = zg361_p3_m240_receipt_state
 			has_variable = zg361_p3_m240_receipt_choice
+			has_variable = zg361_p3_m240_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -12304,7 +12400,7 @@ zg361_p3_m240_consume_due_debt_effect = {
 		var:zg361_p3_m240_debt_case = var:zg361_p3_m240_receipt_case
 		var:zg361_p3_m240_debt_state = var:zg361_p3_m240_receipt_state
 			var:zg361_p3_m240_receipt_choice = 3
-			var:zg361_p3_m240_debt_due_cycle = { value = var:zg361_p3_m240_debt_cycle add = 1 }
+			var:zg361_p3_m240_debt_due_cycle = var:zg361_p3_m240_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m240_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m240_debt_consumer_status value = 5 }
@@ -13217,7 +13313,8 @@ zg361_p3_m240_route_c_effect = {
 			set_variable = { name = zg361_p3_m240_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m240_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m240_debt_mechanism value = 240 }
-			set_variable = { name = zg361_p3_m240_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m240_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m240_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m240_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m240_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m240_debt_business_object_created value = 0 }
@@ -13435,6 +13532,12 @@ zg361_p3_m240_route_c_effect = {
 # #238 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m238_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m238_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m238_debt_cycle }
+		set_variable = { name = zg361_p3_m238_debt_expected_due_cycle value = var:zg361_p3_m238_debt_cycle }
+		change_variable = { name = zg361_p3_m238_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m238_debt_owner
@@ -13453,6 +13556,7 @@ zg361_p3_m238_consume_due_debt_effect = {
 			has_variable = zg361_p3_m238_receipt_case
 			has_variable = zg361_p3_m238_receipt_state
 			has_variable = zg361_p3_m238_receipt_choice
+			has_variable = zg361_p3_m238_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -13474,7 +13578,7 @@ zg361_p3_m238_consume_due_debt_effect = {
 		var:zg361_p3_m238_debt_case = var:zg361_p3_m238_receipt_case
 		var:zg361_p3_m238_debt_state = var:zg361_p3_m238_receipt_state
 			var:zg361_p3_m238_receipt_choice = 3
-			var:zg361_p3_m238_debt_due_cycle = { value = var:zg361_p3_m238_debt_cycle add = 1 }
+			var:zg361_p3_m238_debt_due_cycle = var:zg361_p3_m238_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m238_debt_due_cycle
 		}
 		var:zg361_p3_m238_debt_owner = {
@@ -13532,6 +13636,7 @@ zg361_p3_m238_consume_due_debt_effect = {
 			has_variable = zg361_p3_m238_receipt_case
 			has_variable = zg361_p3_m238_receipt_state
 			has_variable = zg361_p3_m238_receipt_choice
+			has_variable = zg361_p3_m238_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -13550,7 +13655,7 @@ zg361_p3_m238_consume_due_debt_effect = {
 		var:zg361_p3_m238_debt_case = var:zg361_p3_m238_receipt_case
 		var:zg361_p3_m238_debt_state = var:zg361_p3_m238_receipt_state
 			var:zg361_p3_m238_receipt_choice = 3
-			var:zg361_p3_m238_debt_due_cycle = { value = var:zg361_p3_m238_debt_cycle add = 1 }
+			var:zg361_p3_m238_debt_due_cycle = var:zg361_p3_m238_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m238_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m238_debt_consumer_status value = 5 }
@@ -14341,7 +14446,8 @@ zg361_p3_m238_route_c_effect = {
 			set_variable = { name = zg361_p3_m238_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m238_debt_state value = 5 }
 			set_variable = { name = zg361_p3_m238_debt_mechanism value = 238 }
-			set_variable = { name = zg361_p3_m238_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m238_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m238_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m238_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m238_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m238_debt_business_object_created value = 0 }
@@ -14505,6 +14611,12 @@ zg361_p3_m238_route_c_effect = {
 # #239 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m239_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m239_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m239_debt_cycle }
+		set_variable = { name = zg361_p3_m239_debt_expected_due_cycle value = var:zg361_p3_m239_debt_cycle }
+		change_variable = { name = zg361_p3_m239_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m239_debt_owner
@@ -14523,6 +14635,7 @@ zg361_p3_m239_consume_due_debt_effect = {
 			has_variable = zg361_p3_m239_receipt_case
 			has_variable = zg361_p3_m239_receipt_state
 			has_variable = zg361_p3_m239_receipt_choice
+			has_variable = zg361_p3_m239_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -14544,7 +14657,7 @@ zg361_p3_m239_consume_due_debt_effect = {
 		var:zg361_p3_m239_debt_case = var:zg361_p3_m239_receipt_case
 		var:zg361_p3_m239_debt_state = var:zg361_p3_m239_receipt_state
 			var:zg361_p3_m239_receipt_choice = 3
-			var:zg361_p3_m239_debt_due_cycle = { value = var:zg361_p3_m239_debt_cycle add = 1 }
+			var:zg361_p3_m239_debt_due_cycle = var:zg361_p3_m239_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m239_debt_due_cycle
 		}
 		var:zg361_p3_m239_debt_owner = {
@@ -14602,6 +14715,7 @@ zg361_p3_m239_consume_due_debt_effect = {
 			has_variable = zg361_p3_m239_receipt_case
 			has_variable = zg361_p3_m239_receipt_state
 			has_variable = zg361_p3_m239_receipt_choice
+			has_variable = zg361_p3_m239_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -14620,7 +14734,7 @@ zg361_p3_m239_consume_due_debt_effect = {
 		var:zg361_p3_m239_debt_case = var:zg361_p3_m239_receipt_case
 		var:zg361_p3_m239_debt_state = var:zg361_p3_m239_receipt_state
 			var:zg361_p3_m239_receipt_choice = 3
-			var:zg361_p3_m239_debt_due_cycle = { value = var:zg361_p3_m239_debt_cycle add = 1 }
+			var:zg361_p3_m239_debt_due_cycle = var:zg361_p3_m239_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m239_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m239_debt_consumer_status value = 5 }
@@ -15599,7 +15713,8 @@ zg361_p3_m239_route_c_effect = {
 			set_variable = { name = zg361_p3_m239_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m239_debt_state value = 5 }
 			set_variable = { name = zg361_p3_m239_debt_mechanism value = 239 }
-			set_variable = { name = zg361_p3_m239_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m239_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m239_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m239_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m239_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m239_debt_business_object_created value = 0 }
@@ -15861,6 +15976,12 @@ zg361_p3_m239_route_c_effect = {
 # #241 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m241_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m241_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m241_debt_cycle }
+		set_variable = { name = zg361_p3_m241_debt_expected_due_cycle value = var:zg361_p3_m241_debt_cycle }
+		change_variable = { name = zg361_p3_m241_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m241_debt_owner
@@ -15879,6 +16000,7 @@ zg361_p3_m241_consume_due_debt_effect = {
 			has_variable = zg361_p3_m241_receipt_case
 			has_variable = zg361_p3_m241_receipt_state
 			has_variable = zg361_p3_m241_receipt_choice
+			has_variable = zg361_p3_m241_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -15900,7 +16022,7 @@ zg361_p3_m241_consume_due_debt_effect = {
 		var:zg361_p3_m241_debt_case = var:zg361_p3_m241_receipt_case
 		var:zg361_p3_m241_debt_state = var:zg361_p3_m241_receipt_state
 			var:zg361_p3_m241_receipt_choice = 3
-			var:zg361_p3_m241_debt_due_cycle = { value = var:zg361_p3_m241_debt_cycle add = 1 }
+			var:zg361_p3_m241_debt_due_cycle = var:zg361_p3_m241_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m241_debt_due_cycle
 		}
 		var:zg361_p3_m241_debt_owner = {
@@ -15958,6 +16080,7 @@ zg361_p3_m241_consume_due_debt_effect = {
 			has_variable = zg361_p3_m241_receipt_case
 			has_variable = zg361_p3_m241_receipt_state
 			has_variable = zg361_p3_m241_receipt_choice
+			has_variable = zg361_p3_m241_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -15976,7 +16099,7 @@ zg361_p3_m241_consume_due_debt_effect = {
 		var:zg361_p3_m241_debt_case = var:zg361_p3_m241_receipt_case
 		var:zg361_p3_m241_debt_state = var:zg361_p3_m241_receipt_state
 			var:zg361_p3_m241_receipt_choice = 3
-			var:zg361_p3_m241_debt_due_cycle = { value = var:zg361_p3_m241_debt_cycle add = 1 }
+			var:zg361_p3_m241_debt_due_cycle = var:zg361_p3_m241_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m241_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m241_debt_consumer_status value = 5 }
@@ -16911,7 +17034,8 @@ zg361_p3_m241_route_c_effect = {
 			set_variable = { name = zg361_p3_m241_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m241_debt_state value = 6 }
 			set_variable = { name = zg361_p3_m241_debt_mechanism value = 241 }
-			set_variable = { name = zg361_p3_m241_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m241_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m241_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m241_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m241_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m241_debt_business_object_created value = 0 }
@@ -17141,6 +17265,12 @@ zg361_p3_m241_route_c_effect = {
 # #301 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m301_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m301_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m301_debt_cycle }
+		set_variable = { name = zg361_p3_m301_debt_expected_due_cycle value = var:zg361_p3_m301_debt_cycle }
+		change_variable = { name = zg361_p3_m301_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m301_debt_owner
@@ -17159,6 +17289,7 @@ zg361_p3_m301_consume_due_debt_effect = {
 			has_variable = zg361_p3_m301_receipt_case
 			has_variable = zg361_p3_m301_receipt_state
 			has_variable = zg361_p3_m301_receipt_choice
+			has_variable = zg361_p3_m301_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -17180,7 +17311,7 @@ zg361_p3_m301_consume_due_debt_effect = {
 		var:zg361_p3_m301_debt_case = var:zg361_p3_m301_receipt_case
 		var:zg361_p3_m301_debt_state = var:zg361_p3_m301_receipt_state
 			var:zg361_p3_m301_receipt_choice = 3
-			var:zg361_p3_m301_debt_due_cycle = { value = var:zg361_p3_m301_debt_cycle add = 1 }
+			var:zg361_p3_m301_debt_due_cycle = var:zg361_p3_m301_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m301_debt_due_cycle
 		}
 		var:zg361_p3_m301_debt_owner = {
@@ -17238,6 +17369,7 @@ zg361_p3_m301_consume_due_debt_effect = {
 			has_variable = zg361_p3_m301_receipt_case
 			has_variable = zg361_p3_m301_receipt_state
 			has_variable = zg361_p3_m301_receipt_choice
+			has_variable = zg361_p3_m301_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -17256,7 +17388,7 @@ zg361_p3_m301_consume_due_debt_effect = {
 		var:zg361_p3_m301_debt_case = var:zg361_p3_m301_receipt_case
 		var:zg361_p3_m301_debt_state = var:zg361_p3_m301_receipt_state
 			var:zg361_p3_m301_receipt_choice = 3
-			var:zg361_p3_m301_debt_due_cycle = { value = var:zg361_p3_m301_debt_cycle add = 1 }
+			var:zg361_p3_m301_debt_due_cycle = var:zg361_p3_m301_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m301_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m301_debt_consumer_status value = 5 }
@@ -18017,7 +18149,8 @@ zg361_p3_m301_route_c_effect = {
 			set_variable = { name = zg361_p3_m301_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m301_debt_state value = 1 }
 			set_variable = { name = zg361_p3_m301_debt_mechanism value = 301 }
-			set_variable = { name = zg361_p3_m301_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m301_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m301_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m301_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m301_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m301_debt_business_object_created value = 0 }
@@ -18181,6 +18314,12 @@ zg361_p3_m301_route_c_effect = {
 # #302 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m302_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m302_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m302_debt_cycle }
+		set_variable = { name = zg361_p3_m302_debt_expected_due_cycle value = var:zg361_p3_m302_debt_cycle }
+		change_variable = { name = zg361_p3_m302_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m302_debt_owner
@@ -18199,6 +18338,7 @@ zg361_p3_m302_consume_due_debt_effect = {
 			has_variable = zg361_p3_m302_receipt_case
 			has_variable = zg361_p3_m302_receipt_state
 			has_variable = zg361_p3_m302_receipt_choice
+			has_variable = zg361_p3_m302_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -18220,7 +18360,7 @@ zg361_p3_m302_consume_due_debt_effect = {
 		var:zg361_p3_m302_debt_case = var:zg361_p3_m302_receipt_case
 		var:zg361_p3_m302_debt_state = var:zg361_p3_m302_receipt_state
 			var:zg361_p3_m302_receipt_choice = 3
-			var:zg361_p3_m302_debt_due_cycle = { value = var:zg361_p3_m302_debt_cycle add = 1 }
+			var:zg361_p3_m302_debt_due_cycle = var:zg361_p3_m302_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m302_debt_due_cycle
 		}
 		var:zg361_p3_m302_debt_owner = {
@@ -18278,6 +18418,7 @@ zg361_p3_m302_consume_due_debt_effect = {
 			has_variable = zg361_p3_m302_receipt_case
 			has_variable = zg361_p3_m302_receipt_state
 			has_variable = zg361_p3_m302_receipt_choice
+			has_variable = zg361_p3_m302_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -18296,7 +18437,7 @@ zg361_p3_m302_consume_due_debt_effect = {
 		var:zg361_p3_m302_debt_case = var:zg361_p3_m302_receipt_case
 		var:zg361_p3_m302_debt_state = var:zg361_p3_m302_receipt_state
 			var:zg361_p3_m302_receipt_choice = 3
-			var:zg361_p3_m302_debt_due_cycle = { value = var:zg361_p3_m302_debt_cycle add = 1 }
+			var:zg361_p3_m302_debt_due_cycle = var:zg361_p3_m302_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m302_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m302_debt_consumer_status value = 5 }
@@ -19283,7 +19424,8 @@ zg361_p3_m302_route_c_effect = {
 			set_variable = { name = zg361_p3_m302_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m302_debt_state value = 1 }
 			set_variable = { name = zg361_p3_m302_debt_mechanism value = 302 }
-			set_variable = { name = zg361_p3_m302_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m302_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m302_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m302_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m302_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m302_debt_business_object_created value = 0 }
@@ -19545,6 +19687,12 @@ zg361_p3_m302_route_c_effect = {
 # #303 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m303_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m303_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m303_debt_cycle }
+		set_variable = { name = zg361_p3_m303_debt_expected_due_cycle value = var:zg361_p3_m303_debt_cycle }
+		change_variable = { name = zg361_p3_m303_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m303_debt_owner
@@ -19563,6 +19711,7 @@ zg361_p3_m303_consume_due_debt_effect = {
 			has_variable = zg361_p3_m303_receipt_case
 			has_variable = zg361_p3_m303_receipt_state
 			has_variable = zg361_p3_m303_receipt_choice
+			has_variable = zg361_p3_m303_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -19584,7 +19733,7 @@ zg361_p3_m303_consume_due_debt_effect = {
 		var:zg361_p3_m303_debt_case = var:zg361_p3_m303_receipt_case
 		var:zg361_p3_m303_debt_state = var:zg361_p3_m303_receipt_state
 			var:zg361_p3_m303_receipt_choice = 3
-			var:zg361_p3_m303_debt_due_cycle = { value = var:zg361_p3_m303_debt_cycle add = 1 }
+			var:zg361_p3_m303_debt_due_cycle = var:zg361_p3_m303_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m303_debt_due_cycle
 		}
 		var:zg361_p3_m303_debt_owner = {
@@ -19642,6 +19791,7 @@ zg361_p3_m303_consume_due_debt_effect = {
 			has_variable = zg361_p3_m303_receipt_case
 			has_variable = zg361_p3_m303_receipt_state
 			has_variable = zg361_p3_m303_receipt_choice
+			has_variable = zg361_p3_m303_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -19660,7 +19810,7 @@ zg361_p3_m303_consume_due_debt_effect = {
 		var:zg361_p3_m303_debt_case = var:zg361_p3_m303_receipt_case
 		var:zg361_p3_m303_debt_state = var:zg361_p3_m303_receipt_state
 			var:zg361_p3_m303_receipt_choice = 3
-			var:zg361_p3_m303_debt_due_cycle = { value = var:zg361_p3_m303_debt_cycle add = 1 }
+			var:zg361_p3_m303_debt_due_cycle = var:zg361_p3_m303_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m303_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m303_debt_consumer_status value = 5 }
@@ -20449,7 +20599,8 @@ zg361_p3_m303_route_c_effect = {
 			set_variable = { name = zg361_p3_m303_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m303_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m303_debt_mechanism value = 303 }
-			set_variable = { name = zg361_p3_m303_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m303_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m303_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m303_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m303_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m303_debt_business_object_created value = 0 }
@@ -20613,6 +20764,12 @@ zg361_p3_m303_route_c_effect = {
 # #304 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m304_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m304_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m304_debt_cycle }
+		set_variable = { name = zg361_p3_m304_debt_expected_due_cycle value = var:zg361_p3_m304_debt_cycle }
+		change_variable = { name = zg361_p3_m304_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m304_debt_owner
@@ -20631,6 +20788,7 @@ zg361_p3_m304_consume_due_debt_effect = {
 			has_variable = zg361_p3_m304_receipt_case
 			has_variable = zg361_p3_m304_receipt_state
 			has_variable = zg361_p3_m304_receipt_choice
+			has_variable = zg361_p3_m304_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -20652,7 +20810,7 @@ zg361_p3_m304_consume_due_debt_effect = {
 		var:zg361_p3_m304_debt_case = var:zg361_p3_m304_receipt_case
 		var:zg361_p3_m304_debt_state = var:zg361_p3_m304_receipt_state
 			var:zg361_p3_m304_receipt_choice = 3
-			var:zg361_p3_m304_debt_due_cycle = { value = var:zg361_p3_m304_debt_cycle add = 1 }
+			var:zg361_p3_m304_debt_due_cycle = var:zg361_p3_m304_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m304_debt_due_cycle
 		}
 		var:zg361_p3_m304_debt_owner = {
@@ -20710,6 +20868,7 @@ zg361_p3_m304_consume_due_debt_effect = {
 			has_variable = zg361_p3_m304_receipt_case
 			has_variable = zg361_p3_m304_receipt_state
 			has_variable = zg361_p3_m304_receipt_choice
+			has_variable = zg361_p3_m304_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -20728,7 +20887,7 @@ zg361_p3_m304_consume_due_debt_effect = {
 		var:zg361_p3_m304_debt_case = var:zg361_p3_m304_receipt_case
 		var:zg361_p3_m304_debt_state = var:zg361_p3_m304_receipt_state
 			var:zg361_p3_m304_receipt_choice = 3
-			var:zg361_p3_m304_debt_due_cycle = { value = var:zg361_p3_m304_debt_cycle add = 1 }
+			var:zg361_p3_m304_debt_due_cycle = var:zg361_p3_m304_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m304_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m304_debt_consumer_status value = 5 }
@@ -21729,7 +21888,8 @@ zg361_p3_m304_route_c_effect = {
 			set_variable = { name = zg361_p3_m304_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m304_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m304_debt_mechanism value = 304 }
-			set_variable = { name = zg361_p3_m304_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m304_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m304_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m304_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m304_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m304_debt_business_object_created value = 0 }
@@ -21991,6 +22151,12 @@ zg361_p3_m304_route_c_effect = {
 # #305 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m305_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m305_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m305_debt_cycle }
+		set_variable = { name = zg361_p3_m305_debt_expected_due_cycle value = var:zg361_p3_m305_debt_cycle }
+		change_variable = { name = zg361_p3_m305_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m305_debt_owner
@@ -22009,6 +22175,7 @@ zg361_p3_m305_consume_due_debt_effect = {
 			has_variable = zg361_p3_m305_receipt_case
 			has_variable = zg361_p3_m305_receipt_state
 			has_variable = zg361_p3_m305_receipt_choice
+			has_variable = zg361_p3_m305_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -22030,7 +22197,7 @@ zg361_p3_m305_consume_due_debt_effect = {
 		var:zg361_p3_m305_debt_case = var:zg361_p3_m305_receipt_case
 		var:zg361_p3_m305_debt_state = var:zg361_p3_m305_receipt_state
 			var:zg361_p3_m305_receipt_choice = 3
-			var:zg361_p3_m305_debt_due_cycle = { value = var:zg361_p3_m305_debt_cycle add = 1 }
+			var:zg361_p3_m305_debt_due_cycle = var:zg361_p3_m305_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m305_debt_due_cycle
 		}
 		var:zg361_p3_m305_debt_owner = {
@@ -22088,6 +22255,7 @@ zg361_p3_m305_consume_due_debt_effect = {
 			has_variable = zg361_p3_m305_receipt_case
 			has_variable = zg361_p3_m305_receipt_state
 			has_variable = zg361_p3_m305_receipt_choice
+			has_variable = zg361_p3_m305_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -22106,7 +22274,7 @@ zg361_p3_m305_consume_due_debt_effect = {
 		var:zg361_p3_m305_debt_case = var:zg361_p3_m305_receipt_case
 		var:zg361_p3_m305_debt_state = var:zg361_p3_m305_receipt_state
 			var:zg361_p3_m305_receipt_choice = 3
-			var:zg361_p3_m305_debt_due_cycle = { value = var:zg361_p3_m305_debt_cycle add = 1 }
+			var:zg361_p3_m305_debt_due_cycle = var:zg361_p3_m305_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m305_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m305_debt_consumer_status value = 5 }
@@ -22897,7 +23065,8 @@ zg361_p3_m305_route_c_effect = {
 			set_variable = { name = zg361_p3_m305_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m305_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m305_debt_mechanism value = 305 }
-			set_variable = { name = zg361_p3_m305_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m305_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m305_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m305_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m305_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m305_debt_business_object_created value = 0 }
@@ -23061,6 +23230,12 @@ zg361_p3_m305_route_c_effect = {
 # #306 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m306_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m306_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m306_debt_cycle }
+		set_variable = { name = zg361_p3_m306_debt_expected_due_cycle value = var:zg361_p3_m306_debt_cycle }
+		change_variable = { name = zg361_p3_m306_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m306_debt_owner
@@ -23079,6 +23254,7 @@ zg361_p3_m306_consume_due_debt_effect = {
 			has_variable = zg361_p3_m306_receipt_case
 			has_variable = zg361_p3_m306_receipt_state
 			has_variable = zg361_p3_m306_receipt_choice
+			has_variable = zg361_p3_m306_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -23100,7 +23276,7 @@ zg361_p3_m306_consume_due_debt_effect = {
 		var:zg361_p3_m306_debt_case = var:zg361_p3_m306_receipt_case
 		var:zg361_p3_m306_debt_state = var:zg361_p3_m306_receipt_state
 			var:zg361_p3_m306_receipt_choice = 3
-			var:zg361_p3_m306_debt_due_cycle = { value = var:zg361_p3_m306_debt_cycle add = 1 }
+			var:zg361_p3_m306_debt_due_cycle = var:zg361_p3_m306_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m306_debt_due_cycle
 		}
 		var:zg361_p3_m306_debt_owner = {
@@ -23158,6 +23334,7 @@ zg361_p3_m306_consume_due_debt_effect = {
 			has_variable = zg361_p3_m306_receipt_case
 			has_variable = zg361_p3_m306_receipt_state
 			has_variable = zg361_p3_m306_receipt_choice
+			has_variable = zg361_p3_m306_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -23176,7 +23353,7 @@ zg361_p3_m306_consume_due_debt_effect = {
 		var:zg361_p3_m306_debt_case = var:zg361_p3_m306_receipt_case
 		var:zg361_p3_m306_debt_state = var:zg361_p3_m306_receipt_state
 			var:zg361_p3_m306_receipt_choice = 3
-			var:zg361_p3_m306_debt_due_cycle = { value = var:zg361_p3_m306_debt_cycle add = 1 }
+			var:zg361_p3_m306_debt_due_cycle = var:zg361_p3_m306_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m306_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m306_debt_consumer_status value = 5 }
@@ -24165,7 +24342,8 @@ zg361_p3_m306_route_c_effect = {
 			set_variable = { name = zg361_p3_m306_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m306_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m306_debt_mechanism value = 306 }
-			set_variable = { name = zg361_p3_m306_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m306_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m306_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m306_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m306_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m306_debt_business_object_created value = 0 }
@@ -24427,6 +24605,12 @@ zg361_p3_m306_route_c_effect = {
 # #307 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m307_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m307_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m307_debt_cycle }
+		set_variable = { name = zg361_p3_m307_debt_expected_due_cycle value = var:zg361_p3_m307_debt_cycle }
+		change_variable = { name = zg361_p3_m307_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m307_debt_owner
@@ -24445,6 +24629,7 @@ zg361_p3_m307_consume_due_debt_effect = {
 			has_variable = zg361_p3_m307_receipt_case
 			has_variable = zg361_p3_m307_receipt_state
 			has_variable = zg361_p3_m307_receipt_choice
+			has_variable = zg361_p3_m307_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -24466,7 +24651,7 @@ zg361_p3_m307_consume_due_debt_effect = {
 		var:zg361_p3_m307_debt_case = var:zg361_p3_m307_receipt_case
 		var:zg361_p3_m307_debt_state = var:zg361_p3_m307_receipt_state
 			var:zg361_p3_m307_receipt_choice = 3
-			var:zg361_p3_m307_debt_due_cycle = { value = var:zg361_p3_m307_debt_cycle add = 1 }
+			var:zg361_p3_m307_debt_due_cycle = var:zg361_p3_m307_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m307_debt_due_cycle
 		}
 		var:zg361_p3_m307_debt_owner = {
@@ -24524,6 +24709,7 @@ zg361_p3_m307_consume_due_debt_effect = {
 			has_variable = zg361_p3_m307_receipt_case
 			has_variable = zg361_p3_m307_receipt_state
 			has_variable = zg361_p3_m307_receipt_choice
+			has_variable = zg361_p3_m307_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -24542,7 +24728,7 @@ zg361_p3_m307_consume_due_debt_effect = {
 		var:zg361_p3_m307_debt_case = var:zg361_p3_m307_receipt_case
 		var:zg361_p3_m307_debt_state = var:zg361_p3_m307_receipt_state
 			var:zg361_p3_m307_receipt_choice = 3
-			var:zg361_p3_m307_debt_due_cycle = { value = var:zg361_p3_m307_debt_cycle add = 1 }
+			var:zg361_p3_m307_debt_due_cycle = var:zg361_p3_m307_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m307_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m307_debt_consumer_status value = 5 }
@@ -25335,7 +25521,8 @@ zg361_p3_m307_route_c_effect = {
 			set_variable = { name = zg361_p3_m307_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m307_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m307_debt_mechanism value = 307 }
-			set_variable = { name = zg361_p3_m307_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m307_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m307_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m307_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m307_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m307_debt_business_object_created value = 0 }
@@ -25499,6 +25686,12 @@ zg361_p3_m307_route_c_effect = {
 # #308 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m308_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m308_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m308_debt_cycle }
+		set_variable = { name = zg361_p3_m308_debt_expected_due_cycle value = var:zg361_p3_m308_debt_cycle }
+		change_variable = { name = zg361_p3_m308_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m308_debt_owner
@@ -25517,6 +25710,7 @@ zg361_p3_m308_consume_due_debt_effect = {
 			has_variable = zg361_p3_m308_receipt_case
 			has_variable = zg361_p3_m308_receipt_state
 			has_variable = zg361_p3_m308_receipt_choice
+			has_variable = zg361_p3_m308_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -25538,7 +25732,7 @@ zg361_p3_m308_consume_due_debt_effect = {
 		var:zg361_p3_m308_debt_case = var:zg361_p3_m308_receipt_case
 		var:zg361_p3_m308_debt_state = var:zg361_p3_m308_receipt_state
 			var:zg361_p3_m308_receipt_choice = 3
-			var:zg361_p3_m308_debt_due_cycle = { value = var:zg361_p3_m308_debt_cycle add = 1 }
+			var:zg361_p3_m308_debt_due_cycle = var:zg361_p3_m308_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m308_debt_due_cycle
 		}
 		var:zg361_p3_m308_debt_owner = {
@@ -25596,6 +25790,7 @@ zg361_p3_m308_consume_due_debt_effect = {
 			has_variable = zg361_p3_m308_receipt_case
 			has_variable = zg361_p3_m308_receipt_state
 			has_variable = zg361_p3_m308_receipt_choice
+			has_variable = zg361_p3_m308_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -25614,7 +25809,7 @@ zg361_p3_m308_consume_due_debt_effect = {
 		var:zg361_p3_m308_debt_case = var:zg361_p3_m308_receipt_case
 		var:zg361_p3_m308_debt_state = var:zg361_p3_m308_receipt_state
 			var:zg361_p3_m308_receipt_choice = 3
-			var:zg361_p3_m308_debt_due_cycle = { value = var:zg361_p3_m308_debt_cycle add = 1 }
+			var:zg361_p3_m308_debt_due_cycle = var:zg361_p3_m308_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m308_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m308_debt_consumer_status value = 5 }
@@ -26409,7 +26604,8 @@ zg361_p3_m308_route_c_effect = {
 			set_variable = { name = zg361_p3_m308_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m308_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m308_debt_mechanism value = 308 }
-			set_variable = { name = zg361_p3_m308_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m308_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m308_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m308_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m308_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m308_debt_business_object_created value = 0 }
@@ -26573,6 +26769,12 @@ zg361_p3_m308_route_c_effect = {
 # #309 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m309_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m309_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m309_debt_cycle }
+		set_variable = { name = zg361_p3_m309_debt_expected_due_cycle value = var:zg361_p3_m309_debt_cycle }
+		change_variable = { name = zg361_p3_m309_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m309_debt_owner
@@ -26591,6 +26793,7 @@ zg361_p3_m309_consume_due_debt_effect = {
 			has_variable = zg361_p3_m309_receipt_case
 			has_variable = zg361_p3_m309_receipt_state
 			has_variable = zg361_p3_m309_receipt_choice
+			has_variable = zg361_p3_m309_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -26612,7 +26815,7 @@ zg361_p3_m309_consume_due_debt_effect = {
 		var:zg361_p3_m309_debt_case = var:zg361_p3_m309_receipt_case
 		var:zg361_p3_m309_debt_state = var:zg361_p3_m309_receipt_state
 			var:zg361_p3_m309_receipt_choice = 3
-			var:zg361_p3_m309_debt_due_cycle = { value = var:zg361_p3_m309_debt_cycle add = 1 }
+			var:zg361_p3_m309_debt_due_cycle = var:zg361_p3_m309_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m309_debt_due_cycle
 		}
 		var:zg361_p3_m309_debt_owner = {
@@ -26670,6 +26873,7 @@ zg361_p3_m309_consume_due_debt_effect = {
 			has_variable = zg361_p3_m309_receipt_case
 			has_variable = zg361_p3_m309_receipt_state
 			has_variable = zg361_p3_m309_receipt_choice
+			has_variable = zg361_p3_m309_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -26688,7 +26892,7 @@ zg361_p3_m309_consume_due_debt_effect = {
 		var:zg361_p3_m309_debt_case = var:zg361_p3_m309_receipt_case
 		var:zg361_p3_m309_debt_state = var:zg361_p3_m309_receipt_state
 			var:zg361_p3_m309_receipt_choice = 3
-			var:zg361_p3_m309_debt_due_cycle = { value = var:zg361_p3_m309_debt_cycle add = 1 }
+			var:zg361_p3_m309_debt_due_cycle = var:zg361_p3_m309_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m309_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m309_debt_consumer_status value = 5 }
@@ -27487,7 +27691,8 @@ zg361_p3_m309_route_c_effect = {
 			set_variable = { name = zg361_p3_m309_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m309_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m309_debt_mechanism value = 309 }
-			set_variable = { name = zg361_p3_m309_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m309_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m309_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m309_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m309_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m309_debt_business_object_created value = 0 }
@@ -27651,6 +27856,12 @@ zg361_p3_m309_route_c_effect = {
 # #310 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m310_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m310_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m310_debt_cycle }
+		set_variable = { name = zg361_p3_m310_debt_expected_due_cycle value = var:zg361_p3_m310_debt_cycle }
+		change_variable = { name = zg361_p3_m310_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m310_debt_owner
@@ -27669,6 +27880,7 @@ zg361_p3_m310_consume_due_debt_effect = {
 			has_variable = zg361_p3_m310_receipt_case
 			has_variable = zg361_p3_m310_receipt_state
 			has_variable = zg361_p3_m310_receipt_choice
+			has_variable = zg361_p3_m310_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -27690,7 +27902,7 @@ zg361_p3_m310_consume_due_debt_effect = {
 		var:zg361_p3_m310_debt_case = var:zg361_p3_m310_receipt_case
 		var:zg361_p3_m310_debt_state = var:zg361_p3_m310_receipt_state
 			var:zg361_p3_m310_receipt_choice = 3
-			var:zg361_p3_m310_debt_due_cycle = { value = var:zg361_p3_m310_debt_cycle add = 1 }
+			var:zg361_p3_m310_debt_due_cycle = var:zg361_p3_m310_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m310_debt_due_cycle
 		}
 		var:zg361_p3_m310_debt_owner = {
@@ -27748,6 +27960,7 @@ zg361_p3_m310_consume_due_debt_effect = {
 			has_variable = zg361_p3_m310_receipt_case
 			has_variable = zg361_p3_m310_receipt_state
 			has_variable = zg361_p3_m310_receipt_choice
+			has_variable = zg361_p3_m310_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -27766,7 +27979,7 @@ zg361_p3_m310_consume_due_debt_effect = {
 		var:zg361_p3_m310_debt_case = var:zg361_p3_m310_receipt_case
 		var:zg361_p3_m310_debt_state = var:zg361_p3_m310_receipt_state
 			var:zg361_p3_m310_receipt_choice = 3
-			var:zg361_p3_m310_debt_due_cycle = { value = var:zg361_p3_m310_debt_cycle add = 1 }
+			var:zg361_p3_m310_debt_due_cycle = var:zg361_p3_m310_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m310_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m310_debt_consumer_status value = 5 }
@@ -28949,7 +29162,8 @@ zg361_p3_m310_route_c_effect = {
 			set_variable = { name = zg361_p3_m310_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m310_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m310_debt_mechanism value = 310 }
-			set_variable = { name = zg361_p3_m310_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m310_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m310_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m310_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m310_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m310_debt_business_object_created value = 0 }
@@ -29299,6 +29513,12 @@ zg361_p3_m310_route_c_effect = {
 # #311 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m311_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m311_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m311_debt_cycle }
+		set_variable = { name = zg361_p3_m311_debt_expected_due_cycle value = var:zg361_p3_m311_debt_cycle }
+		change_variable = { name = zg361_p3_m311_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m311_debt_owner
@@ -29317,6 +29537,7 @@ zg361_p3_m311_consume_due_debt_effect = {
 			has_variable = zg361_p3_m311_receipt_case
 			has_variable = zg361_p3_m311_receipt_state
 			has_variable = zg361_p3_m311_receipt_choice
+			has_variable = zg361_p3_m311_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -29338,7 +29559,7 @@ zg361_p3_m311_consume_due_debt_effect = {
 		var:zg361_p3_m311_debt_case = var:zg361_p3_m311_receipt_case
 		var:zg361_p3_m311_debt_state = var:zg361_p3_m311_receipt_state
 			var:zg361_p3_m311_receipt_choice = 3
-			var:zg361_p3_m311_debt_due_cycle = { value = var:zg361_p3_m311_debt_cycle add = 1 }
+			var:zg361_p3_m311_debt_due_cycle = var:zg361_p3_m311_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m311_debt_due_cycle
 		}
 		var:zg361_p3_m311_debt_owner = {
@@ -29396,6 +29617,7 @@ zg361_p3_m311_consume_due_debt_effect = {
 			has_variable = zg361_p3_m311_receipt_case
 			has_variable = zg361_p3_m311_receipt_state
 			has_variable = zg361_p3_m311_receipt_choice
+			has_variable = zg361_p3_m311_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -29414,7 +29636,7 @@ zg361_p3_m311_consume_due_debt_effect = {
 		var:zg361_p3_m311_debt_case = var:zg361_p3_m311_receipt_case
 		var:zg361_p3_m311_debt_state = var:zg361_p3_m311_receipt_state
 			var:zg361_p3_m311_receipt_choice = 3
-			var:zg361_p3_m311_debt_due_cycle = { value = var:zg361_p3_m311_debt_cycle add = 1 }
+			var:zg361_p3_m311_debt_due_cycle = var:zg361_p3_m311_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m311_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m311_debt_consumer_status value = 5 }
@@ -30347,7 +30569,8 @@ zg361_p3_m311_route_c_effect = {
 			set_variable = { name = zg361_p3_m311_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m311_debt_state value = 5 }
 			set_variable = { name = zg361_p3_m311_debt_mechanism value = 311 }
-			set_variable = { name = zg361_p3_m311_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m311_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m311_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m311_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m311_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m311_debt_business_object_created value = 0 }
@@ -30577,6 +30800,12 @@ zg361_p3_m311_route_c_effect = {
 # #334 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m334_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m334_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m334_debt_cycle }
+		set_variable = { name = zg361_p3_m334_debt_expected_due_cycle value = var:zg361_p3_m334_debt_cycle }
+		change_variable = { name = zg361_p3_m334_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m334_debt_owner
@@ -30595,6 +30824,7 @@ zg361_p3_m334_consume_due_debt_effect = {
 			has_variable = zg361_p3_m334_receipt_case
 			has_variable = zg361_p3_m334_receipt_state
 			has_variable = zg361_p3_m334_receipt_choice
+			has_variable = zg361_p3_m334_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -30616,7 +30846,7 @@ zg361_p3_m334_consume_due_debt_effect = {
 		var:zg361_p3_m334_debt_case = var:zg361_p3_m334_receipt_case
 		var:zg361_p3_m334_debt_state = var:zg361_p3_m334_receipt_state
 			var:zg361_p3_m334_receipt_choice = 3
-			var:zg361_p3_m334_debt_due_cycle = { value = var:zg361_p3_m334_debt_cycle add = 1 }
+			var:zg361_p3_m334_debt_due_cycle = var:zg361_p3_m334_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m334_debt_due_cycle
 		}
 		var:zg361_p3_m334_debt_owner = {
@@ -30674,6 +30904,7 @@ zg361_p3_m334_consume_due_debt_effect = {
 			has_variable = zg361_p3_m334_receipt_case
 			has_variable = zg361_p3_m334_receipt_state
 			has_variable = zg361_p3_m334_receipt_choice
+			has_variable = zg361_p3_m334_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -30692,7 +30923,7 @@ zg361_p3_m334_consume_due_debt_effect = {
 		var:zg361_p3_m334_debt_case = var:zg361_p3_m334_receipt_case
 		var:zg361_p3_m334_debt_state = var:zg361_p3_m334_receipt_state
 			var:zg361_p3_m334_receipt_choice = 3
-			var:zg361_p3_m334_debt_due_cycle = { value = var:zg361_p3_m334_debt_cycle add = 1 }
+			var:zg361_p3_m334_debt_due_cycle = var:zg361_p3_m334_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m334_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m334_debt_consumer_status value = 5 }
@@ -31483,7 +31714,8 @@ zg361_p3_m334_route_c_effect = {
 			set_variable = { name = zg361_p3_m334_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m334_debt_state value = 1 }
 			set_variable = { name = zg361_p3_m334_debt_mechanism value = 334 }
-			set_variable = { name = zg361_p3_m334_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m334_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m334_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m334_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m334_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m334_debt_business_object_created value = 0 }
@@ -31647,6 +31879,12 @@ zg361_p3_m334_route_c_effect = {
 # #335 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m335_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m335_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m335_debt_cycle }
+		set_variable = { name = zg361_p3_m335_debt_expected_due_cycle value = var:zg361_p3_m335_debt_cycle }
+		change_variable = { name = zg361_p3_m335_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m335_debt_owner
@@ -31665,6 +31903,7 @@ zg361_p3_m335_consume_due_debt_effect = {
 			has_variable = zg361_p3_m335_receipt_case
 			has_variable = zg361_p3_m335_receipt_state
 			has_variable = zg361_p3_m335_receipt_choice
+			has_variable = zg361_p3_m335_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -31686,7 +31925,7 @@ zg361_p3_m335_consume_due_debt_effect = {
 		var:zg361_p3_m335_debt_case = var:zg361_p3_m335_receipt_case
 		var:zg361_p3_m335_debt_state = var:zg361_p3_m335_receipt_state
 			var:zg361_p3_m335_receipt_choice = 3
-			var:zg361_p3_m335_debt_due_cycle = { value = var:zg361_p3_m335_debt_cycle add = 1 }
+			var:zg361_p3_m335_debt_due_cycle = var:zg361_p3_m335_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m335_debt_due_cycle
 		}
 		var:zg361_p3_m335_debt_owner = {
@@ -31744,6 +31983,7 @@ zg361_p3_m335_consume_due_debt_effect = {
 			has_variable = zg361_p3_m335_receipt_case
 			has_variable = zg361_p3_m335_receipt_state
 			has_variable = zg361_p3_m335_receipt_choice
+			has_variable = zg361_p3_m335_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -31762,7 +32002,7 @@ zg361_p3_m335_consume_due_debt_effect = {
 		var:zg361_p3_m335_debt_case = var:zg361_p3_m335_receipt_case
 		var:zg361_p3_m335_debt_state = var:zg361_p3_m335_receipt_state
 			var:zg361_p3_m335_receipt_choice = 3
-			var:zg361_p3_m335_debt_due_cycle = { value = var:zg361_p3_m335_debt_cycle add = 1 }
+			var:zg361_p3_m335_debt_due_cycle = var:zg361_p3_m335_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m335_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m335_debt_consumer_status value = 5 }
@@ -32759,7 +32999,8 @@ zg361_p3_m335_route_c_effect = {
 			set_variable = { name = zg361_p3_m335_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m335_debt_state value = 1 }
 			set_variable = { name = zg361_p3_m335_debt_mechanism value = 335 }
-			set_variable = { name = zg361_p3_m335_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m335_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m335_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m335_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m335_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m335_debt_business_object_created value = 0 }
@@ -33021,6 +33262,12 @@ zg361_p3_m335_route_c_effect = {
 # #336 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m336_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m336_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m336_debt_cycle }
+		set_variable = { name = zg361_p3_m336_debt_expected_due_cycle value = var:zg361_p3_m336_debt_cycle }
+		change_variable = { name = zg361_p3_m336_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m336_debt_owner
@@ -33039,6 +33286,7 @@ zg361_p3_m336_consume_due_debt_effect = {
 			has_variable = zg361_p3_m336_receipt_case
 			has_variable = zg361_p3_m336_receipt_state
 			has_variable = zg361_p3_m336_receipt_choice
+			has_variable = zg361_p3_m336_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -33060,7 +33308,7 @@ zg361_p3_m336_consume_due_debt_effect = {
 		var:zg361_p3_m336_debt_case = var:zg361_p3_m336_receipt_case
 		var:zg361_p3_m336_debt_state = var:zg361_p3_m336_receipt_state
 			var:zg361_p3_m336_receipt_choice = 3
-			var:zg361_p3_m336_debt_due_cycle = { value = var:zg361_p3_m336_debt_cycle add = 1 }
+			var:zg361_p3_m336_debt_due_cycle = var:zg361_p3_m336_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m336_debt_due_cycle
 		}
 		var:zg361_p3_m336_debt_owner = {
@@ -33118,6 +33366,7 @@ zg361_p3_m336_consume_due_debt_effect = {
 			has_variable = zg361_p3_m336_receipt_case
 			has_variable = zg361_p3_m336_receipt_state
 			has_variable = zg361_p3_m336_receipt_choice
+			has_variable = zg361_p3_m336_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -33136,7 +33385,7 @@ zg361_p3_m336_consume_due_debt_effect = {
 		var:zg361_p3_m336_debt_case = var:zg361_p3_m336_receipt_case
 		var:zg361_p3_m336_debt_state = var:zg361_p3_m336_receipt_state
 			var:zg361_p3_m336_receipt_choice = 3
-			var:zg361_p3_m336_debt_due_cycle = { value = var:zg361_p3_m336_debt_cycle add = 1 }
+			var:zg361_p3_m336_debt_due_cycle = var:zg361_p3_m336_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m336_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m336_debt_consumer_status value = 5 }
@@ -33949,7 +34198,8 @@ zg361_p3_m336_route_c_effect = {
 			set_variable = { name = zg361_p3_m336_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m336_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m336_debt_mechanism value = 336 }
-			set_variable = { name = zg361_p3_m336_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m336_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m336_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m336_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m336_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m336_debt_business_object_created value = 0 }
@@ -34113,6 +34363,12 @@ zg361_p3_m336_route_c_effect = {
 # #338 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m338_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m338_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m338_debt_cycle }
+		set_variable = { name = zg361_p3_m338_debt_expected_due_cycle value = var:zg361_p3_m338_debt_cycle }
+		change_variable = { name = zg361_p3_m338_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m338_debt_owner
@@ -34131,6 +34387,7 @@ zg361_p3_m338_consume_due_debt_effect = {
 			has_variable = zg361_p3_m338_receipt_case
 			has_variable = zg361_p3_m338_receipt_state
 			has_variable = zg361_p3_m338_receipt_choice
+			has_variable = zg361_p3_m338_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -34152,7 +34409,7 @@ zg361_p3_m338_consume_due_debt_effect = {
 		var:zg361_p3_m338_debt_case = var:zg361_p3_m338_receipt_case
 		var:zg361_p3_m338_debt_state = var:zg361_p3_m338_receipt_state
 			var:zg361_p3_m338_receipt_choice = 3
-			var:zg361_p3_m338_debt_due_cycle = { value = var:zg361_p3_m338_debt_cycle add = 1 }
+			var:zg361_p3_m338_debt_due_cycle = var:zg361_p3_m338_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m338_debt_due_cycle
 		}
 		var:zg361_p3_m338_debt_owner = {
@@ -34210,6 +34467,7 @@ zg361_p3_m338_consume_due_debt_effect = {
 			has_variable = zg361_p3_m338_receipt_case
 			has_variable = zg361_p3_m338_receipt_state
 			has_variable = zg361_p3_m338_receipt_choice
+			has_variable = zg361_p3_m338_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -34228,7 +34486,7 @@ zg361_p3_m338_consume_due_debt_effect = {
 		var:zg361_p3_m338_debt_case = var:zg361_p3_m338_receipt_case
 		var:zg361_p3_m338_debt_state = var:zg361_p3_m338_receipt_state
 			var:zg361_p3_m338_receipt_choice = 3
-			var:zg361_p3_m338_debt_due_cycle = { value = var:zg361_p3_m338_debt_cycle add = 1 }
+			var:zg361_p3_m338_debt_due_cycle = var:zg361_p3_m338_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m338_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m338_debt_consumer_status value = 5 }
@@ -35236,7 +35494,8 @@ zg361_p3_m338_route_c_effect = {
 			set_variable = { name = zg361_p3_m338_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m338_debt_state value = 2 }
 			set_variable = { name = zg361_p3_m338_debt_mechanism value = 338 }
-			set_variable = { name = zg361_p3_m338_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m338_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m338_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m338_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m338_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m338_debt_business_object_created value = 0 }
@@ -35498,6 +35757,12 @@ zg361_p3_m338_route_c_effect = {
 # #339 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m339_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m339_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m339_debt_cycle }
+		set_variable = { name = zg361_p3_m339_debt_expected_due_cycle value = var:zg361_p3_m339_debt_cycle }
+		change_variable = { name = zg361_p3_m339_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m339_debt_owner
@@ -35516,6 +35781,7 @@ zg361_p3_m339_consume_due_debt_effect = {
 			has_variable = zg361_p3_m339_receipt_case
 			has_variable = zg361_p3_m339_receipt_state
 			has_variable = zg361_p3_m339_receipt_choice
+			has_variable = zg361_p3_m339_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -35537,7 +35803,7 @@ zg361_p3_m339_consume_due_debt_effect = {
 		var:zg361_p3_m339_debt_case = var:zg361_p3_m339_receipt_case
 		var:zg361_p3_m339_debt_state = var:zg361_p3_m339_receipt_state
 			var:zg361_p3_m339_receipt_choice = 3
-			var:zg361_p3_m339_debt_due_cycle = { value = var:zg361_p3_m339_debt_cycle add = 1 }
+			var:zg361_p3_m339_debt_due_cycle = var:zg361_p3_m339_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m339_debt_due_cycle
 		}
 		var:zg361_p3_m339_debt_owner = {
@@ -35595,6 +35861,7 @@ zg361_p3_m339_consume_due_debt_effect = {
 			has_variable = zg361_p3_m339_receipt_case
 			has_variable = zg361_p3_m339_receipt_state
 			has_variable = zg361_p3_m339_receipt_choice
+			has_variable = zg361_p3_m339_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -35613,7 +35880,7 @@ zg361_p3_m339_consume_due_debt_effect = {
 		var:zg361_p3_m339_debt_case = var:zg361_p3_m339_receipt_case
 		var:zg361_p3_m339_debt_state = var:zg361_p3_m339_receipt_state
 			var:zg361_p3_m339_receipt_choice = 3
-			var:zg361_p3_m339_debt_due_cycle = { value = var:zg361_p3_m339_debt_cycle add = 1 }
+			var:zg361_p3_m339_debt_due_cycle = var:zg361_p3_m339_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m339_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m339_debt_consumer_status value = 5 }
@@ -36526,7 +36793,8 @@ zg361_p3_m339_route_c_effect = {
 			set_variable = { name = zg361_p3_m339_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m339_debt_state value = 3 }
 			set_variable = { name = zg361_p3_m339_debt_mechanism value = 339 }
-			set_variable = { name = zg361_p3_m339_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m339_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m339_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m339_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m339_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m339_debt_business_object_created value = 0 }
@@ -36744,6 +37012,12 @@ zg361_p3_m339_route_c_effect = {
 # #340 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m340_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m340_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m340_debt_cycle }
+		set_variable = { name = zg361_p3_m340_debt_expected_due_cycle value = var:zg361_p3_m340_debt_cycle }
+		change_variable = { name = zg361_p3_m340_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m340_debt_owner
@@ -36762,6 +37036,7 @@ zg361_p3_m340_consume_due_debt_effect = {
 			has_variable = zg361_p3_m340_receipt_case
 			has_variable = zg361_p3_m340_receipt_state
 			has_variable = zg361_p3_m340_receipt_choice
+			has_variable = zg361_p3_m340_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -36783,7 +37058,7 @@ zg361_p3_m340_consume_due_debt_effect = {
 		var:zg361_p3_m340_debt_case = var:zg361_p3_m340_receipt_case
 		var:zg361_p3_m340_debt_state = var:zg361_p3_m340_receipt_state
 			var:zg361_p3_m340_receipt_choice = 3
-			var:zg361_p3_m340_debt_due_cycle = { value = var:zg361_p3_m340_debt_cycle add = 1 }
+			var:zg361_p3_m340_debt_due_cycle = var:zg361_p3_m340_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m340_debt_due_cycle
 		}
 		var:zg361_p3_m340_debt_owner = {
@@ -36841,6 +37116,7 @@ zg361_p3_m340_consume_due_debt_effect = {
 			has_variable = zg361_p3_m340_receipt_case
 			has_variable = zg361_p3_m340_receipt_state
 			has_variable = zg361_p3_m340_receipt_choice
+			has_variable = zg361_p3_m340_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -36859,7 +37135,7 @@ zg361_p3_m340_consume_due_debt_effect = {
 		var:zg361_p3_m340_debt_case = var:zg361_p3_m340_receipt_case
 		var:zg361_p3_m340_debt_state = var:zg361_p3_m340_receipt_state
 			var:zg361_p3_m340_receipt_choice = 3
-			var:zg361_p3_m340_debt_due_cycle = { value = var:zg361_p3_m340_debt_cycle add = 1 }
+			var:zg361_p3_m340_debt_due_cycle = var:zg361_p3_m340_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m340_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m340_debt_consumer_status value = 5 }
@@ -37737,7 +38013,8 @@ zg361_p3_m340_route_c_effect = {
 			set_variable = { name = zg361_p3_m340_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m340_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m340_debt_mechanism value = 340 }
-			set_variable = { name = zg361_p3_m340_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m340_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m340_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m340_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m340_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m340_debt_business_object_created value = 0 }
@@ -37901,6 +38178,12 @@ zg361_p3_m340_route_c_effect = {
 # #342 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m342_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m342_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m342_debt_cycle }
+		set_variable = { name = zg361_p3_m342_debt_expected_due_cycle value = var:zg361_p3_m342_debt_cycle }
+		change_variable = { name = zg361_p3_m342_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m342_debt_owner
@@ -37919,6 +38202,7 @@ zg361_p3_m342_consume_due_debt_effect = {
 			has_variable = zg361_p3_m342_receipt_case
 			has_variable = zg361_p3_m342_receipt_state
 			has_variable = zg361_p3_m342_receipt_choice
+			has_variable = zg361_p3_m342_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -37940,7 +38224,7 @@ zg361_p3_m342_consume_due_debt_effect = {
 		var:zg361_p3_m342_debt_case = var:zg361_p3_m342_receipt_case
 		var:zg361_p3_m342_debt_state = var:zg361_p3_m342_receipt_state
 			var:zg361_p3_m342_receipt_choice = 3
-			var:zg361_p3_m342_debt_due_cycle = { value = var:zg361_p3_m342_debt_cycle add = 1 }
+			var:zg361_p3_m342_debt_due_cycle = var:zg361_p3_m342_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m342_debt_due_cycle
 		}
 		var:zg361_p3_m342_debt_owner = {
@@ -37998,6 +38282,7 @@ zg361_p3_m342_consume_due_debt_effect = {
 			has_variable = zg361_p3_m342_receipt_case
 			has_variable = zg361_p3_m342_receipt_state
 			has_variable = zg361_p3_m342_receipt_choice
+			has_variable = zg361_p3_m342_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -38016,7 +38301,7 @@ zg361_p3_m342_consume_due_debt_effect = {
 		var:zg361_p3_m342_debt_case = var:zg361_p3_m342_receipt_case
 		var:zg361_p3_m342_debt_state = var:zg361_p3_m342_receipt_state
 			var:zg361_p3_m342_receipt_choice = 3
-			var:zg361_p3_m342_debt_due_cycle = { value = var:zg361_p3_m342_debt_cycle add = 1 }
+			var:zg361_p3_m342_debt_due_cycle = var:zg361_p3_m342_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m342_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m342_debt_consumer_status value = 5 }
@@ -39075,7 +39360,8 @@ zg361_p3_m342_route_c_effect = {
 			set_variable = { name = zg361_p3_m342_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m342_debt_state value = 4 }
 			set_variable = { name = zg361_p3_m342_debt_mechanism value = 342 }
-			set_variable = { name = zg361_p3_m342_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m342_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m342_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m342_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m342_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m342_debt_business_object_created value = 0 }
@@ -39337,6 +39623,12 @@ zg361_p3_m342_route_c_effect = {
 # #337 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m337_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m337_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m337_debt_cycle }
+		set_variable = { name = zg361_p3_m337_debt_expected_due_cycle value = var:zg361_p3_m337_debt_cycle }
+		change_variable = { name = zg361_p3_m337_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m337_debt_owner
@@ -39355,6 +39647,7 @@ zg361_p3_m337_consume_due_debt_effect = {
 			has_variable = zg361_p3_m337_receipt_case
 			has_variable = zg361_p3_m337_receipt_state
 			has_variable = zg361_p3_m337_receipt_choice
+			has_variable = zg361_p3_m337_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -39376,7 +39669,7 @@ zg361_p3_m337_consume_due_debt_effect = {
 		var:zg361_p3_m337_debt_case = var:zg361_p3_m337_receipt_case
 		var:zg361_p3_m337_debt_state = var:zg361_p3_m337_receipt_state
 			var:zg361_p3_m337_receipt_choice = 3
-			var:zg361_p3_m337_debt_due_cycle = { value = var:zg361_p3_m337_debt_cycle add = 1 }
+			var:zg361_p3_m337_debt_due_cycle = var:zg361_p3_m337_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m337_debt_due_cycle
 		}
 		var:zg361_p3_m337_debt_owner = {
@@ -39434,6 +39727,7 @@ zg361_p3_m337_consume_due_debt_effect = {
 			has_variable = zg361_p3_m337_receipt_case
 			has_variable = zg361_p3_m337_receipt_state
 			has_variable = zg361_p3_m337_receipt_choice
+			has_variable = zg361_p3_m337_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -39452,7 +39746,7 @@ zg361_p3_m337_consume_due_debt_effect = {
 		var:zg361_p3_m337_debt_case = var:zg361_p3_m337_receipt_case
 		var:zg361_p3_m337_debt_state = var:zg361_p3_m337_receipt_state
 			var:zg361_p3_m337_receipt_choice = 3
-			var:zg361_p3_m337_debt_due_cycle = { value = var:zg361_p3_m337_debt_cycle add = 1 }
+			var:zg361_p3_m337_debt_due_cycle = var:zg361_p3_m337_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m337_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m337_debt_consumer_status value = 5 }
@@ -40333,7 +40627,8 @@ zg361_p3_m337_route_c_effect = {
 			set_variable = { name = zg361_p3_m337_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m337_debt_state value = 5 }
 			set_variable = { name = zg361_p3_m337_debt_mechanism value = 337 }
-			set_variable = { name = zg361_p3_m337_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m337_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m337_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m337_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m337_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m337_debt_business_object_created value = 0 }
@@ -40497,6 +40792,12 @@ zg361_p3_m337_route_c_effect = {
 # #341 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m341_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m341_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m341_debt_cycle }
+		set_variable = { name = zg361_p3_m341_debt_expected_due_cycle value = var:zg361_p3_m341_debt_cycle }
+		change_variable = { name = zg361_p3_m341_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m341_debt_owner
@@ -40515,6 +40816,7 @@ zg361_p3_m341_consume_due_debt_effect = {
 			has_variable = zg361_p3_m341_receipt_case
 			has_variable = zg361_p3_m341_receipt_state
 			has_variable = zg361_p3_m341_receipt_choice
+			has_variable = zg361_p3_m341_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -40536,7 +40838,7 @@ zg361_p3_m341_consume_due_debt_effect = {
 		var:zg361_p3_m341_debt_case = var:zg361_p3_m341_receipt_case
 		var:zg361_p3_m341_debt_state = var:zg361_p3_m341_receipt_state
 			var:zg361_p3_m341_receipt_choice = 3
-			var:zg361_p3_m341_debt_due_cycle = { value = var:zg361_p3_m341_debt_cycle add = 1 }
+			var:zg361_p3_m341_debt_due_cycle = var:zg361_p3_m341_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m341_debt_due_cycle
 		}
 		var:zg361_p3_m341_debt_owner = {
@@ -40594,6 +40896,7 @@ zg361_p3_m341_consume_due_debt_effect = {
 			has_variable = zg361_p3_m341_receipt_case
 			has_variable = zg361_p3_m341_receipt_state
 			has_variable = zg361_p3_m341_receipt_choice
+			has_variable = zg361_p3_m341_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -40612,7 +40915,7 @@ zg361_p3_m341_consume_due_debt_effect = {
 		var:zg361_p3_m341_debt_case = var:zg361_p3_m341_receipt_case
 		var:zg361_p3_m341_debt_state = var:zg361_p3_m341_receipt_state
 			var:zg361_p3_m341_receipt_choice = 3
-			var:zg361_p3_m341_debt_due_cycle = { value = var:zg361_p3_m341_debt_cycle add = 1 }
+			var:zg361_p3_m341_debt_due_cycle = var:zg361_p3_m341_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m341_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m341_debt_consumer_status value = 5 }
@@ -41729,7 +42032,8 @@ zg361_p3_m341_route_c_effect = {
 			set_variable = { name = zg361_p3_m341_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m341_debt_state value = 5 }
 			set_variable = { name = zg361_p3_m341_debt_mechanism value = 341 }
-			set_variable = { name = zg361_p3_m341_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m341_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m341_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m341_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m341_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m341_debt_business_object_created value = 0 }
@@ -41991,6 +42295,12 @@ zg361_p3_m341_route_c_effect = {
 # #343 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m343_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m343_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m343_debt_cycle }
+		set_variable = { name = zg361_p3_m343_debt_expected_due_cycle value = var:zg361_p3_m343_debt_cycle }
+		change_variable = { name = zg361_p3_m343_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m343_debt_owner
@@ -42009,6 +42319,7 @@ zg361_p3_m343_consume_due_debt_effect = {
 			has_variable = zg361_p3_m343_receipt_case
 			has_variable = zg361_p3_m343_receipt_state
 			has_variable = zg361_p3_m343_receipt_choice
+			has_variable = zg361_p3_m343_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -42030,7 +42341,7 @@ zg361_p3_m343_consume_due_debt_effect = {
 		var:zg361_p3_m343_debt_case = var:zg361_p3_m343_receipt_case
 		var:zg361_p3_m343_debt_state = var:zg361_p3_m343_receipt_state
 			var:zg361_p3_m343_receipt_choice = 3
-			var:zg361_p3_m343_debt_due_cycle = { value = var:zg361_p3_m343_debt_cycle add = 1 }
+			var:zg361_p3_m343_debt_due_cycle = var:zg361_p3_m343_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m343_debt_due_cycle
 		}
 		var:zg361_p3_m343_debt_owner = {
@@ -42088,6 +42399,7 @@ zg361_p3_m343_consume_due_debt_effect = {
 			has_variable = zg361_p3_m343_receipt_case
 			has_variable = zg361_p3_m343_receipt_state
 			has_variable = zg361_p3_m343_receipt_choice
+			has_variable = zg361_p3_m343_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -42106,7 +42418,7 @@ zg361_p3_m343_consume_due_debt_effect = {
 		var:zg361_p3_m343_debt_case = var:zg361_p3_m343_receipt_case
 		var:zg361_p3_m343_debt_state = var:zg361_p3_m343_receipt_state
 			var:zg361_p3_m343_receipt_choice = 3
-			var:zg361_p3_m343_debt_due_cycle = { value = var:zg361_p3_m343_debt_cycle add = 1 }
+			var:zg361_p3_m343_debt_due_cycle = var:zg361_p3_m343_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m343_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m343_debt_consumer_status value = 5 }
@@ -43131,7 +43443,8 @@ zg361_p3_m343_route_c_effect = {
 			set_variable = { name = zg361_p3_m343_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m343_debt_state value = 6 }
 			set_variable = { name = zg361_p3_m343_debt_mechanism value = 343 }
-			set_variable = { name = zg361_p3_m343_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m343_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m343_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m343_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m343_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m343_debt_business_object_created value = 0 }
@@ -43349,6 +43662,12 @@ zg361_p3_m343_route_c_effect = {
 # #344 next-cycle route-C debt consumer.  The exact frozen
 # owner receives the KPI sink; every other pending state blocks new lifecycle work.
 zg361_p3_m344_consume_due_debt_effect = {
+	remove_variable = zg361_p3_m344_debt_expected_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_m344_debt_cycle }
+		set_variable = { name = zg361_p3_m344_debt_expected_due_cycle value = var:zg361_p3_m344_debt_cycle }
+		change_variable = { name = zg361_p3_m344_debt_expected_due_cycle add = 1 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_p3_m344_debt_owner
@@ -43367,6 +43686,7 @@ zg361_p3_m344_consume_due_debt_effect = {
 			has_variable = zg361_p3_m344_receipt_case
 			has_variable = zg361_p3_m344_receipt_state
 			has_variable = zg361_p3_m344_receipt_choice
+			has_variable = zg361_p3_m344_debt_expected_due_cycle
 			has_variable = zg361_p3_policy_debt_open_n
 			has_variable = zg361_p3_policy_debt_settled_n
 			root = {
@@ -43388,7 +43708,7 @@ zg361_p3_m344_consume_due_debt_effect = {
 		var:zg361_p3_m344_debt_case = var:zg361_p3_m344_receipt_case
 		var:zg361_p3_m344_debt_state = var:zg361_p3_m344_receipt_state
 			var:zg361_p3_m344_receipt_choice = 3
-			var:zg361_p3_m344_debt_due_cycle = { value = var:zg361_p3_m344_debt_cycle add = 1 }
+			var:zg361_p3_m344_debt_due_cycle = var:zg361_p3_m344_debt_expected_due_cycle
 			root.var:zg361_review_serial = var:zg361_p3_m344_debt_due_cycle
 		}
 		var:zg361_p3_m344_debt_owner = {
@@ -43446,6 +43766,7 @@ zg361_p3_m344_consume_due_debt_effect = {
 			has_variable = zg361_p3_m344_receipt_case
 			has_variable = zg361_p3_m344_receipt_state
 			has_variable = zg361_p3_m344_receipt_choice
+			has_variable = zg361_p3_m344_debt_expected_due_cycle
 			root = {
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
@@ -43464,7 +43785,7 @@ zg361_p3_m344_consume_due_debt_effect = {
 		var:zg361_p3_m344_debt_case = var:zg361_p3_m344_receipt_case
 		var:zg361_p3_m344_debt_state = var:zg361_p3_m344_receipt_state
 			var:zg361_p3_m344_receipt_choice = 3
-			var:zg361_p3_m344_debt_due_cycle = { value = var:zg361_p3_m344_debt_cycle add = 1 }
+			var:zg361_p3_m344_debt_due_cycle = var:zg361_p3_m344_debt_expected_due_cycle
 			root.var:zg361_review_serial < var:zg361_p3_m344_debt_due_cycle
 		}
 		set_variable = { name = zg361_p3_m344_debt_consumer_status value = 5 }
@@ -44531,7 +44852,8 @@ zg361_p3_m344_route_c_effect = {
 			set_variable = { name = zg361_p3_m344_debt_case value = $TICKET_CASE$ }
 			set_variable = { name = zg361_p3_m344_debt_state value = 7 }
 			set_variable = { name = zg361_p3_m344_debt_mechanism value = 344 }
-			set_variable = { name = zg361_p3_m344_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_p3_m344_debt_due_cycle value = $TICKET_CYCLE$ }
+			change_variable = { name = zg361_p3_m344_debt_due_cycle add = 1 }
 			set_variable = { name = zg361_p3_m344_debt_status value = 1 }
 			set_variable = { name = zg361_p3_m344_debt_audit_state value = 1 }
 			set_variable = { name = zg361_p3_m344_debt_business_object_created value = 0 }

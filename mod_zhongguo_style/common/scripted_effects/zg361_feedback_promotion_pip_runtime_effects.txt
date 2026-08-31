@@ -6102,11 +6102,11 @@ zg361_pp_m146_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -6275,20 +6275,20 @@ zg361_pp_m146_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m146_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m146_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m146_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m146_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -6452,11 +6452,11 @@ zg361_pp_m147_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -6625,20 +6625,20 @@ zg361_pp_m147_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m147_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m147_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m147_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m147_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -6802,11 +6802,11 @@ zg361_pp_m148_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -6975,20 +6975,20 @@ zg361_pp_m148_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m148_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m148_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m148_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m148_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -7152,11 +7152,11 @@ zg361_pp_m149_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -7379,29 +7379,29 @@ var:zg361_pp_t_commitment_capacity_available >= 1
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m149_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m149_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m149_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m149_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m149_commitment_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m149_commitment_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -7441,7 +7441,7 @@ var:zg361_pp_t_commitment_capacity_available >= 1
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_case_t_owner = {
 							remove_treasury = 5
-							remove_gold = 5
+							remove_short_term_gold = 5
 						}
 						add_gold = 10
 						set_variable = { name = zg361_pp_m149_treasury_paid value = 5 }
@@ -7583,11 +7583,11 @@ zg361_pp_m150_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -7810,29 +7810,29 @@ var:zg361_pp_t_commitment_capacity_available >= 1
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m150_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m150_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m150_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m150_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m150_commitment_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m150_commitment_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -7872,7 +7872,7 @@ var:zg361_pp_t_commitment_capacity_available >= 1
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_case_t_owner = {
 							remove_treasury = 5
-							remove_gold = 5
+							remove_short_term_gold = 5
 						}
 						add_gold = 10
 						set_variable = { name = zg361_pp_m150_treasury_paid value = 5 }
@@ -8045,11 +8045,11 @@ zg361_pp_m151_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -8218,20 +8218,20 @@ zg361_pp_m151_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m151_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m151_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m151_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m151_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -8418,11 +8418,11 @@ zg361_pp_m152_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -8591,20 +8591,20 @@ zg361_pp_m152_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m152_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m152_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m152_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m152_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -8768,11 +8768,11 @@ zg361_pp_m153_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -8941,20 +8941,20 @@ zg361_pp_m153_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m153_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m153_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m153_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m153_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -9119,11 +9119,11 @@ zg361_pp_m154_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -9292,20 +9292,20 @@ zg361_pp_m154_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m154_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m154_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m154_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m154_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -9470,11 +9470,11 @@ zg361_pp_m155_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -9599,11 +9599,11 @@ zg361_pp_m155_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m155_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m155_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -9763,11 +9763,11 @@ zg361_pp_m156_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_t_operation_capacity_available >= 1
@@ -9936,20 +9936,20 @@ zg361_pp_m156_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m156_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m156_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m156_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m156_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -10113,11 +10113,11 @@ zg361_pp_m157_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				var:zg361_pp_u_candidate_eligible = 1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_u_candidate_eligible = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -10286,20 +10286,20 @@ zg361_pp_m157_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m157_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m157_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m157_nomination_slot_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m157_nomination_slot_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -10489,7 +10489,7 @@ zg361_pp_m158_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -10502,7 +10502,7 @@ zg361_pp_m158_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -10627,11 +10627,11 @@ zg361_pp_m158_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m158_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m158_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -10798,11 +10798,11 @@ zg361_pp_m159_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -10927,11 +10927,11 @@ zg361_pp_m159_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m159_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m159_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -11126,7 +11126,7 @@ zg361_pp_m160_core_effect = {
 				var:zg361_pp_m166_packet_active_after = 1
 				var:zg361_pp_m166_withdrawn_before_prescreen = 0
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -11148,7 +11148,7 @@ zg361_pp_m160_core_effect = {
 				var:zg361_pp_m166_packet_active_after = 1
 				var:zg361_pp_m166_withdrawn_before_prescreen = 0
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -11317,11 +11317,11 @@ zg361_pp_m160_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m160_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m160_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m160_promotion_slot_status = 1
@@ -11509,7 +11509,7 @@ zg361_pp_m161_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -11524,7 +11524,7 @@ zg361_pp_m161_core_effect = {
 				has_variable = zg361_pp_m161_filler_candidate
 				NOT = { var:zg361_pp_m161_filler_candidate = this }
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -11739,11 +11739,11 @@ var:zg361_pp_u_capacity_hours_available >= 1
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m161_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m161_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 2 }
@@ -11949,7 +11949,7 @@ zg361_pp_m162_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -11962,7 +11962,7 @@ zg361_pp_m162_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -12131,20 +12131,20 @@ zg361_pp_m162_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m162_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m162_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m162_tenure_exception_slot_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m162_tenure_exception_slot_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -12321,7 +12321,7 @@ zg361_pp_m163_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -12334,7 +12334,7 @@ zg361_pp_m163_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -12459,11 +12459,11 @@ zg361_pp_m163_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m163_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m163_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -12629,7 +12629,7 @@ zg361_pp_m164_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -12642,7 +12642,7 @@ zg361_pp_m164_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -12767,11 +12767,11 @@ zg361_pp_m164_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m164_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m164_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -12938,7 +12938,7 @@ zg361_pp_m165_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -12951,7 +12951,7 @@ zg361_pp_m165_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -13128,20 +13128,20 @@ zg361_pp_m165_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m165_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m165_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m165_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m165_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -13177,7 +13177,7 @@ zg361_pp_m165_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_case_u_owner = {
 							remove_treasury = 5
-							remove_gold = 5
+							remove_short_term_gold = 5
 						}
 						add_gold = 10
 						set_variable = { name = zg361_pp_m165_treasury_paid value = 5 }
@@ -13356,7 +13356,7 @@ zg361_pp_m166_core_effect = {
 				var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial
 				var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m157_packet_active = 1
 				var:zg361_pp_m157_packet_status = 1
@@ -13369,7 +13369,7 @@ zg361_pp_m166_core_effect = {
 					var:zg361_pp_m157_nomination_slot_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -13494,11 +13494,11 @@ zg361_pp_m166_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m166_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m166_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -13704,12 +13704,12 @@ zg361_pp_m167_core_effect = {
 				has_variable = zg361_pp_m160_prescreen_pass
 				var:zg361_pp_m160_packet_candidate_consumed = this
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_m160_prescreen_pass
 				var:zg361_pp_m160_packet_candidate_consumed = this
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -13834,11 +13834,11 @@ zg361_pp_m167_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m167_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m167_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -13999,12 +13999,12 @@ zg361_pp_m168_core_effect = {
 				has_variable = zg361_pp_m160_prescreen_pass
 				has_variable = zg361_pp_m167_observation_id
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_m160_prescreen_pass
 				has_variable = zg361_pp_m167_observation_id
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_u_operation_capacity_available >= 1
@@ -14129,11 +14129,11 @@ zg361_pp_m168_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m168_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m168_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -14299,14 +14299,14 @@ zg361_pp_m169_core_effect = {
 				var:zg361_pp_m160_promotion_slot_status = 2
 				has_variable = zg361_pp_v_source_packet_case
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m160_prescreen_pass = 1
 				var:zg361_pp_m160_packet_candidate_consumed = this
 				var:zg361_pp_m160_promotion_slot_status = 2
 				has_variable = zg361_pp_v_source_packet_case
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -14475,20 +14475,20 @@ zg361_pp_m169_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m169_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m169_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m169_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m169_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -14656,13 +14656,13 @@ zg361_pp_m170_core_effect = {
 				has_variable = zg361_pp_v_panel_pool_2
 				has_variable = zg361_pp_v_panel_pool_3
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_v_panel_pool_1
 				has_variable = zg361_pp_v_panel_pool_2
 				has_variable = zg361_pp_v_panel_pool_3
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -14831,20 +14831,20 @@ zg361_pp_m170_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m170_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m170_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m170_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m170_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -15030,12 +15030,12 @@ zg361_pp_m171_core_effect = {
 				NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_2 }
 				NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_3 }
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m170_selection_replay_ok = 1
 				var:zg361_pp_m170_panel_unique = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -15204,20 +15204,20 @@ zg361_pp_m171_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m171_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m171_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m171_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m171_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -15387,13 +15387,13 @@ zg361_pp_m172_core_effect = {
 				var:zg361_pp_m171_active_panel_count = 3
 				has_variable = zg361_pp_m171_active_panel_revision
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m169_weight_check = 100
 				var:zg361_pp_m171_active_panel_count = 3
 				has_variable = zg361_pp_m171_active_panel_revision
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -15562,20 +15562,20 @@ zg361_pp_m172_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m172_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m172_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m172_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m172_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -15747,12 +15747,12 @@ zg361_pp_m173_core_effect = {
 				var:zg361_pp_m172_rule_frozen_before_vote = 1
 				var:zg361_pp_m172_panel_weight_check = 100
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m172_rule_frozen_before_vote = 1
 				var:zg361_pp_m172_panel_weight_check = 100
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -15921,20 +15921,20 @@ zg361_pp_m173_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m173_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m173_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m173_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m173_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -16100,12 +16100,12 @@ zg361_pp_m174_core_effect = {
 				has_variable = zg361_pp_m173_blind_score
 				var:zg361_pp_m173_identity_fields_hidden = 1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_m173_blind_score
 				var:zg361_pp_m173_identity_fields_hidden = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -16274,20 +16274,20 @@ zg361_pp_m174_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m174_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m174_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m174_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m174_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -16452,12 +16452,12 @@ zg361_pp_m175_core_effect = {
 				var:zg361_pp_m174_time_check = 60
 				var:zg361_pp_m174_question_minutes >= 5
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m174_time_check = 60
 				var:zg361_pp_m174_question_minutes >= 5
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -16626,20 +16626,20 @@ zg361_pp_m175_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m175_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m175_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m175_capacity_hours_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m175_capacity_hours_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -16805,12 +16805,12 @@ zg361_pp_m176_core_effect = {
 				var:zg361_pp_m174_time_check = 60
 				has_variable = zg361_pp_m175_coaching_allocated
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m174_time_check = 60
 				has_variable = zg361_pp_m175_coaching_allocated
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -16979,20 +16979,20 @@ zg361_pp_m176_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m176_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m176_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m176_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m176_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -17156,12 +17156,12 @@ zg361_pp_m177_core_effect = {
 				var:zg361_pp_m176_share_check = 100
 				has_variable = zg361_pp_m176_candidate_share
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m176_share_check = 100
 				has_variable = zg361_pp_m176_candidate_share
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -17330,20 +17330,20 @@ zg361_pp_m177_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m177_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m177_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m177_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m177_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -17510,7 +17510,7 @@ zg361_pp_m178_core_effect = {
 				has_variable = zg361_pp_m177_scale_score
 				has_variable = zg361_pp_m177_leverage_score
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_m173_blind_score
 				var:zg361_pp_m174_time_check = 60
@@ -17519,7 +17519,7 @@ zg361_pp_m178_core_effect = {
 				has_variable = zg361_pp_m177_scale_score
 				has_variable = zg361_pp_m177_leverage_score
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -17688,20 +17688,20 @@ zg361_pp_m178_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m178_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m178_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m178_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m178_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -17887,12 +17887,12 @@ zg361_pp_m179_core_effect = {
 				var:zg361_pp_m178_final_decision = 0
 				has_variable = zg361_pp_m171_active_panel_1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m178_final_decision = 0
 				has_variable = zg361_pp_m171_active_panel_1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -18061,20 +18061,20 @@ zg361_pp_m179_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m179_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m179_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m179_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m179_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -18241,13 +18241,13 @@ zg361_pp_m180_core_effect = {
 				has_variable = zg361_pp_m179_gap_id
 				var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m178_final_decision = 0
 				has_variable = zg361_pp_m179_gap_id
 				var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_v_operation_capacity_available >= 1
@@ -18416,20 +18416,20 @@ zg361_pp_m180_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m180_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m180_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m180_panel_vote_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m180_panel_vote_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -18616,11 +18616,11 @@ zg361_pp_m181_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				always = yes
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				always = yes
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -18745,11 +18745,11 @@ zg361_pp_m181_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m181_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m181_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -18919,14 +18919,14 @@ zg361_pp_m182_core_effect = {
 				var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade
 				var:zg361_pp_w_pip_gate_candidate = 1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_m181_primary_category
 				has_variable = zg361_pp_m181_evidence_id
 				var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade
 				var:zg361_pp_w_frozen_grade = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -19051,11 +19051,11 @@ zg361_pp_m182_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m182_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m182_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -19264,12 +19264,12 @@ zg361_pp_m183_core_effect = {
 				has_variable = zg361_pp_m182_gate_status
 				var:zg361_pp_m182_gate_status = 1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				has_variable = zg361_pp_m182_gate_status
 				var:zg361_pp_m182_gate_status = 2
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -19394,11 +19394,11 @@ zg361_pp_m183_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m183_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m183_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -19575,7 +19575,7 @@ zg361_pp_m184_core_effect = {
 					var:zg361_pp_m183_independent_review_pass = 1
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				OR = {
 					var:zg361_pp_m182_gate_status = 1
@@ -19588,7 +19588,7 @@ zg361_pp_m184_core_effect = {
 					var:zg361_pp_m183_independent_review_pass = 1
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -19757,11 +19757,11 @@ zg361_pp_m184_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m184_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m184_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m184_pip_capacity_status = 1
@@ -19930,11 +19930,11 @@ zg361_pp_m185_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				var:zg361_pp_m184_active_case = 1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m184_active_case = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -20059,11 +20059,11 @@ zg361_pp_m185_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m185_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m185_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -20228,7 +20228,7 @@ zg361_pp_m186_core_effect = {
 					var:zg361_pp_m185_midpoint_status = 2
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m185_audit_1_consumed = 1
 				OR = {
@@ -20236,7 +20236,7 @@ zg361_pp_m186_core_effect = {
 					var:zg361_pp_m185_midpoint_status = 2
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -20361,11 +20361,11 @@ zg361_pp_m186_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m186_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m186_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -20526,12 +20526,12 @@ zg361_pp_m187_core_effect = {
 				var:zg361_pp_m185_audit_1_consumed = 1
 				has_variable = zg361_pp_m186_baseline_workload
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m185_audit_1_consumed = 1
 				has_variable = zg361_pp_m186_baseline_workload
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -20656,11 +20656,11 @@ zg361_pp_m187_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m187_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m187_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -20822,12 +20822,12 @@ zg361_pp_m188_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				var:zg361_pp_m187_graduation_status = 1
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m187_graduation_status = 1
 				var:zg361_pp_m187_graduation_status = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -20952,11 +20952,11 @@ zg361_pp_m188_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m188_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m188_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -21140,7 +21140,7 @@ zg361_pp_m189_core_effect = {
 					var:zg361_pp_m188_same_category_relapse = 1
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				OR = {
 					AND = {
@@ -21156,7 +21156,7 @@ zg361_pp_m189_core_effect = {
 				}
 				var:zg361_pp_w_frozen_grade = 1
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -21333,11 +21333,11 @@ zg361_pp_m189_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m189_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m189_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 2 }
@@ -21402,7 +21402,7 @@ zg361_pp_m189_core_effect = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_case_w_owner = {
 							remove_treasury = 5
-							remove_gold = 5
+							remove_short_term_gold = 5
 						}
 						add_gold = 10
 						set_variable = { name = zg361_pp_m189_treasury_paid value = 5 }
@@ -21649,7 +21649,7 @@ zg361_pp_m190_core_effect = {
 					NOT = { this = root }
 				}
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m189_terminal_code = 2
 				has_variable = zg361_pp_m189_receiving_manager
@@ -21694,7 +21694,7 @@ zg361_pp_m190_core_effect = {
 					NOT = { this = root }
 				}
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -21819,11 +21819,11 @@ zg361_pp_m190_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m190_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m190_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -22019,11 +22019,11 @@ zg361_pp_m191_core_effect = {
 				limit = { scope:zg361_pp_route = 1 }
 				var:zg361_pp_m189_terminal_code = 3
 			}
-			else_if = {
+			trigger_else_if = {
 				limit = { scope:zg361_pp_route = 2 }
 				var:zg361_pp_m189_terminal_code = 3
 			}
-			else = { always = yes }
+			trigger_else = { always = yes }
 			trigger_if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				var:zg361_pp_w_operation_capacity_available >= 1
@@ -22200,20 +22200,20 @@ zg361_pp_m191_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m191_operation_capacity_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m191_operation_capacity_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					trigger_if = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_pp_m191_exit_cost_status = 1
 					}
-					else_if = {
+					trigger_else_if = {
 						limit = { scope:zg361_pp_route = 2 }
 						var:zg361_pp_m191_exit_cost_status = 2
 					}
-					else = { always = yes }
+					trigger_else = { always = yes }
 					always = yes
 					always = yes
 				}
@@ -22254,7 +22254,7 @@ zg361_pp_m191_core_effect = {
 						limit = { scope:zg361_pp_route = 1 }
 						var:zg361_case_w_owner = {
 							remove_treasury = 5
-							remove_gold = 5
+							remove_short_term_gold = 5
 						}
 						add_gold = 10
 						set_variable = { name = zg361_pp_m191_treasury_paid value = 5 }

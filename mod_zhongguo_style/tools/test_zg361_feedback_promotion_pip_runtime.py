@@ -312,6 +312,43 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertIn("limit = { NOT = { scope:zg361_pp_route = 3 } }", core)
             self.assertIn("limit = { var:zg361_case_kernel_applied = 1 scope:zg361_pp_route = 2 }", core)
 
+    def test_trigger_context_route_chains_use_trigger_branch_keywords(self) -> None:
+        # A CK3 `limit` block is trigger context.  Its conditional chain must
+        # use trigger_if/trigger_else_if/trigger_else; effect else_if/else are
+        # rejected by the loader as Unknown trigger.  There is one dependency
+        # chain per mechanism and one receipt-status chain per shared resource.
+        expected_chains = len(gen.MECHANISMS) + sum(
+            1 + len(gen.EXTRA_RESOURCES_BY_ID.get(row.mechanism_id, ()))
+            for row in gen.MECHANISMS
+        )
+        self.assertEqual(expected_chains, 120)
+        self.assertEqual(self.effects.count("trigger_else_if = {"), expected_chains)
+        for row in gen.MECHANISMS:
+            core = effect_block(self.effects, f"zg361_pp_m{row.mechanism_id:03d}_core_effect")
+            dependency_guard = gen.routed_dependency_guard(row.mechanism_id)
+            self.assertIn("trigger_else_if = {", dependency_guard)
+            self.assertIn("trigger_else = { always = yes }", dependency_guard)
+            self.assertNotIn("\nelse_if = {", dependency_guard)
+            self.assertNotIn("\nelse = {", dependency_guard)
+            expected_core_chains = 2 + len(gen.EXTRA_RESOURCES_BY_ID.get(row.mechanism_id, ()))
+            self.assertEqual(
+                core.count("trigger_else_if = {"),
+                expected_core_chains,
+                f"{row.mechanism_id}: trigger-context route chain count drifted",
+            )
+            resources = (
+                gen.DOMAIN_BY_ID[row.mechanism_id].resource,
+                *gen.EXTRA_RESOURCES_BY_ID.get(row.mechanism_id, ()),
+            )
+            for resource in resources:
+                self.assertIn(
+                    f"var:zg361_pp_m{row.mechanism_id:03d}_{resource}_status = 1\n"
+                    "\t\t\t\t\t}\n"
+                    "\t\t\t\t\ttrigger_else_if = {",
+                    core,
+                    f"{row.mechanism_id}/{resource}: status chain is not trigger grammar",
+                )
+
     def test_u_packet_quota_withdrawal_and_matured_observation_chain(self) -> None:
         open_u = effect_block(self.effects, "zg361_pp_open_u_case_effect")
         for token in (
@@ -432,11 +469,16 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 "treasury >= 5",
                 "gold >= 5",
                 "remove_treasury = 5",
-                "remove_gold = 5",
+                "remove_short_term_gold = 5",
                 "add_gold = 10",
                 f"name = zg361_pp_m{mid:03d}_dual_payment_conserved value = 1",
             ):
                 self.assertIn(token, block)
+        self.assertEqual(self.effects.count("remove_short_term_gold = 5"), 5)
+        self.assertIsNone(
+            re.search(r"(?<!short_term_)\bremove_gold\s*=", self.effects),
+            "CK3 1.19.0.6 does not register the bare remove_gold effect",
+        )
 
     def test_only_manager_scope_portfolio_adapter_is_integration_seam(self) -> None:
         adapter = effect_block(self.effects, "zg361_pp_manager_portfolio_adapter_effect")

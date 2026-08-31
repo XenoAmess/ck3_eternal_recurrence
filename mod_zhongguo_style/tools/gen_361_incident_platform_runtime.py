@@ -354,7 +354,7 @@ def _special_consumer(mechanism_id: int) -> str:
 \t\t\t\tvar:{p}_choice = 1
 \t\t\t\tvar:zg361_case_x_owner = {{ government_has_flag = government_has_treasury treasury >= 6 gold >= 4 }}
 \t\t\t}}
-\t\t\tvar:zg361_case_x_owner = {{ remove_treasury = 6 remove_gold = 4 }}
+\t\t\tvar:zg361_case_x_owner = {{ remove_treasury = 6 remove_short_term_gold = 4 }}
 \t\t\tadd_gold = 10
 \t\t\tset_variable = {{ name = {p}_treasury_paid value = 6 }}
 \t\t\tset_variable = {{ name = {p}_personal_paid value = 4 }}
@@ -410,7 +410,7 @@ def _special_consumer(mechanism_id: int) -> str:
 \t\tset_variable = {{ name = {p}_ledger_status value = 0 }}
 \t\tif = {{
 \t\t\tlimit = {{ var:{p}_choice = 1 var:zg361_case_y_owner = {{ government_has_flag = government_has_treasury treasury >= 6 gold >= 4 }} }}
-\t\t\tvar:zg361_case_y_owner = {{ remove_treasury = 6 remove_gold = 4 }}
+\t\t\tvar:zg361_case_y_owner = {{ remove_treasury = 6 remove_short_term_gold = 4 }}
 \t\t\tadd_gold = 10
 \t\t\tset_variable = {{ name = {p}_treasury_paid value = 6 }}
 \t\t\tset_variable = {{ name = {p}_personal_paid value = 4 }}
@@ -449,7 +449,7 @@ def _special_consumer(mechanism_id: int) -> str:
 \t\t\t\t\tgold >= var:{p}_personal_cost
 \t\t\t\t}}
 \t\t\t}}
-\t\t\tvar:zg361_case_z_owner = {{ remove_treasury = var:{p}_treasury_cost remove_gold = var:{p}_personal_cost }}
+\t\t\tvar:zg361_case_z_owner = {{ remove_treasury = var:{p}_treasury_cost remove_short_term_gold = var:{p}_personal_cost }}
 \t\t\tset_variable = {{ name = {p}_treasury_paid value = var:{p}_treasury_cost }}
 \t\t\tset_variable = {{ name = {p}_personal_paid value = var:{p}_personal_cost }}
 \t\t\tset_variable = {{ name = {p}_paid_total value = var:{p}_total_cost }}
@@ -736,6 +736,7 @@ zg361_ip_open_{domain.slug}_case_on_subject_effect = {{
 \t\t\t\tTICKET_SUBJECT = var:{case}_subject
 \t\t\t\tTICKET_CYCLE = var:{case}_cycle_serial
 \t\t\t\tTICKET_CASE = var:{case}_case_serial
+\t\t\t\tTICKET_STATE = 1
 \t\t\t}}
 \t\t}}
 \t}}
@@ -794,6 +795,13 @@ def render_policy_debt_consumer(mechanism_id: int) -> str:
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {{
+		limit = {{ has_variable = {p}_debt_cycle has_variable = {p}_debt_case }}
+		save_temporary_scope_value_as = {{
+			name = zg361_ip_expected_debt_id
+			value = {{ value = var:{p}_debt_cycle multiply = 1000000 add = {{ value = var:{p}_debt_case multiply = 1000 }} add = {mechanism_id} }}
+		}}
+	}}
+	if = {{
 		limit = {{
 			has_variable = {p}_debt_owner
 			has_variable = {p}_debt_subject
@@ -826,7 +834,7 @@ def render_policy_debt_consumer(mechanism_id: int) -> str:
 			var:{p}_debt_cycle = var:{p}_done_cycle
 			var:{p}_debt_case = var:{p}_done_case
 			var:{p}_debt_state = var:{p}_done_state
-			var:{p}_debt_id = {{ value = var:{p}_debt_cycle multiply = 1000000 add = {{ value = var:{p}_debt_case multiply = 1000 }} add = {mechanism_id} }}
+			var:{p}_debt_id = scope:zg361_ip_expected_debt_id
 			var:{p}_debt_owner = {{
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:{p}_debt_due_cycle

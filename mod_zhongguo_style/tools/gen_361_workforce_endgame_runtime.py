@@ -309,6 +309,88 @@ def _zero_or_missing(name: str) -> str:
     )
 
 
+def _save_temp_value(name: str, value: str) -> str:
+    """Render effect-side arithmetic before a trigger compares the result."""
+    return (
+        "save_temporary_scope_value_as = {\n"
+        f"\tname = {name}\n"
+        f"\tvalue = {{ value = {value} }}\n"
+        "}"
+    )
+
+
+def _ticket_next_cycle_prelude() -> str:
+    return _save_temp_value("zg361_we_expected_ticket_next_cycle", "$TICKET_CYCLE$ add = 1")
+
+
+def _collective_argument_prelude() -> str:
+    """Arithmetic for the public #360 adapter's scalar arguments."""
+    values = [
+        *(
+            (f"zg361_we_expected_c{slot}_quota", f"$C{slot}_FORCED_COUNT$ add = $C{slot}_EXCEPTION_COUNT$")
+            for slot in (1, 2, 3)
+        ),
+        (
+            "zg361_we_expected_collective_total_quota",
+            "$C1_QUOTA$ add = $C2_QUOTA$ add = $C3_QUOTA$",
+        ),
+    ]
+    return "\n".join(_save_temp_value(name, value) for name, value in values) + "\n" + _ticket_next_cycle_prelude()
+
+
+def _collective_persistent_prelude() -> str:
+    """Compute #360 aggregate expectations outside trigger grammar."""
+    required: list[str] = []
+    values: list[tuple[str, str]] = []
+    for slot in (1, 2, 3):
+        base = f"{PREFIX}_al_external_collective_{slot}"
+        for field in ("member_count", "quota", "forced_count", "exception_count", "manager_cost"):
+            required.append(f"has_variable = {base}_{field}")
+        values.append(
+            (
+                f"zg361_we_expected_collective_{slot}_quota",
+                f"var:{base}_forced_count add = var:{base}_exception_count",
+            )
+        )
+    for field, source in (
+        ("total_members", "member_count"),
+        ("total_quota", "quota"),
+        ("forced_count", "forced_count"),
+        ("exception_count", "exception_count"),
+        ("manager_cost_total", "manager_cost"),
+    ):
+        values.append(
+            (
+                f"zg361_we_expected_collective_{field}",
+                " add = ".join(
+                    f"var:{PREFIX}_al_external_collective_{slot}_{source}"
+                    for slot in (1, 2, 3)
+                ),
+            )
+        )
+    saves = "\n".join(_save_temp_value(name, value) for name, value in values)
+    return (
+        "if = {\n"
+        "\tlimit = {\n"
+        f"{indent(chr(10).join(required), 2)}\n"
+        "\t}\n"
+        f"{indent(saves)}\n"
+        "}\n"
+        + _ticket_next_cycle_prelude()
+    )
+
+
+def _debt_id_prelude(mid: int) -> str:
+    p = f"{PREFIX}_m{mid}_debt"
+    return f"""if = {{
+\tlimit = {{ has_variable = {p}_cycle has_variable = {p}_case }}
+\tsave_temporary_scope_value_as = {{
+\t\tname = {PREFIX}_m{mid}_expected_debt_id
+\t\tvalue = {{ value = var:{p}_cycle multiply = 1000000 add = {{ value = var:{p}_case multiply = 1000 }} add = {mid} }}
+\t}}
+}}"""
+
+
 def _collective_external_checks(choice: int) -> list[str]:
     """Fixed three-cohort projection of the model's #360 mapping ABI."""
     checks = [
@@ -351,7 +433,7 @@ def _collective_external_checks(choice: int) -> list[str]:
             f"var:{base}_forced_count >= 0",
             f"var:{base}_exception_count >= 0",
             f"var:{base}_manager_cost >= 0",
-            f"var:{base}_quota = {{ value = var:{base}_forced_count add = var:{base}_exception_count }}",
+            f"var:{base}_quota = scope:zg361_we_expected_collective_{slot}_quota",
             f"var:{base}_manager_cost = var:{base}_exception_count",
             f"var:{base}_partition_verified = 1",
             f"var:{base}_manager = {{ zg361_is_celestial_liege_trigger = yes has_variable = {PREFIX}_manager_score var:{PREFIX}_manager_score >= scope:{PREFIX}_al_subject.var:{base}_manager_cost }}",
@@ -376,11 +458,11 @@ def _collective_external_checks(choice: int) -> list[str]:
         f"NOT = {{ var:{PREFIX}_al_external_collective_1_manager = var:{PREFIX}_al_external_collective_2_manager }}",
         f"NOT = {{ var:{PREFIX}_al_external_collective_1_manager = var:{PREFIX}_al_external_collective_3_manager }}",
         f"NOT = {{ var:{PREFIX}_al_external_collective_2_manager = var:{PREFIX}_al_external_collective_3_manager }}",
-        f"var:{PREFIX}_al_external_collective_total_members = {{ value = var:{PREFIX}_al_external_collective_1_member_count add = var:{PREFIX}_al_external_collective_2_member_count add = var:{PREFIX}_al_external_collective_3_member_count }}",
-        f"var:{PREFIX}_al_external_collective_total_quota = {{ value = var:{PREFIX}_al_external_collective_1_quota add = var:{PREFIX}_al_external_collective_2_quota add = var:{PREFIX}_al_external_collective_3_quota }}",
-        f"var:{PREFIX}_al_external_collective_forced_count = {{ value = var:{PREFIX}_al_external_collective_1_forced_count add = var:{PREFIX}_al_external_collective_2_forced_count add = var:{PREFIX}_al_external_collective_3_forced_count }}",
-        f"var:{PREFIX}_al_external_collective_exception_count = {{ value = var:{PREFIX}_al_external_collective_1_exception_count add = var:{PREFIX}_al_external_collective_2_exception_count add = var:{PREFIX}_al_external_collective_3_exception_count }}",
-        f"var:{PREFIX}_al_external_collective_manager_cost_total = {{ value = var:{PREFIX}_al_external_collective_1_manager_cost add = var:{PREFIX}_al_external_collective_2_manager_cost add = var:{PREFIX}_al_external_collective_3_manager_cost }}",
+        f"var:{PREFIX}_al_external_collective_total_members = scope:zg361_we_expected_collective_total_members",
+        f"var:{PREFIX}_al_external_collective_total_quota = scope:zg361_we_expected_collective_total_quota",
+        f"var:{PREFIX}_al_external_collective_forced_count = scope:zg361_we_expected_collective_forced_count",
+        f"var:{PREFIX}_al_external_collective_exception_count = scope:zg361_we_expected_collective_exception_count",
+        f"var:{PREFIX}_al_external_collective_manager_cost_total = scope:zg361_we_expected_collective_manager_cost_total",
         f"var:{PREFIX}_al_external_collective_total_members >= 3",
         f"var:{PREFIX}_al_external_collective_total_quota >= 0",
         f"var:{PREFIX}_al_external_collective_total_quota <= {MAX_COLLECTIVE_OUTCOMES}",
@@ -393,7 +475,7 @@ def _collective_external_checks(choice: int) -> list[str]:
             f"trigger_if = {{ limit = {{ var:{PREFIX}_al_external_collective_exception_count = 0 }} "
             f"has_variable = {PREFIX}_al_external_collective_reform_proposal_id "
             f"has_variable = {PREFIX}_al_external_collective_reform_effective_cycle "
-            f"var:{PREFIX}_al_external_collective_reform_effective_cycle = {{ value = $TICKET_CYCLE$ add = 1 }} }} "
+            f"var:{PREFIX}_al_external_collective_reform_effective_cycle = scope:zg361_we_expected_ticket_next_cycle }} "
             f"trigger_else = {{ always = yes }}"
         )
     # Outcome identities are partitioned by cohort rather than accepted from a
@@ -552,7 +634,7 @@ def _charter_external_checks() -> list[str]:
         f"\tvar:{PREFIX}_al_external_charter_adopted_day > var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_adopted_day",
         f"\tNOT = {{ var:{PREFIX}_al_external_completed_cycles_hash = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_cycle_hash }}",
         f"\tNOT = {{ var:{PREFIX}_al_external_long_report_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_report_id }}",
-        f"\tvar:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_effective_cycle < {{ value = $TICKET_CYCLE$ add = 1 }} }}",
+        f"\tvar:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_effective_cycle < scope:zg361_we_expected_ticket_next_cycle }}",
         f"}} trigger_else = {{ var:{PREFIX}_al_external_charter_previous_id = 0 var:{PREFIX}_al_external_charter_previous_history_hash = 0 }}",
         f"NOT = {{ var:{PREFIX}_al_external_charter_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}",
     ]
@@ -594,7 +676,7 @@ def _charter_business_writes(choice: int) -> list[str]:
         _set("m361_previous_charter_version", f"var:zg361_case_al_owner.var:{PREFIX}_realm_charter_previous_version"),
         _set("al_external_charter_evidence_consumed", 1),
         _set("al_external_charter_evidence_ready", 0),
-        f"var:zg361_case_al_owner = {{ remove_gold = {cost} }}",
+        f"var:zg361_case_al_owner = {{ remove_short_term_gold = {cost} }}",
         f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[361]} days = 365 }}",
     ]
     return lines
@@ -1174,13 +1256,13 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         hours = 2 if choice == 1 else 4
         lines += [_change("hours_available", -hours), _change("hours_on_call", hours), _set("m243_urgency_frozen", 1), _set("m243_mandatory_for_all", 0 if choice == 1 else 1)]
     elif mid == 244:
-        lines += [_change("hours_available", -5), _change("hours_output", 5), _change("gold_available", -10), _change("gold_paid", 10), _set("m244_refusal_protected", 1 if choice == 1 else 0), f"var:zg361_case_{d}_owner = {{ remove_gold = 10 }}", "add_gold = 10"]
+        lines += [_change("hours_available", -5), _change("hours_output", 5), _change("gold_available", -10), _change("gold_paid", 10), _set("m244_refusal_protected", 1 if choice == 1 else 0), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 10 }}", "add_gold = 10"]
     elif mid == 245:
         lines += [_change("overtime_pending", 5), _set("m245_overtime_hours", 5), _set("m245_approved", 1 if choice == 1 else 0), _set("m245_shadow_provenance", 0 if choice == 1 else 1)]
     elif mid == 246:
         lines += [_change("overtime_pending", -5), _set("m246_compensated_hours", 5)]
         if choice == 1:
-            lines += [_change("gold_available", -15), _change("gold_paid", 15), _set("m246_compensation_route", 1), f"var:zg361_case_{d}_owner = {{ remove_gold = 15 }}", "add_gold = 15"]
+            lines += [_change("gold_available", -15), _change("gold_paid", 15), _set("m246_compensation_route", 1), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 15 }}", "add_gold = 15"]
         else:
             lines += [_change("leave_bank", 5), _set("m246_compensation_route", 2)]
     elif mid == 247:
@@ -1249,7 +1331,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
                 _set("m264_practical_hash", f"var:{PREFIX}_ac_external_handoff_practical_hash"),
                 _set("m264_documentation_accepted", 1), _set("m264_shadowing_accepted", 1),
                 _set("m264_practical_acceptance", 1), _set("m264_payment_settled", 1),
-                f"var:zg361_case_{d}_owner = {{ remove_gold = 20 }}", "add_gold = 20",
+                f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 20 }}", "add_gold = 20",
             ]
         else:
             lines += [
@@ -1268,7 +1350,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         ]
     elif mid == 265:
         if choice == 1:
-            lines += [_change("gold_paid", -5), _change("gold_available", 5), _change("contract_gold_paid", -5), _change("contract_gold_recovered", 5), _set("m265_evidence_count", 2), _set("m265_incident_evidence", f"var:{PREFIX}_m259_write_case"), _set("m265_executor_evidence", f"var:{PREFIX}_m261_write_case"), _set("m265_vendor_actor", "$TICKET_SUBJECT$"), _set("m265_liable_manager", "$TICKET_OWNER$"), _set("m265_manager_duty_evidence", f"var:{PREFIX}_m259_write_case"), _set("m265_recovery_payee", "$TICKET_OWNER$"), _set("m265_recovery_source", "$TICKET_SUBJECT$"), _set("m265_liability_total_bps", 10000), _set("m265_actor_identity_verified", 1), _set("m265_suspicion_only", 0), _set("m265_investigation_pending", 0), "remove_gold = 5", f"var:zg361_case_{d}_owner = {{ add_gold = 5 }}"]
+            lines += [_change("gold_paid", -5), _change("gold_available", 5), _change("contract_gold_paid", -5), _change("contract_gold_recovered", 5), _set("m265_evidence_count", 2), _set("m265_incident_evidence", f"var:{PREFIX}_m259_write_case"), _set("m265_executor_evidence", f"var:{PREFIX}_m261_write_case"), _set("m265_vendor_actor", "$TICKET_SUBJECT$"), _set("m265_liable_manager", "$TICKET_OWNER$"), _set("m265_manager_duty_evidence", f"var:{PREFIX}_m259_write_case"), _set("m265_recovery_payee", "$TICKET_OWNER$"), _set("m265_recovery_source", "$TICKET_SUBJECT$"), _set("m265_liability_total_bps", 10000), _set("m265_actor_identity_verified", 1), _set("m265_suspicion_only", 0), _set("m265_investigation_pending", 0), "remove_short_term_gold = 5", f"var:zg361_case_{d}_owner = {{ add_gold = 5 }}"]
         else:
             lines += [_set("m265_evidence_count", 0), _set("m265_actor_identity_verified", 0), _set("m265_suspicion_only", 1), _set("m265_management_chain_frozen", 1), _set("m265_investigation_pending", 1), _set("m265_recovery_gold", 0), _change("manager_score", -5)]
     # AD: one shared HC reservation, immutable votes, delayed outcome and holds.
@@ -1295,7 +1377,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 270:
         lines += [_set("m270_role_class", 1 if choice == 1 else 4), _set("m270_threshold", 75 if choice == 1 else 85), _set("m270_policy_version", "$TICKET_CYCLE$"), _set("m270_raw_votes_rewritten", 0)]
     elif mid == 271:
-        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", f"var:{PREFIX}_ad_external_candidate"), _set("m271_referral_id", f"var:{PREFIX}_ad_external_referral_id"), _set("m271_referrer", f"var:{PREFIX}_ad_external_referrer"), _set("m271_relationship_ref", f"var:{PREFIX}_ad_external_referral_relationship"), _set("m271_evidence_receipt", f"var:{PREFIX}_ad_external_referral_evidence_receipt"), _set("m271_reward_gold", f"var:{PREFIX}_ad_external_referral_reward"), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_voted", f"var:{PREFIX}_ad_external_referrer_voted"), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_gold = 5 }}"]
+        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", f"var:{PREFIX}_ad_external_candidate"), _set("m271_referral_id", f"var:{PREFIX}_ad_external_referral_id"), _set("m271_referrer", f"var:{PREFIX}_ad_external_referrer"), _set("m271_relationship_ref", f"var:{PREFIX}_ad_external_referral_relationship"), _set("m271_evidence_receipt", f"var:{PREFIX}_ad_external_referral_evidence_receipt"), _set("m271_reward_gold", f"var:{PREFIX}_ad_external_referral_reward"), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_voted", f"var:{PREFIX}_ad_external_referrer_voted"), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 5 }}"]
         if choice == 2:
             lines += [_change("gold_reserved", -5), _change("gold_paid", 5), _change("referral_gold_reserved", -5), _change("referral_gold_paid", 5), _set("m271_internal_owner_credit", 5), _set("m271_reward_paid_before_probation", 1), _set("m271_reward_payee", f"var:{PREFIX}_m271_referrer"), _set("m271_reward_escrowed", 0), f"var:{PREFIX}_m271_referrer = {{ add_gold = 5 }}"]
     elif mid == 272:
@@ -1321,7 +1403,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
                 _set("m274_probation_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"),
                 _set("ad_external_appointment_consumed", 1),
                 _set("ad_external_appointment_ready", 0),
-                f"var:zg361_case_{d}_owner = {{ remove_gold = 15 set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}",
+                f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 15 set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}",
                 "add_gold = 15",
             ]
     elif mid == 275:
@@ -1510,10 +1592,11 @@ def render_consumer(spec: Mechanism) -> str:
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_cycle = var:{PREFIX}_m{mid}_write_cycle",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_case = var:{PREFIX}_m{mid}_write_case",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_state = var:{PREFIX}_m{mid}_write_state",
-        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_id = {{ value = var:{PREFIX}_m{mid}_debt_cycle multiply = 1000000 add = {{ value = var:{PREFIX}_m{mid}_debt_case multiply = 1000 }} add = {mid} }}",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_id = scope:{PREFIX}_m{mid}_expected_debt_id",
     ))
     return f"""# #{mid:03d} read-side projection; existence gates precede tuple reads.
 {PREFIX}_m{mid}_consume_effect = {{
+{indent(_debt_id_prelude(mid))}
 \tif = {{
 \t\tlimit = {{
 \t\t\ttrigger_if = {{
@@ -1620,6 +1703,7 @@ def render_timeout(domain: str, state: int) -> str:
 \tTICKET_SUBJECT = this
 \tTICKET_CYCLE = var:zg361_case_{domain}_cycle_serial
 \tTICKET_CASE = var:zg361_case_{domain}_case_serial
+\tTICKET_STATE = {state}
 }}"""
         for spec in specs
     )
@@ -1748,6 +1832,11 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     receipts = any_receipt(spec)
     checks = atomic_precheck(spec, choice)
     business = "\n".join(business_effects(spec, choice))
+    value_prelude = ""
+    if mid == 360:
+        value_prelude = indent(_collective_persistent_prelude()) + "\n"
+    elif mid == 361:
+        value_prelude = indent(_ticket_next_cycle_prelude()) + "\n"
     advance = ""
     # #263 route B and a real #269 hire outcome are future-settled.  Their
     # delayed consumers, rather than the write-side receipt, advance the case.
@@ -1809,6 +1898,7 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 {PREFIX}_m{mid}_route_{letter}_effect = {{
 \tremove_variable = {PREFIX}_runtime_applied
 \tremove_variable = {PREFIX}_last_red_code
+{value_prelude.rstrip()}
 \tif = {{
 \t\tlimit = {{
 {indent(guard, 3)}
@@ -2299,6 +2389,16 @@ def render_future_consumers() -> str:
 {PREFIX}_m269_future_consume_effect = {{
 \tif = {{
 \t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_ad_external_attribution_bps_2
+\t\t\thas_variable = {PREFIX}_ad_external_attribution_bps_3
+\t\t}}
+\t\tsave_temporary_scope_value_as = {{
+\t\t\tname = {PREFIX}_expected_attribution_bps_1
+\t\t\tvalue = {{ value = 10000 subtract = var:{PREFIX}_ad_external_attribution_bps_2 subtract = var:{PREFIX}_ad_external_attribution_bps_3 }}
+\t\t}}
+\t}}
+\tif = {{
+\t\tlimit = {{
 {indent(_future_tuple_guard(269), 3)}
 \t\t\tvar:{PREFIX}_m269_outcome_pending = 1
 \t\t\thas_variable = {PREFIX}_ad_external_outcome_ready
@@ -2344,7 +2444,7 @@ def render_future_consumers() -> str:
 \t\t\t\tvar:{PREFIX}_ad_external_attribution_bps_2 >= 0
 \t\t\t\tvar:{PREFIX}_ad_external_attribution_bps_3 >= 0
 \t\t\t\ttrigger_if = {{ limit = {{ var:{PREFIX}_ad_external_outcome_quality = 4 }} var:{PREFIX}_ad_external_attribution_bps_1 = 0 var:{PREFIX}_ad_external_attribution_bps_2 = 0 var:{PREFIX}_ad_external_attribution_bps_3 = 0 has_variable = {PREFIX}_ad_external_outcome_exclusion_reason }}
-\t\t\t\ttrigger_else = {{ var:{PREFIX}_ad_external_attribution_bps_1 = {{ value = 10000 subtract = var:{PREFIX}_ad_external_attribution_bps_2 subtract = var:{PREFIX}_ad_external_attribution_bps_3 }} }}
+\t\t\t\ttrigger_else = {{ var:{PREFIX}_ad_external_attribution_bps_1 = scope:{PREFIX}_expected_attribution_bps_1 }}
 \t\t\t}}
 \t\t\ttrigger_else = {{
 \t\t\t\tvar:{PREFIX}_m269_receipt_choice = 2
@@ -2503,7 +2603,7 @@ def render_future_consumers() -> str:
 \t\tchange_variable = {{ name = {PREFIX}_target_gold_reserved add = -10 }}
 \t\tchange_variable = {{ name = {PREFIX}_gold_reserved add = -10 }}
 \t\tchange_variable = {{ name = {PREFIX}_gold_paid add = 10 }}
-\t\tvar:{PREFIX}_m355_write_owner = {{ remove_gold = 10 }}
+\t\tvar:{PREFIX}_m355_write_owner = {{ remove_short_term_gold = 10 }}
 \t\tadd_gold = 10
 \t\tset_variable = {{ name = {PREFIX}_m355_target_install_pending value = 0 }}
 \t\tset_variable = {{ name = {PREFIX}_m355_target_installed_future_cycle value = var:{PREFIX}_m355_effective_cycle }}
@@ -2594,6 +2694,7 @@ def render_due_debt_consumer(spec: Mechanism) -> str:
     return f"""{p}_consume_due_debt_effect = {{
 	remove_variable = {PREFIX}_future_status
 	remove_variable = {PREFIX}_future_red_code
+{indent(_debt_id_prelude(mid))}
 	if = {{
 		limit = {{
 			has_variable = {p}_debt_owner
@@ -2626,7 +2727,7 @@ def render_due_debt_consumer(spec: Mechanism) -> str:
 			var:{p}_debt_cycle = var:{p}_write_cycle
 			var:{p}_debt_case = var:{p}_write_case
 			var:{p}_debt_state = var:{p}_write_state
-			var:{p}_debt_id = {{ value = var:{p}_debt_cycle multiply = 1000000 add = {{ value = var:{p}_debt_case multiply = 1000 }} add = {mid} }}
+			var:{p}_debt_id = scope:{PREFIX}_m{mid}_expected_debt_id
 			var:{p}_debt_owner = {{
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:{p}_debt_due_cycle
@@ -2727,7 +2828,7 @@ def render_collective_producer() -> str:
             f"${macro}_QUOTA$ <= ${macro}_MEMBER_COUNT$",
             f"${macro}_FORCED_COUNT$ >= 0",
             f"${macro}_EXCEPTION_COUNT$ >= 0",
-            f"${macro}_QUOTA$ = {{ value = ${macro}_FORCED_COUNT$ add = ${macro}_EXCEPTION_COUNT$ }}",
+            f"${macro}_QUOTA$ = scope:zg361_we_expected_c{cohort}_quota",
             f"${macro}_ALL_MEET_EVIDENCE_ID$ > 0",
             f"${macro}_MANAGER_COST$ = ${macro}_EXCEPTION_COUNT$",
             (
@@ -2768,6 +2869,7 @@ def render_collective_producer() -> str:
 {PREFIX}_begin_al_three_cohort_collective_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
+{indent(_collective_argument_prelude())}
 	if = {{
 		limit = {{
 			zg361_case_kernel_full_guard_trigger = {{
@@ -2789,13 +2891,13 @@ def render_collective_producer() -> str:
 			NOT = {{ $C1_MANAGER$ = $C2_MANAGER$ }}
 			NOT = {{ $C1_MANAGER$ = $C3_MANAGER$ }}
 			NOT = {{ $C2_MANAGER$ = $C3_MANAGER$ }}
-			$C1_QUOTA$ = {{ value = $C1_FORCED_COUNT$ add = $C1_EXCEPTION_COUNT$ }}
-			$C2_QUOTA$ = {{ value = $C2_FORCED_COUNT$ add = $C2_EXCEPTION_COUNT$ }}
-			$C3_QUOTA$ = {{ value = $C3_FORCED_COUNT$ add = $C3_EXCEPTION_COUNT$ }}
-			$TOTAL_QUOTA$ = {{ value = $C1_QUOTA$ add = $C2_QUOTA$ add = $C3_QUOTA$ }}
+			$C1_QUOTA$ = scope:zg361_we_expected_c1_quota
+			$C2_QUOTA$ = scope:zg361_we_expected_c2_quota
+			$C3_QUOTA$ = scope:zg361_we_expected_c3_quota
+			$TOTAL_QUOTA$ = scope:zg361_we_expected_collective_total_quota
 			$TOTAL_QUOTA$ <= {MAX_COLLECTIVE_OUTCOMES}
 			$REFORM_PROPOSAL_ID$ > 0
-			$REFORM_EFFECTIVE_CYCLE$ = {{ value = $TICKET_CYCLE$ add = 1 }}
+			$REFORM_EFFECTIVE_CYCLE$ = scope:zg361_we_expected_ticket_next_cycle
 		}}
 {indent(chr(10).join(cleanup))}
 		set_variable = {{ name = {PREFIX}_al_external_collective_submission_active value = 1 }}
@@ -2882,6 +2984,7 @@ def render_collective_producer() -> str:
     seal = f"""{PREFIX}_seal_al_three_cohort_collective_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
+{indent(_collective_persistent_prelude())}
 	if = {{
 		limit = {{
 {indent(chr(10).join(seal_checks), 3)}
@@ -3742,6 +3845,7 @@ def event_next_mid(spec: Mechanism) -> int | None:
 def render_option(spec: Mechanism, choice: int) -> str:
     d, mid = spec.domain, spec.mid
     letter = "abc"[choice - 1]
+    ticket_state = f"\n\t\t\tTICKET_STATE = {spec.state}" if choice == 3 else ""
     next_mid = event_next_mid(spec)
     next_event = ""
     # #262 opens a due-cycle review; it must not immediately ask #263 in the
@@ -3809,7 +3913,7 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
 \t\t\tTICKET_SUBJECT = scope:{PREFIX}_{d}_subject
 \t\t\tTICKET_CYCLE = scope:{PREFIX}_{d}_cycle
-\t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case
+\t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case{ticket_state}
 \t\t}}
 \t}}{next_event}
 }}"""

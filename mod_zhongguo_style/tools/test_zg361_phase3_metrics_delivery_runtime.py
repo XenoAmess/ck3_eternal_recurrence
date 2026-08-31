@@ -25,6 +25,10 @@ EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_phase3_metrics_
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_phase3_metrics_delivery_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-phase3-metrics-delivery-runtime-spec.md"
 EXPECTED_IDS = set(range(229, 242)) | set(range(301, 312)) | set(range(334, 345))
+ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
+    r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
+    r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
+)
 
 
 def read(path: Path) -> str:
@@ -114,6 +118,14 @@ class GeneratorContractTests(unittest.TestCase):
             with self.subTest(path=path):
                 payload = read(path)
                 self.assertEqual(payload.count("{"), payload.count("}"))
+
+    def test_generated_triggers_never_use_inline_arithmetic_rhs(self) -> None:
+        # CK3 1.19.0.6 reports this shape as wildcard value plus unknown
+        # value/add triggers, so arithmetic must happen in effect statements.
+        self.assertIsNone(
+            ILLEGAL_TRIGGER_ARITHMETIC_RHS.search(self.effects),
+            "CK3 scripted-effect loader treats RHS value arithmetic as triggers",
+        )
 
     def test_every_id_has_consumer_three_routes_and_event(self) -> None:
         for mid in sorted(EXPECTED_IDS):
@@ -249,10 +261,11 @@ class GeneratorContractTests(unittest.TestCase):
                 self.assertEqual(
                     route.count(
                         f"set_variable = {{ name = {prefix}due_cycle "
-                        "value = { value = $TICKET_CYCLE$ add = 1 } }"
+                        "value = $TICKET_CYCLE$ }"
                     ),
                     1,
                 )
+                self.assertEqual(route.count(f"change_variable = {{ name = {prefix}due_cycle add = 1 }}"), 1)
                 self.assertEqual(route.count(f"set_variable = {{ name = {prefix}status value = 1 }}"), 1)
                 for name, value in {
                     "mechanism": spec.mid,
@@ -348,8 +361,14 @@ class GeneratorContractTests(unittest.TestCase):
                 for name in ("owner", "subject", "cycle", "case", "state"):
                     self.assertIn(f"var:{prefix}_debt_{name} = var:{prefix}_receipt_{name}", consumer)
                 self.assertIn(f"var:{prefix}_receipt_choice = 3", consumer)
+                self.assertIn(f"has_variable = {prefix}_debt_expected_due_cycle", consumer)
                 self.assertIn(
-                    f"var:{prefix}_debt_due_cycle = {{ value = var:{prefix}_debt_cycle add = 1 }}",
+                    f"name = {prefix}_debt_expected_due_cycle value = var:{prefix}_debt_cycle",
+                    consumer,
+                )
+                self.assertIn(f"name = {prefix}_debt_expected_due_cycle add = 1", consumer)
+                self.assertIn(
+                    f"var:{prefix}_debt_due_cycle = var:{prefix}_debt_expected_due_cycle",
                     consumer,
                 )
                 self.assertIn(f"root.var:zg361_review_serial = var:{prefix}_debt_due_cycle", consumer)
@@ -438,6 +457,17 @@ class GeneratorContractTests(unittest.TestCase):
 
     def test_due_debt_aggregate_has_one_call_per_id_and_one_caller(self) -> None:
         aggregate = block(self.effects, "zg361_p3_consume_due_policy_debts_effect")
+        self.assertIn(
+            "name = zg361_p3_deferred_cleanup_due_cycle value = var:zg361_p3_portfolio_cycle",
+            aggregate,
+        )
+        self.assertIn("name = zg361_p3_deferred_cleanup_due_cycle add = 1", aggregate)
+        cleanup = block(self.effects, "zg361_p3_settle_deferred_portfolio_effect")
+        self.assertIn("has_variable = zg361_p3_deferred_cleanup_due_cycle", cleanup)
+        self.assertIn(
+            "root.var:zg361_review_serial = var:zg361_p3_deferred_cleanup_due_cycle",
+            cleanup,
+        )
         calls = re.findall(r"zg361_p3_m(\d+)_consume_due_debt_effect = yes", aggregate)
         self.assertEqual([int(mid) for mid in calls], [spec.mid for spec in gen.MECHANISMS])
         self.assertEqual(len(calls), 35)

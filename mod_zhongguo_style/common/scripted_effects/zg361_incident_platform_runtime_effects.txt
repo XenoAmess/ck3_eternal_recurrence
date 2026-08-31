@@ -283,7 +283,7 @@ always = yes
 				var:zg361_ip_m193_choice = 1
 				var:zg361_case_x_owner = { government_has_flag = government_has_treasury treasury >= 6 gold >= 4 }
 			}
-			var:zg361_case_x_owner = { remove_treasury = 6 remove_gold = 4 }
+			var:zg361_case_x_owner = { remove_treasury = 6 remove_short_term_gold = 4 }
 			add_gold = 10
 			set_variable = { name = zg361_ip_m193_treasury_paid value = 6 }
 			set_variable = { name = zg361_ip_m193_personal_paid value = 4 }
@@ -2810,7 +2810,7 @@ always = yes
 		set_variable = { name = zg361_ip_m209_ledger_status value = 0 }
 		if = {
 			limit = { var:zg361_ip_m209_choice = 1 var:zg361_case_y_owner = { government_has_flag = government_has_treasury treasury >= 6 gold >= 4 } }
-			var:zg361_case_y_owner = { remove_treasury = 6 remove_gold = 4 }
+			var:zg361_case_y_owner = { remove_treasury = 6 remove_short_term_gold = 4 }
 			add_gold = 10
 			set_variable = { name = zg361_ip_m209_treasury_paid value = 6 }
 			set_variable = { name = zg361_ip_m209_personal_paid value = 4 }
@@ -4584,7 +4584,7 @@ trigger_if = {
 					gold >= var:zg361_ip_m220_personal_cost
 				}
 			}
-			var:zg361_case_z_owner = { remove_treasury = var:zg361_ip_m220_treasury_cost remove_gold = var:zg361_ip_m220_personal_cost }
+			var:zg361_case_z_owner = { remove_treasury = var:zg361_ip_m220_treasury_cost remove_short_term_gold = var:zg361_ip_m220_personal_cost }
 			set_variable = { name = zg361_ip_m220_treasury_paid value = var:zg361_ip_m220_treasury_cost }
 			set_variable = { name = zg361_ip_m220_personal_paid value = var:zg361_ip_m220_personal_cost }
 			set_variable = { name = zg361_ip_m220_paid_total value = var:zg361_ip_m220_total_cost }
@@ -5981,6 +5981,13 @@ zg361_ip_m192_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m192_debt_cycle has_variable = zg361_ip_m192_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m192_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m192_debt_case multiply = 1000 } add = 192 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m192_debt_owner
 			has_variable = zg361_ip_m192_debt_subject
@@ -6013,7 +6020,7 @@ zg361_ip_m192_consume_due_debt_effect = {
 			var:zg361_ip_m192_debt_cycle = var:zg361_ip_m192_done_cycle
 			var:zg361_ip_m192_debt_case = var:zg361_ip_m192_done_case
 			var:zg361_ip_m192_debt_state = var:zg361_ip_m192_done_state
-			var:zg361_ip_m192_debt_id = { value = var:zg361_ip_m192_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m192_debt_case multiply = 1000 } add = 192 }
+			var:zg361_ip_m192_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m192_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m192_debt_due_cycle
@@ -6079,6 +6086,13 @@ zg361_ip_m193_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m193_debt_cycle has_variable = zg361_ip_m193_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m193_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m193_debt_case multiply = 1000 } add = 193 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m193_debt_owner
 			has_variable = zg361_ip_m193_debt_subject
@@ -6111,7 +6125,7 @@ zg361_ip_m193_consume_due_debt_effect = {
 			var:zg361_ip_m193_debt_cycle = var:zg361_ip_m193_done_cycle
 			var:zg361_ip_m193_debt_case = var:zg361_ip_m193_done_case
 			var:zg361_ip_m193_debt_state = var:zg361_ip_m193_done_state
-			var:zg361_ip_m193_debt_id = { value = var:zg361_ip_m193_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m193_debt_case multiply = 1000 } add = 193 }
+			var:zg361_ip_m193_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m193_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m193_debt_due_cycle
@@ -6177,6 +6191,13 @@ zg361_ip_m194_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m194_debt_cycle has_variable = zg361_ip_m194_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m194_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m194_debt_case multiply = 1000 } add = 194 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m194_debt_owner
 			has_variable = zg361_ip_m194_debt_subject
@@ -6209,7 +6230,7 @@ zg361_ip_m194_consume_due_debt_effect = {
 			var:zg361_ip_m194_debt_cycle = var:zg361_ip_m194_done_cycle
 			var:zg361_ip_m194_debt_case = var:zg361_ip_m194_done_case
 			var:zg361_ip_m194_debt_state = var:zg361_ip_m194_done_state
-			var:zg361_ip_m194_debt_id = { value = var:zg361_ip_m194_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m194_debt_case multiply = 1000 } add = 194 }
+			var:zg361_ip_m194_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m194_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m194_debt_due_cycle
@@ -6275,6 +6296,13 @@ zg361_ip_m195_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m195_debt_cycle has_variable = zg361_ip_m195_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m195_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m195_debt_case multiply = 1000 } add = 195 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m195_debt_owner
 			has_variable = zg361_ip_m195_debt_subject
@@ -6307,7 +6335,7 @@ zg361_ip_m195_consume_due_debt_effect = {
 			var:zg361_ip_m195_debt_cycle = var:zg361_ip_m195_done_cycle
 			var:zg361_ip_m195_debt_case = var:zg361_ip_m195_done_case
 			var:zg361_ip_m195_debt_state = var:zg361_ip_m195_done_state
-			var:zg361_ip_m195_debt_id = { value = var:zg361_ip_m195_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m195_debt_case multiply = 1000 } add = 195 }
+			var:zg361_ip_m195_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m195_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m195_debt_due_cycle
@@ -6373,6 +6401,13 @@ zg361_ip_m196_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m196_debt_cycle has_variable = zg361_ip_m196_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m196_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m196_debt_case multiply = 1000 } add = 196 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m196_debt_owner
 			has_variable = zg361_ip_m196_debt_subject
@@ -6405,7 +6440,7 @@ zg361_ip_m196_consume_due_debt_effect = {
 			var:zg361_ip_m196_debt_cycle = var:zg361_ip_m196_done_cycle
 			var:zg361_ip_m196_debt_case = var:zg361_ip_m196_done_case
 			var:zg361_ip_m196_debt_state = var:zg361_ip_m196_done_state
-			var:zg361_ip_m196_debt_id = { value = var:zg361_ip_m196_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m196_debt_case multiply = 1000 } add = 196 }
+			var:zg361_ip_m196_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m196_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m196_debt_due_cycle
@@ -6471,6 +6506,13 @@ zg361_ip_m197_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m197_debt_cycle has_variable = zg361_ip_m197_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m197_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m197_debt_case multiply = 1000 } add = 197 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m197_debt_owner
 			has_variable = zg361_ip_m197_debt_subject
@@ -6503,7 +6545,7 @@ zg361_ip_m197_consume_due_debt_effect = {
 			var:zg361_ip_m197_debt_cycle = var:zg361_ip_m197_done_cycle
 			var:zg361_ip_m197_debt_case = var:zg361_ip_m197_done_case
 			var:zg361_ip_m197_debt_state = var:zg361_ip_m197_done_state
-			var:zg361_ip_m197_debt_id = { value = var:zg361_ip_m197_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m197_debt_case multiply = 1000 } add = 197 }
+			var:zg361_ip_m197_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m197_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m197_debt_due_cycle
@@ -6569,6 +6611,13 @@ zg361_ip_m198_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m198_debt_cycle has_variable = zg361_ip_m198_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m198_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m198_debt_case multiply = 1000 } add = 198 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m198_debt_owner
 			has_variable = zg361_ip_m198_debt_subject
@@ -6601,7 +6650,7 @@ zg361_ip_m198_consume_due_debt_effect = {
 			var:zg361_ip_m198_debt_cycle = var:zg361_ip_m198_done_cycle
 			var:zg361_ip_m198_debt_case = var:zg361_ip_m198_done_case
 			var:zg361_ip_m198_debt_state = var:zg361_ip_m198_done_state
-			var:zg361_ip_m198_debt_id = { value = var:zg361_ip_m198_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m198_debt_case multiply = 1000 } add = 198 }
+			var:zg361_ip_m198_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m198_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m198_debt_due_cycle
@@ -6667,6 +6716,13 @@ zg361_ip_m199_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m199_debt_cycle has_variable = zg361_ip_m199_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m199_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m199_debt_case multiply = 1000 } add = 199 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m199_debt_owner
 			has_variable = zg361_ip_m199_debt_subject
@@ -6699,7 +6755,7 @@ zg361_ip_m199_consume_due_debt_effect = {
 			var:zg361_ip_m199_debt_cycle = var:zg361_ip_m199_done_cycle
 			var:zg361_ip_m199_debt_case = var:zg361_ip_m199_done_case
 			var:zg361_ip_m199_debt_state = var:zg361_ip_m199_done_state
-			var:zg361_ip_m199_debt_id = { value = var:zg361_ip_m199_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m199_debt_case multiply = 1000 } add = 199 }
+			var:zg361_ip_m199_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m199_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m199_debt_due_cycle
@@ -6765,6 +6821,13 @@ zg361_ip_m200_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m200_debt_cycle has_variable = zg361_ip_m200_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m200_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m200_debt_case multiply = 1000 } add = 200 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m200_debt_owner
 			has_variable = zg361_ip_m200_debt_subject
@@ -6797,7 +6860,7 @@ zg361_ip_m200_consume_due_debt_effect = {
 			var:zg361_ip_m200_debt_cycle = var:zg361_ip_m200_done_cycle
 			var:zg361_ip_m200_debt_case = var:zg361_ip_m200_done_case
 			var:zg361_ip_m200_debt_state = var:zg361_ip_m200_done_state
-			var:zg361_ip_m200_debt_id = { value = var:zg361_ip_m200_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m200_debt_case multiply = 1000 } add = 200 }
+			var:zg361_ip_m200_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m200_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m200_debt_due_cycle
@@ -6863,6 +6926,13 @@ zg361_ip_m201_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m201_debt_cycle has_variable = zg361_ip_m201_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m201_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m201_debt_case multiply = 1000 } add = 201 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m201_debt_owner
 			has_variable = zg361_ip_m201_debt_subject
@@ -6895,7 +6965,7 @@ zg361_ip_m201_consume_due_debt_effect = {
 			var:zg361_ip_m201_debt_cycle = var:zg361_ip_m201_done_cycle
 			var:zg361_ip_m201_debt_case = var:zg361_ip_m201_done_case
 			var:zg361_ip_m201_debt_state = var:zg361_ip_m201_done_state
-			var:zg361_ip_m201_debt_id = { value = var:zg361_ip_m201_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m201_debt_case multiply = 1000 } add = 201 }
+			var:zg361_ip_m201_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m201_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m201_debt_due_cycle
@@ -6961,6 +7031,13 @@ zg361_ip_m202_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m202_debt_cycle has_variable = zg361_ip_m202_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m202_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m202_debt_case multiply = 1000 } add = 202 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m202_debt_owner
 			has_variable = zg361_ip_m202_debt_subject
@@ -6993,7 +7070,7 @@ zg361_ip_m202_consume_due_debt_effect = {
 			var:zg361_ip_m202_debt_cycle = var:zg361_ip_m202_done_cycle
 			var:zg361_ip_m202_debt_case = var:zg361_ip_m202_done_case
 			var:zg361_ip_m202_debt_state = var:zg361_ip_m202_done_state
-			var:zg361_ip_m202_debt_id = { value = var:zg361_ip_m202_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m202_debt_case multiply = 1000 } add = 202 }
+			var:zg361_ip_m202_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m202_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m202_debt_due_cycle
@@ -7059,6 +7136,13 @@ zg361_ip_m203_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m203_debt_cycle has_variable = zg361_ip_m203_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m203_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m203_debt_case multiply = 1000 } add = 203 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m203_debt_owner
 			has_variable = zg361_ip_m203_debt_subject
@@ -7091,7 +7175,7 @@ zg361_ip_m203_consume_due_debt_effect = {
 			var:zg361_ip_m203_debt_cycle = var:zg361_ip_m203_done_cycle
 			var:zg361_ip_m203_debt_case = var:zg361_ip_m203_done_case
 			var:zg361_ip_m203_debt_state = var:zg361_ip_m203_done_state
-			var:zg361_ip_m203_debt_id = { value = var:zg361_ip_m203_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m203_debt_case multiply = 1000 } add = 203 }
+			var:zg361_ip_m203_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m203_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m203_debt_due_cycle
@@ -7157,6 +7241,13 @@ zg361_ip_m204_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m204_debt_cycle has_variable = zg361_ip_m204_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m204_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m204_debt_case multiply = 1000 } add = 204 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m204_debt_owner
 			has_variable = zg361_ip_m204_debt_subject
@@ -7189,7 +7280,7 @@ zg361_ip_m204_consume_due_debt_effect = {
 			var:zg361_ip_m204_debt_cycle = var:zg361_ip_m204_done_cycle
 			var:zg361_ip_m204_debt_case = var:zg361_ip_m204_done_case
 			var:zg361_ip_m204_debt_state = var:zg361_ip_m204_done_state
-			var:zg361_ip_m204_debt_id = { value = var:zg361_ip_m204_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m204_debt_case multiply = 1000 } add = 204 }
+			var:zg361_ip_m204_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m204_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m204_debt_due_cycle
@@ -7255,6 +7346,13 @@ zg361_ip_m205_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m205_debt_cycle has_variable = zg361_ip_m205_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m205_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m205_debt_case multiply = 1000 } add = 205 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m205_debt_owner
 			has_variable = zg361_ip_m205_debt_subject
@@ -7287,7 +7385,7 @@ zg361_ip_m205_consume_due_debt_effect = {
 			var:zg361_ip_m205_debt_cycle = var:zg361_ip_m205_done_cycle
 			var:zg361_ip_m205_debt_case = var:zg361_ip_m205_done_case
 			var:zg361_ip_m205_debt_state = var:zg361_ip_m205_done_state
-			var:zg361_ip_m205_debt_id = { value = var:zg361_ip_m205_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m205_debt_case multiply = 1000 } add = 205 }
+			var:zg361_ip_m205_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m205_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m205_debt_due_cycle
@@ -7353,6 +7451,13 @@ zg361_ip_m206_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m206_debt_cycle has_variable = zg361_ip_m206_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m206_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m206_debt_case multiply = 1000 } add = 206 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m206_debt_owner
 			has_variable = zg361_ip_m206_debt_subject
@@ -7385,7 +7490,7 @@ zg361_ip_m206_consume_due_debt_effect = {
 			var:zg361_ip_m206_debt_cycle = var:zg361_ip_m206_done_cycle
 			var:zg361_ip_m206_debt_case = var:zg361_ip_m206_done_case
 			var:zg361_ip_m206_debt_state = var:zg361_ip_m206_done_state
-			var:zg361_ip_m206_debt_id = { value = var:zg361_ip_m206_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m206_debt_case multiply = 1000 } add = 206 }
+			var:zg361_ip_m206_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m206_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m206_debt_due_cycle
@@ -7451,6 +7556,13 @@ zg361_ip_m207_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m207_debt_cycle has_variable = zg361_ip_m207_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m207_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m207_debt_case multiply = 1000 } add = 207 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m207_debt_owner
 			has_variable = zg361_ip_m207_debt_subject
@@ -7483,7 +7595,7 @@ zg361_ip_m207_consume_due_debt_effect = {
 			var:zg361_ip_m207_debt_cycle = var:zg361_ip_m207_done_cycle
 			var:zg361_ip_m207_debt_case = var:zg361_ip_m207_done_case
 			var:zg361_ip_m207_debt_state = var:zg361_ip_m207_done_state
-			var:zg361_ip_m207_debt_id = { value = var:zg361_ip_m207_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m207_debt_case multiply = 1000 } add = 207 }
+			var:zg361_ip_m207_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m207_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m207_debt_due_cycle
@@ -7549,6 +7661,13 @@ zg361_ip_m208_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m208_debt_cycle has_variable = zg361_ip_m208_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m208_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m208_debt_case multiply = 1000 } add = 208 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m208_debt_owner
 			has_variable = zg361_ip_m208_debt_subject
@@ -7581,7 +7700,7 @@ zg361_ip_m208_consume_due_debt_effect = {
 			var:zg361_ip_m208_debt_cycle = var:zg361_ip_m208_done_cycle
 			var:zg361_ip_m208_debt_case = var:zg361_ip_m208_done_case
 			var:zg361_ip_m208_debt_state = var:zg361_ip_m208_done_state
-			var:zg361_ip_m208_debt_id = { value = var:zg361_ip_m208_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m208_debt_case multiply = 1000 } add = 208 }
+			var:zg361_ip_m208_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m208_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m208_debt_due_cycle
@@ -7647,6 +7766,13 @@ zg361_ip_m209_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m209_debt_cycle has_variable = zg361_ip_m209_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m209_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m209_debt_case multiply = 1000 } add = 209 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m209_debt_owner
 			has_variable = zg361_ip_m209_debt_subject
@@ -7679,7 +7805,7 @@ zg361_ip_m209_consume_due_debt_effect = {
 			var:zg361_ip_m209_debt_cycle = var:zg361_ip_m209_done_cycle
 			var:zg361_ip_m209_debt_case = var:zg361_ip_m209_done_case
 			var:zg361_ip_m209_debt_state = var:zg361_ip_m209_done_state
-			var:zg361_ip_m209_debt_id = { value = var:zg361_ip_m209_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m209_debt_case multiply = 1000 } add = 209 }
+			var:zg361_ip_m209_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m209_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m209_debt_due_cycle
@@ -7745,6 +7871,13 @@ zg361_ip_m210_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m210_debt_cycle has_variable = zg361_ip_m210_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m210_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m210_debt_case multiply = 1000 } add = 210 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m210_debt_owner
 			has_variable = zg361_ip_m210_debt_subject
@@ -7777,7 +7910,7 @@ zg361_ip_m210_consume_due_debt_effect = {
 			var:zg361_ip_m210_debt_cycle = var:zg361_ip_m210_done_cycle
 			var:zg361_ip_m210_debt_case = var:zg361_ip_m210_done_case
 			var:zg361_ip_m210_debt_state = var:zg361_ip_m210_done_state
-			var:zg361_ip_m210_debt_id = { value = var:zg361_ip_m210_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m210_debt_case multiply = 1000 } add = 210 }
+			var:zg361_ip_m210_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m210_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m210_debt_due_cycle
@@ -7843,6 +7976,13 @@ zg361_ip_m211_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m211_debt_cycle has_variable = zg361_ip_m211_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m211_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m211_debt_case multiply = 1000 } add = 211 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m211_debt_owner
 			has_variable = zg361_ip_m211_debt_subject
@@ -7875,7 +8015,7 @@ zg361_ip_m211_consume_due_debt_effect = {
 			var:zg361_ip_m211_debt_cycle = var:zg361_ip_m211_done_cycle
 			var:zg361_ip_m211_debt_case = var:zg361_ip_m211_done_case
 			var:zg361_ip_m211_debt_state = var:zg361_ip_m211_done_state
-			var:zg361_ip_m211_debt_id = { value = var:zg361_ip_m211_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m211_debt_case multiply = 1000 } add = 211 }
+			var:zg361_ip_m211_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m211_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m211_debt_due_cycle
@@ -7941,6 +8081,13 @@ zg361_ip_m212_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m212_debt_cycle has_variable = zg361_ip_m212_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m212_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m212_debt_case multiply = 1000 } add = 212 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m212_debt_owner
 			has_variable = zg361_ip_m212_debt_subject
@@ -7973,7 +8120,7 @@ zg361_ip_m212_consume_due_debt_effect = {
 			var:zg361_ip_m212_debt_cycle = var:zg361_ip_m212_done_cycle
 			var:zg361_ip_m212_debt_case = var:zg361_ip_m212_done_case
 			var:zg361_ip_m212_debt_state = var:zg361_ip_m212_done_state
-			var:zg361_ip_m212_debt_id = { value = var:zg361_ip_m212_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m212_debt_case multiply = 1000 } add = 212 }
+			var:zg361_ip_m212_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m212_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m212_debt_due_cycle
@@ -8039,6 +8186,13 @@ zg361_ip_m213_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m213_debt_cycle has_variable = zg361_ip_m213_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m213_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m213_debt_case multiply = 1000 } add = 213 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m213_debt_owner
 			has_variable = zg361_ip_m213_debt_subject
@@ -8071,7 +8225,7 @@ zg361_ip_m213_consume_due_debt_effect = {
 			var:zg361_ip_m213_debt_cycle = var:zg361_ip_m213_done_cycle
 			var:zg361_ip_m213_debt_case = var:zg361_ip_m213_done_case
 			var:zg361_ip_m213_debt_state = var:zg361_ip_m213_done_state
-			var:zg361_ip_m213_debt_id = { value = var:zg361_ip_m213_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m213_debt_case multiply = 1000 } add = 213 }
+			var:zg361_ip_m213_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m213_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m213_debt_due_cycle
@@ -8137,6 +8291,13 @@ zg361_ip_m214_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m214_debt_cycle has_variable = zg361_ip_m214_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m214_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m214_debt_case multiply = 1000 } add = 214 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m214_debt_owner
 			has_variable = zg361_ip_m214_debt_subject
@@ -8169,7 +8330,7 @@ zg361_ip_m214_consume_due_debt_effect = {
 			var:zg361_ip_m214_debt_cycle = var:zg361_ip_m214_done_cycle
 			var:zg361_ip_m214_debt_case = var:zg361_ip_m214_done_case
 			var:zg361_ip_m214_debt_state = var:zg361_ip_m214_done_state
-			var:zg361_ip_m214_debt_id = { value = var:zg361_ip_m214_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m214_debt_case multiply = 1000 } add = 214 }
+			var:zg361_ip_m214_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m214_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m214_debt_due_cycle
@@ -8235,6 +8396,13 @@ zg361_ip_m215_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m215_debt_cycle has_variable = zg361_ip_m215_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m215_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m215_debt_case multiply = 1000 } add = 215 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m215_debt_owner
 			has_variable = zg361_ip_m215_debt_subject
@@ -8267,7 +8435,7 @@ zg361_ip_m215_consume_due_debt_effect = {
 			var:zg361_ip_m215_debt_cycle = var:zg361_ip_m215_done_cycle
 			var:zg361_ip_m215_debt_case = var:zg361_ip_m215_done_case
 			var:zg361_ip_m215_debt_state = var:zg361_ip_m215_done_state
-			var:zg361_ip_m215_debt_id = { value = var:zg361_ip_m215_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m215_debt_case multiply = 1000 } add = 215 }
+			var:zg361_ip_m215_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m215_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m215_debt_due_cycle
@@ -8333,6 +8501,13 @@ zg361_ip_m216_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m216_debt_cycle has_variable = zg361_ip_m216_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m216_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m216_debt_case multiply = 1000 } add = 216 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m216_debt_owner
 			has_variable = zg361_ip_m216_debt_subject
@@ -8365,7 +8540,7 @@ zg361_ip_m216_consume_due_debt_effect = {
 			var:zg361_ip_m216_debt_cycle = var:zg361_ip_m216_done_cycle
 			var:zg361_ip_m216_debt_case = var:zg361_ip_m216_done_case
 			var:zg361_ip_m216_debt_state = var:zg361_ip_m216_done_state
-			var:zg361_ip_m216_debt_id = { value = var:zg361_ip_m216_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m216_debt_case multiply = 1000 } add = 216 }
+			var:zg361_ip_m216_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m216_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m216_debt_due_cycle
@@ -8431,6 +8606,13 @@ zg361_ip_m217_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m217_debt_cycle has_variable = zg361_ip_m217_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m217_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m217_debt_case multiply = 1000 } add = 217 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m217_debt_owner
 			has_variable = zg361_ip_m217_debt_subject
@@ -8463,7 +8645,7 @@ zg361_ip_m217_consume_due_debt_effect = {
 			var:zg361_ip_m217_debt_cycle = var:zg361_ip_m217_done_cycle
 			var:zg361_ip_m217_debt_case = var:zg361_ip_m217_done_case
 			var:zg361_ip_m217_debt_state = var:zg361_ip_m217_done_state
-			var:zg361_ip_m217_debt_id = { value = var:zg361_ip_m217_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m217_debt_case multiply = 1000 } add = 217 }
+			var:zg361_ip_m217_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m217_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m217_debt_due_cycle
@@ -8529,6 +8711,13 @@ zg361_ip_m218_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m218_debt_cycle has_variable = zg361_ip_m218_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m218_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m218_debt_case multiply = 1000 } add = 218 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m218_debt_owner
 			has_variable = zg361_ip_m218_debt_subject
@@ -8561,7 +8750,7 @@ zg361_ip_m218_consume_due_debt_effect = {
 			var:zg361_ip_m218_debt_cycle = var:zg361_ip_m218_done_cycle
 			var:zg361_ip_m218_debt_case = var:zg361_ip_m218_done_case
 			var:zg361_ip_m218_debt_state = var:zg361_ip_m218_done_state
-			var:zg361_ip_m218_debt_id = { value = var:zg361_ip_m218_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m218_debt_case multiply = 1000 } add = 218 }
+			var:zg361_ip_m218_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m218_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m218_debt_due_cycle
@@ -8627,6 +8816,13 @@ zg361_ip_m219_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m219_debt_cycle has_variable = zg361_ip_m219_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m219_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m219_debt_case multiply = 1000 } add = 219 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m219_debt_owner
 			has_variable = zg361_ip_m219_debt_subject
@@ -8659,7 +8855,7 @@ zg361_ip_m219_consume_due_debt_effect = {
 			var:zg361_ip_m219_debt_cycle = var:zg361_ip_m219_done_cycle
 			var:zg361_ip_m219_debt_case = var:zg361_ip_m219_done_case
 			var:zg361_ip_m219_debt_state = var:zg361_ip_m219_done_state
-			var:zg361_ip_m219_debt_id = { value = var:zg361_ip_m219_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m219_debt_case multiply = 1000 } add = 219 }
+			var:zg361_ip_m219_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m219_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m219_debt_due_cycle
@@ -8725,6 +8921,13 @@ zg361_ip_m220_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m220_debt_cycle has_variable = zg361_ip_m220_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m220_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m220_debt_case multiply = 1000 } add = 220 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m220_debt_owner
 			has_variable = zg361_ip_m220_debt_subject
@@ -8757,7 +8960,7 @@ zg361_ip_m220_consume_due_debt_effect = {
 			var:zg361_ip_m220_debt_cycle = var:zg361_ip_m220_done_cycle
 			var:zg361_ip_m220_debt_case = var:zg361_ip_m220_done_case
 			var:zg361_ip_m220_debt_state = var:zg361_ip_m220_done_state
-			var:zg361_ip_m220_debt_id = { value = var:zg361_ip_m220_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m220_debt_case multiply = 1000 } add = 220 }
+			var:zg361_ip_m220_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m220_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m220_debt_due_cycle
@@ -8823,6 +9026,13 @@ zg361_ip_m221_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m221_debt_cycle has_variable = zg361_ip_m221_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m221_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m221_debt_case multiply = 1000 } add = 221 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m221_debt_owner
 			has_variable = zg361_ip_m221_debt_subject
@@ -8855,7 +9065,7 @@ zg361_ip_m221_consume_due_debt_effect = {
 			var:zg361_ip_m221_debt_cycle = var:zg361_ip_m221_done_cycle
 			var:zg361_ip_m221_debt_case = var:zg361_ip_m221_done_case
 			var:zg361_ip_m221_debt_state = var:zg361_ip_m221_done_state
-			var:zg361_ip_m221_debt_id = { value = var:zg361_ip_m221_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m221_debt_case multiply = 1000 } add = 221 }
+			var:zg361_ip_m221_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m221_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m221_debt_due_cycle
@@ -8921,6 +9131,13 @@ zg361_ip_m222_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m222_debt_cycle has_variable = zg361_ip_m222_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m222_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m222_debt_case multiply = 1000 } add = 222 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m222_debt_owner
 			has_variable = zg361_ip_m222_debt_subject
@@ -8953,7 +9170,7 @@ zg361_ip_m222_consume_due_debt_effect = {
 			var:zg361_ip_m222_debt_cycle = var:zg361_ip_m222_done_cycle
 			var:zg361_ip_m222_debt_case = var:zg361_ip_m222_done_case
 			var:zg361_ip_m222_debt_state = var:zg361_ip_m222_done_state
-			var:zg361_ip_m222_debt_id = { value = var:zg361_ip_m222_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m222_debt_case multiply = 1000 } add = 222 }
+			var:zg361_ip_m222_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m222_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m222_debt_due_cycle
@@ -9019,6 +9236,13 @@ zg361_ip_m223_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m223_debt_cycle has_variable = zg361_ip_m223_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m223_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m223_debt_case multiply = 1000 } add = 223 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m223_debt_owner
 			has_variable = zg361_ip_m223_debt_subject
@@ -9051,7 +9275,7 @@ zg361_ip_m223_consume_due_debt_effect = {
 			var:zg361_ip_m223_debt_cycle = var:zg361_ip_m223_done_cycle
 			var:zg361_ip_m223_debt_case = var:zg361_ip_m223_done_case
 			var:zg361_ip_m223_debt_state = var:zg361_ip_m223_done_state
-			var:zg361_ip_m223_debt_id = { value = var:zg361_ip_m223_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m223_debt_case multiply = 1000 } add = 223 }
+			var:zg361_ip_m223_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m223_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m223_debt_due_cycle
@@ -9117,6 +9341,13 @@ zg361_ip_m224_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m224_debt_cycle has_variable = zg361_ip_m224_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m224_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m224_debt_case multiply = 1000 } add = 224 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m224_debt_owner
 			has_variable = zg361_ip_m224_debt_subject
@@ -9149,7 +9380,7 @@ zg361_ip_m224_consume_due_debt_effect = {
 			var:zg361_ip_m224_debt_cycle = var:zg361_ip_m224_done_cycle
 			var:zg361_ip_m224_debt_case = var:zg361_ip_m224_done_case
 			var:zg361_ip_m224_debt_state = var:zg361_ip_m224_done_state
-			var:zg361_ip_m224_debt_id = { value = var:zg361_ip_m224_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m224_debt_case multiply = 1000 } add = 224 }
+			var:zg361_ip_m224_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m224_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m224_debt_due_cycle
@@ -9215,6 +9446,13 @@ zg361_ip_m225_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m225_debt_cycle has_variable = zg361_ip_m225_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m225_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m225_debt_case multiply = 1000 } add = 225 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m225_debt_owner
 			has_variable = zg361_ip_m225_debt_subject
@@ -9247,7 +9485,7 @@ zg361_ip_m225_consume_due_debt_effect = {
 			var:zg361_ip_m225_debt_cycle = var:zg361_ip_m225_done_cycle
 			var:zg361_ip_m225_debt_case = var:zg361_ip_m225_done_case
 			var:zg361_ip_m225_debt_state = var:zg361_ip_m225_done_state
-			var:zg361_ip_m225_debt_id = { value = var:zg361_ip_m225_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m225_debt_case multiply = 1000 } add = 225 }
+			var:zg361_ip_m225_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m225_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m225_debt_due_cycle
@@ -9313,6 +9551,13 @@ zg361_ip_m226_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m226_debt_cycle has_variable = zg361_ip_m226_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m226_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m226_debt_case multiply = 1000 } add = 226 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m226_debt_owner
 			has_variable = zg361_ip_m226_debt_subject
@@ -9345,7 +9590,7 @@ zg361_ip_m226_consume_due_debt_effect = {
 			var:zg361_ip_m226_debt_cycle = var:zg361_ip_m226_done_cycle
 			var:zg361_ip_m226_debt_case = var:zg361_ip_m226_done_case
 			var:zg361_ip_m226_debt_state = var:zg361_ip_m226_done_state
-			var:zg361_ip_m226_debt_id = { value = var:zg361_ip_m226_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m226_debt_case multiply = 1000 } add = 226 }
+			var:zg361_ip_m226_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m226_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m226_debt_due_cycle
@@ -9411,6 +9656,13 @@ zg361_ip_m227_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m227_debt_cycle has_variable = zg361_ip_m227_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m227_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m227_debt_case multiply = 1000 } add = 227 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m227_debt_owner
 			has_variable = zg361_ip_m227_debt_subject
@@ -9443,7 +9695,7 @@ zg361_ip_m227_consume_due_debt_effect = {
 			var:zg361_ip_m227_debt_cycle = var:zg361_ip_m227_done_cycle
 			var:zg361_ip_m227_debt_case = var:zg361_ip_m227_done_case
 			var:zg361_ip_m227_debt_state = var:zg361_ip_m227_done_state
-			var:zg361_ip_m227_debt_id = { value = var:zg361_ip_m227_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m227_debt_case multiply = 1000 } add = 227 }
+			var:zg361_ip_m227_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m227_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m227_debt_due_cycle
@@ -9509,6 +9761,13 @@ zg361_ip_m228_consume_due_debt_effect = {
 	remove_variable = zg361_ip_debt_status
 	remove_variable = zg361_ip_debt_red_code
 	if = {
+		limit = { has_variable = zg361_ip_m228_debt_cycle has_variable = zg361_ip_m228_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m228_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m228_debt_case multiply = 1000 } add = 228 }
+		}
+	}
+	if = {
 		limit = {
 			has_variable = zg361_ip_m228_debt_owner
 			has_variable = zg361_ip_m228_debt_subject
@@ -9541,7 +9800,7 @@ zg361_ip_m228_consume_due_debt_effect = {
 			var:zg361_ip_m228_debt_cycle = var:zg361_ip_m228_done_cycle
 			var:zg361_ip_m228_debt_case = var:zg361_ip_m228_done_case
 			var:zg361_ip_m228_debt_state = var:zg361_ip_m228_done_state
-			var:zg361_ip_m228_debt_id = { value = var:zg361_ip_m228_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m228_debt_case multiply = 1000 } add = 228 }
+			var:zg361_ip_m228_debt_id = scope:zg361_ip_expected_debt_id
 			var:zg361_ip_m228_debt_owner = {
 				has_variable = zg361_review_serial
 				var:zg361_review_serial >= root.var:zg361_ip_m228_debt_due_cycle
@@ -10352,6 +10611,7 @@ zg361_ip_open_x_case_on_subject_effect = {
 				TICKET_SUBJECT = var:zg361_case_x_subject
 				TICKET_CYCLE = var:zg361_case_x_cycle_serial
 				TICKET_CASE = var:zg361_case_x_case_serial
+				TICKET_STATE = 1
 			}
 		}
 	}
@@ -10942,6 +11202,7 @@ zg361_ip_open_y_case_on_subject_effect = {
 				TICKET_SUBJECT = var:zg361_case_y_subject
 				TICKET_CYCLE = var:zg361_case_y_cycle_serial
 				TICKET_CASE = var:zg361_case_y_case_serial
+				TICKET_STATE = 1
 			}
 		}
 	}
@@ -11532,6 +11793,7 @@ zg361_ip_open_z_case_on_subject_effect = {
 				TICKET_SUBJECT = var:zg361_case_z_subject
 				TICKET_CYCLE = var:zg361_case_z_cycle_serial
 				TICKET_CASE = var:zg361_case_z_case_serial
+				TICKET_STATE = 1
 			}
 		}
 	}

@@ -951,7 +951,8 @@ def debt_effects(spec: Mechanism) -> list[str]:
         f"set_variable = {{ name = {stem}_case value = $TICKET_CASE$ }}",
         f"set_variable = {{ name = {stem}_state value = {spec.state} }}",
         f"set_variable = {{ name = {stem}_mechanism value = {mid} }}",
-        f"set_variable = {{ name = {stem}_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }}",
+        f"set_variable = {{ name = {stem}_due_cycle value = $TICKET_CYCLE$ }}",
+        f"change_variable = {{ name = {stem}_due_cycle add = 1 }}",
         f"set_variable = {{ name = {stem}_status value = 1 }}",
         f"set_variable = {{ name = {stem}_audit_state value = 1 }}",
         f"set_variable = {{ name = {stem}_business_object_created value = 0 }}",
@@ -1067,6 +1068,12 @@ def render_due_debt_aggregate() -> str:
     )
     return f"""# The public portfolio adapter is the sole package-owned due pass.
 zg361_cp_consume_due_policy_debts_effect = {{
+	remove_variable = zg361_cp_deferred_cleanup_due_cycle
+	if = {{
+		limit = {{ has_variable = zg361_cp_portfolio_cycle }}
+		set_variable = {{ name = zg361_cp_deferred_cleanup_due_cycle value = var:zg361_cp_portfolio_cycle }}
+		change_variable = {{ name = zg361_cp_deferred_cleanup_due_cycle add = 1 }}
+	}}
 	remove_variable = zg361_cp_policy_debt_consumer_blocked
 {calls}
 	if = {{
@@ -1392,6 +1399,7 @@ zg361_cp_settle_deferred_portfolio_effect = {
 			has_variable = zg361_cp_historical_owner
 			has_variable = zg361_cp_portfolio_subject
 			has_variable = zg361_cp_portfolio_cycle
+			has_variable = zg361_cp_deferred_cleanup_due_cycle
 			has_variable = zg361_cp_project_active
 			has_variable = zg361_cp_capacity_available
 			has_variable = zg361_cp_capacity_remaining
@@ -1416,7 +1424,7 @@ zg361_cp_settle_deferred_portfolio_effect = {
 			var:zg361_cp_final_deferred = 1
 			var:zg361_cp_final_conservation_ok = 1
 			var:zg361_cp_final_deferred_capacity_check = 100
-			root.var:zg361_review_serial = { value = var:zg361_cp_portfolio_cycle add = 1 }
+			root.var:zg361_review_serial = var:zg361_cp_deferred_cleanup_due_cycle
 			trigger_if = {
 				limit = { var:zg361_cp_project_active = 1 }
 				has_variable = zg361_cp_project_object_status
