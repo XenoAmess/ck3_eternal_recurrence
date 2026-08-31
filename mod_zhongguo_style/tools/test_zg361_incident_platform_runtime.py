@@ -246,6 +246,59 @@ class GeneratedFileTests(unittest.TestCase):
         self.assertLess(treasury_at, control_at)
         self.assertLess(control_at, classification_at)
 
+    def test_each_profile_freezes_one_complete_provider_probe_receipt(self) -> None:
+        shared_fields = (
+            "owner",
+            "subject",
+            "cycle",
+            "serial",
+            "result",
+            "source_kind",
+            "consequence_kind",
+            "subject_gold",
+            "manager_treasury",
+            "capital_control",
+        )
+        for domain in gen.DOMAINS:
+            prefix = f"zg361_ip_{domain.slug}"
+            freeze = block(
+                self.effects, f"zg361_ip_freeze_{domain.slug}_probe_effect"
+            )
+            for field in shared_fields:
+                self.assertIn(
+                    f"has_variable = zg361_ip_probe_{field}", freeze
+                )
+                self.assertIn(
+                    f"name = {prefix}_probe_{field} "
+                    f"value = var:zg361_ip_probe_{field}",
+                    freeze,
+                )
+            entry = block(
+                self.effects,
+                f"zg361_ip_open_{domain.slug}_case_on_subject_effect",
+            )
+            capture_at = entry.index("zg361_ip_capture_real_incident_effect = yes")
+            open_at = entry.index(f"zg361_case_{domain.slug}_open_effect = yes")
+            freeze_token = f"zg361_ip_freeze_{domain.slug}_probe_effect = yes"
+            freeze_positions = [
+                match.start() for match in re.finditer(freeze_token, entry)
+            ]
+            self.assertEqual(len(freeze_positions), 2)
+            self.assertLess(capture_at, open_at)
+            self.assertLess(open_at, freeze_positions[0])
+            self.assertIn("var:zg361_case_kernel_applied = 1", entry)
+            applicable = (
+                f"name = {prefix}_final_applicable value = 1"
+            )
+            self.assertNotIn(applicable, entry[:open_at])
+            self.assertLess(freeze_positions[0], entry.index(applicable))
+            self.assertLess(freeze_positions[0], freeze_positions[1])
+            self.assertIn("var:zg361_ip_capture_status = 1", entry[:open_at])
+            self.assertIn(
+                "var:zg361_ip_capture_status = 0",
+                entry[freeze_positions[0] : freeze_positions[1]],
+            )
+
     def test_no_incident_is_exact_na_and_never_opens_a_case(self) -> None:
         for domain in gen.DOMAINS:
             entry = block(self.effects, f"zg361_ip_open_{domain.slug}_case_on_subject_effect")
@@ -260,13 +313,43 @@ class GeneratedFileTests(unittest.TestCase):
             self.assertNotIn(f"zg361_case_{domain.slug}_open_effect", na)
             self.assertNotIn("zg361_case_kernel", na)
             for exact_zero in (
-                "var:zg361_ip_probe_result = 0",
-                "var:zg361_ip_probe_source_kind = 0",
-                "var:zg361_ip_probe_consequence_kind = 0",
+                f"var:zg361_ip_{domain.slug}_probe_result = 0",
+                f"var:zg361_ip_{domain.slug}_probe_source_kind = 0",
+                f"var:zg361_ip_{domain.slug}_probe_consequence_kind = 0",
                 f"name = zg361_ip_{domain.slug}_final_applicable value = 0",
                 f"name = zg361_ip_{domain.slug}_final_kpi_staged value = 0",
             ):
                 self.assertIn(exact_zero, na)
+
+    def test_finalize_joins_profile_receipt_not_mutable_shared_detector(self) -> None:
+        for domain in gen.DOMAINS:
+            prefix = f"zg361_ip_{domain.slug}"
+            finalize = block(
+                self.effects, f"zg361_ip_finalize_{domain.slug}_effect"
+            )
+            for suffix in (
+                "probe_owner",
+                "probe_subject",
+                "probe_cycle",
+                "probe_result",
+                "probe_source_kind",
+                "probe_consequence_kind",
+            ):
+                self.assertIn(f"has_variable = {prefix}_{suffix}", finalize)
+            self.assertIn(f"var:{prefix}_probe_result = 1", finalize)
+            self.assertIn(
+                f"var:{prefix}_input_source_kind = "
+                f"var:{prefix}_probe_source_kind",
+                finalize,
+            )
+            self.assertIn(
+                f"var:{prefix}_input_consequence_kind = "
+                f"var:{prefix}_probe_consequence_kind",
+                finalize,
+            )
+            self.assertNotIn("var:zg361_ip_incident_serial", finalize)
+            self.assertNotIn("var:zg361_ip_incident_source_kind", finalize)
+            self.assertNotIn("var:zg361_ip_incident_consequence_kind", finalize)
 
     def test_all_37_operations_require_the_same_real_incident_tuple(self) -> None:
         for mechanism_id in range(192, 229):

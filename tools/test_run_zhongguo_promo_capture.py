@@ -3215,7 +3215,7 @@ def main() -> int:
             ] is True
             assert capture.PHASE2_DOMAIN_CELL_REGISTRY[cell_id][
                 "gameplay_action_complete"
-            ] is False
+            ] is (cell_id == "incident_xyz_snapshot_query_matrix")
 
         domain_service = Phase2DomainService()
         pre_domain_artifacts = temporary_root / "phase2-domain-pre-green"
@@ -3777,6 +3777,32 @@ def main() -> int:
             **domain_owner_contract,
         }
         wired_service = Phase2DomainService()
+        incident_action_evidence = {
+            "schema_version": 1,
+            "cell_id": (
+                "incident_xyz_gameplay_action_and_postcondition_matrix"
+            ),
+            "result": "GREEN",
+            "mcp_only": True,
+            "selection_submissions": [{"event_instance_id": 501}],
+            "terminal_profiles": {
+                "x": {"kind": "na"},
+                "y": {"kind": "incident"},
+                "z": {"kind": "incident"},
+            },
+        }
+
+        def fake_incident_action(
+            _service: object,
+            *,
+            owner_character_id: int,
+        ) -> dict[str, object]:
+            assert _service is wired_service
+            assert owner_character_id == domain_owner_contract[
+                "incident_owner_character_id"
+            ]
+            wired_service.calls.append(("incident-action", 4))
+            return copy.deepcopy(incident_action_evidence)
 
         def fake_domain_lineage(
             _service: object,
@@ -3807,6 +3833,11 @@ def main() -> int:
                 "run_phase2_save_restore_lineage",
                 side_effect=fake_domain_lineage,
             ),
+            mock.patch.object(
+                capture,
+                "run_incident_xyz_gameplay_action_cell",
+                side_effect=fake_incident_action,
+            ),
         ):
             try:
                 capture.run_phase2_live_scenario(
@@ -3816,10 +3847,10 @@ def main() -> int:
                     seed_contract=wired_seed_contract,
                 )
             except capture.acceptance.RunnerError as error:
-                assert "observation-only queries passed" in str(error)
+                assert "Incident gameplay action" in str(error)
             else:
                 raise AssertionError(
-                    "read-only B2/Incident matrices claimed gameplay GREEN"
+                    "one Incident action cell claimed the full batch GREEN"
                 )
         wired_scenario = json.loads(
             (
@@ -3828,7 +3859,13 @@ def main() -> int:
         )
         assert wired_scenario["result"] == "RED"
         assert wired_scenario["gameplay_green_claimed"] is False
-        assert wired_scenario["gameplay_acceptance_executed"] is False
+        assert wired_scenario["gameplay_acceptance_executed"] is True
+        assert wired_scenario["incident_gameplay_action_cell"] == (
+            incident_action_evidence
+        )
+        assert wired_scenario["completed_gameplay_action_cells"] == [
+            "incident_xyz_gameplay_action_and_postcondition_matrix"
+        ]
         assert wired_scenario["completed_observation_only_cells"] == [
             "b2_pip_snapshot_query_matrix",
             "incident_xyz_snapshot_query_matrix",
@@ -3841,6 +3878,17 @@ def main() -> int:
         assert wired_scenario["missing_gameplay_action_cells"] == list(
             capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
         )
+        assert (
+            "incident_xyz_gameplay_action_and_postcondition_matrix"
+            not in wired_scenario["missing_gameplay_action_cells"]
+        )
+        preserved_action = json.loads(
+            (
+                wired_scenario_artifacts
+                / "05_phase2_incident_xyz_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert preserved_action == incident_action_evidence
         assert wired_scenario["pre_restore_domain_queries"]["result"] == (
             "GREEN"
         )
@@ -3862,7 +3910,45 @@ def main() -> int:
             for index, call in enumerate(wired_service.calls)
             if call[0] == "b2" and call[1] == 5
         )
-        assert first_pre_query < lineage_call < first_post_query
+        action_call = wired_service.calls.index(("incident-action", 4))
+        assert action_call < first_pre_query < lineage_call < first_post_query
+
+        incident_red_artifacts = temporary_root / "phase2-incident-action-red"
+        incident_red_artifacts.mkdir()
+        incident_red_evidence = {
+            "schema_version": 1,
+            "cell_id": (
+                "incident_xyz_gameplay_action_and_postcondition_matrix"
+            ),
+            "result": "RED",
+            "selection_submissions": [{"event_instance_id": 777}],
+            "failure_reason": "fixture terminal mismatch",
+        }
+        with mock.patch.object(
+            capture,
+            "run_incident_xyz_gameplay_action_cell",
+            side_effect=capture.IncidentActionCellError(
+                "fixture terminal mismatch", incident_red_evidence
+            ),
+        ):
+            try:
+                capture.run_phase2_incident_gameplay_action_cell(
+                    wired_service,
+                    incident_red_artifacts,
+                    owner_character_id=domain_owner_contract[
+                        "incident_owner_character_id"
+                    ],
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "fixture terminal mismatch" in str(error)
+            else:
+                raise AssertionError("Incident RED evidence was accepted")
+        assert json.loads(
+            (
+                incident_red_artifacts
+                / "05_phase2_incident_xyz_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        ) == incident_red_evidence
 
         class MissingLoaderSnapshotService(LoaderReadinessService):
             def snapshot(self) -> dict[str, object]:

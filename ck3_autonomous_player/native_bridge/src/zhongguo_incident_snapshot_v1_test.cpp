@@ -54,17 +54,70 @@ bool Read(void *opaque, std::int32_t character_id, std::string_view key,
   return true;
 }
 
-void AddProbe(Fixture &fixture, bool incident) {
-  fixture.rows["zg361_ip_probe_owner"] = Character(kOwner);
-  fixture.rows["zg361_ip_probe_subject"] = Character(kSubject);
-  fixture.rows["zg361_ip_probe_cycle"] = Integer(7);
-  fixture.rows["zg361_ip_probe_serial"] = Integer(12);
-  fixture.rows["zg361_ip_probe_result"] = Integer(incident ? 1 : 0);
-  fixture.rows["zg361_ip_probe_source_kind"] = Integer(incident ? 3 : 0);
-  fixture.rows["zg361_ip_probe_consequence_kind"] = Integer(incident ? 2 : 0);
-  fixture.rows["zg361_ip_probe_subject_gold"] = Q100000(-125'000);
-  fixture.rows["zg361_ip_probe_manager_treasury"] = Q100000(-900'000);
-  fixture.rows["zg361_ip_probe_capital_control"] = Q100000(4'500'000);
+std::string ProfileKey(std::string_view profile, std::string_view suffix) {
+  return "zg361_ip_" + std::string(profile) + "_" + std::string(suffix);
+}
+
+void AddProbe(Fixture &fixture, std::string_view profile, bool incident,
+              std::int64_t cycle = 7, std::int64_t serial = 12) {
+  fixture.rows[ProfileKey(profile, "probe_owner")] = Character(kOwner);
+  fixture.rows[ProfileKey(profile, "probe_subject")] = Character(kSubject);
+  fixture.rows[ProfileKey(profile, "probe_cycle")] = Integer(cycle);
+  fixture.rows[ProfileKey(profile, "probe_serial")] = Integer(serial);
+  fixture.rows[ProfileKey(profile, "probe_result")] =
+      Integer(incident ? 1 : 0);
+  fixture.rows[ProfileKey(profile, "probe_source_kind")] =
+      Integer(incident ? 3 : 0);
+  fixture.rows[ProfileKey(profile, "probe_consequence_kind")] =
+      Integer(incident ? 2 : 0);
+  fixture.rows[ProfileKey(profile, "probe_subject_gold")] =
+      Q100000(-125'000 + cycle);
+  fixture.rows[ProfileKey(profile, "probe_manager_treasury")] =
+      Q100000(-900'000 + cycle);
+  fixture.rows[ProfileKey(profile, "probe_capital_control")] =
+      Q100000(4'500'000 + cycle);
+}
+
+void AddNaTerminal(Fixture &fixture, std::string_view profile,
+                   std::int64_t cycle = 7, std::int64_t serial = 12) {
+  fixture.rows[ProfileKey(profile, "final_applicable")] = Integer(0);
+  fixture.rows[ProfileKey(profile, "final_kpi_staged")] = Integer(0);
+  fixture.rows[ProfileKey(profile, "final_na_owner")] = Character(kOwner);
+  fixture.rows[ProfileKey(profile, "final_na_subject")] = Character(kSubject);
+  fixture.rows[ProfileKey(profile, "final_na_cycle")] = Integer(cycle);
+  fixture.rows[ProfileKey(profile, "final_na_reason")] = Integer(1);
+  fixture.rows[ProfileKey(profile, "final_na_probe_serial")] = Integer(serial);
+  fixture.rows[ProfileKey(profile, "final_na_receipt")] = Integer(serial + 1);
+}
+
+void AddIncidentPending(Fixture &fixture, std::string_view profile,
+                        std::int64_t state, std::int64_t cycle = 7,
+                        std::int64_t case_serial = 91) {
+  fixture.rows[ProfileKey(profile, "final_applicable")] = Integer(1);
+  fixture.rows[ProfileKey(profile, "final_kpi_staged")] = Integer(1);
+  fixture.rows[ProfileKey(profile, "final_owner")] = Character(kOwner);
+  fixture.rows[ProfileKey(profile, "final_subject")] = Character(kSubject);
+  fixture.rows[ProfileKey(profile, "final_cycle")] = Integer(cycle);
+  fixture.rows[ProfileKey(profile, "final_case")] = Integer(case_serial);
+  fixture.rows[ProfileKey(profile, "final_state")] = Integer(state);
+  fixture.rows[ProfileKey(profile, "final_revision")] = Integer(15);
+  fixture.rows[ProfileKey(profile, "final_incident_serial")] = Integer(4);
+  fixture.rows[ProfileKey(profile, "final_source_kind")] = Integer(3);
+  fixture.rows[ProfileKey(profile, "final_consequence_kind")] = Integer(2);
+  fixture.rows[ProfileKey(profile, "final_score")] = Integer(2);
+  fixture.rows[ProfileKey(profile, "kpi_pending")] = Integer(1);
+  fixture.rows[ProfileKey(profile, "kpi_consumed")] = Integer(0);
+  fixture.rows[ProfileKey(profile, "kpi_owner")] = Character(kOwner);
+  fixture.rows[ProfileKey(profile, "kpi_subject")] = Character(kSubject);
+  fixture.rows[ProfileKey(profile, "kpi_origin_cycle")] = Integer(cycle);
+  fixture.rows[ProfileKey(profile, "kpi_case")] = Integer(case_serial);
+  fixture.rows[ProfileKey(profile, "kpi_state")] = Integer(state);
+  fixture.rows[ProfileKey(profile, "kpi_score")] = Integer(2);
+  fixture.rows[ProfileKey(profile, "kpi_due_cycle")] = Integer(cycle + 1);
+  fixture.rows[ProfileKey(profile, "kpi_due_offset")] = Integer(1);
+  fixture.rows[ProfileKey(profile, "kpi_incident_serial")] = Integer(4);
+  fixture.rows[ProfileKey(profile, "kpi_source_kind")] = Integer(3);
+  fixture.rows[ProfileKey(profile, "kpi_consequence_kind")] = Integer(2);
 }
 
 ck3_11906::ZhongguoIncidentAccessV1 Access(Fixture &fixture) {
@@ -91,15 +144,8 @@ ck3_11906::ZhongguoIncidentSnapshotRequestV1 Request(
 
 bool CheckNa() {
   Fixture fixture;
-  AddProbe(fixture, false);
-  fixture.rows["zg361_ip_x_final_applicable"] = Integer(0);
-  fixture.rows["zg361_ip_x_final_kpi_staged"] = Integer(0);
-  fixture.rows["zg361_ip_x_final_na_owner"] = Character(kOwner);
-  fixture.rows["zg361_ip_x_final_na_subject"] = Character(kSubject);
-  fixture.rows["zg361_ip_x_final_na_cycle"] = Integer(7);
-  fixture.rows["zg361_ip_x_final_na_reason"] = Integer(1);
-  fixture.rows["zg361_ip_x_final_na_probe_serial"] = Integer(12);
-  fixture.rows["zg361_ip_x_final_na_receipt"] = Integer(3);
+  AddProbe(fixture, "x", false);
+  AddNaTerminal(fixture, "x");
   game::ZhongguoIncidentSnapshotV1 output;
   const auto result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
       Environment(), Access(fixture), Request(game::ZhongguoIncidentProfileV1::x),
@@ -110,7 +156,7 @@ bool CheckNa() {
          output.readiness.terminal_ready && output.readiness.kpi_state_ready &&
          output.readiness.resource_snapshot_ready && output.readiness.ready &&
          output.resources.manager_treasury_q100000.available &&
-         output.resources.manager_treasury_q100000.value == -900'000 &&
+         output.resources.manager_treasury_q100000.value == -899'993 &&
          wire.find("\"kind\":\"na\"") != std::string::npos &&
          wire.find("\"manager_treasury_source\":\"zg361_ip_probe_manager_treasury\"") !=
              std::string::npos &&
@@ -119,16 +165,9 @@ bool CheckNa() {
 
 bool CheckMissingTreasury() {
   Fixture fixture;
-  AddProbe(fixture, false);
-  fixture.rows.erase("zg361_ip_probe_manager_treasury");
-  fixture.rows["zg361_ip_x_final_applicable"] = Integer(0);
-  fixture.rows["zg361_ip_x_final_kpi_staged"] = Integer(0);
-  fixture.rows["zg361_ip_x_final_na_owner"] = Character(kOwner);
-  fixture.rows["zg361_ip_x_final_na_subject"] = Character(kSubject);
-  fixture.rows["zg361_ip_x_final_na_cycle"] = Integer(7);
-  fixture.rows["zg361_ip_x_final_na_reason"] = Integer(1);
-  fixture.rows["zg361_ip_x_final_na_probe_serial"] = Integer(12);
-  fixture.rows["zg361_ip_x_final_na_receipt"] = Integer(3);
+  AddProbe(fixture, "x", false);
+  fixture.rows.erase("zg361_ip_x_probe_manager_treasury");
+  AddNaTerminal(fixture, "x");
   game::ZhongguoIncidentSnapshotV1 output;
   const auto result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
       Environment(), Access(fixture), Request(game::ZhongguoIncidentProfileV1::x),
@@ -144,32 +183,8 @@ bool CheckMissingTreasury() {
 
 bool CheckIncidentPending() {
   Fixture fixture;
-  AddProbe(fixture, true);
-  fixture.rows["zg361_ip_y_final_applicable"] = Integer(1);
-  fixture.rows["zg361_ip_y_final_kpi_staged"] = Integer(1);
-  fixture.rows["zg361_ip_y_final_owner"] = Character(kOwner);
-  fixture.rows["zg361_ip_y_final_subject"] = Character(kSubject);
-  fixture.rows["zg361_ip_y_final_cycle"] = Integer(7);
-  fixture.rows["zg361_ip_y_final_case"] = Integer(91);
-  fixture.rows["zg361_ip_y_final_state"] = Integer(6);
-  fixture.rows["zg361_ip_y_final_revision"] = Integer(15);
-  fixture.rows["zg361_ip_y_final_incident_serial"] = Integer(4);
-  fixture.rows["zg361_ip_y_final_source_kind"] = Integer(3);
-  fixture.rows["zg361_ip_y_final_consequence_kind"] = Integer(2);
-  fixture.rows["zg361_ip_y_final_score"] = Integer(2);
-  fixture.rows["zg361_ip_y_kpi_pending"] = Integer(1);
-  fixture.rows["zg361_ip_y_kpi_consumed"] = Integer(0);
-  fixture.rows["zg361_ip_y_kpi_owner"] = Character(kOwner);
-  fixture.rows["zg361_ip_y_kpi_subject"] = Character(kSubject);
-  fixture.rows["zg361_ip_y_kpi_origin_cycle"] = Integer(7);
-  fixture.rows["zg361_ip_y_kpi_case"] = Integer(91);
-  fixture.rows["zg361_ip_y_kpi_state"] = Integer(6);
-  fixture.rows["zg361_ip_y_kpi_score"] = Integer(2);
-  fixture.rows["zg361_ip_y_kpi_due_cycle"] = Integer(8);
-  fixture.rows["zg361_ip_y_kpi_due_offset"] = Integer(1);
-  fixture.rows["zg361_ip_y_kpi_incident_serial"] = Integer(4);
-  fixture.rows["zg361_ip_y_kpi_source_kind"] = Integer(3);
-  fixture.rows["zg361_ip_y_kpi_consequence_kind"] = Integer(2);
+  AddProbe(fixture, "y", true);
+  AddIncidentPending(fixture, "y", 6);
   game::ZhongguoIncidentSnapshotV1 output;
   const auto result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
       Environment(), Access(fixture), Request(game::ZhongguoIncidentProfileV1::y),
@@ -184,10 +199,42 @@ bool CheckIncidentPending() {
          wire.find("\"disposition\":\"pending\"") != std::string::npos;
 }
 
+bool CheckMixedProfileReceiptsInOnePausedFrame() {
+  Fixture fixture;
+  AddProbe(fixture, "x", false, 6, 11);
+  AddNaTerminal(fixture, "x", 6, 11);
+  AddProbe(fixture, "y", true, 7, 12);
+  AddIncidentPending(fixture, "y", 6, 7, 91);
+  AddProbe(fixture, "z", true, 7, 12);
+  AddIncidentPending(fixture, "z", 6, 7, 92);
+
+  game::ZhongguoIncidentSnapshotV1 x;
+  game::ZhongguoIncidentSnapshotV1 y;
+  game::ZhongguoIncidentSnapshotV1 z;
+  const auto environment = Environment();
+  auto access = Access(fixture);
+  const auto x_result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
+      environment, access, Request(game::ZhongguoIncidentProfileV1::x), x);
+  const auto y_result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
+      environment, access, Request(game::ZhongguoIncidentProfileV1::y), y);
+  const auto z_result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
+      environment, access, Request(game::ZhongguoIncidentProfileV1::z), z);
+  return x_result == game::ReadZhongguoIncidentSnapshotResultV1::available &&
+         y_result == game::ReadZhongguoIncidentSnapshotResultV1::available &&
+         z_result == game::ReadZhongguoIncidentSnapshotResultV1::available &&
+         x.readiness.ready && y.readiness.ready && z.readiness.ready &&
+         x.terminal_kind == game::ZhongguoIncidentTerminalKindV1::na &&
+         y.terminal_kind == game::ZhongguoIncidentTerminalKindV1::incident &&
+         z.terminal_kind == game::ZhongguoIncidentTerminalKindV1::incident &&
+         x.probe.cycle_serial.value == 6 && y.probe.cycle_serial.value == 7 &&
+         z.probe.cycle_serial.value == 7;
+}
+
 } // namespace
 
 int main() {
-  if (!CheckNa() || !CheckMissingTreasury() || !CheckIncidentPending()) {
+  if (!CheckNa() || !CheckMissingTreasury() || !CheckIncidentPending() ||
+      !CheckMixedProfileReceiptsInOnePausedFrame()) {
     std::cerr << "ZhongGuo incident snapshot fixture failed\n";
     return 1;
   }

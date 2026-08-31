@@ -29,7 +29,7 @@
   "subject_acl": {
     "scope": "paused_played_character_only",
     "subject_source": "same_frame_snapshot.played_character_id",
-    "owner_source": "kind_4_character_target_in_zg361_ip_probe_owner_on_player_scope",
+    "owner_source": "kind_4_character_target_in_zg361_ip_{profile}_probe_owner_on_player_scope",
     "required_binding": "actual_owner_equals_expected_owner_and_actual_owner_differs_from_player",
     "owner_scope_read": false,
     "third_party_subject_read": false
@@ -48,17 +48,17 @@
   },
   "allowlist": {
     "count_per_profile": 50,
-    "common": [
-      "zg361_ip_probe_owner",
-      "zg361_ip_probe_subject",
-      "zg361_ip_probe_cycle",
-      "zg361_ip_probe_serial",
-      "zg361_ip_probe_result",
-      "zg361_ip_probe_source_kind",
-      "zg361_ip_probe_consequence_kind",
-      "zg361_ip_probe_subject_gold",
-      "zg361_ip_probe_manager_treasury",
-      "zg361_ip_probe_capital_control"
+    "profile_probe_template": [
+      "zg361_ip_{profile}_probe_owner",
+      "zg361_ip_{profile}_probe_subject",
+      "zg361_ip_{profile}_probe_cycle",
+      "zg361_ip_{profile}_probe_serial",
+      "zg361_ip_{profile}_probe_result",
+      "zg361_ip_{profile}_probe_source_kind",
+      "zg361_ip_{profile}_probe_consequence_kind",
+      "zg361_ip_{profile}_probe_subject_gold",
+      "zg361_ip_{profile}_probe_manager_treasury",
+      "zg361_ip_{profile}_probe_capital_control"
     ],
     "profile_template": [
       "zg361_ip_{profile}_final_applicable",
@@ -105,7 +105,9 @@
   },
   "manager_treasury_binding": {
     "field": "resources.manager_treasury_q100000",
-    "mod_variable": "zg361_ip_probe_manager_treasury",
+    "mod_variable_template": "zg361_ip_{profile}_probe_manager_treasury",
+    "freeze_effect_template": "zg361_ip_freeze_{profile}_probe_effect",
+    "upstream_detector_variable": "zg361_ip_probe_manager_treasury",
     "producer_effect": "zg361_ip_capture_real_incident_effect",
     "storage_scope": "assessed_subject",
     "value_source": "root.treasury",
@@ -129,6 +131,11 @@
     "frame_before_after_equal": true,
     "raw_rows_first_second_equal": true,
     "engine_pointers_retained": false
+  },
+  "profile_receipt_atomicity": {
+    "shared_detector_is_provider_invisible": true,
+    "profile_probe_frozen_before_terminal_publication": true,
+    "mixed_na_incident_profiles_same_paused_frame": true
   },
   "terminal_union": {
     "available_arms": ["na", "incident"],

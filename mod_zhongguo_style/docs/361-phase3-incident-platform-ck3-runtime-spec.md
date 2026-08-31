@@ -39,15 +39,21 @@ case kernel。中央 stages 4–6 的适配器由 `gen_361_phase2_central_runtim
 source kind 2 刻意留空。**管理者仅仅处于战争中不是平台事故，受评者仅仅处于普通战争中也不是事故**；
 战争必须与受评者首都控制崩落同时存在，才能落 source kind 1。这样不会把日常战争批量换皮成“线上事故”。
 
-probe 以 `owner + subject + review cycle + probe serial` 冻结，同一轮 X/Y/Z 复用同一事实。首次 probe
-结果为 0 时，后来发生的战争或赤字不能追溯性地把本轮 N/A 改成事故；下一正式考核轮才可重新观测。
+shared detector 以 `owner + subject + review cycle + probe serial` 缓存，同一轮 X/Y/Z 可以复用同一事实；
+但它只服务当前开案计算，不再充当三份长期终态的 provider provenance。每个 domain 只在 N/A 即将发布，
+或 positive case kernel 已确认开案成功后，把完整 detector tuple 冻结到 `zg361_ip_{x,y,z}_probe_*`；
+被拒绝的重复/冲突开案不会破坏旧 receipt。这样中央 stage 4–6 分别推进时，后一个
+domain 的新 detector 不会覆盖前一个 domain 的终态，也允许同一 paused frame 诚实保留跨 stage/cycle 的
+`{na, incident}` 组合。首次 detector 结果为 0 时，后来发生的战争或赤字不能追溯性地把本 profile 的
+N/A 改成事故；下一正式考核轮才可重新观测。
 首次有效 probe 会在受评者身上、同一业务对象时点冻结三项原生资源事实：受评者个人金币
 `zg361_ip_probe_subject_gold = gold`、管理者国库
 `zg361_ip_probe_manager_treasury = ROOT.treasury`、受评者首都控制度
 `zg361_ip_probe_capital_control = capital_county.county_control`。fresh producer 除统一天朝制管理者 trigger 外还显式
 复核 `government_has_flag = government_has_treasury`；生成器没有“缺失时写 0”的分支。缓存复用也要求三项变量
-全部存在，因此变量存在性就是 MCP provider 的明确资源快照 readiness provenance，残缺旧帧不能伪装成完整
-probe。结果为 1 时才递增 `zg361_ip_incident_serial`，并冻结 source、consequence 与同帧资源快照。
+全部存在，因此变量存在性就是 profile freeze 的上游完整性门；provider 最终只读取相应
+`zg361_ip_{profile}_probe_subject_gold/manager_treasury/capital_control`。残缺旧帧不能伪装成完整 probe。
+结果为 1 时才递增 `zg361_ip_incident_serial`，并冻结 source、consequence 与同帧资源快照。
 
 ## 可接线入口
 
@@ -59,7 +65,7 @@ stage 5 -> zg361_ip_open_y_case_effect
 stage 6 -> zg361_ip_open_z_case_effect
 ```
 
-每个入口都先调用真实适用性 producer，然后只有两条可达路径：
+每个入口都先调用真实适用性 producer，并在成功业务分支中冻结本 profile 的完整 10 字段 receipt，然后只有两条可达路径：
 
 1. `probe_result=1` 且 source/consequence 均为正：复制同一事故 tuple 后打开真实 case；
 2. `probe_result=0` 且 source=0、consequence=0：不调用 case kernel，只写 exact N/A receipt。

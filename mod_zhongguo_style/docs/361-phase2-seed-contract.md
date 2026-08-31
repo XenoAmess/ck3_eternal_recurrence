@@ -105,12 +105,14 @@ py tools/test_run_zhongguo_promo_capture.py
 
 ### Incident mixed matrix
 
-当前 X/Y/Z 都写同一 subject 的 `zg361_ip_probe_*`。native provider 的 N/A validator
-要求共享 probe result/source/consequence 全为 0；positive validator 要求同一 tuple 为
-positive。每次 public open 又会覆盖共享 probe。runner 在同一 paused snapshot、同一
-玩家上要求 terminal kind 集合精确为 `{na, incident}`，因此现合同不可达；直接写变量
-也无法让一组 tuple 同时为 0 和 1。应在产品/provider 冻结 profile-specific terminal
-probe，或把 acceptance 改为聚合两个 checkpoint/snapshot。fixture 不得伪造。
+2026-09-01 已完成 `static-ready / fixture-tested` 修复：shared `zg361_ip_probe_*` 只作为内部 detector/cache，
+X/Y/Z public open 在选择 terminal arm 前分别冻结 10 字段 `zg361_ip_{profile}_probe_*` receipt；native provider
+的每份固定 50-key allowlist 已改读相应 profile receipt。同一 paused frame 的 X=N/A、Y/Z=incident 离线 fixture
+已经 GREEN，runner 要求的 `{na, incident}` 因而不再是静态不可达合同。
+
+这不等于当前 seed 已 ready：旧 save 没有这些新增 profile receipt；bootstrap 仍只能调用 shipped public entry，
+不得直接补写。必须在真实 CK3 中让中央 stage/public entry 生成至少一份 exact N/A 与一份 positive terminal，
+再用 MCP 同帧查询三 profile 并保存 raw response。没有 paused artifact 前仍是 `not-live`。
 
 ### Workforce 三周期 charter
 

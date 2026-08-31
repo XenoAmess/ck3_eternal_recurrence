@@ -55,16 +55,16 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
                 self.assertEqual(
                     keys[:10],
                     [
-                        "zg361_ip_probe_owner",
-                        "zg361_ip_probe_subject",
-                        "zg361_ip_probe_cycle",
-                        "zg361_ip_probe_serial",
-                        "zg361_ip_probe_result",
-                        "zg361_ip_probe_source_kind",
-                        "zg361_ip_probe_consequence_kind",
-                        "zg361_ip_probe_subject_gold",
-                        "zg361_ip_probe_manager_treasury",
-                        "zg361_ip_probe_capital_control",
+                        f"zg361_ip_{profile}_probe_owner",
+                        f"zg361_ip_{profile}_probe_subject",
+                        f"zg361_ip_{profile}_probe_cycle",
+                        f"zg361_ip_{profile}_probe_serial",
+                        f"zg361_ip_{profile}_probe_result",
+                        f"zg361_ip_{profile}_probe_source_kind",
+                        f"zg361_ip_{profile}_probe_consequence_kind",
+                        f"zg361_ip_{profile}_probe_subject_gold",
+                        f"zg361_ip_{profile}_probe_manager_treasury",
+                        f"zg361_ip_{profile}_probe_capital_control",
                     ],
                 )
                 self.assertTrue(
@@ -75,16 +75,18 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
                 )
                 self.assertTrue(
                     all(
-                        key.startswith("zg361_ip_probe_")
-                        or key.startswith(f"zg361_ip_{profile}_")
+                        key.startswith(f"zg361_ip_{profile}_")
                         for key in keys
                     )
                 )
-        self.assertEqual(lists["x"][:10], lists["y"][:10])
-        self.assertEqual(lists["x"][:10], lists["z"][:10])
+        self.assertTrue(set(lists["x"][:10]).isdisjoint(lists["y"][:10]))
+        self.assertTrue(set(lists["x"][:10]).isdisjoint(lists["z"][:10]))
 
     def test_manager_treasury_uses_exact_same_frame_mod_variable(self) -> None:
-        self.assertIn("zg361_ip_probe_manager_treasury", self.header)
+        for profile in ("x", "y", "z"):
+            self.assertIn(
+                f"zg361_ip_{profile}_probe_manager_treasury", self.header
+            )
         self.assertIn(
             "DecodeQ100000(rows[probe_manager_treasury]", self.reader
         )
@@ -96,7 +98,12 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
         )
         producer = self.abi["manager_treasury_binding"]
         self.assertEqual(
-            producer["mod_variable"], "zg361_ip_probe_manager_treasury"
+            producer["mod_variable_template"],
+            "zg361_ip_{profile}_probe_manager_treasury",
+        )
+        self.assertEqual(
+            producer["upstream_detector_variable"],
+            "zg361_ip_probe_manager_treasury",
         )
         self.assertEqual(producer["value_source"], "root.treasury")
         self.assertEqual(
@@ -109,6 +116,10 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
         self.assertEqual(
             self.fixture["mod_producer_binding"]["missing_typed_reason"],
             "variable_absent",
+        )
+        self.assertEqual(
+            self.fixture["mod_producer_binding"]["provider_key_template"],
+            "zg361_ip_{profile}_probe_manager_treasury",
         )
         self.assertRegex(
             self.effects,
@@ -123,6 +134,12 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
             self.effects,
             r"government_has_flag\s*=\s*government_has_treasury",
         )
+        for profile in ("x", "y", "z"):
+            self.assertRegex(
+                self.effects,
+                rf"name\s*=\s*zg361_ip_{profile}_probe_manager_treasury\s+"
+                r"value\s*=\s*var:zg361_ip_probe_manager_treasury",
+            )
 
     def test_reader_is_same_frame_played_subject_only(self) -> None:
         for token in (
@@ -176,6 +193,11 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
             "permitted_executor_septendenary",
         )
         self.assertIn("production_live_acceptance", self.abi["unsupported_claims"])
+        self.assertTrue(
+            self.abi["profile_receipt_atomicity"][
+                "mixed_na_incident_profiles_same_paused_frame"
+            ]
+        )
 
 
 if __name__ == "__main__":

@@ -9,8 +9,10 @@ other event is guessed or auto-resolved.
 An option command acknowledgement is never a result.  Each selection must
 materialize as the old event instance disappearing, and the cell is GREEN only
 after the received-self Incident provider publishes exact X, Y and Z terminal
-tuples plus their KPI disposition on one paused snapshot.  A wrong-owner query
-is then required to return the typed ACL denial.
+tuples plus their KPI disposition on one paused snapshot.  The three profiles
+own immutable probe receipts, so the matrix must contain both an exact N/A and
+a positive incident instead of pretending one shared mutable probe can prove
+both.  A wrong-owner query is then required to return the typed ACL denial.
 """
 
 from __future__ import annotations
@@ -407,15 +409,21 @@ def _query_terminal_matrix(
             return None
         profiles[profile] = projection
 
-    shared_probe = profiles["x"]["probe"]
-    shared_resources = profiles["x"]["resources"]
     kinds = {str(row["kind"]) for row in profiles.values()}
-    if len(kinds) != 1:
-        raise ValueError("Incident X/Y/Z did not share one applicability result")
-    if any(row["probe"] != shared_probe for row in profiles.values()):
-        raise ValueError("Incident X/Y/Z probe identity drifted across profiles")
-    if any(row["resources"] != shared_resources for row in profiles.values()):
-        raise ValueError("Incident X/Y/Z resources drifted across profiles")
+    if kinds != {"na", "incident"}:
+        raise ValueError(
+            "Incident X/Y/Z matrix must contain exact N/A and incident receipts"
+        )
+    for profile, row in profiles.items():
+        probe = row["probe"]
+        assert isinstance(probe, dict)
+        if (
+            probe.get("owner_character_id") != owner
+            or probe.get("subject_character_id") != player
+        ):
+            raise ValueError(
+                f"Incident {profile} profile receipt changed owner/subject binding"
+            )
     return profiles, raw
 
 
@@ -754,7 +762,8 @@ def run_incident_xyz_gameplay_action_cell(
                 checks["entry_option_materialized"] = True
                 checks["ack_not_used_as_result"] = True
                 checks["xyz_terminal_same_frame_ready"] = True
-                checks["xyz_shared_probe_and_resources"] = True
+                checks["xyz_profile_probe_receipts_frozen"] = True
+                checks["xyz_mixed_na_incident_matrix"] = True
                 checks["wrong_owner_acl_typed_red"] = True
                 evidence["result"] = "GREEN"
                 evidence["failure_reason"] = None

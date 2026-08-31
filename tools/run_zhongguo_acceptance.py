@@ -68,6 +68,10 @@ from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
     ZhongguoIncidentQueryV1,
     normalize_zhongguo_incident_snapshot_v1_response,
 )
+from xar_autoplayer.bridge.zhongguo_incident_action_cell import (
+    IncidentActionCellError,
+    run_incident_xyz_gameplay_action_cell,
+)
 from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_WORKFORCE_COLLECTIVE_CASE_KIND_V1,
@@ -440,7 +444,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
             "zhongguo_incident_snapshot_v1_query_supported"
         ),
         "observation_only": True,
-        "gameplay_action_complete": False,
+        "gameplay_action_complete": True,
     },
     "workforce_collective_and_three_cycle_matrix": {
         "implementation": "wired",
@@ -476,7 +480,6 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
 }
 PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
     "b2_pip_gameplay_action_and_postcondition_matrix",
-    "incident_xyz_gameplay_action_and_postcondition_matrix",
     "workforce_collective_gameplay_action_and_postcondition_matrix",
     "ai_owned_case_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
@@ -5065,6 +5068,37 @@ def compare_phase2_domain_query_stages(
         raise acceptance.RunnerError(
             f"phase-two domain restore consistency failed: {error}"
         ) from error
+
+
+def run_phase2_incident_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    owner_character_id: int,
+) -> dict[str, object]:
+    """Run the reusable Incident action cell and preserve its exact evidence."""
+
+    evidence_path = artifacts / (
+        "05_phase2_incident_xyz_gameplay_action_cell.json"
+    )
+    try:
+        evidence = run_incident_xyz_gameplay_action_cell(
+            service,
+            owner_character_id=owner_character_id,
+        )
+    except IncidentActionCellError as error:
+        write_json(evidence_path, error.evidence)
+        raise acceptance.RunnerError(
+            "phase-two Incident X/Y/Z gameplay action cell RED: "
+            f"{error.reason}"
+        ) from error
+    if not isinstance(evidence, dict) or evidence.get("result") != "GREEN":
+        raise acceptance.RunnerError(
+            "phase-two Incident X/Y/Z gameplay action cell returned a "
+            "non-GREEN result"
+        )
+    write_json(evidence_path, evidence)
+    return evidence
 
 
 def wait_for_phase2_paused_snapshot(
@@ -10323,6 +10357,8 @@ def run_phase2_live_scenario(
         "loaded_feature_manifest": None,
         "domain_cell_registry": PHASE2_DOMAIN_CELL_REGISTRY,
         "domain_owner_contract": None,
+        "incident_gameplay_action_cell": None,
+        "completed_gameplay_action_cells": [],
         "pre_restore_domain_queries": None,
         "save_restore_lineage": None,
         "post_restore_domain_queries": None,
@@ -10372,6 +10408,19 @@ def run_phase2_live_scenario(
             player_character_id=int(paused_binding["player_character_id"]),
         )
         evidence["domain_owner_contract"] = owner_contract
+        incident_action = run_phase2_incident_gameplay_action_cell(
+            service,
+            artifacts,
+            owner_character_id=owner_contract[
+                "incident_owner_character_id"
+            ],
+        )
+        evidence["incident_gameplay_action_cell"] = incident_action
+        evidence["completed_gameplay_action_cells"] = [
+            "incident_xyz_gameplay_action_and_postcondition_matrix"
+        ]
+        evidence["gameplay_acceptance_executed"] = True
+        write_json(evidence_path, evidence)
         pre_restore_queries = run_phase2_domain_query_stage(
             service,
             artifacts,
@@ -10413,15 +10462,32 @@ def run_phase2_live_scenario(
         write_json(evidence_path, evidence)
 
         # All four frozen domain providers now run as real pre/restore/post
-        # read-only matrices.  No product action was executed, however, and the
-        # named-widget action remains absent.  Returning GREEN here would still
-        # turn observation into a false gameplay-completion claim.
+        # read-only matrices, and the Incident product action has been proven.
+        # The remaining four product cells are still absent, so the batch must
+        # remain RED instead of inflating one completed cell into phase-two.
         raise acceptance.RunnerError(
-            "phase-two MCP domain matrix RED: B2/Incident/Workforce/AI-owned "
-            "observation-only queries passed, but real gameplay actions and "
-            "the safe scoreboard named-widget action remain unimplemented"
+            "phase-two MCP matrix RED: Incident gameplay action and "
+            "B2/Incident/Workforce/AI-owned observations passed, but the "
+            "remaining B2/Workforce/AI-owned/scoreboard gameplay action "
+            "cells are unimplemented"
         )
     except BaseException as error:
+        incident_path = artifacts / (
+            "05_phase2_incident_xyz_gameplay_action_cell.json"
+        )
+        if incident_path.is_file():
+            try:
+                incident_value = json.loads(
+                    incident_path.read_text(encoding="utf-8")
+                )
+                if isinstance(incident_value, dict):
+                    evidence["incident_gameplay_action_cell"] = incident_value
+                    submissions = incident_value.get("selection_submissions")
+                    evidence["gameplay_acceptance_executed"] = bool(
+                        isinstance(submissions, list) and submissions
+                    )
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
         lineage_path = artifacts / "06_phase2_save_restore_lineage.json"
         if lineage_path.is_file():
             try:
@@ -10434,7 +10500,6 @@ def run_phase2_live_scenario(
                 pass
         evidence["result"] = "RED"
         evidence["phase2_acceptance_complete"] = False
-        evidence["gameplay_acceptance_executed"] = False
         evidence["gameplay_green_claimed"] = False
         evidence["failure_reason"] = f"{type(error).__name__}: {error}"
         write_json(evidence_path, evidence)

@@ -117,26 +117,40 @@ def terminal_incident(
     kind: str,
 ) -> dict[str, object]:
     incident = kind == "incident"
+    cycle = {"x": 7, "y": 6, "z": 7}[profile]
+    probe_serial = {"x": 19, "y": 18, "z": 19}[profile]
     probe_values = {
         "owner_character_id": OWNER,
         "subject_character_id": PLAYER,
-        "cycle_serial": 7,
-        "probe_serial": 19,
+        "cycle_serial": cycle,
+        "probe_serial": probe_serial,
         "result": 1 if incident else 0,
         "source_kind": 5 if incident else 0,
         "consequence_kind": 3 if incident else 0,
     }
     resources = {
-        "subject_personal_gold_q100000": 4_200_000,
-        "manager_treasury_q100000": 8_800_000,
-        "capital_control_q100000": 4_000_000,
+        "subject_personal_gold_q100000": {
+            "x": 4_200_000,
+            "y": 5_200_000,
+            "z": 4_200_000,
+        }[profile],
+        "manager_treasury_q100000": {
+            "x": 8_800_000,
+            "y": 9_800_000,
+            "z": 8_800_000,
+        }[profile],
+        "capital_control_q100000": {
+            "x": 4_000_000,
+            "y": 7_000_000,
+            "z": 4_000_000,
+        }[profile],
     }
     if incident:
         state = 8 if profile == "x" else 6
         terminal_values = {
             "owner_character_id": OWNER,
             "subject_character_id": PLAYER,
-            "cycle_serial": 7,
+            "cycle_serial": cycle,
             "case_serial": {"x": 31, "y": 32, "z": 33}[profile],
             "state": state,
             "revision": 4,
@@ -163,9 +177,9 @@ def terminal_incident(
         terminal_values = {
             "owner_character_id": OWNER,
             "subject_character_id": PLAYER,
-            "cycle_serial": 7,
+            "cycle_serial": cycle,
             "reason": 1,
-            "probe_serial": 19,
+            "probe_serial": probe_serial,
             "receipt_serial": {"x": 31, "y": 32, "z": 33}[profile],
             "applicable": 0,
             "kpi_staged": 0,
@@ -211,7 +225,7 @@ class FakeIncidentService:
         self,
         *,
         initial_event: str | None = "zg361.50",
-        terminal_kind: str = "incident",
+        terminal_kinds: dict[str, str] | None = None,
     ) -> None:
         self.event_key = initial_event
         self.event_instance_id = 100 if initial_event is not None else None
@@ -220,14 +234,18 @@ class FakeIncidentService:
         self.revision = 10
         self.native_revision = 100
         self.date_raw = DATE_RAW
-        self.terminal_kind = terminal_kind
+        self.terminal_kinds = terminal_kinds or {
+            "x": "incident",
+            "y": "na",
+            "z": "incident",
+        }
         self.terminal_ready = False
         self.entry_selected = False
         self.result_selected = False
         self.selection_ack_stuck = False
         self.wrong_notice_owner = False
         self.acl_leak = False
-        self.cross_profile_probe_drift = False
+        self.profile_receipt_binding_drift = False
         self.invalid_kpi = False
         self.unexpected_after_entry: str | None = None
         self.entry_event_after_ticks: int | None = None
@@ -393,17 +411,17 @@ class FakeIncidentService:
         if owner_character_id != OWNER:
             if self.acl_leak:
                 return terminal_incident(
-                    profile, owner_character_id, kind=self.terminal_kind
+                    profile, owner_character_id, kind=self.terminal_kinds[profile]
                 )
             return acl_incident(profile, owner_character_id)
         if not self.terminal_ready:
             return unavailable_incident(profile, owner_character_id)
         response = terminal_incident(
-            profile, owner_character_id, kind=self.terminal_kind
+            profile, owner_character_id, kind=self.terminal_kinds[profile]
         )
-        if self.cross_profile_probe_drift and profile == "z":
-            response["probe"]["probe_serial"] = available(20)
-        if self.invalid_kpi and profile == "y":
+        if self.profile_receipt_binding_drift and profile == "z":
+            response["probe"]["owner_character_id"] = available(OWNER + 1)
+        if self.invalid_kpi and profile == "x":
             response["kpi"]["disposition"] = "consumed"
         return response
 
@@ -455,27 +473,27 @@ class IncidentActionCellTests(unittest.TestCase):
         )
         self.assertEqual(
             {row["kind"] for row in result["terminal_profiles"].values()},
-            {"incident"},
+            {"na", "incident"},
+        )
+        self.assertEqual(
+            result["terminal_profiles"]["y"]["kpi_disposition"],
+            "not_staged",
         )
         self.assertTrue(result["checks"]["ack_not_used_as_result"])
+        self.assertTrue(
+            result["checks"]["xyz_profile_probe_receipts_frozen"]
+        )
+        self.assertTrue(result["checks"]["xyz_mixed_na_incident_matrix"])
         self.assertTrue(result["checks"]["wrong_owner_acl_typed_red"])
         self.assertGreaterEqual(len(result["selection_materializations"]), 2)
 
-    def test_exact_na_route_is_a_real_terminal_without_kpi(self) -> None:
-        service = FakeIncidentService(terminal_kind="na")
-        result = run_cell(service)
-        self.assertEqual(result["result"], "GREEN")
-        self.assertEqual(
-            {row["kind"] for row in result["terminal_profiles"].values()},
-            {"na"},
+    def test_single_kind_matrix_cannot_claim_mixed_terminal_coverage(self) -> None:
+        service = FakeIncidentService(
+            terminal_kinds={profile: "na" for profile in INCIDENT_PROFILES}
         )
-        self.assertEqual(
-            {
-                row["kpi_disposition"]
-                for row in result["terminal_profiles"].values()
-            },
-            {"not_staged"},
-        )
+        with self.assertRaises(IncidentActionCellError) as caught:
+            run_cell(service)
+        self.assertIn("must contain exact N/A and incident", caught.exception.reason)
 
     def test_event_free_seed_waits_for_exact_trigger(self) -> None:
         service = FakeIncidentService(initial_event=None)
@@ -535,12 +553,12 @@ class IncidentActionCellTests(unittest.TestCase):
             service.selections, [("zg361.50", 1), ("zg361.4", 1)]
         )
 
-    def test_cross_profile_probe_drift_is_red(self) -> None:
+    def test_profile_receipt_owner_binding_drift_is_red(self) -> None:
         service = FakeIncidentService()
-        service.cross_profile_probe_drift = True
+        service.profile_receipt_binding_drift = True
         with self.assertRaises(IncidentActionCellError) as caught:
             run_cell(service)
-        self.assertIn("probe identity drifted", caught.exception.reason)
+        self.assertIn("changed owner/subject binding", caught.exception.reason)
 
     def test_wrong_owner_acl_must_be_typed_red(self) -> None:
         service = FakeIncidentService()

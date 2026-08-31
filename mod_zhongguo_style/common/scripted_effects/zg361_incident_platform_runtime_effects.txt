@@ -121,13 +121,11 @@ zg361_ip_capture_real_incident_effect = {
 	}
 }
 
-# Exact N/A receipt.  It is an applicability probe, not an incident case.
-zg361_ip_mark_x_not_applicable_effect = {
+# X immutable applicability receipt. The shared probe above is
+# only an internal detector/cache; provider-visible provenance is profile-owned.
+zg361_ip_freeze_x_probe_effect = {
 	if = {
 		limit = {
-			root = { has_game_rule = zg361_on zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial }
-			zg361_is_reviewable_vassal_trigger = yes
-			liege = root
 			has_variable = zg361_ip_probe_owner
 			has_variable = zg361_ip_probe_subject
 			has_variable = zg361_ip_probe_cycle
@@ -135,12 +133,113 @@ zg361_ip_mark_x_not_applicable_effect = {
 			has_variable = zg361_ip_probe_result
 			has_variable = zg361_ip_probe_source_kind
 			has_variable = zg361_ip_probe_consequence_kind
+			has_variable = zg361_ip_probe_subject_gold
+			has_variable = zg361_ip_probe_manager_treasury
+			has_variable = zg361_ip_probe_capital_control
 			var:zg361_ip_probe_owner = root
 			var:zg361_ip_probe_subject = this
 			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
-			var:zg361_ip_probe_result = 0
-			var:zg361_ip_probe_source_kind = 0
-			var:zg361_ip_probe_consequence_kind = 0
+		}
+		set_variable = { name = zg361_ip_x_probe_owner value = var:zg361_ip_probe_owner }
+		set_variable = { name = zg361_ip_x_probe_subject value = var:zg361_ip_probe_subject }
+		set_variable = { name = zg361_ip_x_probe_cycle value = var:zg361_ip_probe_cycle }
+		set_variable = { name = zg361_ip_x_probe_serial value = var:zg361_ip_probe_serial }
+		set_variable = { name = zg361_ip_x_probe_result value = var:zg361_ip_probe_result }
+		set_variable = { name = zg361_ip_x_probe_source_kind value = var:zg361_ip_probe_source_kind }
+		set_variable = { name = zg361_ip_x_probe_consequence_kind value = var:zg361_ip_probe_consequence_kind }
+		set_variable = { name = zg361_ip_x_probe_subject_gold value = var:zg361_ip_probe_subject_gold }
+		set_variable = { name = zg361_ip_x_probe_manager_treasury value = var:zg361_ip_probe_manager_treasury }
+		set_variable = { name = zg361_ip_x_probe_capital_control value = var:zg361_ip_probe_capital_control }
+	}
+}
+
+# Y immutable applicability receipt. The shared probe above is
+# only an internal detector/cache; provider-visible provenance is profile-owned.
+zg361_ip_freeze_y_probe_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_ip_probe_owner
+			has_variable = zg361_ip_probe_subject
+			has_variable = zg361_ip_probe_cycle
+			has_variable = zg361_ip_probe_serial
+			has_variable = zg361_ip_probe_result
+			has_variable = zg361_ip_probe_source_kind
+			has_variable = zg361_ip_probe_consequence_kind
+			has_variable = zg361_ip_probe_subject_gold
+			has_variable = zg361_ip_probe_manager_treasury
+			has_variable = zg361_ip_probe_capital_control
+			var:zg361_ip_probe_owner = root
+			var:zg361_ip_probe_subject = this
+			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
+		}
+		set_variable = { name = zg361_ip_y_probe_owner value = var:zg361_ip_probe_owner }
+		set_variable = { name = zg361_ip_y_probe_subject value = var:zg361_ip_probe_subject }
+		set_variable = { name = zg361_ip_y_probe_cycle value = var:zg361_ip_probe_cycle }
+		set_variable = { name = zg361_ip_y_probe_serial value = var:zg361_ip_probe_serial }
+		set_variable = { name = zg361_ip_y_probe_result value = var:zg361_ip_probe_result }
+		set_variable = { name = zg361_ip_y_probe_source_kind value = var:zg361_ip_probe_source_kind }
+		set_variable = { name = zg361_ip_y_probe_consequence_kind value = var:zg361_ip_probe_consequence_kind }
+		set_variable = { name = zg361_ip_y_probe_subject_gold value = var:zg361_ip_probe_subject_gold }
+		set_variable = { name = zg361_ip_y_probe_manager_treasury value = var:zg361_ip_probe_manager_treasury }
+		set_variable = { name = zg361_ip_y_probe_capital_control value = var:zg361_ip_probe_capital_control }
+	}
+}
+
+# Z immutable applicability receipt. The shared probe above is
+# only an internal detector/cache; provider-visible provenance is profile-owned.
+zg361_ip_freeze_z_probe_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_ip_probe_owner
+			has_variable = zg361_ip_probe_subject
+			has_variable = zg361_ip_probe_cycle
+			has_variable = zg361_ip_probe_serial
+			has_variable = zg361_ip_probe_result
+			has_variable = zg361_ip_probe_source_kind
+			has_variable = zg361_ip_probe_consequence_kind
+			has_variable = zg361_ip_probe_subject_gold
+			has_variable = zg361_ip_probe_manager_treasury
+			has_variable = zg361_ip_probe_capital_control
+			var:zg361_ip_probe_owner = root
+			var:zg361_ip_probe_subject = this
+			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
+		}
+		set_variable = { name = zg361_ip_z_probe_owner value = var:zg361_ip_probe_owner }
+		set_variable = { name = zg361_ip_z_probe_subject value = var:zg361_ip_probe_subject }
+		set_variable = { name = zg361_ip_z_probe_cycle value = var:zg361_ip_probe_cycle }
+		set_variable = { name = zg361_ip_z_probe_serial value = var:zg361_ip_probe_serial }
+		set_variable = { name = zg361_ip_z_probe_result value = var:zg361_ip_probe_result }
+		set_variable = { name = zg361_ip_z_probe_source_kind value = var:zg361_ip_probe_source_kind }
+		set_variable = { name = zg361_ip_z_probe_consequence_kind value = var:zg361_ip_probe_consequence_kind }
+		set_variable = { name = zg361_ip_z_probe_subject_gold value = var:zg361_ip_probe_subject_gold }
+		set_variable = { name = zg361_ip_z_probe_manager_treasury value = var:zg361_ip_probe_manager_treasury }
+		set_variable = { name = zg361_ip_z_probe_capital_control value = var:zg361_ip_probe_capital_control }
+	}
+}
+
+# Exact N/A receipt.  It is an applicability probe, not an incident case.
+zg361_ip_mark_x_not_applicable_effect = {
+	if = {
+		limit = {
+			root = { has_game_rule = zg361_on zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial }
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			has_variable = zg361_ip_x_probe_owner
+			has_variable = zg361_ip_x_probe_subject
+			has_variable = zg361_ip_x_probe_cycle
+			has_variable = zg361_ip_x_probe_serial
+			has_variable = zg361_ip_x_probe_result
+			has_variable = zg361_ip_x_probe_source_kind
+			has_variable = zg361_ip_x_probe_consequence_kind
+			has_variable = zg361_ip_x_probe_subject_gold
+			has_variable = zg361_ip_x_probe_manager_treasury
+			has_variable = zg361_ip_x_probe_capital_control
+			var:zg361_ip_x_probe_owner = root
+			var:zg361_ip_x_probe_subject = this
+			var:zg361_ip_x_probe_cycle = root.var:zg361_review_serial
+			var:zg361_ip_x_probe_result = 0
+			var:zg361_ip_x_probe_source_kind = 0
+			var:zg361_ip_x_probe_consequence_kind = 0
 		}
 		if = { limit = { NOT = { has_variable = zg361_ip_x_na_receipt_serial } } set_variable = { name = zg361_ip_x_na_receipt_serial value = 0 } }
 		change_variable = { name = zg361_ip_x_na_receipt_serial add = 1 }
@@ -149,7 +248,7 @@ zg361_ip_mark_x_not_applicable_effect = {
 		set_variable = { name = zg361_ip_x_final_na_subject value = this }
 		set_variable = { name = zg361_ip_x_final_na_cycle value = root.var:zg361_review_serial }
 		set_variable = { name = zg361_ip_x_final_na_reason value = 1 }
-		set_variable = { name = zg361_ip_x_final_na_probe_serial value = var:zg361_ip_probe_serial }
+		set_variable = { name = zg361_ip_x_final_na_probe_serial value = var:zg361_ip_x_probe_serial }
 		set_variable = { name = zg361_ip_x_final_na_receipt value = var:zg361_ip_x_na_receipt_serial }
 		set_variable = { name = zg361_ip_x_final_kpi_staged value = 0 }
 		debug_log = "ZG361IP: X N/A because no observed incident exists"
@@ -163,19 +262,22 @@ zg361_ip_mark_y_not_applicable_effect = {
 			root = { has_game_rule = zg361_on zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial }
 			zg361_is_reviewable_vassal_trigger = yes
 			liege = root
-			has_variable = zg361_ip_probe_owner
-			has_variable = zg361_ip_probe_subject
-			has_variable = zg361_ip_probe_cycle
-			has_variable = zg361_ip_probe_serial
-			has_variable = zg361_ip_probe_result
-			has_variable = zg361_ip_probe_source_kind
-			has_variable = zg361_ip_probe_consequence_kind
-			var:zg361_ip_probe_owner = root
-			var:zg361_ip_probe_subject = this
-			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
-			var:zg361_ip_probe_result = 0
-			var:zg361_ip_probe_source_kind = 0
-			var:zg361_ip_probe_consequence_kind = 0
+			has_variable = zg361_ip_y_probe_owner
+			has_variable = zg361_ip_y_probe_subject
+			has_variable = zg361_ip_y_probe_cycle
+			has_variable = zg361_ip_y_probe_serial
+			has_variable = zg361_ip_y_probe_result
+			has_variable = zg361_ip_y_probe_source_kind
+			has_variable = zg361_ip_y_probe_consequence_kind
+			has_variable = zg361_ip_y_probe_subject_gold
+			has_variable = zg361_ip_y_probe_manager_treasury
+			has_variable = zg361_ip_y_probe_capital_control
+			var:zg361_ip_y_probe_owner = root
+			var:zg361_ip_y_probe_subject = this
+			var:zg361_ip_y_probe_cycle = root.var:zg361_review_serial
+			var:zg361_ip_y_probe_result = 0
+			var:zg361_ip_y_probe_source_kind = 0
+			var:zg361_ip_y_probe_consequence_kind = 0
 		}
 		if = { limit = { NOT = { has_variable = zg361_ip_y_na_receipt_serial } } set_variable = { name = zg361_ip_y_na_receipt_serial value = 0 } }
 		change_variable = { name = zg361_ip_y_na_receipt_serial add = 1 }
@@ -184,7 +286,7 @@ zg361_ip_mark_y_not_applicable_effect = {
 		set_variable = { name = zg361_ip_y_final_na_subject value = this }
 		set_variable = { name = zg361_ip_y_final_na_cycle value = root.var:zg361_review_serial }
 		set_variable = { name = zg361_ip_y_final_na_reason value = 1 }
-		set_variable = { name = zg361_ip_y_final_na_probe_serial value = var:zg361_ip_probe_serial }
+		set_variable = { name = zg361_ip_y_final_na_probe_serial value = var:zg361_ip_y_probe_serial }
 		set_variable = { name = zg361_ip_y_final_na_receipt value = var:zg361_ip_y_na_receipt_serial }
 		set_variable = { name = zg361_ip_y_final_kpi_staged value = 0 }
 		debug_log = "ZG361IP: Y N/A because no observed incident exists"
@@ -198,19 +300,22 @@ zg361_ip_mark_z_not_applicable_effect = {
 			root = { has_game_rule = zg361_on zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial }
 			zg361_is_reviewable_vassal_trigger = yes
 			liege = root
-			has_variable = zg361_ip_probe_owner
-			has_variable = zg361_ip_probe_subject
-			has_variable = zg361_ip_probe_cycle
-			has_variable = zg361_ip_probe_serial
-			has_variable = zg361_ip_probe_result
-			has_variable = zg361_ip_probe_source_kind
-			has_variable = zg361_ip_probe_consequence_kind
-			var:zg361_ip_probe_owner = root
-			var:zg361_ip_probe_subject = this
-			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
-			var:zg361_ip_probe_result = 0
-			var:zg361_ip_probe_source_kind = 0
-			var:zg361_ip_probe_consequence_kind = 0
+			has_variable = zg361_ip_z_probe_owner
+			has_variable = zg361_ip_z_probe_subject
+			has_variable = zg361_ip_z_probe_cycle
+			has_variable = zg361_ip_z_probe_serial
+			has_variable = zg361_ip_z_probe_result
+			has_variable = zg361_ip_z_probe_source_kind
+			has_variable = zg361_ip_z_probe_consequence_kind
+			has_variable = zg361_ip_z_probe_subject_gold
+			has_variable = zg361_ip_z_probe_manager_treasury
+			has_variable = zg361_ip_z_probe_capital_control
+			var:zg361_ip_z_probe_owner = root
+			var:zg361_ip_z_probe_subject = this
+			var:zg361_ip_z_probe_cycle = root.var:zg361_review_serial
+			var:zg361_ip_z_probe_result = 0
+			var:zg361_ip_z_probe_source_kind = 0
+			var:zg361_ip_z_probe_consequence_kind = 0
 		}
 		if = { limit = { NOT = { has_variable = zg361_ip_z_na_receipt_serial } } set_variable = { name = zg361_ip_z_na_receipt_serial value = 0 } }
 		change_variable = { name = zg361_ip_z_na_receipt_serial add = 1 }
@@ -219,7 +324,7 @@ zg361_ip_mark_z_not_applicable_effect = {
 		set_variable = { name = zg361_ip_z_final_na_subject value = this }
 		set_variable = { name = zg361_ip_z_final_na_cycle value = root.var:zg361_review_serial }
 		set_variable = { name = zg361_ip_z_final_na_reason value = 1 }
-		set_variable = { name = zg361_ip_z_final_na_probe_serial value = var:zg361_ip_probe_serial }
+		set_variable = { name = zg361_ip_z_final_na_probe_serial value = var:zg361_ip_z_probe_serial }
 		set_variable = { name = zg361_ip_z_final_na_receipt value = var:zg361_ip_z_na_receipt_serial }
 		set_variable = { name = zg361_ip_z_final_kpi_staged value = 0 }
 		debug_log = "ZG361IP: Z N/A because no observed incident exists"
@@ -12369,17 +12474,24 @@ zg361_ip_finalize_x_effect = {
 			has_variable = zg361_ip_x_input_incident_serial
 			has_variable = zg361_ip_x_input_source_kind
 			has_variable = zg361_ip_x_input_consequence_kind
-			has_variable = zg361_ip_incident_serial
-			has_variable = zg361_ip_incident_source_kind
-			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_x_probe_owner
+			has_variable = zg361_ip_x_probe_subject
+			has_variable = zg361_ip_x_probe_cycle
+			has_variable = zg361_ip_x_probe_result
+			has_variable = zg361_ip_x_probe_source_kind
+			has_variable = zg361_ip_x_probe_consequence_kind
 			var:zg361_case_x_state = 8
 			var:zg361_case_x_active = 0
 			var:zg361_ip_x_input_owner = var:zg361_case_x_owner
 			var:zg361_ip_x_input_subject = var:zg361_case_x_subject
 			var:zg361_ip_x_input_cycle = var:zg361_case_x_cycle_serial
-			var:zg361_ip_x_input_incident_serial = var:zg361_ip_incident_serial
-			var:zg361_ip_x_input_source_kind = var:zg361_ip_incident_source_kind
-			var:zg361_ip_x_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			var:zg361_ip_x_probe_owner = var:zg361_case_x_owner
+			var:zg361_ip_x_probe_subject = var:zg361_case_x_subject
+			var:zg361_ip_x_probe_cycle = var:zg361_case_x_cycle_serial
+			var:zg361_ip_x_probe_result = 1
+			var:zg361_ip_x_input_incident_serial > 0
+			var:zg361_ip_x_input_source_kind = var:zg361_ip_x_probe_source_kind
+			var:zg361_ip_x_input_consequence_kind = var:zg361_ip_x_probe_consequence_kind
 			var:zg361_ip_x_input_source_kind > 0
 			var:zg361_ip_x_input_consequence_kind > 0
 			trigger_if = {
@@ -13159,12 +13271,13 @@ zg361_ip_open_x_case_on_subject_effect = {
 		set_variable = { name = zg361_ip_x_input_incident_serial value = var:zg361_ip_incident_serial }
 		set_variable = { name = zg361_ip_x_input_source_kind value = var:zg361_ip_incident_source_kind }
 		set_variable = { name = zg361_ip_x_input_consequence_kind value = var:zg361_ip_incident_consequence_kind }
-		set_variable = { name = zg361_ip_x_final_applicable value = 1 }
 		zg361_case_x_open_effect = yes
 		if = {
 			limit = { has_variable = zg361_case_kernel_applied }
 			if = {
 				limit = { var:zg361_case_kernel_applied = 1 }
+				zg361_ip_freeze_x_probe_effect = yes
+				set_variable = { name = zg361_ip_x_final_applicable value = 1 }
 				set_variable = { name = zg361_ip_x_score_delta value = 0 }
 				set_variable = { name = zg361_ip_x_evidence_n value = 0 }
 				set_variable = { name = zg361_ip_x_last_consumer value = 0 }
@@ -13183,6 +13296,7 @@ zg361_ip_open_x_case_on_subject_effect = {
 	}
 	else_if = {
 		limit = { has_variable = zg361_ip_capture_status var:zg361_ip_capture_status = 0 }
+		zg361_ip_freeze_x_probe_effect = yes
 		zg361_ip_mark_x_not_applicable_effect = yes
 	}
 }
@@ -13210,17 +13324,24 @@ zg361_ip_finalize_y_effect = {
 			has_variable = zg361_ip_y_input_incident_serial
 			has_variable = zg361_ip_y_input_source_kind
 			has_variable = zg361_ip_y_input_consequence_kind
-			has_variable = zg361_ip_incident_serial
-			has_variable = zg361_ip_incident_source_kind
-			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_probe_owner
+			has_variable = zg361_ip_y_probe_subject
+			has_variable = zg361_ip_y_probe_cycle
+			has_variable = zg361_ip_y_probe_result
+			has_variable = zg361_ip_y_probe_source_kind
+			has_variable = zg361_ip_y_probe_consequence_kind
 			var:zg361_case_y_state = 6
 			var:zg361_case_y_active = 0
 			var:zg361_ip_y_input_owner = var:zg361_case_y_owner
 			var:zg361_ip_y_input_subject = var:zg361_case_y_subject
 			var:zg361_ip_y_input_cycle = var:zg361_case_y_cycle_serial
-			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
-			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
-			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			var:zg361_ip_y_probe_owner = var:zg361_case_y_owner
+			var:zg361_ip_y_probe_subject = var:zg361_case_y_subject
+			var:zg361_ip_y_probe_cycle = var:zg361_case_y_cycle_serial
+			var:zg361_ip_y_probe_result = 1
+			var:zg361_ip_y_input_incident_serial > 0
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_y_probe_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_y_probe_consequence_kind
 			var:zg361_ip_y_input_source_kind > 0
 			var:zg361_ip_y_input_consequence_kind > 0
 			trigger_if = {
@@ -13830,12 +13951,13 @@ zg361_ip_open_y_case_on_subject_effect = {
 		set_variable = { name = zg361_ip_y_input_incident_serial value = var:zg361_ip_incident_serial }
 		set_variable = { name = zg361_ip_y_input_source_kind value = var:zg361_ip_incident_source_kind }
 		set_variable = { name = zg361_ip_y_input_consequence_kind value = var:zg361_ip_incident_consequence_kind }
-		set_variable = { name = zg361_ip_y_final_applicable value = 1 }
 		zg361_case_y_open_effect = yes
 		if = {
 			limit = { has_variable = zg361_case_kernel_applied }
 			if = {
 				limit = { var:zg361_case_kernel_applied = 1 }
+				zg361_ip_freeze_y_probe_effect = yes
+				set_variable = { name = zg361_ip_y_final_applicable value = 1 }
 				set_variable = { name = zg361_ip_y_score_delta value = 0 }
 				set_variable = { name = zg361_ip_y_evidence_n value = 0 }
 				set_variable = { name = zg361_ip_y_last_consumer value = 0 }
@@ -13854,6 +13976,7 @@ zg361_ip_open_y_case_on_subject_effect = {
 	}
 	else_if = {
 		limit = { has_variable = zg361_ip_capture_status var:zg361_ip_capture_status = 0 }
+		zg361_ip_freeze_y_probe_effect = yes
 		zg361_ip_mark_y_not_applicable_effect = yes
 	}
 }
@@ -13881,17 +14004,24 @@ zg361_ip_finalize_z_effect = {
 			has_variable = zg361_ip_z_input_incident_serial
 			has_variable = zg361_ip_z_input_source_kind
 			has_variable = zg361_ip_z_input_consequence_kind
-			has_variable = zg361_ip_incident_serial
-			has_variable = zg361_ip_incident_source_kind
-			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_z_probe_owner
+			has_variable = zg361_ip_z_probe_subject
+			has_variable = zg361_ip_z_probe_cycle
+			has_variable = zg361_ip_z_probe_result
+			has_variable = zg361_ip_z_probe_source_kind
+			has_variable = zg361_ip_z_probe_consequence_kind
 			var:zg361_case_z_state = 6
 			var:zg361_case_z_active = 0
 			var:zg361_ip_z_input_owner = var:zg361_case_z_owner
 			var:zg361_ip_z_input_subject = var:zg361_case_z_subject
 			var:zg361_ip_z_input_cycle = var:zg361_case_z_cycle_serial
-			var:zg361_ip_z_input_incident_serial = var:zg361_ip_incident_serial
-			var:zg361_ip_z_input_source_kind = var:zg361_ip_incident_source_kind
-			var:zg361_ip_z_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			var:zg361_ip_z_probe_owner = var:zg361_case_z_owner
+			var:zg361_ip_z_probe_subject = var:zg361_case_z_subject
+			var:zg361_ip_z_probe_cycle = var:zg361_case_z_cycle_serial
+			var:zg361_ip_z_probe_result = 1
+			var:zg361_ip_z_input_incident_serial > 0
+			var:zg361_ip_z_input_source_kind = var:zg361_ip_z_probe_source_kind
+			var:zg361_ip_z_input_consequence_kind = var:zg361_ip_z_probe_consequence_kind
 			var:zg361_ip_z_input_source_kind > 0
 			var:zg361_ip_z_input_consequence_kind > 0
 			trigger_if = {
@@ -14501,12 +14631,13 @@ zg361_ip_open_z_case_on_subject_effect = {
 		set_variable = { name = zg361_ip_z_input_incident_serial value = var:zg361_ip_incident_serial }
 		set_variable = { name = zg361_ip_z_input_source_kind value = var:zg361_ip_incident_source_kind }
 		set_variable = { name = zg361_ip_z_input_consequence_kind value = var:zg361_ip_incident_consequence_kind }
-		set_variable = { name = zg361_ip_z_final_applicable value = 1 }
 		zg361_case_z_open_effect = yes
 		if = {
 			limit = { has_variable = zg361_case_kernel_applied }
 			if = {
 				limit = { var:zg361_case_kernel_applied = 1 }
+				zg361_ip_freeze_z_probe_effect = yes
+				set_variable = { name = zg361_ip_z_final_applicable value = 1 }
 				set_variable = { name = zg361_ip_z_score_delta value = 0 }
 				set_variable = { name = zg361_ip_z_evidence_n value = 0 }
 				set_variable = { name = zg361_ip_z_last_consumer value = 0 }
@@ -14525,6 +14656,7 @@ zg361_ip_open_z_case_on_subject_effect = {
 	}
 	else_if = {
 		limit = { has_variable = zg361_ip_capture_status var:zg361_ip_capture_status = 0 }
+		zg361_ip_freeze_z_probe_effect = yes
 		zg361_ip_mark_z_not_applicable_effect = yes
 	}
 }

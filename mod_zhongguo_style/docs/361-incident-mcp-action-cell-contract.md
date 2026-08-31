@@ -23,10 +23,12 @@ caller 只能提交 expected-owner equality filter。把管理者回执事件的
    不 OCR、也不把单选事件一律自动关闭；
 4. 每次 `select-event-option-1` 后必须看到旧 event instance 消失。command ACK 只记录为 submission，
    不能作为结果；
-5. 在一个真实 paused snapshot 上逐一查询固定 profile `x/y/z`。三者必须共享 owner、subject、cycle、
-   probe serial、applicability source/consequence 和三项资源快照；
-6. 正案必须是 X state 8、Y/Z state 6，且各自 `kpi.disposition=pending`、`pending=1`、`consumed=0`；
-   无事故必须是三域一致 exact N/A，且 `kpi.disposition=not_staged`；
+5. 在一个真实 paused snapshot 上逐一查询固定 profile `x/y/z`。三者必须共享 received-self 的 owner/subject
+   ACL，但各自读取 `zg361_ip_{profile}_probe_*` 冻结回执；cycle、probe serial、source/consequence 和三项资源
+   可以来自中央管线不同 stage 的真实业务时点，不能再被强行比较为一份共享 tuple；
+6. 同帧 terminal kind 集合必须精确包含 `{na, incident}`。正案必须是 X state 8、Y/Z state 6，且各自
+   `kpi.disposition=pending`、`pending=1`、`consumed=0`；无事故必须是 exact N/A receipt，且
+   `kpi.disposition=not_staged`；
 7. 同帧再用一个不同的错误 owner 查询三域，必须全部得到
    `owner_filter_mismatch + terminal.kind=unavailable + readiness.ready=false`，否则 ACL RED。
 
@@ -56,15 +58,36 @@ evidence = run_incident_xyz_gameplay_action_cell(
 
 ## 已覆盖的 fixture RED/GREEN
 
-- 正案 X/Y/Z pending KPI GREEN；
-- 三域 exact N/A/no-KPI GREEN；
+- 同一 paused frame 中 X exact N/A、Y/Z 正案 pending KPI GREEN；
+- 三域只有一种 terminal kind 时 RED，不能冒充 `{na, incident}` 覆盖；
 - event-free seed 有界等待后到达 `zg361.50`；
 - 错事件、错误 notice owner、错误 native option index；
 - ACK 成功但旧 event instance 未消失；
 - 中途出现未知事件；
-- KPI disposition 伪造、跨 profile probe 漂移；
+- KPI disposition 伪造、profile receipt owner/subject 漂移；
 - wrong-owner ACL 泄漏；
 - capability 缺失与入口超时。
 
 这些都是 fixture 证据，尚不提升 CK3 live readiness。首次正式集成必须保存 paused snapshot、三域 response、
 wrong-owner response、两次 option materialization 与最终 runner report。
+
+## 2026-09-01 shared probe blocker 修复
+
+`zg361_ip_probe_*` 仍是同一 review cycle 的内部 detector/cache，但不再是 provider 的长期事实。
+每个 `zg361_ip_open_{x,y,z}_case_on_subject_effect` 只在 N/A 路径即将发布 receipt，或 positive case kernel
+已经确认开案成功后，调用 `zg361_ip_freeze_{x,y,z}_probe_effect`，把 owner、subject、cycle、probe serial、result、source、consequence
+和三项 Q100000 资源完整复制到本 profile 的冻结回执。N/A receipt 与 positive final tuple 都只 join 自己的
+profile probe；被 case kernel 拒绝的 open 不改旧 receipt，后续 stage 再写 shared detector 也不会使旧 profile
+变成 `incident_inconsistent`。
+
+native provider 的每份 allowlist 仍固定为 50 项，MCP 参数、schema、received-self ACL 与 positional decode 均未
+增加；仅把前 10 项从 shared key 切到对应 profile key。旧存档没有这些新回执时会诚实返回
+`incident_not_found`，必须经 shipped profile entry 重新生成，不能由 loader 或 fixture 补写产品变量。
+
+## Phase-two runner 接线
+
+`tools/run_zhongguo_acceptance.py --phase2-live-batch` 已在 seed、loaded-feature manifest 和真实 owner contract
+绑定完成后、四域 pre-restore query 之前调用本 helper。成功或失败 evidence 均原样保存在
+`05_phase2_incident_xyz_gameplay_action_cell.json`；只有 helper 返回 GREEN 后，runner 才把
+`incident_xyz_gameplay_action_and_postcondition_matrix` 从 missing action cells 移除并继续 save/restore 查询。
+这只关闭 Incident action cell，不会把仍缺 B2、Workforce、AI-owned 与 scoreboard 动作的整批验收冒充 GREEN。

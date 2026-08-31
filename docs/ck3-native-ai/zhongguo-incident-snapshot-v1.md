@@ -4,7 +4,9 @@
 
 本观测口服务于天朝二期 Incident X/Y/Z 的一次启动批量验收。它只读取暂停帧中的玩家角色，并把请求里的
 `owner_character_id` 当作相等性过滤器；调用方不能指定 subject、scope 或变量名。`profile` 只能是
-`x | y | z`，分别选择三份编译期固定的 50 项 allowlist，不做字符串拼接式变量读取。
+`x | y | z`，分别选择三份编译期固定的 50 项 allowlist，不做字符串拼接式变量读取。三份 allowlist 的
+前 10 项分别读取 `zg361_ip_{x|y|z}_probe_*` 冻结回执；shared `zg361_ip_probe_*` 只留在 mod 内部 detector，
+不再暴露给 provider。
 
 权威实现与合同：
 
@@ -35,6 +37,8 @@ profile = x | y | z
 禁止增加 `subject_character_id`、`case_kind`、`variable_name(s)`、`scope_character_id` 或任意透传字段。
 subject 恒为 same-frame `played_character_id`；reader 只为该角色构造 kind-4 event target。probe 中实际冻结的
 owner 必须等于请求 owner 且不能等于玩家自己。前后帧必须相同，50 项 raw row 必须连续读取两遍且逐项相同。
+X/Y/Z 共享 played subject/expected owner ACL，不要求业务 cycle、probe serial 或资源值相同；中央 stage 分批推进
+时这些字段本就可以来自不同的已冻结业务时点。
 
 ## 严格终态 union
 
@@ -64,8 +68,10 @@ commit `9441742` 中的 `zg361_ip_capture_real_incident_effect` 已在显式
 - `zg361_ip_probe_capital_control = capital_county.county_control`
 
 complete-cache guard 同时要求三项变量存在；没有零值兜底。provider 将
-`zg361_ip_probe_manager_treasury` 纳入 X/Y/Z 三份固定 allowlist，并像另外两项资源一样保留 kind-1 原始 payload，
-按 Q100000 解码。provenance 的 `manager_treasury_source` 精确固定为该 mod variable。
+`zg361_ip_probe_manager_treasury` 先由每个 profile freeze effect 复制为
+`zg361_ip_{profile}_probe_manager_treasury`；三份固定 allowlist 只读取各自副本，并像另外两项资源一样保留
+kind-1 原始 payload、按 Q100000 解码。provenance 的 `manager_treasury_source` 仍精确记录上游 detector
+variable，ABI/source fixture 另记录 provider key template 与 freeze effect template。
 
 如果任一实际帧缺少该变量，字段必须保持：
 
@@ -101,13 +107,16 @@ ABI fixture 的 `integration_status` 已更新为 `shared_protocol_static_ready`
 
 ## 批量实机验收合同
 
-统一 phase2 live batch 在同一 CK3 PID 中，按 `x → y → z` 查询；每域至少冻结并保存以下原始 MCP 响应：
+统一 phase2 live batch 在同一 CK3 PID、同一 paused frame 中按 `x → y → z` 查询；三份响应的 terminal kind
+集合必须精确包含 `{na, incident}`，每域至少冻结并保存以下原始 MCP 响应：
 
 - exact N/A：完整 probe + 正 N/A receipt + `applicable=0/kpi_staged=0`；
 - exact incident：正 final score 与 case/incident/source/consequence；
 - KPI pending，并在下一正式 KPI 冻结后查询 consumed receipt；
 - subject personal gold、manager treasury、capital control 三项 Q100000；
-- stale owner/profile/revision、cross-arm、重复查询不改状态的负例。
+- stale owner/profile/revision、cross-arm、重复查询不改状态的负例；
+- profile receipts 可以有不同 cycle/probe serial/resources，但 owner/subject ACL 必须相同，后写 shared detector
+  不得改变任何已冻结 profile response。
 
 只有 manager treasury producer 已落地、provider `readiness.ready=true`、loader error scan 无本项目归因错误，并且
 上述 paused artifact 都存在，才能把 Incident 提升为 `fixture-live` 或更高。OCR 只可在 MCP 真值闭合后截展示图。
@@ -129,6 +138,14 @@ ABI fixture 的 `integration_status` 已更新为 `shared_protocol_static_ready`
   可执行文件保存在
   `C:\Users\xenoa\AppData\Local\Temp\xar-incident-scaffold-20260831T1615Z\incident_fixture_test.exe`，
   SHA-256 `828F8628C60A3E08C9871D598DEA9A3289EBF57787827610BFE953EB49FB590A`。
+
+2026-09-01 新增 profile-frozen fixture：同一个 paused frame 同时保存 X=N/A（cycle 6）与
+Y/Z=incident-pending（cycle 7），三次 provider query 均 `readiness.ready=true`。MSVC 19.51 Release targeted
+CTest 2/2 GREEN，构建目录为
+`C:\Users\xenoa\AppData\Local\Temp\xar-incident-profile-receipts-20260901`；随后连 mailbox 一起复跑为
+3/3 GREEN。mixed fixture 可执行文件 SHA-256 为
+`DF3C3FBAF03E6D94342D6EA47E64BDA2552FC83E6C4CD352F70D4564A9C876E1`，source-contract 可执行文件为
+`F6EC244F46076E7B3BB1848963EBBDDBDC557317174A8069F12744F475A8AC01`。这仍是离线 fixture，尚不是 CK3 paused artifact。
 
 直接调用 MSVC 编译这组 standalone fixture 时必须带 `/DNOMINMAX`，否则 `windows.h` 的 `max` 宏会破坏
 `std::numeric_limits<...>::max()`，并在 `/WX` 下失败。编译工作目录必须放在仓库外的 artifact 目录；早期一次误在

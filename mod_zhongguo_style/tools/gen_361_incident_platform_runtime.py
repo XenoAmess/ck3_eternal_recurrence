@@ -382,6 +382,53 @@ zg361_ip_capture_real_incident_effect = {
 }'''
 
 
+def render_profile_probe_freeze(domain: Domain) -> str:
+    """Freeze the shared detector result into one profile-owned receipt.
+
+    The shared ``zg361_ip_probe_*`` tuple is an internal per-cycle detector
+    cache.  It cannot also be the durable provenance for three independently
+    retained X/Y/Z terminals: opening another profile would otherwise make an
+    older terminal join the newest shared tuple.  Each successful profile path
+    therefore copies the complete detector frame before it publishes a new
+    N/A receipt or starts an accepted incident case.  Rejected case opens leave
+    the prior profile receipt untouched.  The native provider reads only these
+    profile-owned copies.
+    """
+
+    dp = _domain_prefix(domain)
+    return f'''# {domain.code} immutable applicability receipt. The shared probe above is
+# only an internal detector/cache; provider-visible provenance is profile-owned.
+zg361_ip_freeze_{domain.slug}_probe_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = zg361_ip_probe_owner
+\t\t\thas_variable = zg361_ip_probe_subject
+\t\t\thas_variable = zg361_ip_probe_cycle
+\t\t\thas_variable = zg361_ip_probe_serial
+\t\t\thas_variable = zg361_ip_probe_result
+\t\t\thas_variable = zg361_ip_probe_source_kind
+\t\t\thas_variable = zg361_ip_probe_consequence_kind
+\t\t\thas_variable = zg361_ip_probe_subject_gold
+\t\t\thas_variable = zg361_ip_probe_manager_treasury
+\t\t\thas_variable = zg361_ip_probe_capital_control
+\t\t\tvar:zg361_ip_probe_owner = root
+\t\t\tvar:zg361_ip_probe_subject = this
+\t\t\tvar:zg361_ip_probe_cycle = root.var:zg361_review_serial
+\t\t}}
+\t\tset_variable = {{ name = {dp}_probe_owner value = var:zg361_ip_probe_owner }}
+\t\tset_variable = {{ name = {dp}_probe_subject value = var:zg361_ip_probe_subject }}
+\t\tset_variable = {{ name = {dp}_probe_cycle value = var:zg361_ip_probe_cycle }}
+\t\tset_variable = {{ name = {dp}_probe_serial value = var:zg361_ip_probe_serial }}
+\t\tset_variable = {{ name = {dp}_probe_result value = var:zg361_ip_probe_result }}
+\t\tset_variable = {{ name = {dp}_probe_source_kind value = var:zg361_ip_probe_source_kind }}
+\t\tset_variable = {{ name = {dp}_probe_consequence_kind value = var:zg361_ip_probe_consequence_kind }}
+\t\tset_variable = {{ name = {dp}_probe_subject_gold value = var:zg361_ip_probe_subject_gold }}
+\t\tset_variable = {{ name = {dp}_probe_manager_treasury value = var:zg361_ip_probe_manager_treasury }}
+\t\tset_variable = {{ name = {dp}_probe_capital_control value = var:zg361_ip_probe_capital_control }}
+\t}}
+}}'''
+
+
 def render_not_applicable(domain: Domain) -> str:
     dp = _domain_prefix(domain)
     return f'''# Exact N/A receipt.  It is an applicability probe, not an incident case.
@@ -391,19 +438,22 @@ zg361_ip_mark_{domain.slug}_not_applicable_effect = {{
 			root = {{ has_game_rule = zg361_on zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial }}
 			zg361_is_reviewable_vassal_trigger = yes
 			liege = root
-			has_variable = zg361_ip_probe_owner
-			has_variable = zg361_ip_probe_subject
-			has_variable = zg361_ip_probe_cycle
-			has_variable = zg361_ip_probe_serial
-			has_variable = zg361_ip_probe_result
-			has_variable = zg361_ip_probe_source_kind
-			has_variable = zg361_ip_probe_consequence_kind
-			var:zg361_ip_probe_owner = root
-			var:zg361_ip_probe_subject = this
-			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
-			var:zg361_ip_probe_result = 0
-			var:zg361_ip_probe_source_kind = 0
-			var:zg361_ip_probe_consequence_kind = 0
+			has_variable = {dp}_probe_owner
+			has_variable = {dp}_probe_subject
+			has_variable = {dp}_probe_cycle
+			has_variable = {dp}_probe_serial
+			has_variable = {dp}_probe_result
+			has_variable = {dp}_probe_source_kind
+			has_variable = {dp}_probe_consequence_kind
+			has_variable = {dp}_probe_subject_gold
+			has_variable = {dp}_probe_manager_treasury
+			has_variable = {dp}_probe_capital_control
+			var:{dp}_probe_owner = root
+			var:{dp}_probe_subject = this
+			var:{dp}_probe_cycle = root.var:zg361_review_serial
+			var:{dp}_probe_result = 0
+			var:{dp}_probe_source_kind = 0
+			var:{dp}_probe_consequence_kind = 0
 		}}
 		if = {{ limit = {{ NOT = {{ has_variable = {dp}_na_receipt_serial }} }} set_variable = {{ name = {dp}_na_receipt_serial value = 0 }} }}
 		change_variable = {{ name = {dp}_na_receipt_serial add = 1 }}
@@ -412,7 +462,7 @@ zg361_ip_mark_{domain.slug}_not_applicable_effect = {{
 		set_variable = {{ name = {dp}_final_na_subject value = this }}
 		set_variable = {{ name = {dp}_final_na_cycle value = root.var:zg361_review_serial }}
 		set_variable = {{ name = {dp}_final_na_reason value = 1 }}
-		set_variable = {{ name = {dp}_final_na_probe_serial value = var:zg361_ip_probe_serial }}
+		set_variable = {{ name = {dp}_final_na_probe_serial value = var:{dp}_probe_serial }}
 		set_variable = {{ name = {dp}_final_na_receipt value = var:{dp}_na_receipt_serial }}
 		set_variable = {{ name = {dp}_final_kpi_staged value = 0 }}
 		debug_log = "ZG361IP: {domain.code} N/A because no observed incident exists"
@@ -900,17 +950,24 @@ zg361_ip_finalize_{domain.slug}_effect = {{
 \t\t\thas_variable = {dp}_input_incident_serial
 \t\t\thas_variable = {dp}_input_source_kind
 \t\t\thas_variable = {dp}_input_consequence_kind
-\t\t\thas_variable = zg361_ip_incident_serial
-\t\t\thas_variable = zg361_ip_incident_source_kind
-\t\t\thas_variable = zg361_ip_incident_consequence_kind
+\t\t\thas_variable = {dp}_probe_owner
+\t\t\thas_variable = {dp}_probe_subject
+\t\t\thas_variable = {dp}_probe_cycle
+\t\t\thas_variable = {dp}_probe_result
+\t\t\thas_variable = {dp}_probe_source_kind
+\t\t\thas_variable = {dp}_probe_consequence_kind
 \t\t\tvar:{case}_state = {domain.final_state}
 \t\t\tvar:{case}_active = 0
 \t\t\tvar:{dp}_input_owner = var:{case}_owner
 \t\t\tvar:{dp}_input_subject = var:{case}_subject
 \t\t\tvar:{dp}_input_cycle = var:{case}_cycle_serial
-\t\t\tvar:{dp}_input_incident_serial = var:zg361_ip_incident_serial
-\t\t\tvar:{dp}_input_source_kind = var:zg361_ip_incident_source_kind
-\t\t\tvar:{dp}_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+\t\t\tvar:{dp}_probe_owner = var:{case}_owner
+\t\t\tvar:{dp}_probe_subject = var:{case}_subject
+\t\t\tvar:{dp}_probe_cycle = var:{case}_cycle_serial
+\t\t\tvar:{dp}_probe_result = 1
+\t\t\tvar:{dp}_input_incident_serial > 0
+\t\t\tvar:{dp}_input_source_kind = var:{dp}_probe_source_kind
+\t\t\tvar:{dp}_input_consequence_kind = var:{dp}_probe_consequence_kind
 \t\t\tvar:{dp}_input_source_kind > 0
 \t\t\tvar:{dp}_input_consequence_kind > 0
 \t\t\ttrigger_if = {{
@@ -1003,12 +1060,13 @@ zg361_ip_open_{domain.slug}_case_on_subject_effect = {{
 \t\tset_variable = {{ name = {dp}_input_incident_serial value = var:zg361_ip_incident_serial }}
 \t\tset_variable = {{ name = {dp}_input_source_kind value = var:zg361_ip_incident_source_kind }}
 \t\tset_variable = {{ name = {dp}_input_consequence_kind value = var:zg361_ip_incident_consequence_kind }}
-\t\tset_variable = {{ name = {dp}_final_applicable value = 1 }}
 \t\tzg361_case_{domain.slug}_open_effect = yes
 \t\tif = {{
 \t\t\tlimit = {{ has_variable = zg361_case_kernel_applied }}
 \t\t\tif = {{
 \t\t\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
+\t\t\t\tzg361_ip_freeze_{domain.slug}_probe_effect = yes
+\t\t\t\tset_variable = {{ name = {dp}_final_applicable value = 1 }}
 \t\t\t\tset_variable = {{ name = {dp}_score_delta value = 0 }}
 \t\t\t\tset_variable = {{ name = {dp}_evidence_n value = 0 }}
 \t\t\t\tset_variable = {{ name = {dp}_last_consumer value = 0 }}
@@ -1027,6 +1085,7 @@ zg361_ip_open_{domain.slug}_case_on_subject_effect = {{
 \t}}
 \telse_if = {{
 \t\tlimit = {{ has_variable = zg361_ip_capture_status var:zg361_ip_capture_status = 0 }}
+\t\tzg361_ip_freeze_{domain.slug}_probe_effect = yes
 \t\tzg361_ip_mark_{domain.slug}_not_applicable_effect = yes
 \t}}
 }}
@@ -1448,6 +1507,7 @@ def render_effects() -> bytes:
         "# zg361_ip_open_portfolio_effect. No GUI/on_action/interactions are added."
     ]
     sections.append(render_real_incident_capture())
+    sections.extend(render_profile_probe_freeze(domain) for domain in DOMAINS)
     sections.extend(render_not_applicable(domain) for domain in DOMAINS)
     sections.append(render_kpi_runtime_effects())
     sections.extend(render_mechanism_effect(mechanism_id) for mechanism_id in range(192, 229))

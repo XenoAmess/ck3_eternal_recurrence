@@ -61,17 +61,17 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  constexpr std::array<std::string_view, 10> common{
-      "zg361_ip_probe_owner",
-      "zg361_ip_probe_subject",
-      "zg361_ip_probe_cycle",
-      "zg361_ip_probe_serial",
-      "zg361_ip_probe_result",
-      "zg361_ip_probe_source_kind",
-      "zg361_ip_probe_consequence_kind",
-      "zg361_ip_probe_subject_gold",
-      "zg361_ip_probe_manager_treasury",
-      "zg361_ip_probe_capital_control",
+  constexpr std::array<std::string_view, 10> profile_probe_suffixes{
+      "probe_owner",
+      "probe_subject",
+      "probe_cycle",
+      "probe_serial",
+      "probe_result",
+      "probe_source_kind",
+      "probe_consequence_kind",
+      "probe_subject_gold",
+      "probe_manager_treasury",
+      "probe_capital_control",
   };
   constexpr std::array<std::string_view, 40> profile_suffixes{
       "final_applicable",
@@ -115,15 +115,17 @@ int main(int argc, char **argv) {
       "kpi_consumed_score",
       "kpi_consumed_incident_serial",
   };
-  for (const auto key : common) {
-    const std::string quoted = "\"" + std::string(key) + "\"";
-    if (Count(header, quoted) != 3 || !Contains(abi, quoted) ||
-        !Contains(fixture, quoted) || !Contains(producer, key)) {
-      std::cerr << "common allowlist identity mismatch: " << key << '\n';
-      return 1;
-    }
-  }
   for (const std::string_view profile : {"x", "y", "z"}) {
+    for (const auto suffix : profile_probe_suffixes) {
+      const std::string key =
+          "zg361_ip_" + std::string(profile) + "_" + std::string(suffix);
+      const std::string quoted = "\"" + key + "\"";
+      if (Count(header, quoted) != 1 || !Contains(producer, key)) {
+        std::cerr << "profile probe allowlist identity mismatch: " << key
+                  << '\n';
+        return 1;
+      }
+    }
     for (const auto suffix : profile_suffixes) {
       const std::string key =
           "zg361_ip_" + std::string(profile) + "_" + std::string(suffix);
@@ -192,8 +194,10 @@ int main(int argc, char **argv) {
       !require_tokens(
           abi,
           {"paused_played_character_only",
-           "two_complete_profile_allowlist_reads",
-           "manager_treasury_missing",
+            "two_complete_profile_allowlist_reads",
+            "profile_probe_template",
+            "mixed_na_incident_profiles_same_paused_frame",
+            "manager_treasury_missing",
            "production_live_acceptance",
            "permitted_executor_septendenary"},
           "abi") ||
@@ -201,13 +205,17 @@ int main(int argc, char **argv) {
           fixture,
           {"\"allowlist_count_per_profile\": 50",
            "\"mailbox_fixed_slot\": \"permitted_executor_septendenary\"",
-           "\"integration_status\": \"shared_protocol_static_ready\"",
-           "manager_treasury_uses_exact_mod_variable"},
+            "\"integration_status\": \"shared_protocol_static_ready\"",
+            "profile_probe_allowlist_template",
+            "mixed_na_incident_profiles_are_queryable_in_one_paused_frame",
+            "manager_treasury_uses_exact_mod_variable"},
           "fixture") ||
       !require_tokens(
           producer,
           {"zg361_ip_capture_real_incident_effect",
-           "zg361_ip_probe_manager_treasury", "root.treasury",
+            "zg361_ip_freeze_x_probe_effect",
+            "zg361_ip_x_probe_manager_treasury",
+            "zg361_ip_probe_manager_treasury", "root.treasury",
            "government_has_flag = government_has_treasury"},
           "producer") ||
       !require_tokens(
