@@ -59,6 +59,7 @@ constexpr std::uintptr_t kSelectEventOptionSecondaryVtableRva = 0x4335210;
 constexpr std::uintptr_t kIngameInterfaceIdlerVtableRva = 0x40B1D30;
 constexpr std::uintptr_t kEventWindowPrimaryVtableRva = 0x417F758;
 constexpr std::uintptr_t kSchemeTypePrimaryVtableRva = 0x44081E8;
+constexpr std::uintptr_t kHookTypePrimaryVtableRva = 0x43F69F0;
 constexpr std::uintptr_t kAutoSavePrimaryVtableRva = 0x40AABE8;
 constexpr std::uintptr_t kAutoSaveSecondaryVtableRva = 0x40AAC80;
 constexpr std::uintptr_t kReplyCharacterInteractionPrimaryVtableRva =
@@ -81,6 +82,8 @@ constexpr std::uintptr_t kContactGameModeSlotRva = 0x576CC68;
 constexpr std::uintptr_t kTraitDatabaseSlotRva = 0x570C0F8;
 constexpr std::uintptr_t kSchemeTypeDatabaseSlotRva = 0x570BD98;
 constexpr std::uintptr_t kSchemeTypeFallbackSlotRva = 0x570CB58;
+constexpr std::uintptr_t kHookTypeDatabaseSlotRva = 0x57C9B48;
+constexpr std::uintptr_t kHookTypeFallbackSlotRva = 0x57C78E0;
 constexpr std::uintptr_t kGlobalVariableContainerAccessorSlotRva =
     0x570F750;
 constexpr std::uintptr_t kRaiseTroopsPrimaryVtableRva = 0x41226D8;
@@ -121,6 +124,9 @@ constexpr std::uintptr_t
     kAddFromContributionDefendersEffectVtableRva = 0x444AED8;
 constexpr std::uintptr_t kGoldTransferEffectVtableRva = 0x446E950;
 constexpr std::uintptr_t kTruceEffectVtableRva = 0x4461CA8;
+constexpr std::uintptr_t kAddHookEffectVtableRva = 0x443D830;
+constexpr std::uintptr_t kAddHookNoToastEffectVtableRva = 0x443D708;
+constexpr std::uintptr_t kAddHookTheocracyApproveArgumentRva = 0x443D5B0;
 constexpr std::uintptr_t kAiUnitStackVtableRva = 0x4191870;
 constexpr std::uintptr_t kAiSubunitStackVtableRva = 0x4192778;
 constexpr std::uintptr_t kAiWarCoordinatorVtableRva = 0x41923B0;
@@ -208,6 +214,7 @@ constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
 constexpr std::uintptr_t kGetCharacterInteractionDatabaseRva = 0x0831890;
 constexpr std::uintptr_t kHashStableKeyRva = 0x3B8B000;
 constexpr std::uintptr_t kLookupSchemeTypeRva = 0x0A48C70;
+constexpr std::uintptr_t kLookupHookTypeRva = 0x288D350;
 constexpr std::uintptr_t kEvaluateCasusBelliRva = 0x2D95D00;
 constexpr std::uintptr_t kDestroyValidCasusBelliConfigurationRva =
     0x101B3C0;
@@ -400,6 +407,10 @@ constexpr std::size_t kRegimentCounterTargetEffectivenessOffset = 0x08;
 constexpr std::size_t kRegimentKnightCharacterIdOffset = 0x148;
 constexpr std::size_t kRegimentArmyIdOffset = 0x140;
 constexpr std::size_t kDatabaseObjectKeyOffset = 0x18;
+constexpr std::size_t kDatabaseObjectStableHashOffset = 0x14;
+constexpr std::size_t kAddHookTypePointerOffset = 0x60;
+constexpr std::size_t kAddHookModeOffset = 0x6C;
+constexpr std::string_view kFavorHookKey = "favor_hook";
 constexpr std::size_t kTerrainCombatWidthMultiplierOffset = 0x58;
 constexpr std::size_t kTerrainCommanderMinRollModifierIndexOffset = 0x76E;
 constexpr std::size_t kTerrainCommanderMaxRollModifierIndexOffset = 0x770;
@@ -865,6 +876,25 @@ struct WarExitPreviewCapture {
   bool failed = false;
 };
 
+struct HookTypeIdentity {
+  void *database = nullptr;
+  void *fallback = nullptr;
+  void *type = nullptr;
+};
+
+struct RaiktorFavorHookPreviewCapture {
+  const Bindings *bindings = nullptr;
+  EffectPreviewCollectorSlot8 original_slot8 = nullptr;
+  void *collector = nullptr;
+  void *favor_hook_type = nullptr;
+  void *primary_effect_node = nullptr;
+  std::int32_t attacker_character_id = -1;
+  std::int32_t claimant_character_id = -1;
+  std::size_t primary_rows = 0;
+  std::size_t theocracy_rows = 0;
+  bool failed = false;
+};
+
 struct WarExitHiddenTrucePath {
   void *root_effect = nullptr;
   void *root_children = nullptr;
@@ -887,6 +917,8 @@ struct alignas(16) WarExitHiddenTruceProjection {
 };
 
 thread_local WarExitPreviewCapture *g_war_exit_preview_capture = nullptr;
+thread_local RaiktorFavorHookPreviewCapture
+    *g_raiktor_favor_hook_preview_capture = nullptr;
 
 struct alignas(8) SendCharacterInteractionCommandStorage {
   std::array<std::byte, 0x368> bytes{};
@@ -1637,6 +1669,49 @@ bool ReadDatabaseObjectKey(const void *database_object,
   return true;
 }
 
+bool ResolveFavorHookTypeIdentity(const Bindings &bindings,
+                                  HookTypeIdentity &output) noexcept {
+  output = {};
+  if (!bindings.enabled || bindings.hook_type_database_slot == nullptr ||
+      bindings.hook_type_fallback_slot == nullptr ||
+      bindings.hook_type_primary_vtable == 0 ||
+      bindings.hash_stable_key == nullptr ||
+      bindings.lookup_hook_type == nullptr ||
+      kFavorHookKey.size() >
+          static_cast<std::size_t>(
+              (std::numeric_limits<std::uint32_t>::max)())) {
+    return false;
+  }
+  void *const database = *bindings.hook_type_database_slot;
+  void *const fallback = *bindings.hook_type_fallback_slot;
+  if (database == nullptr || fallback == nullptr) {
+    return false;
+  }
+  // Mirror the engine caller's ABI.  The hash body in this exact build does
+  // not consume its first argument, but the loaded database is still passed
+  // so the bridge and the original call site retain one ABI contract.
+  const auto stable_hash = bindings.hash_stable_key(
+      database, kFavorHookKey.data(),
+      static_cast<std::uint32_t>(kFavorHookKey.size()));
+  void *const type = bindings.lookup_hook_type(database, stable_hash);
+  if (type == nullptr || type == fallback ||
+      LoadAt<std::uintptr_t>(type, 0x00) !=
+          bindings.hook_type_primary_vtable ||
+      LoadAt<std::int32_t>(type, kDatabaseObjectStableHashOffset) !=
+          stable_hash) {
+    return false;
+  }
+  std::string key;
+  if (!ReadDatabaseObjectKey(type, kDatabaseObjectKeyOffset, key) ||
+      key != kFavorHookKey) {
+    return false;
+  }
+  output.database = database;
+  output.fallback = fallback;
+  output.type = type;
+  return true;
+}
+
 bool ReadCasusBelliTypeKey(const void *casus_belli_type,
                            std::string &output) noexcept {
   return ReadDatabaseObjectKey(casus_belli_type,
@@ -2135,6 +2210,175 @@ bool ReadPreviewCharacterScope(const Bindings &bindings, const void *scope,
     return false;
   }
   character_id = candidate;
+  return true;
+}
+
+void CaptureRaiktorFavorHookPreviewRow(
+    void *collector, const void *first_scope, const void *second_scope,
+    const PreviewFixedPayload *payload, void *effect_node,
+    void *forwarded_argument) noexcept {
+  RaiktorFavorHookPreviewCapture *const capture =
+      g_raiktor_favor_hook_preview_capture;
+  if (capture == nullptr || capture->bindings == nullptr ||
+      capture->original_slot8 == nullptr) {
+    return;
+  }
+
+  const auto &bindings = *capture->bindings;
+  if (collector != capture->collector) {
+    capture->failed = true;
+  }
+  const auto effect_vtable =
+      effect_node == nullptr ? std::uintptr_t{0}
+                             : LoadAt<std::uintptr_t>(effect_node, 0x00);
+  if (effect_vtable == bindings.add_hook_no_toast_effect_vtable) {
+    // The authored Raiktor branch uses ordinary add_hook (CAddHookEffect<1>).
+    // Seeing the separately registered no-toast family is an ABI/source drift.
+    capture->failed = true;
+  } else if (effect_vtable == bindings.add_hook_effect_vtable) {
+    std::int32_t first_character_id = -1;
+    std::int32_t second_character_id = -1;
+    const bool row_valid =
+        ReadPreviewCharacterScope(bindings, first_scope,
+                                  first_character_id) &&
+        ReadPreviewCharacterScope(bindings, second_scope,
+                                  second_character_id) &&
+        first_character_id == capture->attacker_character_id &&
+        second_character_id == capture->claimant_character_id &&
+        payload == nullptr &&
+        LoadAt<std::uint8_t>(effect_node, kAddHookModeOffset) == 2 &&
+        LoadAt<void *>(effect_node, kAddHookTypePointerOffset) ==
+            capture->favor_hook_type;
+    if (!row_valid) {
+      capture->failed = true;
+    } else if (forwarded_argument == nullptr) {
+      if (capture->primary_rows != 0) {
+        capture->failed = true;
+      } else {
+        capture->primary_effect_node = effect_node;
+        capture->primary_rows = 1;
+      }
+    } else if (reinterpret_cast<std::uintptr_t>(forwarded_argument) ==
+               bindings.add_hook_theocracy_approve_argument) {
+      if (capture->primary_rows != 1 ||
+          capture->primary_effect_node != effect_node ||
+          capture->theocracy_rows != 0) {
+        capture->failed = true;
+      } else {
+        capture->theocracy_rows = 1;
+      }
+    } else {
+      capture->failed = true;
+    }
+  }
+
+  // Preserve every stock collector side effect.  Unknown effect families are
+  // deliberately outside this narrow observer and are forwarded unchanged.
+  capture->original_slot8(collector, first_scope, second_scope, payload,
+                          effect_node, forwarded_argument);
+}
+
+bool DryPreviewRaiktorFavorHookVisibleRoot(
+    const Bindings &bindings, void *loaded_effect, void *effect_context,
+    std::int32_t attacker_character_id,
+    std::int32_t claimant_character_id, bool &applies) noexcept {
+  applies = false;
+  if (!bindings.enabled || loaded_effect == nullptr ||
+      effect_context == nullptr || attacker_character_id <= 0 ||
+      claimant_character_id <= 0 ||
+      bindings.character_storage_slot == nullptr) {
+    return false;
+  }
+  void *const attacker =
+      ResolveTermsCharacter(bindings, attacker_character_id);
+  void *const claimant =
+      ResolveTermsCharacter(bindings, claimant_character_id);
+  if (attacker == nullptr || claimant == nullptr) {
+    return false;
+  }
+  if (attacker_character_id == claimant_character_id) {
+    // Exact authored outer trigger: claimant != attacker.  CK3 never evaluates
+    // can_add_hook or visits this add_hook node in the equal-ID branch.
+    return attacker == claimant;
+  }
+  if (attacker == claimant ||
+      bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0 ||
+      bindings.add_hook_effect_vtable == 0 ||
+      bindings.add_hook_no_toast_effect_vtable == 0 ||
+      bindings.add_hook_effect_vtable ==
+          bindings.add_hook_no_toast_effect_vtable ||
+      bindings.add_hook_theocracy_approve_argument == 0 ||
+      g_war_exit_preview_capture != nullptr ||
+      g_raiktor_favor_hook_preview_capture != nullptr) {
+    return false;
+  }
+
+  HookTypeIdentity identity_before{};
+  if (!ResolveFavorHookTypeIdentity(bindings, identity_before)) {
+    return false;
+  }
+  auto **const original_effect_vtable =
+      LoadAt<void **>(loaded_effect, 0x00);
+  if (original_effect_vtable == nullptr) {
+    return false;
+  }
+
+  EffectPreviewCollectorStorage collector_storage{};
+  void *const collector = collector_storage.bytes.data();
+  if (bindings.construct_effect_preview_collector(collector) != collector) {
+    return false;
+  }
+  auto **const original_collector_vtable =
+      LoadAt<void **>(collector, 0x00);
+  if (original_collector_vtable == nullptr ||
+      reinterpret_cast<std::uintptr_t>(original_collector_vtable) !=
+          bindings.effect_preview_collector_vtable ||
+      original_collector_vtable[1] == nullptr) {
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+
+  constexpr std::size_t kPreviewVtableCloneSlots = 128;
+  std::array<void *, kPreviewVtableCloneSlots> cloned_vtable{};
+  std::copy_n(original_collector_vtable, cloned_vtable.size(),
+              cloned_vtable.begin());
+  auto *const original_slot8 =
+      reinterpret_cast<EffectPreviewCollectorSlot8>(
+          original_collector_vtable[1]);
+  cloned_vtable[1] =
+      reinterpret_cast<void *>(&CaptureRaiktorFavorHookPreviewRow);
+
+  RaiktorFavorHookPreviewCapture capture{};
+  capture.bindings = &bindings;
+  capture.original_slot8 = original_slot8;
+  capture.collector = collector;
+  capture.favor_hook_type = identity_before.type;
+  capture.attacker_character_id = attacker_character_id;
+  capture.claimant_character_id = claimant_character_id;
+  StoreAt(collector, 0x00, cloned_vtable.data());
+  g_raiktor_favor_hook_preview_capture = &capture;
+  // Traverse the original visible root directly.  This helper neither calls
+  // any effect execution slot nor constructs the broad hidden-truce proxy
+  // whose production reader remains disabled after the live crash.
+  bindings.traverse_loaded_effect(loaded_effect, effect_context, collector);
+  g_raiktor_favor_hook_preview_capture = nullptr;
+  StoreAt(collector, 0x00, original_collector_vtable);
+  bindings.destroy_effect_preview_collector(collector);
+
+  HookTypeIdentity identity_after{};
+  if (LoadAt<void **>(loaded_effect, 0x00) != original_effect_vtable ||
+      !ResolveFavorHookTypeIdentity(bindings, identity_after) ||
+      identity_after.database != identity_before.database ||
+      identity_after.fallback != identity_before.fallback ||
+      identity_after.type != identity_before.type || capture.failed ||
+      capture.primary_rows > 1 || capture.theocracy_rows > 1 ||
+      (capture.theocracy_rows != 0 && capture.primary_rows != 1)) {
+    return false;
+  }
+  applies = capture.primary_rows == 1;
   return true;
 }
 
@@ -6040,6 +6284,7 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kEventWindowPrimaryVtableRva;
   result.scheme_type_primary_vtable =
       module + kSchemeTypePrimaryVtableRva;
+  result.hook_type_primary_vtable = module + kHookTypePrimaryVtableRva;
   result.auto_save_primary_vtable = module + kAutoSavePrimaryVtableRva;
   result.auto_save_secondary_vtable = module + kAutoSaveSecondaryVtableRva;
   result.reply_character_interaction_primary_vtable =
@@ -6104,6 +6349,11 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.gold_transfer_effect_vtable =
       module + kGoldTransferEffectVtableRva;
   result.truce_effect_vtable = module + kTruceEffectVtableRva;
+  result.add_hook_effect_vtable = module + kAddHookEffectVtableRva;
+  result.add_hook_no_toast_effect_vtable =
+      module + kAddHookNoToastEffectVtableRva;
+  result.add_hook_theocracy_approve_argument =
+      module + kAddHookTheocracyApproveArgumentRva;
   result.ai_unit_stack_vtable = module + kAiUnitStackVtableRva;
   result.ai_subunit_stack_vtable = module + kAiSubunitStackVtableRva;
   result.ai_war_coordinator_vtable =
@@ -6142,6 +6392,10 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kSchemeTypeDatabaseSlotRva);
   result.scheme_type_fallback_slot =
       reinterpret_cast<void **>(module + kSchemeTypeFallbackSlotRva);
+  result.hook_type_database_slot =
+      reinterpret_cast<void **>(module + kHookTypeDatabaseSlotRva);
+  result.hook_type_fallback_slot =
+      reinterpret_cast<void **>(module + kHookTypeFallbackSlotRva);
   result.expected_generic_value_type_registry =
       reinterpret_cast<void *>(module + kGenericValueTypeRegistryRva);
   result.generic_value_type_name_fallback =
@@ -6364,6 +6618,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<HashStableKey>(module + kHashStableKeyRva);
   result.lookup_scheme_type =
       reinterpret_cast<LookupSchemeType>(module + kLookupSchemeTypeRva);
+  result.lookup_hook_type =
+      reinterpret_cast<LookupHookType>(module + kLookupHookTypeRva);
   result.evaluate_casus_belli = reinterpret_cast<EvaluateCasusBelli>(
       module + kEvaluateCasusBelliRva);
   result.destroy_valid_casus_belli_configuration =
@@ -13033,6 +13289,15 @@ ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
 }
 
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+bool ReadRaiktorFavorHookPresenceForOfflineReFixture(
+    const Bindings &bindings, void *loaded_effect, void *effect_context,
+    std::int32_t attacker_character_id,
+    std::int32_t claimant_character_id, bool &applies) noexcept {
+  return DryPreviewRaiktorFavorHookVisibleRoot(
+      bindings, loaded_effect, effect_context, attacker_character_id,
+      claimant_character_id, applies);
+}
+
 ReadWarTerminationExitTermsResult
 ReadWarTerminationExitTermsForOfflineReFixture(
     const Bindings &bindings, std::int32_t war_id,

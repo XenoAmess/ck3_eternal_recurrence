@@ -268,6 +268,21 @@ std::array<std::byte, 0x118> g_defender_contribution_effect_node{};
 std::array<std::byte, 0x118> g_gold_transfer_effect_node{};
 std::array<std::byte, 0x118> g_truce_effect_node{};
 std::array<std::byte, 0x118> g_unknown_effect_node{};
+std::array<void *, 128> g_raiktor_preview_collector_vtable{};
+std::array<void *, 1> g_raiktor_loaded_effect_vtable{};
+std::array<void *, 1> g_raiktor_add_hook_effect_vtable{};
+std::array<void *, 1> g_raiktor_add_hook_no_toast_effect_vtable{};
+std::array<void *, 1> g_raiktor_hook_type_vtable{};
+std::array<std::byte, sizeof(void *)> g_raiktor_loaded_effect{};
+std::array<std::byte, 0x80> g_raiktor_add_hook_effect_node{};
+std::array<std::byte, 0x80> g_raiktor_no_toast_effect_node{};
+std::array<std::byte, 0x40> g_raiktor_hook_type_database{};
+std::array<std::byte, 0x40> g_raiktor_hook_type_database_after{};
+std::array<std::byte, 0x40> g_raiktor_favor_hook_type{};
+std::array<std::byte, 0x40> g_raiktor_hook_type_fallback{};
+std::array<std::byte, 0x08> g_raiktor_effect_context{};
+std::array<std::byte, 0x08> g_raiktor_theocracy_argument{};
+std::array<std::byte, 0x08> g_raiktor_unknown_forwarded_argument{};
 std::array<std::byte, 0x10> g_exit_attacker_scope{};
 std::array<std::byte, 0x10> g_exit_defender_scope{};
 std::array<std::byte, 0x10> g_exit_ally_scope{};
@@ -428,6 +443,27 @@ std::int32_t g_exit_terms_monthly_income_calls = 0;
 std::int32_t g_exit_terms_answer_calls = 0;
 std::vector<std::int32_t> g_exit_terms_answer_destroy_counts;
 std::int32_t g_exit_terms_factor_identifier_id = 82;
+void *g_raiktor_hook_type_database_pointer = nullptr;
+void *g_raiktor_hook_type_fallback_pointer = nullptr;
+bool g_raiktor_emit_primary = true;
+bool g_raiktor_emit_theocracy = true;
+bool g_raiktor_emit_duplicate_primary = false;
+bool g_raiktor_emit_theocracy_first = false;
+bool g_raiktor_emit_no_toast = false;
+bool g_raiktor_emit_wrong_first_scope = false;
+bool g_raiktor_emit_wrong_second_scope = false;
+bool g_raiktor_emit_payload = false;
+bool g_raiktor_emit_unknown_forwarded_argument = false;
+bool g_raiktor_lookup_returns_fallback = false;
+bool g_raiktor_drift_database = false;
+bool g_raiktor_drift_loaded_root = false;
+bool g_raiktor_collector_lifecycle_valid = true;
+std::int32_t g_raiktor_collector_construct_calls = 0;
+std::int32_t g_raiktor_collector_destroy_calls = 0;
+std::int32_t g_raiktor_traverse_calls = 0;
+std::int32_t g_raiktor_forward_calls = 0;
+std::int32_t g_raiktor_hash_calls = 0;
+std::int32_t g_raiktor_lookup_calls = 0;
 std::int32_t g_white_peace_construct_calls = 0;
 std::uint8_t g_last_special_interaction_index = 0;
 std::int32_t g_last_special_actor_character_id = -1;
@@ -1942,6 +1978,124 @@ void FixtureOriginalEffectPreviewCallback(
   ++g_exit_terms_forward_calls;
 }
 
+constexpr std::int32_t kFixtureFavorHookStableHash =
+    static_cast<std::int32_t>(0x4F5E02C2U);
+
+void FixtureOriginalRaiktorPreviewCallback(
+    void *, const void *, const void *,
+    const FixturePreviewFixedPayload *, void *, void *) {
+  ++g_raiktor_forward_calls;
+}
+
+std::int32_t FixtureHashRaiktorHookKey(void *context, const char *data,
+                                      std::uint32_t size) {
+  ++g_raiktor_hash_calls;
+  constexpr std::string_view key = "favor_hook";
+  const bool database_valid =
+      context == g_raiktor_hook_type_database.data() ||
+      context == g_raiktor_hook_type_database_after.data();
+  return database_valid && data != nullptr && size == key.size() &&
+                 std::memcmp(data, key.data(), key.size()) == 0
+             ? kFixtureFavorHookStableHash
+             : std::int32_t{0};
+}
+
+void *FixtureLookupRaiktorHookType(void *database, std::int32_t hash) {
+  ++g_raiktor_lookup_calls;
+  const bool database_valid =
+      database == g_raiktor_hook_type_database.data() ||
+      database == g_raiktor_hook_type_database_after.data();
+  if (!database_valid || hash != kFixtureFavorHookStableHash ||
+      g_raiktor_lookup_returns_fallback) {
+    return g_raiktor_hook_type_fallback.data();
+  }
+  return g_raiktor_favor_hook_type.data();
+}
+
+void *FixtureConstructRaiktorPreviewCollector(void *collector) {
+  if (collector == nullptr) {
+    return nullptr;
+  }
+  std::memset(collector, 0, 0xD8);
+  StoreBytes(collector, 0x00,
+             static_cast<void *>(g_raiktor_preview_collector_vtable.data()));
+  ++g_raiktor_collector_construct_calls;
+  return collector;
+}
+
+void FixtureDestroyRaiktorPreviewCollector(void *collector) {
+  g_raiktor_collector_lifecycle_valid =
+      g_raiktor_collector_lifecycle_valid && collector != nullptr &&
+      LoadBytes<void *>(collector, 0x00) ==
+          g_raiktor_preview_collector_vtable.data();
+  ++g_raiktor_collector_destroy_calls;
+}
+
+void FixtureTraverseRaiktorFavorHook(void *loaded_effect,
+                                     void *effect_context,
+                                     void *collector) {
+  ++g_raiktor_traverse_calls;
+  auto **const collector_vtable =
+      collector == nullptr ? nullptr
+                           : LoadBytes<void **>(collector, 0x00);
+  if (loaded_effect != g_raiktor_loaded_effect.data() ||
+      effect_context != g_raiktor_effect_context.data() ||
+      collector_vtable == nullptr || collector_vtable[1] == nullptr) {
+    g_raiktor_collector_lifecycle_valid = false;
+    return;
+  }
+  const auto callback = reinterpret_cast<FixtureEffectPreviewCallback>(
+      collector_vtable[1]);
+
+  // An unrelated row proves the narrow observer forwards and ignores other
+  // effect families, including ones anchored on the primary characters.
+  callback(collector, g_exit_attacker_scope.data(),
+           g_exit_defender_scope.data(), nullptr,
+           g_unknown_effect_node.data(), nullptr);
+
+  void *const node =
+      g_raiktor_emit_no_toast
+          ? static_cast<void *>(g_raiktor_no_toast_effect_node.data())
+          : static_cast<void *>(g_raiktor_add_hook_effect_node.data());
+  const FixturePreviewFixedPayload payload{1, 0, 0};
+  const void *const first_scope =
+      g_raiktor_emit_wrong_first_scope
+          ? static_cast<const void *>(g_exit_ally_scope.data())
+          : static_cast<const void *>(g_exit_attacker_scope.data());
+  const void *const second_scope =
+      g_raiktor_emit_wrong_second_scope
+          ? static_cast<const void *>(g_exit_attacker_scope.data())
+          : static_cast<const void *>(g_exit_defender_scope.data());
+  const auto emit_hook = [&](void *forwarded_argument) {
+    callback(collector, first_scope, second_scope,
+             g_raiktor_emit_payload ? &payload : nullptr, node,
+             forwarded_argument);
+  };
+  if (g_raiktor_emit_theocracy && g_raiktor_emit_theocracy_first) {
+    emit_hook(g_raiktor_theocracy_argument.data());
+  }
+  if (g_raiktor_emit_primary) {
+    emit_hook(g_raiktor_emit_unknown_forwarded_argument
+                  ? static_cast<void *>(
+                        g_raiktor_unknown_forwarded_argument.data())
+                  : nullptr);
+  }
+  if (g_raiktor_emit_duplicate_primary) {
+    emit_hook(nullptr);
+  }
+  if (g_raiktor_emit_theocracy && !g_raiktor_emit_theocracy_first) {
+    emit_hook(g_raiktor_theocracy_argument.data());
+  }
+  if (g_raiktor_drift_database) {
+    g_raiktor_hook_type_database_pointer =
+        g_raiktor_hook_type_database_after.data();
+  }
+  if (g_raiktor_drift_loaded_root) {
+    Store(g_raiktor_loaded_effect, 0x00,
+          static_cast<void *>(g_raiktor_add_hook_effect_vtable.data()));
+  }
+}
+
 void FixtureFreeEffectContextArray(void *allocator, void *data,
                                    std::uint64_t alignment) {
   const bool allocator_valid =
@@ -3086,6 +3240,36 @@ int main() {
   Store(g_gold_transfer_effect_node, 0x00, gold_vtable);
   Store(g_truce_effect_node, 0x00, truce_vtable);
   Store(g_unknown_effect_node, 0x00, unknown_vtable);
+  g_raiktor_preview_collector_vtable[1] =
+      reinterpret_cast<void *>(&FixtureOriginalRaiktorPreviewCallback);
+  Store(g_raiktor_loaded_effect, 0x00,
+        static_cast<void *>(g_raiktor_loaded_effect_vtable.data()));
+  Store(g_raiktor_add_hook_effect_node, 0x00,
+        static_cast<void *>(g_raiktor_add_hook_effect_vtable.data()));
+  Store(g_raiktor_add_hook_effect_node, 0x60,
+        static_cast<void *>(g_raiktor_favor_hook_type.data()));
+  Store(g_raiktor_add_hook_effect_node, 0x6C, std::uint8_t{2});
+  Store(g_raiktor_no_toast_effect_node, 0x00,
+        static_cast<void *>(
+            g_raiktor_add_hook_no_toast_effect_vtable.data()));
+  Store(g_raiktor_no_toast_effect_node, 0x60,
+        static_cast<void *>(g_raiktor_favor_hook_type.data()));
+  Store(g_raiktor_no_toast_effect_node, 0x6C, std::uint8_t{2});
+  Store(g_raiktor_favor_hook_type, 0x00,
+        static_cast<void *>(g_raiktor_hook_type_vtable.data()));
+  Store(g_raiktor_favor_hook_type, 0x10, std::int32_t{3});
+  Store(g_raiktor_favor_hook_type, 0x14,
+        kFixtureFavorHookStableHash);
+  constexpr char favor_hook_key[] = "favor_hook";
+  std::memcpy(g_raiktor_favor_hook_type.data() + 0x18,
+              favor_hook_key, sizeof(favor_hook_key));
+  Store(g_raiktor_favor_hook_type, 0x28,
+        std::size_t{sizeof(favor_hook_key) - 1});
+  Store(g_raiktor_favor_hook_type, 0x30, std::size_t{15});
+  g_raiktor_hook_type_database_pointer =
+      g_raiktor_hook_type_database.data();
+  g_raiktor_hook_type_fallback_pointer =
+      g_raiktor_hook_type_fallback.data();
   g_white_peace_loaded_effect_vtable[11] =
       reinterpret_cast<void *>(&FixtureLoadedEffectSlot58);
   g_defeat_loaded_effect_vtable[11] =
@@ -3863,11 +4047,25 @@ int main() {
       defender_contribution_vtable;
   bindings.gold_transfer_effect_vtable = gold_vtable;
   bindings.truce_effect_vtable = truce_vtable;
+  bindings.hook_type_primary_vtable =
+      reinterpret_cast<std::uintptr_t>(g_raiktor_hook_type_vtable.data());
+  bindings.add_hook_effect_vtable = reinterpret_cast<std::uintptr_t>(
+      g_raiktor_add_hook_effect_vtable.data());
+  bindings.add_hook_no_toast_effect_vtable =
+      reinterpret_cast<std::uintptr_t>(
+          g_raiktor_add_hook_no_toast_effect_vtable.data());
+  bindings.add_hook_theocracy_approve_argument =
+      reinterpret_cast<std::uintptr_t>(
+          g_raiktor_theocracy_argument.data());
   bindings.cb_prestige_factor_identifier_id =
       &g_exit_terms_factor_identifier_id;
   bindings.pending_character_interaction_storage_slot =
       &g_pending_storage_pointer;
   bindings.character_storage_slot = &g_character_storage_pointer;
+  bindings.hook_type_database_slot =
+      &g_raiktor_hook_type_database_pointer;
+  bindings.hook_type_fallback_slot =
+      &g_raiktor_hook_type_fallback_pointer;
   bindings.army_storage_slot = &g_army_storage_pointer;
   bindings.army_internal_storage_slot =
       &g_internal_army_storage_pointer;
@@ -3896,6 +4094,8 @@ int main() {
   bindings.arrange_marriage_interaction_offset = 0xF48;
   bindings.declare_war_interaction_offset = 0xF78;
   bindings.submit_command = FixtureSubmit;
+  bindings.hash_stable_key = FixtureHashRaiktorHookKey;
+  bindings.lookup_hook_type = FixtureLookupRaiktorHookType;
   bindings.get_local_player = FixtureGetLocalPlayer;
   bindings.get_current_event = FixtureGetCurrentEvent;
   bindings.is_pending_character_interaction_for_character =
@@ -8633,6 +8833,205 @@ int main() {
     return Fail(
         "production exit-terms v2 did not fail closed before loaded effects");
   }
+
+  // GEN-034 uses a deliberately isolated visitor over Raiktor's original
+  // visible surrender root.  It must not enter the disabled broad reader,
+  // call an execution slot, or alter the ordinary claim_cb golden.
+  Bindings raiktor_hook_bindings = bindings;
+  raiktor_hook_bindings.effect_preview_collector_vtable =
+      reinterpret_cast<std::uintptr_t>(
+          g_raiktor_preview_collector_vtable.data());
+  raiktor_hook_bindings.construct_effect_preview_collector =
+      FixtureConstructRaiktorPreviewCollector;
+  raiktor_hook_bindings.destroy_effect_preview_collector =
+      FixtureDestroyRaiktorPreviewCollector;
+  raiktor_hook_bindings.traverse_loaded_effect =
+      FixtureTraverseRaiktorFavorHook;
+
+  const auto reset_raiktor_hook_fixture = [&] {
+    g_raiktor_emit_primary = true;
+    g_raiktor_emit_theocracy = true;
+    g_raiktor_emit_duplicate_primary = false;
+    g_raiktor_emit_theocracy_first = false;
+    g_raiktor_emit_no_toast = false;
+    g_raiktor_emit_wrong_first_scope = false;
+    g_raiktor_emit_wrong_second_scope = false;
+    g_raiktor_emit_payload = false;
+    g_raiktor_emit_unknown_forwarded_argument = false;
+    g_raiktor_lookup_returns_fallback = false;
+    g_raiktor_drift_database = false;
+    g_raiktor_drift_loaded_root = false;
+    g_raiktor_collector_lifecycle_valid = true;
+    g_raiktor_collector_construct_calls = 0;
+    g_raiktor_collector_destroy_calls = 0;
+    g_raiktor_traverse_calls = 0;
+    g_raiktor_forward_calls = 0;
+    g_raiktor_hash_calls = 0;
+    g_raiktor_lookup_calls = 0;
+    g_raiktor_hook_type_database_pointer =
+        g_raiktor_hook_type_database.data();
+    g_raiktor_hook_type_fallback_pointer =
+        g_raiktor_hook_type_fallback.data();
+    Store(g_raiktor_loaded_effect, 0x00,
+          static_cast<void *>(g_raiktor_loaded_effect_vtable.data()));
+    Store(g_raiktor_add_hook_effect_node, 0x00,
+          static_cast<void *>(g_raiktor_add_hook_effect_vtable.data()));
+    Store(g_raiktor_add_hook_effect_node, 0x60,
+          static_cast<void *>(g_raiktor_favor_hook_type.data()));
+    Store(g_raiktor_add_hook_effect_node, 0x6C, std::uint8_t{2});
+    Store(g_raiktor_favor_hook_type, 0x00,
+          static_cast<void *>(g_raiktor_hook_type_vtable.data()));
+    Store(g_raiktor_favor_hook_type, 0x14,
+          kFixtureFavorHookStableHash);
+    std::memset(g_raiktor_favor_hook_type.data() + 0x18, 0, 0x20);
+    std::memcpy(g_raiktor_favor_hook_type.data() + 0x18,
+                favor_hook_key, sizeof(favor_hook_key));
+    Store(g_raiktor_favor_hook_type, 0x28,
+          std::size_t{sizeof(favor_hook_key) - 1});
+    Store(g_raiktor_favor_hook_type, 0x30, std::size_t{15});
+  };
+
+  reset_raiktor_hook_fixture();
+  bool favor_hook_applies = false;
+  const auto raiktor_root_vtable_before =
+      LoadBytes<void *>(g_raiktor_loaded_effect.data(), 0x00);
+  if (!xar::ck3_11906::ReadRaiktorFavorHookPresenceForOfflineReFixture(
+          raiktor_hook_bindings, g_raiktor_loaded_effect.data(),
+          g_raiktor_effect_context.data(), played_character_id,
+          enemy_character_id, favor_hook_applies) ||
+      !favor_hook_applies ||
+      LoadBytes<void *>(g_raiktor_loaded_effect.data(), 0x00) !=
+          raiktor_root_vtable_before ||
+      g_raiktor_collector_construct_calls != 1 ||
+      g_raiktor_collector_destroy_calls != 1 ||
+      g_raiktor_traverse_calls != 1 || g_raiktor_forward_calls != 3 ||
+      g_raiktor_hash_calls != 2 || g_raiktor_lookup_calls != 2 ||
+      !g_raiktor_collector_lifecycle_valid || g_submit_called ||
+      g_exit_terms_effect_context_construct_calls != 0 ||
+      g_exit_terms_traverse_calls != 0) {
+    return Fail(
+        "Raiktor favor-hook observer lost the exact primary/optional rows");
+  }
+
+  reset_raiktor_hook_fixture();
+  g_raiktor_emit_theocracy = false;
+  favor_hook_applies = false;
+  if (!xar::ck3_11906::ReadRaiktorFavorHookPresenceForOfflineReFixture(
+          raiktor_hook_bindings, g_raiktor_loaded_effect.data(),
+          g_raiktor_effect_context.data(), played_character_id,
+          enemy_character_id, favor_hook_applies) ||
+      !favor_hook_applies || g_raiktor_forward_calls != 2 ||
+      !g_raiktor_collector_lifecycle_valid) {
+    return Fail(
+        "Raiktor favor-hook observer required the optional theocracy row");
+  }
+
+  reset_raiktor_hook_fixture();
+  g_raiktor_emit_primary = false;
+  g_raiktor_emit_theocracy = false;
+  favor_hook_applies = true;
+  if (!xar::ck3_11906::ReadRaiktorFavorHookPresenceForOfflineReFixture(
+          raiktor_hook_bindings, g_raiktor_loaded_effect.data(),
+          g_raiktor_effect_context.data(), played_character_id,
+          enemy_character_id, favor_hook_applies) ||
+      favor_hook_applies || g_raiktor_forward_calls != 1 ||
+      g_raiktor_hash_calls != 2 || g_raiktor_lookup_calls != 2 ||
+      !g_raiktor_collector_lifecycle_valid) {
+    return Fail("Raiktor favor-hook observer fabricated an absent row");
+  }
+
+  reset_raiktor_hook_fixture();
+  favor_hook_applies = true;
+  if (!xar::ck3_11906::ReadRaiktorFavorHookPresenceForOfflineReFixture(
+          raiktor_hook_bindings, g_raiktor_loaded_effect.data(),
+          g_raiktor_effect_context.data(), played_character_id,
+          played_character_id, favor_hook_applies) ||
+      favor_hook_applies || g_raiktor_collector_construct_calls != 0 ||
+      g_raiktor_traverse_calls != 0 || g_raiktor_hash_calls != 0 ||
+      g_raiktor_lookup_calls != 0) {
+    return Fail(
+        "Raiktor claimant-equals-attacker did not short-circuit to false");
+  }
+
+  const auto rejects_raiktor_hook_drift =
+      [&](auto configure, std::string_view case_name) {
+        reset_raiktor_hook_fixture();
+        configure();
+        bool observed = true;
+        const bool returned =
+            xar::ck3_11906::
+                ReadRaiktorFavorHookPresenceForOfflineReFixture(
+                    raiktor_hook_bindings,
+                    g_raiktor_loaded_effect.data(),
+                    g_raiktor_effect_context.data(),
+                    played_character_id, enemy_character_id, observed);
+        if (returned || observed ||
+            !g_raiktor_collector_lifecycle_valid || g_submit_called) {
+          std::cerr << "Raiktor hook drift accepted: " << case_name
+                    << " returned=" << returned
+                    << " observed=" << observed
+                    << " lifecycle="
+                    << g_raiktor_collector_lifecycle_valid << '\n';
+          return false;
+        }
+        return true;
+      };
+  if (!rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_no_toast = true; }, "no_toast_family") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_wrong_first_scope = true; },
+          "attacker_scope") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_wrong_second_scope = true; },
+          "claimant_scope") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_payload = true; }, "nonnull_payload") ||
+      !rejects_raiktor_hook_drift(
+          [] {
+            Store(g_raiktor_add_hook_effect_node, 0x60,
+                  static_cast<void *>(
+                      g_raiktor_hook_type_fallback.data()));
+          },
+          "node_type_pointer") ||
+      !rejects_raiktor_hook_drift(
+          [] {
+            Store(g_raiktor_add_hook_effect_node, 0x6C,
+                  std::uint8_t{1});
+          },
+          "node_mode") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_unknown_forwarded_argument = true; },
+          "forwarded_argument") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_duplicate_primary = true; },
+          "duplicate_primary") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_emit_theocracy_first = true; },
+          "optional_before_primary") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_lookup_returns_fallback = true; },
+          "hook_type_fallback") ||
+      !rejects_raiktor_hook_drift(
+          [] {
+            Store(g_raiktor_favor_hook_type, 0x14,
+                  std::int32_t{0});
+          },
+          "hook_type_hash") ||
+      !rejects_raiktor_hook_drift(
+          [] {
+            g_raiktor_favor_hook_type[0x18] =
+                std::byte{static_cast<unsigned char>('x')};
+          },
+          "hook_type_key") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_drift_database = true; },
+          "database_pointer_drift") ||
+      !rejects_raiktor_hook_drift(
+          [] { g_raiktor_drift_loaded_root = true; },
+          "loaded_root_vtable_drift")) {
+    return Fail("Raiktor favor-hook observer accepted ABI/source drift");
+  }
+  reset_raiktor_hook_fixture();
 
   const auto exit_terms_result =
       xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(

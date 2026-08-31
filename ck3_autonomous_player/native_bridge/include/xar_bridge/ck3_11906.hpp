@@ -123,6 +123,7 @@ using HashStableKey = std::int32_t (*)(void *context,
                                       const char *data,
                                       std::uint32_t size);
 using LookupSchemeType = void *(*)(void *database, std::int32_t key_hash);
+using LookupHookType = void *(*)(void *database, std::int32_t key_hash);
 using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
                                     void *attacker_character,
                                     void *defender_character,
@@ -229,6 +230,7 @@ struct Bindings {
   std::uintptr_t ingame_interface_idler_vtable = 0;
   std::uintptr_t event_window_primary_vtable = 0;
   std::uintptr_t scheme_type_primary_vtable = 0;
+  std::uintptr_t hook_type_primary_vtable = 0;
   std::uintptr_t auto_save_primary_vtable = 0;
   std::uintptr_t auto_save_secondary_vtable = 0;
   std::uintptr_t reply_character_interaction_primary_vtable = 0;
@@ -267,6 +269,9 @@ struct Bindings {
   std::uintptr_t add_from_contribution_defenders_effect_vtable = 0;
   std::uintptr_t gold_transfer_effect_vtable = 0;
   std::uintptr_t truce_effect_vtable = 0;
+  std::uintptr_t add_hook_effect_vtable = 0;
+  std::uintptr_t add_hook_no_toast_effect_vtable = 0;
+  std::uintptr_t add_hook_theocracy_approve_argument = 0;
   std::uintptr_t ai_unit_stack_vtable = 0;
   std::uintptr_t ai_subunit_stack_vtable = 0;
   std::uintptr_t ai_war_coordinator_vtable = 0;
@@ -286,6 +291,8 @@ struct Bindings {
   void **trait_database_slot = nullptr;
   void **scheme_type_database_slot = nullptr;
   void **scheme_type_fallback_slot = nullptr;
+  void **hook_type_database_slot = nullptr;
+  void **hook_type_fallback_slot = nullptr;
   void *expected_generic_value_type_registry = nullptr;
   const std::string *generic_value_type_name_fallback = nullptr;
   const std::string *script_identifier_name_fallback = nullptr;
@@ -383,6 +390,7 @@ struct Bindings {
       nullptr;
   HashStableKey hash_stable_key = nullptr;
   LookupSchemeType lookup_scheme_type = nullptr;
+  LookupHookType lookup_hook_type = nullptr;
   EvaluateCasusBelli evaluate_casus_belli = nullptr;
   DestroyValidCasusBelliConfiguration
       destroy_valid_casus_belli_configuration = nullptr;
@@ -780,6 +788,15 @@ ReadWarTerminationExitTermsResult
 ReadWarTerminationExitTermsForOfflineReFixture(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationExitTermsSnapshot &output) noexcept;
+
+// Isolated exact-build primitive for the Raiktor attacker-defeat visible
+// loaded root. It observes only the conditional ordinary add_hook row and
+// never enters the disabled broad exit-terms reader or its hidden-truce
+// projection. The caller owns a populated read-only WarEffectContext.
+bool ReadRaiktorFavorHookPresenceForOfflineReFixture(
+    const Bindings &bindings, void *loaded_effect, void *effect_context,
+    std::int32_t attacker_character_id,
+    std::int32_t claimant_character_id, bool &applies) noexcept;
 #endif
 
 // Error-only stage name from the immediately preceding exit-terms read on the
