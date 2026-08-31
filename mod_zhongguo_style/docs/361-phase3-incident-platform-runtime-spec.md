@@ -143,6 +143,9 @@ CK3 静态投影中的跨编号读链另有 current-case guard：前序对象缺
 - 中央 stages 4–6 已逐域接入；无真实事故时以完整 N/A tuple 冻结 `status=3`，不创建空案；
 - 唯一 applicability producer 只读取战时且低控制、受评者赤字、天朝国库赤字或低控制等 CK3 事实；
   普通管理者战争不构成事故，且 producer 不使用 random/chance；
+- 首次有效 probe 已在受评者身上同帧冻结个人金币、管理者真实国库与首都控制度；完整缓存必须同时存在
+  `zg361_ip_probe_subject_gold`、`zg361_ip_probe_manager_treasury`、`zg361_ip_probe_capital_control`，国库字段
+  在显式 treasury-capability guard 后直接取 `ROOT.treasury`，且没有缺失补零路径；
 - 国库与管理者个人金币双付款、份额/容量守恒、下一轮 organization-evidence pending/value/consumer 已生成；
 - 玩家与获授权 AI 的公爵及以上管理入口、伯爵/男爵 subject-only 边界由共享 case kernel 执行。
 
@@ -152,7 +155,8 @@ CK3 静态投影中的跨编号读链另有 current-case guard：前序对象缺
    `zg361_ip_consume_due_kpi_inputs_effect = yes`；共享文件并行占用期间不得抢写；
 2. CK3 中角色、复合战争/低控制、财政赤字、团队与国库的 exact-build 实机互证；
 3. 考核榜中的事故时间线、积弊账和平台分账页面；
-4. MCP 角色/头衔/国库/变量/时间查询与 paused snapshot；
+4. MCP Incident provider 将三份固定 allowlist 从 49 增至 50，解码上述受评者变量并把来源声明从
+   `not_recorded_by_mod` 更新为明确 mod producer；字段缺失仍须 typed unavailable，不能跨 scope 猜值或补 0；
 5. fixture-live、production-live 或实机 CK3 GREEN。
 
 CK3 投影的 C 路现为 37 个逐编号、身份绑定的到期 consumer。每笔债务冻结

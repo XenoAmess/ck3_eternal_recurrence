@@ -276,6 +276,7 @@ zg361_ip_capture_real_incident_effect = {
 				has_game_rule = zg361_on
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
+				government_has_flag = government_has_treasury
 			}
 			zg361_is_reviewable_vassal_trigger = yes
 			liege = root
@@ -286,6 +287,9 @@ zg361_ip_capture_real_incident_effect = {
 			has_variable = zg361_ip_probe_result
 			has_variable = zg361_ip_probe_source_kind
 			has_variable = zg361_ip_probe_consequence_kind
+			has_variable = zg361_ip_probe_subject_gold
+			has_variable = zg361_ip_probe_manager_treasury
+			has_variable = zg361_ip_probe_capital_control
 			var:zg361_ip_probe_owner = root
 			var:zg361_ip_probe_subject = this
 			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
@@ -298,6 +302,7 @@ zg361_ip_capture_real_incident_effect = {
 				has_game_rule = zg361_on
 				zg361_is_celestial_liege_trigger = yes
 				has_variable = zg361_review_serial
+				government_has_flag = government_has_treasury
 			}
 			zg361_is_reviewable_vassal_trigger = yes
 			liege = root
@@ -313,6 +318,10 @@ zg361_ip_capture_real_incident_effect = {
 		set_variable = { name = zg361_ip_probe_world_consequence value = 0 }
 		set_variable = { name = zg361_ip_probe_resource_consequence value = 0 }
 		set_variable = { name = zg361_ip_probe_subject_gold value = gold }
+		# ROOT passed the explicit treasury-capability guard above. Freeze its
+		# signed balance onto THIS in the same probe frame. Absence remains
+		# absence: there is deliberately no zero fallback.
+		set_variable = { name = zg361_ip_probe_manager_treasury value = root.treasury }
 		set_variable = { name = zg361_ip_probe_capital_control value = capital_county.county_control }
 		if = {
 			limit = {

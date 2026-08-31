@@ -200,6 +200,52 @@ class GeneratedFileTests(unittest.TestCase):
             r"capital_county = \{ county_control <= 50 \}\s*\}",
         )
 
+    def test_probe_freezes_real_manager_treasury_without_zero_fill(self) -> None:
+        capture = block(self.effects, "zg361_ip_capture_real_incident_effect")
+        freeze = (
+            "set_variable = { name = zg361_ip_probe_manager_treasury "
+            "value = root.treasury }"
+        )
+        self.assertEqual(capture.count(freeze), 1)
+        self.assertNotIn(
+            "name = zg361_ip_probe_manager_treasury value = 0",
+            capture,
+        )
+
+        # A cache hit is ready only when all three resource facts from the
+        # original probe frame exist.  This makes variable presence the
+        # provider's explicit readiness provenance and rejects partial rows.
+        cache_guard = capture[: capture.index("else_if = {")]
+        for variable in (
+            "zg361_ip_probe_subject_gold",
+            "zg361_ip_probe_manager_treasury",
+            "zg361_ip_probe_capital_control",
+        ):
+            self.assertIn(f"has_variable = {variable}", cache_guard)
+
+        fresh_probe = capture[capture.index("else_if = {") :]
+        freeze_at = fresh_probe.index(freeze)
+        self.assertEqual(
+            fresh_probe[:freeze_at].count(
+                "government_has_flag = government_has_treasury"
+            ),
+            1,
+        )
+        subject_at = fresh_probe.index(
+            "name = zg361_ip_probe_subject_gold value = gold"
+        )
+        treasury_at = fresh_probe.index(
+            "name = zg361_ip_probe_manager_treasury value = root.treasury"
+        )
+        control_at = fresh_probe.index(
+            "name = zg361_ip_probe_capital_control "
+            "value = capital_county.county_control"
+        )
+        classification_at = fresh_probe.index("is_at_war = yes")
+        self.assertLess(subject_at, treasury_at)
+        self.assertLess(treasury_at, control_at)
+        self.assertLess(control_at, classification_at)
+
     def test_no_incident_is_exact_na_and_never_opens_a_case(self) -> None:
         for domain in gen.DOMAINS:
             entry = block(self.effects, f"zg361_ip_open_{domain.slug}_case_on_subject_effect")

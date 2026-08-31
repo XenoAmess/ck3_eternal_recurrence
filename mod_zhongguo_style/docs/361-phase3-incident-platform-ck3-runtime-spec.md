@@ -41,7 +41,13 @@ source kind 2 刻意留空。**管理者仅仅处于战争中不是平台事故�
 
 probe 以 `owner + subject + review cycle + probe serial` 冻结，同一轮 X/Y/Z 复用同一事实。首次 probe
 结果为 0 时，后来发生的战争或赤字不能追溯性地把本轮 N/A 改成事故；下一正式考核轮才可重新观测。
-结果为 1 时才递增 `zg361_ip_incident_serial`，并冻结 source、consequence、金币与控制度快照。
+首次有效 probe 会在受评者身上、同一业务对象时点冻结三项原生资源事实：受评者个人金币
+`zg361_ip_probe_subject_gold = gold`、管理者国库
+`zg361_ip_probe_manager_treasury = ROOT.treasury`、受评者首都控制度
+`zg361_ip_probe_capital_control = capital_county.county_control`。fresh producer 除统一天朝制管理者 trigger 外还显式
+复核 `government_has_flag = government_has_treasury`；生成器没有“缺失时写 0”的分支。缓存复用也要求三项变量
+全部存在，因此变量存在性就是 MCP provider 的明确资源快照 readiness provenance，残缺旧帧不能伪装成完整
+probe。结果为 1 时才递增 `zg361_ip_incident_serial`，并冻结 source、consequence 与同帧资源快照。
 
 ## 可接线入口
 
@@ -208,7 +214,8 @@ py -m unittest -v tools/test_zg361_incident_platform_runtime.py
 静态测试覆盖 exact 37 ID、A/B/C、逐项 exact object/consumer/resource/deadline、C 无业务对象、37 个逐 ID
 policy-debt 到期事件、完整五元 done/operation/object/debt 身份、阶段唯一推进、14 个 case deadline、三张玩家
 结案事件、真实事实 producer、严格 N/A、下一轮 pending/read-only value/一次性 consumer、权威 KPI 仍精确八项、
-双付款原子预检、容量/份额守恒、九语 key 集以及“零新增 GUI/decision/interaction/on_action”。
+真实管理者国库同帧冻结且绝不补零、双付款原子预检、容量/份额守恒、九语 key 集以及“零新增
+GUI/decision/interaction/on_action”。
 
 仍需由统一批次完成：
 
@@ -223,8 +230,11 @@ policy-debt 到期事件、完整五元 done/operation/object/debt 身份、阶�
    owner/subject/origin cycle/current cycle/case/score/incident receipt；提前调用会吞掉本轮分值，漏调用会让
    pending 跨轮重复计入。该调用现已在共享冻结点合并，并由 normal/`-O` 静态测试锁定。
 2. 用 CK3 parser/error.log 排除 Paradox 语法和 scope 误判；
-3. 通过 MCP 查询 applicability probe、N/A/incident tuple、owner/subject/cycle/case/state、每编号 receipt、
-   金币/国库、pending 与 consumed receipt；
+3. Incident provider 把三份 profile 固定 allowlist 从 49 增至 50，并只从受评者变量
+   `zg361_ip_probe_manager_treasury` 解码 Q100000 国库余额；provenance 必须从 `not_recorded_by_mod` 更新为本
+   mod 变量，缺字段仍是 typed unavailable，禁止读取 caller-selected owner scope 或补 0。随后通过 MCP 查询
+   applicability probe、N/A/incident tuple、owner/subject/cycle/case/state、每编号 receipt、三项资源快照、
+   pending 与 consumed receipt；
 4. 在一次启动中覆盖 incident/N/A、X/Y/Z 正常、stale、重复调用、资金不足、玩家/AI、伯爵/男爵 subject；
 5. 保存 paused artifact 后才升级 readiness。
 
