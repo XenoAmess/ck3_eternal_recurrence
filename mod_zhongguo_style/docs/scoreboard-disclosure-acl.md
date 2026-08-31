@@ -61,7 +61,7 @@ manager managed view 仍使用原 `CASE_FIELDS`，并从 owner 为该 manager、
 
 - managed 详情保持原行为，字段缺失时显示“不可用”；
 - received 详情只显示实际被 ACL 复制的字段；B 因而只显示 final grade，不渲染其余字段标签或占位值；
-- 隐藏的 binding owner/subject/cycle/case/state 只用于 selector 和 mutable update，不作为任何可见案卷字段。
+- managed 槽和 self mirror 各自保留 result/B1 case tuple；选中后的唯一 detail buffer 只保留 canonical `binding_owner/binding_cycle_serial/binding_case_serial`，不再生成从未写入的 `detail_case_*` 或 `detail_b1_case_*` 重复字段。`b1_case_state` 只在源记录五元组门禁中使用，不复制到 detail；clear effect 也只清理真实 selector 或 mutable update 可写的字段。
 
 本实现没有构造不存在的 team UI。`team_mode=2` 仅作为冻结 ABI metadata；团队 aggregate 展示和 MCP 返回同一 ACL 仍是后续产品入口，当前 readiness 为 `partial / not implemented`。
 
@@ -73,6 +73,6 @@ py -B mod_zhongguo_style/tools/test_scoreboard_snapshot.py
 py -B mod_zhongguo_style/tools/validate_local.py
 ```
 
-测试覆盖生成可复现、UTF-8 BOM、六字段 ABI、A/B 精确 presence/absence、C/旧存档 fallback、损坏策略 fail closed、B1 case `41` + result case `903` 正例、stale owner/cycle/policy ID、详情行 availability、#141–#145 独立 schema/五元组/ACL、post-mark 一次性补丁、敏感字段排除、后续 mutable 更新不扩权及 80 槽/四内页/七滚动面/3×3 geometry/332 按钮不回退。
+测试覆盖生成可复现、UTF-8 BOM、六字段 ABI、A/B 精确 presence/absence、C/旧存档 fallback、损坏策略 fail closed、B1 case `41` + result case `903` 正例、stale owner/cycle/policy ID、详情行 availability、detail surface 七个 remove-only 重复 binding 不再生成、#141–#145 独立 schema/五元组/ACL、post-mark 一次性补丁、敏感字段排除、后续 mutable 更新不扩权及 80 槽/四内页/七滚动面/3×3 geometry/332 按钮不回退。
 
 简体中文与英文为本批原创文案；法、德、日、韩、波、俄、西七语由英文结构占位生成，仅保证 key 可加载，**不是发布翻译**。

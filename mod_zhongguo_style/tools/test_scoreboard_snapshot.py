@@ -21,10 +21,12 @@ from gen_scoreboard_snapshot import (
     B1_TEAM_PUBLIC_FIELDS,
     B1ObjectFieldSpec,
     CASE_FIELDS,
+    DETAIL_CASE_FIELDS,
     DETAIL_CLEAR_ACTION,
     DETAIL_CLEAR_GUI,
     DETAIL_PAGES,
     DETAIL_CONTENT_WIDTH,
+    DETAIL_REDUNDANT_BINDING_FIELD_NAMES,
     DISCLOSURE_A_CASE_FIELDS,
     DISCLOSURE_A_FIELD_NAMES,
     DISCLOSURE_ACL_MODE,
@@ -102,6 +104,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 {field.source_var for field in RECEIVED_CASE_FIELDS}
             )
         )
+
         required_by_page = {
             "facts": {
                 "self_choice",
@@ -146,6 +149,53 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         for page, required in required_by_page.items():
             actual = {field.name for field in CASE_FIELDS if field.page == page}
             self.assertTrue(required <= actual, f"{page} is missing {required - actual}")
+
+    def test_selected_detail_schema_has_no_remove_only_case_binding_duplicates(self) -> None:
+        rendered = outputs()
+        effects = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        slot_guis = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_guis"
+            / "zg361_generated_scoreboard_slots.txt"
+        ].decode("utf-8-sig")
+        expected = {
+            "case_owner",
+            "cycle_serial",
+            "case_serial",
+            "b1_case_owner",
+            "b1_cycle_serial",
+            "b1_case_serial",
+            "b1_case_state",
+        }
+        self.assertEqual(DETAIL_REDUNDANT_BINDING_FIELD_NAMES, expected)
+        self.assertEqual(
+            {field.name for field in CASE_FIELDS}
+            - {field.name for field in DETAIL_CASE_FIELDS},
+            expected,
+        )
+        for field in expected:
+            dead_detail_var = f"zg361_sb_detail_{field}"
+            self.assertNotIn(dead_detail_var, effects)
+            self.assertNotIn(dead_detail_var, slot_guis)
+            # The real source records retain their independently frozen tuples.
+            self.assertIn(f"zg361_sb_m_01_{field}", effects)
+            self.assertIn(f"zg361_sb_self_{field}", effects)
+        for binding in ("owner", "cycle_serial", "case_serial"):
+            canonical = f"zg361_sb_detail_binding_{binding}"
+            self.assertIn(f"remove_variable = {canonical}", effects)
+            self.assertIn(f"set_variable = {{ name = {canonical}", slot_guis)
+        # Unlike the seven remove-only duplicates, result case_state has a real
+        # mutable producer and remains part of the selected-detail schema.
+        self.assertIn(
+            "set_variable = { name = zg361_sb_detail_case_state",
+            effects,
+        )
 
     def test_single_case_detail_projection_and_selector_cardinality(self) -> None:
         rendered = outputs()

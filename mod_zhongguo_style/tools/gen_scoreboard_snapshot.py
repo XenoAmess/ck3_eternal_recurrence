@@ -282,6 +282,29 @@ CASE_FIELDS = (
     ),
 )
 
+# The managed-slot and received-self surfaces retain both result and B1 case
+# tuples.  The selected detail surface has one canonical result identity tuple
+# under ``binding_*`` instead.  These seven old detail-prefixed duplicates have
+# no producer or consumer; emitting them only in the clear effect makes CK3
+# correctly report ``used but never set``.  B1 state remains a source-side
+# five-tuple gate and is likewise never copied into the selected detail buffer.
+DETAIL_REDUNDANT_BINDING_FIELD_NAMES = frozenset(
+    {
+        "case_owner",
+        "cycle_serial",
+        "case_serial",
+        "b1_case_owner",
+        "b1_cycle_serial",
+        "b1_case_serial",
+        "b1_case_state",
+    }
+)
+DETAIL_CASE_FIELDS = tuple(
+    field
+    for field in CASE_FIELDS
+    if field.name not in DETAIL_REDUNDANT_BINDING_FIELD_NAMES
+)
+
 
 @dataclass(frozen=True)
 class B1ObjectFieldSpec:
@@ -986,7 +1009,7 @@ def render_effects() -> bytes:
         lines.append(f"\tremove_variable = {fixed_var('detail', field)}")
     for name, _source in DISCLOSURE_POLICY_VARS:
         lines.append(f"\tremove_variable = {fixed_var('detail', name)}")
-    for field in CASE_FIELDS:
+    for field in DETAIL_CASE_FIELDS:
         lines.append(f"\tremove_variable = {fixed_var('detail', field.name)}")
     for field in B1_OBJECT_FIELDS:
         lines.append(f"\tremove_variable = {fixed_var('detail', field.name)}")
@@ -1634,7 +1657,7 @@ def render_scripted_guis() -> bytes:
     )
     append_received_identity_gate(lines, indent="\t\t")
     lines.extend(["\t}", "}", ""])
-    for field in tuple(field for field in CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
+    for field in tuple(field for field in DETAIL_CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
         lines.extend(
             [
                 f"zg361_sb_detail_{field.name}_available_gui = {{",
@@ -1702,7 +1725,7 @@ def render_scripted_guis() -> bytes:
                 f"\t\tset_variable = {{ name = {fixed_var('detail', 'rank')} value = var:{var('m', slot, 'rank')} }}",
             ]
         )
-        for field in tuple(field for field in CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
+        for field in tuple(field for field in DETAIL_CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
             lines.append(
                 f"\t\tif = {{ limit = {{ has_variable = {var('m', slot, field.name)} }} "
                 f"set_variable = {{ name = {fixed_var('detail', field.name)} value = var:{var('m', slot, field.name)} }} }}"
@@ -1984,7 +2007,7 @@ def detail_field_row(field: FieldSpec | B1ObjectFieldSpec) -> list[str]:
 def detail_page_gui(page: str) -> list[str]:
     fields = tuple(
         field
-        for field in CASE_FIELDS + B1_OBJECT_FIELDS
+        for field in DETAIL_CASE_FIELDS + B1_OBJECT_FIELDS
         if field.page == page and getattr(field, "visible", True)
     )
     lines = [
