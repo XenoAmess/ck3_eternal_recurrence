@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import traceback
@@ -80,6 +81,7 @@ import promo_real_character_contract as real_characters
 # CK3 writes into its -userdir. Keep both the evidence bundle and complete
 # writable profile durable but outside the repository/protected real profile.
 RUNS_ROOT = ROOT.parent / f"{ROOT.name}_process_assets" / "zg361" / "runs"
+PHASE2_SEED_CONTRACT_PATH = ROOT / "tools" / "zg361_phase2_seed_contract.json"
 EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
@@ -373,11 +375,11 @@ PHASE2_UNFROZEN_REQUIREMENTS = {
         "ABI/provider capability not frozen"
     ),
 }
-PHASE2_PENDING_RUNNER_REQUIREMENTS = {
-    "verified_paused_phase2_seed_or_native_frontend_start": (
-        "MCP-only map-entry path not wired"
-    ),
-}
+# The runner-side map-entry path is now wired through a strict seed contract.
+# Immutable source/provenance drift remains a pre-launch RED.  A source-tree
+# hash differing from the current same-mod-ID projection is provenance, not a
+# failure; the new runtime is verified by mount/manifest/snapshot after load.
+PHASE2_PENDING_RUNNER_REQUIREMENTS: dict[str, str] = {}
 
 
 def log(message: str) -> None:
@@ -1932,6 +1934,668 @@ def bootstrap_userdir(
         "enabled_mods": enabled_mods,
         "manifest": manifest,
     }
+
+
+def load_phase2_seed_contract(
+    contract_path: Path = PHASE2_SEED_CONTRACT_PATH,
+) -> dict[str, object]:
+    """Load the one hash-bound real-character seed without inferring fields."""
+
+    contract_path = Path(contract_path).resolve()
+    try:
+        contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError, json.JSONDecodeError) as error:
+        raise acceptance.RunnerError(
+            f"phase-two seed contract cannot be read: {error}"
+        ) from error
+
+    def exact_object(
+        value: object, fields: set[str], label: str
+    ) -> dict[str, object]:
+        if not isinstance(value, dict) or set(value) != fields:
+            raise acceptance.RunnerError(
+                f"phase-two seed contract {label} fields are invalid"
+            )
+        return value
+
+    exact_object(
+        contract,
+        {
+            "schema_version",
+            "kind",
+            "status",
+            "ready",
+            "blocker",
+            "source",
+            "provenance",
+            "runtime",
+            "saved_state",
+            "install",
+        },
+        "root",
+    )
+    source = exact_object(
+        contract.get("source"),
+        {
+            "profile",
+            "relative_save",
+            "absolute_save",
+            "bytes",
+            "sha256",
+            "last_write_time_utc",
+            "last_write_time_ns",
+        },
+        "source",
+    )
+    provenance = exact_object(
+        contract.get("provenance"),
+        {
+            "source_run",
+            "source_report_sha256",
+            "source_evidence_index_sha256",
+            "source_git_commit",
+            "real_character_proof",
+            "limitations",
+        },
+        "provenance",
+    )
+    runtime = exact_object(
+        contract.get("runtime"),
+        {
+            "game_version",
+            "executable_sha256",
+            "enabled_mods",
+            "source_product_tree_sha256",
+            "source_fixture_tree_sha256",
+        },
+        "runtime",
+    )
+    saved_state = exact_object(
+        contract.get("saved_state"),
+        {
+            "date_raw",
+            "played_character_id",
+            "player_history_id",
+            "played_character_alive",
+            "paused_on_load",
+            "map_ready",
+        },
+        "saved_state",
+    )
+    install = exact_object(
+        contract.get("install"),
+        {
+            "continue_save_relative_path",
+            "last_save_relative_path",
+            "launch_mode",
+        },
+        "install",
+    )
+    status = contract.get("status")
+    ready = contract.get("ready")
+    if (
+        contract.get("schema_version") != 1
+        or isinstance(contract.get("schema_version"), bool)
+        or contract.get("kind") != "zg361_phase2_paused_seed"
+        or status not in {"ready", "blocked_runtime_tree_mismatch"}
+        or not isinstance(ready, bool)
+        or (status == "ready") is not ready
+        or not isinstance(contract.get("blocker"), str)
+    ):
+        raise acceptance.RunnerError(
+            "phase-two seed contract header/readiness is invalid"
+        )
+    if status != "ready" and not contract["blocker"]:
+        raise acceptance.RunnerError(
+            "phase-two blocked seed contract lacks a blocker explanation"
+        )
+    if status == "ready" and contract["blocker"]:
+        raise acceptance.RunnerError(
+            "phase-two ready seed contract must not retain a blocker"
+        )
+
+    sha_fields = (
+        source.get("sha256"),
+        provenance.get("source_report_sha256"),
+        provenance.get("source_evidence_index_sha256"),
+        runtime.get("executable_sha256"),
+        runtime.get("source_product_tree_sha256"),
+        runtime.get("source_fixture_tree_sha256"),
+    )
+    if any(
+        not isinstance(value, str)
+        or re.fullmatch(r"[0-9a-f]{64}", value) is None
+        for value in sha_fields
+    ):
+        raise acceptance.RunnerError(
+            "phase-two seed contract contains a non-canonical SHA-256"
+        )
+    if (
+        not isinstance(source.get("bytes"), int)
+        or isinstance(source.get("bytes"), bool)
+        or source["bytes"] <= 0
+        or not isinstance(source.get("last_write_time_ns"), int)
+        or isinstance(source.get("last_write_time_ns"), bool)
+        or source["last_write_time_ns"] <= 0
+        or not isinstance(source.get("last_write_time_utc"), str)
+        or not source["last_write_time_utc"]
+    ):
+        raise acceptance.RunnerError(
+            "phase-two seed contract source size/time is invalid"
+        )
+    string_fields = (
+        source.get("profile"),
+        source.get("relative_save"),
+        source.get("absolute_save"),
+        provenance.get("source_run"),
+        provenance.get("source_git_commit"),
+        provenance.get("real_character_proof"),
+    )
+    if any(not isinstance(value, str) or not value for value in string_fields):
+        raise acceptance.RunnerError(
+            "phase-two seed contract source/provenance identity is invalid"
+        )
+    limitations = provenance.get("limitations")
+    if (
+        not isinstance(limitations, list)
+        or any(not isinstance(value, str) or not value for value in limitations)
+    ):
+        raise acceptance.RunnerError(
+            "phase-two seed contract provenance limitations are invalid"
+        )
+    if (
+        runtime.get("game_version") != EXPECTED_GAME_VERSION
+        or runtime.get("executable_sha256") != EXPECTED_EXE_SHA256
+        or runtime.get("enabled_mods")
+        != [f"mod/{PRODUCT_OUTER}", f"mod/{FIXTURE_OUTER}"]
+    ):
+        raise acceptance.RunnerError(
+            "phase-two seed contract runtime identity is not the frozen profile"
+        )
+    date_raw = saved_state.get("date_raw")
+    character_id = saved_state.get("played_character_id")
+    if (
+        not isinstance(date_raw, int)
+        or isinstance(date_raw, bool)
+        or date_raw <= 0
+        or not isinstance(character_id, int)
+        or isinstance(character_id, bool)
+        or character_id <= 0
+        or saved_state.get("player_history_id") != EXPECTED_PLAYER_HISTORY_ID
+        or saved_state.get("played_character_alive") is not True
+        or saved_state.get("paused_on_load") is not True
+        or saved_state.get("map_ready") is not True
+    ):
+        raise acceptance.RunnerError(
+            "phase-two seed contract saved-state identity is invalid"
+        )
+    if install != {
+        "continue_save_relative_path": "save games/autosave.ck3",
+        "last_save_relative_path": "last_save.ck3",
+        "launch_mode": "native_session_continue_last_save",
+    }:
+        raise acceptance.RunnerError(
+            "phase-two seed contract install slots/launch mode are invalid"
+        )
+    return contract
+
+
+def install_phase2_seed(
+    userdir: Path,
+    bootstrap: dict[str, object],
+    artifacts: Path,
+    *,
+    observed_game_version: str,
+    observed_executable_sha256: str,
+    contract_path: Path = PHASE2_SEED_CONTRACT_PATH,
+) -> dict[str, object]:
+    """Install an immutable compatible seed; verify current runtime after load."""
+
+    evidence_path = artifacts / "00_phase2_seed_install.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_hash_bound_paused_seed_install",
+        "mcp_only_launch": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "lobby_used": False,
+        "test_decision_used": False,
+        "contract_path": str(Path(contract_path).resolve()),
+        "contract": None,
+        "source": None,
+        "source_provenance": None,
+        "runtime_tree_policy": None,
+        "targets": None,
+        "checks": {},
+        "failed_checks": [],
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        contract = load_phase2_seed_contract(contract_path)
+        evidence["contract"] = contract
+        source_contract = contract["source"]
+        provenance_contract = contract["provenance"]
+        runtime_contract = contract["runtime"]
+        if not (
+            isinstance(source_contract, dict)
+            and isinstance(provenance_contract, dict)
+            and isinstance(runtime_contract, dict)
+        ):
+            raise acceptance.RunnerError(
+                "phase-two seed contract lost a validated object"
+            )
+        source_profile = Path(str(source_contract["profile"])).resolve()
+        source_save = (source_profile / str(source_contract["relative_save"])).resolve()
+        absolute_source = Path(str(source_contract["absolute_save"])).resolve()
+        source_exists = source_save.is_file()
+        source_stat = source_save.stat() if source_exists else None
+        source_hash = isolated.sha256_file(source_save) if source_exists else None
+        if source_exists:
+            with source_save.open("rb") as source_stream:
+                source_header = source_stream.read(96)
+        else:
+            source_header = b""
+        source_run = Path(str(provenance_contract["source_run"])).resolve()
+        source_report_path = source_run / "report.json"
+        source_index_path = source_run / "evidence-index.json"
+        source_report_exists = source_report_path.is_file()
+        source_index_exists = source_index_path.is_file()
+        source_report_hash = (
+            isolated.sha256_file(source_report_path)
+            if source_report_exists
+            else None
+        )
+        source_index_hash = (
+            isolated.sha256_file(source_index_path)
+            if source_index_exists
+            else None
+        )
+        source_report: dict[str, object] = {}
+        source_report_error: str | None = None
+        if source_report_exists:
+            try:
+                source_report_value = json.loads(
+                    source_report_path.read_text(encoding="utf-8")
+                )
+                if not isinstance(source_report_value, dict):
+                    raise TypeError("source report root is not an object")
+                source_report = source_report_value
+            except (OSError, UnicodeError, ValueError, TypeError) as error:
+                source_report_error = f"{type(error).__name__}: {error}"
+        source_cell_value = source_report.get("cell")
+        source_cell = (
+            source_cell_value if isinstance(source_cell_value, dict) else {}
+        )
+        source_scenario_value = source_cell.get("scenario_evidence")
+        source_scenario = (
+            source_scenario_value
+            if isinstance(source_scenario_value, dict)
+            else {}
+        )
+        source_matrix_value = source_scenario.get(
+            "title_navigation_mcp_matrix"
+        )
+        source_matrix = (
+            source_matrix_value if isinstance(source_matrix_value, dict) else {}
+        )
+        source_readiness_value = source_matrix.get("readiness")
+        source_readiness = (
+            source_readiness_value
+            if isinstance(source_readiness_value, dict)
+            else {}
+        )
+        source_snapshot_value = source_readiness.get("snapshot")
+        source_snapshot = (
+            source_snapshot_value
+            if isinstance(source_snapshot_value, dict)
+            else {}
+        )
+        source_player_value = source_snapshot.get("played_character")
+        source_player = (
+            source_player_value
+            if isinstance(source_player_value, dict)
+            else {}
+        )
+        source_attestation_value = source_scenario.get(
+            "real_character_runtime_attestation"
+        )
+        source_attestation = (
+            source_attestation_value
+            if isinstance(source_attestation_value, dict)
+            else {}
+        )
+        source_tree_before_value = source_cell.get(
+            "runtime_tree_before_sha256"
+        )
+        source_tree_before = (
+            source_tree_before_value
+            if isinstance(source_tree_before_value, dict)
+            else {}
+        )
+        source_tree_after_value = source_cell.get(
+            "runtime_tree_after_sha256"
+        )
+        source_tree_after = (
+            source_tree_after_value
+            if isinstance(source_tree_after_value, dict)
+            else {}
+        )
+        tree_value = bootstrap.get("tree_sha256")
+        tree = tree_value if isinstance(tree_value, dict) else {}
+        enabled_mods = bootstrap.get("enabled_mods")
+        install_contract = contract["install"]
+        if not isinstance(install_contract, dict):
+            raise acceptance.RunnerError(
+                "phase-two seed install contract lost its validated object"
+            )
+        continue_save = userdir / str(
+            install_contract["continue_save_relative_path"]
+        )
+        last_save = userdir / str(install_contract["last_save_relative_path"])
+        checks = {
+            "contract_status_ready": contract.get("status") == "ready",
+            "contract_ready": contract.get("ready") is True,
+            "source_profile_exists": source_profile.is_dir(),
+            "source_save_exists": source_exists,
+            "source_path_matches_contract": source_save == absolute_source,
+            "source_save_inside_profile": isolated.is_relative_to(
+                source_save, source_profile
+            ),
+            "source_size_matches": source_stat is not None
+            and source_stat.st_size == source_contract.get("bytes"),
+            "source_mtime_matches": source_stat is not None
+            and source_stat.st_mtime_ns
+            == source_contract.get("last_write_time_ns"),
+            "source_sha256_matches": source_hash == source_contract.get("sha256"),
+            "source_ck3_header": source_header.startswith(b"SAV0101"),
+            "source_header_game_version": EXPECTED_GAME_VERSION.encode("ascii")
+            in source_header,
+            "source_run_exists": source_run.is_dir(),
+            "source_report_exists": source_report_exists,
+            "source_evidence_index_exists": source_index_exists,
+            "source_report_sha256_matches": source_report_hash
+            == provenance_contract.get("source_report_sha256"),
+            "source_evidence_index_sha256_matches": source_index_hash
+            == provenance_contract.get("source_evidence_index_sha256"),
+            "source_report_parsed": source_report_error is None
+            and bool(source_report),
+            "source_report_green": source_report.get("result") == "GREEN"
+            and source_cell.get("result") == "GREEN",
+            "source_profile_matches_report": (
+                isinstance(source_cell.get("isolated_userdir_path"), str)
+                and Path(str(source_cell["isolated_userdir_path"])).resolve()
+                == source_profile
+            ),
+            "source_report_game_version_matches": source_cell.get(
+                "game_version"
+            )
+            == runtime_contract.get("game_version"),
+            "source_report_executable_matches": source_cell.get(
+                "ck3_executable_before_sha256"
+            )
+            == runtime_contract.get("executable_sha256")
+            and source_cell.get("ck3_executable_after_sha256")
+            == runtime_contract.get("executable_sha256"),
+            "source_report_enabled_mod_ids_match": source_cell.get(
+                "enabled_mods"
+            )
+            == runtime_contract.get("enabled_mods"),
+            "source_product_tree_provenance_matches": source_tree_before.get(
+                "product"
+            )
+            == runtime_contract.get("source_product_tree_sha256")
+            and source_tree_after.get("product")
+            == runtime_contract.get("source_product_tree_sha256"),
+            "source_fixture_tree_provenance_matches": source_tree_before.get(
+                "fixture"
+            )
+            == runtime_contract.get("source_fixture_tree_sha256")
+            and source_tree_after.get("fixture")
+            == runtime_contract.get("source_fixture_tree_sha256"),
+            "source_runtime_trees_were_stable": source_cell.get(
+                "runtime_trees_unchanged"
+            )
+            is True,
+            "source_real_history_id_matches": source_scenario.get(
+                "player_history_id"
+            )
+            == contract["saved_state"].get("player_history_id"),
+            "source_real_character_id_matches": source_player.get(
+                "character_id"
+            )
+            == contract["saved_state"].get("played_character_id"),
+            "source_real_character_was_alive": source_player.get("alive")
+            is True,
+            "source_native_snapshot_was_paused_map": source_snapshot.get(
+                "paused"
+            )
+            is True
+            and source_snapshot.get("map_ready") is True,
+            "source_real_character_markers_present": source_attestation.get(
+                "song_emperor_exact_build_marker_count"
+            )
+            == 1
+            and source_attestation.get(
+                "song_emperor_player_switch_marker_count"
+            )
+            == 1
+            and source_scenario.get(
+                "historical_subjects_manufactured_by_fixture"
+            )
+            is False,
+            "observed_game_version_matches": observed_game_version
+            == runtime_contract.get("game_version"),
+            "observed_executable_matches": observed_executable_sha256
+            == runtime_contract.get("executable_sha256"),
+            "enabled_mods_match": enabled_mods == runtime_contract.get("enabled_mods"),
+            "current_product_runtime_tree_available": isinstance(
+                tree.get("product"), str
+            )
+            and re.fullmatch(r"[0-9a-f]{64}", str(tree.get("product")))
+            is not None,
+            "current_fixture_runtime_tree_available": isinstance(
+                tree.get("fixture"), str
+            )
+            and re.fullmatch(r"[0-9a-f]{64}", str(tree.get("fixture")))
+            is not None,
+            "continue_slot_absent": not continue_save.exists(),
+            "last_save_slot_absent": not last_save.exists(),
+        }
+        evidence["source"] = {
+            "profile": str(source_profile),
+            "path": str(source_save),
+            "bytes": source_stat.st_size if source_stat is not None else None,
+            "last_write_time_ns": (
+                source_stat.st_mtime_ns if source_stat is not None else None
+            ),
+            "sha256": source_hash,
+        }
+        evidence["source_provenance"] = {
+            "run": str(source_run),
+            "report": {
+                "path": str(source_report_path),
+                "sha256": source_report_hash,
+                "parse_error": source_report_error,
+            },
+            "evidence_index": {
+                "path": str(source_index_path),
+                "sha256": source_index_hash,
+            },
+            "limitations": list(provenance_contract["limitations"]),
+        }
+        evidence["runtime_tree_policy"] = {
+            "source_trees_are_provenance_only": True,
+            "source": {
+                "product": runtime_contract.get(
+                    "source_product_tree_sha256"
+                ),
+                "fixture": runtime_contract.get(
+                    "source_fixture_tree_sha256"
+                ),
+            },
+            "current": {
+                "product": tree.get("product"),
+                "fixture": tree.get("fixture"),
+            },
+            "source_current_equality_required_for_install": False,
+            "post_load_current_runtime_gates": [
+                "runtime_mount_inventory",
+                "loaded_feature_manifest_v1",
+                "paused_date_and_player_binding",
+            ],
+        }
+        evidence["targets"] = {
+            "continue_save": str(continue_save),
+            "last_save": str(last_save),
+        }
+        evidence["checks"] = checks
+        failed = [label for label, passed in checks.items() if passed is not True]
+        evidence["failed_checks"] = failed
+        if failed:
+            raise acceptance.RunnerError(
+                "phase-two seed install RED: " + ", ".join(failed)
+            )
+
+        continue_save.parent.mkdir(parents=True, exist_ok=True)
+        last_save.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_save, continue_save)
+        shutil.copy2(source_save, last_save)
+        installed_checks = {
+            "continue_save_size_matches": continue_save.stat().st_size
+            == source_contract["bytes"],
+            "last_save_size_matches": last_save.stat().st_size
+            == source_contract["bytes"],
+            "continue_save_sha256_matches": isolated.sha256_file(continue_save)
+            == source_contract["sha256"],
+            "last_save_sha256_matches": isolated.sha256_file(last_save)
+            == source_contract["sha256"],
+        }
+        checks.update(installed_checks)
+        failed = [label for label, passed in checks.items() if passed is not True]
+        evidence["checks"] = checks
+        evidence["failed_checks"] = failed
+        if failed:
+            raise acceptance.RunnerError(
+                "phase-two seed materialization RED: " + ", ".join(failed)
+            )
+        evidence["result"] = "GREEN"
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two seed install failed: {error}"
+        ) from error
+
+
+def preflight_phase2_seed_contract(
+    contract_path: Path = PHASE2_SEED_CONTRACT_PATH,
+    *,
+    runtime_source: Path | None = None,
+    workshop_manifest: Path | None = None,
+) -> dict[str, object]:
+    """Validate the contract and optionally dry-install it without CK3."""
+
+    contract = load_phase2_seed_contract(contract_path)
+    if contract.get("ready") is not True:
+        blocker = str(contract.get("blocker") or "unspecified seed blocker")
+        raise acceptance.RunnerError(
+            "phase-two seed preflight RED: " + blocker
+        )
+    if runtime_source is not None:
+        with tempfile.TemporaryDirectory(
+            prefix="zg361-phase2-seed-preflight-"
+        ) as temporary:
+            temporary_root = Path(temporary)
+            userdir = temporary_root / "profile"
+            artifacts = temporary_root / "artifacts"
+            artifacts.mkdir()
+            bootstrap = bootstrap_userdir(
+                userdir,
+                Path(runtime_source),
+                workshop_manifest=workshop_manifest,
+            )
+            install_phase2_seed(
+                userdir,
+                bootstrap,
+                artifacts,
+                observed_game_version=isolated.installed_game_version(),
+                observed_executable_sha256=isolated.sha256_file(
+                    acceptance.CK3_EXE
+                ),
+                contract_path=contract_path,
+            )
+    return contract
+
+
+def prove_phase2_loaded_seed(
+    snapshot: dict[str, object],
+    seed_contract: dict[str, object],
+    artifacts: Path,
+) -> dict[str, object]:
+    """Bind the first paused MCP snapshot to the installed save identity."""
+
+    evidence_path = artifacts / "04_phase2_seed_loaded.json"
+    saved_state_value = seed_contract.get("saved_state")
+    saved_state = (
+        saved_state_value if isinstance(saved_state_value, dict) else {}
+    )
+    binding = _phase2_paused_binding(
+        snapshot, label="phase-two installed seed"
+    )
+    played_character_value = snapshot.get("played_character")
+    played_character = (
+        played_character_value
+        if isinstance(played_character_value, dict)
+        else {}
+    )
+    checks = {
+        "contract_ready": seed_contract.get("ready") is True,
+        "contract_status_ready": seed_contract.get("status") == "ready",
+        "date_raw_matches_seed": binding["date_raw"]
+        == saved_state.get("date_raw"),
+        "played_character_matches_seed": binding["player_character_id"]
+        == saved_state.get("played_character_id"),
+        "played_character_alive_matches_seed": played_character.get("alive")
+        is True
+        and saved_state.get("played_character_alive") is True,
+        "paused_on_load_expected": saved_state.get("paused_on_load") is True,
+        "map_ready_expected": saved_state.get("map_ready") is True,
+    }
+    failed = [label for label, passed in checks.items() if passed is not True]
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed else "RED",
+        "scope": "phase2_installed_seed_paused_snapshot_binding",
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "expected": {
+            "date_raw": saved_state.get("date_raw"),
+            "played_character_id": saved_state.get("played_character_id"),
+        },
+        "observed": binding,
+        "checks": checks,
+        "failed_checks": failed,
+        "failure_reason": (
+            None
+            if not failed
+            else "phase-two loaded seed RED: " + ", ".join(failed)
+        ),
+    }
+    write_json(evidence_path, evidence)
+    if failed:
+        raise acceptance.RunnerError(str(evidence["failure_reason"]))
+    return evidence
 
 
 def verify_runtime_load_order(
@@ -8509,6 +9173,7 @@ def run_phase2_live_scenario(
     artifacts: Path,
     *,
     tracked_ck3_pid: int,
+    seed_contract: dict[str, object],
 ) -> dict[str, object]:
     """Run only MCP phase-two primitives; never fall back to phase-one UI."""
 
@@ -8527,6 +9192,7 @@ def run_phase2_live_scenario(
         "test_decision_used": False,
         "legacy_run_scenario_used": False,
         "paused_readiness": None,
+        "seed_load_proof": None,
         "loaded_feature_manifest": None,
         "save_restore_lineage": None,
         "unimplemented_domain_cells": [
@@ -8553,6 +9219,12 @@ def run_phase2_live_scenario(
             "artifact": "04_phase2_paused_readiness.json",
             "binding": paused_binding,
         }
+        seed_load_proof = prove_phase2_loaded_seed(
+            paused_snapshot,
+            seed_contract,
+            artifacts,
+        )
+        evidence["seed_load_proof"] = seed_load_proof
         manifest = service.query_loaded_feature_manifest_v1(
             expected_revision=int(paused_binding["revision"])
         )
@@ -8876,10 +9548,19 @@ def run_cell(
     phase2_supervisor: dict[str, object] | None = None
     phase2_initial_binding: dict[str, object] | None = None
     phase2_final_capabilities: dict[str, object] | None = None
+    phase2_seed_install: dict[str, object] | None = None
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
                 f"CK3 executable SHA-256 drifted before launch: {executable_before}"
+            )
+        if phase2_live_batch:
+            phase2_seed_install = install_phase2_seed(
+                userdir,
+                bootstrap,
+                artifacts,
+                observed_game_version=game_version,
+                observed_executable_sha256=executable_before,
             )
         native_driver = NativeHeadlessGameplayDriver(
             native_bridge.pipe_name,
@@ -8988,6 +9669,7 @@ def run_cell(
                 title_navigation_service,
                 artifacts,
                 tracked_ck3_pid=tracked_ck3_pid,
+                seed_contract=dict(phase2_seed_install["contract"]),
             )
             gameplay_acceptance_executed = (
                 evidence.get("phase2_acceptance_complete") is True
@@ -9288,7 +9970,11 @@ def run_cell(
         "isolated_userdir": True,
         "canonical_native_runtime": True,
         "native_launch_sequence": (
-            "managed_native_session_supervisor"
+            (
+                "managed_native_session_supervisor"
+                if phase2_supervisor is not None
+                else "not_launched_seed_red"
+            )
             if phase2_live_batch
             else "suspended_inject_resume"
         ),
@@ -9300,7 +9986,8 @@ def run_cell(
         "promo_camera_probe_only": promo_camera_probe,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
-        "loader_gate_executed": loader_gate_enabled,
+        "loader_gate_executed": loader_gate_evidence is not None,
+        "phase2_seed_install": phase2_seed_install,
         "loader_gate_evidence": loader_gate_evidence,
         "gameplay_acceptance_executed": gameplay_acceptance_executed,
         "gameplay_green_claimed": (
@@ -9432,6 +10119,11 @@ def main(
         require_visual_tools=not (loader_smoke or phase2_live_batch),
     )
     if preflight_only:
+        if phase2_live_batch:
+            preflight_phase2_seed_contract(
+                runtime_source=runtime_source,
+                workshop_manifest=manifest_path,
+            )
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
         return 0
     if artifacts_dir:

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_paused_seed",
+  "status": "ready",
+  "ready": true,
+  "blocker": "",
+  "source": {
+    "profile": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061_native_state/profile",
+    "relative_save": "save games/autosave.ck3",
+    "absolute_save": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061_native_state/profile/save games/autosave.ck3",
+    "bytes": 52902730,
+    "sha256": "98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3",
+    "last_write_time_utc": "2026-08-30T11:19:41.0037741Z",
+    "last_write_time_ns": 1788088781003774100
+  },
+  "provenance": {
+    "source_run": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061",
+    "source_report_sha256": "409cf4366a7a96801cfe56c91792d11c7b779a6deecb1d2dddf4876c87d8dd6b",
+    "source_evidence_index_sha256": "140e5ff79f37717b25d1233e02427ade7f2031fac6b7944b2accda6af979b450",
+    "source_git_commit": "fa5c78dd4b524037d8b113d0498328437085825c",
+    "real_character_proof": "source report GREEN binds historical han_8052 to native CharacterID 32904; the first paused MCP snapshot after loading must independently confirm CharacterID 32904 and date_raw 53147016",
+    "limitations": [
+      "The preserved autosave predates typed save-checkpoint ACK materialization, so its declared saved date is a load-time hypothesis rather than source-ACK proof; this does not block bootstrap and must be accepted or rejected by the first paused MCP snapshot.",
+      "The source product and fixture tree hashes are provenance only; current runtime identity is verified from the newly bootstrapped trees, mount inventory, and loaded-feature manifest after launch."
+    ]
+  },
+  "runtime": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "enabled_mods": [
+      "mod/zg361_acceptance.mod",
+      "mod/zga_acceptance_fixture.mod"
+    ],
+    "source_product_tree_sha256": "ddac4703d99b7e498e276c37c685af28b2006ad73f4124f9cd77e745aa14a693",
+    "source_fixture_tree_sha256": "e2c092a464b53aa3b6161f4f3559ae74e817fe2ecf0327011979c41573eaf5de"
+  },
+  "saved_state": {
+    "date_raw": 53147016,
+    "played_character_id": 32904,
+    "player_history_id": "han_8052",
+    "played_character_alive": true,
+    "paused_on_load": true,
+    "map_ready": true
+  },
+  "install": {
+    "continue_save_relative_path": "save games/autosave.ck3",
+    "last_save_relative_path": "last_save.ck3",
+    "launch_mode": "native_session_continue_last_save"
+  }
+}

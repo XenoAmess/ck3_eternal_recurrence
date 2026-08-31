@@ -232,9 +232,12 @@ rect/scroll/action 仍为 typed unavailable。runner 不把该最小 static prim
 `MCP capability RED`，且总报告强制 `gameplay_green_claimed=false`。即使测试替身伪造 cell `result=GREEN`，只要缺少完整的
 MCP-only scenario proof，总结果也会降为 RED。
 
-启动门还显式保留一项 `runner_not_wired`，避免未来 provider 一到位就误入不可达长局：隔离 userdir 尚无经过验证的二期 seed/
-checkpoint，也没有从主菜单进入 paused map 的 MCP-only frontend start 路径。它闭合前同样必须 pre-start RED，不能等待 300 秒后
-才报 paused timeout。
+二期 map-entry runner 已改为固定存档的 MCP-only native frontend start，不再保留 `runner_not_wired`。权威 seed 合同固定 save
+hash/size/mtime/header、exact game/EXE、相同 mod IDs、source report/index 与真实角色绑定；`native_session` 只走
+`continue_last_save`，不进入主菜单、lobby、OCR、坐标或测试决议。来源 product/fixture tree 只作 provenance，不要求与每次开发后的
+当前代码逐字节相等；否则任意正常 mod 更新都会无实证地永久废弃存档。当前 runtime 由新 bootstrap tree、mount inventory、
+loaded-feature manifest 与首次 paused MCP snapshot 共同验证，后者还必须精确匹配 `date_raw` 和 CharacterID。安装失败发生在 native
+driver/supervisor/CK3 创建以前，并写 `00_phase2_seed_install.json` RED；加载身份写 `04_phase2_seed_loaded.json`。
 
 save/restore helper 已冻结一次保存、保存后动态出现 `restore-checkpoint`、一次 restore 和两 PID lineage 的静态合同：第一 PID/
 generation 在保存期间不变，restore lifecycle 的 previous/new PID 必须分别等于前后 snapshot，第二 PID 必须不同，generation 必须
@@ -256,4 +259,5 @@ mount inventory。restore relaunch 原本就固定使用 `verify_prepared_profil
 shutdown、恰好两个不同 PID、generation 恰加一、restore source/intent/request ID、restore 后 raw capability binding，以及旧 PID 与最终
 PID 各自的 Job/tree/global inventory/watchdog/control-file/contract-error 清理合取。若在 save ACK 前因 capability/paused/manifest RED
 退出，则允许并严格证明单 PID、零 restart 的清理；不能由“进入 scenario”这个手工布尔值伪造两 PID 预期。上述 P1 仍只有
-fake-supervisor/static 证据；seed 与领域 provider RED 解除并取得 exact-build artifact 前，不得写 production-live。
+fake-supervisor/static 证据；seed installer 虽已 static-ready，但在取得 current-tree exact-build load artifact 且领域 provider RED 解除前，
+不得写 production-live。

@@ -1578,6 +1578,244 @@ def main() -> int:
 
     with tempfile.TemporaryDirectory() as temporary:
         temporary_root = Path(temporary)
+        canonical_seed_contract = capture.load_phase2_seed_contract()
+        assert canonical_seed_contract["status"] == "ready"
+        assert canonical_seed_contract["ready"] is True
+        assert canonical_seed_contract["blocker"] == ""
+        assert canonical_seed_contract["provenance"]["limitations"]
+        assert capture.preflight_phase2_seed_contract() == (
+            canonical_seed_contract
+        )
+
+        blocked_seed_contract = copy.deepcopy(canonical_seed_contract)
+        blocked_seed_contract["status"] = "blocked_runtime_tree_mismatch"
+        blocked_seed_contract["ready"] = False
+        blocked_seed_contract["blocker"] = "deliberate blocked seed fixture"
+        blocked_seed_path = temporary_root / "blocked-seed-contract.json"
+        blocked_seed_path.write_text(
+            json.dumps(blocked_seed_contract), encoding="utf-8"
+        )
+        try:
+            capture.preflight_phase2_seed_contract(blocked_seed_path)
+        except capture.acceptance.RunnerError as error:
+            assert "phase-two seed preflight RED" in str(error)
+            assert "deliberate blocked seed fixture" in str(error)
+        else:
+            raise AssertionError("blocked phase-two seed passed preflight")
+
+        seed_source_profile = temporary_root / "seed-source-profile"
+        seed_source_save = seed_source_profile / "save games" / "seed.ck3"
+        seed_source_save.parent.mkdir(parents=True)
+        seed_source_save.write_bytes(
+            b"SAV0101" + b"\0" * 24 + b"1.19.0.6" + b"\0" * 128
+        )
+        seed_source_stat = seed_source_save.stat()
+        seed_product_tree = "b" * 64
+        seed_fixture_tree = "c" * 64
+        seed_enabled_mods = [
+            f"mod/{capture.PRODUCT_OUTER}",
+            f"mod/{capture.FIXTURE_OUTER}",
+        ]
+        seed_source_run = temporary_root / "seed-source-run"
+        seed_source_run.mkdir()
+        seed_source_report = {
+            "result": "GREEN",
+            "cell": {
+                "result": "GREEN",
+                "game_version": capture.EXPECTED_GAME_VERSION,
+                "ck3_executable_before_sha256": capture.EXPECTED_EXE_SHA256,
+                "ck3_executable_after_sha256": capture.EXPECTED_EXE_SHA256,
+                "enabled_mods": seed_enabled_mods,
+                "runtime_tree_before_sha256": {
+                    "product": seed_product_tree,
+                    "fixture": seed_fixture_tree,
+                },
+                "runtime_tree_after_sha256": {
+                    "product": seed_product_tree,
+                    "fixture": seed_fixture_tree,
+                },
+                "runtime_trees_unchanged": True,
+                "isolated_userdir_path": str(seed_source_profile.resolve()),
+                "scenario_evidence": {
+                    "player_history_id": capture.EXPECTED_PLAYER_HISTORY_ID,
+                    "historical_subjects_manufactured_by_fixture": False,
+                    "real_character_runtime_attestation": {
+                        "song_emperor_exact_build_marker_count": 1,
+                        "song_emperor_player_switch_marker_count": 1,
+                    },
+                    "title_navigation_mcp_matrix": {
+                        "readiness": {
+                            "snapshot": {
+                                "paused": True,
+                                "map_ready": True,
+                                "played_character": {
+                                    "character_id": 9001,
+                                    "alive": True,
+                                },
+                            }
+                        }
+                    },
+                },
+            },
+        }
+        seed_source_report_path = seed_source_run / "report.json"
+        seed_source_report_path.write_text(
+            json.dumps(seed_source_report), encoding="utf-8"
+        )
+        seed_source_index_path = seed_source_run / "evidence-index.json"
+        seed_source_index_path.write_text(
+            json.dumps({"result": "GREEN", "files": []}), encoding="utf-8"
+        )
+        ready_seed_contract = {
+            "schema_version": 1,
+            "kind": "zg361_phase2_paused_seed",
+            "status": "ready",
+            "ready": True,
+            "blocker": "",
+            "source": {
+                "profile": str(seed_source_profile.resolve()),
+                "relative_save": "save games/seed.ck3",
+                "absolute_save": str(seed_source_save.resolve()),
+                "bytes": seed_source_stat.st_size,
+                "sha256": capture.isolated.sha256_file(seed_source_save),
+                "last_write_time_utc": "2026-08-31T00:00:00Z",
+                "last_write_time_ns": seed_source_stat.st_mtime_ns,
+            },
+            "provenance": {
+                "source_run": str(seed_source_run.resolve()),
+                "source_report_sha256": capture.isolated.sha256_file(
+                    seed_source_report_path
+                ),
+                "source_evidence_index_sha256": capture.isolated.sha256_file(
+                    seed_source_index_path
+                ),
+                "source_git_commit": "f" * 40,
+                "real_character_proof": (
+                    "typed save-checkpoint binds han_8052 to CharacterID 9001"
+                ),
+                "limitations": [
+                    "synthetic fixture records source-tree provenance only"
+                ],
+            },
+            "runtime": {
+                "game_version": capture.EXPECTED_GAME_VERSION,
+                "executable_sha256": capture.EXPECTED_EXE_SHA256,
+                "enabled_mods": seed_enabled_mods,
+                "source_product_tree_sha256": seed_product_tree,
+                "source_fixture_tree_sha256": seed_fixture_tree,
+            },
+            "saved_state": {
+                "date_raw": 777,
+                "played_character_id": 9001,
+                "player_history_id": capture.EXPECTED_PLAYER_HISTORY_ID,
+                "played_character_alive": True,
+                "paused_on_load": True,
+                "map_ready": True,
+            },
+            "install": {
+                "continue_save_relative_path": "save games/autosave.ck3",
+                "last_save_relative_path": "last_save.ck3",
+                "launch_mode": "native_session_continue_last_save",
+            },
+        }
+        ready_seed_path = temporary_root / "ready-seed-contract.json"
+        ready_seed_path.write_text(
+            json.dumps(ready_seed_contract), encoding="utf-8"
+        )
+        assert capture.preflight_phase2_seed_contract(ready_seed_path) == (
+            ready_seed_contract
+        )
+        with (
+            mock.patch.object(
+                capture,
+                "bootstrap_userdir",
+                return_value={"seed": "bootstrap"},
+            ) as seed_preflight_bootstrap,
+            mock.patch.object(
+                capture,
+                "install_phase2_seed",
+                return_value={"result": "GREEN"},
+            ) as seed_preflight_install,
+            mock.patch.object(
+                capture.isolated,
+                "installed_game_version",
+                return_value=capture.EXPECTED_GAME_VERSION,
+            ),
+            mock.patch.object(
+                capture.isolated,
+                "sha256_file",
+                return_value=capture.EXPECTED_EXE_SHA256,
+            ),
+        ):
+            assert capture.preflight_phase2_seed_contract(
+                ready_seed_path,
+                runtime_source=temporary_root,
+            ) == ready_seed_contract
+        assert seed_preflight_bootstrap.call_count == 1
+        assert seed_preflight_bootstrap.call_args.args[1] == temporary_root
+        assert seed_preflight_install.call_count == 1
+        assert seed_preflight_install.call_args.kwargs[
+            "observed_game_version"
+        ] == capture.EXPECTED_GAME_VERSION
+        assert seed_preflight_install.call_args.kwargs[
+            "observed_executable_sha256"
+        ] == capture.EXPECTED_EXE_SHA256
+
+        seed_install_userdir = temporary_root / "seed-install-profile"
+        seed_install_artifacts = temporary_root / "seed-install-artifacts"
+        seed_install_userdir.mkdir()
+        seed_install_artifacts.mkdir()
+        seed_bootstrap = {
+            "tree_sha256": {
+                "product": "1" * 64,
+                "fixture": "2" * 64,
+            },
+            "enabled_mods": ready_seed_contract["runtime"]["enabled_mods"],
+        }
+        seed_install = capture.install_phase2_seed(
+            seed_install_userdir,
+            seed_bootstrap,
+            seed_install_artifacts,
+            observed_game_version=capture.EXPECTED_GAME_VERSION,
+            observed_executable_sha256=capture.EXPECTED_EXE_SHA256,
+            contract_path=ready_seed_path,
+        )
+        assert seed_install["result"] == "GREEN"
+        assert seed_install["failed_checks"] == []
+        installed_autosave = seed_install_userdir / "save games" / "autosave.ck3"
+        installed_last_save = seed_install_userdir / "last_save.ck3"
+        assert installed_autosave.read_bytes() == seed_source_save.read_bytes()
+        assert installed_last_save.read_bytes() == seed_source_save.read_bytes()
+        assert seed_install["ocr_used"] is False
+        assert seed_install["coordinates_used"] is False
+        assert seed_install["lobby_used"] is False
+        assert seed_install["test_decision_used"] is False
+        assert seed_install["runtime_tree_policy"][
+            "source_current_equality_required_for_install"
+        ] is False
+        assert seed_install["runtime_tree_policy"]["source"] != (
+            seed_install["runtime_tree_policy"]["current"]
+        )
+        assert seed_install["checks"][
+            "source_product_tree_provenance_matches"
+        ] is True
+        assert seed_install["checks"][
+            "current_product_runtime_tree_available"
+        ] is True
+
+        invalid_ready_contract = copy.deepcopy(ready_seed_contract)
+        invalid_ready_contract["blocker"] = "stale blocker"
+        invalid_ready_path = temporary_root / "invalid-ready-seed-contract.json"
+        invalid_ready_path.write_text(
+            json.dumps(invalid_ready_contract), encoding="utf-8"
+        )
+        try:
+            capture.load_phase2_seed_contract(invalid_ready_path)
+        except capture.acceptance.RunnerError as error:
+            assert "must not retain a blocker" in str(error)
+        else:
+            raise AssertionError("ready seed retained a contradictory blocker")
+
         dll = temporary_root / "bridge.dll"
         injector = temporary_root / "injector.exe"
         managed_executable = temporary_root / "ck3.exe"
@@ -2243,13 +2481,64 @@ def main() -> int:
                 "date_raw": 777,
                 "paused": True,
                 "map_ready": True,
-                "played_character": {"character_id": player},
+                "played_character": {"character_id": player, "alive": True},
                 "diagnostics": {
                     "connected": True,
                     "bridge_pid": pid,
                     "connection_generation": generation,
                 },
             }
+
+        seed_loaded_artifacts = temporary_root / "phase2-seed-loaded-green"
+        seed_loaded_artifacts.mkdir()
+        loaded_seed = capture.prove_phase2_loaded_seed(
+            phase2_snapshot(pid=4321, generation=4, revision=10),
+            ready_seed_contract,
+            seed_loaded_artifacts,
+        )
+        assert loaded_seed["result"] == "GREEN"
+        assert loaded_seed["observed"]["date_raw"] == 777
+        assert loaded_seed["observed"]["player_character_id"] == 9001
+        wrong_seed_artifacts = temporary_root / "phase2-seed-loaded-red"
+        wrong_seed_artifacts.mkdir()
+        wrong_seed_snapshot = phase2_snapshot(
+            pid=4321, generation=4, revision=10
+        )
+        wrong_seed_snapshot["date_raw"] = 778
+        try:
+            capture.prove_phase2_loaded_seed(
+                wrong_seed_snapshot,
+                ready_seed_contract,
+                wrong_seed_artifacts,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "date_raw_matches_seed" in str(error)
+        else:
+            raise AssertionError("wrong loaded phase-two seed was accepted")
+        persisted_wrong_seed = json.loads(
+            (wrong_seed_artifacts / "04_phase2_seed_loaded.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert persisted_wrong_seed["result"] == "RED"
+        assert persisted_wrong_seed["checks"]["date_raw_matches_seed"] is False
+        wrong_player_artifacts = temporary_root / "phase2-seed-player-red"
+        wrong_player_artifacts.mkdir()
+        try:
+            capture.prove_phase2_loaded_seed(
+                phase2_snapshot(
+                    pid=4321,
+                    generation=4,
+                    revision=10,
+                    player=9002,
+                ),
+                ready_seed_contract,
+                wrong_player_artifacts,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "played_character_matches_seed" in str(error)
+        else:
+            raise AssertionError("wrong phase-two seed player was accepted")
 
         class Phase2RestoreService:
             def __init__(
@@ -2707,6 +2996,7 @@ def main() -> int:
                     Phase2ManifestService(),
                     scenario_artifacts,
                     tracked_ck3_pid=4321,
+                    seed_contract=ready_seed_contract,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "domain matrix RED" in str(error)
@@ -3446,8 +3736,16 @@ def main() -> int:
         'else "suspended_inject_resume"',
         "start_phase2_native_session_supervisor(",
         "stop_phase2_native_session_supervisor(",
+        "install_phase2_seed(",
+        '"phase2_seed_install": phase2_seed_install',
     ):
         assert token in camera_probe_cell, token
+    seed_install_position = camera_probe_cell.index("install_phase2_seed(")
+    driver_position = camera_probe_cell.index("NativeHeadlessGameplayDriver(")
+    supervisor_position = camera_probe_cell.index(
+        "start_phase2_native_session_supervisor("
+    )
+    assert seed_install_position < driver_position < supervisor_position
     loader_gate_source = inspect.getsource(capture.run_loader_gate)
     for token in (
         "native_loader_smoke_readiness(",
@@ -3496,6 +3794,8 @@ def main() -> int:
     assert "require_visual_tools=not (loader_smoke or phase2_live_batch)" in main_source
     assert '"gameplay_acceptance_executed", False' in main_source
     assert "phase2_live_batch=phase2_live_batch" in main_source
+    assert "preflight_phase2_seed_contract(" in main_source
+    assert "runtime_source=runtime_source" in main_source
     phase2_branch = camera_probe_cell.split(
         "elif phase2_live_batch:", 1
     )[1].split("elif promo_camera_probe:", 1)[0]
