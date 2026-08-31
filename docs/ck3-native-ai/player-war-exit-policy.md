@@ -460,6 +460,11 @@ PoW release pairs、conditional favor-hook application、当前 war-bound source
 gap 和一次启动验收矩阵见 [war-termination.md](war-termination.md)。“六域 terms ready”只解除 CB-specific 条款观测 blocker；
 faction/opinion/feud/Mandala/LAAMP 等 broad rows 继续作为显式能力债，不得从 payload 中悄悄删除或伪装成零。
 
+[fixture-confirmed / pending MCP+live] 六域中的 PoW 原生 core 已由
+`ReadRaiktorSurrenderPrisonerReleases` 闭合：它发布完整 participant、双方 primary+前三继承人候选和 actual release pairs，并把
+完整扫描后的空 pairs 与 unavailable 明确区分；同一 paused date 双采样必须一致。该原子尚未进入 terms JSON 或策略输入，所以此处的
+动作门、`decision_terms_ready` 与 `automatic_surrender_ready` 均保持 false，不得因单域 fixture GREEN 广告投降 literal。
+
 ### Readiness 与动作分层
 
 Native 只允许发布 `decision_terms_ready`，不能发布或暗示 `automatic_surrender_ready`。Python 的

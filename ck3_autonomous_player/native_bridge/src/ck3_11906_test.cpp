@@ -554,6 +554,10 @@ Value LoadBytes(const void *source, std::size_t offset) {
   return value;
 }
 
+void FixtureMutateRaiktorPowJailerBetweenSamples() noexcept {
+  Store(g_dead_prison_relation, 0x00, std::int32_t{0x01000002});
+}
+
 void FixtureSetGlobalNumeric(std::size_t index, std::int64_t raw) {
   auto *const entry =
       g_global_variable_entries.data() + index * 0x20;
@@ -8734,11 +8738,144 @@ int main() {
     return Fail("raiktor surrender terms lost the narrow source-bound slice");
   }
 
+  // GEN-034 PoW is an independent production observer. It must publish the
+  // actual primary/first-three-successor pairs (including a proven empty
+  // list), bind the exact Raiktor CB and full War generation, and reject any
+  // participant/succession/jailer drift between its two paused samples.
+  g_targeted_title_succession_ids[0] = kFixtureDeadCharacterId;
+  Store(g_targeted_title, 0x278,
+        static_cast<void *>(g_targeted_title_succession_ids.data()));
+  Store(g_targeted_title, 0x280, std::int32_t{1});
+  Store(g_targeted_title, 0x284, std::int32_t{1});
+  Store(g_dead_character, 0x1A8,
+        static_cast<void *>(g_dead_character_extension.data()));
+  Store(g_dead_character_extension, 0x288,
+        static_cast<void *>(g_dead_prison_relation.data()));
+  Store(g_dead_prison_relation, 0x00, enemy_character_id);
+
+  xar::ck3_11906::RaiktorSurrenderPrisonerReleaseObservation
+      raiktor_pow{};
+  const std::vector<std::int32_t> expected_attacker_candidates{
+      played_character_id, kFixtureDeadCharacterId};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrisonerReleases(
+          bindings, active_war_id, raiktor_pow) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::available ||
+      raiktor_pow.war_id != active_war_id ||
+      raiktor_pow.date_raw != 43'823'104 ||
+      raiktor_pow.active_casus_belli_database_index != 1 ||
+      raiktor_pow.active_casus_belli_key != "raiktor_claim_cb" ||
+      raiktor_pow.primary_attacker_character_id != played_character_id ||
+      raiktor_pow.primary_defender_character_id != enemy_character_id ||
+      raiktor_pow.claimant_character_id != played_character_id ||
+      raiktor_pow.attacker_participant_ids !=
+          std::vector<std::int32_t>{played_character_id} ||
+      raiktor_pow.defender_participant_ids !=
+          std::vector<std::int32_t>{enemy_character_id} ||
+      raiktor_pow.attacker_release_candidate_ids !=
+          expected_attacker_candidates ||
+      raiktor_pow.defender_release_candidate_ids !=
+          std::vector<std::int32_t>{enemy_character_id} ||
+      raiktor_pow.release_pairs.size() != 1 ||
+      raiktor_pow.release_pairs[0].jailer_character_id !=
+          enemy_character_id ||
+      raiktor_pow.release_pairs[0].prisoner_character_id !=
+          kFixtureDeadCharacterId ||
+      raiktor_pow.release_pairs[0].reason !=
+          "opposite_primary_or_first_three_successors" ||
+      !raiktor_pow.full_participant_scan ||
+      !raiktor_pow.primary_and_first_three_successors_scanned ||
+      !raiktor_pow.same_frame_stable || g_submit_called) {
+    return Fail("Raiktor PoW observer lost the exact release pair");
+  }
+
+  Store(g_dead_character_extension, 0x288, static_cast<void *>(nullptr));
+  raiktor_pow = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrisonerReleases(
+          bindings, active_war_id, raiktor_pow) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::available ||
+      !raiktor_pow.release_pairs.empty() ||
+      raiktor_pow.attacker_release_candidate_ids !=
+          expected_attacker_candidates ||
+      !raiktor_pow.full_participant_scan ||
+      !raiktor_pow.primary_and_first_three_successors_scanned ||
+      !raiktor_pow.same_frame_stable) {
+    return Fail("Raiktor PoW observer could not prove an empty release set");
+  }
+
+  Store(g_dead_character_extension, 0x288,
+        static_cast<void *>(g_dead_prison_relation.data()));
+  Store(g_dead_prison_relation, 0x00, enemy_character_id);
+  raiktor_pow = {};
+  if (xar::ck3_11906::
+          ReadRaiktorSurrenderPrisonerReleasesForOfflineReFixture(
+              bindings, active_war_id, raiktor_pow,
+              FixtureMutateRaiktorPowJailerBetweenSamples) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::unavailable ||
+      raiktor_pow !=
+          xar::ck3_11906::
+              RaiktorSurrenderPrisonerReleaseObservation{}) {
+    return Fail("Raiktor PoW observer accepted jailer drift");
+  }
+  Store(g_dead_prison_relation, 0x00, enemy_character_id);
+
+  Store(g_targeted_title, 0x284, std::int32_t{2});
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrisonerReleases(
+          bindings, active_war_id, raiktor_pow) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::unavailable ||
+      raiktor_pow !=
+          xar::ck3_11906::
+              RaiktorSurrenderPrisonerReleaseObservation{}) {
+    return Fail("Raiktor PoW observer accepted malformed succession");
+  }
+  Store(g_targeted_title, 0x284, std::int32_t{1});
+
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrisonerReleases(
+          bindings, active_war_id, raiktor_pow) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::requires_paused ||
+      raiktor_pow !=
+          xar::ck3_11906::
+              RaiktorSurrenderPrisonerReleaseObservation{}) {
+    return Fail("Raiktor PoW observer read a running frame");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrisonerReleases(
+          bindings, std::int32_t{0x02000001}, raiktor_pow) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::war_not_found ||
+      raiktor_pow !=
+          xar::ck3_11906::
+              RaiktorSurrenderPrisonerReleaseObservation{}) {
+    return Fail("Raiktor PoW observer accepted a stale War generation");
+  }
+
+  Store(g_targeted_title, 0x278, static_cast<void *>(nullptr));
+  Store(g_targeted_title, 0x280, std::int32_t{0});
+  Store(g_targeted_title, 0x284, std::int32_t{0});
+  Store(g_dead_character, 0x1A8, static_cast<void *>(nullptr));
+
   Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
   Store(g_casus_belli_type_1, 0x28,
         std::size_t{sizeof(g_casus_belli_key_1) - 1});
   Store(g_casus_belli_type_1, 0x30,
         std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  raiktor_pow = {};
+  if (xar::ck3_11906::ReadRaiktorSurrenderPrisonerReleases(
+          bindings, active_war_id, raiktor_pow) !=
+          xar::ck3_11906::
+              ReadRaiktorSurrenderPrisonerReleasesResult::
+                  unsupported_casus_belli ||
+      raiktor_pow !=
+          xar::ck3_11906::
+              RaiktorSurrenderPrisonerReleaseObservation{}) {
+    return Fail("Raiktor PoW observer accepted another CB");
+  }
   const auto claim_calls_before_unsupported = g_character_claim_read_calls;
   if (xar::ck3_11906::ReadWarTerminationTerms(
           bindings, active_war_id, termination_terms) !=

@@ -1544,7 +1544,7 @@ flowchart TD
     S --> G["[pending native] actual gold transfer"]
     S --> F["[pending native] final F / prestige delta"]
     S --> T["[pending native] truce days / expiry"]
-    S --> P["[pending native] actual PoW pairs"]
+    S --> P["[fixture-confirmed native; pending MCP/live] actual PoW pairs"]
     S --> H["[pending native] favor-hook bool"]
     S --> R["[pending native] faction / opinion / feud / Mandala rows"]
     S --> A["[pending native] current war-bound armies lost"]
@@ -1602,7 +1602,7 @@ settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects
 | gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；`ReadPrimaryExitResources` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | 无新 ABI；待专用 reader/fixture/live |
 | F / prestige | `CaptureWarExitPrestigeFactor` 读取 `wrapper+0x18` 的唯一 identifier `82` final row；已有 prestige callback | 发布 `cb_prestige_factor` 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow 或公式不符均 unavailable | 无新 ABI；待专用 materializer/fixture/live |
 | truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致，检查非负天数与 `date_raw+24×days` int32 边界 | 一次 pointer-only Raiktor loaded-root shape probe；不得执行 ContextEffect |
-| PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`、`ReadWarExitPrisonerReleases` | 双方 primary 与前三继承人中实际由对方参与者关押的 generation-safe release pairs；前后重读必须一致 | 无新 ABI；待接入 Raiktor wire/live |
+| PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`；新生产 helper `ReadRaiktorSurrenderPrisonerReleases` | 双方完整 participant 列表、primary 与前三继承人候选列表，以及实际由对方参与者关押的 generation-safe release pairs；两次 paused 同日样本必须逐项相同。完整扫描后的空 pairs 是合法零 | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook` | claimant=attacker 时精确 false；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **reverse gap 1**：闭合 `add_hook` effect vtable、preview callback/collector slot 与 favor-hook type identity；不得套用 interaction-only `0x334C510` |
 | war-bound army | 现有 generation-safe CUnit↔CArmy↔CRegiment backlink、regiment storage 与 native soldier helper | 完整 storage scan 后按 `bound WarID + source=norman_highwaymen + keep=false` 选来源 regiments；发布当前 RegimentID、合并后的 Army/CUnit grouping 与 current soldiers lost | **reverse gap 2**：从 `spawn_army` factory/execute 和 save serializer 闭合持久 origin/war-lifetime 字段 |
 
@@ -1615,6 +1615,15 @@ War-bound 军队不能用 ArmyID、owner 是战争参与者、军队名称或脚
 可能消失，来源 regiment 仍存在；空结果也只有在完整 storage scan 成功后才是合法零。当前 snapshot 的 public ArmyID
 `150995107 / 167772444` 因而不能被直接认作 Raiktor event army。
 
+[fixture-confirmed / pending wire+live] PoW 域现有独立 production 只读 helper，而不是复活已禁用的 broad preview。它只接受
+paused、exact `raiktor_claim_cb`、玩家为 `CWar+0x288` primary attacker 的 full-generation WarID；完整读取双方 participant
+数组，再读取双方 primary title 的前三位继承人，按每个候选 `CCharacter+0x1A8 → extension+0x288 → prison relation+0x00`
+取得 generation-safe jailer。只有 jailer 属于完整 opposite-participant 集合时才发布 pair。输出保留双方 participant/candidate
+列表，因此 `release_pairs=[]` 只有在完整扫描成功后才表示真实零。War/CB/primary/claimant、participant、successor 与 jailer 图在同一
+paused date 双采样一致才发布；fixture 已覆盖一条真实 pair、完整空集、succession malformed、jailer 跨样本漂移、running frame、
+stale full WarID、非 Raiktor CB 与零 command submission。它尚未接 mailbox/JSON/MCP，也没有 paused CK3 artifact，故只关闭
+PoW 原生 core/fixture 缺口，不把六域 `decision_terms_ready` 提前置真。
+
 建议的 native helper 边界如下；名称是施工合同，不表示已经实现：
 
 ```text
@@ -1626,6 +1635,7 @@ MaterializeRaiktorGoldAndFame
 ProbeRaiktorDefeatShape
 ResolveRaiktorDefeatTruceNode
 ReadFavorHookPresence
+ReadRaiktorSurrenderPrisonerReleases
 ReadRaiktorWarBoundRegiments
 ```
 
@@ -1654,10 +1664,12 @@ continue-vs-surrender policy。terms readiness 只证明“条款可用于决策
 
 ### Raiktor 六域 fixture 与一次启动实机矩阵
 
-[static design / pending execution] 离线 fixture 必须先锁定：普通 `claim_cb` 既有 normalized JSON 与 reader 调用路径不变；Raiktor happy
+[partially fixture-confirmed / remaining pending] 离线 fixture 必须最终锁定：普通 `claim_cb` 既有 normalized JSON 与 reader 调用路径不变；Raiktor happy
 path；六域逐项缺失/重复/错 scope/错 generation；F tag/公式/overflow；truce shape/vtable/双读/expiry；PoW succession/jailer；hook
 false/true/type/scope；war-origin/keep/bound-WarID/regiment backlink/merge/full-scan；collector/context ctor/dtor 成对；零 game-object write。
 另加 source contract，证明 Raiktor production path 不引用 hidden-truce projection，且 production-disabled broad reader 仍在 preview 前退出。
+其中 favor-hook、active/postwar war-bound regiment 与本节 PoW native core 已各自 fixture-confirmed；它们仍未组成统一 terms wire，
+gold/F/truce、统一 same-frame reader、Python policy/postcondition 与一次启动 live matrix 继续 pending。
 
 实机只跑一次批量矩阵，复用 CharacterID `29829` / WarID `50331699` 的冻结 checkpoint，MCP-first、英文 HKL、不用 OCR：
 

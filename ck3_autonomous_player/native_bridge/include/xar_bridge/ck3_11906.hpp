@@ -589,6 +589,43 @@ struct FrozenWarBoundRegimentCleanupObservation {
       default;
 };
 
+enum class ReadRaiktorSurrenderPrisonerReleasesResult : std::uint8_t {
+  available = 0,
+  requires_paused = 1,
+  no_played_character = 2,
+  war_not_found = 3,
+  player_not_primary_attacker = 4,
+  unsupported_casus_belli = 5,
+  unavailable = 6,
+};
+
+// Exact, read-only PoW slice for raiktor_claim_cb attacker surrender.  Empty
+// release_pairs is meaningful only after every participant and both primary
+// title succession lists were decoded successfully.  The candidate lists are
+// retained so a consumer can distinguish that proven empty set from an
+// omitted or partial scan.
+struct RaiktorSurrenderPrisonerReleaseObservation {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t active_casus_belli_database_index = -1;
+  std::string active_casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::int32_t claimant_character_id = -1;
+  std::vector<std::int32_t> attacker_participant_ids;
+  std::vector<std::int32_t> defender_participant_ids;
+  std::vector<std::int32_t> attacker_release_candidate_ids;
+  std::vector<std::int32_t> defender_release_candidate_ids;
+  std::vector<game::WarExitPrisonerReleaseSnapshot> release_pairs;
+  bool full_participant_scan = false;
+  bool primary_and_first_three_successors_scanned = false;
+  bool same_frame_stable = false;
+
+  friend bool operator==(
+      const RaiktorSurrenderPrisonerReleaseObservation &,
+      const RaiktorSurrenderPrisonerReleaseObservation &) = default;
+};
+
 // The generic registry hashes the process image once and passes an exact-match
 // decision into the selected version adapter. False returns disabled bindings.
 Bindings BindCurrentProcess(bool executable_matches) noexcept;
@@ -888,6 +925,16 @@ ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationExitTermsSnapshot &output) noexcept;
 
+// Reads the actual PoW pairs that CK3's surrender acceptance path will release
+// for the primary leaders and their first three title successors.  The query
+// is limited to the exact raiktor_claim_cb / played-primary-attacker branch,
+// samples the complete participant/succession/jailer graph twice in one
+// paused date, and never constructs an interaction or executes an effect.
+ReadRaiktorSurrenderPrisonerReleasesResult
+ReadRaiktorSurrenderPrisonerReleases(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderPrisonerReleaseObservation &output) noexcept;
+
 // Exact-build, primary-attacker-owner observation of persistent regiments
 // bound to one full-generation active WarID with keep=false. Each of the seven
 // persistent composition rows is generation-resolved to its current
@@ -928,6 +975,17 @@ bool ReadRaiktorFavorHookPresenceForOfflineReFixture(
     const Bindings &bindings, void *loaded_effect, void *effect_context,
     std::int32_t attacker_character_id,
     std::int32_t claimant_character_id, bool &applies) noexcept;
+
+using RaiktorPrisonerReleaseBetweenSamplesHook = void (*)() noexcept;
+
+// Test seam used only to force a participant, succession, jailer or identity
+// mutation between the two native samples. Production always supplies no
+// hook.
+ReadRaiktorSurrenderPrisonerReleasesResult
+ReadRaiktorSurrenderPrisonerReleasesForOfflineReFixture(
+    const Bindings &bindings, std::int32_t war_id,
+    RaiktorSurrenderPrisonerReleaseObservation &output,
+    RaiktorPrisonerReleaseBetweenSamplesHook between_samples) noexcept;
 
 using WarBoundCleanupBetweenSamplesHook = void (*)() noexcept;
 
