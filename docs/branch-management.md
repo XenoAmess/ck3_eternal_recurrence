@@ -27,6 +27,24 @@
 
 `already-contained`、patch-equivalent 和 superseded 不是活跃状态；它们只能进入 retirement ledger，不能继续开发。
 
+## 共享工作树的 Agent 文件所有权
+
+2026-08-31 的 ZhongGuo #361 施工出现过一次已复现覆盖：一条曾经拥有 Workforce 写权限的旧 Agent 被改派为“只读设计”后，
+仍按旧上下文运行内存中的生成器，把新 Agent 尚未提交的 generator 与 generated files 一并恢复成旧版本。该事故没有进入
+`master`，但造成约 700 行候选改动需要重放。后续在同一工作树并行时执行以下约定：
+
+1. 每组 generator、generated files、tests 和对应 spec 只能有一个 active writer；跨域只读任务不得复用曾经写过该组文件的
+   历史 Agent。
+2. 改派旧 Agent 前先 `interrupt`，确认它已不再运行；若新任务与旧写域相邻，使用全新 Agent 名称，不能只靠提示词中的
+   “只读”覆盖旧上下文。
+3. writer 在大段重构完成、尚未生成前先报告 exact source diff；达到可测试原子边界后立即由根线程精确暂存、提交和推送，
+   不让大量未提交生成源长期暴露在共享树中。
+4. 发现非 owner 写入时立即停止双方，保留 `git status`/diff 证据，指定唯一 writer；随后只从权威 generator 重生全部产物，
+   不能手工拼回 generated files 或假定未跟踪文件仍一致。
+5. 只读设计如需检查同域文件，应在 frozen SHA 或独立只读副本上进行；不得运行生成器、formatter 或会写缓存到产品树的命令。
+
+这条约定解决的是已经发生的共享工作树覆盖，不是要求为每个 Agent 新建 Git 分支；默认仍直接在 `master` 上快速收口。
+
 ## 冻结证据不是开发分支
 
 历史 live source、失败复现、benchmark 或 release checkout 默认使用 detached HEAD。每个新冻结 checkout/clone 根目录默认必须有
