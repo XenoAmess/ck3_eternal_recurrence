@@ -1,4 +1,60 @@
 ﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# ---------------------------------------------------------------------------
+# Current PIP tuple reset.  It runs before every new #015 identity is written
+# and again on route C, so a paused native read sees either all eight identity
+# fields for one case or none of them.  In particular a previous subject
+# response author remains absent until this subject answers the new case.
+# ---------------------------------------------------------------------------
+
+zg361_b2_clear_pip_case_tuple_effect = {
+	remove_variable = zg361_b2_pip_owner
+	remove_variable = zg361_b2_pip_subject
+	remove_variable = zg361_b2_pip_cycle
+	remove_variable = zg361_b2_pip_case
+	remove_variable = zg361_b2_pip_state
+	remove_variable = zg361_b2_pip_task_kind
+	remove_variable = zg361_b2_pip_task_controllable
+	remove_variable = zg361_b2_pip_policy_route
+	remove_variable = zg361_b2_m015_receipt_serial
+	remove_variable = zg361_b2_pip_subject_response
+	remove_variable = zg361_b2_pip_subject_response_case
+	remove_variable = zg361_b2_pip_subject_response_author
+	remove_variable = zg361_b2_pip_goal_revision_used
+	remove_variable = zg361_b2_pip_refusal_receipt
+	remove_variable = zg361_b2_pip_high_pressure
+	remove_variable = zg361_b2_pip_refusal_major_evidence
+	remove_variable = zg361_b2_pip_support_reserved
+	remove_variable = zg361_b2_pip_support_absent
+	remove_variable = zg361_b2_pip_support_hours
+	remove_variable = zg361_b2_pip_support_attention
+	remove_variable = zg361_b2_pip_support_mentor
+	remove_variable = zg361_b2_pip_support_budget_owner
+	remove_variable = zg361_b2_pip_support_budget_allocated
+	remove_variable = zg361_b2_pip_support_budget_spent
+	remove_variable = zg361_b2_m016_receipt_serial
+	remove_variable = zg361_b2_pip_support_released
+	remove_variable = zg361_b2_pip_support_withheld
+	remove_variable = zg361_b2_pip_support_atomic_shortfall
+	remove_variable = zg361_b2_pip_support_budget_unchanged
+	remove_variable = zg361_b2_pip_midpoint_receipt
+	remove_variable = zg361_b2_pip_midpoint_resource_delivery_valid
+	remove_variable = zg361_b2_pip_midpoint_progress_status
+	remove_variable = zg361_b2_pip_midpoint_progress_red_code
+	remove_variable = zg361_b2_pip_midpoint_state
+	remove_variable = zg361_b2_pip_outcome_code
+	remove_variable = zg361_b2_pip_settlement_receipt
+	remove_variable = zg361_b2_pip_outcome_result_cycle
+	remove_variable = zg361_b2_pip_outcome_result_case
+	remove_variable = zg361_b2_pip_outcome_result_grade
+	remove_variable = zg361_b2_pip_stability_days_observed
+	remove_variable = zg361_b2_pip_independent_review_status
+	remove_variable = zg361_b2_pip_independent_review_red_code
+	remove_variable = zg361_b2_pip_graduation_receipt
+	remove_variable = zg361_b2_pip_failure_receipt
+	remove_variable = zg361_b2_pip_no_support_liability
+}
+
+
 # ZhongGuo 361 B2 — delivery, appeal justice and first PIP product runtime.
 #
 # State is stored on the assessed official.  Every timed event freezes owner,
@@ -404,6 +460,10 @@ zg361_b2_m015_open_pip_effect = {
 				}
 			}
 		}
+		# A terminal earlier case may still have response/support/outcome fields.
+		# Clear the whole case-bound tuple before writing this new identity; the
+		# next response author must remain absent until the subject answers.
+		zg361_b2_clear_pip_case_tuple_effect = yes
 		set_variable = { name = zg361_b2_pip_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_pip_subject value = this }
 		set_variable = { name = zg361_b2_pip_cycle value = var:zg361_b2_case_cycle }
@@ -457,12 +517,9 @@ zg361_b2_m015_open_pip_effect = {
 		}
 		else = {
 			# Route C records only its bounded policy debt; it cannot leave a
-			# provisional PIP identity for PP to mistake for a real case.
-			remove_variable = zg361_b2_pip_owner
-			remove_variable = zg361_b2_pip_subject
-			remove_variable = zg361_b2_pip_cycle
-			remove_variable = zg361_b2_pip_case
-			remove_variable = zg361_b2_pip_state
+			# provisional or stale partial tuple for PP/provider to mistake for
+			# a real case.
+			zg361_b2_clear_pip_case_tuple_effect = yes
 		}
 	}
 	else_if = {

@@ -32,6 +32,59 @@ WIRED_IDS = CORE_IDS
 SEMANTIC_IDS = CORE_IDS
 INTERFACE_IDS = (69,)
 
+# One subject can pass through more than one terminal PIP over a long game.
+# These fields describe exactly one current PIP case and therefore must never
+# leak from a completed/refused case into the next one.  Prospective
+# ``pip_performance_evidence_*`` is deliberately excluded: it is a separately
+# conserved next-cycle receipt and has its own consumer.
+PIP_CASE_TUPLE_FIELDS = (
+    "zg361_b2_pip_owner",
+    "zg361_b2_pip_subject",
+    "zg361_b2_pip_cycle",
+    "zg361_b2_pip_case",
+    "zg361_b2_pip_state",
+    "zg361_b2_pip_task_kind",
+    "zg361_b2_pip_task_controllable",
+    "zg361_b2_pip_policy_route",
+    "zg361_b2_m015_receipt_serial",
+    "zg361_b2_pip_subject_response",
+    "zg361_b2_pip_subject_response_case",
+    "zg361_b2_pip_subject_response_author",
+    "zg361_b2_pip_goal_revision_used",
+    "zg361_b2_pip_refusal_receipt",
+    "zg361_b2_pip_high_pressure",
+    "zg361_b2_pip_refusal_major_evidence",
+    "zg361_b2_pip_support_reserved",
+    "zg361_b2_pip_support_absent",
+    "zg361_b2_pip_support_hours",
+    "zg361_b2_pip_support_attention",
+    "zg361_b2_pip_support_mentor",
+    "zg361_b2_pip_support_budget_owner",
+    "zg361_b2_pip_support_budget_allocated",
+    "zg361_b2_pip_support_budget_spent",
+    "zg361_b2_m016_receipt_serial",
+    "zg361_b2_pip_support_released",
+    "zg361_b2_pip_support_withheld",
+    "zg361_b2_pip_support_atomic_shortfall",
+    "zg361_b2_pip_support_budget_unchanged",
+    "zg361_b2_pip_midpoint_receipt",
+    "zg361_b2_pip_midpoint_resource_delivery_valid",
+    "zg361_b2_pip_midpoint_progress_status",
+    "zg361_b2_pip_midpoint_progress_red_code",
+    "zg361_b2_pip_midpoint_state",
+    "zg361_b2_pip_outcome_code",
+    "zg361_b2_pip_settlement_receipt",
+    "zg361_b2_pip_outcome_result_cycle",
+    "zg361_b2_pip_outcome_result_case",
+    "zg361_b2_pip_outcome_result_grade",
+    "zg361_b2_pip_stability_days_observed",
+    "zg361_b2_pip_independent_review_status",
+    "zg361_b2_pip_independent_review_red_code",
+    "zg361_b2_pip_graduation_receipt",
+    "zg361_b2_pip_failure_receipt",
+    "zg361_b2_pip_no_support_liability",
+)
+
 
 def generated(text: str) -> bytes:
     return BOM + (HEADER + text.strip() + "\n").encode("utf-8")
@@ -54,6 +107,25 @@ def validate_wired_scope() -> None:
         raise ValueError("B2 semantic ownership must remain the nineteen native IDs")
     if set(SEMANTIC_IDS) & set(DELEGATED_IDS):
         raise ValueError("B2 must not duplicate feedback/PIP delegated IDs")
+
+
+def render_pip_case_tuple_reset() -> str:
+    """Render the single reset owner for one case-bound PIP projection."""
+
+    removals = "".join(
+        f"\tremove_variable = {field}\n" for field in PIP_CASE_TUPLE_FIELDS
+    )
+    return f'''# ---------------------------------------------------------------------------
+# Current PIP tuple reset.  It runs before every new #015 identity is written
+# and again on route C, so a paused native read sees either all eight identity
+# fields for one case or none of them.  In particular a previous subject
+# response author remains absent until this subject answers the new case.
+# ---------------------------------------------------------------------------
+
+zg361_b2_clear_pip_case_tuple_effect = {{
+{removals}}}
+
+'''
 
 
 def render_policy_object_kernel() -> str:
@@ -362,7 +434,7 @@ zg361_b2_m078_apply_resolved_sample_effect = {
 
 
 def render_effects() -> bytes:
-    return generated(r'''
+    return generated(render_pip_case_tuple_reset() + r'''
 # ZhongGuo 361 B2 — delivery, appeal justice and first PIP product runtime.
 #
 # State is stored on the assessed official.  Every timed event freezes owner,
@@ -768,6 +840,10 @@ zg361_b2_m015_open_pip_effect = {
 				}
 			}
 		}
+		# A terminal earlier case may still have response/support/outcome fields.
+		# Clear the whole case-bound tuple before writing this new identity; the
+		# next response author must remain absent until the subject answers.
+		zg361_b2_clear_pip_case_tuple_effect = yes
 		set_variable = { name = zg361_b2_pip_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_pip_subject value = this }
 		set_variable = { name = zg361_b2_pip_cycle value = var:zg361_b2_case_cycle }
@@ -821,12 +897,9 @@ zg361_b2_m015_open_pip_effect = {
 		}
 		else = {
 			# Route C records only its bounded policy debt; it cannot leave a
-			# provisional PIP identity for PP to mistake for a real case.
-			remove_variable = zg361_b2_pip_owner
-			remove_variable = zg361_b2_pip_subject
-			remove_variable = zg361_b2_pip_cycle
-			remove_variable = zg361_b2_pip_case
-			remove_variable = zg361_b2_pip_state
+			# provisional or stale partial tuple for PP/provider to mistake for
+			# a real case.
+			zg361_b2_clear_pip_case_tuple_effect = yes
 		}
 	}
 	else_if = {

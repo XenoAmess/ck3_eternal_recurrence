@@ -133,6 +133,10 @@ PREPARED
 
 ### PIP
 
+- 每次 #015 新建 PIP 前，必须一次性清空上一案的身份、本人回应、支持、中检和结果字段，再写入新案身份；其中
+  `zg361_b2_pip_subject_response_author` 必须保持不存在，直到被考核者本人接受、协商或拒绝。route C 只保留政策债，必须再次清空整组
+  PIP 字段，禁止让 native provider 读到八字段残缺的幽灵案卷。独立守恒的 next-cycle performance evidence 不属于该清理集合。
+
 ```text
 TRIAGED → EVIDENCE_MET → ACK_PENDING → EXECUTING → MIDPOINT
                                                     ├─ 达成关键里程碑、稳定期与独立复核 → GRADUATED

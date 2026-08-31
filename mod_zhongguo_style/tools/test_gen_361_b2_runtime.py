@@ -16,6 +16,7 @@ from gen_361_b2_runtime import (
     DELEGATED_IDS,
     INTERFACE_IDS,
     MOD_ROOT,
+    PIP_CASE_TUPLE_FIELDS,
     SEMANTIC_IDS,
     WIRED_IDS,
     outputs,
@@ -909,8 +910,9 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertNotIn("zg361_result_grade_reason = 5", pip)
         self.assertIn("limit = { is_ai = yes }", pip)
         self.assertIn("zg361_b2_accept_pip_effect = yes", pip)
-        for suffix in ("owner", "subject", "cycle", "case", "state"):
-            self.assertIn(f"remove_variable = zg361_b2_pip_{suffix}", pip)
+        self.assertEqual(
+            pip.count("zg361_b2_clear_pip_case_tuple_effect = yes"), 2
+        )
         self.assertIn("Route C records only its bounded policy debt", pip)
         phase1_settlement = top_level_block(
             self.core, "zg361_settle_delivered_325_effect"
@@ -954,6 +956,135 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "zg361_b2_consume_pip_performance_evidence_effect = yes",
             top_level_block(self.core, "zg361_compute_kpi_effect"),
         )
+
+    def test_second_pip_resets_author_then_accepts_negotiates_or_refuses(self) -> None:
+        reset = top_level_block(
+            self.effects, "zg361_b2_clear_pip_case_tuple_effect"
+        )
+        pip = top_level_block(self.effects, "zg361_b2_m015_open_pip_effect")
+        for field in PIP_CASE_TUPLE_FIELDS:
+            with self.subTest(reset_field=field):
+                self.assertEqual(
+                    len(
+                        re.findall(
+                            rf"(?m)^\s*remove_variable\s*=\s*{re.escape(field)}\s*$",
+                            reset,
+                        )
+                    ),
+                    1,
+                )
+        self.assertEqual(
+            len(re.findall(r"(?m)^\s*remove_variable\s*=", reset)),
+            len(PIP_CASE_TUPLE_FIELDS),
+        )
+        self.assertIn(
+            "remove_variable = zg361_b2_pip_subject_response_author", reset
+        )
+        self.assertNotIn("pip_performance_evidence", reset)
+
+        # The reset must run before the replacement identity and before its
+        # pending-response zeroes are written.  Therefore a terminal first PIP
+        # cannot make the provider see an author on the second pending PIP.
+        reset_call = pip.index("zg361_b2_clear_pip_case_tuple_effect = yes")
+        owner_write = pip.index(
+            "zg361_b2_pip_owner value = var:zg361_b2_case_owner"
+        )
+        pending_response = pip.index(
+            "zg361_b2_pip_subject_response value = 0"
+        )
+        self.assertLess(reset_call, owner_write)
+        self.assertLess(owner_write, pending_response)
+        self.assertNotIn(
+            "zg361_b2_pip_subject_response_author value",
+            pip[reset_call:pending_response],
+        )
+
+        stale_first_case = {field: 99 for field in PIP_CASE_TUPLE_FIELDS}
+        second_case = dict(stale_first_case)
+        for field in PIP_CASE_TUPLE_FIELDS:
+            second_case.pop(field, None)
+        second_case.update(
+            {
+                "zg361_b2_pip_case": 100,
+                "zg361_b2_pip_state": 1,
+                "zg361_b2_pip_subject_response": 0,
+                "zg361_b2_pip_subject_response_case": 0,
+                "zg361_b2_pip_goal_revision_used": 0,
+                "zg361_b2_pip_refusal_receipt": 0,
+            }
+        )
+        self.assertNotIn(
+            "zg361_b2_pip_subject_response_author", second_case
+        )
+
+        for effect_name, response_code, terminal_state in (
+            ("zg361_b2_accept_pip_effect", 1, 2),
+            ("zg361_b2_negotiate_pip_effect", 2, 2),
+            ("zg361_b2_refuse_pip_effect", 3, 5),
+        ):
+            action = top_level_block(self.effects, effect_name)
+            with self.subTest(action=effect_name):
+                self.assertIn("var:zg361_b2_pip_subject_response = 0", action)
+                self.assertIn(
+                    f"zg361_b2_pip_subject_response value = {response_code}",
+                    action,
+                )
+                self.assertIn(
+                    "zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case",
+                    action,
+                )
+                self.assertIn(
+                    "zg361_b2_pip_subject_response_author value = this",
+                    action,
+                )
+                self.assertIn(
+                    f"zg361_b2_pip_state value = {terminal_state}", action
+                )
+                projected = dict(second_case)
+                if (
+                    projected["zg361_b2_pip_state"] == 1
+                    and projected["zg361_b2_pip_subject_response"] == 0
+                    and "zg361_b2_pip_subject_response_author" not in projected
+                ):
+                    projected["zg361_b2_pip_subject_response"] = response_code
+                    projected["zg361_b2_pip_subject_response_case"] = projected[
+                        "zg361_b2_pip_case"
+                    ]
+                    projected["zg361_b2_pip_subject_response_author"] = "subject"
+                    projected["zg361_b2_pip_state"] = terminal_state
+                self.assertEqual(
+                    projected["zg361_b2_pip_subject_response"], response_code
+                )
+                self.assertEqual(
+                    projected["zg361_b2_pip_subject_response_case"], 100
+                )
+                self.assertEqual(
+                    projected["zg361_b2_pip_subject_response_author"], "subject"
+                )
+
+    def test_route_c_removes_the_complete_pip_tuple(self) -> None:
+        pip = top_level_block(self.effects, "zg361_b2_m015_open_pip_effect")
+        reset = top_level_block(
+            self.effects, "zg361_b2_clear_pip_case_tuple_effect"
+        )
+        route_c = pip[pip.index("Route C records only its bounded policy debt") :]
+        self.assertIn("zg361_b2_clear_pip_case_tuple_effect = yes", route_c)
+        for field in (
+            "zg361_b2_pip_owner",
+            "zg361_b2_pip_subject",
+            "zg361_b2_pip_cycle",
+            "zg361_b2_pip_case",
+            "zg361_b2_pip_state",
+            "zg361_b2_pip_task_kind",
+            "zg361_b2_pip_task_controllable",
+            "zg361_b2_pip_policy_route",
+            "zg361_b2_pip_subject_response_author",
+            "zg361_b2_pip_support_reserved",
+            "zg361_b2_pip_settlement_receipt",
+            "zg361_b2_pip_outcome_code",
+        ):
+            with self.subTest(route_c_field=field):
+                self.assertIn(f"remove_variable = {field}", reset)
 
     def test_pip_evidence_uses_prospective_cycle_and_is_consumed_once(self) -> None:
         producer = top_level_block(
