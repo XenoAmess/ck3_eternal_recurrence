@@ -1,0 +1,6 @@
+﻿l_simp_chinese:
+ zg361workforceattributionfact.1.title:0 "请最终拍板者签署面试责任分配"
+ zg361workforceattributionfact.1.desc:0 "Offer 已冻结，三张面试票也都还实名挂着。请决定后续录用质量回写由谁承担主责：[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName]、[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName]，或[scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]。你的签字会同时绑定三份证据回执，并把整整一万个基点分完；这口锅不能平均到小数点后。"
+ zg361workforceattributionfact.1.option_1:0 "第一席主责：60% / 20% / 20%"
+ zg361workforceattributionfact.1.option_2:0 "第二席主责：20% / 60% / 20%"
+ zg361workforceattributionfact.1.option_3:0 "第三席主责：20% / 20% / 60%"

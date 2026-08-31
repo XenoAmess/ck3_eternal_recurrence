@@ -1,0 +1,6 @@
+﻿l_polish:
+ zg361workforceattributionfact.1.title:0 "Sign the Interview Accountability Split"
+ zg361workforceattributionfact.1.desc:0 "The offer is frozen and the three interview ballots still have names attached. Choose which interviewer owns the lead share of the later quality writeback: [scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName], [scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName], or [scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]. Your signature binds all three evidence receipts and exactly 10,000 basis points."
+ zg361workforceattributionfact.1.option_1:0 "First interviewer leads: 60% / 20% / 20%"
+ zg361workforceattributionfact.1.option_2:0 "Second interviewer leads: 20% / 60% / 20%"
+ zg361workforceattributionfact.1.option_3:0 "Third interviewer leads: 20% / 20% / 60%"

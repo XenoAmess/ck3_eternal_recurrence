@@ -1,0 +1,126 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_attribution_fact.py
+# readiness: ck3-script-static-ready-not-live
+
+namespace = zg361workforceattributionfact
+
+zg361workforceattributionfact.1 = {
+    type = character_event
+    theme = vassal
+    title = zg361workforceattributionfact.1.title
+    desc = zg361workforceattributionfact.1.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_workforce_attribution_fact_subject_scope
+        exists = scope:zg361_workforce_attribution_fact_approver_scope
+        exists = scope:zg361_workforce_attribution_fact_interviewer_1_scope
+        exists = scope:zg361_workforce_attribution_fact_interviewer_2_scope
+        exists = scope:zg361_workforce_attribution_fact_interviewer_3_scope
+        this = scope:zg361_workforce_attribution_fact_approver_scope
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_workforce_attribution_fact_subject_scope = {
+            has_variable = zg361_workforce_attribution_fact_owner
+            has_variable = zg361_workforce_attribution_fact_subject
+            has_variable = zg361_workforce_attribution_fact_cycle
+            has_variable = zg361_workforce_attribution_fact_case
+            has_variable = zg361_workforce_attribution_fact_m267_object_id
+            has_variable = zg361_workforce_attribution_fact_m272_object_id
+            has_variable = zg361_workforce_attribution_fact_m274_object_id
+            has_variable = zg361_workforce_attribution_fact_appointment_receipt_id
+            has_variable = zg361_workforce_attribution_fact_appointment_receipt_hash
+            has_variable = zg361_workforce_attribution_fact_signature_pending
+            var:zg361_workforce_attribution_fact_signature_pending = 1
+            var:zg361_workforce_attribution_fact_state = 1
+            var:zg361_workforce_attribution_fact_owner = root
+            var:zg361_workforce_attribution_fact_subject = this
+            var:zg361_workforce_attribution_fact_final_approver = root
+            trigger_if = { limit = { has_variable = zg361_workforce_attribution_fact_signature_committed } var:zg361_workforce_attribution_fact_signature_committed = 0 }
+            trigger_else = { always = yes }
+            var:zg361_workforce_attribution_fact_interviewer_1 = scope:zg361_workforce_attribution_fact_interviewer_1_scope
+            var:zg361_workforce_attribution_fact_interviewer_2 = scope:zg361_workforce_attribution_fact_interviewer_2_scope
+            var:zg361_workforce_attribution_fact_interviewer_3 = scope:zg361_workforce_attribution_fact_interviewer_3_scope
+        }
+    }
+
+    option = {
+        name = zg361workforceattributionfact.1.option_1
+        hidden_effect = {
+            scope:zg361_workforce_attribution_fact_subject_scope = {
+                zg361_workforce_attribution_fact_sign_effect = {
+                    SIGNER = root POLICY = 1
+                    LEAD = scope:zg361_workforce_attribution_fact_interviewer_1_scope
+                    BPS_1 = 6000 BPS_2 = 2000 BPS_3 = 2000
+                    SIGNATURE_MODE = 1 TIE_RULE = 0
+                }
+            }
+        }
+    }
+
+    option = {
+        name = zg361workforceattributionfact.1.option_2
+        hidden_effect = {
+            scope:zg361_workforce_attribution_fact_subject_scope = {
+                zg361_workforce_attribution_fact_sign_effect = {
+                    SIGNER = root POLICY = 2
+                    LEAD = scope:zg361_workforce_attribution_fact_interviewer_2_scope
+                    BPS_1 = 2000 BPS_2 = 6000 BPS_3 = 2000
+                    SIGNATURE_MODE = 1 TIE_RULE = 0
+                }
+            }
+        }
+    }
+
+    option = {
+        name = zg361workforceattributionfact.1.option_3
+        hidden_effect = {
+            scope:zg361_workforce_attribution_fact_subject_scope = {
+                zg361_workforce_attribution_fact_sign_effect = {
+                    SIGNER = root POLICY = 3
+                    LEAD = scope:zg361_workforce_attribution_fact_interviewer_3_scope
+                    BPS_1 = 2000 BPS_2 = 2000 BPS_3 = 6000
+                    SIGNATURE_MODE = 1 TIE_RULE = 0
+                }
+            }
+        }
+    }
+
+}
+
+# Both player and AI approvers are dispatched from a later carrier
+# event, so every variable frozen by the arm effect is from a prior
+# frame.  The carrier is scheduled exactly once by a successful arm.
+zg361workforceattributionfact.2 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_attribution_fact_signature_pending
+        has_variable = zg361_workforce_attribution_fact_state
+        has_variable = zg361_workforce_attribution_fact_subject
+        var:zg361_workforce_attribution_fact_signature_pending = 1
+        var:zg361_workforce_attribution_fact_state = 1
+        var:zg361_workforce_attribution_fact_subject = this
+        trigger_if = { limit = { has_variable = zg361_workforce_attribution_fact_signature_committed } var:zg361_workforce_attribution_fact_signature_committed = 0 }
+        trigger_else = { always = yes }
+    }
+    immediate = {
+        set_variable = { name = zg361_workforce_attribution_fact_signature_dispatch_issued value = 1 }
+        zg361_workforce_attribution_fact_dispatch_signature_effect = yes
+    }
+}
+
+# Cross-package ACK carrier.  The probation producer ran in the prior
+# frame; only this event may verify its frozen read-side tuple.
+zg361workforceattributionfact.3 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_attribution_fact_dispatch_committed
+        has_variable = zg361_workforce_attribution_fact_dispatch_pending
+        has_variable = zg361_workforce_attribution_fact_consumed
+        has_variable = zg361_workforce_attribution_fact_subject
+        var:zg361_workforce_attribution_fact_dispatch_committed = 1
+        var:zg361_workforce_attribution_fact_dispatch_pending = 1
+        var:zg361_workforce_attribution_fact_consumed = 0
+        var:zg361_workforce_attribution_fact_subject = this
+    }
+    immediate = { zg361_workforce_attribution_fact_ack_probation_publish_effect = yes }
+}
