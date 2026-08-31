@@ -1,11 +1,11 @@
-# CK3 1.19.0.6 婚姻与联盟：入站安排婚姻回复树
+# CK3 1.19.0.6 婚姻、联盟与战争召集：入站回复树
 
 ## 范围与结论
 
-本文只闭合 exact-build CK3 `1.19.0.6` 中 stock
-`arrange_marriage_interaction` 的一条真实 **AI → 本地玩家** 入站请求。它不是完整 P6 婚姻/联盟策略，
-也不覆盖主动择偶、多候选联合评分、继承规划、遗传、离婚、通用 faith/doctrine 或其它
-`special_interaction`。
+本文按一代长跑中真实出现的 blocker，分别闭合 exact-build CK3 `1.19.0.6` 的 stock
+`arrange_marriage_interaction`、`negotiate_alliance_interaction` 与 `call_ally_interaction` 入站回复树。
+它不是完整 P6 婚姻/联盟/多战争策略，也不覆盖主动择偶、多候选联合评分、继承规划、遗传、离婚、通用
+faith/doctrine 或其它 `special_interaction`。下列开篇结论先对应 marriage 分支；两个 G2 分支各自在后文维护独立证据边界。
 
 - [static-confirmed] `arrange_marriage_interaction` 是定义绑定的 marriage special；它的
   `special_data_present=true` 不表示 war special，也不需要按战争 payload 解码。
@@ -338,3 +338,175 @@ production-live loop；由于 wire 仍无 `is_allied_to`，不升级联盟关系
 
 下一步质量升级是在真实 gameplay 再次证明联盟关系观测会改变决策时，新增最小只读 `is_allied_to(actor, recipient)` MCP；
 在那以前只诚实声称“accept reply lifecycle GREEN”，不声称完整联盟语义已观测。
+
+## G2：入站战争召集的 exact blocker
+
+本节只处理同一第二角色长跑在 turn 79 首次真实出现的 stock `call_ally_interaction`。它是
+**war-bound normal recipient pending**：不是上文的联盟建立提议，也不是三个 war-exit special，更不能加入
+`ordinary-reject-unique-accept-v1` 的非战争 allowlist。当前只完成原生 definition、AI 发送/接受树、动态代价和拒绝后果的
+exact-build 账本，并提出最小 counter-policy；尚未实现 reply，也没有重新启动 CK3。
+
+### 冻结来源与 production RED
+
+| 证据 | SHA-256 / 值 | 用途 |
+|---|---|---|
+| `Crusader Kings III/launcher/launcher-settings.json:6-7` | `1.19.0.6 (Scribe)` | 安装包版本 |
+| `Crusader Kings III/binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | exact-build pending/reply ABI |
+| `game/common/character_interactions/_character_interactions.info` | `F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10` | Can Send 顺序、compiled `cost` 语义与 callback 边界 |
+| `game/common/character_interactions/00_alliance.txt` | `919ED408EC735F64ED972E23A376CD618A2E207A0EA273F973C5B1F89440E39D` | `call_ally_interaction:1-1104` 完整 definition |
+| `game/common/scripted_triggers/00_war_and_peace_triggers.txt` | `4E3D7DB2931B313F132D5228BABDBB60A67DD28E9898A337BE78B2FC1DEF862E` | 可召性与跨战争冲突门 |
+| `game/common/scripted_effects/00_interaction_effects.txt` | `7B426465FCED71A6D6AA96B34C8924B91990D0BE144FE4BFAA57681BB7FA6EA5` | 加入目标战争与接受后动态付款 |
+| EXE `war` generic resolver | `0x201CF10..0x201CF7F`, `3AE7200E0E195A6D1A511FF2670F1F8AC5DC507D69F8D96895E5FCB8C84131FA` | type-16 token → generation-safe active `CWar` |
+| production `report.json` | `142AD4E357733C575453181A7B06AC044B28A299CAFCD82F388F59D0DD11E50C` | 79-turn run、当前战争与 cleanup |
+| production `first-blocker.json` | `2083D51CCEC9E0BF1CE0F16ACD854C8BA616E7C6A91B05607A270AFD7FFD2E50` | turn 79 exact planner blocker |
+| production `native-session/driver-state.json` | `BDC7353DFA9BF40D2B5CB564901579FBDD5818740E5ABBA53460D65066AE6FE3` | application-main typed pending query 与 raw target token |
+
+artifact：
+
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-altseed-after-embarked-fix-20260831-0937\runs\20260831T015622Z-one-generation-a809dec5\`
+
+[production blocker live] run 从 `date_raw=53218176` 推进到 `53223096`，79 个 attempted turns 中 78 个成功，
+即先推进了 205 个游戏日；随后 exact pending `-1811939304` 在 paused `native:326 / public revision 327` 阻断 planner。
+actor `30287` 向本地玩家 recipient `29829` 发出 `call_ally_interaction`；无 secondary role、无 intermediary，age/expiry
+为 `0/60`，definition deterministic key hash 为 `936306703`，zero send options，normal recipient channel。
+accept/reject/block 原生合法，ACK 非法；planner 没有提交 reply，cleanup 全绿。玩家同时正在 WarID `50331699` 中作为
+primary attacker 作战，warscore `-48`。
+
+同帧 target 明确为 `type_key=war`，raw token 为 `10000000000000005200000400000000`；但
+`typed_identity_status=unavailable / generic_scope_payload_identity_not_closed`。`special_data_present=false`、
+`special_war_binding_not_applicable` 只说明它不是 war-exit special；不能据此把 target 绑定到玩家唯一 active WarID，
+也不能让 Python 把 raw token 中某个 dword 猜成 WarID。live structured send-time costs 的十个资源槽均为零，但 effect preview
+仍 unavailable。
+
+### 原生 War target 与 Can Send 树
+
+- [static-confirmed] definition `00_alliance.txt:1-12` 绑定 `interface = call_ally`、
+  `special_interaction = call_ally_interaction`，收信时 popup 并暂停。完整 block 没有 `target_type`、`cost`、`send_option`、
+  `on_send` 或 `on_blocked_effect`；zero option 与 zero compiled/send-time cost 因而与 live query 一致。
+- [static-confirmed] `:14-74` 要求 actor 已在战争中，并把 recipient 限定为 ally、可参战 diarch、带强制参战契约的
+  liege/suzerain/tributary 等路径；如果 house-member call 有效，则隐藏普通 call-ally。这个 special tag 还被 house-member、
+  dynasty-member 与两个 FP2 definition 复用，所以 domain classification 必须同时匹配 canonical definition key，不能只认 tag。
+- [static-confirmed] `:76-134` 与 `:198-265` 要求 target 存在、actor 是该战争 war leader、recipient 尚未参加 target war，
+  并排除 recipient 与目标战争任一侧已经存在的敌对/同侧战争冲突。GUI
+  `game/gui/interaction_call_ally.gui:84-123,152-158` 又以 `GetWarItems -> GetWar -> OnClick -> Send` 选择 War 对象；
+  因而脚本/GUI 已证明 target 的业务类型是被选战争。
+- [static-confirmed] exact-build type-16 `war` generic value 注册器 `0x3FEB30..0x3FEBED`（SHA-256
+  `1FC898DABB3A0BF0AC17D2A6CFB8BF5119C0908F4F550D25217165515825AE74`）安装 resolver
+  `0x201CF10..0x201CF7F`。resolver 要求 token type 为 `16`，读取 token `+0x08` 的完整 signed-int32 WarID，
+  以 low-24 slot resolve 后再核对 `CWar+0x08` 的完整 generation-bearing ID 与 active predicate。于是 raw frame 的候选值可以
+  冻结为 `0x04000052 / 67108946`，但 production query 尚未调用 resolver 并发布 typed result；planner 仍不得消费 raw hex。
+- [static-confirmed] `00_war_and_peace_triggers.txt:59-164,166-221,613-663` 分别闭合跨战争 participant 冲突、
+  普通 vassal/liege 禁召及契约例外、liege/vassal 已在敌侧的排除门。Great Holy War 的 faith 条件只作为当前 war legality
+  的最小 opaque 输入保留；本节不借此扩展通用宗教系统。
+- [static-confirmed] `_character_interactions.info:676-692` 证明 special interaction 还会在脚本 shown/valid 前后插入两道
+  硬编码检查。它们的 call-ally 专用 C++ 语义仍 unknown，所以本文只消费已经通过 complete Can Send 的 live pending，
+  不把脚本树冒充完整 legality。
+
+定义的 `:198-211` 明确要求 recipient 不在 target war。因此在这个 age-0 paused frame 中，该 call 的 target 不是玩家已经参加的
+WarID `50331699`；接受会尝试把玩家加入另一场战争。这个“另一场战争”结论不依赖猜 raw WarID，但具体 target identity、CB、
+actor side、战争攻防性质与 religious flag 仍未观测。
+
+### 原生 AI 发送、接受与 reply
+
+- [static-confirmed] `auto_accept`（`:487-528`）只覆盖 AI recipient，且 actor/recipient 是配偶或互为近亲 player heir；
+  当前 human recipient 的 live `auto_accept=false`，所以它走 normal pending reply。call-ally 的 `on_auto_accept:267-299`
+  自身没有调用 scripted join effect；auto-accept、hard-coded special side effect 与 callback 的 exact 顺序仍 unknown，
+  不能从 normal accept 路径外推。
+- [static-confirmed] recipient AI 的 `ai_accept`（`:530-1021`）base 为 `20`。六项近似硬拒绝 modifier 各 `-1000`：conqueror、
+  较高阶 recipient 在纯 AI 战争中保留建设资金、无意义 border raid、对 heir/spouse、obedient recipient 对其 suzerain。
+  其余输入包括完整 opinion、非负 honor、防御战 `+50`、语言/court language `+5/+10/+30`、serious diarch `+50`、
+  zeal，以及盟友/同信仰、friend/lover/soulmate、tributary、hostage、house confederation、Mandala guarantee 与 struggle 修正。
+  generic outer answer 和最终 status 仍必须走原生 evaluator；不能在 Python 把这些项手抄成 comparator。
+- [static-confirmed] actor AI 的 `ai_will_do`（`:1023-1103`）是另一棵树：base `100`；对已经在防御战中的 human 发
+  offensive call、human 负债、目标敌方是 human heir/spouse、recent-ally/war-days 条件以及 offensive target 同时是
+  recipient ally 时乘零；Mandala guarantee 路径 `+500`。作者注释还明确 score 大于零后仍受
+  `DESIRED_WAR_SIDE_STRENGTH` veto。当前 proposal 的存在只证明发送树已通过，不提供 recipient 玩家应接受的效用结论。
+- [live-confirmed] 对当前 human pending，已有 generic exact-build query 足以冻结 full ID、stable key/hash、roles、route、deadline
+  与四路 native legality；accept/reject command 也都可达。缺失的是 War target identity 和 action-specific semantic
+  postcondition，而不是按钮可点性。
+
+```mermaid
+flowchart TD
+    A["[static-confirmed] AI actor 枚举自己作为 leader 的 War target"] --> C{"[static-confirmed] complete Can Send + special checks?"}
+    C -->|否| N["[static-confirmed] 不发送"]
+    C -->|是| W{"[static-confirmed] ai_will_do > 0 且未被 desired-strength veto?"}
+    W -->|否| N
+    W -->|是，AI recipient| R{"[static-confirmed] auto_accept?"}
+    R -->|否| E{"[static-confirmed] outer ai_accept?"}
+    E -->|拒绝| N
+    E -->|接受| J["[static-confirmed] normal accept 加入 actor 一侧"]
+    R -. "hard-coded special/callback 顺序未闭合" .-> H["[unknown] auto-accept call side effect"]
+    W -->|是，human recipient| P["[live-confirmed] normal pending -1811939304"]
+    P --> T["[live-confirmed] target type_key=war / zero option / zero send-time cost"]
+    T -. "resolver 已静态闭合但 production wire 未接入" .-> U["[unknown] live exact target WarID / actor side / CB / offensive-defensive"]
+    T --> L{"[live-confirmed] same-frame reply legality?"}
+    L -->|accept| J
+    L -->|reject| D["[static-confirmed] 不参战；按 target side 结算拒绝后果"]
+    J -. "当前缺 exact target WarID" .-> Q["[unknown] 加入该 War 的 typed postcondition"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class H,U,Q unknown;
+```
+
+### 接受付款、结果与拒绝后果
+
+[static-confirmed] definition 没有 compiled `cost`；但这不等于回复无代价。normal accept `00_alliance.txt:301-351`
+调用 `00_interaction_effects.txt:3103-3239`：target 仍存在且 recipient 未与目标两侧交战时，先在目标 War 上
+`set_called_to = recipient`，actor 是 attacker 就 `add_attacker`，否则 `add_defender`。接受还会给 actor→recipient
+potential-friend 并触发 accepted letter。关键是前述 join guard 失败时，外层 `on_accept` 仍可能继续写 scope flag、
+potential-friend 和 accepted letter；所以这些信号与 pending 消失都不能代替 participant postcondition。可见脚本没有创建新
+alliance；成功的 call 结果是加入既有 target War。
+
+动态付款只发生在 offensive join，且由 actor 支付，不由收到请求的玩家 recipient 支付：
+
+- Mandala actor 召自己的 tributary 时，按 recipient tier 扣 actor piety：barony/county/duchy/kingdom/empire/hegemony
+  分别为 `100/200/500/750/1500/2500`；
+- 其它非 blood-brother offensive call 按 recipient tier 扣 actor prestige：barony `10`、county `75`、duchy `150`、
+  kingdom `350`、empire `750`；
+- defensive join 没有这段 actor 资源付款。
+
+[static-confirmed] normal decline `00_alliance.txt:353-485` 在 target 仍存在时按 actor 的 target side 分流：
+
+- offensive call：actor 对 recipient 获得 `rejected_call_to_offensive_war`，即 opinion `-20`、10 年衰减；
+  recipient 通常损失 `350` prestige experience（Mandala recipient 例外）；
+- defensive call：actor 对 recipient opinion `-50`、25 年衰减；recipient 通常损失 `750` prestige experience，
+  Mandala recipient 改为 `350` 并降一 piety level；
+- blood-brother 还会额外损失 `500` piety experience、获得 25 年破誓 modifier、解除 blood-brother 并成为 rival；强制参战/保证路径可取消
+  obedience 或结束 tributary；另有 clan-unity 与 house-relation 伤害；最后 target 仍会 `set_called_to`，阻止把同一次拒绝当作
+  可无限重试的中性选择。
+
+数值来自 `game/common/script_values/00_basic_values.txt:997-1031,1118-1150` 与
+`game/common/opinion_modifiers/00_war_opinions.txt:69-80`。当前 target side、recipient government、blood-brother/
+contract/house 状态均未发布，因此本次不能声称实际拒绝代价已量化；live zero structured costs 也不能覆盖这些 reply-time effects。
+
+### 最小 counter-policy 与后置门
+
+[evidence boundary] `opening_smoke.py:591-614,2054-2134` 的历史 `honor_current_life_alliance-v1` 只按中文可见文本识别
+call-to-war，并用 UI 快捷键无条件接受；它只验证弹窗消失、回到 map 且暂停，没有 exact definition、WarID、native legality 或
+participant postcondition。因此它可以说明早期产品倾向，却不能作为当前 typed/native accept policy 的证据。
+
+[counter-policy proposal] 当前 definition 应分类为 `war_call`，绝不加入 ordinary/nonreligious allowlist。为只解除这个已经有
+production artifact 的 blocker，可实现一条 definition-bound `call-ally-busy-reject-v1`，仅在以下条件全部成立时拒绝：
+
+1. exact build、canonical key `call_ally_interaction`、deterministic key hash `936306703`、full pending ID 与 same-frame
+   binding 完全匹配；runtime ordinal 不得跨进程作为身份；
+2. 玩家是 direct local recipient；secondary/intermediary 均为 `-1`；normal channel、非 auto-accept notification；
+3. target present 且 stable `type_key=war`，zero options，`special_data_present=false`；不尝试从 raw 16 bytes 解码 WarID；
+4. 玩家已经至少参加一场仍 active 的战争，且本 call 的 target 由原生 definition 保证不是其中任何一场；这把规则严格限定为
+   “避免在尚不支持 multi-war OODA 时再加入第二战”，不扩成所有 call-ally 一律拒绝；
+5. 先保留现有 100% enforce-demands 优先级；没有该动作后，reject 原生合法且 command 可达，deadline 未到期；
+6. reply 后等待旧 signed full ID 消失，并在下一 paused snapshot 验证玩家 active WarID signature 没有新增 target war；
+   若 pending 未推进或 active wars 意外增加，立即 capability RED，而不是只信 ACK。
+
+该规则明确选择“继续当前 WarID `50331699`、暂不进入第二战”，因此能解除本次 G2 blocker；同时必须记录已知但未量化的
+opinion/fame/contract 代价，并保持 `native_ai_equivalent=false`、`semantic_optimal=false`、
+`interaction_semantic_decision_ready=false`。若玩家当时没有 active war、reject 非法、shape 不匹配，或未来已经具备 multi-war
+策略，就不得复用这条 busy-reject fallback，也不得落入 generic unique-accept。
+
+[observation dependency] 任何 accept 策略的最小前置不是继续猜 raw token，而是把已经静态闭合的
+type-16 `war` resolver 接入 application-main paused query：读取稳定 WarID、绑定 active `CWar`，发布 target active/leader、actor side、
+primary attacker/defender、CB identity、玩家未参战、offensive/defensive、必要的最小 opaque religious-war 标志与当前 reply
+effect preview。accept 后必须在 paused snapshot 看到玩家以 actor 同侧 participant 加入 **该 exact WarID**；否则旧 pending
+消失也不能冒充 call 语义成功。通用 transport 边界见
+[`events-and-interactions.md`](events-and-interactions.md)，完整战争效用输入见
+[`player-war-entry-policy.md`](player-war-entry-policy.md)；这个 decoder/query 是把本节从 blocker-removal 升级为真正
+call-ally utility policy 的替换入口。
