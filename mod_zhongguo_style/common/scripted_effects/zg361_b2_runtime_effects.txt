@@ -860,6 +860,284 @@ zg361_b2_m077_pick_replacement_effect = {
 	}
 }
 
+# #358/#359 export receipts are consequences of their real business consumers.
+# They are not generic policy-choice receipts: C never creates either export,
+# an expired/open appeal cannot mint #358, and an unreturned quota cannot mint
+# #359.  The downstream Workforce adapter only reads these immutable sources.
+zg361_b2_m358_publish_workforce_receipt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b2_case_owner
+			has_variable = zg361_b2_case_subject
+			has_variable = zg361_b2_case_cycle
+			has_variable = zg361_b2_case_serial
+			has_variable = zg361_b2_m358_route
+			has_variable = zg361_b2_m358_state
+			has_variable = zg361_b2_m358_receipt_serial
+			has_variable = zg361_b2_m358_object_owner
+			has_variable = zg361_b2_m358_object_subject
+			has_variable = zg361_b2_m358_object_cycle
+			has_variable = zg361_b2_m358_object_receipt_case
+			has_variable = zg361_b2_m358_object_consumed
+			has_variable = zg361_b2_m358_consumer_receipt_case
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+			has_variable = zg361_result_appeal_outcome
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_case_owner = var:zg361_result_case_owner
+			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+			var:zg361_b2_case_serial = var:zg361_result_case_serial
+			var:zg361_b2_case_serial > 0
+			var:zg361_b2_m358_route != 3
+			var:zg361_b2_m358_state = 3
+			var:zg361_b2_m358_receipt_serial = var:zg361_b2_case_serial
+			var:zg361_b2_m358_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m358_object_subject = this
+			var:zg361_b2_m358_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m358_object_receipt_case = var:zg361_b2_case_serial
+			var:zg361_b2_m358_object_consumed = 1
+			var:zg361_b2_m358_consumer_receipt_case = var:zg361_b2_case_serial
+			OR = {
+				AND = {
+					var:zg361_result_case_state = 4
+					var:zg361_result_appeal_outcome = 2
+				}
+				AND = {
+					has_variable = zg361_result_refund_posted_serial
+					var:zg361_result_case_state = 5
+					var:zg361_result_appeal_outcome = 1
+					var:zg361_result_refund_posted_serial = var:zg361_result_case_serial
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m358_external_receipt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m358_external_receipt_subject value = this }
+		set_variable = { name = zg361_b2_m358_external_receipt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m358_external_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m358_external_receipt_state value = 3 }
+		set_variable = { name = zg361_b2_m358_external_receipt_route value = var:zg361_b2_m358_route }
+		set_variable = { name = zg361_b2_m358_external_appeal_outcome value = var:zg361_result_appeal_outcome }
+		set_variable = { name = zg361_b2_m358_external_receipt_id value = { value = var:zg361_b2_case_serial multiply = 1000 add = 358 } }
+		set_variable = { name = zg361_b2_m358_external_receipt_hash value = { value = var:zg361_b2_case_serial multiply = 10000 add = { value = var:zg361_b2_m358_route multiply = 1000 } add = 358 } }
+	}
+}
+
+zg361_b2_m359_publish_workforce_receipt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b2_case_owner
+			has_variable = zg361_b2_case_subject
+			has_variable = zg361_b2_case_cycle
+			has_variable = zg361_b2_case_serial
+			has_variable = zg361_b2_m359_route
+			has_variable = zg361_b2_m359_state
+			has_variable = zg361_b2_m359_return_route
+			has_variable = zg361_b2_m359_receipt_serial
+			has_variable = zg361_b2_m359_object_owner
+			has_variable = zg361_b2_m359_object_subject
+			has_variable = zg361_b2_m359_object_cycle
+			has_variable = zg361_b2_m359_object_receipt_case
+			has_variable = zg361_b2_m359_object_consumed
+			has_variable = zg361_b2_m359_consumer_receipt_case
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+			has_variable = zg361_result_appeal_outcome
+			has_variable = zg361_result_refund_posted_serial
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_case_owner = var:zg361_result_case_owner
+			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+			var:zg361_b2_case_serial = var:zg361_result_case_serial
+			var:zg361_b2_case_serial > 0
+			var:zg361_result_case_state = 5
+			var:zg361_result_appeal_outcome = 1
+			var:zg361_result_refund_posted_serial = var:zg361_result_case_serial
+			var:zg361_b2_m359_route != 3
+			var:zg361_b2_m359_receipt_serial = var:zg361_b2_case_serial
+			var:zg361_b2_m359_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m359_object_subject = this
+			var:zg361_b2_m359_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m359_object_receipt_case = var:zg361_b2_case_serial
+			var:zg361_b2_m359_object_consumed = 1
+			var:zg361_b2_m359_consumer_receipt_case = var:zg361_b2_case_serial
+			OR = {
+				AND = {
+					has_variable = zg361_b2_m359_reserved_consumed
+					var:zg361_b2_m359_state = 2
+					var:zg361_b2_m359_return_route = 1
+					var:zg361_b2_m359_reserved_consumed = 1
+				}
+				AND = {
+					var:zg361_b2_m359_state = 3
+					var:zg361_b2_m359_return_route = 2
+					has_variable = zg361_b2_m359_redelivery_receipt
+					var:zg361_b2_m359_redelivery_receipt > 0
+				}
+				AND = {
+					has_variable = zg361_b2_m359_debt_added
+					var:zg361_b2_m359_state = 2
+					var:zg361_b2_m359_return_route = 3
+					var:zg361_b2_m359_debt_added = 1
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m359_external_receipt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m359_external_receipt_subject value = this }
+		set_variable = { name = zg361_b2_m359_external_receipt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m359_external_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m359_external_receipt_state value = var:zg361_b2_m359_state }
+		set_variable = { name = zg361_b2_m359_external_receipt_route value = var:zg361_b2_m359_route }
+		set_variable = { name = zg361_b2_m359_external_return_route value = var:zg361_b2_m359_return_route }
+		set_variable = { name = zg361_b2_m359_external_receipt_id value = { value = var:zg361_b2_case_serial multiply = 1000 add = 359 } }
+		set_variable = { name = zg361_b2_m359_external_receipt_hash value = { value = var:zg361_b2_case_serial multiply = 10000 add = { value = var:zg361_b2_m359_return_route multiply = 1000 } add = 359 } }
+	}
+}
+
+# Public source adapter for the central Workforce wait.  It maps three
+# independently completed source objects into the current AL envelope; no
+# caller can supply receipt ids/hashes, and no route-C policy debt qualifies.
+zg361_b2_submit_completed_al_receipts_effect = {
+	set_variable = { name = zg361_b2_workforce_adapter_status value = 5 }
+	remove_variable = zg361_b2_workforce_adapter_blocked_reason
+	if = {
+		limit = {
+			$TICKET_SUBJECT$ = this
+			has_variable = zg361_b2_case_owner
+			has_variable = zg361_b2_case_subject
+			has_variable = zg361_b2_case_cycle
+			has_variable = zg361_b2_case_serial
+			var:zg361_b2_case_owner = $TICKET_OWNER$
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_case_cycle = $TICKET_CYCLE$
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+			has_variable = zg361_result_appeal_outcome
+			has_variable = zg361_result_refund_posted_serial
+			var:zg361_result_case_owner = $TICKET_OWNER$
+			var:zg361_result_cycle_serial = $TICKET_CYCLE$
+			var:zg361_result_case_serial = var:zg361_b2_case_serial
+			var:zg361_result_case_state = 5
+			var:zg361_result_appeal_outcome = 1
+			var:zg361_result_refund_posted_serial = var:zg361_result_case_serial
+			has_variable = zg361_b1_result_adapter_result_owner
+			has_variable = zg361_b1_result_adapter_result_subject
+			has_variable = zg361_b1_result_adapter_result_cycle
+			has_variable = zg361_b1_result_adapter_result_case
+			has_variable = zg361_b1_result_adapter_b1_owner
+			has_variable = zg361_b1_result_adapter_b1_subject
+			has_variable = zg361_b1_result_adapter_b1_cycle
+			has_variable = zg361_b1_result_adapter_b1_case
+			has_variable = zg361_b1_result_adapter_b1_state
+			var:zg361_b1_result_adapter_result_owner = $TICKET_OWNER$
+			var:zg361_b1_result_adapter_result_subject = this
+			var:zg361_b1_result_adapter_result_cycle = $TICKET_CYCLE$
+			var:zg361_b1_result_adapter_result_case = var:zg361_b2_case_serial
+			var:zg361_b1_result_adapter_b1_owner = $TICKET_OWNER$
+			var:zg361_b1_result_adapter_b1_subject = this
+			var:zg361_b1_result_adapter_b1_cycle = $TICKET_CYCLE$
+			var:zg361_b1_result_adapter_b1_state = 8
+			has_variable = zg361_b1_m357_external_receipt_owner
+			has_variable = zg361_b1_m357_external_receipt_subject
+			has_variable = zg361_b1_m357_external_receipt_cycle
+			has_variable = zg361_b1_m357_external_receipt_case
+			has_variable = zg361_b1_m357_external_receipt_state
+			has_variable = zg361_b1_m357_external_result_case
+			has_variable = zg361_b1_m357_external_receipt_id
+			has_variable = zg361_b1_m357_external_receipt_hash
+			var:zg361_b1_m357_external_receipt_owner = $TICKET_OWNER$
+			var:zg361_b1_m357_external_receipt_subject = this
+			var:zg361_b1_m357_external_receipt_cycle = $TICKET_CYCLE$
+			var:zg361_b1_m357_external_receipt_case = var:zg361_b1_result_adapter_b1_case
+			var:zg361_b1_m357_external_receipt_state = 8
+			var:zg361_b1_m357_external_result_case = var:zg361_b2_case_serial
+			var:zg361_b1_m357_external_receipt_id > 0
+			var:zg361_b1_m357_external_receipt_hash > 0
+			has_variable = zg361_b2_m358_external_receipt_owner
+			has_variable = zg361_b2_m358_external_receipt_subject
+			has_variable = zg361_b2_m358_external_receipt_cycle
+			has_variable = zg361_b2_m358_external_receipt_case
+			has_variable = zg361_b2_m358_external_receipt_state
+			has_variable = zg361_b2_m358_external_receipt_route
+			has_variable = zg361_b2_m358_external_receipt_id
+			has_variable = zg361_b2_m358_external_receipt_hash
+			var:zg361_b2_m358_external_receipt_owner = $TICKET_OWNER$
+			var:zg361_b2_m358_external_receipt_subject = this
+			var:zg361_b2_m358_external_receipt_cycle = $TICKET_CYCLE$
+			var:zg361_b2_m358_external_receipt_case = var:zg361_b2_case_serial
+			var:zg361_b2_m358_external_receipt_state = 3
+			var:zg361_b2_m358_external_receipt_route != 3
+			var:zg361_b2_m358_external_receipt_id > 0
+			var:zg361_b2_m358_external_receipt_hash > 0
+			has_variable = zg361_b2_m359_external_receipt_owner
+			has_variable = zg361_b2_m359_external_receipt_subject
+			has_variable = zg361_b2_m359_external_receipt_cycle
+			has_variable = zg361_b2_m359_external_receipt_case
+			has_variable = zg361_b2_m359_external_receipt_state
+			has_variable = zg361_b2_m359_external_receipt_route
+			has_variable = zg361_b2_m359_external_return_route
+			has_variable = zg361_b2_m359_external_receipt_id
+			has_variable = zg361_b2_m359_external_receipt_hash
+			var:zg361_b2_m359_external_receipt_owner = $TICKET_OWNER$
+			var:zg361_b2_m359_external_receipt_subject = this
+			var:zg361_b2_m359_external_receipt_cycle = $TICKET_CYCLE$
+			var:zg361_b2_m359_external_receipt_case = var:zg361_b2_case_serial
+			OR = {
+				var:zg361_b2_m359_external_receipt_state = 2
+				var:zg361_b2_m359_external_receipt_state = 3
+			}
+			var:zg361_b2_m359_external_receipt_route != 3
+			var:zg361_b2_m359_external_receipt_id > 0
+			var:zg361_b2_m359_external_receipt_hash > 0
+			NOT = { var:zg361_b1_m357_external_receipt_id = var:zg361_b2_m358_external_receipt_id }
+			NOT = { var:zg361_b1_m357_external_receipt_id = var:zg361_b2_m359_external_receipt_id }
+			NOT = { var:zg361_b2_m358_external_receipt_id = var:zg361_b2_m359_external_receipt_id }
+			NOT = { var:zg361_b1_m357_external_receipt_hash = var:zg361_b2_m358_external_receipt_hash }
+			NOT = { var:zg361_b1_m357_external_receipt_hash = var:zg361_b2_m359_external_receipt_hash }
+			NOT = { var:zg361_b2_m358_external_receipt_hash = var:zg361_b2_m359_external_receipt_hash }
+		}
+		zg361_we_submit_al_357_359_receipts_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+			M357_OWNER = $TICKET_OWNER$ M357_SUBJECT = $TICKET_SUBJECT$
+			M357_CYCLE = $TICKET_CYCLE$ M357_CASE = $TICKET_CASE$ M357_STATE = 2
+			M357_RECEIPT_ID = var:zg361_b1_m357_external_receipt_id
+			M357_RECEIPT_HASH = var:zg361_b1_m357_external_receipt_hash
+			M358_OWNER = $TICKET_OWNER$ M358_SUBJECT = $TICKET_SUBJECT$
+			M358_CYCLE = $TICKET_CYCLE$ M358_CASE = $TICKET_CASE$ M358_STATE = 3
+			M358_RECEIPT_ID = var:zg361_b2_m358_external_receipt_id
+			M358_RECEIPT_HASH = var:zg361_b2_m358_external_receipt_hash
+			M359_OWNER = $TICKET_OWNER$ M359_SUBJECT = $TICKET_SUBJECT$
+			M359_CYCLE = $TICKET_CYCLE$ M359_CASE = $TICKET_CASE$ M359_STATE = 3
+			M359_RECEIPT_ID = var:zg361_b2_m359_external_receipt_id
+			M359_RECEIPT_HASH = var:zg361_b2_m359_external_receipt_hash
+		}
+		if = {
+			limit = {
+				has_variable = zg361_we_adapter_status
+				var:zg361_we_adapter_status = 1
+			}
+			set_variable = { name = zg361_b2_workforce_adapter_status value = 1 }
+			set_variable = { name = zg361_b2_workforce_adapter_case value = $TICKET_CASE$ }
+		}
+		else_if = {
+			limit = {
+				has_variable = zg361_we_adapter_status
+				var:zg361_we_adapter_status = 2
+			}
+			set_variable = { name = zg361_b2_workforce_adapter_status value = 2 }
+		}
+		else = {
+			set_variable = { name = zg361_b2_workforce_adapter_status value = 4 }
+			set_variable = { name = zg361_b2_workforce_adapter_blocked_reason value = 357359 }
+		}
+	}
+}
+
 zg361_b2_m358_freeze_non_aggravation_effect = {
 	if = {
 		limit = { var:zg361_b2_m358_object_active = 1 }
@@ -3619,6 +3897,7 @@ zg361_b2_m358_consume_business_object_effect = {
 		set_variable = { name = zg361_b2_m358_object_active value = 0 }
 		set_variable = { name = zg361_b2_m358_consumer_revision value = var:zg361_b2_case_feedback_revision }
 		set_variable = { name = zg361_b2_m358_consumer_receipt_case value = var:zg361_b2_case_serial }
+		zg361_b2_m358_publish_workforce_receipt_effect = yes
 	}
 }
 
@@ -3697,6 +3976,7 @@ zg361_b2_m359_consume_business_object_effect = {
 		set_variable = { name = zg361_b2_m359_object_active value = 0 }
 		set_variable = { name = zg361_b2_m359_consumer_revision value = var:zg361_b2_case_feedback_revision }
 		set_variable = { name = zg361_b2_m359_consumer_receipt_case value = var:zg361_b2_case_serial }
+		zg361_b2_m359_publish_workforce_receipt_effect = yes
 	}
 }
 

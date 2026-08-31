@@ -1215,6 +1215,21 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                 var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
             }
         }
+        # The only automatic resume attempt consumes source receipts minted by
+        # the real B1 facts/quota close and B2 appeal/quota-return consumers.
+        # It cannot manufacture ids/hashes and route-C debts remain waiting.
+        if = {
+            limit = {
+                var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }
+            }
+            var:zg361_p2c_subject = {
+                zg361_b2_submit_completed_al_receipts_effect = {
+                    TICKET_OWNER = root TICKET_SUBJECT = this
+                    TICKET_CYCLE = root.var:zg361_p2c_cycle
+                    TICKET_CASE = var:zg361_case_al_case_serial
+                }
+            }
+        }
         # If exact external receipts already advanced AL to 4/5, call the public
         # resume seam once.  Otherwise remain external and keep the UI lane free.
         if = {

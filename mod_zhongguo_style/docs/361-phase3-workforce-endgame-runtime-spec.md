@@ -191,8 +191,9 @@ typed blocked 终态。它仍未中央接线、未过 parser/MCP/存读档/实�
 - 实机覆盖 reject/withdraw/held/reopen、#257/#269/#275 延迟分支、#360 三 cohort 与 #361 多版本未来默认；
 - 提供 deadline scheduler、save/load round-trip、共享 GUI/ledger、MCP query/action、paused snapshot 与实机 acceptance artifact；
 - CK3 投影已提供 #264 sunset/waiver/artifact、#276 独立历史 rehire、#277 closed-PIP/exit、#275 runner-up
-  central reopen、357–359 receipt bridge、#360 三 cohort producer 和 #361 三周期 rolling-chain adapter；仍需外域
-  以真实角色/职位/历史/哈希调用这些 typed seam，并完成原生 court-position 任命/离任，不能把 adapter ACK 当来源证明；
+  central reopen、357–359 receipt bridge、#360 三 cohort producer 和 #361 三周期 rolling-chain adapter；357–359 另已有
+  B1/B2 真实业务来源与中央提交接线，但仍需 paused/live 证明。其余外域仍须以真实角色/职位/历史/哈希调用 typed seam，并完成
+  原生 court-position 任命/离任，不能把 adapter ACK 当来源证明；
 - 运行 generator/static validation/真实 CK3 L1–L3，并保持本规范所列资源与历史不变量。
 
 因此，本文件和静态投影可作为后续施工的 reference oracle，但不能据此把这些机制提高为 fixture-live、

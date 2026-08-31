@@ -98,6 +98,20 @@ PREPARED
 - 翻案后的配额回流只允许预留位、边界复核或下一周期债三条可审计路线；受影响边界对象必须重新送达并获得新的
   target-bound 申诉时钟。隐藏重排保留 audit diff，审计补救只重送一次。
 
+### #358/#359 真实来源票据与 Workforce handoff
+
+- #358 的 `m358_external_receipt_*` 只由真实申诉案卷 consumer 在 `object_consumed=1/state=3` 后发布。它还要求
+  同案申诉已经形成 upheld outcome，或 corrected outcome + exact refund receipt；尚未裁决、仅到期而没有 outcome、错案与
+  policy route C 均不能发布。
+- #359 只在 corrected outcome + exact refund 后发布，并且必须已经实际消费预留位、完成边界复核后的新案重送，或写入下一周期
+  quota debt 三者之一。这里 `return_route=3` 是业务内的“下周期配额债”，不等于 `m359_route=3` 的 policy route C；后者仍然
+  只写 policy debt，永远没有 external receipt。
+- `zg361_b2_submit_completed_al_receipts_effect` 是唯一产品 adapter。中央 stage 11 只传当前 AL 五元组；adapter 自行读取 B1 #357
+  和 B2 #358/#359 的真实来源 ID/hash，核对 B1/result adapter、corrected result、三组同 owner/subject/cycle 与互异 ID/hash，
+  再调用 Workforce 的 strict receipt bridge。调用者不能注入或伪造来源 ID/hash；任一来源未完成时保持等待。
+
+上述是 CK3 静态接线，不把 receipt ACK 冒充 paused fixture 或 production-live 证据。
+
 ### 反报复
 
 申诉日起冻结一年观察期。窗口内不含申诉后新事实的负面动作先暂停，交独立复核人判定；有完整申诉后新事实的动作走普通管理。

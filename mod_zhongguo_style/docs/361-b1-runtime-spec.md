@@ -352,6 +352,12 @@ result case / final reason frozen
 `adjustment_reason` 与 `forced_down`。事实关闭后修改 live KPI 或八项输入不得改变旧案。#357 不得继承 `transaction.refund`，
 退款只属于后续申诉领域。
 
+产品接线在 `zg361_b1_mark_published_effect` 中完成：只有 #357 本轮 facts→quota consumer 已写
+`m357_receipt_serial=current B1 case`，且当前 final result 已与冻结的 B1/result 两套独立案号 adapter 精确绑定后，才写
+`m357_external_receipt_*`。来源票据冻结 absolute/final grade、final reason、forced-down、B1 case 与 result case；receipt
+ID/hash 从这两个真实案卷确定性派生。它只是一张后续 Workforce 可消费的不可变来源票据，不直接调用 Workforce bridge，
+也不写任何 readiness 布尔；缺失真实配额写入或错 result case 时保持无票据。该接线仍只有 L0 静态证据，尚未升级 live readiness。
+
 ## 四、共同上司 barrier
 
 #037/#038/#011/#136/#141/#144 需要多个真实 manager；不得用一个 manager 的多个本地变量伪造会议。

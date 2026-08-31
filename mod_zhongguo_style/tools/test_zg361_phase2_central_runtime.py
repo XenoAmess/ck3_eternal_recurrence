@@ -371,6 +371,30 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_we_portfolio_status = 6", body[:external])
         self.assertIn("zg361_we_al_external_last_operation = 359", body)
         self.assertNotIn("STATUS = 2", body[external:wait])
+        producer = body.index(
+            "zg361_b2_submit_completed_al_receipts_effect = {",
+            external,
+        )
+        verified = body.index(
+            "var:zg361_we_al_external_stage_receipts_verified = 1",
+            external,
+        )
+        resume = body.index(
+            "zg361_p2c_call_workforce_adapter_effect = yes",
+            verified,
+        )
+        self.assertLess(producer, verified)
+        self.assertLess(verified, resume)
+        producer_prefix = body[external:producer]
+        self.assertIn(
+            "var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }",
+            producer_prefix,
+        )
+        self.assertIn("TICKET_OWNER = root TICKET_SUBJECT = this", body[producer:verified])
+        self.assertIn(
+            "TICKET_CASE = var:zg361_case_al_case_serial",
+            body[producer:verified],
+        )
         for token in (
             "var:zg361_we_portfolio_status = 7",
             "var:zg361_we_portfolio_terminal_na = 1",

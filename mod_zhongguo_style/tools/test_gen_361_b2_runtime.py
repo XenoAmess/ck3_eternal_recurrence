@@ -519,6 +519,90 @@ class B2CK3RuntimeTests(unittest.TestCase):
             redelivery.index("zg361_b2_on_result_frozen_effect = yes"),
         )
 
+    def test_358_359_external_receipts_are_minted_only_by_real_consumers(self) -> None:
+        for mechanism_id in (358, 359):
+            key = f"{mechanism_id:03d}"
+            consumer = top_level_block(
+                self.effects,
+                f"zg361_b2_m{key}_consume_business_object_effect",
+            )
+            receipt = (
+                f"zg361_b2_m{key}_consumer_receipt_case value = "
+                "var:zg361_b2_case_serial"
+            )
+            publisher = f"zg361_b2_m{key}_publish_workforce_receipt_effect = yes"
+            self.assertIn(receipt, consumer)
+            self.assertIn(publisher, consumer)
+            self.assertLess(consumer.index(receipt), consumer.index(publisher))
+
+        appeal = top_level_block(
+            self.effects, "zg361_b2_m358_publish_workforce_receipt_effect"
+        )
+        for required in (
+            "var:zg361_b2_m358_object_consumed = 1",
+            "var:zg361_b2_m358_state = 3",
+            "var:zg361_b2_m358_route != 3",
+            "var:zg361_result_case_state = 4",
+            "var:zg361_result_appeal_outcome = 2",
+            "var:zg361_result_case_state = 5",
+            "var:zg361_result_appeal_outcome = 1",
+            "var:zg361_result_refund_posted_serial = var:zg361_result_case_serial",
+            "zg361_b2_m358_external_receipt_id",
+            "zg361_b2_m358_external_receipt_hash",
+        ):
+            self.assertIn(required, appeal)
+
+        reflow = top_level_block(
+            self.effects, "zg361_b2_m359_publish_workforce_receipt_effect"
+        )
+        for required in (
+            "var:zg361_b2_m359_object_consumed = 1",
+            "var:zg361_b2_m359_route != 3",
+            "var:zg361_result_case_state = 5",
+            "var:zg361_result_appeal_outcome = 1",
+            "has_variable = zg361_b2_m359_reserved_consumed",
+            "var:zg361_b2_m359_return_route = 1",
+            "has_variable = zg361_b2_m359_redelivery_receipt",
+            "var:zg361_b2_m359_return_route = 2",
+            "has_variable = zg361_b2_m359_debt_added",
+            "var:zg361_b2_m359_return_route = 3",
+            "zg361_b2_m359_external_receipt_id",
+            "zg361_b2_m359_external_receipt_hash",
+        ):
+            self.assertIn(required, reflow)
+
+    def test_workforce_adapter_reads_but_never_fabricates_357_359_sources(self) -> None:
+        adapter = top_level_block(
+            self.effects, "zg361_b2_submit_completed_al_receipts_effect"
+        )
+        for required in (
+            "var:zg361_result_case_state = 5",
+            "var:zg361_result_appeal_outcome = 1",
+            "var:zg361_b1_result_adapter_result_case = var:zg361_b2_case_serial",
+            "var:zg361_b1_m357_external_result_case = var:zg361_b2_case_serial",
+            "var:zg361_b2_m358_external_receipt_route != 3",
+            "var:zg361_b2_m359_external_receipt_route != 3",
+            "zg361_we_submit_al_357_359_receipts_effect = {",
+            "M357_RECEIPT_ID = var:zg361_b1_m357_external_receipt_id",
+            "M358_RECEIPT_ID = var:zg361_b2_m358_external_receipt_id",
+            "M359_RECEIPT_ID = var:zg361_b2_m359_external_receipt_id",
+            "has_variable = zg361_we_adapter_status",
+        ):
+            self.assertIn(required, adapter)
+        for source in (
+            "zg361_b1_m357_external_receipt_id",
+            "zg361_b1_m357_external_receipt_hash",
+            "zg361_b2_m358_external_receipt_id",
+            "zg361_b2_m358_external_receipt_hash",
+            "zg361_b2_m359_external_receipt_id",
+            "zg361_b2_m359_external_receipt_hash",
+        ):
+            self.assertNotIn(f"set_variable = {{ name = {source}", adapter)
+        self.assertEqual(
+            adapter.count("NOT = { var:zg361_b"),
+            6,
+        )
+
     def test_interface_069_closes_full_prompt_witness_and_deadline_identity(self) -> None:
         grade = top_level_block(self.core, "zg361_grade_325_apply_effect")
         for field in ("owner", "subject", "cycle", "case", "state"):

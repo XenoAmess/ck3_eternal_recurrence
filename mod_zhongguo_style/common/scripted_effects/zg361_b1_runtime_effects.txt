@@ -7054,6 +7054,51 @@ zg361_b1_mark_published_effect = {
 						limit = { has_variable = zg361_result_grade_reason }
 						set_variable = { name = zg361_b1_final_reason value = var:zg361_result_grade_reason }
 					}
+					# #357's external receipt is minted only after the real B1
+					# facts->quota operation and the linked final result both exist.
+					# The Workforce bridge may later consume this immutable source
+					# tuple, but cannot create it or substitute a readiness flag.
+					if = {
+						limit = {
+							has_variable = zg361_b1_m357_receipt_serial
+							var:zg361_b1_m357_receipt_serial = var:zg361_b1_case_serial
+							has_variable = zg361_result_case_serial
+							has_variable = zg361_b1_result_adapter_result_owner
+							has_variable = zg361_b1_result_adapter_result_subject
+							has_variable = zg361_b1_result_adapter_result_cycle
+							has_variable = zg361_b1_result_adapter_result_case
+							has_variable = zg361_b1_result_adapter_b1_owner
+							has_variable = zg361_b1_result_adapter_b1_subject
+							has_variable = zg361_b1_result_adapter_b1_cycle
+							has_variable = zg361_b1_result_adapter_b1_case
+							has_variable = zg361_b1_result_adapter_b1_state
+							has_variable = zg361_b1_absolute_grade
+							has_variable = zg361_b1_final_grade
+							has_variable = zg361_b1_final_reason
+							has_variable = zg361_b1_forced_down
+							var:zg361_b1_result_adapter_result_owner = var:zg361_b1_case_owner
+							var:zg361_b1_result_adapter_result_subject = this
+							var:zg361_b1_result_adapter_result_cycle = var:zg361_b1_cycle_serial
+							var:zg361_b1_result_adapter_result_case = var:zg361_result_case_serial
+							var:zg361_b1_result_adapter_b1_owner = var:zg361_b1_case_owner
+							var:zg361_b1_result_adapter_b1_subject = this
+							var:zg361_b1_result_adapter_b1_cycle = var:zg361_b1_cycle_serial
+							var:zg361_b1_result_adapter_b1_case = var:zg361_b1_case_serial
+							var:zg361_b1_result_adapter_b1_state = 8
+						}
+						set_variable = { name = zg361_b1_m357_external_receipt_owner value = var:zg361_b1_case_owner }
+						set_variable = { name = zg361_b1_m357_external_receipt_subject value = this }
+						set_variable = { name = zg361_b1_m357_external_receipt_cycle value = var:zg361_b1_cycle_serial }
+						set_variable = { name = zg361_b1_m357_external_receipt_case value = var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_m357_external_receipt_state value = 8 }
+						set_variable = { name = zg361_b1_m357_external_result_case value = var:zg361_result_case_serial }
+						set_variable = { name = zg361_b1_m357_external_absolute_grade value = var:zg361_b1_absolute_grade }
+						set_variable = { name = zg361_b1_m357_external_final_grade value = var:zg361_b1_final_grade }
+						set_variable = { name = zg361_b1_m357_external_final_reason value = var:zg361_b1_final_reason }
+						set_variable = { name = zg361_b1_m357_external_forced_down value = var:zg361_b1_forced_down }
+						set_variable = { name = zg361_b1_m357_external_receipt_id value = { value = var:zg361_b1_case_serial multiply = 1000 add = 357 } }
+						set_variable = { name = zg361_b1_m357_external_receipt_hash value = { value = var:zg361_result_case_serial multiply = 10000 add = { value = var:zg361_b1_final_reason multiply = 1000 } add = 357 } }
+					}
 					if = {
 						limit = { var:zg361_b1_recusal_active = 1 has_variable = zg361_last_grade }
 						set_variable = { name = zg361_b1_recusal_post_grade value = var:zg361_last_grade }

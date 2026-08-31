@@ -136,16 +136,19 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         A write that exists only in a scripted effect does not satisfy the
         loader when a loaded event directly reads the same variable list.
         CK3 1.19.0.6 also ignores an event-root write hidden behind
-        ``always = no`` or reverted before its consumer. A legal flag target
-        must remain in the list through the business read, be excluded from
-        character-only work, and only then restore members and container
+        ``always = no`` or reverted before its consumer. A ``flag:`` enum is
+        not an object setter for a list consumed as character scopes. The
+        event-root character must therefore be saved as a temporary scope,
+        remain in the list through the business read, be excluded from
+        character-only work, and only then restore membership and container
         existence.
         """
 
         subjects = top_level_block(self.events, "zg361b1.103")
         subject_target = "zg361_b1_subjects"
         subject_had = f"{subject_target}_event_loader_had_list"
-        subject_anchor = f"flag:{subject_target}_event_loader_anchor"
+        subject_anchor_name = f"{subject_target}_event_loader_anchor"
+        subject_anchor = f"scope:{subject_anchor_name}"
         subject_add = (
             f"add_to_variable_list = {{ name = {subject_target} "
             f"target = {subject_anchor} }}"
@@ -156,6 +159,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         subject_clear = f"clear_variable_list = {subject_target}"
         subject_record = (
+            f"\t\tsave_temporary_scope_as = {subject_anchor_name}\n"
             f"\t\tremove_character_flag = {subject_had}\n"
             f"\t\tif = {{\n"
             f"\t\t\tlimit = {{ has_variable_list = {subject_target} }}\n"
@@ -171,6 +175,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             rf"\}}\s+remove_character_flag = {subject_had}"
         )
         self.assertNotIn("always = no", subjects)
+        self.assertNotIn(f"target = flag:{subject_anchor_name}", subjects)
         self.assertIn(subject_record, subjects)
         self.assertIn(
             "variable = zg361_b1_subjects\n"
@@ -194,7 +199,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ready = top_level_block(self.events, "zg361b1.110")
         ready_target = "zg361_b1_ready_managers"
         ready_had = f"{ready_target}_event_loader_had_list"
-        ready_anchor = f"flag:{ready_target}_event_loader_anchor"
+        ready_anchor_name = f"{ready_target}_event_loader_anchor"
+        ready_anchor = f"scope:{ready_anchor_name}"
         ready_add = (
             f"add_to_variable_list = {{ name = {ready_target} "
             f"target = {ready_anchor} }}"
@@ -205,6 +211,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         ready_clear = f"clear_variable_list = {ready_target}"
         ready_record = (
+            f"\t\tsave_temporary_scope_as = {ready_anchor_name}\n"
             f"\t\tremove_character_flag = {ready_had}\n"
             f"\t\tif = {{\n"
             f"\t\t\tlimit = {{ has_variable_list = {ready_target} }}\n"
@@ -226,6 +233,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             rf"\}}\s+remove_character_flag = {ready_had}"
         )
         self.assertNotIn("always = no", ready)
+        self.assertNotIn(f"target = flag:{ready_anchor_name}", ready)
         self.assertIn(ready_record, ready)
         self.assertIn(ready_business_gate, ready)
         ready_gate = ready.index(ready_business_gate)
@@ -1758,6 +1766,36 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn("name = zg361_b1_evaluator_credit add = 2", consumer)
             self.assertIn("max = 125 min = 25", consumer)
             self.assertIn("zg361_b1_evaluator_overturn_rate", consumer)
+
+    def test_357_external_receipt_requires_real_quota_and_linked_final_result(self) -> None:
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        for required in (
+            "has_variable = zg361_b1_m357_receipt_serial",
+            "var:zg361_b1_m357_receipt_serial = var:zg361_b1_case_serial",
+            "has_variable = zg361_b1_result_adapter_result_case",
+            "var:zg361_b1_result_adapter_result_case = var:zg361_result_case_serial",
+            "var:zg361_b1_result_adapter_b1_state = 8",
+            "zg361_b1_m357_external_absolute_grade",
+            "zg361_b1_m357_external_final_grade",
+            "zg361_b1_m357_external_final_reason",
+            "zg361_b1_m357_external_forced_down",
+            "zg361_b1_m357_external_receipt_id",
+            "zg361_b1_m357_external_receipt_hash",
+        ):
+            self.assertIn(required, publish)
+        adapter = publish.index(
+            "set_variable = { name = zg361_b1_result_adapter_result_case"
+        )
+        reason = publish.index(
+            "set_variable = { name = zg361_b1_final_reason"
+        )
+        receipt = publish.index(
+            "set_variable = { name = zg361_b1_m357_external_receipt_owner"
+        )
+        self.assertLess(adapter, receipt)
+        self.assertLess(reason, receipt)
+        self.assertNotIn("zg361_we_submit_al_357_359_receipts_effect", publish)
+        self.assertNotIn("external_stage_receipts_verified", publish)
 
     def test_band_order_and_feedback_debt_have_next_cycle_consumers(self) -> None:
         band = top_level_block(self.effects, "zg361_b1_freeze_band_order_effect")

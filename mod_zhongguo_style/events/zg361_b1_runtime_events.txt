@@ -140,16 +140,17 @@ zg361b1.103 = {
 	type = character_event
 	hidden = yes
 	immediate = {
-		# Keep one exact-build-valid flag target alive through the list read: the
-		# loader discards setters that are reverted before their consumer. Record
-		# whether the owner originally had a container so cleanup restores both
-		# membership and has_variable_list semantics.
+		# Save the event-root character as a real object scope before writing the
+		# list. CK3 1.19.0.6 does not count a flag: enum as a setter for a list
+		# later consumed as character scopes. Keep this object anchor alive through
+		# the list read, then restore both membership and container existence.
+		save_temporary_scope_as = zg361_b1_subjects_event_loader_anchor
 		remove_character_flag = zg361_b1_subjects_event_loader_had_list
 		if = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			add_character_flag = zg361_b1_subjects_event_loader_had_list
 		}
-		add_to_variable_list = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+		add_to_variable_list = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 		if = {
 			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
 			if = {
@@ -162,7 +163,7 @@ zg361b1.103 = {
 				}
 				every_in_list = {
 					variable = zg361_b1_subjects
-					limit = { NOT = { this = flag:zg361_b1_subjects_event_loader_anchor } }
+					limit = { NOT = { this = scope:zg361_b1_subjects_event_loader_anchor } }
 					if = {
 						limit = {
 							has_variable = zg361_b1_case_owner
@@ -173,7 +174,7 @@ zg361b1.103 = {
 						zg361_b1_record_shadow_accept_effect = yes
 					}
 				}
-				remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+				remove_list_variable = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 				if = {
 					limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
 					clear_variable_list = zg361_b1_subjects
@@ -183,7 +184,7 @@ zg361b1.103 = {
 				zg361_b1_submit_quota_book_effect = yes
 			}
 			else = {
-				remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+				remove_list_variable = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 				if = {
 					limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
 					clear_variable_list = zg361_b1_subjects
@@ -193,7 +194,7 @@ zg361b1.103 = {
 			}
 		}
 		else = {
-			remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+			remove_list_variable = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 			if = {
 				limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
 				clear_variable_list = zg361_b1_subjects
@@ -210,16 +211,16 @@ zg361b1.110 = {
 	type = character_event
 	hidden = yes
 	immediate = {
-		# Keep the flag anchor alive through the business has-list read, while a
-		# character flag preserves the pre-anchor branch decision. The anchor is
-		# removed before the close effect, so no character-only manager iterator
-		# can consume it.
+		# Use a real character scope for the loader-visible write. A character flag
+		# preserves the pre-anchor branch decision; the object anchor is removed
+		# before the close effect, so no manager iterator can consume the superior.
+		save_temporary_scope_as = zg361_b1_ready_managers_event_loader_anchor
 		remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
 		if = {
 			limit = { has_variable_list = zg361_b1_ready_managers }
 			add_character_flag = zg361_b1_ready_managers_event_loader_had_list
 		}
-		add_to_variable_list = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+		add_to_variable_list = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 		if = {
 			limit = {
 				exists = scope:zg361_b1_bank_ticket_owner
@@ -240,12 +241,12 @@ zg361b1.110 = {
 						has_character_flag = zg361_b1_ready_managers_event_loader_had_list
 						has_variable_list = zg361_b1_ready_managers
 					}
-					remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+					remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 					remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
 					zg361_b1_close_common_superior_bank_effect = yes
 				}
 				else = {
-					remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+					remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 					if = {
 						limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
 						clear_variable_list = zg361_b1_ready_managers
@@ -258,7 +259,7 @@ zg361b1.110 = {
 				}
 			}
 			else = {
-				remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+				remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 				if = {
 					limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
 					clear_variable_list = zg361_b1_ready_managers
@@ -268,7 +269,7 @@ zg361b1.110 = {
 			}
 		}
 		else = {
-			remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+			remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 			if = {
 				limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
 				clear_variable_list = zg361_b1_ready_managers

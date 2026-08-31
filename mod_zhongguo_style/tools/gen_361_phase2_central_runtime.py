@@ -1144,6 +1144,21 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                 var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
             }
         }
+        # The only automatic resume attempt consumes source receipts minted by
+        # the real B1 facts/quota close and B2 appeal/quota-return consumers.
+        # It cannot manufacture ids/hashes and route-C debts remain waiting.
+        if = {
+            limit = {
+                var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }
+            }
+            var:zg361_p2c_subject = {
+                zg361_b2_submit_completed_al_receipts_effect = {
+                    TICKET_OWNER = root TICKET_SUBJECT = this
+                    TICKET_CYCLE = root.var:zg361_p2c_cycle
+                    TICKET_CASE = var:zg361_case_al_case_serial
+                }
+            }
+        }
         # If exact external receipts already advanced AL to 4/5, call the public
         # resume seam once.  Otherwise remain external and keep the UI lane free.
         if = {
@@ -1435,19 +1450,22 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。
 - 新一轮 B1 公示若撞上旧中央案，会先把旧 immutable tuple 记为 typed RED，给旧摘要 D+1 ACK 窗口，再在 D+2 精确初始化新案；禁止原地覆盖或清掉旧摘要。
 - P3、Credit/Project 与 Workforce 的 D+1 域切换空档只轮询同一 portfolio tuple，不会误判 RED。
-- 3.25 state 1/2 以及 Workforce status 5 都记录 external wait，绝不伪装 success。
+- 3.25 state 1/2 以及 Workforce status 5 都记录 external wait，绝不伪装 success。manager 的 status 5 会先调用
+  `zg361_b2_submit_completed_al_receipts_effect`：它只读取 B1 #357 与 B2 #358/#359 已由真实 consumer 发布的来源票据，中央不能
+  传入 receipt ID/hash；strict bridge 验证成功后才调用既有 resume seam。
 - 最终每名玩家 manager 只收到一张中央聚合摘要；AI 不收到中央可见事件。
 
 ## 5. 已知外部依赖
 
-- Workforce 357–359 的同案 receipt 没有到达时，本中央案会诚实停在 stage 11/status 5；不会生成完成标记。
+- Workforce 357–359 的 B1/B2 真实来源、产品 adapter 与中央调用已经接线；但同案 receipt 尚未到达（例如没有已裁决申诉、
+  翻案后尚未完成配额回流，或走 policy route C）时，本中央案仍会诚实停在 stage 11/status 5，不会生成完成标记。
 - Workforce runtime 的初始 AB/AC/AD 必须允许普通 assessed count/baron；只有 #360/#361 resume 才可追加 manager 条件。中央层已经按此权限合同调用 public seam，但不修改该并发领域文件。
 - 普通 count/baron 的 N/A-close seam 必须冻结 `terminal_na=1/reason=360361/owned_operations=38/skipped_manager_only=2/success=0`、`final_conservation_ok=1`、清 AL active 并写 closed=1/status=7；中央据此把 stage 11 记为 N/A。旧 runtime 若没有该 seam，中央仍以 `terminal_state=5` 外部阻点暂停：不调用无权限 ABI、不写 completed-cycle、不伪造 Workforce success，也不每两日永久重试。
 - 所有结论目前只是生成可复现、静态语法/结构测试证据；尚未经过 MCP-first CK3 paused snapshot、存读档或多轮实机验收。
 
 ## 6. 测试口径
 
-`tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 两套公示证明的 mode 互斥与混用反例、D+2 初始化、exact 3.25 wake、单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、Workforce status 5、AI/玩家共同业务路径、BOM 与生成可复现。它不构成 fixture-live 或 production-live 证据。
+`tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 两套公示证明的 mode 互斥与混用反例、D+2 初始化、exact 3.25 wake、单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、Workforce 来源 adapter→verified→resume 顺序与 status 5 等待、AI/玩家共同业务路径、BOM 与生成可复现。它不构成 fixture-live 或 production-live 证据。
 """
 
 

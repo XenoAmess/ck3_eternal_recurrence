@@ -6864,6 +6864,51 @@ __RESULT_ADAPTER_PEER_SLOTS__
 						limit = { has_variable = zg361_result_grade_reason }
 						set_variable = { name = zg361_b1_final_reason value = var:zg361_result_grade_reason }
 					}
+					# #357's external receipt is minted only after the real B1
+					# facts->quota operation and the linked final result both exist.
+					# The Workforce bridge may later consume this immutable source
+					# tuple, but cannot create it or substitute a readiness flag.
+					if = {
+						limit = {
+							has_variable = zg361_b1_m357_receipt_serial
+							var:zg361_b1_m357_receipt_serial = var:zg361_b1_case_serial
+							has_variable = zg361_result_case_serial
+							has_variable = zg361_b1_result_adapter_result_owner
+							has_variable = zg361_b1_result_adapter_result_subject
+							has_variable = zg361_b1_result_adapter_result_cycle
+							has_variable = zg361_b1_result_adapter_result_case
+							has_variable = zg361_b1_result_adapter_b1_owner
+							has_variable = zg361_b1_result_adapter_b1_subject
+							has_variable = zg361_b1_result_adapter_b1_cycle
+							has_variable = zg361_b1_result_adapter_b1_case
+							has_variable = zg361_b1_result_adapter_b1_state
+							has_variable = zg361_b1_absolute_grade
+							has_variable = zg361_b1_final_grade
+							has_variable = zg361_b1_final_reason
+							has_variable = zg361_b1_forced_down
+							var:zg361_b1_result_adapter_result_owner = var:zg361_b1_case_owner
+							var:zg361_b1_result_adapter_result_subject = this
+							var:zg361_b1_result_adapter_result_cycle = var:zg361_b1_cycle_serial
+							var:zg361_b1_result_adapter_result_case = var:zg361_result_case_serial
+							var:zg361_b1_result_adapter_b1_owner = var:zg361_b1_case_owner
+							var:zg361_b1_result_adapter_b1_subject = this
+							var:zg361_b1_result_adapter_b1_cycle = var:zg361_b1_cycle_serial
+							var:zg361_b1_result_adapter_b1_case = var:zg361_b1_case_serial
+							var:zg361_b1_result_adapter_b1_state = 8
+						}
+						set_variable = { name = zg361_b1_m357_external_receipt_owner value = var:zg361_b1_case_owner }
+						set_variable = { name = zg361_b1_m357_external_receipt_subject value = this }
+						set_variable = { name = zg361_b1_m357_external_receipt_cycle value = var:zg361_b1_cycle_serial }
+						set_variable = { name = zg361_b1_m357_external_receipt_case value = var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_m357_external_receipt_state value = 8 }
+						set_variable = { name = zg361_b1_m357_external_result_case value = var:zg361_result_case_serial }
+						set_variable = { name = zg361_b1_m357_external_absolute_grade value = var:zg361_b1_absolute_grade }
+						set_variable = { name = zg361_b1_m357_external_final_grade value = var:zg361_b1_final_grade }
+						set_variable = { name = zg361_b1_m357_external_final_reason value = var:zg361_b1_final_reason }
+						set_variable = { name = zg361_b1_m357_external_forced_down value = var:zg361_b1_forced_down }
+						set_variable = { name = zg361_b1_m357_external_receipt_id value = { value = var:zg361_b1_case_serial multiply = 1000 add = 357 } }
+						set_variable = { name = zg361_b1_m357_external_receipt_hash value = { value = var:zg361_result_case_serial multiply = 10000 add = { value = var:zg361_b1_final_reason multiply = 1000 } add = 357 } }
+					}
 					if = {
 						limit = { var:zg361_b1_recusal_active = 1 has_variable = zg361_last_grade }
 						set_variable = { name = zg361_b1_recusal_post_grade value = var:zg361_last_grade }
@@ -7718,16 +7763,17 @@ zg361b1.103 = {
 	type = character_event
 	hidden = yes
 	immediate = {
-		# Keep one exact-build-valid flag target alive through the list read: the
-		# loader discards setters that are reverted before their consumer. Record
-		# whether the owner originally had a container so cleanup restores both
-		# membership and has_variable_list semantics.
+		# Save the event-root character as a real object scope before writing the
+		# list. CK3 1.19.0.6 does not count a flag: enum as a setter for a list
+		# later consumed as character scopes. Keep this object anchor alive through
+		# the list read, then restore both membership and container existence.
+		save_temporary_scope_as = zg361_b1_subjects_event_loader_anchor
 		remove_character_flag = zg361_b1_subjects_event_loader_had_list
 		if = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			add_character_flag = zg361_b1_subjects_event_loader_had_list
 		}
-		add_to_variable_list = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+		add_to_variable_list = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 		if = {
 			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
 			if = {
@@ -7740,7 +7786,7 @@ zg361b1.103 = {
 				}
 				every_in_list = {
 					variable = zg361_b1_subjects
-					limit = { NOT = { this = flag:zg361_b1_subjects_event_loader_anchor } }
+					limit = { NOT = { this = scope:zg361_b1_subjects_event_loader_anchor } }
 					if = {
 						limit = {
 							has_variable = zg361_b1_case_owner
@@ -7751,7 +7797,7 @@ zg361b1.103 = {
 						zg361_b1_record_shadow_accept_effect = yes
 					}
 				}
-				remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+				remove_list_variable = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 				if = {
 					limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
 					clear_variable_list = zg361_b1_subjects
@@ -7761,7 +7807,7 @@ zg361b1.103 = {
 				zg361_b1_submit_quota_book_effect = yes
 			}
 			else = {
-				remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+				remove_list_variable = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 				if = {
 					limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
 					clear_variable_list = zg361_b1_subjects
@@ -7771,7 +7817,7 @@ zg361b1.103 = {
 			}
 		}
 		else = {
-			remove_list_variable = { name = zg361_b1_subjects target = flag:zg361_b1_subjects_event_loader_anchor }
+			remove_list_variable = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 			if = {
 				limit = { NOT = { has_character_flag = zg361_b1_subjects_event_loader_had_list } }
 				clear_variable_list = zg361_b1_subjects
@@ -7788,16 +7834,16 @@ zg361b1.110 = {
 	type = character_event
 	hidden = yes
 	immediate = {
-		# Keep the flag anchor alive through the business has-list read, while a
-		# character flag preserves the pre-anchor branch decision. The anchor is
-		# removed before the close effect, so no character-only manager iterator
-		# can consume it.
+		# Use a real character scope for the loader-visible write. A character flag
+		# preserves the pre-anchor branch decision; the object anchor is removed
+		# before the close effect, so no manager iterator can consume the superior.
+		save_temporary_scope_as = zg361_b1_ready_managers_event_loader_anchor
 		remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
 		if = {
 			limit = { has_variable_list = zg361_b1_ready_managers }
 			add_character_flag = zg361_b1_ready_managers_event_loader_had_list
 		}
-		add_to_variable_list = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+		add_to_variable_list = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 		if = {
 			limit = {
 				exists = scope:zg361_b1_bank_ticket_owner
@@ -7818,12 +7864,12 @@ zg361b1.110 = {
 						has_character_flag = zg361_b1_ready_managers_event_loader_had_list
 						has_variable_list = zg361_b1_ready_managers
 					}
-					remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+					remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 					remove_character_flag = zg361_b1_ready_managers_event_loader_had_list
 					zg361_b1_close_common_superior_bank_effect = yes
 				}
 				else = {
-					remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+					remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 					if = {
 						limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
 						clear_variable_list = zg361_b1_ready_managers
@@ -7836,7 +7882,7 @@ zg361b1.110 = {
 				}
 			}
 			else = {
-				remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+				remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 				if = {
 					limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
 					clear_variable_list = zg361_b1_ready_managers
@@ -7846,7 +7892,7 @@ zg361b1.110 = {
 			}
 		}
 		else = {
-			remove_list_variable = { name = zg361_b1_ready_managers target = flag:zg361_b1_ready_managers_event_loader_anchor }
+			remove_list_variable = { name = zg361_b1_ready_managers target = scope:zg361_b1_ready_managers_event_loader_anchor }
 			if = {
 				limit = { NOT = { has_character_flag = zg361_b1_ready_managers_event_loader_had_list } }
 				clear_variable_list = zg361_b1_ready_managers

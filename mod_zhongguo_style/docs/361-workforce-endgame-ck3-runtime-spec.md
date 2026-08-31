@@ -172,6 +172,11 @@ al_external_last_operation = 359
 
 仅凭本包不能宣称 AL 端到端闭环。
 
+真实来源现由其业务域负责：B1 在 facts→quota 公示闭合后发布 #357，B2 在真实申诉裁决 consumer 后发布 #358，并在翻案后的
+预留消费/边界重送/下周期债 consumer 后发布 #359。中央 stage 11 遇到 status 5 时调用 B2 产品 adapter；adapter 自行读取三张
+来源票据并把当前 AL 五元组提交给本包 strict bridge，不能由中央传入 receipt ID/hash。policy route C、未裁决申诉、未发生配额
+回流仍保持等待。该接线尚未经过新一轮 CK3 paused/live 验收，因此不改变本包 readiness。
+
 #360 由本包的 `begin → append outcome slot → seal` producer ABI 提交一个未结算的 collective
 case/settlement receipt 和**恰好三个**互异 cohort。
 每个 cohort 完整冻结
@@ -234,12 +239,16 @@ RED `9098`。
 2. AD 已提供严格 adapter：#274 只消费外部已确认的真实角色/position receipt；#276 只接受旧 cycle/旧 case
    的 rehire history；#277 只接受独立 closed-PIP 与 exit/position receipt。仍需原生岗位 provider 真正执行并
    证明 court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
-3. 357–359 的真实业务 owner 仍需调用 receipt bridge；#360 cohort 成员、#361 report/hash 的真实性仍由
-   对应外域/原生 producer 负责。本包可以核对五元身份、顺序、唯一性、守恒与持久化链，不能证明外部哈希来源。
+3. 357–359 已有 B1/B2 真实业务 producer、中央调用与本包 strict bridge 接线；仍需 MCP-first CK3 paused/live 证明三张来源
+   确实在可达业务路径生成并推进 AL。#360 cohort 成员、#361 report/hash 的真实性仍由对应外域/原生 producer 负责。本包可以
+   核对五元身份、顺序、唯一性、守恒与持久化链，不能单独证明外部哈希来源。
 4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
    `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身与真实任命仍是外部调用者责任。
 5. C debt 到期 consumer 与 #264 sunset/waiver/三类 artifact adapter 已落地；仍需 CK3 存读档/跨周期实机证明
    scheduler、资源守恒和有界升级没有 scope 漂移。
 6. 运行本机 CK3 parser、error.log、玩家事件队列、AI 后台、跨期 hidden event、存读档和 paused snapshot
-   验收，再决定是否提升 readiness。
+   验收，再决定是否提升 readiness。2026-08-31 接线前 loader 日志中，本桥最终态的 8 个字段
+   `al_external_stage_receipts_verified`、`al_external_receipt_{owner,subject,cycle,case,state,count}`、
+   `al_external_last_operation` 均报 used-never-set；本次生产调用链让它们的 setter 可达，但必须用新一轮 loader 日志确认
+   这 8 条确实归零，不能以静态可达性代替实机结论。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
