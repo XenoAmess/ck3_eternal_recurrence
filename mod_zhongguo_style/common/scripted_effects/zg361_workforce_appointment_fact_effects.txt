@@ -24,6 +24,22 @@ zg361_workforce_appointment_fact_clear_pending_intent_effect = {
     remove_variable = zg361_workforce_appointment_fact_eligibility_open
 }
 
+# Keep exactly one delayed reconciliation event in flight.  Callback ordering
+# may schedule from either side of appoint_court_position; duplicate schedules
+# must not fan out into an unbounded retry tree.
+zg361_workforce_appointment_fact_schedule_audit_effect = {
+    if = {
+        limit = {
+            OR = {
+                NOT = { has_variable = zg361_workforce_appointment_fact_audit_scheduled }
+                var:zg361_workforce_appointment_fact_audit_scheduled = 0
+            }
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_audit_scheduled value = 1 }
+        trigger_event = { id = zg361workforceappointmentfact.9001 days = 1 }
+    }
+}
+
 # This callback is invoked only by the custom court position's native
 # on_court_position_received hook.  No public caller can supply a success bit.
 zg361_workforce_appointment_fact_on_native_position_received_effect = {
@@ -46,7 +62,7 @@ zg361_workforce_appointment_fact_on_native_position_received_effect = {
         set_variable = { name = zg361_workforce_appointment_fact_native_callback_subject value = this }
         set_variable = { name = zg361_workforce_appointment_fact_native_callback_position_type_id value = 3612741 }
         set_variable = { name = zg361_workforce_appointment_fact_position_active value = 1 }
-        trigger_event = { id = zg361workforceappointmentfact.9001 days = 1 }
+        zg361_workforce_appointment_fact_schedule_audit_effect = yes
     }
 }
 
@@ -450,7 +466,7 @@ zg361_workforce_appointment_fact_request_native_appointment_effect = {
             else = {
                 set_variable = { name = zg361_workforce_appointment_fact_status value = 5 }
                 set_variable = { name = zg361_workforce_appointment_fact_red_code value = 27403 }
-                trigger_event = { id = zg361workforceappointmentfact.9001 days = 1 }
+                zg361_workforce_appointment_fact_schedule_audit_effect = yes
             }
         }
         else = {
@@ -686,10 +702,10 @@ zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = {
     }
 }
 
-# D+1 is only a reconciliation attempt for callback ordering or save/load.  It
-# cannot turn the request intent into success without the native callback and
-# live position postcondition.  A later central retry of the public wrapper is
-# required to consume #274 if publication finished after the original tick.
+# D+1 reconciles callback ordering or save/load.  It cannot turn request intent
+# into success without the native callback and live position postcondition.
+# The hidden event may then delegate an exact published tuple to Workforce's
+# resume seam; this audit effect itself never consumes #274.
 zg361_workforce_appointment_fact_audit_pending_effect = {
     remove_variable = zg361_workforce_appointment_fact_status
     remove_variable = zg361_workforce_appointment_fact_red_code

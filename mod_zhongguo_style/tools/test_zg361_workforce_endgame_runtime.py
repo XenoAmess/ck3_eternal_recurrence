@@ -58,6 +58,11 @@ EXPECTED_RETIRED_AD_EXTERNAL_ALIASES = {
     "zg361_we_ad_external_exit_hc_lineage_case",
     "zg361_we_ad_external_exit_position_type_id",
 }
+STATIC_CLOSED_APPOINTMENT_ALIASES = {
+    "zg361_we_ad_external_position_receipt_hash",
+    "zg361_we_ad_external_position_receipt_id",
+    "zg361_we_ad_external_position_type_id",
+}
 ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
     r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
     r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
@@ -464,6 +469,73 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             ai = block(self.effects, f"zg361_we_{domain}_run_authorized_ai_effect")
             self.assertIn("is_ai = yes zg361_is_celestial_liege_trigger = yes", ai)
             self.assertNotIn("trigger_event", ai)
+
+    def test_23a_native_appointment_wrapper_owns_both_route_a_callers(self) -> None:
+        appointment = block(self.events, "zg361we.274")
+        authorized_ai = block(self.effects, "zg361_we_ad_run_authorized_ai_effect")
+        wrapper_call = f"{gen.APPOINTMENT_WRAPPER} = {{"
+        direct_call = "zg361_we_m274_route_a_effect = {"
+
+        self.assertEqual(1, appointment.count(wrapper_call))
+        self.assertNotIn(direct_call, appointment)
+        self.assertIn(
+            "has_variable = zg361_workforce_appointment_fact_status "
+            "var:zg361_workforce_appointment_fact_status = 6",
+            appointment,
+        )
+
+        self.assertEqual(1, authorized_ai.count(wrapper_call))
+        self.assertNotIn(direct_call, authorized_ai)
+        wrapper_index = authorized_ai.index(wrapper_call)
+        ack_index = authorized_ai.index(
+            "var:zg361_workforce_appointment_fact_status = 6"
+        )
+        later_route_index = authorized_ai.index("zg361_we_m275_route_a_effect = {")
+        self.assertLess(authorized_ai.index("zg361_we_m273_route_a_effect = {"), wrapper_index)
+        self.assertLess(wrapper_index, ack_index)
+        self.assertLess(ack_index, later_route_index)
+
+    def test_23b_delayed_native_appointment_resumes_exactly_once(self) -> None:
+        resume = block(
+            self.effects, "zg361_we_resume_m274_after_native_appointment_effect"
+        )
+        wrapper_index = resume.index(f"{gen.APPOINTMENT_WRAPPER} = {{")
+        hired_disposition_index = resume.index("zg361_we_m275_route_a_effect = {")
+        continuation_index = resume.index(
+            "name = zg361_we_m274_native_resume_continuation_consumed value = 1"
+        )
+
+        self.assertIn("EXPECTED_STATE = 4", resume[:wrapper_index])
+        self.assertIn(
+            "zg361_workforce_appointment_fact_receipt_published = 1",
+            resume[:wrapper_index],
+        )
+        for field in ("owner", "subject", "cycle", "case"):
+            self.assertIn(
+                f"zg361_workforce_appointment_fact_receipt_{field} = $TICKET_{field.upper()}$",
+                resume[:wrapper_index],
+            )
+            self.assertIn(
+                f"m274_native_resume_continuation_{field} = $TICKET_{field.upper()}$",
+                resume,
+            )
+        self.assertIn("m274_native_resume_status value = 2", resume[:wrapper_index])
+        self.assertLess(wrapper_index, hired_disposition_index)
+        self.assertLess(hired_disposition_index, continuation_index)
+        self.assertIn("var:zg361_workforce_appointment_fact_status = 6", resume)
+        self.assertIn("m274_native_resume_status value = 5", resume)
+        self.assertIn("m274_native_resume_status value = 4", resume)
+        continuation_red = resume.index("m274_native_resume_red_code value = 27492")
+        self.assertIn(
+            "m274_native_resume_status value = 4",
+            resume[:continuation_red],
+        )
+        self.assertIn("is_ai = no zg361_is_celestial_liege_trigger = yes", resume)
+        self.assertIn("trigger_event = { id = zg361we.269 }", resume)
+        self.assertIn("is_ai = yes zg361_is_celestial_liege_trigger = yes", resume)
+        for mid in (269, 276, 277):
+            self.assertIn(f"zg361_we_m{mid}_route_a_effect = {{", resume)
+        self.assertNotIn("appoint_court_position", resume)
 
     def test_24_replay_cannot_reset_same_cycle_or_active_cases(self) -> None:
         entry = block(self.effects, "zg361_we_open_portfolio_effect")
@@ -1692,14 +1764,16 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(EXPECTED_RETIRED_AD_EXTERNAL_ALIASES, ad & set(gen.RETIRED_AD_EXTERNAL_ALIASES))
         remaining_ad = ad - EXPECTED_RETIRED_AD_EXTERNAL_ALIASES
         self.assertEqual(45, len(remaining_ad))
+        self.assertTrue(STATIC_CLOSED_APPOINTMENT_ALIASES <= remaining_ad)
+        self.assertEqual(42, len(remaining_ad - STATIC_CLOSED_APPOINTMENT_ALIASES))
         for field in remaining_ad:
             self.assertIn(field, self.effects, field)
-        self.assertIn("AD：45 项", self.ledger_text)
+        self.assertIn("AD：42 项", self.ledger_text)
         self.assertIn("35 项旧 external alias", self.ledger_text)
         self.assertIn("3×(14+36)+17=167", self.ledger_text)
         self.assertIn("AL charter 28 项", self.ledger_text)
-        self.assertIn("20+8+167+28+35=258", self.ledger_text)
-        self.assertIn("剩余 45：全部是 AD 45", self.ledger_text)
+        self.assertIn("20+8+167+28+35+3=261", self.ledger_text)
+        self.assertIn("剩余 42：全部是 AD 42", self.ledger_text)
         self.assertIn("尚无变更后的 loader/live 证据", self.ledger_text)
 
         cohort_fields = (

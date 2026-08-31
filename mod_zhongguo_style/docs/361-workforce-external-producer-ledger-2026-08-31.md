@@ -1,6 +1,6 @@
 ﻿# Workforce external producer 责任账本（2026-08-31）
 
-状态：**逐字段分类完成；AC #264、AL #360 与 AL #361 product vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
+状态：**逐字段分类完成；AC #264、AD #274 native appointment、AL #360 与 AL #361 product vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
 
 ## 1. 冻结证据与分类规则
 
@@ -97,10 +97,11 @@ celestial manager vassal；host 必须不同于 owner 与 subject。伯爵/男�
 上述 20 个旧告警字段中，19 个 `ac_external_handoff_*` 已没有生产 read，`secondment_host_manager` 有真实可达 setter
 与 A/B caller。因此**静态预期**下一轮 loader 消掉 AC 20 项；在新 artifact 出现前仍不得写成 loader-live。
 
-## 3. AD：45 项仍需 producer；35 项旧 external alias 已静态退役
+## 3. AD：42 项仍需 producer；35 项旧 external alias 已静态退役，3 项 native appointment 已静态闭合
 
-旧 loader 的 AD 80 项没有被笼统“补 setter”。本批只删除能够由现有真对象重导、重复表达同一 envelope，或已经由
-B2 权威发布的 35 项；其余 45 项继续作为真实施工债保留。新 loader 运行前只能称为静态预期，不能称为 live。
+旧 loader 的 AD 80 项没有被笼统“补 setter”。35 项能够由现有真对象重导、重复表达同一 envelope，或已经由
+B2 权威发布；原剩余 45 项中的 3 项现由真实 custom court-position callback producer 静态闭合，其余 42 项继续作为
+真实施工债保留。新 loader 运行前只能称为静态预期，不能称为 live。
 
 ### 3.1 同案对象直接重导：10
 
@@ -203,7 +204,23 @@ zg361_we_ad_external_vote_evidence_3
 施工入口必须是实际 referral 提交、三位互异 interviewer 的玩家/AI panel 选择、逐票 evidence、真实 subject refusal
 和真实 runner-up；没有候选时应 N/A/延后，不得把 subject 重复塞进三个 identity slot。
 
-### 3.6 剩余 Career/HC 或 native producer：29
+### 3.6 Native/Career appointment：3，真实 callback producer 与两个 caller 已接通
+
+```text
+zg361_we_ad_external_position_receipt_hash
+zg361_we_ad_external_position_receipt_id
+zg361_we_ad_external_position_type_id
+```
+
+三项只由 `zg361_workforce_appointment_fact_m274_appoint_and_consume_effect` 驱动：先执行真实
+`appoint_court_position`，再等 engine-owned `on_court_position_received`，复核 employer/holder、title、#266 HC lineage
+和 exact case，最后通过既有 strict adapter 发布。玩家 `zg361we.274.a` 与授权 AI 的 AD runner 都已改走 wrapper，
+不再直接调用 #274 route A。若 callback 非同 tick 完成，hidden single-flight audit 释放有界试任岗位后，以 sealed
+receipt exact tuple 调 Workforce resume；resume 只消费一次 #274/#275，并分别恢复玩家 #269 事件或授权 AI 后台链。
+`status=5` 只保留一个次日 retry，RED/complete 不推进。当前仅为 script static-ready，仍待 loader/paused live 证明
+任命、撤任、WAIT 重试及玩家/AI续跑。
+
+### 3.7 剩余 Career/HC 或 native producer：26
 
 Career/HC probation outcome（12；第一份 bps 已由 §3.4 推导）：
 
@@ -220,14 +237,6 @@ zg361_we_ad_external_outcome_exclusion_reason
 zg361_we_ad_external_outcome_id
 zg361_we_ad_external_outcome_observed_cycle
 zg361_we_ad_external_outcome_quality
-```
-
-Native/Career appointment（3）：
-
-```text
-zg361_we_ad_external_position_receipt_hash
-zg361_we_ad_external_position_receipt_id
-zg361_we_ad_external_position_type_id
 ```
 
 Career/HC remediation（2；布尔 sentinel 仍不能冒充 receipt，后续必须升级为 ID/hash/五元事实）：
@@ -321,7 +330,8 @@ zg361_we_al_external_collective_total_quota
    为 1..6；WAIT/RED/结构性 N/A 分别保留 5/4/7，不能冒充 READY。
 2. Workforce resume 独立复核 Central envelope 与 live B1/MG immutable facts；玩家只在 READY 排一次事件，AI
    直接 materialize A。A/B 选项才 materialize 恰好三个 cohort 和 quota 个（最多六个）全局互异真实 B1 candidate，
-   每个候选复制 exact #357/B1/result tuple。C 不 materialize、不 seal。
+   每个候选复制 exact #357/B1/result tuple；同 effect 内的草稿必须再通过三个 MG 与 owner trust 全局预检才返回
+   committed，失败整份清除并释放 queue。C 不 materialize、不 seal。
 3. A/B 在任何 case/resource/business write 前全局预检三个 MG `can_apply`；A 调用三份 apply、复制每份 27 字段
    真实成本回执，再对 owner realm trust 只扣一次；B 取得 MG 的 N/A 结果但不复制成本回执、不写伪零回执，也不读
    旧 Workforce `manager_score`。consumer 成功后才 exact-match 把 Central status 改为 2；重入只修复漏掉的 mark。
@@ -393,10 +403,10 @@ portfolio”当作历史 receipt 的前置条件，又把三张历史 receipt �
 
 ## 5. 收口数字与下一步
 
-- 本包累计静态改动目标：AC 20 项、AL collective 167 项、AL charter 28 项和 AD 35 项旧 external alias，
-  精确名单见 §2、§3、§4.2、§4.3。
+- 本包累计静态改动目标：AC 20 项、AL collective 167 项、AL charter 28 项、AD 35 项旧 external alias 和
+  AD appointment 3 项真实 callback producer，精确名单见 §2、§3、§4.2、§4.3。
 - 另有既存、待复验的 AL stage 8 项，见 §4.1。
-- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+167+28+35=258`，剩余 45：全部是 AD 45。
-- 这 45 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
+- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+167+28+35+3=261`，剩余 42：全部是 AD 42。
+- 这 42 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
 - 下一轮实机必须 MCP-first：先看 loader 唯一字段差集，再用 paused snapshot 验 #262 real host、#264 三次玩家
   选项、两个 30 日 gap、一次支付/退款、AI 无玩家事件。OCR 不是首选路径。

@@ -123,6 +123,11 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
 - #274 录用与 #275 拒绝是互斥结果。录用成功后内部写 #275 `hold=0` disposition，玩家不会看到矛盾的拒绝窗；
   未录用才展示 #275 A/B/C。真实拒绝后内部写 #269 `no_hire=1` disposition，不创建 probation watch，也不展示
   延迟质量回写窗。这两种 disposition 是可追溯的同案业务结论，不是 C debt，且资源变化为零。
+- #274 A 的玩家事件与授权 AI 路径都必须先调用真实任命 wrapper，不能直接调用招聘 route。原生 callback 同 tick
+  返回时按原路径继续；若返回 `status=5`，任命包的 hidden single-flight audit 在 callback、holder/employer、title/HC
+  与 strict adapter 全部闭合后，用 immutable receipt 的 exact tuple 调
+  `zg361_we_resume_m274_after_native_appointment_effect`。resume 只消费一次 #274、内部关闭 hired #275，再为玩家恢复
+  #269 事件或为授权 AI 恢复后台链；WAIT 只保留一条次日重试，RED/complete 不推进也不重排。
 - #277 不再接收 caller 复述的 PIP case/closure。它直接读取 B2 已提交、尚未消费的 11 字段 PIP settlement 槽，
   再与独立 native exit receipt 联结；position type 与 HC lineage 分别从 #274 和当前 formal HC 对象重导。只有 A/B
   在 case-kernel operation receipt 成功后才消费两个来源，C、RED、stale、幂等和 route collision 都不消费 B2。
@@ -180,7 +185,7 @@ owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退�
 | AD | 268 | 2 | calibration snapshot/bounded adjustment → normalized result；raw votes 不改 |
 | AD | 270 | 2 | 消费同案 #266/#267，role class/risk threshold/version → future hiring policy；raw votes 不改 |
 | AD | 272 | 3 | 消费 owner/vote/calibration/policy 同案对象，冻结 unique offer terms/level/approver/premium due → bounded offer reserve |
-| AD | 274 | 4 | 消费同案 offer/HC lineage 与真实 position receipt；appointed character 直接绑定本案 subject；A one counter 后精确结算 15 金币并 reserved→occupied，B 保持 Offer 进入拒绝分支 |
+| AD | 274 | 4 | 玩家/授权 AI 的 A 都经原生 court-position wrapper；消费同案 offer/HC lineage 与 callback 后封存的 position receipt，appointed character 直接绑定本案 subject；A one counter 后精确结算 15 金币并 reserved→occupied；异步 callback 由 exact-tuple single-flight resume 恢复；B 保持 Offer 进入拒绝分支 |
 | AD | 275 | 4 | 未录用时 refusal reason/runner evidence/HC lineage → held/reopen/release；已录用则内部写 hold=0 disposition，不弹拒绝窗、不改资源 |
 | AD | 269 | 5 | 已录用时 pending outcome + unique evidence → 同案身份重导、bps 守恒后 future one-shot 才 advance；已拒绝则内部写 no-hire disposition，不建 watch |
 | AD | 276 | 6 | old case hash/exit/growth → candidate 绑定当前 subject 的 append-only rehire review；HC untouched |
@@ -220,8 +225,9 @@ N/A；READY 必须带 owner/subject、P2C 与 AL 两套 cycle/case、`cohort_cou
 B1/MG immutable facts，不能只信 Central 的 READY 布尔。
 
 玩家只在 READY 且同案 #360 尚未排队时收到 `zg361we.360`；AI 走已授权第二例外，直接 materialize A 并在后台
-消费。玩家选 A/B 后才按 route materialize 一个产品自有、未结算且立即 sealed 的 collective；C 从不调用
-materializer，并先清除任何 stale submission 字段。A/B 都必须恰好投影三个 cohort，逐 cohort 保留
+消费。玩家选 A/B 后才按 route 在同一 effect 内 materialize 一个产品自有草稿；草稿只有再次通过三个 MG
+`can_apply` 和 owner trust 的全局预检后才向调用者返回 committed/sealed，失败会整份清除并释放 event queue，
+不会留下卡死 resume 的半封存 submission。C 从不调用 materializer，并先清除任何 stale submission 字段。A/B 都必须恰好投影三个 cohort，逐 cohort 保留
 `cohort_id/manager/member_count/member_hash/agenda_count/agenda_hash/quota/all_meet_evidence_id` 以及冻结的
 B1/MG identity。每个活动候选还复制 B1 的 character、processing order、#357 receipt id/hash、B1/result 两套
 owner/subject/cycle/case 与 member evidence；三 cohort 合计只消费 quota 个前缀槽，最多 6 名且全局人物互异，
@@ -229,7 +235,7 @@ owner/subject/cycle/case 与 member evidence；三 cohort 合计只消费 quota 
 
 A 把每个 cohort 的 quota 个候选 materialize 为 exception，forced 为 0，manager cost=quota；B 恰好相反，全部
 materialize 为 forced，exception 为 0，manager cost=0。route 开始时先对三个 manager 全局调用 MG
-`zg361_mg_m360_collective_cost_c{1,2,3}_can_apply_trigger`，任何一个失败都在 case receipt 和资源写之前 RED。
+`zg361_mg_m360_collective_cost_c{1,2,3}_can_apply_trigger` 再验一次，任何一个失败都在 case receipt 和资源写之前 RED。
 只有三份都通过，A 才调用对应 apply effect，逐 cohort 原样复制 MG 的 27 字段真实成本回执，然后对 owner 的
 realm trust 按总 quota 只扣一次；B 仍调用三份 MG apply 以取得权威 N/A 结论，但只写
 `manager_cost_receipt_present=0`，不复制回执、不写伪零回执，也不读取旧 `zg361_we_manager_score`。A/B consumer
@@ -302,17 +308,20 @@ RED `9098`。
 
 1. 中央层选择真实 assessed subject 并调用初始 portfolio adapter；#360 只允许走本节冻结的 resume/N/A seam，
    旧 opener 不会提前排 `zg361we.360`。
-2. AD 已提供严格 adapter：#274 只消费外部已确认的 position receipt，角色直接绑定当前 subject；#276 只接受旧
-   cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；#277 直接 join B2 已提交的 11 字段 PIP settlement
-   槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC lineage。仍需原生岗位 provider 真正执行并证明
-   court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
+2. AD 已提供严格 adapter：#274 的玩家与授权 AI caller 均已接入真实 custom court-position provider；只有原生
+   callback、employer/holder/title/HC 后置条件和 sealed receipt 闭合后才消费，异步 callback 由 hidden audit 调 exact-tuple
+   resume，不会让原事件关闭后卡死。#276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；
+   #277 直接 join B2 已提交的 11 字段 PIP settlement 槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC
+   lineage。#274 仍需 CK3 loader/paused live 证明真实任命、撤任、WAIT 重试和玩家/AI续跑；#277 的离任 provider 仍须
+   实机证明。没有真实事实时分别以 2741/2771 blocked，绝不伪造角色或职位。
 3. 357–359 已有 B1/B2 真实业务 producer、中央调用与本包 strict bridge 接线；#360 也已有 Central route-neutral
    source、B1 三 cohort/候选来源、MG 三 manager cost ABI 与 Workforce materializer/consumer 的静态接线。仍需
    MCP-first CK3 paused/live 证明三张来源和三份 cohort 在可达业务路径生成、玩家只在 READY 收到事件、AI 静默走 A、
    A 的三份真实成本回执/单次 trust 扣减、B 的 N/A、C 的无 seal，以及重试不重复收费。#361 report/charter 已改为
    本包从三轮原始 receipt ledger 生成 serial；必须实机证明前两轮只落 state 8、第三轮才弹 #361。
 4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
-   `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身与真实任命仍是外部调用者责任。
+   `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身仍是外部调用者责任，#274 的真实任命 caller 已按
+   上述 wrapper/resume 合同静态接通。
 5. C debt 到期 consumer 已落地；#264 已改为产品自有三步玩家交接链，不再有 caller-supplied waiver/hash
    adapter。仍需 CK3 存读档/跨周期实机证明 30+30 日 scheduler、玩家/AI 分流、一次支付/退款、资源守恒和
    有界升级没有 scope 漂移。

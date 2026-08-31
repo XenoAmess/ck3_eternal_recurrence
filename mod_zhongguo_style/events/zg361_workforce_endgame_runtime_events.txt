@@ -2420,7 +2420,7 @@ zg361we.274 = {
 	option = {
 		name = zg361we.274.a
 		scope:zg361_we_ad_subject = {
-			zg361_we_m274_route_a_effect = {
+			zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
 				TICKET_SUBJECT = scope:zg361_we_ad_subject
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
@@ -2428,7 +2428,7 @@ zg361we.274 = {
 			}
 		}
 		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 } }
+			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 has_variable = zg361_workforce_appointment_fact_status var:zg361_workforce_appointment_fact_status = 6 } }
 			if = {
 				limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_m274_business_object_created var:zg361_we_m274_business_object_created = 1 has_variable = zg361_we_m274_object_owner var:zg361_we_m274_object_owner = scope:zg361_we_ad_owner has_variable = zg361_we_m274_object_subject var:zg361_we_m274_object_subject = scope:zg361_we_ad_subject has_variable = zg361_we_m274_object_cycle var:zg361_we_m274_object_cycle = scope:zg361_we_ad_cycle has_variable = zg361_we_m274_object_case var:zg361_we_m274_object_case = scope:zg361_we_ad_case has_variable = zg361_we_m274_hired var:zg361_we_m274_hired = 1 } }
 				scope:zg361_we_ad_subject = {

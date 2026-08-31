@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Static contracts for the native Workforce #274 appointment fact."""
 
@@ -358,6 +358,46 @@ class AppointmentFactTests(unittest.TestCase):
         event = block(self.events, f"{gen.NAMESPACE}.{gen.AUDIT_EVENT_ID}")
         self.assertIn("hidden = yes", event)
         self.assertIn(f"{gen.PREFIX}_audit_pending_effect = yes", event)
+        self.assertIn("zg361_we_resume_m274_after_native_appointment_effect = {", event)
+        for field in ("owner", "cycle", "case"):
+            self.assertIn(
+                f"TICKET_{field.upper()} = var:{gen.PREFIX}_receipt_{field}", event
+            )
+        self.assertIn("TICKET_SUBJECT = this", event)
+        resume_index = event.index(
+            "zg361_we_resume_m274_after_native_appointment_effect = {"
+        )
+        audit_index = event.index(f"{gen.PREFIX}_audit_pending_effect = yes")
+        self.assertLess(audit_index, resume_index)
+        self.assertIn(f"var:{gen.PREFIX}_status = 5", event[:resume_index])
+        self.assertIn(f"var:{gen.PREFIX}_receipt_published = 1", event[:resume_index])
+        self.assertIn(f"var:{gen.PREFIX}_receipt_consumed = 0", event[:resume_index])
+        self.assertIn(f"var:{gen.PREFIX}_status = 5", event[resume_index:])
+        self.assertIn(f"{gen.PREFIX}_schedule_audit_effect = yes", event[resume_index:])
+
+    def test_wait_retry_is_single_flight_and_success_does_not_reappoint(self) -> None:
+        schedule = block(self.effects, f"{gen.PREFIX}_schedule_audit_effect")
+        callback = block(
+            self.effects, f"{gen.PREFIX}_on_native_position_received_effect"
+        )
+        request = block(
+            self.effects, f"{gen.PREFIX}_request_native_appointment_effect"
+        )
+        event = block(self.events, f"{gen.NAMESPACE}.{gen.AUDIT_EVENT_ID}")
+        self.assertIn(f"has_variable = {gen.PREFIX}_audit_scheduled", schedule)
+        self.assertIn(f"var:{gen.PREFIX}_audit_scheduled = 0", schedule)
+        self.assertEqual(1, schedule.count("trigger_event = {"))
+        self.assertNotIn("appoint_court_position", schedule)
+        self.assertIn(f"{gen.PREFIX}_schedule_audit_effect = yes", callback)
+        self.assertIn(f"{gen.PREFIX}_schedule_audit_effect = yes", request)
+        self.assertNotIn("trigger_event = {", callback)
+        self.assertNotIn("trigger_event = {", request)
+        self.assertLess(
+            event.index(f"name = {gen.PREFIX}_audit_scheduled value = 0"),
+            event.index(f"{gen.PREFIX}_audit_pending_effect = yes"),
+        )
+        self.assertNotIn("appoint_court_position", event)
+        self.assertNotIn("zg361_we_m274_route_a_effect", event)
 
     def test_typed_red_codes_cover_preflight_callback_adapter_consumer_release(self) -> None:
         for code in range(27401, 27408):
@@ -366,12 +406,14 @@ class AppointmentFactTests(unittest.TestCase):
         self.assertIn("status value = 5", self.effects)
         self.assertIn("status value = 6", self.effects)
 
-    def test_spec_is_honest_about_static_readiness_ui_and_remaining_wiring(self) -> None:
+    def test_spec_is_honest_about_static_readiness_ui_and_completed_wiring(self) -> None:
         self.assertIn("CK3 script static-ready; not loader-live or production-live", self.spec)
         self.assertIn("claim zero UI impact", self.spec)
-        self.assertIn("must replace both calls with this package's wrapper", self.spec)
+        self.assertIn("both call this\npackage's wrapper", self.spec)
+        self.assertIn("hidden event 9001 calls", self.spec)
+        self.assertIn("exact continuation receipt", self.spec)
         self.assertIn("does not prove promotion to an unrelated vanilla title", self.spec)
-        self.assertIn("shared ledger is intentionally not edited", self.spec)
+        self.assertIn("shared ledger records these three fields as static-closed", self.spec)
         for alias in (
             "zg361_we_ad_external_position_type_id",
             "zg361_we_ad_external_position_receipt_id",

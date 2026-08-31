@@ -3,11 +3,46 @@ namespace = zg361workforceappointmentfact
 
 # Reconcile native callback ordering and save/load without creating a success
 # fact.  The effect remains fail-closed unless the engine callback and live
-# holder/employer postcondition both exist.
+# holder/employer postcondition both exist.  A published receipt is delegated
+# through Workforce's exact resume seam; status 5 keeps one retry in flight,
+# while RED and complete states never advance or requeue.
 zg361workforceappointmentfact.9001 = {
     type = character_event
     hidden = yes
     immediate = {
+        set_variable = { name = zg361_workforce_appointment_fact_audit_scheduled value = 0 }
         zg361_workforce_appointment_fact_audit_pending_effect = yes
+        if = {
+            limit = {
+                has_variable = zg361_workforce_appointment_fact_status
+                var:zg361_workforce_appointment_fact_status = 5
+                has_variable = zg361_workforce_appointment_fact_receipt_active
+                var:zg361_workforce_appointment_fact_receipt_active = 1
+                var:zg361_workforce_appointment_fact_receipt_consumed = 0
+                var:zg361_workforce_appointment_fact_receipt_published = 1
+                has_variable = zg361_workforce_appointment_fact_receipt_owner
+                has_variable = zg361_workforce_appointment_fact_receipt_subject
+                has_variable = zg361_workforce_appointment_fact_receipt_cycle
+                has_variable = zg361_workforce_appointment_fact_receipt_case
+                var:zg361_workforce_appointment_fact_receipt_subject = this
+            }
+            zg361_we_resume_m274_after_native_appointment_effect = {
+                TICKET_OWNER = var:zg361_workforce_appointment_fact_receipt_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_workforce_appointment_fact_receipt_cycle
+                TICKET_CASE = var:zg361_workforce_appointment_fact_receipt_case
+            }
+        }
+        if = {
+            limit = {
+                has_variable = zg361_workforce_appointment_fact_status
+                var:zg361_workforce_appointment_fact_status = 5
+                has_variable = zg361_workforce_appointment_fact_receipt_active
+                var:zg361_workforce_appointment_fact_receipt_active = 1
+                var:zg361_workforce_appointment_fact_receipt_consumed = 0
+                var:zg361_workforce_appointment_fact_receipt_subject = this
+            }
+            zg361_workforce_appointment_fact_schedule_audit_effect = yes
+        }
     }
 }

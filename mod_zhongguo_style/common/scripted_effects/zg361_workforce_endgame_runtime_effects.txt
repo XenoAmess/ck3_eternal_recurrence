@@ -7486,6 +7486,145 @@ zg361_we_submit_m277_closed_pip_exit_effect = {
 	else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 2771 } }
 }
 
+# Subject-scope continuation used only by the appointment package's
+# hidden single-flight audit.  It replays the exact native receipt tuple, then
+# restores the same post-#274 player/authorized-AI paths as the original tick.
+zg361_we_resume_m274_after_native_appointment_effect = {
+	remove_variable = zg361_we_m274_native_resume_status
+	remove_variable = zg361_we_m274_native_resume_red_code
+	if = {
+		limit = {
+			has_variable = zg361_we_m274_native_resume_continuation_consumed
+			var:zg361_we_m274_native_resume_continuation_consumed = 1
+			var:zg361_we_m274_native_resume_continuation_owner = $TICKET_OWNER$
+			var:zg361_we_m274_native_resume_continuation_subject = $TICKET_SUBJECT$
+			var:zg361_we_m274_native_resume_continuation_cycle = $TICKET_CYCLE$
+			var:zg361_we_m274_native_resume_continuation_case = $TICKET_CASE$
+			has_variable = zg361_we_m274_business_object_created
+			var:zg361_we_m274_business_object_created = 1
+			var:zg361_we_m274_object_owner = $TICKET_OWNER$
+			var:zg361_we_m274_object_subject = $TICKET_SUBJECT$
+			var:zg361_we_m274_object_cycle = $TICKET_CYCLE$
+			var:zg361_we_m274_object_case = $TICKET_CASE$
+			var:zg361_we_m274_object_consumed = 1
+			has_variable = zg361_we_m275_business_object_created
+			var:zg361_we_m275_business_object_created = 1
+			var:zg361_we_m275_object_owner = $TICKET_OWNER$
+			var:zg361_we_m275_object_subject = $TICKET_SUBJECT$
+			var:zg361_we_m275_object_cycle = $TICKET_CYCLE$
+			var:zg361_we_m275_object_case = $TICKET_CASE$
+			var:zg361_we_m275_object_consumed = 1
+		}
+		set_variable = { name = zg361_we_m274_native_resume_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			this = $TICKET_SUBJECT$
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 4
+			}
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes highest_held_title_tier >= tier_duchy }
+			has_variable = zg361_workforce_appointment_fact_receipt_active
+			var:zg361_workforce_appointment_fact_receipt_active = 1
+			var:zg361_workforce_appointment_fact_receipt_consumed = 0
+			var:zg361_workforce_appointment_fact_receipt_published = 1
+			var:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+			var:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+			var:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+			var:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+			var:zg361_workforce_appointment_fact_receipt_state = 4
+			var:zg361_workforce_appointment_fact_receipt_result = 1
+		}
+		zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = {
+				has_variable = zg361_workforce_appointment_fact_status
+				var:zg361_workforce_appointment_fact_status = 6
+				has_variable = zg361_we_runtime_applied
+				var:zg361_we_runtime_applied = 1
+				var:zg361_we_m274_object_owner = $TICKET_OWNER$
+				var:zg361_we_m274_object_subject = $TICKET_SUBJECT$
+				var:zg361_we_m274_object_cycle = $TICKET_CYCLE$
+				var:zg361_we_m274_object_case = $TICKET_CASE$
+				var:zg361_we_m274_object_consumed = 1
+			}
+			zg361_we_m275_route_a_effect = {
+				TICKET_OWNER = $TICKET_OWNER$
+				TICKET_SUBJECT = $TICKET_SUBJECT$
+				TICKET_CYCLE = $TICKET_CYCLE$
+				TICKET_CASE = $TICKET_CASE$
+			}
+			if = {
+				limit = {
+					has_variable = zg361_we_runtime_applied
+					var:zg361_we_runtime_applied = 1
+					var:zg361_case_ad_state = 5
+					has_variable = zg361_we_m275_business_object_created
+					var:zg361_we_m275_business_object_created = 1
+					var:zg361_we_m275_object_owner = $TICKET_OWNER$
+					var:zg361_we_m275_object_subject = $TICKET_SUBJECT$
+					var:zg361_we_m275_object_cycle = $TICKET_CYCLE$
+					var:zg361_we_m275_object_case = $TICKET_CASE$
+					var:zg361_we_m275_object_consumed = 1
+				}
+				set_variable = { name = zg361_we_m274_native_resume_continuation_consumed value = 1 }
+				set_variable = { name = zg361_we_m274_native_resume_continuation_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_we_m274_native_resume_continuation_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_we_m274_native_resume_continuation_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_we_m274_native_resume_continuation_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_we_m274_native_resume_status value = 1 }
+				if = {
+					limit = { $TICKET_OWNER$ = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+					set_variable = { name = zg361_we_m274_native_resume_continuation_mode value = 2 }
+					zg361_we_m269_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+					zg361_we_m276_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+					zg361_we_m277_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+				}
+				else_if = {
+					limit = { $TICKET_OWNER$ = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+					set_variable = { name = zg361_we_m274_native_resume_continuation_mode value = 1 }
+					$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+					save_scope_as = zg361_we_ad_subject
+					save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+					save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+					$TICKET_OWNER$ = { trigger_event = { id = zg361we.269 } }
+				}
+			}
+			else = {
+				set_variable = { name = zg361_we_m274_native_resume_status value = 4 }
+				set_variable = { name = zg361_we_m274_native_resume_red_code value = 27492 }
+			}
+		}
+		else_if = {
+			limit = { has_variable = zg361_workforce_appointment_fact_status var:zg361_workforce_appointment_fact_status = 5 }
+			set_variable = { name = zg361_we_m274_native_resume_status value = 5 }
+		}
+		else = {
+			set_variable = { name = zg361_we_m274_native_resume_status value = 4 }
+			set_variable = { name = zg361_we_m274_native_resume_red_code value = 27491 }
+		}
+	}
+	else = {
+		set_variable = { name = zg361_we_m274_native_resume_status value = 4 }
+		set_variable = { name = zg361_we_m274_native_resume_red_code value = 27490 }
+	}
+}
+
 # Cross-period consumers are single-flight.  The route cannot
 # overwrite its receipt/write tuple until the queued consumer clears pending.
 zg361_we_m257_future_consume_effect = {
@@ -14393,35 +14532,43 @@ zg361_we_ad_run_authorized_ai_effect = {
 			TICKET_CYCLE = scope:zg361_we_ad_cycle
 			TICKET_CASE = scope:zg361_we_ad_case
 		}
-		zg361_we_m274_route_a_effect = {
+		zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = {
 			TICKET_OWNER = scope:zg361_we_ad_owner
 			TICKET_SUBJECT = scope:zg361_we_ad_subject
 			TICKET_CYCLE = scope:zg361_we_ad_cycle
 			TICKET_CASE = scope:zg361_we_ad_case
 		}
-		zg361_we_m275_route_a_effect = {
-			TICKET_OWNER = scope:zg361_we_ad_owner
-			TICKET_SUBJECT = scope:zg361_we_ad_subject
-			TICKET_CYCLE = scope:zg361_we_ad_cycle
-			TICKET_CASE = scope:zg361_we_ad_case
-		}
-		zg361_we_m269_route_a_effect = {
-			TICKET_OWNER = scope:zg361_we_ad_owner
-			TICKET_SUBJECT = scope:zg361_we_ad_subject
-			TICKET_CYCLE = scope:zg361_we_ad_cycle
-			TICKET_CASE = scope:zg361_we_ad_case
-		}
-		zg361_we_m276_route_a_effect = {
-			TICKET_OWNER = scope:zg361_we_ad_owner
-			TICKET_SUBJECT = scope:zg361_we_ad_subject
-			TICKET_CYCLE = scope:zg361_we_ad_cycle
-			TICKET_CASE = scope:zg361_we_ad_case
-		}
-		zg361_we_m277_route_a_effect = {
-			TICKET_OWNER = scope:zg361_we_ad_owner
-			TICKET_SUBJECT = scope:zg361_we_ad_subject
-			TICKET_CYCLE = scope:zg361_we_ad_cycle
-			TICKET_CASE = scope:zg361_we_ad_case
+		if = {
+			limit = {
+				has_variable = zg361_we_runtime_applied
+				var:zg361_we_runtime_applied = 1
+				has_variable = zg361_workforce_appointment_fact_status
+				var:zg361_workforce_appointment_fact_status = 6
+			}
+			zg361_we_m275_route_a_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
+			}
+			zg361_we_m269_route_a_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
+			}
+			zg361_we_m276_route_a_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
+			}
+			zg361_we_m277_route_a_effect = {
+				TICKET_OWNER = scope:zg361_we_ad_owner
+				TICKET_SUBJECT = scope:zg361_we_ad_subject
+				TICKET_CYCLE = scope:zg361_we_ad_cycle
+				TICKET_CASE = scope:zg361_we_ad_case
+			}
 		}
 	}
 }
