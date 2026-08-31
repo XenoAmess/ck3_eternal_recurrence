@@ -1717,3 +1717,88 @@ terms wire，truce、统一 same-frame reader、Python policy/postcondition 与�
    favor hook 存在性、全部 war-bound source RegimentID 消失；普通或非 war-bound 军队不得被误算。
 5. 如果只能跨日才观察 applied，日收入与 truce 起算日可能污染精确 delta；此时记 capability RED 并补 action-boundary observer，不能只用
    WarID 消失冒充六域 postcondition GREEN。保存 postwar checkpoint 后才继续 G2 turns。
+
+### 2026-09-01：四域并入正式 terms wire（实机待验）
+
+[static/fixture-ready / pending paused MCP live] `ReadWarTerminationTerms` 的既有 Raiktor 分支现已直接聚合
+`ReadRaiktorSurrenderGold`、`ReadRaiktorSurrenderPrestige`、
+`ReadRaiktorSurrenderPrisonerReleases` 与 `ReadRaiktorSurrenderFavorHook`。没有另开 capability 或 mailbox：正式路径仍是
+`query-war-termination-terms-v1-<full WarID>` → application-main → adapter → driver/service →
+`ck3_query_war_termination_terms`。为保持现有调用方兼容，本轮没有提前改成设计稿中的新 slice 名，仍使用
+`supported_slice=raiktor_claim_cb_attacker_defeat_disposition`；严格 schema 通过逐域
+`*_observable`、nullable actual rows、逐域 readiness 和 `unobserved_dynamic_effects` 表达增量观测。
+
+每个可用子域都必须与外层 terms 的 paused `date_raw`、full WarID、CB index/key、primary attacker/defender 与 claimant 相同，且其内部双采样
+`same_frame_stable=true`；聚合完成后再重读 paused snapshot、published war row、CWar pointer、CB pointer/index/key、primary IDs、claimant 与
+target-title 顺序。子域自身返回 typed unavailable 时，该域保持 `observable=false`、actual 值为 `null`，且名称继续留在
+`unobserved_dynamic_effects`；帧、War、CB 或角色身份级失败则拒绝整个 terms 结果。成功发布的域才从未观测列表中移除。
+
+当前 component readiness 可以分别把 `finance/gold`、`fame_factor/attacker_prestige_delta`、`prisoner_release` 与 `favor_hook` 置真；
+`truce_ready=false` 和 `war_bound_armies_ready=false` 仍为硬缺口，所以
+`dynamic_deltas_ready/decision_ready/automatic_surrender_ready/ready` 继续全部为 false，surrender literal 仍不得广告或提交。普通
+`claim_cb_claim_disposition` 的 JSON 与 readiness 未改变；旧 broad exit reader 仍在 preview 前禁用。
+
+离线证据：最终 fresh Release 位于 `Z:\xar-g2-gen034-fourdomain-20260901-02`，source fingerprint
+`53BAC343A1A1428A7FC56EE00FBDC7610BDB3F45D96BB4ED0E056138E8F8B76A`，DLL SHA-256
+`B018FB8C55E99E915E728166BBF1934518095CF4E4981114970FC0CEE69026F0`，injector SHA-256
+`8F4E9C6E36BA50B976909E3AC54B3B6A655F39EBED81F42993E517F0E40BF65D`；fresh CTest `63/63` GREEN 且
+`ck3_11906.hpp` dependency gate 通过。native fixture 除普通 claim golden 外，分别从 public terms query 覆盖 favor/PoW、gold/PoW/favor 与
+F/prestige/PoW/favor 聚合；Python strict contract 覆盖四域同时可用、公式/身份/方向/重复/错误 readiness，并与 driver/service/MCP 回归合计
+normal / `-O` 各 `426/426` GREEN。上述均不等于 CK3 live；下一项仍是复用 WarID `50331699` 冻结 checkpoint，在一次英文 HKL
+启动中做两次同暂停帧 MCP 查询并保存原始 payload，随后才可把四域 wire 提升为 production-live primitive。
+
+### 2026-09-01：Raiktor 四域 paused MCP 双样本 GREEN
+
+[production-live read-only primitive / full surrender decision still blocked] 冻结
+CharacterID `29829` / WarID `50331699` / `date_raw=53223936` checkpoint 已用 fresh
+`Z:\xar-g2-gen034-fourdomain-20260901-02` DLL 做一次正式、非 debug、冷恢复实机验收。正式 GREEN report 为
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-gen034-fourdomain-live-20260831T1932Z\report.json`，
+`121254615` bytes，SHA-256
+`1187D0BD129DA9188B7EBC0C389B035B5C4B1383CE1FF4895481678BCB4371E5`；compact evidence index 位于同目录
+`evidence-index.json`，`4742` bytes，SHA-256
+`D1AF7A3C7F06FE8BFBF7F028C8B294B64381F276DBA612FAE07216EF615DE292`。输入 checkpoint / driver-state 的 SHA-256
+仍分别为 `60108A5D...AAF164 / 4FB901C7...CFF57E`，验收前后逐字节不变；CK3 PID `51268` cleanup 与 process-tree
+回收均 GREEN。
+
+本轮只通过官方 MCP server 调用 `ck3_get_capabilities`、`ck3_take_snapshot` 和两次
+`ck3_query_war_termination_terms`，没有 OCR、视觉输入、时间推进、投降或任何 mutation command。两次查询绑定同一
+`snapshot_id=native:3 / revision=4 / native_revision=3 / date_raw=53223936 / episode=native-29829-809d91e48a8d`，
+`query_sequence=1→2`，去除序号后的完整 normalized payload 逐项相同。War/CB/roles 为 full WarID `50331699`、
+CB index `27` / key `raiktor_claim_cb`、player primary attacker `29829`、primary defender `36769`、claimant
+`16826697`、target title `[1207]`。两样本都实测：
+
+- gold transfer 为 attacker `29829` → defender `36769`，`27300000 / 100000`；双方余额和 authoritative monthly income
+  同时发布；
+- `F=10000000 / 100000`，attacker prestige delta 为封顶后的 `-100000000 / 100000`；
+- participant 与 primary+前三继承人扫描完整，当前 `release_pairs=[]` 是合法实测零；
+- claimant 与 attacker 不同，原始 visible root 确实 traversal，conditional ordinary favor hook `will_apply=true`。
+
+四域的 `observable`、component readiness 与 `same_frame_stable` 全真，故这四个 production core 与统一 public terms wire 可提升为
+**production-live read-only primitive**。但 `truce_ready=false`、`war_bound_armies_ready=false` 仍然明确保留，进而
+`dynamic_deltas_ready / decision_ready / automatic_surrender_ready / ready` 全假；本轮没有、后续也不得据此开放
+`surrender-war-50331699`。这不是六域完成，也不是 surrender OODA complete。
+
+英文输入法使用独立 PID-scoped watcher 留证：
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-gen034-fourdomain-live-20260831T1932Z-hkl\hkl\ck3-hkl-summary.json`，
+SHA-256 `2EDA954ED88EB2FE6116A0B138BCE0F8FE47C23EC04833A54EF4C1716831638C`。它对 PID `51268` 的 `79` 次窗口轮询
+始终读到 US English `0x04090409`，layout action `0`、unresolved error `0`；进程退出时一次 Toolhelp access-denied race 已在下一轮以
+PID absent 闭合，不影响 HKL 或 cleanup 结论。
+
+#### 本轮 harness RED 与 MCP binding 教训
+
+三个失败 attempt 都原样保留，不能删除或倒写为 gameplay RED：
+
+1. `...T1919Z/report.json` 在 CK3 启动前因误用缺 `win32api` 的全局 Python 失败；正式实机 runner 必须固定使用
+   `Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe`。
+2. `...T1922Z/report.json` 已冷恢复到正确 paused frame，但 runner 错把 `action_steps` 期望为 capability 的 `-N` 模板；正式
+   `bridge_capabilities` 使用 `game.command.query-war-termination-terms-v1-N`，而 paused `action_steps` 必须是具体 full WarID 字面量
+   `query-war-termination-terms-v1-50331699`。
+3. `...T1926Z/report.json` 的真实双样本与四域已全部成功，但 runner 臆造了不存在的
+   `binding.expected_revision`，因而自判 RED。正式 MCP result 的 frame receipt 是顶层
+   `queried_snapshot_id / queried_revision / queried_native_revision`；`expected_revision` 只是请求参数，不会作为嵌套 `binding`
+   回显。验收必须把这三个 `queried_*` 字段与调用前 paused snapshot 对齐，不能另造返回 schema。
+
+最小修复后的可复用入口为
+`ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py`。它保留所有失败/成功 state 与 raw MCP payload，
+并将允许的 gameplay command 固定为同一 WarID 的两次只读 terms query。以后同类 MCP live runner 应先从现有 service/result contract
+读取真实 receipt 字段；不得把其他 query 的历史字段形状复制过来后再靠重启 CK3 发现错误。

@@ -529,3 +529,22 @@ Surrender queue ACK 仍只表示 `submitted_pending`。同一 paused snapshot �
   `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668`；Raiktor visible-root reader 不得引用 hidden-truce projection。
 - 实机：一次 CK3 启动内完成两次同帧 MCP options+terms、未 ready 时 literal 隐藏、ready 后一次 typed surrender、六域 applied
   postcondition、postwar checkpoint 与继续 G2。不得用 OCR，也不得为每一域分别重启 CK3。
+
+### 2026-09-01 四域策略输入已接线，动作门不变
+
+[production-live read-only primitive / surrender action still blocked] 正式 `query-war-termination-terms-v1-<WarID>` 已在同一 Raiktor
+paused payload 中逐域携带
+actual gold、F/prestige、PoW 与 favor-hook；Python normalization 严格校验原始公式、角色身份、gold 方向、prestige delta、完整
+participant/successor 集、release pair 方向、favor authored outer gate、未观测列表和逐域 readiness。它不再是“只有四个孤立 core、尚未进入
+terms JSON”的状态。
+
+这次接线没有扩大策略授权。`truce_ready=false` 与 `war_bound_armies_ready=false` 仍使
+`decision_ready=false / automatic_surrender_ready=false / ready=false`；driver 继续拒绝 surrender literal，planner/action projection 也不得因为
+四个 component 已观测而创建投降动作。只有后续补齐 truce 与 Raiktor source-specific regiment/loss，再完成同帧 options+terms 合取、独立
+continue-vs-surrender policy 和 action-boundary postcondition，才允许修改本节的动作门。
+
+离线门已由 fresh Release `Z:\xar-g2-gen034-fourdomain-20260901-02` 的 native `63/63` CTest，以及 terms contract +
+native-driver + gameplay/MCP normal / `-O` 各 `426/426` GREEN 覆盖。CharacterID `29829` / WarID `50331699` 的冻结实机状态又以
+同一 `native:3 / revision=4 / native_revision=3 / date_raw=53223936` 做完两次正式 MCP query，payload 一致；report SHA-256 为
+`1187D0BD129DA9188B7EBC0C389B035B5C4B1383CE1FF4895481678BCB4371E5`。因此四域输入可写 production-live primitive，
+但仍不得把它冒充六域 `decision_ready`，也不得把 observed terms 当成 continue-vs-surrender 的自动选择。

@@ -8930,8 +8930,10 @@ int main() {
   g_character_claim_destroy_calls = 0;
   g_character_claim_title_mismatch = false;
   g_character_claim_malformed_bool = false;
-  if (xar::ck3_11906::ReadWarTerminationTerms(
-          bindings, active_war_id, termination_terms) !=
+  const auto raiktor_terms_result =
+      xar::ck3_11906::ReadWarTerminationTerms(
+          bindings, active_war_id, termination_terms);
+  if (raiktor_terms_result !=
           xar::ck3_11906::ReadWarTerminationTermsResult::available ||
       termination_terms.war_id != active_war_id ||
       termination_terms.active_casus_belli_database_index != 0 ||
@@ -9017,12 +9019,79 @@ int main() {
       termination_terms.raiktor_surrender->attacker_influence_delta.scale !=
           100'000 ||
       termination_terms.raiktor_surrender->hostages_allowed ||
+      termination_terms.raiktor_surrender->gold_observable ||
+      termination_terms.raiktor_surrender->prestige_observable ||
+      !termination_terms.raiktor_surrender->prisoner_release_observable ||
+      termination_terms.raiktor_surrender->attacker_participant_ids !=
+          std::vector<std::int32_t>{played_character_id} ||
+      termination_terms.raiktor_surrender->defender_participant_ids !=
+          std::vector<std::int32_t>{enemy_character_id} ||
+      termination_terms.raiktor_surrender->attacker_release_candidate_ids !=
+          std::vector<std::int32_t>{played_character_id} ||
+      termination_terms.raiktor_surrender->defender_release_candidate_ids !=
+          std::vector<std::int32_t>{enemy_character_id} ||
+      !termination_terms.raiktor_surrender->prisoner_release_pairs.empty() ||
+      !termination_terms.raiktor_surrender->full_participant_scan ||
+      !termination_terms.raiktor_surrender
+           ->primary_and_first_three_successors_scanned ||
+      termination_terms.raiktor_surrender->favor_hook_observable ||
+      termination_terms.raiktor_surrender
+          ->claimant_distinct_from_attacker ||
+      termination_terms.raiktor_surrender
+          ->original_visible_root_traversed ||
+      termination_terms.raiktor_surrender
+          ->conditional_favor_hook_applies ||
+      !termination_terms.raiktor_surrender
+           ->observed_dynamic_terms_same_frame_stable ||
       termination_terms.raiktor_surrender->unobserved_dynamic_effects.size() !=
-          14 ||
+          13 ||
+      std::find(
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.begin(),
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end(),
+          "actual_prisoner_release_pairs") !=
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end() ||
+      std::find(
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.begin(),
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end(),
+          "conditional_favor_hook_application") ==
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end() ||
       g_character_claim_read_calls != claim_reads_before_raiktor + 4 ||
       g_character_claim_destroy_calls !=
           claim_destroys_before_raiktor + 3 ||
       g_submit_called) {
+    std::cerr
+        << "raiktor aggregate diagnostics: result="
+        << static_cast<int>(raiktor_terms_result)
+        << " has_surrender=" << termination_terms.raiktor_surrender.has_value()
+        << " claim_reads=" << g_character_claim_read_calls
+        << " claim_destroys=" << g_character_claim_destroy_calls;
+    if (termination_terms.raiktor_surrender.has_value()) {
+      const auto &diagnostic = *termination_terms.raiktor_surrender;
+      std::cerr << " gold=" << diagnostic.gold_observable
+                << " prestige=" << diagnostic.prestige_observable
+                << " pow=" << diagnostic.prisoner_release_observable
+                << " favor=" << diagnostic.favor_hook_observable
+                << " stable="
+                << diagnostic.observed_dynamic_terms_same_frame_stable
+                << " attacker_participants="
+                << diagnostic.attacker_participant_ids.size()
+                << " defender_participants="
+                << diagnostic.defender_participant_ids.size()
+                << " attacker_candidates="
+                << diagnostic.attacker_release_candidate_ids.size()
+                << " defender_candidates="
+                << diagnostic.defender_release_candidate_ids.size()
+                << " pairs=" << diagnostic.prisoner_release_pairs.size()
+                << " unobserved="
+                << diagnostic.unobserved_dynamic_effects.size();
+    }
+    std::cerr << '\n';
     return Fail("raiktor surrender terms lost the narrow source-bound slice");
   }
 
@@ -9548,6 +9617,39 @@ int main() {
     return Fail("Raiktor production favor-hook observer lost exact terms");
   }
 
+  // The existing public terms query must carry this production observer;
+  // proving the isolated core alone is not an end-to-end native wire test.
+  reset_raiktor_favor_production_fixture();
+  Store(g_war, 0x290, played_character_id);
+  termination_terms = {};
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          raiktor_hook_bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::available ||
+      !termination_terms.raiktor_surrender.has_value() ||
+      termination_terms.raiktor_surrender->gold_observable ||
+      termination_terms.raiktor_surrender->prestige_observable ||
+      !termination_terms.raiktor_surrender->prisoner_release_observable ||
+      !termination_terms.raiktor_surrender->favor_hook_observable ||
+      termination_terms.raiktor_surrender
+          ->claimant_distinct_from_attacker ||
+      termination_terms.raiktor_surrender
+          ->original_visible_root_traversed ||
+      termination_terms.raiktor_surrender
+          ->conditional_favor_hook_applies ||
+      !termination_terms.raiktor_surrender
+           ->observed_dynamic_terms_same_frame_stable ||
+      std::find(
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.begin(),
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end(),
+          "conditional_favor_hook_application") !=
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end() ||
+      g_submit_called) {
+    return Fail("Raiktor public terms query did not carry favor/PoW");
+  }
+
   reset_raiktor_favor_production_fixture();
   g_raiktor_emit_primary = false;
   g_raiktor_emit_theocracy = false;
@@ -9843,6 +9945,32 @@ int main() {
     return Fail("Raiktor gold observer lost the exact primary transfer");
   }
 
+  reset_raiktor_gold_fixture();
+  termination_terms = {};
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          raiktor_gold_bindings, active_war_id, termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::available ||
+      !termination_terms.raiktor_surrender.has_value() ||
+      !termination_terms.raiktor_surrender->gold_observable ||
+      termination_terms.raiktor_surrender->prestige_observable ||
+      !termination_terms.raiktor_surrender->prisoner_release_observable ||
+      !termination_terms.raiktor_surrender->favor_hook_observable ||
+      termination_terms.raiktor_surrender->actual_gold_transfer !=
+          xar::game::WarRaiktorGoldTransferSnapshot{
+              played_character_id, enemy_character_id,
+              {15'000'000, 100'000}} ||
+      std::find(
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.begin(),
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end(),
+          "actual_gold_transfer") !=
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end() ||
+      g_submit_called) {
+    return Fail("Raiktor public terms query did not carry gold/PoW/favor");
+  }
+
   const auto rejects_raiktor_gold =
       [&](auto configure,
           xar::ck3_11906::RaiktorGoldBetweenSamplesHook between_samples,
@@ -10039,6 +10167,34 @@ int main() {
       !g_exit_terms_collector_lifecycle_valid ||
       !g_exit_terms_context_lifecycle_valid || g_submit_called) {
     return Fail("Raiktor F/prestige observer lost the exact terms");
+  }
+
+  reset_raiktor_prestige_fixture();
+  termination_terms = {};
+  if (xar::ck3_11906::ReadWarTerminationTerms(
+          raiktor_prestige_bindings, active_war_id,
+          termination_terms) !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::available ||
+      !termination_terms.raiktor_surrender.has_value() ||
+      termination_terms.raiktor_surrender->gold_observable ||
+      !termination_terms.raiktor_surrender->prestige_observable ||
+      !termination_terms.raiktor_surrender->prisoner_release_observable ||
+      !termination_terms.raiktor_surrender->favor_hook_observable ||
+      termination_terms.raiktor_surrender->cb_prestige_factor !=
+          xar::game::FixedPointValue{700'000, 100'000} ||
+      termination_terms.raiktor_surrender->attacker_prestige_delta !=
+          xar::game::WarRaiktorCharacterFixedPointSnapshot{
+              played_character_id, {-7'000'000, 100'000}} ||
+      std::find(
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.begin(),
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end(),
+          "actual_prestige_delta") !=
+          termination_terms.raiktor_surrender
+              ->unobserved_dynamic_effects.end() ||
+      g_submit_called) {
+    return Fail("Raiktor public terms query did not carry F/prestige");
   }
 
   reset_raiktor_prestige_fixture();
@@ -10895,6 +11051,12 @@ int main() {
     return Fail("war-bound regiment observer submitted a native command");
   }
 
+  // The public GEN-034 aggregation checks above intentionally reuse the
+  // claim getter and PoW primary-title reader.  The legacy broad-exit fixture
+  // below owns its own exact call-count lifecycle.
+  g_exit_terms_primary_title_calls = 0;
+  g_character_claim_read_calls = 0;
+  g_character_claim_destroy_calls = 0;
   const auto exit_terms_result =
       xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
           bindings, active_war_id, exit_terms);

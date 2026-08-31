@@ -1370,6 +1370,60 @@ void AppendWarClaimDisposition(
   result += '}';
 }
 
+void AppendRaiktorCharacterFixedPoint(
+    std::string &result,
+    const xar::game::WarRaiktorCharacterFixedPointSnapshot &row) {
+  result += "{\"character_id\":";
+  result += SignedNumber(row.character_id);
+  result += ",\"value\":";
+  AppendFixedPoint(result, row.value);
+  result += '}';
+}
+
+void AppendRaiktorGoldTransfer(
+    std::string &result,
+    const xar::game::WarRaiktorGoldTransferSnapshot &row) {
+  result += "{\"from_character_id\":";
+  result += SignedNumber(row.from_character_id);
+  result += ",\"to_character_id\":";
+  result += SignedNumber(row.to_character_id);
+  result += ",\"value\":";
+  AppendFixedPoint(result, row.value);
+  result += '}';
+}
+
+void AppendRaiktorCharacterIds(
+    std::string &result, const std::vector<std::int32_t> &ids) {
+  result += '[';
+  for (std::size_t index = 0; index < ids.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    result += SignedNumber(ids[index]);
+  }
+  result += ']';
+}
+
+void AppendRaiktorPrisonerReleasePairs(
+    std::string &result,
+    const std::vector<xar::game::WarRaiktorPrisonerReleaseSnapshot> &pairs) {
+  result += '[';
+  for (std::size_t index = 0; index < pairs.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    const auto &pair = pairs[index];
+    result += "{\"jailer_character_id\":";
+    result += SignedNumber(pair.jailer_character_id);
+    result += ",\"prisoner_character_id\":";
+    result += SignedNumber(pair.prisoner_character_id);
+    result += ",\"reason\":";
+    AppendJsonString(result, pair.reason);
+    result += '}';
+  }
+  result += ']';
+}
+
 void AppendClaimWarTerminationTermsProvenance(std::string &result) {
   result +=
       "{\"game_version\":\"1.19.0.6\","
@@ -1477,7 +1531,43 @@ void AppendWarTerminationTerms(
     result += ",\"defender_culture_multiplier\":";
     AppendJsonString(
         result, surrender.gold_reparations_defender_culture_multiplier);
-    result += ",\"actual_amount_observable\":false}";
+    result += ",\"actual_amount_observable\":";
+    result += surrender.gold_observable ? "true" : "false";
+    result += ",\"attacker_current_gold\":";
+    if (surrender.gold_observable) {
+      AppendRaiktorCharacterFixedPoint(result,
+                                       surrender.attacker_current_gold);
+    } else {
+      result += "null";
+    }
+    result += ",\"defender_current_gold\":";
+    if (surrender.gold_observable) {
+      AppendRaiktorCharacterFixedPoint(result,
+                                       surrender.defender_current_gold);
+    } else {
+      result += "null";
+    }
+    result += ",\"attacker_authoritative_monthly_gold_income\":";
+    if (surrender.gold_observable) {
+      AppendRaiktorCharacterFixedPoint(
+          result, surrender.attacker_authoritative_monthly_gold_income);
+    } else {
+      result += "null";
+    }
+    result += ",\"defender_authoritative_monthly_gold_income\":";
+    if (surrender.gold_observable) {
+      AppendRaiktorCharacterFixedPoint(
+          result, surrender.defender_authoritative_monthly_gold_income);
+    } else {
+      result += "null";
+    }
+    result += ",\"actual_transfer\":";
+    if (surrender.gold_observable) {
+      AppendRaiktorGoldTransfer(result, surrender.actual_gold_transfer);
+    } else {
+      result += "null";
+    }
+    result += '}';
     result += ",\"attacker_fame\":{\"resource\":";
     AppendJsonString(result, surrender.attacker_fame_resource);
     result += ",\"base\":";
@@ -1486,7 +1576,29 @@ void AppendWarTerminationTerms(
     result += SignedNumber(surrender.attacker_fame_scale);
     result += ",\"limit_rule\":";
     AppendJsonString(result, surrender.attacker_fame_limit_rule);
-    result += ",\"actual_delta_observable\":false}";
+    result += ",\"actual_delta_observable\":";
+    result += surrender.prestige_observable ? "true" : "false";
+    result += ",\"attacker_current_prestige\":";
+    if (surrender.prestige_observable) {
+      AppendRaiktorCharacterFixedPoint(
+          result, surrender.attacker_current_prestige);
+    } else {
+      result += "null";
+    }
+    result += ",\"cb_prestige_factor\":";
+    if (surrender.prestige_observable) {
+      AppendFixedPoint(result, surrender.cb_prestige_factor);
+    } else {
+      result += "null";
+    }
+    result += ",\"attacker_prestige_delta\":";
+    if (surrender.prestige_observable) {
+      AppendRaiktorCharacterFixedPoint(result,
+                                       surrender.attacker_prestige_delta);
+    } else {
+      result += "null";
+    }
+    result += '}';
     result += ",\"truce\":{\"direction\":";
     AppendJsonString(result, surrender.truce_direction);
     result += ",\"result\":";
@@ -1494,10 +1606,79 @@ void AppendWarTerminationTerms(
     result += ",\"actual_expiry_observable\":false}";
     result += ",\"prisoner_release\":{\"rule\":";
     AppendJsonString(result, surrender.prisoner_release_rule);
-    result += ",\"actual_pairs_observable\":false}";
+    result += ",\"actual_pairs_observable\":";
+    result += surrender.prisoner_release_observable ? "true" : "false";
+    result += ",\"attacker_participant_ids\":";
+    if (surrender.prisoner_release_observable) {
+      AppendRaiktorCharacterIds(result, surrender.attacker_participant_ids);
+    } else {
+      result += "null";
+    }
+    result += ",\"defender_participant_ids\":";
+    if (surrender.prisoner_release_observable) {
+      AppendRaiktorCharacterIds(result, surrender.defender_participant_ids);
+    } else {
+      result += "null";
+    }
+    result += ",\"attacker_release_candidate_ids\":";
+    if (surrender.prisoner_release_observable) {
+      AppendRaiktorCharacterIds(
+          result, surrender.attacker_release_candidate_ids);
+    } else {
+      result += "null";
+    }
+    result += ",\"defender_release_candidate_ids\":";
+    if (surrender.prisoner_release_observable) {
+      AppendRaiktorCharacterIds(
+          result, surrender.defender_release_candidate_ids);
+    } else {
+      result += "null";
+    }
+    result += ",\"release_pairs\":";
+    if (surrender.prisoner_release_observable) {
+      AppendRaiktorPrisonerReleasePairs(
+          result, surrender.prisoner_release_pairs);
+    } else {
+      result += "null";
+    }
+    result += ",\"full_participant_scan\":";
+    if (surrender.prisoner_release_observable) {
+      result += surrender.full_participant_scan ? "true" : "false";
+    } else {
+      result += "null";
+    }
+    result += ",\"primary_and_first_three_successors_scanned\":";
+    if (surrender.prisoner_release_observable) {
+      result += surrender.primary_and_first_three_successors_scanned
+                    ? "true"
+                    : "false";
+    } else {
+      result += "null";
+    }
+    result += '}';
     result += ",\"conditional_favor_hook\":{\"rule\":";
     AppendJsonString(result, surrender.conditional_favor_hook_rule);
-    result += ",\"actual_applies_observable\":false}";
+    result += ",\"actual_applies_observable\":";
+    result += surrender.favor_hook_observable ? "true" : "false";
+    result += ",\"claimant_distinct_from_attacker\":";
+    if (surrender.favor_hook_observable) {
+      result += surrender.claimant_distinct_from_attacker ? "true" : "false";
+    } else {
+      result += "null";
+    }
+    result += ",\"original_visible_root_traversed\":";
+    if (surrender.favor_hook_observable) {
+      result += surrender.original_visible_root_traversed ? "true" : "false";
+    } else {
+      result += "null";
+    }
+    result += ",\"will_apply\":";
+    if (surrender.favor_hook_observable) {
+      result += surrender.conditional_favor_hook_applies ? "true" : "false";
+    } else {
+      result += "null";
+    }
+    result += '}';
     result += ",\"attacker_legitimacy_delta\":";
     AppendFixedPoint(result, surrender.attacker_legitimacy_delta);
     result += ",\"attacker_influence_delta\":";
@@ -1516,9 +1697,25 @@ void AppendWarTerminationTerms(
         "],\"readiness\":{\"identity_ready\":true,"
         "\"targets_ready\":true,\"claim_rows_ready\":true,"
         "\"attacker_defeat_rule_ready\":true,"
-        "\"static_formula_ready\":true,"
-        "\"dynamic_deltas_ready\":false,"
-        "\"decision_ready\":false,"
+        "\"static_formula_ready\":true,\"finance_ready\":";
+    result += surrender.gold_observable ? "true" : "false";
+    result += ",\"gold_ready\":";
+    result += surrender.gold_observable ? "true" : "false";
+    result += ",\"fame_factor_ready\":";
+    result += surrender.prestige_observable ? "true" : "false";
+    result += ",\"attacker_prestige_delta_ready\":";
+    result += surrender.prestige_observable ? "true" : "false";
+    result += ",\"truce_ready\":false,\"prisoner_release_ready\":";
+    result += surrender.prisoner_release_observable ? "true" : "false";
+    result += ",\"favor_hook_ready\":";
+    result += surrender.favor_hook_observable ? "true" : "false";
+    result +=
+        ",\"war_bound_armies_ready\":false,\"same_frame_stable\":";
+    result += surrender.observed_dynamic_terms_same_frame_stable
+                  ? "true"
+                  : "false";
+    result +=
+        ",\"dynamic_deltas_ready\":false,\"decision_ready\":false,"
         "\"automatic_surrender_ready\":false,\"ready\":false},"
         "\"provenance\":";
     AppendRaiktorWarTerminationTermsProvenance(result);

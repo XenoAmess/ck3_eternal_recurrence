@@ -15386,6 +15386,211 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
         "defender_accolade_glory",
         "laamp_actual_settlement_outside_cb_effect",
         "war_bound_army_losses"};
+
+    RaiktorSurrenderGoldObservation gold{};
+    RaiktorSurrenderPrestigeObservation prestige{};
+    RaiktorSurrenderPrisonerReleaseObservation prisoner_releases{};
+    RaiktorSurrenderFavorHookObservation favor_hook{};
+    const auto gold_result =
+        ReadRaiktorSurrenderGoldCore(bindings, war_id, gold, nullptr);
+    const auto prestige_result =
+        ReadRaiktorSurrenderPrestigeCore(bindings, war_id, prestige, nullptr);
+    const auto prisoner_release_result =
+        ReadRaiktorSurrenderPrisonerReleasesCore(
+            bindings, war_id, prisoner_releases, nullptr);
+    const auto favor_hook_result =
+        ReadRaiktorSurrenderFavorHookCore(
+            bindings, war_id, favor_hook, nullptr);
+
+    // A domain-specific malformed shape remains an explicit unavailable
+    // subdomain. Frame/War/CB failures cannot be downgraded to a partial
+    // result, because they invalidate the static terms identity too.
+    if ((gold_result != ReadRaiktorSurrenderGoldResult::available &&
+         gold_result != ReadRaiktorSurrenderGoldResult::unavailable &&
+         gold_result !=
+             ReadRaiktorSurrenderGoldResult::player_not_primary_attacker) ||
+        (prestige_result !=
+             ReadRaiktorSurrenderPrestigeResult::available &&
+         prestige_result !=
+             ReadRaiktorSurrenderPrestigeResult::unavailable &&
+         prestige_result != ReadRaiktorSurrenderPrestigeResult::
+                                player_not_primary_attacker) ||
+        (prisoner_release_result !=
+             ReadRaiktorSurrenderPrisonerReleasesResult::available &&
+         prisoner_release_result !=
+             ReadRaiktorSurrenderPrisonerReleasesResult::unavailable &&
+         prisoner_release_result !=
+             ReadRaiktorSurrenderPrisonerReleasesResult::
+                 player_not_primary_attacker) ||
+        (favor_hook_result !=
+             ReadRaiktorSurrenderFavorHookResult::available &&
+         favor_hook_result !=
+             ReadRaiktorSurrenderFavorHookResult::unavailable &&
+         favor_hook_result != ReadRaiktorSurrenderFavorHookResult::
+                                   player_not_primary_attacker)) {
+      output = {};
+      return ReadWarTerminationTermsResult::unavailable;
+    }
+
+    const auto primary_attacker_character_id = LoadAt<std::int32_t>(
+        war, kWarPrimaryAttackerCharacterIdOffset);
+    const auto primary_defender_character_id = LoadAt<std::int32_t>(
+        war, kWarPrimaryDefenderCharacterIdOffset);
+    const auto observation_identity_matches = [&](const auto &observation) {
+      return observation.war_id == war_id &&
+             observation.date_raw == current.date_raw &&
+             observation.active_casus_belli_database_index ==
+                 casus_belli_database_index &&
+             observation.active_casus_belli_key == casus_belli_key &&
+             observation.primary_attacker_character_id ==
+                 primary_attacker_character_id &&
+             observation.primary_defender_character_id ==
+                 primary_defender_character_id &&
+             observation.claimant_character_id == claimant_character_id &&
+             observation.same_frame_stable;
+    };
+    const auto erase_unobserved = [&](std::string_view key) {
+      surrender.unobserved_dynamic_effects.erase(
+          std::remove(surrender.unobserved_dynamic_effects.begin(),
+                      surrender.unobserved_dynamic_effects.end(), key),
+          surrender.unobserved_dynamic_effects.end());
+    };
+
+    if (gold_result == ReadRaiktorSurrenderGoldResult::available) {
+      if (!observation_identity_matches(gold) ||
+          !gold.exact_primary_transfer_observed) {
+        output = {};
+        return ReadWarTerminationTermsResult::unavailable;
+      }
+      surrender.gold_observable = true;
+      surrender.attacker_current_gold = {
+          gold.attacker_current_gold.character_id,
+          gold.attacker_current_gold.value};
+      surrender.defender_current_gold = {
+          gold.defender_current_gold.character_id,
+          gold.defender_current_gold.value};
+      surrender.attacker_authoritative_monthly_gold_income = {
+          gold.attacker_authoritative_monthly_gold_income.character_id,
+          gold.attacker_authoritative_monthly_gold_income.value};
+      surrender.defender_authoritative_monthly_gold_income = {
+          gold.defender_authoritative_monthly_gold_income.character_id,
+          gold.defender_authoritative_monthly_gold_income.value};
+      surrender.actual_gold_transfer = {
+          gold.actual_transfer.from_character_id,
+          gold.actual_transfer.to_character_id,
+          gold.actual_transfer.value};
+      erase_unobserved("actual_gold_transfer");
+    }
+    if (prestige_result ==
+        ReadRaiktorSurrenderPrestigeResult::available) {
+      if (!observation_identity_matches(prestige) ||
+          !prestige.exact_factor_and_attacker_delta_observed) {
+        output = {};
+        return ReadWarTerminationTermsResult::unavailable;
+      }
+      surrender.prestige_observable = true;
+      surrender.attacker_current_prestige = {
+          prestige.attacker_current_prestige.character_id,
+          prestige.attacker_current_prestige.value};
+      surrender.cb_prestige_factor = prestige.cb_prestige_factor;
+      surrender.attacker_prestige_delta = {
+          prestige.attacker_prestige_delta.character_id,
+          prestige.attacker_prestige_delta.value};
+      erase_unobserved("actual_prestige_delta");
+    }
+    if (prisoner_release_result ==
+        ReadRaiktorSurrenderPrisonerReleasesResult::available) {
+      if (!observation_identity_matches(prisoner_releases) ||
+          !prisoner_releases.full_participant_scan ||
+          !prisoner_releases.primary_and_first_three_successors_scanned) {
+        output = {};
+        return ReadWarTerminationTermsResult::unavailable;
+      }
+      surrender.prisoner_release_observable = true;
+      surrender.attacker_participant_ids =
+          prisoner_releases.attacker_participant_ids;
+      surrender.defender_participant_ids =
+          prisoner_releases.defender_participant_ids;
+      surrender.attacker_release_candidate_ids =
+          prisoner_releases.attacker_release_candidate_ids;
+      surrender.defender_release_candidate_ids =
+          prisoner_releases.defender_release_candidate_ids;
+      surrender.prisoner_release_pairs.reserve(
+          prisoner_releases.release_pairs.size());
+      for (const auto &pair : prisoner_releases.release_pairs) {
+        surrender.prisoner_release_pairs.push_back(
+            {pair.jailer_character_id, pair.prisoner_character_id,
+             pair.reason});
+      }
+      surrender.full_participant_scan = true;
+      surrender.primary_and_first_three_successors_scanned = true;
+      erase_unobserved("actual_prisoner_release_pairs");
+    }
+    if (favor_hook_result ==
+        ReadRaiktorSurrenderFavorHookResult::available) {
+      if (!observation_identity_matches(favor_hook)) {
+        output = {};
+        return ReadWarTerminationTermsResult::unavailable;
+      }
+      surrender.favor_hook_observable = true;
+      surrender.claimant_distinct_from_attacker =
+          favor_hook.claimant_distinct_from_attacker;
+      surrender.original_visible_root_traversed =
+          favor_hook.original_visible_root_traversed;
+      surrender.conditional_favor_hook_applies =
+          favor_hook.conditional_favor_hook_applies;
+      erase_unobserved("conditional_favor_hook_application");
+    }
+
+    std::vector<std::int32_t> final_target_title_ids;
+    std::string final_casus_belli_key;
+    Snapshot final{};
+    const auto final_published_war = [&]() {
+      if (!ReadSnapshot(bindings, final)) {
+        return final.active_wars.end();
+      }
+      return std::find_if(
+          final.active_wars.begin(), final.active_wars.end(),
+          [war_id](const ActiveWarSnapshot &candidate) {
+            return candidate.war_id == war_id;
+          });
+    }();
+    if (!final.paused || final.date_raw != current.date_raw ||
+        final.played_character_id != current.played_character_id ||
+        final_published_war == final.active_wars.end() ||
+        final_published_war->player_side != published_war->player_side ||
+        final_published_war->player_is_primary_war_leader !=
+            published_war->player_is_primary_war_leader ||
+        final_published_war->primary_opponent_character_id !=
+            published_war->primary_opponent_character_id ||
+        ResolveWar(bindings, game_state, war_id) != war ||
+        LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+            casus_belli_type ||
+        LoadAt<std::int32_t>(casus_belli_type,
+                             kCasusBelliTypeDatabaseIndexOffset) !=
+            casus_belli_database_index ||
+        !ReadCasusBelliTypeKey(casus_belli_type,
+                               final_casus_belli_key) ||
+        final_casus_belli_key != casus_belli_key ||
+        LoadAt<std::int32_t>(war, kWarClaimantCharacterIdOffset) !=
+            claimant_character_id ||
+        LoadAt<std::int32_t>(war,
+                             kWarPrimaryAttackerCharacterIdOffset) !=
+            primary_attacker_character_id ||
+        LoadAt<std::int32_t>(war,
+                             kWarPrimaryDefenderCharacterIdOffset) !=
+            primary_defender_character_id ||
+        !ReadNativeIntArray(
+            static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+            final_target_title_ids, kMaximumWarObjectiveTitleIds) ||
+        final_target_title_ids != output.target_title_ids) {
+      output = {};
+      return ReadWarTerminationTermsResult::unavailable;
+    }
+    surrender.observed_dynamic_terms_same_frame_stable =
+        surrender.gold_observable || surrender.prestige_observable ||
+        surrender.prisoner_release_observable ||
+        surrender.favor_hook_observable;
     output.attacker_defeat = surrender.claim_disposition;
     output.raiktor_surrender = std::move(surrender);
   }

@@ -582,10 +582,11 @@ struct WarTerminationOptionsSnapshot {
 };
 
 // Narrow, source-pinned terms projection. The claim_cb branch remains the
-// complete claim-disposition slice. The raiktor_claim_cb branch publishes
-// only its attacker-defeat disposition and authored formulas; it explicitly
-// does not claim that dynamic resource deltas or conditional effects were
-// evaluated. The rows preserve the CWar target-title order.
+// complete claim-disposition slice. The raiktor_claim_cb branch publishes its
+// attacker-defeat disposition and authored formulas plus whichever isolated
+// dynamic domains were proven in the same paused frame. Missing domains stay
+// explicitly unobservable and never make the surrender decision ready. The
+// rows preserve the CWar target-title order.
 struct WarClaimSnapshot {
   std::int32_t title_id = -1;
   bool present = false;
@@ -605,6 +606,33 @@ struct WarClaimDispositionSnapshot {
                          const WarClaimDispositionSnapshot &) = default;
 };
 
+struct WarRaiktorCharacterFixedPointSnapshot {
+  std::int32_t character_id = -1;
+  FixedPointValue value;
+
+  friend bool operator==(const WarRaiktorCharacterFixedPointSnapshot &,
+                         const WarRaiktorCharacterFixedPointSnapshot &) =
+      default;
+};
+
+struct WarRaiktorGoldTransferSnapshot {
+  std::int32_t from_character_id = -1;
+  std::int32_t to_character_id = -1;
+  FixedPointValue value;
+
+  friend bool operator==(const WarRaiktorGoldTransferSnapshot &,
+                         const WarRaiktorGoldTransferSnapshot &) = default;
+};
+
+struct WarRaiktorPrisonerReleaseSnapshot {
+  std::int32_t jailer_character_id = -1;
+  std::int32_t prisoner_character_id = -1;
+  std::string reason;
+
+  friend bool operator==(const WarRaiktorPrisonerReleaseSnapshot &,
+                         const WarRaiktorPrisonerReleaseSnapshot &) = default;
+};
+
 struct WarRaiktorSurrenderTermsSnapshot {
   WarClaimDispositionSnapshot claim_disposition;
   std::int32_t gold_reparations_factor = 0;
@@ -621,6 +649,31 @@ struct WarRaiktorSurrenderTermsSnapshot {
   std::string truce_result;
   std::string prisoner_release_rule;
   std::string conditional_favor_hook_rule;
+  bool gold_observable = false;
+  WarRaiktorCharacterFixedPointSnapshot attacker_current_gold;
+  WarRaiktorCharacterFixedPointSnapshot defender_current_gold;
+  WarRaiktorCharacterFixedPointSnapshot
+      attacker_authoritative_monthly_gold_income;
+  WarRaiktorCharacterFixedPointSnapshot
+      defender_authoritative_monthly_gold_income;
+  WarRaiktorGoldTransferSnapshot actual_gold_transfer;
+  bool prestige_observable = false;
+  WarRaiktorCharacterFixedPointSnapshot attacker_current_prestige;
+  FixedPointValue cb_prestige_factor;
+  WarRaiktorCharacterFixedPointSnapshot attacker_prestige_delta;
+  bool prisoner_release_observable = false;
+  std::vector<std::int32_t> attacker_participant_ids;
+  std::vector<std::int32_t> defender_participant_ids;
+  std::vector<std::int32_t> attacker_release_candidate_ids;
+  std::vector<std::int32_t> defender_release_candidate_ids;
+  std::vector<WarRaiktorPrisonerReleaseSnapshot> prisoner_release_pairs;
+  bool full_participant_scan = false;
+  bool primary_and_first_three_successors_scanned = false;
+  bool favor_hook_observable = false;
+  bool claimant_distinct_from_attacker = false;
+  bool original_visible_root_traversed = false;
+  bool conditional_favor_hook_applies = false;
+  bool observed_dynamic_terms_same_frame_stable = false;
   FixedPointValue attacker_legitimacy_delta;
   FixedPointValue attacker_influence_delta;
   bool hostages_allowed = false;

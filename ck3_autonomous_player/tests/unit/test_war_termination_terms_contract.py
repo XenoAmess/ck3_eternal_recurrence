@@ -150,6 +150,11 @@ def _available_raiktor_terms() -> dict[str, object]:
                 "2_if_primary_defender_has_more_gold_for_successful_defensive_wars_else_1"
             ),
             "actual_amount_observable": False,
+            "attacker_current_gold": None,
+            "defender_current_gold": None,
+            "attacker_authoritative_monthly_gold_income": None,
+            "defender_authoritative_monthly_gold_income": None,
+            "actual_transfer": None,
         },
         "attacker_fame": {
             "resource": "prestige",
@@ -157,6 +162,9 @@ def _available_raiktor_terms() -> dict[str, object]:
             "scale": -10,
             "limit_rule": "loss_capped_at_1000",
             "actual_delta_observable": False,
+            "attacker_current_prestige": None,
+            "cb_prestige_factor": None,
+            "attacker_prestige_delta": None,
         },
         "truce": {
             "direction": "primary_attacker_toward_primary_defender",
@@ -166,12 +174,22 @@ def _available_raiktor_terms() -> dict[str, object]:
         "prisoner_release": {
             "rule": "war_result_primary_and_first_three_heirs",
             "actual_pairs_observable": False,
+            "attacker_participant_ids": None,
+            "defender_participant_ids": None,
+            "attacker_release_candidate_ids": None,
+            "defender_release_candidate_ids": None,
+            "release_pairs": None,
+            "full_participant_scan": None,
+            "primary_and_first_three_successors_scanned": None,
         },
         "conditional_favor_hook": {
             "rule": (
                 "attacker_on_claimant_if_distinct_and_can_add_favor_hook"
             ),
             "actual_applies_observable": False,
+            "claimant_distinct_from_attacker": None,
+            "original_visible_root_traversed": None,
+            "will_apply": None,
         },
         "attacker_legitimacy_delta": {"raw": 0, "scale": 100_000},
         "attacker_influence_delta": {"raw": 0, "scale": 100_000},
@@ -198,6 +216,15 @@ def _available_raiktor_terms() -> dict[str, object]:
             "claim_rows_ready": True,
             "attacker_defeat_rule_ready": True,
             "static_formula_ready": True,
+            "finance_ready": False,
+            "gold_ready": False,
+            "fame_factor_ready": False,
+            "attacker_prestige_delta_ready": False,
+            "truce_ready": False,
+            "prisoner_release_ready": False,
+            "favor_hook_ready": False,
+            "war_bound_armies_ready": False,
+            "same_frame_stable": False,
             "dynamic_deltas_ready": False,
             "decision_ready": False,
             "automatic_surrender_ready": False,
@@ -205,6 +232,97 @@ def _available_raiktor_terms() -> dict[str, object]:
         },
         "provenance": _raiktor_provenance(),
     }
+
+
+def _available_raiktor_observed_terms() -> dict[str, object]:
+    terms = _available_raiktor_terms()
+    terms["gold_reparations"].update(
+        {
+            "actual_amount_observable": True,
+            "attacker_current_gold": {
+                "character_id": 29_829,
+                "value": {"raw": 35_000_000, "scale": 100_000},
+            },
+            "defender_current_gold": {
+                "character_id": 41_002,
+                "value": {"raw": 80_000_000, "scale": 100_000},
+            },
+            "attacker_authoritative_monthly_gold_income": {
+                "character_id": 29_829,
+                "value": {"raw": 500_001, "scale": 100_000},
+            },
+            "defender_authoritative_monthly_gold_income": {
+                "character_id": 41_002,
+                "value": {"raw": 800_000, "scale": 100_000},
+            },
+            "actual_transfer": {
+                "from_character_id": 29_829,
+                "to_character_id": 41_002,
+                "value": {"raw": 15_000_000, "scale": 100_000},
+            },
+        }
+    )
+    terms["attacker_fame"].update(
+        {
+            "actual_delta_observable": True,
+            "attacker_current_prestige": {
+                "character_id": 29_829,
+                "value": {"raw": 12_345_678, "scale": 100_000},
+            },
+            "cb_prestige_factor": {"raw": 700_000, "scale": 100_000},
+            "attacker_prestige_delta": {
+                "character_id": 29_829,
+                "value": {"raw": -7_000_000, "scale": 100_000},
+            },
+        }
+    )
+    terms["prisoner_release"].update(
+        {
+            "actual_pairs_observable": True,
+            "attacker_participant_ids": [29_829, 30_001],
+            "defender_participant_ids": [41_002],
+            "attacker_release_candidate_ids": [29_829, 30_003],
+            "defender_release_candidate_ids": [41_002],
+            "release_pairs": [
+                {
+                    "jailer_character_id": 41_002,
+                    "prisoner_character_id": 30_003,
+                    "reason": (
+                        "opposite_primary_or_first_three_successors"
+                    ),
+                }
+            ],
+            "full_participant_scan": True,
+            "primary_and_first_three_successors_scanned": True,
+        }
+    )
+    terms["conditional_favor_hook"].update(
+        {
+            "actual_applies_observable": True,
+            "claimant_distinct_from_attacker": True,
+            "original_visible_root_traversed": True,
+            "will_apply": True,
+        }
+    )
+    for effect in (
+        "actual_gold_transfer",
+        "actual_prestige_delta",
+        "actual_prisoner_release_pairs",
+        "conditional_favor_hook_application",
+    ):
+        terms["unobserved_dynamic_effects"].remove(effect)
+    terms["readiness"].update(
+        {
+            "finance_ready": True,
+            "gold_ready": True,
+            "fame_factor_ready": True,
+            "attacker_prestige_delta_ready": True,
+            "prisoner_release_ready": True,
+            "favor_hook_ready": True,
+            "same_frame_stable": True,
+        }
+    )
+    return terms
 
 
 class WarTerminationTermsContractTests(unittest.TestCase):
@@ -290,6 +408,74 @@ class WarTerminationTermsContractTests(unittest.TestCase):
         )
         self.assertEqual(normalized["attacker_fame"]["scale"], -10)
         self.assertFalse(normalized["hostages_allowed"])
+
+    def test_raiktor_surrender_slice_publishes_four_observed_domains_only(
+        self,
+    ) -> None:
+        raw = _available_raiktor_observed_terms()
+
+        normalized = normalize_war_termination_terms(
+            raw, expected_war_id=WAR_ID
+        )
+
+        self.assertEqual(normalized, raw)
+        self.assertTrue(normalized["readiness"]["gold_ready"])
+        self.assertTrue(normalized["readiness"]["fame_factor_ready"])
+        self.assertTrue(normalized["readiness"]["prisoner_release_ready"])
+        self.assertTrue(normalized["readiness"]["favor_hook_ready"])
+        self.assertFalse(normalized["readiness"]["truce_ready"])
+        self.assertFalse(normalized["readiness"]["war_bound_armies_ready"])
+        self.assertFalse(normalized["readiness"]["decision_ready"])
+        self.assertFalse(
+            normalized["readiness"]["automatic_surrender_ready"]
+        )
+        self.assertEqual(
+            normalized["unobserved_dynamic_effects"][:2],
+            [
+                "actual_truce_expiry",
+                "targeting_faction_discontent_delta",
+            ],
+        )
+
+    def test_raiktor_surrender_slice_rejects_observed_domain_drift(
+        self,
+    ) -> None:
+        cases: list[dict[str, object]] = []
+        missing_gold_value = _available_raiktor_observed_terms()
+        missing_gold_value["gold_reparations"]["actual_transfer"] = None
+        cases.append(missing_gold_value)
+        reversed_transfer = _available_raiktor_observed_terms()
+        reversed_transfer["gold_reparations"]["actual_transfer"][
+            "from_character_id"
+        ] = 41_002
+        cases.append(reversed_transfer)
+        wrong_prestige_formula = _available_raiktor_observed_terms()
+        wrong_prestige_formula["attacker_fame"]["attacker_prestige_delta"][
+            "value"
+        ]["raw"] = -6_999_999
+        cases.append(wrong_prestige_formula)
+        wrong_prisoner_side = _available_raiktor_observed_terms()
+        wrong_prisoner_side["prisoner_release"]["release_pairs"][0][
+            "jailer_character_id"
+        ] = 29_829
+        cases.append(wrong_prisoner_side)
+        overlapping_successor = _available_raiktor_observed_terms()
+        overlapping_successor["prisoner_release"][
+            "defender_release_candidate_ids"
+        ].append(30_003)
+        cases.append(overlapping_successor)
+        wrong_favor_gate = _available_raiktor_observed_terms()
+        wrong_favor_gate["conditional_favor_hook"][
+            "claimant_distinct_from_attacker"
+        ] = False
+        cases.append(wrong_favor_gate)
+        fabricated_full_readiness = _available_raiktor_observed_terms()
+        fabricated_full_readiness["readiness"]["decision_ready"] = True
+        cases.append(fabricated_full_readiness)
+        for raw in cases:
+            with self.subTest(raw=copy.deepcopy(raw)):
+                with self.assertRaises(ValueError):
+                    normalize_war_termination_terms(raw)
 
     def test_raiktor_surrender_slice_rejects_formula_or_readiness_drift(
         self,

@@ -152,6 +152,11 @@ _TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS = {
         "2_if_primary_defender_has_more_gold_for_successful_defensive_wars_else_1"
     ),
     "actual_amount_observable": False,
+    "attacker_current_gold": None,
+    "defender_current_gold": None,
+    "attacker_authoritative_monthly_gold_income": None,
+    "defender_authoritative_monthly_gold_income": None,
+    "actual_transfer": None,
 }
 _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME = {
     "resource": "prestige",
@@ -159,6 +164,9 @@ _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME = {
     "scale": -10,
     "limit_rule": "loss_capped_at_1000",
     "actual_delta_observable": False,
+    "attacker_current_prestige": None,
+    "cb_prestige_factor": None,
+    "attacker_prestige_delta": None,
 }
 _TERMINATION_TERMS_RAIKTOR_TRUCE = {
     "direction": "primary_attacker_toward_primary_defender",
@@ -168,10 +176,20 @@ _TERMINATION_TERMS_RAIKTOR_TRUCE = {
 _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE = {
     "rule": "war_result_primary_and_first_three_heirs",
     "actual_pairs_observable": False,
+    "attacker_participant_ids": None,
+    "defender_participant_ids": None,
+    "attacker_release_candidate_ids": None,
+    "defender_release_candidate_ids": None,
+    "release_pairs": None,
+    "full_participant_scan": None,
+    "primary_and_first_three_successors_scanned": None,
 }
 _TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK = {
     "rule": "attacker_on_claimant_if_distinct_and_can_add_favor_hook",
     "actual_applies_observable": False,
+    "claimant_distinct_from_attacker": None,
+    "original_visible_root_traversed": None,
+    "will_apply": None,
 }
 
 _ARMY_STRENGTH_ROW_KEYS = {
@@ -2038,6 +2056,338 @@ def _parse_generation_war_step(step: object, *, prefix: str) -> int | None:
     return war_id if 0 < war_id <= 2**31 - 1 else None
 
 
+def _normalize_raiktor_character_fixed_point(
+    value: object, name: str
+) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != {"character_id", "value"}:
+        raise ValueError(f"native {name} schema is malformed")
+    return {
+        "character_id": _positive_int32_id(
+            value.get("character_id"), f"{name}.character_id"
+        ),
+        "value": _signed_fixed_point(value.get("value"), f"{name}.value"),
+    }
+
+
+def _normalize_raiktor_gold_reparations(
+    value: object,
+) -> dict[str, object]:
+    name = "war_termination_terms.gold_reparations"
+    if not isinstance(value, dict) or set(value) != set(
+        _TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS
+    ):
+        raise ValueError(f"native {name} schema is malformed")
+    for field in (
+        "direction",
+        "factor",
+        "positive_income_basis",
+        "fallback_condition",
+        "fallback_basis",
+        "defender_culture_multiplier",
+    ):
+        if value.get(field) != _TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS[field]:
+            raise ValueError(f"native {name}.{field} drifted")
+    observable = _strict_bool(
+        value.get("actual_amount_observable"),
+        f"{name}.actual_amount_observable",
+    )
+    dynamic_fields = (
+        "attacker_current_gold",
+        "defender_current_gold",
+        "attacker_authoritative_monthly_gold_income",
+        "defender_authoritative_monthly_gold_income",
+        "actual_transfer",
+    )
+    if not observable:
+        if any(value.get(field) is not None for field in dynamic_fields):
+            raise ValueError(f"native {name} unavailable values are malformed")
+        return dict(_TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS)
+
+    attacker = _normalize_raiktor_character_fixed_point(
+        value.get("attacker_current_gold"), f"{name}.attacker_current_gold"
+    )
+    defender = _normalize_raiktor_character_fixed_point(
+        value.get("defender_current_gold"), f"{name}.defender_current_gold"
+    )
+    attacker_income = _normalize_raiktor_character_fixed_point(
+        value.get("attacker_authoritative_monthly_gold_income"),
+        f"{name}.attacker_authoritative_monthly_gold_income",
+    )
+    defender_income = _normalize_raiktor_character_fixed_point(
+        value.get("defender_authoritative_monthly_gold_income"),
+        f"{name}.defender_authoritative_monthly_gold_income",
+    )
+    transfer = value.get("actual_transfer")
+    if not isinstance(transfer, dict) or set(transfer) != {
+        "from_character_id",
+        "to_character_id",
+        "value",
+    }:
+        raise ValueError(f"native {name}.actual_transfer schema is malformed")
+    normalized_transfer = {
+        "from_character_id": _positive_int32_id(
+            transfer.get("from_character_id"),
+            f"{name}.actual_transfer.from_character_id",
+        ),
+        "to_character_id": _positive_int32_id(
+            transfer.get("to_character_id"),
+            f"{name}.actual_transfer.to_character_id",
+        ),
+        "value": _signed_fixed_point(
+            transfer.get("value"), f"{name}.actual_transfer.value"
+        ),
+    }
+    attacker_id = attacker["character_id"]
+    defender_id = defender["character_id"]
+    if (
+        attacker_id == defender_id
+        or attacker_income["character_id"] != attacker_id
+        or defender_income["character_id"] != defender_id
+        or normalized_transfer["from_character_id"] != attacker_id
+        or normalized_transfer["to_character_id"] != defender_id
+        or normalized_transfer["value"]["raw"] < 0
+    ):
+        raise ValueError(f"native {name} primary identities/direction are malformed")
+    return {
+        **{
+            field: _TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS[field]
+            for field in (
+                "direction",
+                "factor",
+                "positive_income_basis",
+                "fallback_condition",
+                "fallback_basis",
+                "defender_culture_multiplier",
+            )
+        },
+        "actual_amount_observable": True,
+        "attacker_current_gold": attacker,
+        "defender_current_gold": defender,
+        "attacker_authoritative_monthly_gold_income": attacker_income,
+        "defender_authoritative_monthly_gold_income": defender_income,
+        "actual_transfer": normalized_transfer,
+    }
+
+
+def _normalize_raiktor_attacker_fame(value: object) -> dict[str, object]:
+    name = "war_termination_terms.attacker_fame"
+    if not isinstance(value, dict) or set(value) != set(
+        _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME
+    ):
+        raise ValueError(f"native {name} schema is malformed")
+    for field in ("resource", "base", "scale", "limit_rule"):
+        if value.get(field) != _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME[field]:
+            raise ValueError(f"native {name}.{field} drifted")
+    observable = _strict_bool(
+        value.get("actual_delta_observable"),
+        f"{name}.actual_delta_observable",
+    )
+    dynamic_fields = (
+        "attacker_current_prestige",
+        "cb_prestige_factor",
+        "attacker_prestige_delta",
+    )
+    if not observable:
+        if any(value.get(field) is not None for field in dynamic_fields):
+            raise ValueError(f"native {name} unavailable values are malformed")
+        return dict(_TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME)
+
+    current = _normalize_raiktor_character_fixed_point(
+        value.get("attacker_current_prestige"),
+        f"{name}.attacker_current_prestige",
+    )
+    factor = _signed_fixed_point(
+        value.get("cb_prestige_factor"), f"{name}.cb_prestige_factor"
+    )
+    delta = _normalize_raiktor_character_fixed_point(
+        value.get("attacker_prestige_delta"),
+        f"{name}.attacker_prestige_delta",
+    )
+    expected_delta = max(
+        -10 * factor["raw"], -1000 * CK3_FIXED_POINT_SCALE
+    )
+    if (
+        factor["raw"] < 0
+        or delta["character_id"] != current["character_id"]
+        or delta["value"]["raw"] != expected_delta
+    ):
+        raise ValueError(f"native {name} factor/delta formula is malformed")
+    return {
+        **{
+            field: _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME[field]
+            for field in ("resource", "base", "scale", "limit_rule")
+        },
+        "actual_delta_observable": True,
+        "attacker_current_prestige": current,
+        "cb_prestige_factor": factor,
+        "attacker_prestige_delta": delta,
+    }
+
+
+def _normalize_raiktor_prisoner_release(value: object) -> dict[str, object]:
+    name = "war_termination_terms.prisoner_release"
+    if not isinstance(value, dict) or set(value) != set(
+        _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE
+    ):
+        raise ValueError(f"native {name} schema is malformed")
+    if value.get("rule") != _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE["rule"]:
+        raise ValueError(f"native {name}.rule drifted")
+    observable = _strict_bool(
+        value.get("actual_pairs_observable"),
+        f"{name}.actual_pairs_observable",
+    )
+    dynamic_fields = (
+        "attacker_participant_ids",
+        "defender_participant_ids",
+        "attacker_release_candidate_ids",
+        "defender_release_candidate_ids",
+        "release_pairs",
+        "full_participant_scan",
+        "primary_and_first_three_successors_scanned",
+    )
+    if not observable:
+        if any(value.get(field) is not None for field in dynamic_fields):
+            raise ValueError(f"native {name} unavailable values are malformed")
+        return dict(_TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE)
+
+    attacker_participants = _strict_positive_int32_id_list(
+        value.get("attacker_participant_ids"),
+        f"{name}.attacker_participant_ids",
+    )
+    defender_participants = _strict_positive_int32_id_list(
+        value.get("defender_participant_ids"),
+        f"{name}.defender_participant_ids",
+    )
+    attacker_candidates = _strict_positive_int32_id_list(
+        value.get("attacker_release_candidate_ids"),
+        f"{name}.attacker_release_candidate_ids",
+    )
+    defender_candidates = _strict_positive_int32_id_list(
+        value.get("defender_release_candidate_ids"),
+        f"{name}.defender_release_candidate_ids",
+    )
+    if (
+        not attacker_participants
+        or not defender_participants
+        or not attacker_candidates
+        or not defender_candidates
+        or set(attacker_participants) & set(defender_participants)
+        or set(attacker_candidates) & set(defender_candidates)
+        or _strict_bool(
+            value.get("full_participant_scan"),
+            f"{name}.full_participant_scan",
+        )
+        is not True
+        or _strict_bool(
+            value.get("primary_and_first_three_successors_scanned"),
+            f"{name}.primary_and_first_three_successors_scanned",
+        )
+        is not True
+    ):
+        raise ValueError(f"native {name} complete-scan identity is malformed")
+    raw_pairs = value.get("release_pairs")
+    if not isinstance(raw_pairs, list):
+        raise ValueError(f"native {name}.release_pairs must be an array")
+    pairs: list[dict[str, object]] = []
+    seen_pairs: set[tuple[int, int]] = set()
+    for index, raw_pair in enumerate(raw_pairs):
+        pair_name = f"{name}.release_pairs[{index}]"
+        if not isinstance(raw_pair, dict) or set(raw_pair) != {
+            "jailer_character_id",
+            "prisoner_character_id",
+            "reason",
+        }:
+            raise ValueError(f"native {pair_name} schema is malformed")
+        jailer = _positive_int32_id(
+            raw_pair.get("jailer_character_id"),
+            f"{pair_name}.jailer_character_id",
+        )
+        prisoner = _positive_int32_id(
+            raw_pair.get("prisoner_character_id"),
+            f"{pair_name}.prisoner_character_id",
+        )
+        if (
+            raw_pair.get("reason")
+            != "opposite_primary_or_first_three_successors"
+            or (jailer, prisoner) in seen_pairs
+            or not (
+                (
+                    jailer in defender_participants
+                    and prisoner in attacker_candidates
+                )
+                or (
+                    jailer in attacker_participants
+                    and prisoner in defender_candidates
+                )
+            )
+        ):
+            raise ValueError(f"native {pair_name} direction/reason is malformed")
+        seen_pairs.add((jailer, prisoner))
+        pairs.append(
+            {
+                "jailer_character_id": jailer,
+                "prisoner_character_id": prisoner,
+                "reason": "opposite_primary_or_first_three_successors",
+            }
+        )
+    return {
+        "rule": _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE["rule"],
+        "actual_pairs_observable": True,
+        "attacker_participant_ids": attacker_participants,
+        "defender_participant_ids": defender_participants,
+        "attacker_release_candidate_ids": attacker_candidates,
+        "defender_release_candidate_ids": defender_candidates,
+        "release_pairs": pairs,
+        "full_participant_scan": True,
+        "primary_and_first_three_successors_scanned": True,
+    }
+
+
+def _normalize_raiktor_favor_hook(value: object) -> dict[str, object]:
+    name = "war_termination_terms.conditional_favor_hook"
+    if not isinstance(value, dict) or set(value) != set(
+        _TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK
+    ):
+        raise ValueError(f"native {name} schema is malformed")
+    if value.get("rule") != (
+        _TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK["rule"]
+    ):
+        raise ValueError(f"native {name}.rule drifted")
+    observable = _strict_bool(
+        value.get("actual_applies_observable"),
+        f"{name}.actual_applies_observable",
+    )
+    dynamic_fields = (
+        "claimant_distinct_from_attacker",
+        "original_visible_root_traversed",
+        "will_apply",
+    )
+    if not observable:
+        if any(value.get(field) is not None for field in dynamic_fields):
+            raise ValueError(f"native {name} unavailable values are malformed")
+        return dict(_TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK)
+    distinct = _strict_bool(
+        value.get("claimant_distinct_from_attacker"),
+        f"{name}.claimant_distinct_from_attacker",
+    )
+    traversed = _strict_bool(
+        value.get("original_visible_root_traversed"),
+        f"{name}.original_visible_root_traversed",
+    )
+    will_apply = _strict_bool(value.get("will_apply"), f"{name}.will_apply")
+    if (not distinct and (traversed or will_apply)) or (
+        distinct and not traversed
+    ):
+        raise ValueError(f"native {name} authored outer gate is malformed")
+    return {
+        "rule": _TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK["rule"],
+        "actual_applies_observable": True,
+        "claimant_distinct_from_attacker": distinct,
+        "original_visible_root_traversed": traversed,
+        "will_apply": will_apply,
+    }
+
+
 def normalize_war_termination_terms(
     value: object,
     *,
@@ -2240,36 +2590,64 @@ def normalize_war_termination_terms(
         )
 
     if supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE:
+        gold_reparations = _normalize_raiktor_gold_reparations(
+            value.get("gold_reparations")
+        )
+        attacker_fame = _normalize_raiktor_attacker_fame(
+            value.get("attacker_fame")
+        )
+        prisoner_release = _normalize_raiktor_prisoner_release(
+            value.get("prisoner_release")
+        )
+        conditional_favor_hook = _normalize_raiktor_favor_hook(
+            value.get("conditional_favor_hook")
+        )
+        gold_ready = bool(gold_reparations["actual_amount_observable"])
+        prestige_ready = bool(attacker_fame["actual_delta_observable"])
+        prisoner_ready = bool(prisoner_release["actual_pairs_observable"])
+        favor_ready = bool(
+            conditional_favor_hook["actual_applies_observable"]
+        )
+        observed_any = (
+            gold_ready or prestige_ready or prisoner_ready or favor_ready
+        )
         expected_readiness = {
             "identity_ready": True,
             "targets_ready": True,
             "claim_rows_ready": True,
             "attacker_defeat_rule_ready": True,
             "static_formula_ready": True,
+            "finance_ready": gold_ready,
+            "gold_ready": gold_ready,
+            "fame_factor_ready": prestige_ready,
+            "attacker_prestige_delta_ready": prestige_ready,
+            "truce_ready": False,
+            "prisoner_release_ready": prisoner_ready,
+            "favor_hook_ready": favor_ready,
+            "war_bound_armies_ready": False,
+            "same_frame_stable": observed_any,
             "dynamic_deltas_ready": False,
             "decision_ready": False,
             "automatic_surrender_ready": False,
             "ready": False,
         }
+        observed_effects = {
+            "actual_gold_transfer": gold_ready,
+            "actual_prestige_delta": prestige_ready,
+            "actual_prisoner_release_pairs": prisoner_ready,
+            "conditional_favor_hook_application": favor_ready,
+        }
+        expected_unobserved = [
+            effect
+            for effect in _TERMINATION_TERMS_RAIKTOR_UNOBSERVED_DYNAMIC_EFFECTS
+            if not observed_effects.get(effect, False)
+        ]
         exact_fields: tuple[tuple[str, object], ...] = (
             (
                 "attacker_defeat",
                 _TERMINATION_TERMS_RAIKTOR_ATTACKER_DEFEAT,
             ),
-            (
-                "gold_reparations",
-                _TERMINATION_TERMS_RAIKTOR_GOLD_REPARATIONS,
-            ),
-            ("attacker_fame", _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME),
             ("truce", _TERMINATION_TERMS_RAIKTOR_TRUCE),
-            (
-                "prisoner_release",
-                _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE,
-            ),
-            (
-                "conditional_favor_hook",
-                _TERMINATION_TERMS_RAIKTOR_CONDITIONAL_FAVOR_HOOK,
-            ),
             (
                 "attacker_legitimacy_delta",
                 {"raw": 0, "scale": 100_000},
@@ -2280,7 +2658,7 @@ def normalize_war_termination_terms(
             ),
             (
                 "unobserved_dynamic_effects",
-                _TERMINATION_TERMS_RAIKTOR_UNOBSERVED_DYNAMIC_EFFECTS,
+                expected_unobserved,
             ),
             ("readiness", expected_readiness),
         )
@@ -2294,6 +2672,68 @@ def normalize_war_termination_terms(
             raise ValueError(
                 "native raiktor war_termination_terms hostages drifted"
             )
+        attacker_character_id: int | None = None
+        defender_character_id: int | None = None
+        if gold_ready:
+            attacker_character_id = int(
+                gold_reparations["attacker_current_gold"]["character_id"]
+            )
+            defender_character_id = int(
+                gold_reparations["defender_current_gold"]["character_id"]
+            )
+        if prestige_ready:
+            prestige_attacker_id = int(
+                attacker_fame["attacker_current_prestige"]["character_id"]
+            )
+            if (
+                attacker_character_id is not None
+                and prestige_attacker_id != attacker_character_id
+            ):
+                raise ValueError(
+                    "native raiktor war_termination_terms attacker identity "
+                    "drifted across resource domains"
+                )
+            attacker_character_id = prestige_attacker_id
+        if prisoner_ready:
+            attacker_participants = set(
+                prisoner_release["attacker_participant_ids"]
+            )
+            defender_participants = set(
+                prisoner_release["defender_participant_ids"]
+            )
+            prisoner_attacker_id = int(
+                prisoner_release["attacker_release_candidate_ids"][0]
+            )
+            prisoner_defender_id = int(
+                prisoner_release["defender_release_candidate_ids"][0]
+            )
+            if (
+                prisoner_attacker_id not in attacker_participants
+                or prisoner_defender_id not in defender_participants
+                or (
+                    attacker_character_id is not None
+                    and attacker_character_id != prisoner_attacker_id
+                )
+                or (
+                    defender_character_id is not None
+                    and defender_character_id != prisoner_defender_id
+                )
+            ):
+                raise ValueError(
+                    "native raiktor war_termination_terms participant "
+                    "identity drifted across domains"
+                )
+            attacker_character_id = prisoner_attacker_id
+            defender_character_id = prisoner_defender_id
+        if favor_ready and attacker_character_id is not None:
+            expected_distinct = claimant_character_id != attacker_character_id
+            if conditional_favor_hook[
+                "claimant_distinct_from_attacker"
+            ] is not expected_distinct:
+                raise ValueError(
+                    "native raiktor war_termination_terms favor claimant "
+                    "identity drifted"
+                )
         return {
             "schema_version": 1,
             "status": "available",
@@ -2306,15 +2746,25 @@ def normalize_war_termination_terms(
             "claimant_character_id": claimant_character_id,
             "target_title_ids": target_title_ids,
             "claims": claims,
-            **{
-                field: (
-                    dict(expected)
-                    if isinstance(expected, dict)
-                    else list(expected)
-                )
-                for field, expected in exact_fields
+            "attacker_defeat": dict(
+                _TERMINATION_TERMS_RAIKTOR_ATTACKER_DEFEAT
+            ),
+            "gold_reparations": gold_reparations,
+            "attacker_fame": attacker_fame,
+            "truce": dict(_TERMINATION_TERMS_RAIKTOR_TRUCE),
+            "prisoner_release": prisoner_release,
+            "conditional_favor_hook": conditional_favor_hook,
+            "attacker_legitimacy_delta": {
+                "raw": 0,
+                "scale": CK3_FIXED_POINT_SCALE,
+            },
+            "attacker_influence_delta": {
+                "raw": 0,
+                "scale": CK3_FIXED_POINT_SCALE,
             },
             "hostages_allowed": False,
+            "unobserved_dynamic_effects": expected_unobserved,
+            "readiness": expected_readiness,
             "provenance": provenance,
         }
 
