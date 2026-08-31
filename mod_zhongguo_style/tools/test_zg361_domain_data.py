@@ -168,19 +168,27 @@ class DomainRuntimePlanTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(item["status"]["domain_runtime"] == "partial" for item in manifest["items"]),
-            220,
+            361,
         )
         self.assertEqual(
             sum(item["status"]["domain_runtime"] == "not-implemented" for item in manifest["items"]),
-            141,
+            0,
+        )
+        self.assertEqual(
+            sum(item["status"]["domain_runtime"] == "complete" for item in manifest["items"]),
+            0,
+        )
+        self.assertEqual(
+            sum(item["status"]["player_visible_loop"] == "partial" for item in manifest["items"]),
+            361,
         )
         self.assertEqual(
             manifest["readiness"]["exclusive_counts"],
             {
                 "design-only": 0,
-                "python-l0": 141,
-                "ck3-static-ready": 158,
-                "central-wired": 58,
+                "python-l0": 0,
+                "ck3-static-ready": 0,
+                "central-wired": 357,
                 "ck3-live": 4,
             },
         )

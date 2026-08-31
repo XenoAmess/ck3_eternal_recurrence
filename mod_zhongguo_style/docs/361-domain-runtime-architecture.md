@@ -1,13 +1,16 @@
 # 361 领域运行时架构
 
-> 2026-08-30 施工进度：Phase 0 的设计合同层已经落地。38 个 DomainSpec、361/361 runtime plan、1083 条 A/B/C
-> typed-operation 编译和生成快照已通过 L0；真实 readiness 仍保持 `partial × 4 + not-implemented × 357`。case kernel 的 CK3
-> consumer、第二批产品 effects、共享面板与实机证据尚未完成，不能把 `contract-complete` 写成玩法完成。八批执行账见
+> 2026-08-31 施工进度：38 个 DomainSpec、361/361 runtime plan、1083 条 A/B/C typed-operation 编译和生成快照已通过 L0；
+> 361/361 已达到 CK3 static 与 central-wired，领域运行时仍诚实保持 `partial × 361`，其中只有 #001/#018/#069/#357
+> 有 bounded fixture-live 证据。`central-wired` 只证明中央产品 hook 可达，不能写成逐号业务语义完整、玩家闭环完成或 production-live。
+> 共享面板、MCP 观测面与绝大多数逐号实机证据仍未完成。八批执行账见
 > [`361-phase2-full-implementation-program.md`](361-phase2-full-implementation-program.md)。
 
 本文定义 361 条政策从“可配置的组织账本投影”升级为真正 CK3 决策、对象、期限与后果的施工架构。它不推翻现有考核主循环和实机证据，而是明确区分已经完成的配置投影与尚待实现的领域运行时语义。
 
-> 2026-08-30 二期更新：项目所有者已授权 v0.4.x 实施首个纵切，并已把该成品静态里程碑收入 master 开发基线。#001/#018/#069/#357 现为 `domain_runtime = partial`、`runtime_evidence = static-ready`；其余357项仍为 `not-implemented`。实现、边界与 MCP-first 合批清单见 [phase2-slice-001-018-069-357.md](phase2-slice-001-018-069-357.md)。这不改写已公开 0.3.0 的功能或证据口径。
+> 2026-08-30 的首纵切历史边界保留在 [phase2-slice-001-018-069-357.md](phase2-slice-001-018-069-357.md)。
+> 后续静态包与中央派发已把其余 357 项也推进到 `domain_runtime = partial / runtime_evidence = static-ready`；这不是对首纵切
+> live artifact 的外推，四项以外仍无 CK3 live 证据，也不改写已公开 0.3.0 的功能或证据口径。
 
 设计边界：
 
@@ -32,7 +35,10 @@
 - 组合校验和增量；
 - 编号化 debug marker 与本地化文本。
 
-除二期首纵切的最近一期证据/送达/清算案卷外，目标版本、完整申诉复核、HC、晋升包、事故时间线、奖金归属等概念还没有各自的运行时对象、状态迁移、期限或资源事务。现有实机夹具执行每号的 `reference_choice`，其分布为 326 个 A、4 个 B、31 个 C；随后逐号检查 choice 变量，再核对 14 本账的总和及幂等性。这证明 361 条配置投影确实进入了真实 CK3 引擎，但不证明 361 条领域语义已经实现，也不是二期新字节的 CK3 证据。
+后续领域包已经为目标版本、申诉/PIP、HC、晋升、事故、奖金、项目等概念生成独立 CK3 runtime，并由中央派发接通；
+但除首纵切四项外，这些仍只有静态证据，尚未用同批真实领域对象、动作、期限、资源守恒和可见反馈逐号实机验收。
+旧实机夹具执行每号的 `reference_choice`，其分布为 326 个 A、4 个 B、31 个 C；随后逐号检查 choice 变量，再核对 14 本账的总和及幂等性。
+它只证明 361 条配置投影确实进入真实 CK3 引擎，不能充当后续领域包新字节的 CK3 证据。
 
 因此 manifest 应把状态拆开记录：
 

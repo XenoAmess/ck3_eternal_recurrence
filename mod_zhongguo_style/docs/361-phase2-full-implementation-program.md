@@ -1,7 +1,7 @@
 # 361 二期全量实施总纲
 
-状态：2026-08-30 建立。它把既有 361 条预研目录转换成可逐批施工、可批量验收、最终可归零
-`not-implemented` 的执行账本。现实语境与去重依据见
+状态：2026-08-30 建立，2026-08-31 更新当前 readiness。它把既有 361 条预研目录转换成可逐批施工、可批量验收、最终可归零
+live 缺口的执行账本。现实语境与去重依据见
 [`361-next-version-research-audit-2026-08-30.md`](361-next-version-research-audit-2026-08-30.md)，38 个领域图见
 [`361-domain-runtime-architecture.md`](361-domain-runtime-architecture.md)。
 
@@ -10,7 +10,8 @@
 - 361/361 已有编号文案、三条政策选择与逐项 acceptance contract。
 - 361/361 已有 v2 运行设计合同：领域对象、owner/subject、hook、合法迁移、A/B/C typed operation、期限、事务候选、反馈和负例。
 - 运行设计合同是 `contract-complete`，不等于 CK3 玩法实现。
-- 当前领域运行时仍精确为：`partial × 4`（001/018/069/357）与 `not-implemented × 357`。
+- 当前 361/361 已达到 Python L0、CK3 static 与 central-wired，领域运行时精确为 `partial × 361`、`complete × 0`。
+- bounded CK3 live 仍只有 4/361（001/018/069/357）；其余 357 项的 central wiring 不证明逐号业务语义完整、完整玩家闭环或 production-live。
 - 当前玩家闭环仍为 `partial × 361`；任何批次只有在产品脚本、共享表面和同批 CK3 fixture 证据一起 GREEN 后才升级。
 - v0.4 全量功能完成前不做七语发布审计、Workshop 上传、宣传片或发布物料重制。
 
@@ -22,9 +23,10 @@
 - `tools/mechanism_runtime/runtime_001_120.json`、`runtime_121_240.json`、`runtime_241_361.json`：361 条生成快照；
 - `docs/361-mechanism-manifest.json`：把 `runtime_plan` 与真实 `domain_runtime` readiness 分栏，防止设计完成冒充实装。
 
-## 二、八批精确覆盖
+## 二、八批原始精确覆盖计划
 
-剩余 357 个 `not-implemented` ID 的集合必须精确满足：
+下表保留 2026-08-30 从首纵切向全量静态施工时采用的 357-ID 分批账；这些批次现已完成 static/central wiring，表内
+“累计 complete / 剩余 not-implemented”是原始计划刻度，不是 2026-08-31 的当前 live readiness。原始集合精确满足：
 
 ```text
 40 + 40 + 23 + 59 + 56 + 62 + 73 + 4 = 357
