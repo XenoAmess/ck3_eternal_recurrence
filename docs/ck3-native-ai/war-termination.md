@@ -1601,7 +1601,7 @@ settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects
 |---|---|---|---|
 | gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；current gold `extension+0x100` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | F / prestige | root proxy 在 original attacker-defeat root 返回后、`0x3380170` 销毁临时 wrapper 前读取 `wrapper+0x18` 的唯一 identifier `82` final row；collector 同次捕获 prestige vptr `0x446C7B0` callback | 发布 `cb_prestige_factor`、attacker current prestige 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow、公式或同帧 identity 不符均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
-| truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致，检查非负天数与 `date_raw+24×days` int32 边界 | 一次 pointer-only Raiktor loaded-root shape probe；不得执行 ContextEffect |
+| truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致并检查非负天数；v1 明确不把天数换算为已持久化 expiry | **fixture-confirmed / static-ready**；待把独立 core 接入 production wrapper，并做一次 pointer-only paused shape probe；不得执行 ContextEffect |
 | PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`；新生产 helper `ReadRaiktorSurrenderPrisonerReleases` | 双方完整 participant 列表、primary 与前三继承人候选列表，以及实际由对方参与者关押的 generation-safe release pairs；两次 paused 同日样本必须逐项相同。完整扫描后的空 pairs 是合法零 | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook`；ordinary/no-toast vtable、preview callback 与 `favor_hook` runtime identity 已闭合 | claimant=attacker 时精确 false 且零 traversal；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **fixture-confirmed / static-ready**；production WarID wrapper、root slot11 非空门、hook identity 与 paused 双采样均已闭合，待接 terms wire 与 paused live |
 | war-bound army | 现有 generation-safe CUnit↔CArmy↔CRegiment backlink、regiment storage 与 native soldier helper | 完整 storage scan 后按 `bound WarID + source=norman_highwaymen + keep=false` 选来源 regiments；发布当前 RegimentID、合并后的 Army/CUnit grouping 与 current soldiers lost | **reverse gap 2**：从 `spawn_army` factory/execute 和 save serializer 闭合持久 origin/war-lifetime 字段 |
@@ -1611,6 +1611,30 @@ Gold/F/hook 的 preview 必须走独立的 Raiktor visible-root observer：它�
 production-disabled broad reader。gold 的 `DryPreviewRaiktorGoldVisibleRoot`、F/prestige 的 local-root-proxy observer 与 favor-hook 原子均已按此边界
 fixture-confirmed。原始 WarOverview 路径会自然跳过 hidden truce，因此 truce 只用 pointer walker 加直接 evaluator。这个隔离是
 两次真实 `0x334C668` crash 后的必要回归边界，不是理论性防御。
+
+#### Raiktor attacker→defender truce pointer observer v1（2026-09-01）
+
+[fixture-confirmed / static-ready] 独立 core `raiktor_surrender_truce_v1` 已把本窄读取与旧 exit-terms preview 完全分开。它只从同一 paused
+frame 发布的**原始** `CB+0xA28` attacker-defeat root 开始，要求 loaded-root vtable 精确且 slot 11 非空，然后核对冻结形状：root
+`capacity/count=19/14`、child 9 scripted effect、selector count 0、template default `6/5`、唯一 hidden child 位于 index 2、hidden
+`1/1`、ContextEffect `1/1` 且 scope count 1，终点必须是唯一 vtable `0x4461CA8` 的 `CAddTruce`。整个过程只读指针和字段；不调用
+`ResolveWarExitHiddenTrucePath`、`BuildWarExitHiddenTruceProjection`、`TraverseLoadedEffect`、任何 slot 58 或 ContextEffect。
+
+[fixture-confirmed] core 在第一次 paused frame 后解析该 pointer，直接对 `CAddTruce+0x108` 调用 exact-build evaluator `0x3373000`
+两次；只有两个非负 `int32` 结果相等、第二次 pointer shape 仍相同、随后重读的 snapshot/native revision、date、WarID、CB index/key、
+attacker/defender/claimant 与三个 native pointer 全部逐项相同才 available。fixture 同时覆盖 root span、slot 11、重复 hidden path、
+Context scope count、CAddTruce vtable、负天数、双求值漂移、paused/frame 漂移与 exact-build admission；Python pure contract 在普通和
+`-O` 下拒绝多字段、错 War/CB/方向、不稳定状态及任何 invented expiry。
+
+[static-confirmed] 原版 `raiktor_claim_cb.on_defeat` 对 `add_truce_attacker_defeat_effect` 只有一次调用；冻结的
+`00_war_effects.txt` 中该 scripted effect 只有一条 `scope:attacker → scope:defender` 的 `add_truce_one_way`，days 为
+`standard_truce_duration_days`、result 为 `defeat`。文件 SHA 与所有 RVA/shape 已写入
+`native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json`。
+
+[boundary] v1 只发布 `evaluated_days`，`expiry_observable=false`、`expiry_date_raw=null`。虽然 execute 反汇编展示过日期加法，这个新
+observer 尚未实机证明“当前求值日 + days”就是结束动作后持久化 truce 的最终可查询 expiry，因此不能从脚本基数或本地算式冒充
+expiry。下一步只是在 production wrapper 构造现有 WarEffectContext 后调用此 core，并做一次 MCP-first、paused、pointer-only shape
+probe；没有该 artifact 前状态仍是 static-ready，不是 production-live。
 
 War-bound 军队不能用 ArmyID、owner 是战争参与者、军队名称或脚本初始 `6×500=3000` 猜。军队可合并且 public CArmy ID
 可能消失，来源 regiment 仍存在；空结果也只有在完整 storage scan 成功后才是合法零。当前 snapshot 的 public ArmyID

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-surrender-truce-source-contract-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "base_game_sources": [
+    {
+      "path": "game/common/casus_belli_types/00_event_war.txt",
+      "sha256": "BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707",
+      "semantic_contract": "raiktor_claim_cb.on_defeat invokes add_truce_attacker_defeat_effect exactly once"
+    },
+    {
+      "path": "game/common/scripted_effects/00_war_effects.txt",
+      "sha256": "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D",
+      "semantic_contract": "add_truce_attacker_defeat_effect contains exactly one attacker-to-defender add_truce_one_way with days=standard_truce_duration_days and result=defeat"
+    }
+  ],
+  "native_anchors": {
+    "jomini_effect_vtable_rva": "0x44CF030",
+    "scripted_effect_vtable_rva": "0x44CF0F8",
+    "scripted_template_vtable_rva": "0x44DCD38",
+    "hidden_effect_vtable_rva": "0x44D1C88",
+    "context_effect_vtable_rva": "0x44D27B8",
+    "caddtruce_vtable_rva": "0x4461CA8",
+    "duration_script_value_offset": "0x108",
+    "evaluate_duration_days_rva": "0x3373000"
+  },
+  "attacker_defeat_pointer_shape": {
+    "source": "original CB+0xA28 loaded root only",
+    "root_span": {"capacity": 19, "count": 14},
+    "scripted_child_index": 9,
+    "scripted_selector_count": 0,
+    "default_span": {"capacity": 6, "count": 5},
+    "unique_hidden_child_index": 2,
+    "hidden_span": {"capacity": 1, "count": 1},
+    "context_span": {"capacity": 1, "count": 1},
+    "context_scope_count": 1,
+    "terminal": "unique CAddTruce"
+  },
+  "read_contract": {
+    "requires_paused": true,
+    "requires_exact_raiktor_claim_cb": true,
+    "requires_loaded_root_slot11_non_null": true,
+    "duration_evaluator_reads": 2,
+    "requires_equal_non_negative_days": true,
+    "requires_identical_before_after_frame": true,
+    "direction": "primary_attacker_toward_primary_defender",
+    "expiry_observable": false
+  },
+  "forbidden_production_paths": [
+    "ResolveWarExitHiddenTrucePath",
+    "BuildWarExitHiddenTruceProjection",
+    "ReadWarTerminationExitTerms",
+    "TraverseLoadedEffect",
+    "LoadedEffectSlot58",
+    "ContextEffect execution"
+  ],
+  "readiness": {
+    "stage": "fixture-confirmed/static-ready",
+    "live_shape_probe_required": true,
+    "public_wire_complete": false,
+    "production_live": false,
+    "expiry_semantics_claimed": false
+  }
+}
