@@ -256,10 +256,15 @@ class ReviewCommandTests(unittest.TestCase):
             working_directory=self.root,
             command_runner=successful_runner,
         )
-        self.assertEqual(self.root, calls[0].cwd)
-        self.assertEqual(
-            self.root / "review-relative" / REVIEW_PACKAGE_NAME,
-            result.package_path,
+        # Windows runners can expose the same temporary directory through its
+        # 8.3 alias (RUNNER~1) and its long form (runneradmin).  Compare file
+        # identity instead of path spelling so the test still verifies cwd and
+        # output resolution without treating those aliases as different roots.
+        self.assertTrue(calls[0].cwd.samefile(self.root))
+        self.assertTrue(
+            result.package_path.samefile(
+                self.root / "review-relative" / REVIEW_PACKAGE_NAME
+            )
         )
         self.assertTrue(result.package_path.is_file())
 
