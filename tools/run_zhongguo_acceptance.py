@@ -40,6 +40,10 @@ for import_root in (AUTOPLAYER_SOURCE, TITLE_NAVIGATION_RESEARCH):
 
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
+    QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
+    ZHONGGUO_RESULT_CASE_KIND_V1,
+)
 from xar_autoplayer.environment import make_spec
 from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
 from xar_autoplayer.runtime import (
@@ -68,6 +72,10 @@ EXPECTED_EXE_SHA256 = (
 NATIVE_BRIDGE_MODE = "native-headless"
 NATIVE_TITLE_COMMAND_TIMEOUT_S = 30.0
 NATIVE_TITLE_READINESS_TIMEOUT_S = 60.0
+NATIVE_LOADER_READINESS_TIMEOUT_S = 300.0
+NATIVE_LOADER_STABLE_OBSERVATIONS = 3
+LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
+LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
 EXPECTED_PLAYER_HISTORY_ID = real_characters.MANAGER_HISTORY_ID
 EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS = tuple(
@@ -128,6 +136,44 @@ DUPLICATE_PATTERNS = (
     "already defined",
     "already registered",
 )
+LOADER_ERROR_SIGNATURES = {
+    "parser_or_script": (
+        "parse error",
+        "parser error",
+        "failed to parse",
+        "could not parse",
+        "unexpected token",
+        "unexpected keyword",
+        "invalid syntax",
+        "unknown trigger",
+        "unknown effect",
+        "error in trigger",
+        "error in effect",
+        "invalid scope",
+    ),
+    "database_or_duplicate": DUPLICATE_PATTERNS
+    + (
+        "invalid database object",
+        "database error",
+    ),
+    "localization": (
+        "localization error",
+        "localisation error",
+        "missing localization",
+        "missing localisation",
+    ),
+    "gui": (
+        "gui error",
+        "widget error",
+        "failed to load gui",
+        "failed to load widget",
+    ),
+    "loader": (
+        "failed to load",
+        "could not load",
+        "error loading",
+    ),
+}
 REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST BEGIN zg361",
     "ZGA: TEST PASS exact_build_song_emperor",
@@ -1550,6 +1596,8 @@ def preflight(
     runtime_source: Path = SOURCE,
     workshop_manifest: Path | None = None,
     native_bridge: NativeBridgeLaunchConfig | None = None,
+    *,
+    require_visual_tools: bool = True,
 ) -> dict[str, object]:
     errors = fixture_source_errors()
     errors.extend(product_source_errors())
@@ -1656,16 +1704,19 @@ def preflight(
                 )
         except acceptance.RunnerError as error:
             errors.append(str(error))
-    if acceptance._ocr is None:
-        errors.append("RapidOCR is unavailable; use tools/.venv")
-    width, height = acceptance.pyautogui.size()
-    if width < 1920 or height < 1080:
-        errors.append(f"interactive desktop is too small: {width}x{height}")
+    desktop = "not_queried_mcp_only"
+    if require_visual_tools:
+        if acceptance._ocr is None:
+            errors.append("RapidOCR is unavailable; use tools/.venv")
+        width, height = acceptance.pyautogui.size()
+        desktop = f"{width}x{height}"
+        if width < 1920 or height < 1080:
+            errors.append(f"interactive desktop is too small: {width}x{height}")
     if errors:
         raise acceptance.RunnerError("preflight failed:\n  " + "\n  ".join(errors))
     log(
         f"preflight passed: CK3={EXPECTED_GAME_VERSION}, "
-        f"exe_sha256={EXPECTED_EXE_SHA256}, desktop={width}x{height}"
+        f"exe_sha256={EXPECTED_EXE_SHA256}, desktop={desktop}"
     )
     return runtime_identity
 
@@ -2115,6 +2166,531 @@ def project_diagnostics(
             )
         ),
     )
+
+
+def native_loader_smoke_readiness(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+    timeout_s: float = NATIVE_LOADER_READINESS_TIMEOUT_S,
+    stable_observations: int = NATIVE_LOADER_STABLE_OBSERVATIONS,
+    poll_interval_s: float = 0.1,
+) -> dict[str, object]:
+    """Prove a stable exact-build application-main loader boundary.
+
+    This intentionally does not require ``map_ready`` or a played character.
+    It proves only that the injected native bridge has reached a paused,
+    application-main-owned semantic prefix after CK3's data loader.  The
+    caller may then inspect loader diagnostics, but must not claim gameplay
+    acceptance from this boundary.
+    """
+
+    evidence_path = artifacts / "01_loader_native_readiness.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "exact_build_application_main_loader_smoke_only",
+        "tracked_ck3_pid": tracked_ck3_pid,
+        "required_stable_observations": stable_observations,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "log_character_id_used": False,
+        "gameplay_acceptance_executed": False,
+        "gameplay_green_claimed": False,
+        "map_ready_required": False,
+        "played_character_required": False,
+        "observations": [],
+        "last_capabilities": None,
+        "last_snapshot": None,
+        "checks": {},
+        "stable_binding": None,
+        "failure_reason": None,
+    }
+    if timeout_s <= 0 or stable_observations < 2 or poll_interval_s < 0:
+        raise ValueError("loader readiness timing parameters are invalid")
+
+    deadline = time.monotonic() + timeout_s
+    stable_key: tuple[object, ...] | None = None
+    stable_rows: list[dict[str, object]] = []
+    last_sequence: int | None = None
+    last_pump_epochs: int | None = None
+    last_failed_checks: list[str] = ["native bridge did not publish readiness"]
+    observations = evidence["observations"]
+    if not isinstance(observations, list):
+        raise RuntimeError("loader readiness evidence schema is invalid")
+
+    try:
+        while time.monotonic() < deadline:
+            capabilities: dict[str, object] | None = None
+            snapshot: dict[str, object] | None = None
+            try:
+                candidate_capabilities = service.capabilities()
+                if isinstance(candidate_capabilities, dict):
+                    capabilities = candidate_capabilities
+                    evidence["last_capabilities"] = capabilities
+                else:
+                    raise TypeError("capabilities response is not an object")
+                candidate_snapshot = service.snapshot()
+                if isinstance(candidate_snapshot, dict):
+                    snapshot = candidate_snapshot
+                    evidence["last_snapshot"] = snapshot
+                else:
+                    raise TypeError("snapshot response is not an object")
+            except Exception as error:
+                last_failed_checks = [
+                    f"{type(error).__name__}: {error}"
+                ]
+                if poll_interval_s:
+                    time.sleep(poll_interval_s)
+                continue
+
+            diagnostics_value = capabilities.get("diagnostics")
+            diagnostics = (
+                diagnostics_value
+                if isinstance(diagnostics_value, dict)
+                else {}
+            )
+            snapshot_diagnostics_value = snapshot.get("diagnostics")
+            snapshot_diagnostics = (
+                snapshot_diagnostics_value
+                if isinstance(snapshot_diagnostics_value, dict)
+                else {}
+            )
+            hello_value = diagnostics.get("hello")
+            hello = hello_value if isinstance(hello_value, dict) else {}
+            heartbeat_value = diagnostics.get("last_heartbeat")
+            heartbeat = (
+                heartbeat_value
+                if isinstance(heartbeat_value, dict)
+                else {}
+            )
+            mailbox_value = heartbeat.get("main_thread_query_mailbox_v1")
+            mailbox = (
+                mailbox_value if isinstance(mailbox_value, dict) else {}
+            )
+            connection_generation = diagnostics.get(
+                "connection_generation"
+            )
+            heartbeat_sequence = heartbeat.get("sequence")
+            pump_epochs = mailbox.get("pump_epochs")
+            owner_tid = mailbox.get("owner_tid")
+            current_tid = mailbox.get("current_tid")
+            rng_owner_tid = mailbox.get("rng_owner_tid")
+
+            checks = {
+                "native_headless_mode": capabilities.get("mode")
+                == NATIVE_BRIDGE_MODE,
+                "native_headless_backend": capabilities.get("backend_id")
+                == NATIVE_BRIDGE_MODE,
+                "headless": capabilities.get("headless") is True,
+                "visual_fallback_disabled": capabilities.get(
+                    "visual_fallback"
+                )
+                is False,
+                "transport_ready": capabilities.get("transport_ready")
+                is True,
+                "snapshot_available": capabilities.get("snapshot") is True,
+                "connected": diagnostics.get("connected") is True,
+                "semantic_state_available": diagnostics.get(
+                    "semantic_state_available"
+                )
+                is True,
+                "tracked_ck3_pid_matches_bridge": diagnostics.get(
+                    "bridge_pid"
+                )
+                == tracked_ck3_pid,
+                "positive_connection_generation": isinstance(
+                    connection_generation, int
+                )
+                and not isinstance(connection_generation, bool)
+                and connection_generation > 0,
+                "snapshot_transport_binding_matches": (
+                    snapshot_diagnostics.get("bridge_pid")
+                    == tracked_ck3_pid
+                    and snapshot_diagnostics.get("connection_generation")
+                    == connection_generation
+                ),
+                "exact_game_version": hello.get("expected_ck3_version")
+                == EXPECTED_GAME_VERSION,
+                "exact_executable_sha256": str(
+                    hello.get("expected_ck3_sha256", "")
+                ).lower()
+                == EXPECTED_EXE_SHA256,
+                "exact_build_adapter_ready": hello.get("ck3_build_match")
+                is True
+                and hello.get("game_adapter_status") == "ready",
+                "heartbeat_bound_to_process": heartbeat.get("pid")
+                == tracked_ck3_pid,
+                "positive_heartbeat_sequence": isinstance(
+                    heartbeat_sequence, int
+                )
+                and not isinstance(heartbeat_sequence, bool)
+                and heartbeat_sequence > 0,
+                "main_thread_mailbox_installed": mailbox.get("installed")
+                is True,
+                "main_thread_mailbox_not_stopping": mailbox.get("stop")
+                is False,
+                "main_thread_mailbox_failure_free": mailbox.get("failure")
+                == 0,
+                "main_thread_mailbox_ready": mailbox.get("ready") is True,
+                "main_thread_executor_enabled": mailbox.get(
+                    "executor_submission_enabled"
+                )
+                is True,
+                "main_thread_stamp_read": mailbox.get(
+                    "stamp_read_success"
+                )
+                is True,
+                "positive_pump_epoch": isinstance(pump_epochs, int)
+                and not isinstance(pump_epochs, bool)
+                and pump_epochs > 0,
+                "consecutive_main_thread_proof": isinstance(
+                    mailbox.get("consecutive_verified"), int
+                )
+                and not isinstance(
+                    mailbox.get("consecutive_verified"), bool
+                )
+                and mailbox.get("consecutive_verified", 0) >= 2,
+                "main_thread_identity_consistent": isinstance(
+                    owner_tid, int
+                )
+                and not isinstance(owner_tid, bool)
+                and owner_tid > 0
+                and owner_tid == current_tid == rng_owner_tid,
+                "application_state_pointers_available": isinstance(
+                    mailbox.get("jomini_state"), int
+                )
+                and not isinstance(mailbox.get("jomini_state"), bool)
+                and mailbox.get("jomini_state", 0) > 0
+                and isinstance(mailbox.get("game_state"), int)
+                and not isinstance(mailbox.get("game_state"), bool)
+                and mailbox.get("game_state", 0) > 0,
+                "semantic_snapshot_identity_available": isinstance(
+                    snapshot.get("snapshot_id"), str
+                )
+                and bool(snapshot.get("snapshot_id"))
+                and isinstance(snapshot.get("revision"), int)
+                and not isinstance(snapshot.get("revision"), bool)
+                and snapshot.get("revision", -1) >= 0
+                and isinstance(snapshot.get("native_revision"), int)
+                and not isinstance(snapshot.get("native_revision"), bool)
+                and snapshot.get("native_revision", 0) > 0,
+                "semantic_prefix_available": isinstance(
+                    snapshot.get("date_raw"), int
+                )
+                and not isinstance(snapshot.get("date_raw"), bool)
+                and isinstance(snapshot.get("map_ready"), bool),
+                "paused_application_main": snapshot.get("paused") is True
+                and mailbox.get("paused") is True,
+                "mailbox_snapshot_date_matches": mailbox.get("date_raw")
+                == snapshot.get("date_raw"),
+            }
+            evidence["checks"] = checks
+            last_failed_checks = [
+                key for key, value in checks.items() if value is not True
+            ]
+            if last_failed_checks:
+                stable_key = None
+                stable_rows = []
+                last_sequence = None
+                last_pump_epochs = None
+                if poll_interval_s:
+                    time.sleep(poll_interval_s)
+                continue
+
+            candidate_key = (
+                tracked_ck3_pid,
+                connection_generation,
+                snapshot.get("date_raw"),
+                snapshot.get("paused"),
+                snapshot.get("map_ready"),
+                snapshot.get("local_player_id"),
+                owner_tid,
+                mailbox.get("jomini_state"),
+                mailbox.get("game_state"),
+            )
+            if candidate_key != stable_key:
+                stable_key = candidate_key
+                stable_rows = []
+                last_sequence = None
+                last_pump_epochs = None
+            if (
+                last_sequence is None
+                or (
+                    isinstance(heartbeat_sequence, int)
+                    and isinstance(pump_epochs, int)
+                    and heartbeat_sequence > last_sequence
+                    and pump_epochs > (
+                        last_pump_epochs
+                        if isinstance(last_pump_epochs, int)
+                        else -1
+                    )
+                )
+            ):
+                row = {
+                    "heartbeat_sequence": heartbeat_sequence,
+                    "pump_epochs": pump_epochs,
+                    "consecutive_verified": mailbox.get(
+                        "consecutive_verified"
+                    ),
+                    "snapshot_id": snapshot.get("snapshot_id"),
+                    "revision": snapshot.get("revision"),
+                    "native_revision": snapshot.get("native_revision"),
+                    "date_raw": snapshot.get("date_raw"),
+                    "paused": snapshot.get("paused"),
+                    "map_ready": snapshot.get("map_ready"),
+                    "connection_generation": connection_generation,
+                }
+                stable_rows.append(row)
+                observations.append(row)
+                if len(observations) > 64:
+                    del observations[:-64]
+                last_sequence = int(heartbeat_sequence)
+                last_pump_epochs = int(pump_epochs)
+            if len(stable_rows) >= stable_observations:
+                evidence["result"] = "GREEN"
+                evidence["stable_binding"] = {
+                    "bridge_pid": tracked_ck3_pid,
+                    "connection_generation": connection_generation,
+                    "date_raw": snapshot.get("date_raw"),
+                    "paused": snapshot.get("paused"),
+                    "map_ready": snapshot.get("map_ready"),
+                    "local_player_id": snapshot.get("local_player_id"),
+                    "owner_thread_id": owner_tid,
+                    "jomini_state": mailbox.get("jomini_state"),
+                    "game_state": mailbox.get("game_state"),
+                    "first_heartbeat_sequence": stable_rows[0][
+                        "heartbeat_sequence"
+                    ],
+                    "last_heartbeat_sequence": stable_rows[-1][
+                        "heartbeat_sequence"
+                    ],
+                    "first_pump_epoch": stable_rows[0]["pump_epochs"],
+                    "last_pump_epoch": stable_rows[-1]["pump_epochs"],
+                    "stable_observation_count": len(stable_rows),
+                }
+                evidence["failure_reason"] = None
+                write_json(evidence_path, evidence)
+                return evidence
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+
+        reason = ", ".join(last_failed_checks)
+        if not last_failed_checks:
+            reason = (
+                "native heartbeat/pump epochs did not advance across "
+                f"{stable_observations} stable observations"
+            )
+        raise acceptance.RunnerError(
+            "native loader-smoke readiness timed out: " + reason
+        )
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"native loader-smoke readiness failed: {error}"
+        ) from error
+
+
+def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
+    """Return every project-attributed loader signature in one log image."""
+
+    lines = payload.decode("utf-8", errors="replace").splitlines()
+    matches: list[dict[str, object]] = []
+    for index, line in enumerate(lines):
+        lowered = line.lower()
+        context_lines = lines[max(0, index - 2) : index + 3]
+        context = " ".join(context_lines).lower()
+        attributed_line = any(
+            token in lowered for token in PROJECT_TOKENS
+        )
+        attributed_context = any(
+            token in context for token in PROJECT_TOKENS
+        )
+        categories = [
+            category
+            for category, patterns in LOADER_ERROR_SIGNATURES.items()
+            if any(pattern in lowered for pattern in patterns)
+        ]
+        if attributed_line and not categories:
+            categories = ["project_attributed_error"]
+        elif categories and not attributed_context:
+            categories = []
+        for category in categories:
+            matches.append(
+                {
+                    "category": category,
+                    "line_number": index + 1,
+                    "line": line,
+                    "context_start_line": max(1, index - 1),
+                    "context": context_lines,
+                    "project_attributed_line": attributed_line,
+                    "project_attributed_context": attributed_context,
+                }
+            )
+    return matches
+
+
+def scan_loader_error_log(
+    userdir: Path,
+    artifacts: Path,
+    *,
+    timeout_s: float = LOADER_ERROR_LOG_TIMEOUT_S,
+    stable_samples: int = 3,
+    poll_interval_s: float = 0.25,
+    minimum_quiet_s: float = LOADER_ERROR_LOG_MINIMUM_QUIET_S,
+) -> dict[str, object]:
+    """Freeze and batch-scan ``error.log`` for product loader failures."""
+
+    if (
+        timeout_s <= 0
+        or stable_samples < 1
+        or poll_interval_s < 0
+        or minimum_quiet_s < 0
+        or timeout_s <= minimum_quiet_s
+    ):
+        raise ValueError("loader error-log timing parameters are invalid")
+    source = userdir / "logs" / "error.log"
+    frozen = artifacts / "02_loader_error.log"
+    evidence_path = artifacts / "02_loader_error_scan.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "zhongguo_loader_error_log_batch_scan",
+        "source": str(source),
+        "full_log_artifact": frozen.name,
+        "full_log_size": None,
+        "full_log_sha256": None,
+        "stable_samples_required": stable_samples,
+        "minimum_quiet_seconds_required": minimum_quiet_s,
+        "quiet_seconds_observed": 0.0,
+        "loader_error_detected_before_quiet_window": False,
+        "stable_observations": [],
+        "project_tokens": list(PROJECT_TOKENS),
+        "signature_catalog": {
+            key: list(patterns)
+            for key, patterns in LOADER_ERROR_SIGNATURES.items()
+        },
+        "matches": [],
+        "counts_by_category": {},
+        "failure_reason": None,
+    }
+    deadline = time.monotonic() + timeout_s
+    previous_identity: tuple[int, str] | None = None
+    identity_since: float | None = None
+    consecutive = 0
+    payload: bytes | None = None
+    matches: list[dict[str, object]] = []
+
+    try:
+        while time.monotonic() < deadline:
+            observed_at = time.monotonic()
+            try:
+                candidate = source.read_bytes()
+            except OSError:
+                candidate = None
+            if candidate is not None:
+                identity = (len(candidate), release.sha256_bytes(candidate))
+                if identity == previous_identity:
+                    consecutive += 1
+                else:
+                    previous_identity = identity
+                    identity_since = observed_at
+                    consecutive = 1
+                payload = candidate
+                quiet_seconds = (
+                    max(0.0, observed_at - identity_since)
+                    if identity_since is not None
+                    else 0.0
+                )
+                matches = _loader_error_matches(candidate)
+                observations = evidence["stable_observations"]
+                if not isinstance(observations, list):
+                    raise RuntimeError(
+                        "loader error-log evidence schema is invalid"
+                    )
+                observations.append(
+                    {
+                        "size": identity[0],
+                        "sha256": identity[1],
+                        "consecutive": consecutive,
+                        "quiet_seconds": round(quiet_seconds, 3),
+                    }
+                )
+                if len(observations) > 64:
+                    del observations[:-64]
+                if matches:
+                    evidence[
+                        "loader_error_detected_before_quiet_window"
+                    ] = quiet_seconds < minimum_quiet_s
+                    break
+                if (
+                    consecutive >= stable_samples
+                    and quiet_seconds >= minimum_quiet_s
+                ):
+                    break
+            else:
+                previous_identity = None
+                identity_since = None
+                consecutive = 0
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+        else:
+            raise acceptance.RunnerError(
+                "loader error.log did not appear and become quiescent"
+            )
+        if payload is None:
+            raise acceptance.RunnerError(
+                "loader error.log was unavailable after native readiness"
+            )
+
+        frozen.write_bytes(payload)
+        evidence["full_log_size"] = len(payload)
+        evidence["full_log_sha256"] = release.sha256_bytes(payload)
+        quiet_seconds = (
+            max(0.0, time.monotonic() - identity_since)
+            if identity_since is not None
+            else 0.0
+        )
+        evidence["quiet_seconds_observed"] = round(quiet_seconds, 3)
+        matches = _loader_error_matches(payload)
+        counts: dict[str, int] = {}
+        for match in matches:
+            category = str(match["category"])
+            counts[category] = counts.get(category, 0) + 1
+        evidence["matches"] = matches
+        evidence["counts_by_category"] = counts
+        if matches:
+            evidence["failure_reason"] = (
+                f"{len(matches)} ZhongGuo-attributed loader error "
+                "signature(s) found"
+            )
+            write_json(evidence_path, evidence)
+            raise acceptance.RunnerError(str(evidence["failure_reason"]))
+        evidence["result"] = "GREEN"
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        if payload is not None and not frozen.exists():
+            frozen.write_bytes(payload)
+            evidence["full_log_size"] = len(payload)
+            evidence["full_log_sha256"] = release.sha256_bytes(payload)
+        evidence["result"] = "RED"
+        if evidence.get("failure_reason") is None:
+            evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"loader error.log scan failed: {error}"
+        ) from error
 
 
 def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
@@ -3575,6 +4151,762 @@ def query_event_definition_identity(
     }
 
 
+def accept_zhongguo_result_case_snapshot_v1_live_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    notice_identity: dict[str, object],
+    paused_snapshot: dict[str, object],
+    stem: str = "10_phase2_325_notice_result_case_snapshot_v1",
+) -> dict[str, object]:
+    """Prove the received-self result case on the paused zg361.50 frame.
+
+    The played character and the event root independently bind the subject.
+    The expected owner comes from the event's zg361_notice_prompt_owner saved
+    scope.  When the visible zg361_reviewing_superior scope is published, it
+    must resolve to that same owner.  No fixture character ID, OCR text, log
+    marker, coordinate, caller-selected subject, case-kind input, or variable
+    name participates in this cell.
+    """
+
+    tool_name = "ck3_query_zhongguo_result_case_snapshot_v1"
+    capability_path = artifacts / f"{stem}_capabilities.json"
+    requests_path = artifacts / f"{stem}_requests.json"
+    responses_path = artifacts / f"{stem}_responses.json"
+    gate_path = artifacts / f"{stem}_gate.json"
+    requests: list[dict[str, object]] = []
+    responses: list[dict[str, object]] = []
+    capability_sidecar: dict[str, object] = {
+        "schema_version": 1,
+        "tool_name": tool_name,
+        "required_bridge_capability": (
+            QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+        ),
+        "capabilities": None,
+    }
+    request_sidecar: dict[str, object] = {
+        "schema_version": 1,
+        "tool_name": tool_name,
+        "requests": requests,
+    }
+    response_sidecar: dict[str, object] = {
+        "schema_version": 1,
+        "tool_name": tool_name,
+        "responses": responses,
+    }
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "tool_name": tool_name,
+        "case_kind": ZHONGGUO_RESULT_CASE_KIND_V1,
+        "frame": "paused_zg361.50_received_self_notice_before_refusal",
+        "subject_source": (
+            "paused_snapshot.played_character + "
+            "current_event_window_context.root_scope.typed_identity"
+        ),
+        "owner_source": (
+            "current_event_window_context.saved_scopes"
+            "[zg361_notice_prompt_owner].scope.typed_identity"
+        ),
+        "visible_owner_cross_check_source": (
+            "current_event_window_context.saved_scopes"
+            "[zg361_reviewing_superior].scope.typed_identity"
+        ),
+        "ocr_used": False,
+        "log_character_id_fallback_used": False,
+        "fixture_character_id_used": False,
+        "capability_sidecar": capability_path.name,
+        "requests_sidecar": requests_path.name,
+        "responses_sidecar": responses_path.name,
+        "binding": None,
+        "owner_scope_observation": None,
+        "positive_nonces": [],
+        "negative_cases": [],
+        "observed_result_case": None,
+        "checks": {},
+        "failure_reason": None,
+    }
+
+    def flush() -> None:
+        write_json(capability_path, capability_sidecar)
+        write_json(requests_path, request_sidecar)
+        write_json(responses_path, response_sidecar)
+        write_json(gate_path, evidence)
+
+    def require(condition: bool, reason: str) -> None:
+        if not condition:
+            raise ValueError(reason)
+
+    def integer(
+        value: object,
+        label: str,
+        *,
+        minimum: int,
+        maximum: int,
+    ) -> int:
+        require(
+            isinstance(value, int)
+            and not isinstance(value, bool)
+            and minimum <= value <= maximum,
+            f"{label} must be an integer in range",
+        )
+        assert isinstance(value, int)
+        return value
+
+    def positive_int32(value: object, label: str) -> int:
+        return integer(value, label, minimum=1, maximum=2**31 - 1)
+
+    def public_revision(value: object) -> int:
+        return integer(
+            value,
+            "paused snapshot revision",
+            minimum=0,
+            maximum=2**64 - 1,
+        )
+
+    def typed_value(
+        group: object, field_name: str, group_name: str
+    ) -> object:
+        require(isinstance(group, dict), f"{group_name} is not an object")
+        assert isinstance(group, dict)
+        field = group.get(field_name)
+        require(
+            isinstance(field, dict)
+            and set(field)
+            == {"status", "value", "unavailable_reason"}
+            and field.get("status") == "available"
+            and field.get("unavailable_reason") is None,
+            f"{group_name}.{field_name} is not typed available",
+        )
+        assert isinstance(field, dict)
+        return field.get("value")
+
+    def has_fields(value: object, expected: dict[str, object]) -> bool:
+        return isinstance(value, dict) and all(
+            value.get(key) == expected_value
+            for key, expected_value in expected.items()
+        )
+
+    def all_typed_leaves_unavailable(
+        group: object, field_names: tuple[str, ...]
+    ) -> bool:
+        if not isinstance(group, dict) or set(group) != set(field_names):
+            return False
+        return all(
+            has_fields(
+                group.get(field_name),
+                {
+                    "status": "unavailable",
+                    "value": None,
+                    "unavailable_reason": "case_unavailable",
+                },
+            )
+            for field_name in field_names
+        )
+
+    def has_frame_binding(
+        response: dict[str, object], nonce: str, actual_owner: int | None
+    ) -> bool:
+        return has_fields(
+            response.get("binding"),
+            {
+                "request_nonce": nonce,
+                "snapshot_id": paused_snapshot.get("snapshot_id"),
+                "revision": paused_snapshot.get("revision"),
+                "native_revision": paused_snapshot.get("native_revision"),
+                "connection_generation": connection_generation,
+                "date_raw": paused_snapshot.get("date_raw"),
+                "paused": True,
+                "player_character_id": subject_character_id,
+                "subject_character_id": subject_character_id,
+                "owner_character_id": actual_owner,
+                "expected_revision": paused_snapshot.get("revision"),
+            },
+        )
+
+    def binding_without_nonce(response: dict[str, object]) -> dict[str, object]:
+        detached = {
+            key: value
+            for key, value in response.items()
+            if key != "request_nonce"
+        }
+        binding = detached.get("binding")
+        require(
+            isinstance(binding, dict),
+            "result-case response lacks a binding",
+        )
+        assert isinstance(binding, dict)
+        detached["binding"] = {
+            key: value
+            for key, value in binding.items()
+            if key != "request_nonce"
+        }
+        return detached
+
+    def saved_character_id(row: object, label: str) -> int:
+        require(isinstance(row, dict), f"{label} row is not an object")
+        assert isinstance(row, dict)
+        scope = row.get("scope")
+        require(
+            isinstance(scope, dict)
+            and scope.get("status") == "available"
+            and scope.get("raw_type_index") == 4
+            and scope.get("type_key") == "character",
+            f"{label} scope is not a typed character",
+        )
+        assert isinstance(scope, dict)
+        identity = scope.get("typed_identity")
+        require(
+            isinstance(identity, dict)
+            and identity.get("status") == "available"
+            and identity.get("kind") == "character",
+            f"{label} scope lacks an available character identity",
+        )
+        assert isinstance(identity, dict)
+        return positive_int32(
+            identity.get("character_id"),
+            f"{label} character_id",
+        )
+
+    def query(
+        label: str,
+        *,
+        nonce: str,
+        owner_character_id: int,
+        expected_revision: int,
+        expected_outcome: str,
+    ) -> dict[str, object]:
+        arguments: dict[str, object] = {
+            "request_nonce": nonce,
+            "expected_revision": expected_revision,
+            "owner_character_id": owner_character_id,
+        }
+        requests.append(
+            {
+                "label": label,
+                "expected_outcome": expected_outcome,
+                "arguments": arguments,
+            }
+        )
+        write_json(requests_path, request_sidecar)
+        response = service.query_zhongguo_result_case_snapshot_v1(
+            nonce,
+            expected_revision=expected_revision,
+            owner_character_id=owner_character_id,
+        )
+        require(
+            isinstance(response, dict),
+            f"{label} response is not an object",
+        )
+        responses.append({"label": label, "response": response})
+        write_json(responses_path, response_sidecar)
+        return response
+
+    try:
+        require(
+            notice_identity.get("event_definition_key") == "zg361.50",
+            "result-case live cell was not attached to the zg361.50 notice",
+        )
+        revision = public_revision(paused_snapshot.get("revision"))
+        require(
+            paused_snapshot.get("paused") is True,
+            "result-case live cell requires the paused notice frame",
+        )
+        require(
+            notice_identity.get("snapshot_revision") == revision,
+            "notice identity and paused snapshot revision differ",
+        )
+        played_character = paused_snapshot.get("played_character")
+        require(
+            isinstance(played_character, dict),
+            "paused notice snapshot lacks the played reviewed subject",
+        )
+        assert isinstance(played_character, dict)
+        played_character_id = positive_int32(
+            played_character.get("character_id"),
+            "played subject character_id",
+        )
+        diagnostics = paused_snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        integer(
+            connection_generation,
+            "paused notice connection generation",
+            minimum=1,
+            maximum=2**64 - 1,
+        )
+
+        identity_query = notice_identity.get("query")
+        context = (
+            identity_query.get("current_event_window_context")
+            if isinstance(identity_query, dict)
+            else None
+        )
+        readiness = (
+            context.get("readiness") if isinstance(context, dict) else None
+        )
+        root_scope = (
+            context.get("root_scope") if isinstance(context, dict) else None
+        )
+        require(
+            isinstance(readiness, dict)
+            and readiness.get("root_scope_ready") is True,
+            "zg361.50 notice did not publish a ready typed root scope",
+        )
+        require(
+            isinstance(root_scope, dict)
+            and root_scope.get("status") == "available"
+            and root_scope.get("raw_type_index") == 4
+            and root_scope.get("type_key") == "character",
+            "zg361.50 root scope is not a typed character",
+        )
+        assert isinstance(root_scope, dict)
+        typed_identity = root_scope.get("typed_identity")
+        require(
+            isinstance(typed_identity, dict)
+            and typed_identity.get("status") == "available"
+            and typed_identity.get("kind") == "character",
+            "zg361.50 root scope lacks an available character identity",
+        )
+        assert isinstance(typed_identity, dict)
+        subject_character_id = positive_int32(
+            typed_identity.get("character_id"),
+            "notice root subject character_id",
+        )
+        require(
+            subject_character_id == played_character_id,
+            "zg361.50 notice root is not the played reviewed subject",
+        )
+
+        saved_scopes = (
+            context.get("saved_scopes") if isinstance(context, dict) else None
+        )
+        require(
+            isinstance(readiness, dict)
+            and readiness.get("saved_scopes_ready") is True
+            and isinstance(saved_scopes, list),
+            "zg361.50 notice did not publish ready typed saved scopes",
+        )
+        assert isinstance(saved_scopes, list)
+        notice_owner_rows = [
+            row
+            for row in saved_scopes
+            if isinstance(row, dict)
+            and row.get("name") == "zg361_notice_prompt_owner"
+        ]
+        reviewing_superior_rows = [
+            row
+            for row in saved_scopes
+            if isinstance(row, dict)
+            and row.get("name") == "zg361_reviewing_superior"
+        ]
+        require(
+            len(notice_owner_rows) == 1,
+            "zg361.50 notice lacks one canonical notice-prompt-owner scope",
+        )
+        require(
+            len(reviewing_superior_rows) <= 1,
+            "zg361.50 notice published duplicate reviewing-superior scopes",
+        )
+        owner_character_id = saved_character_id(
+            notice_owner_rows[0],
+            "notice prompt owner",
+        )
+        visible_owner_character_id: int | None = None
+        if reviewing_superior_rows:
+            visible_owner_character_id = saved_character_id(
+                reviewing_superior_rows[0],
+                "visible reviewing superior",
+            )
+            require(
+                visible_owner_character_id == owner_character_id,
+                "zg361.50 visible reviewing superior does not match "
+                "the notice prompt owner",
+            )
+        require(
+            owner_character_id != subject_character_id,
+            "zg361.50 result owner must differ from the received-self subject",
+        )
+
+        capabilities = service.capabilities()
+        require(
+            isinstance(capabilities, dict),
+            "bridge capabilities are unavailable",
+        )
+        assert isinstance(capabilities, dict)
+        capability_sidecar["capabilities"] = capabilities
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        require(
+            capabilities.get(
+                "zhongguo_result_case_snapshot_v1_query_supported"
+            )
+            is True
+            and isinstance(bridge_capabilities, list)
+            and QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+            in bridge_capabilities,
+            "native bridge did not advertise the ZhongGuo result-case tool",
+        )
+
+        checks = evidence["checks"]
+        assert isinstance(checks, dict)
+        checks["capability_advertised"] = True
+        checks["subject_from_typed_notice_root"] = True
+        checks["played_character_is_received_self_subject"] = True
+        checks["owner_from_notice_prompt_saved_scope"] = True
+        checks["visible_reviewing_superior_cross_check"] = (
+            "matched"
+            if visible_owner_character_id is not None
+            else "not_published"
+        )
+        evidence["owner_scope_observation"] = {
+            "zg361_notice_prompt_owner_count": len(notice_owner_rows),
+            "zg361_reviewing_superior_count": len(reviewing_superior_rows),
+            "selected_owner_scope": "zg361_notice_prompt_owner",
+            "visible_cross_check": (
+                "matched"
+                if visible_owner_character_id is not None
+                else "not_published"
+            ),
+        }
+        evidence["binding"] = {
+            "snapshot_id": paused_snapshot.get("snapshot_id"),
+            "revision": revision,
+            "native_revision": paused_snapshot.get("native_revision"),
+            "connection_generation": connection_generation,
+            "date_raw": paused_snapshot.get("date_raw"),
+            "paused": True,
+            "player_character_id": subject_character_id,
+            "subject_character_id": subject_character_id,
+            "owner_character_id": owner_character_id,
+            "active_event_instance_id": _personal_switch_native_snapshot(
+                paused_snapshot
+            )["active_event_instance_id"],
+            "event_definition_key": notice_identity["event_definition_key"],
+        }
+
+        positive_nonces = (
+            "zg361.phase2.result_case.01",
+            "zg361.phase2.result_case.02",
+        )
+        first = query(
+            "same_frame_positive_01",
+            nonce=positive_nonces[0],
+            owner_character_id=owner_character_id,
+            expected_revision=revision,
+            expected_outcome="available_received_self_open_result_case",
+        )
+        second = query(
+            "same_frame_positive_02",
+            nonce=positive_nonces[1],
+            owner_character_id=owner_character_id,
+            expected_revision=revision,
+            expected_outcome="available_received_self_open_result_case",
+        )
+        evidence["positive_nonces"] = list(positive_nonces)
+
+        observed_projection: dict[str, object] | None = None
+        for index, (nonce, response) in enumerate(
+            zip(positive_nonces, (first, second), strict=True),
+            start=1,
+        ):
+            require(
+                response.get("status") == "available"
+                and response.get("unavailable_reason") is None,
+                f"positive query {index} did not return an available result case",
+            )
+            require(
+                has_fields(
+                    response,
+                    {
+                        "case_kind": ZHONGGUO_RESULT_CASE_KIND_V1,
+                        "request_nonce": nonce,
+                        "snapshot_revision": paused_snapshot.get(
+                            "native_revision"
+                        ),
+                        "date_raw": paused_snapshot.get("date_raw"),
+                        "paused": True,
+                        "player_character_id": subject_character_id,
+                        "subject_character_id": subject_character_id,
+                        "requested_owner_character_id": owner_character_id,
+                    },
+                ),
+                f"positive query {index} top-level binding drifted",
+            )
+            require(
+                has_frame_binding(response, nonce, owner_character_id),
+                f"positive query {index} response binding drifted",
+            )
+
+            case = response.get("case")
+            case_cycle = integer(
+                typed_value(case, "cycle_serial", "case"),
+                "case.cycle_serial",
+                minimum=1,
+                maximum=2**63 - 1,
+            )
+            case_serial = integer(
+                typed_value(case, "case_serial", "case"),
+                "case.case_serial",
+                minimum=1,
+                maximum=999_999,
+            )
+            require(
+                typed_value(case, "owner_character_id", "case")
+                == owner_character_id
+                and typed_value(case, "subject_character_id", "case")
+                == subject_character_id
+                and typed_value(case, "state", "case") == 1
+                and typed_value(case, "grade", "case") == 1,
+                f"positive query {index} open result-case identity drifted",
+            )
+
+            notice = response.get("notice")
+            absolute_grade = integer(
+                typed_value(notice, "absolute_grade", "notice"),
+                "notice.absolute_grade",
+                minimum=1,
+                maximum=3,
+            )
+            kpi_frozen_q100000 = integer(
+                typed_value(
+                    notice,
+                    "kpi_frozen_q100000",
+                    "notice",
+                ),
+                "notice.kpi_frozen_q100000",
+                minimum=-(2**63),
+                maximum=2**63 - 1,
+            )
+            rank_frozen = integer(
+                typed_value(notice, "rank_frozen", "notice"),
+                "notice.rank_frozen",
+                minimum=1,
+                maximum=2**63 - 1,
+            )
+            cohort_n_frozen = integer(
+                typed_value(notice, "cohort_n_frozen", "notice"),
+                "notice.cohort_n_frozen",
+                minimum=1,
+                maximum=2**63 - 1,
+            )
+            require(
+                rank_frozen <= cohort_n_frozen,
+                f"positive query {index} notice rank exceeds its cohort",
+            )
+
+            delivery = response.get("delivery")
+            require(
+                typed_value(delivery, "method", "delivery") == 0
+                and typed_value(
+                    delivery,
+                    "objection_recorded",
+                    "delivery",
+                )
+                is False
+                and typed_value(
+                    delivery,
+                    "settlement_posted_serial",
+                    "delivery",
+                )
+                == 0
+                and typed_value(delivery, "appeal_open", "delivery")
+                is False,
+                f"positive query {index} is not the open delivery matrix",
+            )
+            response_readiness = response.get("readiness")
+            require(
+                response_readiness
+                == {
+                    "player_subject_binding_ready": True,
+                    "owner_binding_ready": True,
+                    "case_identity_ready": True,
+                    "notice_facts_ready": True,
+                    "delivery_state_ready": True,
+                    "same_frame_ready": True,
+                    "ready": True,
+                },
+                f"positive query {index} readiness is not fully GREEN",
+            )
+
+            projection = {
+                "case": {
+                    "owner_character_id": owner_character_id,
+                    "subject_character_id": subject_character_id,
+                    "cycle_serial": case_cycle,
+                    "case_serial": case_serial,
+                    "state": 1,
+                    "grade": 1,
+                },
+                "notice": {
+                    "absolute_grade": absolute_grade,
+                    "kpi_frozen_q100000": kpi_frozen_q100000,
+                    "rank_frozen": rank_frozen,
+                    "cohort_n_frozen": cohort_n_frozen,
+                },
+                "delivery": {
+                    "method": 0,
+                    "objection_recorded": False,
+                    "settlement_posted_serial": 0,
+                    "appeal_open": False,
+                },
+                "readiness": {"ready": True},
+            }
+            if observed_projection is None:
+                observed_projection = projection
+            else:
+                require(
+                    projection == observed_projection,
+                    "consecutive result-case projections differ",
+                )
+
+        require(
+            binding_without_nonce(first) == binding_without_nonce(second),
+            "consecutive result-case queries did not return one semantic frame",
+        )
+        require(
+            observed_projection is not None,
+            "positive result-case projection was not recorded",
+        )
+        evidence["observed_result_case"] = observed_projection
+        checks["consecutive_queries_same_semantic_frame"] = True
+        checks["result_case_owner_subject_cycle_case_bound"] = True
+        checks["open_state_and_grade_one"] = True
+        checks["notice_facts_include_q100000"] = True
+        checks["open_delivery_matrix_projected"] = True
+        checks["aggregate_readiness_ready"] = True
+
+        wrong_owner = (
+            owner_character_id + 1
+            if owner_character_id < 2**31 - 1
+            else owner_character_id - 1
+        )
+        wrong_nonce = "zg361.phase2.result_case.wrong_owner"
+        wrong_owner_response = query(
+            "wrong_owner_typed_red",
+            nonce=wrong_nonce,
+            owner_character_id=wrong_owner,
+            expected_revision=revision,
+            expected_outcome="typed_red_owner_filter_mismatch_fully_wiped",
+        )
+        wrong_group_fields = {
+            "case": (
+                "owner_character_id",
+                "subject_character_id",
+                "cycle_serial",
+                "case_serial",
+                "state",
+                "grade",
+            ),
+            "notice": (
+                "absolute_grade",
+                "kpi_frozen_q100000",
+                "rank_frozen",
+                "cohort_n_frozen",
+            ),
+            "delivery": (
+                "method",
+                "objection_recorded",
+                "settlement_posted_serial",
+                "appeal_open",
+            ),
+        }
+        wrong_readiness = wrong_owner_response.get("readiness")
+        require(
+            has_fields(
+                wrong_owner_response,
+                {
+                    "status": "unavailable",
+                    "unavailable_reason": "owner_filter_mismatch",
+                    "case_kind": ZHONGGUO_RESULT_CASE_KIND_V1,
+                    "request_nonce": wrong_nonce,
+                    "snapshot_revision": paused_snapshot.get(
+                        "native_revision"
+                    ),
+                    "date_raw": paused_snapshot.get("date_raw"),
+                    "paused": True,
+                    "player_character_id": subject_character_id,
+                    "subject_character_id": subject_character_id,
+                    "requested_owner_character_id": wrong_owner,
+                },
+            )
+            and has_frame_binding(wrong_owner_response, wrong_nonce, None)
+            and all(
+                all_typed_leaves_unavailable(
+                    wrong_owner_response.get(group_name),
+                    field_names,
+                )
+                for group_name, field_names in wrong_group_fields.items()
+            )
+            and wrong_readiness
+            == {
+                "player_subject_binding_ready": False,
+                "owner_binding_ready": False,
+                "case_identity_ready": False,
+                "notice_facts_ready": False,
+                "delivery_state_ready": False,
+                "same_frame_ready": True,
+                "ready": False,
+            },
+            "wrong-owner query did not return a fully wiped "
+            "owner_filter_mismatch RED",
+        )
+        checks["wrong_owner_typed_red"] = True
+        checks["wrong_owner_all_typed_leaves_unavailable"] = {
+            group_name: len(field_names)
+            for group_name, field_names in wrong_group_fields.items()
+        }
+
+        final_snapshot = service.snapshot()
+        initial_frame = {
+            **_personal_switch_native_snapshot(paused_snapshot),
+            "snapshot_id": paused_snapshot.get("snapshot_id"),
+            "connection_generation": connection_generation,
+            "played_character_id": subject_character_id,
+        }
+        final_character = final_snapshot.get("played_character")
+        final_diagnostics = final_snapshot.get("diagnostics")
+        final_frame = {
+            **_personal_switch_native_snapshot(final_snapshot),
+            "snapshot_id": final_snapshot.get("snapshot_id"),
+            "connection_generation": (
+                final_diagnostics.get("connection_generation")
+                if isinstance(final_diagnostics, dict)
+                else None
+            ),
+            "played_character_id": (
+                final_character.get("character_id")
+                if isinstance(final_character, dict)
+                else None
+            ),
+        }
+        require(
+            final_frame == initial_frame,
+            "read-only result-case cell changed the paused notice frame",
+        )
+        checks["read_only_notice_frame_unchanged"] = True
+        evidence["negative_cases"] = [
+            {
+                "label": "wrong_owner_typed_red",
+                "status": "unavailable",
+                "reason": "owner_filter_mismatch",
+                "semantic_groups_wiped": ["case", "notice", "delivery"],
+            }
+        ]
+        evidence["result"] = "GREEN"
+        flush()
+        return evidence
+    except Exception as error:
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        flush()
+        raise acceptance.RunnerError(
+            "ZhongGuo result-case snapshot v1 live cell failed: "
+            f"{type(error).__name__}: {error}"
+        ) from error
+
+
 def select_resolved_event_option_native(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -4448,6 +5780,14 @@ def capture_superior_assigned_result(
         expected_event_definition_key="zg361.50",
         timeout_s=30.0,
     )
+    result_case_snapshot_live_cell = (
+        accept_zhongguo_result_case_snapshot_v1_live_cell(
+            timeline_service,
+            artifacts,
+            notice_identity=notice_gate["identity"],
+            paused_snapshot=notice_gate["snapshot"],
+        )
+    )
     notice_speed_gate = arm_native_speed_one(
         timeline_service,
         artifacts,
@@ -4573,6 +5913,9 @@ def capture_superior_assigned_result(
                 "ZGA: TEST PASS phase2_player_325_prepared_without_early_penalty"
             ),
             "notice_identity": notice_gate["identity"],
+            "result_case_snapshot_v1_live_cell": (
+                result_case_snapshot_live_cell
+            ),
             "refusal_option_selection": notice_selection,
             "refusal_transition": notice_transition,
             "witnessed_result_identity": result_gate["identity"],
@@ -6111,6 +7454,7 @@ def run_cell(
     native_bridge: NativeBridgeLaunchConfig,
     promo_capture: bool = False,
     promo_camera_probe: bool = False,
+    loader_smoke: bool = False,
     runtime_source: Path = SOURCE,
     runtime_identity: dict[str, object] | None = None,
 ) -> dict[str, object]:
@@ -6203,7 +7547,15 @@ def run_cell(
             "launched suspended/injected/resumed tracked CK3 "
             f"PID {process.pid} on {native_bridge.pipe_name}"
         )
-        acceptance.wait_for_ocr_text(
+        if loader_smoke:
+            native_readiness = native_loader_smoke_readiness(
+                title_navigation_service,
+                artifacts,
+                tracked_ck3_pid=tracked_ck3_pid,
+            )
+            error_scan = scan_loader_error_log(userdir, artifacts)
+        if not loader_smoke:
+            acceptance.wait_for_ocr_text(
             "新游戏",
             acceptance.MAIN_MENU_REGION,
             BOOT_TIMEOUT_S,
@@ -6212,19 +7564,38 @@ def run_cell(
             stable_hits=1,
         )
         mount_order = verify_runtime_load_order(userdir, bootstrap)
-        new_diagnostics, new_warnings = project_diagnostics(
-            userdir, artifacts, "02_main_menu"
-        )
-        diagnostics.extend(new_diagnostics)
-        observed_engine_warnings.extend(new_warnings)
-        if diagnostics:
-            raise acceptance.RunnerError(diagnostics[-1])
-        isolated.dismiss_external_main_menu_popup(artifacts)
-        acceptance.navigate_lobby(artifacts)
-        isolated.wait_for_gameplay_hud(artifacts)
-        acceptance.ensure_game_paused(artifacts, "04_standard_1066_start")
-        keyboard_layout_evidence = force_ck3_english_keyboard_layout(artifacts)
-        if promo_camera_probe:
+        if not loader_smoke:
+            new_diagnostics, new_warnings = project_diagnostics(
+                userdir, artifacts, "02_main_menu"
+            )
+            diagnostics.extend(new_diagnostics)
+            observed_engine_warnings.extend(new_warnings)
+            if diagnostics:
+                raise acceptance.RunnerError(diagnostics[-1])
+        if not loader_smoke:
+            isolated.dismiss_external_main_menu_popup(artifacts)
+            acceptance.navigate_lobby(artifacts)
+            isolated.wait_for_gameplay_hud(artifacts)
+            acceptance.ensure_game_paused(artifacts, "04_standard_1066_start")
+            keyboard_layout_evidence = force_ck3_english_keyboard_layout(artifacts)
+        if loader_smoke:
+            evidence = {
+                "loader_smoke_only": True,
+                "scope": "mcp_assisted_frontend_loader_smoke",
+                "native_readiness": native_readiness,
+                "runtime_mount_inventory": mount_order,
+                "loader_error_log_scan": error_scan,
+                "gameplay_acceptance_executed": False,
+                "gameplay_green_claimed": False,
+                "zg361_50_case_cell_executed": False,
+                "result_provider_exercised": False,
+                "ocr_used": False,
+                "image_used": False,
+                "coordinates_used": False,
+                "navigation_used": False,
+                "ffmpeg_started": False,
+            }
+        elif promo_camera_probe:
             initialize_fixture(stream, artifacts)
             close_native_decisions_panel(
                 artifacts, "05_title_navigation_probe_preflight"
@@ -6281,11 +7652,12 @@ def run_cell(
             error, acceptance.RunnerError
         ):
             traceback.print_exc()
-        try:
-            acceptance.focus_ck3()
-            acceptance.ImageGrab.grab().save(artifacts / "fatal_state.png")
-        except Exception:
-            pass
+        if not loader_smoke:
+            try:
+                acceptance.focus_ck3()
+                acceptance.ImageGrab.grab().save(artifacts / "fatal_state.png")
+            except Exception:
+                pass
     finally:
         if recorder is not None and recorder.process is not None:
             try:
@@ -6335,7 +7707,11 @@ def run_cell(
                 f"{error_reason}; {reason}" if error_reason else reason
             )
         try:
-            if result == "GREEN" and not promo_camera_probe:
+            if (
+                result == "GREEN"
+                and not promo_camera_probe
+                and not loader_smoke
+            ):
                 stream.validate(final=True)
             else:
                 stream.pump(final=True)
@@ -6440,6 +7816,10 @@ def run_cell(
         ),
         "tracked_full_acceptance_pid": tracked_ck3_pid,
         "promo_camera_probe_only": promo_camera_probe,
+        "loader_smoke_only": loader_smoke,
+        "gameplay_acceptance_executed": not loader_smoke,
+        "gameplay_green_claimed": result == "GREEN" and not loader_smoke,
+        "zg361_50_case_cell_executed": False if loader_smoke else None,
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
         "product_runtime_manifest": bootstrap["manifest"],
@@ -6469,8 +7849,12 @@ def run_cell(
             "platform": platform.platform(),
             "python": sys.version.split()[0],
             "desktop": (
-                f"{acceptance.pyautogui.size().width}x"
-                f"{acceptance.pyautogui.size().height}"
+                "not_queried_mcp_only"
+                if loader_smoke
+                else (
+                    f"{acceptance.pyautogui.size().width}x"
+                    f"{acceptance.pyautogui.size().height}"
+                )
             ),
         },
     }
@@ -6484,15 +7868,21 @@ def main(
     preflight_only: bool = False,
     promo_capture: bool = False,
     promo_camera_probe: bool = False,
+    loader_smoke: bool = False,
     workshop_cache_source: str | None = None,
     workshop_manifest: str | None = None,
     bridge_dll: str | None = None,
     bridge_injector: str | None = None,
     bridge_pipe: str | None = None,
 ) -> int:
-    if promo_capture and promo_camera_probe:
+    selected_runtime_modes = sum(
+        bool(value)
+        for value in (promo_capture, promo_camera_probe, loader_smoke)
+    )
+    if selected_runtime_modes > 1:
         raise acceptance.RunnerError(
-            "--promo-capture and --promo-camera-probe are mutually exclusive"
+            "--promo-capture, --promo-camera-probe and --loader-smoke "
+            "are mutually exclusive"
         )
     runtime_source = (
         Path(workshop_cache_source).expanduser().resolve()
@@ -6508,7 +7898,10 @@ def main(
         bridge_dll, bridge_injector, bridge_pipe
     )
     runtime_identity = preflight(
-        runtime_source, manifest_path, native_bridge=native_bridge
+        runtime_source,
+        manifest_path,
+        native_bridge=native_bridge,
+        require_visual_tools=not loader_smoke,
     )
     if preflight_only:
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
@@ -6543,6 +7936,7 @@ def main(
         native_bridge=native_bridge,
         promo_capture=promo_capture,
         promo_camera_probe=promo_camera_probe,
+        loader_smoke=loader_smoke,
         runtime_source=runtime_source,
         runtime_identity=runtime_identity,
     )
@@ -6564,6 +7958,9 @@ def main(
         "schema_version": 1,
         "result": result,
         "error_reason": error_reason,
+        "loader_smoke_only": loader_smoke,
+        "gameplay_acceptance_executed": not loader_smoke,
+        "gameplay_green_claimed": result == "GREEN" and not loader_smoke,
         "cell": report,
         "protected_storage_unchanged": protected_unchanged,
         "postflight_quiet_seconds": (
@@ -6572,13 +7969,21 @@ def main(
     }
     write_json(artifacts / "report.json", matrix)
     write_evidence_index(artifacts, matrix)
-    print("\n===== ZHONGGUO 361 ACCEPTANCE =====")
+    heading = (
+        "ZHONGGUO 361 MCP-ASSISTED LOADER SMOKE"
+        if loader_smoke
+        else "ZHONGGUO 361 ACCEPTANCE"
+    )
+    print(f"\n===== {heading} =====")
     print(f"cell                    {report['result']}")
     print(
         "protected storage       "
         + ("UNCHANGED" if protected_unchanged else "UNPROVEN")
     )
     print(f"artifacts               {artifacts}")
+    if loader_smoke:
+        print("gameplay acceptance     NOT RUN")
+        print("gameplay GREEN claim    NONE")
     print(f"RESULT: {result}")
     return 0 if result == "GREEN" else 1
 
@@ -6601,6 +8006,14 @@ if __name__ == "__main__":
         "--promo-camera-probe",
         action="store_true",
         help="stop after the historical Bianzhou camera and clean-HUD preflight",
+    )
+    parser.add_argument(
+        "--loader-smoke",
+        action="store_true",
+        help=(
+            "run a zero-visual native/MCP frontend loader smoke and error.log "
+            "scan; does not enter or claim gameplay acceptance"
+        ),
     )
     parser.add_argument(
         "--workshop-cache-source",
@@ -6634,6 +8047,7 @@ if __name__ == "__main__":
                 preflight_only=arguments.preflight,
                 promo_capture=arguments.promo_capture,
                 promo_camera_probe=arguments.promo_camera_probe,
+                loader_smoke=arguments.loader_smoke,
                 workshop_cache_source=arguments.workshop_cache_source,
                 workshop_manifest=arguments.workshop_manifest,
                 bridge_dll=arguments.bridge_dll,

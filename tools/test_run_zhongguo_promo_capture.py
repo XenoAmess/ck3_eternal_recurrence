@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import importlib.util
 from pathlib import Path
 import inspect
@@ -295,6 +296,527 @@ def main() -> int:
         '"event_definition_key": event_definition_key',
     ):
         assert token in identity_source, token
+
+    result_case_cell_source = inspect.getsource(
+        capture.accept_zhongguo_result_case_snapshot_v1_live_cell
+    )
+    for token in (
+        'tool_name = "ck3_query_zhongguo_result_case_snapshot_v1"',
+        'notice_identity.get("event_definition_key") == "zg361.50"',
+        'root_scope.get("raw_type_index") == 4',
+        'root_scope.get("type_key") == "character"',
+        'typed_identity.get("kind") == "character"',
+        'subject_character_id == played_character_id',
+        'row.get("name") == "zg361_notice_prompt_owner"',
+        'row.get("name") == "zg361_reviewing_superior"',
+        "visible_owner_character_id == owner_character_id",
+        "service.query_zhongguo_result_case_snapshot_v1(",
+        '"same_frame_positive_01"',
+        '"same_frame_positive_02"',
+        '"owner_filter_mismatch"',
+        'typed_value(case, "state", "case") == 1',
+        'typed_value(case, "grade", "case") == 1',
+        '"kpi_frozen_q100000"',
+        'typed_value(delivery, "method", "delivery") == 0',
+        '"settlement_posted_serial"',
+        '"player_subject_binding_ready": True',
+        '"ready": True',
+        "all_typed_leaves_unavailable(",
+        '"connection_generation": connection_generation',
+        "write_json(capability_path, capability_sidecar)",
+        "write_json(requests_path, request_sidecar)",
+        "write_json(responses_path, response_sidecar)",
+    ):
+        assert token in result_case_cell_source, token
+    for forbidden in (
+        "service.query_zhongguo_case_snapshot_v1(",
+        "subject_character_id=",
+        "case_kind=",
+        "variable_name=",
+        "unsupported_case_kind",
+    ):
+        assert forbidden not in result_case_cell_source, forbidden
+    assert "wait_for_ocr" not in result_case_cell_source
+    assert "deliberate_click" not in result_case_cell_source
+    assert "HISTORICAL_TARGET" not in result_case_cell_source
+
+    result_case_snapshot = {
+        "revision": 73,
+        "native_revision": 72,
+        "snapshot_id": "native-headless:test:73",
+        "date_raw": 53_182_008,
+        "paused": True,
+        "speed": 1,
+        "active_event": {"instance_id": 51, "option_count": 2},
+        "played_character": {"character_id": 441},
+        "diagnostics": {"connection_generation": 4},
+    }
+
+    def saved_character_scope(
+        name: str, name_identifier: int, character_id: int
+    ) -> dict[str, object]:
+        return {
+            "name": name,
+            "name_identifier": name_identifier,
+            "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                },
+            },
+        }
+
+    result_case_identity = {
+        "event_instance_id": 51,
+        "snapshot_revision": 73,
+        "event_definition_key": "zg361.50",
+        "query": {
+            "status": "available",
+            "current_event_window_context": {
+                "event_definition_key": "zg361.50",
+                "readiness": {
+                    "event_definition_identity_ready": True,
+                    "root_scope_ready": True,
+                    "saved_scopes_ready": True,
+                },
+                "root_scope": {
+                    "status": "available",
+                    "raw_type_index": 4,
+                    "type_key": "character",
+                    "subtype": 0,
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": 441,
+                    },
+                },
+                # zg361.50 receives the prompt owner as an event saved scope;
+                # its immediate block also publishes the visible alias.
+                "saved_scopes": [
+                    saved_character_scope(
+                        "zg361_notice_prompt_owner", 97, 772
+                    ),
+                    saved_character_scope(
+                        "zg361_reviewing_superior", 98, 772
+                    ),
+                ],
+            },
+        },
+    }
+
+    def result_available(value: object) -> dict[str, object]:
+        return {
+            "status": "available",
+            "value": value,
+            "unavailable_reason": None,
+        }
+
+    def result_unavailable() -> dict[str, object]:
+        return {
+            "status": "unavailable",
+            "value": None,
+            "unavailable_reason": "case_unavailable",
+        }
+
+    def positive_result_case_response(nonce: str) -> dict[str, object]:
+        return {
+            "schema_version": 1,
+            "status": "available",
+            "case_kind": "zhongguo.result.received-self",
+            "request_nonce": nonce,
+            "snapshot_revision": 72,
+            "date_raw": 53_182_008,
+            "paused": True,
+            "player_character_id": 441,
+            "subject_character_id": 441,
+            "requested_owner_character_id": 772,
+            "case": {
+                "owner_character_id": result_available(772),
+                "subject_character_id": result_available(441),
+                "cycle_serial": result_available(7),
+                "case_serial": result_available(903),
+                "state": result_available(1),
+                "grade": result_available(1),
+            },
+            "notice": {
+                "absolute_grade": result_available(2),
+                "kpi_frozen_q100000": result_available(7_654_321),
+                "rank_frozen": result_available(4),
+                "cohort_n_frozen": result_available(17),
+            },
+            "delivery": {
+                "method": result_available(0),
+                "objection_recorded": result_available(False),
+                "settlement_posted_serial": result_available(0),
+                "appeal_open": result_available(False),
+            },
+            "readiness": {
+                "player_subject_binding_ready": True,
+                "owner_binding_ready": True,
+                "case_identity_ready": True,
+                "notice_facts_ready": True,
+                "delivery_state_ready": True,
+                "same_frame_ready": True,
+                "ready": True,
+            },
+            "unavailable_reason": None,
+            "provenance": {"fixture": "exact-build"},
+            "build": {"version": "1.19.0.6"},
+            "source": {
+                "snapshot_id": "native-headless:test:73",
+                "revision": 73,
+                "native_revision": 72,
+            },
+            "binding": {
+                "request_nonce": nonce,
+                "snapshot_id": "native-headless:test:73",
+                "revision": 73,
+                "native_revision": 72,
+                "connection_generation": 4,
+                "date_raw": 53_182_008,
+                "paused": True,
+                "player_character_id": 441,
+                "subject_character_id": 441,
+                "owner_character_id": 772,
+                "expected_revision": 73,
+            },
+        }
+
+    class ResultCaseSnapshotService:
+        def __init__(self, *, leak_wrong_owner_leaf: bool = False) -> None:
+            self.calls: list[dict[str, object]] = []
+            self.leak_wrong_owner_leaf = leak_wrong_owner_leaf
+
+        def snapshot(self) -> dict[str, object]:
+            return copy.deepcopy(result_case_snapshot)
+
+        def capabilities(self) -> dict[str, object]:
+            return {
+                "zhongguo_result_case_snapshot_v1_query_supported": True,
+                "bridge_capabilities": [
+                    "game.command.query-zhongguo-result-case-snapshot-v1"
+                ],
+            }
+
+        def query_zhongguo_result_case_snapshot_v1(
+            self,
+            request_nonce: str,
+            *,
+            expected_revision: int,
+            owner_character_id: int,
+        ) -> dict[str, object]:
+            self.calls.append(
+                {
+                    "request_nonce": request_nonce,
+                    "expected_revision": expected_revision,
+                    "owner_character_id": owner_character_id,
+                }
+            )
+            assert expected_revision == 73
+            if owner_character_id != 772:
+                wrong_response: dict[str, object] = {
+                    "schema_version": 1,
+                    "case_kind": "zhongguo.result.received-self",
+                    "request_nonce": request_nonce,
+                    "status": "unavailable",
+                    "unavailable_reason": "owner_filter_mismatch",
+                    "snapshot_revision": 72,
+                    "date_raw": 53_182_008,
+                    "paused": True,
+                    "player_character_id": 441,
+                    "subject_character_id": 441,
+                    "requested_owner_character_id": owner_character_id,
+                    "case": {
+                        field: result_unavailable()
+                        for field in (
+                            "owner_character_id",
+                            "subject_character_id",
+                            "cycle_serial",
+                            "case_serial",
+                            "state",
+                            "grade",
+                        )
+                    },
+                    "notice": {
+                        field: result_unavailable()
+                        for field in (
+                            "absolute_grade",
+                            "kpi_frozen_q100000",
+                            "rank_frozen",
+                            "cohort_n_frozen",
+                        )
+                    },
+                    "delivery": {
+                        field: result_unavailable()
+                        for field in (
+                            "method",
+                            "objection_recorded",
+                            "settlement_posted_serial",
+                            "appeal_open",
+                        )
+                    },
+                    "readiness": {
+                        "player_subject_binding_ready": False,
+                        "owner_binding_ready": False,
+                        "case_identity_ready": False,
+                        "notice_facts_ready": False,
+                        "delivery_state_ready": False,
+                        "same_frame_ready": True,
+                        "ready": False,
+                    },
+                    "provenance": {"fixture": "exact-build"},
+                    "build": {"version": "1.19.0.6"},
+                    "source": {
+                        "snapshot_id": "native-headless:test:73",
+                        "revision": 73,
+                        "native_revision": 72,
+                    },
+                    "binding": {
+                        "request_nonce": request_nonce,
+                        "snapshot_id": "native-headless:test:73",
+                        "revision": 73,
+                        "native_revision": 72,
+                        "connection_generation": 4,
+                        "date_raw": 53_182_008,
+                        "paused": True,
+                        "player_character_id": 441,
+                        "subject_character_id": 441,
+                        "owner_character_id": None,
+                        "expected_revision": 73,
+                    },
+                }
+                if self.leak_wrong_owner_leaf:
+                    wrong_case = wrong_response["case"]
+                    assert isinstance(wrong_case, dict)
+                    wrong_case["case_serial"] = result_available(903)
+                return wrong_response
+            return positive_result_case_response(request_nonce)
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        result_case_service = ResultCaseSnapshotService()
+        result_case = (
+            capture.accept_zhongguo_result_case_snapshot_v1_live_cell(
+                result_case_service,
+                artifacts,
+                notice_identity=result_case_identity,
+                paused_snapshot=result_case_snapshot,
+            )
+        )
+        assert result_case["result"] == "GREEN"
+        assert result_case["case_kind"] == "zhongguo.result.received-self"
+        assert result_case["binding"]["player_character_id"] == 441
+        assert result_case["binding"]["subject_character_id"] == 441
+        assert result_case["binding"]["owner_character_id"] == 772
+        assert result_case["owner_scope_observation"] == {
+            "zg361_notice_prompt_owner_count": 1,
+            "zg361_reviewing_superior_count": 1,
+            "selected_owner_scope": "zg361_notice_prompt_owner",
+            "visible_cross_check": "matched",
+        }
+        assert [
+            call["owner_character_id"] for call in result_case_service.calls
+        ] == [772, 772, 773]
+        for call in result_case_service.calls:
+            assert set(call) == {
+                "request_nonce",
+                "expected_revision",
+                "owner_character_id",
+            }
+        for suffix in (
+            "capabilities.json",
+            "requests.json",
+            "responses.json",
+            "gate.json",
+        ):
+            assert (
+                artifacts
+                / f"10_phase2_325_notice_result_case_snapshot_v1_{suffix}"
+            ).is_file()
+        stored_requests = json.loads(
+            (
+                artifacts
+                / "10_phase2_325_notice_result_case_snapshot_v1_requests.json"
+            ).read_text(encoding="utf-8")
+        )
+        stored_responses = json.loads(
+            (
+                artifacts
+                / "10_phase2_325_notice_result_case_snapshot_v1_responses.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert len(stored_requests["requests"]) == 3
+        for stored_request in stored_requests["requests"]:
+            arguments = stored_request["arguments"]
+            assert set(arguments) == {
+                "request_nonce",
+                "expected_revision",
+                "owner_character_id",
+            }
+            assert "subject_character_id" not in arguments
+            assert "case_kind" not in arguments
+            assert "variable_name" not in arguments
+        first_positive = stored_responses["responses"][0]["response"]
+        assert first_positive["case"]["state"]["value"] == 1
+        assert first_positive["case"]["grade"]["value"] == 1
+        assert (
+            first_positive["notice"]["kpi_frozen_q100000"]["value"]
+            == 7_654_321
+        )
+        assert first_positive["delivery"]["method"]["value"] == 0
+        assert (
+            first_positive["delivery"]["objection_recorded"]["value"]
+            is False
+        )
+        assert (
+            first_positive["delivery"]["settlement_posted_serial"]["value"]
+            == 0
+        )
+        assert first_positive["delivery"]["appeal_open"]["value"] is False
+        wrong_response = stored_responses["responses"][2]["response"]
+        assert wrong_response["unavailable_reason"] == "owner_filter_mismatch"
+        expected_wrong_leaf_counts = {
+            "case": 6,
+            "notice": 4,
+            "delivery": 4,
+        }
+        for group_name, expected_count in expected_wrong_leaf_counts.items():
+            group = wrong_response[group_name]
+            typed_leaves = list(group.values())
+            assert len(typed_leaves) == expected_count
+            assert all(
+                leaf == result_unavailable() for leaf in typed_leaves
+            ), group_name
+        stored_gate = json.loads(
+            (
+                artifacts
+                / "10_phase2_325_notice_result_case_snapshot_v1_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert stored_gate["checks"][
+            "wrong_owner_all_typed_leaves_unavailable"
+        ] == expected_wrong_leaf_counts
+        assert stored_gate["observed_result_case"]["case"] == {
+            "owner_character_id": 772,
+            "subject_character_id": 441,
+            "cycle_serial": 7,
+            "case_serial": 903,
+            "state": 1,
+            "grade": 1,
+        }
+
+    with tempfile.TemporaryDirectory() as temporary:
+        leaking_service = ResultCaseSnapshotService(
+            leak_wrong_owner_leaf=True
+        )
+        try:
+            capture.accept_zhongguo_result_case_snapshot_v1_live_cell(
+                leaking_service,
+                Path(temporary),
+                notice_identity=result_case_identity,
+                paused_snapshot=result_case_snapshot,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "wrong-owner query" in str(error)
+        else:
+            raise AssertionError(
+                "result-case cell accepted a wrong-owner semantic leak"
+            )
+
+    bad_identity = copy.deepcopy(result_case_identity)
+    bad_identity["query"]["current_event_window_context"]["root_scope"] = None
+    with tempfile.TemporaryDirectory() as temporary:
+        bad_service = ResultCaseSnapshotService()
+        try:
+            capture.accept_zhongguo_result_case_snapshot_v1_live_cell(
+                bad_service,
+                Path(temporary),
+                notice_identity=bad_identity,
+                paused_snapshot=result_case_snapshot,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "root scope is not a typed character" in str(error)
+        else:
+            raise AssertionError(
+                "result-case cell accepted a missing typed root scope"
+            )
+        assert bad_service.calls == []
+        bad_gate = json.loads(
+            (
+                Path(temporary)
+                / "10_phase2_325_notice_result_case_snapshot_v1_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert bad_gate["result"] == "RED"
+        assert bad_gate["fixture_character_id_used"] is False
+
+    impossible_owner_snapshot = copy.deepcopy(result_case_snapshot)
+    impossible_owner_snapshot["played_character"]["character_id"] = 772
+    with tempfile.TemporaryDirectory() as temporary:
+        impossible_service = ResultCaseSnapshotService()
+        try:
+            capture.accept_zhongguo_result_case_snapshot_v1_live_cell(
+                impossible_service,
+                Path(temporary),
+                notice_identity=result_case_identity,
+                paused_snapshot=impossible_owner_snapshot,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "root is not the played reviewed subject" in str(error)
+        else:
+            raise AssertionError(
+                "result-case cell accepted the owner as received-self subject"
+            )
+        assert impossible_service.calls == []
+
+    mismatched_visible_identity = copy.deepcopy(result_case_identity)
+    mismatched_visible_scopes = mismatched_visible_identity["query"][
+        "current_event_window_context"
+    ]["saved_scopes"]
+    mismatched_visible_scopes[1]["scope"]["typed_identity"][
+        "character_id"
+    ] = 773
+    with tempfile.TemporaryDirectory() as temporary:
+        mismatched_service = ResultCaseSnapshotService()
+        try:
+            capture.accept_zhongguo_result_case_snapshot_v1_live_cell(
+                mismatched_service,
+                Path(temporary),
+                notice_identity=mismatched_visible_identity,
+                paused_snapshot=result_case_snapshot,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "does not match the notice prompt owner" in str(error)
+        else:
+            raise AssertionError(
+                "result-case cell accepted mismatched visible owner scopes"
+            )
+        assert mismatched_service.calls == []
+
+    primary_only_identity = copy.deepcopy(result_case_identity)
+    primary_only_identity["query"]["current_event_window_context"][
+        "saved_scopes"
+    ] = primary_only_identity["query"]["current_event_window_context"][
+        "saved_scopes"
+    ][:1]
+    with tempfile.TemporaryDirectory() as temporary:
+        primary_only_result = (
+            capture.accept_zhongguo_result_case_snapshot_v1_live_cell(
+                ResultCaseSnapshotService(),
+                Path(temporary),
+                notice_identity=primary_only_identity,
+                paused_snapshot=result_case_snapshot,
+            )
+        )
+        assert primary_only_result["owner_scope_observation"][
+            "visible_cross_check"
+        ] == "not_published"
+
     policy_option_source = inspect.getsource(
         capture.select_resolved_event_option_native
     )
@@ -1365,6 +1887,244 @@ def main() -> int:
         ):
             forbidden_mock.assert_not_called()
 
+        class LoaderReadinessService:
+            def __init__(self) -> None:
+                self.index = -1
+                self.current_index = 0
+
+            def capabilities(self) -> dict[str, object]:
+                self.index = min(self.index + 1, 2)
+                self.current_index = self.index
+                sequence = 10 + self.current_index
+                pump_epochs = 100 + self.current_index
+                return {
+                    "mode": "native-headless",
+                    "backend_id": "native-headless",
+                    "headless": True,
+                    "visual_fallback": False,
+                    "transport_ready": True,
+                    "snapshot": True,
+                    "diagnostics": {
+                        "connected": True,
+                        "semantic_state_available": True,
+                        "bridge_pid": 4321,
+                        "connection_generation": 4,
+                        "hello": {
+                            "expected_ck3_version": "1.19.0.6",
+                            "expected_ck3_sha256": (
+                                capture.EXPECTED_EXE_SHA256
+                            ),
+                            "ck3_build_match": True,
+                            "game_adapter_status": "ready",
+                        },
+                        "last_heartbeat": {
+                            "pid": 4321,
+                            "sequence": sequence,
+                            "main_thread_query_mailbox_v1": {
+                                "installed": True,
+                                "stop": False,
+                                "failure": 0,
+                                "pump_epochs": pump_epochs,
+                                "consecutive_verified": 9 + self.current_index,
+                                "owner_tid": 88,
+                                "current_tid": 88,
+                                "rng_owner_tid": 88,
+                                "jomini_state": 0x1000,
+                                "game_state": 0x2000,
+                                "date_raw": 500,
+                                "paused": True,
+                                "stamp_read_success": True,
+                                "executor_submission_enabled": True,
+                                "ready": True,
+                            },
+                        },
+                    },
+                }
+
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "snapshot_id": f"native:{20 + self.current_index}",
+                    "revision": 30 + self.current_index,
+                    "native_revision": 20 + self.current_index,
+                    "date_raw": 500,
+                    "paused": True,
+                    "map_ready": False,
+                    "local_player_id": -1,
+                    "played_character": None,
+                    "diagnostics": {
+                        "bridge_pid": 4321,
+                        "connection_generation": 4,
+                    },
+                }
+
+        loader_artifacts = temporary_root / "loader-readiness"
+        loader_artifacts.mkdir()
+        loader_readiness = capture.native_loader_smoke_readiness(
+            LoaderReadinessService(),
+            loader_artifacts,
+            tracked_ck3_pid=4321,
+            timeout_s=1.0,
+            stable_observations=3,
+            poll_interval_s=0.0,
+        )
+        assert loader_readiness["result"] == "GREEN"
+        assert loader_readiness["scope"] == (
+            "exact_build_application_main_loader_smoke_only"
+        )
+        assert loader_readiness["stable_binding"][
+            "stable_observation_count"
+        ] == 3
+        assert loader_readiness["stable_binding"]["map_ready"] is False
+        assert loader_readiness["played_character_required"] is False
+        assert loader_readiness["gameplay_green_claimed"] is False
+        persisted_loader_readiness = json.loads(
+            (
+                loader_artifacts / "01_loader_native_readiness.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert persisted_loader_readiness == loader_readiness
+
+        class MissingLoaderSnapshotService(LoaderReadinessService):
+            def snapshot(self) -> dict[str, object]:
+                raise RuntimeError("semantic frontend snapshot unavailable")
+
+        missing_artifacts = temporary_root / "loader-readiness-missing"
+        missing_artifacts.mkdir()
+        try:
+            capture.native_loader_smoke_readiness(
+                MissingLoaderSnapshotService(),
+                missing_artifacts,
+                tracked_ck3_pid=4321,
+                timeout_s=0.001,
+                stable_observations=2,
+                poll_interval_s=0.0,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "semantic frontend snapshot unavailable" in str(error)
+        else:
+            raise AssertionError(
+                "loader readiness accepted a missing semantic snapshot"
+            )
+        missing_gate = json.loads(
+            (
+                missing_artifacts / "01_loader_native_readiness.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert missing_gate["result"] == "RED"
+        assert missing_gate["ocr_used"] is False
+        assert missing_gate["gameplay_green_claimed"] is False
+
+        benign_userdir = temporary_root / "benign-loader-profile"
+        (benign_userdir / "logs").mkdir(parents=True)
+        benign_bytes = b"[12:00:00][E] unrelated vanilla diagnostic\n"
+        (benign_userdir / "logs" / "error.log").write_bytes(benign_bytes)
+        benign_artifacts = temporary_root / "benign-loader-artifacts"
+        benign_artifacts.mkdir()
+        benign_scan = capture.scan_loader_error_log(
+            benign_userdir,
+            benign_artifacts,
+            timeout_s=1.0,
+            stable_samples=1,
+            poll_interval_s=0.0,
+            minimum_quiet_s=0.0,
+        )
+        assert benign_scan["result"] == "GREEN"
+        assert benign_scan["matches"] == []
+        assert (
+            benign_artifacts / "02_loader_error.log"
+        ).read_bytes() == benign_bytes
+
+        quiet_artifacts = temporary_root / "quiet-loader-artifacts"
+        quiet_artifacts.mkdir()
+        quiet_scan = capture.scan_loader_error_log(
+            benign_userdir,
+            quiet_artifacts,
+            timeout_s=1.0,
+            stable_samples=1,
+            poll_interval_s=0.001,
+            minimum_quiet_s=0.01,
+        )
+        assert quiet_scan["result"] == "GREEN"
+        assert quiet_scan["quiet_seconds_observed"] >= 0.01
+
+        broken_userdir = temporary_root / "broken-loader-profile"
+        (broken_userdir / "logs").mkdir(parents=True)
+        broken_bytes = (
+            b"[12:00:00][E] mod/zg361/events/zg361_events.txt\n"
+            b"[12:00:00][E] Parse error: unexpected token\n"
+        )
+        (broken_userdir / "logs" / "error.log").write_bytes(broken_bytes)
+        broken_artifacts = temporary_root / "broken-loader-artifacts"
+        broken_artifacts.mkdir()
+        try:
+            capture.scan_loader_error_log(
+                broken_userdir,
+                broken_artifacts,
+                timeout_s=17.0,
+                stable_samples=1,
+                poll_interval_s=0.0,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "loader error signature" in str(error)
+        else:
+            raise AssertionError(
+                "loader error scan accepted a ZhongGuo parser failure"
+            )
+        broken_scan = json.loads(
+            (
+                broken_artifacts / "02_loader_error_scan.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert broken_scan["result"] == "RED"
+        assert broken_scan["counts_by_category"]["parser_or_script"] == 1
+        assert broken_scan[
+            "loader_error_detected_before_quiet_window"
+        ] is True
+        assert (
+            broken_artifacts / "02_loader_error.log"
+        ).read_bytes() == broken_bytes
+
+        loader_helpers = "\n".join(
+            (
+                inspect.getsource(capture.native_loader_smoke_readiness),
+                inspect.getsource(capture.scan_loader_error_log),
+            )
+        )
+        for forbidden in (
+            "acceptance.wait_for_ocr_text",
+            "acceptance.find_ocr_text",
+            "acceptance.ocr_results",
+            "acceptance.ImageGrab",
+            "acceptance.pyautogui",
+            "acceptance.focus_ck3",
+            "acceptance.deliberate_click",
+            "acceptance.navigate_lobby",
+        ):
+            assert forbidden not in loader_helpers, forbidden
+        assert capture.LOADER_ERROR_LOG_MINIMUM_QUIET_S >= 15.0
+        loader_scan_signature = inspect.signature(
+            capture.scan_loader_error_log
+        )
+        assert loader_scan_signature.parameters[
+            "minimum_quiet_s"
+        ].default == capture.LOADER_ERROR_LOG_MINIMUM_QUIET_S
+        assert loader_scan_signature.parameters[
+            "timeout_s"
+        ].default == capture.LOADER_ERROR_LOG_TIMEOUT_S
+        assert capture.LOADER_ERROR_LOG_TIMEOUT_S >= (
+            capture.LOADER_ERROR_LOG_MINIMUM_QUIET_S + 15.0
+        )
+        loader_scan_source = inspect.getsource(
+            capture.scan_loader_error_log
+        )
+        assert "quiet_seconds >= minimum_quiet_s" in loader_scan_source
+        assert "if matches:" in loader_scan_source
+        assert loader_scan_source.index("if matches:") < (
+            loader_scan_source.index(
+                "quiet_seconds >= minimum_quiet_s"
+            )
+        )
+
         launch_artifacts = temporary_root / "launch-wiring"
         steam_root = temporary_root / "steam"
         steam_root.mkdir()
@@ -1398,16 +2158,14 @@ def main() -> int:
                 return_value={"result": "GREEN", "error_reason": None},
             ) as run_cell,
         ):
-            assert (
-                capture.main(
-                    artifacts_dir=str(launch_artifacts),
-                    keep_userdir=True,
-                    bridge_dll=str(dll),
-                    bridge_injector=str(injector),
-                    bridge_pipe=explicit_pipe,
-                )
-                == 0
+            main_result = capture.main(
+                artifacts_dir=str(launch_artifacts),
+                keep_userdir=True,
+                bridge_dll=str(dll),
+                bridge_injector=str(injector),
+                bridge_pipe=explicit_pipe,
             )
+            assert main_result == 0
         selected = preflight.call_args.kwargs["native_bridge"]
         assert selected == native_config
         expected_state = launch_artifacts.with_name(
@@ -1422,6 +2180,64 @@ def main() -> int:
         assert run_cell.call_args.kwargs["state_dir"] == expected_state
         assert run_cell.call_args.kwargs["native_bridge"] == native_config
 
+        loader_launch_artifacts = temporary_root / "loader-launch-wiring"
+        with (
+            mock.patch.object(
+                capture, "preflight", return_value=runtime_identity
+            ) as loader_preflight,
+            mock.patch.object(
+                capture.terminal,
+                "steam_userdata_root",
+                return_value=steam_root,
+            ),
+            mock.patch.object(
+                capture.isolated,
+                "steam_workshop_app_roots",
+                return_value=[],
+            ),
+            mock.patch.object(
+                capture.isolated, "registered_workshop_targets"
+            ),
+            mock.patch.object(capture.isolated, "ensure_test_paths_safe"),
+            mock.patch.object(
+                capture.isolated, "protected_snapshot", return_value={}
+            ),
+            mock.patch.object(
+                capture.isolated, "verify_protected_storage"
+            ),
+            mock.patch.object(capture, "write_evidence_index"),
+            mock.patch.object(
+                capture,
+                "run_cell",
+                return_value={"result": "GREEN", "error_reason": None},
+            ) as loader_run_cell,
+        ):
+            loader_main_result = capture.main(
+                artifacts_dir=str(loader_launch_artifacts),
+                keep_userdir=True,
+                loader_smoke=True,
+                bridge_dll=str(dll),
+                bridge_injector=str(injector),
+                bridge_pipe=explicit_pipe,
+            )
+            assert loader_main_result == 0
+        assert loader_preflight.call_args.kwargs[
+            "require_visual_tools"
+        ] is False
+        assert loader_run_cell.call_args.kwargs["loader_smoke"] is True
+        assert loader_run_cell.call_args.kwargs["promo_capture"] is False
+        assert loader_run_cell.call_args.kwargs[
+            "promo_camera_probe"
+        ] is False
+        loader_matrix = json.loads(
+            (loader_launch_artifacts / "report.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert loader_matrix["loader_smoke_only"] is True
+        assert loader_matrix["gameplay_acceptance_executed"] is False
+        assert loader_matrix["gameplay_green_claimed"] is False
+
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (
         "if promo_camera_probe:",
@@ -1430,7 +2246,12 @@ def main() -> int:
         "run_native_title_navigation_matrix(",
         '"probe_only": True',
         '"ffmpeg_started": False',
-        'result == "GREEN" and not promo_camera_probe',
+        "and not promo_camera_probe",
+        "and not loader_smoke",
+        "native_loader_smoke_readiness(",
+        "scan_loader_error_log(userdir, artifacts)",
+        '"gameplay_green_claimed": False',
+        '"zg361_50_case_cell_executed": False',
         "spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)",
         "spec.profile_dir.resolve() != userdir",
         "exclusive_launch_lock(spec.game_exe)",
@@ -1445,6 +2266,21 @@ def main() -> int:
         '"native_launch_sequence": "suspended_inject_resume"',
     ):
         assert token in camera_probe_cell, token
+    assert camera_probe_cell.index("native_loader_smoke_readiness(") < (
+        camera_probe_cell.index("acceptance.wait_for_ocr_text(")
+    )
+    assert camera_probe_cell.index("scan_loader_error_log(userdir, artifacts)") < (
+        camera_probe_cell.index("run_scenario(")
+    )
+    preflight_source = inspect.getsource(capture.preflight)
+    assert "if require_visual_tools:" in preflight_source
+    assert "acceptance._ocr is None" in preflight_source
+    assert "acceptance.pyautogui.size()" in preflight_source
+    main_source = inspect.getsource(capture.main)
+    assert "require_visual_tools=not loader_smoke" in main_source
+    assert '"gameplay_green_claimed": result == "GREEN" and not loader_smoke' in (
+        main_source
+    )
     for retired in (
         "acceptance.launch_ck3_process",
         "acceptance.start_process_watchdog",
@@ -1462,6 +2298,16 @@ def main() -> int:
         assert "mutually exclusive" in str(error)
     else:
         raise AssertionError("conflicting promo modes were accepted")
+    try:
+        capture.main(
+            preflight_only=True,
+            promo_camera_probe=True,
+            loader_smoke=True,
+        )
+    except capture.acceptance.RunnerError as error:
+        assert "mutually exclusive" in str(error)
+    else:
+        raise AssertionError("loader smoke accepted a visual promo mode")
 
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (
@@ -3092,6 +3938,9 @@ def main() -> int:
     assert "clean_policy_chain_scheduled" in personal_body
     for token in (
         'expected_event_definition_key="zg361.50"',
+        "accept_zhongguo_result_case_snapshot_v1_live_cell",
+        '"result_case_snapshot_v1_live_cell": (',
+        "result_case_snapshot_live_cell",
         'expected_option_text="拒绝签收"',
         'expected_event_definition_key="zg361.4"',
         'expected_option_text="认命"',
@@ -3105,11 +3954,19 @@ def main() -> int:
     notice_identity_index = personal_body.index(
         'expected_event_definition_key="zg361.50"'
     )
+    result_case_snapshot_index = personal_body.index(
+        "accept_zhongguo_result_case_snapshot_v1_live_cell"
+    )
     refusal_option_index = personal_body.index('expected_option_text="拒绝签收"')
     result_identity_index = personal_body.index(
         'expected_event_definition_key="zg361.4"'
     )
-    assert notice_identity_index < refusal_option_index < result_identity_index
+    assert (
+        notice_identity_index
+        < result_case_snapshot_index
+        < refusal_option_index
+        < result_identity_index
+    )
     assert personal_body.index('expected_event_definition_key="zg361.4"') < (
         personal_body.index('("上司考定", "你的绩效", "KPI", "同组位次")')
     )
