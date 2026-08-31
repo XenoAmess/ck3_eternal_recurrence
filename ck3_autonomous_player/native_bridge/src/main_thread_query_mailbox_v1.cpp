@@ -450,7 +450,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_quattuordenary == nullptr &&
       environment.permitted_executor_quindenary == nullptr &&
       environment.permitted_executor_sexdenary == nullptr &&
-      environment.permitted_executor_septendenary == nullptr) {
+      environment.permitted_executor_septendenary == nullptr &&
+      environment.permitted_executor_octodenary == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -601,6 +602,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_sexdenary;
   mailbox.permitted_executor_septendenary =
       environment.permitted_executor_septendenary;
+  mailbox.permitted_executor_octodenary =
+      environment.permitted_executor_octodenary;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -749,7 +752,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_quattuordenary != nullptr ||
        mailbox.permitted_executor_quindenary != nullptr ||
        mailbox.permitted_executor_sexdenary != nullptr ||
-       mailbox.permitted_executor_septendenary != nullptr) &&
+       mailbox.permitted_executor_septendenary != nullptr ||
+       mailbox.permitted_executor_octodenary != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -766,7 +770,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_quattuordenary &&
       executor != mailbox.permitted_executor_quindenary &&
       executor != mailbox.permitted_executor_sexdenary &&
-      executor != mailbox.permitted_executor_septendenary) {
+      executor != mailbox.permitted_executor_septendenary &&
+      executor != mailbox.permitted_executor_octodenary) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

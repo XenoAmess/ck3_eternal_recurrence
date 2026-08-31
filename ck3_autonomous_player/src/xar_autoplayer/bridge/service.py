@@ -114,6 +114,14 @@ from .zhongguo_incident_snapshot_contract import (
     parse_query_zhongguo_incident_snapshot_v1_step,
     query_zhongguo_incident_snapshot_v1_step,
 )
+from .zhongguo_scoreboard_state_contract import (
+    QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+    QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP,
+    ZHONGGUO_SCOREBOARD_STATE_V1_CONSUMER_ID,
+    normalize_native_zhongguo_scoreboard_state_v1,
+    parse_query_zhongguo_scoreboard_state_v1_step,
+    query_zhongguo_scoreboard_state_v1_step,
+)
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -2641,6 +2649,242 @@ class GameplayBridgeService:
                 "ZhongGuo incident response projection is malformed: "
                 f"{error}"
             ) from error
+
+    def query_zhongguo_scoreboard_state_v1(
+        self,
+        request_nonce: str,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read fixed scoreboard instances and current-player frozen ACL."""
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision != expected_revision
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard revision mismatch"
+            )
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard query lacks a stable native binding"
+            )
+        played_character = snapshot.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard query lacks the played character"
+            )
+        step = query_zhongguo_scoreboard_state_v1_step(request_nonce)
+        query = parse_query_zhongguo_scoreboard_state_v1_step(step)
+        if query is None:  # pragma: no cover - builder/parser invariant
+            raise AssertionError("scoreboard query builder violated v1")
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        )
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        bridge_version = (
+            diagnostics.get("bridge_version")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if not isinstance(bridge_version, str) or not bridge_version:
+            bridge_version = (
+                hello.get("bridge_version")
+                if isinstance(hello, dict)
+                else None
+            )
+        game_adapter_id = (
+            hello.get("game_adapter_id") if isinstance(hello, dict) else None
+        )
+        if (
+            isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+            or not isinstance(bridge_version, str)
+            or not bridge_version
+            or not isinstance(game_adapter_id, str)
+            or not game_adapter_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard query lacks its bridge binding"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query ZhongGuo scoreboard state"
+            )
+        result = self.execute_step(step, expected_revision=expected_revision)
+        expected_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "zhongguo_scoreboard_state",
+            "backend_id",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            "queried_connection_generation",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_result_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard backend returned a malformed result"
+            )
+        query_sequence = result.get("query_sequence")
+        backend_id = result.get("backend_id")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+            or not isinstance(backend_id, str)
+            or not backend_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard result lacks its native query identity"
+            )
+        try:
+            normalized = normalize_native_zhongguo_scoreboard_state_v1(
+                result.get("zhongguo_scoreboard_state"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"ZhongGuo scoreboard result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard envelope status disagrees with frame"
+            )
+        provenance = normalized["provenance"]
+        assert isinstance(provenance, dict)
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get("expected_ck3_sha256", hello.get("executable_sha256"))
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != provenance["game_version"]
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != str(provenance["executable_sha256"]).upper()
+            or provenance.get("consumer_id")
+            != ZHONGGUO_SCOREBOARD_STATE_V1_CONSUMER_ID
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard build mirror disagrees with hello"
+            )
+        current = self.snapshot()
+        current_diagnostics = current.get("diagnostics")
+        current_played_character = current.get("played_character")
+        current_player_character_id = (
+            current_played_character.get("character_id")
+            if isinstance(current_played_character, dict)
+            else None
+        )
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current_player_character_id == player_character_id
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation")
+            == connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard query crossed its paused binding"
+            )
+        return {
+            **normalized,
+            "build": {
+                "version": provenance["game_version"],
+                "exe_sha256": provenance["executable_sha256"],
+            },
+            "source": {
+                "bridge_version": bridge_version,
+                "game_adapter_id": game_adapter_id,
+                "backend_id": backend_id,
+                "consumer_id": provenance["consumer_id"],
+                "connection_generation": connection_generation,
+                "query_sequence": query_sequence,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+            },
+            "binding": {
+                "request_nonce": query.request_nonce,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "connection_generation": connection_generation,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+                "expected_revision": expected_revision,
+            },
+        }
 
     def center_map_on_landed_title_v1(
         self,

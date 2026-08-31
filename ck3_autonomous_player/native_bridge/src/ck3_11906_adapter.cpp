@@ -5,6 +5,7 @@
 #include "xar_bridge/zhongguo_case_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_incident_snapshot_v1.hpp"
+#include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/zhongguo_result_case_snapshot_v1.hpp"
 
 #include <array>
@@ -13,7 +14,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 69> kCapabilities{
+constexpr std::array<std::string_view, 70> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -69,6 +70,7 @@ constexpr std::array<std::string_view, 69> kCapabilities{
     ck3_11906::kZhongguoResultCaseSnapshotV1Capability,
     ck3_11906::kZhongguoB2PipSnapshotV1Capability,
     ck3_11906::kZhongguoIncidentSnapshotV1Capability,
+    ck3_11906::kZhongguoScoreboardStateV1Capability,
     "game.command.query-loaded-feature-manifest-v1",
     "game.command.query-pending-character-interaction-context-v1",
     "game.command.query-current-event-window-context-v1",

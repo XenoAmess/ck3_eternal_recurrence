@@ -260,6 +260,18 @@ def _ck3_query_zhongguo_incident_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_scoreboard_state_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe fixed scoreboard instances and the current player's ACL."""
+    return service.query_zhongguo_scoreboard_state_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_center_map_on_landed_title_v1(
     service: GameplayBridgeService,
     title_key: str,
@@ -748,6 +760,18 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_scoreboard_state_v1(
+        request_nonce: str,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read fixed named scoreboard state and current-player frozen ACL."""
+        return _ck3_query_zhongguo_scoreboard_state_v1(
+            service,
+            request_nonce,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_center_map_on_landed_title_v1(
         title_key: str,
         expected_revision: int,
@@ -969,6 +993,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_incident_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_scoreboard_state_v1"
     )
     return server
 

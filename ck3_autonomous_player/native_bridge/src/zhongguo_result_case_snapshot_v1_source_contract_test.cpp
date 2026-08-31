@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
            "ExecuteZhongguoResultCaseSnapshotMailboxQueryV1"},
           "mailbox") ||
       !require_tokens(adapter,
-                      {"std::array<std::string_view, 69>",
+                      {"std::array<std::string_view, 70>",
                        "kZhongguoResultCaseSnapshotV1Capability"},
                       "adapter") ||
       !require_tokens(game_adapter,

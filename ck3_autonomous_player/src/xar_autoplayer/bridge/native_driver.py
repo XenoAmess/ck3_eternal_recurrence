@@ -166,6 +166,14 @@ from .zhongguo_incident_snapshot_contract import (
     normalize_native_zhongguo_incident_snapshot_v1,
     parse_query_zhongguo_incident_snapshot_v1_step,
 )
+from .zhongguo_scoreboard_state_contract import (
+    QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+    QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP,
+    QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP_PREFIX,
+    ZhongguoScoreboardStateQueryV1,
+    normalize_native_zhongguo_scoreboard_state_v1,
+    parse_query_zhongguo_scoreboard_state_v1_step,
+)
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -1512,6 +1520,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_scoreboard_state_v1_query_supported": (
+                QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "loaded_feature_manifest_v1_query_supported": (
                 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
                 in bridge_capabilities
@@ -1815,6 +1827,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_incident_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_scoreboard_state_v1_query_supported": (
+                QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "loaded_feature_manifest_v1_query_supported": (
@@ -3066,6 +3082,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo incident snapshot v1 query step"
             )
+        zhongguo_scoreboard_query = (
+            parse_query_zhongguo_scoreboard_state_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP_PREFIX
+            )
+            and zhongguo_scoreboard_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo scoreboard state v1 query step"
+            )
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if (
             isinstance(step, str)
@@ -3261,6 +3290,21 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_incident_snapshot_v1_query(
                 zhongguo_incident_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_scoreboard_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query fixed ZhongGuo scoreboard state"
+                )
+            return self._execute_zhongguo_scoreboard_state_v1_query(
+                zhongguo_scoreboard_query,
                 expected_revision=expected_revision,
             )
         if active_retreat_preview is not None:
@@ -8299,6 +8343,150 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": connection_generation,
         }
 
+    def _execute_zhongguo_scoreboard_state_v1_query(
+        self,
+        query: ZhongguoScoreboardStateQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read fixed scoreboard instances and the played character's ACL."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query requires a paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo scoreboard starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query lacks a signed int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query lacks a native revision"
+            )
+        snapshot_id = starting.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query lacks a snapshot identity"
+            )
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if (
+            isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query lacks the played character"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query lacks a connection generation"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+            request_fields={"request_nonce": query.request_nonce},
+        )
+        expected_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "zhongguo_scoreboard_state",
+            "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_scoreboard_state_v1(
+                result.get("zhongguo_scoreboard_state"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard envelope status disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_played_character = current.get("played_character")
+        current_player_character_id = (
+            current_played_character.get("character_id")
+            if isinstance(current_played_character, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_character_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_scoreboard_state": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
     def _execute_loaded_feature_manifest_v1_query(
         self,
         *,
@@ -11827,6 +12015,19 @@ class ConfiguredHybridFallbackDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo incident snapshot v1 query step"
             )
+        zhongguo_scoreboard_query = (
+            parse_query_zhongguo_scoreboard_state_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP_PREFIX
+            )
+            and zhongguo_scoreboard_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo scoreboard state v1 query step"
+            )
         if zhongguo_case_query is not None:
             native_bridge_capabilities = set(
                 _string_list(
@@ -11910,6 +12111,7 @@ class ConfiguredHybridFallbackDriver:
             zhongguo_result_case_query is not None
             or zhongguo_b2_pip_query is not None
             or zhongguo_incident_query is not None
+            or zhongguo_scoreboard_query is not None
         ):
             native_bridge_capabilities = set(
                 _string_list(
@@ -11917,12 +12119,16 @@ class ConfiguredHybridFallbackDriver:
                 )
             )
             required_capability = (
-                QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
-                if zhongguo_incident_query is not None
+                QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
+                if zhongguo_scoreboard_query is not None
                 else (
-                    QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
-                    if zhongguo_b2_pip_query is not None
-                    else QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                    QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
+                    if zhongguo_incident_query is not None
+                    else (
+                        QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
+                        if zhongguo_b2_pip_query is not None
+                        else QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                    )
                 )
             )
             if (
@@ -15835,6 +16041,10 @@ def _action_steps(
         elif capability == QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY:
             # Owner, profile and nonce are explicit MCP inputs. The paused
             # played character remains the provider-owned subject.
+            continue
+        elif capability == QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY:
+            # The nonce is explicit; all widget and ACL identities are fixed
+            # provider allowlists and never become planner actions.
             continue
         elif capability == QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY:
             advertise_loaded_feature_manifest = True

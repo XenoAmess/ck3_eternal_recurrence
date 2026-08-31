@@ -1,0 +1,59 @@
+{
+  "fixture": "zhongguo_scoreboard_state_v1_source_contract",
+  "capability": "game.command.query-zhongguo-scoreboard-state-v1",
+  "step": "query-zhongguo-scoreboard-state-v1",
+  "result_payload_key": "zhongguo_scoreboard_state",
+  "case_kind": "zhongguo.scoreboard.named-state-acl",
+  "request_fields": ["request_nonce", "expected_revision"],
+  "mailbox_executor": "ExecuteZhongguoScoreboardStateMailboxQueryV1",
+  "mailbox_fixed_slot": "permitted_executor_octodenary",
+  "fixed_widgets": [
+    ["zg361_open_scoreboard", "zg361_scoreboard_toggle"],
+    ["zg361_scoreboard_window", "zg361_scoreboard_window"],
+    ["zg361_scoreboard_modal", "zg361_scoreboard_modal"],
+    ["zg361_scoreboard_panel", "zg361_scoreboard_panel"]
+  ],
+  "allowlist_count": 20,
+  "required_source_properties": [
+    "played_character_is_only_acl_scope",
+    "fixed_widget_names_are_compiled",
+    "runtime_instance_lookup_not_definition_lookup",
+    "gui_root_pointer_chain_is_exact_build_bound",
+    "two_allowlist_reads",
+    "before_after_frame_equality",
+    "raw_row_equality",
+    "widget_pointer_identity_equality",
+    "effective_visibility_walks_fixed_parent_chain",
+    "managed_acl_is_surface_derived_without_rank_inference",
+    "received_self_acl_joins_player_result_and_b1_policy_tuples",
+    "actions_remain_typed_unavailable",
+    "full_and_live_readiness_remain_false"
+  ],
+  "forbidden_request_fields": [
+    "widget_name",
+    "widget_names",
+    "variable_name",
+    "variable_names",
+    "scope_character_id",
+    "subject_character_id",
+    "owner_character_id",
+    "screen_x",
+    "screen_y",
+    "action",
+    "unknown_field"
+  ],
+  "unsupported_widget_fields": [
+    "enabled",
+    "focused",
+    "modal_blocking",
+    "screen_x",
+    "screen_y",
+    "screen_width",
+    "screen_height",
+    "scroll_min",
+    "scroll_max",
+    "scroll_value"
+  ],
+  "integration_status": "shared_protocol_static_exact_build_ready",
+  "readiness": "static_exact_build_live_unverified"
+}
