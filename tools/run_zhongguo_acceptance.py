@@ -40,6 +40,19 @@ for import_root in (AUTOPLAYER_SOURCE, TITLE_NAVIGATION_RESEARCH):
 
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.event_window_context_contract import (
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+)
+from xar_autoplayer.bridge.loaded_feature_manifest_contract import (
+    QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
+    QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+)
+from xar_autoplayer.bridge.zhongguo_b2_pip_snapshot_contract import (
+    QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
+)
+from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
+    QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+)
 from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_RESULT_CASE_KIND_V1,
@@ -74,6 +87,7 @@ NATIVE_TITLE_COMMAND_TIMEOUT_S = 30.0
 NATIVE_TITLE_READINESS_TIMEOUT_S = 60.0
 NATIVE_LOADER_READINESS_TIMEOUT_S = 300.0
 NATIVE_LOADER_STABLE_OBSERVATIONS = 3
+PHASE2_PAUSED_READINESS_TIMEOUT_S = 300.0
 LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
 LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
@@ -309,6 +323,60 @@ WINDOWS_ENGLISH_US_KLID = "00000409"
 WINDOWS_ENGLISH_US_LANGID = 0x0409
 WINDOWS_ENGLISH_US_HKL = 0x04090409
 WM_INPUTLANGCHANGEREQUEST = 0x0050
+
+# Full phase-two acceptance is deliberately fail-closed.  Existing providers
+# may be exercised by focused fixture-live work, but --phase2-live-batch is the
+# formal all-domain batch and must not silently degrade to the old visual
+# phase-one scenario while one of these requirements is absent.
+PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
+    "paused_snapshot": "game.state.snapshot",
+    "map_ready_state": "game.state.map-ready",
+    "played_character_state": "game.state.played-character",
+    "active_event_state": "game.state.active-event",
+    "pause_timeline": "game.command.pause-map",
+    "resume_timeline": "game.command.resume-map",
+    "bounded_timeline_speed": "game.command.set-speed-1",
+    "event_option_action_ack": "game.command.select-event-option-N",
+    "save_checkpoint": "game.command.save-checkpoint",
+    "current_event_context": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+    "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
+    "b2_pip_snapshot": QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
+    "incident_snapshot": QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+}
+PHASE2_REQUIRED_QUERY_FLAGS = {
+    "b2_pip_snapshot": "zhongguo_b2_pip_snapshot_v1_query_supported",
+    "incident_snapshot": "zhongguo_incident_snapshot_v1_query_supported",
+    "loaded_feature_manifest": "loaded_feature_manifest_v1_query_supported",
+    "current_event_context": "current_event_window_context_v1_query_supported",
+}
+PHASE2_REQUIRED_ACTION_STEPS = {
+    "pause_timeline": "pause-map",
+    "resume_timeline": "resume-map",
+    "bounded_timeline_speed": "set-speed-1",
+    "save_checkpoint": "save-checkpoint",
+    "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+}
+# These are requirement rows rather than invented capability strings.  Their
+# exact ABI names remain owned by the provider contract.  Keeping them here as
+# explicit RED rows prevents a current-runtime capability set from being
+# mistaken for complete phase-two readiness before those ABIs are frozen.
+PHASE2_UNFROZEN_REQUIREMENTS = {
+    "workforce_collective_snapshot_and_three_cycle": (
+        "ABI/provider capability not frozen"
+    ),
+    "ai_owned_case_snapshot": "ABI/provider capability not frozen",
+    "scoreboard_named_widget_state_action_and_acl": (
+        "ABI/provider capability not frozen"
+    ),
+}
+PHASE2_PENDING_RUNNER_REQUIREMENTS = {
+    "verified_paused_phase2_seed_or_native_frontend_start": (
+        "MCP-only map-entry path not wired"
+    ),
+    "managed_native_session_restore_supervisor": (
+        "phase-two launch owner does not yet consume restore lifecycle requests"
+    ),
+}
 
 
 def log(message: str) -> None:
@@ -2498,6 +2566,531 @@ def native_loader_smoke_readiness(
         ) from error
 
 
+def phase2_runtime_capability_preflight(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+) -> dict[str, object]:
+    """Fail before navigation unless the complete phase-two MCP surface exists."""
+
+    evidence_path = artifacts / "02_phase2_mcp_capabilities.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "complete_phase2_mcp_capability_profile",
+        "tracked_ck3_pid": tracked_ck3_pid,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "legacy_scenario_used": False,
+        "required_bridge_capabilities": dict(
+            PHASE2_REQUIRED_BRIDGE_CAPABILITIES
+        ),
+        "required_query_flags": dict(PHASE2_REQUIRED_QUERY_FLAGS),
+        "required_action_steps": dict(PHASE2_REQUIRED_ACTION_STEPS),
+        "unfrozen_requirements": dict(PHASE2_UNFROZEN_REQUIREMENTS),
+        "pending_runner_requirements": dict(
+            PHASE2_PENDING_RUNNER_REQUIREMENTS
+        ),
+        "checks": {},
+        "missing_requirements": [],
+        "capabilities": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        capabilities = service.capabilities()
+        if not isinstance(capabilities, dict):
+            raise acceptance.RunnerError(
+                "MCP capability RED: ck3_get_capabilities returned a non-object"
+            )
+        evidence["capabilities"] = capabilities
+        raw_bridge_capabilities = capabilities.get("bridge_capabilities")
+        bridge_capabilities = (
+            {
+                item
+                for item in raw_bridge_capabilities
+                if isinstance(item, str) and item
+            }
+            if isinstance(raw_bridge_capabilities, list)
+            else set()
+        )
+        raw_action_steps = capabilities.get("action_steps")
+        action_steps = (
+            {
+                item
+                for item in raw_action_steps
+                if isinstance(item, str) and item
+            }
+            if isinstance(raw_action_steps, list)
+            else set()
+        )
+        diagnostics_value = capabilities.get("diagnostics")
+        diagnostics = (
+            diagnostics_value
+            if isinstance(diagnostics_value, dict)
+            else {}
+        )
+        checkpoint_value = capabilities.get("checkpoint_materialization")
+        checkpoint = (
+            checkpoint_value if isinstance(checkpoint_value, dict) else {}
+        )
+        native_session_value = capabilities.get("native_session_control")
+        native_session = (
+            native_session_value
+            if isinstance(native_session_value, dict)
+            else {}
+        )
+
+        missing: list[dict[str, str]] = []
+        for label, capability in PHASE2_REQUIRED_BRIDGE_CAPABILITIES.items():
+            if capability not in bridge_capabilities:
+                missing.append(
+                    {
+                        "kind": "bridge_capability",
+                        "label": label,
+                        "value": capability,
+                    }
+                )
+        for label, flag in PHASE2_REQUIRED_QUERY_FLAGS.items():
+            if capabilities.get(flag) is not True:
+                missing.append(
+                    {
+                        "kind": "query_support_flag",
+                        "label": label,
+                        "value": flag,
+                    }
+                )
+
+        for label, step in PHASE2_REQUIRED_ACTION_STEPS.items():
+            if step not in action_steps:
+                missing.append(
+                    {
+                        "kind": "materialized_action_step",
+                        "label": label,
+                        "value": step,
+                    }
+                )
+
+        checks = {
+            "native_headless_mode": capabilities.get("mode")
+            == NATIVE_BRIDGE_MODE,
+            "native_headless_backend": capabilities.get("backend_id")
+            == NATIVE_BRIDGE_MODE,
+            "visual_fallback_disabled": capabilities.get("visual_fallback")
+            is False,
+            "snapshot_available": capabilities.get("snapshot") is True,
+            "wait_for_change_available": capabilities.get("wait_for_change")
+            is True,
+            "connected": diagnostics.get("connected") is True,
+            "tracked_ck3_pid_matches_bridge": diagnostics.get("bridge_pid")
+            == tracked_ck3_pid,
+            "positive_connection_generation": isinstance(
+                diagnostics.get("connection_generation"), int
+            )
+            and not isinstance(diagnostics.get("connection_generation"), bool)
+            and diagnostics.get("connection_generation", 0) > 0,
+            "checkpoint_materialization_configured": checkpoint.get(
+                "configured"
+            )
+            is True,
+            # restore-checkpoint is a managed composite and becomes an action
+            # only after the first checkpoint exists.  Pre-start readiness is
+            # therefore the configured lifecycle queue plus save materialization;
+            # the post-save gate below must require the concrete restore step.
+            "restore_lifecycle_configured": native_session.get("configured")
+            is True,
+        }
+        evidence["checks"] = checks
+        for label, passed in checks.items():
+            if passed is not True:
+                missing.append(
+                    {
+                        "kind": "runtime_check",
+                        "label": label,
+                        "value": label,
+                    }
+                )
+
+        for label, reason in PHASE2_UNFROZEN_REQUIREMENTS.items():
+            missing.append(
+                {
+                    "kind": "abi_not_frozen",
+                    "label": label,
+                    "value": reason,
+                }
+            )
+        for label, reason in PHASE2_PENDING_RUNNER_REQUIREMENTS.items():
+            missing.append(
+                {
+                    "kind": "runner_not_wired",
+                    "label": label,
+                    "value": reason,
+                }
+            )
+        evidence["missing_requirements"] = missing
+        if missing:
+            summary = ", ".join(
+                f"{row['label']}={row['value']}" for row in missing
+            )
+            raise acceptance.RunnerError("MCP capability RED: " + summary)
+
+        evidence["result"] = "GREEN"
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"MCP capability RED: phase-two preflight failed: {error}"
+        ) from error
+
+
+def _phase2_paused_binding(
+    snapshot: dict[str, object], *, label: str
+) -> dict[str, int | str]:
+    if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+        raise acceptance.RunnerError(
+            f"{label} is not a paused map-ready CK3 snapshot"
+        )
+    snapshot_id = snapshot.get("snapshot_id")
+    revision = snapshot.get("revision")
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    played_character = snapshot.get("played_character")
+    player_character_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    diagnostics_value = snapshot.get("diagnostics")
+    diagnostics = (
+        diagnostics_value if isinstance(diagnostics_value, dict) else {}
+    )
+    bridge_pid = diagnostics.get("bridge_pid")
+    connection_generation = diagnostics.get("connection_generation")
+    if (
+        not isinstance(snapshot_id, str)
+        or not snapshot_id
+        or isinstance(revision, bool)
+        or not isinstance(revision, int)
+        or revision < 0
+        or isinstance(native_revision, bool)
+        or not isinstance(native_revision, int)
+        or native_revision <= 0
+        or isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or isinstance(player_character_id, bool)
+        or not isinstance(player_character_id, int)
+        or player_character_id <= 0
+        or isinstance(bridge_pid, bool)
+        or not isinstance(bridge_pid, int)
+        or bridge_pid <= 0
+        or isinstance(connection_generation, bool)
+        or not isinstance(connection_generation, int)
+        or connection_generation <= 0
+    ):
+        raise acceptance.RunnerError(
+            f"{label} lacks a complete snapshot/player/PID/generation binding"
+        )
+    return {
+        "snapshot_id": snapshot_id,
+        "revision": revision,
+        "native_revision": native_revision,
+        "date_raw": date_raw,
+        "player_character_id": player_character_id,
+        "bridge_pid": bridge_pid,
+        "connection_generation": connection_generation,
+    }
+
+
+def wait_for_phase2_paused_snapshot(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+    timeout_s: float = PHASE2_PAUSED_READINESS_TIMEOUT_S,
+    poll_interval_s: float = 0.1,
+) -> dict[str, object]:
+    """Wait only through MCP for a paused map; never navigate by pixels."""
+
+    evidence_path = artifacts / "04_phase2_paused_readiness.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_mcp_only_paused_map",
+        "tracked_ck3_pid": tracked_ck3_pid,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "last_snapshot": None,
+        "binding": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    if timeout_s <= 0 or poll_interval_s < 0:
+        raise ValueError("phase-two paused readiness timing is invalid")
+    deadline = time.monotonic() + timeout_s
+    last_error = "no semantic snapshot was published"
+    try:
+        while time.monotonic() < deadline:
+            try:
+                snapshot = service.snapshot()
+                if not isinstance(snapshot, dict):
+                    raise TypeError("snapshot response is not an object")
+                evidence["last_snapshot"] = snapshot
+                binding = _phase2_paused_binding(
+                    snapshot, label="phase-two paused readiness"
+                )
+                if binding["bridge_pid"] != tracked_ck3_pid:
+                    raise acceptance.RunnerError(
+                        "phase-two paused snapshot moved to an unexpected PID "
+                        f"before restore: {binding['bridge_pid']}"
+                    )
+                evidence["result"] = "GREEN"
+                evidence["binding"] = binding
+                write_json(evidence_path, evidence)
+                return snapshot
+            except acceptance.RunnerError:
+                raise
+            except Exception as error:
+                last_error = f"{type(error).__name__}: {error}"
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+        raise acceptance.RunnerError(
+            "phase-two MCP paused readiness timed out: " + last_error
+        )
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two MCP paused readiness failed: {error}"
+        ) from error
+
+
+def run_phase2_save_restore_lineage(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+) -> dict[str, object]:
+    """Prove the one-save/one-restore two-PID topology without visual input."""
+
+    evidence_path = artifacts / "06_phase2_save_restore_lineage.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_one_save_one_restore_two_pid_lineage",
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "before": None,
+        "after_save": None,
+        "after_restore": None,
+        "save_result": None,
+        "restore_result": None,
+        "checks": {},
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        before_snapshot = service.snapshot()
+        if not isinstance(before_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two save baseline is not a snapshot object"
+            )
+        before = _phase2_paused_binding(
+            before_snapshot, label="phase-two save baseline"
+        )
+        evidence["before"] = before
+        if before["bridge_pid"] != tracked_ck3_pid:
+            raise acceptance.RunnerError(
+                "phase-two save baseline is not bound to the first tracked PID"
+            )
+
+        save_result = service.save_checkpoint(
+            expected_revision=int(before["revision"])
+        )
+        evidence["save_result"] = save_result
+        if not isinstance(save_result, dict):
+            raise acceptance.RunnerError("save-checkpoint returned a non-object")
+        saved_checkpoint = save_result.get("checkpoint")
+        if not (
+            save_result.get("accepted") is True
+            and isinstance(saved_checkpoint, dict)
+            and saved_checkpoint.get("status") == "saved"
+            and isinstance(saved_checkpoint.get("size"), int)
+            and not isinstance(saved_checkpoint.get("size"), bool)
+            and saved_checkpoint.get("size", 0) > 0
+            and isinstance(saved_checkpoint.get("sha256"), str)
+            and re.fullmatch(r"[0-9A-Fa-f]{64}", saved_checkpoint["sha256"])
+        ):
+            raise acceptance.RunnerError(
+                "save-checkpoint did not materialize an acknowledged hashed save"
+            )
+
+        after_save_snapshot = service.snapshot()
+        if not isinstance(after_save_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two post-save snapshot is not an object"
+            )
+        after_save = _phase2_paused_binding(
+            after_save_snapshot, label="phase-two post-save snapshot"
+        )
+        evidence["after_save"] = after_save
+        after_save_capabilities = service.capabilities()
+        restore_steps = (
+            {
+                item
+                for item in after_save_capabilities.get("action_steps", [])
+                if isinstance(item, str)
+            }
+            if isinstance(after_save_capabilities, dict)
+            else set()
+        )
+        if "restore-checkpoint" not in restore_steps:
+            raise acceptance.RunnerError(
+                "MCP capability RED: restore-checkpoint did not materialize after save"
+            )
+
+        restore_result = service.restore_checkpoint(
+            expected_revision=int(after_save["revision"])
+        )
+        evidence["restore_result"] = restore_result
+        if not isinstance(restore_result, dict):
+            raise acceptance.RunnerError(
+                "restore-checkpoint returned a non-object"
+            )
+        restored_checkpoint = restore_result.get("checkpoint")
+        lifecycle = restore_result.get("lifecycle")
+        restored_date = restore_result.get("restored_date")
+        if not (
+            restore_result.get("accepted") is True
+            and restore_result.get("status") == "restored"
+            and isinstance(restored_checkpoint, dict)
+            and restored_checkpoint.get("status") == "restored"
+            and isinstance(lifecycle, dict)
+            and isinstance(restored_date, dict)
+        ):
+            raise acceptance.RunnerError(
+                "restore-checkpoint did not return its lifecycle/checkpoint proof"
+            )
+
+        after_restore_snapshot = service.snapshot()
+        if not isinstance(after_restore_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two restored snapshot is not an object"
+            )
+        after_restore = _phase2_paused_binding(
+            after_restore_snapshot, label="phase-two restored snapshot"
+        )
+        evidence["after_restore"] = after_restore
+        final_capabilities = service.capabilities()
+        final_diagnostics = (
+            final_capabilities.get("diagnostics")
+            if isinstance(final_capabilities, dict)
+            else None
+        )
+        checks = {
+            "first_pid_matches_tracked": before["bridge_pid"]
+            == tracked_ck3_pid,
+            "save_stayed_on_first_pid": after_save["bridge_pid"]
+            == before["bridge_pid"],
+            "save_stayed_on_first_generation": after_save[
+                "connection_generation"
+            ]
+            == before["connection_generation"],
+            "second_pid_is_distinct": after_restore["bridge_pid"]
+            != before["bridge_pid"],
+            "lifecycle_previous_pid_matches": lifecycle.get("previous_pid")
+            == before["bridge_pid"],
+            "lifecycle_second_pid_matches": lifecycle.get("pid")
+            == after_restore["bridge_pid"],
+            "connection_generation_advanced": after_restore[
+                "connection_generation"
+            ]
+            > before["connection_generation"],
+            "final_capabilities_bind_second_pid": isinstance(
+                final_diagnostics, dict
+            )
+            and final_diagnostics.get("bridge_pid")
+            == after_restore["bridge_pid"]
+            and final_diagnostics.get("connection_generation")
+            == after_restore["connection_generation"],
+            "player_identity_restored": after_restore["player_character_id"]
+            == before["player_character_id"],
+            "save_date_did_not_advance": after_save["date_raw"]
+            == before["date_raw"],
+            "snapshot_date_restored": after_restore["date_raw"]
+            == before["date_raw"],
+            "restore_result_date_matches_snapshot": restored_date.get(
+                "date_raw"
+            )
+            == after_restore["date_raw"],
+            "checkpoint_size_preserved": restored_checkpoint.get("size")
+            == saved_checkpoint.get("size"),
+            "checkpoint_sha256_preserved": str(
+                restored_checkpoint.get("sha256", "")
+            ).lower()
+            == str(saved_checkpoint.get("sha256", "")).lower(),
+            "lifecycle_previous_generation_matches": lifecycle.get(
+                "previous_connection_generation"
+            )
+            == before["connection_generation"],
+            "lifecycle_new_generation_matches": lifecycle.get(
+                "connection_generation"
+            )
+            == after_restore["connection_generation"],
+        }
+        evidence["checks"] = checks
+        failed = [label for label, passed in checks.items() if passed is not True]
+        if failed:
+            raise acceptance.RunnerError(
+                "phase-two save/restore lineage RED: " + ", ".join(failed)
+            )
+        evidence["result"] = "GREEN"
+        evidence["first_pid"] = before["bridge_pid"]
+        evidence["second_pid"] = after_restore["bridge_pid"]
+        evidence["pid_lineage"] = [
+            before["bridge_pid"],
+            after_restore["bridge_pid"],
+        ]
+        evidence["first_connection_generation"] = before[
+            "connection_generation"
+        ]
+        evidence["second_connection_generation"] = after_restore[
+            "connection_generation"
+        ]
+        evidence["connection_generation_lineage"] = [
+            before["connection_generation"],
+            after_restore["connection_generation"],
+        ]
+        evidence["two_pid_lineage_proven"] = True
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two save/restore lineage failed: {error}"
+        ) from error
+
+
 def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
     """Return every project-attributed loader signature in one log image."""
 
@@ -2716,6 +3309,7 @@ def run_loader_gate(
         ),
         "tracked_ck3_pid": tracked_ck3_pid,
         "native_readiness": None,
+        "phase2_capability_preflight": None,
         "loader_error_log_scan": None,
         "runtime_mount_inventory": None,
         "same_pid_gameplay_continuation_authorized": False,
@@ -2740,6 +3334,19 @@ def run_loader_gate(
             raise acceptance.RunnerError(
                 "native loader readiness returned a non-GREEN result"
             )
+
+        if phase2_live_batch:
+            phase2_capabilities = phase2_runtime_capability_preflight(
+                service,
+                artifacts,
+                tracked_ck3_pid=tracked_ck3_pid,
+            )
+            evidence["phase2_capability_preflight"] = phase2_capabilities
+            write_json(evidence_path, evidence)
+            if phase2_capabilities.get("result") != "GREEN":
+                raise acceptance.RunnerError(
+                    "phase-two MCP capability preflight returned non-GREEN"
+                )
 
         error_scan = scan_loader_error_log(userdir, artifacts)
         evidence["loader_error_log_scan"] = error_scan
@@ -7333,6 +7940,98 @@ def capture_policy_cards(
     return captured
 
 
+def run_phase2_live_scenario(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+) -> dict[str, object]:
+    """Run only MCP phase-two primitives; never fall back to phase-one UI."""
+
+    evidence_path = artifacts / "05_phase2_live_scenario.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "complete_phase2_mcp_only_live_batch",
+        "phase2_acceptance_complete": False,
+        "gameplay_acceptance_executed": False,
+        "gameplay_green_claimed": False,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "legacy_run_scenario_used": False,
+        "paused_readiness": None,
+        "loaded_feature_manifest": None,
+        "save_restore_lineage": None,
+        "unimplemented_domain_cells": [
+            "b2_pip_action_and_postcondition_matrix",
+            "incident_xyz_action_and_postcondition_matrix",
+            "workforce_collective_and_three_cycle_matrix",
+            "ai_owned_case_matrix",
+            "scoreboard_named_widget_and_acl_matrix",
+        ],
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        paused_snapshot = wait_for_phase2_paused_snapshot(
+            service,
+            artifacts,
+            tracked_ck3_pid=tracked_ck3_pid,
+        )
+        paused_binding = _phase2_paused_binding(
+            paused_snapshot, label="phase-two scenario baseline"
+        )
+        evidence["paused_readiness"] = {
+            "result": "GREEN",
+            "artifact": "04_phase2_paused_readiness.json",
+            "binding": paused_binding,
+        }
+        manifest = service.query_loaded_feature_manifest_v1(
+            expected_revision=int(paused_binding["revision"])
+        )
+        evidence["loaded_feature_manifest"] = manifest
+        if not (
+            isinstance(manifest, dict)
+            and manifest.get("loaded_feature_manifest_ready") is True
+        ):
+            raise acceptance.RunnerError(
+                "phase-two loaded-feature manifest is not actionable"
+            )
+
+        lineage = run_phase2_save_restore_lineage(
+            service,
+            artifacts,
+            tracked_ck3_pid=tracked_ck3_pid,
+        )
+        evidence["save_restore_lineage"] = lineage
+        write_json(evidence_path, evidence)
+
+        # P0 intentionally stops here.  The full capability gate prevents this
+        # function from running while the future providers are absent; once
+        # they exist, each domain still needs its own pre/post query matrix.
+        # Returning GREEN from only manifest + restore would recreate the false
+        # phase-two claim this split is designed to remove.
+        raise acceptance.RunnerError(
+            "phase-two MCP domain matrix RED: independent B2, Incident, "
+            "Workforce/three-cycle, AI and named-widget cells are not implemented"
+        )
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["phase2_acceptance_complete"] = False
+        evidence["gameplay_acceptance_executed"] = False
+        evidence["gameplay_green_claimed"] = False
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two MCP-only live scenario failed: {error}"
+        ) from error
+
+
 def run_scenario(
     stream: MarkerStream,
     artifacts: Path,
@@ -7648,7 +8347,7 @@ def run_cell(
                     "loader gate returned an invalid mount inventory"
                 )
             mount_order = [str(item) for item in mount_inventory]
-        if not loader_smoke:
+        if not loader_smoke and not phase2_live_batch:
             acceptance.wait_for_ocr_text(
             "新游戏",
             acceptance.MAIN_MENU_REGION,
@@ -7659,7 +8358,7 @@ def run_cell(
         )
         if not loader_gate_enabled:
             mount_order = verify_runtime_load_order(userdir, bootstrap)
-        if not loader_smoke:
+        if not loader_smoke and not phase2_live_batch:
             new_diagnostics, new_warnings = project_diagnostics(
                 userdir, artifacts, "02_main_menu"
             )
@@ -7667,7 +8366,7 @@ def run_cell(
             observed_engine_warnings.extend(new_warnings)
             if diagnostics:
                 raise acceptance.RunnerError(diagnostics[-1])
-        if not loader_smoke:
+        if not loader_smoke and not phase2_live_batch:
             isolated.dismiss_external_main_menu_popup(artifacts)
             acceptance.navigate_lobby(artifacts)
             isolated.wait_for_gameplay_hud(artifacts)
@@ -7690,6 +8389,19 @@ def run_cell(
                 "navigation_used": False,
                 "ffmpeg_started": False,
             }
+        elif phase2_live_batch:
+            evidence = run_phase2_live_scenario(
+                title_navigation_service,
+                artifacts,
+                tracked_ck3_pid=tracked_ck3_pid,
+            )
+            gameplay_acceptance_executed = (
+                evidence.get("phase2_acceptance_complete") is True
+            )
+            if not gameplay_acceptance_executed:
+                raise acceptance.RunnerError(
+                    "phase-two MCP scenario returned without complete acceptance"
+                )
         elif promo_camera_probe:
             initialize_fixture(stream, artifacts)
             close_native_decisions_panel(
@@ -7729,18 +8441,6 @@ def run_cell(
                 preflight_bridge_identity=bridge_identity,
             )
             evidence["keyboard_layout"] = keyboard_layout_evidence
-            if phase2_live_batch:
-                evidence["phase2_live_batch_loader_gate"] = {
-                    "result": (
-                        loader_gate_evidence.get("result")
-                        if isinstance(loader_gate_evidence, dict)
-                        else "RED"
-                    ),
-                    "artifact": "03_loader_gate.json",
-                    "tracked_ck3_pid": tracked_ck3_pid,
-                    "continued_on_same_pid": True,
-                    "ocr_used_for_loader_truth": False,
-                }
         new_diagnostics, new_warnings = project_diagnostics(
             userdir, artifacts, "10_runtime"
         )
@@ -7760,7 +8460,7 @@ def run_cell(
             error, acceptance.RunnerError
         ):
             traceback.print_exc()
-        if not loader_smoke:
+        if not loader_smoke and not phase2_live_batch:
             try:
                 acceptance.focus_ck3()
                 acceptance.ImageGrab.grab().save(artifacts / "fatal_state.png")
@@ -7779,7 +8479,8 @@ def run_cell(
         if session_handle is not None:
             try:
                 native_cleanup = stop_tracked(
-                    session_handle, require_running=result == "GREEN"
+                    session_handle,
+                    require_running=result == "GREEN" and not phase2_live_batch,
                 )
                 if (
                     native_cleanup.get("cleanup_proven") is not True
@@ -7819,6 +8520,7 @@ def run_cell(
                 result == "GREEN"
                 and not promo_camera_probe
                 and not loader_smoke
+                and not phase2_live_batch
             ):
                 stream.validate(final=True)
             else:
@@ -7909,7 +8611,12 @@ def run_cell(
             gameplay_acceptance_executed
         )
         loader_gate_evidence["gameplay_green_claimed"] = (
-            result == "GREEN" and gameplay_acceptance_executed
+            result == "GREEN"
+            and gameplay_acceptance_executed
+            and (
+                not phase2_live_batch
+                or evidence.get("phase2_acceptance_complete") is True
+            )
         )
         write_json(artifacts / "03_loader_gate.json", loader_gate_evidence)
 
@@ -7938,8 +8645,17 @@ def run_cell(
         "loader_gate_executed": loader_gate_enabled,
         "loader_gate_evidence": loader_gate_evidence,
         "gameplay_acceptance_executed": gameplay_acceptance_executed,
-        "gameplay_green_claimed": result == "GREEN" and gameplay_acceptance_executed,
-        "zg361_50_case_cell_executed": False if loader_smoke else None,
+        "gameplay_green_claimed": (
+            result == "GREEN"
+            and gameplay_acceptance_executed
+            and (
+                not phase2_live_batch
+                or evidence.get("phase2_acceptance_complete") is True
+            )
+        ),
+        "zg361_50_case_cell_executed": (
+            False if loader_smoke or phase2_live_batch else None
+        ),
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
         "product_runtime_manifest": bootstrap["manifest"],
@@ -7970,7 +8686,7 @@ def run_cell(
             "python": sys.version.split()[0],
             "desktop": (
                 "not_queried_mcp_only"
-                if loader_smoke
+                if loader_smoke or phase2_live_batch
                 else (
                     f"{acceptance.pyautogui.size().width}x"
                     f"{acceptance.pyautogui.size().height}"
@@ -8027,7 +8743,7 @@ def main(
         runtime_source,
         manifest_path,
         native_bridge=native_bridge,
-        require_visual_tools=not loader_smoke,
+        require_visual_tools=not (loader_smoke or phase2_live_batch),
     )
     if preflight_only:
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
@@ -8069,6 +8785,28 @@ def main(
     )
     result = report["result"]
     error_reason = report["error_reason"]
+    phase2_scenario_value = report.get("scenario_evidence")
+    phase2_scenario = (
+        phase2_scenario_value
+        if isinstance(phase2_scenario_value, dict)
+        else {}
+    )
+    phase2_complete_claim = (
+        report.get("gameplay_acceptance_executed") is True
+        and report.get("gameplay_green_claimed") is True
+        and phase2_scenario.get("result") == "GREEN"
+        and phase2_scenario.get("phase2_acceptance_complete") is True
+        and phase2_scenario.get("mcp_only") is True
+        and phase2_scenario.get("ocr_used") is False
+        and phase2_scenario.get("image_used") is False
+        and phase2_scenario.get("coordinates_used") is False
+        and phase2_scenario.get("test_decision_used") is False
+        and phase2_scenario.get("legacy_run_scenario_used") is False
+    )
+    if phase2_live_batch and phase2_complete_claim is not True:
+        result = "RED"
+        reason = "phase-two report lacks a complete MCP-only scenario proof"
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
     protected_unchanged = False
     try:
         isolated.verify_protected_storage(
@@ -8089,11 +8827,15 @@ def main(
         "phase2_live_batch": phase2_live_batch,
         "loader_gate_executed": loader_smoke or phase2_live_batch,
         "gameplay_acceptance_executed": report.get(
-            "gameplay_acceptance_executed", not loader_smoke
+            "gameplay_acceptance_executed", False
         ),
         "gameplay_green_claimed": (
             result == "GREEN"
-            and report.get("gameplay_acceptance_executed", not loader_smoke)
+            and (
+                report.get("gameplay_green_claimed") is True
+                if not phase2_live_batch
+                else phase2_complete_claim is True
+            )
         ),
         "cell": report,
         "protected_storage_unchanged": protected_unchanged,
@@ -8121,6 +8863,9 @@ def main(
     print(f"artifacts               {artifacts}")
     if loader_smoke:
         print("gameplay acceptance     NOT RUN")
+        print("gameplay GREEN claim    NONE")
+    elif phase2_live_batch and matrix["gameplay_green_claimed"] is not True:
+        print("phase-two acceptance    INCOMPLETE / RED")
         print("gameplay GREEN claim    NONE")
     print(f"RESULT: {result}")
     return 0 if result == "GREEN" else 1
@@ -8157,8 +8902,9 @@ if __name__ == "__main__":
         "--phase2-live-batch",
         action="store_true",
         help=(
-            "run the loader readiness/error/mount gate first, then continue "
-            "the existing full acceptance on the same tracked CK3 PID"
+            "run the strict MCP-only phase-two capability gate and independent "
+            "scenario; missing collective/AI/widget providers fail before any "
+            "OCR or legacy phase-one navigation"
         ),
     )
     parser.add_argument(

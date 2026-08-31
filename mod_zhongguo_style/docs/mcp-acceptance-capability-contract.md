@@ -178,3 +178,31 @@ paused/date/player identity。动作 ACK 只能证明命令被产品路径接受
 每个动作统一遵守：paused snapshot → stable product action + nonce/expected revision → 独立 ACK → 等待新 revision →
 case/resource/widget/visible-feedback 独立查询。最终 artifact 至少保存 capability manifest、真实角色 roster、action journal、
 001–361 case matrix、38 域 A/B/C matrix、资源/期限账、save/restore proof、scoreboard ACL、widget blocking、三周期 lineage、守恒与清理证明。
+
+### Runner P0 落地边界（2026-08-31）
+
+`tools/run_zhongguo_acceptance.py --phase2-live-batch` 已从一期场景分流为独立的 MCP-only 路由：预检设置
+`require_visual_tools=false`，`run_phase2_live_scenario` 不调用旧 `run_scenario`、OCR、`ImageGrab`、坐标输入、lobby 导航或
+acceptance-only 测试决议；失败清理也不截图。普通 `--loader-smoke` 仍只运行通用 native readiness、error.log 和 mount gate，
+不会继承二期能力门。
+
+二期能力门在 error.log 扫描、mount inventory 和任何游戏导航前读取一次 runtime capabilities，并把完整矩阵写入
+`02_phase2_mcp_capabilities.json`。当前已冻结且逐项 fail-fast 的要求为：paused/map-ready/player/active-event snapshot，
+pause/resume/speed-1 timeline，event option action+ACK capability，save-checkpoint，current-event context，loaded-feature manifest，
+B2 PIP snapshot、Incident snapshot，以及相应 query support flag、materialized action step、pure-native/无视觉 fallback、连接 PID/
+generation、checkpoint materialization 与 managed restore lifecycle 配置。
+
+Workforce collective + 三周期、AI-owned case、scoreboard named-widget state/action/ACL 的正式 ABI 尚未冻结。runner 不猜测或擅自
+冻结 provider capability 名，而是把这三项记录为 `abi_not_frozen` requirement；所以当前完整二期启动门必然产出
+`MCP capability RED`，且总报告强制 `gameplay_green_claimed=false`。即使测试替身伪造 cell `result=GREEN`，只要缺少完整的
+MCP-only scenario proof，总结果也会降为 RED。
+
+启动门还显式列出两项 `runner_not_wired`，避免未来 provider 一到位就误入不可达长局：隔离 userdir 尚无经过验证的二期 seed/
+checkpoint，也没有从主菜单进入 paused map 的 MCP-only frontend start 路径；phase2 当前仍由 direct launcher 持有进程，并非会消费
+restore lifecycle queue 的 `native_session` supervisor。这两项闭合前同样必须 pre-start RED，不能等待 300 秒后才报 paused timeout。
+
+save/restore helper 已冻结一次保存、保存后动态出现 `restore-checkpoint`、一次 restore 和两 PID lineage 的静态合同：第一 PID/
+generation 在保存期间不变，restore lifecycle 的 previous/new PID 必须分别等于前后 snapshot，第二 PID 必须不同，generation 必须
+增长，checkpoint size/SHA、date 与 player identity 必须恢复一致。该 helper 目前只有 focused fake-service 正负测试，不是 live 证据。
+正式能力门解除前还必须把 phase2 launch ownership 切换到生产 `native_session` supervisor；当前 runner 的 direct-launch owner 不消费
+restore lifecycle queue，因此不得把 helper 的静态测试写成可达的实机 save/reload GREEN。

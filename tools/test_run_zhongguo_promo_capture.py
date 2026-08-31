@@ -1984,6 +1984,445 @@ def main() -> int:
         )
         assert persisted_loader_readiness == loader_readiness
 
+        def complete_phase2_capabilities() -> dict[str, object]:
+            return {
+                "mode": "native-headless",
+                "backend_id": "native-headless",
+                "visual_fallback": False,
+                "snapshot": True,
+                "wait_for_change": True,
+                "bridge_capabilities": sorted(
+                    set(capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES.values())
+                ),
+                "action_steps": [
+                    "pause-map",
+                    "resume-map",
+                    "set-speed-1",
+                    "save-checkpoint",
+                    "query-loaded-feature-manifest-v1",
+                ],
+                **{
+                    flag: True
+                    for flag in capture.PHASE2_REQUIRED_QUERY_FLAGS.values()
+                },
+                "checkpoint_materialization": {"configured": True},
+                "native_session_control": {"configured": True},
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": 4321,
+                    "connection_generation": 4,
+                },
+            }
+
+        class Phase2CapabilityService:
+            def __init__(self, capabilities: dict[str, object]) -> None:
+                self.value = capabilities
+
+            def capabilities(self) -> dict[str, object]:
+                return copy.deepcopy(self.value)
+
+        phase2_capability_artifacts = (
+            temporary_root / "phase2-current-profile-explicit-red"
+        )
+        phase2_capability_artifacts.mkdir()
+        try:
+            capture.phase2_runtime_capability_preflight(
+                Phase2CapabilityService(complete_phase2_capabilities()),
+                phase2_capability_artifacts,
+                tracked_ck3_pid=4321,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "MCP capability RED" in str(error)
+        else:
+            raise AssertionError(
+                "phase-two preflight accepted unfrozen provider requirements"
+            )
+        phase2_current_red = json.loads(
+            (
+                phase2_capability_artifacts
+                / "02_phase2_mcp_capabilities.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert phase2_current_red["result"] == "RED"
+        assert phase2_current_red["mcp_only"] is True
+        assert phase2_current_red["legacy_scenario_used"] is False
+        assert {
+            row["label"]
+            for row in phase2_current_red["missing_requirements"]
+            if row["kind"] == "abi_not_frozen"
+        } == set(capture.PHASE2_UNFROZEN_REQUIREMENTS)
+        assert all(
+            row["value"] == "ABI/provider capability not frozen"
+            for row in phase2_current_red["missing_requirements"]
+            if row["kind"] == "abi_not_frozen"
+        )
+        assert {
+            row["label"]
+            for row in phase2_current_red["missing_requirements"]
+            if row["kind"] == "runner_not_wired"
+        } == set(capture.PHASE2_PENDING_RUNNER_REQUIREMENTS)
+
+        for label, required_capability in (
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES.items()
+        ):
+            missing_capabilities = complete_phase2_capabilities()
+            missing_capabilities["bridge_capabilities"].remove(
+                required_capability
+            )
+            missing_dir = temporary_root / f"phase2-missing-capability-{label}"
+            missing_dir.mkdir()
+            try:
+                capture.phase2_runtime_capability_preflight(
+                    Phase2CapabilityService(missing_capabilities),
+                    missing_dir,
+                    tracked_ck3_pid=4321,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "MCP capability RED" in str(error)
+            else:
+                raise AssertionError(
+                    f"phase-two preflight accepted missing {label}"
+                )
+            persisted_missing = json.loads(
+                (missing_dir / "02_phase2_mcp_capabilities.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            assert persisted_missing["result"] == "RED"
+            assert any(
+                row["label"] == label
+                and row["value"] == required_capability
+                for row in persisted_missing["missing_requirements"]
+            )
+
+        for label, required_flag in capture.PHASE2_REQUIRED_QUERY_FLAGS.items():
+            missing_flag_capabilities = complete_phase2_capabilities()
+            missing_flag_capabilities[required_flag] = False
+            missing_dir = temporary_root / f"phase2-missing-flag-{label}"
+            missing_dir.mkdir()
+            try:
+                capture.phase2_runtime_capability_preflight(
+                    Phase2CapabilityService(missing_flag_capabilities),
+                    missing_dir,
+                    tracked_ck3_pid=4321,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "MCP capability RED" in str(error)
+            else:
+                raise AssertionError(
+                    f"phase-two preflight accepted false {required_flag}"
+                )
+
+        for label, required_step in capture.PHASE2_REQUIRED_ACTION_STEPS.items():
+            missing_step_capabilities = complete_phase2_capabilities()
+            missing_step_capabilities["action_steps"].remove(required_step)
+            missing_dir = temporary_root / f"phase2-missing-step-{label}"
+            missing_dir.mkdir()
+            try:
+                capture.phase2_runtime_capability_preflight(
+                    Phase2CapabilityService(missing_step_capabilities),
+                    missing_dir,
+                    tracked_ck3_pid=4321,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "MCP capability RED" in str(error)
+            else:
+                raise AssertionError(
+                    f"phase-two preflight accepted missing {required_step}"
+                )
+            persisted_missing = json.loads(
+                (missing_dir / "02_phase2_mcp_capabilities.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            assert any(
+                row["kind"] == "materialized_action_step"
+                and row["label"] == label
+                and row["value"] == required_step
+                for row in persisted_missing["missing_requirements"]
+            )
+
+        runtime_red_cases = {
+            "native_headless_mode": lambda value: value.__setitem__(
+                "mode", "visual"
+            ),
+            "native_headless_backend": lambda value: value.__setitem__(
+                "backend_id", "visual"
+            ),
+            "visual_fallback_disabled": lambda value: value.__setitem__(
+                "visual_fallback", True
+            ),
+            "snapshot_available": lambda value: value.__setitem__(
+                "snapshot", False
+            ),
+            "wait_for_change_available": lambda value: value.__setitem__(
+                "wait_for_change", False
+            ),
+            "checkpoint_materialization_configured": lambda value: value[
+                "checkpoint_materialization"
+            ].__setitem__("configured", False),
+            "restore_lifecycle_configured": lambda value: value[
+                "native_session_control"
+            ].__setitem__("configured", False),
+            "connected": lambda value: value["diagnostics"].__setitem__(
+                "connected", False
+            ),
+            "tracked_ck3_pid_matches_bridge": lambda value: value[
+                "diagnostics"
+            ].__setitem__("bridge_pid", 9876),
+            "positive_connection_generation": lambda value: value[
+                "diagnostics"
+            ].__setitem__("connection_generation", 0),
+        }
+        for label, mutate in runtime_red_cases.items():
+            missing_runtime = complete_phase2_capabilities()
+            mutate(missing_runtime)
+            missing_dir = temporary_root / f"phase2-runtime-red-{label}"
+            missing_dir.mkdir()
+            try:
+                capture.phase2_runtime_capability_preflight(
+                    Phase2CapabilityService(missing_runtime),
+                    missing_dir,
+                    tracked_ck3_pid=4321,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "MCP capability RED" in str(error)
+            else:
+                raise AssertionError(
+                    f"phase-two preflight accepted runtime RED {label}"
+                )
+            persisted_missing = json.loads(
+                (missing_dir / "02_phase2_mcp_capabilities.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            assert any(
+                row["kind"] == "runtime_check" and row["label"] == label
+                for row in persisted_missing["missing_requirements"]
+            )
+
+        def phase2_snapshot(
+            *, pid: int, generation: int, revision: int, player: int = 9001
+        ) -> dict[str, object]:
+            return {
+                "snapshot_id": f"phase2-{pid}-{generation}-{revision}",
+                "revision": revision,
+                "native_revision": revision + 100,
+                "date_raw": 777,
+                "paused": True,
+                "map_ready": True,
+                "played_character": {"character_id": player},
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": pid,
+                    "connection_generation": generation,
+                },
+            }
+
+        class Phase2RestoreService:
+            def __init__(
+                self,
+                *,
+                second_pid: int = 5432,
+                second_generation: int = 5,
+                restored_sha256: str = "a" * 64,
+                restored_player: int = 9001,
+            ) -> None:
+                self.second_pid = second_pid
+                self.second_generation = second_generation
+                self.restored_sha256 = restored_sha256
+                self.snapshots = [
+                    phase2_snapshot(pid=4321, generation=4, revision=10),
+                    phase2_snapshot(pid=4321, generation=4, revision=11),
+                    phase2_snapshot(
+                        pid=second_pid,
+                        generation=second_generation,
+                        revision=20,
+                        player=restored_player,
+                    ),
+                ]
+                self.snapshot_index = 0
+                self.capabilities_index = 0
+
+            def snapshot(self) -> dict[str, object]:
+                value = self.snapshots[self.snapshot_index]
+                self.snapshot_index += 1
+                return copy.deepcopy(value)
+
+            def save_checkpoint(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                assert expected_revision == 10
+                return {
+                    "accepted": True,
+                    "checkpoint": {
+                        "status": "saved",
+                        "size": 123456,
+                        "sha256": "a" * 64,
+                        "date_raw": 777,
+                    },
+                }
+
+            def capabilities(self) -> dict[str, object]:
+                self.capabilities_index += 1
+                if self.capabilities_index == 1:
+                    return {"action_steps": ["restore-checkpoint"]}
+                return {
+                    "diagnostics": {
+                        "connected": True,
+                        "bridge_pid": self.second_pid,
+                        "connection_generation": self.second_generation,
+                    }
+                }
+
+            def restore_checkpoint(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                assert expected_revision == 11
+                return {
+                    "accepted": True,
+                    "status": "restored",
+                    "checkpoint": {
+                        "status": "restored",
+                        "size": 123456,
+                        "sha256": self.restored_sha256,
+                    },
+                    "restored_date": {"date_raw": 777},
+                    "lifecycle": {
+                        "previous_pid": 4321,
+                        "pid": self.second_pid,
+                        "previous_connection_generation": 4,
+                        "connection_generation": self.second_generation,
+                    },
+                }
+
+        lineage_artifacts = temporary_root / "phase2-two-pid-lineage-green"
+        lineage_artifacts.mkdir()
+        lineage = capture.run_phase2_save_restore_lineage(
+            Phase2RestoreService(),
+            lineage_artifacts,
+            tracked_ck3_pid=4321,
+        )
+        assert lineage["result"] == "GREEN"
+        assert lineage["pid_lineage"] == [4321, 5432]
+        assert lineage["connection_generation_lineage"] == [4, 5]
+        assert lineage["two_pid_lineage_proven"] is True
+        assert json.loads(
+            (
+                lineage_artifacts / "06_phase2_save_restore_lineage.json"
+            ).read_text(encoding="utf-8")
+        ) == lineage
+
+        lineage_red_cases = {
+            "second_pid_is_distinct": {"second_pid": 4321},
+            "connection_generation_advanced": {"second_generation": 4},
+            "checkpoint_sha256_preserved": {"restored_sha256": "b" * 64},
+            "player_identity_restored": {"restored_player": 9002},
+        }
+        for failed_check, kwargs in lineage_red_cases.items():
+            red_dir = temporary_root / f"phase2-lineage-red-{failed_check}"
+            red_dir.mkdir()
+            try:
+                capture.run_phase2_save_restore_lineage(
+                    Phase2RestoreService(**kwargs),
+                    red_dir,
+                    tracked_ck3_pid=4321,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "save/restore lineage RED" in str(error)
+                assert failed_check in str(error)
+            else:
+                raise AssertionError(
+                    f"phase-two lineage accepted {failed_check} failure"
+                )
+            persisted_red = json.loads(
+                (red_dir / "06_phase2_save_restore_lineage.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            assert persisted_red["result"] == "RED"
+            assert persisted_red["checks"][failed_check] is False
+
+        scenario_artifacts = temporary_root / "phase2-independent-scenario-red"
+        scenario_artifacts.mkdir()
+
+        class Phase2ManifestService:
+            def query_loaded_feature_manifest_v1(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                assert expected_revision == 10
+                return {"loaded_feature_manifest_ready": True}
+
+        scenario_snapshot = phase2_snapshot(
+            pid=4321, generation=4, revision=10
+        )
+        with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_paused_snapshot",
+                return_value=scenario_snapshot,
+            ),
+            mock.patch.object(
+                capture,
+                "run_phase2_save_restore_lineage",
+                return_value={"result": "GREEN", "pid_lineage": [4321, 5432]},
+            ),
+            mock.patch.object(capture, "run_scenario") as legacy_scenario,
+            mock.patch.object(capture, "initialize_fixture") as legacy_fixture,
+            mock.patch.object(
+                capture.acceptance, "wait_for_ocr_text"
+            ) as legacy_ocr,
+            mock.patch.object(
+                capture.acceptance, "navigate_lobby"
+            ) as legacy_navigation,
+            mock.patch.object(
+                capture.acceptance, "ensure_game_paused"
+            ) as legacy_pause,
+            mock.patch.object(
+                capture, "force_ck3_english_keyboard_layout"
+            ) as legacy_keyboard,
+            mock.patch.object(
+                capture.acceptance.ImageGrab, "grab"
+            ) as legacy_image,
+            mock.patch.object(
+                capture.acceptance.pyautogui, "click"
+            ) as legacy_coordinate,
+        ):
+            try:
+                capture.run_phase2_live_scenario(
+                    Phase2ManifestService(),
+                    scenario_artifacts,
+                    tracked_ck3_pid=4321,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "domain matrix RED" in str(error)
+            else:
+                raise AssertionError(
+                    "incomplete independent phase-two scenario claimed GREEN"
+                )
+        for forbidden_call in (
+            legacy_scenario,
+            legacy_fixture,
+            legacy_ocr,
+            legacy_navigation,
+            legacy_pause,
+            legacy_keyboard,
+            legacy_image,
+            legacy_coordinate,
+        ):
+            assert forbidden_call.called is False
+        scenario_red = json.loads(
+            (scenario_artifacts / "05_phase2_live_scenario.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert scenario_red["result"] == "RED"
+        assert scenario_red["phase2_acceptance_complete"] is False
+        assert scenario_red["gameplay_green_claimed"] is False
+        assert scenario_red["mcp_only"] is True
+        assert scenario_red["legacy_run_scenario_used"] is False
+        assert scenario_red["test_decision_used"] is False
+
         class MissingLoaderSnapshotService(LoaderReadinessService):
             def snapshot(self) -> dict[str, object]:
                 raise RuntimeError("semantic frontend snapshot unavailable")
@@ -2146,6 +2585,12 @@ def main() -> int:
             gate_calls.append("error_log_scan")
             return green_error_scan
 
+        def green_phase2_capability_call(
+            *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            gate_calls.append("phase2_capabilities")
+            return {"result": "GREEN", "missing_requirements": []}
+
         def green_mount_call(*_args: object, **_kwargs: object) -> list[str]:
             gate_calls.append("mount_inventory")
             return green_mounts
@@ -2155,6 +2600,11 @@ def main() -> int:
                 capture,
                 "native_loader_smoke_readiness",
                 side_effect=green_readiness_call,
+            ),
+            mock.patch.object(
+                capture,
+                "phase2_runtime_capability_preflight",
+                side_effect=green_phase2_capability_call,
             ),
             mock.patch.object(
                 capture,
@@ -2177,6 +2627,7 @@ def main() -> int:
             )
         if gate_calls != [
             "native_readiness",
+            "phase2_capabilities",
             "error_log_scan",
             "mount_inventory",
         ]:
@@ -2195,6 +2646,50 @@ def main() -> int:
                 "persisted GREEN loader gate differs from return value"
             )
 
+        loader_only_artifacts = temporary_root / "loader-smoke-independent-gate"
+        loader_only_artifacts.mkdir()
+        gate_calls.clear()
+        with (
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                side_effect=green_readiness_call,
+            ),
+            mock.patch.object(
+                capture, "phase2_runtime_capability_preflight"
+            ) as forbidden_phase2_capability,
+            mock.patch.object(
+                capture,
+                "scan_loader_error_log",
+                side_effect=green_error_call,
+            ),
+            mock.patch.object(
+                capture,
+                "verify_runtime_load_order",
+                side_effect=green_mount_call,
+            ),
+        ):
+            loader_only_gate = capture.run_loader_gate(
+                SimpleNamespace(),
+                loader_only_artifacts,
+                gate_userdir,
+                {},
+                tracked_ck3_pid=4321,
+                phase2_live_batch=False,
+            )
+        assert gate_calls == [
+            "native_readiness",
+            "error_log_scan",
+            "mount_inventory",
+        ]
+        assert forbidden_phase2_capability.called is False
+        assert loader_only_gate["result"] == "GREEN"
+        assert loader_only_gate["phase2_capability_preflight"] is None
+        assert (
+            loader_only_gate["same_pid_gameplay_continuation_authorized"]
+            is False
+        )
+
         red_readiness_artifacts = (
             temporary_root / "phase2-loader-gate-readiness-red"
         )
@@ -2205,6 +2700,9 @@ def main() -> int:
                 "native_loader_smoke_readiness",
                 return_value={"result": "RED"},
             ),
+            mock.patch.object(
+                capture, "phase2_runtime_capability_preflight"
+            ) as red_capability,
             mock.patch.object(capture, "scan_loader_error_log") as red_scan,
             mock.patch.object(capture, "verify_runtime_load_order") as red_mount,
         ):
@@ -2222,9 +2720,47 @@ def main() -> int:
                     raise
             else:
                 raise AssertionError("loader gate accepted RED native readiness")
-            if red_scan.called or red_mount.called:
+            if red_capability.called or red_scan.called or red_mount.called:
                 raise AssertionError(
                     "loader gate did not fail fast after readiness RED"
+                )
+
+        red_capability_artifacts = (
+            temporary_root / "phase2-loader-gate-capability-red"
+        )
+        red_capability_artifacts.mkdir()
+        with (
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                return_value=green_readiness,
+            ),
+            mock.patch.object(
+                capture,
+                "phase2_runtime_capability_preflight",
+                side_effect=capture.acceptance.RunnerError(
+                    "MCP capability RED: workforce_collective_snapshot"
+                ),
+            ),
+            mock.patch.object(capture, "scan_loader_error_log") as red_scan,
+            mock.patch.object(capture, "verify_runtime_load_order") as red_mount,
+        ):
+            try:
+                capture.run_loader_gate(
+                    SimpleNamespace(),
+                    red_capability_artifacts,
+                    gate_userdir,
+                    {},
+                    tracked_ck3_pid=4321,
+                    phase2_live_batch=True,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "MCP capability RED" in str(error)
+            else:
+                raise AssertionError("loader gate accepted capability RED")
+            if red_scan.called or red_mount.called:
+                raise AssertionError(
+                    "loader gate did not fail before log/mount after capability RED"
                 )
 
         red_scan_artifacts = temporary_root / "phase2-loader-gate-scan-red"
@@ -2234,6 +2770,11 @@ def main() -> int:
                 capture,
                 "native_loader_smoke_readiness",
                 return_value=green_readiness,
+            ),
+            mock.patch.object(
+                capture,
+                "phase2_runtime_capability_preflight",
+                return_value={"result": "GREEN"},
             ),
             mock.patch.object(
                 capture,
@@ -2266,6 +2807,11 @@ def main() -> int:
                 capture,
                 "native_loader_smoke_readiness",
                 return_value=green_readiness,
+            ),
+            mock.patch.object(
+                capture,
+                "phase2_runtime_capability_preflight",
+                return_value={"result": "GREEN"},
             ),
             mock.patch.object(
                 capture,
@@ -2419,9 +2965,13 @@ def main() -> int:
 
         phase2_launch_artifacts = temporary_root / "phase2-live-batch-launch-wiring"
         phase2_cell_report = {
-            "result": "GREEN",
-            "error_reason": None,
-            "gameplay_acceptance_executed": True,
+            "result": "RED",
+            "error_reason": "MCP capability RED: workforce collective missing",
+            "gameplay_acceptance_executed": False,
+            "gameplay_green_claimed": False,
+            "scenario_evidence": {
+                "phase2_acceptance_complete": False,
+            },
         }
         with (
             mock.patch.object(
@@ -2462,10 +3012,10 @@ def main() -> int:
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
             )
-            assert phase2_main_result == 0
+            assert phase2_main_result == 1
         assert phase2_preflight.call_args.kwargs[
             "require_visual_tools"
-        ] is True
+        ] is False
         assert phase2_run_cell.call_args.kwargs["phase2_live_batch"] is True
         assert phase2_run_cell.call_args.kwargs["loader_smoke"] is False
         assert phase2_run_cell.call_args.kwargs["promo_capture"] is False
@@ -2480,12 +3030,80 @@ def main() -> int:
         assert phase2_matrix["loader_smoke_only"] is False
         assert phase2_matrix["phase2_live_batch"] is True
         assert phase2_matrix["loader_gate_executed"] is True
-        assert phase2_matrix["gameplay_acceptance_executed"] is True
-        assert phase2_matrix["gameplay_green_claimed"] is True
+        assert phase2_matrix["result"] == "RED"
+        assert phase2_matrix["gameplay_acceptance_executed"] is False
+        assert phase2_matrix["gameplay_green_claimed"] is False
+
+        false_green_artifacts = temporary_root / "phase2-false-green-rejected"
+        false_green_report = {
+            "result": "GREEN",
+            "error_reason": None,
+            "gameplay_acceptance_executed": True,
+            "gameplay_green_claimed": True,
+            "scenario_evidence": {
+                "result": "GREEN",
+                "phase2_acceptance_complete": False,
+                "mcp_only": True,
+                "ocr_used": False,
+                "image_used": False,
+                "coordinates_used": False,
+                "test_decision_used": False,
+                "legacy_run_scenario_used": False,
+            },
+        }
+        with (
+            mock.patch.object(
+                capture, "preflight", return_value=runtime_identity
+            ),
+            mock.patch.object(
+                capture.terminal,
+                "steam_userdata_root",
+                return_value=steam_root,
+            ),
+            mock.patch.object(
+                capture.isolated,
+                "steam_workshop_app_roots",
+                return_value=[],
+            ),
+            mock.patch.object(
+                capture.isolated, "registered_workshop_targets"
+            ),
+            mock.patch.object(capture.isolated, "ensure_test_paths_safe"),
+            mock.patch.object(
+                capture.isolated, "protected_snapshot", return_value={}
+            ),
+            mock.patch.object(
+                capture.isolated, "verify_protected_storage"
+            ),
+            mock.patch.object(capture, "write_evidence_index"),
+            mock.patch.object(
+                capture, "run_cell", return_value=false_green_report
+            ),
+        ):
+            false_green_result = capture.main(
+                artifacts_dir=str(false_green_artifacts),
+                keep_userdir=True,
+                phase2_live_batch=True,
+                bridge_dll=str(dll),
+                bridge_injector=str(injector),
+                bridge_pipe=explicit_pipe,
+            )
+            if false_green_result != 1:
+                raise AssertionError(
+                    "phase-two incomplete MCP proof was not downgraded to RED"
+                )
+        false_green_matrix = json.loads(
+            (false_green_artifacts / "report.json").read_text(encoding="utf-8")
+        )
+        assert false_green_matrix["result"] == "RED"
+        assert false_green_matrix["gameplay_green_claimed"] is False
+        assert "complete MCP-only scenario proof" in false_green_matrix[
+            "error_reason"
+        ]
 
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (
-        "if promo_camera_probe:",
+        "elif promo_camera_probe:",
         '"05_title_navigation_probe_preflight"',
         "force_ck3_english_keyboard_layout(artifacts)",
         "run_native_title_navigation_matrix(",
@@ -2495,7 +3113,8 @@ def main() -> int:
         "and not loader_smoke",
         "loader_gate_enabled = loader_smoke or phase2_live_batch",
         "loader_gate_evidence = run_loader_gate(",
-        '"phase2_live_batch_loader_gate"',
+        "elif phase2_live_batch:",
+        "run_phase2_live_scenario(",
         '"gameplay_green_claimed": False',
         '"zg361_50_case_cell_executed": False',
         "spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)",
@@ -2515,6 +3134,7 @@ def main() -> int:
     loader_gate_source = inspect.getsource(capture.run_loader_gate)
     for token in (
         "native_loader_smoke_readiness(",
+        "phase2_runtime_capability_preflight(",
         "scan_loader_error_log(userdir, artifacts)",
         "verify_runtime_load_order(userdir, bootstrap)",
         '"03_loader_gate.json"',
@@ -2527,16 +3147,24 @@ def main() -> int:
     loader_error_position = loader_gate_source.index(
         "scan_loader_error_log(userdir, artifacts)"
     )
+    phase2_capability_position = loader_gate_source.index(
+        "phase2_runtime_capability_preflight("
+    )
     loader_mount_position = loader_gate_source.index(
         "verify_runtime_load_order(userdir, bootstrap)"
     )
-    assert loader_readiness_position < loader_error_position
+    assert loader_readiness_position < phase2_capability_position
+    assert phase2_capability_position < loader_error_position
     assert loader_error_position < loader_mount_position
     loader_gate_position = camera_probe_cell.index("run_loader_gate(")
     main_menu_position = camera_probe_cell.index("acceptance.wait_for_ocr_text(")
     scenario_position = camera_probe_cell.index("run_scenario(")
+    phase2_scenario_position = camera_probe_cell.index(
+        "run_phase2_live_scenario("
+    )
     cleanup_position = camera_probe_cell.index("stop_tracked(")
     assert loader_gate_position < main_menu_position
+    assert loader_gate_position < phase2_scenario_position
     assert main_menu_position < scenario_position
     assert scenario_position < cleanup_position
     assert "stop_tracked(" not in camera_probe_cell[
@@ -2548,9 +3176,17 @@ def main() -> int:
     assert "acceptance._ocr is None" in preflight_source
     assert "acceptance.pyautogui.size()" in preflight_source
     main_source = inspect.getsource(capture.main)
-    assert "require_visual_tools=not loader_smoke" in main_source
-    assert '"gameplay_acceptance_executed", not loader_smoke' in main_source
+    assert "require_visual_tools=not (loader_smoke or phase2_live_batch)" in main_source
+    assert '"gameplay_acceptance_executed", False' in main_source
     assert "phase2_live_batch=phase2_live_batch" in main_source
+    phase2_branch = camera_probe_cell.split(
+        "elif phase2_live_batch:", 1
+    )[1].split("elif promo_camera_probe:", 1)[0]
+    assert "run_phase2_live_scenario(" in phase2_branch
+    assert "run_scenario(" not in phase2_branch
+    assert "wait_for_ocr_text" not in phase2_branch
+    assert "ImageGrab" not in phase2_branch
+    assert "initialize_fixture" not in phase2_branch
     runner_source = Path(capture.__file__).read_text(encoding="utf-8")
     assert '"--phase2-live-batch"' in runner_source
     for retired in (
