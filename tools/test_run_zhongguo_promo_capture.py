@@ -2125,6 +2125,185 @@ def main() -> int:
             )
         )
 
+        gate_artifacts = temporary_root / "phase2-loader-gate-green"
+        gate_artifacts.mkdir()
+        gate_userdir = temporary_root / "phase2-loader-gate-profile"
+        gate_userdir.mkdir()
+        gate_calls: list[str] = []
+        green_readiness = {"result": "GREEN", "tracked_ck3_pid": 4321}
+        green_error_scan = {"result": "GREEN", "matches": []}
+        green_mounts = ["product-mount", "fixture-mount"]
+
+        def green_readiness_call(
+            *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            gate_calls.append("native_readiness")
+            return green_readiness
+
+        def green_error_call(
+            *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            gate_calls.append("error_log_scan")
+            return green_error_scan
+
+        def green_mount_call(*_args: object, **_kwargs: object) -> list[str]:
+            gate_calls.append("mount_inventory")
+            return green_mounts
+
+        with (
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                side_effect=green_readiness_call,
+            ),
+            mock.patch.object(
+                capture,
+                "scan_loader_error_log",
+                side_effect=green_error_call,
+            ),
+            mock.patch.object(
+                capture,
+                "verify_runtime_load_order",
+                side_effect=green_mount_call,
+            ),
+        ):
+            green_gate = capture.run_loader_gate(
+                SimpleNamespace(),
+                gate_artifacts,
+                gate_userdir,
+                {},
+                tracked_ck3_pid=4321,
+                phase2_live_batch=True,
+            )
+        if gate_calls != [
+            "native_readiness",
+            "error_log_scan",
+            "mount_inventory",
+        ]:
+            raise AssertionError(f"loader gate order drifted: {gate_calls!r}")
+        if green_gate["result"] != "GREEN":
+            raise AssertionError(f"loader gate was not GREEN: {green_gate!r}")
+        if green_gate["same_pid_gameplay_continuation_authorized"] is not True:
+            raise AssertionError(
+                "phase-two loader gate did not authorize continuation"
+            )
+        persisted_green_gate = json.loads(
+            (gate_artifacts / "03_loader_gate.json").read_text(encoding="utf-8")
+        )
+        if persisted_green_gate != green_gate:
+            raise AssertionError(
+                "persisted GREEN loader gate differs from return value"
+            )
+
+        red_readiness_artifacts = (
+            temporary_root / "phase2-loader-gate-readiness-red"
+        )
+        red_readiness_artifacts.mkdir()
+        with (
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                return_value={"result": "RED"},
+            ),
+            mock.patch.object(capture, "scan_loader_error_log") as red_scan,
+            mock.patch.object(capture, "verify_runtime_load_order") as red_mount,
+        ):
+            try:
+                capture.run_loader_gate(
+                    SimpleNamespace(),
+                    red_readiness_artifacts,
+                    gate_userdir,
+                    {},
+                    tracked_ck3_pid=4321,
+                    phase2_live_batch=True,
+                )
+            except capture.acceptance.RunnerError as error:
+                if "native loader readiness" not in str(error):
+                    raise
+            else:
+                raise AssertionError("loader gate accepted RED native readiness")
+            if red_scan.called or red_mount.called:
+                raise AssertionError(
+                    "loader gate did not fail fast after readiness RED"
+                )
+
+        red_scan_artifacts = temporary_root / "phase2-loader-gate-scan-red"
+        red_scan_artifacts.mkdir()
+        with (
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                return_value=green_readiness,
+            ),
+            mock.patch.object(
+                capture,
+                "scan_loader_error_log",
+                return_value={"result": "RED"},
+            ),
+            mock.patch.object(capture, "verify_runtime_load_order") as red_mount,
+        ):
+            try:
+                capture.run_loader_gate(
+                    SimpleNamespace(),
+                    red_scan_artifacts,
+                    gate_userdir,
+                    {},
+                    tracked_ck3_pid=4321,
+                    phase2_live_batch=True,
+                )
+            except capture.acceptance.RunnerError as error:
+                if "error.log scan" not in str(error):
+                    raise
+            else:
+                raise AssertionError("loader gate accepted RED error.log scan")
+            if red_mount.called:
+                raise AssertionError("loader gate did not fail fast after scan RED")
+
+        red_mount_artifacts = temporary_root / "phase2-loader-gate-mount-red"
+        red_mount_artifacts.mkdir()
+        with (
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                return_value=green_readiness,
+            ),
+            mock.patch.object(
+                capture,
+                "scan_loader_error_log",
+                return_value=green_error_scan,
+            ),
+            mock.patch.object(
+                capture,
+                "verify_runtime_load_order",
+                side_effect=capture.acceptance.RunnerError("mount inventory RED"),
+            ),
+        ):
+            try:
+                capture.run_loader_gate(
+                    SimpleNamespace(),
+                    red_mount_artifacts,
+                    gate_userdir,
+                    {},
+                    tracked_ck3_pid=4321,
+                    phase2_live_batch=True,
+                )
+            except capture.acceptance.RunnerError as error:
+                if "mount inventory RED" not in str(error):
+                    raise
+            else:
+                raise AssertionError("loader gate accepted RED mount inventory")
+        persisted_red_mount = json.loads(
+            (red_mount_artifacts / "03_loader_gate.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        if persisted_red_mount["result"] != "RED":
+            raise AssertionError("mount failure was not persisted as RED")
+        if persisted_red_mount[
+            "same_pid_gameplay_continuation_authorized"
+        ] is not False:
+            raise AssertionError("RED loader gate authorized gameplay continuation")
+
         launch_artifacts = temporary_root / "launch-wiring"
         steam_root = temporary_root / "steam"
         steam_root.mkdir()
@@ -2238,6 +2417,72 @@ def main() -> int:
         assert loader_matrix["gameplay_acceptance_executed"] is False
         assert loader_matrix["gameplay_green_claimed"] is False
 
+        phase2_launch_artifacts = temporary_root / "phase2-live-batch-launch-wiring"
+        phase2_cell_report = {
+            "result": "GREEN",
+            "error_reason": None,
+            "gameplay_acceptance_executed": True,
+        }
+        with (
+            mock.patch.object(
+                capture, "preflight", return_value=runtime_identity
+            ) as phase2_preflight,
+            mock.patch.object(
+                capture.terminal,
+                "steam_userdata_root",
+                return_value=steam_root,
+            ),
+            mock.patch.object(
+                capture.isolated,
+                "steam_workshop_app_roots",
+                return_value=[],
+            ),
+            mock.patch.object(
+                capture.isolated, "registered_workshop_targets"
+            ),
+            mock.patch.object(capture.isolated, "ensure_test_paths_safe"),
+            mock.patch.object(
+                capture.isolated, "protected_snapshot", return_value={}
+            ),
+            mock.patch.object(
+                capture.isolated, "verify_protected_storage"
+            ),
+            mock.patch.object(capture, "write_evidence_index"),
+            mock.patch.object(
+                capture,
+                "run_cell",
+                return_value=phase2_cell_report,
+            ) as phase2_run_cell,
+        ):
+            phase2_main_result = capture.main(
+                artifacts_dir=str(phase2_launch_artifacts),
+                keep_userdir=True,
+                phase2_live_batch=True,
+                bridge_dll=str(dll),
+                bridge_injector=str(injector),
+                bridge_pipe=explicit_pipe,
+            )
+            assert phase2_main_result == 0
+        assert phase2_preflight.call_args.kwargs[
+            "require_visual_tools"
+        ] is True
+        assert phase2_run_cell.call_args.kwargs["phase2_live_batch"] is True
+        assert phase2_run_cell.call_args.kwargs["loader_smoke"] is False
+        assert phase2_run_cell.call_args.kwargs["promo_capture"] is False
+        assert phase2_run_cell.call_args.kwargs[
+            "promo_camera_probe"
+        ] is False
+        phase2_matrix = json.loads(
+            (phase2_launch_artifacts / "report.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert phase2_matrix["loader_smoke_only"] is False
+        assert phase2_matrix["phase2_live_batch"] is True
+        assert phase2_matrix["loader_gate_executed"] is True
+        assert phase2_matrix["gameplay_acceptance_executed"] is True
+        assert phase2_matrix["gameplay_green_claimed"] is True
+
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (
         "if promo_camera_probe:",
@@ -2248,8 +2493,9 @@ def main() -> int:
         '"ffmpeg_started": False',
         "and not promo_camera_probe",
         "and not loader_smoke",
-        "native_loader_smoke_readiness(",
-        "scan_loader_error_log(userdir, artifacts)",
+        "loader_gate_enabled = loader_smoke or phase2_live_batch",
+        "loader_gate_evidence = run_loader_gate(",
+        '"phase2_live_batch_loader_gate"',
         '"gameplay_green_claimed": False',
         '"zg361_50_case_cell_executed": False',
         "spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)",
@@ -2266,21 +2512,47 @@ def main() -> int:
         '"native_launch_sequence": "suspended_inject_resume"',
     ):
         assert token in camera_probe_cell, token
-    assert camera_probe_cell.index("native_loader_smoke_readiness(") < (
-        camera_probe_cell.index("acceptance.wait_for_ocr_text(")
+    loader_gate_source = inspect.getsource(capture.run_loader_gate)
+    for token in (
+        "native_loader_smoke_readiness(",
+        "scan_loader_error_log(userdir, artifacts)",
+        "verify_runtime_load_order(userdir, bootstrap)",
+        '"03_loader_gate.json"',
+        '"same_pid_gameplay_continuation_authorized"',
+    ):
+        assert token in loader_gate_source, token
+    loader_readiness_position = loader_gate_source.index(
+        "native_loader_smoke_readiness("
     )
-    assert camera_probe_cell.index("scan_loader_error_log(userdir, artifacts)") < (
-        camera_probe_cell.index("run_scenario(")
+    loader_error_position = loader_gate_source.index(
+        "scan_loader_error_log(userdir, artifacts)"
     )
+    loader_mount_position = loader_gate_source.index(
+        "verify_runtime_load_order(userdir, bootstrap)"
+    )
+    assert loader_readiness_position < loader_error_position
+    assert loader_error_position < loader_mount_position
+    loader_gate_position = camera_probe_cell.index("run_loader_gate(")
+    main_menu_position = camera_probe_cell.index("acceptance.wait_for_ocr_text(")
+    scenario_position = camera_probe_cell.index("run_scenario(")
+    cleanup_position = camera_probe_cell.index("stop_tracked(")
+    assert loader_gate_position < main_menu_position
+    assert main_menu_position < scenario_position
+    assert scenario_position < cleanup_position
+    assert "stop_tracked(" not in camera_probe_cell[
+        loader_gate_position:scenario_position
+    ]
+    assert camera_probe_cell.count("stop_tracked(") == 1
     preflight_source = inspect.getsource(capture.preflight)
     assert "if require_visual_tools:" in preflight_source
     assert "acceptance._ocr is None" in preflight_source
     assert "acceptance.pyautogui.size()" in preflight_source
     main_source = inspect.getsource(capture.main)
     assert "require_visual_tools=not loader_smoke" in main_source
-    assert '"gameplay_green_claimed": result == "GREEN" and not loader_smoke' in (
-        main_source
-    )
+    assert '"gameplay_acceptance_executed", not loader_smoke' in main_source
+    assert "phase2_live_batch=phase2_live_batch" in main_source
+    runner_source = Path(capture.__file__).read_text(encoding="utf-8")
+    assert '"--phase2-live-batch"' in runner_source
     for retired in (
         "acceptance.launch_ck3_process",
         "acceptance.start_process_watchdog",
@@ -2308,6 +2580,16 @@ def main() -> int:
         assert "mutually exclusive" in str(error)
     else:
         raise AssertionError("loader smoke accepted a visual promo mode")
+    try:
+        capture.main(
+            preflight_only=True,
+            loader_smoke=True,
+            phase2_live_batch=True,
+        )
+    except capture.acceptance.RunnerError as error:
+        assert "mutually exclusive" in str(error)
+    else:
+        raise AssertionError("phase-two batch accepted loader-smoke mode")
 
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (

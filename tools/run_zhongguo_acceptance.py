@@ -2693,6 +2693,84 @@ def scan_loader_error_log(
         ) from error
 
 
+def run_loader_gate(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    userdir: Path,
+    bootstrap: dict[str, object],
+    *,
+    tracked_ck3_pid: int,
+    phase2_live_batch: bool,
+) -> dict[str, object]:
+    """Run the native/log/mount loader gate and persist every RED boundary."""
+
+    evidence_path = artifacts / "03_loader_gate.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "exact_build_loader_gate_before_gameplay",
+        "mode": (
+            "phase2_live_batch"
+            if phase2_live_batch
+            else "loader_smoke_only"
+        ),
+        "tracked_ck3_pid": tracked_ck3_pid,
+        "native_readiness": None,
+        "loader_error_log_scan": None,
+        "runtime_mount_inventory": None,
+        "same_pid_gameplay_continuation_authorized": False,
+        "gameplay_acceptance_executed": False,
+        "gameplay_green_claimed": False,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+
+    try:
+        native_readiness = native_loader_smoke_readiness(
+            service,
+            artifacts,
+            tracked_ck3_pid=tracked_ck3_pid,
+        )
+        evidence["native_readiness"] = native_readiness
+        write_json(evidence_path, evidence)
+        if native_readiness.get("result") != "GREEN":
+            raise acceptance.RunnerError(
+                "native loader readiness returned a non-GREEN result"
+            )
+
+        error_scan = scan_loader_error_log(userdir, artifacts)
+        evidence["loader_error_log_scan"] = error_scan
+        write_json(evidence_path, evidence)
+        if error_scan.get("result") != "GREEN":
+            raise acceptance.RunnerError(
+                "loader error.log scan returned a non-GREEN result"
+            )
+
+        mount_order = verify_runtime_load_order(userdir, bootstrap)
+        evidence["runtime_mount_inventory"] = mount_order
+        evidence["result"] = "GREEN"
+        evidence["same_pid_gameplay_continuation_authorized"] = (
+            phase2_live_batch
+        )
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["same_pid_gameplay_continuation_authorized"] = False
+        evidence["failure_reason"] = (
+            f"{type(error).__name__}: {error}"
+        )
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"exact-build loader gate failed: {error}"
+        ) from error
+
+
 def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
     confirm = isolated.open_decision_detail(
         "开始361制实机验收",
@@ -7455,6 +7533,7 @@ def run_cell(
     promo_capture: bool = False,
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
+    phase2_live_batch: bool = False,
     runtime_source: Path = SOURCE,
     runtime_identity: dict[str, object] | None = None,
 ) -> dict[str, object]:
@@ -7518,6 +7597,9 @@ def run_cell(
     recorder = PromoRecorder(artifacts / "promo") if promo_capture else None
     recorder_evidence: dict[str, object] = {}
     keyboard_layout_evidence: dict[str, object] = {}
+    loader_gate_enabled = loader_smoke or phase2_live_batch
+    loader_gate_evidence: dict[str, object] | None = None
+    gameplay_acceptance_executed = False
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
@@ -7547,13 +7629,25 @@ def run_cell(
             "launched suspended/injected/resumed tracked CK3 "
             f"PID {process.pid} on {native_bridge.pipe_name}"
         )
-        if loader_smoke:
-            native_readiness = native_loader_smoke_readiness(
+        if loader_gate_enabled:
+            loader_gate_evidence = run_loader_gate(
                 title_navigation_service,
                 artifacts,
+                userdir,
+                bootstrap,
                 tracked_ck3_pid=tracked_ck3_pid,
+                phase2_live_batch=phase2_live_batch,
             )
-            error_scan = scan_loader_error_log(userdir, artifacts)
+            native_readiness = loader_gate_evidence["native_readiness"]
+            error_scan = loader_gate_evidence["loader_error_log_scan"]
+            mount_inventory = loader_gate_evidence[
+                "runtime_mount_inventory"
+            ]
+            if not isinstance(mount_inventory, list):
+                raise acceptance.RunnerError(
+                    "loader gate returned an invalid mount inventory"
+                )
+            mount_order = [str(item) for item in mount_inventory]
         if not loader_smoke:
             acceptance.wait_for_ocr_text(
             "新游戏",
@@ -7563,7 +7657,8 @@ def run_cell(
             "01_main_menu_parser_ready.png",
             stable_hits=1,
         )
-        mount_order = verify_runtime_load_order(userdir, bootstrap)
+        if not loader_gate_enabled:
+            mount_order = verify_runtime_load_order(userdir, bootstrap)
         if not loader_smoke:
             new_diagnostics, new_warnings = project_diagnostics(
                 userdir, artifacts, "02_main_menu"
@@ -7623,6 +7718,7 @@ def run_cell(
                 "ffmpeg_started": False,
             }
         else:
+            gameplay_acceptance_executed = True
             evidence = run_scenario(
                 stream,
                 artifacts,
@@ -7633,6 +7729,18 @@ def run_cell(
                 preflight_bridge_identity=bridge_identity,
             )
             evidence["keyboard_layout"] = keyboard_layout_evidence
+            if phase2_live_batch:
+                evidence["phase2_live_batch_loader_gate"] = {
+                    "result": (
+                        loader_gate_evidence.get("result")
+                        if isinstance(loader_gate_evidence, dict)
+                        else "RED"
+                    ),
+                    "artifact": "03_loader_gate.json",
+                    "tracked_ck3_pid": tracked_ck3_pid,
+                    "continued_on_same_pid": True,
+                    "ocr_used_for_loader_truth": False,
+                }
         new_diagnostics, new_warnings = project_diagnostics(
             userdir, artifacts, "10_runtime"
         )
@@ -7796,6 +7904,15 @@ def run_cell(
     elif state_dir.exists():
         log(f"retained native state and userdir at {state_dir}")
 
+    if loader_gate_evidence is not None:
+        loader_gate_evidence["gameplay_acceptance_executed"] = (
+            gameplay_acceptance_executed
+        )
+        loader_gate_evidence["gameplay_green_claimed"] = (
+            result == "GREEN" and gameplay_acceptance_executed
+        )
+        write_json(artifacts / "03_loader_gate.json", loader_gate_evidence)
+
     report = {
         "schema_version": 1,
         "result": result,
@@ -7817,8 +7934,11 @@ def run_cell(
         "tracked_full_acceptance_pid": tracked_ck3_pid,
         "promo_camera_probe_only": promo_camera_probe,
         "loader_smoke_only": loader_smoke,
-        "gameplay_acceptance_executed": not loader_smoke,
-        "gameplay_green_claimed": result == "GREEN" and not loader_smoke,
+        "phase2_live_batch": phase2_live_batch,
+        "loader_gate_executed": loader_gate_enabled,
+        "loader_gate_evidence": loader_gate_evidence,
+        "gameplay_acceptance_executed": gameplay_acceptance_executed,
+        "gameplay_green_claimed": result == "GREEN" and gameplay_acceptance_executed,
         "zg361_50_case_cell_executed": False if loader_smoke else None,
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
@@ -7869,6 +7989,7 @@ def main(
     promo_capture: bool = False,
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
+    phase2_live_batch: bool = False,
     workshop_cache_source: str | None = None,
     workshop_manifest: str | None = None,
     bridge_dll: str | None = None,
@@ -7877,12 +7998,17 @@ def main(
 ) -> int:
     selected_runtime_modes = sum(
         bool(value)
-        for value in (promo_capture, promo_camera_probe, loader_smoke)
+        for value in (
+            promo_capture,
+            promo_camera_probe,
+            loader_smoke,
+            phase2_live_batch,
+        )
     )
     if selected_runtime_modes > 1:
         raise acceptance.RunnerError(
-            "--promo-capture, --promo-camera-probe and --loader-smoke "
-            "are mutually exclusive"
+            "--promo-capture, --promo-camera-probe, --loader-smoke and "
+            "--phase2-live-batch are mutually exclusive"
         )
     runtime_source = (
         Path(workshop_cache_source).expanduser().resolve()
@@ -7937,6 +8063,7 @@ def main(
         promo_capture=promo_capture,
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
+        phase2_live_batch=phase2_live_batch,
         runtime_source=runtime_source,
         runtime_identity=runtime_identity,
     )
@@ -7959,8 +8086,15 @@ def main(
         "result": result,
         "error_reason": error_reason,
         "loader_smoke_only": loader_smoke,
-        "gameplay_acceptance_executed": not loader_smoke,
-        "gameplay_green_claimed": result == "GREEN" and not loader_smoke,
+        "phase2_live_batch": phase2_live_batch,
+        "loader_gate_executed": loader_smoke or phase2_live_batch,
+        "gameplay_acceptance_executed": report.get(
+            "gameplay_acceptance_executed", not loader_smoke
+        ),
+        "gameplay_green_claimed": (
+            result == "GREEN"
+            and report.get("gameplay_acceptance_executed", not loader_smoke)
+        ),
         "cell": report,
         "protected_storage_unchanged": protected_unchanged,
         "postflight_quiet_seconds": (
@@ -7972,7 +8106,11 @@ def main(
     heading = (
         "ZHONGGUO 361 MCP-ASSISTED LOADER SMOKE"
         if loader_smoke
-        else "ZHONGGUO 361 ACCEPTANCE"
+        else (
+            "ZHONGGUO 361 PHASE-TWO LIVE BATCH"
+            if phase2_live_batch
+            else "ZHONGGUO 361 ACCEPTANCE"
+        )
     )
     print(f"\n===== {heading} =====")
     print(f"cell                    {report['result']}")
@@ -8016,6 +8154,14 @@ if __name__ == "__main__":
         ),
     )
     parser.add_argument(
+        "--phase2-live-batch",
+        action="store_true",
+        help=(
+            "run the loader readiness/error/mount gate first, then continue "
+            "the existing full acceptance on the same tracked CK3 PID"
+        ),
+    )
+    parser.add_argument(
         "--workshop-cache-source",
         help="verified fresh CK3 Workshop cache leaf used instead of the development source",
     )
@@ -8048,6 +8194,7 @@ if __name__ == "__main__":
                 promo_capture=arguments.promo_capture,
                 promo_camera_probe=arguments.promo_camera_probe,
                 loader_smoke=arguments.loader_smoke,
+                phase2_live_batch=arguments.phase2_live_batch,
                 workshop_cache_source=arguments.workshop_cache_source,
                 workshop_manifest=arguments.workshop_manifest,
                 bridge_dll=arguments.bridge_dll,
