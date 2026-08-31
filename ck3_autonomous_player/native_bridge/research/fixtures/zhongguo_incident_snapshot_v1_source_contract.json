@@ -1,0 +1,50 @@
+{
+  "fixture": "zhongguo_incident_snapshot_v1_source_contract",
+  "capability": "game.command.query-zhongguo-incident-snapshot-v1",
+  "step": "query-zhongguo-incident-snapshot-v1",
+  "case_kind": "zhongguo.incident.subject-self",
+  "profiles": ["x", "y", "z"],
+  "allowlist_count_per_profile": 49,
+  "request_fields": [
+    "request_nonce",
+    "expected_revision",
+    "owner_character_id",
+    "profile"
+  ],
+  "mailbox_executor": "ExecuteZhongguoIncidentSnapshotMailboxQueryV1",
+  "result_payload_key": "zhongguo_incident_snapshot",
+  "required_source_properties": [
+    "played_character_is_only_subject",
+    "actual_owner_decoded_from_kind_4_probe_owner",
+    "expected_owner_is_filter_not_scope",
+    "profile_is_strict_enum_selecting_explicit_allowlist",
+    "two_allowlist_reads",
+    "before_after_frame_equality",
+    "raw_row_equality",
+    "strict_na_or_incident_terminal_union",
+    "na_positive_receipt_never_empty_case",
+    "pending_or_consumed_kpi_union",
+    "resource_payloads_retain_q100000",
+    "manager_treasury_missing_is_typed_unavailable"
+  ],
+  "forbidden_request_fields": [
+    "subject_character_id",
+    "case_kind",
+    "variable_name",
+    "variable_names",
+    "scope_character_id",
+    "unknown_field"
+  ],
+  "fixed_profile_prefixes": {
+    "x": "zg361_ip_x_",
+    "y": "zg361_ip_y_",
+    "z": "zg361_ip_z_"
+  },
+  "mod_producer_gap": {
+    "missing_key": "zg361_ip_probe_manager_treasury",
+    "typed_reason": "not_recorded_by_mod",
+    "must_not_zero_fill": true
+  },
+  "integration_status": "not_added_to_shared_build_or_protocol_surfaces",
+  "readiness": "static_and_fixture_ready_integration_pending_not_live"
+}
