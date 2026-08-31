@@ -27,6 +27,12 @@ jobs:
         run: |
           python -m compileall -q tools
           python -m compileall -q mod_zhongguo_style/tools
+          python -m compileall -q xar_promo_toolchain/src/xar_promo
+      - name: Test reusable promo toolchain
+        run: |
+          $env:PYTHONPATH = (Resolve-Path "xar_promo_toolchain/src")
+          python -m unittest discover -s xar_promo_toolchain/tests -v
+          python -O -m unittest discover -s xar_promo_toolchain/tests -v
       - name: Test succession GUI projection contract
         run: python tools/test_gen_no_heir_gui.py
       - name: Test release manifest verification
@@ -47,6 +53,8 @@ jobs:
           python mod_zhongguo_style/tools/test_phase2_ck3_wiring.py
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
+          python tools/test_zg361_phase2_seed_fixture.py
+          python tools/test_zg361_phase2_seed_bootstrap.py
           python tools/test_run_zhongguo_promo_capture.py
           python tools/test_run_zhongguo_workshop_acceptance.py
       - name: Test ZhongGuo 361 release localization
@@ -71,6 +79,8 @@ jobs:
       - name: Test and validate ZhongGuo 361 promo project
         run: |
           python mod_zhongguo_style/tools/test_promo_video.py
+          python mod_zhongguo_style/tools/test_build_phase2_promo_video.py
+          python -O mod_zhongguo_style/tools/test_build_phase2_promo_video.py
           python mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
           python mod_zhongguo_style/tools/validate_promo_video.py --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
       - name: Test MiniMax localization caller

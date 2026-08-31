@@ -109,6 +109,25 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
+
+PROMO_TOOLCHAIN_SOURCE = Path(__file__).resolve().parents[1] / "xar_promo_toolchain" / "src"
+if str(PROMO_TOOLCHAIN_SOURCE) not in sys.path:
+    sys.path.insert(0, str(PROMO_TOOLCHAIN_SOURCE))
+
+from xar_promo.media import MediaProbeError, ffprobe_command, parse_ffprobe_json  # noqa: E402
+from xar_promo.layout import LayoutError, balance_lines  # noqa: E402
+from xar_promo.legacy import (  # noqa: E402
+    LegacyCompatibilityError,
+    LegacyPipelineSegment,
+    compatible_ass_escape,
+    compatible_ass_timestamp,
+    compatible_concat_manifest,
+    compatible_seconds,
+    validate_legacy_pipeline_projection,
+)
+from xar_promo.tts import EdgeTtsProvider, TtsRequest  # noqa: E402
+
+
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageOps
 except ImportError as exc:  # handled with a repository-specific hint in main()
@@ -623,26 +642,14 @@ def run_checked(command: Sequence[str | Path], *, cwd: Path | None, action: str)
 
 def probe_media(ffprobe: Path, path: Path) -> dict[str, Any]:
     result = run_checked(
-        [
-            ffprobe,
-            "-v",
-            "error",
-            "-show_streams",
-            "-show_format",
-            "-of",
-            "json",
-            path,
-        ],
+        ffprobe_command(ffprobe, path),
         cwd=None,
         action=f"probing media {path}",
     )
     try:
-        payload = json.loads(result.stdout)
-    except json.JSONDecodeError as exc:
+        return dict(parse_ffprobe_json(result.stdout).raw)
+    except MediaProbeError as exc:
         raise ShowcaseError(f"ffprobe returned invalid JSON for {path}: {exc}") from exc
-    if not isinstance(payload, dict):
-        raise ShowcaseError(f"ffprobe returned an invalid payload for {path}")
-    return payload
 
 
 def _duration_from_probe(payload: dict[str, Any], path: Path) -> float:
@@ -852,14 +859,20 @@ def synthesize_narration(
                     "edge-tts is required for narration synthesis; install "
                     "tools\\requirements.txt"
                 )
-            communicator = edge_tts.Communicate(
-                chapter.narration_en,
-                requested_voice,
-                rate=EDGE_TTS_RATE,
-                volume=EDGE_TTS_VOLUME,
-                pitch=EDGE_TTS_PITCH,
+            provider = EdgeTtsProvider(
+                module=edge_tts,
+                tool_version=provider_version,
             )
-            communicator.save_sync(str(temporary))
+            provider.synthesize(
+                TtsRequest(
+                    text=chapter.narration_en,
+                    voice=requested_voice,
+                    rate=EDGE_TTS_RATE,
+                    volume=EDGE_TTS_VOLUME,
+                    pitch=EDGE_TTS_PITCH,
+                ),
+                temporary,
+            )
             if not temporary.is_file() or temporary.stat().st_size == 0:
                 raise ShowcaseError(
                     "Edge TTS did not create narration MP3 for chapter "
@@ -1304,22 +1317,11 @@ def render_visual(chapter: Chapter, fonts: Fonts, chapter_directory: Path) -> tu
 
 
 def _ass_timestamp(seconds: float) -> str:
-    centiseconds = max(0, int(round(seconds * 100)))
-    hours, remainder = divmod(centiseconds, 360_000)
-    minutes, remainder = divmod(remainder, 6_000)
-    whole_seconds, fraction = divmod(remainder, 100)
-    return f"{hours}:{minutes:02d}:{whole_seconds:02d}.{fraction:02d}"
+    return compatible_ass_timestamp(seconds)
 
 
 def _ass_escape(text: str) -> str:
-    return (
-        text.replace("\\", r"\\")
-        .replace("{", r"\{")
-        .replace("}", r"\}")
-        .replace("\r\n", r"\N")
-        .replace("\r", r"\N")
-        .replace("\n", r"\N")
-    )
+    return compatible_ass_escape(text)
 
 
 def _subtitle_width(draw, text: str, font) -> float:
@@ -1481,19 +1483,16 @@ def layout_subtitle(text: str, font) -> tuple[list[str], list[float]]:
 
 
 def _balanced_subtitle_blocks(lines: Sequence[str]) -> list[list[str]]:
-    block_count = math.ceil(len(lines) / SUBTITLE_MAX_LINES_PER_CUE)
-    base_size, larger_blocks = divmod(len(lines), block_count)
-    blocks: list[list[str]] = []
-    cursor = 0
-    for index in range(block_count):
-        block_size = base_size + (1 if index < larger_blocks else 0)
-        blocks.append(list(lines[cursor : cursor + block_size]))
-        cursor += block_size
-    if cursor != len(lines) or any(
-        len(block) > SUBTITLE_MAX_LINES_PER_CUE for block in blocks
-    ):
-        raise ShowcaseError("internal error: invalid subtitle cue partition")
-    return blocks
+    try:
+        return [
+            list(block)
+            for block in balance_lines(
+                lines,
+                max_lines_per_block=SUBTITLE_MAX_LINES_PER_CUE,
+            )
+        ]
+    except LayoutError as exc:
+        raise ShowcaseError("internal error: invalid subtitle cue partition") from exc
 
 
 def prepare_subtitle_layouts(chapters: Sequence[Chapter], fonts: Fonts) -> None:
@@ -1588,7 +1587,7 @@ def write_global_ass(chapters: Sequence[Chapter], destination: Path) -> None:
 
 
 def _seconds(value: float) -> str:
-    return f"{value:.6f}"
+    return compatible_seconds(value)
 
 
 def encode_segment(
@@ -1816,15 +1815,19 @@ def concat_segments(
     ffprobe: Path,
 ) -> dict[str, Any]:
     concat_path = build_directory / "concat.txt"
-    rows: list[str] = []
+    segment_paths: list[Path] = []
     for chapter in chapters:
         if chapter.segment_path is None:
             raise ShowcaseError("internal error: segment was not encoded")
-        relative = chapter.segment_path.relative_to(build_directory).as_posix()
-        if "'" in relative:
-            raise ShowcaseError(f"internal concat path unexpectedly contains an apostrophe: {relative}")
-        rows.append(f"file '{relative}'")
-    concat_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+        segment_paths.append(chapter.segment_path)
+    try:
+        concat_text = compatible_concat_manifest(
+            segment_paths,
+            build_directory=build_directory,
+        )
+    except LegacyCompatibilityError as exc:
+        raise ShowcaseError(f"internal {exc}") from exc
+    concat_path.write_text(concat_text, encoding="utf-8")
 
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = output.with_name(f".{output.stem}.{os.getpid()}.partial.mp4")
@@ -2079,6 +2082,34 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
     preflight_video_sources(chapters, ffprobe)
     prepare_subtitle_layouts(chapters, fonts)
     requested_voice = resolve_requested_voice(args.voice, manifest)
+    try:
+        validate_legacy_pipeline_projection(
+            tuple(
+                LegacyPipelineSegment(
+                    segment_id=chapter.chapter_id,
+                    visual_kind={
+                        "video_clip": "video",
+                        "still": "still",
+                        "title_card": "generated-card",
+                        "evidence_card": "evidence-card",
+                    }[chapter.kind],
+                    source_path=chapter.source_path,
+                    subtitle_tracks={"zh-CN": chapter.subtitle_zh},
+                    duration_seconds=chapter.min_duration_seconds,
+                    start_seconds=chapter.start_seconds,
+                )
+                for chapter in chapters
+            ),
+            work_directory=work_directory,
+            ffmpeg=ffmpeg,
+            width=WIDTH,
+            height=HEIGHT,
+            fps=args.fps,
+            crf=args.crf,
+            render_preset=args.preset,
+        )
+    except LegacyCompatibilityError as exc:
+        raise ShowcaseError(f"generic pipeline compatibility validation failed: {exc}") from exc
     if args.validate_only:
         classifications = sorted({chapter.classification for chapter in chapters})
         print(

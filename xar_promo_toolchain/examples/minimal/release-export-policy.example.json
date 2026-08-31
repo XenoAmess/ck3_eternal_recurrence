@@ -1,0 +1,18 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_release_export_policy",
+  "items": [
+    {
+      "category": "deliverable",
+      "destination": "video/promo-final.mp4",
+      "source_kind": "artifact",
+      "artifact_id": "promo-final",
+      "expected_role": "deliverable"
+    },
+    {
+      "category": "project-config",
+      "destination": "metadata/project-config.json",
+      "source_kind": "project-config-snapshot"
+    }
+  ]
+}

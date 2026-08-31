@@ -1,0 +1,7 @@
+interface:
+  display_name: "Promo Video Pipeline"
+  short_description: "Orchestrate reproducible promotional video production"
+  default_prompt: "Use $promo-video-pipeline to plan, build, audit, prepare for human review, and export a reproducible promotional video while retaining all process artifacts."
+
+policy:
+  allow_implicit_invocation: true

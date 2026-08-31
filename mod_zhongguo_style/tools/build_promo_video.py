@@ -819,14 +819,20 @@ def _synthesize_cue(
         try:
             if temporary.exists():
                 raise PromoError(f"stale partial cue exists: {temporary}")
-            communicator = shared.edge_tts.Communicate(
-                cue["spoken_zh"],
-                voice,
-                rate=EDGE_TTS_RATE,
-                volume=EDGE_TTS_VOLUME,
-                pitch=EDGE_TTS_PITCH,
+            provider = shared.EdgeTtsProvider(
+                module=shared.edge_tts,
+                tool_version=shared.EDGE_TTS_VERSION or "unknown",
             )
-            communicator.save_sync(str(temporary))
+            provider.synthesize(
+                shared.TtsRequest(
+                    text=cue["spoken_zh"],
+                    voice=voice,
+                    rate=EDGE_TTS_RATE,
+                    volume=EDGE_TTS_VOLUME,
+                    pitch=EDGE_TTS_PITCH,
+                ),
+                temporary,
+            )
             if not temporary.is_file() or temporary.stat().st_size == 0:
                 raise PromoError(
                     f"Edge TTS produced no cue audio for {chapter.chapter_id} cue "
@@ -1433,7 +1439,7 @@ def write_global_ass(
 
 
 def _seconds(value: float) -> str:
-    return f"{value:.6f}"
+    return shared.compatible_seconds(value)
 
 
 def encode_segment(
@@ -1588,16 +1594,20 @@ def concat_segments(
         [shared._sha256(chapter.segment_path) for chapter in chapters if chapter.segment_path]
     )
     concat_path = build_directory / f"concat.{fingerprint[:16].lower()}.txt"
-    rows: list[str] = []
+    segment_paths: list[Path] = []
     for chapter in chapters:
         if chapter.segment_path is None:
             raise PromoError("internal error: segment missing")
-        relative = chapter.segment_path.relative_to(build_directory).as_posix()
-        if "'" in relative:
-            raise PromoError(f"apostrophe in concat path: {relative}")
-        rows.append(f"file '{relative}'")
+        segment_paths.append(chapter.segment_path)
+    try:
+        concat_text = shared.compatible_concat_manifest(
+            segment_paths,
+            build_directory=build_directory,
+        )
+    except shared.LegacyCompatibilityError as exc:
+        raise PromoError(str(exc)) from exc
     if not concat_path.exists():
-        concat_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+        concat_path.write_text(concat_text, encoding="utf-8")
 
     sidecar = output.with_suffix(".video.json")
     if output.exists() or sidecar.exists():
@@ -1826,6 +1836,32 @@ def parser() -> argparse.ArgumentParser:
     return result
 
 
+def _legacy_pipeline_segment(
+    chapter: shared.Chapter, *, fallback_duration: float
+) -> shared.LegacyPipelineSegment:
+    cues = getattr(chapter, "promo_cues", ())
+    zh_text = " ".join(cue["zh"] for cue in cues) if cues else "Legacy subtitle"
+    en_text = " ".join(cue["en"] for cue in cues) if cues else "Legacy subtitle"
+    return shared.LegacyPipelineSegment(
+        segment_id=chapter.chapter_id,
+        visual_kind=(
+            "video"
+            if chapter.kind == "video_clip"
+            else "still"
+            if chapter.kind == "still"
+            else "generated-card"
+        ),
+        source_path=chapter.source_path,
+        subtitle_tracks={"zh-CN": zh_text, "en": en_text},
+        duration_seconds=getattr(
+            chapter,
+            "estimated_duration_seconds",
+            max(0.1, fallback_duration),
+        ),
+        start_seconds=getattr(chapter, "start_seconds", 0.0),
+    )
+
+
 def build(args: argparse.Namespace) -> tuple[Path, Path]:
     if shared.PIL_IMPORT_ERROR is not None:
         raise PromoError(
@@ -1871,6 +1907,29 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
         shared.preflight_video_sources(chapters, ffprobe)
     prepare_subtitle_layouts(chapters, fonts)
     prepare_status_badge_layouts(chapters, fonts)
+    try:
+        shared.validate_legacy_pipeline_projection(
+            tuple(
+                _legacy_pipeline_segment(
+                    chapter,
+                    fallback_duration=(
+                        manifest["_estimated_duration_seconds"] / len(chapters)
+                    ),
+                )
+                for chapter in chapters
+            ),
+            work_directory=work_directory,
+            ffmpeg=ffmpeg or args.ffmpeg or "ffmpeg",
+            width=WIDTH,
+            height=HEIGHT,
+            fps=args.fps,
+            crf=args.crf,
+            render_preset=args.preset,
+        )
+    except shared.LegacyCompatibilityError as exc:
+        raise PromoError(
+            f"generic pipeline compatibility validation failed: {exc}"
+        ) from exc
     if args.validate_only:
         print(
             "VALID: "

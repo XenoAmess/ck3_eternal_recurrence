@@ -1,0 +1,58 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "minimal-bilingual-promo",
+    "title": "Minimal Bilingual Promo"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "minimal-bilingual"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 30
+  },
+  "chapters": [
+    {
+      "id": "intro",
+      "type": "still",
+      "state": "planned",
+      "title": {
+        "zh-CN": "一个可复用的宣传片开场",
+        "en": "A Reusable Promo Opening"
+      },
+      "cues": [
+        {
+          "id": "intro-001",
+          "narration": {
+            "zh-CN": "这里放一句简洁的项目介绍。",
+            "en": "Place one concise project introduction here."
+          },
+          "subtitles": {
+            "zh-CN": "这里放一句简洁的项目介绍。",
+            "en": "Place one concise project introduction here."
+          }
+        },
+        {
+          "id": "intro-002",
+          "narration": {
+            "zh-CN": "素材、声音和风格都由项目配置选择。",
+            "en": "The project config selects its media, voice, and style."
+          },
+          "subtitles": {
+            "zh-CN": "素材、声音和风格都由项目配置选择。",
+            "en": "The project config selects its media, voice, and style."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

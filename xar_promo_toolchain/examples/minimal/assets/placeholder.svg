@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">Authoring placeholder</title>
+  <desc id="description">A generic placeholder to replace with project media before rendering.</desc>
+  <rect width="1280" height="720" fill="#172033"/>
+  <rect x="64" y="64" width="1152" height="592" rx="28" fill="#24314d" stroke="#7dd3fc" stroke-width="4" stroke-dasharray="16 12"/>
+  <text x="640" y="330" fill="#e0f2fe" font-family="sans-serif" font-size="48" text-anchor="middle">AUTHORING PLACEHOLDER</text>
+  <text x="640" y="400" fill="#bae6fd" font-family="sans-serif" font-size="30" text-anchor="middle">请替换为项目素材 · Replace with project media</text>
+</svg>

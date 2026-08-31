@@ -13,6 +13,103 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - `gui_warnings.log` — GUI 警告
 - 解析错误在到主菜单前就会全部写入，启动游戏到主菜单即可完成静态验证
 
+## 可复用宣传视频工具链验收
+
+权威入口是 `xar_promo_toolchain/README.md` 与
+`xar_promo_toolchain/docs/architecture-and-migration.md`。公开命令必须以当前
+`<verified-python> -m xar_promo --help` 及各子命令 `--help` 的实际输出为准；library 中存在函数或 handler 不代表 CLI 已暴露该能力。
+
+### 当前冻结 CLI（`xar-promo 0.1.0`）
+
+下表按 2026-09-01 实际 `--help` 记录；尖括号表示由项目提供的路径、ID 或 import target，不是可照抄的字面值。
+
+| 命令 | 实际调用形态 | 验收含义 / 副作用 |
+| --- | --- | --- |
+| `init` | `init <project-directory> [--project-id <id>] [--title <title>] [--adapter <id>] [--preset <id>] [--run-id <id>] [--narration-locale <locale>] [--subtitle-locale <locale>]...` | 新建 config 和首个 run；不覆盖已有文件。 |
+| `start-run` | `start-run [project-config] --run-id <id> [--run-directory <dir>]` | 为当前 config 精确字节新建独立 run 与 snapshot。 |
+| `validate` | `validate [document] [--profile authoring|release] [--structure-only] [--json]` | 只读；普通模式核对引用文件 bytes/SHA，`--structure-only` 不核对，故不能代替 release 验证。 |
+| `preserve` | `preserve <source> [--run-manifest <run>] --artifact-id <id> --collection raw|derived --role <role> [--label <label>] [--media-type <type>]` | content-addressed 复制后 append artifact 记录；不应移动或覆盖源。 |
+| `signoff` | `signoff [--run-manifest <run>] --artifact-id <id> --reviewer <name> --decision approved|rejected [--note <text>] [--reviewed-at <timestamp>]` | append 人工决定；操作者必须先完成同一 bytes 的 1× 全片审阅。 |
+| `plan` | `plan <project-config-or-run> --workdir <fresh-attempt-path> --composer <module>:<attribute> [--validate-only]` | 始终只读：不创建 workdir、不调用 provider、不 append run；flag 只显式重申该合同。 |
+| `build` | `build <run-manifest> --workdir <fresh-attempt-dir> --composer <module>:<attribute> [--offline-tts] [--max-tts-attempts <n>] [--retry-backoff-seconds <seconds>]` | 执行 composer；GREEN/RED 均把已生成 artifact、partial、stdio 与 phase 记录保全到 run。 |
+| `audit` | `audit <run-manifest> --subject-artifact-id <id> --evidence-bundle <path> --report <path> --report-artifact-id <id> [--created-at-utc <timestamp>]` | 写并保全自动报告及输入证据；结果明确不包含人工 approval。 |
+| `review` | `review <deliverable> --storyboard <timeline.json> --probe <bound-probe.json> --output-directory <dir> --audit-directory <dir> --ffmpeg <exe> [--working-directory <dir>] [--plan-only]` | `--probe` 必须是与成片 bytes/SHA-256 绑定的 `xar-promo-bound-media-probe` v1 envelope；`--plan-only` 不写，执行模式只生成 pending review package 和抽帧素材，不 signoff。 |
+| `export` | `export <run-manifest> <destination> --policy <policy.json> [--dry-run | --validate-only]` | 默认仅生成离线 bundle；两个检查模式不创建 destination；都不联网、不发布。 |
+
+`plan`/`build` 的 `--composer` 必须解析为项目提供的 callable `MODULE:ATTRIBUTE`；它与 manifest 中 adapter/preset ID
+是不同接口。adapter/preset 只从本地 registry 注入或 `xar_promo.adapters`、`xar_promo.presets` entry points 解析，
+不得把 composer 塞进 registry，也不得虚构一个通用默认 composer。
+
+先用选定且已验证的解释器做无副作用 CLI smoke：
+
+```powershell
+$PromoSource = (Resolve-Path "xar_promo_toolchain\src").Path
+$env:PYTHONPATH = $PromoSource
+& $PromoPython -m xar_promo --version
+& $PromoPython -m xar_promo --help
+$PromoCommands = @("init", "start-run", "validate", "preserve", "signoff", "plan", "build", "audit", "review", "export")
+foreach ($PromoCommand in $PromoCommands) {
+    & $PromoPython -m xar_promo $PromoCommand --help
+    if ($LASTEXITCODE -ne 0) { throw "xar-promo help RED: $PromoCommand" }
+}
+```
+
+这里的 `$PromoPython` 必须先按本节末尾的 venv 规则解析；secondary worktree 不得临时把它替换成裸 `py`。
+
+### 分层与证据流
+
+宣传生产固定为四层：
+
+1. `xar_promo_toolchain/src/xar_promo/` 通用包管理 `ProjectConfig`、每个 attempt 的 `RunManifest`、配置快照、不可变素材、TTS、字幕/布局、
+   媒体探测、进程执行与审计原语。
+2. `xar_promo_toolchain/codex-skill/promo-video-pipeline/` 只指导编排和检查，不是执行器，也不提供隐含权限。
+3. `xar_promo_toolchain/src/xar_promo/adapters/ck3/` 只读验证 CK3 runner 已产出的 hash-bound capture bundle；它不启动游戏、不解释 OCR、
+   不删除失败素材，也不决定某个 mod 的宣传主张是否充分。
+4. `xar_promo_toolchain/src/xar_promo/presets/` 与项目 config 承载项目独有的章节、声线、语言、时长、角色来源、画面洁净和发布门禁；
+   legacy wrapper 在完成 parity 迁移前仍是各项目生产入口。
+
+标准证据流为：审阅 checked-in config → 为本次尝试创建新 run 并冻结 config snapshot → 取得/验证 raw source →
+只读规划 → 在新 workdir 构建 → 自动媒体/字幕/内容 audit → 生成 pending human-review package → 人工按 1× 完整观看 →
+对精确成片 bytes/SHA-256 记录 signoff → 生成离线发布 bundle。任一步 RED 都保留原 attempt；下一次从新 run/workdir 开始，
+不得修改旧报告来“转绿”。
+
+### 过程素材保留
+
+每次 attempt 都必须保留并纳入可核验索引：
+
+- raw 录像、截图、配音输入/输出、字幕源、项目 config 及 run-local snapshot；
+- clean spans、timeline、probe、evidence index、OCR/抽帧等外部 producer 的原始输出及其 bytes/SHA-256；
+- 生成卡、章节段、concat manifest、ASS、intermediate、partial、失败输出和最终 deliverable；
+- 每条外部命令的 argv/cwd、`stdout.txt`、`stderr.txt`、result、返回码与 partial 清单；
+- manifest preimage、phase/audit history、sidecar、自动 audit、pending review package、人工 signoff 与离线 export manifest。
+
+工具只允许新增或 content-addressed 复用相同字节，不得移动、截断、覆盖源素材。失败命令的 stdio、partial 和已完成阶段同样是
+诊断证据，不能因为最终命令返回非零而清理。大体积文件可以不进 Git，但必须保留稳定路径、bytes、SHA-256 和对应 run ID。
+
+### 自动审计、人工审阅与发布边界
+
+- 自动 audit 只能证明其采样计划、媒体属性、字幕布局、项目规则和证据绑定；抽帧全绿不等于整片逐秒看过。
+- review package/template 的状态只能是 pending human review；生成 review material 不得自动写 approval。
+- 人工 signoff 的前置是审阅人对**同一精确文件**按 1× 从头到尾完整观看。记录至少包含 reviewer、decision、reviewed_at、
+  说明以及 deliverable 的 bytes/SHA-256。重新编码、补字幕或任何字节变化都要求重新完整审阅和新 signoff。
+- 通用 `release` profile 或离线 export 只证明工具链内部候选条件，不发布 Steam/视频平台，也不替代项目验收。
+  各 mod 继续执行自己的 release projection、实机 CK3 矩阵、Workshop 上传/缓存复核和永久 changelog 流程。
+
+### secondary worktree 的 Python/venv 规则
+
+依赖型命令开始前先解析解释器，不能等 import 失败后静默换解释器：
+
+1. 优先检查当前 worktree 约定的相对 venv（本仓库 runner 通常是 `tools\.venv\Scripts\python.exe`）。
+2. secondary/detached worktree 没有该 venv 时，显式填写已经在主 worktree 验证过的 venv **绝对路径**；禁止直接落回 `py`。
+3. 使用主 venv 时，把 `PYTHONPATH` 显式设为当前 secondary worktree 的 `xar_promo_toolchain\src`（以及该任务需要的当前源码根），
+   防止测试到主 worktree 的 editable install 或旧 wheel。
+4. preflight 记录解释器绝对路径、Python 版本，并按任务验证依赖：core 至少能 import `xar_promo`；TTS 路径验证
+   `edge-tts 7.2.8`；visual/render 路径验证 `Pillow 12.3.0`；实际媒体命令另验证所指定的 ffmpeg/ffprobe。
+5. preflight 未闭合时结论是 environment RED。只有已证明使用目标源码和正确依赖后出现的可复现失败，才可归类 code/capability RED。
+
+禁止用“系统 `py` 能启动”替代上述检查，也禁止在 secondary worktree 自动创建、覆盖或升级主 venv。需要改依赖时回到拥有该 venv
+的主 worktree 按项目依赖合同处理；secondary 只显式借用已验证解释器。
+
 ## 全自动验收 runner（tools/run_acceptance.py）
 
 runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`、`courtier-creator`、`balance-long` 加载开发树；四个生产 smoke 会先生成 production-only release 投影，再将该投影 `/MIR` 到工坊缓存后启动 CK3。

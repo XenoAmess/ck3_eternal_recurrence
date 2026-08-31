@@ -84,6 +84,52 @@ py tools/build_vivhite_release.py                           # 生成独立 stagi
 再剥离 `# XAR_ACCEPTANCE_ONLY_BEGIN/END` 区域并展开 `# XAR_RELEASE_ONLY` 生产替代行；最终 staging 禁止出现测试标识。
 未标记文件仍逐字节复制。禁止直接把 mod 源目录上传；正式上传只能使用 `build_release.py` 生成的 staging。
 
+## 可复用宣传视频工具链
+
+- 可复用实现位于 `xar_promo_toolchain/`；用户入口、真实命令与能力边界以其 `README.md`、
+  `docs/architecture-and-migration.md` 和当前 `<verified-python> -m xar_promo --help` 为准。禁止为尚未接入的 library API
+  虚构 CLI 命令，也不得把 plan、命令 ACK、schema 通过或单项自动检查写成“成片已验”。
+- 严格保持四层边界：
+  1. **通用包** `xar_promo_toolchain/src/xar_promo/` 负责 `ProjectConfig`、每次 attempt 的 append-only `RunManifest`、配置快照、
+     content-addressed 素材、TTS、字幕/布局、媒体探测、进程与审计原语；不得内置某个 mod 的文案、角色、声线或发布凭据。
+  2. **Skill** `xar_promo_toolchain/codex-skill/promo-video-pipeline/` 只提供操作方法、检查清单和能力路由；Skill 不是运行时实现，
+     不能授权额外副作用，也不能声称不存在的命令或验收能力。
+  3. **CK3 adapter** `xar_promo_toolchain/src/xar_promo/adapters/ck3/` 只读验证既有 capture report、timeline、evidence index、原始录像、
+     marks 与 clean spans；不得启动 CK3、用 OCR 猜缺失状态、修复/覆盖 RED attempt，或承载某个项目的故事与发布政策。
+  4. **项目 preset** `xar_promo_toolchain/src/xar_promo/presets/` 加各项目 checked-in config 负责章节、文案、语言、声线、时长、
+     真实角色/测试 UI 等项目政策；各项目 legacy wrapper 在迁移期继续保持原 CLI、sidecar 与输出兼容。
+- 当前冻结的 `xar-promo 0.1.0` CLI 只有下列十个命令；命令角色和副作用必须按表解释：
+
+  | 命令 | 角色与副作用边界 |
+  | --- | --- |
+  | `init` | 新建 checked-in `ProjectConfig` 与首个绑定 run；已有目标拒绝覆盖。 |
+  | `start-run` | 从当前 config 的精确字节创建另一个 `RunManifest` 与 config snapshot。 |
+  | `validate` | 只读验证 config/run/legacy manifest；`--structure-only` 明确跳过引用文件 bytes/SHA 检查。 |
+  | `preserve` | 把一个既有文件复制进不可变 content-addressed storage，并 append artifact 记录。 |
+  | `signoff` | 在人工 1× 完整审阅后 append 对精确 artifact bytes 的 `approved`/`rejected` 决定。 |
+  | `plan` | 必须显式给 `--composer MODULE:ATTRIBUTE`；永远只读，不建 workdir、不调用 provider，`--validate-only` 只用于显式声明同一合同。 |
+  | `build` | 对原生 run 执行项目 composer；成功和 RED 的完成产物、partial、stdio 与 phase history 都必须保全。 |
+  | `audit` | 写入并保全自动 audit 及其 evidence；不得读取、推断或写入人工 approval。 |
+  | `review` | `--plan-only` 只读；否则只生成 `pending-human-review` 包，绝不记录 signoff。 |
+  | `export` | 按显式 policy 验证或生成离线 bundle；`--dry-run`/`--validate-only` 不写目标，任何模式都不上传或发布。 |
+
+  adapter/preset 只经本地注入或 Python entry-point 组 `xar_promo.adapters`、`xar_promo.presets` 解析；`plan`/`build`
+  的 composer 是项目提供的可 import callable，不属于 registry，也不得被工具链猜测或自动发现。
+- `ProjectConfig` 是可审阅的 checked-in 意图；每次 capture/render/audit attempt 必须创建独立 run/workdir，保存当时配置的
+  精确字节快照。不得让后续配置修改重新解释旧证据，也不得把失败 attempt 改写成 GREEN。
+- **所有过程素材永久保留，默认不清理**：raw 录像/截图/音频、脚本、TTS 请求与返回、字幕、生成卡、章节段、concat 输入、
+  中间编码、partial、失败 attempt、命令 argv、`stdout`/`stderr`、probe、timeline、evidence/audit/review 报告、sidecar、
+  manifest 历史和最终成片都属于过程资产。重跑使用新 run/workdir；不得为“收口”删除或覆盖旧素材。
+- 自动 validation/audit/review package 只证明它声明并 hash 绑定的机器条件，**不等于人工按 1× 完整观看，也不等于 signoff**。
+  人工签核必须发生在实际 1× 完整审阅之后，记录审阅人、结果、时间/说明，并绑定被审成片的精确 bytes + SHA-256；
+  工具不得自行制造 approval。重新编码或替换任何字节后，旧人工签核自动不适用于新文件，必须重新审阅。
+- 工具链的 build、audit、review、export 都不等于外部发布。每个 mod 仍必须走自己的 release staging、实机验收、
+  Steam Workshop 上传、订阅缓存复核与 changelog 流程；宣传视频上传到外部平台同样需要独立明确授权。
+- secondary/detached worktree 运行宣传工具链或其他依赖型 Python 验收时，先使用该 worktree 内约定的相对 `.venv`。
+  若相对 venv 不存在，只能**显式指定并先验证**主 worktree 的 venv 解释器，同时把 `PYTHONPATH`/工作目录绑定到当前
+  secondary worktree 源码并在报告中记录解释器路径、版本和依赖 probe。禁止静默回落到缺依赖的裸 `py`/系统 Python，
+  再把 `ModuleNotFoundError`、缺 Pillow/edge-tts 或找不到媒体工具误判为代码 RED；这类问题在完成解释器与依赖复核前只能标为 environment RED。
+
 ## 测试流程
 
 **静态 L0（跨平台/CI）**：

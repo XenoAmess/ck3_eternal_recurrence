@@ -1,0 +1,22 @@
+include LICENSE
+include README.md
+include pyproject.toml
+
+graft src
+graft docs
+graft examples
+graft scripts
+graft codex-skill
+graft tests
+
+prune build
+prune dist
+prune artifacts
+prune .pytest_cache
+# Setuptools regenerates its current SOURCES.txt after applying this template;
+# pruning here excludes every stale sibling while retaining that standard list.
+prune src/xar_promo_toolchain.egg-info
+
+global-exclude *.py[cod]
+global-exclude *.avi *.mkv *.mov *.mp3 *.mp4 *.wav *.webm
+global-exclude .DS_Store Thumbs.db

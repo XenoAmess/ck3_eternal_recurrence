@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xar-promo-toolchain"
+version = "0.1.0"
+description = "A reusable, append-only project and evidence contract for promotional video pipelines"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [{ name = "XenoAmess" }]
+dependencies = []
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.optional-dependencies]
+tts = ["edge-tts==7.2.8"]
+visual = ["Pillow==12.3.0"]
+render = ["Pillow==12.3.0"]
+
+[project.scripts]
+xar-promo = "xar_promo.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+xar_promo = ["schemas/*.json"]

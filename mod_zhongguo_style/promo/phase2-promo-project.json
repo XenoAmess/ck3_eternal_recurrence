@@ -1,0 +1,134 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "zhongguo-361-phase2-promo",
+    "title": "《天朝特色 361 制》二期增量宣传片"
+  },
+  "pipeline": {
+    "adapter": "ck3",
+    "preset": "zhongguo_361_phase2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 1200
+  },
+  "chapters": [
+    {
+      "id": "phase2_minimal_recap",
+      "type": "generated_card",
+      "state": "planned",
+      "title": {
+        "zh-CN": "十秒回顾：你会被考核，这次看组织怎样长出牙齿",
+        "en": "TEN-SECOND RECAP: YOU GET RATED; NOW WATCH THE ORGANIZATION GROW TEETH"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_fact_quota_calibration",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "事实档、配额档、背靠背互评与校准债",
+        "en": "FACT GRADES, QUOTA GRADES, BACK-TO-BACK REVIEW, AND CALIBRATION DEBT"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_receipt_appeal_pip",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "告身、申诉与 PIP：一张差评怎样跨周期追你",
+        "en": "RECEIPTS, APPEALS, AND PIP: HOW ONE BAD RATING FOLLOWS YOU ACROSS CYCLES"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_manager_governance",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "经理也有上司：京察拒办、团队快照与连责",
+        "en": "MANAGERS HAVE MANAGERS: REFUSED REVIEWS, TEAM SNAPSHOTS, AND ACCOUNTABILITY"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_promotion_compensation",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "晋升包、职级与薪酬：先预留，再答辩，失败就释放",
+        "en": "PROMOTION, LEVELS, AND PAY: RESERVE FIRST, DEFEND THE PACKET, RELEASE ON FAILURE"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_hc_workforce",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "HC、继任与流动：没有编制，也能把流程走得很完整",
+        "en": "HEADCOUNT, SUCCESSION, AND MOBILITY: NO OPENING, FULL PROCESS"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_projects_metrics",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "项目、抢功、指标与重组：贡献份额总要有人签字",
+        "en": "PROJECTS, CREDIT, METRICS, AND REORGS: SOMEONE MUST SIGN THE CONTRIBUTION SPLIT"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_incidents_operations",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "事故、积弊与共享官署：技术债穿上官服仍然会爆",
+        "en": "INCIDENTS, ENTRENCHED DEBT, AND SHARED OFFICES: TECHNICAL DEBT STILL EXPLODES IN ROBES"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_cross_cycle_endgame",
+      "type": "ck3_clean_span",
+      "state": "planned",
+      "title": {
+        "zh-CN": "跨周期债与制度终局：本轮改默认，下轮还旧账",
+        "en": "CROSS-CYCLE DEBT AND ENDGAME: CHANGE TOMORROW'S DEFAULT, PAY YESTERDAY'S BILL"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase2_finale",
+      "type": "generated_card",
+      "state": "planned",
+      "title": {
+        "zh-CN": "组织能力建设完成：现在轮到组织建设你",
+        "en": "ORGANIZATIONAL CAPABILITY COMPLETE; NOW THE ORGANIZATION WILL REBUILD YOU"
+      },
+      "cues": [],
+      "artifact_ids": []
+    }
+  ]
+}
