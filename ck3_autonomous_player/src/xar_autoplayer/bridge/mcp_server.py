@@ -198,6 +198,24 @@ def _ck3_query_campaign_root_context_v1(
     )
 
 
+def _ck3_query_zhongguo_case_snapshot_v1(
+    service: GameplayBridgeService,
+    case_kind: str,
+    request_nonce: str,
+    expected_revision: int,
+    subject_character_id: int | None = None,
+    owner_character_id: int | None = None,
+) -> dict[str, object]:
+    """Observe one allowlisted ZhongGuo case without generic variable access."""
+    return service.query_zhongguo_case_snapshot_v1(
+        case_kind,
+        request_nonce,
+        expected_revision=expected_revision,
+        subject_character_id=subject_character_id,
+        owner_character_id=owner_character_id,
+    )
+
+
 def _ck3_center_map_on_landed_title_v1(
     service: GameplayBridgeService,
     title_key: str,
@@ -592,6 +610,24 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_query_campaign_root_context_v1(
             service,
             expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_zhongguo_case_snapshot_v1(
+        case_kind: str,
+        request_nonce: str,
+        expected_revision: int,
+        subject_character_id: int | None = None,
+        owner_character_id: int | None = None,
+    ) -> dict[str, object]:
+        """Read one allowlisted case, receipt, and persisted deadline frame."""
+        return _ck3_query_zhongguo_case_snapshot_v1(
+            service,
+            case_kind,
+            request_nonce,
+            expected_revision,
+            subject_character_id,
+            owner_character_id,
         )
 
     @server.tool()

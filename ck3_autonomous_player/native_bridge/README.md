@@ -156,6 +156,41 @@ The current maximum payload is 1 MiB. Frame types are `hello`, `heartbeat`,
 `hello.capabilities` is authoritative. Non-matching executables advertise only
 bridge identity, heartbeat, and ping; they never expose game reads/actions.
 
+Exact-build read-only capability
+`game.command.query-zhongguo-case-snapshot-v1` accepts the fixed native step
+`query-zhongguo-case-snapshot-v1` plus typed request fields. Its semantic
+allowlist contains only `zhongguo.b1.performance`; callers provide a request
+nonce and subject plus an optional owner filter, never a CK3 variable name.
+V1 is player-owned only: an actual case owner different from the paused played
+character returns typed `player_binding_mismatch` rather than exposing an
+AI-owned case.
+On the application main thread while paused, the provider reads the fixed B1
+case, roster-lock operation/receipt, and pending-milestone deadline variables
+from the subject's character scope, then repeats the bounded read and rejects a
+changed frame. The response binds the pinned 1.19.0.6 executable, bridge and
+adapter identities, connection generation, public/native revision, date,
+player, request nonce, subject, and actual owner. Every absent or inconsistent
+semantic field is typed unavailable; no arbitrary variable read/write surface
+is exposed.
+
+Deadline output includes separately typed `open_date_raw` and `due_date_raw`.
+The former reads product variable `zg361_b1_pending_open_date`; duration reads
+`zg361_b1_pending_deadline_days`. The current product persists no exact due-date
+variable, so pending/expired output uses typed
+`due_date_not_persisted_by_product` and keeps
+`deadline_due_date_ready=false`. The provider never derives a due date from
+open date plus duration. The exact-build ABI does not yet prove the event-target
+kind/payload conversion used by `set_variable = current_date`; when that raw
+open-date variable is present, `open_date_raw` is therefore typed
+`value_type_mismatch` rather than fabricated as CK3 `date_raw`. A confirmed
+`not_scheduled` status is a complete typed negative observation and keeps both
+deadline readiness gates true; `open_date_raw` never substitutes for an exact
+due date. The public MCP facade is
+`ck3_query_zhongguo_case_snapshot_v1`. Its contract/schema, native reader and
+offline fixtures are currently **static/fixture-ready only**; no pinned-build
+paused CK3 response artifact exists yet, so this paragraph does not claim
+production-live capability or complete ZhongGuo phase-2 acceptance.
+
 The snapshot currently contains `date_raw`, `speed`, `paused`, `map_ready`,
 `local_player_id`, nullable `played_character`, `active_event` and
 `pending_character_interaction` objects, and the last checkpoint queue

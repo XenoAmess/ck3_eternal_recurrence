@@ -22,6 +22,7 @@
 #include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
 #include "xar_bridge/title_map_navigation_v1_serializer.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_case_snapshot_v1_mailbox.hpp"
 
 #include <windows.h>
 
@@ -225,7 +226,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
   result +=
-      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation\"";
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -2172,6 +2173,38 @@ std::string CampaignRootContextResultFrame(
   return result;
 }
 
+std::string ZhongguoCaseSnapshotResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::ZhongguoCaseSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeZhongguoCaseSnapshotV1(snapshot);
+  if (payload.empty()) {
+    return {};
+  }
+  const std::string_view status =
+      snapshot.status ==
+              xar::game::ZhongguoCaseSnapshotStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"query-zhongguo-case-snapshot-v1\",";
+  result += "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"zhongguo_case_snapshot\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string LoadedFeatureManifestResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::LoadedFeatureManifestV1 &manifest) {
@@ -2763,6 +2796,8 @@ public:
         &xar::ck3_11906::ExecuteEventWindowContextMailboxQueryV1;
     environment.permitted_executor_thirdenary =
         &xar::ck3_11906::ExecuteTitleMapNavigationMailboxV1;
+    environment.permitted_executor_quattuordenary =
+        &xar::ck3_11906::ExecuteZhongguoCaseSnapshotMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -2913,6 +2948,7 @@ struct WorkerState {
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
   std::uint64_t battle_terminal_transition_query_sequence = 0;
   std::uint64_t campaign_root_context_query_sequence = 0;
+  std::uint64_t zhongguo_case_snapshot_query_sequence = 0;
   std::uint64_t loaded_feature_manifest_query_sequence = 0;
   std::uint64_t pending_character_interaction_context_query_sequence = 0;
   std::uint64_t event_window_context_query_sequence = 0;
@@ -2956,6 +2992,8 @@ void RunConnectedSession(
       state.battle_terminal_transition_query_sequence;
   auto &campaign_root_context_query_sequence =
       state.campaign_root_context_query_sequence;
+  auto &zhongguo_case_snapshot_query_sequence =
+      state.zhongguo_case_snapshot_query_sequence;
   auto &loaded_feature_manifest_query_sequence =
       state.loaded_feature_manifest_query_sequence;
   auto &pending_character_interaction_context_query_sequence =
@@ -3544,6 +3582,124 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "application-main campaign-root result was not "
+                      "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step == xar::ck3_11906::kZhongguoCaseSnapshotV1Step) {
+          xar::ck3_11906::ZhongguoCaseSnapshotRequestV1 request{};
+          if (!xar::ck3_11906::ParseZhongguoCaseSnapshotRequestV1(
+                  incoming.payload, request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo case snapshot request is malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo case snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo case snapshot changed or is not ready"));
+            } else {
+              xar::ck3_11906::ZhongguoCaseSnapshotMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment =
+                  xar::ck3_11906::BindZhongguoCaseNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request = std::move(request);
+              query.expected_snapshot = current_snapshot;
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteZhongguoCaseSnapshotMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main ZhongGuo case executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main ZhongGuo case executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kZhongguoCaseSnapshotV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kZhongguoCaseSnapshotV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion ==
+                        xar::ck3_11906::
+                            ZhongguoCaseSnapshotMailboxCompletionV1::
+                                completed &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoCaseSnapshotResultFrame(
+                      request_id,
+                      zhongguo_case_snapshot_query_sequence + 1,
+                      query.result);
+                  if (!response.empty()) {
+                    ++zhongguo_case_snapshot_query_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  const auto error =
+                      xar::ck3_11906::ZhongguoCaseSnapshotFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main ZhongGuo case result was not "
                       "reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);

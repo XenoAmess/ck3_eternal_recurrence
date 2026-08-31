@@ -15,18 +15,34 @@
 - `ck3_query_current_event_window_context_v1`、`ck3_select_event_option`、`ck3_resolve_active_event`；
 - `ck3_center_map_on_landed_title_v1`。
 
-这些能力足以在不使用 OCR 的情况下识别/操作当前原生事件、绑定玩家与构建、等待独立 revision，并保存或恢复测试现场；它们**不能**
-因此被扩写成二期领域验收已经可用。对照下文合同，当前 MCP 注册面仍没有：
+本轮又加入了首个窄域 source/fixture provider：
+`ck3_query_zhongguo_case_snapshot_v1(case_kind, request_nonce, expected_revision, subject_character_id?, owner_character_id?)`。
+V1 只允许玩家持有的 `case_kind=zhongguo.b1.performance`，不接受变量名；实际 owner 与 paused player 不同会返回
+`player_binding_mismatch`，不会借此读取 AI-owned case。它把 request nonce、exact build/DLL consumer、connection generation、
+paused date/player、public/native revision、subject 与实际 owner 绑定到同一响应，并返回 B1 案卷身份、`mechanism_039`/`roster_lock`
+操作及 receipt、pending milestone deadline。`open_date_raw` 只读产品的 `zg361_b1_pending_open_date`，期限长度只读
+`zg361_b1_pending_deadline_days`；当前产品没有显式 due-date 变量，因此 `due_date_raw` 固定为 typed
+`due_date_not_persisted_by_product`、`deadline_due_date_ready=false`，绝不以 open date + days 推算 due date。
+当前 exact-build ABI 还没有证明 `set_variable = current_date` 的 event-target kind/payload 转换；原始 open-date 变量存在时，
+`open_date_raw` 必须返回 `value_type_mismatch`，不得把不明 payload 冒充 CK3 `date_raw`。
+`not_scheduled` 是完整的 typed negative observation，故其 identity/due 两个 gate 都为 true；pending/expired 则只有在显式
+`due_date_raw` 可用时才打开 due gate，`open_date_raw` 不参与推算或替代。
 
-- allowlisted ZhongGuo case/receipt/deadline snapshot；
+该切片目前只有 Python contract/schema、native/provider source 与离线 fixture 证据，状态为 **static/fixture-ready**；尚未在 exact-build CK3
+中取得 paused response artifact，因此不能写 production-live，也不能解除正式 runner 的 capability RED。上述既有能力与本轮窄切片足以在
+不使用 OCR 的情况下识别/操作当前原生事件、绑定玩家与构建、等待独立 revision，并保存或恢复测试现场；它们**不能**因此被扩写成
+二期领域验收已经可用。对照下文合同，当前 MCP 注册面仍没有或尚未 live 闭合：
+
+- B1 之外的 allowlisted ZhongGuo case/receipt/deadline snapshot，以及 B1 provider 的 exact-build paused 实机证据；
 - 产品 decision 枚举与 stable-key 执行；
 - 任意受评者的个人金币、直属上司国库、modifier、opinion pair 与来源快照；
 - named scripted widget 查询、activate/close/reopen 与 scoreboard ACL 数据投影；
 - AI-owned ZhongGuo case snapshot；
 - B4–B8 的 vacancy/position/project/incident/workforce/cross-cycle domain-object 查询。
 
-因此当前可先复用 native event context 做“看到哪张产品事件、选择了哪个真实选项、是否产生新 revision”的部分闭环；但凡验收条件涉及案卷
-五元组、双付款守恒、hidden deadline、考核榜内页/ACL、AI 后台案或跨周期 lineage，仍是 **MCP capability RED**。这些 RED 必须交由
+因此当前可先复用 native event context 做“看到哪张产品事件、选择了哪个真实选项、是否产生新 revision”的部分闭环，并用新 provider 的
+离线 fixture 固定 B1 案卷/receipt/deadline ABI；但凡验收条件涉及实机案卷五元组、双付款守恒、hidden deadline、考核榜内页/ACL、
+AI 后台案或跨周期 lineage，仍是 **MCP capability RED**。这些 RED 必须交由
 MCP/native bridge 层按下文 allowlist 实现，mod runner 不得用坐标/OCR、测试决议或任意变量写入伪造 GREEN。
 
 ## 一、B1 前置能力
@@ -42,6 +58,11 @@ MCP/native bridge 层按下文 allowlist 实现，mod runner 不得用坐标/OCR
 - source revision、connection generation、paused/date/player identity 和 readiness gate。
 
 它是只读查询，不允许任意枚举或改写 mod 变量。未实现字段返回 typed unavailable reason，不能长期用 `null` 冒充完成。
+
+首个实现切片只覆盖 `zhongguo.b1.performance` 的案卷五元组、revision/timeline/feedback、固定 roster-lock policy/operation/receipt，
+以及 pending milestone deadline 的 target/owner/cycle/case/expected-state/open/due/on-due-operation。它不声称已覆盖 evidence/grade/quota
+引用，也不外推到 B4–B8、AI-owned case 或 arbitrary variable reader。离线 contract/schema/native fixture 通过只把状态推进到
+**static/fixture-ready**；必须在 pinned 1.19.0.6 DLL 上取得同一 paused revision 的真实响应后，才允许单独提升这个窄切片。
 
 ### 2. 产品 decision 枚举、执行与独立 ACK
 

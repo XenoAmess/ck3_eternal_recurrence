@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "capability": "game.command.query-zhongguo-case-snapshot-v1",
+  "step": "query-zhongguo-case-snapshot-v1",
+  "case_kind": "zhongguo.b1.performance",
+  "allowlist_id": "zg361-b1-performance-case-v1",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "adapter_id": "ck3-1.19.0.6-msvc-x64",
+    "backend_id": "ck3-1.19.0.6-native-zhongguo-case-snapshot-v1"
+  },
+  "frozen_native_abi": {
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "character_event_target_kind": 4,
+    "character_identity_offset": "0x18",
+    "variable_context_data_offset": "0x10",
+    "variable_context_count_offset": "0x1C",
+    "variable_row_stride": "0x20",
+    "variable_row_identifier_offset": "0x08",
+    "variable_row_kind_offset": "0x10",
+    "variable_row_payload_offset": "0x18",
+    "numeric_kind": 1,
+    "numeric_scale": 100000,
+    "character_kind": 4,
+    "identifier_contract": "lookup_only_then_exact_name_round_trip",
+    "duplicate_identifier_rows": "typed_read_failure"
+  },
+  "evidence": {
+    "implementation_source": "native_bridge/src/combat_v3.cpp",
+    "identifier_lookup_region": "ResolveVariableIdentifier",
+    "variable_context_region": "EventTarget16_FindVariableValue_ReadVariableContextForCharacter",
+    "character_generation_region": "ResolveComponent_character_store_and_fallback",
+    "reader_model": "campaign_root_context_v1_exact_binding_plus_double_observation",
+    "live_artifact": null,
+    "readiness": "static_fixture_only"
+  },
+  "fixed_variable_allowlist": [
+    "zg361_b1_case_owner",
+    "zg361_b1_case_subject",
+    "zg361_b1_cycle_serial",
+    "zg361_b1_case_serial",
+    "zg361_b1_case_state",
+    "zg361_b1_case_active",
+    "zg361_b1_case_revision",
+    "zg361_b1_case_timeline_serial",
+    "zg361_b1_case_feedback_revision",
+    "zg361_b1_case_last_operation",
+    "zg361_b1_case_last_choice",
+    "zg361_b1_roster_lock_receipt_owner",
+    "zg361_b1_roster_lock_receipt_subject",
+    "zg361_b1_roster_lock_receipt_cycle",
+    "zg361_b1_roster_lock_receipt_case",
+    "zg361_b1_roster_lock_receipt_state",
+    "zg361_b1_roster_lock_receipt_choice",
+    "zg361_b1_pending_deadline_owner",
+    "zg361_b1_pending_deadline_subject",
+    "zg361_b1_pending_deadline_ticket_cycle",
+    "zg361_b1_pending_deadline_ticket_case",
+    "zg361_b1_pending_deadline_ticket_state",
+    "zg361_b1_pending_deadline_days",
+    "zg361_b1_pending_deadline_pending",
+    "zg361_b1_pending_deadline_expired",
+    "zg361_b1_pending_open_date"
+  ],
+  "semantic_projection": {
+    "operation_39": {
+      "policy_id": "mechanism_039",
+      "choice": 1,
+      "operation_key": "roster_lock",
+      "hook": "roster_lock",
+      "receipt_key": "roster_lock"
+    },
+    "deadline_on_due_operation": "resolve_pending_milestone",
+    "not_recorded_sentinel": "case_last_operation_numeric_zero",
+    "not_scheduled_sentinel": "pending_deadline_days_numeric_zero",
+    "player_owner_only": true,
+    "arbitrary_variable_read": false,
+    "write_capability": false
+  },
+  "persisted_date_boundary": {
+    "open_date_variable": "zg361_b1_pending_open_date",
+    "due_date_variable": null,
+    "date_event_target_kind": null,
+    "date_payload_to_date_raw": null,
+    "open_date_behavior": "present_but_unproven_kind_is_value_type_mismatch",
+    "due_date_behavior": "due_date_not_persisted_by_product",
+    "derived_open_plus_days": false,
+    "deadline_due_date_ready_for_pending_or_expired": false
+  },
+  "same_frame_contract": {
+    "thread": "verified_paused_application_main",
+    "request_binding": [
+      "case_kind",
+      "request_nonce",
+      "expected_revision",
+      "subject_character_id",
+      "owner_character_id"
+    ],
+    "observations": "frame_before_allowlist_twice_frame_after",
+    "top_unavailable_wipes_semantic_groups": true
+  }
+}

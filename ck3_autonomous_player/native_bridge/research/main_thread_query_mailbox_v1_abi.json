@@ -141,7 +141,7 @@
     "transport": "existing_250ms_heartbeat_metadata_not_capability_not_command_not_MCP",
     "object_key": "main_thread_query_mailbox_v1",
     "executor_submission_enabled": true,
-    "fixed_executor_slots": 13,
+    "fixed_executor_slots": 14,
     "permitted_executors": [
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
@@ -155,9 +155,10 @@
       "ExecuteLoadedFeatureManifestMailboxQueryV1",
       "ExecutePendingCharacterInteractionContextMailboxQueryV1",
       "ExecuteEventWindowContextMailboxQueryV1",
-      "ExecuteTitleMapNavigationMailboxV1"
+      "ExecuteTitleMapNavigationMailboxV1",
+      "ExecuteZhongguoCaseSnapshotMailboxQueryV1"
     ],
-    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation",
+    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot",
     "required_fields": [
       "installed",
       "stop",

@@ -273,6 +273,8 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-campaign-root-context-v1") ||
       !Contains(known.capabilities,
+                "game.command.query-zhongguo-case-snapshot-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-loaded-feature-manifest-v1") ||
       !Contains(known.capabilities,
                 "game.command.query-pending-character-interaction-context-v1") ||
@@ -457,6 +459,9 @@ int main() {
       !exact_adapter->supports_step(canonical_combat_step) ||
       !exact_adapter->supports_step(canonical_v3_combat_step) ||
       !exact_adapter->supports_step("query-campaign-root-context-v1") ||
+      !exact_adapter->supports_step("query-zhongguo-case-snapshot-v1") ||
+      exact_adapter->supports_step(
+          "query-zhongguo-case-snapshot-v1-b1") ||
       !exact_adapter->supports_step("query-loaded-feature-manifest-v1") ||
       !exact_adapter->supports_step(
           "query-pending-character-interaction-context-v1") ||
