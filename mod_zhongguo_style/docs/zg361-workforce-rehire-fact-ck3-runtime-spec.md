@@ -4,7 +4,7 @@
 
 机器口径：`ck3-script-static-ready-not-live`
 
-接线：**四个 ABI 均已有跨事件 caller；跨 owner probation 单槽仍阻止自然 growth 闭环**
+接线：**四个 ABI 均已有跨事件 caller；probation 三代有界 ledger 已解除跨 owner 自然 arm 阻塞**
 
 实证：**尚无 loader、MCP-first paused snapshot 或实机证据**
 
@@ -32,8 +32,9 @@ zg361_we_ad_external_rehire_future_cohort_cycle
 正常离职，并先取得 native career-slot revoke callback，再执行 #075、隔帧验收业务对象。该 producer 仍是
 **core-wired/static-ready**：career-slot arm、#075 玩家选项与 delayed `capture_exit` 已接入；#269 post-settlement
 会在 state 1 时尝试 `capture_growth`，state 2 且回到旧 owner 时调用 `prepare_m276`，并经 D+1 audit 才开放玩家或
-授权 AI 的 #276；route A/B 又经两个 D+1 frame 调 `finalize_m276` 并核验 tombstone。现实流程仍受 probation
-单槽限制而 fail-closed，七字段尚未自然闭合。已实现的 #277 exit provider 只证明
+授权 AI 的 #276；route A/B 又经两个 D+1 frame 调 `finalize_m276` 并核验 tombstone。probation 现以活动投影加两个
+append-only archive 保存三代完整 receipt，足以覆盖旧 owner → 不同 owner growth → 回旧 owner #276；七字段仍需 loader 与
+实机自然流程验证，不能仅凭静态接线写成 live。已实现的 #277 exit provider 只证明
 `PIP state=4 / outcome_code=2 / result_grade=1` 的失败 PIP 撤职；它不是正常离职，本包完全不读取它。
 本交付是 static-ready/not-live source contract，不是 #276 complete、fixture-live 或 production-live。
 
@@ -104,8 +105,9 @@ canonical 条件，游戏路径仍得到 typed RED 27611，而不是用 #277 降
 
 这条 seam 已在真实后续 result settlement 与 probation consumer 都完成后的新 event frame 调用。仅把旧
 probation fact 在离任后重新调用一次，无法通过 `result_delivered_year` 与 exact live-result guard，不能冒充外部成长。
-当前 probation fact 是 single-slot；旧 owner 的 consumed tombstone 尚无跨 owner 轮转/多代 ABI，所以真正的后续
-外部 owner 目前仍可能无法 arm。这是 production blocker，不能靠清洗旧 receipt 绕过。
+probation 的 generation 1 consumed tombstone 会在第二雇主真实 #274 arm 前完整追加到 `ledger_slot_1_*`，不同 owner 的
+generation 2 可自然 arm 并结算；回旧 owner 前 generation 2 再追加到 `ledger_slot_2_*`。archive 永不清洗，exact replay 仍
+按 arm receipt identity 命中；第四代容量不足明确 RED，而不是覆盖旧 provenance。
 
 ## 5. 当前 #276 投影与消费
 
@@ -124,16 +126,17 @@ probation fact 在离任后重新调用一次，无法通过 `result_delivered_y
 
 ## 6. 已接线与 live 待办
 
-六个不需要单槽重构的 caller 已接：#274 career-slot arm、B2 #075 begin、normal-exit D+1 `capture_exit`、#269
+六个跨事件 caller 已接：#274 career-slot arm、B2 #075 begin、normal-exit D+1 `capture_exit`、#269
 post-settlement `capture_growth`、#276 前置 prepare + D+1 audit、route A/B 后置 finalize + D+1 audit。route C
 不调用 finalize；若 #277 provider 尚未 READY，成功 finalize 明确留下 `m276_waiting_for_m277_provider=1`，不伪造
 下一段退出事实。
 
-剩余 blocker：
+本轮已解除的 blocker：probation 不再把旧 owner tombstone 当作唯一不可复用单槽；三代 ledger 在不删除历史 receipt 的前提下
+提供第二雇主与回旧雇主两个新 generation。仍待验收/后续项：
 
-1. probation fact 必须补不清洗旧案的跨 owner 多代/轮转 ABI。当前单槽的旧 owner consumed tombstone 会阻止
-   第二雇主 #274 arm，所以虽然 `capture_growth` caller 已存在，自然流程仍无法提供它要求的不同 owner receipt；
-2. 若产品语义要求 #075 真正释放编制，必须补 HC partition 的真实迁移与恒等式审计，不能改写 receipt 中
+1. 新 loader、MCP-first paused snapshot、存读档与至少两个自然考核周期仍需证明 generation 1 archive、generation 2
+   growth 和 generation 3 回旧 owner 均在 CK3 实机加载；静态 GREEN 不等于 live；
+2. 若产品语义要求 #075 真正释放编制，必须作为独立后续单元补 HC partition 的真实迁移与恒等式审计，不能改写 receipt 中
    `hc_ledger_settled=0` 来假装完成。
 
 不能把 materialize → route → finalize 压在同一 effect 内读取刚写变量。接线完成后仍需新的 loader、

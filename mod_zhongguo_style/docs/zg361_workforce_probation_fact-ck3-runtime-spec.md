@@ -1,6 +1,6 @@
 # Workforce probation/PIP 结局事实 CK3 运行合同
 
-状态：**CK3 script static-ready；#274 arm、signed attribution 普通 result 与 B2 PIP settlement 均已接入；尚无变更后的 loader / paused snapshot / 实机证据**。
+状态：**CK3 script static-ready；#274 arm、三代有界 ledger、signed attribution 普通 result 与 B2 PIP settlement 均已接入；尚无变更后的 loader / paused snapshot / 实机证据**。
 生成器常量固定为 `ck3-script-static-ready-not-live`；本包不得写成 fixture-live、production-live 或完整 #269。
 
 ## 1. 独立文件与责任边界
@@ -34,13 +34,15 @@ zg361_we_ad_external_outcome_observed_cycle
 zg361_we_ad_external_outcome_quality
 ```
 
-这些名字不是新的权威事实槽。权威事实均留在 subject 的 `zg361_workforce_probation_fact_*` 单槽中；共享 core 的 ordinary
-#269 consumer 现直接 join probation + attribution detailed receipt，不再读取这 12 个名字。probation 包仍可在调用 core 前
-短暂物化兼容投影，并在 D+1 consume receipt 后删除；它们只用于旧包的碰撞/清理兼容，不能授权结算。
+这些名字不是新的权威事实槽。当前 generation 继续通过 subject 上无后缀的
+`zg361_workforce_probation_fact_*` 活动投影向 B2、attribution、rehire 与共享 core 保持 ABI；此前已完整消费的 generation
+在接受下一份真实 #274 receipt 前追加到两个 immutable archive。活动投影 + 两个 append-only archive 构成三代有界
+ledger。普通 #269 consumer 现直接 join 当前 probation + attribution detailed receipt，不再读取这 12 个名字。probation 包仍可在
+调用 core 前短暂物化 compatibility alias，并在 D+1 consume receipt 后删除；alias 只用于旧包的碰撞/清理兼容，不能授权结算。
 
 ## 2. 真实对象与状态机
 
-事实槽状态只有五种：
+每个 generation 的事实状态只有五种：
 
 | state | 含义 | 是否允许出现 12 alias |
 |---:|---|---|
@@ -67,6 +69,36 @@ owner + subject + hire cycle/case + position receipt
 消费成功后另写 `consume_owner/subject/hire_cycle/hire_case/result_cycle/result_case/outcome_id`、Workforce route choice、
 owner 单调消费序号和消费 fingerprint。ACK、canonical source 与消费回执三者缺一，state 不得变成 4。
 
+### 2.1 三代有界 ledger
+
+三个 generation 的物理布局固定为：
+
+| generation | 物理位置 | 写入规则 |
+|---:|---|---|
+| 1 | 初始活动投影；第二次 arm 前归档至 `ledger_slot_1_*` | archive `active=1` 最后提交，此后只读 |
+| 2 | 第二次活动投影；第三次 arm 前归档至 `ledger_slot_2_*` | archive `active=1` 最后提交，此后只读 |
+| 3 | 当前活动投影 | 不再接受第四份不同 arm receipt |
+
+这是闭合“旧 owner → 不同 owner → 回旧 owner” #276 provenance 的最小容量：generation 1 保留旧 owner 的完整 consumed
+tombstone；generation 2 保存不同 owner 的真实 probation/result/consume receipt，并先由 rehire fact 捕获 growth；generation 3
+允许回到旧 owner 建立当前案。archive 对每个实际存在的 source、PIP、outcome 与 consume 字段逐项复制，同时固定
+`generation / archive_receipt_id / archive_receipt_hash / owner / subject / cycle / case / state / arm receipt identity`。
+
+所有 ledger 字段都是 subject character 上的普通 `set_variable`，随 CK3 存读档持久化；temporary scope/value 只计算当前调用的
+expected receipt，不承载账本真值。既有单槽存档第一次再 arm 时只补 `ledger_version=1,generation=1` 元数据，不改写原 receipt。
+归档成功后可以退休无后缀活动投影以复用既有 ABI，但不删除任何 `ledger_slot_1_*` 或 `ledger_slot_2_*`。
+
+有界语义明确区分：
+
+- 当前或 archive 的完整 arm identity 重放：status 2，活动投影不切换；
+- owner/subject/hire cycle/case 相同但 due、position receipt 或 arm receipt 不同：RED 1002 collision/stale；
+- 当前 generation 尚未 state 4/consumed：RED 1004 active collision；
+- 元数据或 archive commit marker 矛盾：RED 1005；
+- 三代已满后的第四份不同 arm：RED 1003，不覆盖最旧历史。
+
+未命中 ledger 的任意新 tuple 仍必须先通过当前真实 #274 business object 与 native position receipt guard；ledger 不接受 caller
+自报 owner、case 或 hash，也不清洗旧 receipt 来伪造容量。
+
 ## 3. 三个 ABI 与 scope 约定
 
 所有 public hook 的**当前 scope (`this`) 必须是真实 hired subject**；`OWNER` 参数必须是真实 #274 owner。`ROOT` 被明确
@@ -91,7 +123,9 @@ owner / subject / m274_write_cycle / m274_write_case
 + m274_probation_due_cycle / m274_position_receipt_id / m274_position_receipt_hash
 ```
 
-完全相同重放为 status 2；不同 tuple 撞到同一 active/consumed slot 为 RED 1001，不覆盖旧案。
+完全相同的当前或 archive identity 重放为 status 2。新的真实 #274 只有在当前 state 4 且完整消费回执存在时才追加；第二、第三代
+分别先把当前 tombstone 写入 slot 1、slot 2，再退休活动投影。相同逻辑案但 receipt 不同为 RED 1002；未完成当前案为 RED 1004；
+第四代为 RED 1003。invalid source 仍为 RED 1001，任何 RED 都不覆盖旧案。
 
 ### 3.2 已接 hook 1：普通 result settlement
 
@@ -196,15 +230,20 @@ join；在该生产点出现前继续 fail-closed。
 删除前都再次要求 12 alias 全不存在或全等于 canonical；部分/外来 envelope 永远不会被本包清除。consumer 未 ACK 时 canonical
 source 保留、state 不推进；hidden event 只重试消费，不发布或补全任何事实。
 
-普通 result 与 PIP 不会二次结算：新 result 只允许 state 1，PIP 只允许 state 2；canonical commit 要求 outcome ID 尚未
-签发；state 3/4 只接受完整幂等键重放。owner outcome serial 与 consume serial 分开单调增加。
+普通 result 与 PIP 不会二次结算：新 result 只允许当前活动投影 state 1，PIP 只允许 state 2；canonical commit 要求 outcome ID
+尚未签发；state 3/4 只接受完整幂等键重放。owner outcome serial 与 consume serial 分开单调增加。archive 不参与 alias
+物化或再次结算，只服务历史重放判定与 rehire provenance 审计。
 
 ## 6. 已接线与待验收
 
 三个入口现均为 core-wired static-ready：#274 post-consume D+1 arm；canonical result → attribution adapter → 本包 result ABI；
-B2 PIP 的四段跨事件 handoff。ordinary #269 直接消费 detailed facts，WAIT/RED 不推进；route C 不发布 outcome，而由独立
+B2 PIP 的四段跨事件 handoff。第二和第三份 #274 可在不清洗旧 tombstone 的情况下自然 arm，因此 rehire 的不同 owner growth
+caller 不再被旧 owner 单槽挡住。ordinary #269 直接消费 detailed facts，WAIT/RED 不推进；route C 不发布 outcome，而由独立
 attribution cancel receipt 清槽。没有先冻结普通 3.25 result 与真实三维签署归因时，PIP handoff 仍只会 no-op，不能凭 B2
 settlement 反向制造试用期事实。
+
+正常离职当前仍如实记录 `hc_ledger_settled=0`。若产品要求 #075 真正释放 HC，必须实现 HC partition 的真实迁移与守恒审计；
+这是独立后续单元，不属于本轮 probation 多代 ledger，也不得通过改 receipt 布尔值假装完成。
 
 下一步仍必须用新 loader 证明旧 12 个 `used but never set` 告警归零，再做 MCP-first paused snapshot：普通 pass、3.25 等待、PIP graduation、PIP failure、
 重放幂等、错 tuple RED、一次消费和 alias 清理。本文没有替代这些 live 证据。

@@ -39,8 +39,9 @@ native revoke callback。因此正常链固定为：
 
 producer 复用已有 `zg361_workforce_exit_fact_career_slot_court_position`，不创建第二份岗位。该岗位的统一
 end callback 是 `slot_active` 唯一 1→0 writer；begin/dispatch 又要求岗位真实存在且 owner 匹配，因此旧的
-`native_revoked_seen` 单独不能让 audit 通过。由于本批禁止修改共享 carrier callback，本包记录的成功证据是
-“本次已授权 dispatch + 后续 slot_active=0 + native end reason/owner/subject + no-longer-holder”的精确 join。
+`native_revoked_seen` 单独不能让 audit 通过。carrier callback 现按本包 pending/owner/subject/authorization/dispatch
+精确分支写入专属 callback tuple；成功证据是“本次已授权 dispatch + 专属 callback + 后续 slot_active=0 + native end
+reason/owner/subject + no-longer-holder”的精确 join。
 
 ## 3. 无参数 ABI 与不可变 receipt
 
@@ -76,9 +77,9 @@ result cycle 可以与 #075 exit cycle 相同。rehire 包仍要求该历史 cyc
 ID/hash。若 subject 确有 canonical misconduct history，本包必须等待独立 producer 提供真实引用，不能把旧案
 清成零，也不能凭空补四个数字。
 
-这里不把现有 `zg361_workforce_probation_fact_*` 当旧 result receipt：它是单槽、面向 #269 后续 probation
-结果的 producer；提前占用它会让 #276 所需的不同外部 owner 成长事实无法 arm。normal-exit 在离职发生前直接
-冻结 exact settled result，保留了真实来源，同时没有把未来 external-growth receipt 偷换成旧案。
+这里不把现有 `zg361_workforce_probation_fact_*` 当旧 result receipt：它面向 #269 后续 probation 结果。normal-exit 在
+离职发生前直接冻结 exact settled result，保留真实来源；随后 probation 的三代有界 ledger 会在第二雇主 arm 前把旧 owner
+consumed tombstone 追加到 immutable slot 1，使不同 owner growth 使用新的活动投影，而不是把未来 receipt 偷换成旧案。
 
 ## 5. HC 与成本的诚实口径
 
@@ -100,12 +101,12 @@ receipt seal 后由独立 D+1 event 调 `zg361_workforce_rehire_fact_capture_exi
 本包已提交的 pending/owner/subject/authorization/dispatch 精确识别这次正常撤任；合法 `END_REASON=1` 不再同时
 落 `unexpected_native_end_seen=1`，而 audit 额外要求本包专属 callback tuple。
 
-仍有两个诚实 blocker：
+已解除的原 blocker：probation 的活动投影 + 两个 append-only archive 允许第二雇主与回旧雇主自然 arm，且不删除旧
+receipt。仍有一个独立功能缺口和一组 live 验收项：
 
 1. #075 仍未把真实 HC ledger 从 occupied 迁移到明确的离职 partition；receipt 继续如实保留
-   `source_hc_release_claimed=1 / hc_ledger_settled=0`；
-2. rehire 的后续 external-growth 虽已接到 #269 post-settlement seam，但 probation fact 仍是单槽，尚无跨不同
-   owner 的不清洗旧案轮转 ABI，因此自然流程暂时不能形成第二雇主的 canonical growth receipt。
+   `source_hc_release_claimed=1 / hc_ledger_settled=0`。HC partition 作为下一独立单元处理；
+2. 新 ledger、normal-exit 与 rehire 全链仍须 loader、MCP-first paused snapshot、存读档和多考核周期实机证明。
 
 仍须跑新 loader、MCP-first paused snapshot、存读档与多考核周期实机，逐帧验证 intent、native revoke callback、
 #075 payment/object poststate、HC ledger 和 delayed rehire capture；这些完成前不得从 not live 提升 readiness。

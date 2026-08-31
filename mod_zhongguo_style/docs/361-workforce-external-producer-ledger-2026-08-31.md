@@ -271,6 +271,11 @@ zg361_we_ad_external_rehire_historical_cycle
 zg361_we_ad_external_rehire_id
 ```
 
+normal-exit 与 rehire fact 的六个跨事件 caller 已接；probation 现以当前活动投影加两个 append-only archive 形成三代
+有界 ledger，在不清洗旧 owner consumed tombstone 的情况下允许不同 owner growth 与回旧 owner #276。七字段因此从
+“caller-unwired / 单槽阻塞”提升为 core-wired static-ready；仍需新 loader、MCP-first paused snapshot、存读档与自然多周期
+实机证明，不能写成 live。#075 的 `hc_ledger_settled=0` 仍是下一独立 HC partition 单元，不在本次账本扩展中伪造释放。
+
 Career/native exit（5；position type 与 HC lineage 已由 §3.4 重导）：
 
 ```text

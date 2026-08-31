@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 """Generate the isolated Workforce #269 probation/PIP fact producer.
 
-The package does not invent a hire outcome.  A real #274 hire arms one
-subject-owned slot.  A later, settled result may publish a pass, while a 3.25
-result can only freeze the evidence and wait for B2's unique D+365 PIP
-settlement.  The twelve legacy Workforce aliases exist only while the strict
-#269 consumer is being called; the canonical source and consumption receipt
-remain under this package's prefix.
+The package does not invent a hire outcome.  A real #274 hire arms the active
+projection of a bounded three-generation subject ledger.  Before a later real
+hire reuses that compatibility ABI, a fully consumed tombstone is copied into
+one of two append-only archive slots.  A later, settled result may publish a
+pass, while a 3.25 result can only freeze the evidence and wait for B2's unique
+D+365 PIP settlement.  The twelve legacy Workforce aliases exist only while
+the strict #269 consumer is being called; canonical source and consumption
+receipts remain under this package's prefix.
 """
 
 from __future__ import annotations
@@ -23,6 +25,127 @@ PREFIX = "zg361_workforce_probation_fact"
 WORKFORCE_PREFIX = "zg361_we"
 READINESS = "ck3-script-static-ready-not-live"
 HEADER = f"# GENERATED FILE — edit tools/gen_{PREFIX}.py\n"
+LEDGER_CAPACITY = 3
+LEDGER_ARCHIVE_SLOTS = (1, 2)
+
+# The unsuffixed names remain the active compatibility projection consumed by
+# B2, attribution and rehire.  Before that projection is reused, every
+# provenance-bearing field is copied to the next append-only archive slot.
+# Together the two immutable archives plus the active projection form the
+# minimal three-generation ledger needed for old owner -> different owner ->
+# old owner #276.
+LEDGER_ENTRY_FIELDS = (
+    "owner",
+    "subject",
+    "hire_cycle",
+    "hire_case",
+    "probation_due_cycle",
+    "position_receipt_id",
+    "position_receipt_hash",
+    "arm_receipt_id",
+    "arm_receipt_hash",
+    "state",
+    "source_result_owner",
+    "source_result_subject",
+    "source_result_cycle",
+    "source_result_case",
+    "source_result_state",
+    "source_result_settlement_receipt",
+    "source_result_grade",
+    "source_result_reason",
+    "source_result_kpi",
+    "source_result_rank",
+    "outcome_dimension_1",
+    "outcome_dimension_2",
+    "outcome_dimension_3",
+    "attribution_bps_1",
+    "attribution_bps_2",
+    "attribution_bps_3",
+    "attribution_receipt_id",
+    "attribution_receipt_hash",
+    "awaiting_pip",
+    "source_kind",
+    "source_pip_owner",
+    "source_pip_subject",
+    "source_pip_cycle",
+    "source_pip_case",
+    "source_pip_state",
+    "source_pip_policy_route",
+    "source_pip_task_kind",
+    "source_pip_settlement_receipt",
+    "source_pip_outcome_code",
+    "source_pip_result_cycle",
+    "source_pip_result_case",
+    "source_pip_result_grade",
+    "source_pip_case_receipt_id",
+    "source_pip_case_receipt_hash",
+    "source_pip_closure_receipt_id",
+    "source_pip_closure_receipt_hash",
+    "outcome_quality",
+    "outcome_evidence_count",
+    "outcome_evidence_id",
+    "outcome_evidence_hash",
+    "outcome_observed_cycle",
+    "outcome_exclusion_reason",
+    "outcome_id",
+    "outcome_receipt_hash",
+    "published",
+    "consumed",
+    "legacy_aliases_materialized",
+    "retry_pending",
+    "consume_receipt_id",
+    "consume_receipt_hash",
+    "consume_owner",
+    "consume_subject",
+    "consume_hire_cycle",
+    "consume_hire_case",
+    "consume_result_cycle",
+    "consume_result_case",
+    "consume_outcome_id",
+    "consume_workforce_choice",
+    "consume_workforce_case",
+)
+
+LEDGER_ARM_IDENTITY_FIELDS = (
+    "owner",
+    "subject",
+    "hire_cycle",
+    "hire_case",
+    "probation_due_cycle",
+    "position_receipt_id",
+    "position_receipt_hash",
+    "arm_receipt_id",
+    "arm_receipt_hash",
+)
+
+LEDGER_TOMBSTONE_REQUIRED_FIELDS = (
+    *LEDGER_ARM_IDENTITY_FIELDS,
+    "source_result_owner",
+    "source_result_subject",
+    "source_result_cycle",
+    "source_result_case",
+    "source_result_state",
+    "source_result_settlement_receipt",
+    "source_result_grade",
+    "source_result_reason",
+    "source_result_kpi",
+    "source_result_rank",
+    "outcome_id",
+    "outcome_receipt_hash",
+    "outcome_evidence_id",
+    "outcome_evidence_hash",
+    "consume_receipt_id",
+    "consume_receipt_hash",
+    "consume_owner",
+    "consume_subject",
+    "consume_hire_cycle",
+    "consume_hire_case",
+    "consume_result_cycle",
+    "consume_result_case",
+    "consume_outcome_id",
+    "consume_workforce_choice",
+    "consume_workforce_case",
+)
 
 LANGUAGES = (
     "english",
@@ -89,6 +212,14 @@ def validate_contract() -> None:
         raise ValueError("daily localization contract must keep zh/en plus seven placeholders")
     if READINESS != "ck3-script-static-ready-not-live":
         raise ValueError("static package must not claim live readiness")
+    if LEDGER_CAPACITY != 3 or LEDGER_ARCHIVE_SLOTS != (1, 2):
+        raise ValueError("probation ledger must remain active + two immutable archives")
+    if len(LEDGER_ENTRY_FIELDS) != len(set(LEDGER_ENTRY_FIELDS)):
+        raise ValueError("probation ledger fields must be unique")
+    if not set(LEDGER_ARM_IDENTITY_FIELDS) < set(LEDGER_ENTRY_FIELDS):
+        raise ValueError("arm identity must be a strict subset of archived provenance")
+    if not set(LEDGER_TOMBSTONE_REQUIRED_FIELDS) <= set(LEDGER_ENTRY_FIELDS):
+        raise ValueError("tombstone requirements must all be archived")
 
 
 def _alias_fragments() -> dict[str, str]:
@@ -116,8 +247,177 @@ def _alias_fragments() -> dict[str, str]:
     }
 
 
+def _ledger_name(slot: int, field: str) -> str:
+    return f"{PREFIX}_ledger_slot_{slot}_{field}"
+
+
+def _ledger_arm_rhs(field: str) -> str:
+    mapping = {
+        "owner": f"scope:{PREFIX}_arm_owner_scope",
+        "subject": "this",
+        "hire_cycle": f"var:{WORKFORCE_PREFIX}_m274_write_cycle",
+        "hire_case": f"var:{WORKFORCE_PREFIX}_m274_write_case",
+        "probation_due_cycle": f"var:{WORKFORCE_PREFIX}_m274_probation_due_cycle",
+        "position_receipt_id": f"var:{WORKFORCE_PREFIX}_m274_position_receipt_id",
+        "position_receipt_hash": f"var:{WORKFORCE_PREFIX}_m274_position_receipt_hash",
+        "arm_receipt_id": f"scope:{PREFIX}_expected_arm_receipt_id",
+        "arm_receipt_hash": f"scope:{PREFIX}_expected_arm_receipt_hash",
+    }
+    return mapping[field]
+
+
+def _ledger_exact_guard(slot: int | None, indent: int) -> str:
+    lines: list[str] = []
+    if slot is not None:
+        lines.extend(
+            (
+                f"has_variable = {PREFIX}_ledger_slot_{slot}_active",
+                f"var:{PREFIX}_ledger_slot_{slot}_active = 1",
+            )
+        )
+    for field in LEDGER_ARM_IDENTITY_FIELDS:
+        name = f"{PREFIX}_{field}" if slot is None else _ledger_name(slot, field)
+        lines.extend((f"has_variable = {name}", f"var:{name} = {_ledger_arm_rhs(field)}"))
+    return "\n".join(" " * indent + line for line in lines)
+
+
+def _ledger_logical_guard(slot: int | None, indent: int) -> str:
+    lines: list[str] = []
+    if slot is not None:
+        lines.extend(
+            (
+                f"has_variable = {PREFIX}_ledger_slot_{slot}_active",
+                f"var:{PREFIX}_ledger_slot_{slot}_active = 1",
+            )
+        )
+    for field in ("owner", "subject", "hire_cycle", "hire_case"):
+        name = f"{PREFIX}_{field}" if slot is None else _ledger_name(slot, field)
+        lines.extend((f"has_variable = {name}", f"var:{name} = {_ledger_arm_rhs(field)}"))
+    return "\n".join(" " * indent + line for line in lines)
+
+
+def _ledger_slot_empty_guard(slot: int, indent: int) -> str:
+    names = [
+        f"{PREFIX}_ledger_slot_{slot}_active",
+        f"{PREFIX}_ledger_slot_{slot}_generation",
+        f"{PREFIX}_ledger_slot_{slot}_archive_receipt_id",
+        f"{PREFIX}_ledger_slot_{slot}_archive_receipt_hash",
+    ]
+    lines = ["NOT = {", "    OR = {"]
+    lines.extend(f"        has_variable = {name}" for name in names)
+    lines.extend(("    }", "}"))
+    return "\n".join(" " * indent + line for line in lines)
+
+
+def _ledger_current_tombstone_guard(indent: int) -> str:
+    lines = [
+        f"has_variable = {PREFIX}_state",
+        f"has_variable = {PREFIX}_published",
+        f"has_variable = {PREFIX}_consumed",
+        f"var:{PREFIX}_state = 4",
+        f"var:{PREFIX}_published = 1",
+        f"var:{PREFIX}_consumed = 1",
+    ]
+    for field in LEDGER_TOMBSTONE_REQUIRED_FIELDS:
+        lines.append(f"has_variable = {PREFIX}_{field}")
+    return "\n".join(" " * indent + line for line in lines)
+
+
+def _ledger_copy_lines(slot: int, indent: int) -> str:
+    lines: list[str] = []
+    for field in LEDGER_ENTRY_FIELDS:
+        lines.append(
+            f"if = {{ limit = {{ has_variable = {PREFIX}_{field} }} "
+            f"set_variable = {{ name = {_ledger_name(slot, field)} "
+            f"value = var:{PREFIX}_{field} }} }}"
+        )
+    return "\n".join(" " * indent + line for line in lines)
+
+
+def _ledger_clear_current_lines(indent: int) -> str:
+    lines = [f"remove_variable = {PREFIX}_{field}" for field in LEDGER_ENTRY_FIELDS]
+    lines.append(f"remove_variable = {PREFIX}_notice_seen")
+    return "\n".join(" " * indent + line for line in lines)
+
+
+def _ledger_replay_branches(indent: int) -> str:
+    branches: list[str] = []
+    pad = " " * indent
+    for slot in LEDGER_ARCHIVE_SLOTS:
+        exact = _ledger_exact_guard(slot, indent + 8)
+        branches.append(
+            f"{pad}else_if = {{\n"
+            f"{pad}    limit = {{\n{exact}\n"
+            f"{pad}        NOT = {{ has_variable = {PREFIX}_ledger_arm_red_code }}\n"
+            f"{pad}    }}\n"
+            f"{pad}    set_variable = {{ name = {PREFIX}_ledger_replay_generation value = var:{PREFIX}_ledger_slot_{slot}_generation }}\n"
+            f"{pad}    set_variable = {{ name = {PREFIX}_adapter_status value = 2 }} # exact archived arm replay\n"
+            f"{pad}}}"
+        )
+    return "\n".join(branches)
+
+
+def _ledger_fragments() -> dict[str, str]:
+    any_exact = []
+    any_logical = []
+    for slot in (None, *LEDGER_ARCHIVE_SLOTS):
+        any_exact.append(
+            " " * 12
+            + "AND = {\n"
+            + _ledger_exact_guard(slot, 16)
+            + "\n"
+            + " " * 12
+            + "}"
+        )
+        any_logical.append(
+            " " * 12
+            + "AND = {\n"
+            + _ledger_logical_guard(slot, 16)
+            + "\n"
+            + " " * 12
+            + "}"
+        )
+    all_slot_names = []
+    for slot in LEDGER_ARCHIVE_SLOTS:
+        all_slot_names.extend(
+            (
+                f"{PREFIX}_ledger_slot_{slot}_active",
+                f"{PREFIX}_ledger_slot_{slot}_generation",
+                f"{PREFIX}_ledger_slot_{slot}_archive_receipt_id",
+                f"{PREFIX}_ledger_slot_{slot}_archive_receipt_hash",
+            )
+        )
+    no_ledger_metadata = [
+        f"has_variable = {PREFIX}_ledger_version",
+        f"has_variable = {PREFIX}_ledger_capacity",
+        f"has_variable = {PREFIX}_ledger_generation",
+        f"has_variable = {PREFIX}_ledger_entry_count",
+        f"has_variable = {PREFIX}_ledger_current_generation",
+        *(f"has_variable = {name}" for name in all_slot_names),
+    ]
+    return {
+        "CURRENT_EXACT": _ledger_exact_guard(None, 16),
+        "ARCHIVE_REPLAY_BRANCHES": _ledger_replay_branches(4),
+        "ANY_EXACT": "\n".join(any_exact),
+        "ANY_LOGICAL": "\n".join(any_logical),
+        "SLOT_1_EMPTY": _ledger_slot_empty_guard(1, 16),
+        "SLOT_2_EMPTY": _ledger_slot_empty_guard(2, 16),
+        "SLOT_1_EMPTY_20": _ledger_slot_empty_guard(1, 20),
+        "SLOT_2_EMPTY_20": _ledger_slot_empty_guard(2, 20),
+        "CURRENT_TOMBSTONE": _ledger_current_tombstone_guard(12),
+        "CURRENT_TOMBSTONE_16": _ledger_current_tombstone_guard(16),
+        "SLOT_1_COPY": _ledger_copy_lines(1, 8),
+        "SLOT_2_COPY": _ledger_copy_lines(2, 8),
+        "CURRENT_CLEAR": _ledger_clear_current_lines(4),
+        "NO_LEDGER_METADATA": "\n".join(
+            " " * 16 + line for line in no_ledger_metadata
+        ),
+    }
+
+
 def render_effects() -> bytes:
     fragments = _alias_fragments()
+    fragments.update(_ledger_fragments())
     template = r'''
     # ZhongGuo 361 Workforce probation/PIP outcome fact producer for #269.
     # Scope ABI for all three public hooks:
@@ -126,11 +426,169 @@ def render_effects() -> bytes:
     # Result hook additionally requires actual attribution bps from the caller;
     # the three dimensions are copied from #267's sealed vote-evidence receipts.
 
-    @P@_arm_hire_effect = {
-        remove_variable = @P@_adapter_status
-        remove_variable = @P@_red_code
-        save_temporary_scope_as = @P@_arm_subject_scope
-        $OWNER$ = { save_temporary_scope_as = @P@_arm_owner_scope }
+    # Persistent subject ledger metadata.  Legacy single-slot saves are adopted
+    # as generation 1 without changing their receipt.  New saves start empty.
+    # Any partial or contradictory metadata is a typed collision, not repaired.
+    @P@_ensure_ledger_metadata_effect = {
+        remove_variable = @P@_ledger_metadata_status
+        if = {
+            limit = {
+                NOT = {
+                    OR = {
+    @NO_LEDGER_METADATA@
+                    }
+                }
+            }
+            set_variable = { name = @P@_ledger_version value = 1 }
+            set_variable = { name = @P@_ledger_capacity value = 3 }
+            if = {
+                limit = { has_variable = @P@_state var:@P@_state >= 1 }
+                set_variable = { name = @P@_ledger_generation value = 1 }
+                set_variable = { name = @P@_ledger_entry_count value = 1 }
+                set_variable = { name = @P@_ledger_current_generation value = 1 }
+            }
+            else = {
+                set_variable = { name = @P@_ledger_generation value = 0 }
+                set_variable = { name = @P@_ledger_entry_count value = 0 }
+                set_variable = { name = @P@_ledger_current_generation value = 0 }
+            }
+            set_variable = { name = @P@_ledger_metadata_status value = 1 }
+        }
+        else_if = {
+            limit = {
+                var:@P@_ledger_version = 1
+                var:@P@_ledger_capacity = 3
+                OR = {
+                    AND = {
+                        var:@P@_ledger_generation = 0
+                        var:@P@_ledger_entry_count = 0
+                        var:@P@_ledger_current_generation = 0
+                        OR = { NOT = { has_variable = @P@_state } var:@P@_state = 0 }
+    @SLOT_1_EMPTY_20@
+    @SLOT_2_EMPTY_20@
+                    }
+                    AND = {
+                        var:@P@_ledger_generation = 1
+                        var:@P@_ledger_entry_count = 1
+                        var:@P@_ledger_current_generation = 1
+                        var:@P@_state >= 1
+    @SLOT_1_EMPTY_20@
+    @SLOT_2_EMPTY_20@
+                    }
+                    AND = {
+                        var:@P@_ledger_generation = 2
+                        var:@P@_ledger_entry_count = 2
+                        var:@P@_ledger_current_generation = 2
+                        var:@P@_state >= 1
+                        var:@P@_ledger_slot_1_active = 1
+                        var:@P@_ledger_slot_1_generation = 1
+    @SLOT_2_EMPTY_20@
+                    }
+                    AND = {
+                        var:@P@_ledger_generation = 3
+                        var:@P@_ledger_entry_count = 3
+                        var:@P@_ledger_current_generation = 3
+                        var:@P@_state >= 1
+                        var:@P@_ledger_slot_1_active = 1
+                        var:@P@_ledger_slot_1_generation = 1
+                        var:@P@_ledger_slot_2_active = 1
+                        var:@P@_ledger_slot_2_generation = 2
+                    }
+                }
+            }
+            set_variable = { name = @P@_ledger_metadata_status value = 1 }
+        }
+        else = {
+            set_variable = { name = @P@_ledger_metadata_status value = 5 }
+            set_variable = { name = @P@_ledger_arm_red_code value = 1005 }
+        }
+    }
+
+    # Archive slots are append-only.  active=1 is written last, so a persisted
+    # slot always carries the full old owner/subject/cycle/case and all source,
+    # outcome and consume receipt identities that existed on the tombstone.
+    @P@_archive_current_to_slot_1_effect = {
+        remove_variable = @P@_ledger_archive_status
+        if = {
+            limit = {
+                var:@P@_ledger_version = 1
+                var:@P@_ledger_capacity = 3
+                var:@P@_ledger_generation = 1
+                var:@P@_ledger_entry_count = 1
+                var:@P@_ledger_current_generation = 1
+    @CURRENT_TOMBSTONE_16@
+    @SLOT_1_EMPTY@
+            }
+    @SLOT_1_COPY@
+            set_variable = { name = @P@_ledger_slot_1_generation value = var:@P@_ledger_current_generation }
+            set_variable = { name = @P@_ledger_slot_1_archive_receipt_id value = var:@P@_ledger_current_generation }
+            set_variable = {
+                name = @P@_ledger_slot_1_archive_receipt_hash
+                value = {
+                    value = var:@P@_arm_receipt_hash
+                    add = var:@P@_outcome_receipt_hash
+                    add = var:@P@_consume_receipt_hash
+                    add = var:@P@_ledger_current_generation
+                }
+            }
+            set_variable = { name = @P@_ledger_slot_1_active value = 1 } # commit last
+            set_variable = { name = @P@_ledger_archive_status value = 1 }
+        }
+        else = {
+            set_variable = { name = @P@_ledger_archive_status value = 5 }
+            set_variable = { name = @P@_ledger_arm_red_code value = 1005 }
+        }
+    }
+
+    @P@_archive_current_to_slot_2_effect = {
+        remove_variable = @P@_ledger_archive_status
+        if = {
+            limit = {
+                var:@P@_ledger_version = 1
+                var:@P@_ledger_capacity = 3
+                var:@P@_ledger_generation = 2
+                var:@P@_ledger_entry_count = 2
+                var:@P@_ledger_current_generation = 2
+                var:@P@_ledger_slot_1_active = 1
+                var:@P@_ledger_slot_1_generation = 1
+    @CURRENT_TOMBSTONE_16@
+    @SLOT_2_EMPTY@
+            }
+    @SLOT_2_COPY@
+            set_variable = { name = @P@_ledger_slot_2_generation value = var:@P@_ledger_current_generation }
+            set_variable = { name = @P@_ledger_slot_2_archive_receipt_id value = var:@P@_ledger_current_generation }
+            set_variable = {
+                name = @P@_ledger_slot_2_archive_receipt_hash
+                value = {
+                    value = var:@P@_arm_receipt_hash
+                    add = var:@P@_outcome_receipt_hash
+                    add = var:@P@_consume_receipt_hash
+                    add = var:@P@_ledger_current_generation
+                }
+            }
+            set_variable = { name = @P@_ledger_slot_2_active value = 1 } # commit last
+            set_variable = { name = @P@_ledger_archive_status value = 1 }
+        }
+        else = {
+            set_variable = { name = @P@_ledger_archive_status value = 5 }
+            set_variable = { name = @P@_ledger_arm_red_code value = 1005 }
+        }
+    }
+
+    # Only the active compatibility projection is retired after its complete
+    # tombstone was appended.  No ledger_slot_* variable is ever removed.
+    @P@_retire_current_projection_effect = {
+    @CURRENT_CLEAR@
+    }
+
+    # Decide whether #274 is an initial append, an exact replay, a collision,
+    # or the second/third bounded generation.  The fourth distinct generation
+    # is explicitly RED 1003 instead of overwriting an immutable archive.
+    @P@_prepare_ledger_arm_effect = {
+        remove_variable = @P@_ledger_arm_append_pending
+        remove_variable = @P@_ledger_arm_red_code
+        remove_variable = @P@_ledger_arm_archived_slot
+        remove_variable = @P@_ledger_replay_generation
         if = {
             limit = {
                 scope:@P@_arm_subject_scope = { is_alive = yes }
@@ -159,6 +617,138 @@ def render_effects() -> bytes:
                 var:@W@_m274_native_appointment_confirmed = 1
                 var:@W@_m274_position_receipt_id > 0
                 var:@W@_m274_position_receipt_hash > 0
+            }
+            @P@_ensure_ledger_metadata_effect = yes
+            if = {
+                limit = { NOT = { var:@P@_ledger_metadata_status = 1 } }
+                set_variable = { name = @P@_ledger_arm_red_code value = 1005 }
+            }
+            else_if = {
+                limit = {
+                    OR = {
+    @ANY_EXACT@
+                    }
+                }
+                set_variable = { name = @P@_ledger_arm_append_pending value = 0 }
+            }
+            else_if = {
+                limit = {
+                    OR = {
+    @ANY_LOGICAL@
+                    }
+                }
+                set_variable = { name = @P@_ledger_arm_red_code value = 1002 }
+            }
+            else_if = {
+                limit = {
+                    var:@P@_ledger_generation = 0
+                    var:@P@_ledger_entry_count = 0
+                    var:@P@_ledger_current_generation = 0
+                    OR = { NOT = { has_variable = @P@_state } var:@P@_state = 0 }
+    @SLOT_1_EMPTY@
+    @SLOT_2_EMPTY@
+                }
+                set_variable = { name = @P@_ledger_arm_append_pending value = 1 }
+            }
+            else_if = {
+                limit = {
+                    var:@P@_ledger_generation = 1
+                    var:@P@_ledger_entry_count = 1
+                    var:@P@_ledger_current_generation = 1
+    @CURRENT_TOMBSTONE@
+    @SLOT_1_EMPTY@
+                }
+                @P@_archive_current_to_slot_1_effect = yes
+                if = {
+                    limit = { var:@P@_ledger_archive_status = 1 }
+                    @P@_retire_current_projection_effect = yes
+                    set_variable = { name = @P@_ledger_arm_archived_slot value = 1 }
+                    set_variable = { name = @P@_ledger_arm_append_pending value = 1 }
+                }
+                else = { set_variable = { name = @P@_ledger_arm_red_code value = 1005 } }
+            }
+            else_if = {
+                limit = {
+                    var:@P@_ledger_generation = 2
+                    var:@P@_ledger_entry_count = 2
+                    var:@P@_ledger_current_generation = 2
+                    var:@P@_ledger_slot_1_active = 1
+                    var:@P@_ledger_slot_1_generation = 1
+    @CURRENT_TOMBSTONE@
+    @SLOT_2_EMPTY@
+                }
+                @P@_archive_current_to_slot_2_effect = yes
+                if = {
+                    limit = { var:@P@_ledger_archive_status = 1 }
+                    @P@_retire_current_projection_effect = yes
+                    set_variable = { name = @P@_ledger_arm_archived_slot value = 2 }
+                    set_variable = { name = @P@_ledger_arm_append_pending value = 1 }
+                }
+                else = { set_variable = { name = @P@_ledger_arm_red_code value = 1005 } }
+            }
+            else_if = {
+                limit = {
+                    var:@P@_ledger_generation >= 3
+                    var:@P@_ledger_entry_count >= 3
+    @CURRENT_TOMBSTONE@
+                }
+                set_variable = { name = @P@_ledger_arm_red_code value = 1003 }
+            }
+            else = { set_variable = { name = @P@_ledger_arm_red_code value = 1004 } }
+        }
+        else = { set_variable = { name = @P@_ledger_arm_red_code value = 1001 } }
+    }
+
+    @P@_arm_hire_effect = {
+        remove_variable = @P@_adapter_status
+        remove_variable = @P@_red_code
+        save_temporary_scope_as = @P@_arm_subject_scope
+        $OWNER$ = { save_temporary_scope_as = @P@_arm_owner_scope }
+        save_temporary_scope_value_as = {
+            name = @P@_expected_arm_receipt_id
+            value = { value = var:@W@_m274_write_case multiply = 1000 add = 274 }
+        }
+        save_temporary_scope_value_as = {
+            name = @P@_expected_arm_receipt_hash
+            value = {
+                value = var:@W@_m274_position_receipt_hash
+                add = { value = var:@W@_m274_write_cycle multiply = 1000 }
+                add = var:@W@_m274_write_case
+                add = 274
+            }
+        }
+        @P@_prepare_ledger_arm_effect = yes
+        if = {
+            limit = {
+                scope:@P@_arm_subject_scope = { is_alive = yes }
+                scope:@P@_arm_owner_scope = {
+                    is_alive = yes
+                    is_landed = yes
+                    zg361_is_celestial_liege_trigger = yes
+                }
+                has_variable = @W@_m274_write_owner
+                has_variable = @W@_m274_write_subject
+                has_variable = @W@_m274_write_cycle
+                has_variable = @W@_m274_write_case
+                has_variable = @W@_m274_write_state
+                has_variable = @W@_m274_hired
+                has_variable = @W@_m274_hire_case
+                has_variable = @W@_m274_probation_due_cycle
+                has_variable = @W@_m274_native_appointment_confirmed
+                has_variable = @W@_m274_position_receipt_id
+                has_variable = @W@_m274_position_receipt_hash
+                var:@W@_m274_write_owner = scope:@P@_arm_owner_scope
+                var:@W@_m274_write_subject = this
+                var:@W@_m274_write_state = 4
+                var:@W@_m274_hired = 1
+                var:@W@_m274_hire_case = var:@W@_m274_write_case
+                var:@W@_m274_probation_due_cycle > var:@W@_m274_write_cycle
+                var:@W@_m274_native_appointment_confirmed = 1
+                var:@W@_m274_position_receipt_id > 0
+                var:@W@_m274_position_receipt_hash > 0
+                var:@P@_ledger_arm_append_pending = 1
+                var:@P@_ledger_version = 1
+                var:@P@_ledger_capacity = 3
                 OR = {
                     NOT = { has_variable = @P@_state }
                     var:@P@_state = 0
@@ -185,8 +775,12 @@ def render_effects() -> bytes:
                 }
             }
             set_variable = { name = @P@_state value = 1 } # armed, no outcome yet
+            change_variable = { name = @P@_ledger_generation add = 1 }
+            change_variable = { name = @P@_ledger_entry_count add = 1 }
+            set_variable = { name = @P@_ledger_current_generation value = var:@P@_ledger_generation }
+            set_variable = { name = @P@_ledger_arm_append_pending value = 0 }
             set_variable = { name = @P@_adapter_status value = 1 }
-            debug_log = "ZG361WPF: real m274 hire armed; no outcome has been inferred"
+            debug_log = "ZG361WPF: real m274 hire appended to bounded probation ledger"
         }
         else_if = {
             limit = {
@@ -198,6 +792,9 @@ def render_effects() -> bytes:
                 has_variable = @P@_probation_due_cycle
                 has_variable = @P@_position_receipt_id
                 has_variable = @P@_position_receipt_hash
+                has_variable = @P@_arm_receipt_id
+                has_variable = @P@_arm_receipt_hash
+                NOT = { has_variable = @P@_ledger_arm_red_code }
                 var:@P@_state >= 1
                 var:@P@_owner = scope:@P@_arm_owner_scope
                 var:@P@_subject = this
@@ -206,13 +803,20 @@ def render_effects() -> bytes:
                 var:@P@_probation_due_cycle = var:@W@_m274_probation_due_cycle
                 var:@P@_position_receipt_id = var:@W@_m274_position_receipt_id
                 var:@P@_position_receipt_hash = var:@W@_m274_position_receipt_hash
+                var:@P@_arm_receipt_id = scope:@P@_expected_arm_receipt_id
+                var:@P@_arm_receipt_hash = scope:@P@_expected_arm_receipt_hash
             }
             set_variable = { name = @P@_adapter_status value = 2 } # exact arm replay
         }
+    @ARCHIVE_REPLAY_BRANCHES@
         else = {
             set_variable = { name = @P@_adapter_status value = 5 }
-            set_variable = { name = @P@_red_code value = 1001 }
-            debug_log = "ZG361WPF RED 1001: arm lacks a real m274 hire or collides with another fact"
+            if = {
+                limit = { has_variable = @P@_ledger_arm_red_code }
+                set_variable = { name = @P@_red_code value = var:@P@_ledger_arm_red_code }
+            }
+            else = { set_variable = { name = @P@_red_code value = 1001 } }
+            debug_log = "ZG361WPF RED: arm is invalid, stale, colliding, active, or beyond ledger capacity"
         }
     }
 

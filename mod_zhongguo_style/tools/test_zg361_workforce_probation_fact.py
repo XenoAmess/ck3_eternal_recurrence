@@ -506,6 +506,181 @@ class WorkforceProbationFactTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, lowered)
 
+    def test_24_three_generation_ledger_is_the_minimal_frozen_shape(self) -> None:
+        self.assertEqual(generator.LEDGER_CAPACITY, 3)
+        self.assertEqual(generator.LEDGER_ARCHIVE_SLOTS, (1, 2))
+        self.assertEqual(len(generator.LEDGER_ENTRY_FIELDS), len(set(generator.LEDGER_ENTRY_FIELDS)))
+        self.assertTrue(
+            set(generator.LEDGER_TOMBSTONE_REQUIRED_FIELDS)
+            <= set(generator.LEDGER_ENTRY_FIELDS)
+        )
+        for field in (
+            "owner",
+            "subject",
+            "hire_cycle",
+            "hire_case",
+            "state",
+            "arm_receipt_id",
+            "arm_receipt_hash",
+            "outcome_id",
+            "outcome_receipt_hash",
+            "consume_receipt_id",
+            "consume_receipt_hash",
+        ):
+            self.assertIn(field, generator.LEDGER_ENTRY_FIELDS)
+
+    def test_25_legacy_single_slot_is_adopted_without_rewriting_receipt(self) -> None:
+        ensure = block(
+            self.effects,
+            "zg361_workforce_probation_fact_ensure_ledger_metadata_effect",
+        )
+        for token in (
+            "ledger_version value = 1",
+            "ledger_capacity value = 3",
+            "ledger_generation value = 1",
+            "ledger_entry_count value = 1",
+            "ledger_current_generation value = 1",
+            "has_variable = zg361_workforce_probation_fact_state",
+            "var:zg361_workforce_probation_fact_state >= 1",
+        ):
+            self.assertIn(token, ensure)
+        for field in generator.LEDGER_ENTRY_FIELDS:
+            self.assertNotIn(
+                f"remove_variable = zg361_workforce_probation_fact_{field}",
+                ensure,
+            )
+
+    def test_26_each_archive_copies_full_tombstone_and_commits_active_last(self) -> None:
+        for slot in generator.LEDGER_ARCHIVE_SLOTS:
+            archive = block(
+                self.effects,
+                f"zg361_workforce_probation_fact_archive_current_to_slot_{slot}_effect",
+            )
+            for field in generator.LEDGER_ENTRY_FIELDS:
+                with self.subTest(slot=slot, field=field):
+                    self.assertIn(
+                        "set_variable = { name = "
+                        f"zg361_workforce_probation_fact_ledger_slot_{slot}_{field} "
+                        f"value = var:zg361_workforce_probation_fact_{field} }}",
+                        archive,
+                    )
+            active_write = (
+                "set_variable = { name = "
+                f"zg361_workforce_probation_fact_ledger_slot_{slot}_active value = 1 }}"
+            )
+            self.assertGreater(
+                archive.rindex(active_write),
+                archive.rindex(
+                    "set_variable = { name = "
+                    f"zg361_workforce_probation_fact_ledger_slot_{slot}_consume_workforce_case"
+                ),
+            )
+            self.assertIn(
+                f"ledger_slot_{slot}_archive_receipt_hash",
+                archive,
+            )
+
+    def test_27_second_and_third_arm_append_but_fourth_is_capacity_red(self) -> None:
+        prepare = block(
+            self.effects,
+            "zg361_workforce_probation_fact_prepare_ledger_arm_effect",
+        )
+        first_archive = prepare.index("archive_current_to_slot_1_effect = yes")
+        first_retire = prepare.index("retire_current_projection_effect = yes", first_archive)
+        second_archive = prepare.index("archive_current_to_slot_2_effect = yes")
+        second_retire = prepare.index("retire_current_projection_effect = yes", second_archive)
+        self.assertLess(first_archive, first_retire)
+        self.assertLess(second_archive, second_retire)
+        self.assertIn("ledger_generation = 1", prepare)
+        self.assertIn("ledger_generation = 2", prepare)
+        full = prepare[prepare.index("ledger_generation >= 3") :]
+        self.assertIn("ledger_entry_count >= 3", full)
+        self.assertIn("ledger_arm_red_code value = 1003", full)
+        self.assertNotIn("retire_current_projection_effect", full.split("else =", 1)[0])
+
+    def test_28_exact_current_and_archived_replays_use_full_arm_identity(self) -> None:
+        arm = block(self.effects, "zg361_workforce_probation_fact_arm_hire_effect")
+        self.assertEqual(arm.count("# exact archived arm replay"), 2)
+        self.assertIn("# exact arm replay", arm)
+        for slot in generator.LEDGER_ARCHIVE_SLOTS:
+            for field in generator.LEDGER_ARM_IDENTITY_FIELDS:
+                self.assertIn(
+                    f"ledger_slot_{slot}_{field}",
+                    arm,
+                )
+            self.assertIn(
+                "ledger_replay_generation value = "
+                f"var:zg361_workforce_probation_fact_ledger_slot_{slot}_generation",
+                arm,
+            )
+        self.assertGreaterEqual(
+            arm.count("NOT = { has_variable = zg361_workforce_probation_fact_ledger_arm_red_code }"),
+            3,
+        )
+
+    def test_29_stale_collision_active_and_metadata_fail_closed_are_typed(self) -> None:
+        prepare = block(
+            self.effects,
+            "zg361_workforce_probation_fact_prepare_ledger_arm_effect",
+        )
+        for code in (1001, 1002, 1003, 1004, 1005):
+            self.assertIn(f"ledger_arm_red_code value = {code}", prepare)
+        logical_start = prepare.index("ledger_arm_red_code value = 1002")
+        self.assertIn("ledger_slot_1_hire_case", prepare[:logical_start])
+        self.assertIn("ledger_slot_2_hire_case", prepare[:logical_start])
+        self.assertIn("ledger_slot_1_arm_receipt_hash", prepare)
+        self.assertIn("ledger_slot_2_arm_receipt_hash", prepare)
+
+    def test_30_projection_retirement_never_cleans_immutable_archives(self) -> None:
+        retire = block(
+            self.effects,
+            "zg361_workforce_probation_fact_retire_current_projection_effect",
+        )
+        for field in generator.LEDGER_ENTRY_FIELDS:
+            self.assertIn(
+                f"remove_variable = zg361_workforce_probation_fact_{field}",
+                retire,
+            )
+        self.assertNotIn("ledger_slot_", retire)
+        self.assertNotRegex(
+            self.effects,
+            r"remove_variable = zg361_workforce_probation_fact_ledger_slot_[12]_",
+        )
+
+    def test_31_ledger_state_is_persistent_character_data_not_temporary_truth(self) -> None:
+        for name in (
+            "ledger_version",
+            "ledger_capacity",
+            "ledger_generation",
+            "ledger_entry_count",
+            "ledger_current_generation",
+            "ledger_slot_1_owner",
+            "ledger_slot_1_arm_receipt_hash",
+            "ledger_slot_1_consume_receipt_hash",
+            "ledger_slot_2_owner",
+            "ledger_slot_2_arm_receipt_hash",
+            "ledger_slot_2_consume_receipt_hash",
+        ):
+            self.assertIn(f"name = zg361_workforce_probation_fact_{name}", self.effects)
+            self.assertNotIn(
+                "save_temporary_scope_value_as = {\n        name = "
+                f"zg361_workforce_probation_fact_{name}",
+                self.effects,
+            )
+
+    def test_32_spec_records_bounded_chain_and_hc_as_separate_followup(self) -> None:
+        for token in (
+            "三代有界 ledger",
+            "活动投影 + 两个 append-only archive",
+            "旧 owner → 不同 owner → 回旧 owner",
+            "RED 1002",
+            "RED 1003",
+            "不删除任何 `ledger_slot_1_*` 或 `ledger_slot_2_*`",
+            "HC partition",
+            "独立后续单元",
+        ):
+            self.assertIn(token, self.spec)
+
 
 if __name__ == "__main__":
     unittest.main()

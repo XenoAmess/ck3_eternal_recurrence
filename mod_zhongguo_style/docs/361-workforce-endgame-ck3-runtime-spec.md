@@ -324,9 +324,10 @@ RED `9098`。
    owner 后才 prepare #276，D+1 audit 再开放玩家/授权 AI，route A/B 又隔两帧 finalize。正常撤任 callback 有独立
    exact authorization branch，不再额外标记 unexpected native end。仍需 loader/paused live 证明事件顺序、WAIT/RED
    停链、幂等重放与 10000bp 守恒。
-   #276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；当前 probation fact 是单槽，旧
-   owner consumed tombstone 尚无不清洗旧案的跨 owner 轮转 ABI，所以 later-growth caller 虽已接线，自然多雇主链仍
-   fail-closed；这是明确 residual blocker，不得以清变量绕过。
+   #276 只接受旧 cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；probation 现用活动投影与两个
+   append-only archive 形成三代有界 ledger，在不删除旧 owner consumed tombstone 的情况下允许不同 owner 与回旧 owner
+   两次自然 arm，正好覆盖 later-growth → #276 链。第四代明确 capacity RED，不覆盖历史；全链仍需 loader、存读档和
+   MCP-first paused/live 证明，静态接线不冒充自然流程 GREEN。
    #277 直接 join B2 已提交的 11 字段 PIP settlement 槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC
    lineage。#274 仍需 CK3 loader/paused live 证明真实任命、撤任、WAIT 重试和玩家/AI续跑；#277 的离任 provider 仍须
    实机证明。没有真实事实时分别以 2741/2771 blocked，绝不伪造角色或职位。
