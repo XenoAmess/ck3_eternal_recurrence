@@ -1,9 +1,11 @@
 """Fixed-name, read-only ZhongGuo scoreboard state and player ACL contract.
 
 The caller supplies only a nonce. Widget names and character-variable keys are
-provider-owned allowlists. The v1 query intentionally reports focus, enabled,
-rect, scroll and every action as typed unavailable until their exact-build ABI
-and paused live evidence exist.
+provider-owned allowlists. Nine fixed runtime instances expose their stable
+identity, instance/vtable pointer and visibility for a later paused action
+probe. The v1 query intentionally reports focus, enabled, rect, scroll and
+every action as typed unavailable until their exact-build ABI and paused live
+evidence exist.
 """
 
 from __future__ import annotations
@@ -44,11 +46,20 @@ ZHONGGUO_SCOREBOARD_STATE_V1_GAME_ADAPTER_ID: Final = (
 )
 
 _NONCE_RE: Final = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,63}\Z")
+_POINTER_RE: Final = re.compile(r"0x[0-9A-F]+\Z")
 _WIDGET_IDENTITIES: Final = (
     ("zg361_open_scoreboard", "zg361_scoreboard_toggle"),
     ("zg361_scoreboard_window", "zg361_scoreboard_window"),
     ("zg361_scoreboard_modal", "zg361_scoreboard_modal"),
     ("zg361_scoreboard_panel", "zg361_scoreboard_panel"),
+    ("zg361_scoreboard_entry_managed", "zg361_scoreboard_entry_managed"),
+    ("zg361_scoreboard_entry_received", "zg361_scoreboard_entry_received"),
+    ("zg361_scoreboard_entry_system", "zg361_scoreboard_entry_system"),
+    (
+        "zg361_scoreboard_modal_backdrop_close",
+        "zg361_scoreboard_modal_backdrop_close",
+    ),
+    ("zg361_scoreboard_header_close", "zg361_scoreboard_header_close"),
 )
 _TYPED_KEYS: Final = {"status", "value", "unavailable_reason"}
 _TYPED_REASONS: Final = {
@@ -83,6 +94,8 @@ _TOP_REASONS: Final = {
 _WIDGET_KEYS: Final = {
     "stable_identity",
     "runtime_name",
+    "instance_pointer",
+    "vtable_pointer",
     "exists",
     "local_visible",
     "effective_visible",
@@ -200,6 +213,11 @@ def _typed(
                 raise ValueError(f"{label} must contain a boolean")
         elif kind == "int":
             _integer(raw, label, -(2**63), 2**63 - 1)
+        elif kind == "pointer":
+            if not isinstance(raw, str) or _POINTER_RE.fullmatch(raw) is None:
+                raise ValueError(
+                    f"{label} must contain an uppercase hex pointer"
+                )
         else:  # pragma: no cover - internal invariant
             raise AssertionError(kind)
     elif status == "unavailable":
@@ -274,6 +292,16 @@ def normalize_native_zhongguo_scoreboard_state_v1(
         normalized = {
             "stable_identity": widget["stable_identity"],
             "runtime_name": widget["runtime_name"],
+            "instance_pointer": _typed(
+                widget["instance_pointer"],
+                f"widget[{index}].instance_pointer",
+                kind="pointer",
+            ),
+            "vtable_pointer": _typed(
+                widget["vtable_pointer"],
+                f"widget[{index}].vtable_pointer",
+                kind="pointer",
+            ),
         }
         for key in (
             "exists",
@@ -295,6 +323,11 @@ def normalize_native_zhongguo_scoreboard_state_v1(
         ):
             normalized[key] = _typed(widget[key], f"widget[{index}].{key}", kind="int")
         normalized_widgets.append(normalized)
+        if status == "available" and (
+            normalized["instance_pointer"]["status"] != "available"
+            or normalized["vtable_pointer"]["status"] != "available"
+        ):
+            raise ValueError(f"widget[{index}] lacks paused probe pointers")
 
     acl = _exact(frame["acl"], {"managed", "received_self"}, "acl")
     managed = _exact(acl["managed"], _MANAGED_KEYS, "acl.managed")

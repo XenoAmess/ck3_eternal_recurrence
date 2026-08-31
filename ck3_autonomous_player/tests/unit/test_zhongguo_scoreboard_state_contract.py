@@ -50,14 +50,12 @@ def widget(stable: str, runtime: str, *, visible: bool) -> dict[str, object]:
     return {
         "stable_identity": stable,
         "runtime_name": runtime,
+        "instance_pointer": typed("0x14001000"),
+        "vtable_pointer": typed("0x14506020"),
         "exists": typed(True),
         "local_visible": typed(visible),
         "effective_visible": typed(visible),
-        "enabled": unavailable(
-            "named_clickable_child_not_stable"
-            if stable == "zg361_open_scoreboard"
-            else "enabled_state_abi_not_frozen"
-        ),
+        "enabled": unavailable("enabled_state_abi_not_frozen"),
         "focused": unavailable("focus_owner_abi_not_frozen"),
         "modal_blocking": unavailable("modal_blocking_abi_not_frozen"),
         "screen_x": unavailable("screen_rect_abi_not_frozen"),
@@ -85,6 +83,31 @@ def native_frame() -> dict[str, object]:
             widget("zg361_scoreboard_window", "zg361_scoreboard_window", visible=True),
             widget("zg361_scoreboard_modal", "zg361_scoreboard_modal", visible=False),
             widget("zg361_scoreboard_panel", "zg361_scoreboard_panel", visible=False),
+            widget(
+                "zg361_scoreboard_entry_managed",
+                "zg361_scoreboard_entry_managed",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_entry_received",
+                "zg361_scoreboard_entry_received",
+                visible=True,
+            ),
+            widget(
+                "zg361_scoreboard_entry_system",
+                "zg361_scoreboard_entry_system",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_modal_backdrop_close",
+                "zg361_scoreboard_modal_backdrop_close",
+                visible=False,
+            ),
+            widget(
+                "zg361_scoreboard_header_close",
+                "zg361_scoreboard_header_close",
+                visible=False,
+            ),
         ],
         "acl": {
             "managed": {
@@ -182,7 +205,11 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
         self.assertFalse(normalized["readiness"]["production_live_ready"])
         self.assertEqual(
             normalized["widgets"][0]["enabled"]["unavailable_reason"],
-            "named_clickable_child_not_stable",
+            "enabled_state_abi_not_frozen",
+        )
+        self.assertEqual(
+            normalized["widgets"][5]["vtable_pointer"]["value"],
+            "0x14506020",
         )
         self.assertEqual(
             normalized["actions"]["activate"]["unavailable_reason"],
@@ -194,11 +221,19 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
             query_zhongguo_scoreboard_state_v1_step(NONCE)
         )
         assert query is not None
-        for mutation in ("identity", "manager_acl", "action", "live"):
+        for mutation in (
+            "identity",
+            "pointer",
+            "manager_acl",
+            "action",
+            "live",
+        ):
             with self.subTest(mutation=mutation):
                 frame = native_frame()
                 if mutation == "identity":
                     frame["widgets"][0]["runtime_name"] = "caller_widget"
+                elif mutation == "pointer":
+                    frame["widgets"][5]["vtable_pointer"] = typed("0xlowercase")
                 elif mutation == "manager_acl":
                     frame["acl"]["managed"][
                         "current_player_can_assess_others"
@@ -300,6 +335,11 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
             "zg361_scoreboard_window",
             "zg361_scoreboard_modal",
             "zg361_scoreboard_panel",
+            "zg361_scoreboard_entry_managed",
+            "zg361_scoreboard_entry_received",
+            "zg361_scoreboard_entry_system",
+            "zg361_scoreboard_modal_backdrop_close",
+            "zg361_scoreboard_header_close",
         ):
             self.assertIn(identity, sources["header"])
             self.assertIn(f'name = "{identity}"', sources["gui"])

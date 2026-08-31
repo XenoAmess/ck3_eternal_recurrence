@@ -74,6 +74,18 @@ bool ValidTopReason(std::string_view reason) noexcept {
   return std::find(reasons.begin(), reasons.end(), reason) != reasons.end();
 }
 
+bool ValidPointerString(std::string_view value) noexcept {
+  if (value.size() < 3 || value[0] != '0' || value[1] != 'x') return false;
+  for (std::size_t index = 2; index < value.size(); ++index) {
+    const char character = value[index];
+    if (!((character >= '0' && character <= '9') ||
+          (character >= 'A' && character <= 'F'))) {
+      return false;
+    }
+  }
+  return true;
+}
+
 template <typename Value>
 bool ValidTyped(const game::ZhongguoTypedValueV1<Value> &field) noexcept {
   return field.available
@@ -122,6 +134,15 @@ bool AppendTypedBoolean(std::string &output,
                      });
 }
 
+bool AppendTypedString(std::string &output,
+                       const game::ZhongguoTypedStringV1 &field) {
+  return AppendTyped(output, field,
+                     [](std::string &target, const std::string &value) {
+                       AppendJsonString(target, value);
+                       return true;
+                     });
+}
+
 template <typename Field, typename Append>
 bool AppendNamed(std::string &output, std::string_view name,
                  const Field &field, Append append, bool first = false) {
@@ -137,7 +158,11 @@ bool AppendWidget(std::string &output,
   AppendJsonString(output, widget.stable_identity);
   output += ",\"runtime_name\":";
   AppendJsonString(output, widget.runtime_name);
-  if (!AppendNamed(output, "exists", widget.exists, AppendTypedBoolean) ||
+  if (!AppendNamed(output, "instance_pointer", widget.instance_pointer,
+                   AppendTypedString) ||
+      !AppendNamed(output, "vtable_pointer", widget.vtable_pointer,
+                   AppendTypedString) ||
+      !AppendNamed(output, "exists", widget.exists, AppendTypedBoolean) ||
       !AppendNamed(output, "local_visible", widget.local_visible,
                    AppendTypedBoolean) ||
       !AppendNamed(output, "effective_visible", widget.effective_visible,
@@ -272,7 +297,15 @@ std::string SerializeZhongguoScoreboardStateV1(
     if (snapshot.widgets[index].stable_identity !=
             kZhongguoScoreboardStateV1WidgetIdentities[index] ||
         snapshot.widgets[index].runtime_name !=
-            kZhongguoScoreboardStateV1WidgetNames[index]) {
+            kZhongguoScoreboardStateV1WidgetNames[index] ||
+        (available &&
+         (!snapshot.widgets[index].instance_pointer.available ||
+          !snapshot.widgets[index].instance_pointer.value.has_value() ||
+          !ValidPointerString(
+              *snapshot.widgets[index].instance_pointer.value) ||
+          !snapshot.widgets[index].vtable_pointer.available ||
+          !snapshot.widgets[index].vtable_pointer.value.has_value() ||
+          !ValidPointerString(*snapshot.widgets[index].vtable_pointer.value)))) {
       return {};
     }
   }

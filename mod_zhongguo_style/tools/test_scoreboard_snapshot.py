@@ -222,6 +222,18 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertEqual(slot_guis.count("zg361_sb_self_select_gui = {"), 1)
         self.assertEqual(gui.count('name = "zg361_scoreboard_window"'), 1)
         self.assertEqual(gui.count('name = "zg361_scoreboard_toggle"'), 1)
+        for action_probe_target in (
+            "zg361_scoreboard_entry_managed",
+            "zg361_scoreboard_entry_received",
+            "zg361_scoreboard_entry_system",
+            "zg361_scoreboard_modal_backdrop_close",
+            "zg361_scoreboard_header_close",
+        ):
+            self.assertEqual(
+                gui.count(f'name = "{action_probe_target}"'),
+                1,
+                action_probe_target,
+            )
         self.assertEqual(gui.count('name = "zg361_scoreboard_detail_panel"'), 1)
         for page in DETAIL_PAGES:
             self.assertEqual(
@@ -1199,7 +1211,9 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertRegex(
             gui,
             re.compile(
-                r"button_normal\s*=\s*\{\s*size\s*=\s*\{\s*100%\s+100%\s*\}"
+                r"button_normal\s*=\s*\{\s*"
+                r'name\s*=\s*"zg361_scoreboard_modal_backdrop_close"\s*'
+                r"size\s*=\s*\{\s*100%\s+100%\s*\}"
             ),
         )
         self.assertRegex(
@@ -1378,7 +1392,9 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertRegex(
             gui,
             re.compile(
-                r"button_normal\s*=\s*\{\s*size\s*=\s*\{\s*100%\s+100%\s*\}.*?"
+                r"button_normal\s*=\s*\{\s*"
+                r'name\s*=\s*"zg361_scoreboard_modal_backdrop_close"\s*'
+                r"size\s*=\s*\{\s*100%\s+100%\s*\}.*?"
                 r"GetVariableSystem.Clear\('zg361_scoreboard_open'\).*?"
                 r"GetVariableSystem.Set\('zg361_scoreboard_view', 'list'\).*?"
                 r"GetVariableSystem.Set\('zg361_scoreboard_detail_tab', 'facts'\).*?"

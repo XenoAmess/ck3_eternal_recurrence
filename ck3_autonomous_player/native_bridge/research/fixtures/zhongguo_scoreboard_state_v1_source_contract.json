@@ -11,7 +11,12 @@
     ["zg361_open_scoreboard", "zg361_scoreboard_toggle"],
     ["zg361_scoreboard_window", "zg361_scoreboard_window"],
     ["zg361_scoreboard_modal", "zg361_scoreboard_modal"],
-    ["zg361_scoreboard_panel", "zg361_scoreboard_panel"]
+    ["zg361_scoreboard_panel", "zg361_scoreboard_panel"],
+    ["zg361_scoreboard_entry_managed", "zg361_scoreboard_entry_managed"],
+    ["zg361_scoreboard_entry_received", "zg361_scoreboard_entry_received"],
+    ["zg361_scoreboard_entry_system", "zg361_scoreboard_entry_system"],
+    ["zg361_scoreboard_modal_backdrop_close", "zg361_scoreboard_modal_backdrop_close"],
+    ["zg361_scoreboard_header_close", "zg361_scoreboard_header_close"]
   ],
   "allowlist_count": 20,
   "required_source_properties": [
@@ -23,6 +28,7 @@
     "before_after_frame_equality",
     "raw_row_equality",
     "widget_pointer_identity_equality",
+    "widget_instance_and_vtable_pointers_are_observed_read_only",
     "effective_visibility_walks_fixed_parent_chain",
     "managed_acl_is_surface_derived_without_rank_inference",
     "received_self_acl_joins_player_result_and_b1_policy_tuples",

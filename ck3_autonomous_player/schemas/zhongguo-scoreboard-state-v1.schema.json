@@ -20,12 +20,17 @@
     "paused": {"const": true},
     "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
     "widgets": {
-      "type": "array", "minItems": 4, "maxItems": 4,
+      "type": "array", "minItems": 9, "maxItems": 9,
       "prefixItems": [
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_open_scoreboard"}, "runtime_name": {"const": "zg361_scoreboard_toggle"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_window"}, "runtime_name": {"const": "zg361_scoreboard_window"}}}]},
         {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_modal"}, "runtime_name": {"const": "zg361_scoreboard_modal"}}}]},
-        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_panel"}, "runtime_name": {"const": "zg361_scoreboard_panel"}}}]}
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_panel"}, "runtime_name": {"const": "zg361_scoreboard_panel"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_entry_managed"}, "runtime_name": {"const": "zg361_scoreboard_entry_managed"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_entry_received"}, "runtime_name": {"const": "zg361_scoreboard_entry_received"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_entry_system"}, "runtime_name": {"const": "zg361_scoreboard_entry_system"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_modal_backdrop_close"}, "runtime_name": {"const": "zg361_scoreboard_modal_backdrop_close"}}}]},
+        {"allOf": [{"$ref": "#/$defs/widget"}, {"properties": {"stable_identity": {"const": "zg361_scoreboard_header_close"}, "runtime_name": {"const": "zg361_scoreboard_header_close"}}}]}
       ]
     },
     "acl": {
@@ -120,12 +125,23 @@
         "unavailable_reason": {"type": ["string", "null"]}
       }
     },
+    "typedPointer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "value", "unavailable_reason"],
+      "properties": {
+        "status": {"enum": ["available", "unavailable"]},
+        "value": {"type": ["string", "null"], "pattern": "^0x[0-9A-F]+$"},
+        "unavailable_reason": {"type": ["string", "null"]}
+      }
+    },
     "widget": {
       "type": "object", "additionalProperties": false,
-      "required": ["stable_identity", "runtime_name", "exists", "local_visible", "effective_visible", "enabled", "focused", "modal_blocking", "screen_x", "screen_y", "screen_width", "screen_height", "scroll_min", "scroll_max", "scroll_value"],
+      "required": ["stable_identity", "runtime_name", "instance_pointer", "vtable_pointer", "exists", "local_visible", "effective_visible", "enabled", "focused", "modal_blocking", "screen_x", "screen_y", "screen_width", "screen_height", "scroll_min", "scroll_max", "scroll_value"],
       "properties": {
         "stable_identity": {"type": "string"},
         "runtime_name": {"type": "string"},
+        "instance_pointer": {"$ref": "#/$defs/typedPointer"},
+        "vtable_pointer": {"$ref": "#/$defs/typedPointer"},
         "exists": {"$ref": "#/$defs/typedBoolean"},
         "local_visible": {"$ref": "#/$defs/typedBoolean"},
         "effective_visible": {"$ref": "#/$defs/typedBoolean"},

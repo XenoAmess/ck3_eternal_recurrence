@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include <array>
+#include <charconv>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -271,12 +272,30 @@ void InitializeWidget(game::ZhongguoScoreboardWidgetStateV1 &widget,
   widget.stable_identity.assign(
       kZhongguoScoreboardStateV1WidgetIdentities[index]);
   widget.runtime_name.assign(kZhongguoScoreboardStateV1WidgetNames[index]);
+  SetUnavailable(widget.instance_pointer, reason);
+  SetUnavailable(widget.vtable_pointer, reason);
   SetUnavailable(widget.exists, reason);
   UnavailableMany(reason, widget.local_visible, widget.effective_visible,
                   widget.enabled, widget.focused, widget.modal_blocking,
                   widget.screen_x, widget.screen_y, widget.screen_width,
                   widget.screen_height, widget.scroll_min, widget.scroll_max,
                   widget.scroll_value);
+}
+
+std::string FormatPointer(const void *pointer) {
+  std::array<char, 2 + sizeof(std::uintptr_t) * 2> buffer{};
+  buffer[0] = '0';
+  buffer[1] = 'x';
+  const auto value = reinterpret_cast<std::uintptr_t>(pointer);
+  const auto converted = std::to_chars(
+      buffer.data() + 2, buffer.data() + buffer.size(), value, 16);
+  if (converted.ec != std::errc{}) return {};
+  for (char *current = buffer.data() + 2; current != converted.ptr; ++current) {
+    if (*current >= 'a' && *current <= 'f') {
+      *current = static_cast<char>(*current - 'a' + 'A');
+    }
+  }
+  return std::string(buffer.data(), converted.ptr);
 }
 
 void InitializeEnvelope(const ZhongguoScoreboardStateRequestV1 &request,
@@ -452,7 +471,8 @@ void *CallFindTopLevelWidget(
 bool FindFixedWidgets(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access,
-    std::array<void *, 4> &widgets) noexcept {
+    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()>
+        &widgets) noexcept {
   widgets = {};
   if (environment.offline_fixture_function_overrides) {
     if (access.find_fixed_widget == nullptr) return false;
@@ -474,12 +494,12 @@ bool FindFixedWidgets(
     widgets[1] = nullptr;
     return true;
   }
-  widgets[0] = FindDescendant(
-      access, window, kZhongguoScoreboardStateV1WidgetNames[0]);
-  widgets[2] = FindDescendant(
-      access, window, kZhongguoScoreboardStateV1WidgetNames[2]);
-  widgets[3] = FindDescendant(
-      access, window, kZhongguoScoreboardStateV1WidgetNames[3]);
+  for (std::size_t index = 0; index < widgets.size(); ++index) {
+    if (index != 1) {
+      widgets[index] = FindDescendant(
+          access, window, kZhongguoScoreboardStateV1WidgetNames[index]);
+    }
+  }
   return true;
 }
 
@@ -518,7 +538,9 @@ bool ReadEffectiveVisible(const ZhongguoScoreboardAccessV1 &access,
 }
 
 bool DecodeWidgets(const ZhongguoScoreboardAccessV1 &access,
-                   const std::array<void *, 4> &pointers,
+                   const std::array<
+                       void *, kZhongguoScoreboardStateV1WidgetNames.size()>
+                       &pointers,
                    game::ZhongguoScoreboardStateV1 &output) {
   bool all_present = true;
   for (std::size_t index = 0; index < pointers.size(); ++index) {
@@ -526,21 +548,24 @@ bool DecodeWidgets(const ZhongguoScoreboardAccessV1 &access,
     SetAvailable(widget.exists, pointers[index] != nullptr);
     if (pointers[index] == nullptr) {
       all_present = false;
-      UnavailableMany("widget_not_instantiated", widget.local_visible,
+      UnavailableMany("widget_not_instantiated", widget.instance_pointer,
+                      widget.vtable_pointer, widget.local_visible,
                       widget.effective_visible);
     } else {
+      void *vtable = nullptr;
       bool local = false;
       bool effective = false;
-      if (!ReadLocalVisible(access, pointers[index], local) ||
+      if (!ReadValue(access, pointers[index], 0, vtable) || vtable == nullptr ||
+          !ReadLocalVisible(access, pointers[index], local) ||
           !ReadEffectiveVisible(access, pointers[index], effective)) {
         return false;
       }
+      SetAvailable(widget.instance_pointer, FormatPointer(pointers[index]));
+      SetAvailable(widget.vtable_pointer, FormatPointer(vtable));
       SetAvailable(widget.local_visible, local);
       SetAvailable(widget.effective_visible, effective);
     }
-    SetUnavailable(widget.enabled,
-                   index == 0 ? "named_clickable_child_not_stable"
-                              : "enabled_state_abi_not_frozen");
+    SetUnavailable(widget.enabled, "enabled_state_abi_not_frozen");
     SetUnavailable(widget.focused, "focus_owner_abi_not_frozen");
     SetUnavailable(widget.modal_blocking,
                    "modal_blocking_abi_not_frozen");
@@ -773,8 +798,10 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     }
     output.readiness.player_binding_ready = true;
 
-    std::array<void *, 4> first_widgets{};
-    std::array<void *, 4> second_widgets{};
+    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()>
+        first_widgets{};
+    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()>
+        second_widgets{};
     RawRows first_rows{};
     RawRows second_rows{};
     if (!FindFixedWidgets(environment, access, first_widgets)) {

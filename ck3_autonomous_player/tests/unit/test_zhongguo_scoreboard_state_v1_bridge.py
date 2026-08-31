@@ -338,6 +338,15 @@ class ZhongguoScoreboardStateV1ServiceTests(unittest.TestCase):
         )
         self.assertFalse(result["readiness"]["full_widget_gate_ready"])
         self.assertFalse(result["readiness"]["production_live_ready"])
+        self.assertEqual(len(result["widgets"]), 9)
+        self.assertEqual(
+            result["widgets"][5]["stable_identity"],
+            "zg361_scoreboard_entry_received",
+        )
+        self.assertEqual(
+            result["widgets"][5]["vtable_pointer"]["value"],
+            "0x14506020",
+        )
         self.assertEqual(
             result["actions"]["activate"]["unavailable_reason"],
             "read_only_provider_action_not_exposed",
@@ -411,6 +420,16 @@ class ZhongguoScoreboardStateV1McpTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(accepted.is_error)
         self.assertFalse(
             accepted.structured_content["readiness"]["production_live_ready"]
+        )
+        self.assertEqual(
+            accepted.structured_content["widgets"][7]["runtime_name"],
+            "zg361_scoreboard_modal_backdrop_close",
+        )
+        self.assertEqual(
+            accepted.structured_content["widgets"][8]["vtable_pointer"][
+                "value"
+            ],
+            "0x14506020",
         )
         self.assertTrue(all(result.is_error for result in rejected))
 

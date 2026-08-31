@@ -265,3 +265,24 @@ PID 各自的 Job/tree/global inventory/watchdog/control-file/contract-error 清
 退出，则允许并严格证明单 PID、零 restart 的清理；不能由“进入 scenario”这个手工布尔值伪造两 PID 预期。上述 P1 仍只有
 fake-supervisor/static 证据；seed installer 虽已 static-ready，但在取得 current-tree exact-build load artifact 且领域 provider RED 解除前，
 不得写 production-live。
+
+### Scoreboard stable-target paused-probe prerequisite (2026-08-31)
+
+The generated scoreboard GUI now assigns unique scoreboard-only names to the
+managed, received-self, and system entry buttons, the modal backdrop close
+button, and the header close button. The fixed read-only scoreboard provider
+queries those five targets together with the existing window/container/modal/
+panel instances. For each of the nine fixed targets it returns the stable
+identity, same-query instance pointer, vtable pointer, existence, and local/
+effective visibility. Pointer values are diagnostic uppercase hexadecimal
+strings bound to the same paused revision; they are not durable identities and
+must never be reused after the query.
+
+This closes only the static prerequisite for one bounded MCP paused probe. It
+does not expose `activate`, `close`, `reopen`, a generic widget-name argument,
+or any click path. Enabled/focus/modal-blocking/geometry/scroll remain typed
+unavailable, `full_widget_gate_ready=false`, and
+`production_live_ready=false`. The five names still require exact-build paused
+proof that CK3 materializes them on the intended PushButton instances before
+the callback candidate can be investigated. No action readiness or live claim
+is implied by this contract expansion.

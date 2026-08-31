@@ -40,6 +40,8 @@
     "children_pointer_offset": "0xF0",
     "children_count_offset": "0xFC",
     "name_msvc_string_offset": "0x1B8",
+    "instance_pointer": "same-paused-query uppercase hexadecimal diagnostic identity",
+    "vtable_pointer_offset": "0x00",
     "maximum_depth": 64,
     "maximum_traversal": 4096,
     "effective_visibility": "all_parents_exist_and_local_hidden_bit_is_clear",
@@ -116,8 +118,7 @@
       }
     ],
     "runtime_identity_blockers": [
-      "the named scoreboard toggle is a container with three unnamed managed/received/system button descendants",
-      "the backdrop close control is unnamed; the header close inherits generic template name button_close but lacks a scoreboard-specific identity and paused runtime expansion proof",
+      "the five new scoreboard-specific names still require paused proof that CK3 materializes the generated names on the intended PushButton instances",
       "reopen has no independent control and must be a verified close then activate composition"
     ],
     "unfrozen_action_fields": [
@@ -146,7 +147,7 @@
     {
       "stable_identity": "zg361_open_scoreboard",
       "runtime_name": "zg361_scoreboard_toggle",
-      "note": "the product entry identity is fixed; its three clickable descendants are unnamed"
+      "note": "the product entry container remains fixed; its three clickable descendants now have separate scoreboard-specific identities"
     },
     {
       "stable_identity": "zg361_scoreboard_window",
@@ -159,6 +160,26 @@
     {
       "stable_identity": "zg361_scoreboard_panel",
       "runtime_name": "zg361_scoreboard_panel"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_entry_managed",
+      "runtime_name": "zg361_scoreboard_entry_managed"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_entry_received",
+      "runtime_name": "zg361_scoreboard_entry_received"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_entry_system",
+      "runtime_name": "zg361_scoreboard_entry_system"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_modal_backdrop_close",
+      "runtime_name": "zg361_scoreboard_modal_backdrop_close"
+    },
+    {
+      "stable_identity": "zg361_scoreboard_header_close",
+      "runtime_name": "zg361_scoreboard_header_close"
     }
   ],
   "acl": {
@@ -211,7 +232,8 @@
     "before_after_frame_equality": true,
     "raw_row_equality": true,
     "widget_pointer_identity_equality": true,
-    "engine_pointers_retained": false
+    "engine_pointers_retained": false,
+    "diagnostic_pointer_projection": "instance and vtable are serialized as same-query uppercase hexadecimal strings only"
   },
   "readiness": {
     "state_acl_query_ready": "may become true only for a coherent same-frame fixed-widget plus player-ACL result",
@@ -236,5 +258,5 @@
     "full_runner_capability_gate",
     "production_live_acceptance"
   ],
-  "next_live_evidence": "assign scoreboard-specific identities to the three entry and backdrop-close controls and bind inherited button_close relative to the scoreboard panel; statically close definition onclick 0x307/+0x338 to runtime 0x11B/+0x3F8/+0x7F8 plus slot 36 upstream admission; then batch managed and received-only paused artifacts for the real dispatcher-to-PushButton-callback trace, enabled disabled contrast, and modal-stack/top-receiver contrast; add a scoreboard_state_revision that changes only with canonical scoreboard state; finally require independent ACK plus a later-pump query with a larger scoreboard revision before advertising activate, close, or reopen"
+  "next_live_evidence": "use one bounded paused query to prove the five generated scoreboard-specific names resolve to the intended PushButton instances and capture their instance/vtable contrast; then statically close definition onclick 0x307/+0x338 to runtime 0x11B/+0x3F8/+0x7F8 plus slot 36 upstream admission, batch managed and received-only paused artifacts for the real dispatcher-to-PushButton-callback trace, enabled disabled contrast, and modal-stack/top-receiver contrast; add a scoreboard_state_revision that changes only with canonical scoreboard state; finally require independent ACK plus a later-pump query with a larger scoreboard revision before advertising activate, close, or reopen"
 }
