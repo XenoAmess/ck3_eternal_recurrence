@@ -195,6 +195,9 @@ unreviewed run，并保存配置声明的旁白 artifact 与最终 deliverable
 也不代表 release GREEN；必须另外完成二期 runtime claim matrix、最终 ffprobe 时长门禁、
 完整画面审阅和对同一 deliverable SHA 的明确签核。所有失败 take、原始 capture、日志和
 候选 run 都应继续留在外部 artifact 目录，不能提交到 Git 或冒充正式成片。
+若候选 run 在持久化过程中因 artifact/目标冲突等原因失败，入口会把
+`phase=candidate-run-persistence` 写入同一份失败收据，并保留已经建立的
+`candidate-run` 半成品（收据的 `retained_paths` 会标出该目录）；不得清理后在原目录重试。
 
 ## 媒体 smoke
 

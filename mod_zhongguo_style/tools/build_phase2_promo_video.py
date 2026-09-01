@@ -1507,21 +1507,38 @@ def _write_new_json(path: Path, value: Mapping[str, object]) -> Path:
     return path
 
 
-def _write_entry_failure(workdir: Path, phase: str, error: Exception) -> Path:
-    return _write_new_json(
-        workdir / "phase2-entry-failure.json",
-        {
-            "schema_version": 1,
-            "kind": "zhongguo-361-phase2-entry-failure",
-            "status": "RED",
-            "phase": phase,
-            "exception_type": type(error).__name__,
-            "message": str(error),
-            "recorded_at_utc": dt.datetime.now(dt.timezone.utc)
-            .isoformat(timespec="seconds")
-            .replace("+00:00", "Z"),
-        },
-    )
+def _write_entry_failure(
+    workdir: Path,
+    phase: str,
+    error: Exception,
+    *,
+    retained_paths: Sequence[Path] = (),
+) -> Path:
+    """Write the immutable entry failure receipt for a retained attempt.
+
+    A candidate run can be created incrementally.  If persistence fails after
+    its manifest or some artifacts have landed, callers pass that path here so
+    the receipt makes the retention boundary explicit.  The helper itself is
+    intentionally exclusive: an attempt receipt is process material and must
+    never be overwritten by a retry.
+    """
+
+    payload: dict[str, object] = {
+        "schema_version": 1,
+        "kind": "zhongguo-361-phase2-entry-failure",
+        "status": "RED",
+        "phase": phase,
+        "exception_type": type(error).__name__,
+        "message": str(error),
+        "recorded_at_utc": dt.datetime.now(dt.timezone.utc)
+        .isoformat(timespec="seconds")
+        .replace("+00:00", "Z"),
+    }
+    if retained_paths:
+        payload["retained_paths"] = [
+            str(path.expanduser().resolve()) for path in retained_paths
+        ]
+    return _write_new_json(workdir / "phase2-entry-failure.json", payload)
 
 
 def _persist_candidate_run(
@@ -1764,12 +1781,47 @@ def execute(
             ),
         )
         if result.succeeded:
-            run_path = _persist_candidate_run(
-                config_path,
-                result,
-                args.run_id,
-                seed_preflight=seed_preflight,
-            )
+            failure_phase = "candidate-run-persistence"
+            try:
+                run_path = _persist_candidate_run(
+                    config_path,
+                    result,
+                    args.run_id,
+                    seed_preflight=seed_preflight,
+                )
+            except Exception as exc:
+                # ``_persist_candidate_run`` creates the run incrementally.
+                # Keep any manifest/artifacts already written and record the
+                # exact boundary instead of deleting or retrying the attempt.
+                candidate_run = workdir / "candidate-run"
+                try:
+                    retained_paths = (
+                        (candidate_run.resolve(),)
+                        if candidate_run.exists()
+                        else ()
+                    )
+                except OSError:
+                    # A stat failure must not replace the persistence error;
+                    # the attempt directory itself is still left untouched.
+                    retained_paths = ()
+                try:
+                    if retained_paths:
+                        _write_entry_failure(
+                            workdir,
+                            failure_phase,
+                            exc,
+                            retained_paths=retained_paths,
+                        )
+                    else:
+                        _write_entry_failure(workdir, failure_phase, exc)
+                except Exception as receipt_error:
+                    # Preserve the original persistence exception even if a
+                    # hostile/partial filesystem prevents writing the receipt.
+                    exc.add_note(
+                        "could not write phase2-entry-failure.json: "
+                        f"{type(receipt_error).__name__}: {receipt_error}"
+                    )
+                raise
 
     blockers: list[str] = []
     if not result.succeeded:

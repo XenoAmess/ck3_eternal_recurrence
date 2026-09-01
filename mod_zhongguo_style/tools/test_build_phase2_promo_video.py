@@ -24,6 +24,7 @@ if str(TOOLS_DIRECTORY) not in sys.path:
 
 import build_phase2_promo_video as promo  # noqa: E402
 
+from xar_promo.errors import ArtifactError  # noqa: E402
 from xar_promo.pipeline import (  # noqa: E402
     AuditRecordReady,
     PipelineArtifactRecord,
@@ -916,6 +917,109 @@ class Phase2PromoEntryTests(unittest.TestCase):
             )
             self.assertTrue((workdir / "phase2-pipeline-result.json").is_file())
             self.assertFalse((workdir / "candidate-run" / "run-manifest.json").exists())
+
+    def test_candidate_run_persistence_failure_retains_partial_and_red_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config_path = _write_ready_config(root)
+            workdir = root / "candidate-persistence-failure"
+            args = _args(
+                config_path,
+                root / "fake-live-capture",
+                workdir,
+                validate_only=False,
+            )
+            original = ArtifactError(
+                "refusing to overwrite conflicting artifact: target.mp4"
+            )
+
+            real_preserve = promo.preserve_artifact
+
+            def fail_deliverable_preserve(run_path, source, **kwargs):
+                if kwargs.get("artifact_id") == promo.DELIVERABLE_ARTIFACT_ID:
+                    raise original
+                return real_preserve(run_path, source, **kwargs)
+
+            with mock.patch.object(
+                promo,
+                "preserve_artifact",
+                side_effect=fail_deliverable_preserve,
+            ):
+                with self.assertRaisesRegex(
+                    ArtifactError,
+                    "refusing to overwrite conflicting artifact",
+                ) as raised:
+                    promo.execute(
+                        args,
+                        composer_factory=_RealDurationFakeComposer,
+                        pipeline_runner=lambda _invocation, **_kwargs: _successful_result(
+                            workdir,
+                            load_phase2_project_config(config_path),
+                        ),
+                    )
+
+            # The persistence error remains the caller-visible exception; the
+            # partially-created candidate run is never cleaned up.
+            self.assertIs(raised.exception, original)
+            partial_manifest = workdir / "candidate-run" / "run-manifest.json"
+            self.assertTrue(partial_manifest.is_file())
+            loaded_partial = load_document(partial_manifest, check_files=True)
+            self.assertIsNotNone(loaded_partial.run)
+            self.assertEqual(10, len(loaded_partial.run.artifacts))
+            receipt_path = workdir / "phase2-entry-failure.json"
+            self.assertTrue(receipt_path.is_file())
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            self.assertEqual("RED", receipt["status"])
+            self.assertEqual("candidate-run-persistence", receipt["phase"])
+            self.assertEqual("ArtifactError", receipt["exception_type"])
+            self.assertIn("conflicting artifact", receipt["message"])
+            self.assertEqual(
+                [str((workdir / "candidate-run").resolve())],
+                receipt["retained_paths"],
+            )
+            self.assertTrue((workdir / "phase2-pipeline-result.json").is_file())
+
+    def test_candidate_run_persistence_error_is_not_masked_by_receipt_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config_path = _write_ready_config(root)
+            workdir = root / "candidate-persistence-receipt-failure"
+            args = _args(
+                config_path,
+                root / "fake-live-capture",
+                workdir,
+                validate_only=False,
+            )
+            original = ArtifactError("candidate target conflict")
+
+            with (
+                mock.patch.object(promo, "_persist_candidate_run", side_effect=original),
+                mock.patch.object(
+                    promo,
+                    "_write_entry_failure",
+                    side_effect=OSError("receipt filesystem unavailable"),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    ArtifactError,
+                    "candidate target conflict",
+                ) as raised:
+                    promo.execute(
+                        args,
+                        composer_factory=_RealDurationFakeComposer,
+                        pipeline_runner=lambda _invocation, **_kwargs: _successful_result(
+                            workdir,
+                            load_phase2_project_config(config_path),
+                        ),
+                    )
+
+            self.assertIs(raised.exception, original)
+            self.assertTrue(
+                any(
+                    "could not write phase2-entry-failure.json" in note
+                    for note in getattr(raised.exception, "__notes__", ())
+                )
+            )
 
     def test_missing_real_capture_writes_failure_attempt_in_build_mode(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
