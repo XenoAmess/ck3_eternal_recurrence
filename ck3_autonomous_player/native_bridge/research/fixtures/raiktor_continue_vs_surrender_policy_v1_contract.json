@@ -24,7 +24,7 @@
     },
     {
       "path": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
-      "sha256": "1A4BFC51453B57FA4CBA3CBB9FD4909DEE1DE557C646BF1523F6DA983AA89BE9",
+      "sha256": "39469FD53E91A3807E2154CAA7F94420055CF71D97115DDEB7DA3A6CA8752C35",
       "semantic_contract": "GEN-034 remains unresolved until public same-frame inputs, policy, typed submit and six-domain postconditions are live"
     }
   ],

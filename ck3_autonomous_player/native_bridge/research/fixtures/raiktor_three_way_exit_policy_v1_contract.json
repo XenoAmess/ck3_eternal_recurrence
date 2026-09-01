@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-three-way-exit-policy-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "policy_version": "raiktor-three-way-exit-policy-v1",
+  "owner_budget_profile_contract": "raiktor-owner-budget-profile-v1",
+  "white_peace_comparison_contract": "raiktor-white-peace-comparison-certificate-v1",
+  "composes": [
+    "raiktor-surrender-six-domain-v1",
+    "raiktor-continue-vs-surrender-policy-v1"
+  ],
+  "current_g2_checkpoint": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "casus_belli_key": "raiktor_claim_cb",
+    "player_role": "primary_attacker",
+    "war_score": -50,
+    "war_duration_days": 1281,
+    "status": "evidence_required",
+    "missing_providers": [
+      {
+        "provider": "raiktor-campaign-dominance-certificate-provider-v1",
+        "reason": "campaign_dominance_certificate_unavailable"
+      },
+      {
+        "provider": "raiktor-owner-budget-profile-provider-v1",
+        "reason": "owner_budget_profile_unavailable"
+      },
+      {
+        "provider": "raiktor-white-peace-comparison-provider-v1",
+        "reason": "white_peace_comparison_certificate_unavailable"
+      }
+    ],
+    "recommended_outcome": null,
+    "production_recommendation_ready": false,
+    "full_exit_decision_ready": false,
+    "action_ready": false,
+    "action_literal": null,
+    "automatic_surrender_ready": false
+  },
+  "campaign_certificate_requirement": {
+    "contract": "raiktor-campaign-dominance-certificate-v1",
+    "must_bind": [
+      "candidate full paused frame",
+      "normalized surrender candidate SHA-256",
+      "normalized six-domain terms SHA-256; six-domain v1 itself carries only coarse frame identity",
+      "owner pairwise limits SHA-256"
+    ],
+    "must_include": [
+      "campaign outcome distribution",
+      "all reasonable encounters",
+      "mobilized and reserve strength",
+      "reinforcement and siege ETA",
+      "finance endurance",
+      "model risk",
+      "tail risk",
+      "sunk-cost exclusion",
+      "claims and all six domains valued",
+      "continue and surrender conservative utility bounds"
+    ],
+    "current_provider_status": "unavailable"
+  },
+  "owner_budget_requirement": {
+    "must_include": [
+      "profile identity and provenance",
+      "source artifact SHA-256",
+      "production eligibility",
+      "continue tail-loss limit",
+      "surrender gold, prestige, claim, favor-hook and truce limits",
+      "white-peace gold, prestige, claim, favor-hook and truce limits",
+      "minimum robust switch margin"
+    ],
+    "current_provider_status": "unavailable",
+    "no_default_thresholds": true
+  },
+  "white_peace_requirement": {
+    "must_bind": [
+      "candidate and white-peace full paused frame",
+      "candidate SHA-256",
+      "surrender terms SHA-256; this does not close the six-domain v1 session-provenance gap",
+      "campaign certificate SHA-256",
+      "owner budget profile SHA-256"
+    ],
+    "must_include": [
+      "constructed context and native validator",
+      "typed final recipient response",
+      "declared-target claim retention",
+      "title-holder change count",
+      "actual primary gold transfer",
+      "attacker prestige delta",
+      "truce duration",
+      "prisoner-release pairs",
+      "favor-hook application",
+      "hostage variant",
+      "model-risk-adjusted utility interval"
+    ],
+    "current_provider_status": "unavailable"
+  },
+  "decision_rule": {
+    "eligible_candidate": "all candidate-specific legality and hard-budget checks pass",
+    "robust_winner": "candidate lower utility bound exceeds every other eligible candidate upper bound by the owner minimum switch margin",
+    "otherwise": "three_way_underdetermined",
+    "output_scope": "static outcome recommendation only"
+  },
+  "hard_boundaries": {
+    "authored_3000_is_measured_pre_soldiers": false,
+    "authored_3000_is_proven_loss": false,
+    "generic_war_bound_current_is_source_attribution": false,
+    "six_domain_v1_carries_connection_episode_and_pid": false,
+    "static_core_promotes_provider_flags_to_production_live": false,
+    "score_or_duration_is_an_exit_reason": false,
+    "action_literal": null,
+    "automatic_surrender_ready": false,
+    "pending_or_cooldown_evaluated": false,
+    "action_boundary_postconditions_evaluated": false,
+    "native_ai_equivalent": false,
+    "semantic_optimal": false
+  },
+  "readiness": {
+    "stage": "static-fixture-three-way-core",
+    "public_wire_complete": false,
+    "production_live": false,
+    "action_ready": false,
+    "current_checkpoint_decision_ready": false,
+    "gen_034_resolved": false
+  }
+}
