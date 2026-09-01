@@ -10,8 +10,8 @@
   "advertised": true,
   "production_wired": true,
   "live_validated": true,
-  "live_validated_scope": "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only",
-  "not_live_validated_scope": "negative signed pending-ID consumption and reply, the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
+  "live_validated_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality plus one signed-negative arrange-marriage query/reject lifecycle",
+  "not_live_validated_scope": "typed call_ally war target paused production artifact, the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
   "game_process_started": true,
   "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline, reply legality, authored generic cost vector and the exact ordinary nonreligious three-subtype special-war binding",
   "owner_deferred_domains": [
@@ -25,7 +25,7 @@
     "holy_war"
   ],
   "execution_boundary": {
-    "research_mode": "production read-only query live-validated for one ordinary nonreligious recipient fixture; generic authored costs are static-closed and production-wired but not yet live-validated",
+    "research_mode": "production read-only query live-validated for ordinary nonreligious recipient fixtures, including one signed-negative pending ID; one definition-bound reject lifecycle is separately live-validated; generic authored costs are static-closed and production-wired but not yet live-validated",
     "ck3_started_or_controlled": true,
     "cpp_implementation_changed": true,
     "query_thread": "paused application-main mailbox",
@@ -467,7 +467,21 @@
       "serialization_tag": "0x6B",
       "type_registry": "RVA 0x33C52B0 returns the exact-build registry at 0x4FFE290; data +0x00, signed count +0x0C, entry stride 0x50, entry +0x00 int32 script identifier",
       "stable_type_key": "for a nonzero in-range uint16 type index, resolve entry+0x00 through RVA 0x3B58970; reject the out-of-range fallback entry at 0x5000AB0",
-      "semantic_boundary": "publish the stable type key and raw envelope only as source evidence; typed target payload identity remains unavailable until that type has an exact-build decoder"
+      "semantic_boundary": "publish the stable type key and raw envelope as source evidence; only the canonical call_ally_interaction definition with exact type_index=16/type_key=war is the typed exception below, while every other definition or target kind remains unavailable until its own exact-build decoder exists",
+      "war_target_decoder": {
+        "scope": "stock call_ally pending target only",
+        "call_ally_definition_key": "call_ally_interaction",
+        "type_index": 16,
+        "type_key": "war",
+        "raw_envelope_bytes": 16,
+        "war_id": "+0x08 signed int32 in the complete 0x10-byte envelope",
+        "resolver": "invoke the existing application-main generation-safe active-CWar resolver with that signed WarID; it validates low-24-bit slot, complete generation-bearing ID and active storage liveness",
+        "full_id_recheck": "re-read resolved CWar+0x08 and require exact equality with the envelope WarID",
+        "published_identity": "war:<canonical positive signed-decimal-id>",
+        "unavailable_reason": "war_target_identity_unavailable",
+        "failure_boundary": "negative/nonpositive IDs, resolver failure, inactive/stale generation or full-ID mismatch remain typed_identity_status=unavailable with reason war_target_identity_unavailable; no raw token is published as identity",
+        "action_boundary": "this closes observation only; it does not select a reply, submit call_ally, resolve CB terms or claim an OODA/live action"
+      }
     },
     "CReplyCharacterInteractionCommand": {
       "size": "0x28",
@@ -661,13 +675,14 @@
       "auto_accept result and auto-accept-notification channel",
       "selected send-option native indexes and numeric flag identifiers",
       "target presence, stable generic-scope type key and raw type envelope",
+      "for exact type_index=16/type_key=war call_ally targets only: generation-safe active full WarID and canonical war:<id> typed identity",
       "age, expiration and remaining days",
       "independent accept, reject, block and acknowledge legality",
       "complete ten-key signed Q100000 generic authored cost vector, with actor/on-send/already-applied payment semantics",
       "for the three exact ordinary nonreligious end-war definition/vptr pairs only: absolute outcome, active full WarID and opposite actor/recipient primary war roles"
     ],
     "unavailable_without_subtype_decoder": [
-      "typed identity for every generic target kind",
+      "typed identity for every generic target kind other than the exact call_ally war target decoder",
       "numeric option flag identifier to canonical string",
       "special-subtype resource transfers beyond the generic authored cost vector",
       "structured relationship or title exchanges",
@@ -702,6 +717,8 @@
     "generic_target_envelope_static_ready": true,
     "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
+    "call_ally_war_target_query_ready": true,
+    "call_ally_war_target_live_ready": false,
     "generic_costs_static_ready": true,
     "generic_costs_query_ready": true,
     "generic_costs_live_ready": false,
@@ -718,9 +735,9 @@
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
     "signed_pending_id_contract_ready": true,
-    "negative_signed_pending_id_live_ready": false,
+    "negative_signed_pending_id_live_ready": true,
     "production_live_ready": true,
-    "production_live_scope": "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; negative signed pending-ID consumption and reply, the newly wired generic cost vector and special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
+    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality (including one signed-negative full-ID query/reject lifecycle); the typed call_ally war target decoder is query/static-covered but has no paused live artifact, and the newly wired generic cost vector, special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   },
@@ -789,10 +806,30 @@
     "delivery_diagnostic": "the last recorded snapshot_publish_diagnostic ended with status written at publisher revision 10 and payload_bytes 44025; the failure was consumer-side schema rejection, not an absent or oversized state-frame write",
     "diagnostic_inference": "At the frozen commit, the native serializer emitted instance_id and sender_character_id as signed int32 JSON numbers and auto_accept_notification as a JSON boolean. The Python consumer already accepted the sender signed int and boolean flag but required instance_id to be positive. Therefore this malformed-pending branch uniquely diagnoses a complete generation-bearing pending ID whose high generation bit made its JSON representation negative. The rejected raw ID was not retained in this report, so no exact numeric ID is claimed.",
     "corrected_contract": "accept every canonical signed int32 full component ID except -1; 0 remains structurally valid but has no live sample",
-    "claim_boundary": "This RED artifact proves the previous positive-only consumer contract blocked a real campaign frame and justifies the correction. It does not prove that the corrected consumer can query, acknowledge, accept or reject a negative ID; production-live promotion requires a fresh replay with the old full ID observed to advance."
+    "claim_boundary": "This RED artifact proves the previous positive-only consumer contract blocked a real campaign frame and justifies the correction. The corrected contract's signed-negative query/reject promotion is evidenced separately by signed_pending_id_live_validation below; this diagnostic does not prove acknowledge, accept, block, or marriage semantic utility."
+  },
+  "signed_pending_id_live_validation": {
+    "status": "production-live loop",
+    "source_commit": "c21c096263325e1d8a13a4b01eebaa38ac88d2dd",
+    "run_id": "20260827T191804Z-one-generation-8c116e3e",
+    "artifact_path": "C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/runs/20260827T191804Z-one-generation-8c116e3e/report.json",
+    "artifact_sha256": "3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973",
+    "run_outcome": "bounded_incomplete",
+    "requested_turns": 12,
+    "successful_turns": 12,
+    "pending_interaction_id": -2013265918,
+    "definition_key": "arrange_marriage_interaction",
+    "query_step": "query-pending-character-interaction-context-v1",
+    "reply_step": "reject-pending-character-interaction",
+    "reply_status": "rejected",
+    "old_id_absent_after_reply": true,
+    "continued_after_reply": true,
+    "checkpoints_saved": 2,
+    "cleanup_proven": true,
+    "semantic_decision_ready": false,
+    "claim_boundary": "This production-live slice proves signed-negative snapshot/query/reject and old-full-ID advancement for one exact definition-bound marriage reject-only policy. It does not prove marriage semantic utility, accept, block, alliance outcome, or a one-generation completion."
   },
   "next_reverse_engineering": [
-    "replay the immutable one-generation checkpoint through a negative signed pending ID, then require typed query/reply and old-full-ID advancement before marking negative_signed_pending_id_live_ready",
     "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
     "live-validate all-zero generic authored costs on the existing nonreligious white-peace pending fixture, then validate at least one nonzero nonreligious authored cost without sending or replying",
     "live-validate the exact white-peace definition/vptr pair and active WarID binding twice in one paused revision without sending a reply; victory and defeat remain separate future fixtures",

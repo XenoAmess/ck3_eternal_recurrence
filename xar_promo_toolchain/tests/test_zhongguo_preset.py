@@ -6,6 +6,7 @@ import math
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -19,12 +20,19 @@ from xar_promo.model import ProjectConfig  # noqa: E402
 from xar_promo.presets.zhongguo_361_phase2 import (  # noqa: E402
     CAPTURE_CHAPTER_KIND,
     CORE_PROJECT_CONFIG_BLOCKERS,
+    PHASE2_CHAPTER_CONTRACT,
+    PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+    PHASE2_PROMO_CAPTURE_MODE,
+    PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+    PHASE2_PROMO_CAPTURE_SPAN_MAP,
+    PHASE2_PROMO_CLEAN_SPAN_IDS,
     PHASE2_POLICY,
     Phase2PresetError,
     build_narration_request,
     load_phase2_capture_candidate,
     load_phase2_project_config,
     phase2_capture_requirements,
+    validate_phase2_project_config,
     validate_rendered_duration,
 )
 from xar_promo.project import load_document  # noqa: E402
@@ -70,6 +78,18 @@ def _write_candidate_timeline(
     title_history.write_text("e_example = { 1066.1.1 = { holder = 1001 } }\n", encoding="utf-8")
     requirements = phase2_capture_requirements(config)
     timeline = {
+        "capture_mode": PHASE2_PROMO_CAPTURE_MODE,
+        "capture_contract_version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+        "capture_contract": {
+            "mode": PHASE2_PROMO_CAPTURE_MODE,
+            "version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+            "producer_id": PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+            "span_ids": list(PHASE2_PROMO_CLEAN_SPAN_IDS),
+            "span_map": [
+                {"chapter_id": chapter_id, "producer_key": producer_key}
+                for chapter_id, producer_key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+            ],
+        },
         "real_character_provenance": {
             "schema_version": 1,
             "subjects": [
@@ -132,6 +152,55 @@ class ZhongguoPhase2PresetTest(unittest.TestCase):
         self.assertEqual(document.config, self.config)
         self.assertTrue(self.config.chapters)
         self.assertTrue(all(chapter.state == "planned" for chapter in self.config.chapters))
+        self.assertEqual(
+            PHASE2_CHAPTER_CONTRACT,
+            tuple((chapter.chapter_id, chapter.kind) for chapter in self.config.chapters),
+        )
+
+    def _assert_invalid_project_payload(self, mutate, pattern: str) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            payload = json.loads(PROJECT_CONFIG_PATH.read_text(encoding="utf-8-sig"))
+            mutate(payload)
+            path = Path(temp) / "phase2-invalid.json"
+            path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(Phase2PresetError, pattern):
+                load_phase2_project_config(path)
+
+    def test_project_rejects_missing_canonical_chapter(self) -> None:
+        self._assert_invalid_project_payload(
+            lambda payload: payload["chapters"].pop(4),
+            "canonical ten-chapter contract",
+        )
+
+    def test_project_rejects_reordered_canonical_chapters(self) -> None:
+        def reorder(payload) -> None:
+            payload["chapters"][1], payload["chapters"][2] = (
+                payload["chapters"][2],
+                payload["chapters"][1],
+            )
+
+        self._assert_invalid_project_payload(reorder, "canonical ten-chapter contract")
+
+    def test_project_rejects_duplicate_chapter_ids(self) -> None:
+        def duplicate(payload) -> None:
+            payload["chapters"][1]["id"] = payload["chapters"][2]["id"]
+
+        self._assert_invalid_project_payload(duplicate, "duplicate ids")
+
+    def test_direct_preset_validation_reports_duplicate_ids_before_order(self) -> None:
+        duplicate = replace(
+            self.config,
+            chapters=(
+                self.config.chapters[0],
+                self.config.chapters[0],
+                *self.config.chapters[2:],
+            ),
+        )
+        with self.assertRaisesRegex(Phase2PresetError, "duplicate ids"):
+            validate_phase2_project_config(duplicate)
 
     def test_policy_carries_project_only_requirements(self) -> None:
         self.assertEqual(PHASE2_POLICY.narration_locale, "zh-CN")
@@ -172,6 +241,37 @@ class ZhongguoPhase2PresetTest(unittest.TestCase):
         for span_id in configured:
             self.assertIn(f"{span_id}_clean_begin", requirements.mark_labels)
             self.assertIn(f"{span_id}_clean_end", requirements.mark_labels)
+
+    def test_phase2_capture_schema_freezes_canonical_span_map(self) -> None:
+        schema_path = (
+            PACKAGE_ROOT
+            / "src"
+            / "xar_promo"
+            / "schemas"
+            / "phase2-capture-contract-v1.schema.json"
+        )
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        properties = schema["properties"]
+        self.assertEqual(PHASE2_PROMO_CAPTURE_MODE, properties["mode"]["const"])
+        self.assertEqual(
+            PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+            properties["version"]["const"],
+        )
+        self.assertEqual(
+            PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+            properties["producer_id"]["const"],
+        )
+        self.assertEqual(
+            list(PHASE2_PROMO_CLEAN_SPAN_IDS),
+            properties["span_ids"]["const"],
+        )
+        self.assertEqual(
+            [
+                {"chapter_id": chapter_id, "producer_key": producer_key}
+                for chapter_id, producer_key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+            ],
+            properties["span_map"]["const"],
+        )
 
     def test_narration_request_fixes_xiaoxiao_voice(self) -> None:
         request = build_narration_request("没有 HC？很好，流程还可以继续走。", rate="+3%")
@@ -241,6 +341,44 @@ class ZhongguoPhase2PresetTest(unittest.TestCase):
                         fixture_ui_absent=fixture_ui_absent,
                     )
                     fake_bundle = SimpleNamespace(timeline=SimpleNamespace(path=timeline))
+                    with patch(
+                        "xar_promo.presets.zhongguo_361_phase2.load_capture_bundle",
+                        return_value=fake_bundle,
+                    ):
+                        with self.assertRaisesRegex(Phase2PresetError, expected):
+                            load_phase2_capture_candidate(ready, root / "capture")
+
+    def test_candidate_rejects_legacy_or_misordered_capture_contract(self) -> None:
+        ready = _ready_capture_config(self.config)
+        for mutation, expected in (
+            (
+                lambda value: value.pop("capture_contract"),
+                "lacks its producer capture_contract",
+            ),
+            (
+                lambda value: value.__setitem__("capture_mode", "zhongguo-361-phase1"),
+                "dedicated capture_mode",
+            ),
+            (
+                lambda value: value["capture_contract"].__setitem__(
+                    "span_ids", list(reversed(PHASE2_PROMO_CLEAN_SPAN_IDS))
+                ),
+                "span_ids must exactly match",
+            ),
+        ):
+            with self.subTest(expected=expected):
+                with tempfile.TemporaryDirectory() as temp:
+                    root = Path(temp).resolve()
+                    timeline = _write_candidate_timeline(root, ready)
+                    payload = json.loads(timeline.read_text(encoding="utf-8"))
+                    mutation(payload)
+                    timeline.write_text(
+                        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8",
+                    )
+                    fake_bundle = SimpleNamespace(
+                        timeline=SimpleNamespace(path=timeline)
+                    )
                     with patch(
                         "xar_promo.presets.zhongguo_361_phase2.load_capture_bundle",
                         return_value=fake_bundle,

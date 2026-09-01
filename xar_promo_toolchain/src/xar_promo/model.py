@@ -408,9 +408,7 @@ class ConfigBinding:
     def from_mapping(cls, value: Any) -> "ConfigBinding":
         row = _object(value, "project_config")
         _only_keys(row, {"path", "bytes", "sha256"}, "project_config")
-        path = _string(row.get("path"), "project_config.path")
-        if "\\" in path or PurePosixPath(path).is_absolute():
-            raise ManifestError("project_config.path must be a portable relative reference")
+        path = portable_relative_path(row.get("path"), "project_config.path")
         digest = _string(row.get("sha256"), "project_config.sha256").upper()
         if SHA256.fullmatch(digest) is None:
             raise ManifestError("project_config.sha256 must be a SHA-256")

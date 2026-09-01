@@ -107,6 +107,134 @@ def main() -> int:
             "append-only parser RED lacks deduplicated findings",
         )
 
+        # A managed native session that has already reported a non-zero
+        # process exit must terminate the loader gate immediately.  This is
+        # the concrete C0000005 boundary from the bounded CK3 attempt; it
+        # must not be rewritten as the generic 300-second timeout.
+        exit_logs = root / "process-exit" / "logs"
+        exit_logs.mkdir(parents=True)
+        (exit_logs / "debug.log").write_bytes(b"")
+        (exit_logs / "error.log").write_bytes(b"")
+        exit_progress = root / "process-exit" / "loader-progress.jsonl"
+        exit_time = FakeTime()
+        session_report = {
+            "kind": "ck3_native_headless_session",
+            "exit_reason": "process_exit",
+            "process_exit_code": 1,
+            "pid": 79880,
+            "ok": False,
+        }
+
+        def process_exit_probe() -> dict[str, object] | None:
+            if exit_time.sleep_count < 1:
+                return None
+            return {
+                "terminal": True,
+                "session_thread_alive": False,
+                "session_report": session_report,
+                "session_error": None,
+            }
+
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                exit_logs,
+                exit_progress,
+                timeout_seconds=300.0,
+                fatal_stall_seconds=45.0,
+                poll_interval_seconds=1.0,
+                native_session_probe=process_exit_probe,
+                clock=exit_time.clock,
+                sleeper=exit_time.sleep,
+            )
+            raise AssertionError("native process exit did not fail early")
+        except loader.LoaderNativeSessionExitRed as error:
+            require(
+                error.evidence["state"] == "native_session_process_exit",
+                "native process exit received the wrong terminal",
+            )
+            require(
+                error.evidence["process_exit_code"] == 1
+                and error.evidence["process_exit_nonzero"] is True,
+                "non-zero native process exit was not preserved",
+            )
+            require(
+                error.evidence["native_session"]["session_report"]
+                == session_report,
+                "native session report was not preserved in loader evidence",
+            )
+        require(
+            exit_time.value < 45.0,
+            "native process exit waited for the generic loader timeout",
+        )
+        require(
+            rows(exit_progress)[-1]["state"] == "native_session_process_exit",
+            "append-only evidence lacks the native process-exit terminal",
+        )
+
+        # A terminal supervisor result must win even when the log already
+        # contains a marker that would otherwise authorize the event waiter.
+        # This guards the ordering boundary: a stale Load Save/In Game marker
+        # cannot be promoted to GREEN after CK3 has exited non-zero.
+        precedence_logs = root / "authorized-probe-precedence" / "logs"
+        precedence_logs.mkdir(parents=True)
+        (precedence_logs / "debug.log").write_text(
+            "[00:00:01][D][gameapplication.cpp:558]: "
+            "Setting idler 'Load Save' with init options\n",
+            encoding="utf-8",
+        )
+        (precedence_logs / "error.log").write_text("", encoding="utf-8")
+        precedence_progress = (
+            root / "authorized-probe-precedence" / "loader-progress.jsonl"
+        )
+        precedence_probe_calls: list[int] = []
+
+        def authorized_process_exit_probe() -> dict[str, object] | None:
+            precedence_probe_calls.append(1)
+            return {
+                "terminal": True,
+                "session_report": {
+                    "exit_reason": "process_exit",
+                    "process_exit_code": 1,
+                },
+            }
+
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                precedence_logs,
+                precedence_progress,
+                timeout_seconds=10.0,
+                fatal_stall_seconds=3.0,
+                poll_interval_seconds=0.0,
+                native_session_probe=authorized_process_exit_probe,
+            )
+            raise AssertionError(
+                "terminal native session was incorrectly promoted to GREEN"
+            )
+        except loader.LoaderNativeSessionExitRed as error:
+            require(
+                error.evidence["state"] == "native_session_process_exit",
+                "authorized marker did not preserve typed process-exit RED",
+            )
+            require(
+                error.evidence["event_wait_authorized"] is True,
+                "precedence regression did not exercise an authorized marker",
+            )
+            require(
+                error.evidence["process_exit_nonzero"] is True,
+                "authorized-marker process exit lost its non-zero evidence",
+            )
+        require(
+            precedence_probe_calls == [1],
+            "native session probe was not called before authorized GREEN",
+        )
+        require(
+            all(
+                row["state"] != "loader_stage_ready"
+                for row in rows(precedence_progress)
+            ),
+            "authorized marker emitted a false loader_stage_ready terminal",
+        )
+
         # A theme warning is actionable static debt, but cannot impersonate a
         # parser/compiler stall and trigger the typed early-RED boundary.
         theme_logs = root / "theme" / "logs"

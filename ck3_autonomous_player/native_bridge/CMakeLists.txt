@@ -89,6 +89,7 @@ add_library(xar_ck3_bridge SHARED
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp
   src/route_contact_horizon_v1_mailbox.cpp
+  src/raiktor_surrender_truce_v1.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
   src/startup_particle2_consumer_null_guard_v1.cpp
@@ -209,6 +210,7 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_event_window_context_v1_test
     src/battle_terminal_journal_v1.cpp
     src/ck3_11906.cpp
+    src/raiktor_surrender_truce_v1.cpp
     src/event_window_context_v1.cpp
     src/event_window_context_v1_mailbox.cpp
     src/event_window_context_v1_test.cpp
@@ -242,6 +244,7 @@ if(BUILD_TESTING)
     src/battle_terminal_transition_v1_mailbox.cpp
     src/battle_transition_v1_mailbox.cpp
     src/ck3_11906.cpp
+    src/raiktor_surrender_truce_v1.cpp
     src/ck3_11906_test.cpp
     src/route_contact_horizon_v1_mailbox.cpp
   )
@@ -280,6 +283,7 @@ if(BUILD_TESTING)
     src/pending_character_interaction_context_v1_mailbox.cpp
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
+    src/raiktor_surrender_truce_v1.cpp
     src/combat_v3.cpp
     src/route_contact_horizon_v1_mailbox.cpp
     src/tactical_daily_sentinel_v1.cpp
@@ -1590,6 +1594,75 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_war_termination_same_frame_source_contract
     COMMAND xar_ck3_war_termination_same_frame_source_contract_test
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+  )
+
+  add_executable(xar_ck3_raiktor_surrender_six_domain_v1_test
+    src/raiktor_surrender_six_domain_v1.cpp
+    src/raiktor_surrender_six_domain_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_raiktor_surrender_six_domain_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_raiktor_surrender_six_domain_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_raiktor_surrender_six_domain_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_raiktor_surrender_six_domain_v1
+    COMMAND xar_ck3_raiktor_surrender_six_domain_v1_test
+  )
+
+  add_executable(xar_ck3_raiktor_surrender_truce_v1_test
+    src/raiktor_surrender_truce_v1.cpp
+    src/raiktor_surrender_truce_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_raiktor_surrender_truce_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_raiktor_surrender_truce_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_raiktor_surrender_truce_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_raiktor_surrender_truce_v1
+    COMMAND xar_ck3_raiktor_surrender_truce_v1_test
+  )
+
+  add_executable(xar_ck3_raiktor_war_bound_regiment_v1_test
+    src/raiktor_war_bound_regiment_v1.cpp
+    src/raiktor_war_bound_regiment_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_raiktor_war_bound_regiment_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_raiktor_war_bound_regiment_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_raiktor_war_bound_regiment_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_raiktor_war_bound_regiment_v1
+    COMMAND xar_ck3_raiktor_war_bound_regiment_v1_test
   )
 
   add_executable(xar_ck3_war_entry_assessments_v1_mailbox_test

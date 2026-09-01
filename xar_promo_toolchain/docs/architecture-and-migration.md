@@ -23,10 +23,40 @@ The dependency direction is downward. Generic code must not import a CK3 project
 | Layer | Current home | Owns | Must not own |
 | --- | --- | --- | --- |
 | Generic package | `src/xar_promo/`, including `tts/` | `ProjectConfig`, `RunManifest`, typed runlog, per-run config snapshots, content-addressed artifacts, provider-neutral TTS, storyboard/source/media/layout primitives, dependency-injected pipeline execution, automated-audit records, pending review packages, explicit sign-off, and offline allowlisted export | CK3 process automation, product claims, brand copy, a fixed voice/language pair, project composition, or publication credentials |
-| CK3 adapter | `src/xar_promo/adapters/ck3/` | Read-only verification and projection of a CK3 capture bundle: report, evidence index, raw capture, ordered marks, and independently evidenced clean spans | OCR, capture orchestration, repairing a failed run, choosing a story, or deciding whether a particular mod claim is sufficiently demonstrated |
+| CK3 adapter | `src/xar_promo/adapters/ck3/` | Read-only verification and projection of a CK3 capture bundle: report, evidence index, raw capture, ordered marks, independently evidenced clean spans, and an end-of-operation source-integrity check | OCR, capture orchestration, repairing a failed run, choosing a story, or deciding whether a particular mod claim is sufficiently demonstrated |
 | Project preset | `src/xar_promo/presets/`, a standard checked-in `ProjectConfig`, and the project's legacy wrappers during migration | Chapter order, narration, subtitles, visual identity, required CK3 marks/spans, real-character policy, voice, duration limit, humor/tone, and release gates | Changes to generic schemas or CK3 evidence semantics merely to accommodate one campaign |
 
 The first concrete preset is `xar_promo.presets.zhongguo_361_phase2`. It reads the standard `mod_zhongguo_style/promo/phase2-promo-project.json`, derives CK3 span/mark requirements from configured chapters, fixes the `zh-CN-XiaoxiaoNeural` request, and validates the sequel's duration, historical-character provenance, and clean-UI attestations. It deliberately returns a non-release-ready capture candidate while the project-specific live matrix and full-duration human review remain outstanding. Rendering and the established release workflow still enter through `mod_zhongguo_style/tools/` during migration.
+
+The acceptance runner exposes a separate `--phase2-promo-capture` producer mode for
+that preset.  It uses the eight-span contract in
+`schemas/phase2-capture-contract-v1.schema.json`; the legacy `--promo-capture`
+route remains phase-one-only.  Until a real phase-two visual choreography is
+registered, the new mode fails before preflight/CK3/FFmpeg with a typed RED.  A
+static contract or MCP-only phase-two run cannot be promoted to video footage.
+The future integration point is the runner's
+`register_phase2_promo_capture_producer(producer)` callable; it owns the
+gameplay choreography, starts the recorder only after the HUD is visible, and
+must emit all eight mapped clean spans before the preset can consume the run.
+
+When the phase-two capture is produced by the frozen seed runner, the project
+builder can bind its `--seed-preflight-report` to the runner's
+`--preflight-only` `preflight.json`.  The project layer verifies the report's
+schema, GREEN/no-launch invariants, immutable checks, and report-to-artifact
+root self-consistency, then records the report's exact bytes and SHA-256 in the
+candidate provenance (and preserves it as a raw run artifact).  The later
+capture may be a sibling attempt: when its timeline exposes the frozen source
+commit or clean-source/tree hash, those shared values are compared strictly;
+older timelines may supply the same identity through the capture root's
+GREEN `report.json` runtime projection (`cell.runtime_tree_before_sha256` and
+`product_runtime_manifest.tree_sha256`), which is read-only and hash-bound;
+conflicting sources are rejected.  If neither source exposes a shared value,
+the candidate carries a typed `capture_identity_unbound` blocker.
+The report remains a required capture artifact even when the timeline already
+has a matching identity: a missing `report.json` keeps the binding explicitly
+`unbound` because the CK3 adapter cannot verify a capture without that report.
+This is an upstream input gate only; it does not promote a capture to live
+evidence or replace the runtime matrix and human review gates.
 
 ## Project configuration and run evidence are separate
 
@@ -84,7 +114,7 @@ Preservation copies a source into immutable storage; it does not move, truncate,
 
 `xar_promo.adapters.ck3.load_capture_bundle(...)` consumes an existing capture-artifact root and performs read-only verification. The current adapter requires the producer's GREEN report and evidence index, a timeline that identifies real CK3 footage after the gameplay HUD, explicit loading-screen exclusion, a raw recording whose bytes match the index, ordered start/stop marks, and independently hash-bound begin/end evidence for every projected clean span.
 
-A project supplies `required_span_ids` and `required_mark_labels`; this keeps campaign vocabulary in the preset. The adapter returns typed paths and timeline projections only after the evidence closes. It never uses OCR to guess missing state, mutates producer artifacts, or deletes rejected attempts.
+A project supplies `required_span_ids` and `required_mark_labels`; this keeps campaign vocabulary in the preset. The adapter returns typed paths and timeline projections only after the evidence closes. `CaptureBundle.verify_unchanged()` can be called after a long pipeline to detect mutation of any load-time source record; it never uses OCR to guess missing state, mutates producer artifacts, or deletes rejected attempts.
 
 The adapter does not launch CK3 or record the desktop. Those operations remain responsibilities of the CK3 acceptance/capture runner, which is a producer upstream of this toolchain.
 

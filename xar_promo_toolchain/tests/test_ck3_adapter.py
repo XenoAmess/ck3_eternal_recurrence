@@ -182,6 +182,32 @@ class CK3CaptureAdapterTest(unittest.TestCase):
             _sha256(self.root / "evidence-index.json").upper(),
         )
 
+    def test_verify_unchanged_accepts_untouched_sources(self) -> None:
+        bundle = load_capture_bundle(self.root)
+        bundle.verify_unchanged()
+
+    def test_verify_unchanged_rejects_raw_capture_tampering_after_load(self) -> None:
+        bundle = load_capture_bundle(self.root)
+        raw = self.root / "cell" / "promo" / "raw" / "take-01.mkv"
+        raw.write_bytes(raw.read_bytes() + b"tampered-after-load")
+
+        with self.assertRaisesRegex(
+            CK3CaptureError,
+            "capture source changed after bundle load: cell/promo/raw/take-01.mkv",
+        ):
+            bundle.verify_unchanged()
+
+    def test_verify_unchanged_rejects_clean_frame_evidence_tampering_after_load(self) -> None:
+        bundle = load_capture_bundle(self.root)
+        image = self.root / "cell" / "promo" / "proof" / "feature_demo-begin.png"
+        image.write_bytes(image.read_bytes() + b"tampered-after-load")
+
+        with self.assertRaisesRegex(
+            CK3CaptureError,
+            "capture source changed after bundle load: cell/promo/proof/feature_demo-begin.png",
+        ):
+            bundle.verify_unchanged()
+
     def test_rejects_raw_capture_tampering(self) -> None:
         raw = self.root / "cell" / "promo" / "raw" / "take-01.mkv"
         raw.write_bytes(raw.read_bytes() + b"tampered")

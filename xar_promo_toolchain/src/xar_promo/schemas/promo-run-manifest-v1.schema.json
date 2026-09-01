@@ -11,7 +11,7 @@
     "run": {"type": "object", "additionalProperties": false, "required": ["id"], "properties": {"id": {"$ref": "#/$defs/id"}}},
     "project_config": {
       "type": "object", "additionalProperties": false, "required": ["path", "bytes", "sha256"],
-      "properties": {"path": {"type": "string", "minLength": 1}, "bytes": {"type": "integer", "minimum": 0}, "sha256": {"$ref": "#/$defs/sha"}}
+      "properties": {"path": {"type": "string", "minLength": 1, "allOf": [{"pattern": "^(?!/)(?![A-Za-z]:).+$"}, {"not": {"pattern": "\\\\"}}, {"not": {"pattern": "(^|/)\\.\\.?(/|$)"}}]}, "bytes": {"type": "integer", "minimum": 0}, "sha256": {"$ref": "#/$defs/sha"}}
     },
     "artifact_policy": {
       "type": "object", "additionalProperties": false,

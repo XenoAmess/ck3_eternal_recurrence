@@ -362,11 +362,9 @@ def _call_ally_context_result(
         "type_key_status": "available",
         "type_key": "war",
         "type_key_reason": None,
-        "typed_identity_status": "unavailable",
-        "typed_identity": None,
-        "typed_identity_reason": (
-            "generic_scope_payload_identity_not_closed"
-        ),
+        "typed_identity_status": "available",
+        "typed_identity": "war:67108946",
+        "typed_identity_reason": None,
     }
     context["send_options"] = {
         "exclusive": True,
@@ -380,6 +378,9 @@ def _call_ally_context_result(
         "remaining_days": 60,
         "expiry_boundary_status": "not_reached",
     }
+    readiness = context["readiness"]
+    assert isinstance(readiness, dict)
+    readiness["target_typed_identity_ready"] = True
     return result
 
 
@@ -5826,7 +5827,9 @@ class GameplayBridgeTests(unittest.TestCase):
         assert isinstance(context, dict)
         target = context["target"]
         assert isinstance(target, dict)
-        target["raw_16_bytes_hex"] = "10" * 16
+        raw = bytearray.fromhex(target["raw_16_bytes_hex"])
+        raw[2] ^= 0xFF
+        target["raw_16_bytes_hex"] = raw.hex()
         plan = _plan_for_pending_context(
             context_result,
             action_steps=("reject-pending-character-interaction",),

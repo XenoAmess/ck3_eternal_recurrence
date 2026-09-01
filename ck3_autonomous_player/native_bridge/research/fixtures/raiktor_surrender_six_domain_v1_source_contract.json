@@ -11,8 +11,8 @@
     },
     {
       "path": "native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json",
-      "sha256": "AE6C5569402FF448A3BB028EC3B7F525553075AC5C8FAC7005791FF2EB8ECABE",
-      "semantic_contract": "truce publishes stable nonnegative evaluated_days and explicitly does not publish a persisted expiry"
+      "sha256": "E168CA7B6382B2CCBD8D0619220ADF82A8AE79E525D9CE6E149CCFF9C0F86368",
+      "semantic_contract": "truce publishes stable nonnegative evaluated_days on the public terms wire; persisted expiry remains explicitly unavailable"
     },
     {
       "path": "native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json",
@@ -90,6 +90,8 @@
     "complete_fixture_action_terms_ready": true,
     "automatic_surrender_ready": false,
     "public_wire_complete": false,
+    "truce_leaf_public_wire_complete": true,
+    "truce_leaf_paused_live_probe_required": true,
     "production_live": false
   }
 }

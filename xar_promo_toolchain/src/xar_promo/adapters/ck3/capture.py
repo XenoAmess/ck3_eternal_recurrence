@@ -98,6 +98,54 @@ class CaptureBundle:
                 return span
         raise KeyError(span_id)
 
+    def verify_unchanged(self) -> None:
+        """Revalidate every source file captured by this bundle.
+
+        ``load_capture_bundle`` records byte counts and SHA-256 values before
+        returning this projection.  A long-running renderer may otherwise
+        consume a file after an external process has replaced it.  Recheck the
+        same content-addressed records at the end of a caller's operation so a
+        source mutation becomes an explicit, typed failure.  Only files that
+        can affect a projected capture are included: the report, timeline,
+        evidence index, raw recording, and each clean span's image/gate
+        evidence.  Duplicate records are checked once by resolved path.
+
+        This is an end-of-operation integrity check, not a claim to close
+        every possible concurrent-write race while a file is being hashed.
+        """
+
+        records: list[CaptureFile] = [
+            self.report,
+            self.timeline,
+            self.evidence_index,
+            self.raw_capture,
+        ]
+        records.extend(
+            evidence
+            for span in self.clean_spans
+            for evidence in span.evidence
+        )
+        seen: set[Path] = set()
+        for record in records:
+            path = record.path.resolve()
+            if path in seen:
+                continue
+            seen.add(path)
+            try:
+                current = _computed_file(path, record.relative_path)
+            except CK3CaptureError as exc:
+                raise CK3CaptureError(
+                    "capture source became unavailable after bundle load: "
+                    f"{record.relative_path} ({path})"
+                ) from exc
+            if (current.bytes, current.sha256) != (record.bytes, record.sha256):
+                raise CK3CaptureError(
+                    "capture source changed after bundle load: "
+                    f"{record.relative_path}; expected "
+                    f"{record.bytes} bytes/{record.sha256}, got "
+                    f"{current.bytes} bytes/{current.sha256}"
+                )
+
 
 def _read_object(path: Path, label: str) -> dict[str, Any]:
     try:

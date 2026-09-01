@@ -15,6 +15,7 @@ constexpr std::int32_t kPendingId = -2'130'706'399;
 constexpr std::int32_t kPlayedCharacterId = 2'001;
 constexpr std::int32_t kActorCharacterId = 1'001;
 constexpr std::int32_t kWarId = 16'777'250;
+constexpr std::int32_t kCallAllyWarId = 67'108'946;
 constexpr std::size_t kPendingSlotIndex = 33;
 constexpr std::size_t kPendingSlotCount = 34;
 constexpr std::size_t kCharacterSlotCount = 3'002;
@@ -61,9 +62,10 @@ struct Fixture {
   std::array<std::uint8_t, 2> selected{1, 0};
   std::array<std::byte, 0x20> target_registry{};
   std::vector<std::byte> target_registry_entries =
-      std::vector<std::byte>(8 * 0x50);
+      std::vector<std::byte>(17 * 0x50);
   std::string definition_key = "fixture_request_support_interaction";
   std::string target_type_key = "fixture_generic_target_type";
+  std::string war_target_type_key = "war";
   std::int32_t expiration_days = 60;
   bool on_main_thread = true;
   bool local_route = true;
@@ -77,6 +79,7 @@ struct Fixture {
   bool change_cost_between_observations = false;
   bool change_relation_between_observations = false;
   bool change_special_vptr_between_observations = false;
+  bool call_ally_war_resolver_available = true;
   std::int32_t capture_calls = 0;
   std::int32_t route_calls = 0;
   std::int32_t validator_calls = 0;
@@ -110,6 +113,8 @@ struct Fixture {
               std::byte{});
     expiration_days = 60;
     definition_key = "fixture_request_support_interaction";
+    target_type_key = "fixture_generic_target_type";
+    war_target_type_key = "war";
     pending_storage_pointer = pending_storage.data();
     character_storage_pointer = character_storage.data();
     on_main_thread = true;
@@ -124,6 +129,7 @@ struct Fixture {
     change_cost_between_observations = false;
     change_relation_between_observations = false;
     change_special_vptr_between_observations = false;
+    call_ally_war_resolver_available = true;
     capture_calls = 0;
     route_calls = 0;
     validator_calls = 0;
@@ -167,8 +173,9 @@ struct Fixture {
 
     Store(target_registry, 0x00,
           static_cast<void *>(target_registry_entries.data()));
-    Store(target_registry, 0x0C, std::int32_t{8});
+    Store(target_registry, 0x0C, std::int32_t{17});
     Store(target_registry_entries, 7 * 0x50, std::int32_t{77'007});
+    Store(target_registry_entries, 16 * 0x50, std::int32_t{77'016});
   }
 
   void SetPlayedCharacter(std::int32_t character_id) {
@@ -207,6 +214,15 @@ struct Fixture {
     Store(active_war, 0x28C,
           actor_is_attacker ? kPlayedCharacterId : kActorCharacterId);
     Store(active_war, 0x358, static_cast<void *>(nullptr));
+  }
+
+  void SetCallAllyWarTarget() {
+    definition_key = "call_ally_interaction";
+    const std::uint16_t type_index = 16;
+    Store(pending, 0x308, type_index);
+    Store(pending, 0x310, kCallAllyWarId);
+    Store(active_war, 0x08, kCallAllyWarId);
+    call_ally_war_resolver_available = true;
   }
 };
 
@@ -270,6 +286,10 @@ bool ReadString(void *context, const void *native_string,
   }
   if (native_string == &fixture.target_type_key) {
     output = fixture.target_type_key;
+    return true;
+  }
+  if (native_string == &fixture.war_target_type_key) {
+    output = fixture.war_target_type_key;
     return true;
   }
   return false;
@@ -378,8 +398,11 @@ bool ResolveActiveWar(void *context, std::int32_t war_id,
                       void *&output) noexcept {
   auto &fixture = *static_cast<Fixture *>(context);
   ++fixture.resolve_active_war_calls;
-  output = war_id == kWarId ? static_cast<void *>(fixture.active_war.data())
-                            : nullptr;
+  output = war_id == kWarId ||
+                   (war_id == kCallAllyWarId &&
+                    fixture.call_ally_war_resolver_available)
+               ? static_cast<void *>(fixture.active_war.data())
+               : nullptr;
   return output != nullptr;
 }
 
@@ -396,7 +419,9 @@ bool InvokeIdentifier(
     xar::ck3_11906::NativePendingInteractionScriptIdentifierNameV1,
     std::int32_t identifier, const std::string *&output) noexcept {
   auto &fixture = *static_cast<Fixture *>(context);
-  output = identifier == 77'007 ? &fixture.target_type_key : nullptr;
+  output = identifier == 77'007
+               ? &fixture.target_type_key
+               : identifier == 77'016 ? &fixture.war_target_type_key : nullptr;
   return output != nullptr;
 }
 
@@ -886,6 +911,19 @@ int main() {
           xar::game::PendingCharacterInteractionSemanticStatusV1::absent) {
     return Fail("absent target incorrectly required an all-zero opaque tail");
   }
+  const auto valid_absent_target = output;
+  if (xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+          valid_absent_target)
+          .empty()) {
+    return Fail("serializer rejected an absent target opaque tail");
+  }
+  auto malformed_absent_target = valid_absent_target;
+  malformed_absent_target.target->raw_envelope[0] = 1;
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_absent_target)
+           .empty()) {
+    return Fail("serializer accepted an absent target envelope/index mismatch");
+  }
 
   fixture.Reset();
   Store(fixture.pending, 0x5B8, std::int32_t{60});
@@ -913,6 +951,101 @@ int main() {
           "\"raw_16_bytes_hex\":\"07000100785634120000000000000000\"")) {
     return Fail(
         "opaque target/type-key projection crossed typed identity seam");
+  }
+  auto malformed_generic_target = output;
+  malformed_generic_target.target->raw_envelope[0] = 6;
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_generic_target)
+           .empty()) {
+    return Fail("serializer accepted a generic target envelope/index mismatch");
+  }
+
+  fixture.Reset();
+  fixture.SetCallAllyWarTarget();
+  if (!Read(fixture, output) || !output.target->present ||
+      output.target->raw_type_index != 16 ||
+      output.target->type_key != "war" ||
+      output.target->typed_identity_status !=
+          xar::game::PendingCharacterInteractionSemanticStatusV1::available ||
+      !output.target->typed_identity.has_value() ||
+      *output.target->typed_identity != "war:67108946" ||
+      !output.target->typed_identity_reason.empty() ||
+      !output.readiness.target_typed_identity_ready ||
+      std::find(output.readiness.not_ready_reasons.begin(),
+                output.readiness.not_ready_reasons.end(),
+                "target_generic_scope_payload_identity_not_closed") !=
+          output.readiness.not_ready_reasons.end() ||
+      fixture.resolve_active_war_calls != 2 ||
+      !Contains(
+          xar::ck3_11906::SerializePendingCharacterInteractionContextV1(output),
+          "\"typed_identity\":\"war:67108946\"") ||
+      !Contains(
+          xar::ck3_11906::SerializePendingCharacterInteractionContextV1(output),
+          "\"target_typed_identity_ready\":true")) {
+    return Fail("exact call-ally war target identity was not published");
+  }
+  auto malformed_typed_target = output;
+  malformed_typed_target.target->raw_envelope[0] = 15;
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_typed_target)
+           .empty()) {
+    return Fail("serializer accepted a typed target envelope/index mismatch");
+  }
+
+  fixture.Reset();
+  fixture.SetCallAllyWarTarget();
+  fixture.call_ally_war_resolver_available = false;
+  if (!Read(fixture, output) ||
+      output.target->typed_identity_status !=
+          xar::game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
+      output.target->typed_identity.has_value() ||
+      output.target->typed_identity_reason !=
+          "war_target_identity_unavailable" ||
+      output.readiness.target_typed_identity_ready ||
+      output.readiness.not_ready_reasons.empty() ||
+      output.readiness.not_ready_reasons.front() !=
+          "war_target_identity_unavailable" ||
+      fixture.resolve_active_war_calls != 2 ||
+      xar::ck3_11906::SerializePendingCharacterInteractionContextV1(output)
+          .empty()) {
+    return Fail("call-ally war resolver failure did not fail closed");
+  }
+
+  fixture.Reset();
+  fixture.SetCallAllyWarTarget();
+  Store(fixture.active_war, 0x08, std::int32_t{kCallAllyWarId + 1});
+  if (!Read(fixture, output) ||
+      output.target->typed_identity_status !=
+          xar::game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
+      output.target->typed_identity.has_value() ||
+      output.target->typed_identity_reason !=
+          "war_target_identity_unavailable" ||
+      output.readiness.target_typed_identity_ready ||
+      fixture.resolve_active_war_calls != 2) {
+    return Fail("call-ally war full-ID mismatch was not rejected");
+  }
+
+  fixture.Reset();
+  // A different definition can carry the same generic type-16/war envelope;
+  // without the canonical definition binding it must remain opaque and must
+  // not invoke the active-war resolver.
+  const std::uint16_t non_call_ally_type_index = 16;
+  Store(fixture.pending, 0x308, non_call_ally_type_index);
+  Store(fixture.pending, 0x310, kCallAllyWarId);
+  fixture.definition_key = "request_contract_assistance_interaction";
+  if (!Read(fixture, output) || !output.target->present ||
+      output.target->raw_type_index != 16 || output.target->type_key != "war" ||
+      output.target->typed_identity_status !=
+          xar::game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
+      output.target->typed_identity.has_value() ||
+      output.target->typed_identity_reason !=
+          "generic_scope_payload_identity_not_closed" ||
+      output.readiness.target_typed_identity_ready ||
+      output.readiness.not_ready_reasons.empty() ||
+      output.readiness.not_ready_reasons.front() !=
+          "target_generic_scope_payload_identity_not_closed" ||
+      fixture.resolve_active_war_calls != 0) {
+    return Fail("non-call-ally type-16 war target crossed typed identity seam");
   }
 
   fixture.Reset();

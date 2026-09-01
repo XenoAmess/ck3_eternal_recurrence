@@ -110,7 +110,13 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
         contract = json.loads(fixture_path.read_text(encoding="utf-8"))
         self.assertEqual(contract["readiness"]["stage"], "fixture-confirmed/static-ready")
         self.assertTrue(contract["readiness"]["live_shape_probe_required"])
+        self.assertTrue(contract["readiness"]["public_wire_complete"])
+        self.assertEqual(
+            contract["readiness"]["public_wire_scope"],
+            "evaluated_days_only; expiry_observable=false; expiry_date_raw=null",
+        )
         self.assertFalse(contract["readiness"]["production_live"])
+        self.assertTrue(contract["read_contract"]["evaluated_days_public_wire"])
         self.assertFalse(contract["read_contract"]["expiry_observable"])
         source = (
             ROOT

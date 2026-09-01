@@ -114,7 +114,8 @@
     "installed_resources": [
       "xar_promo/schemas/install-contract-v1.json",
       "xar_promo/schemas/promo-project-config-v1.schema.json",
-      "xar_promo/schemas/promo-run-manifest-v1.schema.json"
+      "xar_promo/schemas/promo-run-manifest-v1.schema.json",
+      "xar_promo/schemas/phase2-capture-contract-v1.schema.json"
     ],
     "source_documentation": [
       "README.md",
@@ -161,7 +162,7 @@
         "argv": [
           "python",
           "-c",
-          "from importlib.resources import files; root=files('xar_promo').joinpath('schemas'); names=('install-contract-v1.json','promo-project-config-v1.schema.json','promo-run-manifest-v1.schema.json'); missing=[name for name in names if not root.joinpath(name).is_file()]; raise SystemExit('missing installed resources: '+','.join(missing) if missing else 0)"
+          "from importlib.resources import files; root=files('xar_promo').joinpath('schemas'); names=('install-contract-v1.json','promo-project-config-v1.schema.json','promo-run-manifest-v1.schema.json','phase2-capture-contract-v1.schema.json'); missing=[name for name in names if not root.joinpath(name).is_file()]; raise SystemExit('missing installed resources: '+','.join(missing) if missing else 0)"
         ],
         "expected_exit_code": 0,
         "project_writes": false

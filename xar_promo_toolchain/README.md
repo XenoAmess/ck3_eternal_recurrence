@@ -17,6 +17,17 @@ The real CLI has ten commands:
 
 There is no `publish` or upload command. `audit`, `review`, and `signoff` are intentionally separate operations.
 
+## Release artifact handoff
+
+The first release workflow is intentionally limited to package evidence. A
+`xar-promo-v<version>` tag (or a manual workflow run) builds and checks the
+0.1.0 wheel and source distribution, validates the sdist contents, performs
+isolated installs of both artifacts, writes `SHA256SUMS`, and uploads those
+files as a GitHub Actions artifact. It does not publish to PyPI or any other
+index, create a GitHub Release, upload media, or start CK3/FFmpeg. See
+[Installation and cross-machine delivery](docs/installation.md) for the exact
+artifact, reproducibility, and trust boundaries.
+
 ## Install and inspect
 
 Python 3.11 or later is required.

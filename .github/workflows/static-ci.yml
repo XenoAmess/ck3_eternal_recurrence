@@ -12,11 +12,11 @@ jobs:
   static:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: pip
@@ -54,11 +54,19 @@ jobs:
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
           python tools/test_zg361_phase2_seed_fixture.py
+          # The normal invocation carries the semantic assertions; -O is an
+          # import/runtime compatibility smoke for the same seed-only tree.
+          python -O tools/test_zg361_phase2_seed_fixture.py
           python tools/test_zg361_phase2_loader_stage.py
           python -O tools/test_zg361_phase2_loader_stage.py
           python tools/test_run_zg361_phase2_seed_capture.py
           python -O tools/test_run_zg361_phase2_seed_capture.py
           python tools/test_zg361_phase2_seed_bootstrap.py
+          # Keep the bootstrap helper's optimized import path covered too;
+          # semantic assertions remain covered by the normal run above.
+          python -O tools/test_zg361_phase2_seed_bootstrap.py
+          python tools/test_zhongguo_phase2_promo_producer.py
+          python -O tools/test_zhongguo_phase2_promo_producer.py
           python tools/test_run_zhongguo_promo_capture.py
           python tools/test_run_zhongguo_workshop_acceptance.py
       - name: Test ZhongGuo 361 release localization
@@ -131,9 +139,9 @@ jobs:
         run: python tools/build_mod_zhongguo_style_release.py --release
       - name: Upload release candidate
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
-          name: release-candidate-${{ github.ref_name }}-${{ github.run_id }}
+          name: release-candidate-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             dist/*.zip
             dist/*.manifest.json

@@ -7,6 +7,7 @@ from pathlib import Path
 
 import xar_promo
 from xar_promo.errors import ManifestError
+from xar_promo.model import ConfigBinding
 from xar_promo.operations import (
     initialize_project,
     preserve_artifact,
@@ -132,6 +133,18 @@ class ConfigRunSplitTests(unittest.TestCase):
                 decision="approved",
                 note=None,
                 reviewed_at="2026-09-01T00:00:00Z",
+            )
+
+    def test_project_config_binding_requires_a_normalized_relative_path(self) -> None:
+        with self.assertRaisesRegex(
+            ManifestError, "project_config.path must be a normalized relative path"
+        ):
+            ConfigBinding.from_mapping(
+                {
+                    "path": "../outside.json",
+                    "bytes": 1,
+                    "sha256": "0" * 64,
+                }
             )
 
     def test_authored_config_can_start_a_new_release_ready_run(self) -> None:

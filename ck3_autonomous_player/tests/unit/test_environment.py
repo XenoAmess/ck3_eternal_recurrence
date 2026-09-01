@@ -136,6 +136,52 @@ class PreparedProfileTests(unittest.TestCase):
         ), self.assertRaisesRegex(AgentError, "git ls-files failed"):
             _git_lines("ls-files")
 
+    def test_git_status_retries_without_an_optional_index_lock(self) -> None:
+        transient = subprocess.CalledProcessError(
+            128,
+            ["git", "status"],
+            stderr="fatal: Unable to create 'index.lock': File exists",
+        )
+        success = subprocess.CompletedProcess(
+            ["git", "status"],
+            0,
+            stdout=" M fixture.txt\n",
+            stderr="",
+        )
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run",
+            side_effect=[transient, success],
+        ) as run, mock.patch("xar_autoplayer.environment.time.sleep") as sleep:
+            self.assertEqual(
+                _git_lines("status", "--porcelain", "--untracked-files=all"),
+                [" M fixture.txt"],
+            )
+        self.assertEqual(run.call_count, 2)
+        sleep.assert_called_once_with(0.05)
+        command = run.call_args_list[0].args[0]
+        self.assertIn("--no-optional-locks", command)
+        self.assertLess(
+            command.index("--no-optional-locks"), command.index("status")
+        )
+
+    def test_git_status_persistent_failure_is_classified_with_stderr(self) -> None:
+        failure = subprocess.CalledProcessError(
+            128,
+            ["git", "status"],
+            stderr="fatal: not a git repository",
+        )
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run",
+            side_effect=[failure, failure, failure],
+        ) as run, mock.patch("xar_autoplayer.environment.time.sleep"):
+            with self.assertRaisesRegex(
+                AgentError,
+                r"git status .*failed after 3 attempts; "
+                r"stderr='fatal: not a git repository'",
+            ):
+                _git_lines("status", "--porcelain")
+        self.assertEqual(run.call_count, 3)
+
     def setUp(self) -> None:
         self.process_patch = mock.patch(
             "xar_autoplayer.environment.ck3_processes", return_value=[]

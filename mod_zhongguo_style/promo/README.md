@@ -35,10 +35,13 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 | 文件 | 用途 |
 |---|---|
 | `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
+| `phase2-promo-project.json` | 二期十章 authoring 配置；章节必须从 `planned` 变为 `ready` 才能消费 capture |
+| `xar_promo_toolchain/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json` | 二期 producer 的固定 mode/version/span map 合同 |
 | `storyboard.md` | 约 7–8 分钟的剪辑结构与节奏说明 |
 | `shot-list.md` | 一次自动集中实录的实际 marks、六张政策卡与不可夸张的产品边界 |
 | `smoke-manifest.json` | 很短的媒体流水线测试；内容明确声明“不是正式成片” |
 | `../tools/build_promo_video.py` | TTS、双语 ASS、画面合成、章节拼接与 sidecar |
+| `../tools/build_phase2_promo_video.py` | 二期专用 adapter/preset builder；支持 `--validate-only` 与 unreviewed candidate run |
 | `../tools/validate_promo_video.py` | 草案/正式门禁、媒体规格、时长、语言、哈希与抽帧检查 |
 | `../tools/prepare_promo_release_manifest.py` | GREEN 集中实录 → 外部零占位正式 manifest + provenance；拒绝 RED、缺 mark、哈希漂移和覆盖旧输出 |
 | `../tools/prepare_promo_visual_audit.py` | 正式 manifest → 全部实机章节的全屏 RGB24 抽帧、RapidOCR、SHA 绑定和明确 `PENDING` 的未签核 spec |
@@ -62,6 +65,179 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 
 `--validate-only` 不创建目录、不调用 Edge TTS、不编码视频。它会检查 13 项核心主题、中文/英文关键词、
 配音 voice、字幕像素布局、素材存在性、loading 开场禁令和离线时长预算。
+
+## 二期 builder：可执行的无启动预检
+
+二期续篇使用项目专用入口
+`mod_zhongguo_style/tools/build_phase2_promo_video.py`，而不是把二期配置交给通用
+`xar-promo build`。入口会从仓库内的 `xar_promo_toolchain/src` 加载已冻结的 adapter/preset，
+所以从仓库根目录直接用 `tools\.venv\Scripts\python.exe` 执行即可；不需要先安装一个本地
+`xar_promo` wheel，也不会替你启动 CK3。通用包在另一台机器上的安装、FFmpeg/ffprobe 和可选
+Edge TTS 依赖见 [`xar_promo_toolchain/docs/installation.md`](../../xar_promo_toolchain/docs/installation.md)。
+
+### 先做 validate-only（不启动 CK3、不写入工作目录）
+
+下面的预检把 stdout/stderr 和一条结果记录写到仓库外的新目录；这些是**预检日志**，不是
+live capture 或宣传素材。把 `$evidence` 改成不会被 Git 跟踪的外部目录，每次重试都使用新
+时间戳。故意把 capture、work、TTS、FFmpeg、ffprobe 和字体指向不存在的哨兵路径，可以直接
+发现入口是否越过了 no-write 边界：
+
+```powershell
+$python = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
+$stamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddTHHmmssZ")
+$evidence = Join-Path $env:TEMP "xar-phase2-preflight-$stamp"
+New-Item -ItemType Directory -Path $evidence | Out-Null
+$config = (Resolve-Path "mod_zhongguo_style\promo\phase2-promo-project.json").Path
+$configShaBefore = (Get-FileHash -LiteralPath $config -Algorithm SHA256).Hash
+$capture = Join-Path $evidence "capture-root-not-created"
+$work = Join-Path $evidence "work-dir-not-created"
+$tts = Join-Path $evidence "tts-cache-not-read"
+$ffmpeg = Join-Path $evidence "ffmpeg-not-run.exe"
+$ffprobe = Join-Path $evidence "ffprobe-not-run.exe"
+$zhFont = Join-Path $evidence "zh-font-not-read.ttf"
+$enFont = Join-Path $evidence "en-font-not-read.ttf"
+$stdout = Join-Path $evidence "stdout.txt"
+$stderr = Join-Path $evidence "stderr.txt"
+
+& $python mod_zhongguo_style\tools\build_phase2_promo_video.py `
+  --project-config $config `
+  --capture-root $capture `
+  --work-dir $work `
+  --tts-cache $tts `
+  --ffmpeg $ffmpeg `
+  --ffprobe $ffprobe `
+  --zh-font-file $zhFont `
+  --en-font-file $enFont `
+  --run-id "phase2-preflight-$stamp" `
+  --validate-only 1> $stdout 2> $stderr
+$exitCode = $LASTEXITCODE
+
+$sentinels = @($capture, $work, $tts, $ffmpeg, $ffprobe, $zhFont, $enFont)
+$unexpected = @($sentinels | Where-Object { Test-Path -LiteralPath $_ })
+if ($unexpected.Count -ne 0) { throw "validate-only created or touched: $($unexpected -join ', ')" }
+$configShaAfter = (Get-FileHash -LiteralPath $config -Algorithm SHA256).Hash
+if ($configShaAfter -ne $configShaBefore) { throw "project config changed during validate-only" }
+if (Select-String -LiteralPath $stderr -Pattern "Traceback") { throw "unexpected Python traceback" }
+[ordered]@{
+  schema_version = 1
+  kind = "zhongguo-361-phase2-validate-only-preflight"
+  exit_code = $exitCode
+  config_sha256 = $configShaAfter
+  stdout = $stdout
+  stderr = $stderr
+  sentinels_absent = ($unexpected.Count -eq 0)
+} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $evidence "result.json") -Encoding utf8
+```
+
+当前签入的 `phase2-promo-project.json` 有意把十章都标为 `planned`，因此这条命令应返回
+`2`，stderr 中应出现 `RELEASE: RED` 及 `phase-two project remains planned`；这是可解释的
+authoring RED，不是崩溃，也不是 live 证据。章节和 capture 都准备好后，`--validate-only`
+仍只读配置及 capture 元数据，不创建 work 目录、不调用 TTS/字体/字幕渲染、媒体 probe、
+FFmpeg/ffprobe 或任何外部命令，不写 run manifest、日志、partial、PNG、MP3、MP4 或 sign-off。
+即使结构验证本身为 `VALIDATION: GREEN`，在 runtime claim matrix 和人工签核完成前，进程仍会
+以 `RELEASE: RED`/退出码 `2` 收口；不要把这个退出码改写成“宣传片完成”。
+
+### 二期实录入口：独立的八段 producer contract
+
+一期的 `tools/run_zhongguo_acceptance.py --promo-capture` 继续只负责既有的
+`PROMO_CLEAN_SPANS`（校准、榜单、驾驶舱、京察、告身和六张政策卡）。它不会因为配置文件
+出现 `phase2_*` 章节而改变含义，也不能通过改名把一期原片伪装成二期。
+
+二期必须显式使用：
+
+```powershell
+& $python tools\run_zhongguo_acceptance.py `
+  --phase2-promo-capture `
+  --artifacts-dir $phase2Capture `
+  --bridge-dll $bridgeDll `
+  --bridge-injector $bridgeInjector
+```
+
+该入口绑定 `phase2-capture-contract-v1.schema.json` 中固定顺序的八个 span：
+`phase2_fact_quota_calibration`、`phase2_receipt_appeal_pip`、
+`phase2_manager_governance`、`phase2_promotion_compensation`、`phase2_hc_workforce`、
+`phase2_projects_metrics`、`phase2_incidents_operations`、
+`phase2_cross_cycle_endgame`。每段必须由同一真实二期 gameplay producer 在 HUD 已出现后
+调用对应的 `*_clean_begin`/`*_clean_end` gate；timeline 同时写入
+`capture_mode=zhongguo-361-phase2`、contract version、producer id 和完整 span map，供
+二期 preset 严格复核。
+
+当前仓库尚未注册二期视觉 choreography hook。因而该命令会在 preflight、CK3 启动和 FFmpeg
+之前以明确的 `producer hook is unavailable` RED 退出，不会运行一期 `run_scenario`、
+`--phase2-live-batch` 的零视觉 MCP 场景，也不会产生可误用的录屏。待真实二期玩法和视觉
+producer 完成后，才可注册 hook、生成八段同源 capture，再交给下方 builder；静态 contract
+通过不等于 `fixture-live`、`production-live` 或正式成片。
+
+接入点固定为 runner 的
+`register_phase2_promo_capture_producer(producer)`。`producer` 接收
+`(stream, artifacts, recorder, title_navigation_service=..., tracked_ck3_pid=...,
+native_bridge=..., preflight_bridge_identity=...)`，必须自己在 gameplay HUD 后调用
+`recorder.start()`，解析真实历史人物，按上表顺序调用八次 `recorder.clean_hold`，并返回
+一个 evidence object；runner 会再校验 recorder 生成的 hash-bound timeline。未完成这些真实
+动作时不能用静态返回值或 MCP snapshot 填充 producer。
+
+### 真实 capture 到来后的候选留存
+
+只有所有章节变为 `ready`、每条 cue 有内容寻址的 Xiaoxiao 缓存、并且已有通过校验的 CK3
+capture bundle 后，才运行普通（非 `--validate-only`）候选构建。每次尝试必须使用新的
+`--work-dir`，并把该目录放在仓库外。下面的变量必须先替换成真实路径；占位字符串不会
+伪造 capture，也不会绕过入口校验：
+
+如果 capture 由天朝二期 seed runner 产生，先把同一 attempt 的
+`preflight.json` 作为 `--seed-preflight-report` 传给 builder：
+
+```powershell
+$seedPreflight = "C:\captures\zhongguo-361-phase2\seed-attempt\artifacts\preflight.json"
+```
+
+builder 会只接受 `run_zg361_phase2_seed_capture.py --preflight-only` 产出的
+schema-v1 `GREEN/preflight-ready` 报告，并重新核对 no-launch、MCP-only、零 OCR/图像/坐标、
+projection-only 和全部 immutable checks。报告声明的 `paths.artifacts` 必须存在，且
+`report_path` 必须精确指向该目录下的 `preflight.json`；它不要求后续 `--capture-root` 位于同一目录或其子树。
+入口读取时记录报告 bytes/SHA-256，并在流水线结束前再次核对；若 capture timeline 提供
+`source_git_commit` 或 clean-source/tree hash，则与 preflight 的 source identity 严格比对；
+旧版 timeline 没有这些字段时，入口只读同一 capture root 的 GREEN `report.json`（含
+`cell.runtime_tree_before_sha256`/`product_runtime_manifest.tree_sha256`）作为补充 identity，
+并同样记录 bytes/SHA-256。两处 identity 只要有冲突即拒绝，全部缺少时仍保留候选但加入
+`capture_identity_unbound` blocker（timeline 或补充 `report.json` 缺失时也会明确记录）。绑定报告会以
+`phase2-seed-preflight` raw artifact 复制进候选 run，同时写入 `phase2-pipeline-result.json`
+的 `seed_preflight` provenance。它只证明上游输入门已通过，不把 capture 变成 live、也不替代
+项目 runtime matrix 或人工审阅。
+
+没有传该参数时仍允许保留候选（便于迁移旧 capture），但结果会明确加入
+`phase-two seed preflight report is not bound` blocker，因而不能成为 release-ready。
+
+```powershell
+$python = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
+$config = (Resolve-Path "mod_zhongguo_style\promo\phase2-promo-project.json").Path
+$stamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddTHHmmssZ")
+$greenCapture = "C:\captures\zhongguo-361-phase2\green-run"
+$ttsCache = "C:\caches\xar-promo\xiaoxiao"
+$ffmpegExe = "C:\tools\ffmpeg.exe"
+$ffprobeExe = "C:\tools\ffprobe.exe"
+$run = Join-Path $env:TEMP "xar-phase2-candidate-$stamp"
+& $python mod_zhongguo_style\tools\build_phase2_promo_video.py `
+  --project-config $config `
+  --capture-root $greenCapture `
+  --seed-preflight-report $seedPreflight `
+  --work-dir (Join-Path $run "attempt") `
+  --tts-cache $ttsCache `
+  --ffmpeg $ffmpegExe `
+  --ffprobe $ffprobeExe `
+  --run-id "phase2-candidate-$stamp"
+```
+
+候选构建会在 attempt 内保留 `phase2-pipeline-result.json`、完整的成功或部分输出、命令
+审计与失败诊断；失败时还会留下 `phase2-entry-failure.json`，不得复用同一目录覆盖。成功
+渲染后，入口会在 `attempt\candidate-run\run-manifest.json` 建立新的、绑定精确配置字节的
+unreviewed run，并保存配置声明的旁白 artifact 与最终 deliverable
+（`deliverable/zhongguo-361-phase2.mp4`）。这个 run 只证明候选字节被留存，**不**记录 human sign-off，
+也不代表 release GREEN；必须另外完成二期 runtime claim matrix、最终 ffprobe 时长门禁、
+完整画面审阅和对同一 deliverable SHA 的明确签核。所有失败 take、原始 capture、日志和
+候选 run 都应继续留在外部 artifact 目录，不能提交到 Git 或冒充正式成片。
+若候选 run 在持久化过程中因 artifact/目标冲突等原因失败，入口会把
+`phase=candidate-run-persistence` 写入同一份失败收据，并保留已经建立的
+`candidate-run` 半成品（收据的 `retained_paths` 会标出该目录）；不得清理后在原目录重试。
 
 ## 媒体 smoke
 

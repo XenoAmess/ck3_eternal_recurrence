@@ -14,6 +14,31 @@ command such as `pip install xar-promo-toolchain` is therefore not an available
 distribution path. Install a local artifact obtained through a trusted project
 channel, or build it from a reviewed trusted source checkout.
 
+The repository workflow
+[`promo-toolchain-release.yml`](../../.github/workflows/promo-toolchain-release.yml)
+is a package-artifact handoff for the `xar-promo-v<version>` tag namespace (or
+an explicit manual run). It runs the package tests in normal and optimized
+mode, builds the wheel and sdist, checks their metadata with `twine check`,
+installs the wheel in a fresh environment, verifies the installed contract, and
+uploads the two files plus `SHA256SUMS` as a GitHub Actions artifact. This is
+build and verification evidence only: the workflow does not publish to PyPI,
+create a GitHub Release, upload a video, or launch CK3/FFmpeg. Any later public
+publication is a separate, explicitly authorized operation and must use these
+exact checked bytes. The workflow also checks the sdist member allowlist and
+installs both artifacts in fresh environments before uploading them. The sdist
+smoke installs a `setuptools>=77` wheel into its fresh environment and then uses
+`--no-index --no-build-isolation`, proving that the checked source archive can
+be installed without reaching a package index once its declared build backend
+has been supplied.
+
+The wheel can be byte-reproducible when the workflow's
+`SOURCE_DATE_EPOCH` is held to the reviewed commit timestamp. With the current
+setuptools backend, an sdist may still retain source-tree mtimes in tar members,
+so its SHA-256 is an exact per-run record rather than a cross-run reproducibility
+claim. The sdist content, metadata, and fresh-install gates above are the
+release checks; do not reject an otherwise valid handoff solely because two
+sdist runs have different digests.
+
 The dependency-free core wheel is tagged `py3-none-any`: its Python code is
 architecture-independent and supports Windows, Linux, and macOS when Python
 3.11 or newer is available. That portability does not extend automatically to
@@ -94,7 +119,8 @@ python -m pip install ./dist/xar_promo_toolchain-0.1.0-py3-none-any.whl
 ```
 
 The wheel contains the Python package, the console entry point, the two native
-manifest schemas, and the installation contract. It does not bundle FFmpeg,
+manifest schemas, the ZhongGuo phase-two capture-contract schema, and the
+installation contract. It does not bundle FFmpeg,
 ffprobe, a CK3 capture runner, a project composer, or a project integration
 plugin.
 
@@ -233,7 +259,7 @@ First verify both public launch paths and the installed resources:
 ```sh
 xar-promo --version
 python -m xar_promo --version
-python -c "from importlib.resources import files; root=files('xar_promo').joinpath('schemas'); names=('install-contract-v1.json','promo-project-config-v1.schema.json','promo-run-manifest-v1.schema.json'); missing=[name for name in names if not root.joinpath(name).is_file()]; raise SystemExit('missing installed resources: '+','.join(missing) if missing else 0)"
+python -c "from importlib.resources import files; root=files('xar_promo').joinpath('schemas'); names=('install-contract-v1.json','promo-project-config-v1.schema.json','promo-run-manifest-v1.schema.json','phase2-capture-contract-v1.schema.json'); missing=[name for name in names if not root.joinpath(name).is_file()]; raise SystemExit('missing installed resources: '+','.join(missing) if missing else 0)"
 ```
 
 Both version commands must print `xar-promo 0.1.0`. Verify all ten commands on

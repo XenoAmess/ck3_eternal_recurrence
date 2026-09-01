@@ -39,6 +39,27 @@
 runner 捕获，不得继续写进正式 manifest 或旁白角标**。六张图共同证明编号、A/B/C 卡面与题材跨度；361/361、
 17 profiles、14 ledgers 的覆盖结论由同一 GREEN 报告绑定，不把六张样卡冒充 361 张逐张真人操作。
 
+## 二期独立实录合同（尚未 live）
+
+二期不复用上表的一期片段。`--phase2-promo-capture` 只接受下列八个按顺序的
+`phase2_*` span，并要求真实二期 choreography 为每段提供 begin/end 全屏干净帧：
+
+| 顺序 | span / chapter id | producer key |
+|---:|---|---|
+| 1 | `phase2_fact_quota_calibration` | `facts-quota-calibration` |
+| 2 | `phase2_receipt_appeal_pip` | `receipts-appeals-pip` |
+| 3 | `phase2_manager_governance` | `manager-governance` |
+| 4 | `phase2_promotion_compensation` | `promotion-compensation` |
+| 5 | `phase2_hc_workforce` | `hc-workforce` |
+| 6 | `phase2_projects_metrics` | `projects-metrics` |
+| 7 | `phase2_incidents_operations` | `incidents-operations` |
+| 8 | `phase2_cross_cycle_endgame` | `cross-cycle-endgame` |
+
+producer 必须在 timeline 写入 `capture_mode=zhongguo-361-phase2`、version `1`、固定
+producer id 和完整 `span_map`；二期 preset 会拒绝缺字段、乱序、额外旧 span 或 legacy
+capture。当前视觉 hook 尚未注册，入口会在启动 CK3 前明确 RED；因此这里记录的是待施工
+接口，不是八段实机素材或 `production-live` 证据。
+
 ## 没有独立实录的章节
 
 下列内容不阻止生成零占位正式候选，但必须显示 `GENERATED EVIDENCE/BOUNDARY`，不能标 `CLEAN CAPTURE`、

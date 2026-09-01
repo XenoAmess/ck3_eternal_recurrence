@@ -1,0 +1,97 @@
+"""Pure checks for the Raiktor terms live-acceptance harness."""
+
+from __future__ import annotations
+
+import importlib.util
+from pathlib import Path
+import unittest
+
+
+ROOT = Path(__file__).resolve().parents[2]
+SCRIPT = (
+    ROOT
+    / "native_bridge"
+    / "research"
+    / "run_war_termination_terms_live_acceptance.py"
+)
+SPEC = importlib.util.spec_from_file_location(
+    "run_war_termination_terms_live_acceptance", SCRIPT
+)
+if SPEC is None or SPEC.loader is None:  # pragma: no cover - import guard
+    raise RuntimeError(f"cannot load harness: {SCRIPT}")
+HARNESS = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(HARNESS)
+
+
+def _payload(
+    *, evaluated_days_observable: bool = True, expiry_date_raw: object = None
+) -> dict[str, object]:
+    terms = {
+        "status": "available",
+        "war_id": 50_331_699,
+        "casus_belli": {"canonical_key": "raiktor_claim_cb", "database_index": 27},
+        "supported_slice": "raiktor_claim_cb_attacker_defeat_disposition",
+        "claimant_character_id": 16_826_697,
+        "target_title_ids": [1207],
+        "gold_reparations": {"actual_amount_observable": True},
+        "attacker_fame": {"actual_delta_observable": True},
+        "prisoner_release": {"actual_pairs_observable": True},
+        "conditional_favor_hook": {
+            "actual_applies_observable": True,
+            "claimant_distinct_from_attacker": True,
+            "original_visible_root_traversed": True,
+            "will_apply": True,
+        },
+        "truce": {
+            "direction": "primary_attacker_toward_primary_defender",
+            "result": "defeat",
+            "evaluated_days_observable": evaluated_days_observable,
+            "evaluated_days": 1_825 if evaluated_days_observable else None,
+            "actual_expiry_observable": False,
+            "expiry_date_raw": expiry_date_raw,
+        },
+        "readiness": {
+            "finance_ready": True,
+            "gold_ready": True,
+            "fame_factor_ready": True,
+            "attacker_prestige_delta_ready": True,
+            "prisoner_release_ready": True,
+            "favor_hook_ready": True,
+            "truce_ready": evaluated_days_observable,
+            "war_bound_armies_ready": False,
+            "same_frame_stable": True,
+            "dynamic_deltas_ready": False,
+            "decision_ready": False,
+            "automatic_surrender_ready": False,
+            "ready": False,
+        },
+        "unobserved_dynamic_effects": list(
+            HARNESS.EXPECTED_UNOBSERVED_AFTER_FOUR_DOMAINS
+        ),
+    }
+    return {"war_termination_terms": terms}
+
+
+class WarTerminationTermsLiveAcceptanceChecksTests(unittest.TestCase):
+    def test_duration_is_observed_while_expiry_stays_unobserved(self) -> None:
+        checks = HARNESS._terms_checks(_payload(), war_id=50_331_699)
+        self.assertTrue(checks["truce_duration_observed"])
+        self.assertTrue(checks["truce_expiry_unobserved"])
+        self.assertNotIn("truce_still_unobserved", checks)
+
+    def test_missing_duration_or_invented_expiry_fails_distinct_checks(self) -> None:
+        missing = HARNESS._terms_checks(
+            _payload(evaluated_days_observable=False), war_id=50_331_699
+        )
+        self.assertFalse(missing["truce_duration_observed"])
+        self.assertTrue(missing["truce_expiry_unobserved"])
+
+        invented = HARNESS._terms_checks(
+            _payload(expiry_date_raw=53_219_616), war_id=50_331_699
+        )
+        self.assertTrue(invented["truce_duration_observed"])
+        self.assertFalse(invented["truce_expiry_unobserved"])
+
+
+if __name__ == "__main__":
+    unittest.main()

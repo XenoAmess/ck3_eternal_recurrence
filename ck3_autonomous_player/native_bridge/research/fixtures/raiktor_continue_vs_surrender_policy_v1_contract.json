@@ -9,7 +9,7 @@
   "frozen_inputs": [
     {
       "path": "docs/ck3-native-ai/war-termination.md",
-      "sha256": "33513B5A927BC353F524AF6FC7D6F81D833E014E7B4E198A2744F248DFB16968",
+      "sha256": "2A857001CC7F6868015BE60D90B588B97CC8114ED7D627B63881807F3670A3FC",
       "semantic_contract": "exact-build options, original AI termination tree, Raiktor terms and six-domain readiness boundaries"
     },
     {
@@ -19,7 +19,7 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json",
-      "sha256": "4D9A67F1C8DBD0528823E11C320DB1CFA57C4C30DF3B377595B26F7281A08500",
+      "sha256": "05C3C40180FCFEC6E33C5DB627287C7FCF361C5B5228374D953BD5119DAD3C79",
       "semantic_contract": "claims base plus gold, prestige, PoW, favor, truce and honestly generic war-bound current observation; automatic surrender remains false"
     },
     {
@@ -42,8 +42,18 @@
       "prisoner_release",
       "favor_hook"
     ],
+    "public_wire_terms_domains": [
+      "gold",
+      "prestige",
+      "prisoner_release",
+      "favor_hook",
+      "truce_evaluated_days"
+    ],
     "missing_public_terms_domains": [
-      "truce",
+      "generic_war_bound_current"
+    ],
+    "paused_live_probe_pending_terms_domains": [
+      "truce_evaluated_days",
       "generic_war_bound_current"
     ],
     "campaign_dominance_certificate_available": false,
@@ -133,6 +143,8 @@
     "stage": "static-fixture-policy-core",
     "production_pairwise_ready": false,
     "public_wire_complete": false,
+    "truce_duration_public_wire": true,
+    "truce_expiry_observable": false,
     "production_live": false,
     "current_checkpoint_decision_ready": false,
     "gen_034_resolved": false

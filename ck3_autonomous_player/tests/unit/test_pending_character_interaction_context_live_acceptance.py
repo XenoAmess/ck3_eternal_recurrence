@@ -445,6 +445,52 @@ class PendingInteractionContextLiveAcceptanceTests(unittest.TestCase):
         )
         self.assertFalse(proof["checks"]["accept_and_reject_legal"])
 
+    def test_context_proof_rejects_absent_target_envelope_drift(self) -> None:
+        frame = _frame()
+        frame["target"]["raw_16_bytes_hex"] = "0100" + ("0" * 28)
+        proof = HARNESS._context_proof(
+            _query_result(1, frame),
+            pending_id=PENDING_ID,
+            native_revision=NATIVE_REVISION,
+            date_raw=DATE_RAW,
+        )
+
+        self.assertFalse(proof["ok"])
+        self.assertFalse(proof["checks"]["target_envelope_typed"])
+
+        frame = _frame()
+        frame["target"]["raw_type_index"] = True
+        proof = HARNESS._context_proof(
+            _query_result(1, frame),
+            pending_id=PENDING_ID,
+            native_revision=NATIVE_REVISION,
+            date_raw=DATE_RAW,
+        )
+        self.assertFalse(proof["checks"]["target_envelope_typed"])
+
+        frame = _frame()
+        frame["readiness"]["target_typed_identity_ready"] = False
+        proof = HARNESS._context_proof(
+            _query_result(1, frame),
+            pending_id=PENDING_ID,
+            native_revision=NATIVE_REVISION,
+            date_raw=DATE_RAW,
+        )
+        self.assertFalse(proof["ok"])
+        self.assertFalse(proof["checks"]["target_readiness_consistent"])
+
+        frame = _frame()
+        frame["readiness"]["not_ready_reasons"].insert(
+            0, "war_target_identity_unavailable"
+        )
+        proof = HARNESS._context_proof(
+            _query_result(1, frame),
+            pending_id=PENDING_ID,
+            native_revision=NATIVE_REVISION,
+            date_raw=DATE_RAW,
+        )
+        self.assertFalse(proof["checks"]["target_readiness_consistent"])
+
     def test_double_query_is_adjacent_same_revision_and_read_only(self) -> None:
         service = _FakeQueryService()
         result = HARNESS._run_double_query_sequence(

@@ -75,6 +75,9 @@ class CaptureConfig:
     keyboard_watchdog_interval_seconds: float = (
         DEFAULT_KEYBOARD_WATCHDOG_INTERVAL_SECONDS
     )
+    # CLI-only mode that stops before any native session or bridge transport
+    # is started.  Full capture remains the default for existing callers.
+    preflight_only: bool = False
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
@@ -928,10 +931,653 @@ def _copy_logs(profile: Path, artifacts: Path) -> dict[str, Any]:
     return {"source": str(source), "destination": str(destination), "files": copied}
 
 
+def _ck3_is_running(acceptance: Any) -> bool:
+    """Return the runtime's CK3 process state without starting any process."""
+
+    checker = getattr(acceptance, "ck3_is_running", None)
+    if not callable(checker):
+        raise SeedCaptureError(
+            "no-launch preflight cannot prove the CK3 process inventory: "
+            "runtime checker is unavailable"
+        )
+    return bool(checker())
+
+
+def _preflight_setup_failure(
+    config: CaptureConfig, error: BaseException
+) -> dict[str, Any] | None:
+    """Persist a setup RED when doing so cannot overwrite prior evidence."""
+
+    try:
+        if _is_relative_to(config.attempt_dir, config.clean_source) or _is_relative_to(
+            config.artifacts_dir, config.clean_source
+        ):
+            return None
+        if config.artifacts_dir.exists() and any(config.artifacts_dir.iterdir()):
+            # A non-empty artifact directory is immutable evidence from an
+            # earlier attempt; never replace it just to report a retry error.
+            return None
+        config.artifacts_dir.mkdir(parents=True, exist_ok=True)
+        report: dict[str, Any] = {
+            "schema_version": 1,
+            "kind": "zg361_phase2_seed_preflight",
+            "mode": "preflight-only",
+            "result": "RED",
+            "status": "preflight-blocked",
+            "ok": False,
+            "readiness_scope": "frozen_inputs_and_projection_only",
+            "seed_ready": False,
+            "seed_contract_status": "unknown",
+            "started_at_utc": utc_now(),
+            "finished_at_utc": utc_now(),
+            "report_path": str((config.artifacts_dir / "preflight.json").resolve()),
+            "frozen_git_commit": config.frozen_git_sha,
+            "paths": {
+                "clean_source": str(config.clean_source),
+                "source_zip": str(config.source_zip),
+                "attempt": str(config.attempt_dir),
+                "artifacts": str(config.artifacts_dir),
+                "state": str(config.state_dir),
+                "profile": str(config.profile_dir),
+                "seed_contract": str(config.seed_contract),
+            },
+            "desktop_interaction": False,
+            "mcp_only": True,
+            "ocr_used": False,
+            "image_used": False,
+            "coordinates_used": False,
+            "test_decision_used": False,
+            "ck3_launch_attempted": False,
+            "launch_boundary": "not-crossed",
+            "native_session_started": False,
+            "driver_opened": False,
+            "checks": {},
+            "failure_reason": f"{type(error).__name__}: {error}",
+            "failure_evidence": None,
+        }
+        write_json(config.artifacts_dir / "preflight.json", report)
+        append_jsonl(
+            config.artifacts_dir / "preflight-failures.jsonl",
+            {
+                "schema_version": 1,
+                "state": "seed_preflight_setup_failed",
+                "error_type": type(error).__name__,
+                "error": str(error),
+            },
+        )
+        return report
+    except BaseException:
+        return None
+
+
+def _run_seed_static_preflight(
+    config: CaptureConfig,
+    artifacts: Path,
+    *,
+    allow_missing_for_fixture: bool = False,
+) -> dict[str, Any]:
+    """Run the seed-specific offline gates without invoking CK3 or desktop IO."""
+
+    commands = (
+        ("validate_static", config.clean_source / "tools" / "validate_static.py", False),
+        (
+            "validate_local",
+            config.clean_source / "mod_zhongguo_style" / "tools" / "validate_local.py",
+            False,
+        ),
+        (
+            "seed_loader_test",
+            config.clean_source / "tools" / "test_zg361_phase2_loader_stage.py",
+            False,
+        ),
+        (
+            "seed_loader_test_optimized",
+            config.clean_source / "tools" / "test_zg361_phase2_loader_stage.py",
+            True,
+        ),
+        (
+            "seed_bootstrap_test",
+            config.clean_source / "tools" / "test_zg361_phase2_seed_bootstrap.py",
+            False,
+        ),
+        (
+            "seed_bootstrap_test_optimized",
+            config.clean_source / "tools" / "test_zg361_phase2_seed_bootstrap.py",
+            True,
+        ),
+        (
+            "seed_fixture_test",
+            config.clean_source / "tools" / "test_zg361_phase2_seed_fixture.py",
+            False,
+        ),
+        (
+            "seed_fixture_test_optimized",
+            config.clean_source / "tools" / "test_zg361_phase2_seed_fixture.py",
+            True,
+        ),
+        (
+            "seed_capture_test",
+            config.clean_source / "tools" / "test_run_zg361_phase2_seed_capture.py",
+            False,
+        ),
+        (
+            "seed_capture_test_optimized",
+            config.clean_source / "tools" / "test_run_zg361_phase2_seed_capture.py",
+            True,
+        ),
+    )
+    missing = [
+        name
+        for name, path, _optimized in commands
+        if not path.is_file()
+    ]
+    if missing:
+        # The tiny fake runtimes used by the CK3-free unit tests intentionally
+        # contain only the minimum fixture files.  They still exercise the
+        # preflight ordering.  This escape is private and explicit; the real
+        # CLI must never turn a missing seed gate into a false GREEN.
+        evidence = {
+            "result": "SKIPPED" if allow_missing_for_fixture else "RED",
+            "reason": (
+                "seed-specific offline gate scripts are absent in injected fixture runtime"
+                if allow_missing_for_fixture
+                else "required seed-specific offline gate scripts are missing"
+            ),
+            "missing_scripts": missing,
+            "commands": [],
+        }
+        write_json(artifacts / "static-preflight.json", evidence)
+        if allow_missing_for_fixture:
+            return evidence
+        raise SeedCaptureError(
+            "seed static preflight cannot be skipped for the real CLI",
+            evidence,
+        )
+    rows: list[dict[str, Any]] = []
+    env = os.environ.copy()
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    for name, script, optimized in commands:
+        command = [sys.executable]
+        if optimized:
+            command.append("-O")
+        command.append(str(script))
+        started = time.monotonic()
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=config.clean_source,
+                env=env,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=120.0,
+                check=False,
+            )
+            row = {
+                "name": name,
+                "command": command,
+                "returncode": completed.returncode,
+                "elapsed_seconds": round(time.monotonic() - started, 3),
+                "stdout": completed.stdout[-4000:],
+                "stderr": completed.stderr[-4000:],
+            }
+        except BaseException as error:
+            row = {
+                "name": name,
+                "command": command,
+                "returncode": None,
+                "elapsed_seconds": round(time.monotonic() - started, 3),
+                "error": f"{type(error).__name__}: {error}",
+            }
+        rows.append(row)
+        if row.get("returncode") != 0:
+            evidence = {"result": "RED", "commands": rows}
+            write_json(artifacts / "static-preflight.json", evidence)
+            raise SeedCaptureError(
+                f"seed static preflight failed: {name}", evidence
+            )
+    evidence = {"result": "GREEN", "commands": rows}
+    write_json(artifacts / "static-preflight.json", evidence)
+    return evidence
+
+
+def run_preflight(
+    raw_config: CaptureConfig,
+    *,
+    runtime: RuntimeBindings | None = None,
+    _allow_fixture_static_skip: bool = False,
+) -> dict[str, Any]:
+    """Validate one frozen seed attempt without crossing the CK3 launch boundary.
+
+    This deliberately stops after source/dependency verification and the
+    product+fixture projection.  It never starts ``native_session``, opens a
+    bridge driver, sends HKL messages, or waits for a loader/event.  A fresh
+    attempt directory is required and the machine-readable ``preflight.json``
+    artifact is written for both GREEN and RED outcomes.
+    """
+
+    config = raw_config.resolved()
+    try:
+        prepare_output_paths(config)
+    except BaseException as error:
+        setup_report = _preflight_setup_failure(config, error)
+        if setup_report is not None:
+            return setup_report
+        raise
+    artifacts = config.artifacts_dir
+    report: dict[str, Any] = {
+        "schema_version": 1,
+        "kind": "zg361_phase2_seed_preflight",
+        "mode": "preflight-only",
+        "result": "RED",
+        "status": "checking",
+        "ok": False,
+        "readiness_scope": "frozen_inputs_and_projection_only",
+        "seed_ready": False,
+        "seed_contract_status": None,
+        "started_at_utc": utc_now(),
+        "finished_at_utc": None,
+        "report_path": str((artifacts / "preflight.json").resolve()),
+        "frozen_git_commit": config.frozen_git_sha,
+        "paths": {
+            "clean_source": str(config.clean_source),
+            "source_zip": str(config.source_zip),
+            "attempt": str(config.attempt_dir),
+            "artifacts": str(artifacts),
+            "state": str(config.state_dir),
+            "profile": str(config.profile_dir),
+            "seed_contract": str(config.seed_contract),
+        },
+        "desktop_interaction": False,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "ck3_launch_attempted": False,
+        "launch_boundary": "not-crossed",
+        "native_session_started": False,
+        "driver_opened": False,
+        "checks": {},
+        "source_identity": None,
+        "external_dependencies": None,
+        "bootstrap": None,
+        "bridge": None,
+        "static_preflight": None,
+        "failure_reason": None,
+        "failure_evidence": None,
+    }
+    active_runtime = runtime
+    source_manifest_before: dict[str, Any] | None = None
+    dependency_paths: dict[str, Path] | None = None
+    dependency_hashes_before: dict[str, str] | None = None
+    initial_runtime_trees: dict[str, Any] | None = None
+    bootstrap_targets: dict[str, Path] | None = None
+
+    try:
+        validate_config(config)
+        report["checks"]["config"] = "GREEN"
+        if active_runtime is None:
+            active_runtime = load_runtime(config)
+        acceptance = active_runtime.acceptance
+        zgrun = active_runtime.zgrun
+
+        if _ck3_is_running(acceptance):
+            raise SeedCaptureError(
+                "no-launch preflight requires zero running ck3.exe processes"
+            )
+        report["checks"]["ck3_process_inventory"] = {
+            "result": "GREEN",
+            "running": False,
+        }
+
+        source_manifest_before = tree_manifest(config.clean_source)
+        write_json(
+            artifacts / "source-tree-manifest.before.json", source_manifest_before
+        )
+        source_zip_manifest = zip_manifest(config.source_zip)
+        write_json(artifacts / "source-zip-manifest.json", source_zip_manifest)
+        bytecode_paths = sorted(
+            str(row["path"])
+            for row in source_manifest_before["files"]
+            if isinstance(row, dict)
+            and (
+                "__pycache__" in Path(str(row["path"])).parts
+                or Path(str(row["path"])).suffix.lower() in {".pyc", ".pyo"}
+            )
+        )
+        if bytecode_paths:
+            raise SeedCaptureError(
+                "clean source contains generated Python bytecode",
+                {"bytecode_paths": bytecode_paths},
+            )
+        archive_equivalence = compare_zip_to_source(
+            source_zip_manifest, source_manifest_before
+        )
+        if archive_equivalence["equivalent"] is not True:
+            raise SeedCaptureError(
+                "clean source is not byte-equivalent to the explicit source ZIP",
+                archive_equivalence,
+            )
+        source_identity = {
+            "git": git_identity(config),
+            "source_zip": {
+                "path": str(config.source_zip),
+                "bytes": config.source_zip.stat().st_size,
+                "sha256": sha256_file(config.source_zip),
+                "logical_tree_sha256": source_zip_manifest["logical_tree_sha256"],
+            },
+            "clean_source_tree": {
+                key: source_manifest_before[key]
+                for key in ("algorithm", "file_count", "tree_sha256")
+            },
+            "archive_source_equivalence": archive_equivalence,
+        }
+        report["source_identity"] = source_identity
+        report["checks"]["source_archive_equivalence"] = "GREEN"
+
+        base_contract = json.loads(config.seed_contract.read_text(encoding="utf-8"))
+        report["seed_contract_status"] = base_contract.get("status")
+        source_row = base_contract.get("source")
+        if not isinstance(source_row, dict):
+            raise SeedCaptureError("seed contract source is not an object")
+        raw_old_save = source_row.get("absolute_save")
+        if not isinstance(raw_old_save, str) or not raw_old_save:
+            raise SeedCaptureError("seed contract absolute_save is missing")
+        old_save_path = Path(raw_old_save)
+        if not old_save_path.is_absolute():
+            raise SeedCaptureError("seed contract absolute_save must be absolute")
+        old_save = old_save_path.resolve()
+        expected_save_sha = source_row.get("sha256")
+        if not old_save.is_file():
+            raise SeedCaptureError(f"old real seed source is missing: {old_save}")
+        observed_save_sha = sha256_file(old_save)
+        if observed_save_sha != expected_save_sha:
+            raise SeedCaptureError(
+                f"old real seed source hash drifted: {observed_save_sha}"
+            )
+
+        dependency_paths = {
+            "source_zip": config.source_zip,
+            "old_save": old_save,
+            "game_executable": config.game_executable,
+            "vanilla_game_rules": config.vanilla_game_rules,
+            "bridge_dll": config.bridge_dll,
+            "bridge_injector": config.bridge_injector,
+        }
+        dependency_hashes_before = {
+            name: sha256_file(path) for name, path in dependency_paths.items()
+        }
+        expected_executable_sha = getattr(zgrun, "EXPECTED_EXE_SHA256", None)
+        expected_game_version = getattr(zgrun, "EXPECTED_GAME_VERSION", None)
+        if dependency_hashes_before["game_executable"] != expected_executable_sha:
+            raise SeedCaptureError(
+                "CK3 executable does not match the exact supported build: "
+                f"{dependency_hashes_before['game_executable']}"
+            )
+        observed_game_version = zgrun.isolated.installed_game_version()
+        if observed_game_version != expected_game_version:
+            raise SeedCaptureError(
+                "CK3 version does not match the exact supported build: "
+                f"{observed_game_version!r}"
+            )
+        report["external_dependencies"] = {
+            "paths": {name: str(path) for name, path in dependency_paths.items()},
+            "sha256_before": dependency_hashes_before,
+            "sha256_after": None,
+            "unchanged": None,
+            "game_version": observed_game_version,
+            "expected_game_version": expected_game_version,
+            "expected_executable_sha256": expected_executable_sha,
+            "old_save": {
+                "path": str(old_save),
+                "bytes": old_save.stat().st_size,
+                "sha256": observed_save_sha,
+            },
+        }
+        report["checks"]["external_dependencies"] = "GREEN"
+
+        bridge = zgrun.resolve_native_bridge_config(
+            config.bridge_dll, config.bridge_injector, config.pipe_name
+        )
+        bridge_identity = {
+            "mode": getattr(bridge, "mode", None),
+            "pipe": getattr(bridge, "pipe_name", config.pipe_name),
+            "dll": str(config.bridge_dll),
+            "dll_sha256": sha256_file(config.bridge_dll),
+            "injector": str(config.bridge_injector),
+            "injector_sha256": sha256_file(config.bridge_injector),
+            "visual_fallback": False,
+        }
+        identity_fn = getattr(zgrun, "native_bridge_preflight_identity", None)
+        if callable(identity_fn):
+            bridge_identity["runtime_identity"] = identity_fn(bridge)
+        report["bridge"] = bridge_identity
+        report["checks"]["bridge"] = "GREEN"
+
+        report["static_preflight"] = _run_seed_static_preflight(
+            config,
+            artifacts,
+            # The skip escape is a unit-test seam, never a real-runtime mode.
+            # Even if a caller reaches this private flag directly, a missing
+            # gate must remain RED unless an injected runtime is present.
+            allow_missing_for_fixture=(
+                _allow_fixture_static_skip and runtime is not None
+            ),
+        )
+        report["checks"]["static_preflight"] = report["static_preflight"][
+            "result"
+        ]
+
+        bootstrap = zgrun.bootstrap_userdir(
+            config.profile_dir, config.product_source
+        )
+        enabled_mods = tuple(bootstrap.get("enabled_mods", ()))
+        if enabled_mods != EXPECTED_ENABLED_MODS:
+            raise SeedCaptureError(
+                "seed profile must enable exactly product+fixture once: "
+                f"{enabled_mods}"
+            )
+        raw_targets = bootstrap.get("targets")
+        if not isinstance(raw_targets, dict) or set(raw_targets) != {
+            "product",
+            "fixture",
+        }:
+            raise SeedCaptureError("bootstrap targets are not exactly product+fixture")
+        bootstrap_targets = {
+            name: Path(path).resolve() for name, path in raw_targets.items()
+        }
+        initial_runtime_trees = {
+            name: zgrun.isolated.tree_snapshot(path)
+            for name, path in bootstrap_targets.items()
+        }
+        initial_runtime_tree_sha256 = {
+            name: zgrun.isolated.snapshot_digest(tree)
+            for name, tree in initial_runtime_trees.items()
+        }
+        declared_runtime_tree_sha256 = bootstrap.get("tree_sha256")
+        if declared_runtime_tree_sha256 != initial_runtime_tree_sha256:
+            raise SeedCaptureError(
+                "bootstrap runtime tree hashes disagree with the projected trees",
+                {
+                    "declared_tree_sha256": declared_runtime_tree_sha256,
+                    "observed_tree_sha256": initial_runtime_tree_sha256,
+                },
+            )
+        report["bootstrap"] = {
+            "targets": {name: str(path) for name, path in bootstrap_targets.items()},
+            "tree_sha256": initial_runtime_tree_sha256,
+            "enabled_mods": list(enabled_mods),
+            "manifest": bootstrap.get("manifest"),
+            "single_mount_contract": True,
+            "projection_only": True,
+            "mounted": False,
+        }
+        report["checks"]["product_fixture_projection"] = "GREEN"
+
+        if _ck3_is_running(acceptance):
+            raise SeedCaptureError(
+                "ck3.exe appeared during no-launch preflight; launch boundary remains closed"
+            )
+        report["checks"]["ck3_process_inventory_after"] = {
+            "result": "GREEN",
+            "running": False,
+        }
+        report["result"] = "GREEN"
+        report["status"] = "preflight-ready"
+        report["ok"] = True
+    except BaseException as error:
+        report["result"] = "RED"
+        report["status"] = "preflight-blocked"
+        report["ok"] = False
+        report["failure_reason"] = f"{type(error).__name__}: {error}"
+        report["traceback"] = traceback.format_exc()
+        if isinstance(error, SeedCaptureError):
+            report["failure_evidence"] = error.evidence
+        append_jsonl(
+            artifacts / "preflight-failures.jsonl",
+            {
+                "schema_version": 1,
+                "state": "seed_preflight_failed",
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "failure_evidence": report.get("failure_evidence"),
+                "traceback": report["traceback"],
+            },
+        )
+    finally:
+        # Hashes are checked again before the report can claim readiness.  A
+        # preflight never owns a native process, so projection immutability is
+        # the only runtime after-check needed here.
+        if source_manifest_before is not None:
+            try:
+                source_manifest_after = tree_manifest(config.clean_source)
+                write_json(
+                    artifacts / "source-tree-manifest.after.json",
+                    source_manifest_after,
+                )
+                unchanged = (
+                    source_manifest_after["tree_sha256"]
+                    == source_manifest_before["tree_sha256"]
+                )
+                source_identity = report.get("source_identity")
+                if not isinstance(source_identity, dict):
+                    source_identity = {}
+                    report["source_identity"] = source_identity
+                source_identity["clean_source_tree_after"] = {
+                    key: source_manifest_after[key]
+                    for key in ("algorithm", "file_count", "tree_sha256")
+                }
+                report["checks"]["clean_source_unchanged"] = (
+                    "GREEN" if unchanged else "RED"
+                )
+                if not unchanged:
+                    _flip_red(report, "clean source tree changed during preflight")
+            except BaseException as error:
+                _flip_red(report, f"source immutability check failed: {error}")
+        if dependency_paths is not None and dependency_hashes_before is not None:
+            dependency_row = report.get("external_dependencies")
+            try:
+                dependency_hashes_after = {
+                    name: sha256_file(path)
+                    for name, path in dependency_paths.items()
+                }
+                if not isinstance(dependency_row, dict):
+                    dependency_row = {
+                        "paths": {
+                            name: str(path)
+                            for name, path in dependency_paths.items()
+                        },
+                        "sha256_before": dependency_hashes_before,
+                    }
+                    report["external_dependencies"] = dependency_row
+                dependency_row["sha256_after"] = dependency_hashes_after
+                dependency_row["unchanged"] = (
+                    dependency_hashes_after == dependency_hashes_before
+                )
+                report["checks"]["external_dependencies_unchanged"] = (
+                    "GREEN" if dependency_row["unchanged"] else "RED"
+                )
+                if dependency_row["unchanged"] is not True:
+                    _flip_red(
+                        report, "external runtime dependency changed during preflight"
+                    )
+            except BaseException as error:
+                _flip_red(report, f"dependency immutability check failed: {error}")
+        if initial_runtime_trees is not None and bootstrap_targets is not None:
+            try:
+                final_trees = {
+                    name: active_runtime.zgrun.isolated.tree_snapshot(path)
+                    for name, path in bootstrap_targets.items()
+                }
+                unchanged = final_trees == initial_runtime_trees
+                report["runtime_projection_unchanged"] = unchanged
+                report["checks"]["runtime_projection_unchanged"] = (
+                    "GREEN" if unchanged else "RED"
+                )
+                if not unchanged:
+                    _flip_red(
+                        report, "projected product/fixture tree changed during preflight"
+                    )
+            except BaseException as error:
+                _flip_red(report, f"projection immutability check failed: {error}")
+        report["finished_at_utc"] = utc_now()
+        # These fields are invariants, not claims inferred from a successful
+        # return.  Keep them explicit so a reviewer can verify the boundary.
+        report["ck3_launch_attempted"] = False
+        report["launch_boundary"] = "not-crossed"
+        report["native_session_started"] = False
+        report["driver_opened"] = False
+        if report.get("result") == "GREEN":
+            report["status"] = "preflight-ready"
+            report["ok"] = True
+        else:
+            report["status"] = "preflight-blocked"
+            report["ok"] = False
+        write_json(artifacts / "preflight.json", report)
+    return report
+
+
 def _flip_red(report: dict[str, Any], reason: str) -> None:
     report["result"] = "RED"
     if report.get("failure_reason") is None:
         report["failure_reason"] = reason
+
+
+def _phase2_native_session_probe(
+    supervisor: object,
+) -> dict[str, Any] | None:
+    """Return a terminal supervisor snapshot without touching CK3 directly.
+
+    The managed native-session thread publishes its report/error before
+    setting ``session_done``.  The loader gate polls this boundary while it
+    waits for append-only CK3 logs; once the event is set, returning the
+    snapshot lets the gate emit a typed process-exit RED immediately instead
+    of waiting for its generic 300-second timeout.
+    """
+
+    if not isinstance(supervisor, dict):
+        raise TypeError("phase-two supervisor handle is not an object")
+    session_done = supervisor.get("session_done")
+    session_state = supervisor.get("session_state")
+    session_thread = supervisor.get("session_thread")
+    if not (
+        isinstance(session_done, threading.Event)
+        and isinstance(session_state, dict)
+        and isinstance(session_thread, threading.Thread)
+    ):
+        raise TypeError("phase-two supervisor handle is malformed")
+    if not session_done.is_set():
+        return None
+    report = session_state.get("report")
+    error = session_state.get("error")
+    return {
+        "terminal": True,
+        "session_thread_alive": session_thread.is_alive(),
+        "session_report": report if isinstance(report, dict) else None,
+        "session_error": error,
+    }
 
 
 def run_capture(
@@ -1260,6 +1906,9 @@ def run_capture(
                 artifacts / "01_phase2_loader_stage_progress.jsonl",
                 timeout_seconds=config.loader_timeout_seconds,
                 fatal_stall_seconds=LOADER_FATAL_STALL_SECONDS,
+                native_session_probe=lambda: _phase2_native_session_probe(
+                    supervisor
+                ),
             )
         except active_runtime.loader_stage_error as error:
             evidence = getattr(error, "evidence", {})
@@ -1565,6 +2214,11 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         type=float,
         default=DEFAULT_KEYBOARD_WATCHDOG_INTERVAL_SECONDS,
     )
+    parser.add_argument(
+        "--preflight-only",
+        action="store_true",
+        help="validate frozen inputs and projections without launching CK3",
+    )
     args = parser.parse_args(argv)
     return CaptureConfig(
         clean_source=args.clean_source,
@@ -1586,13 +2240,14 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         keyboard_watchdog_interval_seconds=(
             args.keyboard_watchdog_interval_seconds
         ),
+        preflight_only=args.preflight_only,
     )
 
 
 def main(argv: list[str] | None = None) -> int:
     config = parse_args(argv)
     try:
-        report = run_capture(config)
+        report = run_preflight(config) if config.preflight_only else run_capture(config)
     except BaseException as error:
         print(f"seed capture preflight failed: {type(error).__name__}: {error}")
         return 2

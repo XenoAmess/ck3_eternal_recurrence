@@ -97,10 +97,18 @@ fixture/loader/helper 的静态验收：
 
 ```powershell
 py tools/test_zg361_phase2_seed_fixture.py
+py -O tools/test_zg361_phase2_seed_fixture.py
 py tools/test_zg361_phase2_loader_stage.py
+py -O tools/test_zg361_phase2_loader_stage.py
 py tools/test_zg361_phase2_seed_bootstrap.py
+py -O tools/test_zg361_phase2_seed_bootstrap.py
 py tools/test_run_zhongguo_promo_capture.py
 ```
+
+这里的普通模式承载 fixture/bootstrap 脚本中的语义断言；对应的 `python -O` 命令只作
+导入与运行时兼容性 smoke，不把断言移除后的结果当成额外业务证明。seed preflight
+会对 loader、bootstrap、fixture 三个脚本分别执行普通与 `-O` 两种模式，再允许进入
+投影检查；任一模式失败都保留静态 RED。
 
 ## attempt 07：不是“再等一会”，而是 loader parser RED
 
@@ -145,6 +153,12 @@ database init 时，这只能说明 native hook 尚未到达可安装阶段，�
 `zga_phase2_seed.1` event waiter。仅到 Frontend 而未开始 Load Save 时应另报 `save_resume_red`；theme-only 只继续等待，不能冒充
 fatal。
 
+loader gate 还轮询受管 `native_session` supervisor 的只读 terminal probe。supervisor 在 session report/error
+写入后才置 `session_done`；若 CK3 提前以非零码退出，gate 立即追加 `native_session_process_exit`（保留完整
+`session_report`、`exit_reason`、`process_exit_code` 与当时日志 hash）并结束本轮，不把已知进程崩溃拖成
+`loader_stage_timeout`。无论该 typed RED 或其它 loader RED，runner 仍进入同一受管 cleanup，并单独保存
+`09_phase2_native_session_cleanup.json`；这条早停只改善诊断时延，不把 RED 提升为 live readiness。
+
 下一次 CK3 只允许单局验证这一个假设：在所有已实证 parser/compiler/theme 项静态清零后，新 HEAD 是否从
 `04:26:53` 对应阶段继续到 `Load Save/In Game` 与 native semantic snapshot。单局顺序固定为：冻结 projection/SHA →
 确认 product/fixture 各挂载一次 → append-only loader gate → exact event query → 五 selector 与 paused checkpoint 捕获 →
@@ -179,6 +193,18 @@ CK3 EXE、game rules、bridge DLL 与 injector 的 before hash；CK3 版本和 E
 合同。bootstrap 声明的 product/fixture tree hash 还必须等于 runner 对实际挂载投影独立计算的 hash，candidate 只采用后者；所有
 timeout 必须为有限正数，seed contract 的 `absolute_save` 必须真的是绝对路径。退出时再核对源码树与全部外部依赖 after hash。
 
+实机前可先对同一组冻结输入执行 no-launch 门：在上述参数后追加 `--preflight-only`。该入口只做 config、clean
+source/ZIP 逐文件等价、旧 save/CK3/rules/bridge/injector 哈希、exact-build 版本、静态 preflight 与 product/fixture
+投影检查；不会启动 `ck3.exe`、native session、driver、HKL watchdog，也不会进入 loader/event waiter。它在
+`artifacts/preflight.json` 写入 machine-readable 结果：`result/status/ok=GREEN/preflight-ready/true` 且
+`ck3_launch_attempted=false` 时退出码为 `0`；这里的 `status=preflight-ready` 只表示冻结输入与投影门通过，报告固定
+`readiness_scope=frozen_inputs_and_projection_only`、`seed_ready=false`，并原样记录当前
+`seed_contract_status`（通常仍为 `blocked_seed_generation_required`），不能解读为 seed 或 live capability 已就绪。
+任何 blocker 都保留 RED artifact（`status=preflight-blocked/ok=false`）并退出码为 `2`。
+每次实机 capture 仍必须使用新的空 attempt/artifact 目录，不能把 preflight 目录直接复用为 attempt 08。
+这里的静态门是 seed 专用离线检查（`_run_seed_static_preflight`）；不会调用面向完整 acceptance fixture 的通用
+`run_zhongguo_acceptance.preflight`，避免把 seed-only fixture 错判为缺少完整宣传验收夹具。
+
 成功路径的硬顺序为：
 
 1. 把 clean product 与专用 seed fixture 投影到隔离 profile，`enabled_mods` 必须严格等于 product/fixture 各一个；
@@ -207,7 +233,7 @@ py tools/test_run_zg361_phase2_seed_capture.py
 py -O tools/test_run_zg361_phase2_seed_capture.py
 ```
 
-fake tests 覆盖显式 CLI 校验、ZIP/tree exact hashes、单挂载及顺序、45 秒 parser fail-fast 原样证据、单一 event deadline、
+fake tests 覆盖显式 CLI 校验、no-launch GREEN/RED 与 launch boundary、ZIP/tree exact hashes、单挂载及顺序、45 秒 parser fail-fast 原样证据、单一 event deadline、
 GREEN cleanup/driver/log/immutability、parser RED 后仍 cleanup，以及拒绝重跑时不覆写原失败 artifact。截至本段记录时仅为
 `static-ready / fake-tested / not-live`；不构成 attempt 08，也不授权在 parser/theme 静态项清零前启动 CK3。
 

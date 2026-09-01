@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 from types import SimpleNamespace
 import tempfile
+import threading
 import zipfile
 
 import run_zg361_phase2_seed_capture as capture
@@ -55,6 +56,9 @@ class FakeAcceptance:
     def configure_runtime_userdir(self, profile: Path) -> None:
         self.calls.append("configure-userdir")
         require(profile.name == "profile", "runtime profile path drifted")
+
+    def ck3_is_running(self) -> bool:
+        return False
 
 
 class FakeDriver:
@@ -159,10 +163,13 @@ class FakeZhongguoRunner:
         executable: Path,
         calls: list[str],
         keyboard_green: bool = True,
+        process_exit: bool = False,
     ) -> None:
         self.fixture_source = fixture_source
         self.calls = calls
         self.keyboard_green = keyboard_green
+        self.process_exit = process_exit
+        self.supervisor: dict[str, object] | None = None
         self.isolated = FakeIsolated()
         self.EXPECTED_EXE_SHA256 = sha256(executable)
 
@@ -209,11 +216,28 @@ class FakeZhongguoRunner:
         self.calls.append("resolve-bridge")
         return SimpleNamespace(pipe_name=pipe)
 
+    def preflight(self, **_kwargs: object) -> dict[str, object]:
+        """Fail loudly if the seed gate regresses to the generic acceptance gate."""
+
+        self.calls.append("generic-preflight")
+        raise AssertionError(
+            "phase-two seed preflight must not invoke generic acceptance preflight"
+        )
+
     def start_phase2_native_session_supervisor(
         self, _spec: object, _bridge: object
     ) -> dict[str, object]:
         self.calls.append("supervisor-start")
-        return {"fake": True}
+        self.supervisor = {
+            "stop_event": threading.Event(),
+            "session_done": threading.Event(),
+            "session_state": {"report": None, "error": None},
+            "session_thread": threading.Thread(
+                target=lambda: None,
+                name="fake-phase2-native-session",
+            ),
+        }
+        return self.supervisor
 
     def wait_for_phase2_native_session_binding(
         self,
@@ -387,13 +411,18 @@ class Fixture:
         )
 
     def runtime(
-        self, calls: list[str], *, parser_red: bool = False
+        self,
+        calls: list[str],
+        *,
+        parser_red: bool = False,
+        process_exit: bool = False,
     ) -> capture.RuntimeBindings:
         acceptance = FakeAcceptance(self.game / "binaries" / "ck3.exe", calls)
         zgrun = FakeZhongguoRunner(
             self.clean / "tools" / "fixtures" / "zg361_phase2_seed_bootstrap",
             self.game / "binaries" / "ck3.exe",
             calls,
+            process_exit=process_exit,
         )
         service = FakeService(calls)
 
@@ -410,6 +439,45 @@ class Fixture:
                 kwargs["fatal_stall_seconds"] == 45.0,
                 "loader parser fail-fast drifted",
             )
+            probe = kwargs.get("native_session_probe")
+            require(callable(probe), "native session early-exit probe missing")
+            if process_exit:
+                require(
+                    zgrun.supervisor is not None,
+                    "fake native supervisor was not retained",
+                )
+                state = zgrun.supervisor["session_state"]
+                require(isinstance(state, dict), "fake session state malformed")
+                state["report"] = {
+                    "kind": "ck3_native_headless_session",
+                    "exit_reason": "process_exit",
+                    "process_exit_code": 1,
+                    "pid": 4321,
+                    "ok": False,
+                }
+                zgrun.supervisor["session_done"].set()
+                terminal = probe()
+                require(
+                    isinstance(terminal, dict)
+                    and terminal.get("terminal") is True,
+                    "native process-exit probe did not publish a terminal",
+                )
+                evidence = {
+                    "result": "RED",
+                    "state": "native_session_process_exit",
+                    "stage": "awaiting_logs",
+                    "database_init_seen": False,
+                    "event_wait_authorized": False,
+                    "native_session": terminal,
+                    "exit_reason": "process_exit",
+                    "process_exit_code": 1,
+                    "process_exit_nonzero": True,
+                }
+                capture.append_jsonl(progress, evidence)
+                raise FakeLoaderStageError(
+                    "managed native_session exited before loader readiness",
+                    evidence,
+                )
             if parser_red:
                 evidence = {
                     "result": "RED",
@@ -663,6 +731,59 @@ def test_parser_red_cleanup() -> None:
         )
 
 
+def test_native_session_process_exit_cleanup() -> None:
+    """A supervisor process-exit RED is retained while cleanup still runs."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        report = capture.run_capture(
+            fixture.config(),
+            runtime=fixture.runtime(calls, process_exit=True),
+        )
+        require(report["result"] == "RED", "native process exit false-GREENed")
+        loader_evidence = report["loader_stage"]
+        require(
+            isinstance(loader_evidence, dict)
+            and loader_evidence.get("state") == "native_session_process_exit",
+            "native process exit terminal was not retained by runner",
+        )
+        require(
+            loader_evidence.get("process_exit_code") == 1
+            and loader_evidence.get("process_exit_nonzero") is True,
+            "runner lost the non-zero native exit code",
+        )
+        require(
+            "supervisor-cleanup" in calls,
+            "native process exit skipped managed cleanup",
+        )
+        require(
+            "single-mount-gate" not in calls
+            and "native-readiness" not in calls
+            and "event-context" not in calls
+            and "seed-capture-mcp" not in calls,
+            "native process exit crossed the loader failure boundary",
+        )
+        require(
+            report["cleanup"]["result"] == "GREEN",
+            "native process exit did not retain cleanup proof",
+        )
+        require(
+            rows(fixture.artifacts / "01_phase2_loader_stage_progress.jsonl")[-1][
+                "state"
+            ]
+            == "native_session_process_exit",
+            "append-only loader stream lacks process-exit terminal",
+        )
+        require(
+            rows(fixture.artifacts / "runner-failures.jsonl")[-1]["loader_stage"][
+                "state"
+            ]
+            == "native_session_process_exit",
+            "failure stream lost process-exit evidence",
+        )
+
+
 def test_total_event_deadline() -> None:
     class EventFreeService:
         def __init__(self) -> None:
@@ -747,6 +868,31 @@ def test_cli_validation_and_artifact_preservation() -> None:
         require(parsed.clean_source == fixture.clean.resolve(), "CLI source drifted")
         require(parsed.pipe_name == fixture.pipe, "CLI explicit pipe drifted")
         require(parsed.loader_timeout_seconds == 60.0, "CLI timeout drifted")
+        parsed_preflight = capture.parse_args(
+            [
+                "--clean-source",
+                str(fixture.clean),
+                "--attempt-dir",
+                str(fixture.attempt),
+                "--artifacts-dir",
+                str(fixture.artifacts),
+                "--source-zip",
+                str(fixture.source_zip),
+                "--git-sha",
+                fixture.git_sha,
+                "--game-dir",
+                str(fixture.game),
+                "--bridge-dll",
+                str(fixture.dll),
+                "--injector",
+                str(fixture.injector),
+                "--pipe",
+                fixture.pipe,
+                "--preflight-only",
+            ]
+        )
+        require(parsed_preflight.preflight_only is True,
+                "--preflight-only CLI flag was not preserved")
         capture.validate_config(parsed)
         for label, invalid_timing in (
             ("NaN", float("nan")),
@@ -782,6 +928,119 @@ def test_cli_validation_and_artifact_preservation() -> None:
         require(
             sha256(report_path) == report_hash,
             "repeat-run rejection overwrote the preserved failure report",
+        )
+
+
+def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        report = capture.run_preflight(
+            fixture.config(),
+            runtime=fixture.runtime(calls),
+            _allow_fixture_static_skip=True,
+        )
+        require(report["result"] == "GREEN", "no-launch preflight unexpectedly RED")
+        require(report["status"] == "preflight-ready" and report["ok"] is True,
+                "GREEN preflight status contract drifted")
+        require(report["seed_ready"] is False,
+                "preflight falsely advertised a live seed")
+        require(report["readiness_scope"] == "frozen_inputs_and_projection_only",
+                "preflight readiness scope drifted")
+        require(report["ck3_launch_attempted"] is False,
+                "preflight claimed a CK3 launch")
+        require(report["launch_boundary"] == "not-crossed",
+                "preflight crossed the native launch boundary")
+        require(report["native_session_started"] is False,
+                "preflight started a native session")
+        require(report["driver_opened"] is False,
+                "preflight opened a bridge driver")
+        require("supervisor-start" not in calls,
+                "preflight reached the supervisor start")
+        require("driver-open" not in calls,
+                "preflight reached the bridge driver")
+        require("transport-binding" not in calls,
+                "preflight reached MCP transport binding")
+        require(
+            "generic-preflight" not in calls,
+            "seed preflight regressed to the generic acceptance preflight",
+        )
+        static_preflight = report["static_preflight"]
+        require(
+            isinstance(static_preflight, dict)
+            and static_preflight.get("result") == "SKIPPED"
+            and "seed-specific" in str(static_preflight.get("reason")),
+            "seed-specific static preflight was not selected for the injected fixture",
+        )
+        require(report["bootstrap"]["projection_only"] is True,
+                "preflight projection was not labelled projection-only")
+        report_path = fixture.artifacts / "preflight.json"
+        require(report_path.is_file(), "GREEN preflight artifact is missing")
+        persisted = json.loads(report_path.read_text(encoding="utf-8"))
+        require(persisted == report, "preflight artifact differs from return value")
+
+
+def test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        report = capture.run_preflight(
+            fixture.config(), runtime=fixture.runtime(calls)
+        )
+        require(
+            report["result"] == "RED",
+            "real no-launch preflight skipped missing seed gate scripts",
+        )
+        require(
+            report["status"] == "preflight-blocked" and report["ok"] is False,
+            "missing seed gate scripts did not produce a blocked report",
+        )
+        require(
+            "cannot be skipped" in str(report["failure_reason"]),
+            "missing seed gate blocker was not typed",
+        )
+        evidence = report["failure_evidence"]
+        require(
+            isinstance(evidence, dict)
+            and evidence.get("result") == "RED"
+            and evidence.get("missing_scripts"),
+            "missing seed gate evidence was not preserved",
+        )
+        require(
+            (fixture.artifacts / "static-preflight.json").is_file(),
+            "missing seed gate did not persist static evidence",
+        )
+        require(
+            "bootstrap" not in calls
+            and "supervisor-start" not in calls
+            and "driver-open" not in calls,
+            "missing seed gate crossed the launch/projection boundary",
+        )
+
+
+def test_no_launch_preflight_running_ck3_is_persisted_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        runtime = fixture.runtime(calls)
+        runtime.acceptance.ck3_is_running = lambda: True
+        report = capture.run_preflight(fixture.config(), runtime=runtime)
+        require(report["result"] == "RED", "running CK3 false-GREENed preflight")
+        require(report["status"] == "preflight-blocked" and report["ok"] is False,
+                "running CK3 RED status contract drifted")
+        require("zero running ck3.exe" in report["failure_reason"],
+                "running CK3 blocker was not typed")
+        require(report["ck3_launch_attempted"] is False,
+                "RED preflight claimed a CK3 launch")
+        require(report["launch_boundary"] == "not-crossed",
+                "RED preflight crossed the launch boundary")
+        require("bootstrap" not in calls,
+                "running CK3 check did not precede profile projection")
+        report_path = fixture.artifacts / "preflight.json"
+        require(report_path.is_file(), "RED preflight artifact is missing")
+        require(
+            (fixture.artifacts / "preflight-failures.jsonl").is_file(),
+            "RED preflight failure stream is missing",
         )
 
 
@@ -876,6 +1135,67 @@ def test_seed_source_path_must_be_absolute() -> None:
         )
 
 
+def test_static_preflight_runs_optimized_seed_smokes() -> None:
+    """Keep the seed preflight matrix aligned with the official CI smoke."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        scripts = (
+            "validate_static.py",
+            "validate_local.py",
+            "test_zg361_phase2_loader_stage.py",
+            "test_zg361_phase2_seed_bootstrap.py",
+            "test_zg361_phase2_seed_fixture.py",
+            "test_run_zg361_phase2_seed_capture.py",
+        )
+        tools_dir = fixture.clean / "tools"
+        tools_dir.mkdir(parents=True, exist_ok=True)
+        for name in scripts:
+            if name == "validate_local.py":
+                continue
+            (tools_dir / name).write_text("# preflight smoke\n", encoding="utf-8")
+        mod_tools_dir = fixture.clean / "mod_zhongguo_style" / "tools"
+        mod_tools_dir.mkdir(parents=True, exist_ok=True)
+        (mod_tools_dir / "validate_local.py").write_text(
+            "# preflight smoke\n", encoding="utf-8"
+        )
+        fixture.artifacts.mkdir(parents=True, exist_ok=True)
+
+        calls: list[tuple[list[str], dict[str, object]]] = []
+        original_run = capture.subprocess.run
+
+        def fake_run(command: list[str], **kwargs: object) -> SimpleNamespace:
+            calls.append((list(command), dict(kwargs)))
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+
+        capture.subprocess.run = fake_run
+        try:
+            evidence = capture._run_seed_static_preflight(
+                fixture.config(), fixture.artifacts
+            )
+        finally:
+            capture.subprocess.run = original_run
+
+        require(
+            evidence["result"] == "GREEN",
+            "seed preflight smoke matrix unexpectedly failed",
+        )
+        require(len(calls) == 10, "seed preflight command count drifted")
+        optimized = {
+            Path(command[-1]).name
+            for command, _kwargs in calls
+            if "-O" in command
+        }
+        require(
+            optimized == set(scripts[2:]),
+            "optimized seed smoke coverage is incomplete",
+        )
+        require(
+            all(kwargs.get("cwd") == fixture.clean for _command, kwargs in calls),
+            "seed preflight smoke did not use the frozen clean source cwd",
+        )
+
+
 def test_static_contract() -> None:
     source = Path(capture.__file__).read_text(encoding="utf-8")
     for token in (
@@ -887,12 +1207,18 @@ def test_static_contract() -> None:
         "--bridge-dll",
         "--injector",
         "--pipe",
+        "--preflight-only",
+        "def run_preflight(",
+        '"launch_boundary": "not-crossed"',
+        '"ck3_launch_attempted": False',
         "sys.dont_write_bytecode = True",
         "verify_runtime_load_order(",
         "native_loader_smoke_readiness(",
         "scan_loader_error_log(",
         "wait_for_bootstrap_event(",
         "stop_phase2_native_session_supervisor(",
+        "native_session_probe",
+        "_phase2_native_session_probe(",
         "driver.close()",
     ):
         require(token in source, f"runner contract token missing: {token}")
@@ -919,11 +1245,16 @@ def test_static_contract() -> None:
 def main() -> int:
     test_green_capture()
     test_parser_red_cleanup()
+    test_native_session_process_exit_cleanup()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
+    test_no_launch_preflight_green_does_not_cross_native_boundary()
+    test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override()
+    test_no_launch_preflight_running_ck3_is_persisted_red()
     test_source_zip_mismatch_is_preserved()
     test_bootstrap_runtime_hash_drift_is_preserved()
     test_seed_source_path_must_be_absolute()
+    test_static_preflight_runs_optimized_seed_smokes()
     test_static_contract()
     print("GREEN: reusable phase-two seed capture is MCP-only and bounded")
     return 0

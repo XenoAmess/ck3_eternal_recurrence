@@ -647,6 +647,11 @@ struct WarRaiktorSurrenderTermsSnapshot {
   std::string attacker_fame_limit_rule;
   std::string truce_direction;
   std::string truce_result;
+  // The Raiktor truce pointer observer publishes only the evaluated duration
+  // from the authored CAddTruce node.  Persisted expiry remains deliberately
+  // unavailable and is represented by the wire's explicit false/null pair.
+  bool truce_evaluated_days_observable = false;
+  std::int32_t truce_evaluated_days = -1;
   std::string prisoner_release_rule;
   std::string conditional_favor_hook_rule;
   bool gold_observable = false;

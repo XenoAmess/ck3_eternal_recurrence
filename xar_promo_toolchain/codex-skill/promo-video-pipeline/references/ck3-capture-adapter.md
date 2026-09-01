@@ -45,9 +45,20 @@ The return value is an immutable `CaptureBundle` projection:
 - `mark(label)` and `clean_span(span_id)` provide stable lookup helpers.
 - `recording_start_seconds` and `recording_stop_seconds` bound every projected
   clean span.
+- `verify_unchanged()` rechecks the load-time bytes/SHA-256 snapshot for the
+  report, timeline, evidence index, raw recording, and projected clean-span
+  frame evidence.  Long-running consumers should call it before accepting a
+  rendered candidate; source drift is a typed failure and the source run is
+  left intact for diagnosis.
 
 Project vocabulary belongs in the optional `required_*` arguments or a higher
 policy layer, never in the adapter.
+
+The ZhongGuo phase-two preset adds that higher policy layer.  Its producer must
+emit the dedicated `capture_contract` described by
+`src/xar_promo/schemas/phase2-capture-contract-v1.schema.json` and the exact
+eight chapter span IDs; a legacy `--promo-capture` timeline is not a valid
+phase-two source, even if its files or marks are renamed.
 
 ## Fail-closed contract
 

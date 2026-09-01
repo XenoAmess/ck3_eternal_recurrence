@@ -1457,7 +1457,8 @@ void AppendRaiktorWarTerminationTermsProvenance(std::string &result) {
       "\"war_interactions_script_sha256\":"
       "\"5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F\","
       "\"bookmark_events_script_sha256\":"
-      "\"75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF\"}";
+      "\"75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF\","
+      "\"truce_observer\":\"ck3-1.19.0.6-native-raiktor-surrender-truce-v1\"}";
 }
 
 void AppendWarTerminationTerms(
@@ -1607,7 +1608,15 @@ void AppendWarTerminationTerms(
     AppendJsonString(result, surrender.truce_direction);
     result += ",\"result\":";
     AppendJsonString(result, surrender.truce_result);
-    result += ",\"actual_expiry_observable\":false}";
+    result += ",\"evaluated_days_observable\":";
+    result += surrender.truce_evaluated_days_observable ? "true" : "false";
+    result += ",\"evaluated_days\":";
+    if (surrender.truce_evaluated_days_observable) {
+      result += SignedNumber(surrender.truce_evaluated_days);
+    } else {
+      result += "null";
+    }
+    result += ",\"actual_expiry_observable\":false,\"expiry_date_raw\":null}";
     result += ",\"prisoner_release\":{\"rule\":";
     AppendJsonString(result, surrender.prisoner_release_rule);
     result += ",\"actual_pairs_observable\":";
@@ -1709,7 +1718,9 @@ void AppendWarTerminationTerms(
     result += surrender.prestige_observable ? "true" : "false";
     result += ",\"attacker_prestige_delta_ready\":";
     result += surrender.prestige_observable ? "true" : "false";
-    result += ",\"truce_ready\":false,\"prisoner_release_ready\":";
+    result += ",\"truce_ready\":";
+    result += surrender.truce_evaluated_days_observable ? "true" : "false";
+    result += ",\"prisoner_release_ready\":";
     result += surrender.prisoner_release_observable ? "true" : "false";
     result += ",\"favor_hook_ready\":";
     result += surrender.favor_hook_observable ? "true" : "false";

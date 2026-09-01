@@ -5,7 +5,10 @@ This acceptance runner is intentionally read-only.  It restores one exact v2
 checkpoint/driver-state pair into a fresh production profile, launches one
 managed non-debug CK3 process, and calls only the public snapshot,
 capabilities, and ``ck3_query_war_termination_terms`` MCP tools.  The complete
-attempt directory is retained on both GREEN and RED.
+attempt directory is retained on both GREEN and RED.  The terms contract now
+checks the Raiktor truce's evaluated duration on the public wire while keeping
+persisted expiry explicitly unobserved; this does not open the six-domain or
+surrender action gates.
 """
 
 from __future__ import annotations
@@ -278,8 +281,23 @@ def _terms_checks(
     prisoner = prisoner_value if isinstance(prisoner_value, dict) else {}
     favor_value = terms.get("conditional_favor_hook")
     favor = favor_value if isinstance(favor_value, dict) else {}
+    truce_value = terms.get("truce")
+    truce = truce_value if isinstance(truce_value, dict) else {}
     claimant = terms.get("claimant_character_id")
     claimant_distinct = favor.get("claimant_distinct_from_attacker")
+    evaluated_days = truce.get("evaluated_days")
+    truce_duration_observed = (
+        truce.get("direction") == "primary_attacker_toward_primary_defender"
+        and truce.get("result") == "defeat"
+        and truce.get("evaluated_days_observable") is True
+        and isinstance(evaluated_days, int)
+        and not isinstance(evaluated_days, bool)
+        and evaluated_days >= 0
+    )
+    truce_expiry_unobserved = (
+        truce.get("actual_expiry_observable") is False
+        and truce.get("expiry_date_raw") is None
+    )
     return {
         "typed_available": terms.get("status") == "available",
         "war_id": terms.get("war_id") == war_id,
@@ -318,7 +336,9 @@ def _terms_checks(
                 "same_frame_stable",
             )
         ),
-        "truce_still_unobserved": readiness.get("truce_ready") is False,
+        "truce_duration_observed": truce_duration_observed
+        and readiness.get("truce_ready") is True,
+        "truce_expiry_unobserved": truce_expiry_unobserved,
         "war_bound_armies_still_unobserved": readiness.get(
             "war_bound_armies_ready"
         )

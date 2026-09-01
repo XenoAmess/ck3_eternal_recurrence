@@ -76,6 +76,10 @@ int main(int argc, char **argv) {
       kPendingInteractionWarVictorySpecialVtableV1Rva != 0x428EEA8 ||
       kPendingInteractionWarWhitePeaceSpecialVtableV1Rva != 0x428EF88 ||
       kPendingInteractionWarDefeatSpecialVtableV1Rva != 0x428EF18 ||
+      kPendingInteractionWarTargetTypeIndexV1 != 16 ||
+      kPendingInteractionWarTargetWarIdOffsetV1 != 0x08 ||
+      kPendingInteractionWarTargetIdentityPrefixV1 != "war:" ||
+      kPendingInteractionCallAllyDefinitionKeyV1 != "call_ally_interaction" ||
       kPendingInteractionMaximumSendOptionsV1 != 256) {
     std::cerr << "compiled exact-build binding drifted\n";
     return 1;
@@ -91,7 +95,11 @@ int main(int argc, char **argv) {
                     "special_war_binding_ready", "special_outcome_terms_ready",
                     "invoke_target_type_registry",
                     "invoke_script_identifier_name",
-                    "interaction_semantic_decision_ready"}) ||
+                    "interaction_semantic_decision_ready",
+                    "kPendingInteractionWarTargetTypeIndexV1",
+                    "kPendingInteractionWarTargetWarIdOffsetV1",
+                    "kPendingInteractionWarTargetIdentityPrefixV1",
+                    "kPendingInteractionCallAllyDefinitionKeyV1"}) ||
       !ContainsAll(reader, {"kPendingDefinitionOffset = 0x18",
                             "kDefinitionCostBlockOffset = 0x38",
                             "kPendingActorOffset = 0x2F0",
@@ -113,6 +121,12 @@ int main(int argc, char **argv) {
                             "kPendingInteractionTargetTypeRegistryV1Rva",
                             "target_type_registry_drift",
                             "type_index >=",
+                            "is_exact_call_ally_war_target",
+                            "kPendingInteractionCallAllyDefinitionKeyV1",
+                            "war_target_identity_unavailable",
+                            "kPendingInteractionWarTargetWarIdOffsetV1",
+                            "resolve_active_war",
+                            "resolved_war_id == war_id",
                             "generic_scope_payload_identity_not_closed",
                             "numeric_flag_identifier_string_mapping_not_closed",
                             "treasury_or_gold",
@@ -157,7 +171,16 @@ int main(int argc, char **argv) {
            "\\\"special_outcome_terms_ready\\\"",
            "\\\"recipient_ai_acceptance_score\\\"",
            "\\\"interaction_semantic_decision_ready\\\"",
-           "\\\"target_type_registry_rva\\\":\\\"0x4FFE290\\\""}) ||
+           "\\\"target_type_registry_rva\\\":\\\"0x4FFE290\\\"",
+           "ValidTargetEnvelope",
+           "kExpectedRawEnvelopeBytes"}) ||
+      !ContainsAll(
+          abi,
+          {"\"war_target_decoder\"", "\"type_index\": 16",
+           "\"published_identity\": \"war:<canonical positive signed-decimal-id>\"",
+           "\"war_target_identity_unavailable\"",
+           "does not select a reply, submit call_ally",
+           "call_ally_definition_key"}) ||
       !ContainsAll(
           abi,
           {"\"exact_byte_spans\"",
@@ -205,10 +228,15 @@ int main(int argc, char **argv) {
            "\"generic_costs_live_ready\": false",
            "\"special_war_binding_query_ready\": true",
            "\"special_war_binding_live_ready\": false",
-           "\"presence_identity_gate\"",
-           "\"special_outcome_terms_ready\": false",
-           "\"ordinary_pending_query_live_ready\": true",
-           "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
+            "\"presence_identity_gate\"",
+            "\"special_outcome_terms_ready\": false",
+            "\"ordinary_pending_query_live_ready\": true",
+            "\"signed_pending_id_live_validation\"",
+            "\"negative_signed_pending_id_live_ready\": true",
+            "3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973",
+            "\"reply_status\": \"rejected\"",
+            "\"old_id_absent_after_reply\": true",
+            "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
            "enum 4 returns true before pending storage resolution",
            "\"auto_accept_notification_query_reachable\": true",
            "\"acknowledge_action_wired\": true",
@@ -248,7 +276,18 @@ int main(int argc, char **argv) {
                     "\"payer_role\": \"actor\"",
                     "\"generic_costs_query_ready\": true",
                     "\"special_war_binding_query_ready\": true",
-                    "\"special_war_binding_live_ready\": false",
+                    "call_ally_war_target_full_id_resolves",
+                    "call_ally_war_target_resolver_failure_stays_unavailable",
+                    "call_ally_war_target_full_id_mismatch_stays_unavailable",
+                    "non_call_ally_type16_war_stays_generic",
+                    "\"typed_identity\": \"war:67108946\"",
+                     "\"target_typed_identity_ready\": true",
+                     "\"war_target_identity_unavailable\"",
+                     "signed_pending_id_live_evidence",
+                     "3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973",
+                     "\"reply_status\": \"rejected\"",
+                     "\"negative_signed_pending_id_live_ready\": true",
+                     "\"special_war_binding_live_ready\": false",
                     "\"generic_target_type_key_static_ready\": true",
                     "\"notification_ack_query_ready\": true",
                     "\"notification_ack_action_ready\": true",
