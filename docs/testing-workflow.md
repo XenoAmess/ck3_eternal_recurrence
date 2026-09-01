@@ -818,6 +818,13 @@ probe；项目校验与 `--validate-only` 现在只在存在 `video_clip`（或�
   `vswhere.exe` 可见。可复现做法是先把 Installer 目录加入 PATH，再用 `cmd /v:on` 和延迟展开
   `set "PATH=<cmake>;<ninja>;!PATH!"`；随后 fresh 222-step Release build 与 `44/44` CTest GREEN。失败构建目录应换
   新名字重试并保留，不能复用成“fresh”证据。
+- 2026-09-01 G2 GEN-034 的三项 Raiktor offline contract test 已补入
+  `native_bridge/CMakeLists.txt`：`xar_ck3_native_bridge_raiktor_surrender_six_domain_v1`、
+  `xar_ck3_native_bridge_raiktor_surrender_truce_v1` 与
+  `xar_ck3_native_bridge_raiktor_war_bound_regiment_v1`。clean `d7a2871` 的 CTest
+  注册数由 68 增至 71；本次只扩大静态/fixture 覆盖，不增加 public wire、ABI、MCP 或 surrender action。
+  用 Visual Studio 随附的原生 `ctest.exe`（不要使用 PATH 中的 Cygwin 版本）执行 `ctest --test-dir <build> -C Release
+  -R raiktor --output-on-failure`，三项 focused tests 应全部通过；GEN-034 仍保持 unresolved。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。
