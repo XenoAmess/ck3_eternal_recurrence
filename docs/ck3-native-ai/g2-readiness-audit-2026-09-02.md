@@ -221,3 +221,23 @@ retains the observed terms-query action-step literals, distinguishing the
 template `query-war-termination-terms-v1-N` from the concrete WarID step.
 The focused termination/exit-terms/live harness suite is `18 passed / 51
 subtests`; CK3 was not started and no action authorization changed.
+
+## 2026-09-02 current open_kaishek schema slice
+
+The canonical `open_kaishek` mainline is now
+`450b559c892228b6ab650c6fa68bece6defdfec7`. The short-lived
+`feat/government-flag-schema-20260902` branch was fast-forwarded and deleted;
+the remaining branches are pre-existing user work, so this slice does not add
+branch debt. It adds the exact-build-backed scalar `government_has_flag`
+descriptor and regression coverage without claiming runtime certification.
+The rebuilt CLI JAR is pinned to SHA-256
+`06E71C403924412A32EE307149AF6DB5E4A40886064263CF1FFDDE5615538C4D`.
+
+The required offline preflight against the frozen phase2 source is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-government-flag-preflight-20260902.json`
+(SHA-256
+`6C4BEAC7FF87CA29B9481FB247CC4AD1E02350D279D9AA644C9A5D6661E28FDA`).
+Parser is GREEN (`76` files, `23,831,410` bytes, zero diagnostics); the
+validator is the known bounded schema-only `RED/233,014`, and no CK3 process
+was started. This improves the next G2 preflight path only; it does not create
+the missing paused semantic-ready truce artifact or change `GEN-034`.

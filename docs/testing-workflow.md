@@ -1154,3 +1154,31 @@ py tools/test_zg361_phase2_seed_fixture.py
 
 测试必须覆盖：已实证 parser errors 早停并去重、theme-only 不误判 fatal、普通日志从 database init 继续到 Load Save。下一次
 真实 CK3 运行必须先清零当前 parser/compiler/theme 项，再用这一门做单局验证；不得直接再开 900 秒 blind wait。
+
+## 2026-09-02 open_kaishek schema slice and branch policy
+
+The canonical `Z:\workspace\open_kaishek` checkout is back on
+`main == origin/main` at `450b559c892228b6ab650c6fa68bece6defdfec7`.
+The temporary `feat/government-flag-schema-20260902` branch was fast-forwarded
+into main and deleted locally and remotely; only the two pre-existing user
+feature branches remain. The slice adds the exact-build-backed scalar trigger
+descriptor `government_has_flag` (character scope, string input,
+`certified=false`) and its profile/validator regressions. Maven offline tests
+are GREEN. The rebuilt CLI JAR is
+`Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar`
+with SHA-256
+`06E71C403924412A32EE307149AF6DB5E4A40886064263CF1FFDDE5615538C4D`.
+
+Before any CK3 launch, the direct CLI preflight against the frozen clean
+phase2 tree produced
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-government-flag-preflight-20260902.json`
+(SHA-256
+`6C4BEAC7FF87CA29B9481FB247CC4AD1E02350D279D9AA644C9A5D6661E28FDA`).
+Parser is GREEN (`76` files, `23,831,410` bytes, `0` diagnostics); the
+profile/root validator remains the expected bounded schema-only
+`RED/233,014`, and `ck3_started=false`. This is offline acceleration and
+schema evidence only; it does not upgrade phase2 or G2 live readiness.
+
+Temporary branches in this repository and in `open_kaishek` are merged or
+removed promptly. Do not create another branch for a read-only investigation
+unless it has a concrete mergeable deliverable.

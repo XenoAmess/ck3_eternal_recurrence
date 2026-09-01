@@ -287,3 +287,30 @@ The extracted comparison is retained outside the repository at
 This is a new observation boundary, not a root-cause claim; it supplies the
 acceptance criterion for any future generated-source repair. No additional CK3
 launch was made.
+
+## 2026-09-02 05:01 dependency inventory and schema preflight
+
+The retained dependency inventory now covers the `24` changed production
+script/event/gui files. Its report is outside the repository at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\dependency-inventory-20260902\report.json`
+(SHA-256
+`8E2C811BC95DE60ED37700DF6692979B677E909064B36C73688A6655E6CF697A`). The
+focused graph has `1,656` definitions and `2,764` edges, zero duplicate
+business definitions, and no actionable newly unresolved call-like symbol;
+the only corpus duplicate is the generic GUI `window` container. The largest
+size deltas are the B2 resolver and scoreboard/workforce endgame snapshots.
+This does not justify another loader gate or a speculative resolver rewrite;
+the baseline remains frozen until a concrete dependency node/file/symbol
+change is observable.
+
+The current `open_kaishek` mainline is
+`450b559c892228b6ab650c6fa68bece6defdfec7`, with CLI JAR SHA-256
+`06E71C403924412A32EE307149AF6DB5E4A40886064263CF1FFDDE5615538C4D`.
+Its direct preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-government-flag-preflight-20260902.json`
+(SHA-256
+`6C4BEAC7FF87CA29B9481FB247CC4AD1E02350D279D9AA644C9A5D6661E28FDA`):
+parser `76/23,831,410/0` is GREEN, while validator/root scan remain the
+bounded schema-only `RED/233,014`; CK3 was not launched. The temporary schema
+branch was merged and removed promptly, leaving the open_kaishek mainline
+with only its pre-existing user branches.
