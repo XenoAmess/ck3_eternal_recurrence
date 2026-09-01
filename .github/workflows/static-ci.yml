@@ -12,11 +12,11 @@ jobs:
   static:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: pip
@@ -139,7 +139,7 @@ jobs:
         run: python tools/build_mod_zhongguo_style_release.py --release
       - name: Upload release candidate
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-candidate-${{ github.ref_name }}-${{ github.run_id }}
           path: |
