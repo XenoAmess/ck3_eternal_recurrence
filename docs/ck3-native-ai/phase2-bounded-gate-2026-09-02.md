@@ -193,6 +193,10 @@ bounded profile validator remained the known schema-only `RED` boundary;
 `ck3_started=false` for that offline step. It used `open_kaishek` `1c320ad`
 and JAR SHA
 `F01C9D5FD0095960AC58E20031F22A3A28F0AFA5B0716C4D3DBECE49583C8A1A`.
+The retained preflight artifact is
+`...\loader-shell-gate-20260902\artifacts4-live\open_kaishek-preflight.json`
+with SHA-256
+`9484DD60C6B0A170F5394455D68199A77740FF4A4833DCC44DBFB7F4338EEA8D`.
 
 The single live diagnostic then returned `RED/LoaderStageTimeout`:
 `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-shell-gate-20260902\artifacts4-live\runner-report.json`
@@ -204,6 +208,11 @@ Save, In Game, or native-ready frame. The debug log still ends at
 `onaction >>> Total of : 881`; the symbol shell did not move the transition.
 Therefore the shell is not a fix and was not merged. No second same-shape CK3
 attempt is planned.
+
+The runner's post-run source immutability check was `false` only because six
+Python bytecode files were emitted during the run; the retained report records
+that fact and the clean source content itself was not changed. The six files
+are environmental artifacts, not a production-tree mutation.
 
 The combined evidence narrows the next implementation step to a real,
 generated-source effect-cluster decomposition or equivalent loader/readiness
