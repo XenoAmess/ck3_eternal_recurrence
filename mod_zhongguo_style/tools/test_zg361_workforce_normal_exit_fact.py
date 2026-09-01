@@ -295,11 +295,38 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
         self.assertIn("receipt_hc_conservation_verified value = 1", finalize)
         self.assertIn("receipt_formal_hc_active_before value = 1", finalize)
         self.assertIn("receipt_formal_hc_active_after value = 0", finalize)
-        self.assertIn("ch_hc_occupied = { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }", finalize)
-        self.assertIn("ch_hc_frozen = { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }", finalize)
+        self.assertIn(
+            "var:zg361_ch_hc_occupied >= { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }",
+            finalize,
+        )
+        self.assertIn(
+            "var:zg361_ch_hc_occupied <= { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }",
+            finalize,
+        )
+        self.assertIn(
+            "var:zg361_ch_hc_frozen >= { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }",
+            finalize,
+        )
+        self.assertIn(
+            "var:zg361_ch_hc_frozen <= { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }",
+            finalize,
+        )
         for field in ("authorized", "available", "reserved", "occupied", "frozen", "reclaimed"):
             self.assertIn(f"receipt_hc_{field}_before", finalize)
             self.assertIn(f"receipt_hc_{field}_after", finalize)
+
+    def test_calculated_hc_guards_use_comparison_rhs_not_trigger_equality(self) -> None:
+        for name in (
+            f"{generator.PREFIX}_begin_from_m075_offer_effect",
+            f"{generator.PREFIX}_migrate_hc_partition_effect",
+            f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect",
+        ):
+            with self.subTest(effect=name):
+                source = block(self.effects, name)
+                self.assertNotRegex(
+                    source,
+                    r"(?m)^\s*var:[A-Za-z0-9_]+\s*=\s*\{\s*value\s*=",
+                )
 
     def test_16_receipt_freezes_normal_reason_and_source(self) -> None:
         finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")

@@ -72,10 +72,23 @@ preflight, making its source immutability after-check `RED`. Those files were
 removed after the run; the retained report is not rewritten and therefore
 continues to document that boundary accurately.
 
-## Next bounded work
+## Offline repair follow-up (not live evidence)
 
-Repair the generator sources for the three workforce fact files using the
-documented CK3 calculated-value rule (materialize the arithmetic in an effect
-variable, then compare the scalar in triggers), add generator/static
-regressions, and run offline checks only. A new CK3 launch requires a separate
-explicit gate decision; this attempt is not to be rerun.
+The three generator sources were repaired without hand-editing generated files.
+Every trigger-side computed equality now uses the documented inclusive pair
+(`>=` and `<=`) with the same calculated-value RHS; effect-side
+`set_variable`/`change_variable` arithmetic was left unchanged.  Regenerated
+outputs contain zero direct computed-variable equality guards in the affected
+effects (the forbidden shape is `var:<name> = { value = ... add/subtract/multiply }`),
+including the previously unreported #277 consume guard.
+
+Focused generator contracts are green: rehire 25 tests, exit 26 tests, and
+normal-exit 29 tests.  `tools/validate_static.py` is also green.  The bounded
+offline parser pass using the same open_kaishek CLI produced `PARSED`, zero
+diagnostics, and `roundTrip=true` for each repaired effects file; artifacts are
+under
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postfix-parser\`.
+The formal preflight's 92 validator diagnostics remain the declared
+`schema-only`/`UNSUPPORTED` boundary and are not reclassified by this parser
+pass.  No CK3 launch was repeated; a future loader gate must be separately
+authorized.

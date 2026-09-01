@@ -246,12 +246,21 @@ zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect = {
             var:zg361_ch_hc_occupied >= 1
             var:zg361_ch_hc_frozen >= 0
             var:zg361_ch_hc_reclaimed >= 0
-            var:zg361_ch_hc_authorized = {
-                value = var:zg361_ch_hc_available
-                add = var:zg361_ch_hc_reserved
-                add = var:zg361_ch_hc_occupied
-                add = var:zg361_ch_hc_frozen
-                add = var:zg361_ch_hc_reclaimed
+            AND = {
+                var:zg361_ch_hc_authorized >= {
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }
+                var:zg361_ch_hc_authorized <= {
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }
             }
         }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending value = 1 }
@@ -500,12 +509,21 @@ zg361_workforce_normal_exit_fact_migrate_hc_partition_effect = {
             var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before >= 1
             var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before >= 0
             var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before >= 0
-            var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before = {
-                value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            AND = {
+                var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before >= {
+                    value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+                }
+                var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before <= {
+                    value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+                }
             }
             var:zg361_we_formal_hc_active = 1
             var:zg361_we_formal_hc_active_case = var:zg361_workforce_normal_exit_fact_pending_slot_case
@@ -610,25 +628,49 @@ zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect = {
             var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before >= 1
             var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before >= 0
             var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before >= 0
-            var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before = {
-                value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
-                add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            AND = {
+                var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before >= {
+                    value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+                }
+                var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before <= {
+                    value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+                    add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+                }
             }
             var:zg361_ch_hc_authorized = var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before
             var:zg361_ch_hc_available = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
             var:zg361_ch_hc_reserved = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
-            var:zg361_ch_hc_occupied = { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }
-            var:zg361_ch_hc_frozen = { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }
+            AND = {
+                var:zg361_ch_hc_occupied >= { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }
+                var:zg361_ch_hc_occupied <= { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }
+            }
+            AND = {
+                var:zg361_ch_hc_frozen >= { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }
+                var:zg361_ch_hc_frozen <= { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }
+            }
             var:zg361_ch_hc_reclaimed = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
-            var:zg361_ch_hc_authorized = {
-                value = var:zg361_ch_hc_available
-                add = var:zg361_ch_hc_reserved
-                add = var:zg361_ch_hc_occupied
-                add = var:zg361_ch_hc_frozen
-                add = var:zg361_ch_hc_reclaimed
+            AND = {
+                var:zg361_ch_hc_authorized >= {
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }
+                var:zg361_ch_hc_authorized <= {
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }
             }
             var:zg361_we_formal_hc_active = 0
             var:zg361_we_formal_hc_active_case = var:zg361_workforce_normal_exit_fact_pending_slot_case

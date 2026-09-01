@@ -438,12 +438,21 @@ def render_effects() -> bytes:
                 var:zg361_ch_hc_occupied >= 1
                 var:zg361_ch_hc_frozen >= 0
                 var:zg361_ch_hc_reclaimed >= 0
-                var:zg361_ch_hc_authorized = {
-                    value = var:zg361_ch_hc_available
-                    add = var:zg361_ch_hc_reserved
-                    add = var:zg361_ch_hc_occupied
-                    add = var:zg361_ch_hc_frozen
-                    add = var:zg361_ch_hc_reclaimed
+                AND = {
+                    var:zg361_ch_hc_authorized >= {
+                        value = var:zg361_ch_hc_available
+                        add = var:zg361_ch_hc_reserved
+                        add = var:zg361_ch_hc_occupied
+                        add = var:zg361_ch_hc_frozen
+                        add = var:zg361_ch_hc_reclaimed
+                    }
+                    var:zg361_ch_hc_authorized <= {
+                        value = var:zg361_ch_hc_available
+                        add = var:zg361_ch_hc_reserved
+                        add = var:zg361_ch_hc_occupied
+                        add = var:zg361_ch_hc_frozen
+                        add = var:zg361_ch_hc_reclaimed
+                    }
                 }
             }
             set_variable = { name = @P@_pending value = 1 }
@@ -692,12 +701,21 @@ def render_effects() -> bytes:
                 var:@P@_pending_hc_occupied_before >= 1
                 var:@P@_pending_hc_frozen_before >= 0
                 var:@P@_pending_hc_reclaimed_before >= 0
-                var:@P@_pending_hc_authorized_before = {
-                    value = var:@P@_pending_hc_available_before
-                    add = var:@P@_pending_hc_reserved_before
-                    add = var:@P@_pending_hc_occupied_before
-                    add = var:@P@_pending_hc_frozen_before
-                    add = var:@P@_pending_hc_reclaimed_before
+                AND = {
+                    var:@P@_pending_hc_authorized_before >= {
+                        value = var:@P@_pending_hc_available_before
+                        add = var:@P@_pending_hc_reserved_before
+                        add = var:@P@_pending_hc_occupied_before
+                        add = var:@P@_pending_hc_frozen_before
+                        add = var:@P@_pending_hc_reclaimed_before
+                    }
+                    var:@P@_pending_hc_authorized_before <= {
+                        value = var:@P@_pending_hc_available_before
+                        add = var:@P@_pending_hc_reserved_before
+                        add = var:@P@_pending_hc_occupied_before
+                        add = var:@P@_pending_hc_frozen_before
+                        add = var:@P@_pending_hc_reclaimed_before
+                    }
                 }
                 var:zg361_we_formal_hc_active = 1
                 var:zg361_we_formal_hc_active_case = var:@P@_pending_slot_case
@@ -802,25 +820,49 @@ def render_effects() -> bytes:
                 var:@P@_pending_hc_occupied_before >= 1
                 var:@P@_pending_hc_frozen_before >= 0
                 var:@P@_pending_hc_reclaimed_before >= 0
-                var:@P@_pending_hc_authorized_before = {
-                    value = var:@P@_pending_hc_available_before
-                    add = var:@P@_pending_hc_reserved_before
-                    add = var:@P@_pending_hc_occupied_before
-                    add = var:@P@_pending_hc_frozen_before
-                    add = var:@P@_pending_hc_reclaimed_before
+                AND = {
+                    var:@P@_pending_hc_authorized_before >= {
+                        value = var:@P@_pending_hc_available_before
+                        add = var:@P@_pending_hc_reserved_before
+                        add = var:@P@_pending_hc_occupied_before
+                        add = var:@P@_pending_hc_frozen_before
+                        add = var:@P@_pending_hc_reclaimed_before
+                    }
+                    var:@P@_pending_hc_authorized_before <= {
+                        value = var:@P@_pending_hc_available_before
+                        add = var:@P@_pending_hc_reserved_before
+                        add = var:@P@_pending_hc_occupied_before
+                        add = var:@P@_pending_hc_frozen_before
+                        add = var:@P@_pending_hc_reclaimed_before
+                    }
                 }
                 var:zg361_ch_hc_authorized = var:@P@_pending_hc_authorized_before
                 var:zg361_ch_hc_available = var:@P@_pending_hc_available_before
                 var:zg361_ch_hc_reserved = var:@P@_pending_hc_reserved_before
-                var:zg361_ch_hc_occupied = { value = var:@P@_pending_hc_occupied_before subtract = 1 }
-                var:zg361_ch_hc_frozen = { value = var:@P@_pending_hc_frozen_before add = 1 }
+                AND = {
+                    var:zg361_ch_hc_occupied >= { value = var:@P@_pending_hc_occupied_before subtract = 1 }
+                    var:zg361_ch_hc_occupied <= { value = var:@P@_pending_hc_occupied_before subtract = 1 }
+                }
+                AND = {
+                    var:zg361_ch_hc_frozen >= { value = var:@P@_pending_hc_frozen_before add = 1 }
+                    var:zg361_ch_hc_frozen <= { value = var:@P@_pending_hc_frozen_before add = 1 }
+                }
                 var:zg361_ch_hc_reclaimed = var:@P@_pending_hc_reclaimed_before
-                var:zg361_ch_hc_authorized = {
-                    value = var:zg361_ch_hc_available
-                    add = var:zg361_ch_hc_reserved
-                    add = var:zg361_ch_hc_occupied
-                    add = var:zg361_ch_hc_frozen
-                    add = var:zg361_ch_hc_reclaimed
+                AND = {
+                    var:zg361_ch_hc_authorized >= {
+                        value = var:zg361_ch_hc_available
+                        add = var:zg361_ch_hc_reserved
+                        add = var:zg361_ch_hc_occupied
+                        add = var:zg361_ch_hc_frozen
+                        add = var:zg361_ch_hc_reclaimed
+                    }
+                    var:zg361_ch_hc_authorized <= {
+                        value = var:zg361_ch_hc_available
+                        add = var:zg361_ch_hc_reserved
+                        add = var:zg361_ch_hc_occupied
+                        add = var:zg361_ch_hc_frozen
+                        add = var:zg361_ch_hc_reclaimed
+                    }
                 }
                 var:zg361_we_formal_hc_active = 0
                 var:zg361_we_formal_hc_active_case = var:@P@_pending_slot_case

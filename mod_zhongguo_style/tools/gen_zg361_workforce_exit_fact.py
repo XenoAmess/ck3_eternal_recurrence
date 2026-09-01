@@ -367,12 +367,21 @@ def render_effects() -> bytes:
             var:zg361_ch_hc_occupied >= 1
             var:zg361_ch_hc_frozen >= 0
             var:zg361_ch_hc_reclaimed >= 0
-            var:zg361_ch_hc_authorized = {{
-                value = var:zg361_ch_hc_available
-                add = var:zg361_ch_hc_reserved
-                add = var:zg361_ch_hc_occupied
-                add = var:zg361_ch_hc_frozen
-                add = var:zg361_ch_hc_reclaimed
+            AND = {{
+                var:zg361_ch_hc_authorized >= {{
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }}
+                var:zg361_ch_hc_authorized <= {{
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }}
             }}
             OR = {{ NOT = {{ has_variable = {PREFIX}_exit_pending }} var:{PREFIX}_exit_pending = 0 }}
             OR = {{ NOT = {{ has_variable = zg361_workforce_normal_exit_fact_pending }} var:zg361_workforce_normal_exit_fact_pending = 0 }}
@@ -1427,7 +1436,10 @@ def render_effects() -> bytes:
             var:zg361_we_m277_object_cycle = $TICKET_CYCLE$
             var:zg361_we_m277_object_case = $TICKET_CASE$
             var:zg361_we_m277_object_state = 6
-            var:zg361_we_m277_object_id = {{ value = $TICKET_CASE$ multiply = 1000 add = 277 }}
+            AND = {{
+                var:zg361_we_m277_object_id >= {{ value = $TICKET_CASE$ multiply = 1000 add = 277 }}
+                var:zg361_we_m277_object_id <= {{ value = $TICKET_CASE$ multiply = 1000 add = 277 }}
+            }}
             var:zg361_we_m277_consumer_contract = 277
             var:zg361_we_m277_object_consumed = 1
             var:zg361_we_m277_consumer_record_pip_exit_277 = 1
@@ -1446,8 +1458,14 @@ def render_effects() -> bytes:
             var:zg361_we_m277_vacant_frozen = 1
             var:zg361_we_m277_hc_minted = 0
             var:zg361_we_formal_hc_active = 0
-            var:zg361_ch_hc_occupied = {{ value = var:{PREFIX}_receipt_hc_occupied_before subtract = 1 }}
-            var:zg361_ch_hc_frozen = {{ value = var:{PREFIX}_receipt_hc_frozen_before add = 1 }}
+            AND = {{
+                var:zg361_ch_hc_occupied >= {{ value = var:{PREFIX}_receipt_hc_occupied_before subtract = 1 }}
+                var:zg361_ch_hc_occupied <= {{ value = var:{PREFIX}_receipt_hc_occupied_before subtract = 1 }}
+            }}
+            AND = {{
+                var:zg361_ch_hc_frozen >= {{ value = var:{PREFIX}_receipt_hc_frozen_before add = 1 }}
+                var:zg361_ch_hc_frozen <= {{ value = var:{PREFIX}_receipt_hc_frozen_before add = 1 }}
+            }}
             NOT = {{ has_court_position = {POSITION_KEY} }}
         }}
         set_variable = {{ name = {PREFIX}_receipt_consumed value = 1 }}

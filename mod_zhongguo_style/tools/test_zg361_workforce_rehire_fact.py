@@ -258,6 +258,37 @@ class WorkforceRehireFactTests(unittest.TestCase):
         self.assertIn("exit_observed_year value = var:zg361_workforce_normal_exit_fact_receipt_exit_year", capture)
         self.assertIn("old_result_hash value = var:zg361_workforce_normal_exit_fact_receipt_prior_result_hash", capture)
 
+    def test_calculated_hc_guards_use_comparison_rhs_not_trigger_equality(self) -> None:
+        direct_computed_equality = (
+            r"(?m)^\s*var:[A-Za-z0-9_]+\s*=\s*\{\s*value\s*="
+        )
+        for name, fields in (
+            (
+                "zg361_workforce_rehire_fact_capture_exit_effect",
+                (
+                    "zg361_workforce_normal_exit_fact_receipt_hc_occupied_after",
+                    "zg361_workforce_normal_exit_fact_receipt_hc_frozen_after",
+                    "zg361_workforce_normal_exit_fact_receipt_hc_authorized_before",
+                    "zg361_workforce_normal_exit_fact_receipt_hc_authorized_after",
+                ),
+            ),
+            (
+                "zg361_workforce_rehire_fact_capture_growth_effect",
+                (
+                    "zg361_workforce_rehire_fact_exit_hc_occupied_after",
+                    "zg361_workforce_rehire_fact_exit_hc_frozen_after",
+                    "zg361_workforce_rehire_fact_exit_hc_authorized_before",
+                    "zg361_workforce_rehire_fact_exit_hc_authorized_after",
+                ),
+            ),
+        ):
+            with self.subTest(effect=name):
+                source = block(self.effects, name)
+                self.assertNotRegex(source, direct_computed_equality)
+                for field in fields:
+                    self.assertEqual(source.count(f"var:{field} >= {{"), 1)
+                    self.assertEqual(source.count(f"var:{field} <= {{"), 1)
+
     def test_09_growth_requires_full_consumed_probation_receipt(self) -> None:
         growth = block(self.effects, "zg361_workforce_rehire_fact_capture_growth_effect")
         for field in generator.PROBATION_REQUIRED_FIELDS:

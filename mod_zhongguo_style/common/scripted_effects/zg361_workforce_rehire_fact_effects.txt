@@ -108,22 +108,46 @@ zg361_workforce_rehire_fact_capture_exit_effect = {
             var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after = var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before
             var:zg361_workforce_normal_exit_fact_receipt_hc_available_after = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
             var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
-            var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after = { value = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before subtract = 1 }
-            var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after = { value = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before add = 1 }
-            var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
-            var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before = {
-                value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+            AND = {
+                var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after >= { value = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before subtract = 1 }
+                var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after <= { value = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before subtract = 1 }
             }
-            var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after = {
-                value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_after
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after
-                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after
+            AND = {
+                var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after >= { value = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before add = 1 }
+                var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after <= { value = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before add = 1 }
+            }
+            var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+            AND = {
+                var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before >= {
+                    value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+                }
+                var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before <= {
+                    value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+                }
+            }
+            AND = {
+                var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after >= {
+                    value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after
+                }
+                var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after <= {
+                    value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after
+                    add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after
+                }
             }
             var:zg361_workforce_normal_exit_fact_receipt_hc_destination_frozen = 1
             var:zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified = 1
@@ -467,22 +491,46 @@ zg361_workforce_rehire_fact_capture_growth_effect = {
             var:zg361_workforce_rehire_fact_exit_hc_authorized_before = var:zg361_workforce_rehire_fact_exit_hc_authorized_after
             var:zg361_workforce_rehire_fact_exit_hc_available_before = var:zg361_workforce_rehire_fact_exit_hc_available_after
             var:zg361_workforce_rehire_fact_exit_hc_reserved_before = var:zg361_workforce_rehire_fact_exit_hc_reserved_after
-            var:zg361_workforce_rehire_fact_exit_hc_occupied_after = { value = var:zg361_workforce_rehire_fact_exit_hc_occupied_before subtract = 1 }
-            var:zg361_workforce_rehire_fact_exit_hc_frozen_after = { value = var:zg361_workforce_rehire_fact_exit_hc_frozen_before add = 1 }
-            var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
-            var:zg361_workforce_rehire_fact_exit_hc_authorized_before = {
-                value = var:zg361_workforce_rehire_fact_exit_hc_available_before
-                add = var:zg361_workforce_rehire_fact_exit_hc_reserved_before
-                add = var:zg361_workforce_rehire_fact_exit_hc_occupied_before
-                add = var:zg361_workforce_rehire_fact_exit_hc_frozen_before
-                add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before
+            AND = {
+                var:zg361_workforce_rehire_fact_exit_hc_occupied_after >= { value = var:zg361_workforce_rehire_fact_exit_hc_occupied_before subtract = 1 }
+                var:zg361_workforce_rehire_fact_exit_hc_occupied_after <= { value = var:zg361_workforce_rehire_fact_exit_hc_occupied_before subtract = 1 }
             }
-            var:zg361_workforce_rehire_fact_exit_hc_authorized_after = {
-                value = var:zg361_workforce_rehire_fact_exit_hc_available_after
-                add = var:zg361_workforce_rehire_fact_exit_hc_reserved_after
-                add = var:zg361_workforce_rehire_fact_exit_hc_occupied_after
-                add = var:zg361_workforce_rehire_fact_exit_hc_frozen_after
-                add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+            AND = {
+                var:zg361_workforce_rehire_fact_exit_hc_frozen_after >= { value = var:zg361_workforce_rehire_fact_exit_hc_frozen_before add = 1 }
+                var:zg361_workforce_rehire_fact_exit_hc_frozen_after <= { value = var:zg361_workforce_rehire_fact_exit_hc_frozen_before add = 1 }
+            }
+            var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+            AND = {
+                var:zg361_workforce_rehire_fact_exit_hc_authorized_before >= {
+                    value = var:zg361_workforce_rehire_fact_exit_hc_available_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reserved_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_occupied_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_frozen_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before
+                }
+                var:zg361_workforce_rehire_fact_exit_hc_authorized_before <= {
+                    value = var:zg361_workforce_rehire_fact_exit_hc_available_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reserved_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_occupied_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_frozen_before
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before
+                }
+            }
+            AND = {
+                var:zg361_workforce_rehire_fact_exit_hc_authorized_after >= {
+                    value = var:zg361_workforce_rehire_fact_exit_hc_available_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reserved_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_occupied_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_frozen_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+                }
+                var:zg361_workforce_rehire_fact_exit_hc_authorized_after <= {
+                    value = var:zg361_workforce_rehire_fact_exit_hc_available_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reserved_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_occupied_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_frozen_after
+                    add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+                }
             }
             var:zg361_workforce_rehire_fact_exit_hc_destination_frozen = 1
             var:zg361_workforce_rehire_fact_exit_hc_conservation_verified = 1

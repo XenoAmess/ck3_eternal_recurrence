@@ -309,22 +309,46 @@ def render_effects() -> bytes:
                 var:@E@_receipt_hc_authorized_after = var:@E@_receipt_hc_authorized_before
                 var:@E@_receipt_hc_available_after = var:@E@_receipt_hc_available_before
                 var:@E@_receipt_hc_reserved_after = var:@E@_receipt_hc_reserved_before
-                var:@E@_receipt_hc_occupied_after = { value = var:@E@_receipt_hc_occupied_before subtract = 1 }
-                var:@E@_receipt_hc_frozen_after = { value = var:@E@_receipt_hc_frozen_before add = 1 }
-                var:@E@_receipt_hc_reclaimed_after = var:@E@_receipt_hc_reclaimed_before
-                var:@E@_receipt_hc_authorized_before = {
-                    value = var:@E@_receipt_hc_available_before
-                    add = var:@E@_receipt_hc_reserved_before
-                    add = var:@E@_receipt_hc_occupied_before
-                    add = var:@E@_receipt_hc_frozen_before
-                    add = var:@E@_receipt_hc_reclaimed_before
+                AND = {
+                    var:@E@_receipt_hc_occupied_after >= { value = var:@E@_receipt_hc_occupied_before subtract = 1 }
+                    var:@E@_receipt_hc_occupied_after <= { value = var:@E@_receipt_hc_occupied_before subtract = 1 }
                 }
-                var:@E@_receipt_hc_authorized_after = {
-                    value = var:@E@_receipt_hc_available_after
-                    add = var:@E@_receipt_hc_reserved_after
-                    add = var:@E@_receipt_hc_occupied_after
-                    add = var:@E@_receipt_hc_frozen_after
-                    add = var:@E@_receipt_hc_reclaimed_after
+                AND = {
+                    var:@E@_receipt_hc_frozen_after >= { value = var:@E@_receipt_hc_frozen_before add = 1 }
+                    var:@E@_receipt_hc_frozen_after <= { value = var:@E@_receipt_hc_frozen_before add = 1 }
+                }
+                var:@E@_receipt_hc_reclaimed_after = var:@E@_receipt_hc_reclaimed_before
+                AND = {
+                    var:@E@_receipt_hc_authorized_before >= {
+                        value = var:@E@_receipt_hc_available_before
+                        add = var:@E@_receipt_hc_reserved_before
+                        add = var:@E@_receipt_hc_occupied_before
+                        add = var:@E@_receipt_hc_frozen_before
+                        add = var:@E@_receipt_hc_reclaimed_before
+                    }
+                    var:@E@_receipt_hc_authorized_before <= {
+                        value = var:@E@_receipt_hc_available_before
+                        add = var:@E@_receipt_hc_reserved_before
+                        add = var:@E@_receipt_hc_occupied_before
+                        add = var:@E@_receipt_hc_frozen_before
+                        add = var:@E@_receipt_hc_reclaimed_before
+                    }
+                }
+                AND = {
+                    var:@E@_receipt_hc_authorized_after >= {
+                        value = var:@E@_receipt_hc_available_after
+                        add = var:@E@_receipt_hc_reserved_after
+                        add = var:@E@_receipt_hc_occupied_after
+                        add = var:@E@_receipt_hc_frozen_after
+                        add = var:@E@_receipt_hc_reclaimed_after
+                    }
+                    var:@E@_receipt_hc_authorized_after <= {
+                        value = var:@E@_receipt_hc_available_after
+                        add = var:@E@_receipt_hc_reserved_after
+                        add = var:@E@_receipt_hc_occupied_after
+                        add = var:@E@_receipt_hc_frozen_after
+                        add = var:@E@_receipt_hc_reclaimed_after
+                    }
                 }
                 var:@E@_receipt_hc_destination_frozen = 1
                 var:@E@_receipt_hc_conservation_verified = 1
@@ -668,22 +692,46 @@ def render_effects() -> bytes:
                 var:@P@_exit_hc_authorized_before = var:@P@_exit_hc_authorized_after
                 var:@P@_exit_hc_available_before = var:@P@_exit_hc_available_after
                 var:@P@_exit_hc_reserved_before = var:@P@_exit_hc_reserved_after
-                var:@P@_exit_hc_occupied_after = { value = var:@P@_exit_hc_occupied_before subtract = 1 }
-                var:@P@_exit_hc_frozen_after = { value = var:@P@_exit_hc_frozen_before add = 1 }
-                var:@P@_exit_hc_reclaimed_before = var:@P@_exit_hc_reclaimed_after
-                var:@P@_exit_hc_authorized_before = {
-                    value = var:@P@_exit_hc_available_before
-                    add = var:@P@_exit_hc_reserved_before
-                    add = var:@P@_exit_hc_occupied_before
-                    add = var:@P@_exit_hc_frozen_before
-                    add = var:@P@_exit_hc_reclaimed_before
+                AND = {
+                    var:@P@_exit_hc_occupied_after >= { value = var:@P@_exit_hc_occupied_before subtract = 1 }
+                    var:@P@_exit_hc_occupied_after <= { value = var:@P@_exit_hc_occupied_before subtract = 1 }
                 }
-                var:@P@_exit_hc_authorized_after = {
-                    value = var:@P@_exit_hc_available_after
-                    add = var:@P@_exit_hc_reserved_after
-                    add = var:@P@_exit_hc_occupied_after
-                    add = var:@P@_exit_hc_frozen_after
-                    add = var:@P@_exit_hc_reclaimed_after
+                AND = {
+                    var:@P@_exit_hc_frozen_after >= { value = var:@P@_exit_hc_frozen_before add = 1 }
+                    var:@P@_exit_hc_frozen_after <= { value = var:@P@_exit_hc_frozen_before add = 1 }
+                }
+                var:@P@_exit_hc_reclaimed_before = var:@P@_exit_hc_reclaimed_after
+                AND = {
+                    var:@P@_exit_hc_authorized_before >= {
+                        value = var:@P@_exit_hc_available_before
+                        add = var:@P@_exit_hc_reserved_before
+                        add = var:@P@_exit_hc_occupied_before
+                        add = var:@P@_exit_hc_frozen_before
+                        add = var:@P@_exit_hc_reclaimed_before
+                    }
+                    var:@P@_exit_hc_authorized_before <= {
+                        value = var:@P@_exit_hc_available_before
+                        add = var:@P@_exit_hc_reserved_before
+                        add = var:@P@_exit_hc_occupied_before
+                        add = var:@P@_exit_hc_frozen_before
+                        add = var:@P@_exit_hc_reclaimed_before
+                    }
+                }
+                AND = {
+                    var:@P@_exit_hc_authorized_after >= {
+                        value = var:@P@_exit_hc_available_after
+                        add = var:@P@_exit_hc_reserved_after
+                        add = var:@P@_exit_hc_occupied_after
+                        add = var:@P@_exit_hc_frozen_after
+                        add = var:@P@_exit_hc_reclaimed_after
+                    }
+                    var:@P@_exit_hc_authorized_after <= {
+                        value = var:@P@_exit_hc_available_after
+                        add = var:@P@_exit_hc_reserved_after
+                        add = var:@P@_exit_hc_occupied_after
+                        add = var:@P@_exit_hc_frozen_after
+                        add = var:@P@_exit_hc_reclaimed_after
+                    }
                 }
                 var:@P@_exit_hc_destination_frozen = 1
                 var:@P@_exit_hc_conservation_verified = 1

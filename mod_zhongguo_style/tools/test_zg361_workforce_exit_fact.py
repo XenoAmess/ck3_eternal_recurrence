@@ -401,7 +401,8 @@ class WorkforceExitFactTests(unittest.TestCase):
         sealed = f"set_variable = {{ name = {gen.PREFIX}_role_failure_receipt_sealed value = 1 }}"
         self.assertGreater(capture.rindex(sealed), capture.rindex("role_failure_receipt_hash value"))
         self.assertGreater(capture.rindex(sealed), capture.rindex("role_failure_receipt_hc_conservation_verified value"))
-        self.assertIn("zg361_ch_hc_authorized = {", capture)
+        self.assertIn("var:zg361_ch_hc_authorized >= {", capture)
+        self.assertIn("var:zg361_ch_hc_authorized <= {", capture)
         self.assertIn("add = var:zg361_ch_hc_reclaimed", capture)
         self.assertIn(
             f"id = {gen.NAMESPACE}.{gen.ROLE_FAILURE_PUBLISH_EVENT_ID} days = 1",
@@ -409,6 +410,23 @@ class WorkforceExitFactTests(unittest.TestCase):
         )
         self.assertNotIn("receipt_actual_exit", capture)
         self.assertNotIn("change_variable = { name = zg361_ch_hc_", capture)
+
+    def test_calculated_hc_guard_uses_comparison_rhs_not_trigger_equality(self) -> None:
+        direct_computed_equality = (
+            r"(?m)^\s*var:[A-Za-z0-9_]+\s*=\s*\{\s*value\s*="
+        )
+        capture = block(self.effects, f"{gen.PREFIX}_capture_role_failure_effect")
+        consume = block(self.effects, f"{gen.PREFIX}_consume_after_m277_effect")
+        for source in (capture, consume):
+            self.assertNotRegex(source, direct_computed_equality)
+        self.assertEqual(capture.count("var:zg361_ch_hc_authorized >= {"), 1)
+        self.assertEqual(capture.count("var:zg361_ch_hc_authorized <= {"), 1)
+        self.assertEqual(consume.count("var:zg361_we_m277_object_id >= {"), 1)
+        self.assertEqual(consume.count("var:zg361_we_m277_object_id <= {"), 1)
+        self.assertEqual(consume.count("var:zg361_ch_hc_occupied >= {"), 1)
+        self.assertEqual(consume.count("var:zg361_ch_hc_occupied <= {"), 1)
+        self.assertEqual(consume.count("var:zg361_ch_hc_frozen >= {"), 1)
+        self.assertEqual(consume.count("var:zg361_ch_hc_frozen <= {"), 1)
 
     def test_role_failure_publish_and_verify_cross_two_hidden_frames(self) -> None:
         publish = block(self.events, f"{gen.NAMESPACE}.{gen.ROLE_FAILURE_PUBLISH_EVENT_ID}")
@@ -621,8 +639,10 @@ class WorkforceExitFactTests(unittest.TestCase):
             "zg361_we_m277_vacant_frozen = 1",
             "zg361_we_m277_hc_minted = 0",
             "zg361_we_formal_hc_active = 0",
-            f"zg361_ch_hc_occupied = {{ value = var:{gen.PREFIX}_receipt_hc_occupied_before subtract = 1 }}",
-            f"zg361_ch_hc_frozen = {{ value = var:{gen.PREFIX}_receipt_hc_frozen_before add = 1 }}",
+            f"var:zg361_ch_hc_occupied >= {{ value = var:{gen.PREFIX}_receipt_hc_occupied_before subtract = 1 }}",
+            f"var:zg361_ch_hc_occupied <= {{ value = var:{gen.PREFIX}_receipt_hc_occupied_before subtract = 1 }}",
+            f"var:zg361_ch_hc_frozen >= {{ value = var:{gen.PREFIX}_receipt_hc_frozen_before add = 1 }}",
+            f"var:zg361_ch_hc_frozen <= {{ value = var:{gen.PREFIX}_receipt_hc_frozen_before add = 1 }}",
         ):
             self.assertIn(needle, consume)
         operation_index = consume.index("zg361_we_m277_exit_receipt_id = var:")
