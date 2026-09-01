@@ -92,3 +92,17 @@ The formal preflight's 92 validator diagnostics remain the declared
 `schema-only`/`UNSUPPORTED` boundary and are not reclassified by this parser
 pass.  No CK3 launch was repeated; a future loader gate must be separately
 authorized.
+
+## 2026-09-02 03:12 offline preflight refresh
+
+After the narrow `open_kaishek` profile slice (`d207707`), the same product
+root was preflighted with the rebuilt JAR
+`CBCD5F868F5C46AA7B5A2C70E11705B978F95DE3437E0809D20A4139F62DD0E4`.
+The machine-readable artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postschema-preflight-d207707.json`
+with SHA-256
+`570BB393FC84E3E87AE69141AF1D036FC63434BB410B9F99A17F197F032DC2D8`.
+It completed in `3.144s`: parser `GREEN` (76 files, 0 diagnostics), fixture
+IR/runtime `GREEN`, and bounded root validator `RED` (233,708 diagnostics).
+This is an offline schema boundary, not a CK3 loader result; no CK3 process,
+save, or network was used.

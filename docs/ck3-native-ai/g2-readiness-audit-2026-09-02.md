@@ -97,7 +97,7 @@ do not create a CK3 process or promote the gate to `production-live`.
 `open_kaishek` is an optional offline accelerator, not a CK3 readiness gate.
 The canonical checkout is `Z:\workspace\open_kaishek` on `main` (also
 `origin/main`), at commit
-`5672c98647a615292065b57716c1f3e0f7255410` (descendant of the preflight
+`d20770783d343328507baedadd13b359ea4ddabd` (descendant of the preflight
 contract commit `b306a95`).  Bind the checkout and jar explicitly, then run a
 fixture-only smoke before any future parent acceptance command:
 
@@ -120,9 +120,10 @@ The command emits one JSON object with schema
 `open_kaishek.preflight.v1`; expected fixture status is `GREEN`, with
 `provenance.mode=offline`, `ck3_started=false`, `save_mutated=false`, and
 `network_used=false`.  The canonical rebuilt CLI jar SHA-256 is
-`A14644331FBBA16E1DDA0B84DCB81F24D39F98CE25702E42ADED93D63FFA9398`;
+`CBCD5F868F5C46AA7B5A2C70E11705B978F95DE3437E0809D20A4139F62DD0E4`;
 record that SHA together with the resolved checkout commit.  Older local
-jars (`47E20B1B3814A5CFBC4CCF7347C0C5CF0128961991FD8436BE2C00701AA969E6`
+jars (`A14644331FBBA16E1DDA0B84DCB81F24D39F98CE25702E42ADED93D63FFA9398`,
+`47E20B1B3814A5CFBC4CCF7347C0C5CF0128961991FD8436BE2C00701AA969E6`
 and `6E8D9CECCAAA2CCF925B369501919C5B8F15AA73F1C9CB78ACEAF52540EE3E91`)
 are superseded and must not be used as current provenance.
 
