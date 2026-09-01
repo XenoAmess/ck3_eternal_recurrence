@@ -1685,7 +1685,8 @@ duplicate/wrong scope/no-toast/type drift、null root slot、running、stale War
 `BuildRaiktorWarBoundRegimentActiveObservationV1` 与 `ApplyRaiktorWarBoundRegimentCleanupObservationV1`。active 阶段只接受两份完全相同的
 paused `raiktor_claim_cb` frame，以及既有 generic observer 的
 `provenance=war_bound_not_event_specific`、primary-attacker owner、exact full WarID、非空 persistent rows。每个 persistent full-generation
-ID 必须唯一、`bound_war_id` 相同、`keep=false`；七个 composition rows 的 present current CArmyRegiment/CArmy full IDs 必须成对且全局唯一。
+ID 必须唯一、`bound_war_id` 相同、`keep=false`；七个 composition rows 的 present current CArmyRegiment/CArmy full IDs 必须成对，current
+CArmyRegiment generation 必须全局唯一；多个 row 允许因军团合并而共享同一个 current CArmy generation。
 production wrapper 后续须从每个已由 generic observer generation-resolve 的 exact current CArmyRegiment `+0x38` 读取一个非负兵数；投影要求
 sample 对 present IDs 完整一一覆盖、无额外或重复 ID，并做逐 persistent 与全局 checked sum。该值是当前可见兵数，不是初始值。
 
@@ -1706,6 +1707,32 @@ frozen persistent/current generations 都消失且无 stale attachment 才为 ag
 reverse 入口冻结于 `native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json`；尚无 public wire 或 production-live
 artifact。
 
+#### Raiktor 六域同帧聚合 core v1（2026-09-01）
+
+[fixture-confirmed / static-ready aggregation] 独立 core
+`BuildRaiktorSurrenderSixDomainObservationV1` 已把现有 leaf contract 组成一份 fail-closed 聚合，但没有改动 production reader、mailbox、
+JSON/MCP 或 action executor。这里的“六域”固定指 **gold、prestige、PoW、favor hook、truce、generic war-bound current**；claims 是每次投降
+都必须先成立的基础语义（target 顺序、claim rows、`remove_declared_target_claims`），不占六个 dynamic domain 的名额。因此完整合取实际是
+`claims base + six dynamic domains`，不是漏算 claims，也不是把七项硬叫六项。
+
+每个 present child 都携带同一 `RaiktorSurrenderSameFrameV1`：paused、snapshot revision、native revision、date、full-generation WarID、CB
+index/key、primary attacker/defender 与 claimant 必须逐项相同。某个 child 缺失是合法的 `incomplete`，在 ordered `missing_domains` 中显式列出，
+并令 `same_frame_stable=false`、`action_terms_ready=false`；某个 present child 跨帧或内部形状错误则整个 aggregate `unavailable`。fixture 的完整
+happy path 可以把 aggregate-local `action_terms_ready=true`，但 `automatic_surrender_ready` 永远为 false：exact options、recipient validator 和
+continue-vs-surrender policy 仍是更高层独立门，不能因 terms 聚合完成而自动提交投降。
+
+truce child 只接受 pointer observer 已证明的非负 `evaluated_days`，并再次要求 `expiry_observable=false`；聚合层没有 expiry 字段，也不做日期
+加法。war-bound child 只接受 `generic_war_bound_visible_source_unattributed`、完整 current-generation soldier sum 与既有 readiness false
+边界；聚合输出固定 `source_specific_war_bound_ready=false`、`pre_soldiers_ready=false`、`proven_soldier_loss_ready=false`。因此 aggregate-local
+`generic_war_bound_current_ready=true` 只表示该独立可见值可用于条款决策，不会把它改名成 `norman_highwaymen`，也不改变当前 production wire
+仍为 false 的 `war_bound_armies_ready`。
+
+postwar cleanup 可以随后附着在同一份冻结 regiment IDs 上，但它使用 war 已消失后的独立 paused postwar frame；它不参与、也不冒充战前
+same-frame 合取。只有逐 persistent/current generation 的 `destroyed/still_alive` 与 aggregate status 一致才令
+`postwar_cleanup_ready=true`，即使如此 source attribution、pre soldiers 和 proven loss 仍全假。source/hashes、域计数、同帧与 readiness 边界
+冻结于 `native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json`。当前状态是 static/fixture-ready aggregation，
+不是 public-wire、production-live 或 surrender OODA complete。
+
 native helper 边界如下；其中 PoW、gold、F/prestige、favor hook 与 war-bound regiment 已有独立 core，列表不表示统一 wire 已实现：
 
 ```text
@@ -1725,6 +1752,7 @@ ReadPrimaryAttackerWarBoundRegimentObservation
 ReadFrozenWarBoundRegimentCleanupObservation
 BuildRaiktorWarBoundRegimentActiveObservationV1
 ApplyRaiktorWarBoundRegimentCleanupObservationV1
+BuildRaiktorSurrenderSixDomainObservationV1
 ```
 
 `HasWarTerminationTermsBindings` 不得被新增 Raiktor ABI 扩大，否则一个 hook/army reverse gap 会令普通 `claim_cb` 回归为 unavailable。
@@ -1756,9 +1784,9 @@ continue-vs-surrender policy。terms readiness 只证明“条款可用于决策
 path；六域逐项缺失/重复/错 scope/错 generation；F tag/公式/overflow；truce shape/vtable/双读/expiry；PoW succession/jailer；hook
 false/true/type/scope；war-origin/keep/bound-WarID/regiment backlink/merge/full-scan；collector/context ctor/dtor 成对；零 game-object write。
 另加 source contract，证明 Raiktor production path 不引用 hidden-truce projection，且 production-disabled broad reader 仍在 preview 前退出。
-其中 actual gold、F/prestige、favor-hook、generic active/postwar war-bound regiment current-soldiers/cleanup 与 PoW native core 已各自
-fixture-confirmed；war-bound 的 `norman_highwaymen` source、pre soldiers/loss 仍未闭合。它们尚未组成统一 terms wire，truce、统一
-same-frame reader、Python policy/postcondition 与一次启动 live matrix 继续 pending。
+其中 actual gold、F/prestige、favor-hook、truce、generic active/postwar war-bound regiment current-soldiers/cleanup 与 PoW native core 已各自
+fixture-confirmed，并已有独立 six-domain same-frame aggregation fixture；war-bound 的 `norman_highwaymen` source、pre soldiers/loss 仍未闭合。
+聚合 core 尚未接统一 production terms reader/wire；Python policy/postcondition 与一次启动 live matrix 继续 pending。
 
 实机只跑一次批量矩阵，复用 CharacterID `29829` / WarID `50331699` 的冻结 checkpoint，MCP-first、英文 HKL、不用 OCR：
 

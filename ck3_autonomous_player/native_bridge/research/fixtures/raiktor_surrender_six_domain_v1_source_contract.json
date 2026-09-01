@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-surrender-six-domain-source-contract-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "frozen_component_contracts": [
+    {
+      "path": "native_bridge/research/ck3_1_19_0_6_anchors.json",
+      "sha256": "9D6001FA9E05C09E45696B3FCDB2C0E30C75EC9D6DB7F800D38096FE6FF7F8AB",
+      "semantic_contract": "claims, gold, prestige, PoW and favor observations use the already frozen exact-build readers and source boundaries"
+    },
+    {
+      "path": "native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json",
+      "sha256": "AE6C5569402FF448A3BB028EC3B7F525553075AC5C8FAC7005791FF2EB8ECABE",
+      "semantic_contract": "truce publishes stable nonnegative evaluated_days and explicitly does not publish a persisted expiry"
+    },
+    {
+      "path": "native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json",
+      "sha256": "26652A0FCB9D0C185272E7C3B2721A9EC93BC5C5CDC5003D2B9D9EE16B105241",
+      "semantic_contract": "war-bound publishes generic full-generation identity, current soldiers and optional later cleanup without event-source, pre-soldier or proven-loss attribution"
+    }
+  ],
+  "base_game_sources": [
+    {
+      "path": "game/common/casus_belli_types/00_event_war.txt",
+      "sha256": "BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707"
+    },
+    {
+      "path": "game/common/scripted_effects/00_war_effects.txt",
+      "sha256": "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D"
+    },
+    {
+      "path": "game/common/scripted_effects/00_casus_belli_effects.txt",
+      "sha256": "9F7C77CC9342B1197B1C802A2D465E56F7521458B103DEC84F5EB7222E45F18C"
+    },
+    {
+      "path": "game/common/character_interactions/00_war.txt",
+      "sha256": "5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F"
+    },
+    {
+      "path": "game/common/hook_types/00_hook_types.txt",
+      "sha256": "25A8C0BCFF713A26754E0F6798BC64CF3133EBA61E3D6C148C6BAB5E70AB9BE8"
+    }
+  ],
+  "domain_counting": {
+    "claims_base": "target order, claim rows and attacker-defeat remove-declared-target-claims disposition; this is required base surrender semantics and is not counted as one of the six dynamic domains",
+    "six_dynamic_domains": [
+      "gold",
+      "prestige",
+      "prisoner_release",
+      "favor_hook",
+      "truce",
+      "generic_war_bound_current"
+    ]
+  },
+  "same_frame_contract": {
+    "requires_paused": true,
+    "requires_exact_raiktor_claim_cb": true,
+    "equal_fields_for_claims_base_and_all_six_dynamic_domains": [
+      "snapshot_revision",
+      "native_revision",
+      "date_raw",
+      "full_generation_war_id",
+      "active_casus_belli_database_index",
+      "primary_attacker_character_id",
+      "primary_defender_character_id",
+      "claimant_character_id"
+    ],
+    "missing_domain_semantics": "a missing optional is a valid incomplete aggregate with action_terms_ready=false; a present cross-frame or malformed domain makes the aggregate unavailable"
+  },
+  "truce_boundary": {
+    "evaluated_days_observable": true,
+    "persisted_expiry_observable": false,
+    "expiry_must_not_be_derived": true
+  },
+  "war_bound_boundary": {
+    "generic_current_soldiers_ready": true,
+    "postwar_cleanup_is_separate_frozen_id_frame": true,
+    "source_specific_attribution_ready": false,
+    "pre_soldiers_ready": false,
+    "proven_soldier_loss_ready": false,
+    "forbidden_promotions": [
+      "generic rows to norman_highwaymen",
+      "authored 3000 to measured pre soldiers",
+      "current soldiers or cleanup to proven soldier loss"
+    ]
+  },
+  "readiness": {
+    "stage": "fixture-confirmed/static-ready-aggregation",
+    "complete_fixture_action_terms_ready": true,
+    "automatic_surrender_ready": false,
+    "public_wire_complete": false,
+    "production_live": false
+  }
+}
