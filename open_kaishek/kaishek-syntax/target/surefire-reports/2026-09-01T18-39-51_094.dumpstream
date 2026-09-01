@@ -1,5 +1,0 @@
-# Created at 2026-09-01T18:39:59.328
-Boot Manifest-JAR contains absolute paths in classpath 'Z:\ck3_mod_rewrite\open_kaishek\kaishek-syntax\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-
