@@ -615,6 +615,24 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertNotIn("zg361_pp_", claim)
         self.assertNotIn("change_liege", claim)
 
+    def test_cl_transfer_adapters_consume_the_frozen_subject_argument(self) -> None:
+        # CK3 derives a scripted-effect's accepted argument names from the
+        # $PARAMETER$ tokens consumed by its body.  Career/Learning passes the
+        # frozen subject explicitly, so each adapter must both declare and
+        # enforce that the current character scope is that subject.  Omitting
+        # this token is a load-time ``unknown argument 'TICKET_SUBJECT'`` RED.
+        expected_guard_counts = {
+            "zg361_career_hc_claim_cl_transfer_vacancy_effect": 3,
+            "zg361_career_hc_accept_cl_transfer_effect": 2,
+            "zg361_career_hc_decline_cl_transfer_effect": 2,
+            "zg361_career_hc_start_cl_transfer_trial_effect": 2,
+            "zg361_career_hc_authorize_cl_transfer_release_effect": 2,
+        }
+        for effect, expected_count in expected_guard_counts.items():
+            source = block(self.effects, effect)
+            self.assertEqual(source.count("this = $TICKET_SUBJECT$"), expected_count)
+
+    def test_cl_transfer_adapter_advances_without_native_mutation_before_settlement(self) -> None:
         for effect, phase in (
             ("zg361_career_hc_accept_cl_transfer_effect", 2),
             ("zg361_career_hc_start_cl_transfer_trial_effect", 3),
