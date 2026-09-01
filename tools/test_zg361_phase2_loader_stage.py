@@ -1,0 +1,259 @@
+#!/usr/bin/env python3
+"""Deterministic tests for the phase-two append-only loader-stage gate."""
+
+from __future__ import annotations
+
+import json
+import tempfile
+from pathlib import Path
+
+import zg361_phase2_loader_stage as loader
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise AssertionError(message)
+
+
+class FakeTime:
+    def __init__(self, on_sleep=None) -> None:
+        self.value = 0.0
+        self.sleep_count = 0
+        self.on_sleep = on_sleep
+
+    def clock(self) -> float:
+        return self.value
+
+    def sleep(self, seconds: float) -> None:
+        self.sleep_count += 1
+        self.value += seconds
+        if self.on_sleep is not None:
+            self.on_sleep(self.sleep_count)
+
+
+def rows(path: Path) -> list[dict[str, object]]:
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+
+def main() -> int:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+
+        # attempt07's concrete product errors stop a stagnant database load.
+        fatal_logs = root / "fatal" / "logs"
+        fatal_logs.mkdir(parents=True)
+        (fatal_logs / "debug.log").write_text(
+            "[00:00:01][D][jomini_eventmanager.cpp:594]: Loaded events\n",
+            encoding="utf-8",
+        )
+        (fatal_logs / "error.log").write_text(
+            "\n".join(
+                (
+                    "[00:00:02][E][event.cpp:368]: Theme missing in event 'zga_phase2_seed.1'",
+                    "[00:00:03][E][jomini_script_system.cpp:303]: Script system error!",
+                    "  Error: revoke_court_position effect [ Expected opening bracket ]",
+                    "  Script location: file: common/scripted_effects/zg361_workforce_exit_fact_effects.txt line: 421",
+                    "[00:00:04][E][jomini_script_system.cpp:303]: Script system error!",
+                    "  Error: revoke_court_position effect [ Expected opening bracket ]",
+                    "  Script location: file: common/scripted_effects/zg361_workforce_exit_fact_effects.txt line: 421",
+                    "[00:00:05][E][pdx_persistent_reader.cpp:216]: Error: Unknown trigger: value in file: common/script_values/zg361_manager_governance_runtime_values.txt",
+                    "[00:00:06][E][jomini_script_argument.cpp:192]: Compiling source for zg361_career_hc_accept_cl_transfer_effect failed for unknown arguments: TICKET_SUBJECT. At file: common/scripted_effects/zg361_career_hc_runtime_effects.txt line: 390",
+                    "[00:00:07][E][jomini_script_argument.cpp:192]: Compiling source for zg361_career_hc_accept_cl_transfer_effect failed for unknown arguments: TICKET_SUBJECT. At file: common/scripted_effects/zg361_career_hc_runtime_effects.txt line: 390",
+                    "[00:00:08][E][jomini_eventmanager.cpp:428]: Duplicated event ID 'zg361we.52640' found. New Location: 'file: events/zg361_workforce_endgame_runtime_events.txt line: 3223'",
+                    "[00:00:09][E][jomini_eventmanager.cpp:428]: Duplicated event ID 'vanilla.52640' found. New Location: 'file: events/vanilla_events.txt line: 99'",
+                    "[00:00:10][E][jomini_eventmanager.cpp:142]: '52750' is not a valid event ID, has to be < 10000",
+                )
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        fatal_progress = root / "fatal" / "loader-progress.jsonl"
+        fatal_time = FakeTime()
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                fatal_logs,
+                fatal_progress,
+                timeout_seconds=10.0,
+                fatal_stall_seconds=2.0,
+                poll_interval_seconds=1.0,
+                clock=fatal_time.clock,
+                sleeper=fatal_time.sleep,
+            )
+            raise AssertionError("fatal loader logs did not fail")
+        except loader.LoaderParseRed as error:
+            require(
+                error.evidence["state"] == "loader_parse_red",
+                "fatal loader state was not typed loader_parse_red",
+            )
+            require(
+                error.evidence["fatal_error_count"] == 4,
+                "fatal signatures were not deduplicated/scoped to product paths",
+            )
+            require(
+                error.evidence["theme_warning_count"] == 1,
+                "theme warning was not counted separately",
+            )
+            require(
+                len(error.evidence["fatal_errors"]) == 4,
+                "fatal evidence list does not match its count",
+            )
+        fatal_rows = rows(fatal_progress)
+        require(
+            fatal_rows[-1]["state"] == "loader_parse_red",
+            "append-only evidence lacks the final parser RED",
+        )
+        require(
+            len(fatal_rows[-1]["fatal_errors"]) == 4,
+            "append-only parser RED lacks deduplicated findings",
+        )
+
+        # A theme warning is actionable static debt, but cannot impersonate a
+        # parser/compiler stall and trigger the typed early-RED boundary.
+        theme_logs = root / "theme" / "logs"
+        theme_logs.mkdir(parents=True)
+        (theme_logs / "debug.log").write_text(
+            "[00:00:01][D][jomini_eventmanager.cpp:594]: Loaded events\n",
+            encoding="utf-8",
+        )
+        (theme_logs / "error.log").write_text(
+            "[00:00:02][E][event.cpp:368]: Theme missing in event 'zga_phase2_seed.1'\n",
+            encoding="utf-8",
+        )
+        theme_progress = root / "theme" / "loader-progress.jsonl"
+        theme_time = FakeTime()
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                theme_logs,
+                theme_progress,
+                timeout_seconds=4.0,
+                fatal_stall_seconds=2.0,
+                poll_interval_seconds=1.0,
+                clock=theme_time.clock,
+                sleeper=theme_time.sleep,
+            )
+            raise AssertionError("theme-only load did not reach its bound")
+        except loader.LoaderStageTimeout as error:
+            require(
+                error.evidence["state"] == "loader_stage_timeout",
+                "theme-only stall received the wrong terminal",
+            )
+            require(
+                error.evidence["fatal_error_count"] == 0,
+                "theme-only warning was misclassified as fatal",
+            )
+            require(
+                error.evidence["theme_warning_count"] == 1,
+                "theme-only warning was not observed",
+            )
+        require(
+            all(
+                row["state"] != "loader_parse_red"
+                for row in rows(theme_progress)
+            ),
+            "theme-only warning emitted a false parser RED",
+        )
+
+        # Even a known historical parser error cannot steal the terminal once
+        # CK3 has demonstrably reached Frontend.  That is a save-resume failure,
+        # not the attempt07 database-init stall.
+        frontend_logs = root / "frontend" / "logs"
+        frontend_logs.mkdir(parents=True)
+        (frontend_logs / "debug.log").write_text(
+            "[00:00:01][D][jomini_eventmanager.cpp:594]: Loaded events\n"
+            "[00:00:02][D][gameapplication.cpp:558]: "
+            "Setting idler 'Frontend' with NO init options\n",
+            encoding="utf-8",
+        )
+        (frontend_logs / "error.log").write_text(
+            "[00:00:01][E][jomini_eventmanager.cpp:428]: "
+            "Duplicated event ID 'zg361we.52640' found. "
+            "New Location: 'file: events/zg361_workforce_endgame_runtime_events.txt "
+            "line: 3223'\n",
+            encoding="utf-8",
+        )
+        frontend_progress = root / "frontend" / "loader-progress.jsonl"
+        frontend_time = FakeTime()
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                frontend_logs,
+                frontend_progress,
+                timeout_seconds=4.0,
+                fatal_stall_seconds=2.0,
+                poll_interval_seconds=1.0,
+                clock=frontend_time.clock,
+                sleeper=frontend_time.sleep,
+            )
+            raise AssertionError("frontend-only load did not reach its bound")
+        except loader.LoaderResumeRed as error:
+            require(
+                error.evidence["state"] == "save_resume_red",
+                "frontend-only load was misclassified as parser RED",
+            )
+        require(
+            all(
+                row["state"] != "loader_parse_red"
+                for row in rows(frontend_progress)
+            ),
+            "historical parser error stole the Frontend terminal",
+        )
+
+        # Ordinary append progress reaches Load Save and authorizes the event
+        # waiter; no screenshot, coordinate, or fixture decision is involved.
+        normal_logs = root / "normal" / "logs"
+        normal_logs.mkdir(parents=True)
+        debug_path = normal_logs / "debug.log"
+        debug_path.write_text(
+            "[00:00:01][D][jomini_eventmanager.cpp:594]: Loaded events\n",
+            encoding="utf-8",
+        )
+        (normal_logs / "error.log").write_text("", encoding="utf-8")
+
+        def advance_loader(sleep_count: int) -> None:
+            if sleep_count == 1:
+                with debug_path.open("a", encoding="utf-8") as stream:
+                    stream.write(
+                        "[00:00:02][D][gameapplication.cpp:558]: "
+                        "Setting idler 'Frontend' with NO init options\n"
+                    )
+            elif sleep_count == 2:
+                with debug_path.open("a", encoding="utf-8") as stream:
+                    stream.write(
+                        "[00:00:03][D][gameapplication.cpp:558]: "
+                        "Setting idler 'Load Save' with init options\n"
+                    )
+
+        normal_progress = root / "normal" / "loader-progress.jsonl"
+        normal_time = FakeTime(advance_loader)
+        ready = loader.wait_for_phase2_seed_loader_stage(
+            normal_logs,
+            normal_progress,
+            timeout_seconds=10.0,
+            fatal_stall_seconds=3.0,
+            poll_interval_seconds=1.0,
+            clock=normal_time.clock,
+            sleeper=normal_time.sleep,
+        )
+        require(ready["result"] == "GREEN", "normal loader did not pass")
+        require(
+            ready["state"] == "loader_stage_ready",
+            "normal loader returned the wrong terminal",
+        )
+        require(
+            ready["stage"] == "load_save",
+            "frontend alone incorrectly authorized event wait",
+        )
+        require(
+            ready["event_wait_authorized"] is True,
+            "Load Save did not authorize event wait",
+        )
+        require(
+            rows(normal_progress)[-1]["state"] == "loader_stage_ready",
+            "append-only evidence lacks the ready terminal",
+        )
+
+    print("GREEN: phase-two loader gate classifies parse RED without visual input")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

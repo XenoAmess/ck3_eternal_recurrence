@@ -54,6 +54,8 @@ jobs:
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
           python tools/test_zg361_phase2_seed_fixture.py
+          python tools/test_zg361_phase2_loader_stage.py
+          python -O tools/test_zg361_phase2_loader_stage.py
           python tools/test_zg361_phase2_seed_bootstrap.py
           python tools/test_run_zhongguo_promo_capture.py
           python tools/test_run_zhongguo_workshop_acceptance.py

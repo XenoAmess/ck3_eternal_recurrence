@@ -105,6 +105,7 @@ def main() -> int:
 
     final_event = top_level_block(events, "zga_phase2_seed.1")
     assert "hidden = yes" not in final_event
+    assert "theme = stewardship" in final_event
     assert len(re.findall(r"(?m)^\s*option\s*=\s*\{", final_event)) == 1
     for scope_name in REQUIRED_SCOPES:
         assert final_event.count(f"save_scope_as = {scope_name}") == 1

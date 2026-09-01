@@ -97,9 +97,58 @@ fixture/loader/helper 的静态验收：
 
 ```powershell
 py tools/test_zg361_phase2_seed_fixture.py
+py tools/test_zg361_phase2_loader_stage.py
 py tools/test_zg361_phase2_seed_bootstrap.py
 py tools/test_run_zhongguo_promo_capture.py
 ```
+
+## attempt 07：不是“再等一会”，而是 loader parser RED
+
+冻结运行
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-seed-attempts\phase2_seed_20260901_042407_head_48fbe07_attempt07`
+在 bridge transport 已连接后等待了 `900s`，但 `8,916` 次 typed observation 全部为
+`semantic_snapshot_temporarily_unavailable`。CK3 `debug.log` 在 `04:26:53` 停止，最后阶段仍是 database/script
+初始化；没有出现健康基线已有的 `Setting idler 'Frontend'`、`Setting idler 'Load Save'` 或
+`Setting idler 'In Game'`。因此这不是 event selector、MCP 查询或普通超时问题，`-continuelastsave` 也尚未获得执行到
+frontend 的机会。
+
+同一现场的只读重放由 `tools/zg361_phase2_loader_stage.py` 归并出 `30` 个去重后的已实证 fatal：
+
+- `16` 个可由同一行 `events/zg361_*` 路径归属的非法生成事件注册（原始日志另有 `17` 条数字 ID `>=10000` 报错；
+  最后一条 `52750` 本身不带 source path，因此 early-fatal allowlist 不单独采信；物理文件中每个 ID 只定义一次）；
+- `6` 个 manager-governance `value/add/multiply` 被当成 trigger 的 parser 错误；
+- `5` 个 career-HC `TICKET_SUBJECT` 未声明参数错误；
+- `3` 个 Workforce `revoke_court_position` 缺少 effect block 的错误。
+
+重放 artifact 是
+`artifacts/attempt07-loader-stage-replay.jsonl`，SHA-256
+`7687E389A75F0800B52AA64693C5375ED17FC926813CCF49A7042F28EEAAFCAE`。它同时记录 `9` 个 theme warning，
+但 theme-only 不会触发 `loader_parse_red`。seed 的唯一可见事件 `zga_phase2_seed.1` 已显式增加
+`theme = stewardship`，静态 fixture test 会阻止回归。
+
+冻结证据的关键哈希为：`runner-report.json`
+`319A3A3419DB77D1349F12CA8450281597612F15E23856268E1ED17E678D2ECE`、cleanup
+`C656193A80A7A7E5AAA8CB77EC5C0EC7B18BA3DC1258EBF5FE055413E214011F`、原始 event wait JSONL
+`2452104F92E75406ABAB3524AF6955D5292F3B15E8F583F959A5C9B01D838DE9`、`debug.log`
+`50F1D64E14684AE13AE7497C2061601BB781281062762684BCC4EAFDF05C3112`、`error.log`
+`C59845A20BA424211DF3187D497256B559B667329BEB8023AAB1FB9B3F4D030A`。重放文件是追加型证据，已有文件不得重复运行再追加。
+
+双挂载也已排除：`debug.log` 对 product 与专用 seed fixture 各只有一次 `Mounted Data`，两棵树都是普通目录；上述超限 ID
+在生成文件中各只有一个顶层定义。CK3 对非法 ID 随后报告同路径 “Duplicated event ID” 是非法注册恢复噪声，不是 VFS
+把 product 挂了两次。bridge hello/build/PID/heartbeat 正常，而 main-thread mailbox 一直 `installed=false`；在应用从未越过
+database init 时，这只能说明 native hook 尚未到达可安装阶段，不能反向归罪 provider。
+
+后续 seed runner 必须先调用 `wait_for_phase2_seed_loader_stage(log_dir, progress_jsonl, ...)`。它只读 CK3 的 append-only
+`debug.log/error.log`，自身也只追加 JSONL；不会读取 runner 正在 atomic-replace 的 partial report。日志若在 database init
+静止且存在上述 allowlist 中的 mod parser/compiler error，默认 quiet `45s` 后以 typed `loader_parse_red` 结束并保存去重错误，
+不再空等 `900s`。只有进入 `Load Save` / `In Game` 或 native semantic readiness 后，才可启动
+`zga_phase2_seed.1` event waiter。仅到 Frontend 而未开始 Load Save 时应另报 `save_resume_red`；theme-only 只继续等待，不能冒充
+fatal。
+
+下一次 CK3 只允许单局验证这一个假设：在所有已实证 parser/compiler/theme 项静态清零后，新 HEAD 是否从
+`04:26:53` 对应阶段继续到 `Load Save/In Game` 与 native semantic snapshot。单局顺序固定为：冻结 projection/SHA →
+确认 product/fixture 各挂载一次 → append-only loader gate → exact event query → 五 selector 与 paused checkpoint 捕获 →
+受管 cleanup。若 loader gate 再次 RED，保留新日志后停止，不增加超时、不启动第二局；只有该门 GREEN 才继续 seed 业务验收。
 
 ## 仍不能由 seed fixture 消除的两项产品阻塞
 

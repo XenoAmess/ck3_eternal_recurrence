@@ -1033,3 +1033,45 @@ revision** 再查询 event context；不能因为没有配置 preferred option t
 `NOT` 不能承担 unset/value compare 的短路逻辑：新案把 settlement/refund posted serial 初始化为 `0`，事务只允许零值进入，
 成功后写正数 case serial；验收准备态必须断言 `0`，不能继续要求变量不存在。对应语法索引见
 [grammar/pitfalls.md](grammar/pitfalls.md)。
+
+## ZhongGuo phase2 seed loader 早停门（2026-09-01）
+
+`phase2_seed_20260901_042407_head_48fbe07_attempt07` 实证了一个不能再用“延长 readiness timeout”掩盖的阶段：bridge
+transport 可以先连接并持续 heartbeat，但 CK3 仍可能卡在 database/script 初始化，尚未发布 semantic snapshot。该现场
+`debug.log/error.log` 在 `04:26:53` 后逐字节不再增长，进程却继续运行到 `900s`；健康旧基线会继续出现
+`Setting idler 'Frontend' → 'Load Save' → 'In Game'`。因此 transport GREEN 不是 map-ready，也不是 event waiter 的启动许可。
+
+仓库工具 `tools/zg361_phase2_loader_stage.py` 把这条经验做成了可执行门：
+
+```powershell
+py tools/zg361_phase2_loader_stage.py `
+  --log-dir "<isolated-userdir>\logs" `
+  --progress-jsonl "<artifacts>\loader-stage-progress.jsonl" `
+  --timeout-seconds 300 `
+  --fatal-stall-seconds 45
+```
+
+- 输入只允许 CK3 自己 append 的 `debug.log/error.log`；输出也只 append JSONL。监控者不得轮询读取另一个 producer 正在
+  temp-file + atomic-replace 的 partial report。attempt 05 已实证：Windows 上外部 reader 持有该目标时会令 writer 的 replace
+  抛 `WinError 5`，制造与产品无关的 harness RED。
+- early fatal allowlist 只覆盖 attempt 07 已实证且能归属 `events/zg361_*`、
+  `common/script_values/zg361_*`、`common/scripted_effects/zg361_*` 的四类：非法生成 event 注册、算术 value 被当 trigger、
+  `TICKET_SUBJECT` 未声明、`revoke_court_position` 缺 block。日志停在 database init 且含这些错误，quiet 45 秒后输出
+  `loader_parse_red` 和去重 fingerprint，不再等待完整业务 timeout。
+- `Theme missing` 单独计数但不触发 early fatal。fixture visible event 仍必须通过静态合同显式提供 theme；“不早停”和“可以留着
+  不修”不是同一件事。
+- 只有 `Load Save`、`In Game` 或 native semantic readiness 才授权进入 event wait。只到 Frontend 的 bounded 终点是
+  `save_resume_red`，用于把 `-continuelastsave`/存档选择故障与 parser stall 分开；还没到 Frontend 时不得猜是旧 save 损坏。
+- 双挂载必须由 `Mounted Data` inventory 判定。attempt 07 的 product/fixture 各恰好一次，且报错 event 在物理文件中各只定义
+  一次；同路径 duplicate 是超限 ID 的恢复噪声，不能臆测为 descriptor/load-order 重挂。
+
+离线门禁：
+
+```powershell
+py tools/test_zg361_phase2_loader_stage.py
+py -O tools/test_zg361_phase2_loader_stage.py
+py tools/test_zg361_phase2_seed_fixture.py
+```
+
+测试必须覆盖：已实证 parser errors 早停并去重、theme-only 不误判 fatal、普通日志从 database init 继续到 Load Save。下一次
+真实 CK3 运行必须先清零当前 parser/compiler/theme 项，再用这一门做单局验证；不得直接再开 900 秒 blind wait。

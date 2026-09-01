@@ -121,6 +121,7 @@ zga_phase2_seed.102 = {
 # five typed saved character scopes, choose its sole option, and save-checkpoint.
 zga_phase2_seed.1 = {
 	type = character_event
+	theme = stewardship
 	title = zga_phase2_seed.1.t
 	desc = zga_phase2_seed.1.desc
 	left_portrait = root
