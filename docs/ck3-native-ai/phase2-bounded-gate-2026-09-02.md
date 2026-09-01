@@ -332,3 +332,21 @@ reports parser `76/23,831,410/0` GREEN and validator/root scan
 `RED/233,014`; CK3 was not launched. The phase2 corpus contains no
 `has_perk` use, so this slice does not reduce the current validator boundary
 or change the frozen loader diagnosis. No new CK3 gate is scheduled.
+
+## 2026-09-02 05:24 node-to-source localization closure
+
+The read-only localization pass confirms that the existing loader parser can
+reliably expose only `database_node_count` and `last_database_node`. CK3 debug
+node lines contain the native database node name and timing, but no production
+script filename or callback, so an offline parser cannot map the stall to a
+changed file. The retained current log has `2` nodes ending at
+`CJominiLoadScreenDatabase`; the older successful log has `303` ending at
+`CJominiInGameMusicDatabase`. The loader-node inventory SHA remains
+`808328DCFA319ED3CC327F8AE201A5D6F0C269343768EA342688CF34EBE6D185`, and the
+dependency inventory remains `1,656` definitions/`2,764` edges with zero
+actionable unresolved delta (SHA
+`8E2C811BC95DE60ED37700DF6692979B677E909064B36C73688A6655E6CF697A`).
+
+No new instrumentation or same-shape CK3 gate is justified. The next phase2
+施工入口 is a loader-side callback/node observation that supplies a concrete
+file or symbol; until then the `a89282d` baseline stays frozen.

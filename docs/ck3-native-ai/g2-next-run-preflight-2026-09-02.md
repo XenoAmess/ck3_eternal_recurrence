@@ -41,9 +41,9 @@ The offline accelerator is pinned independently of the parent repository:
 | Item | Required value |
 | --- | --- |
 | Checkout | `Z:\workspace\open_kaishek` |
-| Git | `main == origin/main == 450b559c892228b6ab650c6fa68bece6defdfec7` |
+| Git | `main == origin/main == a6705894bb41d87aa5e53530d77910369c6eb209` |
 | CLI JAR | `Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar` |
-| JAR SHA-256 | `06E71C403924412A32EE307149AF6DB5E4A40886064263CF1FFDDE5615538C4D` |
+| JAR SHA-256 | `392B130B7F6DCB516627EAE284CF673C7F109D6857A5C6388AE56F02EC0BF1AD` |
 
 Run the following against a fresh, immutable copy of the intended phase-two
 source tree before any native runner command (the root path is deliberately a
