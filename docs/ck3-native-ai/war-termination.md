@@ -1604,7 +1604,7 @@ settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects
 | truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致并检查非负天数；v1 明确不把天数换算为已持久化 expiry | **fixture-confirmed / static-ready**；待把独立 core 接入 production wrapper，并做一次 pointer-only paused shape probe；不得执行 ContextEffect |
 | PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`；新生产 helper `ReadRaiktorSurrenderPrisonerReleases` | 双方完整 participant 列表、primary 与前三继承人候选列表，以及实际由对方参与者关押的 generation-safe release pairs；两次 paused 同日样本必须逐项相同。完整扫描后的空 pairs 是合法零 | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook`；ordinary/no-toast vtable、preview callback 与 `favor_hook` runtime identity 已闭合 | claimant=attacker 时精确 false 且零 traversal；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **fixture-confirmed / static-ready**；production WarID wrapper、root slot11 非空门、hook identity 与 paused 双采样均已闭合，待接 terms wire 与 paused live |
-| war-bound army | 现有 generation-safe CUnit↔CArmy↔CRegiment backlink、regiment storage 与 native soldier helper | 完整 storage scan 后按 `bound WarID + source=norman_highwaymen + keep=false` 选来源 regiments；发布当前 RegimentID、合并后的 Army/CUnit grouping 与 current soldiers lost | **reverse gap 2**：从 `spawn_army` factory/execute 和 save serializer 闭合持久 origin/war-lifetime 字段 |
+| war-bound army | 已冻结 generic `WarBoundRegimentObservation` / cleanup：full-generation persistent/current/CArmy IDs、exact bound WarID、keep=false、七 composition rows；current CArmyRegiment `+0x38` 是当前兵数 | 当前可发布**该 Raiktor War 中 generic war-bound** IDs、当前兵数总量及战后 exact generation `destroyed/still_alive`；不得把它们标成 `norman_highwaymen`，不得用 authored 3000 冒充 pre soldiers 或 loss | **fixture-confirmed / static-ready independent visible value**；source-specific attribution、pre soldiers、proven loss 与六域 `war_bound_armies_ready` 仍 false，需闭合持久 origin 或 action-bound pre-ID capture |
 
 Gold/F/hook 的 preview 必须走独立的 Raiktor visible-root observer：它在真实 WarEffectContext 中遍历**原始** loaded root，所有 callback
 继续 forward 给 stock collector；它绝不调用 `ResolveWarExitHiddenTrucePath`、`BuildWarExitHiddenTruceProjection` 或
@@ -1681,6 +1681,31 @@ duplicate/wrong scope/no-toast/type drift、null root slot、running、stale War
 漂移、成对 teardown 以及零 hidden projection/broad traversal/command。它尚未接 terms JSON/MCP，也没有 paused CK3 artifact，故单域不改变
 六域 readiness。
 
+[fixture-confirmed / static-ready independent visible value] war-bound regiment 域现有独立投影 core
+`BuildRaiktorWarBoundRegimentActiveObservationV1` 与 `ApplyRaiktorWarBoundRegimentCleanupObservationV1`。active 阶段只接受两份完全相同的
+paused `raiktor_claim_cb` frame，以及既有 generic observer 的
+`provenance=war_bound_not_event_specific`、primary-attacker owner、exact full WarID、非空 persistent rows。每个 persistent full-generation
+ID 必须唯一、`bound_war_id` 相同、`keep=false`；七个 composition rows 的 present current CArmyRegiment/CArmy full IDs 必须成对且全局唯一。
+production wrapper 后续须从每个已由 generic observer generation-resolve 的 exact current CArmyRegiment `+0x38` 读取一个非负兵数；投影要求
+sample 对 present IDs 完整一一覆盖、无额外或重复 ID，并做逐 persistent 与全局 checked sum。该值是当前可见兵数，不是初始值。
+
+[static-confirmed / boundary] `bookmark_events.txt` 的 `bookmark.1071` hard Raiktor option 确实创建 `raiktor_claim_cb`，并 authored 六个同形
+`spawn_army`：每个 300 levies + 100 bowmen + 75 light horsemen + 25 armored horsemen，display name 为 `norman_highwaymen`，即 authored
+候选 `6×500=3000`。但是已经冻结的 CK3 1.19.0.6 CRegiment/CArmyRegiment generic 对象没有已证明的 persisted display-name/event-source
+字段。因此 `norman_highwaymen` 只能作为 source 文档候选，不能参与 runtime selector；`bound WarID`、`keep=false`、public ArmyID、匹配
+3000 或 troop composition 都不能把 generic row 升格为 Raiktor-source row。source-specific attribution readiness 固定 false。
+
+[fixture-confirmed] postwar 投影复用 `FrozenWarBoundRegimentCleanupObservation`，要求另两份相同 paused frame 明确 frozen WarID 已不在 active
+wars，并逐项绑定 active 阶段冻结的 persistent/current/CArmy full IDs。它接受 exact generation `destroyed/still_alive`、
+`frozen_army_destroyed/detached/still_attached`，拒绝 generation swap、row reorder、stale roster、aggregate status 与逐 ID 状态不符；只有所有
+frozen persistent/current generations 都消失且无 stale attachment 才为 aggregate `destroyed`。WarID 消失本身仍不是销毁证据。
+
+[boundary] 该 core 提供了真正独立可见的 current soldiers 与 postwar cleanup 价值，但没有 measured pre-spawn snapshot，故
+`pre_soldiers_ready=false`、`proven_soldier_loss_ready=false`；authored 3000 不得填入这两个字段。因为 source attribution 也未闭合，
+`raiktor_source_specific_domain_ready=false`，统一六域中的 `war_bound_armies_ready` 继续 false。全部 source/hash、generic storage/offset 与未来
+reverse 入口冻结于 `native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json`；尚无 public wire 或 production-live
+artifact。
+
 native helper 边界如下；其中 PoW、gold、F/prestige、favor hook 与 war-bound regiment 已有独立 core，列表不表示统一 wire 已实现：
 
 ```text
@@ -1696,7 +1721,10 @@ ProbeRaiktorDefeatShape
 ResolveRaiktorDefeatTruceNode
 ReadFavorHookPresence
 ReadRaiktorSurrenderPrisonerReleases
-ReadRaiktorWarBoundRegiments
+ReadPrimaryAttackerWarBoundRegimentObservation
+ReadFrozenWarBoundRegimentCleanupObservation
+BuildRaiktorWarBoundRegimentActiveObservationV1
+ApplyRaiktorWarBoundRegimentCleanupObservationV1
 ```
 
 `HasWarTerminationTermsBindings` 不得被新增 Raiktor ABI 扩大，否则一个 hook/army reverse gap 会令普通 `claim_cb` 回归为 unavailable。
@@ -1728,8 +1756,9 @@ continue-vs-surrender policy。terms readiness 只证明“条款可用于决策
 path；六域逐项缺失/重复/错 scope/错 generation；F tag/公式/overflow；truce shape/vtable/双读/expiry；PoW succession/jailer；hook
 false/true/type/scope；war-origin/keep/bound-WarID/regiment backlink/merge/full-scan；collector/context ctor/dtor 成对；零 game-object write。
 另加 source contract，证明 Raiktor production path 不引用 hidden-truce projection，且 production-disabled broad reader 仍在 preview 前退出。
-其中 actual gold、F/prestige、favor-hook、active/postwar war-bound regiment 与 PoW native core 已各自 fixture-confirmed；它们仍未组成统一
-terms wire，truce、统一 same-frame reader、Python policy/postcondition 与一次启动 live matrix 继续 pending。
+其中 actual gold、F/prestige、favor-hook、generic active/postwar war-bound regiment current-soldiers/cleanup 与 PoW native core 已各自
+fixture-confirmed；war-bound 的 `norman_highwaymen` source、pre soldiers/loss 仍未闭合。它们尚未组成统一 terms wire，truce、统一
+same-frame reader、Python policy/postcondition 与一次启动 live matrix 继续 pending。
 
 实机只跑一次批量矩阵，复用 CharacterID `29829` / WarID `50331699` 的冻结 checkpoint，MCP-first、英文 HKL、不用 OCR：
 
@@ -1738,7 +1767,8 @@ terms wire，truce、统一 same-frame reader、Python policy/postcondition 与�
 2. 任一六域未 ready 时，`action_steps` 不得出现 `surrender-war-50331699`；保存 pre-surrender checkpoint 与原始 MCP artifact。
 3. 策略门另行满足后才提交 typed surrender；ACK 只记 `submitted_pending`，优先在同一 paused `date_raw` 等待 command 应用。
 4. WarID 消失后逐项核对冻结预测：gold/prestige delta、declared claims 移除、attacker→defender truce days/expiry、PoW pairs 释放、
-   favor hook 存在性、全部 war-bound source RegimentID 消失；普通或非 war-bound 军队不得被误算。
+   favor hook 存在性、全部冻结 generic war-bound full-generation RegimentID 的 cleanup 状态；在 source attribution 未闭合前不得称其为
+   `norman_highwaymen`，普通或非 war-bound 军队不得被误算。
 5. 如果只能跨日才观察 applied，日收入与 truce 起算日可能污染精确 delta；此时记 capability RED 并补 action-boundary observer，不能只用
    WarID 消失冒充六域 postcondition GREEN。保存 postwar checkpoint 后才继续 G2 turns。
 

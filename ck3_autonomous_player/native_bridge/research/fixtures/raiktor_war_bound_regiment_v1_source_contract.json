@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-war-bound-regiment-source-contract-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "base_game_sources": [
+    {
+      "path": "game/events/bookmark_events.txt",
+      "sha256": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF",
+      "semantic_contract": "bookmark.1071 hard Raiktor option starts raiktor_claim_cb and authors six spawn_army blocks named norman_highwaymen; each block requests 300 levies, 100 bowmen, 75 light_horsemen and 25 armored_horsemen"
+    },
+    {
+      "path": "game/common/casus_belli_types/00_event_war.txt",
+      "sha256": "BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707",
+      "semantic_contract": "raiktor_claim_cb is the exact war context; this file does not provide spawned-regiment origin identity"
+    }
+  ],
+  "authored_candidate": {
+    "display_name": "norman_highwaymen",
+    "spawn_army_count": 6,
+    "soldiers_per_authored_army": 500,
+    "authored_total_soldiers": 3000,
+    "runtime_pre_soldiers_observed": false
+  },
+  "frozen_generic_input": {
+    "type": "WarBoundRegimentObservation",
+    "provenance": "war_bound_not_event_specific",
+    "persistent_identity": "full-generation CRegimentID from owner special-troop groups, resolved through module+0x570CC88 and re-read at CRegiment+0x10",
+    "selector": "exact bound WarID at CRegiment+0x13C and keep=false at +0x142",
+    "composition": "seven rows at CRegiment+0x18, owner full ID at row+0x08, ordinal +0x0C, current full CArmyRegimentID +0x10",
+    "current_identity": "current CArmyRegiment resolved through module+0x57BF4C8, full ID at +0x10, current CArmy backlink at +0x140 and exact roster membership",
+    "current_soldiers": "nonnegative int32 at exact current CArmyRegiment+0x38, sampled for every present frozen current generation",
+    "postwar_cleanup": "FrozenWarBoundRegimentCleanupObservation proves each frozen persistent/current/army generation destroyed or still_alive from stable exact stores; War disappearance alone is insufficient"
+  },
+  "source_attribution_boundary": {
+    "source_specific_attribution_ready": false,
+    "reason": "CK3 1.19.0.6 generic persistent/current regiment objects have no proven persisted spawn_army display-name or event-source field",
+    "forbidden_inference_inputs": [
+      "bound WarID alone",
+      "keep=false alone",
+      "norman_highwaymen display text",
+      "public ArmyID",
+      "authored 3000 soldier total",
+      "matching troop composition"
+    ],
+    "future_reverse_target": "spawn_army factory/execute plus serializer/loader field that persists origin or a live action-bound frozen pre-spawn ID set"
+  },
+  "soldier_boundary": {
+    "current_soldiers_observable": true,
+    "pre_soldiers_observable": false,
+    "proven_soldier_loss_observable": false,
+    "authored_total_is_not_runtime_pre": true
+  },
+  "readiness": {
+    "stage": "fixture-confirmed/static-ready-independent-visible-value",
+    "generic_war_bound_identity_ready": true,
+    "current_soldiers_ready": true,
+    "postwar_cleanup_ready_in_fixture": true,
+    "source_specific_attribution_ready": false,
+    "raiktor_source_specific_domain_ready": false,
+    "public_wire_complete": false,
+    "production_live": false
+  }
+}
