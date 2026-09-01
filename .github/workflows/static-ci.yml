@@ -141,7 +141,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
         uses: actions/upload-artifact@v6
         with:
-          name: release-candidate-${{ github.ref_name }}-${{ github.run_id }}
+          name: release-candidate-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             dist/*.zip
             dist/*.manifest.json
