@@ -94,7 +94,8 @@ python -m pip install ./dist/xar_promo_toolchain-0.1.0-py3-none-any.whl
 ```
 
 The wheel contains the Python package, the console entry point, the two native
-manifest schemas, and the installation contract. It does not bundle FFmpeg,
+manifest schemas, the ZhongGuo phase-two capture-contract schema, and the
+installation contract. It does not bundle FFmpeg,
 ffprobe, a CK3 capture runner, a project composer, or a project integration
 plugin.
 
@@ -233,7 +234,7 @@ First verify both public launch paths and the installed resources:
 ```sh
 xar-promo --version
 python -m xar_promo --version
-python -c "from importlib.resources import files; root=files('xar_promo').joinpath('schemas'); names=('install-contract-v1.json','promo-project-config-v1.schema.json','promo-run-manifest-v1.schema.json'); missing=[name for name in names if not root.joinpath(name).is_file()]; raise SystemExit('missing installed resources: '+','.join(missing) if missing else 0)"
+python -c "from importlib.resources import files; root=files('xar_promo').joinpath('schemas'); names=('install-contract-v1.json','promo-project-config-v1.schema.json','promo-run-manifest-v1.schema.json','phase2-capture-contract-v1.schema.json'); missing=[name for name in names if not root.joinpath(name).is_file()]; raise SystemExit('missing installed resources: '+','.join(missing) if missing else 0)"
 ```
 
 Both version commands must print `xar-promo 0.1.0`. Verify all ten commands on
