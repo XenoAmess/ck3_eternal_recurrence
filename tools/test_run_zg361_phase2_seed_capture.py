@@ -212,6 +212,14 @@ class FakeZhongguoRunner:
         self.calls.append("resolve-bridge")
         return SimpleNamespace(pipe_name=pipe)
 
+    def preflight(self, **_kwargs: object) -> dict[str, object]:
+        """Fail loudly if the seed gate regresses to the generic acceptance gate."""
+
+        self.calls.append("generic-preflight")
+        raise AssertionError(
+            "phase-two seed preflight must not invoke generic acceptance preflight"
+        )
+
     def start_phase2_native_session_supervisor(
         self, _spec: object, _bridge: object
     ) -> dict[str, object]:
@@ -841,6 +849,17 @@ def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
                 "preflight reached the bridge driver")
         require("transport-binding" not in calls,
                 "preflight reached MCP transport binding")
+        require(
+            "generic-preflight" not in calls,
+            "seed preflight regressed to the generic acceptance preflight",
+        )
+        static_preflight = report["static_preflight"]
+        require(
+            isinstance(static_preflight, dict)
+            and static_preflight.get("result") == "SKIPPED"
+            and "seed-specific" in str(static_preflight.get("reason")),
+            "seed-specific static preflight was not selected for the injected fixture",
+        )
         require(report["bootstrap"]["projection_only"] is True,
                 "preflight projection was not labelled projection-only")
         report_path = fixture.artifacts / "preflight.json"

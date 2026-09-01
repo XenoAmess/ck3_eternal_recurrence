@@ -188,6 +188,8 @@ source/ZIP 逐文件等价、旧 save/CK3/rules/bridge/injector 哈希、exact-b
 `seed_contract_status`（通常仍为 `blocked_seed_generation_required`），不能解读为 seed 或 live capability 已就绪。
 任何 blocker 都保留 RED artifact（`status=preflight-blocked/ok=false`）并退出码为 `2`。
 每次实机 capture 仍必须使用新的空 attempt/artifact 目录，不能把 preflight 目录直接复用为 attempt 08。
+这里的静态门是 seed 专用离线检查（`_run_seed_static_preflight`）；不会调用面向完整 acceptance fixture 的通用
+`run_zhongguo_acceptance.preflight`，避免把 seed-only fixture 错判为缺少完整宣传验收夹具。
 
 成功路径的硬顺序为：
 
