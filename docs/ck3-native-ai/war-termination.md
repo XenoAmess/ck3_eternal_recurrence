@@ -1601,7 +1601,7 @@ settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects
 |---|---|---|---|
 | gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；current gold `extension+0x100` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | F / prestige | root proxy 在 original attacker-defeat root 返回后、`0x3380170` 销毁临时 wrapper 前读取 `wrapper+0x18` 的唯一 identifier `82` final row；collector 同次捕获 prestige vptr `0x446C7B0` callback | 发布 `cb_prestige_factor`、attacker current prestige 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow、公式或同帧 identity 不符均 unavailable | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
-| truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致并检查非负天数；v1 明确不把天数换算为已持久化 expiry | **fixture-confirmed / static-ready**；待把独立 core 接入 production wrapper，并做一次 pointer-only paused shape probe；不得执行 ContextEffect |
+| truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致并检查非负天数；v1 明确不把天数换算为已持久化 expiry | **fixture-confirmed / static-ready；public evaluated-days wire 已接入（`6be8831`）**；仍待一次 pointer-only paused/live shape probe；不得执行 ContextEffect |
 | PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`；新生产 helper `ReadRaiktorSurrenderPrisonerReleases` | 双方完整 participant 列表、primary 与前三继承人候选列表，以及实际由对方参与者关押的 generation-safe release pairs；两次 paused 同日样本必须逐项相同。完整扫描后的空 pairs 是合法零 | **fixture-confirmed / static-ready**；待接 application-main mailbox、terms wire 与 paused live |
 | favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook`；ordinary/no-toast vtable、preview callback 与 `favor_hook` runtime identity 已闭合 | claimant=attacker 时精确 false 且零 traversal；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **fixture-confirmed / static-ready**；production WarID wrapper、root slot11 非空门、hook identity 与 paused 双采样均已闭合，待接 terms wire 与 paused live |
 | war-bound army | 已冻结 generic `WarBoundRegimentObservation` / cleanup：full-generation persistent/current/CArmy IDs、exact bound WarID、keep=false、七 composition rows；current CArmyRegiment `+0x38` 是当前兵数 | 当前可发布**该 Raiktor War 中 generic war-bound** IDs、当前兵数总量及战后 exact generation `destroyed/still_alive`；不得把它们标成 `norman_highwaymen`，不得用 authored 3000 冒充 pre soldiers 或 loss | **fixture-confirmed / static-ready independent visible value**；source-specific attribution、pre soldiers、proven loss 与六域 `war_bound_armies_ready` 仍 false，需闭合持久 origin 或 action-bound pre-ID capture |
@@ -1633,8 +1633,9 @@ Context scope count、CAddTruce vtable、负天数、双求值漂移、paused/fr
 
 [boundary] v1 只发布 `evaluated_days`，`expiry_observable=false`、`expiry_date_raw=null`。虽然 execute 反汇编展示过日期加法，这个新
 observer 尚未实机证明“当前求值日 + days”就是结束动作后持久化 truce 的最终可查询 expiry，因此不能从脚本基数或本地算式冒充
-expiry。下一步只是在 production wrapper 构造现有 WarEffectContext 后调用此 core，并做一次 MCP-first、paused、pointer-only shape
-probe；没有该 artifact 前状态仍是 static-ready，不是 production-live。
+expiry。以下“待接 production wrapper”的句子是 `c0455b6` 阶段历史快照；`6be8831` 已在正式
+`ReadWarTerminationTerms`/MCP 路径接入该 core。当前仍只需一次 MCP-first、paused、pointer-only shape probe；没有该 artifact
+前状态是 static/query-ready，不是 production-live。
 
 War-bound 军队不能用 ArmyID、owner 是战争参与者、军队名称或脚本初始 `6×500=3000` 猜。军队可合并且 public CArmy ID
 可能消失，来源 regiment 仍存在；空结果也只有在完整 storage scan 成功后才是合法零。当前 snapshot 的 public ArmyID
@@ -1816,9 +1817,11 @@ target-title 顺序。子域自身返回 typed unavailable 时，该域保持 `o
 `unobserved_dynamic_effects`；帧、War、CB 或角色身份级失败则拒绝整个 terms 结果。成功发布的域才从未观测列表中移除。
 
 当前 component readiness 可以分别把 `finance/gold`、`fame_factor/attacker_prestige_delta`、`prisoner_release` 与 `favor_hook` 置真；
-`truce_ready=false` 和 `war_bound_armies_ready=false` 仍为硬缺口，所以
-`dynamic_deltas_ready/decision_ready/automatic_surrender_ready/ready` 继续全部为 false，surrender literal 仍不得广告或提交。普通
-`claim_cb_claim_disposition` 的 JSON 与 readiness 未改变；旧 broad exit reader 仍在 preview 前禁用。
+本节在 `6be8831` 接线前记录的 `truce_ready=false` 已由 truce duration public wire 取代（仅
+`evaluated_days_observable/evaluated_days`，expiry 仍 `false/null`）。`war_bound_armies_ready=false` 仍为硬缺口，且 truce
+尚无 paused/live shape artifact，所以 `dynamic_deltas_ready/decision_ready/automatic_surrender_ready/ready` 继续全部为
+false，surrender literal 仍不得广告或提交。普通 `claim_cb_claim_disposition` 的 JSON 与 readiness 未改变；旧 broad exit reader
+仍在 preview 前禁用。
 
 离线证据：最终 fresh Release 位于 `Z:\xar-g2-gen034-fourdomain-20260901-02`，source fingerprint
 `53BAC343A1A1428A7FC56EE00FBDC7610BDB3F45D96BB4ED0E056138E8F8B76A`，DLL SHA-256
@@ -1856,8 +1859,9 @@ CB index `27` / key `raiktor_claim_cb`、player primary attacker `29829`、prima
 - claimant 与 attacker 不同，原始 visible root 确实 traversal，conditional ordinary favor hook `will_apply=true`。
 
 四域的 `observable`、component readiness 与 `same_frame_stable` 全真，故这四个 production core 与统一 public terms wire 可提升为
-**production-live read-only primitive**。但 `truce_ready=false`、`war_bound_armies_ready=false` 仍然明确保留，进而
-`dynamic_deltas_ready / decision_ready / automatic_surrender_ready / ready` 全假；本轮没有、后续也不得据此开放
+**production-live read-only primitive**。随后 `6be8831` 又把 truce 的 evaluated duration 接入同一 public wire；这不等于
+paused/live 已验收，expiry 仍保持 `actual_expiry_observable=false / expiry_date_raw=null`。`war_bound_armies_ready=false` 仍然明确
+保留，进而 `dynamic_deltas_ready / decision_ready / automatic_surrender_ready / ready` 全假；本轮没有、后续也不得据此开放
 `surrender-war-50331699`。这不是六域完成，也不是 surrender OODA complete。
 
 英文输入法使用独立 PID-scoped watcher 留证：
@@ -1884,3 +1888,25 @@ PID absent 闭合，不影响 HKL 或 cleanup 结论。
 `ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py`。它保留所有失败/成功 state 与 raw MCP payload，
 并将允许的 gameplay command 固定为同一 WarID 的两次只读 terms query。以后同类 MCP live runner 应先从现有 service/result contract
 读取真实 receipt 字段；不得把其他 query 的历史字段形状复制过来后再靠重启 CK3 发现错误。
+
+### 2026-09-01：Raiktor truce duration public wire 接入（paused/live probe pending）
+
+[static/query-ready；无 paused CK3 live artifact] `6be8831` 已将既有
+`raiktor_surrender_truce_v1` core 接到正式 `ReadWarTerminationTerms` →
+`query-war-termination-terms-v1-<full-generation WarID>` /
+`ck3_query_war_termination_terms` 路径。Raiktor terms 的 `truce` 现在显式发布
+`evaluated_days_observable` 与非负 `evaluated_days`，并在 provenance 标记
+`truce_observer=ck3-1.19.0.6-native-raiktor-surrender-truce-v1`；当该 evaluator 尚未通过同帧稳定门时，duration 仍为
+`observable=false / null`。
+
+该接线只增加 duration leaf，不扩大六域聚合或动作授权：`actual_expiry_observable` 固定为 `false`，
+`expiry_date_raw` 固定为 `null`，禁止从 `current_date + days` 或脚本基数推导持久化 expiry。`truce_ready` 仅在
+`evaluated_days` 双读及 frame identity 成功时置真；war-bound source/loss、campaign/budget、white-peace comparison、typed
+surrender 与 action-boundary postcondition 仍未闭合，`GEN-034` 继续 unresolved。
+
+整合线 fresh MSVC/Ninja 产物目录为
+`Z:\ck3_mod_rewrite\_build-g2-truce-integration-20260901b`，DLL SHA-256 为
+`CFDA6FF379F25A250696CAD2497AE5FDDB78559E924E787F6B86B13D7608B578`，injector SHA-256 为
+`92F54D2701C5A64BB3735E74C3B869360DEA89CCE0B47EAE4481B475166A0E13`。Python war/terms 与 truce contract 普通、`-O`
+回归均通过；fresh CMake 全构建成功，CTest `56/71` 通过，剩余 `15` 项仍是既有 source-contract/harness 路径失败，不能误报
+全绿。上述构建和离线 fixture 不等于 CK3 live；下一步仅做一次 MCP-first、paused shape probe，并保留失败 artifact。

@@ -42,6 +42,7 @@
     "requires_exact_raiktor_claim_cb": true,
     "requires_loaded_root_slot11_non_null": true,
     "duration_evaluator_reads": 2,
+    "evaluated_days_public_wire": true,
     "requires_equal_non_negative_days": true,
     "requires_identical_before_after_frame": true,
     "direction": "primary_attacker_toward_primary_defender",
@@ -58,7 +59,8 @@
   "readiness": {
     "stage": "fixture-confirmed/static-ready",
     "live_shape_probe_required": true,
-    "public_wire_complete": false,
+    "public_wire_complete": true,
+    "public_wire_scope": "evaluated_days_only; expiry_observable=false; expiry_date_raw=null",
     "production_live": false,
     "expiry_semantics_claimed": false
   }
