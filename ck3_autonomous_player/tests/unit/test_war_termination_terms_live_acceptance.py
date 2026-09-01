@@ -73,6 +73,47 @@ def _payload(
 
 
 class WarTerminationTermsLiveAcceptanceChecksTests(unittest.TestCase):
+    def test_exact_build_proof_distinguishes_template_and_concrete_step(self) -> None:
+        capability = HARNESS.QUERY_WAR_TERMINATION_TERMS_CAPABILITY
+        base = {
+            "bridge_capabilities": [capability],
+            "diagnostics": {
+                "hello": {
+                    "expected_ck3_version": HARNESS.EXPECTED_GAME_VERSION,
+                    "game_adapter_id": HARNESS.EXPECTED_ADAPTER_ID,
+                    "game_adapter_status": "ready",
+                    "ck3_build_match": True,
+                    "expected_ck3_sha256": HARNESS.EXPECTED_EXECUTABLE_SHA256,
+                    "capabilities": [capability],
+                }
+            },
+        }
+        template = dict(base, action_steps=["query-war-termination-terms-v1-N"])
+        proof = HARNESS._exact_build_proof(
+            template,
+            managed_executable_sha256=HARNESS.EXPECTED_EXECUTABLE_SHA256,
+            war_id=50_331_699,
+        )
+        self.assertFalse(proof["checks"]["action_step_family"])
+        self.assertEqual(
+            proof["observed_action_steps"], ["query-war-termination-terms-v1-N"]
+        )
+
+        concrete = dict(
+            base,
+            action_steps=["query-war-termination-terms-v1-50331699"],
+        )
+        proof = HARNESS._exact_build_proof(
+            concrete,
+            managed_executable_sha256=HARNESS.EXPECTED_EXECUTABLE_SHA256,
+            war_id=50_331_699,
+        )
+        self.assertTrue(proof["checks"]["action_step_family"])
+        self.assertEqual(
+            proof["observed_action_steps"],
+            ["query-war-termination-terms-v1-50331699"],
+        )
+
     def test_duration_is_observed_while_expiry_stays_unobserved(self) -> None:
         checks = HARNESS._terms_checks(_payload(), war_id=50_331_699)
         self.assertTrue(checks["truce_duration_observed"])

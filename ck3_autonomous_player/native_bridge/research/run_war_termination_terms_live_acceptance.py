@@ -225,6 +225,23 @@ def _exact_build_proof(
         "expected_executable_sha256": EXPECTED_EXECUTABLE_SHA256,
         "required_capability": QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
         "required_action_step_family": required_step,
+        # Preserve the exact terms-query literals (or the adapter template)
+        # when the proof stops before the MCP sequence. This keeps an
+        # action-step advertisement mismatch diagnosable without retaining the
+        # complete capabilities payload or weakening the gate.
+        "observed_action_steps": sorted(
+            {
+                step
+                for step in action_steps
+                if isinstance(step, str)
+                and (
+                    step.startswith("query-war-termination-terms-v1-")
+                    or step == "query-war-termination-terms-v1-N"
+                )
+            }
+        )
+        if isinstance(action_steps, list)
+        else None,
         "checks": checks,
         "ok": all(checks.values()),
     }
