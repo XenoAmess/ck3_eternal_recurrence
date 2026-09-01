@@ -1,4 +1,4 @@
-name: XAR Promo Toolchain Release Artifact
+name: XAR Promo Toolchain Release
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -168,7 +168,7 @@ jobs:
           cat dist/SHA256SUMS
 
       - name: Upload package release artifact
-        # Node24 action major; this step does not publish a GitHub Release.
+        # Preserve the checked bytes as a workflow artifact as well as a release asset.
         uses: actions/upload-artifact@v6
         with:
           # run_id/attempt are slash-free and unique across reruns.
@@ -179,3 +179,25 @@ jobs:
             xar_promo_toolchain/dist/SHA256SUMS
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#xar-promo-v}"
+          assets=(
+            xar_promo_toolchain/dist/xar_promo_toolchain-*.whl
+            xar_promo_toolchain/dist/xar_promo_toolchain-*.tar.gz
+            xar_promo_toolchain/dist/SHA256SUMS
+          )
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+            gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+              --title "XAR Promo Toolchain v${version}" --latest=false
+          else
+            gh release create "$GITHUB_REF_NAME" "${assets[@]}" \
+              --repo "$GITHUB_REPOSITORY" --verify-tag \
+              --title "XAR Promo Toolchain v${version}" --generate-notes --latest=false
+          fi

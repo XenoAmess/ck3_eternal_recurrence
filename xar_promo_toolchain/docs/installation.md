@@ -9,22 +9,25 @@ The machine-readable version of this contract is installed as
 `xar_promo/schemas/install-contract-v1.json`. It is part of both the wheel and
 sdist and can be read through `importlib.resources` without a source checkout.
 
-Version 0.1.0 is **not published to PyPI or another public Python index**. A
-command such as `pip install xar-promo-toolchain` is therefore not an available
-distribution path. Install a local artifact obtained through a trusted project
-channel, or build it from a reviewed trusted source checkout.
+Version 0.1.0 is published as a signed-by-tag GitHub Release, but is **not
+published to PyPI or another public Python index**. A command such as
+`pip install xar-promo-toolchain` is therefore not an available distribution
+path. Install the release wheel directly, install a downloaded local artifact,
+or build from a reviewed trusted source checkout:
+
+```text
+python -m pip install https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/xar-promo-v0.1.0/xar_promo_toolchain-0.1.0-py3-none-any.whl
+```
 
 The repository workflow
 [`promo-toolchain-release.yml`](../../.github/workflows/promo-toolchain-release.yml)
-is a package-artifact handoff for the `xar-promo-v<version>` tag namespace (or
-an explicit manual run). It runs the package tests in normal and optimized
+is a package release for the `xar-promo-v<version>` tag namespace (or an
+artifact-only explicit manual run). It runs the package tests in normal and optimized
 mode, builds the wheel and sdist, checks their metadata with `twine check`,
 installs the wheel in a fresh environment, verifies the installed contract, and
-uploads the two files plus `SHA256SUMS` as a GitHub Actions artifact. This is
-build and verification evidence only: the workflow does not publish to PyPI,
-create a GitHub Release, upload a video, or launch CK3/FFmpeg. Any later public
-publication is a separate, explicitly authorized operation and must use these
-exact checked bytes. The workflow also checks the sdist member allowlist and
+uploads the two files plus `SHA256SUMS` as a GitHub Actions artifact. A tag run
+also publishes those exact checked bytes as a GitHub Release; the workflow does
+not publish to PyPI, upload a video, or launch CK3/FFmpeg. The workflow also checks the sdist member allowlist and
 installs both artifacts in fresh environments before uploading them. The sdist
 smoke installs a `setuptools>=77` wheel into its fresh environment and then uses
 `--no-index --no-build-isolation`, proving that the checked source archive can
