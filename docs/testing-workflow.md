@@ -13,6 +13,25 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - `gui_warnings.log` — GUI 警告
 - 解析错误在到主菜单前就会全部写入，启动游戏到主菜单即可完成静态验证
 
+## 当前并行优先级与 `open_kaishek` 预验（2026-09-02 起）
+
+当前验收调度按以下顺序执行：
+
+1. **天朝二期（P0）**：在正式发布闭环前保持最高优先级，优先解除其真实 CK3/MCP blocker。
+2. **G2 演进（P1）**：与天朝二期并行推进，不因等待另一条线而停工。
+3. **`open_kaishek` 演进（支撑线）**：持续完善 `Z:\workspace\open_kaishek` 的伪 Runtime、profile、validator、IR 和 replay，作为上述两条线的验收加速器；支撑线不得抢占正在运行的有效 CK3 长局。
+
+### CK3 验收前置顺序
+
+每个 CK3 验收步骤（包括静态/fixture 检查、paused snapshot、启动、MCP 动作和后置断言）在启动游戏或桌面交互前，都必须先做一次“是否可由 `open_kaishek` 预验”的判断：
+
+1. 把本步骤拆成确定性输入、解析/schema、IR/runtime/replay 子集与只能由真实 CK3 证明的部分。
+2. 对 `open_kaishek` 已声明支持的子集，使用其仓库 README/对应 profile 的实际离线命令先行预验；不得凭空发明尚未暴露的 CLI 能力。预验通过后再执行现有的 CK3 no-launch/native preflight 和 live 流程。
+3. 将预验结果与同一验收 run 绑定，至少记录：`open_kaishek` Git commit、profile/version、CK3 exact build 与 EXE SHA-256、fixture/corpus ID 与 SHA-256、实际命令/解释器、结果、覆盖范围以及 `UNSUPPORTED` 项。推荐写入该 run 的 `open_kaishek-preflight.json` 或等价 machine-readable artifact，并在报告中回链。
+4. 若该步骤没有可覆盖的离线语义，记录 `not-applicable` 和原因后直接进入 CK3；不为形式重复执行已由相同 immutable inputs 证明的预验。若预验出现 RED，先保留原始输出并区分 `open_kaishek` 工具/fixture RED 与 CK3 capability RED，不得把任一结果改写成另一类。
+
+`open_kaishek` 预验只缩短确定性失败的反馈周期，不替代真实 CK3/MCP paused artifact、真实输入/动作、自然推进、结算或 GREEN。没有 paused artifact 时，状态仍只能写为 `static-ready`/`runtime-fixture` 等实际级别；ACK、schema 通过和 synthetic replay 都不能升级为 `fixture-live` 或 `production-live`。
+
 ## 可复用宣传视频工具链验收
 
 权威入口是独立仓库
