@@ -1399,6 +1399,21 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_pending_projection_route value = 0 }
 	set_variable = { name = zg361_b1_pending_late_to_next_cycle value = 0 }
 	set_variable = { name = zg361_b1_pending_deferred_projection_state value = 0 }
+	# The local-publication object is distinct from both the pending business
+	# object and the final generic result case.  It lets a stable subject receive
+	# one frozen notice while another member of the cohort is still pending, and
+	# records later grade changes as revisions of this same five-tuple.
+	set_variable = { name = zg361_b1_local_publish_object_available value = 0 }
+	remove_variable = zg361_b1_local_publish_object_owner
+	remove_variable = zg361_b1_local_publish_object_subject
+	set_variable = { name = zg361_b1_local_publish_object_cycle value = 0 }
+	set_variable = { name = zg361_b1_local_publish_object_case value = 0 }
+	set_variable = { name = zg361_b1_local_publish_object_state value = 0 }
+	set_variable = { name = zg361_b1_local_publish_source_case value = 0 }
+	set_variable = { name = zg361_b1_local_publish_revision value = 0 }
+	set_variable = { name = zg361_b1_local_publish_grade value = 0 }
+	set_variable = { name = zg361_b1_local_publish_kind value = 0 }
+	set_variable = { name = zg361_b1_local_publish_receipt value = 0 }
 	# #143 owns two distinct subject-local projection objects.  They deliberately
 	# do not reuse the batch/probe or next-cycle business tuples: the projection
 	# tuple binds exactly one published subject/cycle while its visible payload
@@ -1729,6 +1744,12 @@ zg361_b1_open_cycle_effect = {
 		set_variable = { name = zg361_b1_pending_reward_book_version value = 0 }
 		set_variable = { name = zg361_b1_pending_reward_expected_n value = 0 }
 		set_variable = { name = zg361_b1_pending_rewards_paid_n value = 0 }
+		set_variable = { name = zg361_b1_local_publish_available value = 0 }
+		set_variable = { name = zg361_b1_local_publish_revision value = 0 }
+		set_variable = { name = zg361_b1_local_publish_expected_n value = 0 }
+		set_variable = { name = zg361_b1_local_publish_published_n value = 0 }
+		set_variable = { name = zg361_b1_local_publish_waiting_n value = 0 }
+		set_variable = { name = zg361_b1_local_publish_update_kind value = 0 }
 		set_variable = { name = zg361_b1_peer_used value = 0 }
 		set_variable = { name = zg361_b1_peer_cap value = 3 }
 		set_variable = { name = zg361_b1_peer_fatigue value = 0 }
@@ -3308,7 +3329,9 @@ zg361_b1_audit_locked_roster_additions_effect = {
 					set_variable = { name = zg361_b1_roster_change_reason value = 5 }
 					set_variable = { name = zg361_b1_late_join_route value = 0 }
 					set_variable = { name = zg361_b1_backfill_route value = 1 }
-					scope:zg361_b1_roster_add_manager = { change_variable = { name = zg361_b1_roster_backfill_needed add = -1 } }
+					scope:zg361_b1_roster_add_manager = {
+						change_variable = { name = zg361_b1_roster_backfill_needed add = -1 }
+					}
 				}
 				scope:zg361_b1_roster_add_manager = {
 					if = {
@@ -5463,6 +5486,165 @@ zg361_b1_finalize_named_dissent_effect = {
 	}
 }
 
+# Publish stable subjects independently of the cohort-wide pending barrier.
+# This is a real subject-local five-tuple and a player-visible notice, not a
+# manager boolean: non-pending subjects are materialized immediately, while a
+# pending TOP and its reserved MIDDLE peer stay WAITING until their atomic
+# resolution makes both grades stable.  A later #143 rerank updates only rows
+# whose grade changed and advances the manager revision once per changed row.
+zg361_b1_refresh_individual_publications_effect = {
+	save_temporary_scope_as = zg361_b1_local_publish_manager
+	set_variable = { name = zg361_b1_local_publish_available value = 1 }
+	set_variable = { name = zg361_b1_local_publish_expected_n value = 0 }
+	set_variable = { name = zg361_b1_local_publish_published_n value = 0 }
+	set_variable = { name = zg361_b1_local_publish_waiting_n value = 0 }
+	set_variable = { name = zg361_b1_local_publish_drift_n value = 0 }
+	every_in_list = {
+		variable = zg361_b1_processing_subjects
+		if = {
+			limit = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_case_subject
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_case_state
+				has_variable = zg361_b1_case_active
+				has_variable = zg361_b1_processing_order
+				has_variable = zg361_pending_grade
+				var:zg361_b1_case_owner = scope:zg361_b1_local_publish_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_b1_local_publish_manager.var:zg361_b1_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_local_publish_manager.var:zg361_b1_case_serial
+				var:zg361_b1_case_state = 7
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				var:zg361_b1_processing_order >= 1
+			}
+			scope:zg361_b1_local_publish_manager = {
+				change_variable = { name = zg361_b1_local_publish_expected_n add = 1 }
+			}
+			set_variable = { name = zg361_b1_local_publish_work_waiting value = 0 }
+			if = {
+				limit = {
+					OR = {
+						var:zg361_b1_pending_state = 1
+						var:zg361_b1_pending_reservation_state = 1
+					}
+				}
+				set_variable = { name = zg361_b1_local_publish_work_waiting value = 1 }
+			}
+			if = {
+				limit = { var:zg361_b1_local_publish_work_waiting = 1 }
+				if = {
+					limit = { var:zg361_b1_local_publish_object_available = 0 }
+					set_variable = { name = zg361_b1_local_publish_object_available value = 1 }
+					set_variable = { name = zg361_b1_local_publish_object_owner value = scope:zg361_b1_local_publish_manager }
+					set_variable = { name = zg361_b1_local_publish_object_subject value = this }
+					set_variable = { name = zg361_b1_local_publish_object_cycle value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_local_publish_object_case value = { value = var:zg361_b1_case_serial multiply = 100 add = var:zg361_b1_processing_order } }
+					set_variable = { name = zg361_b1_local_publish_object_state value = 1 }
+					set_variable = { name = zg361_b1_local_publish_source_case value = var:zg361_b1_case_serial }
+				}
+			}
+			else = {
+				set_variable = { name = zg361_b1_local_publish_work_write value = 0 }
+				if = {
+					limit = { var:zg361_b1_local_publish_object_available = 0 }
+					set_variable = { name = zg361_b1_local_publish_object_available value = 1 }
+					set_variable = { name = zg361_b1_local_publish_object_owner value = scope:zg361_b1_local_publish_manager }
+					set_variable = { name = zg361_b1_local_publish_object_subject value = this }
+					set_variable = { name = zg361_b1_local_publish_object_cycle value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_local_publish_object_case value = { value = var:zg361_b1_case_serial multiply = 100 add = var:zg361_b1_processing_order } }
+					set_variable = { name = zg361_b1_local_publish_object_state value = 1 }
+					set_variable = { name = zg361_b1_local_publish_source_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_local_publish_work_write value = 1 }
+				}
+				else_if = {
+					limit = {
+						var:zg361_b1_local_publish_object_owner = scope:zg361_b1_local_publish_manager
+						var:zg361_b1_local_publish_object_subject = this
+						var:zg361_b1_local_publish_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_local_publish_source_case = var:zg361_b1_case_serial
+						OR = {
+							var:zg361_b1_local_publish_object_state = 1
+							NOT = { var:zg361_b1_local_publish_grade = var:zg361_pending_grade }
+						}
+					}
+					set_variable = { name = zg361_b1_local_publish_work_write value = 1 }
+				}
+				if = {
+					limit = { var:zg361_b1_local_publish_work_write = 1 }
+					scope:zg361_b1_local_publish_manager = {
+						change_variable = { name = zg361_b1_local_publish_revision add = 1 }
+					}
+					set_variable = { name = zg361_b1_local_publish_object_state value = 2 }
+					set_variable = { name = zg361_b1_local_publish_revision value = scope:zg361_b1_local_publish_manager.var:zg361_b1_local_publish_revision }
+					set_variable = { name = zg361_b1_local_publish_grade value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_local_publish_kind value = scope:zg361_b1_local_publish_manager.var:zg361_b1_local_publish_update_kind }
+					set_variable = { name = zg361_b1_local_publish_receipt value = { value = var:zg361_b1_local_publish_object_case multiply = 1000 add = var:zg361_b1_local_publish_revision } }
+					if = {
+						limit = { is_ai = no }
+						scope:zg361_b1_local_publish_manager = { save_scope_as = zg361_b1_local_publish_notice_owner }
+						save_scope_as = zg361_b1_local_publish_notice_subject
+						save_scope_value_as = { name = zg361_b1_local_publish_notice_cycle value = var:zg361_b1_cycle_serial }
+						save_scope_value_as = { name = zg361_b1_local_publish_notice_case value = var:zg361_b1_local_publish_object_case }
+						save_scope_value_as = { name = zg361_b1_local_publish_notice_revision value = var:zg361_b1_local_publish_revision }
+						trigger_event = { id = zg361b1.126 days = 1 }
+					}
+				}
+			}
+			if = {
+				limit = {
+					var:zg361_b1_local_publish_object_available = 1
+					var:zg361_b1_local_publish_object_owner = scope:zg361_b1_local_publish_manager
+					var:zg361_b1_local_publish_object_subject = this
+					var:zg361_b1_local_publish_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_local_publish_source_case = var:zg361_b1_case_serial
+					var:zg361_b1_local_publish_object_state = 2
+				}
+				scope:zg361_b1_local_publish_manager = {
+					change_variable = { name = zg361_b1_local_publish_published_n add = 1 }
+				}
+			}
+			else_if = {
+				limit = {
+					var:zg361_b1_local_publish_object_available = 1
+					var:zg361_b1_local_publish_object_owner = scope:zg361_b1_local_publish_manager
+					var:zg361_b1_local_publish_object_subject = this
+					var:zg361_b1_local_publish_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_local_publish_source_case = var:zg361_b1_case_serial
+					var:zg361_b1_local_publish_object_state = 1
+				}
+				scope:zg361_b1_local_publish_manager = {
+					change_variable = { name = zg361_b1_local_publish_waiting_n add = 1 }
+				}
+			}
+			else = {
+				scope:zg361_b1_local_publish_manager = {
+					change_variable = { name = zg361_b1_local_publish_drift_n add = 1 }
+				}
+			}
+		}
+	}
+	set_variable = { name = zg361_b1_local_publish_conservation_valid value = 0 }
+	if = {
+		limit = {
+			var:zg361_b1_local_publish_drift_n = 0
+			AND = {
+				var:zg361_b1_local_publish_expected_n >= {
+					value = var:zg361_b1_local_publish_published_n
+					add = var:zg361_b1_local_publish_waiting_n
+				}
+				var:zg361_b1_local_publish_expected_n <= {
+					value = var:zg361_b1_local_publish_published_n
+					add = var:zg361_b1_local_publish_waiting_n
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_local_publish_conservation_valid value = 1 }
+	}
+}
+
 zg361_b1_open_pending_slots_effect = {
 	set_variable = { name = zg361_b1_pending_open_n value = 0 }
 	if = { limit = { has_variable_list = zg361_b1_pending_watch_subjects } clear_variable_list = zg361_b1_pending_watch_subjects }
@@ -5682,6 +5864,8 @@ zg361_b1_open_pending_slots_effect = {
 		}
 		zg361_b1_verify_frozen_quota_conservation_effect = yes
 		set_variable = { name = zg361_b1_pending_partial_conservation_valid value = var:zg361_b1_quota_conservation_valid }
+		set_variable = { name = zg361_b1_local_publish_update_kind value = 1 }
+		zg361_b1_refresh_individual_publications_effect = yes
 	}
 	if = {
 		limit = { var:zg361_b1_pending_open_n = 0 }
@@ -5795,6 +5979,11 @@ zg361_b1_resolve_pending_subject_effect = {
 					change_variable = { name = zg361_b1_quota_book_version add = 1 }
 				}
 				change_variable = { name = zg361_b1_pending_open_n add = -1 }
+				# Publish this resolved subject and its now-stable reserved peer
+				# immediately.  Other open pending objects remain WAITING and cannot
+				# block this subject-local revision.
+				set_variable = { name = zg361_b1_local_publish_update_kind value = 2 }
+				zg361_b1_refresh_individual_publications_effect = yes
 				if = {
 					limit = { var:zg361_b1_pending_open_n = 0 }
 					save_scope_as = zg361_b1_pending_continue_owner
@@ -6132,6 +6321,8 @@ zg361_b1_apply_symmetric_reopen_effect = {
 		}
 		else = { scope:zg361_b1_reopen_ticket_subject = { change_variable = { name = zg361_b1_calibration_score add = 2 } } }
 		zg361_b1_rerank_frozen_quota_book_effect = yes
+		set_variable = { name = zg361_b1_local_publish_update_kind value = 3 }
+		zg361_b1_refresh_individual_publications_effect = yes
 		set_variable = { name = zg361_b1_reopen_subject_new_grade value = scope:zg361_b1_reopen_ticket_subject.var:zg361_pending_grade }
 		set_variable = { name = zg361_b1_reopen_subject_calibration_after value = scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_calibration_score }
 		set_variable = { name = zg361_b1_reopen_recomputed_top value = var:zg361_pending_375_n }
@@ -6238,6 +6429,8 @@ zg361_b1_finish_calibration_effect = {
 		if = {
 			limit = { var:zg361_b1_pending_rewards_paid_n = var:zg361_b1_pending_reward_expected_n }
 			set_variable = { name = zg361_b1_calibration_finalized value = 1 }
+			set_variable = { name = zg361_b1_local_publish_update_kind value = 4 }
+			zg361_b1_refresh_individual_publications_effect = yes
 			# Settlement is the only post-recusal commit path.  The legacy player
 			# calibration event exposes independent promote/demote writers that do
 			# not understand the frozen conflict ACL, so B1 closes directly through
@@ -8692,10 +8885,49 @@ zg361b1.125 = {
 				set_variable = { name = zg361_b1_pending_watchdog_orphan_n value = var:zg361_b1_pending_open_n }
 				set_variable = { name = zg361_b1_pending_open_n value = 0 }
 			}
+			set_variable = { name = zg361_b1_local_publish_update_kind value = 2 }
+			zg361_b1_refresh_individual_publications_effect = yes
 			zg361_b1_prepare_reopen_gate_effect = yes
 		}
 		else = { debug_log = "ZG361B1: stale pending watchdog ticket ignored" }
 	}
+}
+
+# Subject-local publication notice.  It is scheduled only for a human subject
+# by the product effect above; the frozen tuple/revision makes an older queued
+# notice disappear if the same subject has already received a newer reopen.
+zg361b1.126 = {
+	type = character_event
+	theme = stewardship
+	title = zg361b1.126.t
+	desc = {
+		desc = zg361b1.126.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_grade = 3 } desc = zg361b1.126.grade_375 }
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_grade = 1 } desc = zg361b1.126.grade_325 }
+			desc = zg361b1.126.grade_35
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_kind = 3 } desc = zg361b1.126.reopened }
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_kind = 2 } desc = zg361b1.126.appended }
+			desc = zg361b1.126.initial
+		}
+	}
+	trigger = {
+		is_ai = no
+		has_game_rule = zg361_on
+		exists = scope:zg361_b1_local_publish_notice_owner
+		exists = scope:zg361_b1_local_publish_notice_subject
+		this = scope:zg361_b1_local_publish_notice_subject
+		var:zg361_b1_local_publish_object_available = 1
+		var:zg361_b1_local_publish_object_owner = scope:zg361_b1_local_publish_notice_owner
+		var:zg361_b1_local_publish_object_subject = this
+		var:zg361_b1_local_publish_object_cycle = scope:zg361_b1_local_publish_notice_cycle
+		var:zg361_b1_local_publish_object_case = scope:zg361_b1_local_publish_notice_case
+		var:zg361_b1_local_publish_object_state = 2
+		var:zg361_b1_local_publish_revision = scope:zg361_b1_local_publish_notice_revision
+	}
+	option = { name = zg361b1.126.a }
 }
 ''')
 
@@ -8712,6 +8944,15 @@ l_english:
  zg361b1.201.desc:0 "Your manager has opened a non-final shadow band code of #high [ROOT.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!. Frozen gap magnitude: [ROOT.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]; response window: [ROOT.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] days. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded, non-zero evidence packet; the frozen KPI will not change."
  zg361b1.201.a:0 "Accept the shadow record."
  zg361b1.201.b:0 "Submit supplementary evidence."
+ zg361b1.126.t:0 "Your Rating Has Been Posted"
+ zg361b1.126.desc:0 "Your manager has posted your stable row without waiting for unrelated pending cases. This notice freezes revision [ROOT.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] of your own review object; it grants no early reward and does not expose another subject's case."
+ zg361b1.126.grade_375:0 "Current posted rating: #P 3.75#!."
+ zg361b1.126.grade_35:0 "Current posted rating: #V 3.5#!."
+ zg361b1.126.grade_325:0 "Current posted rating: #N 3.25#!."
+ zg361b1.126.initial:0 "This is the first stable publication for your row."
+ zg361b1.126.appended:0 "A pending milestone has resolved, so your row has now been appended independently."
+ zg361b1.126.reopened:0 "Fresh evidence reopened your row; this revision supersedes the earlier publication."
+ zg361b1.126.a:0 "At least I did not have to wait for the whole department."
  zg361_scoreboard_detail_field_self_choice:0 "Self-Review Choice Code (1 Honest / 2 Exaggerated / 3 Conservative)"
  zg361_scoreboard_detail_field_self_score:0 "Self-Review Score"
  zg361_scoreboard_detail_field_self_gap:0 "Self-to-Facts Gap"
@@ -8786,6 +9027,15 @@ l_simp_chinese:
  zg361b1.201.desc:0 "直属上司给出的非最终影子档代码是 #high [ROOT.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!；冻结差距幅度为 [ROOT.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]，回应窗口为 [ROOT.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] 天。此档尚不发放奖惩，也不占用最终配额。你可以接受，或补交一份有界且非零的新证据；已经封存的事实 KPI 不会改变。"
  zg361b1.201.a:0 "接受这份影子记录。"
  zg361b1.201.b:0 "补交证据，交由校准复核。"
+ zg361b1.126.t:0 "你的绩效行已公示"
+ zg361b1.126.desc:0 "直属上司已先公示你的稳定结果，不再让无关的待定案卷拖住全组。这是你本人案卷的第 [ROOT.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] 次冻结发布；它不会提前发奖，也不会泄露其他人的待定内容。"
+ zg361b1.126.grade_375:0 "当前公示档位：#P 3.75#!。"
+ zg361b1.126.grade_35:0 "当前公示档位：#V 3.5#!。"
+ zg361b1.126.grade_325:0 "当前公示档位：#N 3.25#!。"
+ zg361b1.126.initial:0 "这是你这一行第一次稳定公示。"
+ zg361b1.126.appended:0 "待定里程碑已经结清，你这一行现已独立追加。"
+ zg361b1.126.reopened:0 "新证据触发了逐人重开；本次修订替代先前公示。"
+ zg361b1.126.a:0 "至少不用陪整个部门一起等。"
  zg361_scoreboard_detail_field_self_choice:0 "自评选择码（1 诚实 / 2 夸大 / 3 保守）"
  zg361_scoreboard_detail_field_self_score:0 "自评分"
  zg361_scoreboard_detail_field_self_gap:0 "自评与事实差"

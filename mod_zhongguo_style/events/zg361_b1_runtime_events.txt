@@ -636,8 +636,47 @@ zg361b1.125 = {
 				set_variable = { name = zg361_b1_pending_watchdog_orphan_n value = var:zg361_b1_pending_open_n }
 				set_variable = { name = zg361_b1_pending_open_n value = 0 }
 			}
+			set_variable = { name = zg361_b1_local_publish_update_kind value = 2 }
+			zg361_b1_refresh_individual_publications_effect = yes
 			zg361_b1_prepare_reopen_gate_effect = yes
 		}
 		else = { debug_log = "ZG361B1: stale pending watchdog ticket ignored" }
 	}
+}
+
+# Subject-local publication notice.  It is scheduled only for a human subject
+# by the product effect above; the frozen tuple/revision makes an older queued
+# notice disappear if the same subject has already received a newer reopen.
+zg361b1.126 = {
+	type = character_event
+	theme = stewardship
+	title = zg361b1.126.t
+	desc = {
+		desc = zg361b1.126.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_grade = 3 } desc = zg361b1.126.grade_375 }
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_grade = 1 } desc = zg361b1.126.grade_325 }
+			desc = zg361b1.126.grade_35
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_kind = 3 } desc = zg361b1.126.reopened }
+			triggered_desc = { trigger = { var:zg361_b1_local_publish_kind = 2 } desc = zg361b1.126.appended }
+			desc = zg361b1.126.initial
+		}
+	}
+	trigger = {
+		is_ai = no
+		has_game_rule = zg361_on
+		exists = scope:zg361_b1_local_publish_notice_owner
+		exists = scope:zg361_b1_local_publish_notice_subject
+		this = scope:zg361_b1_local_publish_notice_subject
+		var:zg361_b1_local_publish_object_available = 1
+		var:zg361_b1_local_publish_object_owner = scope:zg361_b1_local_publish_notice_owner
+		var:zg361_b1_local_publish_object_subject = this
+		var:zg361_b1_local_publish_object_cycle = scope:zg361_b1_local_publish_notice_cycle
+		var:zg361_b1_local_publish_object_case = scope:zg361_b1_local_publish_notice_case
+		var:zg361_b1_local_publish_object_state = 2
+		var:zg361_b1_local_publish_revision = scope:zg361_b1_local_publish_notice_revision
+	}
+	option = { name = zg361b1.126.a }
 }

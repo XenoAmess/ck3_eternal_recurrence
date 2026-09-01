@@ -1,6 +1,6 @@
 # 361 二期 B1：完整绩效事实季运行规范
 
-> 状态：施工规范，2026-08-31（Asia/Shanghai）
+> 状态：施工规范，2026-09-01（Asia/Shanghai）
 >
 > 范围：`001–013`、`037–053`、`135–145`、`357`，共 42 项。
 >
@@ -61,10 +61,15 @@
   TOP/MIDDLE/BOTTOM 数量不变；目标档无席时冻结 `quota_blocked`，绝不单边改档。发布时另写
   `recusal_post_grade/lock_match`。这闭合了 #012 的静态替代复评 write→consumer，但尚无 CK3 scope/结算实证。
 - 仍未完成：#003 的真实 war scope 只通过 source contract，未做 CK3 求值证明；影子补证仍是固定有界 delta，不是可核验材料
-  对象；机会偏置审计、真实预会、pending 局部提前公示与实名异议仍未闭合。
+  对象；机会偏置审计、真实预会与实名异议仍未闭合。#040 B 也不能只在 B1 专属层安全闭合：共享
+  `zg361_run_review_effect` 会在 B1 事实准备之后按当前直属关系再次把离任者写成 `leaver_route=1 / roster_included=0`，而共享最终结算
+  只遍历当时的 `every_vassal`。因此“灰色离任者继续占本周期 C 配额”需要同时修改共享考核、结算与榜单投影；在这些消费者改造前，
+  不得用 B1 局部字段冒充已完成。
   pending verifier 当前是冻结经理 + 30 天 live KPI 比较的确定性最小实现，成功奖励固定为 25 威望，不代表外部
-  材料核验完成。现有榜单/结算是 manager 级原子发布，因此任一 pending 会让同 cohort 全员等待至所有 pending 结束；
-  非 pending 人员档位不会改变，但尚未实现“先局部公示、后补 pending 行”。
+  材料核验完成。#142 A 现为每名 subject 建独立局部公示五元对象：非 pending 且未被预留为 fallback 的稳定人员立即获得冻结档位
+  与本人事件；pending 与其唯一预留 peer 只处于 WAITING。每一宗 pending 成功、失败或 watchdog 取消后，经理立即只刷新已稳定的
+  subject 行并逐行推进 revision，不再等待其他 pending；#143 重排后也只对实际变化的行写 reopen revision。局部公示不提前发奖、
+  不应用最终 modifier，完整奖励 seal、淘汰与最终固定考核榜仍在 cohort barrier 后一次结算，避免重开时重复奖惩。
 - `zg361_b1_mNNN_receipt_serial` 目前只是阶段施工追踪；在对应 meaningful write 与 consumer 都落地并通过同批 CK3 fixture 前，
   receipt 的存在不得用于把任何编号升级为 `complete` 或 `fixture-live`。
 
@@ -263,6 +268,12 @@ CK3 画面中可见的声明**。
   verifier identity、冻结/释放/到期/已支付 reward、reserved peer、quota count、hash 或内部终态分支。
 - A 在 pending 创建时持久化 typed `open_date=current_date` 与独立的 `deadline_days=30`。当前 exact-build 尚未冻结可靠的
   date-plus-days 赋值语法，因此不伪造 exact due-date 变量；provider 必须用这两个字段严格计算，轮次 deadline 继续独立保存。
+- A 同时建立与 pending 对象分离的逐人局部公示五元组。稳定的非 pending subject 立即从 `WAITING→PUBLISHED` 并冻结档位、
+  object revision 与 receipt；pending subject 及其被预留的 MIDDLE peer 在原子成功/失败前都保持 `WAITING`。每次单人结算后立即
+  重扫冻结 `processing_subjects`，只追加刚稳定或档位实际改变的行，其他 pending 不构成 barrier；watchdog 取消和 #143 重排也走
+  同一逐行 revision。本人事件只显示本人当前档位与“首次/追加/重开”类型，不显示 verifier、预留 peer、quota 或他人身份。
+  该局部公示不调用 `zg361_apply_grade_effect`、不发奖励、不触发淘汰；最终 modifier、奖励 seal 与固定考核榜仍在全组终态后一次结算，
+  从而避免一行被重开时重复发钱、重复扣钱或重复处分。
 - B 不创建 pending、不持有 held/fallback slot、不冻结或支付 reward，也不重写当期榜。它创建独立的次周期对象
   `(direct_manager, subject, next_cycle, deferred_case, DEFERRED_OPEN)`，由下一周期证据入口一次消费后置为 `CONSUMED`；
   stale/调任/死亡走 `CANCELLED`。**本人公开投影的精确白名单只有** `current_final_unchanged`、
@@ -457,11 +468,11 @@ exact-build/live 闭合。既有 OCR/坐标 runner 仍不能签 MCP-first GREEN�
 - 同等强度的正面成果与负面事故可对称重开，旧/新 board hash、recalculation receipt 与发奖互斥均为一次性；
 - typed RED、失败前置原子性、stale 与重复 operation 分离。
 
-`tools/test_zg361_b1_quota_model.py` 当前为 55/55 GREEN。模型显式声明
+`tools/test_zg361_b1_quota_model.py` 当前为 69/69 GREEN。模型显式声明
 `READINESS = python-l0-reference-only`、`CK3_IMPLEMENTED = False`；该声明仍准确，因为 Python 模型本身不是 CK3 证据。
 `gen_361_b1_runtime.py` 现已消费其中的确定性纵切：整数最大余数配额、唯一同职能 3+4 池、离开名册 amendment、
-TOP↔MIDDLE 单槽交易与次周期 one-shot 债、agenda/attention/overtime、多人 pending 及付款前对称重开。runtime 专测当前
-30/30 GREEN，且共享案卷内核调用只达到 source-contract/static-ready；尚无 CK3 fixture，因此不得把上述静态实现写成
+TOP↔MIDDLE 单槽交易与次周期 one-shot 债、agenda/attention/overtime、多人 pending、逐人局部公示及付款前对称重开。runtime 专测当前
+51/51 GREEN，且共享案卷内核调用只达到 source-contract/static-ready；尚无 CK3 fixture，因此不得把上述静态实现写成
 `CK3_IMPLEMENTED=True`、`fixture-live` 或 42 项完成。
 
 L0 至少覆盖：

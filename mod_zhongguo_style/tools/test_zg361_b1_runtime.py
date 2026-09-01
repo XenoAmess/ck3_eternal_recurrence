@@ -2768,6 +2768,101 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("var:zg361_b1_roster_included = 1", continuation)
         self.assertIn("stale pending continuation ticket ignored", continuation)
 
+    def test_pending_publishes_stable_subjects_then_revises_each_resolved_row(self) -> None:
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        refresh = top_level_block(
+            self.effects, "zg361_b1_refresh_individual_publications_effect"
+        )
+        opened = top_level_block(self.effects, "zg361_b1_open_pending_slots_effect")
+        resolved = top_level_block(
+            self.effects, "zg361_b1_resolve_pending_subject_effect"
+        )
+        reopened = top_level_block(
+            self.effects, "zg361_b1_apply_symmetric_reopen_effect"
+        )
+        finished = top_level_block(
+            self.effects, "zg361_b1_finish_calibration_effect"
+        )
+        notice = top_level_block(self.events, "zg361b1.126")
+
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_local_publish_object_{field}", initialize)
+            self.assertIn(f"zg361_b1_local_publish_object_{field}", refresh)
+        for token in (
+            "variable = zg361_b1_processing_subjects",
+            "var:zg361_b1_pending_state = 1",
+            "var:zg361_b1_pending_reservation_state = 1",
+            "name = zg361_b1_local_publish_object_state value = 1",
+            "name = zg361_b1_local_publish_object_state value = 2",
+            "name = zg361_b1_local_publish_grade value = var:zg361_pending_grade",
+            "name = zg361_b1_local_publish_revision add = 1",
+            "name = zg361_b1_local_publish_receipt",
+            "name = zg361_b1_local_publish_published_n add = 1",
+            "name = zg361_b1_local_publish_waiting_n add = 1",
+            "name = zg361_b1_local_publish_conservation_valid value = 1",
+        ):
+            self.assertIn(token, refresh)
+        self.assertIn(
+            "var:zg361_b1_local_publish_expected_n >= {", refresh
+        )
+        self.assertIn(
+            "var:zg361_b1_local_publish_expected_n <= {", refresh
+        )
+        self.assertNotIn(
+            "var:zg361_b1_local_publish_expected_n = {", refresh
+        )
+        # Local publication is informational: it neither pays nor applies the
+        # final grade modifier before the cohort-wide reward seal closes.
+        refresh_code = without_comments(refresh)
+        self.assertNotIn("add_prestige", refresh_code)
+        self.assertNotIn("zg361_apply_grade_effect", refresh_code)
+        self.assertNotIn("zg361_apply_pending_grades_effect", refresh_code)
+
+        self.assertIn(
+            "name = zg361_b1_local_publish_update_kind value = 1", opened
+        )
+        self.assertIn(
+            "zg361_b1_refresh_individual_publications_effect = yes", opened
+        )
+        resolve_refresh = resolved.index(
+            "zg361_b1_refresh_individual_publications_effect = yes"
+        )
+        resolve_barrier = resolved.index("var:zg361_b1_pending_open_n = 0")
+        self.assertLess(resolve_refresh, resolve_barrier)
+        self.assertIn(
+            "name = zg361_b1_local_publish_update_kind value = 2", resolved
+        )
+        self.assertIn(
+            "name = zg361_b1_local_publish_update_kind value = 3", reopened
+        )
+        self.assertGreater(
+            reopened.index("zg361_b1_refresh_individual_publications_effect = yes"),
+            reopened.index("zg361_b1_rerank_frozen_quota_book_effect = yes"),
+        )
+        self.assertIn(
+            "name = zg361_b1_local_publish_update_kind value = 4", finished
+        )
+        self.assertLess(
+            finished.index("zg361_b1_refresh_individual_publications_effect = yes"),
+            finished.index("zg361_apply_pending_grades_effect = yes"),
+        )
+
+        self.assertIn("is_ai = no", notice)
+        self.assertIn("has_game_rule = zg361_on", notice)
+        self.assertIn("this = scope:zg361_b1_local_publish_notice_subject", notice)
+        self.assertIn(
+            "var:zg361_b1_local_publish_object_owner = scope:zg361_b1_local_publish_notice_owner",
+            notice,
+        )
+        self.assertIn(
+            "var:zg361_b1_local_publish_revision = scope:zg361_b1_local_publish_notice_revision",
+            notice,
+        )
+        self.assertIn("zg361b1.126.reopened", notice)
+        self.assertIn("zg361b1.126.appended", notice)
+
     def test_symmetric_reopen_is_pre_reward_single_use_and_reseals(self) -> None:
         gate = top_level_block(
             self.effects, "zg361_b1_prepare_reopen_gate_effect"
