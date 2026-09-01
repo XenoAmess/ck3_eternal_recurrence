@@ -186,3 +186,25 @@ is `GREEN/preflight-ready` with `ck3_started=false`; the profile validator's
 `RED/233,115` schema-only boundary and the blocked seed-contract status remain
 explicit. This accelerates the next G2 offline step but does not add a paused
 truce artifact or change `GEN-034` readiness.
+
+## 2026-09-02 bridge capability gap refresh
+
+A read-only bridge review confirms that the exact-build bridge already exposes
+the generic termination options, the pointer-only
+`query-war-termination-terms-v1-N` shape, and mechanically implemented
+`surrender-war-N`/`offer-white-peace-N` commands. The upper layer must still
+keep those writes frozen until the claim-exit-terms contract and campaign
+readiness are proven. `ReadWarTerminationExitTerms` is explicitly disabled
+with reason `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668`;
+there is no evidence-supported field to re-enable by inference.
+
+The reusable paused/map-ready report's concrete gap is
+`exact_build_proof.checks.action_step_family=false`: bridge/hello capabilities
+are present, but the driver did not advertise the literal
+`query-war-termination-terms-v1-50331699` action step, so no MCP sequence ran.
+Current contract coverage passes `17` tests / `51` subtests for the double-read,
+pointer-only `CAddTruce` shape, expiry-unobserved boundary, and write rejection.
+No code or branch changed in this review. The next G2 entry remains one fresh
+exact-build semantic-ready run using the frozen checkpoint/driver pair; if the
+literal action family is still absent, fix only its bridge/driver advertisement
+without widening the ABI, otherwise stop at the existing readiness gate.
