@@ -242,3 +242,29 @@ still the known schema-only `RED/233,115`, with
 capability result. A prior stale-`pyc` RED attempt is retained as environment
 provenance. The live loader RED at `database_init` is unchanged; no new CK3 run
 is justified until the generated-source decomposition candidate is reviewed.
+
+## 2026-09-02 04:52 generated effect-cluster gate
+
+The evidence-backed decomposition candidate from `a1177f1` was integrated as
+`041fd68` and preflighted before launch. It split the workforce/endgame
+effects into 14 ordinary CK3 files while retaining a byte-identical offline
+aggregate (`4,636,271` bytes; candidate aggregate SHA-256
+`926453fe4b3621b5381743d61f5d03ac29c1d498181702e05a9532739d334d8a`). The
+fresh preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\cluster-split-041fd68\artifacts2\preflight.json`
+(SHA-256 `3DBA85267D901DEF2DF9ACDBF1518F17DA6FE8EC972ECDB75E1BA65F4FDC95D5`).
+Its archive/tree equivalence, parser (`89` files, zero diagnostics), IR/runtime,
+static checks, and local/release checks were GREEN; the profile validator
+remained the explicit schema-only `RED/233,115`, and no CK3 launch occurred in
+that preflight.
+
+The one permitted exact-build gate for that changed layout is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\cluster-split-041fd68\artifacts3\runner-report.json`
+(SHA-256 `FDF3A172C6BED99221B48446577F47535F7B036111826F9B2A8D79D7C7D7D115`).
+It returned `RED/LoaderStageTimeout`: `database_init` was observed, then
+timed out at `299.915s` with `quiet_seconds=207.595`, zero fatal errors, an
+empty `error.log`, and no Frontend/Load Save/In Game/native-ready frame.
+Source and external dependencies remained unchanged. Since the file-layout
+change did not move the loader transition, it was reverted immediately by
+`e4a964a`; the candidate and failed run remain retained as diagnostic evidence.
+No same-shape retry, timeout extension, or deletion/no-op workaround is planned.
