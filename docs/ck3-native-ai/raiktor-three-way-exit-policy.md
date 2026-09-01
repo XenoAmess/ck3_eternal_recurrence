@@ -103,7 +103,8 @@ action-bound loss provider 时，这三项继续为 false。新核心没有 `300
 
 当前冻结 checkpoint 的 typed RED 是：
 
-- public same-frame six-domain input 仍需由其它施工包完成实机闭环；
+- public same-frame six-domain aggregate 仍需由其它施工包完成实机闭环；truce 的
+  `evaluated_days` leaf 已接入 terms/MCP public wire，但尚无 paused/live shape artifact；
 - six-domain public aggregate 还必须补齐 connection/episode/PID session binding；
 - `raiktor-campaign-dominance-certificate-provider-v1` unavailable；
 - `raiktor-owner-budget-profile-provider-v1` unavailable；
@@ -121,8 +122,9 @@ automatic_surrender_ready = false
 GEN-034 = unresolved
 ```
 
-后续最小路径是先补上述只读 provider 与 MCP public wire，再把静态 recommendation 接入
-typed termination submit gate；最后在一次 CK3 启动里完成双查询、唯一 submit、六域
+后续最小路径是先补上述只读 provider、剩余 aggregate public wire，并完成 truce
+`evaluated_days` 的 paused/live shape probe，再把静态 recommendation 接入 typed
+termination submit gate；最后在一次 CK3 启动里完成双查询、唯一 submit、六域
 postcondition、postwar checkpoint。不得用 OCR 或重复跑局替代缺失 provider。
 
 ## 离线验收
