@@ -70,6 +70,28 @@ dynamic terms, campaign/owner/white-peace providers, the six-domain aggregate,
 or any surrender/white-peace write.  Until that artifact exists, retain
 `static/query-ready` and `GEN-034=unresolved`.
 
+### Probe contract prepared (static, not live)
+
+The narrow gate is now executable as a report check through
+`ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_truce_probe.py`.
+`run_war_termination_terms_live_acceptance.py` records its result under
+`mcp_sequence.truce_probe_checks` and binds the frozen
+`raiktor_surrender_truce_v1_source_contract.json` pointer shape. The check
+requires two queries on one paused revision, exact WarID and
+attacker/defender/claimant roles, exact-build provenance, equal non-negative
+`evaluated_days`, and an explicit no-write boundary. It rejects
+`surrender-war-*`, `offer-white-peace-*`, and `enforce-demands-*` steps.
+
+Static contract tests:
+
+```powershell
+$env:PYTHONPATH = 'ck3_autonomous_player/src'
+py -3.13 -m unittest ck3_autonomous_player.tests.unit.test_raiktor_truce_probe -v
+```
+
+These tests use synthetic payloads and the frozen source contract only; they
+do not create a CK3 process or promote the gate to `production-live`.
+
 ## Executable open_kaishek preflight entry
 
 `open_kaishek` is an optional offline accelerator, not a CK3 readiness gate.

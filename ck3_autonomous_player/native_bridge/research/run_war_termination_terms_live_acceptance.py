@@ -39,6 +39,10 @@ from xar_autoplayer.bridge.war_contract import (  # noqa: E402
     QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
     query_war_termination_terms_step,
 )
+from xar_autoplayer.bridge.raiktor_truce_probe import (  # noqa: E402
+    validate_pointer_contract,
+    validate_truce_probe,
+)
 from xar_autoplayer.environment import (  # noqa: E402
     make_spec,
     prepare_profile,
@@ -80,6 +84,11 @@ EXPECTED_UNOBSERVED_AFTER_FOUR_DOMAINS = [
     "laamp_actual_settlement_outside_cb_effect",
     "war_bound_army_losses",
 ]
+TRUCE_SOURCE_CONTRACT = (
+    Path(__file__).resolve().parent
+    / "fixtures"
+    / "raiktor_surrender_truce_v1_source_contract.json"
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -262,6 +271,16 @@ def _without_query_sequence(value: object) -> object:
     return result
 
 
+def _pointer_contract_checks() -> dict[str, bool]:
+    """Load the frozen pointer-only CAddTruce contract for every attempt."""
+
+    try:
+        value = json.loads(TRUCE_SOURCE_CONTRACT.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return {"ok": False}
+    return validate_pointer_contract(value)
+
+
 def _terms_checks(
     payload: dict[str, object],
     *,
@@ -396,6 +415,24 @@ async def _run_mcp_sequence(
     second = _structured(second_result)
     first_checks = _terms_checks(first, war_id=war_id)
     second_checks = _terms_checks(second, war_id=war_id)
+    pointer_checks = _pointer_contract_checks()
+    truce_checks = validate_truce_probe(
+        before=before,
+        between=between,
+        after=after,
+        first=first,
+        second=second,
+        tool_names=tool_names,
+        allowed_gameplay_commands=[
+            query_war_termination_terms_step(war_id),
+            query_war_termination_terms_step(war_id),
+        ],
+        mutation_commands=[],
+        expected_war_id=war_id,
+        expected_character_id=expected_character_id,
+        expected_date_raw=expected_date_raw,
+        pointer_contract_checks=pointer_checks,
+    )
     player_value = before.get("played_character")
     player = player_value if isinstance(player_value, dict) else {}
     first_sequence = first.get("query_sequence")
@@ -441,6 +478,10 @@ async def _run_mcp_sequence(
             == before.get("native_revision")
             for result in (first, second)
         ),
+        # Keep this narrower gate independent from the four-domain terms
+        # acceptance.  It is the exact next G2 deliverable and remains
+        # read-only even when one of the wider domains is unavailable.
+        "truce_probe": truce_checks["ok"],
     }
     return {
         "allowed_gameplay_commands": [
@@ -458,6 +499,16 @@ async def _run_mcp_sequence(
         "after_snapshot": _mcp_record(after_result),
         "first_terms_checks": first_checks,
         "second_terms_checks": second_checks,
+        "pointer_contract": {
+            "path": str(TRUCE_SOURCE_CONTRACT),
+            "sha256": (
+                _sha256_file(TRUCE_SOURCE_CONTRACT)
+                if TRUCE_SOURCE_CONTRACT.is_file()
+                else None
+            ),
+            "checks": pointer_checks,
+        },
+        "truce_probe_checks": truce_checks,
         "checks": checks,
         "ok": all(checks.values()),
     }
