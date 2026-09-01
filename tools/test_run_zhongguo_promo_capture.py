@@ -5538,7 +5538,8 @@ def main() -> int:
         '"ffmpeg_started": False',
         "and not promo_camera_probe",
         "and not loader_smoke",
-        "loader_gate_enabled = loader_smoke or phase2_live_batch",
+        "loader_gate_enabled = (",
+        "phase2_live_batch or phase2_promo_capture",
         "loader_gate_evidence = run_loader_gate(",
         "elif phase2_live_batch:",
         "run_phase2_live_scenario(",
@@ -5560,7 +5561,7 @@ def main() -> int:
         "start_phase2_native_session_supervisor(",
         "stop_phase2_native_session_supervisor(",
         "install_phase2_seed(",
-        '"phase2_seed_install": phase2_seed_install',
+        '"phase2_seed_install": phase2_seed_install_evidence',
     ):
         assert token in camera_probe_cell, token
     seed_install_position = camera_probe_cell.index("install_phase2_seed(")
@@ -5619,7 +5620,8 @@ def main() -> int:
     assert "acceptance._ocr is None" in preflight_source
     assert "acceptance.pyautogui.size()" in preflight_source
     main_source = inspect.getsource(capture.main)
-    assert "require_visual_tools=not (loader_smoke or phase2_live_batch)" in main_source
+    assert "require_visual_tools = not (" in main_source
+    assert "loader_smoke or phase2_live_batch or phase2_promo_capture" in main_source
     assert '"gameplay_acceptance_executed", False' in main_source
     assert "phase2_live_batch=phase2_live_batch" in main_source
     assert "preflight_phase2_seed_contract(" in main_source

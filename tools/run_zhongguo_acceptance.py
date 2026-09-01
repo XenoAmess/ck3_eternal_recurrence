@@ -22,7 +22,7 @@ import time
 import traceback
 import unicodedata
 import uuid
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from pathlib import Path
 
 import run_acceptance as acceptance
@@ -876,6 +876,10 @@ def run_phase2_promo_capture_scenario(
     tracked_ck3_pid: int,
     native_bridge: NativeBridgeLaunchConfig,
     preflight_bridge_identity: dict[str, object],
+    seed_contract: Mapping[str, object] | None = None,
+    seed_install: Mapping[str, object] | None = None,
+    native_session_binding: Mapping[str, object] | None = None,
+    loader_gate: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Invoke only the explicitly registered sequel visual producer.
 
@@ -890,14 +894,28 @@ def run_phase2_promo_capture_scenario(
             "phase-two promo scenario requires the canonical phase-two recorder contract"
         )
     producer = _require_phase2_promo_capture_producer()
+    producer_kwargs: dict[str, object] = {
+        "title_navigation_service": title_navigation_service,
+        "tracked_ck3_pid": tracked_ck3_pid,
+        "native_bridge": native_bridge,
+        "preflight_bridge_identity": preflight_bridge_identity,
+    }
+    # Optional phase-two runtime snapshots are appended only when the managed
+    # lifecycle supplied them.  Keeping the old keyword set intact for direct
+    # callers preserves producers written against the original hand-off ABI.
+    for name, value in (
+        ("seed_contract", seed_contract),
+        ("seed_install", seed_install),
+        ("native_session_binding", native_session_binding),
+        ("loader_gate", loader_gate),
+    ):
+        if value is not None:
+            producer_kwargs[name] = value
     result = producer(
         stream,
         artifacts,
         recorder,
-        title_navigation_service=title_navigation_service,
-        tracked_ck3_pid=tracked_ck3_pid,
-        native_bridge=native_bridge,
-        preflight_bridge_identity=preflight_bridge_identity,
+        **producer_kwargs,
     )
     if not isinstance(result, dict):
         raise acceptance.RunnerError(
@@ -7655,18 +7673,24 @@ def run_loader_gate(
     tracked_ck3_pid: int,
     phase2_live_batch: bool,
     managed_restore_supervisor: bool = False,
+    phase2_promo_capture: bool = False,
 ) -> dict[str, object]:
     """Run the native/log/mount loader gate and persist every RED boundary."""
 
+    managed_phase2 = phase2_live_batch or phase2_promo_capture
     evidence_path = artifacts / "03_loader_gate.json"
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
         "scope": "exact_build_loader_gate_before_gameplay",
         "mode": (
-            "phase2_live_batch"
-            if phase2_live_batch
-            else "loader_smoke_only"
+            "phase2_promo_capture"
+            if phase2_promo_capture
+            else (
+                "phase2_live_batch"
+                if phase2_live_batch
+                else "loader_smoke_only"
+            )
         ),
         "tracked_ck3_pid": tracked_ck3_pid,
         "append_only_loader_stage": None,
@@ -7685,7 +7709,7 @@ def run_loader_gate(
     write_json(evidence_path, evidence)
 
     try:
-        if phase2_live_batch:
+        if managed_phase2:
             try:
                 loader_stage = wait_for_phase2_seed_loader_stage(
                     userdir / "logs",
@@ -7716,7 +7740,7 @@ def run_loader_gate(
                 "native loader readiness returned a non-GREEN result"
             )
 
-        if phase2_live_batch:
+        if managed_phase2:
             phase2_capabilities = phase2_runtime_capability_preflight(
                 service,
                 artifacts,
@@ -7742,7 +7766,7 @@ def run_loader_gate(
         evidence["runtime_mount_inventory"] = mount_order
         evidence["result"] = "GREEN"
         evidence["same_pid_gameplay_continuation_authorized"] = (
-            phase2_live_batch
+            managed_phase2
         )
         write_json(evidence_path, evidence)
         return evidence
@@ -13028,6 +13052,7 @@ def run_cell(
     phase2_live_batch: bool = False,
     runtime_source: Path = SOURCE,
     runtime_identity: dict[str, object] | None = None,
+    phase2_seed_install: dict[str, object] | None = None,
 ) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
@@ -13100,26 +13125,51 @@ def run_cell(
     )
     recorder_evidence: dict[str, object] = {}
     keyboard_layout_evidence: dict[str, object] = {}
-    loader_gate_enabled = loader_smoke or phase2_live_batch
+    # The sequel visual producer uses the same managed seed/session/loader
+    # boundary as the phase-two MCP batch.  Keep the legacy promo path on its
+    # suspended/inject/resume lifecycle.
+    loader_gate_enabled = (
+        loader_smoke or phase2_live_batch or phase2_promo_capture
+    )
     loader_gate_evidence: dict[str, object] | None = None
     gameplay_acceptance_executed = False
     phase2_supervisor: dict[str, object] | None = None
     phase2_initial_binding: dict[str, object] | None = None
     phase2_final_capabilities: dict[str, object] | None = None
-    phase2_seed_install: dict[str, object] | None = None
+    phase2_native_session_liveness: dict[str, object] | None = None
+    phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
+    phase2_runtime_mode = phase2_live_batch or phase2_promo_capture
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
                 f"CK3 executable SHA-256 drifted before launch: {executable_before}"
             )
-        if phase2_live_batch:
-            phase2_seed_install = install_phase2_seed(
-                userdir,
-                bootstrap,
-                artifacts,
-                observed_game_version=game_version,
-                observed_executable_sha256=executable_before,
-            )
+        if phase2_runtime_mode:
+            if phase2_seed_install_evidence is None:
+                phase2_seed_install_evidence = install_phase2_seed(
+                    userdir,
+                    bootstrap,
+                    artifacts,
+                    observed_game_version=game_version,
+                    observed_executable_sha256=executable_before,
+                )
+            else:
+                # This optional injection is for CK3-free lifecycle tests.  It
+                # may not turn a blocked seed into a runnable phase-two mode.
+                if (
+                    not isinstance(phase2_seed_install_evidence, dict)
+                    or phase2_seed_install_evidence.get("result") != "GREEN"
+                    or not isinstance(
+                        phase2_seed_install_evidence.get("contract"), dict
+                    )
+                    or phase2_seed_install_evidence["contract"].get("ready")
+                    is not True
+                    or phase2_seed_install_evidence["contract"].get("status")
+                    != "ready"
+                ):
+                    raise acceptance.RunnerError(
+                        "phase-two runtime requires a GREEN ready seed install evidence"
+                    )
         native_driver = NativeHeadlessGameplayDriver(
             native_bridge.pipe_name,
             state_dir=spec.state_dir,
@@ -13127,7 +13177,7 @@ def run_cell(
             command_timeout_seconds=NATIVE_TITLE_COMMAND_TIMEOUT_S,
         )
         title_navigation_service = GameplayBridgeService(native_driver)
-        if phase2_live_batch:
+        if phase2_runtime_mode:
             phase2_supervisor = start_phase2_native_session_supervisor(
                 spec, native_bridge
             )
@@ -13167,8 +13217,9 @@ def run_cell(
                 userdir,
                 bootstrap,
                 tracked_ck3_pid=tracked_ck3_pid,
-                phase2_live_batch=phase2_live_batch,
+                phase2_live_batch=phase2_runtime_mode,
                 managed_restore_supervisor=phase2_supervisor is not None,
+                phase2_promo_capture=phase2_promo_capture,
             )
             native_readiness = loader_gate_evidence["native_readiness"]
             error_scan = loader_gate_evidence["loader_error_log_scan"]
@@ -13180,7 +13231,7 @@ def run_cell(
                     "loader gate returned an invalid mount inventory"
                 )
             mount_order = [str(item) for item in mount_inventory]
-        if not loader_smoke and not phase2_live_batch:
+        if not loader_smoke and not phase2_runtime_mode:
             acceptance.wait_for_ocr_text(
             "新游戏",
             acceptance.MAIN_MENU_REGION,
@@ -13191,7 +13242,7 @@ def run_cell(
         )
         if not loader_gate_enabled:
             mount_order = verify_runtime_load_order(userdir, bootstrap)
-        if not loader_smoke and not phase2_live_batch:
+        if not loader_smoke and not phase2_runtime_mode:
             new_diagnostics, new_warnings = project_diagnostics(
                 userdir, artifacts, "02_main_menu"
             )
@@ -13199,7 +13250,7 @@ def run_cell(
             observed_engine_warnings.extend(new_warnings)
             if diagnostics:
                 raise acceptance.RunnerError(diagnostics[-1])
-        if not loader_smoke and not phase2_live_batch:
+        if not loader_smoke and not phase2_runtime_mode:
             isolated.dismiss_external_main_menu_popup(artifacts)
             acceptance.navigate_lobby(artifacts)
             isolated.wait_for_gameplay_hud(artifacts)
@@ -13222,12 +13273,42 @@ def run_cell(
                 "navigation_used": False,
                 "ffmpeg_started": False,
             }
+        elif phase2_promo_capture:
+            gameplay_acceptance_executed = True
+            if recorder is None:
+                raise acceptance.RunnerError(
+                    "phase-two promo capture recorder was not initialized"
+                )
+            if not isinstance(phase2_seed_install_evidence, dict):
+                raise acceptance.RunnerError(
+                    "phase-two promo capture has no seed install evidence"
+                )
+            seed_contract_value = phase2_seed_install_evidence.get("contract")
+            if not isinstance(seed_contract_value, dict):
+                raise acceptance.RunnerError(
+                    "phase-two promo capture seed install lacks its contract"
+                )
+            evidence = run_phase2_promo_capture_scenario(
+                stream,
+                artifacts,
+                recorder,
+                title_navigation_service=title_navigation_service,
+                tracked_ck3_pid=tracked_ck3_pid,
+                native_bridge=native_bridge,
+                preflight_bridge_identity=bridge_identity,
+                seed_contract=dict(seed_contract_value),
+                seed_install=phase2_seed_install_evidence,
+                native_session_binding=phase2_initial_binding,
+                loader_gate=loader_gate_evidence,
+            )
         elif phase2_live_batch:
             evidence = run_phase2_live_scenario(
                 title_navigation_service,
                 artifacts,
                 tracked_ck3_pid=tracked_ck3_pid,
-                seed_contract=dict(phase2_seed_install["contract"]),
+                seed_contract=dict(
+                    phase2_seed_install_evidence["contract"]
+                ),
                 userdir=userdir,
                 bootstrap=bootstrap,
             )
@@ -13238,21 +13319,6 @@ def run_cell(
                 raise acceptance.RunnerError(
                     "phase-two MCP scenario returned without complete acceptance"
                 )
-        elif phase2_promo_capture:
-            gameplay_acceptance_executed = True
-            if recorder is None:
-                raise acceptance.RunnerError(
-                    "phase-two promo capture recorder was not initialized"
-                )
-            evidence = run_phase2_promo_capture_scenario(
-                stream,
-                artifacts,
-                recorder,
-                title_navigation_service=title_navigation_service,
-                tracked_ck3_pid=tracked_ck3_pid,
-                native_bridge=native_bridge,
-                preflight_bridge_identity=bridge_identity,
-            )
         elif promo_camera_probe:
             initialize_fixture(stream, artifacts)
             close_native_decisions_panel(
@@ -13292,6 +13358,10 @@ def run_cell(
                 preflight_bridge_identity=bridge_identity,
             )
             evidence["keyboard_layout"] = keyboard_layout_evidence
+        # The post-restore liveness gate is intentionally scoped to the MCP
+        # batch.  It proves the two-PID save/restore lineage that that
+        # scenario owns; the visual promo producer has a separate eight-span
+        # contract and must not be forced to manufacture restore evidence.
         if phase2_live_batch:
             liveness = phase2_native_session_liveness_gate(
                 title_navigation_service,
@@ -13299,6 +13369,7 @@ def run_cell(
                 artifacts,
                 scenario_evidence=evidence,
             )
+            phase2_native_session_liveness = liveness
             evidence["native_session_liveness"] = liveness
             capabilities_value = liveness.get("capabilities")
             if isinstance(capabilities_value, dict):
@@ -13310,7 +13381,7 @@ def run_cell(
         observed_engine_warnings.extend(new_warnings)
         if diagnostics:
             raise acceptance.RunnerError(diagnostics[-1])
-        if not phase2_live_batch and process.poll() is not None:
+        if not phase2_runtime_mode and process is not None and process.poll() is not None:
             raise acceptance.RunnerError(
                 f"CK3 PID {process.pid} exited before controlled shutdown"
             )
@@ -13322,7 +13393,7 @@ def run_cell(
             error, acceptance.RunnerError
         ):
             traceback.print_exc()
-        if not loader_smoke and not phase2_live_batch:
+        if not loader_smoke and not phase2_runtime_mode:
             try:
                 acceptance.focus_ck3()
                 acceptance.ImageGrab.grab().save(artifacts / "fatal_state.png")
@@ -13518,36 +13589,6 @@ def run_cell(
     elif state_dir.exists():
         log(f"retained native state and userdir at {state_dir}")
 
-    if loader_gate_evidence is not None:
-        phase2_promo_capture_complete = (
-            not phase2_promo_capture
-            or (
-                recorder_evidence.get("capture_mode")
-                == PHASE2_PROMO_CAPTURE_MODE
-                and recorder_evidence.get("capture_contract_version")
-                == PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
-                and recorder_evidence.get("clean_capture_complete") is True
-                and recorder_evidence.get("missing_clean_spans") == []
-            )
-        )
-        loader_gate_evidence["gameplay_acceptance_executed"] = (
-            gameplay_acceptance_executed
-        )
-        loader_gate_evidence["gameplay_green_claimed"] = (
-            result == "GREEN"
-            and gameplay_acceptance_executed
-            and (
-                not phase2_live_batch
-                and (
-                    not phase2_promo_capture
-                    or phase2_promo_capture_complete
-                )
-                or phase2_live_batch
-                and evidence.get("phase2_acceptance_complete") is True
-            )
-        )
-        write_json(artifacts / "03_loader_gate.json", loader_gate_evidence)
-
     phase2_promo_capture_complete = (
         not phase2_promo_capture
         or (
@@ -13558,6 +13599,24 @@ def run_cell(
             and recorder_evidence.get("missing_clean_spans") == []
         )
     )
+    gameplay_green_claimed = (
+        result == "GREEN"
+        and gameplay_acceptance_executed
+        and (
+            (phase2_promo_capture and phase2_promo_capture_complete)
+            or (
+                phase2_live_batch
+                and evidence.get("phase2_acceptance_complete") is True
+            )
+            or not phase2_runtime_mode
+        )
+    )
+    if loader_gate_evidence is not None:
+        loader_gate_evidence["gameplay_acceptance_executed"] = (
+            gameplay_acceptance_executed
+        )
+        loader_gate_evidence["gameplay_green_claimed"] = gameplay_green_claimed
+        write_json(artifacts / "03_loader_gate.json", loader_gate_evidence)
     report = {
         "schema_version": 1,
         "result": result,
@@ -13577,7 +13636,7 @@ def run_cell(
                 if phase2_supervisor is not None
                 else "not_launched_seed_red"
             )
-            if phase2_live_batch
+            if phase2_runtime_mode
             else "suspended_inject_resume"
         ),
         "native_bridge_pipe": native_bridge.pipe_name,
@@ -13596,20 +13655,18 @@ def run_cell(
             else None
         ),
         "loader_gate_executed": loader_gate_evidence is not None,
-        "phase2_seed_install": phase2_seed_install,
+        "phase2_seed_install": phase2_seed_install_evidence,
         "loader_gate_evidence": loader_gate_evidence,
         "gameplay_acceptance_executed": gameplay_acceptance_executed,
-        "gameplay_green_claimed": (
-            result == "GREEN"
-            and gameplay_acceptance_executed
-            and (
-                not phase2_live_batch
-                and (
-                    not phase2_promo_capture
-                    or phase2_promo_capture_complete
-                )
-                or phase2_live_batch
-                and evidence.get("phase2_acceptance_complete") is True
+        "gameplay_green_claimed": gameplay_green_claimed,
+        "native_session_liveness": phase2_native_session_liveness,
+        "native_session_liveness_scope": (
+            "phase2_post_restore_supervisor_liveness"
+            if phase2_live_batch
+            else (
+                "not_applicable_phase2_promo_capture"
+                if phase2_promo_capture
+                else None
             )
         ),
         "zg361_50_case_cell_executed": (
@@ -13661,7 +13718,7 @@ def run_cell(
                 ),
                 "cleanup": native_cleanup,
             }
-            if phase2_live_batch
+            if phase2_runtime_mode
             else None
         ),
         "native_driver_closed": driver_closed,
@@ -13673,8 +13730,12 @@ def run_cell(
                 "not_queried_mcp_only"
                 if loader_smoke or phase2_live_batch
                 else (
-                    f"{acceptance.pyautogui.size().width}x"
-                    f"{acceptance.pyautogui.size().height}"
+                    "producer_owned_visual_capture"
+                    if phase2_promo_capture
+                    else (
+                        f"{acceptance.pyautogui.size().width}x"
+                        f"{acceptance.pyautogui.size().height}"
+                    )
                 )
             ),
         },
@@ -13731,14 +13792,19 @@ def main(
     native_bridge = resolve_native_bridge_config(
         bridge_dll, bridge_injector, bridge_pipe
     )
+    # Sequel promo capture is native/MCP-only, just like the phase-two batch;
+    # ordinary visual capture retains the desktop-tool preflight.
+    require_visual_tools = not (
+        loader_smoke or phase2_live_batch or phase2_promo_capture
+    )
     runtime_identity = preflight(
         runtime_source,
         manifest_path,
         native_bridge=native_bridge,
-        require_visual_tools=not (loader_smoke or phase2_live_batch),
+        require_visual_tools=require_visual_tools,
     )
     if preflight_only:
-        if phase2_live_batch:
+        if phase2_live_batch or phase2_promo_capture:
             preflight_phase2_seed_contract(
                 runtime_source=runtime_source,
                 workshop_manifest=manifest_path,
@@ -13841,7 +13907,13 @@ def main(
         "phase2_live_batch": phase2_live_batch,
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_promo_capture_complete": phase2_promo_capture_complete_claim,
-        "loader_gate_executed": loader_smoke or phase2_live_batch,
+        "loader_gate_executed": (
+            loader_smoke or phase2_live_batch or phase2_promo_capture
+        ),
+        "native_session_liveness": report.get("native_session_liveness"),
+        "native_session_liveness_scope": report.get(
+            "native_session_liveness_scope"
+        ),
         "gameplay_acceptance_executed": report.get(
             "gameplay_acceptance_executed", False
         ),

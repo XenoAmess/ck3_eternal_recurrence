@@ -171,6 +171,14 @@ class Phase2PromoCaptureContext:
     native_bridge: object
     preflight_bridge_identity: Mapping[str, object]
     contract: Mapping[str, object]
+    # The phase-two acceptance runner supplies these snapshots only after it
+    # has installed the canonical paused seed and passed the managed loader
+    # gate.  Defaults deliberately keep the original hand-off ABI valid for
+    # callers that construct the context through the legacy argument set.
+    seed_contract: Mapping[str, object] | None = None
+    seed_install: Mapping[str, object] | None = None
+    native_session_binding: Mapping[str, object] | None = None
+    loader_gate: Mapping[str, object] | None = None
 
 
 class RuntimeProbe(Protocol):
@@ -330,6 +338,10 @@ class Phase2PromoProducerScaffold:
         tracked_ck3_pid: int,
         native_bridge: object,
         preflight_bridge_identity: Mapping[str, object],
+        seed_contract: Mapping[str, object] | None = None,
+        seed_install: Mapping[str, object] | None = None,
+        native_session_binding: Mapping[str, object] | None = None,
+        loader_gate: Mapping[str, object] | None = None,
     ) -> Phase2PromoCaptureContext:
         if not isinstance(artifacts, Path):
             self._red(
@@ -394,6 +406,31 @@ class Phase2PromoProducerScaffold:
                 "preflight bridge identity could not be copied",
                 evidence={"exception_type": type(error).__name__},
             )
+
+        optional_snapshots: dict[str, Mapping[str, object] | None] = {}
+        for name, value in (
+            ("seed_contract", seed_contract),
+            ("seed_install", seed_install),
+            ("native_session_binding", native_session_binding),
+            ("loader_gate", loader_gate),
+        ):
+            if value is None:
+                optional_snapshots[name] = None
+                continue
+            if not isinstance(value, Mapping):
+                self._red(
+                    f"{name}_invalid",
+                    f"{name} must be a mapping when supplied",
+                    evidence={"actual_type": type(value).__name__},
+                )
+            try:
+                optional_snapshots[name] = deepcopy(dict(value))
+            except BaseException as error:
+                self._red(
+                    f"{name}_unavailable",
+                    f"{name} could not be copied",
+                    evidence={"exception_type": type(error).__name__},
+                )
         return Phase2PromoCaptureContext(
             stream=stream,
             artifacts=artifacts,
@@ -403,6 +440,10 @@ class Phase2PromoProducerScaffold:
             native_bridge=native_bridge,
             preflight_bridge_identity=bridge_identity,
             contract=deepcopy(self._contract_snapshot),
+            seed_contract=optional_snapshots["seed_contract"],
+            seed_install=optional_snapshots["seed_install"],
+            native_session_binding=optional_snapshots["native_session_binding"],
+            loader_gate=optional_snapshots["loader_gate"],
         )
 
     def _validate_runtime(
@@ -534,6 +575,10 @@ class Phase2PromoProducerScaffold:
         tracked_ck3_pid: int,
         native_bridge: object,
         preflight_bridge_identity: Mapping[str, object],
+        seed_contract: Mapping[str, object] | None = None,
+        seed_install: Mapping[str, object] | None = None,
+        native_session_binding: Mapping[str, object] | None = None,
+        loader_gate: Mapping[str, object] | None = None,
     ) -> dict[str, object]:
         """Perform only dependency validation and evidence hand-off.
 
@@ -549,6 +594,10 @@ class Phase2PromoProducerScaffold:
             tracked_ck3_pid=tracked_ck3_pid,
             native_bridge=native_bridge,
             preflight_bridge_identity=preflight_bridge_identity,
+            seed_contract=seed_contract,
+            seed_install=seed_install,
+            native_session_binding=native_session_binding,
+            loader_gate=loader_gate,
         )
         runtime = self._validate_runtime(context)
         if self.choreography is None:
