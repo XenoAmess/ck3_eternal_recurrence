@@ -4794,9 +4794,34 @@ def main() -> int:
         gate_userdir = temporary_root / "phase2-loader-gate-profile"
         gate_userdir.mkdir()
         gate_calls: list[str] = []
+        green_loader_stage = {
+            "result": "GREEN",
+            "state": "loader_stage_ready",
+            "stage": "load_save",
+        }
         green_readiness = {"result": "GREEN", "tracked_ck3_pid": 4321}
         green_error_scan = {"result": "GREEN", "matches": []}
         green_mounts = ["product-mount", "fixture-mount"]
+
+        def green_loader_stage_call(
+            *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            expected_args = (
+                gate_userdir / "logs",
+                gate_artifacts / "01_phase2_loader_stage_progress.jsonl",
+            )
+            if _args != expected_args:
+                raise AssertionError(
+                    f"loader-stage paths drifted: {_args!r} != {expected_args!r}"
+                )
+            if _kwargs != {
+                "timeout_seconds": capture.NATIVE_LOADER_READINESS_TIMEOUT_S
+            }:
+                raise AssertionError(
+                    f"loader-stage timing contract drifted: {_kwargs!r}"
+                )
+            gate_calls.append("loader_stage")
+            return green_loader_stage
 
         def green_readiness_call(
             *_args: object, **_kwargs: object
@@ -4821,6 +4846,11 @@ def main() -> int:
             return green_mounts
 
         with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+                side_effect=green_loader_stage_call,
+            ),
             mock.patch.object(
                 capture,
                 "native_loader_smoke_readiness",
@@ -4851,6 +4881,7 @@ def main() -> int:
                 phase2_live_batch=True,
             )
         if gate_calls != [
+            "loader_stage",
             "native_readiness",
             "phase2_capabilities",
             "error_log_scan",
@@ -4863,6 +4894,8 @@ def main() -> int:
             raise AssertionError(
                 "phase-two loader gate did not authorize continuation"
             )
+        if green_gate["append_only_loader_stage"] != green_loader_stage:
+            raise AssertionError("GREEN loader-stage evidence was not preserved")
         persisted_green_gate = json.loads(
             (gate_artifacts / "03_loader_gate.json").read_text(encoding="utf-8")
         )
@@ -4875,6 +4908,10 @@ def main() -> int:
         loader_only_artifacts.mkdir()
         gate_calls.clear()
         with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+            ) as forbidden_loader_stage,
             mock.patch.object(
                 capture,
                 "native_loader_smoke_readiness",
@@ -4902,24 +4939,107 @@ def main() -> int:
                 tracked_ck3_pid=4321,
                 phase2_live_batch=False,
             )
-        assert gate_calls == [
+        if gate_calls != [
             "native_readiness",
             "error_log_scan",
             "mount_inventory",
-        ]
-        assert forbidden_phase2_capability.called is False
-        assert loader_only_gate["result"] == "GREEN"
-        assert loader_only_gate["phase2_capability_preflight"] is None
-        assert (
+        ]:
+            raise AssertionError(
+                f"loader-smoke-only gate order drifted: {gate_calls!r}"
+            )
+        if forbidden_loader_stage.called:
+            raise AssertionError("loader-smoke-only invoked the phase-two stage")
+        if forbidden_phase2_capability.called:
+            raise AssertionError("loader-smoke-only invoked phase-two preflight")
+        if loader_only_gate["result"] != "GREEN":
+            raise AssertionError("loader-smoke-only gate was not GREEN")
+        if loader_only_gate["phase2_capability_preflight"] is not None:
+            raise AssertionError("loader-smoke-only persisted phase-two preflight")
+        if loader_only_gate["append_only_loader_stage"] is not None:
+            raise AssertionError("loader-smoke-only persisted phase-two loader stage")
+        if (
             loader_only_gate["same_pid_gameplay_continuation_authorized"]
-            is False
+            is not False
+        ):
+            raise AssertionError("loader-smoke-only authorized gameplay continuation")
+
+        red_loader_stage_artifacts = (
+            temporary_root / "phase2-loader-stage-parser-red"
         )
+        red_loader_stage_artifacts.mkdir()
+        parser_red_evidence = {
+            "result": "RED",
+            "state": "loader_parse_red",
+            "stage": "database_init",
+            "fatal_error_count": 4,
+        }
+        with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+                side_effect=capture.LoaderStageError(
+                    "known product parser errors stalled database init",
+                    parser_red_evidence,
+                ),
+            ),
+            mock.patch.object(
+                capture, "native_loader_smoke_readiness"
+            ) as red_stage_readiness,
+            mock.patch.object(
+                capture, "phase2_runtime_capability_preflight"
+            ) as red_stage_capability,
+            mock.patch.object(
+                capture, "scan_loader_error_log"
+            ) as red_stage_scan,
+            mock.patch.object(
+                capture, "verify_runtime_load_order"
+            ) as red_stage_mount,
+        ):
+            try:
+                capture.run_loader_gate(
+                    SimpleNamespace(),
+                    red_loader_stage_artifacts,
+                    gate_userdir,
+                    {},
+                    tracked_ck3_pid=4321,
+                    phase2_live_batch=True,
+                )
+            except capture.acceptance.RunnerError as error:
+                if "loader_parse_red" not in str(error):
+                    raise
+            else:
+                raise AssertionError("loader gate accepted parser-stage RED")
+        if any(
+            call.called
+            for call in (
+                red_stage_readiness,
+                red_stage_capability,
+                red_stage_scan,
+                red_stage_mount,
+            )
+        ):
+            raise AssertionError("parser-stage RED did not stop all later gates")
+        persisted_parser_red = json.loads(
+            (red_loader_stage_artifacts / "03_loader_gate.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        if (
+            persisted_parser_red["append_only_loader_stage"]
+            != parser_red_evidence
+        ):
+            raise AssertionError("typed parser-stage evidence was not preserved")
 
         red_readiness_artifacts = (
             temporary_root / "phase2-loader-gate-readiness-red"
         )
         red_readiness_artifacts.mkdir()
         with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+                return_value=green_loader_stage,
+            ),
             mock.patch.object(
                 capture,
                 "native_loader_smoke_readiness",
@@ -4955,6 +5075,11 @@ def main() -> int:
         )
         red_capability_artifacts.mkdir()
         with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+                return_value=green_loader_stage,
+            ),
             mock.patch.object(
                 capture,
                 "native_loader_smoke_readiness",
@@ -4993,6 +5118,11 @@ def main() -> int:
         with (
             mock.patch.object(
                 capture,
+                "wait_for_phase2_seed_loader_stage",
+                return_value=green_loader_stage,
+            ),
+            mock.patch.object(
+                capture,
                 "native_loader_smoke_readiness",
                 return_value=green_readiness,
             ),
@@ -5028,6 +5158,11 @@ def main() -> int:
         red_mount_artifacts = temporary_root / "phase2-loader-gate-mount-red"
         red_mount_artifacts.mkdir()
         with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+                return_value=green_loader_stage,
+            ),
             mock.patch.object(
                 capture,
                 "native_loader_smoke_readiness",
@@ -5369,6 +5504,7 @@ def main() -> int:
     assert seed_install_position < driver_position < supervisor_position
     loader_gate_source = inspect.getsource(capture.run_loader_gate)
     for token in (
+        "wait_for_phase2_seed_loader_stage(",
         "native_loader_smoke_readiness(",
         "phase2_runtime_capability_preflight(",
         "scan_loader_error_log(userdir, artifacts)",
@@ -5377,6 +5513,9 @@ def main() -> int:
         '"same_pid_gameplay_continuation_authorized"',
     ):
         assert token in loader_gate_source, token
+    loader_stage_position = loader_gate_source.index(
+        "wait_for_phase2_seed_loader_stage("
+    )
     loader_readiness_position = loader_gate_source.index(
         "native_loader_smoke_readiness("
     )
@@ -5389,6 +5528,7 @@ def main() -> int:
     loader_mount_position = loader_gate_source.index(
         "verify_runtime_load_order(userdir, bootstrap)"
     )
+    assert loader_stage_position < loader_readiness_position
     assert loader_readiness_position < phase2_capability_position
     assert phase2_capability_position < loader_error_position
     assert loader_error_position < loader_mount_position

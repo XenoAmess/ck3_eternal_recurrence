@@ -84,6 +84,10 @@ from zg361_phase2_b2_action_cell import (
     B2PipActionCellError,
     run_b2_pip_gameplay_action_cell,
 )
+from zg361_phase2_loader_stage import (
+    LoaderStageError,
+    wait_for_phase2_seed_loader_stage,
+)
 from zhongguo_phase2_workforce_action import (
     M360_EVENT_DEFINITION_KEY,
     run_m360_action_and_postcondition,
@@ -7363,6 +7367,7 @@ def run_loader_gate(
             else "loader_smoke_only"
         ),
         "tracked_ck3_pid": tracked_ck3_pid,
+        "append_only_loader_stage": None,
         "native_readiness": None,
         "phase2_capability_preflight": None,
         "loader_error_log_scan": None,
@@ -7378,6 +7383,25 @@ def run_loader_gate(
     write_json(evidence_path, evidence)
 
     try:
+        if phase2_live_batch:
+            try:
+                loader_stage = wait_for_phase2_seed_loader_stage(
+                    userdir / "logs",
+                    artifacts / "01_phase2_loader_stage_progress.jsonl",
+                    timeout_seconds=NATIVE_LOADER_READINESS_TIMEOUT_S,
+                )
+            except LoaderStageError as error:
+                evidence["append_only_loader_stage"] = error.evidence
+                write_json(evidence_path, evidence)
+                state = error.evidence.get("state", "loader_stage_red")
+                raise acceptance.RunnerError(f"{state}: {error}") from error
+            evidence["append_only_loader_stage"] = loader_stage
+            write_json(evidence_path, evidence)
+            if loader_stage.get("result") != "GREEN":
+                raise acceptance.RunnerError(
+                    "phase-two append-only loader stage returned non-GREEN"
+                )
+
         native_readiness = native_loader_smoke_readiness(
             service,
             artifacts,
