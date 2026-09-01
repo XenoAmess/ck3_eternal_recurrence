@@ -41,7 +41,11 @@ public final class Validator {
             if (domain == ScriptDomain.GUI_REGISTRATION && e.operator() == null) continue;
             String key = e.key().text().trim();
             String at = path + "." + key;
-            if (seen.putIfAbsent(key, e) != null)
+            // A file-root block is a declaration map, where duplicate names
+            // can hide an earlier definition.  Nested CK3 blocks are ordered
+            // executable sequences (and may intentionally repeat an opcode),
+            // so do not apply map-duplicate semantics to them.
+            if (depth == 0 && seen.putIfAbsent(key, e) != null)
                 out.add(diag("DUPLICATE_KEY", Diagnostic.Severity.ERROR, "duplicate key in the same block: " + key, e.span(), at));
             OpcodeSpec spec = profile.opcode(key);
             boolean opcodePosition = depth > 0;
@@ -81,7 +85,28 @@ public final class Validator {
     }
     private static void validateParameters(OpcodeSpec spec, EntryNode e, List<Diagnostic> out, String path) {
         if (!(e.value() instanceof BlockNode b)) return;
-        int count = (int)b.entries().stream().filter(x -> !x.key().text().trim().equals("scope")).count();
+        List<EntryNode> parameters = new ArrayList<>();
+        for (EntryNode parameter : b.entries()) {
+            String name = parameter.key().text().trim();
+            // CK3 parameter blocks are ordered and may legally repeat a
+            // named field (for example, repeated value/add terms).  Keep
+            // every occurrence for arity/declared-name checks; duplicate
+            // diagnostics belong only to executable/structural sibling
+            // sequences in walk(), where a repeated key is ambiguous.
+            if (!name.equals("scope")) parameters.add(parameter);
+        }
+        Set<String> declared = spec.parameterNames();
+        if (!declared.isEmpty()) {
+            for (EntryNode parameter : parameters) {
+                String name = parameter.key().text().trim();
+                if (!declared.contains(name)) {
+                    out.add(diag("INVALID_PARAMETERS", Diagnostic.Severity.ERROR,
+                            "parameter " + name + " is not declared by opcode " + spec.name(),
+                            parameter.key().span(), path + "." + name));
+                }
+            }
+        }
+        int count = parameters.size();
         if (count < spec.minParameters() || count > spec.maxParameters())
             out.add(diag("INVALID_PARAMETERS", Diagnostic.Severity.ERROR, "opcode " + spec.name() + " expects " + spec.minParameters() + ".." + (spec.maxParameters() == Integer.MAX_VALUE ? "*" : spec.maxParameters()) + " parameters, got " + count, e.value().span(), path));
     }

@@ -37,6 +37,16 @@ class Ck3Profile11906Test {
     }
 
     @Test
+    void schemaArityMatchesEveryTypedOpcodeDescriptor() {
+        for (OpcodeDescriptor descriptor : profile.opcodeRegistry().all()) {
+            OpcodeSpec spec = profile.opcode(descriptor.id());
+            assertNotNull(spec, "schema is missing " + descriptor.id());
+            assertEquals(descriptor.minParameters(), spec.minParameters(), descriptor.id());
+            assertEquals(descriptor.maxParameters(), spec.maxParameters(), descriptor.id());
+        }
+    }
+
+    @Test
     void directoryMappingIsCaseAndSeparatorIndependent() {
         assertEquals(ScriptDomain.SCRIPTED_EFFECTS,
                 profile.domainForPath("COMMON\\SCRIPTED_EFFECTS\\xar.txt"));

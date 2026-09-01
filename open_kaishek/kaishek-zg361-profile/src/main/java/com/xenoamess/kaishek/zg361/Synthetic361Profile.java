@@ -78,11 +78,11 @@ public final class Synthetic361Profile implements KaishekProfile {
     private static Map<String, OpcodeSpec> schema() {
         Map<String, OpcodeSpec> result = new LinkedHashMap<>();
         result.put(OPEN_CASE, new OpcodeSpec(OPEN_CASE, OpcodeSpec.Kind.EFFECT,
-                1, 1, Set.of("CHARACTER", "character"), GAME_VERSION));
+                1, 1, Set.of("CHARACTER", "character"), GAME_VERSION, Set.of("case_id")));
         result.put(CHOOSE, new OpcodeSpec(CHOOSE, OpcodeSpec.Kind.EFFECT,
-                1, 1, Set.of("CHARACTER", "character"), GAME_VERSION));
+                1, 1, Set.of("CHARACTER", "character"), GAME_VERSION, Set.of("choice")));
         result.put(CLOSE_CASE, new OpcodeSpec(CLOSE_CASE, OpcodeSpec.Kind.EFFECT,
-                0, 0, Set.of("CHARACTER", "character"), GAME_VERSION));
+                0, 0, Set.of("CHARACTER", "character"), GAME_VERSION, Set.of()));
         return Collections.unmodifiableMap(result);
     }
 

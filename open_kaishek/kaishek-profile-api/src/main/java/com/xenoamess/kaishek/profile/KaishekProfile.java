@@ -60,7 +60,7 @@ public interface KaishekProfile {
                     descriptor.requiredScope().name().toLowerCase(Locale.ROOT));
             specs.put(descriptor.id(), new OpcodeSpec(descriptor.id(), kind,
                     descriptor.minParameters(), descriptor.maxParameters(),
-                    scopes, descriptor.profileVersion()));
+                    scopes, descriptor.profileVersion(), Set.copyOf(descriptor.parameterNames())));
         }
         Map<String, OpcodeSpec> immutableSpecs = Collections.unmodifiableMap(specs);
         return new KaishekProfile() {

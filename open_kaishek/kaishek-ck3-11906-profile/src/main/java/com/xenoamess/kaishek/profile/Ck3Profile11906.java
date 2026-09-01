@@ -44,10 +44,18 @@ public final class Ck3Profile11906 implements KaishekProfile {
                     List.of(), RandomnessClass.DETERMINISTIC, false, true),
             descriptor("check_variable", OpcodeKind.TRIGGER, InputType.BOOLEAN, ScopeType.THIS,
                     List.of("name", "value"), 1, 2, RandomnessClass.DETERMINISTIC, false, true),
+            // CK3 accepts duration modifiers in addition to name/value for
+            // set_variable; keep the static shape broad until the exact-build
+            // parameter contract is certified.
             descriptor("set_variable", OpcodeKind.EFFECT, InputType.BLOCK, ScopeType.THIS,
-                    List.of("name", "value"), 1, 2, RandomnessClass.DETERMINISTIC, true, true),
+                    List.of("name", "value", "days", "weeks", "months", "years"),
+                    1, Integer.MAX_VALUE, RandomnessClass.DETERMINISTIC, true, true),
+            // change_variable uses arithmetic keys (add/subtract/etc.).  Keep
+            // `value` as a compatibility spelling for expression forms until
+            // the exact-build contract is narrowed by differential evidence.
             descriptor("change_variable", OpcodeKind.EFFECT, InputType.BLOCK, ScopeType.THIS,
-                    List.of("name", "value"), 1, 2, RandomnessClass.DETERMINISTIC, true, true),
+                    List.of("name", "add", "subtract", "multiply", "divide", "min", "max", "value"),
+                    1, Integer.MAX_VALUE, RandomnessClass.DETERMINISTIC, true, true),
             descriptor("remove_variable", OpcodeKind.EFFECT, InputType.BLOCK, ScopeType.THIS,
                     List.of("name"), RandomnessClass.DETERMINISTIC, true, true),
             descriptor("set_character_flag", OpcodeKind.EFFECT, InputType.BLOCK, ScopeType.CHARACTER,
@@ -55,18 +63,24 @@ public final class Ck3Profile11906 implements KaishekProfile {
             descriptor("remove_character_flag", OpcodeKind.EFFECT, InputType.BLOCK, ScopeType.CHARACTER,
                     List.of("flag"), RandomnessClass.DETERMINISTIC, true, true),
             descriptor("trigger_event", OpcodeKind.EVENT, InputType.BLOCK, ScopeType.CHARACTER,
-                    List.of("event", "days"), 1, 2, RandomnessClass.DETERMINISTIC, true, true),
-            descriptor("add_gold", OpcodeKind.EFFECT, InputType.DECIMAL, ScopeType.CHARACTER,
-                    List.of("amount"), RandomnessClass.DETERMINISTIC, true, true),
-            descriptor("add_prestige", OpcodeKind.EFFECT, InputType.DECIMAL, ScopeType.CHARACTER,
-                    List.of("amount"), RandomnessClass.DETERMINISTIC, true, true),
-            descriptor("add_piety", OpcodeKind.EFFECT, InputType.DECIMAL, ScopeType.CHARACTER,
-                    List.of("amount"), RandomnessClass.DETERMINISTIC, true, true),
+                    List.of("id", "on_action", "saved_event_id", "days", "weeks", "months",
+                            "years", "delayed", "trigger_on_next_date"),
+                    1, 2, RandomnessClass.DETERMINISTIC, true, true),
+            // Resource effects accept scalar values and expression blocks
+            // whose keys vary by caller (value/subtract/multiply/min/max...).
+            // An empty name set deliberately leaves that polymorphic shape
+            // unconstrained until exact-build schema evidence is recorded.
+            descriptor("add_gold", OpcodeKind.EFFECT, InputType.ANY, ScopeType.CHARACTER,
+                    List.of(), 0, Integer.MAX_VALUE, RandomnessClass.DETERMINISTIC, true, true),
+            descriptor("add_prestige", OpcodeKind.EFFECT, InputType.ANY, ScopeType.CHARACTER,
+                    List.of(), 0, Integer.MAX_VALUE, RandomnessClass.DETERMINISTIC, true, true),
+            descriptor("add_piety", OpcodeKind.EFFECT, InputType.ANY, ScopeType.CHARACTER,
+                    List.of(), 0, Integer.MAX_VALUE, RandomnessClass.DETERMINISTIC, true, true),
             // CK3's candidate materialisation order is not yet certified.
             descriptor("random", OpcodeKind.SCRIPTED_CALL, InputType.BLOCK, ScopeType.THIS,
-                    List.of(), RandomnessClass.UNSUPPORTED, false, true),
+                    List.of(), 0, Integer.MAX_VALUE, RandomnessClass.UNSUPPORTED, false, true),
             descriptor("script_value", OpcodeKind.SCRIPT_VALUE, InputType.VALUE, ScopeType.THIS,
-                    List.of(), RandomnessClass.DETERMINISTIC, false, true),
+                    List.of(), 0, Integer.MAX_VALUE, RandomnessClass.DETERMINISTIC, false, true),
             descriptor("GetPlayer", OpcodeKind.GUI, InputType.SCOPE, ScopeType.ROOT,
                     List.of(), RandomnessClass.DETERMINISTIC, false, true));
 
@@ -164,38 +178,39 @@ public final class Ck3Profile11906 implements KaishekProfile {
 
     private static Map<String, OpcodeSpec> schemaOpcodes() {
         Map<String, OpcodeSpec> m = new LinkedHashMap<>();
-        add(m, "always", OpcodeSpec.Kind.TRIGGER, 0, 0);
-        add(m, "is_ai", OpcodeSpec.Kind.TRIGGER, 1, 1);
-        add(m, "has_character_flag", OpcodeSpec.Kind.TRIGGER, 1, 1);
-        add(m, "has_trait", OpcodeSpec.Kind.TRIGGER, 1, 1);
-        add(m, "has_title", OpcodeSpec.Kind.TRIGGER, 1, 1);
-        add(m, "is_alive", OpcodeSpec.Kind.TRIGGER, 0, 0);
-        add(m, "check_variable", OpcodeSpec.Kind.TRIGGER, 1, 2);
-        add(m, "set_variable", OpcodeSpec.Kind.EFFECT, 1, 2);
-        add(m, "change_variable", OpcodeSpec.Kind.EFFECT, 1, 2);
-        add(m, "remove_variable", OpcodeSpec.Kind.EFFECT, 1, 1);
-        add(m, "set_character_flag", OpcodeSpec.Kind.EFFECT, 1, 1);
-        add(m, "remove_character_flag", OpcodeSpec.Kind.EFFECT, 1, 1);
-        add(m, "trigger_event", OpcodeSpec.Kind.EFFECT, 1, 2);
-        add(m, "add_gold", OpcodeSpec.Kind.EFFECT, 1, 1);
-        add(m, "add_prestige", OpcodeSpec.Kind.EFFECT, 1, 1);
-        add(m, "add_piety", OpcodeSpec.Kind.EFFECT, 1, 1);
-        add(m, "random", OpcodeSpec.Kind.STRUCTURAL, 0, Integer.MAX_VALUE);
-        add(m, "script_value", OpcodeSpec.Kind.VALUE, 0, Integer.MAX_VALUE);
-        add(m, "GetPlayer", OpcodeSpec.Kind.INTERFACE, 0, 0);
+        add(m, "always", OpcodeSpec.Kind.TRIGGER);
+        add(m, "is_ai", OpcodeSpec.Kind.TRIGGER);
+        add(m, "has_character_flag", OpcodeSpec.Kind.TRIGGER);
+        add(m, "has_trait", OpcodeSpec.Kind.TRIGGER);
+        add(m, "has_title", OpcodeSpec.Kind.TRIGGER);
+        add(m, "is_alive", OpcodeSpec.Kind.TRIGGER);
+        add(m, "check_variable", OpcodeSpec.Kind.TRIGGER);
+        add(m, "set_variable", OpcodeSpec.Kind.EFFECT);
+        add(m, "change_variable", OpcodeSpec.Kind.EFFECT);
+        add(m, "remove_variable", OpcodeSpec.Kind.EFFECT);
+        add(m, "set_character_flag", OpcodeSpec.Kind.EFFECT);
+        add(m, "remove_character_flag", OpcodeSpec.Kind.EFFECT);
+        add(m, "trigger_event", OpcodeSpec.Kind.EFFECT);
+        add(m, "add_gold", OpcodeSpec.Kind.EFFECT);
+        add(m, "add_prestige", OpcodeSpec.Kind.EFFECT);
+        add(m, "add_piety", OpcodeSpec.Kind.EFFECT);
+        add(m, "random", OpcodeSpec.Kind.STRUCTURAL);
+        add(m, "script_value", OpcodeSpec.Kind.VALUE);
+        add(m, "GetPlayer", OpcodeSpec.Kind.INTERFACE);
         return Collections.unmodifiableMap(m);
     }
 
-    private static void add(Map<String, OpcodeSpec> m, String name, OpcodeSpec.Kind kind,
-                             int min, int max) {
+    private static void add(Map<String, OpcodeSpec> m, String name, OpcodeSpec.Kind kind) {
         // Keep the validator-facing schema and the typed registry on the same
         // scope contract.  An empty scope set would silently disable the
         // INVALID_SCOPE diagnostic for every registered opcode.
-        OpcodeDescriptor descriptor = OPCODE_REGISTRY.find(name).orElse(null);
-        Set<String> scopes = descriptor == null ? Set.of() : Set.of(
+        OpcodeDescriptor descriptor = OPCODE_REGISTRY.require(name);
+        Set<String> scopes = Set.of(
                 descriptor.requiredScope().name(),
                 descriptor.requiredScope().name().toLowerCase(Locale.ROOT));
-        m.put(name, new OpcodeSpec(name, kind, min, max, scopes, GAME_VERSION));
+        Set<String> parameters = Set.copyOf(descriptor.parameterNames());
+        m.put(name, new OpcodeSpec(name, kind, descriptor.minParameters(), descriptor.maxParameters(),
+                scopes, GAME_VERSION, parameters));
     }
 
     private static Map<ScopeType, Set<ScopeType>> identityScopeLinks() {

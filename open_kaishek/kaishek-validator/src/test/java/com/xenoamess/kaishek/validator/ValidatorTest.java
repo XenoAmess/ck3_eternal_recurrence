@@ -40,7 +40,7 @@ class ValidatorTest {
     }
 
     @Test void gameProfileAdapterKeepsEventEffectDomain() {
-        String source = "trigger_event = { event = test_event days = 1 }\n";
+        String source = "trigger_event = { id = test_event days = 1 }\n";
         var parsed = Parser.parse(source.getBytes(StandardCharsets.UTF_8));
         var diagnostics = Validator.validate(parsed, "common/scripted_triggers/xar.txt",
                 PROFILE.gameProfile());
@@ -62,6 +62,43 @@ class ValidatorTest {
         var parsed = Parser.parse(source.getBytes(StandardCharsets.UTF_8));
         var diagnostics = Validator.validate(parsed, "common/scripted_effects/xar.txt", PROFILE);
         assertTrue(diagnostics.stream().anyMatch(d -> d.code().equals("INVALID_SCOPE")),
+                diagnostics::toString);
+    }
+
+    @Test void registeredOpcodeRejectsUnknownParameterName() {
+        String source = "set_variable = { bogus = sample }\n";
+        var parsed = Parser.parse(source.getBytes(StandardCharsets.UTF_8));
+        var diagnostics = Validator.validate(parsed, "common/scripted_effects/xar.txt", PROFILE);
+        assertTrue(diagnostics.stream().anyMatch(d -> d.code().equals("INVALID_PARAMETERS")),
+                diagnostics::toString);
+    }
+
+    @Test void observedCk3ParameterFormsAreNotRejected() {
+        String source = "change_variable = { name = sample add = 1 }\n"
+                + "trigger_event = { id = test_event days = 1 }\n"
+                + "add_prestige = { value = 0 subtract = 100 }\n";
+        var parsed = Parser.parse(source.getBytes(StandardCharsets.UTF_8));
+        var diagnostics = Validator.validate(parsed, "common/scripted_effects/xar.txt", PROFILE);
+        assertTrue(diagnostics.stream().noneMatch(d -> d.code().equals("INVALID_PARAMETERS")),
+                diagnostics::toString);
+    }
+
+    @Test void repeatedCk3ParameterKeysRemainOrderedInput() {
+        String source = "set_variable = { name = sample value = 1 value = 2 }\n";
+        var parsed = Parser.parse(source.getBytes(StandardCharsets.UTF_8));
+        var diagnostics = Validator.validate(parsed, "common/scripted_effects/xar.txt", PROFILE);
+        assertTrue(diagnostics.stream().noneMatch(d -> d.code().equals("DUPLICATE_KEY")),
+                diagnostics::toString);
+    }
+
+    @Test void repeatedExecutableOpcodesRemainOrderedInput() {
+        String source = "wrapper = {\n"
+                + "  set_variable = { name = first value = 1 }\n"
+                + "  set_variable = { name = second value = 2 }\n"
+                + "}\n";
+        var parsed = Parser.parse(source.getBytes(StandardCharsets.UTF_8));
+        var diagnostics = Validator.validate(parsed, "common/scripted_effects/xar.txt", PROFILE);
+        assertTrue(diagnostics.stream().noneMatch(d -> d.code().equals("DUPLICATE_KEY")),
                 diagnostics::toString);
     }
 }

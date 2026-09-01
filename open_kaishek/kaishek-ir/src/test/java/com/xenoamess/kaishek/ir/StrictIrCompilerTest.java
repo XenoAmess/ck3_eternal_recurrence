@@ -85,4 +85,23 @@ class StrictIrCompilerTest {
         assertTrue(program.instructions().isEmpty(),
                 "invalid block must not emit a partially executable instruction");
     }
+
+    @Test
+    void repeatedNamedParameterIsExplicitlyRejectedByMapIrBoundary() {
+        byte[] source = "wrapper = {\n  set_test = { name = first name = second }\n}\n"
+                .getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        IrProgram program = StrictIrCompiler.compile(Parser.parse(source), "fixture.txt", PROFILE);
+
+        // Validator/CST retain ordered repeated fields.  The Phase 0 IR
+        // contract still exposes named arguments as a Map, so lowering must
+        // fail closed rather than overwrite either occurrence.
+        assertFalse(program.executable());
+        assertTrue(program.instructions().isEmpty(),
+                "duplicate parameter must not emit a lossy instruction");
+        assertTrue(program.diagnostics().stream().anyMatch(d ->
+                        d.code().equals("DUPLICATE_PARAMETER")
+                                && d.unsupportedReason()
+                                == com.xenoamess.kaishek.profile.UnsupportedReason.INVALID_INPUT),
+                () -> program.diagnostics().toString());
+    }
 }

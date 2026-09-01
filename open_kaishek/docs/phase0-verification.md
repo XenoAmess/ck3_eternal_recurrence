@@ -34,8 +34,8 @@ java -jar open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar corpus 
 
 当前观测：
 
-- Maven reactor：`BUILD SUCCESS`；profile-api 4、CK3 profile 4、validator 7、IR 6、
-  runtime 19、diff 2、zg361 synthetic 4 个 JUnit 测试全部通过。Syntax/CLI 的无框架
+- Maven reactor：`BUILD SUCCESS`；profile-api 4、CK3 profile 5、validator 11、IR 7、
+  runtime 19、diff 2、zg361 synthetic 4 个 JUnit 测试全部通过（合计 52）。Syntax/CLI 的无框架
   smoke 主类也由上面的显式命令运行（CLI smoke 无输出即表示通过），Maven 报告其
   JUnit 测试数为 0，这是有意的 dependency-free 设计。
 - Parser corpus：27 个 `.txt/.gui` 文件、2,677,440 bytes、0 个错误诊断、字节级
@@ -52,6 +52,17 @@ java -jar open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar corpus 
   fail-closed。该结果属于离线 synthetic fixture，不是 CK3 live 或差分认证。
 - Parser 对非法 UTF-8 现在发出 `INVALID_BYTE` 并保持原始字节；CLI `validate` 在语法错误
   时返回 `INVALID`/exit 1，只有语义层确实不可用且输入无错误时才返回 `UNSUPPORTED`/exit 4。
+- 对显式登记参数集合的 opcode，profile/validator 同时校验参数数量和参数名；未知参数以
+  `INVALID_PARAMETERS` fail-closed。空集合表示该 opcode 的参数形状仍是多态/未查明，
+  此时只做已知的数量与结构检查，不把未认证字段误报成已支持语义。CST/validator 层保留
+  参数块的有序重复字段，不按普通映射重复键报错；嵌套 executable sequence 同样保留重复
+  opcode，只有文件根声明层采用重复定义诊断。Phase 0 StrictIrCompiler 的命名参数 IR
+  仍是 `Map<String, IrValue>`，因此遇到重复参数会产生 `DUPLICATE_PARAMETER`/`INVALID_INPUT`
+  并停止发射指令；这是显式 fail-closed 的 IR 边界，不是静默覆盖，待 ordered named-argument
+  IR 合同冻结后再开放。
+- CK3 1.19.0.6 profile 已按目标 corpus 校正 `change_variable { name, add }`、
+  `trigger_event { id, days }` 和资源表达式 block；更广的 vanilla 多态签名仍待
+  exact-build schema 证据，不能据此宣称完整 CK3 覆盖。
 
 ## Readiness 与未完成项
 
