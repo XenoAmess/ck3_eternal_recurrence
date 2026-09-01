@@ -163,3 +163,51 @@ Parser and fixture IR/runtime remain GREEN; the bounded validator is RED at
 eight additional WRONG_DOMAIN diagnostics are existing SCRIPTED_VALUES
 coverage boundaries, not a schema expansion. Focused profile/validator Maven
 tests and the CLI preflight passed; CK3 was not started.
+
+## 2026-09-02 04:06 projection bisect and loader diagnostic
+
+Before another CK3 launch, the current `a89282d` tree was projected offline by
+removing the three largest generated workload clusters one at a time. The
+index and all manifests/reports are retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\projection-bisect-20260902\index.json`
+(SHA-256
+`6582011DE1AB4E6826194036D243A656DF12C8454C582B35538A77F9F4FFE078`).
+The intact projection parsed `76` files with zero diagnostics. Removing
+`scoreboard_snapshots`, `workforce_endgame_runtime_effects`, or
+`scoreboard_slots` individually also parsed with zero diagnostics, but each
+removal is semantically incomplete and is not a release candidate. Their
+validator diagnostic counts were respectively `202,210`, `174,861`, and
+`231,691` (intact `233,115`).
+
+One additional diagnostic projection kept every endgame effect name while
+replacing only the generated endgame bodies with a symbol shell. This was a
+loader experiment, not production source: the expected filename was restored
+in a clean full tree, and the shell candidate was preflighted with
+`open_kaishek` before CK3 launch. The clean source tree SHA was
+`eb31cbb234fc0025984b11d8692a27401c0cf4f7ec1349504f66ca0a7ebd3bf9`; the
+source ZIP SHA was
+`BF7E969A0610957F8B3FD8FEACFF379AD89BF1B5B5AD76CB4D1850C8BD8A6F87`.
+The preflight was structurally `GREEN` (archive equivalence, parser, fixture
+IR/runtime, static checks, and exact-build dependency identity), while the
+bounded profile validator remained the known schema-only `RED` boundary;
+`ck3_started=false` for that offline step. It used `open_kaishek` `1c320ad`
+and JAR SHA
+`F01C9D5FD0095960AC58E20031F22A3A28F0AFA5B0716C4D3DBECE49583C8A1A`.
+
+The single live diagnostic then returned `RED/LoaderStageTimeout`:
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-shell-gate-20260902\artifacts4-live\runner-report.json`
+(SHA-256
+`3549502304DD58AB39AE553B546F6A5331CD1778F03027C71B03BA04C7D3A0C8`).
+It stayed at `database_init` for `299.962s` (`quiet_seconds=195.089`), with
+`fatal_error_count=0`, `event_wait_authorized=false`, and no Frontend, Load
+Save, In Game, or native-ready frame. The debug log still ends at
+`onaction >>> Total of : 881`; the symbol shell did not move the transition.
+Therefore the shell is not a fix and was not merged. No second same-shape CK3
+attempt is planned.
+
+The combined evidence narrows the next implementation step to a real,
+generated-source effect-cluster decomposition or equivalent loader/readiness
+repair that preserves all generated symbols and contracts. A no-op shell,
+blind file deletion, timeout extension, or bridge-scope expansion is not an
+acceptable substitute. All diagnostic artifacts and the failed attempt are
+retained for comparison; no production tree was changed by this gate.
