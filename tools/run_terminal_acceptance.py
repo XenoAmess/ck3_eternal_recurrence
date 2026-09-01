@@ -133,6 +133,7 @@ def render_presets(ironman):
 def render_settings():
     return '''"game"={
 \t"promt_for_tutorial"={ version=0 enabled=no }
+\t"prompt_for_china_tutorial"={ version=0 enabled=no }
 \t"cloud_save"={ version=0 enabled=no }
 }
 "Graphics"={

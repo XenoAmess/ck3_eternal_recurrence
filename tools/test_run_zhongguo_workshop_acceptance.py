@@ -44,6 +44,13 @@ ITEM_ID = "4000000001"
 
 
 class WorkshopRuntimeTests(unittest.TestCase):
+    def test_terminal_profile_disables_china_tutorial_prompt(self) -> None:
+        settings = acceptance.terminal.render_settings()
+        self.assertIn(
+            '"prompt_for_china_tutorial"={ version=0 enabled=no }',
+            settings,
+        )
+
     def build_cache(self, root: Path) -> tuple[Path, Path, Path]:
         userdata = root / "Steam" / "userdata"
         userdata.mkdir(parents=True)
