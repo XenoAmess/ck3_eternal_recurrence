@@ -28,6 +28,21 @@ from the runner's own CK3 result.  The exact command and provenance are
 provided by `tools/kaishek_preflight.py` and the external
 `open_kaishek.preflight.v1` contract.
 
+The parent adapter's default contract/provenance pin is `open_kaishek`
+`aecb14f` (or a compatible descendant). The resolved checkout commit and JAR
+SHA-256 are archived independently, and an intentionally different
+checkout/JAR can be bound with `XAR_OPEN_KAISHEK_ROOT`,
+`XAR_OPEN_KAISHEK_JAR`, and `XAR_OPEN_KAISHEK_COMMIT`. A legacy JAR that
+answers `preflight` with the generic `UNSUPPORTED` envelope remains
+`UNSUPPORTED`; a missing checkout or JAR remains `NOT_APPLICABLE`.
+
+The default subprocess timeout is 180 seconds. This replaces the former
+120-second bound after a real 76-file full-corpus preflight exhausted that
+window. The effective value is included in adapter provenance and can be
+overridden with `XAR_KAISHEK_PREFLIGHT_TIMEOUT_SECONDS` for a specifically
+bounded corpus; changing it does not alter any CK3 live timeout or evidence
+level.
+
 ## Progress-report fields
 
 Use the following compact fields in the daily and weekly reports:
@@ -38,7 +53,7 @@ Use the following compact fields in the daily and weekly reports:
 | `acceptance_preflight_entrypoints` | `run_acceptance`, `run_terminal_acceptance`, `run_vivhite_acceptance`, `run_ox_here_acceptance`, `run_ox_here_loc_smoke`, `run_zhongguo_acceptance`, `run_zg361_phase2_seed_capture` |
 | `acceptance_preflight_na` | No N/A coverage gap among the seven; native-bridge research `run_*_live_acceptance.py` remains N/A/excluded because the current profile has no deterministic source/fixture subset for its save/bridge semantics |
 | `acceptance_preflight_semantics` | Offline parser/validator accelerator only; an adapter `NOT_APPLICABLE`, `UNSUPPORTED`, or `FAILED` result never becomes CK3 live/readiness evidence |
-| `acceptance_preflight_evidence` | Commit `9764ad6`; `tools/test_acceptance_open_kaishek_coverage.py` 4/4; no CK3 or desktop run performed |
+| `acceptance_preflight_evidence` | Commits `9764ad6`, `6c2117a`, `9cf958a`; coverage 4/4 and adapter 7/7; no CK3 or desktop run performed |
 
 Copy-ready daily wording:
 
