@@ -110,7 +110,15 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 
-from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
+try:
+    # Direct script execution puts this directory on sys.path.
+    from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
+except ModuleNotFoundError as exc:  # pragma: no cover - namespace import path
+    if exc.name != "promo_toolchain_loader":
+        raise
+    # ``import tools.build_full_agent_showcase`` starts with the repository root
+    # on sys.path instead; support that normal library-style invocation too.
+    from tools.promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
 
 
 # The reusable package is installed from the independent GitHub release in
