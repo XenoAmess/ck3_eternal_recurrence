@@ -31,7 +31,8 @@ created on those paths.  The scaffold exposes that structured envelope to its
 direct caller; the current acceptance runner logs an exception's text unless
 the caller supplies a report-aware error adapter.  If the delegate includes an
 optional `result` field, it must be exactly `GREEN`; omitting it leaves the
-runner's outer capture result in charge.
+runner's outer capture result in charge, and the runner rejects any explicit
+non-`GREEN` value before accepting the hand-off.
 
 Only a future producer with both real dependencies should register the
 callable:

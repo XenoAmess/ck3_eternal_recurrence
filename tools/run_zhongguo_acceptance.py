@@ -918,6 +918,15 @@ def run_phase2_promo_capture_scenario(
             "capture contract fields: "
             + ", ".join(missing_contract_fields)
         )
+    if "result" in result:
+        producer_result = result["result"]
+        if (
+            type(producer_result) is not str
+            or producer_result != "GREEN"
+        ):
+            raise acceptance.RunnerError(
+                "phase-two promo producer returned an explicit result that is not GREEN"
+            )
     result_mode = result["capture_mode"]
     if (
         type(result_mode) is not str

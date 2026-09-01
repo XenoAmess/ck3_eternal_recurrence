@@ -5879,6 +5879,16 @@ def main() -> int:
 
         malformed_results = (
             (
+                "result",
+                "RED",
+                "explicit result that is not GREEN",
+            ),
+            (
+                "result",
+                False,
+                "explicit result that is not GREEN",
+            ),
+            (
                 "capture_mode",
                 "not-zhongguo-361-phase2",
                 "non-canonical capture mode",
