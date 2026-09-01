@@ -45,6 +45,11 @@ The return value is an immutable `CaptureBundle` projection:
 - `mark(label)` and `clean_span(span_id)` provide stable lookup helpers.
 - `recording_start_seconds` and `recording_stop_seconds` bound every projected
   clean span.
+- `verify_unchanged()` rechecks the load-time bytes/SHA-256 snapshot for the
+  report, timeline, evidence index, raw recording, and projected clean-span
+  frame evidence.  Long-running consumers should call it before accepting a
+  rendered candidate; source drift is a typed failure and the source run is
+  left intact for diagnosis.
 
 Project vocabulary belongs in the optional `required_*` arguments or a higher
 policy layer, never in the adapter.

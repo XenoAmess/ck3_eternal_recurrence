@@ -25,6 +25,12 @@ if str(TOOLS_DIRECTORY) not in sys.path:
 import build_phase2_promo_video as promo  # noqa: E402
 
 from xar_promo.errors import ArtifactError  # noqa: E402
+from xar_promo.adapters.ck3 import (  # noqa: E402
+    CaptureBundle,
+    CaptureFile,
+    CaptureMark,
+    CleanSpan,
+)
 from xar_promo.pipeline import (  # noqa: E402
     AuditRecordReady,
     PipelineArtifactRecord,
@@ -243,7 +249,12 @@ def _write_capture_report(root: Path, *, identity: dict[str, object] | None = No
 
 def _candidate(config, capture_root: Path, bundle=None):
     if bundle is None:
-        bundle = SimpleNamespace(artifact_root=capture_root)
+        bundle = SimpleNamespace(
+            artifact_root=capture_root,
+            # Full-build entry tests use a light fake bundle; production
+            # candidates receive the real CaptureBundle verifier.
+            verify_unchanged=lambda: None,
+        )
     return SimpleNamespace(
         config=config,
         bundle=bundle,
@@ -291,6 +302,80 @@ class _OverlongFakeComposer(_RealDurationFakeComposer):
             self.final_duration_seconds,
             self.config,
         )
+
+
+def _capture_file(path: Path, root: Path) -> CaptureFile:
+    resolved = path.resolve()
+    return CaptureFile(
+        resolved.relative_to(root.resolve()).as_posix(),
+        resolved,
+        resolved.stat().st_size,
+        promo.sha256_file(resolved),
+    )
+
+
+def _minimal_capture_bundle(root: Path) -> CaptureBundle:
+    """Build a tiny real CaptureBundle for source-drift entry tests."""
+
+    capture_root = root / "capture-source"
+    raw = capture_root / "cell" / "promo" / "raw" / "take-01.mkv"
+    report = capture_root / "report.json"
+    timeline = capture_root / "cell" / "promo" / "capture-timeline.json"
+    index = capture_root / "evidence-index.json"
+    frame = capture_root / "cell" / "promo" / "proof" / "frame.png"
+    for path, payload in (
+        (raw, b"raw-capture"),
+        (report, b"report"),
+        (timeline, b"timeline"),
+        (index, b"index"),
+        (frame, b"frame-proof"),
+    ):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(payload)
+    frame_record = _capture_file(frame, capture_root)
+    return CaptureBundle(
+        artifact_root=capture_root.resolve(),
+        timeline_schema=2,
+        source_kind="real CK3 desktop capture after gameplay HUD",
+        report=_capture_file(report, capture_root),
+        timeline=_capture_file(timeline, capture_root),
+        evidence_index=_capture_file(index, capture_root),
+        raw_capture=_capture_file(raw, capture_root),
+        marks=(
+            CaptureMark("recording_started_after_gameplay_hud", 0.0),
+            CaptureMark("feature_demo_clean_begin", 1.0),
+            CaptureMark("feature_demo_clean_end", 2.0),
+            CaptureMark("recording_stop_requested", 3.0),
+        ),
+        clean_spans=(
+            CleanSpan(
+                "feature_demo",
+                "feature_demo_clean_begin",
+                "feature_demo_clean_end",
+                1.0,
+                2.0,
+                (frame_record,),
+            ),
+        ),
+        recording_start_seconds=0.0,
+        recording_stop_seconds=3.0,
+    )
+
+
+class _BundleFakeComposer(_RealDurationFakeComposer):
+    def __init__(self, *, bundle: CaptureBundle, **kwargs) -> None:
+        self._bundle = bundle
+        super().__init__(**kwargs)
+
+    def __call__(self, config, run, **kwargs):
+        self.config = config
+        self.calls.append((config, run, kwargs))
+        self.capture_candidate = _candidate(
+            config,
+            self.capture_root,
+            bundle=self._bundle,
+        )
+        return SimpleNamespace(workdir=kwargs["workdir"])
 
 
 def _validated_result(workdir: Path) -> PipelineResult:
@@ -672,6 +757,64 @@ class Phase2PromoEntryTests(unittest.TestCase):
             self.assertEqual(1, len(preflight_artifacts))
             self.assertEqual("raw", preflight_artifacts[0].collection)
             self.assertEqual("preflight", preflight_artifacts[0].role)
+
+    def test_capture_source_mutation_after_pipeline_is_red_and_retained(self) -> None:
+        """A source changed by the fake runner cannot become a candidate."""
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config_path = _write_ready_config(root)
+            for target_name in ("raw", "clean-frame-evidence"):
+                with self.subTest(target=target_name):
+                    capture_root = root / target_name
+                    bundle = _minimal_capture_bundle(capture_root)
+                    workdir = root / f"attempt-{target_name}"
+                    args = _args(
+                        config_path,
+                        bundle.artifact_root,
+                        workdir,
+                        validate_only=False,
+                    )
+
+                    target = (
+                        bundle.raw_capture.path
+                        if target_name == "raw"
+                        else bundle.clean_spans[0].evidence[0].path
+                    )
+
+                    def mutate_then_succeed(_invocation, **_kwargs):
+                        target.write_bytes(target.read_bytes() + b"-mutated")
+                        return _successful_result(
+                            workdir,
+                            load_phase2_project_config(config_path),
+                        )
+
+                    with self.assertRaisesRegex(
+                        promo.Phase2PromoBuildError,
+                        "capture source changed after bundle load",
+                    ):
+                        promo.execute(
+                            args,
+                            composer_factory=lambda **kwargs: _BundleFakeComposer(
+                                bundle=bundle,
+                                **kwargs,
+                            ),
+                            pipeline_runner=mutate_then_succeed,
+                        )
+
+                    receipt_path = workdir / "phase2-entry-failure.json"
+                    self.assertTrue(receipt_path.is_file())
+                    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                    self.assertEqual("RED", receipt["status"])
+                    self.assertEqual(
+                        "capture-source-immutability",
+                        receipt["phase"],
+                    )
+                    self.assertIn(
+                        "capture source changed after bundle load",
+                        receipt["message"],
+                    )
+                    self.assertFalse((workdir / "candidate-run").exists())
 
     def test_unbound_seed_preflight_is_an_explicit_release_blocker(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

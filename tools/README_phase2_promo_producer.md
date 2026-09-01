@@ -60,3 +60,9 @@ The seed-preflight binding also requires the capture root's GREEN `report.json`
 for the adapter's report/index contract.  A timeline with a matching source
 identity but no report is retained as a typed `capture_identity_unbound`
 candidate blocker; it must not be described as bound.
+
+After a successful full build reaches final-duration verification, the phase-two
+CLI rechecks the CK3 adapter's load-time bytes/SHA-256 snapshot with
+`CaptureBundle.verify_unchanged()` before writing the pipeline result or
+candidate run.  A changed or missing source is retained as a RED attempt with
+the typed `capture-source-immutability` phase for diagnosis.

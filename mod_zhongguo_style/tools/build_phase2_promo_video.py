@@ -35,6 +35,7 @@ if str(PACKAGE_SOURCE) not in sys.path:
     sys.path.insert(0, str(PACKAGE_SOURCE))
 
 from xar_promo.errors import ArtifactError, ManifestError, PromoToolchainError  # noqa: E402
+from xar_promo.adapters.ck3 import CK3CaptureError  # noqa: E402
 from xar_promo.layout import FontSpec, SafeArea, WrapPolicy  # noqa: E402
 from xar_promo.media import probe_media, require_streams  # noqa: E402
 from xar_promo.operations import preserve_artifact, start_run  # noqa: E402
@@ -1765,6 +1766,17 @@ def execute(
                     ),
                 )
                 raise
+            # The capture adapter hashes its source files at composition time;
+            # recheck that immutable snapshot before accepting this long-running
+            # build as a candidate.
+            failure_phase = "capture-source-immutability"
+            try:
+                candidate.bundle.verify_unchanged()
+            except CK3CaptureError as exc:
+                raise Phase2PromoBuildError(
+                    "phase-two capture source changed during pipeline: "
+                    f"{exc}"
+                ) from exc
         if seed_preflight is not None:
             seed_preflight.verify_unchanged()
     except Exception as exc:
