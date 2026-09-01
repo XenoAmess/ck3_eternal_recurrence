@@ -20,19 +20,20 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-          cache-dependency-path: tools/requirements-static.txt
+          cache-dependency-path: |
+            tools/requirements-static.txt
+            tools/requirements-promo-toolchain.txt
       - name: Install static dependencies
         run: python -m pip install -r tools/requirements-static.txt
+      - name: Install released promo toolchain
+        run: |
+          python -m pip install -r tools/requirements-promo-toolchain.txt
+          python -m xar_promo --version
+          python -m xar_promo --help | Out-Null
       - name: Compile Python tools
         run: |
           python -m compileall -q tools
           python -m compileall -q mod_zhongguo_style/tools
-          python -m compileall -q xar_promo_toolchain/src/xar_promo
-      - name: Test reusable promo toolchain
-        run: |
-          $env:PYTHONPATH = (Resolve-Path "xar_promo_toolchain/src")
-          python -m unittest discover -s xar_promo_toolchain/tests -v
-          python -O -m unittest discover -s xar_promo_toolchain/tests -v
       - name: Test succession GUI projection contract
         run: python tools/test_gen_no_heir_gui.py
       - name: Test release manifest verification

@@ -1,0 +1,4 @@
+# The reusable promo toolchain is maintained and released independently.
+# Keep this URL version-pinned; use XAR_PROMO_SOURCE for an explicit local
+# checkout override when developing or replaying acceptance fixtures.
+https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.1.0/xar_promo_toolchain-0.1.0-py3-none-any.whl

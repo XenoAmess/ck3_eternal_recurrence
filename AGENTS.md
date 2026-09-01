@@ -86,17 +86,20 @@ py tools/build_vivhite_release.py                           # 生成独立 stagi
 
 ## 可复用宣传视频工具链
 
-- 可复用实现位于 `xar_promo_toolchain/`；用户入口、真实命令与能力边界以其 `README.md`、
-  `docs/architecture-and-migration.md` 和当前 `<verified-python> -m xar_promo --help` 为准。禁止为尚未接入的 library API
-  虚构 CLI 命令，也不得把 plan、命令 ACK、schema 通过或单项自动检查写成“成片已验”。
+- 可复用实现已拆到独立仓库
+  [`XenoAmess/xar_promo_toolchain`](https://github.com/XenoAmess/xar_promo_toolchain)；用户入口、真实命令与能力边界以该仓库的
+  `README.md`、`docs/architecture-and-migration.md` 和当前 `<verified-python> -m xar_promo --help` 为准。主仓不再
+  vendoring 其源码，也不在这里运行其独立单测。默认使用独立仓库的 GitHub Release wheel `v0.1.0`；本地开发或验收可设置
+  `XAR_PROMO_SOURCE`（兼容别名 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向独立 checkout 或其 `src` 目录。禁止为尚未接入的
+  library API 虚构 CLI 命令，也不得把 plan、命令 ACK、schema 通过或单项自动检查写成“成片已验”。
 - 严格保持四层边界：
-  1. **通用包** `xar_promo_toolchain/src/xar_promo/` 负责 `ProjectConfig`、每次 attempt 的 append-only `RunManifest`、配置快照、
+  1. **通用包**（独立仓库的 `src/xar_promo/`）负责 `ProjectConfig`、每次 attempt 的 append-only `RunManifest`、配置快照、
      content-addressed 素材、TTS、字幕/布局、媒体探测、进程与审计原语；不得内置某个 mod 的文案、角色、声线或发布凭据。
-  2. **Skill** `xar_promo_toolchain/codex-skill/promo-video-pipeline/` 只提供操作方法、检查清单和能力路由；Skill 不是运行时实现，
+  2. **Skill**（独立仓库的 `codex-skill/promo-video-pipeline/`）只提供操作方法、检查清单和能力路由；Skill 不是运行时实现，
      不能授权额外副作用，也不能声称不存在的命令或验收能力。
-  3. **CK3 adapter** `xar_promo_toolchain/src/xar_promo/adapters/ck3/` 只读验证既有 capture report、timeline、evidence index、原始录像、
+  3. **CK3 adapter**（独立仓库的 `src/xar_promo/adapters/ck3/`）只读验证既有 capture report、timeline、evidence index、原始录像、
      marks 与 clean spans；不得启动 CK3、用 OCR 猜缺失状态、修复/覆盖 RED attempt，或承载某个项目的故事与发布政策。
-  4. **项目 preset** `xar_promo_toolchain/src/xar_promo/presets/` 加各项目 checked-in config 负责章节、文案、语言、声线、时长、
+  4. **项目 preset**（独立仓库的 `src/xar_promo/presets/`）加各项目 checked-in config 负责章节、文案、语言、声线、时长、
      真实角色/测试 UI 等项目政策；各项目 legacy wrapper 在迁移期继续保持原 CLI、sidecar 与输出兼容。
 - 当前冻结的 `xar-promo 0.1.0` CLI 只有下列十个命令；命令角色和副作用必须按表解释：
 
@@ -125,10 +128,11 @@ py tools/build_vivhite_release.py                           # 生成独立 stagi
   工具不得自行制造 approval。重新编码或替换任何字节后，旧人工签核自动不适用于新文件，必须重新审阅。
 - 工具链的 build、audit、review、export 都不等于外部发布。每个 mod 仍必须走自己的 release staging、实机验收、
   Steam Workshop 上传、订阅缓存复核与 changelog 流程；宣传视频上传到外部平台同样需要独立明确授权。
-- secondary/detached worktree 运行宣传工具链或其他依赖型 Python 验收时，先使用该 worktree 内约定的相对 `.venv`。
-  若相对 venv 不存在，只能**显式指定并先验证**主 worktree 的 venv 解释器，同时把 `PYTHONPATH`/工作目录绑定到当前
-  secondary worktree 源码并在报告中记录解释器路径、版本和依赖 probe。禁止静默回落到缺依赖的裸 `py`/系统 Python，
-  再把 `ModuleNotFoundError`、缺 Pillow/edge-tts 或找不到媒体工具误判为代码 RED；这类问题在完成解释器与依赖复核前只能标为 environment RED。
+- secondary/detached worktree 运行宣传工具链或其他依赖型 Python 验收时，先使用该 worktree 内约定的相对 `.venv`，并确认
+  已安装独立仓库发布的 `xar-promo-toolchain==0.1.0` wheel。若相对 venv 不存在，只能**显式指定并先验证**主 worktree 的
+  venv 解释器，同时设置 `XAR_PROMO_SOURCE`（若需源码调试）并在报告中记录解释器路径、版本和依赖 probe。禁止静默回落到
+  缺依赖的裸 `py`/系统 Python，再把 `ModuleNotFoundError`、缺 Pillow/edge-tts 或找不到媒体工具误判为代码 RED；这类问题在
+  完成解释器与依赖复核前只能标为 environment RED。
 
 ## 测试流程
 

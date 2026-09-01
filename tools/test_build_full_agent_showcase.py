@@ -18,6 +18,13 @@ TOOLS_DIRECTORY = Path(__file__).resolve().parent
 if str(TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIRECTORY))
 
+# Resolve the external released toolchain (or an explicit
+# ``XAR_PROMO_SOURCE``/``XAR_PROMO_TOOLCHAIN_SOURCE`` checkout override) before
+# importing the project builder.
+from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
+
+ensure_promo_toolchain()
+
 import build_full_agent_showcase as showcase  # noqa: E402
 
 

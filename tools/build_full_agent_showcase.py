@@ -110,9 +110,13 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 
-PROMO_TOOLCHAIN_SOURCE = Path(__file__).resolve().parents[1] / "xar_promo_toolchain" / "src"
-if str(PROMO_TOOLCHAIN_SOURCE) not in sys.path:
-    sys.path.insert(0, str(PROMO_TOOLCHAIN_SOURCE))
+from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
+
+
+# The reusable package is installed from the independent GitHub release in
+# normal runs.  ``XAR_PROMO_SOURCE`` (or the longer compatibility alias) may
+# explicitly point at a checkout/src directory for local development.
+PROMO_TOOLCHAIN_SOURCE = ensure_promo_toolchain()
 
 from xar_promo.media import MediaProbeError, ffprobe_command, parse_ffprobe_json  # noqa: E402
 from xar_promo.layout import LayoutError, balance_lines  # noqa: E402

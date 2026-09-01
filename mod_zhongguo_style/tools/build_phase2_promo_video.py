@@ -30,9 +30,17 @@ from typing import Any, Callable, Mapping, Sequence
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
-PACKAGE_SOURCE = REPOSITORY_ROOT / "xar_promo_toolchain" / "src"
-if str(PACKAGE_SOURCE) not in sys.path:
-    sys.path.insert(0, str(PACKAGE_SOURCE))
+REPOSITORY_TOOLS = REPOSITORY_ROOT / "tools"
+if str(REPOSITORY_TOOLS) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_TOOLS))
+
+from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
+
+
+# The reusable package is installed from the independent GitHub release in
+# normal runs.  ``XAR_PROMO_SOURCE`` (or the longer compatibility alias) may
+# explicitly point at a checkout/src directory for local development.
+PACKAGE_SOURCE = ensure_promo_toolchain()
 
 from xar_promo.errors import ArtifactError, ManifestError, PromoToolchainError  # noqa: E402
 from xar_promo.adapters.ck3 import CK3CaptureError  # noqa: E402

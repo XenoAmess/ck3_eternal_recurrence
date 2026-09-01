@@ -15,8 +15,9 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 ## 可复用宣传视频工具链验收
 
-权威入口是 `xar_promo_toolchain/README.md` 与
-`xar_promo_toolchain/docs/architecture-and-migration.md`。公开命令必须以当前
+权威入口是独立仓库
+[`XenoAmess/xar_promo_toolchain`](https://github.com/XenoAmess/xar_promo_toolchain) 的 `README.md` 与
+`docs/architecture-and-migration.md`。本仓库不再包含工具链源码；公开命令必须以当前
 `<verified-python> -m xar_promo --help` 及各子命令 `--help` 的实际输出为准；library 中存在函数或 handler 不代表 CLI 已暴露该能力。
 
 ### 当前冻结 CLI（`xar-promo 0.1.0`）
@@ -40,11 +41,16 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 是不同接口。adapter/preset 只从本地 registry 注入或 `xar_promo.adapters`、`xar_promo.presets` entry points 解析，
 不得把 composer 塞进 registry，也不得虚构一个通用默认 composer。
 
-先用选定且已验证的解释器做无副作用 CLI smoke：
+先安装独立仓库的冻结 wheel，再用选定且已验证的解释器做无副作用 CLI smoke。仓库提供
+`tools/requirements-promo-toolchain.txt`，默认指向 GitHub Release `v0.1.0`；离线或本地源码验收时，
+可设置 `XAR_PROMO_SOURCE`（兼容别名 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向独立 checkout 或其 `src` 目录，
+以覆盖已安装 wheel：
 
 ```powershell
-$PromoSource = (Resolve-Path "xar_promo_toolchain\src").Path
-$env:PYTHONPATH = $PromoSource
+$PromoPython = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
+& $PromoPython -m pip install -r tools\requirements-promo-toolchain.txt
+# Optional source-checkout override (do not set this for a wheel-only run):
+# $env:XAR_PROMO_SOURCE = "Z:\workspace\xar_promo_toolchain"
 & $PromoPython -m xar_promo --version
 & $PromoPython -m xar_promo --help
 $PromoCommands = @("init", "start-run", "validate", "preserve", "signoff", "plan", "build", "audit", "review", "export")
@@ -60,12 +66,12 @@ foreach ($PromoCommand in $PromoCommands) {
 
 宣传生产固定为四层：
 
-1. `xar_promo_toolchain/src/xar_promo/` 通用包管理 `ProjectConfig`、每个 attempt 的 `RunManifest`、配置快照、不可变素材、TTS、字幕/布局、
+1. 独立仓库 `src/xar_promo/` 通用包管理 `ProjectConfig`、每个 attempt 的 `RunManifest`、配置快照、不可变素材、TTS、字幕/布局、
    媒体探测、进程执行与审计原语。
-2. `xar_promo_toolchain/codex-skill/promo-video-pipeline/` 只指导编排和检查，不是执行器，也不提供隐含权限。
-3. `xar_promo_toolchain/src/xar_promo/adapters/ck3/` 只读验证 CK3 runner 已产出的 hash-bound capture bundle；它不启动游戏、不解释 OCR、
+2. 独立仓库 `codex-skill/promo-video-pipeline/` 只指导编排和检查，不是执行器，也不提供隐含权限。
+3. 独立仓库 `src/xar_promo/adapters/ck3/` 只读验证 CK3 runner 已产出的 hash-bound capture bundle；它不启动游戏、不解释 OCR、
    不删除失败素材，也不决定某个 mod 的宣传主张是否充分。
-4. `xar_promo_toolchain/src/xar_promo/presets/` 与项目 config 承载项目独有的章节、声线、语言、时长、角色来源、画面洁净和发布门禁；
+4. 独立仓库 `src/xar_promo/presets/` 与项目 config 承载项目独有的章节、声线、语言、时长、角色来源、画面洁净和发布门禁；
    legacy wrapper 在完成 parity 迁移前仍是各项目生产入口。
 
 标准证据流为：审阅 checked-in config → 为本次尝试创建新 run 并冻结 config snapshot → 取得/验证 raw source →
@@ -101,8 +107,8 @@ foreach ($PromoCommand in $PromoCommands) {
 
 1. 优先检查当前 worktree 约定的相对 venv（本仓库 runner 通常是 `tools\.venv\Scripts\python.exe`）。
 2. secondary/detached worktree 没有该 venv 时，显式填写已经在主 worktree 验证过的 venv **绝对路径**；禁止直接落回 `py`。
-3. 使用主 venv 时，把 `PYTHONPATH` 显式设为当前 secondary worktree 的 `xar_promo_toolchain\src`（以及该任务需要的当前源码根），
-   防止测试到主 worktree 的 editable install 或旧 wheel。
+3. 使用主 venv 时，默认使用已安装的独立 wheel；若需源码调试，把 `XAR_PROMO_SOURCE` 显式设为当前独立
+   secondary checkout（或其 `src` 目录），防止测试到旧 editable install 或旧 wheel。
 4. preflight 记录解释器绝对路径、Python 版本，并按任务验证依赖：core 至少能 import `xar_promo`；TTS 路径验证
    `edge-tts 7.2.8`；visual/render 路径验证 `Pillow 12.3.0`；实际媒体命令另验证所指定的 ffmpeg/ffprobe。
 5. preflight 未闭合时结论是 environment RED。只有已证明使用目标源码和正确依赖后出现的可复现失败，才可归类 code/capability RED。
