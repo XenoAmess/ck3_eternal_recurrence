@@ -14,6 +14,7 @@ from zhongguo_phase2_workforce_action import (
     WorkforceActionCellError,
     prove_m360_postcondition,
     run_m360_action_and_postcondition,
+    select_typed_fixture_player_transition,
     submit_m360_route_action,
 )
 
@@ -225,8 +226,9 @@ def workforce_response(route: str) -> dict[str, object]:
 
 
 class FakeOwnerService:
-    def __init__(self) -> None:
+    def __init__(self, *, post_event_key: str = "zg361we.361") -> None:
         self.event_key = "zg361we.360"
+        self.post_event_key = post_event_key
         self.event_id = 3601
         self.revision = 10
         self.selected: list[tuple[int, int, int]] = []
@@ -269,7 +271,7 @@ class FakeOwnerService:
         expected_revision: int | None = None,
     ) -> dict[str, object]:
         self.selected.append((option_number, int(event_instance_id), int(expected_revision)))
-        self.event_key = "zg361we.361"
+        self.event_key = self.post_event_key
         self.event_id += 1
         self.revision += 1
         return {"accepted": True, "status": "submitted", "option_number": option_number}
@@ -356,6 +358,81 @@ class FakeSubjectService:
         raise AssertionError("subject proof must not select an event option")
 
 
+class FakeTransitionService:
+    def __init__(self, *, before: int, after: int, event_key: str) -> None:
+        self.player = before
+        self.after = after
+        self.event_key = event_key
+        self.event_id = 991
+        self.revision = 30
+        self.selected: list[tuple[int, int, int]] = []
+
+    def snapshot(self) -> dict[str, object]:
+        return {
+            "snapshot_id": "transition",
+            "revision": self.revision,
+            "native_revision": self.revision + 100,
+            "date_raw": 9000,
+            "paused": True,
+            "map_ready": True,
+            "speed": 1,
+            "played_character": {"character_id": self.player},
+            "active_event": (
+                {
+                    "instance_id": self.event_id,
+                    "option_count": 1,
+                    "options": [{"option_number": 1, "enabled": True}],
+                }
+                if self.player != self.after
+                else None
+            ),
+        }
+
+    def query_current_event_window_context_v1(
+        self, event_instance_id: int, *, expected_revision: int
+    ) -> dict[str, object]:
+        if event_instance_id != self.event_id or expected_revision != self.revision:
+            raise AssertionError("transition event binding changed")
+        return {
+            "status": "available",
+            "current_event_window_context": {
+                **event_context(self.event_key),
+                "root_scope": character_scope(self.player),
+                "saved_scopes": [
+                    {
+                        "name": "zga_phase2_workforce_owner",
+                        "scope": character_scope(OWNER),
+                    },
+                    {
+                        "name": "zga_phase2_workforce_subject",
+                        "scope": character_scope(SUBJECT),
+                    },
+                ],
+                "options": [
+                    {
+                        "native_option_index": 0,
+                        "shown": True,
+                        "enabled": True,
+                    }
+                ],
+            },
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int | None = None,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        self.selected.append(
+            (option_number, int(event_instance_id), int(expected_revision))
+        )
+        self.player = self.after
+        self.revision += 1
+        return {"accepted": True, "status": "submitted"}
+
+
 class WorkforcePhase2ActionTests(unittest.TestCase):
     def test_owner_side_submits_all_three_native_routes_without_claiming_receipt(self) -> None:
         for route, expected_option in (("A", 1), ("B", 2), ("C", 3)):
@@ -368,6 +445,63 @@ class WorkforcePhase2ActionTests(unittest.TestCase):
                 self.assertFalse(result["business_receipt_claimed"])
                 self.assertEqual(service.selected, [(expected_option, 3601, 10)])
                 self.assertTrue(result["post_ack_event"]["observed"])
+
+    def test_post_ack_allowlist_is_opt_in_and_default_remains_m361(self) -> None:
+        switch_key = "zga_phase2_workforce.3"
+        accepted = submit_m360_route_action(
+            FakeOwnerService(post_event_key=switch_key),
+            route="A",
+            settle_polls=0,
+            poll_interval_s=0,
+            post_ack_event_definition_allowlist=(switch_key,),
+        )
+        self.assertEqual(
+            accepted["post_ack_event_definition_allowlist"], [switch_key]
+        )
+        self.assertEqual(
+            accepted["post_ack_event"]["observations"][-1][
+                "event_definition_key"
+            ],
+            switch_key,
+        )
+        self.assertTrue(accepted["post_ack_event"]["observed"])
+        self.assertFalse(accepted["post_ack_event"]["m361_observed"])
+        with self.assertRaisesRegex(
+            WorkforceActionCellError, "unexpected post-ACK event definition"
+        ):
+            submit_m360_route_action(
+                FakeOwnerService(post_event_key=switch_key),
+                route="A",
+                settle_polls=0,
+                poll_interval_s=0,
+            )
+
+    def test_typed_fixture_transition_requires_native_played_character(self) -> None:
+        event_key = "zga_phase2_workforce.1"
+        service = FakeTransitionService(
+            before=SUBJECT, after=OWNER, event_key=event_key
+        )
+        result = select_typed_fixture_player_transition(
+            service,
+            expected_event_definition_key=event_key,
+            expected_player_before=SUBJECT,
+            expected_player_after=OWNER,
+            owner_character_id=OWNER,
+            subject_character_id=SUBJECT,
+            owner_scope_name="zga_phase2_workforce_owner",
+            subject_scope_name="zga_phase2_workforce_subject",
+            settle_polls=0,
+            poll_interval_s=0,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertFalse(result["ack_used_as_identity_postcondition"])
+        self.assertEqual(
+            result["native_played_character_postcondition"][
+                "played_character_id"
+            ],
+            OWNER,
+        )
+        self.assertEqual(service.selected, [(1, 991, 30)])
 
     def test_subject_side_proves_route_receipt_collective_history_and_charter(self) -> None:
         for route in ("A", "B", "C"):

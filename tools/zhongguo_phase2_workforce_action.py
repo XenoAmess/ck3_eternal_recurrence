@@ -187,6 +187,64 @@ def _event_context(
     return context
 
 
+def _event_context_allowlist(
+    service: WorkforceService,
+    snapshot: dict[str, object],
+    *,
+    expected_definitions: tuple[str, ...],
+) -> dict[str, object]:
+    """Resolve one event while preserving an explicit definition allowlist.
+
+    The product default remains the single ``zg361we.361`` successor.  A
+    dedicated acceptance fixture may instead put its typed switch-back card
+    immediately behind #360.  Callers must opt into that exact key; an empty,
+    duplicate or malformed allowlist is rejected before querying CK3.
+    """
+
+    if (
+        not expected_definitions
+        or any(
+            not isinstance(value, str) or not value
+            for value in expected_definitions
+        )
+        or len(set(expected_definitions)) != len(expected_definitions)
+    ):
+        raise ValueError("post-ACK event definition allowlist is invalid")
+    event_id = _active_event_id(snapshot)
+    if event_id is None:
+        raise WorkforceActionCellBlocked(
+            "current paused frame has no allowlisted post-ACK event"
+        )
+    revision = _integer(
+        snapshot.get("revision"), "event snapshot revision", minimum=0
+    )
+    response = service.query_current_event_window_context_v1(
+        event_id, expected_revision=revision
+    )
+    if not isinstance(response, dict):
+        raise WorkforceActionCellError("event-window query returned a non-object")
+    context = response.get("current_event_window_context")
+    readiness = context.get("readiness") if isinstance(context, dict) else None
+    _require(
+        response.get("status") == "available"
+        and isinstance(context, dict)
+        and isinstance(readiness, dict)
+        and readiness.get("event_definition_identity_ready") is True
+        and readiness.get("root_scope_ready") is True
+        and readiness.get("saved_scopes_ready") is True
+        and readiness.get("option_presentation_ready") is True,
+        "event-window query is not identity/presentation ready",
+    )
+    assert isinstance(context, dict)
+    observed = context.get("event_definition_key")
+    _require(
+        observed in expected_definitions,
+        "unexpected post-ACK event definition: expected one of "
+        f"{list(expected_definitions)}, observed {observed}",
+    )
+    return context
+
+
 def _scope_character_id(scope: object, label: str) -> int:
     _require(isinstance(scope, dict), f"{label} is not a scope object")
     assert isinstance(scope, dict)
@@ -216,6 +274,172 @@ def _saved_character_id(context: dict[str, object], name: str) -> int:
     return _scope_character_id(matches[0].get("scope"), f"saved scope {name}")
 
 
+def select_typed_fixture_player_transition(
+    service: WorkforceService,
+    *,
+    expected_event_definition_key: str,
+    expected_player_before: int,
+    expected_player_after: int,
+    owner_character_id: int,
+    subject_character_id: int,
+    owner_scope_name: str,
+    subject_scope_name: str,
+    evidence_path: Path | None = None,
+    settle_polls: int = 40,
+    poll_interval_s: float = 0.05,
+) -> dict[str, object]:
+    """Select one typed acceptance-fixture card and prove the native rebind.
+
+    The option ACK proves only submission.  Success requires a later paused
+    semantic snapshot whose played ``CharacterID`` equals the requested target
+    while the date remains frozen.  The event root and its two named saved
+    scopes independently bind the exact owner/subject pair, so this helper
+    cannot become a caller-reported ``set_player_character`` shortcut.
+    """
+
+    if not isinstance(expected_event_definition_key, str) or not (
+        expected_event_definition_key
+    ):
+        raise ValueError("fixture transition event definition is invalid")
+    before_player = _positive_int(
+        expected_player_before, "expected_player_before"
+    )
+    after_player = _positive_int(
+        expected_player_after, "expected_player_after"
+    )
+    owner = _positive_int(owner_character_id, "owner_character_id")
+    subject = _positive_int(subject_character_id, "subject_character_id")
+    if owner == subject or before_player == after_player:
+        raise ValueError("fixture transition requires two distinct characters")
+    if {before_player, after_player} != {owner, subject}:
+        raise ValueError("fixture transition endpoints must be owner/subject")
+    if (
+        not isinstance(owner_scope_name, str)
+        or not owner_scope_name
+        or not isinstance(subject_scope_name, str)
+        or not subject_scope_name
+        or owner_scope_name == subject_scope_name
+    ):
+        raise ValueError("fixture transition saved-scope names are invalid")
+    if settle_polls < 0 or poll_interval_s < 0:
+        raise ValueError("fixture transition settle timing is invalid")
+
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "stage": "typed_fixture_player_transition",
+        "mcp_only": True,
+        "ocr_used": False,
+        "coordinates_used": False,
+        "console_used": False,
+        "test_decision_used": False,
+        "expected_event_definition_key": expected_event_definition_key,
+        "owner_character_id": owner,
+        "subject_character_id": subject,
+        "expected_player_before": before_player,
+        "expected_player_after": after_player,
+        "event_context": None,
+        "selection_submission": None,
+        "post_submission_snapshots": [],
+        "native_played_character_postcondition": None,
+        "ack_used_as_identity_postcondition": False,
+        "failure_reason": None,
+    }
+    _write_json(evidence_path, evidence)
+    try:
+        snapshot, revision, date_raw, played = _snapshot_binding(
+            service, label="fixture transition precondition"
+        )
+        _require(
+            played == before_player,
+            "fixture transition started from the wrong played CharacterID",
+        )
+        event_id = _active_event_id(snapshot)
+        if event_id is None:
+            raise WorkforceActionCellBlocked(
+                "fixture transition has no active typed event"
+            )
+        context = _event_context(
+            service,
+            snapshot,
+            expected_definition=expected_event_definition_key,
+        )
+        evidence["event_context"] = context
+        root = _scope_character_id(
+            context.get("root_scope"), "fixture transition root scope"
+        )
+        observed_owner = _saved_character_id(context, owner_scope_name)
+        observed_subject = _saved_character_id(context, subject_scope_name)
+        _require(
+            root == before_player,
+            "fixture transition root does not equal the played character",
+        )
+        _require(
+            observed_owner == owner and observed_subject == subject,
+            "fixture transition saved owner/subject scopes drifted",
+        )
+        options = context.get("options")
+        _require(
+            isinstance(options, list)
+            and len(options) == 1
+            and isinstance(options[0], dict)
+            and options[0].get("shown") is True
+            and options[0].get("enabled") is True
+            and options[0].get("native_option_index") == 0,
+            "fixture transition must expose exactly one enabled native option",
+        )
+        submission = service.select_event_option(
+            1,
+            event_instance_id=event_id,
+            expected_revision=revision,
+        )
+        evidence["selection_submission"] = submission
+        _require(
+            isinstance(submission, dict)
+            and submission.get("accepted") is True
+            and submission.get("status") == "submitted",
+            "fixture transition option was not acknowledged",
+        )
+
+        observations = evidence["post_submission_snapshots"]
+        assert isinstance(observations, list)
+        for poll in range(settle_polls + 1):
+            after, after_revision, after_date, after_played = _snapshot_binding(
+                service, label="fixture transition post-submission"
+            )
+            row = {
+                "poll": poll,
+                "revision": after_revision,
+                "date_raw": after_date,
+                "played_character_id": after_played,
+                "active_event_instance_id": _active_event_id(after),
+            }
+            observations.append(row)
+            _require(
+                after_date == date_raw,
+                "fixture transition advanced the frozen game date",
+            )
+            if after_played == after_player:
+                evidence["native_played_character_postcondition"] = row
+                evidence["result"] = "GREEN"
+                _write_json(evidence_path, evidence)
+                return evidence
+            _require(
+                after_played == before_player,
+                "fixture transition reached an unexpected played CharacterID",
+            )
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+        raise WorkforceActionCellBlocked(
+            "fixture transition ACK did not produce the expected native "
+            f"played CharacterID {after_player}"
+        )
+    except BaseException as error:
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        _write_json(evidence_path, evidence)
+        raise
+
+
 def submit_m360_route_action(
     service: WorkforceService,
     *,
@@ -223,6 +447,9 @@ def submit_m360_route_action(
     evidence_path: Path | None = None,
     settle_polls: int = 20,
     poll_interval_s: float = 0.05,
+    post_ack_event_definition_allowlist: tuple[str, ...] = (
+        M361_EVENT_DEFINITION_KEY,
+    ),
 ) -> dict[str, object]:
     """Submit exactly one #360 option and return ACK evidence only.
 
@@ -235,6 +462,16 @@ def submit_m360_route_action(
         raise ValueError("route must be A, B or C")
     if settle_polls < 0 or poll_interval_s < 0:
         raise ValueError("settle timing must be non-negative")
+    if (
+        not post_ack_event_definition_allowlist
+        or any(
+            not isinstance(value, str) or not value
+            for value in post_ack_event_definition_allowlist
+        )
+        or len(set(post_ack_event_definition_allowlist))
+        != len(post_ack_event_definition_allowlist)
+    ):
+        raise ValueError("post-ACK event definition allowlist is invalid")
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
@@ -248,6 +485,9 @@ def submit_m360_route_action(
         "event_context": None,
         "action_ack": None,
         "post_ack_event": None,
+        "post_ack_event_definition_allowlist": list(
+            post_ack_event_definition_allowlist
+        ),
         "failure_reason": None,
     }
     _write_json(evidence_path, evidence)
@@ -327,8 +567,12 @@ def submit_m360_route_action(
                 "event_definition_key": None,
             }
             if active_id is not None and active_id != event_id:
-                next_context = _event_context(
-                    service, after, expected_definition=M361_EVENT_DEFINITION_KEY
+                next_context = _event_context_allowlist(
+                    service,
+                    after,
+                    expected_definitions=(
+                        post_ack_event_definition_allowlist
+                    ),
                 )
                 row["event_definition_key"] = next_context.get(
                     "event_definition_key"
@@ -339,8 +583,20 @@ def submit_m360_route_action(
             if poll_interval_s:
                 time.sleep(poll_interval_s)
         evidence["post_ack_event"] = {
-            "expected_definition": M361_EVENT_DEFINITION_KEY,
+            "expected_definition": (
+                post_ack_event_definition_allowlist[0]
+                if len(post_ack_event_definition_allowlist) == 1
+                else None
+            ),
+            "expected_definitions": list(
+                post_ack_event_definition_allowlist
+            ),
             "observed": bool(
+                observations
+                and observations[-1].get("event_definition_key")
+                in post_ack_event_definition_allowlist
+            ),
+            "m361_observed": bool(
                 observations
                 and observations[-1].get("event_definition_key")
                 == M361_EVENT_DEFINITION_KEY
@@ -848,6 +1104,9 @@ def run_m360_action_and_postcondition(
     | None,
     evidence_directory: Path,
     max_timeline_steps: int = 0,
+    post_ack_event_definition_allowlist: tuple[str, ...] = (
+        M361_EVENT_DEFINITION_KEY,
+    ),
 ) -> dict[str, object]:
     """Join the two phases only through an explicit subject-session seam."""
 
@@ -870,6 +1129,9 @@ def run_m360_action_and_postcondition(
             route=route,
             evidence_path=evidence_directory
             / f"workforce_m360_route_{route.lower()}_action_ack.json",
+            post_ack_event_definition_allowlist=(
+                post_ack_event_definition_allowlist
+            ),
         )
         matrix["owner_action"] = action
         binding_value = action.get("binding")
@@ -934,5 +1196,6 @@ __all__ = [
     "WorkforceActionCellError",
     "prove_m360_postcondition",
     "run_m360_action_and_postcondition",
+    "select_typed_fixture_player_transition",
     "submit_m360_route_action",
 ]

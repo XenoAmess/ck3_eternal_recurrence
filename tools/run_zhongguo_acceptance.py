@@ -33,6 +33,9 @@ import run_vivhite_acceptance as isolated
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "mod_zhongguo_style"
 FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
+PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE = (
+    ROOT / "tools" / "fixtures" / "zg361_phase2_workforce_action"
+)
 AUTOPLAYER_SOURCE = ROOT / "ck3_autonomous_player" / "src"
 TITLE_NAVIGATION_RESEARCH = (
     ROOT / "ck3_autonomous_player" / "native_bridge" / "research"
@@ -84,6 +87,7 @@ from zg361_phase2_b2_action_cell import (
 from zhongguo_phase2_workforce_action import (
     M360_EVENT_DEFINITION_KEY,
     run_m360_action_and_postcondition,
+    select_typed_fixture_player_transition,
 )
 from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
@@ -193,6 +197,13 @@ POSTFLIGHT_STABILITY_SECONDS = 5
 BOOT_TIMEOUT_S = 300
 PRODUCT_OUTER = "zg361_acceptance.mod"
 FIXTURE_OUTER = "zga_acceptance_fixture.mod"
+PHASE2_WORKFORCE_ACTION_FIXTURE_OUTER = (
+    "zga_phase2_workforce_action_fixture.mod"
+)
+PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT = "zga_phase2_workforce.1"
+PHASE2_WORKFORCE_SWITCH_BACK_EVENT = "zga_phase2_workforce.3"
+PHASE2_WORKFORCE_OWNER_SCOPE = "zga_phase2_workforce_owner"
+PHASE2_WORKFORCE_SUBJECT_SCOPE = "zga_phase2_workforce_subject"
 PROJECT_TOKENS = ("zg361", "zga_acceptance", "zga_", "zga.")
 DUPLICATE_PATTERNS = (
     "there is more than one",
@@ -470,7 +481,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
             "zhongguo_workforce_collective_snapshot_v1_query_supported"
         ),
         "observation_only": True,
-        "gameplay_action_complete": False,
+        "gameplay_action_complete": True,
     },
     "ai_owned_case_matrix": {
         "implementation": "wired",
@@ -494,7 +505,6 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
     },
 }
 PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
-    "workforce_collective_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
 )
 
@@ -1284,7 +1294,10 @@ def script_tree_errors(root: Path, label: str) -> list[str]:
         )
         if runtime_product_file and "remote_file_id" in text:
             errors.append(f"{label} contains Workshop identity: {relative}")
-        if root == FIXTURE_SOURCE and path.suffix.lower() in {".txt", ".gui"}:
+        if root in {
+            FIXTURE_SOURCE,
+            PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE,
+        } and path.suffix.lower() in {".txt", ".gui"}:
             depth = 0
             for line_number, line in enumerate(text.splitlines(), 1):
                 body = line.split("#", 1)[0]
@@ -1789,6 +1802,12 @@ def preflight(
 ) -> dict[str, object]:
     errors = fixture_source_errors()
     errors.extend(product_source_errors())
+    errors.extend(
+        script_tree_errors(
+            PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE,
+            "phase-two Workforce action fixture",
+        )
+    )
     runtime_source = Path(runtime_source).expanduser().resolve()
     runtime_identity: dict[str, object] = {
         "verified_workshop_cache": False,
@@ -1855,6 +1874,30 @@ def preflight(
             "clean historical promo fixture contract is RED:\n"
             + (
                 clean_fixture_contract.stdout + clean_fixture_contract.stderr
+            ).strip()
+        )
+    workforce_action_fixture_contract = subprocess.run(
+        [
+            sys.executable,
+            str(
+                ROOT
+                / "tools"
+                / "test_zg361_phase2_workforce_action_fixture.py"
+            ),
+        ],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        capture_output=True,
+        check=False,
+    )
+    if workforce_action_fixture_contract.returncode != 0:
+        errors.append(
+            "phase-two Workforce action fixture contract is RED:\n"
+            + (
+                workforce_action_fixture_contract.stdout
+                + workforce_action_fixture_contract.stderr
             ).strip()
         )
     validation = subprocess.run(
@@ -3660,6 +3703,89 @@ def phase2_restore_queue_required(scenario_evidence: object) -> bool:
     )
 
 
+def _phase2_expected_session_lineage(
+    scenario_evidence: object,
+) -> dict[str, object]:
+    """Project the base restore plus every recorded Workforce restart.
+
+    The original phase-two transaction owns the first two PID/generation
+    entries.  The optional Workforce fixture starts on that second binding
+    and records its activation, A/B/C, final, or failure-recovery restores.
+    Keeping the duplicate join binding explicit in the source evidence makes
+    the concatenation auditable while the returned full lineage contains it
+    only once.
+    """
+
+    scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
+    base_value = scenario.get("save_restore_lineage")
+    base = base_value if isinstance(base_value, dict) else {}
+    base_pid_value = base.get("pid_lineage")
+    base_generation_value = base.get("connection_generation_lineage")
+    base_pids = list(base_pid_value) if isinstance(base_pid_value, list) else []
+    base_generations = (
+        list(base_generation_value)
+        if isinstance(base_generation_value, list)
+        else []
+    )
+
+    workforce_value = scenario.get(
+        "workforce_collective_gameplay_action_cell"
+    )
+    workforce = workforce_value if isinstance(workforce_value, dict) else {}
+    workforce_lineage_value = workforce.get("session_lineage")
+    workforce_lineage = (
+        workforce_lineage_value
+        if isinstance(workforce_lineage_value, dict)
+        else {}
+    )
+    workforce_pid_value = workforce_lineage.get("pid_lineage")
+    workforce_generation_value = workforce_lineage.get(
+        "connection_generation_lineage"
+    )
+    workforce_pids = (
+        list(workforce_pid_value)
+        if isinstance(workforce_pid_value, list)
+        else []
+    )
+    workforce_generations = (
+        list(workforce_generation_value)
+        if isinstance(workforce_generation_value, list)
+        else []
+    )
+    workforce_recorded = bool(workforce_pids or workforce_generations)
+    join_matches = bool(
+        base_pids
+        and base_generations
+        and workforce_pids
+        and workforce_generations
+        and workforce_pids[0] == base_pids[-1]
+        and workforce_generations[0] == base_generations[-1]
+    )
+    full_pids = list(base_pids)
+    full_generations = list(base_generations)
+    if workforce_recorded:
+        # Append even when the join is malformed.  The explicit join check
+        # below will make cleanup/liveness RED, while retaining every claimed
+        # retired process in the diagnostic projection.
+        full_pids.extend(workforce_pids[1:])
+        full_generations.extend(workforce_generations[1:])
+    return {
+        "base": base,
+        "workforce_cell": workforce,
+        "workforce_lineage": workforce_lineage,
+        "base_pid_lineage": base_pids,
+        "base_connection_generation_lineage": base_generations,
+        "workforce_pid_lineage": workforce_pids,
+        "workforce_connection_generation_lineage": workforce_generations,
+        "workforce_recorded": workforce_recorded,
+        "workforce_join_matches_base_final": (
+            join_matches if workforce_recorded else True
+        ),
+        "pid_lineage": full_pids,
+        "connection_generation_lineage": full_generations,
+    }
+
+
 def prove_phase2_native_session_cleanup(
     session_report: object,
     artifacts: Path,
@@ -3672,14 +3798,16 @@ def prove_phase2_native_session_cleanup(
     session_error: object = None,
     supervisor_stopped: bool,
 ) -> dict[str, object]:
-    """Prove either one clean PID or the exact save/restore two-PID topology."""
+    """Prove every managed PID from the base and optional Workforce restores."""
 
     evidence_path = artifacts / "09_phase2_native_session_cleanup.json"
     report = session_report if isinstance(session_report, dict) else {}
     scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
     restore_expected = phase2_restore_queue_required(scenario)
-    lineage_value = scenario.get("save_restore_lineage")
-    lineage = lineage_value if isinstance(lineage_value, dict) else {}
+    lineage_projection = _phase2_expected_session_lineage(scenario)
+    lineage = lineage_projection["base"]
+    if not isinstance(lineage, dict):
+        lineage = {}
     restore_value = lineage.get("restore_result")
     restore_result = restore_value if isinstance(restore_value, dict) else {}
     lifecycle_value = restore_result.get("lifecycle")
@@ -3711,9 +3839,27 @@ def prove_phase2_native_session_cleanup(
         if isinstance(final_diagnostics_value, dict)
         else {}
     )
-    expected_final_pid = second_pid if restore_expected else initial_pid
+    pid_lineage_value = lineage_projection.get("pid_lineage")
+    pid_lineage = (
+        pid_lineage_value if isinstance(pid_lineage_value, list) else []
+    )
+    generation_lineage_value = lineage_projection.get(
+        "connection_generation_lineage"
+    )
+    generation_lineage = (
+        generation_lineage_value
+        if isinstance(generation_lineage_value, list)
+        else []
+    )
+    expected_final_pid = (
+        pid_lineage[-1]
+        if restore_expected and pid_lineage
+        else initial_pid
+    )
     expected_final_generation = (
-        second_generation if restore_expected else initial_generation
+        generation_lineage[-1]
+        if restore_expected and generation_lineage
+        else initial_generation
     )
     checks: dict[str, bool] = {
         "supervisor_stopped": supervisor_stopped is True,
@@ -3787,12 +3933,6 @@ def prove_phase2_native_session_cleanup(
                     lifecycle.get("request_id"), str
                 )
                 and bool(lifecycle.get("request_id")),
-                "restore_queue_consumed_once": restart_count == 1
-                and len(restart_shutdowns) == 1,
-                "restart_count_exactly_one": restart_count == 1,
-                "one_old_pid_shutdown": len(restart_shutdowns) == 1,
-                "session_last_pid_matches_second": report.get("pid")
-                == second_pid,
                 "final_capabilities_bound_second_pid": isinstance(
                     lineage.get("checks"), dict
                 )
@@ -3802,21 +3942,171 @@ def prove_phase2_native_session_cleanup(
                 is True,
             }
         )
-        old_shutdown = restart_shutdowns[0] if len(restart_shutdowns) == 1 else None
-        checks.update(
-            _phase2_shutdown_checks(
-                old_shutdown,
-                expected_pid=initial_pid,
-                prefix="old_pid_shutdown",
+        if len(pid_lineage) <= 2:
+            checks.update(
+                {
+                    "restore_queue_consumed_once": restart_count == 1
+                    and len(restart_shutdowns) == 1,
+                    "restart_count_exactly_one": restart_count == 1,
+                    "one_old_pid_shutdown": len(restart_shutdowns) == 1,
+                    "session_last_pid_matches_second": report.get("pid")
+                    == second_pid,
+                }
             )
-        )
-        checks.update(
-            _phase2_shutdown_checks(
-                report.get("shutdown"),
-                expected_pid=second_pid,
-                prefix="new_pid_shutdown",
+            old_shutdown = (
+                restart_shutdowns[0]
+                if len(restart_shutdowns) == 1
+                else None
             )
-        )
+            checks.update(
+                _phase2_shutdown_checks(
+                    old_shutdown,
+                    expected_pid=initial_pid,
+                    prefix="old_pid_shutdown",
+                )
+            )
+            checks.update(
+                _phase2_shutdown_checks(
+                    report.get("shutdown"),
+                    expected_pid=second_pid,
+                    prefix="new_pid_shutdown",
+                )
+            )
+        else:
+            workforce_lineage_value = lineage_projection.get(
+                "workforce_lineage"
+            )
+            workforce_lineage = (
+                workforce_lineage_value
+                if isinstance(workforce_lineage_value, dict)
+                else {}
+            )
+            restore_records_value = workforce_lineage.get("restore_records")
+            restore_records = (
+                restore_records_value
+                if isinstance(restore_records_value, list)
+                else []
+            )
+            expected_restart_count = len(pid_lineage) - 1
+            positive_pid_lineage = all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and value > 0
+                for value in pid_lineage
+            )
+            positive_generation_lineage = bool(generation_lineage) and all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and value > 0
+                for value in generation_lineage
+            )
+            base_pid_value = lineage_projection.get("base_pid_lineage")
+            base_pids = (
+                base_pid_value if isinstance(base_pid_value, list) else []
+            )
+            base_count = len(base_pids)
+            lifecycle_chain = (
+                base_count == 2
+                and len(pid_lineage) == len(generation_lineage)
+                and len(restore_records)
+                == len(pid_lineage) - base_count
+                and all(
+                    isinstance(row, dict)
+                    and isinstance(row.get("before"), dict)
+                    and isinstance(row.get("after"), dict)
+                    and isinstance(row.get("lifecycle"), dict)
+                    and row["before"].get("bridge_pid")
+                    == pid_lineage[index + base_count - 1]
+                    and row["after"].get("bridge_pid")
+                    == pid_lineage[index + base_count]
+                    and row["before"].get("connection_generation")
+                    == generation_lineage[index + base_count - 1]
+                    and row["after"].get("connection_generation")
+                    == generation_lineage[index + base_count]
+                    and row["lifecycle"].get("previous_pid")
+                    == pid_lineage[index + base_count - 1]
+                    and row["lifecycle"].get("pid")
+                    == pid_lineage[index + base_count]
+                    for index, row in enumerate(restore_records)
+                )
+            )
+            checks.update(
+                {
+                    "workforce_restart_lineage_recorded": (
+                        lineage_projection.get("workforce_recorded") is True
+                    ),
+                    "workforce_join_matches_base_final": (
+                        lineage_projection.get(
+                            "workforce_join_matches_base_final"
+                        )
+                        is True
+                    ),
+                    "full_pid_lineage_positive": positive_pid_lineage,
+                    "full_pid_lineage_unique": positive_pid_lineage
+                    and len(set(pid_lineage)) == len(pid_lineage),
+                    "full_generation_lineage_positive": (
+                        positive_generation_lineage
+                    ),
+                    "full_generation_lineage_consecutive": (
+                        positive_generation_lineage
+                        and generation_lineage
+                        == list(
+                            range(
+                                generation_lineage[0],
+                                generation_lineage[0]
+                                + len(generation_lineage),
+                            )
+                        )
+                    ),
+                    "full_lineage_lengths_match": len(pid_lineage)
+                    == len(generation_lineage),
+                    "full_lineage_starts_at_initial": bool(pid_lineage)
+                    and bool(generation_lineage)
+                    and pid_lineage[0] == initial_pid
+                    and generation_lineage[0] == initial_generation,
+                    "restart_count_matches_full_lineage": restart_count
+                    == expected_restart_count,
+                    "retired_shutdown_count_matches_full_lineage": len(
+                        restart_shutdowns
+                    )
+                    == expected_restart_count,
+                    "session_last_pid_matches_full_lineage": report.get(
+                        "pid"
+                    )
+                    == expected_final_pid,
+                    "workforce_restore_lifecycle_chain_exact": lifecycle_chain,
+                }
+            )
+            for index, retired_pid in enumerate(pid_lineage[:-1]):
+                shutdown = (
+                    restart_shutdowns[index]
+                    if index < len(restart_shutdowns)
+                    else None
+                )
+                checks.update(
+                    _phase2_shutdown_checks(
+                        shutdown,
+                        expected_pid=(
+                            retired_pid
+                            if isinstance(retired_pid, int)
+                            and not isinstance(retired_pid, bool)
+                            else None
+                        ),
+                        prefix=f"retired_pid_{index + 1}_shutdown",
+                    )
+                )
+            checks.update(
+                _phase2_shutdown_checks(
+                    report.get("shutdown"),
+                    expected_pid=(
+                        expected_final_pid
+                        if isinstance(expected_final_pid, int)
+                        and not isinstance(expected_final_pid, bool)
+                        else None
+                    ),
+                    prefix="final_pid_shutdown",
+                )
+            )
     else:
         checks.update(
             {
@@ -3844,6 +4134,13 @@ def prove_phase2_native_session_cleanup(
         "initial_generation": initial_generation,
         "second_pid": second_pid,
         "second_generation": second_generation,
+        "pid_lineage": pid_lineage if restore_expected else [initial_pid],
+        "connection_generation_lineage": (
+            generation_lineage if restore_expected else [initial_generation]
+        ),
+        "expected_final_pid": expected_final_pid,
+        "expected_final_generation": expected_final_generation,
+        "lineage_projection": lineage_projection,
         "expected_pipe": expected_pipe,
         "final_capabilities": (
             final_capabilities if isinstance(final_capabilities, dict) else None
@@ -5422,6 +5719,729 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
         ) from error
 
 
+def install_phase2_workforce_action_fixture(
+    userdir: Path,
+    bootstrap: dict[str, object],
+    artifacts: Path,
+) -> dict[str, object]:
+    """Install one dormant external fixture for the next managed reload only."""
+
+    evidence_path = artifacts / (
+        "08a_phase2_workforce_action_fixture_install.json"
+    )
+    source = PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE.resolve()
+    target = (
+        userdir
+        / "mod-content"
+        / "phase2_workforce_action_fixture"
+    ).resolve()
+    outer = (userdir / "mod" / PHASE2_WORKFORCE_ACTION_FIXTURE_OUTER).resolve()
+    dlc_load = (userdir / "dlc_load.json").resolve()
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_workforce_action_fixture_dynamic_install",
+        "acceptance_only": True,
+        "release_included": False,
+        "promo_included": False,
+        "seed_fixture_modified": False,
+        "mcp_gameplay_path": True,
+        "source": str(source),
+        "target": str(target),
+        "outer_descriptor": str(outer),
+        "source_tree_sha256": None,
+        "target_tree_sha256": None,
+        "enabled_mods_before": None,
+        "enabled_mods_after": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        required = (
+            "descriptor.mod",
+            "common/scripted_guis/zga_phase2_workforce_guis.txt",
+            "events/zga_phase2_workforce_events.txt",
+            "gui/zga_phase2_workforce_bridge.gui",
+            (
+                "gui/scripted_widgets/"
+                "zga_phase2_workforce_scripted_widgets.txt"
+            ),
+            (
+                "localization/english/"
+                "zga_phase2_workforce_l_english.yml"
+            ),
+            (
+                "localization/simp_chinese/"
+                "zga_phase2_workforce_l_simp_chinese.yml"
+            ),
+        )
+        if not source.is_dir() or any(
+            not (source / relative).is_file() for relative in required
+        ):
+            raise acceptance.RunnerError(
+                "phase-two Workforce action fixture source is incomplete"
+            )
+        source_snapshot = isolated.tree_snapshot(source)
+        if len(source_snapshot) != len(required):
+            raise acceptance.RunnerError(
+                "phase-two Workforce action fixture has an unexpected file set"
+            )
+        for relative in required:
+            payload = (source / relative).read_bytes()
+            if not payload.startswith(b"\xef\xbb\xbf"):
+                raise acceptance.RunnerError(
+                    "phase-two Workforce action fixture lacks UTF-8 BOM: "
+                    + relative
+                )
+        if target.exists() or outer.exists():
+            raise acceptance.RunnerError(
+                "phase-two Workforce action fixture target already exists"
+            )
+        if not isolated.is_relative_to(target, userdir.resolve()) or not (
+            isolated.is_relative_to(outer, userdir.resolve())
+        ):
+            raise acceptance.RunnerError(
+                "phase-two Workforce fixture target escaped the isolated userdir"
+            )
+        shutil.copytree(source, target)
+        isolated.write_outer_descriptor(
+            target / "descriptor.mod", outer, target
+        )
+        try:
+            load_value = json.loads(dlc_load.read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise acceptance.RunnerError(
+                f"cannot read isolated dlc_load.json: {error}"
+            ) from error
+        if not isinstance(load_value, dict):
+            raise acceptance.RunnerError(
+                "isolated dlc_load.json root is not an object"
+            )
+        enabled_value = load_value.get("enabled_mods")
+        enabled = enabled_value if isinstance(enabled_value, list) else None
+        expected_before = bootstrap.get("enabled_mods")
+        if (
+            enabled is None
+            or any(not isinstance(value, str) for value in enabled)
+            or enabled != expected_before
+        ):
+            raise acceptance.RunnerError(
+                "isolated enabled-mod baseline drifted before Workforce fixture"
+            )
+        fixture_mod = f"mod/{PHASE2_WORKFORCE_ACTION_FIXTURE_OUTER}"
+        if fixture_mod in enabled:
+            raise acceptance.RunnerError(
+                "phase-two Workforce action fixture was enabled before its gate"
+            )
+        enabled_after = [*enabled, fixture_mod]
+        load_value["enabled_mods"] = enabled_after
+        write_json(dlc_load, load_value)
+        target_snapshot = isolated.tree_snapshot(target)
+        if target_snapshot != source_snapshot:
+            raise acceptance.RunnerError(
+                "phase-two Workforce action fixture copy changed bytes"
+            )
+        evidence.update(
+            {
+                "result": "GREEN",
+                "source_tree_sha256": isolated.snapshot_digest(
+                    source_snapshot
+                ),
+                "target_tree_sha256": isolated.snapshot_digest(
+                    target_snapshot
+                ),
+                "enabled_mods_before": list(enabled),
+                "enabled_mods_after": enabled_after,
+                "failure_reason": None,
+            }
+        )
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two Workforce action fixture install failed: {error}"
+        ) from error
+
+
+def _phase2_checkpoint_payload(
+    result: object,
+    *,
+    status: str,
+    label: str,
+) -> dict[str, object]:
+    if not isinstance(result, dict) or result.get("accepted") is not True:
+        raise acceptance.RunnerError(
+            f"{label} checkpoint command was not acknowledged"
+        )
+    checkpoint_value = result.get("checkpoint")
+    checkpoint = (
+        checkpoint_value if isinstance(checkpoint_value, dict) else {}
+    )
+    size = checkpoint.get("size")
+    sha256 = checkpoint.get("sha256")
+    if not (
+        checkpoint.get("status") == status
+        and isinstance(size, int)
+        and not isinstance(size, bool)
+        and size > 0
+        and isinstance(sha256, str)
+        and re.fullmatch(r"[0-9A-Fa-f]{64}", sha256) is not None
+    ):
+        raise acceptance.RunnerError(
+            f"{label} checkpoint lacks typed {status} size/hash proof"
+        )
+    return checkpoint
+
+
+def _save_phase2_workforce_checkpoint(
+    service: GameplayBridgeService,
+    *,
+    label: str,
+) -> dict[str, object]:
+    snapshot = service.snapshot()
+    if not isinstance(snapshot, dict):
+        raise acceptance.RunnerError(f"{label} save baseline is not an object")
+    before = _phase2_paused_binding(snapshot, label=f"{label} save baseline")
+    result = service.save_checkpoint(
+        expected_revision=int(before["revision"])
+    )
+    checkpoint = _phase2_checkpoint_payload(
+        result, status="saved", label=label
+    )
+    after_snapshot = service.snapshot()
+    if not isinstance(after_snapshot, dict):
+        raise acceptance.RunnerError(f"{label} post-save snapshot is not an object")
+    after = _phase2_paused_binding(
+        after_snapshot, label=f"{label} post-save snapshot"
+    )
+    if any(
+        after[key] != before[key]
+        for key in (
+            "bridge_pid",
+            "connection_generation",
+            "player_character_id",
+            "date_raw",
+        )
+    ):
+        raise acceptance.RunnerError(
+            f"{label} save escaped its paused binding"
+        )
+    return {
+        "label": label,
+        "before": before,
+        "after": after,
+        "result": result,
+        "checkpoint": checkpoint,
+    }
+
+
+def _restore_phase2_workforce_checkpoint(
+    service: GameplayBridgeService,
+    *,
+    checkpoint: dict[str, object],
+    expected_player_character_id: int,
+    label: str,
+) -> dict[str, object]:
+    before_snapshot = service.snapshot()
+    if not isinstance(before_snapshot, dict):
+        raise acceptance.RunnerError(
+            f"{label} pre-restore snapshot is not an object"
+        )
+    before = _phase2_paused_binding(
+        before_snapshot, label=f"{label} pre-restore"
+    )
+    result = service.restore_checkpoint(
+        expected_revision=int(before["revision"])
+    )
+    restored = _phase2_checkpoint_payload(
+        result, status="restored", label=label
+    )
+    lifecycle_value = result.get("lifecycle")
+    lifecycle = lifecycle_value if isinstance(lifecycle_value, dict) else {}
+    after_snapshot = service.snapshot()
+    if not isinstance(after_snapshot, dict):
+        raise acceptance.RunnerError(
+            f"{label} post-restore snapshot is not an object"
+        )
+    after = _phase2_paused_binding(
+        after_snapshot, label=f"{label} post-restore"
+    )
+    checks = {
+        "pid_changed": after["bridge_pid"] != before["bridge_pid"],
+        "generation_advanced_once": after["connection_generation"]
+        == before["connection_generation"] + 1,
+        "lifecycle_previous_pid_matches": lifecycle.get("previous_pid")
+        == before["bridge_pid"],
+        "lifecycle_pid_matches": lifecycle.get("pid")
+        == after["bridge_pid"],
+        "lifecycle_intent_restore": lifecycle.get("lifecycle_intent")
+        == "restore",
+        "player_restored": after["player_character_id"]
+        == expected_player_character_id,
+        "date_restored": after["date_raw"] == checkpoint.get("date_raw"),
+        "size_preserved": restored.get("size") == checkpoint.get("size"),
+        "sha256_preserved": str(restored.get("sha256", "")).lower()
+        == str(checkpoint.get("sha256", "")).lower(),
+    }
+    failed = [name for name, passed in checks.items() if passed is not True]
+    if failed:
+        raise acceptance.RunnerError(
+            f"{label} restore lineage RED: " + ", ".join(failed)
+        )
+    return {
+        "label": label,
+        "before": before,
+        "after": after,
+        "result": result,
+        "restored_checkpoint": restored,
+        "lifecycle": lifecycle,
+        "checks": checks,
+    }
+
+
+def wait_for_phase2_exact_event(
+    service: GameplayBridgeService,
+    *,
+    expected_definition_key: str,
+    expected_player_character_id: int,
+    timeout_s: float = 30.0,
+    poll_interval_s: float = 0.05,
+) -> dict[str, object]:
+    """Wait for one exact current-event identity without timeline input."""
+
+    if timeout_s <= 0 or poll_interval_s < 0:
+        raise ValueError("phase-two exact-event wait timing is invalid")
+    deadline = time.monotonic() + timeout_s
+    last = "no active event"
+    while time.monotonic() < deadline:
+        snapshot = service.snapshot()
+        if not isinstance(snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two exact-event snapshot is not an object"
+            )
+        binding = _phase2_paused_binding(
+            snapshot, label="phase-two exact-event wait"
+        )
+        if binding["player_character_id"] != expected_player_character_id:
+            raise acceptance.RunnerError(
+                "phase-two exact-event wait changed played CharacterID"
+            )
+        if isinstance(snapshot.get("active_event"), dict):
+            identity = query_event_definition_identity(service, snapshot)
+            observed = identity.get("event_definition_key")
+            if observed == expected_definition_key:
+                return {"binding": binding, "identity": identity}
+            raise acceptance.RunnerError(
+                "phase-two exact-event wait encountered unexpected event "
+                f"{observed!r}; expected {expected_definition_key!r}"
+            )
+        last = f"revision={binding['revision']} has no active event"
+        if poll_interval_s:
+            time.sleep(poll_interval_s)
+    raise acceptance.RunnerError(
+        "phase-two exact-event wait timed out: " + last
+    )
+
+
+def run_phase2_workforce_m360_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    userdir: Path,
+    bootstrap: dict[str, object],
+    owner_character_id: int,
+    subject_character_id: int,
+    b2_owner_character_id: int,
+    prior_lineage: dict[str, object],
+) -> dict[str, object]:
+    """Run A/B/C from one hash-identical checkpoint through typed MCP cards."""
+
+    evidence_path = artifacts / (
+        "08_phase2_workforce_m360_gameplay_action_cell.json"
+    )
+    owner = owner_character_id
+    subject = subject_character_id
+    evidence: dict[str, object] = {
+        "schema_version": 2,
+        "cell_id": (
+            "workforce_collective_gameplay_action_and_postcondition_matrix"
+        ),
+        "result": "RED",
+        "stage": "dynamic_fixture_activation",
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "console_used": False,
+        "test_decision_used": False,
+        "legacy_fixture_switch_accepted": False,
+        "gameplay_action_executed": False,
+        "checkpoint_created_for_workforce": False,
+        "helper_invoked": False,
+        "owner_character_id": owner,
+        "subject_character_id": subject,
+        "prior_lineage": prior_lineage,
+        "fixture_install": None,
+        "activation_checkpoint": None,
+        "activation_restore": None,
+        "activation_b2_clear": None,
+        "shared_pre_m360_checkpoint": None,
+        "routes": {
+            route: {
+                "result": "NOT_RUN",
+                "restore_from_shared_pre_m360_checkpoint": False,
+                "restore": None,
+                "subject_to_owner_transition": None,
+                "m360_event_identity": None,
+                "action_and_postcondition": None,
+                "owner_to_subject_transition": None,
+            }
+            for route in ("A", "B", "C")
+        },
+        "final_baseline_restore": None,
+        "session_lineage": None,
+        "checks": {},
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    shared_checkpoint: dict[str, object] | None = None
+    final_restore_completed = False
+    recovery_restore_completed = False
+    restore_records: list[dict[str, object]] = []
+    starting_binding: dict[str, object] | None = None
+
+    def record_session_lineage(
+        *, result: str, baseline_restored: bool
+    ) -> dict[str, object] | None:
+        if starting_binding is None:
+            return None
+        pid_lineage = [starting_binding["bridge_pid"]] + [
+            row["after"]["bridge_pid"]
+            for row in restore_records
+            if isinstance(row, dict) and isinstance(row.get("after"), dict)
+        ]
+        generation_lineage = [
+            starting_binding["connection_generation"]
+        ] + [
+            row["after"]["connection_generation"]
+            for row in restore_records
+            if isinstance(row, dict) and isinstance(row.get("after"), dict)
+        ]
+        return {
+            "scope": (
+                "phase2_workforce_activation_three_route_final_restore"
+            ),
+            "result": result,
+            "baseline_restored": baseline_restored,
+            "starting_binding": starting_binding,
+            "restore_count": len(restore_records),
+            "pid_lineage": pid_lineage,
+            "connection_generation_lineage": generation_lineage,
+            "restore_records": restore_records,
+            "final_binding": (
+                restore_records[-1]["after"]
+                if restore_records
+                else starting_binding
+            ),
+        }
+
+    try:
+        character_ids = (owner, subject, b2_owner_character_id)
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or value <= 0
+            for value in character_ids
+        ) or owner == subject:
+            raise acceptance.RunnerError(
+                "phase-two Workforce action cell received invalid identities"
+            )
+        initial_snapshot = service.snapshot()
+        if not isinstance(initial_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two Workforce initial snapshot is not an object"
+            )
+        starting_binding = _phase2_paused_binding(
+            initial_snapshot, label="phase-two Workforce action baseline"
+        )
+        if starting_binding["player_character_id"] != subject:
+            raise acceptance.RunnerError(
+                "phase-two Workforce action baseline is not the received-self subject"
+            )
+
+        fixture_install = install_phase2_workforce_action_fixture(
+            userdir, bootstrap, artifacts
+        )
+        evidence["fixture_install"] = fixture_install
+        activation_save = _save_phase2_workforce_checkpoint(
+            service, label="Workforce fixture activation"
+        )
+        evidence["activation_checkpoint"] = activation_save
+        activation_restore = _restore_phase2_workforce_checkpoint(
+            service,
+            checkpoint=activation_save["checkpoint"],
+            expected_player_character_id=subject,
+            label="Workforce fixture activation",
+        )
+        restore_records.append(activation_restore)
+        evidence["activation_restore"] = activation_restore
+
+        activation_snapshot = service.snapshot()
+        if not isinstance(activation_snapshot, dict):
+            raise acceptance.RunnerError(
+                "Workforce fixture activation snapshot is not an object"
+            )
+        if isinstance(activation_snapshot.get("active_event"), dict):
+            activation_identity = query_event_definition_identity(
+                service, activation_snapshot
+            )
+            activation_key = activation_identity.get("event_definition_key")
+        else:
+            activation_key = None
+        if activation_key == B2_PIP_EVENT_DEFINITION_KEY:
+            activation_dir = artifacts / "workforce_fixture_activation"
+            activation_dir.mkdir(parents=True, exist_ok=True)
+            evidence["activation_b2_clear"] = (
+                run_phase2_b2_pip_gameplay_action_cell(
+                    service,
+                    activation_dir,
+                    owner_character_id=b2_owner_character_id,
+                )
+            )
+        elif activation_key not in {
+            None,
+            PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT,
+        }:
+            raise acceptance.RunnerError(
+                "Workforce fixture activation encountered unexpected event "
+                f"{activation_key!r}"
+            )
+        handoff_ready = wait_for_phase2_exact_event(
+            service,
+            expected_definition_key=PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT,
+            expected_player_character_id=subject,
+        )
+        evidence["activation_handoff_ready"] = handoff_ready
+        shared_save = _save_phase2_workforce_checkpoint(
+            service, label="shared pre-M360 A/B/C"
+        )
+        shared_checkpoint = dict(shared_save["checkpoint"])
+        evidence["shared_pre_m360_checkpoint"] = shared_save
+        evidence["checkpoint_created_for_workforce"] = True
+        evidence["stage"] = "three_independent_route_restores"
+        write_json(evidence_path, evidence)
+
+        for route in ("A", "B", "C"):
+            route_row = evidence["routes"][route]
+            if not isinstance(route_row, dict):
+                raise acceptance.RunnerError(
+                    f"Workforce route {route} evidence row is malformed"
+                )
+            route_directory = artifacts / "workforce_m360_routes" / route
+            route_directory.mkdir(parents=True, exist_ok=True)
+            restored = _restore_phase2_workforce_checkpoint(
+                service,
+                checkpoint=shared_checkpoint,
+                expected_player_character_id=subject,
+                label=f"Workforce route {route}",
+            )
+            restore_records.append(restored)
+            route_row["restore"] = restored
+            route_row["restore_from_shared_pre_m360_checkpoint"] = True
+            route_row["handoff_event"] = wait_for_phase2_exact_event(
+                service,
+                expected_definition_key=(
+                    PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT
+                ),
+                expected_player_character_id=subject,
+            )
+            to_owner = select_typed_fixture_player_transition(
+                service,
+                expected_event_definition_key=(
+                    PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT
+                ),
+                expected_player_before=subject,
+                expected_player_after=owner,
+                owner_character_id=owner,
+                subject_character_id=subject,
+                owner_scope_name=PHASE2_WORKFORCE_OWNER_SCOPE,
+                subject_scope_name=PHASE2_WORKFORCE_SUBJECT_SCOPE,
+                evidence_path=(
+                    route_directory / "subject_to_owner_transition.json"
+                ),
+            )
+            route_row["subject_to_owner_transition"] = to_owner
+            m360_ready = wait_for_phase2_exact_event(
+                service,
+                expected_definition_key=M360_EVENT_DEFINITION_KEY,
+                expected_player_character_id=owner,
+            )
+            route_row["m360_event_identity"] = m360_ready
+            switch_back_capture: dict[str, object] = {}
+
+            def subject_service_factory(binding: object) -> GameplayBridgeService:
+                binding_owner = getattr(binding, "owner_character_id", None)
+                binding_subject = getattr(binding, "subject_character_id", None)
+                if binding_owner != owner or binding_subject != subject:
+                    raise acceptance.RunnerError(
+                        "M360 helper binding disagrees with fixture owner/subject"
+                    )
+                transition = select_typed_fixture_player_transition(
+                    service,
+                    expected_event_definition_key=(
+                        PHASE2_WORKFORCE_SWITCH_BACK_EVENT
+                    ),
+                    expected_player_before=owner,
+                    expected_player_after=subject,
+                    owner_character_id=owner,
+                    subject_character_id=subject,
+                    owner_scope_name=PHASE2_WORKFORCE_OWNER_SCOPE,
+                    subject_scope_name=PHASE2_WORKFORCE_SUBJECT_SCOPE,
+                    evidence_path=(
+                        route_directory / "owner_to_subject_transition.json"
+                    ),
+                )
+                switch_back_capture.update(transition)
+                return service
+
+            evidence["helper_invoked"] = True
+            matrix = run_m360_action_and_postcondition(
+                service,
+                route=route,
+                subject_service_factory=subject_service_factory,
+                evidence_directory=route_directory,
+                max_timeline_steps=0,
+                post_ack_event_definition_allowlist=(
+                    PHASE2_WORKFORCE_SWITCH_BACK_EVENT,
+                ),
+            )
+            evidence["gameplay_action_executed"] = True
+            route_row["action_and_postcondition"] = matrix
+            route_row["owner_to_subject_transition"] = switch_back_capture
+            if not (
+                matrix.get("result") == "GREEN"
+                and switch_back_capture.get("result") == "GREEN"
+            ):
+                raise acceptance.RunnerError(
+                    f"Workforce route {route} returned a non-GREEN matrix"
+                )
+            route_row["result"] = "GREEN"
+            write_json(evidence_path, evidence)
+
+        final_restore = _restore_phase2_workforce_checkpoint(
+            service,
+            checkpoint=shared_checkpoint,
+            expected_player_character_id=subject,
+            label="Workforce final frozen baseline",
+        )
+        restore_records.append(final_restore)
+        evidence["final_baseline_restore"] = final_restore
+        final_restore_completed = True
+        final_handoff = wait_for_phase2_exact_event(
+            service,
+            expected_definition_key=PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT,
+            expected_player_character_id=subject,
+        )
+        evidence["final_handoff_event"] = final_handoff
+        pid_lineage = [starting_binding["bridge_pid"]] + [
+            row["after"]["bridge_pid"] for row in restore_records
+        ]
+        generation_lineage = [starting_binding["connection_generation"]] + [
+            row["after"]["connection_generation"] for row in restore_records
+        ]
+        checkpoint_hash = str(shared_checkpoint["sha256"]).lower()
+        checks = {
+            "fixture_installed_only_for_phase2": fixture_install.get("result")
+            == "GREEN"
+            and fixture_install.get("acceptance_only") is True
+            and fixture_install.get("release_included") is False
+            and fixture_install.get("promo_included") is False,
+            "shared_checkpoint_hashed": re.fullmatch(
+                r"[0-9a-f]{64}", checkpoint_hash
+            )
+            is not None,
+            "three_routes_green": all(
+                isinstance(evidence["routes"].get(route), dict)
+                and evidence["routes"][route].get("result") == "GREEN"
+                for route in ("A", "B", "C")
+            ),
+            "three_independent_route_restores": len(restore_records) == 5
+            and all(
+                row["restored_checkpoint"].get("sha256", "").lower()
+                == checkpoint_hash
+                for row in restore_records[1:]
+            ),
+            "final_baseline_restored": final_restore_completed,
+            "pid_lineage_unique": len(set(pid_lineage)) == len(pid_lineage),
+            "generation_lineage_consecutive": generation_lineage
+            == list(
+                range(
+                    int(generation_lineage[0]),
+                    int(generation_lineage[0]) + len(generation_lineage),
+                )
+            ),
+            "native_subject_restored": final_restore["after"][
+                "player_character_id"
+            ]
+            == subject,
+        }
+        evidence["checks"] = checks
+        failed = [name for name, passed in checks.items() if passed is not True]
+        if failed:
+            raise acceptance.RunnerError(
+                "Workforce #360 A/B/C matrix RED: " + ", ".join(failed)
+            )
+        evidence["session_lineage"] = record_session_lineage(
+            result="GREEN", baseline_restored=True
+        )
+        evidence["result"] = "GREEN"
+        evidence["stage"] = "complete_and_baseline_restored"
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        if shared_checkpoint is not None and not final_restore_completed:
+            try:
+                recovery = _restore_phase2_workforce_checkpoint(
+                    service,
+                    checkpoint=shared_checkpoint,
+                    expected_player_character_id=subject,
+                    label="Workforce failure recovery baseline",
+                )
+                restore_records.append(recovery)
+                evidence["failure_recovery_restore"] = recovery
+                recovery_restore_completed = True
+            except BaseException as recovery_error:
+                evidence["failure_recovery_restore"] = {
+                    "result": "RED",
+                    "failure_reason": (
+                        f"{type(recovery_error).__name__}: {recovery_error}"
+                    ),
+                }
+        evidence["session_lineage"] = record_session_lineage(
+            result=(
+                "RED_RECOVERED"
+                if final_restore_completed or recovery_restore_completed
+                else "RED_UNRECOVERED"
+            ),
+            baseline_restored=(
+                final_restore_completed or recovery_restore_completed
+            ),
+        )
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two Workforce #360 action matrix failed: {error}"
+        ) from error
+
+
 def wait_for_phase2_paused_snapshot(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -5988,14 +7008,29 @@ def phase2_native_session_liveness_gate(
     *,
     scenario_evidence: object,
 ) -> dict[str, object]:
-    """Bind the still-running supervisor and MCP driver to restored PID two."""
+    """Bind the supervisor and driver to the final recorded restore PID."""
 
     evidence_path = artifacts / "08_phase2_native_session_liveness.json"
     scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
-    lineage_value = scenario.get("save_restore_lineage")
+    lineage_projection = _phase2_expected_session_lineage(scenario)
+    lineage_value = lineage_projection.get("base")
     lineage = lineage_value if isinstance(lineage_value, dict) else {}
-    expected_pid = lineage.get("second_pid")
-    expected_generation = lineage.get("second_connection_generation")
+    pid_lineage_value = lineage_projection.get("pid_lineage")
+    pid_lineage = (
+        pid_lineage_value if isinstance(pid_lineage_value, list) else []
+    )
+    generation_lineage_value = lineage_projection.get(
+        "connection_generation_lineage"
+    )
+    generation_lineage = (
+        generation_lineage_value
+        if isinstance(generation_lineage_value, list)
+        else []
+    )
+    expected_pid = pid_lineage[-1] if pid_lineage else None
+    expected_generation = (
+        generation_lineage[-1] if generation_lineage else None
+    )
     session_done = supervisor.get("session_done")
     session_thread = supervisor.get("session_thread")
     evidence: dict[str, object] = {
@@ -6005,6 +7040,7 @@ def phase2_native_session_liveness_gate(
         "mcp_only": True,
         "expected_pid": expected_pid,
         "expected_connection_generation": expected_generation,
+        "lineage_projection": lineage_projection,
         "capabilities": None,
         "snapshot": None,
         "binding": None,
@@ -6040,6 +7076,38 @@ def phase2_native_session_liveness_gate(
                 "two_pid_lineage_proven"
             )
             is True,
+            "full_lineage_lengths_match": bool(pid_lineage)
+            and len(pid_lineage) == len(generation_lineage),
+            "full_pid_lineage_unique": bool(pid_lineage)
+            and all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and value > 0
+                for value in pid_lineage
+            )
+            and len(set(pid_lineage)) == len(pid_lineage),
+            "full_generation_lineage_consecutive": bool(
+                generation_lineage
+            )
+            and all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and value > 0
+                for value in generation_lineage
+            )
+            and generation_lineage
+            == list(
+                range(
+                    generation_lineage[0],
+                    generation_lineage[0] + len(generation_lineage),
+                )
+            ),
+            "workforce_join_matches_base_final": (
+                lineage_projection.get(
+                    "workforce_join_matches_base_final"
+                )
+                is True
+            ),
             "capabilities_connected": diagnostics.get("connected") is True,
             "capabilities_pid_matches_second": diagnostics.get("bridge_pid")
             == expected_pid,
@@ -10934,6 +12002,8 @@ def run_phase2_live_scenario(
     *,
     tracked_ck3_pid: int,
     seed_contract: dict[str, object],
+    userdir: Path | None = None,
+    bootstrap: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Run only MCP phase-two primitives; never fall back to phase-one UI."""
 
@@ -11171,42 +12241,70 @@ def run_phase2_live_scenario(
         )
         write_json(evidence_path, evidence)
 
-        # The reusable Workforce helper is intentionally reached only after
-        # the already-completed action/restore cells have returned to their
-        # frozen baseline.  Its current runner gate fails before creating a
-        # Workforce checkpoint or selecting #360: the public session has no
-        # exact owner-to-subject player transition, and the existing lineage
-        # cannot provide three independent A/B/C restores.  Never fall back to
-        # the legacy fixture's hard-wired test choreography.
-        workforce_action = (
-            preflight_phase2_workforce_m360_gameplay_action_cell(
+        # The dedicated third fixture is installed only now, after all prior
+        # cells and their read-only restore comparison are complete.  A
+        # managed reload activates its invisible scripted-widget summon.  The
+        # real #360 product action and typed subject/owner cards then run A/B/C
+        # from one hash-identical checkpoint, followed by a final baseline
+        # restore.  Tests that call this function without an isolated userdir
+        # retain the old honest pre-mutation RED instead of manufacturing one.
+        if userdir is None or bootstrap is None:
+            workforce_action = (
+                preflight_phase2_workforce_m360_gameplay_action_cell(
+                    service,
+                    artifacts,
+                    owner_character_id=owner_contract[
+                        "workforce_owner_character_id"
+                    ],
+                    subject_character_id=int(
+                        restored_binding["player_character_id"]
+                    ),
+                    seed_contract=seed_contract,
+                    prior_lineage=lineage,
+                )
+            )
+        else:
+            workforce_action = run_phase2_workforce_m360_gameplay_action_cell(
                 service,
                 artifacts,
+                userdir=userdir,
+                bootstrap=bootstrap,
                 owner_character_id=owner_contract[
                     "workforce_owner_character_id"
                 ],
                 subject_character_id=int(
                     restored_binding["player_character_id"]
                 ),
-                seed_contract=seed_contract,
+                b2_owner_character_id=owner_contract[
+                    "b2_pip_owner_character_id"
+                ],
                 prior_lineage=lineage,
             )
-        )
         evidence["workforce_collective_gameplay_action_cell"] = (
             workforce_action
         )
+        if workforce_action.get("result") == "GREEN":
+            evidence["completed_gameplay_action_cells"].append(
+                "workforce_collective_gameplay_action_and_postcondition_matrix"
+            )
+            evidence["missing_gameplay_action_cells"] = [
+                value
+                for value in evidence["missing_gameplay_action_cells"]
+                if value
+                != "workforce_collective_gameplay_action_and_postcondition_matrix"
+            ]
+            write_json(evidence_path, evidence)
 
         # All four frozen domain providers now run as real pre/restore/post
         # read-only matrices, and the Incident, B2, and AI-owned product
-        # actions have been proven.  The remaining two product cells are
-        # still absent, so the batch must remain RED instead of inflating
-        # three completed cells into phase-two.
+        # actions have been proven.  The remaining scoreboard product cell is
+        # still absent, so the batch must remain RED instead of inflating the
+        # completed cells into full phase-two acceptance.
         raise acceptance.RunnerError(
             "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
-            "actions and "
-            "B2/Incident/Workforce/AI-owned observations passed, but the "
-            "remaining Workforce/scoreboard gameplay action "
-            "cells are unimplemented"
+            "actions and B2/Incident/Workforce/AI-owned observations passed, "
+            "but the remaining scoreboard gameplay action cell is "
+            "unimplemented"
         )
     except BaseException as error:
         incident_path = artifacts / (
@@ -11291,6 +12389,26 @@ def run_phase2_live_scenario(
                     evidence["workforce_collective_gameplay_action_cell"] = (
                         workforce_value
                     )
+                    completed = evidence["completed_gameplay_action_cells"]
+                    if (
+                        workforce_value.get("result") == "GREEN"
+                        and isinstance(completed, list)
+                        and (
+                            "workforce_collective_gameplay_action_and_postcondition_matrix"
+                            not in completed
+                        )
+                    ):
+                        completed.append(
+                            "workforce_collective_gameplay_action_and_postcondition_matrix"
+                        )
+                        evidence["missing_gameplay_action_cells"] = [
+                            value
+                            for value in evidence[
+                                "missing_gameplay_action_cells"
+                            ]
+                            if value
+                            != "workforce_collective_gameplay_action_and_postcondition_matrix"
+                        ]
             except (OSError, ValueError, json.JSONDecodeError):
                 pass
         lineage_path = artifacts / "06_phase2_save_restore_lineage.json"
@@ -11707,6 +12825,8 @@ def run_cell(
                 artifacts,
                 tracked_ck3_pid=tracked_ck3_pid,
                 seed_contract=dict(phase2_seed_install["contract"]),
+                userdir=userdir,
+                bootstrap=bootstrap,
             )
             gameplay_acceptance_executed = (
                 evidence.get("phase2_acceptance_complete") is True
@@ -12069,14 +13189,10 @@ def run_cell(
                     if isinstance(phase2_final_capabilities, dict)
                     else None
                 ),
-                "pid_lineage": [
-                    native_cleanup.get("initial_pid"),
-                    native_cleanup.get("second_pid"),
-                ],
-                "connection_generation_lineage": [
-                    native_cleanup.get("initial_generation"),
-                    native_cleanup.get("second_generation"),
-                ],
+                "pid_lineage": native_cleanup.get("pid_lineage"),
+                "connection_generation_lineage": native_cleanup.get(
+                    "connection_generation_lineage"
+                ),
                 "restart_count": (
                     native_cleanup.get("session_report", {}).get(
                         "restart_count"

@@ -1,0 +1,18 @@
+﻿# One-pixel automatic bridge. It has no clickable test control and is mounted
+# only after the phase-two runner enables this dedicated external fixture.
+window = {
+	name = "zga_phase2_workforce_bridge_window"
+	size = { 1 1 }
+	layer = tutorial
+	position = { 0 0 }
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	state = { name = _show using = Animation_FadeIn_Quick }
+	state = { name = _hide using = Animation_FadeOut_Quick }
+	state = {
+		name = "zga_phase2_workforce_summon"
+		trigger_when = "[GetScriptedGui('zga_phase2_workforce_summon_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('zga_phase2_workforce_summon_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+}

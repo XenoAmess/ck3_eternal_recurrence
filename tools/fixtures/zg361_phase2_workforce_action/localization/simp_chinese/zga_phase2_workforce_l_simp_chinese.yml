@@ -1,0 +1,7 @@
+﻿l_simp_chinese:
+ zga_phase2_workforce.1.t:0 "Workforce 验收：接管经理席位"
+ zga_phase2_workforce.1.desc:0 "这张外部验收卡绑定真实案卷的受考人与负责人。只能通过带类型的 MCP 选项继续。"
+ zga_phase2_workforce.1.a:0 "暂时扮演本案确切负责人"
+ zga_phase2_workforce.3.t:0 "Workforce 验收：回到收到案卷的人"
+ zga_phase2_workforce.3.desc:0 "真实的 #360 路线已经提交。读取 received-self provider 前，回到本案确切受考人。"
+ zga_phase2_workforce.3.a:0 "回到本案确切受考人"

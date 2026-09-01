@@ -1,0 +1,37 @@
+﻿# Acceptance-only player-transition summons. The shipped product owns every
+# zg361_* business fact; this fixture writes only its own one-shot flags.
+zga_phase2_workforce_summon_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		NOT = { has_character_flag = zga_phase2_workforce_transition_pending }
+		NOT = { has_character_flag = zga_phase2_workforce_transition_complete }
+		has_variable = zg361_case_al_owner
+		has_variable = zg361_case_al_subject
+		has_variable = zg361_case_al_cycle_serial
+		has_variable = zg361_case_al_case_serial
+		has_variable = zg361_case_al_state
+		has_variable = zg361_case_al_active
+		var:zg361_case_al_subject = this
+		var:zg361_case_al_state = 4
+		var:zg361_case_al_active = 1
+		has_variable = zg361_we_al_external_stage_receipts_verified
+		var:zg361_we_al_external_stage_receipts_verified = 1
+		NOT = { has_variable = zg361_we_m360_event_queued }
+		var:zg361_case_al_owner = {
+			is_ai = yes
+			is_alive = yes
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_p2c_m360_source_status
+			var:zg361_p2c_m360_source_status = 1
+			var:zg361_p2c_m360_source_owner = this
+			var:zg361_p2c_m360_source_subject = root
+			var:zg361_p2c_m360_source_al_cycle = root.var:zg361_case_al_cycle_serial
+			var:zg361_p2c_m360_source_al_case = root.var:zg361_case_al_case_serial
+		}
+	}
+	effect = {
+		add_character_flag = zga_phase2_workforce_transition_pending
+		trigger_event = zga_phase2_workforce.1
+	}
+}

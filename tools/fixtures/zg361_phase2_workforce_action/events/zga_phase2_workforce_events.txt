@@ -1,0 +1,121 @@
+﻿namespace = zga_phase2_workforce
+
+# Visible typed subject -> owner handoff. MCP must inspect this exact event,
+# its root and both saved character scopes before selecting the sole option.
+zga_phase2_workforce.1 = {
+	type = character_event
+	title = zga_phase2_workforce.1.t
+	desc = zga_phase2_workforce.1.desc
+	left_portrait = root
+	trigger = {
+		is_ai = no
+		has_character_flag = zga_phase2_workforce_transition_pending
+		has_variable = zg361_case_al_owner
+		has_variable = zg361_case_al_subject
+		has_variable = zg361_case_al_cycle_serial
+		has_variable = zg361_case_al_case_serial
+		has_variable = zg361_case_al_state
+		has_variable = zg361_case_al_active
+		var:zg361_case_al_subject = this
+		var:zg361_case_al_state = 4
+		var:zg361_case_al_active = 1
+		var:zg361_case_al_owner = {
+			is_ai = yes
+			is_alive = yes
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_p2c_m360_source_status
+			var:zg361_p2c_m360_source_status = 1
+		}
+	}
+	immediate = {
+		save_scope_as = zga_phase2_workforce_subject
+		var:zg361_case_al_owner = {
+			save_scope_as = zga_phase2_workforce_owner
+		}
+	}
+	option = {
+		name = zga_phase2_workforce.1.a
+		set_player_character = scope:zga_phase2_workforce_owner
+		scope:zga_phase2_workforce_owner = {
+			trigger_event = zga_phase2_workforce.2
+		}
+	}
+}
+
+# Hidden owner carrier. The public product resume performs every business
+# mutation and queues the genuine zg361we.360 card. The switch-back card is
+# queued only afterwards, making its appearance an ordering postcondition.
+zga_phase2_workforce.2 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = scope:zga_phase2_workforce_owner
+				exists = scope:zga_phase2_workforce_subject
+				scope:zga_phase2_workforce_subject = {
+					is_ai = yes
+					has_character_flag = zga_phase2_workforce_transition_pending
+					has_variable = zg361_case_al_owner
+					has_variable = zg361_case_al_subject
+					has_variable = zg361_case_al_cycle_serial
+					has_variable = zg361_case_al_case_serial
+					has_variable = zg361_case_al_state
+					has_variable = zg361_case_al_active
+					var:zg361_case_al_owner = root
+					var:zg361_case_al_subject = this
+					var:zg361_case_al_state = 4
+					var:zg361_case_al_active = 1
+				}
+			}
+			save_scope_as = zga_phase2_workforce_owner
+			scope:zga_phase2_workforce_subject = {
+				save_scope_as = zga_phase2_workforce_subject
+				zg361_we_resume_m360_from_central_source_effect = {
+					TICKET_OWNER = scope:zga_phase2_workforce_owner
+					TICKET_SUBJECT = scope:zga_phase2_workforce_subject
+					TICKET_CYCLE = var:zg361_case_al_cycle_serial
+					TICKET_CASE = var:zg361_case_al_case_serial
+				}
+			}
+			trigger_event = zga_phase2_workforce.3
+		}
+		else = {
+			debug_log = "ZGAP2WF: RED exact owner/subject carrier binding unavailable"
+		}
+	}
+}
+
+# Visible typed owner -> subject handoff. It must be selected before the
+# received-self Workforce provider can prove the #360 business receipt.
+zga_phase2_workforce.3 = {
+	type = character_event
+	title = zga_phase2_workforce.3.t
+	desc = zga_phase2_workforce.3.desc
+	left_portrait = root
+	trigger = {
+		is_ai = no
+		this = scope:zga_phase2_workforce_owner
+		exists = scope:zga_phase2_workforce_subject
+		scope:zga_phase2_workforce_subject = {
+			is_ai = yes
+			has_character_flag = zga_phase2_workforce_transition_pending
+			has_variable = zg361_we_m360_receipt_choice
+		}
+	}
+	immediate = {
+		save_scope_as = zga_phase2_workforce_owner
+		scope:zga_phase2_workforce_subject = {
+			save_scope_as = zga_phase2_workforce_subject
+		}
+	}
+	option = {
+		name = zga_phase2_workforce.3.a
+		scope:zga_phase2_workforce_subject = {
+			remove_character_flag = zga_phase2_workforce_transition_pending
+			add_character_flag = zga_phase2_workforce_transition_complete
+		}
+		set_player_character = scope:zga_phase2_workforce_subject
+	}
+}

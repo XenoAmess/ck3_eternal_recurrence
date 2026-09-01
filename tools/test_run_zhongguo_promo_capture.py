@@ -3475,7 +3475,6 @@ def main() -> int:
             "scoreboard_named_widget_and_acl_matrix",
         ]
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
-            "workforce_collective_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
         )
         for cell_id in (
@@ -3494,6 +3493,7 @@ def main() -> int:
                 in {
                     "b2_pip_snapshot_query_matrix",
                     "incident_xyz_snapshot_query_matrix",
+                    "workforce_collective_and_three_cycle_matrix",
                     "ai_owned_case_matrix",
                 }
             )
