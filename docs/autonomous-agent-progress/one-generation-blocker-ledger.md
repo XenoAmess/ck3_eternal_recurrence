@@ -67,7 +67,7 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 | GEN-031 | B1 native capability | war-termination options query 未绑定已发布 paused revision | 历史 RED `33876238` 在 `53278752 / native:25 / revision=26` 的第二个 WarID query 发生 row mismatch。`fc0f878` 让 native handler 消费 expected revision，并在 admission/completion 进行完整 snapshot sandwich；只在稳定成功后推进 query sequence。Python 只把明确 stale/admission-changed/completion-changed 的零写入拒绝映射为既有一次 whole-turn replan，真实四字段 mismatch 继续硬 RED并留最小 diff | `9186bfa3` turn 11/12 已在同一 paused native revision 26 连续成功查询 WarID `83886203 / 134217852`，跨过原失败边界；后续查询至 turn 20 持续成功，cleanup 全绿 | 2026-08-28 resolved；`fc0f878` blocker-removal production-live，report `2C764FEC...6C83` |
 | GEN-032 | B1 | 玩家自然死亡先于 tactical sentinel 正常 stop，terminal 边界不能稳定化 | 三次早期 attempt 先关闭 terminal 识别与日期漂移；formal G2 attempt 01 又证明同一 bound episode 的 terminal surface 在 pause 服务期间可从死亡角色演化为继承人。最终合同只固定 bridge/connection/episode owner；played-character、alive 与 `dead→changed` terminal reason 可单调演化。event/pending interaction 的 exact identity 不变 | formal G2 attempt 03 已在相同生产边界返回 `death-terminal`，随后继续完成 GEN-009；driver 回归 `196 passed + 212 subtests`，相关聚合 `468 passed + 287 subtests` | 2026-08-30 resolved；terminal sentinel blocker-removal production-live；边界由 G2 live 再校准 |
 | GEN-033 | B1（G2） | 新接触战斗的 full CombatID/BattleResultID 为负，被旧 consumer 当成未物化 | attempts 08/09 在 `53291904` 分别报 `active_combat_identity_failed` / `subject_combat_id_invalid`；attempt10 唯一一次 `+24h` 后仍因“缺 positive CombatID”停止。exact-build 证明两类 ID 均为 opaque signed full dword、low24 仅选槽、`-1` 唯一 missing。attempt11 先穿过 CombatID 后暴露 BattleResultID，同一修复后 attempt12 双查询稳定读到 `-2147483647 / -2046820351` | signed identity 原样贯穿 reader、wire、contracts、planner literal、battle action/transition/terminal journal 与 sentinel；同 checkpoint 做真实 action 后 paused requery 并保存 durable checkpoint | 2026-08-31 resolved；attempt16 production-live loop slice，完整 G2 第二寿命仍进行中 |
-| GEN-034 | B1（G2） | Raiktor 特殊战争可合法投降，但 CB-specific actual terms 尚未形成可执行闭环 | frozen continuation 的 CharacterID `29829` / WarID `50331699` 为 primary attacker，`raiktor_claim_cb`、1281 日、战分 `-50`；surrender validator/available/auto-accept/`would_accept_now` 全真。gold、F/prestige、PoW、favor-hook 四域已有 production-live 只读 wire；truce、generic war-bound current/cleanup 与 claims-base+六动态域聚合分别由 `c0455b6 / 94d367e / 5e2dfea` 闭合到 static/fixture-ready，但尚未接 public wire/policy/live。source attribution、pre soldiers、proven loss 仍为 false | 将 truce 与 generic war-bound/aggregate 接入同帧 production reader/MCP，完成 continue-vs-surrender policy；普通 `claim_cb` 不变，旧 crash reader继续禁用。随后一次 CK3 启动完成双查询、typed surrender、六域 postcondition与 postwar checkpoint；若策略仍要求 source-specific loss，必须先闭合 attribution/pre/loss，不能用 authored 3000 猜测 | **GEN-034 unresolved**；四域 read-only production-live，六域 aggregate static/fixture-ready/not-live；public wire、policy、MCP action 与 live matrix pending |
+| GEN-034 | B1（G2） | Raiktor 特殊战争可合法投降，但 CB-specific actual terms 尚未形成可执行闭环 | frozen continuation 的 CharacterID `29829` / WarID `50331699` 为 primary attacker，`raiktor_claim_cb`、1281 日、战分 `-50`；surrender validator/available/auto-accept/`would_accept_now` 全真。gold、F/prestige、PoW、favor-hook 四域已有 production-live 只读 wire；truce、generic war-bound current/cleanup 与 claims-base+六动态域聚合分别由 `c0455b6 / 94d367e / 5e2dfea` 闭合到 static/fixture-ready。`630ff35` 又闭合 conservative pairwise policy core，但当前缺 public 同帧 truce/generic input、campaign dominance certificate、owner budget profile 与 white-peace evaluation，故 policy 仍 underdetermined、无 action literal。source attribution、pre soldiers、proven loss 仍为 false | 将 truce 与 generic war-bound/aggregate 接入同帧 production reader/MCP，补 campaign certificate、显式 budget profile 与 white-peace comparison，再将 policy 接到 typed surrender；普通 `claim_cb` 不变，旧 crash reader继续禁用。随后一次 CK3 启动完成双查询、唯一 submit、六域 postcondition与 postwar checkpoint；若策略要求 source-specific loss，必须先闭合 attribution/pre/loss，不能用 authored 3000 猜测 | **GEN-034 unresolved**；四域 read-only production-live；六域 aggregate 与 policy core static/fixture-ready/not-live；public wire、full-exit policy、MCP action 与 live matrix pending |
 
 ## Degraded heuristic 纪律
 
@@ -740,3 +740,21 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - [postcondition boundary] 优先在同一 paused `date_raw` 完成 command 应用。如果必须跨日，日收入、其它 effect 与 truce 起算会污染精确
   delta；没有 action-boundary observer 时该臂记 capability RED，不能只用 WarID 消失冒充六域 GREEN。GEN-034 只有 implementation、
   fixture 与上述一次启动 live matrix 全部完成后才能关闭。
+
+## 2026-09-01：GEN-034 conservative pairwise policy core
+
+- [static/fixture-ready policy / not-live] `630ff35` 新增
+  `raiktor_continue_vs_surrender_policy_v1`。其输入严格冻结 exact paused frame identity、claims base、六个 dynamic domains、完整
+  campaign dominance certificate 与具 provenance 的 owner budget profile；战争分数 `-50` 和 1281 日只作为模型输入，不是投降理由。
+  continue 与 surrender 分别使用保守上下界，只有一方在全部 hard budget 内并以显式 switch margin 严格胜过另一方时，才产生 pairwise
+  preference；否则返回 underdetermined。
+- generic war-bound current 只可作为 conservative exposure，不能冒充 `norman_highwaymen` source attribution、战前兵力或 proven loss；
+  authored `3000` 同样不能进入 measured loss。policy 不恢复已因两次实机 crash 禁用的 broad exit reader，也不放宽普通 `claim_cb`
+  white-peace 纵切。
+- 当前冻结 checkpoint 缺 public truce/generic-war-bound 同帧 wire、campaign dominance certificate 与显式 budget profile；white peace 也未评价。
+  因此合同明确保持 `recommendation_ready=false / full_exit_decision_ready=false / automatic_surrender_ready=false / action_literal=null`。
+  该提交没有 MCP action、没有 CK3 paused artifact，也没有 submit/postcondition；readiness 仅为
+  `static-fixture-policy-core / not-live`。
+- `630ff35` 的 Official Runner CI `33460057790` 已 terminal SUCCESS。这个 GREEN 只验证 policy/fixture 合同，不改变四域 live 边界，
+  也不关闭 `GEN-034`。最小下一步仍是 public same-frame six-domain input → campaign/budget evidence → white-peace comparison → typed
+  surrender single-submit → 六域 action-boundary/postwar live matrix。
