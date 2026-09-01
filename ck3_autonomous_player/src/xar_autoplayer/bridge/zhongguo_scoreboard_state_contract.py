@@ -3,9 +3,10 @@
 The caller supplies only a nonce. Widget names and character-variable keys are
 provider-owned allowlists. Fifteen fixed runtime instances expose their stable
 identity, instance/vtable pointer and visibility for a later paused action
-probe. The v1 query intentionally reports focus, enabled, rect, scroll and
-every action as typed unavailable until their exact-build ABI and paused live
-evidence exist.
+probe. Effective enabled is exact-build observed; focus, rect, scroll and every
+action remain typed unavailable until their exact-build ABI and paused live
+evidence exist. Provider-owned fingerprints and observation revisions advance
+only after a successful application-main, same-frame double read.
 """
 
 from __future__ import annotations
@@ -47,6 +48,8 @@ ZHONGGUO_SCOREBOARD_STATE_V1_GAME_ADAPTER_ID: Final = (
 
 _NONCE_RE: Final = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,63}\Z")
 _POINTER_RE: Final = re.compile(r"0x[0-9A-F]+\Z")
+_FINGERPRINT_RE: Final = re.compile(r"[0-9A-F]{64}\Z")
+_PROVIDER_SESSION_RE: Final = re.compile(r"[0-9A-F]{32}\Z")
 _WIDGET_IDENTITIES: Final = (
     ("zg361_open_scoreboard", "zg361_scoreboard_toggle"),
     ("zg361_scoreboard_window", "zg361_scoreboard_window"),
@@ -95,6 +98,7 @@ _TOP_REASONS: Final = {
     "widget_not_instantiated",
     "acl_inconsistent",
     "state_changed",
+    "provider_revision_unavailable",
     "internal_error",
 }
 _WIDGET_KEYS: Final = {
@@ -158,11 +162,20 @@ _PROVENANCE_VALUES: Final = {
     "gui_global_slot_rva": "0x576CC68",
     "find_top_level_widget_rva": "0x36D0B20",
     "widget_hidden_flags_offset": "0xD0",
+    "widget_local_hidden_mask": "0x10",
+    "widget_effective_hidden_mask": "0x08",
+    "widget_local_disabled_mask": "0x04",
+    "widget_effective_disabled_mask": "0x02",
     "widget_parent_offset": "0xE8",
     "widget_children_offset": "0xF0",
     "widget_name_offset": "0x1B8",
+    "modal_receivers_offset": "0x290",
+    "modal_receiver_count_offset": "0x29C",
+    "tree_fingerprint_domain": "XAR/ZG361/SCOREBOARD/TREE/V1\x00",
+    "semantic_fingerprint_domain": "XAR/ZG361/SCOREBOARD/SEMANTIC/V1\x00",
+    "state_digest_domain": "XAR/ZG361/SCOREBOARD/STATE/V1\x00",
     "query_scope": "fixed_scoreboard_instances_and_player_frozen_acl",
-    "contract_stage": "static_exact_build_live_unverified",
+    "contract_stage": "static_provider_observed_revision_live_unverified",
 }
 _FRAME_KEYS: Final = {
     "schema_version",
@@ -173,6 +186,11 @@ _FRAME_KEYS: Final = {
     "date_raw",
     "paused",
     "player_character_id",
+    "tree_fingerprint_v1",
+    "semantic_fingerprint_v1",
+    "provider_session_id",
+    "observation_sequence",
+    "observed_state_revision",
     "widgets",
     "acl",
     "actions",
@@ -284,6 +302,58 @@ def normalize_native_zhongguo_scoreboard_state_v1(
         status == "unavailable" and reason not in _TOP_REASONS
     ):
         raise ValueError("scoreboard_state top-level reason is invalid")
+    tree_fingerprint = frame["tree_fingerprint_v1"]
+    semantic_fingerprint = frame["semantic_fingerprint_v1"]
+    provider_session_id = frame["provider_session_id"]
+    observation_sequence = _integer(
+        frame["observation_sequence"],
+        "scoreboard_state observation_sequence",
+        0,
+        2**64 - 1,
+    )
+    observed_state_revision = _integer(
+        frame["observed_state_revision"],
+        "scoreboard_state observed_state_revision",
+        0,
+        2**64 - 1,
+    )
+    if status == "available":
+        if (
+            not isinstance(tree_fingerprint, str)
+            or _FINGERPRINT_RE.fullmatch(tree_fingerprint) is None
+            or not isinstance(semantic_fingerprint, str)
+            or _FINGERPRINT_RE.fullmatch(semantic_fingerprint) is None
+            or not isinstance(provider_session_id, str)
+            or _PROVIDER_SESSION_RE.fullmatch(provider_session_id) is None
+            or observation_sequence < 1
+            or observed_state_revision < 1
+        ):
+            raise ValueError(
+                "available scoreboard_state lacks provider observation binding"
+            )
+    else:
+        tree_fingerprint_valid = isinstance(tree_fingerprint, str) and (
+            tree_fingerprint == ""
+            or _FINGERPRINT_RE.fullmatch(tree_fingerprint) is not None
+        )
+        semantic_fingerprint_valid = isinstance(
+            semantic_fingerprint, str
+        ) and (
+            semantic_fingerprint == ""
+            or _FINGERPRINT_RE.fullmatch(semantic_fingerprint) is not None
+        )
+        provider_valid = isinstance(provider_session_id, str) and (
+            provider_session_id == ""
+            or _PROVIDER_SESSION_RE.fullmatch(provider_session_id) is not None
+        )
+        if (
+            not tree_fingerprint_valid
+            or not semantic_fingerprint_valid
+            or not provider_valid
+        ):
+            raise ValueError(
+                "unavailable scoreboard_state diagnostics are malformed"
+            )
 
     widgets = frame["widgets"]
     if not isinstance(widgets, list) or len(widgets) != len(

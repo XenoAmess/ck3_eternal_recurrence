@@ -19,6 +19,9 @@ ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY: Final = (
 ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP: Final = (
     "activate-zhongguo-scoreboard-v1"
 )
+ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY: Final = (
+    "game.contract.zhongguo-scoreboard-action-v1-fail-closed"
+)
 ZHONGGUO_SCOREBOARD_ACTION_V1_GAME_VERSION: Final = "1.19.0.6"
 ZHONGGUO_SCOREBOARD_ACTION_V1_EXECUTABLE_SHA256: Final = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -45,6 +48,8 @@ ACTION_KEYS: Final = frozenset(
 )
 _NONCE_RE: Final = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,63}\Z")
 _POINTER_RE: Final = re.compile(r"0x[0-9A-F]+\Z")
+_PROVIDER_SESSION_RE: Final = re.compile(r"[0-9A-F]{32}\Z")
+_FINGERPRINT_RE: Final = re.compile(r"[0-9A-F]{64}\Z")
 
 _WINDOW = "zg361_scoreboard_window"
 _MODAL = "zg361_scoreboard_modal"
@@ -88,6 +93,7 @@ _ACK_KEYS: Final = {
     "source",
     "target",
     "expected_postcondition",
+    "native_handled",
     "postcondition_verified",
     "provenance",
 }
@@ -97,6 +103,11 @@ _SOURCE_KEYS: Final = {
     "connection_generation",
     "date_raw",
     "player_character_id",
+    "provider_session_id",
+    "observation_sequence",
+    "observed_state_revision",
+    "tree_fingerprint_v1",
+    "semantic_fingerprint_v1",
     "window_instance_pointer",
 }
 _TARGET_KEYS: Final = {
@@ -107,12 +118,27 @@ _TARGET_KEYS: Final = {
 }
 _POST_KEYS: Final = {
     "requires_independent_query",
-    "minimum_revision",
-    "minimum_native_revision",
+    "minimum_observation_sequence",
+    "minimum_observed_state_revision",
+    "expected_provider_session_id",
+    "expected_tree_fingerprint_v1",
     "modal_effective_visible",
     "active_tab",
     "list_view_required",
     "expected_window_instance_pointer",
+}
+_NATIVE_RESULT_KEYS: Final = {
+    "step",
+    "accepted",
+    "status",
+    "request_nonce",
+    "action",
+    "action_sequence",
+    "snapshot_revision",
+    "rejection_reason",
+    "action_ack",
+    "production_capability_advertised",
+    "backend_id",
 }
 _PROVENANCE: Final = {
     "game_version": ZHONGGUO_SCOREBOARD_ACTION_V1_GAME_VERSION,
@@ -120,7 +146,7 @@ _PROVENANCE: Final = {
     "backend_id": ZHONGGUO_SCOREBOARD_ACTION_V1_BACKEND_ID,
     "consumer_id": ZHONGGUO_SCOREBOARD_ACTION_V1_CONSUMER_ID,
     "allowlist_id": ZHONGGUO_SCOREBOARD_ACTION_V1_ALLOWLIST_ID,
-    "contract_stage": "static_action_contract_live_unverified",
+    "contract_stage": "exact_dispatch_ack_provider_revision_live_unverified",
 }
 
 
@@ -140,6 +166,11 @@ class ZhongguoScoreboardActionRequestV1:
     expected_native_revision: int
     expected_connection_generation: int
     expected_player_character_id: int
+    expected_provider_session_id: str
+    expected_observation_sequence: int
+    expected_observed_state_revision: int
+    expected_tree_fingerprint_v1: str
+    expected_semantic_fingerprint_v1: str
     expected_window_instance_pointer: str
     expected_target_instance_pointer: str
     expected_target_vtable_pointer: str
@@ -168,6 +199,18 @@ def _pointer(value: object, label: str) -> str:
     return value
 
 
+def _provider_session_id(value: object, label: str) -> str:
+    if not isinstance(value, str) or _PROVIDER_SESSION_RE.fullmatch(value) is None:
+        raise ValueError(f"{label} must be 32 uppercase hexadecimal digits")
+    return value
+
+
+def _fingerprint(value: object, label: str) -> str:
+    if not isinstance(value, str) or _FINGERPRINT_RE.fullmatch(value) is None:
+        raise ValueError(f"{label} must be 64 uppercase hexadecimal digits")
+    return value
+
+
 def build_zhongguo_scoreboard_action_v1_request(
     *,
     request_nonce: str,
@@ -176,6 +219,11 @@ def build_zhongguo_scoreboard_action_v1_request(
     expected_native_revision: int,
     expected_connection_generation: int,
     expected_player_character_id: int,
+    expected_provider_session_id: str,
+    expected_observation_sequence: int,
+    expected_observed_state_revision: int,
+    expected_tree_fingerprint_v1: str,
+    expected_semantic_fingerprint_v1: str,
     expected_window_instance_pointer: str,
     expected_target_instance_pointer: str,
     expected_target_vtable_pointer: str,
@@ -203,6 +251,28 @@ def build_zhongguo_scoreboard_action_v1_request(
         expected_player_character_id=_character_id(
             expected_player_character_id,
             "expected_player_character_id",
+        ),
+        expected_provider_session_id=_provider_session_id(
+            expected_provider_session_id,
+            "expected_provider_session_id",
+        ),
+        expected_observation_sequence=_uint64(
+            expected_observation_sequence,
+            "expected_observation_sequence",
+            positive=True,
+        ),
+        expected_observed_state_revision=_uint64(
+            expected_observed_state_revision,
+            "expected_observed_state_revision",
+            positive=True,
+        ),
+        expected_tree_fingerprint_v1=_fingerprint(
+            expected_tree_fingerprint_v1,
+            "expected_tree_fingerprint_v1",
+        ),
+        expected_semantic_fingerprint_v1=_fingerprint(
+            expected_semantic_fingerprint_v1,
+            "expected_semantic_fingerprint_v1",
         ),
         expected_window_instance_pointer=_pointer(
             expected_window_instance_pointer,
@@ -302,8 +372,8 @@ def plan_zhongguo_scoreboard_action_v1(
     ) is not True:
         raise ScoreboardActionRejected("source_state_unavailable")
     if (
-        request.expected_revision == 2**64 - 1
-        or request.expected_native_revision == 2**64 - 1
+        request.expected_observation_sequence == 2**64 - 1
+        or request.expected_observed_state_revision == 2**64 - 1
     ):
         raise ScoreboardActionRejected("revision_overflow")
     if observed_revision != request.expected_revision:
@@ -320,6 +390,26 @@ def plan_zhongguo_scoreboard_action_v1(
         != request.expected_player_character_id
     ):
         raise ScoreboardActionRejected("player_binding_mismatch")
+    if source_state.get("provider_session_id") != (
+        request.expected_provider_session_id
+    ):
+        raise ScoreboardActionRejected("provider_session_mismatch")
+    if source_state.get("observation_sequence") != (
+        request.expected_observation_sequence
+    ):
+        raise ScoreboardActionRejected("observation_sequence_mismatch")
+    if source_state.get("observed_state_revision") != (
+        request.expected_observed_state_revision
+    ):
+        raise ScoreboardActionRejected("observed_state_revision_mismatch")
+    if source_state.get("tree_fingerprint_v1") != (
+        request.expected_tree_fingerprint_v1
+    ):
+        raise ScoreboardActionRejected("tree_fingerprint_mismatch")
+    if source_state.get("semantic_fingerprint_v1") != (
+        request.expected_semantic_fingerprint_v1
+    ):
+        raise ScoreboardActionRejected("semantic_fingerprint_mismatch")
     readiness = source_state.get("readiness")
     if not isinstance(readiness, dict) or any(
         readiness.get(key) is not True
@@ -348,7 +438,9 @@ def plan_zhongguo_scoreboard_action_v1(
     )
 
     active_tab: str | None
-    if request.action in {"open", "reopen"}:
+    if request.action == "reopen":
+        raise ScoreboardActionRejected("reopen_requires_two_phase_sequence")
+    if request.action == "open":
         if modal_visible:
             raise ScoreboardActionRejected("scoreboard_already_open")
         visible_entries: list[tuple[str, str]] = []
@@ -384,6 +476,12 @@ def plan_zhongguo_scoreboard_action_v1(
                 "surface_available"
             ) is not True:
                 raise ScoreboardActionRejected("received_acl_denied")
+        if _typed_bool(
+            widgets[_PAGE_WITNESSES[active_tab]],
+            "effective_visible",
+            "active_page_visibility",
+        ):
+            raise ScoreboardActionRejected("action_noop")
     else:
         if not modal_visible:
             raise ScoreboardActionRejected("scoreboard_not_open")
@@ -410,6 +508,15 @@ def plan_zhongguo_scoreboard_action_v1(
             "connection_generation": observed_connection_generation,
             "date_raw": date_raw,
             "player_character_id": request.expected_player_character_id,
+            "provider_session_id": request.expected_provider_session_id,
+            "observation_sequence": request.expected_observation_sequence,
+            "observed_state_revision": (
+                request.expected_observed_state_revision
+            ),
+            "tree_fingerprint_v1": request.expected_tree_fingerprint_v1,
+            "semantic_fingerprint_v1": (
+                request.expected_semantic_fingerprint_v1
+            ),
             "window_instance_pointer": window_instance,
         },
         "target": {
@@ -420,8 +527,18 @@ def plan_zhongguo_scoreboard_action_v1(
         },
         "expected_postcondition": {
             "requires_independent_query": True,
-            "minimum_revision": observed_revision + 1,
-            "minimum_native_revision": request.expected_native_revision + 1,
+            "minimum_observation_sequence": (
+                request.expected_observation_sequence + 1
+            ),
+            "minimum_observed_state_revision": (
+                request.expected_observed_state_revision + 1
+            ),
+            "expected_provider_session_id": (
+                request.expected_provider_session_id
+            ),
+            "expected_tree_fingerprint_v1": (
+                request.expected_tree_fingerprint_v1
+            ),
             "modal_effective_visible": request.action != "close",
             "active_tab": active_tab,
             "list_view_required": request.action != "close",
@@ -449,6 +566,7 @@ def acknowledged_zhongguo_scoreboard_action_v1(
         "source": dict(plan["source"]),
         "target": dict(plan["target"]),
         "expected_postcondition": dict(plan["expected_postcondition"]),
+        "native_handled": False,
         "postcondition_verified": False,
         "provenance": dict(_PROVENANCE),
     }
@@ -469,6 +587,7 @@ def normalize_zhongguo_scoreboard_action_v1_ack(
         or value["step"] != ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP
         or value["request_nonce"] != expected_request.request_nonce
         or value["action"] != expected_request.action
+        or not isinstance(value["native_handled"], bool)
         or value["postcondition_verified"] is not False
         or value["provenance"] != _PROVENANCE
     ):
@@ -490,6 +609,16 @@ def normalize_zhongguo_scoreboard_action_v1_ack(
         != expected_request.expected_connection_generation
         or source["player_character_id"]
         != expected_request.expected_player_character_id
+        or source["provider_session_id"]
+        != expected_request.expected_provider_session_id
+        or source["observation_sequence"]
+        != expected_request.expected_observation_sequence
+        or source["observed_state_revision"]
+        != expected_request.expected_observed_state_revision
+        or source["tree_fingerprint_v1"]
+        != expected_request.expected_tree_fingerprint_v1
+        or source["semantic_fingerprint_v1"]
+        != expected_request.expected_semantic_fingerprint_v1
         or source["window_instance_pointer"]
         != expected_request.expected_window_instance_pointer
         or target["instance_pointer"]
@@ -499,6 +628,15 @@ def normalize_zhongguo_scoreboard_action_v1_ack(
     ):
         raise ValueError("scoreboard action ACK does not match its request")
     _pointer(source["window_instance_pointer"], "window_instance_pointer")
+    _provider_session_id(source["provider_session_id"], "provider_session_id")
+    _uint64(source["observation_sequence"], "observation_sequence", positive=True)
+    _uint64(
+        source["observed_state_revision"],
+        "observed_state_revision",
+        positive=True,
+    )
+    _fingerprint(source["tree_fingerprint_v1"], "tree_fingerprint_v1")
+    _fingerprint(source["semantic_fingerprint_v1"], "semantic_fingerprint_v1")
     _pointer(target["instance_pointer"], "target.instance_pointer")
     _pointer(target["vtable_pointer"], "target.vtable_pointer")
     if expected_request.action.startswith("switch-"):
@@ -513,8 +651,14 @@ def normalize_zhongguo_scoreboard_action_v1_ack(
         target["stable_identity"] not in expected_targets
         or target["runtime_name"] != target["stable_identity"]
         or post["requires_independent_query"] is not True
-        or post["minimum_revision"] != source["revision"] + 1
-        or post["minimum_native_revision"] != source["native_revision"] + 1
+        or post["minimum_observation_sequence"]
+        != source["observation_sequence"] + 1
+        or post["minimum_observed_state_revision"]
+        != source["observed_state_revision"] + 1
+        or post["expected_provider_session_id"]
+        != source["provider_session_id"]
+        or post["expected_tree_fingerprint_v1"]
+        != source["tree_fingerprint_v1"]
         or post["expected_window_instance_pointer"]
         != source["window_instance_pointer"]
         or not isinstance(post["list_view_required"], bool)
@@ -542,6 +686,70 @@ def normalize_zhongguo_scoreboard_action_v1_ack(
     }
 
 
+def normalize_native_zhongguo_scoreboard_action_v1_result(
+    value: object,
+    *,
+    expected_request: ZhongguoScoreboardActionRequestV1,
+) -> dict[str, object]:
+    """Validate one native transport result without promoting unavailable.
+
+    The fail-closed transport capability is intentionally distinct from the
+    production action capability.  Once the exact dispatcher is wired, that
+    transport may return an ACK with ``production_capability_advertised=false``;
+    the ACK proves submission only and remains unusable as gameplay success
+    until a later provider-owned observation revision verifies postconditions.
+    """
+
+    if not isinstance(value, dict) or set(value) != _NATIVE_RESULT_KEYS:
+        raise ValueError("scoreboard action native result has unexpected fields")
+    if (
+        value["step"] != ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP
+        or value["request_nonce"] != expected_request.request_nonce
+        or value["action"] != expected_request.action
+    ):
+        raise ValueError("scoreboard action native result binding drifted")
+    action_sequence = _uint64(
+        value["action_sequence"], "action_sequence", positive=True
+    )
+    snapshot_revision = _uint64(
+        value["snapshot_revision"], "snapshot_revision", positive=True
+    )
+    backend_id = value["backend_id"]
+    if not isinstance(backend_id, str) or not backend_id:
+        raise ValueError("scoreboard action native result lacks backend_id")
+    advertised = value["production_capability_advertised"]
+    if not isinstance(advertised, bool):
+        raise ValueError("scoreboard action production capability flag is invalid")
+    if value["accepted"] is False:
+        reason = value["rejection_reason"]
+        if (
+            value["status"] != "unavailable"
+            or not isinstance(reason, str)
+            or not reason
+            or value["action_ack"] is not None
+            or advertised
+        ):
+            raise ValueError("scoreboard action unavailable result is inconsistent")
+        ack = None
+    elif value["accepted"] is True:
+        if (
+            value["status"] != "acknowledged_verification_pending"
+            or value["rejection_reason"] is not None
+        ):
+            raise ValueError("scoreboard action ACK is inconsistent")
+        ack = normalize_zhongguo_scoreboard_action_v1_ack(
+            value["action_ack"], expected_request=expected_request
+        )
+    else:
+        raise ValueError("scoreboard action accepted flag is invalid")
+    return {
+        **value,
+        "action_sequence": action_sequence,
+        "snapshot_revision": snapshot_revision,
+        "action_ack": ack,
+    }
+
+
 def verify_zhongguo_scoreboard_action_v1_postcondition(
     ack: dict[str, object],
     *,
@@ -559,21 +767,53 @@ def verify_zhongguo_scoreboard_action_v1_postcondition(
         "paused"
     ) is not True:
         raise ScoreboardActionRejected("post_state_unavailable")
-    if observed_revision < expected["minimum_revision"]:
-        raise ScoreboardActionRejected("post_revision_not_advanced")
+    if observed_revision != source["revision"]:
+        raise ScoreboardActionRejected("post_revision_mismatch")
     native_revision = post_state.get("snapshot_revision")
     if (
         isinstance(native_revision, bool)
         or not isinstance(native_revision, int)
-        or native_revision < expected["minimum_native_revision"]
+        or native_revision != source["native_revision"]
     ):
-        raise ScoreboardActionRejected("post_native_revision_not_advanced")
+        raise ScoreboardActionRejected("post_native_revision_mismatch")
     if observed_connection_generation != source["connection_generation"]:
         raise ScoreboardActionRejected("post_connection_generation_mismatch")
     if post_state.get("player_character_id") != source["player_character_id"]:
         raise ScoreboardActionRejected("post_player_binding_mismatch")
     if post_state.get("date_raw") != source["date_raw"]:
         raise ScoreboardActionRejected("post_date_mismatch")
+    if post_state.get("provider_session_id") != (
+        expected["expected_provider_session_id"]
+    ):
+        raise ScoreboardActionRejected("post_provider_session_mismatch")
+    observation_sequence = post_state.get("observation_sequence")
+    if (
+        isinstance(observation_sequence, bool)
+        or not isinstance(observation_sequence, int)
+        or observation_sequence < expected["minimum_observation_sequence"]
+    ):
+        raise ScoreboardActionRejected("post_observation_sequence_not_advanced")
+    observed_state_revision = post_state.get("observed_state_revision")
+    if (
+        isinstance(observed_state_revision, bool)
+        or not isinstance(observed_state_revision, int)
+        or observed_state_revision
+        < expected["minimum_observed_state_revision"]
+    ):
+        raise ScoreboardActionRejected("post_observed_state_revision_not_advanced")
+    if post_state.get("tree_fingerprint_v1") != (
+        expected["expected_tree_fingerprint_v1"]
+    ):
+        raise ScoreboardActionRejected("post_tree_fingerprint_mismatch")
+    semantic_fingerprint = post_state.get("semantic_fingerprint_v1")
+    if semantic_fingerprint == source["semantic_fingerprint_v1"]:
+        raise ScoreboardActionRejected("post_semantic_fingerprint_unchanged")
+    try:
+        _fingerprint(semantic_fingerprint, "post semantic_fingerprint_v1")
+    except ValueError as error:
+        raise ScoreboardActionRejected(
+            "post_semantic_fingerprint_unavailable"
+        ) from error
     post_query_nonce = post_state.get("request_nonce")
     if (
         not isinstance(post_query_nonce, str)
@@ -614,6 +854,16 @@ def verify_zhongguo_scoreboard_action_v1_postcondition(
         "post_revision": observed_revision,
         "source_native_revision": source["native_revision"],
         "post_native_revision": native_revision,
+        "provider_session_id": source["provider_session_id"],
+        "source_observation_sequence": source["observation_sequence"],
+        "post_observation_sequence": observation_sequence,
+        "source_observed_state_revision": source["observed_state_revision"],
+        "post_observed_state_revision": observed_state_revision,
+        "tree_fingerprint_v1": source["tree_fingerprint_v1"],
+        "source_semantic_fingerprint_v1": source[
+            "semantic_fingerprint_v1"
+        ],
+        "post_semantic_fingerprint_v1": semantic_fingerprint,
         "player_character_id": source["player_character_id"],
         "window_instance_pointer": window_instance,
         "modal_effective_visible": modal_visible,

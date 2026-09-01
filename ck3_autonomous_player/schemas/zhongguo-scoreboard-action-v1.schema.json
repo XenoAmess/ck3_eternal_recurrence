@@ -7,7 +7,8 @@
   "required": [
     "schema_version", "status", "accepted", "capability", "step",
     "request_nonce", "action", "source", "target",
-    "expected_postcondition", "postcondition_verified", "provenance"
+    "expected_postcondition", "native_handled", "postcondition_verified",
+    "provenance"
   ],
   "properties": {
     "schema_version": {"const": 1},
@@ -22,7 +23,7 @@
     "action": {
       "enum": [
         "open", "switch-managed", "switch-received", "switch-system",
-        "close", "reopen"
+        "close"
       ]
     },
     "source": {
@@ -30,7 +31,10 @@
       "additionalProperties": false,
       "required": [
         "revision", "native_revision", "connection_generation", "date_raw",
-        "player_character_id", "window_instance_pointer"
+        "player_character_id", "provider_session_id",
+        "observation_sequence", "observed_state_revision",
+        "tree_fingerprint_v1", "semantic_fingerprint_v1",
+        "window_instance_pointer"
       ],
       "properties": {
         "revision": {"type": "integer", "minimum": 0},
@@ -42,6 +46,11 @@
         "player_character_id": {
           "type": "integer", "minimum": 1, "maximum": 2147483647
         },
+        "provider_session_id": {"$ref": "#/$defs/provider_session_id"},
+        "observation_sequence": {"type": "integer", "minimum": 1},
+        "observed_state_revision": {"type": "integer", "minimum": 1},
+        "tree_fingerprint_v1": {"$ref": "#/$defs/fingerprint"},
+        "semantic_fingerprint_v1": {"$ref": "#/$defs/fingerprint"},
         "window_instance_pointer": {"$ref": "#/$defs/pointer"}
       }
     },
@@ -72,14 +81,18 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "requires_independent_query", "minimum_revision",
-        "minimum_native_revision", "modal_effective_visible", "active_tab",
-        "list_view_required", "expected_window_instance_pointer"
+        "requires_independent_query", "minimum_observation_sequence",
+        "minimum_observed_state_revision", "expected_provider_session_id",
+        "expected_tree_fingerprint_v1", "modal_effective_visible",
+        "active_tab", "list_view_required",
+        "expected_window_instance_pointer"
       ],
       "properties": {
         "requires_independent_query": {"const": true},
-        "minimum_revision": {"type": "integer", "minimum": 1},
-        "minimum_native_revision": {"type": "integer", "minimum": 2},
+        "minimum_observation_sequence": {"type": "integer", "minimum": 2},
+        "minimum_observed_state_revision": {"type": "integer", "minimum": 2},
+        "expected_provider_session_id": {"$ref": "#/$defs/provider_session_id"},
+        "expected_tree_fingerprint_v1": {"$ref": "#/$defs/fingerprint"},
         "modal_effective_visible": {"type": "boolean"},
         "active_tab": {
           "type": ["string", "null"],
@@ -89,6 +102,7 @@
         "expected_window_instance_pointer": {"$ref": "#/$defs/pointer"}
       }
     },
+    "native_handled": {"type": "boolean"},
     "postcondition_verified": {"const": false},
     "provenance": {
       "type": "object",
@@ -109,11 +123,13 @@
           "const": "xar-autoplayer-zhongguo-scoreboard-action-v1"
         },
         "allowlist_id": {"const": "zg361-scoreboard-named-widget-action-v1"},
-        "contract_stage": {"const": "static_action_contract_live_unverified"}
+        "contract_stage": {"const": "exact_dispatch_ack_provider_revision_live_unverified"}
       }
     }
   },
   "$defs": {
-    "pointer": {"type": "string", "pattern": "^0x[0-9A-F]+$"}
+    "pointer": {"type": "string", "pattern": "^0x[0-9A-F]+$"},
+    "provider_session_id": {"type": "string", "pattern": "^[0-9A-F]{32}$"},
+    "fingerprint": {"type": "string", "pattern": "^[0-9A-F]{64}$"}
   }
 }

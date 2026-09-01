@@ -1,6 +1,6 @@
 {
   "contract": "zhongguo_scoreboard_state_v1",
-  "status": "read_only_static_exact_build_action_paused_probe_required_live_unverified",
+  "status": "read_only_provider_observed_revision_static_exact_action_ack_live_unverified",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.query-zhongguo-scoreboard-state-v1",
@@ -11,6 +11,7 @@
   "mailbox_fixed_slot": "permitted_executor_octodenary",
   "request": {
     "public_inputs": ["request_nonce", "expected_revision"],
+    "internal_native_wire_inputs": ["expected_connection_generation"],
     "forbidden_inputs": [
       "widget_name",
       "widget_names",
@@ -25,6 +26,91 @@
       "unknown_field"
     ]
   },
+  "provider_observation_revision": {
+    "provider_session_id": "128_bit_CSPRNG_rendered_as_exactly_32_uppercase_hex_digits_and_stable_for_the_DLL_provider_lifetime",
+    "public_fields": [
+      "tree_fingerprint_v1",
+      "semantic_fingerprint_v1",
+      "provider_session_id",
+      "observation_sequence",
+      "observed_state_revision"
+    ],
+    "provider_injected_binding": [
+      "provider_session_id",
+      "connection_generation",
+      "player_character_id",
+      "date_raw",
+      "game_version",
+      "executable_sha256",
+      "allowlist_id"
+    ],
+    "read_modes": {
+      "publish_observation": "successful application-main same-frame double read advances observation_sequence; observed_state_revision advances only when tree or semantic canonical bytes differ from the last successful observation in the same binding",
+      "validate_without_advancing": "requires the same binding and byte-for-byte equality with the last published tree and semantic observations; never advances either counter",
+      "unavailable": "fails closed and never updates tracker state"
+    },
+    "first_successful_observation": {
+      "observation_sequence": 1,
+      "observed_state_revision": 1
+    },
+    "tree_canonical_encoding": {
+      "integer_byte_order": "little_endian",
+      "domain_with_terminal_nul": "XAR/ZG361/SCOREBOARD/TREE/V1\u0000",
+      "format_u16": 1,
+      "executable_sha256": "raw_32_bytes",
+      "allowlist_id": "u32_byte_length_then_utf8",
+      "gui_owner": "u64_pointer",
+      "gui_root": "u64_pointer",
+      "fixed_widget_count_is_implicit": 15,
+      "widget_record": "index_u8,exists_u8,instance_u64,vtable_u64,path_depth_u8,then_each_edge_from_gui_root_to_target_as_parent_or_ancestor_u64_plus_child_ordinal_u32",
+      "excludes": [
+        "local_visible",
+        "effective_visible",
+        "enabled",
+        "modal_top_receiver"
+      ]
+    },
+    "semantic_canonical_encoding": {
+      "integer_byte_order": "little_endian",
+      "domain_with_terminal_nul": "XAR/ZG361/SCOREBOARD/SEMANTIC/V1\u0000",
+      "format_u16": 1,
+      "executable_sha256": "raw_32_bytes",
+      "allowlist_id": "u32_byte_length_then_utf8",
+      "played_character_id": "i32",
+      "fixed_widget_count_is_implicit": 15,
+      "widget_record": "index_u8,exists_u8,effective_visible_u8,enabled_u8",
+      "modal_open": "u8",
+      "modal_top_relation_u8": {
+        "0": "none",
+        "1": "exact_scoreboard_modal",
+        "2": "strict_descendant_of_scoreboard_modal",
+        "3": "other"
+      },
+      "modal_top_receiver": "u64_pointer",
+      "active_page_u8": {
+        "0": "none",
+        "1": "managed",
+        "2": "received",
+        "3": "system"
+      },
+      "visible_closed_entry_u8": {
+        "0": "none",
+        "1": "managed",
+        "2": "received",
+        "3": "system"
+      },
+      "surface_consistency": "open requires exactly one active page and zero closed entries; closed requires zero active pages and exactly one closed entry; zero-or-multiple contradictions fail the query",
+      "raw_acl_rows": "20 allowlisted rows in frozen order, each present_u8,and when present kind_i32,payload_i64",
+      "derived_acl_tuples": "managed and received-self surface booleans followed by each typed tuple field as available_u8 plus i64 when available"
+    },
+    "state_digest_encoding": {
+      "visibility": "provider_internal_only",
+      "domain_with_terminal_nul": "XAR/ZG361/SCOREBOARD/STATE/V1\u0000",
+      "payload": "raw_tree_sha256_32_then_raw_semantic_sha256_32"
+    },
+    "fingerprints": "uppercase SHA-256 diagnostics only; revision equality compares provider-private tree and semantic canonical bytes directly",
+    "aba_boundary": "A-B-A proves two changes only when B is itself captured by a successful publish_observation query; changes that occur entirely between observations are not claimed"
+  },
   "gui_root": {
     "global_slot_rva": "0x576CC68",
     "pointer_chain": ["deref_global_slot", "+0x1B8", "+0x58", "+0x3D0", "+0x08"],
@@ -36,6 +122,11 @@
   "widget_abi": {
     "local_hidden_flags_offset": "0xD0",
     "local_hidden_mask": "0x10",
+    "effective_hidden_cache_mask": "0x08",
+    "effective_visible": "widget_plus_0xD0_bit_0x08_is_clear",
+    "local_disabled_mask": "0x04",
+    "effective_disabled_cache_mask": "0x02",
+    "effective_enabled": "widget_plus_0xD0_bit_0x02_is_clear",
     "parent_offset": "0xE8",
     "children_pointer_offset": "0xF0",
     "children_count_offset": "0xFC",
@@ -44,9 +135,8 @@
     "vtable_pointer_offset": "0x00",
     "maximum_depth": 64,
     "maximum_traversal": 4096,
-    "effective_visibility": "all_parents_exist_and_local_hidden_bit_is_clear",
+    "effective_visibility": "read_recursively_cached_effective_hidden_bit_0x08_directly_from_widget",
     "unfrozen_fields": [
-      "enabled",
       "focused",
       "modal_blocking",
       "screen_rect",
@@ -55,9 +145,31 @@
       "scroll_value"
     ]
   },
+  "modal_receiver_abi": {
+    "gui_context_modal_vector_data_offset": "0x290",
+    "gui_context_modal_vector_count_offset": "0x29C",
+    "count_type": "int32",
+    "admitted_count": [0, 256],
+    "top_receiver": "last non-null readable pointer when count is positive",
+    "relation": "exact or strict parent-chain descendant comparison against fixed zg361_scoreboard_modal; it remains a semantic observation and does not establish action dispatcher admission"
+  },
   "typed_action_reverse_evidence": {
     "public_action_abi_ready": false,
+    "public_action_abi_ready_meaning": "the state payload does not promote the independent action transport before paused live postcondition evidence",
+    "exact_dispatch_static_ready": true,
     "paused_probe_required": true,
+    "enabled_chain": {
+      "definition_property_id": "0x305",
+      "parser_rva": "0x36A1928",
+      "setter_rva": "0x369CA70",
+      "recursive_cache_rva": "0x369CA90",
+      "flags_offset": "0xD0",
+      "local_disabled_mask": "0x04",
+      "effective_disabled_mask": "0x02",
+      "buttonbase_slot_13_rva": "0x36C69A0",
+      "base_input_rva": "0x369E720",
+      "claim": "slot 13 rejects input when recursively cached effective-disabled bit 0x02 is set"
+    },
     "rtti": {
       "CPdxGuiWidget": {
         "type_descriptor_rva": "0x518CFE0",
@@ -85,20 +197,15 @@
         "property_key_rva": "0x4294DE8",
         "property_id": "0x3EE",
         "parser_caller_rva": "0x36A23BC",
-        "claim": "filter_mouse mask setter: input bit 0 maps to widget +0xD1 bit 7, bits 1..3 map to +0xD2 bits 0..2, and bits 4+ are discarded; script token all and modal-stack/top-receiver semantics remain unbound"
+        "claim": "filter_mouse mask setter: input bit 0 maps to widget +0xD1 bit 7, bits 1..3 map to +0xD2 bits 0..2, and bits 4+ are discarded; script token all remains unbound. This setter is not the modal admission source: the exact dispatcher uses the independently frozen context +0x290/+0x29C modal vector and absolute last-item top receiver rule"
       },
       {
-        "name": "push_button_slot_36_primary_left_release_callback_candidate",
+        "name": "push_button_slot_36_disproven_oversound_hover",
         "start_rva": "0x36C6A90",
         "end_rva": "0x36C6BD0",
         "byte_length": "0x140",
         "sha256": "70AE9CC44C6A7D8E147978014411935E2E675E8E532E501105DACB8CB3CF9765",
-        "runtime_property_id": "0x11B",
-        "runtime_definition_offset": "0x3F8",
-        "runtime_widget_offset": "0x7F8",
-        "definition_onclick_property_id": "0x307",
-        "definition_onclick_offset": "0x338",
-        "claim": "when +0xD0 mask 0x02 is clear and +0x7F8 is non-null, obtains the callback object and executes it with Position2D context; definition onclick 0x307/+0x338 is not yet bound to runtime 0x11B/+0x3F8/+0x7F8, and a direct call bypasses upstream hit-test, capture, modal, shortcut, and complete effective-enabled admission"
+        "claim": "disproven as onclick dispatch; observed role is oversound/hover and this RVA must never be called as a scoreboard action"
       },
       {
         "name": "push_button_slot_37_state_release_candidate",
@@ -115,6 +222,28 @@
         "byte_length": "0x24B",
         "sha256": "5B522D1F7F0BEF050F13424BFC32EB73798DC94B14C4BA60D850FE940821BEB5",
         "claim": "filters event +0x24 against ButtonBase +0x810/+0x814 trigger modes; not an enabled getter"
+      },
+      {
+        "name": "onclick_definition_slot_17_partial_chain",
+        "start_rva": "0x36C6740",
+        "branch_rva": "0x36C6842",
+        "definition_property_id": "0x307",
+        "definition_member_offset": "0x338",
+        "button_event_type": "0x1D",
+        "callback_wrapper_rva": "0x36C56C0",
+        "runtime_member_offset": "0x3F8",
+        "following_vtable_slot": 10,
+        "claim": "historical partial chain now closed by the shortcut-manager binder and DeliverGuiEvent evidence recorded in zhongguo_scoreboard_action_v1_abi.json; the wrapper must not be called directly"
+      },
+      {
+        "name": "modal_and_modality_local_fields",
+        "modal_property_id": "0x338",
+        "modal_setter_rva": "0x369D6A0",
+        "modal_local_mask_at_plus_d0": "0x80",
+        "modality_property_id": "0x339",
+        "modality_setter_rva": "0x369D760",
+        "modality_enum_offset": "0x154",
+        "claim": "local fields only; the exact dispatcher separately binds the global modal vector at context +0x290/+0x29C and the strict-descendant helper, while modal_blocking remains outside the state payload"
       }
     ],
     "runtime_identity_blockers": [
@@ -122,20 +251,18 @@
       "reopen has no independent control and must be a verified close then activate composition"
     ],
     "unfrozen_action_fields": [
-      "exact_runtime_entry_push_button",
-      "exact_runtime_close_push_button",
-      "enabled_semantics_for_widget_flags_plus_0xD0_mask_0x02",
       "filter_mouse_all_numeric_encoding",
       "modal_blocking_runtime_predicate",
-      "scoreboard_onclick_callback_binding"
+      "natural_registered_shortcut_id_and_name_payload"
     ],
     "typed_unavailable_summary": {
-      "enabled": "+0xD0 mask 0x02 is observed in button-event/callback gates, but its complete effective-enabled semantics are unproven",
-      "modal_blocking": "filter_mouse encoding is frozen, but filter_mouse=all and modal-stack/top-receiver semantics are not",
-      "activate_close_reopen": "a primary/left-release callback candidate exists, but exact onclick identity, safe direct-call admission, stable target identity, and paused postcondition are not closed"
+      "enabled": "available from the recursively cached effective-disabled +0xD0 bit 0x02; local source bit is 0x04",
+      "modal_blocking": "the state field remains unavailable even though dispatcher admission uses the exact global modal vector and strict-descendant helper",
+      "activate_close_reopen": "the independent exact dispatcher is static-ready and returns verification-pending ACK; only paused later-query postcondition evidence and production capability promotion remain open"
     },
     "forbidden_shortcuts": [
-      "direct_call_to_candidate_rva_without_paused_probe",
+      "direct_call_to_callback_wrapper_instead_of_the_exact_shortcut_manager_binder",
+      "call_disproven_slot_36_rva_0x36C6A90",
       "button_state_propagation_slot_as_click",
       "definition_presence_as_runtime_identity",
       "ocr_or_screen_coordinates",
@@ -256,11 +383,17 @@
     "before_after_frame_equality": true,
     "raw_row_equality": true,
     "widget_pointer_identity_equality": true,
+    "tree_canonical_byte_equality": true,
+    "semantic_canonical_byte_equality": true,
+    "provider_tracker_updates_only_after_double_read_equality": true,
+    "unavailable_updates_tracker": false,
+    "ack_validation_updates_tracker": false,
     "engine_pointers_retained": false,
     "diagnostic_pointer_projection": "instance and vtable are serialized as same-query uppercase hexadecimal strings only"
   },
   "readiness": {
     "state_acl_query_ready": "may become true only for a coherent same-frame fixed-widget plus player-ACL result",
+    "provider_observed_revision_static_ready": true,
     "full_widget_gate_ready": false,
     "action_abi_ready": false,
     "action_postcondition_revision_ready": false,
@@ -268,9 +401,10 @@
   },
   "actions": {
     "provider_mode": "read_only",
-    "activate": "typed_unavailable_read_only_provider_action_not_exposed",
-    "close": "typed_unavailable_read_only_provider_action_not_exposed",
-    "reopen": "typed_unavailable_read_only_provider_action_not_exposed"
+    "state_payload": "does_not_expose_or_promote_actions",
+    "separate_transport": "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+    "separate_transport_status": "exact_dispatch_ack_verification_pending_static_ready_live_unverified",
+    "production_action_capability_advertised": false
   },
   "explicitly_not_equivalent": [
     "gui_definition_lookup",
@@ -282,5 +416,5 @@
     "full_runner_capability_gate",
     "production_live_acceptance"
   ],
-  "next_live_evidence": "use one bounded paused query to prove the eleven generated scoreboard-specific action/postcondition names resolve to the intended PushButton or page-witness instances and capture their instance/vtable contrast; then statically close definition onclick 0x307/+0x338 to runtime 0x11B/+0x3F8/+0x7F8 plus slot 36 upstream admission, batch managed and received-only paused artifacts for the real dispatcher-to-PushButton-callback trace, enabled disabled contrast, and modal-stack/top-receiver contrast; add a scoreboard_state_revision that changes only with canonical scoreboard state; finally require independent ACK plus a later-pump query with a larger scoreboard revision before advertising open, switch-managed, switch-received, switch-system, close, or reopen"
+  "next_live_evidence": "batch paused source query, exact dispatcher ACK, and independent later-pump query artifacts for open, switch-managed, switch-received, switch-system, close, and the two-phase reopen composition; each proof must retain the provider session and paused world binding, keep the tree fingerprint equal, advance observed_state_revision, change the semantic fingerprint, and satisfy the explicit modal/page postcondition before production capability promotion"
 }

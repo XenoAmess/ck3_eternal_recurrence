@@ -26,18 +26,21 @@
 #include "xar_bridge/zhongguo_case_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_result_case_snapshot_v1_mailbox.hpp"
 
 #include <windows.h>
+#include <bcrypt.h>
 
 #include <algorithm>
 #include <array>
 #include <atomic>
 #include <charconv>
 #include <cstdint>
+#include <limits>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -233,7 +236,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
   result +=
-      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot\"";
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -2620,6 +2623,79 @@ std::string ZhongguoScoreboardStateResultFrame(
   return result;
 }
 
+std::string_view ZhongguoScoreboardActionName(
+    xar::game::ZhongguoScoreboardActionV1 action) noexcept {
+  using Action = xar::game::ZhongguoScoreboardActionV1;
+  switch (action) {
+  case Action::open:
+    return "open";
+  case Action::switch_managed:
+    return "switch-managed";
+  case Action::switch_received:
+    return "switch-received";
+  case Action::switch_system:
+    return "switch-system";
+  case Action::close:
+    return "close";
+  case Action::reopen:
+    return "reopen";
+  }
+  return {};
+}
+
+std::string ZhongguoScoreboardActionResultFrame(
+    std::string_view request_id, std::uint64_t action_sequence,
+    std::uint64_t snapshot_revision,
+    const xar::game::ZhongguoScoreboardActionRequestV1 &request,
+    const xar::game::ZhongguoScoreboardActionAckV1 &action) {
+  const auto action_name = ZhongguoScoreboardActionName(request.action);
+  if (action_name.empty() || action_sequence == 0 || snapshot_revision == 0) {
+    return {};
+  }
+  const bool acknowledged =
+      action.result == xar::game::ZhongguoScoreboardActionResultV1::
+                           acknowledged_verification_pending &&
+      action.accepted;
+  const auto payload = acknowledged
+                           ? xar::ck3_11906::
+                                 SerializeZhongguoScoreboardActionAckV1(action)
+                           : std::string{};
+  if (acknowledged && payload.empty()) return {};
+  if (!acknowledged && action.rejection_reason.empty()) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"activate-zhongguo-scoreboard-v1\",\"accepted\":";
+  result += acknowledged ? "true" : "false";
+  result += ",\"status\":";
+  AppendJsonString(result, acknowledged
+                               ? "acknowledged_verification_pending"
+                               : "unavailable");
+  result += ",\"request_nonce\":";
+  AppendJsonString(result, request.request_nonce);
+  result += ",\"action\":";
+  AppendJsonString(result, action_name);
+  result += ",\"action_sequence\":";
+  result += Number(action_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot_revision);
+  result += ",\"rejection_reason\":";
+  if (acknowledged) {
+    result += "null";
+  } else {
+    AppendJsonString(result, action.rejection_reason);
+  }
+  result += ",\"action_ack\":";
+  result += acknowledged ? payload : "null";
+  result +=
+      ",\"production_capability_advertised\":false,"
+      "\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string ZhongguoWorkforceCollectiveSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoWorkforceCollectiveSnapshotV1 &snapshot) {
@@ -3321,6 +3397,8 @@ public:
     environment.permitted_executor_unvigintary =
         &xar::ck3_11906::
             ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1;
+    environment.permitted_executor_duovigintary =
+        &xar::ck3_11906::ExecuteZhongguoScoreboardActionMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -3456,6 +3534,7 @@ HANDLE ConnectToHost() noexcept {
 }
 
 struct WorkerState {
+  std::uint64_t connection_generation = 0;
   std::uint64_t sequence = 0;
   std::uint64_t state_revision = 0;
   CheckpointSubmission checkpoint_submission{};
@@ -3476,6 +3555,10 @@ struct WorkerState {
   std::uint64_t zhongguo_b2_pip_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_incident_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_scoreboard_state_query_sequence = 0;
+  std::uint64_t zhongguo_scoreboard_action_sequence = 0;
+  std::string zhongguo_scoreboard_provider_session_id;
+  xar::ck3_11906::ZhongguoScoreboardProviderRevisionTrackerV1
+      zhongguo_scoreboard_provider_revision_tracker{};
   std::uint64_t zhongguo_workforce_collective_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_ai_owned_case_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_workforce_normal_exit_snapshot_query_sequence = 0;
@@ -3490,9 +3573,35 @@ struct WorkerState {
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
 
+std::string NewProviderSessionId() noexcept {
+  try {
+    std::array<std::uint8_t, 16> random{};
+    if (BCryptGenRandom(nullptr, random.data(),
+                        static_cast<ULONG>(random.size()),
+                        BCRYPT_USE_SYSTEM_PREFERRED_RNG) < 0) {
+      return {};
+    }
+    constexpr char hex[] = "0123456789ABCDEF";
+    std::string result;
+    result.resize(random.size() * 2);
+    for (std::size_t index = 0; index < random.size(); ++index) {
+      result[index * 2] = hex[random[index] >> 4];
+      result[index * 2 + 1] = hex[random[index] & 0x0F];
+    }
+    return result;
+  } catch (...) {
+    return {};
+  }
+}
+
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
+  if (state.connection_generation ==
+      std::numeric_limits<std::uint64_t>::max()) {
+    return;
+  }
+  ++state.connection_generation;
   state.checkpoint_submission.save_name =
       game.descriptor().checkpoint_save_name;
   if (!xar::bridge::WriteFrame(pipe, HelloFrame(game))) {
@@ -3500,6 +3609,7 @@ void RunConnectedSession(
   }
 
   auto &sequence = state.sequence;
+  const auto connection_generation = state.connection_generation;
   auto &state_revision = state.state_revision;
   auto &checkpoint_submission = state.checkpoint_submission;
   auto &published_checkpoint_sequence = state.published_checkpoint_sequence;
@@ -3532,6 +3642,12 @@ void RunConnectedSession(
       state.zhongguo_incident_snapshot_query_sequence;
   auto &zhongguo_scoreboard_state_query_sequence =
       state.zhongguo_scoreboard_state_query_sequence;
+  auto &zhongguo_scoreboard_action_sequence =
+      state.zhongguo_scoreboard_action_sequence;
+  auto &zhongguo_scoreboard_provider_session_id =
+      state.zhongguo_scoreboard_provider_session_id;
+  auto &zhongguo_scoreboard_provider_revision_tracker =
+      state.zhongguo_scoreboard_provider_revision_tracker;
   auto &zhongguo_workforce_collective_snapshot_query_sequence =
       state.zhongguo_workforce_collective_snapshot_query_sequence;
   auto &zhongguo_ai_owned_case_snapshot_query_sequence =
@@ -4622,6 +4738,13 @@ void RunConnectedSession(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard state revision is stale"));
+          } else if (request.connection_generation !=
+                     connection_generation) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo scoreboard state connection generation "
+                          "is stale"));
           } else {
             xar::game::Snapshot current_snapshot{};
             if (!previous_snapshot.has_value() || state_revision == 0 ||
@@ -4644,6 +4767,17 @@ void RunConnectedSession(
                       reinterpret_cast<std::uintptr_t>(
                           GetModuleHandleW(nullptr)),
                       true);
+              request.provider_session_id =
+                  zhongguo_scoreboard_provider_session_id;
+              request.provider_read_mode =
+                  zhongguo_scoreboard_provider_session_id.empty()
+                      ? xar::ck3_11906::
+                            ZhongguoScoreboardProviderReadModeV1::unavailable
+                      : xar::ck3_11906::
+                            ZhongguoScoreboardProviderReadModeV1::
+                                publish_observation;
+              request.provider_revision_tracker =
+                  &zhongguo_scoreboard_provider_revision_tracker;
               query.request = std::move(request);
               query.expected_snapshot = current_snapshot;
 
@@ -4724,6 +4858,157 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main ZhongGuo scoreboard state result was "
                       "not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step ==
+                   xar::ck3_11906::kZhongguoScoreboardActionV1Step) {
+          xar::game::ZhongguoScoreboardActionRequestV1 request{};
+          if (!xar::ck3_11906::ParseZhongguoScoreboardActionRequestV1(
+                  incoming.payload, request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo scoreboard action request is malformed"));
+          } else if (request.expected_native_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo scoreboard action revision is stale"));
+          } else if (request.expected_connection_generation !=
+                     connection_generation) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo scoreboard action connection generation "
+                          "is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.played_character_id !=
+                    request.expected_player_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo scoreboard action binding changed or "
+                            "is not ready"));
+            } else {
+              xar::ck3_11906::ZhongguoScoreboardActionMailboxContextV1
+                  action{};
+              action.mailbox = &g_main_thread_query_mailbox_v1;
+              action.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              action.environment =
+                  xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              action.dispatch_environment = xar::ck3_11906::
+                  BindZhongguoScoreboardActionDispatchEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              action.request = std::move(request);
+              action.expected_snapshot = current_snapshot;
+              action.provider_revision_tracker =
+                  &zhongguo_scoreboard_provider_revision_tracker;
+              action.action_access.context = &action.dispatch_environment;
+              action.action_access.dispatch =
+                  &xar::ck3_11906::
+                      DispatchZhongguoScoreboardActionNativeV1;
+              // This exact shortcut-manager path may only acknowledge that
+              // the event was submitted.  Its raw native boolean is not a
+              // postcondition, and production capability remains unadvertised
+              // until an independent provider-owned observation revision
+              // proves the requested GUI state transition.
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteZhongguoScoreboardActionMailboxV1,
+                      &action, action.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main ZhongGuo scoreboard action executor "
+                    "is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main ZhongGuo scoreboard action executor "
+                      "is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, action.ticket,
+                    xar::ck3_11906::
+                        kZhongguoScoreboardActionV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, action.ticket,
+                      xar::ck3_11906::
+                          kZhongguoScoreboardActionV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    (action.completion ==
+                         xar::ck3_11906::
+                             ZhongguoScoreboardActionMailboxCompletionV1::
+                                 completed_unavailable ||
+                     action.completion ==
+                         xar::ck3_11906::
+                             ZhongguoScoreboardActionMailboxCompletionV1::
+                                 completed_acknowledged) &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoScoreboardActionResultFrame(
+                      request_id, zhongguo_scoreboard_action_sequence + 1,
+                      state_revision, action.request, action.result);
+                  if (!response.empty()) {
+                    ++zhongguo_scoreboard_action_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      ZhongguoScoreboardActionFailureMessageV1(
+                          wait, action.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, action.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main ZhongGuo scoreboard action result "
+                      "was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
@@ -7404,6 +7689,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   }
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(*game);
   WorkerState state{};
+  state.zhongguo_scoreboard_provider_session_id = NewProviderSessionId();
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     HANDLE pipe = ConnectToHost();
     if (pipe == INVALID_HANDLE_VALUE) {

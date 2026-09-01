@@ -198,6 +198,13 @@ from .zhongguo_scoreboard_state_contract import (
     normalize_native_zhongguo_scoreboard_state_v1,
     parse_query_zhongguo_scoreboard_state_v1_step,
 )
+from .zhongguo_scoreboard_action_contract import (
+    ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY,
+    ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP,
+    ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY,
+    ZhongguoScoreboardActionRequestV1,
+    normalize_native_zhongguo_scoreboard_action_v1_result,
+)
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -1560,6 +1567,14 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_scoreboard_action_v1_transport_wired": (
+                ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_scoreboard_action_v1_supported": (
+                ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "loaded_feature_manifest_v1_query_supported": (
                 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY
                 in bridge_capabilities
@@ -1879,6 +1894,14 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_scoreboard_state_v1_query_supported": (
                 QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_scoreboard_action_v1_transport_wired": (
+                ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_scoreboard_action_v1_supported": (
+                ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "loaded_feature_manifest_v1_query_supported": (
@@ -9028,7 +9051,10 @@ class NativeHeadlessGameplayDriver:
             QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP,
             expected_revision=selected_revision,
             required_capability=QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
-            request_fields={"request_nonce": query.request_nonce},
+            request_fields={
+                "request_nonce": query.request_nonce,
+                "expected_connection_generation": connection_generation,
+            },
         )
         expected_keys = {
             "step",
@@ -9098,6 +9124,157 @@ class NativeHeadlessGameplayDriver:
             "query_sequence": query_sequence,
             "queried_snapshot_id": snapshot_id,
             "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
+    def activate_zhongguo_scoreboard_v1(
+        self,
+        request: ZhongguoScoreboardActionRequestV1,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Cross the exact dispatcher transport without promoting its ACK.
+
+        The typed request binds the last provider observation. A native ACK is
+        still verification-pending and production capability remains a
+        separate advertised gate.
+        """
+
+        if not isinstance(request, ZhongguoScoreboardActionRequestV1):
+            raise ValueError("request must be a scoreboard action v1 request")
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard action requires a paused snapshot"
+            )
+        public_revision = starting.get("revision")
+        native_revision = starting.get("native_revision")
+        date_raw = starting.get("date_raw")
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            public_revision != expected_revision
+            or request.expected_revision != expected_revision
+            or native_revision != request.expected_native_revision
+            or connection_generation
+            != request.expected_connection_generation
+            or player_character_id != request.expected_player_character_id
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "native ZhongGuo scoreboard action source binding is stale"
+            )
+        bridge_capabilities = set(
+            _string_list(self.capabilities().get("bridge_capabilities"))
+        )
+        if (
+            ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+            not in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "native DLL lacks the fail-closed scoreboard action transport"
+            )
+        production_advertised = (
+            ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY
+            in bridge_capabilities
+        )
+        result = self._execute_primitive_step(
+            ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=(
+                ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+            ),
+            request_fields={
+                "request_nonce": request.request_nonce,
+                "action": request.action,
+                # Wire-only name avoids collision with the native protocol's
+                # reserved expected_revision (the native snapshot revision).
+                "expected_public_revision": request.expected_revision,
+                "expected_native_revision": request.expected_native_revision,
+                "expected_connection_generation": (
+                    request.expected_connection_generation
+                ),
+                "expected_player_character_id": (
+                    request.expected_player_character_id
+                ),
+                "expected_provider_session_id": (
+                    request.expected_provider_session_id
+                ),
+                "expected_observation_sequence": (
+                    request.expected_observation_sequence
+                ),
+                "expected_observed_state_revision": (
+                    request.expected_observed_state_revision
+                ),
+                "expected_tree_fingerprint_v1": (
+                    request.expected_tree_fingerprint_v1
+                ),
+                "expected_semantic_fingerprint_v1": (
+                    request.expected_semantic_fingerprint_v1
+                ),
+                "expected_window_instance_pointer": (
+                    request.expected_window_instance_pointer
+                ),
+                "expected_target_instance_pointer": (
+                    request.expected_target_instance_pointer
+                ),
+                "expected_target_vtable_pointer": (
+                    request.expected_target_vtable_pointer
+                ),
+            },
+        )
+        try:
+            normalized = normalize_native_zhongguo_scoreboard_action_v1_result(
+                result, expected_request=request
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard action returned a malformed "
+                f"result: {error}"
+            ) from error
+        if (
+            normalized["snapshot_revision"] != native_revision
+            or normalized["production_capability_advertised"]
+            is not production_advertised
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard action capability/revision mirror "
+                "drifted"
+            )
+        ending = self.take_snapshot()
+        ending_diagnostics = ending.get("diagnostics")
+        ending_played_character = ending.get("played_character")
+        if not (
+            _same_paused_native_frame(starting, ending)
+            and ending.get("revision") == public_revision
+            and ending.get("date_raw") == date_raw
+            and isinstance(ending_diagnostics, dict)
+            and ending_diagnostics.get("connection_generation")
+            == connection_generation
+            and isinstance(ending_played_character, dict)
+            and ending_played_character.get("character_id")
+            == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo scoreboard action crossed its paused binding"
+            )
+        return {
+            **normalized,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": public_revision,
             "queried_native_revision": native_revision,
             "queried_connection_generation": connection_generation,
         }
@@ -12394,6 +12571,9 @@ class ConfiguredHybridFallbackDriver:
             QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+            QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+            ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY,
+            ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY,
         ):
             if pure_native_capability not in native_bridge_capabilities:
                 bridge_capabilities.discard(pure_native_capability)
@@ -12413,6 +12593,130 @@ class ConfiguredHybridFallbackDriver:
                 "data-mod",
                 "vision-session-guarded",
             ],
+        }
+
+    def activate_zhongguo_scoreboard_v1(
+        self,
+        request: ZhongguoScoreboardActionRequestV1,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Route the exact action transport to native only.
+
+        Hybrid public revisions are not the named-pipe public revision.  The
+        adapter can rebind an unavailable result safely. ACK rebinding remains
+        fail-closed in this hybrid path until it has its own live evidence.
+        """
+
+        if not isinstance(request, ZhongguoScoreboardActionRequestV1):
+            raise ValueError("request must be a scoreboard action v1 request")
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        if (
+            starting.get("paused") is not True
+            or starting.get("revision") != expected_revision
+            or request.expected_revision != expected_revision
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "hybrid ZhongGuo scoreboard action source binding is stale"
+            )
+        diagnostics = starting.get("diagnostics")
+        played_character = starting.get("played_character")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        if not (
+            starting.get("native_revision")
+            == request.expected_native_revision
+            and connection_generation
+            == request.expected_connection_generation
+            and player_character_id == request.expected_player_character_id
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "hybrid ZhongGuo scoreboard native binding is stale"
+            )
+        backend_revisions = starting.get("backend_revisions")
+        native_public_revision = (
+            backend_revisions.get("fast")
+            if isinstance(backend_revisions, dict)
+            else None
+        )
+        if (
+            isinstance(native_public_revision, bool)
+            or not isinstance(native_public_revision, int)
+            or native_public_revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "hybrid ZhongGuo scoreboard action lacks a native public "
+                "revision"
+            )
+        native_request = ZhongguoScoreboardActionRequestV1(
+            request_nonce=request.request_nonce,
+            action=request.action,
+            expected_revision=native_public_revision,
+            expected_native_revision=request.expected_native_revision,
+            expected_connection_generation=(
+                request.expected_connection_generation
+            ),
+            expected_player_character_id=request.expected_player_character_id,
+            expected_provider_session_id=request.expected_provider_session_id,
+            expected_observation_sequence=(
+                request.expected_observation_sequence
+            ),
+            expected_observed_state_revision=(
+                request.expected_observed_state_revision
+            ),
+            expected_tree_fingerprint_v1=(
+                request.expected_tree_fingerprint_v1
+            ),
+            expected_semantic_fingerprint_v1=(
+                request.expected_semantic_fingerprint_v1
+            ),
+            expected_window_instance_pointer=(
+                request.expected_window_instance_pointer
+            ),
+            expected_target_instance_pointer=(
+                request.expected_target_instance_pointer
+            ),
+            expected_target_vtable_pointer=(
+                request.expected_target_vtable_pointer
+            ),
+        )
+        result = self.native.activate_zhongguo_scoreboard_v1(
+            native_request, expected_revision=native_public_revision
+        )
+        if result.get("accepted") is True:
+            raise BridgeUnavailableError(
+                "hybrid scoreboard ACK is disabled until its dedicated "
+                "public/native binding is proven"
+            )
+        ending = self.take_snapshot()
+        if not (
+            ending.get("paused") is True
+            and ending.get("snapshot_id") == starting.get("snapshot_id")
+            and ending.get("revision") == starting.get("revision")
+            and ending.get("native_revision")
+            == starting.get("native_revision")
+            and ending.get("date_raw") == starting.get("date_raw")
+            and ending.get("played_character")
+            == starting.get("played_character")
+        ):
+            raise BridgeUnavailableError(
+                "hybrid ZhongGuo scoreboard action crossed its paused binding"
+            )
+        return {
+            **result,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+            "queried_connection_generation": connection_generation,
         }
 
     def take_snapshot(self) -> dict[str, object]:

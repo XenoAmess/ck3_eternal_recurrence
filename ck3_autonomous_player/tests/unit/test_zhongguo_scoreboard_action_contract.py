@@ -33,6 +33,9 @@ PUBLIC_REVISION = 19
 NATIVE_REVISION = 77
 CONNECTION_GENERATION = 3
 PLAYER = 101
+PROVIDER_SESSION = "0123456789ABCDEF0123456789ABCDEF"
+TREE_FINGERPRINT = "A" * 64
+SEMANTIC_FINGERPRINT = "B" * 64
 SCHEMA = PROJECT_ROOT / "schemas/zhongguo-scoreboard-action-v1.schema.json"
 ABI = (
     PROJECT_ROOT
@@ -115,6 +118,11 @@ def _request(
         expected_native_revision=NATIVE_REVISION,
         expected_connection_generation=CONNECTION_GENERATION,
         expected_player_character_id=PLAYER,
+        expected_provider_session_id=frame["provider_session_id"],
+        expected_observation_sequence=frame["observation_sequence"],
+        expected_observed_state_revision=frame["observed_state_revision"],
+        expected_tree_fingerprint_v1=frame["tree_fingerprint_v1"],
+        expected_semantic_fingerprint_v1=frame["semantic_fingerprint_v1"],
         expected_window_instance_pointer=window["instance_pointer"]["value"],
         expected_target_instance_pointer=target["instance_pointer"]["value"],
         expected_target_vtable_pointer=target["vtable_pointer"]["value"],
@@ -139,7 +147,10 @@ def _post(
 ) -> dict[str, object]:
     frame = copy.deepcopy(source)
     frame["request_nonce"] = "scoreboard.post-query"
-    frame["snapshot_revision"] = NATIVE_REVISION + 1
+    frame["snapshot_revision"] = NATIVE_REVISION
+    frame["observation_sequence"] = source["observation_sequence"] + 1
+    frame["observed_state_revision"] = source["observed_state_revision"] + 1
+    frame["semantic_fingerprint_v1"] = "C" * 64
     _set_visible(frame, "zg361_scoreboard_modal", active_tab is not None)
     _set_visible(frame, "zg361_scoreboard_panel", active_tab is not None)
     _set_visible(frame, "zg361_scoreboard_header_close", active_tab is not None)
@@ -154,16 +165,15 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
         cls.schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         Draft202012Validator.check_schema(cls.schema)
 
-    def test_all_six_actions_are_allowlisted_and_ack_never_claims_postcondition(self) -> None:
+    def test_primitive_actions_are_allowlisted_and_ack_never_claims_postcondition(self) -> None:
         cases = (
             ("open", None, "received", ENTRY["received"], "received"),
-            ("reopen", None, "system", ENTRY["system"], "system"),
             ("switch-managed", "received", "received", TAB["managed"], "managed"),
             ("switch-received", "managed", "received", TAB["received"], "received"),
             ("switch-system", "managed", "received", TAB["system"], "system"),
             ("close", "received", "received", "zg361_scoreboard_header_close", None),
         )
-        self.assertEqual({row[0] for row in cases}, ACTION_KEYS)
+        self.assertEqual({row[0] for row in cases} | {"reopen"}, ACTION_KEYS)
         for action, open_tab, entry_tab, target, expected_tab in cases:
             with self.subTest(action=action):
                 frame = _frame(open_tab=open_tab, entry_tab=entry_tab)
@@ -188,11 +198,28 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
                 proof = verify_zhongguo_scoreboard_action_v1_postcondition(
                     normalized,
                     post_state=post,
-                    observed_revision=PUBLIC_REVISION + 1,
+                    observed_revision=PUBLIC_REVISION,
                     observed_connection_generation=CONNECTION_GENERATION,
                 )
                 self.assertTrue(proof["postcondition_verified"])
                 self.assertEqual(proof["active_tab"], expected_tab)
+
+        reopen_frame = _frame(open_tab=None, entry_tab="system")
+        reopen_request = _request(
+            reopen_frame,
+            action="reopen",
+            target_identity=ENTRY["system"],
+        )
+        with self.assertRaisesRegex(
+            ScoreboardActionRejected,
+            "reopen_requires_two_phase_sequence",
+        ):
+            plan_zhongguo_scoreboard_action_v1(
+                reopen_request,
+                source_state=reopen_frame,
+                observed_revision=PUBLIC_REVISION,
+                observed_connection_generation=CONNECTION_GENERATION,
+            )
 
     def test_request_has_no_widget_name_coordinate_or_character_scope_escape_hatch(self) -> None:
         frame = _frame(open_tab=None)
@@ -208,6 +235,11 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
                 "expected_native_revision",
                 "expected_connection_generation",
                 "expected_player_character_id",
+                "expected_provider_session_id",
+                "expected_observation_sequence",
+                "expected_observed_state_revision",
+                "expected_tree_fingerprint_v1",
+                "expected_semantic_fingerprint_v1",
                 "expected_window_instance_pointer",
                 "expected_target_instance_pointer",
                 "expected_target_vtable_pointer",
@@ -222,6 +254,11 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
                     expected_native_revision=1,
                     expected_connection_generation=1,
                     expected_player_character_id=1,
+                    expected_provider_session_id=PROVIDER_SESSION,
+                    expected_observation_sequence=1,
+                    expected_observed_state_revision=1,
+                    expected_tree_fingerprint_v1=TREE_FINGERPRINT,
+                    expected_semantic_fingerprint_v1=SEMANTIC_FINGERPRINT,
                     expected_window_instance_pointer="0x1",
                     expected_target_instance_pointer="0x2",
                     expected_target_vtable_pointer="0x3",
@@ -234,6 +271,11 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
                 expected_native_revision=1,
                 expected_connection_generation=1,
                 expected_player_character_id=1,
+                expected_provider_session_id=PROVIDER_SESSION,
+                expected_observation_sequence=1,
+                expected_observed_state_revision=1,
+                expected_tree_fingerprint_v1=TREE_FINGERPRINT,
+                expected_semantic_fingerprint_v1=SEMANTIC_FINGERPRINT,
                 expected_window_instance_pointer="0x1",
                 expected_target_instance_pointer="0x2",
                 expected_target_vtable_pointer="0x3",
@@ -347,9 +389,14 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
         )
         post = _post(frame, active_tab="received")
         for reason, revision, native_revision, nonce in (
-            ("post_revision_not_advanced", PUBLIC_REVISION, NATIVE_REVISION + 1, "post"),
-            ("post_native_revision_not_advanced", PUBLIC_REVISION + 1, NATIVE_REVISION, "post"),
-            ("post_query_nonce_not_independent", PUBLIC_REVISION + 1, NATIVE_REVISION + 1, request.request_nonce),
+            ("post_revision_mismatch", PUBLIC_REVISION + 1, NATIVE_REVISION, "post"),
+            ("post_native_revision_mismatch", PUBLIC_REVISION, NATIVE_REVISION + 1, "post"),
+            (
+                "post_query_nonce_not_independent",
+                PUBLIC_REVISION,
+                NATIVE_REVISION,
+                request.request_nonce,
+            ),
         ):
             with self.subTest(reason=reason):
                 candidate = copy.deepcopy(post)
@@ -370,7 +417,7 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
             verify_zhongguo_scoreboard_action_v1_postcondition(
                 ack,
                 post_state=missing_nonce,
-                observed_revision=PUBLIC_REVISION + 1,
+                observed_revision=PUBLIC_REVISION,
                 observed_connection_generation=CONNECTION_GENERATION,
             )
         with self.assertRaisesRegex(
@@ -379,7 +426,7 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
             verify_zhongguo_scoreboard_action_v1_postcondition(
                 {},
                 post_state=post,
-                observed_revision=PUBLIC_REVISION + 1,
+                observed_revision=PUBLIC_REVISION,
                 observed_connection_generation=CONNECTION_GENERATION,
             )
 
@@ -412,8 +459,23 @@ class ZhongguoScoreboardActionContractTests(unittest.TestCase):
         self.assertEqual(set(abi["actions"]), ACTION_KEYS)
         self.assertEqual(set(fixture["actions"]), ACTION_KEYS)
         self.assertEqual(abi["ack"]["postcondition_verified"], False)
-        self.assertEqual(fixture["production_executor"], "unwired_fail_closed")
-        self.assertIn("effective_enabled_semantics", abi["exact_build_blockers"])
+        self.assertEqual(
+            fixture["production_executor"],
+            "exact_dispatch_ack_verification_pending",
+        )
+        self.assertEqual(
+            fixture["shared_transport"], "wired_ack_or_typed_unavailable"
+        )
+        self.assertNotIn(
+            "effective_enabled_semantics", abi["exact_build_blockers"]
+        )
+        self.assertEqual(
+            abi["enabled_abi"]["effective_disabled_mask"], "0x02"
+        )
+        self.assertEqual(
+            abi["disproven_dispatch_candidates"][0]["rva"],
+            "0x36C6A90",
+        )
         gui = (MOD_ROOT / "gui/zg361_scoreboard.gui").read_text(
             encoding="utf-8-sig"
         )

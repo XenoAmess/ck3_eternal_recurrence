@@ -55,7 +55,7 @@ def widget(stable: str, runtime: str, *, visible: bool) -> dict[str, object]:
         "exists": typed(True),
         "local_visible": typed(visible),
         "effective_visible": typed(visible),
-        "enabled": unavailable("enabled_state_abi_not_frozen"),
+        "enabled": typed(True),
         "focused": unavailable("focus_owner_abi_not_frozen"),
         "modal_blocking": unavailable("modal_blocking_abi_not_frozen"),
         "screen_x": unavailable("screen_rect_abi_not_frozen"),
@@ -78,6 +78,11 @@ def native_frame() -> dict[str, object]:
         "date_raw": DATE_RAW,
         "paused": True,
         "player_character_id": PLAYER,
+        "tree_fingerprint_v1": "A" * 64,
+        "semantic_fingerprint_v1": "B" * 64,
+        "provider_session_id": "0123456789ABCDEF0123456789ABCDEF",
+        "observation_sequence": 7,
+        "observed_state_revision": 3,
         "widgets": [
             widget("zg361_open_scoreboard", "zg361_scoreboard_toggle", visible=True),
             widget("zg361_scoreboard_window", "zg361_scoreboard_window", visible=True),
@@ -189,11 +194,24 @@ def native_frame() -> dict[str, object]:
             "gui_global_slot_rva": "0x576CC68",
             "find_top_level_widget_rva": "0x36D0B20",
             "widget_hidden_flags_offset": "0xD0",
+            "widget_local_hidden_mask": "0x10",
+            "widget_effective_hidden_mask": "0x08",
+            "widget_local_disabled_mask": "0x04",
+            "widget_effective_disabled_mask": "0x02",
             "widget_parent_offset": "0xE8",
             "widget_children_offset": "0xF0",
             "widget_name_offset": "0x1B8",
+            "modal_receivers_offset": "0x290",
+            "modal_receiver_count_offset": "0x29C",
+            "tree_fingerprint_domain": "XAR/ZG361/SCOREBOARD/TREE/V1\x00",
+            "semantic_fingerprint_domain": (
+                "XAR/ZG361/SCOREBOARD/SEMANTIC/V1\x00"
+            ),
+            "state_digest_domain": "XAR/ZG361/SCOREBOARD/STATE/V1\x00",
             "query_scope": "fixed_scoreboard_instances_and_player_frozen_acl",
-            "contract_stage": "static_exact_build_live_unverified",
+            "contract_stage": (
+                "static_provider_observed_revision_live_unverified"
+            ),
         },
     }
 
@@ -234,8 +252,7 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
         self.assertFalse(normalized["readiness"]["full_widget_gate_ready"])
         self.assertFalse(normalized["readiness"]["production_live_ready"])
         self.assertEqual(
-            normalized["widgets"][0]["enabled"]["unavailable_reason"],
-            "enabled_state_abi_not_frozen",
+            normalized["widgets"][0]["enabled"], typed(True)
         )
         self.assertEqual(
             normalized["widgets"][5]["vtable_pointer"]["value"],
@@ -245,6 +262,12 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
             normalized["actions"]["activate"]["unavailable_reason"],
             "read_only_provider_action_not_exposed",
         )
+        self.assertEqual(
+            normalized["provider_session_id"],
+            "0123456789ABCDEF0123456789ABCDEF",
+        )
+        self.assertEqual(normalized["observation_sequence"], 7)
+        self.assertEqual(normalized["observed_state_revision"], 3)
 
     def test_identity_acl_and_action_drift_fail_closed(self) -> None:
         query = parse_query_zhongguo_scoreboard_state_v1_step(
@@ -257,6 +280,8 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
             "manager_acl",
             "action",
             "live",
+            "fingerprint",
+            "provider_sequence",
         ):
             with self.subTest(mutation=mutation):
                 frame = native_frame()
@@ -270,6 +295,10 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
                     ] = True
                 elif mutation == "action":
                     frame["actions"]["activate"] = typed(True)
+                elif mutation == "fingerprint":
+                    frame["tree_fingerprint_v1"] = "lowercase"
+                elif mutation == "provider_sequence":
+                    frame["observation_sequence"] = 0
                 else:
                     frame["readiness"]["production_live_ready"] = True
                 with self.assertRaises(ValueError):

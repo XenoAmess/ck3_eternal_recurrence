@@ -1,6 +1,6 @@
 {
   "contract": "zhongguo_scoreboard_action_v1",
-  "status": "static_action_contract_executor_unwired_live_unverified",
+  "status": "exact_dispatch_provider_observed_revision_static_ready_live_unverified",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.activate-zhongguo-scoreboard-v1",
@@ -22,6 +22,11 @@
       "expected_native_revision",
       "expected_connection_generation",
       "expected_player_character_id",
+      "expected_provider_session_id",
+      "expected_observation_sequence",
+      "expected_observed_state_revision",
+      "expected_tree_fingerprint_v1",
+      "expected_semantic_fingerprint_v1",
       "expected_window_instance_pointer",
       "expected_target_instance_pointer",
       "expected_target_vtable_pointer"
@@ -44,7 +49,7 @@
     "switch-received": "zg361_scoreboard_tab_received",
     "switch-system": "zg361_scoreboard_tab_system",
     "close": "zg361_scoreboard_header_close",
-    "reopen": "exactly_one_effectively_visible_entry"
+    "reopen": "composite_only_close_then_closed_query_then_open_then_open_query"
   },
   "postcondition_witnesses": {
     "modal": "zg361_scoreboard_modal",
@@ -57,12 +62,17 @@
     "postcondition_verified": false,
     "schema": "schemas/zhongguo-scoreboard-action-v1.schema.json",
     "independent_query_required": true,
-    "minimum_public_revision_delta": 1,
-    "minimum_native_revision_delta": 1
+    "public_revision_rule": "equal_to_source_paused_world_frame",
+    "native_revision_rule": "equal_to_source_paused_world_frame",
+    "minimum_observation_sequence_delta": 1,
+    "minimum_observed_state_revision_delta": 1,
+    "tree_fingerprint_rule": "equal_to_source",
+    "semantic_fingerprint_rule": "different_from_source"
   },
   "admission": [
     "same_paused_player_frame",
     "public_native_revision_and_connection_match",
+    "provider_session_observation_revision_and_fingerprints_match_last_committed_query",
     "window_and_target_instance_vtable_match",
     "target_exists_effectively_visible_and_enabled",
     "managed_and_received_acl_match",
@@ -73,23 +83,19 @@
     "native_admission_and_injected_dispatch_primitive",
     "native_ack_serializer",
     "normal_and_optimized_python_fixture",
-    "fresh_msvc_native_fixture"
+    "fresh_msvc_native_fixture",
+    "application_main_mailbox_fixed_slot_22",
+    "game_adapter_transport_capability",
+    "bridge_typed_ack_or_unavailable_envelope",
+    "native_driver_service_and_mcp_typed_transport",
+    "exact_shortcut_manager_semantic_activation_dispatcher",
+    "provider_observation_publish_and_action_validate_without_advancing",
+    "phase2_runner_source_ack_later_red_gate"
   ],
-  "unwired_shared_layers": [
-    "application_main_mailbox_slot",
-    "game_contract_and_adapter",
-    "bridge_capability_registration",
-    "native_driver",
-    "service",
-    "mcp_server",
-    "phase2_runner"
-  ],
+  "unwired_shared_layers": [],
   "exact_build_blockers": [
-    "effective_enabled_semantics",
-    "dispatcher_to_pushbutton_callback_and_upstream_admission",
-    "filter_mouse_all_modal_stack_and_top_receiver",
-    "scoreboard_canonical_state_revision",
-    "paused_identity_and_action_artifacts_for_current_gui_sha"
+    "paused_identity_action_and_later_observation_artifacts_for_current_gui_sha",
+    "production_capability_promotion_after_live_postcondition_evidence"
   ],
   "forbidden_shortcuts": [
     "direct_call_to_candidate_rva_without_paused_trace",
@@ -99,5 +105,95 @@
     "ack_as_postcondition",
     "query_sequence_as_scoreboard_revision",
     "old_gui_sha_live_evidence"
-  ]
+  ],
+  "enabled_abi": {
+    "definition_property_id": "0x305",
+    "parser_rva": "0x36A1928",
+    "setter_rva": "0x369CA70",
+    "flags_offset": "0xD0",
+    "local_disabled_mask": "0x04",
+    "recursive_cache_rva": "0x369CA90",
+    "effective_disabled_mask": "0x02",
+    "buttonbase_input_slot": 13,
+    "buttonbase_input_rva": "0x36C69A0",
+    "base_input_rva": "0x369E720"
+  },
+  "disproven_dispatch_candidates": [
+    {
+      "vtable_slot": 36,
+      "rva": "0x36C6A90",
+      "observed_role": "oversound_or_hover",
+      "policy": "never_call"
+    }
+  ],
+  "exact_dispatch_abi": {
+    "shortcut_manager_activate_rva": "0x36E1C40",
+    "signature": "bool __fastcall(manager,uint32,const_CString_ptr,pimpl_ptr)",
+    "manager": "deref_gui_context_plus_0x3E0_and_manager_plus_0_equals_context",
+    "target": "borrowed_pimpl_size_0x50_target_at_plus_0x48",
+    "synthetic_payload": "bridge_owned_semantic_activation_id_0_empty_CString_SSO_capacity_0xF_not_a_registered_shortcut",
+    "target_rejected_mask_plus_d0": "0x0B",
+    "modal_vector": "gui_context_plus_0x290_data_plus_0x29C_int32_count_bounded_0_to_256",
+    "modal_rule": "if_any_effectively_visible_modal_then_target_must_be_strict_descendant_of_absolute_vector_last_item",
+    "strict_descendant_rva": "0x369E620",
+    "event": "CPdxGuiShortcutEvent_size_0x40_vptr_rva_0x4507A78_type_0x1D_mutable_gate_plus_0x14",
+    "deliver_gui_event_rva": "0x36CB4A0",
+    "prehandlers": "context_plus_0x260_then_target_plus_0x130_stride_0x18_inactive_plus_0x10_vslot1_may_short_circuit_or_mutate_event",
+    "buttonbase_slot13_rva": "0x36C69A0",
+    "buttonbase_slot10_rva": "0x36C7330",
+    "callback_groups": "primary_target_plus_0x3F8_group0_else_fallback_plus_0x338_group0_stride_0x48_callback_plus_0x40_vslot2",
+    "admission_requires": "selected_callback_group_count_positive_and_every_callback_vslot2_callable",
+    "native_handled": "raw_binder_boolean_diagnostic_only_never_execution_or_postcondition_proof",
+    "ack": "always_verification_pending_after_completed_dispatch_call_regardless_of_native_handled"
+  },
+  "exact_dispatch_evidence": {
+    "shortcut_manager_activate": {
+      "start_rva": "0x36E1C40",
+      "end_rva": "0x36E1D35",
+      "sha256": "0A97BEABF9B0D6520B68A26ABC50DE77FE536C34BEBB828B69554BF0492DD025"
+    },
+    "deliver_gui_event": {
+      "start_rva": "0x36CB4A0",
+      "end_rva": "0x36CB57F",
+      "sha256": "916D1C16C608830D2514AC918CE9B95A318C658560E650084B3FA300A2AD1AF4"
+    },
+    "strict_descendant": {
+      "start_rva": "0x369E620",
+      "end_rva": "0x369E6BD",
+      "sha256": "62C712BB46F0BBD13726077C0DE1F4500D0C76B43DC7E5E913D666A8814FDACF"
+    },
+    "binder_thunk": {
+      "start_rva": "0x36E5510",
+      "end_rva": "0x36E5521",
+      "sha256": "F9EC8BA71B330C31445B865C61563850B1931034BF81CE0203AC006612973D04"
+    },
+    "event_rtti": {
+      "exact_name": "CPdxGuiShortcutEvent",
+      "vptr_rva": "0x4507A78",
+      "complete_object_locator_rva": "0x4B98AA8",
+      "type_descriptor_rva": "0x569B878",
+      "vtable_slot_0_rva": "0x36D7E50"
+    },
+    "cstring": {
+      "size": "0x20",
+      "copy_constructor_rva": "0x7E9680",
+      "destructor_rva": "0x7E97D0",
+      "sso_inline_bytes": 16,
+      "length_offset": "0x10",
+      "capacity_offset": "0x18",
+      "empty_capacity": "0xF"
+    }
+  },
+  "provider_observed_revision": {
+    "source_fields": [
+      "provider_session_id",
+      "observation_sequence",
+      "observed_state_revision",
+      "tree_fingerprint_v1",
+      "semantic_fingerprint_v1"
+    ],
+    "action_read_mode": "validate_without_advancing",
+    "later_query": "independent_nonce_same_session_connection_player_date_build_tree_observation_sequence_advanced_observed_state_revision_advanced_semantic_changed_then_explicit_widget_postcondition",
+    "aba_boundary": "unsampled_A_B_A_or_same_address_reconstruction_is_not_claimed"
+  }
 }

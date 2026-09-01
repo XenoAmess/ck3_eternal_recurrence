@@ -65,13 +65,32 @@ bool ValidFieldReason(std::string_view reason) noexcept {
 }
 
 bool ValidTopReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 11> reasons{
+  constexpr std::array<std::string_view, 12> reasons{
       "unsupported_build", "requires_application_main", "requires_paused",
       "map_not_ready", "gui_root_unavailable",
       "state_projection_unavailable", "widget_state_unavailable",
       "widget_not_instantiated", "acl_inconsistent", "state_changed",
-      "internal_error"};
+      "provider_revision_unavailable", "internal_error"};
   return std::find(reasons.begin(), reasons.end(), reason) != reasons.end();
+}
+
+bool ValidFingerprint(std::string_view value) noexcept {
+  if (value.size() != 64) return false;
+  return std::all_of(value.begin(), value.end(), [](char character) {
+    return (character >= '0' && character <= '9') ||
+           (character >= 'A' && character <= 'F');
+  });
+}
+
+bool ValidProviderSession(std::string_view value) noexcept {
+  if (value.size() != 32) return false;
+  for (const char character : value) {
+    if (!((character >= '0' && character <= '9') ||
+          (character >= 'A' && character <= 'F'))) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool ValidPointerString(std::string_view value) noexcept {
@@ -289,6 +308,12 @@ std::string SerializeZhongguoScoreboardStateV1(
   if (snapshot.case_kind != kZhongguoScoreboardStateV1CaseKind ||
       snapshot.request_nonce.empty() || snapshot.snapshot_revision == 0 ||
       snapshot.player_character_id <= 0 || !snapshot.paused ||
+      (available &&
+       (!ValidFingerprint(snapshot.tree_fingerprint_v1) ||
+        !ValidFingerprint(snapshot.semantic_fingerprint_v1) ||
+        !ValidProviderSession(snapshot.provider_session_id) ||
+        snapshot.observation_sequence == 0 ||
+        snapshot.observed_state_revision == 0)) ||
       (available ? !snapshot.unavailable_reason.empty()
                  : !ValidTopReason(snapshot.unavailable_reason))) {
     return {};
@@ -321,6 +346,16 @@ std::string SerializeZhongguoScoreboardStateV1(
   if (!AppendNumber(output, snapshot.date_raw)) return {};
   output += ",\"paused\":true,\"player_character_id\":";
   if (!AppendNumber(output, snapshot.player_character_id)) return {};
+  output += ",\"tree_fingerprint_v1\":";
+  AppendJsonString(output, snapshot.tree_fingerprint_v1);
+  output += ",\"semantic_fingerprint_v1\":";
+  AppendJsonString(output, snapshot.semantic_fingerprint_v1);
+  output += ",\"provider_session_id\":";
+  AppendJsonString(output, snapshot.provider_session_id);
+  output += ",\"observation_sequence\":";
+  if (!AppendNumber(output, snapshot.observation_sequence)) return {};
+  output += ",\"observed_state_revision\":";
+  if (!AppendNumber(output, snapshot.observed_state_revision)) return {};
   output += ",\"widgets\":[";
   for (std::size_t index = 0; index < snapshot.widgets.size(); ++index) {
     if (index != 0) output.push_back(',');
@@ -354,11 +389,20 @@ std::string SerializeZhongguoScoreboardStateV1(
       ",\"gui_global_slot_rva\":\"0x576CC68\","
       "\"find_top_level_widget_rva\":\"0x36D0B20\","
       "\"widget_hidden_flags_offset\":\"0xD0\","
+      "\"widget_local_hidden_mask\":\"0x10\","
+      "\"widget_effective_hidden_mask\":\"0x08\","
+      "\"widget_local_disabled_mask\":\"0x04\","
+      "\"widget_effective_disabled_mask\":\"0x02\","
       "\"widget_parent_offset\":\"0xE8\","
       "\"widget_children_offset\":\"0xF0\","
       "\"widget_name_offset\":\"0x1B8\","
+      "\"modal_receivers_offset\":\"0x290\","
+      "\"modal_receiver_count_offset\":\"0x29C\","
+      "\"tree_fingerprint_domain\":\"XAR/ZG361/SCOREBOARD/TREE/V1\\u0000\","
+      "\"semantic_fingerprint_domain\":\"XAR/ZG361/SCOREBOARD/SEMANTIC/V1\\u0000\","
+      "\"state_digest_domain\":\"XAR/ZG361/SCOREBOARD/STATE/V1\\u0000\","
       "\"query_scope\":\"fixed_scoreboard_instances_and_player_frozen_acl\","
-      "\"contract_stage\":\"static_exact_build_live_unverified\"}}";
+      "\"contract_stage\":\"static_provider_observed_revision_live_unverified\"}}";
   return output;
 }
 

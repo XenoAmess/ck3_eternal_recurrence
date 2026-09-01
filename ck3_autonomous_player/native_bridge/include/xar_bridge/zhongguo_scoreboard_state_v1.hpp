@@ -104,6 +104,11 @@ struct ZhongguoScoreboardStateV1 {
   std::int32_t date_raw = 0;
   bool paused = false;
   std::int32_t player_character_id = -1;
+  std::string tree_fingerprint_v1;
+  std::string semantic_fingerprint_v1;
+  std::string provider_session_id;
+  std::uint64_t observation_sequence = 0;
+  std::uint64_t observed_state_revision = 0;
   std::array<ZhongguoScoreboardWidgetStateV1, 15> widgets;
   ZhongguoScoreboardManagedAclV1 managed_acl;
   ZhongguoScoreboardReceivedSelfAclV1 received_self_acl;
@@ -136,6 +141,17 @@ inline constexpr std::string_view kZhongguoScoreboardStateV1ConsumerId =
     "xar-autoplayer-zhongguo-scoreboard-state-v1";
 inline constexpr std::string_view kZhongguoScoreboardStateV1AllowlistId =
     "zg361-scoreboard-fixed-widget-acl-v1";
+inline constexpr std::string_view kZhongguoScoreboardStateV1GameVersion =
+    "1.19.0.6";
+inline constexpr std::string_view
+    kZhongguoScoreboardStateV1ExecutableSha256 =
+        "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+inline constexpr std::string_view kZhongguoScoreboardTreeDomainV1 =
+    "XAR/ZG361/SCOREBOARD/TREE/V1";
+inline constexpr std::string_view kZhongguoScoreboardSemanticDomainV1 =
+    "XAR/ZG361/SCOREBOARD/SEMANTIC/V1";
+inline constexpr std::string_view kZhongguoScoreboardStateDomainV1 =
+    "XAR/ZG361/SCOREBOARD/STATE/V1";
 
 inline constexpr std::uintptr_t kZhongguoGuiGlobalSlotRva = 0x576CC68;
 inline constexpr std::uintptr_t kZhongguoGuiFindTopLevelWidgetRva = 0x36D0B20;
@@ -143,8 +159,17 @@ inline constexpr std::size_t kZhongguoGuiChainFirstOffset = 0x1B8;
 inline constexpr std::size_t kZhongguoGuiChainSecondOffset = 0x58;
 inline constexpr std::size_t kZhongguoGuiContextOffset = 0x3D0;
 inline constexpr std::size_t kZhongguoGuiOwnerOffset = 0x08;
+inline constexpr std::size_t kZhongguoGuiModalReceiversOffset = 0x290;
+inline constexpr std::size_t kZhongguoGuiModalReceiverCountOffset = 0x29C;
 inline constexpr std::size_t kZhongguoWidgetHiddenFlagsOffset = 0xD0;
-inline constexpr std::uint8_t kZhongguoWidgetHiddenMask = 0x10;
+inline constexpr std::uint8_t kZhongguoWidgetEffectiveHiddenMask = 0x08;
+inline constexpr std::uint8_t kZhongguoWidgetLocalHiddenMask = 0x10;
+// ButtonBase::OnInput (slot 13) rejects input while the recursively cached
+// effective-disabled bit is set.  The local-disabled source bit is exposed as
+// an exact-build ABI constant for provenance, but the state projection reads
+// only the already-propagated effective value.
+inline constexpr std::uint8_t kZhongguoWidgetEffectiveDisabledMask = 0x02;
+inline constexpr std::uint8_t kZhongguoWidgetLocalDisabledMask = 0x04;
 inline constexpr std::size_t kZhongguoWidgetParentOffset = 0xE8;
 inline constexpr std::size_t kZhongguoWidgetChildrenOffset = 0xF0;
 inline constexpr std::size_t kZhongguoWidgetChildCountOffset = 0xFC;
@@ -211,13 +236,50 @@ struct ZhongguoScoreboardNativeEnvironmentV1 {
 using FindZhongguoFixedWidgetV1 = void *(*)(
     void *, std::string_view) noexcept;
 
+using ResolveZhongguoFixtureGuiV1 = bool (*)(
+    void *, void *&gui_context, void *&gui_owner) noexcept;
+
 struct ZhongguoScoreboardAccessV1 : ZhongguoCaseAccessV1 {
   FindZhongguoFixedWidgetV1 find_fixed_widget = nullptr;
+  // Only offline fixtures may inject these roots. Production resolves the
+  // exact-build singleton chain and never consumes this callback.
+  ResolveZhongguoFixtureGuiV1 resolve_fixture_gui = nullptr;
+};
+
+enum class ZhongguoScoreboardProviderReadModeV1 : std::uint32_t {
+  unavailable = 0,
+  publish_observation = 1,
+  validate_without_advancing = 2,
+};
+
+struct ZhongguoScoreboardProviderRevisionTrackerV1 {
+  bool initialized = false;
+  std::string provider_session_id;
+  std::uint64_t connection_generation = 0;
+  std::int32_t player_character_id = -1;
+  std::int32_t date_raw = 0;
+  std::string game_version;
+  std::string executable_sha256;
+  std::string allowlist_id;
+  std::uint64_t observation_sequence = 0;
+  std::uint64_t observed_state_revision = 0;
+
+  // Provider-private canonical bytes. Revisions compare these bytes directly;
+  // the public SHA-256 fields are diagnostics, not equality authorities.
+  std::string last_tree_canonical_bytes;
+  std::string last_semantic_canonical_bytes;
+  std::string last_state_digest_bytes;
 };
 
 struct ZhongguoScoreboardStateRequestV1 {
   std::uint64_t expected_snapshot_revision = 0;
   std::string request_nonce;
+  std::string provider_session_id;
+  std::uint64_t connection_generation = 0;
+  ZhongguoScoreboardProviderReadModeV1 provider_read_mode =
+      ZhongguoScoreboardProviderReadModeV1::unavailable;
+  ZhongguoScoreboardProviderRevisionTrackerV1 *provider_revision_tracker =
+      nullptr;
 };
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(

@@ -149,6 +149,13 @@ from .zhongguo_scoreboard_state_contract import (
     parse_query_zhongguo_scoreboard_state_v1_step,
     query_zhongguo_scoreboard_state_v1_step,
 )
+from .zhongguo_scoreboard_action_contract import (
+    ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY,
+    ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP,
+    ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY,
+    build_zhongguo_scoreboard_action_v1_request,
+    normalize_native_zhongguo_scoreboard_action_v1_result,
+)
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -3788,6 +3795,196 @@ class GameplayBridgeService:
                 "player_character_id": player_character_id,
                 "expected_revision": expected_revision,
             },
+        }
+
+    def activate_zhongguo_scoreboard_v1(
+        self,
+        request_nonce: str,
+        action: str,
+        *,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_connection_generation: int,
+        expected_player_character_id: int,
+        expected_provider_session_id: str,
+        expected_observation_sequence: int,
+        expected_observed_state_revision: int,
+        expected_tree_fingerprint_v1: str,
+        expected_semantic_fingerprint_v1: str,
+        expected_window_instance_pointer: str,
+        expected_target_instance_pointer: str,
+        expected_target_vtable_pointer: str,
+    ) -> dict[str, object]:
+        """Cross the typed scoreboard action transport without promotion.
+
+        The exact dispatcher returns an ACK only. Production capability stays
+        unadvertised until a paused live run proves the independent
+        provider-owned observation transition and explicit postcondition.
+        """
+
+        request = build_zhongguo_scoreboard_action_v1_request(
+            request_nonce=request_nonce,
+            action=action,
+            expected_revision=expected_revision,
+            expected_native_revision=expected_native_revision,
+            expected_connection_generation=expected_connection_generation,
+            expected_player_character_id=expected_player_character_id,
+            expected_provider_session_id=expected_provider_session_id,
+            expected_observation_sequence=expected_observation_sequence,
+            expected_observed_state_revision=(
+                expected_observed_state_revision
+            ),
+            expected_tree_fingerprint_v1=expected_tree_fingerprint_v1,
+            expected_semantic_fingerprint_v1=(
+                expected_semantic_fingerprint_v1
+            ),
+            expected_window_instance_pointer=expected_window_instance_pointer,
+            expected_target_instance_pointer=expected_target_instance_pointer,
+            expected_target_vtable_pointer=expected_target_vtable_pointer,
+        )
+        snapshot = self.snapshot()
+        diagnostics = snapshot.get("diagnostics")
+        played_character = snapshot.get("played_character")
+        actual_player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        actual_connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard actions require a paused snapshot"
+            )
+        if not (
+            snapshot.get("revision") == expected_revision
+            and snapshot.get("native_revision") == expected_native_revision
+            and actual_connection_generation
+            == expected_connection_generation
+            and actual_player_character_id == expected_player_character_id
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "ZhongGuo scoreboard action source binding is stale"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend lacks the fail-closed ZhongGuo scoreboard "
+                "action transport"
+            )
+        executor = getattr(
+            self.driver, "activate_zhongguo_scoreboard_v1", None
+        )
+        if not callable(executor):
+            raise UnsupportedStepError(
+                "selected backend has no typed ZhongGuo scoreboard action "
+                "executor"
+            )
+        result = executor(request, expected_revision=expected_revision)
+        expected_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "request_nonce",
+            "action",
+            "action_sequence",
+            "snapshot_revision",
+            "rejection_reason",
+            "action_ack",
+            "production_capability_advertised",
+            "backend_id",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            "queried_connection_generation",
+        }
+        if not isinstance(result, dict) or set(result) != expected_result_keys:
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard action backend returned unexpected fields"
+            )
+        try:
+            normalized = normalize_native_zhongguo_scoreboard_action_v1_result(
+                {
+                    key: result[key]
+                    for key in (
+                        "step",
+                        "accepted",
+                        "status",
+                        "request_nonce",
+                        "action",
+                        "action_sequence",
+                        "snapshot_revision",
+                        "rejection_reason",
+                        "action_ack",
+                        "production_capability_advertised",
+                        "backend_id",
+                    )
+                },
+                expected_request=request,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"ZhongGuo scoreboard action result is malformed: {error}"
+            ) from error
+        if not (
+            normalized["step"] == ACTIVATE_ZHONGGUO_SCOREBOARD_V1_STEP
+            and result["queried_snapshot_id"] == snapshot.get("snapshot_id")
+            and result["queried_revision"] == expected_revision
+            and result["queried_native_revision"]
+            == expected_native_revision
+            and result["queried_connection_generation"]
+            == expected_connection_generation
+            and normalized["snapshot_revision"]
+            == expected_native_revision
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard action result crossed its source binding"
+            )
+        advertised_by_capability = (
+            isinstance(bridge_capabilities, list)
+            and ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY
+            in bridge_capabilities
+        )
+        if (
+            normalized["production_capability_advertised"]
+            is not advertised_by_capability
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard production capability mirror drifted"
+            )
+        current = self.snapshot()
+        current_diagnostics = current.get("diagnostics")
+        current_played_character = current.get("played_character")
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot.get("snapshot_id")
+            and current.get("revision") == expected_revision
+            and current.get("native_revision") == expected_native_revision
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation")
+            == expected_connection_generation
+            and isinstance(current_played_character, dict)
+            and current_played_character.get("character_id")
+            == expected_player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo scoreboard action crossed its paused binding"
+            )
+        return {
+            **normalized,
+            "queried_snapshot_id": result["queried_snapshot_id"],
+            "queried_revision": result["queried_revision"],
+            "queried_native_revision": result["queried_native_revision"],
+            "queried_connection_generation": result[
+                "queried_connection_generation"
+            ],
         }
 
     def center_map_on_landed_title_v1(

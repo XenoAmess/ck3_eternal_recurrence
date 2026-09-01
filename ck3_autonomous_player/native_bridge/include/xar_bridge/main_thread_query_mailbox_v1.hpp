@@ -200,14 +200,15 @@ struct MainThreadQueryInstallEnvironmentV1 {
   bool executor_submission_enabled = false;
   // At least one slot is non-null in production.  These exact typed callback
   // identities prevent the infrastructure from becoming a generic native-call
-  // trampoline. V1 has twenty-one fixed slots for the bounded war-entry,
+  // trampoline. V1 has twenty-two fixed slots for the bounded war-entry,
   // route-contact, actual-contact, combat-v3, ongoing-battle, full-CombatID
   // lifecycle, campaign-root, loaded-feature, pending-interaction and
   // current-event-window read-only, explicit title-map presentation, B1
   // manager-owned case, received-self result-case, strict B2 PIP and strict
   // received-self incident, fixed ZhongGuo scoreboard-state and fixed
   // Workforce collective/rolling-three-cycle, AI-owned B1 case and Workforce
-  // normal-exit/HC lifecycle snapshot executors.
+  // normal-exit/HC lifecycle snapshot and fail-closed scoreboard-action
+  // transport executors.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_tertiary = nullptr;
@@ -229,6 +230,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_novemdenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_vigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_unvigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_duovigintary = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -321,6 +323,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_novemdenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_vigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_unvigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_duovigintary = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

@@ -2,10 +2,19 @@
 
 #include <array>
 #include <charconv>
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <limits>
 #include <string>
 #include <string_view>
+
+#if defined(_MSC_VER)
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#endif
 
 namespace xar::ck3_11906 {
 namespace {
@@ -45,6 +54,233 @@ bool ValidPointer(std::string_view value) noexcept {
     }
   }
   return true;
+}
+
+bool ValidProviderSessionId(std::string_view value) noexcept {
+  if (value.size() != 32) return false;
+  for (const char current : value) {
+    if (!((current >= '0' && current <= '9') ||
+          (current >= 'A' && current <= 'F'))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ValidFingerprint(std::string_view value) noexcept {
+  if (value.size() != 64) return false;
+  for (const char current : value) {
+    if (!((current >= '0' && current <= '9') ||
+          (current >= 'A' && current <= 'F'))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ParsePointer(std::string_view value, void *&output) noexcept {
+  output = nullptr;
+  if (!ValidPointer(value)) return false;
+  std::uint64_t parsed = 0;
+  const auto converted = std::from_chars(value.data() + 2,
+                                         value.data() + value.size(), parsed,
+                                         16);
+  if (converted.ec != std::errc{} || converted.ptr != value.data() + value.size() ||
+      parsed == 0 || parsed > std::numeric_limits<std::uintptr_t>::max()) {
+    return false;
+  }
+  output = reinterpret_cast<void *>(static_cast<std::uintptr_t>(parsed));
+  return true;
+}
+
+bool ReadBytes(const void *address, void *output, std::size_t size) noexcept {
+  if (address == nullptr || output == nullptr || size == 0) return false;
+#if defined(_MSC_VER)
+  __try {
+    std::memcpy(output, address, size);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  std::memcpy(output, address, size);
+  return true;
+#endif
+}
+
+template <typename T>
+bool ReadValue(const void *base, std::size_t offset, T &output) noexcept {
+  const auto address = reinterpret_cast<std::uintptr_t>(base);
+  if (address == 0 ||
+      address > std::numeric_limits<std::uintptr_t>::max() - offset) {
+    return false;
+  }
+  return ReadBytes(reinterpret_cast<const void *>(address + offset), &output,
+                   sizeof(output));
+}
+
+bool CallableAddress(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
+    void *address) noexcept {
+  if (address == nullptr) return false;
+  if (environment.offline_fixture_function_overrides) return true;
+  const auto value = reinterpret_cast<std::uintptr_t>(address);
+  return environment.module_base != 0 && value >= environment.module_base &&
+         value - environment.module_base < kZhongguoExactImageSize;
+}
+
+bool DispatchEnvironmentIsExact(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment) noexcept {
+  if (!environment.exact_build_admitted ||
+      environment.gui_global_slot == nullptr ||
+      environment.activate_shortcut == nullptr ||
+      environment.is_strict_descendant == nullptr ||
+      environment.button_base_slot13 == nullptr) {
+    return false;
+  }
+  if (environment.offline_fixture_function_overrides) return true;
+  return environment.module_base != 0 &&
+         reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) ==
+             environment.module_base + kZhongguoGuiGlobalSlotRva &&
+         reinterpret_cast<std::uintptr_t>(environment.activate_shortcut) ==
+             environment.module_base + kZhongguoShortcutManagerActivateRva &&
+         reinterpret_cast<std::uintptr_t>(environment.is_strict_descendant) ==
+             environment.module_base + kZhongguoStrictDescendantRva &&
+         reinterpret_cast<std::uintptr_t>(environment.button_base_slot13) ==
+             environment.module_base + kZhongguoButtonBaseSlot13Rva;
+}
+
+bool ResolveGuiContext(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
+    void *&context) noexcept {
+  context = nullptr;
+  void *first = nullptr;
+  void *second = nullptr;
+  void *third = nullptr;
+  return ReadBytes(environment.gui_global_slot, &first, sizeof(first)) &&
+         ReadValue(first, kZhongguoGuiChainFirstOffset, second) &&
+         ReadValue(second, kZhongguoGuiChainSecondOffset, third) &&
+         ReadValue(third, kZhongguoGuiContextOffset, context) &&
+         context != nullptr;
+}
+
+bool CallStrictDescendant(
+    NativeZhongguoStrictDescendantV1 function, void *root,
+    void *target) noexcept {
+#if defined(_MSC_VER)
+  __try {
+    return function(root, target);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  return function(root, target);
+#endif
+}
+
+bool ValidateModalAdmission(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
+    void *context, void *target) noexcept {
+  void **receivers = nullptr;
+  std::int32_t count = 0;
+  if (!ReadValue(context, kZhongguoGuiModalVectorOffset, receivers) ||
+      !ReadValue(context, kZhongguoGuiModalCountOffset, count) || count < 0 ||
+      count > kZhongguoMaximumModalReceivers ||
+      (count != 0 && receivers == nullptr)) {
+    return false;
+  }
+  bool any_effectively_visible = false;
+  for (std::int32_t index = count - 1; index >= 0; --index) {
+    void *receiver = nullptr;
+    std::uint8_t flags = 0;
+    if (!ReadValue(receivers, static_cast<std::size_t>(index) * sizeof(void *),
+                   receiver) ||
+        receiver == nullptr ||
+        !ReadValue(receiver, kZhongguoWidgetHiddenFlagsOffset, flags)) {
+      return false;
+    }
+    if ((flags & kZhongguoWidgetEffectiveHiddenMask) == 0) {
+      any_effectively_visible = true;
+      break;
+    }
+  }
+  if (!any_effectively_visible) return true;
+  void *root = nullptr;
+  if (!ReadValue(receivers,
+                 static_cast<std::size_t>(count - 1) * sizeof(void *), root) ||
+      root == nullptr) {
+    return false;
+  }
+  return CallStrictDescendant(environment.is_strict_descendant, root, target);
+}
+
+bool ValidateCallbackGroup(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
+    void *target) noexcept {
+  std::int32_t primary_count = 0;
+  if (!ReadValue(target, kZhongguoPrimaryCallbackGroupOffset +
+                             kZhongguoCallbackGroupCountOffset,
+                 primary_count) ||
+      primary_count < 0 || primary_count > kZhongguoMaximumCallbacks) {
+    return false;
+  }
+  const auto group_offset = primary_count > 0
+                                ? kZhongguoPrimaryCallbackGroupOffset
+                                : kZhongguoFallbackCallbackGroupOffset;
+  std::int32_t count = primary_count;
+  if (primary_count == 0 &&
+      (!ReadValue(target, group_offset + kZhongguoCallbackGroupCountOffset,
+                  count) ||
+       count < 0 || count > kZhongguoMaximumCallbacks)) {
+    return false;
+  }
+  if (count == 0) return false;
+  void *data = nullptr;
+  if (!ReadValue(target, group_offset + kZhongguoCallbackGroupDataOffset,
+                 data) ||
+      data == nullptr) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto row_offset = static_cast<std::size_t>(index) *
+                            kZhongguoCallbackStride;
+    void *callback = nullptr;
+    void *vtable = nullptr;
+    void *slot2 = nullptr;
+    if (!ReadValue(data, row_offset + kZhongguoCallbackObjectOffset,
+                   callback) ||
+        callback == nullptr || !ReadValue(callback, 0, vtable) ||
+        vtable == nullptr ||
+        !ReadValue(vtable, kZhongguoCallbackVtableSlot2Offset, slot2) ||
+        !CallableAddress(environment, slot2)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool CallShortcutActivate(
+    NativeZhongguoShortcutManagerActivateV1 function, void *manager,
+    void *target, bool &native_handled) noexcept {
+  native_handled = false;
+  alignas(void *) std::array<std::byte, kZhongguoShortcutCStringSize> text{};
+  const std::uint64_t capacity = kZhongguoShortcutCStringEmptyCapacity;
+  std::memcpy(text.data() + kZhongguoShortcutCStringCapacityOffset, &capacity,
+              sizeof(capacity));
+  alignas(void *) std::array<std::byte, kZhongguoShortcutPimplSize> pimpl{};
+  std::memcpy(pimpl.data() + kZhongguoShortcutPimplTargetOffset, &target,
+              sizeof(target));
+#if defined(_MSC_VER)
+  __try {
+    native_handled = function(manager, 0, text.data(), pimpl.data());
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  native_handled = function(manager, 0, text.data(), pimpl.data());
+  return true;
+#endif
 }
 
 std::string_view ActionName(game::ZhongguoScoreboardActionV1 value) noexcept {
@@ -145,6 +381,86 @@ void AppendJsonString(std::string &output, std::string_view value) {
 
 } // namespace
 
+ZhongguoScoreboardActionDispatchEnvironmentV1
+BindZhongguoScoreboardActionDispatchEnvironmentV1(
+    std::uintptr_t module_base, bool exact_build_admitted) noexcept {
+  ZhongguoScoreboardActionDispatchEnvironmentV1 environment{};
+  environment.module_base = module_base;
+  environment.exact_build_admitted = exact_build_admitted;
+  if (module_base != 0 && exact_build_admitted) {
+    environment.gui_global_slot = reinterpret_cast<void **>(
+        module_base + kZhongguoGuiGlobalSlotRva);
+    environment.activate_shortcut =
+        reinterpret_cast<NativeZhongguoShortcutManagerActivateV1>(
+            module_base + kZhongguoShortcutManagerActivateRva);
+    environment.is_strict_descendant =
+        reinterpret_cast<NativeZhongguoStrictDescendantV1>(
+            module_base + kZhongguoStrictDescendantRva);
+    environment.button_base_slot13 = reinterpret_cast<void *>(
+        module_base + kZhongguoButtonBaseSlot13Rva);
+  }
+  return environment;
+}
+
+bool DispatchZhongguoScoreboardActionNativeV1(
+    void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
+    std::string_view stable_identity, std::string_view runtime_name,
+    std::string_view instance_pointer, std::string_view vtable_pointer,
+    bool &native_handled) noexcept {
+  native_handled = false;
+  try {
+    auto *environment = static_cast<
+        ZhongguoScoreboardActionDispatchEnvironmentV1 *>(opaque_environment);
+    if (environment == nullptr || !DispatchEnvironmentIsExact(*environment) ||
+        action == game::ZhongguoScoreboardActionV1::reopen ||
+        stable_identity.empty() || stable_identity != runtime_name) {
+      return false;
+    }
+    void *target = nullptr;
+    void *expected_vtable = nullptr;
+    if (!ParsePointer(instance_pointer, target) ||
+        !ParsePointer(vtable_pointer, expected_vtable)) {
+      return false;
+    }
+    void *context = nullptr;
+    void *manager = nullptr;
+    void *manager_context = nullptr;
+    void *target_context = nullptr;
+    void *actual_vtable = nullptr;
+    void *slot13 = nullptr;
+    void *slot10 = nullptr;
+    std::uint8_t flags = 0;
+    if (!ResolveGuiContext(*environment, context) ||
+        !ReadValue(context, kZhongguoGuiShortcutManagerOffset, manager) ||
+        manager == nullptr || !ReadValue(manager, 0, manager_context) ||
+        manager_context != context ||
+        !ReadValue(target, kZhongguoWidgetGuiContextOffset, target_context) ||
+        target_context != context ||
+        !ReadValue(target, kZhongguoWidgetHiddenFlagsOffset, flags) ||
+        (flags & kZhongguoWidgetShortcutRejectedMask) != 0 ||
+        !ReadValue(target, 0, actual_vtable) ||
+        actual_vtable != expected_vtable ||
+        !ReadValue(actual_vtable, 13 * sizeof(void *), slot13) ||
+        slot13 != environment->button_base_slot13 ||
+        !ReadValue(actual_vtable, 10 * sizeof(void *), slot10) ||
+        !CallableAddress(*environment, slot10) ||
+        !ValidateCallbackGroup(*environment, target) ||
+        !ValidateModalAdmission(*environment, context, target)) {
+      return false;
+    }
+    // The native boolean is only a diagnostic: a prehandler may mutate the
+    // event's +0x14 gate or return a value that does not identify whether the
+    // product callback ran.  Successful invocation therefore yields an ACK
+    // with verification pending regardless of native_handled; only a later
+    // independent provider observation may prove the postcondition.
+    return CallShortcutActivate(environment->activate_shortcut, manager, target,
+                                native_handled);
+  } catch (...) {
+    native_handled = false;
+    return false;
+  }
+}
+
 game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
     const game::ZhongguoScoreboardActionRequestV1 &request,
     const game::ZhongguoScoreboardActionBindingV1 &binding,
@@ -156,13 +472,19 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
       request.expected_native_revision == 0 ||
       request.expected_connection_generation == 0 ||
       request.expected_player_character_id <= 0 ||
+      !ValidProviderSessionId(request.expected_provider_session_id) ||
+      request.expected_observation_sequence == 0 ||
+      request.expected_observed_state_revision == 0 ||
+      !ValidFingerprint(request.expected_tree_fingerprint_v1) ||
+      !ValidFingerprint(request.expected_semantic_fingerprint_v1) ||
       !ValidPointer(request.expected_window_instance_pointer) ||
       !ValidPointer(request.expected_target_instance_pointer) ||
       !ValidPointer(request.expected_target_vtable_pointer)) {
     return Reject(request, binding, "invalid_request", ack);
   }
-  if (request.expected_revision == std::numeric_limits<std::uint64_t>::max() ||
-      request.expected_native_revision ==
+  if (request.expected_observation_sequence ==
+          std::numeric_limits<std::uint64_t>::max() ||
+      request.expected_observed_state_revision ==
           std::numeric_limits<std::uint64_t>::max()) {
     return Reject(request, binding, "revision_overflow", ack);
   }
@@ -180,6 +502,31 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
   if (binding.player_character_id != request.expected_player_character_id ||
       source.player_character_id != request.expected_player_character_id) {
     return Reject(request, binding, "player_binding_mismatch", ack);
+  }
+  if (binding.provider_session_id != request.expected_provider_session_id ||
+      source.provider_session_id != request.expected_provider_session_id) {
+    return Reject(request, binding, "provider_session_mismatch", ack);
+  }
+  if (binding.observation_sequence != request.expected_observation_sequence ||
+      source.observation_sequence != request.expected_observation_sequence) {
+    return Reject(request, binding, "observation_sequence_mismatch", ack);
+  }
+  if (binding.observed_state_revision !=
+          request.expected_observed_state_revision ||
+      source.observed_state_revision !=
+          request.expected_observed_state_revision) {
+    return Reject(request, binding, "observed_state_revision_mismatch", ack);
+  }
+  if (binding.tree_fingerprint_v1 !=
+          request.expected_tree_fingerprint_v1 ||
+      source.tree_fingerprint_v1 != request.expected_tree_fingerprint_v1) {
+    return Reject(request, binding, "tree_fingerprint_mismatch", ack);
+  }
+  if (binding.semantic_fingerprint_v1 !=
+          request.expected_semantic_fingerprint_v1 ||
+      source.semantic_fingerprint_v1 !=
+          request.expected_semantic_fingerprint_v1) {
+    return Reject(request, binding, "semantic_fingerprint_mismatch", ack);
   }
   if (source.status != game::ZhongguoScoreboardStateStatusV1::available ||
       !source.paused || source.date_raw != binding.date_raw ||
@@ -210,8 +557,7 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
   std::size_t target_index = source.widgets.size();
   std::size_t active_tab_index = 0;
   bool active_tab_available = false;
-  if (request.action == game::ZhongguoScoreboardActionV1::open ||
-      request.action == game::ZhongguoScoreboardActionV1::reopen) {
+  if (request.action == game::ZhongguoScoreboardActionV1::open) {
     if (modal_visible) {
       return Reject(request, binding, "scoreboard_already_open", ack);
     }
@@ -256,6 +602,14 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
         !source.received_self_acl.surface_available) {
       return Reject(request, binding, "received_acl_denied", ack);
     }
+    bool page_visible = false;
+    if (!AvailableBool(source.widgets[10 + active_tab_index].effective_visible,
+                       page_visible)) {
+      return Reject(request, binding, "active_page_visibility_unavailable", ack);
+    }
+    if (page_visible) {
+      return Reject(request, binding, "action_noop", ack);
+    }
     target_index = kTabIndices[active_tab_index];
     active_tab_available = true;
   } else if (request.action == game::ZhongguoScoreboardActionV1::close) {
@@ -263,6 +617,8 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
       return Reject(request, binding, "scoreboard_not_open", ack);
     }
     target_index = kHeaderCloseIndex;
+  } else if (request.action == game::ZhongguoScoreboardActionV1::reopen) {
+    return Reject(request, binding, "reopen_requires_two_phase_sequence", ack);
   } else {
     return Reject(request, binding, "invalid_request", ack);
   }
@@ -306,8 +662,10 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
   if (access.dispatch == nullptr) {
     return Reject(request, binding, "action_dispatch_unavailable", ack);
   }
+  bool native_handled = false;
   if (!access.dispatch(access.context, request.action, target.stable_identity,
-                       target.runtime_name, instance, vtable)) {
+                       target.runtime_name, instance, vtable,
+                       native_handled)) {
     return Reject(request, binding, "action_dispatch_rejected", ack);
   }
 
@@ -323,9 +681,14 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
   ack.target.runtime_name = target.runtime_name;
   ack.target.instance_pointer.assign(instance);
   ack.target.vtable_pointer.assign(vtable);
-  ack.expected_postcondition.minimum_revision = binding.revision + 1;
-  ack.expected_postcondition.minimum_native_revision =
-      binding.native_revision + 1;
+  ack.expected_postcondition.minimum_observation_sequence =
+      binding.observation_sequence + 1;
+  ack.expected_postcondition.minimum_observed_state_revision =
+      binding.observed_state_revision + 1;
+  ack.expected_postcondition.expected_provider_session_id =
+      binding.provider_session_id;
+  ack.expected_postcondition.expected_tree_fingerprint_v1 =
+      binding.tree_fingerprint_v1;
   ack.expected_postcondition.modal_effective_visible =
       request.action != game::ZhongguoScoreboardActionV1::close;
   ack.expected_postcondition.active_tab_available = active_tab_available;
@@ -335,6 +698,7 @@ game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
   ack.expected_postcondition.list_view_required = active_tab_available;
   ack.expected_postcondition.expected_window_instance_pointer.assign(
       window_instance);
+  ack.native_handled = native_handled;
   ack.postcondition_verified = false;
   return ack.result;
 }
@@ -348,14 +712,28 @@ std::string SerializeZhongguoScoreboardActionAckV1(
       !ValidNonce(ack.request_nonce) || ack.source.native_revision == 0 ||
       ack.source.connection_generation == 0 ||
       ack.source.player_character_id <= 0 ||
+      !ValidProviderSessionId(ack.source.provider_session_id) ||
+      ack.source.observation_sequence == 0 ||
+      ack.source.observed_state_revision == 0 ||
+      !ValidFingerprint(ack.source.tree_fingerprint_v1) ||
+      !ValidFingerprint(ack.source.semantic_fingerprint_v1) ||
       !ValidPointer(ack.window_instance_pointer) ||
       !ValidPointer(ack.target.instance_pointer) ||
       !ValidPointer(ack.target.vtable_pointer) ||
       ack.target.stable_identity != ack.target.runtime_name ||
       !ack.expected_postcondition.requires_independent_query ||
-      ack.expected_postcondition.minimum_revision != ack.source.revision + 1 ||
-      ack.expected_postcondition.minimum_native_revision !=
-          ack.source.native_revision + 1 ||
+      ack.source.observation_sequence ==
+          std::numeric_limits<std::uint64_t>::max() ||
+      ack.source.observed_state_revision ==
+          std::numeric_limits<std::uint64_t>::max() ||
+      ack.expected_postcondition.minimum_observation_sequence !=
+          ack.source.observation_sequence + 1 ||
+      ack.expected_postcondition.minimum_observed_state_revision !=
+          ack.source.observed_state_revision + 1 ||
+      ack.expected_postcondition.expected_provider_session_id !=
+          ack.source.provider_session_id ||
+      ack.expected_postcondition.expected_tree_fingerprint_v1 !=
+          ack.source.tree_fingerprint_v1 ||
       ack.expected_postcondition.expected_window_instance_pointer !=
           ack.window_instance_pointer ||
       ack.postcondition_verified) {
@@ -379,6 +757,16 @@ std::string SerializeZhongguoScoreboardActionAckV1(
   if (!AppendSigned(output, ack.source.date_raw)) return {};
   output += ",\"player_character_id\":";
   if (!AppendSigned(output, ack.source.player_character_id)) return {};
+  output += ",\"provider_session_id\":";
+  AppendJsonString(output, ack.source.provider_session_id);
+  output += ",\"observation_sequence\":";
+  if (!AppendNumber(output, ack.source.observation_sequence)) return {};
+  output += ",\"observed_state_revision\":";
+  if (!AppendNumber(output, ack.source.observed_state_revision)) return {};
+  output += ",\"tree_fingerprint_v1\":";
+  AppendJsonString(output, ack.source.tree_fingerprint_v1);
+  output += ",\"semantic_fingerprint_v1\":";
+  AppendJsonString(output, ack.source.semantic_fingerprint_v1);
   output += ",\"window_instance_pointer\":";
   AppendJsonString(output, ack.window_instance_pointer);
   output += "},\"target\":{\"stable_identity\":";
@@ -391,15 +779,24 @@ std::string SerializeZhongguoScoreboardActionAckV1(
   AppendJsonString(output, ack.target.vtable_pointer);
   output +=
       "},\"expected_postcondition\":{\"requires_independent_query\":true,"
-      "\"minimum_revision\":";
-  if (!AppendNumber(output, ack.expected_postcondition.minimum_revision)) {
+      "\"minimum_observation_sequence\":";
+  if (!AppendNumber(
+          output,
+          ack.expected_postcondition.minimum_observation_sequence)) {
     return {};
   }
-  output += ",\"minimum_native_revision\":";
-  if (!AppendNumber(output,
-                    ack.expected_postcondition.minimum_native_revision)) {
+  output += ",\"minimum_observed_state_revision\":";
+  if (!AppendNumber(
+          output,
+          ack.expected_postcondition.minimum_observed_state_revision)) {
     return {};
   }
+  output += ",\"expected_provider_session_id\":";
+  AppendJsonString(
+      output, ack.expected_postcondition.expected_provider_session_id);
+  output += ",\"expected_tree_fingerprint_v1\":";
+  AppendJsonString(
+      output, ack.expected_postcondition.expected_tree_fingerprint_v1);
   output += ",\"modal_effective_visible\":";
   output += ack.expected_postcondition.modal_effective_visible ? "true" : "false";
   output += ",\"active_tab\":";
@@ -413,15 +810,17 @@ std::string SerializeZhongguoScoreboardActionAckV1(
   output += ",\"expected_window_instance_pointer\":";
   AppendJsonString(
       output, ack.expected_postcondition.expected_window_instance_pointer);
+  output += "},\"native_handled\":";
+  output += ack.native_handled ? "true" : "false";
   output +=
-      "},\"postcondition_verified\":false,\"provenance\":{"
+      ",\"postcondition_verified\":false,\"provenance\":{"
       "\"game_version\":\"1.19.0.6\","
       "\"executable_sha256\":"
       "\"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\","
       "\"backend_id\":\"ck3-1.19.0.6-native-zhongguo-scoreboard-action-v1\","
       "\"consumer_id\":\"xar-autoplayer-zhongguo-scoreboard-action-v1\","
       "\"allowlist_id\":\"zg361-scoreboard-named-widget-action-v1\","
-      "\"contract_stage\":\"static_action_contract_live_unverified\"}}";
+      "\"contract_stage\":\"exact_dispatch_ack_provider_revision_live_unverified\"}}";
   return output;
 }
 

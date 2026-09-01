@@ -122,6 +122,19 @@ void *ProxyFindFixedWidget(void *opaque, std::string_view name) noexcept {
                                                 name);
 }
 
+bool ProxyResolveFixtureGui(void *opaque, void *&gui_context,
+                            void *&gui_owner) noexcept {
+  gui_context = nullptr;
+  gui_owner = nullptr;
+  const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
+  return proxy != nullptr && proxy->query != nullptr &&
+         proxy->stamp != nullptr &&
+         proxy->query->access.resolve_fixture_gui != nullptr &&
+         IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp) &&
+         proxy->query->access.resolve_fixture_gui(
+             proxy->query->access.context, gui_context, gui_owner);
+}
+
 bool IsWhitespace(char value) noexcept {
   return value == ' ' || value == '\t' || value == '\r' || value == '\n';
 }
@@ -181,9 +194,10 @@ bool SkipJsonValue(std::string_view json, std::size_t &cursor) noexcept {
 }
 
 bool HasExactControlFields(std::string_view json) noexcept {
-  constexpr std::array<std::string_view, 6> fields{
+  constexpr std::array<std::string_view, 7> fields{
       "type", "protocol_version", "request_id", "step",
-      "expected_revision", "request_nonce"};
+      "expected_revision", "request_nonce",
+      "expected_connection_generation"};
   std::uint32_t seen = 0;
   std::size_t cursor = 0;
   SkipWhitespace(json, cursor);
@@ -299,7 +313,10 @@ bool ParseZhongguoScoreboardStateRequestV1(
       output.expected_snapshot_revision == 0 ||
       !FindRawField(json, "request_nonce", raw) ||
       !ParseString(raw, output.request_nonce) ||
-      !ValidNonce(output.request_nonce)) {
+      !ValidNonce(output.request_nonce) ||
+      !FindRawField(json, "expected_connection_generation", raw) ||
+      !ParseUint64(raw, output.connection_generation) ||
+      output.connection_generation == 0) {
     output = {};
     return false;
   }
@@ -338,6 +355,10 @@ bool ExecuteZhongguoScoreboardStateMailboxQueryV1(
     access.find_fixed_widget = query->access.find_fixed_widget == nullptr
                                    ? nullptr
                                    : &ProxyFindFixedWidget;
+    access.resolve_fixture_gui =
+        query->access.resolve_fixture_gui == nullptr
+            ? nullptr
+            : &ProxyResolveFixtureGui;
     query->read_result = ReadZhongguoScoreboardStateV1(
         query->environment, access, query->request, query->result);
     const bool typed_available =

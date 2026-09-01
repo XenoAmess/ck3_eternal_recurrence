@@ -283,6 +283,9 @@ int main() {
       !Contains(
           known.capabilities,
           "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1") ||
+      !Contains(
+          known.capabilities,
+          "game.contract.zhongguo-scoreboard-action-v1-fail-closed") ||
       !Contains(known.capabilities,
                 "game.command.query-loaded-feature-manifest-v1") ||
       !Contains(known.capabilities,
@@ -314,6 +317,10 @@ int main() {
   if (Contains(known.capabilities,
                "game.command.query-war-termination-exit-terms-v2-N")) {
     return Fail("known adapter advertised the crash-disabled exit-v2 query");
+  }
+  if (Contains(known.capabilities,
+               "game.command.activate-zhongguo-scoreboard-v1")) {
+    return Fail("known adapter advertised the unclosed scoreboard action");
   }
   for (auto left = known.capabilities.begin(); left != known.capabilities.end();
        ++left) {

@@ -1,134 +1,110 @@
 # 考核榜 named-widget MCP action 单元
 
-状态：**static-ready / live RED**。本单元已经实现 allowlisted 动作合同、
-ACK schema、Python admission/post-query verifier、C++ admission/dispatch primitive
-和专属 native fixture；尚未接共享 mailbox/driver/service/MCP，也没有启动 CK3。
-OCR、屏幕坐标、任意 widget 名和任意变量读写均不在这条路径里。
+状态：**exact dispatcher + provider-owned observed revision 已静态接线；production capability 与实机 PASS 仍为 RED**。本轮没有启动 CK3，也没有使用 OCR 或坐标。
 
-## 1. 固定动作面
+## 1. 动作面
 
-能力名冻结为 `game.command.activate-zhongguo-scoreboard-v1`，step 为
-`activate-zhongguo-scoreboard-v1`。动作只允许：
+能力名为 `game.command.activate-zhongguo-scoreboard-v1`，step 为 `activate-zhongguo-scoreboard-v1`。外层原子动作只有五个：
 
-| action | provider-owned 真实目标 | 后置 |
+| action | provider-owned 目标 | 后置条件 |
 |---|---|---|
-| `open` | 当前关闭态唯一可见的 managed/received/system 入口 | modal 打开；对应 list page 唯一可见 |
-| `switch-managed` | `zg361_scoreboard_tab_managed` | managed list page 唯一可见 |
-| `switch-received` | `zg361_scoreboard_tab_received` | received list page 唯一可见 |
-| `switch-system` | `zg361_scoreboard_tab_system` | system list page 唯一可见 |
-| `close` | `zg361_scoreboard_header_close` | modal 与三个 page 全部不可见 |
-| `reopen` | 当前关闭态唯一可见的入口 | modal 打开；对应 list page 唯一可见 |
+| `open` | 关闭态唯一可见的 managed/received/system 入口 | modal 打开，对应 list page 唯一可见 |
+| `switch-managed` | `zg361_scoreboard_tab_managed` | managed page 唯一可见 |
+| `switch-received` | `zg361_scoreboard_tab_received` | received page 唯一可见 |
+| `switch-system` | `zg361_scoreboard_tab_system` | system page 唯一可见 |
+| `close` | `zg361_scoreboard_header_close` | modal 与三页均不可见 |
 
-`open/reopen` 不让 caller 提交目标名字：provider 从同一 paused query 中三选一，
-若零个或多个入口有效可见则拒绝。managed 切页还要求 materialized managed ACL，
-received 切页要求 received-self surface；不能按爵位猜权限。
+`reopen` 不是一次原子 callback。它必须严格拆为：`close ACK → 独立 closed query → open ACK → 独立 open query`。直接提交 `reopen` 会得到 `reopen_requires_two_phase_sequence`。
 
-## 2. 固定 state/action identity
+已在目标页时切到同一页属于 `action_noop`，不会伪造一次变化。
 
-只读 `zhongguo_scoreboard_state_v1` 的固定实例从 9 个扩为 15 个：原有
-window/toggle/modal/panel、三个入口、backdrop/header close，加上三个页签目标和
-三个 list-page 后置 witness。新增 GUI identity 为：
+## 2. exact dispatcher
 
-- `zg361_scoreboard_tab_managed`、`zg361_scoreboard_tab_received`、
-  `zg361_scoreboard_tab_system`；
-- `zg361_scoreboard_page_managed`、`zg361_scoreboard_page_received`、
-  `zg361_scoreboard_page_system`。
+冻结基线为 CK3 `1.19.0.6`、EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 
-这些只是名字与既有 exists/local/effective-visibility ABI 的扩展；没有据此猜
-enabled、focus、modal-stack、rect、scroll 或 callback ABI。当前只读 provider 仍把
-enabled 返回 `enabled_state_abi_not_frozen`，所以生产 action 必然在 dispatch 前
-fail closed。
+安全入口是 `CPdxGuiShortcutManager` binder RVA `0x36E1C40`，不是旧的 slot 36。旧 `0x36C6A90` 已证明属于 hover/oversound，永久禁止调用。
 
-## 3. 请求与 ACK
+静态闭合链路：
 
-请求绑定以下字段：
+```text
+target +0xD8 -> GUI context
+context +0x3E0 -> shortcut manager; manager +0 == context
+bridge-owned 0x50 pimpl stub; +0x48 == target
+empty 0x20 CString SSO; length 0, capacity 0xF
+RVA 0x36E1C40
+  -> CPdxGuiShortcutEvent (0x40, type 0x1D)
+  -> DeliverGuiEvent RVA 0x36CB4A0
+  -> context prehandlers, then target prehandlers
+  -> ButtonBase slot13 RVA 0x36C69A0
+  -> selected onclick callback group
+  -> target slot10
+```
 
-- `request_nonce`、allowlisted `action`；
-- `expected_revision`、`expected_native_revision`、
-  `expected_connection_generation`；
-- `expected_player_character_id`；
-- `expected_window_instance_pointer`；
-- `expected_target_instance_pointer` 与
-  `expected_target_vtable_pointer`。
+dispatch 前精确检查：
 
-请求没有 `widget_name`、角色 scope、坐标、变量名或 callback 地址。instance/vtable
-只是在同一 paused query 内使用的短期 identity，不能跨 revision 或重连复用。
+- target `+0xD0` 的 `0x01/0x02/0x08` 均清零；其中 `0x08` 是 cached effective-hidden，`0x02` 是 cached effective-disabled；
+- target vslot13 必须为 `0x36C69A0`，vslot10 与选择到的 callback vslot2 必须可调用；
+- flags=0 时先选 `target+0x3F8` group0；为空才退到 `target+0x338` group0；选择到的组必须至少有一个 callback；
+- modal vector 位于 context `+0x290/+0x29C`，count 限制为 0–256；若存在任何有效可见 modal，target 必须是绝对最后一项 `vector[count-1]` 的严格后代，helper 为 `0x369E620`。
 
-dispatch 被 executor 接受后只能返回
-`acknowledged_verification_pending`。ACK 回显 exact source/target binding，并冻结：
+传入 `{shortcut id=0, name=""}` 只能称为 bridge-owned native semantic activation，不能宣称触发了真实注册快捷键。
 
-- 最小后置 public/native revision（均为 source + 1）；
-- modal 应当打开还是关闭；
-- 预期 active outer tab；
-- 是否必须回到 list；
-- 必须保持的 scoreboard-window instance。
+原生返回值只记录为 `native_handled`。prehandler 可以短路或修改 event `+0x14`，ButtonBase 即使没有 callback 也可能返回 true；反过来 callback 已执行时 raw bool 也可能为 false。因此 raw bool 无论真假都不证明动作发生，ACK 始终是 `acknowledged_verification_pending`。
 
-ACK 的 `postcondition_verified` 永远是 `false`。它不能因为 native callback 返回
-true 就写成 GUI 成功。
+## 3. provider-owned observation revision
 
-## 4. 独立 post-query
+没有找到可诚实命名为 engine/canonical scoreboard revision 的字段。provider 因而发布五个顶层字段：
 
-PASS 只能由另一个 nonce 的只读查询给出，并同时满足：
+- `provider_session_id`：DLL 生命周期内稳定的 128 bit CSPRNG 值，固定 32 个大写十六进制字符；
+- `observation_sequence`：每次成功的 application-main 同帧双读 query 增加 1；
+- `observed_state_revision`：只有完整 TREE 或 SEMANTIC canonical bytes 相对上一条成功观测变化时增加 1；
+- `tree_fingerprint_v1`：稳定 GUI 树身份的 SHA-256 诊断值；
+- `semantic_fingerprint_v1`：可见、enabled、modal、活动页与 ACL/case tuple 的 SHA-256 诊断值。
 
-1. public 与 native revision 都至少增长 1；
-2. connection generation、player、date、window instance 未变；
-3. modal effective visibility 与动作一致；
-4. 打开/切页/重开后，预期 page witness 恰好一个有效可见；
-5. 关闭后三个 page witness 全部不可见。
+revision 判定比较 provider 内部保存的完整 canonical bytes，不拿 SHA-256 相等代替逐字节相等。查询使用 `publish_observation`；动作 source reread 使用 `validate_without_advancing`，必须与最后一次已发布观测的 session、connection、player、date、build、allowlist、tree bytes 和 semantic bytes 全部一致，而且 ACK 不推进 sequence/revision。
 
-关闭时隐藏页面无法证明 `detail_tab=facts`；本单元不把该不可观察状态冒充已
-验证。重开后的 list-page witness可以证明已经退出 detail view。若今后必须单独
-证明隐藏的 facts selection，应先补 typed 观测口，不能靠 ACK 或 GUI 定义推断。
+未采样的 A→B→A，以及同地址 destroy/recreate，仍无法排除；本合同不作 ABA-proof 或 engine revision 声明。
 
-## 5. fail-closed 矩阵
+## 4. 请求与 ACK
 
-在调用 executor 之前拒绝：非法 action/nonce、revision 溢出、public/native
-revision 不匹配、connection/player/date 重绑、非 paused/player/same-frame、固定
-实例集合不完整、window/target instance 或 vtable 重绑、目标不存在/不可见、
-enabled 不可读、disabled、managed/received ACL 拒绝、modal 开关状态不适合该
-动作，以及 production dispatch 尚未接通。fixture 断言所有这些拒绝路径的
-dispatch 计数为 0。
+请求固定绑定：
 
-## 6. 已有静态证据
+- nonce、allowlisted action；
+- public/native revision、connection generation、player；
+- provider session、observation sequence、observed state revision；
+- tree/semantic fingerprint；
+- window instance、target instance 与 target vtable。
 
-- Python action contract：normal 与 `python -O` 各 8 项 GREEN；
-- 扩展后的 scoreboard state contract/MCP fixture：normal 与 `python -O` 各
-  11 项 GREEN；
-- fresh MSVC `/std:c++20 /W4 /WX /O2` action fixture：编译与执行 exit 0；
-- fresh MSVC `/std:c++20 /W4 /WX /O2 /DNOMINMAX` 15-widget state fixture：
-  编译与执行 exit 0；
-- 证据目录：
-  `Z:\ck3_mod_rewrite_process_assets\zg361-scoreboard-action-native-fixture-20260901`。
+caller 不能提交任意 widget 名、角色 scope、坐标、变量名或 callback 地址。
 
-以上都是 static/fixture 证据，不是 production-live。
+ACK 回显上述 source binding 和 provider-owned target，并给出：
 
-## 7. 后续精确 wiring patch（本轮不碰共享文件）
+- `minimum_observation_sequence = source + 1`；
+- `minimum_observed_state_revision = source + 1`；
+- provider session 不变；
+- tree fingerprint 不变；
+- 预期 modal、active tab、list view 与 window instance。
 
-等 Workforce/G2 释放共享路径后，按以下最小补丁接线：
+暂停状态下的纯 GUI 动作通常不会推动世界 public/native revision，因此 later query 必须与 source 的 public/native revision相等，而不是错误地要求 `+1`。
 
-1. 冻结 effective-enabled exact-build ABI；让 state provider 对 7 个动作目标返回
-   typed enabled，保留其他未冻结字段 unavailable。
-2. 取得 dispatcher → PushButton callback 的 paused trace，证明 upstream admission、
-   onclick identity、modal stack/top receiver；禁止直接调用当前候选 RVA。
-3. 增加 scoreboard 专属 canonical state revision；它只随 open/tab/list/detail 等
-   规范状态改变，不拿 query sequence 冒充 revision。
-4. 为 action 增加独立 mailbox request/ACK slot；不得覆盖现有第 18 槽只读查询，
-   也不得与 Workforce 当前第 21 槽冲突。
-5. 在 `game_contract.hpp`/adapter/bridge、`native_driver.py`、`service.py` 和
-   `mcp_server.py` 只做上述 capability 的窄注册；public 参数严格等于本合同。
-6. runner 流程固定为 source query → action ACK → later-pump query；保存 raw
-   request/ACK/post response 和 cleanup。先合批 open、三切页、close、reopen，再做
-   managed/received-only ACL 角色矩阵。
+## 5. 独立 later query
 
-## 8. 当前 exact-build blocker
+验证 PASS 必须同时满足：
 
-- `enabled` 的完整 effective 语义尚未冻结；
-- callback candidate 与真实 onclick/upstream admission 尚未闭合；
-- `filter_mouse=all` 到 modal stack/top receiver 的运行语义尚未闭合；
-- scoreboard canonical revision 尚不存在；
-- 15 个固定实例（尤其 6 个新 tab/page identity）尚无当前 SHA paused artifact；
-- 共享 mailbox/provider/MCP 尚未接线；
-- 无真实 action ACK + later-query artifact。
+1. nonce 独立；provider session、connection、player、date、build 与 public/native paused frame 不变；
+2. observation sequence 至少为 source+1；observed state revision 至少为 source+1；
+3. tree fingerprint 完全相同；semantic fingerprint 与 source 不同；
+4. modal 与目标页面的逐项 typed postcondition 成立；
+5. window instance 保持相同。
 
-任一 blocker 未解决前，`full_widget_gate_ready=false`、
-`production_live_ready=false`，正式 phase2 runner 的 scoreboard action cell 继续 RED。
+shared helper 固定执行 `source query → action result/ACK → independent later query`，保存到 `07c_phase2_scoreboard_named_widget_action_cell.json`。当前即使收到结构正确的 exact ACK，只要 `production_capability_advertised=false`，cell 仍输出 RED `provider_owned_revision_verification_unavailable`，不会生成 verified PASS。
+
+## 6. shared wiring 与 readiness
+
+- state 使用 application-main 第 18 固定槽；action 使用独立第 22 固定槽 `permitted_executor_duovigintary`；
+- adapter 只广告运输合同 `game.contract.zhongguo-scoreboard-action-v1-fail-closed`，不广告 production action；
+- bridge、native driver、service、MCP 已严格传递 provider binding；内部 state query wire 另带当前 `expected_connection_generation`；
+- normal、`python -O`、native Release fixture 与 runner static RED gate 均须通过；
+- `full_widget_gate_ready=false`、`production_live_ready=false` 保持不变。
+
+当前真正剩余 blocker 只有：在冻结 build 上取得真实 paused source→ACK→later artifact，确认五个原子动作的可见后置状态，并据此另行决定是否广告 production capability。内页选择、back、scroll、geometry 不属于本轮外层六动作范围。

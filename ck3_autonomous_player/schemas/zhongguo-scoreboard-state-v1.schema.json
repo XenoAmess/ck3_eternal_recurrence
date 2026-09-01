@@ -7,6 +7,8 @@
   "required": [
     "schema_version", "status", "case_kind", "request_nonce",
     "snapshot_revision", "date_raw", "paused", "player_character_id",
+    "tree_fingerprint_v1", "semantic_fingerprint_v1",
+    "provider_session_id", "observation_sequence", "observed_state_revision",
     "widgets", "acl", "actions", "readiness", "unavailable_reason",
     "provenance", "build", "source", "binding"
   ],
@@ -19,6 +21,11 @@
     "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
     "paused": {"const": true},
     "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "tree_fingerprint_v1": {"type": "string", "pattern": "^(?:|[0-9A-F]{64})$"},
+    "semantic_fingerprint_v1": {"type": "string", "pattern": "^(?:|[0-9A-F]{64})$"},
+    "provider_session_id": {"type": "string", "pattern": "^(?:|[0-9A-F]{32})$"},
+    "observation_sequence": {"type": "integer", "minimum": 0},
+    "observed_state_revision": {"type": "integer", "minimum": 0},
     "widgets": {
       "type": "array", "minItems": 15, "maxItems": 15,
       "prefixItems": [
@@ -112,6 +119,20 @@
     "source": {"$ref": "#/$defs/source"},
     "binding": {"$ref": "#/$defs/binding"}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "available"}}},
+      "then": {
+        "properties": {
+          "tree_fingerprint_v1": {"pattern": "^[0-9A-F]{64}$"},
+          "semantic_fingerprint_v1": {"pattern": "^[0-9A-F]{64}$"},
+          "provider_session_id": {"pattern": "^[0-9A-F]{32}$"},
+          "observation_sequence": {"minimum": 1},
+          "observed_state_revision": {"minimum": 1}
+        }
+      }
+    }
+  ],
   "$defs": {
     "typedInteger": {
       "type": "object", "additionalProperties": false,
@@ -165,7 +186,7 @@
     },
     "provenance": {
       "type": "object", "additionalProperties": false,
-      "required": ["game_version", "executable_sha256", "backend_id", "consumer_id", "allowlist_id", "gui_global_slot_rva", "find_top_level_widget_rva", "widget_hidden_flags_offset", "widget_parent_offset", "widget_children_offset", "widget_name_offset", "query_scope", "contract_stage"],
+      "required": ["game_version", "executable_sha256", "backend_id", "consumer_id", "allowlist_id", "gui_global_slot_rva", "find_top_level_widget_rva", "widget_hidden_flags_offset", "widget_local_hidden_mask", "widget_effective_hidden_mask", "widget_local_disabled_mask", "widget_effective_disabled_mask", "widget_parent_offset", "widget_children_offset", "widget_name_offset", "modal_receivers_offset", "modal_receiver_count_offset", "tree_fingerprint_domain", "semantic_fingerprint_domain", "state_digest_domain", "query_scope", "contract_stage"],
       "properties": {
         "game_version": {"const": "1.19.0.6"},
         "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
@@ -175,11 +196,20 @@
         "gui_global_slot_rva": {"const": "0x576CC68"},
         "find_top_level_widget_rva": {"const": "0x36D0B20"},
         "widget_hidden_flags_offset": {"const": "0xD0"},
+        "widget_local_hidden_mask": {"const": "0x10"},
+        "widget_effective_hidden_mask": {"const": "0x08"},
+        "widget_local_disabled_mask": {"const": "0x04"},
+        "widget_effective_disabled_mask": {"const": "0x02"},
         "widget_parent_offset": {"const": "0xE8"},
         "widget_children_offset": {"const": "0xF0"},
         "widget_name_offset": {"const": "0x1B8"},
+        "modal_receivers_offset": {"const": "0x290"},
+        "modal_receiver_count_offset": {"const": "0x29C"},
+        "tree_fingerprint_domain": {"const": "XAR/ZG361/SCOREBOARD/TREE/V1\u0000"},
+        "semantic_fingerprint_domain": {"const": "XAR/ZG361/SCOREBOARD/SEMANTIC/V1\u0000"},
+        "state_digest_domain": {"const": "XAR/ZG361/SCOREBOARD/STATE/V1\u0000"},
         "query_scope": {"const": "fixed_scoreboard_instances_and_player_frozen_acl"},
-        "contract_stage": {"const": "static_exact_build_live_unverified"}
+        "contract_stage": {"const": "static_provider_observed_revision_live_unverified"}
       }
     },
     "build": {

@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#include <algorithm>
 #include <array>
 #include <charconv>
 #include <cstddef>
@@ -21,6 +22,7 @@ constexpr std::int32_t kMaximumVariableRows = 65'536;
 constexpr std::int32_t kMaximumWidgetChildren = 4'096;
 constexpr std::size_t kMaximumWidgetTraversal = 4'096;
 constexpr std::size_t kMaximumWidgetDepth = 64;
+constexpr std::int32_t kMaximumModalReceivers = 256;
 constexpr std::size_t kStorageSlotsOffset = 0x20;
 constexpr std::size_t kStorageCapacityOffset = 0x2C;
 constexpr std::size_t kStorageSlotStride = 0x10;
@@ -51,6 +53,28 @@ enum VariableIndex : std::size_t {
 };
 
 using RawRows = std::array<ZhongguoRawVariableV1, 20>;
+
+struct ResolvedGuiTreeV1 {
+  void *context = nullptr;
+  void *owner = nullptr;
+  void *root = nullptr;
+  void *modal_top_receiver = nullptr;
+  std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()> widgets{};
+};
+
+enum class ModalTopRelationV1 : std::uint8_t {
+  none = 0,
+  exact_scoreboard_modal = 1,
+  strict_descendant_of_scoreboard_modal = 2,
+  other = 3,
+};
+
+enum class ScoreboardSurfaceV1 : std::uint8_t {
+  none = 0,
+  managed = 1,
+  received = 2,
+  system = 3,
+};
 
 bool GuardedDirectRead(const void *address, void *output,
                        std::size_t size) noexcept {
@@ -93,6 +117,191 @@ bool ReadValue(const ZhongguoScoreboardAccessV1 &access, const void *base,
   const void *address = nullptr;
   return CheckedAddress(base, offset, address) &&
          ReadBytes(access, address, &output, sizeof(output));
+}
+
+void AppendU8(std::string &output, std::uint8_t value) {
+  output.push_back(static_cast<char>(value));
+}
+
+void AppendU16Le(std::string &output, std::uint16_t value) {
+  for (unsigned shift = 0; shift != 16; shift += 8) {
+    AppendU8(output, static_cast<std::uint8_t>(value >> shift));
+  }
+}
+
+void AppendU32Le(std::string &output, std::uint32_t value) {
+  for (unsigned shift = 0; shift != 32; shift += 8) {
+    AppendU8(output, static_cast<std::uint8_t>(value >> shift));
+  }
+}
+
+void AppendU64Le(std::string &output, std::uint64_t value) {
+  for (unsigned shift = 0; shift != 64; shift += 8) {
+    AppendU8(output, static_cast<std::uint8_t>(value >> shift));
+  }
+}
+
+void AppendI32Le(std::string &output, std::int32_t value) {
+  AppendU32Le(output, static_cast<std::uint32_t>(value));
+}
+
+void AppendI64Le(std::string &output, std::int64_t value) {
+  AppendU64Le(output, static_cast<std::uint64_t>(value));
+}
+
+bool AppendCanonicalString(std::string &output, std::string_view value) {
+  if (value.size() > std::numeric_limits<std::uint32_t>::max()) return false;
+  AppendU32Le(output, static_cast<std::uint32_t>(value.size()));
+  output.append(value);
+  return true;
+}
+
+void AppendDomain(std::string &output, std::string_view domain) {
+  output.append(domain);
+  output.push_back('\0');
+}
+
+void AppendPointer(std::string &output, const void *pointer) {
+  AppendU64Le(output, static_cast<std::uint64_t>(
+                          reinterpret_cast<std::uintptr_t>(pointer)));
+}
+
+std::uint32_t RotateRight(std::uint32_t value, unsigned count) noexcept {
+  return (value >> count) | (value << (32U - count));
+}
+
+std::array<std::uint8_t, 32> Sha256(std::string_view input) {
+  constexpr std::array<std::uint32_t, 64> constants{
+      0x428A2F98U, 0x71374491U, 0xB5C0FBCFU, 0xE9B5DBA5U,
+      0x3956C25BU, 0x59F111F1U, 0x923F82A4U, 0xAB1C5ED5U,
+      0xD807AA98U, 0x12835B01U, 0x243185BEU, 0x550C7DC3U,
+      0x72BE5D74U, 0x80DEB1FEU, 0x9BDC06A7U, 0xC19BF174U,
+      0xE49B69C1U, 0xEFBE4786U, 0x0FC19DC6U, 0x240CA1CCU,
+      0x2DE92C6FU, 0x4A7484AAU, 0x5CB0A9DCU, 0x76F988DAU,
+      0x983E5152U, 0xA831C66DU, 0xB00327C8U, 0xBF597FC7U,
+      0xC6E00BF3U, 0xD5A79147U, 0x06CA6351U, 0x14292967U,
+      0x27B70A85U, 0x2E1B2138U, 0x4D2C6DFCU, 0x53380D13U,
+      0x650A7354U, 0x766A0ABBU, 0x81C2C92EU, 0x92722C85U,
+      0xA2BFE8A1U, 0xA81A664BU, 0xC24B8B70U, 0xC76C51A3U,
+      0xD192E819U, 0xD6990624U, 0xF40E3585U, 0x106AA070U,
+      0x19A4C116U, 0x1E376C08U, 0x2748774CU, 0x34B0BCB5U,
+      0x391C0CB3U, 0x4ED8AA4AU, 0x5B9CCA4FU, 0x682E6FF3U,
+      0x748F82EEU, 0x78A5636FU, 0x84C87814U, 0x8CC70208U,
+      0x90BEFFFAU, 0xA4506CEBU, 0xBEF9A3F7U, 0xC67178F2U};
+  std::array<std::uint32_t, 8> hash{
+      0x6A09E667U, 0xBB67AE85U, 0x3C6EF372U, 0xA54FF53AU,
+      0x510E527FU, 0x9B05688CU, 0x1F83D9ABU, 0x5BE0CD19U};
+  std::string padded(input);
+  padded.push_back(static_cast<char>(0x80));
+  while (padded.size() % 64 != 56) padded.push_back('\0');
+  const auto bit_length = static_cast<std::uint64_t>(input.size()) * 8U;
+  for (int shift = 56; shift >= 0; shift -= 8) {
+    padded.push_back(static_cast<char>(bit_length >> shift));
+  }
+  for (std::size_t offset = 0; offset < padded.size(); offset += 64) {
+    std::array<std::uint32_t, 64> words{};
+    for (std::size_t index = 0; index < 16; ++index) {
+      const auto *byte = reinterpret_cast<const unsigned char *>(
+          padded.data() + offset + index * 4);
+      words[index] = (static_cast<std::uint32_t>(byte[0]) << 24U) |
+                     (static_cast<std::uint32_t>(byte[1]) << 16U) |
+                     (static_cast<std::uint32_t>(byte[2]) << 8U) |
+                     static_cast<std::uint32_t>(byte[3]);
+    }
+    for (std::size_t index = 16; index < words.size(); ++index) {
+      const auto s0 = RotateRight(words[index - 15], 7) ^
+                      RotateRight(words[index - 15], 18) ^
+                      (words[index - 15] >> 3U);
+      const auto s1 = RotateRight(words[index - 2], 17) ^
+                      RotateRight(words[index - 2], 19) ^
+                      (words[index - 2] >> 10U);
+      words[index] = words[index - 16] + s0 + words[index - 7] + s1;
+    }
+    auto a = hash[0];
+    auto b = hash[1];
+    auto c = hash[2];
+    auto d = hash[3];
+    auto e = hash[4];
+    auto f = hash[5];
+    auto g = hash[6];
+    auto h = hash[7];
+    for (std::size_t index = 0; index < words.size(); ++index) {
+      const auto sigma1 = RotateRight(e, 6) ^ RotateRight(e, 11) ^
+                          RotateRight(e, 25);
+      const auto choose = (e & f) ^ ((~e) & g);
+      const auto temporary1 =
+          h + sigma1 + choose + constants[index] + words[index];
+      const auto sigma0 = RotateRight(a, 2) ^ RotateRight(a, 13) ^
+                          RotateRight(a, 22);
+      const auto majority = (a & b) ^ (a & c) ^ (b & c);
+      const auto temporary2 = sigma0 + majority;
+      h = g;
+      g = f;
+      f = e;
+      e = d + temporary1;
+      d = c;
+      c = b;
+      b = a;
+      a = temporary1 + temporary2;
+    }
+    hash[0] += a;
+    hash[1] += b;
+    hash[2] += c;
+    hash[3] += d;
+    hash[4] += e;
+    hash[5] += f;
+    hash[6] += g;
+    hash[7] += h;
+  }
+  std::array<std::uint8_t, 32> digest{};
+  for (std::size_t index = 0; index < hash.size(); ++index) {
+    for (unsigned byte = 0; byte < 4; ++byte) {
+      digest[index * 4 + byte] = static_cast<std::uint8_t>(
+          hash[index] >> (24U - byte * 8U));
+    }
+  }
+  return digest;
+}
+
+std::string DigestBytes(const std::array<std::uint8_t, 32> &digest) {
+  return std::string(reinterpret_cast<const char *>(digest.data()),
+                     digest.size());
+}
+
+std::string DigestHex(const std::array<std::uint8_t, 32> &digest) {
+  constexpr char hex[] = "0123456789ABCDEF";
+  std::string output;
+  output.reserve(64);
+  for (const auto byte : digest) {
+    output.push_back(hex[byte >> 4U]);
+    output.push_back(hex[byte & 0x0FU]);
+  }
+  return output;
+}
+
+bool AppendExecutableDigest(std::string &output) {
+  constexpr auto value = kZhongguoScoreboardStateV1ExecutableSha256;
+  if (value.size() != 64) return false;
+  const auto digit = [](char character, std::uint8_t &result) {
+    if (character >= '0' && character <= '9') {
+      result = static_cast<std::uint8_t>(character - '0');
+      return true;
+    }
+    if (character >= 'A' && character <= 'F') {
+      result = static_cast<std::uint8_t>(character - 'A' + 10);
+      return true;
+    }
+    return false;
+  };
+  for (std::size_t index = 0; index < value.size(); index += 2) {
+    std::uint8_t high = 0;
+    std::uint8_t low = 0;
+    if (!digit(value[index], high) || !digit(value[index + 1], low)) {
+      return false;
+    }
+    AppendU8(output, static_cast<std::uint8_t>((high << 4U) | low));
+  }
+  return true;
 }
 
 bool EnvironmentIsExact(
@@ -304,6 +513,7 @@ void InitializeEnvelope(const ZhongguoScoreboardStateRequestV1 &request,
   output = {};
   output.case_kind = kZhongguoScoreboardStateV1CaseKind;
   output.request_nonce = request.request_nonce;
+  output.provider_session_id = request.provider_session_id;
   output.snapshot_revision = request.expected_snapshot_revision;
   if (frame != nullptr) {
     output.date_raw = frame->date_raw;
@@ -437,14 +647,20 @@ void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
   return nullptr;
 }
 
-bool ResolveGuiOwner(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
-                     const ZhongguoScoreboardAccessV1 &access,
-                     void *&owner) noexcept {
+bool ResolveGuiContextAndOwner(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *&context,
+    void *&owner) noexcept {
+  context = nullptr;
   owner = nullptr;
+  if (environment.offline_fixture_function_overrides) {
+    return access.resolve_fixture_gui != nullptr &&
+           access.resolve_fixture_gui(access.context, context, owner) &&
+           context != nullptr && owner != nullptr;
+  }
   void *first = nullptr;
   void *second = nullptr;
   void *third = nullptr;
-  void *context = nullptr;
   return ReadBytes(access, environment.gui_global_slot, &first,
                    sizeof(first)) &&
          ReadValue(access, first, kZhongguoGuiChainFirstOffset, second) &&
@@ -452,6 +668,34 @@ bool ResolveGuiOwner(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
          ReadValue(access, third, kZhongguoGuiContextOffset, context) &&
          ReadValue(access, context, kZhongguoGuiOwnerOffset, owner) &&
          owner != nullptr;
+}
+
+bool ReadModalTopReceiver(const ZhongguoScoreboardAccessV1 &access,
+                          void *context, void *&top_receiver) noexcept {
+  top_receiver = nullptr;
+  void **receivers = nullptr;
+  std::int32_t count = 0;
+  if (!ReadValue(access, context, kZhongguoGuiModalReceiversOffset,
+                 receivers) ||
+      !ReadValue(access, context, kZhongguoGuiModalReceiverCountOffset,
+                 count) ||
+      count < 0 || count > kMaximumModalReceivers ||
+      (count != 0 && receivers == nullptr)) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *receiver = nullptr;
+    void *vtable = nullptr;
+    if (!ReadValue(access, receivers,
+                   static_cast<std::size_t>(index) * sizeof(void *),
+                   receiver) ||
+        receiver == nullptr || !ReadValue(access, receiver, 0, vtable) ||
+        vtable == nullptr) {
+      return false;
+    }
+    if (index + 1 == count) top_receiver = receiver;
+  }
+  return true;
 }
 
 void *CallFindTopLevelWidget(
@@ -471,32 +715,38 @@ void *CallFindTopLevelWidget(
 bool FindFixedWidgets(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access,
-    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()>
-        &widgets) noexcept {
-  widgets = {};
+    ResolvedGuiTreeV1 &resolved) noexcept {
+  resolved = {};
+  if (!ResolveGuiContextAndOwner(environment, access, resolved.context,
+                                 resolved.owner) ||
+      !ReadModalTopReceiver(access, resolved.context,
+                            resolved.modal_top_receiver)) {
+    return false;
+  }
   if (environment.offline_fixture_function_overrides) {
     if (access.find_fixed_widget == nullptr) return false;
-    for (std::size_t index = 0; index < widgets.size(); ++index) {
-      widgets[index] = access.find_fixed_widget(
+    for (std::size_t index = 0; index < resolved.widgets.size(); ++index) {
+      resolved.widgets[index] = access.find_fixed_widget(
           access.context, kZhongguoScoreboardStateV1WidgetNames[index]);
     }
+    resolved.root = resolved.widgets[1];
     return true;
   }
-  void *owner = nullptr;
-  if (!ResolveGuiOwner(environment, access, owner)) return false;
   std::string window_name{kZhongguoScoreboardStateV1WidgetNames[1]};
   void *window = CallFindTopLevelWidget(environment.find_top_level_widget,
-                                        owner, &window_name);
-  widgets[1] = window;
+                                        resolved.owner, &window_name);
+  resolved.widgets[1] = window;
+  resolved.root = window;
   if (window == nullptr ||
       !WidgetNameEquals(access, window,
                         kZhongguoScoreboardStateV1WidgetNames[1])) {
-    widgets[1] = nullptr;
+    resolved.widgets[1] = nullptr;
+    resolved.root = nullptr;
     return true;
   }
-  for (std::size_t index = 0; index < widgets.size(); ++index) {
+  for (std::size_t index = 0; index < resolved.widgets.size(); ++index) {
     if (index != 1) {
-      widgets[index] = FindDescendant(
+      resolved.widgets[index] = FindDescendant(
           access, window, kZhongguoScoreboardStateV1WidgetNames[index]);
     }
   }
@@ -509,31 +759,27 @@ bool ReadLocalVisible(const ZhongguoScoreboardAccessV1 &access, void *widget,
   if (!ReadValue(access, widget, kZhongguoWidgetHiddenFlagsOffset, flags)) {
     return false;
   }
-  visible = (flags & kZhongguoWidgetHiddenMask) == 0;
+  visible = (flags & kZhongguoWidgetLocalHiddenMask) == 0;
+  return true;
+}
+
+bool ReadEffectiveEnabled(const ZhongguoScoreboardAccessV1 &access,
+                          void *widget, bool &enabled) noexcept {
+  std::uint8_t flags = 0;
+  if (!ReadValue(access, widget, kZhongguoWidgetHiddenFlagsOffset, flags)) {
+    return false;
+  }
+  enabled = (flags & kZhongguoWidgetEffectiveDisabledMask) == 0;
   return true;
 }
 
 bool ReadEffectiveVisible(const ZhongguoScoreboardAccessV1 &access,
                           void *widget, bool &visible) noexcept {
-  visible = true;
-  std::array<void *, kMaximumWidgetDepth> seen{};
-  std::size_t count = 0;
-  void *current = widget;
-  while (current != nullptr) {
-    if (count >= seen.size()) return false;
-    for (std::size_t index = 0; index < count; ++index) {
-      if (seen[index] == current) return false;
-    }
-    seen[count++] = current;
-    bool local = false;
-    if (!ReadLocalVisible(access, current, local)) return false;
-    visible = visible && local;
-    void *parent = nullptr;
-    if (!ReadValue(access, current, kZhongguoWidgetParentOffset, parent)) {
-      return false;
-    }
-    current = parent;
+  std::uint8_t flags = 0;
+  if (!ReadValue(access, widget, kZhongguoWidgetHiddenFlagsOffset, flags)) {
+    return false;
   }
+  visible = (flags & kZhongguoWidgetEffectiveHiddenMask) == 0;
   return true;
 }
 
@@ -555,17 +801,19 @@ bool DecodeWidgets(const ZhongguoScoreboardAccessV1 &access,
       void *vtable = nullptr;
       bool local = false;
       bool effective = false;
+      bool enabled = false;
       if (!ReadValue(access, pointers[index], 0, vtable) || vtable == nullptr ||
           !ReadLocalVisible(access, pointers[index], local) ||
-          !ReadEffectiveVisible(access, pointers[index], effective)) {
+          !ReadEffectiveVisible(access, pointers[index], effective) ||
+          !ReadEffectiveEnabled(access, pointers[index], enabled)) {
         return false;
       }
       SetAvailable(widget.instance_pointer, FormatPointer(pointers[index]));
       SetAvailable(widget.vtable_pointer, FormatPointer(vtable));
       SetAvailable(widget.local_visible, local);
       SetAvailable(widget.effective_visible, effective);
+      SetAvailable(widget.enabled, enabled);
     }
-    SetUnavailable(widget.enabled, "enabled_state_abi_not_frozen");
     SetUnavailable(widget.focused, "focus_owner_abi_not_frozen");
     SetUnavailable(widget.modal_blocking,
                    "modal_blocking_abi_not_frozen");
@@ -732,6 +980,385 @@ bool DecodeAcl(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
   return true;
 }
 
+bool ReadChildOrdinal(const ZhongguoScoreboardAccessV1 &access, void *parent,
+                      void *child, std::uint32_t &ordinal) noexcept {
+  void **children = nullptr;
+  std::int32_t count = 0;
+  if (!ReadValue(access, parent, kZhongguoWidgetChildrenOffset, children) ||
+      !ReadValue(access, parent, kZhongguoWidgetChildCountOffset, count) ||
+      count < 0 || count > kMaximumWidgetChildren ||
+      (count != 0 && children == nullptr)) {
+    return false;
+  }
+  bool found = false;
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *candidate = nullptr;
+    if (!ReadValue(access, children,
+                   static_cast<std::size_t>(index) * sizeof(void *),
+                   candidate)) {
+      return false;
+    }
+    if (candidate == child) {
+      if (found) return false;
+      found = true;
+      ordinal = static_cast<std::uint32_t>(index);
+    }
+  }
+  return found;
+}
+
+bool AppendParentPath(const ZhongguoScoreboardAccessV1 &access, void *widget,
+                      void *root, std::string &output) {
+  struct Hop {
+    void *ancestor = nullptr;
+    std::uint32_t child_ordinal = 0;
+  };
+  std::array<Hop, kMaximumWidgetDepth> hops{};
+  std::size_t depth = 0;
+  void *current = widget;
+  while (current != root) {
+    if (current == nullptr || depth == hops.size()) return false;
+    void *parent = nullptr;
+    std::uint32_t ordinal = 0;
+    if (!ReadValue(access, current, kZhongguoWidgetParentOffset, parent) ||
+        parent == nullptr ||
+        !ReadChildOrdinal(access, parent, current, ordinal)) {
+      return false;
+    }
+    for (std::size_t index = 0; index < depth; ++index) {
+      if (hops[index].ancestor == parent) return false;
+    }
+    hops[depth++] = {parent, ordinal};
+    current = parent;
+  }
+  AppendU8(output, static_cast<std::uint8_t>(depth));
+  // The frozen TREE encoding walks each edge from the scoreboard window root
+  // down to the target.  Discovery naturally produced the opposite order, so
+  // serialize the bounded hop stack in reverse rather than making the public
+  // fingerprint depend on an implementation traversal detail.
+  for (std::size_t index = depth; index != 0; --index) {
+    AppendPointer(output, hops[index - 1].ancestor);
+    AppendU32Le(output, hops[index - 1].child_ordinal);
+  }
+  return true;
+}
+
+bool BuildTreeCanonicalBytes(const ZhongguoScoreboardAccessV1 &access,
+                             const ResolvedGuiTreeV1 &resolved,
+                             std::string &output) {
+  output.clear();
+  AppendDomain(output, kZhongguoScoreboardTreeDomainV1);
+  AppendU16Le(output, 1);
+  if (!AppendExecutableDigest(output) ||
+      !AppendCanonicalString(output, kZhongguoScoreboardStateV1AllowlistId) ||
+      resolved.owner == nullptr || resolved.root == nullptr) {
+    return false;
+  }
+  AppendPointer(output, resolved.owner);
+  AppendPointer(output, resolved.root);
+  for (std::size_t index = 0; index < resolved.widgets.size(); ++index) {
+    void *const widget = resolved.widgets[index];
+    AppendU8(output, static_cast<std::uint8_t>(index));
+    AppendU8(output, widget != nullptr ? 1 : 0);
+    AppendPointer(output, widget);
+    void *vtable = nullptr;
+    if (widget != nullptr &&
+        (!ReadValue(access, widget, 0, vtable) || vtable == nullptr)) {
+      return false;
+    }
+    AppendPointer(output, vtable);
+    if (widget == nullptr) {
+      AppendU8(output, 0);
+    } else if (!AppendParentPath(access, widget, resolved.root, output)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ClassifyModalTop(const ZhongguoScoreboardAccessV1 &access,
+                      void *top_receiver, void *scoreboard_modal,
+                      ModalTopRelationV1 &relation) noexcept {
+  if (top_receiver == nullptr) {
+    relation = ModalTopRelationV1::none;
+    return true;
+  }
+  if (top_receiver == scoreboard_modal) {
+    relation = ModalTopRelationV1::exact_scoreboard_modal;
+    return true;
+  }
+  void *current = top_receiver;
+  std::array<void *, kMaximumWidgetDepth> visited{};
+  std::size_t depth = 0;
+  while (current != nullptr) {
+    if (depth == visited.size()) return false;
+    for (std::size_t index = 0; index < depth; ++index) {
+      if (visited[index] == current) return false;
+    }
+    visited[depth++] = current;
+    void *parent = nullptr;
+    if (!ReadValue(access, current, kZhongguoWidgetParentOffset, parent)) {
+      return false;
+    }
+    if (parent == scoreboard_modal) {
+      relation = ModalTopRelationV1::strict_descendant_of_scoreboard_modal;
+      return true;
+    }
+    current = parent;
+  }
+  relation = ModalTopRelationV1::other;
+  return true;
+}
+
+bool ReadObservedBoolean(const game::ZhongguoTypedBooleanV1 &field,
+                         bool &value) noexcept {
+  if (!field.available || !field.value.has_value()) return false;
+  value = *field.value;
+  return true;
+}
+
+bool UniqueVisibleSurface(const game::ZhongguoScoreboardStateV1 &state,
+                          std::size_t begin, ScoreboardSurfaceV1 &surface,
+                          std::uint8_t &count) noexcept {
+  surface = ScoreboardSurfaceV1::none;
+  count = 0;
+  for (std::size_t offset = 0; offset < 3; ++offset) {
+    bool exists = false;
+    bool visible = false;
+    if (!ReadObservedBoolean(state.widgets[begin + offset].exists, exists) ||
+        !ReadObservedBoolean(state.widgets[begin + offset].effective_visible,
+                             visible)) {
+      return false;
+    }
+    if (exists && visible) {
+      ++count;
+      surface = static_cast<ScoreboardSurfaceV1>(offset + 1);
+    }
+  }
+  return count <= 1;
+}
+
+void AppendTypedIntegerCanonical(
+    std::string &output, const game::ZhongguoTypedIntegerV1 &field) {
+  AppendU8(output, field.available && field.value.has_value() ? 1 : 0);
+  if (field.available && field.value.has_value()) {
+    AppendI64Le(output, *field.value);
+  }
+}
+
+void AppendDerivedAclCanonical(
+    std::string &output, const game::ZhongguoScoreboardStateV1 &state) {
+  const auto &managed = state.managed_acl;
+  AppendU8(output, managed.surface_available ? 1 : 0);
+  AppendU8(output, managed.current_player_can_assess_others ? 1 : 0);
+  AppendTypedIntegerCanonical(output, managed.owner_character_id);
+  AppendTypedIntegerCanonical(output, managed.first_subject_character_id);
+
+  const auto &received = state.received_self_acl;
+  AppendU8(output, received.surface_available ? 1 : 0);
+  AppendU8(output, received.current_player_is_subject ? 1 : 0);
+  AppendTypedIntegerCanonical(output, received.first_row_character_id);
+  AppendTypedIntegerCanonical(output, received.owner_character_id);
+  AppendTypedIntegerCanonical(output, received.subject_character_id);
+  AppendTypedIntegerCanonical(output, received.cycle_serial);
+  AppendTypedIntegerCanonical(output, received.result_case_serial);
+  AppendTypedIntegerCanonical(output, received.b1_case_serial);
+  AppendTypedIntegerCanonical(output, received.disclosure_acl_mode);
+  AppendTypedIntegerCanonical(output, received.disclosure_policy_available);
+  AppendTypedIntegerCanonical(output, received.disclosure_policy_id);
+  AppendTypedIntegerCanonical(output, received.disclosure_self_mode);
+  AppendTypedIntegerCanonical(output, received.disclosure_team_mode);
+  AppendTypedIntegerCanonical(output,
+                              received.disclosure_evaluator_identity_mode);
+  AppendTypedIntegerCanonical(output, received.disclosure_blackbox_risk);
+}
+
+bool BuildSemanticCanonicalBytes(
+    const ZhongguoScoreboardAccessV1 &access,
+    const ResolvedGuiTreeV1 &resolved, const RawRows &rows,
+    const game::ZhongguoScoreboardStateV1 &state, std::string &output) {
+  output.clear();
+  AppendDomain(output, kZhongguoScoreboardSemanticDomainV1);
+  AppendU16Le(output, 1);
+  if (!AppendExecutableDigest(output) ||
+      !AppendCanonicalString(output, kZhongguoScoreboardStateV1AllowlistId)) {
+    return false;
+  }
+  AppendI32Le(output, state.player_character_id);
+  for (std::size_t index = 0; index < state.widgets.size(); ++index) {
+    bool exists = false;
+    bool visible = false;
+    bool enabled = false;
+    if (!ReadObservedBoolean(state.widgets[index].exists, exists) ||
+        !ReadObservedBoolean(state.widgets[index].effective_visible, visible) ||
+        !ReadObservedBoolean(state.widgets[index].enabled, enabled)) {
+      return false;
+    }
+    AppendU8(output, static_cast<std::uint8_t>(index));
+    AppendU8(output, exists ? 1 : 0);
+    AppendU8(output, visible ? 1 : 0);
+    AppendU8(output, enabled ? 1 : 0);
+  }
+
+  bool modal_open = false;
+  if (!ReadObservedBoolean(state.widgets[2].effective_visible, modal_open)) {
+    return false;
+  }
+  ModalTopRelationV1 modal_relation = ModalTopRelationV1::none;
+  if (!ClassifyModalTop(access, resolved.modal_top_receiver,
+                        resolved.widgets[2], modal_relation)) {
+    return false;
+  }
+  if ((modal_open && modal_relation != ModalTopRelationV1::exact_scoreboard_modal &&
+       modal_relation !=
+           ModalTopRelationV1::strict_descendant_of_scoreboard_modal) ||
+      (!modal_open &&
+       (modal_relation == ModalTopRelationV1::exact_scoreboard_modal ||
+        modal_relation ==
+            ModalTopRelationV1::strict_descendant_of_scoreboard_modal))) {
+    return false;
+  }
+
+  ScoreboardSurfaceV1 active_page = ScoreboardSurfaceV1::none;
+  ScoreboardSurfaceV1 visible_closed_entry = ScoreboardSurfaceV1::none;
+  std::uint8_t active_page_count = 0;
+  std::uint8_t visible_closed_entry_count = 0;
+  if (!UniqueVisibleSurface(state, 10, active_page, active_page_count) ||
+      !UniqueVisibleSurface(state, 4, visible_closed_entry,
+                            visible_closed_entry_count) ||
+      (modal_open &&
+       (active_page_count != 1 || visible_closed_entry_count != 0)) ||
+      (!modal_open &&
+       (active_page_count != 0 || visible_closed_entry_count != 1))) {
+    return false;
+  }
+  AppendU8(output, modal_open ? 1 : 0);
+  AppendU8(output, static_cast<std::uint8_t>(modal_relation));
+  AppendPointer(output, resolved.modal_top_receiver);
+  AppendU8(output, static_cast<std::uint8_t>(active_page));
+  AppendU8(output, static_cast<std::uint8_t>(visible_closed_entry));
+
+  for (std::size_t index = 0; index < rows.size(); ++index) {
+    AppendU8(output, rows[index].present ? 1 : 0);
+    if (rows[index].present) {
+      AppendI32Le(output, static_cast<std::int32_t>(rows[index].kind));
+      AppendI64Le(output, rows[index].payload);
+    }
+  }
+  AppendDerivedAclCanonical(output, state);
+  return true;
+}
+
+bool ValidProviderSession(std::string_view value) noexcept {
+  if (value.size() != 32) return false;
+  for (const char character : value) {
+    if (!((character >= '0' && character <= '9') ||
+          (character >= 'A' && character <= 'F'))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool SameProviderBinding(
+    const ZhongguoScoreboardProviderRevisionTrackerV1 &tracker,
+    const ZhongguoScoreboardStateRequestV1 &request,
+    const game::ZhongguoCaseFrameV1 &frame) noexcept {
+  return tracker.initialized &&
+         tracker.provider_session_id == request.provider_session_id &&
+         tracker.connection_generation == request.connection_generation &&
+         tracker.player_character_id == frame.played_character_id &&
+         tracker.date_raw == frame.date_raw &&
+         tracker.game_version == kZhongguoScoreboardStateV1GameVersion &&
+         tracker.executable_sha256 ==
+             kZhongguoScoreboardStateV1ExecutableSha256 &&
+         tracker.allowlist_id == kZhongguoScoreboardStateV1AllowlistId;
+}
+
+bool ApplyProviderRevision(
+    const ZhongguoScoreboardStateRequestV1 &request,
+    const game::ZhongguoCaseFrameV1 &frame,
+    const std::string &tree_canonical_bytes,
+    const std::string &semantic_canonical_bytes,
+    game::ZhongguoScoreboardStateV1 &output) {
+  auto *const tracker = request.provider_revision_tracker;
+  if (tracker == nullptr || !ValidProviderSession(request.provider_session_id) ||
+      request.connection_generation == 0 ||
+      request.provider_read_mode ==
+          ZhongguoScoreboardProviderReadModeV1::unavailable) {
+    return false;
+  }
+  const auto tree_digest = Sha256(tree_canonical_bytes);
+  const auto semantic_digest = Sha256(semantic_canonical_bytes);
+  std::string state_digest_material;
+  AppendDomain(state_digest_material, kZhongguoScoreboardStateDomainV1);
+  state_digest_material.append(
+      reinterpret_cast<const char *>(tree_digest.data()), tree_digest.size());
+  state_digest_material.append(
+      reinterpret_cast<const char *>(semantic_digest.data()),
+      semantic_digest.size());
+  const auto state_digest = Sha256(state_digest_material);
+
+  const bool same_binding = SameProviderBinding(*tracker, request, frame);
+  if (request.provider_read_mode ==
+      ZhongguoScoreboardProviderReadModeV1::validate_without_advancing) {
+    if (!same_binding ||
+        tracker->last_tree_canonical_bytes != tree_canonical_bytes ||
+        tracker->last_semantic_canonical_bytes != semantic_canonical_bytes) {
+      return false;
+    }
+    output.provider_session_id = tracker->provider_session_id;
+    output.observation_sequence = tracker->observation_sequence;
+    output.observed_state_revision = tracker->observed_state_revision;
+    output.tree_fingerprint_v1 = DigestHex(tree_digest);
+    output.semantic_fingerprint_v1 = DigestHex(semantic_digest);
+    return true;
+  }
+  if (request.provider_read_mode !=
+      ZhongguoScoreboardProviderReadModeV1::publish_observation) {
+    return false;
+  }
+
+  ZhongguoScoreboardProviderRevisionTrackerV1 next = *tracker;
+  if (!same_binding) {
+    next = {};
+    next.initialized = true;
+    next.provider_session_id = request.provider_session_id;
+    next.connection_generation = request.connection_generation;
+    next.player_character_id = frame.played_character_id;
+    next.date_raw = frame.date_raw;
+    next.game_version.assign(kZhongguoScoreboardStateV1GameVersion);
+    next.executable_sha256.assign(
+        kZhongguoScoreboardStateV1ExecutableSha256);
+    next.allowlist_id.assign(kZhongguoScoreboardStateV1AllowlistId);
+    next.observation_sequence = 1;
+    next.observed_state_revision = 1;
+  } else {
+    if (next.observation_sequence ==
+            std::numeric_limits<std::uint64_t>::max() ||
+        next.observed_state_revision ==
+            std::numeric_limits<std::uint64_t>::max()) {
+      return false;
+    }
+    ++next.observation_sequence;
+    if (next.last_tree_canonical_bytes != tree_canonical_bytes ||
+        next.last_semantic_canonical_bytes != semantic_canonical_bytes) {
+      ++next.observed_state_revision;
+    }
+  }
+  next.last_tree_canonical_bytes = tree_canonical_bytes;
+  next.last_semantic_canonical_bytes = semantic_canonical_bytes;
+  next.last_state_digest_bytes = DigestBytes(state_digest);
+  *tracker = std::move(next);
+
+  output.provider_session_id = tracker->provider_session_id;
+  output.observation_sequence = tracker->observation_sequence;
+  output.observed_state_revision = tracker->observed_state_revision;
+  output.tree_fingerprint_v1 = DigestHex(tree_digest);
+  output.semantic_fingerprint_v1 = DigestHex(semantic_digest);
+  return true;
+}
+
 } // namespace
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
@@ -771,7 +1398,8 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     if (environment.offline_fixture_function_overrides &&
         (access.validate_character == nullptr ||
          access.read_allowlisted_variable == nullptr ||
-         access.find_fixed_widget == nullptr)) {
+         access.find_fixed_widget == nullptr ||
+         access.resolve_fixture_gui == nullptr)) {
       SetTopUnavailable(output, "internal_error");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
@@ -796,48 +1424,81 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
       SetTopUnavailable(output, "map_not_ready");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
-    output.readiness.player_binding_ready = true;
-
-    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()>
-        first_widgets{};
-    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()>
-        second_widgets{};
+    ResolvedGuiTreeV1 first_gui{};
+    ResolvedGuiTreeV1 second_gui{};
     RawRows first_rows{};
     RawRows second_rows{};
-    if (!FindFixedWidgets(environment, access, first_widgets)) {
+    if (!FindFixedWidgets(environment, access, first_gui)) {
       SetTopUnavailable(output, "gui_root_unavailable");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
-    output.readiness.gui_root_ready = true;
     if (!ReadAllowlistedRows(environment, access, before.played_character_id,
-                             first_rows) ||
-        !FindFixedWidgets(environment, access, second_widgets) ||
+                             first_rows)) {
+      SetTopUnavailable(output, "state_projection_unavailable");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+
+    game::ZhongguoScoreboardStateV1 first_state{};
+    InitializeEnvelope(request, &before, first_state);
+    first_state.readiness.player_binding_ready = true;
+    first_state.readiness.gui_root_ready = true;
+    if (!DecodeWidgets(access, first_gui.widgets, first_state)) {
+      SetTopUnavailable(output, "widget_state_unavailable");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!DecodeAcl(environment, access, first_rows,
+                   before.played_character_id, first_state)) {
+      SetTopUnavailable(output, "acl_inconsistent");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!first_state.readiness.entry_window_state_ready) {
+      SetTopUnavailable(output, "widget_not_instantiated");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+
+    std::string first_tree_bytes;
+    std::string first_semantic_bytes;
+    if (!BuildTreeCanonicalBytes(access, first_gui, first_tree_bytes) ||
+        !BuildSemanticCanonicalBytes(access, first_gui, first_rows,
+                                     first_state, first_semantic_bytes) ||
+        !FindFixedWidgets(environment, access, second_gui) ||
         !ReadAllowlistedRows(environment, access, before.played_character_id,
                              second_rows)) {
       SetTopUnavailable(output, "state_projection_unavailable");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
+
+    game::ZhongguoScoreboardStateV1 second_state{};
+    InitializeEnvelope(request, &before, second_state);
+    second_state.readiness.player_binding_ready = true;
+    second_state.readiness.gui_root_ready = true;
+    std::string second_tree_bytes;
+    std::string second_semantic_bytes;
+    if (!DecodeWidgets(access, second_gui.widgets, second_state) ||
+        !DecodeAcl(environment, access, second_rows,
+                   before.played_character_id, second_state) ||
+        !second_state.readiness.entry_window_state_ready ||
+        !BuildTreeCanonicalBytes(access, second_gui, second_tree_bytes) ||
+        !BuildSemanticCanonicalBytes(access, second_gui, second_rows,
+                                     second_state, second_semantic_bytes)) {
+      SetTopUnavailable(output, "state_projection_unavailable");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
     game::ZhongguoCaseFrameV1 after{};
     if (!access.capture_frame(access.context, after) || before != after ||
-        first_widgets != second_widgets || first_rows != second_rows) {
+        first_gui.context != second_gui.context ||
+        first_gui.owner != second_gui.owner ||
+        first_gui.root != second_gui.root ||
+        first_gui.modal_top_receiver != second_gui.modal_top_receiver ||
+        first_gui.widgets != second_gui.widgets || first_rows != second_rows ||
+        first_tree_bytes != second_tree_bytes ||
+        first_semantic_bytes != second_semantic_bytes) {
       SetTopUnavailable(output, "state_changed");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
-    output.readiness.same_frame_ready = true;
-    if (!DecodeWidgets(access, first_widgets, output)) {
-      SetTopUnavailable(output, "widget_state_unavailable", true);
-      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
-    }
-    if (!DecodeAcl(environment, access, first_rows,
-                   before.played_character_id, output)) {
-      SetTopUnavailable(output, "acl_inconsistent", true);
-      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
-    }
-    if (!output.readiness.entry_window_state_ready) {
-      SetTopUnavailable(output, "widget_not_instantiated", true);
-      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
-    }
 
+    output = std::move(first_state);
+    output.readiness.same_frame_ready = true;
     output.readiness.state_acl_query_ready =
         output.readiness.player_binding_ready &&
         output.readiness.gui_root_ready &&
@@ -847,6 +1508,11 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     output.readiness.production_live_ready = false;
     output.status = game::ZhongguoScoreboardStateStatusV1::available;
     output.unavailable_reason.clear();
+    if (!ApplyProviderRevision(request, before, first_tree_bytes,
+                               first_semantic_bytes, output)) {
+      SetTopUnavailable(output, "provider_revision_unavailable", true);
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
     return game::ReadZhongguoScoreboardStateResultV1::available;
   } catch (...) {
     SetTopUnavailable(output, "internal_error");

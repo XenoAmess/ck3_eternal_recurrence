@@ -3477,6 +3477,62 @@ def main() -> int:
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
             "scoreboard_named_widget_action_and_postcondition_matrix",
         )
+        scoreboard_runner_red = {
+            "schema_version": 1,
+            "cell_id": (
+                "scoreboard_named_widget_action_and_postcondition_matrix"
+            ),
+            "result": "RED",
+            "mcp_only": True,
+            "source_query": {"status": "available"},
+            "action_result": {
+                "accepted": False,
+                "status": "unavailable",
+                "rejection_reason": "action_dispatch_unavailable",
+            },
+            "later_query": {"status": "available"},
+            "verified_postcondition": None,
+            "verified_pass": False,
+            "production_capability_advertised": False,
+            "failure_reason": "action_dispatch_unavailable",
+        }
+        scoreboard_runner_artifacts = temporary_root / "scoreboard-runner-red"
+        scoreboard_runner_artifacts.mkdir()
+        with mock.patch.object(
+            capture,
+            "run_zhongguo_scoreboard_action_cell",
+            return_value=copy.deepcopy(scoreboard_runner_red),
+        ):
+            scoreboard_runner_result = (
+                capture.run_phase2_scoreboard_gameplay_action_cell(
+                    object(), scoreboard_runner_artifacts
+                )
+            )
+        assert scoreboard_runner_result == scoreboard_runner_red
+        assert json.loads(
+            (
+                scoreboard_runner_artifacts
+                / "07c_phase2_scoreboard_named_widget_action_cell.json"
+            ).read_text(encoding="utf-8")
+        ) == scoreboard_runner_red
+        forged_scoreboard_green = copy.deepcopy(scoreboard_runner_red)
+        forged_scoreboard_green["result"] = "GREEN"
+        forged_scoreboard_green["production_capability_advertised"] = True
+        with mock.patch.object(
+            capture,
+            "run_zhongguo_scoreboard_action_cell",
+            return_value=forged_scoreboard_green,
+        ):
+            try:
+                capture.run_phase2_scoreboard_gameplay_action_cell(
+                    object(), scoreboard_runner_artifacts
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "forged GREEN" in str(error)
+            else:
+                raise AssertionError(
+                    "scoreboard runner accepted GREEN without verified PASS"
+                )
         for cell_id in (
             "b2_pip_snapshot_query_matrix",
             "incident_xyz_snapshot_query_matrix",
@@ -4356,6 +4412,11 @@ def main() -> int:
                 "run_zhongguo_ai_owned_case_background_action",
                 side_effect=fake_ai_owned_action,
             ),
+            mock.patch.object(
+                capture,
+                "run_phase2_scoreboard_gameplay_action_cell",
+                return_value=copy.deepcopy(scoreboard_runner_red),
+            ) as scoreboard_action_cell,
         ):
             try:
                 capture.run_phase2_live_scenario(
@@ -4373,6 +4434,9 @@ def main() -> int:
                 raise AssertionError(
                     "Workforce #360 missing rebind claimed the full batch GREEN"
                 )
+        scoreboard_action_cell.assert_called_once_with(
+            wired_service, wired_scenario_artifacts
+        )
         wired_scenario = json.loads(
             (
                 wired_scenario_artifacts / "05_phase2_live_scenario.json"
@@ -4389,6 +4453,9 @@ def main() -> int:
         )
         assert wired_scenario["ai_owned_case_gameplay_action_cell"] == (
             ai_owned_action_evidence
+        )
+        assert wired_scenario["scoreboard_gameplay_action_cell"] == (
+            scoreboard_runner_red
         )
         workforce_scenario_gate = wired_scenario[
             "workforce_collective_gameplay_action_cell"

@@ -5,6 +5,7 @@
   "result_payload_key": "zhongguo_scoreboard_state",
   "case_kind": "zhongguo.scoreboard.named-state-acl",
   "request_fields": ["request_nonce", "expected_revision"],
+  "internal_native_wire_fields": ["expected_connection_generation"],
   "mailbox_executor": "ExecuteZhongguoScoreboardStateMailboxQueryV1",
   "mailbox_fixed_slot": "permitted_executor_octodenary",
   "fixed_widgets": [
@@ -34,12 +35,25 @@
     "before_after_frame_equality",
     "raw_row_equality",
     "widget_pointer_identity_equality",
+    "tree_and_semantic_canonical_bytes_are_double_read_equal",
+    "tree_fingerprint_is_sha256_diagnostic_over_fixed_tree_encoding",
+    "semantic_fingerprint_is_sha256_diagnostic_over_fixed_semantic_encoding",
+    "revision_equality_uses_internal_canonical_bytes_not_public_hashes",
+    "provider_tracker_binds_session_connection_player_date_build_and_allowlist",
+    "provider_session_is_128_bit_csprng_and_32_uppercase_hex_digits",
+    "successful_publish_observation_advances_sequence",
+    "tree_or_semantic_change_advances_observed_state_revision",
+    "unavailable_and_ack_validation_never_advance_tracker",
+    "modal_top_receiver_reads_gui_context_plus_0x290_count_plus_0x29c",
     "widget_instance_and_vtable_pointers_are_observed_read_only",
-    "effective_visibility_walks_fixed_parent_chain",
+    "local_visibility_reads_widget_plus_d0_local_hidden_bit_0x10",
+    "effective_visibility_reads_widget_plus_d0_cached_hidden_bit_0x08",
+    "effective_enabled_reads_widget_plus_d0_cached_disabled_bit_0x02",
+    "local_disabled_source_bit_is_widget_plus_d0_bit_0x04",
     "three_outer_tab_targets_and_three_list_page_witnesses_are_fixed",
     "managed_acl_is_surface_derived_without_rank_inference",
     "received_self_acl_joins_player_result_and_b1_policy_tuples",
-    "actions_remain_typed_unavailable",
+    "state_query_does_not_expose_or_promote_the_separate_action_transport",
     "full_and_live_readiness_remain_false"
   ],
   "forbidden_request_fields": [
@@ -56,7 +70,6 @@
     "unknown_field"
   ],
   "unsupported_widget_fields": [
-    "enabled",
     "focused",
     "modal_blocking",
     "screen_x",
@@ -67,6 +80,17 @@
     "scroll_max",
     "scroll_value"
   ],
-  "integration_status": "shared_protocol_static_exact_build_ready",
-  "readiness": "static_exact_build_live_unverified"
+  "provider_observation_fields": [
+    "tree_fingerprint_v1",
+    "semantic_fingerprint_v1",
+    "provider_session_id",
+    "observation_sequence",
+    "observed_state_revision"
+  ],
+  "provider_read_modes": [
+    "publish_observation",
+    "validate_without_advancing"
+  ],
+  "integration_status": "shared_protocol_provider_observed_revision_static_ready",
+  "readiness": "static_provider_revision_live_unverified"
 }

@@ -316,6 +316,42 @@ def _ck3_query_zhongguo_scoreboard_state_v1(
     )
 
 
+def _ck3_activate_zhongguo_scoreboard_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    action: str,
+    expected_revision: int,
+    expected_native_revision: int,
+    expected_connection_generation: int,
+    expected_player_character_id: int,
+    expected_provider_session_id: str,
+    expected_observation_sequence: int,
+    expected_observed_state_revision: int,
+    expected_tree_fingerprint_v1: str,
+    expected_semantic_fingerprint_v1: str,
+    expected_window_instance_pointer: str,
+    expected_target_instance_pointer: str,
+    expected_target_vtable_pointer: str,
+) -> dict[str, object]:
+    """Cross the named-widget transport; unavailable stays a typed RED."""
+    return service.activate_zhongguo_scoreboard_v1(
+        request_nonce,
+        action,
+        expected_revision=expected_revision,
+        expected_native_revision=expected_native_revision,
+        expected_connection_generation=expected_connection_generation,
+        expected_player_character_id=expected_player_character_id,
+        expected_provider_session_id=expected_provider_session_id,
+        expected_observation_sequence=expected_observation_sequence,
+        expected_observed_state_revision=expected_observed_state_revision,
+        expected_tree_fingerprint_v1=expected_tree_fingerprint_v1,
+        expected_semantic_fingerprint_v1=expected_semantic_fingerprint_v1,
+        expected_window_instance_pointer=expected_window_instance_pointer,
+        expected_target_instance_pointer=expected_target_instance_pointer,
+        expected_target_vtable_pointer=expected_target_vtable_pointer,
+    )
+
+
 def _ck3_center_map_on_landed_title_v1(
     service: GameplayBridgeService,
     title_key: str,
@@ -860,6 +896,42 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_activate_zhongguo_scoreboard_v1(
+        request_nonce: str,
+        action: str,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_connection_generation: int,
+        expected_player_character_id: int,
+        expected_provider_session_id: str,
+        expected_observation_sequence: int,
+        expected_observed_state_revision: int,
+        expected_tree_fingerprint_v1: str,
+        expected_semantic_fingerprint_v1: str,
+        expected_window_instance_pointer: str,
+        expected_target_instance_pointer: str,
+        expected_target_vtable_pointer: str,
+    ) -> dict[str, object]:
+        """Use the fail-closed scoreboard transport; never imply GUI PASS."""
+        return _ck3_activate_zhongguo_scoreboard_v1(
+            service,
+            request_nonce,
+            action,
+            expected_revision,
+            expected_native_revision,
+            expected_connection_generation,
+            expected_player_character_id,
+            expected_provider_session_id,
+            expected_observation_sequence,
+            expected_observed_state_revision,
+            expected_tree_fingerprint_v1,
+            expected_semantic_fingerprint_v1,
+            expected_window_instance_pointer,
+            expected_target_instance_pointer,
+            expected_target_vtable_pointer,
+        )
+
+    @server.tool()
     def ck3_center_map_on_landed_title_v1(
         title_key: str,
         expected_revision: int,
@@ -1093,6 +1165,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_scoreboard_state_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_activate_zhongguo_scoreboard_v1"
     )
     return server
 

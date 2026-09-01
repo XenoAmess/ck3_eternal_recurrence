@@ -102,6 +102,9 @@ from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract impor
 from xar_autoplayer.bridge.zhongguo_scoreboard_state_contract import (
     QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
 )
+from xar_autoplayer.bridge.zhongguo_scoreboard_action_cell import (
+    run_zhongguo_scoreboard_action_cell,
+)
 from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_RESULT_CASE_KIND_V1,
@@ -5382,6 +5385,51 @@ def compare_phase2_domain_query_stages(
         raise acceptance.RunnerError(
             f"phase-two domain restore consistency failed: {error}"
         ) from error
+
+
+def run_phase2_scoreboard_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+) -> dict[str, object]:
+    """Preserve the named-widget action ledger without promoting transport.
+
+    The current exact-build provider may return typed unavailable or a
+    verification-pending ACK between two independent scoreboard queries.  A
+    future GREEN result is accepted only when the reusable cell supplies both
+    an advertised production capability and an independently verified
+    provider-observed revision/postcondition transition.
+    """
+
+    evidence_path = artifacts / (
+        "07c_phase2_scoreboard_named_widget_action_cell.json"
+    )
+    evidence = run_zhongguo_scoreboard_action_cell(service)
+    if not isinstance(evidence, dict):
+        raise acceptance.RunnerError(
+            "phase-two scoreboard action cell returned a non-object"
+        )
+    write_json(evidence_path, evidence)
+    result = evidence.get("result")
+    if result == "GREEN":
+        if not (
+            evidence.get("verified_pass") is True
+            and evidence.get("production_capability_advertised") is True
+            and isinstance(evidence.get("verified_postcondition"), dict)
+        ):
+            raise acceptance.RunnerError(
+                "phase-two scoreboard action cell forged GREEN without an "
+                "advertised capability and verified later-query postcondition"
+            )
+    elif result == "RED":
+        if evidence.get("verified_pass") is not False:
+            raise acceptance.RunnerError(
+                "phase-two scoreboard RED ledger contains a verified PASS"
+            )
+    else:
+        raise acceptance.RunnerError(
+            "phase-two scoreboard action cell returned an invalid result"
+        )
+    return evidence
 
 
 def run_phase2_incident_gameplay_action_cell(
@@ -12054,6 +12102,7 @@ def run_phase2_live_scenario(
         "b2_pip_gameplay_action_cell": None,
         "ai_owned_case_gameplay_action_cell": None,
         "workforce_collective_gameplay_action_cell": None,
+        "scoreboard_gameplay_action_cell": None,
         "post_incident_paused_binding": None,
         "b2_pip_prompt_readiness": None,
         "completed_gameplay_action_cells": [],
@@ -12265,6 +12314,23 @@ def run_phase2_live_scenario(
         )
         write_json(evidence_path, evidence)
 
+        scoreboard_action = run_phase2_scoreboard_gameplay_action_cell(
+            service,
+            artifacts,
+        )
+        evidence["scoreboard_gameplay_action_cell"] = scoreboard_action
+        if scoreboard_action.get("result") == "GREEN":
+            evidence["completed_gameplay_action_cells"].append(
+                "scoreboard_named_widget_action_and_postcondition_matrix"
+            )
+            evidence["missing_gameplay_action_cells"] = [
+                value
+                for value in evidence["missing_gameplay_action_cells"]
+                if value
+                != "scoreboard_named_widget_action_and_postcondition_matrix"
+            ]
+        write_json(evidence_path, evidence)
+
         # The dedicated third fixture is installed only now, after all prior
         # cells and their read-only restore comparison are complete.  A
         # managed reload activates its invisible scripted-widget summon.  The
@@ -12319,16 +12385,16 @@ def run_phase2_live_scenario(
             ]
             write_json(evidence_path, evidence)
 
-        # All four frozen domain providers now run as real pre/restore/post
-        # read-only matrices, and the Incident, B2, and AI-owned product
-        # actions have been proven.  The remaining scoreboard product cell is
-        # still absent, so the batch must remain RED instead of inflating the
-        # completed cells into full phase-two acceptance.
+        # The scoreboard runner ledger is wired too.  The exact dispatcher and
+        # provider-observed revision are static-ready, but no paused-game
+        # source/ACK/later-query artifact has promoted the production
+        # capability yet.  Preserve the typed RED evidence instead of
+        # manufacturing a gameplay PASS from static or fixture proof.
         raise acceptance.RunnerError(
             "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
             "actions and B2/Incident/Workforce/AI-owned observations passed, "
-            "but the remaining scoreboard gameplay action cell is "
-            "unimplemented"
+            "but the scoreboard named-widget action/postcondition cell "
+            "remains fail-closed"
         )
     except BaseException as error:
         incident_path = artifacts / (
@@ -12432,6 +12498,53 @@ def run_phase2_live_scenario(
                             ]
                             if value
                             != "workforce_collective_gameplay_action_and_postcondition_matrix"
+                        ]
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
+        scoreboard_path = artifacts / (
+            "07c_phase2_scoreboard_named_widget_action_cell.json"
+        )
+        if scoreboard_path.is_file():
+            try:
+                scoreboard_value = json.loads(
+                    scoreboard_path.read_text(encoding="utf-8")
+                )
+                if isinstance(scoreboard_value, dict):
+                    evidence["scoreboard_gameplay_action_cell"] = (
+                        scoreboard_value
+                    )
+                    action_result = scoreboard_value.get("action_result")
+                    evidence["gameplay_acceptance_executed"] = bool(
+                        evidence["gameplay_acceptance_executed"]
+                        or (
+                            isinstance(action_result, dict)
+                            and action_result.get("accepted") is True
+                        )
+                    )
+                    completed = evidence["completed_gameplay_action_cells"]
+                    if (
+                        scoreboard_value.get("result") == "GREEN"
+                        and scoreboard_value.get("verified_pass") is True
+                        and scoreboard_value.get(
+                            "production_capability_advertised"
+                        )
+                        is True
+                        and isinstance(completed, list)
+                        and (
+                            "scoreboard_named_widget_action_and_postcondition_matrix"
+                            not in completed
+                        )
+                    ):
+                        completed.append(
+                            "scoreboard_named_widget_action_and_postcondition_matrix"
+                        )
+                        evidence["missing_gameplay_action_cells"] = [
+                            value
+                            for value in evidence[
+                                "missing_gameplay_action_cells"
+                            ]
+                            if value
+                            != "scoreboard_named_widget_action_and_postcondition_matrix"
                         ]
             except (OSError, ValueError, json.JSONDecodeError):
                 pass

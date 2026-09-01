@@ -199,9 +199,14 @@ class ZhongguoScoreboardStateV1NativeDriverTests(unittest.TestCase):
                 "step",
                 "expected_revision",
                 "request_nonce",
+                "expected_connection_generation",
             },
         )
         self.assertEqual(sent["request_nonce"], NONCE)
+        self.assertEqual(
+            sent["expected_connection_generation"],
+            snapshot["diagnostics"]["connection_generation"],
+        )
         self.assertNotIn("widget_name", sent)
         self.assertNotIn("action", sent)
 
@@ -333,6 +338,14 @@ class ZhongguoScoreboardStateV1ServiceTests(unittest.TestCase):
 
         self.assertEqual(result["status"], "available")
         self.assertEqual(result["binding"]["player_character_id"], PLAYER)
+        self.assertEqual(
+            result["provider_session_id"],
+            "0123456789ABCDEF0123456789ABCDEF",
+        )
+        self.assertEqual(result["observation_sequence"], 7)
+        self.assertEqual(result["observed_state_revision"], 3)
+        self.assertEqual(result["tree_fingerprint_v1"], "A" * 64)
+        self.assertEqual(result["semantic_fingerprint_v1"], "B" * 64)
         self.assertEqual(
             result["source"]["connection_generation"], CONNECTION_GENERATION
         )

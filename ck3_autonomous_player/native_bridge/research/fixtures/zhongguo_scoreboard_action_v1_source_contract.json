@@ -16,16 +16,24 @@
     "same_paused_player_frame",
     "public_and_native_revision_binding",
     "connection_generation_binding",
+    "provider_session_binding",
+    "observation_sequence_binding",
+    "observed_state_revision_binding",
+    "tree_and_semantic_fingerprint_binding",
     "window_instance_binding",
     "target_instance_and_vtable_binding",
     "exists_effective_visibility_and_enabled_admission",
     "managed_and_received_acl_admission",
     "provider_owned_action_target_mapping",
-    "injected_dispatch_only_after_admission",
+    "exact_shortcut_manager_semantic_activation_only_after_admission",
+    "raw_native_handled_boolean_is_diagnostic_only",
     "ack_is_verification_pending",
     "postcondition_verified_is_false",
     "independent_later_query_required"
   ],
+  "transport_capability": "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+  "mailbox_executor": "ExecuteZhongguoScoreboardActionMailboxV1",
+  "mailbox_fixed_slot": "permitted_executor_duovigintary",
   "postcondition_witnesses": [
     "zg361_scoreboard_modal",
     "zg361_scoreboard_page_managed",
@@ -43,6 +51,10 @@
     "callback_address",
     "unknown_field"
   ],
-  "production_executor": "unwired_fail_closed",
-  "readiness": "static_action_contract_live_unverified"
+  "production_executor": "exact_dispatch_ack_verification_pending",
+  "shared_transport": "wired_ack_or_typed_unavailable",
+  "production_capability_advertised": false,
+  "provider_read_mode": "validate_without_advancing",
+  "later_query_gate": "same_paused_world_and_provider_binding_tree_equal_observation_and_observed_revision_advanced_semantic_changed_explicit_widgets_match",
+  "readiness": "static_exact_dispatch_provider_revision_red_live_unverified"
 }
