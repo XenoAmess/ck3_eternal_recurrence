@@ -145,6 +145,12 @@ database init 时，这只能说明 native hook 尚未到达可安装阶段，�
 `zga_phase2_seed.1` event waiter。仅到 Frontend 而未开始 Load Save 时应另报 `save_resume_red`；theme-only 只继续等待，不能冒充
 fatal。
 
+loader gate 还轮询受管 `native_session` supervisor 的只读 terminal probe。supervisor 在 session report/error
+写入后才置 `session_done`；若 CK3 提前以非零码退出，gate 立即追加 `native_session_process_exit`（保留完整
+`session_report`、`exit_reason`、`process_exit_code` 与当时日志 hash）并结束本轮，不把已知进程崩溃拖成
+`loader_stage_timeout`。无论该 typed RED 或其它 loader RED，runner 仍进入同一受管 cleanup，并单独保存
+`09_phase2_native_session_cleanup.json`；这条早停只改善诊断时延，不把 RED 提升为 live readiness。
+
 下一次 CK3 只允许单局验证这一个假设：在所有已实证 parser/compiler/theme 项静态清零后，新 HEAD 是否从
 `04:26:53` 对应阶段继续到 `Load Save/In Game` 与 native semantic snapshot。单局顺序固定为：冻结 projection/SHA →
 确认 product/fixture 各挂载一次 → append-only loader gate → exact event query → 五 selector 与 paused checkpoint 捕获 →

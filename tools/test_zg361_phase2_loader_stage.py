@@ -107,6 +107,70 @@ def main() -> int:
             "append-only parser RED lacks deduplicated findings",
         )
 
+        # A managed native session that has already reported a non-zero
+        # process exit must terminate the loader gate immediately.  This is
+        # the concrete C0000005 boundary from the bounded CK3 attempt; it
+        # must not be rewritten as the generic 300-second timeout.
+        exit_logs = root / "process-exit" / "logs"
+        exit_logs.mkdir(parents=True)
+        (exit_logs / "debug.log").write_bytes(b"")
+        (exit_logs / "error.log").write_bytes(b"")
+        exit_progress = root / "process-exit" / "loader-progress.jsonl"
+        exit_time = FakeTime()
+        session_report = {
+            "kind": "ck3_native_headless_session",
+            "exit_reason": "process_exit",
+            "process_exit_code": 1,
+            "pid": 79880,
+            "ok": False,
+        }
+
+        def process_exit_probe() -> dict[str, object] | None:
+            if exit_time.sleep_count < 1:
+                return None
+            return {
+                "terminal": True,
+                "session_thread_alive": False,
+                "session_report": session_report,
+                "session_error": None,
+            }
+
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                exit_logs,
+                exit_progress,
+                timeout_seconds=300.0,
+                fatal_stall_seconds=45.0,
+                poll_interval_seconds=1.0,
+                native_session_probe=process_exit_probe,
+                clock=exit_time.clock,
+                sleeper=exit_time.sleep,
+            )
+            raise AssertionError("native process exit did not fail early")
+        except loader.LoaderNativeSessionExitRed as error:
+            require(
+                error.evidence["state"] == "native_session_process_exit",
+                "native process exit received the wrong terminal",
+            )
+            require(
+                error.evidence["process_exit_code"] == 1
+                and error.evidence["process_exit_nonzero"] is True,
+                "non-zero native process exit was not preserved",
+            )
+            require(
+                error.evidence["native_session"]["session_report"]
+                == session_report,
+                "native session report was not preserved in loader evidence",
+            )
+        require(
+            exit_time.value < 45.0,
+            "native process exit waited for the generic loader timeout",
+        )
+        require(
+            rows(exit_progress)[-1]["state"] == "native_session_process_exit",
+            "append-only evidence lacks the native process-exit terminal",
+        )
+
         # A theme warning is actionable static debt, but cannot impersonate a
         # parser/compiler stall and trigger the typed early-RED boundary.
         theme_logs = root / "theme" / "logs"

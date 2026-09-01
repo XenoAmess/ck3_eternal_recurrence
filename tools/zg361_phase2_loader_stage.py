@@ -63,6 +63,10 @@ class LoaderStageTimeout(LoaderStageError):
     """No proven loader-stage terminal was observed within the bound."""
 
 
+class LoaderNativeSessionExitRed(LoaderStageError):
+    """The managed native session ended before a loader terminal was proven."""
+
+
 def _sha256(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
@@ -251,10 +255,19 @@ def wait_for_phase2_seed_loader_stage(
     fatal_stall_seconds: float = 45.0,
     poll_interval_seconds: float = 0.25,
     native_ready_probe: Callable[[], bool] | None = None,
+    native_session_probe: Callable[[], dict[str, Any] | None] | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
 ) -> dict[str, Any]:
-    """Wait for save/native progress or fail early on a proven parser RED."""
+    """Wait for save/native progress or fail on a typed early RED.
+
+    ``native_session_probe`` is an optional supervisor-side health boundary.
+    It must return ``None`` while the managed session is still running and a
+    mapping with ``terminal=True`` once that session has finished.  The
+    terminal mapping is copied into append-only evidence, so a non-zero CK3
+    exit (or a supervisor error) cannot be misreported as a generic 300-second
+    loader timeout.
+    """
 
     if (
         timeout_seconds <= 0
@@ -327,6 +340,72 @@ def wait_for_phase2_seed_loader_stage(
             }
             append_jsonl(progress_jsonl, result)
             return result
+        if native_session_probe is not None:
+            try:
+                native_session_terminal = native_session_probe()
+            except Exception as error:
+                native_session_terminal = {
+                    "terminal": True,
+                    "probe_error": f"{type(error).__name__}: {error}",
+                }
+            if native_session_terminal is not None:
+                if not isinstance(native_session_terminal, dict):
+                    native_session_terminal = {
+                        "terminal": True,
+                        "probe_error": (
+                            "native session probe returned a non-object: "
+                            f"{type(native_session_terminal).__name__}"
+                        ),
+                    }
+                elif native_session_terminal.get("terminal") is not True:
+                    native_session_terminal = {
+                        "terminal": True,
+                        "probe_error": (
+                            "native session probe returned a non-terminal object"
+                        ),
+                        "probe_result": native_session_terminal,
+                    }
+                session_report = native_session_terminal.get("session_report")
+                exit_reason = (
+                    session_report.get("exit_reason")
+                    if isinstance(session_report, dict)
+                    else None
+                )
+                process_exit_code = (
+                    session_report.get("process_exit_code")
+                    if isinstance(session_report, dict)
+                    else None
+                )
+                if exit_reason == "process_exit":
+                    terminal_state = "native_session_process_exit"
+                    terminal_message = (
+                        "managed native_session exited before loader readiness"
+                    )
+                else:
+                    terminal_state = "native_session_exit"
+                    terminal_message = (
+                        "managed native_session ended before loader readiness"
+                    )
+                if native_session_terminal.get("probe_error"):
+                    terminal_state = "native_session_probe_red"
+                    terminal_message = (
+                        "managed native_session supervisor probe failed"
+                    )
+                result = {
+                    "sequence": sequence + 1,
+                    **observation,
+                    "state": terminal_state,
+                    "result": "RED",
+                    "native_session": native_session_terminal,
+                    "exit_reason": exit_reason,
+                    "process_exit_code": process_exit_code,
+                    "process_exit_nonzero": (
+                        exit_reason == "process_exit"
+                        and process_exit_code not in (None, 0)
+                    ),
+                }
+                append_jsonl(progress_jsonl, result)
+                raise LoaderNativeSessionExitRed(terminal_message, result)
         if (
             observation["stage"] == "database_init"
             and observation["fatal_error_count"] > 0

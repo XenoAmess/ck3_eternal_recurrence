@@ -1530,6 +1530,41 @@ def _flip_red(report: dict[str, Any], reason: str) -> None:
         report["failure_reason"] = reason
 
 
+def _phase2_native_session_probe(
+    supervisor: object,
+) -> dict[str, Any] | None:
+    """Return a terminal supervisor snapshot without touching CK3 directly.
+
+    The managed native-session thread publishes its report/error before
+    setting ``session_done``.  The loader gate polls this boundary while it
+    waits for append-only CK3 logs; once the event is set, returning the
+    snapshot lets the gate emit a typed process-exit RED immediately instead
+    of waiting for its generic 300-second timeout.
+    """
+
+    if not isinstance(supervisor, dict):
+        raise TypeError("phase-two supervisor handle is not an object")
+    session_done = supervisor.get("session_done")
+    session_state = supervisor.get("session_state")
+    session_thread = supervisor.get("session_thread")
+    if not (
+        isinstance(session_done, threading.Event)
+        and isinstance(session_state, dict)
+        and isinstance(session_thread, threading.Thread)
+    ):
+        raise TypeError("phase-two supervisor handle is malformed")
+    if not session_done.is_set():
+        return None
+    report = session_state.get("report")
+    error = session_state.get("error")
+    return {
+        "terminal": True,
+        "session_thread_alive": session_thread.is_alive(),
+        "session_report": report if isinstance(report, dict) else None,
+        "session_error": error,
+    }
+
+
 def run_capture(
     raw_config: CaptureConfig,
     *,
@@ -1856,6 +1891,9 @@ def run_capture(
                 artifacts / "01_phase2_loader_stage_progress.jsonl",
                 timeout_seconds=config.loader_timeout_seconds,
                 fatal_stall_seconds=LOADER_FATAL_STALL_SECONDS,
+                native_session_probe=lambda: _phase2_native_session_probe(
+                    supervisor
+                ),
             )
         except active_runtime.loader_stage_error as error:
             evidence = getattr(error, "evidence", {})

@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 from types import SimpleNamespace
 import tempfile
+import threading
 import zipfile
 
 import run_zg361_phase2_seed_capture as capture
@@ -162,10 +163,13 @@ class FakeZhongguoRunner:
         executable: Path,
         calls: list[str],
         keyboard_green: bool = True,
+        process_exit: bool = False,
     ) -> None:
         self.fixture_source = fixture_source
         self.calls = calls
         self.keyboard_green = keyboard_green
+        self.process_exit = process_exit
+        self.supervisor: dict[str, object] | None = None
         self.isolated = FakeIsolated()
         self.EXPECTED_EXE_SHA256 = sha256(executable)
 
@@ -224,7 +228,16 @@ class FakeZhongguoRunner:
         self, _spec: object, _bridge: object
     ) -> dict[str, object]:
         self.calls.append("supervisor-start")
-        return {"fake": True}
+        self.supervisor = {
+            "stop_event": threading.Event(),
+            "session_done": threading.Event(),
+            "session_state": {"report": None, "error": None},
+            "session_thread": threading.Thread(
+                target=lambda: None,
+                name="fake-phase2-native-session",
+            ),
+        }
+        return self.supervisor
 
     def wait_for_phase2_native_session_binding(
         self,
@@ -398,13 +411,18 @@ class Fixture:
         )
 
     def runtime(
-        self, calls: list[str], *, parser_red: bool = False
+        self,
+        calls: list[str],
+        *,
+        parser_red: bool = False,
+        process_exit: bool = False,
     ) -> capture.RuntimeBindings:
         acceptance = FakeAcceptance(self.game / "binaries" / "ck3.exe", calls)
         zgrun = FakeZhongguoRunner(
             self.clean / "tools" / "fixtures" / "zg361_phase2_seed_bootstrap",
             self.game / "binaries" / "ck3.exe",
             calls,
+            process_exit=process_exit,
         )
         service = FakeService(calls)
 
@@ -421,6 +439,45 @@ class Fixture:
                 kwargs["fatal_stall_seconds"] == 45.0,
                 "loader parser fail-fast drifted",
             )
+            probe = kwargs.get("native_session_probe")
+            require(callable(probe), "native session early-exit probe missing")
+            if process_exit:
+                require(
+                    zgrun.supervisor is not None,
+                    "fake native supervisor was not retained",
+                )
+                state = zgrun.supervisor["session_state"]
+                require(isinstance(state, dict), "fake session state malformed")
+                state["report"] = {
+                    "kind": "ck3_native_headless_session",
+                    "exit_reason": "process_exit",
+                    "process_exit_code": 1,
+                    "pid": 4321,
+                    "ok": False,
+                }
+                zgrun.supervisor["session_done"].set()
+                terminal = probe()
+                require(
+                    isinstance(terminal, dict)
+                    and terminal.get("terminal") is True,
+                    "native process-exit probe did not publish a terminal",
+                )
+                evidence = {
+                    "result": "RED",
+                    "state": "native_session_process_exit",
+                    "stage": "awaiting_logs",
+                    "database_init_seen": False,
+                    "event_wait_authorized": False,
+                    "native_session": terminal,
+                    "exit_reason": "process_exit",
+                    "process_exit_code": 1,
+                    "process_exit_nonzero": True,
+                }
+                capture.append_jsonl(progress, evidence)
+                raise FakeLoaderStageError(
+                    "managed native_session exited before loader readiness",
+                    evidence,
+                )
             if parser_red:
                 evidence = {
                     "result": "RED",
@@ -671,6 +728,59 @@ def test_parser_red_cleanup() -> None:
         require(
             (fixture.artifacts / "ck3-logs" / "debug.log").is_file(),
             "parser RED did not preserve CK3 logs",
+        )
+
+
+def test_native_session_process_exit_cleanup() -> None:
+    """A supervisor process-exit RED is retained while cleanup still runs."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        report = capture.run_capture(
+            fixture.config(),
+            runtime=fixture.runtime(calls, process_exit=True),
+        )
+        require(report["result"] == "RED", "native process exit false-GREENed")
+        loader_evidence = report["loader_stage"]
+        require(
+            isinstance(loader_evidence, dict)
+            and loader_evidence.get("state") == "native_session_process_exit",
+            "native process exit terminal was not retained by runner",
+        )
+        require(
+            loader_evidence.get("process_exit_code") == 1
+            and loader_evidence.get("process_exit_nonzero") is True,
+            "runner lost the non-zero native exit code",
+        )
+        require(
+            "supervisor-cleanup" in calls,
+            "native process exit skipped managed cleanup",
+        )
+        require(
+            "single-mount-gate" not in calls
+            and "native-readiness" not in calls
+            and "event-context" not in calls
+            and "seed-capture-mcp" not in calls,
+            "native process exit crossed the loader failure boundary",
+        )
+        require(
+            report["cleanup"]["result"] == "GREEN",
+            "native process exit did not retain cleanup proof",
+        )
+        require(
+            rows(fixture.artifacts / "01_phase2_loader_stage_progress.jsonl")[-1][
+                "state"
+            ]
+            == "native_session_process_exit",
+            "append-only loader stream lacks process-exit terminal",
+        )
+        require(
+            rows(fixture.artifacts / "runner-failures.jsonl")[-1]["loader_stage"][
+                "state"
+            ]
+            == "native_session_process_exit",
+            "failure stream lost process-exit evidence",
         )
 
 
@@ -1046,6 +1156,8 @@ def test_static_contract() -> None:
         "scan_loader_error_log(",
         "wait_for_bootstrap_event(",
         "stop_phase2_native_session_supervisor(",
+        "native_session_probe",
+        "_phase2_native_session_probe(",
         "driver.close()",
     ):
         require(token in source, f"runner contract token missing: {token}")
@@ -1072,6 +1184,7 @@ def test_static_contract() -> None:
 def main() -> int:
     test_green_capture()
     test_parser_red_cleanup()
+    test_native_session_process_exit_cleanup()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
     test_no_launch_preflight_green_does_not_cross_native_boundary()
