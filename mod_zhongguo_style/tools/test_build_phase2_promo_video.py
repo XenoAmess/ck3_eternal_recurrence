@@ -366,6 +366,7 @@ class Phase2PromoEntryTests(unittest.TestCase):
             artifacts = root / "seed-attempt" / "artifacts"
             capture = root / "capture-attempt"
             timeline = _write_capture_timeline(capture)
+            _write_capture_report(capture)
             report = _write_seed_preflight_report(
                 artifacts,
                 artifact_root=artifacts,
@@ -593,6 +594,31 @@ class Phase2PromoEntryTests(unittest.TestCase):
                 )
             )
 
+            # A matching timeline identity is not sufficient on its own: the
+            # CK3 adapter also requires the GREEN root report.  Keep the
+            # source identity for diagnosis, but retain a typed unbound
+            # blocker instead of reporting a falsely bound capture.
+            timeline_only_capture = root / "timeline-identity-without-report"
+            _write_capture_timeline(timeline_only_capture)
+            timeline_only = promo.load_seed_preflight_binding(
+                report,
+                timeline_only_capture,
+            )
+            self.assertEqual(
+                "unbound",
+                timeline_only.to_mapping()["capture_identity_status"],
+            )
+            self.assertEqual(
+                "d7a28713fca39b70121e47cfa0a9838bf244774c",
+                timeline_only.to_mapping()["capture_identity"]["source_git_commit"],
+            )
+            self.assertTrue(
+                any(
+                    "capture report is missing" in item
+                    for item in timeline_only.release_blockers
+                )
+            )
+
     def test_bound_seed_preflight_is_recorded_and_preserved_in_candidate_run(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -600,6 +626,7 @@ class Phase2PromoEntryTests(unittest.TestCase):
             artifacts = root / "seed-attempt" / "artifacts"
             capture = root / "capture-attempt"
             _write_capture_timeline(capture)
+            _write_capture_report(capture)
             report = _write_seed_preflight_report(
                 artifacts,
                 artifact_root=artifacts,

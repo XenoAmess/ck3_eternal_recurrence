@@ -54,3 +54,8 @@ and choreography are available.  Passing a probe result or evidence object
 from a static test does not establish `fixture-live` or `production-live`;
 those statuses still require the runner's real CK3 capture, clean-frame gates,
 and downstream review contracts.
+
+The seed-preflight binding also requires the capture root's GREEN `report.json`
+for the adapter's report/index contract.  A timeline with a matching source
+identity but no report is retained as a typed `capture_identity_unbound`
+candidate blocker; it must not be described as bound.

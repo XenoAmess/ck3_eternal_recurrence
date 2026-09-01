@@ -314,12 +314,18 @@ class SeedPreflightBinding:
 
         report = Path(report_path).expanduser().resolve()
         if not report.is_file():
+            missing_report_blocker = (
+                "capture_identity_unbound: capture report is missing; "
+                f"expected {report}"
+            )
             blocker = self.capture_identity_blocker
-            if not self.capture_identity:
-                blocker = (
-                    "capture_identity_unbound: capture report is missing; "
-                    f"expected {report}"
-                )
+            if blocker is None:
+                blocker = missing_report_blocker
+            elif missing_report_blocker not in blocker:
+                # Keep an earlier timeline blocker for diagnosis, but never
+                # let a matching timeline identity imply a bound capture when
+                # the report required by the CK3 adapter is absent.
+                blocker = f"{blocker}; {missing_report_blocker}"
             return replace(
                 self,
                 capture_report_path=report,
@@ -377,7 +383,11 @@ class SeedPreflightBinding:
                     "bound phase-two capture timeline changed during the attempt: "
                     f"{self.capture_timeline_path}"
                 )
-        if self.capture_report_path is not None:
+        if (
+            self.capture_report_path is not None
+            and self.capture_report_bytes is not None
+            and self.capture_report_sha256 is not None
+        ):
             try:
                 report_bytes = self.capture_report_path.stat().st_size
                 report_sha = sha256_file(self.capture_report_path)
@@ -839,13 +849,9 @@ def load_seed_preflight_binding(
                     f"{capture}"
                 ),
             )
-    elif binding.capture_identity_blocker is not None:
-        binding = replace(
-            binding,
-            capture_identity_blocker=(
-                f"{binding.capture_identity_blocker}; capture report was not "
-                f"found under {capture}"
-            ),
+    else:
+        binding = binding.bind_capture_report(
+            capture / CAPTURE_REPORT_RELATIVE_PATHS[0]
         )
     return binding
 

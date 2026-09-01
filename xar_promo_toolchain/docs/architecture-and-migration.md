@@ -52,6 +52,9 @@ GREEN `report.json` runtime projection (`cell.runtime_tree_before_sha256` and
 `product_runtime_manifest.tree_sha256`), which is read-only and hash-bound;
 conflicting sources are rejected.  If neither source exposes a shared value,
 the candidate carries a typed `capture_identity_unbound` blocker.
+The report remains a required capture artifact even when the timeline already
+has a matching identity: a missing `report.json` keeps the binding explicitly
+`unbound` because the CK3 adapter cannot verify a capture without that report.
 This is an upstream input gate only; it does not promote a capture to live
 evidence or replace the runtime matrix and human review gates.
 
