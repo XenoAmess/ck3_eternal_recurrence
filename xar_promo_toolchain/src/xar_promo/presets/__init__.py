@@ -2,6 +2,7 @@
 
 from .zhongguo_361_phase2 import (
     CORE_PROJECT_CONFIG_BLOCKERS,
+    PHASE2_CHAPTER_CONTRACT,
     PHASE2_POLICY,
     CaptureRequirements,
     HistoricalSubject,
@@ -18,6 +19,7 @@ from .zhongguo_361_phase2 import (
 
 __all__ = [
     "CORE_PROJECT_CONFIG_BLOCKERS",
+    "PHASE2_CHAPTER_CONTRACT",
     "PHASE2_POLICY",
     "CaptureRequirements",
     "HistoricalSubject",

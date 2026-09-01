@@ -6,6 +6,7 @@ import math
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -19,12 +20,14 @@ from xar_promo.model import ProjectConfig  # noqa: E402
 from xar_promo.presets.zhongguo_361_phase2 import (  # noqa: E402
     CAPTURE_CHAPTER_KIND,
     CORE_PROJECT_CONFIG_BLOCKERS,
+    PHASE2_CHAPTER_CONTRACT,
     PHASE2_POLICY,
     Phase2PresetError,
     build_narration_request,
     load_phase2_capture_candidate,
     load_phase2_project_config,
     phase2_capture_requirements,
+    validate_phase2_project_config,
     validate_rendered_duration,
 )
 from xar_promo.project import load_document  # noqa: E402
@@ -132,6 +135,55 @@ class ZhongguoPhase2PresetTest(unittest.TestCase):
         self.assertEqual(document.config, self.config)
         self.assertTrue(self.config.chapters)
         self.assertTrue(all(chapter.state == "planned" for chapter in self.config.chapters))
+        self.assertEqual(
+            PHASE2_CHAPTER_CONTRACT,
+            tuple((chapter.chapter_id, chapter.kind) for chapter in self.config.chapters),
+        )
+
+    def _assert_invalid_project_payload(self, mutate, pattern: str) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            payload = json.loads(PROJECT_CONFIG_PATH.read_text(encoding="utf-8-sig"))
+            mutate(payload)
+            path = Path(temp) / "phase2-invalid.json"
+            path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(Phase2PresetError, pattern):
+                load_phase2_project_config(path)
+
+    def test_project_rejects_missing_canonical_chapter(self) -> None:
+        self._assert_invalid_project_payload(
+            lambda payload: payload["chapters"].pop(4),
+            "canonical ten-chapter contract",
+        )
+
+    def test_project_rejects_reordered_canonical_chapters(self) -> None:
+        def reorder(payload) -> None:
+            payload["chapters"][1], payload["chapters"][2] = (
+                payload["chapters"][2],
+                payload["chapters"][1],
+            )
+
+        self._assert_invalid_project_payload(reorder, "canonical ten-chapter contract")
+
+    def test_project_rejects_duplicate_chapter_ids(self) -> None:
+        def duplicate(payload) -> None:
+            payload["chapters"][1]["id"] = payload["chapters"][2]["id"]
+
+        self._assert_invalid_project_payload(duplicate, "duplicate ids")
+
+    def test_direct_preset_validation_reports_duplicate_ids_before_order(self) -> None:
+        duplicate = replace(
+            self.config,
+            chapters=(
+                self.config.chapters[0],
+                self.config.chapters[0],
+                *self.config.chapters[2:],
+            ),
+        )
+        with self.assertRaisesRegex(Phase2PresetError, "duplicate ids"):
+            validate_phase2_project_config(duplicate)
 
     def test_policy_carries_project_only_requirements(self) -> None:
         self.assertEqual(PHASE2_POLICY.narration_locale, "zh-CN")

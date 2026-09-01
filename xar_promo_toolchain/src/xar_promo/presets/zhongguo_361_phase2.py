@@ -31,6 +31,21 @@ ADAPTER_ID = "ck3"
 PRESET_ID = "zhongguo_361_phase2"
 CAPTURE_CHAPTER_KIND = "ck3_clean_span"
 GENERATED_CHAPTER_KIND = "generated_card"
+# The phase-two promo is authored as one fixed ten-chapter story.  Keep this
+# project-level contract here (rather than in the generic model) so a partial
+# or reordered config cannot silently shrink the required CK3 capture set.
+PHASE2_CHAPTER_CONTRACT = (
+    ("phase2_minimal_recap", GENERATED_CHAPTER_KIND),
+    ("phase2_fact_quota_calibration", CAPTURE_CHAPTER_KIND),
+    ("phase2_receipt_appeal_pip", CAPTURE_CHAPTER_KIND),
+    ("phase2_manager_governance", CAPTURE_CHAPTER_KIND),
+    ("phase2_promotion_compensation", CAPTURE_CHAPTER_KIND),
+    ("phase2_hc_workforce", CAPTURE_CHAPTER_KIND),
+    ("phase2_projects_metrics", CAPTURE_CHAPTER_KIND),
+    ("phase2_incidents_operations", CAPTURE_CHAPTER_KIND),
+    ("phase2_cross_cycle_endgame", CAPTURE_CHAPTER_KIND),
+    ("phase2_finale", GENERATED_CHAPTER_KIND),
+)
 _SHA256_PATTERN = re.compile(r"^[0-9A-Fa-f]{64}$")
 _FIXTURE_CONSTRUCTOR_KEYS = (
     "create_character",
@@ -226,6 +241,35 @@ def validate_phase2_project_config(config: ProjectConfig) -> ProjectConfig:
         )
     if not config.chapters:
         raise Phase2PresetError("phase-two project must contain planned chapters")
+
+    chapter_ids = tuple(chapter.chapter_id for chapter in config.chapters)
+    seen_ids: set[str] = set()
+    duplicate_ids: list[str] = []
+    for chapter_id in chapter_ids:
+        if chapter_id in seen_ids and chapter_id not in duplicate_ids:
+            duplicate_ids.append(chapter_id)
+        seen_ids.add(chapter_id)
+    if duplicate_ids:
+        raise Phase2PresetError(
+            "phase-two chapters contain duplicate ids: " + ", ".join(duplicate_ids)
+        )
+
+    actual_contract = tuple(
+        (chapter.chapter_id, chapter.kind) for chapter in config.chapters
+    )
+    if actual_contract != PHASE2_CHAPTER_CONTRACT:
+        expected = ", ".join(
+            f"{chapter_id}<{chapter_kind}>"
+            for chapter_id, chapter_kind in PHASE2_CHAPTER_CONTRACT
+        )
+        actual = ", ".join(
+            f"{chapter_id}<{chapter_kind}>"
+            for chapter_id, chapter_kind in actual_contract
+        )
+        raise Phase2PresetError(
+            "phase-two chapters must match the canonical ten-chapter contract "
+            f"in order; expected [{expected}], got [{actual}]"
+        )
 
     capture_count = 0
     for chapter in config.chapters:
@@ -489,6 +533,7 @@ __all__ = [
     "CAPTURE_CHAPTER_KIND",
     "CORE_PROJECT_CONFIG_BLOCKERS",
     "GENERATED_CHAPTER_KIND",
+    "PHASE2_CHAPTER_CONTRACT",
     "PHASE2_POLICY",
     "PRESET_ID",
     "PROJECT_ID",
