@@ -13,7 +13,6 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
 
 from zg361_phase3_workforce_endgame_model import (
     EXPECTED_MECHANISM_IDS,
@@ -26,48 +25,6 @@ from zg361_phase3_workforce_endgame_model import (
 MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py\n"
-# The effect runtime used to be emitted as one monolith.  Keep the first
-# compatibility basename, then emit the remaining contiguous clusters in
-# lexical order.  CK3 still loads every ordinary .txt projection; the names
-# are an explicit, reviewable load-order contract rather than an include
-# mechanism.
-EFFECT_CLUSTER_NAMES = (
-    "core",
-    "collective_route_a",
-    "collective_route_b",
-    "collective_support",
-    "producers",
-    "ad_source",
-    "handoffs",
-    "debt",
-    "lifecycle",
-    "routes_ab",
-    "routes_ac",
-    "routes_ad",
-    "routes_al_355_356",
-    "routes_al_360_361",
-)
-EFFECT_CLUSTER_FILES = (
-    "zg361_workforce_endgame_runtime_effects.txt",
-    "zg361_workforce_endgame_runtime_effects_01_collective_route_a.txt",
-    "zg361_workforce_endgame_runtime_effects_02_collective_route_b.txt",
-    "zg361_workforce_endgame_runtime_effects_03_collective_support.txt",
-    "zg361_workforce_endgame_runtime_effects_04_producers.txt",
-    "zg361_workforce_endgame_runtime_effects_05_ad_source.txt",
-    "zg361_workforce_endgame_runtime_effects_06_handoffs.txt",
-    "zg361_workforce_endgame_runtime_effects_07_debt.txt",
-    "zg361_workforce_endgame_runtime_effects_08_lifecycle.txt",
-    "zg361_workforce_endgame_runtime_effects_09_routes_ab.txt",
-    "zg361_workforce_endgame_runtime_effects_10_routes_ac.txt",
-    "zg361_workforce_endgame_runtime_effects_11_routes_ad.txt",
-    "zg361_workforce_endgame_runtime_effects_12_routes_al_355_356.txt",
-    "zg361_workforce_endgame_runtime_effects_13_routes_al_360_361.txt",
-)
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / EFFECT_CLUSTER_FILES[0]
-EFFECTS_PATHS = tuple(
-    MOD_ROOT / "common" / "scripted_effects" / filename
-    for filename in EFFECT_CLUSTER_FILES
-)
 READINESS = "ck3-script-static-ready-not-live"
 PREFIX = "zg361_we"
 NAMESPACE = "zg361we"
@@ -406,13 +363,6 @@ def by_id() -> dict[int, Mechanism]:
 
 
 def validate_specs() -> None:
-    if (
-        len(EFFECT_CLUSTER_NAMES) != len(EFFECT_CLUSTER_FILES)
-        or len(set(EFFECT_CLUSTER_NAMES)) != len(EFFECT_CLUSTER_NAMES)
-        or len(set(EFFECT_CLUSTER_FILES)) != len(EFFECT_CLUSTER_FILES)
-        or not EFFECT_CLUSTER_FILES[0].endswith("_effects.txt")
-    ):
-        raise ValueError("effect cluster output contract must have unique stable names")
     expected = set(EXPECTED_MECHANISM_IDS)
     specs = by_id()
     if set(specs) != expected or len(specs) != 40:
@@ -5640,13 +5590,8 @@ def render_due_debt_consumers() -> str:
     return "\n\n".join(render_due_debt_consumer(spec) for spec in MECHANISMS)
 
 
-def render_collective_producer_parts() -> tuple[str, str, str, str]:
-    """Render the four contiguous #360 producer blocks.
-
-    The returned order is intentionally the historical order.  Keeping the
-    two large materializers separate gives the loader diagnostic a useful
-    boundary while retaining the exact source text of every definition.
-    """
+def render_collective_producer() -> str:
+    """Render the only real #360 producer: Central -> B1/MG -> Workforce."""
 
     shared_fields = (
         "submission_active", "submission_sealed", "submission_consumed",
@@ -6024,13 +5969,7 @@ def render_collective_producer_parts() -> tuple[str, str, str, str]:
 	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3604 }} }}
 }}"""
-    return route_materializer(1), route_materializer(2), mark, resume
-
-
-def render_collective_producer() -> str:
-    """Render the only real #360 producer: Central -> B1/MG -> Workforce."""
-
-    return "\n\n".join(render_collective_producer_parts())
+    return "\n\n".join((route_materializer(1), route_materializer(2), mark, resume))
 
 
 def render_completed_cycle_ledger() -> str:
@@ -7512,173 +7451,39 @@ def render_finalize() -> str:
 }}"""
 
 
-def effect_cluster_paths() -> tuple[Path, ...]:
-    """Return effect files in the exact CK3 projection order.
-
-    The first path deliberately keeps the historical basename for callers
-    that only need a stable anchor.  It is a real runtime chunk, not a second
-    aggregate copy of the definitions.
-    """
-
-    return EFFECTS_PATHS
-
-
-def _route_effect_cluster(spec: Mechanism) -> str:
-    if spec.domain == "ab":
-        return "routes_ab"
-    if spec.domain == "ac":
-        return "routes_ac"
-    if spec.domain == "ad":
-        return "routes_ad"
-    if spec.mid in (355, 356):
-        return "routes_al_355_356"
-    return "routes_al_360_361"
-
-
-def _effect_sections() -> tuple[tuple[str, str], ...]:
-    """Build the historical effect section stream with cluster labels.
-
-    Labels are assigned only at contiguous boundaries.  Consequently joining
-    the section text in this returned order is byte-for-byte equivalent to
-    the former monolithic renderer (apart from the normal generated wrapper).
-    """
-
+def render_effects() -> bytes:
     validate_specs()
-    collective = render_collective_producer_parts()
-    sections: list[tuple[str, str]] = [
-        (
-            "core",
-            "# ZhongGuo 361 workforce/endgame: AB/AC/AD plus AL 355/356/360/361.\n"
-            f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n"
-            f"# Public manager ABI: {PREFIX}_open_portfolio_effect = {{ SUBJECT = <direct vassal> }}.\n"
-            "# Stable status: 1=applied, 2=idempotent, 3=stale, 4=typed RED, 5=external dependency, 6=complete, 7=honest N/A terminal, 8=history-accruing terminal.",
-        ),
-        ("core", render_portfolio_initialize()),
-        ("core", render_portfolio_entry()),
-        ("core", render_al_357_359_receipt_bridge()),
-        ("collective_route_a", collective[0]),
-        ("collective_route_b", collective[1]),
-        ("collective_support", "\n\n".join(collective[2:])),
-    ]
-
-    producer_sections = [
+    sections = [
+        "# ZhongGuo 361 workforce/endgame: AB/AC/AD plus AL 355/356/360/361.\n"
+        f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n"
+        f"# Public manager ABI: {PREFIX}_open_portfolio_effect = {{ SUBJECT = <direct vassal> }}.\n"
+        "# Stable status: 1=applied, 2=idempotent, 3=stale, 4=typed RED, 5=external dependency, 6=complete, 7=honest N/A terminal, 8=history-accruing terminal.",
+        render_portfolio_initialize(),
+        render_portfolio_entry(),
+        render_al_357_359_receipt_bridge(),
+        render_collective_producer(),
         render_completed_cycle_ledger(),
         render_ac_real_fact_producers(),
         render_external_fact_adapters(),
-    ]
-    sections.extend(("producers", text) for text in producer_sections)
-    sections.append(("ad_source", render_ad_source_integration()))
-    handoff_sections = [
+        render_ad_source_integration(),
         render_m274_attribution_pipeline(),
         render_future_consumers_integrated(),
         render_m269_attribution_handoffs(),
-    ]
-    sections.extend(("handoffs", text) for text in handoff_sections)
-    sections.append(("debt", render_due_debt_consumers()))
-
-    lifecycle_sections = [
+        render_due_debt_consumers(),
         render_abandoned_resource_release(),
         render_nonmanager_na_finalize(),
         render_manager_collective_na_finalize(),
         render_finalize(),
     ]
     for domain in ("ab", "ac", "ad", "al"):
-        lifecycle_sections += [
-            render_domain_init(domain),
-            render_subject_read(domain),
-            render_ai(domain),
-            render_launch(domain),
-        ]
+        sections += [render_domain_init(domain), render_subject_read(domain), render_ai(domain), render_launch(domain)]
         for state in sorted(set(STAGE_LAST[domain].values())):
-            lifecycle_sections += [render_schedule(domain, state), render_timeout(domain, state)]
-    sections.append(("lifecycle", "\n\n".join(lifecycle_sections)))
-
+            sections += [render_schedule(domain, state), render_timeout(domain, state)]
     for spec in MECHANISMS:
-        cluster = _route_effect_cluster(spec)
-        sections.append((cluster, render_consumer(spec)))
+        sections.append(render_consumer(spec))
         for choice in (1, 2, 3):
-            sections.append((cluster, render_route_effect(spec, choice)))
-
-    seen: list[str] = []
-    for cluster, text in sections:
-        if not text:
-            raise ValueError(f"empty workforce/endgame effect section in cluster {cluster}")
-        if not seen or seen[-1] != cluster:
-            seen.append(cluster)
-    if tuple(seen) != EFFECT_CLUSTER_NAMES:
-        raise ValueError(
-            "effect cluster order diverges from the generated output contract: "
-            f"{tuple(seen)!r}"
-        )
-    return tuple(sections)
-
-
-def effect_cluster_texts() -> dict[str, str]:
-    """Return contiguous cluster bodies without generated BOM/header wrappers."""
-
-    grouped: dict[str, list[str]] = {name: [] for name in EFFECT_CLUSTER_NAMES}
-    for cluster, text in _effect_sections():
-        grouped[cluster].append(text)
-    return {
-        name: "\n\n".join(grouped[name])
-        for name in EFFECT_CLUSTER_NAMES
-    }
-
-
-def render_effects() -> bytes:
-    """Render the legacy aggregate for parity and offline consumers.
-
-    This compatibility renderer is not emitted as a runtime file.  The CK3
-    projection is the ordered set returned by :func:`render_effect_clusters`.
-    """
-
-    return generated("\n\n".join(text for _, text in _effect_sections()))
-
-
-def render_effect_clusters() -> dict[Path, bytes]:
-    """Render each runtime effect cluster in stable load order."""
-
-    texts = effect_cluster_texts()
-    return {
-        path: generated(texts[name])
-        for path, name in zip(effect_cluster_paths(), EFFECT_CLUSTER_NAMES)
-    }
-
-
-def aggregate_effect_cluster_payloads(payloads: Mapping[Path, bytes]) -> bytes:
-    """Reconstruct the legacy aggregate from emitted cluster payloads.
-
-    Every payload must carry exactly one generated wrapper.  Stripping only
-    those wrappers and joining the ordered bodies preserves definitions,
-    comments and whitespace semantics while making the parity check explicit.
-    """
-
-    paths = effect_cluster_paths()
-    missing = [path for path in paths if path not in payloads]
-    if missing:
-        raise ValueError(f"missing workforce/endgame effect clusters: {missing}")
-    bodies: list[str] = []
-    for path in paths:
-        payload = payloads[path]
-        if not payload.startswith(BOM):
-            raise ValueError(f"effect cluster is missing UTF-8 BOM: {path}")
-        try:
-            text = payload[len(BOM):].decode("utf-8")
-        except UnicodeDecodeError as error:
-            raise ValueError(f"effect cluster is not UTF-8: {path}") from error
-        if not text.startswith(HEADER):
-            raise ValueError(f"effect cluster has an unexpected generated header: {path}")
-        body = text[len(HEADER):]
-        if not body.endswith("\n"):
-            raise ValueError(f"effect cluster is missing its generated final newline: {path}")
-        bodies.append(body[:-1])
-    return generated("\n\n".join(bodies))
-
-
-def aggregate_effect_cluster_files() -> bytes:
-    """Read and aggregate the checked-in effect clusters for parity tests."""
-
-    return aggregate_effect_cluster_payloads({path: path.read_bytes() for path in effect_cluster_paths()})
+            sections.append(render_route_effect(spec, choice))
+    return generated("\n\n".join(sections))
 
 
 def event_guard(spec: Mechanism) -> str:
@@ -8306,7 +8111,7 @@ def render_localization(language: str) -> bytes:
 def outputs() -> dict[Path, bytes]:
     validate_specs()
     rendered = {
-        **render_effect_clusters(),
+        MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_endgame_runtime_effects.txt": render_effects(),
         MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt": render_events(),
     }
     for language in LANGUAGES:

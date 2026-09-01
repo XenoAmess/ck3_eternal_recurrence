@@ -12,7 +12,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import gen_zg361_workforce_exit_fact as gen
-import gen_361_workforce_endgame_runtime as workforce_generator
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -571,7 +570,12 @@ class WorkforceExitFactTests(unittest.TestCase):
             self.assertNotIn(f"set_variable = {{ name = {alias}", self.effects)
 
     def test_legacy_adapter_call_supplies_every_required_parameter(self) -> None:
-        core = workforce_generator.aggregate_effect_cluster_files().decode("utf-8-sig")
+        core = text(
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_workforce_endgame_runtime_effects.txt"
+        )
         adapter = block(core, "zg361_we_submit_m277_closed_pip_exit_effect")
         required = set(re.findall(r"\$([A-Z][A-Z0-9_]*)\$", adapter))
         publish = block(
