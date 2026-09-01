@@ -1,0 +1,36 @@
+# open_kaishek Phase 0 third-party dependency lock
+#
+# This file records every non-JDK input intentionally selected by the build.
+# The core modules currently have zero runtime dependencies. Maven resolves the
+# build plugins below from a configured repository; no third-party source is
+# copied into this repository. Before a release, CI must verify each artifact
+# against the repository's SHA-256 sidecar and record that digest here.
+
+lock-format = 1
+reviewed-on = 2026-09-01
+java = 21.0.10+7 (Eclipse Temurin; verified host baseline; source/target release 21)
+maven = 3.6.3 or newer (Apache Maven; wrapper intentionally deferred)
+
+[runtime]
+dependencies = []
+note = "Syntax, profile API, validator, IR, runtime, and diff contracts are pure Java."
+
+[test]
+# JUnit is test-scope only; it is never part of the core/runtime artifacts.
+org.junit:junit-bom = 5.12.1 | SPDX: EPL-1.0 OR BSD-3-Clause | https://junit.org/junit5/
+org.junit.jupiter:junit-jupiter-api = 5.12.1 | SPDX: EPL-1.0 OR BSD-3-Clause | https://junit.org/junit5/
+org.junit.jupiter:junit-jupiter-engine = 5.12.1 | SPDX: EPL-1.0 OR BSD-3-Clause | https://junit.org/junit5/
+org.apache.maven.surefire:surefire-junit-platform = 3.5.4 | SPDX: Apache-2.0 | https://maven.apache.org/surefire/
+
+[build-plugins]
+org.apache.maven.plugins:maven-compiler-plugin = 3.13.0 | SPDX: Apache-2.0 | https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/3.13.0/
+org.apache.maven.plugins:maven-resources-plugin = 3.3.1 | SPDX: Apache-2.0 | https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-resources-plugin/3.3.1/
+org.apache.maven.plugins:maven-surefire-plugin = 3.5.4 | SPDX: Apache-2.0 | https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-surefire-plugin/3.5.4/
+org.apache.maven.plugins:maven-jar-plugin = 3.4.2 | SPDX: Apache-2.0 | https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-jar-plugin/3.4.2/
+org.apache.maven.plugins:maven-shade-plugin = 3.5.2 | SPDX: Apache-2.0 | https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-shade-plugin/3.5.2/
+org.apache.maven.plugins:maven-clean-plugin = 2.5 | SPDX: Apache-2.0 | https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/2.5/
+
+[adoption-policy]
+source = "Only published artifacts with an SPDX-compatible license may be added."
+code = "No external source is copied until URL, fixed tag/commit, license, and content hash are reviewed."
+quarkus = "Quarkus is intentionally absent from Phase 0 and may only be added to kaishek-service-quarkus in Phase 6."

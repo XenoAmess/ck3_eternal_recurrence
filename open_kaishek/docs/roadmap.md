@@ -178,3 +178,15 @@
 ## 12. 计划外事项
 
 本立项阶段不包含：源码实现、Quarkus 初始化、依赖下载、第三方代码移植、CK3 启动、MCP 实机差分、CI workflow 或开源平台发布。
+## 13. 2026-09-01 开工初始记录（历史快照）
+
+项目所有者已授权开始 Phase 0 实施。当前里程碑为 **M0 `in-progress`**，仅推进合同、schema 草案、构建探针和许可证记录；M0 评审尚未通过。JDK、构建工具与第三方许可证仍待冻结，未冻结前不复制外部源码或写入正式依赖。
+
+M1（lossless parser round-trip）、M3（strict runtime synthetic 361）和 CK3 live / product-live 均保持 `not-started`/`not-available`。静态文档、fixture 或 ACK 不得升级这些 readiness。详见 [ADR-0002](decisions/0002-phase0-start.md)。
+
+> **状态更新（2026-09-01）**：上段是开工初始记录，已被当前验证结果 supersede。
+> M0/M1/M2 现在为 `static-ready`；M3 为 runtime 原语加 synthetic 014 夹具的
+> `static-ready`。M4 目前也只有这一条 synthetic 子集证据，完整 B2/Workforce
+> exact-build 范围尚未开始。目标 corpus 的 27 个文件已通过 byte-for-byte round-trip，
+> 具体证据见 [Phase 0 验证记录](phase0-verification.md)。M5/CK3 live 仍
+> `not-available`，所以不产生任何 differential-certified 或 product-live 声明。

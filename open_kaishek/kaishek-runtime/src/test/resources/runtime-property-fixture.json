@@ -1,0 +1,26 @@
+{
+  "contract": "kaishek-runtime-properties-v1",
+  "case": {
+    "id": "case",
+    "serial": 0,
+    "revision": 0,
+    "due_epoch_day": 100,
+    "before_due": "INVALID",
+    "at_due": "SUCCESS",
+    "reopened_or_rebound": "STALE"
+  },
+  "receipt": {
+    "initial": 100,
+    "charged": 40,
+    "refunded": 15,
+    "net": 25,
+    "balance_after": 75,
+    "over_refund": "REJECTED",
+    "same_transaction": "IDEMPOTENT"
+  },
+  "unknown_opcode": {
+    "status": "UNSUPPORTED",
+    "writes": 0,
+    "draws_consumed": 0
+  }
+}

@@ -1,0 +1,4 @@
+set_character_flag = { flag = xa_enabled }
+set_character_flag = { flag = duplicate }
+mystery_opcode = yes
+is_ai = yes

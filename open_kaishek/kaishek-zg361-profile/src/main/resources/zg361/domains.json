@@ -1,0 +1,3645 @@
+{
+  "schema_version": "361-domain-graph-v2-phase0",
+  "lifecycle_status": "schema-and-validator-only",
+  "completion_claim": "No domain runtime is implemented by this catalogue.",
+  "mechanism_coverage": {
+    "first": 1,
+    "last": 361,
+    "cardinality": 361
+  },
+  "domain_coverage": {
+    "first": "A",
+    "last": "AL",
+    "cardinality": 38
+  },
+  "permission_policies": {
+    "celestial_manager_reviews_direct_vassal": {
+      "player_manager": {
+        "all_of": [
+          "is_ai=no",
+          "zg361_is_celestial_liege_trigger=yes"
+        ]
+      },
+      "ai_manager": {
+        "all_of": [
+          "is_ai=yes",
+          "zg361_is_celestial_liege_trigger=yes",
+          "entry=backend_resolver_only"
+        ]
+      },
+      "subject": {
+        "all_of": [
+          "zg361_is_reviewable_vassal_trigger=yes"
+        ]
+      },
+      "denied": [
+        "baron_or_count_as_manager",
+        "non_celestial_government_manager",
+        "non_direct_vassal_subject",
+        "ai_event_or_gui_entry",
+        "peer_kpi_direct_write",
+        "religion_or_faith_system_entry"
+      ]
+    }
+  },
+  "global_boundaries": {
+    "ai_exception_scope": "qualified celestial duke-or-higher managers in mod_zhongguo_style only",
+    "player_path": "case and policy surfaces; player managerial action still requires celestial manager qualification",
+    "subject_path": "reviewed officials may only submit or acknowledge their own evidence, appeal, PIP, mobility, learning, or handoff tasks",
+    "prohibited_capabilities": [
+      "religion",
+      "faith",
+      "doctrine",
+      "tenet",
+      "fervor",
+      "conversion",
+      "reformation",
+      "holy_order"
+    ],
+    "prohibited_management_roles": [
+      "baron",
+      "count"
+    ],
+    "no_arbitrary_script_text": true
+  },
+  "domains": [
+    {
+      "code": "A",
+      "mechanism_ids": {
+        "first": 1,
+        "last": 6
+      },
+      "object_type": "review_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "unstarted",
+        "targets_locked",
+        "midcycle_adjusted",
+        "evidence_frozen",
+        "graded"
+      ],
+      "initial_state": "unstarted",
+      "transitions": [
+        {
+          "from": "unstarted",
+          "to": "targets_locked",
+          "hook": "advance_review_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "targets_locked",
+          "to": "midcycle_adjusted",
+          "hook": "advance_review_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "midcycle_adjusted",
+          "to": "evidence_frozen",
+          "hook": "advance_review_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "evidence_frozen",
+          "to": "graded",
+          "hook": "advance_review_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "graded"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "B",
+      "mechanism_ids": {
+        "first": 7,
+        "last": 13
+      },
+      "object_type": "calibration_round",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "invited",
+        "submissions_frozen",
+        "reviewers_adjusted",
+        "calibrated",
+        "published"
+      ],
+      "initial_state": "invited",
+      "transitions": [
+        {
+          "from": "invited",
+          "to": "submissions_frozen",
+          "hook": "advance_calibration_round_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "submissions_frozen",
+          "to": "reviewers_adjusted",
+          "hook": "advance_calibration_round_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "reviewers_adjusted",
+          "to": "calibrated",
+          "hook": "advance_calibration_round_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "calibrated",
+          "to": "published",
+          "hook": "advance_calibration_round_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "published"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "C",
+      "mechanism_ids": {
+        "first": 14,
+        "last": 18
+      },
+      "object_type": "appeal_pip_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "delivered",
+        "appeal_or_pip_open",
+        "supported",
+        "checked",
+        "closed"
+      ],
+      "initial_state": "delivered",
+      "transitions": [
+        {
+          "from": "delivered",
+          "to": "appeal_or_pip_open",
+          "hook": "advance_appeal_pip_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "appeal_or_pip_open",
+          "to": "supported",
+          "hook": "advance_appeal_pip_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "supported",
+          "to": "checked",
+          "hook": "advance_appeal_pip_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "checked",
+          "to": "closed",
+          "hook": "advance_appeal_pip_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "D",
+      "mechanism_ids": {
+        "first": 19,
+        "last": 25
+      },
+      "object_type": "career_allocation",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "eligible",
+        "packet_open",
+        "defended",
+        "resources_reserved",
+        "settled"
+      ],
+      "initial_state": "eligible",
+      "transitions": [
+        {
+          "from": "eligible",
+          "to": "packet_open",
+          "hook": "advance_career_allocation_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "packet_open",
+          "to": "defended",
+          "hook": "advance_career_allocation_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "defended",
+          "to": "resources_reserved",
+          "hook": "advance_career_allocation_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "resources_reserved",
+          "to": "settled",
+          "hook": "advance_career_allocation_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "settled"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "E",
+      "mechanism_ids": {
+        "first": 26,
+        "last": 31
+      },
+      "object_type": "contribution_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "registered",
+        "contributions_signed",
+        "claim_open",
+        "disputed_or_audited",
+        "attributed"
+      ],
+      "initial_state": "registered",
+      "transitions": [
+        {
+          "from": "registered",
+          "to": "contributions_signed",
+          "hook": "advance_contribution_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "contributions_signed",
+          "to": "claim_open",
+          "hook": "advance_contribution_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "claim_open",
+          "to": "disputed_or_audited",
+          "hook": "advance_contribution_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "disputed_or_audited",
+          "to": "attributed",
+          "hook": "advance_contribution_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "attributed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "F",
+      "mechanism_ids": {
+        "first": 32,
+        "last": 36
+      },
+      "object_type": "manager_review",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "team_snapshot_frozen",
+        "manager_scored",
+        "reason_coded",
+        "matrix_placed",
+        "reported"
+      ],
+      "initial_state": "team_snapshot_frozen",
+      "transitions": [
+        {
+          "from": "team_snapshot_frozen",
+          "to": "manager_scored",
+          "hook": "advance_manager_review_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "manager_scored",
+          "to": "reason_coded",
+          "hook": "advance_manager_review_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "reason_coded",
+          "to": "matrix_placed",
+          "hook": "advance_manager_review_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "matrix_placed",
+          "to": "reported",
+          "hook": "advance_manager_review_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "reported"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "G",
+      "mechanism_ids": {
+        "first": 37,
+        "last": 47
+      },
+      "object_type": "quota_book",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "roster_draft",
+        "roster_locked",
+        "quota_calculated",
+        "exchange_or_debt_open",
+        "sealed"
+      ],
+      "initial_state": "roster_draft",
+      "transitions": [
+        {
+          "from": "roster_draft",
+          "to": "roster_locked",
+          "hook": "advance_quota_book_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "roster_locked",
+          "to": "quota_calculated",
+          "hook": "advance_quota_book_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "quota_calculated",
+          "to": "exchange_or_debt_open",
+          "hook": "advance_quota_book_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "exchange_or_debt_open",
+          "to": "sealed",
+          "hook": "advance_quota_book_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "sealed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "H",
+      "mechanism_ids": {
+        "first": 48,
+        "last": 53
+      },
+      "object_type": "peer_feedback_round",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "invited",
+        "submitted",
+        "frozen",
+        "integrity_checked",
+        "settled"
+      ],
+      "initial_state": "invited",
+      "transitions": [
+        {
+          "from": "invited",
+          "to": "submitted",
+          "hook": "advance_peer_feedback_round_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "submitted",
+          "to": "frozen",
+          "hook": "advance_peer_feedback_round_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "frozen",
+          "to": "integrity_checked",
+          "hook": "advance_peer_feedback_round_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "integrity_checked",
+          "to": "settled",
+          "hook": "advance_peer_feedback_round_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "settled"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "I",
+      "mechanism_ids": {
+        "first": 54,
+        "last": 61
+      },
+      "object_type": "report_packet",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "outcome_ready",
+        "materials_attached",
+        "version_signed",
+        "routing",
+        "acknowledged"
+      ],
+      "initial_state": "outcome_ready",
+      "transitions": [
+        {
+          "from": "outcome_ready",
+          "to": "materials_attached",
+          "hook": "advance_report_packet_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "materials_attached",
+          "to": "version_signed",
+          "hook": "advance_report_packet_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "version_signed",
+          "to": "routing",
+          "hook": "advance_report_packet_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "routing",
+          "to": "acknowledged",
+          "hook": "advance_report_packet_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "acknowledged"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "J",
+      "mechanism_ids": {
+        "first": 62,
+        "last": 68
+      },
+      "object_type": "matrix_handoff",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "dual_line_awarded",
+        "weights_locked",
+        "handoff_open",
+        "dual_signed",
+        "mapped"
+      ],
+      "initial_state": "dual_line_awarded",
+      "transitions": [
+        {
+          "from": "dual_line_awarded",
+          "to": "weights_locked",
+          "hook": "advance_matrix_handoff_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "weights_locked",
+          "to": "handoff_open",
+          "hook": "advance_matrix_handoff_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "handoff_open",
+          "to": "dual_signed",
+          "hook": "advance_matrix_handoff_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "dual_signed",
+          "to": "mapped",
+          "hook": "advance_matrix_handoff_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "mapped"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "K",
+      "mechanism_ids": {
+        "first": 69,
+        "last": 81
+      },
+      "object_type": "notice_justice_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "notice_prepared",
+        "served",
+        "appeal_clock_open",
+        "independent_review",
+        "corrected_or_closed",
+        "retaliation_observation"
+      ],
+      "initial_state": "notice_prepared",
+      "transitions": [
+        {
+          "from": "notice_prepared",
+          "to": "served",
+          "hook": "advance_notice_justice_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "served",
+          "to": "appeal_clock_open",
+          "hook": "advance_notice_justice_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "appeal_clock_open",
+          "to": "independent_review",
+          "hook": "advance_notice_justice_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "independent_review",
+          "to": "corrected_or_closed",
+          "hook": "advance_notice_justice_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "corrected_or_closed",
+          "to": "retaliation_observation",
+          "hook": "advance_notice_justice_case_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "retaliation_observation"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "L",
+      "mechanism_ids": {
+        "first": 82,
+        "last": 91
+      },
+      "object_type": "compensation_award",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "formula_locked",
+        "funds_reserved",
+        "awarded",
+        "deferred_or_held",
+        "paid_or_recovered"
+      ],
+      "initial_state": "formula_locked",
+      "transitions": [
+        {
+          "from": "formula_locked",
+          "to": "funds_reserved",
+          "hook": "advance_compensation_award_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "funds_reserved",
+          "to": "awarded",
+          "hook": "advance_compensation_award_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "awarded",
+          "to": "deferred_or_held",
+          "hook": "advance_compensation_award_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "deferred_or_held",
+          "to": "paid_or_recovered",
+          "hook": "advance_compensation_award_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "paid_or_recovered"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "M",
+      "mechanism_ids": {
+        "first": 92,
+        "last": 97
+      },
+      "object_type": "career_track",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "track_selected",
+        "eligible",
+        "calibrated",
+        "advanced_or_returned",
+        "reviewed"
+      ],
+      "initial_state": "track_selected",
+      "transitions": [
+        {
+          "from": "track_selected",
+          "to": "eligible",
+          "hook": "advance_career_track_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "eligible",
+          "to": "calibrated",
+          "hook": "advance_career_track_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "calibrated",
+          "to": "advanced_or_returned",
+          "hook": "advance_career_track_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "advanced_or_returned",
+          "to": "reviewed",
+          "hook": "advance_career_track_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "reviewed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "N",
+      "mechanism_ids": {
+        "first": 98,
+        "last": 105
+      },
+      "object_type": "hc_slot",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "request_classified",
+        "approved_or_frozen",
+        "recruiting",
+        "occupied",
+        "reclaimed"
+      ],
+      "initial_state": "request_classified",
+      "transitions": [
+        {
+          "from": "request_classified",
+          "to": "approved_or_frozen",
+          "hook": "advance_hc_slot_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "approved_or_frozen",
+          "to": "recruiting",
+          "hook": "advance_hc_slot_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "recruiting",
+          "to": "occupied",
+          "hook": "advance_hc_slot_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "occupied",
+          "to": "reclaimed",
+          "hook": "advance_hc_slot_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "reclaimed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "O",
+      "mechanism_ids": {
+        "first": 106,
+        "last": 113
+      },
+      "object_type": "succession_plan",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "critical_role_identified",
+        "candidate_pool_open",
+        "readiness_assessed",
+        "acting_trial",
+        "succession_decided",
+        "handoff_complete"
+      ],
+      "initial_state": "critical_role_identified",
+      "transitions": [
+        {
+          "from": "critical_role_identified",
+          "to": "candidate_pool_open",
+          "hook": "advance_succession_plan_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "candidate_pool_open",
+          "to": "readiness_assessed",
+          "hook": "advance_succession_plan_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "readiness_assessed",
+          "to": "acting_trial",
+          "hook": "advance_succession_plan_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "acting_trial",
+          "to": "succession_decided",
+          "hook": "advance_succession_plan_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "succession_decided",
+          "to": "handoff_complete",
+          "hook": "advance_succession_plan_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "handoff_complete"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "P",
+      "mechanism_ids": {
+        "first": 114,
+        "last": 120
+      },
+      "object_type": "mobility_onboarding",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "application_open",
+        "accepted",
+        "release_window",
+        "transferred",
+        "protected",
+        "quality_written_back"
+      ],
+      "initial_state": "application_open",
+      "transitions": [
+        {
+          "from": "application_open",
+          "to": "accepted",
+          "hook": "advance_mobility_onboarding_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "accepted",
+          "to": "release_window",
+          "hook": "advance_mobility_onboarding_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "release_window",
+          "to": "transferred",
+          "hook": "advance_mobility_onboarding_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "transferred",
+          "to": "protected",
+          "hook": "advance_mobility_onboarding_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "protected",
+          "to": "quality_written_back",
+          "hook": "advance_mobility_onboarding_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "quality_written_back"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "Q",
+      "mechanism_ids": {
+        "first": 121,
+        "last": 128
+      },
+      "object_type": "manager_certification",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "trial",
+        "distribution_assessed",
+        "subordinate_feedback",
+        "succession_checked",
+        "certified_or_withdrawn"
+      ],
+      "initial_state": "trial",
+      "transitions": [
+        {
+          "from": "trial",
+          "to": "distribution_assessed",
+          "hook": "advance_manager_certification_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "distribution_assessed",
+          "to": "subordinate_feedback",
+          "hook": "advance_manager_certification_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "subordinate_feedback",
+          "to": "succession_checked",
+          "hook": "advance_manager_certification_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "succession_checked",
+          "to": "certified_or_withdrawn",
+          "hook": "advance_manager_certification_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "certified_or_withdrawn"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "R",
+      "mechanism_ids": {
+        "first": 129,
+        "last": 134
+      },
+      "object_type": "project_governance",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "proposed",
+        "discovery_or_commitment",
+        "executing",
+        "stopped_or_reviewed",
+        "accountability_decided",
+        "value_observed"
+      ],
+      "initial_state": "proposed",
+      "transitions": [
+        {
+          "from": "proposed",
+          "to": "discovery_or_commitment",
+          "hook": "advance_project_governance_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "discovery_or_commitment",
+          "to": "executing",
+          "hook": "advance_project_governance_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "executing",
+          "to": "stopped_or_reviewed",
+          "hook": "advance_project_governance_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "stopped_or_reviewed",
+          "to": "accountability_decided",
+          "hook": "advance_project_governance_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "accountability_decided",
+          "to": "value_observed",
+          "hook": "advance_project_governance_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "value_observed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "S",
+      "mechanism_ids": {
+        "first": 135,
+        "last": 145
+      },
+      "object_type": "shadow_calibration",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "shadow_file_open",
+        "precalibrated",
+        "anchor_frozen",
+        "exception_or_dissent",
+        "finalized"
+      ],
+      "initial_state": "shadow_file_open",
+      "transitions": [
+        {
+          "from": "shadow_file_open",
+          "to": "precalibrated",
+          "hook": "advance_shadow_calibration_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "precalibrated",
+          "to": "anchor_frozen",
+          "hook": "advance_shadow_calibration_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "anchor_frozen",
+          "to": "exception_or_dissent",
+          "hook": "advance_shadow_calibration_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "exception_or_dissent",
+          "to": "finalized",
+          "hook": "advance_shadow_calibration_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "finalized"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "T",
+      "mechanism_ids": {
+        "first": 146,
+        "last": 156
+      },
+      "object_type": "feedback_commitment",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "result_locked",
+        "feedback_meeting",
+        "acknowledged_or_disputed",
+        "actions_open",
+        "fulfilled_or_breached"
+      ],
+      "initial_state": "result_locked",
+      "transitions": [
+        {
+          "from": "result_locked",
+          "to": "feedback_meeting",
+          "hook": "advance_feedback_commitment_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "feedback_meeting",
+          "to": "acknowledged_or_disputed",
+          "hook": "advance_feedback_commitment_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "acknowledged_or_disputed",
+          "to": "actions_open",
+          "hook": "advance_feedback_commitment_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "actions_open",
+          "to": "fulfilled_or_breached",
+          "hook": "advance_feedback_commitment_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "fulfilled_or_breached"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "U",
+      "mechanism_ids": {
+        "first": 157,
+        "last": 168
+      },
+      "object_type": "promotion_nomination",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "qualified",
+        "nominated",
+        "quota_reserved",
+        "department_review",
+        "submitted_or_withdrawn"
+      ],
+      "initial_state": "qualified",
+      "transitions": [
+        {
+          "from": "qualified",
+          "to": "nominated",
+          "hook": "advance_promotion_nomination_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "nominated",
+          "to": "quota_reserved",
+          "hook": "advance_promotion_nomination_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "quota_reserved",
+          "to": "department_review",
+          "hook": "advance_promotion_nomination_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "department_review",
+          "to": "submitted_or_withdrawn",
+          "hook": "advance_promotion_nomination_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "submitted_or_withdrawn"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "V",
+      "mechanism_ids": {
+        "first": 169,
+        "last": 180
+      },
+      "object_type": "promotion_panel",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "panel_formed",
+        "recusal_checked",
+        "blind_review",
+        "defended",
+        "voted",
+        "closed"
+      ],
+      "initial_state": "panel_formed",
+      "transitions": [
+        {
+          "from": "panel_formed",
+          "to": "recusal_checked",
+          "hook": "advance_promotion_panel_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "recusal_checked",
+          "to": "blind_review",
+          "hook": "advance_promotion_panel_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "blind_review",
+          "to": "defended",
+          "hook": "advance_promotion_panel_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "defended",
+          "to": "voted",
+          "hook": "advance_promotion_panel_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "voted",
+          "to": "closed",
+          "hook": "advance_promotion_panel_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "W",
+      "mechanism_ids": {
+        "first": 181,
+        "last": 191
+      },
+      "object_type": "pip_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "classified",
+        "evidence_gate",
+        "signature_gate",
+        "executing",
+        "midpoint",
+        "closed"
+      ],
+      "initial_state": "classified",
+      "transitions": [
+        {
+          "from": "classified",
+          "to": "evidence_gate",
+          "hook": "advance_pip_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "evidence_gate",
+          "to": "signature_gate",
+          "hook": "advance_pip_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "signature_gate",
+          "to": "executing",
+          "hook": "advance_pip_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "executing",
+          "to": "midpoint",
+          "hook": "advance_pip_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "midpoint",
+          "to": "closed",
+          "hook": "advance_pip_case_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "X",
+      "mechanism_ids": {
+        "first": 192,
+        "last": 204
+      },
+      "object_type": "incident_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "on_call",
+        "alerted",
+        "classified",
+        "commanded",
+        "timeline_frozen",
+        "reviewed",
+        "actions_open",
+        "closed"
+      ],
+      "initial_state": "on_call",
+      "transitions": [
+        {
+          "from": "on_call",
+          "to": "alerted",
+          "hook": "advance_incident_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "alerted",
+          "to": "classified",
+          "hook": "advance_incident_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "classified",
+          "to": "commanded",
+          "hook": "advance_incident_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "commanded",
+          "to": "timeline_frozen",
+          "hook": "advance_incident_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "timeline_frozen",
+          "to": "reviewed",
+          "hook": "advance_incident_case_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "reviewed",
+          "to": "actions_open",
+          "hook": "advance_incident_case_6",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "actions_open",
+          "to": "closed",
+          "hook": "advance_incident_case_7",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "Y",
+      "mechanism_ids": {
+        "first": 205,
+        "last": 216
+      },
+      "object_type": "debt_item",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "registered",
+        "owner_assigned",
+        "budgeted",
+        "remediating",
+        "accepted",
+        "retired"
+      ],
+      "initial_state": "registered",
+      "transitions": [
+        {
+          "from": "registered",
+          "to": "owner_assigned",
+          "hook": "advance_debt_item_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "owner_assigned",
+          "to": "budgeted",
+          "hook": "advance_debt_item_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "budgeted",
+          "to": "remediating",
+          "hook": "advance_debt_item_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "remediating",
+          "to": "accepted",
+          "hook": "advance_debt_item_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "accepted",
+          "to": "retired",
+          "hook": "advance_debt_item_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "retired"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "Z",
+      "mechanism_ids": {
+        "first": 217,
+        "last": 228
+      },
+      "object_type": "platform_service",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "proposed",
+        "adopted_or_forked",
+        "migrating",
+        "dual_running",
+        "valued",
+        "settled"
+      ],
+      "initial_state": "proposed",
+      "transitions": [
+        {
+          "from": "proposed",
+          "to": "adopted_or_forked",
+          "hook": "advance_platform_service_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "adopted_or_forked",
+          "to": "migrating",
+          "hook": "advance_platform_service_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "migrating",
+          "to": "dual_running",
+          "hook": "advance_platform_service_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "dual_running",
+          "to": "valued",
+          "hook": "advance_platform_service_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "valued",
+          "to": "settled",
+          "hook": "advance_platform_service_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "settled"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AA",
+      "mechanism_ids": {
+        "first": 229,
+        "last": 241
+      },
+      "object_type": "metric_experiment",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "metric_defined",
+        "version_reconciled",
+        "preregistered",
+        "running",
+        "frozen",
+        "interpreted",
+        "closed"
+      ],
+      "initial_state": "metric_defined",
+      "transitions": [
+        {
+          "from": "metric_defined",
+          "to": "version_reconciled",
+          "hook": "advance_metric_experiment_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "version_reconciled",
+          "to": "preregistered",
+          "hook": "advance_metric_experiment_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "preregistered",
+          "to": "running",
+          "hook": "advance_metric_experiment_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "running",
+          "to": "frozen",
+          "hook": "advance_metric_experiment_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "frozen",
+          "to": "interpreted",
+          "hook": "advance_metric_experiment_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "interpreted",
+          "to": "closed",
+          "hook": "advance_metric_experiment_6",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AB",
+      "mechanism_ids": {
+        "first": 242,
+        "last": 253
+      },
+      "object_type": "capacity_period",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "planned",
+        "request_open",
+        "approved_or_shadowed",
+        "compensated",
+        "normalized",
+        "burnout_reviewed"
+      ],
+      "initial_state": "planned",
+      "transitions": [
+        {
+          "from": "planned",
+          "to": "request_open",
+          "hook": "advance_capacity_period_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "request_open",
+          "to": "approved_or_shadowed",
+          "hook": "advance_capacity_period_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "approved_or_shadowed",
+          "to": "compensated",
+          "hook": "advance_capacity_period_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "compensated",
+          "to": "normalized",
+          "hook": "advance_capacity_period_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "normalized",
+          "to": "burnout_reviewed",
+          "hook": "advance_capacity_period_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "burnout_reviewed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AC",
+      "mechanism_ids": {
+        "first": 254,
+        "last": 265
+      },
+      "object_type": "external_contract",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "demand_open",
+        "contract_classified",
+        "vendor_selected",
+        "sla_active",
+        "delivered",
+        "converted_or_exited",
+        "knowledge_transferred"
+      ],
+      "initial_state": "demand_open",
+      "transitions": [
+        {
+          "from": "demand_open",
+          "to": "contract_classified",
+          "hook": "advance_external_contract_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "contract_classified",
+          "to": "vendor_selected",
+          "hook": "advance_external_contract_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "vendor_selected",
+          "to": "sla_active",
+          "hook": "advance_external_contract_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "sla_active",
+          "to": "delivered",
+          "hook": "advance_external_contract_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "delivered",
+          "to": "converted_or_exited",
+          "hook": "advance_external_contract_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "converted_or_exited",
+          "to": "knowledge_transferred",
+          "hook": "advance_external_contract_6",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "knowledge_transferred"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AD",
+      "mechanism_ids": {
+        "first": 266,
+        "last": 277
+      },
+      "object_type": "recruitment_funnel",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "requisitioned",
+        "independent_voting",
+        "calibrated",
+        "offer_open",
+        "accepted_or_rejected",
+        "probation",
+        "quality_written_back"
+      ],
+      "initial_state": "requisitioned",
+      "transitions": [
+        {
+          "from": "requisitioned",
+          "to": "independent_voting",
+          "hook": "advance_recruitment_funnel_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "independent_voting",
+          "to": "calibrated",
+          "hook": "advance_recruitment_funnel_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "calibrated",
+          "to": "offer_open",
+          "hook": "advance_recruitment_funnel_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "offer_open",
+          "to": "accepted_or_rejected",
+          "hook": "advance_recruitment_funnel_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "accepted_or_rejected",
+          "to": "probation",
+          "hook": "advance_recruitment_funnel_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "probation",
+          "to": "quality_written_back",
+          "hook": "advance_recruitment_funnel_6",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "quality_written_back"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AE",
+      "mechanism_ids": {
+        "first": 278,
+        "last": 289
+      },
+      "object_type": "pay_statement",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "payable_generated",
+        "due",
+        "paid_or_delayed",
+        "corrected",
+        "appeal_open",
+        "closed"
+      ],
+      "initial_state": "payable_generated",
+      "transitions": [
+        {
+          "from": "payable_generated",
+          "to": "due",
+          "hook": "advance_pay_statement_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "due",
+          "to": "paid_or_delayed",
+          "hook": "advance_pay_statement_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "paid_or_delayed",
+          "to": "corrected",
+          "hook": "advance_pay_statement_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "corrected",
+          "to": "appeal_open",
+          "hook": "advance_pay_statement_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "appeal_open",
+          "to": "closed",
+          "hook": "advance_pay_statement_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AF",
+      "mechanism_ids": {
+        "first": 290,
+        "last": 300
+      },
+      "object_type": "lti_grant",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "nominated",
+        "granted",
+        "cliff",
+        "vesting",
+        "departure_classified",
+        "liquidity_or_buyback"
+      ],
+      "initial_state": "nominated",
+      "transitions": [
+        {
+          "from": "nominated",
+          "to": "granted",
+          "hook": "advance_lti_grant_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "granted",
+          "to": "cliff",
+          "hook": "advance_lti_grant_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "cliff",
+          "to": "vesting",
+          "hook": "advance_lti_grant_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "vesting",
+          "to": "departure_classified",
+          "hook": "advance_lti_grant_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "departure_classified",
+          "to": "liquidity_or_buyback",
+          "hook": "advance_lti_grant_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "liquidity_or_buyback"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AG",
+      "mechanism_ids": {
+        "first": 301,
+        "last": 311
+      },
+      "object_type": "reorg_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "pre_reorg_frozen",
+        "responsibility_split",
+        "quiet_period",
+        "legacy_mapped",
+        "normalized",
+        "closed"
+      ],
+      "initial_state": "pre_reorg_frozen",
+      "transitions": [
+        {
+          "from": "pre_reorg_frozen",
+          "to": "responsibility_split",
+          "hook": "advance_reorg_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "responsibility_split",
+          "to": "quiet_period",
+          "hook": "advance_reorg_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "quiet_period",
+          "to": "legacy_mapped",
+          "hook": "advance_reorg_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "legacy_mapped",
+          "to": "normalized",
+          "hook": "advance_reorg_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "normalized",
+          "to": "closed",
+          "hook": "advance_reorg_case_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "closed"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AH",
+      "mechanism_ids": {
+        "first": 312,
+        "last": 322
+      },
+      "object_type": "internal_market_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "role_posted",
+        "confidential_application",
+        "trial",
+        "released_or_returned",
+        "transferred",
+        "alumni_or_rehired"
+      ],
+      "initial_state": "role_posted",
+      "transitions": [
+        {
+          "from": "role_posted",
+          "to": "confidential_application",
+          "hook": "advance_internal_market_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "confidential_application",
+          "to": "trial",
+          "hook": "advance_internal_market_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "trial",
+          "to": "released_or_returned",
+          "hook": "advance_internal_market_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "released_or_returned",
+          "to": "transferred",
+          "hook": "advance_internal_market_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "transferred",
+          "to": "alumni_or_rehired",
+          "hook": "advance_internal_market_case_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "alumni_or_rehired"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AI",
+      "mechanism_ids": {
+        "first": 323,
+        "last": 333
+      },
+      "object_type": "learning_plan",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "budgeted",
+        "enrolled",
+        "completed",
+        "applied",
+        "outcome_observed",
+        "taught_or_diffused"
+      ],
+      "initial_state": "budgeted",
+      "transitions": [
+        {
+          "from": "budgeted",
+          "to": "enrolled",
+          "hook": "advance_learning_plan_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "enrolled",
+          "to": "completed",
+          "hook": "advance_learning_plan_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "completed",
+          "to": "applied",
+          "hook": "advance_learning_plan_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "applied",
+          "to": "outcome_observed",
+          "hook": "advance_learning_plan_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "outcome_observed",
+          "to": "taught_or_diffused",
+          "hook": "advance_learning_plan_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "taught_or_diffused"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AJ",
+      "mechanism_ids": {
+        "first": 334,
+        "last": 344
+      },
+      "object_type": "demand_item",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "intake",
+        "definition_of_done",
+        "estimated",
+        "wip",
+        "change_control",
+        "delivered",
+        "adopted",
+        "valued"
+      ],
+      "initial_state": "intake",
+      "transitions": [
+        {
+          "from": "intake",
+          "to": "definition_of_done",
+          "hook": "advance_demand_item_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "definition_of_done",
+          "to": "estimated",
+          "hook": "advance_demand_item_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "estimated",
+          "to": "wip",
+          "hook": "advance_demand_item_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "wip",
+          "to": "change_control",
+          "hook": "advance_demand_item_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "change_control",
+          "to": "delivered",
+          "hook": "advance_demand_item_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "delivered",
+          "to": "adopted",
+          "hook": "advance_demand_item_6",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "adopted",
+          "to": "valued",
+          "hook": "advance_demand_item_7",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "valued"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AK",
+      "mechanism_ids": {
+        "first": 345,
+        "last": 354
+      },
+      "object_type": "policy_version",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "draft",
+        "pilot",
+        "effective",
+        "exception_or_audit",
+        "measured",
+        "revised_or_migrated"
+      ],
+      "initial_state": "draft",
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "pilot",
+          "hook": "advance_policy_version_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "pilot",
+          "to": "effective",
+          "hook": "advance_policy_version_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "effective",
+          "to": "exception_or_audit",
+          "hook": "advance_policy_version_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "exception_or_audit",
+          "to": "measured",
+          "hook": "advance_policy_version_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "measured",
+          "to": "revised_or_migrated",
+          "hook": "advance_policy_version_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "revised_or_migrated"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    },
+    {
+      "code": "AL",
+      "mechanism_ids": {
+        "first": 355,
+        "last": 361
+      },
+      "object_type": "constitution_case",
+      "owner_scope": "reviewing_manager",
+      "subject_scope": "assessed_official",
+      "permission_policy": "celestial_manager_reviews_direct_vassal",
+      "allowed_entry_hooks": [
+        "cycle_open",
+        "cohort_locked",
+        "targets_locked",
+        "evidence_open",
+        "evidence_frozen",
+        "pending_grades",
+        "precalibration",
+        "calibration_complete",
+        "scoreboard_published",
+        "result_delivered",
+        "appeal_resolved",
+        "career_resources_settled",
+        "cycle_closed"
+      ],
+      "states": [
+        "multi_cycle_facts",
+        "quota_applied",
+        "overturn_flow",
+        "collective_action",
+        "chartered",
+        "reported"
+      ],
+      "initial_state": "multi_cycle_facts",
+      "transitions": [
+        {
+          "from": "multi_cycle_facts",
+          "to": "quota_applied",
+          "hook": "advance_constitution_case_1",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "quota_applied",
+          "to": "overturn_flow",
+          "hook": "advance_constitution_case_2",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "overturn_flow",
+          "to": "collective_action",
+          "hook": "advance_constitution_case_3",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "collective_action",
+          "to": "chartered",
+          "hook": "advance_constitution_case_4",
+          "actor": "qualified_manager_or_subject_self_response"
+        },
+        {
+          "from": "chartered",
+          "to": "reported",
+          "hook": "advance_constitution_case_5",
+          "actor": "qualified_manager_or_subject_self_response"
+        }
+      ],
+      "terminal_states": [
+        "reported"
+      ],
+      "capacity": {
+        "scope": "owner_cycle_bounded_slots",
+        "max_active_per_subject": 1,
+        "max_active_per_owner": 80,
+        "invariant": "authorized = free + reserved + used + reclaimable"
+      },
+      "cleanup": {
+        "on_terminal": "release_reservations_and_retain_receipts",
+        "stale_deadline": "no_op_with_marker",
+        "guard": [
+          "owner",
+          "cycle_serial",
+          "case_serial",
+          "expected_state"
+        ],
+        "retention_cycles": 3
+      },
+      "prohibited_capabilities": [
+        "religion",
+        "faith",
+        "doctrine",
+        "tenet",
+        "conversion",
+        "reformation",
+        "holy_order"
+      ]
+    }
+  ]
+}

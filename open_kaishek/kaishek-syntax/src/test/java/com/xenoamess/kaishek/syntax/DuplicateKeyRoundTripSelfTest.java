@@ -20,6 +20,10 @@ public final class DuplicateKeyRoundTripSelfTest {
         check(parsed.document().entries().size() == 1, "top-level entry count changed");
         check(parsed.document().children().stream().filter(n -> n.kind() == SyntaxKind.ENTRY).count() == 1,
                 "entry structure was collapsed");
+        BlockNode block = (BlockNode) parsed.document().entries().get(0).value();
+        check(block.entries().size() == 3, "duplicate nested keys were overwritten");
+        check(((BlockNode) block.entries().get(2).value()).entries().size() == 2,
+                "duplicate keys in nested block were overwritten");
         System.out.println("DuplicateKeyRoundTripSelfTest: OK");
     }
 

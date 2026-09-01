@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>com.xenoamess.kaishek</groupId><artifactId>open-kaishek</artifactId><version>0.1.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>kaishek-validator</artifactId>
+  <name>Kaishek Validator</name>
+  <packaging>jar</packaging>
+  <dependencies>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-syntax</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-profile-api</artifactId><version>${project.version}</version></dependency>
+    <!-- The production validator is profile-agnostic; tests exercise the
+         canonical CK3 profile through its dedicated module. -->
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-ck3-11906-profile</artifactId><version>${project.version}</version><scope>test</scope></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-api</artifactId><scope>test</scope></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-engine</artifactId><scope>test</scope></dependency>
+  </dependencies>
+</project>

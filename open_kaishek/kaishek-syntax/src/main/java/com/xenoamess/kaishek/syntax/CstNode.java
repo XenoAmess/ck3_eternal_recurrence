@@ -6,6 +6,11 @@ import java.util.List;
 public interface CstNode {
     SyntaxKind kind();
     SourceSpan span();
+    /**
+     * Return a defensive copy of the original source bytes.  Nodes retain a
+     * private immutable snapshot; callers must not be able to mutate a parse
+     * result by editing an array returned from the tree.
+     */
     byte[] source();
     List<CstNode> children();
 

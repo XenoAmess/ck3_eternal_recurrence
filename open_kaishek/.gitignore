@@ -1,0 +1,9 @@
+# Maven outputs
+**/target/
+
+# Local parser/compiler probes
+.tmp-*/
+
+# IDE metadata
+.idea/
+.vscode/

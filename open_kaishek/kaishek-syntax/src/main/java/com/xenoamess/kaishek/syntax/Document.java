@@ -9,7 +9,7 @@ public final class Document implements CstNode {
     }
     @Override public SyntaxKind kind() { return SyntaxKind.DOCUMENT; }
     @Override public SourceSpan span() { return span; }
-    @Override public byte[] source() { return source; }
+    @Override public byte[] source() { return source.clone(); }
     @Override public List<CstNode> children() { return children; }
     public List<EntryNode> entries() { return children.stream().filter(EntryNode.class::isInstance).map(EntryNode.class::cast).toList(); }
 }

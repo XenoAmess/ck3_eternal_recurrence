@@ -1,0 +1,18 @@
+{
+  "contract": "kaishek-runtime-drawtape-v1",
+  "profile": "ck3-1.19.0.6",
+  "tape": [7, -1, -2147483648, 12],
+  "draws": [
+    {"purpose": "grade", "bound": 5, "result": 2},
+    {"purpose": "route", "bound": 4, "result": 3},
+    {"purpose": "coin", "bound": 3, "result": 1}
+  ],
+  "remaining": 1,
+  "exhaustion": "DrawTapeExhaustedException",
+  "invariants": [
+    "same tape and input produce identical values and records",
+    "all values use floorMod(raw,bound)",
+    "unknown or exhausted draws never fall back to system randomness",
+    "failed bound validation does not consume a tape cell"
+  ]
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>com.xenoamess.kaishek</groupId><artifactId>open-kaishek</artifactId><version>0.1.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>kaishek-cli</artifactId>
+  <name>Kaishek CLI</name>
+  <packaging>jar</packaging>
+  <dependencies>
+    <!-- The CLI uses parser types directly; keep this edge explicit rather
+         than relying on validator's transitive dependency. -->
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-syntax</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-validator</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-diff-contract</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-ck3-11906-profile</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.xenoamess.kaishek</groupId><artifactId>kaishek-zg361-profile</artifactId><version>${project.version}</version></dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId>
+        <configuration><archive><manifest><mainClass>com.xenoamess.kaishek.cli.KaishekCli</mainClass></manifest></archive></configuration>
+      </plugin>
+      <!-- Keep the documented `java -jar` entry point self-contained. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>shade</goal></goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.xenoamess.kaishek.cli.KaishekCli</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

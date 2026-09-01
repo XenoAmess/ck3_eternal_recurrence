@@ -10,6 +10,6 @@ class Node implements CstNode {
     }
     @Override public SyntaxKind kind() { return kind; }
     @Override public SourceSpan span() { return span; }
-    @Override public byte[] source() { return source; }
+    @Override public byte[] source() { return source.clone(); }
     @Override public List<CstNode> children() { return children; }
 }

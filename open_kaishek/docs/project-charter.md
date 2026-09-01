@@ -206,3 +206,32 @@ port 只有三种合法结果：由测试快照注入明确结果、通过 MCP �
 ## 13. 立项决定
 
 项目正式批准进入文档与合同设计阶段。下一步只能启动路线图 Phase 0；本次立项不授权直接开始源码实现，也不改变天朝二期、G2 或现有 MCP 工作的优先级。
+## 14. 2026-09-01 授权开工后的初始状态（历史快照）
+
+项目所有者已明确授权从文档预研进入 Phase 0 实施。该授权只覆盖 M0 所需的合同冻结、schema/接口草案、构建探针和依赖许可证记录，不代表已具备 parser、Runtime 或 CK3 实机能力。
+
+- M0：`in-progress`，尚未完成评审；
+- M1：`not-started`，没有 lossless parser round-trip 证据；
+- M3：`not-started`，没有 strict runtime synthetic 361 证据；
+- CK3 live / product-live：`not-available`，没有 paused live artifact；
+- JDK、构建工具、许可证和 `THIRD_PARTY_LOCK`：`pending-freeze`。
+
+在这些冻结项完成并留下可复核证据前，项目不创建正式发布构建、不复制第三方源码，也不把静态 fixture/ACK 写成 live 或 certified。
+
+## 15. 2026-09-01 Phase 0 静态基线落地
+
+本节 supersede 第 14 节中“尚未创建源码/M1 未开始”的即时状态描述；第 13–14 节仍
+保留为授权决策的历史记录。授权后已建立 `open_kaishek` 多模块纯 Java 基线，并完成
+parser corpus、profile/validator、IR、runtime 合同、361 schema 与 CLI 的离线探针。
+
+- M0：`static-ready`，待正式维护者合同评审；
+- M1：`static-ready`，27 个目标 `.txt/.gui` 文件逐字节 round-trip 通过；
+- M2：`static-ready`，小型 schema/profile fixture 通过；
+- M3：`static-ready`（runtime 原语 + synthetic 014 夹具）；有限状态链已走通，
+  但不代表 CK3 语义；
+- M4/M5：`static-ready`（仅 synthetic 014 子集）/ `not-available`，完整 361
+  exact-build 范围、CK3 paused artifact 和差分认证仍未完成。
+
+命令、版本、hash 和测试结果见 [Phase 0 验证记录](phase0-verification.md)。本节不
+改变“核心纯 Java、Quarkus 外壳、未知语义 fail-closed、CK3 实机为最终权威”的原始
+约束。

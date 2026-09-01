@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.xenoamess.kaishek</groupId>
+  <artifactId>open-kaishek</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>open_kaishek</name>
+  <description>Lossless Paradox script tooling and finite CK3 runtime contracts</description>
+  <url>https://github.com/XenoAmess/ck3_mod_rewrite</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <modules>
+    <module>kaishek-syntax</module>
+    <module>kaishek-profile-api</module>
+    <module>kaishek-ck3-11906-profile</module>
+    <module>kaishek-validator</module>
+    <module>kaishek-ir</module>
+    <module>kaishek-runtime</module>
+    <module>kaishek-diff-contract</module>
+    <module>kaishek-zg361-profile</module>
+    <module>kaishek-cli</module>
+    <module>kaishek-service-quarkus</module>
+  </modules>
+
+  <properties>
+    <!-- The Phase 0 build is deliberately pinned to the installed JDK line. -->
+    <java.version>21</java.version>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.parameters>true</maven.compiler.parameters>
+
+    <!-- Versions are fixed here so a clean/CI build does not float silently. -->
+    <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+    <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+    <!-- Keep Surefire pinned so `mvn -o` remains a supported Phase 0
+         verification path. -->
+    <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
+    <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
+    <!-- Surefire 3.5.4 embeds the JUnit Platform 1.12.1 provider; keep the
+         project BOM on the matching Jupiter 5.12.1 line to avoid mixed
+         launcher/engine class paths in offline and CI runs. -->
+    <junit.version>5.12.1</junit.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Test dependencies are opt-in per module; no Quarkus dependency is managed here. -->
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+            <parameters>${maven.compiler.parameters}</parameters>
+            <!-- Forked javac keeps the compiler isolated from Maven's own
+                 classloader and makes offline reproducibility stable on the
+                 Windows workspace used by this project. -->
+            <fork>true</fork>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resources.plugin.version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+          <dependencies>
+            <!-- Pin the provider so modules containing only dependency-free
+                 smoke mains do not make Maven probe the absent JUnit3
+                 provider in offline builds. -->
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit-platform</artifactId>
+              <version>${maven.surefire.plugin.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>${junit.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <!-- The syntax and CLI smoke classes are dependency-free
+                 executable mains.  They are invoked explicitly by the
+                 verification commands and must not be treated as JUnit
+                 classes merely because their names end in `Test`. -->
+            <excludes>
+              <exclude>**/*SelfTest.java</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
