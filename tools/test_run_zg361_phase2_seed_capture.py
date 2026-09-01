@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
 from types import SimpleNamespace
 import tempfile
 import threading
@@ -1135,6 +1136,67 @@ def test_seed_source_path_must_be_absolute() -> None:
         )
 
 
+def test_static_preflight_runs_optimized_seed_smokes() -> None:
+    """Keep the seed preflight matrix aligned with the official CI smoke."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        scripts = (
+            "validate_static.py",
+            "validate_local.py",
+            "test_zg361_phase2_loader_stage.py",
+            "test_zg361_phase2_seed_bootstrap.py",
+            "test_zg361_phase2_seed_fixture.py",
+            "test_run_zg361_phase2_seed_capture.py",
+        )
+        tools_dir = fixture.clean / "tools"
+        tools_dir.mkdir(parents=True, exist_ok=True)
+        for name in scripts:
+            if name == "validate_local.py":
+                continue
+            (tools_dir / name).write_text("# preflight smoke\n", encoding="utf-8")
+        mod_tools_dir = fixture.clean / "mod_zhongguo_style" / "tools"
+        mod_tools_dir.mkdir(parents=True, exist_ok=True)
+        (mod_tools_dir / "validate_local.py").write_text(
+            "# preflight smoke\n", encoding="utf-8"
+        )
+        fixture.artifacts.mkdir(parents=True, exist_ok=True)
+
+        calls: list[tuple[list[str], dict[str, object]]] = []
+        original_run = capture.subprocess.run
+
+        def fake_run(command: list[str], **kwargs: object) -> SimpleNamespace:
+            calls.append((list(command), dict(kwargs)))
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+
+        capture.subprocess.run = fake_run
+        try:
+            evidence = capture._run_seed_static_preflight(
+                fixture.config(), fixture.artifacts
+            )
+        finally:
+            capture.subprocess.run = original_run
+
+        require(
+            evidence["result"] == "GREEN",
+            "seed preflight smoke matrix unexpectedly failed",
+        )
+        require(len(calls) == 10, "seed preflight command count drifted")
+        optimized = {
+            Path(command[-1]).name
+            for command, _kwargs in calls
+            if "-O" in command
+        }
+        require(
+            optimized == set(scripts[2:]),
+            "optimized seed smoke coverage is incomplete",
+        )
+        require(
+            all(kwargs.get("cwd") == fixture.clean for _command, kwargs in calls),
+            "seed preflight smoke did not use the frozen clean source cwd",
+        )
+
+
 def test_static_contract() -> None:
     source = Path(capture.__file__).read_text(encoding="utf-8")
     for token in (
@@ -1193,6 +1255,7 @@ def main() -> int:
     test_source_zip_mismatch_is_preserved()
     test_bootstrap_runtime_hash_drift_is_preserved()
     test_seed_source_path_must_be_absolute()
+    test_static_preflight_runs_optimized_seed_smokes()
     test_static_contract()
     print("GREEN: reusable phase-two seed capture is MCP-only and bounded")
     return 0

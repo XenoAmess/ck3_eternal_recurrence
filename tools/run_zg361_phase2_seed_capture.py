@@ -1031,14 +1031,29 @@ def _run_seed_static_preflight(
             False,
         ),
         (
+            "seed_loader_test_optimized",
+            config.clean_source / "tools" / "test_zg361_phase2_loader_stage.py",
+            True,
+        ),
+        (
             "seed_bootstrap_test",
             config.clean_source / "tools" / "test_zg361_phase2_seed_bootstrap.py",
             False,
         ),
         (
+            "seed_bootstrap_test_optimized",
+            config.clean_source / "tools" / "test_zg361_phase2_seed_bootstrap.py",
+            True,
+        ),
+        (
             "seed_fixture_test",
             config.clean_source / "tools" / "test_zg361_phase2_seed_fixture.py",
             False,
+        ),
+        (
+            "seed_fixture_test_optimized",
+            config.clean_source / "tools" / "test_zg361_phase2_seed_fixture.py",
+            True,
         ),
         (
             "seed_capture_test",

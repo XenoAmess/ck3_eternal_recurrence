@@ -97,10 +97,18 @@ fixture/loader/helper 的静态验收：
 
 ```powershell
 py tools/test_zg361_phase2_seed_fixture.py
+py -O tools/test_zg361_phase2_seed_fixture.py
 py tools/test_zg361_phase2_loader_stage.py
+py -O tools/test_zg361_phase2_loader_stage.py
 py tools/test_zg361_phase2_seed_bootstrap.py
+py -O tools/test_zg361_phase2_seed_bootstrap.py
 py tools/test_run_zhongguo_promo_capture.py
 ```
+
+这里的普通模式承载 fixture/bootstrap 脚本中的语义断言；对应的 `python -O` 命令只作
+导入与运行时兼容性 smoke，不把断言移除后的结果当成额外业务证明。seed preflight
+会对 loader、bootstrap、fixture 三个脚本分别执行普通与 `-O` 两种模式，再允许进入
+投影检查；任一模式失败都保留静态 RED。
 
 ## attempt 07：不是“再等一会”，而是 loader parser RED
 

@@ -54,11 +54,17 @@ jobs:
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
           python tools/test_zg361_phase2_seed_fixture.py
+          # The normal invocation carries the semantic assertions; -O is an
+          # import/runtime compatibility smoke for the same seed-only tree.
+          python -O tools/test_zg361_phase2_seed_fixture.py
           python tools/test_zg361_phase2_loader_stage.py
           python -O tools/test_zg361_phase2_loader_stage.py
           python tools/test_run_zg361_phase2_seed_capture.py
           python -O tools/test_run_zg361_phase2_seed_capture.py
           python tools/test_zg361_phase2_seed_bootstrap.py
+          # Keep the bootstrap helper's optimized import path covered too;
+          # semantic assertions remain covered by the normal run above.
+          python -O tools/test_zg361_phase2_seed_bootstrap.py
           python tools/test_run_zhongguo_promo_capture.py
           python tools/test_run_zhongguo_workshop_acceptance.py
       - name: Test ZhongGuo 361 release localization
