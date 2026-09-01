@@ -105,6 +105,10 @@ foreach ($PromoCommand in $PromoCommands) {
 
 依赖型命令开始前先解析解释器，不能等 import 失败后静默换解释器：
 
+主仓 `tools/requirements.txt` 与 `tools/requirements-static.txt` 不再间接安装宣传工具链。准备全自动或静态验收环境后，
+必须用同一解释器显式执行 `-m pip install -r tools/requirements-promo-toolchain.txt`；该文件固定独立仓库的 GitHub
+Release wheel。需要源码调试时，再设置 `XAR_PROMO_SOURCE`（或兼容别名）覆盖 wheel。
+
 1. 优先检查当前 worktree 约定的相对 venv（本仓库 runner 通常是 `tools\.venv\Scripts\python.exe`）。
 2. secondary/detached worktree 没有该 venv 时，显式填写已经在主 worktree 验证过的 venv **绝对路径**；禁止直接落回 `py`。
 3. 使用主 venv 时，默认使用已安装的独立 wheel；若需源码调试，把 `XAR_PROMO_SOURCE` 显式设为当前独立

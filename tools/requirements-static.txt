@@ -1,4 +1,2 @@
 Pillow==12.3.0
 edge-tts==7.2.8
-# The reusable promo package is released from its independent repository.
--r requirements-promo-toolchain.txt

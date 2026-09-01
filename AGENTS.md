@@ -140,6 +140,8 @@ py tools/build_vivhite_release.py                           # 生成独立 stagi
 
 ```powershell
 py -m pip install -r tools/requirements-static.txt
+# The external promo wheel is intentionally a separate requirement file.
+py -m pip install -r tools/requirements-promo-toolchain.txt
 py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
 py tools/test_build_vivhite_release.py
@@ -151,6 +153,9 @@ py tools/build_vivhite_release.py --check
 ```
 
 **全自动验收（默认）**：
+
+创建或更新 `tools\.venv` 后，除 `tools/requirements.txt` 外，必须使用同一解释器单独执行
+`-m pip install -r tools/requirements-promo-toolchain.txt`；该依赖不再由通用 requirements 文件间接引入。
 
 ```powershell
 & "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
