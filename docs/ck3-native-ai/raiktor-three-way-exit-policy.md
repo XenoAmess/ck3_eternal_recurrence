@@ -138,3 +138,27 @@ py -O -m unittest ck3_autonomous_player/tests/unit/test_raiktor_three_way_exit_p
 测试覆盖三种稳健赢家、区间重叠、missing provider、stale hash、incomplete domain、owner
 profile identity drift、white-peace budget breach、claim retention 未证明，以及所有 action/live
 字段继续关闭。测试只使用 synthetic fixture，不是 CK3 paused artifact。
+
+## 2026-09-02: post-race MCP-first probe
+
+The previously observed launch-before RED was rerun once after the
+`prepare_profile` Git-status stabilization (`6e27221`). The attempt reached
+profile preparation and cold-checkpoint validation successfully, so the old
+`git status` failure did not recur. It then launched the exact-build,
+non-debug CK3 process, but native readiness never became available within the
+bounded 120-second window. No snapshot, terms query, mutation, or surrender
+action was issued.
+
+Evidence is retained at
+`C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-truce-paused-live-20260902T012000\\report.json`
+(5,920 bytes, SHA-256
+`C9EB36E1861037A7AC25ED16494FCD41EC921851343D531B09FFBAD9A9D313E4`). The
+report binds checkpoint SHA
+`60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164`, driver
+state SHA
+`4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E`, and the
+expected CK3 executable SHA. Preparation and cold validation are present;
+cleanup is proven GREEN; the capability result is **harness/startup RED**, not
+truce capability evidence. The exact-build paused MCP gate and `GEN-034`
+remain unresolved. Do not repeat this same checkpoint attempt until the
+startup/readiness cause is changed or a new frozen artifact is supplied.
