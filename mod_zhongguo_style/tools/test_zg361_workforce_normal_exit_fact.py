@@ -324,6 +324,7 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             "receipt_prior_result_grade value = 1",
             "receipt_prior_result_hash value = var:zg361_workforce_normal_exit_fact_pending_result_hash",
             "receipt_former_slot_id value = var:zg361_workforce_normal_exit_fact_pending_slot_id",
+            "receipt_former_slot_hash value = var:zg361_workforce_normal_exit_fact_pending_slot_hash",
             "receipt_appointment_receipt_id value = var:zg361_workforce_normal_exit_fact_pending_appointment_receipt_id",
             "receipt_displaced_cost_amount value = var:zg361_workforce_normal_exit_fact_pending_cost_amount",
             "receipt_prior_pip_case_id value = var:zg361_workforce_normal_exit_fact_pending_pip_case_id",
@@ -389,6 +390,31 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             f"{generator.REHIRE_CAPTURE_EXIT_EFFECT} = yes",
             capture,
         )
+        self.assertIn(
+            f"{generator.PROBATION_PUBLISH_NORMAL_EXIT_EFFECT} = yes",
+            capture,
+        )
+        self.assertLess(
+            finalize.index("receipt_sealed value = 1"),
+            finalize.index(f"id = {generator.NAMESPACE}.{generator.CAPTURE_EVENT_ID} days = 1"),
+        )
+
+    def test_22b_slot_hash_is_frozen_across_dispatch_and_receipt(self) -> None:
+        begin = block(self.effects, f"{generator.PREFIX}_begin_from_m075_offer_effect")
+        dispatch = block(self.effects, f"{generator.PREFIX}_dispatch_native_revoke_effect")
+        clear = block(self.effects, f"{generator.PREFIX}_clear_pending_effect")
+        self.assertIn("has_variable = zg361_workforce_exit_fact_slot_hash", begin)
+        self.assertIn("zg361_workforce_exit_fact_slot_hash > 0", begin)
+        self.assertIn(
+            "pending_slot_hash value = var:zg361_workforce_exit_fact_slot_hash",
+            begin,
+        )
+        self.assertIn(
+            "zg361_workforce_exit_fact_slot_hash = var:zg361_workforce_normal_exit_fact_pending_slot_hash",
+            dispatch,
+        )
+        self.assertIn("remove_variable = zg361_workforce_normal_exit_fact_pending_slot_hash", clear)
+        self.assertIn("former_slot_hash", generator.RECEIPT_ALWAYS_FIELDS)
 
     def test_23_zh_en_and_seven_placeholders_are_loadable(self) -> None:
         for language in generator.LANGUAGES:

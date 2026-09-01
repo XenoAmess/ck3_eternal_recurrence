@@ -438,7 +438,7 @@ class WorkforceProbationFactTests(unittest.TestCase):
         for key in ("zg361wpf.2.t:0", "zg361wpf.2.desc:0", "zg361wpf.2.a:0"):
             self.assertIn(key, english)
             self.assertIn(key, chinese)
-        self.assertIn("唯一的 PIP 结算", chinese)
+        self.assertIn("PIP、真实正常离职或岗位变更排除项", chinese)
         self.assertIn("consumed the same outcome once", english)
         for language in generator.LANGUAGES[2:]:
             with self.subTest(language=language):
@@ -453,12 +453,14 @@ class WorkforceProbationFactTests(unittest.TestCase):
     def test_22_spec_freezes_scope_idempotency_and_core_wired_boundary(self) -> None:
         for token in (
             "CK3 script static-ready",
-            "B2 PIP settlement 均已接入",
+            "B2 PIP settlement、真实 #075 normal-exit attrition",
             "#274 post-consume D+1 arm",
             "ROOT=this=subject",
             "zg361_workforce_probation_fact_arm_hire_effect",
             "zg361_workforce_probation_fact_publish_from_result_effect",
             "zg361_workforce_probation_fact_publish_from_pip_settlement_effect",
+            "zg361_workforce_probation_fact_publish_from_normal_exit_effect",
+            "zg361_workforce_probation_fact_publish_from_role_failure_effect",
             "ATTRIBUTION_BPS_2",
             "ATTRIBUTION_BPS_3",
             "不传 3333/3333、全零、随机值或从档位反推的伪值",
@@ -468,8 +470,8 @@ class WorkforceProbationFactTests(unittest.TestCase):
             "zg361b2.104",
             "不重新调用 B2 publisher",
             "幂等键",
-            "不发布 quality 3/4",
-            "继续 fail-closed",
+            "quality 3/4 只由上述两个独立 producer 发布",
+            "PIP failure 仍只能是 quality 2",
             "不再读取这 12 个名字",
             "新 loader",
             "MCP-first paused snapshot",
@@ -683,6 +685,92 @@ class WorkforceProbationFactTests(unittest.TestCase):
             "static-ready",
         ):
             self.assertIn(token, self.spec)
+
+    def test_33_attrition_is_exact_normal_exit_not_failed_pip(self) -> None:
+        normal = block(
+            self.effects,
+            "zg361_workforce_probation_fact_publish_from_normal_exit_effect",
+        )
+        for token in (
+            "state = 2",
+            "awaiting_pip = 1",
+            "source_result_grade = 1",
+            "normal_exit_fact_receipt_consumed_operation = 75",
+            "normal_exit_fact_receipt_exit_class = 1",
+            "normal_exit_fact_receipt_actual_exit = 1",
+            "normal_exit_fact_receipt_hc_ledger_settled = 1",
+            "normal_exit_fact_receipt_hc_conservation_verified = 1",
+            "normal_exit_fact_receipt_formal_hc_active_after = 0",
+            "normal_exit_fact_receipt_former_slot_hash > 0",
+            "normal_exit_fact_receipt_prior_result_case = var:zg361_workforce_probation_fact_source_result_case",
+            "source_kind value = 3",
+            "outcome_quality value = 3",
+            "outcome_exclusion_reason value = 0",
+            "zg361_we_formal_hc_active = 0",
+        ):
+            self.assertIn(token, normal)
+        self.assertNotIn("zg361_b2_workforce_pip_consumed = 1", normal)
+        self.assertNotIn("m277", normal)
+
+    def test_34_role_strategy_failure_is_native_invalidation_exclusion(self) -> None:
+        role = block(
+            self.effects,
+            "zg361_workforce_probation_fact_publish_from_role_failure_effect",
+        )
+        for token in (
+            "state = 2",
+            "awaiting_pip = 1",
+            "role_failure_receipt_active = 1",
+            "role_failure_receipt_sealed = 1",
+            "role_failure_receipt_consumed = 0",
+            "role_failure_receipt_native_end_reason = 2",
+            "role_failure_receipt_hc_conservation_verified = 1",
+            "role_failure_receipt_formal_hc_active = 1",
+            "source_kind value = 4",
+            "outcome_quality value = 4",
+            "outcome_exclusion_reason value = 1",
+            "zg361_we_formal_hc_active = 1",
+            "zg361_we_formal_hc_active_case = var:zg361_workforce_probation_fact_hire_case",
+        ):
+            self.assertIn(token, role)
+        self.assertNotIn("actual_exit value = 1", role)
+        self.assertNotIn("change_variable = { name = zg361_ch_hc_", role)
+
+    def test_35_canonical_quality_domain_and_external_provenance_are_typed(self) -> None:
+        publish = block(
+            self.effects,
+            "zg361_workforce_probation_fact_publish_canonical_effect",
+        )
+        materialize = block(
+            self.effects,
+            "zg361_workforce_probation_fact_materialize_and_consume_effect",
+        )
+        for quality in (1, 2, 3, 4):
+            self.assertIn(f"outcome_quality = {quality}", publish)
+        for source_kind in (1, 2, 3, 4):
+            self.assertIn(f"source_kind = {source_kind}", publish)
+        for field in (
+            "source_external_owner",
+            "source_external_subject",
+            "source_external_cycle",
+            "source_external_case",
+            "source_external_receipt_id",
+            "source_external_receipt_hash",
+            "source_external_former_slot_id",
+            "source_external_slot_hash",
+            "source_external_appointment_receipt_id",
+            "source_external_appointment_receipt_hash",
+            "source_external_native_end_reason",
+            "source_external_hc_conservation_verified",
+        ):
+            self.assertIn(field, generator.LEDGER_ENTRY_FIELDS)
+            self.assertIn(field, publish)
+        self.assertIn("outcome_quality = 3", materialize)
+        self.assertIn("zg361_we_formal_hc_active = 0", materialize)
+        self.assertIn("outcome_quality = 4", materialize)
+        self.assertIn("zg361_we_formal_hc_active = 1", materialize)
+        self.assertIn("normal_exit_fact_receipt_hc_conservation_verified = 1", materialize)
+        self.assertIn("add = var:zg361_workforce_probation_fact_source_external_receipt_hash", publish)
 
 
 if __name__ == "__main__":

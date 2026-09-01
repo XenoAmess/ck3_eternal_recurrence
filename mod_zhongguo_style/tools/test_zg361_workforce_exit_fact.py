@@ -372,6 +372,67 @@ class WorkforceExitFactTests(unittest.TestCase):
         ):
             self.assertIn(needle, callback)
 
+    def test_native_invalidation_seals_distinct_role_failure_receipt(self) -> None:
+        callback = block(self.effects, f"{gen.PREFIX}_on_native_slot_ended_effect")
+        capture = block(self.effects, f"{gen.PREFIX}_capture_role_failure_effect")
+        self.assertLess(
+            callback.index(f"{gen.PREFIX}_capture_role_failure_effect = yes"),
+            callback.index(f"set_variable = {{ name = {gen.PREFIX}_slot_active value = 0 }}"),
+        )
+        for needle in (
+            "$END_REASON$ = 2",
+            f"var:{gen.PREFIX}_slot_active = 1",
+            f"var:{gen.PREFIX}_slot_owner = scope:liege",
+            f"var:{gen.PREFIX}_slot_subject = this",
+            "zg361_workforce_probation_fact_state = 2",
+            "zg361_workforce_probation_fact_awaiting_pip = 1",
+            "zg361_we_m269_outcome_pending = 1",
+            "zg361_we_m269_outcome_settled = 0",
+            "zg361_we_formal_hc_active = 1",
+            "role_failure_receipt_native_end_reason value = 2",
+            "role_failure_receipt_exclusion_reason value = 1",
+            "role_failure_receipt_former_slot_hash value = var:",
+            "role_failure_receipt_appointment_receipt_hash value = var:",
+            "role_failure_receipt_hc_authorized value = var:zg361_ch_hc_authorized",
+            "role_failure_receipt_hc_occupied value = var:zg361_ch_hc_occupied",
+            "role_failure_receipt_hc_conservation_verified value = 1",
+        ):
+            self.assertIn(needle, callback if needle == "$END_REASON$ = 2" else capture)
+        sealed = f"set_variable = {{ name = {gen.PREFIX}_role_failure_receipt_sealed value = 1 }}"
+        self.assertGreater(capture.rindex(sealed), capture.rindex("role_failure_receipt_hash value"))
+        self.assertGreater(capture.rindex(sealed), capture.rindex("role_failure_receipt_hc_conservation_verified value"))
+        self.assertIn("zg361_ch_hc_authorized = {", capture)
+        self.assertIn("add = var:zg361_ch_hc_reclaimed", capture)
+        self.assertIn(
+            f"id = {gen.NAMESPACE}.{gen.ROLE_FAILURE_PUBLISH_EVENT_ID} days = 1",
+            capture,
+        )
+        self.assertNotIn("receipt_actual_exit", capture)
+        self.assertNotIn("change_variable = { name = zg361_ch_hc_", capture)
+
+    def test_role_failure_publish_and_verify_cross_two_hidden_frames(self) -> None:
+        publish = block(self.events, f"{gen.NAMESPACE}.{gen.ROLE_FAILURE_PUBLISH_EVENT_ID}")
+        verify_event = block(self.events, f"{gen.NAMESPACE}.{gen.ROLE_FAILURE_VERIFY_EVENT_ID}")
+        verify = block(self.effects, f"{gen.PREFIX}_verify_role_failure_publish_effect")
+        self.assertIn("hidden = yes", publish)
+        self.assertIn(f"{gen.PROBATION_ROLE_FAILURE_EFFECT} = yes", publish)
+        self.assertIn(
+            f"id = {gen.NAMESPACE}.{gen.ROLE_FAILURE_VERIFY_EVENT_ID} days = 1",
+            publish,
+        )
+        self.assertIn("hidden = yes", verify_event)
+        self.assertIn(f"{gen.PREFIX}_verify_role_failure_publish_effect = yes", verify_event)
+        for needle in (
+            "probation_fact_source_kind = 4",
+            "probation_fact_outcome_quality = 4",
+            "probation_fact_outcome_exclusion_reason = 1",
+            "probation_fact_source_external_receipt_id = var:",
+            "probation_fact_source_external_receipt_hash = var:",
+            "role_failure_receipt_published value = 1",
+            "role_failure_receipt_consumed value = 1",
+        ):
+            self.assertIn(needle, verify)
+
     def test_hours_and_cost_are_derived_from_real_ledgers(self) -> None:
         request = block(self.effects, f"{gen.PREFIX}_request_closed_pip_exit_effect")
         self.assertIn("zg361_we_hours_output >= 0", request)
@@ -592,6 +653,8 @@ class WorkforceExitFactTests(unittest.TestCase):
             gen.PUBLISH_EVENT_ID: f"{gen.PREFIX}_publish_to_workforce_m277_effect = yes",
             gen.PUBLISH_VERIFY_EVENT_ID: f"{gen.PREFIX}_verify_publish_effect = yes",
             gen.CLEANUP_REVOKE_EVENT_ID: f"{gen.PREFIX}_dispatch_cleanup_revoke_effect = yes",
+            gen.ROLE_FAILURE_PUBLISH_EVENT_ID: gen.PROBATION_ROLE_FAILURE_EFFECT + " = yes",
+            gen.ROLE_FAILURE_VERIFY_EVENT_ID: f"{gen.PREFIX}_verify_role_failure_publish_effect = yes",
         }
         for event_id, call in expectations.items():
             event = block(self.events, f"{gen.NAMESPACE}.{event_id}")

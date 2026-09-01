@@ -4568,6 +4568,18 @@ def render_m269_attribution_consumer() -> str:
 \t\t\tvar:{PREFIX}_m269_outcome_evidence_count = var:zg361_workforce_probation_fact_outcome_evidence_count
 \t\t\tvar:{PREFIX}_m269_final_quality = var:zg361_workforce_probation_fact_outcome_quality
 \t\t\tvar:{PREFIX}_m269_outcome_provenance_locked = 1
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{ OR = {{ var:{PREFIX}_m269_final_quality = 3 var:{PREFIX}_m269_final_quality = 4 }} }}
+\t\t\t\thas_variable = {PREFIX}_m269_outcome_source_kind
+\t\t\t\thas_variable = {PREFIX}_m269_outcome_exclusion_reason
+\t\t\t\thas_variable = {PREFIX}_m269_external_source_receipt_id
+\t\t\t\thas_variable = {PREFIX}_m269_external_source_receipt_hash
+\t\t\t\tvar:{PREFIX}_m269_outcome_source_kind = var:zg361_workforce_probation_fact_source_kind
+\t\t\t\tvar:{PREFIX}_m269_outcome_exclusion_reason = var:zg361_workforce_probation_fact_outcome_exclusion_reason
+\t\t\t\tvar:{PREFIX}_m269_external_source_receipt_id = var:zg361_workforce_probation_fact_source_external_receipt_id
+\t\t\t\tvar:{PREFIX}_m269_external_source_receipt_hash = var:zg361_workforce_probation_fact_source_external_receipt_hash
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = yes }}
 \t\t\thas_variable = {PREFIX}_m269_attribution_signature_receipt_id
 \t\t\thas_variable = {PREFIX}_m269_attribution_signature_receipt_hash
 \t\t\tvar:{PREFIX}_m269_attribution_signature_receipt_id = var:zg361_workforce_attribution_fact_receipt_id
@@ -4647,6 +4659,8 @@ def render_m269_attribution_consumer() -> str:
 \t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_hash
 \t\t\thas_variable = zg361_workforce_probation_fact_outcome_evidence_count
 \t\t\thas_variable = zg361_workforce_probation_fact_outcome_observed_cycle
+\t\t\thas_variable = zg361_workforce_probation_fact_outcome_exclusion_reason
+\t\t\thas_variable = zg361_workforce_probation_fact_source_kind
 \t\t\thas_variable = zg361_workforce_probation_fact_outcome_dimension_1
 \t\t\thas_variable = zg361_workforce_probation_fact_outcome_dimension_2
 \t\t\thas_variable = zg361_workforce_probation_fact_outcome_dimension_3
@@ -4663,7 +4677,48 @@ def render_m269_attribution_consumer() -> str:
 \t\t\tvar:zg361_workforce_probation_fact_hire_cycle = var:{PREFIX}_m269_write_cycle
 \t\t\tvar:zg361_workforce_probation_fact_hire_case = var:{PREFIX}_m269_write_case
 \t\t\tvar:zg361_workforce_probation_fact_outcome_id > 0
-\t\t\tOR = {{ var:zg361_workforce_probation_fact_outcome_quality = 1 var:zg361_workforce_probation_fact_outcome_quality = 2 }}
+\t\t\tOR = {{
+\t\t\t\tAND = {{ var:zg361_workforce_probation_fact_source_kind = 1 var:zg361_workforce_probation_fact_outcome_quality = 1 var:zg361_workforce_probation_fact_outcome_exclusion_reason = 0 }}
+\t\t\t\tAND = {{ var:zg361_workforce_probation_fact_source_kind = 2 OR = {{ var:zg361_workforce_probation_fact_outcome_quality = 1 var:zg361_workforce_probation_fact_outcome_quality = 2 }} var:zg361_workforce_probation_fact_outcome_exclusion_reason = 0 }}
+\t\t\t\tAND = {{
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_kind = 3
+\t\t\t\t\tvar:zg361_workforce_probation_fact_outcome_quality = 3
+\t\t\t\t\tvar:zg361_workforce_probation_fact_outcome_exclusion_reason = 0
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_owner = var:{PREFIX}_m269_write_owner
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_subject = this
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_receipt_id = var:zg361_workforce_normal_exit_fact_receipt_id
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_receipt_hash = var:zg361_workforce_normal_exit_fact_receipt_hash
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_native_end_reason = 1
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_hc_conservation_verified = 1
+\t\t\t\t\tvar:zg361_workforce_normal_exit_fact_receipt_active = 1
+\t\t\t\t\tvar:zg361_workforce_normal_exit_fact_receipt_sealed = 1
+\t\t\t\t\tvar:zg361_workforce_normal_exit_fact_receipt_consumed = 1
+\t\t\t\t\tvar:zg361_workforce_normal_exit_fact_receipt_actual_exit = 1
+\t\t\t\t\tvar:zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified = 1
+\t\t\t\t\tvar:zg361_workforce_normal_exit_fact_receipt_formal_hc_active_after = 0
+\t\t\t\t}}
+\t\t\t\tAND = {{
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_kind = 4
+\t\t\t\t\tvar:zg361_workforce_probation_fact_outcome_quality = 4
+\t\t\t\t\tvar:zg361_workforce_probation_fact_outcome_exclusion_reason = 1
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_owner = var:{PREFIX}_m269_write_owner
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_subject = this
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_receipt_id = var:zg361_workforce_exit_fact_role_failure_receipt_id
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_receipt_hash = var:zg361_workforce_exit_fact_role_failure_receipt_hash
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_native_end_reason = 2
+\t\t\t\t\tvar:zg361_workforce_probation_fact_source_external_hc_conservation_verified = 1
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_formal_hc_active = 1
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_conservation_verified = 1
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_authorized = var:zg361_ch_hc_authorized
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_available = var:zg361_ch_hc_available
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_reserved = var:zg361_ch_hc_reserved
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_occupied = var:zg361_ch_hc_occupied
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_frozen = var:zg361_ch_hc_frozen
+\t\t\t\t\tvar:zg361_workforce_exit_fact_role_failure_receipt_hc_reclaimed = var:zg361_ch_hc_reclaimed
+\t\t\t\t}}
+\t\t\t}}
 \t\t\tvar:zg361_workforce_probation_fact_outcome_evidence_count >= 1
 \t\t\tvar:zg361_workforce_probation_fact_outcome_observed_cycle > var:{PREFIX}_m269_write_cycle
 \t\t\tvar:zg361_workforce_probation_fact_outcome_dimension_1 = var:zg361_workforce_attribution_fact_receipt_evidence_1
@@ -4678,8 +4733,17 @@ def render_m269_attribution_consumer() -> str:
 \t\t\tvar:{PREFIX}_m274_hired = 1
 \t\t\tvar:{PREFIX}_m274_hire_case = var:{PREFIX}_m269_write_case
 \t\t\thas_variable = {PREFIX}_formal_hc_active
-\t\t\tvar:{PREFIX}_formal_hc_active = 1
-\t\t\tvar:{PREFIX}_formal_hc_active_case = var:{PREFIX}_m269_write_case
+\t\t\tOR = {{
+\t\t\t\tAND = {{
+\t\t\t\t\tvar:zg361_workforce_probation_fact_outcome_quality = 3
+\t\t\t\t\tvar:{PREFIX}_formal_hc_active = 0
+\t\t\t\t}}
+\t\t\t\tAND = {{
+\t\t\t\t\tOR = {{ var:zg361_workforce_probation_fact_outcome_quality = 1 var:zg361_workforce_probation_fact_outcome_quality = 2 var:zg361_workforce_probation_fact_outcome_quality = 4 }}
+\t\t\t\t\tvar:{PREFIX}_formal_hc_active = 1
+\t\t\t\t\tvar:{PREFIX}_formal_hc_active_case = var:{PREFIX}_m269_write_case
+\t\t\t\t}}
+\t\t\t}}
 \t\t}}
 \t\tset_variable = {{ name = {PREFIX}_m269_original_votes_preserved value = 1 }}
 \t\tset_variable = {{ name = {PREFIX}_m269_last_outcome_id value = var:zg361_workforce_probation_fact_outcome_id }}
@@ -4690,6 +4754,14 @@ def render_m269_attribution_consumer() -> str:
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_evidence_count value = var:zg361_workforce_probation_fact_outcome_evidence_count }}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_observed_cycle value = var:zg361_workforce_probation_fact_outcome_observed_cycle }}
 \t\tset_variable = {{ name = {PREFIX}_m269_final_quality value = var:zg361_workforce_probation_fact_outcome_quality }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_source_kind value = var:zg361_workforce_probation_fact_source_kind }}
+\t\tset_variable = {{ name = {PREFIX}_m269_outcome_exclusion_reason value = var:zg361_workforce_probation_fact_outcome_exclusion_reason }}
+\t\tif = {{
+\t\t\tlimit = {{ OR = {{ var:zg361_workforce_probation_fact_source_kind = 3 var:zg361_workforce_probation_fact_source_kind = 4 }} }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_external_source_receipt_id value = var:zg361_workforce_probation_fact_source_external_receipt_id }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_external_source_receipt_hash value = var:zg361_workforce_probation_fact_source_external_receipt_hash }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_external_source_native_end_reason value = var:zg361_workforce_probation_fact_source_external_native_end_reason }}
+\t\t}}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_provenance_locked value = 1 }}
 \t\tset_variable = {{ name = {PREFIX}_m269_attribution_signature_receipt_id value = var:zg361_workforce_attribution_fact_receipt_id }}
 \t\tset_variable = {{ name = {PREFIX}_m269_attribution_signature_receipt_hash value = var:zg361_workforce_attribution_fact_receipt_hash }}
@@ -4705,7 +4777,6 @@ def render_m269_attribution_consumer() -> str:
 \t\tset_variable = {{ name = {PREFIX}_m269_signed_bps_3 value = var:zg361_workforce_attribution_fact_attribution_bps_3 }}
 \t\tset_variable = {{ name = {PREFIX}_m269_probation_receipt_id value = var:zg361_workforce_probation_fact_attribution_receipt_id }}
 \t\tset_variable = {{ name = {PREFIX}_m269_probation_receipt_hash value = var:zg361_workforce_probation_fact_attribution_receipt_hash }}
-\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 10000 }}
 \t\tif = {{
 \t\t\tlimit = {{ var:{PREFIX}_m269_receipt_choice = 1 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_1 value = var:zg361_workforce_attribution_fact_receipt_evidence_1 }}
@@ -4714,14 +4785,31 @@ def render_m269_attribution_consumer() -> str:
 \t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_1 value = var:zg361_workforce_attribution_fact_receipt_interviewer_1 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_2 value = var:zg361_workforce_attribution_fact_receipt_interviewer_2 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m269_responsible_interviewer_3 value = var:zg361_workforce_attribution_fact_receipt_interviewer_3 }}
-\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = var:zg361_workforce_attribution_fact_attribution_bps_1 }}
-\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_2 value = var:zg361_workforce_attribution_fact_attribution_bps_2 }}
-\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_3 value = var:zg361_workforce_attribution_fact_attribution_bps_3 }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:zg361_workforce_probation_fact_outcome_quality = 4 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = 0 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_2 value = 0 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_3 value = 0 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 0 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_exclusion_reason value = var:zg361_workforce_probation_fact_outcome_exclusion_reason }}
+\t\t\t}}
+\t\t\telse = {{
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_1 value = var:zg361_workforce_attribution_fact_attribution_bps_1 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_2 value = var:zg361_workforce_attribution_fact_attribution_bps_2 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_dimension_bps_3 value = var:zg361_workforce_attribution_fact_attribution_bps_3 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 10000 }}
+\t\t\t}}
 \t\t}}
 \t\telse = {{
 \t\t\tset_variable = {{ name = {PREFIX}_m269_blamed_final_approver value = var:{PREFIX}_m272_offer_approver }}
 \t\t\tset_variable = {{ name = {PREFIX}_m269_approver_blame_bps value = 10000 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m269_premature_approver_blame value = 1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m269_attribution_total_bps value = 10000 }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:zg361_workforce_probation_fact_outcome_quality = 4 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_premature_blame_ignored_exclusion value = 1 }}
+\t\t\t\tset_variable = {{ name = {PREFIX}_m269_exclusion_reason value = var:zg361_workforce_probation_fact_outcome_exclusion_reason }}
+\t\t\t}}
 \t\t}}
 \t\tif = {{
 \t\t\tlimit = {{ var:zg361_workforce_probation_fact_outcome_quality = 1 has_variable = {PREFIX}_m271_reward_due_after_probation var:{PREFIX}_m271_reward_due_after_probation = 1 has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 has_variable = {PREFIX}_m271_referrer }}

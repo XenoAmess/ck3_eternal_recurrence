@@ -13,7 +13,7 @@
 
 公开 `request_closed_pip_exit_effect` 只接收 `TICKET_OWNER/TICKET_SUBJECT/TICKET_CYCLE/TICKET_CASE`。它要求同一 career slot 仍被 subject 持有、formal HC 仍 active/occupied、#269 outcome 已结算，并 join B2 已提交但未消费的一格 PIP closed source。它只冻结完整 intent 与 provenance；D+1 dispatch 重验同一 slot/B2/HC 后，才对长期 carrier 执行一次原生 `revoke_court_position`。callback 读取的是前一事件已提交的 pending/authorization，D+1 audit 再要求 dispatch 位、fresh revoked callback 和岗位确已消失，整条链没有 same-effect read-after-write 充当成功证据。
 
-court-position 三类结束 callback 都会被观察：revoked=`1`、invalidated=`2`、vacated=`3`。只有本次 exact intent 之后的新 revoked callback（reason=1），再加 D+1 `NOT has_court_position`，才能 seal exit。旧 #274 callback、B2 ACK、调用方 bool、自然 invalidation/vacate、仅“岗位变量被清零”都不能封 receipt。
+court-position 三类结束 callback 都会被观察：revoked=`1`、invalidated=`2`、vacated=`3`。只有本次 exact intent 之后的新 revoked callback（reason=1），再加 D+1 `NOT has_court_position`，才能 seal #277 exit。旧 #274 callback、B2 ACK、调用方 bool、自然 invalidation/vacate、仅“岗位变量被清零”都不能封 #277 receipt。另有一个严格分离的 role-failure receipt：仅当 still-alive subject 的 exact long-lived slot 在未请求 exit/normal-exit/cleanup 时发生 native invalidation=`2`，且同一 3.25 probation、#274 appointment、#269 pending、formal-HC tuple 与六分区守恒全吻合，才会在 callback 清空 active 前冻结 slot/hash/appointment/review-cycle 及 HC partition provenance。它在 D+1 调用 probation canonical quality=4 exclusion hook，再在后一日核 exact publish 后消费；它不释放 HC、绝不冒充实际离职。
 
 ## 3. 五个 #277 字段及其 provenance
 
@@ -44,4 +44,4 @@ zg361_workforce_exit_fact_publish_to_workforce_m277_effect = yes
 zg361_workforce_exit_fact_consume_after_m277_effect = { TICKET_OWNER TICKET_SUBJECT TICKET_CYCLE TICKET_CASE }
 ```
 
-当前 core 已在 #274 exact post-consume seam 调用 arm；request/consume 与 #277 玩家事件等待 publish ACK 的链仍待另一工作包闭合，所以本包仍是 `core-wired / static-ready / not live`。正常离职对同一 carrier 的合法撤任会由 exact normal-exit authorization branch 识别，不再同时写 unexpected end；它仍不能冒充失败 PIP #277。L0 只证明 deterministic generation、BOM、九语结构、真实 native action/callback 门、D+1 分阶段、不可 caller 伪造、B2/HC 守恒与详细 receipt 合同；loader、存读档、paused MCP snapshot 与多周期实机仍待批量验收。
+当前 core 已在 #274 exact post-consume seam 调用 arm；request/consume 与 #277 玩家事件等待 publish ACK 的链仍待另一工作包闭合，所以本包仍是 `core-wired / static-ready / not live`。正常离职对同一 carrier 的合法撤任会由 exact normal-exit authorization branch 识别，不再同时写 unexpected end；它仍不能冒充失败 PIP #277。role/strategy invalidation 则只发布 quality=4 的 exclusion，不改 gold/hours/HC。L0 只证明 deterministic generation、BOM、九语结构、真实 native action/callback 门、D+1 分阶段、不可 caller 伪造、B2/HC 守恒与详细 receipt 合同；loader、存读档、paused MCP snapshot 与多周期实机仍待批量验收。

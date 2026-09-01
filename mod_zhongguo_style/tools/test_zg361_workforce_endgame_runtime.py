@@ -888,6 +888,38 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("m269_original_votes_preserved value = 1", future)
         self.assertEqual(1, future.count("m269_outcome_pending value = 0"))
 
+    def test_34a_269_consumes_canonical_attrition_and_role_exclusion(self) -> None:
+        future = block(self.effects, "zg361_we_m269_future_consume_effect")
+        for token in (
+            "probation_fact_source_kind = 3",
+            "probation_fact_outcome_quality = 3",
+            "probation_fact_outcome_exclusion_reason = 0",
+            "normal_exit_fact_receipt_actual_exit = 1",
+            "normal_exit_fact_receipt_hc_conservation_verified = 1",
+            "normal_exit_fact_receipt_formal_hc_active_after = 0",
+            "zg361_we_formal_hc_active = 0",
+            "probation_fact_source_kind = 4",
+            "probation_fact_outcome_quality = 4",
+            "probation_fact_outcome_exclusion_reason = 1",
+            "exit_fact_role_failure_receipt_sealed = 1",
+            "exit_fact_role_failure_receipt_formal_hc_active = 1",
+            "zg361_we_formal_hc_active = 1",
+            "m269_outcome_source_kind value = var:zg361_workforce_probation_fact_source_kind",
+            "m269_external_source_receipt_id value = var:zg361_workforce_probation_fact_source_external_receipt_id",
+            "m269_external_source_receipt_hash value = var:zg361_workforce_probation_fact_source_external_receipt_hash",
+        ):
+            self.assertIn(token, future)
+        self.assertIn("m269_dimension_bps_1 value = 0", future)
+        self.assertIn("m269_dimension_bps_2 value = 0", future)
+        self.assertIn("m269_dimension_bps_3 value = 0", future)
+        self.assertIn("m269_attribution_total_bps value = 0", future)
+        self.assertIn(
+            "m269_exclusion_reason value = var:zg361_workforce_probation_fact_outcome_exclusion_reason",
+            future,
+        )
+        self.assertIn("m269_premature_blame_ignored_exclusion value = 1", future)
+        self.assertNotIn("change_variable = { name = zg361_ch_hc_", future)
+
     def test_35_referral_reward_is_conditional_and_consumed_by_outcome(self) -> None:
         referral = block(self.effects, "zg361_we_m271_route_a_effect")
         undisclosed = block(self.effects, "zg361_we_m271_route_b_effect")

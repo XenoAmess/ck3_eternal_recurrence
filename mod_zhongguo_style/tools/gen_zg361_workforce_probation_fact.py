@@ -81,6 +81,21 @@ LEDGER_ENTRY_FIELDS = (
     "source_pip_case_receipt_hash",
     "source_pip_closure_receipt_id",
     "source_pip_closure_receipt_hash",
+    "source_external_owner",
+    "source_external_subject",
+    "source_external_cycle",
+    "source_external_case",
+    "source_external_state",
+    "source_external_receipt_id",
+    "source_external_receipt_hash",
+    "source_external_reason",
+    "source_external_former_slot_id",
+    "source_external_slot_hash",
+    "source_external_position_type_id",
+    "source_external_appointment_receipt_id",
+    "source_external_appointment_receipt_hash",
+    "source_external_native_end_reason",
+    "source_external_hc_conservation_verified",
     "outcome_quality",
     "outcome_evidence_count",
     "outcome_evidence_id",
@@ -130,6 +145,9 @@ LEDGER_TOMBSTONE_REQUIRED_FIELDS = (
     "source_result_reason",
     "source_result_kpi",
     "source_result_rank",
+    "source_kind",
+    "outcome_quality",
+    "outcome_exclusion_reason",
     "outcome_id",
     "outcome_receipt_hash",
     "outcome_evidence_id",
@@ -320,6 +338,36 @@ def _ledger_current_tombstone_guard(indent: int) -> str:
     ]
     for field in LEDGER_TOMBSTONE_REQUIRED_FIELDS:
         lines.append(f"has_variable = {PREFIX}_{field}")
+    lines.extend(
+        (
+            "trigger_if = {",
+            f"    limit = {{ OR = {{ var:{PREFIX}_source_kind = 3 var:{PREFIX}_source_kind = 4 }} }}",
+            *(
+                f"    has_variable = {PREFIX}_{field}"
+                for field in (
+                    "source_external_owner",
+                    "source_external_subject",
+                    "source_external_cycle",
+                    "source_external_case",
+                    "source_external_state",
+                    "source_external_receipt_id",
+                    "source_external_receipt_hash",
+                    "source_external_reason",
+                    "source_external_former_slot_id",
+                    "source_external_slot_hash",
+                    "source_external_position_type_id",
+                    "source_external_appointment_receipt_id",
+                    "source_external_appointment_receipt_hash",
+                    "source_external_native_end_reason",
+                    "source_external_hc_conservation_verified",
+                )
+            ),
+            "}",
+            "trigger_else = {",
+            f"    OR = {{ var:{PREFIX}_source_kind = 1 var:{PREFIX}_source_kind = 2 }}",
+            "}",
+        )
+    )
     return "\n".join(" " * indent + line for line in lines)
 
 
@@ -420,7 +468,7 @@ def render_effects() -> bytes:
     fragments.update(_ledger_fragments())
     template = r'''
     # ZhongGuo 361 Workforce probation/PIP outcome fact producer for #269.
-    # Scope ABI for all three public hooks:
+    # Scope ABI for all public hooks:
     #   current scope (this) = the real hired subject; $OWNER$ = the real #274 owner.
     #   ROOT is deliberately ignored and conveys no authority or identity.
     # Result hook additionally requires actual attribution bps from the caller;
@@ -1206,6 +1254,316 @@ def render_effects() -> bytes:
         }
     }
 
+    # Pending hook 3.  A funded #075 route-A normal exit publishes attrition
+    # only from its already sealed, consumed and HC-conserved receipt.  The
+    # original 3.25 result and signed attribution tuple remain immutable.
+    @P@_publish_from_normal_exit_effect = {
+        remove_variable = @P@_adapter_status
+        remove_variable = @P@_red_code
+        var:zg361_workforce_normal_exit_fact_receipt_owner = { save_temporary_scope_as = @P@_normal_exit_owner_scope }
+        if = {
+            limit = {
+                var:@P@_state >= 3
+                var:@P@_source_kind = 3
+                var:@P@_source_external_receipt_id = var:zg361_workforce_normal_exit_fact_receipt_id
+                var:@P@_source_external_receipt_hash = var:zg361_workforce_normal_exit_fact_receipt_hash
+            }
+            set_variable = { name = @P@_adapter_status value = 2 }
+            if = { limit = { var:@P@_state = 3 } @P@_schedule_consume_effect = yes }
+            else = { set_variable = { name = @P@_adapter_status value = 4 } }
+        }
+        else_if = {
+            limit = {
+                var:@P@_state = 2
+                var:@P@_awaiting_pip = 1
+                var:@P@_owner = scope:@P@_normal_exit_owner_scope
+                var:@P@_subject = this
+                var:@P@_source_result_grade = 1
+                var:@P@_source_result_owner = scope:@P@_normal_exit_owner_scope
+                var:@P@_source_result_subject = this
+                has_variable = zg361_workforce_attribution_fact_signature_committed
+                has_variable = zg361_workforce_attribution_fact_state
+                has_variable = zg361_workforce_attribution_fact_consumed
+                has_variable = zg361_workforce_attribution_fact_owner
+                has_variable = zg361_workforce_attribution_fact_subject
+                has_variable = zg361_workforce_attribution_fact_cycle
+                has_variable = zg361_workforce_attribution_fact_case
+                has_variable = zg361_workforce_attribution_fact_receipt_id
+                has_variable = zg361_workforce_attribution_fact_receipt_hash
+                has_variable = zg361_workforce_attribution_fact_receipt_evidence_1
+                has_variable = zg361_workforce_attribution_fact_receipt_evidence_2
+                has_variable = zg361_workforce_attribution_fact_receipt_evidence_3
+                has_variable = zg361_workforce_attribution_fact_attribution_bps_1
+                has_variable = zg361_workforce_attribution_fact_attribution_bps_2
+                has_variable = zg361_workforce_attribution_fact_attribution_bps_3
+                var:zg361_workforce_attribution_fact_signature_committed = 1
+                var:zg361_workforce_attribution_fact_state = 3
+                var:zg361_workforce_attribution_fact_consumed = 1
+                var:zg361_workforce_attribution_fact_owner = scope:@P@_normal_exit_owner_scope
+                var:zg361_workforce_attribution_fact_subject = this
+                var:zg361_workforce_attribution_fact_cycle = var:@P@_hire_cycle
+                var:zg361_workforce_attribution_fact_case = var:@P@_hire_case
+                var:zg361_workforce_attribution_fact_receipt_id > 0
+                var:zg361_workforce_attribution_fact_receipt_hash > 0
+                var:zg361_workforce_attribution_fact_receipt_evidence_1 = var:@P@_outcome_dimension_1
+                var:zg361_workforce_attribution_fact_receipt_evidence_2 = var:@P@_outcome_dimension_2
+                var:zg361_workforce_attribution_fact_receipt_evidence_3 = var:@P@_outcome_dimension_3
+                var:zg361_workforce_attribution_fact_attribution_bps_1 = var:@P@_attribution_bps_1
+                var:zg361_workforce_attribution_fact_attribution_bps_2 = var:@P@_attribution_bps_2
+                var:zg361_workforce_attribution_fact_attribution_bps_3 = var:@P@_attribution_bps_3
+                has_variable = zg361_workforce_normal_exit_fact_receipt_active
+                has_variable = zg361_workforce_normal_exit_fact_receipt_sealed
+                has_variable = zg361_workforce_normal_exit_fact_receipt_published
+                has_variable = zg361_workforce_normal_exit_fact_receipt_consumed
+                has_variable = zg361_workforce_normal_exit_fact_receipt_consumed_operation
+                has_variable = zg361_workforce_normal_exit_fact_receipt_owner
+                has_variable = zg361_workforce_normal_exit_fact_receipt_subject
+                has_variable = zg361_workforce_normal_exit_fact_receipt_cycle
+                has_variable = zg361_workforce_normal_exit_fact_receipt_case
+                has_variable = zg361_workforce_normal_exit_fact_receipt_state
+                has_variable = zg361_workforce_normal_exit_fact_receipt_id
+                has_variable = zg361_workforce_normal_exit_fact_receipt_hash
+                has_variable = zg361_workforce_normal_exit_fact_receipt_exit_source_kind
+                has_variable = zg361_workforce_normal_exit_fact_receipt_exit_source_state
+                has_variable = zg361_workforce_normal_exit_fact_receipt_exit_class
+                has_variable = zg361_workforce_normal_exit_fact_receipt_exit_reason_code
+                has_variable = zg361_workforce_normal_exit_fact_receipt_normal_exit_confirmed
+                has_variable = zg361_workforce_normal_exit_fact_receipt_forced
+                has_variable = zg361_workforce_normal_exit_fact_receipt_neutral_record
+                has_variable = zg361_workforce_normal_exit_fact_receipt_actual_exit
+                has_variable = zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled
+                has_variable = zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified
+                has_variable = zg361_workforce_normal_exit_fact_receipt_hc_destination_frozen
+                has_variable = zg361_workforce_normal_exit_fact_receipt_formal_hc_active_before
+                has_variable = zg361_workforce_normal_exit_fact_receipt_formal_hc_active_after
+                has_variable = zg361_workforce_normal_exit_fact_receipt_formal_hc_case
+                has_variable = zg361_workforce_normal_exit_fact_receipt_former_slot_id
+                has_variable = zg361_workforce_normal_exit_fact_receipt_former_slot_hash
+                has_variable = zg361_workforce_normal_exit_fact_receipt_position_type_id
+                has_variable = zg361_workforce_normal_exit_fact_receipt_appointment_receipt_id
+                has_variable = zg361_workforce_normal_exit_fact_receipt_appointment_receipt_hash
+                has_variable = zg361_workforce_normal_exit_fact_receipt_native_end_reason
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_owner
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_subject
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_cycle
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_case
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_state
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_settlement_receipt
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_grade
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_reason
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_kpi
+                has_variable = zg361_workforce_normal_exit_fact_receipt_prior_result_rank
+                var:zg361_workforce_normal_exit_fact_receipt_active = 1
+                var:zg361_workforce_normal_exit_fact_receipt_sealed = 1
+                var:zg361_workforce_normal_exit_fact_receipt_published = 1
+                var:zg361_workforce_normal_exit_fact_receipt_consumed = 1
+                var:zg361_workforce_normal_exit_fact_receipt_consumed_operation = 75
+                var:zg361_workforce_normal_exit_fact_receipt_owner = scope:@P@_normal_exit_owner_scope
+                var:zg361_workforce_normal_exit_fact_receipt_subject = this
+                var:zg361_workforce_normal_exit_fact_receipt_cycle > var:@P@_hire_cycle
+                var:zg361_workforce_normal_exit_fact_receipt_case > 0
+                var:zg361_workforce_normal_exit_fact_receipt_state = 6
+                var:zg361_workforce_normal_exit_fact_receipt_id > 0
+                var:zg361_workforce_normal_exit_fact_receipt_hash > 0
+                var:zg361_workforce_normal_exit_fact_receipt_exit_source_kind = 75
+                var:zg361_workforce_normal_exit_fact_receipt_exit_source_state = 3
+                var:zg361_workforce_normal_exit_fact_receipt_exit_class = 1
+                var:zg361_workforce_normal_exit_fact_receipt_exit_reason_code = 1
+                var:zg361_workforce_normal_exit_fact_receipt_normal_exit_confirmed = 1
+                var:zg361_workforce_normal_exit_fact_receipt_forced = 0
+                var:zg361_workforce_normal_exit_fact_receipt_neutral_record = 1
+                var:zg361_workforce_normal_exit_fact_receipt_actual_exit = 1
+                var:zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled = 1
+                var:zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified = 1
+                var:zg361_workforce_normal_exit_fact_receipt_hc_destination_frozen = 1
+                var:zg361_workforce_normal_exit_fact_receipt_formal_hc_active_before = 1
+                var:zg361_workforce_normal_exit_fact_receipt_formal_hc_active_after = 0
+                var:zg361_workforce_normal_exit_fact_receipt_formal_hc_case = var:@P@_hire_case
+                var:zg361_workforce_normal_exit_fact_receipt_former_slot_id > 0
+                var:zg361_workforce_normal_exit_fact_receipt_former_slot_hash > 0
+                var:zg361_workforce_normal_exit_fact_receipt_position_type_id = 3612741
+                var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_id = var:@P@_position_receipt_id
+                var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_hash = var:@P@_position_receipt_hash
+                var:zg361_workforce_normal_exit_fact_receipt_native_end_reason = 1
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_owner = var:@P@_source_result_owner
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_subject = this
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_cycle = var:@P@_source_result_cycle
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_case = var:@P@_source_result_case
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_state = var:@P@_source_result_state
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_settlement_receipt = var:@P@_source_result_settlement_receipt
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_grade = 1
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_reason = var:@P@_source_result_reason
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_kpi = var:@P@_source_result_kpi
+                var:zg361_workforce_normal_exit_fact_receipt_prior_result_rank = var:@P@_source_result_rank
+                var:@W@_m269_outcome_pending = 1
+                var:@W@_m269_outcome_settled = 0
+                var:@W@_m269_write_owner = scope:@P@_normal_exit_owner_scope
+                var:@W@_m269_write_subject = this
+                var:@W@_m269_write_cycle = var:@P@_hire_cycle
+                var:@W@_m269_write_case = var:@P@_hire_case
+                var:@W@_m269_write_state = 5
+                has_variable = @W@_formal_hc_active
+                var:@W@_formal_hc_active = 0
+            }
+            set_variable = { name = @P@_source_kind value = 3 }
+            set_variable = { name = @P@_source_external_owner value = scope:@P@_normal_exit_owner_scope }
+            set_variable = { name = @P@_source_external_subject value = this }
+            set_variable = { name = @P@_source_external_cycle value = var:zg361_workforce_normal_exit_fact_receipt_cycle }
+            set_variable = { name = @P@_source_external_case value = var:zg361_workforce_normal_exit_fact_receipt_case }
+            set_variable = { name = @P@_source_external_state value = 6 }
+            set_variable = { name = @P@_source_external_receipt_id value = var:zg361_workforce_normal_exit_fact_receipt_id }
+            set_variable = { name = @P@_source_external_receipt_hash value = var:zg361_workforce_normal_exit_fact_receipt_hash }
+            set_variable = { name = @P@_source_external_reason value = var:zg361_workforce_normal_exit_fact_receipt_exit_reason_code }
+            set_variable = { name = @P@_source_external_former_slot_id value = var:zg361_workforce_normal_exit_fact_receipt_former_slot_id }
+            set_variable = { name = @P@_source_external_slot_hash value = var:zg361_workforce_normal_exit_fact_receipt_former_slot_hash }
+            set_variable = { name = @P@_source_external_position_type_id value = var:zg361_workforce_normal_exit_fact_receipt_position_type_id }
+            set_variable = { name = @P@_source_external_appointment_receipt_id value = var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_id }
+            set_variable = { name = @P@_source_external_appointment_receipt_hash value = var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_hash }
+            set_variable = { name = @P@_source_external_native_end_reason value = 1 }
+            set_variable = { name = @P@_source_external_hc_conservation_verified value = 1 }
+            set_variable = { name = @P@_outcome_quality value = 3 }
+            set_variable = { name = @P@_outcome_evidence_count value = 3 }
+            set_variable = { name = @P@_outcome_evidence_id value = var:zg361_workforce_normal_exit_fact_receipt_id }
+            set_variable = { name = @P@_outcome_evidence_hash value = var:zg361_workforce_normal_exit_fact_receipt_hash }
+            set_variable = { name = @P@_outcome_observed_cycle value = var:zg361_workforce_normal_exit_fact_receipt_cycle }
+            set_variable = { name = @P@_outcome_exclusion_reason value = 0 }
+            set_variable = { name = @P@_awaiting_pip value = 0 }
+            @P@_publish_canonical_effect = yes
+        }
+        else = {
+            set_variable = { name = @P@_adapter_status value = 5 }
+            set_variable = { name = @P@_red_code value = 3201 }
+            debug_log = "ZG361WPF RED 3201: attrition hook lacks exact normal-exit, result, attribution or HC provenance"
+        }
+    }
+
+    # Pending hook 4.  A native invalidation of the exact long-lived career
+    # slot is a role/strategy-change exclusion, not attrition and not #277.
+    @P@_publish_from_role_failure_effect = {
+        remove_variable = @P@_adapter_status
+        remove_variable = @P@_red_code
+        var:zg361_workforce_exit_fact_role_failure_receipt_owner = { save_temporary_scope_as = @P@_role_failure_owner_scope }
+        if = {
+            limit = {
+                var:@P@_state >= 3
+                var:@P@_source_kind = 4
+                var:@P@_source_external_receipt_id = var:zg361_workforce_exit_fact_role_failure_receipt_id
+                var:@P@_source_external_receipt_hash = var:zg361_workforce_exit_fact_role_failure_receipt_hash
+            }
+            set_variable = { name = @P@_adapter_status value = 2 }
+            if = { limit = { var:@P@_state = 3 } @P@_schedule_consume_effect = yes }
+            else = { set_variable = { name = @P@_adapter_status value = 4 } }
+        }
+        else_if = {
+            limit = {
+                var:@P@_state = 2
+                var:@P@_awaiting_pip = 1
+                var:@P@_owner = scope:@P@_role_failure_owner_scope
+                var:@P@_subject = this
+                var:@P@_source_result_grade = 1
+                var:@P@_source_result_owner = scope:@P@_role_failure_owner_scope
+                var:@P@_source_result_subject = this
+                var:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+                var:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+                var:zg361_workforce_exit_fact_role_failure_receipt_published = 0
+                var:zg361_workforce_exit_fact_role_failure_receipt_consumed = 0
+                var:zg361_workforce_exit_fact_role_failure_receipt_owner = scope:@P@_role_failure_owner_scope
+                var:zg361_workforce_exit_fact_role_failure_receipt_subject = this
+                var:zg361_workforce_exit_fact_role_failure_receipt_hire_cycle = var:@P@_hire_cycle
+                var:zg361_workforce_exit_fact_role_failure_receipt_hire_case = var:@P@_hire_case
+                var:zg361_workforce_exit_fact_role_failure_receipt_state = 4
+                var:zg361_workforce_exit_fact_role_failure_receipt_id > 0
+                var:zg361_workforce_exit_fact_role_failure_receipt_hash > 0
+                var:zg361_workforce_exit_fact_role_failure_receipt_reason_kind = 1
+                var:zg361_workforce_exit_fact_role_failure_receipt_exclusion_reason = 1
+                var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_id > 0
+                var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash > 0
+                var:zg361_workforce_exit_fact_role_failure_receipt_position_type_id = 3612741
+                var:zg361_workforce_exit_fact_role_failure_receipt_carrier_type_id = 3612771
+                var:zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_id = var:@P@_position_receipt_id
+                var:zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_hash = var:@P@_position_receipt_hash
+                var:zg361_workforce_exit_fact_role_failure_receipt_native_end_reason = 2
+                var:zg361_workforce_exit_fact_role_failure_receipt_observed_cycle > var:@P@_hire_cycle
+                var:zg361_workforce_exit_fact_role_failure_receipt_formal_hc_active = 1
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_conservation_verified = 1
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_authorized = var:zg361_ch_hc_authorized
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_available = var:zg361_ch_hc_available
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_reserved = var:zg361_ch_hc_reserved
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_occupied = var:zg361_ch_hc_occupied
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_frozen = var:zg361_ch_hc_frozen
+                var:zg361_workforce_exit_fact_role_failure_receipt_hc_reclaimed = var:zg361_ch_hc_reclaimed
+                has_variable = zg361_workforce_attribution_fact_signature_committed
+                has_variable = zg361_workforce_attribution_fact_state
+                has_variable = zg361_workforce_attribution_fact_consumed
+                has_variable = zg361_workforce_attribution_fact_owner
+                has_variable = zg361_workforce_attribution_fact_subject
+                has_variable = zg361_workforce_attribution_fact_cycle
+                has_variable = zg361_workforce_attribution_fact_case
+                has_variable = zg361_workforce_attribution_fact_receipt_id
+                has_variable = zg361_workforce_attribution_fact_receipt_hash
+                has_variable = zg361_workforce_attribution_fact_receipt_evidence_1
+                has_variable = zg361_workforce_attribution_fact_receipt_evidence_2
+                has_variable = zg361_workforce_attribution_fact_receipt_evidence_3
+                has_variable = zg361_workforce_attribution_fact_attribution_bps_1
+                has_variable = zg361_workforce_attribution_fact_attribution_bps_2
+                has_variable = zg361_workforce_attribution_fact_attribution_bps_3
+                var:zg361_workforce_attribution_fact_signature_committed = 1
+                var:zg361_workforce_attribution_fact_state = 3
+                var:zg361_workforce_attribution_fact_consumed = 1
+                var:zg361_workforce_attribution_fact_owner = scope:@P@_role_failure_owner_scope
+                var:zg361_workforce_attribution_fact_subject = this
+                var:zg361_workforce_attribution_fact_cycle = var:@P@_hire_cycle
+                var:zg361_workforce_attribution_fact_case = var:@P@_hire_case
+                var:zg361_workforce_attribution_fact_receipt_id > 0
+                var:zg361_workforce_attribution_fact_receipt_hash > 0
+                var:zg361_workforce_attribution_fact_receipt_evidence_1 = var:@P@_outcome_dimension_1
+                var:zg361_workforce_attribution_fact_receipt_evidence_2 = var:@P@_outcome_dimension_2
+                var:zg361_workforce_attribution_fact_receipt_evidence_3 = var:@P@_outcome_dimension_3
+                var:zg361_workforce_attribution_fact_attribution_bps_1 = var:@P@_attribution_bps_1
+                var:zg361_workforce_attribution_fact_attribution_bps_2 = var:@P@_attribution_bps_2
+                var:zg361_workforce_attribution_fact_attribution_bps_3 = var:@P@_attribution_bps_3
+                var:@W@_m269_outcome_pending = 1
+                var:@W@_m269_outcome_settled = 0
+                var:@W@_m269_write_owner = scope:@P@_role_failure_owner_scope
+                var:@W@_m269_write_subject = this
+                var:@W@_m269_write_cycle = var:@P@_hire_cycle
+                var:@W@_m269_write_case = var:@P@_hire_case
+                var:@W@_m269_write_state = 5
+                var:@W@_formal_hc_active = 1
+                var:@W@_formal_hc_active_case = var:@P@_hire_case
+            }
+            set_variable = { name = @P@_source_kind value = 4 }
+            set_variable = { name = @P@_source_external_owner value = scope:@P@_role_failure_owner_scope }
+            set_variable = { name = @P@_source_external_subject value = this }
+            set_variable = { name = @P@_source_external_cycle value = var:zg361_workforce_exit_fact_role_failure_receipt_observed_cycle }
+            set_variable = { name = @P@_source_external_case value = var:zg361_workforce_exit_fact_role_failure_receipt_hire_case }
+            set_variable = { name = @P@_source_external_state value = 4 }
+            set_variable = { name = @P@_source_external_receipt_id value = var:zg361_workforce_exit_fact_role_failure_receipt_id }
+            set_variable = { name = @P@_source_external_receipt_hash value = var:zg361_workforce_exit_fact_role_failure_receipt_hash }
+            set_variable = { name = @P@_source_external_reason value = 1 }
+            set_variable = { name = @P@_source_external_former_slot_id value = var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_id }
+            set_variable = { name = @P@_source_external_slot_hash value = var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash }
+            set_variable = { name = @P@_source_external_position_type_id value = var:zg361_workforce_exit_fact_role_failure_receipt_position_type_id }
+            set_variable = { name = @P@_source_external_appointment_receipt_id value = var:zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_id }
+            set_variable = { name = @P@_source_external_appointment_receipt_hash value = var:zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_hash }
+            set_variable = { name = @P@_source_external_native_end_reason value = 2 }
+            set_variable = { name = @P@_source_external_hc_conservation_verified value = 1 }
+            set_variable = { name = @P@_outcome_quality value = 4 }
+            set_variable = { name = @P@_outcome_evidence_count value = 2 }
+            set_variable = { name = @P@_outcome_evidence_id value = var:zg361_workforce_exit_fact_role_failure_receipt_id }
+            set_variable = { name = @P@_outcome_evidence_hash value = var:zg361_workforce_exit_fact_role_failure_receipt_hash }
+            set_variable = { name = @P@_outcome_observed_cycle value = var:zg361_workforce_exit_fact_role_failure_receipt_observed_cycle }
+            set_variable = { name = @P@_outcome_exclusion_reason value = 1 }
+            set_variable = { name = @P@_awaiting_pip value = 0 }
+            @P@_publish_canonical_effect = yes
+        }
+        else = {
+            set_variable = { name = @P@_adapter_status value = 5 }
+            set_variable = { name = @P@_red_code value = 3301 }
+            debug_log = "ZG361WPF RED 3301: role-failure hook lacks exact invalidation, attribution or HC provenance"
+        }
+    }
+
     # Internal commit: issue one owner-monotonic outcome ID only after a real
     # source guard has populated every canonical payload field.
     @P@_publish_canonical_effect = {
@@ -1220,7 +1578,7 @@ def render_effects() -> bytes:
         }
         if = {
             limit = {
-                OR = { var:@P@_source_kind = 1 var:@P@_source_kind = 2 }
+                OR = { var:@P@_source_kind = 1 var:@P@_source_kind = 2 var:@P@_source_kind = 3 var:@P@_source_kind = 4 }
                 has_variable = @P@_owner
                 has_variable = @P@_subject
                 has_variable = @P@_hire_cycle
@@ -1247,8 +1605,54 @@ def render_effects() -> bytes:
                 var:@P@_outcome_evidence_count >= 1
                 var:@P@_outcome_evidence_id > 0
                 var:@P@_outcome_evidence_hash > 0
-                OR = { var:@P@_outcome_quality = 1 var:@P@_outcome_quality = 2 }
-                var:@P@_outcome_exclusion_reason = 0
+                OR = {
+                    AND = { var:@P@_source_kind = 1 var:@P@_outcome_quality = 1 var:@P@_outcome_exclusion_reason = 0 }
+                    AND = { var:@P@_source_kind = 2 OR = { var:@P@_outcome_quality = 1 var:@P@_outcome_quality = 2 } var:@P@_outcome_exclusion_reason = 0 }
+                    AND = {
+                        var:@P@_source_kind = 3
+                        var:@P@_outcome_quality = 3
+                        var:@P@_outcome_exclusion_reason = 0
+                        var:@P@_source_external_owner = scope:@P@_publish_owner_scope
+                        var:@P@_source_external_subject = this
+                        var:@P@_source_external_cycle = var:zg361_workforce_normal_exit_fact_receipt_cycle
+                        var:@P@_source_external_case = var:zg361_workforce_normal_exit_fact_receipt_case
+                        var:@P@_source_external_state = 6
+                        var:@P@_source_external_receipt_id = var:zg361_workforce_normal_exit_fact_receipt_id
+                        var:@P@_source_external_receipt_hash = var:zg361_workforce_normal_exit_fact_receipt_hash
+                        var:@P@_source_external_reason = var:zg361_workforce_normal_exit_fact_receipt_exit_reason_code
+                        var:@P@_source_external_former_slot_id = var:zg361_workforce_normal_exit_fact_receipt_former_slot_id
+                        var:@P@_source_external_slot_hash = var:zg361_workforce_normal_exit_fact_receipt_former_slot_hash
+                        var:@P@_source_external_position_type_id = var:zg361_workforce_normal_exit_fact_receipt_position_type_id
+                        var:@P@_source_external_appointment_receipt_id = var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_id
+                        var:@P@_source_external_appointment_receipt_hash = var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_hash
+                        var:@P@_source_external_native_end_reason = 1
+                        var:@P@_source_external_hc_conservation_verified = 1
+                        var:@P@_outcome_evidence_id = var:@P@_source_external_receipt_id
+                        var:@P@_outcome_evidence_hash = var:@P@_source_external_receipt_hash
+                    }
+                    AND = {
+                        var:@P@_source_kind = 4
+                        var:@P@_outcome_quality = 4
+                        var:@P@_outcome_exclusion_reason = 1
+                        var:@P@_source_external_owner = scope:@P@_publish_owner_scope
+                        var:@P@_source_external_subject = this
+                        var:@P@_source_external_cycle = var:zg361_workforce_exit_fact_role_failure_receipt_observed_cycle
+                        var:@P@_source_external_case = var:zg361_workforce_exit_fact_role_failure_receipt_hire_case
+                        var:@P@_source_external_state = 4
+                        var:@P@_source_external_receipt_id = var:zg361_workforce_exit_fact_role_failure_receipt_id
+                        var:@P@_source_external_receipt_hash = var:zg361_workforce_exit_fact_role_failure_receipt_hash
+                        var:@P@_source_external_reason = var:zg361_workforce_exit_fact_role_failure_receipt_reason_kind
+                        var:@P@_source_external_former_slot_id = var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_id
+                        var:@P@_source_external_slot_hash = var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash
+                        var:@P@_source_external_position_type_id = var:zg361_workforce_exit_fact_role_failure_receipt_position_type_id
+                        var:@P@_source_external_appointment_receipt_id = var:zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_id
+                        var:@P@_source_external_appointment_receipt_hash = var:zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_hash
+                        var:@P@_source_external_native_end_reason = 2
+                        var:@P@_source_external_hc_conservation_verified = 1
+                        var:@P@_outcome_evidence_id = var:@P@_source_external_receipt_id
+                        var:@P@_outcome_evidence_hash = var:@P@_source_external_receipt_hash
+                    }
+                }
                 var:@P@_attribution_bps_1 = scope:@P@_commit_expected_attribution_bps_1
                 OR = {
                     NOT = { has_variable = @P@_outcome_id }
@@ -1263,14 +1667,30 @@ def render_effects() -> bytes:
                 change_variable = { name = @P@_owner_outcome_serial add = 1 }
             }
             set_variable = { name = @P@_outcome_id value = scope:@P@_publish_owner_scope.var:@P@_owner_outcome_serial }
-            set_variable = {
-                name = @P@_outcome_receipt_hash
-                value = {
-                    value = var:@P@_outcome_id multiply = 1000000
-                    add = { value = var:@P@_hire_case multiply = 10000 }
-                    add = { value = var:@P@_source_result_case multiply = 100 }
-                    add = { value = var:@P@_source_kind multiply = 10 }
-                    add = var:@P@_outcome_quality
+            if = {
+                limit = { OR = { var:@P@_source_kind = 3 var:@P@_source_kind = 4 } }
+                set_variable = {
+                    name = @P@_outcome_receipt_hash
+                    value = {
+                        value = var:@P@_outcome_id multiply = 1000000
+                        add = { value = var:@P@_hire_case multiply = 10000 }
+                        add = { value = var:@P@_source_result_case multiply = 100 }
+                        add = { value = var:@P@_source_kind multiply = 10 }
+                        add = var:@P@_outcome_quality
+                        add = var:@P@_source_external_receipt_hash
+                    }
+                }
+            }
+            else = {
+                set_variable = {
+                    name = @P@_outcome_receipt_hash
+                    value = {
+                        value = var:@P@_outcome_id multiply = 1000000
+                        add = { value = var:@P@_hire_case multiply = 10000 }
+                        add = { value = var:@P@_source_result_case multiply = 100 }
+                        add = { value = var:@P@_source_kind multiply = 10 }
+                        add = var:@P@_outcome_quality
+                    }
                 }
             }
             set_variable = { name = @P@_published value = 1 }
@@ -1318,8 +1738,20 @@ def render_effects() -> bytes:
                 var:@W@_m274_hired = 1
                 var:@W@_m274_hire_case = var:@P@_hire_case
                 var:@W@_m267_candidate_frozen = this
-                var:@W@_formal_hc_active = 1
-                var:@W@_formal_hc_active_case = var:@P@_hire_case
+                OR = {
+                    AND = {
+                        var:@P@_outcome_quality = 3
+                        var:@W@_formal_hc_active = 0
+                        var:zg361_workforce_normal_exit_fact_receipt_id = var:@P@_source_external_receipt_id
+                        var:zg361_workforce_normal_exit_fact_receipt_hash = var:@P@_source_external_receipt_hash
+                        var:zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified = 1
+                    }
+                    AND = {
+                        OR = { var:@P@_outcome_quality = 1 var:@P@_outcome_quality = 2 var:@P@_outcome_quality = 4 }
+                        var:@W@_formal_hc_active = 1
+                        var:@W@_formal_hc_active_case = var:@P@_hire_case
+                    }
+                }
                 OR = {
                     NOT = {
                         OR = {
@@ -1531,7 +1963,7 @@ def render_events() -> bytes:
         namespace = zg361wpf
 
         # A retry never publishes truth.  It only replays the strict consumer
-        # for a canonical fact that one of the two real producer hooks wrote.
+        # for a canonical fact that one of the four real outcome hooks wrote.
         zg361wpf.1 = {
             type = character_event
             hidden = yes
@@ -1571,13 +2003,13 @@ def localization_rows(language: str) -> list[str]:
     if english:
         title = "Probation outcome receipt"
         desc = (
-            "A later settled performance result, and where required the unique PIP settlement, "
-            "has been bound to this real hire. Workforce #269 consumed the same outcome once."
+            "A settled result, PIP decision, real normal exit, or role-change exclusion "
+            "has been bound to this hire. Workforce #269 consumed the same outcome once."
         )
         option = "Keep the receipt with the hire case."
     else:
         title = "试用期结局回执"
-        desc = "后续正式绩效结算，以及适用时唯一的 PIP 结算，已经绑定到这次真实录用。Workforce #269 只消费了同一结局一次。"
+        desc = "正式绩效、PIP、真实正常离职或岗位变更排除项，已绑定到这次录用。Workforce #269 只消费同一结局一次。"
         option = "把回执归入本次录用案。"
     return [
         f"l_{language}:",

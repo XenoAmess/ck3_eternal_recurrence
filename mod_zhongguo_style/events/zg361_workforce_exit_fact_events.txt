@@ -42,3 +42,24 @@ zg361workforceexitfact.9006 = {
     hidden = yes
     immediate = { zg361_workforce_exit_fact_dispatch_cleanup_revoke_effect = yes }
 }
+
+zg361workforceexitfact.9007 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        var:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+        var:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+        var:zg361_workforce_exit_fact_role_failure_receipt_consumed = 0
+        var:zg361_workforce_exit_fact_role_failure_receipt_subject = this
+    }
+    immediate = {
+        zg361_workforce_probation_fact_publish_from_role_failure_effect = yes
+        trigger_event = { id = zg361workforceexitfact.9008 days = 1 }
+    }
+}
+
+zg361workforceexitfact.9008 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_verify_role_failure_publish_effect = yes }
+}

@@ -36,7 +36,7 @@ native revoke callback。因此正常链固定为：
   -> 同一 audit 尾部：执行真实 zg361_b2_m075_accept_exit_offer_effect
   -> D+1 migrate：验收 #075 funded poststate 和 consumed business object；occupied -1、frozen +1
   -> D+1 HC audit：重新读取六分区、formal HC 与 lineage；守恒成立后才 seal receipt
-  -> D+1 capture：把已结算 receipt 交给 rehire producer
+  -> D+1 capture：把已结算 receipt 同时交给 rehire producer 与 probation attrition producer
 ```
 
 producer 复用已有 `zg361_workforce_exit_fact_career_slot_court_position`，不创建第二份岗位。该岗位的统一
@@ -58,7 +58,9 @@ zg361_workforce_normal_exit_fact_migrate_hc_partition_effect
 zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect
 ```
 
-receipt 的 ID/hash 由已冻结的 #075 case、旧 result、appointment hash 与 subject-local serial 推导。seal 后
+receipt 的 ID/hash 由已冻结的 #075 case、旧 result、appointment hash 与 subject-local serial 推导。career slot 的
+`slot_id` 与 `slot_hash` 在 begin 同时冻结、D+1 dispatch 重新核对，并分别封入 `former_slot_id/former_slot_hash`；seal 作为
+完整 payload 的 commit-last marker。seal 后
 `receipt_active/sealed/published/consumed=1`、`consumed_operation=75`；owner/subject/cycle/case、离职原因、
 旧 result、岗位 lineage、成本、native callback 与业务对象消费字段永久保留，不存在清洗旧案的 effect。
 
@@ -114,8 +116,11 @@ RED 27654/27655，不能 seal receipt，也不能再次迁移。50 金成本只�
 
 ## 6. 已接 caller 与精确 residual blocker
 
-共享 core 现已完成三条安全接线：#274 post-consume 调长期 career-slot arm；`zg361b2.60.a` 改为本包 begin；
-receipt seal 后由独立 D+1 event 调 `zg361_workforce_rehire_fact_capture_exit_effect`。career carrier callback 也会用
+共享 core 现已完成四条安全接线：#274 post-consume 调长期 career-slot arm；`zg361b2.60.a` 改为本包 begin；
+receipt seal 后由独立 D+1 event 调 `zg361_workforce_rehire_fact_capture_exit_effect` 与
+`zg361_workforce_probation_fact_publish_from_normal_exit_effect`。后者只在同一 state-2 3.25 probation、signed attribution、
+旧 result、appointment/slot hash、`actual_exit=1`、formal HC=0 与本 receipt 六分区守恒全部吻合时发布 canonical
+`quality=3 / attrition`，不消费 failed-PIP #277，也不再次修改 HC/gold。career carrier callback 也会用
 本包已提交的 pending/owner/subject/authorization/dispatch 精确识别这次正常撤任；合法 `END_REASON=1` 不再同时
 落 `unexpected_native_end_seen=1`，而 audit 额外要求本包专属 callback tuple。
 

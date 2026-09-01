@@ -45,6 +45,9 @@ CAPTURE_EVENT_ID: Final[int] = 9103
 HC_AUDIT_EVENT_ID: Final[int] = 9104
 NOTICE_EVENT_ID: Final[int] = 1
 REHIRE_CAPTURE_EXIT_EFFECT: Final[str] = "zg361_workforce_rehire_fact_capture_exit_effect"
+PROBATION_PUBLISH_NORMAL_EXIT_EFFECT: Final[str] = (
+    "zg361_workforce_probation_fact_publish_from_normal_exit_effect"
+)
 
 LANGUAGES: Final[tuple[str, ...]] = (
     "english",
@@ -146,6 +149,7 @@ RECEIPT_ALWAYS_FIELDS: Final[tuple[str, ...]] = (
     "formal_hc_case",
     "exit_year",
     "former_slot_id",
+    "former_slot_hash",
     "position_type_id",
     "carrier_type_id",
     "appointment_receipt_id",
@@ -246,6 +250,7 @@ def render_effects() -> bytes:
         remove_variable = @P@_pending_pip_closure_receipt_id
         remove_variable = @P@_pending_pip_closure_receipt_hash
         remove_variable = @P@_pending_slot_id
+        remove_variable = @P@_pending_slot_hash
         remove_variable = @P@_pending_slot_cycle
         remove_variable = @P@_pending_slot_case
         remove_variable = @P@_pending_position_type_id
@@ -392,6 +397,7 @@ def render_effects() -> bytes:
                 has_variable = @S@_slot_appointment_receipt_hash
                 has_variable = @S@_slot_carrier_type_id
                 has_variable = @S@_slot_id
+                has_variable = @S@_slot_hash
                 var:@S@_slot_active = 1
                 var:@S@_slot_owner = var:@M@_owner
                 var:@S@_slot_subject = this
@@ -403,6 +409,7 @@ def render_effects() -> bytes:
                 var:@S@_slot_appointment_receipt_hash > 0
                 var:@S@_slot_carrier_type_id = @CARRIER_TYPE@
                 var:@S@_slot_id > 0
+                var:@S@_slot_hash > 0
                 has_court_position = @POSITION@
                 is_court_position_employer = { court_position = @POSITION@ who = var:@M@_owner }
                 OR = { NOT = { has_variable = @S@_exit_pending } var:@S@_exit_pending = 0 }
@@ -481,6 +488,7 @@ def render_effects() -> bytes:
             }
             else = { set_variable = { name = @P@_pending_pip_present value = 0 } }
             set_variable = { name = @P@_pending_slot_id value = var:@S@_slot_id }
+            set_variable = { name = @P@_pending_slot_hash value = var:@S@_slot_hash }
             set_variable = { name = @P@_pending_slot_cycle value = var:@S@_slot_cycle }
             set_variable = { name = @P@_pending_slot_case value = var:@S@_slot_case }
             set_variable = { name = @P@_pending_position_type_id value = var:@S@_slot_position_type_id }
@@ -542,6 +550,7 @@ def render_effects() -> bytes:
                 var:@S@_slot_owner = var:@P@_pending_owner
                 var:@S@_slot_subject = this
                 var:@S@_slot_id = var:@P@_pending_slot_id
+                var:@S@_slot_hash = var:@P@_pending_slot_hash
                 has_court_position = @POSITION@
                 is_court_position_employer = { court_position = @POSITION@ who = var:@P@_pending_owner }
                 OR = { NOT = { has_variable = @S@_exit_pending } var:@S@_exit_pending = 0 }
@@ -823,7 +832,6 @@ def render_effects() -> bytes:
             }
             else = { save_temporary_scope_value_as = { name = @P@_next_receipt_serial value = 1 } }
             set_variable = { name = @P@_receipt_active value = 1 }
-            set_variable = { name = @P@_receipt_sealed value = 1 }
             set_variable = { name = @P@_receipt_published value = 1 }
             set_variable = { name = @P@_receipt_consumed value = 1 }
             set_variable = { name = @P@_receipt_consumed_operation value = @SOURCE_KIND@ }
@@ -863,6 +871,7 @@ def render_effects() -> bytes:
             set_variable = { name = @P@_receipt_formal_hc_case value = var:@P@_pending_slot_case }
             set_variable = { name = @P@_receipt_exit_year value = var:@P@_exit_observed_year }
             set_variable = { name = @P@_receipt_former_slot_id value = var:@P@_pending_slot_id }
+            set_variable = { name = @P@_receipt_former_slot_hash value = var:@P@_pending_slot_hash }
             set_variable = { name = @P@_receipt_position_type_id value = var:@P@_pending_position_type_id }
             set_variable = { name = @P@_receipt_carrier_type_id value = var:@P@_pending_carrier_type_id }
             set_variable = { name = @P@_receipt_appointment_receipt_id value = var:@P@_pending_appointment_receipt_id }
@@ -904,6 +913,7 @@ def render_effects() -> bytes:
             set_variable = { name = @P@_receipt_source_object_consumed value = 1 }
             set_variable = { name = @P@_receipt_source_receipt_serial value = var:@P@_pending_source_receipt_serial }
             set_variable = { name = @P@_subject_receipt_serial value = scope:@P@_next_receipt_serial }
+            set_variable = { name = @P@_receipt_sealed value = 1 } # commit last
             @P@_clear_pending_effect = yes
             set_variable = { name = @P@_state value = 4 }
             set_variable = { name = @P@_status value = 1 }
@@ -1021,7 +1031,10 @@ def render_events() -> bytes:
                 var:{PREFIX}_receipt_consumed = 1
                 var:{PREFIX}_receipt_subject = this
             }}
-            immediate = {{ {REHIRE_CAPTURE_EXIT_EFFECT} = yes }}
+            immediate = {{
+                {REHIRE_CAPTURE_EXIT_EFFECT} = yes
+                {PROBATION_PUBLISH_NORMAL_EXIT_EFFECT} = yes
+            }}
         }}
 
         {NAMESPACE}.{NOTICE_EVENT_ID} = {{

@@ -50,6 +50,242 @@ zg361_workforce_exit_fact_clear_exit_pending_effect = {
     remove_variable = zg361_workforce_exit_fact_exit_request_dispatched
 }
 
+zg361_workforce_exit_fact_clear_role_failure_receipt_effect = {
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_active
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_sealed
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_published
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_consumed
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_owner
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_subject
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hire_cycle
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hire_case
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_state
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_id
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hash
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_reason_kind
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_exclusion_reason
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_former_slot_id
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_position_type_id
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_carrier_type_id
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_id
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_hash
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_native_end_reason
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_observed_cycle
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_formal_hc_active
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_authorized
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_available
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_reserved
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_occupied
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_frozen
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_reclaimed
+    remove_variable = zg361_workforce_exit_fact_role_failure_receipt_hc_conservation_verified
+}
+
+# A natural native invalidation is not a PIP exit.  When it ends the exact
+# long-lived slot of a still-active 3.25 probation tuple, however, it is the
+# real role/strategy-change exclusion source for canonical #269 quality=4.
+# This capture runs before slot_active is cleared by the callback.
+zg361_workforce_exit_fact_capture_role_failure_effect = {
+    remove_variable = zg361_workforce_exit_fact_role_failure_status
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_role_failure_receipt_active
+            has_variable = zg361_workforce_exit_fact_role_failure_receipt_sealed
+            has_variable = zg361_workforce_exit_fact_role_failure_receipt_former_slot_id
+            has_variable = zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash
+            var:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_owner = scope:liege
+            var:zg361_workforce_exit_fact_role_failure_receipt_subject = this
+            var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_id = var:zg361_workforce_exit_fact_slot_id
+            var:zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash = var:zg361_workforce_exit_fact_slot_hash
+            var:zg361_workforce_exit_fact_role_failure_receipt_native_end_reason = 2
+        }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_status value = 2 }
+    }
+    else_if = {
+        limit = {
+            is_alive = yes
+            has_variable = zg361_workforce_exit_fact_slot_active
+            has_variable = zg361_workforce_exit_fact_slot_owner
+            has_variable = zg361_workforce_exit_fact_slot_subject
+            has_variable = zg361_workforce_exit_fact_slot_cycle
+            has_variable = zg361_workforce_exit_fact_slot_case
+            has_variable = zg361_workforce_exit_fact_slot_state
+            has_variable = zg361_workforce_exit_fact_slot_position_type_id
+            has_variable = zg361_workforce_exit_fact_slot_carrier_type_id
+            has_variable = zg361_workforce_exit_fact_slot_appointment_receipt_id
+            has_variable = zg361_workforce_exit_fact_slot_appointment_receipt_hash
+            has_variable = zg361_workforce_exit_fact_slot_id
+            has_variable = zg361_workforce_exit_fact_slot_hash
+            var:zg361_workforce_exit_fact_slot_active = 1
+            var:zg361_workforce_exit_fact_slot_owner = scope:liege
+            var:zg361_workforce_exit_fact_slot_subject = this
+            var:zg361_workforce_exit_fact_slot_cycle > 0
+            var:zg361_workforce_exit_fact_slot_case > 0
+            var:zg361_workforce_exit_fact_slot_state = 4
+            var:zg361_workforce_exit_fact_slot_position_type_id = 3612741
+            var:zg361_workforce_exit_fact_slot_carrier_type_id = 3612771
+            var:zg361_workforce_exit_fact_slot_appointment_receipt_id > 0
+            var:zg361_workforce_exit_fact_slot_appointment_receipt_hash > 0
+            var:zg361_workforce_exit_fact_slot_id > 0
+            var:zg361_workforce_exit_fact_slot_hash > 0
+            scope:liege = {
+                is_alive = yes
+                is_landed = yes
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_review_serial
+                var:zg361_review_serial > root.var:zg361_workforce_exit_fact_slot_cycle
+            }
+            has_variable = zg361_workforce_probation_fact_state
+            has_variable = zg361_workforce_probation_fact_awaiting_pip
+            has_variable = zg361_workforce_probation_fact_owner
+            has_variable = zg361_workforce_probation_fact_subject
+            has_variable = zg361_workforce_probation_fact_hire_cycle
+            has_variable = zg361_workforce_probation_fact_hire_case
+            has_variable = zg361_workforce_probation_fact_position_receipt_id
+            has_variable = zg361_workforce_probation_fact_position_receipt_hash
+            var:zg361_workforce_probation_fact_state = 2
+            var:zg361_workforce_probation_fact_awaiting_pip = 1
+            var:zg361_workforce_probation_fact_owner = scope:liege
+            var:zg361_workforce_probation_fact_subject = this
+            var:zg361_workforce_probation_fact_hire_cycle = var:zg361_workforce_exit_fact_slot_cycle
+            var:zg361_workforce_probation_fact_hire_case = var:zg361_workforce_exit_fact_slot_case
+            var:zg361_workforce_probation_fact_position_receipt_id = var:zg361_workforce_exit_fact_slot_appointment_receipt_id
+            var:zg361_workforce_probation_fact_position_receipt_hash = var:zg361_workforce_exit_fact_slot_appointment_receipt_hash
+            has_variable = zg361_we_m274_hired
+            has_variable = zg361_we_m274_hire_case
+            has_variable = zg361_we_m274_position_receipt_id
+            has_variable = zg361_we_m274_position_receipt_hash
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_hire_case = var:zg361_workforce_exit_fact_slot_case
+            var:zg361_we_m274_position_receipt_id = var:zg361_workforce_exit_fact_slot_appointment_receipt_id
+            var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_exit_fact_slot_appointment_receipt_hash
+            has_variable = zg361_we_m269_outcome_pending
+            has_variable = zg361_we_m269_outcome_settled
+            var:zg361_we_m269_outcome_pending = 1
+            var:zg361_we_m269_outcome_settled = 0
+            var:zg361_we_m269_write_owner = scope:liege
+            var:zg361_we_m269_write_subject = this
+            var:zg361_we_m269_write_cycle = var:zg361_workforce_exit_fact_slot_cycle
+            var:zg361_we_m269_write_case = var:zg361_workforce_exit_fact_slot_case
+            var:zg361_we_m269_write_state = 5
+            has_variable = zg361_we_formal_hc_active
+            has_variable = zg361_we_formal_hc_active_case
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = var:zg361_workforce_exit_fact_slot_case
+            has_variable = zg361_ch_hc_authorized
+            has_variable = zg361_ch_hc_available
+            has_variable = zg361_ch_hc_reserved
+            has_variable = zg361_ch_hc_occupied
+            has_variable = zg361_ch_hc_frozen
+            has_variable = zg361_ch_hc_reclaimed
+            var:zg361_ch_hc_authorized >= 1
+            var:zg361_ch_hc_available >= 0
+            var:zg361_ch_hc_reserved >= 0
+            var:zg361_ch_hc_occupied >= 1
+            var:zg361_ch_hc_frozen >= 0
+            var:zg361_ch_hc_reclaimed >= 0
+            var:zg361_ch_hc_authorized = {
+                value = var:zg361_ch_hc_available
+                add = var:zg361_ch_hc_reserved
+                add = var:zg361_ch_hc_occupied
+                add = var:zg361_ch_hc_frozen
+                add = var:zg361_ch_hc_reclaimed
+            }
+            OR = { NOT = { has_variable = zg361_workforce_exit_fact_exit_pending } var:zg361_workforce_exit_fact_exit_pending = 0 }
+            OR = { NOT = { has_variable = zg361_workforce_normal_exit_fact_pending } var:zg361_workforce_normal_exit_fact_pending = 0 }
+            OR = { NOT = { has_variable = zg361_workforce_exit_fact_cleanup_revoke_requested } var:zg361_workforce_exit_fact_cleanup_revoke_requested = 0 }
+            OR = {
+                NOT = { has_variable = zg361_workforce_exit_fact_role_failure_receipt_active }
+                AND = {
+                    var:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+                    var:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+                    var:zg361_workforce_exit_fact_role_failure_receipt_consumed = 1
+                }
+            }
+        }
+        zg361_workforce_exit_fact_clear_role_failure_receipt_effect = yes
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_active value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_published value = 0 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_consumed value = 0 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_subject value = this }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hire_cycle value = var:zg361_workforce_exit_fact_slot_cycle }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hire_case value = var:zg361_workforce_exit_fact_slot_case }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_state value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_id value = { value = var:zg361_workforce_exit_fact_slot_id multiply = 10 add = 2 } }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hash value = { value = var:zg361_workforce_exit_fact_slot_hash multiply = 100000 add = { value = var:zg361_workforce_exit_fact_slot_appointment_receipt_hash multiply = 10 } add = 2 } }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_reason_kind value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_exclusion_reason value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_former_slot_id value = var:zg361_workforce_exit_fact_slot_id }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_former_slot_hash value = var:zg361_workforce_exit_fact_slot_hash }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_position_type_id value = var:zg361_workforce_exit_fact_slot_position_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_carrier_type_id value = var:zg361_workforce_exit_fact_slot_carrier_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_id value = var:zg361_workforce_exit_fact_slot_appointment_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_appointment_receipt_hash value = var:zg361_workforce_exit_fact_slot_appointment_receipt_hash }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_native_end_reason value = 2 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_observed_cycle value = scope:liege.var:zg361_review_serial }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_formal_hc_active value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_authorized value = var:zg361_ch_hc_authorized }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_available value = var:zg361_ch_hc_available }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_reserved value = var:zg361_ch_hc_reserved }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_occupied value = var:zg361_ch_hc_occupied }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_frozen value = var:zg361_ch_hc_frozen }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_reclaimed value = var:zg361_ch_hc_reclaimed }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_hc_conservation_verified value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_sealed value = 1 } # commit last
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_status value = 1 }
+        trigger_event = { id = zg361workforceexitfact.9007 days = 1 }
+        debug_log = "ZG361WEF: exact native invalidation sealed as role/strategy exclusion source"
+    }
+    else = {
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_status value = 5 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_collision value = 1 }
+    }
+}
+
+zg361_workforce_exit_fact_verify_role_failure_publish_effect = {
+    if = {
+        limit = {
+            var:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_consumed = 0
+            var:zg361_workforce_exit_fact_role_failure_receipt_subject = this
+            var:zg361_workforce_probation_fact_state >= 3
+            var:zg361_workforce_probation_fact_published = 1
+            var:zg361_workforce_probation_fact_subject = this
+            var:zg361_workforce_probation_fact_source_kind = 4
+            var:zg361_workforce_probation_fact_outcome_quality = 4
+            var:zg361_workforce_probation_fact_outcome_exclusion_reason = 1
+            var:zg361_workforce_probation_fact_source_external_owner = var:zg361_workforce_exit_fact_role_failure_receipt_owner
+            var:zg361_workforce_probation_fact_source_external_subject = this
+            var:zg361_workforce_probation_fact_source_external_cycle = var:zg361_workforce_exit_fact_role_failure_receipt_observed_cycle
+            var:zg361_workforce_probation_fact_source_external_case = var:zg361_workforce_exit_fact_role_failure_receipt_hire_case
+            var:zg361_workforce_probation_fact_source_external_receipt_id = var:zg361_workforce_exit_fact_role_failure_receipt_id
+            var:zg361_workforce_probation_fact_source_external_receipt_hash = var:zg361_workforce_exit_fact_role_failure_receipt_hash
+        }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_published value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_receipt_consumed value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_status value = 4 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_workforce_exit_fact_role_failure_receipt_active = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_sealed = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_published = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_consumed = 1
+            var:zg361_workforce_exit_fact_role_failure_receipt_subject = this
+        }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_status value = 2 }
+    }
+    else = {
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_status value = 5 }
+        set_variable = { name = zg361_workforce_exit_fact_role_failure_publish_red value = 1 }
+    }
+}
+
 # Native receive callback for the long-lived career carrier.  It records only
 # callback observation; the already-authorized dispatch schedules the later
 # postcondition audit, so a missing callback becomes an explicit audit RED
@@ -79,6 +315,10 @@ zg361_workforce_exit_fact_on_native_slot_received_effect = {
 # (END_REASON=1) can later seal a PIP-exit receipt.  Invalidation/vacating and
 # package cleanup remain visible RED facts and can never masquerade as #277.
 zg361_workforce_exit_fact_on_native_slot_ended_effect = {
+    if = {
+        limit = { $END_REASON$ = 2 }
+        zg361_workforce_exit_fact_capture_role_failure_effect = yes
+    }
     set_variable = { name = zg361_workforce_exit_fact_slot_active value = 0 }
     set_variable = { name = zg361_workforce_exit_fact_native_last_end_reason value = $END_REASON$ }
     set_variable = { name = zg361_workforce_exit_fact_native_last_end_owner value = scope:liege }

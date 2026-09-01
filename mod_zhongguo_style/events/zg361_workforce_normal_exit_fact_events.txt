@@ -60,7 +60,10 @@ zg361workforcenormalexitfact.9103 = {
         var:zg361_workforce_normal_exit_fact_receipt_consumed = 1
         var:zg361_workforce_normal_exit_fact_receipt_subject = this
     }
-    immediate = { zg361_workforce_rehire_fact_capture_exit_effect = yes }
+    immediate = {
+        zg361_workforce_rehire_fact_capture_exit_effect = yes
+        zg361_workforce_probation_fact_publish_from_normal_exit_effect = yes
+    }
 }
 
 zg361workforcenormalexitfact.1 = {

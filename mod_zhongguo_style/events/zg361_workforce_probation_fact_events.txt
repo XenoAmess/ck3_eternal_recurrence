@@ -2,7 +2,7 @@
 namespace = zg361wpf
 
 # A retry never publishes truth.  It only replays the strict consumer
-# for a canonical fact that one of the two real producer hooks wrote.
+# for a canonical fact that one of the four real outcome hooks wrote.
 zg361wpf.1 = {
     type = character_event
     hidden = yes

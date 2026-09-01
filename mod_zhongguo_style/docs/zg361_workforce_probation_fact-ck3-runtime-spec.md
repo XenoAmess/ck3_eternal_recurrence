@@ -1,6 +1,6 @@
 # Workforce probation/PIP 结局事实 CK3 运行合同
 
-状态：**CK3 script static-ready；#274 arm、三代有界 ledger、signed attribution 普通 result 与 B2 PIP settlement 均已接入；尚无变更后的 loader / paused snapshot / 实机证据**。
+状态：**CK3 script static-ready；#274 arm、三代有界 ledger、signed attribution 普通 result、B2 PIP settlement、真实 #075 normal-exit attrition 与 native role invalidation exclusion 均已接入；尚无变更后的 loader / paused snapshot / 实机证据**。
 生成器常量固定为 `ck3-script-static-ready-not-live`；本包不得写成 fixture-live、production-live 或完整 #269。
 
 ## 1. 独立文件与责任边界
@@ -63,6 +63,7 @@ owner + subject + hire cycle/case + position receipt
 + result owner/subject/cycle/case/state/settlement receipt/grade/reason/KPI/rank
 + 三份 #267 sealed vote evidence + 三份 attribution bps + attribution receipt
 + 可选 PIP owner/subject/cycle/case/state/policy route/task/settlement/outcome/result + B2 case/closure receipt
++ 可选 external source owner/subject/cycle/case/state/receipt/reason/slot/hash/position/appointment/native-end/HC-conservation
 + source kind + quality + observed cycle + evidence id/hash/count + publication id/hash
 ```
 
@@ -99,7 +100,7 @@ expected receipt，不承载账本真值。既有单槽存档第一次再 arm �
 未命中 ledger 的任意新 tuple 仍必须先通过当前真实 #274 business object 与 native position receipt guard；ledger 不接受 caller
 自报 owner、case 或 hash，也不清洗旧 receipt 来伪造容量。
 
-## 3. 三个 ABI 与 scope 约定
+## 3. 五个 ABI 与 scope 约定
 
 所有 public hook 的**当前 scope (`this`) 必须是真实 hired subject**；`OWNER` 参数必须是真实 #274 owner。`ROOT` 被明确
 忽略，不参与身份、权限或幂等键。消费 legacy #269 前，本包通过 subject 上的 hidden character event 重新建立
@@ -197,6 +198,26 @@ PIP tuple 重算，不读取 source writer 同链刚写的 case hash。
 
 完全相同重放不发第二个 outcome；普通 result 已经发布后调用 PIP hook，或 PIP tuple 改写，均 RED 3001。
 
+### 3.4 已接 hook 3：真实正常离职 attrition
+
+`zg361workforcenormalexitfact.9103` 只在 #075 route-A receipt 已完成 funded payment、原生 career-slot revoke、实际
+离职、`occupied -> frozen`、formal HC `1 -> 0` 与 D+1 六分区守恒审计后调用无参数
+`zg361_workforce_probation_fact_publish_from_normal_exit_effect = yes`。该 hook 只接受 state 2 的同一 3.25 probation，逐项
+join signed attribution、旧 result、hire/appointment、former slot ID/hash、normal-exit owner/subject/cycle/case/id/hash、
+`consumed_operation=75`、`actual_exit=1`、native reason=1 与 HC conservation receipt。它发布 `source_kind=3 /
+quality=3 / exclusion_reason=0`，不把 failed PIP 或 caller bool 当 attrition，也不再次移动 HC 或金币。
+
+### 3.5 已接 hook 4：岗位/战略变更 exclusion
+
+长期 career-slot 的 `on_court_position_invalidated` 在清空 `slot_active` 前调用独立 capture。仅当 subject 仍 alive、没有
+#277/normal-exit/cleanup intent、同一 state-2 3.25 probation、#274 appointment、#269 pending 与 formal HC active tuple
+完整吻合时，才封 `role_failure_receipt_*`：owner/subject/hire cycle/case、slot ID/hash、appointment ID/hash、native
+reason=2、owner review observed cycle、完整六分区快照及 `authorized=sum(partitions)` 导出的
+`hc_conservation_verified=1`。probation hook 还会逐项重核当前六分区未漂移。D+1 hidden event 调无参数
+`zg361_workforce_probation_fact_publish_from_role_failure_effect = yes`，再隔一日核 canonical publish 后才消费 source receipt。
+该 hook 发布 `source_kind=4 / quality=4 / exclusion_reason=1`；它是 attribution exclusion，不是实际离职，formal HC 继续为 1，
+也不释放/冻结/重开 HC。
+
 ## 4. 结局映射与诚实缺口
 
 | 真实来源 | canonical quality | 说明 |
@@ -205,18 +226,21 @@ PIP tuple 重算，不读取 source writer 同链刚写的 case hash。
 | settled result grade 1（3.25） | 不发布 | 只进入 state 2；不能把 3.25 默认解释为失败或成功 |
 | B2 `outcome_code=1,state=3` | 1 / pass | 唯一 D+365 PIP settlement 明确毕业 |
 | B2 `outcome_code=2,state=4` | 2 / mismatch | 唯一 D+365 PIP settlement 明确失败；失败本身仍不是离职 |
+| #075 route-A canonical normal-exit receipt | 3 / attrition | 已实际离职且 HC 六分区守恒；不是 failed PIP |
+| native career-slot invalidated=`2` 的 exact role receipt | 4 / excluded | 岗位/战略变化排除归因；formal HC 保留，不是离职 |
 
-本包没有真实 attrition 或岗位/战略失效 producer，所以不发布 quality 3/4，也不借 PIP failure 伪造离职。对本包真实发布的
-pass/mismatch，`outcome_exclusion_reason=0` 是经过 source-kind guard 的 typed “not excluded” 结论，不是默认成功。
-未来若要发布 attrition/excluded，必须另接 Career/HC/native 的真实退出或岗位失效 case、receipt 与 owner/subject/cycle/case
-join；在该生产点出现前继续 fail-closed。
+quality 3/4 只由上述两个独立 producer 发布。canonical commit 逐项绑定 external source tuple 与 receipt/hash，并把 external
+receipt hash 纳入新 quality 的 canonical outcome hash；三代 ledger
+归档其完整 provenance。PIP failure 仍只能是 quality 2，不得因后续可能撤职而提前写 attrition。quality 4 必须带非零
+exclusion reason；其 route-A 归因输出为 0 bps，route-B 若仍选择全责上收则明确记录 `premature_blame_ignored_exclusion=1`。
 
 ## 5. Alias 物化、消费与双结算屏障
 
 只有 state 3 且下列全部成立时才物化 12 alias：
 
 1. owner/subject/hire cycle/case 与 #269 write/receipt 完全相等；
-2. #274 hired、formal HC lineage、#267 candidate 均仍指向本 subject/case；
+2. #274 hired、#267 candidate 均仍指向本 subject/case；quality 1/2/4 要求 formal HC active=1 且 case 一致，quality 3
+   则要求 formal HC=0 并重新 join normal-exit HC-conservation receipt；
 3. owner review serial 已到 probation due 与 observed cycle；
 4. 12 alias 要么全不存在，要么全都等于 canonical fact；部分残留或不同值拒绝；
 5. canonical outcome 还没有消费。
@@ -236,8 +260,9 @@ source 保留、state 不推进；hidden event 只重试消费，不发布或补
 
 ## 6. 已接线与待验收
 
-三个入口现均为 core-wired static-ready：#274 post-consume D+1 arm；canonical result → attribution adapter → 本包 result ABI；
-B2 PIP 的四段跨事件 handoff。第二和第三份 #274 可在不清洗旧 tombstone 的情况下自然 arm，因此 rehire 的不同 owner growth
+五个入口现均为 core-wired static-ready：#274 post-consume D+1 arm；canonical result → attribution adapter → 本包 result ABI；
+B2 PIP 的四段跨事件 handoff；normal-exit seal 后 D+1 attrition hook；native invalidation capture 后 D+1 publish、再 D+1 verify。
+第二和第三份 #274 可在不清洗旧 tombstone 的情况下自然 arm，因此 rehire 的不同 owner growth
 caller 不再被旧 owner 单槽挡住。ordinary #269 直接消费 detailed facts，WAIT/RED 不推进；route C 不发布 outcome，而由独立
 attribution cancel receipt 清槽。没有先冻结普通 3.25 result 与真实三维签署归因时，PIP handoff 仍只会 no-op，不能凭 B2
 settlement 反向制造试用期事实。
@@ -248,7 +273,7 @@ settlement 反向制造试用期事实。
 immutable provenance；仍须 MCP-first paused snapshot、存读档和自然多周期实机验收，不能把 static-ready 写成 live。
 
 下一步仍必须用新 loader 证明旧 12 个 `used but never set` 告警归零，再做 MCP-first paused snapshot：普通 pass、3.25 等待、PIP graduation、PIP failure、
-重放幂等、错 tuple RED、一次消费和 alias 清理。本文没有替代这些 live 证据。
+真实 normal-exit attrition、native role invalidation exclusion、重放幂等、错 tuple RED、一次消费和 alias 清理。本文没有替代这些 live 证据。
 
 L0 命令：
 

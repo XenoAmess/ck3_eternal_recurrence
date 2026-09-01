@@ -127,6 +127,11 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
   WAIT 只重排，RED 不推进；成功后先提交 `outcome_settled`，再由 D+1 seam 完成 probation consume receipt 与 state 5→6，
   第二帧只冻结 `m269_postsettlement_ready=1`。该 seam 是后续 #276/#277 的明确插入点，本工作包不提前派发退出链。
   旧 watchdog 首先识别完全相同的已结算 tuple 并返回幂等 status 2，不能在晚到重放时误报 2691。
+  canonical quality 现闭合 1..4：quality 3 只接受 #075 normal-exit 的 sealed/consumed/actual-exit/HC-conservation
+  receipt，要求 formal HC 已为 0；quality 4 只接受 long-lived native slot invalidation 的独立 role-failure receipt，
+  要求 formal HC 仍为 1 且 `exclusion_reason=1`。二者都逐项绑定 source receipt ID/hash/native reason。route A 对
+  quality 4 保留三份 signed evidence 但把责任 bps 与 total 置 0；route B 若仍上收全责，会显式记录
+  `premature_blame_ignored_exclusion=1`。consumer 本身不再次移动 HC。
 - #274 录用与 #275 拒绝是互斥结果。录用成功后内部写 #275 `hold=0` disposition，玩家不会看到矛盾的拒绝窗；
   未录用才展示 #275 A/B/C。真实拒绝后内部写 #269 `no_hire=1` disposition，不创建 probation watch，也不展示
   延迟质量回写窗。这两种 disposition 是可追溯的同案业务结论，不是 C debt，且资源变化为零。
@@ -365,7 +370,9 @@ RED `9098`。
    attribution arm/signature、hired disposition 与 #269 拆成逐帧 exact-ticket 链；两处 canonical result settlement 也只排 D+1
    relay，由 attribution adapter 发布详细签署事实。#269 ordinary success、route C cancel/debt 与 post-settlement seam 均已
    core-wired static-ready。#274 post-consume 同时调用长期 career-slot arm；B2 #075 A 先进入 normal-exit producer，
-   seal 后 D+1 捕获 exit。#269 post-settlement 在已有 exit history 时尝试 later-growth capture；完整 history 回到旧
+   seal 后 D+1 同时捕获 rehire exit history 并发布 #269 quality-3 attrition。未请求退出的 native invalidation 则在
+   callback 清 slot 前封 role-failure receipt，经 D+1 publish + D+1 verify 发布 quality-4 exclusion，且不释放 HC。
+   #269 post-settlement 在已有 exit history 时尝试 later-growth capture；完整 history 回到旧
    owner 后才 prepare #276，D+1 audit 再开放玩家/授权 AI，route A/B 又隔两帧 finalize。正常撤任 callback 有独立
    exact authorization branch，不再额外标记 unexpected native end。仍需 loader/paused live 证明事件顺序、WAIT/RED
    停链、幂等重放与 10000bp 守恒。
