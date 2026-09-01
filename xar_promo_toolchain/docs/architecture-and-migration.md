@@ -28,6 +28,22 @@ The dependency direction is downward. Generic code must not import a CK3 project
 
 The first concrete preset is `xar_promo.presets.zhongguo_361_phase2`. It reads the standard `mod_zhongguo_style/promo/phase2-promo-project.json`, derives CK3 span/mark requirements from configured chapters, fixes the `zh-CN-XiaoxiaoNeural` request, and validates the sequel's duration, historical-character provenance, and clean-UI attestations. It deliberately returns a non-release-ready capture candidate while the project-specific live matrix and full-duration human review remain outstanding. Rendering and the established release workflow still enter through `mod_zhongguo_style/tools/` during migration.
 
+When the phase-two capture is produced by the frozen seed runner, the project
+builder can bind its `--seed-preflight-report` to the runner's
+`--preflight-only` `preflight.json`.  The project layer verifies the report's
+schema, GREEN/no-launch invariants, immutable checks, and report-to-artifact
+root self-consistency, then records the report's exact bytes and SHA-256 in the
+candidate provenance (and preserves it as a raw run artifact).  The later
+capture may be a sibling attempt: when its timeline exposes the frozen source
+commit or clean-source/tree hash, those shared values are compared strictly;
+older timelines may supply the same identity through the capture root's
+GREEN `report.json` runtime projection (`cell.runtime_tree_before_sha256` and
+`product_runtime_manifest.tree_sha256`), which is read-only and hash-bound;
+conflicting sources are rejected.  If neither source exposes a shared value,
+the candidate carries a typed `capture_identity_unbound` blocker.
+This is an upstream input gate only; it does not promote a capture to live
+evidence or replace the runtime matrix and human review gates.
+
 ## Project configuration and run evidence are separate
 
 One checked-in `promo-project.json` describes intent. Each attempt receives its own `runs/<run-id>/run-manifest.json`, an immutable content-addressed snapshot of the then-current config, and evidence directories.

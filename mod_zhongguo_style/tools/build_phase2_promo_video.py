@@ -23,10 +23,10 @@ import mimetypes
 import os
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
-from typing import Callable, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
@@ -106,10 +106,746 @@ WIDTH = 1920
 HEIGHT = 1080
 FPS = 30
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
+_GIT_SHA = re.compile(r"^[0-9a-fA-F]{40}$")
+_SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
+
+# ``run_zg361_phase2_seed_capture.py --preflight-only`` is the upstream
+# no-launch gate for a phase-two seed.  Keep this contract local to the
+# project-specific builder: the reusable package must not know anything about
+# CK3 seed runners or their process boundary.
+SEED_PREFLIGHT_KIND = "zg361_phase2_seed_preflight"
+SEED_PREFLIGHT_MODE = "preflight-only"
+SEED_PREFLIGHT_RESULT = "GREEN"
+SEED_PREFLIGHT_STATUS = "preflight-ready"
+SEED_PREFLIGHT_ARTIFACT_ID = "phase2-seed-preflight"
+SEED_PREFLIGHT_CHECKS = (
+    "config",
+    "ck3_process_inventory",
+    "source_archive_equivalence",
+    "external_dependencies",
+    "bridge",
+    "static_preflight",
+    "product_fixture_projection",
+    "ck3_process_inventory_after",
+    "clean_source_unchanged",
+    "external_dependencies_unchanged",
+    "runtime_projection_unchanged",
+)
+SEED_PREFLIGHT_ENABLED_MODS = (
+    "mod/zg361_acceptance.mod",
+    "mod/zga_acceptance_fixture.mod",
+)
+CAPTURE_TIMELINE_RELATIVE_PATHS = (
+    Path("cell") / "promo" / "capture-timeline.json",
+    Path("promo") / "capture-timeline.json",
+    Path("capture-timeline.json"),
+)
+CAPTURE_REPORT_RELATIVE_PATHS = (
+    Path("report.json"),
+    Path("cell") / "report.json",
+)
 
 
 class Phase2PromoBuildError(PromoToolchainError):
     """The project-specific entry cannot honestly produce the requested state."""
+
+
+@dataclass(frozen=True, slots=True)
+class SeedPreflightBinding:
+    """Immutable identity of an upstream no-launch seed preflight report.
+
+    The report is deliberately retained as an input artifact rather than
+    treated as a live claim.  ``verify_unchanged`` is called after composition
+    so a producer cannot replace the gate while a long render is running.
+    """
+
+    path: Path
+    bytes: int
+    sha256: str
+    frozen_git_commit: str
+    artifact_root: Path
+    capture_root: Path
+    seed_identity: tuple[tuple[str, str], ...] = ()
+    capture_timeline_path: Path | None = None
+    capture_timeline_bytes: int | None = None
+    capture_timeline_sha256: str | None = None
+    capture_report_path: Path | None = None
+    capture_report_bytes: int | None = None
+    capture_report_sha256: str | None = None
+    capture_identity: tuple[tuple[str, str], ...] = ()
+    capture_identity_blocker: str | None = None
+
+    def to_mapping(self) -> dict[str, object]:
+        return {
+            "path": str(self.path),
+            "bytes": self.bytes,
+            "sha256": self.sha256,
+            "frozen_git_commit": self.frozen_git_commit,
+            "artifact_root": str(self.artifact_root),
+            "capture_root": str(self.capture_root),
+            "capture_timeline_path": (
+                None
+                if self.capture_timeline_path is None
+                else str(self.capture_timeline_path)
+            ),
+            "capture_timeline_bytes": self.capture_timeline_bytes,
+            "capture_timeline_sha256": self.capture_timeline_sha256,
+            "capture_report_path": (
+                None
+                if self.capture_report_path is None
+                else str(self.capture_report_path)
+            ),
+            "capture_report_bytes": self.capture_report_bytes,
+            "capture_report_sha256": self.capture_report_sha256,
+            "result": SEED_PREFLIGHT_RESULT,
+            "mode": SEED_PREFLIGHT_MODE,
+            "seed_identity": (
+                None if not self.seed_identity else dict(self.seed_identity)
+            ),
+            "capture_identity_status": (
+                "bound"
+                if self.capture_identity_blocker is None and self.capture_identity
+                else "unbound"
+            ),
+            "capture_identity": (
+                None if not self.capture_identity else dict(self.capture_identity)
+            ),
+            "capture_identity_blocker": self.capture_identity_blocker,
+        }
+
+    @property
+    def release_blockers(self) -> tuple[str, ...]:
+        if self.capture_identity_blocker is None:
+            return ()
+        return (self.capture_identity_blocker,)
+
+    def _bind_capture_source(
+        self,
+        identity: Mapping[str, str],
+        *,
+        source_kind: str,
+    ) -> "SeedPreflightBinding":
+        """Merge one capture provenance source and compare it to the seed."""
+
+        merged = dict(self.capture_identity)
+        for key, value in identity.items():
+            prior = merged.get(key)
+            if prior is not None and prior != value:
+                raise Phase2PromoBuildError(
+                    "phase-two capture source identity disagrees between "
+                    f"capture sources for {key}: {value} != {prior}"
+                )
+            merged[key] = value
+
+        expected = dict(self.seed_identity)
+        comparable = set(expected).intersection(merged)
+        for key in sorted(comparable):
+            if expected[key] != merged[key]:
+                raise Phase2PromoBuildError(
+                    "phase-two capture source identity does not match the bound "
+                    f"seed preflight for {key}: {merged[key]} != {expected[key]}"
+                )
+        blocker = None
+        if not comparable:
+            blocker = (
+                "capture_identity_unbound: capture "
+                f"{source_kind} does not expose a source_git_commit or "
+                "clean-source/tree hash shared with the seed preflight"
+            )
+        return replace(
+            self,
+            capture_identity=tuple(sorted(merged.items())),
+            capture_identity_blocker=blocker,
+        )
+
+    def bind_capture_timeline(self, timeline_path: str | Path) -> "SeedPreflightBinding":
+        """Bind the preflight to a later capture timeline by shared source identity.
+
+        A seed preflight and its eventual desktop capture intentionally live in
+        separate attempt directories.  The timeline is therefore bound by the
+        producer's frozen source commit/tree hashes, never by a directory
+        ancestry assumption.  Missing identity remains a typed candidate
+        blocker so an old capture can be retained without being called live.
+        """
+
+        timeline = Path(timeline_path).expanduser().resolve()
+        if not timeline.is_file():
+            return replace(
+                self,
+                capture_timeline_path=timeline,
+                capture_timeline_bytes=None,
+                capture_timeline_sha256=None,
+                capture_identity=(),
+                capture_identity_blocker=(
+                    "capture_identity_unbound: capture timeline is missing; "
+                    f"expected {timeline}"
+                ),
+            )
+        payload = _read_capture_timeline(timeline)
+        capture_identity = _capture_identity(payload)
+        try:
+            timeline_bytes = timeline.stat().st_size
+            timeline_sha256 = sha256_file(timeline)
+        except OSError as exc:
+            raise Phase2PromoBuildError(
+                f"could not stat phase-two capture timeline: {timeline}: {exc}"
+            ) from exc
+
+        binding = self._bind_capture_source(
+            capture_identity,
+            source_kind="timeline",
+        )
+        return replace(
+            binding,
+            capture_timeline_path=timeline,
+            capture_timeline_bytes=timeline_bytes,
+            capture_timeline_sha256=timeline_sha256,
+        )
+
+    def bind_capture_report(self, report_path: str | Path) -> "SeedPreflightBinding":
+        """Bind identity from the acceptance report when the timeline is sparse.
+
+        The full capture runner keeps runtime projection hashes in its
+        ``report.json`` (usually under ``cell``), while its timeline predates
+        that identity extension.  The report is read and hash-bound as a
+        second provenance source; it is never treated as gameplay evidence by
+        this method.
+        """
+
+        report = Path(report_path).expanduser().resolve()
+        if not report.is_file():
+            blocker = self.capture_identity_blocker
+            if not self.capture_identity:
+                blocker = (
+                    "capture_identity_unbound: capture report is missing; "
+                    f"expected {report}"
+                )
+            return replace(
+                self,
+                capture_report_path=report,
+                capture_report_bytes=None,
+                capture_report_sha256=None,
+                capture_identity_blocker=blocker,
+            )
+        payload = _read_capture_report(report)
+        capture_identity = _capture_identity(payload)
+        try:
+            report_bytes = report.stat().st_size
+            report_sha256 = sha256_file(report)
+        except OSError as exc:
+            raise Phase2PromoBuildError(
+                f"could not stat phase-two capture report: {report}: {exc}"
+            ) from exc
+        binding = self._bind_capture_source(
+            capture_identity,
+            source_kind="report",
+        )
+        return replace(
+            binding,
+            capture_report_path=report,
+            capture_report_bytes=report_bytes,
+            capture_report_sha256=report_sha256,
+        )
+
+    def verify_unchanged(self) -> None:
+        try:
+            current_bytes = self.path.stat().st_size
+            current_sha = sha256_file(self.path)
+        except OSError as exc:
+            raise Phase2PromoBuildError(
+                f"bound phase-two seed preflight report became unavailable: {self.path}"
+            ) from exc
+        if (current_bytes, current_sha) != (self.bytes, self.sha256):
+            raise Phase2PromoBuildError(
+                "bound phase-two seed preflight report changed during the attempt: "
+                f"{self.path}"
+            )
+        if self.capture_timeline_path is not None:
+            try:
+                timeline_bytes = self.capture_timeline_path.stat().st_size
+                timeline_sha = sha256_file(self.capture_timeline_path)
+            except OSError as exc:
+                raise Phase2PromoBuildError(
+                    "bound phase-two capture timeline became unavailable: "
+                    f"{self.capture_timeline_path}"
+                ) from exc
+            if (timeline_bytes, timeline_sha) != (
+                self.capture_timeline_bytes,
+                self.capture_timeline_sha256,
+            ):
+                raise Phase2PromoBuildError(
+                    "bound phase-two capture timeline changed during the attempt: "
+                    f"{self.capture_timeline_path}"
+                )
+        if self.capture_report_path is not None:
+            try:
+                report_bytes = self.capture_report_path.stat().st_size
+                report_sha = sha256_file(self.capture_report_path)
+            except OSError as exc:
+                raise Phase2PromoBuildError(
+                    "bound phase-two capture report became unavailable: "
+                    f"{self.capture_report_path}"
+                ) from exc
+            if (report_bytes, report_sha) != (
+                self.capture_report_bytes,
+                self.capture_report_sha256,
+            ):
+                raise Phase2PromoBuildError(
+                    "bound phase-two capture report changed during the attempt: "
+                    f"{self.capture_report_path}"
+                )
+
+
+def _read_seed_preflight_report(path: Path) -> dict[str, object]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except OSError as exc:
+        raise Phase2PromoBuildError(
+            f"could not read phase-two seed preflight report: {path}: {exc}"
+        ) from exc
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise Phase2PromoBuildError(
+            f"invalid phase-two seed preflight report: {path}: {exc}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise Phase2PromoBuildError("phase-two seed preflight report root must be an object")
+    return payload
+
+
+def _read_capture_timeline(path: Path) -> dict[str, object]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except OSError as exc:
+        raise Phase2PromoBuildError(
+            f"could not read phase-two capture timeline: {path}: {exc}"
+        ) from exc
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise Phase2PromoBuildError(
+            f"invalid phase-two capture timeline: {path}: {exc}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise Phase2PromoBuildError(
+            f"phase-two capture timeline root must be an object: {path}"
+        )
+    return payload
+
+
+def _read_capture_report(path: Path) -> dict[str, object]:
+    payload = _read_capture_timeline(path)
+    if payload.get("result") != "GREEN":
+        raise Phase2PromoBuildError(
+            f"phase-two capture report must be GREEN: {path}"
+        )
+    cell = payload.get("cell")
+    if isinstance(cell, Mapping) and cell.get("result") not in (None, "GREEN"):
+        raise Phase2PromoBuildError(
+            f"phase-two capture report cell must be GREEN: {path}"
+        )
+    return payload
+
+
+def _identity_value(
+    value: Any,
+    *,
+    key: str,
+    context: str,
+) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise Phase2PromoBuildError(
+            f"phase-two capture {context}.{key} must be a hexadecimal string"
+        )
+    normalized = value.strip()
+    pattern = _GIT_SHA if key == "source_git_commit" else _SHA256
+    if pattern.fullmatch(normalized) is None:
+        raise Phase2PromoBuildError(
+            f"phase-two capture {context}.{key} has a non-canonical hexadecimal value"
+        )
+    return normalized.lower() if key == "source_git_commit" else normalized.upper()
+
+
+def _capture_identity(payload: Mapping[str, Any]) -> dict[str, str]:
+    """Project optional source identity fields from capture evidence.
+
+    The recorder may expose identity directly, under the same nested
+    ``source_identity`` shape emitted by the seed preflight, or in the
+    acceptance report's runtime projection fields.  Only these explicitly
+    named fields are considered; unrelated report metadata cannot accidentally
+    satisfy the binding.
+    """
+
+    projected: dict[str, str] = {}
+
+    def add(key: str, value: Any, context: str) -> None:
+        normalized = _identity_value(value, key=key, context=context)
+        if normalized is None:
+            return
+        prior = projected.get(key)
+        if prior is not None and prior != normalized:
+            raise Phase2PromoBuildError(
+                f"phase-two capture source identity repeats {key} with conflicting values"
+            )
+        projected[key] = normalized
+
+    direct_aliases = {
+        "source_git_commit": ("source_git_commit", "source_commit", "git_head"),
+        "source_clean_tree_sha256": (
+            "source_clean_tree_sha256",
+            "clean_source_tree_sha256",
+            "source_tree_sha256",
+            "clean_source_sha256",
+        ),
+        "source_zip_logical_tree_sha256": (
+            "source_zip_logical_tree_sha256",
+            "source_zip_tree_sha256",
+        ),
+        "source_product_tree_sha256": ("source_product_tree_sha256",),
+        "source_fixture_tree_sha256": ("source_fixture_tree_sha256",),
+    }
+    for canonical, aliases in direct_aliases.items():
+        for alias in aliases:
+            if alias in payload:
+                add(canonical, payload.get(alias), "timeline")
+
+    source_identity = payload.get("source_identity")
+    if isinstance(source_identity, Mapping):
+        git = source_identity.get("git")
+        if isinstance(git, Mapping):
+            for alias in ("declared_sha", "observed_sha", "head", "sha256"):
+                if alias in git:
+                    add("source_git_commit", git.get(alias), "source_identity.git")
+        for alias in ("source_git_commit", "source_commit", "git_sha"):
+            if alias in source_identity:
+                add("source_git_commit", source_identity.get(alias), "source_identity")
+        for container_key, canonical in (
+            ("clean_source_tree", "source_clean_tree_sha256"),
+            ("clean_source_tree_before", "source_clean_tree_sha256"),
+            ("clean_source_tree_after", "source_clean_tree_sha256"),
+        ):
+            container = source_identity.get(container_key)
+            if isinstance(container, Mapping) and "tree_sha256" in container:
+                add(canonical, container.get("tree_sha256"), f"source_identity.{container_key}")
+        source_zip = source_identity.get("source_zip")
+        if isinstance(source_zip, Mapping):
+            add(
+                "source_zip_logical_tree_sha256",
+                source_zip.get("logical_tree_sha256"),
+                "source_identity.source_zip",
+            )
+
+    for container_key, canonical in (
+        ("clean_source_tree", "source_clean_tree_sha256"),
+        ("clean_source_tree_before", "source_clean_tree_sha256"),
+        ("clean_source_tree_after", "source_clean_tree_sha256"),
+    ):
+        container = payload.get(container_key)
+        if isinstance(container, Mapping) and "tree_sha256" in container:
+            add(canonical, container.get("tree_sha256"), f"timeline.{container_key}")
+
+    def project_runtime(container: Mapping[str, Any], context: str) -> None:
+        runtime = container.get("runtime")
+        if isinstance(runtime, Mapping):
+            for key in ("source_product_tree_sha256", "source_fixture_tree_sha256"):
+                if key in runtime:
+                    add(key, runtime.get(key), f"{context}.runtime")
+        for field in ("runtime_tree_before_sha256", "runtime_tree_after_sha256"):
+            runtime_trees = container.get(field)
+            if isinstance(runtime_trees, Mapping):
+                for name, canonical in (
+                    ("product", "source_product_tree_sha256"),
+                    ("fixture", "source_fixture_tree_sha256"),
+                ):
+                    if name in runtime_trees:
+                        add(canonical, runtime_trees.get(name), f"{context}.{field}")
+        product_manifest = container.get("product_runtime_manifest")
+        if isinstance(product_manifest, Mapping) and "tree_sha256" in product_manifest:
+            add(
+                "source_product_tree_sha256",
+                product_manifest.get("tree_sha256"),
+                f"{context}.product_runtime_manifest",
+            )
+
+    project_runtime(payload, "capture")
+    cell = payload.get("cell")
+    if isinstance(cell, Mapping):
+        project_runtime(cell, "capture.cell")
+        # A root acceptance report can carry the source identity in its cell's
+        # nested report while the timeline remains deliberately compact.
+        nested_identity = _capture_identity(cell)
+        for key, value in nested_identity.items():
+            add(key, value, "capture.cell")
+    return projected
+
+
+def _seed_identity(payload: Mapping[str, Any], frozen_git_commit: str) -> dict[str, str]:
+    """Project the source identity available in a GREEN seed preflight report."""
+
+    identity = {"source_git_commit": frozen_git_commit}
+    source_identity = payload.get("source_identity")
+    if isinstance(source_identity, Mapping):
+        clean_tree = source_identity.get("clean_source_tree")
+        if isinstance(clean_tree, Mapping):
+            value = clean_tree.get("tree_sha256")
+            if value is not None:
+                normalized = _identity_value(
+                    value,
+                    key="source_clean_tree_sha256",
+                    context="source_identity.clean_source_tree",
+                )
+                if normalized is not None:
+                    identity["source_clean_tree_sha256"] = normalized
+        source_zip = source_identity.get("source_zip")
+        if isinstance(source_zip, Mapping):
+            value = source_zip.get("logical_tree_sha256")
+            if value is not None:
+                normalized = _identity_value(
+                    value,
+                    key="source_zip_logical_tree_sha256",
+                    context="source_identity.source_zip",
+                )
+                if normalized is not None:
+                    identity["source_zip_logical_tree_sha256"] = normalized
+    bootstrap = payload.get("bootstrap")
+    if isinstance(bootstrap, Mapping):
+        trees = bootstrap.get("tree_sha256")
+        if isinstance(trees, Mapping):
+            for name, canonical in (
+                ("product", "source_product_tree_sha256"),
+                ("fixture", "source_fixture_tree_sha256"),
+            ):
+                value = trees.get(name)
+                if value is not None:
+                    normalized = _identity_value(value, key=canonical, context="bootstrap.tree_sha256")
+                    if normalized is not None:
+                        identity[canonical] = normalized
+    return identity
+
+
+def _capture_timeline_for_root(capture_root: Path) -> Path | None:
+    for relative in CAPTURE_TIMELINE_RELATIVE_PATHS:
+        candidate = (capture_root / relative).resolve()
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def _capture_report_for_root(capture_root: Path) -> Path | None:
+    for relative in CAPTURE_REPORT_RELATIVE_PATHS:
+        candidate = (capture_root / relative).resolve()
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def _require_green_check(value: Any, name: str) -> None:
+    """Accept the runner's scalar or evidence-object GREEN check form.
+
+    Most preflight checks are persisted as the scalar ``"GREEN"``.  The two
+    process-inventory checks are persisted as
+    ``{"result": "GREEN", "running": false}``; accepting that documented
+    shape keeps this gate bound to the real runner rather than only to a test
+    fixture.
+    """
+
+    if value == "GREEN":
+        return
+    if (
+        name in {"ck3_process_inventory", "ck3_process_inventory_after"}
+        and isinstance(value, Mapping)
+        and value.get("result") == "GREEN"
+    ):
+        if value.get("running") is not False:
+            raise Phase2PromoBuildError(
+                f"phase-two seed preflight check {name} must attest running=false"
+            )
+        return
+    raise Phase2PromoBuildError(
+        f"phase-two seed preflight check {name} must be GREEN"
+    )
+
+
+def load_seed_preflight_binding(
+    report_path: str | Path,
+    capture_root: str | Path,
+) -> SeedPreflightBinding:
+    """Load and verify a GREEN, no-launch seed preflight report.
+
+    This is intentionally a narrow *provenance* gate.  It does not make a
+    capture live or prove any gameplay claim; the CK3 adapter still verifies
+    the capture bundle independently.  A preflight attempt and its later
+    capture are allowed to be sibling directories (or to live on different
+    volumes); when the capture timeline exposes source identity, the shared
+    commit/tree hashes provide the binding.  Legacy timelines can instead be
+    supplemented by the capture root's GREEN ``report.json`` runtime hashes.
+    """
+
+    path = Path(report_path).expanduser().resolve()
+    if not path.is_file():
+        raise Phase2PromoBuildError(
+            f"phase-two seed preflight report does not exist: {path}"
+        )
+    capture = Path(capture_root).expanduser().resolve()
+    payload = _read_seed_preflight_report(path)
+
+    expected_scalars = {
+        "schema_version": 1,
+        "kind": SEED_PREFLIGHT_KIND,
+        "mode": SEED_PREFLIGHT_MODE,
+        "result": SEED_PREFLIGHT_RESULT,
+        "status": SEED_PREFLIGHT_STATUS,
+        "ok": True,
+        "readiness_scope": "frozen_inputs_and_projection_only",
+        "seed_ready": False,
+        "mcp_only": True,
+        "desktop_interaction": False,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "ck3_launch_attempted": False,
+        "launch_boundary": "not-crossed",
+        "native_session_started": False,
+        "driver_opened": False,
+    }
+    for key, expected in expected_scalars.items():
+        actual = payload.get(key)
+        if isinstance(expected, bool):
+            matches = actual is expected
+        elif isinstance(expected, int):
+            matches = type(actual) is int and actual == expected
+        else:
+            matches = actual == expected
+        if not matches:
+            raise Phase2PromoBuildError(
+                f"phase-two seed preflight report {key} must be {expected!r}"
+            )
+    if payload.get("failure_reason") is not None or payload.get("failure_evidence") is not None:
+        raise Phase2PromoBuildError(
+            "GREEN phase-two seed preflight report contains failure evidence"
+        )
+    if payload.get("traceback") is not None:
+        raise Phase2PromoBuildError(
+            "GREEN phase-two seed preflight report contains a traceback"
+        )
+
+    frozen_git_commit = payload.get("frozen_git_commit")
+    if not isinstance(frozen_git_commit, str) or _GIT_SHA.fullmatch(frozen_git_commit) is None:
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report frozen_git_commit must be a 40-character git SHA"
+        )
+    frozen_git_commit = frozen_git_commit.lower()
+    declared_identity = _capture_identity(payload).get("source_git_commit")
+    if declared_identity is not None and declared_identity != frozen_git_commit:
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight source_identity git SHA does not match frozen_git_commit"
+        )
+
+    paths = payload.get("paths")
+    if not isinstance(paths, dict):
+        raise Phase2PromoBuildError("phase-two seed preflight report paths must be an object")
+    raw_artifacts = paths.get("artifacts")
+    if not isinstance(raw_artifacts, str) or not Path(raw_artifacts).is_absolute():
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report paths.artifacts must be absolute"
+        )
+    artifact_root = Path(raw_artifacts).expanduser().resolve()
+    if not artifact_root.is_dir():
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report paths.artifacts must be an existing directory"
+        )
+    try:
+        path.relative_to(artifact_root)
+    except ValueError as exc:
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report must be located below paths.artifacts"
+        ) from exc
+    report_path_value = payload.get("report_path")
+    if not isinstance(report_path_value, str) or not Path(report_path_value).is_absolute():
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report report_path must be absolute"
+        )
+    declared_report_path = Path(report_path_value).expanduser().resolve()
+    if declared_report_path != path:
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report report_path does not bind the supplied file"
+        )
+    if declared_report_path != artifact_root / "preflight.json":
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report must be paths.artifacts/preflight.json"
+        )
+
+    checks = payload.get("checks")
+    if not isinstance(checks, dict):
+        raise Phase2PromoBuildError("phase-two seed preflight report checks must be an object")
+    for name in SEED_PREFLIGHT_CHECKS:
+        _require_green_check(checks.get(name), name)
+
+    bootstrap = payload.get("bootstrap")
+    if not isinstance(bootstrap, dict):
+        raise Phase2PromoBuildError("phase-two seed preflight report bootstrap is missing")
+    if bootstrap.get("projection_only") is not True or bootstrap.get("mounted") is not False:
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report bootstrap must attest projection_only=true and mounted=false"
+        )
+    enabled_mods = bootstrap.get("enabled_mods")
+    if not isinstance(enabled_mods, list) or tuple(enabled_mods) != SEED_PREFLIGHT_ENABLED_MODS:
+        raise Phase2PromoBuildError(
+            "phase-two seed preflight report must bind exactly product+fixture projections"
+        )
+
+    try:
+        size = path.stat().st_size
+        digest = sha256_file(path)
+    except OSError as exc:
+        raise Phase2PromoBuildError(
+            f"could not stat phase-two seed preflight report: {path}: {exc}"
+        ) from exc
+    binding = SeedPreflightBinding(
+        path=path,
+        bytes=size,
+        sha256=digest,
+        frozen_git_commit=frozen_git_commit,
+        artifact_root=artifact_root,
+        capture_root=capture,
+        seed_identity=tuple(
+            sorted(_seed_identity(payload, frozen_git_commit).items())
+        ),
+    )
+    timeline = _capture_timeline_for_root(capture)
+    capture_report = _capture_report_for_root(capture)
+    if timeline is None:
+        binding = replace(
+            binding,
+            capture_identity_blocker=(
+                "capture_identity_unbound: capture timeline was not found under "
+                f"{capture}"
+            ),
+        )
+    else:
+        binding = binding.bind_capture_timeline(timeline)
+    if capture_report is not None:
+        binding = binding.bind_capture_report(capture_report)
+        if timeline is None:
+            # A report can provide useful source identity, but the adapter
+            # still requires its canonical timeline before a candidate can be
+            # considered capture-ready.
+            binding = replace(
+                binding,
+                capture_identity_blocker=(
+                    "capture_identity_unbound: capture timeline was not found under "
+                    f"{capture}"
+                ),
+            )
+    elif binding.capture_identity_blocker is not None:
+        binding = replace(
+            binding,
+            capture_identity_blocker=(
+                f"{binding.capture_identity_blocker}; capture report was not "
+                f"found under {capture}"
+            ),
+        )
+    return binding
 
 
 @dataclass(frozen=True, slots=True)
@@ -119,6 +855,7 @@ class Phase2BuildOutcome:
     release_ready: bool
     blockers: tuple[str, ...]
     run_manifest_path: Path | None
+    seed_preflight: SeedPreflightBinding | None = None
 
 
 def _portable_id(value: str, *, prefix: str = "") -> str:
@@ -710,6 +1447,7 @@ def _result_mapping(
     result: PipelineResult,
     *,
     final_duration_seconds: float | None = None,
+    seed_preflight: SeedPreflightBinding | None = None,
 ) -> dict[str, object]:
     value: dict[str, object] = {
         "schema_version": 1,
@@ -722,6 +1460,9 @@ def _result_mapping(
         "artifacts": [artifact.to_audit_mapping() for artifact in result.artifacts],
         "audit_record": (
             None if result.audit_record is None else result.audit_record.to_mapping()
+        ),
+        "seed_preflight": (
+            None if seed_preflight is None else seed_preflight.to_mapping()
         ),
     }
     if result.failure is not None:
@@ -781,7 +1522,13 @@ def _write_entry_failure(workdir: Path, phase: str, error: Exception) -> Path:
     )
 
 
-def _persist_candidate_run(config_path: Path, result: PipelineResult, run_id: str) -> Path:
+def _persist_candidate_run(
+    config_path: Path,
+    result: PipelineResult,
+    run_id: str,
+    *,
+    seed_preflight: SeedPreflightBinding | None = None,
+) -> Path:
     if result.audit_record is None:
         raise Phase2PromoBuildError("successful build lacks a byte-bound deliverable record")
     run_path = start_run(
@@ -821,6 +1568,19 @@ def _persist_candidate_run(config_path: Path, result: PipelineResult, run_id: st
                 else artifact.path.name
             ),
             media_type=artifact.media_type,
+        )
+    if seed_preflight is not None:
+        # Keep the exact upstream gate in the candidate run's raw collection;
+        # this makes the provenance portable even after the external attempt
+        # directory is archived or moved.
+        preserve_artifact(
+            run_path,
+            seed_preflight.path,
+            artifact_id=SEED_PREFLIGHT_ARTIFACT_ID,
+            collection="raw",
+            role="preflight",
+            label="ZhongGuo 361 phase-two seed no-launch preflight",
+            media_type="application/json",
         )
     return run_path
 
@@ -883,6 +1643,7 @@ def execute(
     config_path = args.project_config.expanduser().resolve()
     capture_root = args.capture_root.expanduser().resolve()
     workdir = args.work_dir.expanduser().resolve()
+    seed_preflight: SeedPreflightBinding | None = None
     if not args.validate_only and workdir.exists():
         raise Phase2PromoBuildError(
             f"full build requires a new attempt directory; retain the existing one: {workdir}"
@@ -893,6 +1654,12 @@ def execute(
     try:
         config = load_phase2_project_config(config_path)
         _require_ready_authoring(config)
+        seed_preflight_path = getattr(args, "seed_preflight_report", None)
+        if seed_preflight_path is not None:
+            seed_preflight = load_seed_preflight_binding(
+                seed_preflight_path,
+                capture_root,
+            )
         selected_registry = _registry() if registry is None else registry
         adapter_factory = selected_registry.resolve_adapter(config.adapter)
         preset_factory = selected_registry.resolve_preset(config.preset)
@@ -919,6 +1686,34 @@ def execute(
         candidate = composer.capture_candidate
         if candidate is None:
             raise Phase2PromoBuildError("phase-two composer did not retain its capture candidate")
+        if seed_preflight is not None:
+            # The adapter is authoritative for the timeline location.  Rebind
+            # through it after composition so custom test seams and future
+            # capture layouts cannot accidentally rely on directory ancestry.
+            timeline = getattr(getattr(candidate.bundle, "timeline", None), "path", None)
+            if timeline is not None and (
+                seed_preflight.capture_timeline_path is None
+                or Path(timeline).expanduser().resolve()
+                != seed_preflight.capture_timeline_path
+            ):
+                seed_preflight = seed_preflight.bind_capture_timeline(timeline)
+            candidate_capture_root = getattr(candidate.bundle, "artifact_root", None)
+            report_roots = [capture_root]
+            if candidate_capture_root is not None:
+                report_roots.insert(0, Path(candidate_capture_root).expanduser().resolve())
+            capture_report = next(
+                (
+                    report
+                    for report_root in report_roots
+                    if (report := _capture_report_for_root(report_root)) is not None
+                ),
+                None,
+            )
+            if capture_report is not None and (
+                seed_preflight.capture_report_path is None
+                or capture_report != seed_preflight.capture_report_path
+            ):
+                seed_preflight = seed_preflight.bind_capture_report(capture_report)
         runner = run_invocation if pipeline_runner is None else pipeline_runner
         result = runner(
             invocation,
@@ -941,9 +1736,12 @@ def execute(
                             "final_duration_seconds",
                             None,
                         ),
+                        seed_preflight=seed_preflight,
                     ),
                 )
                 raise
+        if seed_preflight is not None:
+            seed_preflight.verify_unchanged()
     except Exception as exc:
         if not args.validate_only and not workdir.exists():
             _write_entry_failure(workdir, failure_phase, exc)
@@ -960,10 +1758,16 @@ def execute(
             _result_mapping(
                 result,
                 final_duration_seconds=final_duration_seconds,
+                seed_preflight=seed_preflight,
             ),
         )
         if result.succeeded:
-            run_path = _persist_candidate_run(config_path, result, args.run_id)
+            run_path = _persist_candidate_run(
+                config_path,
+                result,
+                args.run_id,
+                seed_preflight=seed_preflight,
+            )
 
     blockers: list[str] = []
     if not result.succeeded:
@@ -990,6 +1794,12 @@ def execute(
         raise Phase2PromoBuildError(f"invalid signed run manifest: {exc}") from exc
     if not human_approved:
         blockers.append("exact rendered bytes lack an approved full-duration human sign-off")
+    if seed_preflight is None:
+        blockers.append(
+            "phase-two seed preflight report is not bound; pass --seed-preflight-report before release"
+        )
+    else:
+        blockers.extend(seed_preflight.release_blockers)
     blockers.extend(candidate.blockers)
     blockers = list(dict.fromkeys(blockers))
     return Phase2BuildOutcome(
@@ -998,6 +1808,7 @@ def execute(
         release_ready=not blockers,
         blockers=tuple(blockers),
         run_manifest_path=run_path,
+        seed_preflight=seed_preflight,
     )
 
 
@@ -1015,6 +1826,14 @@ def parser() -> argparse.ArgumentParser:
         help="phase-two xar_promo ProjectConfig",
     )
     result.add_argument("--capture-root", type=Path, required=True)
+    result.add_argument(
+        "--seed-preflight-report",
+        type=Path,
+        help=(
+            "optional GREEN preflight.json from run_zg361_phase2_seed_capture.py "
+            "--preflight-only; required for a release-ready outcome"
+        ),
+    )
     result.add_argument("--work-dir", type=Path, required=True)
     result.add_argument(
         "--tts-cache",
@@ -1055,6 +1874,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"{label}: {'GREEN' if outcome.result.succeeded else 'RED'}")
     print(f"RELEASE: {'GREEN' if outcome.release_ready else 'RED'}")
     print(f"CAPTURE: {outcome.candidate.bundle.artifact_root}")
+    if outcome.seed_preflight is None:
+        print("PREFLIGHT: unbound")
+    else:
+        print(
+            "PREFLIGHT: "
+            f"{outcome.seed_preflight.path} "
+            f"sha256={outcome.seed_preflight.sha256}"
+        )
     print(f"WORK: {outcome.result.workdir}")
     if outcome.run_manifest_path is not None:
         print(f"UNREVIEWED RUN: {outcome.run_manifest_path}")

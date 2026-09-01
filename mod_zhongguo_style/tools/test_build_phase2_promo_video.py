@@ -79,6 +79,7 @@ def _args(
     workdir: Path,
     *,
     validate_only: bool,
+    seed_preflight_report: Path | None = None,
 ):
     values = [
         "--project-config",
@@ -88,9 +89,138 @@ def _args(
         "--work-dir",
         str(workdir),
     ]
+    if seed_preflight_report is not None:
+        values.extend(("--seed-preflight-report", str(seed_preflight_report)))
     if validate_only:
         values.append("--validate-only")
     return promo.parser().parse_args(values)
+
+
+def _write_seed_preflight_report(
+    root: Path,
+    *,
+    artifact_root: Path,
+    **overrides: object,
+) -> Path:
+    """Write a synthetic contract fixture; it is not CK3/live evidence."""
+
+    root.mkdir(parents=True, exist_ok=True)
+    checks = {
+        name: "GREEN" for name in promo.SEED_PREFLIGHT_CHECKS
+    }
+    # The production runner uses evidence objects for its before/after CK3
+    # process inventories; keep the fixture in that real wire shape.
+    checks["ck3_process_inventory"] = {"result": "GREEN", "running": False}
+    checks["ck3_process_inventory_after"] = {"result": "GREEN", "running": False}
+    source_clean_tree = "a" * 64
+    source_zip_tree = "b" * 64
+    product_tree = "c" * 64
+    fixture_tree = "d" * 64
+    payload: dict[str, object] = {
+        "schema_version": 1,
+        "kind": promo.SEED_PREFLIGHT_KIND,
+        "mode": promo.SEED_PREFLIGHT_MODE,
+        "result": promo.SEED_PREFLIGHT_RESULT,
+        "status": promo.SEED_PREFLIGHT_STATUS,
+        "ok": True,
+        "readiness_scope": "frozen_inputs_and_projection_only",
+        "seed_ready": False,
+        "frozen_git_commit": "d7a28713fca39b70121e47cfa0a9838bf244774c",
+        "paths": {"artifacts": str(artifact_root.resolve())},
+        "source_identity": {
+            "git": {
+                "declared_sha": "d7a28713fca39b70121e47cfa0a9838bf244774c",
+            },
+            "source_zip": {"logical_tree_sha256": source_zip_tree},
+            "clean_source_tree": {"tree_sha256": source_clean_tree},
+        },
+        "desktop_interaction": False,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "ck3_launch_attempted": False,
+        "launch_boundary": "not-crossed",
+        "native_session_started": False,
+        "driver_opened": False,
+        "checks": checks,
+        "bootstrap": {
+            "enabled_mods": list(promo.SEED_PREFLIGHT_ENABLED_MODS),
+            "projection_only": True,
+            "mounted": False,
+            "tree_sha256": {
+                "product": product_tree,
+                "fixture": fixture_tree,
+            },
+        },
+        "failure_reason": None,
+        "failure_evidence": None,
+        "traceback": None,
+    }
+    payload.update(overrides)
+    path = root / "preflight.json"
+    payload["report_path"] = str(path.resolve())
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def _write_capture_timeline(
+    root: Path,
+    *,
+    identity: dict[str, object] | None = None,
+) -> Path:
+    """Write a tiny source-identity projection, never a gameplay capture."""
+
+    path = root / "cell" / "promo" / "capture-timeline.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload: dict[str, object] = {
+        "schema": 2,
+        "source_git_commit": "d7a28713fca39b70121e47cfa0a9838bf244774c",
+        "source_clean_tree_sha256": "a" * 64,
+        "source_zip_logical_tree_sha256": "b" * 64,
+        "source_product_tree_sha256": "c" * 64,
+        "source_fixture_tree_sha256": "d" * 64,
+    }
+    if identity is not None:
+        payload.update(identity)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def _write_capture_report(root: Path, *, identity: dict[str, object] | None = None) -> Path:
+    """Write a synthetic GREEN acceptance report identity projection."""
+
+    path = root / "report.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload: dict[str, object] = {
+        "schema_version": 1,
+        "result": "GREEN",
+        "cell": {
+            "schema_version": 1,
+            "result": "GREEN",
+            "runtime_tree_before_sha256": {
+                "product": "c" * 64,
+                "fixture": "d" * 64,
+            },
+            "product_runtime_manifest": {"tree_sha256": "c" * 64},
+        },
+    }
+    if identity is not None:
+        cell = payload["cell"]
+        if isinstance(cell, dict):
+            cell.update(identity)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return path
 
 
 def _candidate(config, capture_root: Path, bundle=None):
@@ -211,6 +341,324 @@ class Phase2PromoEntryTests(unittest.TestCase):
         _FakeComposer.instances.clear()
         _RealDurationFakeComposer.instances.clear()
         _OverlongFakeComposer.instances.clear()
+
+    def test_seed_preflight_binding_requires_green_no_launch_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "seed-attempt" / "artifacts"
+            capture = root / "capture-attempt"
+            timeline = _write_capture_timeline(capture)
+            report = _write_seed_preflight_report(
+                artifacts,
+                artifact_root=artifacts,
+            )
+
+            binding = promo.load_seed_preflight_binding(report, capture)
+
+            self.assertEqual(report.resolve(), binding.path)
+            self.assertEqual(report.stat().st_size, binding.bytes)
+            self.assertEqual(promo.sha256_file(report), binding.sha256)
+            self.assertEqual(artifacts.resolve(), binding.artifact_root)
+            self.assertNotEqual(artifacts.resolve(), capture.resolve())
+            self.assertEqual(timeline.resolve(), binding.capture_timeline_path)
+            self.assertEqual("bound", binding.to_mapping()["capture_identity_status"])
+            binding.verify_unchanged()
+
+            timeline.write_text(
+                timeline.read_text(encoding="utf-8").replace(
+                    '"source_git_commit": "d7a28713fca39b70121e47cfa0a9838bf244774c"',
+                    '"source_git_commit": "' + ("e" * 40) + '"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "capture timeline changed during the attempt",
+            ):
+                binding.verify_unchanged()
+
+            # Recreate the valid report/binding before exercising report drift.
+            timeline.write_text(
+                json.dumps(
+                    {
+                        "schema": 2,
+                        "source_git_commit": "d7a28713fca39b70121e47cfa0a9838bf244774c",
+                        "source_clean_tree_sha256": "a" * 64,
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            binding = promo.load_seed_preflight_binding(report, capture)
+            report.write_text(
+                report.read_text(encoding="utf-8").replace(
+                    '"result": "GREEN"', '"result": "RED"', 1
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "changed during the attempt",
+            ):
+                binding.verify_unchanged()
+
+    def test_seed_preflight_binding_rejects_crossed_or_unrelated_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "seed-attempt" / "artifacts"
+            artifacts.mkdir(parents=True)
+            capture = root / "capture-attempt"
+            capture.mkdir()
+
+            for overrides, expected in (
+                ({"result": "RED"}, "result must be 'GREEN'"),
+                ({"launch_boundary": "crossed"}, "launch_boundary must be 'not-crossed'"),
+                ({"mcp_only": False}, "mcp_only must be True"),
+            ):
+                report = _write_seed_preflight_report(
+                    artifacts,
+                    artifact_root=artifacts,
+                    **overrides,
+                )
+                with self.assertRaisesRegex(promo.Phase2PromoBuildError, expected):
+                    promo.load_seed_preflight_binding(report, capture)
+
+            # Keep the minimal report/artifact-root consistency check while
+            # allowing the later capture attempt to live elsewhere.
+            declared_artifacts = root / "declared-artifacts"
+            declared_artifacts.mkdir()
+            mislocated_report = _write_seed_preflight_report(
+                root / "mislocated-report",
+                artifact_root=declared_artifacts,
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "located below paths.artifacts",
+            ):
+                promo.load_seed_preflight_binding(mislocated_report, capture)
+
+            malformed_report = _write_seed_preflight_report(
+                root / "malformed-report",
+                artifact_root=root / "malformed-report",
+            )
+            malformed_payload = json.loads(
+                malformed_report.read_text(encoding="utf-8")
+            )
+            malformed_payload.pop("report_path")
+            malformed_report.write_text(
+                json.dumps(malformed_payload, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "report_path must be absolute",
+            ):
+                promo.load_seed_preflight_binding(malformed_report, capture)
+
+            malformed_report = _write_seed_preflight_report(
+                root / "malformed-check",
+                artifact_root=root / "malformed-check",
+            )
+            malformed_payload = json.loads(
+                malformed_report.read_text(encoding="utf-8")
+            )
+            malformed_payload["checks"]["config"] = {"result": "GREEN"}
+            malformed_report.write_text(
+                json.dumps(malformed_payload, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "check config must be GREEN",
+            ):
+                promo.load_seed_preflight_binding(malformed_report, capture)
+
+            report = _write_seed_preflight_report(artifacts, artifact_root=artifacts)
+            unbound_capture = root / "other-attempt" / "capture"
+            unbound_capture.mkdir(parents=True)
+            binding = promo.load_seed_preflight_binding(report, unbound_capture)
+            self.assertEqual("unbound", binding.to_mapping()["capture_identity_status"])
+            self.assertTrue(
+                any("capture_identity_unbound" in item for item in binding.release_blockers)
+            )
+
+            mismatch_timeline = _write_capture_timeline(
+                unbound_capture,
+                identity={
+                    "source_git_commit": "e" * 40,
+                },
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "source identity does not match",
+            ):
+                promo.load_seed_preflight_binding(report, unbound_capture)
+            self.assertTrue(mismatch_timeline.is_file())
+
+    def test_capture_report_identity_binds_sparse_timeline(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "seed-attempt" / "artifacts"
+            capture = root / "capture-attempt"
+            timeline = _write_capture_timeline(capture)
+            timeline.write_text(
+                json.dumps({"schema": 2, "marks": []}, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            capture_report = _write_capture_report(capture)
+            report = _write_seed_preflight_report(
+                artifacts,
+                artifact_root=artifacts,
+            )
+
+            binding = promo.load_seed_preflight_binding(report, capture)
+
+            self.assertEqual("bound", binding.to_mapping()["capture_identity_status"])
+            self.assertEqual(capture_report.resolve(), binding.capture_report_path)
+            self.assertEqual(
+                capture_report.stat().st_size,
+                binding.capture_report_bytes,
+            )
+            self.assertEqual(
+                promo.sha256_file(capture_report),
+                binding.capture_report_sha256,
+            )
+            self.assertEqual(timeline.stat().st_size, binding.capture_timeline_bytes)
+            self.assertEqual(
+                promo.sha256_file(timeline),
+                binding.capture_timeline_sha256,
+            )
+            self.assertEqual(
+                {"C" * 64, "D" * 64},
+                {
+                    binding.to_mapping()["capture_identity"][
+                        "source_product_tree_sha256"
+                    ],
+                    binding.to_mapping()["capture_identity"][
+                        "source_fixture_tree_sha256"
+                    ],
+                },
+            )
+            binding.verify_unchanged()
+
+            capture_report.write_text(
+                capture_report.read_text(encoding="utf-8").replace(
+                    '"result": "GREEN"', '"result": "RED"', 1
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "capture report changed during the attempt",
+            ):
+                binding.verify_unchanged()
+
+            missing_report_capture = root / "sparse-without-report"
+            missing_timeline = _write_capture_timeline(missing_report_capture)
+            missing_timeline.write_text(
+                json.dumps({"schema": 2, "marks": []}, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            unbound = promo.load_seed_preflight_binding(
+                report,
+                missing_report_capture,
+            )
+            self.assertEqual(
+                "unbound",
+                unbound.to_mapping()["capture_identity_status"],
+            )
+            self.assertTrue(
+                any(
+                    "capture_identity_unbound" in item
+                    for item in unbound.release_blockers
+                )
+            )
+
+    def test_bound_seed_preflight_is_recorded_and_preserved_in_candidate_run(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config_path = _write_ready_config(root)
+            artifacts = root / "seed-attempt" / "artifacts"
+            capture = root / "capture-attempt"
+            _write_capture_timeline(capture)
+            report = _write_seed_preflight_report(
+                artifacts,
+                artifact_root=artifacts,
+            )
+            workdir = root / "candidate-attempt"
+            args = _args(
+                config_path,
+                capture,
+                workdir,
+                validate_only=False,
+                seed_preflight_report=report,
+            )
+
+            outcome = promo.execute(
+                args,
+                composer_factory=_RealDurationFakeComposer,
+                pipeline_runner=lambda _invocation, **_kwargs: _successful_result(
+                    workdir,
+                    load_phase2_project_config(config_path),
+                ),
+            )
+
+            self.assertIsNotNone(outcome.seed_preflight)
+            self.assertEqual(report.resolve(), outcome.seed_preflight.path)
+            self.assertNotIn(
+                "seed preflight report is not bound",
+                " ".join(outcome.blockers),
+            )
+            summary = json.loads(
+                (workdir / "phase2-pipeline-result.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                outcome.seed_preflight.to_mapping(),
+                summary["seed_preflight"],
+            )
+            loaded = load_document(outcome.run_manifest_path, check_files=True)
+            self.assertIsNotNone(loaded.run)
+            preflight_artifacts = [
+                artifact
+                for artifact in loaded.run.artifacts
+                if artifact.artifact_id == promo.SEED_PREFLIGHT_ARTIFACT_ID
+            ]
+            self.assertEqual(1, len(preflight_artifacts))
+            self.assertEqual("raw", preflight_artifacts[0].collection)
+            self.assertEqual("preflight", preflight_artifacts[0].role)
+
+    def test_unbound_seed_preflight_is_an_explicit_release_blocker(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config_path = _write_ready_config(root)
+            workdir = root / "candidate-attempt"
+            args = _args(
+                config_path,
+                root / "capture",
+                workdir,
+                validate_only=False,
+            )
+
+            outcome = promo.execute(
+                args,
+                composer_factory=_RealDurationFakeComposer,
+                pipeline_runner=lambda _invocation, **_kwargs: _successful_result(
+                    workdir,
+                    load_phase2_project_config(config_path),
+                ),
+            )
+
+            self.assertFalse(outcome.release_ready)
+            self.assertIsNone(outcome.seed_preflight)
+            self.assertIn(
+                "phase-two seed preflight report is not bound",
+                " ".join(outcome.blockers),
+            )
+            summary = json.loads(
+                (workdir / "phase2-pipeline-result.json").read_text(encoding="utf-8")
+            )
+            self.assertIsNone(summary["seed_preflight"])
 
     def test_checked_in_planned_project_is_red_without_pipeline_or_writes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

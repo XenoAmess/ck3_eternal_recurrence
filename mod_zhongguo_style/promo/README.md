@@ -143,6 +143,30 @@ capture bundle 后，才运行普通（非 `--validate-only`）候选构建。�
 `--work-dir`，并把该目录放在仓库外。下面的变量必须先替换成真实路径；占位字符串不会
 伪造 capture，也不会绕过入口校验：
 
+如果 capture 由天朝二期 seed runner 产生，先把同一 attempt 的
+`preflight.json` 作为 `--seed-preflight-report` 传给 builder：
+
+```powershell
+$seedPreflight = "C:\captures\zhongguo-361-phase2\seed-attempt\artifacts\preflight.json"
+```
+
+builder 会只接受 `run_zg361_phase2_seed_capture.py --preflight-only` 产出的
+schema-v1 `GREEN/preflight-ready` 报告，并重新核对 no-launch、MCP-only、零 OCR/图像/坐标、
+projection-only 和全部 immutable checks。报告声明的 `paths.artifacts` 必须存在，且
+`report_path` 必须精确指向该目录下的 `preflight.json`；它不要求后续 `--capture-root` 位于同一目录或其子树。
+入口读取时记录报告 bytes/SHA-256，并在流水线结束前再次核对；若 capture timeline 提供
+`source_git_commit` 或 clean-source/tree hash，则与 preflight 的 source identity 严格比对；
+旧版 timeline 没有这些字段时，入口只读同一 capture root 的 GREEN `report.json`（含
+`cell.runtime_tree_before_sha256`/`product_runtime_manifest.tree_sha256`）作为补充 identity，
+并同样记录 bytes/SHA-256。两处 identity 只要有冲突即拒绝，全部缺少时仍保留候选但加入
+`capture_identity_unbound` blocker（timeline 或补充 `report.json` 缺失时也会明确记录）。绑定报告会以
+`phase2-seed-preflight` raw artifact 复制进候选 run，同时写入 `phase2-pipeline-result.json`
+的 `seed_preflight` provenance。它只证明上游输入门已通过，不把 capture 变成 live、也不替代
+项目 runtime matrix 或人工审阅。
+
+没有传该参数时仍允许保留候选（便于迁移旧 capture），但结果会明确加入
+`phase-two seed preflight report is not bound` blocker，因而不能成为 release-ready。
+
 ```powershell
 $python = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
 $config = (Resolve-Path "mod_zhongguo_style\promo\phase2-promo-project.json").Path
@@ -155,6 +179,7 @@ $run = Join-Path $env:TEMP "xar-phase2-candidate-$stamp"
 & $python mod_zhongguo_style\tools\build_phase2_promo_video.py `
   --project-config $config `
   --capture-root $greenCapture `
+  --seed-preflight-report $seedPreflight `
   --work-dir (Join-Path $run "attempt") `
   --tts-cache $ttsCache `
   --ffmpeg $ffmpegExe `
