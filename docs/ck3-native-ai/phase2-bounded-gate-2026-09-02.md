@@ -314,3 +314,21 @@ parser `76/23,831,410/0` is GREEN, while validator/root scan remain the
 bounded schema-only `RED/233,014`; CK3 was not launched. The temporary schema
 branch was merged and removed promptly, leaving the open_kaishek mainline
 with only its pre-existing user branches.
+
+## 2026-09-02 05:20 open_kaishek `has_perk` schema slice
+
+`open_kaishek` was fast-forwarded to
+`a6705894bb41d87aa5e53530d77910369c6eb209`; the temporary schema branch was
+merged and removed immediately. The exact-build-backed scalar character
+trigger `has_perk` now has profile and validator regression coverage. Its CLI
+JAR SHA-256 is
+`392B130B7F6DCB516627EAE284CF673C7F109D6857A5C6388AE56F02EC0BF1AD`.
+
+The retained preflight artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-has-perk-preflight-20260902.json`
+(SHA-256
+`F37560B6C0B3113C3B6F0EDE04368E9C5B57BE55F473938DCE7A2D355787E8E9`)
+reports parser `76/23,831,410/0` GREEN and validator/root scan
+`RED/233,014`; CK3 was not launched. The phase2 corpus contains no
+`has_perk` use, so this slice does not reduce the current validator boundary
+or change the frozen loader diagnosis. No new CK3 gate is scheduled.

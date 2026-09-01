@@ -69,13 +69,13 @@ coverage, a paused snapshot, or a production-live result.
 ## Current accelerator provenance (2026-09-02)
 
 The canonical accelerator is now `open_kaishek` `main` at
-`450b559c892228b6ab650c6fa68bece6defdfec7`, with the rebuilt CLI JAR pinned
+`a6705894bb41d87aa5e53530d77910369c6eb209`, with the rebuilt CLI JAR pinned
 to SHA-256
-`06E71C403924412A32EE307149AF6DB5E4A40886064263CF1FFDDE5615538C4D`.
+`392B130B7F6DCB516627EAE284CF673C7F109D6857A5C6388AE56F02EC0BF1AD`.
 The latest direct phase2 preflight artifact is
-`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-government-flag-preflight-20260902.json`
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-has-perk-preflight-20260902.json`
 (SHA-256
-`6C4BEAC7FF87CA29B9481FB247CC4AD1E02350D279D9AA644C9A5D6661E28FDA`):
+`F37560B6C0B3113C3B6F0EDE04368E9C5B57BE55F473938DCE7A2D355787E8E9`):
 parser `76/23,831,410/0` is GREEN, while the validator remains the bounded
 schema-only `RED/233,014`; CK3 was not started. The short-lived schema branch
 was merged and removed promptly. This evidence updates only offline

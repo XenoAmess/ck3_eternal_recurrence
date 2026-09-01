@@ -241,3 +241,17 @@ Parser is GREEN (`76` files, `23,831,410` bytes, zero diagnostics); the
 validator is the known bounded schema-only `RED/233,014`, and no CK3 process
 was started. This improves the next G2 preflight path only; it does not create
 the missing paused semantic-ready truce artifact or change `GEN-034`.
+
+## 2026-09-02 accelerator follow-up
+
+`open_kaishek` is now on mainline
+`a6705894bb41d87aa5e53530d77910369c6eb209` after the temporary
+`has_perk` schema branch was merged and deleted. The rebuilt JAR SHA-256 is
+`392B130B7F6DCB516627EAE284CF673C7F109D6857A5C6388AE56F02EC0BF1AD`.
+The corresponding offline preflight artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-has-perk-preflight-20260902.json`
+(SHA-256
+`F37560B6C0B3113C3B6F0EDE04368E9C5B57BE55F473938DCE7A2D355787E8E9`)
+is parser GREEN (`76/23,831,410/0`) with the expected bounded validator
+`RED/233,014`; CK3 was not started. This schema increment does not change the
+G2 semantic-ready gate, action-step requirement, or `GEN-034` status.
