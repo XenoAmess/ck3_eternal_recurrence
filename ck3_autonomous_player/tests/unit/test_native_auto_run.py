@@ -77,6 +77,7 @@ class _NativeAutoRunHarness:
         cold_start: bool = False,
         session_exits_immediately: bool = False,
         fail_save_checkpoint: bool = False,
+        persistent_unavailable: bool = False,
     ) -> None:
         self.spec = spec
         self.actions = list(actions)
@@ -84,6 +85,7 @@ class _NativeAutoRunHarness:
         self.cold_start = cold_start
         self.session_exits_immediately = session_exits_immediately
         self.fail_save_checkpoint = fail_save_checkpoint
+        self.persistent_unavailable = persistent_unavailable
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -213,6 +215,11 @@ class _NativeAutoRunHarness:
         }
 
     def snapshot(self) -> dict[str, object]:
+        if self.persistent_unavailable:
+            self.events.append("snapshot_unavailable")
+            raise BridgeUnavailableError(
+                "native game state is not available yet; fixture persistent"
+            )
         map_ready = True
         if self.initial_unready_snapshot:
             self.initial_unready_snapshot = False
@@ -807,13 +814,45 @@ class _NativeAutoRunHarness:
         )
 
     def _diagnostics(self) -> dict[str, object]:
+        if self.persistent_unavailable:
+            mailbox = {
+                "installed": False,
+                "stop": False,
+                "failure": 0,
+                "ready": False,
+                "executor_submission_enabled": False,
+                "date_raw": 0,
+                "paused": False,
+                "executed_requests": 0,
+                "pump_epochs": 0,
+                "consecutive_verified": 0,
+            }
+            semantic_state_available = False
+            rejected_state_snapshot_count = 7
+            snapshot_publish_diagnostic_count = 11
+        else:
+            mailbox = {
+                "installed": True,
+                "stop": False,
+                "failure": 0,
+                "ready": True,
+                "executor_submission_enabled": True,
+                "date_raw": self.heartbeat_date_raw,
+                "paused": True,
+                "executed_requests": len(self.history),
+            }
+            semantic_state_available = True
+            rejected_state_snapshot_count = 0
+            snapshot_publish_diagnostic_count = 0
         return {
             "protocol_version": 1,
             "pipe_name": r"\\.\pipe\native-auto-run-test",
             "connected": True,
             "connection_generation": self.connection_generation,
             "bridge_pid": self.bridge_pid,
-            "semantic_state_available": True,
+            "semantic_state_available": semantic_state_available,
+            "rejected_state_snapshot_count": rejected_state_snapshot_count,
+            "snapshot_publish_diagnostic_count": snapshot_publish_diagnostic_count,
             "transport_fatal_error": None,
             "hello": {
                 "type": "hello",
@@ -831,16 +870,7 @@ class _NativeAutoRunHarness:
                 "sequence": self.native_revision,
                 "startup_failure_containment_enabled": False,
                 "startup_particle2_stage_recorder_enabled": False,
-                "main_thread_query_mailbox_v1": {
-                    "installed": True,
-                    "stop": False,
-                    "failure": 0,
-                    "ready": True,
-                    "executor_submission_enabled": True,
-                    "date_raw": self.heartbeat_date_raw,
-                    "paused": True,
-                    "executed_requests": len(self.history),
-                },
+                "main_thread_query_mailbox_v1": mailbox,
             },
         }
 
@@ -917,6 +947,7 @@ class NativeAutoRunTests(unittest.TestCase):
         checkpoint_every_eligible_advances: int = 3,
         session_exits_immediately: bool = False,
         fail_save_checkpoint: bool = False,
+        persistent_unavailable: bool = False,
         allow_stationary_objective_hold_sentinel_canary: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
@@ -927,6 +958,7 @@ class NativeAutoRunTests(unittest.TestCase):
             in {"one_generation", "next_episode"},
             session_exits_immediately=session_exits_immediately,
             fail_save_checkpoint=fail_save_checkpoint,
+            persistent_unavailable=persistent_unavailable,
         )
         with mock.patch.object(
             native_auto_run_module,
@@ -1917,6 +1949,58 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIn(
             "managed native-session exited before auto-run stop",
             report["first_blocker"]["message"],
+        )
+
+    def test_persistent_readiness_unavailable_preserves_diagnostics(self) -> None:
+        report, harness = self._run(
+            ["advance"],
+            initial_unready_snapshot=False,
+            persistent_unavailable=True,
+            timeout_seconds=0.4,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIsNone(report["readiness"])
+        self.assertEqual(report["first_blocker"]["stage"], "readiness")
+        self.assertEqual(report["first_blocker"]["kind"], "readiness_failed")
+        self.assertEqual(
+            report["first_blocker"]["status"], report["status"]
+        )
+        self.assertEqual(report["auto_run"]["attempted_turns"], 0)
+        self.assertNotIn("auto_turn:advance", harness.events)
+        self.assertTrue(report["cleanup"]["ok"])
+
+        diagnostics = report["readiness_diagnostics"]
+        self.assertIsInstance(diagnostics, dict)
+        self.assertEqual(diagnostics["transport_ready"], True)
+        self.assertEqual(diagnostics["snapshot"], True)
+        self.assertEqual(diagnostics["diagnostics"]["connected"], True)
+        self.assertEqual(
+            diagnostics["diagnostics"]["connection_generation"], 1
+        )
+        self.assertEqual(
+            diagnostics["diagnostics"]["semantic_state_available"], False
+        )
+        self.assertEqual(
+            diagnostics["diagnostics"]["rejected_state_snapshot_count"], 7
+        )
+        self.assertEqual(
+            diagnostics["diagnostics"]["snapshot_publish_diagnostic_count"],
+            11,
+        )
+        self.assertEqual(
+            diagnostics["diagnostics"]["last_heartbeat"]["sequence"], 1
+        )
+        self.assertEqual(
+            diagnostics["diagnostics"]["last_heartbeat"][
+                "main_thread_query_mailbox_v1"
+            ]["installed"],
+            False,
+        )
+        self.assertEqual(
+            report["first_blocker"]["readiness_diagnostics"], diagnostics
         )
 
     def test_periodic_checkpoint_failure_names_checkpoint_attempt(self) -> None:

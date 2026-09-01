@@ -79,6 +79,21 @@ _PENDING_INTERACTION_REPLY_STATUSES = {
 }
 
 
+class NativeReadinessTimeoutError(AgentError):
+    """A native readiness wait expired with its last bridge evidence."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        readiness_diagnostics: dict[str, object] | None,
+        last_observation: dict[str, object] | None,
+    ) -> None:
+        super().__init__(message)
+        self.readiness_diagnostics = copy.deepcopy(readiness_diagnostics)
+        self.last_observation = copy.deepcopy(last_observation)
+
+
 def native_auto_run(
     spec: EnvironmentSpec,
     *,
@@ -188,6 +203,7 @@ def native_auto_run(
     primary_error: str | None = None
     current_attempt: dict[str, object] | None = None
     first_failure: dict[str, object] | None = None
+    readiness_timeout_diagnostics: dict[str, object] | None = None
 
     def capture_first_failure(
         *,
@@ -277,6 +293,18 @@ def native_auto_run(
             ),
             "cleanup": None,
         }
+        failure_readiness_diagnostics = getattr(
+            error, "readiness_diagnostics", None
+        )
+        if isinstance(failure_readiness_diagnostics, dict):
+            first_failure["readiness_diagnostics"] = copy.deepcopy(
+                failure_readiness_diagnostics
+            )
+        failure_last_observation = getattr(error, "last_observation", None)
+        if isinstance(failure_last_observation, dict):
+            first_failure["last_readiness_observation"] = copy.deepcopy(
+                failure_last_observation
+            )
 
     def mark_checkpoint_submit_started() -> None:
         if isinstance(current_attempt, dict):
@@ -987,6 +1015,7 @@ def native_auto_run(
                     "checkpoint"
                 )
     except KeyboardInterrupt as error:
+        status = "operator_stop"
         capture_first_failure(
             stage=(
                 str(current_attempt.get("stage"))
@@ -997,9 +1026,12 @@ def native_auto_run(
             message="operator requested stop",
             error=error,
         )
-        status = "operator_stop"
         primary_error = "KeyboardInterrupt: operator requested stop"
     except BaseException as error:
+        if isinstance(error, NativeReadinessTimeoutError):
+            readiness_timeout_diagnostics = copy.deepcopy(
+                error.readiness_diagnostics
+            )
         if isinstance(current_attempt, dict):
             if isinstance(error, BridgeUnavailableError):
                 error_plan = getattr(error, "plan", None)
@@ -1025,6 +1057,10 @@ def native_auto_run(
                 else "startup"
             )
         )
+        if status in {"starting", "running"}:
+            status = (
+                "session_exit" if session_done.is_set() else "stopped_on_error"
+            )
         capture_first_failure(
             stage=failure_stage,
             kind=(
@@ -1035,10 +1071,6 @@ def native_auto_run(
             message=str(error),
             error=error,
         )
-        if status in {"starting", "running"}:
-            status = (
-                "session_exit" if session_done.is_set() else "stopped_on_error"
-            )
         primary_error = f"{type(error).__name__}: {error}"
     finally:
         stop_started = time.monotonic()
@@ -1231,6 +1263,7 @@ def native_auto_run(
         },
         "identity": _identity(config, readiness, spec),
         "readiness": _public_binding(readiness) if readiness is not None else None,
+        "readiness_diagnostics": readiness_timeout_diagnostics,
         "auto_run": {
             "attempted_turns": attempted_turns,
             "successful_turns": sum(
@@ -1286,17 +1319,23 @@ def _wait_for_readiness(
     stable_since: float | None = None
     last_reason = "native DLL has not connected"
     last_observation: dict[str, object] | None = None
+    last_readiness_diagnostics: dict[str, object] | None = None
     while True:
         if session_done.is_set():
             raise AgentError(_premature_session_exit(session_state))
         now = time.monotonic()
         if now >= deadline:
-            raise AgentError(
+            raise NativeReadinessTimeoutError(
                 "native readiness timed out: "
-                f"{last_reason}; last={last_observation!r}"
+                f"{last_reason}; last={last_observation!r}",
+                readiness_diagnostics=last_readiness_diagnostics,
+                last_observation=last_observation,
             )
         try:
             capabilities = driver.capabilities()
+            last_readiness_diagnostics = _compact_readiness_diagnostics(
+                capabilities
+            )
             diagnostics = capabilities.get("diagnostics")
             _raise_fatal_diagnostics(diagnostics)
             snapshot = _runner_semantic_snapshot(driver)
@@ -1304,6 +1343,9 @@ def _wait_for_readiness(
             # capabilities must be read again so the gate observes that
             # committed binding without copying transcript evidence.
             capabilities = driver.capabilities()
+            last_readiness_diagnostics = _compact_readiness_diagnostics(
+                capabilities
+            )
             ready, reason, observation = _readiness_observation(
                 capabilities,
                 snapshot,
@@ -1335,6 +1377,103 @@ def _wait_for_readiness(
             stable_key = None
             stable_since = None
         time.sleep(min(poll_interval_seconds, max(0.0, deadline - now)))
+
+
+def _compact_readiness_diagnostics(
+    capabilities: object,
+) -> dict[str, object]:
+    """Retain bounded bridge evidence when semantic readiness never arrives.
+
+    A timeout can occur before a semantic snapshot exists, so the normal
+    ``_compact_binding`` path has nothing to serialize.  Keep only stable
+    transport/heartbeat fields here; full hello capability lists and native
+    snapshots are intentionally excluded from the failure report.
+    """
+    if not isinstance(capabilities, dict):
+        return {
+            "mode": None,
+            "backend_id": None,
+            "transport_ready": None,
+            "snapshot": None,
+            "diagnostics": None,
+        }
+    diagnostics = capabilities.get("diagnostics")
+    if not isinstance(diagnostics, dict):
+        return {
+            "mode": capabilities.get("mode"),
+            "backend_id": capabilities.get("backend_id"),
+            "transport_ready": capabilities.get("transport_ready"),
+            "snapshot": capabilities.get("snapshot"),
+            "diagnostics": None,
+        }
+    hello = diagnostics.get("hello")
+    heartbeat = diagnostics.get("last_heartbeat")
+    mailbox = (
+        heartbeat.get("main_thread_query_mailbox_v1")
+        if isinstance(heartbeat, dict)
+        else None
+    )
+    hello_summary = (
+        {
+            "ck3_build_match": hello.get("ck3_build_match"),
+            "game_adapter_id": hello.get("game_adapter_id"),
+            "game_adapter_status": hello.get("game_adapter_status"),
+            "executable_sha256": hello.get("executable_sha256"),
+        }
+        if isinstance(hello, dict)
+        else None
+    )
+    heartbeat_summary = (
+        {
+            "sequence": heartbeat.get("sequence"),
+            "pid": heartbeat.get("pid"),
+            "main_thread_query_mailbox_v1": (
+                {
+                    key: mailbox.get(key)
+                    for key in (
+                        "installed",
+                        "stop",
+                        "failure",
+                        "pump_epochs",
+                        "consecutive_verified",
+                        "ready",
+                        "executor_submission_enabled",
+                        "date_raw",
+                        "paused",
+                        "executed_requests",
+                    )
+                }
+                if isinstance(mailbox, dict)
+                else None
+            ),
+        }
+        if isinstance(heartbeat, dict)
+        else None
+    )
+    return {
+        "mode": capabilities.get("mode"),
+        "backend_id": capabilities.get("backend_id"),
+        "transport_ready": capabilities.get("transport_ready"),
+        "snapshot": capabilities.get("snapshot"),
+        "diagnostics": {
+            "connected": diagnostics.get("connected"),
+            "connection_generation": diagnostics.get("connection_generation"),
+            "bridge_pid": diagnostics.get("bridge_pid"),
+            "semantic_state_available": diagnostics.get(
+                "semantic_state_available"
+            ),
+            "rejected_state_snapshot_count": diagnostics.get(
+                "rejected_state_snapshot_count"
+            ),
+            "snapshot_publish_diagnostic_count": diagnostics.get(
+                "snapshot_publish_diagnostic_count"
+            ),
+            "transport_fatal_error": diagnostics.get("transport_fatal_error"),
+            "last_error": diagnostics.get("last_error"),
+            "hello": hello_summary,
+            "last_heartbeat": heartbeat_summary,
+        },
+    }
 
 
 def _readiness_observation(
