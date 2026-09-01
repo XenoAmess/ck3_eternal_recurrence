@@ -194,7 +194,7 @@ bounded profile validator remained the known schema-only `RED` boundary;
 and JAR SHA
 `F01C9D5FD0095960AC58E20031F22A3A28F0AFA5B0716C4D3DBECE49583C8A1A`.
 The retained preflight artifact is
-`...\loader-shell-gate-20260902\artifacts4-live\open_kaishek-preflight.json`
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-shell-gate-20260902\artifacts4-live\open_kaishek-preflight.json`
 with SHA-256
 `9484DD60C6B0A170F5394455D68199A77740FF4A4833DCC44DBFB7F4338EEA8D`.
 
