@@ -73,13 +73,14 @@ or any surrender/white-peace write.  Until that artifact exists, retain
 ## Executable open_kaishek preflight entry
 
 `open_kaishek` is an optional offline accelerator, not a CK3 readiness gate.
-The canonical checkout is `Z:\workspace\open_kaishek_preflight` at commit
+The canonical checkout is `Z:\workspace\open_kaishek` on
+`integration/zg361-preflight-20260902`, at commit
 `aecb14fbdfa462e4824e5283bbb3e750d09339f0` (descendant of the preflight
 contract commit `b306a95`).  Bind the checkout and jar explicitly, then run a
 fixture-only smoke before any future parent acceptance command:
 
 ```powershell
-$kaishekRoot = 'Z:\workspace\open_kaishek_preflight'
+$kaishekRoot = 'Z:\workspace\open_kaishek'
 $kaishekJar = Join-Path $kaishekRoot 'kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT-shaded.jar'
 $java = 'C:\jdk-21\bin\java.exe'
 
@@ -96,9 +97,11 @@ mvn -o -ntp -Dmaven.repo.local='Z:\ck3_mod_rewrite\_g2-maven-repo' `
 The command emits one JSON object with schema
 `open_kaishek.preflight.v1`; expected fixture status is `GREEN`, with
 `provenance.mode=offline`, `ck3_started=false`, `save_mutated=false`, and
-`network_used=false`.  The observed shaded-jar SHA-256 before a rebuild was
-`6E8D9CECCAAA2CCF925B369501919C5B8F15AA73F1C9CB78ACEAF52540EE3E91`; after
-building, record the new SHA together with the resolved checkout commit.
+`network_used=false`.  The canonical rebuilt shaded-jar SHA-256 is
+`47E20B1B3814A5CFBC4CCF7347C0C5CF0128961991FD8436BE2C00701AA969E6`;
+record that SHA together with the resolved checkout commit.  An older local
+jar (`6E8D9CECCAAA2CCF925B369501919C5B8F15AA73F1C9CB78ACEAF52540EE3E91`)
+is superseded and must not be used as current provenance.
 
 For the loader boundary, the intentionally RED diagnostic fixture is:
 
