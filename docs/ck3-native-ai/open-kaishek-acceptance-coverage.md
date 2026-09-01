@@ -65,3 +65,18 @@ Copy-ready daily wording:
 For the weekly report, retain the same count and boundary, then link this
 matrix and the evidence commit.  Do not describe the count as CK3 gameplay
 coverage, a paused snapshot, or a production-live result.
+
+## Current accelerator provenance (2026-09-02)
+
+The canonical accelerator is now `open_kaishek` `main` at
+`450b559c892228b6ab650c6fa68bece6defdfec7`, with the rebuilt CLI JAR pinned
+to SHA-256
+`06E71C403924412A32EE307149AF6DB5E4A40886064263CF1FFDDE5615538C4D`.
+The latest direct phase2 preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-government-flag-preflight-20260902.json`
+(SHA-256
+`6C4BEAC7FF87CA29B9481FB247CC4AD1E02350D279D9AA644C9A5D6661E28FDA`):
+parser `76/23,831,410/0` is GREEN, while the validator remains the bounded
+schema-only `RED/233,014`; CK3 was not started. The short-lived schema branch
+was merged and removed promptly. This evidence updates only offline
+preflight provenance, not any live/readiness status.
