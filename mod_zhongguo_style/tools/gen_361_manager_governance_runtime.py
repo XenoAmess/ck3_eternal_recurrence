@@ -39,12 +39,26 @@ SHARED_HOOK_CONTRACT: dict[str, tuple[str, str]] = {
     ),
 }
 
+
+def numeric_expression_equality(lhs: str, expression: str) -> str:
+    """Render exact numeric equality without CK3's invalid ``= { value }`` form.
+
+    CK3 1.19.0.6 accepts a calculated script-value block on the right-hand side
+    of ``>=`` and ``<=`` (the base game uses that shape), but parses the same
+    block after ``=`` as a trigger block.  Pairing the inclusive comparisons
+    preserves exact equality while keeping the expression in value grammar.
+    """
+
+    calculated = f"{{ {expression} }}"
+    return f"AND = {{ {lhs} >= {calculated} {lhs} <= {calculated} }}"
+
+
 # One canonical due guard is injected byte-for-byte into the component-8 value
 # and its post-write settler.  Active B1 advances b1_cycle_serial before KPI
 # computation while legacy/no-B1 advances review_serial after computation.
 ORGANIZATION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_organization_input_source_cycle
 \t\t\thas_variable = zg361_mg_organization_input_due_cycle
-\t\t\tvar:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }
+\t\t\t$EXACT_DUE_CYCLE$
 \t\t\tOR = {
 \t\t\t\tAND = {
 \t\t\t\t\thas_variable = zg361_b1_cycle_serial
@@ -55,11 +69,17 @@ ORGANIZATION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_organization_input_sou
 \t\t\t\t\thas_variable = zg361_review_serial
 \t\t\t\t\tvar:zg361_review_serial >= var:zg361_mg_organization_input_source_cycle
 \t\t\t\t}
-\t\t\t}"""
+\t\t\t}""".replace(
+    "$EXACT_DUE_CYCLE$",
+    numeric_expression_equality(
+        "var:zg361_mg_organization_input_due_cycle",
+        "value = var:zg361_mg_organization_input_source_cycle add = 1",
+    ),
+)
 
 DISTRIBUTION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_distribution_policy_source_cycle
 \t\t\thas_variable = zg361_mg_distribution_policy_due_cycle
-\t\t\tvar:zg361_mg_distribution_policy_due_cycle = { value = var:zg361_mg_distribution_policy_source_cycle add = 1 }
+\t\t\t$EXACT_DUE_CYCLE$
 \t\t\tOR = {
 \t\t\t\tAND = {
 \t\t\t\t\thas_variable = zg361_b1_cycle_serial
@@ -70,7 +90,13 @@ DISTRIBUTION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_distribution_policy_so
 \t\t\t\t\thas_variable = zg361_review_serial
 \t\t\t\t\tvar:zg361_review_serial >= var:zg361_mg_distribution_policy_source_cycle
 \t\t\t\t}
-\t\t\t}"""
+\t\t\t}""".replace(
+    "$EXACT_DUE_CYCLE$",
+    numeric_expression_equality(
+        "var:zg361_mg_distribution_policy_due_cycle",
+        "value = var:zg361_mg_distribution_policy_source_cycle add = 1",
+    ),
+)
 
 
 @dataclass(frozen=True)
@@ -958,12 +984,15 @@ def collective_cost_receipt_guard(ordinal: int) -> str:
     lines = [f"has_variable = zg361_mg_m360_cost_receipt_{field}" for field in required]
     lines += [
         "var:zg361_mg_m360_cost_receipt_status = 1",
-        f"var:zg361_mg_m360_cost_receipt_id = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }}",
-        (
-            "var:zg361_mg_m360_cost_receipt_hash = { value = "
-            "var:zg361_mg_m360_cost_receipt_id multiply = 100 add = { value = "
-            "scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route "
-            f"multiply = 10 }} add = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}"
+        numeric_expression_equality(
+            "var:zg361_mg_m360_cost_receipt_id",
+            f"value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360",
+        ),
+        numeric_expression_equality(
+            "var:zg361_mg_m360_cost_receipt_hash",
+            "value = var:zg361_mg_m360_cost_receipt_id multiply = 100 "
+            "add = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route "
+            f"multiply = 10 }} add = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost",
         ),
         "var:zg361_mg_m360_cost_receipt_owner = scope:zg361_we_m360_cost_owner",
         "var:zg361_mg_m360_cost_receipt_al_subject = scope:zg361_we_m360_cost_subject",
@@ -986,14 +1015,15 @@ def collective_cost_receipt_guard(ordinal: int) -> str:
         f"var:zg361_mg_m360_cost_receipt_quota = scope:zg361_we_m360_cost_subject.var:{base}_quota",
         f"var:zg361_mg_m360_cost_receipt_exception_count = scope:zg361_we_m360_cost_subject.var:{base}_exception_count",
         f"var:zg361_mg_m360_cost_receipt_cost = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost",
-        (
-            "var:zg361_mg_m360_cost_receipt_score_after = { value = "
-            "var:zg361_mg_m360_cost_receipt_score_before subtract = "
-            f"scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}"
+        numeric_expression_equality(
+            "var:zg361_mg_m360_cost_receipt_score_after",
+            "value = var:zg361_mg_m360_cost_receipt_score_before subtract = "
+            f"scope:zg361_we_m360_cost_subject.var:{base}_manager_cost",
         ),
-        (
-            "var:zg361_mg_m360_cost_receipt_score_delta = { value = 0 subtract = "
-            f"scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}"
+        numeric_expression_equality(
+            "var:zg361_mg_m360_cost_receipt_score_delta",
+            "value = 0 subtract = "
+            f"scope:zg361_we_m360_cost_subject.var:{base}_manager_cost",
         ),
     ]
     return "\n\t".join(lines)
@@ -1031,7 +1061,10 @@ def collective_cost_source_guard(ordinal: int) -> str:
         "var:zg361_we_al_external_collective_route >= 1",
         "var:zg361_we_al_external_collective_route <= 2",
         f"var:{base}_manager = root",
-        f"var:{base}_cohort_id = {{ value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal} }}",
+        numeric_expression_equality(
+            f"var:{base}_cohort_id",
+            f"value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal}",
+        ),
         f"var:{base}_member_count >= 1",
         f"var:{base}_member_count = var:{base}_agenda_count",
         f"var:{base}_member_hash = var:{base}_agenda_hash",
@@ -1181,7 +1214,7 @@ def collective_cost_new_receipt_guard(ordinal: int) -> str:
 				var:zg361_mg_m360_cost_receipt_al_case < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
 			}}
 		}}
-		NOT = {{ var:zg361_mg_m360_cost_receipt_id = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }} }}
+		NOT = {{ {numeric_expression_equality("var:zg361_mg_m360_cost_receipt_id", f"value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360")} }}
 	}}
 }}"""
 
@@ -1240,7 +1273,7 @@ def render_collective_cost_effects() -> str:
 			OR = {{
 				AND = {{
 					has_variable = zg361_mg_m360_cost_receipt_id
-					var:zg361_mg_m360_cost_receipt_id = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }}
+					{numeric_expression_equality("var:zg361_mg_m360_cost_receipt_id", f"value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360")}
 				}}
 				AND = {{
 					has_variable = zg361_mg_m360_cost_receipt_settlement_id

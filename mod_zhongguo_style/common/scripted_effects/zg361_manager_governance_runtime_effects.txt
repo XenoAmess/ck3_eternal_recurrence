@@ -1322,7 +1322,7 @@ zg361_mg_settle_due_organization_kpi_effect = {
 			var:zg361_mg_organization_input_subject = this
 			has_variable = zg361_mg_organization_input_source_cycle
 			has_variable = zg361_mg_organization_input_due_cycle
-			var:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }
+			AND = { var:zg361_mg_organization_input_due_cycle >= { value = var:zg361_mg_organization_input_source_cycle add = 1 } var:zg361_mg_organization_input_due_cycle <= { value = var:zg361_mg_organization_input_source_cycle add = 1 } }
 			OR = {
 				AND = {
 					has_variable = zg361_b1_cycle_serial
@@ -1355,7 +1355,7 @@ zg361_mg_apply_due_distribution_policy_effect = {
 			var:zg361_mg_distribution_policy_owner = this
 			has_variable = zg361_mg_distribution_policy_source_cycle
 			has_variable = zg361_mg_distribution_policy_due_cycle
-			var:zg361_mg_distribution_policy_due_cycle = { value = var:zg361_mg_distribution_policy_source_cycle add = 1 }
+			AND = { var:zg361_mg_distribution_policy_due_cycle >= { value = var:zg361_mg_distribution_policy_source_cycle add = 1 } var:zg361_mg_distribution_policy_due_cycle <= { value = var:zg361_mg_distribution_policy_source_cycle add = 1 } }
 			OR = {
 				AND = {
 					has_variable = zg361_b1_cycle_serial
@@ -1464,7 +1464,7 @@ zg361_mg_m360_apply_collective_cost_c1_effect = {
 			OR = {
 				AND = {
 					has_variable = zg361_mg_m360_cost_receipt_id
-					var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 }
+					AND = { var:zg361_mg_m360_cost_receipt_id >= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 } var:zg361_mg_m360_cost_receipt_id <= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 } }
 				}
 				AND = {
 					has_variable = zg361_mg_m360_cost_receipt_settlement_id
@@ -1547,7 +1547,7 @@ zg361_mg_m360_apply_collective_cost_c2_effect = {
 			OR = {
 				AND = {
 					has_variable = zg361_mg_m360_cost_receipt_id
-					var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 }
+					AND = { var:zg361_mg_m360_cost_receipt_id >= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 } var:zg361_mg_m360_cost_receipt_id <= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 } }
 				}
 				AND = {
 					has_variable = zg361_mg_m360_cost_receipt_settlement_id
@@ -1630,7 +1630,7 @@ zg361_mg_m360_apply_collective_cost_c3_effect = {
 			OR = {
 				AND = {
 					has_variable = zg361_mg_m360_cost_receipt_id
-					var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 }
+					AND = { var:zg361_mg_m360_cost_receipt_id >= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 } var:zg361_mg_m360_cost_receipt_id <= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 } }
 				}
 				AND = {
 					has_variable = zg361_mg_m360_cost_receipt_settlement_id

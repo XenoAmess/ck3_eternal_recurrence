@@ -201,6 +201,45 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             duplicates = sorted({key for key in keys if keys.count(key) > 1})
             self.assertEqual(duplicates, [], label)
 
+    def test_calculated_numeric_equality_uses_ck3_value_comparison_grammar(self) -> None:
+        # CK3 1.19.0.6 parses ``var:x = { value = ... add/multiply = ... }``
+        # as a nested trigger block and reports value/add/multiply as unknown
+        # triggers.  Exact numeric equality must instead be expressed as the
+        # conjunction of the engine-supported calculated >= and <= forms.
+        illegal = re.compile(
+            r"\b(?:scope:[A-Za-z0-9_]+\.)?var:[A-Za-z0-9_.:]+\s+=\s+\{\s*value\s*="
+        )
+        for text, label in (
+            (self.effects, "effects"),
+            (self.manager_triggers, "manager_triggers"),
+            (self.events, "events"),
+            (self.manager_values, "manager_values"),
+        ):
+            with self.subTest(file=label):
+                self.assertIsNone(illegal.search(text), label)
+
+        due_expression = "value = var:zg361_mg_organization_input_source_cycle add = 1"
+        exact_due = (
+            "AND = { var:zg361_mg_organization_input_due_cycle >= { "
+            f"{due_expression} }} var:zg361_mg_organization_input_due_cycle <= {{ "
+            f"{due_expression} }} }}"
+        )
+        self.assertEqual(self.manager_values.count(exact_due), 1)
+        self.assertEqual(self.effects.count(exact_due), 1)
+        for ordinal in COLLECTIVE_COST_ORDINALS:
+            expression = (
+                "value = scope:zg361_we_m360_cost_subject.var:"
+                f"zg361_we_al_external_collective_{ordinal}_cohort_id "
+                "multiply = 1000 add = 360"
+            )
+            exact_receipt_id = (
+                "AND = { var:zg361_mg_m360_cost_receipt_id >= { "
+                f"{expression} }} var:zg361_mg_m360_cost_receipt_id <= {{ "
+                f"{expression} }} }}"
+            )
+            self.assertGreaterEqual(self.manager_triggers.count(exact_receipt_id), 2)
+            self.assertEqual(self.effects.count(exact_receipt_id), 1)
+
     def test_f032_is_due_once_inside_official_component_eight(self) -> None:
         official = top_level_block(self.values, "zg361_kpi_value")
         organization = top_level_block(
@@ -244,7 +283,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertEqual(settle.count(canonical), 1)
         for block in (due_value, settle):
             self.assertIn(
-                "var:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }",
+                "AND = { var:zg361_mg_organization_input_due_cycle >= { value = var:zg361_mg_organization_input_source_cycle add = 1 } var:zg361_mg_organization_input_due_cycle <= { value = var:zg361_mg_organization_input_source_cycle add = 1 } }",
                 block,
             )
             self.assertIn(
@@ -1079,7 +1118,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                 ):
                     self.assertIn(f"zg361_we_al_external_collective_{token}", block)
                 self.assertIn(
-                    f"var:{base}_cohort_id = {{ value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal} }}",
+                    f"AND = {{ var:{base}_cohort_id >= {{ value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal} }} var:{base}_cohort_id <= {{ value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal} }} }}",
                     block,
                 )
                 for proof in (

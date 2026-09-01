@@ -48,7 +48,7 @@ zg361_mg_due_organization_kpi_value = {
 			var:zg361_mg_organization_input_subject = this
 			has_variable = zg361_mg_organization_input_source_cycle
 			has_variable = zg361_mg_organization_input_due_cycle
-			var:zg361_mg_organization_input_due_cycle = { value = var:zg361_mg_organization_input_source_cycle add = 1 }
+			AND = { var:zg361_mg_organization_input_due_cycle >= { value = var:zg361_mg_organization_input_source_cycle add = 1 } var:zg361_mg_organization_input_due_cycle <= { value = var:zg361_mg_organization_input_source_cycle add = 1 } }
 			OR = {
 				AND = {
 					has_variable = zg361_b1_cycle_serial
