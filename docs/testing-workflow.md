@@ -52,6 +52,27 @@ SHA-256 为 `F01C9D5FD0095960AC58E20031F22A3A28F0AFA5B0716C4D3DBECE49583C8A1A`�
 `SCRIPTED_VALUES` 边界，未放宽为 GREEN。聚焦 profile/validator Maven 测试
 与 CLI preflight 均通过，未启动 CK3。
 
+截至 2026-09-02 04:31，`open_kaishek` 主线已推进到 `19ff306`
+（完整 commit `19ff306cd902978dac43a56377720be874c51cb8`）。该切片只将
+Parser 热路径中的六个 `String.matches` 改为静态预编译 `Pattern`，不改变
+匹配语义或诊断输出；同一 75-file/19,238,232-byte corpus 的 warm parser
+约由 `1066ms` 降至 `421ms`，parse+validate 约由 `1240--1300ms` 降至
+`574--610ms`，新进程 CLI preflight 约由 `2.65--3.10s` 降至
+`1.43--1.49s`。ParserSelfTest、Phase1SyntaxSelfTest、760-case fuzz、
+Maven 全量测试均通过，未启动 CK3。新 JAR SHA-256 为
+`3DF2B4463EDC1D732DE1FAA85CE2803F8995DEAE1640D5F2D93001FEE53174C2`。
+
+同一二期 `a89282d` 输入在清理旧 `pyc` 后重新执行的父仓预验 artifact 为
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postschema-preflight-19ff306-clean\preflight.json`
+（SHA-256 `004AD71FD182590FAB7A8EE932BFE58536E42B98A32D476734293E6B614F248F`），
+其中 `open_kaishek-preflight.json` SHA-256 为
+`2920EE0C202137725B83B339AD3D67C95E91845B8DD7FA765FA590073A1AC624`。
+结果为 `GREEN/preflight-ready`、parser `GREEN/0 diagnostics`、IR/runtime
+及静态依赖检查 GREEN；profile validator 仍为已知 schema-only
+`RED/233,115`，`seed_contract_status=blocked_seed_generation_required`，
+`ck3_launch_attempted=false`。此前同输入直接复用带旧 `pyc` 的目录得到的
+RED 已保留为环境问题证据，不能覆盖这次干净目录结果。
+
 `open_kaishek` 预验只缩短确定性失败的反馈周期，不替代真实 CK3/MCP paused artifact、真实输入/动作、自然推进、结算或 GREEN。没有 paused artifact 时，状态仍只能写为 `static-ready`/`runtime-fixture` 等实际级别；ACK、schema 通过和 synthetic replay 都不能升级为 `fixture-live` 或 `production-live`。
 
 ## 可复用宣传视频工具链验收

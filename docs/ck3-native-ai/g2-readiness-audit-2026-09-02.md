@@ -170,3 +170,19 @@ character `29829`, and `date_raw=53223936`; it must run open_kaishek offline
 preflight first and must stop at the existing capability/readiness boundary
 if no semantic native-ready frame is available. No code or branch changed in
 this inventory.
+
+## 2026-09-02 current offline accelerator
+
+The canonical `open_kaishek` checkout remains `main == origin/main` and is now
+at `19ff306cd902978dac43a56377720be874c51cb8`. The rebuilt JAR is pinned by
+SHA-256 `3DF2B4463EDC1D732DE1FAA85CE2803F8995DEAE1640D5F2D93001FEE53174C2`.
+This is an evidence-backed parser performance-only slice (six precompiled
+`Pattern`s); it preserves parser semantics and diagnostics and has passed the
+Maven, parser self, phase-one syntax, and 760-case fuzz suites. On the frozen
+parent source, a fresh-copy preflight artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postschema-preflight-19ff306-clean\preflight.json`
+(SHA-256 `004AD71FD182590FAB7A8EE932BFE58536E42B98A32D476734293E6B614F248F`)
+is `GREEN/preflight-ready` with `ck3_started=false`; the profile validator's
+`RED/233,115` schema-only boundary and the blocked seed-contract status remain
+explicit. This accelerates the next G2 offline step but does not add a paused
+truce artifact or change `GEN-034` readiness.

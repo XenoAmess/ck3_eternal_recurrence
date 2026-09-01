@@ -220,3 +220,25 @@ repair that preserves all generated symbols and contracts. A no-op shell,
 blind file deletion, timeout extension, or bridge-scope expansion is not an
 acceptable substitute. All diagnostic artifacts and the failed attempt are
 retained for comparison; no production tree was changed by this gate.
+
+## 2026-09-02 04:31 `open_kaishek` performance/current preflight
+
+`open_kaishek` mainline is now `19ff306cd902978dac43a56377720be874c51cb8`
+(`main == origin/main`). The six static `Pattern` replacements are semantics
+preserving and cut the bounded corpus warm-parser time from about `1066ms` to
+`421ms`, parse+validate from about `1240--1300ms` to `574--610ms`, and a fresh
+CLI preflight process from about `2.65--3.10s` to `1.43--1.49s`; its focused and
+full Maven/parser/fuzz tests are GREEN. The new JAR SHA-256 is
+`3DF2B4463EDC1D732DE1FAA85CE2803F8995DEAE1640D5F2D93001FEE53174C2`.
+
+Before any further CK3 launch, a fresh copy of the `a89282d` source was
+preflighted with that JAR. The parent artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postschema-preflight-19ff306-clean\preflight.json`
+(SHA-256 `004AD71FD182590FAB7A8EE932BFE58536E42B98A32D476734293E6B614F248F`)
+is `GREEN/preflight-ready`: parser `76/23,831,410/0`, IR/runtime and static
+dependency checks GREEN, `ck3_launch_attempted=false`. The profile validator is
+still the known schema-only `RED/233,115`, with
+`seed_contract_status=blocked_seed_generation_required`; this is not a CK3
+capability result. A prior stale-`pyc` RED attempt is retained as environment
+provenance. The live loader RED at `database_init` is unchanged; no new CK3 run
+is justified until the generated-source decomposition candidate is reviewed.
