@@ -360,7 +360,12 @@ zg361_workforce_normal_exit_fact_dispatch_native_revoke_effect = {
             OR = { NOT = { has_variable = zg361_workforce_exit_fact_receipt_active } var:zg361_workforce_exit_fact_receipt_active = 0 }
         }
         set_variable = { name = zg361_workforce_normal_exit_fact_request_dispatched value = 1 }
-        revoke_court_position = zg361_workforce_exit_fact_career_slot_court_position
+        var:zg361_workforce_normal_exit_fact_pending_owner = {
+            revoke_court_position = {
+                recipient = root
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+            }
+        }
         set_variable = { name = zg361_workforce_normal_exit_fact_status value = 5 }
         trigger_event = { id = zg361workforcenormalexitfact.9101 days = 1 }
     }

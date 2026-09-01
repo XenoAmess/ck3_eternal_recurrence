@@ -443,6 +443,7 @@ class WorkforceRehireFactTests(unittest.TestCase):
 
     def test_22_notice_is_player_subject_only_and_grants_no_authority(self) -> None:
         notice = block(self.events, "zg361wrf.1")
+        self.assertIn("type = character_event\n    theme = stewardship", notice)
         self.assertIn("is_ai = no", notice)
         self.assertIn("rehire_fact_state = 4", notice)
         self.assertIn("rehire_fact_consumed = 1", notice)

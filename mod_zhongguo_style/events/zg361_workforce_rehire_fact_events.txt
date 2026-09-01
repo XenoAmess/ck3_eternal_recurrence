@@ -5,6 +5,7 @@ namespace = zg361wrf
 # never shown to an AI subject.
 zg361wrf.1 = {
     type = character_event
+    theme = stewardship
     title = zg361wrf.1.t
     desc = zg361wrf.1.desc
     trigger = {

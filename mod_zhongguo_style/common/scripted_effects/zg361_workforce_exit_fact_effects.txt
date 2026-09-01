@@ -418,7 +418,12 @@ zg361_workforce_exit_fact_dispatch_cleanup_revoke_effect = {
                 who = var:zg361_workforce_exit_fact_arm_owner
             }
         }
-        revoke_court_position = zg361_workforce_exit_fact_career_slot_court_position
+        var:zg361_workforce_exit_fact_arm_owner = {
+            revoke_court_position = {
+                recipient = root
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+            }
+        }
     }
     zg361_workforce_exit_fact_clear_arm_pending_effect = yes
     remove_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
@@ -648,7 +653,12 @@ zg361_workforce_exit_fact_dispatch_native_exit_effect = {
             var:zg361_b2_pip_outcome_result_grade = 1
         }
         set_variable = { name = zg361_workforce_exit_fact_exit_request_dispatched value = 1 }
-        revoke_court_position = zg361_workforce_exit_fact_career_slot_court_position
+        var:zg361_workforce_exit_fact_exit_owner = {
+            revoke_court_position = {
+                recipient = root
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+            }
+        }
         trigger_event = { id = zg361workforceexitfact.9003 days = 1 }
         set_variable = { name = zg361_workforce_exit_fact_status value = 5 }
     }

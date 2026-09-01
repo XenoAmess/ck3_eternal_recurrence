@@ -591,7 +591,12 @@ def render_effects() -> bytes:
                 who = var:{PREFIX}_arm_owner
             }}
         }}
-        revoke_court_position = {POSITION_KEY}
+        var:{PREFIX}_arm_owner = {{
+            revoke_court_position = {{
+                recipient = root
+                court_position = {POSITION_KEY}
+            }}
+        }}
     }}
     {PREFIX}_clear_arm_pending_effect = yes
     remove_variable = {PREFIX}_cleanup_revoke_requested
@@ -821,7 +826,12 @@ def render_effects() -> bytes:
             var:zg361_b2_pip_outcome_result_grade = 1
         }}
         set_variable = {{ name = {PREFIX}_exit_request_dispatched value = 1 }}
-        revoke_court_position = {POSITION_KEY}
+        var:{PREFIX}_exit_owner = {{
+            revoke_court_position = {{
+                recipient = root
+                court_position = {POSITION_KEY}
+            }}
+        }}
         trigger_event = {{ id = {NAMESPACE}.{EXIT_AUDIT_EVENT_ID} days = 1 }}
         set_variable = {{ name = {PREFIX}_status value = 5 }}
     }}

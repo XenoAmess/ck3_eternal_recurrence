@@ -415,6 +415,7 @@ class WorkforceProbationFactTests(unittest.TestCase):
 
     def test_20_subject_notice_is_player_only_and_grants_no_authority(self) -> None:
         notice = block(self.events, "zg361wpf.2")
+        self.assertIn("type = character_event\n    theme = stewardship", notice)
         self.assertIn("is_ai = no", notice)
         self.assertIn("consume_subject = this", notice)
         self.assertIn("consumed = 1", notice)

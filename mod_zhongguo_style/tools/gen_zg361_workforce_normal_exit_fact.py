@@ -548,7 +548,12 @@ def render_effects() -> bytes:
                 OR = { NOT = { has_variable = @S@_receipt_active } var:@S@_receipt_active = 0 }
             }
             set_variable = { name = @P@_request_dispatched value = 1 }
-            revoke_court_position = @POSITION@
+            var:@P@_pending_owner = {
+                revoke_court_position = {
+                    recipient = root
+                    court_position = @POSITION@
+                }
+            }
             set_variable = { name = @P@_status value = 5 }
             trigger_event = { id = @N@.@AUDIT@ days = 1 }
         }
@@ -1021,6 +1026,7 @@ def render_events() -> bytes:
 
         {NAMESPACE}.{NOTICE_EVENT_ID} = {{
             type = character_event
+            theme = stewardship
             title = {NAMESPACE}.{NOTICE_EVENT_ID}.t
             desc = {NAMESPACE}.{NOTICE_EVENT_ID}.desc
             trigger = {{

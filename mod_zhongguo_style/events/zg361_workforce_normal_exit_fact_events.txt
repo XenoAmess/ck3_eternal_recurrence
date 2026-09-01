@@ -65,6 +65,7 @@ zg361workforcenormalexitfact.9103 = {
 
 zg361workforcenormalexitfact.1 = {
     type = character_event
+    theme = stewardship
     title = zg361workforcenormalexitfact.1.t
     desc = zg361workforcenormalexitfact.1.desc
     trigger = {

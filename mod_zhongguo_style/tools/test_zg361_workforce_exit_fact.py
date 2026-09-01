@@ -216,7 +216,19 @@ class WorkforceExitFactTests(unittest.TestCase):
             f"id = {gen.NAMESPACE}.{gen.CLEANUP_REVOKE_EVENT_ID} days = 1", audit
         )
         self.assertIn(f"var:{gen.PREFIX}_cleanup_revoke_requested = 1", cleanup)
-        self.assertIn(f"revoke_court_position = {gen.POSITION_KEY}", cleanup)
+        self.assertIn(
+            f"var:{gen.PREFIX}_arm_owner = {{\n"
+            "            revoke_court_position = {\n"
+            "                recipient = root\n"
+            f"                court_position = {gen.POSITION_KEY}\n"
+            "            }\n"
+            "        }",
+            cleanup,
+        )
+        self.assertNotRegex(
+            cleanup,
+            rf"(?m)^\s*revoke_court_position\s*=\s*{re.escape(gen.POSITION_KEY)}\s*$",
+        )
 
     def test_public_abi_has_no_caller_truth_material(self) -> None:
         public = "\n".join(
@@ -282,14 +294,30 @@ class WorkforceExitFactTests(unittest.TestCase):
             f"set_variable = {{ name = {gen.PREFIX}_exit_request_dispatched value = 1 }}",
             dispatch,
         )
-        self.assertIn(f"revoke_court_position = {gen.POSITION_KEY}", dispatch)
+        self.assertIn(
+            f"var:{gen.PREFIX}_exit_owner = {{\n"
+            "            revoke_court_position = {\n"
+            "                recipient = root\n"
+            f"                court_position = {gen.POSITION_KEY}\n"
+            "            }\n"
+            "        }",
+            dispatch,
+        )
+        self.assertNotRegex(
+            dispatch,
+            rf"(?m)^\s*revoke_court_position\s*=\s*{re.escape(gen.POSITION_KEY)}\s*$",
+        )
 
     def test_only_new_native_revoke_callback_can_seal_exit(self) -> None:
         request = block(self.effects, f"{gen.PREFIX}_request_closed_pip_exit_effect")
         dispatch = block(self.effects, f"{gen.PREFIX}_dispatch_native_exit_effect")
         callback = block(self.effects, f"{gen.PREFIX}_on_native_slot_ended_effect")
         audit = block(self.effects, f"{gen.PREFIX}_audit_exit_effect")
-        self.assertEqual(self.effects.count(f"revoke_court_position = {gen.POSITION_KEY}"), 2)
+        self.assertEqual(self.effects.count("revoke_court_position = {"), 2)
+        self.assertNotRegex(
+            self.effects,
+            rf"(?m)^\s*revoke_court_position\s*=\s*{re.escape(gen.POSITION_KEY)}\s*$",
+        )
         self.assertIn(f"native_exit_revoked_callback_seen value = 1", callback)
         self.assertIn(f"var:{gen.PREFIX}_exit_request_authorized = 1", callback)
         self.assertNotIn(f"var:{gen.PREFIX}_exit_request_dispatched = 1", callback)

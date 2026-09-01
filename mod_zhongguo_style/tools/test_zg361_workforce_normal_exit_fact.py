@@ -219,7 +219,23 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
         self.assertIn("request_authorized value = 1", begin)
         self.assertIn(f"id = {generator.NAMESPACE}.{generator.DISPATCH_EVENT_ID} days = 1", begin)
         self.assertIn("request_dispatched value = 1", dispatch)
-        self.assertIn(f"revoke_court_position = {generator.EXIT_SLOT_POSITION}", dispatch)
+        self.assertIn(
+            f"var:{generator.PREFIX}_pending_owner = {{\n"
+            "            revoke_court_position = {\n"
+            "                recipient = root\n"
+            f"                court_position = {generator.EXIT_SLOT_POSITION}\n"
+            "            }\n"
+            "        }",
+            dispatch,
+        )
+        self.assertNotRegex(
+            dispatch,
+            rf"(?m)^\s*revoke_court_position\s*=\s*{re.escape(generator.EXIT_SLOT_POSITION)}\s*$",
+        )
+
+    def test_11b_visible_notice_has_registered_event_theme(self) -> None:
+        notice = block(self.events, f"{generator.NAMESPACE}.{generator.NOTICE_EVENT_ID}")
+        self.assertIn("type = character_event\n    theme = stewardship", notice)
 
     def test_12_callback_and_no_longer_holder_are_both_required(self) -> None:
         audit = block(self.effects, f"{generator.PREFIX}_audit_native_then_accept_m075_effect")

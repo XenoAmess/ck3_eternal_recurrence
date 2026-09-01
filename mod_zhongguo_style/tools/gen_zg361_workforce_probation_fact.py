@@ -1545,6 +1545,7 @@ def render_events() -> bytes:
         # player event; manager authority is neither requested nor granted.
         zg361wpf.2 = {
             type = character_event
+            theme = stewardship
             title = zg361wpf.2.t
             desc = zg361wpf.2.desc
             trigger = {

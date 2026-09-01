@@ -1252,6 +1252,7 @@ def render_events() -> bytes:
         # never shown to an AI subject.
         {NAMESPACE}.1 = {{
             type = character_event
+            theme = stewardship
             title = {NAMESPACE}.1.t
             desc = {NAMESPACE}.1.desc
             trigger = {{
