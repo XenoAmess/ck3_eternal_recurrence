@@ -2,6 +2,9 @@ package com.xenoamess.kaishek.syntax;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +60,11 @@ public final class Parser {
         State(byte[] b) { this.b = b; }
 
         List<Token> lex() {
+            // Java's String(byte[], UTF_8) replaces malformed sequences with
+            // U+FFFD.  That is useful for display, but unsafe for a lossless
+            // parser: an invalid source byte must remain an explicit error so
+            // the validator/IR cannot accidentally execute a repaired token.
+            validateUtf8();
             List<Token> out = new ArrayList<>(); int i = 0;
             while (i < b.length) {
                 int s = i; int c = b[i] & 0xff;
@@ -73,7 +81,7 @@ public final class Parser {
                     i++; boolean closed = false;
                     while (i < b.length) { if (b[i] == '\\') { i += Math.min(2, b.length - i); } else if (b[i++] == '"') { closed = true; break; } }
                     if (!closed) { diagnostics.add(new Diagnostic("UNTERMINATED_STRING", Diagnostic.Severity.ERROR, "unterminated quoted string", s, i)); }
-                    out.add(new Token(T.STRING,s,i,null,!closed)); continue;
+                    out.add(new Token(T.STRING,s,i,null,!closed || decodeUtf8(s, i) == null)); continue;
                 }
                 if (c == '{') { i++; out.add(new Token(T.LBRACE,s,i,null,false)); continue; }
                 if (c == '}') { i++; out.add(new Token(T.RBRACE,s,i,null,false)); continue; }
@@ -83,11 +91,89 @@ public final class Parser {
                 if (op != null) { out.add(new Token(T.OP,s,i,op,false)); continue; }
                 while (i < b.length && !isDelimiter(b[i] & 0xff)) i++;
                 if (i == s) { i++; diagnostics.add(new Diagnostic("INVALID_BYTE", Diagnostic.Severity.ERROR, "invalid byte in token", s, i)); out.add(new Token(T.BAD,s,i,null,true)); continue; }
-                String text = new String(b,s,i-s,java.nio.charset.StandardCharsets.UTF_8);
+                String text = decodeUtf8(s, i);
+                if (text == null) {
+                    // validateUtf8() has already recorded the precise source
+                    // error; retain a recovery token so byte spans and
+                    // round-trip output remain available to callers.
+                    out.add(new Token(T.BAD, s, i, null, true));
+                    continue;
+                }
                 T kind = text.startsWith("$") || text.startsWith("@") ? T.VARIABLE : NUMBER.matcher(text).matches() ? T.NUMBER : T.BARE;
                 out.add(new Token(kind,s,i,null,false));
             }
             return out;
+        }
+
+        /** Record every malformed UTF-8 sequence without rewriting input. */
+        private void validateUtf8() {
+            for (int i = 0; i < b.length;) {
+                int first = b[i] & 0xff;
+                int length;
+                int secondMin = 0x80;
+                int secondMax = 0xbf;
+                if (first <= 0x7f) {
+                    i++;
+                    continue;
+                } else if (first >= 0xc2 && first <= 0xdf) {
+                    length = 2;
+                } else if (first == 0xe0) {
+                    length = 3;
+                    secondMin = 0xa0;
+                } else if ((first >= 0xe1 && first <= 0xec) || (first >= 0xee && first <= 0xef)) {
+                    length = 3;
+                } else if (first == 0xed) {
+                    length = 3;
+                    secondMax = 0x9f;
+                } else if (first == 0xf0) {
+                    length = 4;
+                    secondMin = 0x90;
+                } else if (first >= 0xf1 && first <= 0xf3) {
+                    length = 4;
+                } else if (first == 0xf4) {
+                    length = 4;
+                    secondMax = 0x8f;
+                } else {
+                    invalidUtf8(i, i + 1);
+                    i++;
+                    continue;
+                }
+                int end = Math.min(b.length, i + length);
+                boolean valid = end - i == length;
+                if (valid) {
+                    int second = b[i + 1] & 0xff;
+                    valid = second >= secondMin && second <= secondMax;
+                    for (int j = 2; valid && j < length; j++) {
+                        int continuation = b[i + j] & 0xff;
+                        valid = continuation >= 0x80 && continuation <= 0xbf;
+                    }
+                }
+                if (valid) {
+                    i += length;
+                } else {
+                    invalidUtf8(i, end);
+                    // Advance one byte so a following malformed lead is not
+                    // hidden behind the first recovery diagnostic.
+                    i++;
+                }
+            }
+        }
+
+        private void invalidUtf8(int start, int end) {
+            diagnostics.add(new Diagnostic("INVALID_BYTE", Diagnostic.Severity.ERROR,
+                    "invalid UTF-8 byte sequence", start, Math.max(start + 1, end)));
+        }
+
+        /** Decode a token strictly; null means malformed UTF-8. */
+        private String decodeUtf8(int start, int end) {
+            try {
+                return java.nio.charset.StandardCharsets.UTF_8.newDecoder()
+                        .onMalformedInput(CodingErrorAction.REPORT)
+                        .onUnmappableCharacter(CodingErrorAction.REPORT)
+                        .decode(ByteBuffer.wrap(b, start, end - start)).toString();
+            } catch (CharacterCodingException ex) {
+                return null;
+            }
         }
 
         private static boolean isDelimiter(int c) { return c == ' ' || c == '\t' || c == '\f' || c == '\r' || c == '\n' || c == '#' || c == '{' || c == '}' || c == '=' || c == '<' || c == '>' || c == '?'; }

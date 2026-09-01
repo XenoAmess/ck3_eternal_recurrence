@@ -18,6 +18,17 @@ public final class ParserSelfTest {
         ParseResult malformed = Parser.parse("x = { y = 1".getBytes(StandardCharsets.UTF_8));
         check(malformed.hasErrors(), "unclosed block was not diagnosed");
         check(Arrays.equals(malformed.source(), malformed.emit()), "malformed input was rewritten");
+
+        byte[] invalidUtf8 = {'x', ' ', '=', ' ', (byte) 0xc3, (byte) 0x28};
+        ParseResult invalid = Parser.parse(invalidUtf8);
+        check(invalid.hasErrors(), "invalid UTF-8 was silently accepted");
+        check(invalid.diagnostics().stream().anyMatch(d -> d.code().equals("INVALID_BYTE")),
+                "invalid UTF-8 diagnostic missing: " + invalid.diagnostics());
+        check(Arrays.equals(invalidUtf8, invalid.emit()), "invalid UTF-8 input was rewritten");
+
+        ParseResult mixedNewlines = Parser.parse("a = 1\r\nb = 2\r\nc = 3\n".getBytes(StandardCharsets.UTF_8));
+        check("\r\n".equals(mixedNewlines.newlineStyle()),
+                "newline style did not select the dominant sequence");
         System.out.println("ParserSelfTest: OK");
     }
     private static void check(boolean ok, String message) { if (!ok) throw new AssertionError(message); }

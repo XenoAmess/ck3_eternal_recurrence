@@ -19,11 +19,28 @@ public final class ParseResult {
     public boolean hasUtf8Bom() { return source.length >= 3 && (source[0] & 0xff) == 0xef && (source[1] & 0xff) == 0xbb && (source[2] & 0xff) == 0xbf; }
     /** Returns the dominant newline sequence, or the empty string for a file without newlines. */
     public String newlineStyle() {
+        int crlf = 0, lf = 0, cr = 0;
+        String first = "";
         for (int i = 0; i < source.length; i++) {
-            if (source[i] == '\r') return (i + 1 < source.length && source[i + 1] == '\n') ? "\r\n" : "\r";
-            if (source[i] == '\n') return "\n";
+            if (source[i] == '\r') {
+                String style = (i + 1 < source.length && source[i + 1] == '\n') ? "\r\n" : "\r";
+                if (first.isEmpty()) first = style;
+                if ("\r\n".equals(style)) { crlf++; i++; } else cr++;
+            } else if (source[i] == '\n') {
+                if (first.isEmpty()) first = "\n";
+                lf++;
+            }
         }
-        return "";
+        if (crlf == 0 && lf == 0 && cr == 0) return "";
+        int best = Math.max(crlf, Math.max(lf, cr));
+        // Preserve first-seen style for ties, while selecting the actual
+        // majority for mixed files.
+        if ("\r\n".equals(first) && crlf == best) return "\r\n";
+        if ("\n".equals(first) && lf == best) return "\n";
+        if ("\r".equals(first) && cr == best) return "\r";
+        if (crlf == best) return "\r\n";
+        if (lf == best) return "\n";
+        return "\r";
     }
     public byte[] source() { return source.clone(); }
     /** Emit the exact bytes supplied to {@link Parser#parse(byte[])}. */

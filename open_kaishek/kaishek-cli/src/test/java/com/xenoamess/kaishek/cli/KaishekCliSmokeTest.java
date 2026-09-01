@@ -23,6 +23,14 @@ public final class KaishekCliSmokeTest {
     check(syntaxError == 1 && syntaxJson.contains("\"offset\":0")
         && !syntaxJson.contains("\"offset\":\"0\""), syntaxJson);
 
+    b.reset();
+    int inlineSyntaxError = KaishekCli.run(new String[]{"validate", "x"},
+        new PrintStream(b), System.err);
+    // An inline syntax error must not be reported as an unsupported semantic
+    // layer merely because no file path was supplied.
+    check(inlineSyntaxError == 1 && b.toString(StandardCharsets.UTF_8)
+        .contains("\"status\":\"INVALID\""), b);
+
     // A semantic diagnostic must make validate fail.  Put the fixture under a
     // recognised directory so the static CK3 profile is actually selected,
     // and put --profile before --file to exercise option-order handling.

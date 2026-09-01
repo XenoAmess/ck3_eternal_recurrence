@@ -79,7 +79,10 @@ public final class KaishekCli {
     // A supported semantic check must fail the process when it finds a
     // semantic diagnostic.  Previously only syntax diagnostics affected the
     // exit code, making an INVALID response appear successful to CI.
-    return !semanticSupported ? 4 : (invalid ? 1 : 0);
+    // Syntax errors are invalid input regardless of whether a file path was
+    // supplied.  Only a syntactically valid input whose semantic layer is not
+    // available uses the explicit UNSUPPORTED exit code.
+    return invalid ? 1 : (!semanticSupported ? 4 : 0);
   }
   private static int hash(String[] a, PrintStream out) throws IOException {
     Path path = pathOption(a, 1); if (path != null && Files.isDirectory(path)) return corpus(a,out);
