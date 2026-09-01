@@ -36,7 +36,7 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 |---|---|
 | `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
 | `phase2-promo-project.json` | 二期十章 authoring 配置；章节必须从 `planned` 变为 `ready` 才能消费 capture |
-| 独立仓库 [`xar_promo_toolchain/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json`](https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.1.0/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json) | 二期 producer 的固定 mode/version/span map 合同 |
+| 独立仓库 [`src/xar_promo/schemas/phase2-capture-contract-v1.schema.json`](https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.1.0/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json) | 二期 producer 的固定 mode/version/span map 合同 |
 | `storyboard.md` | 约 7–8 分钟的剪辑结构与节奏说明 |
 | `shot-list.md` | 一次自动集中实录的实际 marks、六张政策卡与不可夸张的产品边界 |
 | `smoke-manifest.json` | 很短的媒体流水线测试；内容明确声明“不是正式成片” |
@@ -80,7 +80,7 @@ adapter/preset；从仓库根目录执行前先安装：
 本地开发或验收 fixture 可设置 `XAR_PROMO_SOURCE`（兼容别名
 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向 `Z:\workspace\xar_promo_toolchain` 或其 `src` 目录，覆盖已安装
 wheel。该入口不会替你启动 CK3。通用包在独立仓库的安装、FFmpeg/ffprobe 和可选 Edge TTS 依赖见
-[`xar_promo_toolchain/docs/installation.md`](https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.1.0/docs/installation.md)。
+[`docs/installation.md`](https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.1.0/docs/installation.md)。
 
 ### 先做 validate-only（不启动 CK3、不写入工作目录）
 
