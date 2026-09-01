@@ -2016,9 +2016,13 @@ def package_checks(errors):
         "python tools/build_release.py --check", "python tools/build_release.py --release",
         "python tools/build_vivhite_release.py --check",
         "python tools/build_vivhite_release.py --release",
-        "actions/upload-artifact@v4", "dist/*.zip", "dist/*.manifest.json",
+        "dist/*.zip", "dist/*.manifest.json",
     )
-    if any(token not in official_ci for token in ci_requirements):
+    artifact_action_ok = any(
+        token in official_ci
+        for token in ("actions/upload-artifact@v4", "actions/upload-artifact@v6")
+    )
+    if any(token not in official_ci for token in ci_requirements) or not artifact_action_ok:
         errors.append("official-runner CI lost a static, release, or artifact gate")
     if "self-hosted" in official_ci or "run_acceptance.py" in official_ci:
         errors.append("official-runner CI must not claim CK3 desktop acceptance")
