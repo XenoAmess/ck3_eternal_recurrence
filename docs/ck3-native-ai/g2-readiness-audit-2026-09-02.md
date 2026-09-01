@@ -214,3 +214,10 @@ capability and `active_wars[{war_id:50331699}]` are present, it emits the exact
 `query-war-termination-terms-v1-50331699` step. Therefore the historical
 `action_step_family=false` is attributed to the older runner/DLL provenance,
 not to a current Python generation defect; no speculative code change is made.
+
+The diagnostic-only harness increment is now on the parent mainline as
+`de4c7be` (`d1850b3` source). If exact-build proof stops before MCP, the report
+retains the observed terms-query action-step literals, distinguishing the
+template `query-war-termination-terms-v1-N` from the concrete WarID step.
+The focused termination/exit-terms/live harness suite is `18 passed / 51
+subtests`; CK3 was not started and no action authorization changed.
