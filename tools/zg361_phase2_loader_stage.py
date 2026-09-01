@@ -41,6 +41,10 @@ THEME_WARNING_PATTERN = re.compile(
     r"Theme missing in event '(?:zg361|zga_phase2_seed)[^']*'",
     re.IGNORECASE,
 )
+DATABASE_NODE_PATTERN = re.compile(
+    r"Database Node Init Time:\s*([^\s]+)\s+-\s+\d+\s+ms\s+-\s+\d+\s+ms",
+    re.IGNORECASE,
+)
 
 
 class LoaderStageError(RuntimeError):
@@ -208,11 +212,14 @@ def inspect_loader_logs(
     else:
         stage = "awaiting_logs"
     fatal_errors = extract_fatal_errors(error_log)
+    database_nodes = DATABASE_NODE_PATTERN.findall(debug_text)
     return {
         "stage": stage,
         "database_init_seen": any(
             marker in debug_text for marker in DATABASE_MARKERS
         ),
+        "database_node_count": len(database_nodes),
+        "last_database_node": database_nodes[-1] if database_nodes else None,
         "event_wait_authorized": stage
         in {"native_ready", "load_save", "in_game"},
         "fatal_error_count": len(fatal_errors),

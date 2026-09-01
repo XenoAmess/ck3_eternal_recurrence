@@ -39,6 +39,33 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as raw:
         root = Path(raw)
 
+        # Database dependency progress is observational only.  It must expose
+        # the last native node without changing the stage classification or
+        # authorizing the event waiter.
+        dependency_snapshot = loader.inspect_loader_logs(
+            (
+                b"[00:00:01][D][database_dependencies.cpp:433]: "
+                b"Database Node Init Time: CGameConceptTypeDatabase - 3 ms - 3 ms including dependencies\n"
+                b"[00:00:02][D][database_dependencies.cpp:433]: "
+                b"Database Node Init Time: CJominiLoadScreenDatabase - 4 ms - 4 ms including dependencies\n"
+            ),
+            b"",
+        )
+        require(
+            dependency_snapshot["database_node_count"] == 2,
+            "database dependency node count was not observed",
+        )
+        require(
+            dependency_snapshot["last_database_node"]
+            == "CJominiLoadScreenDatabase",
+            "last database dependency node was not observed",
+        )
+        require(
+            dependency_snapshot["stage"] == "engine_start"
+            and dependency_snapshot["event_wait_authorized"] is False,
+            "database dependency observation changed loader authorization",
+        )
+
         # attempt07's concrete product errors stop a stagnant database load.
         fatal_logs = root / "fatal" / "logs"
         fatal_logs.mkdir(parents=True)
