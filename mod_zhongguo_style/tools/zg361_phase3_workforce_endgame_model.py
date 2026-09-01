@@ -720,14 +720,66 @@ class SecondmentRecord:
     extension_receipts: tuple[tuple[int, int], ...] = ()
 
 
+@dataclass(frozen=True)
+class RequisitionOpenReceipt:
+    receipt_id: str
+    receipt_hash: str
+    owner_id: str
+    original_subject_id: str
+    original_candidate_id: str
+    runner_up_id: str
+    runner_evidence_id: str
+    cycle_serial: int
+    predecessor_requisition_id: str
+    predecessor_case_serial: int
+    requisition_id: str
+    requisition_case_serial: int
+    role_id: str
+    hc_lineage_case_serial: int
+
+    def validate(self) -> None:
+        for value, label in (
+            (self.receipt_id, "requisition_open_receipt_id"),
+            (self.receipt_hash, "requisition_open_receipt_hash"),
+            (self.owner_id, "requisition_open_owner_id"),
+            (self.original_subject_id, "requisition_open_original_subject_id"),
+            (self.original_candidate_id, "requisition_open_original_candidate_id"),
+            (self.runner_up_id, "requisition_open_runner_up_id"),
+            (self.runner_evidence_id, "requisition_open_runner_evidence_id"),
+            (self.predecessor_requisition_id, "predecessor_requisition_id"),
+            (self.requisition_id, "requisition_id"),
+            (self.role_id, "requisition_role_id"),
+        ):
+            _identifier(value, label)
+        for value, label in (
+            (self.cycle_serial, "requisition_open_cycle_serial"),
+            (self.predecessor_case_serial, "predecessor_case_serial"),
+            (self.requisition_case_serial, "requisition_case_serial"),
+            (self.hc_lineage_case_serial, "hc_lineage_case_serial"),
+        ):
+            _integer(value, label, minimum=1)
+        if self.original_candidate_id == self.runner_up_id:
+            raise DomainRed(RedCode.PROVENANCE_INVALID, "runner-up reused the refused candidate")
+        if self.predecessor_requisition_id == self.requisition_id:
+            raise DomainRed(RedCode.PROVENANCE_INVALID, "runner requisition reused the predecessor id")
+        if self.predecessor_case_serial == self.requisition_case_serial:
+            raise DomainRed(RedCode.PROVENANCE_INVALID, "runner requisition reused the predecessor case")
+
+
 @dataclass
 class Requisition:
     requisition_id: str
     role_id: str
     threshold: int
     urgency: int
+    case_serial: int
     status: RequisitionStatus = RequisitionStatus.OPEN
     hc_reservation_active: bool = True
+    candidate_active_case: int | None = None
+    hc_flight_case: int | None = None
+    predecessor_requisition_id: str | None = None
+    central_open_receipt_id: str | None = None
+    central_open_receipt_hash: str | None = None
     independent_votes: dict[str, Vote] = field(default_factory=dict)
     vote_evidence: dict[str, str] = field(default_factory=dict)
     calibrated_scores: dict[str, int] = field(default_factory=dict)
@@ -767,6 +819,7 @@ class Requisition:
         _identifier(self.role_id, "role_id")
         _integer(self.threshold, "threshold")
         _integer(self.urgency, "urgency")
+        _integer(self.case_serial, "requisition_case_serial", minimum=1)
         if not isinstance(self.status, RequisitionStatus):
             raise DomainRed(RedCode.INVALID_TYPE, "requisition status is invalid")
         if any(not isinstance(vote, Vote) for vote in self.independent_votes.values()):
@@ -783,6 +836,20 @@ class Requisition:
                 raise DomainRed(RedCode.INVARIANT_BROKEN, "candidate allocation credit diverged")
         if self.status is RequisitionStatus.HIRED and self.hc_reservation_active:
             raise DomainRed(RedCode.HC_IMBALANCE, "hired requisition still reserves HC")
+        if self.hc_reservation_active and self.hc_flight_case != self.case_serial:
+            raise DomainRed(RedCode.HC_IMBALANCE, "active requisition lost its exact HC flight")
+        if not self.hc_reservation_active and self.hc_flight_case is not None:
+            raise DomainRed(RedCode.HC_IMBALANCE, "inactive requisition retained an HC flight")
+        if self.candidate_active_case is not None and self.candidate_active_case != self.case_serial:
+            raise DomainRed(RedCode.PROVENANCE_INVALID, "candidate active case diverged from requisition")
+        if self.status in {RequisitionStatus.CLOSED, RequisitionStatus.HIRED, RequisitionStatus.REFUSED_HOLD} and self.candidate_active_case is not None:
+            raise DomainRed(RedCode.STATE_CONFLICT, "inactive candidate retained an active requisition case")
+        if self.predecessor_requisition_id is not None:
+            _identifier(self.predecessor_requisition_id, "predecessor_requisition_id")
+            _identifier(self.central_open_receipt_id, "central_open_receipt_id")
+            _identifier(self.central_open_receipt_hash, "central_open_receipt_hash")
+        elif self.central_open_receipt_id is not None or self.central_open_receipt_hash is not None:
+            raise DomainRed(RedCode.PROVENANCE_INVALID, "central receipt lacks predecessor lineage")
         if (
             self.offer_gold_reserved < 0
             or self.referral_gold_reserved < 0
@@ -923,6 +990,7 @@ class Phase3WorkforceEndgameModel:
     external_contracts: dict[str, ExternalContract] = field(default_factory=dict)
     secondments: dict[str, SecondmentRecord] = field(default_factory=dict)
     requisitions: dict[str, Requisition] = field(default_factory=dict)
+    requisition_open_receipts: dict[str, RequisitionOpenReceipt] = field(default_factory=dict)
     target_ratchets: dict[str, TargetRatchetRecord] = field(default_factory=dict)
     outcome_timings: dict[str, OutcomeTimingRecord] = field(default_factory=dict)
     collective_actions: dict[str, CollectiveActionRecord] = field(default_factory=dict)
@@ -1063,10 +1131,46 @@ class Phase3WorkforceEndgameModel:
             _integer(secondment.extension_count, "secondment_extension_count")
             if secondment.extension_count != len(secondment.extension_receipts):
                 raise DomainRed(RedCode.PROVENANCE_INVALID, "secondment extension receipts diverged")
+        if set(self.requisitions) != {item.requisition_id for item in self.requisitions.values()}:
+            raise DomainRed(RedCode.PROVENANCE_INVALID, "requisition registry keys are stale")
         for requisition in self.requisitions.values():
             if not isinstance(requisition, Requisition):
                 raise DomainRed(RedCode.INVALID_TYPE, "requisition is invalid")
             requisition.validate()
+        requisition_cases = [item.case_serial for item in self.requisitions.values()]
+        if len(requisition_cases) != len(set(requisition_cases)):
+            raise DomainRed(RedCode.DUPLICATE, "requisition cases are duplicated")
+        receipt_hashes: set[str] = set()
+        for receipt_id, receipt in self.requisition_open_receipts.items():
+            if not isinstance(receipt, RequisitionOpenReceipt):
+                raise DomainRed(RedCode.INVALID_TYPE, "requisition open receipt is invalid")
+            receipt.validate()
+            if receipt_id != receipt.receipt_id:
+                raise DomainRed(RedCode.PROVENANCE_INVALID, "requisition receipt key is stale")
+            if receipt.receipt_hash in receipt_hashes:
+                raise DomainRed(RedCode.DUPLICATE, "requisition receipt hash is duplicated")
+            receipt_hashes.add(receipt.receipt_hash)
+            predecessor = self.requisitions.get(receipt.predecessor_requisition_id)
+            reopened = self.requisitions.get(receipt.requisition_id)
+            if predecessor is None or reopened is None:
+                raise DomainRed(RedCode.PROVENANCE_INVALID, "requisition receipt lost an endpoint")
+            if (
+                receipt.owner_id != self.owner_id
+                or receipt.original_subject_id != self.subject_id
+                or receipt.cycle_serial > self.cycle_serial
+                or predecessor.status is not RequisitionStatus.CLOSED
+                or predecessor.case_serial != receipt.predecessor_case_serial
+                or predecessor.candidate_id != receipt.original_candidate_id
+                or reopened.predecessor_requisition_id != predecessor.requisition_id
+                or reopened.case_serial != receipt.requisition_case_serial
+                or reopened.role_id != predecessor.role_id
+                or reopened.role_id != receipt.role_id
+                or reopened.candidate_id != receipt.runner_up_id
+                or reopened.central_open_receipt_id != receipt.receipt_id
+                or reopened.central_open_receipt_hash != receipt.receipt_hash
+                or receipt.hc_lineage_case_serial != predecessor.case_serial
+            ):
+                raise DomainRed(RedCode.PROVENANCE_INVALID, "requisition receipt tuple diverged")
         active_requisition_reservations = sum(
             1 for item in self.requisitions.values() if item.hc_reservation_active
         )
@@ -2376,7 +2480,15 @@ class Phase3WorkforceEndgameModel:
                 raise DomainRed(RedCode.RESOURCE_EXHAUSTED, "no formal HC is available")
             candidate.formal_hc_available -= 1
             candidate.formal_hc_reserved += 1
-            candidate.requisitions[key] = Requisition(key, role, bar, urgent)
+            requisition_case = candidate.case_serial * 1000 + len(candidate.requisitions) + 1
+            candidate.requisitions[key] = Requisition(
+                key,
+                role,
+                bar,
+                urgent,
+                requisition_case,
+                hc_flight_case=requisition_case,
+            )
 
         return self._atomic(token, 266, mutate)
 
@@ -2701,6 +2813,7 @@ class Phase3WorkforceEndgameModel:
                     raise DomainRed(RedCode.STATE_CONFLICT, "candidate has another active offer/hire")
             requisition.candidate_id = person
             requisition.candidate_owner_id = owner
+            requisition.candidate_active_case = requisition.case_serial
             requisition.owner_history = (owner,)
             requisition.allocation_ref = allocation_ref
             requisition.scout_credit_bps = scout
@@ -2746,6 +2859,8 @@ class Phase3WorkforceEndgameModel:
                 candidate.formal_hc_occupants.get(requisition.candidate_id, 0) + 1
             )
             requisition.hc_reservation_active = False
+            requisition.candidate_active_case = None
+            requisition.hc_flight_case = None
             requisition.status = RequisitionStatus.HIRED
 
         return self._atomic(token, 274, mutate)
@@ -2759,8 +2874,13 @@ class Phase3WorkforceEndgameModel:
         hold_until_cycle: int | None = None,
         refusal_reason: str | None = None,
         runner_up_id: str | None = None,
+        runner_up_evidence_id: str | None = None,
+        new_requisition_id: str | None = None,
+        new_requisition_case: int | None = None,
+        central_receipt_id: str | None = None,
+        central_receipt_hash: str | None = None,
     ) -> ActionResult:
-        """Hold, then reopen/release the same HC slot; a hold is never consumption."""
+        """Hold, then atomically transfer or release one existing HC slot."""
 
         def mutate(candidate: Phase3WorkforceEndgameModel) -> None:
             requisition = candidate._requisition(requisition_id)
@@ -2779,6 +2899,7 @@ class Phase3WorkforceEndgameModel:
                 requisition.referral_gold_reserved = 0
                 requisition.hold_until_cycle = due
                 requisition.refusal_reason = reason
+                requisition.candidate_active_case = None
                 requisition.status = RequisitionStatus.REFUSED_HOLD
                 return
             if requisition.status is not RequisitionStatus.REFUSED_HOLD:
@@ -2789,31 +2910,88 @@ class Phase3WorkforceEndgameModel:
                 raise DomainRed(RedCode.DEADLINE_INVALID, "HC hold is not due")
             if runner_up_id is not None:
                 runner_up = _identifier(runner_up_id, "runner_up_id")
+                evidence = _identifier(runner_up_evidence_id, "runner_up_evidence_id")
+                new_id = _identifier(new_requisition_id, "new_requisition_id")
+                new_case = _integer(new_requisition_case, "new_requisition_case", minimum=1)
+                receipt_id = _identifier(central_receipt_id, "central_receipt_id")
+                receipt_hash = _identifier(central_receipt_hash, "central_receipt_hash")
                 if runner_up not in candidate.actors:
                     raise DomainRed(RedCode.NOT_FOUND, "runner-up is not a real actor")
-                requisition.candidate_id = runner_up
-                requisition.candidate_owner_id = None
-                requisition.owner_history = ()
-                requisition.referral_id = None
-                requisition.referrer_id = None
-                requisition.referral_reward_gold = 0
-                requisition.offer_id = None
-                requisition.offered_level = None
-                requisition.promised_level = None
-                requisition.level_approver_id = None
-                requisition.premium_end_cycle = None
-                requisition.counteroffer_used = False
-                requisition.counteroffer_gold = 0
-                requisition.hold_until_cycle = None
-                requisition.independent_votes = {}
-                requisition.vote_evidence = {}
-                requisition.raw_votes_frozen = ()
-                requisition.calibrated_scores = {}
-                requisition.status = RequisitionStatus.OPEN
+                if requisition.candidate_id is None:
+                    raise DomainRed(RedCode.PROVENANCE_INVALID, "refused hold lost original candidate")
+                if runner_up == requisition.candidate_id:
+                    raise DomainRed(RedCode.PROVENANCE_INVALID, "runner-up reused the refused candidate")
+                if new_id in candidate.requisitions:
+                    raise DomainRed(RedCode.DUPLICATE, "runner requisition id already exists")
+                if new_case == requisition.case_serial or any(
+                    item.case_serial == new_case for item in candidate.requisitions.values()
+                ):
+                    raise DomainRed(RedCode.DUPLICATE, "runner requisition case is not distinct")
+                if receipt_id in candidate.requisition_open_receipts or any(
+                    item.receipt_hash == receipt_hash
+                    for item in candidate.requisition_open_receipts.values()
+                ):
+                    raise DomainRed(RedCode.DUPLICATE, "central requisition receipt is not distinct")
+                if runner_up in candidate._claimed_formal_hc_actor_ids():
+                    raise DomainRed(RedCode.STATE_CONFLICT, "runner-up already owns an HC claim")
+                original_candidate = requisition.candidate_id
+                old_case = requisition.case_serial
+                requisition.hc_reservation_active = False
+                requisition.candidate_active_case = None
+                requisition.hc_flight_case = None
+                requisition.status = RequisitionStatus.CLOSED
+                reopened = Requisition(
+                    requisition_id=new_id,
+                    role_id=requisition.role_id,
+                    threshold=requisition.threshold,
+                    urgency=requisition.urgency,
+                    case_serial=new_case,
+                    status=RequisitionStatus.OPEN,
+                    hc_reservation_active=True,
+                    candidate_active_case=new_case,
+                    hc_flight_case=new_case,
+                    predecessor_requisition_id=requisition.requisition_id,
+                    central_open_receipt_id=receipt_id,
+                    central_open_receipt_hash=receipt_hash,
+                    risk_policy=requisition.risk_policy,
+                    policy_version_id=requisition.policy_version_id,
+                    candidate_id=runner_up,
+                    threshold_policy_frozen=requisition.threshold_policy_frozen,
+                )
+                candidate.requisitions[new_id] = reopened
+                candidate.requisition_open_receipts[receipt_id] = RequisitionOpenReceipt(
+                    receipt_id=receipt_id,
+                    receipt_hash=receipt_hash,
+                    owner_id=candidate.owner_id,
+                    original_subject_id=candidate.subject_id,
+                    original_candidate_id=original_candidate,
+                    runner_up_id=runner_up,
+                    runner_evidence_id=evidence,
+                    cycle_serial=current,
+                    predecessor_requisition_id=requisition.requisition_id,
+                    predecessor_case_serial=old_case,
+                    requisition_id=new_id,
+                    requisition_case_serial=new_case,
+                    role_id=requisition.role_id,
+                    hc_lineage_case_serial=old_case,
+                )
             else:
+                if any(
+                    value is not None
+                    for value in (
+                        runner_up_evidence_id,
+                        new_requisition_id,
+                        new_requisition_case,
+                        central_receipt_id,
+                        central_receipt_hash,
+                    )
+                ):
+                    raise DomainRed(RedCode.PROVENANCE_INVALID, "release route carried a partial central requisition")
                 candidate.formal_hc_reserved -= 1
                 candidate.formal_hc_available += 1
                 requisition.hc_reservation_active = False
+                requisition.candidate_active_case = None
+                requisition.hc_flight_case = None
                 requisition.status = RequisitionStatus.CLOSED
 
         return self._atomic(token, 275, mutate)

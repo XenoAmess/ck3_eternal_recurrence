@@ -115,7 +115,10 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
   owner/subject/cycle/case/state/choice。对应机制在 pending 清零前禁止新周期覆写 tuple；不到权威
   `review_serial` 的事件只重排后续检查，不能提前结算。
 - #266 建立 owner-scope AD HC flight；它阻止同一 owner 换 subject 再占一个槽。#274 正式雇用后清掉该
-  flight。#275 A 在到期时保留原 HC lineage 并打开 runner-up pending；#275 B 只有拿到与冻结拒绝理由一致的
+  flight。#275 A 到期先保留 `hold_pending=1`、旧案 HC flight 与 #266 reservation/receipt，再调用 Central 独立招聘
+  producer；Central 自产 distinct new case、receipt/hash，并在三个自然帧中依次提交 canonical source、调用 Workforce
+  consumer、核验 durable result。只有 consumer 成功后才激活 runner-up、把 `candidate_active_case` 与 owner flight
+  改绑新案并清 pending；正式 HC 数量不变，不二次 reserve/release。#275 B 只有拿到与冻结拒绝理由一致的
   remediation receipt 后才 `reserved→available` 并清 flight。没有证据就继续等待，不能因计时到期自动释放。
   route B 提交后由 D+1 subject event 调用独立 remediation producer 打开真实整改 requirement；due consumer
   完成 HC 释放、`reason_remediated=1` 与 owner flight 清除后，再由另一个 D+1 subject event 精确消费同一
@@ -157,13 +160,17 @@ referral READY → #271 A/B success → consume referral → begin panel
 panel READY → #267 A/B success → consume panel
 #272 A/B pushes state 4 → begin offer
 offer accept → native appointment → #274 A success → consume offer
-offer refusal → #274 B success → #275 A/B success → consume offer
+offer refusal → #274 B success → #275 A/B operation success（先冻结各自 future contract）→ consume offer
 ```
 
 这里的 success 都要求 case-kernel operation receipt、业务写和机制 consumer 已实际完成；source consume 调用排在
 这些动作之后。#271 B 只托管推荐奖励并写 `paid_before_probation=0`，不在 #271 付款；#267 B 必须先证明
 `interviewer_1=referrer`、slot 1 actor receipt 与三票证据完整，operation 成功后才向该 referrer 支付 5 金。
 #267 A 的 recusal 路仍把奖励留到 probation outcome。
+
+#275 A 消费 offer source 只证明“短期 hold 与 runner-up future contract 已成功冻结”，不冒充 D+90 中央招聘完成；
+后者使用独立 Central source，必须等 Workforce adapter 成功并经下一帧 exact verify 后才消费。#275 B 同理先冻结
+remediation future contract，真正释放 HC 仍须等待 detailed remediation receipt 与 due consumer。
 
 referral/panel/offer 的 C 路从不消费 source，只在同一五元组的 debt 已提交后写
 `pending=0, consumed=0, retired=1`。retire replay 复核 source owner/subject/cycle/case/id/hash 与 tombstone；下一案
@@ -243,7 +250,7 @@ owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退�
 | AD | 270 | 2 | 消费同案 #266/#267，role class/risk threshold/version → future hiring policy；raw votes 不改 |
 | AD | 272 | 3 | 消费 owner/vote/calibration/policy 同案对象，冻结 unique offer terms/level/approver/premium due → bounded offer reserve；state 4 后打开 subject-owned offer source |
 | AD | 274 | 4 | 接受路经原生 court-position wrapper，A 成功后消费 offer source；拒绝 source 必须先成功写 B，再交 #275，B 本身不消费；C 只退役 |
-| AD | 275 | 4 | 未录用时消费同一拒绝 source 的本人 reason/runner evidence/HC lineage → held/reopen/release；A/B 成功后才消费，C 只退役；已录用则内部写 hold=0 disposition |
+| AD | 275 | 4 | 未录用时消费同一拒绝 source 的本人 reason/runner evidence/HC lineage → held/reopen/release；A 到期经 Central 自产 distinct new case/receipt/hash，成功后把同一 HC flight 改绑新案且不二次 reserve/release；B 成功整改后释放；A/B 只在各自真实后续 consumer 成功后消费，C 只退役；已录用则内部写 hold=0 disposition |
 | AD | 269 | 5 | 已录用时 signed attribution receipt + canonical probation outcome → detailed exact join 后 D+1 advance；route C 先登记 exact attribution debt/cancel；已拒绝则内部写 no-hire disposition，不建 watch |
 | AD | 276 | 6 | old case hash/exit/growth → candidate 绑定当前 subject 的 append-only rehire review；HC untouched |
 | AD | 277 | 6 | B2 pending 11-tuple + 独立 exit receipt + 内部 position/HC lineage → occupied→frozen vacancy；只在成功 A/B 消费 B2，不回 available、不铸 HC |
@@ -391,9 +398,12 @@ RED `9098`。
    MCP-first CK3 paused/live 证明三张来源和三份 cohort 在可达业务路径生成、玩家只在 READY 收到事件、AI 静默走 A、
    A 的三份真实成本回执/单次 trust 扣减、B 的 N/A、C 的无 seal，以及重试不重复收费。#361 report/charter 已改为
    本包从三轮原始 receipt ledger 生成 serial；必须实机证明前两轮只落 state 8、第三轮才弹 #361。
-4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
-   `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身仍是外部调用者责任，#274 的真实任命 caller 已按
-   上述 wrapper/resume 合同静态接通。
+4. #275 A 的中央招聘 caller 已静态闭合：到期 consumer 调用 Central 独立 producer，由 owner 专用单调 cursor 自产
+   distinct new requisition case、receipt/hash；source 冻结旧案、runner/evidence 与 HC lineage，commit-last 后跨帧调用
+   `consume_m275_runner_reopen`，再由 Central exact verify 后关闭 source。adapter 成功前旧 hold/flight 保持；成功后才激活
+   runner、改绑 candidate/flight 并清 pending，#266 receipt 与正式 HC 总数不变。exact replay 不重签，碰撞不覆盖，
+   B/C 不调用本 producer。该闭环仍只有生成器与 L0 证据，尚待 loader、MCP-first paused snapshot、存读档与实机事件证明；
+   #274 的真实任命 caller 已按上述 wrapper/resume 合同静态接通。
 5. C debt 到期 consumer 已落地；#264 已改为产品自有三步玩家交接链，不再有 caller-supplied waiver/hash
    adapter。仍需 CK3 存读档/跨周期实机证明 30+30 日 scheduler、玩家/AI 分流、一次支付/退款、资源守恒和
    有界升级没有 scope 漂移。

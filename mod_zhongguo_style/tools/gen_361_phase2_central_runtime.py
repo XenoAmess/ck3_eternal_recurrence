@@ -713,6 +713,219 @@ def render_effects() -> str:
 # 4 typed RED, 5 external dependency.  Managers are celestial dukes+;
 # counts/barons remain valid assessed subjects but can never be ROOT.
 
+# #275-A is a standalone Central product, not a stage-11 poll.  Workforce's
+# D+90 due consumer calls this scheduler while the refused original candidate
+# still owns the hold.  The three delayed frames deliberately separate source
+# commit, Workforce consume and Central receipt close; no frame relies on a
+# same-effect write-then-read result.
+zg361_p2c_schedule_m275_runner_requisition_effect = {
+    if = {
+        limit = {
+            this = $TICKET_SUBJECT$
+            $TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+            has_variable = zg361_we_m275_runner_reopen_pending
+            var:zg361_we_m275_runner_reopen_pending = 1
+            has_variable = zg361_we_m275_hold_pending
+            var:zg361_we_m275_hold_pending = 1
+        }
+        if = { limit = { NOT = { has_variable = zg361_p2c_m275_ingress_ticket_serial } } set_variable = { name = zg361_p2c_m275_ingress_ticket_serial value = 0 } }
+        change_variable = { name = zg361_p2c_m275_ingress_ticket_serial add = 1 }
+        $TICKET_OWNER$ = { save_scope_as = zg361_p2c_m275_ingress_owner }
+        save_scope_as = zg361_p2c_m275_ingress_subject
+        save_scope_value_as = { name = zg361_p2c_m275_ingress_cycle value = $TICKET_CYCLE$ }
+        save_scope_value_as = { name = zg361_p2c_m275_ingress_case value = $TICKET_CASE$ }
+        save_scope_value_as = { name = zg361_p2c_m275_ingress_identity value = var:zg361_p2c_m275_ingress_ticket_serial }
+        trigger_event = { id = zg361p2c.4 days = 1 }
+    }
+}
+
+# Subject-scoped canonical producer.  The owner-local cursor never wraps or
+# resets.  Exact replay schedules the same committed source without allocating
+# another identity; any different live tuple is a collision and cannot
+# overwrite the immutable source envelope.
+zg361_p2c_open_m275_runner_requisition_effect = {
+    remove_variable = zg361_p2c_m275_requisition_last_call_status
+    if = {
+        limit = {
+            has_variable = zg361_p2c_m275_requisition_committed
+            var:zg361_p2c_m275_requisition_committed = 1
+            has_variable = zg361_p2c_m275_requisition_pending
+            has_variable = zg361_p2c_m275_requisition_consumed
+            has_variable = zg361_p2c_m275_requisition_owner
+            has_variable = zg361_p2c_m275_requisition_original_subject
+            has_variable = zg361_p2c_m275_requisition_source_cycle
+            has_variable = zg361_p2c_m275_requisition_source_case
+            has_variable = zg361_p2c_m275_requisition_source_state
+            has_variable = zg361_p2c_m275_requisition_runner_up
+            has_variable = zg361_p2c_m275_requisition_runner_evidence
+            has_variable = zg361_p2c_m275_requisition_hc_lineage_receipt
+            has_variable = zg361_p2c_m275_requisition_hc_flight_case
+            has_variable = zg361_p2c_m275_requisition_serial
+            has_variable = zg361_p2c_m275_requisition_new_case
+            has_variable = zg361_p2c_m275_requisition_new_state
+            has_variable = zg361_p2c_m275_requisition_receipt_id
+            has_variable = zg361_p2c_m275_requisition_receipt_hash
+            has_variable = zg361_p2c_m275_requisition_opened
+            var:zg361_p2c_m275_requisition_owner = $TICKET_OWNER$
+            var:zg361_p2c_m275_requisition_original_subject = $TICKET_SUBJECT$
+            var:zg361_p2c_m275_requisition_source_cycle = $TICKET_CYCLE$
+            var:zg361_p2c_m275_requisition_source_case = $TICKET_CASE$
+            var:zg361_p2c_m275_requisition_source_state = 4
+            var:zg361_p2c_m275_requisition_runner_up = var:zg361_we_m275_runner_up
+            var:zg361_p2c_m275_requisition_runner_evidence = var:zg361_we_m275_runner_up_evidence
+            var:zg361_p2c_m275_requisition_hc_lineage_receipt = var:zg361_we_m275_hc_lineage_receipt
+            var:zg361_p2c_m275_requisition_hc_flight_case = $TICKET_CASE$
+            var:zg361_p2c_m275_requisition_serial > 0
+            var:zg361_p2c_m275_requisition_new_case > 0
+            NOT = { var:zg361_p2c_m275_requisition_new_case = $TICKET_CASE$ }
+            var:zg361_p2c_m275_requisition_new_state = 1
+            var:zg361_p2c_m275_requisition_receipt_id > 0
+            var:zg361_p2c_m275_requisition_receipt_hash > 0
+            var:zg361_p2c_m275_requisition_opened = 1
+            OR = {
+                AND = { var:zg361_p2c_m275_requisition_pending = 1 var:zg361_p2c_m275_requisition_consumed = 0 }
+                AND = { var:zg361_p2c_m275_requisition_pending = 0 var:zg361_p2c_m275_requisition_consumed = 1 }
+            }
+        }
+        if = {
+            limit = { var:zg361_p2c_m275_requisition_pending = 1 var:zg361_p2c_m275_requisition_consumed = 0 }
+            set_variable = { name = zg361_p2c_m275_requisition_last_call_status value = 1 }
+            save_scope_as = zg361_p2c_m275_dispatch_subject
+            $TICKET_OWNER$ = { save_scope_as = zg361_p2c_m275_dispatch_owner }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_cycle value = $TICKET_CYCLE$ }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_case value = $TICKET_CASE$ }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_serial value = var:zg361_p2c_m275_requisition_serial }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_new_case value = var:zg361_p2c_m275_requisition_new_case }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_receipt value = var:zg361_p2c_m275_requisition_receipt_id }
+            trigger_event = { id = zg361p2c.5 days = 1 }
+        }
+        else = { set_variable = { name = zg361_p2c_m275_requisition_last_call_status value = 2 } }
+    }
+    else_if = {
+        limit = {
+            this = $TICKET_SUBJECT$
+            trigger_if = { limit = { has_variable = zg361_p2c_m275_requisition_committed } var:zg361_p2c_m275_requisition_committed = 0 }
+            trigger_else = { always = yes }
+            $TICKET_OWNER$ = {
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_review_serial
+                var:zg361_review_serial >= root.var:zg361_we_m275_hold_due_cycle
+                has_variable = zg361_we_ad_hc_flight_pending
+                var:zg361_we_ad_hc_flight_pending = 1
+                var:zg361_we_ad_hc_flight_subject = $TICKET_SUBJECT$
+                var:zg361_we_ad_hc_flight_cycle = $TICKET_CYCLE$
+                var:zg361_we_ad_hc_flight_case = $TICKET_CASE$
+            }
+            has_variable = zg361_we_m275_business_object_created
+            has_variable = zg361_we_m275_object_owner
+            has_variable = zg361_we_m275_object_subject
+            has_variable = zg361_we_m275_object_cycle
+            has_variable = zg361_we_m275_object_case
+            has_variable = zg361_we_m275_object_state
+            has_variable = zg361_we_m275_object_consumed
+            has_variable = zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275
+            var:zg361_we_m275_business_object_created = 1
+            var:zg361_we_m275_object_owner = $TICKET_OWNER$
+            var:zg361_we_m275_object_subject = $TICKET_SUBJECT$
+            var:zg361_we_m275_object_cycle = $TICKET_CYCLE$
+            var:zg361_we_m275_object_case = $TICKET_CASE$
+            var:zg361_we_m275_object_state = 4
+            var:zg361_we_m275_object_consumed = 1
+            var:zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275 = 1
+            has_variable = zg361_we_m275_receipt_choice
+            has_variable = zg361_we_m275_refusal
+            has_variable = zg361_we_m275_not_applicable_hired
+            has_variable = zg361_we_m275_original_candidate
+            has_variable = zg361_we_m275_hold_pending
+            has_variable = zg361_we_m275_runner_reopen_pending
+            has_variable = zg361_we_m275_runner_up
+            has_variable = zg361_we_m275_runner_up_evidence
+            has_variable = zg361_we_m275_hc_lineage_receipt
+            has_variable = zg361_we_m266_hc_reservation_active
+            has_variable = zg361_we_m266_hc_receipt
+            has_variable = zg361_we_candidate_active
+            var:zg361_we_m275_receipt_choice = 1
+            var:zg361_we_m275_refusal = 1
+            var:zg361_we_m275_not_applicable_hired = 0
+            var:zg361_we_m275_original_candidate = $TICKET_SUBJECT$
+            var:zg361_we_m275_hold_pending = 1
+            var:zg361_we_m275_runner_reopen_pending = 1
+            NOT = { var:zg361_we_m275_runner_up = $TICKET_SUBJECT$ }
+            var:zg361_we_m275_runner_up_evidence > 0
+            var:zg361_we_m275_hc_lineage_receipt = $TICKET_CASE$
+            var:zg361_we_m266_hc_reservation_active = 1
+            var:zg361_we_m266_hc_receipt = $TICKET_CASE$
+            var:zg361_we_candidate_active = 0
+            has_variable = zg361_ch_hc_reserved
+            var:zg361_ch_hc_reserved >= 1
+        }
+        $TICKET_OWNER$ = {
+            save_temporary_scope_as = zg361_p2c_m275_requisition_cursor_owner
+            if = { limit = { NOT = { has_variable = zg361_p2c_m275_requisition_cursor } } set_variable = { name = zg361_p2c_m275_requisition_cursor value = 0 } }
+            change_variable = { name = zg361_p2c_m275_requisition_cursor add = 1 }
+        }
+        save_temporary_scope_value_as = {
+            name = zg361_p2c_m275_expected_new_case
+            value = { value = $TICKET_CASE$ multiply = 100000 add = { value = scope:zg361_p2c_m275_requisition_cursor_owner.var:zg361_p2c_m275_requisition_cursor multiply = 10 } add = 5 }
+        }
+        save_temporary_scope_value_as = { name = zg361_p2c_m275_expected_receipt_id value = { value = scope:zg361_p2c_m275_expected_new_case multiply = 10 add = 5 } }
+        save_temporary_scope_value_as = {
+            name = zg361_p2c_m275_expected_receipt_hash
+            value = {
+                value = scope:zg361_p2c_m275_requisition_cursor_owner.var:zg361_p2c_m275_requisition_cursor multiply = 100000000
+                add = { value = $TICKET_CYCLE$ multiply = 1000000 }
+                add = { value = $TICKET_CASE$ multiply = 1000 }
+                add = { value = var:zg361_we_m275_runner_up_evidence multiply = 10 }
+                add = 275
+            }
+        }
+        if = {
+            limit = {
+                scope:zg361_p2c_m275_expected_new_case > 0
+                NOT = { scope:zg361_p2c_m275_expected_new_case = $TICKET_CASE$ }
+                scope:zg361_p2c_m275_expected_receipt_id > 0
+                scope:zg361_p2c_m275_expected_receipt_hash > 0
+            }
+            set_variable = { name = zg361_p2c_m275_requisition_pending value = 1 }
+            set_variable = { name = zg361_p2c_m275_requisition_consumed value = 0 }
+            set_variable = { name = zg361_p2c_m275_requisition_status value = 1 }
+            set_variable = { name = zg361_p2c_m275_requisition_owner value = $TICKET_OWNER$ }
+            set_variable = { name = zg361_p2c_m275_requisition_original_subject value = $TICKET_SUBJECT$ }
+            set_variable = { name = zg361_p2c_m275_requisition_source_cycle value = $TICKET_CYCLE$ }
+            set_variable = { name = zg361_p2c_m275_requisition_source_case value = $TICKET_CASE$ }
+            set_variable = { name = zg361_p2c_m275_requisition_source_state value = 4 }
+            set_variable = { name = zg361_p2c_m275_requisition_runner_up value = var:zg361_we_m275_runner_up }
+            set_variable = { name = zg361_p2c_m275_requisition_runner_evidence value = var:zg361_we_m275_runner_up_evidence }
+            set_variable = { name = zg361_p2c_m275_requisition_hc_lineage_receipt value = var:zg361_we_m275_hc_lineage_receipt }
+            set_variable = { name = zg361_p2c_m275_requisition_hc_flight_case value = $TICKET_CASE$ }
+            set_variable = { name = zg361_p2c_m275_requisition_serial value = scope:zg361_p2c_m275_requisition_cursor_owner.var:zg361_p2c_m275_requisition_cursor }
+            set_variable = { name = zg361_p2c_m275_requisition_new_case value = scope:zg361_p2c_m275_expected_new_case }
+            set_variable = { name = zg361_p2c_m275_requisition_new_state value = 1 }
+            set_variable = { name = zg361_p2c_m275_requisition_receipt_id value = scope:zg361_p2c_m275_expected_receipt_id }
+            set_variable = { name = zg361_p2c_m275_requisition_receipt_hash value = scope:zg361_p2c_m275_expected_receipt_hash }
+            set_variable = { name = zg361_p2c_m275_requisition_opened value = 1 }
+            set_variable = { name = zg361_p2c_m275_requisition_last_call_status value = 1 }
+            set_variable = { name = zg361_p2c_m275_requisition_committed value = 1 } # source commit last
+            save_scope_as = zg361_p2c_m275_dispatch_subject
+            $TICKET_OWNER$ = { save_scope_as = zg361_p2c_m275_dispatch_owner }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_cycle value = $TICKET_CYCLE$ }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_case value = $TICKET_CASE$ }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_serial value = var:zg361_p2c_m275_requisition_serial }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_new_case value = var:zg361_p2c_m275_requisition_new_case }
+            save_scope_value_as = { name = zg361_p2c_m275_dispatch_receipt value = var:zg361_p2c_m275_requisition_receipt_id }
+            trigger_event = { id = zg361p2c.5 days = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_p2c_m275_requisition_last_call_status value = 4 }
+            set_variable = { name = zg361_p2c_m275_requisition_collision_code value = 27542 }
+        }
+    }
+    else = {
+        set_variable = { name = zg361_p2c_m275_requisition_last_call_status value = 4 }
+        set_variable = { name = zg361_p2c_m275_requisition_collision_code value = 27541 }
+    }
+}
+
 zg361_p2c_mark_lane_busy_effect = {
     set_variable = { name = zg361_p2c_stage_status value = 1 }
     if = { limit = { is_ai = no } set_variable = { name = zg361_p2c_ui_lane_busy value = 1 } }
@@ -2042,6 +2255,172 @@ zg361p2c.3 = {
         else = { debug_log = "ZG361P2C: stale deferred central reinitialization ignored" }
     }
 }
+
+# #275-A ingress.  The due consumer has already committed the refused-hold
+# ticket, but still owns hold_pending and the original owner HC flight.
+zg361p2c.4 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                exists = scope:zg361_p2c_m275_ingress_owner
+                exists = scope:zg361_p2c_m275_ingress_subject
+                exists = scope:zg361_p2c_m275_ingress_cycle
+                exists = scope:zg361_p2c_m275_ingress_case
+                exists = scope:zg361_p2c_m275_ingress_identity
+                this = scope:zg361_p2c_m275_ingress_subject
+                has_variable = zg361_p2c_m275_ingress_ticket_serial
+                var:zg361_p2c_m275_ingress_ticket_serial = scope:zg361_p2c_m275_ingress_identity
+                has_variable = zg361_we_m275_runner_reopen_pending
+                var:zg361_we_m275_runner_reopen_pending = 1
+                has_variable = zg361_we_m275_hold_pending
+                var:zg361_we_m275_hold_pending = 1
+            }
+            zg361_p2c_open_m275_runner_requisition_effect = {
+                TICKET_OWNER = scope:zg361_p2c_m275_ingress_owner
+                TICKET_SUBJECT = scope:zg361_p2c_m275_ingress_subject
+                TICKET_CYCLE = scope:zg361_p2c_m275_ingress_cycle
+                TICKET_CASE = scope:zg361_p2c_m275_ingress_case
+            }
+        }
+        else = { debug_log = "ZG361P2C: stale M275 runner requisition ingress ignored" }
+    }
+}
+
+# The producer's committed source is consumed one frame later.  This event
+# never trusts caller-supplied runner/case/receipt values: Workforce joins the
+# canonical subject-local source directly.
+zg361p2c.5 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                exists = scope:zg361_p2c_m275_dispatch_owner
+                exists = scope:zg361_p2c_m275_dispatch_subject
+                exists = scope:zg361_p2c_m275_dispatch_cycle
+                exists = scope:zg361_p2c_m275_dispatch_case
+                exists = scope:zg361_p2c_m275_dispatch_serial
+                exists = scope:zg361_p2c_m275_dispatch_new_case
+                exists = scope:zg361_p2c_m275_dispatch_receipt
+                this = scope:zg361_p2c_m275_dispatch_subject
+                has_variable = zg361_p2c_m275_requisition_committed
+                has_variable = zg361_p2c_m275_requisition_pending
+                has_variable = zg361_p2c_m275_requisition_consumed
+                var:zg361_p2c_m275_requisition_committed = 1
+                var:zg361_p2c_m275_requisition_pending = 1
+                var:zg361_p2c_m275_requisition_consumed = 0
+                var:zg361_p2c_m275_requisition_owner = scope:zg361_p2c_m275_dispatch_owner
+                var:zg361_p2c_m275_requisition_original_subject = scope:zg361_p2c_m275_dispatch_subject
+                var:zg361_p2c_m275_requisition_source_cycle = scope:zg361_p2c_m275_dispatch_cycle
+                var:zg361_p2c_m275_requisition_source_case = scope:zg361_p2c_m275_dispatch_case
+                var:zg361_p2c_m275_requisition_serial = scope:zg361_p2c_m275_dispatch_serial
+                var:zg361_p2c_m275_requisition_new_case = scope:zg361_p2c_m275_dispatch_new_case
+                var:zg361_p2c_m275_requisition_receipt_id = scope:zg361_p2c_m275_dispatch_receipt
+            }
+            zg361_we_consume_m275_runner_reopen_effect = {
+                TICKET_OWNER = scope:zg361_p2c_m275_dispatch_owner
+                TICKET_SUBJECT = scope:zg361_p2c_m275_dispatch_subject
+                TICKET_CYCLE = scope:zg361_p2c_m275_dispatch_cycle
+                TICKET_CASE = scope:zg361_p2c_m275_dispatch_case
+            }
+            save_scope_as = zg361_p2c_m275_verify_subject
+            scope:zg361_p2c_m275_dispatch_owner = { save_scope_as = zg361_p2c_m275_verify_owner }
+            save_scope_value_as = { name = zg361_p2c_m275_verify_cycle value = scope:zg361_p2c_m275_dispatch_cycle }
+            save_scope_value_as = { name = zg361_p2c_m275_verify_case value = scope:zg361_p2c_m275_dispatch_case }
+            save_scope_value_as = { name = zg361_p2c_m275_verify_serial value = scope:zg361_p2c_m275_dispatch_serial }
+            save_scope_value_as = { name = zg361_p2c_m275_verify_new_case value = scope:zg361_p2c_m275_dispatch_new_case }
+            save_scope_value_as = { name = zg361_p2c_m275_verify_receipt value = scope:zg361_p2c_m275_dispatch_receipt }
+            trigger_event = { id = zg361p2c.6 days = 1 }
+        }
+        else = { debug_log = "ZG361P2C: stale M275 runner requisition dispatch ignored" }
+    }
+}
+
+# Central consumes its source only after a later-frame exact check of
+# Workforce's durable result.  A failed adapter leaves both source pending and
+# the original HC flight inspectable.
+zg361p2c.6 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                exists = scope:zg361_p2c_m275_verify_owner
+                exists = scope:zg361_p2c_m275_verify_subject
+                exists = scope:zg361_p2c_m275_verify_cycle
+                exists = scope:zg361_p2c_m275_verify_case
+                exists = scope:zg361_p2c_m275_verify_serial
+                exists = scope:zg361_p2c_m275_verify_new_case
+                exists = scope:zg361_p2c_m275_verify_receipt
+                this = scope:zg361_p2c_m275_verify_subject
+                has_variable = zg361_p2c_m275_requisition_committed
+                has_variable = zg361_p2c_m275_requisition_pending
+                has_variable = zg361_p2c_m275_requisition_consumed
+                var:zg361_p2c_m275_requisition_committed = 1
+                var:zg361_p2c_m275_requisition_pending = 1
+                var:zg361_p2c_m275_requisition_consumed = 0
+                var:zg361_p2c_m275_requisition_owner = scope:zg361_p2c_m275_verify_owner
+                var:zg361_p2c_m275_requisition_original_subject = scope:zg361_p2c_m275_verify_subject
+                var:zg361_p2c_m275_requisition_source_cycle = scope:zg361_p2c_m275_verify_cycle
+                var:zg361_p2c_m275_requisition_source_case = scope:zg361_p2c_m275_verify_case
+                var:zg361_p2c_m275_requisition_serial = scope:zg361_p2c_m275_verify_serial
+                var:zg361_p2c_m275_requisition_new_case = scope:zg361_p2c_m275_verify_new_case
+                var:zg361_p2c_m275_requisition_receipt_id = scope:zg361_p2c_m275_verify_receipt
+            }
+            if = {
+                limit = {
+                    has_variable = zg361_we_m275_runner_reopen_consumed
+                    has_variable = zg361_we_m275_runner_new_case
+                    has_variable = zg361_we_m275_runner_requisition_receipt_id
+                    has_variable = zg361_we_m275_runner_requisition_receipt_hash
+                    has_variable = zg361_we_m275_runner_requisition_candidate
+                    has_variable = zg361_we_m275_runner_requisition_evidence
+                    has_variable = zg361_we_candidate_active
+                    has_variable = zg361_we_candidate_active_owner
+                    has_variable = zg361_we_candidate_active_case
+                    has_variable = zg361_we_candidate_active_character
+                    has_variable = zg361_we_m275_hold_pending
+                    has_variable = zg361_we_m275_runner_reopen_pending
+                    var:zg361_we_m275_runner_reopen_consumed = 1
+                    var:zg361_we_m275_runner_new_case = var:zg361_p2c_m275_requisition_new_case
+                    var:zg361_we_m275_runner_requisition_receipt_id = var:zg361_p2c_m275_requisition_receipt_id
+                    var:zg361_we_m275_runner_requisition_receipt_hash = var:zg361_p2c_m275_requisition_receipt_hash
+                    var:zg361_we_m275_runner_requisition_candidate = var:zg361_p2c_m275_requisition_runner_up
+                    var:zg361_we_m275_runner_requisition_evidence = var:zg361_p2c_m275_requisition_runner_evidence
+                    var:zg361_we_candidate_active = 1
+                    var:zg361_we_candidate_active_owner = scope:zg361_p2c_m275_verify_owner
+                    var:zg361_we_candidate_active_case = scope:zg361_p2c_m275_verify_new_case
+                    var:zg361_we_candidate_active_character = var:zg361_p2c_m275_requisition_runner_up
+                    var:zg361_we_m275_hold_pending = 0
+                    var:zg361_we_m275_runner_reopen_pending = 0
+                    has_variable = zg361_we_m266_hc_reservation_active
+                    has_variable = zg361_we_m266_hc_receipt
+                    var:zg361_we_m266_hc_reservation_active = 1
+                    var:zg361_we_m266_hc_receipt = var:zg361_p2c_m275_requisition_hc_lineage_receipt
+                    scope:zg361_p2c_m275_verify_owner = {
+                        zg361_is_celestial_liege_trigger = yes
+                        has_variable = zg361_we_ad_hc_flight_pending
+                        var:zg361_we_ad_hc_flight_pending = 1
+                        var:zg361_we_ad_hc_flight_subject = scope:zg361_p2c_m275_verify_subject
+                        var:zg361_we_ad_hc_flight_cycle = scope:zg361_p2c_m275_verify_cycle
+                        var:zg361_we_ad_hc_flight_case = scope:zg361_p2c_m275_verify_new_case
+                    }
+                }
+                set_variable = { name = zg361_p2c_m275_requisition_status value = 2 }
+                set_variable = { name = zg361_p2c_m275_requisition_pending value = 0 }
+                set_variable = { name = zg361_p2c_m275_requisition_consumed value = 1 } # source close commit last
+            }
+            else = {
+                set_variable = { name = zg361_p2c_m275_requisition_verify_status value = 4 }
+                set_variable = { name = zg361_p2c_m275_requisition_collision_code value = 27543 }
+                debug_log = "ZG361P2C RED: M275 runner source was not consumed exactly"
+            }
+        }
+        else = { debug_log = "ZG361P2C: stale or replayed M275 runner verification ignored" }
+    }
+}
 '''
 
 
@@ -2131,6 +2510,15 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
   terminal snapshot；`team_n/member_count`、`team_bottom_n/quota` 与 snapshot 的 B1 source serial 必须一致。冻结后任一
   manager、B1 source id/hash/quota 或 MG case/revision 漂移立即 RED，绝不重选。
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。
+- #275-A runner-up 招聘是独立于 stage 11 的 Central 产品入口：旧 AD 案 D+90 到期后只排
+  `zg361p2c.4`，再以三个自然帧完成 canonical source commit → Workforce consume → Central verify/close。
+  source 在拒绝候选 subject 上冻结 owner、original subject、runner/evidence、cycle/old case/state、旧 HC flight、
+  m266 lineage、专用 owner 单调 serial、distinct new case 与自产 receipt/hash；`committed=1` 是 source 最后业务写。
+  exact replay 不增 serial、不重签，碰撞只写诊断且不覆盖 source。
+- Workforce adapter 成功前 `m275_hold_pending=1`、旧 candidate inactive、旧 owner HC flight 不变；成功后才一次性激活
+  runner-up、把 `candidate_active_case` 和 owner flight 切到新案并清两个 pending。`m266_hc_receipt` 与 reserved 数量保持
+  原值，不重跑 #266、不 reserve/release HC。Central 只在下一帧核对完整 durable result 后消费 source；中断重入只修复
+  未完成的 consume/verify。route B 仍只走 remediation release，route C 只退役 source/debt，二者都不调用本 producer。
 - 新一轮 B1 公示若撞上旧中央案，会先把旧 immutable tuple 记为 typed RED，给旧摘要 D+1 ACK 窗口，再在 D+2 精确初始化新案；禁止原地覆盖或清掉旧摘要。
 - P3、Credit/Project 与 Workforce 的 D+1 域切换空档只轮询同一 portfolio tuple，不会误判 RED。
 - 3.25 state 1/2 以及 Workforce status 5 都记录 external wait，绝不伪装 success。manager 的 status 5 会先调用
@@ -2157,7 +2545,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 `tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 proof 互斥、D+2 初始化、exact 3.25 wake、
 单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、#360 frozen-order 组合、
 B1 diagnostic WAIT/N/A/RED、B1+MG exact source、READY-only gated resume、manager structural-N/A、status 8 history terminal、
-AI/玩家共同业务路径、BOM 与生成可复现。它不构成 fixture-live 或 production-live 证据。
+AI/玩家共同业务路径、#275-A 三帧 distinct requisition/receipt/hash 与 HC 守恒、BOM 与生成可复现。它不构成
+fixture-live 或 production-live 证据。
 """
 
 

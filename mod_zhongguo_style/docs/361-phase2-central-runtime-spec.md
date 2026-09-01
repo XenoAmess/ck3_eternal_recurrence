@@ -56,6 +56,15 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
   terminal snapshot；`team_n/member_count`、`team_bottom_n/quota` 与 snapshot 的 B1 source serial 必须一致。冻结后任一
   manager、B1 source id/hash/quota 或 MG case/revision 漂移立即 RED，绝不重选。
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。
+- #275-A runner-up 招聘是独立于 stage 11 的 Central 产品入口：旧 AD 案 D+90 到期后只排
+  `zg361p2c.4`，再以三个自然帧完成 canonical source commit → Workforce consume → Central verify/close。
+  source 在拒绝候选 subject 上冻结 owner、original subject、runner/evidence、cycle/old case/state、旧 HC flight、
+  m266 lineage、专用 owner 单调 serial、distinct new case 与自产 receipt/hash；`committed=1` 是 source 最后业务写。
+  exact replay 不增 serial、不重签，碰撞只写诊断且不覆盖 source。
+- Workforce adapter 成功前 `m275_hold_pending=1`、旧 candidate inactive、旧 owner HC flight 不变；成功后才一次性激活
+  runner-up、把 `candidate_active_case` 和 owner flight 切到新案并清两个 pending。`m266_hc_receipt` 与 reserved 数量保持
+  原值，不重跑 #266、不 reserve/release HC。Central 只在下一帧核对完整 durable result 后消费 source；中断重入只修复
+  未完成的 consume/verify。route B 仍只走 remediation release，route C 只退役 source/debt，二者都不调用本 producer。
 - 新一轮 B1 公示若撞上旧中央案，会先把旧 immutable tuple 记为 typed RED，给旧摘要 D+1 ACK 窗口，再在 D+2 精确初始化新案；禁止原地覆盖或清掉旧摘要。
 - P3、Credit/Project 与 Workforce 的 D+1 域切换空档只轮询同一 portfolio tuple，不会误判 RED。
 - 3.25 state 1/2 以及 Workforce status 5 都记录 external wait，绝不伪装 success。manager 的 status 5 会先调用
@@ -82,4 +91,5 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 `tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 proof 互斥、D+2 初始化、exact 3.25 wake、
 单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、#360 frozen-order 组合、
 B1 diagnostic WAIT/N/A/RED、B1+MG exact source、READY-only gated resume、manager structural-N/A、status 8 history terminal、
-AI/玩家共同业务路径、BOM 与生成可复现。它不构成 fixture-live 或 production-live 证据。
+AI/玩家共同业务路径、#275-A 三帧 distinct requisition/receipt/hash 与 HC 守恒、BOM 与生成可复现。它不构成
+fixture-live 或 production-live 证据。

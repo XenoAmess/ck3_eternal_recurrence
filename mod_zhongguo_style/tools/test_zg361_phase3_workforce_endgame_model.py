@@ -497,6 +497,135 @@ class WorkforceEndgameModelTests(unittest.TestCase):
         touched = hired.exact_mechanism_ids_touched | refused.exact_mechanism_ids_touched
         self.assertEqual(frozenset(range(266, 278)), touched)
 
+    def test_275_runner_up_uses_distinct_central_requisition_atomically(self) -> None:
+        model = make_model()
+        apply(model, "runner-266", "open_requisition_266", requisition_id="req-old", role_id="role-runner", threshold=60, urgency=50)
+        apply(model, "runner-273", "assign_candidate_owner_273", requisition_id="req-old", candidate_id="candidate2", owner_id="duke", allocation_ref="allocation-old", scout_credit_bps=5_000, hiring_credit_bps=5_000)
+        apply(model, "runner-267", "seal_interview_votes_267", requisition_id="req-old", candidate_id="candidate2", votes={"emperor": Vote.HIRE}, evidence_by_interviewer={"emperor": "old-vote-evidence"})
+        apply(model, "runner-268", "calibrate_interviewers_268", requisition_id="req-old", normalized_adjustments={"emperor": 0}, calibration_snapshot_id="old-calibration")
+        apply(model, "runner-272", "issue_offer_272", requisition_id="req-old", offer_id="old-offer", requested_level=3, band_min=2, band_max=4, signing_gold=10)
+        apply(model, "runner-275-hold", "handle_offer_refusal_275", requisition_id="req-old", as_of_cycle=3, hold_until_cycle=5, refusal_reason="compensation")
+        old_case = model.requisitions["req-old"].case_serial
+        old_votes = copy.deepcopy(model.requisitions["req-old"].raw_votes_frozen)
+        old_offer = model.requisitions["req-old"].offer_id
+        model.cycle_serial = 5
+        model._validate()
+
+        incomplete_snapshot = copy.deepcopy(model)
+        with self.assertRaises(DomainRed):
+            model.handle_offer_refusal_275(
+                model.command("runner-incomplete"),
+                requisition_id="req-old",
+                as_of_cycle=5,
+                runner_up_id="candidate1",
+            )
+        self.assertEqual(incomplete_snapshot, model)
+
+        same_case_snapshot = copy.deepcopy(model)
+        with self.assertRaises(DomainRed) as caught:
+            model.handle_offer_refusal_275(
+                model.command("runner-same-case"),
+                requisition_id="req-old",
+                as_of_cycle=5,
+                runner_up_id="candidate1",
+                runner_up_evidence_id="runner-evidence",
+                new_requisition_id="req-new",
+                new_requisition_case=old_case,
+                central_receipt_id="central-receipt",
+                central_receipt_hash="central-hash",
+            )
+        self.assertEqual(RedCode.DUPLICATE, caught.exception.code)
+        self.assertEqual(same_case_snapshot, model)
+
+        ghost_snapshot = copy.deepcopy(model)
+        with self.assertRaises(DomainRed) as caught:
+            model.handle_offer_refusal_275(
+                model.command("runner-ghost"),
+                requisition_id="req-old",
+                as_of_cycle=5,
+                runner_up_id="ghost",
+                runner_up_evidence_id="runner-evidence",
+                new_requisition_id="req-new",
+                new_requisition_case=99001,
+                central_receipt_id="central-receipt",
+                central_receipt_hash="central-hash",
+            )
+        self.assertEqual(RedCode.NOT_FOUND, caught.exception.code)
+        self.assertEqual(ghost_snapshot, model)
+
+        reserved_before = model.formal_hc_reserved
+        available_before = model.formal_hc_available
+        reopen_token = model.command("runner-reopen")
+        result = model.handle_offer_refusal_275(
+            reopen_token,
+            requisition_id="req-old",
+            as_of_cycle=5,
+            runner_up_id="candidate1",
+            runner_up_evidence_id="runner-evidence",
+            new_requisition_id="req-new",
+            new_requisition_case=99001,
+            central_receipt_id="central-receipt",
+            central_receipt_hash="central-hash",
+        )
+        self.assertEqual(ActionStatus.APPLIED, result.status)
+        old = model.requisitions["req-old"]
+        new = model.requisitions["req-new"]
+        receipt = model.requisition_open_receipts["central-receipt"]
+        self.assertEqual("closed", old.status.value)
+        self.assertFalse(old.hc_reservation_active)
+        self.assertIsNone(old.hc_flight_case)
+        self.assertEqual(old_votes, old.raw_votes_frozen)
+        self.assertEqual(old_offer, old.offer_id)
+        self.assertEqual("open", new.status.value)
+        self.assertEqual("req-old", new.predecessor_requisition_id)
+        self.assertEqual(99001, new.case_serial)
+        self.assertEqual(99001, new.candidate_active_case)
+        self.assertEqual(99001, new.hc_flight_case)
+        self.assertEqual("candidate1", new.candidate_id)
+        self.assertEqual((), new.raw_votes_frozen)
+        self.assertIsNone(new.offer_id)
+        self.assertEqual(old_case, receipt.predecessor_case_serial)
+        self.assertEqual(old_case, receipt.hc_lineage_case_serial)
+        self.assertEqual("count", receipt.original_subject_id)
+        self.assertEqual("runner-evidence", receipt.runner_evidence_id)
+        self.assertEqual(reserved_before, model.formal_hc_reserved)
+        self.assertEqual(available_before, model.formal_hc_available)
+
+        replay = model.handle_offer_refusal_275(
+            reopen_token,
+            requisition_id="req-old",
+            as_of_cycle=5,
+            runner_up_id="candidate1",
+            runner_up_evidence_id="runner-evidence",
+            new_requisition_id="req-new",
+            new_requisition_case=99001,
+            central_receipt_id="central-receipt",
+            central_receipt_hash="central-hash",
+        )
+        self.assertEqual(ActionStatus.IDEMPOTENT_NOOP, replay.status)
+        collision_snapshot = copy.deepcopy(model)
+        with self.assertRaises(DomainRed) as caught:
+            model.handle_offer_refusal_275(
+                model.command("runner-reopen"),
+                requisition_id="req-old",
+                as_of_cycle=5,
+                runner_up_id="candidate1",
+                runner_up_evidence_id="runner-evidence",
+                new_requisition_id="req-new",
+                new_requisition_case=99001,
+                central_receipt_id="central-receipt",
+                central_receipt_hash="different-hash",
+            )
+        self.assertEqual(RedCode.COMMAND_COLLISION, caught.exception.code)
+        self.assertEqual(collision_snapshot, model)
+
+        apply(model, "runner-new-owner", "assign_candidate_owner_273", requisition_id="req-new", candidate_id="candidate1", owner_id="emperor", allocation_ref="allocation-new", scout_credit_bps=5_000, hiring_credit_bps=5_000)
+        apply(model, "runner-new-votes", "seal_interview_votes_267", requisition_id="req-new", candidate_id="candidate1", votes={"duke2": Vote.HOLD}, evidence_by_interviewer={"duke2": "new-vote-evidence"})
+        self.assertEqual(old_votes, model.requisitions["req-old"].raw_votes_frozen)
+        self.assertEqual((("duke2", Vote.HOLD),), model.requisitions["req-new"].raw_votes_frozen)
+        model.cycle_serial = 6
+        model._validate()
+
     def test_al_endgame_is_historical_and_future_only(self) -> None:
         model = make_model()
         historical_before = copy.deepcopy(model.historical_cases)

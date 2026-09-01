@@ -26,7 +26,7 @@ paused snapshot 或实机 artifact；作用是把完整施工计划中的资源�
 
 manifest 对本范围仍标记 `domain_runtime=not-implemented`，player-visible loop 也未闭合。通用 runtime JSON 的机械线性边仅用于
 traceability，不能冒充逐项语义已经审定。例如 #260 合同类型和 #261 执行者披露必须在交付前冻结；#256、#257 要消费交付证据；
-#269 必须等录用后的延迟结果；#275 必须分叉到 held/reopen/release；#276、#277 不是 probation 线性边。Python 模型按语义约束这些
+#269 必须等录用后的延迟结果；#275 必须分叉到 held/distinct-requisition reopen/release；#276、#277 不是 probation 线性边。Python 模型按语义约束这些
 先后关系；`MechanismBinding.execution_stage` 与 `WORKFORCE_EXECUTION_ORDER` 另行冻结真实执行顺序，不再从旧 manifest hook
 机械推导。CK3 静态生成器现在消费这两份模型常量：AC 为
 `254→255→260→261→256→258→259→257→262→263→264→265`，AD 为
@@ -84,8 +84,10 @@ shadow_total = shadow_available + shadow_active
 formal_filled = Σ formal_hc_occupants[real_actor]
 ```
 
-一个活动 requisition 对应且只对应一个 formal reservation。录用把 reserved 转为 filled；拒绝 hold 仍是 reserved，只有到期重开/释放
-才回到 available。#277 把离任人的 filled 槽转为不可自动招聘的 vacant，并记录 displaced work；不能自动增加 available、reserved 或 total。外部容量只移动 shadow HC。
+一个活动 requisition 对应且只对应一个 formal reservation。录用把 reserved 转为 filled；拒绝 hold 仍是 reserved。到期 release
+才回到 available；runner-up reopen 则关闭旧 requisition、保留旧票/Offer/拒绝证据，创建 distinct new requisition/case 与不可变
+`RequisitionOpenReceipt`，并把同一 reservation/HC flight 原子转移到新案。新案不能继承旧案 votes/offer/refusal，且不得二次
+reserve/release。#277 把离任人的 filled 槽转为不可自动招聘的 vacant，并记录 displaced work；不能自动增加 available、reserved 或 total。外部容量只移动 shadow HC。
 #257 先把一个 formal available 转为带真实角色和 recruitment ref 的 pending reservation；只有 model 的权威周期到达 effective cycle，
 `settle_external_conversion_257` 才把 reserved 转为 filled、写入 occupant 并释放一个 shadow HC。同一角色不能拥有第二个 filled/pending HC。
 
@@ -153,7 +155,7 @@ accounted_hours <= authorized_hours
 | 272 | AD / `offer_due` | `issue_offer_272` | level band 外必须有 manager 特批；Offer promise、signing gold 与限期 premium 一次冻结。 |
 | 273 | AD / `offer_due` | `assign_candidate_owner_273` | 真实 candidate 单 owner，scout+hiring credit 恰 10000 bp；不能同时被第二活动 Offer/录用占有。 |
 | 274 | AD / `offer_decided` | `resolve_counteroffer_274` | competitor provenance、一次 counter、fairness cap；付款给 candidate，HC reserved→filled 恰一次。 |
-| 275 | AD / `offer_decided` | `handle_offer_refusal_275` | 拒绝先释放 Offer/内推资金但 HC 保持 reserved；`as_of_cycle` 必须等于 model 权威周期，due 后才重开/释放。 |
+| 275 | AD / `offer_decided` | `handle_offer_refusal_275` | 拒绝先释放 Offer/内推资金但 HC 保持 reserved；`as_of_cycle` 必须等于 model 权威周期。due 后 runner 路必须提供 distinct new requisition/case 与 canonical receipt/hash，原子关闭旧案并转移同一 HC flight；release 才归还 available。 |
 | 276 | AD / `probation_due` | `register_rehire_276` | 历史 case/hash 和 misconduct 保留；新 evidence 只开未来 cohort gap review，本操作不造 HC、不改旧档。 |
 | 277 | AD / `probation_due` | `record_pip_exit_277` | 冻结 PIP、原 slot、真实 occupant、displaced work/cost provenance；filled→vacant 守恒，vacant 不自动变为可招聘 HC。 |
 | 355 | AL / `multi_cycle_facts_frozen` | `apply_target_ratchet_355` | official+closed prior cycle 唯一；新增金币真实 reserve；PEAK 即使无资源/权力也合法，但全部缺口落显式风险。 |
@@ -170,7 +172,7 @@ accounted_hours <= authorized_hours
    以及独立于 legacy hook 的 execution stage/order，不再用 `capacity_period` / `recruitment_funnel` 四个域级泛化标签冒充业务对象；
 2. AB 242–253 单链触达与金币/五类工时/会议贡献分账；
 3. AC 254–265 单链触达与采购付款/追回、formal/shadow HC、借调、转正和知识移交；
-4. AD 266–277 的录用成功链，以及拒绝→HC hold→到期释放、回聘历史、PIP 退出不造 HC；
+4. AD 266–277 的录用成功链，以及拒绝→HC hold→到期 distinct runner-up requisition / 释放、回聘历史、PIP 退出不造 HC；
 5. AL 355/356/360/361 的目标棘轮、跨期成果、全员 agenda/配额守恒、宪章 current-vs-future 默认；
 6. 公爵权限、伯爵自评边界、bool typed RED、live snapshot 原子性、stale、payload collision、幂等重放与 pickle round-trip；
 7. 两轮只读审查反例：无值守工时、空贡献重复封存、owner 拒会、合同换型、空 scope 重放、多 incident、提前移交、ghost liability、
@@ -184,14 +186,14 @@ accounted_hours <= authorized_hours
 
 独立 CK3 静态投影现已存在，并把本模型的 exact object/consumer/resource/deadline 合同投影到 A/B；C 生成
 精确五元 policy debt、逐编号 hidden 到期消费者、等量治理工时偿债、两次有界 manager 升级和保持 open 的
-typed blocked 终态。它仍未中央接线、未过 parser/MCP/存读档/实机，因此至少需要：
+typed blocked 终态。#275 runner-up 已有 Central 静态 caller 接线，但整个投影仍未过 parser/MCP/存读档/实机，因此至少需要：
 
 - 用 exact-build 原生查询把 vacancy/candidate/vendor/team/cohort/charter 标识与合法 court position/council/title 结果互证；
 - 在真实 CK3 中验证正式/影子 HC、国库→角色/供应商、个人信用、capacity 五桶与跨期 consumer 的读写和守恒；
 - 实机覆盖 reject/withdraw/held/reopen、#257/#269/#275 延迟分支、#360 三 cohort 与 #361 多版本未来默认；
 - 提供 deadline scheduler、save/load round-trip、共享 GUI/ledger、MCP query/action、paused snapshot 与实机 acceptance artifact；
 - CK3 投影已提供 #264 sunset/waiver/artifact、#276 独立历史 rehire、#277 closed-PIP/exit、#275 runner-up
-  central reopen、357–359 receipt bridge、#360 三 cohort producer 和 #361 三周期 rolling-chain adapter；357–359 另已有
+  Central 三帧 producer→consumer→verify（distinct case/receipt/hash、旧 HC lineage 守恒）、357–359 receipt bridge、#360 三 cohort producer 和 #361 三周期 rolling-chain adapter；357–359 另已有
   B1/B2 真实业务来源与中央提交接线，但仍需 paused/live 证明。其余外域仍须以真实角色/职位/历史/哈希调用 typed seam，并完成
   原生 court-position 任命/离任，不能把 adapter ACK 当来源证明；
 - 运行 generator/static validation/真实 CK3 L1–L3，并保持本规范所列资源与历史不变量。

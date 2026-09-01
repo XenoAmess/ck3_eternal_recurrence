@@ -1453,6 +1453,18 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_we_m275_receipt_choice = 1", due)
         self.assertIn("m275_runner_reopen_pending value = 1", due)
         self.assertIn("m275_hold_released value = 0", due)
+        self.assertIn("zg361_p2c_schedule_m275_runner_requisition_effect = {", due)
+        self.assertEqual(1, due.count("zg361_p2c_schedule_m275_runner_requisition_effect = {"))
+        self.assertNotIn("candidate_active value = 1", due)
+        self.assertNotIn("candidate_active_case", due)
+        self.assertLess(
+            due.index("m275_runner_reopen_pending value = 1"),
+            due.index("zg361_p2c_schedule_m275_runner_requisition_effect = {"),
+        )
+        self.assertLess(
+            due.index("zg361_p2c_schedule_m275_runner_requisition_effect = {"),
+            due.index("m275_hold_pending value = 0"),
+        )
         self.assertIn("ad_external_m275_remediation_receipt = 1", due)
         self.assertIn("ad_external_m275_remediated_reason_id = var:zg361_we_m275_refusal_reason_id", due)
         self.assertIn("zg361_ch_hc_reserved add = -1", due)
@@ -1920,8 +1932,31 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             ("state", "4"),
         ):
             self.assertIn(f"ad_appointment_receipt_{field} value = {value}", appointment)
-        self.assertIn("$CENTRAL_REQUISITION_OPENED$ = 1", runner)
-        self.assertIn("NOT = { $NEW_REQUISITION_CASE$ = $TICKET_CASE$ }", runner)
+        self.assertIn("zg361_p2c_m275_requisition_committed = 1", runner)
+        self.assertIn("zg361_p2c_m275_requisition_pending = 1", runner)
+        self.assertIn("zg361_p2c_m275_requisition_consumed = 0", runner)
+        self.assertIn("NOT = { var:zg361_p2c_m275_requisition_new_case = $TICKET_CASE$ }", runner)
+        self.assertNotIn("$CENTRAL_REQUISITION_OPENED$", runner)
+        self.assertNotIn("$NEW_REQUISITION_CASE$", runner)
+        self.assertNotIn("$REQUISITION_RECEIPT_ID$", runner)
+        self.assertNotIn("$REQUISITION_RECEIPT_HASH$", runner)
+        self.assertIn("candidate_active_case value = var:zg361_p2c_m275_requisition_new_case", runner)
+        self.assertIn("ad_hc_flight_case value = root.var:zg361_p2c_m275_requisition_new_case", runner)
+        self.assertIn("m266_hc_receipt = var:zg361_p2c_m275_requisition_hc_lineage_receipt", runner)
+        self.assertNotIn("zg361_ch_hc_reserved add", runner)
+        self.assertNotIn("zg361_ch_hc_available add", runner)
+        self.assertLess(
+            runner.index("m275_runner_requisition_receipt_hash value"),
+            runner.index("candidate_active_case value"),
+        )
+        self.assertLess(
+            runner.index("candidate_active_case value"),
+            runner.index("m275_hold_pending value = 0"),
+        )
+        self.assertLess(
+            runner.index("m275_runner_reopen_pending value = 0"),
+            runner.index("m275_runner_reopen_consumed value = 1"),
+        )
         self.assertIn("m275_runner_reopen_consumed value = 1", runner)
         self.assertIn("$HISTORICAL_CYCLE$ < $TICKET_CYCLE$", rehire)
         self.assertIn("NOT = { $HISTORICAL_CASE_ID$ = $TICKET_CASE$ }", rehire)

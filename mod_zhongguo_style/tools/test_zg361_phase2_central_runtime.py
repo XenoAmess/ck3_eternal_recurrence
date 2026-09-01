@@ -87,6 +87,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         cls.events = read("events/zg361_phase2_central_runtime_events.txt")
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.b1 = read("common/scripted_effects/zg361_b1_runtime_effects.txt")
+        cls.workforce = read("common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt")
         cls.spec = read("docs/361-phase2-central-runtime-spec.md")
 
     def test_stage_inventory_and_public_abis_are_exact(self) -> None:
@@ -121,7 +122,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         assert_balanced(self, self.triggers, "central triggers")
         assert_balanced(self, self.events, "central events")
         self.assertIn("namespace = zg361p2c", self.events)
-        self.assertEqual(len(re.findall(r"(?m)^zg361p2c\.\d+\s*=", self.events)), 3)
+        self.assertEqual(len(re.findall(r"(?m)^zg361p2c\.\d+\s*=", self.events)), 6)
 
     def test_publish_hook_is_after_b1_publish_and_flag_clear(self) -> None:
         annual = block(self.core, "zg361_apply_pending_grades_effect")
@@ -494,6 +495,74 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         ):
             self.assertIn(token, body[history:red])
 
+    def test_m275_runner_requisition_is_central_owned_commit_then_consume_then_verify(self) -> None:
+        schedule = block(self.effects, "zg361_p2c_schedule_m275_runner_requisition_effect")
+        producer = block(self.effects, "zg361_p2c_open_m275_runner_requisition_effect")
+        due = block(self.workforce, "zg361_we_m275_hold_due_effect")
+        adapter = block(self.workforce, "zg361_we_consume_m275_runner_reopen_effect")
+        ingress = block(self.events, "zg361p2c.4")
+        dispatch = block(self.events, "zg361p2c.5")
+        verify = block(self.events, "zg361p2c.6")
+
+        self.assertIn("m275_hold_pending = 1", schedule)
+        self.assertIn("m275_runner_reopen_pending = 1", schedule)
+        self.assertIn("id = zg361p2c.4 days = 1", schedule)
+        self.assertEqual(1, due.count("zg361_p2c_schedule_m275_runner_requisition_effect = {"))
+        self.assertLess(
+            due.index("m275_runner_reopen_pending value = 1"),
+            due.index("zg361_p2c_schedule_m275_runner_requisition_effect = {"),
+        )
+        self.assertNotIn("candidate_active_case value = var:zg361_we_m275_write_case", due)
+        self.assertNotIn("zg361_p2c_schedule_m275_runner_requisition_effect", block(self.workforce, "zg361_we_m275_route_c_effect"))
+
+        self.assertIn("save_temporary_scope_as = zg361_p2c_m275_requisition_cursor_owner", producer)
+        self.assertIn("change_variable = { name = zg361_p2c_m275_requisition_cursor add = 1 }", producer)
+        self.assertNotIn("zg361_p2c_m275_requisition_cursor value = 0 } }\n            if", producer)
+        self.assertNotIn("999999", producer)
+        for field in (
+            "owner", "original_subject", "source_cycle", "source_case", "source_state",
+            "runner_up", "runner_evidence", "hc_lineage_receipt", "hc_flight_case",
+            "serial", "new_case", "new_state", "receipt_id", "receipt_hash", "opened",
+        ):
+            self.assertIn(f"zg361_p2c_m275_requisition_{field}", producer)
+        self.assertIn("NOT = { scope:zg361_p2c_m275_expected_new_case = $TICKET_CASE$ }", producer)
+        receipt = producer.index("name = zg361_p2c_m275_requisition_receipt_hash value")
+        opened = producer.index("name = zg361_p2c_m275_requisition_opened value", receipt)
+        committed = producer.index("name = zg361_p2c_m275_requisition_committed value = 1", opened)
+        queued = producer.index("trigger_event = { id = zg361p2c.5 days = 1 }", committed)
+        self.assertLess(receipt, opened)
+        self.assertLess(opened, committed)
+        self.assertLess(committed, queued)
+        for forbidden in ("zg361_ch_hc_reserved add", "zg361_ch_hc_available add", "add_gold", "remove_short_term_gold"):
+            self.assertNotIn(forbidden, producer)
+            self.assertNotIn(forbidden, adapter)
+
+        self.assertIn("zg361_p2c_open_m275_runner_requisition_effect = {", ingress)
+        self.assertNotIn("zg361_we_consume_m275_runner_reopen_effect", ingress)
+        self.assertIn("zg361_we_consume_m275_runner_reopen_effect = {", dispatch)
+        self.assertNotIn("$RUNNER_UP$", dispatch)
+        self.assertIn("id = zg361p2c.6 days = 1", dispatch)
+        self.assertIn("candidate_active_case = scope:zg361_p2c_m275_verify_new_case", verify)
+        self.assertIn("ad_hc_flight_case = scope:zg361_p2c_m275_verify_new_case", verify)
+        self.assertLess(
+            verify.index("m275_requisition_pending value = 0"),
+            verify.index("m275_requisition_consumed value = 1"),
+        )
+
+        self.assertNotIn("$NEW_REQUISITION_CASE$", adapter)
+        self.assertNotIn("$REQUISITION_RECEIPT_ID$", adapter)
+        self.assertNotIn("$REQUISITION_RECEIPT_HASH$", adapter)
+        self.assertIn("candidate_active_case value = var:zg361_p2c_m275_requisition_new_case", adapter)
+        self.assertIn("ad_hc_flight_case value = root.var:zg361_p2c_m275_requisition_new_case", adapter)
+        self.assertLess(
+            adapter.index("candidate_active_case value = var:zg361_p2c_m275_requisition_new_case"),
+            adapter.index("m275_hold_pending value = 0"),
+        )
+        self.assertLess(
+            adapter.index("m275_runner_reopen_pending value = 0"),
+            adapter.index("m275_runner_reopen_consumed value = 1"),
+        )
+
     def test_d1_transition_gaps_poll_same_tuple_instead_of_red(self) -> None:
         p3 = block(self.effects, "zg361_p2c_stage_07_metrics_delivery_effect")
         self.assertIn("var:zg361_p2c_stage_status = 1", p3)
@@ -570,7 +639,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("else = { set_variable = { name = zg361_p2c_ui_lane_busy value = 0 } }", lane)
         summary = block(self.events, "zg361p2c.2")
         self.assertIn("is_ai = no", summary)
-        self.assertEqual(self.events.count("hidden = yes"), 2)
+        self.assertEqual(self.events.count("hidden = yes"), 5)
         self.assertEqual(self.events.count("title = zg361_p2c_summary_title"), 1)
 
     def test_localization_keys_exist_in_all_nine_files(self) -> None:

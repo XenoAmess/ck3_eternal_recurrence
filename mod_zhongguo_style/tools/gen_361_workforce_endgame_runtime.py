@@ -4414,19 +4414,21 @@ def render_future_consumers() -> str:
 \t\t\tvar:{PREFIX}_m275_write_owner = {{ has_variable = {PREFIX}_ad_hc_flight_pending var:{PREFIX}_ad_hc_flight_pending = 1 var:{PREFIX}_ad_hc_flight_subject = root.var:{PREFIX}_m275_write_subject var:{PREFIX}_ad_hc_flight_cycle = root.var:{PREFIX}_m275_write_cycle var:{PREFIX}_ad_hc_flight_case = root.var:{PREFIX}_m275_write_case }}
 \t\t\tvar:{PREFIX}_m275_write_owner = {{ has_variable = zg361_review_serial var:zg361_review_serial >= root.var:{PREFIX}_m275_hold_due_cycle }}
 \t\t}}
-\t\tset_variable = {{ name = {PREFIX}_m275_hold_pending value = 0 }}
 \t\tif = {{
 \t\t\tlimit = {{ var:{PREFIX}_m275_receipt_choice = 1 }}
-\t\t\tset_variable = {{ name = {PREFIX}_candidate_active value = 1 }}
-\t\t\tset_variable = {{ name = {PREFIX}_candidate_active_owner value = var:{PREFIX}_m275_write_owner }}
-\t\t\tset_variable = {{ name = {PREFIX}_candidate_active_case value = var:{PREFIX}_m275_write_case }}
-\t\t\tset_variable = {{ name = {PREFIX}_candidate_active_character value = var:{PREFIX}_m275_runner_up }}
 \t\t\tset_variable = {{ name = {PREFIX}_m275_runner_reopen_pending value = 1 }}
-\t\t\tset_variable = {{ name = {PREFIX}_m275_runner_attempt_opened value = 1 }}
+\t\t\tset_variable = {{ name = {PREFIX}_m275_runner_attempt_opened value = 0 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m275_old_attempt_reopened value = 0 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m275_hold_released value = 0 }}
+\t\t\tzg361_p2c_schedule_m275_runner_requisition_effect = {{
+\t\t\t\tTICKET_OWNER = var:{PREFIX}_m275_write_owner
+\t\t\t\tTICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:{PREFIX}_m275_write_cycle
+\t\t\t\tTICKET_CASE = var:{PREFIX}_m275_write_case
+\t\t\t}}
 \t\t}}
 \t\telse = {{
+\t\t\tset_variable = {{ name = {PREFIX}_m275_hold_pending value = 0 }}
 \t\t\tchange_variable = {{ name = zg361_ch_hc_reserved add = -1 }}
 \t\t\tchange_variable = {{ name = zg361_ch_hc_available add = 1 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m266_hc_reservation_active value = 0 }}
@@ -6829,9 +6831,12 @@ def render_external_fact_adapters() -> str:
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2741 }} }}
 }}
 
-# Consume the central recruitment result for #275.  This does not appoint the
-# runner-up; it closes the pending handoff only after the central pipeline has
-# returned a distinct requisition case and immutable receipt/hash.
+# Consume the canonical Central recruitment source for #275.  The caller may
+# provide only the original five-tuple; runner identity, evidence, new case and
+# receipt/hash are joined from Central's committed subject-local source.
+# The #266 reservation/receipt and formal HC count remain untouched.  A
+# successful consume transfers the existing owner flight from the refused case
+# to Central's distinct new case; it never reserves or releases another slot.
 {PREFIX}_consume_m275_runner_reopen_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
@@ -6855,37 +6860,132 @@ def render_external_fact_adapters() -> str:
 			var:{PREFIX}_m275_object_state = 4
 			var:{PREFIX}_m275_object_consumed = 1
 			var:{PREFIX}_m275_consumer_resolve_offer_refusal_hc_hold_275 = 1
+			has_variable = {PREFIX}_m275_receipt_choice
+			has_variable = {PREFIX}_m275_refusal
+			has_variable = {PREFIX}_m275_not_applicable_hired
+			has_variable = {PREFIX}_m275_hold_pending
 			has_variable = {PREFIX}_m275_runner_up
 			has_variable = {PREFIX}_m275_runner_up_evidence
+			has_variable = {PREFIX}_m275_hc_lineage_receipt
 			has_variable = {PREFIX}_candidate_active
-			has_variable = {PREFIX}_candidate_active_character
 			has_variable = {PREFIX}_m266_hc_reservation_active
-			var:{PREFIX}_candidate_active = 1
-			var:{PREFIX}_candidate_active_character = var:{PREFIX}_m275_runner_up
+			has_variable = {PREFIX}_m266_hc_receipt
+			var:{PREFIX}_m275_receipt_choice = 1
+			var:{PREFIX}_m275_refusal = 1
+			var:{PREFIX}_m275_not_applicable_hired = 0
+			var:{PREFIX}_m275_hold_pending = 1
+			var:{PREFIX}_candidate_active = 0
 			var:{PREFIX}_m266_hc_reservation_active = 1
+			var:{PREFIX}_m266_hc_receipt = var:{PREFIX}_m275_hc_lineage_receipt
 			var:{PREFIX}_m275_write_owner = $TICKET_OWNER$
 			var:{PREFIX}_m275_write_subject = $TICKET_SUBJECT$
 			var:{PREFIX}_m275_write_cycle = $TICKET_CYCLE$
 			var:{PREFIX}_m275_write_case = $TICKET_CASE$
-			$RUNNER_UP$ = var:{PREFIX}_m275_runner_up
-			$RUNNER_EVIDENCE$ = var:{PREFIX}_m275_runner_up_evidence
-			NOT = {{ $RUNNER_UP$ = $TICKET_SUBJECT$ }}
-			$NEW_REQUISITION_CASE$ > 0
-			NOT = {{ $NEW_REQUISITION_CASE$ = $TICKET_CASE$ }}
-			$REQUISITION_RECEIPT_ID$ > 0
-			$REQUISITION_RECEIPT_HASH$ > 0
-			$CENTRAL_REQUISITION_OPENED$ = 1
+			NOT = {{ var:{PREFIX}_m275_runner_up = $TICKET_SUBJECT$ }}
+			var:{PREFIX}_m275_runner_up_evidence > 0
+			$TICKET_OWNER$ = {{
+				has_variable = {PREFIX}_ad_hc_flight_pending
+				var:{PREFIX}_ad_hc_flight_pending = 1
+				var:{PREFIX}_ad_hc_flight_subject = $TICKET_SUBJECT$
+				var:{PREFIX}_ad_hc_flight_cycle = $TICKET_CYCLE$
+				var:{PREFIX}_ad_hc_flight_case = $TICKET_CASE$
+			}}
+			has_variable = zg361_p2c_m275_requisition_committed
+			has_variable = zg361_p2c_m275_requisition_pending
+			has_variable = zg361_p2c_m275_requisition_consumed
+			has_variable = zg361_p2c_m275_requisition_owner
+			has_variable = zg361_p2c_m275_requisition_original_subject
+			has_variable = zg361_p2c_m275_requisition_source_cycle
+			has_variable = zg361_p2c_m275_requisition_source_case
+			has_variable = zg361_p2c_m275_requisition_source_state
+			has_variable = zg361_p2c_m275_requisition_runner_up
+			has_variable = zg361_p2c_m275_requisition_runner_evidence
+			has_variable = zg361_p2c_m275_requisition_hc_lineage_receipt
+			has_variable = zg361_p2c_m275_requisition_hc_flight_case
+			has_variable = zg361_p2c_m275_requisition_new_case
+			has_variable = zg361_p2c_m275_requisition_new_state
+			has_variable = zg361_p2c_m275_requisition_receipt_id
+			has_variable = zg361_p2c_m275_requisition_receipt_hash
+			has_variable = zg361_p2c_m275_requisition_opened
+			var:zg361_p2c_m275_requisition_committed = 1
+			var:zg361_p2c_m275_requisition_pending = 1
+			var:zg361_p2c_m275_requisition_consumed = 0
+			var:zg361_p2c_m275_requisition_owner = $TICKET_OWNER$
+			var:zg361_p2c_m275_requisition_original_subject = $TICKET_SUBJECT$
+			var:zg361_p2c_m275_requisition_source_cycle = $TICKET_CYCLE$
+			var:zg361_p2c_m275_requisition_source_case = $TICKET_CASE$
+			var:zg361_p2c_m275_requisition_source_state = 4
+			var:zg361_p2c_m275_requisition_runner_up = var:{PREFIX}_m275_runner_up
+			var:zg361_p2c_m275_requisition_runner_evidence = var:{PREFIX}_m275_runner_up_evidence
+			var:zg361_p2c_m275_requisition_hc_lineage_receipt = var:{PREFIX}_m275_hc_lineage_receipt
+			var:zg361_p2c_m275_requisition_hc_flight_case = $TICKET_CASE$
+			var:zg361_p2c_m275_requisition_new_case > 0
+			NOT = {{ var:zg361_p2c_m275_requisition_new_case = $TICKET_CASE$ }}
+			var:zg361_p2c_m275_requisition_new_state = 1
+			var:zg361_p2c_m275_requisition_receipt_id > 0
+			var:zg361_p2c_m275_requisition_receipt_hash > 0
+			var:zg361_p2c_m275_requisition_opened = 1
 		}}
+		set_variable = {{ name = {PREFIX}_m275_runner_new_case value = var:zg361_p2c_m275_requisition_new_case }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_receipt_id value = var:zg361_p2c_m275_requisition_receipt_id }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_receipt_hash value = var:zg361_p2c_m275_requisition_receipt_hash }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_candidate value = var:zg361_p2c_m275_requisition_runner_up }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_evidence value = var:zg361_p2c_m275_requisition_runner_evidence }}
+		set_variable = {{ name = {PREFIX}_candidate_active value = 1 }}
+		set_variable = {{ name = {PREFIX}_candidate_active_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_candidate_active_case value = var:zg361_p2c_m275_requisition_new_case }}
+		set_variable = {{ name = {PREFIX}_candidate_active_character value = var:zg361_p2c_m275_requisition_runner_up }}
+		$TICKET_OWNER$ = {{ set_variable = {{ name = {PREFIX}_ad_hc_flight_case value = root.var:zg361_p2c_m275_requisition_new_case }} }}
+		set_variable = {{ name = {PREFIX}_m275_runner_attempt_opened value = 1 }}
+		set_variable = {{ name = {PREFIX}_m275_old_attempt_reopened value = 0 }}
+		set_variable = {{ name = {PREFIX}_m275_hold_released value = 0 }}
+		set_variable = {{ name = {PREFIX}_m275_hold_pending value = 0 }}
 		set_variable = {{ name = {PREFIX}_m275_runner_reopen_pending value = 0 }}
-		set_variable = {{ name = {PREFIX}_m275_runner_reopen_consumed value = 1 }}
-		set_variable = {{ name = {PREFIX}_m275_runner_new_case value = $NEW_REQUISITION_CASE$ }}
-		set_variable = {{ name = {PREFIX}_m275_runner_requisition_receipt_id value = $REQUISITION_RECEIPT_ID$ }}
-		set_variable = {{ name = {PREFIX}_m275_runner_requisition_receipt_hash value = $REQUISITION_RECEIPT_HASH$ }}
-		set_variable = {{ name = {PREFIX}_m275_runner_requisition_candidate value = $RUNNER_UP$ }}
-		set_variable = {{ name = {PREFIX}_m275_runner_requisition_evidence value = $RUNNER_EVIDENCE$ }}
+		set_variable = {{ name = {PREFIX}_m275_runner_reopen_consumed value = 1 }} # consumer commit last
 		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 	}}
-	else_if = {{ limit = {{ has_variable = {PREFIX}_m275_runner_reopen_consumed var:{PREFIX}_m275_runner_reopen_consumed = 1 }} set_variable = {{ name = {PREFIX}_adapter_status value = 2 }} }}
+	else_if = {{
+		limit = {{
+			has_variable = {PREFIX}_m275_runner_reopen_consumed
+			var:{PREFIX}_m275_runner_reopen_consumed = 1
+			var:{PREFIX}_m275_object_owner = $TICKET_OWNER$
+			var:{PREFIX}_m275_object_subject = $TICKET_SUBJECT$
+			var:{PREFIX}_m275_object_cycle = $TICKET_CYCLE$
+			var:{PREFIX}_m275_object_case = $TICKET_CASE$
+			var:{PREFIX}_m275_object_state = 4
+			has_variable = zg361_p2c_m275_requisition_committed
+			var:zg361_p2c_m275_requisition_committed = 1
+			var:zg361_p2c_m275_requisition_owner = $TICKET_OWNER$
+			var:zg361_p2c_m275_requisition_original_subject = $TICKET_SUBJECT$
+			var:zg361_p2c_m275_requisition_source_cycle = $TICKET_CYCLE$
+			var:zg361_p2c_m275_requisition_source_case = $TICKET_CASE$
+			OR = {{
+				AND = {{ var:zg361_p2c_m275_requisition_pending = 1 var:zg361_p2c_m275_requisition_consumed = 0 }}
+				AND = {{ var:zg361_p2c_m275_requisition_pending = 0 var:zg361_p2c_m275_requisition_consumed = 1 }}
+			}}
+			var:{PREFIX}_m275_runner_new_case = var:zg361_p2c_m275_requisition_new_case
+			var:{PREFIX}_m275_runner_requisition_receipt_id = var:zg361_p2c_m275_requisition_receipt_id
+			var:{PREFIX}_m275_runner_requisition_receipt_hash = var:zg361_p2c_m275_requisition_receipt_hash
+			var:{PREFIX}_m275_runner_requisition_candidate = var:zg361_p2c_m275_requisition_runner_up
+			var:{PREFIX}_m275_runner_requisition_evidence = var:zg361_p2c_m275_requisition_runner_evidence
+			var:{PREFIX}_candidate_active = 1
+			var:{PREFIX}_candidate_active_owner = $TICKET_OWNER$
+			var:{PREFIX}_candidate_active_case = var:zg361_p2c_m275_requisition_new_case
+			var:{PREFIX}_candidate_active_character = var:zg361_p2c_m275_requisition_runner_up
+			var:{PREFIX}_m275_hold_pending = 0
+			var:{PREFIX}_m275_runner_reopen_pending = 0
+			var:{PREFIX}_m266_hc_reservation_active = 1
+			var:{PREFIX}_m266_hc_receipt = var:zg361_p2c_m275_requisition_hc_lineage_receipt
+			$TICKET_OWNER$ = {{
+				has_variable = {PREFIX}_ad_hc_flight_pending
+				var:{PREFIX}_ad_hc_flight_pending = 1
+				var:{PREFIX}_ad_hc_flight_subject = $TICKET_SUBJECT$
+				var:{PREFIX}_ad_hc_flight_cycle = $TICKET_CYCLE$
+				var:{PREFIX}_ad_hc_flight_case = root.var:zg361_p2c_m275_requisition_new_case
+			}}
+		}}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2752 }} }}
 }}
 
