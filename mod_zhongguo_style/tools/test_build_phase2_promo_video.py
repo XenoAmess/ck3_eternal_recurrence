@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import ast
 import contextlib
+import hashlib
 import io
 import json
 import sys
@@ -228,6 +229,66 @@ class Phase2PromoEntryTests(unittest.TestCase):
 
             runner.assert_not_called()
             self.assertFalse(workdir.exists())
+
+    def test_checked_in_cli_validate_only_preserves_no_write_boundary(self) -> None:
+        """Exercise the documented executable preflight, not only ``execute``."""
+
+        config_before = hashlib.sha256(CHECKED_CONFIG.read_bytes()).hexdigest()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            capture = root / "capture-root-not-created"
+            workdir = root / "work-dir-not-created"
+            tts_cache = root / "tts-cache-not-read"
+            ffmpeg = root / "ffmpeg-not-run.exe"
+            ffprobe = root / "ffprobe-not-run.exe"
+            zh_font = root / "zh-font-not-read.ttf"
+            en_font = root / "en-font-not-read.ttf"
+            arguments = [
+                "--project-config",
+                str(CHECKED_CONFIG),
+                "--capture-root",
+                str(capture),
+                "--work-dir",
+                str(workdir),
+                "--tts-cache",
+                str(tts_cache),
+                "--ffmpeg",
+                str(ffmpeg),
+                "--ffprobe",
+                str(ffprobe),
+                "--zh-font-file",
+                str(zh_font),
+                "--en-font-file",
+                str(en_font),
+                "--run-id",
+                "phase2-cli-preflight-test",
+                "--validate-only",
+            ]
+            stdout = io.StringIO()
+            stderr = io.StringIO()
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                exit_code = promo.main(arguments)
+
+            self.assertEqual(2, exit_code)
+            self.assertEqual("", stdout.getvalue())
+            error = stderr.getvalue()
+            self.assertIn("RELEASE: RED", error)
+            self.assertIn("phase-two project remains planned", error)
+            self.assertNotIn("Traceback", error)
+            for sentinel in (
+                capture,
+                workdir,
+                tts_cache,
+                ffmpeg,
+                ffprobe,
+                zh_font,
+                en_font,
+            ):
+                self.assertFalse(sentinel.exists(), sentinel)
+            self.assertEqual(
+                config_before,
+                hashlib.sha256(CHECKED_CONFIG.read_bytes()).hexdigest(),
+            )
 
     def test_validate_only_uses_fake_pipeline_but_stays_release_red(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
