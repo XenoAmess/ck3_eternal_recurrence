@@ -208,3 +208,9 @@ No code or branch changed in this review. The next G2 entry remains one fresh
 exact-build semantic-ready run using the frozen checkpoint/driver pair; if the
 literal action family is still absent, fix only its bridge/driver advertisement
 without widening the ABI, otherwise stop at the existing readiness gate.
+
+The current Python action-step builder was also checked directly: when the
+capability and `active_wars[{war_id:50331699}]` are present, it emits the exact
+`query-war-termination-terms-v1-50331699` step. Therefore the historical
+`action_step_family=false` is attributed to the older runner/DLL provenance,
+not to a current Python generation defect; no speculative code change is made.
