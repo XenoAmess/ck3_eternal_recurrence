@@ -5798,6 +5798,8 @@ def main() -> int:
     assert "run_scenario(" not in phase2_capture_source
     assert "run_phase2_live_scenario(" not in phase2_capture_source
     assert '"capture_contract_version"' in phase2_capture_source
+    assert "must explicitly return canonical" in phase2_capture_source
+    assert "setdefault(" not in phase2_capture_source
     assert '"--phase2-promo-capture"' in runner
 
     # The unregistered sequel producer must fail before preflight or any CK3 /
@@ -5811,6 +5813,101 @@ def main() -> int:
         else:
             raise AssertionError("unregistered phase-two producer was accepted")
         forbidden_preflight.assert_not_called()
+
+    # A registered producer must carry the complete contract itself.  The
+    # acceptance runner may validate the evidence, but it must not fill in
+    # omitted metadata (which could hide a producer that never opted into the
+    # phase-two contract).  This exercises only the typed hand-off; no CK3,
+    # desktop, recorder, or FFmpeg side effect is allowed here.
+    with tempfile.TemporaryDirectory() as temporary:
+        strict_artifacts = Path(temporary)
+        strict_recorder = capture.PromoRecorder(
+            strict_artifacts / "promo",
+            contract=capture.PHASE2_PROMO_CAPTURE_CONTRACT,
+        )
+        strict_kwargs = {
+            "title_navigation_service": object(),
+            "tracked_ck3_pid": 0,
+            "native_bridge": object(),
+            "preflight_bridge_identity": {},
+        }
+        prior_producer = capture._PHASE2_PROMO_CAPTURE_PRODUCER
+
+        def invoke_phase2_producer(payload: object) -> object:
+            capture.register_phase2_promo_capture_producer(
+                lambda *_args, **_kwargs: payload  # type: ignore[return-value]
+            )
+            try:
+                return capture.run_phase2_promo_capture_scenario(
+                    object(),
+                    strict_artifacts,
+                    strict_recorder,
+                    **strict_kwargs,
+                )
+            finally:
+                capture._PHASE2_PROMO_CAPTURE_PRODUCER = prior_producer
+
+        expected_contract = capture.PHASE2_PROMO_CAPTURE_CONTRACT.to_mapping()
+        canonical_result = {
+            "capture_mode": capture.PHASE2_PROMO_CAPTURE_MODE,
+            "capture_contract_version": capture.PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+            "capture_contract": copy.deepcopy(expected_contract),
+            "producer_evidence": "contract-only",
+        }
+        accepted_result = invoke_phase2_producer(copy.deepcopy(canonical_result))
+        assert accepted_result == canonical_result
+
+        for missing_field in (
+            "capture_mode",
+            "capture_contract_version",
+            "capture_contract",
+        ):
+            missing_result = copy.deepcopy(canonical_result)
+            missing_result.pop(missing_field)
+            try:
+                invoke_phase2_producer(missing_result)
+            except capture.acceptance.RunnerError as error:
+                assert isinstance(error, capture.acceptance.RunnerError)
+                assert "must explicitly return canonical capture contract fields" in str(
+                    error
+                )
+                assert missing_field in str(error)
+            else:
+                raise AssertionError(
+                    f"producer missing {missing_field} was silently defaulted"
+                )
+
+        malformed_results = (
+            (
+                "capture_mode",
+                "not-zhongguo-361-phase2",
+                "non-canonical capture mode",
+            ),
+            (
+                "capture_contract_version",
+                2,
+                "unsupported capture contract version",
+            ),
+            (
+                "capture_contract",
+                {
+                    **expected_contract,
+                    "unexpected": "must-be-rejected",
+                },
+                "non-canonical capture contract",
+            ),
+        )
+        for field, value, expected_message in malformed_results:
+            malformed = copy.deepcopy(canonical_result)
+            malformed[field] = value
+            try:
+                invoke_phase2_producer(malformed)
+            except capture.acceptance.RunnerError as error:
+                assert expected_message in str(error)
+            else:
+                raise AssertionError(
+                    f"producer malformed {field} was accepted"
+                )
     assert capture.PROMO_PERSONAL_RESULT_FIELD_REGION == (0.20, 0.34, 0.42, 0.40)
 
     def fixture_provenance(history_id: str) -> dict[str, object]:

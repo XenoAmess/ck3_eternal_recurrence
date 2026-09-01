@@ -874,26 +874,39 @@ def run_phase2_promo_capture_scenario(
             "phase-two promo capture producer must return an evidence object"
         )
     expected_contract = PHASE2_PROMO_CAPTURE_CONTRACT.to_mapping()
-    result_mode = result.get("capture_mode")
-    if result_mode is not None and result_mode != PHASE2_PROMO_CAPTURE_MODE:
+    required_contract_fields = (
+        "capture_mode",
+        "capture_contract_version",
+        "capture_contract",
+    )
+    missing_contract_fields = tuple(
+        field for field in required_contract_fields if field not in result
+    )
+    if missing_contract_fields:
+        raise acceptance.RunnerError(
+            "phase-two promo producer must explicitly return canonical "
+            "capture contract fields: "
+            + ", ".join(missing_contract_fields)
+        )
+    result_mode = result["capture_mode"]
+    if result_mode != PHASE2_PROMO_CAPTURE_MODE:
         raise acceptance.RunnerError(
             "phase-two promo producer returned a non-canonical capture mode"
         )
-    result_version = result.get("capture_contract_version")
-    if result_version is not None and result_version != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION:
+    result_version = result["capture_contract_version"]
+    if result_version != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION:
         raise acceptance.RunnerError(
             "phase-two promo producer returned an unsupported capture contract version"
         )
-    result_contract = result.get("capture_contract")
-    if result_contract is not None and result_contract != expected_contract:
+    result_contract = result["capture_contract"]
+    if (
+        not isinstance(result_contract, dict)
+        or set(result_contract) != set(expected_contract)
+        or result_contract != expected_contract
+    ):
         raise acceptance.RunnerError(
             "phase-two promo producer returned a non-canonical capture contract"
         )
-    result.setdefault("capture_mode", PHASE2_PROMO_CAPTURE_MODE)
-    result.setdefault(
-        "capture_contract_version", PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
-    )
-    result.setdefault("capture_contract", expected_contract)
     return result
 
 
