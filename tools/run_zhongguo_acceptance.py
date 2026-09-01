@@ -210,6 +210,36 @@ PHASE2_PROMO_CAPTURE_SPAN_MAP = (
     ("phase2_incidents_operations", "incidents-operations"),
     ("phase2_cross_cycle_endgame", "cross-cycle-endgame"),
 )
+
+
+def _strict_contract_equal(expected: object, actual: object) -> bool:
+    """Compare phase-two contract JSON with exact scalar/container types.
+
+    Python's ordinary equality treats ``True == 1`` and ``1.0 == 1`` as
+    equal.  That is not sufficient for a versioned capture hand-off: a
+    producer returning a boolean or float must be rejected before any
+    timeline evidence is accepted.
+    """
+
+    if type(expected) is not type(actual):
+        return False
+    if isinstance(expected, dict):
+        if expected.keys() != actual.keys():  # type: ignore[union-attr]
+            return False
+        return all(
+            _strict_contract_equal(expected[key], actual[key])  # type: ignore[index]
+            for key in expected
+        )
+    if isinstance(expected, list):
+        if len(expected) != len(actual):  # type: ignore[arg-type]
+            return False
+        return all(
+            _strict_contract_equal(left, right)
+            for left, right in zip(expected, actual)  # type: ignore[arg-type]
+        )
+    return expected == actual
+
+
 if set(PHASE2_PROMO_CLEAN_SPANS).intersection(PROMO_CLEAN_SPANS):
     raise RuntimeError("phase-two promo spans must be disjoint from phase-one spans")
 if tuple(item[0] for item in PHASE2_PROMO_CAPTURE_SPAN_MAP) != PHASE2_PROMO_CLEAN_SPANS:
@@ -889,20 +919,26 @@ def run_phase2_promo_capture_scenario(
             + ", ".join(missing_contract_fields)
         )
     result_mode = result["capture_mode"]
-    if result_mode != PHASE2_PROMO_CAPTURE_MODE:
+    if (
+        type(result_mode) is not str
+        or result_mode != PHASE2_PROMO_CAPTURE_MODE
+    ):
         raise acceptance.RunnerError(
             "phase-two promo producer returned a non-canonical capture mode"
         )
     result_version = result["capture_contract_version"]
-    if result_version != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION:
+    if (
+        type(result_version) is not int
+        or isinstance(result_version, bool)
+        or result_version != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
+    ):
         raise acceptance.RunnerError(
             "phase-two promo producer returned an unsupported capture contract version"
         )
     result_contract = result["capture_contract"]
     if (
         not isinstance(result_contract, dict)
-        or set(result_contract) != set(expected_contract)
-        or result_contract != expected_contract
+        or not _strict_contract_equal(result_contract, expected_contract)
     ):
         raise acceptance.RunnerError(
             "phase-two promo producer returned a non-canonical capture contract"

@@ -266,6 +266,36 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         self.assertEqual(raised.exception.reason_code, "producer_mode_mismatch")
         self.assertEqual(recorder.calls, [])
 
+    def test_explicit_non_green_result_cannot_pass_handoff(self) -> None:
+        recorder = _Recorder(self.contract)
+        for value in ("RED", "BOGUS", None, False):
+            bad = {
+                "result": value,
+                "capture_mode": "zhongguo-361-phase2",
+                "capture_contract_version": 1,
+                "capture_contract": copy.deepcopy(self.contract),
+            }
+            producer = make_phase2_promo_capture_scaffold(
+                runtime_probe=lambda _context: {"ready": True},
+                choreography=lambda _context, _runtime, result=bad: result,
+            )
+            with self.assertRaises(Phase2PromoProducerContractError) as raised:
+                _invoke(producer, recorder)
+            self.assertEqual(raised.exception.reason_code, "producer_result_not_green")
+
+    def test_absent_result_is_left_to_runner(self) -> None:
+        recorder = _Recorder(self.contract)
+        expected = {
+            "capture_mode": "zhongguo-361-phase2",
+            "capture_contract_version": 1,
+            "capture_contract": copy.deepcopy(self.contract),
+        }
+        producer = make_phase2_promo_capture_scaffold(
+            runtime_probe=lambda _context: {"ready": True},
+            choreography=lambda _context, _runtime: copy.deepcopy(expected),
+        )
+        self.assertEqual(_invoke(producer, recorder), expected)
+
     def test_delegate_contract_version_requires_exact_integer_type(self) -> None:
         recorder = _Recorder(self.contract)
         for invalid_version in (True, 1.0):

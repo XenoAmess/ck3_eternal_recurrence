@@ -5908,6 +5908,41 @@ def main() -> int:
                 raise AssertionError(
                     f"producer malformed {field} was accepted"
                 )
+
+        # Python equality would otherwise let bool/float values masquerade as
+        # the canonical string/int contract fields.  The runner must reject
+        # those values before any timeline evidence is accepted.
+        for invalid_mode in (True, 1):
+            malformed = copy.deepcopy(canonical_result)
+            malformed["capture_mode"] = invalid_mode
+            try:
+                invoke_phase2_producer(malformed)
+            except capture.acceptance.RunnerError as error:
+                assert "non-canonical capture mode" in str(error)
+            else:
+                raise AssertionError("non-string capture mode was accepted")
+        for invalid_version in (True, 1.0):
+            malformed = copy.deepcopy(canonical_result)
+            malformed["capture_contract_version"] = invalid_version
+            try:
+                invoke_phase2_producer(malformed)
+            except capture.acceptance.RunnerError as error:
+                assert "unsupported capture contract version" in str(error)
+            else:
+                raise AssertionError("non-integer capture version was accepted")
+        for invalid_contract_version in (True, 1.0):
+            malformed = copy.deepcopy(canonical_result)
+            malformed_contract = copy.deepcopy(expected_contract)
+            malformed_contract["version"] = invalid_contract_version
+            malformed["capture_contract"] = malformed_contract
+            try:
+                invoke_phase2_producer(malformed)
+            except capture.acceptance.RunnerError as error:
+                assert "non-canonical capture contract" in str(error)
+            else:
+                raise AssertionError(
+                    "non-canonical nested capture version was accepted"
+                )
     assert capture.PROMO_PERSONAL_RESULT_FIELD_REGION == (0.20, 0.34, 0.42, 0.40)
 
     def fixture_provenance(history_id: str) -> dict[str, object]:

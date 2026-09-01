@@ -66,6 +66,7 @@ jobs:
           # semantic assertions remain covered by the normal run above.
           python -O tools/test_zg361_phase2_seed_bootstrap.py
           python tools/test_zhongguo_phase2_promo_producer.py
+          python -O tools/test_zhongguo_phase2_promo_producer.py
           python tools/test_run_zhongguo_promo_capture.py
           python tools/test_run_zhongguo_workshop_acceptance.py
       - name: Test ZhongGuo 361 release localization

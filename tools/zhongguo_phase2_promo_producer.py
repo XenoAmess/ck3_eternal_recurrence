@@ -114,7 +114,9 @@ class Phase2PromoProducerError(RuntimeError):
     ``reason_code`` is intentionally stable for direct callers while
     ``evidence`` remains a small, JSON-compatible partial record.  No error
     path writes that record; the acceptance runner currently retains only the
-    exception text unless a caller supplies an error adapter/report hook.
+    exception text unless a caller supplies an error adapter/report hook.  The
+    scaffold also rejects an explicitly reported non-GREEN producer result;
+    omitting that optional field leaves the runner's outer result in charge.
     """
 
     result: Final = "RED"
@@ -154,7 +156,12 @@ class Phase2PromoProducerContractError(Phase2PromoProducerError):
 
 @dataclass(frozen=True, slots=True)
 class Phase2PromoCaptureContext:
-    """Immutable parameter bundle passed to injected producer dependencies."""
+    """Parameter snapshot passed to injected producer dependencies.
+
+    The dataclass prevents rebinding its top-level fields.  The injected
+    dependencies still own the referenced runner/bridge objects; this type is
+    a hand-off boundary, not a claim that those external objects are immutable.
+    """
 
     stream: object
     artifacts: Path
@@ -459,6 +466,16 @@ class Phase2PromoProducerScaffold:
                 "choreography omitted canonical contract fields: "
                 + ", ".join(missing),
                 evidence={"missing_fields": missing},
+                unavailable=False,
+            )
+        if "result" in evidence and (
+            type(evidence["result"]) is not str
+            or evidence["result"] != "GREEN"
+        ):
+            self._red(
+                "producer_result_not_green",
+                "an explicitly reported producer result must be GREEN",
+                evidence={"result": evidence["result"]},
                 unavailable=False,
             )
         if (
