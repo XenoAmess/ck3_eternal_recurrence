@@ -150,3 +150,23 @@ needed to obtain the single paused truce shape artifact; once that artifact is
 available, extend only the corresponding typed read path and its evidence
 contract.  Do not enable surrender writes, infer expiry from
 `evaluated_days`, or use a fixture-only preflight result as live evidence.
+
+## 2026-09-02 artifact inventory refresh
+
+A read-only inventory found no new paused truce artifact. The latest three
+`xar-g2-truce-paused-live-*` attempts remain RED (preflight/harness or native
+readiness failures) and contain no MCP terms sequence. The reusable frozen
+pair is checkpoint
+`C:\Users\xenoa\AppData\Local\Temp\xar-g2-altseed-after-embarked-fix-20260831-0937\profile\save games\xar_checkpoint.ck3`
+(SHA-256
+`60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164`) and
+driver state SHA
+`4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E`.
+The known-good older launch reached paused/map-ready but did not advertise
+`query-war-termination-terms-v1-50331699`, so it cannot be reused as truce
+evidence. The next live command remains the existing
+`run_war_termination_terms_live_acceptance.py` entry with WarID `50331699`,
+character `29829`, and `date_raw=53223936`; it must run open_kaishek offline
+preflight first and must stop at the existing capability/readiness boundary
+if no semantic native-ready frame is available. No code or branch changed in
+this inventory.
