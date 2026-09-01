@@ -179,6 +179,16 @@ CK3 EXE、game rules、bridge DLL 与 injector 的 before hash；CK3 版本和 E
 合同。bootstrap 声明的 product/fixture tree hash 还必须等于 runner 对实际挂载投影独立计算的 hash，candidate 只采用后者；所有
 timeout 必须为有限正数，seed contract 的 `absolute_save` 必须真的是绝对路径。退出时再核对源码树与全部外部依赖 after hash。
 
+实机前可先对同一组冻结输入执行 no-launch 门：在上述参数后追加 `--preflight-only`。该入口只做 config、clean
+source/ZIP 逐文件等价、旧 save/CK3/rules/bridge/injector 哈希、exact-build 版本、静态 preflight 与 product/fixture
+投影检查；不会启动 `ck3.exe`、native session、driver、HKL watchdog，也不会进入 loader/event waiter。它在
+`artifacts/preflight.json` 写入 machine-readable 结果：`result/status/ok=GREEN/preflight-ready/true` 且
+`ck3_launch_attempted=false` 时退出码为 `0`；这里的 `status=preflight-ready` 只表示冻结输入与投影门通过，报告固定
+`readiness_scope=frozen_inputs_and_projection_only`、`seed_ready=false`，并原样记录当前
+`seed_contract_status`（通常仍为 `blocked_seed_generation_required`），不能解读为 seed 或 live capability 已就绪。
+任何 blocker 都保留 RED artifact（`status=preflight-blocked/ok=false`）并退出码为 `2`。
+每次实机 capture 仍必须使用新的空 attempt/artifact 目录，不能把 preflight 目录直接复用为 attempt 08。
+
 成功路径的硬顺序为：
 
 1. 把 clean product 与专用 seed fixture 投影到隔离 profile，`enabled_mods` 必须严格等于 product/fixture 各一个；
@@ -207,7 +217,7 @@ py tools/test_run_zg361_phase2_seed_capture.py
 py -O tools/test_run_zg361_phase2_seed_capture.py
 ```
 
-fake tests 覆盖显式 CLI 校验、ZIP/tree exact hashes、单挂载及顺序、45 秒 parser fail-fast 原样证据、单一 event deadline、
+fake tests 覆盖显式 CLI 校验、no-launch GREEN/RED 与 launch boundary、ZIP/tree exact hashes、单挂载及顺序、45 秒 parser fail-fast 原样证据、单一 event deadline、
 GREEN cleanup/driver/log/immutability、parser RED 后仍 cleanup，以及拒绝重跑时不覆写原失败 artifact。截至本段记录时仅为
 `static-ready / fake-tested / not-live`；不构成 attempt 08，也不授权在 parser/theme 静态项清零前启动 CK3。
 

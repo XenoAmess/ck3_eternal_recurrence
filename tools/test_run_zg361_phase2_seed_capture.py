@@ -56,6 +56,9 @@ class FakeAcceptance:
         self.calls.append("configure-userdir")
         require(profile.name == "profile", "runtime profile path drifted")
 
+    def ck3_is_running(self) -> bool:
+        return False
+
 
 class FakeDriver:
     def __init__(self, calls: list[str]) -> None:
@@ -747,6 +750,31 @@ def test_cli_validation_and_artifact_preservation() -> None:
         require(parsed.clean_source == fixture.clean.resolve(), "CLI source drifted")
         require(parsed.pipe_name == fixture.pipe, "CLI explicit pipe drifted")
         require(parsed.loader_timeout_seconds == 60.0, "CLI timeout drifted")
+        parsed_preflight = capture.parse_args(
+            [
+                "--clean-source",
+                str(fixture.clean),
+                "--attempt-dir",
+                str(fixture.attempt),
+                "--artifacts-dir",
+                str(fixture.artifacts),
+                "--source-zip",
+                str(fixture.source_zip),
+                "--git-sha",
+                fixture.git_sha,
+                "--game-dir",
+                str(fixture.game),
+                "--bridge-dll",
+                str(fixture.dll),
+                "--injector",
+                str(fixture.injector),
+                "--pipe",
+                fixture.pipe,
+                "--preflight-only",
+            ]
+        )
+        require(parsed_preflight.preflight_only is True,
+                "--preflight-only CLI flag was not preserved")
         capture.validate_config(parsed)
         for label, invalid_timing in (
             ("NaN", float("nan")),
@@ -782,6 +810,68 @@ def test_cli_validation_and_artifact_preservation() -> None:
         require(
             sha256(report_path) == report_hash,
             "repeat-run rejection overwrote the preserved failure report",
+        )
+
+
+def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        report = capture.run_preflight(
+            fixture.config(), runtime=fixture.runtime(calls)
+        )
+        require(report["result"] == "GREEN", "no-launch preflight unexpectedly RED")
+        require(report["status"] == "preflight-ready" and report["ok"] is True,
+                "GREEN preflight status contract drifted")
+        require(report["seed_ready"] is False,
+                "preflight falsely advertised a live seed")
+        require(report["readiness_scope"] == "frozen_inputs_and_projection_only",
+                "preflight readiness scope drifted")
+        require(report["ck3_launch_attempted"] is False,
+                "preflight claimed a CK3 launch")
+        require(report["launch_boundary"] == "not-crossed",
+                "preflight crossed the native launch boundary")
+        require(report["native_session_started"] is False,
+                "preflight started a native session")
+        require(report["driver_opened"] is False,
+                "preflight opened a bridge driver")
+        require("supervisor-start" not in calls,
+                "preflight reached the supervisor start")
+        require("driver-open" not in calls,
+                "preflight reached the bridge driver")
+        require("transport-binding" not in calls,
+                "preflight reached MCP transport binding")
+        require(report["bootstrap"]["projection_only"] is True,
+                "preflight projection was not labelled projection-only")
+        report_path = fixture.artifacts / "preflight.json"
+        require(report_path.is_file(), "GREEN preflight artifact is missing")
+        persisted = json.loads(report_path.read_text(encoding="utf-8"))
+        require(persisted == report, "preflight artifact differs from return value")
+
+
+def test_no_launch_preflight_running_ck3_is_persisted_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        runtime = fixture.runtime(calls)
+        runtime.acceptance.ck3_is_running = lambda: True
+        report = capture.run_preflight(fixture.config(), runtime=runtime)
+        require(report["result"] == "RED", "running CK3 false-GREENed preflight")
+        require(report["status"] == "preflight-blocked" and report["ok"] is False,
+                "running CK3 RED status contract drifted")
+        require("zero running ck3.exe" in report["failure_reason"],
+                "running CK3 blocker was not typed")
+        require(report["ck3_launch_attempted"] is False,
+                "RED preflight claimed a CK3 launch")
+        require(report["launch_boundary"] == "not-crossed",
+                "RED preflight crossed the launch boundary")
+        require("bootstrap" not in calls,
+                "running CK3 check did not precede profile projection")
+        report_path = fixture.artifacts / "preflight.json"
+        require(report_path.is_file(), "RED preflight artifact is missing")
+        require(
+            (fixture.artifacts / "preflight-failures.jsonl").is_file(),
+            "RED preflight failure stream is missing",
         )
 
 
@@ -887,6 +977,10 @@ def test_static_contract() -> None:
         "--bridge-dll",
         "--injector",
         "--pipe",
+        "--preflight-only",
+        "def run_preflight(",
+        '"launch_boundary": "not-crossed"',
+        '"ck3_launch_attempted": False',
         "sys.dont_write_bytecode = True",
         "verify_runtime_load_order(",
         "native_loader_smoke_readiness(",
@@ -921,6 +1015,8 @@ def main() -> int:
     test_parser_red_cleanup()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
+    test_no_launch_preflight_green_does_not_cross_native_boundary()
+    test_no_launch_preflight_running_ck3_is_persisted_red()
     test_source_zip_mismatch_is_preserved()
     test_bootstrap_runtime_hash_drift_is_preserved()
     test_seed_source_path_must_be_absolute()
