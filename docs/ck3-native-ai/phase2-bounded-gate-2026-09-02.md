@@ -106,3 +106,28 @@ It completed in `3.144s`: parser `GREEN` (76 files, 0 diagnostics), fixture
 IR/runtime `GREEN`, and bounded root validator `RED` (233,708 diagnostics).
 This is an offline schema boundary, not a CK3 loader result; no CK3 process,
 save, or network was used.
+
+## 2026-09-02 03:16 delta isolation gate
+
+The only follow-up CK3 attempt used a source candidate that was byte-identical
+to the current parent tree except for removal of the 249-line d692 role-failure
+block in `zg361_workforce_exit_fact_effects.txt`.  The candidate passed source
+archive equivalence, static preflight, bridge identity, and exact-build
+dependency checks.  Its source tree SHA was
+`1b1db97883b4eb65b8a221aa888476587c19c5d71f808a3c82bb58da5fc37583` and the
+source ZIP SHA was
+`145b466757fec58ff7fbe3ab5c74cd807f9d9454447eadf90fbad7f948f27499`.
+
+The retained report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\delta-live-pre-d692-20260902\artifacts\runner-report.json`
+with SHA-256
+`9EA7AFBEBCD210997B77F794574E7D36FEE3CA1C700C02EE707FE7389F9DF460`.
+It is `RED/LoaderStageTimeout` at `database_init` after `299.9s` (quiet
+`141.194s`), with `fatal_error_count=0` and no Frontend, Load Save, or native
+readiness.  The candidate also exposed one concrete dangling reference:
+`Unknown effect: zg361_workforce_exit_fact_verify_role_failure_publish_effect`
+at `events/zg361_workforce_exit_fact_events.txt:64`, because the removed block
+owned that effect.  Therefore the removal is not a shippable fix and was not
+merged.  Cleanup/driver close and external dependency immutability remained
+GREEN; no further same-shape CK3 attempt is scheduled until a new compatible
+stub or call-site change is statically prepared.
