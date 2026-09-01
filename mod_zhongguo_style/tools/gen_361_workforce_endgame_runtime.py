@@ -139,18 +139,22 @@ FUTURE_EVENT = {
 }
 REMEDIATION_OPEN_EVENT = 5276
 REMEDIATION_CONSUME_EVENT = 5277
-M274_NATIVE_ACK_EVENT = 52739
-M274_PROBATION_AUDIT_EVENT = 52740
-M274_SIGNATURE_AUDIT_EVENT = 52741
-M274_DISPOSITION_AUDIT_EVENT = 52742
-M269_DEBT_CANCEL_EVENT = 52743
-M269_DEBT_CANCEL_ACK_EVENT = 52744
-M269_DEBT_ADVANCE_AUDIT_EVENT = 52745
-M269_POSTSETTLEMENT_EVENT = 52746
-M269_RESULT_PUBLISH_EVENT = 52747
-M276_PREPARE_AUDIT_EVENT = 52748
-M276_FINALIZE_EVENT = 52749
-M276_FINALIZE_AUDIT_EVENT = 52750
+# CK3 event namespace suffixes are bounded to 0..9999.  The former 52739..
+# 52750 spellings were rejected by the loader (and could surface as misleading
+# duplicate-registration noise), so keep this product-owned relay range both
+# explicit and below the engine ceiling.
+M274_NATIVE_ACK_EVENT = 5370
+M274_PROBATION_AUDIT_EVENT = 5371
+M274_SIGNATURE_AUDIT_EVENT = 5372
+M274_DISPOSITION_AUDIT_EVENT = 5373
+M269_DEBT_CANCEL_EVENT = 5374
+M269_DEBT_CANCEL_ACK_EVENT = 5375
+M269_DEBT_ADVANCE_AUDIT_EVENT = 5376
+M269_POSTSETTLEMENT_EVENT = 5377
+M269_RESULT_PUBLISH_EVENT = 5378
+M276_PREPARE_AUDIT_EVENT = 5379
+M276_FINALIZE_EVENT = 5380
+M276_FINALIZE_AUDIT_EVENT = 5381
 FUTURE_PENDING = {
     257: "m257_conversion_pending",
     262: "m262_review_pending",
@@ -195,8 +199,8 @@ M360_MG_RECEIPT_FIELDS = (
     "b1_source_hash", "route", "quota", "exception_count", "cost",
     "score_before", "score_after", "score_delta",
 )
-HANDOFF_EVENT = {1: 52640, 2: 52641, 3: 52642}
-HANDOFF_RELAY_EVENT = {2: 52650, 3: 52651}
+HANDOFF_EVENT = {1: 5264, 2: 5265, 3: 5266}
+HANDOFF_RELAY_EVENT = {2: 5267, 3: 5268}
 NONMANAGER_NA_IDS = frozenset({360, 361})
 NONMANAGER_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS - NONMANAGER_NA_IDS)
 CHARTER_HISTORY_ACCRUAL_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS) - 1
@@ -204,6 +208,41 @@ B2_PIP_SOURCE_FIELDS = (
     "pending", "consumed", "owner", "subject", "cycle", "case", "state",
     "case_id", "case_hash", "closure_receipt_id", "closure_receipt_hash",
 )
+AD_SOURCE_COMMON_FIELDS = (
+    "pending", "consumed", "retired", "owner", "subject", "cycle", "case",
+    "state", "id", "hash",
+)
+AD_REFERRAL_SOURCE_FIELDS = AD_SOURCE_COMMON_FIELDS + (
+    "disposition", "referral_id", "referrer", "relationship",
+    "evidence_receipt",
+)
+AD_PANEL_SOURCE_FIELDS = AD_SOURCE_COMMON_FIELDS + (
+    "disposition", "referrer", "referrer_vote_policy", "interviewer_1",
+    "interviewer_2", "interviewer_3", "vote_1", "vote_2", "vote_3",
+    "vote_evidence_1", "vote_evidence_2", "vote_evidence_3",
+    "runner_up_present",
+)
+AD_OFFER_SOURCE_FIELDS = AD_SOURCE_COMMON_FIELDS + (
+    "response", "response_receipt",
+)
+AD_SOURCE_REPLACED_EXTERNAL_ALIASES = frozenset({
+    "zg361_we_ad_external_referral_id",
+    "zg361_we_ad_external_referrer",
+    "zg361_we_ad_external_referral_relationship",
+    "zg361_we_ad_external_referral_evidence_receipt",
+    "zg361_we_ad_external_interviewer_1",
+    "zg361_we_ad_external_interviewer_2",
+    "zg361_we_ad_external_interviewer_3",
+    "zg361_we_ad_external_vote_1",
+    "zg361_we_ad_external_vote_2",
+    "zg361_we_ad_external_vote_3",
+    "zg361_we_ad_external_vote_evidence_1",
+    "zg361_we_ad_external_vote_evidence_2",
+    "zg361_we_ad_external_vote_evidence_3",
+    "zg361_we_ad_external_runner_up",
+    "zg361_we_ad_external_runner_up_evidence",
+    "zg361_we_ad_external_refusal_reason_id",
+})
 # These names came from the frozen AD80 loader artifact, but they are not
 # independent external facts.  They are either current-case identity aliases,
 # facts already committed by this product, or the redundant projection of the
@@ -363,6 +402,41 @@ def validate_specs() -> None:
                 raise ValueError(f"stage barrier {mid} has the wrong state")
     if {spec.mid for spec in MECHANISMS if spec.domain == "al" and spec.state in (2, 3)}:
         raise ValueError("AL 357-359 must remain an external dependency")
+    if len(AD_SOURCE_REPLACED_EXTERNAL_ALIASES) != 16:
+        raise ValueError("the AD fact source bridge must replace exactly sixteen legacy aliases")
+    if AD_SOURCE_REPLACED_EXTERNAL_ALIASES & RETIRED_AD_EXTERNAL_ALIASES:
+        raise ValueError("AD source replacements and independently retired aliases must stay disjoint")
+    event_suffixes = [spec.mid for spec in MECHANISMS]
+    for domain in ("ab", "ac", "ad", "al"):
+        for state in sorted(set(STAGE_LAST[domain].values())):
+            event_suffixes.extend((
+                DOMAIN_EVENT_BASE[domain] + state,
+                DOMAIN_EVENT_BASE[domain] + 100 + state,
+            ))
+    event_suffixes.extend(FUTURE_EVENT.values())
+    event_suffixes.extend((
+        M274_NATIVE_ACK_EVENT,
+        M274_PROBATION_AUDIT_EVENT,
+        M274_SIGNATURE_AUDIT_EVENT,
+        M274_DISPOSITION_AUDIT_EVENT,
+        M269_DEBT_CANCEL_EVENT,
+        M269_DEBT_CANCEL_ACK_EVENT,
+        M269_DEBT_ADVANCE_AUDIT_EVENT,
+        M269_POSTSETTLEMENT_EVENT,
+        M269_RESULT_PUBLISH_EVENT,
+        M276_PREPARE_AUDIT_EVENT,
+        M276_FINALIZE_EVENT,
+        M276_FINALIZE_AUDIT_EVENT,
+        REMEDIATION_OPEN_EVENT,
+        REMEDIATION_CONSUME_EVENT,
+        *HANDOFF_EVENT.values(),
+        *HANDOFF_RELAY_EVENT.values(),
+        *DEBT_EVENT.values(),
+    ))
+    if any(suffix < 0 or suffix >= 10000 for suffix in event_suffixes):
+        raise ValueError("CK3 event namespace suffixes must remain in 0..9999")
+    if len(set(event_suffixes)) != len(event_suffixes):
+        raise ValueError("workforce/endgame event namespace suffixes must remain unique")
 
 
 def indent(text: str, tabs: int = 1) -> str:
@@ -1090,6 +1164,137 @@ def _current_object_checks(spec: Mechanism) -> list[str]:
     return checks
 
 
+def _ad_source_hash_prelude(source: str) -> str:
+    terminal = "response" if source == "offer" else "disposition"
+    p = f"zg361_wad_{source}_source"
+    return f"""if = {{
+	limit = {{
+		has_variable = {p}_id
+		has_variable = {p}_cycle
+		has_variable = {p}_case
+		has_variable = {p}_{terminal}
+	}}
+	save_temporary_scope_value_as = {{
+		name = {PREFIX}_ad_expected_{source}_source_hash
+		value = {{ value = var:{p}_id multiply = 1000000 add = {{ value = var:{p}_cycle multiply = 10000 }} add = {{ value = var:{p}_case multiply = 10 }} add = var:{p}_{terminal} }}
+	}}
+}}"""
+
+
+def _ad_source_common_checks(
+    source: str,
+    *,
+    state: int,
+    terminal: int | tuple[int, ...],
+    pending: int = 1,
+    consumed: int = 0,
+    retired: int = 0,
+) -> list[str]:
+    terminal_name = "response" if source == "offer" else "disposition"
+    p = f"zg361_wad_{source}_source"
+    terminal_values = (terminal,) if isinstance(terminal, int) else terminal
+    terminal_check = (
+        f"var:{p}_{terminal_name} = {terminal_values[0]}"
+        if len(terminal_values) == 1
+        else "OR = { " + " ".join(
+            f"var:{p}_{terminal_name} = {value}" for value in terminal_values
+        ) + " }"
+    )
+    fields = (*AD_SOURCE_COMMON_FIELDS, terminal_name)
+    checks = [f"has_variable = {p}_{field}" for field in fields]
+    checks += [
+        f"var:{p}_pending = {pending}",
+        f"var:{p}_consumed = {consumed}",
+        f"var:{p}_retired = {retired}",
+        f"var:{p}_owner = $TICKET_OWNER$",
+        f"var:{p}_subject = $TICKET_SUBJECT$",
+        f"var:{p}_cycle = $TICKET_CYCLE$",
+        f"var:{p}_case = $TICKET_CASE$",
+        f"var:{p}_state = {state}",
+        f"var:{p}_id > 0",
+        f"var:{p}_hash = scope:{PREFIX}_ad_expected_{source}_source_hash",
+        terminal_check,
+    ]
+    return checks
+
+
+def _ad_referral_source_checks(*, disposition: int | tuple[int, ...] = 1) -> list[str]:
+    checks = _ad_source_common_checks("referral", state=1, terminal=disposition)
+    if disposition == 1:
+        checks += [
+            "has_variable = zg361_wad_referral_source_referral_id",
+            "has_variable = zg361_wad_referral_source_referrer",
+            "has_variable = zg361_wad_referral_source_relationship",
+            "has_variable = zg361_wad_referral_source_evidence_receipt",
+            "var:zg361_wad_referral_source_referral_id > 0",
+            "var:zg361_wad_referral_source_evidence_receipt > 0",
+            "NOT = { var:zg361_wad_referral_source_id = var:zg361_wad_referral_source_referral_id }",
+            "NOT = { var:zg361_wad_referral_source_id = var:zg361_wad_referral_source_evidence_receipt }",
+            "NOT = { var:zg361_wad_referral_source_referral_id = var:zg361_wad_referral_source_evidence_receipt }",
+            "var:zg361_wad_referral_source_referrer = { zg361_is_celestial_liege_trigger = yes }",
+            "NOT = { var:zg361_wad_referral_source_referrer = $TICKET_SUBJECT$ }",
+            "var:zg361_wad_referral_source_relationship >= 1",
+            "var:zg361_wad_referral_source_relationship <= 3",
+        ]
+    return checks
+
+
+def _ad_panel_source_checks(*, disposition: int | tuple[int, ...] = 1) -> list[str]:
+    checks = _ad_source_common_checks("panel", state=1, terminal=disposition)
+    if disposition == 1:
+        checks += [
+            "has_variable = zg361_wad_panel_source_referrer",
+            "has_variable = zg361_wad_panel_source_referrer_vote_policy",
+            "has_variable = zg361_wad_panel_runner_up_present",
+            "var:zg361_wad_panel_source_referrer_vote_policy >= 0",
+            "var:zg361_wad_panel_source_referrer_vote_policy <= 1",
+            "var:zg361_wad_panel_runner_up_present >= 0",
+            "var:zg361_wad_panel_runner_up_present <= 1",
+        ]
+        for slot in (1, 2, 3):
+            checks += [
+                f"has_variable = zg361_wad_panel_source_interviewer_{slot}",
+                f"has_variable = zg361_wad_panel_source_vote_{slot}",
+                f"has_variable = zg361_wad_panel_source_vote_evidence_{slot}",
+                f"has_variable = zg361_wad_panel_vote_receipt_actor_{slot}",
+                f"var:zg361_wad_panel_source_interviewer_{slot} = {{ zg361_is_celestial_liege_trigger = yes }}",
+                f"NOT = {{ var:zg361_wad_panel_source_interviewer_{slot} = $TICKET_SUBJECT$ }}",
+                f"var:zg361_wad_panel_source_vote_{slot} >= 1",
+                f"var:zg361_wad_panel_source_vote_{slot} <= 3",
+                f"var:zg361_wad_panel_source_vote_evidence_{slot} > 0",
+                f"var:zg361_wad_panel_vote_receipt_actor_{slot} = var:zg361_wad_panel_source_interviewer_{slot}",
+                f"NOT = {{ var:zg361_wad_panel_source_id = var:zg361_wad_panel_source_vote_evidence_{slot} }}",
+            ]
+        checks += [
+            "NOT = { var:zg361_wad_panel_source_interviewer_1 = var:zg361_wad_panel_source_interviewer_2 }",
+            "NOT = { var:zg361_wad_panel_source_interviewer_1 = var:zg361_wad_panel_source_interviewer_3 }",
+            "NOT = { var:zg361_wad_panel_source_interviewer_2 = var:zg361_wad_panel_source_interviewer_3 }",
+            "NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_2 }",
+            "NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_3 }",
+            "NOT = { var:zg361_wad_panel_source_vote_evidence_2 = var:zg361_wad_panel_source_vote_evidence_3 }",
+            "trigger_if = { limit = { var:zg361_wad_panel_runner_up_present = 1 } has_variable = zg361_wad_panel_source_runner_up has_variable = zg361_wad_panel_source_runner_up_evidence var:zg361_wad_panel_source_runner_up_evidence > 0 NOT = { var:zg361_wad_panel_source_runner_up = $TICKET_SUBJECT$ } } trigger_else = { NOT = { has_variable = zg361_wad_panel_source_runner_up } NOT = { has_variable = zg361_wad_panel_source_runner_up_evidence } }",
+        ]
+    return checks
+
+
+def _ad_offer_source_checks(*, response: int) -> list[str]:
+    checks = _ad_source_common_checks("offer", state=4, terminal=response)
+    checks += [
+        "has_variable = zg361_wad_offer_source_response_receipt",
+        "var:zg361_wad_offer_source_response_receipt > 0",
+        "NOT = { var:zg361_wad_offer_source_id = var:zg361_wad_offer_source_response_receipt }",
+    ]
+    if response == 1:
+        checks.append("NOT = { has_variable = zg361_wad_offer_source_refusal_reason_id }")
+    else:
+        checks += [
+            "has_variable = zg361_wad_offer_source_refusal_reason_id",
+            "var:zg361_wad_offer_source_refusal_reason_id >= 1",
+            "var:zg361_wad_offer_source_refusal_reason_id <= 3",
+        ]
+    return checks
+
+
 def resource_checks(spec: Mechanism, choice: int) -> list[str]:
     """Every read is paired with an existence gate before record_operation."""
     d, mid = spec.domain, spec.mid
@@ -1254,7 +1459,7 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:zg361_case_{d}_owner = {{ {_zero_or_missing(f'{PREFIX}_ad_hc_flight_pending')} }}",
         ]
     if mid == 267:
-        checks += [
+        checks += _ad_panel_source_checks() + [
             f"has_variable = {PREFIX}_m271_candidate",
             f"has_variable = {PREFIX}_m271_referral_id",
             f"has_variable = {PREFIX}_m271_referrer",
@@ -1269,41 +1474,30 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:{PREFIX}_m271_referrer_vote_policy >= 0",
             f"var:{PREFIX}_m271_referrer_vote_policy <= 1",
             f"NOT = {{ var:{PREFIX}_m271_referrer = var:{PREFIX}_m271_candidate }}",
+            f"has_variable = {PREFIX}_gold_reserved",
+            f"var:{PREFIX}_gold_reserved >= 5",
+            f"has_variable = {PREFIX}_referral_gold_reserved",
+            f"var:{PREFIX}_referral_gold_reserved >= 5",
+            f"has_variable = {PREFIX}_m271_reward_escrowed",
+            f"var:{PREFIX}_m271_reward_escrowed = 1",
+            f"has_variable = {PREFIX}_m271_reward_paid_before_probation",
+            f"var:{PREFIX}_m271_reward_paid_before_probation = 0",
         ]
-        for slot in (1, 2, 3):
-            checks += [
-                f"has_variable = {PREFIX}_ad_external_interviewer_{slot}",
-                f"has_variable = {PREFIX}_ad_external_vote_{slot}",
-                f"has_variable = {PREFIX}_ad_external_vote_evidence_{slot}",
-                f"var:{PREFIX}_ad_external_vote_{slot} >= 1",
-                f"var:{PREFIX}_ad_external_vote_{slot} <= 3",
-                f"var:{PREFIX}_ad_external_interviewer_{slot} = {{ zg361_is_celestial_liege_trigger = yes }}",
-            ]
         checks += [
-            f"NOT = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_ad_external_interviewer_2 }}",
-            f"NOT = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_ad_external_interviewer_3 }}",
-            f"NOT = {{ var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_ad_external_interviewer_3 }}",
             (
-                f"var:{PREFIX}_m271_referrer_vote_policy = 0 NOT = {{ OR = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_3 = var:{PREFIX}_m271_referrer }} }}"
+                f"var:{PREFIX}_m271_referrer_vote_policy = 0 NOT = {{ OR = {{ var:zg361_wad_panel_source_interviewer_1 = var:{PREFIX}_m271_referrer var:zg361_wad_panel_source_interviewer_2 = var:{PREFIX}_m271_referrer var:zg361_wad_panel_source_interviewer_3 = var:{PREFIX}_m271_referrer }} }}"
                 if choice == 1 else
-                f"var:{PREFIX}_m271_referrer_vote_policy = 1 OR = {{ var:{PREFIX}_ad_external_interviewer_1 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_2 = var:{PREFIX}_m271_referrer var:{PREFIX}_ad_external_interviewer_3 = var:{PREFIX}_m271_referrer }}"
+                f"var:{PREFIX}_m271_referrer_vote_policy = 1 var:zg361_wad_panel_source_interviewer_1 = var:{PREFIX}_m271_referrer"
             ),
         ]
     if mid == 271:
-        checks += _gold_check(5) + [
+        checks += _gold_check(5) + _ad_referral_source_checks() + [
             f"var:zg361_case_{d}_owner = {{ gold >= 5 }}",
-            f"has_variable = {PREFIX}_ad_external_referral_id",
-            f"has_variable = {PREFIX}_ad_external_referrer",
-            f"has_variable = {PREFIX}_ad_external_referral_relationship",
-            f"has_variable = {PREFIX}_ad_external_referral_evidence_receipt",
-            f"var:{PREFIX}_ad_external_referral_id > 0",
-            f"var:{PREFIX}_ad_external_referral_evidence_receipt > 0",
-            f"NOT = {{ var:{PREFIX}_ad_external_referrer = $TICKET_SUBJECT$ }}",
         ]
     if mid == 272:
         checks += _gold_check(10) + [f"var:zg361_case_{d}_owner = {{ gold >= 10 }}"]
     if mid == 274:
-        checks += _gold_check(5) + [
+        checks += _gold_check(5) + _ad_offer_source_checks(response=choice) + [
             f"has_variable = {PREFIX}_offer_gold_reserved",
             f"var:{PREFIX}_offer_gold_reserved >= 10",
             f"has_variable = {PREFIX}_gold_reserved",
@@ -1361,13 +1555,15 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_ad_hc_flight_pending "
             f"var:{PREFIX}_ad_hc_flight_pending = 1 var:{PREFIX}_ad_hc_flight_subject = $TICKET_SUBJECT$ "
             f"var:{PREFIX}_ad_hc_flight_cycle = $TICKET_CYCLE$ var:{PREFIX}_ad_hc_flight_case = $TICKET_CASE$ }} "
-            f"has_variable = {PREFIX}_ad_external_refusal_reason_id"
+            f"{' '.join(_ad_offer_source_checks(response=2))}"
         )
         if choice == 1:
             refusal_only += (
-                f" has_variable = {PREFIX}_ad_external_runner_up "
-                f"has_variable = {PREFIX}_ad_external_runner_up_evidence "
-                f"NOT = {{ var:{PREFIX}_ad_external_runner_up = $TICKET_SUBJECT$ }}"
+                f" has_variable = {PREFIX}_m267_runner_up "
+                f"has_variable = {PREFIX}_m267_runner_up_evidence "
+                f"has_variable = {PREFIX}_m267_runner_up_present "
+                f"var:{PREFIX}_m267_runner_up_present = 1 "
+                f"NOT = {{ var:{PREFIX}_m267_runner_up = $TICKET_SUBJECT$ }}"
             )
         checks.append(
             f"trigger_if = {{ limit = {{ has_variable = {PREFIX}_m274_hired "
@@ -1694,10 +1890,19 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 266:
         lines += ["change_variable = { name = zg361_ch_hc_available add = -1 }", "change_variable = { name = zg361_ch_hc_reserved add = 1 }", _set("m266_standard_bar", 70), _set("m266_selected_bar", 70 if choice == 1 else 60), _set("m266_urgency_level", 2 if choice == 1 else 4), _set("m266_hc_receipt", "$TICKET_CASE$"), _set("m266_hc_reservation_active", 1), _set("m266_vacancy_serial", "$TICKET_CASE$"), f"var:zg361_case_{d}_owner = {{ set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 1 }} set_variable = {{ name = {PREFIX}_ad_hc_flight_subject value = $TICKET_SUBJECT$ }} set_variable = {{ name = {PREFIX}_ad_hc_flight_cycle value = $TICKET_CYCLE$ }} set_variable = {{ name = {PREFIX}_ad_hc_flight_case value = $TICKET_CASE$ }} }}"]
     elif mid == 267:
-        lines += [_set("m267_vote_count", 3), _set("m267_evidence_count", 3), _set("m267_anchor_before_votes", 0 if choice == 1 else 1), _set("m267_candidate_frozen", f"var:{PREFIX}_m271_candidate"), _set("m267_referral_present", 1), _set("m267_referrer_voted", 0 if choice == 1 else 1), _set("m267_referral_frozen_case", "$TICKET_CASE$")]
+        lines += [_set("m267_panel_source_id", "var:zg361_wad_panel_source_id"), _set("m267_panel_source_hash", "var:zg361_wad_panel_source_hash"), _set("m267_vote_count", 3), _set("m267_evidence_count", 3), _set("m267_anchor_before_votes", 0 if choice == 1 else 1), _set("m267_candidate_frozen", f"var:{PREFIX}_m271_candidate"), _set("m267_referral_present", 1), _set("m267_referrer_voted", 0 if choice == 1 else 1), _set("m267_referral_frozen_case", "$TICKET_CASE$")]
         lines += [_set("m267_referral_id", f"var:{PREFIX}_m271_referral_id"), _set("m267_referrer_frozen", f"var:{PREFIX}_m271_referrer"), _set("m267_referral_relationship", f"var:{PREFIX}_m271_relationship_ref"), _set("m267_referral_evidence_receipt", f"var:{PREFIX}_m271_evidence_receipt"), _set("m267_referral_reward", f"var:{PREFIX}_m271_reward_gold"), _set("m267_referrer_excluded_before_seal", 1 if choice == 1 else 0)]
         for slot in (1, 2, 3):
-            lines += [_set(f"m267_interviewer_{slot}", f"var:{PREFIX}_ad_external_interviewer_{slot}"), _set(f"m267_vote_{slot}", f"var:{PREFIX}_ad_external_vote_{slot}"), _set(f"m267_vote_evidence_{slot}", f"var:{PREFIX}_ad_external_vote_evidence_{slot}")]
+            lines += [_set(f"m267_interviewer_{slot}", f"var:zg361_wad_panel_source_interviewer_{slot}"), _set(f"m267_vote_{slot}", f"var:zg361_wad_panel_source_vote_{slot}"), _set(f"m267_vote_evidence_{slot}", f"var:zg361_wad_panel_source_vote_evidence_{slot}")]
+        lines += [_set("m267_runner_up_present", "var:zg361_wad_panel_runner_up_present")]
+        lines.append(
+            f"if = {{ limit = {{ var:zg361_wad_panel_runner_up_present = 1 }} "
+            f"set_variable = {{ name = {PREFIX}_m267_runner_up value = var:zg361_wad_panel_source_runner_up }} "
+            f"set_variable = {{ name = {PREFIX}_m267_runner_up_evidence value = var:zg361_wad_panel_source_runner_up_evidence }} }} "
+            f"else = {{ remove_variable = {PREFIX}_m267_runner_up remove_variable = {PREFIX}_m267_runner_up_evidence }}"
+        )
+        if choice == 2:
+            lines += [_change("gold_reserved", -5), _change("gold_paid", 5), _change("referral_gold_reserved", -5), _change("referral_gold_paid", 5), _set("m271_internal_owner_credit", 5), _set("m271_reward_paid_before_probation", 1), _set("m271_reward_payee", f"var:{PREFIX}_m271_referrer"), _set("m271_reward_escrowed", 0), f"var:{PREFIX}_m271_referrer = {{ add_gold = 5 }}"]
         # The seal is the commit marker for the complete identity/vote/evidence
         # snapshot, so it must be the last #267 business write.
         lines += [_set("m267_raw_votes_frozen", 1)]
@@ -1714,15 +1919,13 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 270:
         lines += [_set("m270_role_class", 1 if choice == 1 else 4), _set("m270_threshold", 75 if choice == 1 else 85), _set("m270_policy_version", "$TICKET_CYCLE$"), _set("m270_raw_votes_rewritten", 0)]
     elif mid == 271:
-        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", "$TICKET_SUBJECT$"), _set("m271_referral_id", f"var:{PREFIX}_ad_external_referral_id"), _set("m271_referrer", f"var:{PREFIX}_ad_external_referrer"), _set("m271_relationship_ref", f"var:{PREFIX}_ad_external_referral_relationship"), _set("m271_evidence_receipt", f"var:{PREFIX}_ad_external_referral_evidence_receipt"), _set("m271_reward_gold", 5), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_vote_policy", 0 if choice == 1 else 1), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 5 }}"]
-        if choice == 2:
-            lines += [_change("gold_reserved", -5), _change("gold_paid", 5), _change("referral_gold_reserved", -5), _change("referral_gold_paid", 5), _set("m271_internal_owner_credit", 5), _set("m271_reward_paid_before_probation", 1), _set("m271_reward_payee", f"var:{PREFIX}_m271_referrer"), _set("m271_reward_escrowed", 0), f"var:{PREFIX}_m271_referrer = {{ add_gold = 5 }}"]
+        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_referral_source_id", "var:zg361_wad_referral_source_id"), _set("m271_referral_source_hash", "var:zg361_wad_referral_source_hash"), _set("m271_candidate", "$TICKET_SUBJECT$"), _set("m271_referral_id", "var:zg361_wad_referral_source_referral_id"), _set("m271_referrer", "var:zg361_wad_referral_source_referrer"), _set("m271_relationship_ref", "var:zg361_wad_referral_source_relationship"), _set("m271_evidence_receipt", "var:zg361_wad_referral_source_evidence_receipt"), _set("m271_reward_gold", 5), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_vote_policy", 0 if choice == 1 else 1), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_paid_before_probation", 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 5 }}"]
     elif mid == 272:
         lines += [_change("gold_available", -10), _change("gold_reserved", 10), _change("offer_gold_reserved", 10), _set("m272_offer_candidate", "$TICKET_SUBJECT$"), _set("m272_offer_approver", "$TICKET_OWNER$"), _set("m272_offer_terms_frozen", 1), _set("m272_requested_level", 5 if choice == 1 else 6), _set("m272_cross_team_approver", 1 if choice == 1 else 0), _set("m272_premium_end_cycle", "{ value = $TICKET_CYCLE$ add = 1 }")]
     elif mid == 273:
         lines += [_set("candidate_active", 1), _set("candidate_active_owner", "$TICKET_OWNER$"), _set("candidate_active_case", "$TICKET_CASE$"), _set("m273_candidate_fingerprint", "$TICKET_SUBJECT$"), _set("m273_owner_frozen", "$TICKET_OWNER$"), _set("m273_scout_credit_bps", 3000 if choice == 1 else 10000), _set("m273_hiring_credit_bps", 7000 if choice == 1 else 0), _set("m273_credit_total_bps", 10000), _set("m273_additional_hc_reserved", 0)]
     elif mid == 274:
-        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("offer_gold_reserved", 5), _set("m274_counter_used", 1), _set("m274_counter_amount", 5 if choice == 1 else 15), _set("m274_fairness_cap", 10), _set("m274_offer_acceptance_candidate", 1 if choice == 1 else 0), _set("m274_hired", 0)]
+        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("offer_gold_reserved", 5), _set("m274_offer_source_id", "var:zg361_wad_offer_source_id"), _set("m274_offer_source_hash", "var:zg361_wad_offer_source_hash"), _set("m274_offer_response_receipt", "var:zg361_wad_offer_source_response_receipt"), _set("m274_offer_response", choice), _set("m274_counter_used", 1), _set("m274_counter_amount", 5 if choice == 1 else 15), _set("m274_fairness_cap", 10), _set("m274_offer_acceptance_candidate", 1 if choice == 1 else 0), _set("m274_hired", 0)]
         if choice == 1:
             lines += [
                 _set("m274_appointed_character", "$TICKET_SUBJECT$"),
@@ -1745,9 +1948,9 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             ]
     elif mid == 275:
         due_add = 1 if choice == 1 else 3
-        refusal_lines = [_set("m275_refusal", 1), _set("m275_not_applicable_hired", 0), _set("m275_refusal_reason_id", f"var:{PREFIX}_ad_external_refusal_reason_id"), _set("m275_original_candidate", "$TICKET_SUBJECT$"), _set("m275_hold_start_cycle", "$TICKET_CYCLE$"), _set("m275_hold_due_cycle", f"{{ value = $TICKET_CYCLE$ add = {due_add} }}"), _set("m275_hc_lineage_receipt", "$TICKET_CASE$"), _set("m275_hold_pending", 1), _set("m275_runner_attempt_new_case", 1 if choice == 1 else 0), _set("m275_policy_breach_indefinite_requested", 1 if choice == 2 else 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[275]} days = {90 if choice == 1 else 365} }}"]
+        refusal_lines = [_set("m275_offer_source_id", "var:zg361_wad_offer_source_id"), _set("m275_offer_source_hash", "var:zg361_wad_offer_source_hash"), _set("m275_offer_response_receipt", "var:zg361_wad_offer_source_response_receipt"), _set("m275_refusal", 1), _set("m275_not_applicable_hired", 0), _set("m275_refusal_reason_id", "var:zg361_wad_offer_source_refusal_reason_id"), _set("m275_original_candidate", "$TICKET_SUBJECT$"), _set("m275_hold_start_cycle", "$TICKET_CYCLE$"), _set("m275_hold_due_cycle", f"{{ value = $TICKET_CYCLE$ add = {due_add} }}"), _set("m275_hc_lineage_receipt", "$TICKET_CASE$"), _set("m275_hold_pending", 1), _set("m275_runner_attempt_new_case", 1 if choice == 1 else 0), _set("m275_policy_breach_indefinite_requested", 1 if choice == 2 else 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[275]} days = {90 if choice == 1 else 365} }}"]
         if choice == 1:
-            refusal_lines += [_set("m275_runner_up", f"var:{PREFIX}_ad_external_runner_up"), _set("m275_runner_up_evidence", f"var:{PREFIX}_ad_external_runner_up_evidence"), _set("m275_runner_reopen_pending", 0)]
+            refusal_lines += [_set("m275_runner_up", f"var:{PREFIX}_m267_runner_up"), _set("m275_runner_up_evidence", f"var:{PREFIX}_m267_runner_up_evidence"), _set("m275_runner_reopen_pending", 0)]
         else:
             refusal_lines += [
                 _set("m275_reason_remediated", 0),
@@ -2166,6 +2369,476 @@ def render_abandoned_resource_release() -> str:
 }}"""
 
 
+def _ad_case_guard(state: int) -> str:
+    return f"""zg361_case_kernel_full_guard_trigger = {{
+	OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+	CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+	STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+	EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+	EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = {state}
+}}"""
+
+
+def _ad_committed_object_checks(mid: int, choices: tuple[int, ...]) -> list[str]:
+    spec = by_id()[mid]
+    checks = [
+        f"has_variable = {PREFIX}_m{mid}_business_object_created",
+        f"has_variable = {PREFIX}_m{mid}_object_owner",
+        f"has_variable = {PREFIX}_m{mid}_object_subject",
+        f"has_variable = {PREFIX}_m{mid}_object_cycle",
+        f"has_variable = {PREFIX}_m{mid}_object_case",
+        f"has_variable = {PREFIX}_m{mid}_object_state",
+        f"has_variable = {PREFIX}_m{mid}_object_consumed",
+        f"has_variable = {PREFIX}_m{mid}_consumer_{spec.consumer_key}",
+        f"var:{PREFIX}_m{mid}_business_object_created = 1",
+        f"var:{PREFIX}_m{mid}_object_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_m{mid}_object_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m{mid}_object_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m{mid}_object_case = $TICKET_CASE$",
+        f"var:{PREFIX}_m{mid}_object_state = {spec.state}",
+        f"var:{PREFIX}_m{mid}_object_consumed = 1",
+        f"var:{PREFIX}_m{mid}_consumer_{spec.consumer_key} = 1",
+        "OR = {\n" + "\n".join(indent(receipt_guard(spec, choice)) for choice in choices) + "\n}",
+    ]
+    return checks
+
+
+def _ad_committed_debt_checks(mid: int) -> list[str]:
+    spec = by_id()[mid]
+    checks = [
+        f"has_variable = {PREFIX}_m{mid}_business_object_created",
+        f"has_variable = {PREFIX}_m{mid}_choice",
+        f"has_variable = {PREFIX}_m{mid}_debt_owner",
+        f"has_variable = {PREFIX}_m{mid}_debt_subject",
+        f"has_variable = {PREFIX}_m{mid}_debt_cycle",
+        f"has_variable = {PREFIX}_m{mid}_debt_case",
+        f"has_variable = {PREFIX}_m{mid}_debt_state",
+        f"has_variable = {PREFIX}_m{mid}_debt_open",
+        f"has_variable = {PREFIX}_m{mid}_debt_consumed",
+        f"has_variable = {PREFIX}_m{mid}_debt_visible_to_settlement",
+        f"has_variable = {PREFIX}_m{mid}_consumed_owner",
+        f"has_variable = {PREFIX}_m{mid}_consumed_subject",
+        f"has_variable = {PREFIX}_m{mid}_consumed_cycle",
+        f"has_variable = {PREFIX}_m{mid}_consumed_case",
+        f"has_variable = {PREFIX}_m{mid}_consumed_state",
+        f"var:{PREFIX}_m{mid}_business_object_created = 0",
+        f"var:{PREFIX}_m{mid}_choice = 3",
+        f"var:{PREFIX}_m{mid}_debt_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_m{mid}_debt_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m{mid}_debt_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m{mid}_debt_case = $TICKET_CASE$",
+        f"var:{PREFIX}_m{mid}_debt_state = {spec.state}",
+        f"var:{PREFIX}_m{mid}_debt_open = 1",
+        f"var:{PREFIX}_m{mid}_debt_consumed = 0",
+        f"var:{PREFIX}_m{mid}_debt_visible_to_settlement = 1",
+        f"var:{PREFIX}_m{mid}_consumed_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_m{mid}_consumed_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m{mid}_consumed_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m{mid}_consumed_case = $TICKET_CASE$",
+        f"var:{PREFIX}_m{mid}_consumed_state = {spec.state}",
+        receipt_guard(spec, 3),
+    ]
+    return checks
+
+
+def _ad_referral_copy_checks() -> list[str]:
+    return [
+        f"has_variable = {PREFIX}_m271_referral_source_id",
+        f"has_variable = {PREFIX}_m271_referral_source_hash",
+        f"has_variable = {PREFIX}_m271_referral_id",
+        f"has_variable = {PREFIX}_m271_referrer",
+        f"has_variable = {PREFIX}_m271_relationship_ref",
+        f"has_variable = {PREFIX}_m271_evidence_receipt",
+        f"var:{PREFIX}_m271_referral_source_id = var:zg361_wad_referral_source_id",
+        f"var:{PREFIX}_m271_referral_source_hash = var:zg361_wad_referral_source_hash",
+        f"var:{PREFIX}_m271_referral_id = var:zg361_wad_referral_source_referral_id",
+        f"var:{PREFIX}_m271_referrer = var:zg361_wad_referral_source_referrer",
+        f"var:{PREFIX}_m271_relationship_ref = var:zg361_wad_referral_source_relationship",
+        f"var:{PREFIX}_m271_evidence_receipt = var:zg361_wad_referral_source_evidence_receipt",
+    ]
+
+
+def _ad_panel_copy_checks() -> list[str]:
+    checks = [
+        f"has_variable = {PREFIX}_m267_panel_source_id",
+        f"has_variable = {PREFIX}_m267_panel_source_hash",
+        f"has_variable = {PREFIX}_m267_runner_up_present",
+        f"var:{PREFIX}_m267_panel_source_id = var:zg361_wad_panel_source_id",
+        f"var:{PREFIX}_m267_panel_source_hash = var:zg361_wad_panel_source_hash",
+        f"var:{PREFIX}_m267_runner_up_present = var:zg361_wad_panel_runner_up_present",
+    ]
+    for slot in (1, 2, 3):
+        for field in ("interviewer", "vote", "vote_evidence"):
+            checks += [
+                f"has_variable = {PREFIX}_m267_{field}_{slot}",
+                f"var:{PREFIX}_m267_{field}_{slot} = var:zg361_wad_panel_source_{field}_{slot}",
+            ]
+    checks.append(
+        f"trigger_if = {{ limit = {{ var:zg361_wad_panel_runner_up_present = 1 }} "
+        f"has_variable = {PREFIX}_m267_runner_up has_variable = {PREFIX}_m267_runner_up_evidence "
+        f"var:{PREFIX}_m267_runner_up = var:zg361_wad_panel_source_runner_up "
+        f"var:{PREFIX}_m267_runner_up_evidence = var:zg361_wad_panel_source_runner_up_evidence }} "
+        f"trigger_else = {{ NOT = {{ has_variable = {PREFIX}_m267_runner_up }} "
+        f"NOT = {{ has_variable = {PREFIX}_m267_runner_up_evidence }} }}"
+    )
+    return checks
+
+
+def _ad_offer_copy_checks(mid: int, response: int) -> list[str]:
+    checks = [
+        f"has_variable = {PREFIX}_m{mid}_offer_source_id",
+        f"has_variable = {PREFIX}_m{mid}_offer_source_hash",
+        f"has_variable = {PREFIX}_m{mid}_offer_response_receipt",
+        f"var:{PREFIX}_m{mid}_offer_source_id = var:zg361_wad_offer_source_id",
+        f"var:{PREFIX}_m{mid}_offer_source_hash = var:zg361_wad_offer_source_hash",
+        f"var:{PREFIX}_m{mid}_offer_response_receipt = var:zg361_wad_offer_source_response_receipt",
+    ]
+    if mid == 274:
+        checks += [
+            f"has_variable = {PREFIX}_m274_offer_response",
+            f"var:{PREFIX}_m274_offer_response = {response}",
+        ]
+    else:
+        checks += [
+            f"has_variable = {PREFIX}_m275_refusal_reason_id",
+            f"var:{PREFIX}_m275_refusal_reason_id = var:zg361_wad_offer_source_refusal_reason_id",
+        ]
+    return checks
+
+
+def _render_ad_source_consumer(
+    source: str,
+    *,
+    mid: int,
+    terminal: int,
+    source_checks: list[str],
+    copy_checks: list[str],
+    choices: tuple[int, ...],
+) -> str:
+    p = f"zg361_wad_{source}_source"
+    state = 4 if source == "offer" else 1
+    common_consumed = _ad_source_common_checks(
+        source, state=state, terminal=terminal, pending=0, consumed=1, retired=0
+    )
+    committed = _ad_committed_object_checks(mid, choices)
+    active = [*_ad_case_guard(state).splitlines(), *source_checks, *committed, *copy_checks]
+    replay = [*_ad_case_guard(state).splitlines(), *common_consumed, *committed, *copy_checks]
+    return f"""{PREFIX}_consume_{source}_source_after_m{mid}_effect = {{
+	remove_variable = {PREFIX}_ad_source_status
+	remove_variable = {PREFIX}_ad_source_red_code
+{indent(_ad_source_hash_prelude(source))}
+	if = {{
+		limit = {{
+{indent(chr(10).join(active), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_{source}_source_consumed_id value = var:{p}_id }}
+		set_variable = {{ name = {PREFIX}_{source}_source_consumed_hash value = var:{p}_hash }}
+		set_variable = {{ name = {p}_pending value = 0 }}
+		set_variable = {{ name = {p}_consumed value = 1 }} # source consume commit last
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{
+{indent(chr(10).join(replay), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 2 }}
+	}}
+	else_if = {{
+		limit = {{ has_variable = {p}_pending var:{p}_pending = 1 }}
+		set_variable = {{ name = {PREFIX}_ad_source_red_code value = {mid}41 }}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 4 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_ad_source_status value = 3 }} }}
+}}"""
+
+
+def _render_ad_source_retire(source: str, *, mid: int, terminals: tuple[int, ...]) -> str:
+    p = f"zg361_wad_{source}_source"
+    state = 4 if source == "offer" else 1
+    source_checks = _ad_source_common_checks(source, state=state, terminal=terminals)
+    committed = _ad_committed_debt_checks(mid)
+    replay = _ad_source_common_checks(
+        source, state=state, terminal=terminals, pending=0, consumed=0, retired=1
+    ) + [
+        f"has_variable = {PREFIX}_{source}_source_retired_id",
+        f"has_variable = {PREFIX}_{source}_source_retired_hash",
+        f"var:{PREFIX}_{source}_source_retired_id = var:{p}_id",
+        f"var:{PREFIX}_{source}_source_retired_hash = var:{p}_hash",
+    ]
+    return f"""{PREFIX}_retire_{source}_source_after_m{mid}_debt_effect = {{
+	remove_variable = {PREFIX}_ad_source_status
+	remove_variable = {PREFIX}_ad_source_red_code
+{indent(_ad_source_hash_prelude(source))}
+	if = {{
+		limit = {{
+{indent(_ad_case_guard(by_id()[mid].state), 3)}
+{indent(chr(10).join(source_checks), 3)}
+{indent(chr(10).join(committed), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_{source}_source_retired_id value = var:{p}_id }}
+		set_variable = {{ name = {PREFIX}_{source}_source_retired_hash value = var:{p}_hash }}
+		set_variable = {{ name = {p}_pending value = 0 }}
+		set_variable = {{ name = {p}_retired value = 1 }} # never marks consumed
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{
+{indent(chr(10).join(replay), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 2 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_ad_source_status value = 3 }} }}
+}}"""
+
+
+def _ad_dispatch_player_event(event_id: int) -> str:
+    return f"""save_scope_as = {PREFIX}_ad_subject
+$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_ad_owner }}
+save_scope_value_as = {{ name = {PREFIX}_ad_cycle value = $TICKET_CYCLE$ }}
+save_scope_value_as = {{ name = {PREFIX}_ad_case value = $TICKET_CASE$ }}
+$TICKET_OWNER$ = {{ trigger_event = {{ id = {NAMESPACE}.{event_id} }} }}"""
+
+
+def render_ad_source_integration() -> str:
+    consume_referral = _render_ad_source_consumer(
+        "referral", mid=271, terminal=1,
+        source_checks=_ad_referral_source_checks(),
+        copy_checks=_ad_referral_copy_checks(), choices=(1, 2),
+    )
+    consume_panel = _render_ad_source_consumer(
+        "panel", mid=267, terminal=1,
+        source_checks=_ad_panel_source_checks(),
+        copy_checks=_ad_panel_copy_checks(), choices=(1, 2),
+    )
+    consume_offer_accept = _render_ad_source_consumer(
+        "offer", mid=274, terminal=1,
+        source_checks=_ad_offer_source_checks(response=1),
+        copy_checks=_ad_offer_copy_checks(274, 1), choices=(1,),
+    )
+    consume_offer_refusal = _render_ad_source_consumer(
+        "offer", mid=275, terminal=2,
+        source_checks=_ad_offer_source_checks(response=2),
+        copy_checks=_ad_offer_copy_checks(275, 2), choices=(1, 2),
+    )
+    retire_referral = _render_ad_source_retire("referral", mid=267, terminals=(1, 2, 3))
+    retire_panel = _render_ad_source_retire("panel", mid=267, terminals=(1, 3))
+    retire_offer_274 = _render_ad_source_retire("offer", mid=274, terminals=(1, 2))
+    retire_offer_275 = _render_ad_source_retire("offer", mid=275, terminals=(2,))
+
+    referral_ready = "\n".join(
+        [*_ad_case_guard(1).splitlines(), *_ad_referral_source_checks(disposition=1)]
+    )
+    referral_na = "\n".join(
+        [*_ad_case_guard(1).splitlines(), *_ad_source_common_checks("referral", state=1, terminal=(2, 3))]
+    )
+    panel_ready = "\n".join(
+        [*_ad_case_guard(1).splitlines(), *_ad_panel_source_checks(disposition=1)]
+    )
+    panel_na = "\n".join(
+        [*_ad_case_guard(1).splitlines(), *_ad_source_common_checks("panel", state=1, terminal=3)]
+    )
+    offer_accept = "\n".join(
+        [*_ad_case_guard(4).splitlines(), *_ad_offer_source_checks(response=1)]
+    )
+    offer_refusal = "\n".join(
+        [*_ad_case_guard(4).splitlines(), *_ad_offer_source_checks(response=2)]
+    )
+    return "\n\n".join((
+        consume_referral, consume_panel, consume_offer_accept, consume_offer_refusal,
+        retire_referral, retire_panel, retire_offer_274, retire_offer_275,
+        f"""# An authorised AI manager cannot display the remaining AD windows after
+# a typed referral/panel N/A.  Continue the exact tuple with route C at every
+# later stage; these debt routes never consume a real actor source.
+{PREFIX}_continue_ai_ad_after_fact_na_effect = {{
+	if = {{
+		limit = {{
+{indent(_ad_case_guard(2), 3)}
+			$TICKET_OWNER$ = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }}
+		}}
+		{PREFIX}_m268_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 2 }}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }}
+			{PREFIX}_m270_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 2 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 3 }}
+			{PREFIX}_m272_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 3 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 4 }}
+			{PREFIX}_m274_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 4 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }}
+			{PREFIX}_m275_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 4 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 5 }}
+			{PREFIX}_m269_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 5 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 6 }}
+			{PREFIX}_m276_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }}
+			{PREFIX}_m277_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }}
+		}}
+	}}
+}}""",
+        f"""# A human candidate may refuse an AI manager's offer.  #274-B records the
+# rejection, then this exact-tuple continuation records #275 before closing
+# the no-hire-only tail.  The pending offer is consumed only by successful
+# #275 A/B, never by #274-B itself.
+{PREFIX}_continue_ai_ad_after_offer_refusal_effect = {{
+	if = {{
+		limit = {{
+{indent(_ad_case_guard(4), 3)}
+			$TICKET_OWNER$ = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_m267_runner_up_present var:{PREFIX}_m267_runner_up_present = 1 }}
+			{PREFIX}_m275_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		}}
+		else_if = {{
+			limit = {{ has_variable = {PREFIX}_m267_runner_up_present var:{PREFIX}_m267_runner_up_present = 0 }}
+			{PREFIX}_m275_route_b_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 5 }}
+			{PREFIX}_m269_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 6 }}
+			{PREFIX}_m276_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }}
+			{PREFIX}_m277_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }}
+		}}
+	}}
+}}""",
+        f"""# Product callbacks: WAIT never advances; READY resumes the exact tuple;
+# typed N/A records only route-C debt and retires (never consumes) its source.
+{PREFIX}_resume_m271_from_referral_source_effect = {{
+	remove_variable = {PREFIX}_ad_source_status
+{indent(_ad_source_hash_prelude('referral'))}
+	if = {{
+		limit = {{
+{indent(referral_ready, 3)}
+		}}
+		if = {{
+			limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+			{PREFIX}_m271_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		}}
+		else = {{
+{indent(_ad_dispatch_player_event(271), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{
+{indent(referral_na, 3)}
+		}}
+		{PREFIX}_m271_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 1 }}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }}
+			{PREFIX}_m267_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 1 }}
+		}}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 2 }}
+			if = {{
+				limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+				{PREFIX}_continue_ai_ad_after_fact_na_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			}}
+			else = {{
+{indent(_ad_dispatch_player_event(268), 4)}
+			}}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{ limit = {{ has_variable = zg361_wad_referral_source_pending var:zg361_wad_referral_source_pending = 0 }} set_variable = {{ name = {PREFIX}_ad_source_status value = 5 }} }}
+	else = {{ set_variable = {{ name = {PREFIX}_ad_source_status value = 4 }} }}
+}}""",
+        f"""{PREFIX}_resume_m267_from_panel_source_effect = {{
+	remove_variable = {PREFIX}_ad_source_status
+{indent(_ad_source_hash_prelude('panel'))}
+	if = {{
+		limit = {{
+{indent(panel_ready, 3)}
+		}}
+		if = {{
+			limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+			{PREFIX}_m267_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			if = {{ limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 2 }} {PREFIX}_m268_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }} }}
+			if = {{ limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }} {PREFIX}_m270_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }} }}
+			if = {{ limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 3 }} {PREFIX}_m272_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }} }}
+		}}
+		else = {{
+{indent(_ad_dispatch_player_event(267), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{
+{indent(panel_na, 3)}
+		}}
+		{PREFIX}_m267_route_c_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 1 }}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_ad_state = 2 }}
+			if = {{
+				limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+				{PREFIX}_continue_ai_ad_after_fact_na_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			}}
+			else = {{
+{indent(_ad_dispatch_player_event(268), 4)}
+			}}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{ limit = {{ has_variable = zg361_wad_panel_source_pending var:zg361_wad_panel_source_pending = 0 }} set_variable = {{ name = {PREFIX}_ad_source_status value = 5 }} }}
+	else = {{ set_variable = {{ name = {PREFIX}_ad_source_status value = 4 }} }}
+}}""",
+        f"""{PREFIX}_resume_m274_from_offer_source_effect = {{
+	remove_variable = {PREFIX}_ad_source_status
+{indent(_ad_source_hash_prelude('offer'))}
+	if = {{
+		limit = {{
+{indent(offer_accept, 3)}
+		}}
+		if = {{
+			limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+			{APPOINTMENT_WRAPPER} = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			{PREFIX}_queue_m274_appointment_ack_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		}}
+		else = {{
+{indent(_ad_dispatch_player_event(274), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{
+{indent(offer_refusal, 3)}
+		}}
+		{PREFIX}_m274_route_b_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		if = {{
+			limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }}
+			if = {{
+				limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+				{PREFIX}_continue_ai_ad_after_offer_refusal_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			}}
+			else = {{
+{indent(_ad_dispatch_player_event(275), 4)}
+			}}
+		}}
+		set_variable = {{ name = {PREFIX}_ad_source_status value = 1 }}
+	}}
+	else_if = {{ limit = {{ has_variable = zg361_wad_offer_source_pending var:zg361_wad_offer_source_pending = 0 }} set_variable = {{ name = {PREFIX}_ad_source_status value = 5 }} }}
+	else = {{ set_variable = {{ name = {PREFIX}_ad_source_status value = 4 }} }}
+}}""",
+    ))
+
+
 def render_route_effect(spec: Mechanism, choice: int) -> str:
     mid, d = spec.mid, spec.domain
     letter = "abc"[choice - 1]
@@ -2188,9 +2861,68 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 \t\t\t\tlimit = {{ has_variable = {PREFIX}_m274_hired var:{PREFIX}_m274_hired = 1 }}
 \t\t\t\ttrigger_event = {{ id = {NAMESPACE}.{M269_DEBT_CANCEL_EVENT} days = 1 }}
 \t\t\t}}"""
+    elif mid == 273 and choice in (1, 2):
+        post_consume = f"""
+\t\t\tzg361_wad_begin_referral_source_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}"""
+    elif mid == 271 and choice in (1, 2):
+        post_consume = f"""
+\t\t\t{PREFIX}_consume_referral_source_after_m271_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ has_variable = {PREFIX}_ad_source_status var:{PREFIX}_ad_source_status = 1 }}
+\t\t\t\tzg361_wad_begin_panel_source_effect = {{
+\t\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t\t}}
+\t\t\t}}"""
+    elif mid == 267 and choice in (1, 2):
+        post_consume = f"""
+\t\t\t{PREFIX}_consume_panel_source_after_m267_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}"""
+    elif mid == 274 and choice == 1:
+        post_consume = f"""
+\t\t\t{PREFIX}_consume_offer_source_after_m274_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}"""
+    elif mid == 275 and choice in (1, 2):
+        post_consume = f"""
+\t\t\tif = {{
+\t\t\t\tlimit = {{ has_variable = {PREFIX}_m275_refusal var:{PREFIX}_m275_refusal = 1 }}
+\t\t\t\t{PREFIX}_consume_offer_source_after_m275_effect = {{
+\t\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t\t}}
+\t\t\t}}"""
+    elif mid == 267 and choice == 3:
+        post_consume = f"""
+\t\t\t{PREFIX}_retire_referral_source_after_m267_debt_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}
+\t\t\t{PREFIX}_retire_panel_source_after_m267_debt_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}"""
+    elif mid in (274, 275) and choice == 3:
+        post_consume = f"""
+\t\t\t{PREFIX}_retire_offer_source_after_m{mid}_debt_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+\t\t\t}}"""
     value_prelude = ""
+    if choice in (1, 2) and mid in (271, 267, 274, 275):
+        source = {271: "referral", 267: "panel", 274: "offer", 275: "offer"}[mid]
+        value_prelude = _ad_source_hash_prelude(source) + "\n"
     if mid == 262 and choice in (1, 2):
-        value_prelude = f"""{PREFIX}_ac_freeze_m262_host_manager_effect = {{
+        value_prelude += f"""{PREFIX}_ac_freeze_m262_host_manager_effect = {{
 	TICKET_OWNER = $TICKET_OWNER$
 	TICKET_SUBJECT = $TICKET_SUBJECT$
 	TICKET_CYCLE = $TICKET_CYCLE$
@@ -2277,10 +3009,20 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
         advance = f"""
 \t\t\tif = {{
 \t\t\t\tlimit = {{
-\t\t\t\t\thas_variable = {PREFIX}_m275_refusal
-\t\t\t\t\tvar:{PREFIX}_m275_refusal = 1
-\t\t\t\t\thas_variable = {PREFIX}_m274_hired
-\t\t\t\t\tvar:{PREFIX}_m274_hired = 0
+\t\t\t\t\tOR = {{
+\t\t\t\t\t\tAND = {{
+\t\t\t\t\t\t\thas_variable = {PREFIX}_m275_refusal
+\t\t\t\t\t\t\tvar:{PREFIX}_m275_refusal = 1
+\t\t\t\t\t\t\thas_variable = {PREFIX}_m274_hired
+\t\t\t\t\t\t\tvar:{PREFIX}_m274_hired = 0
+\t\t\t\t\t\t}}
+\t\t\t\t\t\tAND = {{
+\t\t\t\t\t\t\thas_variable = {PREFIX}_m274_choice
+\t\t\t\t\t\t\tvar:{PREFIX}_m274_choice = 3
+\t\t\t\t\t\t\thas_variable = {PREFIX}_m275_choice
+\t\t\t\t\t\t\tvar:{PREFIX}_m275_choice = 3
+\t\t\t\t\t\t}}
+\t\t\t\t\t}}
 {indent(barrier, 5)}
 \t\t\t\t}}
 \t\t\t\tset_variable = {{ name = {deadline}_pending value = 0 }}
@@ -2293,6 +3035,20 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 \t\t\t\tif = {{
 \t\t\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
 {indent(after, 5)}
+\t\t\t\t}}
+\t\t\t}}
+"""
+    if mid == 272 and choice in (1, 2):
+        advance += f"""
+\t\t\tif = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\thas_variable = {PREFIX}_runtime_applied
+\t\t\t\t\tvar:{PREFIX}_runtime_applied = 1
+\t\t\t\t\tvar:zg361_case_ad_state = 4
+\t\t\t\t}}
+\t\t\t\tzg361_wad_begin_offer_response_source_effect = {{
+\t\t\t\t\tTICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
 \t\t\t\t}}
 \t\t\t}}
 """
@@ -2487,15 +3243,12 @@ def render_ai(domain: str) -> str:
 }}"""
 
     if domain == "ad":
-        appointment_index = next(index for index, spec in enumerate(specs) if spec.mid == 274)
-        before_and_appointment = "\n".join(call(spec) for spec in specs[: appointment_index + 1])
-        calls = f"""{before_and_appointment}
-{PREFIX}_queue_m274_appointment_ack_effect = {{
-\tTICKET_OWNER = scope:{PREFIX}_{domain}_owner
-\tTICKET_SUBJECT = scope:{PREFIX}_{domain}_subject
-\tTICKET_CYCLE = scope:{PREFIX}_{domain}_cycle
-\tTICKET_CASE = scope:{PREFIX}_{domain}_case
-}}"""
+        # #273 commits the candidate and opens the real referral producer.
+        # Referral/panel/offer callbacks own every later edge, including the
+        # native appointment wrapper and its ACK queue.  Replaying the former
+        # straight-line #271..#274 tail here would race a pending real actor.
+        candidate_index = next(index for index, spec in enumerate(specs) if spec.mid == 273)
+        calls = "\n".join(call(spec) for spec in specs[: candidate_index + 1])
     else:
         calls = "\n".join(call(spec) for spec in specs)
     return f"""{PREFIX}_{domain}_run_authorized_ai_effect = {{
@@ -6524,6 +7277,7 @@ def render_effects() -> bytes:
         render_completed_cycle_ledger(),
         render_ac_real_fact_producers(),
         render_external_fact_adapters(),
+        render_ad_source_integration(),
         render_m274_attribution_pipeline(),
         render_future_consumers_integrated(),
         render_m269_attribution_handoffs(),
@@ -6704,7 +7458,9 @@ def render_option(spec: Mechanism, choice: int) -> str:
 		else = {{ trigger_event = {{ id = {NAMESPACE}.269 }} }}
 	}}"""
     elif next_mid is not None and not (
-        (mid == 262 and choice in (1, 2)) or mid == 263
+        (mid == 262 and choice in (1, 2))
+        or mid == 263
+        or (mid in (273, 271, 272) and choice in (1, 2))
     ):
         next_state = by_id()[next_mid].state
         next_event = f"""

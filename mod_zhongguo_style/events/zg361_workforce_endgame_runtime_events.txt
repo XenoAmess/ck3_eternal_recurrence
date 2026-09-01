@@ -1959,10 +1959,6 @@ zg361we.273 = {
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
 		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 1 } }
-			trigger_event = { id = zg361we.271 }
-		}
 	}
 	option = {
 		name = zg361we.273.b
@@ -1973,10 +1969,6 @@ zg361we.273 = {
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 1 } }
-			trigger_event = { id = zg361we.271 }
 		}
 	}
 	option = {
@@ -2037,10 +2029,6 @@ zg361we.271 = {
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
 		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 1 } }
-			trigger_event = { id = zg361we.267 }
-		}
 	}
 	option = {
 		name = zg361we.271.b
@@ -2051,10 +2039,6 @@ zg361we.271 = {
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 1 } }
-			trigger_event = { id = zg361we.267 }
 		}
 	}
 	option = {
@@ -2349,10 +2333,6 @@ zg361we.272 = {
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
 		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 4 } }
-			trigger_event = { id = zg361we.274 }
-		}
 	}
 	option = {
 		name = zg361we.272.b
@@ -2363,10 +2343,6 @@ zg361we.272 = {
 				TICKET_CYCLE = scope:zg361_we_ad_cycle
 				TICKET_CASE = scope:zg361_we_ad_case
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 4 } }
-			trigger_event = { id = zg361we.274 }
 		}
 	}
 	option = {
@@ -3220,7 +3196,7 @@ zg361we.361 = {
 	}
 }
 
-zg361we.52640 = {
+zg361we.5264 = {
 	type = character_event
 	theme = stewardship
 	title = zg361we.handoff.1.t
@@ -3250,7 +3226,7 @@ zg361we.52640 = {
 	}
 }
 
-zg361we.52641 = {
+zg361we.5265 = {
 	type = character_event
 	theme = stewardship
 	title = zg361we.handoff.2.t
@@ -3280,7 +3256,7 @@ zg361we.52641 = {
 	}
 }
 
-zg361we.52642 = {
+zg361we.5266 = {
 	type = character_event
 	theme = stewardship
 	title = zg361we.handoff.3.t
@@ -3310,13 +3286,13 @@ zg361we.52642 = {
 	}
 }
 
-zg361we.52650 = {
+zg361we.5267 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m264_dispatch_handoff_step_2_effect = yes }
 }
 
-zg361we.52651 = {
+zg361we.5268 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m264_dispatch_handoff_step_3_effect = yes }
@@ -4798,7 +4774,7 @@ zg361we.5361 = {
 	immediate = { zg361_we_m361_future_default_install_effect = yes }
 }
 
-zg361we.52739 = {
+zg361we.5370 = {
 	type = character_event
 	hidden = yes
 	immediate = {
@@ -4821,49 +4797,49 @@ zg361we.52739 = {
 	}
 }
 
-zg361we.52740 = {
+zg361we.5371 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m274_audit_probation_and_arm_attribution_effect = yes }
 }
 
-zg361we.52741 = {
+zg361we.5372 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m274_audit_signature_and_dispatch_disposition_effect = yes }
 }
 
-zg361we.52742 = {
+zg361we.5373 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m274_audit_disposition_and_launch_m269_effect = yes }
 }
 
-zg361we.52743 = {
+zg361we.5374 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m269_begin_attribution_debt_cancel_effect = yes }
 }
 
-zg361we.52744 = {
+zg361we.5375 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m269_ack_attribution_debt_cancel_effect = yes }
 }
 
-zg361we.52745 = {
+zg361we.5376 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m269_audit_attribution_debt_advance_effect = yes }
 }
 
-zg361we.52746 = {
+zg361we.5377 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m269_postsettlement_handoff_effect = yes }
 }
 
-zg361we.52747 = {
+zg361we.5378 = {
 	type = character_event
 	hidden = yes
 	immediate = {
@@ -4872,19 +4848,19 @@ zg361we.52747 = {
 	}
 }
 
-zg361we.52748 = {
+zg361we.5379 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m276_audit_prepared_rehire_effect = yes }
 }
 
-zg361we.52749 = {
+zg361we.5380 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m276_finalize_rehire_effect = yes }
 }
 
-zg361we.52750 = {
+zg361we.5381 = {
 	type = character_event
 	hidden = yes
 	immediate = { zg361_we_m276_audit_rehire_finalize_effect = yes }

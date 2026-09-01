@@ -91,6 +91,12 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
         for name, text in (("effects", self.effects), ("events", self.events)):
             self.assertEqual(text.count("{"), text.count("}"), name)
 
+    def test_all_visible_fact_events_have_a_valid_theme(self) -> None:
+        for event_id in (1, 11, 12, 13, 20):
+            event = block(self.events, f"zg361wad.{event_id}")
+            self.assertIn("type = character_event", event)
+            self.assertIn("theme = stewardship", event)
+
     def test_public_entries_are_exact_case_guarded(self) -> None:
         expected = {
             "zg361_wad_begin_referral_source_effect": (1, "zg361_we_m273_object_consumed"),
@@ -121,6 +127,9 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
                 self.assertIn(f"zg361_wad_{source}_source_{field}", begin)
             self.assertIn(f"zg361_wad_{source}_source_state value = {state}", begin)
             self.assertIn(f"zg361_wad_{source}_source_consumed value = 0", begin)
+            self.assertIn(f"zg361_wad_{source}_source_retired value = 0", begin)
+            self.assertIn(f"remove_variable = zg361_wad_{source}_source_id", begin)
+            self.assertIn(f"remove_variable = zg361_wad_{source}_source_hash", begin)
             self.assertRegex(begin, rf"zg361_wad_{source}_source_pending value = [01]")
 
     def test_referrer_is_real_distinct_and_relational(self) -> None:
@@ -145,10 +154,14 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_wad_decline_referral_effect", event)
         self.assertIn("if = { limit = { is_ai = no } trigger_event = { id = zg361wad.1 } }", dispatch)
         self.assertIn("else = {", dispatch)
-        self.assertEqual(2, submit.count("change_variable = { name = zg361_wad_receipt_serial add = 1 }"))
+        self.assertEqual(3, submit.count("change_variable = { name = zg361_wad_receipt_serial add = 1 }"))
         self.assertLess(submit.index("change_variable = { name = zg361_wad_receipt_serial add = 1 }"), submit.index("referral_source_referral_id value"))
+        self.assertLess(submit.index("referral_source_id value"), submit.index("referral_source_pending value = 1"))
+        self.assertLess(submit.index("referral_source_hash value"), submit.index("referral_source_pending value = 1"))
         self.assertIn("referral_source_disposition value = 1", submit)
         self.assertIn("referral_source_disposition value = 2", decline)
+        self.assertIn("referral_source_id value", decline)
+        self.assertIn("referral_source_hash value", decline)
         self.assertNotIn("referral_source_referral_id value", decline)
 
     def test_panel_requires_three_distinct_celestial_managers(self) -> None:
@@ -284,7 +297,13 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
         for legacy in EXPECTED_LEGACY:
             self.assertNotIn(legacy, self.effects)
             self.assertNotIn(legacy, self.events)
-        self.assertNotIn("_hash", self.effects)
+        for source in ("referral", "panel", "offer"):
+            self.assertIn(f"zg361_wad_{source}_source_id", self.effects)
+            self.assertIn(f"zg361_wad_{source}_source_hash", self.effects)
+            self.assertIn(
+                f"zg361_we_resume_m{ {'referral': 271, 'panel': 267, 'offer': 274}[source] }_from_{source}_source_effect",
+                self.effects,
+            )
 
     def test_localization_is_complete_and_daily_placeholders_are_english(self) -> None:
         expected_keys = {f"zg361wad.{key}" for key in gen.LOCALIZATION_EN}
@@ -297,17 +316,20 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
             if language not in ("english", "simp_chinese"):
                 self.assertEqual(gen.render_localization("english").split(b"\n", 1)[1], path.read_bytes().split(b"\n", 1)[1])
 
-    def test_spec_freezes_unwired_integration_and_role_boundary(self) -> None:
+    def test_spec_freezes_core_wiring_and_role_boundary(self) -> None:
         for token in (
-            "static-ready / core-unwired",
+            "core-wired static-ready / not live",
             "zg361_wad_begin_referral_source_effect",
             "zg361_wad_begin_panel_source_effect",
             "zg361_wad_begin_offer_response_source_effect",
             "pending=0, consumed=1",
+            "pending=0, retired=1",
+            "#271 B",
+            "#267",
             "伯爵/男爵",
             "公爵及以上",
             "不得把 subject 填进 interviewer",
-            "不修改 `gen_361_workforce_endgame_runtime.py`",
+            "同一 subject 的后续新案",
         ):
             self.assertIn(token, self.spec)
 

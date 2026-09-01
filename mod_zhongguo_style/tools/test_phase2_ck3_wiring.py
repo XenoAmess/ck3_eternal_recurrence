@@ -168,7 +168,7 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         delivered = self.effects.split("zg361_settle_delivered_325_effect = {", 1)[1].split(
             "zg361_appeal_regrade_to_35_effect = {", 1
         )[0]
-        dispatch = "trigger_event = { id = zg361we.52747 days = 1 }"
+        dispatch = "trigger_event = { id = zg361we.5378 days = 1 }"
         commit = "set_variable = { name = zg361_we_m269_result_relay_queued value = 1 }"
         for settlement in (freeze, delivered):
             posted = settlement.index(
@@ -192,6 +192,7 @@ class Phase2Ck3WiringTests(unittest.TestCase):
             self.assertIn("var:zg361_we_m269_write_subject = this", settlement)
         self.assertEqual(2, self.effects.count(dispatch))
         self.assertEqual(2, self.effects.count(commit))
+        self.assertNotIn("zg361we.52747", self.effects)
 
     def test_appeal_uses_frozen_case_and_refunds_once(self) -> None:
         appeal = self.effects.split("zg361_appeal_regrade_to_35_effect = {", 1)[1].split(

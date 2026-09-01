@@ -1,10 +1,11 @@
 ﻿# GENERATED FILE — edit tools/gen_361_workforce_ad_fact_runtime.py
-# readiness: ck3-script-static-ready-unwired-to-workforce-core
+# readiness: ck3-script-core-wired-static-ready-not-live
 
 namespace = zg361wad
 
 zg361wad.1 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.referral.t
 	desc = zg361wad.referral.desc
 	trigger = {
@@ -37,6 +38,7 @@ zg361wad.1 = {
 
 zg361wad.11 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.vote.t
 	desc = zg361wad.vote.desc
 	trigger = {
@@ -85,6 +87,7 @@ option = {
 
 zg361wad.12 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.vote.t
 	desc = zg361wad.vote.desc
 	trigger = {
@@ -133,6 +136,7 @@ option = {
 
 zg361wad.13 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.vote.t
 	desc = zg361wad.vote.desc
 	trigger = {
@@ -181,6 +185,7 @@ option = {
 
 zg361wad.20 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.offer.t
 	desc = zg361wad.offer.desc
 	trigger = {

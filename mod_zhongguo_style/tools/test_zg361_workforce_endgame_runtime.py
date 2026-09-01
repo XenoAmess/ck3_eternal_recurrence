@@ -189,6 +189,64 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for text in (self.effects, self.events):
             self.assertEqual(text.count("{"), text.count("}"))
 
+    def test_07a_event_suffixes_are_unique_stable_and_below_ck3_ceiling(self) -> None:
+        definitions = [
+            int(value)
+            for value in re.findall(r"(?m)^zg361we\.(\d+) = \{", self.events)
+        ]
+        self.assertEqual(149, len(definitions))
+        self.assertEqual(len(definitions), len(set(definitions)))
+        self.assertTrue(all(0 <= suffix < 10000 for suffix in definitions))
+        old_invalid = {
+            52640, 52641, 52642, 52650, 52651,
+            *range(52739, 52751),
+        }
+        self.assertFalse(old_invalid & set(definitions))
+        self.assertFalse(
+            old_invalid
+            & {
+                int(value)
+                for value in re.findall(r"zg361we\.(\d+)", self.effects + self.events)
+            }
+        )
+        self.assertTrue(set(gen.HANDOFF_EVENT.values()) <= set(definitions))
+        self.assertTrue(set(gen.HANDOFF_RELAY_EVENT.values()) <= set(definitions))
+        self.assertTrue(
+            {
+                gen.M274_NATIVE_ACK_EVENT,
+                gen.M274_PROBATION_AUDIT_EVENT,
+                gen.M274_SIGNATURE_AUDIT_EVENT,
+                gen.M274_DISPOSITION_AUDIT_EVENT,
+                gen.M269_DEBT_CANCEL_EVENT,
+                gen.M269_DEBT_CANCEL_ACK_EVENT,
+                gen.M269_DEBT_ADVANCE_AUDIT_EVENT,
+                gen.M269_POSTSETTLEMENT_EVENT,
+                gen.M269_RESULT_PUBLISH_EVENT,
+                gen.M276_PREPARE_AUDIT_EVENT,
+                gen.M276_FINALIZE_EVENT,
+                gen.M276_FINALIZE_AUDIT_EVENT,
+            }
+            <= set(definitions)
+        )
+
+    def test_07b_all_active_product_zg361we_references_are_bounded_and_defined(self) -> None:
+        active_paths = [
+            *sorted((MOD_ROOT / "common").rglob("*.txt")),
+            *sorted((MOD_ROOT / "events").rglob("*.txt")),
+            *sorted((MOD_ROOT / "gui").rglob("*.gui")),
+        ]
+        active_text = "\n".join(read(path) for path in active_paths)
+        definitions = {
+            int(value)
+            for value in re.findall(r"(?m)^zg361we\.(\d+) = \{", active_text)
+        }
+        references = {
+            int(value) for value in re.findall(r"zg361we\.(\d+)", active_text)
+        }
+        self.assertEqual(149, len(definitions))
+        self.assertTrue(all(0 <= suffix < 10000 for suffix in references))
+        self.assertEqual(set(), references - definitions)
+
     def test_08_every_id_has_consumer_three_routes_and_player_event(self) -> None:
         for mid in sorted(EXPECTED_IDS):
             with self.subTest(mid=mid):
@@ -491,9 +549,10 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn("is_ai = yes zg361_is_celestial_liege_trigger = yes", ai)
             self.assertNotIn("trigger_event", ai)
 
-    def test_23a_native_appointment_wrapper_owns_both_route_a_callers(self) -> None:
+    def test_23a_native_appointment_wrapper_is_owned_by_player_and_source_resume_callers(self) -> None:
         appointment = block(self.events, "zg361we.274")
         authorized_ai = block(self.effects, "zg361_we_ad_run_authorized_ai_effect")
+        source_resume = block(self.effects, "zg361_we_resume_m274_from_offer_source_effect")
         wrapper_call = f"{gen.APPOINTMENT_WRAPPER} = {{"
         direct_call = "zg361_we_m274_route_a_effect = {"
 
@@ -503,14 +562,22 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertNotIn("zg361_workforce_appointment_fact_status = 6", appointment)
         self.assertNotIn("zg361_we_m274_postconsume_fact_handoff_effect", appointment)
 
-        self.assertEqual(1, authorized_ai.count(wrapper_call))
-        self.assertNotIn(direct_call, authorized_ai)
-        wrapper_index = authorized_ai.index(wrapper_call)
-        queue_index = authorized_ai.index("zg361_we_queue_m274_appointment_ack_effect = {")
-        self.assertLess(authorized_ai.index("zg361_we_m273_route_a_effect = {"), wrapper_index)
+        self.assertIn("zg361_we_m273_route_a_effect = {", authorized_ai)
+        for forbidden in (
+            "zg361_we_m271_route_a_effect = {",
+            "zg361_we_m267_route_a_effect = {",
+            "zg361_we_m272_route_a_effect = {",
+            wrapper_call,
+            "zg361_we_queue_m274_appointment_ack_effect = {",
+        ):
+            self.assertNotIn(forbidden, authorized_ai)
+
+        self.assertEqual(1, source_resume.count(wrapper_call))
+        self.assertNotIn(direct_call, source_resume)
+        wrapper_index = source_resume.index(wrapper_call)
+        queue_index = source_resume.index("zg361_we_queue_m274_appointment_ack_effect = {")
         self.assertLess(wrapper_index, queue_index)
-        self.assertNotIn("zg361_workforce_appointment_fact_status = 6", authorized_ai)
-        self.assertNotIn("zg361_we_m275_route_a_effect = {", authorized_ai[wrapper_index:])
+        self.assertNotIn("zg361_workforce_appointment_fact_status = 6", source_resume)
 
         handoff = block(
             self.effects, "zg361_we_m274_postconsume_fact_handoff_effect"
@@ -569,6 +636,155 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_we_m269_route_a_effect = {", disposition)
         self.assertNotIn("zg361_we_m276_route_a_effect", disposition)
         self.assertNotIn("zg361_we_m277_route_a_effect", disposition)
+
+    def test_23c_ad_actor_sources_are_consumed_or_retired_only_after_operation_success(self) -> None:
+        route_273 = block(self.effects, "zg361_we_m273_route_a_effect")
+        self.assertLess(
+            route_273.index("zg361_case_kernel_record_operation_effect"),
+            route_273.index("zg361_wad_begin_referral_source_effect = {"),
+        )
+
+        for letter in ("a", "b"):
+            referral = block(self.effects, f"zg361_we_m271_route_{letter}_effect")
+            operation = referral.index("zg361_case_kernel_record_operation_effect")
+            consume = referral.index("zg361_we_consume_referral_source_after_m271_effect = {")
+            begin_panel = referral.index("zg361_wad_begin_panel_source_effect = {")
+            self.assertLess(operation, consume)
+            self.assertLess(consume, begin_panel)
+
+            panel = block(self.effects, f"zg361_we_m267_route_{letter}_effect")
+            self.assertLess(
+                panel.index("zg361_case_kernel_record_operation_effect"),
+                panel.index("zg361_we_consume_panel_source_after_m267_effect = {"),
+            )
+
+            offer_begin = block(self.effects, f"zg361_we_m272_route_{letter}_effect")
+            self.assertLess(
+                offer_begin.index("zg361_case_ad_advance_03_effect = {"),
+                offer_begin.index("zg361_wad_begin_offer_response_source_effect = {"),
+            )
+
+        offer_accept = block(self.effects, "zg361_we_m274_route_a_effect")
+        self.assertLess(
+            offer_accept.index("zg361_case_kernel_record_operation_effect"),
+            offer_accept.index("zg361_we_consume_offer_source_after_m274_effect = {"),
+        )
+        self.assertNotIn(
+            "zg361_we_consume_offer_source_after_m274_effect",
+            block(self.effects, "zg361_we_m274_route_b_effect"),
+        )
+        for letter in ("a", "b"):
+            refusal = block(self.effects, f"zg361_we_m275_route_{letter}_effect")
+            self.assertLess(
+                refusal.index("zg361_case_kernel_record_operation_effect"),
+                refusal.index("zg361_we_consume_offer_source_after_m275_effect = {"),
+            )
+
+        for route_name, retire_names in (
+            (
+                "zg361_we_m267_route_c_effect",
+                (
+                    "zg361_we_retire_referral_source_after_m267_debt_effect",
+                    "zg361_we_retire_panel_source_after_m267_debt_effect",
+                ),
+            ),
+            (
+                "zg361_we_m274_route_c_effect",
+                ("zg361_we_retire_offer_source_after_m274_debt_effect",),
+            ),
+            (
+                "zg361_we_m275_route_c_effect",
+                ("zg361_we_retire_offer_source_after_m275_debt_effect",),
+            ),
+        ):
+            route_c = block(self.effects, route_name)
+            self.assertNotIn("zg361_we_consume_", route_c)
+            for retire_name in retire_names:
+                self.assertIn(f"{retire_name} = {{", route_c)
+
+        for source, mid in (("referral", 271), ("panel", 267), ("offer", 274)):
+            consumer = block(
+                self.effects, f"zg361_we_consume_{source}_source_after_m{mid}_effect"
+            )
+            self.assertLess(
+                consumer.index(f"name = zg361_wad_{source}_source_pending value = 0"),
+                consumer.index(f"name = zg361_wad_{source}_source_consumed value = 1"),
+            )
+
+        for source, mid in (("referral", 267), ("panel", 267), ("offer", 274), ("offer", 275)):
+            retire = block(
+                self.effects, f"zg361_we_retire_{source}_source_after_m{mid}_debt_effect"
+            )
+            self.assertIn(f"var:zg361_wad_{source}_source_owner = $TICKET_OWNER$", retire)
+            self.assertIn(f"var:zg361_wad_{source}_source_subject = $TICKET_SUBJECT$", retire)
+            self.assertIn(f"var:zg361_wad_{source}_source_cycle = $TICKET_CYCLE$", retire)
+            self.assertIn(f"var:zg361_wad_{source}_source_case = $TICKET_CASE$", retire)
+            self.assertIn(
+                f"var:zg361_we_{source}_source_retired_id = var:zg361_wad_{source}_source_id",
+                retire,
+            )
+            self.assertLess(
+                retire.index(f"name = zg361_wad_{source}_source_pending value = 0"),
+                retire.index(f"name = zg361_wad_{source}_source_retired value = 1"),
+            )
+            self.assertNotIn(f"name = zg361_wad_{source}_source_consumed value = 1", retire)
+
+    def test_23d_ad_source_callbacks_own_ai_continuations_without_visible_ai_events(self) -> None:
+        authorized_ai = block(self.effects, "zg361_we_ad_run_authorized_ai_effect")
+        self.assertIn("zg361_we_m266_route_a_effect = {", authorized_ai)
+        self.assertIn("zg361_we_m273_route_a_effect = {", authorized_ai)
+        for mid in (271, 267, 268, 270, 272, 274, 275, 269, 276, 277):
+            self.assertNotIn(f"zg361_we_m{mid}_route_", authorized_ai)
+
+        na = block(self.effects, "zg361_we_continue_ai_ad_after_fact_na_effect")
+        ordered_calls = (
+            "zg361_we_m268_route_c_effect = {",
+            "zg361_we_m270_route_c_effect = {",
+            "zg361_we_m272_route_c_effect = {",
+            "zg361_we_m274_route_c_effect = {",
+            "zg361_we_m275_route_c_effect = {",
+            "zg361_we_m269_route_c_effect = {",
+            "zg361_we_m276_route_c_effect = {",
+            "zg361_we_m277_route_c_effect = {",
+        )
+        positions = [na.index(call) for call in ordered_calls]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("EXPECTED_STATE = 2", na)
+        for state in (3, 4, 5, 6):
+            self.assertIn(f"var:zg361_case_ad_state = {state}", na)
+        self.assertNotIn("trigger_event", na)
+
+        for callback_name in (
+            "zg361_we_resume_m271_from_referral_source_effect",
+            "zg361_we_resume_m267_from_panel_source_effect",
+        ):
+            callback = block(self.effects, callback_name)
+            self.assertIn("zg361_we_continue_ai_ad_after_fact_na_effect = {", callback)
+            self.assertIn("trigger_event = { id = zg361we.268 }", callback)
+
+        refusal_resume = block(self.effects, "zg361_we_resume_m274_from_offer_source_effect")
+        rejection = refusal_resume.index("zg361_we_m274_route_b_effect = {")
+        continuation = refusal_resume.index(
+            "zg361_we_continue_ai_ad_after_offer_refusal_effect = {"
+        )
+        self.assertLess(rejection, continuation)
+        self.assertNotIn(
+            "zg361_we_consume_offer_source_after_m274_effect",
+            refusal_resume[rejection:],
+        )
+
+        refusal_ai = block(
+            self.effects, "zg361_we_continue_ai_ad_after_offer_refusal_effect"
+        )
+        for call in (
+            "zg361_we_m275_route_a_effect = {",
+            "zg361_we_m275_route_b_effect = {",
+            "zg361_we_m269_route_a_effect = {",
+            "zg361_we_m276_route_c_effect = {",
+            "zg361_we_m277_route_c_effect = {",
+        ):
+            self.assertIn(call, refusal_ai)
+        self.assertNotIn("trigger_event", refusal_ai)
 
     def test_24_replay_cannot_reset_same_cycle_or_active_cases(self) -> None:
         entry = block(self.effects, "zg361_we_open_portfolio_effect")
@@ -675,17 +891,31 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     def test_35_referral_reward_is_conditional_and_consumed_by_outcome(self) -> None:
         referral = block(self.effects, "zg361_we_m271_route_a_effect")
         undisclosed = block(self.effects, "zg361_we_m271_route_b_effect")
+        sealed_undisclosed = block(self.effects, "zg361_we_m267_route_b_effect")
         future = block(self.effects, "zg361_we_m269_future_consume_effect")
         self.assertIn("referral_gold_reserved add = 5", referral)
         self.assertIn("m271_referrer_recused_before_vote value = 1", referral)
         self.assertIn("m271_referrer_vote_policy value = 0", referral)
         self.assertIn("m271_referrer_vote_policy value = 1", undisclosed)
-        self.assertIn("m271_referral_id value = var:zg361_we_ad_external_referral_id", referral)
+        self.assertIn("m271_referral_id value = var:zg361_wad_referral_source_referral_id", referral)
         self.assertLess(gen.DOMAIN_ORDER["ad"].index(271), gen.DOMAIN_ORDER["ad"].index(267))
         self.assertIn("m271_reward_due_after_probation value = 1", referral)
         self.assertIn("var:zg361_case_ad_owner = { remove_short_term_gold = 5 }", referral)
-        self.assertIn("m271_reward_paid_before_probation value = 1", undisclosed)
-        self.assertIn("var:zg361_we_m271_referrer = { add_gold = 5 }", undisclosed)
+        for route in (referral, undisclosed):
+            self.assertIn("m271_reward_paid_before_probation value = 0", route)
+            self.assertNotIn("var:zg361_we_m271_referrer = { add_gold = 5 }", route)
+        operation = sealed_undisclosed.index("zg361_case_kernel_record_operation_effect")
+        referrer_vote = sealed_undisclosed.index(
+            "var:zg361_wad_panel_source_interviewer_1 = var:zg361_we_m271_referrer"
+        )
+        actor_receipt = sealed_undisclosed.index(
+            "var:zg361_wad_panel_vote_receipt_actor_1 = var:zg361_wad_panel_source_interviewer_1"
+        )
+        payment = sealed_undisclosed.index("var:zg361_we_m271_referrer = { add_gold = 5 }")
+        self.assertLess(referrer_vote, operation)
+        self.assertLess(actor_receipt, operation)
+        self.assertLess(operation, payment)
+        self.assertIn("m271_reward_paid_before_probation value = 1", sealed_undisclosed)
         self.assertIn("referral_gold_reserved add = -5", future)
         self.assertIn("var:zg361_we_m271_referrer = { add_gold = 5 }", future)
         self.assertIn("var:zg361_we_m269_write_owner = { add_gold = 5 }", future)
@@ -1136,11 +1366,11 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             route = block(self.effects, f"zg361_we_m267_route_{letter}_effect")
             receipt = route.index("zg361_case_kernel_record_operation_effect")
             for slot in (1, 2, 3):
-                self.assertLess(route.index(f"has_variable = zg361_we_ad_external_interviewer_{slot}"), receipt)
-                self.assertLess(route.index(f"has_variable = zg361_we_ad_external_vote_evidence_{slot}"), receipt)
-                self.assertIn(f"m267_interviewer_{slot} value = var:zg361_we_ad_external_interviewer_{slot}", route)
-                self.assertIn(f"m267_vote_{slot} value = var:zg361_we_ad_external_vote_{slot}", route)
-                self.assertIn(f"m267_vote_evidence_{slot} value = var:zg361_we_ad_external_vote_evidence_{slot}", route)
+                self.assertLess(route.index(f"has_variable = zg361_wad_panel_source_interviewer_{slot}"), receipt)
+                self.assertLess(route.index(f"has_variable = zg361_wad_panel_source_vote_evidence_{slot}"), receipt)
+                self.assertIn(f"m267_interviewer_{slot} value = var:zg361_wad_panel_source_interviewer_{slot}", route)
+                self.assertIn(f"m267_vote_{slot} value = var:zg361_wad_panel_source_vote_{slot}", route)
+                self.assertIn(f"m267_vote_evidence_{slot} value = var:zg361_wad_panel_source_vote_evidence_{slot}", route)
             self.assertIn(f"m267_referrer_voted value = {referrer_voted}", route)
             self.assertGreater(route.index("m267_raw_votes_frozen value = 1"), route.index("m267_vote_evidence_3 value"))
 
@@ -1180,11 +1410,14 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         indefinite = block(self.effects, "zg361_we_m275_route_b_effect")
         due = block(self.effects, "zg361_we_m275_hold_due_effect")
         for route in (refusal, indefinite):
-            self.assertIn("m275_refusal_reason_id value = var:zg361_we_ad_external_refusal_reason_id", route)
+            self.assertIn("m275_refusal_reason_id value = var:zg361_wad_offer_source_refusal_reason_id", route)
             self.assertNotIn("m269_watch_cancelled_by_refusal value = 1", route)
             self.assertIn("m275_not_applicable_hired value = 1", route)
-        self.assertIn("m275_runner_up value = var:zg361_we_ad_external_runner_up", refusal)
-        self.assertIn("m275_runner_up_evidence value = var:zg361_we_ad_external_runner_up_evidence", refusal)
+        self.assertIn("m275_runner_up value = var:zg361_we_m267_runner_up", refusal)
+        self.assertIn("m275_runner_up_evidence value = var:zg361_we_m267_runner_up_evidence", refusal)
+        panel = block(self.effects, "zg361_we_m267_route_a_effect")
+        self.assertIn("m267_runner_up value = var:zg361_wad_panel_source_runner_up", panel)
+        self.assertIn("m267_runner_up_evidence value = var:zg361_wad_panel_source_runner_up_evidence", panel)
         self.assertIn("var:zg361_we_m275_receipt_choice = 1", due)
         self.assertIn("m275_runner_reopen_pending value = 1", due)
         self.assertIn("m275_hold_released value = 0", due)
@@ -1746,20 +1979,21 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("m264_handoff_step value = 1", begin)
         self.assertIn("m264_documentation_receipt_id value = { value = var:zg361_we_m264_handoff_case multiply = 10000 add = 2641 }", documentation)
         self.assertIn("m264_handoff_documentation_source_object value = var:zg361_we_m261_object_id", documentation)
-        self.assertIn("id = zg361we.52650 days = 30", documentation)
+        self.assertIn(f"id = zg361we.{gen.HANDOFF_RELAY_EVENT[2]} days = 30", documentation)
         self.assertIn("m264_shadowing_receipt_id value = { value = var:zg361_we_m264_handoff_case multiply = 10000 add = 2642 }", shadowing)
         self.assertIn("m264_handoff_shadowing_source_object value = var:zg361_we_m263_object_id", shadowing)
-        self.assertIn("id = zg361we.52651 days = 30", shadowing)
+        self.assertIn(f"id = zg361we.{gen.HANDOFF_RELAY_EVENT[3]} days = 30", shadowing)
         self.assertIn("m264_practical_receipt_id value = { value = var:zg361_we_m264_handoff_case multiply = 10000 add = 2643 }", practical)
         self.assertIn("m264_handoff_practical_source_object value = var:zg361_we_m256_object_id", practical)
         self.assertIn("m264_handoff_response value = 1", practical)
         self.assertIn("m264_handoff_refusal_reason value = $EXPECTED_STEP$", refusal)
         self.assertNotIn("_hash", "\n".join((begin, documentation, shadowing, practical, refusal)))
-        for step, event_id, effect_name in (
-            (1, 52640, "zg361_we_m264_complete_documentation_effect"),
-            (2, 52641, "zg361_we_m264_complete_shadowing_effect"),
-            (3, 52642, "zg361_we_m264_complete_practical_effect"),
+        for step, effect_name in (
+            (1, "zg361_we_m264_complete_documentation_effect"),
+            (2, "zg361_we_m264_complete_shadowing_effect"),
+            (3, "zg361_we_m264_complete_practical_effect"),
         ):
+            event_id = gen.HANDOFF_EVENT[step]
             event = block(self.events, f"zg361we.{event_id}")
             self.assertIn("option = {", event)
             self.assertIn("is_ai = no", event)
@@ -1769,7 +2003,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn(f"EXPECTED_STEP = {step}", event)
 
     def test_82c_m264_dispatch_never_sends_visible_event_to_ai(self) -> None:
-        for step, event_id in ((1, 52640), (2, 52641), (3, 52642)):
+        for step in (1, 2, 3):
+            event_id = gen.HANDOFF_EVENT[step]
             dispatch = block(self.effects, f"zg361_we_m264_dispatch_handoff_step_{step}_effect")
             self.assertIn(f"if = {{ limit = {{ is_ai = no }} trigger_event = {{ id = zg361we.{event_id} }} }}", dispatch)
             self.assertIn("else_if = { limit = { var:zg361_we_m264_handoff_owner = { is_ai = no } }", dispatch)
@@ -1923,8 +2158,31 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(33, len(remaining_ad))
         self.assertTrue(STATIC_CLOSED_APPOINTMENT_ALIASES <= remaining_ad)
         self.assertEqual(30, len(remaining_ad - STATIC_CLOSED_APPOINTMENT_ALIASES))
-        for field in remaining_ad:
+        source_replaced = remaining_ad & set(gen.AD_SOURCE_REPLACED_EXTERNAL_ALIASES)
+        currently_external = (
+            remaining_ad
+            - STATIC_CLOSED_APPOINTMENT_ALIASES
+            - source_replaced
+        )
+        self.assertEqual(16, len(source_replaced))
+        self.assertEqual(14, len(currently_external))
+        for field in source_replaced:
+            self.assertNotIn(field, self.effects, field)
+        for field in currently_external:
             self.assertIn(field, self.effects, field)
+        for replacement in (
+            "zg361_wad_referral_source_referral_id",
+            "zg361_wad_referral_source_referrer",
+            "zg361_wad_referral_source_relationship",
+            "zg361_wad_referral_source_evidence_receipt",
+            *(f"zg361_wad_panel_source_interviewer_{slot}" for slot in (1, 2, 3)),
+            *(f"zg361_wad_panel_source_vote_{slot}" for slot in (1, 2, 3)),
+            *(f"zg361_wad_panel_source_vote_evidence_{slot}" for slot in (1, 2, 3)),
+            "zg361_wad_panel_source_runner_up",
+            "zg361_wad_panel_source_runner_up_evidence",
+            "zg361_wad_offer_source_refusal_reason_id",
+        ):
+            self.assertIn(replacement, self.effects, replacement)
         self.assertIn("AD：30 项", self.ledger_text)
         self.assertIn("47 项旧 external alias", self.ledger_text)
         self.assertIn("3×(14+36)+17=167", self.ledger_text)
@@ -1932,6 +2190,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("20+8+167+28+47+3=273", self.ledger_text)
         self.assertIn("剩余 30：全部是 AD 30", self.ledger_text)
         self.assertIn("尚无变更后的 loader/live 证据", self.ledger_text)
+        self.assertIn("静态预期剩余 AD 14 项", self.spec_text)
 
         cohort_fields = (
             "agenda_count", "agenda_hash", "all_meet_evidence_id",

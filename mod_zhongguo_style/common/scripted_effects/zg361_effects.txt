@@ -709,7 +709,7 @@ zg361_freeze_result_case_effect = {
 					}
 					trigger_else = { always = yes }
 				}
-				trigger_event = { id = zg361we.52747 days = 1 }
+				trigger_event = { id = zg361we.5378 days = 1 }
 				set_variable = { name = zg361_we_m269_result_relay_queued value = 1 }
 			}
 		}
@@ -1051,7 +1051,7 @@ zg361_settle_delivered_325_effect = {
 				}
 				trigger_else = { always = yes }
 			}
-			trigger_event = { id = zg361we.52747 days = 1 }
+			trigger_event = { id = zg361we.5378 days = 1 }
 			set_variable = { name = zg361_we_m269_result_relay_queued value = 1 }
 		}
 		set_variable = { name = zg361_result_appeal_open value = 1 }

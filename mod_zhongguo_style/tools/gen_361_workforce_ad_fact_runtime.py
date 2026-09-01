@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """Generate the product-owned AD referral, panel and offer-response facts.
 
-This package deliberately owns only its new effects, events and localization
-projections.  The Workforce core will consume the frozen source ABI in a later
-serialized integration; this generator does not edit or regenerate that core.
+This generator still owns only its effects, events and localization projections.
+The endgame generator now consumes the frozen source ABI through serialized
+exact-tuple callbacks; neither generator edits the other's generated files.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from pathlib import Path
 MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_workforce_ad_fact_runtime.py\n"
-READINESS = "ck3-script-static-ready-unwired-to-workforce-core"
+READINESS = "ck3-script-core-wired-static-ready-not-live"
 PREFIX = "zg361_wad"
 NAMESPACE = "zg361wad"
 LANGUAGES = (
@@ -55,9 +55,18 @@ LEGACY_AD16_MAPPING = {
 }
 
 SOURCE_ENVELOPES = {
-    "referral": ("pending", "consumed", "owner", "subject", "cycle", "case", "state", "disposition"),
-    "panel": ("pending", "consumed", "owner", "subject", "cycle", "case", "state", "disposition"),
-    "offer": ("pending", "consumed", "owner", "subject", "cycle", "case", "state", "response"),
+    "referral": (
+        "pending", "consumed", "retired", "owner", "subject", "cycle", "case", "state",
+        "id", "hash", "disposition",
+    ),
+    "panel": (
+        "pending", "consumed", "retired", "owner", "subject", "cycle", "case", "state",
+        "id", "hash", "disposition",
+    ),
+    "offer": (
+        "pending", "consumed", "retired", "owner", "subject", "cycle", "case", "state",
+        "id", "hash", "response",
+    ),
 }
 
 
@@ -351,9 +360,12 @@ zg361_wad_begin_referral_source_effect = {
 		remove_variable = zg361_wad_referral_source_referrer
 		remove_variable = zg361_wad_referral_source_relationship
 		remove_variable = zg361_wad_referral_source_evidence_receipt
+		remove_variable = zg361_wad_referral_source_id
+		remove_variable = zg361_wad_referral_source_hash
 		set_variable = { name = zg361_wad_referral_flow_active value = 1 }
 		set_variable = { name = zg361_wad_referral_source_pending value = 0 }
 		set_variable = { name = zg361_wad_referral_source_consumed value = 0 }
+		set_variable = { name = zg361_wad_referral_source_retired value = 0 }
 		set_variable = { name = zg361_wad_referral_source_owner value = $TICKET_OWNER$ }
 		set_variable = { name = zg361_wad_referral_source_subject value = this }
 		set_variable = { name = zg361_wad_referral_source_cycle value = $TICKET_CYCLE$ }
@@ -437,8 +449,19 @@ zg361_wad_select_real_referrer_effect = {
 	}
 	else = {
 		set_variable = { name = zg361_wad_referral_flow_active value = 0 }
-		set_variable = { name = zg361_wad_referral_source_pending value = 1 }
 		set_variable = { name = zg361_wad_referral_source_disposition value = 3 }
+		var:zg361_wad_referral_source_owner = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_referral_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_referral_source_id value = scope:zg361_wad_referral_source_id_value }
+		set_variable = { name = zg361_wad_referral_source_hash value = { value = var:zg361_wad_referral_source_id multiply = 1000000 add = { value = var:zg361_wad_referral_source_cycle multiply = 10000 } add = { value = var:zg361_wad_referral_source_case multiply = 10 } add = var:zg361_wad_referral_source_disposition } }
+		set_variable = { name = zg361_wad_referral_source_pending value = 1 } # source commit last
+		zg361_we_resume_m271_from_referral_source_effect = {
+			TICKET_OWNER = var:zg361_wad_referral_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_referral_source_cycle TICKET_CASE = var:zg361_wad_referral_source_case
+		}
 	}
 }
 
@@ -498,10 +521,20 @@ zg361_wad_submit_referral_effect = {
 		}
 		set_variable = { name = zg361_wad_referral_source_referral_id value = scope:zg361_wad_referral_object_value }
 		set_variable = { name = zg361_wad_referral_source_evidence_receipt value = scope:zg361_wad_referral_receipt_value }
-		set_variable = { name = zg361_wad_referral_source_pending value = 1 }
 		set_variable = { name = zg361_wad_referral_source_consumed value = 0 }
 		set_variable = { name = zg361_wad_referral_source_disposition value = 1 }
 		set_variable = { name = zg361_wad_referral_flow_active value = 0 }
+		$TICKET_OWNER$ = {
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_referral_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_referral_source_id value = scope:zg361_wad_referral_source_id_value }
+		set_variable = { name = zg361_wad_referral_source_hash value = { value = var:zg361_wad_referral_source_id multiply = 1000000 add = { value = var:zg361_wad_referral_source_cycle multiply = 10000 } add = { value = var:zg361_wad_referral_source_case multiply = 10 } add = var:zg361_wad_referral_source_disposition } }
+		set_variable = { name = zg361_wad_referral_source_pending value = 1 } # source commit last
+		zg361_we_resume_m271_from_referral_source_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
 	}
 }
 
@@ -515,10 +548,21 @@ zg361_wad_decline_referral_effect = {
 		}
 		remove_variable = zg361_wad_referral_source_referral_id
 		remove_variable = zg361_wad_referral_source_evidence_receipt
-		set_variable = { name = zg361_wad_referral_source_pending value = 1 }
 		set_variable = { name = zg361_wad_referral_source_consumed value = 0 }
 		set_variable = { name = zg361_wad_referral_source_disposition value = 2 }
 		set_variable = { name = zg361_wad_referral_flow_active value = 0 }
+		var:zg361_wad_referral_source_owner = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_referral_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_referral_source_id value = scope:zg361_wad_referral_source_id_value }
+		set_variable = { name = zg361_wad_referral_source_hash value = { value = var:zg361_wad_referral_source_id multiply = 1000000 add = { value = var:zg361_wad_referral_source_cycle multiply = 10000 } add = { value = var:zg361_wad_referral_source_case multiply = 10 } add = var:zg361_wad_referral_source_disposition } }
+		set_variable = { name = zg361_wad_referral_source_pending value = 1 } # source commit last
+		zg361_we_resume_m271_from_referral_source_effect = {
+			TICKET_OWNER = var:zg361_wad_referral_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_referral_source_cycle TICKET_CASE = var:zg361_wad_referral_source_case
+		}
 	}
 }
 
@@ -573,9 +617,12 @@ zg361_wad_begin_panel_source_effect = {
 		remove_variable = zg361_wad_panel_source_vote_evidence_3
 		remove_variable = zg361_wad_panel_source_runner_up
 		remove_variable = zg361_wad_panel_source_runner_up_evidence
+		remove_variable = zg361_wad_panel_source_id
+		remove_variable = zg361_wad_panel_source_hash
 		set_variable = { name = zg361_wad_panel_active value = 0 }
 		set_variable = { name = zg361_wad_panel_source_pending value = 0 }
 		set_variable = { name = zg361_wad_panel_source_consumed value = 0 }
+		set_variable = { name = zg361_wad_panel_source_retired value = 0 }
 		set_variable = { name = zg361_wad_panel_source_owner value = $TICKET_OWNER$ }
 		set_variable = { name = zg361_wad_panel_source_subject value = this }
 		set_variable = { name = zg361_wad_panel_source_cycle value = $TICKET_CYCLE$ }
@@ -672,10 +719,21 @@ zg361_wad_freeze_real_panel_effect = {
 		remove_variable = zg361_wad_panel_source_runner_up
 		remove_variable = zg361_wad_panel_source_runner_up_evidence
 		set_variable = { name = zg361_wad_panel_runner_up_present value = 0 }
-		set_variable = { name = zg361_wad_panel_source_pending value = 1 }
 		set_variable = { name = zg361_wad_panel_source_consumed value = 0 }
 		set_variable = { name = zg361_wad_panel_source_disposition value = 3 }
 		set_variable = { name = zg361_wad_panel_active value = 0 }
+		var:zg361_wad_panel_source_owner = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_panel_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_panel_source_id value = scope:zg361_wad_panel_source_id_value }
+		set_variable = { name = zg361_wad_panel_source_hash value = { value = var:zg361_wad_panel_source_id multiply = 1000000 add = { value = var:zg361_wad_panel_source_cycle multiply = 10000 } add = { value = var:zg361_wad_panel_source_case multiply = 10 } add = var:zg361_wad_panel_source_disposition } }
+		set_variable = { name = zg361_wad_panel_source_pending value = 1 } # source commit last
+		zg361_we_resume_m267_from_panel_source_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+		}
 	}
 }
 
@@ -732,10 +790,21 @@ zg361_wad_finalize_panel_source_effect = {
 			NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_3 }
 			NOT = { var:zg361_wad_panel_source_vote_evidence_2 = var:zg361_wad_panel_source_vote_evidence_3 }
 		}
-		set_variable = { name = zg361_wad_panel_source_pending value = 1 }
 		set_variable = { name = zg361_wad_panel_source_consumed value = 0 }
 		set_variable = { name = zg361_wad_panel_source_disposition value = 1 }
 		set_variable = { name = zg361_wad_panel_active value = 0 }
+		var:zg361_wad_panel_source_owner = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_panel_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_panel_source_id value = scope:zg361_wad_panel_source_id_value }
+		set_variable = { name = zg361_wad_panel_source_hash value = { value = var:zg361_wad_panel_source_id multiply = 1000000 add = { value = var:zg361_wad_panel_source_cycle multiply = 10000 } add = { value = var:zg361_wad_panel_source_case multiply = 10 } add = var:zg361_wad_panel_source_disposition } }
+		set_variable = { name = zg361_wad_panel_source_pending value = 1 } # source commit last
+		zg361_we_resume_m267_from_panel_source_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+		}
 	}
 }
 
@@ -773,9 +842,12 @@ zg361_wad_begin_offer_response_source_effect = {
 		}
 		remove_variable = zg361_wad_offer_source_refusal_reason_id
 		remove_variable = zg361_wad_offer_source_response_receipt
+		remove_variable = zg361_wad_offer_source_id
+		remove_variable = zg361_wad_offer_source_hash
 		set_variable = { name = zg361_wad_offer_flow_active value = 1 }
 		set_variable = { name = zg361_wad_offer_source_pending value = 0 }
 		set_variable = { name = zg361_wad_offer_source_consumed value = 0 }
+		set_variable = { name = zg361_wad_offer_source_retired value = 0 }
 		set_variable = { name = zg361_wad_offer_source_owner value = $TICKET_OWNER$ }
 		set_variable = { name = zg361_wad_offer_source_subject value = this }
 		set_variable = { name = zg361_wad_offer_source_cycle value = $TICKET_CYCLE$ }
@@ -815,9 +887,19 @@ zg361_wad_accept_offer_effect = {
 		}
 		set_variable = { name = zg361_wad_offer_source_response_receipt value = scope:zg361_wad_offer_receipt_value }
 		set_variable = { name = zg361_wad_offer_source_response value = 1 }
-		set_variable = { name = zg361_wad_offer_source_pending value = 1 }
 		set_variable = { name = zg361_wad_offer_source_consumed value = 0 }
 		set_variable = { name = zg361_wad_offer_flow_active value = 0 }
+		var:zg361_wad_offer_source_owner = {
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_offer_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_offer_source_id value = scope:zg361_wad_offer_source_id_value }
+		set_variable = { name = zg361_wad_offer_source_hash value = { value = var:zg361_wad_offer_source_id multiply = 1000000 add = { value = var:zg361_wad_offer_source_cycle multiply = 10000 } add = { value = var:zg361_wad_offer_source_case multiply = 10 } add = var:zg361_wad_offer_source_response } }
+		set_variable = { name = zg361_wad_offer_source_pending value = 1 } # source commit last
+		zg361_we_resume_m274_from_offer_source_effect = {
+			TICKET_OWNER = var:zg361_wad_offer_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_offer_source_cycle TICKET_CASE = var:zg361_wad_offer_source_case
+		}
 	}
 }
 
@@ -839,9 +921,19 @@ zg361_wad_refuse_offer_effect = {
 		set_variable = { name = zg361_wad_offer_source_response_receipt value = scope:zg361_wad_offer_receipt_value }
 		set_variable = { name = zg361_wad_offer_source_refusal_reason_id value = $REASON$ }
 		set_variable = { name = zg361_wad_offer_source_response value = 2 }
-		set_variable = { name = zg361_wad_offer_source_pending value = 1 }
 		set_variable = { name = zg361_wad_offer_source_consumed value = 0 }
 		set_variable = { name = zg361_wad_offer_flow_active value = 0 }
+		var:zg361_wad_offer_source_owner = {
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_offer_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_offer_source_id value = scope:zg361_wad_offer_source_id_value }
+		set_variable = { name = zg361_wad_offer_source_hash value = { value = var:zg361_wad_offer_source_id multiply = 1000000 add = { value = var:zg361_wad_offer_source_cycle multiply = 10000 } add = { value = var:zg361_wad_offer_source_case multiply = 10 } add = var:zg361_wad_offer_source_response } }
+		set_variable = { name = zg361_wad_offer_source_pending value = 1 } # source commit last
+		zg361_we_resume_m274_from_offer_source_effect = {
+			TICKET_OWNER = var:zg361_wad_offer_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_offer_source_cycle TICKET_CASE = var:zg361_wad_offer_source_case
+		}
 	}
 }
 """
@@ -870,6 +962,7 @@ def render_vote_event(slot: int) -> str:
         )
     return f"""zg361wad.{10 + slot} = {{
 \ttype = character_event
+\ttheme = stewardship
 \ttitle = zg361wad.vote.t
 \tdesc = zg361wad.vote.desc
 \ttrigger = {{
@@ -894,6 +987,7 @@ namespace = zg361wad
 
 zg361wad.1 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.referral.t
 	desc = zg361wad.referral.desc
 	trigger = {
@@ -928,6 +1022,7 @@ __VOTE_EVENTS__
 
 zg361wad.20 = {
 	type = character_event
+	theme = stewardship
 	title = zg361wad.offer.t
 	desc = zg361wad.offer.desc
 	trigger = {
