@@ -50,6 +50,8 @@ java -jar open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar corpus 
 - Synthetic 014：BOM `.txt` 经 Parser → Validator → Strict IR → RuntimeKernel/IrExecutor
   走通 `delivered → appeal_open → closed`；未知 opcode、解析错误和 CK3 未认证语义均
   fail-closed。该结果属于离线 synthetic fixture，不是 CK3 live 或差分认证。
+- Parser 对非法 UTF-8 现在发出 `INVALID_BYTE` 并保持原始字节；CLI `validate` 在语法错误
+  时返回 `INVALID`/exit 1，只有语义层确实不可用且输入无错误时才返回 `UNSUPPORTED`/exit 4。
 
 ## Readiness 与未完成项
 

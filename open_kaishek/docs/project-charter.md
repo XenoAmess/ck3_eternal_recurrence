@@ -10,7 +10,7 @@
 | 强制技术栈 | Java/JVM + Quarkus |
 | 首个产品 profile | CK3 1.19.0.6 |
 | 首个业务 profile | `mod_zhongguo_style` 的 361 绩效机制 |
-| 当前阶段 | 立项文档完成，尚未开始编码 |
+| 当前阶段 | Phase 0 静态基线已落地；M0 正式评审待完成 |
 
 ## 2. 执行摘要
 
