@@ -1,4 +1,4 @@
-# 全自动验收 runner：备份现场 -> 场景规则/纪录 -> OCR 过大厅 -> 场景判定 -> 恢复现场
+﻿# 全自动验收 runner：备份现场 -> 场景规则/纪录 -> OCR 过大厅 -> 场景判定 -> 恢复现场
 #
 # 前置事实（2026-08-17 实证）：游戏加载的是 Steam 工坊缓存（ugc_3784706360，
 # 播放集启用的是工坊项而非 dev 路径，因 dev .mod 带了 remote_file_id 被启动器合并）。
@@ -43,6 +43,7 @@ from PIL import Image, ImageDraw, ImageGrab
 
 import validate_static
 import build_release
+import kaishek_preflight
 from balance_wire_data import FIELD_SCALES
 
 # UI localization smoke test: OCR engine + crop box for the three event options.
@@ -140,6 +141,7 @@ QUICK_EVIDENCE_KINDS = set()
 TERMINAL_SCENARIOS = {"terminal-observer", "terminal-ironman"}
 ACTIVE_CK3_PID = None
 ISOLATED_USERDIR = False
+OPEN_KAISHEK_PREFLIGHT_RESULT = None
 
 BALANCE_FIXTURES = {
     "count": {
@@ -185,6 +187,56 @@ class RunnerError(RuntimeError):
 
 def log(msg):
     print(f"[runner {time.strftime('%H:%M:%S')}] {msg}", flush=True)
+
+
+def run_open_kaishek_preflight(
+    *,
+    root=None,
+    profile="ck3-1.19.0.6",
+    fixture="none",
+    scope="run_acceptance",
+):
+    """Run the optional offline gate before any CK3 or desktop operation.
+
+    The external pseudo-runtime is deliberately advisory: an absent checkout
+    or an unsupported semantic subset is archived as such and does not change
+    the existing live-acceptance policy.  A real result is still retained so
+    callers can distinguish ``GREEN``/``FAILED``/``UNSUPPORTED`` from the
+    later CK3 capability result.
+    """
+    executable_sha256 = None
+    if CK3_EXE.is_file():
+        try:
+            executable_sha256 = build_release.sha256_file(CK3_EXE)
+        except OSError:
+            executable_sha256 = None
+    try:
+        result = kaishek_preflight.run_preflight(
+            root=Path(root).expanduser().resolve() if root is not None else None,
+            profile=profile,
+            fixture=fixture,
+            ck3_build=os.environ.get("XAR_CK3_VERSION") or "1.19.0.6",
+            ck3_exe_sha256=executable_sha256,
+        )
+    except BaseException as error:
+        result = {
+            "schema": kaishek_preflight.ADAPTER_SCHEMA,
+            "status": "failed",
+            "result": "FAILED",
+            "ok": False,
+            "reason": "adapter-exception",
+            "error": f"{type(error).__name__}: {error}",
+            "provenance": {
+                "cli_contract_commit": kaishek_preflight.CLI_CONTRACT_COMMIT,
+                "open_kaishek_release": os.environ.get(
+                    "XAR_OPEN_KAISHEK_RELEASE", "unreleased"
+                ),
+                "open_kaishek_commit": os.environ.get("XAR_OPEN_KAISHEK_COMMIT"),
+            },
+        }
+    result["runner_scope"] = scope
+    result["coverage_decision"] = "parser-validator-fixture-none"
+    return result
 
 
 def configure_runtime_userdir(user_dir):
@@ -324,6 +376,20 @@ def ck3_is_running():
 
 def preflight():
     """Reject unsafe or incomplete desktop-runner configuration before /MIR or backup."""
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    # Keep the offline parser/validator ahead of every desktop query.  The
+    # result is advisory and is bound to the final report by ``write_json_report``.
+    OPEN_KAISHEK_PREFLIGHT_RESULT = run_open_kaishek_preflight(
+        root=MOD_ROOT,
+        profile="ck3-1.19.0.6",
+        fixture="none",
+        scope="run_acceptance.xar_and_terminal",
+    )
+    log(
+        "open_kaishek preflight: "
+        f"{OPEN_KAISHEK_PREFLIGHT_RESULT.get('result', 'FAILED')} "
+        f"({OPEN_KAISHEK_PREFLIGHT_RESULT.get('reason', 'unknown')})"
+    )
     errors = []
     if os.name != "nt":
         errors.append("acceptance requires Windows")
@@ -3869,6 +3935,7 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "import_record": import_record,
         "phase_timings_seconds": timings,
         "runner_performance": runner_performance_report(),
+        "open_kaishek_preflight": OPEN_KAISHEK_PREFLIGHT_RESULT,
         "error_reason": error_reason,
     }
     if evidence:
@@ -3881,9 +3948,11 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
 
 def main(scenario="selftest", import_record=0, artifacts_dir=None,
          balance_fixture=None, balance_smoke_pairs=0):
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
     RECOVERY_TRACE.clear()
     RESUME_TRACE.clear()
     QUICK_EVIDENCE_KINDS.clear()
+    OPEN_KAISHEK_PREFLIGHT_RESULT = None
     run_started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     effective_record = {

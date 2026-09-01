@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run fresh-process CK3 localization smoke cells for all Ox Here languages.
 
 The live matrix copies either the canonical source or an exact Workshop cache
@@ -85,6 +85,8 @@ EXPECTED_LOC_KEYS = frozenset(
         "ox_here_blond_kanuri_prefix",
     }
 )
+
+OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
 
 
 @dataclass(frozen=True)
@@ -1221,6 +1223,7 @@ def run_cell(
         "fixture_markers": stream.lines,
         "project_diagnostics": list(dict.fromkeys(diagnostics)),
         "surface_evidence": evidence,
+        "open_kaishek_preflight": OPEN_KAISHEK_PREFLIGHT_RESULT,
         "isolated_userdir_path": str(userdir),
         "userdir_removed_after_run": userdir_removed,
         "process_watchdog_pid": watchdog_pid,
@@ -1242,6 +1245,21 @@ def preflight(
     workshop_item_id: str | None,
     manifest: Path | None,
 ) -> dict[str, dict[str, str]]:
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    # The checked-in fixture is the smallest deterministic parser slice for
+    # this localization runner.  Run it before desktop inspection or CK3
+    # launch; an absent/unsupported accelerator remains advisory.
+    OPEN_KAISHEK_PREFLIGHT_RESULT = acceptance.run_open_kaishek_preflight(
+        root=FIXTURE_SOURCE,
+        profile="ck3-1.19.0.6",
+        fixture="none",
+        scope="run_ox_here_loc_smoke.fixture",
+    )
+    log(
+        "open_kaishek preflight: "
+        f"{OPEN_KAISHEK_PREFLIGHT_RESULT.get('result', 'FAILED')} "
+        f"({OPEN_KAISHEK_PREFLIGHT_RESULT.get('reason', 'unknown')})"
+    )
     errors = fixture_source_errors()
     errors.extend(product_source_errors(source, workshop_item_id))
     if os.name != "nt":
@@ -1302,6 +1320,8 @@ def main(
     keep_userdirs: bool = False,
     preflight_only: bool = False,
 ) -> int:
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    OPEN_KAISHEK_PREFLIGHT_RESULT = None
     validate_mode_arguments(workshop_cache, manifest_path)
     steam_root = terminal.steam_userdata_root()
     source = (
@@ -1436,6 +1456,7 @@ def main(
         "selected_language": selected_language,
         "expected_languages": [spec.key for spec in chosen],
         "cells": reports,
+        "open_kaishek_preflight": OPEN_KAISHEK_PREFLIGHT_RESULT,
         "fresh_process_per_language": True,
         "protected_storage_unchanged": protected_unchanged,
         "postflight_quiet_seconds": (

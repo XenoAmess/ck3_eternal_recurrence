@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Create one frozen, MCP-only ZhongGuo phase-two seed capture attempt.
 
 The caller supplies an immutable clean source export and every machine-local
@@ -27,6 +27,8 @@ import traceback
 from types import ModuleType
 from typing import Any, Callable
 import zipfile
+
+import kaishek_preflight
 
 
 EXPECTED_ENABLED_MODS = (
@@ -163,6 +165,69 @@ def write_json(path: Path, value: object) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def _run_open_kaishek_seed_preflight(
+    config: CaptureConfig,
+    artifacts: Path,
+    *,
+    runtime: RuntimeBindings | None,
+) -> dict[str, Any]:
+    """Run the offline phase-two gate before native session/CK3 startup.
+
+    Unit seams inject a fake runtime and disable only the external accelerator;
+    production capture keeps the real parser/validator/fixture command.  Both
+    paths retain the same machine-readable result and never promote it to live
+    evidence.
+    """
+
+    executable_sha256 = None
+    if config.game_executable.is_file():
+        try:
+            executable_sha256 = sha256_file(config.game_executable)
+        except OSError:
+            executable_sha256 = None
+    environment = (
+        {"XAR_KAISHEK_PREFLIGHT_DISABLED": "1"}
+        if runtime is not None
+        else None
+    )
+    try:
+        result = kaishek_preflight.run_preflight(
+            root=config.product_source,
+            profile="ck3-1.19.0.6-zg361",
+            fixture="synthetic-361-014",
+            artifact_path=artifacts / "open_kaishek-preflight.json",
+            ck3_build="1.19.0.6",
+            ck3_exe_sha256=executable_sha256,
+            env=environment,
+        )
+    except BaseException as error:
+        result = {
+            "schema": kaishek_preflight.ADAPTER_SCHEMA,
+            "status": "failed",
+            "result": "FAILED",
+            "ok": False,
+            "reason": "adapter-exception",
+            "error": f"{type(error).__name__}: {error}",
+            "provenance": {
+                "cli_contract_commit": kaishek_preflight.CLI_CONTRACT_COMMIT,
+            },
+        }
+    result["runner_scope"] = "run_zg361_phase2_seed_capture"
+    result["coverage_decision"] = (
+        "injected-runtime-test-disabled"
+        if runtime is not None
+        else "zg361-product-parser-validator-plus-synthetic-fixture"
+    )
+    # The adapter writes its own JSON before returning.  Persist once more
+    # after adding runner-owned provenance so the archived artifact and the
+    # report carry the same contract fields.
+    try:
+        write_json(artifacts / "open_kaishek-preflight.json", result)
+    except OSError as error:
+        result["artifact_error"] = f"{type(error).__name__}: {error}"
+    return result
 
 
 def append_jsonl(path: Path, value: object) -> None:
@@ -1217,6 +1282,9 @@ def run_preflight(
 
     try:
         validate_config(config)
+        report["open_kaishek_preflight"] = _run_open_kaishek_seed_preflight(
+            config, artifacts, runtime=runtime
+        )
         report["checks"]["config"] = "GREEN"
         if active_runtime is None:
             active_runtime = load_runtime(config)
@@ -1638,6 +1706,7 @@ def run_capture(
         "runtime_unchanged": None,
         "clean_source_unchanged": None,
         "logs_copy": None,
+        "open_kaishek_preflight": None,
         "failure_reason": None,
         "failure_evidence": None,
     }
@@ -1663,6 +1732,9 @@ def run_capture(
 
     try:
         validate_config(config)
+        report["open_kaishek_preflight"] = _run_open_kaishek_seed_preflight(
+            config, artifacts, runtime=runtime
+        )
         source_manifest_before = tree_manifest(config.clean_source)
         write_json(artifacts / "source-tree-manifest.before.json", source_manifest_before)
         source_zip_manifest = zip_manifest(config.source_zip)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run isolated CK3 acceptance for Vivhite alone and both product load orders."""
 
 from __future__ import annotations
@@ -104,6 +104,8 @@ SCENARIOS = {
         ),
     )
 }
+
+OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
 
 STANDALONE_MARKERS = (
     "ERVA: TEST BEGIN standalone",
@@ -1546,6 +1548,7 @@ def run_cell(
         "project_diagnostics": diagnostics,
         "allowed_project_diagnostics": allowed_diagnostics,
         "scenario_evidence": evidence,
+        "open_kaishek_preflight": OPEN_KAISHEK_PREFLIGHT_RESULT,
         "environment": {
             "platform": platform.platform(),
             "python": sys.version.split()[0],
@@ -1613,6 +1616,22 @@ def installed_game_version() -> str:
 
 
 def preflight() -> None:
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    # The fixture is the smallest deterministic CK3 script slice for this
+    # runner.  Run the shared offline parser/validator before any desktop
+    # query; unsupported/absent Kaishek capability remains explicitly
+    # advisory and is retained in each cell/matrix report.
+    OPEN_KAISHEK_PREFLIGHT_RESULT = acceptance.run_open_kaishek_preflight(
+        root=FIXTURE_SOURCE,
+        profile="ck3-1.19.0.6",
+        fixture="none",
+        scope="run_vivhite_acceptance.fixture",
+    )
+    log(
+        "open_kaishek preflight: "
+        f"{OPEN_KAISHEK_PREFLIGHT_RESULT.get('result', 'FAILED')} "
+        f"({OPEN_KAISHEK_PREFLIGHT_RESULT.get('reason', 'unknown')})"
+    )
     errors = fixture_source_errors()
     errors.extend(build_vivhite_release.release_source_errors(
         build_vivhite_release.DEFAULT_SOURCE
@@ -1684,6 +1703,7 @@ def write_matrix_report(
         "debug_mode": False,
         "isolated_userdirs": True,
         "fixture_source": str(FIXTURE_SOURCE),
+        "open_kaishek_preflight": OPEN_KAISHEK_PREFLIGHT_RESULT,
         "scenarios": reports,
         "protected_storage": {
             "unchanged": protected_unchanged,
@@ -1742,6 +1762,8 @@ def main(
     artifacts_dir: str | None = None,
     keep_userdirs: bool = False,
 ) -> int:
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    OPEN_KAISHEK_PREFLIGHT_RESULT = None
     preflight()
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()

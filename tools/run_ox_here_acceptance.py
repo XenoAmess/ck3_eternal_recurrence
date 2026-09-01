@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run one isolated, non-debug CK3 acceptance cell for standalone ox_here."""
 
 from __future__ import annotations
@@ -51,6 +51,8 @@ REQUIRED_MARKERS = (
     "OXA: TEST PASS champion_salary_zero",
     "OXA: TEST DONE standalone",
 )
+
+OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
 
 
 def log(message: str) -> None:
@@ -156,6 +158,20 @@ def product_source_errors() -> list[str]:
 
 
 def preflight() -> None:
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    # Use the checked-in fixture as the smallest deterministic parser slice,
+    # and run it before any desktop query or CK3 launch in this entrypoint.
+    OPEN_KAISHEK_PREFLIGHT_RESULT = acceptance.run_open_kaishek_preflight(
+        root=FIXTURE_SOURCE,
+        profile="ck3-1.19.0.6",
+        fixture="none",
+        scope="run_ox_here_acceptance.fixture",
+    )
+    log(
+        "open_kaishek preflight: "
+        f"{OPEN_KAISHEK_PREFLIGHT_RESULT.get('result', 'FAILED')} "
+        f"({OPEN_KAISHEK_PREFLIGHT_RESULT.get('reason', 'unknown')})"
+    )
     errors = fixture_source_errors()
     errors.extend(product_source_errors())
     if os.name != "nt":
@@ -694,6 +710,7 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
         "fixture_markers": stream.lines,
         "project_diagnostics": list(dict.fromkeys(diagnostics)),
         "scenario_evidence": evidence,
+        "open_kaishek_preflight": OPEN_KAISHEK_PREFLIGHT_RESULT,
         "isolated_userdir_path": str(userdir),
         "userdir_removed_after_run": userdir_removed,
         "process_watchdog_pid": watchdog_pid,
@@ -715,6 +732,8 @@ def main(
     keep_userdir: bool = False,
     preflight_only: bool = False,
 ) -> int:
+    global OPEN_KAISHEK_PREFLIGHT_RESULT
+    OPEN_KAISHEK_PREFLIGHT_RESULT = None
     preflight()
     if preflight_only:
         print("OX HERE ACCEPTANCE PREFLIGHT: GREEN")
