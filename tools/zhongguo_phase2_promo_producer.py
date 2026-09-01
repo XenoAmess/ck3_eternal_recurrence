@@ -112,11 +112,12 @@ class Phase2PromoProducerError(RuntimeError):
     """A typed RED at the producer hand-off boundary.
 
     ``reason_code`` is intentionally stable for direct callers while
-    ``evidence`` remains a small, JSON-compatible partial record.  No error
-    path writes that record; the acceptance runner currently retains only the
-    exception text unless a caller supplies an error adapter/report hook.  The
-    scaffold also rejects an explicitly reported non-GREEN producer result;
-    omitting that optional field leaves the runner's outer result in charge.
+    ``evidence`` remains a small, JSON-compatible partial record.  The
+    acceptance runner preserves this envelope as
+    ``phase2_promo_producer_error`` when the hand-off reaches its report
+    boundary.  The scaffold also rejects an explicitly reported non-GREEN
+    producer result; omitting that optional field leaves the runner's outer
+    result in charge.
     """
 
     result: Final = "RED"
@@ -152,6 +153,48 @@ class Phase2PromoProducerUnavailable(Phase2PromoProducerError):
 
 class Phase2PromoProducerContractError(Phase2PromoProducerError):
     """The producer or its delegate violated the canonical contract."""
+
+
+def phase2_promo_producer_typed_error_payload(
+    error: BaseException,
+) -> dict[str, object] | None:
+    """Project a producer exception onto the stable JSON RED envelope.
+
+    The acceptance runner may adapt a :class:`Phase2PromoProducerError` to
+    its own ``RunnerError`` class, so it cannot rely on the concrete exception
+    type.  Only the typed ``reason_code`` plus an optional exact ``RED``
+    result qualify; ordinary runner failures remain represented solely by
+    ``error_reason``.  Evidence is projected through the same JSON-safe
+    routine used by the producer error itself, keeping report serialization
+    deterministic without inspecting native bridge objects.
+    """
+
+    try:
+        reason_code = getattr(error, "reason_code", None)
+        result = getattr(error, "result", None)
+        evidence = getattr(error, "evidence", None)
+    except BaseException:
+        return None
+    if type(reason_code) is not str or not reason_code:
+        return None
+    if result is not None and (type(result) is not str or result != "RED"):
+        return None
+    if evidence is None:
+        diagnostic: object = {}
+    elif isinstance(evidence, Mapping):
+        try:
+            diagnostic = _json_safe(dict(evidence))
+        except BaseException:
+            diagnostic = {}
+    else:
+        diagnostic = {"value": _json_safe(evidence)}
+    if not isinstance(diagnostic, dict):
+        diagnostic = {"value": diagnostic}
+    return {
+        "result": "RED",
+        "reason_code": reason_code,
+        "evidence": diagnostic,
+    }
 
 
 @dataclass(frozen=True, slots=True)
@@ -698,4 +741,5 @@ __all__ = [
     "canonical_phase2_capture_contract",
     "install_phase2_promo_capture_scaffold",
     "make_phase2_promo_capture_scaffold",
+    "phase2_promo_producer_typed_error_payload",
 ]

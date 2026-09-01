@@ -126,6 +126,13 @@ import run_title_map_navigation_v1_live_acceptance as title_navigation_live
 PROMO_TOOLS_DIRECTORY = SOURCE / "tools"
 if str(PROMO_TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(PROMO_TOOLS_DIRECTORY))
+TOOLS_DIRECTORY = ROOT / "tools"
+if str(TOOLS_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIRECTORY))
+
+from zhongguo_phase2_promo_producer import (
+    phase2_promo_producer_typed_error_payload,
+)
 
 import promo_real_character_contract as real_characters
 
@@ -13138,6 +13145,7 @@ def run_cell(
     phase2_final_capabilities: dict[str, object] | None = None
     phase2_native_session_liveness: dict[str, object] | None = None
     phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
+    phase2_promo_producer_error: dict[str, object] | None = None
     phase2_runtime_mode = phase2_live_batch or phase2_promo_capture
     try:
         if executable_before != EXPECTED_EXE_SHA256:
@@ -13288,19 +13296,27 @@ def run_cell(
                 raise acceptance.RunnerError(
                     "phase-two promo capture seed install lacks its contract"
                 )
-            evidence = run_phase2_promo_capture_scenario(
-                stream,
-                artifacts,
-                recorder,
-                title_navigation_service=title_navigation_service,
-                tracked_ck3_pid=tracked_ck3_pid,
-                native_bridge=native_bridge,
-                preflight_bridge_identity=bridge_identity,
-                seed_contract=dict(seed_contract_value),
-                seed_install=phase2_seed_install_evidence,
-                native_session_binding=phase2_initial_binding,
-                loader_gate=loader_gate_evidence,
-            )
+            try:
+                evidence = run_phase2_promo_capture_scenario(
+                    stream,
+                    artifacts,
+                    recorder,
+                    title_navigation_service=title_navigation_service,
+                    tracked_ck3_pid=tracked_ck3_pid,
+                    native_bridge=native_bridge,
+                    preflight_bridge_identity=bridge_identity,
+                    seed_contract=dict(seed_contract_value),
+                    seed_install=phase2_seed_install_evidence,
+                    native_session_binding=phase2_initial_binding,
+                    loader_gate=loader_gate_evidence,
+                )
+            except BaseException as error:
+                # Keep a producer's typed RED envelope in the durable report
+                # while preserving the existing outer error/cleanup flow.
+                phase2_promo_producer_error = (
+                    phase2_promo_producer_typed_error_payload(error)
+                )
+                raise
         elif phase2_live_batch:
             evidence = run_phase2_live_scenario(
                 title_navigation_service,
@@ -13656,6 +13672,7 @@ def run_cell(
         ),
         "loader_gate_executed": loader_gate_evidence is not None,
         "phase2_seed_install": phase2_seed_install_evidence,
+        "phase2_promo_producer_error": phase2_promo_producer_error,
         "loader_gate_evidence": loader_gate_evidence,
         "gameplay_acceptance_executed": gameplay_acceptance_executed,
         "gameplay_green_claimed": gameplay_green_claimed,
@@ -13913,6 +13930,9 @@ def main(
         "native_session_liveness": report.get("native_session_liveness"),
         "native_session_liveness_scope": report.get(
             "native_session_liveness_scope"
+        ),
+        "phase2_promo_producer_error": report.get(
+            "phase2_promo_producer_error"
         ),
         "gameplay_acceptance_executed": report.get(
             "gameplay_acceptance_executed", False

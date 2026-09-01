@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 from contextlib import ExitStack, nullcontext
 import importlib.util
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -420,6 +421,135 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         )
         self.assertEqual(
             report["loader_gate_evidence"]["mode"], "phase2_promo_capture"
+        )
+
+    def test_phase2_promo_report_preserves_typed_producer_red(self) -> None:
+        """A producer RED remains structured without opening a real runtime."""
+
+        producer = make_phase2_promo_capture_scaffold(
+            runtime_probe=lambda _context: {
+                "ready": False,
+                "blocker": "canonical_seed_not_ready",
+            },
+            error_factory=capture.acceptance.RunnerError,
+        )
+        capture.register_phase2_promo_capture_producer(producer)
+        seed_contract = {
+            "status": "ready",
+            "ready": True,
+            "seed_identity": "canonical-unit-seed",
+        }
+        seed_install = {
+            "result": "GREEN",
+            "contract": seed_contract,
+            "targets": {"continue": "autosave.ck3"},
+        }
+        loader_gate = {
+            "result": "GREEN",
+            "mode": "phase2_promo_capture",
+            "native_readiness": {"result": "GREEN"},
+            "phase2_capability_preflight": {"result": "GREEN"},
+            "loader_error_log_scan": {"result": "GREEN"},
+            "runtime_mount_inventory": ["product", "fixture"],
+        }
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state_dir = root / "state"
+            userdir = state_dir / "profile"
+            bridge = SimpleNamespace(pipe_name=r"\\.\pipe\phase2-promo-red")
+            with ExitStack() as stack:
+                _enter_common_run_cell_patches(stack, root)
+                install = stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "install_phase2_seed",
+                        return_value=copy.deepcopy(seed_install),
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "start_phase2_native_session_supervisor",
+                        return_value={"kind": "fake-supervisor"},
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "wait_for_phase2_native_session_binding",
+                        return_value={
+                            "bridge_pid": 4321,
+                            "connection_generation": 1,
+                        },
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "run_loader_gate",
+                        return_value=copy.deepcopy(loader_gate),
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "stop_phase2_native_session_supervisor",
+                        return_value={
+                            "pid_lineage": [4321],
+                            "connection_generation_lineage": [1],
+                            "session_report": {"restart_count": 0},
+                        },
+                    )
+                )
+                forbidden_launch = stack.enter_context(
+                    mock.patch.object(capture, "launch_native_ck3")
+                )
+                forbidden_ffmpeg = stack.enter_context(
+                    mock.patch.object(capture, "subprocess")
+                )
+                report = capture.run_cell(
+                    root / "artifacts",
+                    userdir,
+                    True,
+                    state_dir=state_dir,
+                    native_bridge=bridge,
+                    phase2_promo_capture=True,
+                    runtime_source=root / "runtime",
+                    runtime_identity={
+                        "native_bridge_runtime": {"identity": "red-unit"}
+                    },
+                )
+                persisted = json.loads(
+                    (root / "artifacts" / "report.json").read_text(
+                        encoding="utf-8"
+                    )
+                )
+
+        install.assert_called_once()
+        forbidden_launch.assert_not_called()
+        forbidden_ffmpeg.Popen.assert_not_called()
+        self.assertEqual(report["result"], "RED")
+        typed_error = report["phase2_promo_producer_error"]
+        self.assertEqual(
+            typed_error,
+            {
+                "result": "RED",
+                "reason_code": "runtime_unavailable",
+                "evidence": {
+                    "runtime": {
+                        "ready": False,
+                        "blocker": "canonical_seed_not_ready",
+                    },
+                    "result": "RED",
+                    "reason_code": "runtime_unavailable",
+                },
+            },
+        )
+        self.assertIn("runtime_unavailable", report["error_reason"])
+        self.assertFalse(report["gameplay_green_claimed"])
+        self.assertEqual(
+            persisted["phase2_promo_producer_error"], typed_error
         )
 
     def test_legacy_promo_keeps_suspended_launch_without_phase2_plumbing(self) -> None:
