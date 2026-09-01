@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Iterable
 
@@ -68,6 +69,13 @@ RUNTIME_DISTRIBUTIONS = (
     "Shapely",
     "six",
 )
+
+# ``git status`` may try to refresh the index even though this fingerprint is
+# read-only.  A concurrent worktree checkout can therefore make the command
+# briefly fail with exit 128 while its index lock is held.  Keep this retry
+# deliberately short: a persistent repository failure must still fail closed.
+_GIT_STATUS_MAX_ATTEMPTS = 3
+_GIT_STATUS_RETRY_DELAYS_SECONDS = (0.05, 0.1)
 
 
 def process_creation_utc(value: object) -> datetime:
@@ -426,21 +434,45 @@ def _git_revision() -> str:
 
 
 def _git_lines(*arguments: str) -> list[str]:
-    try:
-        result = subprocess.run(
-            ["git", "-C", str(REPO_ROOT), *arguments],
-            check=True,
-            capture_output=True,
-            text=True,
-            timeout=15,
-        )
-    except (
-        FileNotFoundError,
-        subprocess.CalledProcessError,
-        subprocess.TimeoutExpired,
-    ) as error:
-        raise AgentError(f"git {' '.join(arguments)} failed") from error
-    return [line for line in result.stdout.splitlines() if line.strip()]
+    is_status = bool(arguments) and arguments[0] == "status"
+    attempts = _GIT_STATUS_MAX_ATTEMPTS if is_status else 1
+    command = ["git", "-C", str(REPO_ROOT)]
+    if is_status:
+        # Avoid taking the optional index-refresh lock ourselves.  This keeps
+        # two read-only fingerprint calls from racing a checkout's index lock.
+        command.append("--no-optional-locks")
+    command.extend(arguments)
+    for attempt in range(1, attempts + 1):
+        try:
+            result = subprocess.run(
+                command,
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=15,
+            )
+        except FileNotFoundError as error:
+            raise AgentError(f"git {' '.join(arguments)} failed") from error
+        except subprocess.TimeoutExpired as error:
+            raise AgentError(f"git {' '.join(arguments)} failed") from error
+        except subprocess.CalledProcessError as error:
+            if is_status and attempt < attempts:
+                time.sleep(_GIT_STATUS_RETRY_DELAYS_SECONDS[attempt - 1])
+                continue
+            detail = error.stderr or error.stdout or ""
+            if isinstance(detail, bytes):
+                detail = detail.decode(errors="replace")
+            detail = " ".join(str(detail).split())
+            suffix = f" after {attempt} attempts" if is_status else ""
+            if detail:
+                suffix += f"; stderr={detail[:512]!r}"
+            raise AgentError(
+                f"git {' '.join(arguments)} failed{suffix}"
+            ) from error
+        return [line for line in result.stdout.splitlines() if line.strip()]
+    # The loop always returns or raises; retain a defensive fail-closed path if
+    # the retry constants are changed inconsistently in the future.
+    raise AgentError(f"git {' '.join(arguments)} failed")
 
 
 def mod_source_fingerprint() -> dict[str, object]:
