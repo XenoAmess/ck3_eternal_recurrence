@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-continue-vs-surrender-policy-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "path_base": "repository_root",
+  "policy_version": "raiktor-continue-vs-surrender-policy-v1",
+  "campaign_certificate_contract": "raiktor-campaign-dominance-certificate-v1",
+  "frozen_inputs": [
+    {
+      "path": "docs/ck3-native-ai/war-termination.md",
+      "sha256": "33513B5A927BC353F524AF6FC7D6F81D833E014E7B4E198A2744F248DFB16968",
+      "semantic_contract": "exact-build options, original AI termination tree, Raiktor terms and six-domain readiness boundaries"
+    },
+    {
+      "path": "docs/ck3-native-ai/player-war-exit-policy.md",
+      "sha256": "9B02C8AB70413954618E38A7E35A200D8954405A8440A3F7890DE014B91DC3BA",
+      "semantic_contract": "continue and surrender require complete campaign evidence, explicit loss budgets and robust risk-adjusted utility comparison"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json",
+      "sha256": "4D9A67F1C8DBD0528823E11C320DB1CFA57C4C30DF3B377595B26F7281A08500",
+      "semantic_contract": "claims base plus gold, prestige, PoW, favor, truce and honestly generic war-bound current observation; automatic surrender remains false"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
+      "sha256": "1A4BFC51453B57FA4CBA3CBB9FD4909DEE1DE557C646BF1523F6DA983AA89BE9",
+      "semantic_contract": "GEN-034 remains unresolved until public same-frame inputs, policy, typed submit and six-domain postconditions are live"
+    }
+  ],
+  "current_g2_checkpoint": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "casus_belli_key": "raiktor_claim_cb",
+    "player_role": "primary_attacker",
+    "war_score": -50,
+    "war_duration_days": 1281,
+    "surrender_legal_and_would_accept": true,
+    "production_live_terms_domains": [
+      "gold",
+      "prestige",
+      "prisoner_release",
+      "favor_hook"
+    ],
+    "missing_public_terms_domains": [
+      "truce",
+      "generic_war_bound_current"
+    ],
+    "campaign_dominance_certificate_available": false,
+    "explicit_owner_budget_profile_available": false,
+    "pairwise_preference": null,
+    "full_exit_decision_ready": false,
+    "white_peace_evaluated": false,
+    "suggested_action": null,
+    "automatic_surrender_ready": false
+  },
+  "pairwise_requirements": {
+    "same_paused_frame": [
+      "snapshot_id",
+      "snapshot_revision",
+      "native_revision",
+      "date_raw",
+      "connection_id",
+      "episode_id",
+      "CK3 PID",
+      "full_generation_war_id",
+      "casus_belli_identity",
+      "primary_roles",
+      "claimant"
+    ],
+    "candidate": [
+      "primary attacker",
+      "hostage variant none",
+      "constructed context",
+      "native validator",
+      "available option",
+      "typed recipient would accept"
+    ],
+    "terms": [
+      "claims base",
+      "all six dynamic domains",
+      "same-frame stability",
+      "action_terms_ready"
+    ],
+    "campaign": [
+      "all reasonable continuation paths",
+      "all reasonable encounters",
+      "mobilized and reserve strength",
+      "reinforcement and siege ETA",
+      "finance endurance",
+      "model risk",
+      "tail risk",
+      "sunk-cost exclusion",
+      "valuation of the full claims base",
+      "valuation of all six domains"
+    ],
+    "policy": [
+      "observed score and duration hash-bound as model inputs, not surrender validators",
+      "explicit profile provenance",
+      "explicit maximum surrender gold transfer",
+      "explicit maximum surrender prestige loss",
+      "explicit maximum removed claims",
+      "explicit favor-hook allowance",
+      "explicit maximum truce duration",
+      "explicit tail-loss budget",
+      "explicit utility switch margin",
+      "hard-budget breach lists"
+    ]
+  },
+  "decision_rules": {
+    "prefer_surrender_over_continue": "no safe objective, no timely credible reinforcement, continuation tail loss exceeds the explicit budget, surrender has no hard-budget breach, and the conservative surrender lower bound exceeds the continuation upper bound by the explicit margin",
+    "prefer_continue_over_surrender": "a safe objective is proven, continuation stays inside the explicit tail-loss and hard budgets, and the conservative continuation lower bound exceeds the surrender upper bound by the explicit margin",
+    "otherwise": "pairwise underdetermined",
+    "full_exit_decision": "always unavailable because white peace is not evaluated"
+  },
+  "hard_boundaries": {
+    "pairwise_preference_only": true,
+    "recommendation_ready": false,
+    "full_exit_decision_ready": false,
+    "white_peace_evaluated": false,
+    "action_literal": null,
+    "automatic_surrender_ready": false,
+    "native_ai_equivalent": false,
+    "semantic_optimal": false,
+    "generic_war_bound_current_is_source_attribution": false,
+    "generic_war_bound_current_is_conservative_exposure_only": true,
+    "authored_3000_is_measured_pre_soldiers": false,
+    "current_soldiers_is_proven_loss": false,
+    "pending_submission_and_cooldown_evaluated": false,
+    "action_boundary_postconditions_evaluated": false
+  },
+  "readiness": {
+    "stage": "static-fixture-policy-core",
+    "production_pairwise_ready": false,
+    "public_wire_complete": false,
+    "production_live": false,
+    "current_checkpoint_decision_ready": false,
+    "gen_034_resolved": false
+  }
+}
