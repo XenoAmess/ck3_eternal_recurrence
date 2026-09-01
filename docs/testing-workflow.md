@@ -40,6 +40,18 @@ certification。对 76-file 二期语料的离线预验耗时约 `3.144s`，pars
 `GREEN/0 diagnostics`，fixture IR/runtime 为 `GREEN`，validator 为
 `RED/233,708 diagnostics`（仍是有意保留的 bounded schema 覆盖边界）。
 
+截至 2026-09-02 03:28，`open_kaishek` 已在 `main` 合入两个同样有
+exact-build 证据的标量 trigger：`has_game_rule` 与
+`has_character_modifier`（提交 `1c320ad`，`origin/main` 同步）。新 JAR
+SHA-256 为 `F01C9D5FD0095960AC58E20031F22A3A28F0AFA5B0716C4D3DBECE49583C8A1A`；
+同一 75-file 二期语料预验 artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postschema-preflight-1c320ad.json`
+（SHA-256 `A63212B2F5BFAE1FEFE280DEAC1D75D77720A13BD5A46430876094D86D294F22`）
+保持 parser `GREEN`、IR/runtime `GREEN`，validator `RED/233,115`。
+相对 `d207707` 再减少 601 条 UNKNOWN；新增 8 条 WRONG_DOMAIN 属于既有
+`SCRIPTED_VALUES` 边界，未放宽为 GREEN。聚焦 profile/validator Maven 测试
+与 CLI preflight 均通过，未启动 CK3。
+
 `open_kaishek` 预验只缩短确定性失败的反馈周期，不替代真实 CK3/MCP paused artifact、真实输入/动作、自然推进、结算或 GREEN。没有 paused artifact 时，状态仍只能写为 `static-ready`/`runtime-fixture` 等实际级别；ACK、schema 通过和 synthetic replay 都不能升级为 `fixture-live` 或 `production-live`。
 
 ## 可复用宣传视频工具链验收

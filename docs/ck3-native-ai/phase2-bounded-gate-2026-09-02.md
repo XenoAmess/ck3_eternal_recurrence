@@ -147,3 +147,19 @@ does not explain or repair the independent `database_init` timeout. No
 production source or branch was changed. The next phase2 code change must be
 an evidence-backed loader/readiness fix, not a compatibility stub for this
 invalid delta.
+
+## 2026-09-02 03:28 evidence-backed schema increment
+
+`open_kaishek` mainline `1c320ad` adds only the two scalar triggers already
+marked `[static-confirmed]` in the exact-build ledger:
+`has_game_rule` and `has_character_modifier`. Its rebuilt JAR is
+`F01C9D5FD0095960AC58E20031F22A3A28F0AFA5B0716C4D3DBECE49583C8A1A`.
+The retained offline artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\postschema-preflight-1c320ad.json`
+with SHA-256
+`A63212B2F5BFAE1FEFE280DEAC1D75D77720A13BD5A46430876094D86D294F22`.
+Parser and fixture IR/runtime remain GREEN; the bounded validator is RED at
+`233,115` diagnostics, 601 fewer UNKNOWN diagnostics than `d207707`. The
+eight additional WRONG_DOMAIN diagnostics are existing SCRIPTED_VALUES
+coverage boundaries, not a schema expansion. Focused profile/validator Maven
+tests and the CLI preflight passed; CK3 was not started.
