@@ -108,6 +108,9 @@ def _raiktor_provenance() -> dict[str, str]:
         "bookmark_events_script_sha256": (
             "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF"
         ),
+        "truce_observer": (
+            "ck3-1.19.0.6-native-raiktor-surrender-truce-v1"
+        ),
     }
 
 
@@ -169,7 +172,10 @@ def _available_raiktor_terms() -> dict[str, object]:
         "truce": {
             "direction": "primary_attacker_toward_primary_defender",
             "result": "defeat",
+            "evaluated_days_observable": False,
+            "evaluated_days": None,
             "actual_expiry_observable": False,
+            "expiry_date_raw": None,
         },
         "prisoner_release": {
             "rule": "war_result_primary_and_first_three_heirs",
@@ -436,6 +442,43 @@ class WarTerminationTermsContractTests(unittest.TestCase):
                 "targeting_faction_discontent_delta",
             ],
         )
+
+    def test_raiktor_surrender_slice_accepts_evaluated_truce_duration_only(
+        self,
+    ) -> None:
+        raw = _available_raiktor_observed_terms()
+        raw["truce"].update(
+            {
+                "evaluated_days_observable": True,
+                "evaluated_days": 1_825,
+            }
+        )
+        raw["readiness"]["truce_ready"] = True
+
+        normalized = normalize_war_termination_terms(
+            raw, expected_war_id=WAR_ID
+        )
+
+        self.assertEqual(normalized, raw)
+        self.assertTrue(normalized["readiness"]["truce_ready"])
+        self.assertEqual(normalized["truce"]["evaluated_days"], 1_825)
+        self.assertFalse(normalized["truce"]["actual_expiry_observable"])
+        self.assertIsNone(normalized["truce"]["expiry_date_raw"])
+        self.assertIn(
+            "actual_truce_expiry", normalized["unobserved_dynamic_effects"]
+        )
+
+    def test_raiktor_surrender_slice_rejects_truce_expiry_or_duration_drift(
+        self,
+    ) -> None:
+        expiry = _available_raiktor_terms()
+        expiry["truce"]["expiry_date_raw"] = 53_177_641
+        duration_gate = _available_raiktor_terms()
+        duration_gate["truce"]["evaluated_days_observable"] = True
+        for raw in (expiry, duration_gate):
+            with self.subTest(raw=copy.deepcopy(raw)):
+                with self.assertRaises(ValueError):
+                    normalize_war_termination_terms(raw)
 
     def test_raiktor_surrender_slice_rejects_observed_domain_drift(
         self,

@@ -97,6 +97,9 @@ _TERMINATION_TERMS_BOOKMARK_EVENTS_SCRIPT_SHA256 = (
     "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF"
 )
 _TERMINATION_TERMS_NATIVE_READER = "CWar+0x270/+0x290;0x28B1AA0"
+_TERMINATION_TERMS_RAIKTOR_TRUCE_OBSERVER = (
+    "ck3-1.19.0.6-native-raiktor-surrender-truce-v1"
+)
 _TERMINATION_TERMS_CLAIM_LIFECYCLE = (
     "present_only_vtable_slot_0_delete_flags_0"
 )
@@ -171,7 +174,10 @@ _TERMINATION_TERMS_RAIKTOR_ATTACKER_FAME = {
 _TERMINATION_TERMS_RAIKTOR_TRUCE = {
     "direction": "primary_attacker_toward_primary_defender",
     "result": "defeat",
+    "evaluated_days_observable": False,
+    "evaluated_days": None,
     "actual_expiry_observable": False,
+    "expiry_date_raw": None,
 }
 _TERMINATION_TERMS_RAIKTOR_PRISONER_RELEASE = {
     "rule": "war_result_primary_and_first_three_heirs",
@@ -2388,6 +2394,44 @@ def _normalize_raiktor_favor_hook(value: object) -> dict[str, object]:
     }
 
 
+def _normalize_raiktor_truce(value: object) -> dict[str, object]:
+    name = "war_termination_terms.truce"
+    if not isinstance(value, dict) or set(value) != set(
+        _TERMINATION_TERMS_RAIKTOR_TRUCE
+    ):
+        raise ValueError(f"native {name} schema is malformed")
+    if (
+        value.get("direction")
+        != _TERMINATION_TERMS_RAIKTOR_TRUCE["direction"]
+        or value.get("result") != _TERMINATION_TERMS_RAIKTOR_TRUCE["result"]
+    ):
+        raise ValueError(f"native {name} authored rule drifted")
+    evaluated_observable = _strict_bool(
+        value.get("evaluated_days_observable"),
+        f"{name}.evaluated_days_observable",
+    )
+    evaluated_days = _optional_non_negative_int32(
+        value.get("evaluated_days"), f"{name}.evaluated_days"
+    )
+    if evaluated_observable != (evaluated_days is not None):
+        raise ValueError(f"native {name} evaluated duration gate is malformed")
+    if _strict_bool(
+        value.get("actual_expiry_observable"),
+        f"{name}.actual_expiry_observable",
+    ):
+        raise ValueError(f"native {name} persisted expiry is unavailable")
+    if value.get("expiry_date_raw") is not None:
+        raise ValueError(f"native {name} invented persisted expiry")
+    return {
+        "direction": _TERMINATION_TERMS_RAIKTOR_TRUCE["direction"],
+        "result": _TERMINATION_TERMS_RAIKTOR_TRUCE["result"],
+        "evaluated_days_observable": evaluated_observable,
+        "evaluated_days": evaluated_days,
+        "actual_expiry_observable": False,
+        "expiry_date_raw": None,
+    }
+
+
 def normalize_war_termination_terms(
     value: object,
     *,
@@ -2602,14 +2646,20 @@ def normalize_war_termination_terms(
         conditional_favor_hook = _normalize_raiktor_favor_hook(
             value.get("conditional_favor_hook")
         )
+        truce = _normalize_raiktor_truce(value.get("truce"))
         gold_ready = bool(gold_reparations["actual_amount_observable"])
         prestige_ready = bool(attacker_fame["actual_delta_observable"])
         prisoner_ready = bool(prisoner_release["actual_pairs_observable"])
         favor_ready = bool(
             conditional_favor_hook["actual_applies_observable"]
         )
+        truce_ready = bool(truce["evaluated_days_observable"])
         observed_any = (
-            gold_ready or prestige_ready or prisoner_ready or favor_ready
+            gold_ready
+            or prestige_ready
+            or prisoner_ready
+            or favor_ready
+            or truce_ready
         )
         expected_readiness = {
             "identity_ready": True,
@@ -2621,7 +2671,7 @@ def normalize_war_termination_terms(
             "gold_ready": gold_ready,
             "fame_factor_ready": prestige_ready,
             "attacker_prestige_delta_ready": prestige_ready,
-            "truce_ready": False,
+            "truce_ready": truce_ready,
             "prisoner_release_ready": prisoner_ready,
             "favor_hook_ready": favor_ready,
             "war_bound_armies_ready": False,
@@ -2647,7 +2697,7 @@ def normalize_war_termination_terms(
                 "attacker_defeat",
                 _TERMINATION_TERMS_RAIKTOR_ATTACKER_DEFEAT,
             ),
-            ("truce", _TERMINATION_TERMS_RAIKTOR_TRUCE),
+            ("truce", truce),
             (
                 "attacker_legitimacy_delta",
                 {"raw": 0, "scale": 100_000},
@@ -2751,7 +2801,7 @@ def normalize_war_termination_terms(
             ),
             "gold_reparations": gold_reparations,
             "attacker_fame": attacker_fame,
-            "truce": dict(_TERMINATION_TERMS_RAIKTOR_TRUCE),
+            "truce": truce,
             "prisoner_release": prisoner_release,
             "conditional_favor_hook": conditional_favor_hook,
             "attacker_legitimacy_delta": {
@@ -2847,6 +2897,7 @@ def _normalize_war_termination_terms_provenance(
             "bookmark_events_script_sha256": (
                 _TERMINATION_TERMS_BOOKMARK_EVENTS_SCRIPT_SHA256
             ),
+            "truce_observer": _TERMINATION_TERMS_RAIKTOR_TRUCE_OBSERVER,
         }
     else:
         raise ValueError(

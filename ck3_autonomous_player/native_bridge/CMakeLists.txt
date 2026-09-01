@@ -89,6 +89,7 @@ add_library(xar_ck3_bridge SHARED
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp
   src/route_contact_horizon_v1_mailbox.cpp
+  src/raiktor_surrender_truce_v1.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
   src/startup_particle2_consumer_null_guard_v1.cpp
@@ -209,6 +210,7 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_event_window_context_v1_test
     src/battle_terminal_journal_v1.cpp
     src/ck3_11906.cpp
+    src/raiktor_surrender_truce_v1.cpp
     src/event_window_context_v1.cpp
     src/event_window_context_v1_mailbox.cpp
     src/event_window_context_v1_test.cpp
@@ -242,6 +244,7 @@ if(BUILD_TESTING)
     src/battle_terminal_transition_v1_mailbox.cpp
     src/battle_transition_v1_mailbox.cpp
     src/ck3_11906.cpp
+    src/raiktor_surrender_truce_v1.cpp
     src/ck3_11906_test.cpp
     src/route_contact_horizon_v1_mailbox.cpp
   )
@@ -280,6 +283,7 @@ if(BUILD_TESTING)
     src/pending_character_interaction_context_v1_mailbox.cpp
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
+    src/raiktor_surrender_truce_v1.cpp
     src/combat_v3.cpp
     src/route_contact_horizon_v1_mailbox.cpp
     src/tactical_daily_sentinel_v1.cpp

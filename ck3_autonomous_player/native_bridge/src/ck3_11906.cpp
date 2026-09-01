@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
 
 #include <windows.h>
@@ -3645,6 +3646,172 @@ bool DestroyWarEffectContext(const Bindings &bindings,
   }
   valid = FreeEffectContextArray(context, 0x18, 0x24, 0x28) && valid;
   return valid;
+}
+
+// The standalone Raiktor truce observer intentionally owns only the pointer
+// walk and the duration evaluator.  This adapter supplies its frame reads
+// from the already resolved, paused WarTerminationTerms target; it never
+// traverses or executes the broad exit reader.
+struct RaiktorTruceProductionFrameContext {
+  const Bindings *bindings = nullptr;
+  void *game_state = nullptr;
+  void *jomini_state = nullptr;
+  void *war = nullptr;
+  void *casus_belli = nullptr;
+  std::int32_t war_id = -1;
+  std::int32_t casus_belli_database_index = -1;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::int32_t claimant_character_id = -1;
+};
+
+bool ReadRaiktorTruceProductionFrame(
+    void *opaque, RaiktorSurrenderTruceFrameV1 *output) noexcept {
+  auto *const context =
+      static_cast<RaiktorTruceProductionFrameContext *>(opaque);
+  if (context == nullptr || output == nullptr || context->bindings == nullptr ||
+      context->bindings->game_state_slot == nullptr ||
+      context->bindings->jomini_state_slot == nullptr ||
+      context->game_state == nullptr || context->jomini_state == nullptr) {
+    return false;
+  }
+  const auto &bindings = *context->bindings;
+  Snapshot snapshot{};
+  if (!ReadSnapshot(bindings, snapshot) || !snapshot.paused ||
+      !snapshot.has_played_character || !snapshot.played_character_alive) {
+    return false;
+  }
+  if (*bindings.game_state_slot != context->game_state ||
+      *bindings.jomini_state_slot != context->jomini_state) {
+    return false;
+  }
+  void *const war = ResolveWar(bindings, context->game_state, context->war_id);
+  if (war == nullptr || war != context->war ||
+      std::none_of(snapshot.active_wars.begin(), snapshot.active_wars.end(),
+                   [context](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == context->war_id;
+                   })) {
+    return false;
+  }
+  void *const casus_belli =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (casus_belli == nullptr || casus_belli != context->casus_belli ||
+      LoadAt<std::int32_t>(casus_belli,
+                           kCasusBelliTypeDatabaseIndexOffset) !=
+          context->casus_belli_database_index) {
+    return false;
+  }
+  std::string casus_belli_key;
+  if (!ReadCasusBelliTypeKey(casus_belli, casus_belli_key) ||
+      casus_belli_key != "raiktor_claim_cb") {
+    return false;
+  }
+  const auto primary_attacker_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryAttackerCharacterIdOffset);
+  const auto primary_defender_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryDefenderCharacterIdOffset);
+  const auto claimant_character_id =
+      LoadAt<std::int32_t>(war, kWarClaimantCharacterIdOffset);
+  if (primary_attacker_character_id !=
+          context->primary_attacker_character_id ||
+      primary_defender_character_id != context->primary_defender_character_id ||
+      claimant_character_id != context->claimant_character_id) {
+    return false;
+  }
+  // WarTerminationTerms does not carry the mailbox's state revision.  The
+  // observer's frame identity is instead re-read through date, pointers, and
+  // IDs below; these nonzero local stamps satisfy the standalone core's
+  // validity contract and are never serialized onto the MCP wire.
+  output->snapshot_revision = 1;
+  output->native_revision = 1;
+  output->date_raw = snapshot.date_raw;
+  output->paused = snapshot.paused;
+  output->war_id = context->war_id;
+  output->active_casus_belli_database_index =
+      context->casus_belli_database_index;
+  output->exact_raiktor_claim_cb = true;
+  output->primary_attacker_character_id = primary_attacker_character_id;
+  output->primary_defender_character_id = primary_defender_character_id;
+  output->claimant_character_id = claimant_character_id;
+  output->war = war;
+  output->active_casus_belli = casus_belli;
+  output->attacker_defeat_root =
+      static_cast<std::byte *>(casus_belli) + kWarEffectAttackerDefeatOffset;
+  return true;
+}
+
+bool ReadRaiktorSurrenderTruceDuration(
+    const Bindings &bindings, void *game_state, void *jomini_state,
+    void *war, void *casus_belli, std::int32_t war_id,
+    std::int32_t casus_belli_database_index,
+    std::int32_t primary_attacker_character_id,
+    std::int32_t primary_defender_character_id,
+    std::int32_t claimant_character_id,
+    RaiktorSurrenderTruceObservationV1 &output) noexcept {
+  output = {};
+  if (!bindings.enabled || game_state == nullptr || jomini_state == nullptr ||
+      war == nullptr || casus_belli == nullptr || war_id <= 0 ||
+      casus_belli_database_index < 0 || primary_attacker_character_id <= 0 ||
+      primary_defender_character_id <= 0 || claimant_character_id <= 0 ||
+      primary_attacker_character_id == primary_defender_character_id ||
+      bindings.construct_war_effect_context == nullptr ||
+      bindings.populate_war_effect_context == nullptr ||
+      bindings.destroy_effect_context_118 == nullptr ||
+      bindings.destroy_effect_context_array_row == nullptr ||
+      bindings.evaluate_truce_duration_days == nullptr ||
+      bindings.truce_effect_vtable == 0 ||
+      bindings.truce_effect_vtable < kTruceEffectVtableRva) {
+    return false;
+  }
+
+  WarEffectContextStorage effect_context_storage{};
+  void *const effect_context = effect_context_storage.bytes.data();
+  if (bindings.construct_war_effect_context(effect_context) !=
+      effect_context) {
+    return false;
+  }
+  bindings.populate_war_effect_context(effect_context, war, false);
+
+  RaiktorTruceProductionFrameContext frame_context{
+      &bindings,
+      game_state,
+      jomini_state,
+      war,
+      casus_belli,
+      war_id,
+      casus_belli_database_index,
+      primary_attacker_character_id,
+      primary_defender_character_id,
+      claimant_character_id};
+  const auto module = bindings.truce_effect_vtable - kTruceEffectVtableRva;
+  const RaiktorSurrenderTruceNativeEnvironmentV1 environment{
+      true,
+      false,
+      module,
+      bindings.jomini_effect_vtable,
+      bindings.jomini_scripted_effect_vtable,
+      bindings.jomini_scripted_effect_template_vtable,
+      bindings.hidden_effect_vtable,
+      bindings.jomini_context_effect_vtable,
+      bindings.truce_effect_vtable,
+      bindings.evaluate_truce_duration_days};
+  const RaiktorSurrenderTruceAccessV1 access{
+      &frame_context, nullptr, ReadRaiktorTruceProductionFrame};
+  const RaiktorSurrenderTruceRequestV1 request{
+      effect_context, static_cast<std::byte *>(effect_context) + 0x28};
+  output = ObserveRaiktorSurrenderTruceV1(environment, access, request);
+  const bool context_destroyed =
+      DestroyWarEffectContext(bindings, effect_context);
+  if (!context_destroyed ||
+      output.status != RaiktorSurrenderTruceStatusV1::available ||
+      output.failure != RaiktorSurrenderTruceFailureV1::none ||
+      output.owner_character_id != primary_attacker_character_id ||
+      output.toward_character_id != primary_defender_character_id ||
+      output.evaluated_days < 0 || output.expiry_observable) {
+    output = {};
+    return false;
+  }
+  return true;
 }
 
 bool DryPreviewWarExitEffect(const Bindings &bindings, void *loaded_effect,
@@ -15191,6 +15358,10 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
   }
 
   void *const game_state = *bindings.game_state_slot;
+  void *const jomini_state = *bindings.jomini_state_slot;
+  if (game_state == nullptr || jomini_state == nullptr) {
+    return ReadWarTerminationTermsResult::unavailable;
+  }
   void *const war = ResolveWar(bindings, game_state, war_id);
   if (war == nullptr) {
     return ReadWarTerminationTermsResult::war_not_found;
@@ -15391,6 +15562,7 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
     RaiktorSurrenderPrestigeObservation prestige{};
     RaiktorSurrenderPrisonerReleaseObservation prisoner_releases{};
     RaiktorSurrenderFavorHookObservation favor_hook{};
+    RaiktorSurrenderTruceObservationV1 truce{};
     const auto gold_result =
         ReadRaiktorSurrenderGoldCore(bindings, war_id, gold, nullptr);
     const auto prestige_result =
@@ -15436,6 +15608,10 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
         war, kWarPrimaryAttackerCharacterIdOffset);
     const auto primary_defender_character_id = LoadAt<std::int32_t>(
         war, kWarPrimaryDefenderCharacterIdOffset);
+    const auto truce_observable = ReadRaiktorSurrenderTruceDuration(
+        bindings, game_state, jomini_state, war, casus_belli_type, war_id,
+        casus_belli_database_index, primary_attacker_character_id,
+        primary_defender_character_id, claimant_character_id, truce);
     const auto observation_identity_matches = [&](const auto &observation) {
       return observation.war_id == war_id &&
              observation.date_raw == current.date_raw &&
@@ -15541,6 +15717,23 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
           favor_hook.conditional_favor_hook_applies;
       erase_unobserved("conditional_favor_hook_application");
     }
+    if (truce_observable) {
+      if (!truce.same_frame_stable ||
+          truce.frame.war_id != war_id ||
+          truce.frame.date_raw != current.date_raw ||
+          truce.frame.active_casus_belli_database_index !=
+              casus_belli_database_index ||
+          truce.frame.claimant_character_id != claimant_character_id ||
+          truce.frame.primary_attacker_character_id !=
+              primary_attacker_character_id ||
+          truce.frame.primary_defender_character_id !=
+              primary_defender_character_id) {
+        output = {};
+        return ReadWarTerminationTermsResult::unavailable;
+      }
+      surrender.truce_evaluated_days_observable = true;
+      surrender.truce_evaluated_days = truce.evaluated_days;
+    }
 
     std::vector<std::int32_t> final_target_title_ids;
     std::string final_casus_belli_key;
@@ -15590,7 +15783,8 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
     surrender.observed_dynamic_terms_same_frame_stable =
         surrender.gold_observable || surrender.prestige_observable ||
         surrender.prisoner_release_observable ||
-        surrender.favor_hook_observable;
+        surrender.favor_hook_observable ||
+        surrender.truce_evaluated_days_observable;
     output.attacker_defeat = surrender.claim_disposition;
     output.raiktor_surrender = std::move(surrender);
   }
