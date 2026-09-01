@@ -44,8 +44,8 @@ owner/subject/cycle/case 与 hook，防止批次身份漂移。
 |---:|---|---|
 | 014 | 冻结原 owner/subject/cycle/case、理由与证据 revision；真实退款仍复用按实付 receipt 的共享改判链 | A 独立复核，B 原链快审并披露冲突，C 不建增强案卷 |
 | 015 | 唯一 PIP 案卷；须同时满足已冻结 3.25、证据字段完整且“绝对低绩效/KPI/八类证据”至少 3 个真实负项；本人接受/协商一次/拒绝，D+365 只交给唯一 settlement | A 可控目标，B 高压与拒绝风险，C 不建 PIP 案；强制分布造成的孤立 3.25 不得自动进 PIP |
-| 016 | 导师、12 工时、1 容量与 25 国库支持预算原子核对；D+180 只确认真实资源交付，缺少任务进度 producer 时保持 typed RED；终态只释放容量一次 | A 全部齐备才扣国库，B 明示只给指标不给资源，C 不建支持包 |
-| 017 | B2 唯一 settlement 根据后续真实结果写毕业/失败、移除 PIP modifier、释放支持容量并发布下一周期绩效证据；失败后才开处置案 | A 阶梯处置，B 有证据加速并留风险，C 不建处置案 |
+| 016 | 导师、12 工时、1 容量与 25 国库支持预算原子核对；开案按任务冻结真实 KPI 分项，D+180 重读同一 native value 并写 current/baseline/delta/达标 receipt；终态只释放容量一次 | A 全部齐备才扣国库，B 明示只给指标不给资源，C 不建支持包；资源交付不能改写任务进度 |
+| 017 | 开案冻结一名互异、无已知关系冲突且仍具天朝制公爵以上考核资格的复核人；D+365 由该角色根据 exact 中检与后续真实结果签署毕业/失败，B2 唯一 settlement 再移除 modifier、释放支持并发布下周期证据 | A 阶梯处置，B 有证据加速并留风险，C 不建处置案；经理选项不能代替独立签字 |
 | 069 | 正式送达、见证拒签、D+90 时钟与 actual settlement receipt | A/B 可结算；C 必须在任何资源写之前拦截，当前 shared caller 仍 RED |
 | 070 | 申诉后 365 日观察对象；不含后续新事实的动作暂停，真实新事实另案送达 | A 独立审查，B 冒险管理并加权反转风险，C 不建观察期 |
 | 071 | 私下/正式渠道耗尽后冻结公开证据包、哈希和 D+30 核查 | A 有界证据公开，B 追求传播并承担双边声誉成本，C 只记债 |
@@ -150,8 +150,27 @@ FAILED / RELAPSED → 新案号二次 PIP | 真实空缺转岗 | 有成本 recei
 - `zg361_b2_pip_owner/subject/cycle/case/state` 是跨周期不可变身份。后续新 result 可以更新普通 B2 当前案，但不能覆盖活动 PIP 的 #015–#017 对象；D+180、D+365、重复点击与 stale ticket 都必须复核同一五元身份。
 - `zg361b2.40` 是被考核玩家本人的唯一 PIP 回应窗，三个选择分别发布接受、协商和拒绝 receipt；经理不能替本人签字。AI subject 不弹窗，只静默调用同一 self-guarded 合法接受路径。
 - 开案前原子核对经理容量、支持工时、导师和支持预算；任一不足不得部分占用容量或扣款。
-- D+180 中检只把已实际预留的导师、12 工时和 25 国库预算记为资源交付。当前没有真实任务进度 producer，因此进度保持 `status=0/red_code=1`；支持交付绝不能冒充员工进步。
-- D+365 resolver 只判定 outcome，`zg361_b2_settle_pip_outcome_effect` 是唯一毕业/失败 writer：它一次性移除 modifier、释放支持、消费 #015/#016，并在失败时打开 #017。独立复核尚无真实 producer，保持 `independent_review_status=0/red_code=2`，不能用经理选择硬编码通过。
+- #016 在开案时先核对当前 `liege` 仍是冻结 owner，再把任务映射到官方考核同一套 native 分项：总督任务读取
+  `zg361_kpi_governance_evidence_value`，伯爵及以上地方能力任务读取 `zg361_kpi_capability_evidence_value`，男爵/default 协作任务读取
+  `zg361_kpi_collaboration_evidence_value`。选中的分项冻结为 baseline，并冻结 `target=baseline+1`、source/task kind 与
+  owner/subject/cycle/case。D+180 只有当前直属关系未漂移且
+  baseline provenance 与活动 PIP 完全一致时才重读对应分项 script value，写 current、`delta=current-baseline`、是否达到 target、
+  年份和 exact receipt；此时
+  `midpoint_progress_status=1/red_code=0`。缺字段或身份错配继续 `status=0/red_code=1`。导师、12 工时与 25 国库预算仍是另一组
+  resource-delivery receipt，任何支持字段都不参与 delta 算式，因而“给了资源”不能冒充“人有进步”。
+- #017 在开案时按固定顺序选择真实复核人：直属上司的上司 → 同一上级 cohort 中 stewardship 最高的合格经理 → 当前经理麾下
+  stewardship 最高的合格经理。三路都必须通过 `zg361_is_celestial_liege_trigger`，所以只有天朝制公爵及以上角色能复核；伯爵、男爵
+  仍只能被考核。复核人必须与 owner/subject 互异，并排除双方近亲、friend、lover、rival；不存在合格人时 assignment 保持
+  `status=0/red_code=2`，绝不创建抽象席位或让直属经理代签。
+- D+365 resolver 先逐层核对 assignment、中检 producer、后续 result 的完整 provenance；后续结果必须同 PIP owner、
+  `result_cycle>pip_cycle`、`state>=3` 且 `result_grade=last_grade`。只有全部成立，脚本才真正进入冻结 reviewer 的角色 scope：该角色在
+  自己身上留下 latest-review receipt，同时在 subject 上签署 reviewer/owner/subject/cycle/case、result provenance、midpoint delta/met、
+  conclusion 与年份。中检达到冻结 target 且后续 grade≥3.5 时记 `status=1/conclusion=1`，否则由同一真实复核人签
+  `status=2/conclusion=2`；两者都用 `red_code=0`。RED 2–7 依次表示 assignment 缺失/错配、中检缺失/错配、后续结果缺失/错配，
+  RED 时不生成 outcome、不调用 terminal writer。
+- `zg361_b2_settle_pip_outcome_effect` 仍是唯一毕业/失败 writer，但现在只消费已提交的独立复核结论；它从签署 tuple 而非
+  D+366 时的 live result 复制结果，随后一次性移除 modifier、释放支持、消费 #015/#016，并在失败时打开 #017。全部复核调度事件
+  都是 hidden，AI subject 仍只走静默 self-guarded 接受路径，不会看到玩家事件。
 - 同一真实 settlement 落地且 `state=3/4` 后，B2 只发布一格 Workforce #277 source：
   `pending/consumed + owner/subject/cycle/case/state + case_id/case_hash/closure_receipt_id/closure_receipt_hash`。case truth 来自 PIP object，
   closure truth 来自 settlement receipt 并显式绑定 `outcome_result_cycle/case`，四项都大于零且两组不复用；未消费旧 source 必须守恒。

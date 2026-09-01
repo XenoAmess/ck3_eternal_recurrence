@@ -108,8 +108,8 @@ zg361b2.61 = {
 	}
 }
 
-# #016 D+180 support receipt.  The event records real delivery facts and keeps
-# missing task-progress observation RED; it never manufactures improvement.
+# #016 D+180 support/progress receipt. The event records real delivery facts
+# and the exact native KPI delta; missing/mismatched provenance stays RED.
 zg361b2.99 = {
 	type = character_event
 	hidden = yes
@@ -132,7 +132,8 @@ zg361b2.99 = {
 	}
 }
 
-# #015/#016 D+365 outcome. Every component of the immutable ticket must match.
+# #015–017 D+365 independent outcome. Every component of the immutable ticket
+# must match before the frozen reviewer may sign a conclusion.
 zg361b2.100 = {
 	type = character_event
 	hidden = yes

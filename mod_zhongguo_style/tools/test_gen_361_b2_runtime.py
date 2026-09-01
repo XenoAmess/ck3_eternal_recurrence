@@ -1154,6 +1154,146 @@ class B2CK3RuntimeTests(unittest.TestCase):
             top_level_block(self.core, "zg361_compute_kpi_effect"),
         )
 
+    def test_016_midpoint_progress_has_a_real_kpi_producer_and_exact_provenance(self) -> None:
+        pip = top_level_block(self.effects, "zg361_b2_m015_open_pip_effect")
+        for token in (
+            "zg361_b2_pip_progress_source_kind value = 1",
+            "zg361_b2_pip_progress_source_kind value = 2",
+            "zg361_b2_pip_progress_source_kind value = 3",
+            "zg361_b2_pip_progress_baseline_owner value = var:zg361_b2_case_owner",
+            "zg361_b2_pip_progress_baseline_subject value = this",
+            "zg361_b2_pip_progress_baseline_cycle value = var:zg361_b2_case_cycle",
+            "zg361_b2_pip_progress_baseline_case value = var:zg361_b2_case_serial",
+            "liege = var:zg361_b2_case_owner",
+            "zg361_b2_pip_progress_baseline_value value = zg361_kpi_governance_evidence_value",
+            "zg361_b2_pip_progress_baseline_value value = zg361_kpi_capability_evidence_value",
+            "zg361_b2_pip_progress_baseline_value value = zg361_kpi_collaboration_evidence_value",
+            "value = zg361_kpi_governance_evidence_value add = 1",
+            "value = zg361_kpi_capability_evidence_value add = 1",
+            "value = zg361_kpi_collaboration_evidence_value add = 1",
+            "zg361_b2_pip_progress_baseline_status value = 0",
+            "zg361_b2_pip_progress_baseline_red_code value = 1",
+            "zg361_b2_pip_progress_baseline_status value = 1",
+            "zg361_b2_pip_progress_baseline_red_code value = 0",
+        ):
+            self.assertIn(token, pip)
+        # Baron/count subjects remain controllable: only the task-kind branch
+        # changes, while every tier receives the same native KPI producer.
+        self.assertIn("zg361_b2_pip_progress_baseline_task_kind value = 3", pip)
+        self.assertIn("highest_held_title_tier >= tier_county", pip)
+
+        midpoint = top_level_block(
+            self.effects, "zg361_b2_record_pip_midpoint_effect"
+        )
+        for field in (
+            "owner",
+            "subject",
+            "cycle",
+            "case",
+            "task_kind",
+        ):
+            self.assertIn(
+                f"zg361_b2_pip_midpoint_progress_{field}", midpoint
+            )
+        for token in (
+            "has_variable = zg361_b2_pip_progress_baseline_value",
+            "var:zg361_b2_pip_progress_baseline_owner = var:zg361_b2_pip_owner",
+            "var:zg361_b2_pip_progress_baseline_subject = this",
+            "var:zg361_b2_pip_progress_baseline_cycle = var:zg361_b2_pip_cycle",
+            "var:zg361_b2_pip_progress_baseline_case = var:zg361_b2_pip_case",
+            "var:zg361_b2_pip_progress_source_kind = var:zg361_b2_pip_progress_baseline_task_kind",
+            "liege = var:zg361_b2_pip_owner",
+            "zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_governance_evidence_value",
+            "zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_capability_evidence_value",
+            "zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_collaboration_evidence_value",
+            "value = var:zg361_b2_pip_midpoint_progress_current_value subtract = var:zg361_b2_pip_progress_baseline_value",
+            "var:zg361_b2_pip_midpoint_progress_current_value >= var:zg361_b2_pip_progress_target_value",
+            "zg361_b2_pip_midpoint_progress_status value = 1",
+            "zg361_b2_pip_midpoint_progress_red_code value = 0",
+        ):
+            self.assertIn(token, midpoint)
+        # The two facts are adjacent products, not aliases: no support write is
+        # used in the KPI delta expression.
+        delta_write = midpoint[
+            midpoint.index("name = zg361_b2_pip_midpoint_progress_delta") :
+            midpoint.index("name = zg361_b2_pip_midpoint_progress_met")
+        ]
+        self.assertNotIn("support_", delta_write)
+
+    def test_017_due_review_is_signed_by_a_real_independent_manager(self) -> None:
+        assign = top_level_block(
+            self.effects, "zg361_b2_assign_pip_independent_reviewer_effect"
+        )
+        for token in (
+            "zg361_is_celestial_liege_trigger = yes",
+            "is_available = yes",
+            "is_imprisoned = no",
+            "NOT = { this = scope:zg361_b2_pip_review_owner }",
+            "NOT = { this = scope:zg361_b2_pip_review_subject }",
+            "NOT = { is_close_family_of = scope:zg361_b2_pip_review_owner }",
+            "NOT = { is_close_family_of = scope:zg361_b2_pip_review_subject }",
+            "NOT = { has_relation_friend = scope:zg361_b2_pip_review_owner }",
+            "order_by = stewardship",
+            "zg361_b2_pip_reviewer_assignment_status value = 1",
+            "zg361_b2_pip_reviewer_assignment_red_code value = 0",
+            "zg361_b2_pip_reviewer_assignment_receipt value = var:zg361_b2_case_serial",
+        ):
+            self.assertIn(token, assign)
+        self.assertNotIn("trigger_event", assign)
+        self.assertNotIn("random_", assign)
+
+        due_event = top_level_block(self.events, "zg361b2.100")
+        self.assertIn("hidden = yes", due_event)
+        self.assertNotIn("option =", due_event)
+
+        resolve = top_level_block(self.effects, "zg361_b2_resolve_pip_due_effect")
+        for token in (
+            "zg361_b2_pip_independent_review_status value = 0",
+            "zg361_b2_pip_independent_review_red_code value = 2",
+            "var:zg361_b2_pip_reviewer_assignment_owner = var:zg361_b2_pip_owner",
+            "var:zg361_b2_pip_reviewer_assignment_subject = this",
+            "var:zg361_b2_pip_reviewer_assignment_cycle = var:zg361_b2_pip_cycle",
+            "var:zg361_b2_pip_reviewer_assignment_case = var:zg361_b2_pip_case",
+            "var:zg361_b2_pip_midpoint_progress_status = 1",
+            "var:zg361_b2_pip_midpoint_progress_red_code = 0",
+            "var:zg361_result_case_owner = var:zg361_b2_pip_owner",
+            "var:zg361_result_cycle_serial > var:zg361_b2_pip_cycle",
+            "var:zg361_result_case_state >= 3",
+            "var:zg361_result_grade = var:zg361_last_grade",
+            "var:zg361_b2_pip_independent_reviewer = {",
+            "zg361_b2_last_pip_review_subject value = root",
+            "zg361_b2_pip_independent_review_result_case value = var:zg361_result_case_serial",
+            "var:zg361_b2_pip_midpoint_progress_met = 1",
+            "zg361_b2_pip_independent_review_status value = 1",
+            "zg361_b2_pip_independent_review_status value = 2",
+            "zg361_b2_pip_independent_review_red_code value = 0",
+            "zg361_b2_pip_independent_review_receipt value = var:zg361_b2_pip_case",
+        ):
+            self.assertIn(token, resolve)
+        self.assertLess(
+            resolve.index("var:zg361_b2_pip_independent_reviewer = {"),
+            resolve.index("trigger_event = { id = zg361b2.101 days = 1 }"),
+        )
+
+        settlement = top_level_block(
+            self.effects, "zg361_b2_settle_pip_outcome_effect"
+        )
+        for token in (
+            "trigger_if = {",
+            "has_variable = zg361_b2_pip_independent_review_receipt",
+            "var:zg361_b2_pip_independent_review_reviewer = var:zg361_b2_pip_independent_reviewer",
+            "var:zg361_b2_pip_independent_review_result_cycle > var:zg361_b2_pip_cycle",
+            "var:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case",
+            "zg361_b2_pip_outcome_result_cycle value = var:zg361_b2_pip_independent_review_result_cycle",
+            "zg361_b2_pip_outcome_result_case value = var:zg361_b2_pip_independent_review_result_case",
+            "zg361_b2_pip_outcome_result_grade value = var:zg361_b2_pip_independent_review_result_grade",
+        ):
+            self.assertIn(token, settlement)
+        self.assertNotIn(
+            "set_variable = { name = zg361_b2_pip_independent_review_status",
+            settlement,
+        )
+
     def test_second_pip_resets_author_then_accepts_negotiates_or_refuses(self) -> None:
         reset = top_level_block(
             self.effects, "zg361_b2_clear_pip_case_tuple_effect"
@@ -1353,8 +1493,12 @@ class B2CK3RuntimeTests(unittest.TestCase):
         ), 1)
         midpoint = top_level_block(self.effects, "zg361_b2_record_pip_midpoint_effect")
         self.assertIn("zg361_b2_pip_midpoint_resource_delivery_valid value = 1", midpoint)
+        # RED is the fail-closed initialization; an exact baseline tuple now
+        # reaches the real native KPI producer and clears it.
         self.assertIn("zg361_b2_pip_midpoint_progress_status value = 0", midpoint)
         self.assertIn("zg361_b2_pip_midpoint_progress_red_code value = 1", midpoint)
+        self.assertIn("zg361_b2_pip_midpoint_progress_status value = 1", midpoint)
+        self.assertIn("zg361_b2_pip_midpoint_progress_red_code value = 0", midpoint)
         midpoint_event = top_level_block(self.events, "zg361b2.99")
         for suffix in ("owner", "subject", "cycle", "case", "state"):
             self.assertIn(f"zg361_b2_pip_{suffix} = scope:zg361_b2_pip_deadline_{suffix}", midpoint_event)

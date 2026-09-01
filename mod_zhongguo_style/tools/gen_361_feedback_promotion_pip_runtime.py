@@ -2932,6 +2932,36 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\tset_variable = {{ name = {p}_progress_truth_status value = 0 }}
 \t\t\t\tset_variable = {{ name = {p}_progress_red_code value = 1 }}
 \t\t\t\tset_variable = {{ name = {p}_resource_delivery_valid value = 0 }}
+\t\t\t\t# #185 projects only B2's exact D+180 producer. Missing or stale
+\t\t\t\t# provenance retains the typed RED initialized above.
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_receipt
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_status
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_red_code
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_owner
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_subject
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_cycle
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_case
+\t\t\t\t\t\thas_variable = zg361_b2_pip_midpoint_progress_delta
+\t\t\t\t\t}}
+\t\t\t\t\tif = {{
+\t\t\t\t\t\tlimit = {{
+\t\t\t\t\t\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
+\t\t\t\t\t\t\tvar:zg361_b2_pip_subject = this
+\t\t\t\t\t\t\tvar:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+\t\t\t\t\t\t\tvar:zg361_b2_pip_case = var:zg361_case_w_case_serial
+\t\t\t\t\t\t\tvar:zg361_b2_pip_midpoint_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t\t\tvar:zg361_b2_pip_midpoint_progress_owner = var:zg361_b2_pip_owner
+\t\t\t\t\t\t\tvar:zg361_b2_pip_midpoint_progress_subject = this
+\t\t\t\t\t\t\tvar:zg361_b2_pip_midpoint_progress_cycle = var:zg361_b2_pip_cycle
+\t\t\t\t\t\t\tvar:zg361_b2_pip_midpoint_progress_case = var:zg361_b2_pip_case
+\t\t\t\t\t\t}}
+\t\t\t\t\t\tset_variable = {{ name = {p}_progress_snapshot value = var:zg361_b2_pip_midpoint_progress_delta }}
+\t\t\t\t\t\tset_variable = {{ name = {p}_progress_truth_status value = var:zg361_b2_pip_midpoint_progress_status }}
+\t\t\t\t\t\tset_variable = {{ name = {p}_progress_red_code value = var:zg361_b2_pip_midpoint_progress_red_code }}
+\t\t\t\t\t}}
+\t\t\t\t}}
 \t\t\t\tif = {{
 \t\t\t\t\tlimit = {{
 \t\t\t\t\t\tvar:zg361_b2_pip_owner = var:zg361_case_w_owner
@@ -2969,6 +2999,9 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\t\t\tvar:zg361_b2_pip_state = 3
 \t\t\t\t\t\tvar:zg361_b2_pip_graduation_receipt = var:zg361_b2_pip_case
 \t\t\t\t\t\tvar:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t\tvar:zg361_b2_pip_independent_review_status = 1
+\t\t\t\t\t\tvar:zg361_b2_pip_independent_review_red_code = 0
+\t\t\t\t\t\tvar:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case
 \t\t\t\t\t}}
 \t\t\t\t\tset_variable = {{ name = {p}_key_milestones_met value = 1 }}
 \t\t\t\t\tset_variable = {{ name = {p}_stability_days_observed value = var:zg361_b2_pip_stability_days_observed }}
@@ -2985,7 +3018,14 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\t\t\tvar:zg361_b2_pip_state = 4
 \t\t\t\t\t\tvar:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
 \t\t\t\t\t\tvar:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+\t\t\t\t\t\tvar:zg361_b2_pip_independent_review_status = 2
+\t\t\t\t\t\tvar:zg361_b2_pip_independent_review_red_code = 0
+\t\t\t\t\t\tvar:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case
 \t\t\t\t\t}}
+\t\t\t\t\tset_variable = {{ name = {p}_key_milestones_met value = 0 }}
+\t\t\t\t\tset_variable = {{ name = {p}_stability_days_observed value = var:zg361_b2_pip_stability_days_observed }}
+\t\t\t\t\tset_variable = {{ name = {p}_independent_review_pass value = var:zg361_b2_pip_independent_review_status }}
+\t\t\t\t\tset_variable = {{ name = {p}_independent_review_red_code value = var:zg361_b2_pip_independent_review_red_code }}
 \t\t\t\t\tset_variable = {{ name = {p}_graduation_status value = 2 }}
 \t\t\t\t\tif = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_appeal_weight value = 1 }} }}
 \t\t\t\t}}

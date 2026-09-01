@@ -6491,6 +6491,36 @@ zg361pp.2185 = {
 				set_variable = { name = zg361_pp_m185_progress_truth_status value = 0 }
 				set_variable = { name = zg361_pp_m185_progress_red_code value = 1 }
 				set_variable = { name = zg361_pp_m185_resource_delivery_valid value = 0 }
+				# #185 projects only B2's exact D+180 producer. Missing or stale
+				# provenance retains the typed RED initialized above.
+				if = {
+					limit = {
+						has_variable = zg361_b2_pip_midpoint_receipt
+						has_variable = zg361_b2_pip_midpoint_progress_status
+						has_variable = zg361_b2_pip_midpoint_progress_red_code
+						has_variable = zg361_b2_pip_midpoint_progress_owner
+						has_variable = zg361_b2_pip_midpoint_progress_subject
+						has_variable = zg361_b2_pip_midpoint_progress_cycle
+						has_variable = zg361_b2_pip_midpoint_progress_case
+						has_variable = zg361_b2_pip_midpoint_progress_delta
+					}
+					if = {
+						limit = {
+							var:zg361_b2_pip_owner = var:zg361_case_w_owner
+							var:zg361_b2_pip_subject = this
+							var:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+							var:zg361_b2_pip_case = var:zg361_case_w_case_serial
+							var:zg361_b2_pip_midpoint_receipt = var:zg361_b2_pip_case
+							var:zg361_b2_pip_midpoint_progress_owner = var:zg361_b2_pip_owner
+							var:zg361_b2_pip_midpoint_progress_subject = this
+							var:zg361_b2_pip_midpoint_progress_cycle = var:zg361_b2_pip_cycle
+							var:zg361_b2_pip_midpoint_progress_case = var:zg361_b2_pip_case
+						}
+						set_variable = { name = zg361_pp_m185_progress_snapshot value = var:zg361_b2_pip_midpoint_progress_delta }
+						set_variable = { name = zg361_pp_m185_progress_truth_status value = var:zg361_b2_pip_midpoint_progress_status }
+						set_variable = { name = zg361_pp_m185_progress_red_code value = var:zg361_b2_pip_midpoint_progress_red_code }
+					}
+				}
 				if = {
 					limit = {
 						var:zg361_b2_pip_owner = var:zg361_case_w_owner
@@ -6610,6 +6640,9 @@ zg361pp.2187 = {
 						var:zg361_b2_pip_state = 3
 						var:zg361_b2_pip_graduation_receipt = var:zg361_b2_pip_case
 						var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+						var:zg361_b2_pip_independent_review_status = 1
+						var:zg361_b2_pip_independent_review_red_code = 0
+						var:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case
 					}
 					set_variable = { name = zg361_pp_m187_key_milestones_met value = 1 }
 					set_variable = { name = zg361_pp_m187_stability_days_observed value = var:zg361_b2_pip_stability_days_observed }
@@ -6626,7 +6659,14 @@ zg361pp.2187 = {
 						var:zg361_b2_pip_state = 4
 						var:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
 						var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+						var:zg361_b2_pip_independent_review_status = 2
+						var:zg361_b2_pip_independent_review_red_code = 0
+						var:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case
 					}
+					set_variable = { name = zg361_pp_m187_key_milestones_met value = 0 }
+					set_variable = { name = zg361_pp_m187_stability_days_observed value = var:zg361_b2_pip_stability_days_observed }
+					set_variable = { name = zg361_pp_m187_independent_review_pass value = var:zg361_b2_pip_independent_review_status }
+					set_variable = { name = zg361_pp_m187_independent_review_red_code value = var:zg361_b2_pip_independent_review_red_code }
 					set_variable = { name = zg361_pp_m187_graduation_status value = 2 }
 					if = { limit = { var:zg361_pp_m187_route = 2 } set_variable = { name = zg361_pp_m187_appeal_weight value = 1 } }
 				}

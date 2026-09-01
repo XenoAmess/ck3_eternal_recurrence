@@ -144,16 +144,17 @@ P1 的 C 审计为 D+90；P2 的 #147、#149、#154、#155、#161、#162、#166�
 | 182 | 只投影 B2 唯一 evidence gate 的 count/threshold/status 与五元身份 | 正式开案门由 B2 决定；3.25 本身不是充分条件，经理只能审阅或记录 override attempt |
 | 183 | 目标/资源/期限与经理程序签署；本人签字只读取 B2 `subject_response/author/case` | 经理不能替员工签字、不能把路线选择硬编码为进步；拒签也只由 B2 结算后果 |
 | 184 | 只投影 B2 已预留的支持容量、导师工时、预算与 support receipt | PP 不再拥有第二份 `pip_capacity`，不负责预留或释放容量 |
-| 185 | D+180 记录 B2 真实资源交付；真实任务进度缺失时 `progress_truth_status=0/red_code=1` | 经理路线只决定中检程序，不能制造进步或毕业 |
+| 185 | D+180 只投影 B2 exact midpoint receipt：按任务选择的真实 governance/capability/collaboration KPI 分项之 current-baseline delta 与资源交付分列；producer 缺失/错配才保持 `progress_truth_status=0/red_code=1` | 经理路线只决定中检程序，不能制造进步、改写 delta 或毕业 |
 | 186 | 工作量三个数值保持 0，`workload_truth_status=0/red_code=1`，直至有真实 workload producer | 经理可记录程序选择，但不能用常数伪造基线或膨胀 |
-| 187 | D+366 只读取 B2 唯一 settlement 的毕业/失败 receipt、365 日稳定值与独立复核 typed RED | PP 不结算、不释放容量、不写 3.75；经理路线只决定审阅程序 |
+| 187 | D+366 只读取 B2 唯一 settlement 的毕业/失败 receipt、365 日稳定值与真实独立 reviewer 签署状态；毕业要求 status=1，失败要求 status=2，二者都必须 `red_code=0` 且 receipt 命中同一 PIP | PP 不结算、不释放容量、不写 3.75；经理路线只决定审阅程序，不能代签 |
 | 188 | 一周期观察、问题类别、过度标签风险 | 只对同类复发升级；新问题另开案 |
 | 189 | 二次 PIP/真实空缺转岗/退出三选一、成本 | 终局页只接受一个互斥终态 |
 | 190 | 接收经理 ACL、最小字段、本人陈述 | 转岗包不改旧档位、不扩散私人 ID |
 | 191 | 空缺、交接、加班、补员付款与净额 | 团队成本单和经理记分卡消费同一净成本 |
 
-W 的时间不是卡片标题上的装饰：#185 选项只建立中检义务，D+180 audit 才记录 B2 资源交付并放行下一阶段；#187
-只建立经理审阅程序，D+366 audit 才读取已经由 B2 D+365 settlement 写成的毕业/失败、稳定期与独立复核状态；#188 卡在阶段开启 D+1 作答，D+365 audit
+W 的时间不是卡片标题上的装饰：#185 选项只建立中检义务，D+180 audit 才读取 B2 已提交的 exact progress/resource
+receipt 并放行下一阶段；progress 初始 RED 不能由 PP 路线清零。#187 只建立经理审阅程序，D+366 audit 才读取已经由 B2 D+365
+真实 reviewer 结论和唯一 settlement 写成的毕业/失败、稳定期与签署 receipt；PP 只复制 B2 status/red，不产生第二个 reviewer。#188 卡在阶段开启 D+1 作答，D+365 audit
 因此发生在阶段 D+366，并逐项冻结下一轮 result 五元身份、档位、理由与派生问题类别。证据路线只有同类 3.25 才算
 复发，政治路线把任意新 3.25 贴为复发但留下过度标签风险；没有复发时 #189 以明确 `not-applicable` receipt 关闭，
 不会硬塞二次 PIP。首轮 PIP 已失败时则反过来：#188 以 `not-applicable/first-failure` receipt 立即关闭，不伪造“毕业后

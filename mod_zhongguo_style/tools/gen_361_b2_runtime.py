@@ -46,6 +46,26 @@ PIP_CASE_TUPLE_FIELDS = (
     "zg361_b2_pip_task_kind",
     "zg361_b2_pip_task_controllable",
     "zg361_b2_pip_policy_route",
+    "zg361_b2_pip_progress_source_kind",
+    "zg361_b2_pip_progress_baseline_owner",
+    "zg361_b2_pip_progress_baseline_subject",
+    "zg361_b2_pip_progress_baseline_cycle",
+    "zg361_b2_pip_progress_baseline_case",
+    "zg361_b2_pip_progress_baseline_task_kind",
+    "zg361_b2_pip_progress_baseline_value",
+    "zg361_b2_pip_progress_target_value",
+    "zg361_b2_pip_progress_baseline_year",
+    "zg361_b2_pip_progress_baseline_status",
+    "zg361_b2_pip_progress_baseline_red_code",
+    "zg361_b2_pip_independent_reviewer",
+    "zg361_b2_pip_reviewer_assignment_owner",
+    "zg361_b2_pip_reviewer_assignment_subject",
+    "zg361_b2_pip_reviewer_assignment_cycle",
+    "zg361_b2_pip_reviewer_assignment_case",
+    "zg361_b2_pip_reviewer_assignment_source",
+    "zg361_b2_pip_reviewer_assignment_status",
+    "zg361_b2_pip_reviewer_assignment_red_code",
+    "zg361_b2_pip_reviewer_assignment_receipt",
     "zg361_b2_m015_receipt_serial",
     "zg361_b2_pip_subject_response",
     "zg361_b2_pip_subject_response_case",
@@ -71,6 +91,16 @@ PIP_CASE_TUPLE_FIELDS = (
     "zg361_b2_pip_midpoint_resource_delivery_valid",
     "zg361_b2_pip_midpoint_progress_status",
     "zg361_b2_pip_midpoint_progress_red_code",
+    "zg361_b2_pip_midpoint_progress_source_kind",
+    "zg361_b2_pip_midpoint_progress_owner",
+    "zg361_b2_pip_midpoint_progress_subject",
+    "zg361_b2_pip_midpoint_progress_cycle",
+    "zg361_b2_pip_midpoint_progress_case",
+    "zg361_b2_pip_midpoint_progress_task_kind",
+    "zg361_b2_pip_midpoint_progress_current_value",
+    "zg361_b2_pip_midpoint_progress_delta",
+    "zg361_b2_pip_midpoint_progress_met",
+    "zg361_b2_pip_midpoint_progress_year",
     "zg361_b2_pip_midpoint_state",
     "zg361_b2_pip_outcome_code",
     "zg361_b2_pip_settlement_receipt",
@@ -80,6 +110,20 @@ PIP_CASE_TUPLE_FIELDS = (
     "zg361_b2_pip_stability_days_observed",
     "zg361_b2_pip_independent_review_status",
     "zg361_b2_pip_independent_review_red_code",
+    "zg361_b2_pip_independent_review_reviewer",
+    "zg361_b2_pip_independent_review_owner",
+    "zg361_b2_pip_independent_review_subject",
+    "zg361_b2_pip_independent_review_cycle",
+    "zg361_b2_pip_independent_review_case",
+    "zg361_b2_pip_independent_review_result_owner",
+    "zg361_b2_pip_independent_review_result_cycle",
+    "zg361_b2_pip_independent_review_result_case",
+    "zg361_b2_pip_independent_review_result_grade",
+    "zg361_b2_pip_independent_review_progress_delta",
+    "zg361_b2_pip_independent_review_progress_met",
+    "zg361_b2_pip_independent_review_conclusion",
+    "zg361_b2_pip_independent_review_receipt",
+    "zg361_b2_pip_independent_review_year",
     "zg361_b2_pip_graduation_receipt",
     "zg361_b2_pip_failure_receipt",
     "zg361_b2_pip_no_support_liability",
@@ -781,6 +825,119 @@ zg361_b2_m081_publish_case_projection_effect = {
 # #015–#017: bounded PIP opened only after the existing settlement receipt.
 # ---------------------------------------------------------------------------
 
+# Freeze one real, non-manager-authored reviewer at case creation.  The
+# superior-of-owner route is preferred; a same-level manager in the superior's
+# cohort and then an eligible manager vassal are deterministic fallbacks.  All
+# routes exclude both frozen parties and observable close/personal conflicts.
+# No abstract review seat and no manager choice can satisfy this producer.
+zg361_b2_assign_pip_independent_reviewer_effect = {
+	set_variable = { name = zg361_b2_pip_reviewer_assignment_owner value = var:zg361_b2_case_owner }
+	set_variable = { name = zg361_b2_pip_reviewer_assignment_subject value = this }
+	set_variable = { name = zg361_b2_pip_reviewer_assignment_cycle value = var:zg361_b2_case_cycle }
+	set_variable = { name = zg361_b2_pip_reviewer_assignment_case value = var:zg361_b2_case_serial }
+	set_variable = { name = zg361_b2_pip_reviewer_assignment_status value = 0 }
+	set_variable = { name = zg361_b2_pip_reviewer_assignment_red_code value = 2 } # no eligible real reviewer
+	remove_variable = zg361_b2_pip_independent_reviewer
+	remove_variable = zg361_b2_pip_reviewer_assignment_source
+	remove_variable = zg361_b2_pip_reviewer_assignment_receipt
+	save_temporary_scope_as = zg361_b2_pip_review_subject
+	var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_pip_review_owner }
+	if = {
+		limit = {
+			scope:zg361_b2_pip_review_owner = {
+				exists = liege
+				liege = {
+					zg361_is_celestial_liege_trigger = yes
+					is_available = yes
+					is_imprisoned = no
+					NOT = { this = scope:zg361_b2_pip_review_owner }
+					NOT = { this = scope:zg361_b2_pip_review_subject }
+					NOT = { is_close_family_of = scope:zg361_b2_pip_review_owner }
+					NOT = { is_close_family_of = scope:zg361_b2_pip_review_subject }
+					NOT = { has_relation_friend = scope:zg361_b2_pip_review_owner }
+					NOT = { has_relation_lover = scope:zg361_b2_pip_review_owner }
+					NOT = { has_relation_rival = scope:zg361_b2_pip_review_owner }
+					NOT = { has_relation_friend = scope:zg361_b2_pip_review_subject }
+					NOT = { has_relation_lover = scope:zg361_b2_pip_review_subject }
+					NOT = { has_relation_rival = scope:zg361_b2_pip_review_subject }
+				}
+			}
+		}
+		scope:zg361_b2_pip_review_owner = { liege = { save_scope_as = zg361_b2_pip_review_candidate } }
+		set_variable = { name = zg361_b2_pip_reviewer_assignment_source value = 1 } # owner's superior
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:zg361_b2_pip_review_candidate }
+			scope:zg361_b2_pip_review_owner = { exists = liege }
+		}
+		scope:zg361_b2_pip_review_owner = {
+			liege = {
+				ordered_vassal = {
+					limit = {
+						zg361_is_celestial_liege_trigger = yes
+						is_available = yes
+						is_imprisoned = no
+						NOT = { this = scope:zg361_b2_pip_review_owner }
+						NOT = { this = scope:zg361_b2_pip_review_subject }
+						NOT = { is_close_family_of = scope:zg361_b2_pip_review_owner }
+						NOT = { is_close_family_of = scope:zg361_b2_pip_review_subject }
+						NOT = { has_relation_friend = scope:zg361_b2_pip_review_owner }
+						NOT = { has_relation_lover = scope:zg361_b2_pip_review_owner }
+						NOT = { has_relation_rival = scope:zg361_b2_pip_review_owner }
+						NOT = { has_relation_friend = scope:zg361_b2_pip_review_subject }
+						NOT = { has_relation_lover = scope:zg361_b2_pip_review_subject }
+						NOT = { has_relation_rival = scope:zg361_b2_pip_review_subject }
+					}
+					order_by = stewardship
+					position = 0
+					save_scope_as = zg361_b2_pip_review_candidate
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:zg361_b2_pip_review_candidate }
+			set_variable = { name = zg361_b2_pip_reviewer_assignment_source value = 2 } # peer manager
+		}
+	}
+	if = {
+		limit = { NOT = { exists = scope:zg361_b2_pip_review_candidate } }
+		scope:zg361_b2_pip_review_owner = {
+			ordered_vassal = {
+				limit = {
+					zg361_is_celestial_liege_trigger = yes
+					is_available = yes
+					is_imprisoned = no
+					NOT = { this = scope:zg361_b2_pip_review_owner }
+					NOT = { this = scope:zg361_b2_pip_review_subject }
+					NOT = { is_close_family_of = scope:zg361_b2_pip_review_owner }
+					NOT = { is_close_family_of = scope:zg361_b2_pip_review_subject }
+					NOT = { has_relation_friend = scope:zg361_b2_pip_review_owner }
+					NOT = { has_relation_lover = scope:zg361_b2_pip_review_owner }
+					NOT = { has_relation_rival = scope:zg361_b2_pip_review_owner }
+					NOT = { has_relation_friend = scope:zg361_b2_pip_review_subject }
+					NOT = { has_relation_lover = scope:zg361_b2_pip_review_subject }
+					NOT = { has_relation_rival = scope:zg361_b2_pip_review_subject }
+				}
+				order_by = stewardship
+				position = 0
+				save_scope_as = zg361_b2_pip_review_candidate
+			}
+		}
+		if = {
+			limit = { exists = scope:zg361_b2_pip_review_candidate }
+			set_variable = { name = zg361_b2_pip_reviewer_assignment_source value = 3 } # eligible subordinate manager
+		}
+	}
+	if = {
+		limit = { exists = scope:zg361_b2_pip_review_candidate }
+		set_variable = { name = zg361_b2_pip_independent_reviewer value = scope:zg361_b2_pip_review_candidate }
+		set_variable = { name = zg361_b2_pip_reviewer_assignment_status value = 1 }
+		set_variable = { name = zg361_b2_pip_reviewer_assignment_red_code value = 0 }
+		set_variable = { name = zg361_b2_pip_reviewer_assignment_receipt value = var:zg361_b2_case_serial }
+	}
+}
+
 zg361_b2_m015_open_pip_effect = {
 	# #182 and every later PP projection consume this frozen gate.  Presence of
 	# an evidence field is not evidence: forced-distribution 3.25 with a healthy
@@ -852,18 +1009,55 @@ zg361_b2_m015_open_pip_effect = {
 		zg361_b2_m015_open_business_object_effect = yes
 		if = {
 			limit = { var:zg361_b2_m015_object_active = 1 }
-			set_variable = { name = zg361_b2_pip_state value = 1 } # acknowledgement pending
+		set_variable = { name = zg361_b2_pip_state value = 1 } # acknowledgement pending
 		set_variable = { name = zg361_b2_pip_task_kind value = 3 } # collaboration/default
+		set_variable = { name = zg361_b2_pip_progress_baseline_task_kind value = 3 }
+		set_variable = { name = zg361_b2_pip_progress_source_kind value = 3 } # collaboration component
 		if = {
 			limit = { is_governor = yes }
 			set_variable = { name = zg361_b2_pip_task_kind value = 1 } # governance, subject-controllable
+			set_variable = { name = zg361_b2_pip_progress_baseline_task_kind value = 1 }
+			set_variable = { name = zg361_b2_pip_progress_source_kind value = 1 } # governance component
 		}
 		else_if = {
 			limit = { highest_held_title_tier >= tier_county }
 			set_variable = { name = zg361_b2_pip_task_kind value = 2 } # local capability
+			set_variable = { name = zg361_b2_pip_progress_baseline_task_kind value = 2 }
+			set_variable = { name = zg361_b2_pip_progress_source_kind value = 2 } # capability component
 		}
 		set_variable = { name = zg361_b2_pip_task_controllable value = 1 }
 		set_variable = { name = zg361_b2_pip_policy_route value = var:zg361_b2_m015_route }
+		# #016 task progress is a real, subject-scoped observation mapped to one
+		# official KPI component: governor→governance, county+→capability and
+		# barony/default→collaboration. Manager policy never writes either endpoint.
+		set_variable = { name = zg361_b2_pip_progress_baseline_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_pip_progress_baseline_subject value = this }
+		set_variable = { name = zg361_b2_pip_progress_baseline_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_pip_progress_baseline_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_pip_progress_baseline_status value = 0 }
+		set_variable = { name = zg361_b2_pip_progress_baseline_red_code value = 1 }
+		if = {
+			limit = {
+				exists = liege
+				liege = var:zg361_b2_case_owner
+			}
+			set_variable = { name = zg361_b2_pip_progress_baseline_value value = zg361_kpi_collaboration_evidence_value }
+			set_variable = { name = zg361_b2_pip_progress_target_value value = { value = zg361_kpi_collaboration_evidence_value add = 1 } }
+			if = {
+				limit = { is_governor = yes }
+				set_variable = { name = zg361_b2_pip_progress_baseline_value value = zg361_kpi_governance_evidence_value }
+				set_variable = { name = zg361_b2_pip_progress_target_value value = { value = zg361_kpi_governance_evidence_value add = 1 } }
+			}
+			else_if = {
+				limit = { highest_held_title_tier >= tier_county }
+				set_variable = { name = zg361_b2_pip_progress_baseline_value value = zg361_kpi_capability_evidence_value }
+				set_variable = { name = zg361_b2_pip_progress_target_value value = { value = zg361_kpi_capability_evidence_value add = 1 } }
+			}
+			set_variable = { name = zg361_b2_pip_progress_baseline_year value = current_year }
+			set_variable = { name = zg361_b2_pip_progress_baseline_status value = 1 }
+			set_variable = { name = zg361_b2_pip_progress_baseline_red_code value = 0 }
+		}
+		zg361_b2_assign_pip_independent_reviewer_effect = yes
 		set_variable = { name = zg361_b2_pip_support_reserved value = 0 }
 		set_variable = { name = zg361_b2_pip_support_absent value = 0 }
 		set_variable = { name = zg361_b2_pip_support_budget_allocated value = 0 }
@@ -1115,11 +1309,65 @@ zg361_b2_record_pip_midpoint_effect = {
 			}
 			set_variable = { name = zg361_b2_pip_midpoint_resource_delivery_valid value = 1 }
 		}
-		# CK3 currently exposes no real task-progress producer for this product.
-		# Keep that missing observation typed and visible; support delivery is not
-		# allowed to masquerade as employee progress.
+		# Fail closed until the immutable baseline provenance matches this exact
+		# PIP.  The producer then re-evaluates the subject's real eight-component
+		# KPI and records current-baseline; support delivery is a separate fact and
+		# can never manufacture this delta.
 		set_variable = { name = zg361_b2_pip_midpoint_progress_status value = 0 }
 		set_variable = { name = zg361_b2_pip_midpoint_progress_red_code value = 1 }
+		if = {
+			limit = {
+				has_variable = zg361_b2_pip_progress_source_kind
+				has_variable = zg361_b2_pip_progress_baseline_owner
+				has_variable = zg361_b2_pip_progress_baseline_subject
+				has_variable = zg361_b2_pip_progress_baseline_cycle
+				has_variable = zg361_b2_pip_progress_baseline_case
+				has_variable = zg361_b2_pip_progress_baseline_task_kind
+				has_variable = zg361_b2_pip_progress_baseline_value
+				has_variable = zg361_b2_pip_progress_target_value
+				has_variable = zg361_b2_pip_progress_baseline_status
+				has_variable = zg361_b2_pip_progress_baseline_red_code
+				var:zg361_b2_pip_progress_source_kind = var:zg361_b2_pip_progress_baseline_task_kind
+				var:zg361_b2_pip_progress_source_kind >= 1
+				var:zg361_b2_pip_progress_source_kind <= 3
+				var:zg361_b2_pip_progress_baseline_owner = var:zg361_b2_pip_owner
+				var:zg361_b2_pip_progress_baseline_subject = this
+				var:zg361_b2_pip_progress_baseline_cycle = var:zg361_b2_pip_cycle
+				var:zg361_b2_pip_progress_baseline_case = var:zg361_b2_pip_case
+				var:zg361_b2_pip_progress_baseline_task_kind = var:zg361_b2_pip_task_kind
+				var:zg361_b2_pip_progress_baseline_status = 1
+				var:zg361_b2_pip_progress_baseline_red_code = 0
+				exists = liege
+				liege = var:zg361_b2_pip_owner
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_progress_source_kind value = var:zg361_b2_pip_progress_source_kind }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_owner value = var:zg361_b2_pip_owner }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_subject value = this }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_cycle value = var:zg361_b2_pip_cycle }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_case value = var:zg361_b2_pip_case }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_task_kind value = var:zg361_b2_pip_task_kind }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_collaboration_evidence_value }
+			if = {
+				limit = { var:zg361_b2_pip_progress_source_kind = 1 }
+				set_variable = { name = zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_governance_evidence_value }
+			}
+			else_if = {
+				limit = { var:zg361_b2_pip_progress_source_kind = 2 }
+				set_variable = { name = zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_capability_evidence_value }
+			}
+			set_variable = {
+				name = zg361_b2_pip_midpoint_progress_delta
+				value = { value = var:zg361_b2_pip_midpoint_progress_current_value subtract = var:zg361_b2_pip_progress_baseline_value }
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_progress_met value = 0 }
+			if = {
+				limit = { var:zg361_b2_pip_midpoint_progress_current_value >= var:zg361_b2_pip_progress_target_value }
+				set_variable = { name = zg361_b2_pip_midpoint_progress_met value = 1 }
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_progress_year value = current_year }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_status value = 1 }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_red_code value = 0 }
+		}
 		set_variable = { name = zg361_b2_pip_midpoint_state value = 2 }
 	}
 }
@@ -1143,25 +1391,151 @@ zg361_b2_resolve_pip_due_effect = {
 				NOT = { var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case }
 			}
 		}
-		# Freeze the still-active identity before writing the terminal outcome.
-		# The D+1 event is the commit boundary for outcome_code; settlement must
-		# never read a value written earlier in this same effect chain.
-		var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_terminal_settlement_owner }
-		save_scope_as = zg361_b2_terminal_settlement_subject
-		save_scope_value_as = { name = zg361_b2_terminal_settlement_cycle value = var:zg361_b2_pip_cycle }
-		save_scope_value_as = { name = zg361_b2_terminal_settlement_case value = var:zg361_b2_pip_case }
-		save_scope_value_as = { name = zg361_b2_terminal_settlement_state value = var:zg361_b2_pip_state }
+		remove_variable = zg361_b2_pip_outcome_code
+		set_variable = { name = zg361_b2_pip_independent_review_status value = 0 }
+		set_variable = { name = zg361_b2_pip_independent_review_red_code value = 2 } # assignment missing
+		# Existence gates are deliberately nested. CK3 trigger blocks do not
+		# promise short-circuit evaluation, so no provenance value is read before
+		# its complete assignment tuple is known to exist.
 		if = {
 			limit = {
-			has_variable = zg361_result_cycle_serial
-			var:zg361_result_cycle_serial > var:zg361_b2_pip_cycle
-			has_variable = zg361_last_grade
-			var:zg361_last_grade >= 2
+				has_variable = zg361_b2_pip_independent_reviewer
+				has_variable = zg361_b2_pip_reviewer_assignment_owner
+				has_variable = zg361_b2_pip_reviewer_assignment_subject
+				has_variable = zg361_b2_pip_reviewer_assignment_cycle
+				has_variable = zg361_b2_pip_reviewer_assignment_case
+				has_variable = zg361_b2_pip_reviewer_assignment_source
+				has_variable = zg361_b2_pip_reviewer_assignment_status
+				has_variable = zg361_b2_pip_reviewer_assignment_red_code
+				has_variable = zg361_b2_pip_reviewer_assignment_receipt
+			}
+			set_variable = { name = zg361_b2_pip_independent_review_red_code value = 3 } # assignment provenance mismatch
+			if = {
+				limit = {
+					var:zg361_b2_pip_reviewer_assignment_owner = var:zg361_b2_pip_owner
+					var:zg361_b2_pip_reviewer_assignment_subject = this
+					var:zg361_b2_pip_reviewer_assignment_cycle = var:zg361_b2_pip_cycle
+					var:zg361_b2_pip_reviewer_assignment_case = var:zg361_b2_pip_case
+					var:zg361_b2_pip_reviewer_assignment_status = 1
+					var:zg361_b2_pip_reviewer_assignment_red_code = 0
+					var:zg361_b2_pip_reviewer_assignment_receipt = var:zg361_b2_pip_case
+					var:zg361_b2_pip_reviewer_assignment_source >= 1
+					var:zg361_b2_pip_reviewer_assignment_source <= 3
+					var:zg361_b2_pip_independent_reviewer = {
+						zg361_is_celestial_liege_trigger = yes
+						is_available = yes
+						is_imprisoned = no
+						NOT = { this = root }
+						NOT = { this = root.var:zg361_b2_pip_owner }
+						NOT = { is_close_family_of = root }
+						NOT = { is_close_family_of = root.var:zg361_b2_pip_owner }
+						NOT = { has_relation_friend = root }
+						NOT = { has_relation_lover = root }
+						NOT = { has_relation_rival = root }
+						NOT = { has_relation_friend = root.var:zg361_b2_pip_owner }
+						NOT = { has_relation_lover = root.var:zg361_b2_pip_owner }
+						NOT = { has_relation_rival = root.var:zg361_b2_pip_owner }
+					}
+				}
+				set_variable = { name = zg361_b2_pip_independent_review_red_code value = 4 } # midpoint provenance missing
+				if = {
+					limit = {
+						has_variable = zg361_b2_pip_midpoint_receipt
+						has_variable = zg361_b2_pip_midpoint_progress_status
+						has_variable = zg361_b2_pip_midpoint_progress_red_code
+						has_variable = zg361_b2_pip_midpoint_progress_owner
+						has_variable = zg361_b2_pip_midpoint_progress_subject
+						has_variable = zg361_b2_pip_midpoint_progress_cycle
+						has_variable = zg361_b2_pip_midpoint_progress_case
+						has_variable = zg361_b2_pip_midpoint_progress_task_kind
+						has_variable = zg361_b2_pip_midpoint_progress_delta
+						has_variable = zg361_b2_pip_midpoint_progress_met
+					}
+					set_variable = { name = zg361_b2_pip_independent_review_red_code value = 5 } # midpoint provenance mismatch
+					if = {
+						limit = {
+							var:zg361_b2_pip_midpoint_receipt = var:zg361_b2_pip_case
+							var:zg361_b2_pip_midpoint_progress_status = 1
+							var:zg361_b2_pip_midpoint_progress_red_code = 0
+							var:zg361_b2_pip_midpoint_progress_owner = var:zg361_b2_pip_owner
+							var:zg361_b2_pip_midpoint_progress_subject = this
+							var:zg361_b2_pip_midpoint_progress_cycle = var:zg361_b2_pip_cycle
+							var:zg361_b2_pip_midpoint_progress_case = var:zg361_b2_pip_case
+							var:zg361_b2_pip_midpoint_progress_task_kind = var:zg361_b2_pip_task_kind
+						}
+						set_variable = { name = zg361_b2_pip_independent_review_red_code value = 6 } # later result missing
+						if = {
+							limit = {
+								has_variable = zg361_result_case_owner
+								has_variable = zg361_result_cycle_serial
+								has_variable = zg361_result_case_serial
+								has_variable = zg361_result_case_state
+								has_variable = zg361_result_grade
+								has_variable = zg361_last_grade
+							}
+							set_variable = { name = zg361_b2_pip_independent_review_red_code value = 7 } # later result provenance mismatch
+							if = {
+								limit = {
+									var:zg361_result_case_owner = var:zg361_b2_pip_owner
+									var:zg361_result_cycle_serial > var:zg361_b2_pip_cycle
+									var:zg361_result_case_serial > 0
+									var:zg361_result_case_state >= 3
+									var:zg361_result_grade = var:zg361_last_grade
+									var:zg361_result_grade >= 1
+									var:zg361_result_grade <= 3
+								}
+								# The conclusion is executed in the independently assigned
+								# character's scope. That character signs both its own latest
+								# review receipt and the subject's immutable conclusion tuple.
+								var:zg361_b2_pip_independent_reviewer = {
+									set_variable = { name = zg361_b2_last_pip_review_subject value = root }
+									set_variable = { name = zg361_b2_last_pip_review_owner value = root.var:zg361_b2_pip_owner }
+									set_variable = { name = zg361_b2_last_pip_review_cycle value = root.var:zg361_b2_pip_cycle }
+									set_variable = { name = zg361_b2_last_pip_review_case value = root.var:zg361_b2_pip_case }
+									set_variable = { name = zg361_b2_last_pip_review_result_case value = root.var:zg361_result_case_serial }
+									root = {
+										set_variable = { name = zg361_b2_pip_independent_review_reviewer value = var:zg361_b2_pip_independent_reviewer }
+										set_variable = { name = zg361_b2_pip_independent_review_owner value = var:zg361_b2_pip_owner }
+										set_variable = { name = zg361_b2_pip_independent_review_subject value = this }
+										set_variable = { name = zg361_b2_pip_independent_review_cycle value = var:zg361_b2_pip_cycle }
+										set_variable = { name = zg361_b2_pip_independent_review_case value = var:zg361_b2_pip_case }
+										set_variable = { name = zg361_b2_pip_independent_review_result_owner value = var:zg361_result_case_owner }
+										set_variable = { name = zg361_b2_pip_independent_review_result_cycle value = var:zg361_result_cycle_serial }
+										set_variable = { name = zg361_b2_pip_independent_review_result_case value = var:zg361_result_case_serial }
+										set_variable = { name = zg361_b2_pip_independent_review_result_grade value = var:zg361_result_grade }
+										set_variable = { name = zg361_b2_pip_independent_review_progress_delta value = var:zg361_b2_pip_midpoint_progress_delta }
+										set_variable = { name = zg361_b2_pip_independent_review_progress_met value = var:zg361_b2_pip_midpoint_progress_met }
+										set_variable = { name = zg361_b2_pip_independent_review_conclusion value = 2 }
+										set_variable = { name = zg361_b2_pip_independent_review_status value = 2 } # completed, failure upheld
+										set_variable = { name = zg361_b2_pip_outcome_code value = 2 }
+										if = {
+											limit = {
+												var:zg361_b2_pip_midpoint_progress_met = 1
+												var:zg361_result_grade >= 2
+											}
+											set_variable = { name = zg361_b2_pip_independent_review_conclusion value = 1 }
+											set_variable = { name = zg361_b2_pip_independent_review_status value = 1 } # completed, graduation approved
+											set_variable = { name = zg361_b2_pip_outcome_code value = 1 }
+										}
+										set_variable = { name = zg361_b2_pip_independent_review_red_code value = 0 }
+										set_variable = { name = zg361_b2_pip_independent_review_receipt value = var:zg361_b2_pip_case }
+										set_variable = { name = zg361_b2_pip_independent_review_year value = current_year }
+									}
+								}
+								# D+1 remains the terminal commit boundary. It reads the
+								# already-signed conclusion and cannot manufacture a reviewer.
+								var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_terminal_settlement_owner }
+								save_scope_as = zg361_b2_terminal_settlement_subject
+								save_scope_value_as = { name = zg361_b2_terminal_settlement_cycle value = var:zg361_b2_pip_cycle }
+								save_scope_value_as = { name = zg361_b2_terminal_settlement_case value = var:zg361_b2_pip_case }
+								save_scope_value_as = { name = zg361_b2_terminal_settlement_state value = var:zg361_b2_pip_state }
+								trigger_event = { id = zg361b2.101 days = 1 }
+							}
+						}
+					}
+				}
+			}
 		}
-			set_variable = { name = zg361_b2_pip_outcome_code value = 1 }
-		}
-		else = { set_variable = { name = zg361_b2_pip_outcome_code value = 2 } }
-		trigger_event = { id = zg361b2.101 days = 1 }
 	}
 	else = { debug_log = "ZG361B2: duplicate or stale PIP settlement ignored" }
 }
@@ -1394,10 +1768,49 @@ zg361_b2_settle_pip_outcome_effect = {
 			var:zg361_b2_m015_object_owner = var:zg361_b2_pip_owner
 			var:zg361_b2_m015_object_cycle = var:zg361_b2_pip_cycle
 			var:zg361_b2_m015_object_receipt_case = var:zg361_b2_pip_case
-			OR = {
-				var:zg361_b2_pip_outcome_code = 1
-				var:zg361_b2_pip_outcome_code = 2
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b2_pip_independent_review_reviewer
+					has_variable = zg361_b2_pip_independent_review_owner
+					has_variable = zg361_b2_pip_independent_review_subject
+					has_variable = zg361_b2_pip_independent_review_cycle
+					has_variable = zg361_b2_pip_independent_review_case
+					has_variable = zg361_b2_pip_independent_review_result_owner
+					has_variable = zg361_b2_pip_independent_review_result_cycle
+					has_variable = zg361_b2_pip_independent_review_result_case
+					has_variable = zg361_b2_pip_independent_review_result_grade
+					has_variable = zg361_b2_pip_independent_review_conclusion
+					has_variable = zg361_b2_pip_independent_review_status
+					has_variable = zg361_b2_pip_independent_review_red_code
+					has_variable = zg361_b2_pip_independent_review_receipt
+					has_variable = zg361_b2_pip_outcome_code
+				}
+				var:zg361_b2_pip_independent_review_reviewer = var:zg361_b2_pip_independent_reviewer
+				var:zg361_b2_pip_independent_review_owner = var:zg361_b2_pip_owner
+				var:zg361_b2_pip_independent_review_subject = this
+				var:zg361_b2_pip_independent_review_cycle = var:zg361_b2_pip_cycle
+				var:zg361_b2_pip_independent_review_case = var:zg361_b2_pip_case
+				var:zg361_b2_pip_independent_review_result_owner = var:zg361_b2_pip_owner
+				var:zg361_b2_pip_independent_review_result_cycle > var:zg361_b2_pip_cycle
+				var:zg361_b2_pip_independent_review_result_case > 0
+				var:zg361_b2_pip_independent_review_result_grade >= 1
+				var:zg361_b2_pip_independent_review_result_grade <= 3
+				var:zg361_b2_pip_independent_review_red_code = 0
+				var:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case
+				OR = {
+					AND = {
+						var:zg361_b2_pip_outcome_code = 1
+						var:zg361_b2_pip_independent_review_conclusion = 1
+						var:zg361_b2_pip_independent_review_status = 1
+					}
+					AND = {
+						var:zg361_b2_pip_outcome_code = 2
+						var:zg361_b2_pip_independent_review_conclusion = 2
+						var:zg361_b2_pip_independent_review_status = 2
+					}
+				}
 			}
+			trigger_else = { always = no }
 			OR = {
 				NOT = { has_variable = zg361_b2_pip_settlement_receipt }
 				NOT = { var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case }
@@ -1410,12 +1823,10 @@ zg361_b2_settle_pip_outcome_effect = {
 		save_scope_value_as = { name = zg361_b2_source_publish_cycle value = var:zg361_b2_pip_cycle }
 		save_scope_value_as = { name = zg361_b2_source_publish_case value = var:zg361_b2_pip_case }
 		set_variable = { name = zg361_b2_pip_settlement_receipt value = var:zg361_b2_pip_case }
-		set_variable = { name = zg361_b2_pip_outcome_result_cycle value = var:zg361_result_cycle_serial }
-		set_variable = { name = zg361_b2_pip_outcome_result_case value = var:zg361_result_case_serial }
-		set_variable = { name = zg361_b2_pip_outcome_result_grade value = var:zg361_last_grade }
+		set_variable = { name = zg361_b2_pip_outcome_result_cycle value = var:zg361_b2_pip_independent_review_result_cycle }
+		set_variable = { name = zg361_b2_pip_outcome_result_case value = var:zg361_b2_pip_independent_review_result_case }
+		set_variable = { name = zg361_b2_pip_outcome_result_grade value = var:zg361_b2_pip_independent_review_result_grade }
 		set_variable = { name = zg361_b2_pip_stability_days_observed value = 365 }
-		set_variable = { name = zg361_b2_pip_independent_review_status value = 0 }
-		set_variable = { name = zg361_b2_pip_independent_review_red_code value = 2 }
 		remove_character_modifier = zg361_pip
 		if = {
 			limit = { var:zg361_b2_pip_outcome_code = 1 }
@@ -3364,8 +3775,8 @@ zg361b2.61 = {
 	}
 }
 
-# #016 D+180 support receipt.  The event records real delivery facts and keeps
-# missing task-progress observation RED; it never manufactures improvement.
+# #016 D+180 support/progress receipt. The event records real delivery facts
+# and the exact native KPI delta; missing/mismatched provenance stays RED.
 zg361b2.99 = {
 	type = character_event
 	hidden = yes
@@ -3388,7 +3799,8 @@ zg361b2.99 = {
 	}
 }
 
-# #015/#016 D+365 outcome. Every component of the immutable ticket must match.
+# #015–017 D+365 independent outcome. Every component of the immutable ticket
+# must match before the frozen reviewer may sign a conclusion.
 zg361b2.100 = {
 	type = character_event
 	hidden = yes

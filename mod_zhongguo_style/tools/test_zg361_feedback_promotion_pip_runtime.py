@@ -716,6 +716,42 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertNotIn("zg361_pp_m184_pip_capacity", block)
             self.assertNotIn("zg361_pp_w_capacity_released", block)
 
+    def test_w_midpoint_and_graduation_project_b2_producer_truth(self) -> None:
+        midpoint = effect_block(self.events, "zg361pp.2185")
+        for token in (
+            "zg361_pp_m185_progress_truth_status value = 0",
+            "zg361_pp_m185_progress_red_code value = 1",
+            "has_variable = zg361_b2_pip_midpoint_progress_delta",
+            "var:zg361_b2_pip_midpoint_progress_owner = var:zg361_b2_pip_owner",
+            "var:zg361_b2_pip_midpoint_progress_subject = this",
+            "var:zg361_b2_pip_midpoint_progress_cycle = var:zg361_b2_pip_cycle",
+            "var:zg361_b2_pip_midpoint_progress_case = var:zg361_b2_pip_case",
+            "zg361_pp_m185_progress_snapshot value = var:zg361_b2_pip_midpoint_progress_delta",
+            "zg361_pp_m185_progress_truth_status value = var:zg361_b2_pip_midpoint_progress_status",
+            "zg361_pp_m185_progress_red_code value = var:zg361_b2_pip_midpoint_progress_red_code",
+        ):
+            self.assertIn(token, midpoint)
+        self.assertNotIn(
+            "zg361_pp_m185_progress_truth_status value = 1", midpoint
+        )
+
+        graduation = effect_block(self.events, "zg361pp.2187")
+        for token in (
+            "var:zg361_b2_pip_independent_review_status = 1",
+            "var:zg361_b2_pip_independent_review_status = 2",
+            "var:zg361_b2_pip_independent_review_red_code = 0",
+            "var:zg361_b2_pip_independent_review_receipt = var:zg361_b2_pip_case",
+            "zg361_pp_m187_independent_review_pass value = var:zg361_b2_pip_independent_review_status",
+            "zg361_pp_m187_independent_review_red_code value = var:zg361_b2_pip_independent_review_red_code",
+        ):
+            self.assertIn(token, graduation)
+        self.assertEqual(
+            graduation.count(
+                "zg361_pp_m187_independent_review_pass value = var:zg361_b2_pip_independent_review_status"
+            ),
+            2,
+        )
+
     def test_midpoint_graduation_and_relapse_are_real_time_gates(self) -> None:
         self.assertEqual(gen.DELAYED_STAGE_GATE_IDS, {185, 187, 188})
         schedules = {185: 180, 187: 366, 188: 365}
