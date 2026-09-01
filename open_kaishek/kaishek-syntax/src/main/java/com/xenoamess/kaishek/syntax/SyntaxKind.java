@@ -1,0 +1,7 @@
+package com.xenoamess.kaishek.syntax;
+
+public enum SyntaxKind {
+    DOCUMENT, ENTRY, BLOCK, LIST_ITEM,
+    KEY, OPERATOR, VALUE, STRING, NUMBER, BARE_VALUE, VARIABLE,
+    BOM, COMMENT, WHITESPACE, NEWLINE, LBRACE, RBRACE, ERROR
+}
