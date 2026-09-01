@@ -150,6 +150,67 @@ fatal。
 确认 product/fixture 各挂载一次 → append-only loader gate → exact event query → 五 selector 与 paused checkpoint 捕获 →
 受管 cleanup。若 loader gate 再次 RED，保留新日志后停止，不增加超时、不启动第二局；只有该门 GREEN 才继续 seed 业务验收。
 
+## 可复用 seed capture runner（static-ready，尚未运行 attempt 08）
+
+attempt 07 的 `run_seed_capture.py` 是冻结现场中的一次性脚本，路径、HEAD、DLL、injector 与 pipe 全部硬编码，且 bridge
+transport 连接后直接进入 `900s` event wait。它只属于失败现场，**不得重跑或改写**。仓库内的新入口是
+`tools/run_zg361_phase2_seed_capture.py`；它以显式参数建立新 attempt，不读取或覆盖 attempt 07：
+
+```powershell
+py tools/run_zg361_phase2_seed_capture.py `
+  --clean-source "<attempt>\source" `
+  --attempt-dir "<attempt>" `
+  --artifacts-dir "<attempt>\artifacts" `
+  --source-zip "<attempt>\head-source.zip" `
+  --git-sha "<40-hex-frozen-HEAD>" `
+  --game-dir "<CK3-install>" `
+  --bridge-dll "<frozen-bridge>\xar_ck3_bridge.dll" `
+  --injector "<frozen-bridge>\xar_ck3_bridge_injector.exe" `
+  --pipe '\\.\pipe\xar_ck3_bridge_zg361_<unique-id>' `
+  --seed-contract "<attempt>\source\tools\zg361_phase2_seed_contract.json"
+```
+
+调用者必须创建一个全新的 attempt；`native-state` 必须不存在、artifact 目录必须为空。runner 拒绝重用非空 artifact，因而
+不会覆盖先前 RED。所有 CK3/Python 项目模块都从 `--clean-source` 导入，并验证模块 origin；导入前设置
+`PYTHONDONTWRITEBYTECODE=1` 与 `sys.dont_write_bytecode=True`，避免 attempt 07 已实证的 `__pycache__/*.pyc` 污染冻结源码。
+preflight 也会拒绝 clean source 中任何既存 `__pycache__`、`.pyc` 或 `.pyo`。
+preflight 同时保存：声明 git SHA、source ZIP blob SHA、ZIP logical-tree SHA、解压源码 tree SHA、ZIP/源码逐文件等价结果、旧 save、
+CK3 EXE、game rules、bridge DLL 与 injector 的 before hash；CK3 版本和 EXE SHA 还必须等于仓库冻结的 `1.19.0.6` exact-build
+合同。bootstrap 声明的 product/fixture tree hash 还必须等于 runner 对实际挂载投影独立计算的 hash，candidate 只采用后者；所有
+timeout 必须为有限正数，seed contract 的 `absolute_save` 必须真的是绝对路径。退出时再核对源码树与全部外部依赖 after hash。
+
+成功路径的硬顺序为：
+
+1. 把 clean product 与专用 seed fixture 投影到隔离 profile，`enabled_mods` 必须严格等于 product/fixture 各一个；
+2. 启动受管 `native_session -continuelastsave`，仅通过 MCP transport 取得 PID/generation；
+3. 启动 US-English HKL watchdog。它是唯一的非 MCP 平台操作；以 MCP 返回的 CK3 PID 枚举该进程窗口，直接向其 UI thread
+   发送 `WM_INPUTLANGCHANGEREQUEST(04090409)`，不抢前台焦点，也不发送按键、文字、鼠标或游戏命令。至少一份 HKL
+   attestation 必须 GREEN；
+4. **先**运行 `wait_for_phase2_seed_loader_stage`。database init 出现已实证 parser/compiler allowlist 且日志静止 `45s` 时，
+   `01_phase2_loader_stage_progress.jsonl` 原样落 `loader_parse_red` 与去重错误，后续 mount/native/event 均不得执行；
+5. loader GREEN 后验证 debug inventory 中 product 与 fixture 各 `Enabled/Mounted` 一次，再运行 native readiness 与完整项目
+   `error.log` quiet scan；
+6. 最后才进入一个总 monotonic deadline 的 exact `zga_phase2_seed.1` waiter；默认 `300s`，不会按 snapshot unavailable、调速、
+   pause/resume 等子状态重置计时；
+7. MCP 捕获五 selector、关闭事件、保存 checkpoint、逐项查询四域 provider 并物化 candidate；
+8. 无论 GREEN/RED 都停止 supervisor、证明进程 cleanup、关闭 driver、复制并哈希 CK3 logs、复核 mounted runtime/source/external
+   dependency unchanged，最后写 `runner-report.json`。
+
+业务操作严格 MCP-only；没有 OCR、屏幕坐标、测试决议或视觉兜底。失败路径追加
+`runner-failures.jsonl`，loader 与 event wait 分别使用自己的 append-only JSONL；最终报告只在 cleanup 后落盘。若 source ZIP 与解压
+tree 不等价、mount 不是一加一、HKL 从未 GREEN、cleanup/driver close/immutability 任一缺失，则不得得到 GREEN。
+
+离线验收（不启动 CK3）：
+
+```powershell
+py tools/test_run_zg361_phase2_seed_capture.py
+py -O tools/test_run_zg361_phase2_seed_capture.py
+```
+
+fake tests 覆盖显式 CLI 校验、ZIP/tree exact hashes、单挂载及顺序、45 秒 parser fail-fast 原样证据、单一 event deadline、
+GREEN cleanup/driver/log/immutability、parser RED 后仍 cleanup，以及拒绝重跑时不覆写原失败 artifact。截至本段记录时仅为
+`static-ready / fake-tested / not-live`；不构成 attempt 08，也不授权在 parser/theme 静态项清零前启动 CK3。
+
 ## 仍不能由 seed fixture 消除的两项产品阻塞
 
 ### Incident mixed matrix
