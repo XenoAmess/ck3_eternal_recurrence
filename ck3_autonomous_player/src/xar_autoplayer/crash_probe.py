@@ -879,6 +879,7 @@ def _validate_watchdog_process_command(
 ) -> None:
     _validate_process_identity_payload(identity, "crash watchdog")
     expected_tail = [
+        "-B",
         str(PROCESS_WATCHDOG.resolve()),
         str(int(supervisor["pid"])),
         str(Path(str(supervisor["executable"])).resolve()),

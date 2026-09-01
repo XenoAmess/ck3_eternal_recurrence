@@ -799,9 +799,18 @@ class TrackedShutdownTests(unittest.TestCase):
                 self.assertEqual(watchdog_pid, 123)
                 command = runtime_module._FALLBACK_WATCHDOG_COMMAND_LINES[123]
                 self.assertIn("process_watchdog.py", command)
+                self.assertIn(" -B ", f" {command} ")
                 self.assertIn("worker-thread-nonce", command)
             finally:
                 runtime_module._FALLBACK_WATCHDOG_COMMAND_LINES.pop(123, None)
+
+    def test_watchdog_entrypoint_disables_bytecode_writes_before_package_import(self) -> None:
+        source = (
+            PACKAGE_ROOT / "xar_autoplayer" / "process_watchdog.py"
+        ).read_text(encoding="utf-8")
+        assignment = source.index("sys.dont_write_bytecode = True")
+        package_import = source.index("from .environment")
+        self.assertLess(assignment, package_import)
 
     @unittest.skipUnless(os.name == "nt", "Windows Job Object contract")
     def test_suspended_process_is_assigned_before_resume(self) -> None:

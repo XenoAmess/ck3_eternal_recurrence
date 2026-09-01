@@ -2003,6 +2003,11 @@ def _start_process_watchdog(
         watchdog_python = Path(sys.executable)
     arguments = [
         str(watchdog_python),
+        # The watchdog is created through Win32_Process.Create when possible;
+        # that detached boundary does not reliably inherit the caller's
+        # PYTHONDONTWRITEBYTECODE environment.  Keep the clean source export
+        # immutable even while the watchdog imports its package helpers.
+        "-B",
         str(PROCESS_WATCHDOG),
         str(parent_pid),
         str(parent_executable),

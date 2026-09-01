@@ -370,7 +370,7 @@ class CrashReportContractTests(unittest.TestCase):
             "name": Path(sys.executable).name,
             "executable": str(sys.executable),
             "creation_date": "watchdog-created",
-            "command_line": f'"{sys.executable}" process_watchdog.py',
+            "command_line": f'"{sys.executable}" -B process_watchdog.py',
         }
         control_payloads = {
             "record": {
@@ -637,6 +637,7 @@ class CrashReportContractTests(unittest.TestCase):
         watchdog["command_line"] = subprocess.list2cmdline(
             [
                 str(watchdog["executable"]),
+                "-B",
                 str(PROCESS_WATCHDOG.resolve()),
                 str(supervisor["pid"]),
                 str(Path(str(supervisor["executable"])).resolve()),
@@ -1538,6 +1539,7 @@ class CrashSupervisorHandshakeTests(unittest.TestCase):
             game_exe = root / "game" / "binaries" / "ck3.exe"
             final = root / "final.json"
             watchdog_tail = [
+                "-B",
                 str(PROCESS_WATCHDOG.resolve()),
                 "20",
                 str(base_python.resolve()),

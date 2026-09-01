@@ -9,6 +9,11 @@ import sys
 import time
 from types import SimpleNamespace
 
+# This process may be launched by Win32_Process.Create without inheriting the
+# parent's Python flags.  It imports package modules from a frozen clean source
+# export, so never leave __pycache__ artefacts in that export.
+sys.dont_write_bytecode = True
+
 import win32api
 import win32com.client
 import win32con
