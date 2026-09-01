@@ -10,7 +10,7 @@
 本文是 `361-phase2-full-implementation-program.md` 的 B1 施工细化。B1 不是在旧的单 tick 考核链上为 42 个编号各写一个
 布尔变量，而是把现有考核重构为一条真实跨周期绩效季：目标、期中检查、互评、事实封存、影子档、跨经理校准、正式公示。
 
-## 当前施工状态（2026-08-31）
+## 当前施工状态（2026-09-01）
 
 当前可称为 **B1 跨周期行为纵切 static-ready**，仍不能称 42 项已完成：
 
@@ -30,8 +30,12 @@
 - 已接入名册离开/失地/换上司的单次 amendment receipt 与 denominator consumer；唯一 3+4 池可执行一次固定
   TOP↔MIDDLE 单槽交易，双方 book version 与 creditor/debtor/liability 收据同步，责任债在 `created_cycle + 1`
   到期且只结一次。事实冻结前也会审计锁定后的合法新加入与 departure backfill，为新增者建立完整五元案卷、写 0→1
-  amendment 并重开配额；离任审计项为可追溯性仍留在持久 list，因此 backfill 后物理 list 可超过 80，但 `roster_included=1`
-  的有效 denominator 仍不超过 80。灰色离任继续占档仍未实现。
+  amendment 并重开配额。#040 当前周期占位纵切已经跨共享考核、最终结算和榜单闭合：D+0 冻结 subject/title/旧 owner
+  与最后一份旧 owner KPI，活着的 A/B 离任者只把 `roster_employment_state` 改为离任，`roster_included=1` 不变；HC 空缺与
+  review denominator 空缺分账，replacement 不得在同周期形成 N+1。B 路最多指定一名离任者占用一个既有 C；本来就是 C
+  只记自然来源，否则与一名既有 C 原子互换，无 C 的 1/2/3/4 人队列显式阻断。离任者仍从持久 list 进入旧 owner 的评分、
+  结算和榜单，下一周期则清空旧 list 并只按届时直属在职 roster 重建。该纵切是 static-ready；manifest 要求的后续审计翻案与
+  三类经理责任尚未实现，不能据此把完整 #040 标成 complete。
 - 已接入完整 agenda list、跨周期稳定轮换、三席 attention 与有成本的 10 分钟加班换席；同轮可为多名已消费
   attention 的边界 subject 各开一个 pending，逐人冻结 milestone/verifier/deadline/reward，并走成功或失败终态。
   pending 先冻结 `min(late evidence + 1, 100)` 的目标，30 天独立事件再读取新的 live KPI；fallback MIDDLE 容量逐人预留，
@@ -61,10 +65,9 @@
   TOP/MIDDLE/BOTTOM 数量不变；目标档无席时冻结 `quota_blocked`，绝不单边改档。发布时另写
   `recusal_post_grade/lock_match`。这闭合了 #012 的静态替代复评 write→consumer，但尚无 CK3 scope/结算实证。
 - 仍未完成：#003 的真实 war scope 只通过 source contract，未做 CK3 求值证明；影子补证仍是固定有界 delta，不是可核验材料
-  对象；机会偏置审计、真实预会与实名异议仍未闭合。#040 B 也不能只在 B1 专属层安全闭合：共享
-  `zg361_run_review_effect` 会在 B1 事实准备之后按当前直属关系再次把离任者写成 `leaver_route=1 / roster_included=0`，而共享最终结算
-  只遍历当时的 `every_vassal`。因此“灰色离任者继续占本周期 C 配额”需要同时修改共享考核、结算与榜单投影；在这些消费者改造前，
-  不得用 B1 局部字段冒充已完成。
+  对象；机会偏置审计、真实预会与实名异议仍未闭合。#040 的“当前周期离任者不退出分母、灰色路线只消费一个既有 C、最终
+  结算与榜单保留离任行”已经跨共享消费者静态闭合，但死人头审计命中后的证据序恢复、双方翻案和经理的分布造假/错误补缺/
+  人才判断三类责任仍是明确产品缺口；在该审计链与 CK3 MCP-first 证据完成前，不得把完整 #040 冒充 complete。
   pending verifier 当前是冻结经理 + 30 天 live KPI 比较的确定性最小实现，成功奖励固定为 25 威望，不代表外部
   材料核验完成。#142 A 现为每名 subject 建独立局部公示五元对象：非 pending 且未被预留为 fallback 的稳定人员立即获得冻结档位
   与本人事件；pending 与其唯一预留 peer 只处于 WAITING。每一宗 pending 成功、失败或 watchdog 取消后，经理立即只刷新已稳定的
@@ -189,6 +192,42 @@ Phase 0 的通用计划会让同一领域的多个编号共享 `from → to`。�
 | 045 | D+180 反馈→终评检测 | 3.25 没有真实早期 warning/ack/objection 时生成反馈债，进入经理下轮 KPI 与申诉权重。终评后不得补造。 |
 | 046 | 周期内机会授予 | 记录关键项目、援军、富庶领地或曝光机会的 grant；难度校正有上限且不能单独升 3.75，长期偏爱开启经理审计。 |
 | 047 | 早/中/晚证据窗 | 保存三段 raw/weight/weighted score，合计必须是 KPI 的真实 consumer；切换政策只影响下一周期。 |
+
+#### #040 当前周期占位纵切（static-ready）
+
+本节冻结已经实现的产品边界，避免再次把“真实 HC 离任”和“本轮绩效分母空缺”混为同一本账：
+
+- D+0 subject case 持久保存 `owner/subject/cycle/case`、`roster_frozen_title`、八项 KPI、总 KPI、价值观与效率快照。
+  事实截止前仍在旧 owner 下的在职人员可刷新快照；离任后只读最后一份匹配旧 owner/cycle/case 的快照，绝不向新上司重算旧案。
+- 第一次观察到死亡、失地或换上司时，`roster_employment_state` 从 1 写为 2，并保存离任生效年与一次 receipt。真实 HC 空缺
+  总是单独加一；只有死亡或显式排除路线才增加 review vacancy 并把 `roster_included` 改为 0。A/B 的活着离任者保持
+  `roster_included=1`，因此 replacement 默认下一周期才成为新 subject。
+- A 路按冻结事实正常分档。B 路每队每轮只允许第一个合格离任者进入灰色路线，其余离任者仍按 A；最后一次 seal 前：
+  1. 离任者本来就是 C：来源记为 `natural_bottom`，不制造交换；
+  2. 存在既有 C 且离任者不是 C：离任者与一名确定性既有 C 承担者原子互换，双方 grade/reason 同时落账；
+  3. 本轮没有 C：写 `no_existing_bottom` 并保持全队档位不变，禁止凭空增加 C。
+- 共享 `zg361_run_review_effect`、`zg361_apply_pending_grades_effect` 与 `zg361_publish_scoreboard_effect` 在 B1 周期均遍历持久
+  `zg361_b1_subjects`，不再只按结算当刻的 `every_vassal`。离任结果是旧 owner 的信息案卷：保存终档和榜单行，但不向离任者
+  施加旧雇主奖金、扣薪、好感、PIP 或淘汰。榜单沿用原有固定 slot/widget identity，只新增 employment、应得档、终档、异常来源、
+  生效年和 receipt 字段；官职显示优先使用 D+0 冻结 title。
+- 发布把旧 subject case 写为 state 8/active 0；下一周期开局先清 manager 的持久 subject list，再只从当前合法直属封臣重建。
+  因而离任者只占离任发生的本周期，不会继续占下周期配额。
+
+确定性参考向量如下；B 路只能重排既有数量，绝不改变三档合计：
+
+| 冻结 cohort | TOP / MIDDLE / BOTTOM | 灰色离任结果 |
+|---:|---:|---|
+| 1 | 0 / 1 / 0 | 无既有 C，阻断 |
+| 2 | 0 / 2 / 0 | 无既有 C，阻断 |
+| 3 | 1 / 2 / 0 | 无既有 C，阻断 |
+| 4 | 1 / 3 / 0 | 无既有 C，阻断 |
+| 7 | 2 / 4 / 1 | 只占唯一既有 C |
+| 14 | 4 / 9 / 1 | 只占唯一既有 C |
+| 23 | 7 / 14 / 2 | 占一个既有 C，另一个 C 仍保留 |
+
+这些合同由 Python quota model、B1 生成器、共享结算和 scoreboard 生成器的 normal/`-O` L0 覆盖；character variable、
+manager variable 与 variable list 都是存档持久对象，临时 scope 只用于同一 effect 内重建指针。尚未运行 CK3，故这里只能写
+`static-ready`。完整 #040 仍缺审计翻案、恢复证据序以及经理三类责任；这部分不得从本纵切的 receipt 推断为已完成。
 
 ### H：互评微观博弈
 
@@ -462,17 +501,20 @@ exact-build/live 闭合。既有 OCR/坐标 runner 仍不能签 MCP-first GREEN�
 
 - 0/1/2/3/4/7/14/23 人精确最大余数法，23 人固定为 7/14/2；3+4 只有同一共同上司、同一职能才能组成唯一 7 人池；
 - 新人、离任、调任、长休、周期后加入的 denominator/bottom 资格与名册变更 receipt；
+- 灰色离任只消费一个既有 bottom：自然 C 不交换、非 C 与既有 C 原子互换、无 C 显式阻断；三档数量与冻结 subject identity 守恒，
+  同一 operation receipt 重放返回同一结果，错 operation/错 before-image 为 stale；
 - 一次只交易一个 top 或 bottom 槽，交易同时产生双方责任、到期周期为 `created_cycle + 1` 的 one-shot 配额债；
 - 议程必须与冻结 cohort 一一相等；attention 席、转让和加班都守恒，并记录被挤占对象与成本，不改冻结档位；
 - 每名边界人最多一个 pending slot，绑定 milestone、verifier、deadline、冻结奖励与成功/失败终态；失败不能直接换成 3.75；
 - 同等强度的正面成果与负面事故可对称重开，旧/新 board hash、recalculation receipt 与发奖互斥均为一次性；
 - typed RED、失败前置原子性、stale 与重复 operation 分离。
 
-`tools/test_zg361_b1_quota_model.py` 当前为 69/69 GREEN。模型显式声明
+`tools/test_zg361_b1_quota_model.py` 当前为 74/74 GREEN。模型显式声明
 `READINESS = python-l0-reference-only`、`CK3_IMPLEMENTED = False`；该声明仍准确，因为 Python 模型本身不是 CK3 证据。
 `gen_361_b1_runtime.py` 现已消费其中的确定性纵切：整数最大余数配额、唯一同职能 3+4 池、离开名册 amendment、
-TOP↔MIDDLE 单槽交易与次周期 one-shot 债、agenda/attention/overtime、多人 pending、逐人局部公示及付款前对称重开。runtime 专测当前
-51/51 GREEN，且共享案卷内核调用只达到 source-contract/static-ready；尚无 CK3 fixture，因此不得把上述静态实现写成
+TOP↔MIDDLE 单槽交易与次周期 one-shot 债、灰色离任只占既有 C、agenda/attention/overtime、多人 pending、逐人局部公示及付款前
+对称重开。runtime 专测当前 56/56 GREEN，scoreboard 专测 32/32 GREEN；共享案卷内核调用只达到 source-contract/static-ready，
+尚无 CK3 fixture，因此不得把上述静态实现写成
 `CK3_IMPLEMENTED=True`、`fixture-live` 或 42 项完成。
 
 L0 至少覆盖：
@@ -482,6 +524,7 @@ L0 至少覆盖：
 3. 跨年 D+0→D+180→D+300→facts→shadow→quota→calibration→publish；版本不可倒改；
 4. 真实 evaluator/subject/cycle 三槽，0–4 作者、迟交/补交、重复提交、互抬/恶意低分、同均分不同 shape 与 ACL observer；
 5. cohort 0/1/2/3/4/7/14/23；1–2 中性、3+4 唯一合池 7、23 严格 7/14/2；trade/debt/rounding/swap 守恒；
+   灰色离任在 1/2/3/4 明确无 C 阻断，在 7/14/23 只占一个既有 C；重复/存读档不增 C，下一周期不再占位；
 6. 两 manager ready、一个迟到、换上司、共同上司死亡；barrier 不死锁，且上级不能直接改孙级档位；
 7. shadow 补证、同轮多人且逐人唯一的 pending slot、正负同 severity 重开、dissent 复阅与 band order 无奖金 consumer；
 8. #357 facts 必先于 quota，冻结后 live KPI 无效，事实 3.75/3.5→最终 3.25 明确 reason=quota，旧 AL refund 静态 RED；

@@ -367,7 +367,10 @@ class EligibilityTreatment(str, Enum):
 @dataclass(frozen=True, slots=True)
 class EligibilityPolicy:
     newcomer: EligibilityTreatment = EligibilityTreatment.PROTECT_FROM_BOTTOM
-    leaver: EligibilityTreatment = EligibilityTreatment.EXCLUDE
+    # A D+0 member who later leaves remains in the frozen review denominator.
+    # Explicit route C may still pass EXCLUDE; gray-route C charging is modeled
+    # separately and can never alter this denominator.
+    leaver: EligibilityTreatment = EligibilityTreatment.INCLUDE
     transferred_in: EligibilityTreatment = EligibilityTreatment.INCLUDE
     long_leave: EligibilityTreatment = EligibilityTreatment.EXCLUDE
 
@@ -2887,6 +2890,156 @@ class BandAssignment:
             raise InvalidInputError("band assignment has an invalid band")
 
 
+class GrayLeaverQuotaSource(str, Enum):
+    NATURAL_BOTTOM = "natural_bottom"
+    SWAPPED_BOTTOM = "swapped_bottom"
+    NO_EXISTING_BOTTOM = "no_existing_bottom"
+
+
+@dataclass(frozen=True, slots=True)
+class GrayLeaverResult:
+    operation_id: str
+    leaver_id: str
+    source: GrayLeaverQuotaSource
+    before: tuple[BandAssignment, ...]
+    after: tuple[BandAssignment, ...]
+    carrier_id: str | None = None
+
+    def __post_init__(self) -> None:
+        _require_identifier(self.operation_id, "operation_id")
+        _require_identifier(self.leaver_id, "leaver_id")
+        if not isinstance(self.source, GrayLeaverQuotaSource):
+            raise InvalidInputError("gray leaver source is invalid")
+        before = tuple(self.before)
+        after = tuple(self.after)
+        if any(not isinstance(item, BandAssignment) for item in before + after):
+            raise InvalidInputError("gray leaver assignments are invalid")
+        before_ids = tuple(item.subject_id for item in before)
+        after_ids = tuple(item.subject_id for item in after)
+        if len(set(before_ids)) != len(before_ids) or set(before_ids) != set(after_ids):
+            raise ConservationError("gray leaver operation changed cohort identity")
+        if self.leaver_id not in set(before_ids):
+            raise InvalidInputError("gray leaver is not in the frozen cohort")
+        before_counts = {band: sum(item.band is band for item in before) for band in BAND_ORDER}
+        after_counts = {band: sum(item.band is band for item in after) for band in BAND_ORDER}
+        if before_counts != after_counts:
+            raise ConservationError("gray leaver operation changed quota counts")
+        before_by_id = {item.subject_id: item.band for item in before}
+        after_by_id = {item.subject_id: item.band for item in after}
+        if self.source is GrayLeaverQuotaSource.NO_EXISTING_BOTTOM:
+            if before != after or self.carrier_id is not None:
+                raise ConservationError("blocked gray leaver operation must be a no-op")
+            if before_counts[RatingBand.BOTTOM] != 0:
+                raise ConservationError("blocked gray leaver ignored an existing bottom slot")
+        else:
+            if after_by_id[self.leaver_id] is not RatingBand.BOTTOM:
+                raise ConservationError("gray leaver did not occupy the existing bottom slot")
+            if self.source is GrayLeaverQuotaSource.NATURAL_BOTTOM:
+                if before != after or self.carrier_id is not None:
+                    raise ConservationError("natural bottom must not manufacture a swap")
+            else:
+                if self.carrier_id is None:
+                    raise ConservationError("swapped gray leaver requires the old C carrier")
+                _require_identifier(self.carrier_id, "carrier_id")
+                if self.carrier_id == self.leaver_id:
+                    raise ConservationError("gray leaver cannot be its own carrier")
+                if before_by_id[self.leaver_id] is RatingBand.BOTTOM:
+                    raise ConservationError("a natural bottom cannot claim a swap")
+                if before_by_id.get(self.carrier_id) is not RatingBand.BOTTOM:
+                    raise ConservationError("gray leaver carrier was not the existing bottom")
+                if after_by_id.get(self.carrier_id) is not before_by_id[self.leaver_id]:
+                    raise ConservationError("gray leaver swap did not preserve the honest grade")
+                changed = {
+                    subject_id
+                    for subject_id in before_ids
+                    if before_by_id[subject_id] is not after_by_id[subject_id]
+                }
+                if changed != {self.leaver_id, self.carrier_id}:
+                    raise ConservationError("gray leaver swap was not atomic")
+        object.__setattr__(self, "before", before)
+        object.__setattr__(self, "after", after)
+
+
+def charge_gray_leaver_to_existing_bottom(
+    assignments: tuple[BandAssignment, ...],
+    leaver_id: str,
+    *,
+    operation_id: str,
+    prior: GrayLeaverResult | None = None,
+) -> GrayLeaverResult:
+    """Atomically swap one frozen leaver into an existing C, or block.
+
+    ``prior`` models the persisted CK3 receipt: exact replay returns the same
+    result, while a changed roster/operation cannot be smuggled through it.
+    """
+
+    _require_identifier(leaver_id, "leaver_id")
+    _require_identifier(operation_id, "operation_id")
+    frozen = tuple(assignments)
+    if any(not isinstance(item, BandAssignment) for item in frozen):
+        raise InvalidInputError("assignments must contain BandAssignment values")
+    ids = tuple(item.subject_id for item in frozen)
+    if len(set(ids)) != len(ids):
+        raise DuplicateInputError("a subject appears twice in the quota book")
+    if leaver_id not in set(ids):
+        raise InvalidInputError("gray leaver is not in the frozen quota book")
+    if prior is not None:
+        if not isinstance(prior, GrayLeaverResult):
+            raise InvalidInputError("prior gray leaver receipt is invalid")
+        if (
+            prior.operation_id != operation_id
+            or prior.leaver_id != leaver_id
+            or prior.after != frozen
+        ):
+            raise StaleOperationError("gray leaver replay does not match its receipt")
+        return prior
+
+    by_id = {item.subject_id: item.band for item in frozen}
+    bottom_ids = sorted(
+        item.subject_id for item in frozen if item.band is RatingBand.BOTTOM
+    )
+    if not bottom_ids:
+        return GrayLeaverResult(
+            operation_id=operation_id,
+            leaver_id=leaver_id,
+            source=GrayLeaverQuotaSource.NO_EXISTING_BOTTOM,
+            before=frozen,
+            after=frozen,
+        )
+    if by_id[leaver_id] is RatingBand.BOTTOM:
+        return GrayLeaverResult(
+            operation_id=operation_id,
+            leaver_id=leaver_id,
+            source=GrayLeaverQuotaSource.NATURAL_BOTTOM,
+            before=frozen,
+            after=frozen,
+        )
+
+    carrier_id = bottom_ids[0]
+    leaver_band = by_id[leaver_id]
+    after = tuple(
+        BandAssignment(
+            item.subject_id,
+            (
+                RatingBand.BOTTOM
+                if item.subject_id == leaver_id
+                else leaver_band
+                if item.subject_id == carrier_id
+                else item.band
+            ),
+        )
+        for item in frozen
+    )
+    return GrayLeaverResult(
+        operation_id=operation_id,
+        leaver_id=leaver_id,
+        source=GrayLeaverQuotaSource.SWAPPED_BOTTOM,
+        before=frozen,
+        after=after,
+        carrier_id=carrier_id,
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class PrecalibrationDiff:
     subject_id: str
@@ -4767,6 +4920,8 @@ __all__ = [
     "ExecutiveReviewOpenResult",
     "ExecutiveReviewRegistry",
     "FrozenCandidateGrade",
+    "GrayLeaverQuotaSource",
+    "GrayLeaverResult",
     "IllegalStateError",
     "InsufficientSlotError",
     "InvalidInputError",
@@ -4817,6 +4972,7 @@ __all__ = [
     "allocate_reorganized_subject",
     "bind_attention_seat",
     "build_agenda",
+    "charge_gray_leaver_to_existing_bottom",
     "compute_quota",
     "consume_attention_seat",
     "consume_agenda_subject",

@@ -37,6 +37,8 @@ from zg361_b1_quota_model import (
     ExecutiveMustReviewCase,
     ExecutiveReviewRegistry,
     FrozenCandidateGrade,
+    GrayLeaverQuotaSource,
+    GrayLeaverResult,
     IllegalStateError,
     InsufficientSlotError,
     InvalidInputError,
@@ -67,6 +69,7 @@ from zg361_b1_quota_model import (
     allocate_reorganized_subject,
     bind_attention_seat,
     build_agenda,
+    charge_gray_leaver_to_existing_bottom,
     compute_quota,
     consume_attention_seat,
     consume_agenda_subject,
@@ -234,7 +237,7 @@ class QuotaRoundingTests(unittest.TestCase):
 
 
 class EligibilityAndPoolingTests(unittest.TestCase):
-    def test_default_policy_includes_protected_newcomer_and_excludes_leaver(self) -> None:
+    def test_default_policy_keeps_d0_leaver_in_frozen_denominator(self) -> None:
         cohort = TeamCohort(
             team_id="a",
             manager_id="manager-a",
@@ -249,16 +252,31 @@ class EligibilityAndPoolingTests(unittest.TestCase):
         )
         locked = lock_cohort(cohort)
         self.assertEqual(
-            tuple(item.member_id for item in locked.included_members), ("new", "normal")
+            tuple(item.member_id for item in locked.included_members),
+            ("leaving", "new", "new-leaving", "normal"),
         )
         self.assertEqual(
-            tuple(item.member_id for item in locked.bottom_eligible_members), ("normal",)
+            tuple(item.member_id for item in locked.bottom_eligible_members),
+            ("leaving", "normal"),
+        )
+        self.assertEqual(locked.excluded_members, ())
+        self.assertEqual(locked.quota.effective_counts, QuotaCounts(1, 3, 0))
+
+    def test_explicit_route_c_can_exclude_leaver(self) -> None:
+        cohort = TeamCohort(
+            team_id="a",
+            manager_id="manager-a",
+            common_superior_id="sup",
+            cycle=1,
+            members=(member("incumbent", "a"), member("leaver", "a", leaver=True)),
+        )
+        locked = lock_cohort(
+            cohort,
+            EligibilityPolicy(leaver=EligibilityTreatment.EXCLUDE),
         )
         self.assertEqual(
-            tuple(item.member_id for item in locked.excluded_members),
-            ("leaving", "new-leaving"),
+            tuple(item.member_id for item in locked.included_members), ("incumbent",)
         )
-        self.assertEqual(locked.quota.effective_counts, QuotaCounts(0, 2, 0))
 
     def test_explicit_full_policy_makes_newcomer_and_leaver_bottom_eligible(self) -> None:
         cohort = TeamCohort(
@@ -311,7 +329,8 @@ class EligibilityAndPoolingTests(unittest.TestCase):
         self.assertFalse(by_id["join"].bottom_eligible)
         self.assertTrue(by_id["transfer"].quota_eligible)
         self.assertFalse(by_id["leave"].quota_eligible)
-        self.assertFalse(by_id["leaver"].quota_eligible)
+        self.assertTrue(by_id["leaver"].quota_eligible)
+        self.assertTrue(by_id["leaver"].bottom_eligible)
 
     def test_post_lock_status_change_gets_receipt_and_requires_atomic_reopen(self) -> None:
         cohort = TeamCohort(
@@ -332,7 +351,7 @@ class EligibilityAndPoolingTests(unittest.TestCase):
         )
         self.assertEqual(len(state.original.included_members), 2)
         self.assertEqual(len(changed.original.included_members), 2)
-        self.assertEqual(len(changed.current.included_members), 1)
+        self.assertEqual(len(changed.current.included_members), 2)
         self.assertTrue(changed.calibration_reopen_required)
         self.assertEqual(changed.change_receipts[0].before.leaver, False)
         self.assertEqual(changed.change_receipts[0].after.leaver, True)
@@ -410,7 +429,7 @@ class EligibilityAndPoolingTests(unittest.TestCase):
         self.assertEqual(len(state.current.records), 3)
         by_id = {record.member.member_id: record for record in state.current.records}
         self.assertFalse(by_id["official"].quota_eligible)
-        self.assertFalse(by_id["join"].quota_eligible)
+        self.assertTrue(by_id["join"].quota_eligible)
         self.assertTrue(by_id["transfer"].quota_eligible)
 
     def test_three_plus_four_common_superior_forms_one_unique_seven_person_pool(self) -> None:
@@ -463,6 +482,110 @@ class EligibilityAndPoolingTests(unittest.TestCase):
             TeamCohort("a", "ma", "sup", 1, (duplicate, duplicate))
         with self.assertRaises(InvalidInputError):
             TeamCohort("a", "ma", "sup", 1, (member("wrong", "b"),))
+
+
+class GrayLeaverQuotaTests(unittest.TestCase):
+    @staticmethod
+    def assignments_for_size(size: int) -> tuple[BandAssignment, ...]:
+        counts = compute_quota(size).effective_counts
+        bands = (
+            (RatingBand.TOP,) * counts.top
+            + (RatingBand.MIDDLE,) * counts.middle
+            + (RatingBand.BOTTOM,) * counts.bottom
+        )
+        return tuple(
+            BandAssignment(f"subject-{index:02d}", band)
+            for index, band in enumerate(bands, start=1)
+        )
+
+    def test_gray_leaver_never_changes_required_quota_vectors(self) -> None:
+        expected = {
+            1: QuotaCounts(0, 1, 0),
+            2: QuotaCounts(0, 2, 0),
+            3: QuotaCounts(1, 2, 0),
+            4: QuotaCounts(1, 3, 0),
+            7: QuotaCounts(2, 4, 1),
+            14: QuotaCounts(4, 9, 1),
+            23: QuotaCounts(7, 14, 2),
+        }
+        for size, counts in expected.items():
+            with self.subTest(size=size):
+                assignments = self.assignments_for_size(size)
+                result = charge_gray_leaver_to_existing_bottom(
+                    assignments,
+                    assignments[0].subject_id,
+                    operation_id=f"gray-{size}",
+                )
+                after_counts = QuotaCounts(
+                    top=sum(item.band is RatingBand.TOP for item in result.after),
+                    middle=sum(item.band is RatingBand.MIDDLE for item in result.after),
+                    bottom=sum(item.band is RatingBand.BOTTOM for item in result.after),
+                )
+                self.assertEqual(after_counts, counts)
+                if counts.bottom == 0:
+                    self.assertIs(result.source, GrayLeaverQuotaSource.NO_EXISTING_BOTTOM)
+                    self.assertEqual(result.after, assignments)
+                else:
+                    self.assertIs(result.source, GrayLeaverQuotaSource.SWAPPED_BOTTOM)
+                    self.assertEqual(result.after[0].band, RatingBand.BOTTOM)
+
+    def test_natural_c_does_not_fabricate_a_swap(self) -> None:
+        assignments = self.assignments_for_size(23)
+        leaver = next(item for item in assignments if item.band is RatingBand.BOTTOM)
+        result = charge_gray_leaver_to_existing_bottom(
+            assignments, leaver.subject_id, operation_id="gray-natural"
+        )
+        self.assertIs(result.source, GrayLeaverQuotaSource.NATURAL_BOTTOM)
+        self.assertIsNone(result.carrier_id)
+        self.assertEqual(result.before, result.after)
+
+    def test_persisted_receipt_is_exactly_replay_stable(self) -> None:
+        assignments = self.assignments_for_size(23)
+        first = charge_gray_leaver_to_existing_bottom(
+            assignments, assignments[0].subject_id, operation_id="gray-replay"
+        )
+        replay = charge_gray_leaver_to_existing_bottom(
+            first.after,
+            assignments[0].subject_id,
+            operation_id="gray-replay",
+            prior=first,
+        )
+        self.assertEqual(replay, first)
+        with self.assertRaises(StaleOperationError):
+            charge_gray_leaver_to_existing_bottom(
+                first.after,
+                assignments[0].subject_id,
+                operation_id="gray-stale",
+                prior=first,
+            )
+
+    def test_forged_non_atomic_receipts_are_rejected(self) -> None:
+        assignments = self.assignments_for_size(7)
+        with self.assertRaises(ConservationError):
+            GrayLeaverResult(
+                operation_id="gray-forged-block",
+                leaver_id=assignments[0].subject_id,
+                source=GrayLeaverQuotaSource.NO_EXISTING_BOTTOM,
+                before=assignments,
+                after=assignments,
+            )
+        bottom = next(item for item in assignments if item.band is RatingBand.BOTTOM)
+        forged = tuple(
+            BandAssignment(
+                item.subject_id,
+                RatingBand.BOTTOM if item.subject_id == assignments[0].subject_id else item.band,
+            )
+            for item in assignments
+        )
+        with self.assertRaises(ConservationError):
+            GrayLeaverResult(
+                operation_id="gray-forged-swap",
+                leaver_id=assignments[0].subject_id,
+                source=GrayLeaverQuotaSource.SWAPPED_BOTTOM,
+                before=assignments,
+                after=forged,
+                carrier_id=bottom.subject_id,
+            )
 
 
 class BilateralTradeTests(unittest.TestCase):

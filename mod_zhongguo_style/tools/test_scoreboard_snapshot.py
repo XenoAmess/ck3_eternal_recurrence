@@ -105,6 +105,56 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             )
         )
 
+    def test_gray_leaver_fields_and_frozen_title_reach_managed_slots(self) -> None:
+        gray_fields = {
+            "roster_employment_state": "zg361_b1_roster_employment_state",
+            "leaver_route": "zg361_b1_leaver_route",
+            "leaver_honest_grade": "zg361_b1_leaver_honest_grade",
+            "leaver_final_grade": "zg361_b1_leaver_final_grade",
+            "leaver_quota_source": "zg361_b1_leaver_quota_source",
+            "leaver_effective_year": "zg361_b1_leaver_effective_year",
+            "leaver_receipt_state": "zg361_b1_leaver_receipt_state",
+        }
+        case_by_name = {field.name: field for field in CASE_FIELDS}
+        for name, source in gray_fields.items():
+            with self.subTest(field=name):
+                self.assertIn(name, case_by_name)
+                self.assertEqual(case_by_name[name].source_var, source)
+                self.assertEqual(case_by_name[name].page, "audit")
+
+        rendered = outputs()
+        effects = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+        first_slot = effects.split(
+            "zg361_write_managed_scoreboard_slot_effect = {", 1
+        )[1].split("\n\t\telse_if = {", 1)[0]
+        self.assertIn("has_variable = zg361_b1_roster_frozen_title", first_slot)
+        self.assertIn(
+            "value = scope:zg361_scoreboard_snapshot_entry.var:zg361_b1_roster_frozen_title",
+            first_slot,
+        )
+        self.assertIn(
+            "value = scope:zg361_scoreboard_snapshot_entry.primary_title",
+            first_slot,
+        )
+        for name in gray_fields:
+            self.assertIn(f"name = zg361_sb_m_01_{name}", first_slot)
+            self.assertIn(
+                f'text = "zg361_scoreboard_detail_field_{name}"', gui
+            )
+
+        # The data schema may grow, but #040 must not introduce another HUD
+        # button/window/widget identity or compete with native action wiring.
+        self.assertEqual(gui.count('name = "zg361_scoreboard_toggle"'), 1)
+        self.assertEqual(gui.count('name = "zg361_scoreboard_window"'), 1)
+
         required_by_page = {
             "facts": {
                 "self_choice",

@@ -288,6 +288,41 @@ zg361_sb_detail_forced_down_available_gui = {
 	is_shown = { has_variable = zg361_sb_detail_forced_down }
 }
 
+zg361_sb_detail_roster_employment_state_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_roster_employment_state }
+}
+
+zg361_sb_detail_leaver_route_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_leaver_route }
+}
+
+zg361_sb_detail_leaver_honest_grade_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_leaver_honest_grade }
+}
+
+zg361_sb_detail_leaver_final_grade_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_leaver_final_grade }
+}
+
+zg361_sb_detail_leaver_quota_source_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_leaver_quota_source }
+}
+
+zg361_sb_detail_leaver_effective_year_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_leaver_effective_year }
+}
+
+zg361_sb_detail_leaver_receipt_state_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_detail_leaver_receipt_state }
+}
+
 zg361_sb_detail_delivery_method_available_gui = {
 	scope = character
 	is_shown = { has_variable = zg361_sb_detail_delivery_method }
@@ -3763,6 +3798,13 @@ zg361_sb_m_01_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_01_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_01_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_01_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_01_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_01_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_01_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_01_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_01_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_01_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_01_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_01_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_01_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_01_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_01_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_01_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_01_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_01_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_01_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_01_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_01_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_01_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_01_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_01_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_01_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_01_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_01_appeal_outcome } }
@@ -3874,6 +3916,13 @@ zg361_sb_m_02_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_02_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_02_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_02_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_02_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_02_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_02_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_02_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_02_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_02_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_02_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_02_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_02_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_02_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_02_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_02_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_02_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_02_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_02_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_02_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_02_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_02_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_02_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_02_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_02_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_02_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_02_appeal_outcome } }
@@ -3985,6 +4034,13 @@ zg361_sb_m_03_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_03_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_03_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_03_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_03_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_03_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_03_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_03_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_03_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_03_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_03_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_03_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_03_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_03_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_03_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_03_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_03_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_03_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_03_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_03_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_03_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_03_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_03_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_03_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_03_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_03_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_03_appeal_outcome } }
@@ -4096,6 +4152,13 @@ zg361_sb_m_04_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_04_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_04_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_04_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_04_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_04_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_04_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_04_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_04_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_04_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_04_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_04_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_04_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_04_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_04_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_04_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_04_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_04_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_04_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_04_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_04_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_04_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_04_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_04_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_04_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_04_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_04_appeal_outcome } }
@@ -4207,6 +4270,13 @@ zg361_sb_m_05_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_05_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_05_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_05_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_05_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_05_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_05_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_05_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_05_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_05_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_05_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_05_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_05_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_05_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_05_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_05_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_05_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_05_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_05_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_05_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_05_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_05_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_05_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_05_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_05_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_05_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_05_appeal_outcome } }
@@ -4318,6 +4388,13 @@ zg361_sb_m_06_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_06_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_06_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_06_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_06_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_06_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_06_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_06_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_06_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_06_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_06_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_06_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_06_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_06_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_06_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_06_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_06_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_06_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_06_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_06_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_06_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_06_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_06_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_06_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_06_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_06_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_06_appeal_outcome } }
@@ -4429,6 +4506,13 @@ zg361_sb_m_07_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_07_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_07_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_07_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_07_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_07_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_07_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_07_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_07_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_07_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_07_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_07_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_07_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_07_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_07_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_07_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_07_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_07_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_07_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_07_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_07_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_07_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_07_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_07_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_07_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_07_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_07_appeal_outcome } }
@@ -4540,6 +4624,13 @@ zg361_sb_m_08_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_08_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_08_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_08_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_08_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_08_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_08_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_08_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_08_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_08_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_08_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_08_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_08_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_08_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_08_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_08_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_08_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_08_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_08_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_08_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_08_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_08_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_08_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_08_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_08_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_08_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_08_appeal_outcome } }
@@ -4651,6 +4742,13 @@ zg361_sb_m_09_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_09_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_09_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_09_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_09_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_09_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_09_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_09_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_09_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_09_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_09_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_09_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_09_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_09_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_09_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_09_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_09_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_09_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_09_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_09_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_09_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_09_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_09_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_09_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_09_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_09_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_09_appeal_outcome } }
@@ -4762,6 +4860,13 @@ zg361_sb_m_10_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_10_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_10_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_10_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_10_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_10_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_10_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_10_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_10_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_10_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_10_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_10_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_10_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_10_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_10_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_10_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_10_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_10_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_10_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_10_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_10_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_10_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_10_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_10_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_10_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_10_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_10_appeal_outcome } }
@@ -4873,6 +4978,13 @@ zg361_sb_m_11_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_11_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_11_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_11_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_11_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_11_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_11_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_11_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_11_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_11_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_11_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_11_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_11_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_11_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_11_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_11_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_11_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_11_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_11_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_11_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_11_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_11_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_11_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_11_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_11_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_11_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_11_appeal_outcome } }
@@ -4984,6 +5096,13 @@ zg361_sb_m_12_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_12_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_12_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_12_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_12_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_12_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_12_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_12_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_12_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_12_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_12_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_12_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_12_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_12_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_12_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_12_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_12_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_12_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_12_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_12_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_12_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_12_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_12_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_12_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_12_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_12_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_12_appeal_outcome } }
@@ -5095,6 +5214,13 @@ zg361_sb_m_13_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_13_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_13_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_13_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_13_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_13_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_13_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_13_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_13_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_13_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_13_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_13_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_13_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_13_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_13_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_13_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_13_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_13_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_13_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_13_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_13_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_13_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_13_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_13_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_13_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_13_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_13_appeal_outcome } }
@@ -5206,6 +5332,13 @@ zg361_sb_m_14_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_14_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_14_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_14_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_14_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_14_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_14_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_14_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_14_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_14_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_14_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_14_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_14_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_14_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_14_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_14_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_14_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_14_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_14_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_14_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_14_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_14_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_14_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_14_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_14_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_14_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_14_appeal_outcome } }
@@ -5317,6 +5450,13 @@ zg361_sb_m_15_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_15_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_15_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_15_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_15_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_15_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_15_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_15_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_15_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_15_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_15_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_15_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_15_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_15_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_15_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_15_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_15_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_15_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_15_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_15_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_15_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_15_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_15_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_15_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_15_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_15_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_15_appeal_outcome } }
@@ -5428,6 +5568,13 @@ zg361_sb_m_16_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_16_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_16_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_16_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_16_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_16_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_16_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_16_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_16_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_16_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_16_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_16_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_16_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_16_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_16_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_16_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_16_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_16_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_16_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_16_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_16_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_16_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_16_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_16_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_16_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_16_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_16_appeal_outcome } }
@@ -5539,6 +5686,13 @@ zg361_sb_m_17_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_17_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_17_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_17_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_17_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_17_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_17_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_17_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_17_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_17_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_17_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_17_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_17_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_17_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_17_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_17_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_17_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_17_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_17_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_17_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_17_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_17_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_17_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_17_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_17_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_17_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_17_appeal_outcome } }
@@ -5650,6 +5804,13 @@ zg361_sb_m_18_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_18_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_18_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_18_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_18_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_18_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_18_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_18_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_18_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_18_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_18_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_18_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_18_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_18_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_18_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_18_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_18_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_18_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_18_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_18_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_18_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_18_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_18_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_18_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_18_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_18_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_18_appeal_outcome } }
@@ -5761,6 +5922,13 @@ zg361_sb_m_19_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_19_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_19_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_19_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_19_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_19_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_19_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_19_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_19_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_19_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_19_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_19_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_19_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_19_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_19_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_19_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_19_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_19_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_19_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_19_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_19_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_19_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_19_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_19_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_19_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_19_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_19_appeal_outcome } }
@@ -5872,6 +6040,13 @@ zg361_sb_m_20_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_20_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_20_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_20_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_20_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_20_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_20_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_20_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_20_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_20_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_20_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_20_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_20_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_20_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_20_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_20_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_20_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_20_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_20_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_20_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_20_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_20_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_20_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_20_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_20_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_20_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_20_appeal_outcome } }
@@ -5983,6 +6158,13 @@ zg361_sb_m_21_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_21_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_21_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_21_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_21_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_21_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_21_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_21_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_21_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_21_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_21_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_21_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_21_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_21_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_21_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_21_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_21_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_21_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_21_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_21_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_21_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_21_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_21_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_21_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_21_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_21_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_21_appeal_outcome } }
@@ -6094,6 +6276,13 @@ zg361_sb_m_22_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_22_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_22_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_22_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_22_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_22_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_22_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_22_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_22_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_22_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_22_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_22_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_22_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_22_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_22_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_22_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_22_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_22_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_22_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_22_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_22_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_22_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_22_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_22_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_22_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_22_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_22_appeal_outcome } }
@@ -6205,6 +6394,13 @@ zg361_sb_m_23_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_23_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_23_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_23_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_23_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_23_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_23_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_23_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_23_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_23_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_23_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_23_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_23_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_23_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_23_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_23_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_23_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_23_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_23_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_23_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_23_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_23_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_23_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_23_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_23_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_23_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_23_appeal_outcome } }
@@ -6316,6 +6512,13 @@ zg361_sb_m_24_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_24_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_24_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_24_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_24_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_24_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_24_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_24_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_24_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_24_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_24_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_24_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_24_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_24_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_24_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_24_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_24_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_24_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_24_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_24_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_24_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_24_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_24_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_24_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_24_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_24_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_24_appeal_outcome } }
@@ -6427,6 +6630,13 @@ zg361_sb_m_25_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_25_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_25_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_25_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_25_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_25_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_25_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_25_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_25_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_25_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_25_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_25_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_25_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_25_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_25_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_25_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_25_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_25_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_25_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_25_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_25_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_25_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_25_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_25_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_25_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_25_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_25_appeal_outcome } }
@@ -6538,6 +6748,13 @@ zg361_sb_m_26_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_26_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_26_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_26_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_26_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_26_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_26_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_26_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_26_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_26_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_26_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_26_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_26_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_26_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_26_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_26_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_26_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_26_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_26_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_26_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_26_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_26_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_26_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_26_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_26_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_26_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_26_appeal_outcome } }
@@ -6649,6 +6866,13 @@ zg361_sb_m_27_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_27_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_27_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_27_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_27_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_27_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_27_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_27_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_27_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_27_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_27_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_27_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_27_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_27_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_27_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_27_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_27_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_27_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_27_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_27_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_27_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_27_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_27_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_27_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_27_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_27_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_27_appeal_outcome } }
@@ -6760,6 +6984,13 @@ zg361_sb_m_28_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_28_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_28_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_28_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_28_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_28_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_28_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_28_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_28_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_28_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_28_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_28_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_28_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_28_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_28_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_28_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_28_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_28_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_28_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_28_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_28_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_28_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_28_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_28_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_28_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_28_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_28_appeal_outcome } }
@@ -6871,6 +7102,13 @@ zg361_sb_m_29_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_29_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_29_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_29_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_29_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_29_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_29_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_29_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_29_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_29_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_29_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_29_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_29_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_29_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_29_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_29_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_29_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_29_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_29_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_29_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_29_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_29_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_29_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_29_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_29_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_29_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_29_appeal_outcome } }
@@ -6982,6 +7220,13 @@ zg361_sb_m_30_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_30_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_30_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_30_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_30_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_30_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_30_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_30_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_30_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_30_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_30_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_30_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_30_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_30_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_30_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_30_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_30_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_30_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_30_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_30_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_30_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_30_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_30_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_30_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_30_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_30_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_30_appeal_outcome } }
@@ -7093,6 +7338,13 @@ zg361_sb_m_31_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_31_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_31_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_31_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_31_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_31_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_31_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_31_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_31_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_31_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_31_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_31_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_31_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_31_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_31_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_31_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_31_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_31_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_31_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_31_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_31_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_31_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_31_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_31_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_31_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_31_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_31_appeal_outcome } }
@@ -7204,6 +7456,13 @@ zg361_sb_m_32_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_32_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_32_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_32_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_32_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_32_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_32_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_32_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_32_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_32_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_32_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_32_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_32_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_32_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_32_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_32_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_32_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_32_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_32_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_32_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_32_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_32_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_32_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_32_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_32_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_32_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_32_appeal_outcome } }
@@ -7315,6 +7574,13 @@ zg361_sb_m_33_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_33_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_33_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_33_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_33_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_33_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_33_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_33_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_33_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_33_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_33_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_33_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_33_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_33_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_33_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_33_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_33_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_33_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_33_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_33_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_33_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_33_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_33_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_33_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_33_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_33_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_33_appeal_outcome } }
@@ -7426,6 +7692,13 @@ zg361_sb_m_34_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_34_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_34_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_34_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_34_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_34_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_34_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_34_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_34_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_34_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_34_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_34_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_34_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_34_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_34_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_34_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_34_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_34_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_34_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_34_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_34_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_34_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_34_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_34_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_34_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_34_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_34_appeal_outcome } }
@@ -7537,6 +7810,13 @@ zg361_sb_m_35_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_35_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_35_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_35_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_35_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_35_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_35_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_35_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_35_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_35_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_35_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_35_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_35_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_35_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_35_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_35_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_35_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_35_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_35_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_35_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_35_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_35_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_35_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_35_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_35_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_35_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_35_appeal_outcome } }
@@ -7648,6 +7928,13 @@ zg361_sb_m_36_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_36_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_36_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_36_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_36_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_36_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_36_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_36_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_36_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_36_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_36_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_36_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_36_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_36_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_36_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_36_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_36_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_36_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_36_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_36_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_36_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_36_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_36_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_36_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_36_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_36_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_36_appeal_outcome } }
@@ -7759,6 +8046,13 @@ zg361_sb_m_37_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_37_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_37_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_37_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_37_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_37_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_37_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_37_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_37_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_37_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_37_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_37_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_37_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_37_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_37_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_37_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_37_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_37_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_37_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_37_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_37_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_37_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_37_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_37_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_37_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_37_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_37_appeal_outcome } }
@@ -7870,6 +8164,13 @@ zg361_sb_m_38_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_38_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_38_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_38_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_38_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_38_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_38_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_38_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_38_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_38_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_38_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_38_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_38_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_38_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_38_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_38_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_38_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_38_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_38_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_38_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_38_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_38_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_38_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_38_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_38_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_38_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_38_appeal_outcome } }
@@ -7981,6 +8282,13 @@ zg361_sb_m_39_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_39_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_39_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_39_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_39_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_39_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_39_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_39_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_39_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_39_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_39_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_39_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_39_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_39_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_39_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_39_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_39_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_39_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_39_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_39_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_39_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_39_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_39_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_39_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_39_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_39_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_39_appeal_outcome } }
@@ -8092,6 +8400,13 @@ zg361_sb_m_40_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_40_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_40_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_40_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_40_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_40_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_40_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_40_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_40_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_40_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_40_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_40_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_40_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_40_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_40_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_40_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_40_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_40_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_40_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_40_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_40_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_40_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_40_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_40_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_40_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_40_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_40_appeal_outcome } }
@@ -8203,6 +8518,13 @@ zg361_sb_m_41_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_41_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_41_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_41_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_41_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_41_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_41_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_41_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_41_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_41_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_41_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_41_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_41_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_41_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_41_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_41_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_41_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_41_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_41_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_41_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_41_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_41_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_41_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_41_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_41_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_41_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_41_appeal_outcome } }
@@ -8314,6 +8636,13 @@ zg361_sb_m_42_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_42_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_42_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_42_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_42_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_42_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_42_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_42_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_42_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_42_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_42_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_42_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_42_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_42_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_42_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_42_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_42_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_42_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_42_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_42_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_42_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_42_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_42_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_42_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_42_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_42_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_42_appeal_outcome } }
@@ -8425,6 +8754,13 @@ zg361_sb_m_43_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_43_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_43_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_43_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_43_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_43_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_43_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_43_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_43_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_43_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_43_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_43_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_43_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_43_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_43_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_43_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_43_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_43_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_43_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_43_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_43_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_43_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_43_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_43_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_43_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_43_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_43_appeal_outcome } }
@@ -8536,6 +8872,13 @@ zg361_sb_m_44_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_44_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_44_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_44_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_44_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_44_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_44_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_44_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_44_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_44_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_44_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_44_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_44_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_44_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_44_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_44_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_44_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_44_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_44_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_44_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_44_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_44_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_44_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_44_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_44_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_44_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_44_appeal_outcome } }
@@ -8647,6 +8990,13 @@ zg361_sb_m_45_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_45_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_45_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_45_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_45_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_45_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_45_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_45_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_45_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_45_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_45_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_45_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_45_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_45_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_45_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_45_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_45_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_45_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_45_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_45_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_45_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_45_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_45_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_45_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_45_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_45_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_45_appeal_outcome } }
@@ -8758,6 +9108,13 @@ zg361_sb_m_46_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_46_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_46_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_46_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_46_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_46_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_46_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_46_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_46_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_46_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_46_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_46_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_46_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_46_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_46_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_46_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_46_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_46_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_46_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_46_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_46_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_46_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_46_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_46_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_46_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_46_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_46_appeal_outcome } }
@@ -8869,6 +9226,13 @@ zg361_sb_m_47_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_47_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_47_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_47_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_47_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_47_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_47_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_47_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_47_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_47_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_47_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_47_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_47_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_47_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_47_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_47_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_47_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_47_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_47_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_47_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_47_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_47_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_47_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_47_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_47_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_47_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_47_appeal_outcome } }
@@ -8980,6 +9344,13 @@ zg361_sb_m_48_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_48_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_48_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_48_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_48_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_48_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_48_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_48_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_48_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_48_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_48_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_48_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_48_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_48_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_48_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_48_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_48_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_48_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_48_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_48_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_48_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_48_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_48_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_48_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_48_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_48_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_48_appeal_outcome } }
@@ -9091,6 +9462,13 @@ zg361_sb_m_49_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_49_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_49_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_49_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_49_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_49_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_49_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_49_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_49_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_49_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_49_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_49_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_49_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_49_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_49_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_49_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_49_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_49_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_49_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_49_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_49_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_49_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_49_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_49_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_49_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_49_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_49_appeal_outcome } }
@@ -9202,6 +9580,13 @@ zg361_sb_m_50_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_50_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_50_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_50_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_50_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_50_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_50_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_50_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_50_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_50_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_50_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_50_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_50_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_50_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_50_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_50_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_50_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_50_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_50_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_50_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_50_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_50_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_50_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_50_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_50_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_50_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_50_appeal_outcome } }
@@ -9313,6 +9698,13 @@ zg361_sb_m_51_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_51_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_51_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_51_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_51_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_51_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_51_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_51_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_51_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_51_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_51_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_51_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_51_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_51_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_51_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_51_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_51_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_51_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_51_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_51_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_51_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_51_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_51_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_51_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_51_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_51_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_51_appeal_outcome } }
@@ -9424,6 +9816,13 @@ zg361_sb_m_52_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_52_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_52_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_52_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_52_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_52_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_52_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_52_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_52_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_52_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_52_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_52_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_52_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_52_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_52_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_52_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_52_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_52_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_52_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_52_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_52_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_52_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_52_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_52_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_52_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_52_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_52_appeal_outcome } }
@@ -9535,6 +9934,13 @@ zg361_sb_m_53_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_53_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_53_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_53_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_53_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_53_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_53_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_53_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_53_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_53_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_53_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_53_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_53_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_53_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_53_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_53_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_53_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_53_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_53_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_53_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_53_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_53_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_53_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_53_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_53_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_53_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_53_appeal_outcome } }
@@ -9646,6 +10052,13 @@ zg361_sb_m_54_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_54_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_54_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_54_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_54_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_54_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_54_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_54_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_54_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_54_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_54_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_54_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_54_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_54_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_54_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_54_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_54_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_54_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_54_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_54_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_54_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_54_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_54_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_54_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_54_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_54_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_54_appeal_outcome } }
@@ -9757,6 +10170,13 @@ zg361_sb_m_55_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_55_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_55_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_55_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_55_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_55_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_55_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_55_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_55_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_55_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_55_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_55_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_55_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_55_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_55_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_55_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_55_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_55_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_55_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_55_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_55_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_55_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_55_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_55_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_55_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_55_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_55_appeal_outcome } }
@@ -9868,6 +10288,13 @@ zg361_sb_m_56_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_56_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_56_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_56_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_56_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_56_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_56_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_56_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_56_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_56_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_56_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_56_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_56_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_56_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_56_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_56_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_56_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_56_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_56_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_56_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_56_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_56_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_56_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_56_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_56_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_56_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_56_appeal_outcome } }
@@ -9979,6 +10406,13 @@ zg361_sb_m_57_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_57_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_57_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_57_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_57_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_57_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_57_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_57_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_57_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_57_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_57_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_57_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_57_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_57_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_57_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_57_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_57_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_57_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_57_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_57_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_57_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_57_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_57_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_57_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_57_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_57_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_57_appeal_outcome } }
@@ -10090,6 +10524,13 @@ zg361_sb_m_58_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_58_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_58_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_58_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_58_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_58_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_58_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_58_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_58_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_58_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_58_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_58_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_58_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_58_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_58_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_58_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_58_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_58_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_58_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_58_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_58_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_58_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_58_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_58_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_58_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_58_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_58_appeal_outcome } }
@@ -10201,6 +10642,13 @@ zg361_sb_m_59_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_59_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_59_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_59_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_59_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_59_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_59_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_59_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_59_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_59_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_59_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_59_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_59_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_59_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_59_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_59_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_59_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_59_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_59_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_59_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_59_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_59_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_59_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_59_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_59_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_59_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_59_appeal_outcome } }
@@ -10312,6 +10760,13 @@ zg361_sb_m_60_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_60_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_60_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_60_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_60_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_60_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_60_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_60_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_60_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_60_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_60_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_60_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_60_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_60_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_60_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_60_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_60_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_60_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_60_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_60_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_60_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_60_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_60_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_60_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_60_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_60_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_60_appeal_outcome } }
@@ -10423,6 +10878,13 @@ zg361_sb_m_61_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_61_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_61_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_61_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_61_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_61_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_61_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_61_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_61_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_61_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_61_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_61_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_61_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_61_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_61_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_61_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_61_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_61_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_61_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_61_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_61_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_61_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_61_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_61_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_61_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_61_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_61_appeal_outcome } }
@@ -10534,6 +10996,13 @@ zg361_sb_m_62_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_62_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_62_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_62_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_62_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_62_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_62_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_62_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_62_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_62_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_62_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_62_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_62_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_62_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_62_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_62_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_62_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_62_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_62_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_62_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_62_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_62_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_62_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_62_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_62_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_62_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_62_appeal_outcome } }
@@ -10645,6 +11114,13 @@ zg361_sb_m_63_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_63_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_63_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_63_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_63_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_63_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_63_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_63_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_63_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_63_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_63_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_63_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_63_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_63_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_63_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_63_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_63_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_63_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_63_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_63_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_63_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_63_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_63_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_63_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_63_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_63_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_63_appeal_outcome } }
@@ -10756,6 +11232,13 @@ zg361_sb_m_64_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_64_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_64_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_64_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_64_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_64_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_64_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_64_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_64_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_64_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_64_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_64_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_64_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_64_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_64_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_64_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_64_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_64_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_64_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_64_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_64_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_64_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_64_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_64_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_64_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_64_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_64_appeal_outcome } }
@@ -10867,6 +11350,13 @@ zg361_sb_m_65_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_65_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_65_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_65_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_65_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_65_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_65_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_65_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_65_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_65_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_65_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_65_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_65_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_65_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_65_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_65_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_65_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_65_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_65_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_65_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_65_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_65_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_65_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_65_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_65_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_65_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_65_appeal_outcome } }
@@ -10978,6 +11468,13 @@ zg361_sb_m_66_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_66_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_66_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_66_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_66_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_66_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_66_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_66_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_66_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_66_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_66_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_66_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_66_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_66_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_66_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_66_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_66_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_66_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_66_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_66_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_66_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_66_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_66_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_66_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_66_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_66_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_66_appeal_outcome } }
@@ -11089,6 +11586,13 @@ zg361_sb_m_67_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_67_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_67_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_67_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_67_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_67_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_67_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_67_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_67_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_67_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_67_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_67_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_67_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_67_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_67_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_67_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_67_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_67_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_67_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_67_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_67_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_67_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_67_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_67_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_67_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_67_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_67_appeal_outcome } }
@@ -11200,6 +11704,13 @@ zg361_sb_m_68_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_68_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_68_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_68_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_68_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_68_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_68_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_68_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_68_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_68_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_68_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_68_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_68_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_68_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_68_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_68_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_68_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_68_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_68_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_68_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_68_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_68_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_68_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_68_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_68_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_68_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_68_appeal_outcome } }
@@ -11311,6 +11822,13 @@ zg361_sb_m_69_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_69_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_69_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_69_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_69_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_69_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_69_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_69_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_69_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_69_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_69_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_69_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_69_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_69_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_69_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_69_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_69_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_69_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_69_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_69_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_69_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_69_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_69_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_69_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_69_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_69_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_69_appeal_outcome } }
@@ -11422,6 +11940,13 @@ zg361_sb_m_70_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_70_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_70_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_70_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_70_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_70_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_70_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_70_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_70_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_70_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_70_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_70_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_70_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_70_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_70_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_70_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_70_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_70_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_70_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_70_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_70_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_70_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_70_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_70_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_70_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_70_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_70_appeal_outcome } }
@@ -11533,6 +12058,13 @@ zg361_sb_m_71_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_71_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_71_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_71_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_71_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_71_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_71_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_71_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_71_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_71_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_71_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_71_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_71_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_71_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_71_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_71_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_71_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_71_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_71_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_71_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_71_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_71_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_71_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_71_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_71_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_71_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_71_appeal_outcome } }
@@ -11644,6 +12176,13 @@ zg361_sb_m_72_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_72_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_72_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_72_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_72_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_72_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_72_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_72_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_72_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_72_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_72_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_72_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_72_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_72_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_72_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_72_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_72_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_72_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_72_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_72_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_72_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_72_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_72_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_72_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_72_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_72_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_72_appeal_outcome } }
@@ -11755,6 +12294,13 @@ zg361_sb_m_73_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_73_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_73_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_73_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_73_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_73_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_73_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_73_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_73_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_73_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_73_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_73_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_73_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_73_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_73_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_73_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_73_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_73_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_73_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_73_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_73_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_73_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_73_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_73_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_73_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_73_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_73_appeal_outcome } }
@@ -11866,6 +12412,13 @@ zg361_sb_m_74_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_74_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_74_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_74_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_74_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_74_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_74_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_74_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_74_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_74_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_74_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_74_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_74_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_74_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_74_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_74_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_74_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_74_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_74_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_74_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_74_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_74_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_74_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_74_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_74_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_74_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_74_appeal_outcome } }
@@ -11977,6 +12530,13 @@ zg361_sb_m_75_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_75_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_75_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_75_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_75_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_75_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_75_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_75_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_75_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_75_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_75_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_75_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_75_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_75_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_75_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_75_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_75_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_75_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_75_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_75_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_75_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_75_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_75_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_75_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_75_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_75_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_75_appeal_outcome } }
@@ -12088,6 +12648,13 @@ zg361_sb_m_76_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_76_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_76_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_76_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_76_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_76_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_76_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_76_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_76_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_76_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_76_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_76_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_76_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_76_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_76_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_76_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_76_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_76_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_76_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_76_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_76_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_76_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_76_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_76_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_76_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_76_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_76_appeal_outcome } }
@@ -12199,6 +12766,13 @@ zg361_sb_m_77_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_77_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_77_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_77_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_77_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_77_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_77_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_77_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_77_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_77_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_77_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_77_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_77_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_77_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_77_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_77_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_77_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_77_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_77_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_77_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_77_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_77_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_77_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_77_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_77_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_77_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_77_appeal_outcome } }
@@ -12310,6 +12884,13 @@ zg361_sb_m_78_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_78_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_78_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_78_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_78_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_78_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_78_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_78_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_78_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_78_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_78_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_78_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_78_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_78_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_78_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_78_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_78_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_78_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_78_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_78_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_78_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_78_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_78_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_78_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_78_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_78_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_78_appeal_outcome } }
@@ -12421,6 +13002,13 @@ zg361_sb_m_79_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_79_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_79_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_79_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_79_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_79_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_79_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_79_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_79_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_79_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_79_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_79_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_79_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_79_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_79_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_79_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_79_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_79_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_79_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_79_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_79_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_79_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_79_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_79_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_79_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_79_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_79_appeal_outcome } }
@@ -12532,6 +13120,13 @@ zg361_sb_m_80_select_gui = {
 		if = { limit = { has_variable = zg361_sb_m_80_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_m_80_shadow_to_quota_delta } }
 		if = { limit = { has_variable = zg361_sb_m_80_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_m_80_quota_snapshot } }
 		if = { limit = { has_variable = zg361_sb_m_80_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_m_80_forced_down } }
+		if = { limit = { has_variable = zg361_sb_m_80_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_m_80_roster_employment_state } }
+		if = { limit = { has_variable = zg361_sb_m_80_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_m_80_leaver_route } }
+		if = { limit = { has_variable = zg361_sb_m_80_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_m_80_leaver_honest_grade } }
+		if = { limit = { has_variable = zg361_sb_m_80_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_m_80_leaver_final_grade } }
+		if = { limit = { has_variable = zg361_sb_m_80_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_m_80_leaver_quota_source } }
+		if = { limit = { has_variable = zg361_sb_m_80_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_m_80_leaver_effective_year } }
+		if = { limit = { has_variable = zg361_sb_m_80_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_m_80_leaver_receipt_state } }
 		if = { limit = { has_variable = zg361_sb_m_80_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_m_80_delivery_method } }
 		if = { limit = { has_variable = zg361_sb_m_80_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_m_80_appeal_open } }
 		if = { limit = { has_variable = zg361_sb_m_80_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_m_80_appeal_outcome } }
@@ -12747,6 +13342,13 @@ zg361_sb_self_select_gui = {
 			if = { limit = { has_variable = zg361_sb_self_shadow_to_quota_delta } set_variable = { name = zg361_sb_detail_shadow_to_quota_delta value = var:zg361_sb_self_shadow_to_quota_delta } }
 			if = { limit = { has_variable = zg361_sb_self_quota_snapshot } set_variable = { name = zg361_sb_detail_quota_snapshot value = var:zg361_sb_self_quota_snapshot } }
 			if = { limit = { has_variable = zg361_sb_self_forced_down } set_variable = { name = zg361_sb_detail_forced_down value = var:zg361_sb_self_forced_down } }
+			if = { limit = { has_variable = zg361_sb_self_roster_employment_state } set_variable = { name = zg361_sb_detail_roster_employment_state value = var:zg361_sb_self_roster_employment_state } }
+			if = { limit = { has_variable = zg361_sb_self_leaver_route } set_variable = { name = zg361_sb_detail_leaver_route value = var:zg361_sb_self_leaver_route } }
+			if = { limit = { has_variable = zg361_sb_self_leaver_honest_grade } set_variable = { name = zg361_sb_detail_leaver_honest_grade value = var:zg361_sb_self_leaver_honest_grade } }
+			if = { limit = { has_variable = zg361_sb_self_leaver_final_grade } set_variable = { name = zg361_sb_detail_leaver_final_grade value = var:zg361_sb_self_leaver_final_grade } }
+			if = { limit = { has_variable = zg361_sb_self_leaver_quota_source } set_variable = { name = zg361_sb_detail_leaver_quota_source value = var:zg361_sb_self_leaver_quota_source } }
+			if = { limit = { has_variable = zg361_sb_self_leaver_effective_year } set_variable = { name = zg361_sb_detail_leaver_effective_year value = var:zg361_sb_self_leaver_effective_year } }
+			if = { limit = { has_variable = zg361_sb_self_leaver_receipt_state } set_variable = { name = zg361_sb_detail_leaver_receipt_state value = var:zg361_sb_self_leaver_receipt_state } }
 			if = { limit = { has_variable = zg361_sb_self_delivery_method } set_variable = { name = zg361_sb_detail_delivery_method value = var:zg361_sb_self_delivery_method } }
 			if = { limit = { has_variable = zg361_sb_self_appeal_open } set_variable = { name = zg361_sb_detail_appeal_open value = var:zg361_sb_self_appeal_open } }
 			if = { limit = { has_variable = zg361_sb_self_appeal_outcome } set_variable = { name = zg361_sb_detail_appeal_outcome value = var:zg361_sb_self_appeal_outcome } }

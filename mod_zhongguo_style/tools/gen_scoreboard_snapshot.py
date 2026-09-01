@@ -215,6 +215,33 @@ CASE_FIELDS = (
     FieldSpec("quota_snapshot", "zg361_b1_quota_snapshot", "quota", "grade"),
     FieldSpec("forced_down", "zg361_b1_forced_down", "quota"),
     FieldSpec(
+        "roster_employment_state",
+        "zg361_b1_roster_employment_state",
+        "audit",
+    ),
+    FieldSpec("leaver_route", "zg361_b1_leaver_route", "audit"),
+    FieldSpec(
+        "leaver_honest_grade",
+        "zg361_b1_leaver_honest_grade",
+        "audit",
+        "grade",
+    ),
+    FieldSpec(
+        "leaver_final_grade",
+        "zg361_b1_leaver_final_grade",
+        "audit",
+        "grade",
+    ),
+    FieldSpec(
+        "leaver_quota_source", "zg361_b1_leaver_quota_source", "audit"
+    ),
+    FieldSpec(
+        "leaver_effective_year", "zg361_b1_leaver_effective_year", "audit"
+    ),
+    FieldSpec(
+        "leaver_receipt_state", "zg361_b1_leaver_receipt_state", "audit"
+    ),
+    FieldSpec(
         "case_state",
         "zg361_result_case_state",
         "audit",
@@ -1062,7 +1089,13 @@ def render_effects() -> bytes:
                 f"\t\t{keyword} = {{",
                 f"\t\t\tlimit = {{ has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = {slot} }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'char')} value = scope:zg361_scoreboard_snapshot_entry }}",
-                f"\t\t\tset_variable = {{ name = {var('m', slot, 'title')} value = scope:zg361_scoreboard_snapshot_entry.primary_title }}",
+                "\t\t\tif = {",
+                "\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry = { has_variable = zg361_b1_roster_frozen_title } }",
+                f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'title')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_b1_roster_frozen_title }}",
+                "\t\t\t}",
+                "\t\t\telse = {",
+                f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'title')} value = scope:zg361_scoreboard_snapshot_entry.primary_title }}",
+                "\t\t\t}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'kpi')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'rank')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'values')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_values }}",

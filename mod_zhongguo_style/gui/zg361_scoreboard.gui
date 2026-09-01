@@ -7202,6 +7202,48 @@ window = {
 							blockoverride "scrollbox_content" {
 								set_parent_size_to_minimum = yes
 								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_roster_employment_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_roster_employment_state" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_roster_employment_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_roster_employment_state').GetValue|0]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_roster_employment_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_leaver_route_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_leaver_route" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_leaver_route_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_leaver_route').GetValue|0]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_leaver_route_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_leaver_honest_grade_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_leaver_honest_grade" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_leaver_honest_grade_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_leaver_honest_grade').GetValue|2]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_leaver_honest_grade_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_leaver_final_grade_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_leaver_final_grade" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_leaver_final_grade_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_leaver_final_grade').GetValue|2]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_leaver_final_grade_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_leaver_quota_source_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_leaver_quota_source" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_leaver_quota_source_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_leaver_quota_source').GetValue|0]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_leaver_quota_source_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_leaver_effective_year_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_leaver_effective_year" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_leaver_effective_year_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_leaver_effective_year').GetValue|0]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_leaver_effective_year_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
+									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_leaver_receipt_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
+										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_leaver_receipt_state" default_format = "#weak" align = nobaseline }
+										expand = {}
+										text_single = { visible = "[GetScriptedGui('zg361_sb_detail_leaver_receipt_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "[GetPlayer.MakeScope.Var('zg361_sb_detail_leaver_receipt_state').GetValue|0]" default_format = "#high" align = nobaseline }
+										text_single = { visible = "[Not(GetScriptedGui('zg361_sb_detail_leaver_receipt_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "zg361_scoreboard_detail_unavailable" default_format = "#weak" align = nobaseline }
+									}
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_delivery_method_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_delivery_method" default_format = "#weak" align = nobaseline }
 										expand = {}

@@ -1363,7 +1363,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ):
             self.assertIn(identity, prepare)
         evidence = prepare.index(
-            "set_variable = { name = zg361_b1_evidence_late value = zg361_kpi_value }"
+            "set_variable = { name = zg361_b1_evidence_late value = var:zg361_b1_owner_bound_kpi }"
         )
         seal = prepare.index(
             "set_variable = { name = zg361_b1_peer_sealed value = 1 }"
@@ -2504,6 +2504,213 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn(marker, additions)
         self.assertIn("name = zg361_b1_roster_included value = 1", initialize)
 
+    def test_gray_leaver_freezes_roster_identity_but_not_employment_state(self) -> None:
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        for policy_marker in (
+            "name = zg361_b1_m040_mode value = 1",
+            "has_variable = zg361_mechanism_040_choice",
+            "name = zg361_b1_m040_mode value = var:zg361_mechanism_040_choice",
+            "name = zg361_b1_m040_gray_used value = 0",
+            "name = zg361_b1_m040_frozen_leaver_n value = 0",
+            "name = zg361_b1_m040_hc_vacancy_n value = 0",
+            "name = zg361_b1_m040_review_vacancy_n value = 0",
+        ):
+            self.assertIn(policy_marker, open_cycle)
+
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        for marker in (
+            "name = zg361_b1_roster_included value = 1",
+            "name = zg361_b1_roster_employment_state value = 1",
+            "name = zg361_b1_leaver_route value = 0",
+            "name = zg361_b1_leaver_quota_source value = 0",
+            "name = zg361_b1_leaver_receipt_state value = 0",
+            "name = zg361_b1_roster_frozen_title value = primary_title",
+            "zg361_b1_snapshot_owner_bound_kpi_effect = yes",
+        ):
+            self.assertIn(marker, initialize)
+
+        audit = top_level_block(
+            self.effects, "zg361_b1_audit_frozen_roster_effect"
+        )
+        # The once-only gate is the live employment state, not removal from the
+        # D+0 denominator.  Alive A/B leavers therefore remain included.
+        self.assertIn("var:zg361_b1_roster_employment_state = 1", audit)
+        employment_write = audit.index(
+            "set_variable = { name = zg361_b1_roster_employment_state value = 2 }"
+        )
+        self.assertLess(
+            employment_write,
+            audit.index(
+                "change_variable = { name = zg361_b1_m040_hc_vacancy_n add = 1 }"
+            ),
+        )
+        self.assertIn("name = zg361_b1_leaver_route value = 1", audit)
+        self.assertIn("name = zg361_b1_leaver_route value = 2", audit)
+        self.assertIn("name = zg361_b1_m040_gray_used value = 1", audit)
+        self.assertIn("name = zg361_b1_m040_gray_subject value = prev", audit)
+        self.assertIn("name = zg361_b1_m040_frozen_leaver_n add = 1", audit)
+        self.assertIn("name = zg361_b1_m040_review_vacancy_n add = 1", audit)
+        # Only death/explicit route C opens a review vacancy and removes the
+        # row.  The separate HC vacancy cannot authorize an N+1 quota row.
+        route_c = audit.split(
+            "# Death and explicit C create a review vacancy.", 1
+        )[1]
+        self.assertIn("name = zg361_b1_roster_included value = 0", route_c)
+        self.assertIn("name = zg361_b1_leaver_route value = 3", route_c)
+
+        additions = top_level_block(
+            self.effects, "zg361_b1_audit_locked_roster_additions_effect"
+        )
+        self.assertIn("var:zg361_b1_m040_frozen_leaver_n = 0", additions)
+        self.assertIn(
+            "name = zg361_b1_roster_backfill_needed value = var:zg361_b1_roster_amendment_n",
+            additions,
+        )
+
+    def test_departed_kpi_and_result_remain_bound_to_the_frozen_owner(self) -> None:
+        snapshot = top_level_block(
+            self.effects, "zg361_b1_snapshot_owner_bound_kpi_effect"
+        )
+        for identity in (
+            "var:zg361_b1_case_owner = root",
+            "var:zg361_b1_case_subject = this",
+            "var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial",
+            "var:zg361_b1_case_serial = root.var:zg361_b1_case_serial",
+            "liege = root",
+        ):
+            self.assertIn(identity, snapshot)
+        for component in (
+            "governance",
+            "capability",
+            "growth",
+            "superior",
+            "values",
+            "collaboration",
+            "jingcha",
+            "organization",
+        ):
+            self.assertIn(f"zg361_b1_owner_bound_evidence_{component}", snapshot)
+
+        materialize = top_level_block(
+            self.effects, "zg361_b1_materialize_departed_kpi_effect"
+        )
+        self.assertIn("var:zg361_b1_roster_employment_state = 2", materialize)
+        self.assertIn(
+            "OR = { var:zg361_b1_leaver_route = 1 var:zg361_b1_leaver_route = 2 }",
+            materialize,
+        )
+        self.assertIn(
+            "var:zg361_b1_owner_bound_snapshot_owner = root", materialize
+        )
+        self.assertIn(
+            "name = zg361_kpi value = var:zg361_b1_owner_bound_kpi",
+            materialize,
+        )
+        self.assertNotIn("zg361_compute_kpi_effect = yes", materialize)
+
+        settle = top_level_block(
+            self.effects, "zg361_b1_apply_departed_grade_effect"
+        )
+        self.assertIn("zg361_freeze_result_case_effect = yes", settle)
+        self.assertIn("name = zg361_last_grade value = var:zg361_pending_grade", settle)
+        self.assertIn("name = zg361_result_delivery_method value = 5", settle)
+        for forbidden in (
+            "add_character_modifier",
+            "remove_treasury",
+            "remove_short_term_gold",
+            "change_merit",
+            "add_opinion",
+            "zg361_b2_on_result_frozen_effect",
+        ):
+            self.assertNotIn(forbidden, settle)
+
+    def test_gray_leaver_uses_one_existing_c_at_the_final_seal(self) -> None:
+        gray = top_level_block(
+            self.effects, "zg361_b1_apply_final_gray_leaver_effect"
+        )
+        for exact_guard in (
+            "var:zg361_b1_m040_mode = 2",
+            "var:zg361_b1_m040_gray_used = 1",
+            "var:zg361_b1_case_owner = scope:zg361_b1_m040_manager",
+            "var:zg361_b1_case_subject = this",
+            "var:zg361_b1_case_state = 7",
+            "var:zg361_b1_case_active = 1",
+            "var:zg361_b1_roster_included = 1",
+            "var:zg361_b1_roster_employment_state = 2",
+            "var:zg361_b1_leaver_route = 2",
+        ):
+            self.assertIn(exact_guard, gray)
+        self.assertIn("limit = { var:zg361_pending_325_n >= 1 }", gray)
+        self.assertIn("name = zg361_b1_leaver_quota_source value = 1", gray)
+        self.assertIn("name = zg361_b1_leaver_quota_source value = 2", gray)
+        self.assertIn("name = zg361_b1_leaver_quota_source value = 3", gray)
+        self.assertIn("name = zg361_b1_leaver_swap_partner", gray)
+        self.assertIn("name = zg361_grade_reason_override value = 9", gray)
+        self.assertIn("name = zg361_grade_reason_override value = 10", gray)
+        self.assertEqual(gray.count("remove_variable = zg361_calibration_reason"), 2)
+        self.assertIn("name = zg361_b1_forced_down value = 0", gray)
+        self.assertIn("name = zg361_b1_leaver_receipt_state value = 2", gray)
+        self.assertIn("name = zg361_b1_leaver_receipt_state value = 3", gray)
+        self.assertIn("zg361_b1_verify_frozen_quota_conservation_effect = yes", gray)
+        # The operation swaps two assignments; it never edits the three quota
+        # totals, so 23 remains exactly 7/14/2 and small zero-C cohorts block.
+        for count_field in (
+            "zg361_pending_375_n",
+            "zg361_pending_35_n",
+            "zg361_pending_325_n",
+        ):
+            self.assertNotIn(f"name = {count_field} value", gray)
+            self.assertNotIn(f"name = {count_field} add", gray)
+
+        finish = top_level_block(
+            self.effects, "zg361_b1_finish_calibration_effect"
+        )
+        apply_gray = finish.index("zg361_b1_apply_final_gray_leaver_effect = yes")
+        self.assertLess(apply_gray, finish.index("zg361_b1_freeze_band_order_effect = yes"))
+        self.assertLess(apply_gray, finish.index("zg361_b1_pay_frozen_pending_rewards_effect = yes"))
+        self.assertLess(apply_gray, finish.index("zg361_apply_pending_grades_effect = yes"))
+
+    def test_departed_subject_crosses_review_settlement_and_scoreboard_projection(self) -> None:
+        run_review = top_level_block(self.core, "zg361_run_review_effect")
+        b1_review = run_review.split(
+            "# B1 uses the roster frozen at D+0.", 1
+        )[1].split("\n\telse = {", 1)[0]
+        self.assertIn("variable = zg361_b1_subjects", b1_review)
+        self.assertIn("zg361_b1_materialize_departed_kpi_effect = yes", b1_review)
+        self.assertIn("add_to_list = zg361_cohort", b1_review)
+
+        apply_grades = top_level_block(
+            self.core, "zg361_apply_pending_grades_effect"
+        )
+        b1_settle = apply_grades.split(
+            "has_character_flag = zg361_b1_cycle_active", 1
+        )[1].split("\n\telse = {", 1)[0]
+        self.assertIn("variable = zg361_b1_subjects", b1_settle)
+        self.assertIn("zg361_b1_apply_departed_grade_effect = yes", b1_settle)
+
+        publish = top_level_block(self.core, "zg361_publish_scoreboard_effect")
+        self.assertEqual(publish.count("variable = zg361_b1_subjects"), 2)
+        self.assertIn("add_to_list = zg361_scoreboard_candidates", publish)
+        self.assertIn("add_to_list = zg361_scoreboard_recipients", publish)
+        self.assertIn("var:zg361_b1_roster_included = 1", publish)
+
+    def test_departed_subject_is_not_carried_into_the_next_cycle(self) -> None:
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        clear = open_cycle.index("clear_variable_list = zg361_b1_subjects")
+        rebuild = open_cycle.index("every_vassal = {", clear)
+        initialize = open_cycle.index("zg361_b1_initialize_subject_case_effect = yes", rebuild)
+        self.assertLess(clear, rebuild)
+        self.assertLess(rebuild, initialize)
+
+        published = top_level_block(
+            self.effects, "zg361_b1_mark_published_effect"
+        )
+        self.assertIn("name = zg361_b1_case_state value = 8", published)
+        self.assertIn("name = zg361_b1_case_active value = 0", published)
+        self.assertIn("remove_character_flag = zg361_b1_cycle_active", published)
+
     def test_newcomer_protection_preserves_exact_top_and_bottom_counts(self) -> None:
         blocks = (
             top_level_block(self.effects, "zg361_b1_rebuild_local_quota_effect"),
@@ -2985,6 +3192,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("highest_held_title_tier >= tier_duchy", celestial)
         self.assertIn("is_landed = yes", celestial)
         self.assertIn("is_alive = yes", celestial)
+        reviewable = top_level_block(
+            self.triggers, "zg361_is_reviewable_vassal_trigger"
+        )
+        self.assertIn("liege = { zg361_is_celestial_liege_trigger = yes }", reviewable)
+        self.assertNotIn("tier_duchy", reviewable)
+        self.assertNotIn("highest_held_title_tier", reviewable)
         self.assertIn(
             "zg361_case_kernel_subject_self_guard_trigger",
             self.case_kernel_triggers,

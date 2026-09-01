@@ -883,6 +883,144 @@ zg361_b1_consume_manager_liabilities_as_subject_effect = {
 	}
 }
 
+# Freeze the latest KPI view while the subject is still bound to the cycle
+# owner.  A later transfer/unlanding must not make the old manager recompute
+# superior/organization evidence against the new live liege.
+zg361_b1_snapshot_owner_bound_kpi_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			var:zg361_b1_case_owner = root
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			is_alive = yes
+			liege = root
+		}
+		set_variable = { name = zg361_b1_owner_bound_evidence_governance value = zg361_kpi_governance_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_capability value = zg361_kpi_capability_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_growth value = zg361_kpi_growth_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_superior value = zg361_kpi_superior_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_values value = zg361_kpi_values_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_collaboration value = zg361_kpi_collaboration_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_jingcha value = zg361_kpi_jingcha_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_evidence_organization value = zg361_kpi_organization_evidence_value }
+		set_variable = { name = zg361_b1_owner_bound_kpi value = zg361_kpi_value }
+		set_variable = { name = zg361_b1_owner_bound_values value = zg361_values_score_value }
+		set_variable = { name = zg361_b1_owner_bound_efficiency value = 0 }
+		if = {
+			limit = { is_governor = yes }
+			set_variable = { name = zg361_b1_owner_bound_efficiency value = governor_efficiency_presented }
+		}
+		set_variable = { name = zg361_b1_owner_bound_snapshot_available value = 1 }
+		set_variable = { name = zg361_b1_owner_bound_snapshot_owner value = root }
+		set_variable = { name = zg361_b1_owner_bound_snapshot_subject value = this }
+		set_variable = { name = zg361_b1_owner_bound_snapshot_cycle value = var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_owner_bound_snapshot_case value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_owner_bound_snapshot_stage value = var:zg361_b1_case_state }
+		set_variable = { name = zg361_b1_owner_bound_snapshot_year value = current_year }
+	}
+}
+
+# Re-materialize an old-manager evidence sheet for an alive in-cycle leaver.
+# This deliberately does not consume inputs that now belong to a later live
+# employment relation; it only consumes a skipped-Jingcha reason already bound
+# to this frozen owner.
+zg361_b1_materialize_departed_kpi_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_roster_employment_state = 2
+			OR = { var:zg361_b1_leaver_route = 1 var:zg361_b1_leaver_route = 2 }
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_owner_bound_snapshot_available = 1
+			var:zg361_b1_owner_bound_snapshot_owner = root
+			var:zg361_b1_owner_bound_snapshot_subject = this
+			var:zg361_b1_owner_bound_snapshot_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_owner_bound_snapshot_case = var:zg361_b1_case_serial
+		}
+		set_variable = { name = zg361_evidence_governance value = var:zg361_b1_owner_bound_evidence_governance }
+		set_variable = { name = zg361_evidence_capability value = var:zg361_b1_owner_bound_evidence_capability }
+		set_variable = { name = zg361_evidence_growth value = var:zg361_b1_owner_bound_evidence_growth }
+		set_variable = { name = zg361_evidence_superior value = var:zg361_b1_owner_bound_evidence_superior }
+		set_variable = { name = zg361_evidence_values value = var:zg361_b1_owner_bound_evidence_values }
+		set_variable = { name = zg361_evidence_collaboration value = var:zg361_b1_owner_bound_evidence_collaboration }
+		set_variable = { name = zg361_evidence_jingcha value = var:zg361_b1_owner_bound_evidence_jingcha }
+		set_variable = { name = zg361_evidence_organization value = var:zg361_b1_owner_bound_evidence_organization }
+		set_variable = { name = zg361_kpi value = var:zg361_b1_owner_bound_kpi }
+		set_variable = { name = zg361_values value = var:zg361_b1_owner_bound_values }
+		set_variable = { name = zg361_efficiency value = var:zg361_b1_owner_bound_efficiency }
+		if = { limit = { var:zg361_kpi >= 50 } set_variable = { name = zg361_absolute_grade value = 3 } }
+		else_if = { limit = { var:zg361_kpi >= 0 } set_variable = { name = zg361_absolute_grade value = 2 } }
+		else = { set_variable = { name = zg361_absolute_grade value = 1 } }
+		if = {
+			limit = { var:zg361_b1_goal_grade_cap = 2 var:zg361_absolute_grade = 3 }
+			set_variable = { name = zg361_absolute_grade value = 2 }
+		}
+		remove_variable = zg361_calibration_reason
+		remove_variable = zg361_grade_reason_override
+		if = {
+			limit = {
+				has_variable = zg361_skipped_jingcha_superior
+				var:zg361_skipped_jingcha_superior = var:zg361_b1_case_owner
+			}
+			remove_variable = zg361_skipped_jingcha_superior
+			remove_variable = zg361_skipped_jingcha_year
+		}
+		if = { limit = { var:zg361_kpi >= 50 var:zg361_values <= -20 } set_variable = { name = zg361_class value = 1 } }
+		else_if = { limit = { var:zg361_kpi <= 0 var:zg361_values >= 20 } set_variable = { name = zg361_class value = 2 } }
+		else = { set_variable = { name = zg361_class value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_streak_top } } set_variable = { name = zg361_streak_top value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_streak_bottom } } set_variable = { name = zg361_streak_bottom value = 0 } }
+		set_variable = { name = zg361_b1_departed_kpi_materialized value = 1 }
+	}
+}
+
+# A departed A/B subject receives an immutable result row but no old-employer
+# bonus, penalty, opinion, PIP, elimination, or live-liege class write.  Counts
+# belong to the frozen owner and the result is terminally posted in one pass.
+zg361_b1_apply_departed_grade_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_case_owner = root
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_case_state = 7
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_roster_employment_state = 2
+			OR = { var:zg361_b1_leaver_route = 1 var:zg361_b1_leaver_route = 2 }
+			has_variable = zg361_pending_grade
+		}
+		zg361_freeze_result_case_effect = yes
+		set_variable = { name = zg361_last_grade value = var:zg361_pending_grade }
+		if = {
+			limit = { var:zg361_pending_grade = 3 }
+			root = { change_variable = { name = zg361_last_375_n add = 1 } }
+		}
+		else_if = {
+			limit = { var:zg361_pending_grade = 1 }
+			root = { change_variable = { name = zg361_last_325_n add = 1 } }
+		}
+		else = { root = { change_variable = { name = zg361_last_35_n add = 1 } } }
+		if = { limit = { var:zg361_class = 1 } root = { change_variable = { name = zg361_wild_dog_n add = 1 } } }
+		if = { limit = { var:zg361_class = 2 } root = { change_variable = { name = zg361_rabbit_n add = 1 } } }
+		set_variable = { name = zg361_result_case_state value = 3 }
+		set_variable = { name = zg361_result_delivery_method value = 5 }
+		set_variable = { name = zg361_result_delivered_year value = current_year }
+		set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
+		set_variable = { name = zg361_result_appeal_open value = 0 }
+		set_variable = { name = zg361_result_salary_cut_active value = 0 }
+		set_variable = { name = zg361_b1_departed_result_posted value = 1 }
+		set_variable = { name = zg361_b1_leaver_final_grade value = var:zg361_pending_grade }
+		remove_variable = zg361_pending_grade
+		remove_character_flag = zg361_newcomer_this_cycle
+	}
+}
+
 zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_case_owner value = root }
 	set_variable = { name = zg361_b1_case_subject value = this }
@@ -912,6 +1050,7 @@ zg361_b1_initialize_subject_case_effect = {
 	remove_variable = zg361_b1_m011_receipt_serial
 	remove_variable = zg361_b1_m012_receipt_serial
 	remove_variable = zg361_b1_m013_receipt_serial
+	remove_variable = zg361_b1_m040_receipt_serial
 	remove_variable = zg361_b1_m135_receipt_serial
 	remove_variable = zg361_b1_m137_receipt_serial
 	remove_variable = zg361_b1_m138_receipt_serial
@@ -972,6 +1111,20 @@ zg361_b1_initialize_subject_case_effect = {
 	remove_variable = zg361_b1_roster_change_actor
 	remove_variable = zg361_b1_roster_change_approver
 	set_variable = { name = zg361_b1_leaver_route value = 0 }
+	set_variable = { name = zg361_b1_roster_employment_state value = 1 }
+	set_variable = { name = zg361_b1_leaver_quota_source value = 0 }
+	set_variable = { name = zg361_b1_leaver_honest_grade value = 0 }
+	set_variable = { name = zg361_b1_leaver_final_grade value = 0 }
+	set_variable = { name = zg361_b1_leaver_swap_before value = 0 }
+	set_variable = { name = zg361_b1_leaver_swap_after value = 0 }
+	set_variable = { name = zg361_b1_leaver_receipt_state value = 0 }
+	set_variable = { name = zg361_b1_leaver_effective_year value = 0 }
+	remove_variable = zg361_b1_leaver_swap_partner
+	set_variable = { name = zg361_b1_roster_frozen_title value = primary_title }
+	set_variable = { name = zg361_b1_owner_bound_snapshot_available value = 0 }
+	set_variable = { name = zg361_b1_departed_kpi_materialized value = 0 }
+	set_variable = { name = zg361_b1_departed_result_posted value = 0 }
+	zg361_b1_snapshot_owner_bound_kpi_effect = yes
 	set_variable = { name = zg361_b1_goal_available value = 1 }
 	set_variable = { name = zg361_b1_goal_contract_id value = var:zg361_b1_case_serial }
 	set_variable = { name = zg361_b1_goal_version value = 1 }
@@ -1714,6 +1867,21 @@ zg361_b1_open_cycle_effect = {
 		set_variable = { name = zg361_b1_quota_function_code value = var:zg361_b1_function_code }
 		zg361_b1_freeze_001_013_policy_effect = yes
 		zg361_b1_freeze_135_145_policy_effect = yes
+		# #040 is a cycle policy, not a live card lookup.  A is the honest
+		# evidence route; B may gray-charge exactly one existing C; C excludes
+		# the departure from review and records only policy debt.
+		set_variable = { name = zg361_b1_m040_mode value = 1 }
+		if = {
+			limit = { has_variable = zg361_mechanism_040_choice }
+			set_variable = { name = zg361_b1_m040_mode value = var:zg361_mechanism_040_choice }
+		}
+		set_variable = { name = zg361_b1_m040_gray_used value = 0 }
+		set_variable = { name = zg361_b1_m040_gray_blocked value = 0 }
+		set_variable = { name = zg361_b1_m040_frozen_leaver_n value = 0 }
+		set_variable = { name = zg361_b1_m040_hc_vacancy_n value = 0 }
+		set_variable = { name = zg361_b1_m040_review_vacancy_n value = 0 }
+		set_variable = { name = zg361_b1_m040_replacement_deferred_n value = 0 }
+		remove_variable = zg361_b1_m040_gray_subject
 		set_variable = { name = zg361_b1_roster_amendment_n value = 0 }
 		set_variable = { name = zg361_b1_roster_audit_version value = 1 }
 		set_variable = { name = zg361_b1_roster_reopen_required value = 0 }
@@ -1854,9 +2022,11 @@ zg361_b1_midcycle_dispatcher_effect = {
 					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
 					var:zg361_b1_case_state = 1
 				}
-				# Snapshot the formula without consuming one-shot evidence. The final
-				# D+300 compute remains the sole consumer of a skipped-Jingcha penalty.
-				set_variable = { name = zg361_b1_evidence_mid value = zg361_kpi_value }
+				# Refresh only while the old owner relation still exists.  If the
+				# subject already departed, retain the last owner-bound D+0 snapshot
+				# instead of evaluating superior inputs against a new liege.
+				zg361_b1_snapshot_owner_bound_kpi_effect = yes
+				set_variable = { name = zg361_b1_evidence_mid value = var:zg361_b1_owner_bound_kpi }
 				set_variable = { name = zg361_b1_self_score value = var:zg361_b1_evidence_mid }
 				if = {
 					limit = { var:zg361_b1_checkin_available = 1 }
@@ -2184,7 +2354,11 @@ zg361_b1_prepare_facts_effect = {
 					limit = { var:zg361_b1_self_review_available = 1 var:zg361_b1_self_submitted = 0 }
 					zg361_b1_record_self_honest_effect = yes
 				}
-				set_variable = { name = zg361_b1_evidence_late value = zg361_kpi_value }
+				# Current staff refresh at D+300; departed A/B subjects retain the
+				# last valid old-owner snapshot.  Both paths therefore feed the same
+				# frozen evidence sheet without consulting a replacement liege.
+				zg361_b1_snapshot_owner_bound_kpi_effect = yes
+				set_variable = { name = zg361_b1_evidence_late value = var:zg361_b1_owner_bound_kpi }
 				if = {
 					limit = {
 						var:zg361_b1_opportunity_project_available = 1
@@ -3074,9 +3248,10 @@ zg361_b1_compute_exact_quota_effect = {
 }
 
 # Compare the frozen variable list with current ownership immediately before
-# quota calculation. A departure is excluded once and leaves a reconstructible
-# before/after/reason/actor/approver receipt; the quota candidate filters below
-# consume zg361_b1_roster_included, so this is not a write-only audit field.
+# quota calculation.  Employment state and review membership are deliberately
+# separate: alive A/B leavers keep their D+0 denominator slot, while death/C
+# creates a review vacancy.  The one-time receipt survives save/load because a
+# processed row leaves employment_state=1 permanently.
 zg361_b1_audit_frozen_roster_effect = {
 	if = {
 		limit = {
@@ -3095,6 +3270,7 @@ zg361_b1_audit_frozen_roster_effect = {
 					has_variable = zg361_b1_case_state
 					has_variable = zg361_b1_case_active
 					has_variable = zg361_b1_roster_included
+					has_variable = zg361_b1_roster_employment_state
 					var:zg361_b1_case_owner = scope:zg361_b1_roster_manager
 					var:zg361_b1_case_subject = this
 					var:zg361_b1_cycle_serial = scope:zg361_b1_roster_manager.var:zg361_b1_cycle_serial
@@ -3102,17 +3278,15 @@ zg361_b1_audit_frozen_roster_effect = {
 					OR = { var:zg361_b1_case_state = 3 var:zg361_b1_case_state = 5 }
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
+					var:zg361_b1_roster_employment_state = 1
 					OR = {
 						is_alive = no
 						is_landed = no
-						AND = {
-							NOT = { liege = scope:zg361_b1_roster_manager }
-							scope:zg361_b1_roster_manager.var:zg361_b1_m140_mode != 1
-						}
+						NOT = { liege = scope:zg361_b1_roster_manager }
 					}
 				}
 				set_variable = { name = zg361_b1_roster_change_before value = 1 }
-				set_variable = { name = zg361_b1_roster_change_after value = 0 }
+				set_variable = { name = zg361_b1_roster_change_after value = 1 }
 				set_variable = { name = zg361_b1_roster_change_reason value = 1 }
 				if = {
 					limit = { is_alive = no }
@@ -3129,12 +3303,48 @@ zg361_b1_audit_frozen_roster_effect = {
 				change_variable = { name = zg361_b1_roster_change_version add = 1 }
 				set_variable = { name = zg361_b1_roster_amendment value = 1 }
 				set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
-				set_variable = { name = zg361_b1_roster_included value = 0 }
-				set_variable = { name = zg361_b1_leaver_route value = 1 }
+				set_variable = { name = zg361_b1_roster_employment_state value = 2 }
+				set_variable = { name = zg361_b1_leaver_effective_year value = current_year }
+				set_variable = { name = zg361_b1_leaver_receipt_state value = 1 }
+				set_variable = { name = zg361_b1_m040_receipt_serial value = var:zg361_b1_case_serial }
 				scope:zg361_b1_roster_manager = {
-					change_variable = { name = zg361_b1_roster_amendment_n add = 1 }
+					change_variable = { name = zg361_b1_m040_hc_vacancy_n add = 1 }
 					change_variable = { name = zg361_b1_roster_audit_version add = 1 }
 					set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
+				}
+				if = {
+					limit = {
+						is_alive = yes
+						scope:zg361_b1_roster_manager.var:zg361_b1_m040_mode != 3
+					}
+					# Honest A and all non-selected B departures remain evidence-led.
+					set_variable = { name = zg361_b1_leaver_route value = 1 }
+					if = {
+						limit = {
+							scope:zg361_b1_roster_manager.var:zg361_b1_m040_mode = 2
+							scope:zg361_b1_roster_manager.var:zg361_b1_m040_gray_used = 0
+						}
+						set_variable = { name = zg361_b1_leaver_route value = 2 }
+						scope:zg361_b1_roster_manager = {
+							set_variable = { name = zg361_b1_m040_gray_used value = 1 }
+							set_variable = { name = zg361_b1_m040_gray_subject value = prev }
+						}
+					}
+					scope:zg361_b1_roster_manager = {
+						change_variable = { name = zg361_b1_m040_frozen_leaver_n add = 1 }
+					}
+				}
+				else = {
+					# Death and explicit C create a review vacancy.  They may be
+					# backfilled under the existing #039/#140 path, but cannot be
+					# confused with an occupied gray quota slot.
+					set_variable = { name = zg361_b1_roster_change_after value = 0 }
+					set_variable = { name = zg361_b1_roster_included value = 0 }
+					set_variable = { name = zg361_b1_leaver_route value = 3 }
+					scope:zg361_b1_roster_manager = {
+						change_variable = { name = zg361_b1_m040_review_vacancy_n add = 1 }
+						change_variable = { name = zg361_b1_roster_amendment_n add = 1 }
+					}
 				}
 			}
 		}
@@ -3157,7 +3367,13 @@ zg361_b1_audit_locked_roster_additions_effect = {
 		if = {
 			limit = {
 				scope:zg361_b1_roster_add_manager = {
-					OR = { var:zg361_b1_subject_n < 80 var:zg361_b1_roster_backfill_needed >= 1 }
+					OR = {
+						var:zg361_b1_roster_backfill_needed >= 1
+						AND = {
+							var:zg361_b1_subject_n < 80
+							var:zg361_b1_m040_frozen_leaver_n = 0
+						}
+					}
 					trigger_if = {
 						limit = { has_variable_list = zg361_b1_subjects }
 						NOT = {
@@ -6379,6 +6595,157 @@ zg361_b1_apply_symmetric_reopen_effect = {
 	zg361_b1_finish_calibration_effect = yes
 }
 
+# #040 B is applied only after every ordinary calibration/pending/reopen writer
+# has finished, but before rewards and the immutable result settlement.  It can
+# consume one existing C by an atomic swap; a zero-C cohort is explicitly
+# blocked and never manufactures an extra bottom slot.
+zg361_b1_apply_final_gray_leaver_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_m040_mode = 2
+			var:zg361_b1_m040_gray_used = 1
+			has_variable = zg361_b1_m040_gray_subject
+		}
+		save_temporary_scope_as = zg361_b1_m040_manager
+		var:zg361_b1_m040_gray_subject = {
+			if = {
+				limit = {
+					var:zg361_b1_case_owner = scope:zg361_b1_m040_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_m040_manager.var:zg361_b1_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_m040_manager.var:zg361_b1_case_serial
+					var:zg361_b1_case_state = 7
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_b1_roster_employment_state = 2
+					var:zg361_b1_leaver_route = 2
+					has_variable = zg361_pending_grade
+					var:zg361_b1_leaver_receipt_state = 1
+				}
+				save_temporary_scope_as = zg361_b1_m040_gray_subject_scope
+				set_variable = { name = zg361_b1_leaver_honest_grade value = var:zg361_pending_grade }
+				set_variable = { name = zg361_b1_leaver_swap_before value = var:zg361_pending_grade }
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:zg361_b1_m040_gray_subject_scope
+				scope:zg361_b1_m040_gray_subject_scope.var:zg361_b1_leaver_receipt_state = 1
+			}
+			set_variable = { name = zg361_b1_m040_source_board_hash value = var:zg361_b1_sealed_board_hash }
+			set_variable = { name = zg361_b1_m040_source_board_checksum value = var:zg361_b1_sealed_board_checksum }
+			if = {
+				limit = { var:zg361_pending_325_n >= 1 }
+				if = {
+					limit = { scope:zg361_b1_m040_gray_subject_scope.var:zg361_pending_grade = 1 }
+					scope:zg361_b1_m040_gray_subject_scope = {
+						set_variable = { name = zg361_b1_leaver_quota_source value = 1 }
+						set_variable = { name = zg361_b1_leaver_final_grade value = 1 }
+						set_variable = { name = zg361_b1_leaver_swap_after value = 1 }
+						set_variable = { name = zg361_b1_leaver_receipt_state value = 2 }
+						set_variable = { name = zg361_b1_m040_receipt_serial value = var:zg361_b1_case_serial }
+					}
+				}
+				else = {
+					ordered_in_list = {
+						variable = zg361_b1_processing_subjects
+						order_by = var:zg361_b1_calibration_score
+						max = 1
+						limit = {
+							var:zg361_b1_case_owner = scope:zg361_b1_m040_manager
+							var:zg361_b1_cycle_serial = scope:zg361_b1_m040_manager.var:zg361_b1_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_m040_manager.var:zg361_b1_case_serial
+							var:zg361_b1_case_state = 7
+							var:zg361_b1_case_active = 1
+							var:zg361_b1_roster_included = 1
+							var:zg361_pending_grade = 1
+							NOT = { this = scope:zg361_b1_m040_gray_subject_scope }
+						}
+						save_temporary_scope_as = zg361_b1_m040_carrier_scope
+					}
+					if = {
+						limit = { exists = scope:zg361_b1_m040_carrier_scope }
+						scope:zg361_b1_m040_carrier_scope = {
+							set_variable = { name = zg361_b1_m040_partner_before value = 1 }
+							set_variable = { name = zg361_b1_m040_partner_after value = scope:zg361_b1_m040_gray_subject_scope.var:zg361_pending_grade }
+							set_variable = { name = zg361_pending_grade value = scope:zg361_b1_m040_gray_subject_scope.var:zg361_pending_grade }
+							set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+							set_variable = { name = zg361_b1_forced_down value = 0 }
+							remove_variable = zg361_calibration_reason
+							set_variable = { name = zg361_grade_reason_override value = 10 }
+						}
+						scope:zg361_b1_m040_gray_subject_scope = {
+							set_variable = { name = zg361_b1_leaver_swap_partner value = scope:zg361_b1_m040_carrier_scope }
+							set_variable = { name = zg361_pending_grade value = 1 }
+							set_variable = { name = zg361_b1_quota_snapshot value = 1 }
+							set_variable = { name = zg361_b1_leaver_quota_source value = 2 }
+							set_variable = { name = zg361_b1_leaver_final_grade value = 1 }
+							set_variable = { name = zg361_b1_leaver_swap_after value = 1 }
+							set_variable = { name = zg361_b1_leaver_receipt_state value = 2 }
+							set_variable = { name = zg361_b1_m040_receipt_serial value = var:zg361_b1_case_serial }
+							remove_variable = zg361_calibration_reason
+							set_variable = { name = zg361_grade_reason_override value = 9 }
+							set_variable = { name = zg361_b1_forced_down value = 0 }
+							if = { limit = { var:zg361_absolute_grade > 1 } set_variable = { name = zg361_b1_forced_down value = 1 } }
+						}
+						change_variable = { name = zg361_b1_quota_book_version add = 1 }
+					}
+					else = {
+						# A positive bottom count without a distinct carrier is an
+						# invariant failure, not permission to mint another C.
+						set_variable = { name = zg361_b1_m040_gray_blocked value = 1 }
+						scope:zg361_b1_m040_gray_subject_scope = {
+							set_variable = { name = zg361_b1_leaver_quota_source value = 3 }
+							set_variable = { name = zg361_b1_leaver_final_grade value = var:zg361_pending_grade }
+							set_variable = { name = zg361_b1_leaver_swap_after value = var:zg361_pending_grade }
+							set_variable = { name = zg361_b1_leaver_receipt_state value = 3 }
+							set_variable = { name = zg361_b1_m040_receipt_serial value = var:zg361_b1_case_serial }
+						}
+					}
+				}
+			}
+			else = {
+				set_variable = { name = zg361_b1_m040_gray_blocked value = 1 }
+				scope:zg361_b1_m040_gray_subject_scope = {
+					set_variable = { name = zg361_b1_leaver_quota_source value = 3 }
+					set_variable = { name = zg361_b1_leaver_final_grade value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_leaver_swap_after value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_leaver_receipt_state value = 3 }
+					set_variable = { name = zg361_b1_m040_receipt_serial value = var:zg361_b1_case_serial }
+				}
+			}
+			# Re-seal the final quota book after the only possible gray swap.
+			set_variable = { name = zg361_b1_sealed_board_hash value = { value = var:zg361_b1_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version } }
+			set_variable = { name = zg361_b1_sealed_board_checksum value = { value = var:zg361_b1_case_serial multiply = 10000 } }
+			every_in_list = {
+				variable = zg361_b1_processing_subjects
+				if = {
+					limit = {
+						var:zg361_b1_case_owner = root
+						var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
+						var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+						var:zg361_b1_case_state = 7
+						var:zg361_b1_case_active = 1
+						var:zg361_b1_roster_included = 1
+					}
+					set_variable = { name = zg361_b1_reopen_sealed_grade value = var:zg361_pending_grade }
+					save_temporary_scope_as = zg361_b1_m040_hash_subject
+					root = {
+						change_variable = {
+							name = zg361_b1_sealed_board_checksum
+							add = { value = scope:zg361_b1_m040_hash_subject.var:zg361_b1_agenda_order multiply = scope:zg361_b1_m040_hash_subject.var:zg361_pending_grade }
+						}
+					}
+				}
+			}
+			set_variable = { name = zg361_b1_reward_snapshot_hash value = { value = var:zg361_b1_sealed_board_hash multiply = 1000 add = var:zg361_b1_pending_reward_book_version } }
+			set_variable = { name = zg361_b1_m040_final_board_hash value = var:zg361_b1_sealed_board_hash }
+			set_variable = { name = zg361_b1_m040_final_board_checksum value = var:zg361_b1_sealed_board_checksum }
+			zg361_b1_verify_frozen_quota_conservation_effect = yes
+		}
+	}
+}
+
 zg361_b1_pay_frozen_pending_rewards_effect = {
 	if = {
 		limit = {
@@ -6421,6 +6788,7 @@ zg361_b1_finish_calibration_effect = {
 			var:zg361_b1_rewards_issued = 0
 			var:zg361_b1_calibration_finalized = 0
 		}
+		zg361_b1_apply_final_gray_leaver_effect = yes
 		zg361_b1_freeze_band_order_effect = yes
 		set_variable = { name = zg361_b1_finalization_board_hash value = var:zg361_b1_sealed_board_hash }
 		set_variable = { name = zg361_b1_finalization_reward_hash value = var:zg361_b1_reward_snapshot_hash }
@@ -8978,6 +9346,13 @@ l_english:
  zg361_scoreboard_detail_field_shadow_to_quota_delta:0 "Shadow-to-Quota Rating Delta"
  zg361_scoreboard_detail_field_quota_snapshot:0 "Frozen Quota Rating"
  zg361_scoreboard_detail_field_forced_down:0 "Forced Below Absolute Band"
+ zg361_scoreboard_detail_field_roster_employment_state:0 "Employment State (1 Active / 2 Departed This Cycle)"
+ zg361_scoreboard_detail_field_leaver_route:0 "Leaver Route (1 Evidence / 2 Gray C / 3 Excluded)"
+ zg361_scoreboard_detail_field_leaver_honest_grade:0 "Evidence-Led Leaver Rating"
+ zg361_scoreboard_detail_field_leaver_final_grade:0 "Posted Leaver Rating"
+ zg361_scoreboard_detail_field_leaver_quota_source:0 "Leaver Quota Source (1 Natural C / 2 Swapped C / 3 No Existing C)"
+ zg361_scoreboard_detail_field_leaver_effective_year:0 "Departure Effective Year"
+ zg361_scoreboard_detail_field_leaver_receipt_state:0 "Leaver Receipt State"
  zg361_scoreboard_detail_field_b1_case_owner:0 "B1 Case Owner"
  zg361_scoreboard_detail_field_b1_cycle_serial:0 "B1 Cycle Serial"
  zg361_scoreboard_detail_field_b1_case_serial:0 "B1 Case Serial"
@@ -9061,6 +9436,13 @@ l_simp_chinese:
  zg361_scoreboard_detail_field_shadow_to_quota_delta:0 "影子档到配额档变化"
  zg361_scoreboard_detail_field_quota_snapshot:0 "冻结配额档"
  zg361_scoreboard_detail_field_forced_down:0 "是否被压低至事实绝对档以下"
+ zg361_scoreboard_detail_field_roster_employment_state:0 "在职状态（1 在职 / 2 本周期已离任）"
+ zg361_scoreboard_detail_field_leaver_route:0 "离任路线（1 按证据 / 2 灰色占 C / 3 不纳入）"
+ zg361_scoreboard_detail_field_leaver_honest_grade:0 "离任者证据应得档"
+ zg361_scoreboard_detail_field_leaver_final_grade:0 "离任者公示终档"
+ zg361_scoreboard_detail_field_leaver_quota_source:0 "离任配额来源（1 自然 C / 2 换得 C / 3 无既有 C）"
+ zg361_scoreboard_detail_field_leaver_effective_year:0 "离任生效年份"
+ zg361_scoreboard_detail_field_leaver_receipt_state:0 "离任收据状态"
  zg361_scoreboard_detail_field_b1_case_owner:0 "B1 案卷所有者"
  zg361_scoreboard_detail_field_b1_cycle_serial:0 "B1 轮次序号"
  zg361_scoreboard_detail_field_b1_case_serial:0 "B1 案卷序号"
