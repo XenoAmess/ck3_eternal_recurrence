@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "contract_id": "raiktor-gen034-boundary-v1",
+  "scope": "stable semantic boundary for G2 GEN-034",
+  "gen_034_resolved": false,
+  "required_before_resolution": [
+    "public same-frame six-domain inputs with complete session identity",
+    "campaign dominance certificate",
+    "owner budget profile",
+    "white-peace comparison",
+    "single typed exit submission",
+    "six-domain action-boundary postconditions",
+    "postwar checkpoint"
+  ],
+  "prohibited_shortcuts": [
+    "combine production-live and fixture-only domains into a live claim",
+    "treat authored 3000 as observed pre-soldiers or proven loss",
+    "treat command acknowledgement as outcome verification",
+    "emit an action literal before the full decision and action gates close"
+  ],
+  "readiness": "static-boundary-only"
+}

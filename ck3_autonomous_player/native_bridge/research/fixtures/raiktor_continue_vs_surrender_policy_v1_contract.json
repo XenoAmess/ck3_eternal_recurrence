@@ -23,8 +23,8 @@
       "semantic_contract": "claims base plus gold, prestige, PoW, favor, truce and honestly generic war-bound current observation; automatic surrender remains false"
     },
     {
-      "path": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
-      "sha256": "39469FD53E91A3807E2154CAA7F94420055CF71D97115DDEB7DA3A6CA8752C35",
+      "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_gen034_boundary_v1.json",
+      "sha256": "5297A0DE783A61E3EE2787A5B91CBBB700F57B6D7468882A571D82BE6AC399B7",
       "semantic_contract": "GEN-034 remains unresolved until public same-frame inputs, policy, typed submit and six-domain postconditions are live"
     }
   ],
