@@ -526,6 +526,47 @@ def main() -> int:
         == contract.get("live_validation", {}).get("artifact_sha256")
     ):
         failures.append("fixture: historical external live evidence drifted")
+    signed_live = contract.get("signed_pending_id_live_validation", {})
+    fixture_signed_live = fixture.get("signed_pending_id_live_evidence", {})
+    if not (
+        isinstance(signed_live, dict)
+        and signed_live.get("status") == "production-live loop"
+        and signed_live.get("source_commit")
+        == "c21c096263325e1d8a13a4b01eebaa38ac88d2dd"
+        and signed_live.get("run_id")
+        == "20260827T191804Z-one-generation-8c116e3e"
+        and signed_live.get("artifact_sha256")
+        == "3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973"
+        and signed_live.get("run_outcome") == "bounded_incomplete"
+        and signed_live.get("requested_turns") == 12
+        and signed_live.get("successful_turns") == 12
+        and signed_live.get("pending_interaction_id") == -2013265918
+        and signed_live.get("query_step")
+        == "query-pending-character-interaction-context-v1"
+        and signed_live.get("reply_step")
+        == "reject-pending-character-interaction"
+        and signed_live.get("reply_status") == "rejected"
+        and signed_live.get("old_id_absent_after_reply") is True
+        and signed_live.get("continued_after_reply") is True
+        and signed_live.get("checkpoints_saved") == 2
+        and signed_live.get("cleanup_proven") is True
+        and signed_live.get("semantic_decision_ready") is False
+    ):
+        failures.append("contract: signed-negative live evidence boundary drifted")
+    if not (
+        isinstance(fixture_signed_live, dict)
+        and fixture_signed_live.get("contract")
+        == "../pending_character_interaction_context_v1_abi.json#signed_pending_id_live_validation"
+        and fixture_signed_live.get("artifact_sha256")
+        == signed_live.get("artifact_sha256")
+        and fixture_signed_live.get("pending_interaction_id")
+        == signed_live.get("pending_interaction_id")
+        and fixture_signed_live.get("query_step") == signed_live.get("query_step")
+        and fixture_signed_live.get("reply_step") == signed_live.get("reply_step")
+        and fixture_signed_live.get("reply_status") == signed_live.get("reply_status")
+        and fixture_signed_live.get("old_id_absent_after_reply") is True
+    ):
+        failures.append("fixture: signed-negative live evidence drifted")
     if fixture.get("source_hashes") != contract.get("source_contract", {}).get(
         "source_files"
     ):
@@ -562,6 +603,13 @@ def main() -> int:
         and fixture_readiness.get("call_ally_war_target_live_ready") is False
     ):
         failures.append("contract: call-ally typed-target readiness boundary drifted")
+    if not (
+        readiness.get("signed_pending_id_contract_ready") is True
+        and readiness.get("negative_signed_pending_id_live_ready") is True
+        and fixture_readiness.get("signed_pending_id_contract_ready") is True
+        and fixture_readiness.get("negative_signed_pending_id_live_ready") is True
+    ):
+        failures.append("contract: signed-negative readiness boundary drifted")
     for source, label in (
         (readiness.get("production_live_scope"), "contract"),
         (fixture_readiness.get("production_live_scope"), "fixture"),
@@ -569,6 +617,7 @@ def main() -> int:
         if not (
             isinstance(source, str)
             and "historical ordinary" in source
+            and "signed-negative" in source
             and "generic cost" in source
             and "special war binding" in source
             and "notification ACK" in source
@@ -579,7 +628,7 @@ def main() -> int:
     if not (
         contract.get("live_validated") is True
         and contract.get("live_validated_scope")
-        == "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only"
+        == "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality plus one signed-negative arrange-marriage query/reject lifecycle"
         and isinstance(contract.get("not_live_validated_scope"), str)
         and "generic authored cost" in contract["not_live_validated_scope"]
         and "typed call_ally war target" in contract["not_live_validated_scope"]
@@ -600,7 +649,8 @@ def main() -> int:
         return 1
     print(
         f"PASS spans={len(spans)} exact_build=1 source_hashes=1 "
-        "cost_mapping=10 special_war_pairs=3 read_only=1 live_pending=1"
+        "cost_mapping=10 special_war_pairs=3 read_only=1 "
+        "signed_negative_live=1 call_ally_live_pending=1"
     )
     return 0
 

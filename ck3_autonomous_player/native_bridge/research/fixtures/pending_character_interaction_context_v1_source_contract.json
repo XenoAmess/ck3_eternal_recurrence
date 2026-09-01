@@ -13,6 +13,16 @@
     "artifact_sha256": "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
     "claim_boundary": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; this synthetic fixture does not itself supply live evidence"
   },
+  "signed_pending_id_live_evidence": {
+    "contract": "../pending_character_interaction_context_v1_abi.json#signed_pending_id_live_validation",
+    "artifact_sha256": "3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973",
+    "pending_interaction_id": -2013265918,
+    "query_step": "query-pending-character-interaction-context-v1",
+    "reply_step": "reject-pending-character-interaction",
+    "reply_status": "rejected",
+    "old_id_absent_after_reply": true,
+    "claim_boundary": "external production-live lifecycle evidence only; this synthetic fixture remains not-live evidence and does not prove marriage semantics"
+  },
   "override_application": "recursively merge each vector's overrides into defaults; arrays and scalar leaves replace the default value, and the key/hash pair is read evidence rather than a request to recompute the engine hash",
   "source_hashes": {
     "Crusader Kings III/game/common/character_interactions/_character_interactions.info": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
@@ -845,8 +855,10 @@
     "notification_ack_query_ready": true,
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
+    "signed_pending_id_contract_ready": true,
+    "negative_signed_pending_id_live_ready": true,
     "production_live_ready": true,
-    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; the typed call_ally war target decoder is query/static-covered but has no paused live artifact; excludes the newly wired generic costs and special war binding, notification ACK, intermediary routing and semantic decision",
+    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality (including one signed-negative full-ID query/reject lifecycle); the typed call_ally war target decoder is query/static-covered but has no paused live artifact; excludes the newly wired generic costs and special war binding, notification ACK, intermediary routing and semantic decision",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   }
