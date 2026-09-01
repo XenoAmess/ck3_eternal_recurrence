@@ -322,6 +322,20 @@ inline constexpr std::uintptr_t
     kPendingInteractionTargetTypeFallbackEntryV1Rva = 0x5000AB0;
 inline constexpr std::uintptr_t kPendingInteractionScriptIdentifierNameV1Rva =
     0x3B58970;
+// Exact-build generic target decoder for the stock call_ally war target.
+// The first uint16 in the 16-byte envelope is the registry index; for the
+// `war` type (index 16), the complete signed int32 WarID starts at +0x08.
+// `typed_identity` serializes this as `war:<canonical positive signed-decimal-id>` only after the
+// generation-safe active-CWar resolver and a second full-ID read succeed.
+inline constexpr std::uint16_t kPendingInteractionWarTargetTypeIndexV1 = 16;
+inline constexpr std::size_t kPendingInteractionWarTargetWarIdOffsetV1 = 0x08;
+inline constexpr std::string_view kPendingInteractionWarTargetIdentityPrefixV1 =
+    "war:";
+// The typed decoder is intentionally bound to the canonical stock definition
+// we researched.  Other interaction definitions can reuse the same generic
+// target registry type, but are not allowed to cross this semantic seam.
+inline constexpr std::string_view kPendingInteractionCallAllyDefinitionKeyV1 =
+    "call_ally_interaction";
 inline constexpr std::uintptr_t kPendingInteractionReplyPrimaryVtableV1Rva =
     0x4082930;
 inline constexpr std::uintptr_t kPendingInteractionReplySecondaryVtableV1Rva =

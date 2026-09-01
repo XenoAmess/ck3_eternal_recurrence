@@ -3,6 +3,7 @@
 #include <array>
 #include <charconv>
 #include <cstdint>
+#include <cstring>
 #include <string>
 #include <string_view>
 
@@ -123,6 +124,86 @@ bool ValidUnavailableTerm(
   return term.status ==
              game::PendingCharacterInteractionSemanticStatusV1::unavailable &&
          term.reason == reason;
+}
+
+bool ValidTargetEnvelope(
+    const game::PendingCharacterInteractionTargetV1 &target) noexcept {
+  constexpr std::size_t kExpectedRawEnvelopeBytes = 16;
+  if (target.raw_envelope.size() != kExpectedRawEnvelopeBytes) {
+    return false;
+  }
+  std::uint16_t raw_type_index = 0;
+  std::memcpy(&raw_type_index, target.raw_envelope.data(),
+              sizeof(raw_type_index));
+  return raw_type_index == target.raw_type_index;
+}
+
+bool ValidTypedWarTarget(
+    const game::PendingCharacterInteractionTargetV1 &target,
+    std::string_view definition_key) noexcept {
+  constexpr std::size_t kExpectedRawEnvelopeBytes = 16;
+  static_assert(kPendingInteractionWarTargetWarIdOffsetV1 +
+                    sizeof(std::int32_t) <= kExpectedRawEnvelopeBytes);
+  if (!ValidTargetEnvelope(target)) {
+    return false;
+  }
+  if (definition_key != kPendingInteractionCallAllyDefinitionKeyV1 ||
+      target.raw_type_index != kPendingInteractionWarTargetTypeIndexV1 ||
+      target.type_key_status !=
+          game::PendingCharacterInteractionSemanticStatusV1::available ||
+      !target.type_key.has_value() || *target.type_key != "war" ||
+      !target.type_key_reason.empty() ||
+      target.typed_identity_status !=
+          game::PendingCharacterInteractionSemanticStatusV1::available ||
+      !target.typed_identity.has_value() ||
+      !target.typed_identity_reason.empty()) {
+    return false;
+  }
+  const auto identity = std::string_view(*target.typed_identity);
+  const auto prefix = kPendingInteractionWarTargetIdentityPrefixV1;
+  if (identity.size() <= prefix.size() ||
+      identity.compare(0, prefix.size(), prefix) != 0) {
+    return false;
+  }
+  const auto decimal = identity.substr(prefix.size());
+  std::int32_t parsed_id = 0;
+  const auto parsed = std::from_chars(
+      decimal.data(), decimal.data() + decimal.size(), parsed_id, 10);
+  if (parsed.ec != std::errc{} || parsed.ptr != decimal.data() + decimal.size() ||
+      parsed_id <= 0 || std::to_string(parsed_id) != decimal) {
+    return false;
+  }
+  std::int32_t raw_id = 0;
+  std::memcpy(&raw_id,
+              target.raw_envelope.data() +
+                  kPendingInteractionWarTargetWarIdOffsetV1,
+              sizeof(raw_id));
+  return raw_id == parsed_id;
+}
+
+bool ValidUnavailableTarget(
+    const game::PendingCharacterInteractionTargetV1 &target,
+    std::string_view definition_key) noexcept {
+  if (!ValidTargetEnvelope(target) ||
+      target.typed_identity_status !=
+          game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
+      target.typed_identity.has_value() ||
+      target.typed_identity_reason.empty()) {
+    return false;
+  }
+  if (target.typed_identity_reason ==
+      "generic_scope_payload_identity_not_closed") {
+    // The exact allowlisted call_ally/war tuple must use the dedicated
+    // resolver-failure reason; accepting the generic reason here would let a
+    // malformed typed tuple silently bypass its identity contract.
+    return definition_key != kPendingInteractionCallAllyDefinitionKeyV1 ||
+           target.raw_type_index != kPendingInteractionWarTargetTypeIndexV1 ||
+           !target.type_key.has_value() || *target.type_key != "war";
+  }
+  return definition_key == kPendingInteractionCallAllyDefinitionKeyV1 &&
+         target.raw_type_index == kPendingInteractionWarTargetTypeIndexV1 &&
+         target.type_key.has_value() && *target.type_key == "war" &&
+         target.typed_identity_reason == "war_target_identity_unavailable";
 }
 
 bool ValidStructuredCosts(
@@ -253,19 +334,16 @@ bool ValidAvailable(
     return false;
   }
   if (target.present) {
-    if (target.raw_type_index == 0 ||
+    if (!ValidTargetEnvelope(target) || target.raw_type_index == 0 ||
         target.type_key_status !=
             game::PendingCharacterInteractionSemanticStatusV1::available ||
         !target.type_key.has_value() || target.type_key->empty() ||
         !target.type_key_reason.empty() ||
-        target.typed_identity_status !=
-            game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
-        target.typed_identity.has_value() ||
-        target.typed_identity_reason !=
-            "generic_scope_payload_identity_not_closed") {
+        (!ValidTypedWarTarget(target, definition.canonical_key) &&
+         !ValidUnavailableTarget(target, definition.canonical_key))) {
       return false;
     }
-  } else if (target.raw_type_index != 0 ||
+  } else if (!ValidTargetEnvelope(target) || target.raw_type_index != 0 ||
              target.type_key_status !=
                  game::PendingCharacterInteractionSemanticStatusV1::absent ||
              target.type_key.has_value() || !target.type_key_reason.empty() ||
@@ -302,10 +380,17 @@ bool ValidAvailable(
     return false;
   }
   std::size_t reason_index = 0;
-  if (target.present &&
+  const bool target_typed_identity_ready =
+      !target.present ||
+      target.typed_identity_status ==
+          game::PendingCharacterInteractionSemanticStatusV1::available;
+  if (target.present && !target_typed_identity_ready &&
       (ready.not_ready_reasons.empty() ||
        ready.not_ready_reasons[reason_index++] !=
-           "target_generic_scope_payload_identity_not_closed")) {
+           (target.typed_identity_reason ==
+                    "generic_scope_payload_identity_not_closed"
+                ? "target_generic_scope_payload_identity_not_closed"
+                : target.typed_identity_reason))) {
     return false;
   }
   const bool special_binding_available =
@@ -327,7 +412,7 @@ bool ValidAvailable(
           "structured_effect_preview_unavailable";
   return exact_reasons && ready.stable_definition_ready && ready.roles_ready &&
          ready.target_type_key_ready &&
-         ready.target_typed_identity_ready == !target.present &&
+         ready.target_typed_identity_ready == target_typed_identity_ready &&
          ready.send_options_ready && ready.routing_ready &&
          ready.deadline_ready && ready.auto_accept_ready &&
          ready.reply_legality_ready && ready.generic_costs_ready &&

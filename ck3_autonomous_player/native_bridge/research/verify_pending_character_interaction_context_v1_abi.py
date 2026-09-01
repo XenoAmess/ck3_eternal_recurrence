@@ -168,6 +168,9 @@ def main() -> int:
                 "resolve_active_war",
                 "special_war_binding_ready",
                 "special_outcome_terms_ready",
+                "kPendingInteractionWarTargetTypeIndexV1",
+                "kPendingInteractionWarTargetWarIdOffsetV1",
+                "kPendingInteractionCallAllyDefinitionKeyV1",
             ),
         ),
         "reader": (
@@ -180,6 +183,9 @@ def main() -> int:
                 "special_interaction_identity_mismatch",
                 "native_common_war_relation",
                 "second != first",
+                "is_exact_call_ally_war_target",
+                "war_target_identity_unavailable",
+                "resolved_war_id == war_id",
             ),
         ),
         "serializer": (
@@ -192,6 +198,8 @@ def main() -> int:
                 '\\"special_war_binding\\"',
                 '\\"common_war_relation_rva\\"',
                 '\\"special_outcome_terms_ready\\"',
+                "ValidTargetEnvelope",
+                "kExpectedRawEnvelopeBytes",
             ),
         ),
         "mailbox": (
@@ -397,6 +405,118 @@ def main() -> int:
         is False
     ):
         failures.append("fixture: known war definition accepted null special data")
+
+    required_target_vectors = {
+        "call_ally_war_target_full_id_resolves",
+        "call_ally_war_target_resolver_failure_stays_unavailable",
+        "call_ally_war_target_full_id_mismatch_stays_unavailable",
+        "non_call_ally_type16_war_stays_generic",
+    }
+    if not required_target_vectors.issubset(fixture_vectors):
+        failures.append("fixture: call-ally typed-target source vectors are incomplete")
+    else:
+        exact_target = fixture_vectors["call_ally_war_target_full_id_resolves"]
+        exact_target_override = exact_target.get("overrides", {}).get("target", {})
+        exact_target_expected = exact_target.get("expected", {})
+        if not (
+            exact_target.get("overrides", {})
+            .get("definition", {})
+            .get("canonical_key")
+            == "call_ally_interaction"
+            and exact_target_override.get("raw_scope_type_index") == 16
+            and exact_target_override.get("type_key") == "war"
+            and exact_target_override.get("raw_16_bytes_hex")
+            == "10000000000000005200000400000000"
+            and exact_target_override.get("typed_status") == "available"
+            and exact_target_override.get("typed_identity") == "war:67108946"
+            and exact_target_expected.get("target_typed_status") == "available"
+            and exact_target_expected.get("target_typed_identity")
+            == "war:67108946"
+            and exact_target_expected.get("target_typed_identity_ready") is True
+            and exact_target_expected.get("resolver_invoked_twice") is True
+        ):
+            failures.append("fixture: exact call-ally war target vector drifted")
+
+        resolver_failure = fixture_vectors[
+            "call_ally_war_target_resolver_failure_stays_unavailable"
+        ]
+        resolver_failure_expected = resolver_failure.get("expected", {})
+        if not (
+            resolver_failure.get("overrides", {})
+            .get("definition", {})
+            .get("canonical_key")
+            == "call_ally_interaction"
+            and resolver_failure.get("overrides", {})
+            .get("target", {})
+            .get("typed_status")
+            == "unavailable"
+            and resolver_failure.get("overrides", {})
+            .get("target", {})
+            .get("unavailable_reason")
+            == "war_target_identity_unavailable"
+            and resolver_failure_expected.get("target_typed_identity_ready") is False
+            and resolver_failure_expected.get("reason")
+            == "war_target_identity_unavailable"
+        ):
+            failures.append("fixture: call-ally resolver-failure vector drifted")
+
+        mismatch = fixture_vectors[
+            "call_ally_war_target_full_id_mismatch_stays_unavailable"
+        ]
+        mismatch_expected = mismatch.get("expected", {})
+        if not (
+            mismatch.get("overrides", {})
+            .get("definition", {})
+            .get("canonical_key")
+            == "call_ally_interaction"
+            and mismatch.get("overrides", {})
+            .get("target", {})
+            .get("typed_status")
+            == "unavailable"
+            and mismatch.get("overrides", {})
+            .get("target", {})
+            .get("unavailable_reason")
+            == "war_target_identity_unavailable"
+            and mismatch_expected.get("target_typed_identity_ready") is False
+            and mismatch_expected.get("reason")
+            == "war_target_identity_unavailable"
+        ):
+            failures.append("fixture: call-ally full-ID mismatch vector drifted")
+
+        generic_target = fixture_vectors["non_call_ally_type16_war_stays_generic"]
+        generic_target_expected = generic_target.get("expected", {})
+        if not (
+            generic_target.get("overrides", {})
+            .get("definition", {})
+            .get("canonical_key")
+            == "request_contract_assistance_interaction"
+            and generic_target.get("overrides", {})
+            .get("target", {})
+            .get("raw_scope_type_index")
+            == 16
+            and generic_target.get("overrides", {})
+            .get("target", {})
+            .get("type_key")
+            == "war"
+            and generic_target.get("overrides", {})
+            .get("target", {})
+            .get("typed_status")
+            == "unavailable"
+            and generic_target.get("overrides", {})
+            .get("target", {})
+            .get("unavailable_reason")
+            == "generic_scope_payload_identity_not_closed"
+            and generic_target.get("overrides", {})
+            .get("target", {})
+            .get("resolver", {})
+            .get("invoked")
+            is False
+            and generic_target_expected.get("target_typed_identity_ready") is False
+            and generic_target_expected.get("reason")
+            == "generic_scope_payload_identity_not_closed"
+            and generic_target_expected.get("resolver_invoked") is False
+        ):
+            failures.append("fixture: non-call-ally generic target vector drifted")
     external_live = fixture.get("external_live_evidence", {})
     if not (
         isinstance(external_live, dict)
@@ -435,6 +555,13 @@ def main() -> int:
         and fixture_readiness.get("production_live_ready") is True
     ):
         failures.append("contract: historical ordinary live readiness drifted")
+    if not (
+        readiness.get("call_ally_war_target_query_ready") is True
+        and readiness.get("call_ally_war_target_live_ready") is False
+        and fixture_readiness.get("call_ally_war_target_query_ready") is True
+        and fixture_readiness.get("call_ally_war_target_live_ready") is False
+    ):
+        failures.append("contract: call-ally typed-target readiness boundary drifted")
     for source, label in (
         (readiness.get("production_live_scope"), "contract"),
         (fixture_readiness.get("production_live_scope"), "fixture"),
@@ -452,9 +579,10 @@ def main() -> int:
     if not (
         contract.get("live_validated") is True
         and contract.get("live_validated_scope")
-        == "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only"
+        == "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only"
         and isinstance(contract.get("not_live_validated_scope"), str)
         and "generic authored cost" in contract["not_live_validated_scope"]
+        and "typed call_ally war target" in contract["not_live_validated_scope"]
         and "special war binding" in contract["not_live_validated_scope"]
         and "notification ACK" in contract["not_live_validated_scope"]
         and "intermediary" in contract["not_live_validated_scope"]

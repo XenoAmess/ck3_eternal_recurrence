@@ -31,7 +31,7 @@
     "acknowledge_reachability": "production Snapshot preserves generation-valid locally routed +0x5C6 notifications, the paused mailbox can query them, and the strict fixed enum-4 action is unit-covered; live readiness remains false until a real nonreligious notification advances",
     "acknowledge_postcondition": "queue acceptance alone is not success; the native driver must observe a later snapshot in which the old full generation-bearing pending ID is absent or replaced",
     "malformed_observation": "publish status invalid and all action booleans false",
-    "target_boundary": "a nonzero raw scope type has a stable registry type key but is not a typed payload identity until an exact-build decoder for that type exists",
+    "target_boundary": "a nonzero raw scope type has a stable registry type key; only canonical definition call_ally_interaction with exact type_index=16/type_key=war may publish a typed identity after the generation-safe full-ID resolver succeeds, while other definitions, unknown/non-war targets and resolver failures remain unavailable",
     "generic_cost_mapping": "all ten evaluator ordinals are mapped by the same-index render/formatter loop and independently cross-checked by the fixed-token serializer and affordability dispatch; no slot name is inferred from documentation order",
     "generic_cost_payment": "the actor paid the generic authored cost on_send, so an observed pending interaction reports already_applied history rather than a future responder liability",
     "generic_cost_signed_raw": "preserve signed int64 Q100000 because the native negative clamp is conditional",
@@ -351,6 +351,140 @@
           "structured_exchanges_unavailable",
           "structured_effect_preview_unavailable"
         ]
+      }
+    },
+    {
+      "name": "call_ally_war_target_full_id_resolves",
+      "overrides": {
+        "definition": {
+          "canonical_key": "call_ally_interaction"
+        },
+        "target": {
+          "raw_scope_type_index": 16,
+          "raw_16_bytes_hex": "10000000000000005200000400000000",
+          "type_key_status": "available",
+          "type_key": "war",
+          "decoder_available": true,
+          "typed_status": "available",
+          "typed_identity": "war:67108946",
+          "resolver": {
+            "requested_signed_war_id": 67108946,
+            "resolved_full_war_id": 67108946,
+            "active": true,
+            "generation_valid": true
+          }
+        }
+      },
+      "expected": {
+        "status": "available",
+        "target_type_index": 16,
+        "target_type_key": "war",
+        "target_typed_status": "available",
+        "target_typed_identity": "war:67108946",
+        "target_typed_identity_ready": true,
+        "resolver_invoked_twice": true,
+        "reply_action_submitted": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "call_ally_war_target_resolver_failure_stays_unavailable",
+      "overrides": {
+        "definition": {
+          "canonical_key": "call_ally_interaction"
+        },
+        "target": {
+          "raw_scope_type_index": 16,
+          "raw_16_bytes_hex": "10000000000000005200000400000000",
+          "type_key_status": "available",
+          "type_key": "war",
+          "decoder_available": true,
+          "typed_status": "unavailable",
+          "typed_identity": null,
+          "unavailable_reason": "war_target_identity_unavailable",
+          "resolver": {
+            "requested_signed_war_id": 67108946,
+            "resolved_full_war_id": null,
+            "active": false,
+            "generation_valid": false
+          }
+        }
+      },
+      "expected": {
+        "status": "available",
+        "target_typed_status": "unavailable",
+        "target_typed_identity": null,
+        "target_typed_identity_ready": false,
+        "reason": "war_target_identity_unavailable",
+        "reply_action_submitted": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "call_ally_war_target_full_id_mismatch_stays_unavailable",
+      "overrides": {
+        "definition": {
+          "canonical_key": "call_ally_interaction"
+        },
+        "target": {
+          "raw_scope_type_index": 16,
+          "raw_16_bytes_hex": "10000000000000005200000400000000",
+          "type_key_status": "available",
+          "type_key": "war",
+          "decoder_available": true,
+          "typed_status": "unavailable",
+          "typed_identity": null,
+          "unavailable_reason": "war_target_identity_unavailable",
+          "resolver": {
+            "requested_signed_war_id": 67108946,
+            "resolved_full_war_id": 67108947,
+            "active": true,
+            "generation_valid": false
+          }
+        }
+      },
+      "expected": {
+        "status": "available",
+        "target_typed_status": "unavailable",
+        "target_typed_identity_ready": false,
+        "reason": "war_target_identity_unavailable",
+        "reply_action_submitted": false
+      }
+    },
+    {
+      "name": "non_call_ally_type16_war_stays_generic",
+      "overrides": {
+        "definition": {
+          "canonical_key": "request_contract_assistance_interaction"
+        },
+        "target": {
+          "raw_scope_type_index": 16,
+          "raw_16_bytes_hex": "10000000000000005200000400000000",
+          "type_key_status": "available",
+          "type_key": "war",
+          "decoder_available": false,
+          "typed_status": "unavailable",
+          "typed_identity": null,
+          "unavailable_reason": "generic_scope_payload_identity_not_closed",
+          "resolver": {
+            "invoked": false
+          }
+        },
+        "semantic_domains": {
+          "target": "unavailable"
+        }
+      },
+      "expected": {
+        "status": "available",
+        "target_type_index": 16,
+        "target_type_key": "war",
+        "target_typed_status": "unavailable",
+        "target_typed_identity": null,
+        "target_typed_identity_ready": false,
+        "reason": "generic_scope_payload_identity_not_closed",
+        "resolver_invoked": false,
+        "reply_action_submitted": false,
+        "interaction_semantic_decision_ready": false
       }
     },
     {
@@ -694,6 +828,8 @@
     "reply_legality_static_ready": true,
     "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
+    "call_ally_war_target_query_ready": true,
+    "call_ally_war_target_live_ready": false,
     "generic_costs_static_ready": true,
     "generic_costs_query_ready": true,
     "generic_costs_live_ready": false,
@@ -710,7 +846,7 @@
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; excludes the newly wired generic costs and special war binding, notification ACK, intermediary routing and semantic decision",
+    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; the typed call_ally war target decoder is query/static-covered but has no paused live artifact; excludes the newly wired generic costs and special war binding, notification ACK, intermediary routing and semantic decision",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   }

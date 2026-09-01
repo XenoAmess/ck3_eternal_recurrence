@@ -73,6 +73,16 @@ _TARGET_FIELDS: Final = {
     "typed_identity",
     "typed_identity_reason",
 }
+_PENDING_INTERACTION_WAR_TARGET_TYPE_INDEX: Final = 16
+_PENDING_INTERACTION_WAR_TARGET_WAR_ID_OFFSET: Final = 0x08
+_PENDING_INTERACTION_WAR_TARGET_IDENTITY_PREFIX: Final = "war:"
+_PENDING_INTERACTION_CALL_ALLY_DEFINITION_KEY: Final = "call_ally_interaction"
+_PENDING_INTERACTION_WAR_TARGET_UNAVAILABLE_REASON: Final = (
+    "war_target_identity_unavailable"
+)
+_PENDING_INTERACTION_GENERIC_TARGET_UNAVAILABLE_REASON: Final = (
+    "generic_scope_payload_identity_not_closed"
+)
 _SEND_OPTIONS_FIELDS: Final = {
     "exclusive",
     "definition_count",
@@ -486,6 +496,8 @@ def _normalize_readiness(
     *,
     available: bool,
     target_present: bool,
+    target_typed_identity_ready: bool,
+    target_typed_identity_reason: str | None,
     special_war_binding_available: bool,
     special_war_binding_reason: str | None,
     top_reason: str | None,
@@ -512,7 +524,7 @@ def _normalize_readiness(
             "stable_definition_ready": True,
             "roles_ready": True,
             "target_type_key_ready": True,
-            "target_typed_identity_ready": not target_present,
+            "target_typed_identity_ready": target_typed_identity_ready,
             "send_options_ready": True,
             "routing_ready": True,
             "deadline_ready": True,
@@ -529,8 +541,16 @@ def _normalize_readiness(
             raise ValueError("readiness fields disagree with observed domains")
         expected_reasons = [
             *(
-                ["target_generic_scope_payload_identity_not_closed"]
-                if target_present
+                [
+                    (
+                        "target_generic_scope_payload_identity_not_closed"
+                        if target_typed_identity_reason
+                        == _PENDING_INTERACTION_GENERIC_TARGET_UNAVAILABLE_REASON
+                        else target_typed_identity_reason
+                    )
+                    or "target_generic_scope_payload_identity_not_closed"
+                ]
+                if target_present and not target_typed_identity_ready
                 else []
             ),
             *(
@@ -634,19 +654,82 @@ def _normalize_available_frame(
         ):
             raise ValueError("absent target invented a type or identity")
         normalized_target = dict(target)
+        target_typed_identity_ready = True
+        target_typed_identity_reason = None
     else:
         if (
             target.get("type_key_status") != "available"
             or target.get("type_key_reason") is not None
-            or target.get("typed_identity_status") != "unavailable"
-            or target.get("typed_identity") is not None
-            or target.get("typed_identity_reason")
-            != "generic_scope_payload_identity_not_closed"
         ):
             raise ValueError("present target violates the typed boundary")
+        type_key = _stable_key(target.get("type_key"), "target.type_key")
+        exact_war_target = (
+            normalized_definition["canonical_key"]
+            == _PENDING_INTERACTION_CALL_ALLY_DEFINITION_KEY
+            and raw_type_index == _PENDING_INTERACTION_WAR_TARGET_TYPE_INDEX
+            and type_key == "war"
+        )
+        typed_status = target.get("typed_identity_status")
+        typed_identity = target.get("typed_identity")
+        typed_reason = target.get("typed_identity_reason")
+        if exact_war_target and typed_status == "available":
+            if typed_reason is not None or not isinstance(typed_identity, str):
+                raise ValueError("typed war target lacks a closed identity")
+            if not typed_identity.startswith(
+                _PENDING_INTERACTION_WAR_TARGET_IDENTITY_PREFIX
+            ):
+                raise ValueError("typed war target identity prefix drifted")
+            decimal = typed_identity[
+                len(_PENDING_INTERACTION_WAR_TARGET_IDENTITY_PREFIX) :
+            ]
+            try:
+                war_id = int(decimal, 10)
+            except (TypeError, ValueError) as error:
+                raise ValueError("typed war target identity is not decimal") from error
+            if (
+                war_id <= 0
+                or war_id > 2**31 - 1
+                or str(war_id) != decimal
+                or int.from_bytes(
+                    raw_bytes[
+                        _PENDING_INTERACTION_WAR_TARGET_WAR_ID_OFFSET :
+                        _PENDING_INTERACTION_WAR_TARGET_WAR_ID_OFFSET + 4
+                    ],
+                    "little",
+                    signed=True,
+                )
+                != war_id
+            ):
+                raise ValueError("typed war target full identity disagrees with raw envelope")
+            target_typed_identity_ready = True
+            target_typed_identity_reason = None
+        elif exact_war_target:
+            if (
+                typed_status != "unavailable"
+                or typed_identity is not None
+                or typed_reason
+                != _PENDING_INTERACTION_WAR_TARGET_UNAVAILABLE_REASON
+            ):
+                raise ValueError("war target resolver failure crossed the typed boundary")
+            target_typed_identity_ready = False
+            target_typed_identity_reason = (
+                _PENDING_INTERACTION_WAR_TARGET_UNAVAILABLE_REASON
+            )
+        else:
+            if (
+                typed_status != "unavailable"
+                or typed_identity is not None
+                or typed_reason
+                != _PENDING_INTERACTION_GENERIC_TARGET_UNAVAILABLE_REASON
+            ):
+                raise ValueError("present target violates the typed boundary")
+            target_typed_identity_ready = False
+            target_typed_identity_reason = (
+                _PENDING_INTERACTION_GENERIC_TARGET_UNAVAILABLE_REASON
+            )
         normalized_target = {
             **target,
-            "type_key": _stable_key(target.get("type_key"), "target.type_key"),
+            "type_key": type_key,
         }
 
     send_options = _exact_object(
@@ -926,6 +1009,8 @@ def _normalize_available_frame(
         frame.get("readiness"),
         available=True,
         target_present=present,
+        target_typed_identity_ready=target_typed_identity_ready,
+        target_typed_identity_reason=target_typed_identity_reason,
         special_war_binding_available=special_war_binding_available,
         special_war_binding_reason=special_war_binding_reason,
         top_reason=None,
@@ -1041,6 +1126,8 @@ def normalize_pending_character_interaction_context_v1(
             frame.get("readiness"),
             available=False,
             target_present=False,
+            target_typed_identity_ready=False,
+            target_typed_identity_reason=None,
             special_war_binding_available=False,
             special_war_binding_reason=None,
             top_reason=reason,

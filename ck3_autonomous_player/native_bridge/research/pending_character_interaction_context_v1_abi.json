@@ -11,7 +11,7 @@
   "production_wired": true,
   "live_validated": true,
   "live_validated_scope": "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only",
-  "not_live_validated_scope": "negative signed pending-ID consumption and reply, the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
+  "not_live_validated_scope": "typed call_ally war target paused production artifact, negative signed pending-ID consumption and reply, the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
   "game_process_started": true,
   "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline, reply legality, authored generic cost vector and the exact ordinary nonreligious three-subtype special-war binding",
   "owner_deferred_domains": [
@@ -467,7 +467,21 @@
       "serialization_tag": "0x6B",
       "type_registry": "RVA 0x33C52B0 returns the exact-build registry at 0x4FFE290; data +0x00, signed count +0x0C, entry stride 0x50, entry +0x00 int32 script identifier",
       "stable_type_key": "for a nonzero in-range uint16 type index, resolve entry+0x00 through RVA 0x3B58970; reject the out-of-range fallback entry at 0x5000AB0",
-      "semantic_boundary": "publish the stable type key and raw envelope only as source evidence; typed target payload identity remains unavailable until that type has an exact-build decoder"
+      "semantic_boundary": "publish the stable type key and raw envelope as source evidence; only the canonical call_ally_interaction definition with exact type_index=16/type_key=war is the typed exception below, while every other definition or target kind remains unavailable until its own exact-build decoder exists",
+      "war_target_decoder": {
+        "scope": "stock call_ally pending target only",
+        "call_ally_definition_key": "call_ally_interaction",
+        "type_index": 16,
+        "type_key": "war",
+        "raw_envelope_bytes": 16,
+        "war_id": "+0x08 signed int32 in the complete 0x10-byte envelope",
+        "resolver": "invoke the existing application-main generation-safe active-CWar resolver with that signed WarID; it validates low-24-bit slot, complete generation-bearing ID and active storage liveness",
+        "full_id_recheck": "re-read resolved CWar+0x08 and require exact equality with the envelope WarID",
+        "published_identity": "war:<canonical positive signed-decimal-id>",
+        "unavailable_reason": "war_target_identity_unavailable",
+        "failure_boundary": "negative/nonpositive IDs, resolver failure, inactive/stale generation or full-ID mismatch remain typed_identity_status=unavailable with reason war_target_identity_unavailable; no raw token is published as identity",
+        "action_boundary": "this closes observation only; it does not select a reply, submit call_ally, resolve CB terms or claim an OODA/live action"
+      }
     },
     "CReplyCharacterInteractionCommand": {
       "size": "0x28",
@@ -661,13 +675,14 @@
       "auto_accept result and auto-accept-notification channel",
       "selected send-option native indexes and numeric flag identifiers",
       "target presence, stable generic-scope type key and raw type envelope",
+      "for exact type_index=16/type_key=war call_ally targets only: generation-safe active full WarID and canonical war:<id> typed identity",
       "age, expiration and remaining days",
       "independent accept, reject, block and acknowledge legality",
       "complete ten-key signed Q100000 generic authored cost vector, with actor/on-send/already-applied payment semantics",
       "for the three exact ordinary nonreligious end-war definition/vptr pairs only: absolute outcome, active full WarID and opposite actor/recipient primary war roles"
     ],
     "unavailable_without_subtype_decoder": [
-      "typed identity for every generic target kind",
+      "typed identity for every generic target kind other than the exact call_ally war target decoder",
       "numeric option flag identifier to canonical string",
       "special-subtype resource transfers beyond the generic authored cost vector",
       "structured relationship or title exchanges",
@@ -702,6 +717,8 @@
     "generic_target_envelope_static_ready": true,
     "generic_target_type_key_static_ready": true,
     "generic_target_typed_identity_ready": false,
+    "call_ally_war_target_query_ready": true,
+    "call_ally_war_target_live_ready": false,
     "generic_costs_static_ready": true,
     "generic_costs_query_ready": true,
     "generic_costs_live_ready": false,
@@ -720,7 +737,7 @@
     "signed_pending_id_contract_ready": true,
     "negative_signed_pending_id_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; negative signed pending-ID consumption and reply, the newly wired generic cost vector and special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
+    "production_live_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only (nonnegative full ID); the typed call_ally war target decoder is query/static-covered but has no paused live artifact, and negative signed pending-ID consumption and reply, the newly wired generic cost vector and special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   },

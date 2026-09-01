@@ -380,9 +380,10 @@ flowchart TD
   （SHA `B267CA32...D1E6D`）和 `0x2011400..0x2011623`（SHA `55AC1793...B02B`）。因此 wire 必须发布
   `raw_type_index + type_key`；type `0` 明确表示 absent，越界不得使用 `module+0x5000AB0` fallback 冒充有效类型。
 - [unknown] `title/artifact/men_at_arms/court_position_type/count` 等 type key 对应的 payload → 稳定业务 ID decoder
-  尚未逐类闭合。只读合同可保留 type key、raw index/16 bytes 作为 source evidence，但在该类型被 exact-build
-  decoder 支持前，`target.typed_identity_status` 必须为 `unavailable`，不得把 payload 的某个 dword 猜成
-  CharacterID/TitleID。
+  尚未逐类闭合。例外是已 static/query-covered 的 canonical `call_ally_interaction` + `type_index=16/type_key=war`：
+  reader 会读取 envelope `+0x08` signed WarID，经 generation-safe active-CWar resolver 与 `CWar+0x08` full-ID
+  回读后发布 `war:<id>`。其它 definition（即使复用 type-16/war）、非 war/未知类型仍只保留 type key、raw index/16 bytes
+  source evidence，并保持 `target.typed_identity_status=unavailable`；不得把 payload 的某个 dword 猜成 CharacterID/TitleID。
 - [static-confirmed] definition `+0x2548/+0x2554` 是 inline send-option rows pointer/count，row stride `0x7D0`；
   row `+0x00/+0xE0` 分别是 `is_shown/is_valid` triggers，row `+0x3A8` 是 numeric script flag identifier。
   context `+0x300` 的 byte vector 必须与 definition count 相等，byte `1` 表示 selected、`0` 表示未选；
@@ -441,7 +442,7 @@ flowchart TD
     D -->|reject| N
     D -->|block| B["[static-confirmed] on_blocked_effect"]
     PA --> K
-    D -. "generic target payload 尚未逐类解码" .-> U["[unknown] target identity"]
+    D -. "除 call_ally war 窄例外外，generic target payload 尚未逐类解码" .-> U["[unknown] target identity"]
     D -. "special payload/描述 bundle 尚未结构化" .-> E["[unknown] cost/exchange/effect preview"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,E unknown;
@@ -618,7 +619,7 @@ tail/periodic checkpoint。compact result 保留有界的 `interaction_result` �
 写入 history 前以 `pending_interaction_lifecycle_postcondition_failed` 停止。
 
 这是保守的玩家 counter-policy，不是把接收方原生 `ai_accept` 套在人类 responder 上。尚未采用的原生输入/质量分支包括完整
-structured exchange/effect、target payload identity、campaign utility，以及 intermediary/recipient AI raw/final acceptance；替换入口
+structured exchange/effect、非 allowlisted target payload identity、campaign utility，以及 intermediary/recipient AI raw/final acceptance；替换入口
 仍是补齐同一个 typed context 后实现按类型的语义效用策略。war-exit 的替换入口是完整 special outcome terms，而不是仅凭 WarID、
 战分或 interaction key 自动接受/拒绝。
 
@@ -628,7 +629,7 @@ structured exchange/effect、target payload identity、campaign utility，以及
 |---|---|---|---|
 | active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、process-local calculated event ID/runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback 和有损 typed trait/stress/death/scheme/unknown indicator 子集；Attempt4 已对 generic 非宗教 fixture 做 seed/checkpoint/fresh-cold empty-surface live，非空 Attempt1 又实读 `trait/add brave`、`stress/increase affected=false/critical=false` 与 `death/played_character`；select command 仍用 native index + instance-change postcondition | stock event、其余非空 indicator branches、selection lifecycle、stable root/saved scope identity、resource/relationship delta、完整 effect-preview output ABI | fixture available 时 `readiness.event_definition_identity_ready=true`、`readiness.option_presentation_ready=true`、`readiness.effect_indicators_ready=true`；`readiness.effect_preview_ready=false`、`readiness.semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
-| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；完整 identity 合同为除 `-1` 外的 generation-bearing signed int32，`0` 结构合法；negative full ID `-2013265918` 已完成 production snapshot→typed query→reject→old-ID 消失，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `signed_pending_id_contract_ready=true`、`negative_signed_pending_id_live_ready=true`、`interaction_typed_query_wired=true`、`ordinary_interaction_live_ready=true`；`interaction_semantic_decision_ready=false` |
+| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；完整 identity 合同为除 `-1` 外的 generation-bearing signed int32，`0` 结构合法；negative full ID `-2013265918` 已完成 production snapshot→typed query→reject→old-ID 消失，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；canonical `call_ally_interaction` 的 type-16/war target 已有 static/query typed `war:<id>` resolver 路径 | intermediary live、非 allowlisted generic target payload identity、structured terms/cost/effect preview，以及 call-ally typed target 的 paused production live artifact；当前 terms 必须 typed unavailable | `signed_pending_id_contract_ready=true`、`negative_signed_pending_id_live_ready=true`、`interaction_typed_query_wired=true`、`call_ally_war_target_query_ready=true`、`call_ally_war_target_live_ready=false`、`ordinary_interaction_live_ready=true`；`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
 | current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；ordinary degraded reply 只对 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用；`arrange_marriage_interaction` 另有 direct/same-day/zero-option reject-only 分支；任何未分类 definition 与 known/opaque war-special fail-closed；active war 同帧时 100% enforce-demands 无条件优先 | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；marriage accept 的当前 score 与 secondary-pair postcondition；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` 与窄 `arrange_marriage` reject 均 production-live loop；notification ACK 为 fixture-live；`spar`、unique-accept、marriage accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready=false` |
 
@@ -649,7 +650,8 @@ stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。ar
 
 这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 已能确认 definition identity、实际显示项与 enabled 状态，但仍不知道
 每项的完整结构化效果与长期效用；
-互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
+互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复；canonical call-ally war target 另有
+static/query `war:<id>` identity，但其它 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合；planner 现会先查询同帧 typed context，再仅对 exact-definition allowlist 命中的
 `spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用 ordinary reject-first fallback；其中后者的真实 reject→旧 full ID 消失→继续
 推进/checkpoint 已 production-live。definition-bound `arrange_marriage_interaction` 的独立 zero-option reject-only 分支也已在 negative
@@ -724,8 +726,9 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 
 - instance ID、stable interaction key、actor/recipient/intermediary/secondary actors 与 target identity；
 - stable key 必须来自 definition canonical string/hash；同时可给 calculated ID/runtime ordinal，但明确两者只在当前 loaded process 内稳定；
-- target 发布 `present/raw_type_index/type_key/typed_identity_status/typed_identity`；未支持的 generic scope payload
-  返回 typed unavailable，而不是把已经闭合的 type key 也降级成 unknown 或填入空 ID；
+- target 发布 `present/raw_type_index/type_key/typed_identity_status/typed_identity`；仅 canonical `call_ally_interaction`
+  的 exact type-16/war envelope 在 resolver/full-ID 回读成功后返回 `war:<id>`，其它未支持 generic scope payload 返回 typed
+  unavailable，而不是把已经闭合的 type key 也降级成 unknown 或填入空 ID；
 - 每个 send option 发布 native index、numeric flag identifier、selected、shown/valid evaluation status 与 exclusive；
 - routing kind、当前 responder role、auto-accept notification、age/expiration/remaining days；
 - `can_accept/can_reject/can_block/can_acknowledge` 四个独立 legality/status；ACK 不读取 validator enum 4 的
@@ -780,6 +783,7 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   notification live；不得把 fixture 称为 stock/production-only，也不得用冻结 `70bf8e6` artifact 宣称 current HEAD
   structured costs/special-war query 已 live。
 - [static-confirmed] generic target scope 的 registry type key 已由 `0x33C52B0` registry 与 `0x3B58970` resolver
-  闭合；[unknown] 仍是各 type-key payload decoder，以及 `special_data`/materialized description bundle 的
-  engine-generic structured terms/effect ABI。后两者是 `interaction_semantic_decision_ready` 的最高优先级观测依赖；
-  在闭合前继续 typed unavailable，不允许默认接受。
+  闭合；canonical `call_ally_interaction` 的 type-16/war `+0x08` full-ID decoder 也已 static/query-covered，但尚无
+  新的 paused production live artifact。[unknown] 仍是其它 type-key payload decoder，以及 `special_data`/materialized
+  description bundle 的 engine-generic structured terms/effect ABI。后两者和非 allowlisted target identity 是
+  `interaction_semantic_decision_ready` 的最高优先级观测依赖；在闭合前继续 typed unavailable，不允许默认接受。

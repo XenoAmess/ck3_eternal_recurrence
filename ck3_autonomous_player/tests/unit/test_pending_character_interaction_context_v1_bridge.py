@@ -99,12 +99,24 @@ def _legality(
 def _readiness(
     *,
     target_present: bool = False,
+    target_typed_identity_ready: bool | None = None,
+    target_typed_identity_reason: str | None = None,
     special_war_binding_available: bool = False,
     special_war_binding_reason: str = "special_war_binding_not_applicable",
 ) -> dict[str, object]:
+    if target_typed_identity_ready is None:
+        target_typed_identity_ready = not target_present
     reasons = []
-    if target_present:
-        reasons.append("target_generic_scope_payload_identity_not_closed")
+    if target_present and not target_typed_identity_ready:
+        target_reason = (
+            target_typed_identity_reason
+            or "generic_scope_payload_identity_not_closed"
+        )
+        reasons.append(
+            "target_generic_scope_payload_identity_not_closed"
+            if target_reason == "generic_scope_payload_identity_not_closed"
+            else target_reason
+        )
     if not special_war_binding_available:
         reasons.append(special_war_binding_reason)
     reasons.extend(
@@ -118,7 +130,7 @@ def _readiness(
         "stable_definition_ready": True,
         "roles_ready": True,
         "target_type_key_ready": True,
-        "target_typed_identity_ready": not target_present,
+        "target_typed_identity_ready": target_typed_identity_ready,
         "send_options_ready": True,
         "routing_ready": True,
         "deadline_ready": True,
@@ -134,18 +146,53 @@ def _readiness(
     }
 
 
-def _target(*, present: bool = False) -> dict[str, object]:
+def _target(
+    *,
+    present: bool = False,
+    war: bool = False,
+    war_id: int = 67_108_946,
+    resolved: bool = True,
+    typed_decoder: bool = True,
+) -> dict[str, object]:
     if not present:
+        if war:
+            present = True
+        else:
+            return {
+                "present": False,
+                "raw_type_index": 0,
+                "raw_16_bytes_hex": "0" * 32,
+                "type_key_status": "absent",
+                "type_key": None,
+                "type_key_reason": None,
+                "typed_identity_status": "absent",
+                "typed_identity": None,
+                "typed_identity_reason": None,
+            }
+    if war:
+        typed_available = typed_decoder and resolved
         return {
-            "present": False,
-            "raw_type_index": 0,
-            "raw_16_bytes_hex": "0" * 32,
-            "type_key_status": "absent",
-            "type_key": None,
+            "present": True,
+            "raw_type_index": 16,
+            "raw_16_bytes_hex": (
+                "1000000000000000"
+                + war_id.to_bytes(4, "little", signed=True).hex()
+                + "00000000"
+            ),
+            "type_key_status": "available",
+            "type_key": "war",
             "type_key_reason": None,
-            "typed_identity_status": "absent",
-            "typed_identity": None,
-            "typed_identity_reason": None,
+            "typed_identity_status": "available" if typed_available else "unavailable",
+            "typed_identity": f"war:{war_id}" if typed_available else None,
+            "typed_identity_reason": (
+                None
+                if typed_available
+                else (
+                    "war_target_identity_unavailable"
+                    if typed_decoder
+                    else "generic_scope_payload_identity_not_closed"
+                )
+            ),
         }
     return {
         "present": True,
@@ -167,6 +214,9 @@ def _frame(
     *,
     reason: str | None = None,
     target_present: bool = False,
+    target_war: bool = False,
+    target_war_id: int = 67_108_946,
+    target_war_resolved: bool = True,
     notification: bool = False,
     special_war_binding: dict[str, object] | None = None,
     definition_key: str = "fixture_request_support_interaction",
@@ -223,6 +273,7 @@ def _frame(
         if notification
         else _legality()
     )
+    call_ally_war = definition_key == "call_ally_interaction"
     return {
         "schema": "pending-character-interaction-context-v1",
         "schema_version": 1,
@@ -244,7 +295,17 @@ def _frame(
             "secondary_recipient_character_id": -1,
             "intermediary_character_id": -1,
         },
-        "target": _target(present=target_present),
+        "target": (
+            _target(
+                present=True,
+                war=True,
+                war_id=target_war_id,
+                resolved=target_war_resolved,
+                typed_decoder=call_ally_war,
+            )
+            if target_war
+            else _target(present=target_present)
+        ),
         "send_options": {
             "exclusive": False,
             "definition_count": 2,
@@ -355,7 +416,24 @@ def _frame(
             },
         },
         "readiness": _readiness(
-            target_present=target_present,
+            target_present=target_war or target_present,
+            target_typed_identity_ready=(
+                target_war and call_ally_war and target_war_resolved
+                or not target_war and not target_present
+            ),
+            target_typed_identity_reason=(
+                None
+                if target_war and call_ally_war and target_war_resolved
+                else (
+                    "war_target_identity_unavailable"
+                    if target_war and call_ally_war
+                    else (
+                        "generic_scope_payload_identity_not_closed"
+                        if target_war
+                        else None
+                    )
+                )
+            ),
             special_war_binding_available=(
                 special_war_binding is not None
                 and special_war_binding.get("status") == "available"
@@ -551,6 +629,104 @@ class PendingCharacterInteractionContextV1ContractTests(unittest.TestCase):
         )
         self.assertFalse(
             normalized["readiness"]["target_typed_identity_ready"]
+        )
+
+    def test_exact_call_ally_war_target_publishes_canonical_full_id(self) -> None:
+        normalized = normalize_pending_character_interaction_context_v1(
+            _frame(
+                target_war=True,
+                definition_key="call_ally_interaction",
+            ),
+            expected_pending_interaction_id=PENDING_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertEqual(normalized["target"]["raw_type_index"], 16)
+        self.assertEqual(normalized["target"]["type_key"], "war")
+        self.assertEqual(
+            normalized["target"]["typed_identity_status"], "available"
+        )
+        self.assertEqual(
+            normalized["target"]["typed_identity"], "war:67108946"
+        )
+        self.assertTrue(
+            normalized["readiness"]["target_typed_identity_ready"]
+        )
+        self.assertNotIn(
+            "target_generic_scope_payload_identity_not_closed",
+            normalized["readiness"]["not_ready_reasons"],
+        )
+
+    def test_call_ally_war_resolver_failure_remains_unavailable(self) -> None:
+        normalized = normalize_pending_character_interaction_context_v1(
+            _frame(
+                target_war=True,
+                target_war_resolved=False,
+                definition_key="call_ally_interaction",
+            ),
+            expected_pending_interaction_id=PENDING_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertEqual(
+            normalized["target"]["typed_identity_status"], "unavailable"
+        )
+        self.assertIsNone(normalized["target"]["typed_identity"])
+        self.assertEqual(
+            normalized["target"]["typed_identity_reason"],
+            "war_target_identity_unavailable",
+        )
+        self.assertFalse(
+            normalized["readiness"]["target_typed_identity_ready"]
+        )
+        self.assertEqual(
+            normalized["readiness"]["not_ready_reasons"][0],
+            "war_target_identity_unavailable",
+        )
+
+    def test_call_ally_war_target_rejects_raw_full_id_mismatch(self) -> None:
+        frame = _frame(
+            target_war=True,
+            definition_key="call_ally_interaction",
+        )
+        frame["target"]["typed_identity"] = "war:67108947"
+        with self.assertRaises(ValueError):
+            normalize_pending_character_interaction_context_v1(
+                frame,
+                expected_pending_interaction_id=PENDING_ID,
+                expected_date_raw=DATE_RAW,
+                expected_snapshot_revision=NATIVE_REVISION,
+            )
+
+    def test_same_war_target_on_other_definition_stays_generic(self) -> None:
+        normalized = normalize_pending_character_interaction_context_v1(
+            _frame(
+                target_war=True,
+                definition_key="request_contract_assistance_interaction",
+            ),
+            expected_pending_interaction_id=PENDING_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertEqual(normalized["target"]["raw_type_index"], 16)
+        self.assertEqual(normalized["target"]["type_key"], "war")
+        self.assertEqual(
+            normalized["target"]["typed_identity_status"], "unavailable"
+        )
+        self.assertIsNone(normalized["target"]["typed_identity"])
+        self.assertEqual(
+            normalized["target"]["typed_identity_reason"],
+            "generic_scope_payload_identity_not_closed",
+        )
+        self.assertFalse(
+            normalized["readiness"]["target_typed_identity_ready"]
+        )
+        self.assertEqual(
+            normalized["readiness"]["not_ready_reasons"][0],
+            "target_generic_scope_payload_identity_not_closed",
         )
 
     def test_exact_white_peace_special_war_binding_is_typed_but_not_semantic_ready(

@@ -66,6 +66,12 @@ constexpr std::size_t kMaximumStableKeyBytes = 1'024;
 constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::int32_t kMaximumTargetTypeEntries = 65'536;
 constexpr std::int32_t kMaximumExpirationDays = 100'000;
+constexpr std::string_view kGenericTargetIdentityUnavailableReason =
+    "generic_scope_payload_identity_not_closed";
+constexpr std::string_view kGenericTargetReadinessUnavailableReason =
+    "target_generic_scope_payload_identity_not_closed";
+constexpr std::string_view kWarTargetIdentityUnavailableReason =
+    "war_target_identity_unavailable";
 constexpr std::array<std::string_view,
                      game::kPendingCharacterInteractionCostResourceCountV1>
     kCostResourceKeys{"gold",        "prestige",         "piety",
@@ -584,6 +590,7 @@ bool ReadTargetTypeKey(
 bool ReadTarget(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
     const PendingCharacterInteractionAccessV1 &access, void *pending,
+    std::string_view definition_key,
     game::PendingCharacterInteractionTargetV1 &target,
     void *&target_type_registry, FailureV1 &failure) noexcept {
   if (!ReadValue(access, pending, kPendingTargetEnvelopeOffset,
@@ -609,10 +616,45 @@ bool ReadTarget(
   }
   target.type_key_status =
       game::PendingCharacterInteractionSemanticStatusV1::available;
+  const bool is_exact_call_ally_war_target =
+      definition_key == kPendingInteractionCallAllyDefinitionKeyV1 &&
+      target.raw_type_index == kPendingInteractionWarTargetTypeIndexV1 &&
+      type_key == "war";
   target.type_key = std::move(type_key);
+  if (is_exact_call_ally_war_target) {
+    // The generic scope envelope is not a universal component ID.  For the
+    // one exact-build canonical call_ally `war` target, however, the ABI
+    // closes the signed WarID at +0x08.  Do not publish it until the existing
+    // resolver proves a live generation-bearing CWar and its full ID is
+    // re-read.
+    std::int32_t war_id = -1;
+    std::memcpy(&war_id,
+                target.raw_envelope.data() +
+                    kPendingInteractionWarTargetWarIdOffsetV1,
+                sizeof(war_id));
+    void *active_war = nullptr;
+    std::int32_t resolved_war_id = -1;
+    if (war_id > 0 && access.resolve_active_war != nullptr &&
+        access.resolve_active_war(access.context, war_id, active_war) &&
+        active_war != nullptr &&
+        ReadValue(access, active_war, kWarIdentityOffset, resolved_war_id) &&
+        resolved_war_id == war_id) {
+      target.typed_identity_status =
+          game::PendingCharacterInteractionSemanticStatusV1::available;
+      target.typed_identity =
+          std::string(kPendingInteractionWarTargetIdentityPrefixV1);
+      target.typed_identity->append(std::to_string(war_id));
+      target.typed_identity_reason.clear();
+      return true;
+    }
+    target.typed_identity_status =
+        game::PendingCharacterInteractionSemanticStatusV1::unavailable;
+    target.typed_identity_reason = kWarTargetIdentityUnavailableReason;
+    return true;
+  }
   target.typed_identity_status =
       game::PendingCharacterInteractionSemanticStatusV1::unavailable;
-  target.typed_identity_reason = "generic_scope_payload_identity_not_closed";
+  target.typed_identity_reason = kGenericTargetIdentityUnavailableReason;
   return true;
 }
 
@@ -1118,7 +1160,8 @@ bool ReadObservation(
                    failure) ||
       !ReadDefinition(access, output.pending, output.definition_pointer,
                       output.definition, failure) ||
-      !ReadTarget(environment, access, output.pending, output.target,
+      !ReadTarget(environment, access, output.pending,
+                  output.definition.canonical_key, output.target,
                   output.target_type_registry, failure) ||
       !ReadSendOptions(environment, access, output.pending,
                        output.definition_pointer, output.selected_option_data,
@@ -1478,9 +1521,17 @@ ReadPendingCharacterInteractionContextV1(
     output.readiness.structured_terms_ready = false;
     output.readiness.same_frame_ready = true;
     output.readiness.interaction_semantic_decision_ready = false;
-    if (output.target->present) {
+    output.readiness.target_typed_identity_ready =
+        !output.target->present ||
+        output.target->typed_identity_status ==
+            game::PendingCharacterInteractionSemanticStatusV1::available;
+    if (output.target->present &&
+        !output.readiness.target_typed_identity_ready) {
       output.readiness.not_ready_reasons.push_back(
-          "target_generic_scope_payload_identity_not_closed");
+          output.target->typed_identity_reason ==
+                  kGenericTargetIdentityUnavailableReason
+              ? std::string(kGenericTargetReadinessUnavailableReason)
+              : output.target->typed_identity_reason);
     }
     if (!output.readiness.special_war_binding_ready) {
       output.readiness.not_ready_reasons.push_back(

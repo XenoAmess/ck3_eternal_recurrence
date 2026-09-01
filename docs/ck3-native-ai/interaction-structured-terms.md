@@ -78,7 +78,7 @@ special object 只是 exact subtype tag，WarID 来自 actor/recipient 的共同
 | `game/common/character_interactions/00_tribal_interactions.txt` | `2EB46B8A66080C189AD955E4B7511195B3A51C3FEA540DDE6085D276FB80C282` | 非宗教 `treasury_or_gold` cost 作者实例 |
 | `game/common/scripted_costs/00_costs.txt` | `E83855B1B09752BCF1D8CD8D6965D466548DC8A97ADCC1772D46EB05CA0D3710` | 通用 scripted-cost 作者实例 |
 | `game/common/character_interactions/00_war.txt` | `5C99B8F14893929A9BC2DBB5B258CDD2D4233D5805091952209413DE876EE09F` | white-peace fixture 与非宗教接受树 |
-| `native_bridge/research/pending_character_interaction_context_v1_abi.json` | `5E515D4142BA0A45EE51DACA4F8534464C873909154E3261D6499F9174395BD5` | 文档自检时的 pending/context ABI 基线 |
+| `native_bridge/research/pending_character_interaction_context_v1_abi.json` | `7D1586D7708D4EDBF19F1ADB60B4252E65D40DB8E55B87F9949CD1095A41610` | 文档自检时的 pending/context ABI 基线 |
 
 相关既有边界：
 

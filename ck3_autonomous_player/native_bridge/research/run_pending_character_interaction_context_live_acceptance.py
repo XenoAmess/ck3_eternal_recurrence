@@ -738,17 +738,116 @@ def _context_proof(
     binding_value = envelope.get("binding")
     binding = binding_value if isinstance(binding_value, dict) else {}
 
+    def target_identity_closed(value: dict[str, object]) -> bool:
+        present = value.get("present")
+        if present is False:
+            raw_hex = value.get("raw_16_bytes_hex")
+            try:
+                raw = bytes.fromhex(raw_hex) if isinstance(raw_hex, str) else b""
+            except ValueError:
+                return False
+            raw_type_index = value.get("raw_type_index")
+            return (
+                isinstance(raw_type_index, int)
+                and not isinstance(raw_type_index, bool)
+                and raw_type_index == 0
+                and len(raw) == 16
+                and int.from_bytes(raw[:2], "little") == raw_type_index
+                and value.get("type_key_status") == "absent"
+                and value.get("type_key") is None
+                and value.get("type_key_reason") is None
+                and value.get("typed_identity_status") == "absent"
+                and value.get("typed_identity") is None
+                and value.get("typed_identity_reason") is None
+            )
+        if present is not True or value.get("type_key_status") != "available":
+            return False
+        type_key = value.get("type_key")
+        if (
+            not isinstance(type_key, str)
+            or not type_key
+            or value.get("type_key_reason") is not None
+        ):
+            return False
+        raw_hex = value.get("raw_16_bytes_hex")
+        try:
+            raw = bytes.fromhex(raw_hex) if isinstance(raw_hex, str) else b""
+        except ValueError:
+            return False
+        if len(raw) != 16:
+            return False
+        raw_type_index = value.get("raw_type_index")
+        if (
+            not isinstance(raw_type_index, int)
+            or isinstance(raw_type_index, bool)
+            or raw_type_index == 0
+            or raw_type_index != int.from_bytes(raw[:2], "little")
+        ):
+            return False
+        if (
+            raw_type_index == 16
+            and type_key == "war"
+            and definition.get("canonical_key") == "call_ally_interaction"
+        ):
+            identity = value.get("typed_identity")
+            if (
+                value.get("typed_identity_status") != "available"
+                or not isinstance(identity, str)
+                or not identity.startswith("war:")
+                or value.get("typed_identity_reason") is not None
+            ):
+                return False
+            decimal = identity[4:]
+            try:
+                war_id = int(decimal, 10)
+            except (TypeError, ValueError):
+                return False
+            return (
+                war_id > 0
+                and war_id <= 2**31 - 1
+                and str(war_id) == decimal
+                and int.from_bytes(raw[8:12], "little", signed=True) == war_id
+            )
+        return (
+            value.get("typed_identity_status") == "unavailable"
+            and value.get("typed_identity") is None
+            and value.get("typed_identity_reason")
+            == "generic_scope_payload_identity_not_closed"
+        )
+
     target_present = target.get("present")
-    target_type_closed = bool(
+    target_type_closed = target_identity_closed(target)
+    target_identity_ready = (
         target_present is False
-        and target.get("type_key_status") == "absent"
-        and target.get("typed_identity_status") == "absent"
-        or target_present is True
-        and target.get("type_key_status") == "available"
-        and isinstance(target.get("type_key"), str)
-        and bool(target.get("type_key"))
-        and target.get("typed_identity_status") == "unavailable"
-        and target.get("typed_identity") is None
+        or target.get("typed_identity_status") == "available"
+    )
+    readiness_reasons = readiness.get("not_ready_reasons")
+    target_readiness_reason = None
+    if target_present is True and not target_identity_ready:
+        target_readiness_reason = target.get("typed_identity_reason")
+        if target_readiness_reason == "generic_scope_payload_identity_not_closed":
+            target_readiness_reason = (
+                "target_generic_scope_payload_identity_not_closed"
+            )
+    target_readiness_tokens = {
+        "target_generic_scope_payload_identity_not_closed",
+        "war_target_identity_unavailable",
+    }
+    target_readiness_consistent = (
+        readiness.get("target_typed_identity_ready") is target_identity_ready
+        and isinstance(readiness_reasons, list)
+        and (
+            (
+                target_readiness_reason is None
+                and not any(
+                    token in readiness_reasons for token in target_readiness_tokens
+                )
+            )
+            or (
+                target_readiness_reason is not None
+                and readiness_reasons.count(target_readiness_reason) == 1
+            )
+        )
     )
     options_exact = bool(
         options.get("exclusive") is True
@@ -823,6 +922,7 @@ def _context_proof(
             "intermediary_character_id": -1,
         },
         "target_envelope_typed": target_type_closed,
+        "target_readiness_consistent": target_readiness_consistent,
         "zero_send_options_exact": options_exact,
         "recipient_local_route": routing
         == {

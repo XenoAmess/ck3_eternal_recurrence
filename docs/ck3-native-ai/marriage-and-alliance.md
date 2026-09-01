@@ -379,6 +379,13 @@ primary attacker 作战，warscore `-48`。
 也不能让 Python 把 raw token 中某个 dword 猜成 WarID。live structured send-time costs 的十个资源槽均为零，但 effect preview
 仍 unavailable。
 
+上面保留的是该历史 blocker artifact 的原始观察结果：当时 production query 还没有接入 `war` resolver。当前
+`pending-character-interaction-context-v1` reader/serializer 已增加 definition-bound 的窄例外：仅
+canonical `call_ally_interaction` 且 `type_index=16/type_key=war` 时读取 envelope `+0x08` signed WarID，调用
+generation-safe active-CWar resolver 并回读 `CWar+0x08`；只有完整 ID 相等才发布 `typed_identity=war:<id>`。
+其它复用 type-16/war 的 definition、非 war/未知类型和 resolver 失败仍返回 generic/专用 unavailable。该路径目前
+有 synthetic/native query 与 source-contract 证据，但没有新的 paused production live artifact，故不提升 live readiness。
+
 ### 原生 War target 与 Can Send 树
 
 - [static-confirmed] definition `00_alliance.txt:1-12` 绑定 `interface = call_ally`、
@@ -395,7 +402,10 @@ primary attacker 作战，warscore `-48`。
   `1FC898DABB3A0BF0AC17D2A6CFB8BF5119C0908F4F550D25217165515825AE74`）安装 resolver
   `0x201CF10..0x201CF7F`。resolver 要求 token type 为 `16`，读取 token `+0x08` 的完整 signed-int32 WarID，
   以 low-24 slot resolve 后再核对 `CWar+0x08` 的完整 generation-bearing ID 与 active predicate。于是 raw frame 的候选值可以
-  冻结为 `0x04000052 / 67108946`，但 production query 尚未调用 resolver 并发布 typed result；planner 仍不得消费 raw hex。
+  冻结为 `0x04000052 / 67108946`。历史 blocker query 没有调用 resolver；当前 reader 仅在 canonical
+  `call_ally_interaction` 组合下接入该 resolver，并以 `war:<id>` 发布通过 full-ID 回读的 typed result。
+  非 allowlisted definition 即使携带同一 type-16/war envelope 仍保持 generic unavailable；当前只有 synthetic/native
+  query 证据，planner 的历史 fallback 仍不消费 raw hex。
 - [static-confirmed] `00_war_and_peace_triggers.txt:59-164,166-221,613-663` 分别闭合跨战争 participant 冲突、
   普通 vassal/liege 禁召及契约例外、liege/vassal 已在敌侧的排除门。Great Holy War 的 faith 条件只作为当前 war legality
   的最小 opaque 输入保留；本节不借此扩展通用宗教系统。
@@ -404,8 +414,9 @@ primary attacker 作战，warscore `-48`。
   不把脚本树冒充完整 legality。
 
 定义的 `:198-211` 明确要求 recipient 不在 target war。因此在这个 age-0 paused frame 中，该 call 的 target 不是玩家已经参加的
-WarID `50331699`；接受会尝试把玩家加入另一场战争。这个“另一场战争”结论不依赖猜 raw WarID，但具体 target identity、CB、
-actor side、战争攻防性质与 religious flag 仍未观测。
+WarID `50331699`；接受会尝试把玩家加入另一场战争。这个“另一场战争”结论不依赖猜 raw WarID。typed observer
+现在可在窄的 call-ally definition-bound query 中发布目标 WarID，但该历史 live frame 没有这项结果；CB、actor side、
+战争攻防性质与 religious flag 仍未观测。
 
 ### 原生 AI 发送、接受与 reply
 
@@ -423,8 +434,9 @@ actor side、战争攻防性质与 religious flag 仍未观测。
   recipient ally 时乘零；Mandala guarantee 路径 `+500`。作者注释还明确 score 大于零后仍受
   `DESIRED_WAR_SIDE_STRENGTH` veto。当前 proposal 的存在只证明发送树已通过，不提供 recipient 玩家应接受的效用结论。
 - [live-confirmed] 对当前 human pending，已有 generic exact-build query 足以冻结 full ID、stable key/hash、roles、route、deadline
-  与四路 native legality；accept/reject command 也都可达。缺失的是 War target identity 和 action-specific semantic
-  postcondition，而不是按钮可点性。
+  与四路 native legality；accept/reject command 也都可达。历史 live artifact 缺失 War target identity；新的
+  call-ally typed decoder 仅 static/query-covered，仍缺 paused live artifact 与 action-specific semantic postcondition，
+  而不是按钮可点性。
 
 ```mermaid
 flowchart TD
@@ -439,7 +451,7 @@ flowchart TD
     R -. "hard-coded special/callback 顺序未闭合" .-> H["[unknown] auto-accept call side effect"]
     W -->|是，human recipient| P["[live-confirmed] normal pending -1811939304"]
     P --> T["[live-confirmed] target type_key=war / zero option / zero send-time cost"]
-    T -. "resolver 已静态闭合但 production wire 未接入" .-> U["[unknown] live exact target WarID / actor side / CB / offensive-defensive"]
+    T -. "call-ally resolver 仅 static/query-covered，尚无新 live artifact" .-> U["[unknown] live exact target WarID / actor side / CB / offensive-defensive"]
     T --> L{"[live-confirmed] same-frame reply legality?"}
     L -->|accept| J
     L -->|reject| D["[static-confirmed] 不参战；按 target side 结算拒绝后果"]
@@ -491,7 +503,8 @@ production artifact 的 blocker，Python planner 实现一条 definition-bound `
 1. exact build、canonical key `call_ally_interaction`、deterministic key hash `936306703`、full pending ID 与 same-frame
    binding 完全匹配；runtime ordinal 不得跨进程作为身份；
 2. 玩家是 direct local recipient；secondary/intermediary 均为 `-1`；normal channel、非 auto-accept notification；
-3. target present 且 stable `type_key=war`，zero options，`special_data_present=false`；不尝试从 raw 16 bytes 解码 WarID；
+3. target present 且 stable `type_key=war`，zero options，`special_data_present=false`；这条历史 fallback 即使 typed observer
+   可用也不消费 raw 16 bytes/WarID；
 4. 玩家已经至少参加一场仍 active 的战争，且本 call 的 target 由原生 definition 保证不是其中任何一场；这把规则严格限定为
    “避免在尚不支持 multi-war OODA 时再加入第二战”，不扩成所有 call-ally 一律拒绝；
 5. 先保留现有 100% enforce-demands 优先级；没有该动作后，reject 原生合法且 command 可达，deadline 未到期；
@@ -509,11 +522,11 @@ opinion/fame/contract 代价，并保持 `native_ai_equivalent=false`、`semanti
 `interaction_semantic_decision_ready=false`。若玩家当时没有 active war、reject 非法、shape 不匹配，或未来已经具备 multi-war
 策略，就不得复用这条 busy-reject fallback，也不得落入 generic unique-accept。
 
-[observation dependency] 任何 accept 策略的最小前置不是继续猜 raw token，而是把已经静态闭合的
-type-16 `war` resolver 接入 application-main paused query：读取稳定 WarID、绑定 active `CWar`，发布 target active/leader、actor side、
-primary attacker/defender、CB identity、玩家未参战、offensive/defensive、必要的最小 opaque religious-war 标志与当前 reply
-effect preview。accept 后必须在 paused snapshot 看到玩家以 actor 同侧 participant 加入 **该 exact WarID**；否则旧 pending
-消失也不能冒充 call 语义成功。通用 transport 边界见
+[observation dependency] type-16 `war` resolver 已接入 application-main query 的 static/native fixture 路径，并绑定
+canonical `call_ally_interaction`；production paused live artifact 仍待补。下一步是在真实 query 中互证稳定 WarID、active
+`CWar`、target active/leader、actor side、primary attacker/defender、CB identity、玩家未参战、offensive/defensive、必要的最小
+opaque religious-war 标志与当前 reply effect preview。accept 后必须在 paused snapshot 看到玩家以 actor 同侧 participant 加入
+**该 exact WarID**；否则旧 pending 消失也不能冒充 call 语义成功。通用 transport 边界见
 [`events-and-interactions.md`](events-and-interactions.md)，完整战争效用输入见
 [`player-war-entry-policy.md`](player-war-entry-policy.md)；这个 decoder/query 是把本节从 blocker-removal 升级为真正
 call-ally utility policy 的替换入口。
