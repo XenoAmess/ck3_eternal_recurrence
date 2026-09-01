@@ -80,15 +80,41 @@ def _json_safe(value: object) -> object:
         return {str(key): _json_safe(item) for key, item in value.items()}
     if isinstance(value, (list, tuple)):
         return [_json_safe(item) for item in value]
-    return repr(value)
+    try:
+        return repr(value)
+    except BaseException:
+        return f"<{type(value).__name__}>"
+
+
+def _strict_equal(expected: object, actual: object) -> bool:
+    """Compare the JSON contract with exact container and scalar types."""
+
+    if type(expected) is not type(actual):
+        return False
+    if isinstance(expected, dict):
+        if expected.keys() != actual.keys():  # type: ignore[union-attr]
+            return False
+        return all(
+            _strict_equal(expected[key], actual[key])  # type: ignore[index]
+            for key in expected
+        )
+    if isinstance(expected, list):
+        if len(expected) != len(actual):  # type: ignore[arg-type]
+            return False
+        return all(
+            _strict_equal(left, right)
+            for left, right in zip(expected, actual)  # type: ignore[arg-type]
+        )
+    return expected == actual
 
 
 class Phase2PromoProducerError(RuntimeError):
     """A typed RED at the producer hand-off boundary.
 
-    ``reason_code`` is intentionally stable for runner/report consumers while
+    ``reason_code`` is intentionally stable for direct callers while
     ``evidence`` remains a small, JSON-compatible partial record.  No error
-    path writes that record; the acceptance runner may decide how to retain it.
+    path writes that record; the acceptance runner currently retains only the
+    exception text unless a caller supplies an error adapter/report hook.
     """
 
     result: Final = "RED"
@@ -158,7 +184,7 @@ class Choreography(Protocol):
     ) -> Mapping[str, object]: ...
 
 
-ProducerErrorFactory: TypeAlias = Callable[[str], BaseException]
+ProducerErrorFactory: TypeAlias = Callable[[str], Exception]
 RunnerRegistrar: TypeAlias = Callable[[Callable[..., dict[str, object]]], None]
 
 
@@ -171,9 +197,16 @@ def _canonical_contract(value: Mapping[str, object]) -> dict[str, object]:
             "phase-two capture contract must be a mapping",
             evidence={"actual_type": type(value).__name__},
         )
-    actual = deepcopy(dict(value))
+    try:
+        actual = deepcopy(dict(value))
+    except BaseException as error:
+        raise Phase2PromoProducerContractError(
+            "contract_unreadable",
+            "phase-two capture contract could not be copied",
+            evidence={"exception_type": type(error).__name__},
+        ) from error
     expected = canonical_phase2_capture_contract()
-    if actual != expected:
+    if not _strict_equal(actual, expected):
         raise Phase2PromoProducerContractError(
             "contract_mismatch",
             "phase-two capture contract differs from the canonical v1 contract",
@@ -185,18 +218,23 @@ def _canonical_contract(value: Mapping[str, object]) -> dict[str, object]:
 def _recorder_contract(recorder: object) -> Mapping[str, object] | None:
     """Read a runner ``PromoRecorder`` contract without touching its lifecycle."""
 
-    value = getattr(recorder, "contract", None)
+    try:
+        value = getattr(recorder, "contract", None)
+    except BaseException:
+        return None
     if value is None:
         return None
-    to_mapping = getattr(value, "to_mapping", None)
-    if callable(to_mapping):
-        value = to_mapping()
+    try:
+        to_mapping = getattr(value, "to_mapping", None)
+        if callable(to_mapping):
+            value = to_mapping()
+    except BaseException:
+        return None
     if not isinstance(value, Mapping):
         return None
     return value
 
 
-@dataclass(frozen=True, slots=True)
 class Phase2PromoProducerScaffold:
     """Strict, side-effect-free adapter around future runtime dependencies.
 
@@ -206,21 +244,33 @@ class Phase2PromoProducerScaffold:
     injected ``runtime_probe`` and ``choreography`` functions.
     """
 
-    contract: Mapping[str, object]
-    runtime_probe: RuntimeProbe | None = None
-    choreography: Choreography | None = None
-    error_factory: ProducerErrorFactory | None = None
+    __slots__ = ("_contract_snapshot", "runtime_probe", "choreography", "error_factory")
 
-    def __post_init__(self) -> None:
+    def __init__(
+        self,
+        contract: Mapping[str, object],
+        runtime_probe: RuntimeProbe | None = None,
+        choreography: Choreography | None = None,
+        error_factory: ProducerErrorFactory | None = None,
+    ) -> None:
         # Store a private-by-convention copy so a caller cannot mutate the
         # contract after construction and silently change the hand-off.
-        object.__setattr__(self, "contract", _canonical_contract(self.contract))
-        if self.runtime_probe is not None and not callable(self.runtime_probe):
+        self._contract_snapshot = _canonical_contract(contract)
+        self.runtime_probe = runtime_probe
+        self.choreography = choreography
+        self.error_factory = error_factory
+        if runtime_probe is not None and not callable(runtime_probe):
             raise TypeError("runtime_probe must be callable or None")
-        if self.choreography is not None and not callable(self.choreography):
+        if choreography is not None and not callable(choreography):
             raise TypeError("choreography must be callable or None")
-        if self.error_factory is not None and not callable(self.error_factory):
+        if error_factory is not None and not callable(error_factory):
             raise TypeError("error_factory must be callable or None")
+
+    @property
+    def contract(self) -> dict[str, object]:
+        """Return a copy so callers cannot mutate the validation snapshot."""
+
+        return deepcopy(self._contract_snapshot)
 
     def _red(
         self,
@@ -240,13 +290,14 @@ class Phase2PromoProducerScaffold:
             raise local_error
         try:
             adapted = self.error_factory(str(local_error))
-        except Exception:
+        except BaseException:
             # An error adapter must never hide the original typed RED.
             raise local_error
-        if not isinstance(adapted, BaseException):
+        if not isinstance(adapted, Exception):
             raise local_error
         # RunnerError has no structured fields, so attach them opportunistically
         # while retaining its established exception type for the caller.
+        adaptation_failed = False
         for name, value in (
             ("reason_code", local_error.reason_code),
             ("reason", local_error.reason),
@@ -256,8 +307,10 @@ class Phase2PromoProducerScaffold:
         ):
             try:
                 setattr(adapted, name, value)
-            except Exception:
-                pass
+            except BaseException:
+                adaptation_failed = True
+        if adaptation_failed:
+            raise local_error
         raise adapted
 
     def _build_context(
@@ -298,13 +351,15 @@ class Phase2PromoProducerScaffold:
         if recorder is None:
             self._red("recorder_unavailable", "a PromoRecorder is required")
         actual_contract = _recorder_contract(recorder)
-        if actual_contract is None or dict(actual_contract) != dict(self.contract):
+        if actual_contract is None or not _strict_equal(
+            dict(actual_contract), self._contract_snapshot
+        ):
             self._red(
                 "recorder_contract_mismatch",
                 "recorder is not bound to the canonical phase-two contract",
                 evidence={
-                    "expected_contract": deepcopy(dict(self.contract)),
-                    "actual_contract": deepcopy(
+                    "expected_contract": self._contract_snapshot,
+                    "actual_contract": (
                         dict(actual_contract) if actual_contract is not None else {}
                     ),
                 },
@@ -324,6 +379,14 @@ class Phase2PromoProducerScaffold:
                 "required runtime dependency is None: " + ", ".join(missing),
                 evidence={"missing_dependencies": missing},
             )
+        try:
+            bridge_identity = deepcopy(dict(preflight_bridge_identity))
+        except BaseException as error:
+            self._red(
+                "bridge_identity_unavailable",
+                "preflight bridge identity could not be copied",
+                evidence={"exception_type": type(error).__name__},
+            )
         return Phase2PromoCaptureContext(
             stream=stream,
             artifacts=artifacts,
@@ -331,8 +394,8 @@ class Phase2PromoProducerScaffold:
             title_navigation_service=title_navigation_service,
             tracked_ck3_pid=tracked_ck3_pid,
             native_bridge=native_bridge,
-            preflight_bridge_identity=deepcopy(dict(preflight_bridge_identity)),
-            contract=deepcopy(dict(self.contract)),
+            preflight_bridge_identity=bridge_identity,
+            contract=deepcopy(self._contract_snapshot),
         )
 
     def _validate_runtime(
@@ -398,7 +461,10 @@ class Phase2PromoProducerScaffold:
                 evidence={"missing_fields": missing},
                 unavailable=False,
             )
-        if evidence["capture_mode"] != PHASE2_PROMO_CAPTURE_MODE:
+        if (
+            type(evidence["capture_mode"]) is not str
+            or evidence["capture_mode"] != PHASE2_PROMO_CAPTURE_MODE
+        ):
             self._red(
                 "producer_mode_mismatch",
                 "choreography returned a non-canonical capture mode",
@@ -406,7 +472,9 @@ class Phase2PromoProducerScaffold:
                 unavailable=False,
             )
         if (
-            evidence["capture_contract_version"]
+            type(evidence["capture_contract_version"]) is not int
+            or isinstance(evidence["capture_contract_version"], bool)
+            or evidence["capture_contract_version"]
             != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
         ):
             self._red(
@@ -422,14 +490,14 @@ class Phase2PromoProducerScaffold:
         returned_contract = evidence["capture_contract"]
         if (
             not isinstance(returned_contract, dict)
-            or returned_contract != dict(self.contract)
+            or not _strict_equal(returned_contract, self._contract_snapshot)
         ):
             self._red(
                 "producer_contract_mismatch",
                 "choreography returned a non-canonical capture contract",
                 evidence={
-                    "expected_contract": deepcopy(dict(self.contract)),
-                    "actual_contract": deepcopy(
+                    "expected_contract": self._contract_snapshot,
+                    "actual_contract": (
                         dict(returned_contract)
                         if isinstance(returned_contract, Mapping)
                         else {}

@@ -27,7 +27,9 @@ object.  The scaffold forwards no defaults: mode, version, and the complete
 canonical eight-span `capture_contract` must be present and exact.  Missing
 dependencies, an unavailable runtime, or malformed evidence raises a typed
 `RED` with `reason_code` and JSON-compatible `evidence`; no clean-frame gate is
-created on those paths.
+created on those paths.  The scaffold exposes that structured envelope to its
+direct caller; the current acceptance runner logs an exception's text unless
+the caller supplies a report-aware error adapter.
 
 Only a future producer with both real dependencies should register the
 callable:

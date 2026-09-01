@@ -115,6 +115,13 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         first.contract["span_ids"].append("must-not-leak")  # type: ignore[union-attr]
         self.assertEqual(second.contract, self.contract)
 
+    def test_contract_snapshot_cannot_be_mutated_after_construction(self) -> None:
+        producer = make_phase2_promo_capture_scaffold()
+        exposed = producer.contract
+        exposed["mode"] = "phase1"
+        exposed["span_map"].clear()  # type: ignore[union-attr]
+        self.assertEqual(producer.contract, self.contract)
+
     def test_contract_mismatch_is_typed_red_at_construction(self) -> None:
         malformed = copy.deepcopy(self.contract)
         malformed["span_ids"] = list(malformed["span_ids"])[::-1]  # type: ignore[index]
@@ -125,6 +132,14 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         self.assertEqual(
             raised.exception.evidence["actual_contract"], malformed
         )
+
+    def test_constructor_contract_requires_exact_scalar_types(self) -> None:
+        for invalid_version in (True, 1.0):
+            malformed = copy.deepcopy(self.contract)
+            malformed["version"] = invalid_version
+            with self.assertRaises(Phase2PromoProducerContractError) as raised:
+                make_phase2_promo_capture_scaffold(contract=malformed)
+            self.assertEqual(raised.exception.reason_code, "contract_mismatch")
 
     def test_missing_runtime_probe_is_typed_red_without_recorder_calls(self) -> None:
         recorder = _Recorder(self.contract)
@@ -251,6 +266,25 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         self.assertEqual(raised.exception.reason_code, "producer_mode_mismatch")
         self.assertEqual(recorder.calls, [])
 
+    def test_delegate_contract_version_requires_exact_integer_type(self) -> None:
+        recorder = _Recorder(self.contract)
+        for invalid_version in (True, 1.0):
+            bad = {
+                "capture_mode": "zhongguo-361-phase2",
+                "capture_contract_version": invalid_version,
+                "capture_contract": copy.deepcopy(self.contract),
+            }
+            producer = make_phase2_promo_capture_scaffold(
+                runtime_probe=lambda _context: {"ready": True},
+                choreography=lambda _context, _runtime, value=bad: value,
+            )
+            with self.assertRaises(Phase2PromoProducerContractError) as raised:
+                _invoke(producer, recorder)
+            self.assertEqual(
+                raised.exception.reason_code,
+                "producer_contract_version_mismatch",
+            )
+
     def test_install_requires_dependencies_and_registers_only_explicitly(self) -> None:
         registrations: list[object] = []
         with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
@@ -284,6 +318,15 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         self.assertEqual(raised.exception.evidence["result"], "RED")
         self.assertNotIsInstance(raised.exception, Phase2PromoProducerError)
         self.assertEqual(recorder.calls, [])
+
+    def test_error_factory_cannot_replace_typed_red_with_base_exception(self) -> None:
+        recorder = _Recorder(self.contract)
+        producer = make_phase2_promo_capture_scaffold(
+            error_factory=lambda _message: SystemExit(3),  # type: ignore[return-value]
+        )
+        with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
+            _invoke(producer, recorder)
+        self.assertEqual(raised.exception.reason_code, "runtime_probe_unconfigured")
 
 
 if __name__ == "__main__":
