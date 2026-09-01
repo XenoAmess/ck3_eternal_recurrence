@@ -111,6 +111,29 @@ clone 的 local tip（不留 persistent ref），再与当前 master 做 ancestr
 | `Z:\ck3_mod_rewrite` | 一期 WIP tip `17dc506` 上的用户脏现场 | owner | 已同 tip detach、删除 ref；中央 ledger 保留 exact HEAD/status/diff，绝不删除 36 tracked / 12,600 untracked | `retired` ref；frozen evidence 原地保留 |
 | 旧 agent/runtime/release checkout | 已合入、patch-equivalent 或 superseded 的 live 证据 | consolidation | 34 个根已 detach + marker；目录不随 35 个历史 ref 删除 | `retired` |
 
+## 2026-09-02 mainline consolidation
+
+After the `87d557c` master CI completed GREEN, the short-lived parent refs
+whose changes were already merged or patch-equivalent were retired. Their
+associated clean worktrees were switched to detached HEAD and kept on disk;
+no source, build, log, or process-assets directory was removed. Retired refs
+include the `agent/kaishek-acceptance-coverage-*` pair,
+`agent/kaishek-adapter-refresh-20260902`,
+`agent/kaishek-preflight-adapter-20260902`,
+`agent/promo-phase2-preflight-docs`, `docs/preflight-policy-20260902`,
+`g2-gen034-native-contract-tests`, `promo/phase2-producer-typed-red-20260901`,
+and the three `wip/phase2-*` refs. The G2 fresh-run branch
+`feat/g2-next-run-preflight-20260902` was merged as `a1f424e` and its ref was
+retired after its own CI success.
+
+The independent `Z:\workspace\open_kaishek` checkout follows the same rule:
+`feat/government-flag-schema-20260902` was merged as `450b559` and
+`feat/perk-schema-20260902` as `a670589`; both refs were deleted immediately.
+Its canonical `main` is `a670589`, and only the two pre-existing user branches
+(`feat/cli-batch-replay` and `feat/zg361-appeal-replay`) remain. Historical
+parent refs with distinct user-facing release/evidence ownership are retained
+until their owners request retirement.
+
 ## 合并与清理 checklist
 
 - [ ] base SHA、owner、reason、acceptance、deadline 和 status 已进 ledger；
