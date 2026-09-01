@@ -7,6 +7,7 @@ import argparse
 from contextlib import ExitStack
 import ctypes
 from ctypes import wintypes
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 import os
@@ -177,6 +178,88 @@ PROMO_CLEAN_SPANS = (
     "policy_card_022",
     "policy_card_026",
     "policy_card_361",
+)
+# Phase two has a separate visual producer contract.  These IDs intentionally
+# do not alias the phase-one spans above: a phase-one take must never be
+# relabelled as sequel footage.  The future producer is required to call
+# ``PromoRecorder.clean_hold`` with these exact chapter IDs after each real
+# phase-two gameplay surface is visible and clean.
+PHASE2_PROMO_CAPTURE_MODE = "zhongguo-361-phase2"
+PHASE2_PROMO_CAPTURE_CONTRACT_VERSION = 1
+PHASE2_PROMO_CAPTURE_PRODUCER_ID = "zhongguo-361-phase2-visual-producer-v1"
+PHASE2_PROMO_CLEAN_SPANS = (
+    "phase2_fact_quota_calibration",
+    "phase2_receipt_appeal_pip",
+    "phase2_manager_governance",
+    "phase2_promotion_compensation",
+    "phase2_hc_workforce",
+    "phase2_projects_metrics",
+    "phase2_incidents_operations",
+    "phase2_cross_cycle_endgame",
+)
+# Keep a semantic producer key beside each chapter ID.  The keys are an
+# explicit interface for the eventual gameplay choreography; they are not
+# aliases for any old visual span.
+PHASE2_PROMO_CAPTURE_SPAN_MAP = (
+    ("phase2_fact_quota_calibration", "facts-quota-calibration"),
+    ("phase2_receipt_appeal_pip", "receipts-appeals-pip"),
+    ("phase2_manager_governance", "manager-governance"),
+    ("phase2_promotion_compensation", "promotion-compensation"),
+    ("phase2_hc_workforce", "hc-workforce"),
+    ("phase2_projects_metrics", "projects-metrics"),
+    ("phase2_incidents_operations", "incidents-operations"),
+    ("phase2_cross_cycle_endgame", "cross-cycle-endgame"),
+)
+if set(PHASE2_PROMO_CLEAN_SPANS).intersection(PROMO_CLEAN_SPANS):
+    raise RuntimeError("phase-two promo spans must be disjoint from phase-one spans")
+if tuple(item[0] for item in PHASE2_PROMO_CAPTURE_SPAN_MAP) != PHASE2_PROMO_CLEAN_SPANS:
+    raise RuntimeError("phase-two promo span map must follow the canonical chapter order")
+
+
+@dataclass(frozen=True, slots=True)
+class PromoCaptureContract:
+    """Mode-specific producer contract projected into a capture timeline."""
+
+    mode: str
+    version: int
+    producer_id: str
+    clean_span_ids: tuple[str, ...]
+    span_map: tuple[tuple[str, str], ...]
+
+    @property
+    def mark_labels(self) -> tuple[str, ...]:
+        return tuple(
+            label
+            for span_id in self.clean_span_ids
+            for label in (f"{span_id}_clean_begin", f"{span_id}_clean_end")
+        )
+
+    def to_mapping(self) -> dict[str, object]:
+        return {
+            "mode": self.mode,
+            "version": self.version,
+            "producer_id": self.producer_id,
+            "span_ids": list(self.clean_span_ids),
+            "span_map": [
+                {"chapter_id": chapter_id, "producer_key": producer_key}
+                for chapter_id, producer_key in self.span_map
+            ],
+        }
+
+
+LEGACY_PROMO_CAPTURE_CONTRACT = PromoCaptureContract(
+    mode="zhongguo-361-phase1",
+    version=1,
+    producer_id="zhongguo-361-legacy-visual-producer-v1",
+    clean_span_ids=PROMO_CLEAN_SPANS,
+    span_map=tuple((span_id, span_id) for span_id in PROMO_CLEAN_SPANS),
+)
+PHASE2_PROMO_CAPTURE_CONTRACT = PromoCaptureContract(
+    mode=PHASE2_PROMO_CAPTURE_MODE,
+    version=PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+    producer_id=PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+    clean_span_ids=PHASE2_PROMO_CLEAN_SPANS,
+    span_map=PHASE2_PROMO_CAPTURE_SPAN_MAP,
 )
 PROMO_FORBIDDEN_VISIBLE_TEXT = (
     "决议和大型工程",
@@ -523,8 +606,14 @@ def log(message: str) -> None:
 class PromoRecorder:
     """Append-only desktop recorder started only after CK3 gameplay is visible."""
 
-    def __init__(self, artifact_dir: Path):
+    def __init__(
+        self,
+        artifact_dir: Path,
+        *,
+        contract: PromoCaptureContract = LEGACY_PROMO_CAPTURE_CONTRACT,
+    ):
         self.artifact_dir = artifact_dir
+        self.contract = contract
         self.raw_dir = artifact_dir / "raw"
         self.raw_path = self.raw_dir / "zg361-promo-live-full-take-01.mkv"
         self.log_path = self.raw_dir / "ffmpeg-take-01.log"
@@ -619,7 +708,7 @@ class PromoRecorder:
 
         if self.process is None:
             return
-        if label not in PROMO_CLEAN_SPANS:
+        if label not in self.contract.clean_span_ids:
             raise acceptance.RunnerError(f"unknown promo clean span: {label}")
         if label in self.clean_frame_gates:
             raise acceptance.RunnerError(f"duplicate promo clean span: {label}")
@@ -668,7 +757,9 @@ class PromoRecorder:
                 f"promo recorder failed with exit {returncode}; inspect {self.log_path}"
             )
         missing_clean_spans = [
-            label for label in PROMO_CLEAN_SPANS if label not in self.clean_frame_gates
+            label
+            for label in self.contract.clean_span_ids
+            if label not in self.clean_frame_gates
         ]
         payload = {
             "schema": 2,
@@ -681,13 +772,26 @@ class PromoRecorder:
             "ffmpeg_log": str(self.log_path),
             "marks": self.marks,
             "clean_frame_gates": [
-                self.clean_frame_gates[label] for label in PROMO_CLEAN_SPANS
+                self.clean_frame_gates[label]
+                for label in self.contract.clean_span_ids
                 if label in self.clean_frame_gates
             ],
             "clean_capture_complete": not missing_clean_spans,
             "missing_clean_spans": missing_clean_spans,
             "real_character_provenance": self.real_character_provenance,
         }
+        # Keep the established phase-one timeline byte/schema surface intact.
+        # The dedicated contract metadata is required only for the new phase-
+        # two producer, so existing --promo-capture consumers do not acquire a
+        # hidden dependency on sequel vocabulary.
+        if self.contract != LEGACY_PROMO_CAPTURE_CONTRACT:
+            payload.update(
+                {
+                    "capture_mode": self.contract.mode,
+                    "capture_contract_version": self.contract.version,
+                    "capture_contract": self.contract.to_mapping(),
+                }
+            )
         write_json(self.timeline_path, payload)
         self.process = None
         if missing_clean_spans:
@@ -699,6 +803,98 @@ class PromoRecorder:
                 "promo capture completed without resolving its historical reviewed subject"
             )
         return payload
+
+
+Phase2PromoCaptureProducer = Callable[..., dict[str, object]]
+_PHASE2_PROMO_CAPTURE_PRODUCER: Phase2PromoCaptureProducer | None = None
+
+
+def register_phase2_promo_capture_producer(
+    producer: Phase2PromoCaptureProducer,
+) -> None:
+    """Register the future real-game phase-two visual choreography.
+
+    The registration point is deliberately explicit.  Until a producer is
+    registered, ``--phase2-promo-capture`` fails before preflight/CK3/FFmpeg;
+    this prevents the existing phase-one scenario from being reused under a
+    sequel label.  A producer must start the recorder only after the gameplay
+    HUD is visible and call ``clean_hold`` once for every canonical span.
+    """
+
+    global _PHASE2_PROMO_CAPTURE_PRODUCER
+    if not callable(producer):
+        raise TypeError("phase-two promo capture producer must be callable")
+    _PHASE2_PROMO_CAPTURE_PRODUCER = producer
+
+
+def _require_phase2_promo_capture_producer() -> Phase2PromoCaptureProducer:
+    producer = _PHASE2_PROMO_CAPTURE_PRODUCER
+    if producer is None:
+        raise acceptance.RunnerError(
+            "phase-two promo capture producer hook is unavailable; "
+            "no CK3 launch or FFmpeg recording was attempted"
+        )
+    return producer
+
+
+def run_phase2_promo_capture_scenario(
+    stream: "MarkerStream",
+    artifacts: Path,
+    recorder: PromoRecorder,
+    *,
+    title_navigation_service: GameplayBridgeService,
+    tracked_ck3_pid: int,
+    native_bridge: NativeBridgeLaunchConfig,
+    preflight_bridge_identity: dict[str, object],
+) -> dict[str, object]:
+    """Invoke only the explicitly registered sequel visual producer.
+
+    This function is the stable hand-off between the acceptance runner and
+    future phase-two gameplay choreography.  It intentionally has no fallback
+    to ``run_scenario`` or ``run_phase2_live_scenario``: those paths either
+    capture phase-one spans or are MCP-only and must not become video footage.
+    """
+
+    if recorder.contract != PHASE2_PROMO_CAPTURE_CONTRACT:
+        raise acceptance.RunnerError(
+            "phase-two promo scenario requires the canonical phase-two recorder contract"
+        )
+    producer = _require_phase2_promo_capture_producer()
+    result = producer(
+        stream,
+        artifacts,
+        recorder,
+        title_navigation_service=title_navigation_service,
+        tracked_ck3_pid=tracked_ck3_pid,
+        native_bridge=native_bridge,
+        preflight_bridge_identity=preflight_bridge_identity,
+    )
+    if not isinstance(result, dict):
+        raise acceptance.RunnerError(
+            "phase-two promo capture producer must return an evidence object"
+        )
+    expected_contract = PHASE2_PROMO_CAPTURE_CONTRACT.to_mapping()
+    result_mode = result.get("capture_mode")
+    if result_mode is not None and result_mode != PHASE2_PROMO_CAPTURE_MODE:
+        raise acceptance.RunnerError(
+            "phase-two promo producer returned a non-canonical capture mode"
+        )
+    result_version = result.get("capture_contract_version")
+    if result_version is not None and result_version != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION:
+        raise acceptance.RunnerError(
+            "phase-two promo producer returned an unsupported capture contract version"
+        )
+    result_contract = result.get("capture_contract")
+    if result_contract is not None and result_contract != expected_contract:
+        raise acceptance.RunnerError(
+            "phase-two promo producer returned a non-canonical capture contract"
+        )
+    result.setdefault("capture_mode", PHASE2_PROMO_CAPTURE_MODE)
+    result.setdefault(
+        "capture_contract_version", PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
+    )
+    result.setdefault("capture_contract", expected_contract)
+    return result
 
 
 def write_json(path: Path, payload: dict[str, object]) -> None:
@@ -12768,6 +12964,7 @@ def run_cell(
     state_dir: Path,
     native_bridge: NativeBridgeLaunchConfig,
     promo_capture: bool = False,
+    phase2_promo_capture: bool = False,
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
@@ -12831,7 +13028,18 @@ def run_cell(
     native_cleanup: dict[str, object] = {}
     driver_closed = False
     locks_released = False
-    recorder = PromoRecorder(artifacts / "promo") if promo_capture else None
+    recorder = (
+        PromoRecorder(
+            artifacts / "promo",
+            contract=(
+                PHASE2_PROMO_CAPTURE_CONTRACT
+                if phase2_promo_capture
+                else LEGACY_PROMO_CAPTURE_CONTRACT
+            ),
+        )
+        if (promo_capture or phase2_promo_capture)
+        else None
+    )
     recorder_evidence: dict[str, object] = {}
     keyboard_layout_evidence: dict[str, object] = {}
     loader_gate_enabled = loader_smoke or phase2_live_batch
@@ -12972,6 +13180,21 @@ def run_cell(
                 raise acceptance.RunnerError(
                     "phase-two MCP scenario returned without complete acceptance"
                 )
+        elif phase2_promo_capture:
+            gameplay_acceptance_executed = True
+            if recorder is None:
+                raise acceptance.RunnerError(
+                    "phase-two promo capture recorder was not initialized"
+                )
+            evidence = run_phase2_promo_capture_scenario(
+                stream,
+                artifacts,
+                recorder,
+                title_navigation_service=title_navigation_service,
+                tracked_ck3_pid=tracked_ck3_pid,
+                native_bridge=native_bridge,
+                preflight_bridge_identity=bridge_identity,
+            )
         elif promo_camera_probe:
             initialize_fixture(stream, artifacts)
             close_native_decisions_panel(
@@ -13151,6 +13374,7 @@ def run_cell(
                 and not promo_camera_probe
                 and not loader_smoke
                 and not phase2_live_batch
+                and not phase2_promo_capture
             ):
                 stream.validate(final=True)
             else:
@@ -13237,6 +13461,17 @@ def run_cell(
         log(f"retained native state and userdir at {state_dir}")
 
     if loader_gate_evidence is not None:
+        phase2_promo_capture_complete = (
+            not phase2_promo_capture
+            or (
+                recorder_evidence.get("capture_mode")
+                == PHASE2_PROMO_CAPTURE_MODE
+                and recorder_evidence.get("capture_contract_version")
+                == PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
+                and recorder_evidence.get("clean_capture_complete") is True
+                and recorder_evidence.get("missing_clean_spans") == []
+            )
+        )
         loader_gate_evidence["gameplay_acceptance_executed"] = (
             gameplay_acceptance_executed
         )
@@ -13245,11 +13480,26 @@ def run_cell(
             and gameplay_acceptance_executed
             and (
                 not phase2_live_batch
-                or evidence.get("phase2_acceptance_complete") is True
+                and (
+                    not phase2_promo_capture
+                    or phase2_promo_capture_complete
+                )
+                or phase2_live_batch
+                and evidence.get("phase2_acceptance_complete") is True
             )
         )
         write_json(artifacts / "03_loader_gate.json", loader_gate_evidence)
 
+    phase2_promo_capture_complete = (
+        not phase2_promo_capture
+        or (
+            recorder_evidence.get("capture_mode") == PHASE2_PROMO_CAPTURE_MODE
+            and recorder_evidence.get("capture_contract_version")
+            == PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
+            and recorder_evidence.get("clean_capture_complete") is True
+            and recorder_evidence.get("missing_clean_spans") == []
+        )
+    )
     report = {
         "schema_version": 1,
         "result": result,
@@ -13280,6 +13530,13 @@ def run_cell(
         "promo_camera_probe_only": promo_camera_probe,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
+        "phase2_promo_capture": phase2_promo_capture,
+        "phase2_promo_capture_complete": phase2_promo_capture_complete,
+        "promo_capture_mode": (
+            recorder.contract.mode
+            if recorder is not None
+            else None
+        ),
         "loader_gate_executed": loader_gate_evidence is not None,
         "phase2_seed_install": phase2_seed_install,
         "loader_gate_evidence": loader_gate_evidence,
@@ -13289,11 +13546,18 @@ def run_cell(
             and gameplay_acceptance_executed
             and (
                 not phase2_live_batch
-                or evidence.get("phase2_acceptance_complete") is True
+                and (
+                    not phase2_promo_capture
+                    or phase2_promo_capture_complete
+                )
+                or phase2_live_batch
+                and evidence.get("phase2_acceptance_complete") is True
             )
         ),
         "zg361_50_case_cell_executed": (
-            False if loader_smoke or phase2_live_batch else None
+            False
+            if loader_smoke or phase2_live_batch or phase2_promo_capture
+            else None
         ),
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
@@ -13366,6 +13630,7 @@ def main(
     keep_userdir: bool = True,
     preflight_only: bool = False,
     promo_capture: bool = False,
+    phase2_promo_capture: bool = False,
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
@@ -13379,6 +13644,7 @@ def main(
         bool(value)
         for value in (
             promo_capture,
+            phase2_promo_capture,
             promo_camera_probe,
             loader_smoke,
             phase2_live_batch,
@@ -13386,9 +13652,14 @@ def main(
     )
     if selected_runtime_modes > 1:
         raise acceptance.RunnerError(
-            "--promo-capture, --promo-camera-probe, --loader-smoke and "
-            "--phase2-live-batch are mutually exclusive"
+            "--promo-capture, --phase2-promo-capture, --promo-camera-probe, "
+            "--loader-smoke and --phase2-live-batch are mutually exclusive"
         )
+    # Do not let the sequel mode fall through to the legacy visual scenario.
+    # A real phase-two choreography must be registered explicitly before any
+    # preflight, profile write, CK3 launch, or FFmpeg process is attempted.
+    if phase2_promo_capture:
+        _require_phase2_promo_capture_producer()
     runtime_source = (
         Path(workshop_cache_source).expanduser().resolve()
         if workshop_cache_source
@@ -13445,6 +13716,7 @@ def main(
         state_dir=state_dir,
         native_bridge=native_bridge,
         promo_capture=promo_capture,
+        phase2_promo_capture=phase2_promo_capture,
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
@@ -13475,6 +13747,22 @@ def main(
         result = "RED"
         reason = "phase-two report lacks a complete MCP-only scenario proof"
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    phase2_promo_capture_complete_claim = (
+        phase2_promo_capture
+        and report.get("result") == "GREEN"
+        and report.get("phase2_promo_capture") is True
+        and isinstance(report.get("promo_capture"), dict)
+        and report["promo_capture"].get("capture_mode")
+        == PHASE2_PROMO_CAPTURE_MODE
+        and report["promo_capture"].get("capture_contract_version")
+        == PHASE2_PROMO_CAPTURE_CONTRACT_VERSION
+        and report["promo_capture"].get("clean_capture_complete") is True
+        and report["promo_capture"].get("missing_clean_spans") == []
+    )
+    if phase2_promo_capture and phase2_promo_capture_complete_claim is not True:
+        result = "RED"
+        reason = "phase-two promo capture lacks a complete canonical eight-span proof"
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
     protected_unchanged = False
     try:
         isolated.verify_protected_storage(
@@ -13493,6 +13781,8 @@ def main(
         "error_reason": error_reason,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
+        "phase2_promo_capture": phase2_promo_capture,
+        "phase2_promo_capture_complete": phase2_promo_capture_complete_claim,
         "loader_gate_executed": loader_smoke or phase2_live_batch,
         "gameplay_acceptance_executed": report.get(
             "gameplay_acceptance_executed", False
@@ -13500,9 +13790,15 @@ def main(
         "gameplay_green_claimed": (
             result == "GREEN"
             and (
-                report.get("gameplay_green_claimed") is True
-                if not phase2_live_batch
-                else phase2_complete_claim is True
+                (
+                    phase2_complete_claim
+                    if phase2_live_batch
+                    else (
+                        phase2_promo_capture_complete_claim
+                        if phase2_promo_capture
+                        else report.get("gameplay_green_claimed") is True
+                    )
+                )
             )
         ),
         "cell": report,
@@ -13519,7 +13815,11 @@ def main(
         else (
             "ZHONGGUO 361 PHASE-TWO LIVE BATCH"
             if phase2_live_batch
-            else "ZHONGGUO 361 ACCEPTANCE"
+            else (
+                "ZHONGGUO 361 PHASE-TWO PROMO CAPTURE"
+                if phase2_promo_capture
+                else "ZHONGGUO 361 ACCEPTANCE"
+            )
         )
     )
     print(f"\n===== {heading} =====")
@@ -13552,6 +13852,14 @@ if __name__ == "__main__":
         "--promo-capture",
         action="store_true",
         help="record an append-only post-loading gameplay take and extra product UI",
+    )
+    parser.add_argument(
+        "--phase2-promo-capture",
+        action="store_true",
+        help=(
+            "run the explicitly registered phase-two visual producer with the "
+            "canonical eight-span capture contract; never falls back to --promo-capture"
+        ),
     )
     parser.add_argument(
         "--promo-camera-probe",
@@ -13606,6 +13914,7 @@ if __name__ == "__main__":
                 keep_userdir=not arguments.discard_userdir,
                 preflight_only=arguments.preflight,
                 promo_capture=arguments.promo_capture,
+                phase2_promo_capture=arguments.phase2_promo_capture,
                 promo_camera_probe=arguments.promo_camera_probe,
                 loader_smoke=arguments.loader_smoke,
                 phase2_live_batch=arguments.phase2_live_batch,

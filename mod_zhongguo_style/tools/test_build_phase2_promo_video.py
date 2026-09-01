@@ -39,6 +39,11 @@ from xar_promo.operations import (  # noqa: E402
 )
 from xar_promo.presets.zhongguo_361_phase2 import (  # noqa: E402
     CaptureRequirements,
+    PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+    PHASE2_PROMO_CAPTURE_MODE,
+    PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+    PHASE2_PROMO_CAPTURE_SPAN_MAP,
+    PHASE2_PROMO_CLEAN_SPAN_IDS,
     Phase2CaptureCandidate,
     load_phase2_project_config,
 )
@@ -180,6 +185,18 @@ def _write_capture_timeline(
     path.parent.mkdir(parents=True, exist_ok=True)
     payload: dict[str, object] = {
         "schema": 2,
+        "capture_mode": PHASE2_PROMO_CAPTURE_MODE,
+        "capture_contract_version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+        "capture_contract": {
+            "mode": PHASE2_PROMO_CAPTURE_MODE,
+            "version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+            "producer_id": PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+            "span_ids": list(PHASE2_PROMO_CLEAN_SPAN_IDS),
+            "span_map": [
+                {"chapter_id": chapter_id, "producer_key": producer_key}
+                for chapter_id, producer_key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+            ],
+        },
         "source_git_commit": "d7a28713fca39b70121e47cfa0a9838bf244774c",
         "source_clean_tree_sha256": "a" * 64,
         "source_zip_logical_tree_sha256": "b" * 64,

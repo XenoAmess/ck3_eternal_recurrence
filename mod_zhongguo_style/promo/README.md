@@ -36,6 +36,7 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 |---|---|
 | `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
 | `phase2-promo-project.json` | 二期十章 authoring 配置；章节必须从 `planned` 变为 `ready` 才能消费 capture |
+| `xar_promo_toolchain/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json` | 二期 producer 的固定 mode/version/span map 合同 |
 | `storyboard.md` | 约 7–8 分钟的剪辑结构与节奏说明 |
 | `shot-list.md` | 一次自动集中实录的实际 marks、六张政策卡与不可夸张的产品边界 |
 | `smoke-manifest.json` | 很短的媒体流水线测试；内容明确声明“不是正式成片” |
@@ -135,6 +136,45 @@ authoring RED，不是崩溃，也不是 live 证据。章节和 capture 都准�
 FFmpeg/ffprobe 或任何外部命令，不写 run manifest、日志、partial、PNG、MP3、MP4 或 sign-off。
 即使结构验证本身为 `VALIDATION: GREEN`，在 runtime claim matrix 和人工签核完成前，进程仍会
 以 `RELEASE: RED`/退出码 `2` 收口；不要把这个退出码改写成“宣传片完成”。
+
+### 二期实录入口：独立的八段 producer contract
+
+一期的 `tools/run_zhongguo_acceptance.py --promo-capture` 继续只负责既有的
+`PROMO_CLEAN_SPANS`（校准、榜单、驾驶舱、京察、告身和六张政策卡）。它不会因为配置文件
+出现 `phase2_*` 章节而改变含义，也不能通过改名把一期原片伪装成二期。
+
+二期必须显式使用：
+
+```powershell
+& $python tools\run_zhongguo_acceptance.py `
+  --phase2-promo-capture `
+  --artifacts-dir $phase2Capture `
+  --bridge-dll $bridgeDll `
+  --bridge-injector $bridgeInjector
+```
+
+该入口绑定 `phase2-capture-contract-v1.schema.json` 中固定顺序的八个 span：
+`phase2_fact_quota_calibration`、`phase2_receipt_appeal_pip`、
+`phase2_manager_governance`、`phase2_promotion_compensation`、`phase2_hc_workforce`、
+`phase2_projects_metrics`、`phase2_incidents_operations`、
+`phase2_cross_cycle_endgame`。每段必须由同一真实二期 gameplay producer 在 HUD 已出现后
+调用对应的 `*_clean_begin`/`*_clean_end` gate；timeline 同时写入
+`capture_mode=zhongguo-361-phase2`、contract version、producer id 和完整 span map，供
+二期 preset 严格复核。
+
+当前仓库尚未注册二期视觉 choreography hook。因而该命令会在 preflight、CK3 启动和 FFmpeg
+之前以明确的 `producer hook is unavailable` RED 退出，不会运行一期 `run_scenario`、
+`--phase2-live-batch` 的零视觉 MCP 场景，也不会产生可误用的录屏。待真实二期玩法和视觉
+producer 完成后，才可注册 hook、生成八段同源 capture，再交给下方 builder；静态 contract
+通过不等于 `fixture-live`、`production-live` 或正式成片。
+
+接入点固定为 runner 的
+`register_phase2_promo_capture_producer(producer)`。`producer` 接收
+`(stream, artifacts, recorder, title_navigation_service=..., tracked_ck3_pid=...,
+native_bridge=..., preflight_bridge_identity=...)`，必须自己在 gameplay HUD 后调用
+`recorder.start()`，解析真实历史人物，按上表顺序调用八次 `recorder.clean_hold`，并返回
+一个 evidence object；runner 会再校验 recorder 生成的 hash-bound timeline。未完成这些真实
+动作时不能用静态返回值或 MCP snapshot 填充 producer。
 
 ### 真实 capture 到来后的候选留存
 

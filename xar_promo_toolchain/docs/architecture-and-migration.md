@@ -28,6 +28,17 @@ The dependency direction is downward. Generic code must not import a CK3 project
 
 The first concrete preset is `xar_promo.presets.zhongguo_361_phase2`. It reads the standard `mod_zhongguo_style/promo/phase2-promo-project.json`, derives CK3 span/mark requirements from configured chapters, fixes the `zh-CN-XiaoxiaoNeural` request, and validates the sequel's duration, historical-character provenance, and clean-UI attestations. It deliberately returns a non-release-ready capture candidate while the project-specific live matrix and full-duration human review remain outstanding. Rendering and the established release workflow still enter through `mod_zhongguo_style/tools/` during migration.
 
+The acceptance runner exposes a separate `--phase2-promo-capture` producer mode for
+that preset.  It uses the eight-span contract in
+`schemas/phase2-capture-contract-v1.schema.json`; the legacy `--promo-capture`
+route remains phase-one-only.  Until a real phase-two visual choreography is
+registered, the new mode fails before preflight/CK3/FFmpeg with a typed RED.  A
+static contract or MCP-only phase-two run cannot be promoted to video footage.
+The future integration point is the runner's
+`register_phase2_promo_capture_producer(producer)` callable; it owns the
+gameplay choreography, starts the recorder only after the HUD is visible, and
+must emit all eight mapped clean spans before the preset can consume the run.
+
 When the phase-two capture is produced by the frozen seed runner, the project
 builder can bind its `--seed-preflight-report` to the runner's
 `--preflight-only` `preflight.json`.  The project layer verifies the report's

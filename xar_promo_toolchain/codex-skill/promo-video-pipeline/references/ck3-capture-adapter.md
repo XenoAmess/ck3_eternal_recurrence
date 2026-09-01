@@ -49,6 +49,12 @@ The return value is an immutable `CaptureBundle` projection:
 Project vocabulary belongs in the optional `required_*` arguments or a higher
 policy layer, never in the adapter.
 
+The ZhongGuo phase-two preset adds that higher policy layer.  Its producer must
+emit the dedicated `capture_contract` described by
+`src/xar_promo/schemas/phase2-capture-contract-v1.schema.json` and the exact
+eight chapter span IDs; a legacy `--promo-capture` timeline is not a valid
+phase-two source, even if its files or marks are renamed.
+
 ## Fail-closed contract
 
 Loading is rejected when any of these conditions fail:

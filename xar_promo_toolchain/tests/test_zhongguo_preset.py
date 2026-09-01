@@ -21,6 +21,11 @@ from xar_promo.presets.zhongguo_361_phase2 import (  # noqa: E402
     CAPTURE_CHAPTER_KIND,
     CORE_PROJECT_CONFIG_BLOCKERS,
     PHASE2_CHAPTER_CONTRACT,
+    PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+    PHASE2_PROMO_CAPTURE_MODE,
+    PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+    PHASE2_PROMO_CAPTURE_SPAN_MAP,
+    PHASE2_PROMO_CLEAN_SPAN_IDS,
     PHASE2_POLICY,
     Phase2PresetError,
     build_narration_request,
@@ -73,6 +78,18 @@ def _write_candidate_timeline(
     title_history.write_text("e_example = { 1066.1.1 = { holder = 1001 } }\n", encoding="utf-8")
     requirements = phase2_capture_requirements(config)
     timeline = {
+        "capture_mode": PHASE2_PROMO_CAPTURE_MODE,
+        "capture_contract_version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+        "capture_contract": {
+            "mode": PHASE2_PROMO_CAPTURE_MODE,
+            "version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+            "producer_id": PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+            "span_ids": list(PHASE2_PROMO_CLEAN_SPAN_IDS),
+            "span_map": [
+                {"chapter_id": chapter_id, "producer_key": producer_key}
+                for chapter_id, producer_key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+            ],
+        },
         "real_character_provenance": {
             "schema_version": 1,
             "subjects": [
@@ -225,6 +242,37 @@ class ZhongguoPhase2PresetTest(unittest.TestCase):
             self.assertIn(f"{span_id}_clean_begin", requirements.mark_labels)
             self.assertIn(f"{span_id}_clean_end", requirements.mark_labels)
 
+    def test_phase2_capture_schema_freezes_canonical_span_map(self) -> None:
+        schema_path = (
+            PACKAGE_ROOT
+            / "src"
+            / "xar_promo"
+            / "schemas"
+            / "phase2-capture-contract-v1.schema.json"
+        )
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        properties = schema["properties"]
+        self.assertEqual(PHASE2_PROMO_CAPTURE_MODE, properties["mode"]["const"])
+        self.assertEqual(
+            PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
+            properties["version"]["const"],
+        )
+        self.assertEqual(
+            PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+            properties["producer_id"]["const"],
+        )
+        self.assertEqual(
+            list(PHASE2_PROMO_CLEAN_SPAN_IDS),
+            properties["span_ids"]["const"],
+        )
+        self.assertEqual(
+            [
+                {"chapter_id": chapter_id, "producer_key": producer_key}
+                for chapter_id, producer_key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+            ],
+            properties["span_map"]["const"],
+        )
+
     def test_narration_request_fixes_xiaoxiao_voice(self) -> None:
         request = build_narration_request("没有 HC？很好，流程还可以继续走。", rate="+3%")
 
@@ -293,6 +341,44 @@ class ZhongguoPhase2PresetTest(unittest.TestCase):
                         fixture_ui_absent=fixture_ui_absent,
                     )
                     fake_bundle = SimpleNamespace(timeline=SimpleNamespace(path=timeline))
+                    with patch(
+                        "xar_promo.presets.zhongguo_361_phase2.load_capture_bundle",
+                        return_value=fake_bundle,
+                    ):
+                        with self.assertRaisesRegex(Phase2PresetError, expected):
+                            load_phase2_capture_candidate(ready, root / "capture")
+
+    def test_candidate_rejects_legacy_or_misordered_capture_contract(self) -> None:
+        ready = _ready_capture_config(self.config)
+        for mutation, expected in (
+            (
+                lambda value: value.pop("capture_contract"),
+                "lacks its producer capture_contract",
+            ),
+            (
+                lambda value: value.__setitem__("capture_mode", "zhongguo-361-phase1"),
+                "dedicated capture_mode",
+            ),
+            (
+                lambda value: value["capture_contract"].__setitem__(
+                    "span_ids", list(reversed(PHASE2_PROMO_CLEAN_SPAN_IDS))
+                ),
+                "span_ids must exactly match",
+            ),
+        ):
+            with self.subTest(expected=expected):
+                with tempfile.TemporaryDirectory() as temp:
+                    root = Path(temp).resolve()
+                    timeline = _write_candidate_timeline(root, ready)
+                    payload = json.loads(timeline.read_text(encoding="utf-8"))
+                    mutation(payload)
+                    timeline.write_text(
+                        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8",
+                    )
+                    fake_bundle = SimpleNamespace(
+                        timeline=SimpleNamespace(path=timeline)
+                    )
                     with patch(
                         "xar_promo.presets.zhongguo_361_phase2.load_capture_bundle",
                         return_value=fake_bundle,

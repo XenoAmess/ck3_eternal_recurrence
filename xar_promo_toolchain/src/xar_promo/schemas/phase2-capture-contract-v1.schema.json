@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:xar-promo:schema:zhongguo-361-phase2-capture-contract:v1",
+  "title": "ZhongGuo 361 phase-two CK3 promo capture contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "version", "producer_id", "span_ids", "span_map"],
+  "properties": {
+    "mode": {"const": "zhongguo-361-phase2"},
+    "version": {"const": 1},
+    "producer_id": {"const": "zhongguo-361-phase2-visual-producer-v1"},
+    "span_ids": {
+      "const": [
+        "phase2_fact_quota_calibration",
+        "phase2_receipt_appeal_pip",
+        "phase2_manager_governance",
+        "phase2_promotion_compensation",
+        "phase2_hc_workforce",
+        "phase2_projects_metrics",
+        "phase2_incidents_operations",
+        "phase2_cross_cycle_endgame"
+      ]
+    },
+    "span_map": {
+      "type": "array",
+      "const": [
+        {"chapter_id": "phase2_fact_quota_calibration", "producer_key": "facts-quota-calibration"},
+        {"chapter_id": "phase2_receipt_appeal_pip", "producer_key": "receipts-appeals-pip"},
+        {"chapter_id": "phase2_manager_governance", "producer_key": "manager-governance"},
+        {"chapter_id": "phase2_promotion_compensation", "producer_key": "promotion-compensation"},
+        {"chapter_id": "phase2_hc_workforce", "producer_key": "hc-workforce"},
+        {"chapter_id": "phase2_projects_metrics", "producer_key": "projects-metrics"},
+        {"chapter_id": "phase2_incidents_operations", "producer_key": "incidents-operations"},
+        {"chapter_id": "phase2_cross_cycle_endgame", "producer_key": "cross-cycle-endgame"}
+      ]
+    }
+  }
+}

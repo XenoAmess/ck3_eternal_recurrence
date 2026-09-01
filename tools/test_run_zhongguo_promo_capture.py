@@ -5760,6 +5760,57 @@ def main() -> int:
         "policy_card_026",
         "policy_card_361",
     )
+    assert capture.PHASE2_PROMO_CAPTURE_MODE == "zhongguo-361-phase2"
+    assert capture.PHASE2_PROMO_CAPTURE_CONTRACT_VERSION == 1
+    assert capture.PHASE2_PROMO_CAPTURE_PRODUCER_ID == (
+        "zhongguo-361-phase2-visual-producer-v1"
+    )
+    assert capture.PHASE2_PROMO_CLEAN_SPANS == (
+        "phase2_fact_quota_calibration",
+        "phase2_receipt_appeal_pip",
+        "phase2_manager_governance",
+        "phase2_promotion_compensation",
+        "phase2_hc_workforce",
+        "phase2_projects_metrics",
+        "phase2_incidents_operations",
+        "phase2_cross_cycle_endgame",
+    )
+    assert not set(capture.PHASE2_PROMO_CLEAN_SPANS).intersection(
+        capture.PROMO_CLEAN_SPANS
+    )
+    assert (
+        tuple(item[0] for item in capture.PHASE2_PROMO_CAPTURE_SPAN_MAP)
+        == capture.PHASE2_PROMO_CLEAN_SPANS
+    )
+    recorder_contract = capture.PHASE2_PROMO_CAPTURE_CONTRACT.to_mapping()
+    assert recorder_contract["mode"] == capture.PHASE2_PROMO_CAPTURE_MODE
+    assert recorder_contract["version"] == 1
+    assert recorder_contract["span_ids"] == list(capture.PHASE2_PROMO_CLEAN_SPANS)
+    assert len(recorder_contract["span_map"]) == 8
+    recorder_source = inspect.getsource(capture.PromoRecorder)
+    assert "contract: PromoCaptureContract" in recorder_source
+    assert "self.contract.clean_span_ids" in recorder_source
+    assert '"capture_contract": self.contract.to_mapping()' in recorder_source
+    phase2_capture_source = inspect.getsource(
+        capture.run_phase2_promo_capture_scenario
+    )
+    assert "_require_phase2_promo_capture_producer" in phase2_capture_source
+    assert "run_scenario(" not in phase2_capture_source
+    assert "run_phase2_live_scenario(" not in phase2_capture_source
+    assert '"capture_contract_version"' in phase2_capture_source
+    assert '"--phase2-promo-capture"' in runner
+
+    # The unregistered sequel producer must fail before preflight or any CK3 /
+    # FFmpeg side effect.  This is a contract RED, not live evidence.
+    with mock.patch.object(capture, "preflight") as forbidden_preflight:
+        try:
+            capture.main(preflight_only=True, phase2_promo_capture=True)
+        except capture.acceptance.RunnerError as error:
+            assert "producer hook is unavailable" in str(error)
+            assert "no CK3 launch or FFmpeg recording was attempted" in str(error)
+        else:
+            raise AssertionError("unregistered phase-two producer was accepted")
+        forbidden_preflight.assert_not_called()
     assert capture.PROMO_PERSONAL_RESULT_FIELD_REGION == (0.20, 0.34, 0.42, 0.40)
 
     def fixture_provenance(history_id: str) -> dict[str, object]:

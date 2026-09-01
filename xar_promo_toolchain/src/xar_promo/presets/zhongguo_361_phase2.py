@@ -31,6 +31,32 @@ ADAPTER_ID = "ck3"
 PRESET_ID = "zhongguo_361_phase2"
 CAPTURE_CHAPTER_KIND = "ck3_clean_span"
 GENERATED_CHAPTER_KIND = "generated_card"
+# The producer contract is deliberately distinct from the legacy ZhongGuo
+# capture vocabulary.  A phase-one timeline must not become a phase-two
+# candidate merely by renaming its clean spans.
+PHASE2_PROMO_CAPTURE_MODE = "zhongguo-361-phase2"
+PHASE2_PROMO_CAPTURE_CONTRACT_VERSION = 1
+PHASE2_PROMO_CAPTURE_PRODUCER_ID = "zhongguo-361-phase2-visual-producer-v1"
+PHASE2_PROMO_CLEAN_SPAN_IDS = (
+    "phase2_fact_quota_calibration",
+    "phase2_receipt_appeal_pip",
+    "phase2_manager_governance",
+    "phase2_promotion_compensation",
+    "phase2_hc_workforce",
+    "phase2_projects_metrics",
+    "phase2_incidents_operations",
+    "phase2_cross_cycle_endgame",
+)
+PHASE2_PROMO_CAPTURE_SPAN_MAP = (
+    ("phase2_fact_quota_calibration", "facts-quota-calibration"),
+    ("phase2_receipt_appeal_pip", "receipts-appeals-pip"),
+    ("phase2_manager_governance", "manager-governance"),
+    ("phase2_promotion_compensation", "promotion-compensation"),
+    ("phase2_hc_workforce", "hc-workforce"),
+    ("phase2_projects_metrics", "projects-metrics"),
+    ("phase2_incidents_operations", "incidents-operations"),
+    ("phase2_cross_cycle_endgame", "cross-cycle-endgame"),
+)
 # The phase-two promo is authored as one fixed ten-chapter story.  Keep this
 # project-level contract here (rather than in the generic model) so a partial
 # or reordered config cannot silently shrink the required CK3 capture set.
@@ -46,6 +72,16 @@ PHASE2_CHAPTER_CONTRACT = (
     ("phase2_cross_cycle_endgame", CAPTURE_CHAPTER_KIND),
     ("phase2_finale", GENERATED_CHAPTER_KIND),
 )
+if tuple(item[0] for item in PHASE2_PROMO_CAPTURE_SPAN_MAP) != PHASE2_PROMO_CLEAN_SPAN_IDS:
+    raise RuntimeError("phase-two promo span map must follow canonical chapter order")
+if tuple(
+    chapter_id
+    for chapter_id, chapter_kind in PHASE2_CHAPTER_CONTRACT
+    if chapter_kind == CAPTURE_CHAPTER_KIND
+) != PHASE2_PROMO_CLEAN_SPAN_IDS:
+    raise RuntimeError(
+        "phase-two promo capture span contract must follow capture chapters"
+    )
 _SHA256_PATTERN = re.compile(r"^[0-9A-Fa-f]{64}$")
 _FIXTURE_CONSTRUCTOR_KEYS = (
     "create_character",
@@ -477,6 +513,75 @@ def _fixture_ui_absence(
     return True
 
 
+def _validate_capture_contract(
+    timeline: Mapping[str, Any],
+    requirements: CaptureRequirements,
+) -> None:
+    """Require the dedicated phase-two producer contract before consuming spans."""
+
+    if timeline.get("capture_mode") != PHASE2_PROMO_CAPTURE_MODE:
+        raise Phase2PresetError(
+            "phase-two capture timeline must declare the dedicated "
+            f"capture_mode {PHASE2_PROMO_CAPTURE_MODE!r}"
+        )
+    if timeline.get("capture_contract_version") != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION:
+        raise Phase2PresetError(
+            "phase-two capture timeline has an unsupported capture contract version"
+        )
+    raw_contract = timeline.get("capture_contract")
+    if not isinstance(raw_contract, Mapping):
+        raise Phase2PresetError(
+            "phase-two capture timeline lacks its producer capture_contract"
+        )
+    if raw_contract.get("mode") != PHASE2_PROMO_CAPTURE_MODE:
+        raise Phase2PresetError(
+            "phase-two producer capture_contract mode is not canonical"
+        )
+    if raw_contract.get("version") != PHASE2_PROMO_CAPTURE_CONTRACT_VERSION:
+        raise Phase2PresetError(
+            "phase-two producer capture_contract version is not canonical"
+        )
+    if raw_contract.get("producer_id") != PHASE2_PROMO_CAPTURE_PRODUCER_ID:
+        raise Phase2PresetError(
+            "phase-two capture timeline was not produced by the canonical "
+            "visual producer"
+        )
+
+    expected_span_ids = tuple(requirements.clean_span_ids)
+    if expected_span_ids != PHASE2_PROMO_CLEAN_SPAN_IDS:
+        raise Phase2PresetError(
+            "phase-two capture requirements drifted from the canonical eight-span contract"
+        )
+    raw_span_ids = raw_contract.get("span_ids")
+    if not isinstance(raw_span_ids, list) or tuple(raw_span_ids) != expected_span_ids:
+        raise Phase2PresetError(
+            "phase-two producer capture_contract span_ids must exactly match "
+            "the canonical chapter order"
+        )
+    expected_span_map = [
+        {"chapter_id": span_id, "producer_key": producer_key}
+        for span_id, producer_key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+    ]
+    if raw_contract.get("span_map") != expected_span_map:
+        raise Phase2PresetError(
+            "phase-two producer capture_contract span_map is not canonical"
+        )
+
+    raw_gates = timeline.get("clean_frame_gates")
+    if not isinstance(raw_gates, list):
+        raise Phase2PresetError("phase-two capture timeline clean_frame_gates must be an array")
+    gate_ids = tuple(
+        gate.get("span_id")
+        for gate in raw_gates
+        if isinstance(gate, Mapping)
+    )
+    if gate_ids != expected_span_ids:
+        raise Phase2PresetError(
+            "phase-two capture clean spans must exactly match the canonical "
+            "eight-span producer order"
+        )
+
+
 def load_phase2_capture_candidate(
     config: ProjectConfig,
     artifact_root: str | Path,
@@ -505,6 +610,7 @@ def load_phase2_capture_candidate(
         required_mark_labels=requirements.mark_labels,
     )
     timeline = _read_object(bundle.timeline.path, "verified phase-two capture timeline")
+    _validate_capture_contract(timeline, requirements)
     subjects, title_history, test_decisions_absent = _historical_provenance(timeline)
     fixture_ui_absent = _fixture_ui_absence(timeline, requirements)
     blockers = (
@@ -534,6 +640,11 @@ __all__ = [
     "CORE_PROJECT_CONFIG_BLOCKERS",
     "GENERATED_CHAPTER_KIND",
     "PHASE2_CHAPTER_CONTRACT",
+    "PHASE2_PROMO_CAPTURE_CONTRACT_VERSION",
+    "PHASE2_PROMO_CAPTURE_MODE",
+    "PHASE2_PROMO_CAPTURE_PRODUCER_ID",
+    "PHASE2_PROMO_CAPTURE_SPAN_MAP",
+    "PHASE2_PROMO_CLEAN_SPAN_IDS",
     "PHASE2_POLICY",
     "PRESET_ID",
     "PROJECT_ID",
