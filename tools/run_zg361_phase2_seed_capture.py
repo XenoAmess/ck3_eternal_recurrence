@@ -1344,7 +1344,12 @@ def run_preflight(
         report["static_preflight"] = _run_seed_static_preflight(
             config,
             artifacts,
-            allow_missing_for_fixture=_allow_fixture_static_skip,
+            # The skip escape is a unit-test seam, never a real-runtime mode.
+            # Even if a caller reaches this private flag directly, a missing
+            # gate must remain RED unless an injected runtime is present.
+            allow_missing_for_fixture=(
+                _allow_fixture_static_skip and runtime is not None
+            ),
         )
         report["checks"]["static_preflight"] = report["static_preflight"][
             "result"
