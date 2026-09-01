@@ -29,6 +29,7 @@ import run_acceptance as acceptance
 import build_mod_zhongguo_style_release as release
 import run_terminal_acceptance as terminal
 import run_vivhite_acceptance as isolated
+import kaishek_preflight
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -2086,6 +2087,42 @@ def preflight(
     *,
     require_visual_tools: bool = True,
 ) -> dict[str, object]:
+    # Run the optional open_kaishek gate before any CK3/desktop work.  The
+    # adapter is deliberately advisory when the external checkout or jar is
+    # absent, so existing acceptance environments keep their prior behaviour;
+    # a real GREEN is never inferred from an UNSUPPORTED/schema-only result.
+    try:
+        kaishek_root_override = (
+            os.environ.get("XAR_KAISHEK_PREFLIGHT_ROOT")
+            or os.environ.get("OPEN_KAISHEK_PREFLIGHT_ROOT")
+            or os.environ.get("KAISHEK_PREFLIGHT_ROOT")
+        )
+        open_kaishek_preflight = kaishek_preflight.run_preflight(
+            root=kaishek_root_override or runtime_source,
+            ck3_build=EXPECTED_GAME_VERSION,
+            ck3_exe_sha256=EXPECTED_EXE_SHA256,
+        )
+    except BaseException as error:
+        # Keep a malformed optional integration from obscuring the runner's
+        # own preflight result.  The failure remains machine-readable and is
+        # not converted to a false GREEN.
+        open_kaishek_preflight = {
+            "schema": kaishek_preflight.ADAPTER_SCHEMA,
+            "status": "failed",
+            "result": "FAILED",
+            "ok": False,
+            "reason": "adapter-exception",
+            "error": f"{type(error).__name__}: {error}",
+            "provenance": {
+                "cli_contract_commit": kaishek_preflight.CLI_CONTRACT_COMMIT,
+                "open_kaishek_release": os.environ.get(
+                    "XAR_OPEN_KAISHEK_RELEASE", "unreleased"
+                ),
+                "open_kaishek_commit": os.environ.get(
+                    "XAR_OPEN_KAISHEK_COMMIT"
+                ),
+            },
+        }
     errors = fixture_source_errors()
     errors.extend(product_source_errors())
     errors.extend(
@@ -2106,6 +2143,7 @@ def preflight(
         "workshop_manifest_git_tag": None,
         "verified_file_count": None,
         "native_bridge_runtime": None,
+        "open_kaishek_preflight": open_kaishek_preflight,
     }
     if native_bridge is None:
         errors.append("native title-navigation bridge configuration is missing")
@@ -13850,6 +13888,22 @@ def main(
     )
     protected_before = isolated.protected_snapshot(steam_root)
     artifacts.mkdir()
+    # Bind the optional offline result to this acceptance attempt after the
+    # fresh artifact directory exists.  ``preflight`` runs before this point
+    # by design, so this copy is the only write performed by the runner; it
+    # does not re-invoke the CLI or cross the CK3 launch boundary.
+    open_kaishek_row = runtime_identity.get("open_kaishek_preflight")
+    if isinstance(open_kaishek_row, dict):
+        open_kaishek_path = artifacts / "open_kaishek-preflight.json"
+        try:
+            open_kaishek_row["artifact_path"] = str(open_kaishek_path.resolve())
+            write_json(open_kaishek_path, open_kaishek_row)
+        except BaseException as error:
+            # Evidence loss is retained in the run identity, but an optional
+            # accelerator must not change the existing CK3 acceptance policy.
+            open_kaishek_row["artifact_error"] = (
+                f"{type(error).__name__}: {error}"
+            )
     report = run_cell(
         artifacts / "cell",
         userdir,
