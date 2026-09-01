@@ -1,0 +1,1911 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+zg361_we_release_abandoned_ac_resources_effect = {
+	if = {
+		limit = { has_variable = zg361_we_contract_gold_reserved var:zg361_we_contract_gold_reserved > 0 }
+		set_variable = { name = zg361_we_ac_release_gold value = var:zg361_we_contract_gold_reserved }
+		change_variable = { name = zg361_we_gold_reserved add = { value = var:zg361_we_ac_release_gold multiply = -1 } }
+		change_variable = { name = zg361_we_gold_available add = var:zg361_we_ac_release_gold }
+		set_variable = { name = zg361_we_contract_gold_reserved value = 0 }
+		set_variable = { name = zg361_we_ac_abandoned_contract_refunded value = 1 }
+	}
+	if = {
+		limit = { has_variable = zg361_we_shadow_hc_active var:zg361_we_shadow_hc_active > 0 }
+		set_variable = { name = zg361_we_ac_release_shadow value = var:zg361_we_shadow_hc_active }
+		change_variable = { name = zg361_we_shadow_hc_available add = var:zg361_we_ac_release_shadow }
+		set_variable = { name = zg361_we_shadow_hc_active value = 0 }
+		set_variable = { name = zg361_we_ac_abandoned_shadow_released value = 1 }
+	}
+}
+
+zg361_we_release_abandoned_ad_resources_effect = {
+	if = {
+		limit = { has_variable = zg361_we_offer_gold_reserved var:zg361_we_offer_gold_reserved > 0 }
+		set_variable = { name = zg361_we_ad_release_offer_gold value = var:zg361_we_offer_gold_reserved }
+		change_variable = { name = zg361_we_gold_reserved add = { value = var:zg361_we_ad_release_offer_gold multiply = -1 } }
+		change_variable = { name = zg361_we_gold_available add = var:zg361_we_ad_release_offer_gold }
+		change_variable = { name = zg361_we_offer_gold_refunded add = var:zg361_we_ad_release_offer_gold }
+		set_variable = { name = zg361_we_offer_gold_reserved value = 0 }
+	}
+	if = {
+		limit = { has_variable = zg361_we_m271_reward_escrowed var:zg361_we_m271_reward_escrowed = 1 has_variable = zg361_we_referral_gold_reserved var:zg361_we_referral_gold_reserved >= 5 has_variable = zg361_we_gold_reserved var:zg361_we_gold_reserved >= 5 }
+		change_variable = { name = zg361_we_referral_gold_reserved add = -5 }
+		change_variable = { name = zg361_we_gold_reserved add = -5 }
+		change_variable = { name = zg361_we_gold_available add = 5 }
+		set_variable = { name = zg361_we_m271_reward_escrowed value = 0 }
+		set_variable = { name = zg361_we_m271_reward_refunded value = 1 }
+		var:zg361_case_ad_owner = { add_gold = 5 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_we_m266_hc_reservation_active
+			var:zg361_we_m266_hc_reservation_active = 1
+			trigger_if = { limit = { has_variable = zg361_we_m275_hold_pending } var:zg361_we_m275_hold_pending = 0 } trigger_else = { always = yes }
+			has_variable = zg361_ch_hc_reserved
+			var:zg361_ch_hc_reserved >= 1
+		}
+		change_variable = { name = zg361_ch_hc_reserved add = -1 }
+		change_variable = { name = zg361_ch_hc_available add = 1 }
+		set_variable = { name = zg361_we_m266_hc_reservation_active value = 0 }
+		set_variable = { name = zg361_we_ad_abandoned_hc_released value = 1 }
+		var:zg361_case_ad_owner = { set_variable = { name = zg361_we_ad_hc_flight_pending value = 0 } }
+	}
+	if = { limit = { has_variable = zg361_we_candidate_active var:zg361_we_candidate_active = 1 } set_variable = { name = zg361_we_candidate_active value = 0 } }
+}
+
+zg361_we_finalize_nonmanager_na_effect = {
+	remove_variable = zg361_we_runtime_applied
+	if = {
+		limit = {
+			NOT = { zg361_is_celestial_liege_trigger = yes }
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_al_owner
+				SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial
+				CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state
+				ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = var:zg361_case_al_owner
+				EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_al_cycle_serial
+				EXPECTED_CASE = var:zg361_case_al_case_serial
+				EXPECTED_STATE = 2
+			}
+			var:zg361_case_al_owner = { zg361_is_celestial_liege_trigger = yes }
+			has_variable = zg361_we_operation_total
+			has_variable = zg361_we_operation_used
+			has_variable = zg361_we_gold_total
+			has_variable = zg361_we_gold_available
+			has_variable = zg361_we_gold_reserved
+			has_variable = zg361_we_gold_paid
+			has_variable = zg361_we_hours_total
+			has_variable = zg361_we_hours_available
+			has_variable = zg361_we_hours_output
+			has_variable = zg361_we_hours_on_call
+			has_variable = zg361_we_hours_meeting
+			has_variable = zg361_we_hours_leave
+			has_variable = zg361_we_hours_governance
+			has_variable = zg361_we_shadow_hc_total
+			has_variable = zg361_we_shadow_hc_available
+			has_variable = zg361_we_shadow_hc_active
+			has_variable = zg361_ch_hc_authorized
+			has_variable = zg361_ch_hc_available
+			has_variable = zg361_ch_hc_reserved
+			has_variable = zg361_ch_hc_occupied
+			has_variable = zg361_ch_hc_frozen
+			has_variable = zg361_ch_hc_reclaimed
+			var:zg361_we_operation_total = 40
+			var:zg361_we_operation_used = 38
+		}
+		set_variable = { name = zg361_we_portfolio_closed value = 0 }
+		set_variable = { name = zg361_we_portfolio_status value = 4 }
+		set_variable = { name = zg361_we_final_operation_check value = var:zg361_we_operation_used }
+		set_variable = { name = zg361_we_final_gold_check value = var:zg361_we_gold_available }
+		change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_reserved }
+		change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_paid }
+		set_variable = { name = zg361_we_final_hours_check value = var:zg361_we_hours_available }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_output }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_on_call }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_meeting }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_leave }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_governance }
+		set_variable = { name = zg361_we_final_shadow_hc_check value = var:zg361_we_shadow_hc_available }
+		change_variable = { name = zg361_we_final_shadow_hc_check add = var:zg361_we_shadow_hc_active }
+		set_variable = { name = zg361_we_final_formal_hc_check value = var:zg361_ch_hc_available }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reserved }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_occupied }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_frozen }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reclaimed }
+		set_variable = { name = zg361_we_final_conservation_ok value = 0 }
+		if = {
+			limit = {
+				var:zg361_we_final_operation_check = 38
+				var:zg361_we_gold_available >= 0
+				var:zg361_we_gold_reserved >= 0
+				var:zg361_we_gold_paid >= 0
+				var:zg361_we_final_gold_check = var:zg361_we_gold_total
+				var:zg361_we_hours_available >= 0
+				var:zg361_we_hours_output >= 0
+				var:zg361_we_hours_on_call >= 0
+				var:zg361_we_hours_meeting >= 0
+				var:zg361_we_hours_leave >= 0
+				var:zg361_we_hours_governance >= 0
+				var:zg361_we_final_hours_check = var:zg361_we_hours_total
+				var:zg361_we_shadow_hc_available >= 0
+				var:zg361_we_shadow_hc_active >= 0
+				var:zg361_we_final_shadow_hc_check = var:zg361_we_shadow_hc_total
+				var:zg361_ch_hc_available >= 0
+				var:zg361_ch_hc_reserved >= 0
+				var:zg361_ch_hc_occupied >= 0
+				var:zg361_ch_hc_frozen >= 0
+				var:zg361_ch_hc_reclaimed >= 0
+				var:zg361_we_final_formal_hc_check = var:zg361_ch_hc_authorized
+			}
+			zg361_case_kernel_transition_effect = {
+				OWNER_VAR = zg361_case_al_owner
+				SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial
+				CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state
+				REVISION_VAR = zg361_case_al_revision
+				ACTIVE_VAR = zg361_case_al_active
+				TIMELINE_VAR = zg361_case_al_timeline_serial
+				FEEDBACK_VAR = zg361_case_al_feedback_revision
+				LAST_HOOK_VAR = zg361_case_al_last_hook
+				TICKET_OWNER = var:zg361_case_al_owner
+				TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_case_al_cycle_serial
+				TICKET_CASE = var:zg361_case_al_case_serial
+				TICKET_STATE = 2
+				NEXT_STATE = 7
+				HOOK_ID = 9361
+				CLOSE_CASE = yes
+			}
+			if = {
+				limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_active = 0 var:zg361_case_al_state = 7 }
+				set_variable = { name = zg361_we_final_conservation_ok value = 1 }
+				set_variable = { name = zg361_we_portfolio_terminal_na value = 1 }
+				set_variable = { name = zg361_we_portfolio_terminal_reason value = 360361 }
+				set_variable = { name = zg361_we_portfolio_terminal_owned_operations value = 38 }
+				set_variable = { name = zg361_we_portfolio_terminal_skipped_manager_only value = 2 }
+				set_variable = { name = zg361_we_portfolio_terminal_success value = 0 }
+				set_variable = { name = zg361_we_awaiting_al_357_359 value = 0 }
+				set_variable = { name = zg361_we_portfolio_closed value = 1 }
+				set_variable = { name = zg361_we_portfolio_status value = 7 }
+				set_variable = { name = zg361_we_runtime_applied value = 1 }
+				set_variable = { name = zg361_we_runtime_status value = 1 }
+				debug_log = "ZG361WE: count/baron portfolio closed N/A before manager-only #360/#361"
+			}
+			else = {
+				set_variable = { name = zg361_we_last_red_code value = 9098 }
+				set_variable = { name = zg361_we_runtime_status value = 4 }
+			}
+		}
+		else = {
+			set_variable = { name = zg361_we_last_red_code value = 9098 }
+			set_variable = { name = zg361_we_runtime_status value = 4 }
+			debug_log = "ZG361WE RED: non-manager N/A conservation failed; AL remains active"
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_we_portfolio_terminal_na var:zg361_we_portfolio_terminal_na = 1 var:zg361_we_portfolio_closed = 1 var:zg361_we_portfolio_status = 7 var:zg361_case_al_active = 0 }
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent N/A no-op
+	}
+	else = {
+		set_variable = { name = zg361_we_last_red_code value = 9098 }
+		set_variable = { name = zg361_we_runtime_status value = 4 }
+	}
+}
+
+# Public Central structural-N/A seam.  It writes neither #360 nor
+# #361 receipt/business object and never creates a sealed collective.
+zg361_we_finalize_manager_collective_na_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+	save_scope_as = zg361_we_m360_materialize_subject
+	$TICKET_OWNER$ = { save_scope_as = zg361_we_m360_materialize_owner }
+	if = {
+		limit = {
+			$REASON$ = 360362
+			zg361_is_celestial_liege_trigger = yes
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}
+			$TICKET_SUBJECT$ = this
+			trigger_if = { limit = { has_variable = zg361_we_al_external_collective_submission_active } var:zg361_we_al_external_collective_submission_active = 0 } trigger_else = { always = yes }
+			$TICKET_OWNER$ = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_p2c_m360_source_status
+				has_variable = zg361_p2c_m360_source_reason
+				has_variable = zg361_p2c_m360_source_owner
+				has_variable = zg361_p2c_m360_source_subject
+				has_variable = zg361_p2c_m360_source_p2c_cycle
+				has_variable = zg361_p2c_m360_source_p2c_case
+				has_variable = zg361_p2c_m360_source_al_cycle
+				has_variable = zg361_p2c_m360_source_al_case
+				has_variable = zg361_p2c_subject
+				has_variable = zg361_p2c_cycle
+				has_variable = zg361_p2c_case_serial
+				var:zg361_p2c_m360_source_status = 7
+				var:zg361_p2c_m360_source_owner = this
+				var:zg361_p2c_m360_source_subject = $TICKET_SUBJECT$
+				var:zg361_p2c_m360_source_subject = var:zg361_p2c_subject
+				var:zg361_p2c_m360_source_p2c_cycle = $TICKET_CYCLE$
+				var:zg361_p2c_m360_source_p2c_cycle = var:zg361_p2c_cycle
+				var:zg361_p2c_m360_source_p2c_case = var:zg361_p2c_case_serial
+				var:zg361_p2c_m360_source_al_cycle = $TICKET_CYCLE$
+				var:zg361_p2c_m360_source_al_case = $TICKET_CASE$
+				var:zg361_p2c_m360_source_reason >= 360421
+				var:zg361_p2c_m360_source_reason <= 360425
+				NOT = { has_variable = zg361_p2c_m360_source_cohort_count }
+				NOT = { has_variable = zg361_p2c_m360_source_total_quota }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_reason = 360424 } has_variable = zg361_p2c_m360_source_upstream_reason var:zg361_p2c_m360_source_upstream_reason > 0 } trigger_else = { NOT = { has_variable = zg361_p2c_m360_source_upstream_reason } }
+			}
+			has_variable = zg361_we_operation_total
+			has_variable = zg361_we_operation_used
+			has_variable = zg361_we_gold_total
+			has_variable = zg361_we_gold_available
+			has_variable = zg361_we_gold_reserved
+			has_variable = zg361_we_gold_paid
+			has_variable = zg361_we_hours_total
+			has_variable = zg361_we_hours_available
+			has_variable = zg361_we_hours_output
+			has_variable = zg361_we_hours_on_call
+			has_variable = zg361_we_hours_meeting
+			has_variable = zg361_we_hours_leave
+			has_variable = zg361_we_hours_governance
+			has_variable = zg361_we_shadow_hc_total
+			has_variable = zg361_we_shadow_hc_available
+			has_variable = zg361_we_shadow_hc_active
+			has_variable = zg361_ch_hc_authorized
+			has_variable = zg361_ch_hc_available
+			has_variable = zg361_ch_hc_reserved
+			has_variable = zg361_ch_hc_occupied
+			has_variable = zg361_ch_hc_frozen
+			has_variable = zg361_ch_hc_reclaimed
+			var:zg361_we_operation_total = 40
+			var:zg361_we_operation_used = 38
+		}
+		set_variable = { name = zg361_we_portfolio_closed value = 0 }
+		set_variable = { name = zg361_we_portfolio_status value = 4 }
+		set_variable = { name = zg361_we_final_operation_check value = var:zg361_we_operation_used }
+		set_variable = { name = zg361_we_final_gold_check value = var:zg361_we_gold_available }
+		change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_reserved }
+		change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_paid }
+		set_variable = { name = zg361_we_final_hours_check value = var:zg361_we_hours_available }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_output }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_on_call }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_meeting }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_leave }
+		change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_governance }
+		set_variable = { name = zg361_we_final_shadow_hc_check value = var:zg361_we_shadow_hc_available }
+		change_variable = { name = zg361_we_final_shadow_hc_check add = var:zg361_we_shadow_hc_active }
+		set_variable = { name = zg361_we_final_formal_hc_check value = var:zg361_ch_hc_available }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reserved }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_occupied }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_frozen }
+		change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reclaimed }
+		set_variable = { name = zg361_we_final_conservation_ok value = 0 }
+		if = {
+			limit = {
+				var:zg361_we_final_operation_check = 38
+				var:zg361_we_gold_available >= 0
+				var:zg361_we_gold_reserved >= 0
+				var:zg361_we_gold_paid >= 0
+				var:zg361_we_final_gold_check = var:zg361_we_gold_total
+				var:zg361_we_hours_available >= 0
+				var:zg361_we_hours_output >= 0
+				var:zg361_we_hours_on_call >= 0
+				var:zg361_we_hours_meeting >= 0
+				var:zg361_we_hours_leave >= 0
+				var:zg361_we_hours_governance >= 0
+				var:zg361_we_final_hours_check = var:zg361_we_hours_total
+				var:zg361_we_shadow_hc_available >= 0
+				var:zg361_we_shadow_hc_active >= 0
+				var:zg361_we_final_shadow_hc_check = var:zg361_we_shadow_hc_total
+				var:zg361_ch_hc_available >= 0
+				var:zg361_ch_hc_reserved >= 0
+				var:zg361_ch_hc_occupied >= 0
+				var:zg361_ch_hc_frozen >= 0
+				var:zg361_ch_hc_reclaimed >= 0
+				var:zg361_we_final_formal_hc_check = var:zg361_ch_hc_authorized
+			}
+			zg361_case_kernel_transition_effect = {
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state REVISION_VAR = zg361_case_al_revision
+				ACTIVE_VAR = zg361_case_al_active TIMELINE_VAR = zg361_case_al_timeline_serial
+				FEEDBACK_VAR = zg361_case_al_feedback_revision LAST_HOOK_VAR = zg361_case_al_last_hook
+				TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+				TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+				TICKET_STATE = 4 NEXT_STATE = 7 HOOK_ID = 9363 CLOSE_CASE = yes
+			}
+			if = {
+				limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_active = 0 var:zg361_case_al_state = 7 }
+				set_variable = { name = zg361_we_final_conservation_ok value = 1 }
+				set_variable = { name = zg361_we_portfolio_terminal_na value = 1 }
+				set_variable = { name = zg361_we_portfolio_terminal_reason value = $REASON$ }
+				set_variable = { name = zg361_we_portfolio_terminal_owned_operations value = 38 }
+				set_variable = { name = zg361_we_portfolio_terminal_skipped_manager_only value = 2 }
+				set_variable = { name = zg361_we_portfolio_terminal_success value = 0 }
+				set_variable = { name = zg361_we_awaiting_al_357_359 value = 0 }
+				set_variable = { name = zg361_we_m360_event_queued value = 0 }
+				set_variable = { name = zg361_we_portfolio_closed value = 1 }
+				set_variable = { name = zg361_we_portfolio_status value = 7 }
+				set_variable = { name = zg361_we_runtime_applied value = 1 }
+				set_variable = { name = zg361_we_runtime_status value = 1 }
+				debug_log = "ZG361WE: manager portfolio closed structural N/A without #360/#361"
+			}
+			else = { set_variable = { name = zg361_we_last_red_code value = 9096 } set_variable = { name = zg361_we_runtime_status value = 4 } }
+		}
+		else = { set_variable = { name = zg361_we_last_red_code value = 9096 } set_variable = { name = zg361_we_runtime_status value = 4 } }
+	}
+	else_if = {
+		limit = { has_variable = zg361_we_portfolio_terminal_na var:zg361_we_portfolio_terminal_na = 1 var:zg361_we_portfolio_terminal_reason = $REASON$ var:zg361_we_portfolio_closed = 1 var:zg361_we_portfolio_status = 7 var:zg361_case_al_active = 0 }
+		set_variable = { name = zg361_we_runtime_status value = 2 }
+	}
+	else = { set_variable = { name = zg361_we_last_red_code value = 9096 } set_variable = { name = zg361_we_runtime_status value = 4 } }
+}
+
+zg361_we_finalize_portfolio_effect = {
+	set_variable = { name = zg361_we_portfolio_closed value = 0 }
+	set_variable = { name = zg361_we_portfolio_status value = 4 }
+	set_variable = { name = zg361_we_final_operation_check value = var:zg361_we_operation_used }
+	set_variable = { name = zg361_we_final_gold_check value = var:zg361_we_gold_available }
+	change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_reserved }
+	change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_paid }
+	set_variable = { name = zg361_we_final_hours_check value = var:zg361_we_hours_available }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_output }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_on_call }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_meeting }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_leave }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_governance }
+	set_variable = { name = zg361_we_final_shadow_hc_check value = var:zg361_we_shadow_hc_available }
+	change_variable = { name = zg361_we_final_shadow_hc_check add = var:zg361_we_shadow_hc_active }
+	set_variable = { name = zg361_we_final_formal_hc_check value = var:zg361_ch_hc_available }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reserved }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_occupied }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_frozen }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reclaimed }
+	set_variable = { name = zg361_we_final_conservation_ok value = 0 }
+	if = {
+		limit = {
+			var:zg361_we_operation_used >= 0
+			var:zg361_we_operation_used <= var:zg361_we_operation_total
+			var:zg361_we_gold_available >= 0
+			var:zg361_we_gold_reserved >= 0
+			var:zg361_we_gold_paid >= 0
+			var:zg361_we_hours_available >= 0
+			var:zg361_we_hours_output >= 0
+			var:zg361_we_hours_on_call >= 0
+			var:zg361_we_hours_meeting >= 0
+			var:zg361_we_hours_leave >= 0
+			var:zg361_we_hours_governance >= 0
+			var:zg361_we_shadow_hc_available >= 0
+			var:zg361_we_shadow_hc_active >= 0
+			var:zg361_ch_hc_available >= 0
+			var:zg361_ch_hc_reserved >= 0
+			var:zg361_ch_hc_occupied >= 0
+			var:zg361_ch_hc_frozen >= 0
+			var:zg361_ch_hc_reclaimed >= 0
+			var:zg361_we_final_operation_check = 40
+			var:zg361_we_final_gold_check = var:zg361_we_gold_total
+			var:zg361_we_final_hours_check = var:zg361_we_hours_total
+			var:zg361_we_final_shadow_hc_check = var:zg361_we_shadow_hc_total
+			var:zg361_we_final_formal_hc_check = var:zg361_ch_hc_authorized
+		}
+		set_variable = { name = zg361_we_final_conservation_ok value = 1 }
+		set_variable = { name = zg361_we_portfolio_closed value = 1 }
+		set_variable = { name = zg361_we_portfolio_status value = 6 }
+		debug_log = "ZG361WE: workforce/endgame portfolio closed static runtime"
+	}
+	else = {
+		set_variable = { name = zg361_we_last_red_code value = 9099 }
+		set_variable = { name = zg361_we_runtime_status value = 4 }
+		debug_log = "ZG361WE RED: final conservation failed; portfolio remains open"
+	}
+}
+
+zg361_we_ab_initialize_effect = {
+	set_variable = { name = zg361_we_ab_visible_revision value = 0 }
+	remove_variable = zg361_we_record_presence_output_242
+	remove_variable = zg361_we_m242_visible_value
+	remove_variable = zg361_we_record_after_hours_reply_243
+	remove_variable = zg361_we_m243_visible_value
+	remove_variable = zg361_we_record_voluntary_effort_244
+	remove_variable = zg361_we_m244_visible_value
+	remove_variable = zg361_we_record_overtime_245
+	remove_variable = zg361_we_m245_visible_value
+	remove_variable = zg361_we_settle_overtime_246
+	remove_variable = zg361_we_m246_visible_value
+	remove_variable = zg361_we_open_sprint_247
+	remove_variable = zg361_we_m247_visible_value
+	remove_variable = zg361_we_record_understaffing_248
+	remove_variable = zg361_we_m248_visible_value
+	remove_variable = zg361_we_record_meeting_249
+	remove_variable = zg361_we_m249_visible_value
+	remove_variable = zg361_we_record_meeting_contribution_250
+	remove_variable = zg361_we_m250_visible_value
+	remove_variable = zg361_we_record_meeting_refusal_251
+	remove_variable = zg361_we_m251_visible_value
+	remove_variable = zg361_we_normalize_leave_252
+	remove_variable = zg361_we_m252_visible_value
+	remove_variable = zg361_we_record_recovery_response_253
+	remove_variable = zg361_we_m253_visible_value
+	set_variable = { name = zg361_we_ab_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s02_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s02_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s03_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s03_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s05_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s06_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s06_deadline_expired value = 0 }
+}
+
+# Counts/barons are assessed-only: no open, stage, HC or manager authority.
+zg361_we_ab_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_ab_subject
+				ACTIVE_VAR = zg361_case_ab_active
+			}
+		}
+		set_variable = { name = zg361_we_ab_subject_seen_revision value = var:zg361_we_ab_visible_revision }
+	}
+}
+
+zg361_we_ab_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m242_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m243_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m244_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m245_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m246_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m247_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m248_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m249_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m250_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m251_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m252_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m253_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+	}
+}
+
+# Internal subject-scope launch; ROOT is the eligible direct manager.
+zg361_we_ab_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_ab_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_initialize_portfolio_effect = yes
+		zg361_we_ab_initialize_effect = yes
+		var:zg361_case_ab_owner = { save_scope_as = zg361_we_ab_owner }
+		save_scope_as = zg361_we_ab_subject
+		save_scope_value_as = { name = zg361_we_ab_cycle value = var:zg361_case_ab_cycle_serial }
+		save_scope_value_as = { name = zg361_we_ab_case value = var:zg361_case_ab_case_serial }
+		zg361_we_ab_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_ab_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_ab_owner = { trigger_event = { id = zg361we.242 } }
+		}
+	}
+}
+
+zg361_we_ab_schedule_stage_01_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s01_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s01_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s01_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s01_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s01_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s01_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s01_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s01_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 1
+		DAYS = 90
+		EVENT = zg361we.4201
+	}
+}
+
+zg361_we_ab_timeout_stage_01_effect = {
+	zg361_we_m242_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m243_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 1
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 2
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.244 } }
+	}
+	debug_log = "ZG361WE: AB stage 1 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_02_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s02_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s02_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s02_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s02_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s02_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s02_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s02_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s02_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 2
+		DAYS = 90
+		EVENT = zg361we.4202
+	}
+}
+
+zg361_we_ab_timeout_stage_02_effect = {
+	zg361_we_m244_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 2
+	}
+	zg361_we_m245_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 2
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 3
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.246 } }
+	}
+	debug_log = "ZG361WE: AB stage 2 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_03_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s03_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s03_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s03_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s03_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s03_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s03_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s03_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s03_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 3
+		DAYS = 90
+		EVENT = zg361we.4203
+	}
+}
+
+zg361_we_ab_timeout_stage_03_effect = {
+	zg361_we_m246_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 3
+	}
+	zg361_we_m247_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 3
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 4
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.248 } }
+	}
+	debug_log = "ZG361WE: AB stage 3 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_04_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s04_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s04_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s04_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s04_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s04_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s04_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s04_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s04_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 4
+		DAYS = 90
+		EVENT = zg361we.4204
+	}
+}
+
+zg361_we_ab_timeout_stage_04_effect = {
+	zg361_we_m248_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 4
+	}
+	zg361_we_m249_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 4
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 5
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.250 } }
+	}
+	debug_log = "ZG361WE: AB stage 4 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_05_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s05_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s05_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s05_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s05_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s05_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s05_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s05_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s05_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 5
+		DAYS = 90
+		EVENT = zg361we.4205
+	}
+}
+
+zg361_we_ab_timeout_stage_05_effect = {
+	zg361_we_m250_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 5
+	}
+	zg361_we_m251_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 5
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 6
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.252 } }
+	}
+	debug_log = "ZG361WE: AB stage 5 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_06_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s06_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s06_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s06_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s06_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s06_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s06_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s06_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s06_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 6
+		DAYS = 90
+		EVENT = zg361we.4206
+	}
+}
+
+zg361_we_ab_timeout_stage_06_effect = {
+	zg361_we_m252_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 6
+	}
+	zg361_we_m253_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 6
+	}
+	debug_log = "ZG361WE: AB stage 6 exact deadline consumed"
+}
+
+zg361_we_ac_initialize_effect = {
+	set_variable = { name = zg361_we_ac_visible_revision value = 0 }
+	remove_variable = zg361_we_open_external_contract_254
+	remove_variable = zg361_we_m254_visible_value
+	remove_variable = zg361_we_compare_workforce_tco_255
+	remove_variable = zg361_we_m255_visible_value
+	remove_variable = zg361_we_lock_contract_type_260
+	remove_variable = zg361_we_m260_visible_value
+	remove_variable = zg361_we_disclose_executor_chain_261
+	remove_variable = zg361_we_m261_visible_value
+	remove_variable = zg361_we_evaluate_supplier_pool_256
+	remove_variable = zg361_we_m256_visible_value
+	remove_variable = zg361_we_freeze_controllable_scope_258
+	remove_variable = zg361_we_m258_visible_value
+	remove_variable = zg361_we_allocate_sla_responsibility_259
+	remove_variable = zg361_we_m259_visible_value
+	remove_variable = zg361_we_convert_external_worker_257
+	remove_variable = zg361_we_m257_visible_value
+	remove_variable = zg361_we_open_secondment_review_262
+	remove_variable = zg361_we_m262_visible_value
+	remove_variable = zg361_we_resolve_secondment_return_263
+	remove_variable = zg361_we_m263_visible_value
+	remove_variable = zg361_we_accept_knowledge_handoff_264
+	remove_variable = zg361_we_m264_visible_value
+	remove_variable = zg361_we_audit_external_fraud_265
+	remove_variable = zg361_we_m265_visible_value
+	set_variable = { name = zg361_we_ac_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ac_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ac_s02_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ac_s02_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ac_s03_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ac_s03_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ac_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ac_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ac_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ac_s05_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ac_s06_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ac_s06_deadline_expired value = 0 }
+}
+
+# Counts/barons are assessed-only: no open, stage, HC or manager authority.
+zg361_we_ac_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_ac_subject
+				ACTIVE_VAR = zg361_case_ac_active
+			}
+		}
+		set_variable = { name = zg361_we_ac_subject_seen_revision value = var:zg361_we_ac_visible_revision }
+	}
+}
+
+zg361_we_ac_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m254_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m255_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m260_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m261_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m256_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m258_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m259_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m257_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m262_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m263_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m264_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+		zg361_we_m265_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ac_owner
+			TICKET_SUBJECT = scope:zg361_we_ac_subject
+			TICKET_CYCLE = scope:zg361_we_ac_cycle
+			TICKET_CASE = scope:zg361_we_ac_case
+		}
+	}
+}
+
+# Internal subject-scope launch; ROOT is the eligible direct manager.
+zg361_we_ac_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_ac_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_ac_initialize_effect = yes
+		var:zg361_case_ac_owner = { save_scope_as = zg361_we_ac_owner }
+		save_scope_as = zg361_we_ac_subject
+		save_scope_value_as = { name = zg361_we_ac_cycle value = var:zg361_case_ac_cycle_serial }
+		save_scope_value_as = { name = zg361_we_ac_case value = var:zg361_case_ac_case_serial }
+		zg361_we_ac_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_ac_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_ac_owner = { trigger_event = { id = zg361we.254 } }
+		}
+	}
+}
+
+zg361_we_ac_schedule_stage_01_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ac_owner
+		SUBJECT_VAR = zg361_case_ac_subject
+		CYCLE_VAR = zg361_case_ac_cycle_serial
+		CASE_VAR = zg361_case_ac_case_serial
+		STATE_VAR = zg361_case_ac_state
+		ACTIVE_VAR = zg361_case_ac_active
+		DEADLINE_OWNER_VAR = zg361_we_ac_s01_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ac_s01_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ac_s01_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ac_s01_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ac_s01_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ac_s01_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ac_s01_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ac_s01_deadline_expired
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 1
+		DAYS = 180
+		EVENT = zg361we.4401
+	}
+}
+
+zg361_we_ac_timeout_stage_01_effect = {
+	zg361_we_m254_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m255_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 1
+	}
+	if = {
+		limit = {
+			var:zg361_case_ac_owner = { is_ai = no }
+			var:zg361_case_ac_state = 2
+		}
+		var:zg361_case_ac_owner = { trigger_event = { id = zg361we.260 } }
+	}
+	debug_log = "ZG361WE: AC stage 1 exact deadline consumed"
+}
+
+zg361_we_ac_schedule_stage_02_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ac_owner
+		SUBJECT_VAR = zg361_case_ac_subject
+		CYCLE_VAR = zg361_case_ac_cycle_serial
+		CASE_VAR = zg361_case_ac_case_serial
+		STATE_VAR = zg361_case_ac_state
+		ACTIVE_VAR = zg361_case_ac_active
+		DEADLINE_OWNER_VAR = zg361_we_ac_s02_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ac_s02_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ac_s02_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ac_s02_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ac_s02_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ac_s02_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ac_s02_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ac_s02_deadline_expired
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 2
+		DAYS = 180
+		EVENT = zg361we.4402
+	}
+}
+
+zg361_we_ac_timeout_stage_02_effect = {
+	zg361_we_m260_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 2
+	}
+	zg361_we_m261_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 2
+	}
+	if = {
+		limit = {
+			var:zg361_case_ac_owner = { is_ai = no }
+			var:zg361_case_ac_state = 3
+		}
+		var:zg361_case_ac_owner = { trigger_event = { id = zg361we.256 } }
+	}
+	debug_log = "ZG361WE: AC stage 2 exact deadline consumed"
+}
+
+zg361_we_ac_schedule_stage_03_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ac_owner
+		SUBJECT_VAR = zg361_case_ac_subject
+		CYCLE_VAR = zg361_case_ac_cycle_serial
+		CASE_VAR = zg361_case_ac_case_serial
+		STATE_VAR = zg361_case_ac_state
+		ACTIVE_VAR = zg361_case_ac_active
+		DEADLINE_OWNER_VAR = zg361_we_ac_s03_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ac_s03_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ac_s03_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ac_s03_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ac_s03_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ac_s03_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ac_s03_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ac_s03_deadline_expired
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 3
+		DAYS = 180
+		EVENT = zg361we.4403
+	}
+}
+
+zg361_we_ac_timeout_stage_03_effect = {
+	zg361_we_m256_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 3
+	}
+	zg361_we_m258_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 3
+	}
+	zg361_we_m259_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 3
+	}
+	if = {
+		limit = {
+			var:zg361_case_ac_owner = { is_ai = no }
+			var:zg361_case_ac_state = 4
+		}
+		var:zg361_case_ac_owner = { trigger_event = { id = zg361we.257 } }
+	}
+	debug_log = "ZG361WE: AC stage 3 exact deadline consumed"
+}
+
+zg361_we_ac_schedule_stage_04_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ac_owner
+		SUBJECT_VAR = zg361_case_ac_subject
+		CYCLE_VAR = zg361_case_ac_cycle_serial
+		CASE_VAR = zg361_case_ac_case_serial
+		STATE_VAR = zg361_case_ac_state
+		ACTIVE_VAR = zg361_case_ac_active
+		DEADLINE_OWNER_VAR = zg361_we_ac_s04_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ac_s04_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ac_s04_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ac_s04_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ac_s04_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ac_s04_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ac_s04_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ac_s04_deadline_expired
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 4
+		DAYS = 180
+		EVENT = zg361we.4404
+	}
+}
+
+zg361_we_ac_timeout_stage_04_effect = {
+	zg361_we_m257_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 4
+	}
+	zg361_we_m262_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 4
+	}
+	if = {
+		limit = {
+			var:zg361_case_ac_owner = { is_ai = no }
+			var:zg361_case_ac_state = 5
+		}
+		var:zg361_case_ac_owner = { trigger_event = { id = zg361we.263 } }
+	}
+	debug_log = "ZG361WE: AC stage 4 exact deadline consumed"
+}
+
+zg361_we_ac_schedule_stage_05_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ac_owner
+		SUBJECT_VAR = zg361_case_ac_subject
+		CYCLE_VAR = zg361_case_ac_cycle_serial
+		CASE_VAR = zg361_case_ac_case_serial
+		STATE_VAR = zg361_case_ac_state
+		ACTIVE_VAR = zg361_case_ac_active
+		DEADLINE_OWNER_VAR = zg361_we_ac_s05_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ac_s05_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ac_s05_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ac_s05_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ac_s05_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ac_s05_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ac_s05_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ac_s05_deadline_expired
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 5
+		DAYS = 180
+		EVENT = zg361we.4405
+	}
+}
+
+zg361_we_ac_timeout_stage_05_effect = {
+	zg361_we_m263_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 5
+	}
+	if = {
+		limit = {
+			var:zg361_case_ac_owner = { is_ai = no }
+			var:zg361_case_ac_state = 6
+		}
+		var:zg361_case_ac_owner = { trigger_event = { id = zg361we.264 } }
+	}
+	debug_log = "ZG361WE: AC stage 5 exact deadline consumed"
+}
+
+zg361_we_ac_schedule_stage_06_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ac_owner
+		SUBJECT_VAR = zg361_case_ac_subject
+		CYCLE_VAR = zg361_case_ac_cycle_serial
+		CASE_VAR = zg361_case_ac_case_serial
+		STATE_VAR = zg361_case_ac_state
+		ACTIVE_VAR = zg361_case_ac_active
+		DEADLINE_OWNER_VAR = zg361_we_ac_s06_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ac_s06_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ac_s06_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ac_s06_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ac_s06_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ac_s06_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ac_s06_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ac_s06_deadline_expired
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 6
+		DAYS = 180
+		EVENT = zg361we.4406
+	}
+}
+
+zg361_we_ac_timeout_stage_06_effect = {
+	zg361_we_m264_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 6
+	}
+	zg361_we_m265_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ac_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+		TICKET_CASE = var:zg361_case_ac_case_serial
+		TICKET_STATE = 6
+	}
+	debug_log = "ZG361WE: AC stage 6 exact deadline consumed"
+}
+
+zg361_we_ad_initialize_effect = {
+	set_variable = { name = zg361_we_ad_visible_revision value = 0 }
+	remove_variable = zg361_we_open_requisition_266
+	remove_variable = zg361_we_m266_visible_value
+	remove_variable = zg361_we_assign_candidate_owner_273
+	remove_variable = zg361_we_m273_visible_value
+	remove_variable = zg361_we_register_referral_271
+	remove_variable = zg361_we_m271_visible_value
+	remove_variable = zg361_we_seal_interview_votes_267
+	remove_variable = zg361_we_m267_visible_value
+	remove_variable = zg361_we_calibrate_interviewers_268
+	remove_variable = zg361_we_m268_visible_value
+	remove_variable = zg361_we_set_hiring_risk_policy_270
+	remove_variable = zg361_we_m270_visible_value
+	remove_variable = zg361_we_issue_offer_272
+	remove_variable = zg361_we_m272_visible_value
+	remove_variable = zg361_we_resolve_counteroffer_274
+	remove_variable = zg361_we_m274_visible_value
+	remove_variable = zg361_we_handle_offer_refusal_275
+	remove_variable = zg361_we_m275_visible_value
+	remove_variable = zg361_we_write_back_hire_quality_269
+	remove_variable = zg361_we_m269_visible_value
+	remove_variable = zg361_we_register_rehire_276
+	remove_variable = zg361_we_m276_visible_value
+	remove_variable = zg361_we_record_pip_exit_277
+	remove_variable = zg361_we_m277_visible_value
+	set_variable = { name = zg361_we_ad_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s02_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s02_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s03_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s03_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s05_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s06_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s06_deadline_expired value = 0 }
+}
+
+# Counts/barons are assessed-only: no open, stage, HC or manager authority.
+zg361_we_ad_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_ad_subject
+				ACTIVE_VAR = zg361_case_ad_active
+			}
+		}
+		set_variable = { name = zg361_we_ad_subject_seen_revision value = var:zg361_we_ad_visible_revision }
+	}
+}
+
+zg361_we_ad_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m266_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ad_owner
+			TICKET_SUBJECT = scope:zg361_we_ad_subject
+			TICKET_CYCLE = scope:zg361_we_ad_cycle
+			TICKET_CASE = scope:zg361_we_ad_case
+		}
+		zg361_we_m273_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ad_owner
+			TICKET_SUBJECT = scope:zg361_we_ad_subject
+			TICKET_CYCLE = scope:zg361_we_ad_cycle
+			TICKET_CASE = scope:zg361_we_ad_case
+		}
+	}
+}
+
+# Internal subject-scope launch; ROOT is the eligible direct manager.
+zg361_we_ad_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_ad_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_ad_initialize_effect = yes
+		var:zg361_case_ad_owner = { save_scope_as = zg361_we_ad_owner }
+		save_scope_as = zg361_we_ad_subject
+		save_scope_value_as = { name = zg361_we_ad_cycle value = var:zg361_case_ad_cycle_serial }
+		save_scope_value_as = { name = zg361_we_ad_case value = var:zg361_case_ad_case_serial }
+		zg361_we_ad_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_ad_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_ad_owner = { trigger_event = { id = zg361we.266 } }
+		}
+	}
+}
+
+zg361_we_ad_schedule_stage_01_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s01_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s01_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s01_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s01_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s01_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s01_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s01_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s01_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 1
+		DAYS = 90
+		EVENT = zg361we.4601
+	}
+}
+
+zg361_we_ad_timeout_stage_01_effect = {
+	zg361_we_m266_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m273_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m271_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m267_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 1
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 2
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.268 } }
+	}
+	debug_log = "ZG361WE: AD stage 1 exact deadline consumed"
+}
+
+zg361_we_ad_schedule_stage_02_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s02_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s02_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s02_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s02_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s02_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s02_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s02_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s02_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 2
+		DAYS = 90
+		EVENT = zg361we.4602
+	}
+}
+
+zg361_we_ad_timeout_stage_02_effect = {
+	zg361_we_m268_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 2
+	}
+	zg361_we_m270_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 2
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 3
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.272 } }
+	}
+	debug_log = "ZG361WE: AD stage 2 exact deadline consumed"
+}
+
+zg361_we_ad_schedule_stage_03_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s03_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s03_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s03_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s03_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s03_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s03_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s03_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s03_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 3
+		DAYS = 90
+		EVENT = zg361we.4603
+	}
+}
+
+zg361_we_ad_timeout_stage_03_effect = {
+	zg361_we_m272_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 3
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 4
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.274 } }
+	}
+	debug_log = "ZG361WE: AD stage 3 exact deadline consumed"
+}
+
+zg361_we_ad_schedule_stage_04_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s04_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s04_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s04_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s04_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s04_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s04_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s04_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s04_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 4
+		DAYS = 90
+		EVENT = zg361we.4604
+	}
+}
+
+zg361_we_ad_timeout_stage_04_effect = {
+	zg361_we_m274_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 4
+	}
+	zg361_we_m275_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 4
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 5
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.269 } }
+	}
+	debug_log = "ZG361WE: AD stage 4 exact deadline consumed"
+}
+
+zg361_we_ad_schedule_stage_05_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s05_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s05_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s05_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s05_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s05_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s05_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s05_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s05_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 5
+		DAYS = 90
+		EVENT = zg361we.4605
+	}
+}
+
+zg361_we_ad_timeout_stage_05_effect = {
+	zg361_we_m269_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 5
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 6
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.276 } }
+	}
+	debug_log = "ZG361WE: AD stage 5 exact deadline consumed"
+}
+
+zg361_we_ad_schedule_stage_06_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s06_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s06_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s06_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s06_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s06_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s06_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s06_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s06_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 6
+		DAYS = 90
+		EVENT = zg361we.4606
+	}
+}
+
+zg361_we_ad_timeout_stage_06_effect = {
+	zg361_we_m276_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 6
+	}
+	zg361_we_m277_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 6
+	}
+	debug_log = "ZG361WE: AD stage 6 exact deadline consumed"
+}
+
+zg361_we_al_initialize_effect = {
+	set_variable = { name = zg361_we_al_visible_revision value = 0 }
+	remove_variable = zg361_we_apply_target_ratchet_355
+	remove_variable = zg361_we_m355_visible_value
+	remove_variable = zg361_we_settle_outcome_timing_356
+	remove_variable = zg361_we_m356_visible_value
+	remove_variable = zg361_we_resolve_collective_action_360
+	remove_variable = zg361_we_m360_visible_value
+	remove_variable = zg361_we_adopt_charter_361
+	remove_variable = zg361_we_m361_visible_value
+	set_variable = { name = zg361_we_al_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_al_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_al_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_al_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_al_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_al_s05_deadline_expired value = 0 }
+}
+
+# Counts/barons are assessed-only: no open, stage, HC or manager authority.
+zg361_we_al_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_al_subject
+				ACTIVE_VAR = zg361_case_al_active
+			}
+		}
+		set_variable = { name = zg361_we_al_subject_seen_revision value = var:zg361_we_al_visible_revision }
+	}
+}
+
+zg361_we_al_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m355_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_al_owner
+			TICKET_SUBJECT = scope:zg361_we_al_subject
+			TICKET_CYCLE = scope:zg361_we_al_cycle
+			TICKET_CASE = scope:zg361_we_al_case
+		}
+		zg361_we_m356_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_al_owner
+			TICKET_SUBJECT = scope:zg361_we_al_subject
+			TICKET_CYCLE = scope:zg361_we_al_cycle
+			TICKET_CASE = scope:zg361_we_al_case
+		}
+	}
+}
+
+# Internal subject-scope launch; ROOT is the eligible direct manager.
+zg361_we_al_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_al_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_al_initialize_effect = yes
+		var:zg361_case_al_owner = { save_scope_as = zg361_we_al_owner }
+		save_scope_as = zg361_we_al_subject
+		save_scope_value_as = { name = zg361_we_al_cycle value = var:zg361_case_al_cycle_serial }
+		save_scope_value_as = { name = zg361_we_al_case value = var:zg361_case_al_case_serial }
+		zg361_we_al_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_al_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_al_owner = { trigger_event = { id = zg361we.355 } }
+		}
+	}
+}
+
+zg361_we_al_schedule_stage_01_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		ACTIVE_VAR = zg361_case_al_active
+		DEADLINE_OWNER_VAR = zg361_we_al_s01_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_al_s01_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_al_s01_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_al_s01_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_al_s01_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_al_s01_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_al_s01_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_al_s01_deadline_expired
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 1
+		DAYS = 180
+		EVENT = zg361we.4801
+	}
+}
+
+zg361_we_al_timeout_stage_01_effect = {
+	zg361_we_m355_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m356_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 1
+	}
+	debug_log = "ZG361WE: AL stage 1 exact deadline consumed"
+}
+
+zg361_we_al_schedule_stage_04_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		ACTIVE_VAR = zg361_case_al_active
+		DEADLINE_OWNER_VAR = zg361_we_al_s04_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_al_s04_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_al_s04_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_al_s04_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_al_s04_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_al_s04_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_al_s04_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_al_s04_deadline_expired
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 4
+		DAYS = 180
+		EVENT = zg361we.4804
+	}
+}
+
+zg361_we_al_timeout_stage_04_effect = {
+	zg361_we_m360_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 4
+	}
+	if = {
+		limit = {
+			var:zg361_case_al_owner = { is_ai = no }
+			var:zg361_case_al_state = 5
+		}
+		var:zg361_case_al_owner = { trigger_event = { id = zg361we.361 } }
+	}
+	debug_log = "ZG361WE: AL stage 4 exact deadline consumed"
+}
+
+zg361_we_al_schedule_stage_05_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		ACTIVE_VAR = zg361_case_al_active
+		DEADLINE_OWNER_VAR = zg361_we_al_s05_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_al_s05_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_al_s05_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_al_s05_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_al_s05_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_al_s05_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_al_s05_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_al_s05_deadline_expired
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 5
+		DAYS = 180
+		EVENT = zg361we.4805
+	}
+}
+
+zg361_we_al_timeout_stage_05_effect = {
+	zg361_we_m361_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 5
+	}
+	debug_log = "ZG361WE: AL stage 5 exact deadline consumed"
+}

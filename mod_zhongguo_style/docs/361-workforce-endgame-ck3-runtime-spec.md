@@ -10,10 +10,30 @@
 - `tools/test_zg361_workforce_endgame_runtime.py`
 - `tools/zg361_phase3_workforce_endgame_model.py`
 - `tools/test_zg361_phase3_workforce_endgame_model.py`
-- `common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt`（core cluster；保留历史 basename）
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_01_collective_route_a.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_02_collective_route_b.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_03_collective_support.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_04_producers.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_05_ad_source.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_06_handoffs.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_07_debt.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_08_lifecycle.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_09_routes_ab.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_10_routes_ac.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_11_routes_ad.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_12_routes_al_355_356.txt`
+- `common/scripted_effects/zg361_workforce_endgame_runtime_effects_13_routes_al_360_361.txt`
 - `events/zg361_workforce_endgame_runtime_events.txt`
 - `localization/*/zg361_workforce_endgame_l_*.yml`
 - `docs/361-workforce-external-producer-ledger-2026-08-31.md`（旧现场 303 项 loader 告警责任与消债账本）
+
+effects 现在按生成器定义的连续簇拆成 14 个普通 `.txt` 投影，词法顺序就是原单文件的定义顺序；CK3
+没有使用 include 语法，也没有保留一份完整 monolith。`render_effects()` 仅作为离线兼容聚合，测试会把磁盘上的
+14 个 BOM/header 去掉后按固定顺序重建并与该聚合逐字节比较。拆分保留完整定义、注释、参数和字节语义，当前只是
+针对 `database_init` workload regression 的可复现 loader 诊断候选，不能单独宣称修复 loader timeout 或提升
+readiness；发布构建沿用 `tools/build_mod_zhongguo_style_release.py` 的 `common/*.txt` runtime allowlist，测试同时
+确认这 14 个簇全部进入 staging 且不存在旧的未知同前缀文件；仍需后续一次受控 CK3 gate。
 
 它复用共享 case kernel 的五元 guard、operation receipt、stage dispatcher 与 exact deadline ABI，但不修改
 kernel。本包向中央层公开一个初始 opener 和两个 #360 continuation/finalizer seam：

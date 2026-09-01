@@ -11,12 +11,15 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
 
+import build_mod_zhongguo_style_release as release
 import gen_361_workforce_endgame_runtime as gen
 
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_endgame_runtime_effects.txt"
+EFFECTS_PATH = gen.EFFECTS_PATH
+EFFECT_CLUSTER_PATHS = gen.effect_cluster_paths()
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-workforce-endgame-ck3-runtime-spec.md"
 LEDGER_PATH = MOD_ROOT / "docs" / "361-workforce-external-producer-ledger-2026-08-31.md"
@@ -115,7 +118,7 @@ def loc_rows(path: Path) -> dict[str, str]:
 class WorkforceEndgameRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effects = gen.aggregate_effect_cluster_files().decode("utf-8-sig")
         cls.events = read(EVENTS_PATH)
         cls.spec_text = read(SPEC_PATH)
         cls.ledger_text = read(LEDGER_PATH)
@@ -160,9 +163,57 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for spec in gen.MECHANISMS:
             self.assertEqual(gen.MECHANISM_BINDINGS[spec.mid].behaviors[0], spec.field)
 
+    def test_03a_effect_clusters_reconstruct_legacy_bytes_exactly(self) -> None:
+        actual = gen.aggregate_effect_cluster_files()
+        expected = gen.render_effects()
+        self.assertEqual(expected, actual)
+        self.assertEqual(
+            tuple(path.name for path in EFFECT_CLUSTER_PATHS),
+            gen.EFFECT_CLUSTER_FILES,
+        )
+        self.assertEqual(
+            tuple(sorted(EFFECT_CLUSTER_PATHS, key=lambda path: path.name)),
+            EFFECT_CLUSTER_PATHS,
+        )
+        for path in EFFECT_CLUSTER_PATHS:
+            payload = path.read_bytes()
+            self.assertTrue(
+                payload.startswith(gen.BOM + gen.HEADER.encode("utf-8")),
+                path,
+            )
+
+    def test_03b_effect_cluster_inventory_is_exact(self) -> None:
+        effect_root = MOD_ROOT / "common" / "scripted_effects"
+        actual_paths = tuple(
+            sorted(
+                effect_root.glob("zg361_workforce_endgame_runtime_effects*.txt"),
+                key=lambda path: path.name,
+            )
+        )
+        self.assertEqual(EFFECT_CLUSTER_PATHS, actual_paths)
+        expected_bodies = gen.effect_cluster_texts()
+        for path, name in zip(EFFECT_CLUSTER_PATHS, gen.EFFECT_CLUSTER_NAMES):
+            source = read(path)
+            self.assertTrue(source.startswith(gen.HEADER), path)
+            body = source[len(gen.HEADER):]
+            self.assertTrue(body.endswith("\n"), path)
+            self.assertEqual(expected_bodies[name], body[:-1], path)
+
     def test_04_generator_outputs_exact_independent_allowlist(self) -> None:
         outputs = {path.relative_to(MOD_ROOT).as_posix() for path in gen.outputs()}
-        self.assertEqual(11, len(outputs))
+        self.assertEqual(len(gen.EFFECT_CLUSTER_FILES) + 1 + len(gen.LANGUAGES), len(outputs))
+        self.assertEqual(
+            {path.relative_to(MOD_ROOT).as_posix() for path in EFFECT_CLUSTER_PATHS},
+            {path for path in outputs if "workforce_endgame_runtime_effects" in path},
+        )
+        self.assertEqual(
+            [],
+            release.release_source_errors(MOD_ROOT),
+        )
+        release_paths = {path.resolve() for path in release.release_files(MOD_ROOT)}
+        self.assertTrue(
+            {path.resolve() for path in EFFECT_CLUSTER_PATHS} <= release_paths
+        )
         self.assertIn("common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt", outputs)
         self.assertIn("events/zg361_workforce_endgame_runtime_events.txt", outputs)
         self.assertFalse(any("on_action" in path or "gui/" in path or "scoreboard" in path for path in outputs))
@@ -177,7 +228,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             check=False,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("GREEN: 11", result.stdout)
+        self.assertIn(f"GREEN: {len(gen.outputs())}", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
         paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]
@@ -494,8 +545,13 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 if re.match(r"^\s*zg361_we_m\d+_route_c_effect = \{$", line):
                     all_route_c_rows.append((path, line))
         self.assertEqual(120, len(all_route_c_rows))
+        effect_paths_with_route_c = {
+            path.resolve()
+            for path in EFFECT_CLUSTER_PATHS
+            if re.search(r"(?m)^\s*zg361_we_m\d+_route_c_effect = \{$", read(path))
+        }
         self.assertEqual(
-            {EFFECTS_PATH.resolve(), EVENTS_PATH.resolve()},
+            effect_paths_with_route_c | {EVENTS_PATH.resolve()},
             {path.resolve() for path, _ in all_route_c_rows},
         )
 
