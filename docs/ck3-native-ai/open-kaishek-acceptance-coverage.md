@@ -27,3 +27,19 @@ For all rows, an absent checkout/JAR is recorded as
 from the runner's own CK3 result.  The exact command and provenance are
 provided by `tools/kaishek_preflight.py` and the external
 `open_kaishek.preflight.v1` contract.
+
+The parent adapter's default contract/provenance pin is `open_kaishek`
+`aecb14f` (or a compatible descendant).  The resolved checkout commit and JAR
+SHA-256 are still archived independently, and an intentionally different
+checkout/JAR can be bound with `XAR_OPEN_KAISHEK_ROOT`,
+`XAR_OPEN_KAISHEK_JAR`, and `XAR_OPEN_KAISHEK_COMMIT`.  A legacy JAR that
+answers `preflight` with the generic `UNSUPPORTED` envelope remains
+`UNSUPPORTED`, while a missing checkout or JAR remains `NOT_APPLICABLE`; neither
+can become an offline `GREEN` through the new pin.
+
+The default subprocess timeout is 180 seconds.  This replaces the former
+120-second bound after a real 76-file full-corpus preflight exhausted that
+window.  The effective value is included in adapter provenance and can be
+overridden with `XAR_KAISHEK_PREFLIGHT_TIMEOUT_SECONDS` for a specifically
+bounded corpus; changing it does not alter any CK3 live timeout or evidence
+level.

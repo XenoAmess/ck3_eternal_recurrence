@@ -8,8 +8,10 @@ its provenance, and returns an explicit outcome when the accelerator cannot be
 used.  It never installs dependencies, starts CK3, opens MCP, or mutates a
 save.
 
-The command contract is the one introduced by open_kaishek commit ``b306a95``
-(``preflight --root PATH --profile ID --fixture ID``).
+The command contract is pinned to the current open_kaishek preflight contract
+at commit ``aecb14f`` (or a descendant) while retaining explicit checkout,
+JAR, and provenance environment overrides.  The command shape is
+``preflight --root PATH --profile ID --fixture ID``.
 """
 
 from __future__ import annotations
@@ -28,14 +30,23 @@ from typing import Any, Mapping
 
 ADAPTER_SCHEMA = "xar.ck3.open_kaishek_preflight.v1"
 CLI_SCHEMA = "open_kaishek.preflight.v1"
-CLI_CONTRACT_COMMIT = "b306a95"
+# This is the minimum/current parent contract used for default provenance.
+# A runner may intentionally bind another checkout through
+# XAR_OPEN_KAISHEK_COMMIT (and the corresponding root/JAR overrides); the
+# resolved commit is still archived below.  Descendants remain compatible as
+# long as they preserve the v1 command/schema.
+CLI_CONTRACT_COMMIT = "aecb14f"
 DEFAULT_OPEN_KAISHEK_ROOT = Path(r"Z:\workspace\open_kaishek")
 DEFAULT_CLI_RELATIVE_JAR = Path(
     "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar"
 )
 DEFAULT_PROFILE = "ck3-1.19.0.6-zg361"
 DEFAULT_FIXTURE = "synthetic-361-014"
-DEFAULT_TIMEOUT_SECONDS = 120.0
+# A full 76-file corpus exceeded the former 120 s bound in a real offline
+# preflight.  Keep the timeout finite but leave enough margin for the current
+# parser/validator pass; callers can override it with
+# XAR_KAISHEK_PREFLIGHT_TIMEOUT_SECONDS.
+DEFAULT_TIMEOUT_SECONDS = 180.0
 
 _UNAVAILABLE = "not-applicable"
 _UNSUPPORTED = "unsupported"
@@ -155,6 +166,7 @@ def _base_result(
     checkout: Path | None,
     jar: Path | None,
     command: list[str],
+    timeout_seconds: float,
     required: bool,
     release: str,
     commit: str | None,
@@ -181,6 +193,7 @@ def _base_result(
         "ck3_exact_build": ck3_build,
         "ck3_exe_sha256": ck3_exe_sha256,
         "command": list(command),
+        "preflight_timeout_seconds": timeout_seconds,
         "python": sys.executable,
     }
     return {
@@ -418,6 +431,7 @@ def run_preflight(
         checkout=checkout,
         jar=jar,
         command=command,
+        timeout_seconds=timeout,
         required=bool(required_value),
         release=release,
         commit=commit,
@@ -587,6 +601,7 @@ __all__ = [
     "CLI_SCHEMA",
     "DEFAULT_FIXTURE",
     "DEFAULT_PROFILE",
+    "DEFAULT_TIMEOUT_SECONDS",
     "run",
     "run_preflight",
     "preflight",

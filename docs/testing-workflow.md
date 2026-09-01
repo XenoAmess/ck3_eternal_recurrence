@@ -30,6 +30,8 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 3. 将预验结果与同一验收 run 绑定，至少记录：`open_kaishek` Git commit、profile/version、CK3 exact build 与 EXE SHA-256、fixture/corpus ID 与 SHA-256、实际命令/解释器、结果、覆盖范围以及 `UNSUPPORTED` 项。推荐写入该 run 的 `open_kaishek-preflight.json` 或等价 machine-readable artifact，并在报告中回链。
 4. 若该步骤没有可覆盖的离线语义，记录 `not-applicable` 和原因后直接进入 CK3；不为形式重复执行已由相同 immutable inputs 证明的预验。若预验出现 RED，先保留原始输出并区分 `open_kaishek` 工具/fixture RED 与 CK3 capability RED，不得把任一结果改写成另一类。
 
+父仓适配器当前默认绑定 `open_kaishek` contract `aecb14f`（兼容其后代），默认离线进程上限为 180 秒；后者来自完整 76 文件语料在旧 120 秒上限耗尽的实证。显式 checkout/JAR/commit/timeout 仍可通过 `XAR_OPEN_KAISHEK_ROOT`、`XAR_OPEN_KAISHEK_JAR`、`XAR_OPEN_KAISHEK_COMMIT` 与 `XAR_KAISHEK_PREFLIGHT_TIMEOUT_SECONDS` 覆盖，并必须进入同一份 provenance。旧 JAR 不支持 `preflight` 时记 `UNSUPPORTED`，checkout/JAR 缺失时记 `NOT_APPLICABLE`，两者都不得冒充 `GREEN`。
+
 `open_kaishek` 预验只缩短确定性失败的反馈周期，不替代真实 CK3/MCP paused artifact、真实输入/动作、自然推进、结算或 GREEN。没有 paused artifact 时，状态仍只能写为 `static-ready`/`runtime-fixture` 等实际级别；ACK、schema 通过和 synthetic replay 都不能升级为 `fixture-live` 或 `production-live`。
 
 ## 可复用宣传视频工具链验收
