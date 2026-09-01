@@ -131,3 +131,19 @@ owned that effect.  Therefore the removal is not a shippable fix and was not
 merged.  Cleanup/driver close and external dependency immutability remained
 GREEN; no further same-shape CK3 attempt is scheduled until a new compatible
 stub or call-site change is statically prepared.
+
+## 2026-09-02 03:24 compatibility-candidate closure
+
+The proposed compatibility follow-up was checked offline against the retained
+delta tree and was intentionally not merged. Removing the d692 role-failure
+block leaves the event call at
+`events/zg361_workforce_exit_fact_events.txt:64` pointing at the undefined
+`zg361_workforce_exit_fact_verify_role_failure_publish_effect`. A no-op stub
+would hide that parser symptom but would fail generated-output parity and the
+role-failure contract tests (4 exit tests fail); removing the call leaves the
+same parity/semantic failures. The intact generator output parses cleanly
+with open_kaishek and `tools/validate_static.py` is GREEN, so this candidate
+does not explain or repair the independent `database_init` timeout. No
+production source or branch was changed. The next phase2 code change must be
+an evidence-backed loader/readiness fix, not a compatibility stub for this
+invalid delta.
