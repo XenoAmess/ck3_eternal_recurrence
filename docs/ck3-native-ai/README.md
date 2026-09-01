@@ -201,6 +201,18 @@
   fail-closed schema 草案。
 - [static-confirmed] [war-termination.md](war-termination.md) 记录原版 AI 的执行要求、白和、投降三棵主动提出与
   接受树，包括战分、时长、债务、其它战争、人格、人质与 auto-accept 边界。
+- [static/fixture-ready, not live/action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
+  冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；它不发布 action literal，
+  不关闭 `GEN-034`。四域 terms wire/runner 入口见
+  [run_war_termination_terms_live_acceptance.py](../../ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py)，
+  四域状态与策略边界见
+  [raiktor_continue_vs_surrender_policy_v1_contract.json](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json)
+  和 [raiktor_gen034_boundary_v1.json](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_gen034_boundary_v1.json)。
+  六域聚合及其 source-contract 入口为
+  [raiktor_surrender_six_domain_v1_source_contract.json](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json)，
+  并分别冻结 [truce](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json)
+  与 [war-bound](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json)
+  source contract；四域 production-live read-only primitive 不等于六域、决策或 action-ready。
 - [inference] [player-counterpolicy.md](player-counterpolicy.md) 把上述已证事实映射为我方 planner 的
   lexicographic counter-policy、enemy endpoint epoch、multi-stack 路线矩阵、cohesion / merge 边界与测试矩阵；
   该文档描述我方策略，不代表 CK3 原生 AI 的 static fact。
