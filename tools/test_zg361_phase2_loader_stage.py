@@ -171,6 +171,70 @@ def main() -> int:
             "append-only evidence lacks the native process-exit terminal",
         )
 
+        # A terminal supervisor result must win even when the log already
+        # contains a marker that would otherwise authorize the event waiter.
+        # This guards the ordering boundary: a stale Load Save/In Game marker
+        # cannot be promoted to GREEN after CK3 has exited non-zero.
+        precedence_logs = root / "authorized-probe-precedence" / "logs"
+        precedence_logs.mkdir(parents=True)
+        (precedence_logs / "debug.log").write_text(
+            "[00:00:01][D][gameapplication.cpp:558]: "
+            "Setting idler 'Load Save' with init options\n",
+            encoding="utf-8",
+        )
+        (precedence_logs / "error.log").write_text("", encoding="utf-8")
+        precedence_progress = (
+            root / "authorized-probe-precedence" / "loader-progress.jsonl"
+        )
+        precedence_probe_calls: list[int] = []
+
+        def authorized_process_exit_probe() -> dict[str, object] | None:
+            precedence_probe_calls.append(1)
+            return {
+                "terminal": True,
+                "session_report": {
+                    "exit_reason": "process_exit",
+                    "process_exit_code": 1,
+                },
+            }
+
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                precedence_logs,
+                precedence_progress,
+                timeout_seconds=10.0,
+                fatal_stall_seconds=3.0,
+                poll_interval_seconds=0.0,
+                native_session_probe=authorized_process_exit_probe,
+            )
+            raise AssertionError(
+                "terminal native session was incorrectly promoted to GREEN"
+            )
+        except loader.LoaderNativeSessionExitRed as error:
+            require(
+                error.evidence["state"] == "native_session_process_exit",
+                "authorized marker did not preserve typed process-exit RED",
+            )
+            require(
+                error.evidence["event_wait_authorized"] is True,
+                "precedence regression did not exercise an authorized marker",
+            )
+            require(
+                error.evidence["process_exit_nonzero"] is True,
+                "authorized-marker process exit lost its non-zero evidence",
+            )
+        require(
+            precedence_probe_calls == [1],
+            "native session probe was not called before authorized GREEN",
+        )
+        require(
+            all(
+                row["state"] != "loader_stage_ready"
+                for row in rows(precedence_progress)
+            ),
+            "authorized marker emitted a false loader_stage_ready terminal",
+        )
+
         # A theme warning is actionable static debt, but cannot impersonate a
         # parser/compiler stall and trigger the typed early-RED boundary.
         theme_logs = root / "theme" / "logs"

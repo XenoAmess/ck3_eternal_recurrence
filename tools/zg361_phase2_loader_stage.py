@@ -331,15 +331,6 @@ def wait_for_phase2_seed_loader_stage(
             last_emitted_state = state_key
         last_observation = observation
 
-        if observation["event_wait_authorized"] is True:
-            result = {
-                "sequence": sequence + 1,
-                "state": "loader_stage_ready",
-                "result": "GREEN",
-                **observation,
-            }
-            append_jsonl(progress_jsonl, result)
-            return result
         if native_session_probe is not None:
             try:
                 native_session_terminal = native_session_probe()
@@ -406,6 +397,15 @@ def wait_for_phase2_seed_loader_stage(
                 }
                 append_jsonl(progress_jsonl, result)
                 raise LoaderNativeSessionExitRed(terminal_message, result)
+        if observation["event_wait_authorized"] is True:
+            result = {
+                "sequence": sequence + 1,
+                "state": "loader_stage_ready",
+                "result": "GREEN",
+                **observation,
+            }
+            append_jsonl(progress_jsonl, result)
+            return result
         if (
             observation["stage"] == "database_init"
             and observation["fatal_error_count"] > 0
