@@ -1011,7 +1011,10 @@ def _preflight_setup_failure(
 
 
 def _run_seed_static_preflight(
-    config: CaptureConfig, artifacts: Path
+    config: CaptureConfig,
+    artifacts: Path,
+    *,
+    allow_missing_for_fixture: bool = False,
 ) -> dict[str, Any]:
     """Run the seed-specific offline gates without invoking CK3 or desktop IO."""
 
@@ -1048,15 +1051,33 @@ def _run_seed_static_preflight(
             True,
         ),
     )
-    if not all(path.is_file() for _name, path, _optimized in commands):
+    missing = [
+        name
+        for name, path, _optimized in commands
+        if not path.is_file()
+    ]
+    if missing:
         # The tiny fake runtimes used by the CK3-free unit tests intentionally
         # contain only the minimum fixture files.  They still exercise the
-        # preflight ordering, while the real CLI always has this full gate.
-        return {
-            "result": "SKIPPED",
-            "reason": "seed-specific offline gate scripts are absent in injected fixture runtime",
+        # preflight ordering.  This escape is private and explicit; the real
+        # CLI must never turn a missing seed gate into a false GREEN.
+        evidence = {
+            "result": "SKIPPED" if allow_missing_for_fixture else "RED",
+            "reason": (
+                "seed-specific offline gate scripts are absent in injected fixture runtime"
+                if allow_missing_for_fixture
+                else "required seed-specific offline gate scripts are missing"
+            ),
+            "missing_scripts": missing,
             "commands": [],
         }
+        write_json(artifacts / "static-preflight.json", evidence)
+        if allow_missing_for_fixture:
+            return evidence
+        raise SeedCaptureError(
+            "seed static preflight cannot be skipped for the real CLI",
+            evidence,
+        )
     rows: list[dict[str, Any]] = []
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -1110,6 +1131,7 @@ def run_preflight(
     raw_config: CaptureConfig,
     *,
     runtime: RuntimeBindings | None = None,
+    _allow_fixture_static_skip: bool = False,
 ) -> dict[str, Any]:
     """Validate one frozen seed attempt without crossing the CK3 launch boundary.
 
@@ -1320,7 +1342,9 @@ def run_preflight(
         report["checks"]["bridge"] = "GREEN"
 
         report["static_preflight"] = _run_seed_static_preflight(
-            config, artifacts
+            config,
+            artifacts,
+            allow_missing_for_fixture=_allow_fixture_static_skip,
         )
         report["checks"]["static_preflight"] = report["static_preflight"][
             "result"

@@ -826,7 +826,9 @@ def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
         fixture = Fixture(Path(raw))
         calls: list[str] = []
         report = capture.run_preflight(
-            fixture.config(), runtime=fixture.runtime(calls)
+            fixture.config(),
+            runtime=fixture.runtime(calls),
+            _allow_fixture_static_skip=True,
         )
         require(report["result"] == "GREEN", "no-launch preflight unexpectedly RED")
         require(report["status"] == "preflight-ready" and report["ok"] is True,
@@ -866,6 +868,44 @@ def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
         require(report_path.is_file(), "GREEN preflight artifact is missing")
         persisted = json.loads(report_path.read_text(encoding="utf-8"))
         require(persisted == report, "preflight artifact differs from return value")
+
+
+def test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        report = capture.run_preflight(
+            fixture.config(), runtime=fixture.runtime(calls)
+        )
+        require(
+            report["result"] == "RED",
+            "real no-launch preflight skipped missing seed gate scripts",
+        )
+        require(
+            report["status"] == "preflight-blocked" and report["ok"] is False,
+            "missing seed gate scripts did not produce a blocked report",
+        )
+        require(
+            "cannot be skipped" in str(report["failure_reason"]),
+            "missing seed gate blocker was not typed",
+        )
+        evidence = report["failure_evidence"]
+        require(
+            isinstance(evidence, dict)
+            and evidence.get("result") == "RED"
+            and evidence.get("missing_scripts"),
+            "missing seed gate evidence was not preserved",
+        )
+        require(
+            (fixture.artifacts / "static-preflight.json").is_file(),
+            "missing seed gate did not persist static evidence",
+        )
+        require(
+            "bootstrap" not in calls
+            and "supervisor-start" not in calls
+            and "driver-open" not in calls,
+            "missing seed gate crossed the launch/projection boundary",
+        )
 
 
 def test_no_launch_preflight_running_ck3_is_persisted_red() -> None:
@@ -1035,6 +1075,7 @@ def main() -> int:
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
     test_no_launch_preflight_green_does_not_cross_native_boundary()
+    test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override()
     test_no_launch_preflight_running_ck3_is_persisted_red()
     test_source_zip_mismatch_is_preserved()
     test_bootstrap_runtime_hash_drift_is_preserved()
