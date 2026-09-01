@@ -432,14 +432,16 @@ def _read_capture_timeline(path: Path) -> dict[str, object]:
 
 def _read_capture_report(path: Path) -> dict[str, object]:
     payload = _read_capture_timeline(path)
-    if payload.get("result") != "GREEN":
+    if payload.get("schema_version") != 1 or payload.get("result") != "GREEN":
         raise Phase2PromoBuildError(
-            f"phase-two capture report must be GREEN: {path}"
+            f"phase-two capture report schema_version/result must be 1/GREEN: {path}"
         )
     cell = payload.get("cell")
-    if isinstance(cell, Mapping) and cell.get("result") not in (None, "GREEN"):
+    if isinstance(cell, Mapping) and (
+        cell.get("schema_version") != 1 or cell.get("result") != "GREEN"
+    ):
         raise Phase2PromoBuildError(
-            f"phase-two capture report cell must be GREEN: {path}"
+            f"phase-two capture report cell must be schema-v1 GREEN: {path}"
         )
     return payload
 
