@@ -268,3 +268,22 @@ Source and external dependencies remained unchanged. Since the file-layout
 change did not move the loader transition, it was reverted immediately by
 `e4a964a`; the candidate and failed run remain retained as diagnostic evidence.
 No same-shape retry, timeout extension, or deletion/no-op workaround is planned.
+
+## 2026-09-02 04:58 loader dependency observability
+
+The loader harness now records two read-only fields in each progress snapshot:
+`database_node_count` and `last_database_node` (`7413346`). Stage classification,
+event authorization, timeout budgets, and bridge behavior are unchanged; the
+offline fixture test remains GREEN. Applying the parser to retained logs gives
+the first concrete phase boundary: the older successful run reached `303`
+`database_dependencies.cpp:433` nodes and ended at
+`CJominiInGameMusicDatabase`/`in_game`, while the current `a89282d`, shell, and
+reverted-cluster runs each reached only `2` nodes and ended at
+`CJominiLoadScreenDatabase`/`database_init`.
+
+The extracted comparison is retained outside the repository at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-node-inventory-20260902.json`
+(SHA-256 `808328DCFA319ED3CC327F8AE201A5D6F0C269343768EA342688CF34EBE6D185`).
+This is a new observation boundary, not a root-cause claim; it supplies the
+acceptance criterion for any future generated-source repair. No additional CK3
+launch was made.
