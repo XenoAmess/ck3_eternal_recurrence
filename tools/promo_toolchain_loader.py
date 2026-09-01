@@ -1,4 +1,4 @@
-"""Resolve the external :mod:`xar_promo` package used by project builders.
+﻿"""Resolve the external :mod:`xar_promo` package used by project builders.
 
 The reusable promo toolchain lives in its own repository now.  Builders use the
 released wheel by default (installed into the active interpreter); setting
