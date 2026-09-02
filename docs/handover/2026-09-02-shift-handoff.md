@@ -1,6 +1,6 @@
 # 项目交接（2026-09-02）
 
-> 交接目的：在当前执行者离岗前，给下一位执行者一份可直接恢复工作的事实账本。本文只记录已经取得的证据和可执行的下一步；`static-ready`、`fixture-live`、`production-live primitive` 与 `complete` 不混用。最后更新：主线 `1821d36`。
+> 交接目的：在当前执行者离岗前，给下一位执行者一份可直接恢复工作的事实账本。本文只记录已经取得的证据和可执行的下一步；`static-ready`、`fixture-live`、`production-live primitive` 与 `complete` 不混用。最后更新：主线 `7401613`。
 
 ## 0. 快速结论
 
@@ -11,12 +11,12 @@
 | G2 | `production-live read-only primitive / GEN-034 unresolved` | paused exact-build 四个窄域只读 primitive、truce evaluator call-site contract、离线失败 seam 已固定 | `evaluated_days` live 结果、war-bound/策略/typed action/postcondition；不能执行 surrender/white-peace/enforce mutation |
 | open_kaishek | `main` clean；schema/preflight 证据持续增加 | `is_acclaimed`、`can_be_acclaimed` 均已合入并通过 focused CI，均 `certified=false` | 不得把离线 parser/validator 预验当作 CK3 native/runtime 或 production readiness；`ACCOLADE` scope 仍是条件性后续项 |
 
-交接材料索引：[`audit-2026-09-02.md`](audit-2026-09-02.md)、[`2026-09-02-g2-open-kaishek-handoff.md`](2026-09-02-g2-open-kaishek-handoff.md)、以及本文件。前两份是早于 `fefdb6d` 的事实快照；本文件与日报/周报的最新追加以 `1821d36` 为准。
+交接材料索引：[`audit-2026-09-02.md`](audit-2026-09-02.md)、[`2026-09-02-g2-open-kaishek-handoff.md`](2026-09-02-g2-open-kaishek-handoff.md)、以及本文件。前两份是早于 `fefdb6d` 的事实快照；本文件与日报/周报的最新追加以 `7401613` 为准。
 
 ## 1. 当前主线与发布锚点
 
 - 父仓库远端：`https://github.com/XenoAmess/ck3_eternal_recurrence.git`
-- 本交接快照父仓库主线：`1821d36`（交接索引刷新；phase2 dispatch 实现为 `fefdb6d`，报告收口为 `c38ede1`）；提交前先 `git fetch origin master`，若远端前进只做 fast-forward/rebase，不在用户脏工作树操作。此前交接提交链为 `0c9c43a` → `547c7ac` → `8d79ae2` → `fefdb6d` → `c38ede1` → `a922413` → `1821d36`。
+- 本交接快照父仓库主线：`7401613`（交接索引刷新；phase2 dispatch 实现为 `fefdb6d`，报告收口为 `c38ede1`）；提交前先 `git fetch origin master`，若远端前进只做 fast-forward/rebase，不在用户脏工作树操作。此前交接提交链为 `0c9c43a` → `547c7ac` → `8d79ae2` → `fefdb6d` → `c38ede1` → `a922413` → `1821d36` → `8c17e92` → `7401613`。
 - 用户原工作树 `Z:\ck3_mod_rewrite` 是 detached 且有用户现场改动（快照 `236dd32`）；禁止 reset、checkout、清理或覆盖。继续工作使用独立 clean worktree。
 - 正式宣传工具仓库：`https://github.com/XenoAmess/xar_promo_toolchain`，本地 `Z:\workspace\xar_promo_toolchain`，`main` 与远端一致，`v0.1.0` 已有 wheel/sdist/SHA256SUMS。无需重复发布。
 - `open_kaishek`：`Z:\workspace\open_kaishek`，当前 `main`/`origin/main` 为 `759199b`；保持少分支，临时分支完成后立即合并/删除。
