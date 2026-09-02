@@ -223,8 +223,10 @@
   effect 有五个候选 index `6/7/9/10/11`，已排除“按 vtable 唯一定位”的
   假设；候选级 shape 又证明旧 default `6/5` 无一匹配，且 indices `9/10`
   同为 selector `0`、default `1/1`。sole-child live 进一步区分为 index 9
-  `Context→0x44D1E18` 与 index 10 `0x44D1D50→Context`，但仍未观察到
-  Truce vtable，不能命名 CAddTruce。详见
+  `Context→0x44D1E18` 与 index 10 `0x44D1D50→Context`；exact Context
+  child-0 live 又确认两条 Context 均为 scope/count/capacity `1/1/1`，后继
+  分别为 `0x44D1E18(1/1)` 与 `0x41E36D0(6/6)`，仍未命中 Truce vtable，
+  不能命名 CAddTruce。详见
   [g2-truce-private-live-capture-2026-09-02.md](g2-truce-private-live-capture-2026-09-02.md)；
   该 RED 不升级 truce、expiry、decision 或 action readiness。
 - [inference] [player-counterpolicy.md](player-counterpolicy.md) 把上述已证事实映射为我方 planner 的

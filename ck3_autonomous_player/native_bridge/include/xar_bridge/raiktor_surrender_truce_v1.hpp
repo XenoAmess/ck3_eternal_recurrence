@@ -146,6 +146,21 @@ struct RaiktorTrucePrivateScriptedCandidateV1 {
   std::uintptr_t sole_child_nested0 = 0;
   std::uintptr_t sole_child_nested0_vtable = 0;
   bool caddtruce_prefix_match = false;
+  std::string_view context_status = "not_attempted";
+  std::int32_t context_depth = -1;
+  std::uintptr_t context_node = 0;
+  std::uintptr_t context_vtable = 0;
+  std::uintptr_t context_children = 0;
+  std::int32_t context_capacity = -1;
+  std::int32_t context_count = -1;
+  std::int32_t context_scope_count = -1;
+  std::uintptr_t context_child0 = 0;
+  std::uintptr_t context_child0_vtable = 0;
+  std::uintptr_t context_child0_children = 0;
+  std::int32_t context_child0_capacity = -1;
+  std::int32_t context_child0_count = -1;
+  std::uintptr_t context_child0_duration_script_value = 0;
+  bool truce_vtable_match = false;
 };
 
 struct RaiktorTrucePrivateShapeCaptureV1 {
@@ -170,6 +185,9 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::size_t sole_child_capture_completed = 0;
   std::size_t caddtruce_prefix_match_count = 0;
   std::int32_t caddtruce_prefix_match_root_index = -1;
+  std::size_t context_capture_completed = 0;
+  std::size_t truce_vtable_match_count = 0;
+  std::int32_t truce_vtable_match_root_index = -1;
   std::uintptr_t scripted_effect = 0;
   std::uintptr_t scripted_vtable = 0;
   std::int32_t scripted_selector_count = -1;

@@ -334,6 +334,108 @@ void CaptureLoadedScriptedCandidatesForG2(
       capture.caddtruce_prefix_match_root_index =
           static_cast<std::int32_t>(root_index);
     }
+
+    void *context_node = nullptr;
+    if (candidate.sole_child_vtable == environment.context_effect_vtable) {
+      context_node = reinterpret_cast<void *>(candidate.sole_child);
+      candidate.context_depth = 0;
+    } else if (candidate.sole_child_nested0_vtable ==
+               environment.context_effect_vtable) {
+      context_node = reinterpret_cast<void *>(candidate.sole_child_nested0);
+      candidate.context_depth = 1;
+    } else {
+      candidate.context_status = "exact_context_not_found";
+      continue;
+    }
+    candidate.context_node = reinterpret_cast<std::uintptr_t>(context_node);
+    if (!ReadValue(access, context_node, 0, candidate.context_vtable)) {
+      candidate.context_status = "context_vtable_read_failed";
+      continue;
+    }
+
+    void *context_children = nullptr;
+    if (!ReadValue(access, context_node, kEffectChildrenOffset,
+                   context_children)) {
+      candidate.context_status = "context_children_read_failed";
+      continue;
+    }
+    candidate.context_children =
+        reinterpret_cast<std::uintptr_t>(context_children);
+    if (!ReadValue(access, context_node, kEffectCapacityOffset,
+                   candidate.context_capacity)) {
+      candidate.context_status = "context_capacity_read_failed";
+      continue;
+    }
+    if (!ReadValue(access, context_node, kEffectCountOffset,
+                   candidate.context_count)) {
+      candidate.context_status = "context_count_read_failed";
+      continue;
+    }
+    if (!ReadValue(access, context_node, kContextScopeCountOffset,
+                   candidate.context_scope_count)) {
+      candidate.context_status = "context_scope_count_read_failed";
+      continue;
+    }
+    if (context_children == nullptr || candidate.context_count < 1 ||
+        candidate.context_capacity < candidate.context_count) {
+      candidate.context_status = "context_child0_unavailable";
+      continue;
+    }
+
+    void *context_child0 = nullptr;
+    if (!ReadValue(access, context_children, 0, context_child0)) {
+      candidate.context_status = "context_child0_read_failed";
+      continue;
+    }
+    candidate.context_child0 =
+        reinterpret_cast<std::uintptr_t>(context_child0);
+    if (context_child0 == nullptr) {
+      candidate.context_status = "context_child0_null";
+      continue;
+    }
+    if (!ReadValue(access, context_child0, 0,
+                   candidate.context_child0_vtable)) {
+      candidate.context_status = "context_child0_vtable_read_failed";
+      continue;
+    }
+
+    void *context_child0_children = nullptr;
+    if (!ReadValue(access, context_child0, kEffectChildrenOffset,
+                   context_child0_children)) {
+      candidate.context_status = "context_child0_children_read_failed";
+      continue;
+    }
+    candidate.context_child0_children =
+        reinterpret_cast<std::uintptr_t>(context_child0_children);
+    if (!ReadValue(access, context_child0, kEffectCapacityOffset,
+                   candidate.context_child0_capacity)) {
+      candidate.context_status = "context_child0_capacity_read_failed";
+      continue;
+    }
+    if (!ReadValue(access, context_child0, kEffectCountOffset,
+                   candidate.context_child0_count)) {
+      candidate.context_status = "context_child0_count_read_failed";
+      continue;
+    }
+
+    candidate.context_status = "complete";
+    ++capture.context_capture_completed;
+    candidate.truce_vtable_match =
+        candidate.context_child0_vtable == environment.truce_effect_vtable;
+    if (candidate.truce_vtable_match) {
+      const void *duration_address = nullptr;
+      if (CheckedAddress(context_child0, kTruceDurationScriptValueOffset,
+                         duration_address)) {
+        candidate.context_child0_duration_script_value =
+            reinterpret_cast<std::uintptr_t>(duration_address);
+        ++capture.truce_vtable_match_count;
+        capture.truce_vtable_match_root_index =
+            static_cast<std::int32_t>(root_index);
+      } else {
+        candidate.context_status = "truce_duration_address_failed";
+        candidate.truce_vtable_match = false;
+      }
+    }
   }
 }
 #endif

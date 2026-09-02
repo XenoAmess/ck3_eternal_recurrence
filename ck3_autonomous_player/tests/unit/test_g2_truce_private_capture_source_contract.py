@@ -167,8 +167,36 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             '"caddtruce_prefix_match"',
             '"caddtruce_prefix_match_count"',
             '"caddtruce_prefix_match_root_index"',
+            '"context_status"',
+            '"context_depth"',
+            '"context_scope_count"',
+            '"context_child0_vtable_rva"',
+            '"context_child0_capacity"',
+            '"context_child0_count"',
+            '"context_child0_duration_script_value"',
+            '"truce_vtable_match"',
+            '"context_capture_completed"',
+            '"truce_vtable_match_count"',
+            '"truce_vtable_match_root_index"',
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
+
+        self.assertIn(
+            "candidate.sole_child_vtable == environment.context_effect_vtable",
+            resolver,
+        )
+        self.assertIn(
+            "candidate.sole_child_nested0_vtable ==",
+            resolver,
+        )
+        self.assertIn(
+            "candidate.context_child0_vtable == environment.truce_effect_vtable",
+            resolver,
+        )
+        self.assertIn(
+            "CheckedAddress(context_child0, kTruceDurationScriptValueOffset",
+            resolver,
+        )
 
 
 if __name__ == "__main__":

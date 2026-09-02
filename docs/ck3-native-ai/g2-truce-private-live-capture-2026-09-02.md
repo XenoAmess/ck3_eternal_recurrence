@@ -326,3 +326,63 @@ child-0 vtable. A unique child-0 match to the frozen Truce vtable
 new ledger entry rather than a broader walk. Cleanup/source invariants were
 GREEN, no mutation or time advance was sent, and production/readiness remain
 unchanged.
+
+## Exact Context child-0 follow-up
+
+A fresh branch from parent baseline
+`062548173d717b6bcc8234cfb3bee0df1eb7be4c` retained only root indices
+`9/10` and selected the exact Context node already observed on each path. The
+private capture reads Context `scope_count`, children/capacity/count, child-0
+vtable, and that child's common capacity/count. It computes a duration address
+only after an exact match to the frozen Truce vtable; it never calls the
+duration evaluator.
+
+The focused source contract passed `5/5`; the native game-access fixture and
+fresh instrumented MSVC build passed. The initial required gate bound
+`open_kaishek` `17caa288eb980aab0b652358e9e94a9901131619`; its GREEN artifact
+is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-context-child-20260902T180601\open-kaishek-preflight.json`,
+SHA-256
+`83079F60D4DC19E0542E14B413CFBD1DD1947F4E08CA6719B4F274F4487EEFEC`.
+Before live, current support advanced to `open_kaishek`
+`425514e2e937bb829b2415f9da7870609e9c736f` with the same CLI JAR SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`.
+Its already-completed equivalent G2 Context-path preflight was bound without
+repeating the gate:
+`Z:\ck3_mod_rewrite_process_assets\zg361\open-kaishek-support-20260902T1807\g2-context-path-preflight.json`,
+SHA-256
+`BBEEE5782733D09A0A3A66F6B9A6F2448693E704E77FA504CD6DF4A17E134792`.
+Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `A8EB37CC769AC9DC212A91FD2DF9BC8237406D5C2E4A8A4F2E8A0DB2707ED845`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `70187EC7A01898017F7C9925EE429F15BFC5F55A36428904D65E8C663E0CE00B`.
+
+The single paused live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-context-child-20260902T180601\live\report.json`,
+  SHA-256
+  `D2C82BFB70113F51418B0E1F1195D33550955E4513529587DB53ECCAE6E8FBCC`;
+- private JSONL beside it, SHA-256
+  `47519D81A5EF6D902A218F50017609F44EDE6EFE1E223F5299406575AB4B48AA`.
+
+Both rows are identical and both Context captures completed:
+
+| Root path | Context depth | Context scope/capacity/count | Context child-0 vtable RVA | Child-0 capacity/count |
+| --- | ---: | --- | --- | --- |
+| index `9` | `0` | `1 / 1 / 1` | `0x44D1E18` | `1/1` |
+| index `10` | `1` | `1 / 1 / 1` | `0x41E36D0` | `6/6` |
+
+Neither child-0 matches the frozen Truce vtable `0x4461CA8`, so
+`truce_vtable_match_count=0` and no duration address was produced. The paths
+are more sharply separated, but CAddTruce is still not identified; this is a
+NO-GO, not evidence to change the stale production tree contract.
+
+The next smallest distinct entry follows only the shapes just observed:
+index 9 may read the sole child under `0x44D1E18(1/1)`; index 10 may enumerate
+only the six children under `0x41E36D0(6/6)`. Record child vtables and stop as
+soon as an exact `0x4461CA8` match is classified. Do not revisit other root
+indices or repeat Context-prefix fields. Cleanup/source invariants were GREEN,
+no mutation or time advance was sent, and public/readiness remain unchanged.
