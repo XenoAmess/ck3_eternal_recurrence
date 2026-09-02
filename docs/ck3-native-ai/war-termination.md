@@ -2219,3 +2219,18 @@ acceptance click. The frozen manifest SHA-256 is
 A fresh live attempt still requires an empty P0 slot and coordinator approval;
 this static harness change does not alter the public ABI or
 `war_bound_armies_ready`.
+
+Final no-launch verification at `2026-09-02T23:13:37+08:00` returned
+`READY_TO_RUN` with empty pre/post CK3/Python inventories and left
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-war-bound-legal-handler-static-verify-20260902\attempt-never-created`
+absent. The exact verified hashes are manifest
+`D60C1ECF8E5F7D10A3809557D09662A3D8B714907533BD6BAFBCCFA6307EE426`,
+runner
+`16CDF7F3566F1397A85E256CDD89075220503CB9A74BEF2FA5C374DB29892C3F`,
+private capture executable
+`E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72`,
+and read-only real-profile account source
+`8933437F2000BB639D588A541B798F97C6D87BA7D891613FAC23D1812AB9EB28`.
+The frozen CK3 executable, bookmark source, `open_kaishek` JAR/commit and
+acceptance runner also matched their manifest-bound values. This verification
+did not create an artifact directory or start CK3.
