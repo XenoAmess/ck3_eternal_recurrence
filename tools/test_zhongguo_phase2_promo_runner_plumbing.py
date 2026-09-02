@@ -51,8 +51,13 @@ _install_optional_desktop_import_stubs()
 
 import run_zhongguo_acceptance as capture  # noqa: E402
 from zhongguo_phase2_promo_producer import (  # noqa: E402
+    Phase2PromoCaptureContext,
     Phase2PromoProducerUnavailable,
+    canonical_phase2_capture_contract,
     make_phase2_promo_capture_scaffold,
+)
+from zhongguo_phase2_capture_choreography import (  # noqa: E402
+    phase2_choreography_readiness,
 )
 
 
@@ -334,6 +339,50 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 self.assertTrue(requirements["gui_surfaces"])
                 self.assertTrue(requirements["mcp_queries"])
                 self.assertTrue(requirements["mcp_actions"])
+
+        context = Phase2PromoCaptureContext(
+            stream="",
+            artifacts=Path("unused-loaded-seed-integration"),
+            recorder=object(),
+            title_navigation_service=object(),
+            tracked_ck3_pid=4321,
+            native_bridge=object(),
+            preflight_bridge_identity={"identity": "unit"},
+            contract=canonical_phase2_capture_contract(),
+            seed_contract=contract,
+            seed_install={"result": "GREEN"},
+            native_session_binding={
+                "bridge_pid": 4321,
+                "connection_generation": 4,
+            },
+            loader_gate={
+                "result": "GREEN",
+                "native_readiness": {"result": "GREEN"},
+                "phase2_capability_preflight": {"result": "GREEN"},
+            },
+        )
+        driver = capture._make_default_phase2_promo_span_driver(context)
+        readiness = phase2_choreography_readiness(
+            context,
+            {
+                "ready": True,
+                "paused_snapshot": snapshot,
+                "seed_load_proof": evidence,
+            },
+            driver,
+        )
+        self.assertEqual(readiness["result"], "GREEN")
+        self.assertEqual(readiness["missing_handlers"], [])
+        self.assertTrue(readiness["checks"]["all_span_handlers_available"])
+        self.assertTrue(
+            all(row["handler_available"] for row in readiness["span_readiness"])
+        )
+        self.assertTrue(
+            all(
+                row["provider_ready_claimed"] is False
+                for row in evidence["span_requirements"]
+            )
+        )
 
     def test_loaded_seed_proof_is_red_when_real_feature_provider_is_missing(self) -> None:
         snapshot = {

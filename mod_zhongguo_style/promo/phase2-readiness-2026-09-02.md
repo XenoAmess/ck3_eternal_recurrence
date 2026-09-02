@@ -16,9 +16,10 @@
 - 对当前 `phase2-promo-project.json` 的 `--validate-only` 返回 exit `2`：十章全部仍为 `planned`；入口没有创建
   workdir，也没有读取缺失 capture、调用 TTS 或媒体进程。配置 SHA-256 为
   `150EE549AF859517C377D3CD531414E9C76E133A8168AF2B0168797249B62129`。
-- runner 已内置 managed-runtime producer adapter：它复用现有 paused-map 与 loaded-seed proof 原语，并把真实 visual
-  primitive registry 接到 producer-neutral 八段 executor。当前八个真实 handler 尚未全部注册，live 入口会在
-  `recorder.start()` 前以 typed RED `span_handlers_missing` 收口；seed 未就绪仍为 `seed_not_ready`。两者都不产生录屏。
+- runner 已内置 managed-runtime producer adapter：它复用现有 paused-map 与 schema-v2 loaded-seed proof，并由默认
+  composite driver 静态拥有全部 8/8 handler。`span_handlers_missing` 现在只适用于兼容 registry 或自定义 driver 回退，
+  不再是默认入口的当前 blocker。八个 handler 的真实 event/GUI/MCP provider proof 仍全部保持 false，必须由同一次实机
+  span 执行逐项转为 GREEN；seed 未就绪仍为 `seed_not_ready`，这些 RED 都不会产生录屏。
 - `open_kaishek` 支撑主线锚点为 `17caa28`。它继续随项目演进提供离线预验，但不会把当前 loader/native RED、
   缺失 paused artifact 或缺失视频素材升级为 live。
 

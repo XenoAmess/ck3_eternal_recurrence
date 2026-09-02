@@ -27,8 +27,11 @@ event definitions, machine-readable `event_window:<key>` or
 `named_widget:<name>` surface, and MCP query/action requirements.  These rows
 deliberately say `provider_ready_claimed=false`: a source definition or loaded
 DLC flag cannot prove that a later event/GUI is visible.  The registered live
-handler must still provide that proof at span execution, and an absent handler
-remains typed RED `span_handlers_missing` before recording starts.
+handler must still provide that proof at span execution.  The default composite
+driver now owns all eight handler names, so `span_handlers_missing` applies only
+to the compatibility registry path or a regressed custom driver; it is not the
+current default blocker.  Eight static owners still do not claim any provider
+live proof.
 
 `zhongguo_phase2_visual_handlers.py` supplies the real-surface adapter for the
 four catalogue entries that previously had no visual-handler boundary.  The

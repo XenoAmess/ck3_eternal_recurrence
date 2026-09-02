@@ -174,9 +174,11 @@ FFmpeg/ffprobe 或任何外部命令，不写 run manifest、日志、partial、
 
 runner 已默认注册二期 managed-runtime producer adapter。它复用现有 seed install、managed
 native session、loader completion、paused-map 与 loaded-seed proof 原语；不运行一期
-`run_scenario`，也不把 `--phase2-live-batch` 的零视觉 MCP 场景作为素材。seed 未就绪返回
-`seed_not_ready`；当前八个真实视觉 handler 未接齐时返回 `span_handlers_missing`。两条 typed RED
-路径都发生在 `recorder.start()` 前，不产生可误用的录屏。静态 contract 通过不等于
+`run_scenario`，也不把 `--phase2-live-batch` 的零视觉 MCP 场景作为素材。默认 composite driver
+已经静态拥有 8/8 handler；`span_handlers_missing` 只保留给兼容 registry 或自定义 driver 回退，
+不是默认入口的当前 blocker。seed 未就绪仍返回 `seed_not_ready`，而 event/GUI/MCP provider
+postcondition 必须在各 span 实机执行时逐项证明；这些 typed RED 都发生在 clean hold 前，
+不产生可误用的录屏。静态 contract 通过不等于
 `fixture-live`、`production-live` 或正式成片。
 
 默认 producer 仍通过 runner 的 `register_phase2_promo_capture_producer(producer)` 接入；各玩法
