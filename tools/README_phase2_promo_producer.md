@@ -6,6 +6,18 @@ inspect the desktop, call `PromoRecorder.start()`/`clean_hold()`/`stop()`, or
 write capture artifacts.  It cannot make a static or MCP-only run look like
 video evidence.
 
+The producer-neutral eight-span action catalogue and executor live in
+`zhongguo_phase2_capture_choreography.py`.  Its definitions bind every fixed
+span to product event keys, GUI surfaces, MCP queries/actions, a concrete
+runner action entrypoint, and a provider-observed postcondition.  The executor
+first requires the ready seed, GREEN seed install, matching native PID/session,
+GREEN loader/capability gate, paused map snapshot, and all eight real span
+handlers.  It calls `clean_hold()` only after the corresponding handler has
+returned both `surface_visible=True` and `postcondition_green=True`; a missing
+gate or RED action raises `Phase2ChoreographyBlocked` and never creates a clean
+gate for that span.  This module does not register a producer or start/stop a
+recorder.
+
 Build an unregistered scaffold while the runtime implementation is absent:
 
 ```python
