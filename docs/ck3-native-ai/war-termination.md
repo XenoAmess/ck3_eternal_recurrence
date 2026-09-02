@@ -1958,3 +1958,48 @@ Its parent-adapter `war_days` preflight is retained at
 with parser and dedicated fixture validation GREEN, bounded root validation
 RED, and no CK3 process. This schema-only slice does not alter the static
 war-exit tree or authorize a termination action.
+
+## 2026-09-02 war-bound loss wiring audit and exact execute seam
+
+[static-confirmed / production unchanged] The existing
+`ReadPrimaryAttackerWarBoundRegimentObservation` is not a direct source for
+`war_bound_army_losses`. It publishes generation-safe current soldiers for
+`war_bound_not_event_specific` rows and a separate postwar cleanup result, but
+it has neither a source-bound created-ID set nor a measured initial soldier
+sample. `WarRaiktorSurrenderTermsSnapshot` contains no war-bound loss payload,
+and the serializer intentionally keeps `war_bound_armies_ready=false`.
+Wiring the generic current total into that readiness bit would therefore turn
+the authored `3000` or a post-hoc selector into an unproved loss calculation.
+No production struct, query, wire, policy, or readiness value was changed.
+
+[static-confirmed] The next distinct native entry is now frozen against CK3
+`1.19.0.6` in
+`native_bridge/research/raiktor_spawn_army_execute_v1_abi.json`. The
+`spawn_army` registration at RVA `0x5C40F0` constructs a `0x558`-byte runtime
+object with vtable RVA `0x443C6E8`; slot 22 is execute RVA `0x2E7F010` and slot
+23 is preview RVA `0x2E7FBF0`. Inside execute, RVA `0x2E7F45C` creates each
+persistent `CRegiment`, then the function writes the resolved bound WarID to
+`CRegiment+0x13C` and copies the effect flags through `+0x142`. RVA
+`0x2E7F89C` creates the `CArmy`; the attach/finalize chain ends with calls at
+`0x2E7F941` and `0x2E7F94C`.
+
+The exact read-only observation window starts at RVA `0x2E7F951`, after that
+chain returns and before local persistent-vector cleanup begins at
+`0x2E7F9A6`. At the stop, `R14` is the compiled effect object, `RSI` is the
+created `CArmy`, `[RSP+0x60]` is the persistent-pointer vector begin,
+`int32 [RSP+0x6C]` is its count, and the evaluated-name MSVC string remains at
+`RBP+0x70`. A future action-bound capture must bind each execute instance to
+the selected `bookmark.1071.a` loaded option node and its exact
+`raiktor_claim_cb` WarID, then freeze every newly created persistent/current/
+CArmy generation and its current soldiers before time advances. Exactly six
+source executions are required before publishing a measured initial total.
+The evaluated `norman_highwaymen` name is supporting evidence only, never a
+standalone selector.
+
+The offline verifier
+`native_bridge/research/verify_raiktor_spawn_army_execute_v1.py` pins the
+registration, factory/vtable, full execute digest, direct call targets,
+post-finalize window, and unchanged production-readiness boundary. It does not
+start or attach to CK3. Until the action-bound capture exists, source
+attribution, pre soldiers, proven loss, and `war_bound_armies_ready` all remain
+false.

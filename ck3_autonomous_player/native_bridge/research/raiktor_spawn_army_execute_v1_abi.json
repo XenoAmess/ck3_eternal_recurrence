@@ -1,0 +1,140 @@
+{
+  "contract": "raiktor-spawn-army-execute-v1",
+  "schema_version": 1,
+  "status": "static-observation-point-ready",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "pe_timestamp": "0x6A1EEE6D",
+    "image_base": "0x140000000",
+    "size_of_image": "0x5C2D000",
+    "architecture": "msvc-x64"
+  },
+  "registration": {
+    "keyword_rva": "0x443BF48",
+    "keyword_bytes_hex": "737061776E5F61726D7900",
+    "registration_rva": "0x5C40F0",
+    "registration_end_rva_exclusive": "0x5C4194",
+    "registration_sha256": "0294E34F4B7A70EEDFE9FAADE5977EBFE87DD60916CD243554685207E45E10F2",
+    "factory_method_rva": "0x2E80E10",
+    "runtime_object_size": "0x558",
+    "runtime_vtable_rva": "0x443C6E8"
+  },
+  "runtime_vtable": {
+    "complete_object_locator_rva": "0x4AAA260",
+    "execute_slot_index": 22,
+    "execute_slot_offset": "0xB0",
+    "execute_rva": "0x2E7F010",
+    "preview_slot_index": 23,
+    "preview_slot_offset": "0xB8",
+    "preview_rva": "0x2E7FBF0"
+  },
+  "execute": {
+    "rva": "0x2E7F010",
+    "end_rva_exclusive": "0x2E7F9FB",
+    "length_bytes": 2539,
+    "sha256": "43496AA6929976CFE70326156BBB09761FF4ECE3ADEB26358B5E7E3F6A591FE3",
+    "calling_convention": "MSVC x64",
+    "effect_object_register": "RCX at entry; R14 after prologue",
+    "effect_context_register": "RDX at entry; RSI after prologue"
+  },
+  "source_and_creation_flow": {
+    "evaluated_name_call": {
+      "call_instruction_rva": "0x2E7F26E",
+      "target_rva": "0x2E7FA00",
+      "output": "caller-owned MSVC string at RBP+0x70; remains live through 0x2E7F9D4"
+    },
+    "persistent_regiment_create": {
+      "call_instruction_rva": "0x2E7F45C",
+      "target_rva": "0x27BEE20",
+      "return": "CRegiment pointer in RAX, copied to R12 at 0x2E7F461",
+      "bound_war_write": "[RAX+0x13C] = EBX at 0x2E7F464",
+      "flags": "effect bytes [R14+0x550..0x552] copied to CRegiment+0x140..0x142; +0x142 is keep-on-attacker-victory"
+    },
+    "army_create": {
+      "call_instruction_rva": "0x2E7F89C",
+      "target_rva": "0x27BF0A0",
+      "return": "created CArmy pointer in RAX, copied to RSI at 0x2E7F8A1"
+    },
+    "attach_and_finalize_calls": [
+      {"call_instruction_rva": "0x2E7F8D3", "target_rva": "0x27BEF60"},
+      {"call_instruction_rva": "0x2E7F91B", "target_rva": "0x239C510"},
+      {"call_instruction_rva": "0x2E7F926", "target_rva": "0x226FB40"},
+      {"call_instruction_rva": "0x2E7F941", "target_rva": "0x2276FB0"},
+      {"call_instruction_rva": "0x2E7F94C", "target_rva": "0x2949690"}
+    ]
+  },
+  "pinned_spans": [
+    {
+      "name": "name_evaluation_call",
+      "start_rva": "0x2E7F264",
+      "end_rva_exclusive": "0x2E7F273",
+      "bytes_hex": "4C8BC6488D5570498BCEE88D070000",
+      "sha256": "0A4DB42DEF16A7BF425D543567C3FB9323869B9D9F1B744FE784AF078EE33024"
+    },
+    {
+      "name": "persistent_create_and_war_binding",
+      "start_rva": "0x2E7F3F0",
+      "end_rva_exclusive": "0x2E7F49E",
+      "sha256": "3EE1BD7EFCD99E623F808257B7121F12DE5F688879D4B70F9FF8F837114FD2BE"
+    },
+    {
+      "name": "army_create",
+      "start_rva": "0x2E7F87B",
+      "end_rva_exclusive": "0x2E7F8A1",
+      "bytes_hex": "488D45704889442428895C24204D8BCC4C8B8518030000488B542448488B4C2440E8FFF793FF",
+      "sha256": "EC2BB84EDF9AF74CD8BE63E40529687582616FBDE7FF6295AEAD098D8100A0BA"
+    },
+    {
+      "name": "attach_and_finalize",
+      "start_rva": "0x2E7F8BB",
+      "end_rva_exclusive": "0x2E7F951",
+      "sha256": "01A39F8ADB3AA09D31063927EDC05BAEAB4DB0519C751895C3FCE7BAB110FB41"
+    },
+    {
+      "name": "post_finalize_pre_cleanup_window",
+      "start_rva": "0x2E7F951",
+      "end_rva_exclusive": "0x2E7F9A6",
+      "sha256": "29C99BA78D1B08A68A4EFB43F55A07777048F7F41BF74FBA98D83D446BAD8ACA"
+    },
+    {
+      "name": "local_persistent_vector_cleanup",
+      "start_rva": "0x2E7F9A6",
+      "end_rva_exclusive": "0x2E7F9D9",
+      "sha256": "E7AD0815936BE4F903A44D30C870179D9978529D5EC5046AF6AFC808C63D29FF"
+    }
+  ],
+  "next_native_observation": {
+    "stop_rva": "0x2E7F951",
+    "window_end_rva_exclusive": "0x2E7F9A6",
+    "why_here": "the CArmy attach/finalize chain has returned while the execute-local vector of newly created persistent CRegiment pointers and evaluated name are still live",
+    "live_registers_and_locals": {
+      "effect_object": "R14",
+      "created_army": "RSI",
+      "persistent_vector_begin": "[RSP+0x60]",
+      "persistent_vector_count": "int32 [RSP+0x6C]",
+      "evaluated_name": "MSVC string at RBP+0x70"
+    },
+    "required_capture": "for each bookmark.1071.a spawn_army execution bound to the same full-generation raiktor_claim_cb WarID, freeze every newly created persistent/current/CArmy generation and current soldiers before gameplay advances; require exactly six source executions before publishing an initial measured total",
+    "source_identity_requirement": "bind the execute instance to the selected bookmark.1071.a loaded option node and its war scope; evaluated name is supporting evidence only and is not a standalone selector",
+    "forbidden": [
+      "derive pre soldiers from authored 3000",
+      "attribute post-hoc generic war-bound rows by name, composition, ArmyID, bound WarID, or keep=false alone",
+      "change WarRaiktorSurrenderTermsSnapshot, public wire, or war_bound_armies_ready before action-bound live evidence"
+    ]
+  },
+  "current_wiring_audit": {
+    "direct_loss_wiring_supported": false,
+    "generic_observer_value": "current soldiers plus generation-safe postwar cleanup for war_bound_not_event_specific rows",
+    "missing_evidence": [
+      "selected bookmark.1071.a loaded-node identity",
+      "source-bound created persistent/current generation set",
+      "measured initial soldiers for that frozen set"
+    ],
+    "public_readiness_remains": false
+  }
+}
