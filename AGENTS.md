@@ -206,6 +206,8 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
+- **工作包一次验证、立即交付。** 每个独立工作包只做一次与风险相称且必要的验证；验证通过或形成可复现的 RED 证据后，立即提交到主线并普通 fast-forward 推送，然后继续下一个工作包。除非出现改变结论的新证据或用户明确要求，不重复同一验证，也不把等待人工复核当作停工条件。
+- **少分支、快合主线。** 默认直接从最新 `origin/master` 工作；只有真实隔离、并发冲突或高风险 live 实验才创建短期分支。短期分支完成后尽快合入 `master`，CI 进入终态后立即删除 local/remote ref；不得为了保存过程、形式审查或“以后可能有用”长期保留游离开发分支。
 - `origin/master` 是唯一集成真相，默认从最新 master 直接开发。只有具体隔离、真实并发或高风险 live 理由才建
   `wip/<topic>`；必要发布线才用 `release/<product>-<version>`。分支必须登记 reason/base/owner/acceptance/deadline，
   成品及时合入，等待 exact master SHA 官方 CI GREEN 后删除 local + remote ref。

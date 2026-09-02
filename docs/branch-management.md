@@ -1,5 +1,25 @@
 # Branch management and frozen evidence
 
+## Delivery cadence and minimum-branch rule
+
+These are mandatory operating principles for every work package:
+
+1. **One necessary verification, then delivery.** Run one verification pass
+   proportionate to the work package and its risk. Once it passes—or produces
+   a reproducible, well-recorded RED boundary—commit the result to the current
+   mainline and push it with a normal fast-forward. Continue with the next
+   package immediately. Do not repeat an unchanged check or wait for a second
+   review unless new evidence changes the conclusion or the owner explicitly
+   asks for another pass.
+2. **Keep branches few and merge early.** Start from the newest
+   `origin/master` and work on it directly whenever the files and runtime
+   boundary permit. Create a short-lived branch only for real isolation,
+   concurrent write conflict, or a high-risk live experiment. As soon as its
+   work package is ready, merge it into `master`; after the exact master CI is
+   terminal, delete the local and remote temporary refs. Detached evidence
+   checkouts and retained artifacts may stay on disk, but they are not reasons
+   to keep a development branch.
+
 状态：2026-08-30 起生效。`origin/master` 是唯一集成真相；删除 branch ref 永远不等于删除 worktree、clone、构建目录、
 录像、日志或 artifact。
 
