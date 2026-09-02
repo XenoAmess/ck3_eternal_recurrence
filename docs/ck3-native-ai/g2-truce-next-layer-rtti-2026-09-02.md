@@ -238,3 +238,42 @@ All preflight/hash checks were GREEN and the future attempt directory remained
 absent. Focused preflight plus private-reader source contracts were `10/10`
 GREEN. This preparation started no CK3 process and does not authorize the live
 command by itself.
+
+## Targeted index-7 live result
+
+The one authorized readiness-300 run reached the private reader after the old
+budget would have expired. Both private rows are identical and report
+`targeted_index7_status=complete`:
+
+| Node | Frozen loaded-tree result |
+| --- | --- |
+| index-7 default | capacity/count `4/4` |
+| child 1 `hidden_effect` | vtable RVA `0x44D1C88`, child capacity/count `1/1` |
+| child 0 Context | vtable RVA `0x44D27B8`, child capacity/count `1/1`, scope count `1` |
+| child 0 Truce | object `0x1D0752B8FB0`, exact vtable RVA `0x4461CA8` |
+| duration input | `0x1D0752B90B8`, exactly Truce object `+0x108` |
+
+The private objective is GREEN: the source-correlated index-7 path and
+`CAddTruceEffect<0>+0x108` input location are now paused/live evidence. The
+capture did not call evaluator `0x3373000`; `evaluated_days` therefore remains
+unobserved. The enclosing legacy public terms runner ended RED later with
+`paused double-sample MCP proof failed`, because its production resolver still
+uses the stale `19/14/index9` contract. That later public failure does not
+invalidate the two completed private rows and must not be called a public wire
+GREEN.
+
+Frozen evidence:
+
+- report SHA-256:
+  `24D9661AEC29E8247BF63E54082487BD6A2E296F4E2A0A965227BDB454A63706`;
+- private JSONL SHA-256:
+  `6807E408870D7A7B47E9B6EC609BEFB270FC0E4571912D5FEA4432E09F8705C3`;
+- evidence/cleanup summary SHA-256:
+  `27ABEC1CBE11E022C8CB8309BC9889E7FADFC103128D8862798542F2E9B4B0FA`.
+
+Cleanup and source invariants were GREEN; CK3/probe/python returned to zero,
+there was no mutation or time advance, and no second live was started. The
+next distinct private package may call the known evaluator only with this
+exact input shape and capture its result twice on one paused frame. Public
+ABI/readiness and production constants remain unchanged until that separate
+live evidence exists.
