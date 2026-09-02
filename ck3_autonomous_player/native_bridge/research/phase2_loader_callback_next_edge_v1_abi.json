@@ -1,0 +1,103 @@
+{
+  "contract": "phase2-loader-callback-next-edge-v1",
+  "schema_version": 1,
+  "status": "static-stop-point-bound",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "image_base": "0x140000000",
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "4e0927c64ff5d72958bea87f4a1e47cdb11ad89a",
+    "static_slice_contract": "phase2-loader-callback-static-slice-v1",
+    "static_slice_contract_sha256": "4E196FB245F7A93E056930B9DE91CA07AA26F12BA71EAED0BE081897F394C36C",
+    "later_stall_contract": "phase2-loader-callback-later-stall-v1",
+    "later_stall_contract_sha256": "7B8B2EEEB5C98A703C1E7226856DAFDD15A304FEA453E77F4A0D3039C1080236",
+    "extractor": "extract_phase2_loader_callback_next_edge.py",
+    "extractor_sha256": "D18E793E9B9F54CB54D883D7A6A367E20E7E736034AC921C3A978E077BCED998"
+  },
+  "preflight": {
+    "reused_without_rerun": true,
+    "reason": "the immediately preceding package used the same exact executable, open_kaishek commit, and CLI JAR",
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\later-stalled-open-kaishek-preflight.json",
+    "artifact_sha256": "1E8DCBC7EBAB3D1D23EF31DF5684AAF61B81FAE8BC0BDE92A1C57E8F2F770F30",
+    "boundary": "offline parser/IR/runtime validation only; the known full-root schema-only validator remains RED"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\callback-next-edge-static-extract.json",
+    "artifact_sha256": "20454FC337ADB25AEFCE8BA80FB07305EA8C9F844251D9C429F795B55940E6DA",
+    "ck3_started": false,
+    "function_rva": "0x3B9AB00",
+    "function_end_rva_exclusive": "0x3B9ACED",
+    "callback_call_rva": "0x3B9AB90",
+    "callback_continuation_rva": "0x3B9AB93",
+    "post_callback_window": {
+      "end_rva_exclusive": "0x3B9ACC4",
+      "length_bytes": 305,
+      "bytes_sha256": "D624CA70C1CAE6E3178AAB95D6369CFF96FD9CED8CD87B6BBEB2EB1CBA2B234D"
+    },
+    "iterator": {
+      "begin": "RBX=[owner+0x70]",
+      "signed_count": "sign_extend([owner+0x7C])",
+      "end": "RDI=RBX+count*8",
+      "next_advance_rva": "0x3B9ACB7",
+      "advance": "RBX=RBX+8",
+      "next_compare_rva": "0x3B9ACBB",
+      "next_branch_rva": "0x3B9ACBE",
+      "next_branch_target_rva": "0x3B9AB50",
+      "exhausted_fallthrough_rva": "0x3B9ACC4",
+      "edge_bytes_sha256": "03F8709D2D31472468E72873F81E2635305BCB5CFB81004B7DE721BFDC7BC8E8"
+    },
+    "observable_stop_point": {
+      "rva": "0x3B9AB53",
+      "role": "next-node-loaded-before-callback-null-gate",
+      "preceding_instruction_rva": "0x3B9AB50",
+      "preceding_instruction": "mov RSI,[RBX]",
+      "current_node_register": "RSI",
+      "node_name_pointer": "[RSI+0x08]",
+      "callback_receiver": "[RSI+0x88]",
+      "callback_gate_not_yet_executed": true,
+      "reached_for_every_nonempty_iteration": true,
+      "closes_previous_gap": "observes nodes whose null callback receiver prevents entry at 0x3B9AB90"
+    },
+    "loop_exit_discriminator": {
+      "rva": "0x3B9ACC4",
+      "role": "node-vector-exhausted-or-initially-empty"
+    }
+  },
+  "wait_edge_boundary": {
+    "status": "no-unique-wait-edge-in-bounded-function",
+    "opaque_post_return_call_rvas": [
+      "0x3B9AC2C",
+      "0x3B9AC45",
+      "0x3B9AC6E",
+      "0x3B9ACB2"
+    ],
+    "conclusion": "next-node advancement is exact, but no opaque helper is assigned wait semantics without source symbols or runtime evidence"
+  },
+  "limits": [
+    "the primary stop point identifies each current node before its callback gate; it does not establish loader readiness",
+    "the loop-exit discriminator does not identify which of eight external callers invoked the function",
+    "the four post-return calls retain opaque business and wait semantics",
+    "no live observation, production detour, public bridge field, or readiness promotion follows"
+  ],
+  "next_entry": {
+    "proposed_only": "one bounded private exact-build observation at RVA 0x3B9AB53, paired with the existing callback entry/return evidence and RVA 0x3B9ACC4 loop-exit discriminator",
+    "authorized_in_this_package": false,
+    "success_condition": "record the first node loaded after the last returned callback, including node name and node+0x88 callback receiver, or prove the vector exhausted",
+    "forbidden": [
+      "start CK3 in this static package",
+      "repeat a callback-only timeout without the new node-loaded stop point",
+      "generalize into whole-loader or whole-executable reverse engineering",
+      "widen the public bridge or promote readiness"
+    ]
+  }
+}
