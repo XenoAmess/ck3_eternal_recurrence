@@ -53,6 +53,18 @@ DATABASE_POST_INIT_PATTERN = re.compile(
     r"PostInit\s+-\s*(?P<value>.+?)\s*$",
     re.IGNORECASE | re.MULTILINE,
 )
+POST_DATABASE_CALLBACK_TIMEOUT_REASON = (
+    "loader_terminal_missing_after_database_callbacks"
+)
+DATABASE_COMPLETION_PUBLISHED_TIMEOUT_REASON = (
+    "loader_terminal_missing_after_database_completion_publish"
+)
+PROVEN_DATABASE_COMPLETION_NODE_SEQUENCE = (
+    "CGameConceptTypeDatabase",
+    "CJominiLoadScreenDatabase",
+)
+PROVEN_DATABASE_COMPLETION_CONTRACT = "phase2-outer-completion-edge-v1"
+PROVEN_DATABASE_COMPLETION_PUBLISH_RVA = "0x3B9CFD7"
 
 
 class LoaderStageError(RuntimeError):
@@ -264,6 +276,12 @@ def inspect_loader_logs(
     fatal_errors = extract_fatal_errors(error_log)
     database_node_details = _database_node_details(debug_text)
     database_post_init_details = _database_post_init_details(debug_text)
+    database_node_sequence = tuple(
+        str(detail["node"]) for detail in database_node_details
+    )
+    completion_publish_sequence_observed = (
+        database_node_sequence == PROVEN_DATABASE_COMPLETION_NODE_SEQUENCE
+    )
     return {
         "stage": stage,
         "database_init_seen": any(
@@ -277,6 +295,23 @@ def inspect_loader_logs(
             else None
         ),
         "database_nodes": database_node_details,
+        # Exact-build private live + static CFG evidence proves this complete
+        # two-node sequence returns, exhausts the vector, and reaches the
+        # completion-state publish at 0x3B9CFD7.  This remains diagnostic; it
+        # cannot authorize event wait or promote readiness.
+        "database_completion_publish_sequence_observed": (
+            completion_publish_sequence_observed
+        ),
+        "database_completion_publish_contract": (
+            PROVEN_DATABASE_COMPLETION_CONTRACT
+            if completion_publish_sequence_observed
+            else None
+        ),
+        "database_completion_publish_rva": (
+            PROVEN_DATABASE_COMPLETION_PUBLISH_RVA
+            if completion_publish_sequence_observed
+            else None
+        ),
         "last_database_node_detail": (
             database_node_details[-1] if database_node_details else None
         ),
@@ -416,9 +451,16 @@ def wait_for_phase2_seed_loader_stage(
                 "elapsed_seconds": round(max(0.0, now - started), 3),
                 "quiet_seconds": round(quiet_seconds, 3),
                 # Unlike ``quiet_seconds`` (which follows either log), this
-                # clock follows only completed database callback records.  It
-                # makes a loader stall visible even while unrelated event or
-                # onaction lines continue to arrive.
+                # clock follows only completed database callback records.
+                # New exact-build evidence proves the observed callback
+                # vector returned and exhausted, so the absence of another
+                # callback record must not itself be called a callback stall.
+                "database_callback_completion_quiet_seconds": round(
+                    database_callback_quiet_seconds, 3
+                ),
+                # Compatibility alias for retained reports and consumers.
+                # Do not use this legacy name to attribute a timeout to a
+                # callback that has already returned.
                 "database_callback_quiet_seconds": round(
                     database_callback_quiet_seconds, 3
                 ),
@@ -545,8 +587,15 @@ def wait_for_phase2_seed_loader_stage(
         state = "loader_stage_timeout"
         error_type = LoaderStageTimeout
         message = "CK3 did not reach Load Save/In Game/native readiness"
-        if observation.get("database_callback_count", 0):
-            reason_code = "database_callback_stall"
+        if observation.get("database_completion_publish_sequence_observed"):
+            reason_code = DATABASE_COMPLETION_PUBLISHED_TIMEOUT_REASON
+        elif observation.get("database_callback_count", 0):
+            # A Database Node Init Time row proves its callback returned.  A
+            # private exact-build observation further closed both retained
+            # callbacks, vector exhaustion, and outer returns.  The loader
+            # terminal is still missing, but callback_stall is now a disproven
+            # attribution rather than a valid terminal reason.
+            reason_code = POST_DATABASE_CALLBACK_TIMEOUT_REASON
         elif observation.get("stage") == "database_init":
             if observation.get("fatal_error_count", 0):
                 reason_code = "known_parser_errors_reached_deadline"
@@ -561,6 +610,11 @@ def wait_for_phase2_seed_loader_stage(
         **observation,
         "reason_code": reason_code,
     }
+    if reason_code in {
+        POST_DATABASE_CALLBACK_TIMEOUT_REASON,
+        DATABASE_COMPLETION_PUBLISHED_TIMEOUT_REASON,
+    }:
+        result["deprecated_reason_code"] = "database_callback_stall"
     append_jsonl(progress_jsonl, result)
     raise error_type(message, result)
 

@@ -1277,6 +1277,30 @@ It reports `RED/database_callback_stall`, two completed callbacks ending at
 authorization. Reuse this artifact; do not repeat the same CK3 timeout merely
 to populate the new telemetry.
 
+That reason code is historical evidence only. The later exact-build private
+trace (artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-native-gate-20260902\selected-outer-return-observation-20260902T1838.json`,
+SHA-256
+`F10CDD414FA4EDD74E256BB2D084C8F5117467B32E7CCB3E70F5CAB45B9A4958`)
+proved that both observed callbacks returned, the vector exhausted, and the
+sequence-2 owner returned through `0x88B648` to `0x3B9CFD2`. Current runner
+terminals that contain the frozen two-node sequence therefore use
+`reason_code=loader_terminal_missing_after_database_completion_publish`;
+other partial callback sequences use
+`loader_terminal_missing_after_database_callbacks`. Both retain
+`deprecated_reason_code=database_callback_stall` only so old report consumers
+can identify the renamed bucket. The additive
+`database_callback_completion_quiet_seconds` field is the preferred name for
+the existing quiet clock; `database_callback_quiet_seconds` remains an equal
+compatibility alias. Neither name authorizes event wait, seed readiness, or a
+new CK3 attempt.
+
+The static owner for that diagnostic is
+`phase2_outer_completion_edge_v1_abi.json` (`phase2-outer-completion-edge-v1`):
+`0x3B9CFD7` atomically publishes state value `2` after the selected callback
+returns. Runner evidence that selects this reason also records the contract
+name and publish RVA; it does not expose or read `[rbx+0x60]` at runtime.
+
 The current `open_kaishek` offline binding is `36b4743` / JAR SHA-256
 `DFEA464B657D627BBB1AEF34C12CD91419830644D47F891782A3C9D718C44D61`.
 Its `ck3-war-days-trigger-11906` fixture is parser/validator GREEN and

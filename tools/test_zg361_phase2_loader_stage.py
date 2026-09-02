@@ -363,13 +363,16 @@ def main() -> int:
         )
 
         # A database node timing line proves one callback completed, but
-        # unrelated event-manager chatter must not hide that callbacks have
-        # stopped.  The terminal remains the compatible timeout state while
-        # its reason identifies the bounded callback stall.
+        # unrelated event-manager chatter must not hide that the loader never
+        # reached a terminal.  Exact-build evidence now proves the observed
+        # callback vector returned and exhausted, so this must not be called a
+        # callback stall.
         callback_logs = root / "callback-stall" / "logs"
         callback_logs.mkdir(parents=True)
         callback_debug = callback_logs / "debug.log"
         callback_debug.write_text(
+            "[00:00:01][D][database_dependencies.cpp:433]: "
+            "Database Node Init Time: CGameConceptTypeDatabase - 4 ms - 4 ms including dependencies\n"
             "[00:00:01][D][database_dependencies.cpp:433]: "
             "Database Node Init Time: CJominiLoadScreenDatabase - 4 ms - 4 ms including dependencies\n"
             "[00:00:02][D][jomini_eventmanager.cpp:594]: Loaded events\n",
@@ -391,21 +394,48 @@ def main() -> int:
             raise AssertionError("callback stall did not reach its bound")
         except loader.LoaderStageTimeout as error:
             require(
-                error.evidence["reason_code"] == "database_callback_stall",
-                "database callback stall was reported as an untyped timeout",
+                error.evidence["reason_code"]
+                == "loader_terminal_missing_after_database_completion_publish",
+                "post-callback timeout retained its disproven attribution",
             )
             require(
-                error.evidence["database_callback_count"] == 1,
+                error.evidence["deprecated_reason_code"]
+                == "database_callback_stall",
+                "post-callback timeout lost its compatibility reason",
+            )
+            require(
+                error.evidence["database_callback_count"] == 2,
                 "callback stall evidence lost completed callback count",
+            )
+            require(
+                error.evidence[
+                    "database_completion_publish_sequence_observed"
+                ]
+                is True,
+                "proven completion-publish node sequence was not classified",
+            )
+            require(
+                error.evidence["database_completion_publish_contract"]
+                == "phase2-outer-completion-edge-v1"
+                and error.evidence["database_completion_publish_rva"]
+                == "0x3B9CFD7",
+                "completion-publish classification lost its exact contract",
             )
             require(
                 error.evidence["database_callback_quiet_seconds"] >= 3.0,
                 "callback-specific quiet clock did not advance",
             )
+            require(
+                error.evidence[
+                    "database_callback_completion_quiet_seconds"
+                ]
+                == error.evidence["database_callback_quiet_seconds"],
+                "completion quiet clock and compatibility alias diverged",
+            )
         require(
             rows(callback_progress)[-1]["reason_code"]
-            == "database_callback_stall",
-            "append-only callback timeout lacked its reason code",
+            == "loader_terminal_missing_after_database_completion_publish",
+            "append-only post-callback timeout lacked its corrected reason",
         )
 
         # Even a known historical parser error cannot steal the terminal once

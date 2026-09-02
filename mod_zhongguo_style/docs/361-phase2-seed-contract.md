@@ -159,6 +159,15 @@ loader gate 还轮询受管 `native_session` supervisor 的只读 terminal probe
 `loader_stage_timeout`。无论该 typed RED 或其它 loader RED，runner 仍进入同一受管 cleanup，并单独保存
 `09_phase2_native_session_cleanup.json`；这条早停只改善诊断时延，不把 RED 提升为 live readiness。
 
+后续 exact-build 私有只读证据已证明两条已观察 callback 均正常返回、vector exhausted，且 sequence 2
+外层 owner 最终从 `0x88B648` 返回到 `0x3B9CFD2`。因此新 runner 不再把“已有 callback 完成记录但仍未出现
+Load Save/In Game/native readiness”归因为 `database_callback_stall`。冻结的完整两节点序列报告
+`loader_terminal_missing_after_database_completion_publish`，其它不完整序列才报告一般性的
+`loader_terminal_missing_after_database_callbacks`；旧 reason 只以 `deprecated_reason_code` 保留给历史消费者。
+这只是修正故障归属，不放宽 `event_wait_authorized`，也不提升 seed/paused/live readiness。
+该诊断回链静态合同 `phase2-outer-completion-edge-v1` 及 publish RVA `0x3B9CFD7`；runner 本身不新增内存读取或
+production detour。
+
 下一次 CK3 只允许单局验证这一个假设：在所有已实证 parser/compiler/theme 项静态清零后，新 HEAD 是否从
 `04:26:53` 对应阶段继续到 `Load Save/In Game` 与 native semantic snapshot。单局顺序固定为：冻结 projection/SHA →
 确认 product/fixture 各挂载一次 → append-only loader gate → exact event query → 五 selector 与 paused checkpoint 捕获 →

@@ -507,6 +507,38 @@ The next legitimate entry is offline closure of callback prologue/parameter/
 thread evidence, followed by a separately opt-in private recorder only if
 those prerequisites become concrete.
 
+## 2026-09-02 post-callback timeout classification correction
+
+The later private exact-build trace closed the previously unknown callback
+lifetime: both observed callbacks returned, the vector exhausted, and the
+sequence-2 owner returned through `0x88B648` to `0x3B9CFD2`. Its artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-native-gate-20260902\selected-outer-return-observation-20260902T1838.json`,
+SHA-256
+`F10CDD414FA4EDD74E256BB2D084C8F5117467B32E7CCB3E70F5CAB45B9A4958`.
+
+Consequently, `database_callback_stall` is no longer a valid attribution for
+future runner terminals. The loader gate now emits
+`loader_terminal_missing_after_database_completion_publish` for the frozen
+two-node sequence, and the more general
+`loader_terminal_missing_after_database_callbacks` for any partial sequence.
+Both preserve the old token in `deprecated_reason_code` and preserve the
+original quiet-clock field as a compatibility alias. This does not change the
+loader terminal, event-wait authorization, public ABI, or readiness. The next
+executable gate is the native completion-publisher boundary immediately after
+`0x3B9CFD2`; its exact-build PDATA/local CFG must be reused before any
+separately authorized bounded observation or production integration.
+
+That boundary is now frozen by
+`native_bridge/research/phase2_outer_completion_edge_v1_abi.json`
+(`phase2-outer-completion-edge-v1`). Its offline artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-native-gate-20260902\outer-completion-edge-static-extract.json`,
+SHA-256
+`D831486D634D17BD2DEF3607AE2E72F99DB16B4682823B80EE291DAD7450158B`.
+The bounded CFG proves that `0x3B9CFD7` atomically publishes state value `2`
+after the callback return. No additional live run is required for that edge;
+the remaining product gate is downstream consumption toward the existing
+Load Save/In Game/native-readiness terminals.
+
 ## 2026-09-02 11:17 telemetry live recheck
 
 After the required current `open_kaishek` offline preflight, one new exact-build
