@@ -303,6 +303,43 @@ class FinalPromoCompletionTests(unittest.TestCase):
         self.assertFalse(report["checks"]["publish_target_verified"])
         self.assertFalse(report["checks"]["publish_verified"])
 
+    def test_custom_deliverable_id_is_bound_without_breaking_legacy_default(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            attestation = _fixture(root)
+            outer = json.loads(attestation.read_text(encoding="utf-8"))
+            run_path = Path(outer["candidate"]["run_manifest"]["path"])
+            run = json.loads(run_path.read_text(encoding="utf-8"))
+            run["artifacts"][0]["id"] = "zhongguo-361-phase2-character-led"
+            run["signoffs"][0]["artifact_id"] = "zhongguo-361-phase2-character-led"
+            _write(run_path, run)
+            outer["candidate"]["run_manifest"] = _record(run_path)
+            export_path = Path(outer["export"]["manifest"]["path"])
+            export = json.loads(export_path.read_text(encoding="utf-8"))
+            export["source_run"]["bytes"] = _record(run_path)["bytes"]
+            export["source_run"]["sha256"] = _record(run_path)["sha256"]
+            export["files"][0]["source"]["artifact_id"] = (
+                "zhongguo-361-phase2-character-led"
+            )
+            _write(export_path, export)
+            outer["export"]["manifest"] = _record(export_path)
+            publication_path = Path(outer["publication"]["path"])
+            publication = json.loads(publication_path.read_text(encoding="utf-8"))
+            publication["export_manifest"] = {
+                "bytes": _record(export_path)["bytes"],
+                "sha256": _record(export_path)["sha256"],
+            }
+            _write(publication_path, publication)
+            outer["publication"] = _record(publication_path)
+            _write(attestation, outer)
+            report = completion.validate_final_promo_completion(
+                attestation,
+                footage_intake={"result": "GREEN"},
+                publish_target=PUBLISH_TARGET,
+                deliverable_id="zhongguo-361-phase2-character-led",
+            )
+        self.assertEqual(report["status"], "COMPLETE", report)
+
 
 if __name__ == "__main__":
     unittest.main()

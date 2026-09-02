@@ -119,8 +119,12 @@ def validate_final_promo_completion(
     *,
     footage_intake: Mapping[str, object],
     publish_target: Mapping[str, object] | None = None,
+    deliverable_id: str = DELIVERABLE_ID,
 ) -> dict[str, object]:
     """Return COMPLETE only when every immutable final boundary is closed."""
+
+    if not isinstance(deliverable_id, str) or not deliverable_id.strip():
+        raise ValueError("deliverable_id must be a non-empty string")
 
     footage_green = footage_intake.get("result") == "GREEN"
     target_gate = publish_target if isinstance(publish_target, Mapping) else {}
@@ -228,7 +232,7 @@ def validate_final_promo_completion(
         deliverables = [
             row for row in artifacts
             if isinstance(row, Mapping)
-            and row.get("id") == DELIVERABLE_ID
+            and row.get("id") == deliverable_id
             and row.get("role") == "deliverable"
             and _media_binding(row, media_record)
         ]
@@ -236,7 +240,7 @@ def validate_final_promo_completion(
         matching_signoffs = [
             row for row in signoffs
             if isinstance(row, Mapping)
-            and row.get("artifact_id") == DELIVERABLE_ID
+            and row.get("artifact_id") == deliverable_id
         ]
         latest_signoff = matching_signoffs[-1] if matching_signoffs else {}
         deliverable_path_ok = len(deliverables) == 1 and (
@@ -407,7 +411,7 @@ def validate_final_promo_completion(
             and exported_bound is not None
             and _media_binding(exported_record, media_record)
             and exported_source.get("kind") == "run-artifact"
-            and exported_source.get("artifact_id") == DELIVERABLE_ID
+            and exported_source.get("artifact_id") == deliverable_id
             and exported_source.get("role") == "deliverable"
             and _media_binding(exported_source, media_record)
             and actual_files == expected_files | {EXPORT_MANIFEST_NAME}
