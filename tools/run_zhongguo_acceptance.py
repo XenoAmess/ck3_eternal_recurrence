@@ -137,6 +137,14 @@ from zhongguo_phase2_promo_producer import (
     make_managed_phase2_promo_capture_producer,
     phase2_promo_producer_typed_error_payload,
 )
+from zhongguo_phase2_visual_handlers import (
+    CompositePhase2SpanDriver,
+    ENDGAME_HANDLER,
+    PROJECTS_HANDLER,
+    PROMOTION_HANDLER,
+    Phase2VisualHandlerAdapter,
+    Phase2VisualHandlerError,
+)
 
 import promo_real_character_contract as real_characters
 
@@ -851,6 +859,194 @@ _PHASE2_PROMO_CAPTURE_PRODUCER: Phase2PromoCaptureProducer | None = None
 _PHASE2_PROMO_VISUAL_PRIMITIVES: dict[str, Phase2PromoVisualPrimitive] = {}
 
 
+class _Phase2AcceptanceActionSpanDriver:
+    """Expose the four already-wired acceptance action cells as promo spans."""
+
+    _HANDLERS = (
+        "capture_receipt_appeal_pip",
+        "capture_manager_governance",
+        "capture_hc_workforce",
+        "capture_incidents_operations",
+    )
+
+    def __init__(self, service: GameplayBridgeService) -> None:
+        self.service = service
+
+    def available_handlers(self) -> tuple[str, ...]:
+        return self._HANDLERS
+
+    def run_span(
+        self,
+        scenario: object,
+        context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        handler = str(getattr(scenario, "handler"))
+        if handler not in self._HANDLERS:
+            raise Phase2VisualHandlerError(
+                "handler_not_owned", {"handler": handler}
+            )
+        snapshot = self.service.snapshot()
+        if not isinstance(snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two promo action baseline is not an object"
+            )
+        binding = _phase2_paused_binding(
+            snapshot, label=f"phase-two promo {handler} baseline"
+        )
+        if not isinstance(context.seed_contract, Mapping):
+            raise acceptance.RunnerError(
+                "phase-two promo action lacks its seed contract"
+            )
+        owners = _phase2_domain_query_contract(
+            dict(context.seed_contract),
+            player_character_id=int(binding["player_character_id"]),
+        )
+        if handler == "capture_receipt_appeal_pip":
+            evidence = run_phase2_b2_pip_gameplay_action_cell(
+                self.service,
+                context.artifacts,
+                owner_character_id=owners["b2_pip_owner_character_id"],
+            )
+        elif handler == "capture_manager_governance":
+            evidence = run_phase2_ai_owned_case_gameplay_action_cell(
+                self.service,
+                context.artifacts,
+                owner_character_id=owners["ai_owned_case_owner_character_id"],
+                subject_character_id=owners["ai_owned_case_subject_character_id"],
+            )
+        elif handler == "capture_incidents_operations":
+            evidence = run_phase2_incident_gameplay_action_cell(
+                self.service,
+                context.artifacts,
+                owner_character_id=owners["incident_owner_character_id"],
+            )
+        else:
+            # The production-only seed must already contain the route.  This
+            # preflight never installs or activates the acceptance fixture.
+            evidence = preflight_phase2_workforce_m360_gameplay_action_cell(
+                self.service,
+                context.artifacts,
+                owner_character_id=owners["workforce_owner_character_id"],
+                subject_character_id=int(binding["player_character_id"]),
+                seed_contract=dict(context.seed_contract),
+                prior_lineage={"scope": "phase2_promo_production_seed"},
+            )
+        if not isinstance(evidence, Mapping) or evidence.get("result") != "GREEN":
+            raise Phase2VisualHandlerError(
+                "acceptance_action_cell_not_green",
+                {"handler": handler, "action_cell": evidence},
+            )
+        visible = _phase2_promo_visible_scenario_surface(self.service, scenario)
+        return {
+            "result": "GREEN",
+            "surface_visible": True,
+            "postcondition_green": True,
+            "handler": handler,
+            "action_cell": dict(evidence),
+            "visible_surface": visible,
+        }
+
+
+def _phase2_promo_visible_scenario_surface(
+    service: GameplayBridgeService, scenario: object
+) -> dict[str, object]:
+    snapshot = service.snapshot()
+    if not isinstance(snapshot, dict) or not isinstance(
+        snapshot.get("active_event"), dict
+    ):
+        raise Phase2VisualHandlerError(
+            "scenario_surface_not_visible",
+            {"handler": getattr(scenario, "handler", None)},
+        )
+    identity = query_event_definition_identity(service, snapshot)
+    expected = tuple(getattr(scenario, "event_definition_keys"))
+    if identity.get("event_definition_key") not in expected:
+        raise Phase2VisualHandlerError(
+            "scenario_surface_not_visible",
+            {"expected_events": list(expected), "event_identity": identity},
+        )
+    return identity
+
+
+def _phase2_promo_advance_to_result(
+    service: GameplayBridgeService,
+    plan: object,
+    context: Phase2PromoCaptureContext,
+    _runtime: Mapping[str, object],
+) -> Mapping[str, object]:
+    saved_state = (
+        context.seed_contract.get("saved_state")
+        if isinstance(context.seed_contract, Mapping)
+        else None
+    )
+    player_character_id = (
+        saved_state.get("played_character_id")
+        if isinstance(saved_state, Mapping)
+        else None
+    )
+    if isinstance(player_character_id, bool) or not isinstance(
+        player_character_id, int
+    ):
+        raise Phase2VisualHandlerError("seed_player_identity_unavailable")
+    result = wait_for_phase2_exact_event(
+        service,
+        expected_definition_key=str(getattr(plan, "result_event")),
+        expected_player_character_id=player_character_id,
+    )
+    return {"result": "GREEN", "provider_observed": True, **result}
+
+
+def _phase2_promo_event_postcondition(
+    _service: GameplayBridgeService,
+    plan: object,
+    before: Mapping[str, object],
+    after: Mapping[str, object],
+    _context: Phase2PromoCaptureContext,
+    _runtime: Mapping[str, object],
+) -> Mapping[str, object]:
+    checks = {
+        "snapshot_advanced": before.get("snapshot_id") != after.get("snapshot_id"),
+        "revision_advanced": isinstance(before.get("revision"), int)
+        and isinstance(after.get("revision"), int)
+        and int(after["revision"]) > int(before["revision"]),
+        "native_revision_advanced": isinstance(before.get("native_revision"), int)
+        and isinstance(after.get("native_revision"), int)
+        and int(after["native_revision"]) > int(before["native_revision"]),
+        "same_player": before.get("player_character_id")
+        == after.get("player_character_id"),
+    }
+    green = all(checks.values())
+    return {
+        "result": "GREEN" if green else "RED",
+        "provider_observed": True,
+        "postcondition_green": green,
+        "handler": getattr(plan, "handler", None),
+        "checks": checks,
+    }
+
+
+def _make_default_phase2_promo_span_driver(
+    context: Phase2PromoCaptureContext,
+) -> CompositePhase2SpanDriver:
+    service = context.title_navigation_service
+    visual = Phase2VisualHandlerAdapter(
+        service,
+        scoreboard_action_cell=run_phase2_scoreboard_gameplay_action_cell,
+        advance_to_result={
+            handler: _phase2_promo_advance_to_result
+            for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER, ENDGAME_HANDLER)
+        },
+        postcondition_verifiers={
+            handler: _phase2_promo_event_postcondition
+            for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER, ENDGAME_HANDLER)
+        },
+    )
+    return CompositePhase2SpanDriver(
+        _Phase2AcceptanceActionSpanDriver(service), visual
+    )
+
+
 def register_phase2_promo_capture_producer(
     producer: Phase2PromoCaptureProducer,
 ) -> None:
@@ -932,6 +1128,7 @@ def _ensure_phase2_promo_capture_producer() -> Phase2PromoCaptureProducer:
             paused_snapshot_probe=_phase2_promo_paused_snapshot_probe,
             seed_proof_probe=_phase2_promo_seed_proof_probe,
             visual_primitives=_PHASE2_PROMO_VISUAL_PRIMITIVES,
+            span_driver_factory=_make_default_phase2_promo_span_driver,
             reviewed_history_id=PHASE2_SEED_PLAYER_HISTORY_ID,
             error_factory=acceptance.RunnerError,
         )

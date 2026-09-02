@@ -254,6 +254,9 @@ Phase2PromoVisualPrimitive: TypeAlias = Callable[
     [Phase2PromoCaptureContext, Mapping[str, object], str, str],
     Mapping[str, object],
 ]
+Phase2SpanDriverFactory: TypeAlias = Callable[
+    [Phase2PromoCaptureContext], object
+]
 
 
 def _canonical_contract(value: Mapping[str, object]) -> dict[str, object]:
@@ -817,15 +820,20 @@ def make_managed_phase2_runtime_probe(
 
 
 def make_eight_span_phase2_choreography(
-    visual_primitives: Mapping[str, Phase2PromoVisualPrimitive],
+    visual_primitives: Mapping[str, Phase2PromoVisualPrimitive] | None = None,
     *,
     reviewed_history_id: str,
     hold_seconds: float = 2.5,
+    span_driver_factory: Phase2SpanDriverFactory | None = None,
 ) -> Choreography:
     """Adapt the visual primitive registry to the shared eight-span executor."""
 
+    if visual_primitives is None:
+        visual_primitives = {}
     if not isinstance(visual_primitives, Mapping):
         raise TypeError("visual_primitives must be a mapping")
+    if span_driver_factory is not None and not callable(span_driver_factory):
+        raise TypeError("span_driver_factory must be callable")
     if type(reviewed_history_id) is not str or not reviewed_history_id:
         raise TypeError("reviewed_history_id must be a non-empty string")
     if isinstance(hold_seconds, bool) or not isinstance(hold_seconds, (int, float)):
@@ -870,7 +878,19 @@ def make_eight_span_phase2_choreography(
                     producer_key,
                 )
 
-        driver = RegistrySpanDriver()
+        driver = (
+            RegistrySpanDriver()
+            if span_driver_factory is None
+            else span_driver_factory(context)
+        )
+        if not callable(getattr(driver, "available_handlers", None)) or not callable(
+            getattr(driver, "run_span", None)
+        ):
+            raise Phase2PromoProducerUnavailable(
+                "span_driver_unavailable",
+                "phase-two span driver factory returned an invalid driver",
+                evidence={"actual_type": type(driver).__name__},
+            )
         readiness = phase2_choreography_readiness(context, runtime, driver)
         if readiness.get("ready") is not True:
             reason_code = str(readiness.get("reason_code"))
@@ -927,10 +947,11 @@ def make_managed_phase2_promo_capture_producer(
     *,
     paused_snapshot_probe: Phase2PromoPausedSnapshotProbe,
     seed_proof_probe: Phase2PromoSeedProofProbe,
-    visual_primitives: Mapping[str, Phase2PromoVisualPrimitive],
+    visual_primitives: Mapping[str, Phase2PromoVisualPrimitive] | None = None,
     reviewed_history_id: str,
     error_factory: ProducerErrorFactory | None = None,
     hold_seconds: float = 2.5,
+    span_driver_factory: Phase2SpanDriverFactory | None = None,
 ) -> Phase2PromoProducerScaffold:
     """Build the concrete managed-runtime/eight-span producer adapter."""
 
@@ -943,6 +964,7 @@ def make_managed_phase2_promo_capture_producer(
             visual_primitives,
             reviewed_history_id=reviewed_history_id,
             hold_seconds=hold_seconds,
+            span_driver_factory=span_driver_factory,
         ),
         error_factory=error_factory,
     )
@@ -1023,6 +1045,7 @@ __all__ = [
     "Phase2PromoPausedSnapshotProbe",
     "Phase2PromoSeedProofProbe",
     "Phase2PromoVisualPrimitive",
+    "Phase2SpanDriverFactory",
     "RuntimeProbe",
     "canonical_phase2_capture_contract",
     "install_phase2_promo_capture_scaffold",

@@ -218,66 +218,26 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             self.prior_visual_primitives
         )
 
-    def test_built_in_producer_reuses_paused_and_seed_primitives_before_typed_red(
-        self,
-    ) -> None:
+    def test_built_in_producer_registers_composite_all_eight_driver(self) -> None:
         capture._PHASE2_PROMO_CAPTURE_PRODUCER = None
         capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()
         producer = capture._ensure_phase2_promo_capture_producer()
-        seed_contract = {"status": "ready", "ready": True}
-        snapshot = {
-            "diagnostics": {"bridge_pid": 4321},
-            "paused": True,
-            "map_ready": True,
-        }
-        recorder = capture.PromoRecorder(
-            Path("unused-phase2-promo"),
-            contract=capture.PHASE2_PROMO_CAPTURE_CONTRACT,
-        )
-        with (
-            mock.patch.object(
-                capture,
-                "wait_for_phase2_paused_snapshot",
-                return_value=copy.deepcopy(snapshot),
-            ) as paused,
-            mock.patch.object(
-                capture,
-                "prove_phase2_loaded_seed",
-                return_value={"result": "GREEN", "loaded": True},
-            ) as seed_proof,
-        ):
-            with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
-                producer(
-                    object(),
-                    Path("unused-artifacts"),
-                    recorder,
-                    title_navigation_service=object(),
-                    tracked_ck3_pid=4321,
-                    native_bridge=object(),
-                    preflight_bridge_identity={},
-                    seed_contract=seed_contract,
-                    seed_install={
-                        "result": "GREEN",
-                        "contract": copy.deepcopy(seed_contract),
-                    },
-                    native_session_binding={
-                        "bridge_pid": 4321,
-                        "connection_generation": 1,
-                    },
-                    loader_gate={
-                        "result": "GREEN",
-                        "mode": "phase2_promo_capture",
-                        "same_pid_gameplay_continuation_authorized": True,
-                        "native_readiness": {"result": "GREEN"},
-                        "phase2_capability_preflight": {"result": "GREEN"},
-                    },
-                )
+        context = SimpleNamespace(title_navigation_service=object())
+        driver = capture._make_default_phase2_promo_span_driver(context)
         self.assertEqual(
-            raised.exception.reason_code, "span_handlers_missing"
+            set(driver.available_handlers()),
+            {
+                "capture_fact_quota_calibration",
+                "capture_receipt_appeal_pip",
+                "capture_manager_governance",
+                "capture_promotion_compensation",
+                "capture_hc_workforce",
+                "capture_projects_metrics",
+                "capture_incidents_operations",
+                "capture_cross_cycle_endgame",
+            },
         )
-        paused.assert_called_once()
-        seed_proof.assert_called_once()
-        self.assertIsNone(recorder.process)
+        self.assertIs(producer, capture._PHASE2_PROMO_CAPTURE_PRODUCER)
 
     def test_visual_primitive_registry_accepts_only_canonical_unique_keys(self) -> None:
         capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()

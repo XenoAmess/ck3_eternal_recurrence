@@ -61,8 +61,15 @@ runner's outer capture result in charge, and the runner rejects any explicit
 non-`GREEN` value before accepting the hand-off.
 
 `run_zhongguo_acceptance.py --phase2-promo-capture` installs the managed
-adapter when no explicit producer override exists.  Product-specific visual
-handlers register by canonical producer key:
+adapter when no explicit producer override exists.  Its context-bound driver
+combines the existing B2/manager/workforce/incident acceptance action cells
+with `Phase2VisualHandlerAdapter`, so the default readiness inventory owns all
+eight canonical handlers.  The workforce delegate uses the production-seed
+preflight and never activates the dynamic acceptance fixture.  Missing or RED
+provider proof remains a typed per-span RED and cannot create a clean hold.
+
+Tests and explicit producer overrides may still register a product-specific
+visual primitive by canonical producer key:
 
 ```python
 from run_zhongguo_acceptance import register_phase2_promo_visual_primitive
@@ -73,12 +80,12 @@ register_phase2_promo_visual_primitive(
 )
 ```
 
-The registry adapter implements the producer-neutral `Phase2SpanDriver` and
+The compatibility registry adapter implements the producer-neutral `Phase2SpanDriver` and
 delegates ordering, readiness, surface/postcondition checks, and clean holds to
 `run_phase2_capture_choreography`.  Registration order cannot change the
-contract order.  The current incomplete registry returns typed RED
-`span_handlers_missing` before `PromoRecorder.start()`; a missing canonical
-seed stays typed RED `seed_not_ready`.  Passing static mappings does not
+contract order.  A missing canonical seed stays typed RED `seed_not_ready`
+before the span-driver factory and `PromoRecorder.start()` are reachable.
+Passing static mappings does not
 establish `fixture-live` or `production-live`; those statuses still require a
 real CK3 capture, all eight clean-frame gates, and downstream review.
 

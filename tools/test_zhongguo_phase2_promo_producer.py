@@ -422,6 +422,7 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
     def test_managed_runtime_preserves_seed_not_ready_typed_red(self) -> None:
         recorder = _Recorder(self.contract)
         paused_calls: list[object] = []
+        driver_factory_calls: list[object] = []
 
         def paused(context: object) -> dict[str, object]:
             paused_calls.append(context)
@@ -432,6 +433,7 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
             seed_proof_probe=lambda _context, _snapshot: {"result": "GREEN"},
             visual_primitives={},
             reviewed_history_id="han_6875",
+            span_driver_factory=lambda context: driver_factory_calls.append(context),
         )
         blocked_seed = {
             "status": "blocked_seed_generation_required",
@@ -464,6 +466,7 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
                 )
         self.assertEqual(raised.exception.reason_code, "seed_not_ready")
         self.assertEqual(paused_calls, [])
+        self.assertEqual(driver_factory_calls, [])
         self.assertEqual(recorder.calls, [])
 
     def test_missing_visual_primitives_is_typed_red_before_recorder_start(self) -> None:
@@ -534,6 +537,55 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         self.assertEqual(result["result"], "GREEN")
         self.assertEqual(result["capture_contract"], self.contract)
         self.assertEqual(len(result["completed_spans"]), 8)
+
+    def test_managed_producer_accepts_context_bound_span_driver_factory(self) -> None:
+        recorder = _Recorder(self.contract)
+        calls: list[str] = []
+
+        class Driver:
+            def available_handlers(self) -> tuple[str, ...]:
+                return tuple(
+                    {
+                        "facts-quota-calibration": "capture_fact_quota_calibration",
+                        "receipts-appeals-pip": "capture_receipt_appeal_pip",
+                        "manager-governance": "capture_manager_governance",
+                        "promotion-compensation": "capture_promotion_compensation",
+                        "hc-workforce": "capture_hc_workforce",
+                        "projects-metrics": "capture_projects_metrics",
+                        "incidents-operations": "capture_incidents_operations",
+                        "cross-cycle-endgame": "capture_cross_cycle_endgame",
+                    }.values()
+                )
+
+            def run_span(self, scenario, _context, _runtime):
+                calls.append(scenario.handler)
+                return {
+                    "result": "GREEN",
+                    "surface_visible": True,
+                    "postcondition_green": True,
+                }
+
+        seen_contexts: list[object] = []
+
+        def factory(context: object) -> Driver:
+            seen_contexts.append(context)
+            return Driver()
+
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=lambda _context: {
+                "diagnostics": {"bridge_pid": 4321},
+                "paused": True,
+                "map_ready": True,
+            },
+            seed_proof_probe=lambda _context, _snapshot: {"result": "GREEN"},
+            reviewed_history_id="han_6875",
+            span_driver_factory=factory,
+        )
+        result = _invoke_managed(producer, recorder)
+        self.assertEqual(len(seen_contexts), 1)
+        self.assertEqual(len(calls), 8)
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(recorder.calls[:2], ["resolve:han_6875", "start"])
 
     def test_runner_error_factory_keeps_typed_fields(self) -> None:
         class RunnerLikeError(RuntimeError):
