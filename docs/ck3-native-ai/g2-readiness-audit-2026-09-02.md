@@ -333,3 +333,28 @@ artifact is
 `B2183C32C18D0F7A6F00A8C96C2D0DEEAD7EAF8BFC358606F92415368E6674B7`). This
 is syntax/profile-only (`certified=false`) and leaves the fresh live G2
 result and `GEN-034` boundary unchanged.
+
+## 2026-09-02 10:45 truce-reader compatibility decision
+
+The attempted diagnostic-only `observation_failure_reason` field was not
+merged. The public v1 truce and six-domain normalizers are exact-key contracts,
+and the frozen truce source fixture is hash-bound into the six-domain and
+policy fixtures; adding a field would require a versioned schema migration,
+not an incidental diagnostic patch. The candidate was reverted cleanly, with
+no public ABI, wire, frozen hash, or readiness change and no CK3 rerun.
+
+Static review reconfirmed the existing exact-build CAddTruce anchors and
+reader constants, but the fresh artifact does not carry the internal failure
+enum. There is therefore no evidence-backed offset/shape edit yet. G2 remains
+a four-domain production-live read-only primitive with
+`evaluated_days_observable=false`, `truce_ready=false`,
+`decision_ready=false`, and `GEN-034` unresolved. The next bounded entry is an
+internal native trace or equivalent exact-build evidence that does not widen
+the public v1 schema; termination writes remain disabled.
+
+The current offline accelerator is `open_kaishek`
+`36b4743d5da013ba1f85790ebcffad2629442ed1` with the syntax-only `war_days`
+slice. Its parent preflight artifact SHA-256 is
+`CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`;
+parser and the dedicated fixture validator are GREEN, the bounded root
+validator remains RED, and no CK3 process or mutation was involved.

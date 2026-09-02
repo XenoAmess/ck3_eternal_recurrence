@@ -1256,3 +1256,29 @@ contract and synthetic join test (`4/4` GREEN). It binds the exact-build loop
 and per-node vcall/timing offsets only; callback return semantics and source
 file attribution remain unknown. This contract is static/fixture evidence and
 does not authorize a native detour or change the phase-two loader gate.
+
+### Callback-stall telemetry (2026-09-02)
+
+Parent `f20a88d` keeps the existing loader stage, timeout, and event-wait
+authorization contract while adding three passive fields: completed callback
+count/last detail, opaque `PostInit - %s` records, and
+`database_callback_quiet_seconds`. Terminal RED rows also carry a stable
+`reason_code`, including `database_callback_stall`,
+`database_init_without_callback_completion`, and the bounded known-parser
+variants. These fields diagnose a retained timeout; they never authorize a
+seed/event wait or infer a production source filename.
+
+A no-launch replay of the frozen `a89282d` logs is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-callback-replay-f20a88d\loader-stage-replay.json`
+(SHA-256
+`56233A3CAF9062B347C1661132E3D16A419CF0698C69CB4C775214B47311E56D`).
+It reports `RED/database_callback_stall`, two completed callbacks ending at
+`CJominiLoadScreenDatabase`, zero fatal errors, and no event-wait
+authorization. Reuse this artifact; do not repeat the same CK3 timeout merely
+to populate the new telemetry.
+
+The current `open_kaishek` offline binding is `36b4743` / JAR SHA-256
+`DFEA464B657D627BBB1AEF34C12CD91419830644D47F891782A3C9D718C44D61`.
+Its `ck3-war-days-trigger-11906` fixture is parser/validator GREEN and
+IR/runtime SKIPPED; the full corpus remains a bounded validator RED. This is
+preflight acceleration only, not native readiness.

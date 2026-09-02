@@ -145,3 +145,25 @@ the rebuilt JAR SHA-256 is
 `DCCCF51A8B68EEC6CCF8D391D7B0E839361DECB9E37098C31BBB78EB296247A1`.
 No parent full preflight or CK3 run was repeated. This remains an offline
 schema accelerator and does not change any live/readiness gate.
+
+## 2026-09-02 10:45 `war_days` schema slice
+
+The accelerator is clean at `main == origin/main ==
+36b4743d5da013ba1f85790ebcffad2629442ed1`. It adds the exact-build-backed
+`war_days` scalar descriptor as `TRIGGER/WAR/INTEGER`, with
+`certified=false`; no native evaluator or runtime certification is claimed.
+Focused profile, validator, and ZhongGuo fixture tests passed (`14`, `24`, and
+`12`), the CLI smoke is GREEN, and GitHub CI run `33584241395` succeeded. The
+rebuilt JAR is 317,764 bytes with SHA-256
+`DFEA464B657D627BBB1AEF34C12CD91419830644D47F891782A3C9D718C44D61`.
+
+The parent-adapter artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T1042-war-days\open-kaishek-preflight-war-days.json`
+(SHA-256
+`CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`).
+The product parser is GREEN (`76/23,831,335/0`), the bounded root validator is
+the expected schema-only RED (`232,973` unsupported diagnostics), and the
+dedicated `ck3-war-days-trigger-11906` fixture has parser/validator GREEN with
+IR/runtime explicitly SKIPPED. The run is offline
+(`ck3_started=false`, `save_mutated=false`, `network_used=false`) and does not
+alter phase-two or G2 live readiness.

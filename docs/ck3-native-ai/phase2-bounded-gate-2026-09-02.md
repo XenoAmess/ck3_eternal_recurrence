@@ -459,3 +459,37 @@ reaches paused state) further points to loader/native callback context rather
 than current event/value/effect registration. Keep `a89282d` frozen and use
 the new callback contract as the next observation entry; do not repeat the
 same CK3 timeout or broaden the gate without a new file/symbol artifact.
+
+## 2026-09-02 10:44 callback-stall telemetry and retained-log replay
+
+Parent mainline `f20a88d` adds only read-only loader telemetry. Completed
+`Database Node Init Time` rows are now exposed as callback completions,
+`PostInit - %s` rows are retained as opaque records, and a callback-specific
+quiet clock distinguishes loader progress from unrelated event/on-action log
+traffic. Terminal RED evidence receives an additive `reason_code`; stage,
+timeout, event authorization, and CK3 behavior are unchanged. The focused
+loader test, optimized-mode test, seed-capture contract, and four callback
+contract tests are GREEN.
+
+The new parser was replayed once against the frozen `a89282d` logs without
+starting CK3. The report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-callback-replay-f20a88d\loader-stage-replay.json`
+(SHA-256
+`56233A3CAF9062B347C1661132E3D16A419CF0698C69CB4C775214B47311E56D`);
+its append-only progress SHA-256 is
+`50F47B22B2BD373CC641B6CDC88ED576A95B4A658E9F3E186319255634C50631`.
+It classifies the retained boundary as `RED/database_callback_stall`: two
+completed callbacks, last node `CJominiLoadScreenDatabase`, zero fatal errors,
+and `event_wait_authorized=false`. No retained `PostInit` record exists. This
+narrows the observable stall category but does not identify a source file,
+repair the loader, or upgrade phase-two readiness.
+
+Before this replay, the planned next-entry corpus was run through the current
+`open_kaishek` adapter once (offline only). The retained preflight is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\next-entry-open-kaishek-preflight-20260902.json`
+(SHA-256
+`4C7370C9E0F9E83FB2A6080C8A4AEB467F5F56A4AAD9AFEB46F7009C82FB8F9A`). It
+reported parser `55/2,223,707/0` and fixture IR/runtime GREEN, with the
+declared bounded validator RED (`39,360` unsupported diagnostics),
+`ck3_started=false`, and no save mutation. This preflight was consumed as
+offline evidence only and did not justify another same-shape CK3 launch.
