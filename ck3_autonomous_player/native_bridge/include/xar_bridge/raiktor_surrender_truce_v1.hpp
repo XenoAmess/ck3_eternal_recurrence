@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
@@ -118,6 +119,49 @@ struct RaiktorSurrenderTruceObservationV1 {
   // result; it does not synthesize CK3's persisted truce expiry semantics.
   bool expiry_observable = false;
 };
+
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+// One-off staged evidence for the private GEN-034 reader. This type and its
+// accessor do not exist in the default production DLL or on the MCP wire.
+struct RaiktorTrucePrivateShapeCaptureV1 {
+  std::string_view failed_check = "not_started";
+  std::uintptr_t root_vtable = 0;
+  std::uintptr_t root_slot11 = 0;
+  std::uintptr_t root_children = 0;
+  std::int32_t root_capacity = -1;
+  std::int32_t root_count = -1;
+  std::uintptr_t scripted_effect = 0;
+  std::uintptr_t scripted_vtable = 0;
+  std::int32_t scripted_selector_count = -1;
+  std::uintptr_t scripted_template = 0;
+  std::uintptr_t template_vtable = 0;
+  std::uintptr_t default_effect = 0;
+  std::uintptr_t default_vtable = 0;
+  std::uintptr_t default_children = 0;
+  std::int32_t default_capacity = -1;
+  std::int32_t default_count = -1;
+  std::array<std::uintptr_t, 5> default_child_vtables{};
+  std::size_t default_child_scan_index = 0;
+  std::size_t hidden_count = 0;
+  std::size_t hidden_index = 0;
+  std::uintptr_t hidden_effect = 0;
+  std::uintptr_t hidden_children = 0;
+  std::int32_t hidden_capacity = -1;
+  std::int32_t hidden_child_count = -1;
+  std::uintptr_t context_effect = 0;
+  std::uintptr_t context_vtable = 0;
+  std::uintptr_t context_children = 0;
+  std::int32_t context_capacity = -1;
+  std::int32_t context_child_count = -1;
+  std::int32_t context_scope_count = -1;
+  std::uintptr_t truce_effect = 0;
+  std::uintptr_t truce_vtable = 0;
+  std::uintptr_t duration_script_value = 0;
+};
+
+const RaiktorTrucePrivateShapeCaptureV1 &
+LastRaiktorTrucePrivateShapeCaptureV1() noexcept;
+#endif
 
 std::string_view RaiktorSurrenderTruceFailureReasonV1(
     RaiktorSurrenderTruceFailureV1 failure) noexcept;

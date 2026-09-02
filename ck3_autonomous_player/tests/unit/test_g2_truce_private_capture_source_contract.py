@@ -47,6 +47,49 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
                 private_schema, public_path.read_text(encoding="utf-8")
             )
 
+    def test_capture_names_the_failed_loaded_tree_check_and_actual_shape(self) -> None:
+        resolver = (
+            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
+        ).read_text(encoding="utf-8")
+        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
+            encoding="utf-8"
+        )
+        header = (
+            NATIVE
+            / "include"
+            / "xar_bridge"
+            / "raiktor_surrender_truce_v1.hpp"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("XAR_G2_SHAPE_RESET();", resolver)
+        for check in (
+            "root_capacity_mismatch",
+            "root_count_mismatch",
+            "scripted_vtable_mismatch",
+            "default_capacity_mismatch",
+            "default_count_mismatch",
+            "hidden_count_mismatch",
+            "hidden_capacity_mismatch",
+            "context_capacity_mismatch",
+            "truce_vtable_mismatch",
+            "complete",
+        ):
+            self.assertIn(f'XAR_G2_SHAPE_STAGE("{check}")', resolver)
+
+        self.assertIn("RaiktorTrucePrivateShapeCaptureV1", header)
+        self.assertIn("#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)", header)
+        for field in (
+            '"failed_check"',
+            '"root_vtable_rva"',
+            '"root_capacity"',
+            '"root_count"',
+            '"default_child_vtable_rvas"',
+            '"hidden_capacity"',
+            '"context_capacity"',
+            '"truce_vtable_rva"',
+        ):
+            self.assertIn(field.replace('"', '\\"'), writer)
+
 
 if __name__ == "__main__":
     unittest.main()

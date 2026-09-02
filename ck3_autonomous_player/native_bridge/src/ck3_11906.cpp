@@ -68,9 +68,15 @@ void AppendG2TrucePrivateCaptureV1(
     return;
   }
 
-  std::array<char, 2048> row{};
+  std::array<char, 8192> row{};
   const auto failure =
       RaiktorSurrenderTruceFailureReasonV1(observation.failure);
+  const auto &shape = LastRaiktorTrucePrivateShapeCaptureV1();
+  const auto module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto as_rva = [module_base](std::uintptr_t address) noexcept {
+    return address >= module_base ? address - module_base : address;
+  };
   const int length = std::snprintf(
       row.data(), row.size(),
       "{\"schema\":\"xar.ck3.g2_truce_private_capture.v1\","
@@ -85,6 +91,45 @@ void AppendG2TrucePrivateCaptureV1(
       "\"pointer_shape_verified\":%s,"
       "\"evaluator_double_read_stable\":%s,"
       "\"same_frame_stable\":%s,\"expiry_observable\":%s,"
+      "\"loaded_tree_shape\":{"
+      "\"failed_check\":\"%.*s\","
+      "\"root_vtable\":\"0x%llX\",\"root_vtable_rva\":\"0x%llX\","
+      "\"expected_root_vtable_rva\":\"0x%llX\","
+      "\"root_slot11\":\"0x%llX\",\"root_children\":\"0x%llX\","
+      "\"root_capacity\":%d,\"expected_root_capacity\":19,"
+      "\"root_count\":%d,\"expected_root_count\":14,"
+      "\"scripted_effect\":\"0x%llX\","
+      "\"scripted_vtable\":\"0x%llX\",\"scripted_vtable_rva\":\"0x%llX\","
+      "\"expected_scripted_vtable_rva\":\"0x%llX\","
+      "\"scripted_selector_count\":%d,\"expected_scripted_selector_count\":0,"
+      "\"scripted_template\":\"0x%llX\","
+      "\"template_vtable\":\"0x%llX\",\"template_vtable_rva\":\"0x%llX\","
+      "\"expected_template_vtable_rva\":\"0x%llX\","
+      "\"default_effect\":\"0x%llX\","
+      "\"default_vtable\":\"0x%llX\",\"default_vtable_rva\":\"0x%llX\","
+      "\"expected_default_vtable_rva\":\"0x%llX\","
+      "\"default_children\":\"0x%llX\","
+      "\"default_capacity\":%d,\"expected_default_capacity\":6,"
+      "\"default_count\":%d,\"expected_default_count\":5,"
+      "\"default_child_scan_index\":%llu,"
+      "\"default_child_vtable_rvas\":[\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\"],"
+      "\"expected_hidden_vtable_rva\":\"0x%llX\","
+      "\"hidden_count\":%llu,\"expected_hidden_count\":1,"
+      "\"hidden_index\":%llu,\"expected_hidden_index\":2,"
+      "\"hidden_effect\":\"0x%llX\",\"hidden_children\":\"0x%llX\","
+      "\"hidden_capacity\":%d,\"expected_hidden_capacity\":1,"
+      "\"hidden_child_count\":%d,\"expected_hidden_child_count\":1,"
+      "\"context_effect\":\"0x%llX\","
+      "\"context_vtable\":\"0x%llX\",\"context_vtable_rva\":\"0x%llX\","
+      "\"expected_context_vtable_rva\":\"0x%llX\","
+      "\"context_children\":\"0x%llX\","
+      "\"context_capacity\":%d,\"expected_context_capacity\":1,"
+      "\"context_child_count\":%d,\"expected_context_child_count\":1,"
+      "\"context_scope_count\":%d,\"expected_context_scope_count\":1,"
+      "\"truce_effect\":\"0x%llX\","
+      "\"truce_vtable\":\"0x%llX\",\"truce_vtable_rva\":\"0x%llX\","
+      "\"expected_truce_vtable_rva\":\"0x%llX\","
+      "\"duration_script_value\":\"0x%llX\"},"
       "\"context_destroyed\":%s}\r\n",
       war_id, casus_belli_database_index,
       primary_attacker_character_id, primary_defender_character_id,
@@ -97,6 +142,52 @@ void AppendG2TrucePrivateCaptureV1(
       observation.evaluator_double_read_stable ? "true" : "false",
       observation.same_frame_stable ? "true" : "false",
       observation.expiry_observable ? "true" : "false",
+      static_cast<int>(shape.failed_check.size()), shape.failed_check.data(),
+      static_cast<unsigned long long>(shape.root_vtable),
+      static_cast<unsigned long long>(as_rva(shape.root_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceJominiEffectVtableRva),
+      static_cast<unsigned long long>(shape.root_slot11),
+      static_cast<unsigned long long>(shape.root_children),
+      shape.root_capacity, shape.root_count,
+      static_cast<unsigned long long>(shape.scripted_effect),
+      static_cast<unsigned long long>(shape.scripted_vtable),
+      static_cast<unsigned long long>(as_rva(shape.scripted_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceScriptedEffectVtableRva),
+      shape.scripted_selector_count,
+      static_cast<unsigned long long>(shape.scripted_template),
+      static_cast<unsigned long long>(shape.template_vtable),
+      static_cast<unsigned long long>(as_rva(shape.template_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceScriptedTemplateVtableRva),
+      static_cast<unsigned long long>(shape.default_effect),
+      static_cast<unsigned long long>(shape.default_vtable),
+      static_cast<unsigned long long>(as_rva(shape.default_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceJominiEffectVtableRva),
+      static_cast<unsigned long long>(shape.default_children),
+      shape.default_capacity, shape.default_count,
+      static_cast<unsigned long long>(shape.default_child_scan_index),
+      static_cast<unsigned long long>(as_rva(shape.default_child_vtables[0])),
+      static_cast<unsigned long long>(as_rva(shape.default_child_vtables[1])),
+      static_cast<unsigned long long>(as_rva(shape.default_child_vtables[2])),
+      static_cast<unsigned long long>(as_rva(shape.default_child_vtables[3])),
+      static_cast<unsigned long long>(as_rva(shape.default_child_vtables[4])),
+      static_cast<unsigned long long>(kRaiktorTruceHiddenEffectVtableRva),
+      static_cast<unsigned long long>(shape.hidden_count),
+      static_cast<unsigned long long>(shape.hidden_index),
+      static_cast<unsigned long long>(shape.hidden_effect),
+      static_cast<unsigned long long>(shape.hidden_children),
+      shape.hidden_capacity, shape.hidden_child_count,
+      static_cast<unsigned long long>(shape.context_effect),
+      static_cast<unsigned long long>(shape.context_vtable),
+      static_cast<unsigned long long>(as_rva(shape.context_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceContextEffectVtableRva),
+      static_cast<unsigned long long>(shape.context_children),
+      shape.context_capacity, shape.context_child_count,
+      shape.context_scope_count,
+      static_cast<unsigned long long>(shape.truce_effect),
+      static_cast<unsigned long long>(shape.truce_vtable),
+      static_cast<unsigned long long>(as_rva(shape.truce_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceEffectVtableRva),
+      static_cast<unsigned long long>(shape.duration_script_value),
       context_destroyed ? "true" : "false");
   if (length <= 0 || static_cast<std::size_t>(length) >= row.size()) {
     return;

@@ -89,3 +89,62 @@ corresponding observed vtable/count/capacity value. It must again be
 OFF-by-default, run after an `open_kaishek` preflight, preserve the public v1
 wire, and issue no war-termination mutation. Only new exact-build evidence may
 justify an offset or shape-contract change.
+
+## Staged loaded-tree follow-up
+
+The next bounded follow-up used parent baseline
+`2c64c420666f0b0adacad783f732bcef7545e884` and the same frozen CK3,
+checkpoint, driver state, CharacterID, WarID, and paused date. The
+OFF-by-default candidate split every `ResolveUniqueTruceNode` read and
+comparison into a named private stage while preserving the production return
+codes and public wire. It recorded actual vtables, counts, and capacities only
+in the private JSONL sink.
+
+The required `open_kaishek` gate again bound clean main
+`17caa288eb980aab0b652358e9e94a9901131619` and CLI JAR SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`.
+The `ck3-war-days-trigger-11906` parser/validator preflight was GREEN; artifact:
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-staged-shape-capture-20260902T165942\open-kaishek-preflight.json`,
+SHA-256
+`5FB98B7BD312F97EB695BDA1DD8735AE9362DC20FB0F0752561211AFF053DB08`.
+Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `0FDAF90717B49E573CB39A00BB4B7FA8BF08F5DCF33EF8F8A0182792F762329B`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `B7909865ED03E6DD4E905CB7E4797341312CE16F8DA27ED8888AE3D864FE8779`.
+
+The single live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-staged-shape-capture-20260902T165942\live\report.json`,
+  SHA-256
+  `0DE94D78563A2A21256E9F28FFA87D445E4754AE3FE5688834010450CE336E06`;
+- private JSONL beside it, SHA-256
+  `D93DDF01465EED6F5F8B660276E22658B848ABA981D39DA88EFFA6832E748A28`.
+
+Both captured rows are identical and identify the first failed check as
+`root_capacity_mismatch`. The loaded root vtable RVA is `0x44CF030`, exactly
+matching the frozen `Jomini::Effect` vtable, and vtable slot 11 is non-null.
+The actual root vector is `capacity=13, count=12`; the stale reader contract
+expects `capacity=19, count=14`. All three values were read before the
+comparison, so the `count=12` evidence remains valid even though capacity is
+the first named failure. Traversal correctly stopped before dereferencing the
+hard-coded child index; no downstream scripted/template/hidden/context/truce
+shape was claimed. The duration evaluator was not invoked and both rows remain
+`evaluated_days=-1`, `pointer_shape_verified=false`, and
+`expiry_observable=false` with `context_destroyed=true`.
+
+The runner is RED only because the public paused double-sample semantic proof
+still cannot pass without duration. Cleanup is GREEN (`shutdown_ok=true`,
+`tree_gone=true`, `driver_closed=true`), no war-termination mutation or time
+advance was sent, and the source checkpoint/driver hashes remain unchanged.
+Focused validation passed the private source contract (`3/3`) and the native
+game-access fixture.
+
+This narrows the next reverse entry: enumerate the 12 actual root children in
+a private capture, record their vtables, and locate a unique
+`scripted_effect_vtable` child before changing the stale `19/14/index 9`
+contract. Do not blindly replace constants from this one boundary and do not
+repeat either prior undifferentiated probe. Public truce, expiry, decision, and
+action readiness remain unchanged; `GEN-034` is still unresolved.

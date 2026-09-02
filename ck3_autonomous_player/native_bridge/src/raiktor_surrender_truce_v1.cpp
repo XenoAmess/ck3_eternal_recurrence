@@ -28,6 +28,22 @@ constexpr std::int32_t kScriptDefaultCapacity = 6;
 constexpr std::int32_t kScriptDefaultCount = 5;
 constexpr std::size_t kScriptDefaultHiddenIndex = 2;
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+thread_local RaiktorTrucePrivateShapeCaptureV1 g_private_shape_capture{};
+#define XAR_G2_SHAPE_RESET() (g_private_shape_capture = {})
+#define XAR_G2_SHAPE_STAGE(value)                                         \
+  (g_private_shape_capture.failed_check = (value))
+#define XAR_G2_SHAPE_VALUE(member, value)                                 \
+  (g_private_shape_capture.member = (value))
+#define XAR_G2_SHAPE_ADDRESS(member, value)                               \
+  (g_private_shape_capture.member = reinterpret_cast<std::uintptr_t>(value))
+#else
+#define XAR_G2_SHAPE_RESET() ((void)0)
+#define XAR_G2_SHAPE_STAGE(value) ((void)0)
+#define XAR_G2_SHAPE_VALUE(member, value) ((void)0)
+#define XAR_G2_SHAPE_ADDRESS(member, value) ((void)0)
+#endif
+
 bool GuardedDirectRead(const void *address, void *output,
                        std::size_t size) noexcept {
   if (address == nullptr || output == nullptr || size == 0) return false;
@@ -128,26 +144,57 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
     const RaiktorSurrenderTruceAccessV1 &access, void *root,
     ResolvedTruceNodeV1 &output) noexcept {
   output = {};
+  XAR_G2_SHAPE_RESET();
   std::uintptr_t root_vtable = 0;
-  if (!ReadValue(access, root, 0, root_vtable) ||
-      root_vtable != environment.jomini_effect_vtable) {
+  if (!ReadValue(access, root, 0, root_vtable)) {
+    XAR_G2_SHAPE_STAGE("root_vtable_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_vtable_mismatch;
+  }
+  XAR_G2_SHAPE_VALUE(root_vtable, root_vtable);
+  if (root_vtable != environment.jomini_effect_vtable) {
+    XAR_G2_SHAPE_STAGE("root_vtable_mismatch");
     return RaiktorSurrenderTruceFailureV1::root_vtable_mismatch;
   }
   void *root_slot11 = nullptr;
   if (!ReadValue(access, reinterpret_cast<void *>(root_vtable),
-                 kLoadedEffectSlot11Offset, root_slot11) ||
-      root_slot11 == nullptr) {
+                 kLoadedEffectSlot11Offset, root_slot11)) {
+    XAR_G2_SHAPE_STAGE("root_slot11_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_slot11_missing;
+  }
+  XAR_G2_SHAPE_ADDRESS(root_slot11, root_slot11);
+  if (root_slot11 == nullptr) {
+    XAR_G2_SHAPE_STAGE("root_slot11_null");
     return RaiktorSurrenderTruceFailureV1::root_slot11_missing;
   }
 
   void *root_children = nullptr;
   std::int32_t root_capacity = -1;
   std::int32_t root_count = -1;
-  if (!ReadValue(access, root, kEffectChildrenOffset, root_children) ||
-      !ReadValue(access, root, kEffectCapacityOffset, root_capacity) ||
-      !ReadValue(access, root, kEffectCountOffset, root_count) ||
-      root_children == nullptr || root_capacity != kDefeatRootCapacity ||
-      root_count != kDefeatRootCount) {
+  if (!ReadValue(access, root, kEffectChildrenOffset, root_children)) {
+    XAR_G2_SHAPE_STAGE("root_children_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(root_children, root_children);
+  if (!ReadValue(access, root, kEffectCapacityOffset, root_capacity)) {
+    XAR_G2_SHAPE_STAGE("root_capacity_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(root_capacity, root_capacity);
+  if (!ReadValue(access, root, kEffectCountOffset, root_count)) {
+    XAR_G2_SHAPE_STAGE("root_count_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(root_count, root_count);
+  if (root_children == nullptr) {
+    XAR_G2_SHAPE_STAGE("root_children_null");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (root_capacity != kDefeatRootCapacity) {
+    XAR_G2_SHAPE_STAGE("root_capacity_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (root_count != kDefeatRootCount) {
+    XAR_G2_SHAPE_STAGE("root_count_mismatch");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
@@ -157,26 +204,64 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   void *scripted_template = nullptr;
   if (!ReadValue(access, root_children,
                  kDefeatRootTruceScriptIndex * sizeof(void *),
-                 scripted_effect) ||
-      scripted_effect == nullptr ||
-      !ReadValue(access, scripted_effect, 0, scripted_vtable) ||
-      scripted_vtable != environment.scripted_effect_vtable ||
-      !ReadValue(access, scripted_effect, kScriptedSelectorCountOffset,
-                 selector_count) ||
-      selector_count != 0 ||
-      !ReadValue(access, scripted_effect, kScriptedTemplateOffset,
-                 scripted_template) ||
-      scripted_template == nullptr) {
+                 scripted_effect)) {
+    XAR_G2_SHAPE_STAGE("scripted_effect_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(scripted_effect, scripted_effect);
+  if (scripted_effect == nullptr) {
+    XAR_G2_SHAPE_STAGE("scripted_effect_null");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (!ReadValue(access, scripted_effect, 0, scripted_vtable)) {
+    XAR_G2_SHAPE_STAGE("scripted_vtable_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(scripted_vtable, scripted_vtable);
+  if (scripted_vtable != environment.scripted_effect_vtable) {
+    XAR_G2_SHAPE_STAGE("scripted_vtable_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (!ReadValue(access, scripted_effect, kScriptedSelectorCountOffset,
+                 selector_count)) {
+    XAR_G2_SHAPE_STAGE("scripted_selector_count_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(scripted_selector_count, selector_count);
+  if (selector_count != 0) {
+    XAR_G2_SHAPE_STAGE("scripted_selector_count_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (!ReadValue(access, scripted_effect, kScriptedTemplateOffset,
+                 scripted_template)) {
+    XAR_G2_SHAPE_STAGE("scripted_template_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(scripted_template, scripted_template);
+  if (scripted_template == nullptr) {
+    XAR_G2_SHAPE_STAGE("scripted_template_null");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
   std::uintptr_t template_vtable = 0;
   void *default_effect = nullptr;
-  if (!ReadValue(access, scripted_template, 0, template_vtable) ||
-      template_vtable != environment.scripted_template_vtable ||
-      !ReadValue(access, scripted_template, kTemplateDefaultEffectOffset,
-                 default_effect) ||
-      default_effect == nullptr) {
+  if (!ReadValue(access, scripted_template, 0, template_vtable)) {
+    XAR_G2_SHAPE_STAGE("template_vtable_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(template_vtable, template_vtable);
+  if (template_vtable != environment.scripted_template_vtable) {
+    XAR_G2_SHAPE_STAGE("template_vtable_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (!ReadValue(access, scripted_template, kTemplateDefaultEffectOffset,
+                 default_effect)) {
+    XAR_G2_SHAPE_STAGE("default_effect_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(default_effect, default_effect);
+  if (default_effect == nullptr) {
+    XAR_G2_SHAPE_STAGE("default_effect_null");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
@@ -184,16 +269,42 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   void *default_children = nullptr;
   std::int32_t default_capacity = -1;
   std::int32_t default_count = -1;
-  if (!ReadValue(access, default_effect, 0, default_vtable) ||
-      default_vtable != environment.jomini_effect_vtable ||
-      !ReadValue(access, default_effect, kEffectChildrenOffset,
-                 default_children) ||
-      !ReadValue(access, default_effect, kEffectCapacityOffset,
-                 default_capacity) ||
-      !ReadValue(access, default_effect, kEffectCountOffset, default_count) ||
-      default_children == nullptr ||
-      default_capacity != kScriptDefaultCapacity ||
-      default_count != kScriptDefaultCount) {
+  if (!ReadValue(access, default_effect, 0, default_vtable)) {
+    XAR_G2_SHAPE_STAGE("default_vtable_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(default_vtable, default_vtable);
+  if (default_vtable != environment.jomini_effect_vtable) {
+    XAR_G2_SHAPE_STAGE("default_vtable_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (!ReadValue(access, default_effect, kEffectChildrenOffset,
+                 default_children)) {
+    XAR_G2_SHAPE_STAGE("default_children_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(default_children, default_children);
+  if (!ReadValue(access, default_effect, kEffectCapacityOffset,
+                 default_capacity)) {
+    XAR_G2_SHAPE_STAGE("default_capacity_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(default_capacity, default_capacity);
+  if (!ReadValue(access, default_effect, kEffectCountOffset, default_count)) {
+    XAR_G2_SHAPE_STAGE("default_count_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(default_count, default_count);
+  if (default_children == nullptr) {
+    XAR_G2_SHAPE_STAGE("default_children_null");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (default_capacity != kScriptDefaultCapacity) {
+    XAR_G2_SHAPE_STAGE("default_capacity_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (default_count != kScriptDefaultCount) {
+    XAR_G2_SHAPE_STAGE("default_count_mismatch");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
@@ -202,19 +313,37 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   std::size_t hidden_index = 0;
   for (std::size_t index = 0;
        index < static_cast<std::size_t>(kScriptDefaultCount); ++index) {
+    XAR_G2_SHAPE_VALUE(default_child_scan_index, index);
     void *child = nullptr;
     std::uintptr_t child_vtable = 0;
-    if (!ReadValue(access, default_children, index * sizeof(void *), child) ||
-        child == nullptr || !ReadValue(access, child, 0, child_vtable)) {
+    if (!ReadValue(access, default_children, index * sizeof(void *), child)) {
+      XAR_G2_SHAPE_STAGE("default_child_read_failed");
       return RaiktorSurrenderTruceFailureV1::root_shape_drift;
     }
+    if (child == nullptr) {
+      XAR_G2_SHAPE_STAGE("default_child_null");
+      return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+    }
+    if (!ReadValue(access, child, 0, child_vtable)) {
+      XAR_G2_SHAPE_STAGE("default_child_vtable_read_failed");
+      return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+    }
+    XAR_G2_SHAPE_VALUE(default_child_vtables[index], child_vtable);
     if (child_vtable == environment.hidden_effect_vtable) {
       ++hidden_count;
       hidden_effect = child;
       hidden_index = index;
     }
   }
-  if (hidden_count != 1 || hidden_index != kScriptDefaultHiddenIndex) {
+  XAR_G2_SHAPE_VALUE(hidden_count, hidden_count);
+  XAR_G2_SHAPE_VALUE(hidden_index, hidden_index);
+  XAR_G2_SHAPE_ADDRESS(hidden_effect, hidden_effect);
+  if (hidden_count != 1) {
+    XAR_G2_SHAPE_STAGE("hidden_count_mismatch");
+    return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
+  }
+  if (hidden_index != kScriptDefaultHiddenIndex) {
+    XAR_G2_SHAPE_STAGE("hidden_index_mismatch");
     return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
   }
 
@@ -222,22 +351,54 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   std::int32_t hidden_capacity = -1;
   std::int32_t hidden_child_count = -1;
   if (!ReadValue(access, hidden_effect, kEffectChildrenOffset,
-                 hidden_children) ||
-      !ReadValue(access, hidden_effect, kEffectCapacityOffset,
-                 hidden_capacity) ||
-      !ReadValue(access, hidden_effect, kEffectCountOffset,
-                 hidden_child_count) ||
-      hidden_children == nullptr || hidden_capacity != 1 ||
-      hidden_child_count != 1) {
+                 hidden_children)) {
+    XAR_G2_SHAPE_STAGE("hidden_children_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(hidden_children, hidden_children);
+  if (!ReadValue(access, hidden_effect, kEffectCapacityOffset,
+                 hidden_capacity)) {
+    XAR_G2_SHAPE_STAGE("hidden_capacity_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(hidden_capacity, hidden_capacity);
+  if (!ReadValue(access, hidden_effect, kEffectCountOffset,
+                 hidden_child_count)) {
+    XAR_G2_SHAPE_STAGE("hidden_child_count_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(hidden_child_count, hidden_child_count);
+  if (hidden_children == nullptr) {
+    XAR_G2_SHAPE_STAGE("hidden_children_null");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (hidden_capacity != 1) {
+    XAR_G2_SHAPE_STAGE("hidden_capacity_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (hidden_child_count != 1) {
+    XAR_G2_SHAPE_STAGE("hidden_child_count_mismatch");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
   void *context_effect = nullptr;
   std::uintptr_t context_vtable = 0;
-  if (!ReadValue(access, hidden_children, 0, context_effect) ||
-      context_effect == nullptr ||
-      !ReadValue(access, context_effect, 0, context_vtable) ||
-      context_vtable != environment.context_effect_vtable) {
+  if (!ReadValue(access, hidden_children, 0, context_effect)) {
+    XAR_G2_SHAPE_STAGE("context_effect_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(context_effect, context_effect);
+  if (context_effect == nullptr) {
+    XAR_G2_SHAPE_STAGE("context_effect_null");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (!ReadValue(access, context_effect, 0, context_vtable)) {
+    XAR_G2_SHAPE_STAGE("context_vtable_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(context_vtable, context_vtable);
+  if (context_vtable != environment.context_effect_vtable) {
+    XAR_G2_SHAPE_STAGE("context_vtable_mismatch");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
@@ -246,36 +407,88 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   std::int32_t context_child_count = -1;
   std::int32_t context_scope_count = -1;
   if (!ReadValue(access, context_effect, kEffectChildrenOffset,
-                 context_children) ||
-      !ReadValue(access, context_effect, kEffectCapacityOffset,
-                 context_capacity) ||
-      !ReadValue(access, context_effect, kEffectCountOffset,
-                 context_child_count) ||
-      !ReadValue(access, context_effect, kContextScopeCountOffset,
-                 context_scope_count) ||
-      context_children == nullptr || context_capacity != 1 ||
-      context_child_count != 1 || context_scope_count != 1) {
+                 context_children)) {
+    XAR_G2_SHAPE_STAGE("context_children_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_ADDRESS(context_children, context_children);
+  if (!ReadValue(access, context_effect, kEffectCapacityOffset,
+                 context_capacity)) {
+    XAR_G2_SHAPE_STAGE("context_capacity_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(context_capacity, context_capacity);
+  if (!ReadValue(access, context_effect, kEffectCountOffset,
+                 context_child_count)) {
+    XAR_G2_SHAPE_STAGE("context_child_count_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(context_child_count, context_child_count);
+  if (!ReadValue(access, context_effect, kContextScopeCountOffset,
+                 context_scope_count)) {
+    XAR_G2_SHAPE_STAGE("context_scope_count_read_failed");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  XAR_G2_SHAPE_VALUE(context_scope_count, context_scope_count);
+  if (context_children == nullptr) {
+    XAR_G2_SHAPE_STAGE("context_children_null");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (context_capacity != 1) {
+    XAR_G2_SHAPE_STAGE("context_capacity_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (context_child_count != 1) {
+    XAR_G2_SHAPE_STAGE("context_child_count_mismatch");
+    return RaiktorSurrenderTruceFailureV1::root_shape_drift;
+  }
+  if (context_scope_count != 1) {
+    XAR_G2_SHAPE_STAGE("context_scope_count_mismatch");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
 
   void *truce_effect = nullptr;
   std::uintptr_t truce_vtable = 0;
   const void *duration_address = nullptr;
-  if (!ReadValue(access, context_children, 0, truce_effect) ||
-      truce_effect == nullptr ||
-      !ReadValue(access, truce_effect, 0, truce_vtable) ||
-      truce_vtable != environment.truce_effect_vtable ||
-      !CheckedAddress(truce_effect, kTruceDurationScriptValueOffset,
-                      duration_address)) {
+  if (!ReadValue(access, context_children, 0, truce_effect)) {
+    XAR_G2_SHAPE_STAGE("truce_effect_read_failed");
     return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
   }
+  XAR_G2_SHAPE_ADDRESS(truce_effect, truce_effect);
+  if (truce_effect == nullptr) {
+    XAR_G2_SHAPE_STAGE("truce_effect_null");
+    return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
+  }
+  if (!ReadValue(access, truce_effect, 0, truce_vtable)) {
+    XAR_G2_SHAPE_STAGE("truce_vtable_read_failed");
+    return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
+  }
+  XAR_G2_SHAPE_VALUE(truce_vtable, truce_vtable);
+  if (truce_vtable != environment.truce_effect_vtable) {
+    XAR_G2_SHAPE_STAGE("truce_vtable_mismatch");
+    return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
+  }
+  if (!CheckedAddress(truce_effect, kTruceDurationScriptValueOffset,
+                      duration_address)) {
+    XAR_G2_SHAPE_STAGE("duration_script_value_address_failed");
+    return RaiktorSurrenderTruceFailureV1::caddtruce_not_unique;
+  }
+  XAR_G2_SHAPE_ADDRESS(duration_script_value, duration_address);
 
   output.node = truce_effect;
   output.duration_script_value = const_cast<void *>(duration_address);
+  XAR_G2_SHAPE_STAGE("complete");
   return RaiktorSurrenderTruceFailureV1::none;
 }
 
 } // namespace
+
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+const RaiktorTrucePrivateShapeCaptureV1 &
+LastRaiktorTrucePrivateShapeCaptureV1() noexcept {
+  return g_private_shape_capture;
+}
+#endif
 
 std::string_view RaiktorSurrenderTruceFailureReasonV1(
     RaiktorSurrenderTruceFailureV1 failure) noexcept {
