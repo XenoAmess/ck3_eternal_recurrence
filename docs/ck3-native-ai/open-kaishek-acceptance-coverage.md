@@ -274,3 +274,25 @@ rebuilt CLI JAR SHA-256 is
 The two initial CI failures were caused by a missing preflight registration;
 the follow-up commit `638f4c0` contains that fix, while its final CI was still
 in progress at handoff.  No phase-two or G2 readiness label changes.
+
+## 2026-09-02 12:45 `can_be_acclaimed` schema slice
+
+The accelerator then advanced to `main == origin/main == 759199b`.  The
+exact-build-backed `can_be_acclaimed` descriptor is a schema-only
+`TRIGGER/CHARACTER/BOOLEAN` shape with zero parameters, deterministic
+read-only metadata, and `certified=false`.  It is intentionally separate
+from `is_acclaimed`: the native leaf at `0x2819200` enters the full
+qualification evaluator `0x28A4870`, but this slice does not invoke that
+evaluator, add an `ACCOLADE` scope, or claim runtime semantics.
+
+Profile, validator, ZG361 fixture, OfflinePreflight, package, and CLI smoke
+checks passed once.  The parent preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\kaishek-can-be-acclaimed-20260902.json`
+(SHA-256
+`503BA9C9F7D49E4154BC6B0FD29E763A59FD1AAC1BA3AED24767C29DC4ABE409`).
+Its parser/validator stages are `1 file / 163 bytes / 0 diagnostics`,
+IR/runtime are `SKIPPED`, and `ck3_started=false`, `save_mutated=false`,
+`network_used=false`.  The rebuilt CLI JAR SHA-256 is
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`.
+The final open_k CI runs `33592356916` and `33592340523` both completed
+successfully; no parent CK3 or G2/phase2 readiness label changed.
