@@ -39,6 +39,7 @@ from typing import Any, Callable
 import zipfile
 
 import kaishek_preflight
+from zg361_phase2_acceptance_observer_gate import evaluate_observer_gate
 
 
 EXPECTED_ENABLED_MODS = (
@@ -87,6 +88,11 @@ class CaptureConfig:
     keyboard_watchdog_interval_seconds: float = (
         DEFAULT_KEYBOARD_WATCHDOG_INTERVAL_SECONDS
     )
+    # Optional static handshake for the next private Phase-2 observer.  The
+    # contract is part of the frozen source; its native seam manifest remains
+    # external until the native implementation is ready.
+    list_domain_observer_gate: bool = False
+    acceptance_observer_manifest: Path | None = None
     # CLI-only mode that stops before any native session or bridge transport
     # is started.  Full capture remains the default for existing callers.
     preflight_only: bool = False
@@ -107,6 +113,11 @@ class CaptureConfig:
                 self.seed_contract.resolve()
                 if self.seed_contract is not None
                 else clean_source / "tools" / "zg361_phase2_seed_contract.json"
+            ),
+            acceptance_observer_manifest=(
+                self.acceptance_observer_manifest.resolve()
+                if self.acceptance_observer_manifest is not None
+                else None
             ),
         )
 
@@ -138,6 +149,14 @@ class CaptureConfig:
     @property
     def vanilla_game_rules(self) -> Path:
         return self.game_dir / "game" / "common" / "game_rules" / "00_game_rules.txt"
+
+    @property
+    def acceptance_observer_contract(self) -> Path:
+        return (
+            self.clean_source
+            / "tools"
+            / "zg361_phase2_list_domain_acceptance_contract.json"
+        )
 
 
 @dataclass(frozen=True)
@@ -462,6 +481,23 @@ def validate_config(config: CaptureConfig) -> None:
     for label, path in required_files.items():
         if not isinstance(path, Path) or not path.is_file():
             raise SeedCaptureError(f"{label} is missing: {path}")
+    observer_gate_enabled = (
+        config.list_domain_observer_gate
+        or config.acceptance_observer_manifest is not None
+    )
+    if observer_gate_enabled and not config.acceptance_observer_contract.is_file():
+        raise SeedCaptureError(
+            "list-domain acceptance observer contract is missing: "
+            f"{config.acceptance_observer_contract}"
+        )
+    if (
+        config.acceptance_observer_manifest is not None
+        and not config.acceptance_observer_manifest.is_file()
+    ):
+        raise SeedCaptureError(
+            "native observer seam manifest is missing: "
+            f"{config.acceptance_observer_manifest}"
+        )
     if GIT_SHA_PATTERN.fullmatch(config.frozen_git_sha) is None:
         raise SeedCaptureError("frozen git SHA must be exactly 40 hexadecimal digits")
     if not config.pipe_name.startswith(PIPE_PREFIX):
@@ -1219,6 +1255,35 @@ def _run_seed_static_preflight(
     return evidence
 
 
+def _run_list_domain_observer_gate(
+    config: CaptureConfig,
+    artifacts: Path,
+    *,
+    game_version: str,
+    dependency_hashes: dict[str, str],
+) -> dict[str, Any] | None:
+    """Freeze the next observer seam without selecting a native address here."""
+
+    enabled = (
+        config.list_domain_observer_gate
+        or config.acceptance_observer_manifest is not None
+    )
+    if not enabled:
+        return None
+    gate = evaluate_observer_gate(
+        contract_path=config.acceptance_observer_contract,
+        observer_manifest_path=config.acceptance_observer_manifest,
+        clean_source=config.clean_source,
+        frozen_git_commit=config.frozen_git_sha,
+        game_version=game_version,
+        game_executable_sha256=dependency_hashes["game_executable"],
+        bridge_dll_sha256=dependency_hashes["bridge_dll"],
+        bridge_injector_sha256=dependency_hashes["bridge_injector"],
+    )
+    write_json(artifacts / "list-domain-observer-gate.json", gate)
+    return gate
+
+
 def run_preflight(
     raw_config: CaptureConfig,
     *,
@@ -1265,6 +1330,17 @@ def run_preflight(
             "state": str(config.state_dir),
             "profile": str(config.profile_dir),
             "seed_contract": str(config.seed_contract),
+            "acceptance_observer_contract": (
+                str(config.acceptance_observer_contract)
+                if config.list_domain_observer_gate
+                or config.acceptance_observer_manifest is not None
+                else None
+            ),
+            "acceptance_observer_manifest": (
+                str(config.acceptance_observer_manifest)
+                if config.acceptance_observer_manifest is not None
+                else None
+            ),
         },
         "desktop_interaction": False,
         "mcp_only": True,
@@ -1281,6 +1357,7 @@ def run_preflight(
         "external_dependencies": None,
         "bootstrap": None,
         "bridge": None,
+        "list_domain_observer_gate": None,
         "static_preflight": None,
         "failure_reason": None,
         "failure_evidence": None,
@@ -1386,6 +1463,10 @@ def run_preflight(
             "bridge_dll": config.bridge_dll,
             "bridge_injector": config.bridge_injector,
         }
+        if config.acceptance_observer_manifest is not None:
+            dependency_paths["acceptance_observer_manifest"] = (
+                config.acceptance_observer_manifest
+            )
         dependency_hashes_before = {
             name: sha256_file(path) for name, path in dependency_paths.items()
         }
@@ -1417,6 +1498,23 @@ def run_preflight(
             },
         }
         report["checks"]["external_dependencies"] = "GREEN"
+
+        report["list_domain_observer_gate"] = _run_list_domain_observer_gate(
+            config,
+            artifacts,
+            game_version=observed_game_version,
+            dependency_hashes=dependency_hashes_before,
+        )
+        if report["list_domain_observer_gate"] is not None:
+            report["checks"]["list_domain_observer_gate"] = report[
+                "list_domain_observer_gate"
+            ]["result"]
+            if report["list_domain_observer_gate"]["result"] != "GREEN":
+                raise SeedCaptureError(
+                    "list-domain observer gate blocked: "
+                    f"{report['list_domain_observer_gate'].get('failure_reason')}",
+                    report["list_domain_observer_gate"],
+                )
 
         bridge = zgrun.resolve_native_bridge_config(
             config.bridge_dll, config.bridge_injector, config.pipe_name
@@ -1683,6 +1781,17 @@ def run_capture(
             "state": str(config.state_dir),
             "profile": str(config.profile_dir),
             "seed_contract": str(config.seed_contract),
+            "acceptance_observer_contract": (
+                str(config.acceptance_observer_contract)
+                if config.list_domain_observer_gate
+                or config.acceptance_observer_manifest is not None
+                else None
+            ),
+            "acceptance_observer_manifest": (
+                str(config.acceptance_observer_manifest)
+                if config.acceptance_observer_manifest is not None
+                else None
+            ),
         },
         "mcp_only": True,
         "gameplay_control_transport": "MCP-only",
@@ -1701,6 +1810,7 @@ def run_capture(
         },
         "source_identity": None,
         "external_dependencies": None,
+        "list_domain_observer_gate": None,
         "bridge": None,
         "bootstrap": None,
         "binding": None,
@@ -1822,6 +1932,10 @@ def run_capture(
             "bridge_dll": config.bridge_dll,
             "bridge_injector": config.bridge_injector,
         }
+        if config.acceptance_observer_manifest is not None:
+            dependency_paths["acceptance_observer_manifest"] = (
+                config.acceptance_observer_manifest
+            )
         dependency_hashes_before = {
             name: sha256_file(path) for name, path in dependency_paths.items()
         }
@@ -1847,6 +1961,22 @@ def run_capture(
             "expected_game_version": expected_game_version,
             "expected_executable_sha256": expected_executable_sha,
         }
+
+        report["list_domain_observer_gate"] = _run_list_domain_observer_gate(
+            config,
+            artifacts,
+            game_version=observed_game_version,
+            dependency_hashes=dependency_hashes_before,
+        )
+        if (
+            report["list_domain_observer_gate"] is not None
+            and report["list_domain_observer_gate"]["result"] != "GREEN"
+        ):
+            raise SeedCaptureError(
+                "list-domain observer gate blocked: "
+                f"{report['list_domain_observer_gate'].get('failure_reason')}",
+                report["list_domain_observer_gate"],
+            )
 
         bootstrap = zgrun.bootstrap_userdir(config.profile_dir, config.product_source)
         enabled_mods = tuple(bootstrap.get("enabled_mods", ()))
@@ -2305,6 +2435,19 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         action="store_true",
         help="validate frozen inputs and projections without launching CK3",
     )
+    parser.add_argument(
+        "--list-domain-observer-gate",
+        action="store_true",
+        help=(
+            "require the frozen 0x817C20 list-domain observer handshake; "
+            "without a native seam manifest this produces a typed no-launch RED"
+        ),
+    )
+    parser.add_argument(
+        "--acceptance-observer-manifest",
+        type=Path,
+        help="native-team seam manifest bound to this source and bridge build",
+    )
     args = parser.parse_args(argv)
     return CaptureConfig(
         clean_source=args.clean_source,
@@ -2326,6 +2469,8 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         keyboard_watchdog_interval_seconds=(
             args.keyboard_watchdog_interval_seconds
         ),
+        list_domain_observer_gate=args.list_domain_observer_gate,
+        acceptance_observer_manifest=args.acceptance_observer_manifest,
         preflight_only=args.preflight_only,
     )
 

@@ -996,6 +996,139 @@ def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
         require(persisted == report, "preflight artifact differs from return value")
 
 
+def _install_list_domain_contract(fixture: Fixture) -> Path:
+    source = Path(capture.__file__).with_name(
+        "zg361_phase2_list_domain_acceptance_contract.json"
+    )
+    target = fixture.clean / "tools" / source.name
+    shutil.copy2(source, target)
+    fixture.rebuild_source_zip()
+    return target
+
+
+def test_list_domain_observer_pending_is_typed_no_launch_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        _install_list_domain_contract(fixture)
+        calls: list[str] = []
+        config = replace(fixture.config(), list_domain_observer_gate=True)
+        report = capture.run_preflight(
+            config,
+            runtime=fixture.runtime(calls),
+            _allow_fixture_static_skip=True,
+        )
+        gate = report["list_domain_observer_gate"]
+        require(report["result"] == "RED", "missing native seam false-GREENed")
+        require(isinstance(gate, dict), "typed observer gate was not embedded")
+        require(
+            gate.get("status") == "waiting-native-seam"
+            and gate.get("failure_reason") == "native_observer_manifest_pending",
+            "missing native seam was not classified as waiting",
+        )
+        require(
+            gate.get("known_live_input", {}).get("callback_slot2_rva")
+            == "0x817C20",
+            "known list-domain input drifted",
+        )
+        require("supervisor-start" not in calls, "pending seam crossed launch boundary")
+        require("driver-open" not in calls, "pending seam opened a bridge driver")
+        require(report["ck3_launch_attempted"] is False, "pending seam claimed launch")
+        require(
+            (fixture.artifacts / "list-domain-observer-gate.json").is_file(),
+            "pending seam gate artifact is missing",
+        )
+        require(
+            (fixture.artifacts / "source-tree-manifest.before.json").is_file(),
+            "pending seam did not preserve the frozen source manifest",
+        )
+
+
+def test_list_domain_observer_manifest_binds_frozen_no_launch_inputs() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        _install_list_domain_contract(fixture)
+        abi = fixture.clean / "ck3_autonomous_player" / "native_bridge" / "research" / "next_observer_abi.json"
+        source_contract = fixture.clean / "ck3_autonomous_player" / "native_bridge" / "research" / "next_observer_contract.json"
+        abi.parent.mkdir(parents=True, exist_ok=True)
+        abi.write_text('{"schema_version":1}\n', encoding="utf-8")
+        source_contract.write_text('{"schema_version":1}\n', encoding="utf-8")
+        fixture.rebuild_source_zip()
+        canonical = json.loads(
+            (fixture.clean / "tools" / "zg361_phase2_list_domain_acceptance_contract.json").read_text(encoding="utf-8")
+        )
+        manifest = fixture.root / "native-observer-seam.json"
+        manifest.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "kind": "zg361_phase2_native_observer_seam",
+                    "result": "GREEN",
+                    "source_git_commit": fixture.git_sha,
+                    "exact_build": {
+                        "game_version": "1.19.0.6",
+                        "game_executable_sha256": sha256(fixture.game / "binaries" / "ck3.exe"),
+                    },
+                    "build": {
+                        "private_option": "XAR_CK3_ENABLE_PHASE2_NEXT_OBSERVER_V1",
+                        "private_option_enabled": True,
+                        "bridge_dll_sha256": sha256(fixture.dll),
+                        "bridge_injector_sha256": sha256(fixture.injector),
+                    },
+                    "seam": {
+                        "hooks": [
+                            {"rva": "0x3B9CFD2", "anchor_sha256": "b" * 64},
+                            {"rva": "0x3B9CFD7", "anchor_sha256": "c" * 64},
+                        ],
+                        "task_register": "RBX",
+                        "callback_field_offset": "0x38",
+                        "heartbeat_object": "phase2_next_observer_v1",
+                        "prior_list_domain_callback_slot2_rva": "0x817C20",
+                        "abi": {
+                            "path": abi.relative_to(fixture.clean).as_posix(),
+                            "sha256": sha256(abi),
+                        },
+                        "source_contract": {
+                            "path": source_contract.relative_to(fixture.clean).as_posix(),
+                            "sha256": sha256(source_contract),
+                        },
+                    },
+                    "report_contract": {
+                        "schema": "phase2_next_observer_v1",
+                        "artifact_name": "phase2-next-observer.json",
+                        "required_fields": canonical["native_seam"]["required_report_fields"],
+                    },
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        calls: list[str] = []
+        config = replace(
+            fixture.config(),
+            list_domain_observer_gate=True,
+            acceptance_observer_manifest=manifest,
+        )
+        report = capture.run_preflight(
+            config,
+            runtime=fixture.runtime(calls),
+            _allow_fixture_static_skip=True,
+        )
+        gate = report["list_domain_observer_gate"]
+        require(report["result"] == "GREEN", "valid frozen seam did not preflight")
+        require(
+            isinstance(gate, dict)
+            and gate.get("status") == "static-wiring-ready"
+            and gate.get("runner_observer_gate_ready") is True,
+            "valid native seam did not satisfy the static wiring gate",
+        )
+        require(
+            report["external_dependencies"]["sha256_before"]["acceptance_observer_manifest"]
+            == sha256(manifest),
+            "native seam manifest was not frozen as an external dependency",
+        )
+        require("supervisor-start" not in calls, "no-launch seam test started CK3")
+
+
 def test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
@@ -1235,6 +1368,12 @@ def test_runner_import_guard_prevents_clean_source_bytecode() -> None:
             Path(capture.__file__).with_name("kaishek_preflight.py"),
             tools_dir / "kaishek_preflight.py",
         )
+        shutil.copy2(
+            Path(capture.__file__).with_name(
+                "zg361_phase2_acceptance_observer_gate.py"
+            ),
+            tools_dir / "zg361_phase2_acceptance_observer_gate.py",
+        )
         script = tools_dir / "run_zg361_phase2_seed_capture.py"
         environment = {
             key: value
@@ -1280,6 +1419,9 @@ def test_static_contract() -> None:
         "--injector",
         "--pipe",
         "--preflight-only",
+        "--list-domain-observer-gate",
+        "--acceptance-observer-manifest",
+        "list-domain-observer-gate.json",
         "def run_preflight(",
         '"launch_boundary": "not-crossed"',
         '"ck3_launch_attempted": False',
@@ -1321,6 +1463,8 @@ def main() -> int:
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
     test_no_launch_preflight_green_does_not_cross_native_boundary()
+    test_list_domain_observer_pending_is_typed_no_launch_red()
+    test_list_domain_observer_manifest_binds_frozen_no_launch_inputs()
     test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override()
     test_no_launch_preflight_running_ck3_is_persisted_red()
     test_source_zip_mismatch_is_preserved()

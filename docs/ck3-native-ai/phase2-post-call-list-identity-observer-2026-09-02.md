@@ -20,7 +20,39 @@ quiescent unload. Its atomic odd/even snapshot sequence keeps heartbeat reads
 consistent with the bounded writer. It does not coexist with the older private
 observer because both own the same RVA.
 
-This package is source-ready only. It does not start CK3 and does not change the
-public bridge ABI or readiness. A future single bounded live can directly list
-the 27 slot-2 RVAs, state whether `0x88B480` occurs, and map every retained
-task/owner to its callback target.
+The single bounded live subsequently captured one internally consistent
+27-descriptor snapshot. All 27 callback slot-2 RVAs were `0x817C20`, all shared
+one owner, states were 25 at 1 and 2 at 0, and `0x88B480` occurred zero times.
+There were no read, truncation, capacity, or contention errors. Exact-build
+static classification then identified `0x817C20` as the
+`SPdxParallelForOverArray` range worker: 278 RTTI vtable slot-2 references point
+to it. It is not a loader completion callback, so this observer/live shape must
+not be repeated.
+
+## Acceptance wiring for the next observer
+
+The seed/paused runner has an opt-in static handshake:
+
+```text
+--list-domain-observer-gate
+--acceptance-observer-manifest <frozen-native-seam.json>
+```
+
+The canonical source contract is
+`tools/zg361_phase2_list_domain_acceptance_contract.json`. With only the first
+flag, no-launch preflight preserves its source/ZIP/dependency manifests and
+returns typed `native_observer_manifest_pending`; it cannot reach the native
+supervisor or bridge driver. Supplying a native manifest also freezes that
+manifest as an external dependency and checks the exact source commit, game
+build, private DLL/injector hashes, and source-relative ABI/source-contract
+hashes. Existing seed/paused calls that do not opt in are unchanged.
+
+The verified next seam is the real producer pair `0x3B9CFD2` and `0x3B9CFD7`.
+At each entry it observes the `RBX` task and the callback object at
+`[RBX+0x38]`; the report contract requires both entry counters plus the last
+task pointer, callback pointer, callback vptr, callback slot 2 and slot-2 RVA,
+read failures, last thread and timestamp. Acceptance does not choose another
+address. The remaining native-owned manifest fields are the two anchor hashes,
+private option and heartbeat name, ABI/source-contract paths and hashes, and
+the final report schema/artifact name. Until those fields arrive, this is
+`static-ready` wiring only and no CK3 attempt is authorized.

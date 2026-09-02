@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_list_domain_acceptance_contract",
+  "status": "waiting-native-seam",
+  "known_live_input": {
+    "observed_list_count": 27,
+    "callback_slot2_rva": "0x817C20",
+    "callback_slot2_match_count": 27,
+    "state_counts": {
+      "0": 2,
+      "1": 25
+    },
+    "selected_loader_callback_slot2_rva": "0x88B480",
+    "selected_loader_match_count": 0,
+    "classification": "SPdxParallelForOverArray range worker",
+    "rtti_vtable_slot2_reference_count": 278,
+    "conclusion": "the observed post-call list is a parallel-for range-worker domain, not the loader completion consumer list",
+    "repeat_live_forbidden": true
+  },
+  "native_seam": {
+    "hook_rvas": [
+      "0x3B9CFD2",
+      "0x3B9CFD7"
+    ],
+    "hook_anchor_sha256": {
+      "0x3B9CFD2": null,
+      "0x3B9CFD7": null
+    },
+    "task_register": "RBX",
+    "callback_field_offset": "0x38",
+    "private_build_option": null,
+    "heartbeat_object": null,
+    "abi_path": null,
+    "abi_sha256": null,
+    "source_contract_path": null,
+    "source_contract_sha256": null,
+    "report_schema": null,
+    "report_artifact_name": null,
+    "required_report_fields": [
+      "installed",
+      "failure",
+      "producer_0x3B9CFD2_entry_count",
+      "producer_0x3B9CFD7_entry_count",
+      "last_task_pointer",
+      "last_callback_pointer",
+      "last_callback_vptr",
+      "last_callback_slot2",
+      "last_callback_slot2_rva",
+      "read_failure_count",
+      "last_thread_id",
+      "last_timestamp_qpc"
+    ]
+  },
+  "acceptance_gate": {
+    "exact_source_commit": true,
+    "exact_game_build": true,
+    "private_bridge_binary_hash": true,
+    "injector_binary_hash": true,
+    "source_manifest_bound_abi_and_contract": true,
+    "no_launch_preflight_required": true,
+    "fresh_attempt_and_artifacts_required": true
+  }
+}
