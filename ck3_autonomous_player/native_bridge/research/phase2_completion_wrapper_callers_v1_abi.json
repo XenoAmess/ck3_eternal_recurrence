@@ -1,0 +1,78 @@
+{
+  "contract": "phase2-completion-wrapper-callers-v1",
+  "schema_version": 1,
+  "status": "static-caller-bound-runtime-owner-unresolved",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "c6efcf3145919a91d14a3a65803502feaa54c0cd"
+  },
+  "evidence": {
+    "extractor": "extract_phase2_completion_wrapper_callers.py",
+    "extractor_sha256": "EF293D11832DC611484085911D94E340E7B2EFD7733F49CF99DA227C487AD269",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\completion-wrapper-callers-static-extract.json",
+    "artifact_sha256": "6BF4F6E2A8BD68355F1E74C230D7FF66E65052FDFA045A7250BE6E5B28FE6EA3"
+  },
+  "wrapper": {
+    "function_rva": "0x3B9E030",
+    "function_end_rva_exclusive": "0x3B9E266",
+    "unwind_rva": "0x4F101D4",
+    "bytes_sha256": "C311284A4604FF68449A7C84CE8A607FA1175A2E6539F4F537FE28CF841CE249",
+    "entry_anchor_hex": "48895C240848896C24184889742420",
+    "return_rva": "0x3B9E265"
+  },
+  "direct_callers": {
+    "callsite_count": 618,
+    "callsite_list_sha256": "32B88FEACB2D43E2284C116C53A448D8C1F14FDBD4B2BFB97C0725622E861A8C",
+    "caller_function_count": 525,
+    "caller_function_list_sha256": "DFEF530E330DEEEC2154A5A8D826605A46EC46C8E670249162FC0586938715C5",
+    "single_call_function_count": 432,
+    "dual_call_function_count": 93,
+    "runtime_owner_unique": false
+  },
+  "bounded_local_callers": [
+    {
+      "call_rva": "0x3B8AB00",
+      "continuation_rva": "0x3B8AB05",
+      "owner": "[0x3B8A9C0,0x3B8AC01)",
+      "condition": "empty range returns without calling; surviving path calls once"
+    },
+    {
+      "call_rva": "0x3B9B87C",
+      "continuation_rva": "0x3B9B881",
+      "owner": "[0x3B9B750,0x3B9BA5F)",
+      "condition": "requires nonempty range, mode != 3, and derived batch count != 1"
+    },
+    {
+      "call_rva": "0x3B9DB04",
+      "continuation_rva": "0x3B9DB09",
+      "owner": "[0x3B9DA60,0x3B9DBAD)",
+      "condition": "unconditional once per owner invocation"
+    }
+  ],
+  "post_publish_control_flow": {
+    "consumer_calls_before_producer": ["0x3B9E10B", "0x3B9E175"],
+    "producer_loop": "0x3B9E230..0x3B9E246",
+    "teardown": "0x3B9E248..0x3B9E264",
+    "return_rva": "0x3B9E265",
+    "consumer_reentry_after_producer": false,
+    "wrapper_self_call": false,
+    "conclusion": "after a selected state2 publish, this invocation can only finish the remaining producer entries and return; another consumer tick requires a new external wrapper invocation"
+  },
+  "next_distinct_observation": {
+    "rva": "0x3B9E030",
+    "read": "[RSP] return address at wrapper entry",
+    "mapping": "subtract 5 and require membership in the frozen 618-callsite list",
+    "telemetry": ["entry_count", "last_return_rva", "last_thread_id", "last_timestamp_qpc"],
+    "purpose": "prove whether the wrapper is externally reinvoked and bind the runtime caller before any caller-specific continuation observation",
+    "live_authorized": false
+  },
+  "scope": {
+    "ck3_started": false,
+    "production_code_changed": false,
+    "public_abi_changed": false,
+    "readiness_promotion": false,
+    "thread_or_os_wait_inferred": false
+  },
+  "readiness": "native-readiness RED + static wrapper caller boundary bound"
+}
