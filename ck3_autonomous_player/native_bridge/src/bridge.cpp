@@ -10,6 +10,7 @@
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
+#include "xar_bridge/phase2_completion_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -63,6 +64,11 @@ constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
 #else
 constexpr bool kStartupParticle2StageRecorderEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
+constexpr bool kPhase2CompletionObserverEnabledV1 = true;
+#else
+constexpr bool kPhase2CompletionObserverEnabledV1 = false;
+#endif
 static_assert(!(kStartupFailureContainmentEnabledV1 &&
                 kStartupParticle2StageRecorderEnabledV1));
 
@@ -88,6 +94,8 @@ static xar::bridge::StartupDx11RenderContextDrawGuardV1State
     g_startup_dx11_render_context_draw_guard_v1{};
 static xar::bridge::StartupLocalizeCurrentRootGuardV1State
     g_startup_localize_current_root_guard_v1{};
+static xar::bridge::Phase2CompletionObserverV1State
+    g_phase2_completion_observer_v1{};
 
 bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
@@ -220,6 +228,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto startup_localize_guard =
       xar::bridge::ReadStartupLocalizeCurrentRootGuardV1Diagnostics(
           g_startup_localize_current_root_guard_v1);
+#if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
+  const auto phase2_completion_observer =
+      xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(
+          g_phase2_completion_observer_v1);
+#endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
   result += Number(sequence);
@@ -322,6 +335,31 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(startup_localize_guard.failure_flags);
   result += ",\"native_miss_count\":";
   result += Number(startup_localize_guard.native_miss_count);
+#if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
+  result += "},\"phase2_completion_observer_v1\":{";
+  result += "\"private_build\":true,\"installed\":";
+  result += phase2_completion_observer.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(phase2_completion_observer.failure_flags);
+  result += ",\"selected_event_count\":";
+  result += Number(phase2_completion_observer.selected_event_count);
+  result += ",\"state2_count\":";
+  result += Number(phase2_completion_observer.state2_count);
+  result += ",\"state3_count\":";
+  result += Number(phase2_completion_observer.state3_count);
+  result += ",\"last_state\":";
+  result += Number(phase2_completion_observer.last_state);
+  result += ",\"last_thread_id\":";
+  result += Number(phase2_completion_observer.last_thread_id);
+  result += ",\"last_timestamp_qpc\":";
+  result += Number(phase2_completion_observer.last_timestamp_qpc);
+  result += ",\"last_reference_count\":";
+  result += Number(phase2_completion_observer.last_reference_count);
+  result += ",\"last_observed_retired\":";
+  result += phase2_completion_observer.last_observed_retired ? "true" : "false";
+  result += ",\"last_will_retire\":";
+  result += phase2_completion_observer.last_will_retire ? "true" : "false";
+#endif
   result += "}}";
   return result;
 }
@@ -7801,6 +7839,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
           g_battle_terminal_journal_v1,
           battle_terminal_environment)) {
     return FALSE;
+  }
+  if (kPhase2CompletionObserverEnabledV1) {
+    xar::bridge::Phase2CompletionObserverV1Environment environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPhase2CompletionObserverV1(
+            g_phase2_completion_observer_v1, environment)) {
+      return FALSE;
+    }
   }
   if (kStartupParticle2StageRecorderEnabledV1) {
     xar::bridge::StartupParticle2StageRecorderV1Environment environment{};

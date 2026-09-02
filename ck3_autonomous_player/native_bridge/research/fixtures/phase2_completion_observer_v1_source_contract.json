@@ -1,0 +1,44 @@
+{
+  "contract": "phase2-completion-observer-v1-source",
+  "required_header_tokens": [
+    "kPhase2CompletionObserverPatchRvaV1 =",
+    "0x3B9DEA7",
+    "kPhase2SelectedCallbackTargetRvaV1 =",
+    "0x88B480",
+    "selected_event_count",
+    "last_timestamp_qpc",
+    "last_observed_retired",
+    "last_will_retire",
+    "UninstallPhase2CompletionObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor",
+    "Phase2CompletionObserverThunkV1",
+    "QueryPerformanceCounter",
+    "task + 0x38",
+    "+ 0x10",
+    "task + 0x64",
+    "kPhase2SelectedCallbackTargetRvaV1",
+    "TargetWriteResult::rollback_unproven",
+    "WriteTarget(state, state.installed_patch_bytes.data()",
+    "RecordPhase2CompletionObservationV1"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1",
+    "phase2_completion_observer_v1",
+    "InstallPhase2CompletionObserverV1",
+    "last_timestamp_qpc",
+    "last_will_retire"
+  ],
+  "forbidden_default_tokens": [
+    "phase2.completion_observer",
+    "readiness_promotion\":true"
+  ],
+  "fixture_cases": [
+    "selected state2 publishes thread, QPC timestamp, reference count and will-retire",
+    "selected state3 publishes observed-retired",
+    "non-selected slot2 target is ignored",
+    "uninstall restores exact anchor",
+    "recoverable target-flush failure rolls back and releases ownership"
+  ]
+}

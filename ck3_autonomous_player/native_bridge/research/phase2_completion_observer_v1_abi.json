@@ -1,0 +1,70 @@
+{
+  "contract": "phase2-completion-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-ready-to-live",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "c98181e65c477606d4dfa33e58d49cba3cae24f3"
+  },
+  "scope": {
+    "read_only_game_state": true,
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1",
+    "installed_by_default": false,
+    "public_abi_changed": false,
+    "default_heartbeat_schema_changed": false,
+    "readiness_promotion": false,
+    "ck3_started": false
+  },
+  "exact_hook": {
+    "patch_rva": "0x3B9DEA7",
+    "patch_bytes": 15,
+    "anchor_hex": "8B436083C0FE83F8010F86AD000000",
+    "continue_rva": "0x3B9DEB6",
+    "retire_rva": "0x3B9DF63",
+    "selected_callback_slot2_target_rva": "0x88B480",
+    "replayed_semantics": "read [RBX+0x60], subtract 2, compare 1, route values 2/3 to native retire branch and all other values to native continuation",
+    "telemetry_call_only_on_complete_values": [2, 3]
+  },
+  "private_telemetry": {
+    "carrier": "private-option heartbeat phase2_completion_observer_v1 object",
+    "seed_gate_fields": [
+      "selected_event_count",
+      "state2_count",
+      "state3_count",
+      "last_state",
+      "last_thread_id",
+      "last_timestamp_qpc",
+      "last_reference_count",
+      "last_observed_retired",
+      "last_will_retire"
+    ],
+    "selected_filter": "read [RBX+0x38] callback, then callback vtable slot 2; publish only when target equals module_base+0x88B480",
+    "timestamp_clock": "QueryPerformanceCounter",
+    "retire_status": "last_observed_retired is state==3; last_will_retire is pre-retire reference_count==1"
+  },
+  "lifecycle": {
+    "install": "exact build admitted and newly-created primary thread suspension proven",
+    "patch": "transactional anchor/protection/write/identity/flush/protection restore",
+    "rollback": "recoverable install failure restores exact anchor and releases RX stub; unproven rollback retains ownership and stub",
+    "uninstall": "caller must prove quiescence; restores the exact 15-byte anchor before releasing stub",
+    "production_startup_wiring": "private option calls install from XarCk3BridgePrepareStartup",
+    "live_cleanup": "bounded runner must terminate the isolated process; standalone uninstall remains fixture-covered"
+  },
+  "source_hashes": {
+    "header_sha256": "A5B3A6B0C9CEE23EA07A60B13EDC7CBE3D4F4C590E89C7B00F0D82C2DFED0574",
+    "implementation_sha256": "6809AFB2B70A0C36D918DECF5EAC485060156739A3179C6DE6461F03C042EC80",
+    "fixture_test_sha256": "9F93675326EBF3C950ED61748956383E88BFC121D0885C29A14AAF708C569B7A"
+  },
+  "acceptance": {
+    "offline_fixture": "install/filter/state2/state3/retire telemetry/uninstall/recoverable rollback GREEN",
+    "private_bridge_build": "MSVC x64 Release /W4 private-option DLL build GREEN",
+    "live_status": "not run; waiting for serialized CK3 authorization"
+  },
+  "limits": [
+    "the hook records completion consumption and does not change task, callback, state, reference count, or loader flow",
+    "the private heartbeat extension is absent from default builds",
+    "no public bridge capability or readiness gate is promoted"
+  ],
+  "readiness": "native-readiness RED + private observer ready-to-live"
+}

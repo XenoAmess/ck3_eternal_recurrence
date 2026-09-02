@@ -46,6 +46,12 @@ option(
   OFF
 )
 
+option(
+  XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1
+  "Install the private exact-build phase-two completion observer"
+  OFF
+)
+
 add_library(xar_bridge_protocol STATIC
   src/protocol.cpp
 )
@@ -100,6 +106,7 @@ add_library(xar_ck3_bridge SHARED
   src/pending_character_interaction_context_v1.cpp
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp
+  src/phase2_completion_observer_v1.cpp
   src/route_contact_horizon_v1_mailbox.cpp
   src/raiktor_surrender_truce_v1.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
@@ -154,6 +161,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1=1
   )
 endif()
 set_target_properties(xar_ck3_bridge PROPERTIES
@@ -1910,6 +1922,29 @@ if(BUILD_TESTING)
       "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
       ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+  )
+
+  add_executable(xar_ck3_phase2_completion_observer_v1_test
+    src/phase2_completion_observer_v1.cpp
+    src/phase2_completion_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_phase2_completion_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_phase2_completion_observer_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_phase2_completion_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_phase2_completion_observer_v1
+    COMMAND xar_ck3_phase2_completion_observer_v1_test
   )
 
   add_test(
