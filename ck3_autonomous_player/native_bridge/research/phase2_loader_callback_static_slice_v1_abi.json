@@ -1,0 +1,135 @@
+{
+  "contract": "phase2-loader-callback-static-slice-v1",
+  "schema_version": 1,
+  "status": "static-ready",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "pe_timestamp": "0x6A1EEE6D",
+    "image_base": "0x140000000",
+    "size_of_image": "0x5C2D000",
+    "architecture": "msvc-x64"
+  },
+  "fixture": {
+    "path": "native_bridge/research/fixtures/phase2_loader_callback_v1_source_contract.json",
+    "sha256": "5C70182102BA3BA16D606B8ACAB89F9F952DB9D38E785DF04067265F58A80DE9",
+    "reused_contract": "phase2-loader-callback-v1"
+  },
+  "function": {
+    "rva": "0x3B9AB00",
+    "end_rva_exclusive": "0x3B9ACED",
+    "prologue": {
+      "rva": "0x3B9AB00",
+      "end_rva_exclusive": "0x3B9AB23",
+      "bytes_hex": "48895C2410488974241848897C24205541564157488DAC2410FEFFFF4881ECF0020000",
+      "length_bytes": 35,
+      "pdata": {
+        "begin_rva": "0x3B9AB00",
+        "end_rva_exclusive": "0x3B9ACED",
+        "unwind_info_rva": "0x4F0FE28"
+      },
+      "unwind": {
+        "raw_header_hex": "11230B00",
+        "version": 1,
+        "flags": 2,
+        "prolog_size_bytes": 35,
+        "unwind_code_count": 11,
+        "frame_register": 0,
+        "frame_offset_units": 0,
+        "handler_rva": "0x3E27DD0",
+        "handler_bytes_hex": "D07DE203"
+      }
+    },
+    "callback_instruction_bytes": {
+      "0x3B9AB7D": "488B8E88000000",
+      "0x3B9AB84": "4885C9",
+      "0x3B9AB8D": "488B01",
+      "0x3B9AB90": "FF5010"
+    }
+  },
+  "win64_parameter_flow": {
+    "calling_convention": "MSVC x64",
+    "entry_argument_register": "RCX",
+    "entry_owner_load": "[RCX+0x08]",
+    "node_vector_begin_load": "[owner+0x70]",
+    "node_count_load": "[owner+0x7C]",
+    "callback_receiver_load": "RCX=[node+0x88]",
+    "vptr_load": "RAX=[RCX]",
+    "indirect_call": "[RAX+0x10]",
+    "explicitly_initialized_call_registers": [
+      "RCX"
+    ],
+    "additional_argument_registers": "not_established",
+    "return_value_consumed_by_loop": false
+  },
+  "callback_vtable": {
+    "slot_index": 2,
+    "byte_offset": "0x10",
+    "slot_target_rva": "0x3B9BA70",
+    "candidate_callable_vtables": [
+      {
+        "type_descriptor_rva": "0x56F1390",
+        "type_name": ".?AV?$_Func_impl_no_alloc@V<lambda_8128e40481c938ef2e798c8b366f7112>@@X$$V@std@@",
+        "complete_object_locator_rva": "0x4BFA738",
+        "vtable_rva": "0x4558700",
+        "invoke_slot_target_rva": "0x3B9BA70",
+        "construction_reference_rva": "0x3B9A8A4"
+      },
+      {
+        "type_descriptor_rva": "0x56F1210",
+        "type_name": ".?AV?$_Func_impl_no_alloc@V<lambda_f64d2a3595213b63f4c97f202457024f>@@X$$V@std@@",
+        "complete_object_locator_rva": "0x4BFA710",
+        "vtable_rva": "0x4558770",
+        "invoke_slot_target_rva": "0x3B9BA70",
+        "construction_reference_rva": "0x3B9A3C3"
+      }
+    ],
+    "runtime_node_vptr_identity": "unknown",
+    "runtime_callback_return_semantics": "unknown",
+    "static_candidate_return_kind": "void_callable_wrapper"
+  },
+  "callers": {
+    "direct_relative_callsite_rvas": [
+      "0x821E45",
+      "0x88B5DC",
+      "0x1B3984D",
+      "0x1E18C56",
+      "0x1E21CD3",
+      "0x203FF96",
+      "0x2041D8C",
+      "0x3B9AEF4"
+    ],
+    "count": 8,
+    "argument_setup_observed": "local 16-byte pair address passed in RCX at each listed callsite"
+  },
+  "thread_lifecycle": {
+    "bounded_dispatch": "direct_synchronous_call",
+    "continuation_rva": "0x3B9AB93",
+    "same_function_continuation": true,
+    "thread_handoff_observed_in_bounded_range": false,
+    "thread_identity": "unknown",
+    "callback_object_lifetime": "unknown",
+    "lock_or_quiescence": "not_observed",
+    "unwind_metadata_present": true,
+    "production_detour": false
+  },
+  "evidence_limits": [
+    "candidate callable vtables are static construction evidence; runtime node+0x88 vptr is not observed",
+    "void kind applies to the candidate _Func_impl_no_alloc wrappers; runtime callback return remains unknown",
+    "a synchronous direct call does not identify the operating-system thread",
+    "unwind metadata records an exact handler RVA but does not by itself prove callback object lifetime",
+    "no production callback hook, bridge field, or loader-readiness claim follows"
+  ],
+  "next_entry": {
+    "required": "obtain one paused exact-build private observation of node+0x88 vptr and callback completion/lifetime without widening the public ABI",
+    "forbidden": [
+      "production detour",
+      "callback-side file I/O",
+      "CK3 launch or save mutation"
+    ]
+  }
+}
