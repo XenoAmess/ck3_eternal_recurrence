@@ -51,6 +51,7 @@ _install_optional_desktop_import_stubs()
 
 import run_zhongguo_acceptance as capture  # noqa: E402
 from zhongguo_phase2_promo_producer import (  # noqa: E402
+    Phase2PromoProducerUnavailable,
     make_phase2_promo_capture_scaffold,
 )
 
@@ -204,11 +205,100 @@ def _enter_common_run_cell_patches(
 class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
     def setUp(self) -> None:
         self.prior_producer = capture._PHASE2_PROMO_CAPTURE_PRODUCER
+        self.prior_visual_primitives = dict(
+            capture._PHASE2_PROMO_VISUAL_PRIMITIVES
+        )
         _FakeDriver.instances.clear()
         _FakeRecorder.instances.clear()
 
     def tearDown(self) -> None:
         capture._PHASE2_PROMO_CAPTURE_PRODUCER = self.prior_producer
+        capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()
+        capture._PHASE2_PROMO_VISUAL_PRIMITIVES.update(
+            self.prior_visual_primitives
+        )
+
+    def test_built_in_producer_reuses_paused_and_seed_primitives_before_typed_red(
+        self,
+    ) -> None:
+        capture._PHASE2_PROMO_CAPTURE_PRODUCER = None
+        capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()
+        producer = capture._ensure_phase2_promo_capture_producer()
+        seed_contract = {"status": "ready", "ready": True}
+        snapshot = {
+            "diagnostics": {"bridge_pid": 4321},
+            "paused": True,
+            "map_ready": True,
+        }
+        recorder = capture.PromoRecorder(
+            Path("unused-phase2-promo"),
+            contract=capture.PHASE2_PROMO_CAPTURE_CONTRACT,
+        )
+        with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_paused_snapshot",
+                return_value=copy.deepcopy(snapshot),
+            ) as paused,
+            mock.patch.object(
+                capture,
+                "prove_phase2_loaded_seed",
+                return_value={"result": "GREEN", "loaded": True},
+            ) as seed_proof,
+        ):
+            with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
+                producer(
+                    object(),
+                    Path("unused-artifacts"),
+                    recorder,
+                    title_navigation_service=object(),
+                    tracked_ck3_pid=4321,
+                    native_bridge=object(),
+                    preflight_bridge_identity={},
+                    seed_contract=seed_contract,
+                    seed_install={
+                        "result": "GREEN",
+                        "contract": copy.deepcopy(seed_contract),
+                    },
+                    native_session_binding={
+                        "bridge_pid": 4321,
+                        "connection_generation": 1,
+                    },
+                    loader_gate={
+                        "result": "GREEN",
+                        "mode": "phase2_promo_capture",
+                        "same_pid_gameplay_continuation_authorized": True,
+                        "native_readiness": {"result": "GREEN"},
+                        "phase2_capability_preflight": {"result": "GREEN"},
+                    },
+                )
+        self.assertEqual(
+            raised.exception.reason_code, "span_handlers_missing"
+        )
+        paused.assert_called_once()
+        seed_proof.assert_called_once()
+        self.assertIsNone(recorder.process)
+
+    def test_visual_primitive_registry_accepts_only_canonical_unique_keys(self) -> None:
+        capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()
+        primitive = lambda *_args, **_kwargs: {}  # noqa: E731
+        capture.register_phase2_promo_visual_primitive(
+            "facts-quota-calibration", primitive
+        )
+        self.assertIs(
+            capture._PHASE2_PROMO_VISUAL_PRIMITIVES[
+                "facts-quota-calibration"
+            ],
+            primitive,
+        )
+        with self.assertRaises(ValueError):
+            capture.register_phase2_promo_visual_primitive(
+                "facts-quota-calibration", primitive
+            )
+        with self.assertRaises(ValueError):
+            capture.register_phase2_promo_visual_primitive(
+                "legacy-phase1-span", primitive
+            )
 
     def test_phase2_promo_preflight_keeps_missing_seed_typed_red(self) -> None:
         capture.register_phase2_promo_capture_producer(

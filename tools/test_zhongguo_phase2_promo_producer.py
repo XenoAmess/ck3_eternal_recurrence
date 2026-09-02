@@ -21,11 +21,13 @@ if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
 
 from zhongguo_phase2_promo_producer import (
+    PHASE2_PROMO_CAPTURE_SPAN_MAP,
     Phase2PromoProducerContractError,
     Phase2PromoProducerError,
     Phase2PromoProducerUnavailable,
     canonical_phase2_capture_contract,
     install_phase2_promo_capture_scaffold,
+    make_managed_phase2_promo_capture_producer,
     make_phase2_promo_capture_scaffold,
 )
 
@@ -42,12 +44,17 @@ class _Recorder:
     def __init__(self, contract: dict[str, object]) -> None:
         self.contract = _Contract(contract)
         self.calls: list[str] = []
+        self.clean_labels: list[str] = []
+
+    def resolve_reviewed_subject(self, history_id: str) -> None:
+        self.calls.append(f"resolve:{history_id}")
 
     def start(self) -> None:
         self.calls.append("start")
 
-    def clean_hold(self, *_args: object, **_kwargs: object) -> None:
+    def clean_hold(self, label: str, *_args: object, **_kwargs: object) -> None:
         self.calls.append("clean_hold")
+        self.clean_labels.append(label)
 
     def stop(self) -> None:
         self.calls.append("stop")
@@ -64,6 +71,36 @@ def _invoke(producer: object, recorder: _Recorder) -> dict[str, object]:
             tracked_ck3_pid=4321,
             native_bridge=object(),
             preflight_bridge_identity={},
+        )
+
+
+def _invoke_managed(producer: object, recorder: _Recorder) -> dict[str, object]:
+    assert callable(producer)
+    with tempfile.TemporaryDirectory() as temporary:
+        return producer(  # type: ignore[operator]
+            object(),
+            Path(temporary) / "artifacts",
+            recorder,
+            title_navigation_service=object(),
+            tracked_ck3_pid=4321,
+            native_bridge=object(),
+            preflight_bridge_identity={},
+            seed_contract={"status": "ready", "ready": True},
+            seed_install={
+                "result": "GREEN",
+                "contract": {"status": "ready", "ready": True},
+            },
+            native_session_binding={
+                "bridge_pid": 4321,
+                "connection_generation": 7,
+            },
+            loader_gate={
+                "result": "GREEN",
+                "mode": "phase2_promo_capture",
+                "same_pid_gameplay_continuation_authorized": True,
+                "native_readiness": {"result": "GREEN"},
+                "phase2_capability_preflight": {"result": "GREEN"},
+            },
         )
 
 
@@ -332,6 +369,171 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
             },
         )
         self.assertEqual(registrations, [producer])
+
+    def test_managed_runtime_gate_red_precedes_paused_probe_and_recording(self) -> None:
+        recorder = _Recorder(self.contract)
+        paused_calls: list[object] = []
+
+        def paused(context: object) -> dict[str, object]:
+            paused_calls.append(context)
+            return {}
+
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=paused,
+            seed_proof_probe=lambda _context, _snapshot: {"result": "GREEN"},
+            visual_primitives={},
+            reviewed_history_id="han_6875",
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
+                producer(
+                    object(),
+                    Path(temporary) / "artifacts",
+                    recorder,
+                    title_navigation_service=object(),
+                    tracked_ck3_pid=4321,
+                    native_bridge=object(),
+                    preflight_bridge_identity={},
+                    seed_contract={"status": "ready", "ready": True},
+                    seed_install={
+                        "result": "GREEN",
+                        "contract": {"status": "ready", "ready": True},
+                    },
+                    native_session_binding={
+                        "bridge_pid": 9999,
+                        "connection_generation": 7,
+                    },
+                    loader_gate={
+                        "result": "GREEN",
+                        "mode": "phase2_promo_capture",
+                        "same_pid_gameplay_continuation_authorized": True,
+                    },
+                )
+        self.assertEqual(
+            raised.exception.reason_code, "native_session_not_bound"
+        )
+        self.assertIn(
+            "native_session_pid_matches",
+            raised.exception.evidence["failed_checks"],
+        )
+        self.assertEqual(paused_calls, [])
+        self.assertEqual(recorder.calls, [])
+
+    def test_managed_runtime_preserves_seed_not_ready_typed_red(self) -> None:
+        recorder = _Recorder(self.contract)
+        paused_calls: list[object] = []
+
+        def paused(context: object) -> dict[str, object]:
+            paused_calls.append(context)
+            return {}
+
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=paused,
+            seed_proof_probe=lambda _context, _snapshot: {"result": "GREEN"},
+            visual_primitives={},
+            reviewed_history_id="han_6875",
+        )
+        blocked_seed = {
+            "status": "blocked_seed_generation_required",
+            "ready": False,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
+                producer(
+                    object(),
+                    Path(temporary) / "artifacts",
+                    recorder,
+                    title_navigation_service=object(),
+                    tracked_ck3_pid=4321,
+                    native_bridge=object(),
+                    preflight_bridge_identity={},
+                    seed_contract=blocked_seed,
+                    seed_install={
+                        "result": "RED",
+                        "contract": copy.deepcopy(blocked_seed),
+                    },
+                    native_session_binding={
+                        "bridge_pid": 4321,
+                        "connection_generation": 7,
+                    },
+                    loader_gate={
+                        "result": "GREEN",
+                        "mode": "phase2_promo_capture",
+                        "same_pid_gameplay_continuation_authorized": True,
+                    },
+                )
+        self.assertEqual(raised.exception.reason_code, "seed_not_ready")
+        self.assertEqual(paused_calls, [])
+        self.assertEqual(recorder.calls, [])
+
+    def test_missing_visual_primitives_is_typed_red_before_recorder_start(self) -> None:
+        recorder = _Recorder(self.contract)
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=lambda _context: {
+                "diagnostics": {"bridge_pid": 4321},
+                "paused": True,
+                "map_ready": True,
+            },
+            seed_proof_probe=lambda _context, _snapshot: {"result": "GREEN"},
+            visual_primitives={},
+            reviewed_history_id="han_6875",
+        )
+        with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
+            _invoke_managed(producer, recorder)
+        self.assertEqual(
+            raised.exception.reason_code, "span_handlers_missing"
+        )
+        self.assertEqual(
+            len(
+                raised.exception.evidence["readiness"]["missing_handlers"]
+            ),
+            8,
+        )
+        self.assertEqual(recorder.calls, [])
+
+    def test_managed_producer_records_exact_eight_span_order(self) -> None:
+        recorder = _Recorder(self.contract)
+        primitive_calls: list[tuple[str, str]] = []
+
+        def primitive(
+            _context: object,
+            _runtime: object,
+            chapter_id: str,
+            producer_key: str,
+        ) -> dict[str, object]:
+            primitive_calls.append((chapter_id, producer_key))
+            return {
+                "result": "GREEN",
+                "surface_visible": True,
+                "postcondition_green": True,
+            }
+
+        primitives = {
+            key: primitive for _, key in PHASE2_PROMO_CAPTURE_SPAN_MAP
+        }
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=lambda _context: {
+                "diagnostics": {"bridge_pid": 4321},
+                "paused": True,
+                "map_ready": True,
+            },
+            seed_proof_probe=lambda _context, _snapshot: {"result": "GREEN"},
+            visual_primitives=primitives,
+            reviewed_history_id="han_6875",
+        )
+        result = _invoke_managed(producer, recorder)
+        self.assertEqual(primitive_calls, list(PHASE2_PROMO_CAPTURE_SPAN_MAP))
+        self.assertEqual(
+            recorder.clean_labels,
+            [chapter_id for chapter_id, _ in PHASE2_PROMO_CAPTURE_SPAN_MAP],
+        )
+        self.assertEqual(
+            recorder.calls,
+            ["resolve:han_6875", "start"] + ["clean_hold"] * 8,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["capture_contract"], self.contract)
+        self.assertEqual(len(result["completed_spans"]), 8)
 
     def test_runner_error_factory_keeps_typed_fields(self) -> None:
         class RunnerLikeError(RuntimeError):

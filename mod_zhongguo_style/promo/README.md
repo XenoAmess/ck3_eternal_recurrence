@@ -172,16 +172,19 @@ FFmpeg/ffprobe 或任何外部命令，不写 run manifest、日志、partial、
 `capture_mode=zhongguo-361-phase2`、contract version、producer id 和完整 span map，供
 二期 preset 严格复核。
 
-当前仓库尚未注册二期视觉 choreography hook。因而该命令会在 preflight、CK3 启动和 FFmpeg
-之前以明确的 `producer hook is unavailable` RED 退出，不会运行一期 `run_scenario`、
-`--phase2-live-batch` 的零视觉 MCP 场景，也不会产生可误用的录屏。待真实二期玩法和视觉
-producer 完成后，才可注册 hook、生成八段同源 capture，再交给下方 builder；静态 contract
-通过不等于 `fixture-live`、`production-live` 或正式成片。
+runner 已默认注册二期 managed-runtime producer adapter。它复用现有 seed install、managed
+native session、loader completion、paused-map 与 loaded-seed proof 原语；不运行一期
+`run_scenario`，也不把 `--phase2-live-batch` 的零视觉 MCP 场景作为素材。seed 未就绪返回
+`seed_not_ready`；当前八个真实视觉 handler 未接齐时返回 `span_handlers_missing`。两条 typed RED
+路径都发生在 `recorder.start()` 前，不产生可误用的录屏。静态 contract 通过不等于
+`fixture-live`、`production-live` 或正式成片。
 
-接入点固定为 runner 的
-`register_phase2_promo_capture_producer(producer)`。`producer` 接收
+默认 producer 仍通过 runner 的 `register_phase2_promo_capture_producer(producer)` 接入；各玩法
+surface 用 `register_phase2_promo_visual_primitive(producer_key, primitive)` 注册，再由共享的
+`run_phase2_capture_choreography` 按冻结顺序执行。`producer` 接收
 `(stream, artifacts, recorder, title_navigation_service=..., tracked_ck3_pid=...,
-native_bridge=..., preflight_bridge_identity=...)`，必须自己在 gameplay HUD 后调用
+native_bridge=..., preflight_bridge_identity=..., seed_contract=..., seed_install=...,
+native_session_binding=..., loader_gate=...)`。adapter 在真实 gameplay HUD/paused seed 可核验后调用
 `recorder.start()`，解析真实历史人物，按上表顺序调用八次 `recorder.clean_hold`，并返回
 一个 evidence object；runner 会再校验 recorder 生成的 hash-bound timeline。未完成这些真实
 动作时不能用静态返回值或 MCP snapshot 填充 producer。

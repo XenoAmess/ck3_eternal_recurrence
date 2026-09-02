@@ -132,6 +132,9 @@ if str(TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIRECTORY))
 
 from zhongguo_phase2_promo_producer import (
+    Phase2PromoCaptureContext,
+    Phase2PromoVisualPrimitive,
+    make_managed_phase2_promo_capture_producer,
     phase2_promo_producer_typed_error_payload,
 )
 
@@ -845,6 +848,7 @@ class PromoRecorder:
 
 Phase2PromoCaptureProducer = Callable[..., dict[str, object]]
 _PHASE2_PROMO_CAPTURE_PRODUCER: Phase2PromoCaptureProducer | None = None
+_PHASE2_PROMO_VISUAL_PRIMITIVES: dict[str, Phase2PromoVisualPrimitive] = {}
 
 
 def register_phase2_promo_capture_producer(
@@ -863,6 +867,76 @@ def register_phase2_promo_capture_producer(
     if not callable(producer):
         raise TypeError("phase-two promo capture producer must be callable")
     _PHASE2_PROMO_CAPTURE_PRODUCER = producer
+
+
+def register_phase2_promo_visual_primitive(
+    producer_key: str,
+    primitive: Phase2PromoVisualPrimitive,
+) -> None:
+    """Register one real gameplay surface for the built-in eight-span adapter.
+
+    This registry is intentionally separate from the producer hook.  The
+    runner can install its concrete managed-runtime producer before every
+    visual feature has landed, while that producer still returns a typed RED
+    before FFmpeg starts until all eight canonical keys are present.
+    """
+
+    expected_keys = tuple(key for _, key in PHASE2_PROMO_CAPTURE_SPAN_MAP)
+    if producer_key not in expected_keys:
+        raise ValueError(
+            f"unknown phase-two promo producer key: {producer_key!r}"
+        )
+    if not callable(primitive):
+        raise TypeError("phase-two promo visual primitive must be callable")
+    if producer_key in _PHASE2_PROMO_VISUAL_PRIMITIVES:
+        raise ValueError(
+            f"duplicate phase-two promo producer key: {producer_key!r}"
+        )
+    _PHASE2_PROMO_VISUAL_PRIMITIVES[producer_key] = primitive
+
+
+def _phase2_promo_paused_snapshot_probe(
+    context: Phase2PromoCaptureContext,
+) -> Mapping[str, object]:
+    """Reuse the exact phase-two paused-map acceptance primitive."""
+
+    return wait_for_phase2_paused_snapshot(
+        context.title_navigation_service,
+        context.artifacts,
+        tracked_ck3_pid=context.tracked_ck3_pid,
+    )
+
+
+def _phase2_promo_seed_proof_probe(
+    context: Phase2PromoCaptureContext,
+    snapshot: Mapping[str, object],
+) -> Mapping[str, object]:
+    """Reuse the installed-seed proof before any visual recording starts."""
+
+    if not isinstance(context.seed_contract, Mapping):
+        raise acceptance.RunnerError(
+            "phase-two promo seed contract is unavailable"
+        )
+    return prove_phase2_loaded_seed(
+        dict(snapshot),
+        dict(context.seed_contract),
+        context.artifacts,
+    )
+
+
+def _ensure_phase2_promo_capture_producer() -> Phase2PromoCaptureProducer:
+    """Install the real managed-runtime adapter when no override is supplied."""
+
+    if _PHASE2_PROMO_CAPTURE_PRODUCER is None:
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=_phase2_promo_paused_snapshot_probe,
+            seed_proof_probe=_phase2_promo_seed_proof_probe,
+            visual_primitives=_PHASE2_PROMO_VISUAL_PRIMITIVES,
+            reviewed_history_id=PHASE2_SEED_PLAYER_HISTORY_ID,
+            error_factory=acceptance.RunnerError,
+        )
+        register_phase2_promo_capture_producer(producer)
+    return _require_phase2_promo_capture_producer()
 
 
 def _require_phase2_promo_capture_producer() -> Phase2PromoCaptureProducer:
@@ -13833,7 +13907,7 @@ def main(
     # A real phase-two choreography must be registered explicitly before any
     # preflight, profile write, CK3 launch, or FFmpeg process is attempted.
     if phase2_promo_capture:
-        _require_phase2_promo_capture_producer()
+        _ensure_phase2_promo_capture_producer()
     runtime_source = (
         Path(workshop_cache_source).expanduser().resolve()
         if workshop_cache_source

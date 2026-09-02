@@ -16,8 +16,9 @@
 - 对当前 `phase2-promo-project.json` 的 `--validate-only` 返回 exit `2`：十章全部仍为 `planned`；入口没有创建
   workdir，也没有读取缺失 capture、调用 TTS 或媒体进程。配置 SHA-256 为
   `150EE549AF859517C377D3CD531414E9C76E133A8168AF2B0168797249B62129`。
-- `run_zhongguo_acceptance.py --preflight --phase2-promo-capture` 返回 exit `1`：真实 producer hook 未注册；检查在
-  preflight、CK3、FFmpeg 和 artifact 目录创建前退出。这是当前正确的 fail-closed 结果。
+- runner 已内置 managed-runtime producer adapter：它复用现有 paused-map 与 loaded-seed proof 原语，并把真实 visual
+  primitive registry 接到 producer-neutral 八段 executor。当前八个真实 handler 尚未全部注册，live 入口会在
+  `recorder.start()` 前以 typed RED `span_handlers_missing` 收口；seed 未就绪仍为 `seed_not_ready`。两者都不产生录屏。
 - `open_kaishek` 支撑主线锚点为 `17caa28`。它继续随项目演进提供离线预验，但不会把当前 loader/native RED、
   缺失 paused artifact 或缺失视频素材升级为 live。
 
@@ -35,8 +36,8 @@
 7. `phase2_incidents_operations` / `incidents-operations`：事故、积弊、共享官署与技术债后果。
 8. `phase2_cross_cycle_endgame` / `cross-cycle-endgame`：跨周期债、默认变更和制度终局。
 
-在项目 loader callback/native readiness 未取得新 exact-build runtime identity、callback return/lifetime、线程或
-source attribution 证据并进入真实 paused seed 前，不启动同形 capture 重试。当前状态仍是
+producer gate 只等待可核验的 loader completion、同 PID managed session 与真实 paused seed，不再依赖旧的
+`database_callback_stall` 文本。上述 native/paused 证据闭合前不启动同形 capture 重试。当前状态仍是
 `static-ready + native-readiness RED + not-live`。
 
 ## 十章 authoring、媒体、TTS 与字幕
@@ -76,6 +77,6 @@ Launcher、loading 或测试 UI。
 
 ## 下一项施工
 
-当前视频侧不再添加 fixture plumbing。主线先闭合天朝二期 loader callback/native paused gate；一旦取得真实 paused seed，
-立即实现并注册真实 runtime probe + choreography，生成八段同源 capture。capture 通过后才能根据画面写最终中文稿、英文字幕、
-TTS、候选成片与人审包。
+当前视频侧不再添加 fixture plumbing。managed runtime probe、默认 producer 注册、registry adapter 与固定八段 executor 已
+`static-ready`；主线先闭合天朝二期 loader callback/native paused gate，并为八个 canonical handler 逐项接入真实玩法 surface。
+八项齐备后同一 adapter 可直接生成八段同源 capture。capture 通过后才能根据画面写最终中文稿、英文字幕、TTS、候选成片与人审包。

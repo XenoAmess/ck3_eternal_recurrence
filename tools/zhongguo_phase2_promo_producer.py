@@ -1,11 +1,11 @@
-"""Dependency-injected hand-off for the ZhongGuo phase-two promo producer.
+"""Managed-runtime hand-off for the ZhongGuo phase-two promo producer.
 
-This module intentionally stops at the boundary between the acceptance runner
-and a future *real* gameplay choreography.  It does not launch CK3, invoke
-FFmpeg, inspect the desktop, call any recorder lifecycle method, or write an
-artifact.  A caller supplies a read-only runtime probe and a choreography
-delegate; the scaffold forwards a typed context to those dependencies and
-checks the phase-two capture contract on the way back.
+This module does not launch CK3, invoke FFmpeg directly, inspect the desktop,
+or write an artifact.  It supplies a strict dependency-injected scaffold plus
+an adapter that reuses the acceptance runner's live gates and delegates the
+fixed eight-span ordering to the producer-neutral choreography executor.  Only
+after those gates and all real visual handlers are ready does the adapter ask
+the runner-owned recorder to start and create clean holds.
 
 The factory is useful before the gameplay implementation exists: invoking a
 scaffold with an unconfigured or unavailable runtime raises a structured RED
@@ -244,6 +244,16 @@ class Choreography(Protocol):
 
 ProducerErrorFactory: TypeAlias = Callable[[str], Exception]
 RunnerRegistrar: TypeAlias = Callable[[Callable[..., dict[str, object]]], None]
+Phase2PromoPausedSnapshotProbe: TypeAlias = Callable[
+    [Phase2PromoCaptureContext], Mapping[str, object]
+]
+Phase2PromoSeedProofProbe: TypeAlias = Callable[
+    [Phase2PromoCaptureContext, Mapping[str, object]], Mapping[str, object]
+]
+Phase2PromoVisualPrimitive: TypeAlias = Callable[
+    [Phase2PromoCaptureContext, Mapping[str, object], str, str],
+    Mapping[str, object],
+]
 
 
 def _canonical_contract(value: Mapping[str, object]) -> dict[str, object]:
@@ -665,6 +675,279 @@ class Phase2PromoProducerScaffold:
         return self._validate_result(result)
 
 
+def make_managed_phase2_runtime_probe(
+    *,
+    paused_snapshot_probe: Phase2PromoPausedSnapshotProbe,
+    seed_proof_probe: Phase2PromoSeedProofProbe,
+) -> RuntimeProbe:
+    """Bind the producer to the runner's real managed phase-two live gates.
+
+    The returned probe is intentionally an adapter, not a second readiness
+    implementation.  The acceptance runner injects its existing paused-map
+    and loaded-seed primitives, while this function checks the snapshots that
+    were already produced by seed installation, native-session startup and
+    the loader gate.  No recorder method is reachable until every check is
+    GREEN and the paused snapshot is bound to the tracked CK3 PID.
+    """
+
+    if not callable(paused_snapshot_probe):
+        raise TypeError("paused_snapshot_probe must be callable")
+    if not callable(seed_proof_probe):
+        raise TypeError("seed_proof_probe must be callable")
+
+    def probe(context: Phase2PromoCaptureContext) -> Mapping[str, object]:
+        seed_contract = context.seed_contract
+        seed_install = context.seed_install
+        native_binding = context.native_session_binding
+        loader_gate = context.loader_gate
+        missing = [
+            name
+            for name, value in (
+                ("seed_contract", seed_contract),
+                ("seed_install", seed_install),
+                ("native_session_binding", native_binding),
+                ("loader_gate", loader_gate),
+            )
+            if not isinstance(value, Mapping)
+        ]
+        if missing:
+            reason_code = (
+                "seed_not_ready"
+                if "seed_contract" in missing
+                else "live_gate_unavailable"
+            )
+            raise Phase2PromoProducerUnavailable(
+                reason_code,
+                "managed phase-two live-gate snapshots are incomplete",
+                evidence={"missing_snapshots": missing},
+            )
+
+        assert isinstance(seed_contract, Mapping)
+        assert isinstance(seed_install, Mapping)
+        assert isinstance(native_binding, Mapping)
+        assert isinstance(loader_gate, Mapping)
+        install_contract = seed_install.get("contract")
+        checks = {
+            "seed_contract_ready": seed_contract.get("ready") is True
+            and seed_contract.get("status") == "ready",
+            "seed_install_green": seed_install.get("result") == "GREEN",
+            "seed_install_contract_matches": isinstance(
+                install_contract, Mapping
+            )
+            and _strict_equal(dict(install_contract), dict(seed_contract)),
+            "native_session_pid_matches": native_binding.get("bridge_pid")
+            == context.tracked_ck3_pid,
+            "native_session_generation_positive": type(
+                native_binding.get("connection_generation")
+            )
+            is int
+            and int(native_binding["connection_generation"]) > 0,
+            "loader_gate_green": loader_gate.get("result") == "GREEN",
+            "loader_gate_mode": loader_gate.get("mode")
+            == "phase2_promo_capture",
+            "loader_completion_authorized": loader_gate.get(
+                "same_pid_gameplay_continuation_authorized"
+            )
+            is True,
+        }
+        failed = [name for name, passed in checks.items() if passed is not True]
+        if failed:
+            blocker_order = (
+                ("seed_contract_ready", "seed_not_ready"),
+                ("seed_install_green", "seed_not_installed"),
+                ("seed_install_contract_matches", "seed_not_installed"),
+                ("native_session_pid_matches", "native_session_not_bound"),
+                (
+                    "native_session_generation_positive",
+                    "native_session_not_bound",
+                ),
+                ("loader_gate_green", "loader_gate_not_green"),
+                ("loader_gate_mode", "loader_gate_not_green"),
+                (
+                    "loader_completion_authorized",
+                    "loader_gate_not_green",
+                ),
+            )
+            reason_code = next(
+                code for name, code in blocker_order if name in failed
+            )
+            raise Phase2PromoProducerUnavailable(
+                reason_code,
+                "managed phase-two loader/seed/session gate is not GREEN",
+                evidence={"checks": checks, "failed_checks": failed},
+            )
+        snapshot = paused_snapshot_probe(context)
+        if not isinstance(snapshot, Mapping):
+            raise Phase2PromoProducerUnavailable(
+                "paused_snapshot_invalid",
+                "paused snapshot primitive returned a non-mapping value",
+                evidence={"actual_type": type(snapshot).__name__},
+            )
+        proof = seed_proof_probe(context, snapshot)
+        if not isinstance(proof, Mapping) or proof.get("result") != "GREEN":
+            raise Phase2PromoProducerUnavailable(
+                "seed_load_proof_red",
+                "loaded-seed primitive did not return GREEN evidence",
+                evidence={"seed_load_proof": proof},
+            )
+        snapshot_diagnostics = snapshot.get("diagnostics")
+        snapshot_pid = (
+            snapshot_diagnostics.get("bridge_pid")
+            if isinstance(snapshot_diagnostics, Mapping)
+            else None
+        )
+        if snapshot_pid != context.tracked_ck3_pid:
+            raise Phase2PromoProducerUnavailable(
+                "paused_snapshot_pid_mismatch",
+                "paused snapshot is not bound to the tracked CK3 PID",
+                evidence={
+                    "tracked_ck3_pid": context.tracked_ck3_pid,
+                    "snapshot_bridge_pid": snapshot_pid,
+                },
+            )
+        return {
+            "ready": True,
+            "gate": "managed_phase2_loader_completion_and_paused_seed",
+            "checks": checks,
+            "paused_snapshot": dict(snapshot),
+            "seed_load_proof": dict(proof),
+        }
+
+    return probe
+
+
+def make_eight_span_phase2_choreography(
+    visual_primitives: Mapping[str, Phase2PromoVisualPrimitive],
+    *,
+    reviewed_history_id: str,
+    hold_seconds: float = 2.5,
+) -> Choreography:
+    """Adapt the visual primitive registry to the shared eight-span executor."""
+
+    if not isinstance(visual_primitives, Mapping):
+        raise TypeError("visual_primitives must be a mapping")
+    if type(reviewed_history_id) is not str or not reviewed_history_id:
+        raise TypeError("reviewed_history_id must be a non-empty string")
+    if isinstance(hold_seconds, bool) or not isinstance(hold_seconds, (int, float)):
+        raise TypeError("hold_seconds must be a number")
+    if hold_seconds <= 0:
+        raise ValueError("hold_seconds must be positive")
+
+    def choreography(
+        context: Phase2PromoCaptureContext,
+        runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        # Local import avoids a module cycle: the producer contract is the
+        # type owner imported by the producer-neutral choreography module.
+        from zhongguo_phase2_capture_choreography import (
+            PHASE2_CAPTURE_SCENARIOS,
+            Phase2ChoreographyBlocked,
+            phase2_choreography_readiness,
+            run_phase2_capture_choreography,
+        )
+
+        class RegistrySpanDriver:
+            def available_handlers(self) -> tuple[str, ...]:
+                return tuple(
+                    scenario.handler
+                    for scenario in PHASE2_CAPTURE_SCENARIOS
+                    if callable(visual_primitives.get(scenario.producer_key))
+                )
+
+            def run_span(
+                self,
+                scenario: object,
+                live_context: Phase2PromoCaptureContext,
+                live_runtime: Mapping[str, object],
+            ) -> Mapping[str, object]:
+                producer_key = getattr(scenario, "producer_key")
+                span_id = getattr(scenario, "span_id")
+                primitive = visual_primitives[producer_key]
+                return primitive(
+                    live_context,
+                    live_runtime,
+                    span_id,
+                    producer_key,
+                )
+
+        driver = RegistrySpanDriver()
+        readiness = phase2_choreography_readiness(context, runtime, driver)
+        if readiness.get("ready") is not True:
+            reason_code = str(readiness.get("reason_code"))
+            raise Phase2PromoProducerUnavailable(
+                reason_code,
+                "shared phase-two capture choreography is not ready",
+                evidence={"readiness": readiness},
+            )
+        recorder = context.recorder
+        try:
+            resolve_subject = getattr(recorder, "resolve_reviewed_subject")
+            start = getattr(recorder, "start")
+            clean_hold = getattr(recorder, "clean_hold")
+        except (AttributeError, TypeError) as error:
+            raise Phase2PromoProducerUnavailable(
+                "recorder_lifecycle_unavailable",
+                "phase-two recorder lacks its real capture lifecycle",
+                evidence={"exception_type": type(error).__name__},
+            ) from error
+        if not all(callable(value) for value in (resolve_subject, start, clean_hold)):
+            raise Phase2PromoProducerUnavailable(
+                "recorder_lifecycle_unavailable",
+                "phase-two recorder lifecycle attributes are not callable",
+            )
+
+        resolve_subject(reviewed_history_id)
+        start()
+        try:
+            evidence = run_phase2_capture_choreography(
+                context,
+                runtime,
+                driver,
+                clean_hold_seconds=float(hold_seconds),
+            )
+        except Phase2ChoreographyBlocked as error:
+            raise Phase2PromoProducerContractError(
+                error.reason_code,
+                "shared phase-two capture choreography returned RED",
+                evidence={"choreography": error.evidence},
+            ) from error
+        evidence.update(
+            {
+                "producer_id": PHASE2_PROMO_CAPTURE_PRODUCER_ID,
+                "runtime_gate": runtime.get("gate"),
+                "reviewed_history_id": reviewed_history_id,
+            }
+        )
+        return evidence
+
+    return choreography
+
+
+def make_managed_phase2_promo_capture_producer(
+    *,
+    paused_snapshot_probe: Phase2PromoPausedSnapshotProbe,
+    seed_proof_probe: Phase2PromoSeedProofProbe,
+    visual_primitives: Mapping[str, Phase2PromoVisualPrimitive],
+    reviewed_history_id: str,
+    error_factory: ProducerErrorFactory | None = None,
+    hold_seconds: float = 2.5,
+) -> Phase2PromoProducerScaffold:
+    """Build the concrete managed-runtime/eight-span producer adapter."""
+
+    return make_phase2_promo_capture_scaffold(
+        runtime_probe=make_managed_phase2_runtime_probe(
+            paused_snapshot_probe=paused_snapshot_probe,
+            seed_proof_probe=seed_proof_probe,
+        ),
+        choreography=make_eight_span_phase2_choreography(
+            visual_primitives,
+            reviewed_history_id=reviewed_history_id,
+            hold_seconds=hold_seconds,
+        ),
+        error_factory=error_factory,
+    )
+
+
 def make_phase2_promo_capture_scaffold(
     *,
     contract: Mapping[str, object] | None = None,
@@ -737,9 +1020,15 @@ __all__ = [
     "Phase2PromoProducerError",
     "Phase2PromoProducerScaffold",
     "Phase2PromoProducerUnavailable",
+    "Phase2PromoPausedSnapshotProbe",
+    "Phase2PromoSeedProofProbe",
+    "Phase2PromoVisualPrimitive",
     "RuntimeProbe",
     "canonical_phase2_capture_contract",
     "install_phase2_promo_capture_scaffold",
+    "make_eight_span_phase2_choreography",
+    "make_managed_phase2_promo_capture_producer",
+    "make_managed_phase2_runtime_probe",
     "make_phase2_promo_capture_scaffold",
     "phase2_promo_producer_typed_error_payload",
 ]

@@ -1,10 +1,10 @@
-# ZhongGuo phase-two promo producer scaffold
+# ZhongGuo phase-two promo producer adapter
 
-`zhongguo_phase2_promo_producer.py` is only the hand-off boundary for the
-future real-game visual producer.  It does not launch CK3, invoke FFmpeg,
-inspect the desktop, call `PromoRecorder.start()`/`clean_hold()`/`stop()`, or
-write capture artifacts.  It cannot make a static or MCP-only run look like
-video evidence.
+`zhongguo_phase2_promo_producer.py` contains the strict hand-off scaffold and
+the concrete managed-runtime adapter.  The adapter does not launch CK3; it
+reuses the acceptance runner's managed seed/session/loader context, paused-map
+probe, and loaded-seed proof.  Recorder lifecycle remains unreachable until
+those real gates and all eight visual handlers are ready.
 
 The producer-neutral eight-span action catalogue and executor live in
 `zhongguo_phase2_capture_choreography.py`.  Its definitions bind every fixed
@@ -46,27 +46,27 @@ includes an optional `result` field, it must be exactly `GREEN`; omitting it lea
 runner's outer capture result in charge, and the runner rejects any explicit
 non-`GREEN` value before accepting the hand-off.
 
-Only a future producer with both real dependencies should register the
-callable:
+`run_zhongguo_acceptance.py --phase2-promo-capture` installs the managed
+adapter when no explicit producer override exists.  Product-specific visual
+handlers register by canonical producer key:
 
 ```python
-from run_zhongguo_acceptance import register_phase2_promo_capture_producer
-from zhongguo_phase2_promo_producer import install_phase2_promo_capture_scaffold
+from run_zhongguo_acceptance import register_phase2_promo_visual_primitive
 
-install_phase2_promo_capture_scaffold(
-    register_phase2_promo_capture_producer,
-    runtime_probe=read_only_real_runtime_probe,
-    choreography=real_phase2_choreography,
+register_phase2_promo_visual_primitive(
+    "facts-quota-calibration",
+    expose_real_facts_quota_calibration_surface,
 )
 ```
 
-The install helper is explicit and has no import-time registration.  It
-refuses to register an unconfigured scaffold, preserving the runner's existing
-preflight `producer hook is unavailable` RED until a real phase-two runtime
-and choreography are available.  Passing a probe result or evidence object
-from a static test does not establish `fixture-live` or `production-live`;
-those statuses still require the runner's real CK3 capture, clean-frame gates,
-and downstream review contracts.
+The registry adapter implements the producer-neutral `Phase2SpanDriver` and
+delegates ordering, readiness, surface/postcondition checks, and clean holds to
+`run_phase2_capture_choreography`.  Registration order cannot change the
+contract order.  The current incomplete registry returns typed RED
+`span_handlers_missing` before `PromoRecorder.start()`; a missing canonical
+seed stays typed RED `seed_not_ready`.  Passing static mappings does not
+establish `fixture-live` or `production-live`; those statuses still require a
+real CK3 capture, all eight clean-frame gates, and downstream review.
 
 The seed-preflight binding also requires the capture root's GREEN `report.json`
 for the adapter's report/index contract.  A timeline with a matching source

@@ -5804,17 +5804,19 @@ def main() -> int:
     assert "setdefault(" not in phase2_capture_source
     assert '"--phase2-promo-capture"' in runner
 
-    # The unregistered sequel producer must fail before preflight or any CK3 /
-    # FFmpeg side effect.  This is a contract RED, not live evidence.
-    with mock.patch.object(capture, "preflight") as forbidden_preflight:
-        try:
-            capture.main(preflight_only=True, phase2_promo_capture=True)
-        except capture.acceptance.RunnerError as error:
-            assert "producer hook is unavailable" in str(error)
-            assert "no CK3 launch or FFmpeg recording was attempted" in str(error)
-        else:
-            raise AssertionError("unregistered phase-two producer was accepted")
-        forbidden_preflight.assert_not_called()
+    # The runner now installs the concrete managed-runtime adapter when no
+    # override is supplied.  Its visual registry remains empty until real
+    # feature-specific primitives land, so a live invocation returns typed
+    # RED before recorder.start rather than failing on an absent hook.
+    prior_default_producer = capture._PHASE2_PROMO_CAPTURE_PRODUCER
+    try:
+        capture._PHASE2_PROMO_CAPTURE_PRODUCER = None
+        built_in = capture._ensure_phase2_promo_capture_producer()
+        assert callable(built_in)
+        assert built_in is capture._PHASE2_PROMO_CAPTURE_PRODUCER
+        assert capture._PHASE2_PROMO_VISUAL_PRIMITIVES == {}
+    finally:
+        capture._PHASE2_PROMO_CAPTURE_PRODUCER = prior_default_producer
 
     # A registered producer must carry the complete contract itself.  The
     # acceptance runner may validate the evidence, but it must not fill in
