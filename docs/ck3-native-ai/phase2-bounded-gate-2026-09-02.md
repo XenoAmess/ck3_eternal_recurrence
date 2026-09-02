@@ -493,3 +493,16 @@ reported parser `55/2,223,707/0` and fixture IR/runtime GREEN, with the
 declared bounded validator RED (`39,360` unsupported diagnostics),
 `ck3_started=false`, and no save mutation. This preflight was consumed as
 offline evidence only and did not justify another same-shape CK3 launch.
+
+## 2026-09-02 10:52 loader detour feasibility boundary
+
+A short static bridge review found no safe reusable pre-loader callback detour
+for the current exact-build anchor. The existing installers require proven
+prologue bytes, calling convention, quiescence, trampoline/rollback, and a
+process-lifetime observation sink; the loader callback currently has none of
+those proofs, and the bridge has no safe post-loader uninstall lifecycle.
+Existing private journals use preallocated atomics/rings rather than callback-
+side file I/O. Therefore no detour, public ABI field, or CK3 rerun was added.
+The next legitimate entry is offline closure of callback prologue/parameter/
+thread evidence, followed by a separately opt-in private recorder only if
+those prerequisites become concrete.

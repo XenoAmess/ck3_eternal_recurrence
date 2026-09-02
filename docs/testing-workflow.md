@@ -1282,3 +1282,10 @@ The current `open_kaishek` offline binding is `36b4743` / JAR SHA-256
 Its `ck3-war-days-trigger-11906` fixture is parser/validator GREEN and
 IR/runtime SKIPPED; the full corpus remains a bounded validator RED. This is
 preflight acceleration only, not native readiness.
+
+The loader callback detour remains out of scope until its exact-build prologue,
+calling convention, callback-thread quiescence, and rollback/lifecycle are
+closed. Existing bridge observation sinks are preallocated atomics/rings; do
+not add callback-side file I/O or a production detour merely to explain the
+current two-node timeout. The current bounded evidence is the typed parser
+replay above plus the static callback contract.
