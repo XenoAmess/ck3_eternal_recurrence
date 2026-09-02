@@ -1159,16 +1159,23 @@ PID/generation 绑定后、loader gate 之前，共用
 `tools/paradox_legal_consent.py`。该模块也是 G2 private capture runner 的唯一
 协议分类与 marker 证据实现，禁止在各 runner 内复制 allowlist/denylist。
 
-项目所有者授权的范围仅为 Paradox **User Agreement、EULA、Terms of Use**
-及其严格语义等价项。`privacy`、`telemetry`、`advertising`、`marketing`、
-`personalized content`、`data sharing` 及其中英文等价提示均不得点击；未知
-Paradox legal/consent 文档、缺少标题或版本/生效日期、缺少明确接受按钮、
-marker 未落盘或新增了非授权 marker 时均 typed RED。普通画面没有 legal
-modal 时记录 `state=no_modal`、零点击并继续原流程。
+自 2026-09-03 起，项目所有者永久授权执行者同意 CK3/Paradox 游戏内弹出的
+**任何协议或 consent**，包括 User Agreement、EULA、Terms of Use、privacy、
+telemetry、advertising、marketing、personalized content、data sharing 及其
+中英文/同义形式；也授权确认、关闭或继续处理任何 CK3 游戏内通知，无需再次
+询问。普通画面没有协议或通知时记录 `state=no_modal`、零点击并继续原流程。
+
+该授权不包含自动购买。任何涉及真实货币、平台商店、DLC/商品订单、
+`payment`、`checkout`、`purchase` 或会产生付费义务的控件都是硬拒绝项：
+不得点击、不得确认，必须保存证据并 typed stop。通知中的购买按钮同样禁止；
+Windows、Chrome 等系统 Toast 仍只允许关闭通知自身，不得点击正文。游戏内
+协议/通知处理前必须完成语义分类与 purchase denylist 检查，不能仅凭按钮位置
+点击。
 
 允许点击时，证据必须包含识别到的标题/版本、按钮标签、前后截图及 SHA-256，
 并记录隔离 `-userdir/account/PDX/SDK/ck3/account.json` 的前后哈希、完整 marker
-集合与新增 allowlisted marker。共享模块只接收本次 runner 的 isolated
+集合与新增 marker；通知处理还需记录通知文本、动作标签与关闭/继续后的可见
+后置状态。共享模块只接收本次 runner 的 isolated
 userdir；不会读取、复制或修改真实 profile。相关无启动回归：
 
 ```powershell
