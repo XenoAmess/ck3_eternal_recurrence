@@ -1,0 +1,134 @@
+{
+  "format_version": 1,
+  "kind": "xar-promo-review-checklist",
+  "checklist_id": "zg361-phase2-institution-claims-source-v1",
+  "deliverable": null,
+  "items": [
+    {
+      "id": "playback_complete_1x",
+      "instruction": "Play the exact final candidate continuously from first frame to final frame at 1.0x without skipping, scrubbing, or fast playback.",
+      "required": true
+    },
+    {
+      "id": "candidate_and_sources_hash_bound",
+      "instruction": "Confirm the candidate, all eight canonical source spans, intake timeline, evidence index, and claims audit are bound to the exact reviewed bytes.",
+      "required": true
+    },
+    {
+      "id": "canonical_lineage_and_span_sessions",
+      "instruction": "Confirm all eight spans share the accepted canonical seed/save source-game-mount lineage and each span preserves its own pre-action-post session identity and GREEN cleanup evidence.",
+      "required": true
+    },
+    {
+      "id": "all_ten_chapters_present",
+      "instruction": "Confirm both generated cards and all eight gameplay chapters are present, and generated cards are not presented as gameplay evidence.",
+      "required": true
+    },
+    {
+      "id": "fact_quota_calibration_visible",
+      "instruction": "Confirm fact and quota records are visibly distinct, the calibration event is identity-ready, and the scoreboard or query revision visibly changes after the action.",
+      "required": true
+    },
+    {
+      "id": "manager_terminal_visible",
+      "instruction": "Confirm the real manager-governance event is identity-ready and the AI-owned case reaches a provider-observed terminal business state rather than an inferred ACK or timeout.",
+      "required": true
+    },
+    {
+      "id": "receipt_pip_identity_visible",
+      "instruction": "Confirm the real receipt and PIP surface is visible, owner-subject-cycle-case identity stays stable, and the selected response state is provider-observed after the action.",
+      "required": true
+    },
+    {
+      "id": "promotion_compensation_same_case",
+      "instruction": "Confirm the real promotion choice and compensation result are visible and bound to the same frozen case.",
+      "required": true
+    },
+    {
+      "id": "workforce_branches_proven",
+      "instruction": "Confirm A, B, and C workforce outcomes use one owner-subject case from a hash-identical checkpoint and the no-opening outcome is visibly shown.",
+      "required": true
+    },
+    {
+      "id": "projects_metrics_postcondition_visible",
+      "instruction": "Confirm real project-choice and contribution or metrics result events are identity-ready and the result is provider-observed after the action.",
+      "required": true
+    },
+    {
+      "id": "incident_chain_visible",
+      "instruction": "Confirm X, Y, and Z incident surfaces appear in order and every transition plus closure is provider-observed after its action.",
+      "required": true
+    },
+    {
+      "id": "cross_cycle_binding_visible",
+      "instruction": "Confirm the identity-ready terminal institutional event remains bound to the carried debt or default-change cycle and the NEXT CYCLE boundary is readable.",
+      "required": true
+    },
+    {
+      "id": "cross_case_boundaries_explicit",
+      "instruction": "Confirm every cross-character, cross-case, branch-comparison, and cross-cycle cut is explicitly labelled in Chinese and English and no montage invents continuity or causality.",
+      "required": true
+    },
+    {
+      "id": "claims_match_visible_shots",
+      "instruction": "Confirm every narration and subtitle claim is supported by the mapped visible shot, and no forbidden claim from the authority ledger or director treatment appears.",
+      "required": true
+    },
+    {
+      "id": "historical_characters_only",
+      "instruction": "Confirm every visible character covered by the policy is provenance-bound historical material rather than a temporary, fixture, or generated substitute.",
+      "required": true
+    },
+    {
+      "id": "no_generated_official_name_visible",
+      "instruction": "Confirm no prohibited world-generated official name is visible anywhere in the reviewed candidate.",
+      "required": true
+    },
+    {
+      "id": "fixture_test_ui_absent",
+      "instruction": "Confirm no fixture, test, debug, ZGA, acceptance, launcher, loading, or other non-product UI is visible.",
+      "required": true
+    },
+    {
+      "id": "full_clip_reviewed",
+      "instruction": "Confirm every included live clip was watched in full at 1.0x and every included still was inspected; sampled frames were not substituted for review.",
+      "required": true
+    },
+    {
+      "id": "no_crop_mask_or_redaction",
+      "instruction": "Confirm compliance comes from clean source material and not from cropping, masking, blurring, redaction, or redrawing disallowed UI.",
+      "required": true
+    },
+    {
+      "id": "picture_audio_subtitles_continuous",
+      "instruction": "Confirm picture, game audio, narration, and Chinese-English subtitles remain present, synchronized, readable, and uninterrupted across every chapter and boundary.",
+      "required": true
+    }
+  ],
+  "metadata": {
+    "cut_id": "institution-led",
+    "review_scope": "claims-and-source-pass",
+    "state": "pending-media-and-human-review",
+    "final_basename": "zhongguo-361-phase2-institution-led.mp4",
+    "deliverable_artifact_id": "zhongguo-361-phase2-institution-led-video",
+    "default_run_id": "phase2-institution-led-candidate",
+    "authority_document": "docs/phase2-promo/phase2-institution-director-treatment.md",
+    "human_response_required": true,
+    "independent_reviewer_required": true,
+    "receipt_kind_after_real_review": "zg361_phase2_1x_review_receipt",
+    "unbound_fields": [
+      "deliverable",
+      "checklist_sha256",
+      "candidate_media",
+      "claims_audit_sha256",
+      "reviewer",
+      "reviewed_at",
+      "decision",
+      "results",
+      "signoff"
+    ]
+  },
+  "template_only": true,
+  "is_signoff": false
+}
+

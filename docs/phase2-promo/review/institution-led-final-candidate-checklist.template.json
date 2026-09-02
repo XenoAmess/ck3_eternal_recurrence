@@ -1,0 +1,98 @@
+{
+  "format_version": 1,
+  "kind": "xar-promo-review-checklist",
+  "checklist_id": "zg361-phase2-institution-final-candidate-v1",
+  "deliverable": null,
+  "items": [
+    {
+      "id": "playback_complete_1x",
+      "instruction": "Independently play the exact final candidate continuously from first frame to final frame at 1.0x without skipping, scrubbing, or fast playback.",
+      "required": true
+    },
+    {
+      "id": "independent_second_reviewer",
+      "instruction": "Confirm this review is performed by a named reviewer different from the claims-and-source-pass reviewer.",
+      "required": true
+    },
+    {
+      "id": "candidate_identity_exact",
+      "instruction": "Confirm basename, artifact ID, run ID, byte count, and SHA-256 identify the same candidate used by the bound probe, claims audit, first review, and run manifest.",
+      "required": true
+    },
+    {
+      "id": "media_profile_exact",
+      "instruction": "Confirm the bound probe reports one H.264 yuv420p 1920x1080 video stream, one AAC 48000 Hz stereo audio stream, and a positive duration below 1200 seconds.",
+      "required": true
+    },
+    {
+      "id": "picture_and_sound_clean",
+      "instruction": "Confirm picture and sound are continuously present and synchronized with no black frames, unintended freezes, corrupt frames, dropouts, clipping, or explosive level changes.",
+      "required": true
+    },
+    {
+      "id": "chapter_edges_clean",
+      "instruction": "Confirm the first frame, final frame, all ten chapter starts and ends, and every declared internal boundary enter and exit cleanly.",
+      "required": true
+    },
+    {
+      "id": "bilingual_layout_safe",
+      "instruction": "Confirm Simplified Chinese remains the primary visual layer and synchronized English remains secondary; each language uses at most two readable lines inside the 1920x1080 safe area.",
+      "required": true
+    },
+    {
+      "id": "overlay_does_not_hide_evidence",
+      "instruction": "Confirm subtitles, lower thirds, chapter cards, and continuity labels do not cover identities, values, revisions, branches, incident states, cycle markers, or postconditions.",
+      "required": true
+    },
+    {
+      "id": "institution_led_story_distinct",
+      "instruction": "Confirm the institution and multi-person organizational network remain the narrative subject; the cut does not collapse into a single-official recovery or revenge story.",
+      "required": true
+    },
+    {
+      "id": "no_false_continuity_or_causality",
+      "instruction": "Confirm edits, reprises, match cuts, narration, music, and sound effects do not imply unproved continuity, causality, success, settlement, closure, or cross-cycle persistence.",
+      "required": true
+    },
+    {
+      "id": "product_only_clean_visuals",
+      "instruction": "Confirm no fixture, test, debug, ZGA, acceptance, launcher, loading, generated substitute, prohibited name, crop, mask, blur, redaction, or redrawn product UI appears.",
+      "required": true
+    },
+    {
+      "id": "finale_boundary_honest",
+      "instruction": "Confirm the finale states People transfer; the ledger remains, lists only real included spans, and does not claim COMPLETE, release-ready, exported, or published status without matching evidence.",
+      "required": true
+    },
+    {
+      "id": "claims_audit_and_first_pass_closed",
+      "instruction": "Confirm the automated claims audit is passed, its manual sign-off is genuinely approved for these bytes, and every issue from the first review is closed without changing the candidate afterward.",
+      "required": true
+    }
+  ],
+  "metadata": {
+    "cut_id": "institution-led",
+    "review_scope": "final-candidate-pass",
+    "state": "pending-media-and-human-review",
+    "final_basename": "zhongguo-361-phase2-institution-led.mp4",
+    "deliverable_artifact_id": "zhongguo-361-phase2-institution-led-video",
+    "default_run_id": "phase2-institution-led-candidate",
+    "authority_document": "docs/phase2-promo/phase2-institution-director-treatment.md",
+    "human_response_required": true,
+    "independent_reviewer_required": true,
+    "receipt_kind_after_real_review": "zg361_phase2_1x_review_receipt",
+    "unbound_fields": [
+      "deliverable",
+      "checklist_sha256",
+      "candidate_media",
+      "claims_audit_sha256",
+      "reviewer",
+      "reviewed_at",
+      "decision",
+      "results",
+      "signoff"
+    ]
+  },
+  "template_only": true,
+  "is_signoff": false
+}
