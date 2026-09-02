@@ -1,0 +1,72 @@
+{
+  "contract": "phase2-loader-callback-v1",
+  "schema_version": 1,
+  "status": "static-ready",
+  "read_only": true,
+  "production_installed": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "architecture": "msvc-x64"
+  },
+  "loader_node_init_loop": {
+    "function_rva": "0x3B9AB00",
+    "function_end_rva_exclusive": "0x3B9ACED",
+    "current_node_rva": "0x3B9AB50",
+    "node_gate_rva": "0x3B9AB53",
+    "callback_call_rva": "0x3B9AB90",
+    "callback": {
+      "kind": "indirect_virtual_call",
+      "receiver_register": "rax",
+      "vtable_slot_offset": "0x10",
+      "return_semantics": "unknown"
+    },
+    "node_layout": {
+      "initialized_gate_offset": "0x88",
+      "init_time_offset": "0x98",
+      "dependency_chain_offset": "0xB8"
+    },
+    "format_strings": {
+      "database_node_init_time_rva": "0x4558670",
+      "post_init_rva": "0x4558648"
+    }
+  },
+  "source_attribution": {
+    "status": "unknown",
+    "script_filename": null,
+    "native_log_source_line_is_script_filename": false,
+    "allow_filename_inference": false
+  },
+  "telemetry_boundary": {
+    "per_node_fields": [
+      "sequence",
+      "timestamp",
+      "native_log_source_line",
+      "node",
+      "init_ms",
+      "inclusive_ms"
+    ],
+    "join_key": [
+      "timestamp",
+      "native_log_source_line",
+      "node",
+      "init_ms",
+      "inclusive_ms"
+    ],
+    "authorization_effect": "none",
+    "state_write": false,
+    "detour": false
+  },
+  "unsupported_claims": [
+    "callback return value meaning",
+    "vtable owner/type identity",
+    "script source filename for a node",
+    "database loader readiness",
+    "production callback detour or bridge capability"
+  ],
+  "next_entry": {
+    "required": "close the exact vtable slot owner and callback return semantics",
+    "optional_after_closure": "add a paused exact-build read-only callback probe that emits this telemetry"
+  },
+  "evidence_ref": "docs/ck3-native-ai/phase2-bounded-gate-2026-09-02.md#2026-09-02-1007-callback-location-static-closure"
+}

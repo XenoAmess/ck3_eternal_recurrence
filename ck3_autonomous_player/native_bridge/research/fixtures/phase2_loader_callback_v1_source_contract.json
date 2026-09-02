@@ -1,0 +1,39 @@
+{
+  "contract": "phase2-loader-callback-v1",
+  "schema_version": 1,
+  "fixture_kind": "synthetic_log_join",
+  "source_attribution": {
+    "script_filename": null,
+    "native_log_source_line": "database_dependencies.cpp:433",
+    "filename_inference_allowed": false
+  },
+  "records": [
+    {
+      "sequence": 1,
+      "timestamp": "00:00:01",
+      "native_log_source_line": "database_dependencies.cpp:433",
+      "node": "CGameConceptTypeDatabase",
+      "init_ms": 3,
+      "inclusive_ms": 3
+    },
+    {
+      "sequence": 2,
+      "timestamp": "00:00:02",
+      "native_log_source_line": "database_dependencies.cpp:433",
+      "node": "CJominiLoadScreenDatabase",
+      "init_ms": 4,
+      "inclusive_ms": 4
+    }
+  ],
+  "expected_observation": {
+    "database_node_count": 2,
+    "last_database_node": "CJominiLoadScreenDatabase",
+    "stage": "engine_start",
+    "event_wait_authorized": false
+  },
+  "claims": {
+    "read_only": true,
+    "callback_return_semantics": "unknown",
+    "production_ready": false
+  }
+}
