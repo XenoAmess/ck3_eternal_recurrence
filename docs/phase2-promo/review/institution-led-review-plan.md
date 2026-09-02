@@ -110,4 +110,3 @@ blur 或重绘隐藏污染；关键 identity、数值、状态至少可读两秒
 5. completion attestation 只引用这些已经存在且 byte-bound 的文件。
 
 自动化不得预填 reviewer、时间、决定、逐项通过、签名或 GREEN。第一轮通过也不替代第二轮，任一版本的回执也不得替另一版本开门。
-
