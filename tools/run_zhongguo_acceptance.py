@@ -30,6 +30,7 @@ import build_mod_zhongguo_style_release as release
 import run_terminal_acceptance as terminal
 import run_vivhite_acceptance as isolated
 import kaishek_preflight
+import paradox_legal_consent as legal_consent
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -1290,6 +1291,148 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+class Phase2LegalConsentBlocked(acceptance.RunnerError):
+    """A managed Phase2 run stopped before an unauthorized consent click."""
+
+    def __init__(self, reason_code: str, evidence: dict[str, object]) -> None:
+        super().__init__(
+            f"phase-two legal consent RED [{reason_code}]: "
+            + str(evidence.get("failure_reason") or reason_code)
+        )
+        self.reason_code = reason_code
+        self.evidence = evidence
+
+
+def handle_phase2_optional_legal_consent(
+    userdir: Path,
+    artifacts: Path,
+    *,
+    maximum_agreements: int = 4,
+) -> dict[str, object]:
+    """Accept only necessary Paradox agreements inside the isolated profile.
+
+    A normal screen with no legal modal returns GREEN without a click.  Every
+    recognized agreement must expose a title/version, an allowlisted accept
+    control and a new allowlisted marker written below this run's ``-userdir``.
+    """
+
+    profile = Path(userdir).resolve()
+    evidence_path = Path(artifacts).resolve() / "01_phase2_legal_consent.json"
+    ui_dir = evidence_path.parent / "legal-consent"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "reason_code": None,
+        "scope": "phase2_managed_isolated_userdir_legal_consent",
+        "authorization": (
+            "Paradox User Agreement, EULA, Terms of Use or exact semantic equivalent"
+        ),
+        "explicitly_not_authorized": [
+            "privacy",
+            "telemetry",
+            "advertising",
+            "marketing",
+            "personalized content",
+            "data sharing",
+        ],
+        "isolated_userdir": str(profile),
+        "marker_relative_path": (
+            legal_consent.LEGAL_CONSENT_PROFILE_SUFFIX.as_posix()
+        ),
+        "real_profile_read": False,
+        "real_profile_modified": False,
+        "ocr_used": True,
+        "image_used": True,
+        "authorized_click_count": 0,
+        "acceptances": [],
+        "state": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        if maximum_agreements <= 0:
+            raise ValueError("maximum_agreements must be positive")
+        acceptances: list[dict[str, object]] = []
+        stage_artifacts: list[dict[str, object]] = []
+        for index in range(1, maximum_agreements + 1):
+            acceptance.focus_ck3()
+            image = acceptance.ImageGrab.grab()
+            rows = [
+                str(row[0])
+                for row in acceptance.ocr_results(
+                    image, legal_consent.LEGAL_MODAL_HEADER_REGION
+                )
+            ]
+            classification = legal_consent.classify_authorized_legal_modal(rows)
+            if classification is None:
+                break
+            acceptances.append(
+                legal_consent.accept_authorized_legal_modal(
+                    acceptance,
+                    acceptance.ImageGrab,
+                    profile,
+                    ui_dir,
+                    image,
+                    rows,
+                    index,
+                    stage_artifacts,
+                )
+            )
+        else:
+            acceptance.focus_ck3()
+            image = acceptance.ImageGrab.grab()
+            rows = [
+                str(row[0])
+                for row in acceptance.ocr_results(
+                    image, legal_consent.LEGAL_MODAL_HEADER_REGION
+                )
+            ]
+            if legal_consent.classify_authorized_legal_modal(rows) is not None:
+                raise legal_consent.TypedTerminalError(
+                    "LegalConsentSequenceLimit",
+                    "legal_consent",
+                    "more legal agreements are visible than the bounded handler allows",
+                )
+        evidence.update(
+            {
+                "result": "GREEN",
+                "state": "accepted" if acceptances else "no_modal",
+                "authorized_click_count": len(acceptances),
+                "acceptances": acceptances,
+                "stage_artifacts": stage_artifacts,
+                "failure_reason": None,
+            }
+        )
+        write_json(evidence_path, evidence)
+        return evidence
+    except legal_consent.TypedTerminalError as error:
+        evidence.update(
+            {
+                "result": "RED",
+                "reason_code": error.terminal,
+                "state": "typed_stop",
+                "failure_stage": error.stage,
+                "failure_reason": str(error),
+            }
+        )
+        write_json(evidence_path, evidence)
+        raise Phase2LegalConsentBlocked(error.terminal, evidence) from error
+    except BaseException as error:
+        evidence.update(
+            {
+                "result": "RED",
+                "reason_code": "LegalConsentInspectionFailed",
+                "state": "typed_stop",
+                "failure_stage": "legal_consent",
+                "failure_reason": f"{type(error).__name__}: {error}",
+            }
+        )
+        write_json(evidence_path, evidence)
+        raise Phase2LegalConsentBlocked(
+            "LegalConsentInspectionFailed", evidence
+        ) from error
 
 
 def _format_keyboard_layout(value: int) -> str:
@@ -13607,6 +13750,7 @@ def run_cell(
     phase2_initial_binding: dict[str, object] | None = None
     phase2_final_capabilities: dict[str, object] | None = None
     phase2_native_session_liveness: dict[str, object] | None = None
+    phase2_legal_consent: dict[str, object] | None = None
     phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
     phase2_promo_producer_error: dict[str, object] | None = None
     phase2_runtime_mode = phase2_live_batch or phase2_promo_capture
@@ -13670,6 +13814,13 @@ def run_cell(
                 "started managed phase-two native_session supervisor on CK3 "
                 f"PID {tracked_ck3_pid} and {native_bridge.pipe_name}"
             )
+            try:
+                phase2_legal_consent = handle_phase2_optional_legal_consent(
+                    userdir, artifacts
+                )
+            except Phase2LegalConsentBlocked as error:
+                phase2_legal_consent = dict(error.evidence)
+                raise
         else:
             lock_stack.enter_context(exclusive_launch_lock(spec.game_exe))
             lock_stack.enter_context(
@@ -14143,6 +14294,7 @@ def run_cell(
         "loader_gate_executed": loader_gate_evidence is not None,
         "phase2_seed_install": phase2_seed_install_evidence,
         "phase2_promo_producer_error": phase2_promo_producer_error,
+        "phase2_legal_consent": phase2_legal_consent,
         "loader_gate_evidence": loader_gate_evidence,
         "gameplay_acceptance_executed": gameplay_acceptance_executed,
         "gameplay_green_claimed": gameplay_green_claimed,
@@ -14285,11 +14437,11 @@ def main(
     native_bridge = resolve_native_bridge_config(
         bridge_dll, bridge_injector, bridge_pipe
     )
-    # Sequel promo capture is native/MCP-only, just like the phase-two batch;
-    # ordinary visual capture retains the desktop-tool preflight.
-    require_visual_tools = not (
-        loader_smoke or phase2_live_batch or phase2_promo_capture
-    )
+    # Every managed Phase2 gameplay mode now performs the owner-authorized
+    # legal-modal OCR gate after binding.  Only loader-smoke stops before that
+    # boundary, so every other runtime mode must prove the desktop stack before
+    # launch instead of discovering a missing OCR dependency inside CK3.
+    require_visual_tools = not loader_smoke
     runtime_identity = preflight(
         runtime_source,
         manifest_path,

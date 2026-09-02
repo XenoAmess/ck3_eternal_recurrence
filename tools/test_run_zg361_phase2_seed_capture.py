@@ -253,6 +253,22 @@ class FakeZhongguoRunner:
         require(kwargs["timeout_s"] == 12.0, "binding timeout drifted")
         return {"bridge_pid": 4321, "connection_generation": 1}
 
+    def handle_phase2_optional_legal_consent(
+        self, profile: Path, artifacts: Path
+    ) -> dict[str, object]:
+        self.calls.append("legal-consent")
+        require(profile.name == "profile", "legal gate escaped isolated profile")
+        require(artifacts.name == "artifacts", "legal evidence root drifted")
+        return {
+            "schema_version": 1,
+            "result": "GREEN",
+            "state": "no_modal",
+            "authorized_click_count": 0,
+            "real_profile_modified": False,
+            "ocr_used": True,
+            "image_used": True,
+        }
+
     def verify_runtime_load_order(
         self, profile: Path, bootstrap: dict[str, object]
     ) -> list[str]:
@@ -551,7 +567,14 @@ def test_green_capture() -> None:
         report = capture.run_capture(fixture.config(), runtime=runtime)
         require(report["result"] == "GREEN", f"fake capture RED: {report}")
         require(report["mcp_only"] is True, "capture lost MCP-only boundary")
-        require(report["ocr_used"] is False, "fake capture used OCR")
+        require(
+            report["ocr_used"] is True and report["image_used"] is True,
+            "legal-consent-only visual boundary was not recorded",
+        )
+        require(
+            report["legal_consent"]["state"] == "no_modal",
+            "default no-modal legal gate did not preserve the capture flow",
+        )
         require(report["coordinates_used"] is False, "fake capture used coordinates")
         require(report["test_decision_used"] is False, "fake capture used a test decision")
         source_identity = report["source_identity"]
@@ -669,6 +692,7 @@ def test_green_capture() -> None:
             name: calls.index(name)
             for name in (
                 "transport-binding",
+                "legal-consent",
                 "loader-stage",
                 "single-mount-gate",
                 "native-readiness",
@@ -682,6 +706,7 @@ def test_green_capture() -> None:
         }
         require(
             order["transport-binding"]
+            < order["legal-consent"]
             < order["loader-stage"]
             < order["single-mount-gate"]
             < order["native-readiness"]

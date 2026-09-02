@@ -22,8 +22,28 @@ import sys
 import time
 
 
+PROJECT_TOOLS = Path(__file__).resolve().parents[3] / "tools"
+if str(PROJECT_TOOLS) not in sys.path:
+    sys.path.insert(0, str(PROJECT_TOOLS))
+
+from paradox_legal_consent import (  # noqa: E402
+    LEGAL_ALLOWED_TERMS,
+    LEGAL_CONSENT_PROFILE_SUFFIX,
+    LEGAL_DENIED_TERMS,
+    LEGAL_MODAL_HEADER_REGION,
+    TypedTerminalError,
+    _authorized_legal_marker,
+    accept_authorized_legal_modal,
+    account_legal_state,
+    classify_authorized_legal_modal,
+    newly_persisted_legal_markers,
+    sha256,
+    validate_legal_consent_source,
+)
+
+
 EXPECTED_MANIFEST_SHA256 = (
-    "D60C1ECF8E5F7D10A3809557D09662A3D8B714907533BD6BAFBCCFA6307EE426"
+    "70D9DDA9397733E2454D7842C78144CA653B435765F690D911A325A4BF308B74"
 )
 EXPECTED_CAPTURE_EXE_SHA256 = (
     "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72"
@@ -46,53 +66,10 @@ EXPECTED_ARM_BYTES = (
     b"option_key=bookmark.1071.a\n"
     b"option_index=0\n"
 )
-LEGAL_CONSENT_PROFILE_SUFFIX = Path("account/PDX/SDK/ck3/account.json")
-LEGAL_MODAL_HEADER_REGION = (0.10, 0.02, 0.90, 0.32)
-LEGAL_ALLOWED_TERMS = (
-    "user agreement",
-    "end user license agreement",
-    "eula",
-    "terms of use",
-    "用户协议",
-    "最终用户许可协议",
-    "用户许可协议",
-    "使用条款",
-    "使用条件",
-)
-LEGAL_DENIED_TERMS = (
-    "privacy",
-    "telemetry",
-    "advertising",
-    "advertisement",
-    "marketing",
-    "personalized",
-    "data sharing",
-    "隐私",
-    "遥测",
-    "广告",
-    "营销",
-    "个性化",
-    "数据共享",
-)
 TARGET_TITLE = "觊觎大位的修士"
 TARGET_OPTION = "我会将他扶上君士坦丁堡的皇位！"
 SICILY_TITLE = "诺曼人的西西里"
 SICILY_SAFE_OPTION = "教宗和皇帝都可以保留他们的土地"
-
-
-class TypedTerminalError(RuntimeError):
-    def __init__(self, terminal: str, stage: str, detail: str) -> None:
-        super().__init__(detail)
-        self.terminal = terminal
-        self.stage = stage
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as source:
-        for block in iter(lambda: source.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest().upper()
 
 
 def process_inventory() -> list[dict[str, object]]:
@@ -182,248 +159,6 @@ def require_fresh_userdir(path: Path) -> None:
                 "preflight",
                 f"isolated userdir contains prior {relative} files: {candidate}",
             )
-
-
-def _legal_document_markers(payload: dict[str, object]) -> list[str]:
-    viewed = payload.get("viewedLegalDocuments")
-    if not isinstance(viewed, dict):
-        return []
-    markers: list[str] = []
-    for bucket in ("online", "localOnly"):
-        values = viewed.get(bucket, [])
-        if isinstance(values, list):
-            markers.extend(value for value in values if isinstance(value, str))
-    return markers
-
-
-def classify_authorized_legal_modal(rows: list[str]) -> dict[str, object] | None:
-    cleaned = [" ".join(row.split()) for row in rows if row.strip()]
-    joined = " ".join(cleaned).casefold()
-    if "paradox" not in joined:
-        return None
-    denied = [term for term in LEGAL_DENIED_TERMS if term in joined]
-    if denied:
-        raise TypedTerminalError(
-            "LegalConsentNotAuthorized",
-            "legal_consent",
-            f"legal modal header contains non-authorized category tokens: {denied}",
-        )
-    allowed = [term for term in LEGAL_ALLOWED_TERMS if term in joined]
-    if not allowed:
-        return None
-    title = next(
-        (row for row in cleaned if any(term in row.casefold() for term in allowed)),
-        cleaned[0] if cleaned else "",
-    )
-    version = next(
-        (
-            row for row in cleaned
-            if any(token in row.casefold() for token in (
-                "last update", "last updated", "effective", "version",
-                "更新", "生效", "版本",
-            ))
-        ),
-        None,
-    )
-    return {
-        "title": title,
-        "version": version,
-        "allowed_terms": allowed,
-        "denied_terms": denied,
-    }
-
-
-def validate_legal_consent_source(
-    source: Path, contract: dict[str, object]
-) -> dict[str, object]:
-    expected = {
-        "source_profile_relative_path": LEGAL_CONSENT_PROFILE_SUFFIX.as_posix(),
-        "source_sha256": "8933437F2000BB639D588A541B798F97C6D87BA7D891613FAC23D1812AB9EB28",
-        "authorized_document_kinds": [
-            "User Agreement", "EULA", "Terms of Use", "semantic equivalents"
-        ],
-        "explicitly_not_authorized": [
-            "privacy", "telemetry", "advertising", "marketing",
-            "personalized content", "data sharing",
-        ],
-        "accepted_marker_present": False,
-        "allow_exact_semantic_modal_acceptance": True,
-        "real_profile_read_only": True,
-    }
-    for key, value in expected.items():
-        if contract.get(key) != value:
-            raise RuntimeError(f"manifest legal-consent contract mismatch for {key}")
-    if not source.is_file():
-        raise TypedTerminalError(
-            "LegalConsentRequired",
-            "preflight_legal_consent",
-            "real-profile legal-consent source is absent",
-        )
-    source_parts = tuple(part.casefold() for part in source.resolve().parts)
-    suffix_parts = tuple(part.casefold() for part in LEGAL_CONSENT_PROFILE_SUFFIX.parts)
-    if source_parts[-len(suffix_parts):] != suffix_parts:
-        raise RuntimeError("legal-consent source path is not the frozen CK3 account file")
-    observed_hash = sha256(source)
-    if observed_hash != contract["source_sha256"]:
-        raise RuntimeError(
-            f"legal-consent source hash mismatch: {observed_hash}"
-        )
-    try:
-        payload = json.loads(source.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RuntimeError(f"legal-consent source is invalid JSON: {exc}") from exc
-    if not isinstance(payload, dict):
-        raise RuntimeError("legal-consent source root is not an object")
-    markers = _legal_document_markers(payload)
-    return {
-        "source_path": str(source.resolve()),
-        "source_sha256": observed_hash,
-        "accepted_marker_present": False,
-        "observed_legal_marker_count": len(markers),
-        "real_profile_read_only": True,
-    }
-
-
-def account_legal_state(userdir: Path) -> dict[str, object]:
-    path = userdir / LEGAL_CONSENT_PROFILE_SUFFIX
-    if not path.is_file():
-        return {"path": str(path.resolve()), "exists": False, "sha256": None,
-                "markers": []}
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict):
-        raise RuntimeError("isolated userdir account.json root is not an object")
-    return {
-        "path": str(path.resolve()),
-        "exists": True,
-        "sha256": sha256(path),
-        "markers": sorted(_legal_document_markers(payload)),
-    }
-
-
-def newly_persisted_legal_markers(
-    before: dict[str, object], after: dict[str, object]
-) -> list[str]:
-    before_markers = set(str(value) for value in before.get("markers", []))
-    return sorted(
-        str(value) for value in after.get("markers", [])
-        if str(value) not in before_markers
-    )
-
-
-def _authorized_legal_marker(marker: str) -> bool:
-    normalized = marker.casefold().replace("_", "-").replace(".", "-")
-    if any(term.replace(" ", "-") in normalized for term in LEGAL_DENIED_TERMS):
-        return False
-    return any(token in normalized for token in (
-        "user-agreement", "end-user-license-agreement", "eula", "terms-of-use"
-    ))
-
-
-def accept_authorized_legal_modal(
-    acceptance: object,
-    image_grab: object,
-    userdir: Path,
-    ui_dir: Path,
-    image: object,
-    rows: list[str],
-    index: int,
-    stage_artifacts: list[dict[str, object]],
-) -> dict[str, object]:
-    classification = classify_authorized_legal_modal(rows)
-    if classification is None:
-        raise TypedTerminalError(
-            "LegalConsentNotAuthorized",
-            "legal_consent",
-            "visible modal is not an allowlisted Paradox legal agreement",
-        )
-    before_path = ui_dir / f"legal_consent_{index:02d}_before.png"
-    image.save(before_path)
-    stage_artifacts.append({
-        "stage": "legal_consent_before",
-        "path": before_path.name,
-    })
-    before_state = account_legal_state(userdir)
-    accept_point = None
-    for label in ("好的", "我同意", "接受", "I Agree", "Accept", "OK"):
-        accept_point = acceptance.find_ocr_text(
-            image, label, acceptance.FULL_SCREEN_REGION, contains=True
-        )
-        if accept_point is not None:
-            break
-    if accept_point is None:
-        raise TypedTerminalError(
-            "LegalConsentControlNotFound",
-            "legal_consent",
-            "allowlisted legal agreement is visible but its accept control was not found",
-        )
-    acceptance.deliberate_click(
-        accept_point,
-        f"authorized Paradox legal agreement #{index}: {classification['title']}",
-    )
-    deadline = time.monotonic() + 20
-    after_image = None
-    while time.monotonic() < deadline:
-        acceptance.focus_ck3()
-        after_image = image_grab.grab()
-        after_rows = [
-            str(row[0]) for row in acceptance.ocr_results(
-                after_image, LEGAL_MODAL_HEADER_REGION
-            )
-        ]
-        try:
-            remaining = classify_authorized_legal_modal(after_rows)
-        except TypedTerminalError as next_modal:
-            if next_modal.terminal == "LegalConsentNotAuthorized":
-                break
-            raise
-        if (
-            remaining is None
-            or remaining.get("title") != classification.get("title")
-            or remaining.get("version") != classification.get("version")
-        ):
-            break
-        time.sleep(0.25)
-    else:
-        raise TypedTerminalError(
-            "LegalConsentAcceptanceTimeout",
-            "legal_consent",
-            "allowlisted legal agreement did not close after the authorized click",
-        )
-    assert after_image is not None
-    after_path = ui_dir / f"legal_consent_{index:02d}_after.png"
-    after_image.save(after_path)
-    stage_artifacts.append({
-        "stage": "legal_consent_after",
-        "path": after_path.name,
-    })
-    marker_deadline = time.monotonic() + 15
-    after_state = account_legal_state(userdir)
-    new_markers = newly_persisted_legal_markers(before_state, after_state)
-    while not new_markers and time.monotonic() < marker_deadline:
-        time.sleep(0.25)
-        after_state = account_legal_state(userdir)
-        new_markers = newly_persisted_legal_markers(before_state, after_state)
-    allowed_new_markers = [
-        marker for marker in new_markers if _authorized_legal_marker(marker)
-    ]
-    if not allowed_new_markers:
-        raise TypedTerminalError(
-            "LegalConsentMarkerNotPersisted",
-            "legal_consent",
-            "authorized agreement closed but no new allowlisted accepted marker was persisted in the isolated userdir",
-        )
-    return {
-        **classification,
-        "authorized_click": True,
-        "button_label": label,
-        "before_screenshot": before_path.name,
-        "after_screenshot": after_path.name,
-        "marker_path": after_state["path"],
-        "marker_sha256_before": before_state["sha256"],
-        "marker_sha256_after": after_state["sha256"],
-        "new_accepted_markers": allowed_new_markers,
-        "real_profile_modified": False,
-    }
 
 
 def navigate_lobby_with_authorized_legal(

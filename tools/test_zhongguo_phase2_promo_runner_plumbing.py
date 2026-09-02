@@ -202,6 +202,19 @@ def _enter_common_run_cell_patches(
     )
     stack.enter_context(mock.patch.object(capture, "PromoRecorder", _FakeRecorder))
     stack.enter_context(
+        mock.patch.object(
+            capture,
+            "handle_phase2_optional_legal_consent",
+            return_value={
+                "schema_version": 1,
+                "result": "GREEN",
+                "state": "no_modal",
+                "authorized_click_count": 0,
+                "real_profile_modified": False,
+            },
+        )
+    )
+    stack.enter_context(
         mock.patch.object(capture, "project_diagnostics", return_value=([], []))
     )
     stack.enter_context(mock.patch.object(capture, "copy_logs"))
@@ -624,7 +637,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 )
         self.assertIn("phase-two seed preflight RED", str(raised.exception))
         self.assertIn("no ready canonical paused seed", str(raised.exception))
-        self.assertFalse(preflight.call_args.kwargs["require_visual_tools"])
+        self.assertTrue(preflight.call_args.kwargs["require_visual_tools"])
         forbidden_run_cell.assert_not_called()
         forbidden_install.assert_not_called()
         forbidden_supervisor.assert_not_called()
@@ -725,6 +738,22 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             bridge = SimpleNamespace(pipe_name=r"\\.\pipe\phase2-promo-unit")
             with ExitStack() as stack:
                 _enter_common_run_cell_patches(stack, root)
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "handle_phase2_optional_legal_consent",
+                        side_effect=lambda *_args, **_kwargs: (
+                            lifecycle.append("legal-consent")
+                            or {
+                                "schema_version": 1,
+                                "result": "GREEN",
+                                "state": "no_modal",
+                                "authorized_click_count": 0,
+                                "real_profile_modified": False,
+                            }
+                        ),
+                    )
+                )
                 install = stack.enter_context(
                     mock.patch.object(
                         capture, "install_phase2_seed", side_effect=install_seed
@@ -787,6 +816,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 "seed",
                 "supervisor",
                 "binding",
+                "legal-consent",
                 "loader",
                 "loaded-seed",
                 "footage",
@@ -1132,6 +1162,89 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertTrue(
             capability.call_args.kwargs["managed_restore_supervisor"]
         )
+
+    def test_phase2_legal_gate_no_modal_is_green_without_click(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "native-state" / "profile"
+            artifacts = root / "artifacts"
+            userdir.mkdir(parents=True)
+            artifacts.mkdir()
+            with (
+                mock.patch.object(capture.acceptance, "focus_ck3"),
+                mock.patch.object(
+                    capture.acceptance.ImageGrab,
+                    "grab",
+                    return_value=object(),
+                ),
+                mock.patch.object(
+                    capture.acceptance,
+                    "ocr_results",
+                    return_value=[("Crusader Kings III", 1.0, (10, 10), None)],
+                ),
+                mock.patch.object(
+                    capture.acceptance, "deliberate_click"
+                ) as forbidden_click,
+            ):
+                evidence = capture.handle_phase2_optional_legal_consent(
+                    userdir, artifacts
+                )
+            persisted = json.loads(
+                (artifacts / "01_phase2_legal_consent.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(evidence["state"], "no_modal")
+        self.assertEqual(evidence["authorized_click_count"], 0)
+        self.assertEqual(persisted, evidence)
+        forbidden_click.assert_not_called()
+
+    def test_phase2_legal_gate_denies_telemetry_before_click(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "native-state" / "profile"
+            artifacts = root / "artifacts"
+            userdir.mkdir(parents=True)
+            artifacts.mkdir()
+            with (
+                mock.patch.object(capture.acceptance, "focus_ck3"),
+                mock.patch.object(
+                    capture.acceptance.ImageGrab,
+                    "grab",
+                    return_value=object(),
+                ),
+                mock.patch.object(
+                    capture.acceptance,
+                    "ocr_results",
+                    return_value=[
+                        (
+                            "Paradox Interactive Telemetry Consent",
+                            1.0,
+                            (10, 10),
+                            None,
+                        )
+                    ],
+                ),
+                mock.patch.object(
+                    capture.acceptance, "deliberate_click"
+                ) as forbidden_click,
+            ):
+                with self.assertRaises(
+                    capture.Phase2LegalConsentBlocked
+                ) as raised:
+                    capture.handle_phase2_optional_legal_consent(
+                        userdir, artifacts
+                    )
+            persisted = json.loads(
+                (artifacts / "01_phase2_legal_consent.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+        self.assertEqual(raised.exception.reason_code, "LegalConsentNotAuthorized")
+        self.assertEqual(persisted["result"], "RED")
+        self.assertEqual(persisted["state"], "typed_stop")
+        forbidden_click.assert_not_called()
 
     def test_production_sidecars_feed_strict_footage_intake_unchanged(self) -> None:
         """Exercise the planned producer bundle through the real intake contract.
@@ -1516,7 +1629,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertIn("cell/promo/raw/zg361-promo-live-full-take-01.mkv", indexed_paths)
         forbidden_launch.assert_not_called()
         forbidden_ffmpeg.assert_not_called()
-        self.assertFalse(preflight.call_args.kwargs["require_visual_tools"])
+        self.assertTrue(preflight.call_args.kwargs["require_visual_tools"])
 
 
 if __name__ == "__main__":

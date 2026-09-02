@@ -173,6 +173,43 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
             ])
         self.assertEqual(caught.exception.terminal, "LegalConsentNotAuthorized")
 
+    def test_legal_modal_requires_version_before_any_click(self) -> None:
+        class ForbiddenAcceptance:
+            FULL_SCREEN_REGION = (0, 0, 1, 1)
+
+            @staticmethod
+            def find_ocr_text(*_args, **_kwargs):
+                raise AssertionError("missing version must stop before button lookup")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "userdir"
+            ui_dir = root / "ui"
+            userdir.mkdir()
+            with self.assertRaises(MODULE.TypedTerminalError) as raised:
+                MODULE.accept_authorized_legal_modal(
+                    ForbiddenAcceptance(),
+                    object(),
+                    userdir,
+                    ui_dir,
+                    object(),
+                    ["Paradox Interactive User Agreement", "Accept"],
+                    1,
+                    [],
+                )
+        self.assertEqual(raised.exception.terminal, "LegalConsentVersionMissing")
+
+    def test_shared_classifier_preserves_chinese_policy_terms(self) -> None:
+        allowed = MODULE.classify_authorized_legal_modal(
+            ["Paradox Interactive 最终用户许可协议", "版本 4.0", "我同意"]
+        )
+        self.assertIsNotNone(allowed)
+        with self.assertRaises(MODULE.TypedTerminalError) as denied:
+            MODULE.classify_authorized_legal_modal(
+                ["Paradox Interactive 遥测与数据共享政策", "接受"]
+            )
+        self.assertEqual(denied.exception.terminal, "LegalConsentNotAuthorized")
+
     def test_new_accepted_marker_must_be_allowlisted(self) -> None:
         before = {
             "markers": ["eula-2016-11-08", "Terms-of-use-2019-04-05"]

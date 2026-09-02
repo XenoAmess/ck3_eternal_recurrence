@@ -5475,7 +5475,7 @@ def main() -> int:
             assert phase2_main_result == 1
         assert phase2_preflight.call_args.kwargs[
             "require_visual_tools"
-        ] is False
+        ] is True
         assert phase2_run_cell.call_args.kwargs["phase2_live_batch"] is True
         assert phase2_run_cell.call_args.kwargs["loader_smoke"] is False
         assert phase2_run_cell.call_args.kwargs["promo_capture"] is False
@@ -5653,8 +5653,7 @@ def main() -> int:
     assert "acceptance._ocr is None" in preflight_source
     assert "acceptance.pyautogui.size()" in preflight_source
     main_source = inspect.getsource(capture.main)
-    assert "require_visual_tools = not (" in main_source
-    assert "loader_smoke or phase2_live_batch or phase2_promo_capture" in main_source
+    assert "require_visual_tools = not loader_smoke" in main_source
     assert '"gameplay_acceptance_executed", False' in main_source
     assert "phase2_live_batch=phase2_live_batch" in main_source
     assert "preflight_phase2_seed_contract(" in main_source

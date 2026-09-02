@@ -1,9 +1,11 @@
 ﻿#!/usr/bin/env python3
-"""Create one frozen, MCP-only ZhongGuo phase-two seed capture attempt.
+"""Create one frozen ZhongGuo phase-two seed capture attempt.
 
 The caller supplies an immutable clean source export and every machine-local
 runtime dependency.  This runner never imports the invoking worktree's CK3
-modules, uses visual input, or guesses a domain selector.
+modules or guesses a domain selector.  Its only visual exception is the
+shared, owner-authorized Paradox legal-agreement gate; seed observation and
+mutation remain MCP-only.
 """
 
 from __future__ import annotations
@@ -1795,7 +1797,9 @@ def run_capture(
         },
         "mcp_only": True,
         "gameplay_control_transport": "MCP-only",
-        "non_gameplay_platform_operation": "US-English HKL watchdog",
+        "non_gameplay_platform_operation": (
+            "US-English HKL watchdog + optional legal-agreement gate"
+        ),
         "ocr_used": False,
         "image_used": False,
         "coordinates_used": False,
@@ -1814,6 +1818,7 @@ def run_capture(
         "bridge": None,
         "bootstrap": None,
         "binding": None,
+        "legal_consent": None,
         "loader_stage": None,
         "runtime_mount_inventory": None,
         "native_readiness": None,
@@ -2071,6 +2076,21 @@ def run_capture(
         runner_log(
             f"CK3 PID {binding['bridge_pid']} bound on explicit pipe {config.pipe_name}"
         )
+        try:
+            legal_evidence = zgrun.handle_phase2_optional_legal_consent(
+                config.profile_dir, artifacts
+            )
+            report["legal_consent"] = legal_evidence
+            report["ocr_used"] = legal_evidence.get("ocr_used") is True
+            report["image_used"] = legal_evidence.get("image_used") is True
+        except BaseException as error:
+            legal_evidence = getattr(error, "evidence", None)
+            if isinstance(legal_evidence, dict):
+                report["legal_consent"] = legal_evidence
+            raise SeedCaptureError(
+                "phase-two seed legal-consent gate blocked: " + str(error),
+                legal_evidence if isinstance(legal_evidence, dict) else {},
+            ) from error
 
         def keep_english() -> None:
             serial = 0

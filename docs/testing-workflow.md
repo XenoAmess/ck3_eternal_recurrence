@@ -1152,6 +1152,34 @@ py -O tools/test_zg361_phase2_loader_stage.py
 py tools/test_zg361_phase2_seed_fixture.py
 ```
 
+### Phase2 managed legal-agreement gate（2026-09-02）
+
+Phase2 seed capture 与 phase2 promo/acceptance 的 managed session 在首次
+PID/generation 绑定后、loader gate 之前，共用
+`tools/paradox_legal_consent.py`。该模块也是 G2 private capture runner 的唯一
+协议分类与 marker 证据实现，禁止在各 runner 内复制 allowlist/denylist。
+
+项目所有者授权的范围仅为 Paradox **User Agreement、EULA、Terms of Use**
+及其严格语义等价项。`privacy`、`telemetry`、`advertising`、`marketing`、
+`personalized content`、`data sharing` 及其中英文等价提示均不得点击；未知
+Paradox legal/consent 文档、缺少标题或版本/生效日期、缺少明确接受按钮、
+marker 未落盘或新增了非授权 marker 时均 typed RED。普通画面没有 legal
+modal 时记录 `state=no_modal`、零点击并继续原流程。
+
+允许点击时，证据必须包含识别到的标题/版本、按钮标签、前后截图及 SHA-256，
+并记录隔离 `-userdir/account/PDX/SDK/ck3/account.json` 的前后哈希、完整 marker
+集合与新增 allowlisted marker。共享模块只接收本次 runner 的 isolated
+userdir；不会读取、复制或修改真实 profile。相关无启动回归：
+
+```powershell
+py -m unittest ck3_autonomous_player.tests.unit.test_raiktor_war_bound_capture_runner
+py -m unittest tools.test_zhongguo_phase2_promo_runner_plumbing
+py tools/test_run_zg361_phase2_seed_capture.py
+```
+
+这些测试只使用内存 OCR/截图夹具和临时 isolated profile，不启动 CK3，也不
+调用 FFmpeg。
+
 测试必须覆盖：已实证 parser errors 早停并去重、theme-only 不误判 fatal、普通日志从 database init 继续到 Load Save。下一次
 真实 CK3 运行必须先清零当前 parser/compiler/theme 项，再用这一门做单局验证；不得直接再开 900 秒 blind wait。
 
