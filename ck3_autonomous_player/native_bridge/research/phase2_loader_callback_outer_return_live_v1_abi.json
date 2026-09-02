@@ -83,15 +83,34 @@
     "post_capture_probe_process_count": 0,
     "result": "GREEN"
   },
-  "next_outer_stop_point": {
+  "selected_outer_continuation": {
     "rva": "0x88B5E1",
     "instruction": "nop",
     "role": "exact sequence-2 caller continuation after loader-loop normal return",
-    "first_downstream_call_rva": "0x88B5E9",
-    "first_downstream_call_target_rva": "0x82D880",
-    "first_downstream_return_rva": "0x88B5EE",
-    "downstream_call_semantics": "unknown",
-    "required_before_more_live": "bounded static slice of this caller continuation path"
+    "repeat_observation_required": false
+  },
+  "bounded_outer_teardown": {
+    "function_rva": "0x88B480",
+    "function_end_rva_exclusive": "0x88B649",
+    "local_pair_teardown_call_rva": "0x88B5E9",
+    "local_pair_teardown_target_rva": "0x82D880",
+    "local_pair_teardown_return_rva": "0x88B5EE",
+    "element_array_begin": "[RBP+0x00]",
+    "element_count": "[RBP+0x0C]",
+    "element_stride": "0x148",
+    "element_teardown_call_rva": "0x88B603",
+    "element_teardown_target_rva": "0x823D90",
+    "allocator_release_call_rva": "0x88B62C",
+    "epilogue_rva": "0x88B630",
+    "normal_return_rva": "0x88B648",
+    "semantics_boundary": "bounded local teardown only; no wait meaning assigned"
+  },
+  "next_distinct_stop_point": {
+    "rva": "0x88B648",
+    "instruction": "ret",
+    "read": "[RSP] exact outer return address before RET",
+    "role": "normal return after the selected caller completes local teardown",
+    "authorized_in_this_package": false
   },
   "limits": [
     "the mapping identifies the exact external caller continuation, not the meaning of its downstream helper",

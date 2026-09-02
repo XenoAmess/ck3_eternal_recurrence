@@ -52,11 +52,19 @@ class Phase2LoaderCallbackOuterReturnLiveContractTests(unittest.TestCase):
         self.assertTrue(cleanup["process_terminated"])
         self.assertEqual(cleanup["post_capture_ck3_process_count"], 0)
         self.assertEqual(cleanup["post_capture_probe_process_count"], 0)
-        stop = self.contract["next_outer_stop_point"]
-        self.assertEqual(stop["rva"], "0x88B5E1")
-        self.assertEqual(stop["first_downstream_call_rva"], "0x88B5E9")
-        self.assertEqual(stop["first_downstream_return_rva"], "0x88B5EE")
-        self.assertEqual(stop["downstream_call_semantics"], "unknown")
+        selected = self.contract["selected_outer_continuation"]
+        self.assertEqual(selected["rva"], "0x88B5E1")
+        self.assertFalse(selected["repeat_observation_required"])
+        teardown = self.contract["bounded_outer_teardown"]
+        self.assertEqual(teardown["local_pair_teardown_call_rva"], "0x88B5E9")
+        self.assertEqual(teardown["element_teardown_call_rva"], "0x88B603")
+        self.assertEqual(teardown["element_stride"], "0x148")
+        self.assertEqual(teardown["allocator_release_call_rva"], "0x88B62C")
+        self.assertEqual(teardown["normal_return_rva"], "0x88B648")
+        stop = self.contract["next_distinct_stop_point"]
+        self.assertEqual(stop["rva"], "0x88B648")
+        self.assertEqual(stop["read"], "[RSP] exact outer return address before RET")
+        self.assertFalse(stop["authorized_in_this_package"])
 
 
 if __name__ == "__main__":

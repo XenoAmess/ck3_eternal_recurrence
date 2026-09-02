@@ -43,13 +43,23 @@ entry, same-thread return, same-thread `0x3B9ACC4` vector exhaustion, then
 Thus sequence 2 selects callsite `0x88B5DC`, continuation `0x88B5E1`, and
 PDATA owner `[0x88B480,0x88B649)` with unwind RVA `0x4C42814`.
 
-## Next outer stop point
+## Bounded outer teardown and next stop point
 
-The new exact outer stop point is `0x88B5E1`, the `nop` immediately following
-the selected direct call. The first downstream instructions are
-`0x88B5E2: lea rcx,[rbp+0x170]`, `0x88B5E9: call 0x82D880`, and return RVA
-`0x88B5EE`. The helper's business or wait meaning remains unknown; the next
-package must first perform a bounded static slice of this continuation path.
+`0x88B5E1` is the selected outer continuation, not a point that needs another
+observation. Its bounded path through the end of PDATA function
+`[0x88B480,0x88B649)` contains only local teardown:
+
+- `0x88B5E2` addresses the local pair at `[rbp+0x170]`, and `0x88B5E9`
+  calls teardown helper `0x82D880`; it returns at `0x88B5EE`;
+- the array at `[rbp+0x00]`, count `[rbp+0x0C]`, is walked with stride
+  `0x148`; each live element calls `0x823D90` at `0x88B603`;
+- `0x88B62C` dispatches the allocator release for the array, followed by the
+  epilogue at `0x88B630` and normal `ret` at `0x88B648`.
+
+No wait meaning is assigned to these teardown helpers. The next distinct
+observation candidate is **`0x88B648`**, where `[RSP]` is the exact return
+address of this selected outer caller. It requires separate authorization;
+repeating `0x88B5E1` would add no evidence.
 
 Phase two remains **native-readiness RED + not-live**. All five private
 breakpoint bytes were restored, the isolated CK3 process terminated, the real
