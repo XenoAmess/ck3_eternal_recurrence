@@ -1,0 +1,100 @@
+{
+  "contract": "phase2-post-call-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-ready-to-live",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "ae309fa5407fc18fde3c0155489ba6c403cc4b24"
+  },
+  "scope": {
+    "read_only_game_state": true,
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1",
+    "installed_by_default": false,
+    "public_abi_changed": false,
+    "default_heartbeat_schema_changed": false,
+    "readiness_promotion": false,
+    "ck3_started": false
+  },
+  "exact_hook": {
+    "patch_rva": "0x3407DA1",
+    "patch_bytes": 14,
+    "anchor_hex": "90488B4C24684885C97411488B01",
+    "continue_rva": "0x3407DAF",
+    "null_target_rva": "0x3407DBD",
+    "stub_bytes": 87,
+    "replayed_semantics": "the relocated stub replays NOP, loads [RSP+0x68], tests RCX, routes null by an absolute jump to 0x3407DBD, otherwise loads [RCX] and absolutely continues at 0x3407DAF",
+    "frame_contract": {
+      "producer_list": "RBP+0xE0",
+      "list_begin": "[producer_list+0x0]",
+      "list_count": "uint32 [producer_list+0xC]",
+      "descriptor_task": "[descriptor+0x18]",
+      "descriptor_owner": "[descriptor+0x20]",
+      "task_callback": "[task+0x38]",
+      "task_state": "uint32 [task+0x60]",
+      "selected_callback_slot2_target_rva": "0x88B480"
+    },
+    "maximum_descriptors_per_hit": 4096
+  },
+  "private_telemetry": {
+    "carrier": "private-option heartbeat phase2_post_call_observer_v1 object",
+    "raw_boundary": "hit/list/descriptor/raw-last counters publish before the callback-vslot2 equality filter",
+    "selected_filter": "callback vtable slot 2 equals module_base+0x88B480",
+    "fields": [
+      "hit_count",
+      "nonempty_list_count",
+      "descriptor_seen_count",
+      "selected_event_count",
+      "selected_state0_count",
+      "selected_state2_count",
+      "selected_state3_count",
+      "selected_other_state_count",
+      "read_failure_count",
+      "scan_truncated_count",
+      "last_producer_list",
+      "last_list_begin",
+      "last_list_count",
+      "raw_last_descriptor",
+      "raw_last_task",
+      "raw_last_owner",
+      "raw_last_callback",
+      "raw_last_callback_slot2_target",
+      "raw_last_state",
+      "last_descriptor",
+      "last_task",
+      "last_owner",
+      "last_callback",
+      "last_callback_slot2_target",
+      "last_state",
+      "last_thread_id",
+      "last_timestamp_qpc"
+    ],
+    "timestamp_clock": "QueryPerformanceCounter"
+  },
+  "lifecycle": {
+    "install": "exact build admitted and newly-created primary thread suspension proven",
+    "patch": "transactional anchor/protection/write/identity/flush/protection restore",
+    "relative_branch_relocation": "native JE is not byte-copied at a new address; the stub emits explicit absolute null and non-null exits",
+    "rollback": "recoverable install failure restores exact anchor and releases RX stub; unproven rollback retains ownership and stub",
+    "uninstall": "caller must prove quiescence; restores the exact 14-byte anchor before releasing stub",
+    "production_startup_wiring": "private option calls install from XarCk3BridgePrepareStartup",
+    "live_cleanup": "bounded runner must terminate the isolated process; standalone uninstall remains fixture-covered"
+  },
+  "source_hashes": {
+    "header_sha256": "E441D49D01DDB06A30ABBC1D354802EF40B75D26710C04A6524892F38DDD0531",
+    "implementation_sha256": "8513DFAB35AB8229A90BEF545908B809E0816F292314F44133399560A6FA7333",
+    "fixture_test_sha256": "2C62FFCAC9E33E03538DDAFD429C3463CCD1FE84D4BA39AD2825B1C0C78802A4"
+  },
+  "acceptance": {
+    "offline_fixture": "install/executed stub/selected state2/raw selector miss/relative branch exits/uninstall/recoverable rollback GREEN",
+    "private_bridge_build": "MSVC x64 Release private-option DLL SHA-256 E5AAC565567D104B2AD6E6718F0089A6211586429DF66CD4E74D1D62EB81004D",
+    "default_bridge_build": "MSVC x64 Release default DLL SHA-256 A81AA4C35006CD678CE2FA9B8DD3C2C544DD3A13DC4DE4E75C77853AC060CAD4; private heartbeat tokens absent",
+    "live_status": "not run; waiting for a newly frozen serialized CK3 authorization"
+  },
+  "limits": [
+    "the hook scans only the caller-local producer list after wrapper return and does not change any native object",
+    "the private heartbeat extension is absent from default builds",
+    "no public bridge capability or readiness gate is promoted"
+  ],
+  "readiness": "native-readiness RED + private post-call observer ready-to-live"
+}

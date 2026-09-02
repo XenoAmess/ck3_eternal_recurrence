@@ -11,6 +11,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
+#include "xar_bridge/phase2_post_call_observer_v1.hpp"
 #include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
@@ -70,6 +71,11 @@ constexpr bool kPhase2WrapperEntryObserverEnabledV1 = true;
 #else
 constexpr bool kPhase2WrapperEntryObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1)
+constexpr bool kPhase2PostCallObserverEnabledV1 = true;
+#else
+constexpr bool kPhase2PostCallObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
 constexpr bool kPhase2CompletionObserverEnabledV1 = true;
 #else
@@ -102,6 +108,8 @@ static xar::bridge::StartupLocalizeCurrentRootGuardV1State
     g_startup_localize_current_root_guard_v1{};
 static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
+static xar::bridge::Phase2PostCallObserverV1State
+    g_phase2_post_call_observer_v1{};
 static xar::bridge::Phase2WrapperEntryObserverV1State
     g_phase2_wrapper_entry_observer_v1{};
 
@@ -245,6 +253,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto phase2_wrapper_entry_observer =
       xar::bridge::ReadPhase2WrapperEntryObserverV1Diagnostics(
           g_phase2_wrapper_entry_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1)
+  const auto phase2_post_call_observer =
+      xar::bridge::ReadPhase2PostCallObserverV1Diagnostics(
+          g_phase2_post_call_observer_v1);
 #endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
@@ -406,6 +419,44 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(phase2_wrapper_entry_observer.last_thread_id);
   result += ",\"last_timestamp_qpc\":";
   result += Number(phase2_wrapper_entry_observer.last_timestamp_qpc);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1)
+  result += "},\"phase2_post_call_observer_v1\":{";
+  result += "\"private_build\":true,\"installed\":";
+  result += phase2_post_call_observer.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(phase2_post_call_observer.failure_flags);
+#define XAR_APPEND_PHASE2_POST_CALL_FIELD(name) \
+  result += ",\"" #name "\":";                  \
+  result += Number(phase2_post_call_observer.name)
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(hit_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(nonempty_list_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(descriptor_seen_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(selected_event_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(selected_state0_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(selected_state2_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(selected_state3_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(selected_other_state_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(read_failure_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(scan_truncated_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_producer_list);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_list_begin);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_list_count);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(raw_last_descriptor);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(raw_last_task);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(raw_last_owner);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(raw_last_callback);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(raw_last_callback_slot2_target);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(raw_last_state);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_descriptor);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_task);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_owner);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_callback);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_callback_slot2_target);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_state);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_thread_id);
+  XAR_APPEND_PHASE2_POST_CALL_FIELD(last_timestamp_qpc);
+#undef XAR_APPEND_PHASE2_POST_CALL_FIELD
 #endif
   result += "}}";
   return result;
@@ -7906,6 +7957,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallPhase2WrapperEntryObserverV1(
             g_phase2_wrapper_entry_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kPhase2PostCallObserverEnabledV1) {
+    xar::bridge::Phase2PostCallObserverV1Environment environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPhase2PostCallObserverV1(
+            g_phase2_post_call_observer_v1, environment)) {
       return FALSE;
     }
   }

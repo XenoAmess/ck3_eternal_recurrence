@@ -1,0 +1,55 @@
+{
+  "contract": "phase2-post-call-observer-v1-source",
+  "required_header_tokens": [
+    "kPhase2PostCallObserverPatchRvaV1 = 0x3407DA1",
+    "kPhase2PostCallObserverContinueRvaV1 = 0x3407DAF",
+    "kPhase2PostCallObserverNullTargetRvaV1 = 0x3407DBD",
+    "kPhase2PostCallSelectedCallbackTargetRvaV1",
+    "0x88B480",
+    "hit_count",
+    "nonempty_list_count",
+    "descriptor_seen_count",
+    "selected_state2_count",
+    "raw_last_callback_slot2_target",
+    "last_producer_list",
+    "last_list_count",
+    "last_owner",
+    "last_state",
+    "UninstallPhase2PostCallObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor",
+    "Phase2PostCallObserverThunkV1",
+    "QueryPerformanceCounter",
+    "mov rcx, rbp",
+    "jne over null absolute jump",
+    "state.null_target",
+    "Add(frame_base, 0xE0, producer_list)",
+    "descriptor) + 0x18",
+    "descriptor) + 0x20",
+    "task) + 0x38",
+    "task) + 0x60",
+    "kPhase2PostCallSelectedCallbackTargetRvaV1",
+    "TargetWriteResult::rollback_unproven",
+    "RecordPhase2PostCallObservationV1"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1",
+    "phase2_post_call_observer_v1",
+    "InstallPhase2PostCallObserverV1",
+    "hit_count",
+    "selected_event_count",
+    "selected_state2_count",
+    "raw_last_callback_slot2_target",
+    "last_producer_list",
+    "last_owner",
+    "last_timestamp_qpc"
+  ],
+  "fixture_cases": [
+    "generated stub captures RBP and preserves the relative-branch semantics with two absolute exits",
+    "selected state2 publishes list, descriptor, task, owner, callback and state",
+    "non-selected slot2 target remains visible only in raw telemetry",
+    "uninstall restores exact anchor",
+    "recoverable target-flush failure rolls back and releases ownership"
+  ]
+}
