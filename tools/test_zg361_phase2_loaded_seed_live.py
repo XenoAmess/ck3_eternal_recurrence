@@ -163,6 +163,10 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
         self.assertTrue(plan["same_session_continuation"])
         self.assertFalse(plan["live_executed"])
         self.assertFalse(plan["provider_live_proof_claimed"])
+        self.assertIn(
+            "expected_connection_generation",
+            plan["required_existing_session"],
+        )
         self.assertIn("launch CK3", plan["forbidden_operations"])
         self.assertIn("run any phase-two span handler", plan["forbidden_operations"])
 
@@ -176,6 +180,12 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
                 seed_contract_path=contract_path,
                 artifacts=root / "artifacts",
                 tracked_ck3_pid=4321,
+                expected_connection_generation=4,
+            )
+            persisted_proof = json.loads(
+                (root / "artifacts" / "04_phase2_seed_loaded.json").read_text(
+                    encoding="utf-8"
+                )
             )
         self.assertEqual(service.calls, [("snapshot", 10), ("manifest", 10), ("snapshot", 10)])
         self.assertEqual(report["result"], "GREEN")
@@ -184,6 +194,9 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
         self.assertFalse(report["recorder_started"])
         self.assertFalse(report["provider_live_proof_claimed"])
         self.assertTrue(report["same_session_continuation_authorized"])
+        self.assertEqual(report["expected_connection_generation"], 4)
+        self.assertEqual(persisted_proof["schema_version"], 2)
+        self.assertEqual(persisted_proof["result"], "GREEN")
         rows = report["loaded_seed_proof"]["span_requirements"]
         self.assertEqual(len(rows), 8)
         self.assertTrue(all(row["provider_ready_claimed"] is False for row in rows))
@@ -199,6 +212,7 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
                     seed_contract_path=contract_path,
                     artifacts=root / "artifacts",
                     tracked_ck3_pid=4321,
+                    expected_connection_generation=4,
                 )
             persisted = json.loads(
                 (root / "artifacts" / live.REPORT_NAME).read_text(
@@ -219,9 +233,37 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
                     seed_contract_path=phase2.PHASE2_SEED_CONTRACT_PATH,
                     artifacts=Path(temporary),
                     tracked_ck3_pid=4321,
+                    expected_connection_generation=4,
                 )
         self.assertEqual(raised.exception.reason_code, "canonical_seed_not_ready")
         self.assertEqual(service.calls, [])
+
+    def test_managed_session_generation_must_match_owning_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            contract_path = _ready_contract(root)
+            service = _ExistingService()
+            with self.assertRaises(live.LoadedSeedLiveError) as raised:
+                live.run_existing_session_loaded_seed_v2(
+                    service,
+                    seed_contract_path=contract_path,
+                    artifacts=root / "artifacts",
+                    tracked_ck3_pid=4321,
+                    expected_connection_generation=3,
+                )
+            persisted = json.loads(
+                (root / "artifacts" / live.REPORT_NAME).read_text(
+                    encoding="utf-8"
+                )
+            )
+        self.assertEqual(
+            raised.exception.reason_code,
+            "managed_session_generation_mismatch",
+        )
+        self.assertEqual(service.calls, [("snapshot", 10)])
+        self.assertEqual(persisted["result"], "RED")
+        self.assertFalse(persisted["same_session_continuation_authorized"])
+        self.assertEqual(persisted["expected_connection_generation"], 3)
 
 
 if __name__ == "__main__":

@@ -97,6 +97,9 @@ def build_no_launch_plan(seed_contract_path: Path) -> dict[str, object]:
             "paused": True,
             "map_ready": True,
             "tracked_ck3_pid": "positive exact PID",
+            "expected_connection_generation": (
+                "positive exact generation from the owning managed-session binding"
+            ),
             "service_methods": [
                 "snapshot",
                 "query_loaded_feature_manifest_v1",
@@ -132,6 +135,7 @@ def run_existing_session_loaded_seed_v2(
     seed_contract_path: Path,
     artifacts: Path,
     tracked_ck3_pid: int,
+    expected_connection_generation: int,
 ) -> dict[str, object]:
     """Prove one canonical seed/manifest frame without any gameplay action."""
 
@@ -147,6 +151,7 @@ def run_existing_session_loaded_seed_v2(
         "no_launch": True,
         "service_session_reused": True,
         "tracked_ck3_pid": tracked_ck3_pid,
+        "expected_connection_generation": expected_connection_generation,
         "seed_contract_path": str(Path(seed_contract_path).resolve()),
         "first_binding": None,
         "second_binding": None,
@@ -168,6 +173,12 @@ def run_existing_session_loaded_seed_v2(
             or tracked_ck3_pid <= 0
         ):
             raise LoadedSeedLiveError("tracked_pid_invalid")
+        if (
+            isinstance(expected_connection_generation, bool)
+            or not isinstance(expected_connection_generation, int)
+            or expected_connection_generation <= 0
+        ):
+            raise LoadedSeedLiveError("expected_connection_generation_invalid")
         contract = phase2.load_phase2_seed_contract(seed_contract_path)
         if not (
             contract.get("ready") is True
@@ -187,6 +198,19 @@ def run_existing_session_loaded_seed_v2(
         if first_binding["bridge_pid"] != tracked_ck3_pid:
             raise LoadedSeedLiveError(
                 "tracked_pid_mismatch", {"first_binding": first_binding}
+            )
+        if (
+            first_binding["connection_generation"]
+            != expected_connection_generation
+        ):
+            raise LoadedSeedLiveError(
+                "managed_session_generation_mismatch",
+                {
+                    "expected_connection_generation": (
+                        expected_connection_generation
+                    ),
+                    "first_binding": first_binding,
+                },
             )
         manifest = service.query_loaded_feature_manifest_v1(
             expected_revision=int(first_binding["revision"])

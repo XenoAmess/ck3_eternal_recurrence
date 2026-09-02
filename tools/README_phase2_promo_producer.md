@@ -45,10 +45,29 @@ py tools/zg361_phase2_loaded_seed_live.py --plan-only `
 
 Until the canonical contract becomes `ready`, the plan remains
 `WAITING_CANONICAL_SEED`.  The owning managed session then calls
-`run_existing_session_loaded_seed_v2(...)` with its already-connected service.
+`run_existing_session_loaded_seed_v2(...)` with its already-connected service,
+the exact `bridge_pid`, and the exact `connection_generation` returned by that
+runner's initial managed-session binding.  A finalized seed-capture report is
+not a continuation token: that runner stops its supervisor and closes its
+driver in `finally`, so this callable must run inline while the owning service
+is still live:
+
+```python
+loaded_seed = run_existing_session_loaded_seed_v2(
+    title_navigation_service,
+    seed_contract_path=Path(seed_candidate["contract_path"]),
+    artifacts=artifacts,
+    tracked_ck3_pid=int(native_session_binding["bridge_pid"]),
+    expected_connection_generation=int(
+        native_session_binding["connection_generation"]
+    ),
+)
+```
+
 The wrapper performs exactly `snapshot -> query-loaded-feature-manifest-v1 ->
 snapshot`, rejects any snapshot/revision/native-revision/date/player/PID or
-generation change, and emits the schema-v2 eight-row proof.  It executes no
+generation change (including drift from the owning runner's initial
+generation), and emits the schema-v2 eight-row proof.  It executes no
 span action and starts no recorder; GREEN merely authorizes the caller to keep
 using that same session for the separately serialized next step.
 
