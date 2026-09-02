@@ -30,6 +30,8 @@ namespace {
 
 constexpr std::uint64_t kCallbackCallRva = 0x3B9AB90;
 constexpr std::uint64_t kCallbackContinuationRva = 0x3B9AB93;
+constexpr std::uint64_t kNodeLoadedStopRva = 0x3B9AB53;
+constexpr std::uint64_t kLoopExitRva = 0x3B9ACC4;
 constexpr std::uint64_t kCallbackSlotTargetRva = 0x3B9BA70;
 constexpr std::uint64_t kObservedRuntimeVtableRva = 0x408A450;
 constexpr std::uint64_t kObservedRuntimeSlotTargetRva = 0x947BD0;
@@ -38,6 +40,8 @@ constexpr std::array<std::uint64_t, 2> kCandidateVtableRvas = {
     0x4558770,
 };
 constexpr std::array<std::uint8_t, 3> kCallbackBytes = {0xFF, 0x50, 0x10};
+constexpr std::uint8_t kNodeLoadedStopByte = 0x48;
+constexpr std::uint8_t kLoopExitByte = 0x4C;
 constexpr std::uint64_t kExpectedExeSize = 95206008;
 constexpr wchar_t kExpectedExeSha256[] =
     L"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
@@ -48,6 +52,7 @@ struct Options {
   std::filesystem::path output;
   DWORD timeout_ms = 45000;
   bool sequence = false;
+  bool next_node = false;
 };
 
 struct SequenceEntry {
@@ -72,6 +77,19 @@ struct SequenceEntry {
   bool concrete_callback_survived = false;
   double entry_elapsed_seconds = 0.0;
   double return_elapsed_seconds = 0.0;
+};
+
+struct NextNodeTransition {
+  std::size_t callback_sequence = 0;
+  DWORD callback_return_thread_id = 0;
+  DWORD transition_thread_id = 0;
+  std::string outcome;
+  std::uint64_t node = 0;
+  std::string node_name;
+  std::uint64_t receiver = 0;
+  bool receiver_is_null = false;
+  bool same_thread = false;
+  double elapsed_seconds = 0.0;
 };
 
 struct Capture {
@@ -119,6 +137,13 @@ struct Capture {
   std::uint64_t timeout_receiver = 0;
   DWORD timeout_thread_id = 0;
   bool timeout_thread_suspended = false;
+  std::vector<NextNodeTransition> next_node_transitions;
+  std::size_t awaiting_transition_sequence = 0;
+  DWORD awaiting_transition_thread_id = 0;
+  bool node_breakpoint_installed = false;
+  bool node_breakpoint_byte_restored = false;
+  bool loop_exit_breakpoint_installed = false;
+  bool loop_exit_breakpoint_byte_restored = false;
 };
 
 std::string Narrow(const std::wstring& value) {
@@ -325,6 +350,21 @@ bool WriteBreakpointByte(HANDLE process, std::uint64_t address,
   return wrote && restored;
 }
 
+bool ResetThreadInstructionPointer(DWORD thread_id, std::uint64_t address) {
+  HANDLE thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
+                                 THREAD_QUERY_INFORMATION,
+                             FALSE, thread_id);
+  if (!thread) return false;
+  CONTEXT context{};
+  context.ContextFlags = CONTEXT_CONTROL;
+  const bool context_ok = GetThreadContext(thread, &context) != FALSE;
+  context.Rip = address;
+  const bool context_set =
+      context_ok && SetThreadContext(thread, &context) != FALSE;
+  CloseHandle(thread);
+  return context_set;
+}
+
 HANDLE CreateKillOnCloseJob() {
   HANDLE job = CreateJobObjectW(nullptr, nullptr);
   if (!job) throw std::runtime_error("CreateJobObjectW failed");
@@ -351,6 +391,10 @@ Options ParseOptions(int argc, wchar_t** argv) {
     else if (name == L"--output") options.output = next();
     else if (name == L"--timeout-ms") options.timeout_ms = std::stoul(next());
     else if (name == L"--sequence") options.sequence = true;
+    else if (name == L"--next-node") {
+      options.next_node = true;
+      options.sequence = true;
+    }
     else throw std::runtime_error("unknown option: " + Narrow(name));
   }
   if (options.exe.empty() || options.userdir.empty() || options.output.empty()) {
@@ -374,8 +418,14 @@ void WriteReport(const Options& options, const Capture& capture) {
       first_unreturned_sequence = row.sequence;
     }
   }
+  const NextNodeTransition* last_successful_transition = nullptr;
+  for (const auto& row : capture.next_node_transitions) {
+    if (row.callback_sequence == last_successful_sequence) {
+      last_successful_transition = &row;
+    }
+  }
   output << "{\n"
-         << "  \"schema\": \"xar.phase2.loader_callback_private_debug_capture.v2\",\n"
+         << "  \"schema\": \"xar.phase2.loader_callback_private_debug_capture.v3\",\n"
          << "  \"result\": \"" << capture.result << "\",\n"
          << "  \"reason\": \"" << JsonEscape(capture.reason) << "\",\n"
          << "  \"exact_build\": {\n"
@@ -521,6 +571,52 @@ void WriteReport(const Options& options, const Capture& capture) {
          << "\",\n"
          << "    \"timeout_thread_suspended\": "
          << (capture.timeout_thread_suspended ? "true" : "false") << "\n"
+         << "  },\n";
+  output << "  \"next_node_observation\": {\n"
+         << "    \"enabled\": " << (options.next_node ? "true" : "false")
+         << ",\n"
+         << "    \"node_loaded_stop_rva\": \"" << Hex(kNodeLoadedStopRva)
+         << "\",\n"
+         << "    \"loop_exit_discriminator_rva\": \"" << Hex(kLoopExitRva)
+         << "\",\n"
+         << "    \"last_successful_callback_sequence\": "
+         << last_successful_sequence << ",\n"
+         << "    \"matching_transition_observed\": "
+         << (last_successful_transition ? "true" : "false") << ",\n"
+         << "    \"transitions\": [\n";
+  for (std::size_t index = 0; index < capture.next_node_transitions.size();
+       ++index) {
+    const auto& row = capture.next_node_transitions[index];
+    output << "      {\n"
+           << "        \"callback_sequence\": " << row.callback_sequence
+           << ",\n"
+           << "        \"callback_return_thread_id\": "
+           << row.callback_return_thread_id << ",\n"
+           << "        \"transition_thread_id\": "
+           << row.transition_thread_id << ",\n"
+           << "        \"same_thread\": "
+           << (row.same_thread ? "true" : "false") << ",\n"
+           << "        \"outcome\": \"" << JsonEscape(row.outcome)
+           << "\",\n"
+           << "        \"node\": \"" << Hex(row.node) << "\",\n"
+           << "        \"node_name\": \"" << JsonEscape(row.node_name)
+           << "\",\n"
+           << "        \"receiver\": \"" << Hex(row.receiver) << "\",\n"
+           << "        \"receiver_is_null\": "
+           << (row.receiver_is_null ? "true" : "false") << ",\n"
+           << "        \"elapsed_seconds\": " << std::fixed
+           << std::setprecision(3) << row.elapsed_seconds << "\n"
+           << "      }"
+           << (index + 1 == capture.next_node_transitions.size() ? "" : ",")
+           << "\n";
+  }
+  output << "    ],\n"
+         << "    \"node_breakpoint_byte_restored\": "
+         << (capture.node_breakpoint_byte_restored ? "true" : "false")
+         << ",\n"
+         << "    \"loop_exit_breakpoint_byte_restored\": "
+         << (capture.loop_exit_breakpoint_byte_restored ? "true" : "false")
+         << "\n"
          << "  },\n"
          << "  \"cleanup\": {\n"
          << "    \"original_breakpoint_byte_restored\": "
@@ -554,6 +650,34 @@ Capture Run(const Options& options) {
   auto finish_elapsed = [&]() {
     capture.elapsed_seconds = std::chrono::duration<double>(
         std::chrono::steady_clock::now() - started).count();
+  };
+  auto restore_transition_breakpoints = [&]() {
+    bool ok = true;
+    if (process_info.hProcess && capture.image_base != 0 &&
+        capture.node_breakpoint_installed) {
+      const auto address = capture.image_base + kNodeLoadedStopRva;
+      const bool wrote = WriteBreakpointByte(
+          process_info.hProcess, address, kNodeLoadedStopByte);
+      std::uint8_t restored = 0;
+      capture.node_breakpoint_byte_restored =
+          wrote && ReadRemote(process_info.hProcess, address, &restored) &&
+          restored == kNodeLoadedStopByte;
+      capture.node_breakpoint_installed = false;
+      ok &= capture.node_breakpoint_byte_restored;
+    }
+    if (process_info.hProcess && capture.image_base != 0 &&
+        capture.loop_exit_breakpoint_installed) {
+      const auto address = capture.image_base + kLoopExitRva;
+      const bool wrote =
+          WriteBreakpointByte(process_info.hProcess, address, kLoopExitByte);
+      std::uint8_t restored = 0;
+      capture.loop_exit_breakpoint_byte_restored =
+          wrote && ReadRemote(process_info.hProcess, address, &restored) &&
+          restored == kLoopExitByte;
+      capture.loop_exit_breakpoint_installed = false;
+      ok &= capture.loop_exit_breakpoint_byte_restored;
+    }
+    return ok;
   };
 
   try {
@@ -617,10 +741,24 @@ Capture Run(const Options& options) {
         SIZE_T read = 0;
         if (!ReadProcessMemory(process_info.hProcess,
                                reinterpret_cast<const void*>(
-                                   capture.callback_address),
+                                    capture.callback_address),
                                actual.data(), actual.size(), &read) ||
             read != actual.size() || actual != kCallbackBytes) {
           throw std::runtime_error("callback instruction bytes mismatch");
+        }
+        if (options.next_node) {
+          std::uint8_t node_byte = 0;
+          std::uint8_t exit_byte = 0;
+          if (!ReadRemote(process_info.hProcess,
+                          capture.image_base + kNodeLoadedStopRva,
+                          &node_byte) ||
+              node_byte != kNodeLoadedStopByte ||
+              !ReadRemote(process_info.hProcess,
+                          capture.image_base + kLoopExitRva, &exit_byte) ||
+              exit_byte != kLoopExitByte) {
+            throw std::runtime_error(
+                "next-node observation instruction bytes mismatch");
+          }
         }
         if (!WriteBreakpointByte(process_info.hProcess,
                                  capture.callback_address, 0xCC)) {
@@ -639,6 +777,62 @@ Capture Run(const Options& options) {
         const auto address = reinterpret_cast<std::uint64_t>(
             exception.ExceptionAddress);
         if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
+            options.next_node &&
+            capture.awaiting_transition_sequence != 0 &&
+            ((address == capture.image_base + kNodeLoadedStopRva &&
+              capture.node_breakpoint_installed) ||
+             (address == capture.image_base + kLoopExitRva &&
+              capture.loop_exit_breakpoint_installed))) {
+          HANDLE thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
+                                         THREAD_QUERY_INFORMATION,
+                                     FALSE, event.dwThreadId);
+          if (!thread) {
+            throw std::runtime_error(
+                "OpenThread failed at next-node transition");
+          }
+          CONTEXT context{};
+          context.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER;
+          const bool context_ok = GetThreadContext(thread, &context) != FALSE;
+          CloseHandle(thread);
+          if (!context_ok) {
+            throw std::runtime_error(
+                "GetThreadContext failed at next-node transition");
+          }
+
+          NextNodeTransition row;
+          row.callback_sequence = capture.awaiting_transition_sequence;
+          row.callback_return_thread_id =
+              capture.awaiting_transition_thread_id;
+          row.transition_thread_id = event.dwThreadId;
+          row.same_thread = row.callback_return_thread_id == row.transition_thread_id;
+          row.elapsed_seconds = std::chrono::duration<double>(
+              std::chrono::steady_clock::now() - started).count();
+          if (address == capture.image_base + kNodeLoadedStopRva) {
+            row.outcome = "next-node-loaded";
+            row.node = context.Rsi;
+            row.node_name = ReadNodeName(process_info.hProcess, row.node);
+            if (!ReadRemote(process_info.hProcess, row.node + 0x88,
+                            &row.receiver)) {
+              throw std::runtime_error(
+                  "could not read next node+0x88 receiver");
+            }
+            row.receiver_is_null = row.receiver == 0;
+          } else {
+            row.outcome = "vector-exhausted";
+            row.receiver_is_null = true;
+          }
+          if (!restore_transition_breakpoints()) {
+            throw std::runtime_error(
+                "could not restore next-node transition breakpoints");
+          }
+          if (!ResetThreadInstructionPointer(event.dwThreadId, address)) {
+            throw std::runtime_error(
+                "could not reset instruction pointer at next-node transition");
+          }
+          capture.next_node_transitions.push_back(row);
+          capture.awaiting_transition_sequence = 0;
+          capture.awaiting_transition_thread_id = 0;
+        } else if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
             address == capture.callback_address) {
           HANDLE thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
                                          THREAD_QUERY_INFORMATION,
@@ -774,6 +968,44 @@ Capture Run(const Options& options) {
                 capture.callback_function_survived_return;
             row.return_elapsed_seconds = std::chrono::duration<double>(
                 std::chrono::steady_clock::now() - started).count();
+            if (options.next_node) {
+              if (capture.node_breakpoint_installed ||
+                  capture.loop_exit_breakpoint_installed ||
+                  capture.awaiting_transition_sequence != 0) {
+                throw std::runtime_error(
+                    "previous next-node transition remained pending");
+              }
+              const auto node_address =
+                  capture.image_base + kNodeLoadedStopRva;
+              const auto exit_address = capture.image_base + kLoopExitRva;
+              std::uint8_t node_byte = 0;
+              std::uint8_t exit_byte = 0;
+              if (!ReadRemote(process_info.hProcess, node_address,
+                              &node_byte) ||
+                  node_byte != kNodeLoadedStopByte ||
+                  !ReadRemote(process_info.hProcess, exit_address,
+                              &exit_byte) ||
+                  exit_byte != kLoopExitByte) {
+                throw std::runtime_error(
+                    "next-node breakpoint source byte mismatch");
+              }
+              if (!WriteBreakpointByte(process_info.hProcess, node_address,
+                                       0xCC)) {
+                throw std::runtime_error(
+                    "could not install node-loaded breakpoint");
+              }
+              capture.node_breakpoint_installed = true;
+              capture.node_breakpoint_byte_restored = false;
+              if (!WriteBreakpointByte(process_info.hProcess, exit_address,
+                                       0xCC)) {
+                throw std::runtime_error(
+                    "could not install loop-exit breakpoint");
+              }
+              capture.loop_exit_breakpoint_installed = true;
+              capture.loop_exit_breakpoint_byte_restored = false;
+              capture.awaiting_transition_sequence = row.sequence;
+              capture.awaiting_transition_thread_id = event.dwThreadId;
+            }
             HANDLE resume_thread = OpenThread(
                 THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
                     THREAD_QUERY_INFORMATION,
@@ -857,17 +1089,40 @@ Capture Run(const Options& options) {
       const bool has_pending = !capture.sequence_entries.empty() &&
                                !capture.sequence_entries.back().returned;
       const bool has_unentered_candidate = capture.timeout_thread_suspended &&
-                                           !capture.timeout_node_name.empty();
-      capture.result = !capture.sequence_entries.empty() &&
-                               (has_pending || has_unentered_candidate)
-                           ? "GREEN"
-                           : "RED";
-      capture.reason =
-          has_pending
-              ? "callback-sequence-first-unreturned-observed"
-              : (has_unentered_candidate
-                     ? "callback-sequence-first-unentered-candidate-observed"
-                     : "callback-sequence-stall-boundary-unobservable");
+                                            !capture.timeout_node_name.empty();
+      if (options.next_node) {
+        std::size_t last_successful_sequence = 0;
+        for (const auto& row : capture.sequence_entries) {
+          if (row.returned) last_successful_sequence = row.sequence;
+        }
+        const NextNodeTransition* matching = nullptr;
+        for (const auto& row : capture.next_node_transitions) {
+          if (row.callback_sequence == last_successful_sequence) {
+            matching = &row;
+          }
+        }
+        capture.result =
+            last_successful_sequence != 0 && matching && matching->same_thread
+                ? "GREEN"
+                : "RED";
+        capture.reason =
+            capture.result == "GREEN"
+                ? (matching->outcome == "vector-exhausted"
+                       ? "last-returned-callback-vector-exhausted"
+                       : "last-returned-callback-next-node-observed")
+                : "last-returned-callback-next-transition-unobserved";
+      } else {
+        capture.result = !capture.sequence_entries.empty() &&
+                                 (has_pending || has_unentered_candidate)
+                             ? "GREEN"
+                             : "RED";
+        capture.reason =
+            has_pending
+                ? "callback-sequence-first-unreturned-observed"
+                : (has_unentered_candidate
+                       ? "callback-sequence-first-unentered-candidate-observed"
+                       : "callback-sequence-stall-boundary-unobservable");
+      }
     } else if (!capture.callback_observed) {
       capture.result = "RED";
       capture.reason = "callback-breakpoint-timeout";
@@ -881,6 +1136,10 @@ Capture Run(const Options& options) {
   }
 
   if (process_info.hProcess) {
+    if (!restore_transition_breakpoints()) {
+      capture.result = "RED";
+      capture.reason += "; transition-breakpoint-cleanup-failed";
+    }
     if (capture.breakpoint_installed && !capture.original_byte_restored &&
         capture.callback_address != 0) {
       capture.original_byte_restored = WriteBreakpointByte(
@@ -950,11 +1209,15 @@ Capture Run(const Options& options) {
 int wmain(int argc, wchar_t** argv) {
   if (argc == 2 && std::wstring(argv[1]) == L"--self-test") {
     const bool ok = kCallbackCallRva == 0x3B9AB90 &&
-                    kCallbackContinuationRva == 0x3B9AB93 &&
-                    kCallbackSlotTargetRva == 0x3B9BA70 &&
+                     kCallbackContinuationRva == 0x3B9AB93 &&
+                     kNodeLoadedStopRva == 0x3B9AB53 &&
+                     kLoopExitRva == 0x3B9ACC4 &&
+                     kCallbackSlotTargetRva == 0x3B9BA70 &&
                     kObservedRuntimeVtableRva == 0x408A450 &&
                     kObservedRuntimeSlotTargetRva == 0x947BD0 &&
-                    kCallbackBytes == std::array<std::uint8_t, 3>{0xFF, 0x50, 0x10};
+                     kCallbackBytes ==
+                         std::array<std::uint8_t, 3>{0xFF, 0x50, 0x10} &&
+                     kNodeLoadedStopByte == 0x48 && kLoopExitByte == 0x4C;
     std::cout << (ok ? "phase2-private-debug-capture-self-test=GREEN\n"
                      : "phase2-private-debug-capture-self-test=RED\n");
     return ok ? 0 : 2;

@@ -144,6 +144,16 @@ class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
         self.assertIn("public_bridge_abi_changed", self.source)
         self.assertIn("production_detour_installed", self.source)
 
+    def test_next_node_probe_uses_the_static_stop_point_and_exit_edge(self) -> None:
+        self.assertIn("kNodeLoadedStopRva = 0x3B9AB53", self.source)
+        self.assertIn("kLoopExitRva = 0x3B9ACC4", self.source)
+        self.assertIn('else if (name == L"--next-node")', self.source)
+        self.assertIn("next-node-loaded", self.source)
+        self.assertIn("vector-exhausted", self.source)
+        self.assertIn("last-returned-callback-next-node-observed", self.source)
+        self.assertIn("last-returned-callback-vector-exhausted", self.source)
+        self.assertIn("restore_transition_breakpoints", self.source)
+
 
 if __name__ == "__main__":
     unittest.main()

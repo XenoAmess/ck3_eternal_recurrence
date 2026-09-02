@@ -1,0 +1,126 @@
+{
+  "contract": "phase2-loader-callback-next-node-live-v1",
+  "schema_version": 1,
+  "status": "private-vector-exhaustion-observed",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "3f90b664d6e9095bce079de47113da9c551a9787",
+    "static_contract": "phase2-loader-callback-next-edge-v1",
+    "private_probe": "phase2_loader_callback_debug_capture.cpp",
+    "private_probe_source_sha256": "AAC7DC42C2D4FE781B15F71BB0CDDB114D0903192CBED20E607524B3C26A950F",
+    "private_probe_executable_sha256": "E083CC03D5E9C24C46D97ACAFB24AE7FFAF83A81C3483C49679ACEF42EDD5603"
+  },
+  "preflight": {
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\next-node-open-kaishek-preflight.json",
+    "artifact_sha256": "85C7FF727E9305314C2B5DF6F57FBA7D9ECC9ED1CAD8B30B24409276812984B5",
+    "parser_status": "GREEN",
+    "ir_status": "GREEN",
+    "runtime_status": "GREEN",
+    "validator_status": "RED",
+    "boundary": "the validator result is the known full-root schema-only RED; this is offline structural evidence"
+  },
+  "capture": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\next-node-callback-observation.json",
+    "artifact_sha256": "A55D2E84D6842A7603DB96EC91A21B0A5D218221986E16B9B96CD8DD85847F05",
+    "timeout_ms": 60000,
+    "elapsed_seconds": 60.238,
+    "result": "GREEN",
+    "reason": "last-returned-callback-vector-exhausted",
+    "callback_entry_count": 2,
+    "last_successful_callback_sequence": 2,
+    "node_loaded_stop_rva": "0x3B9AB53",
+    "loop_exit_discriminator_rva": "0x3B9ACC4",
+    "entries": [
+      {
+        "sequence": 1,
+        "node_name": "CGameConceptTypeDatabase",
+        "concrete_callback_rva": "0x2045330",
+        "entry_thread_id": 29792,
+        "return_thread_id": 29792,
+        "returned": true,
+        "entry_elapsed_seconds": 13.818,
+        "return_elapsed_seconds": 13.908,
+        "next_transition": {
+          "outcome": "vector-exhausted",
+          "thread_id": 29792,
+          "same_thread": true,
+          "elapsed_seconds": 13.908
+        }
+      },
+      {
+        "sequence": 2,
+        "node_name": "CJominiLoadScreenDatabase",
+        "concrete_callback_rva": "0x3455CA0",
+        "entry_thread_id": 55852,
+        "return_thread_id": 55852,
+        "returned": true,
+        "entry_elapsed_seconds": 14.989,
+        "return_elapsed_seconds": 14.989,
+        "next_transition": {
+          "outcome": "vector-exhausted",
+          "thread_id": 55852,
+          "same_thread": true,
+          "elapsed_seconds": 14.989
+        }
+      }
+    ],
+    "last_returned_callback_transition": {
+      "callback_sequence": 2,
+      "outcome": "vector-exhausted",
+      "next_node_observed": false,
+      "next_node": null,
+      "next_node_name": null,
+      "next_receiver": null,
+      "next_receiver_is_null": null,
+      "meaning": "the node vector reached its exhausted edge after the callback returned; there is no later node in this invocation"
+    }
+  },
+  "cleanup": {
+    "callback_breakpoint_byte_restored": true,
+    "continuation_breakpoint_byte_restored": true,
+    "node_loaded_breakpoint_byte_restored": true,
+    "loop_exit_breakpoint_byte_restored": true,
+    "process_terminated": true,
+    "real_user_profile_targeted": false,
+    "post_capture_ck3_process_count": 0,
+    "post_capture_probe_process_count": 0,
+    "result": "GREEN"
+  },
+  "conclusion": {
+    "closed": "the last returned callback has no next node in its current vector",
+    "ruled_out": "a later node in this callback-loop invocation is the source of the observed loader stall",
+    "not_closed": "the external caller and any wait after this callback-loop function returns",
+    "readiness": "native-readiness RED + not-live"
+  },
+  "next_entry": {
+    "required": "bind the normal return at RVA 0x3B9ACE0 to the exact external caller continuation for the CJominiLoadScreenDatabase invocation before any further live run",
+    "candidate_continuations": [
+      "0x821E4A",
+      "0x88B5E1",
+      "0x1B39852",
+      "0x1E18C5B",
+      "0x1E21CD8",
+      "0x203FF9B",
+      "0x2041D91",
+      "0x3B9AEF9"
+    ],
+    "authorized_in_this_package": false,
+    "forbidden": [
+      "repeat this next-node capture",
+      "repeat the old 300-second loader timeout",
+      "infer an external caller without stack/return-address evidence",
+      "widen the public bridge or promote readiness"
+    ]
+  }
+}
