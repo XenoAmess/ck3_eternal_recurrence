@@ -33,6 +33,25 @@ to the compatibility registry path or a regressed custom driver; it is not the
 current default blocker.  Eight static owners still do not claim any provider
 live proof.
 
+`zg361_phase2_loaded_seed_live.py` is the independent no-launch hand-off for
+the next canonical seed.  Its CLI only writes a plan and cannot create a
+gameplay service:
+
+```powershell
+py tools/zg361_phase2_loaded_seed_live.py --plan-only `
+  --seed-contract tools/zg361_phase2_seed_contract.json `
+  --output $env:TEMP/zg361-phase2-loaded-seed-v2-plan.json
+```
+
+Until the canonical contract becomes `ready`, the plan remains
+`WAITING_CANONICAL_SEED`.  The owning managed session then calls
+`run_existing_session_loaded_seed_v2(...)` with its already-connected service.
+The wrapper performs exactly `snapshot -> query-loaded-feature-manifest-v1 ->
+snapshot`, rejects any snapshot/revision/native-revision/date/player/PID or
+generation change, and emits the schema-v2 eight-row proof.  It executes no
+span action and starts no recorder; GREEN merely authorizes the caller to keep
+using that same session for the separately serialized next step.
+
 `zhongguo_phase2_visual_handlers.py` supplies the real-surface adapter for the
 four catalogue entries that previously had no visual-handler boundary.  The
 scoreboard adapter consumes the existing production action cell and accepts
