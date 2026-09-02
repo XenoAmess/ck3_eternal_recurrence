@@ -28,13 +28,15 @@ from the runner's own CK3 result.  The exact command and provenance are
 provided by `tools/kaishek_preflight.py` and the external
 `open_kaishek.preflight.v1` contract.
 
-The parent adapter's default contract/provenance pin is `open_kaishek`
-`aecb14f` (or a compatible descendant). The resolved checkout commit and JAR
-SHA-256 are archived independently, and an intentionally different
-checkout/JAR can be bound with `XAR_OPEN_KAISHEK_ROOT`,
-`XAR_OPEN_KAISHEK_JAR`, and `XAR_OPEN_KAISHEK_COMMIT`. A legacy JAR that
-answers `preflight` with the generic `UNSUPPORTED` envelope remains
-`UNSUPPORTED`; a missing checkout or JAR remains `NOT_APPLICABLE`.
+The parent adapter's stable minimum contract marker is `open_kaishek`
+`b306a95` (or a compatible descendant).  It does not pin a moving mainline
+commit: each invocation resolves the checked-out HEAD and JAR SHA-256 and
+archives both, so an already-updated `Z:\workspace\open_kaishek\main` is
+used without a network fetch. An intentionally different checkout/JAR can be
+bound with `XAR_OPEN_KAISHEK_ROOT`, `XAR_OPEN_KAISHEK_JAR`, and the explicit
+provenance override `XAR_OPEN_KAISHEK_COMMIT`. A legacy JAR that answers
+`preflight` with the generic `UNSUPPORTED` envelope remains `UNSUPPORTED`; a
+missing checkout or JAR remains `NOT_APPLICABLE`.
 
 The default subprocess timeout is 180 seconds. This replaces the former
 120-second bound after a real 76-file full-corpus preflight exhausted that

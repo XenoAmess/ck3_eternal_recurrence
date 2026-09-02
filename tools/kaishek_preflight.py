@@ -8,10 +8,12 @@ its provenance, and returns an explicit outcome when the accelerator cannot be
 used.  It never installs dependencies, starts CK3, opens MCP, or mutates a
 save.
 
-The command contract is pinned to the current open_kaishek preflight contract
-at commit ``aecb14f`` (or a descendant) while retaining explicit checkout,
-JAR, and provenance environment overrides.  The command shape is
-``preflight --root PATH --profile ID --fixture ID``.
+The command contract starts at the stable ``open_kaishek`` preflight contract
+introduced by commit ``b306a95`` (or a compatible descendant).  The checkout
+and JAR are resolved at invocation time, so a locally advanced ``main`` is
+used without a network fetch; explicit checkout, JAR, and provenance
+environment overrides remain supported.  The command shape is ``preflight
+--root PATH --profile ID --fixture ID``.
 """
 
 from __future__ import annotations
@@ -30,12 +32,13 @@ from typing import Any, Mapping
 
 ADAPTER_SCHEMA = "xar.ck3.open_kaishek_preflight.v1"
 CLI_SCHEMA = "open_kaishek.preflight.v1"
-# This is the minimum/current parent contract used for default provenance.
-# A runner may intentionally bind another checkout through
-# XAR_OPEN_KAISHEK_COMMIT (and the corresponding root/JAR overrides); the
-# resolved commit is still archived below.  Descendants remain compatible as
-# long as they preserve the v1 command/schema.
-CLI_CONTRACT_COMMIT = "aecb14f"
+# This is the stable minimum contract used for provenance.  The actual
+# checkout HEAD is resolved and archived separately on every invocation, so
+# newer mainline slices are adopted without changing this adapter.  A runner
+# may intentionally bind another checkout through XAR_OPEN_KAISHEK_COMMIT
+# (and the corresponding root/JAR overrides); that explicit value is retained
+# as the provenance override.
+CLI_CONTRACT_COMMIT = "b306a95"
 DEFAULT_OPEN_KAISHEK_ROOT = Path(r"Z:\workspace\open_kaishek")
 DEFAULT_CLI_RELATIVE_JAR = Path(
     "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar"

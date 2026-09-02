@@ -12,8 +12,11 @@ import kaishek_preflight as adapter
 
 
 class KaishekPreflightTests(unittest.TestCase):
-    def test_default_contract_pin_and_timeout_match_current_preflight(self) -> None:
-        self.assertEqual(adapter.CLI_CONTRACT_COMMIT, "aecb14f")
+    def test_contract_floor_and_timeout_match_current_preflight(self) -> None:
+        # The contract floor is stable; the checked-out HEAD is resolved per
+        # invocation and recorded separately, so newer mainline slices do not
+        # require a parent-code edit.
+        self.assertEqual(adapter.CLI_CONTRACT_COMMIT, "b306a95")
         self.assertEqual(adapter.DEFAULT_TIMEOUT_SECONDS, 180.0)
 
     def test_missing_checkout_is_not_applicable_and_is_archived(self) -> None:
@@ -78,7 +81,7 @@ class KaishekPreflightTests(unittest.TestCase):
             self.assertTrue(result["ok"])
             self.assertEqual(result["provenance"]["open_kaishek_commit"], commit)
             self.assertEqual(result["provenance"]["open_kaishek_release"], "v0.1.0")
-            self.assertEqual(result["provenance"]["cli_contract_commit"], "aecb14f")
+            self.assertEqual(result["provenance"]["cli_contract_commit"], "b306a95")
             self.assertEqual(
                 result["provenance"]["preflight_timeout_seconds"],
                 adapter.DEFAULT_TIMEOUT_SECONDS,
