@@ -159,7 +159,7 @@ the concrete `query-war-termination-terms-v1-50331699` action step. The
 template `query-war-termination-terms-v1-N` remains non-executable. This
 regression is offline/static evidence only; it does not bypass the semantic
 snapshot gate or authorize any termination write. The next live attempt still
-uses the updated `7da444d`/JAR binding above and stops if the concrete literal
+uses the updated `bd980e7`/JAR binding above and stops if the concrete literal
 or paused semantic snapshot is absent.
 
 ## 2026-09-02 10:08 bounded entry result
