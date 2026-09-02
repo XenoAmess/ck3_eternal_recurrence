@@ -108,7 +108,11 @@ class CaptureAttemptPlanTests(unittest.TestCase):
             injector = _write(root / "injector.exe", "")
             observer = _write(
                 root / "observer.json",
-                {"result": "GREEN", "status": "completion_observed"},
+                {
+                    "schema": "xar.phase2.completion_observer_ready_to_live.v1",
+                    "result": "GREEN",
+                    "status": "ready-to-live",
+                },
             )
             seed = _write(root / "seed.json", _seed(ready=True))
             media = _write(root / "media.json", _media())
@@ -145,6 +149,19 @@ class CaptureAttemptPlanTests(unittest.TestCase):
             self.assertEqual(
                 manifest["single_capture_command"]["argv"][2],
                 "--phase2-promo-capture",
+            )
+            self.assertEqual(
+                manifest["single_capture_command"]["argv"][3:5],
+                ["--phase2-seed-contract", str(seed.resolve())],
+            )
+            self.assertEqual(
+                manifest["managed_session_handoff"]["same_session_boundary"],
+                "loaded-seed-v2-through-eight-span-capture",
+            )
+            self.assertFalse(
+                manifest["managed_session_handoff"][
+                    "seed_generation_session_reused"
+                ]
             )
             self.assertFalse((root / "attempt" / "capture").exists())
 

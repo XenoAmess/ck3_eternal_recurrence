@@ -130,13 +130,19 @@ def _observer_gate(path: Path | None) -> tuple[dict[str, object], list[str]]:
         return row, ["completion_observer_artifact_pending"]
     payload = _json(path)
     status = str(payload.get("status", "")).lower()
+    schema = payload.get("schema")
     checks = {
         "result_green": payload.get("result") == "GREEN",
         "observer_ready": status in {
             "ready",
+            "ready-to-live",
             "green",
             "completion_observed",
             "observer_ready",
+        },
+        "schema_supported": schema in {
+            None,
+            "xar.phase2.completion_observer_ready_to_live.v1",
         },
         "not_fixture_claim": payload.get("fixture_only") is not True,
     }
@@ -257,6 +263,12 @@ def prepare_plan(
         str(python.expanduser().resolve()),
         str(source / "tools" / "run_zhongguo_acceptance.py"),
         "--phase2-promo-capture",
+        "--phase2-seed-contract",
+        (
+            "<PENDING>"
+            if seed_contract is None
+            else str(seed_contract.expanduser().resolve())
+        ),
         "--artifacts-dir",
         str(capture),
         "--bridge-dll",
@@ -313,6 +325,22 @@ def prepare_plan(
             "all eight loaded-feature requirements GREEN",
             "all eight default handlers available",
         ],
+        "managed_session_handoff": {
+            "seed_generation_session_reused": False,
+            "reason": (
+                "run_zg361_phase2_seed_capture.py always stops its supervisor "
+                "and closes its driver before returning GREEN"
+            ),
+            "capture_session_sequence": [
+                "install the explicit generated seed contract",
+                "start one managed native session",
+                "complete loader and paused-map gates",
+                "write 04_phase2_seed_loaded.json schema v2 in that session",
+                "record all eight spans in that same session",
+                "stop recorder and clean up the managed session",
+            ],
+            "same_session_boundary": "loaded-seed-v2-through-eight-span-capture",
+        },
         "recorder_contract": {
             "start_after_all_pre_recorder_gates": True,
             "clean_frame_gate_count": 8,

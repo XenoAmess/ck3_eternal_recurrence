@@ -634,10 +634,15 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     runtime_identity={
                         "native_bridge_runtime": {"identity": "preflight-unit"}
                     },
+                    phase2_seed_contract_path=root / "generated-seed.json",
                 )
 
         self.assertEqual(lifecycle, ["seed", "supervisor", "binding", "loader", "cleanup"])
         install.assert_called_once()
+        self.assertEqual(
+            install.call_args.kwargs["contract_path"],
+            (root / "generated-seed.json").resolve(),
+        )
         start.assert_called_once()
         gate.assert_called_once()
         stop.assert_called_once()
