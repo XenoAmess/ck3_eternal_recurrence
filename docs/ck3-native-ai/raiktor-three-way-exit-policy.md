@@ -200,3 +200,32 @@ offline preflight artifact is
 (SHA-256
 `CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`).
 No CK3 rerun or termination write is justified by this static result.
+
+## 2026-09-02 surrender execution-readiness projection
+
+[static-ready; no CK3 launch; no mutation] The pure
+`raiktor-surrender-execution-policy-v1` projection now composes the frozen
+three-way decision with the six-domain aggregate and separates three gates:
+production decision readiness, typed surrender submission, and the
+action-boundary postcondition bundle. It never accepts score, duration, an ACK,
+or old-WarID disappearance as a substitute for those gates, and it emits no
+action literal while readiness is false.
+
+The current typed blockers are explicit rather than implicit in the native
+driver's blanket rejection: the three-way providers and production decision
+are not ready; the v1 aggregate lacks connection/episode/PID provenance;
+truce `evaluated_days` is still pending paused/live evidence and persisted
+expiry is unobservable; source-specific war-bound pre/action/post identity is
+unavailable; and typed-submit pending/cooldown plus post-state observers are
+not implemented. The postcondition contract requires all eight observations
+in one lifecycle: old WarID absence, both gold sides, attacker prestige,
+declared-target claim removal, directional truce days and expiry, exact
+prisoner releases, conditional favor hook, and source-specific regiment
+cleanup. ACK and WarID absence alone remain insufficient.
+
+The executable contract and synthetic tests live in
+`ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_surrender_execution_policy.py`
+and `ck3_autonomous_player/tests/unit/test_raiktor_surrender_execution_policy.py`.
+This is a static construction seam for the future live provider; it does not
+change `automatic_surrender_ready=false`, `GEN-034=unresolved`, the public
+action surface, or any production-live claim.

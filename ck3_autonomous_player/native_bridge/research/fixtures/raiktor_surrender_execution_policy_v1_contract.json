@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-surrender-execution-policy-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "policy_version": "raiktor-surrender-execution-policy-v1",
+  "composes": [
+    "raiktor-three-way-exit-policy-v1",
+    "raiktor-surrender-six-domain-v1"
+  ],
+  "current_g2_checkpoint": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "casus_belli_key": "raiktor_claim_cb",
+    "decision_ready": false,
+    "action_ready": false,
+    "action_literal": null,
+    "postcondition_ready": false,
+    "automatic_surrender_ready": false
+  },
+  "postcondition_requirements": [
+    "old_full_generation_war_id_absent",
+    "attacker_and_defender_gold_match_frozen_transfer",
+    "attacker_prestige_matches_frozen_delta",
+    "declared_target_claims_removed",
+    "attacker_to_defender_truce_days_and_expiry_observed",
+    "frozen_prisoner_release_pairs_no_longer_held",
+    "favor_hook_presence_matches_frozen_will_apply",
+    "source_specific_war_bound_regiments_absent"
+  ],
+  "current_blockers": [
+    "truce evaluated_days is not yet paused/live on the current checkpoint",
+    "persisted truce expiry is not observable",
+    "six-domain aggregate lacks connection, episode and CK3 PID binding",
+    "source-specific war-bound pre/action-bound/post cleanup is unavailable",
+    "campaign, owner-budget and white-peace providers are unavailable",
+    "typed surrender submit, pending/cooldown and post-state observers are not enabled"
+  ],
+  "hard_boundaries": {
+    "static_recommendation_is_action_authority": false,
+    "ack_is_postcondition": false,
+    "war_id_absence_is_full_postcondition": false,
+    "evaluated_days_implies_expiry": false,
+    "generic_war_bound_is_source_specific": false,
+    "score_or_duration_authorizes_surrender": false,
+    "native_ai_equivalent": false,
+    "semantic_optimal": false
+  },
+  "readiness": {
+    "stage": "static-ready-execution-gate",
+    "production_live": false,
+    "action_ready": false,
+    "postcondition_ready": false,
+    "gen_034_resolved": false
+  }
+}
