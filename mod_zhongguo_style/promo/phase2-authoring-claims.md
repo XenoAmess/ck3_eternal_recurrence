@@ -3,8 +3,9 @@
 The machine-readable authority is
 [`phase2-authoring-claims.json`](phase2-authoring-claims.json). It is a
 Chinese-first narration draft with simultaneous Simplified Chinese and English
-subtitle lines. This is the ZhongGuo phase-two promo contract, not the monthly
-English-primary show-off contract. The intended voice remains
+subtitle lines. Simplified Chinese remains the primary visual/subtitle layer and
+English remains secondary. This is the ZhongGuo phase-two promo contract, not
+the monthly English-primary show-off contract. The intended voice remains
 `zh-CN-XiaoxiaoNeural`.
 
 The ledger is deliberately **not** builder input. All ten source chapters remain
@@ -31,14 +32,58 @@ after the corresponding real footage and claim can be reviewed.
   Claims may not be strengthened unless the same-run evidence and human review
   support them.
 
+## Review through `d0fa156`
+
+The 2026-09-03 content review is frozen in the JSON `readiness_review` block.
+At `d0fa15670fc9b0c049cc6d9228c839c04135e21c`, there are still zero verified
+same-run phase-two clean spans. The latest phase-two terminal remains
+`RED/LegalConsentNotAuthorized`: the run stopped before the producer seam,
+recorded zero producer entries, and generated no footage. The exact evidence is
+`docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md`. This newer
+terminal is now a hash-bound authoring authority; it does not promote any claim.
+
+The review found six cue-level overclaim risks relative to the current capture
+postconditions and narrowed them before footage arrives:
+
+- fact/quota no longer says calibration debt persisted when the span only proves
+  a visible identity-ready calibration event and an observed revision change;
+- receipt/PIP no longer promises cross-cycle persistence before the same-case
+  selected response is provider-observed;
+- manager governance no longer bundles refusal, team snapshot, and accountability
+  into one terminal-event proof;
+- promotion no longer claims both successful settlement and failed reservation
+  release from a one-path span;
+- projects and incidents no longer infer reorganization/shared-office effects or
+  closure from a button/command ACK.
+
+Every gameplay claim now lists the additional visible observations needed before
+its cue can be promoted. If the eventual clean span lacks any listed observation,
+the operator must rewrite or drop that clause; passing the generic choreography
+postcondition alone is insufficient.
+
+The planned source finale title still says "organizational capability complete,"
+which directly conflicts with its own cannot-claim boundary. Because the source
+project must remain untouched and `planned` before footage review, both generated
+chapters now carry reviewed replacement titles in this authoring ledger. Promotion
+must copy those titles as well as the cue; the validator rejects any generated
+title containing the completion claim.
+
 ## Subtitle editorial guard
 
 Every cue provides one or two explicit Simplified Chinese lines and one or two
-English lines. Chinese lines reproduce the spoken narration exactly and break at
-sentence or clause boundaries. The validate-only guard uses conservative display
-width limits (48 East-Asian display units for Chinese, 78 for English) before the
-promo tool performs its later font-based wrapping and 1920x1080 safe-area check.
-Passing this editorial guard does not replace final rendered subtitle inspection.
+English lines. Chinese lines reproduce the spoken narration exactly; every line
+must end at a sentence or clause boundary. The frozen promotion mapping joins
+those editorial lines with newline separators in the future project subtitle
+input. The promo renderer converts those separators to explicit ASS semantic
+breaks and may still wrap within each line according to rendered width.
+
+The validate-only guard constructs this exact future `id+narration+subtitles`
+cue shape and rejects stray embedded breaks, malformed track sets, or lost
+semantic separators. It also uses conservative display-width limits (48
+East-Asian display units for Chinese, 78 for English) before the promo tool
+performs its later font-based wrapping and 1920x1080 safe-area check. Passing
+this editorial guard does not replace final font-measured layout or rendered
+subtitle inspection.
 
 Run the read-only check with:
 
@@ -49,10 +94,11 @@ py -O mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
 ```
 
 The validator pins the current phase-two project, creative brief, promo manifest,
-and readiness ledger by SHA-256; checks the exact ten-chapter order, Chinese-first
-language policy, Xiaoxiao voice, canonical span/postcondition bindings, subtitle
-line limits, repository evidence paths, and pending release states; and has no
-write or render mode.
+readiness ledger, and latest phase-two live terminal by SHA-256; checks the exact
+ten-chapter order, Chinese-primary/English-secondary visual hierarchy, Xiaoxiao
+voice, canonical span/postcondition bindings, required visible observations,
+project-cue projection, subtitle line limits, repository evidence paths, and
+pending release states; and has no write or render mode.
 
 The final-video no-media planner binds this exact ledger by bytes and SHA-256:
 

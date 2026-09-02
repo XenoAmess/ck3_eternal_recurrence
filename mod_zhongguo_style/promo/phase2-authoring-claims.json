@@ -18,10 +18,16 @@
     {
       "path": "mod_zhongguo_style/promo/phase2-readiness-2026-09-02.md",
       "sha256": "A74912A0E34C89C04761C63183FA71B96F7B21196C2B759B961EB3AC0D956457"
+    },
+    {
+      "path": "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md",
+      "sha256": "326B406FE774F07A772EB04F0A6E059D33A81FA5E0B46FC71A0CA90160BD8AFA"
     }
   ],
   "language_policy": {
     "primary_narration": "zh-CN",
+    "primary_visual_text": "zh-CN",
+    "secondary_visual_text": "en",
     "simultaneous_subtitles": [
       "zh-CN",
       "en"
@@ -29,6 +35,28 @@
     "current_builder_narration": "zh-CN",
     "current_builder_voice": "zh-CN-XiaoxiaoNeural",
     "builder_policy_status": "aligned"
+  },
+  "readiness_review": {
+    "reviewed_through_commit": "d0fa15670fc9b0c049cc6d9228c839c04135e21c",
+    "current_state": "static-ready-native-readiness-red-not-live",
+    "same_run_phase2_clean_spans_verified": 0,
+    "latest_phase2_terminal": {
+      "result": "RED",
+      "reason_code": "LegalConsentNotAuthorized",
+      "producer_entry_count": 0,
+      "footage_generated": false,
+      "evidence_path": "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md"
+    }
+  },
+  "promotion_mapping": {
+    "project_cue_shape": "id+narration+subtitles",
+    "narration_zh_cn": "cue.narration_zh_cn",
+    "subtitle_zh_cn": "newline_join(cue.subtitle_zh_cn_lines)",
+    "subtitle_en": "newline_join(cue.subtitle_en_lines)",
+    "generated_card_title": "chapter.generated_card_title",
+    "semantic_breaks": "explicit-newline-between-editorial-lines",
+    "automatic_wrap": "promo-renderer-wraps-within-each-editorial-line",
+    "promotion_status": "blocked-until-footage-supported-source-review"
   },
   "authoring_status": "draft-only-not-builder-input",
   "global_release_boundaries": [
@@ -48,8 +76,12 @@
         "required_for_release": true,
         "verified": false
       },
+      "generated_card_title": {
+        "zh-CN": "十秒回顾：考核会追人，制度也会记账",
+        "en": "TEN-SECOND RECAP: RATINGS FOLLOW PEOPLE; INSTITUTIONS KEEP THE LEDGER"
+      },
       "cue": {
-        "id": "p2-en-01-recap",
+        "id": "p2-zh-01-recap",
         "narration_zh_cn": "上一次，一份考核追着一个官员走。二期要看：整个制度如何制造、争议并延续它。",
         "subtitle_zh_cn_lines": [
           "上一次，一份考核追着一个官员走。",
@@ -87,15 +119,15 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-02-fact-quota",
-        "narration_zh_cn": "事实档与配额档，是两本账。校准可以改结果，欠下的账不会消失。",
+        "id": "p2-zh-02-fact-quota",
+        "narration_zh_cn": "事实档与配额档，是两本账。校准落笔后，榜单和查询修订号必须一起变化。",
         "subtitle_zh_cn_lines": [
           "事实档与配额档，是两本账。",
-          "校准可以改结果，欠下的账不会消失。"
+          "校准落笔后，榜单和查询修订号必须一起变化。"
         ],
         "subtitle_en_lines": [
           "Facts and quota grades are separate ledgers.",
-          "Calibration can move the result, not erase the debt."
+          "After calibration, the board and observed revision must change together."
         ],
         "release_usable": false
       },
@@ -104,6 +136,11 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "Fact and quota grades are readable as distinct records on the real product surface.",
+          "The visible calibration event is identity-ready.",
+          "The scoreboard/query revision advances after the calibration action."
         ],
         "required_future_evidence": "The canonical clean span must visibly show the scoreboard/calibration product surface and a provider-observed revision change in the same managed run.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -125,15 +162,15 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-03-receipt-pip",
-        "narration_zh_cn": "结果会留下回执，申诉可以重开案卷。未能纠正的差评，会变成 PIP 并跨期追随。",
+        "id": "p2-zh-03-receipt-pip",
+        "narration_zh_cn": "告身会留下案卷，申诉与 PIP 回应不能只看按钮。同一主体、周期和案件抵达所选状态，结果才算落账。",
         "subtitle_zh_cn_lines": [
-          "结果会留下回执，申诉可以重开案卷。",
-          "未能纠正的差评，会变成 PIP 并跨期追随。"
+          "告身会留下案卷，申诉与 PIP 回应不能只看按钮。",
+          "同一主体、周期和案件抵达所选状态，结果才算落账。"
         ],
         "subtitle_en_lines": [
-          "A result leaves a receipt; an appeal can reopen the case.",
-          "An unresolved rating can become a PIP and follow the next cycle."
+          "Receipts, appeals, and PIP responses need more than a button ACK.",
+          "The same subject, cycle, and case must reach the selected state."
         ],
         "release_usable": false
       },
@@ -142,6 +179,11 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "The real receipt and PIP response surface are visible.",
+          "One owner, subject, cycle, and case identity remains stable through the response.",
+          "The selected response state is provider-observed after the action."
         ],
         "required_future_evidence": "The canonical clean span must bind one real PIP owner, subject, cycle, and case through the selected response and provider-observed state.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -163,15 +205,15 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-04-manager",
-        "narration_zh_cn": "经理也在考核链里。拒评、团队快照与连责，都必须显示为真实后果。",
+        "id": "p2-zh-04-manager",
+        "narration_zh_cn": "经理也会留下自己的考核案卷。只有真实经理事件抵达业务终态，连责才算发生。",
         "subtitle_zh_cn_lines": [
-          "经理也在考核链里。",
-          "拒评、团队快照与连责，都必须显示为真实后果。"
+          "经理也会留下自己的考核案卷。",
+          "只有真实经理事件抵达业务终态，连责才算发生。"
         ],
         "subtitle_en_lines": [
-          "Managers are evaluated too.",
-          "Refusal, team snapshots, and accountability must have consequences."
+          "Managers leave review cases of their own.",
+          "Accountability counts only when the real case reaches a business terminal."
         ],
         "release_usable": false
       },
@@ -180,6 +222,11 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "The real manager-governance event is visible and identity-ready.",
+          "The AI-owned case reaches a provider-observed terminal business state.",
+          "The footage does not infer accountability from elapsed time or an action ACK."
         ],
         "required_future_evidence": "The canonical clean span must show the real manager event and a provider-observed terminal business state for the AI-owned case.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -201,15 +248,15 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-05-promotion",
-        "narration_zh_cn": "晋升先预留材料，不预支结果。答辩决定职级与薪酬落定，失败则释放预留。",
+        "id": "p2-zh-05-promotion",
+        "narration_zh_cn": "晋升不是一句许诺。选择与薪酬回执必须留在同一个冻结案卷里。",
         "subtitle_zh_cn_lines": [
-          "晋升先预留材料，不预支结果。",
-          "答辩决定职级与薪酬落定，失败则释放预留。"
+          "晋升不是一句许诺。",
+          "选择与薪酬回执必须留在同一个冻结案卷里。"
         ],
         "subtitle_en_lines": [
-          "A reserved packet is not a guaranteed title.",
-          "The defense settles level and pay, or releases the reservation."
+          "Promotion is not a promise.",
+          "The choice and compensation receipt must stay in one frozen case."
         ],
         "release_usable": false
       },
@@ -218,6 +265,10 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "The real promotion choice and compensation result events are both visible.",
+          "The promotion choice and compensation receipt remain bound to one frozen case."
         ],
         "required_future_evidence": "The canonical clean span must show promotion choice and compensation receipt bound to the same frozen case.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -239,7 +290,7 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-06-workforce",
+        "id": "p2-zh-06-workforce",
         "narration_zh_cn": "HC 让继任与流动受真实名额约束。没有编制也是结果，不是缺了一张页面。",
         "subtitle_zh_cn_lines": [
           "HC 让继任与流动受真实名额约束。",
@@ -256,6 +307,11 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "A/B/C workforce outcomes each use the same owner and subject case.",
+          "All three branches originate from a hash-identical checkpoint.",
+          "The no-opening outcome is visible rather than inferred from a missing surface."
         ],
         "required_future_evidence": "The canonical clean span must prove A/B/C outcomes for the same owner/subject case from a hash-identical checkpoint.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -277,15 +333,15 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-07-projects",
-        "narration_zh_cn": "项目会保存贡献份额。抢功、指标与重组，会改变结果归属。",
+        "id": "p2-zh-07-projects",
+        "narration_zh_cn": "项目选择不会停在按钮上。贡献与指标结果必须在身份明确的正式事件里出现。",
         "subtitle_zh_cn_lines": [
-          "项目会保存贡献份额。",
-          "抢功、指标与重组，会改变结果归属。"
+          "项目选择不会停在按钮上。",
+          "贡献与指标结果必须在身份明确的正式事件里出现。"
         ],
         "subtitle_en_lines": [
-          "Projects keep a contribution split.",
-          "Credit, metrics, and reorganization can change result ownership."
+          "A project choice cannot end at the button ACK.",
+          "Contribution and metrics must appear on identity-ready product events."
         ],
         "release_usable": false
       },
@@ -294,6 +350,11 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "The real project-choice event is visible and identity-ready.",
+          "The contribution/metrics result is visible on its identity-ready result event.",
+          "The result is provider-observed after the action rather than inferred from its ACK."
         ],
         "required_future_evidence": "The canonical clean span must show project choice and metrics result on identity-ready product events.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -315,15 +376,15 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-08-incidents",
-        "narration_zh_cn": "事故会积累成运营债务。共享官署可以分担代价，不能抹掉记录。",
+        "id": "p2-zh-08-incidents",
+        "narration_zh_cn": "事故处理不能只看命令回执。三个阶段与结案，都要由后续真实状态作证。",
         "subtitle_zh_cn_lines": [
-          "事故会积累成运营债务。",
-          "共享官署可以分担代价，不能抹掉记录。"
+          "事故处理不能只看命令回执。",
+          "三个阶段与结案，都要由后续真实状态作证。"
         ],
         "subtitle_en_lines": [
-          "Incidents accumulate operational debt.",
-          "Shared offices can spread the cost, not erase the record."
+          "Incident handling cannot stop at a command ACK.",
+          "All three transitions and closure need later real-state proof."
         ],
         "release_usable": false
       },
@@ -332,6 +393,11 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "The real X, Y, and Z incident surfaces are visible in order.",
+          "Each transition and final closure is provider-observed after its action.",
+          "No transition or closure is inferred from an action ACK."
         ],
         "required_future_evidence": "The canonical clean span must show X/Y/Z transitions and closure observed by the provider, never inferred from action ACKs.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -353,7 +419,7 @@
         "verified": false
       },
       "cue": {
-        "id": "p2-en-09-endgame",
+        "id": "p2-zh-09-endgame",
         "narration_zh_cn": "本轮可以改掉明天的默认规则。昨天的制度债仍要偿还；终局不是重置按钮。",
         "subtitle_zh_cn_lines": [
           "本轮可以改掉明天的默认规则。",
@@ -370,6 +436,10 @@
         "evidence_paths": [
           "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
           "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_visible_observations": [
+          "The terminal institutional event is visible and identity-ready.",
+          "The terminal event remains bound to the carried debt/default-change cycle."
         ],
         "required_future_evidence": "The canonical clean span must bind the terminal product event to the carried debt and default-change cycle.",
         "release_status": "pending-live-footage-and-postcondition"
@@ -388,16 +458,20 @@
         "required_for_release": true,
         "verified": false
       },
+      "generated_card_title": {
+        "zh-CN": "组织开始记账：下一轮继续收账",
+        "en": "THE ORGANIZATION KEEPS THE LEDGER; THE NEXT CYCLE COLLECTS"
+      },
       "cue": {
-        "id": "p2-en-10-finale",
-        "narration_zh_cn": "组织开始记住人们想忘掉的事。实机矩阵与最终人审通过前，这仍只是待验声明。",
+        "id": "p2-zh-10-finale",
+        "narration_zh_cn": "榜单、案卷与制度债会把选择带进下一轮。旅人，组织已经开始记账，也会等你回来还账。",
         "subtitle_zh_cn_lines": [
-          "组织开始记住人们想忘掉的事。",
-          "实机矩阵与最终人审通过前，这仍只是待验声明。"
+          "榜单、案卷与制度债会把选择带进下一轮。",
+          "旅人，组织已经开始记账，也会等你回来还账。"
         ],
         "subtitle_en_lines": [
-          "The organization remembers what people try to forget.",
-          "This claim remains pending until the live matrix and final review pass."
+          "Boards, cases, and institutional debt carry choices into the next cycle.",
+          "Traveler, the organization keeps the ledger—and waits to collect."
         ],
         "release_usable": false
       },

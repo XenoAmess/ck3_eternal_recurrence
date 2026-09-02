@@ -19,7 +19,10 @@ LEDGER_PATH = REPO_ROOT / "mod_zhongguo_style" / "promo" / "phase2-authoring-cla
 VALIDATOR_PATH = TOOLS_DIR / "validate_phase2_authoring_claims.py"
 sys.path.insert(0, str(TOOLS_DIR))
 
-from validate_phase2_authoring_claims import validate_ledger  # noqa: E402
+from validate_phase2_authoring_claims import (  # noqa: E402
+    project_cue_input,
+    validate_ledger,
+)
 
 
 def _hash(path: Path) -> str:
@@ -49,6 +52,10 @@ class Phase2AuthoringClaimsTest(unittest.TestCase):
             / "mod_zhongguo_style"
             / "promo"
             / "phase2-readiness-2026-09-02.md",
+            REPO_ROOT
+            / "docs"
+            / "ck3-native-ai"
+            / "phase2-producer-identity-live-2026-09-02.md",
         ]
         before = {path: _hash(path) for path in tracked}
         result = subprocess.run(
@@ -93,6 +100,48 @@ class Phase2AuthoringClaimsTest(unittest.TestCase):
         payload["language_policy"]["primary_narration"] = "en"
         errors = self._validate_mutation(payload)
         self.assertTrue(any("language policy" in row for row in errors))
+
+    def test_project_cue_projection_preserves_semantic_newlines(self) -> None:
+        cue = self.ledger["chapters"][1]["cue"]
+        projected = project_cue_input(cue)
+        self.assertEqual(set(projected), {"id", "narration", "subtitles"})
+        self.assertEqual(projected["id"], "p2-zh-02-fact-quota")
+        self.assertEqual(projected["narration"], {"zh-CN": cue["narration_zh_cn"]})
+        self.assertEqual(
+            projected["subtitles"]["zh-CN"],
+            "\n".join(cue["subtitle_zh_cn_lines"]),
+        )
+        self.assertEqual(
+            projected["subtitles"]["en"],
+            "\n".join(cue["subtitle_en_lines"]),
+        )
+
+    def test_rejects_missing_visible_claim_observations(self) -> None:
+        payload = copy.deepcopy(self.ledger)
+        del payload["chapters"][2]["claim"]["required_visible_observations"]
+        errors = self._validate_mutation(payload)
+        self.assertTrue(any("explicit visible observations" in row for row in errors))
+
+    def test_rejects_nonsemantic_editorial_break(self) -> None:
+        payload = copy.deepcopy(self.ledger)
+        cue = payload["chapters"][0]["cue"]
+        cue["subtitle_en_lines"] = ["This line has no boundary", "Second line."]
+        errors = self._validate_mutation(payload)
+        self.assertTrue(any("sentence or clause boundary" in row for row in errors))
+
+    def test_rejects_readiness_overclaim(self) -> None:
+        payload = copy.deepcopy(self.ledger)
+        payload["readiness_review"]["same_run_phase2_clean_spans_verified"] = 8
+        errors = self._validate_mutation(payload)
+        self.assertTrue(any("zero-footage RED terminal" in row for row in errors))
+
+    def test_rejects_generated_finale_completion_overclaim(self) -> None:
+        payload = copy.deepcopy(self.ledger)
+        payload["chapters"][-1]["generated_card_title"]["en"] = (
+            "ORGANIZATIONAL CAPABILITY COMPLETE"
+        )
+        errors = self._validate_mutation(payload)
+        self.assertTrue(any("overclaims completion" in row for row in errors))
 
 
 if __name__ == "__main__":

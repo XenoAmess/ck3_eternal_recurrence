@@ -41,7 +41,41 @@ EXPECTED_AUTHORITIES = (
     "mod_zhongguo_style/promo/phase2-brief.md",
     "mod_zhongguo_style/promo/promo-manifest.json",
     "mod_zhongguo_style/promo/phase2-readiness-2026-09-02.md",
+    "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md",
 )
+EXPECTED_LANGUAGE_POLICY = {
+    "primary_narration": "zh-CN",
+    "primary_visual_text": "zh-CN",
+    "secondary_visual_text": "en",
+    "simultaneous_subtitles": ["zh-CN", "en"],
+    "current_builder_narration": "zh-CN",
+    "current_builder_voice": "zh-CN-XiaoxiaoNeural",
+    "builder_policy_status": "aligned",
+}
+EXPECTED_PROMOTION_MAPPING = {
+    "project_cue_shape": "id+narration+subtitles",
+    "narration_zh_cn": "cue.narration_zh_cn",
+    "subtitle_zh_cn": "newline_join(cue.subtitle_zh_cn_lines)",
+    "subtitle_en": "newline_join(cue.subtitle_en_lines)",
+    "generated_card_title": "chapter.generated_card_title",
+    "semantic_breaks": "explicit-newline-between-editorial-lines",
+    "automatic_wrap": "promo-renderer-wraps-within-each-editorial-line",
+    "promotion_status": "blocked-until-footage-supported-source-review",
+}
+EXPECTED_READINESS_REVIEW = {
+    "reviewed_through_commit": "d0fa15670fc9b0c049cc6d9228c839c04135e21c",
+    "current_state": "static-ready-native-readiness-red-not-live",
+    "same_run_phase2_clean_spans_verified": 0,
+    "latest_phase2_terminal": {
+        "result": "RED",
+        "reason_code": "LegalConsentNotAuthorized",
+        "producer_entry_count": 0,
+        "footage_generated": False,
+        "evidence_path": (
+            "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md"
+        ),
+    },
+}
 MAX_ZH_LINE_UNITS = 48
 MAX_EN_LINE_UNITS = 78
 
@@ -103,6 +137,7 @@ def _validate_lines(
     value: object,
     label: str,
     maximum_units: int,
+    terminal_punctuation: frozenset[str],
     errors: list[str],
 ) -> list[str]:
     if not isinstance(value, list) or not 1 <= len(value) <= 2:
@@ -115,6 +150,10 @@ def _validate_lines(
             continue
         if "\n" in line or "\r" in line:
             errors.append(f"{label}[{index}] contains an embedded line break")
+        if line[-1] not in terminal_punctuation:
+            errors.append(
+                f"{label}[{index}] does not end at a sentence or clause boundary"
+            )
         units = _display_units(line)
         if units > maximum_units:
             errors.append(
@@ -123,6 +162,19 @@ def _validate_lines(
             )
         lines.append(line)
     return lines
+
+
+def project_cue_input(cue: dict[str, Any]) -> dict[str, object]:
+    """Project one reviewed ledger cue onto the exact future project shape."""
+
+    return {
+        "id": cue.get("id"),
+        "narration": {"zh-CN": cue.get("narration_zh_cn")},
+        "subtitles": {
+            "zh-CN": "\n".join(cue.get("subtitle_zh_cn_lines", [])),
+            "en": "\n".join(cue.get("subtitle_en_lines", [])),
+        },
+    }
 
 
 def validate_ledger(path: Path) -> list[str]:
@@ -159,8 +211,11 @@ def validate_ledger(path: Path) -> list[str]:
         errors.append("source project must keep zh-CN narration and zh-CN/en subtitles")
 
     authorities = ledger.get("authoring_authorities")
-    if not isinstance(authorities, list) or len(authorities) != 3:
-        errors.append("authoring_authorities must bind brief, manifest, and readiness ledger")
+    if not isinstance(authorities, list) or len(authorities) != len(EXPECTED_AUTHORITIES):
+        errors.append(
+            "authoring_authorities must bind brief, manifest, readiness ledger, "
+            "and latest phase-two live terminal"
+        )
     else:
         actual_authorities = tuple(
             row.get("path") if isinstance(row, dict) else None for row in authorities
@@ -179,15 +234,14 @@ def validate_ledger(path: Path) -> list[str]:
     ):
         errors.append("promo manifest Chinese-first language/voice policy drifted")
     language = _object(ledger.get("language_policy"), "language_policy", errors)
-    expected_language = {
-        "primary_narration": "zh-CN",
-        "simultaneous_subtitles": ["zh-CN", "en"],
-        "current_builder_narration": "zh-CN",
-        "current_builder_voice": "zh-CN-XiaoxiaoNeural",
-        "builder_policy_status": "aligned",
-    }
-    if language != expected_language:
+    if language != EXPECTED_LANGUAGE_POLICY:
         errors.append("ledger language policy does not exactly match the promo contract")
+    if ledger.get("readiness_review") != EXPECTED_READINESS_REVIEW:
+        errors.append(
+            "readiness review must preserve d0fa156 and the zero-footage RED terminal"
+        )
+    if ledger.get("promotion_mapping") != EXPECTED_PROMOTION_MAPPING:
+        errors.append("promotion mapping does not preserve semantic subtitle lines")
 
     source_chapters = source_project.get("chapters")
     ledger_chapters = ledger.get("chapters")
@@ -231,6 +285,25 @@ def validate_ledger(path: Path) -> list[str]:
                 errors.append(f"{chapter_id} generated card must remain draft-only")
             if binding.get("kind") != "future-generated-card" or "producer_key" in binding:
                 errors.append(f"{chapter_id} generated card binding is invalid")
+            title = _object(
+                chapter.get("generated_card_title"),
+                f"{chapter_id}.generated_card_title",
+                errors,
+            )
+            if set(title) != {"zh-CN", "en"}:
+                errors.append(f"{chapter_id} generated card title must be exactly bilingual")
+            for locale, limit in (("zh-CN", 48), ("en", 90)):
+                value = _nonempty_string(
+                    title.get(locale),
+                    f"{chapter_id}.generated_card_title.{locale}",
+                    errors,
+                )
+                if value and _display_units(value) > limit:
+                    errors.append(f"{chapter_id} {locale} generated card title is too wide")
+                if value and ("完成" in value or "complete" in value.casefold()):
+                    errors.append(f"{chapter_id} generated card title overclaims completion")
+        if chapter_id in EXPECTED_SPAN_MAP and "generated_card_title" in chapter:
+            errors.append(f"{chapter_id} gameplay chapter must not define a generated title")
 
         cue = _object(chapter.get("cue"), f"{chapter_id}.cue", errors)
         cue_id = _nonempty_string(cue.get("id"), f"{chapter_id}.cue.id", errors)
@@ -244,18 +317,49 @@ def validate_ledger(path: Path) -> list[str]:
             cue.get("subtitle_zh_cn_lines"),
             f"{chapter_id}.cue.subtitle_zh_cn_lines",
             MAX_ZH_LINE_UNITS,
+            frozenset("。！？；："),
             errors,
         )
-        _validate_lines(
+        en_lines = _validate_lines(
             cue.get("subtitle_en_lines"),
             f"{chapter_id}.cue.subtitle_en_lines",
             MAX_EN_LINE_UNITS,
+            frozenset(".!?;:"),
             errors,
         )
         if narration and zh_lines and narration != "".join(zh_lines):
             errors.append(f"{chapter_id} Chinese subtitle lines must reproduce narration exactly")
         if cue.get("release_usable") is not False:
             errors.append(f"{chapter_id} draft cue must not be release-usable")
+        raw_zh_lines = cue.get("subtitle_zh_cn_lines")
+        raw_en_lines = cue.get("subtitle_en_lines")
+        if (
+            narration
+            and isinstance(raw_zh_lines, list)
+            and isinstance(raw_en_lines, list)
+            and len(zh_lines) == len(raw_zh_lines)
+            and len(en_lines) == len(raw_en_lines)
+            and zh_lines
+            and en_lines
+        ):
+            projected = project_cue_input(cue)
+            if set(projected) != {"id", "narration", "subtitles"}:
+                errors.append(f"{chapter_id} project cue projection has extra fields")
+            subtitles = projected["subtitles"]
+            if not isinstance(subtitles, dict) or set(subtitles) != {"zh-CN", "en"}:
+                errors.append(f"{chapter_id} project cue projection lacks exact subtitles")
+            else:
+                for locale, text in subtitles.items():
+                    if type(text) is not str or "\r" in text or "\t" in text:
+                        errors.append(
+                            f"{chapter_id} {locale} automatic-wrap input is not renderable"
+                        )
+                    elif text.count("\n") != len(
+                        zh_lines if locale == "zh-CN" else en_lines
+                    ) - 1:
+                        errors.append(
+                            f"{chapter_id} {locale} semantic line breaks drifted"
+                        )
 
         claim = _object(chapter.get("claim"), f"{chapter_id}.claim", errors)
         if claim.get("current_evidence_level") != "static-ready":
@@ -278,6 +382,15 @@ def validate_ledger(path: Path) -> list[str]:
                 )
                 if relative and not (REPO_ROOT / relative).is_file():
                     errors.append(f"{chapter_id} evidence path does not exist: {relative}")
+        observations = claim.get("required_visible_observations")
+        if chapter_id in EXPECTED_SPAN_MAP and (
+            not isinstance(observations, list)
+            or len(observations) < 2
+            or not all(type(item) is str and bool(item.strip()) for item in observations)
+        ):
+            errors.append(
+                f"{chapter_id} needs at least two explicit visible observations"
+            )
         cannot_claim = chapter.get("cannot_claim")
         if not isinstance(cannot_claim, list) or not cannot_claim or not all(
             type(item) is str and bool(item.strip()) for item in cannot_claim
