@@ -279,7 +279,7 @@ void AppendG2TrucePrivateCaptureV1(
   std::array<char, 32768> row{};
   const int length = std::snprintf(
       row.data(), row.size(),
-      "{\"schema\":\"xar.ck3.g2_truce_private_capture.v1\","
+      "{\"schema\":\"xar.ck3.g2_truce_private_capture.v2\","
       "\"war_id\":%d,\"casus_belli_database_index\":%d,"
       "\"primary_attacker_character_id\":%d,"
       "\"primary_defender_character_id\":%d,"
@@ -293,6 +293,7 @@ void AppendG2TrucePrivateCaptureV1(
       "\"same_frame_stable\":%s,\"expiry_observable\":%s,"
       "\"loaded_tree_shape\":{"
       "\"failed_check\":\"%.*s\","
+      "\"targeted_index7_status\":\"%.*s\","
       "\"root_vtable\":\"0x%llX\",\"root_vtable_rva\":\"0x%llX\","
       "\"expected_root_vtable_rva\":\"0x%llX\","
       "\"root_slot11\":\"0x%llX\",\"root_children\":\"0x%llX\","
@@ -340,13 +341,13 @@ void AppendG2TrucePrivateCaptureV1(
       "\"default_vtable\":\"0x%llX\",\"default_vtable_rva\":\"0x%llX\","
       "\"expected_default_vtable_rva\":\"0x%llX\","
       "\"default_children\":\"0x%llX\","
-      "\"default_capacity\":%d,\"expected_default_capacity\":6,"
-      "\"default_count\":%d,\"expected_default_count\":5,"
+      "\"default_capacity\":%d,\"expected_default_capacity\":4,"
+      "\"default_count\":%d,\"expected_default_count\":4,"
       "\"default_child_scan_index\":%llu,"
       "\"default_child_vtable_rvas\":[\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\"],"
       "\"expected_hidden_vtable_rva\":\"0x%llX\","
       "\"hidden_count\":%llu,\"expected_hidden_count\":1,"
-      "\"hidden_index\":%llu,\"expected_hidden_index\":2,"
+      "\"hidden_index\":%llu,\"expected_hidden_index\":1,"
       "\"hidden_effect\":\"0x%llX\",\"hidden_children\":\"0x%llX\","
       "\"hidden_capacity\":%d,\"expected_hidden_capacity\":1,"
       "\"hidden_child_count\":%d,\"expected_hidden_child_count\":1,"
@@ -374,6 +375,8 @@ void AppendG2TrucePrivateCaptureV1(
       observation.same_frame_stable ? "true" : "false",
       observation.expiry_observable ? "true" : "false",
       static_cast<int>(shape.failed_check.size()), shape.failed_check.data(),
+      static_cast<int>(shape.targeted_index7_status.size()),
+      shape.targeted_index7_status.data(),
       static_cast<unsigned long long>(shape.root_vtable),
       static_cast<unsigned long long>(as_rva(shape.root_vtable)),
       static_cast<unsigned long long>(kRaiktorTruceJominiEffectVtableRva),

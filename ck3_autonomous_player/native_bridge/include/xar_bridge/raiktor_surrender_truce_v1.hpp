@@ -196,6 +196,7 @@ struct RaiktorTrucePrivateNestedContainerV1 {
 
 struct RaiktorTrucePrivateShapeCaptureV1 {
   std::string_view failed_check = "not_started";
+  std::string_view targeted_index7_status = "not_attempted";
   std::uintptr_t root_vtable = 0;
   std::uintptr_t root_slot11 = 0;
   std::uintptr_t root_children = 0;

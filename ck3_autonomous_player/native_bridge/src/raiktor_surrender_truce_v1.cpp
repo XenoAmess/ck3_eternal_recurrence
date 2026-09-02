@@ -666,6 +666,196 @@ void CaptureLoadedScriptedCandidatesForG2(
     ++capture.next_layer_candidate_capture_completed;
   }
 }
+
+// Source-correlated one-off capture.  It reads exactly root index 7 and the
+// authored hidden_effect -> scope:attacker Context -> CAddTruce child chain.
+// It intentionally does not enumerate any root/default/container siblings and
+// never invokes the duration evaluator.
+void CaptureTargetedIndex7ForG2(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access, void *root_children,
+    std::int32_t root_count) noexcept {
+  constexpr std::size_t kRootIndex = 7;
+  constexpr std::size_t kHiddenIndex = 1;
+  auto &capture = g_private_shape_capture;
+  const auto stop = [&capture](std::string_view status) noexcept {
+    capture.targeted_index7_status = status;
+  };
+  if (root_children == nullptr || root_count <= static_cast<std::int32_t>(kRootIndex)) {
+    stop("root_index7_unavailable");
+    return;
+  }
+
+  void *scripted = nullptr;
+  if (!ReadValue(access, root_children, kRootIndex * sizeof(void *), scripted)) {
+    stop("scripted_effect_read_failed");
+    return;
+  }
+  capture.scripted_effect = reinterpret_cast<std::uintptr_t>(scripted);
+  if (scripted == nullptr ||
+      !ReadValue(access, scripted, 0, capture.scripted_vtable)) {
+    stop(scripted == nullptr ? "scripted_effect_null"
+                             : "scripted_vtable_read_failed");
+    return;
+  }
+  if (capture.scripted_vtable != environment.scripted_effect_vtable) {
+    stop("scripted_vtable_mismatch");
+    return;
+  }
+  if (!ReadValue(access, scripted, kScriptedSelectorCountOffset,
+                 capture.scripted_selector_count) ||
+      capture.scripted_selector_count != 0) {
+    stop("scripted_selector_count_mismatch");
+    return;
+  }
+  void *scripted_template = nullptr;
+  if (!ReadValue(access, scripted, kScriptedTemplateOffset,
+                 scripted_template)) {
+    stop("scripted_template_read_failed");
+    return;
+  }
+  capture.scripted_template =
+      reinterpret_cast<std::uintptr_t>(scripted_template);
+  if (scripted_template == nullptr ||
+      !ReadValue(access, scripted_template, 0, capture.template_vtable)) {
+    stop(scripted_template == nullptr ? "scripted_template_null"
+                                      : "template_vtable_read_failed");
+    return;
+  }
+  if (capture.template_vtable != environment.scripted_template_vtable) {
+    stop("template_vtable_mismatch");
+    return;
+  }
+
+  void *default_effect = nullptr;
+  if (!ReadValue(access, scripted_template, kTemplateDefaultEffectOffset,
+                 default_effect)) {
+    stop("default_effect_read_failed");
+    return;
+  }
+  capture.default_effect = reinterpret_cast<std::uintptr_t>(default_effect);
+  if (default_effect == nullptr ||
+      !ReadValue(access, default_effect, 0, capture.default_vtable)) {
+    stop(default_effect == nullptr ? "default_effect_null"
+                                   : "default_vtable_read_failed");
+    return;
+  }
+  if (capture.default_vtable != environment.jomini_effect_vtable) {
+    stop("default_vtable_mismatch");
+    return;
+  }
+  void *default_children = nullptr;
+  if (!ReadValue(access, default_effect, kEffectChildrenOffset,
+                 default_children) ||
+      !ReadValue(access, default_effect, kEffectCapacityOffset,
+                 capture.default_capacity) ||
+      !ReadValue(access, default_effect, kEffectCountOffset,
+                 capture.default_count)) {
+    stop("default_shape_read_failed");
+    return;
+  }
+  capture.default_children =
+      reinterpret_cast<std::uintptr_t>(default_children);
+  if (default_children == nullptr || capture.default_capacity != 4 ||
+      capture.default_count != 4) {
+    stop("default_shape_mismatch");
+    return;
+  }
+
+  capture.default_child_scan_index = kHiddenIndex;
+  void *hidden = nullptr;
+  if (!ReadValue(access, default_children, kHiddenIndex * sizeof(void *),
+                 hidden)) {
+    stop("hidden_effect_read_failed");
+    return;
+  }
+  capture.hidden_index = kHiddenIndex;
+  capture.hidden_effect = reinterpret_cast<std::uintptr_t>(hidden);
+  std::uintptr_t hidden_vtable = 0;
+  if (hidden == nullptr || !ReadValue(access, hidden, 0, hidden_vtable)) {
+    stop(hidden == nullptr ? "hidden_effect_null"
+                           : "hidden_vtable_read_failed");
+    return;
+  }
+  capture.default_child_vtables[kHiddenIndex] = hidden_vtable;
+  capture.hidden_count = hidden_vtable == environment.hidden_effect_vtable ? 1 : 0;
+  if (capture.hidden_count != 1) {
+    stop("hidden_vtable_mismatch");
+    return;
+  }
+  void *hidden_children = nullptr;
+  if (!ReadValue(access, hidden, kEffectChildrenOffset, hidden_children) ||
+      !ReadValue(access, hidden, kEffectCapacityOffset,
+                 capture.hidden_capacity) ||
+      !ReadValue(access, hidden, kEffectCountOffset,
+                 capture.hidden_child_count)) {
+    stop("hidden_shape_read_failed");
+    return;
+  }
+  capture.hidden_children = reinterpret_cast<std::uintptr_t>(hidden_children);
+  if (hidden_children == nullptr || capture.hidden_capacity != 1 ||
+      capture.hidden_child_count != 1) {
+    stop("hidden_shape_mismatch");
+    return;
+  }
+
+  void *context = nullptr;
+  if (!ReadValue(access, hidden_children, 0, context)) {
+    stop("context_effect_read_failed");
+    return;
+  }
+  capture.context_effect = reinterpret_cast<std::uintptr_t>(context);
+  if (context == nullptr ||
+      !ReadValue(access, context, 0, capture.context_vtable)) {
+    stop(context == nullptr ? "context_effect_null"
+                            : "context_vtable_read_failed");
+    return;
+  }
+  if (capture.context_vtable != environment.context_effect_vtable) {
+    stop("context_vtable_mismatch");
+    return;
+  }
+  void *context_children = nullptr;
+  if (!ReadValue(access, context, kEffectChildrenOffset, context_children) ||
+      !ReadValue(access, context, kEffectCapacityOffset,
+                 capture.context_capacity) ||
+      !ReadValue(access, context, kEffectCountOffset,
+                 capture.context_child_count) ||
+      !ReadValue(access, context, kContextScopeCountOffset,
+                 capture.context_scope_count)) {
+    stop("context_shape_read_failed");
+    return;
+  }
+  capture.context_children =
+      reinterpret_cast<std::uintptr_t>(context_children);
+  if (context_children == nullptr || capture.context_capacity != 1 ||
+      capture.context_child_count != 1 || capture.context_scope_count != 1) {
+    stop("context_shape_mismatch");
+    return;
+  }
+
+  void *truce = nullptr;
+  if (!ReadValue(access, context_children, 0, truce)) {
+    stop("truce_effect_read_failed");
+    return;
+  }
+  capture.truce_effect = reinterpret_cast<std::uintptr_t>(truce);
+  if (truce == nullptr || !ReadValue(access, truce, 0, capture.truce_vtable)) {
+    stop(truce == nullptr ? "truce_effect_null" : "truce_vtable_read_failed");
+    return;
+  }
+  if (capture.truce_vtable != environment.truce_effect_vtable) {
+    stop("truce_vtable_mismatch");
+    return;
+  }
+  const void *duration = nullptr;
+  if (!CheckedAddress(truce, kTruceDurationScriptValueOffset, duration)) {
+    stop("duration_script_value_address_failed");
+    return;
+  }
+  capture.duration_script_value = reinterpret_cast<std::uintptr_t>(duration);
+  stop("complete");
+}
 #endif
 
 bool EnvironmentIsExact(
@@ -767,8 +957,7 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   }
   XAR_G2_SHAPE_VALUE(root_count, root_count);
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
-  CaptureLoadedScriptedCandidatesForG2(environment, access, root_children,
-                                       root_count);
+  CaptureTargetedIndex7ForG2(environment, access, root_children, root_count);
 #endif
   if (root_children == nullptr) {
     XAR_G2_SHAPE_STAGE("root_children_null");

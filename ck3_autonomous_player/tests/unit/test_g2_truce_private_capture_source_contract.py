@@ -7,6 +7,9 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 NATIVE = ROOT / "native_bridge"
+RESOLVER = NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
+WRITER = NATIVE / "src" / "ck3_11906.cpp"
+HEADER = NATIVE / "include" / "xar_bridge" / "raiktor_surrender_truce_v1.hpp"
 
 
 class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
@@ -19,282 +22,84 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         )
         self.assertIsNotNone(option)
         self.assertEqual(option.group(1), "OFF")
-        self.assertIn(
-            "if(XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1)", cmake
-        )
-        self.assertIn(
-            "target_compile_definitions(xar_ck3_bridge PRIVATE", cmake
-        )
         self.assertEqual(cmake.count("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1"), 1)
 
-    def test_capture_precedes_reset_without_public_serialization(self) -> None:
-        source = (NATIVE / "src" / "ck3_11906.cpp").read_text(encoding="utf-8")
+    def test_capture_precedes_production_reset_without_public_wire(self) -> None:
+        source = WRITER.read_text(encoding="utf-8")
         observer = source.index("output = ObserveRaiktorSurrenderTruceV1")
         call = source.index("AppendG2TrucePrivateCaptureV1(", observer)
         reset = source.index("output = {};", call)
         self.assertLess(call, reset)
+        self.assertIn("xar.ck3.g2_truce_private_capture.v2", source)
         self.assertIn("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH", source)
-        self.assertIn("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1", source)
-
-        private_schema = "xar.ck3.g2_truce_private_capture.v1"
-        self.assertIn(private_schema, source)
+        private_schema = "xar.ck3.g2_truce_private_capture.v2"
         for public_path in (
             NATIVE / "src" / "bridge.cpp",
             NATIVE / "include" / "xar_bridge" / "game_contract.hpp",
             ROOT / "src" / "xar_autoplayer" / "bridge" / "war_contract.py",
         ):
-            self.assertNotIn(
-                private_schema, public_path.read_text(encoding="utf-8")
-            )
+            self.assertNotIn(private_schema, public_path.read_text(encoding="utf-8"))
 
-    def test_capture_names_the_failed_loaded_tree_check_and_actual_shape(self) -> None:
-        resolver = (
-            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
-        ).read_text(encoding="utf-8")
-        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
-            encoding="utf-8"
-        )
-        header = (
-            NATIVE
-            / "include"
-            / "xar_bridge"
-            / "raiktor_surrender_truce_v1.hpp"
-        ).read_text(encoding="utf-8")
+    def test_runtime_capture_calls_only_the_source_correlated_index7_helper(self) -> None:
+        resolver = RESOLVER.read_text(encoding="utf-8")
+        resolve = resolver.index("ResolveUniqueTruceNode(")
+        runtime_call = resolver.index("CaptureTargetedIndex7ForG2(", resolve)
+        stale_gate = resolver.index('XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', runtime_call)
+        self.assertLess(runtime_call, stale_gate)
+        self.assertEqual(resolver.count("CaptureTargetedIndex7ForG2("), 2)
+        self.assertEqual(resolver.count("CaptureLoadedScriptedCandidatesForG2("), 1)
+        self.assertEqual(resolver.count("CapturePrivateNestedContainerForG2("), 5)
+        self.assertIn("constexpr std::size_t kRootIndex = 7", resolver)
+        self.assertIn("constexpr std::size_t kHiddenIndex = 1", resolver)
+        self.assertNotIn("CaptureLoadedScriptedCandidatesForG2(", resolver[runtime_call:stale_gate])
+        self.assertNotIn("CapturePrivateNestedContainerForG2(", resolver[runtime_call:stale_gate])
 
-        self.assertIn("XAR_G2_SHAPE_RESET();", resolver)
-        for check in (
-            "root_capacity_mismatch",
-            "root_count_mismatch",
-            "scripted_vtable_mismatch",
-            "default_capacity_mismatch",
-            "default_count_mismatch",
-            "hidden_count_mismatch",
-            "hidden_capacity_mismatch",
-            "context_capacity_mismatch",
-            "truce_vtable_mismatch",
-            "complete",
-        ):
-            self.assertIn(f'XAR_G2_SHAPE_STAGE("{check}")', resolver)
-
-        self.assertIn("RaiktorTrucePrivateShapeCaptureV1", header)
-        self.assertIn("#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)", header)
-        for field in (
-            '"failed_check"',
-            '"root_vtable_rva"',
-            '"root_capacity"',
-            '"root_count"',
-            '"default_child_vtable_rvas"',
-            '"hidden_capacity"',
-            '"context_capacity"',
-            '"truce_vtable_rva"',
-        ):
-            self.assertIn(field.replace('"', '\\"'), writer)
-
-    def test_nested_capture_is_bounded_to_four_rtti_justified_entries(self) -> None:
-        resolver = (
-            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
-        ).read_text(encoding="utf-8")
-        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
-            encoding="utf-8"
-        )
-        header = (
-            NATIVE
-            / "include"
-            / "xar_bridge"
-            / "raiktor_surrender_truce_v1.hpp"
-        ).read_text(encoding="utf-8")
-
-        self.assertIn("kPrivateScriptedListVtableRva = 0x41B1E90", resolver)
-        self.assertIn("kPrivateIfEffectVtableRva = 0x44D1E18", resolver)
-        self.assertIn("kPrivateIfOptionalEffectOffset = 0x258", resolver)
-        self.assertEqual(
-            resolver.count("CapturePrivateNestedContainerForG2("), 5
-        )
-        for call_shape in (
-            "capture, 0, environment, access, 9, -1, context_child0",
-            "capture, 1, environment, access, 10, 3, next_child",
-            "capture, 2, environment, access, 10, 4, next_child",
-            "capture, 3, environment, access, 10, 5, next_child",
-        ):
-            self.assertIn(call_shape, resolver)
-        helper = resolver[
-            resolver.index("void CapturePrivateNestedContainerForG2("):
-            resolver.index("void CaptureLoadedScriptedCandidatesForG2(")
-        ]
-        self.assertIn("common_child_vtable == environment.truce_effect_vtable", helper)
-        self.assertIn("nested.optional_effect_vtable == environment.truce_effect_vtable", helper)
+    def test_targeted_helper_reads_no_siblings_and_never_calls_evaluator(self) -> None:
+        resolver = RESOLVER.read_text(encoding="utf-8")
+        begin = resolver.index("void CaptureTargetedIndex7ForG2(")
+        end = resolver.index("#endif", begin)
+        helper = resolver[begin:end]
+        self.assertNotIn("for (", helper)
+        self.assertIn("kRootIndex * sizeof(void *)", helper)
+        self.assertIn("kHiddenIndex * sizeof(void *)", helper)
+        self.assertIn("ReadValue(access, hidden_children, 0, context)", helper)
+        self.assertIn("ReadValue(access, context_children, 0, truce)", helper)
+        self.assertIn("kTruceDurationScriptValueOffset", helper)
         self.assertNotIn("evaluate_duration_days", helper)
-        self.assertNotIn("kTruceDurationScriptValueOffset", helper)
-        self.assertIn(
-            "std::array<RaiktorTrucePrivateNestedContainerV1, 4>", header
-        )
-        self.assertIn(
-            "std::array<std::uintptr_t, 16> common_child_vtables", header
-        )
+        for old_index in ("root_index == 9", "root_index == 10"):
+            self.assertNotIn(old_index, helper)
 
+    def test_exact_target_shape_and_duration_input_are_serialized(self) -> None:
+        source = WRITER.read_text(encoding="utf-8")
+        header = HEADER.read_text(encoding="utf-8")
+        self.assertIn("targeted_index7_status", header)
         for field in (
-            '"nested_container_capture_completed"',
-            '"nested_truce_match_count"',
-            '"nested_truce_match_container_slot"',
-            '"nested_truce_match_common_child_index"',
-            '"nested_truce_match_optional_effect"',
-            '"nested_containers"',
-            '"common_vector_status"',
-            '"common_child_vtable_rvas"',
-            '"optional_effect_vtable_rva"',
-            '"optional_truce_match"',
+            '"targeted_index7_status"',
+            '"expected_default_capacity":4',
+            '"expected_default_count":4',
+            '"expected_hidden_index":1',
+            '"expected_hidden_capacity":1',
+            '"expected_context_capacity":1',
+            '"expected_truce_vtable_rva"',
+            '"duration_script_value"',
         ):
-            self.assertIn(field.replace('"', '\\"'), writer)
+            self.assertIn(field.replace('"', '\\"'), source)
 
-    def test_prior_root_enumeration_is_not_replayed(self) -> None:
-        resolver = (
-            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
-        ).read_text(encoding="utf-8")
-        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
-            encoding="utf-8"
-        )
-        header = (
-            NATIVE
-            / "include"
-            / "xar_bridge"
-            / "raiktor_surrender_truce_v1.hpp"
-        ).read_text(encoding="utf-8")
-
-        helper = resolver.index("void CaptureLoadedRootChildrenForG2(")
-        helper_guard = resolver.rfind(
-            "#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)", 0, helper
-        )
-        self.assertGreaterEqual(helper_guard, 0)
-        self.assertEqual(resolver.count("CaptureLoadedRootChildrenForG2("), 1)
-        self.assertIn(
-            "child_vtable == environment.scripted_effect_vtable", resolver
-        )
-        self.assertIn("std::array<std::uintptr_t, 16> root_child_vtables", header)
-
-        for field in (
-            '"root_child_capture_status"',
-            '"root_child_capture_completed"',
-            '"root_child_vtable_rvas"',
-            '"root_scripted_match_count"',
-            '"root_scripted_match_index"',
-        ):
-            self.assertIn(field.replace('"', '\\"'), writer)
-
-    def test_only_indices_nine_and_ten_receive_nested_capture(self) -> None:
-        resolver = (
-            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
-        ).read_text(encoding="utf-8")
-        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
-            encoding="utf-8"
-        )
-
-        self.assertRegex(
-            resolver,
-            r"kPrivateScriptedCandidateIndices\s*=\s*\{\s*"
-            r"9,\s*10\s*\}",
-        )
-        call = resolver.index("CaptureLoadedScriptedCandidatesForG2(", 1)
-        call = resolver.index(
-            "CaptureLoadedScriptedCandidatesForG2(", call + 1
-        )
-        stale_gate = resolver.index(
-            'XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', call
-        )
-        self.assertLess(call, stale_gate)
+    def test_production_contract_and_mutation_surfaces_are_unchanged(self) -> None:
+        resolver = RESOLVER.read_text(encoding="utf-8")
         self.assertIn("kDefeatRootCapacity = 19", resolver)
         self.assertIn("kDefeatRootCount = 14", resolver)
         self.assertIn("kDefeatRootTruceScriptIndex = 9", resolver)
-
-        for field in (
-            '"scripted_candidate_capture_completed"',
-            '"scripted_semantic_match_count"',
-            '"scripted_semantic_match_root_index"',
-            '"scripted_candidates"',
-            '"selector_count"',
-            '"template_vtable_rva"',
-            '"default_capacity"',
-            '"default_count"',
-            '"semantic_shape_match"',
-            '"sole_child_status"',
-            '"sole_child_vtable_rva"',
-            '"sole_child_capacity"',
-            '"sole_child_count"',
-            '"sole_child_nested0_vtable_rva"',
-            '"caddtruce_prefix_match"',
-            '"caddtruce_prefix_match_count"',
-            '"caddtruce_prefix_match_root_index"',
-            '"context_status"',
-            '"context_depth"',
-            '"context_scope_count"',
-            '"context_child0_vtable_rva"',
-            '"context_child0_capacity"',
-            '"context_child0_count"',
-            '"context_child0_duration_script_value"',
-            '"truce_vtable_match"',
-            '"context_capture_completed"',
-            '"truce_vtable_match_count"',
-            '"truce_vtable_match_root_index"',
+        begin = resolver.index("void CaptureTargetedIndex7ForG2(")
+        end = resolver.index("#endif", begin)
+        helper = resolver[begin:end]
+        for forbidden in (
+            "surrender",
+            "white_peace",
+            "enforce_demands",
+            "WriteProcessMemory",
         ):
-            self.assertIn(field.replace('"', '\\"'), writer)
-
-        self.assertIn(
-            "candidate.sole_child_vtable == environment.context_effect_vtable",
-            resolver,
-        )
-        self.assertIn(
-            "candidate.sole_child_nested0_vtable ==",
-            resolver,
-        )
-        self.assertIn(
-            "candidate.context_child0_vtable == environment.truce_effect_vtable",
-            resolver,
-        )
-        self.assertIn(
-            "CheckedAddress(context_child0, kTruceDurationScriptValueOffset",
-            resolver,
-        )
-
-    def test_next_layer_capture_is_exactly_bounded_to_known_nine_and_ten_shapes(self) -> None:
-        resolver = (
-            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
-        ).read_text(encoding="utf-8")
-        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
-            encoding="utf-8"
-        )
-
-        self.assertIn(
-            "kPrivateIndex9ContextChild0VtableRva = 0x44D1E18",
-            resolver,
-        )
-        self.assertIn(
-            "kPrivateIndex10ContextChild0VtableRva = 0x41E36D0",
-            resolver,
-        )
-        self.assertIn("root_index == 9 ? 1 : 6", resolver)
-        self.assertIn('"unexpected_index9_shape"', resolver)
-        self.assertIn('"unexpected_index10_shape"', resolver)
-        self.assertIn(
-            "next_child_vtable == environment.truce_effect_vtable",
-            resolver,
-        )
-        self.assertNotIn("evaluate_duration_days(", resolver[
-            resolver.index("const auto expected_child0_vtable"):
-            resolver.index("bool EnvironmentIsExact(")
-        ])
-
-        for field in (
-            '"next_layer_status"',
-            '"next_layer_capture_limit"',
-            '"next_layer_capture_completed"',
-            '"next_layer_child_vtable_rvas"',
-            '"next_layer_truce_match_count"',
-            '"next_layer_truce_match_index"',
-            '"next_layer_truce_duration_script_value"',
-            '"next_layer_candidate_capture_completed"',
-            '"next_layer_truce_match_root_index"',
-            '"next_layer_truce_match_child_index"',
-        ):
-            self.assertIn(field.replace('"', '\\"'), writer)
+            self.assertNotIn(forbidden, helper)
 
 
 if __name__ == "__main__":
