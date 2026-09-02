@@ -30,14 +30,43 @@ no self-call or branch back to either consumer. A later consumer tick therefore
 requires a new external wrapper invocation, and none is guaranteed by this
 function itself.
 
-The next distinct observation is wrapper entry `0x3B9E030`. Reading `[RSP]`
-before replaying its exact 15-byte prologue maps the runtime return address to
-one of the frozen callsites by subtracting five. Counting entries would also
-show whether the wrapper is externally reinvoked after the completion publish.
-Only after that runtime owner is known should a caller-specific continuation be
-selected. No thread or OS-wait semantics are inferred, and public ABI/readiness
-remain unchanged.
+## Producer carrier versus consumer ring
+
+The bounded task builder `[0x3B9DBB0,0x3B9DD4E)` (PDATA unwind
+`0x4F10158`, bytes SHA-256
+`3EC3E5D8366717B979C04125CBF8EAD0D2AF6D42DB9930E0CA48D8DB89FCF05A`)
+allocates a `0x78`-byte task, initializes state `[task+0x60]=0` and reference
+count `[task+0x64]=1`, then stores it at descriptor offset `+0x18`. The
+descriptor is always appended to the wrapper's fifth-argument producer list at
+`0x3B9DCE6`.
+
+The consumer carrier is separate. Only queued mode increments the task
+reference count and calls `[0x3B9EBD0,0x3B9ED27)` at `0x3B9DCD9`; that function
+writes the task pointer into its ring at `0x3B9ED05` and advances the tail at
+`0x3B9ED0E`. In synchronous mode this enqueue is skipped. The wrapper uses the
+same mode condition: queued mode branches from `0x3B9E214` directly to teardown,
+whereas synchronous mode iterates the producer list at `0x3B9E230` and calls the
+state-2 publisher.
+
+This closes the raw-live discrepancy. The retained runner report SHA-256 is
+`DD6F61C871AD371F3BCE843BDA864E7D6317267AE839CB7A65EC399CCD4098A8`;
+its terminal evidence index SHA-256 is
+`7E6B405A03C0E3F4A799F5836C6FACC4E6261E6C3E997886D0D01FFB32876487`.
+The consumer hook was installed with failure code zero and executed 1,908
+times, but observed no state 2/3 task and no selected callback, while the
+producer publish at `0x3B9CFD7` was observed. This is evidence for two carrier
+paths, not hook failure: the synchronously published task was never a member of
+the consumer ring scanned at `0x3B9DEA7`.
+
+The next distinct observation is wrapper entry `0x3B9E030`. Before replaying
+its exact 15-byte prologue, read `[RSP]` to map the runtime return address to one
+of the frozen callsites by subtracting five, `RCX` for the scheduler owner, and
+`[RSP+0x28]` for the fifth-argument producer-list carrier. Entry/return counts
+then establish lifetime without observing the unrelated consumer ring again.
+Only after this runtime owner and carrier are known should a caller-specific
+continuation be selected. No thread or OS-wait semantics are inferred, and
+public ABI/readiness remain unchanged.
 
 The reproducible extractor artifact is
 `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-native-gate-20260902\completion-wrapper-callers-static-extract.json`,
-SHA-256 `6BF4F6E2A8BD68355F1E74C230D7FF66E65052FDFA045A7250BE6E5B28FE6EA3`.
+SHA-256 `353599579C6415FCE0D8C5A8164EF1BE8E8A1F53BD7A97A44AC4D2B2D357EA1F`.

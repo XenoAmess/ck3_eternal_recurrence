@@ -1,7 +1,7 @@
 {
   "contract": "phase2-completion-wrapper-callers-v1",
   "schema_version": 1,
-  "status": "static-caller-bound-runtime-owner-unresolved",
+  "status": "static-synchronous-carrier-bound-runtime-owner-unresolved",
   "build": {
     "product_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
@@ -9,9 +9,9 @@
   },
   "evidence": {
     "extractor": "extract_phase2_completion_wrapper_callers.py",
-    "extractor_sha256": "EF293D11832DC611484085911D94E340E7B2EFD7733F49CF99DA227C487AD269",
+    "extractor_sha256": "81E3771693F01E9933ABE9C21113B1F7362D9CF4E8EF7244BA092D20AFF54C7E",
     "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\completion-wrapper-callers-static-extract.json",
-    "artifact_sha256": "6BF4F6E2A8BD68355F1E74C230D7FF66E65052FDFA045A7250BE6E5B28FE6EA3"
+    "artifact_sha256": "353599579C6415FCE0D8C5A8164EF1BE8E8A1F53BD7A97A44AC4D2B2D357EA1F"
   },
   "wrapper": {
     "function_rva": "0x3B9E030",
@@ -50,6 +50,65 @@
       "condition": "unconditional once per owner invocation"
     }
   ],
+  "task_carrier_routing": {
+    "task_builder": {
+      "function": "[0x3B9DBB0,0x3B9DD4E)",
+      "unwind_rva": "0x4F10158",
+      "bytes_sha256": "3EC3E5D8366717B979C04125CBF8EAD0D2AF6D42DB9930E0CA48D8DB89FCF05A",
+      "task_layout": {
+        "callback_offset": "0x38",
+        "owner_offset": "0x58",
+        "state_offset": "0x60",
+        "reference_count_offset": "0x64",
+        "initial_state": 0,
+        "initial_reference_count": 1
+      },
+      "descriptor_task_pointer_offset": "0x18",
+      "producer_list_append_call_rva": "0x3B9DCE6",
+      "consumer_ring_enqueue_call_rva": "0x3B9DCD9"
+    },
+    "consumer_enqueue": {
+      "function": "[0x3B9EBD0,0x3B9ED27)",
+      "unwind_rva": "0x4F1037C",
+      "bytes_sha256": "2B217C2378A435E6BB34EECE8FB9C1E47EF16A209E940EC3E09B51F3FD616E25",
+      "ring_pointer_write_rva": "0x3B9ED05",
+      "tail_advance_rva": "0x3B9ED0E"
+    },
+    "mode_matrix": [
+      {
+        "mode": "synchronous",
+        "wrapper_bpl": 0,
+        "producer_list_appended": true,
+        "consumer_ring_enqueued": false,
+        "wrapper_producer_loop_runs": true
+      },
+      {
+        "mode": "queued",
+        "wrapper_bpl": 1,
+        "producer_list_appended": true,
+        "consumer_ring_enqueued": true,
+        "wrapper_producer_loop_runs": false
+      }
+    ],
+    "conclusion": "the synchronous task published by the wrapper producer loop is carried by descriptor+0x18 in the fifth-argument producer list and is never enqueued into the consumer ring scanned at 0x3B9DEA7"
+  },
+  "prior_raw_live": {
+    "runner_report": "Z:\\p2r-raw\\live-artifacts\\runner-report.json",
+    "runner_report_sha256": "DD6F61C871AD371F3BCE843BDA864E7D6317267AE839CB7A65EC399CCD4098A8",
+    "terminal_evidence_index": "Z:\\p2r-raw\\live-artifacts\\terminal-evidence-index.json",
+    "terminal_evidence_index_sha256": "7E6B405A03C0E3F4A799F5836C6FACC4E6261E6C3E997886D0D01FFB32876487",
+    "observer_installed": true,
+    "observer_failure_code": 0,
+    "raw_hit_count": 1908,
+    "raw_state2_count": 0,
+    "raw_state3_count": 0,
+    "raw_last_callback": 0,
+    "raw_last_callback_slot2_target": 0,
+    "selected_event_count": 0,
+    "database_completion_publish_observed": true,
+    "database_completion_publish_rva": "0x3B9CFD7",
+    "interpretation": "the consumer hook executed, but the synchronously published task was not a member of its consumer ring"
+  },
   "post_publish_control_flow": {
     "consumer_calls_before_producer": ["0x3B9E10B", "0x3B9E175"],
     "producer_loop": "0x3B9E230..0x3B9E246",
@@ -61,10 +120,14 @@
   },
   "next_distinct_observation": {
     "rva": "0x3B9E030",
-    "read": "[RSP] return address at wrapper entry",
+    "read": [
+      "[RSP] return address at wrapper entry",
+      "RCX scheduler owner",
+      "[RSP+0x28] fifth-argument producer-list carrier"
+    ],
     "mapping": "subtract 5 and require membership in the frozen 618-callsite list",
-    "telemetry": ["entry_count", "last_return_rva", "last_thread_id", "last_timestamp_qpc"],
-    "purpose": "prove whether the wrapper is externally reinvoked and bind the runtime caller before any caller-specific continuation observation",
+    "telemetry": ["entry_count", "return_count", "last_return_rva", "last_scheduler_owner", "last_producer_list", "last_thread_id", "last_timestamp_qpc"],
+    "purpose": "bind the runtime caller and synchronous producer-list carrier before following its caller-specific continuation",
     "live_authorized": false
   },
   "scope": {

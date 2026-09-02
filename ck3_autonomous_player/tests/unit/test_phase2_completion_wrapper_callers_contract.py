@@ -41,10 +41,31 @@ class Phase2CompletionWrapperCallersContractTests(unittest.TestCase):
         self.assertFalse(flow["wrapper_self_call"])
         self.assertEqual(flow["return_rva"], "0x3B9E265")
 
+    def test_synchronous_task_uses_producer_carrier_not_consumer_ring(self) -> None:
+        routing = self.contract["task_carrier_routing"]
+        synchronous, queued = routing["mode_matrix"]
+        self.assertEqual(routing["task_builder"]["descriptor_task_pointer_offset"], "0x18")
+        self.assertTrue(synchronous["producer_list_appended"])
+        self.assertFalse(synchronous["consumer_ring_enqueued"])
+        self.assertTrue(synchronous["wrapper_producer_loop_runs"])
+        self.assertTrue(queued["consumer_ring_enqueued"])
+        self.assertFalse(queued["wrapper_producer_loop_runs"])
+
+    def test_raw_live_matches_separate_carrier_contract(self) -> None:
+        live = self.contract["prior_raw_live"]
+        self.assertTrue(live["observer_installed"])
+        self.assertEqual(live["observer_failure_code"], 0)
+        self.assertEqual(live["raw_hit_count"], 1908)
+        self.assertEqual(live["raw_state2_count"], 0)
+        self.assertEqual(live["raw_state3_count"], 0)
+        self.assertTrue(live["database_completion_publish_observed"])
+
     def test_next_observation_maps_entry_return_address(self) -> None:
         observation = self.contract["next_distinct_observation"]
         self.assertEqual(observation["rva"], "0x3B9E030")
-        self.assertIn("[RSP]", observation["read"])
+        self.assertTrue(any("[RSP]" in item for item in observation["read"]))
+        self.assertTrue(any("[RSP+0x28]" in item for item in observation["read"]))
+        self.assertTrue(any("RCX" in item for item in observation["read"]))
         self.assertFalse(observation["live_authorized"])
 
     def test_scope_stays_private_static_and_read_only(self) -> None:
@@ -63,6 +84,10 @@ class Phase2CompletionWrapperCallersContractTests(unittest.TestCase):
             "instruction_boundary_verified",
             "consumer_reentry_after_producer",
             "external_reinvocation_required",
+            "TASK_BUILDER_BEGIN_RVA = 0x3B9DBB0",
+            "CONSUMER_ENQUEUE_BEGIN_RVA = 0x3B9EBD0",
+            "consumer_ring_enqueued",
+            "raw_hit_count",
         ):
             self.assertIn(token, self.extractor)
 

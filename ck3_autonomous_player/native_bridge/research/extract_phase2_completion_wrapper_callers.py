@@ -34,6 +34,14 @@ EXPECTED_OWNER_LIST_SHA256 = (
     "DFEF530E330DEEEC2154A5A8D826605A46EC46C8E670249162FC0586938715C5"
 )
 EXPECTED_DUAL_CALLER_FUNCTION_COUNT = 93
+TASK_BUILDER_BEGIN_RVA = 0x3B9DBB0
+TASK_BUILDER_END_RVA = 0x3B9DD4E
+TASK_BUILDER_UNWIND_RVA = 0x4F10158
+TASK_BUILDER_SHA256 = "3EC3E5D8366717B979C04125CBF8EAD0D2AF6D42DB9930E0CA48D8DB89FCF05A"
+CONSUMER_ENQUEUE_BEGIN_RVA = 0x3B9EBD0
+CONSUMER_ENQUEUE_END_RVA = 0x3B9ED27
+CONSUMER_ENQUEUE_UNWIND_RVA = 0x4F1037C
+CONSUMER_ENQUEUE_SHA256 = "2B217C2378A435E6BB34EECE8FB9C1E47EF16A209E940EC3E09B51F3FD616E25"
 
 LOCAL_CALLERS = (
     (0x3B8A9C0, 0x3B8AC01, 0x4DA2E1C, 0x3B8AB00,
@@ -106,6 +114,35 @@ def extract(exe: Path) -> dict[str, Any]:
     )
     if sha256(wrapper_bytes) != WRAPPER_SHA256:
         raise ValueError("completion wrapper bytes changed")
+    frozen_functions = (
+        (
+            TASK_BUILDER_BEGIN_RVA,
+            TASK_BUILDER_END_RVA,
+            TASK_BUILDER_UNWIND_RVA,
+            TASK_BUILDER_SHA256,
+            "task builder",
+        ),
+        (
+            CONSUMER_ENQUEUE_BEGIN_RVA,
+            CONSUMER_ENQUEUE_END_RVA,
+            CONSUMER_ENQUEUE_UNWIND_RVA,
+            CONSUMER_ENQUEUE_SHA256,
+            "consumer enqueue",
+        ),
+    )
+    frozen_function_results: dict[str, dict[str, str]] = {}
+    for begin, end, unwind, expected_hash, name in frozen_functions:
+        if (begin, end, unwind) not in pdata_set:
+            raise ValueError(f"{name} PDATA changed")
+        function_bytes = bytes_at(data, image, begin, end - begin)
+        if sha256(function_bytes) != expected_hash:
+            raise ValueError(f"{name} bytes changed")
+        frozen_function_results[name.replace(" ", "_")] = {
+            "function_rva": f"0x{begin:X}",
+            "function_end_rva_exclusive": f"0x{end:X}",
+            "unwind_rva": f"0x{unwind:X}",
+            "bytes_sha256": sha256(function_bytes),
+        }
 
     starts = [entry[0] for entry in pdata]
     owners: list[tuple[int, int, int]] = []
@@ -173,12 +210,19 @@ def extract(exe: Path) -> dict[str, Any]:
         0x3B9B784: bytes.fromhex("837918030F8497020000"),
         0x3B9B7B5: bytes.fromhex("4183FF010F8466020000"),
         0x3B9DAF6: bytes.fromhex("BD01000000448BCD488BD7488BCB"),
+        0x3B9DBD7: bytes.fromhex("803D74F7390100740E83B9AC000000007E0541B401EB034532E4"),
+        0x3B9DC74: bytes.fromhex("4889735833C0894360C74364010000004889436848894370"),
+        0x3B9DCB3: bytes.fromhex("488958184C896820"),
+        0x3B9DCCA: bytes.fromhex("4584E4740FF0FF4364488BD3498BCFE8F20E0000"),
+        0x3B9DCDE: bytes.fromhex("488D542478498BCEE855214CFF"),
+        0x3B9E0A6: bytes.fromhex("443805A5F23901740E443987AC0000007E0540B501EB034032ED"),
         0x3B9E214: bytes.fromhex("4084ED752F"),
         0x3B9E219: bytes.fromhex("498B1E4963460C488D3CC3483BDF741F"),
         0x3B9E230: bytes.fromhex("488B0B488BD6488B4918E811EDFFFF"),
         0x3B9E23F: bytes.fromhex("4883C308483BDF75E8"),
         0x3B9E248: bytes.fromhex("4C8D5C2460"),
         0x3B9E265: bytes.fromhex("C3"),
+        0x3B9ECFA: bytes.fromhex("488B4E084923CE488B46104C892CC890498D460148894708"),
     }
     for rva, expected in signatures.items():
         if bytes_at(data, image, rva, len(expected)) != expected:
@@ -186,7 +230,7 @@ def extract(exe: Path) -> dict[str, Any]:
 
     return {
         "contract": "phase2-completion-wrapper-callers-extract-v1",
-        "status": "static-caller-bound-runtime-owner-unresolved",
+        "status": "static-synchronous-carrier-bound-runtime-owner-unresolved",
         "read_only": True,
         "source": {
             "path": str(source),
@@ -220,6 +264,53 @@ def extract(exe: Path) -> dict[str, Any]:
             "0x3B9B87C": "call requires nonempty range, mode != 3, and derived batch count != 1",
             "0x3B9DB04": "one unconditional wrapper call per 0x3B9DA60 invocation",
         },
+        "task_carrier_routing": {
+            "functions": frozen_function_results,
+            "task_layout": {
+                "callback_offset": "0x38",
+                "owner_offset": "0x58",
+                "state_offset": "0x60",
+                "reference_count_offset": "0x64",
+                "initial_state": 0,
+                "initial_reference_count": 1,
+            },
+            "descriptor_task_pointer_offset": "0x18",
+            "producer_list_append_call_rva": "0x3B9DCE6",
+            "consumer_ring_enqueue_call_rva": "0x3B9DCD9",
+            "consumer_ring_pointer_write_rva": "0x3B9ED05",
+            "mode_matrix": [
+                {
+                    "mode": "synchronous",
+                    "wrapper_bpl": 0,
+                    "producer_list_appended": True,
+                    "consumer_ring_enqueued": False,
+                    "wrapper_producer_loop_runs": True,
+                },
+                {
+                    "mode": "queued",
+                    "wrapper_bpl": 1,
+                    "producer_list_appended": True,
+                    "consumer_ring_enqueued": True,
+                    "wrapper_producer_loop_runs": False,
+                },
+            ],
+            "conclusion": "the synchronous task published by the wrapper producer loop is carried by descriptor+0x18 in the fifth-argument producer list and is never enqueued into the consumer ring scanned at 0x3B9DEA7",
+        },
+        "prior_raw_live": {
+            "runner_report_sha256": "DD6F61C871AD371F3BCE843BDA864E7D6317267AE839CB7A65EC399CCD4098A8",
+            "terminal_evidence_index_sha256": "7E6B405A03C0E3F4A799F5836C6FACC4E6261E6C3E997886D0D01FFB32876487",
+            "observer_installed": True,
+            "observer_failure_code": 0,
+            "raw_hit_count": 1908,
+            "raw_state2_count": 0,
+            "raw_state3_count": 0,
+            "raw_last_callback": 0,
+            "raw_last_callback_slot2_target": 0,
+            "selected_event_count": 0,
+            "database_completion_publish_observed": True,
+            "database_completion_publish_rva": "0x3B9CFD7",
+            "interpretation": "the consumer hook executed, but the synchronously published task was not a member of its consumer ring",
+        },
         "post_publish_cfg": {
             "consumer_calls": ["0x3B9E10B", "0x3B9E175"],
             "producer_loop_begin_rva": "0x3B9E230",
@@ -233,9 +324,13 @@ def extract(exe: Path) -> dict[str, Any]:
         },
         "next_observation": {
             "entry_rva": "0x3B9E030",
-            "read": "[RSP] return address before the 15-byte prologue anchor",
+            "read": [
+                "[RSP] return address before the 15-byte prologue anchor",
+                "RCX scheduler owner",
+                "[RSP+0x28] fifth-argument producer-list carrier",
+            ],
             "mapping": "return_rva - 5 maps exactly to the frozen direct callsite list",
-            "purpose": "count wrapper entries and bind the runtime caller without expanding 525 caller CFGs",
+            "purpose": "bind the runtime caller and synchronous producer-list carrier without expanding 525 caller CFGs or observing the unrelated consumer ring again",
         },
         "limits": [
             "618 callsites across 525 functions do not statically identify the selected runtime caller",
