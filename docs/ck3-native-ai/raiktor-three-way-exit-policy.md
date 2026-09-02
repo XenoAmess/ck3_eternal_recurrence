@@ -348,3 +348,27 @@ removal, and driver closure. This artifact promotes only the additive public
 session binding to production-live evidence. It does **not** promote truce,
 generic/source-specific war-bound loss, the complete six-domain decision, any
 termination action, or automatic surrender; `GEN-034` remains unresolved.
+
+## 2026-09-03 generic war-bound aggregate intake
+
+[static/fixture-ready; no CK3 launch; no mutation] The public aggregate adapter
+now has an optional intake for the already frozen
+`generic_war_bound_visible_source_unattributed` payload.  It accepts the value
+only after the existing strict normalizer binds its paused snapshot/native
+revision, date, full WarID, primary attacker/defender and CB database index to
+the aggregate frame.  Missing input, malformed generations, aggregate drift,
+or any frame/CB mismatch remains the existing typed
+`{"available": false}` domain.
+
+An accepted payload promotes only `generic_war_bound_current_ready`; source
+attribution, pre soldiers and proven loss stay false, and authored `3000` is
+not used as any observed soldier value.  The production driver does not yet
+supply this optional payload, so the real public query and cached session
+binding remain wire-compatible and still return generic war-bound unavailable.
+No surrender recommendation, command literal, postcondition claim, or
+automatic policy is added; `GEN-034` remains unresolved.
+
+The next distinct live gate is to publish the strict generic payload on the
+same paused public query frame and prove two identical, session/cache-bound
+queries.  This is separate from the action-bound source/pre/loss capture and
+from persisted truce-expiry observation.

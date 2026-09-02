@@ -2,8 +2,8 @@
 
 This adapter is deliberately read-only.  It only promotes domains whose
 values are already present in the normalized war-termination terms response;
-truce and generic war-bound data remain unavailable until their strict public
-contracts are carried by the same paused frame.
+truce and generic war-bound data require their strict observer contracts on
+the same paused frame.
 """
 
 from __future__ import annotations
@@ -16,6 +16,9 @@ from xar_autoplayer.bridge.raiktor_surrender_six_domain_contract import (
 )
 from xar_autoplayer.bridge.raiktor_surrender_truce_contract import (
     project_raiktor_surrender_truce_from_passive_observer,
+)
+from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
+    normalize_raiktor_war_bound_regiment,
 )
 
 
@@ -36,6 +39,7 @@ def project_raiktor_surrender_six_domain(
     terms_value: object,
     *,
     passive_truce_postprocess_value: object | None = None,
+    generic_war_bound_current_value: object | None = None,
 ) -> dict[str, object] | None:
     """Return the identity-bound observed aggregate, or ``None`` if invalid."""
 
@@ -125,6 +129,10 @@ def project_raiktor_surrender_six_domain(
         expected_attacker_character_id=attacker_id,
         expected_defender_character_id=defender_id,
     )
+    generic_war_bound = _project_generic_war_bound_current(
+        generic_war_bound_current_value,
+        frame=frame,
+    )
     domain_payloads: dict[str, dict[str, object] | None] = {
         "gold": (
             {
@@ -201,7 +209,10 @@ def project_raiktor_surrender_six_domain(
         # A bare public evaluated_days leaf is insufficient.  Only the frozen
         # passive postprocessor's session-bound two-return GREEN may fill v1.
         "truce": passive_truce,
-        "generic_war_bound_current": None,
+        # Only the frozen generic observer contract may fill this domain.  It
+        # proves current soldiers, never source attribution, pre soldiers, or
+        # loss from the authored 3000.
+        "generic_war_bound_current": generic_war_bound,
     }
     domains = {
         name: _wrap(frame, payload)
@@ -212,10 +223,17 @@ def project_raiktor_surrender_six_domain(
         for name in _DOMAIN_ORDER
         if name != "claims_base" and domain_payloads[name] is None
     ]
+    six_dynamic_domains_ready = not missing
+    postwar_cleanup_ready = bool(
+        generic_war_bound is not None
+        and generic_war_bound["cleanup"]["observable"] is True
+    )
     aggregate = {
         "schema_version": 1,
         "backend_id": BACKEND_ID,
-        "status": "incomplete",
+        "status": (
+            "complete" if six_dynamic_domains_ready else "incomplete"
+        ),
         "failure": None,
         "frame": frame,
         "claims_base": _wrap(frame, claims),
@@ -230,14 +248,16 @@ def project_raiktor_surrender_six_domain(
             ),
             "favor_hook_ready": domain_payloads["favor_hook"] is not None,
             "truce_ready": domain_payloads["truce"] is not None,
-            "generic_war_bound_current_ready": False,
-            "postwar_cleanup_ready": False,
+            "generic_war_bound_current_ready": (
+                generic_war_bound is not None
+            ),
+            "postwar_cleanup_ready": postwar_cleanup_ready,
             "source_specific_war_bound_ready": False,
             "pre_soldiers_ready": False,
             "proven_soldier_loss_ready": False,
-            "six_dynamic_domains_ready": False,
-            "same_frame_stable": False,
-            "action_terms_ready": False,
+            "six_dynamic_domains_ready": six_dynamic_domains_ready,
+            "same_frame_stable": six_dynamic_domains_ready,
+            "action_terms_ready": six_dynamic_domains_ready,
             "automatic_surrender_ready": False,
         },
     }
@@ -254,6 +274,41 @@ def project_raiktor_surrender_six_domain(
         )
     except (KeyError, TypeError, ValueError):
         return None
+
+
+def _project_generic_war_bound_current(
+    value: object,
+    *,
+    frame: dict[str, object],
+) -> dict[str, object] | None:
+    """Return a strict generic current-regiment payload for ``frame``."""
+
+    if not isinstance(value, dict):
+        return None
+    active_frame = value.get("active_frame")
+    if (
+        not isinstance(active_frame, dict)
+        or active_frame.get("active_casus_belli_database_index")
+        != frame["active_casus_belli_database_index"]
+    ):
+        return None
+    try:
+        normalized = normalize_raiktor_war_bound_regiment(
+            value,
+            expected_war_id=frame["war_id"],
+            expected_attacker_character_id=frame[
+                "primary_attacker_character_id"
+            ],
+            expected_defender_character_id=frame[
+                "primary_defender_character_id"
+            ],
+            expected_snapshot_revision=frame["snapshot_revision"],
+            expected_native_revision=frame["native_revision"],
+            expected_date_raw=frame["date_raw"],
+        )
+    except (KeyError, TypeError, ValueError):
+        return None
+    return copy.deepcopy(normalized)
 
 
 def _wrap(

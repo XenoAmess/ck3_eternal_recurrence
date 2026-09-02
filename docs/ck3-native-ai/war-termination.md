@@ -2234,3 +2234,59 @@ and read-only real-profile account source
 The frozen CK3 executable, bookmark source, `open_kaishek` JAR/commit and
 acceptance runner also matched their manifest-bound values. This verification
 did not create an artifact directory or start CK3.
+
+### GEN-034 nearest read-only gap: generic war-bound aggregate intake (2026-09-03)
+
+[static-confirmed / implementation boundary] The nearest independently useful
+GEN-034 observation gap is the existing generic war-bound current-regiment
+payload, not truce expiry.  The exact CK3 1.19.0.6 source contract already
+freezes executable SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+the `bookmark_events.txt` and `00_event_war.txt` hashes, full-generation
+persistent/current/CArmy identities, exact bound WarID, `keep=false`, seven
+composition rows, current-soldier offset `+0x38`, and the paused same-frame
+double-sample rules.  Its strict Python normalizer and native fixtures already
+reject malformed generations, selector drift, soldier aggregate drift, and
+invented source/pre/loss values.  The remaining near-side gap is therefore a
+read-only intake seam from that normalized payload into the public six-domain
+aggregate.
+
+[static-confirmed / evidence boundary] Truce expiry is not selected for this
+static package.  `expiry_date_raw = current_date_raw + 24 * evaluated_days` is
+confirmed inside the frozen `CAddTruce` execute implementation, but there is
+still no exact-build read-only ABI proving the *persisted* post-termination
+truce row and its expiry.  Computing that value in Python would turn an execute
+formula into invented observation.  `expiry_observable=false` and
+`expiry_date_raw=null` consequently remain unchanged.
+
+The generic intake may accept only a payload that passes the existing strict
+normalizer against the aggregate's exact paused revision, native revision,
+date, full WarID, primary attacker, and primary defender.  Missing or invalid
+input remains the existing typed `{"available": false}` domain.  A valid
+generic payload may set only `generic_war_bound_current_ready=true`; it must
+preserve `source_specific_war_bound_ready=false`, `pre_soldiers_ready=false`,
+and `proven_soldier_loss_ready=false`.  It is not evidence that the rows are
+`norman_highwaymen`, is not a loss calculation, and by itself cannot promote a
+surrender recommendation, action, or automatic policy.
+
+```mermaid
+flowchart TD
+    S["[static-confirmed] exact 1.19.0.6 source contract"] --> G["[fixture-confirmed] generic war-bound double sample"]
+    G --> I["[static-ready] strict same-frame aggregate intake"]
+    I --> V["generic current soldiers visible"]
+    I -. "[unknown] no public live payload yet" .-> L["paused MCP live evidence"]
+    G -. "[unknown] no persisted origin" .-> A["Raiktor-source attribution"]
+    G -. "[unknown] no action-bound pre snapshot" .-> P["pre soldiers / proven loss"]
+    V --> R["generic_war_bound_current_ready only"]
+    A --> X["source-specific war-bound readiness"]
+    P --> X
+    R -. "insufficient alone" .-> D["GEN-034 decision/action"]
+    X -. "still unavailable" .-> D
+```
+
+The next distinct live gate after the static intake is a single paused,
+read-only publication of the strict generic payload on the same public query
+frame, followed by two identical queries bound to the same session and cache
+identity.  That live gate may promote only the generic current-soldier domain;
+source attribution, pre soldiers, proven loss, persisted truce expiry,
+termination mutation, and automatic surrender remain separate work.
