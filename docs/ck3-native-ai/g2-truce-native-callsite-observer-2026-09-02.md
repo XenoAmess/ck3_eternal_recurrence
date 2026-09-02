@@ -280,3 +280,49 @@ continues to pin the previous manifest; it must not be changed unless a later
 authorized live produces a valid typed GREEN from this exact candidate.
 Expiry, war-bound, action, decision, and automatic-surrender readiness remain
 unchanged and false.
+
+## Exact-candidate bounded live (2026-09-03)
+
+[production-live read-only observer; typed NO-GO] The one authorized execution
+of manifest `19AF7FD0...AD613` reached paused native readiness against the
+frozen checkpoint and exact CK3 `1.19.0.6` build.  The external frozen runner
+needed an explicit `PYTHONPATH` binding to the clean product source tree; a
+pre-live runtime record proves that `ck3_autonomous_player/src` and `tools`
+were the exact `0d83cc3` trees (`57cd2a7...` and `52abb1a...`) before the
+unchanged manifest command ran.  The fresh attempt was not reused.
+
+The two-site patch installed successfully (`installed_mask=3`, `failure=0`).
+Across 241 bounded heartbeat samples, however, both `0x2EDAF0F` and
+`0x2EDB59E` remained at `pre_call_count=0 / post_call_count=0`.  The final two
+rows were stable and belonged to the same session, but stability at zero is
+not a native return.  Offline postprocessing therefore produced
+`NO-GO / no_native_callsite_hit`, with both `evaluated_days` values absent.
+
+The frozen evidence directory is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-native-callsite-observer-ready-20260903T003347\live-authorized-passive-native-callsite-observer-v2`:
+
+- raw runner report SHA-256:
+  `1F319AE1F9D947D1BC766E304E8329CEE80E845B35833E45A2BB6F6E1DEB0AC9`;
+- typed postprocess SHA-256:
+  `64EC9BAA217DAF3A7797DBB1155B5896CC63A5A4B38EB407C0CFE2B6F0795693`;
+- acceptance report SHA-256:
+  `2D2F2D4732951B76AF263772D9286AB6358A7EBD8E71693C0374011E83A4731E`;
+- pre-live verify-only SHA-256:
+  `64F3C71D82FBDE80B00F7905DD398034051D9E835F5CD849110A8882ECB03008`;
+- runtime source binding SHA-256:
+  `86CE02C5143E9840A08F23418457BE4B07AF5B5ECE911E72657E8E47AB347411`.
+
+Session identity was `snapshot=native:3`, public/native revisions `4/3`,
+`date_raw=53223936`, connection generation `1`, episode
+`native-29829-809d91e48a8d`, CharacterID `29829`, CK3 PID `34656`.  Exact-build
+proof, paused/map readiness and every sample/session identity check passed.
+Managed cleanup proved shutdown, tree removal and driver close; CK3, injector,
+probe and Python inventory returned to zero.  Checkpoint and driver-state hashes
+remained respectively `60108A...F164` and `4FB901...F57E` before and after.
+
+This was heartbeat-only observation: no MCP query, direct evaluator, Context
+effect, mutation or time advance occurred.  It does not change the public
+projector pin or any readiness.  The distinct next static seam is the exact
+caller CFG and activation predicate leading to these installed-but-unreached
+callsites, or an earlier passive observer on that native path; another run of
+the same paused/no-trigger shape would only repeat the zero-hit result.

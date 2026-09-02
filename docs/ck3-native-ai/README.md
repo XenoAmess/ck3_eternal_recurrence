@@ -222,9 +222,10 @@
   source contract；四域 production-live read-only primitive 不等于六域、决策或 action-ready。
   [passive native-callsite observer](g2-truce-native-callsite-observer-2026-09-02.md)
   已增加静态 session-bound postprocessor intake：仅 GREEN、双 callsite 稳定相等 return 与
-  manifest/source/session identity 全匹配时可填充既有 truce v1；当前尚无对应 GREEN live
-  artifact，no-hit/pre-only/partial/read failure 仍 typed unavailable，且 decision/action/automatic
-  surrender readiness 不变。
+  manifest/source/session identity 全匹配时可填充既有 truce v1。2026-09-03 唯一 bounded
+  live 已在 exact build 上成功安装两处 observer，但 241 samples 内两处均为稳定 `0/0`，typed
+  `NO-GO / no_native_callsite_hit`；因此仍无 GREEN return artifact，no-hit/pre-only/partial/read
+  failure 继续 unavailable，且 decision/action/automatic surrender readiness 不变。
   2026-09-02 的 paused private pre-reset capture 先将缺失 duration 收窄为
   evaluator 前的 `root_shape_drift`；随后唯一 staged capture 将首个失败检查
   精确到 `root_capacity_mismatch`（actual `capacity/count=13/12`，旧合同
