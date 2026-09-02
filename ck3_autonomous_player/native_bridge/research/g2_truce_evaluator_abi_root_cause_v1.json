@@ -1,0 +1,87 @@
+{
+  "schema": "xar.ck3.g2_truce_evaluator_abi_root_cause.fixture.v1",
+  "status": "static-ready",
+  "read_only": true,
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "evaluator": {
+    "rva": "0x3373000",
+    "pdata": ["0x3373000", "0x337312F", "0x4C92B1C"],
+    "function_sha256": "82D70BEF987F60478D1AC4102C2ABF60E0723AAE93E06F72BD4DDEAED3893DF4",
+    "entry_bindings": {
+      "RCX": "script_value -> RBX",
+      "RDX": "effect_context -> RBP",
+      "R8": "evaluation_context -> RSI"
+    },
+    "first_r9_reference": "0x3373046 LEA R9,[RSP+0x30] (overwrite)",
+    "incoming_r9_consumed": false,
+    "incoming_stack_parameter_consumed": false,
+    "direct_fs_gs_tls_access": false,
+    "return": "signed int32 in EAX"
+  },
+  "direct_xrefs": {
+    "call_count": 78,
+    "tail_jump_count": 1,
+    "rvas": [
+      "0x1944DD0", "0x19451B0", "0x19454F0", "0x194583D", "0x1945B78",
+      "0x1945D51", "0x1945F1D", "0x19460D3", "0x194627D", "0x194643D",
+      "0x19484B9", "0x194894C", "0x1949149", "0x19495D9", "0x1949A69",
+      "0x1949F06", "0x194A1FD", "0x194A4F9", "0x194A7E9", "0x194AB29",
+      "0x194AE19", "0x209D37F", "0x218EA1D", "0x21933D9", "0x21935CE",
+      "0x2199385", "0x2289D92", "0x22DD2BE", "0x22DD2D5", "0x22DD2EC",
+      "0x232F5DB", "0x2688FE2", "0x278DAB6", "0x2817AD8", "0x28224BF",
+      "0x285C7BA", "0x28671E8", "0x2867368", "0x2878C5B", "0x2884BBB",
+      "0x2C382B8", "0x2C9C69B", "0x2CD311B", "0x2CE2EC5", "0x2D17194",
+      "0x2E4FC7E", "0x2E4FE1A", "0x2E60018", "0x2E653DE", "0x2E654D0",
+      "0x2E6566E", "0x2E68C16", "0x2E82FF5", "0x2E83945", "0x2E9408C",
+      "0x2EA1672", "0x2EB6B8C", "0x2EB7125", "0x2EB7C1D", "0x2EB92FA",
+      "0x2ED5EDE", "0x2EDAF0F", "0x2EDB59E", "0x2EDC204", "0x2EDD119",
+      "0x2EDD452", "0x2EF4117", "0x2EF4263", "0x2EF9A19", "0x2EFA17C",
+      "0x2EFA9A8", "0x2F186AF", "0x338CB55", "0x3390C81", "0x3391425",
+      "0x33915DE", "0x3392D89", "0x33934E7", "0x33936D9"
+    ],
+    "tail_jump_rva": "0x2EDC204"
+  },
+  "caddtruce_calls": [
+    {
+      "call_rva": "0x2EDAF0F",
+      "owner_pdata_begin": "0x2EDAD20",
+      "sequence_sha256": "1FAE6B4E26AC04D4999B8DDBCECCF0A243DF0795F41979DB53BB8B9FBBC39D00"
+    },
+    {
+      "call_rva": "0x2EDB59E",
+      "owner_pdata_begin": "0x2EDB3A0",
+      "sequence_sha256": "DDDA2E8AF70DAA91A1513C3DF3FE05714D6FAB8B2F6D7CC9B2C83D0EFCC85990"
+    }
+  ],
+  "generic_wrapper": {
+    "pdata": ["0x2EDC1B0", "0x2EDC209", "0x4C38E20"],
+    "tail_rva": "0x2EDC1FB..0x2EDC209",
+    "tail_sha256": "9EB8827328472C901245DA85A8E0F325BD8557ED85EFA4853DA538EA64F82AB8",
+    "semantic": "R8 = *(void **)(RDX + 0x28); tail-jump evaluator"
+  },
+  "frozen_live_boundary": {
+    "terminal_summary_sha256": "C4157B5E48D9634E79146A970C254914DEBB1C6B57F0A81459EAFD4DD0493574",
+    "effect_context": "0x5B2FD01B0",
+    "evaluation_context": "0x5B2FD01D8",
+    "post_call_rows": 0,
+    "terminal": "process_exit"
+  },
+  "diagnosis": {
+    "three_parameter_msvc_x64_signature_correct": true,
+    "missing_parameter": false,
+    "thiscall_mismatch": false,
+    "script_value_plus_0x108_correct": true,
+    "root_cause": "wrong_evaluation_context_kind",
+    "native_expected": "pointer value loaded from *(void **)(effect_context + 0x28)",
+    "bridge_observed": "address of field (effect_context + 0x28)"
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "mutation_sent": false,
+    "public_abi_changed": false,
+    "public_readiness_changed": false
+  }
+}

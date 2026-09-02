@@ -15,13 +15,17 @@ with the same MSVC x64 argument shape:
 | --- | --- |
 | script value (`RCX`) | `[RSI+0x108]` |
 | effect context (`RDX`) | current effect object (`R15` or `R12`) |
-| evaluation context (`R8`) | `[effect_context+0x28]` |
+| evaluation context (`R8`) | pointer value loaded from `*(void **)(effect_context+0x28)` |
 | result | signed `int32` in `EAX`, consumed immediately by the caller |
 
 The two bounded sequences are anchored at `0x2EDAF01..0x2EDAF14` (call at
 `0x2EDAF0F`) and `0x2EDB58F..0x2EDB5A3` (call at `0x2EDB59E`).  The complete
 bytes, span digests, evaluator entry span, and post-call consumers are frozen
 in [`raiktor_truce_evaluator_callsite_v1_abi.json`](../../ck3_autonomous_player/native_bridge/research/raiktor_truce_evaluator_callsite_v1_abi.json).
+
+Here and in the original JSON, bracket notation means a memory load. It does
+not mean the address of the `+0x28` field. The later exact ABI root-cause
+slice records why that distinction matters.
 
 The reusable verifier is:
 
