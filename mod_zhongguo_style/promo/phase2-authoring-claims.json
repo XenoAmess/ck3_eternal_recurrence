@@ -1,0 +1,419 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_chinese_first_authoring_claim_matrix",
+  "source_project": {
+    "path": "mod_zhongguo_style/promo/phase2-promo-project.json",
+    "project_id": "zhongguo-361-phase2-promo",
+    "sha256": "150EE549AF859517C377D3CD531414E9C76E133A8168AF2B0168797249B62129"
+  },
+  "authoring_authorities": [
+    {
+      "path": "mod_zhongguo_style/promo/phase2-brief.md",
+      "sha256": "5DDCBA6FB821AE0C2A2D8D2D95DE81033CB635F32FFBC97FD0607F6F498441AC"
+    },
+    {
+      "path": "mod_zhongguo_style/promo/promo-manifest.json",
+      "sha256": "64EA0E3A1CA5E6278A5DE0DF3BB2D81AEF437485D0A15A7AE223AF22FA9ED0A6"
+    },
+    {
+      "path": "mod_zhongguo_style/promo/phase2-readiness-2026-09-02.md",
+      "sha256": "A74912A0E34C89C04761C63183FA71B96F7B21196C2B759B961EB3AC0D956457"
+    }
+  ],
+  "language_policy": {
+    "primary_narration": "zh-CN",
+    "simultaneous_subtitles": [
+      "zh-CN",
+      "en"
+    ],
+    "current_builder_narration": "zh-CN",
+    "current_builder_voice": "zh-CN-XiaoxiaoNeural",
+    "builder_policy_status": "aligned"
+  },
+  "authoring_status": "draft-only-not-builder-input",
+  "global_release_boundaries": [
+    "No chapter may be called live, complete, release-ready, exported, or published from static wiring, fixtures, generated cards, MCP schemas, command acknowledgements, or this draft.",
+    "The eight gameplay chapters require clean spans from one real managed CK3 capture run, with their canonical producer keys, begin/end marks, source-byte hashes, visible product surfaces, and provider-observed postconditions.",
+    "Opening and finale cards may be generated only during a future candidate build; they cannot substitute for any gameplay span.",
+    "Chinese narration and simultaneous Chinese/English subtitles remain draft text until final footage is reviewed; no TTS, subtitle render, or media output is authorized by this ledger.",
+    "Release use additionally requires the media-preflight receipt, capture evidence, final render validation, and human review gates already defined by the phase-two readiness ledger."
+  ],
+  "chapters": [
+    {
+      "id": "phase2_minimal_recap",
+      "type": "generated_card",
+      "draft_state": "draft-only",
+      "footage_binding": {
+        "kind": "future-generated-card",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-01-recap",
+        "narration_zh_cn": "上一次，一份考核追着一个官员走。二期要看：整个制度如何制造、争议并延续它。",
+        "subtitle_zh_cn_lines": [
+          "上一次，一份考核追着一个官员走。",
+          "二期要看：整个制度如何制造、争议并延续它。"
+        ],
+        "subtitle_en_lines": [
+          "Last time, one rating followed one official.",
+          "Now watch the institution produce, dispute, and carry it forward."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/promo/phase2-promo-project.json",
+          "mod_zhongguo_style/promo/phase2-readiness-2026-09-02.md"
+        ],
+        "required_future_evidence": "A newly generated bilingual opening card in the reviewed candidate; it must not depict or imply gameplay proof.",
+        "release_status": "pending-candidate-and-human-review"
+      },
+      "cannot_claim": [
+        "Phase two is complete or live.",
+        "The recap card proves any gameplay capability."
+      ]
+    },
+    {
+      "id": "phase2_fact_quota_calibration",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "facts-quota-calibration",
+        "required_postcondition": "scoreboard/query revision changes and the visible calibration event is identity-ready",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-02-fact-quota",
+        "narration_zh_cn": "事实档与配额档，是两本账。校准可以改结果，欠下的账不会消失。",
+        "subtitle_zh_cn_lines": [
+          "事实档与配额档，是两本账。",
+          "校准可以改结果，欠下的账不会消失。"
+        ],
+        "subtitle_en_lines": [
+          "Facts and quota grades are separate ledgers.",
+          "Calibration can move the result, not erase the debt."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must visibly show the scoreboard/calibration product surface and a provider-observed revision change in the same managed run.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "The fact/quota distinction has passed live capture.",
+        "Calibration debt persists merely because the schema or handler exists."
+      ]
+    },
+    {
+      "id": "phase2_receipt_appeal_pip",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "receipts-appeals-pip",
+        "required_postcondition": "the same PIP owner/subject/cycle/case reaches the selected response state",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-03-receipt-pip",
+        "narration_zh_cn": "结果会留下回执，申诉可以重开案卷。未能纠正的差评，会变成 PIP 并跨期追随。",
+        "subtitle_zh_cn_lines": [
+          "结果会留下回执，申诉可以重开案卷。",
+          "未能纠正的差评，会变成 PIP 并跨期追随。"
+        ],
+        "subtitle_en_lines": [
+          "A result leaves a receipt; an appeal can reopen the case.",
+          "An unresolved rating can become a PIP and follow the next cycle."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must bind one real PIP owner, subject, cycle, and case through the selected response and provider-observed state.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "An appeal succeeds in all cases.",
+        "PIP cross-cycle persistence is live-proven before the same-case span passes."
+      ]
+    },
+    {
+      "id": "phase2_manager_governance",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "manager-governance",
+        "required_postcondition": "the AI-owned case reaches a provider-observed terminal business state",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-04-manager",
+        "narration_zh_cn": "经理也在考核链里。拒评、团队快照与连责，都必须显示为真实后果。",
+        "subtitle_zh_cn_lines": [
+          "经理也在考核链里。",
+          "拒评、团队快照与连责，都必须显示为真实后果。"
+        ],
+        "subtitle_en_lines": [
+          "Managers are evaluated too.",
+          "Refusal, team snapshots, and accountability must have consequences."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must show the real manager event and a provider-observed terminal business state for the AI-owned case.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "Manager accountability is production-live from event definitions alone.",
+        "An ACK or elapsed time proves the terminal business state."
+      ]
+    },
+    {
+      "id": "phase2_promotion_compensation",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "promotion-compensation",
+        "required_postcondition": "promotion choice and compensation receipt remain bound to the same frozen case",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-05-promotion",
+        "narration_zh_cn": "晋升先预留材料，不预支结果。答辩决定职级与薪酬落定，失败则释放预留。",
+        "subtitle_zh_cn_lines": [
+          "晋升先预留材料，不预支结果。",
+          "答辩决定职级与薪酬落定，失败则释放预留。"
+        ],
+        "subtitle_en_lines": [
+          "A reserved packet is not a guaranteed title.",
+          "The defense settles level and pay, or releases the reservation."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must show promotion choice and compensation receipt bound to the same frozen case.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "A reserved packet guarantees promotion.",
+        "Level and pay settlement are live-proven before a same-case product span passes."
+      ]
+    },
+    {
+      "id": "phase2_hc_workforce",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "hc-workforce",
+        "required_postcondition": "A/B/C each proves the same owner/subject case from a hash-identical checkpoint",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-06-workforce",
+        "narration_zh_cn": "HC 让继任与流动受真实名额约束。没有编制也是结果，不是缺了一张页面。",
+        "subtitle_zh_cn_lines": [
+          "HC 让继任与流动受真实名额约束。",
+          "没有编制也是结果，不是缺了一张页面。"
+        ],
+        "subtitle_en_lines": [
+          "Headcount constrains succession and mobility.",
+          "No opening is an outcome, not a missing screen."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must prove A/B/C outcomes for the same owner/subject case from a hash-identical checkpoint.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "All workforce branches have passed live validation.",
+        "A fixture checkpoint is equivalent to the required real managed span."
+      ]
+    },
+    {
+      "id": "phase2_projects_metrics",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "projects-metrics",
+        "required_postcondition": "project choice and metrics result are visible on identity-ready product events",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-07-projects",
+        "narration_zh_cn": "项目会保存贡献份额。抢功、指标与重组，会改变结果归属。",
+        "subtitle_zh_cn_lines": [
+          "项目会保存贡献份额。",
+          "抢功、指标与重组，会改变结果归属。"
+        ],
+        "subtitle_en_lines": [
+          "Projects keep a contribution split.",
+          "Credit, metrics, and reorganization can change result ownership."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must show project choice and metrics result on identity-ready product events.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "Contribution ownership is production-live from static handlers.",
+        "Every credit dispute or reorganization outcome is covered."
+      ]
+    },
+    {
+      "id": "phase2_incidents_operations",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "incidents-operations",
+        "required_postcondition": "X/Y/Z transitions and closure are provider-observed, never inferred from ACK",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-08-incidents",
+        "narration_zh_cn": "事故会积累成运营债务。共享官署可以分担代价，不能抹掉记录。",
+        "subtitle_zh_cn_lines": [
+          "事故会积累成运营债务。",
+          "共享官署可以分担代价，不能抹掉记录。"
+        ],
+        "subtitle_en_lines": [
+          "Incidents accumulate operational debt.",
+          "Shared offices can spread the cost, not erase the record."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must show X/Y/Z transitions and closure observed by the provider, never inferred from action ACKs.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "Operational debt is live-proven from scripted definitions.",
+        "Action acknowledgements prove incident transitions or closure."
+      ]
+    },
+    {
+      "id": "phase2_cross_cycle_endgame",
+      "type": "ck3_clean_span",
+      "draft_state": "pending-real-footage",
+      "footage_binding": {
+        "kind": "same-run-real-ck3-clean-span",
+        "producer_key": "cross-cycle-endgame",
+        "required_postcondition": "the terminal event is bound to the carried debt/default-change cycle",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-09-endgame",
+        "narration_zh_cn": "本轮可以改掉明天的默认规则。昨天的制度债仍要偿还；终局不是重置按钮。",
+        "subtitle_zh_cn_lines": [
+          "本轮可以改掉明天的默认规则。",
+          "昨天的制度债仍要偿还；终局不是重置按钮。"
+        ],
+        "subtitle_en_lines": [
+          "A cycle can change tomorrow's default while yesterday's debt remains.",
+          "The endgame is institutional memory, not a reset button."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/docs/361-phase2-coverage-ledger.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "The canonical clean span must bind the terminal product event to the carried debt and default-change cycle.",
+        "release_status": "pending-live-footage-and-postcondition"
+      },
+      "cannot_claim": [
+        "Cross-cycle debt is production-live before the carried-cycle span passes.",
+        "The endgame resets all institutional state."
+      ]
+    },
+    {
+      "id": "phase2_finale",
+      "type": "generated_card",
+      "draft_state": "draft-only",
+      "footage_binding": {
+        "kind": "future-generated-card",
+        "required_for_release": true,
+        "verified": false
+      },
+      "cue": {
+        "id": "p2-en-10-finale",
+        "narration_zh_cn": "组织开始记住人们想忘掉的事。实机矩阵与最终人审通过前，这仍只是待验声明。",
+        "subtitle_zh_cn_lines": [
+          "组织开始记住人们想忘掉的事。",
+          "实机矩阵与最终人审通过前，这仍只是待验声明。"
+        ],
+        "subtitle_en_lines": [
+          "The organization remembers what people try to forget.",
+          "This claim remains pending until the live matrix and final review pass."
+        ],
+        "release_usable": false
+      },
+      "claim": {
+        "current_evidence_level": "static-ready",
+        "evidence_paths": [
+          "mod_zhongguo_style/promo/phase2-readiness-2026-09-02.md",
+          "tools/zhongguo_phase2_capture_choreography.py"
+        ],
+        "required_future_evidence": "All eight canonical spans, the reviewed bilingual finale card, the final render gates, and human approval bound to the deliverable hash.",
+        "release_status": "pending-full-live-matrix-and-human-review"
+      },
+      "cannot_claim": [
+        "Organizational capability is complete.",
+        "The video is release-ready, exported, or published."
+      ]
+    }
+  ]
+}

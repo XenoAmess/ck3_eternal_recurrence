@@ -98,6 +98,9 @@ jobs:
           python mod_zhongguo_style/tools/test_build_phase2_promo_video.py
           python -O mod_zhongguo_style/tools/test_build_phase2_promo_video.py
           python mod_zhongguo_style/tools/test_preflight_phase2_media.py
+          python mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
+          python -O mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
+          python mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --validate-only
           python mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
           python mod_zhongguo_style/tools/validate_promo_video.py --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
       - name: Test MiniMax localization caller
