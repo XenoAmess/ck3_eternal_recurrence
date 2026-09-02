@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import sys
@@ -21,6 +22,7 @@ if str(ROOT_TOOLS) not in sys.path:
 from zhongguo_phase2_capture_choreography import (  # noqa: E402
     PHASE2_CAPTURE_SCENARIOS,
 )
+from zhongguo_phase2_promo_cuts import CUT_BY_ID  # noqa: E402
 
 
 DEFAULT_LEDGER = (
@@ -78,6 +80,7 @@ EXPECTED_READINESS_REVIEW = {
 }
 MAX_ZH_LINE_UNITS = 48
 MAX_EN_LINE_UNITS = 78
+OVERLAY_KIND = "zg361_phase2_cut_authoring_overlay"
 
 
 def _sha256(path: Path) -> str:
@@ -112,6 +115,83 @@ def _load_json(path: Path, label: str, errors: list[str]) -> dict[str, Any]:
         errors.append(f"{label} is unreadable: {error}")
         return {}
     return _object(value, label, errors)
+
+
+def materialize_ledger(path: Path, errors: list[str] | None = None) -> dict[str, Any]:
+    """Load a full ledger or expand one cut overlay over shared claim facts.
+
+    The overlay may replace only editorial cue text and generated-card titles.
+    Evidence bindings, postconditions, visible-observation requirements, and
+    cannot-claim boundaries remain byte-bound to the shared full ledger.
+    """
+
+    problems = [] if errors is None else errors
+    overlay = _load_json(path, "authoring ledger", problems)
+    if not overlay or overlay.get("kind") != OVERLAY_KIND:
+        return overlay
+    cut_id = _nonempty_string(overlay.get("cut_id"), "cut_id", problems)
+    cut = CUT_BY_ID.get(cut_id)
+    if cut is None or cut.cut_id == "legacy-single-cut":
+        problems.append("cut overlay must identify character-led or institution-led")
+    source = _object(overlay.get("source_project"), "source_project", problems)
+    shared = _object(overlay.get("shared_claim_source"), "shared_claim_source", problems)
+    expected_config = None if cut is None else cut.project_config_name
+    expected_ledger = None if cut is None else cut.authoring_ledger_name
+    if path.name != expected_ledger:
+        problems.append("cut overlay filename does not match its cut contract")
+    if source.get("path") != f"mod_zhongguo_style/promo/{expected_config}":
+        problems.append("cut overlay source project does not match its cut contract")
+    shared_relative = _nonempty_string(
+        shared.get("path"), "shared_claim_source.path", problems
+    )
+    if shared_relative != "mod_zhongguo_style/promo/phase2-authoring-claims.json":
+        problems.append("cut overlay must bind the canonical shared claim ledger")
+        return {}
+    shared_path = REPO_ROOT / shared_relative
+    expected_sha = _nonempty_string(
+        shared.get("sha256"), "shared_claim_source.sha256", problems
+    )
+    if not shared_path.is_file():
+        problems.append("cut overlay shared claim ledger does not exist")
+        return {}
+    if expected_sha and _sha256(shared_path) != expected_sha:
+        problems.append("cut overlay shared claim ledger hash drifted")
+    base = _load_json(shared_path, "shared authoring claim ledger", problems)
+    if not base:
+        return {}
+    rows = overlay.get("chapters")
+    base_rows = base.get("chapters")
+    if not isinstance(rows, list) or not isinstance(base_rows, list):
+        problems.append("cut overlay and shared ledger chapters must be arrays")
+        return {}
+    expected_ids = [
+        row.get("id") if isinstance(row, dict) else None for row in base_rows
+    ]
+    actual_ids = [row.get("id") if isinstance(row, dict) else None for row in rows]
+    if actual_ids != expected_ids:
+        problems.append("cut overlay chapters do not match the canonical ordered ten")
+        return {}
+    materialized = copy.deepcopy(base)
+    materialized["source_project"] = copy.deepcopy(source)
+    materialized["authoring_status"] = overlay.get("authoring_status")
+    for index, raw_overlay in enumerate(rows):
+        row = _object(raw_overlay, f"overlay.chapters[{index}]", problems)
+        allowed = {"id", "cue"}
+        if index in {0, len(rows) - 1}:
+            allowed.add("generated_card_title")
+        unexpected = set(row) - allowed
+        if unexpected:
+            problems.append(
+                f"overlay chapter {row.get('id')} may not replace claim facts: "
+                + ", ".join(sorted(unexpected))
+            )
+        materialized_row = materialized["chapters"][index]
+        materialized_row["cue"] = copy.deepcopy(row.get("cue"))
+        if "generated_card_title" in row:
+            materialized_row["generated_card_title"] = copy.deepcopy(
+                row["generated_card_title"]
+            )
+    return materialized
 
 
 def _validate_authority(
@@ -181,7 +261,7 @@ def validate_ledger(path: Path) -> list[str]:
     """Return deterministic validation errors; never modify any input."""
 
     errors: list[str] = []
-    ledger = _load_json(path, "authoring ledger", errors)
+    ledger = materialize_ledger(path, errors)
     if not ledger:
         return errors
     if ledger.get("schema_version") != 1:

@@ -53,6 +53,13 @@ from zhongguo_phase2_footage_intake import (  # noqa: E402
     final_promo_execution_dag,
     validate_footage_intake,
 )
+from zhongguo_phase2_promo_cuts import (  # noqa: E402
+    CUT_BY_ID,
+    LEGACY_CUT,
+    Phase2PromoCut,
+    cut_for_config_name,
+    cut_for_id,
+)
 
 
 # The reusable package is installed from the independent GitHub release in
@@ -198,6 +205,22 @@ class Phase2FootagePending(Phase2PromoBuildError):
             "footage_pending: strict eight-span footage intake is RED"
             + (f" ({detail})" if detail else "")
         )
+
+
+def select_cut(config_path: Path, cut_id: str | None = None) -> Phase2PromoCut:
+    """Resolve one editorial cut and reject accidental config/cut mixing."""
+
+    if cut_id is None:
+        try:
+            return cut_for_config_name(config_path.name)
+        except ValueError:
+            return LEGACY_CUT
+    cut = cut_for_id(cut_id)
+    if config_path.name != cut.project_config_name:
+        raise Phase2PromoBuildError(
+            f"cut {cut.cut_id!r} requires project config {cut.project_config_name!r}"
+        )
+    return cut
 
 
 @dataclass(frozen=True, slots=True)
@@ -1612,6 +1635,7 @@ class Phase2ProjectComposer:
         zh_font_file: Path,
         en_font_file: Path,
         command_runner: Callable[..., CommandResult] = run_command,
+        cut: Phase2PromoCut = LEGACY_CUT,
     ) -> None:
         self.capture_root = capture_root.expanduser().resolve()
         self.tts_cache_root = (
@@ -1623,6 +1647,7 @@ class Phase2ProjectComposer:
         self.zh_font_file = zh_font_file.expanduser().resolve()
         self.en_font_file = en_font_file.expanduser().resolve()
         self.command_runner = command_runner
+        self.cut = cut
         self.capture_candidate: Phase2CaptureCandidate | None = None
         self.real_narration_durations = False
         self.composed_config = None
@@ -1826,8 +1851,8 @@ class Phase2ProjectComposer:
             PipelineDraft(
                 config=config,
                 segments=tuple(segments),
-                deliverable_relative_path=DELIVERABLE_RELATIVE_PATH,
-                deliverable_artifact_id=DELIVERABLE_ARTIFACT_ID,
+                deliverable_relative_path=self.cut.deliverable_relative_path,
+                deliverable_artifact_id=self.cut.deliverable_artifact_id,
                 deliverable_media_type="video/mp4",
             ),
             dependencies,
@@ -2114,6 +2139,7 @@ def execute(
     footage_validator=None,
 ) -> Phase2BuildOutcome:
     config_path = args.project_config.expanduser().resolve()
+    cut = select_cut(config_path, getattr(args, "cut", None))
     capture_root = args.capture_root.expanduser().resolve()
     workdir = args.work_dir.expanduser().resolve()
     seed_preflight: SeedPreflightBinding | None = None
@@ -2172,7 +2198,7 @@ def execute(
         adapter_factory = selected_registry.resolve_adapter(config.adapter)
         preset_factory = selected_registry.resolve_preset(config.preset)
         factory = Phase2ProjectComposer if composer_factory is None else composer_factory
-        composer = factory(
+        composer_kwargs = dict(
             capture_root=capture_root,
             tts_cache_root=args.tts_cache,
             edge_tts_version=args.edge_tts_version,
@@ -2181,6 +2207,9 @@ def execute(
             zh_font_file=args.zh_font_file,
             en_font_file=args.en_font_file,
         )
+        if composer_factory is None:
+            composer_kwargs["cut"] = cut
+        composer = factory(**composer_kwargs)
         invocation = composer(
             config,
             None,
@@ -2296,7 +2325,7 @@ def execute(
                 run_path = _persist_candidate_run(
                     config_path,
                     result,
-                    args.run_id,
+                    args.run_id or cut.default_run_id,
                     seed_preflight=seed_preflight,
                     media_preflight=media_preflight,
                 )
@@ -2398,6 +2427,14 @@ def parser() -> argparse.ArgumentParser:
         default=DEFAULT_PROJECT_CONFIG,
         help="phase-two xar_promo ProjectConfig",
     )
+    result.add_argument(
+        "--cut",
+        choices=tuple(CUT_BY_ID),
+        help=(
+            "editorial cut identity; inferred from a canonical config filename "
+            "when omitted, with the historical single-cut entry retained for compatibility"
+        ),
+    )
     result.add_argument("--capture-root", type=Path, required=True)
     result.add_argument(
         "--seed-preflight-report",
@@ -2430,7 +2467,10 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--ffprobe", default="ffprobe")
     result.add_argument("--zh-font-file", type=Path, default=_default_font("msyh.ttc"))
     result.add_argument("--en-font-file", type=Path, default=_default_font("segoeui.ttf"))
-    result.add_argument("--run-id", default="phase2-candidate")
+    result.add_argument(
+        "--run-id",
+        help="unique run id; defaults to the selected cut's candidate id",
+    )
     result.add_argument(
         "--signed-run-manifest",
         type=Path,

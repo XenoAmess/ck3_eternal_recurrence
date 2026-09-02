@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_cut_authoring_overlay",
+  "cut_id": "character-led",
+  "source_project": {
+    "path": "mod_zhongguo_style/promo/phase2-promo-character-project.json",
+    "project_id": "zhongguo-361-phase2-promo",
+    "sha256": "963735C8D32725A83D4A764CFD92D3C85519500C44FB2D71823F51992DB7042F"
+  },
+  "shared_claim_source": {
+    "path": "mod_zhongguo_style/promo/phase2-authoring-claims.json",
+    "sha256": "9AD63985561C4BF08BBCCE7B7676579C71C0953C7BEF718E56BE45C2C722B11B"
+  },
+  "authoring_status": "draft-only-not-builder-input",
+  "chapters": [
+    {
+      "id": "phase2_minimal_recap",
+      "generated_card_title": {"zh-CN": "上次他背下了 C；这次跟他走完整个考核季", "en": "LAST TIME HE CARRIED THE C; NOW FOLLOW HIS WHOLE REVIEW SEASON"},
+      "cue": {
+        "id": "p2-character-01-recap",
+        "narration_zh_cn": "上一期，他背下了一个 C。这一次，我们跟他走完整个考核季。",
+        "subtitle_zh_cn_lines": ["上一期，他背下了一个 C。", "这一次，我们跟他走完整个考核季。"],
+        "subtitle_en_lines": ["Last time, he carried a C.", "This time, follow him through the whole review season."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_fact_quota_calibration",
+      "cue": {
+        "id": "p2-character-02-fact-quota",
+        "narration_zh_cn": "他的工作写进事实档，名次却还要经过配额与校准。结果落笔以后，榜单和修订号必须一起变化。",
+        "subtitle_zh_cn_lines": ["他的工作写进事实档，名次却还要经过配额与校准。", "结果落笔以后，榜单和修订号必须一起变化。"],
+        "subtitle_en_lines": ["His work enters the facts ledger; quota and calibration still shape the rank.", "After the result, the board and observed revision must change together."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_receipt_appeal_pip",
+      "cue": {
+        "id": "p2-character-03-receipt-pip",
+        "narration_zh_cn": "他可以申诉，也可能走进 PIP。按钮不是结局；同一案卷抵达所选状态，才算有结果。",
+        "subtitle_zh_cn_lines": ["他可以申诉，也可能走进 PIP。", "按钮不是结局；同一案卷抵达所选状态，才算有结果。"],
+        "subtitle_en_lines": ["He may appeal, or enter a PIP.", "The button is not the outcome; the same case must reach the selected state."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_manager_governance",
+      "cue": {
+        "id": "p2-character-04-manager",
+        "narration_zh_cn": "他去找经理，经理也会留下自己的考核案卷。真实案件抵达业务终态，连责才算发生。",
+        "subtitle_zh_cn_lines": ["他去找经理，经理也会留下自己的考核案卷。", "真实案件抵达业务终态，连责才算发生。"],
+        "subtitle_en_lines": ["He goes to his manager, who leaves a review case of their own.", "Accountability counts only when the real case reaches a business terminal."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_promotion_compensation",
+      "cue": {
+        "id": "p2-character-05-promotion",
+        "narration_zh_cn": "他等来的晋升不是一句许诺。选择与薪酬回执，必须留在同一个冻结案卷里。",
+        "subtitle_zh_cn_lines": ["他等来的晋升不是一句许诺。", "选择与薪酬回执，必须留在同一个冻结案卷里。"],
+        "subtitle_en_lines": ["The promotion he awaits is not a promise.", "Its choice and pay receipt must remain in one frozen case."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_hc_workforce",
+      "cue": {
+        "id": "p2-character-06-workforce",
+        "narration_zh_cn": "他准备好了，编制却未必准备好。没有名额也是系统结果，不是页面缺失。",
+        "subtitle_zh_cn_lines": ["他准备好了，编制却未必准备好。", "没有名额也是系统结果，不是页面缺失。"],
+        "subtitle_en_lines": ["He may be ready while headcount is not.", "No opening is a system outcome, not a missing screen."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_projects_metrics",
+      "cue": {
+        "id": "p2-character-07-projects",
+        "narration_zh_cn": "到了项目里，他的成绩有了更多共同作者。贡献和指标必须出现在身份明确的正式事件里。",
+        "subtitle_zh_cn_lines": ["到了项目里，他的成绩有了更多共同作者。", "贡献和指标必须出现在身份明确的正式事件里。"],
+        "subtitle_en_lines": ["In projects, his result gains more co-authors.", "Credit and metrics must appear on identity-ready product events."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_incidents_operations",
+      "cue": {
+        "id": "p2-character-08-incidents",
+        "narration_zh_cn": "事故发生以后，他按下的每个按钮都只是开始。三个阶段与结案，都要由后续真实状态作证。",
+        "subtitle_zh_cn_lines": ["事故发生以后，他按下的每个按钮都只是开始。", "三个阶段与结案，都要由后续真实状态作证。"],
+        "subtitle_en_lines": ["After an incident, every button he presses is only a beginning.", "All three transitions and closure need later real-state proof."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_cross_cycle_endgame",
+      "cue": {
+        "id": "p2-character-09-endgame",
+        "narration_zh_cn": "他走进下一轮时，可以改掉明天的默认规则。昨天的制度债仍在那里；终局不是重置按钮。",
+        "subtitle_zh_cn_lines": ["他走进下一轮时，可以改掉明天的默认规则。", "昨天的制度债仍在那里；终局不是重置按钮。"],
+        "subtitle_en_lines": ["Entering the next cycle, he may change tomorrow's default.", "Yesterday's debt remains; the endgame is not a reset button."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_finale",
+      "generated_card_title": {"zh-CN": "一个考核季结束了，案卷没有", "en": "ONE REVIEW SEASON ENDS; THE CASE FILE DOES NOT"},
+      "cue": {
+        "id": "p2-character-10-finale",
+        "narration_zh_cn": "一个考核季结束了，案卷没有。旅人，他会调任，账不会。",
+        "subtitle_zh_cn_lines": ["一个考核季结束了，案卷没有。", "旅人，他会调任，账不会。"],
+        "subtitle_en_lines": ["One review season ends; the case file does not.", "Traveler, he may transfer. The ledger remains."],
+        "release_usable": false
+      }
+    }
+  ]
+}

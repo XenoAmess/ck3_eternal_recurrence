@@ -20,6 +20,7 @@ VALIDATOR_PATH = TOOLS_DIR / "validate_phase2_authoring_claims.py"
 sys.path.insert(0, str(TOOLS_DIR))
 
 from validate_phase2_authoring_claims import (  # noqa: E402
+    materialize_ledger,
     project_cue_input,
     validate_ledger,
 )
@@ -69,6 +70,33 @@ class Phase2AuthoringClaimsTest(unittest.TestCase):
         self.assertIn("VALIDATION: GREEN", result.stdout)
         self.assertIn("media generated: no", result.stdout)
         self.assertEqual(before, {path: _hash(path) for path in tracked})
+
+    def test_both_editorial_cut_ledgers_share_claims_but_not_cues(self) -> None:
+        promo = REPO_ROOT / "mod_zhongguo_style" / "promo"
+        character_path = promo / "phase2-authoring-character-claims.json"
+        institution_path = promo / "phase2-authoring-institution-claims.json"
+        self.assertEqual(validate_ledger(character_path), [])
+        self.assertEqual(validate_ledger(institution_path), [])
+        character = materialize_ledger(character_path)
+        institution = materialize_ledger(institution_path)
+        self.assertEqual(
+            [row["footage_binding"] for row in character["chapters"]],
+            [row["footage_binding"] for row in institution["chapters"]],
+        )
+        self.assertEqual(
+            [row["claim"] for row in character["chapters"]],
+            [row["claim"] for row in institution["chapters"]],
+        )
+        self.assertTrue(
+            all(
+                left["cue"]["id"].startswith("p2-character-")
+                and right["cue"]["id"].startswith("p2-institution-")
+                and left["cue"] != right["cue"]
+                for left, right in zip(
+                    character["chapters"], institution["chapters"], strict=True
+                )
+            )
+        )
 
     def test_rejects_release_overclaim(self) -> None:
         payload = copy.deepcopy(self.ledger)

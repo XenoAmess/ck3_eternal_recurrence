@@ -81,6 +81,53 @@ def _media_receipt(*, production_pending: bool = True) -> dict[str, object]:
 
 
 class FinalPromoRunbookTests(unittest.TestCase):
+    def test_dual_cut_runbooks_keep_shared_spans_and_distinct_outputs(self) -> None:
+        promo_dir = planner.ROOT / "mod_zhongguo_style" / "promo"
+        rows = []
+        with tempfile.TemporaryDirectory() as raw, mock.patch.object(
+            planner,
+            "_git",
+            side_effect=lambda _root, *args: "" if args[:2] == ("status", "--short") else "a" * 40,
+        ):
+            root = Path(raw)
+            for cut_name in ("character", "institution"):
+                rows.append(
+                    planner.build_runbook(
+                        project_config=promo_dir / f"phase2-promo-{cut_name}-project.json",
+                        authoring_ledger=promo_dir
+                        / f"phase2-authoring-{cut_name}-claims.json",
+                        promo_tool_root=root / "promo-tool",
+                        capture_root=root / "shared-capture-missing",
+                        seed_preflight_report=None,
+                        media_preflight_report=None,
+                        expected_media_preflight_sha256=None,
+                        tts_cache=root / "shared-tts-cache",
+                        work_dir=root / f"{cut_name}-work",
+                        python=Path(sys.executable),
+                        ffmpeg="ffmpeg-not-run",
+                        ffprobe="ffprobe-not-run",
+                    )
+                )
+        character, institution = rows
+        self.assertEqual(
+            character["fixed_contract"]["canonical_spans"],
+            institution["fixed_contract"]["canonical_spans"],
+        )
+        self.assertNotEqual(character["cut"]["id"], institution["cut"]["id"])
+        self.assertNotEqual(
+            character["cut"]["run_id"], institution["cut"]["run_id"]
+        )
+        self.assertNotEqual(
+            character["cut"]["deliverable_artifact_id"],
+            institution["cut"]["deliverable_artifact_id"],
+        )
+        self.assertNotEqual(
+            character["planned_paths"]["deliverable"],
+            institution["planned_paths"]["deliverable"],
+        )
+        self.assertEqual(character["reason_code"], "footage_pending")
+        self.assertEqual(institution["reason_code"], "footage_pending")
+
     def test_missing_footage_is_typed_and_planning_generates_no_media(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

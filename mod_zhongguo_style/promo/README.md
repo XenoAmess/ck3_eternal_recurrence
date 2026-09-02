@@ -20,7 +20,11 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 
 ## 二期续篇定位
 
-二期正式宣传片沿用一期的媒体、字幕、实录 provenance 与人工审阅门禁，但叙事按“看过一期之后的新一轮绩效折磨”组织：
+二期现在保留两个正式剪辑方向：跟随一名官员走完整个考核季的 `character-led`，以及把制度作为主角、追问“一个 C 是怎样被
+生产出来的”的 `institution-led`。两版共用同一组八段 canonical 实录，但旁白、配置、run、交付物、审阅、导出和发布记录彼此
+独立；完整映射见 `../../docs/phase2-promo/phase2-dual-cut-production.md`。
+
+两版都沿用一期的媒体、字幕、实录 provenance 与人工审阅门禁，并默认观众已经看过一期：
 
 - 默认观众已经知道一期的京察、361 强制分布、考核榜、3.25、PIP 与申诉，不再逐项重做新手教程；
 - 开场只允许极短的旧版回顾，主体时长必须用于二期新增机制及其 CK3 决策—资源—后果闭环；
@@ -36,6 +40,10 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 |---|---|
 | `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
 | `phase2-promo-project.json` | 二期十章 authoring 配置；章节必须从 `planned` 变为 `ready` 才能消费 capture |
+| `../../docs/phase2-promo/phase2-dual-cut-production.md` | 人物版/制度版的共享实录、独立 ID、构建、审阅与发布权威合同 |
+| `phase2-promo-character-project.json` / `phase2-promo-institution-project.json` | 两版各自的十章项目配置；底层 preset project ID 按外部合同保持一致 |
+| `phase2-authoring-character-claims.json` / `phase2-authoring-institution-claims.json` | 两版独立旁白覆盖层；共同继承同一组八段声明与不可宣称边界 |
+| `../../docs/phase2-promo/phase2-character-director-treatment.md` / `../../docs/phase2-promo/phase2-institution-director-treatment.md` | 人物主角版与制度主角版的权威导演处理稿 |
 | `phase2-readiness-2026-09-02.md` | 当前工具 HEAD、typed RED 与八段实录到发布的精确缺口清单 |
 | `phase2-publish-target.md` | 最终视频本地导出与外部发布边界；显式目标/账号/credential reference/receipt 合同 |
 | 独立仓库 [`src/xar_promo/schemas/phase2-capture-contract-v1.schema.json`](https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.2.1/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json) | 二期 producer 的固定 mode/version/span map 合同 |

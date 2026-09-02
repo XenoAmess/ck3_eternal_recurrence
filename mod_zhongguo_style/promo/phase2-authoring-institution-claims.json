@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_cut_authoring_overlay",
+  "cut_id": "institution-led",
+  "source_project": {
+    "path": "mod_zhongguo_style/promo/phase2-promo-institution-project.json",
+    "project_id": "zhongguo-361-phase2-promo",
+    "sha256": "77537A37D2D1B3E00F38120667491F8CF7047E999DFEEF640DCB8D4343524C7E"
+  },
+  "shared_claim_source": {
+    "path": "mod_zhongguo_style/promo/phase2-authoring-claims.json",
+    "sha256": "9AD63985561C4BF08BBCCE7B7676579C71C0953C7BEF718E56BE45C2C722B11B"
+  },
+  "authoring_status": "draft-only-not-builder-input",
+  "chapters": [
+    {
+      "id": "phase2_minimal_recap",
+      "generated_card_title": {"zh-CN": "一个 C 是怎样被生产出来的？", "en": "HOW IS A C PRODUCED?"},
+      "cue": {
+        "id": "p2-institution-01-recap",
+        "narration_zh_cn": "一期里，我们问这个 C 谁来背。二期看它是谁算的、谁批的，又由谁还账。",
+        "subtitle_zh_cn_lines": ["一期里，我们问这个 C 谁来背。", "二期看它是谁算的、谁批的，又由谁还账。"],
+        "subtitle_en_lines": ["In season one, we asked who would carry the C.", "Now ask who calculated it, approved it, and pays next cycle."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_fact_quota_calibration",
+      "cue": {
+        "id": "p2-institution-02-fact-quota",
+        "narration_zh_cn": "事实负责发生，配额负责解释。校准落笔以后，榜单和查询修订号必须一起变化。",
+        "subtitle_zh_cn_lines": ["事实负责发生，配额负责解释。", "校准落笔以后，榜单和查询修订号必须一起变化。"],
+        "subtitle_en_lines": ["Facts happen; quotas interpret them.", "After calibration, the board and observed revision must change together."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_receipt_appeal_pip",
+      "cue": {
+        "id": "p2-institution-03-receipt-pip",
+        "narration_zh_cn": "制度追踪的不是按钮，而是案卷。同一主体、周期和案件抵达所选状态，结果才算落账。",
+        "subtitle_zh_cn_lines": ["制度追踪的不是按钮，而是案卷。", "同一主体、周期和案件抵达所选状态，结果才算落账。"],
+        "subtitle_en_lines": ["The institution tracks a case, not a button.", "The same subject, cycle, and case must reach the selected state."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_manager_governance",
+      "cue": {
+        "id": "p2-institution-04-manager",
+        "narration_zh_cn": "经理当然也有经理。真实经理案卷抵达业务终态，连责才算发生。",
+        "subtitle_zh_cn_lines": ["经理当然也有经理。", "真实经理案卷抵达业务终态，连责才算发生。"],
+        "subtitle_en_lines": ["Managers have managers, too.", "Accountability counts only when the real manager case reaches a terminal."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_promotion_compensation",
+      "cue": {
+        "id": "p2-institution-05-promotion",
+        "narration_zh_cn": "晋升不是祝贺，而是资源重排。选择与薪酬回执必须留在同一个冻结案卷里。",
+        "subtitle_zh_cn_lines": ["晋升不是祝贺，而是资源重排。", "选择与薪酬回执必须留在同一个冻结案卷里。"],
+        "subtitle_en_lines": ["Promotion is not congratulations; it reallocates resources.", "The choice and pay receipt must stay in one frozen case."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_hc_workforce",
+      "cue": {
+        "id": "p2-institution-06-workforce",
+        "narration_zh_cn": "HC 把人变成名额与分支。没有编制也是系统给出的结果，不是少了一张页面。",
+        "subtitle_zh_cn_lines": ["HC 把人变成名额与分支。", "没有编制也是系统给出的结果，不是少了一张页面。"],
+        "subtitle_en_lines": ["Headcount turns people into slots and branches.", "No opening is a system outcome, not a missing screen."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_projects_metrics",
+      "cue": {
+        "id": "p2-institution-07-projects",
+        "narration_zh_cn": "进入项目，一个人的结果开始拥有更多共同作者。贡献与指标必须在身份明确的正式事件里出现。",
+        "subtitle_zh_cn_lines": ["进入项目，一个人的结果开始拥有更多共同作者。", "贡献与指标必须在身份明确的正式事件里出现。"],
+        "subtitle_en_lines": ["Inside a project, one person's result gains more co-authors.", "Credit and metrics must appear on identity-ready product events."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_incidents_operations",
+      "cue": {
+        "id": "p2-institution-08-incidents",
+        "narration_zh_cn": "事故把组织选择变成运行状态。三个阶段与结案，都要由动作后的真实状态作证。",
+        "subtitle_zh_cn_lines": ["事故把组织选择变成运行状态。", "三个阶段与结案，都要由动作后的真实状态作证。"],
+        "subtitle_en_lines": ["Incidents turn organizational choices into operating states.", "All three transitions and closure need later real-state proof."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_cross_cycle_endgame",
+      "cue": {
+        "id": "p2-institution-09-endgame",
+        "narration_zh_cn": "默认规则可以改，旧债不会因此消失。终局不是重置；人会调任，账不会。",
+        "subtitle_zh_cn_lines": ["默认规则可以改，旧债不会因此消失。", "终局不是重置；人会调任，账不会。"],
+        "subtitle_en_lines": ["Defaults can change; old debt does not disappear.", "The endgame is not a reset. People transfer; the ledger remains."],
+        "release_usable": false
+      }
+    },
+    {
+      "id": "phase2_finale",
+      "generated_card_title": {"zh-CN": "这个 C 从来不只是一个人的问题", "en": "THIS C WAS NEVER ONE PERSON'S PROBLEM"},
+      "cue": {
+        "id": "p2-institution-10-finale",
+        "narration_zh_cn": "一期结束时，一个官员背了 C。二期结束时，没人能说这个 C 只是他一个人的问题。",
+        "subtitle_zh_cn_lines": ["一期结束时，一个官员背了 C。", "二期结束时，没人能说这个 C 只是他一个人的问题。"],
+        "subtitle_en_lines": ["Season one ended with one official carrying a C.", "Now no one can call this C his problem alone."],
+        "release_usable": false
+      }
+    }
+  ]
+}

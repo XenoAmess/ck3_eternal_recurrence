@@ -548,6 +548,32 @@ def _successful_result(workdir: Path, config=None) -> PipelineResult:
 
 
 class Phase2PromoEntryTests(unittest.TestCase):
+    def test_dual_cut_contracts_use_unique_run_artifact_and_output_ids(self) -> None:
+        promo_root = PROJECT_DIRECTORY / "promo"
+        character_config = promo_root / "phase2-promo-character-project.json"
+        institution_config = promo_root / "phase2-promo-institution-project.json"
+        character = promo.select_cut(character_config)
+        institution = promo.select_cut(institution_config)
+        for config_path in (character_config, institution_config):
+            loaded = load_phase2_project_config(config_path)
+            self.assertEqual(loaded.project_id, "zhongguo-361-phase2-promo")
+            self.assertEqual(len(loaded.chapters), 10)
+        self.assertNotEqual(character.cut_id, institution.cut_id)
+        self.assertNotEqual(character.default_run_id, institution.default_run_id)
+        self.assertNotEqual(
+            character.deliverable_artifact_id,
+            institution.deliverable_artifact_id,
+        )
+        self.assertNotEqual(
+            character.deliverable_relative_path,
+            institution.deliverable_relative_path,
+        )
+        with self.assertRaisesRegex(promo.Phase2PromoBuildError, "requires project config"):
+            promo.select_cut(
+                promo_root / "phase2-promo-character-project.json",
+                "institution-led",
+            )
+
     def setUp(self) -> None:
         _FakeComposer.instances.clear()
         _RealDurationFakeComposer.instances.clear()
