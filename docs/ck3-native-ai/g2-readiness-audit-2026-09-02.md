@@ -319,3 +319,17 @@ The run remains RED only because the native truce row reports
 unobserved). Consequently `truce_ready=false`, `decision_ready=false`, and
 `GEN-034` remains unresolved. This is the first live evidence for the narrow
 truce-duration observation gap, not a surrender/action authorization.
+
+## 2026-09-02 10:24 open_kaishek schema follow-up
+
+The offline accelerator is now clean at `bd980e787e8e64b64104b43542ae2afefe3e8a06`
+with JAR SHA-256
+`DCCCF51A8B68EEC6CCF8D391D7B0E839361DECB9E37098C31BBB78EB296247A1`.
+The exact-build-backed `has_court_position=<court-position-key>` descriptor
+passed `13/13` profile and `23/23` validator tests; its synthetic preflight
+artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-court-position-synthetic-preflight-20260902.json`
+(SHA-256
+`B2183C32C18D0F7A6F00A8C96C2D0DEEAD7EAF8BFC358606F92415368E6674B7`). This
+is syntax/profile-only (`certified=false`) and leaves the fresh live G2
+result and `GEN-034` boundary unchanged.

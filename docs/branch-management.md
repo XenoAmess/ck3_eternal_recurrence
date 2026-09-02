@@ -134,8 +134,9 @@ The independent `Z:\workspace\open_kaishek` checkout follows the same rule:
 `feat/government-flag-schema-20260902` was merged as `450b559` and
 `feat/perk-schema-20260902` as `a670589`, then the dynasty-perk slice as
 `757fb1b`; `feat/dlc-feature-schema-20260902` then advanced `main` to
-`7da444d`; all four short-lived refs were deleted immediately.
-Its canonical `main` is `7da444d`, and only the two pre-existing user branches
+`7da444d`, followed by `feat/court-position-schema-20260902` at `bd980e7`;
+all five short-lived refs were deleted immediately.
+Its canonical `main` is `bd980e7`, and only the two pre-existing user branches
 (`feat/cli-batch-replay` and `feat/zg361-appeal-replay`) remain. Historical
 parent refs with distinct user-facing release/evidence ownership are retained
 until their owners request retirement.

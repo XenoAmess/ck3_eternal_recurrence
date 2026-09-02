@@ -130,3 +130,18 @@ parser/root-scan and IR/runtime GREEN, bounded validator RED, and
 orthogonal schema work; it does not invalidate or require repeating that
 already completed preflight. Offline output remains advisory and never
 promotes CK3 readiness.
+
+## 2026-09-02 10:24 schema follow-up
+
+The accelerator is clean at `main == origin/main ==
+bd980e787e8e64b64104b43542ae2afefe3e8a06`. The exact-build-backed
+`has_court_position=<court-position-key>` scalar descriptor is
+`certified=false` and is covered by `13/13` profile and `23/23` validator
+tests. Its synthetic preflight is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-court-position-synthetic-preflight-20260902.json`
+(SHA-256
+`B2183C32C18D0F7A6F00A8C96C2D0DEEAD7EAF8BFC358606F92415368E6674B7`), GREEN;
+the rebuilt JAR SHA-256 is
+`DCCCF51A8B68EEC6CCF8D391D7B0E839361DECB9E37098C31BBB78EB296247A1`.
+No parent full preflight or CK3 run was repeated. This remains an offline
+schema accelerator and does not change any live/readiness gate.

@@ -41,9 +41,9 @@ The offline accelerator is pinned independently of the parent repository:
 | Item | Required value |
 | --- | --- |
 | Checkout | `Z:\workspace\open_kaishek` |
-| Git | `main == origin/main == 7da444d6afbeb98ec6c9d91da49535a43d55d0ce` |
+| Git | `main == origin/main == bd980e787e8e64b64104b43542ae2afefe3e8a06` |
 | CLI JAR | `Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar` |
-| JAR SHA-256 | `78AFD52B147874070813B5E77FA710B082065C6BB14EB3C9071A833BB0FEF2A9` |
+| JAR SHA-256 | `DCCCF51A8B68EEC6CCF8D391D7B0E839361DECB9E37098C31BBB78EB296247A1` |
 
 Run the following against a fresh, immutable copy of the intended phase-two
 source tree before any native runner command (the root path is deliberately a
@@ -181,5 +181,22 @@ This closes the action-step/startup uncertainty but not the G2 decision gate:
 `truce_ready=false`, `decision_ready=false`, and `GEN-034` remains unresolved.
 The next implementation package is a narrow native observation of the truce
 duration field. Do not rerun this identical checkpoint/driver shape or infer
-expiry from a date-plus-duration calculation. The later `open_kaishek` 7da
-schema slice is orthogonal and does not require repeating this preflight.
+expiry from a date-plus-duration calculation. The later `open_kaishek` schema
+descendants through `bd980e7` are orthogonal and do not require repeating this
+native entry. The next native entry, after a real truce-reader change, should
+bind the current `bd980e7` preflight.
+
+## 2026-09-02 10:24 accelerator schema slice
+
+`open_kaishek` main is now
+`bd980e787e8e64b64104b43542ae2afefe3e8a06` with the exact-build-backed
+`has_court_position=<court-position-key>` scalar descriptor
+(`certified=false`). The synthetic preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-court-position-synthetic-preflight-20260902.json`
+(SHA-256
+`B2183C32C18D0F7A6F00A8C96C2D0DEEAD7EAF8BFC358606F92415368E6674B7`), GREEN.
+Focused profile/validator tests are `13/13` and `23/23`; the rebuilt JAR SHA-
+256 is
+`DCCCF51A8B68EEC6CCF8D391D7B0E839361DECB9E37098C31BBB78EB296247A1`.
+This is offline syntax/profile evidence only and does not change the G2 live
+gate or authorize any action.
