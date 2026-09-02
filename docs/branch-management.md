@@ -19,6 +19,12 @@ These are mandatory operating principles for every work package:
    terminal, delete the local and remote temporary refs. Detached evidence
    checkouts and retained artifacts may stay on disk, but they are not reasons
    to keep a development branch.
+3. **Reuse a child process after HTTP 429.** A service-side `429` interruption
+   is a scheduling interruption, not a work result. Reuse the original child
+   task and its worktree first, then continue the same bounded package with
+   local execution or another available child if needed. Preserve completed
+   evidence and do not restart unchanged checks merely because the process was
+   interrupted.
 
 状态：2026-08-30 起生效。`origin/master` 是唯一集成真相；删除 branch ref 永远不等于删除 worktree、clone、构建目录、
 录像、日志或 artifact。
