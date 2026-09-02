@@ -1219,6 +1219,14 @@ positive full-generation WarID. It keeps the template action non-executable,
 does not widen ABI or authorize termination writes, and leaves G2 at
 `static/query-ready + paused/live=false + GEN-034 unresolved`.
 
+The accelerator then advanced to `open_kaishek` `7da444d6afbeb98ec6c9d91da49535a43d55d0ce`
+with CLI JAR SHA-256
+`78AFD52B147874070813B5E77FA710B082065C6BB14EB3C9071A833BB0FEF2A9`.
+Its `has_dlc_feature` schema slice passed 12 profile and 22 validator tests;
+the full parent-root preflight remained parser/IR/runtime GREEN with bounded
+validator RED (`39,360`) and no CK3 launch. The output was not persisted as a
+separate artifact, so this is provenance only and does not alter live gates.
+
 The phase-two loader observer is now on parent mainline as `a5c079e`. It
 retains the compatible `database_node_count`/`last_database_node` fields and
 adds typed `database_nodes` plus `last_database_node_detail` (timestamp,
@@ -1226,3 +1234,17 @@ native source line, node, init milliseconds, and inclusive milliseconds).
 The focused parser fixture is GREEN; this is diagnostic context only and does
 not alter the loader stage, timeout, event authorization, or live evidence
 boundary.
+
+## 2026-09-02 G2 semantic-ready probe evidence
+
+The current G2 runner has one retained exact-build, read-only entry after the
+offline `open_kaishek` preflight. Report:
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\report.json`
+(SHA-256
+`4A7C66D34C851698572F4BBA2970ECAA00C005C2DC338ABCD75A7FD304F0B991`). It
+advertised the concrete WarID action step and reached a paused frame bound to
+the frozen CharacterID/WarID/date. Two terms reads on the same revision were
+equal; gold, prestige, prisoner-release, and favor-hook components are
+production-live read-only primitives. The run sent no mutation and proved
+process cleanup. `truce.evaluated_days` and war-bound losses remain absent, so
+this evidence does not enable a termination decision or action.

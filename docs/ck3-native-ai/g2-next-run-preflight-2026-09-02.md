@@ -41,9 +41,9 @@ The offline accelerator is pinned independently of the parent repository:
 | Item | Required value |
 | --- | --- |
 | Checkout | `Z:\workspace\open_kaishek` |
-| Git | `main == origin/main == 757fb1b0d0b92fd234961f32e853f9cdef7069d1` |
+| Git | `main == origin/main == 7da444d6afbeb98ec6c9d91da49535a43d55d0ce` |
 | CLI JAR | `Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar` |
-| JAR SHA-256 | `D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476` |
+| JAR SHA-256 | `78AFD52B147874070813B5E77FA710B082065C6BB14EB3C9071A833BB0FEF2A9` |
 
 Run the following against a fresh, immutable copy of the intended phase-two
 source tree before any native runner command (the root path is deliberately a
@@ -159,5 +159,27 @@ the concrete `query-war-termination-terms-v1-50331699` action step. The
 template `query-war-termination-terms-v1-N` remains non-executable. This
 regression is offline/static evidence only; it does not bypass the semantic
 snapshot gate or authorize any termination write. The next live attempt still
-uses the updated `757fb1b`/JAR binding above and stops if the concrete literal
+uses the updated `7da444d`/JAR binding above and stops if the concrete literal
 or paused semantic snapshot is absent.
+
+## 2026-09-02 10:08 bounded entry result
+
+The single fresh entry prescribed above has now been completed. Its retained
+report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\report.json`
+(SHA-256
+`4A7C66D34C851698572F4BBA2970ECAA00C005C2DC338ABCD75A7FD304F0B991`); the
+offline preflight used for that entry is
+`open-kaishek-preflight-mod-20260902.json` in the same directory (SHA-256
+`5F7F67C439D8721E56C735E2DFA49E07A32630DD7019EB221C1C1215DD68AC90`).
+The concrete action step and semantic paused identity were present, and the
+two read-only terms queries were equal on one frame. Gold, prestige, prisoner,
+and favor rows passed; truce duration did not (`evaluated_days_observable=false`,
+`evaluated_days=null`). No mutation was issued and cleanup was proven.
+
+This closes the action-step/startup uncertainty but not the G2 decision gate:
+`truce_ready=false`, `decision_ready=false`, and `GEN-034` remains unresolved.
+The next implementation package is a narrow native observation of the truce
+duration field. Do not rerun this identical checkpoint/driver shape or infer
+expiry from a date-plus-duration calculation. The later `open_kaishek` 7da
+schema slice is orthogonal and does not require repeating this preflight.

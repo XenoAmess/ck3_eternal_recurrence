@@ -1910,3 +1910,38 @@ surrender 与 action-boundary postcondition 仍未闭合，`GEN-034` 继续 unre
 `92F54D2701C5A64BB3735E74C3B869360DEA89CCE0B47EAE4481B475166A0E13`。Python war/terms 与 truce contract 普通、`-O`
 回归均通过；fresh CMake 全构建成功，CTest `56/71` 通过，剩余 `15` 项仍是既有 source-contract/harness 路径失败，不能误报
 全绿。上述构建和离线 fixture 不等于 CK3 live；下一步仅做一次 MCP-first、paused shape probe，并保留失败 artifact。
+
+## 2026-09-02 fresh semantic-ready MCP terms probe
+
+One bounded exact-build entry was run after the required offline
+`open_kaishek` preflight (checkout `757fb1b`, JAR SHA-256
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`). The
+native report is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\report.json`,
+SHA-256
+`4A7C66D34C851698572F4BBA2970ECAA00C005C2DC338ABCD75A7FD304F0B991`; its
+matching preflight is in the same directory as
+`open-kaishek-preflight-mod-20260902.json`, SHA-256
+`5F7F67C439D8721E56C735E2DFA49E07A32630DD7019EB221C1C1215DD68AC90`.
+
+Exact-build proof passed for CK3 `1.19.0.6`, adapter
+`ck3-1.19.0.6-msvc-x64`, executable SHA
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`, and the
+concrete action step `query-war-termination-terms-v1-50331699`. The paused
+snapshot is `native:3 / revision=4 / native_revision=3`,
+`date_raw=53223936`, CharacterID `29829`, WarID `50331699`, opponent `36769`.
+Two read-only terms queries on that same frame succeeded (`query_sequence`
+`1 -> 2`) and their normalized payloads are equal. Gold, prestige,
+prisoner-release, and conditional favor-hook rows are now evidenced as
+production-live read-only primitives.
+
+The report is still RED at the deliberate boundary: the native truce row has
+`evaluated_days_observable=false` and `evaluated_days=null`; expiry is also
+unobserved, and war-bound army loss remains unavailable. Therefore
+`truce_ready`, `dynamic_deltas_ready`, `decision_ready`,
+`automatic_surrender_ready`, and `ready` remain `false`; `GEN-034` is not
+closed. No surrender, white-peace, enforce-demands, or other mutation was
+sent. CK3 cleanup is proven (`tree_gone=true`, `driver_closed=true`), and the
+checkpoint/driver source hashes are unchanged. The next implementation target
+is a narrowly scoped native observation of `evaluated_days`; expiry must not be
+inferred and an identical runner retry is not justified.

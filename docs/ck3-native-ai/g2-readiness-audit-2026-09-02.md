@@ -279,3 +279,43 @@ parser/root-scan is GREEN (`75/23,831,185/0`), fixture IR/runtime is GREEN,
 and the bounded profile validator remains the expected RED (`233,014`). The
 preflight is offline (`ck3_started=false`) and therefore leaves `GEN-034` at
 `static/query-ready + paused/live=false`.
+
+## 2026-09-02 09:55 open_kaishek DLC-feature schema slice
+
+The accelerator mainline advanced to
+`7da444d6afbeb98ec6c9d91da49535a43d55d0ce` with the exact-build-backed scalar
+`has_dlc_feature` trigger descriptor. Its profile/validator coverage and
+offline package are GREEN (12 profile tests and 22 validator tests); the JAR
+SHA-256 is
+`78AFD52B147874070813B5E77FA710B082065C6BB14EB3C9071A833BB0FEF2A9`.
+The slice is syntax/profile-only (`certified=false`) and does not alter the
+G2 action-step or semantic-ready gates. The full phase-two preflight reported
+parser/IR/runtime GREEN and the expected bounded validator RED (`39,360`),
+with no CK3 launch; its output was not persisted as a separate artifact.
+
+## 2026-09-02 10:08 fresh semantic-ready terms probe
+
+After the offline preflight, one fresh exact-build runner was executed with
+the frozen checkpoint/driver pair. The retained report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\report.json`
+(copied from the managed temp attempt; SHA-256
+`4A7C66D34C851698572F4BBA2970ECAA00C005C2DC338ABCD75A7FD304F0B991`). The
+matching offline preflight is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\open-kaishek-preflight-mod-20260902.json`
+(SHA-256
+`5F7F67C439D8721E56C735E2DFA49E07A32630DD7019EB221C1C1215DD68AC90`).
+
+All exact-build proof checks passed: the concrete action step
+`query-war-termination-terms-v1-50331699` was advertised, and the paused
+snapshot bound CharacterID `29829`, `date_raw=53223936`, WarID `50331699`, and
+opponent `36769` at `native:3 / revision=4 / native_revision=3`. Both read-only
+terms queries succeeded on the same frame, sequence `1 -> 2`, with normalized
+payloads equal; gold, prestige, prisoner-release, and favor-hook domains were
+ready. Cleanup was GREEN (`tree_gone=true`, `driver_closed=true`) and no write
+action was sent.
+
+The run remains RED only because the native truce row reports
+`evaluated_days_observable=false` and `evaluated_days=null` (expiry is also
+unobserved). Consequently `truce_ready=false`, `decision_ready=false`, and
+`GEN-034` remains unresolved. This is the first live evidence for the narrow
+truce-duration observation gap, not a surrender/action authorization.

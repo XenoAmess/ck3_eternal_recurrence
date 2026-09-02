@@ -162,3 +162,26 @@ cleanup is proven GREEN; the capability result is **harness/startup RED**, not
 truce capability evidence. The exact-build paused MCP gate and `GEN-034`
 remain unresolved. Do not repeat this same checkpoint attempt until the
 startup/readiness cause is changed or a new frozen artifact is supplied.
+
+## 2026-09-02 fresh semantic-ready evidence
+
+The next bounded entry did reach a semantic-ready paused frame after the
+required offline accelerator preflight. The retained report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\report.json`
+(SHA-256
+`4A7C66D34C851698572F4BBA2970ECAA00C005C2DC338ABCD75A7FD304F0B991`), bound
+to `open_kaishek` `757fb1b` and JAR SHA
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`.
+
+The concrete terms step was advertised and two read-only queries returned
+equal normalized payloads on `native:3 / revision=4 / native_revision=3`
+(`date_raw=53223936`, player `29829`, WarID `50331699`, opponent `36769`).
+The four narrow component rows (gold, prestige, prisoner release, and favor
+hook) are live/read-only available. The six-domain decision is not ready:
+`evaluated_days_observable=false`, `evaluated_days=null`, expiry and
+war-bound losses remain unobserved, so `truce_ready=false`,
+`production_recommendation_ready=false`, `action_ready=false`, and
+`GEN-034` remains unresolved. No action or mutation was sent; cleanup and
+checkpoint/driver invariants were GREEN. This artifact supersedes the earlier
+"no paused artifact" wording for the narrow component rows while preserving
+the full-exit RED boundary.

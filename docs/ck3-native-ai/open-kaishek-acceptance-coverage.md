@@ -102,3 +102,31 @@ The parent loader observer `a5c079e` consumes this preflight only as an
 offline accelerator and records typed database-node context for later native
 callback correlation. It does not turn parser/validator output into a CK3
 live result.
+
+## 2026-09-02 09:55 schema follow-up
+
+The accelerator is now clean at `main == origin/main ==
+7da444d6afbeb98ec6c9d91da49535a43d55d0ce`. The exact-build-backed scalar
+`has_dlc_feature` descriptor is syntax/profile-only (`certified=false`); 12
+profile and 22 validator tests plus offline packaging passed. The CLI JAR SHA-
+256 is
+`78AFD52B147874070813B5E77FA710B082065C6BB14EB3C9071A833BB0FEF2A9`.
+The full parent-root preflight was parser/IR/runtime GREEN with the expected
+bounded validator RED (`39,360` diagnostics), and `ck3_started=false`; its
+stdout was not persisted as a separate artifact. This increment does not
+change any CK3 live/readiness claim.
+
+## 2026-09-02 10:08 G2 preflight binding
+
+The fresh G2 native entry used the then-current clean accelerator binding
+`757fb1b` / JAR SHA
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`.
+Its archived adapter preflight is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T100431236\open-kaishek-preflight-mod-20260902.json`
+(SHA-256
+`5F7F67C439D8721E56C735E2DFA49E07A32630DD7019EB221C1C1215DD68AC90`), with
+parser/root-scan and IR/runtime GREEN, bounded validator RED, and
+`ck3_started=false`. The later `7da444d` `has_dlc_feature` slice is
+orthogonal schema work; it does not invalidate or require repeating that
+already completed preflight. Offline output remains advisory and never
+promotes CK3 readiness.

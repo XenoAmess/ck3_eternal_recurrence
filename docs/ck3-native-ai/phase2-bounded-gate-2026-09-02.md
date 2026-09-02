@@ -392,3 +392,35 @@ timeout, event authorization, or CK3 launch behavior. Re-parsing the retained
 logs still yields `2` nodes for the current run versus `303` for the older
 successful run, so the `a89282d` production baseline and native-readiness RED
 remain unchanged.
+
+## 2026-09-02 09:55 accelerator schema follow-up
+
+`open_kaishek` subsequently advanced to
+`7da444d6afbeb98ec6c9d91da49535a43d55d0ce` with the exact-build-backed scalar
+`has_dlc_feature` trigger descriptor (`certified=false`). Focused profile and
+validator tests (`12` and `22`) plus offline packaging passed; the new CLI JAR
+SHA-256 is
+`78AFD52B147874070813B5E77FA710B082065C6BB14EB3C9071A833BB0FEF2A9`.
+The full phase-two preflight kept parser/IR/runtime GREEN and the bounded
+validator RED (`39,360` diagnostics) without starting CK3. This schema-only
+increment has no `has_dlc_feature` occurrence in the frozen phase-two tree and
+does not change the loader diagnosis or native readiness.
+
+## 2026-09-02 10:07 callback-location static closure
+
+The exact CK3 1.19.0.6 binary scan now supplies a stable loader-side callback
+anchor. Function RVA `0x3B9AB00` (pdata range
+`[0x3B9AB00,0x3B9ACED)`) is the database-node initialization loop:
+`0x3B9AB50` obtains the current node, `0x3B9AB53` checks `node+0x88`, and
+`0x3B9AB90` calls `[rax+0x10]`, the per-node initialization virtual callback.
+After the call, the loop reads `node+0x98` and the dependency chain at
+`node+0xB8` to aggregate timing; the nearby format strings are
+`Database Node Init Time...` (RVA `0x4558670`) and `PostInit - %s` (RVA
+`0x4558648`).
+
+This is a static exact-build observation point, not yet a bridge detour or a
+production source-file attribution. It can expose native node name/timing in
+a future read-only probe once the vtable slot semantics are closed. The
+repeated `onaction.cpp:429 Total of : 881` remains non-discriminating, so no
+`onaction_total` field is justified. No CK3 launch, ABI widening, or new gate
+was added; `a89282d` remains the frozen phase-two production baseline.
