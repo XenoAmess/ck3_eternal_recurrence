@@ -235,7 +235,9 @@
   12 项顶层顺序纠正 shape-only narrowing：唯一 truce scripted-effect 是 index
   `7`（其 4 个源码 children 与 live `4/4` 一致），index `9/10` 分别是
   discontent 与 LAAMP tooltip。下一 private read-only 路径只沿 index 7 的
-  `hidden_effect -> scope:attacker -> CAddTruce` 验证；尚未改 production 合同。
+  `hidden_effect -> scope:attacker -> CAddTruce` 验证；其首次 targeted live
+  在进入 reader 前因 native readiness timeout 收口，未生成 JSONL、未命中
+  Truce vtable，故仍尚未改 production 合同。
   详见
   [g2-truce-next-layer-rtti-2026-09-02.md](g2-truce-next-layer-rtti-2026-09-02.md)。
   这些 RED/static 结果不升级 truce、expiry、decision 或 action readiness。

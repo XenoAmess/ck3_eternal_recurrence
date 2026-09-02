@@ -177,3 +177,38 @@ Reproducible inputs and result:
 
 No CK3 process was started. Public ABI, readiness, production shape constants,
 and all mutation paths remain unchanged; `GEN-034` is still unresolved.
+
+## Targeted index-7 live attempt: harness RED before capture
+
+The OFF-by-default targeted reader was frozen on commit
+`a3d2fb0f801840168ee64dfa27ab65ece5540c46`. Its only runtime path is
+`index7 -> default child1 -> hidden_effect child0 -> Context child0`; it would
+accept only the exact `CAddTruceEffect<0>` vtable and then expose the `+0x108`
+input address without invoking the evaluator. Focused source/fixture tests were
+`10/10` GREEN and the Release candidate DLL SHA-256 was
+`C8B4D8015CE251FC09DD9AE4348BD469B57CF8F554349BB5B9698B17D8B6A036`.
+
+The single authorized live attempt ended after `126.891s` with typed
+`NativeReadinessTimeoutError` and `last=None`. Readiness, exact-build proof,
+and the MCP sequence remained null, so execution never reached the private
+reader. Consequently no private JSONL was created, the Truce vtable was not
+observed, and `+0x108` was not frozen. This is a harness/native-readiness RED,
+not a path-shape or capability RED, and it does not justify changing the
+production `19/14/index9` constants or any public readiness field.
+
+Evidence:
+
+- report:
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-index7-targeted-ready-20260902T1930\live-authorized-index7\report.json`,
+  SHA-256
+  `6997DDA2C233974CE679F93C452A519E55CE309DAB8D3A4D50D6861A8BAE2C58`;
+- cleanup summary beside it, SHA-256
+  `6014C3EB76BFD48D6BDE3932E4343F20C827E2B59AF7EED1C0E4AA1AD6D91906`;
+- checkpoint and driver source invariants were unchanged at
+  `60108A5D...AF164` and `4FB901C7...FF57E`; cleanup was GREEN and CK3/probe
+  inventory returned to zero.
+
+No evaluator or mutation was called, game time did not advance, and no second
+live attempt was started. `GEN-034` remains unresolved; the exact index-7 path
+still needs one successful paused private capture in a separately authorized
+run.
