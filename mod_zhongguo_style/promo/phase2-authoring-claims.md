@@ -152,7 +152,9 @@ session/PID/generation with an explicitly linked revision chain, byte-bound
 start/end checkpoints in the same save lineage, a provider-observed GREEN
 postcondition, and GREEN process/driver cleanup. Different spans may use clean
 CK3 restarts and therefore different PIDs or connection generations. The seed
-generation → loaded-seed proof remains a separate same-session continuity gate.
+generation → loaded-seed proof remains a separate save-hash and source-
+provenance continuity gate; seed generation and capture may use different
+managed sessions.
 Ordered recording marks and eight clean-frame gates are still mandatory.
 Missing, partial, intra-span discontinuous, lineage-drifting, phase-one,
 old-version, fixture, or hash-mismatched input stays typed `footage_pending`;

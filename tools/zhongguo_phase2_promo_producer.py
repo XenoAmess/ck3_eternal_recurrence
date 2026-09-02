@@ -315,7 +315,13 @@ class Phase2PromoProducerScaffold:
     injected ``runtime_probe`` and ``choreography`` functions.
     """
 
-    __slots__ = ("_contract_snapshot", "runtime_probe", "choreography", "error_factory")
+    __slots__ = (
+        "_contract_snapshot",
+        "runtime_probe",
+        "choreography",
+        "error_factory",
+        "span_session_contract_version",
+    )
 
     def __init__(
         self,
@@ -323,6 +329,7 @@ class Phase2PromoProducerScaffold:
         runtime_probe: RuntimeProbe | None = None,
         choreography: Choreography | None = None,
         error_factory: ProducerErrorFactory | None = None,
+        span_session_contract_version: int | None = None,
     ) -> None:
         # Store a private-by-convention copy so a caller cannot mutate the
         # contract after construction and silently change the hand-off.
@@ -330,6 +337,7 @@ class Phase2PromoProducerScaffold:
         self.runtime_probe = runtime_probe
         self.choreography = choreography
         self.error_factory = error_factory
+        self.span_session_contract_version = span_session_contract_version
         if runtime_probe is not None and not callable(runtime_probe):
             raise TypeError("runtime_probe must be callable or None")
         if choreography is not None and not callable(choreography):
@@ -931,6 +939,41 @@ def make_eight_span_phase2_choreography(
                 "shared phase-two capture choreography returned RED",
                 evidence={"choreography": error.evidence},
             ) from error
+        seed_chain_provider = getattr(
+            recorder, "phase2_seed_chain_provider", None
+        )
+        capture_lineage = getattr(recorder, "phase2_capture_lineage", None)
+        if seed_chain_provider is not None or capture_lineage is not None:
+            if not callable(seed_chain_provider) or not isinstance(
+                capture_lineage, Mapping
+            ):
+                raise Phase2PromoProducerUnavailable(
+                    "span_session_receipt_source_incomplete",
+                    "phase-two v2 seed/lineage receipt source is incomplete",
+                )
+            seed_load_proof = runtime.get("seed_load_proof")
+            if not isinstance(seed_load_proof, Mapping):
+                raise Phase2PromoProducerUnavailable(
+                    "seed_load_proof_red",
+                    "phase-two v2 receipt requires the real loaded-seed proof",
+                )
+            seed_chain = seed_chain_provider(seed_load_proof)
+            if not isinstance(seed_chain, Mapping) or seed_chain.get(
+                "result"
+            ) != "GREEN":
+                raise Phase2PromoProducerUnavailable(
+                    "seed_generation_loaded_chain_red",
+                    "phase-two seed generation/load lineage receipt is RED",
+                    evidence={
+                        "seed_chain": (
+                            dict(seed_chain)
+                            if isinstance(seed_chain, Mapping)
+                            else None
+                        )
+                    },
+                )
+            evidence["capture_lineage"] = dict(capture_lineage)
+            evidence["seed_generation_loaded_chain"] = dict(seed_chain)
         evidence.update(
             {
                 "producer_id": PHASE2_PROMO_CAPTURE_PRODUCER_ID,
@@ -967,6 +1010,7 @@ def make_managed_phase2_promo_capture_producer(
             span_driver_factory=span_driver_factory,
         ),
         error_factory=error_factory,
+        span_session_contract_version=2,
     )
 
 
@@ -976,6 +1020,7 @@ def make_phase2_promo_capture_scaffold(
     runtime_probe: RuntimeProbe | None = None,
     choreography: Choreography | None = None,
     error_factory: ProducerErrorFactory | None = None,
+    span_session_contract_version: int | None = None,
 ) -> Phase2PromoProducerScaffold:
     """Build an unregistered scaffold for tests or a future live producer."""
 
@@ -988,6 +1033,7 @@ def make_phase2_promo_capture_scaffold(
         runtime_probe=runtime_probe,
         choreography=choreography,
         error_factory=error_factory,
+        span_session_contract_version=span_session_contract_version,
     )
 
 

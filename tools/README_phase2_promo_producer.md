@@ -82,6 +82,36 @@ manifest is `loaded_feature_manifest_unavailable`; a missing or blocked seed,
 generation drift, frame drift, or non-GREEN eight-row proof likewise raises a
 typed producer RED before `recorder.start()`.
 
+The managed producer advertises the span-session-v2 receipt contract.  Before
+each real span action, the runner takes a native paused snapshot and materializes
+a native `save_checkpoint` as that span's start checkpoint; it repeats both
+operations after the action for the end checkpoint.  The sidecar records the
+observed session ID, CK3 PID, connection generation, snapshot/public/native
+revisions, checkpoint bytes/SHA-256, provider postcondition and the runner's
+final process/driver/lock cleanup receipt.  Pre, action and post must remain in
+one session for an individual span.  A supervisor restart between spans is
+allowed: later spans may have a different PID/generation as long as each is
+bound to the same canonical seed/save lineage, exact game/EXE, exact product
+tree and product-only mount.  The legacy unversioned producer scaffold and
+legacy intake format retain their original single-session behavior.
+
+Seed continuity is byte/provenance continuity, not a claim that seed creation
+and later capture shared a live process.  The generated seed's SHA-256, source
+product tree, game/EXE and source report/index hashes must bind the canonical
+archived save; the later loaded-seed proof must observe that same save hash and
+the same product/game/mount identity in its own managed session.  A tools-only
+producer commit may therefore change the separately recorded capture-harness
+HEAD without invalidating a seed.  Any change to the product tree, canonical
+save bytes, game version, EXE or product mount does invalidate the binding and
+requires a new canonical seed.
+
+The v2 capture runtime mounts only `zg361_acceptance.mod`; it does not install
+the acceptance fixture.  No Phase 1, fixture or generated substitute footage
+can satisfy the lineage flags.  Once one immutable eight-span source bundle is
+GREEN, two independent edit projects may reference the same indexed hashes;
+the runner does not copy or regenerate footage merely because there are two
+cuts.
+
 The seed-generation runner's finalized `paused_seed_ready` report still is
 not an inline-session token.  Its new list-domain observer manifest gate runs
 before its launch boundary and a missing manifest remains a typed no-launch

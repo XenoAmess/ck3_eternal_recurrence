@@ -246,6 +246,86 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
         )
         self.assertEqual([item[0] for item in recorder.calls], [PHASE2_CAPTURE_SCENARIOS[0].span_id])
 
+    def test_v2_allows_a_new_session_between_spans(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            recorder = _Recorder()
+            recorder.phase2_capture_lineage = {"seed_lineage_id": "seed-1"}
+            calls: dict[str, int] = {}
+
+            def receipt(scenario, phase: str) -> dict[str, object]:
+                span_index = next(
+                    index
+                    for index, item in enumerate(PHASE2_CAPTURE_SCENARIOS, 1)
+                    if item.span_id == scenario.span_id
+                )
+                calls[scenario.span_id] = calls.get(scenario.span_id, 0) + 1
+                revision = span_index * 10 + (phase == "post")
+                return {
+                    "schema_version": 1,
+                    "result": "GREEN",
+                    "span_id": scenario.span_id,
+                    "phase": phase,
+                    "session_id": f"session-{span_index}",
+                    "bridge_pid": 5000 + span_index,
+                    "connection_generation": 20 + span_index,
+                    "snapshot_id": f"snapshot-{span_index}-{phase}",
+                    "revision": revision,
+                    "native_revision": 100 + revision,
+                    "checkpoint": {
+                        "path": str((root / f"{scenario.span_id}-{phase}.ck3").resolve()),
+                        "bytes": 1,
+                        "sha256": f"{span_index:064x}",
+                        "save_lineage_id": "seed-1",
+                    },
+                }
+
+            recorder.phase2_span_receipt_provider = receipt
+            evidence = run_phase2_capture_choreography(
+                _context(recorder, root), _runtime(), _Driver()
+            )
+
+        sessions = [row["session_evidence"] for row in evidence["completed_spans"]]
+        self.assertEqual(evidence["span_session_contract_version"], 2)
+        self.assertEqual(len({row["session_id"] for row in sessions}), 8)
+        self.assertEqual(len({row["bridge_pid"] for row in sessions}), 8)
+        self.assertTrue(all(row["result"] == "PENDING_CLEANUP" for row in sessions))
+        self.assertTrue(all(value == 2 for value in calls.values()))
+
+    def test_v2_rejects_session_drift_inside_a_span(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            recorder = _Recorder()
+            recorder.phase2_capture_lineage = {"seed_lineage_id": "seed-1"}
+
+            def receipt(scenario, phase: str) -> dict[str, object]:
+                return {
+                    "schema_version": 1,
+                    "result": "GREEN",
+                    "span_id": scenario.span_id,
+                    "phase": phase,
+                    "session_id": "session-pre" if phase == "pre" else "session-post",
+                    "bridge_pid": 5001,
+                    "connection_generation": 21,
+                    "snapshot_id": f"snapshot-{phase}",
+                    "revision": 10 + (phase == "post"),
+                    "native_revision": 110 + (phase == "post"),
+                    "checkpoint": {
+                        "path": str((root / f"{phase}.ck3").resolve()),
+                        "bytes": 1,
+                        "sha256": "1" * 64,
+                        "save_lineage_id": "seed-1",
+                    },
+                }
+
+            recorder.phase2_span_receipt_provider = receipt
+            with self.assertRaises(Phase2ChoreographyBlocked) as raised:
+                run_phase2_capture_choreography(
+                    _context(recorder, root), _runtime(), _Driver()
+                )
+        self.assertEqual(raised.exception.reason_code, "span_session_changed_during_action")
+        self.assertEqual(recorder.calls, [])
+
 
 if __name__ == "__main__":
     unittest.main()

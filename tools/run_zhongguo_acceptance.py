@@ -683,6 +683,39 @@ class PromoRecorder:
         self.clean_frame_gates: dict[str, dict[str, object]] = {}
         self.reviewed_official_history_id: str | None = None
         self.real_character_provenance: dict[str, object] | None = None
+        self.phase2_capture_lineage: dict[str, object] | None = None
+        self.phase2_span_receipt_provider: Callable[..., Mapping[str, object]] | None = None
+        self.phase2_seed_chain_provider: Callable[..., Mapping[str, object]] | None = None
+
+    def bind_phase2_receipt_sources(
+        self,
+        *,
+        capture_lineage: Mapping[str, object],
+        span_receipt_provider: Callable[..., Mapping[str, object]],
+        seed_chain_provider: Callable[..., Mapping[str, object]],
+    ) -> None:
+        """Bind real runner evidence providers before a phase-two recording.
+
+        These callbacks archive materialized save-checkpoints and project
+        already-observed seed/session identities.  They are deliberately
+        absent from the legacy recorder path.
+        """
+
+        if self.contract != PHASE2_PROMO_CAPTURE_CONTRACT:
+            raise acceptance.RunnerError(
+                "phase-two receipt sources require the phase-two recorder contract"
+            )
+        if self.process is not None or self.phase2_capture_lineage is not None:
+            raise acceptance.RunnerError(
+                "phase-two receipt sources must be bound exactly once before recording"
+            )
+        if not callable(span_receipt_provider) or not callable(seed_chain_provider):
+            raise acceptance.RunnerError(
+                "phase-two receipt providers must be callable"
+            )
+        self.phase2_capture_lineage = dict(capture_lineage)
+        self.phase2_span_receipt_provider = span_receipt_provider
+        self.phase2_seed_chain_provider = seed_chain_provider
 
     def resolve_reviewed_subject(self, history_id: str) -> None:
         """Freeze the one runtime-selected historical subject for this take."""
@@ -849,6 +882,16 @@ class PromoRecorder:
                     "capture_contract": self.contract.to_mapping(),
                 }
             )
+            if self.phase2_capture_lineage is not None:
+                source = self.phase2_capture_lineage.get("source")
+                source = source if isinstance(source, Mapping) else {}
+                payload.update(
+                    {
+                        "capture_lineage": self.phase2_capture_lineage,
+                        "source_git_commit": source.get("git_commit"),
+                        "source_clean_tree_sha256": source.get("tree_sha256"),
+                    }
+                )
         write_json(self.timeline_path, payload)
         self.process = None
         if missing_clean_spans:
@@ -1191,6 +1234,7 @@ def run_phase2_promo_capture_scenario(
     seed_install: Mapping[str, object] | None = None,
     native_session_binding: Mapping[str, object] | None = None,
     loader_gate: Mapping[str, object] | None = None,
+    capture_receipt_context: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Invoke only the explicitly registered sequel visual producer.
 
@@ -1205,6 +1249,41 @@ def run_phase2_promo_capture_scenario(
             "phase-two promo scenario requires the canonical phase-two recorder contract"
         )
     producer = _require_phase2_promo_capture_producer()
+    if (
+        getattr(producer, "span_session_contract_version", None) == 2
+        and capture_receipt_context is not None
+    ):
+        if not isinstance(seed_install, Mapping):
+            raise acceptance.RunnerError(
+                "phase-two span-session-v2 producer requires seed install evidence"
+            )
+        bootstrap = capture_receipt_context.get("bootstrap")
+        runtime_identity = capture_receipt_context.get("runtime_identity")
+        game_version = capture_receipt_context.get("game_version")
+        executable_sha256 = capture_receipt_context.get("executable_sha256")
+        if not (
+            isinstance(bootstrap, Mapping)
+            and isinstance(runtime_identity, Mapping)
+            and isinstance(game_version, str)
+            and isinstance(executable_sha256, str)
+        ):
+            raise acceptance.RunnerError(
+                "phase-two span-session-v2 receipt context is incomplete"
+            )
+        lineage, span_receipts, seed_chain = _phase2_promo_receipt_sources(
+            title_navigation_service,
+            artifacts,
+            seed_install=seed_install,
+            bootstrap=bootstrap,
+            runtime_identity=runtime_identity,
+            game_version=game_version,
+            executable_sha256=executable_sha256,
+        )
+        recorder.bind_phase2_receipt_sources(
+            capture_lineage=lineage,
+            span_receipt_provider=span_receipts,
+            seed_chain_provider=seed_chain,
+        )
     producer_kwargs: dict[str, object] = {
         "title_navigation_service": title_navigation_service,
         "tracked_ck3_pid": tracked_ck3_pid,
@@ -2858,6 +2937,8 @@ def bootstrap_userdir(
     userdir: Path,
     product_source: Path = SOURCE,
     workshop_manifest: Path | None = None,
+    *,
+    include_acceptance_fixture: bool = True,
 ) -> dict[str, object]:
     product_source = Path(product_source).resolve()
     canonical_descriptor = (
@@ -2896,15 +2977,19 @@ def bootstrap_userdir(
             shutil.copy2(source_path, destination)
         product_files.append(relative.as_posix())
 
-    fixture = userdir / "mod-content" / "fixture"
-    shutil.copytree(FIXTURE_SOURCE, fixture)
     isolated.write_outer_descriptor(
         product / "descriptor.mod", userdir / "mod" / PRODUCT_OUTER, product
     )
-    isolated.write_outer_descriptor(
-        fixture / "descriptor.mod", userdir / "mod" / FIXTURE_OUTER, fixture
-    )
-    enabled_mods = [f"mod/{PRODUCT_OUTER}", f"mod/{FIXTURE_OUTER}"]
+    targets = {"product": product}
+    enabled_mods = [f"mod/{PRODUCT_OUTER}"]
+    if include_acceptance_fixture:
+        fixture = userdir / "mod-content" / "fixture"
+        shutil.copytree(FIXTURE_SOURCE, fixture)
+        isolated.write_outer_descriptor(
+            fixture / "descriptor.mod", userdir / "mod" / FIXTURE_OUTER, fixture
+        )
+        targets["fixture"] = fixture
+        enabled_mods.append(f"mod/{FIXTURE_OUTER}")
     (userdir / "tutorial.txt").write_text(
         'last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n',
         encoding="utf-8",
@@ -2924,7 +3009,6 @@ def bootstrap_userdir(
     (userdir / "pdx_settings.txt").write_text(
         terminal.render_settings(), encoding="utf-8", newline="\n"
     )
-    targets = {"product": product, "fixture": fixture}
     snapshots = {key: isolated.tree_snapshot(path) for key, path in targets.items()}
     manifest = {
         "projection": "release-runtime-allowlist-equivalent",
@@ -3215,6 +3299,7 @@ def install_phase2_seed(
     observed_game_version: str,
     observed_executable_sha256: str,
     contract_path: Path = PHASE2_SEED_CONTRACT_PATH,
+    product_only_runtime: bool = False,
 ) -> dict[str, object]:
     """Install an immutable compatible seed; verify current runtime after load."""
 
@@ -3494,17 +3579,29 @@ def install_phase2_seed(
             == runtime_contract.get("game_version"),
             "observed_executable_matches": observed_executable_sha256
             == runtime_contract.get("executable_sha256"),
-            "enabled_mods_match": enabled_mods == runtime_contract.get("enabled_mods"),
+            "enabled_mods_match": (
+                enabled_mods == [f"mod/{PRODUCT_OUTER}"]
+                if product_only_runtime
+                else enabled_mods == runtime_contract.get("enabled_mods")
+            ),
             "current_product_runtime_tree_available": isinstance(
                 tree.get("product"), str
             )
             and re.fullmatch(r"[0-9a-f]{64}", str(tree.get("product")))
             is not None,
-            "current_fixture_runtime_tree_available": isinstance(
-                tree.get("fixture"), str
-            )
-            and re.fullmatch(r"[0-9a-f]{64}", str(tree.get("fixture")))
-            is not None,
+            "current_fixture_runtime_tree_policy": (
+                tree.get("fixture") is None
+                if product_only_runtime
+                else isinstance(tree.get("fixture"), str)
+                and re.fullmatch(r"[0-9a-f]{64}", str(tree.get("fixture")))
+                is not None
+            ),
+            "current_product_tree_matches_seed_source": (
+                tree.get("product")
+                == runtime_contract.get("source_product_tree_sha256")
+                if product_only_runtime
+                else True
+            ),
             "continue_slot_absent": not continue_save.exists(),
             "last_save_slot_absent": not last_save.exists(),
         }
@@ -3545,6 +3642,8 @@ def install_phase2_seed(
                 "fixture": tree.get("fixture"),
             },
             "source_current_equality_required_for_install": False,
+            "product_only_capture": product_only_runtime,
+            "product_source_equality_required_for_capture": product_only_runtime,
             "post_load_current_runtime_gates": [
                 "runtime_mount_inventory",
                 "loaded_feature_manifest_v1",
@@ -3664,6 +3763,9 @@ def prove_phase2_loaded_seed(
     binding = _phase2_paused_binding(
         snapshot, label="phase-two installed seed"
     )
+    source_value = seed_contract.get("source")
+    source = source_value if isinstance(source_value, Mapping) else {}
+    binding["save_sha256"] = source.get("sha256")
     played_character_value = snapshot.get("played_character")
     played_character = (
         played_character_value
@@ -5168,6 +5270,89 @@ def stop_phase2_native_session_supervisor(
         session_error=session_state.get("error"),
         supervisor_stopped=supervisor_stopped,
     )
+
+
+def finalize_phase2_promo_span_session_receipts(
+    scenario_evidence: object,
+    native_cleanup: object,
+    artifacts: Path,
+    *,
+    driver_closed: bool,
+    locks_released: bool,
+) -> None:
+    """Attach only the runner's completed cleanup proof to v2 span receipts."""
+
+    if not isinstance(scenario_evidence, dict) or scenario_evidence.get(
+        "span_session_contract_version"
+    ) != 2:
+        return
+    cleanup = native_cleanup if isinstance(native_cleanup, Mapping) else {}
+    checks = cleanup.get("checks")
+    checks = checks if isinstance(checks, Mapping) else {}
+    tree_checks = [
+        value
+        for key, value in checks.items()
+        if str(key).endswith("_tree_gone")
+    ]
+    process_tree_gone = bool(tree_checks) and all(value is True for value in tree_checks)
+    cleanup_path = Path(artifacts).resolve() / "09_phase2_native_session_cleanup.json"
+    cleanup_record = None
+    if cleanup_path.is_file():
+        cleanup_record = {
+            "path": str(cleanup_path),
+            "bytes": cleanup_path.stat().st_size,
+            "sha256": isolated.sha256_file(cleanup_path).upper(),
+        }
+    cleanup_green = (
+        cleanup.get("result") == "GREEN"
+        and not cleanup.get("failed_checks")
+        and process_tree_gone
+        and driver_closed is True
+        and locks_released is True
+        and cleanup_record is not None
+    )
+    rows = scenario_evidence.get("completed_spans")
+    completed = rows if isinstance(rows, list) else []
+    cleanup_pids = cleanup.get("pid_lineage")
+    cleanup_generations = cleanup.get("connection_generation_lineage")
+    cleanup_pids = cleanup_pids if isinstance(cleanup_pids, list) else []
+    cleanup_generations = (
+        cleanup_generations if isinstance(cleanup_generations, list) else []
+    )
+    for row in completed:
+        if not isinstance(row, dict):
+            continue
+        session = row.get("session_evidence")
+        if not isinstance(session, dict):
+            continue
+        session_cleanup_green = (
+            cleanup_green
+            and session.get("bridge_pid") in cleanup_pids
+            and session.get("connection_generation") in cleanup_generations
+        )
+        session["cleanup"] = {
+            "result": "GREEN" if session_cleanup_green else "RED",
+            "session_id": session.get("session_id"),
+            "bridge_pid": session.get("bridge_pid"),
+            "connection_generation": session.get("connection_generation"),
+            "process_tree_gone": process_tree_gone,
+            "driver_closed": driver_closed is True,
+            "locks_released": locks_released is True,
+            "native_cleanup": cleanup_record,
+        }
+        session["result"] = "GREEN" if session_cleanup_green else "RED"
+    if not (
+        len(completed) == len(PHASE2_CAPTURE_SCENARIOS)
+        and all(
+            isinstance(row, Mapping)
+            and isinstance(row.get("session_evidence"), Mapping)
+            and row["session_evidence"].get("result") == "GREEN"
+            for row in completed
+        )
+    ):
+        raise acceptance.RunnerError(
+            "phase-two span-session-v2 cleanup receipts are incomplete or RED"
+        )
 
 
 def phase2_runtime_capability_preflight(
@@ -6907,6 +7092,285 @@ def _phase2_checkpoint_payload(
             f"{label} checkpoint lacks typed {status} size/hash proof"
         )
     return checkpoint
+
+
+def _phase2_archive_checkpoint(
+    checkpoint: Mapping[str, object],
+    destination: Path,
+    *,
+    save_lineage_id: str,
+) -> dict[str, object]:
+    """Archive one materialized CK3 save without inventing checkpoint proof."""
+
+    raw_path = checkpoint.get("path")
+    if not isinstance(raw_path, str) or not Path(raw_path).is_absolute():
+        raise acceptance.RunnerError(
+            "phase-two checkpoint does not expose an absolute materialized path"
+        )
+    source = Path(raw_path).resolve()
+    if not source.is_file():
+        raise acceptance.RunnerError(
+            f"phase-two checkpoint file is absent: {source}"
+        )
+    expected_size = checkpoint.get("size")
+    expected_sha = str(checkpoint.get("sha256", "")).lower()
+    if (
+        source.stat().st_size != expected_size
+        or isolated.sha256_file(source).lower() != expected_sha
+    ):
+        raise acceptance.RunnerError(
+            "phase-two checkpoint bytes drifted from the native save receipt"
+        )
+    destination = Path(destination).resolve()
+    if destination.exists():
+        raise acceptance.RunnerError(
+            f"phase-two checkpoint archive already exists: {destination}"
+        )
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+    archived_sha = isolated.sha256_file(destination).upper()
+    if destination.stat().st_size != expected_size or archived_sha.lower() != expected_sha:
+        raise acceptance.RunnerError(
+            "phase-two archived checkpoint differs from the native save receipt"
+        )
+    return {
+        "path": str(destination),
+        "bytes": destination.stat().st_size,
+        "sha256": archived_sha,
+        "save_lineage_id": save_lineage_id,
+    }
+
+
+def _phase2_promo_receipt_sources(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    seed_install: Mapping[str, object],
+    bootstrap: Mapping[str, object],
+    runtime_identity: Mapping[str, object],
+    game_version: str,
+    executable_sha256: str,
+) -> tuple[
+    dict[str, object],
+    Callable[..., Mapping[str, object]],
+    Callable[..., Mapping[str, object]],
+]:
+    """Bind v2 receipt providers only to already-proven runner state."""
+
+    contract = seed_install.get("contract")
+    source_install = seed_install.get("source")
+    if not isinstance(contract, Mapping) or not isinstance(source_install, Mapping):
+        raise acceptance.RunnerError(
+            "phase-two span receipts require the GREEN seed install contract/source"
+        )
+    provenance = contract.get("provenance")
+    seed_runtime = contract.get("runtime")
+    seed_source = contract.get("source")
+    trees = bootstrap.get("tree_sha256")
+    if not all(
+        isinstance(value, Mapping)
+        for value in (provenance, seed_runtime, seed_source, trees)
+    ):
+        raise acceptance.RunnerError(
+            "phase-two span receipts lack seed/runtime tree provenance"
+        )
+    assert isinstance(provenance, Mapping)
+    assert isinstance(seed_runtime, Mapping)
+    assert isinstance(seed_source, Mapping)
+    assert isinstance(trees, Mapping)
+    current_product_tree = trees.get("product")
+    enabled_mods = bootstrap.get("enabled_mods")
+    if (
+        seed_install.get("result") != "GREEN"
+        or enabled_mods != [f"mod/{PRODUCT_OUTER}"]
+        or trees.get("fixture") is not None
+        or current_product_tree != seed_runtime.get("source_product_tree_sha256")
+        or game_version != seed_runtime.get("game_version")
+        or executable_sha256 != seed_runtime.get("executable_sha256")
+    ):
+        raise acceptance.RunnerError(
+            "phase-two span receipts require exact seed product tree, game/EXE, "
+            "and a product-only runtime mount"
+        )
+    source_git_commit = provenance.get("source_git_commit")
+    if not isinstance(source_git_commit, str) or re.fullmatch(
+        r"[0-9A-Fa-f]{40}", source_git_commit
+    ) is None:
+        raise acceptance.RunnerError(
+            "phase-two seed provenance lacks its exact source commit"
+        )
+    raw_seed_path = source_install.get("path")
+    if not isinstance(raw_seed_path, str):
+        raise acceptance.RunnerError(
+            "phase-two seed install lacks its materialized source path"
+        )
+    seed_path = Path(raw_seed_path).resolve()
+    seed_sha = str(seed_source.get("sha256", "")).upper()
+    if (
+        not seed_path.is_file()
+        or seed_path.stat().st_size != seed_source.get("bytes")
+        or isolated.sha256_file(seed_path).upper() != seed_sha
+    ):
+        raise acceptance.RunnerError(
+            "phase-two canonical seed bytes drifted before receipt binding"
+        )
+    save_lineage_id = f"zg361-phase2-seed-{seed_sha.lower()}"
+    canonical_save = artifacts / "promo" / "checkpoints" / "canonical-seed.ck3"
+    if canonical_save.exists():
+        raise acceptance.RunnerError(
+            f"phase-two canonical seed archive already exists: {canonical_save}"
+        )
+    canonical_save.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(seed_path, canonical_save)
+    if isolated.sha256_file(canonical_save).upper() != seed_sha:
+        raise acceptance.RunnerError(
+            "phase-two canonical seed archive hash mismatch"
+        )
+    canonical_record = {
+        "path": str(canonical_save.resolve()),
+        "bytes": canonical_save.stat().st_size,
+        "sha256": seed_sha,
+        "save_lineage_id": save_lineage_id,
+    }
+    harness_commit = git_text("rev-parse", "HEAD")
+    lineage: dict[str, object] = {
+        "schema_version": 1,
+        "phase": "zhongguo_phase2",
+        "evidence_class": "real_ck3",
+        "fixture_used": False,
+        "prior_phase_footage_used": False,
+        "seed_lineage_id": save_lineage_id,
+        "canonical_seed_save_sha256": seed_sha,
+        "source": {
+            "git_commit": source_git_commit,
+            "tree_sha256": str(current_product_tree).upper(),
+        },
+        "capture_harness": {
+            "git_commit": harness_commit,
+            "runtime_source_kind": runtime_identity.get("runtime_source_kind"),
+            "runtime_source_path": runtime_identity.get("runtime_source_path"),
+        },
+        "game": {
+            "version": game_version,
+            "exe_sha256": executable_sha256.upper(),
+        },
+        "mod_mount": {
+            "kind": "product-only",
+            "tree_sha256": str(current_product_tree).upper(),
+            "enabled_mods": list(enabled_mods),
+        },
+    }
+
+    def span_receipt_provider(
+        scenario: object, phase: str
+    ) -> Mapping[str, object]:
+        if phase not in {"pre", "post"}:
+            raise acceptance.RunnerError(
+                f"phase-two span receipt phase is invalid: {phase}"
+            )
+        span_id = str(getattr(scenario, "span_id"))
+        snapshot = service.snapshot()
+        if not isinstance(snapshot, dict):
+            raise acceptance.RunnerError(
+                f"phase-two {span_id} {phase} snapshot is not an object"
+            )
+        before = _phase2_paused_binding(
+            snapshot, label=f"phase-two {span_id} {phase} checkpoint"
+        )
+        result = service.save_checkpoint(expected_revision=int(before["revision"]))
+        checkpoint = _phase2_checkpoint_payload(
+            result, status="saved", label=f"phase-two {span_id} {phase}"
+        )
+        after_snapshot = service.snapshot()
+        if not isinstance(after_snapshot, dict):
+            raise acceptance.RunnerError(
+                f"phase-two {span_id} {phase} post-save snapshot is not an object"
+            )
+        after = _phase2_paused_binding(
+            after_snapshot, label=f"phase-two {span_id} {phase} post-save"
+        )
+        for key in (
+            "bridge_pid",
+            "connection_generation",
+            "player_character_id",
+            "date_raw",
+        ):
+            if after.get(key) != before.get(key):
+                raise acceptance.RunnerError(
+                    f"phase-two {span_id} {phase} save escaped its managed binding"
+                )
+        archived = _phase2_archive_checkpoint(
+            checkpoint,
+            artifacts / "promo" / "checkpoints" / span_id / f"{phase}.ck3",
+            save_lineage_id=save_lineage_id,
+        )
+        pid = after["bridge_pid"]
+        generation = after["connection_generation"]
+        return {
+            "schema_version": 1,
+            "result": "GREEN",
+            "span_id": span_id,
+            "phase": phase,
+            "session_id": f"managed-pid-{pid}-generation-{generation}",
+            "bridge_pid": pid,
+            "connection_generation": generation,
+            "snapshot_id": after["snapshot_id"],
+            "revision": after["revision"],
+            "native_revision": after["native_revision"],
+            "checkpoint": archived,
+            "native_save_receipt": dict(checkpoint),
+        }
+
+    def seed_chain_provider(
+        loaded_seed_proof: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        observed = loaded_seed_proof.get("observed")
+        if not isinstance(observed, Mapping):
+            raise acceptance.RunnerError(
+                "phase-two loaded-seed proof lacks observed binding"
+            )
+        loaded_save_sha = str(observed.get("save_sha256", "")).upper()
+        if loaded_seed_proof.get("result") != "GREEN" or loaded_save_sha != seed_sha:
+            raise acceptance.RunnerError(
+                "phase-two loaded-seed proof is not continuous with canonical seed bytes"
+            )
+        pid = observed.get("bridge_pid")
+        generation = observed.get("connection_generation")
+        return {
+            "schema_version": 1,
+            "result": "GREEN",
+            "seed_lineage_id": save_lineage_id,
+            "canonical_save": canonical_record,
+            "generated": {
+                "save_sha256": seed_sha,
+                "source_git_commit": source_git_commit,
+                "source_product_tree_sha256": str(current_product_tree).upper(),
+                "source_report_sha256": str(
+                    provenance.get("source_report_sha256", "")
+                ).upper(),
+                "source_evidence_index_sha256": str(
+                    provenance.get("source_evidence_index_sha256", "")
+                ).upper(),
+                "game_version": seed_runtime.get("game_version"),
+                "game_exe_sha256": str(
+                    seed_runtime.get("executable_sha256", "")
+                ).upper(),
+            },
+            "loaded": {
+                "session_id": f"managed-pid-{pid}-generation-{generation}",
+                "bridge_pid": pid,
+                "connection_generation": generation,
+                "revision": observed.get("revision"),
+                "native_revision": observed.get("native_revision"),
+                "save_sha256": loaded_save_sha,
+                "source_product_tree_sha256": str(current_product_tree).upper(),
+                "game_version": game_version,
+                "game_exe_sha256": executable_sha256.upper(),
+                "mod_mount_tree_sha256": str(current_product_tree).upper(),
+            },
+        }
+
+    return lineage, span_receipt_provider, seed_chain_provider
 
 
 def _save_phase2_workforce_checkpoint(
@@ -13767,6 +14231,7 @@ def run_cell(
             and verified_manifest_path
             else None
         ),
+        include_acceptance_fixture=not phase2_promo_capture,
     )
     spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)
     if spec.profile_dir.resolve() != userdir:
@@ -13850,6 +14315,7 @@ def run_cell(
                     userdir,
                     bootstrap,
                     artifacts,
+                    product_only_runtime=phase2_promo_capture,
                     **install_kwargs,
                 )
             else:
@@ -14007,6 +14473,12 @@ def run_cell(
                     seed_install=phase2_seed_install_evidence,
                     native_session_binding=phase2_initial_binding,
                     loader_gate=loader_gate_evidence,
+                    capture_receipt_context={
+                        "bootstrap": bootstrap,
+                        "runtime_identity": runtime_identity,
+                        "game_version": game_version,
+                        "executable_sha256": executable_before,
+                    },
                 )
             except BaseException as error:
                 # Keep a producer's typed RED envelope in the durable report
@@ -14303,6 +14775,22 @@ def run_cell(
     elif state_dir.exists():
         log(f"retained native state and userdir at {state_dir}")
 
+    if phase2_promo_capture:
+        try:
+            finalize_phase2_promo_span_session_receipts(
+                evidence,
+                native_cleanup,
+                artifacts,
+                driver_closed=driver_closed,
+                locks_released=locks_released,
+            )
+        except Exception as error:
+            result = "RED"
+            reason = f"phase-two span receipt finalization failed: {error}"
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
+
     phase2_promo_capture_complete = (
         not phase2_promo_capture
         or (
@@ -14405,6 +14893,11 @@ def run_cell(
             dict.fromkeys(observed_engine_warnings)
         ),
         "scenario_evidence": evidence,
+        "seed_generation_loaded_chain": (
+            evidence.get("seed_generation_loaded_chain")
+            if phase2_promo_capture
+            else None
+        ),
         "promo_capture": recorder_evidence,
         "isolated_state_dir_path": str(state_dir),
         "isolated_userdir_path": str(userdir),

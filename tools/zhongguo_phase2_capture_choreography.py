@@ -193,6 +193,52 @@ def _positive_integer(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value > 0
 
 
+def _revision(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def _span_stage_receipt(
+    value: object,
+    *,
+    scenario: Phase2CaptureScenario,
+    phase: str,
+) -> dict[str, object]:
+    receipt = dict(value) if isinstance(value, Mapping) else {}
+    checkpoint = receipt.get("checkpoint")
+    checkpoint = checkpoint if isinstance(checkpoint, Mapping) else {}
+    valid = (
+        receipt.get("schema_version") == 1
+        and receipt.get("result") == "GREEN"
+        and receipt.get("span_id") == scenario.span_id
+        and receipt.get("phase") == phase
+        and isinstance(receipt.get("session_id"), str)
+        and bool(str(receipt.get("session_id")))
+        and _positive_integer(receipt.get("bridge_pid"))
+        and _positive_integer(receipt.get("connection_generation"))
+        and isinstance(receipt.get("snapshot_id"), str)
+        and bool(str(receipt.get("snapshot_id")))
+        and _revision(receipt.get("revision"))
+        and _positive_integer(receipt.get("native_revision"))
+        and isinstance(checkpoint.get("path"), str)
+        and Path(str(checkpoint.get("path"))).is_absolute()
+        and _positive_integer(checkpoint.get("bytes"))
+        and isinstance(checkpoint.get("sha256"), str)
+        and len(str(checkpoint.get("sha256"))) == 64
+        and isinstance(checkpoint.get("save_lineage_id"), str)
+        and bool(str(checkpoint.get("save_lineage_id")))
+    )
+    if not valid:
+        raise Phase2ChoreographyBlocked(
+            "span_session_receipt_invalid",
+            {
+                "span_id": scenario.span_id,
+                "phase": phase,
+                "receipt": receipt,
+            },
+        )
+    return receipt
+
+
 def phase2_choreography_readiness(
     context: Phase2PromoCaptureContext,
     runtime: Mapping[str, object],
@@ -285,7 +331,28 @@ def run_phase2_capture_choreography(
 
     completed: list[dict[str, object]] = []
     recorder = context.recorder
+    receipt_provider = getattr(recorder, "phase2_span_receipt_provider", None)
+    lineage_value = getattr(recorder, "phase2_capture_lineage", None)
+    v2_requested = receipt_provider is not None or lineage_value is not None
+    if v2_requested and not (
+        callable(receipt_provider) and isinstance(lineage_value, Mapping)
+    ):
+        raise Phase2ChoreographyBlocked(
+            "span_session_receipt_source_incomplete",
+            {
+                "receipt_provider_callable": callable(receipt_provider),
+                "capture_lineage_mapping": isinstance(lineage_value, Mapping),
+            },
+        )
+    lineage = dict(lineage_value) if isinstance(lineage_value, Mapping) else None
     for scenario in PHASE2_CAPTURE_SCENARIOS:
+        pre_receipt = None
+        if callable(receipt_provider):
+            pre_receipt = _span_stage_receipt(
+                receipt_provider(scenario, "pre"),
+                scenario=scenario,
+                phase="pre",
+            )
         result = driver.run_span(scenario, context, runtime)
         if not isinstance(result, Mapping) or result.get("result") != "GREEN":
             raise Phase2ChoreographyBlocked(
@@ -302,13 +369,139 @@ def run_phase2_capture_choreography(
                 "span_surface_or_postcondition_not_green",
                 {"span_id": scenario.span_id, "driver_result": dict(result)},
             )
+        post_receipt = None
+        session_evidence = None
+        postcondition_evidence = dict(result)
+        if callable(receipt_provider):
+            assert pre_receipt is not None
+            assert lineage is not None
+            post_receipt = _span_stage_receipt(
+                receipt_provider(scenario, "post"),
+                scenario=scenario,
+                phase="post",
+            )
+            identity_fields = (
+                "session_id",
+                "bridge_pid",
+                "connection_generation",
+            )
+            if any(
+                pre_receipt.get(field) != post_receipt.get(field)
+                for field in identity_fields
+            ):
+                raise Phase2ChoreographyBlocked(
+                    "span_session_changed_during_action",
+                    {
+                        "span_id": scenario.span_id,
+                        "pre": pre_receipt,
+                        "post": post_receipt,
+                    },
+                )
+            if (
+                int(post_receipt["revision"]) < int(pre_receipt["revision"])
+                or int(post_receipt["native_revision"])
+                < int(pre_receipt["native_revision"])
+            ):
+                raise Phase2ChoreographyBlocked(
+                    "span_revision_regressed",
+                    {
+                        "span_id": scenario.span_id,
+                        "pre": pre_receipt,
+                        "post": post_receipt,
+                    },
+                )
+            binding = {
+                "bridge_pid": post_receipt["bridge_pid"],
+                "connection_generation": post_receipt[
+                    "connection_generation"
+                ],
+                "revision": post_receipt["revision"],
+                "native_revision": post_receipt["native_revision"],
+            }
+            prior_binding = postcondition_evidence.get("binding")
+            if prior_binding is not None and (
+                not isinstance(prior_binding, Mapping)
+                or any(prior_binding.get(key) != value for key, value in binding.items())
+            ):
+                raise Phase2ChoreographyBlocked(
+                    "span_postcondition_binding_conflict",
+                    {
+                        "span_id": scenario.span_id,
+                        "driver_binding": prior_binding,
+                        "observed_binding": binding,
+                    },
+                )
+            postcondition_evidence["binding"] = binding
+            session_evidence = {
+                "schema_version": 1,
+                "result": "PENDING_CLEANUP",
+                "span_id": scenario.span_id,
+                "session_id": pre_receipt["session_id"],
+                "bridge_pid": pre_receipt["bridge_pid"],
+                "connection_generation": pre_receipt[
+                    "connection_generation"
+                ],
+                "lineage_binding": lineage,
+                "start_checkpoint": pre_receipt["checkpoint"],
+                "end_checkpoint": post_receipt["checkpoint"],
+                "pre": {
+                    key: pre_receipt[key]
+                    for key in (
+                        "session_id",
+                        "bridge_pid",
+                        "connection_generation",
+                        "revision",
+                        "native_revision",
+                    )
+                }
+                | {
+                    "checkpoint_sha256": pre_receipt["checkpoint"][
+                        "sha256"
+                    ]
+                },
+                "action": {
+                    key: pre_receipt[key]
+                    for key in (
+                        "session_id",
+                        "bridge_pid",
+                        "connection_generation",
+                    )
+                }
+                | {
+                    "pre_revision": pre_receipt["revision"],
+                    "pre_native_revision": pre_receipt["native_revision"],
+                    "post_revision": post_receipt["revision"],
+                    "post_native_revision": post_receipt[
+                        "native_revision"
+                    ],
+                },
+                "post": {
+                    key: post_receipt[key]
+                    for key in (
+                        "session_id",
+                        "bridge_pid",
+                        "connection_generation",
+                        "revision",
+                        "native_revision",
+                    )
+                }
+                | {
+                    "checkpoint_sha256": post_receipt["checkpoint"][
+                        "sha256"
+                    ]
+                },
+                "cleanup": None,
+                "runner_receipts": {
+                    "pre": pre_receipt,
+                    "post": post_receipt,
+                },
+            }
         recorder.clean_hold(
             scenario.span_id,
             context.artifacts,
             seconds=clean_hold_seconds,
         )
-        completed.append(
-            {
+        completed_row = {
                 "span_id": scenario.span_id,
                 "producer_key": scenario.producer_key,
                 "handler": scenario.handler,
@@ -316,10 +509,12 @@ def run_phase2_capture_choreography(
                 "result": "GREEN",
                 "surface_visible": True,
                 "postcondition_green": True,
-                "postcondition_evidence": dict(result),
+                "postcondition_evidence": postcondition_evidence,
             }
-        )
-    return {
+        if session_evidence is not None:
+            completed_row["session_evidence"] = session_evidence
+        completed.append(completed_row)
+    evidence = {
         "result": "GREEN",
         "capture_mode": PHASE2_PROMO_CAPTURE_MODE,
         "capture_contract_version": PHASE2_PROMO_CAPTURE_CONTRACT_VERSION,
@@ -328,6 +523,9 @@ def run_phase2_capture_choreography(
         "completed_spans": completed,
         "scenario_definitions": [asdict(item) for item in PHASE2_CAPTURE_SCENARIOS],
     }
+    if v2_requested:
+        evidence["span_session_contract_version"] = 2
+    return evidence
 
 
 def _validate_catalogue() -> None:

@@ -251,6 +251,19 @@ def _upgrade_to_multisession(root: Path) -> None:
     scenario_evidence["span_session_contract_version"] = (
         intake.SPAN_SESSION_CONTRACT_VERSION
     )
+    cleanup_path = root / "cell" / "09_phase2_native_session_cleanup.json"
+    cleanup_path.write_text(
+        json.dumps(
+            {
+                "result": "GREEN",
+                "checks": {"tracked_process_tree_gone": True},
+                "pid_lineage": list(range(5001, 5009)),
+                "connection_generation_lineage": list(range(11, 19)),
+            }
+        ),
+        encoding="utf-8",
+    )
+    cleanup_record = _record(root, cleanup_path)
     for index, (scenario, row) in enumerate(
         zip(PHASE2_CAPTURE_SCENARIOS, scenario_evidence["completed_spans"]),
         start=1,
@@ -314,36 +327,44 @@ def _upgrade_to_multisession(root: Path) -> None:
             },
             "cleanup": {
                 "result": "GREEN",
+                "session_id": session_id,
+                "bridge_pid": pid,
+                "connection_generation": generation,
                 "process_tree_gone": True,
                 "driver_closed": True,
+                "locks_released": True,
+                "native_cleanup": cleanup_record,
             },
         }
 
-    seed_session = "phase2-seed-generation-load-session"
     seed_pid = 4900
     seed_generation = 9
     generated = {
-        "session_id": seed_session,
-        "bridge_pid": seed_pid,
-        "connection_generation": seed_generation,
-        "revision": 90,
-        "native_revision": 190,
-        "save": canonical_record,
+        "save_sha256": canonical_record["sha256"],
+        "source_git_commit": lineage["source"]["git_commit"],
+        "source_product_tree_sha256": lineage["source"]["tree_sha256"],
+        "source_report_sha256": "5" * 64,
+        "source_evidence_index_sha256": "6" * 64,
+        "game_version": lineage["game"]["version"],
+        "game_exe_sha256": lineage["game"]["exe_sha256"],
     }
     loaded_chain = {
-        "session_id": seed_session,
+        "session_id": "phase2-loaded-seed-capture-session",
         "bridge_pid": seed_pid,
         "connection_generation": seed_generation,
         "revision": 91,
         "native_revision": 191,
-        "save": canonical_record,
+        "save_sha256": canonical_record["sha256"],
+        "source_product_tree_sha256": lineage["source"]["tree_sha256"],
+        "game_version": lineage["game"]["version"],
+        "game_exe_sha256": lineage["game"]["exe_sha256"],
+        "mod_mount_tree_sha256": lineage["mod_mount"]["tree_sha256"],
     }
     cell["seed_generation_loaded_chain"] = {
         "schema_version": 1,
         "result": "GREEN",
-        "session_id": seed_session,
-        "bridge_pid": seed_pid,
-        "connection_generation": seed_generation,
+        "seed_lineage_id": lineage["seed_lineage_id"],
+        "canonical_save": canonical_record,
         "generated": generated,
         "loaded": loaded_chain,
     }
@@ -494,7 +515,7 @@ class Phase2FootageIntakeTests(unittest.TestCase):
         self.assertEqual(report["result"], "RED")
         self.assertFalse(report["checks"]["cross_span_canonical_lineage_exact"])
 
-    def test_seed_generation_and_loaded_proof_cannot_cross_sessions(self) -> None:
+    def test_seed_generation_and_loaded_proof_require_exact_save_hash(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             _valid_bundle(root)
@@ -502,8 +523,8 @@ class Phase2FootageIntakeTests(unittest.TestCase):
             report_path = root / "report.json"
             outer = json.loads(report_path.read_text(encoding="utf-8"))
             outer["cell"]["seed_generation_loaded_chain"]["loaded"][
-                "connection_generation"
-            ] += 1
+                "save_sha256"
+            ] = "9" * 64
             _write_json(report_path, outer)
             _reindex(root)
             report = intake.validate_footage_intake(root)

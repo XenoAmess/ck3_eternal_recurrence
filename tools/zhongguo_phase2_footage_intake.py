@@ -564,45 +564,70 @@ def validate_footage_intake(capture_root: Path | None) -> dict[str, object]:
             if isinstance(seed_chain.get("loaded"), Mapping)
             else {}
         )
-        seed_pid = seed_chain.get("bridge_pid")
-        seed_generation = seed_chain.get("connection_generation")
-        generated_save_ok = verify_declared_record(
-            generated.get("save"), "canonical_seed_generated_save"
+        canonical_save_value = seed_chain.get("canonical_save")
+        canonical_save = (
+            canonical_save_value
+            if isinstance(canonical_save_value, Mapping)
+            else {}
         )
-        loaded_save_ok = verify_declared_record(
-            loaded_chain.get("save"), "canonical_seed_loaded_save"
+        canonical_save_ok = verify_declared_record(
+            canonical_save, "canonical_seed_save"
         )
         canonical_seed_sha = str(lineage.get("canonical_seed_save_sha256", "")).upper()
-        generated_save = generated.get("save") if isinstance(generated.get("save"), Mapping) else {}
-        loaded_save = loaded_chain.get("save") if isinstance(loaded_chain.get("save"), Mapping) else {}
+        lineage_source = (
+            lineage.get("source")
+            if isinstance(lineage.get("source"), Mapping)
+            else {}
+        )
+        lineage_game = (
+            lineage.get("game")
+            if isinstance(lineage.get("game"), Mapping)
+            else {}
+        )
+        lineage_mount = (
+            lineage.get("mod_mount")
+            if isinstance(lineage.get("mod_mount"), Mapping)
+            else {}
+        )
         checks["seed_generation_to_loaded_proof_continuous"] = (
             seed_chain.get("schema_version") == 1
             and seed_chain.get("result") == "GREEN"
-            and _nonempty(seed_chain.get("session_id"))
-            and _positive_int(seed_pid)
-            and _positive_int(seed_generation)
-            and generated.get("session_id") == seed_chain.get("session_id")
-            and loaded_chain.get("session_id") == seed_chain.get("session_id")
-            and generated.get("bridge_pid") == seed_pid
-            and loaded_chain.get("bridge_pid") == seed_pid
-            and generated.get("connection_generation") == seed_generation
-            and loaded_chain.get("connection_generation") == seed_generation
-            and _revision(generated.get("revision"))
+            and seed_chain.get("seed_lineage_id") == lineage.get("seed_lineage_id")
+            and canonical_save_ok
+            and canonical_save.get("save_lineage_id")
+            == lineage.get("seed_lineage_id")
+            and str(canonical_save.get("sha256", "")).upper()
+            == canonical_seed_sha
+            and str(generated.get("save_sha256", "")).upper()
+            == canonical_seed_sha
+            and generated.get("source_git_commit")
+            == lineage_source.get("git_commit")
+            and str(generated.get("source_product_tree_sha256", "")).upper()
+            == str(lineage_source.get("tree_sha256", "")).upper()
+            and _sha(generated.get("source_report_sha256"))
+            and _sha(generated.get("source_evidence_index_sha256"))
+            and generated.get("game_version") == lineage_game.get("version")
+            and str(generated.get("game_exe_sha256", "")).upper()
+            == str(lineage_game.get("exe_sha256", "")).upper()
+            and _nonempty(loaded_chain.get("session_id"))
+            and _positive_int(loaded_chain.get("bridge_pid"))
+            and _positive_int(loaded_chain.get("connection_generation"))
             and _revision(loaded_chain.get("revision"))
-            and int(loaded_chain.get("revision", -1))
-            >= int(generated.get("revision", 0))
-            and _positive_int(generated.get("native_revision"))
             and _positive_int(loaded_chain.get("native_revision"))
-            and int(loaded_chain.get("native_revision", 0))
-            >= int(generated.get("native_revision", 1))
-            and generated_save_ok
-            and loaded_save_ok
-            and str(generated_save.get("sha256", "")).upper() == canonical_seed_sha
-            and str(loaded_save.get("sha256", "")).upper() == canonical_seed_sha
+            and str(loaded_chain.get("save_sha256", "")).upper()
+            == canonical_seed_sha
+            and str(loaded_chain.get("source_product_tree_sha256", "")).upper()
+            == str(lineage_source.get("tree_sha256", "")).upper()
+            and loaded_chain.get("game_version") == lineage_game.get("version")
+            and str(loaded_chain.get("game_exe_sha256", "")).upper()
+            == str(lineage_game.get("exe_sha256", "")).upper()
+            and str(loaded_chain.get("mod_mount_tree_sha256", "")).upper()
+            == str(lineage_mount.get("tree_sha256", "")).upper()
             and loaded.get("schema_version") == 2
             and loaded.get("result") == "GREEN"
-            and observed.get("bridge_pid") == seed_pid
-            and observed.get("connection_generation") == seed_generation
+            and observed.get("bridge_pid") == loaded_chain.get("bridge_pid")
+            and observed.get("connection_generation")
+            == loaded_chain.get("connection_generation")
             and observed.get("revision") == loaded_chain.get("revision")
             and observed.get("native_revision") == loaded_chain.get("native_revision")
             and str(observed.get("save_sha256", "")).upper() == canonical_seed_sha
@@ -651,6 +676,10 @@ def validate_footage_intake(capture_root: Path | None) -> dict[str, object]:
                 session.get("end_checkpoint")
                 if isinstance(session.get("end_checkpoint"), Mapping)
                 else {}
+            )
+            cleanup_record_ok = verify_declared_record(
+                span_cleanup.get("native_cleanup"),
+                f"{expected.span_id}_native_cleanup",
             )
             stage_identity_ok = all(
                 stage.get("session_id") == session_id
@@ -708,8 +737,13 @@ def validate_footage_intake(capture_root: Path | None) -> dict[str, object]:
                 and checkpoint_chain_ok
                 and postcondition_bound
                 and span_cleanup.get("result") == "GREEN"
+                and span_cleanup.get("session_id") == session_id
+                and span_cleanup.get("bridge_pid") == pid
+                and span_cleanup.get("connection_generation") == generation
                 and span_cleanup.get("process_tree_gone") is True
                 and span_cleanup.get("driver_closed") is True
+                and span_cleanup.get("locks_released") is True
+                and cleanup_record_ok
             )
             per_span_ok = per_span_ok and row_ok
             lineage_binding = session.get("lineage_binding")

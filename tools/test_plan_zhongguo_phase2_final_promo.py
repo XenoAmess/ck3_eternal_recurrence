@@ -234,7 +234,12 @@ class FinalPromoRunbookTests(unittest.TestCase):
                 session_policy["cross_span_pid_or_generation_equality_required"]
             )
             self.assertTrue(
-                session_policy["seed_generation_to_loaded_proof_same_session"]
+                session_policy[
+                    "seed_generation_to_loaded_proof_hash_continuous"
+                ]
+            )
+            self.assertTrue(
+                session_policy["seed_generation_session_may_differ_from_capture"]
             )
             self.assertEqual(
                 session_policy["forbidden_sources"],

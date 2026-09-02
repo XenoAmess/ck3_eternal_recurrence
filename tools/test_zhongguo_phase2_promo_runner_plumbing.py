@@ -142,6 +142,7 @@ def _enter_common_run_cell_patches(
         _runtime_source: Path,
         *,
         workshop_manifest: Path | None = None,
+        include_acceptance_fixture: bool = True,
     ) -> dict[str, object]:
         del workshop_manifest
         logs = userdir / "logs"
@@ -150,13 +151,28 @@ def _enter_common_run_cell_patches(
         product = userdir / "mod-content" / "product"
         fixture = userdir / "mod-content" / "fixture"
         product.mkdir(parents=True, exist_ok=True)
-        fixture.mkdir(parents=True, exist_ok=True)
-        runtime_targets.update(product=product, fixture=fixture)
+        if include_acceptance_fixture:
+            fixture.mkdir(parents=True, exist_ok=True)
+            runtime_targets.update(product=product, fixture=fixture)
+        else:
+            runtime_targets.update(product=product)
+        enabled_mods = [f"mod/{capture.PRODUCT_OUTER}"]
+        if include_acceptance_fixture:
+            enabled_mods.append("mod/fixture.mod")
         return {
             "targets": dict(runtime_targets),
-            "tree_snapshots": {"product": {}, "fixture": {}},
-            "tree_sha256": {"product": "p", "fixture": "f"},
-            "enabled_mods": ["mod/product.mod", "mod/fixture.mod"],
+            "tree_snapshots": {
+                key: {} for key in runtime_targets
+            },
+            "tree_sha256": {
+                key: value
+                for key, value in (
+                    ("product", "A" * 64),
+                    ("fixture", "B" * 64),
+                )
+                if key in runtime_targets
+            },
+            "enabled_mods": enabled_mods,
             "manifest": {"fixture": "unit"},
         }
 
@@ -1445,6 +1461,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             "loader_error_log_scan": {"result": "GREEN"},
             "runtime_mount_inventory": ["product", "fixture"],
         }
+        runtime_revision = {"revision": 100, "native_revision": 200}
 
         class ContractDriver:
             def __init__(self) -> None:
@@ -1455,6 +1472,8 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
 
             def run_span(self, scenario, _context, _runtime):
                 self.calls += 1
+                runtime_revision["revision"] += 1
+                runtime_revision["native_revision"] += 1
                 return {
                     "result": "GREEN",
                     "surface_visible": True,
@@ -1462,9 +1481,11 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     "provider_observed": True,
                     "handler": scenario.handler,
                     "binding": {
-                        "snapshot_id": f"phase2-cross-contract:{100 + self.calls}",
-                        "revision": 100 + self.calls,
-                        "native_revision": 200 + self.calls,
+                        "snapshot_id": (
+                            f"phase2-cross-contract:{runtime_revision['revision']}"
+                        ),
+                        "revision": runtime_revision["revision"],
+                        "native_revision": runtime_revision["native_revision"],
                         "date_raw": 777 + self.calls,
                         "bridge_pid": tracked_pid,
                         "connection_generation": connection_generation,
@@ -1578,9 +1599,81 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             root = Path(temporary)
             artifact_root = (root / "capture").resolve()
             bridge = SimpleNamespace(pipe_name=r"\\.\pipe\phase2-contract-unit")
+            seed_path = (root / "canonical-phase2.ck3").resolve()
+            seed_path.write_bytes(b"canonical-phase2-seed")
+            seed_sha = hashlib.sha256(seed_path.read_bytes()).hexdigest().upper()
+            seed_contract.update(
+                {
+                    "provenance": {
+                        "source_git_commit": "1" * 40,
+                        "source_report_sha256": "2" * 64,
+                        "source_evidence_index_sha256": "3" * 64,
+                    },
+                    "runtime": {
+                        "source_product_tree_sha256": "A" * 64,
+                        "game_version": capture.EXPECTED_GAME_VERSION,
+                        "executable_sha256": capture.EXPECTED_EXE_SHA256,
+                    },
+                    "source": {
+                        "bytes": seed_path.stat().st_size,
+                        "sha256": seed_sha,
+                    },
+                }
+            )
+            seed_install.update(
+                {
+                    "contract": copy.deepcopy(seed_contract),
+                    "source": {
+                        "path": str(seed_path),
+                        "bytes": seed_path.stat().st_size,
+                        "sha256": seed_sha,
+                    },
+                }
+            )
+
+            class ReceiptService(_FakeService):
+                def snapshot(self) -> dict[str, object]:
+                    value = copy.deepcopy(snapshot)
+                    value["revision"] = runtime_revision["revision"]
+                    value["native_revision"] = runtime_revision["native_revision"]
+                    value["snapshot_id"] = (
+                        f"phase2-cross-contract:{runtime_revision['revision']}"
+                    )
+                    return value
+
+                def save_checkpoint(
+                    self, *, expected_revision: int
+                ) -> dict[str, object]:
+                    self.assert_revision(expected_revision)
+                    checkpoint_path = (
+                        root
+                        / "native-checkpoints"
+                        / f"checkpoint-{time.monotonic_ns()}.ck3"
+                    ).resolve()
+                    checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+                    checkpoint_path.write_bytes(
+                        f"native:{expected_revision}:{checkpoint_path.name}".encode()
+                    )
+                    payload = checkpoint_path.read_bytes()
+                    return {
+                        "accepted": True,
+                        "checkpoint": {
+                            "status": "saved",
+                            "path": str(checkpoint_path),
+                            "size": len(payload),
+                            "sha256": hashlib.sha256(payload).hexdigest().upper(),
+                        },
+                    }
+
+                @staticmethod
+                def assert_revision(expected_revision: int) -> None:
+                    if expected_revision != runtime_revision["revision"]:
+                        raise AssertionError("receipt save revision drifted")
 
             def artifact_hash(path: Path) -> str:
                 candidate = Path(path).resolve()
+                if candidate == seed_path or root / "native-checkpoints" in candidate.parents:
+                    return hashlib.sha256(candidate.read_bytes()).hexdigest().upper()
                 try:
                     candidate.relative_to(artifact_root)
                 except ValueError:
@@ -1589,6 +1682,9 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
 
             with ExitStack() as stack:
                 _enter_common_run_cell_patches(stack, root)
+                stack.enter_context(
+                    mock.patch.object(capture, "GameplayBridgeService", ReceiptService)
+                )
                 stack.enter_context(
                     mock.patch.object(capture, "PromoRecorder", NoLaunchPromoRecorder)
                 )
@@ -1637,20 +1733,34 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                         return_value=copy.deepcopy(loader_gate),
                     )
                 )
+                def stop_with_receipt(
+                    _supervisor: object,
+                    cleanup_artifacts: Path,
+                    **_kwargs: object,
+                ) -> dict[str, object]:
+                    cleanup = {
+                        "result": "GREEN",
+                        "cleanup_proven": True,
+                        "contract_errors": [],
+                        "failed_checks": [],
+                        "checks": {"tracked_process_tree_gone": True},
+                        "pid_lineage": [tracked_pid],
+                        "connection_generation_lineage": [
+                            connection_generation
+                        ],
+                        "session_report": {"restart_count": 0},
+                    }
+                    capture.write_json(
+                        cleanup_artifacts / "09_phase2_native_session_cleanup.json",
+                        cleanup,
+                    )
+                    return cleanup
+
                 stack.enter_context(
                     mock.patch.object(
                         capture,
                         "stop_phase2_native_session_supervisor",
-                        return_value={
-                            "result": "GREEN",
-                            "cleanup_proven": True,
-                            "contract_errors": [],
-                            "pid_lineage": [tracked_pid],
-                            "connection_generation_lineage": [
-                                connection_generation
-                            ],
-                            "session_report": {"restart_count": 0},
-                        },
+                        side_effect=stop_with_receipt,
                     )
                 )
                 forbidden_launch = stack.enter_context(
@@ -1741,7 +1851,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 (artifact_root / "evidence-index.json").read_text(encoding="utf-8")
             )
 
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 0, outer)
         self.assertEqual(strict["result"], "GREEN", strict["errors"])
         self.assertTrue(all(strict["checks"].values()), strict["checks"])
         self.assertEqual(outer["cell"]["promo_capture"], timeline)

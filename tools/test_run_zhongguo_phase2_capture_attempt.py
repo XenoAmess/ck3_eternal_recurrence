@@ -156,7 +156,14 @@ class CaptureAttemptPlanTests(unittest.TestCase):
             )
             self.assertEqual(
                 manifest["managed_session_handoff"]["same_session_boundary"],
-                "loaded-seed-v2-through-eight-span-capture",
+                "per-span-pre-action-post-only",
+            )
+            self.assertTrue(
+                manifest["managed_session_handoff"]["cross_span_restart_allowed"]
+            )
+            self.assertEqual(
+                manifest["managed_session_handoff"]["seed_generation_continuity"],
+                "save-hash-and-source-provenance",
             )
             self.assertFalse(
                 manifest["managed_session_handoff"][
