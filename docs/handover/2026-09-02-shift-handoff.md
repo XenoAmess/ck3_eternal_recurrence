@@ -14,7 +14,7 @@
 ## 1. 当前主线与发布锚点
 
 - 父仓库远端：`https://github.com/XenoAmess/ck3_eternal_recurrence.git`
-- 本交接快照父仓库主线：`7f31580`（`Record can-be-acclaimed accelerator slice`）；提交前先 `git fetch origin master`，若远端前进只做 fast-forward/rebase，不在用户脏工作树操作。
+- 本交接快照父仓库主线：`fefdb6d`（`Record phase2 loader dispatch boundary`）；提交前先 `git fetch origin master`，若远端前进只做 fast-forward/rebase，不在用户脏工作树操作。此前交接提交链为 `0c9c43a` → `547c7ac` → `8d79ae2`。
 - 用户原工作树 `Z:\ck3_mod_rewrite` 是 detached 且有用户现场改动（快照 `236dd32`）；禁止 reset、checkout、清理或覆盖。继续工作使用独立 clean worktree。
 - 正式宣传工具仓库：`https://github.com/XenoAmess/xar_promo_toolchain`，本地 `Z:\workspace\xar_promo_toolchain`，`main` 与远端一致，`v0.1.0` 已有 wheel/sdist/SHA256SUMS。无需重复发布。
 - `open_kaishek`：`Z:\workspace\open_kaishek`，当前 `main`/`origin/main` 为 `759199b`；保持少分支，临时分支完成后立即合并/删除。
@@ -33,6 +33,10 @@
   `docs/ck3-native-ai/phase2-loader-callback-cfg-2026-09-02.md`。
 - callback probe NO-GO 说明：没有可复用的 debugger/硬件断点/loader 专用捕获入口；详见
   `docs/ck3-native-ai/phase2-loader-callback-probe-no-go-2026-09-02.md`。
+- 最新静态 dispatch-window 增量已在 `fefdb6d` 合入：窗口
+  `[0x3B9AB50,0x3B9AB93)`（67 bytes，14 instructions），保留两条 null CFG edge 与 8 个 direct callers；输出
+  `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-callback-boundary-next-20260902.json`，SHA-256
+  `D2E0677813EC641DB77F0F8F81ECB6F57F611254A8A183A77776465B24424295`。focused static checks `6/6 + 4/4` GREEN；仍不代表 runtime callback 或 loader readiness。
 
 ### 下一步（仅一个最小入口）
 
@@ -71,7 +75,7 @@
 ## 5. 报告、分支与 429 规则
 
 - 日报：`docs/autonomous-agent-progress/daily/2026-09-02.md`；周报：`docs/autonomous-agent-progress/weekly/2026-W36.md`。新证据当场追加，必须带 artifact 路径、SHA、commit、CI、readiness 标签和遗留项。
-- 最近父仓 Official Runner CI（截至快照）均 SUCCESS；`7f31580` 对应 run `33592554247`。若远端已有更新，以 `gh run list` 实际结果为准，只查一次。
+- 最近父仓 Official Runner CI（截至快照）中 `7f31580` 对应 run `33592554247` SUCCESS；`fefdb6d` 对应 run `33593818448`（交接时 queued/in progress）。若远端已有更新，以 `gh run list` 实际结果为准，只查一次。
 - 每个工作包只做一次必要验证，完成即提交主线并推送；少分支、早合并。不要为了“清理”删除用户指定保留的构建目录或现场数据。
 - 子进程遇到 HTTP `429`：直接复用原任务线程/工作树继续同一个 bounded 包，保留已有证据；不要把 429 当失败，不要从头重复无变化验证。规则已写入 `AGENTS.md` 与 `docs/branch-management.md`。
 
