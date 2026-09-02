@@ -2028,3 +2028,42 @@ The source and invocation contract are
 not constitute live evidence. A future GREEN run must wait for the P0 seed
 slot, and still must not promote the public terms ABI or
 `war_bound_armies_ready` until the private live artifact has been reviewed.
+
+#### 2026-09-02 bounded private live attempt: loader-stage RED
+
+[harness RED / native observation not reached] One authorized run used the
+frozen manifest and capture executable above, the exact CK3 executable and
+base `bookmark_events.txt`, and the offline-GREEN `open_kaishek` checkout
+`0390b9a959fa1a59a968000ed49e827a03b8d4e4`. The run remained on CK3's
+"starting game" loading screen until the 120-second main-menu OCR deadline.
+It therefore did not select Robert, advance game time, observe
+`bookmark.1071`, create the exact action-arm file, or reach the private native
+breakpoint.
+
+The recovered failure report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-war-bound-private-capture-20260902T193723\report.json`
+(SHA-256
+`35AB762341758CF49DFA14621CE47BFD8550F8615D075BE29D58200629A99460`).
+The terminal screenshot is `ui/timeout_01_main_menu.png` (SHA-256
+`D1B767BBB72F704CA2A097FA86B29E488EC72C69052FBE5E96552C2CD1C48F65`).
+The cleanup sidecar is `cleanup.json` (SHA-256
+`23143DE335D4EDA9194DAE684CF3266B39AF3F29647E4E59DC26C14AF173E84E`)
+and records a zero-process inventory immediately after the attempt. All six
+frozen input hashes are identical before and after. No console, bridge,
+gameplay command API, event option, or time advance was used, and no second
+CK3 process was started.
+
+The capture process had opened `capture.json` but was tree-terminated before
+writing a document, leaving the empty-file SHA-256
+`E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855`.
+That exposed a real harness defect: the Python runner tried to decode the
+empty artifact and masked its preceding loader timeout. The runner now treats
+missing, empty, malformed, or non-object capture artifacts as reportable
+typed inputs; this is an offline reporting fix and does not authorize another
+live attempt.
+
+This RED does not disprove or live-confirm the native seam. The exact next
+native observation point remains RVA `0x2E7F951`, gated by the exact
+`bookmark.1071.a` action arm and six source executions. Source attribution,
+measured initial soldiers, proven loss, the public ABI, and
+`war_bound_armies_ready` all remain unchanged/false.

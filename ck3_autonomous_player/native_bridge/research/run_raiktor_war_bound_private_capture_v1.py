@@ -108,6 +108,22 @@ def atomic_arm(path: Path) -> str:
     return observed
 
 
+def load_capture_artifact(path: Path) -> tuple[dict[str, object] | None, str | None]:
+    """Load a terminal capture without masking an earlier harness failure."""
+    if not path.is_file():
+        return None, "capture artifact was not created"
+    payload = path.read_text(encoding="utf-8")
+    if not payload.strip():
+        return None, "capture artifact is empty"
+    try:
+        decoded = json.loads(payload)
+    except json.JSONDecodeError as exc:
+        return None, f"capture artifact is invalid JSON: {exc}"
+    if not isinstance(decoded, dict):
+        return None, "capture artifact root is not an object"
+    return decoded, None
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture-exe", type=Path, required=True)
@@ -332,11 +348,7 @@ def main() -> int:
 
     time.sleep(1)
     after_inventory = process_inventory()
-    capture = (
-        json.loads(capture_path.read_text(encoding="utf-8"))
-        if capture_path.is_file()
-        else None
-    )
+    capture, capture_artifact_error = load_capture_artifact(capture_path)
     after_hashes = {
         "manifest": sha256(args.manifest),
         "capture_exe": sha256(args.capture_exe),
@@ -404,6 +416,7 @@ def main() -> int:
         "capture_artifact_sha256": (
             sha256(capture_path) if capture_path.is_file() else None
         ),
+        "capture_artifact_error": capture_artifact_error,
         "cleanup": {
             "process_inventory": after_inventory,
             "tree_gone": not after_inventory,
