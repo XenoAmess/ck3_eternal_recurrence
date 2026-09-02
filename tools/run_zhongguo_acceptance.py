@@ -109,6 +109,7 @@ from xar_autoplayer.bridge.zhongguo_scoreboard_action_cell import (
 )
 from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
     ZHONGGUO_RESULT_CASE_KIND_V1,
 )
 from xar_autoplayer.environment import EnvironmentSpec, make_spec
@@ -145,6 +146,7 @@ from zhongguo_phase2_visual_handlers import (
     Phase2VisualHandlerAdapter,
     Phase2VisualHandlerError,
 )
+from zhongguo_phase2_capture_choreography import PHASE2_CAPTURE_SCENARIOS
 
 import promo_real_character_contract as real_characters
 
@@ -551,6 +553,7 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
         QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
     ),
     "scoreboard_state_acl": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+    "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
 }
 PHASE2_REQUIRED_QUERY_FLAGS = {
     "b2_pip_snapshot": "zhongguo_b2_pip_snapshot_v1_query_supported",
@@ -566,6 +569,7 @@ PHASE2_REQUIRED_QUERY_FLAGS = {
     ),
     "loaded_feature_manifest": "loaded_feature_manifest_v1_query_supported",
     "current_event_context": "current_event_window_context_v1_query_supported",
+    "result_case_snapshot": "zhongguo_result_case_snapshot_v1_query_supported",
 }
 PHASE2_REQUIRED_ACTION_STEPS = {
     "pause_timeline": "pause-map",
@@ -574,6 +578,7 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "bounded_life_advance": "life-advance",
     "save_checkpoint": "save-checkpoint",
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
+    "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
 }
 # Provider readiness and gameplay completion are separate gates.  Every frozen
 # read-only provider belongs to the capability preflight below; the missing
@@ -1113,10 +1118,24 @@ def _phase2_promo_seed_proof_probe(
         raise acceptance.RunnerError(
             "phase-two promo seed contract is unavailable"
         )
+    query_manifest = getattr(
+        context.title_navigation_service,
+        "query_loaded_feature_manifest_v1",
+        None,
+    )
+    revision = snapshot.get("revision")
+    if not callable(query_manifest) or isinstance(revision, bool) or not isinstance(
+        revision, int
+    ):
+        raise acceptance.RunnerError(
+            "phase-two promo loaded-feature provider is unavailable"
+        )
+    loaded_feature_manifest = query_manifest(expected_revision=revision)
     return prove_phase2_loaded_seed(
         dict(snapshot),
         dict(context.seed_contract),
         context.artifacts,
+        loaded_feature_manifest=loaded_feature_manifest,
     )
 
 
@@ -3393,8 +3412,17 @@ def prove_phase2_loaded_seed(
     snapshot: dict[str, object],
     seed_contract: dict[str, object],
     artifacts: Path,
+    *,
+    loaded_feature_manifest: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
-    """Bind the first paused MCP snapshot to the installed save identity."""
+    """Bind the paused seed and its eight-span feature surface to one frame.
+
+    Event definitions and GUI names in the returned matrix are requirements,
+    not invented live observations.  Their real visibility and business
+    postconditions remain the responsibility of each registered visual
+    provider during choreography.  This gate proves only what the paused
+    snapshot and the strict loaded-feature query can prove before gameplay.
+    """
 
     evidence_path = artifacts / "04_phase2_seed_loaded.json"
     saved_state_value = seed_contract.get("saved_state")
@@ -3410,6 +3438,105 @@ def prove_phase2_loaded_seed(
         if isinstance(played_character_value, dict)
         else {}
     )
+    manifest = (
+        loaded_feature_manifest
+        if isinstance(loaded_feature_manifest, Mapping)
+        else {}
+    )
+    manifest_binding_value = manifest.get("binding")
+    manifest_binding = (
+        manifest_binding_value
+        if isinstance(manifest_binding_value, Mapping)
+        else {}
+    )
+    feature_flags_value = manifest.get("effective_feature_flags")
+    feature_flags = (
+        feature_flags_value
+        if isinstance(feature_flags_value, Mapping)
+        else {}
+    )
+    feature_items_value = feature_flags.get("items")
+    feature_items = (
+        feature_items_value if isinstance(feature_items_value, list) else []
+    )
+    enabled_features = {
+        str(item["key"]): item.get("enabled") is True
+        for item in feature_items
+        if isinstance(item, Mapping)
+        and isinstance(item.get("key"), str)
+    }
+    script_dlc_value = manifest.get("script_dlc_keys")
+    script_dlc = (
+        script_dlc_value if isinstance(script_dlc_value, Mapping) else {}
+    )
+    script_keys_value = script_dlc.get("keys")
+    script_keys = {
+        item for item in script_keys_value if isinstance(item, str)
+    } if isinstance(script_keys_value, list) else set()
+    manifest_checks = {
+        "loaded_feature_manifest_ready": manifest.get(
+            "loaded_feature_manifest_ready"
+        )
+        is True,
+        "loaded_feature_manifest_available": manifest.get("status")
+        == "available",
+        "manifest_snapshot_id_matches": manifest_binding.get("snapshot_id")
+        == binding["snapshot_id"],
+        "manifest_revision_matches": manifest_binding.get("revision")
+        == binding["revision"],
+        "manifest_native_revision_matches": manifest_binding.get(
+            "native_revision"
+        )
+        == binding["native_revision"],
+        "manifest_date_matches": manifest_binding.get("date_raw")
+        == binding["date_raw"],
+        "feature_flags_available": feature_flags.get("status")
+        == "available",
+        "script_dlc_keys_available": script_dlc.get("status")
+        == "available",
+    }
+    manifest_bound = all(manifest_checks.values())
+    span_requirements: list[dict[str, object]] = []
+    for scenario in PHASE2_CAPTURE_SCENARIOS:
+        feature_observations = {
+            key: enabled_features.get(key)
+            for key in scenario.loaded_feature_flags
+        }
+        script_key_observations = {
+            key: key in script_keys for key in scenario.script_dlc_keys
+        }
+        feature_ready = (
+            manifest_bound
+            and all(value is True for value in feature_observations.values())
+            and all(
+                value is True for value in script_key_observations.values()
+            )
+        )
+        span_requirements.append(
+            {
+                "span_id": scenario.span_id,
+                "producer_key": scenario.producer_key,
+                "handler": scenario.handler,
+                "requirements": {
+                    "loaded_feature_flags": list(
+                        scenario.loaded_feature_flags
+                    ),
+                    "script_dlc_keys": list(scenario.script_dlc_keys),
+                    "event_definition_keys": list(
+                        scenario.event_definition_keys
+                    ),
+                    "gui_surfaces": list(scenario.gui_surfaces),
+                    "mcp_queries": list(scenario.mcp_queries),
+                    "mcp_actions": list(scenario.mcp_actions),
+                },
+                "observed_loaded_feature_flags": feature_observations,
+                "observed_script_dlc_keys": script_key_observations,
+                "loaded_feature_seed_ready": feature_ready,
+                "event_gui_provider_live_proof": "required_at_span_execution",
+                "mcp_provider_live_proof": "required_at_span_execution",
+                "provider_ready_claimed": False,
+            }
+        )
     checks = {
         "contract_ready": seed_contract.get("ready") is True,
         "contract_status_ready": seed_contract.get("status") == "ready",
@@ -3422,10 +3549,17 @@ def prove_phase2_loaded_seed(
         and saved_state.get("played_character_alive") is True,
         "paused_on_load_expected": saved_state.get("paused_on_load") is True,
         "map_ready_expected": saved_state.get("map_ready") is True,
+        **manifest_checks,
+        "all_eight_span_requirements_present": len(span_requirements) == 8
+        and len({row["span_id"] for row in span_requirements}) == 8,
+        "all_span_loaded_features_ready": all(
+            row["loaded_feature_seed_ready"] is True
+            for row in span_requirements
+        ),
     }
     failed = [label for label, passed in checks.items() if passed is not True]
     evidence: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "result": "GREEN" if not failed else "RED",
         "scope": "phase2_installed_seed_paused_snapshot_binding",
         "mcp_only": True,
@@ -3437,6 +3571,12 @@ def prove_phase2_loaded_seed(
             "played_character_id": saved_state.get("played_character_id"),
         },
         "observed": binding,
+        "loaded_feature_manifest_binding": dict(manifest_binding),
+        "span_requirements": span_requirements,
+        "provider_boundary": (
+            "event, GUI and MCP provider availability is proven only by each "
+            "span's registered live handler; this seed proof makes no such claim"
+        ),
         "checks": checks,
         "failed_checks": failed,
         "failure_reason": (
@@ -12726,12 +12866,6 @@ def run_phase2_live_scenario(
             "artifact": "04_phase2_paused_readiness.json",
             "binding": paused_binding,
         }
-        seed_load_proof = prove_phase2_loaded_seed(
-            paused_snapshot,
-            seed_contract,
-            artifacts,
-        )
-        evidence["seed_load_proof"] = seed_load_proof
         manifest = service.query_loaded_feature_manifest_v1(
             expected_revision=int(paused_binding["revision"])
         )
@@ -12743,6 +12877,13 @@ def run_phase2_live_scenario(
             raise acceptance.RunnerError(
                 "phase-two loaded-feature manifest is not actionable"
             )
+        seed_load_proof = prove_phase2_loaded_seed(
+            paused_snapshot,
+            seed_contract,
+            artifacts,
+            loaded_feature_manifest=manifest,
+        )
+        evidence["seed_load_proof"] = seed_load_proof
 
         owner_contract = _phase2_domain_query_contract(
             seed_contract,

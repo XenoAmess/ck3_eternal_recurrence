@@ -18,6 +18,18 @@ gate or RED action raises `Phase2ChoreographyBlocked` and never creates a clean
 gate for that span.  This module does not register a producer or start/stop a
 recorder.
 
+The pre-record seed proof is schema v2.  It queries
+`query-loaded-feature-manifest-v1` on the same paused snapshot and binds its
+snapshot ID, public/native revisions and date before checking every span's
+`all_under_heaven` / `merit_admin` effective flags and the opaque runtime
+`All Under Heaven` script key.  Its eight-row matrix also carries the exact
+event definitions, machine-readable `event_window:<key>` or
+`named_widget:<name>` surface, and MCP query/action requirements.  These rows
+deliberately say `provider_ready_claimed=false`: a source definition or loaded
+DLC flag cannot prove that a later event/GUI is visible.  The registered live
+handler must still provide that proof at span execution, and an absent handler
+remains typed RED `span_handlers_missing` before recording starts.
+
 `zhongguo_phase2_visual_handlers.py` supplies the real-surface adapter for the
 four catalogue entries that previously had no visual-handler boundary.  The
 scoreboard adapter consumes the existing production action cell and accepts

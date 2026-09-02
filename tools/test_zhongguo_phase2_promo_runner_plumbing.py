@@ -260,6 +260,147 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 "legacy-phase1-span", primitive
             )
 
+    def test_loaded_seed_proof_covers_all_eight_span_requirements(self) -> None:
+        snapshot = {
+            "snapshot_id": "phase2-seed:10",
+            "revision": 10,
+            "native_revision": 110,
+            "date_raw": 777,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 9001, "alive": True},
+            "diagnostics": {"bridge_pid": 4321, "connection_generation": 4},
+        }
+        contract = {
+            "status": "ready",
+            "ready": True,
+            "saved_state": {
+                "date_raw": 777,
+                "played_character_id": 9001,
+                "played_character_alive": True,
+                "paused_on_load": True,
+                "map_ready": True,
+            },
+        }
+        manifest = {
+            "status": "available",
+            "loaded_feature_manifest_ready": True,
+            "binding": {
+                "snapshot_id": "phase2-seed:10",
+                "revision": 10,
+                "native_revision": 110,
+                "date_raw": 777,
+            },
+            "effective_feature_flags": {
+                "status": "available",
+                "items": [
+                    {"key": "all_under_heaven", "enabled": True},
+                    {"key": "merit_admin", "enabled": True},
+                ],
+            },
+            "script_dlc_keys": {
+                "status": "available",
+                "keys": ["All Under Heaven"],
+            },
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence = capture.prove_phase2_loaded_seed(
+                snapshot,
+                contract,
+                Path(temporary),
+                loaded_feature_manifest=manifest,
+            )
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(evidence["schema_version"], 2)
+        self.assertEqual(len(evidence["span_requirements"]), 8)
+        self.assertTrue(evidence["checks"]["all_span_loaded_features_ready"])
+        for row in evidence["span_requirements"]:
+            with self.subTest(span=row["span_id"]):
+                self.assertTrue(row["loaded_feature_seed_ready"])
+                self.assertFalse(row["provider_ready_claimed"])
+                self.assertEqual(
+                    row["event_gui_provider_live_proof"],
+                    "required_at_span_execution",
+                )
+                requirements = row["requirements"]
+                self.assertEqual(
+                    requirements["loaded_feature_flags"],
+                    ["all_under_heaven", "merit_admin"],
+                )
+                self.assertEqual(
+                    requirements["script_dlc_keys"], ["All Under Heaven"]
+                )
+                self.assertTrue(requirements["event_definition_keys"])
+                self.assertTrue(requirements["gui_surfaces"])
+                self.assertTrue(requirements["mcp_queries"])
+                self.assertTrue(requirements["mcp_actions"])
+
+    def test_loaded_seed_proof_is_red_when_real_feature_provider_is_missing(self) -> None:
+        snapshot = {
+            "snapshot_id": "phase2-seed:10",
+            "revision": 10,
+            "native_revision": 110,
+            "date_raw": 777,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 9001, "alive": True},
+            "diagnostics": {"bridge_pid": 4321, "connection_generation": 4},
+        }
+        contract = {
+            "status": "ready",
+            "ready": True,
+            "saved_state": {
+                "date_raw": 777,
+                "played_character_id": 9001,
+                "played_character_alive": True,
+                "paused_on_load": True,
+                "map_ready": True,
+            },
+        }
+        manifest = {
+            "status": "available",
+            "loaded_feature_manifest_ready": True,
+            "binding": {
+                "snapshot_id": "phase2-seed:10",
+                "revision": 10,
+                "native_revision": 110,
+                "date_raw": 777,
+            },
+            "effective_feature_flags": {
+                "status": "available",
+                "items": [
+                    {"key": "all_under_heaven", "enabled": True},
+                    {"key": "merit_admin", "enabled": False},
+                ],
+            },
+            "script_dlc_keys": {
+                "status": "available",
+                "keys": ["All Under Heaven"],
+            },
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            with self.assertRaises(capture.acceptance.RunnerError) as raised:
+                capture.prove_phase2_loaded_seed(
+                    snapshot,
+                    contract,
+                    artifacts,
+                    loaded_feature_manifest=manifest,
+                )
+            persisted = json.loads(
+                (artifacts / "04_phase2_seed_loaded.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+        self.assertIn("all_span_loaded_features_ready", str(raised.exception))
+        self.assertEqual(persisted["result"], "RED")
+        self.assertTrue(
+            all(
+                row["observed_loaded_feature_flags"]["merit_admin"] is False
+                for row in persisted["span_requirements"]
+            )
+        )
+
     def test_phase2_promo_preflight_keeps_missing_seed_typed_red(self) -> None:
         capture.register_phase2_promo_capture_producer(
             lambda *_args, **_kwargs: {}  # pragma: no cover - never invoked

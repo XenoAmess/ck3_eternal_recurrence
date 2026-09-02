@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 from pathlib import Path
+import re
 import sys
 import tempfile
 import unittest
@@ -104,11 +105,45 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
         for scenario in PHASE2_CAPTURE_SCENARIOS:
             with self.subTest(span=scenario.span_id):
                 self.assertTrue(scenario.event_definition_keys)
+                self.assertEqual(
+                    scenario.loaded_feature_flags,
+                    ("all_under_heaven", "merit_admin"),
+                )
+                self.assertEqual(scenario.script_dlc_keys, ("All Under Heaven",))
                 self.assertTrue(scenario.gui_surfaces)
                 self.assertTrue(scenario.mcp_queries)
                 self.assertTrue(scenario.mcp_actions)
                 self.assertTrue(scenario.postcondition)
                 self.assertFalse(scenario.gameplay_entrypoint.startswith("fixture"))
+
+    def test_event_and_named_widget_requirements_exist_in_product_sources(self) -> None:
+        repository = TOOLS.parent
+        event_source = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in (repository / "mod_zhongguo_style" / "events").glob("*.txt")
+        )
+        gui_source = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in (repository / "mod_zhongguo_style" / "gui").rglob("*.gui")
+        )
+        for scenario in PHASE2_CAPTURE_SCENARIOS:
+            for event_key in scenario.event_definition_keys:
+                with self.subTest(span=scenario.span_id, event=event_key):
+                    self.assertRegex(
+                        "\n" + event_source,
+                        rf"(?m)^\s*{re.escape(event_key)}\s*=\s*\{{",
+                    )
+                    self.assertIn(
+                        f"event_window:{event_key}", scenario.gui_surfaces
+                    )
+            for surface in scenario.gui_surfaces:
+                if surface.startswith("named_widget:"):
+                    widget = surface.removeprefix("named_widget:")
+                    with self.subTest(span=scenario.span_id, widget=widget):
+                        self.assertRegex(
+                            gui_source,
+                            rf'name\s*=\s*"{re.escape(widget)}"',
+                        )
 
     def test_readiness_reports_seed_gate_before_paused_and_handlers(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

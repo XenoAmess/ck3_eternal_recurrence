@@ -29,6 +29,8 @@ class Phase2CaptureScenario:
     producer_key: str
     handler: str
     gameplay_entrypoint: str
+    loaded_feature_flags: tuple[str, ...]
+    script_dlc_keys: tuple[str, ...]
     event_definition_keys: tuple[str, ...]
     gui_surfaces: tuple[str, ...]
     mcp_queries: tuple[str, ...]
@@ -42,8 +44,15 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "facts-quota-calibration",
         "capture_fact_quota_calibration",
         "run_phase2_scoreboard_gameplay_action_cell",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361b1.200", "zg361b1.201", "zg361.1"),
-        ("zg361_scoreboard", "zg361 calibration event"),
+        (
+            "named_widget:zg361_scoreboard_modal",
+            "event_window:zg361b1.200",
+            "event_window:zg361b1.201",
+            "event_window:zg361.1",
+        ),
         ("query-zhongguo-scoreboard-state-v1", "query-current-event-window-context-v1"),
         ("select-event-option-N",),
         "scoreboard/query revision changes and the visible calibration event is identity-ready",
@@ -53,8 +62,10 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "receipts-appeals-pip",
         "capture_receipt_appeal_pip",
         "run_phase2_b2_pip_gameplay_action_cell",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361b2.40", "zg361.4"),
-        ("B2 PIP prompt", "received-result notice"),
+        ("event_window:zg361b2.40", "event_window:zg361.4"),
         ("query-zhongguo-b2-pip-snapshot-v1", "query-current-event-window-context-v1"),
         ("select-event-option-N",),
         "the same PIP owner/subject/cycle/case reaches the selected response state",
@@ -64,8 +75,10 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "manager-governance",
         "capture_manager_governance",
         "run_phase2_ai_owned_case_gameplay_action_cell",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361mg.120",),
-        ("manager result event", "team governance evidence"),
+        ("event_window:zg361mg.120",),
         ("query-zhongguo-ai-owned-case-snapshot-v1", "query-current-event-window-context-v1"),
         ("set-speed-1", "resume-map", "pause-map"),
         "the AI-owned case reaches a provider-observed terminal business state",
@@ -75,8 +88,14 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "promotion-compensation",
         "capture_promotion_compensation",
         "event-window option cell (promotion package/compensation runtime)",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361pp.147", "zg361pp.150", "zg361comp.1"),
-        ("promotion package event", "compensation result event"),
+        (
+            "event_window:zg361pp.147",
+            "event_window:zg361pp.150",
+            "event_window:zg361comp.1",
+        ),
         ("query-current-event-window-context-v1", "query-zhongguo-result-case-snapshot-v1"),
         ("select-event-option-N",),
         "promotion choice and compensation receipt remain bound to the same frozen case",
@@ -86,8 +105,10 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "hc-workforce",
         "capture_hc_workforce",
         "run_phase2_workforce_m360_gameplay_action_cell",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361we.360", "zg361we.361"),
-        ("workforce route event", "workforce terminal result"),
+        ("event_window:zg361we.360", "event_window:zg361we.361"),
         ("query-zhongguo-workforce-collective-snapshot-v1", "query-current-event-window-context-v1"),
         ("select-event-option-N", "save-checkpoint", "restore-checkpoint"),
         "A/B/C each proves the same owner/subject case from a hash-identical checkpoint",
@@ -97,8 +118,14 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "projects-metrics",
         "capture_projects_metrics",
         "event-window option cell (credit/project runtime)",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361cp.26", "zg361cp.31", "zg361p3.229"),
-        ("project/credit event", "metrics delivery event"),
+        (
+            "event_window:zg361cp.26",
+            "event_window:zg361cp.31",
+            "event_window:zg361p3.229",
+        ),
         ("query-current-event-window-context-v1", "query-loaded-feature-manifest-v1"),
         ("select-event-option-N",),
         "project choice and metrics result are visible on identity-ready product events",
@@ -108,8 +135,14 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "incidents-operations",
         "capture_incidents_operations",
         "run_phase2_incident_gameplay_action_cell",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361ip.190", "zg361ip.290", "zg361ip.390"),
-        ("incident action event", "incident closure notice"),
+        (
+            "event_window:zg361ip.190",
+            "event_window:zg361ip.290",
+            "event_window:zg361ip.390",
+        ),
         ("query-zhongguo-incident-snapshot-v1", "query-current-event-window-context-v1"),
         ("select-event-option-N", "set-speed-1", "resume-map", "pause-map"),
         "X/Y/Z transitions and closure are provider-observed, never inferred from ACK",
@@ -119,8 +152,10 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "cross-cycle-endgame",
         "capture_cross_cycle_endgame",
         "event-window option cell (workforce/endgame runtime)",
+        ("all_under_heaven", "merit_admin"),
+        ("All Under Heaven",),
         ("zg361we.356", "zg361we.361"),
-        ("cross-cycle debt result", "institutional endgame event"),
+        ("event_window:zg361we.356", "event_window:zg361we.361"),
         ("query-zhongguo-workforce-collective-snapshot-v1", "query-loaded-feature-manifest-v1"),
         ("set-speed-1", "resume-map", "pause-map", "select-event-option-N"),
         "the terminal event is bound to the carried debt/default-change cycle",
@@ -300,6 +335,20 @@ def _validate_catalogue() -> None:
     handlers = [item.handler for item in PHASE2_CAPTURE_SCENARIOS]
     if len(handlers) != len(set(handlers)):
         raise RuntimeError("phase-two choreography handlers are not unique")
+    for scenario in PHASE2_CAPTURE_SCENARIOS:
+        if not scenario.loaded_feature_flags or not scenario.script_dlc_keys:
+            raise RuntimeError(
+                f"phase-two span lacks loaded-feature requirements: {scenario.span_id}"
+            )
+        event_surfaces = {
+            surface.removeprefix("event_window:")
+            for surface in scenario.gui_surfaces
+            if surface.startswith("event_window:")
+        }
+        if not set(scenario.event_definition_keys).issubset(event_surfaces):
+            raise RuntimeError(
+                f"phase-two span lacks an exact event-window surface: {scenario.span_id}"
+            )
 
 
 _validate_catalogue()

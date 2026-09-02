@@ -2312,14 +2312,9 @@ def main() -> int:
                 "bridge_capabilities": sorted(
                     set(capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES.values())
                 ),
-                "action_steps": [
-                    "pause-map",
-                    "resume-map",
-                    "set-speed-1",
-                    "life-advance",
-                    "save-checkpoint",
-                    "query-loaded-feature-manifest-v1",
-                ],
+                "action_steps": sorted(
+                    set(capture.PHASE2_REQUIRED_ACTION_STEPS.values())
+                ),
                 **{
                     flag: True
                     for flag in capture.PHASE2_REQUIRED_QUERY_FLAGS.values()
@@ -2589,12 +2584,43 @@ def main() -> int:
                 },
             }
 
+        def phase2_loaded_feature_manifest(
+            snapshot: dict[str, object],
+            *,
+            merit_admin: bool = True,
+        ) -> dict[str, object]:
+            return {
+                "status": "available",
+                "loaded_feature_manifest_ready": True,
+                "binding": {
+                    "snapshot_id": snapshot["snapshot_id"],
+                    "revision": snapshot["revision"],
+                    "native_revision": snapshot["native_revision"],
+                    "date_raw": snapshot["date_raw"],
+                },
+                "effective_feature_flags": {
+                    "status": "available",
+                    "items": [
+                        {"key": "all_under_heaven", "enabled": True},
+                        {"key": "merit_admin", "enabled": merit_admin},
+                    ],
+                },
+                "script_dlc_keys": {
+                    "status": "available",
+                    "keys": ["All Under Heaven"],
+                },
+            }
+
         seed_loaded_artifacts = temporary_root / "phase2-seed-loaded-green"
         seed_loaded_artifacts.mkdir()
+        loaded_snapshot = phase2_snapshot(pid=4321, generation=4, revision=10)
         loaded_seed = capture.prove_phase2_loaded_seed(
-            phase2_snapshot(pid=4321, generation=4, revision=10),
+            loaded_snapshot,
             ready_seed_contract,
             seed_loaded_artifacts,
+            loaded_feature_manifest=phase2_loaded_feature_manifest(
+                loaded_snapshot
+            ),
         )
         assert loaded_seed["result"] == "GREEN"
         assert loaded_seed["observed"]["date_raw"] == 777
@@ -2610,6 +2636,9 @@ def main() -> int:
                 wrong_seed_snapshot,
                 ready_seed_contract,
                 wrong_seed_artifacts,
+                loaded_feature_manifest=phase2_loaded_feature_manifest(
+                    wrong_seed_snapshot
+                ),
             )
         except capture.acceptance.RunnerError as error:
             assert "date_raw_matches_seed" in str(error)
@@ -2625,15 +2654,19 @@ def main() -> int:
         wrong_player_artifacts = temporary_root / "phase2-seed-player-red"
         wrong_player_artifacts.mkdir()
         try:
+            wrong_player_snapshot = phase2_snapshot(
+                pid=4321,
+                generation=4,
+                revision=10,
+                player=9002,
+            )
             capture.prove_phase2_loaded_seed(
-                phase2_snapshot(
-                    pid=4321,
-                    generation=4,
-                    revision=10,
-                    player=9002,
-                ),
+                wrong_player_snapshot,
                 ready_seed_contract,
                 wrong_player_artifacts,
+                loaded_feature_manifest=phase2_loaded_feature_manifest(
+                    wrong_player_snapshot
+                ),
             )
         except capture.acceptance.RunnerError as error:
             assert "played_character_matches_seed" in str(error)
@@ -3286,7 +3319,7 @@ def main() -> int:
             ) -> dict[str, object]:
                 assert expected_revision == int(self.binding["revision"])
                 self.calls.append(("manifest", expected_revision))
-                return {"loaded_feature_manifest_ready": True}
+                return phase2_loaded_feature_manifest(self.snapshot())
 
             def query_zhongguo_b2_pip_snapshot_v1(
                 self,
@@ -4142,7 +4175,7 @@ def main() -> int:
                 self, *, expected_revision: int
             ) -> dict[str, object]:
                 assert expected_revision == 10
-                return {"loaded_feature_manifest_ready": True}
+                return phase2_loaded_feature_manifest(scenario_snapshot)
 
         scenario_snapshot = phase2_snapshot(
             pid=4321, generation=4, revision=10
