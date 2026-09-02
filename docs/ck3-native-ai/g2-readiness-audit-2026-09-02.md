@@ -358,3 +358,16 @@ slice. Its parent preflight artifact SHA-256 is
 `CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`;
 parser and the dedicated fixture validator are GREEN, the bounded root
 validator remains RED, and no CK3 process or mutation was involved.
+
+## 2026-09-02 10:50 exact evaluator call-site closure
+
+A bounded static pass on the frozen executable found no ABI-preserving offset
+swap for the missing truce duration. The evaluator at RVA `0x3373000` uses the
+three-argument Win64 shape `(script_value, effect_context,
+evaluation_context)` and returns an `int32`. Both direct CAddTruce call sites
+(`0x2EDAF01` and `0x2EDB59E`) load the duration object from `truce_effect+0x108`
+and pass `context+0x28` as the evaluation context. All other `+0x60/+0x78/+0xF8/+0x208`
+call sites belong to different effect types. This closes the static call
+contract without proving the dynamic loaded-tree/context state; no code,
+public ABI, or CK3 run changed. The next G2 entry remains an internal trace or
+equivalent paused evidence path.
