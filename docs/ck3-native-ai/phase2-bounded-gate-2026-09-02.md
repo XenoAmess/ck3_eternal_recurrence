@@ -507,6 +507,33 @@ The next legitimate entry is offline closure of callback prologue/parameter/
 thread evidence, followed by a separately opt-in private recorder only if
 those prerequisites become concrete.
 
+## 2026-09-02 11:17 telemetry live recheck
+
+After the required current `open_kaishek` offline preflight, one new exact-build
+read-only phase-two entry was run against frozen source `a89282d` with the
+`f20a88d` loader telemetry. The retained report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\phase2-live-recheck-20260902\artifacts-a89282d-f20-loader\runner-report.json`
+(SHA-256
+`187E1A438F0DCDE838BAC1AF02AAB878393BBAF999D704E3C9F2D843627FBBA9`). The
+matching offline preflight is retained in the same attempt directory
+(`open-kaishek-preflight.json`, SHA-256
+`E18ECD37F2EC8AAA56BCE5CE271F968CB58CEF8ACACEB710E14D5001A272B8DC`).
+
+The run reached the same loader boundary but now has native callback evidence:
+`RED/loader_stage_timeout`, `reason_code=database_callback_stall`,
+`elapsed_seconds=299.748`, two completed callbacks/nodes
+(`CGameConceptTypeDatabase` 441 ms and `CJominiLoadScreenDatabase` 9 ms),
+zero fatal errors, zero `PostInit` rows, and
+`database_callback_quiet_seconds=286.430`. `event_wait_authorized=false`;
+native readiness and all seed/event work were not entered. Managed cleanup,
+tree removal, and driver close are GREEN, with no action or save write.
+
+The report's `clean_source_unchanged=false` is isolated to six runner-created
+`__pycache__` files in the clean export; product/runtime dependency hashes are
+unchanged and the logs contain only four path-length warnings, not script
+fatalities. This immutability defect is tracked for the next runner patch and
+does not alter the loader diagnosis or upgrade phase-two readiness.
+
 ## 2026-09-02 11:00 open_kaishek `has_innovation` follow-up
 
 Before any subsequent phase-two entry, the current accelerator was advanced
