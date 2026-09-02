@@ -1,0 +1,47 @@
+{
+  "contract": "phase2-wrapper-entry-observer-v1-source",
+  "required_header_tokens": [
+    "kPhase2WrapperEntryObserverPatchRvaV1 =",
+    "0x3B9E030",
+    "kPhase2WrapperEntryObserverContinueRvaV1 =",
+    "0x3B9E03F",
+    "entry_count",
+    "last_return_address",
+    "last_callsite_rva",
+    "last_scheduler_owner",
+    "last_producer_list",
+    "last_thread_id",
+    "last_timestamp_qpc",
+    "UninstallPhase2WrapperEntryObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor",
+    "Phase2WrapperEntryObserverThunkV1",
+    "QueryPerformanceCounter",
+    "r8=[entry rsp+28]",
+    "rdx=saved entry rcx",
+    "rcx=[entry rsp]",
+    "return_address - state.module_base - 5",
+    "TargetWriteResult::rollback_unproven",
+    "WriteTarget(state, state.installed_patch_bytes.data()",
+    "RecordPhase2WrapperEntryObservationV1"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1",
+    "phase2_wrapper_entry_observer_v1",
+    "InstallPhase2WrapperEntryObserverV1",
+    "entry_count",
+    "last_return_address",
+    "last_callsite_rva",
+    "last_scheduler_owner",
+    "last_producer_list",
+    "last_thread_id",
+    "last_timestamp_qpc"
+  ],
+  "fixture_cases": [
+    "generated stub captures wrapper return address, scheduler owner, and fifth-argument producer list",
+    "callsite mapping subtracts module base and five-byte direct-call length",
+    "uninstall restores exact anchor",
+    "recoverable target-flush failure rolls back and releases ownership"
+  ]
+}

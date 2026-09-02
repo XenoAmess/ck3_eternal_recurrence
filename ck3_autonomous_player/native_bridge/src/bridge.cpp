@@ -11,6 +11,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
+#include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -64,6 +65,11 @@ constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
 #else
 constexpr bool kStartupParticle2StageRecorderEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1)
+constexpr bool kPhase2WrapperEntryObserverEnabledV1 = true;
+#else
+constexpr bool kPhase2WrapperEntryObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
 constexpr bool kPhase2CompletionObserverEnabledV1 = true;
 #else
@@ -96,6 +102,8 @@ static xar::bridge::StartupLocalizeCurrentRootGuardV1State
     g_startup_localize_current_root_guard_v1{};
 static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
+static xar::bridge::Phase2WrapperEntryObserverV1State
+    g_phase2_wrapper_entry_observer_v1{};
 
 bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
@@ -232,6 +240,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto phase2_completion_observer =
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(
           g_phase2_completion_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1)
+  const auto phase2_wrapper_entry_observer =
+      xar::bridge::ReadPhase2WrapperEntryObserverV1Diagnostics(
+          g_phase2_wrapper_entry_observer_v1);
 #endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
@@ -372,6 +385,27 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += phase2_completion_observer.last_observed_retired ? "true" : "false";
   result += ",\"last_will_retire\":";
   result += phase2_completion_observer.last_will_retire ? "true" : "false";
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1)
+  result += "},\"phase2_wrapper_entry_observer_v1\":{";
+  result += "\"private_build\":true,\"installed\":";
+  result += phase2_wrapper_entry_observer.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(phase2_wrapper_entry_observer.failure_flags);
+  result += ",\"entry_count\":";
+  result += Number(phase2_wrapper_entry_observer.entry_count);
+  result += ",\"last_return_address\":";
+  result += Number(phase2_wrapper_entry_observer.last_return_address);
+  result += ",\"last_callsite_rva\":";
+  result += Number(phase2_wrapper_entry_observer.last_callsite_rva);
+  result += ",\"last_scheduler_owner\":";
+  result += Number(phase2_wrapper_entry_observer.last_scheduler_owner);
+  result += ",\"last_producer_list\":";
+  result += Number(phase2_wrapper_entry_observer.last_producer_list);
+  result += ",\"last_thread_id\":";
+  result += Number(phase2_wrapper_entry_observer.last_thread_id);
+  result += ",\"last_timestamp_qpc\":";
+  result += Number(phase2_wrapper_entry_observer.last_timestamp_qpc);
 #endif
   result += "}}";
   return result;
@@ -7861,6 +7895,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallPhase2CompletionObserverV1(
             g_phase2_completion_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kPhase2WrapperEntryObserverEnabledV1) {
+    xar::bridge::Phase2WrapperEntryObserverV1Environment environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPhase2WrapperEntryObserverV1(
+            g_phase2_wrapper_entry_observer_v1, environment)) {
       return FALSE;
     }
   }

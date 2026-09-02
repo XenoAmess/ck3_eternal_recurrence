@@ -1,0 +1,72 @@
+{
+  "contract": "phase2-wrapper-entry-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-ready-to-live",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "4e7bee157fbda825605f3325cf10c931485eb658"
+  },
+  "scope": {
+    "read_only_game_state": true,
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1",
+    "installed_by_default": false,
+    "public_abi_changed": false,
+    "default_heartbeat_schema_changed": false,
+    "readiness_promotion": false,
+    "ck3_started": false
+  },
+  "exact_hook": {
+    "patch_rva": "0x3B9E030",
+    "patch_bytes": 15,
+    "anchor_hex": "48895C240848896C24184889742420",
+    "continue_rva": "0x3B9E03F",
+    "replayed_semantics": "save RBX/RBP/RSI in their native home slots, then continue at the first native push",
+    "stub_bytes": 89,
+    "entry_stack_contract": {
+      "return_address": "[RSP]",
+      "scheduler_owner": "RCX",
+      "producer_list": "[RSP+0x28] fifth argument"
+    }
+  },
+  "private_telemetry": {
+    "carrier": "private-option heartbeat phase2_wrapper_entry_observer_v1 object",
+    "fields": [
+      "entry_count",
+      "last_return_address",
+      "last_callsite_rva",
+      "last_scheduler_owner",
+      "last_producer_list",
+      "last_thread_id",
+      "last_timestamp_qpc"
+    ],
+    "callsite_mapping": "last_callsite_rva = last_return_address - module_base - 5; membership is checked against the separately frozen 618-callsite artifact",
+    "timestamp_clock": "QueryPerformanceCounter",
+    "return_count": "not required for this observation: prior exact CFG freezes normal return at 0x3B9E265 and this package only identifies the runtime caller and producer carrier"
+  },
+  "lifecycle": {
+    "install": "exact build admitted and newly-created primary thread suspension proven",
+    "patch": "transactional anchor/protection/write/identity/flush/protection restore",
+    "rollback": "recoverable install failure restores exact anchor and releases RX stub; unproven rollback retains ownership and stub",
+    "uninstall": "caller must prove quiescence; restores the exact 15-byte anchor before releasing stub",
+    "production_startup_wiring": "private option calls install from XarCk3BridgePrepareStartup",
+    "live_cleanup": "bounded runner must terminate the isolated process; standalone uninstall remains fixture-covered"
+  },
+  "source_hashes": {
+    "header_sha256": "2D574D08F7363C74B3DC156D79DF66249F416D0C8DF5C1B9041A60B166AB4249",
+    "implementation_sha256": "DEC8FFD2E0E91ED0C270F0C282405A33A23406F96D5553225F0DBA3251FBC39D",
+    "fixture_test_sha256": "267ED9C01B3521EA7E4901DA7E5D00859E278DBB2DBB229287218F30C053B5C8"
+  },
+  "acceptance": {
+    "offline_fixture": "install/executed stub/argument capture/callsite mapping/uninstall/recoverable rollback GREEN",
+    "private_bridge_build": "MSVC x64 Release private-option DLL SHA-256 B39624100F0119A87DAED1055F8F31EB4692AB1D5F4083E1C5518028678F14E6",
+    "default_bridge_build": "MSVC x64 Release default DLL SHA-256 99DD731351ACBC41EE60C60D00B5BA0E4085285E7A51D45FB0702FB6BA84DAAD; private heartbeat tokens absent",
+    "live_status": "not run; waiting for a newly frozen serialized CK3 authorization"
+  },
+  "limits": [
+    "the hook observes wrapper entry and does not change scheduler owner, producer list, task, callback, state, or loader flow",
+    "the private heartbeat extension is absent from default builds",
+    "no public bridge capability or readiness gate is promoted"
+  ],
+  "readiness": "native-readiness RED + private wrapper-entry observer ready-to-live"
+}
