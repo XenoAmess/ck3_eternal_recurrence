@@ -7,6 +7,7 @@
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
+#include "xar_bridge/g2_truce_native_callsite_observer_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
@@ -87,6 +88,11 @@ constexpr bool kPhase2CompletionObserverEnabledV1 = true;
 #else
 constexpr bool kPhase2CompletionObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
+constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = true;
+#else
+constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = false;
+#endif
 static_assert(!(kStartupFailureContainmentEnabledV1 &&
                 kStartupParticle2StageRecorderEnabledV1));
 static_assert(!(kPhase2PostCallObserverEnabledV1 &&
@@ -122,6 +128,8 @@ static xar::bridge::Phase2PostCallListIdentityStateV1
     g_phase2_post_call_list_identity_observer_v1{};
 static xar::bridge::Phase2WrapperEntryObserverV1State
     g_phase2_wrapper_entry_observer_v1{};
+static xar::bridge::G2TruceNativeCallsiteObserverV1State
+    g_g2_truce_native_callsite_observer_v1{};
 
 bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
@@ -273,6 +281,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto phase2_post_call_list_identity_observer =
       xar::bridge::ReadPhase2PostCallListIdentityDiagnosticsV1(
           g_phase2_post_call_list_identity_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
+  const auto g2_truce_native_callsite_observer =
+      xar::bridge::ReadG2TruceNativeCallsiteObserverV1Diagnostics(
+          g_g2_truce_native_callsite_observer_v1);
 #endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
@@ -549,6 +562,45 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
     result += Number(bin.last_task);
     result += ",\"last_owner\":";
     result += Number(bin.last_owner);
+    result += '}';
+  }
+  result += ']';
+#endif
+#if defined(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
+  result += "},\"g2_truce_native_callsite_observer_v1\":{";
+  result += "\"private_build\":true,\"installed_mask\":";
+  result += Number(g2_truce_native_callsite_observer.installed_mask);
+  result += ",\"failure\":";
+  result += Number(g2_truce_native_callsite_observer.failure_flags);
+  result += ",\"callsites\":[";
+  for (std::size_t index = 0;
+       index < g2_truce_native_callsite_observer.callsites.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &callsite =
+        g2_truce_native_callsite_observer.callsites[index];
+    result += "{\"call_instruction_rva\":";
+    result += Number(
+        xar::bridge::kG2TruceNativeCallsiteInstructionRvasV1[index]);
+    result += ",\"pre_call_count\":";
+    result += Number(callsite.pre_call_count);
+    result += ",\"post_call_count\":";
+    result += Number(callsite.post_call_count);
+    result += ",\"last_script_value\":";
+    result += Number(callsite.last_script_value);
+    result += ",\"last_effect_context\":";
+    result += Number(callsite.last_effect_context);
+    result += ",\"last_evaluation_context\":";
+    result += Number(callsite.last_evaluation_context);
+    result += ",\"last_pre_thread_id\":";
+    result += Number(callsite.last_pre_thread_id);
+    result += ",\"last_pre_timestamp_qpc\":";
+    result += Number(callsite.last_pre_timestamp_qpc);
+    result += ",\"last_return_eax\":";
+    result += SignedNumber(callsite.last_return_eax);
+    result += ",\"last_post_thread_id\":";
+    result += Number(callsite.last_post_thread_id);
+    result += ",\"last_post_timestamp_qpc\":";
+    result += Number(callsite.last_post_timestamp_qpc);
     result += '}';
   }
   result += ']';
@@ -8074,6 +8126,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallPhase2PostCallListIdentityObserverV1(
             g_phase2_post_call_list_identity_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kG2TruceNativeCallsiteObserverEnabledV1) {
+    xar::bridge::G2TruceNativeCallsiteObserverV1Environment environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallG2TruceNativeCallsiteObserverV1(
+            g_g2_truce_native_callsite_observer_v1, environment)) {
       return FALSE;
     }
   }

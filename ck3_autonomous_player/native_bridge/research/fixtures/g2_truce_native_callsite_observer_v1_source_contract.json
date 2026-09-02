@@ -1,0 +1,51 @@
+{
+  "contract": "g2-truce-native-callsite-observer-v1-source",
+  "required_header_tokens": [
+    "kG2TruceNativeCallsitePatchRvasV1{0x2EDAF01, 0x2EDB58F}",
+    "kG2TruceNativeCallsiteInstructionRvasV1{0x2EDAF0F, 0x2EDB59E}",
+    "kG2TruceNativeCallsiteContinueRvasV1{0x2EDAF14, 0x2EDB5A3}",
+    "kG2TruceEvaluatorRvaV1 = 0x3373000",
+    "kG2TruceNativeCallsiteObserverInstalledByDefaultV1 =",
+    "last_script_value",
+    "last_effect_context",
+    "last_evaluation_context",
+    "last_return_eax",
+    "UninstallG2TruceNativeCallsiteObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kCallsite0Anchor",
+    "kCallsite1Anchor",
+    "G2TruceNativeCallsitePreThunkV1",
+    "G2TruceNativeCallsitePostThunkV1",
+    "QueryPerformanceCounter",
+    "GetCurrentThreadId",
+    "relocated original native direct call",
+    "EmitRelocatedNativeCall",
+    "TargetWriteResult::rollback_unproven",
+    "state.evaluator_target",
+    "RecordG2TruceNativeCallsitePreV1",
+    "RecordG2TruceNativeCallsitePostV1"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
+    "g2_truce_native_callsite_observer_v1",
+    "InstallG2TruceNativeCallsiteObserverV1",
+    "pre_call_count",
+    "post_call_count",
+    "last_script_value",
+    "last_effect_context",
+    "last_evaluation_context",
+    "last_return_eax"
+  ],
+  "required_cmake_tokens": [
+    "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1 AND",
+    "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
+    "cannot be combined with direct evaluator capture"
+  ],
+  "fixture_cases": [
+    "default build remains disabled and exact-build admission is mandatory",
+    "both native callsite inputs and EAX returns retain thread and QPC stamps",
+    "two exact anchors produce two trampolines and uninstall restores both",
+    "second-site write failure rolls the first site back and releases ownership"
+  ]
+}

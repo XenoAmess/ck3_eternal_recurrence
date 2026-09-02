@@ -1,0 +1,82 @@
+{
+  "contract": "g2-truce-native-callsite-observer-v1",
+  "schema_version": 1,
+  "status": "static-ready",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "evaluator": {
+    "rva": "0x3373000",
+    "signature": "int32 __fastcall(void *script_value, void *effect_context, void *evaluation_context)",
+    "return": "signed int32 in EAX"
+  },
+  "call_sites": [
+    {
+      "index": 0,
+      "patch_rva": "0x2EDAF01",
+      "call_instruction_rva": "0x2EDAF0F",
+      "continue_rva": "0x2EDAF14",
+      "patch_bytes": 19,
+      "anchor_hex": "488D8E080100004D8B4728498BD7E8EC804900",
+      "anchor_sha256": "1FAE6B4E26AC04D4999B8DDBCECCF0A243DF0795F41979DB53BB8B9FBBC39D00",
+      "operands": {
+        "RCX": "RSI+0x108 script_value",
+        "RDX": "R15 effect_context",
+        "R8": "[R15+0x28] loaded evaluation_context"
+      }
+    },
+    {
+      "index": 1,
+      "patch_rva": "0x2EDB58F",
+      "call_instruction_rva": "0x2EDB59E",
+      "continue_rva": "0x2EDB5A3",
+      "patch_bytes": 20,
+      "anchor_hex": "488D8E080100004D8B442428498BD4E85D7A4900",
+      "anchor_sha256": "DDDA2E8AF70DAA91A1513C3DF3FE05714D6FAB8B2F6D7CC9B2C83D0EFCC85990",
+      "operands": {
+        "RCX": "RSI+0x108 script_value",
+        "RDX": "R12 effect_context",
+        "R8": "[R12+0x28] loaded evaluation_context"
+      }
+    }
+  ],
+  "private_telemetry": {
+    "per_callsite_fields": [
+      "pre_call_count",
+      "post_call_count",
+      "last_script_value",
+      "last_effect_context",
+      "last_evaluation_context",
+      "last_pre_thread_id",
+      "last_pre_timestamp_qpc",
+      "last_return_eax",
+      "last_post_thread_id",
+      "last_post_timestamp_qpc"
+    ],
+    "clock": "QueryPerformanceCounter",
+    "thread": "GetCurrentThreadId"
+  },
+  "detour_semantics": {
+    "exact_anchor_required": true,
+    "primary_thread_suspended_required": true,
+    "two_site_install_transaction": true,
+    "rollback_restores_original_bytes": true,
+    "relocated_original_call": true,
+    "autonomous_evaluator_request": false,
+    "context_effect_executed": false,
+    "mutation_executed": false
+  },
+  "scope": {
+    "compile_option": "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
+    "installed_by_default": false,
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "default_heartbeat_schema_changed": false,
+    "public_readiness_changed": false,
+    "ck3_started": false
+  },
+  "evidence_limit": "Static fixtures prove exact anchors, generated trampoline shape, telemetry publication, and transactional rollback. No native runtime row or evaluated_days result is claimed."
+}
