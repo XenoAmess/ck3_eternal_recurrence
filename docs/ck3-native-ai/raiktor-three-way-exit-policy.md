@@ -372,3 +372,36 @@ The next distinct live gate is to publish the strict generic payload on the
 same paused public query frame and prove two identical, session/cache-bound
 queries.  This is separate from the action-bound source/pre/loss capture and
 from persisted truce-expiry observation.
+
+## 2026-09-03 generic war-bound public query-frame producer
+
+[static/fixture-ready; no CK3 launch; no mutation] The exact-build production
+terms reader now consumes the already frozen generic war-bound observer. It
+double-reads the full-generation persistent/current/CArmy identity graph and
+each exact current `CArmyRegiment+0x38` soldier count, then passes those inputs
+through the existing strict builder. The production DLL now links that builder
+and emits its result as an optional `generic_war_bound_current` child in the
+existing Raiktor terms envelope.
+
+The DLL child is stamped with the native state revision. The public driver
+accepts it only when that revision, paused date, WarID, CB database index and
+primary attacker/defender match the query's admission snapshot; it then binds
+the child to that snapshot's public revision before projecting the aggregate,
+session wrapper and exact-frame cache row. Old artifacts without the additive
+child remain valid and yield typed unavailable; any identity or revision drift
+fails the query instead of falling back to a guessed frame.
+
+This producer can make only
+`generic_war_bound_current_ready=true`. `source_attribution.mode` remains
+`authored_candidate_only`; source-specific readiness, pre soldiers, proven
+loss, cleanup, action terms and automatic surrender all remain false/null.
+Authored `3000` is metadata only and is never substituted for observed current
+or pre-action soldiers. The native and Python deterministic fixtures exercise
+the `80 + 60 + 40 = 180` current total, all seven composition rows, public
+revision binding, CB/revision rejection and the unchanged action boundary.
+
+The next distinct live prerequisite is a single paused read-only run with the
+new DLL, exactly two terms queries, and equality across strict child,
+six-domain aggregate, session identity and cache binding. Until that artifact
+exists this is not production-live evidence, and it does not advance truce,
+source-specific war-bound loss, surrender action or `GEN-034` completion.

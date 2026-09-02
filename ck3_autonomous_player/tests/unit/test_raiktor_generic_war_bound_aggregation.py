@@ -11,6 +11,9 @@ from test_war_termination_terms_contract import (
 from xar_autoplayer.bridge.raiktor_surrender_public_aggregate import (
     project_raiktor_surrender_six_domain,
 )
+from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
+    bind_raiktor_war_bound_regiment_public_frame,
+)
 from xar_autoplayer.bridge.war_contract import normalize_war_termination_terms
 
 
@@ -75,7 +78,69 @@ def _project(war_bound: object) -> dict[str, object]:
     return aggregate
 
 
+def _native_war_bound() -> dict[str, object]:
+    value = _war_bound()
+    value["active_frame"]["snapshot_revision"] = 7
+    return value
+
+
 class RaiktorGenericWarBoundAggregationTests(unittest.TestCase):
+    def test_native_wire_revision_binds_to_public_query_frame(self) -> None:
+        bound = bind_raiktor_war_bound_regiment_public_frame(
+            _native_war_bound(),
+            expected_snapshot_revision=91,
+            expected_native_revision=7,
+            expected_date_raw=53_175_816,
+            expected_war_id=WAR_ID,
+            expected_casus_belli_database_index=409,
+            expected_attacker_character_id=ATTACKER_ID,
+            expected_defender_character_id=DEFENDER_ID,
+        )
+
+        self.assertIsInstance(bound, dict)
+        assert isinstance(bound, dict)
+        self.assertEqual(bound["active_frame"]["snapshot_revision"], 91)
+        self.assertEqual(bound["active_frame"]["native_revision"], 7)
+        self.assertEqual(
+            bound["soldiers"]["observed_current_soldiers"], 180
+        )
+        self.assertFalse(
+            bound["readiness"]["source_specific_attribution_ready"]
+        )
+        self.assertFalse(bound["readiness"]["pre_soldiers_ready"])
+        self.assertFalse(
+            bound["readiness"]["proven_soldier_loss_ready"]
+        )
+
+    def test_native_wire_revision_or_cb_drift_is_rejected(self) -> None:
+        mutations = (
+            lambda value: value["active_frame"].__setitem__(
+                "snapshot_revision", 8
+            ),
+            lambda value: value["active_frame"].__setitem__(
+                "native_revision", 8
+            ),
+            lambda value: value["active_frame"].__setitem__(
+                "active_casus_belli_database_index", 410
+            ),
+        )
+        for mutate in mutations:
+            with self.subTest(mutate=mutate):
+                value = _native_war_bound()
+                mutate(value)
+                self.assertIsNone(
+                    bind_raiktor_war_bound_regiment_public_frame(
+                        value,
+                        expected_snapshot_revision=91,
+                        expected_native_revision=7,
+                        expected_date_raw=53_175_816,
+                        expected_war_id=WAR_ID,
+                        expected_casus_belli_database_index=409,
+                        expected_attacker_character_id=ATTACKER_ID,
+                        expected_defender_character_id=DEFENDER_ID,
+                    )
+                )
+
     def test_strict_payload_promotes_only_generic_current_domain(self) -> None:
         aggregate = _project(_war_bound())
 

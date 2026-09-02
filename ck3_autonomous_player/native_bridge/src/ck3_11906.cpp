@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
 
@@ -15929,6 +15930,132 @@ ReadWarTerminationOptionsResult ReadWarTerminationOptions(
   return ReadWarTerminationOptionsResult::available;
 }
 
+bool ReadRaiktorGenericWarBoundCurrentForTerms(
+    const Bindings &bindings, const Snapshot &frame_snapshot,
+    std::int32_t war_id, std::int32_t casus_belli_database_index,
+    std::int32_t primary_attacker_character_id,
+    std::int32_t primary_defender_character_id,
+    game::WarRaiktorWarBoundCurrentSnapshot &output) noexcept {
+  output = {};
+  if (!frame_snapshot.paused || war_id == -1 ||
+      casus_belli_database_index < 0 ||
+      primary_attacker_character_id == -1 ||
+      primary_defender_character_id == -1 ||
+      bindings.regiment_storage_slot == nullptr) {
+    return false;
+  }
+
+  const auto collect_soldiers = [&](
+      const WarBoundRegimentObservation &generic,
+      std::vector<RaiktorWarBoundCurrentSoldierSampleV1>
+          &samples) noexcept {
+    samples.clear();
+    for (const auto &persistent : generic.regiments) {
+      for (const auto &row : persistent.current_rows) {
+        if (row.current_army_regiment_id == -1) {
+          if (row.raised_carmy_id != -1) {
+            return false;
+          }
+          continue;
+        }
+        void *const regiment = ResolveStoredComponent(
+            bindings.regiment_storage_slot,
+            row.current_army_regiment_id, kRegimentIdOffset);
+        if (regiment == nullptr ||
+            LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+                row.raised_carmy_id) {
+          return false;
+        }
+        const auto current_soldiers = LoadAt<std::int32_t>(
+            regiment, kRegimentCurrentSoldiersOffset);
+        if (current_soldiers < 0) {
+          return false;
+        }
+        samples.push_back(
+            {row.current_army_regiment_id, current_soldiers});
+      }
+    }
+    return true;
+  };
+
+  WarBoundRegimentObservation first_generic{};
+  WarBoundRegimentObservation second_generic{};
+  std::vector<RaiktorWarBoundCurrentSoldierSampleV1> first_soldiers;
+  std::vector<RaiktorWarBoundCurrentSoldierSampleV1> second_soldiers;
+  if (!ReadPrimaryAttackerWarBoundRegimentObservation(
+          bindings, war_id, primary_attacker_character_id,
+          first_generic) ||
+      !collect_soldiers(first_generic, first_soldiers) ||
+      !ReadPrimaryAttackerWarBoundRegimentObservation(
+          bindings, war_id, primary_attacker_character_id,
+          second_generic) ||
+      first_generic != second_generic ||
+      !collect_soldiers(second_generic, second_soldiers) ||
+      first_soldiers != second_soldiers) {
+    return false;
+  }
+
+  const RaiktorWarBoundFrameV1 frame{
+      1,
+      1,
+      frame_snapshot.date_raw,
+      true,
+      war_id,
+      casus_belli_database_index,
+      true,
+      primary_attacker_character_id,
+      primary_defender_character_id,
+  };
+  RaiktorWarBoundRegimentObservationV1 strict{};
+  if (!BuildRaiktorWarBoundRegimentActiveObservationV1(
+          frame, frame, second_generic, second_soldiers, strict) ||
+      strict.status != RaiktorWarBoundRegimentStatusV1::
+                           generic_war_bound_visible_source_unattributed ||
+      strict.failure != RaiktorWarBoundRegimentFailureV1::none ||
+      strict.cleanup_status != WarBoundRegimentCleanupStatus::unavailable ||
+      !strict.readiness.generic_war_bound_identity_ready ||
+      !strict.readiness.current_soldiers_ready ||
+      strict.readiness.source_specific_attribution_ready ||
+      strict.readiness.pre_soldiers_ready ||
+      strict.readiness.proven_soldier_loss_ready) {
+    return false;
+  }
+
+  game::WarRaiktorWarBoundCurrentSnapshot observed{};
+  observed.date_raw = frame_snapshot.date_raw;
+  observed.war_id = strict.war_id;
+  observed.active_casus_belli_database_index =
+      casus_belli_database_index;
+  observed.primary_attacker_character_id =
+      primary_attacker_character_id;
+  observed.primary_defender_character_id =
+      primary_defender_character_id;
+  observed.owner_character_id = strict.owner_character_id;
+  observed.observed_current_soldiers = strict.observed_current_soldiers;
+  observed.regiments.reserve(strict.regiments.size());
+  for (const auto &strict_regiment : strict.regiments) {
+    game::WarRaiktorWarBoundRegimentSnapshot regiment{};
+    regiment.persistent_regiment_id =
+        strict_regiment.persistent_regiment_id;
+    regiment.bound_war_id = strict_regiment.bound_war_id;
+    regiment.war_keep_on_attacker_victory =
+        strict_regiment.war_keep_on_attacker_victory;
+    regiment.current_soldiers = strict_regiment.current_soldiers;
+    regiment.composition_rows.reserve(
+        kWarBoundRegimentCompositionRowCount);
+    for (const auto &strict_row : strict_regiment.composition_rows) {
+      regiment.composition_rows.push_back(
+          {strict_row.composition_ordinal,
+           strict_row.current_army_regiment_id,
+           strict_row.raised_carmy_id,
+           strict_row.current_soldiers});
+    }
+    observed.regiments.push_back(std::move(regiment));
+  }
+  output = std::move(observed);
+  return true;
+}
+
 ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept {
@@ -16203,6 +16330,16 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
         war, kWarPrimaryAttackerCharacterIdOffset);
     const auto primary_defender_character_id = LoadAt<std::int32_t>(
         war, kWarPrimaryDefenderCharacterIdOffset);
+    game::WarRaiktorWarBoundCurrentSnapshot generic_war_bound_current{};
+    const bool generic_war_bound_current_observable =
+        player_is_attacker &&
+        published_war->player_is_primary_war_leader &&
+        current.played_character_id == primary_attacker_character_id &&
+        ReadRaiktorGenericWarBoundCurrentForTerms(
+            bindings, current, war_id, casus_belli_database_index,
+            primary_attacker_character_id,
+            primary_defender_character_id,
+            generic_war_bound_current);
     const auto truce_observable = ReadRaiktorSurrenderTruceDuration(
         bindings, game_state, jomini_state, war, casus_belli_type, war_id,
         casus_belli_database_index, primary_attacker_character_id,
@@ -16329,6 +16466,11 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
       surrender.truce_evaluated_days_observable = true;
       surrender.truce_evaluated_days = truce.evaluated_days;
     }
+    if (generic_war_bound_current_observable) {
+      surrender.generic_war_bound_current_observable = true;
+      surrender.generic_war_bound_current =
+          std::move(generic_war_bound_current);
+    }
 
     std::vector<std::int32_t> final_target_title_ids;
     std::string final_casus_belli_key;
@@ -16379,7 +16521,8 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
         surrender.gold_observable || surrender.prestige_observable ||
         surrender.prisoner_release_observable ||
         surrender.favor_hook_observable ||
-        surrender.truce_evaluated_days_observable;
+        surrender.truce_evaluated_days_observable ||
+        surrender.generic_war_bound_current_observable;
     output.attacker_defeat = surrender.claim_disposition;
     output.raiktor_surrender = std::move(surrender);
   }

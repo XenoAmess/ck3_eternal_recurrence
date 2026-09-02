@@ -2273,8 +2273,9 @@ surrender recommendation, action, or automatic policy.
 flowchart TD
     S["[static-confirmed] exact 1.19.0.6 source contract"] --> G["[fixture-confirmed] generic war-bound double sample"]
     G --> I["[static-ready] strict same-frame aggregate intake"]
-    I --> V["generic current soldiers visible"]
-    I -. "[unknown] no public live payload yet" .-> L["paused MCP live evidence"]
+    I --> Q["[static/fixture-ready] production terms wire"]
+    Q --> V["generic current soldiers visible"]
+    Q -. "[pending-live] no paused artifact yet" .-> L["paused MCP live evidence"]
     G -. "[unknown] no persisted origin" .-> A["Raiktor-source attribution"]
     G -. "[unknown] no action-bound pre snapshot" .-> P["pre soldiers / proven loss"]
     V --> R["generic_war_bound_current_ready only"]
@@ -2284,9 +2285,28 @@ flowchart TD
     X -. "still unavailable" .-> D
 ```
 
-The next distinct live gate after the static intake is a single paused,
-read-only publication of the strict generic payload on the same public query
-frame, followed by two identical queries bound to the same session and cache
-identity.  That live gate may promote only the generic current-soldier domain;
-source attribution, pre soldiers, proven loss, persisted truce expiry,
-termination mutation, and automatic surrender remain separate work.
+The production DLL now links the same strict builder and the Raiktor terms
+reader performs two generic identity samples plus two exact
+`CArmyRegiment+0x38` soldier samples while paused. The serializer publishes
+that result as the optional `generic_war_bound_current` child of the existing
+terms envelope. It stamps the native revision at the DLL boundary; the Python
+driver binds that stamp to the already published public revision and rejects
+native/public revision, date, WarID, CB or role drift before aggregation and
+cache publication. Historical terms artifacts without the optional child
+remain wire-compatible and normalize to typed unavailable.
+
+[static/fixture-ready / no CK3 launch] The production DLL, exact-build game
+access fixture, strict child normalizer, public driver/session/cache path, and
+optimized Python contracts all pass. The native fixture proves current totals
+`80 + 60 + 40 = 180` through full-generation IDs and seven composition rows;
+the public fixture proves the native revision is rebound only to its matching
+public query frame. Neither layer removes `war_bound_army_losses` from the
+unobserved list or sets `war_bound_armies_ready`.
+
+The next distinct live gate is now only one paused, read-only acceptance using
+the newly built production DLL: issue two identical terms queries and require
+the strict child, aggregate, session wrapper and exact-frame cache row to agree
+on native/public revisions, connection/episode/PID identity, WarID, CB index
+and current soldier rows. That live gate may promote only the generic current-
+soldier domain; source attribution, pre soldiers, proven loss, persisted truce
+expiry, termination mutation, and automatic surrender remain separate work.

@@ -10534,6 +10534,9 @@ int main() {
   initialize_current_regiment(current_regiment_b6,
                               current_regiment_b6_id,
                               split_carmy_id);
+  Store(current_regiment_a0, 0x38, std::int32_t{80});
+  Store(current_regiment_a3, 0x38, std::int32_t{60});
+  Store(current_regiment_b6, 0x38, std::int32_t{40});
   Store(current_regiment_slots, 0x18,
         static_cast<void *>(current_regiment_a0.data()));
   Store(current_regiment_slots, 0x28,
@@ -10624,6 +10627,65 @@ int main() {
     return Fail(
         "war-bound regiment observer lost full identity, seven rows or merge state");
   }
+
+  // The production terms path reuses the strict generic observer and reads
+  // every exact current CArmyRegiment +0x38 twice.  It exposes current
+  // soldiers without relabeling them as the authored Raiktor source or loss.
+  Store(g_casus_belli_type_1, 0x18, g_raiktor_casus_belli_key);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_raiktor_casus_belli_key) - 1});
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_1.data()));
+  termination_terms = {};
+  const auto war_bound_terms_result =
+      xar::ck3_11906::ReadWarTerminationTerms(
+          war_bound_bindings, active_war_id, termination_terms);
+  if (war_bound_terms_result !=
+          xar::ck3_11906::ReadWarTerminationTermsResult::available ||
+      !termination_terms.raiktor_surrender.has_value()) {
+    return Fail("Raiktor public terms lost its strict surrender slice");
+  }
+  const auto &war_bound_terms =
+      termination_terms.raiktor_surrender.value();
+  if (!war_bound_terms.generic_war_bound_current_observable ||
+      war_bound_terms.generic_war_bound_current.war_id != active_war_id ||
+      war_bound_terms.generic_war_bound_current.owner_character_id !=
+          played_character_id ||
+      war_bound_terms.generic_war_bound_current
+              .primary_defender_character_id != enemy_character_id ||
+      war_bound_terms.generic_war_bound_current
+              .observed_current_soldiers != 180 ||
+      war_bound_terms.generic_war_bound_current.regiments.size() != 2 ||
+      war_bound_terms.generic_war_bound_current.regiments[0]
+              .current_soldiers != 140 ||
+      war_bound_terms.generic_war_bound_current.regiments[1]
+              .current_soldiers != 40 ||
+      war_bound_terms.generic_war_bound_current.regiments[0]
+              .composition_rows.size() != 7 ||
+      war_bound_terms.generic_war_bound_current.regiments[0]
+              .composition_rows[0].current_soldiers != 80 ||
+      war_bound_terms.generic_war_bound_current.regiments[0]
+              .composition_rows[3].current_soldiers != 60 ||
+      war_bound_terms.generic_war_bound_current.regiments[1]
+              .composition_rows[6].current_soldiers != 40 ||
+      !war_bound_terms.observed_dynamic_terms_same_frame_stable ||
+      std::find(war_bound_terms.unobserved_dynamic_effects.begin(),
+                war_bound_terms.unobserved_dynamic_effects.end(),
+                "war_bound_army_losses") ==
+          war_bound_terms.unobserved_dynamic_effects.end() ||
+      g_submit_called) {
+    return Fail(
+        "Raiktor public terms did not publish strict generic war-bound current soldiers");
+  }
+  Store(g_casus_belli_type_1, 0x18, g_casus_belli_key_1);
+  Store(g_casus_belli_type_1, 0x28,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_casus_belli_type_1, 0x30,
+        std::size_t{sizeof(g_casus_belli_key_1) - 1});
+  Store(g_war, 0x100,
+        static_cast<void *>(g_casus_belli_type_0.data()));
 
   // The cleanup observer consumes only the frozen full-generation IDs. An
   // ended/missing War is deliberately neither its selector nor its success
@@ -11056,9 +11118,25 @@ int main() {
   // The public GEN-034 aggregation checks above intentionally reuse the
   // claim getter and PoW primary-title reader.  The legacy broad-exit fixture
   // below owns its own exact call-count lifecycle.
+  g_exit_terms_collector_lifecycle_valid = true;
+  g_exit_terms_context_lifecycle_valid = true;
+  g_exit_terms_effect_context_construct_calls = 0;
+  g_exit_terms_effect_context_populate_calls = 0;
+  g_exit_terms_collector_construct_calls = 0;
+  g_exit_terms_collector_destroy_calls = 0;
+  g_exit_terms_traverse_calls = 0;
+  g_exit_terms_forward_calls = 0;
+  g_exit_terms_projected_root_preview_calls = 0;
+  g_exit_terms_projected_callback_counts.fill(0);
+  g_exit_terms_hidden_truce_preview_calls = 0;
+  g_exit_terms_context_teardown_stage = 0;
+  g_exit_terms_truce_duration_calls = 0;
   g_exit_terms_primary_title_calls = 0;
+  g_exit_terms_monthly_income_calls = 0;
+  g_exit_terms_answer_calls = 0;
   g_character_claim_read_calls = 0;
   g_character_claim_destroy_calls = 0;
+  g_interaction_destroy_calls = 0;
   const auto exit_terms_result =
       xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
           bindings, active_war_id, exit_terms);

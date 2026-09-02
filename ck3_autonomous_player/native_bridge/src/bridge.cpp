@@ -1851,6 +1851,112 @@ void AppendRaiktorPrisonerReleasePairs(
   result += ']';
 }
 
+void AppendRaiktorGenericWarBoundCurrent(
+    std::string &result,
+    const xar::game::WarRaiktorWarBoundCurrentSnapshot &value,
+    std::uint64_t native_revision) {
+  result +=
+      "{\"schema_version\":1,"
+      "\"backend_id\":\"ck3-1.19.0.6-native-raiktor-war-bound-regiment-v1\","
+      "\"status\":\"generic_war_bound_visible_source_unattributed\","
+      "\"failure\":null,\"active_frame\":{\"snapshot_revision\":";
+  result += Number(native_revision);
+  result += ",\"native_revision\":";
+  result += Number(native_revision);
+  result += ",\"date_raw\":";
+  result += SignedNumber(value.date_raw);
+  result += ",\"paused\":true,\"war_id\":";
+  result += SignedNumber(value.war_id);
+  result += ",\"active_casus_belli_database_index\":";
+  result += SignedNumber(value.active_casus_belli_database_index);
+  result +=
+      ",\"active_casus_belli_key\":\"raiktor_claim_cb\","
+      "\"primary_attacker_character_id\":";
+  result += SignedNumber(value.primary_attacker_character_id);
+  result += ",\"primary_defender_character_id\":";
+  result += SignedNumber(value.primary_defender_character_id);
+  result += "},\"postwar_frame\":null,\"owner_character_id\":";
+  result += SignedNumber(value.owner_character_id);
+  result += ",\"war_id\":";
+  result += SignedNumber(value.war_id);
+  result +=
+      ",\"source_attribution\":{"
+      "\"mode\":\"authored_candidate_only\","
+      "\"authored_candidate_name\":\"norman_highwaymen\","
+      "\"authored_spawn_army_count\":6,"
+      "\"authored_soldiers_per_army\":500,"
+      "\"authored_total_soldiers\":3000},"
+      "\"soldiers\":{\"current_soldiers_observable\":true,"
+      "\"observed_current_soldiers\":";
+  result += SignedNumber(value.observed_current_soldiers);
+  result +=
+      ",\"pre_soldiers_observable\":false,"
+      "\"observed_pre_soldiers\":null,"
+      "\"proven_soldier_loss_observable\":false,"
+      "\"proven_soldiers_lost\":null},"
+      "\"cleanup\":{\"observable\":false,\"status\":null},"
+      "\"regiments\":[";
+  for (std::size_t regiment_index = 0;
+       regiment_index < value.regiments.size(); ++regiment_index) {
+    if (regiment_index != 0) {
+      result += ',';
+    }
+    const auto &regiment = value.regiments[regiment_index];
+    result += "{\"persistent_regiment_id\":";
+    result += SignedNumber(regiment.persistent_regiment_id);
+    result += ",\"bound_war_id\":";
+    result += SignedNumber(regiment.bound_war_id);
+    result += ",\"war_keep_on_attacker_victory\":";
+    result += regiment.war_keep_on_attacker_victory ? "true" : "false";
+    result += ",\"current_soldiers\":";
+    result += SignedNumber(regiment.current_soldiers);
+    result += ",\"postwar_persistent_state\":null,\"composition_rows\":[";
+    for (std::size_t row_index = 0;
+         row_index < regiment.composition_rows.size(); ++row_index) {
+      if (row_index != 0) {
+        result += ',';
+      }
+      const auto &row = regiment.composition_rows[row_index];
+      result += "{\"composition_ordinal\":";
+      result += SignedNumber(row.composition_ordinal);
+      result += ",\"current_army_regiment_id\":";
+      if (row.current_army_regiment_id == -1) {
+        result += "null";
+      } else {
+        result += SignedNumber(row.current_army_regiment_id);
+      }
+      result += ",\"raised_carmy_id\":";
+      if (row.raised_carmy_id == -1) {
+        result += "null";
+      } else {
+        result += SignedNumber(row.raised_carmy_id);
+      }
+      result += ",\"current_soldiers\":";
+      if (row.current_soldiers == -1) {
+        result += "null";
+      } else {
+        result += SignedNumber(row.current_soldiers);
+      }
+      result +=
+          ",\"current_army_regiment_state\":null,"
+          "\"raised_carmy_state\":null,"
+          "\"frozen_carmy_roster_evidence\":null}";
+    }
+    result += "]}";
+  }
+  result +=
+      "],\"readiness\":{"
+      "\"exact_raiktor_war_context_ready\":true,"
+      "\"generic_war_bound_identity_ready\":true,"
+      "\"current_soldiers_ready\":true,"
+      "\"postwar_cleanup_ready\":false,"
+      "\"source_specific_attribution_ready\":false,"
+      "\"pre_soldiers_ready\":false,"
+      "\"proven_soldier_loss_ready\":false,"
+      "\"independently_visible_value_ready\":true,"
+      "\"raiktor_source_specific_domain_ready\":false}}";
+}
+
 void AppendClaimWarTerminationTermsProvenance(std::string &result) {
   result +=
       "{\"game_version\":\"1.19.0.6\","
@@ -1887,7 +1993,7 @@ void AppendRaiktorWarTerminationTermsProvenance(std::string &result) {
 void AppendWarTerminationTerms(
     std::string &result,
     const xar::game::WarTerminationTermsSnapshot &terms,
-    bool supported) {
+    bool supported, std::uint64_t native_revision) {
   result += "{\"schema_version\":1,\"status\":\"";
   result += supported ? "available" : "unsupported";
   result += "\",\"war_id\":";
@@ -2115,6 +2221,13 @@ void AppendWarTerminationTerms(
       result += "null";
     }
     result += '}';
+    result += ",\"generic_war_bound_current\":";
+    if (surrender.generic_war_bound_current_observable) {
+      AppendRaiktorGenericWarBoundCurrent(
+          result, surrender.generic_war_bound_current, native_revision);
+    } else {
+      result += "null";
+    }
     result += ",\"attacker_legitimacy_delta\":";
     AppendFixedPoint(result, surrender.attacker_legitimacy_delta);
     result += ",\"attacker_influence_delta\":";
@@ -3447,7 +3560,7 @@ std::string WarTerminationTermsResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
     const xar::game::WarTerminationTermsSnapshot &terms,
-    bool supported) {
+    bool supported, std::uint64_t native_revision) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -3459,7 +3572,7 @@ std::string WarTerminationTermsResultFrame(
   result += "\",\"query_sequence\":";
   result += Number(query_sequence);
   result += ",\"war_termination_terms\":";
-  AppendWarTerminationTerms(result, terms, supported);
+  AppendWarTerminationTerms(result, terms, supported, native_revision);
   result += "}}";
   return result;
 }
@@ -6764,46 +6877,82 @@ void RunConnectedSession(
                           "invalid query-war-termination-terms-v1-<war_id> "
                           "step"));
           } else {
-            xar::game::WarTerminationTermsSnapshot terms{};
-            const auto query_result = xar::game::ReadWarTerminationTerms(
-                game, war_id.value(), terms);
-            if (query_result ==
-                    xar::game::ReadWarTerminationTermsResult::available ||
-                query_result ==
-                    xar::game::ReadWarTerminationTermsResult::
-                        unsupported_casus_belli) {
-              ++war_termination_terms_query_sequence;
-              connected = xar::bridge::WriteFrame(
-                  pipe, WarTerminationTermsResultFrame(
-                            request_id, step,
-                            war_termination_terms_query_sequence, terms,
-                            query_result ==
-                                xar::game::ReadWarTerminationTermsResult::
-                                    available));
-            } else {
-              std::string_view error =
-                  "CK3 war-termination terms query is unavailable";
-              if (query_result ==
-                  xar::game::ReadWarTerminationTermsResult::
-                      requires_paused) {
-                error =
-                    "CK3 war-termination terms query requires a paused map";
-              } else if (query_result ==
-                         xar::game::ReadWarTerminationTermsResult::
-                             no_played_character) {
-                error = "no living played CK3 character";
-              } else if (query_result ==
-                         xar::game::ReadWarTerminationTermsResult::
-                             war_not_found) {
-                error = "CK3 war was not found";
-              } else if (query_result ==
-                         xar::game::ReadWarTerminationTermsResult::
-                             player_not_participant) {
-                error = "played CK3 character is not a war participant";
+            xar::game::Snapshot admission_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, admission_snapshot) ||
+                admission_snapshot != previous_snapshot.value()) {
+              connected = PublishSnapshot(
+                  pipe, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
+              if (connected) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "war-termination terms admission snapshot "
+                              "changed; retry after heartbeat"));
               }
-              connected = xar::bridge::WriteFrame(
-                  pipe,
-                  CommandResultFrame(request_id, step, false, error));
+            } else {
+              xar::game::WarTerminationTermsSnapshot terms{};
+              const auto query_result = xar::game::ReadWarTerminationTerms(
+                  game, war_id.value(), terms);
+              xar::game::Snapshot completion_snapshot{};
+              if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "war-termination terms completion snapshot "
+                              "read failed"));
+              } else if (completion_snapshot != admission_snapshot) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "war-termination terms completion snapshot "
+                                "changed; retry after heartbeat"));
+                }
+              } else if (
+                  query_result ==
+                      xar::game::ReadWarTerminationTermsResult::available ||
+                  query_result ==
+                      xar::game::ReadWarTerminationTermsResult::
+                          unsupported_casus_belli) {
+                ++war_termination_terms_query_sequence;
+                connected = xar::bridge::WriteFrame(
+                    pipe, WarTerminationTermsResultFrame(
+                              request_id, step,
+                              war_termination_terms_query_sequence, terms,
+                              query_result ==
+                                  xar::game::ReadWarTerminationTermsResult::
+                                      available,
+                              state_revision));
+              } else {
+                std::string_view error =
+                    "CK3 war-termination terms query is unavailable";
+                if (query_result ==
+                    xar::game::ReadWarTerminationTermsResult::
+                        requires_paused) {
+                  error =
+                      "CK3 war-termination terms query requires a paused map";
+                } else if (query_result ==
+                           xar::game::ReadWarTerminationTermsResult::
+                               no_played_character) {
+                  error = "no living played CK3 character";
+                } else if (query_result ==
+                           xar::game::ReadWarTerminationTermsResult::
+                               war_not_found) {
+                  error = "CK3 war was not found";
+                } else if (query_result ==
+                           xar::game::ReadWarTerminationTermsResult::
+                               player_not_participant) {
+                  error = "played CK3 character is not a war participant";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe,
+                    CommandResultFrame(request_id, step, false, error));
+              }
             }
           }
         } else if (step.starts_with("offer-white-peace-")) {

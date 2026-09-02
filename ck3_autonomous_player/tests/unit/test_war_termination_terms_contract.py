@@ -200,6 +200,7 @@ def _available_raiktor_terms() -> dict[str, object]:
             "original_visible_root_traversed": None,
             "will_apply": None,
         },
+        "generic_war_bound_current": None,
         "attacker_legitimacy_delta": {"raw": 0, "scale": 100_000},
         "attacker_influence_delta": {"raw": 0, "scale": 100_000},
         "hostages_allowed": False,

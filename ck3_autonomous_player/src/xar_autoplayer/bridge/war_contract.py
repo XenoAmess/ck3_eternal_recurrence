@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
+    normalize_raiktor_war_bound_regiment,
+)
+
 
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
 PREVIEW_MOVE_ARMY_CAPABILITY = "game.command.preview-move-army-N-to-N"
@@ -2432,6 +2436,49 @@ def _normalize_raiktor_truce(value: object) -> dict[str, object]:
     }
 
 
+def _normalize_raiktor_generic_war_bound_current(
+    value: object,
+    *,
+    expected_war_id: int,
+    expected_casus_belli_database_index: int,
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError(
+            "native war_termination_terms.generic_war_bound_current "
+            "must be an object or null"
+        )
+    active = value.get("active_frame")
+    if not isinstance(active, dict):
+        raise ValueError(
+            "native generic war-bound active frame is malformed"
+        )
+    if (
+        active.get("active_casus_belli_database_index")
+        != expected_casus_belli_database_index
+    ):
+        raise ValueError("native generic war-bound CB identity drifted")
+    try:
+        return normalize_raiktor_war_bound_regiment(
+            value,
+            expected_war_id=expected_war_id,
+            expected_attacker_character_id=active.get(
+                "primary_attacker_character_id"
+            ),
+            expected_defender_character_id=active.get(
+                "primary_defender_character_id"
+            ),
+            expected_snapshot_revision=active.get("snapshot_revision"),
+            expected_native_revision=active.get("native_revision"),
+            expected_date_raw=active.get("date_raw"),
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError(
+            "native generic war-bound payload is malformed"
+        ) from error
+
+
 def normalize_war_termination_terms(
     value: object,
     *,
@@ -2450,6 +2497,7 @@ def normalize_war_termination_terms(
         "readiness",
         "provenance",
     }
+    optional_keys: set[str] = set()
     supported_slice = value.get("supported_slice")
     if status == "available" and supported_slice == (
         _TERMINATION_TERMS_CLAIM_SLICE
@@ -2478,11 +2526,15 @@ def normalize_war_termination_terms(
             "hostages_allowed",
             "unobserved_dynamic_effects",
         }
+        optional_keys = {"generic_war_bound_current"}
     elif status == "unsupported":
         expected_keys = common_keys | {"reason"}
     else:
         raise ValueError("native war_termination_terms.status is malformed")
-    if set(value) != expected_keys or value.get("schema_version") != 1:
+    if set(value) not in {
+        frozenset(expected_keys),
+        frozenset(expected_keys | optional_keys),
+    } or value.get("schema_version") != 1:
         raise ValueError(
             "native war_termination_terms top-level schema is malformed"
         )
@@ -2647,6 +2699,13 @@ def normalize_war_termination_terms(
             value.get("conditional_favor_hook")
         )
         truce = _normalize_raiktor_truce(value.get("truce"))
+        generic_war_bound_current = (
+            _normalize_raiktor_generic_war_bound_current(
+                value.get("generic_war_bound_current"),
+                expected_war_id=war_id,
+                expected_casus_belli_database_index=database_index,
+            )
+        )
         gold_ready = bool(gold_reparations["actual_amount_observable"])
         prestige_ready = bool(attacker_fame["actual_delta_observable"])
         prisoner_ready = bool(prisoner_release["actual_pairs_observable"])
@@ -2654,12 +2713,16 @@ def normalize_war_termination_terms(
             conditional_favor_hook["actual_applies_observable"]
         )
         truce_ready = bool(truce["evaluated_days_observable"])
+        generic_war_bound_current_ready = (
+            generic_war_bound_current is not None
+        )
         observed_any = (
             gold_ready
             or prestige_ready
             or prisoner_ready
             or favor_ready
             or truce_ready
+            or generic_war_bound_current_ready
         )
         expected_readiness = {
             "identity_ready": True,
@@ -2784,6 +2847,25 @@ def normalize_war_termination_terms(
                     "native raiktor war_termination_terms favor claimant "
                     "identity drifted"
                 )
+        if generic_war_bound_current is not None:
+            active_war_bound = generic_war_bound_current["active_frame"]
+            war_bound_attacker_id = int(
+                active_war_bound["primary_attacker_character_id"]
+            )
+            war_bound_defender_id = int(
+                active_war_bound["primary_defender_character_id"]
+            )
+            if (
+                attacker_character_id is not None
+                and attacker_character_id != war_bound_attacker_id
+            ) or (
+                defender_character_id is not None
+                and defender_character_id != war_bound_defender_id
+            ):
+                raise ValueError(
+                    "native raiktor war_termination_terms war-bound "
+                    "identity drifted across domains"
+                )
         return {
             "schema_version": 1,
             "status": "available",
@@ -2804,6 +2886,7 @@ def normalize_war_termination_terms(
             "truce": truce,
             "prisoner_release": prisoner_release,
             "conditional_favor_hook": conditional_favor_hook,
+            "generic_war_bound_current": generic_war_bound_current,
             "attacker_legitimacy_delta": {
                 "raw": 0,
                 "scale": CK3_FIXED_POINT_SCALE,

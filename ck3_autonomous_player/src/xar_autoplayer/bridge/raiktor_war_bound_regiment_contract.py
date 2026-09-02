@@ -7,6 +7,8 @@ refusing to label those regiments as the authored ``norman_highwaymen``.
 
 from __future__ import annotations
 
+import copy
+
 
 BACKEND_ID = "ck3-1.19.0.6-native-raiktor-war-bound-regiment-v1"
 STATUS = "generic_war_bound_visible_source_unattributed"
@@ -342,6 +344,57 @@ def normalize_raiktor_war_bound_regiment(
     }:
         raise ValueError("Raiktor war-bound readiness overclaims evidence")
     return dict(root)
+
+
+def bind_raiktor_war_bound_regiment_public_frame(
+    value: object,
+    *,
+    expected_snapshot_revision: int,
+    expected_native_revision: int,
+    expected_date_raw: int,
+    expected_war_id: int,
+    expected_casus_belli_database_index: int,
+    expected_attacker_character_id: int,
+    expected_defender_character_id: int,
+) -> dict[str, object] | None:
+    """Bind a native-revision-stamped wire value to its public frame."""
+
+    if not isinstance(value, dict):
+        return None
+    active = value.get("active_frame")
+    if (
+        not isinstance(active, dict)
+        or active.get("snapshot_revision") != expected_native_revision
+        or active.get("native_revision") != expected_native_revision
+        or active.get("active_casus_belli_database_index")
+        != expected_casus_belli_database_index
+    ):
+        return None
+    try:
+        normalize_raiktor_war_bound_regiment(
+            value,
+            expected_war_id=expected_war_id,
+            expected_attacker_character_id=expected_attacker_character_id,
+            expected_defender_character_id=expected_defender_character_id,
+            expected_snapshot_revision=expected_native_revision,
+            expected_native_revision=expected_native_revision,
+            expected_date_raw=expected_date_raw,
+        )
+        bound = copy.deepcopy(value)
+        bound["active_frame"]["snapshot_revision"] = (
+            expected_snapshot_revision
+        )
+        return normalize_raiktor_war_bound_regiment(
+            bound,
+            expected_war_id=expected_war_id,
+            expected_attacker_character_id=expected_attacker_character_id,
+            expected_defender_character_id=expected_defender_character_id,
+            expected_snapshot_revision=expected_snapshot_revision,
+            expected_native_revision=expected_native_revision,
+            expected_date_raw=expected_date_raw,
+        )
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def _exact_dict(value: object, keys: set[str], label: str) -> dict[str, object]:

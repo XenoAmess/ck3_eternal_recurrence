@@ -332,6 +332,9 @@ from .war_contract import (
 from .raiktor_surrender_public_aggregate import (
     project_raiktor_surrender_six_domain,
 )
+from .raiktor_war_bound_regiment_contract import (
+    bind_raiktor_war_bound_regiment_public_frame,
+)
 from .raiktor_surrender_session_binding_contract import (
     bind_raiktor_surrender_aggregate_session,
 )
@@ -9767,6 +9770,45 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native war-termination terms query returned after war ended"
             )
+        generic_war_bound_current = terms.get(
+            "generic_war_bound_current"
+        )
+        if generic_war_bound_current is not None:
+            starting_war = _war_by_id(starting, war_id)
+            casus_belli = terms.get("casus_belli")
+            defender_id = (
+                starting_war.get("primary_opponent_character_id")
+                if isinstance(starting_war, dict)
+                else None
+            )
+            cb_database_index = (
+                casus_belli.get("database_index")
+                if isinstance(casus_belli, dict)
+                else None
+            )
+            bound_war_bound = (
+                bind_raiktor_war_bound_regiment_public_frame(
+                    generic_war_bound_current,
+                    expected_snapshot_revision=starting.get("revision"),
+                    expected_native_revision=starting.get(
+                        "native_revision"
+                    ),
+                    expected_date_raw=starting.get("date_raw"),
+                    expected_war_id=war_id,
+                    expected_casus_belli_database_index=cb_database_index,
+                    expected_attacker_character_id=starting.get(
+                        "episode_character_id"
+                    ),
+                    expected_defender_character_id=defender_id,
+                )
+            )
+            if bound_war_bound is None:
+                raise BridgeUnavailableError(
+                    "native generic war-bound payload disagrees with "
+                    "the public paused frame"
+                )
+            terms = copy.deepcopy(terms)
+            terms["generic_war_bound_current"] = bound_war_bound
         diagnostics = starting.get("diagnostics")
         connection_generation = (
             diagnostics.get("connection_generation")
@@ -9786,7 +9828,13 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": connection_generation,
             "episode_run_id": starting.get("episode_run_id"),
         }
-        aggregate = project_raiktor_surrender_six_domain(starting, terms)
+        aggregate = project_raiktor_surrender_six_domain(
+            starting,
+            terms,
+            generic_war_bound_current_value=terms.get(
+                "generic_war_bound_current"
+            ),
+        )
         aggregate_session = bind_raiktor_surrender_aggregate_session(
             starting,
             query_receipt,

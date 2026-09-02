@@ -633,6 +633,47 @@ struct WarRaiktorPrisonerReleaseSnapshot {
                          const WarRaiktorPrisonerReleaseSnapshot &) = default;
 };
 
+struct WarRaiktorWarBoundCompositionSnapshot {
+  std::int32_t composition_ordinal = -1;
+  std::int32_t current_army_regiment_id = -1;
+  std::int32_t raised_carmy_id = -1;
+  std::int32_t current_soldiers = -1;
+
+  friend bool operator==(const WarRaiktorWarBoundCompositionSnapshot &,
+                         const WarRaiktorWarBoundCompositionSnapshot &) =
+      default;
+};
+
+struct WarRaiktorWarBoundRegimentSnapshot {
+  std::int32_t persistent_regiment_id = -1;
+  std::int32_t bound_war_id = -1;
+  bool war_keep_on_attacker_victory = false;
+  std::int64_t current_soldiers = 0;
+  std::vector<WarRaiktorWarBoundCompositionSnapshot> composition_rows;
+
+  friend bool operator==(const WarRaiktorWarBoundRegimentSnapshot &,
+                         const WarRaiktorWarBoundRegimentSnapshot &) =
+      default;
+};
+
+// Read-only generic war-bound current-regiment projection.  The bridge stamps
+// its transport revision when serializing the query result; source-specific
+// origin, pre soldiers, loss, and postwar cleanup remain unavailable.
+struct WarRaiktorWarBoundCurrentSnapshot {
+  std::int32_t date_raw = 0;
+  std::int32_t war_id = -1;
+  std::int32_t active_casus_belli_database_index = -1;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::int32_t owner_character_id = -1;
+  std::int64_t observed_current_soldiers = -1;
+  std::vector<WarRaiktorWarBoundRegimentSnapshot> regiments;
+
+  friend bool operator==(const WarRaiktorWarBoundCurrentSnapshot &,
+                         const WarRaiktorWarBoundCurrentSnapshot &) =
+      default;
+};
+
 struct WarRaiktorSurrenderTermsSnapshot {
   WarClaimDispositionSnapshot claim_disposition;
   std::int32_t gold_reparations_factor = 0;
@@ -678,6 +719,8 @@ struct WarRaiktorSurrenderTermsSnapshot {
   bool claimant_distinct_from_attacker = false;
   bool original_visible_root_traversed = false;
   bool conditional_favor_hook_applies = false;
+  bool generic_war_bound_current_observable = false;
+  WarRaiktorWarBoundCurrentSnapshot generic_war_bound_current;
   bool observed_dynamic_terms_same_frame_stable = false;
   FixedPointValue attacker_legitimacy_delta;
   FixedPointValue attacker_influence_delta;

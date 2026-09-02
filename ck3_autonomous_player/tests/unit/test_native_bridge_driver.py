@@ -80,6 +80,7 @@ from xar_autoplayer.bridge.war_contract import (
 from test_war_termination_terms_contract import (
     _available_raiktor_observed_terms,
 )
+from test_raiktor_war_bound_regiment_contract import _active as _war_bound
 from xar_autoplayer.strategy import _battle_sentinel_advance_validation
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import write_bytes_atomic, write_json_atomic
@@ -10393,6 +10394,98 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(len(cached), 1)
         self.assertEqual(
             cached[0]["raiktor_surrender_aggregate_session"], binding
+        )
+
+    def test_raiktor_terms_query_binds_native_war_bound_to_public_frame(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        terms = _available_raiktor_observed_terms()
+        war_id = int(terms["war_id"])
+        generic = _war_bound()
+        generic["war_id"] = war_id
+        generic["owner_character_id"] = 29_829
+        generic["active_frame"].update(
+            {
+                "snapshot_revision": 40,
+                "native_revision": 40,
+                "date_raw": 53_175_816,
+                "war_id": war_id,
+                "active_casus_belli_database_index": 409,
+                "primary_attacker_character_id": 29_829,
+                "primary_defender_character_id": 41_002,
+            }
+        )
+        for regiment in generic["regiments"]:
+            regiment["bound_war_id"] = war_id
+        terms["generic_war_bound_current"] = generic
+        active_war = _war(war_id=war_id, targeted_title_ids=[1_800])
+        active_war["primary_opponent_character_id"] = 41_002
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-terms-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_175_816,
+                played_character={"character_id": 29_829, "alive": True},
+                active_wars=[active_war],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 12,
+                        "war_termination_terms": terms,
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        public_revision = int(driver.take_snapshot()["revision"])
+        result = GameplayBridgeService(driver).query_war_termination_terms(
+            war_id, expected_revision=public_revision
+        )
+
+        bound = result["war_termination_terms"][
+            "generic_war_bound_current"
+        ]
+        self.assertEqual(
+            bound["active_frame"]["snapshot_revision"], public_revision
+        )
+        self.assertEqual(bound["active_frame"]["native_revision"], 40)
+        aggregate = result["raiktor_surrender_aggregate_session"][
+            "aggregate"
+        ]
+        self.assertEqual(aggregate["missing_domains"], ["truce"])
+        self.assertTrue(
+            aggregate["readiness"]["generic_war_bound_current_ready"]
+        )
+        self.assertFalse(
+            aggregate["readiness"]["source_specific_war_bound_ready"]
+        )
+        self.assertFalse(aggregate["readiness"]["action_terms_ready"])
+        self.assertFalse(
+            aggregate["readiness"]["automatic_surrender_ready"]
         )
 
     def test_unsupported_claim_terms_keep_termination_commands_frozen(
