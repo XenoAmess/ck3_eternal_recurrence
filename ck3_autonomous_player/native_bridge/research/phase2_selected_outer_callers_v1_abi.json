@@ -1,0 +1,72 @@
+{
+  "contract": "phase2-selected-outer-callers-v1",
+  "schema_version": 1,
+  "status": "static-indirect-owner-bound",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "f122cdcd81a968247c77f9de5b73ab745897ea67",
+    "outer_return_live_contract": "phase2-loader-callback-outer-return-live-v1",
+    "outer_return_live_contract_sha256": "90701CB04D51A80B0BEBAE19DD6F1BD30F88797F4ED42FC3E7F7404460548FB9",
+    "extractor": "extract_phase2_selected_outer_callers.py",
+    "extractor_sha256": "E7CB892B91AC8F6FAEB4673A772952E1909C2C698F50606DAE0358342762D67F"
+  },
+  "preflight": {
+    "open_kaishek_commit": "425514e2e937bb829b2415f9da7870609e9c736f",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\open-kaishek-support-20260902T1807\\phase2-outer-caller-preflight.json",
+    "artifact_sha256": "80FC14AF5081A85ECBCAC998FDCF8FE26A11644E24407865D24EB8EF2CB70823"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\selected-outer-callers-static-extract.json",
+    "artifact_sha256": "77E277CFF70C0A6231174C52476B73C1B7EB61DB337C78EDFEB7FA49B50920C7",
+    "ck3_started": false,
+    "function": {
+      "rva": "0x88B480",
+      "end_rva_exclusive": "0x88B649",
+      "bytes_sha256": "0434F6BAD0F0DC15301E30408EAE2705CA65C4C5B54A422FB75EA4D643AE5F37",
+      "unwind_rva": "0x4C42814",
+      "normal_return_rva": "0x88B648"
+    },
+    "direct_relative_caller_count": 0,
+    "static_continuation_count": 0,
+    "absolute_function_pointer_ref_count": 1,
+    "indirect_owner": {
+      "identity": "std::_Func_impl_no_alloc<lambda_68c316810e9676445097b6e1817a6010, void>",
+      "type_descriptor_rva": "0x5158290",
+      "complete_object_locator_rva": "0x45BE710",
+      "vtable_rva": "0x408DBF0",
+      "slot_index": 2,
+      "slot_rva": "0x408DC00",
+      "slot_target_rva": "0x88B480",
+      "construction_reference_rvas": ["0x82193B", "0x88B650"],
+      "construction_owner_function_rva": "0x821870",
+      "construction_owner_function_end_rva_exclusive": "0x821A0A",
+      "construction_owner_unwind_rva": "0x4C3F144"
+    }
+  },
+  "conclusion": {
+    "closed": "the selected callback function has one exact RTTI/vtable slot owner",
+    "not_closed": "the runtime indirect callsite and continuation after normal return",
+    "next_distinct_stop_point_rva": "0x88B648",
+    "next_read": "[RSP] exact runtime continuation before RET"
+  },
+  "next_entry": {
+    "authorized_in_this_static_package": false,
+    "required": "one bounded private observation at 0x88B648 preserving callback, vector exhaustion, teardown, and outer return ordering",
+    "forbidden": [
+      "infer a continuation from vtable ownership",
+      "expand beyond the selected callable and its two construction references",
+      "widen the public bridge or promote readiness"
+    ]
+  },
+  "readiness": "native-readiness RED + not-live"
+}
