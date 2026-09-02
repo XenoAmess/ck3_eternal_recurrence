@@ -279,7 +279,7 @@ void AppendG2TrucePrivateCaptureV1(
   std::array<char, 32768> row{};
   const int length = std::snprintf(
       row.data(), row.size(),
-      "{\"schema\":\"xar.ck3.g2_truce_private_capture.v2\","
+      "{\"schema\":\"xar.ck3.g2_truce_private_capture.v3\","
       "\"war_id\":%d,\"casus_belli_database_index\":%d,"
       "\"primary_attacker_character_id\":%d,"
       "\"primary_defender_character_id\":%d,"
@@ -361,7 +361,18 @@ void AppendG2TrucePrivateCaptureV1(
       "\"truce_effect\":\"0x%llX\","
       "\"truce_vtable\":\"0x%llX\",\"truce_vtable_rva\":\"0x%llX\","
       "\"expected_truce_vtable_rva\":\"0x%llX\","
-      "\"duration_script_value\":\"0x%llX\"},"
+      "\"duration_script_value\":\"0x%llX\","
+      "\"evaluator_capture_status\":\"%.*s\","
+      "\"evaluator_function\":\"0x%llX\","
+      "\"evaluator_function_rva\":\"0x%llX\","
+      "\"expected_evaluator_function_rva\":\"0x%llX\","
+      "\"evaluator_effect_context\":\"0x%llX\","
+      "\"evaluator_evaluation_context\":\"0x%llX\","
+      "\"evaluator_first_days\":%d,"
+      "\"evaluator_second_days\":%d,"
+      "\"evaluator_call_count\":%llu,"
+      "\"evaluator_nonnegative\":%s,"
+      "\"evaluator_stable\":%s},"
       "\"context_destroyed\":%s}\r\n",
       war_id, casus_belli_database_index,
       primary_attacker_character_id, primary_defender_character_id,
@@ -470,6 +481,17 @@ void AppendG2TrucePrivateCaptureV1(
       static_cast<unsigned long long>(as_rva(shape.truce_vtable)),
       static_cast<unsigned long long>(kRaiktorTruceEffectVtableRva),
       static_cast<unsigned long long>(shape.duration_script_value),
+      static_cast<int>(shape.evaluator_capture_status.size()),
+      shape.evaluator_capture_status.data(),
+      static_cast<unsigned long long>(shape.evaluator_function),
+      static_cast<unsigned long long>(as_rva(shape.evaluator_function)),
+      static_cast<unsigned long long>(kRaiktorTruceDurationEvaluatorRva),
+      static_cast<unsigned long long>(shape.evaluator_effect_context),
+      static_cast<unsigned long long>(shape.evaluator_evaluation_context),
+      shape.evaluator_first_days, shape.evaluator_second_days,
+      static_cast<unsigned long long>(shape.evaluator_call_count),
+      shape.evaluator_nonnegative ? "true" : "false",
+      shape.evaluator_stable ? "true" : "false",
       context_destroyed ? "true" : "false");
   if (length <= 0 || static_cast<std::size_t>(length) >= row.size()) {
     return;

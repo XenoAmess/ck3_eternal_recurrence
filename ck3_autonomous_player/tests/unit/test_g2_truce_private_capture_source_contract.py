@@ -22,7 +22,8 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         )
         self.assertIsNotNone(option)
         self.assertEqual(option.group(1), "OFF")
-        self.assertEqual(cmake.count("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1"), 1)
+        self.assertEqual(cmake.count("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1"), 2)
+        self.assertIn("xar_ck3_raiktor_surrender_truce_v1_test PRIVATE", cmake)
 
     def test_capture_precedes_production_reset_without_public_wire(self) -> None:
         source = WRITER.read_text(encoding="utf-8")
@@ -30,9 +31,9 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         call = source.index("AppendG2TrucePrivateCaptureV1(", observer)
         reset = source.index("output = {};", call)
         self.assertLess(call, reset)
-        self.assertIn("xar.ck3.g2_truce_private_capture.v2", source)
+        self.assertIn("xar.ck3.g2_truce_private_capture.v3", source)
         self.assertIn("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH", source)
-        private_schema = "xar.ck3.g2_truce_private_capture.v2"
+        private_schema = "xar.ck3.g2_truce_private_capture.v3"
         for public_path in (
             NATIVE / "src" / "bridge.cpp",
             NATIVE / "include" / "xar_bridge" / "game_contract.hpp",
@@ -54,7 +55,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         self.assertNotIn("CaptureLoadedScriptedCandidatesForG2(", resolver[runtime_call:stale_gate])
         self.assertNotIn("CapturePrivateNestedContainerForG2(", resolver[runtime_call:stale_gate])
 
-    def test_targeted_helper_reads_no_siblings_and_never_calls_evaluator(self) -> None:
+    def test_targeted_helper_reads_no_siblings_and_calls_only_duration_evaluator(self) -> None:
         resolver = RESOLVER.read_text(encoding="utf-8")
         begin = resolver.index("void CaptureTargetedIndex7ForG2(")
         end = resolver.index("#endif", begin)
@@ -65,7 +66,10 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         self.assertIn("ReadValue(access, hidden_children, 0, context)", helper)
         self.assertIn("ReadValue(access, context_children, 0, truce)", helper)
         self.assertIn("kTruceDurationScriptValueOffset", helper)
-        self.assertNotIn("evaluate_duration_days", helper)
+        self.assertEqual(helper.count("environment.evaluate_duration_days("), 2)
+        self.assertIn("const_cast<void *>(duration), request.effect_context", helper)
+        self.assertIn("request.evaluation_context", helper)
+        self.assertIn("capture.evaluator_call_count", helper)
         for old_index in ("root_index == 9", "root_index == 10"):
             self.assertNotIn(old_index, helper)
 
@@ -82,6 +86,16 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             '"expected_context_capacity":1',
             '"expected_truce_vtable_rva"',
             '"duration_script_value"',
+            '"evaluator_capture_status"',
+            '"evaluator_function_rva"',
+            '"expected_evaluator_function_rva"',
+            '"evaluator_effect_context"',
+            '"evaluator_evaluation_context"',
+            '"evaluator_first_days"',
+            '"evaluator_second_days"',
+            '"evaluator_call_count"',
+            '"evaluator_nonnegative"',
+            '"evaluator_stable"',
         ):
             self.assertIn(field.replace('"', '\\"'), source)
 
@@ -98,6 +112,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             "white_peace",
             "enforce_demands",
             "WriteProcessMemory",
+            "Execute",
         ):
             self.assertNotIn(forbidden, helper)
 

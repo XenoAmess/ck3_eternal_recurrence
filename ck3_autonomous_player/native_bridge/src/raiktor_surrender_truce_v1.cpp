@@ -669,11 +669,14 @@ void CaptureLoadedScriptedCandidatesForG2(
 
 // Source-correlated one-off capture.  It reads exactly root index 7 and the
 // authored hidden_effect -> scope:attacker Context -> CAddTruce child chain.
-// It intentionally does not enumerate any root/default/container siblings and
-// never invokes the duration evaluator.
+// It intentionally does not enumerate any root/default/container siblings.
+// The private-only evaluator capture calls the exact-build duration evaluator
+// twice with the same frozen input tuple and records the results; it does not
+// execute the Context effect or any war-termination mutation.
 void CaptureTargetedIndex7ForG2(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
-    const RaiktorSurrenderTruceAccessV1 &access, void *root_children,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    const RaiktorSurrenderTruceRequestV1 &request, void *root_children,
     std::int32_t root_count) noexcept {
   constexpr std::size_t kRootIndex = 7;
   constexpr std::size_t kHiddenIndex = 1;
@@ -854,6 +857,46 @@ void CaptureTargetedIndex7ForG2(
     return;
   }
   capture.duration_script_value = reinterpret_cast<std::uintptr_t>(duration);
+  capture.evaluator_function = reinterpret_cast<std::uintptr_t>(
+      environment.evaluate_duration_days);
+  capture.evaluator_effect_context =
+      reinterpret_cast<std::uintptr_t>(request.effect_context);
+  capture.evaluator_evaluation_context =
+      reinterpret_cast<std::uintptr_t>(request.evaluation_context);
+  if (environment.evaluate_duration_days == nullptr) {
+    capture.evaluator_capture_status = "evaluator_unavailable";
+    stop("evaluator_unavailable");
+    return;
+  }
+  if (request.effect_context == nullptr ||
+      request.evaluation_context == nullptr) {
+    capture.evaluator_capture_status = "evaluator_context_unavailable";
+    stop("evaluator_context_unavailable");
+    return;
+  }
+  capture.evaluator_first_days = environment.evaluate_duration_days(
+      const_cast<void *>(duration), request.effect_context,
+      request.evaluation_context);
+  ++capture.evaluator_call_count;
+  capture.evaluator_second_days = environment.evaluate_duration_days(
+      const_cast<void *>(duration), request.effect_context,
+      request.evaluation_context);
+  ++capture.evaluator_call_count;
+  capture.evaluator_nonnegative = capture.evaluator_first_days >= 0 &&
+                                  capture.evaluator_second_days >= 0;
+  capture.evaluator_stable = capture.evaluator_first_days ==
+                             capture.evaluator_second_days;
+  if (!capture.evaluator_nonnegative) {
+    capture.evaluator_capture_status = "negative_result";
+    stop("evaluator_negative_result");
+    return;
+  }
+  if (!capture.evaluator_stable) {
+    capture.evaluator_capture_status = "unstable_result";
+    stop("evaluator_unstable_result");
+    return;
+  }
+  capture.evaluator_capture_status = "complete";
   stop("complete");
 }
 #endif
@@ -912,7 +955,8 @@ struct ResolvedTruceNodeV1 {
 
 RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
-    const RaiktorSurrenderTruceAccessV1 &access, void *root,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    [[maybe_unused]] const RaiktorSurrenderTruceRequestV1 &request, void *root,
     ResolvedTruceNodeV1 &output) noexcept {
   output = {};
   XAR_G2_SHAPE_RESET();
@@ -957,7 +1001,8 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   }
   XAR_G2_SHAPE_VALUE(root_count, root_count);
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
-  CaptureTargetedIndex7ForG2(environment, access, root_children, root_count);
+  CaptureTargetedIndex7ForG2(environment, access, request, root_children,
+                            root_count);
 #endif
   if (root_children == nullptr) {
     XAR_G2_SHAPE_STAGE("root_children_null");
@@ -1343,7 +1388,7 @@ RaiktorSurrenderTruceObservationV1 ObserveRaiktorSurrenderTruceV1(
 
   ResolvedTruceNodeV1 first_node;
   auto shape_failure = ResolveUniqueTruceNode(
-      environment, access, first.attacker_defeat_root, first_node);
+      environment, access, request, first.attacker_defeat_root, first_node);
   if (shape_failure != RaiktorSurrenderTruceFailureV1::none) {
     return fail(shape_failure);
   }
@@ -1365,7 +1410,7 @@ RaiktorSurrenderTruceObservationV1 ObserveRaiktorSurrenderTruceV1(
 
   ResolvedTruceNodeV1 second_node;
   shape_failure = ResolveUniqueTruceNode(
-      environment, access, first.attacker_defeat_root, second_node);
+      environment, access, request, first.attacker_defeat_root, second_node);
   if (shape_failure != RaiktorSurrenderTruceFailureV1::none ||
       second_node.node != first_node.node ||
       second_node.duration_script_value != first_node.duration_script_value) {

@@ -258,6 +258,15 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::uintptr_t truce_effect = 0;
   std::uintptr_t truce_vtable = 0;
   std::uintptr_t duration_script_value = 0;
+  std::string_view evaluator_capture_status = "not_attempted";
+  std::uintptr_t evaluator_function = 0;
+  std::uintptr_t evaluator_effect_context = 0;
+  std::uintptr_t evaluator_evaluation_context = 0;
+  std::int32_t evaluator_first_days = -1;
+  std::int32_t evaluator_second_days = -1;
+  std::size_t evaluator_call_count = 0;
+  bool evaluator_nonnegative = false;
+  bool evaluator_stable = false;
 };
 
 const RaiktorTrucePrivateShapeCaptureV1 &

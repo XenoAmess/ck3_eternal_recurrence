@@ -33,8 +33,16 @@ struct Fixture {
   std::array<std::byte, 0x80> context_effect{};
   std::array<std::byte, 0x110> truce{};
   std::array<std::byte, 0x10> unknown{};
+  std::array<std::byte, 0xA0> private_scripted{};
+  std::array<std::byte, 0x128> private_scripted_template{};
+  std::array<std::byte, 0x60> private_default_effect{};
+  std::array<std::byte, 0x60> private_hidden{};
+  std::array<std::byte, 0x80> private_context_effect{};
   std::array<void *, 19> root_children{};
   std::array<void *, 6> default_children{};
+  std::array<void *, 4> private_default_children{};
+  std::array<void *, 1> private_hidden_children{};
+  std::array<void *, 1> private_context_children{};
   std::array<void *, 1> hidden_children{};
   std::array<void *, 1> context_children{};
   std::array<std::byte, 1> war{};
@@ -87,6 +95,38 @@ struct Fixture {
     Store(context_effect, 0x4C, std::int32_t{1});
     Store(context_effect, 0x6C, std::int32_t{1});
     Store(truce, 0x00, static_cast<void *>(truce_vtable.data()));
+
+    private_default_children.fill(unknown.data());
+    private_default_children[1] = private_hidden.data();
+    private_hidden_children[0] = private_context_effect.data();
+    private_context_children[0] = truce.data();
+    Store(private_scripted, 0x00,
+          static_cast<void *>(scripted_vtable.data()));
+    Store(private_scripted, 0x60,
+          static_cast<void *>(private_scripted_template.data()));
+    Store(private_scripted, 0x94, std::int32_t{0});
+    Store(private_scripted_template, 0x00,
+          static_cast<void *>(template_vtable.data()));
+    Store(private_scripted_template, 0x120,
+          static_cast<void *>(private_default_effect.data()));
+    Store(private_default_effect, 0x00,
+          static_cast<void *>(root_vtable.data()));
+    Store(private_default_effect, 0x40,
+          static_cast<void *>(private_default_children.data()));
+    Store(private_default_effect, 0x48, std::int32_t{4});
+    Store(private_default_effect, 0x4C, std::int32_t{4});
+    Store(private_hidden, 0x00, static_cast<void *>(hidden_vtable.data()));
+    Store(private_hidden, 0x40,
+          static_cast<void *>(private_hidden_children.data()));
+    Store(private_hidden, 0x48, std::int32_t{1});
+    Store(private_hidden, 0x4C, std::int32_t{1});
+    Store(private_context_effect, 0x00,
+          static_cast<void *>(context_vtable.data()));
+    Store(private_context_effect, 0x40,
+          static_cast<void *>(private_context_children.data()));
+    Store(private_context_effect, 0x48, std::int32_t{1});
+    Store(private_context_effect, 0x4C, std::int32_t{1});
+    Store(private_context_effect, 0x6C, std::int32_t{1});
 
     frame.snapshot_revision = 73;
     frame.native_revision = 4;
@@ -186,6 +226,40 @@ bool ShapeDrift(Mutate mutate, RaiktorSurrenderTruceFailureV1 failure,
 } // namespace
 
 int main() {
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    fixture.root_children[7] = fixture.private_scripted.data();
+    Store(fixture.root, 0x48, std::int32_t{13});
+    Store(fixture.root, 0x4C, std::int32_t{12});
+    const auto value = ObserveRaiktorSurrenderTruceV1(
+        fixture.Environment(), fixture.Access(), fixture.Request());
+    const auto &capture = LastRaiktorTrucePrivateShapeCaptureV1();
+    if (!ExpectFailure(value,
+                       RaiktorSurrenderTruceFailureV1::root_shape_drift,
+                       "private targeted evaluator") ||
+        capture.targeted_index7_status != "complete" ||
+        capture.evaluator_capture_status != "complete" ||
+        capture.duration_script_value !=
+            reinterpret_cast<std::uintptr_t>(fixture.truce.data() + 0x108) ||
+        capture.evaluator_function !=
+            reinterpret_cast<std::uintptr_t>(Evaluate) ||
+        capture.evaluator_effect_context != reinterpret_cast<std::uintptr_t>(
+                                                fixture.effect_context.data()) ||
+        capture.evaluator_evaluation_context !=
+            reinterpret_cast<std::uintptr_t>(fixture.effect_context.data() +
+                                             0x28) ||
+        capture.evaluator_first_days != 1825 ||
+        capture.evaluator_second_days != 1825 ||
+        capture.evaluator_call_count != 2 ||
+        !capture.evaluator_nonnegative || !capture.evaluator_stable ||
+        fixture.evaluator_calls != 2 || fixture.frame_reads != 1) {
+      std::cerr << "private targeted evaluator capture failed\n";
+      return 1;
+    }
+  }
+#endif
   {
     Fixture fixture;
     g_fixture = &fixture;

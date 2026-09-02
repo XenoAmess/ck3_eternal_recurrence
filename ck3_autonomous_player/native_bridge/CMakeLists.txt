@@ -1700,6 +1700,12 @@ if(BUILD_TESTING)
     UNICODE
     _UNICODE
   )
+  if(XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1)
+    target_compile_definitions(
+      xar_ck3_raiktor_surrender_truce_v1_test PRIVATE
+      XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1
+    )
+  endif()
   if(MSVC)
     target_compile_options(
       xar_ck3_raiktor_surrender_truce_v1_test PRIVATE
