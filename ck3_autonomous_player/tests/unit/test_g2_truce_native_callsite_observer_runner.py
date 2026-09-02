@@ -133,6 +133,12 @@ class G2TruceNativeCallsiteObserverRunnerTests(unittest.TestCase):
                     report_path=report_path,
                     manifest_path=manifest_path,
                     expected_manifest_sha256=manifest_sha256,
+                    expected_source_commit=(
+                        RUNNER.postprocessor.EXPECTED_SOURCE_COMMIT
+                    ),
+                    expected_source_zip_sha256=(
+                        RUNNER.postprocessor.EXPECTED_SOURCE_ZIP_SHA256
+                    ),
                 )
 
                 acceptance = result["acceptance"]
@@ -178,7 +184,7 @@ class G2TruceNativeCallsiteObserverRunnerTests(unittest.TestCase):
     def test_verifier_freezes_exact_source_and_two_anchors(self) -> None:
         self.assertEqual(
             VERIFIER.EXPECTED_SOURCE_COMMIT,
-            "36fafd811b29bba11758d1ebc3929be8cbd4c9d4",
+            "0d83cc3d0affaa29878ae2311d0bd23cd2780059",
         )
         self.assertEqual(
             [rva for rva, _ in VERIFIER.ANCHORS],

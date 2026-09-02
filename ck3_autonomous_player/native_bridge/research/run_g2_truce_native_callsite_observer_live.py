@@ -62,6 +62,12 @@ EXPECTED_EXECUTABLE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 EXPECTED_CALL_RVAS = (0x2EDAF0F, 0x2EDB59E)
+EXPECTED_CANDIDATE_SOURCE_COMMIT = (
+    "0d83cc3d0affaa29878ae2311d0bd23cd2780059"
+)
+EXPECTED_CANDIDATE_SOURCE_ZIP_SHA256 = (
+    "6906AF774916AF36409159404B9213B99ED0655A24966F51B31A91FA8D452242"
+)
 MAX_MANIFEST_BYTES = 4 * 1024 * 1024
 REQUIRED_CALLSITE_FIELDS = (
     "call_instruction_rva",
@@ -129,6 +135,8 @@ def _materialize_acceptance_evidence(
     report_path: Path,
     manifest_path: Path,
     expected_manifest_sha256: str | None = None,
+    expected_source_commit: str = EXPECTED_CANDIDATE_SOURCE_COMMIT,
+    expected_source_zip_sha256: str = EXPECTED_CANDIDATE_SOURCE_ZIP_SHA256,
 ) -> dict[str, object]:
     """Bind one raw runner report to its typed offline acceptance result."""
 
@@ -155,6 +163,8 @@ def _materialize_acceptance_evidence(
         report_sha256=report_sha256,
         manifest_sha256=manifest_sha256,
         expected_manifest_sha256=expected_manifest_sha256,
+        expected_source_commit=expected_source_commit,
+        expected_source_zip_sha256=expected_source_zip_sha256,
     )
     typed_path = report_path.with_name("typed-postprocess.json")
     _write_json_atomic(typed_path, typed)

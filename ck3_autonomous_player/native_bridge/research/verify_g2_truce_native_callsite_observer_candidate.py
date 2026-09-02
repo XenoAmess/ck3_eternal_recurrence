@@ -20,7 +20,10 @@ import pefile
 EXPECTED_EXE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
-EXPECTED_SOURCE_COMMIT = "36fafd811b29bba11758d1ebc3929be8cbd4c9d4"
+EXPECTED_SOURCE_COMMIT = "0d83cc3d0affaa29878ae2311d0bd23cd2780059"
+EXPECTED_SOURCE_ZIP_SHA256 = (
+    "6906AF774916AF36409159404B9213B99ED0655A24966F51B31A91FA8D452242"
+)
 PRIVATE_MARKER = b"g2_truce_native_callsite_observer_v1"
 ANCHORS = (
     (0x2EDAF01, bytes.fromhex("488D8E080100004D8B4728498BD7E8EC804900")),
@@ -137,6 +140,8 @@ def verify(manifest_path: Path) -> dict[str, object]:
     command = str(run["unique_powershell_command"])
     checks = {
         "source_commit_exact": source.get("commit") == EXPECTED_SOURCE_COMMIT,
+        "source_zip_exact": expected_hashes.get("source_zip")
+        == EXPECTED_SOURCE_ZIP_SHA256,
         "all_frozen_files_exist": all(path.is_file() for path in files.values()),
         "all_frozen_hashes_match": actual_hashes == expected_hashes,
         "all_frozen_files_read_only": all(is_read_only(path) for path in files.values()),

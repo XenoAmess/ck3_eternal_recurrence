@@ -51,7 +51,11 @@ def _positive(value: Any) -> bool:
 
 
 def _validate_manifest(
-    manifest: dict[str, Any], manifest_sha256: str, expected_manifest_sha256: str
+    manifest: dict[str, Any],
+    manifest_sha256: str,
+    expected_manifest_sha256: str,
+    expected_source_commit: str,
+    expected_source_zip_sha256: str,
 ) -> dict[str, Any]:
     source = manifest.get("source")
     candidate = manifest.get("candidate")
@@ -62,9 +66,9 @@ def _validate_manifest(
     checks = {
         "manifest_sha256": manifest_sha256 == expected_manifest_sha256,
         "source_commit": isinstance(source, dict)
-        and source.get("commit") == EXPECTED_SOURCE_COMMIT,
+        and source.get("commit") == expected_source_commit,
         "source_zip_sha256": isinstance(source_zip, dict)
-        and source_zip.get("sha256") == EXPECTED_SOURCE_ZIP_SHA256,
+        and source_zip.get("sha256") == expected_source_zip_sha256,
         "heartbeat_schema": manifest.get("heartbeat_schema")
         == EXPECTED_OBSERVER_KEY,
         "report_schema": manifest.get("report_schema") == EXPECTED_REPORT_KIND,
@@ -303,11 +307,17 @@ def analyze(
     report_sha256: str,
     manifest_sha256: str,
     expected_manifest_sha256: str = EXPECTED_MANIFEST_SHA256,
+    expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
+    expected_source_zip_sha256: str = EXPECTED_SOURCE_ZIP_SHA256,
 ) -> dict[str, Any]:
     report = report if isinstance(report, dict) else {}
     manifest = manifest if isinstance(manifest, dict) else {}
     manifest_proof = _validate_manifest(
-        manifest, manifest_sha256, expected_manifest_sha256
+        manifest,
+        manifest_sha256,
+        expected_manifest_sha256,
+        expected_source_commit,
+        expected_source_zip_sha256,
     )
     policy_proof = _validate_policy(report)
     observation = report.get("observation")
