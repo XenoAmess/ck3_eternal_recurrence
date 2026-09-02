@@ -36,6 +36,7 @@ class FinalPromoRunbookTests(unittest.TestCase):
             work = root / "work-must-not-be-created"
             runbook = planner.build_runbook(
                 project_config=planner.DEFAULT_CONFIG,
+                authoring_ledger=planner.DEFAULT_AUTHORING_LEDGER,
                 promo_tool_root=Path(r"Z:\workspace\xar_promo_toolchain"),
                 capture_root=root / "footage-missing",
                 seed_preflight_report=None,
@@ -49,6 +50,11 @@ class FinalPromoRunbookTests(unittest.TestCase):
             )
             self.assertEqual(runbook["result"], "RED")
             self.assertEqual(runbook["reason_code"], "footage_pending")
+            self.assertEqual(runbook["blockers"], ["footage_pending"])
+            self.assertEqual(runbook["authoring_claim_ledger"]["result"], "GREEN")
+            self.assertEqual(
+                len(runbook["authoring_claim_ledger"]["claims"]), 10
+            )
             self.assertEqual(len(runbook["fixed_contract"]["canonical_spans"]), 8)
             self.assertEqual(runbook["fixed_contract"]["chapter_count"], 10)
             self.assertEqual(runbook["fixed_contract"]["voice"], planner.VOICE)
@@ -59,7 +65,10 @@ class FinalPromoRunbookTests(unittest.TestCase):
             self.assertTrue(runbook["ordered_steps"][0]["required_first"])
             self.assertEqual(
                 [step["id"] for step in runbook["ordered_steps"] if step.get("human_pause")],
-                ["source_footage_human_review_1x", "final_video_human_review_1x"],
+                [
+                    "source_footage_human_review_1x",
+                    "final_video_human_review_1x",
+                ],
             )
             self.assertFalse(tts.exists())
             self.assertFalse(work.exists())
@@ -71,6 +80,7 @@ class FinalPromoRunbookTests(unittest.TestCase):
             root = Path(raw)
             kwargs = dict(
                 project_config=planner.DEFAULT_CONFIG,
+                authoring_ledger=planner.DEFAULT_AUTHORING_LEDGER,
                 promo_tool_root=Path(r"Z:\workspace\xar_promo_toolchain"),
                 capture_root=None,
                 seed_preflight_report=None,

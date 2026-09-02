@@ -22,6 +22,15 @@ from zhongguo_phase2_capture_choreography import PHASE2_CAPTURE_SCENARIOS
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CONFIG = ROOT / "mod_zhongguo_style" / "promo" / "phase2-promo-project.json"
+DEFAULT_AUTHORING_LEDGER = (
+    ROOT / "mod_zhongguo_style" / "promo" / "phase2-authoring-claims.json"
+)
+PHASE2_MOD_TOOLS = ROOT / "mod_zhongguo_style" / "tools"
+if str(PHASE2_MOD_TOOLS) not in sys.path:
+    sys.path.insert(0, str(PHASE2_MOD_TOOLS))
+
+from validate_phase2_authoring_claims import validate_ledger  # noqa: E402
+
 VOICE = "zh-CN-XiaoxiaoNeural"
 EXPECTED_CHAPTERS = (
     "phase2_minimal_recap",
@@ -101,13 +110,13 @@ def _project_gate(config_path: Path) -> tuple[dict[str, object], list[str]]:
         and all(isinstance(row["title"].get(locale), str) and row["title"][locale].strip() for locale in ("zh-CN", "en"))
         for row in rows
     )
-    cues_ready = all(
+    deliberately_unpromoted = all(
         isinstance(row, Mapping)
-        and row.get("state") == "ready"
+        and row.get("state") == "planned"
         and isinstance(row.get("cues"), list)
-        and bool(row["cues"])
+        and not row["cues"]
         and isinstance(row.get("artifact_ids"), list)
-        and bool(row["artifact_ids"])
+        and not row["artifact_ids"]
         for row in rows
     )
     checks = {
@@ -120,7 +129,7 @@ def _project_gate(config_path: Path) -> tuple[dict[str, object], list[str]]:
         and rows[-1].get("type") == "generated_card",
         "eight_canonical_clean_spans": len(rows) == 10 and all(isinstance(row, Mapping) and row.get("type") == "ck3_clean_span" for row in rows[1:-1]),
         "bilingual_claim_titles": titles_bilingual,
-        "ready_cues_and_artifact_ids": cues_ready,
+        "deliberately_unpromoted_before_footage": deliberately_unpromoted,
     }
     blockers = [] if all(checks.values()) else ["authoring_pending"]
     claims = [
@@ -141,9 +150,51 @@ def _project_gate(config_path: Path) -> tuple[dict[str, object], list[str]]:
     }, blockers
 
 
+def _authoring_ledger_gate(path: Path) -> tuple[dict[str, object], list[str]]:
+    ledger_path = path.expanduser().resolve()
+    errors = validate_ledger(ledger_path)
+    payload = _json(ledger_path) if ledger_path.is_file() else {}
+    chapters = payload.get("chapters")
+    rows = chapters if isinstance(chapters, list) else []
+    ids = tuple(row.get("id") for row in rows if isinstance(row, Mapping))
+    ready = not errors and ids == EXPECTED_CHAPTERS and len(rows) == 10
+    return {
+        "record": None if not ledger_path.is_file() else _sha256(ledger_path),
+        "result": "GREEN" if ready else "RED",
+        "status": payload.get("authoring_status"),
+        "checks": {
+            "validator_green": not errors,
+            "exact_ten_claims": len(rows) == 10,
+            "canonical_order": ids == EXPECTED_CHAPTERS,
+            "chinese_first": isinstance(payload.get("language_policy"), Mapping)
+            and payload["language_policy"].get("primary_narration") == "zh-CN",
+            "simultaneous_zh_cn_en": isinstance(
+                payload.get("language_policy"), Mapping
+            )
+            and payload["language_policy"].get("simultaneous_subtitles")
+            == ["zh-CN", "en"],
+            "xiaoxiao": isinstance(payload.get("language_policy"), Mapping)
+            and payload["language_policy"].get("current_builder_voice") == VOICE,
+            "draft_not_release_claim": all(
+                isinstance(row, Mapping)
+                and isinstance(row.get("cue"), Mapping)
+                and row["cue"].get("release_usable") is False
+                for row in rows
+            ),
+        },
+        "validation_errors": errors,
+        "claims": rows,
+        "promotion_boundary": (
+            "10/10 authoring is complete as a reviewed draft input; promote "
+            "only after the corresponding real footage supports each claim"
+        ),
+    }, ([] if ready else ["authoring_claim_ledger_invalid"])
+
+
 def build_runbook(
     *,
     project_config: Path,
+    authoring_ledger: Path,
     promo_tool_root: Path,
     capture_root: Path | None,
     seed_preflight_report: Path | None,
@@ -159,6 +210,8 @@ def build_runbook(
     promo = promo_tool_root.expanduser().resolve()
     capture = None if capture_root is None else capture_root.expanduser().resolve()
     project, blockers = _project_gate(config)
+    authoring, authoring_blockers = _authoring_ledger_gate(authoring_ledger)
+    blockers.extend(authoring_blockers)
 
     timeline = _first(capture, TIMELINE_CANDIDATES)
     report = _first(capture, REPORT_CANDIDATES)
@@ -225,24 +278,35 @@ def build_runbook(
         },
         {
             "ordinal": 3,
-            "id": "validate_only",
-            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--project-config", str(config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", "phase2-final", "--validate-only"],
-            "gate": "read-only GREEN; exact 10 chapters/8 spans/runtime claims; no work directory created",
+            "id": "bind_green_footage_and_authoring_ledger",
+            "gate": "rerun this planner against the same-run GREEN capture; require footage_pending cleared and the byte-bound 10/10 authoring ledger still GREEN",
         },
         {
             "ordinal": 4,
             "id": "source_footage_human_review_1x",
             "human_pause": True,
-            "gate": "named human watches all eight raw spans completely at 1x and signs exact timeline/raw/report/index hashes; historical characters only; no fixture/test UI; no crop, mask, or redaction",
+            "gate": "named human watches all eight raw spans completely at 1x and signs exact timeline/raw/report/index hashes; confirms every drafted claim is supported; historical characters only; no fixture/test UI; no crop, mask, or redaction",
         },
         {
             "ordinal": 5,
+            "id": "promote_reviewed_authoring_into_project",
+            "manual_gate": True,
+            "gate": "copy only footage-supported ledger cues into the ten project chapters, set ready/artifact_ids, revalidate both files, and record their new SHA-256; this is text/config work, not TTS or subtitle rendering",
+        },
+        {
+            "ordinal": 6,
+            "id": "validate_only",
+            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--project-config", str(config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", "phase2-final", "--validate-only"],
+            "gate": "read-only GREEN; exact 10 chapters/8 spans/runtime claims; no work directory created",
+        },
+        {
+            "ordinal": 7,
             "id": "build_unreviewed_candidate",
             "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--project-config", str(config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", "phase2-final"],
             "gate": "new external work directory; offline content-addressed Xiaoxiao cache only; capture and receipt bytes unchanged after build",
         },
         {
-            "ordinal": 6,
+            "ordinal": 8,
             "id": "prepare_exact_deliverable_review",
             "commands": [
                 ["xar-promo", "audit", str(candidate_run), "--subject-artifact-id", "zhongguo-361-phase2-video", "--evidence-bundle", "<AUTOMATED_EVIDENCE_BUNDLE_JSON>", "--report", "<AUTOMATED_AUDIT_REPORT_JSON>", "--report-artifact-id", "phase2-final-automated-audit"],
@@ -252,19 +316,19 @@ def build_runbook(
             "gate": "create byte-bound ffprobe envelope and pending review package for the exact final MP4; automated audit is not approval",
         },
         {
-            "ordinal": 7,
+            "ordinal": 9,
             "id": "final_video_human_review_1x",
             "human_pause": True,
             "gate": "independent named human watches the exact MP4 completely at 1x; verifies narration claims, Xiaoxiao audio, zh-CN/en synchronization and wrapping, safe area, opening/finale, chapter boundaries, no loading/test UI; then explicitly approves or rejects its SHA-256",
         },
         {
-            "ordinal": 8,
+            "ordinal": 10,
             "id": "record_signoff",
             "command": ["xar-promo", "signoff", "--run-manifest", str(candidate_run), "--artifact-id", "zhongguo-361-phase2-video", "--reviewer", "<NAMED_HUMAN>", "--decision", "<approved-or-rejected>"],
             "gate": "approval is valid only for the exact deliverable bytes reviewed in step 7",
         },
         {
-            "ordinal": 9,
+            "ordinal": 11,
             "id": "export_preflight_then_local_bundle",
             "commands": [
                 ["xar-promo", "validate", str(candidate_run), "--profile", "release"],
@@ -274,7 +338,7 @@ def build_runbook(
             "gate": "release profile GREEN, selected deliverable approved, strict allowlist GREEN; export is local and does not publish",
         },
         {
-            "ordinal": 10,
+            "ordinal": 12,
             "id": "external_publish",
             "gate": "separate explicit operator action; verify remote page after upload; keep publish_performed=false until it actually succeeds",
         },
@@ -290,12 +354,18 @@ def build_runbook(
         "scope": "no-media planning only",
         "execution_attestation": {"commands_executed": False, "ck3_started": False, "tts_generated": False, "subtitle_media_generated": False, "ffmpeg_started": False, "candidate_generated": False},
         "project": project,
+        "authoring_claim_ledger": authoring,
         "fixed_contract": {"voice": VOICE, "subtitle_locales": ["zh-CN", "en"], "chapter_count": 10, "canonical_span_count": 8, "canonical_spans": [scenario.span_id for scenario in PHASE2_CAPTURE_SCENARIOS]},
         "inputs": {
             "repository": {
                 "root": str(ROOT),
                 "head": _git(ROOT, "rev-parse", "HEAD"),
                 "clean_at_planning": not bool(_git(ROOT, "status", "--short")),
+            },
+            "authoring_claim_ledger": {
+                "record": authoring["record"],
+                "result": authoring["result"],
+                "claim_count": len(authoring["claims"]),
             },
             "promo_toolchain": tool_identity,
             "capture": {"root": capture_arg, "ready": footage_ready, "timeline": _file_input(timeline), "report": _file_input(report), "evidence_index": _file_input(index)},
@@ -306,9 +376,11 @@ def build_runbook(
         "dependency_graph": {
             "fetch_and_verify_promo_origin_main": [],
             "fresh_media_receipt": ["fetch_and_verify_promo_origin_main"],
-            "validate_only": ["fresh_media_receipt", "ten_ready_authoring_chapters", "eight_span_green_capture", "seed_preflight"],
-            "source_review_1x": ["validate_only"],
-            "candidate_build": ["source_review_1x", "xiaoxiao_cache", "bilingual_authoring"],
+            "bind_inputs": ["fresh_media_receipt", "ten_chapter_authoring_ledger", "eight_span_green_capture", "seed_preflight"],
+            "source_review_1x": ["bind_inputs"],
+            "promote_authoring": ["source_review_1x"],
+            "validate_only": ["promote_authoring"],
+            "candidate_build": ["validate_only", "xiaoxiao_cache", "bilingual_authoring"],
             "final_review_1x": ["candidate_build", "byte_bound_probe", "automated_audit"],
             "signoff": ["final_review_1x"],
             "export": ["signoff", "release_policy"],
@@ -316,10 +388,10 @@ def build_runbook(
         },
         "ordered_steps": steps,
         "hash_backfill_fields": [
-            "promo_toolchain.head_after_fetch", "project_config.bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "final_review.package_sha256_reviewer_reviewed_at_decision", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256", "publication.publish_performed_remote_url_verified_at"
+            "promo_toolchain.head_after_fetch", "authoring_ledger.bytes_sha256", "authoring_ledger.each_claim_cue_and_language_lines", "project_config.promoted_bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "final_review.package_sha256_reviewer_reviewed_at_decision", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256", "publication.publish_performed_remote_url_verified_at"
         ],
         "release_gates": [
-            "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "all ten authoring chapters are ready and claims match the eight captured spans", "all eight canonical spans come from one GREEN capture and have clean begin/end gates", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p plus AAC 48kHz stereo and under 1200 seconds", "both independent 1x human review checkpoints are complete", "approved signoff binds the exact final MP4 SHA-256", "export release profile and allowlist are GREEN", "publish_performed remains false until external upload and page verification really complete"
+            "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "the byte-bound 10/10 bilingual authoring ledger is GREEN and only footage-supported claims are promoted into the project", "all eight canonical spans come from one GREEN capture and have clean begin/end gates", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p plus AAC 48kHz stereo and under 1200 seconds", "both independent 1x human review checkpoints are complete", "approved signoff binds the exact final MP4 SHA-256", "export release profile and allowlist are GREEN", "publish_performed remains false until external upload and page verification really complete"
         ],
         "planned_paths": {"work_dir": str(work_dir.resolve()), "candidate_run_manifest": str(candidate_run), "deliverable": str(deliverable)},
     }
@@ -329,6 +401,9 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--output", type=Path, required=True)
     result.add_argument("--project-config", type=Path, default=DEFAULT_CONFIG)
+    result.add_argument(
+        "--authoring-ledger", type=Path, default=DEFAULT_AUTHORING_LEDGER
+    )
     result.add_argument("--promo-tool-root", type=Path, default=Path(r"Z:\workspace\xar_promo_toolchain"))
     result.add_argument("--capture-root", type=Path)
     result.add_argument("--seed-preflight-report", type=Path)
@@ -351,6 +426,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise RunbookError(f"runbook parent does not exist: {output.parent}")
     runbook = build_runbook(
         project_config=args.project_config,
+        authoring_ledger=args.authoring_ledger,
         promo_tool_root=args.promo_tool_root,
         capture_root=args.capture_root,
         seed_preflight_report=args.seed_preflight_report,

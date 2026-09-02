@@ -53,3 +53,25 @@ and readiness ledger by SHA-256; checks the exact ten-chapter order, Chinese-fir
 language policy, Xiaoxiao voice, canonical span/postcondition bindings, subtitle
 line limits, repository evidence paths, and pending release states; and has no
 write or render mode.
+
+The final-video no-media planner binds this exact ledger by bytes and SHA-256:
+
+```powershell
+py tools/plan_zhongguo_phase2_final_promo.py `
+  --output <new-runbook.json> `
+  --capture-root <same-run-green-capture> `
+  --seed-preflight-report <preflight.json> `
+  --media-preflight-report <media-receipt.json> `
+  --expected-media-preflight-sha256 <receipt-sha256> `
+  --tts-cache <future-content-addressed-cache> `
+  --work-dir <future-new-attempt>
+```
+
+All ten validated draft claims make the runbook authoring-input gate GREEN; the
+source project deliberately remains `planned` until the first 1× review proves
+which claims the real footage supports. Missing footage therefore remains the
+typed `footage_pending` blocker, not `authoring_pending`. The planner only writes
+JSON and does not fetch, render subtitles, invoke TTS/FFmpeg, or create a video.
+Its first future production step still requires fetching the standalone promo
+tool and proving a clean `HEAD == origin/main` before refreshing the media
+receipt or running any builder command.
