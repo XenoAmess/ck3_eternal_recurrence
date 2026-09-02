@@ -87,8 +87,33 @@ deterministic regression fixture is pinned to the real report SHA and its
 observed terminal shape (`mcp_sequence=null`, readiness present, exact-build
 GREEN, process exit `1`, JSONL absent).
 
-This diagnostic fix alone is not a reason to repeat the evaluator live. The
-same candidate would still place its first durable row after the native calls,
-so another process exit could again leave no evaluator-boundary evidence. A
-future distinct attempt first needs separately reviewed instrumentation that
-durably records the exact pre-call tuple before invoking the evaluator.
+This diagnostic fix alone was not a reason to repeat the evaluator live. The
+same candidate placed its first row after the native calls, so another process
+exit could again have left no evaluator-boundary evidence.
+
+## Durable evaluator boundary candidate
+
+The next private-only candidate closes that evidence gap without changing the
+call target or inputs. Immediately before the first evaluator call it appends
+one `xar.ck3.g2_truce_private_evaluator_boundary.v1` JSONL row and calls
+`FlushFileBuffers`. The row freezes the exact index-7 path, verified Truce
+object and `0x4461CA8` vtable, script-value object `+0x108`, effect and
+evaluation contexts, evaluator function and `0x3373000` RVA, and
+`planned_call_count=2`. If append or flush fails, the evaluator is not called.
+
+After each returned call, `post_call_1` and `post_call_2` are independently
+appended and flushed with completed-call count and the corresponding result.
+Thus a CK3 process exit inside the first native evaluator can still leave the
+durable `pre_call` boundary; a later exit can distinguish one returned call
+from two. The previous aggregate v3 row remains a final summary when control
+returns normally.
+
+The native fixture covers both terminal shapes: a deterministic simulated
+process exit after the durable pre-call row produces exactly one boundary row
+and zero evaluator calls, while a stable `1825/1825` run produces ordered
+`pre_call`, `post_call_1`, and `post_call_2` rows. The feature remains under
+the same OFF-by-default private build flag. It neither executes the Context
+effect nor exposes a public field, readiness claim, or mutation path. This is
+a static-ready candidate only. Python source-contract tests are `8/8` GREEN,
+the MSVC 19.51 Release instrumented bridge build is GREEN, and its focused
+native fixture is GREEN. No CK3 process was launched for this package.

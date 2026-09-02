@@ -874,14 +874,54 @@ void CaptureTargetedIndex7ForG2(
     stop("evaluator_context_unavailable");
     return;
   }
+
+  RaiktorTrucePrivateEvaluatorBoundaryV1 boundary{};
+  boundary.stage = "pre_call";
+  boundary.exact_path_verified = true;
+  boundary.truce_effect = capture.truce_effect;
+  boundary.truce_vtable = capture.truce_vtable;
+  boundary.duration_script_value = capture.duration_script_value;
+  boundary.effect_context = capture.evaluator_effect_context;
+  boundary.evaluation_context = capture.evaluator_evaluation_context;
+  boundary.evaluator_function = capture.evaluator_function;
+  if (environment.append_private_evaluator_boundary == nullptr ||
+      !environment.append_private_evaluator_boundary(
+          environment.private_evaluator_boundary_context, boundary)) {
+    capture.evaluator_capture_status = "pre_call_durable_append_failed";
+    stop("pre_call_durable_append_failed");
+    return;
+  }
+  if (environment.private_fixture_stop_after_pre_call) {
+    capture.evaluator_capture_status = "fixture_process_exit_after_pre_call";
+    stop("fixture_process_exit_after_pre_call");
+    return;
+  }
   capture.evaluator_first_days = environment.evaluate_duration_days(
       const_cast<void *>(duration), request.effect_context,
       request.evaluation_context);
   ++capture.evaluator_call_count;
+  boundary.stage = "post_call_1";
+  boundary.completed_call_count = capture.evaluator_call_count;
+  boundary.evaluated_days = capture.evaluator_first_days;
+  if (!environment.append_private_evaluator_boundary(
+          environment.private_evaluator_boundary_context, boundary)) {
+    capture.evaluator_capture_status = "post_call_1_durable_append_failed";
+    stop("post_call_1_durable_append_failed");
+    return;
+  }
   capture.evaluator_second_days = environment.evaluate_duration_days(
       const_cast<void *>(duration), request.effect_context,
       request.evaluation_context);
   ++capture.evaluator_call_count;
+  boundary.stage = "post_call_2";
+  boundary.completed_call_count = capture.evaluator_call_count;
+  boundary.evaluated_days = capture.evaluator_second_days;
+  if (!environment.append_private_evaluator_boundary(
+          environment.private_evaluator_boundary_context, boundary)) {
+    capture.evaluator_capture_status = "post_call_2_durable_append_failed";
+    stop("post_call_2_durable_append_failed");
+    return;
+  }
   capture.evaluator_nonnegative = capture.evaluator_first_days >= 0 &&
                                   capture.evaluator_second_days >= 0;
   capture.evaluator_stable = capture.evaluator_first_days ==

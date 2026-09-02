@@ -99,6 +99,62 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         ):
             self.assertIn(field.replace('"', '\\"'), source)
 
+    def test_evaluator_boundary_is_durable_and_ordered_around_each_call(self) -> None:
+        resolver = RESOLVER.read_text(encoding="utf-8")
+        helper_begin = resolver.index("void CaptureTargetedIndex7ForG2(")
+        helper_end = resolver.index("#endif", helper_begin)
+        helper = resolver[helper_begin:helper_end]
+        pre = helper.index('boundary.stage = "pre_call"')
+        first_call = helper.index("capture.evaluator_first_days =")
+        post_one = helper.index('boundary.stage = "post_call_1"')
+        second_call = helper.index("capture.evaluator_second_days =")
+        post_two = helper.index('boundary.stage = "post_call_2"')
+        self.assertLess(pre, first_call)
+        self.assertLess(first_call, post_one)
+        self.assertLess(post_one, second_call)
+        self.assertLess(second_call, post_two)
+        self.assertIn("pre_call_durable_append_failed", helper)
+        self.assertIn("post_call_1_durable_append_failed", helper)
+        self.assertIn("post_call_2_durable_append_failed", helper)
+        self.assertIn("private_fixture_stop_after_pre_call", helper)
+
+    def test_boundary_writer_flushes_each_complete_jsonl_row(self) -> None:
+        source = WRITER.read_text(encoding="utf-8")
+        header = HEADER.read_text(encoding="utf-8")
+        self.assertIn(
+            "xar.ck3.g2_truce_private_evaluator_boundary.v1", source
+        )
+        for field in (
+            '"stage"',
+            '"exact_path"',
+            '"exact_path_verified"',
+            '"truce_effect"',
+            '"truce_vtable_rva"',
+            '"duration_script_value"',
+            '"duration_is_truce_plus_0x108"',
+            '"effect_context"',
+            '"evaluation_context"',
+            '"evaluator_function_rva"',
+            '"planned_call_count"',
+            '"completed_call_count"',
+            '"evaluated_days"',
+        ):
+            self.assertIn(field.replace('"', '\\"'), source)
+        writer_begin = source.index("bool AppendAndFlushG2TrucePrivateRow(")
+        writer_end = source.index(
+            "bool AppendG2TrucePrivateEvaluatorBoundaryV1(", writer_begin
+        )
+        writer = source[writer_begin:writer_end]
+        self.assertIn("FILE_APPEND_DATA", writer)
+        self.assertIn("WriteFile", writer)
+        self.assertIn("written == length", writer)
+        self.assertIn("FlushFileBuffers", writer)
+        self.assertIn("return write_ok && flush_ok", writer)
+        self.assertIn("RaiktorTrucePrivateEvaluatorBoundaryV1", header)
+        self.assertIn(
+            "RaiktorTruceAppendPrivateEvaluatorBoundaryV1", header
+        )
+
     def test_production_contract_and_mutation_surfaces_are_unchanged(self) -> None:
         resolver = RESOLVER.read_text(encoding="utf-8")
         self.assertIn("kDefeatRootCapacity = 19", resolver)

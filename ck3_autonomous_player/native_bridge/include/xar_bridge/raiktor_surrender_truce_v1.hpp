@@ -79,6 +79,30 @@ using RaiktorTruceReadFrameV1 = bool (*)(
 using RaiktorTruceEvaluateDurationDaysV1 = std::int32_t (*)(
     void *script_value, void *effect_context, void *evaluation_context);
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+// Private, test-build-only evidence emitted at the exact evaluator call
+// boundary.  The callback must append and durably flush the row before it
+// returns true; a false result prevents the evaluator call.
+struct RaiktorTrucePrivateEvaluatorBoundaryV1 {
+  std::string_view stage = "not_started";
+  std::string_view exact_path =
+      "root[7].default.children[1].children[0].children[0]";
+  bool exact_path_verified = false;
+  std::uintptr_t truce_effect = 0;
+  std::uintptr_t truce_vtable = 0;
+  std::uintptr_t duration_script_value = 0;
+  std::uintptr_t effect_context = 0;
+  std::uintptr_t evaluation_context = 0;
+  std::uintptr_t evaluator_function = 0;
+  std::size_t planned_call_count = 2;
+  std::size_t completed_call_count = 0;
+  std::int32_t evaluated_days = -1;
+};
+
+using RaiktorTruceAppendPrivateEvaluatorBoundaryV1 = bool (*)(
+    void *context, const RaiktorTrucePrivateEvaluatorBoundaryV1 &boundary);
+#endif
+
 struct RaiktorSurrenderTruceAccessV1 {
   void *context = nullptr;
   RaiktorTruceReadMemoryV1 read_memory = nullptr;
@@ -96,6 +120,14 @@ struct RaiktorSurrenderTruceNativeEnvironmentV1 {
   std::uintptr_t context_effect_vtable = 0;
   std::uintptr_t truce_effect_vtable = 0;
   RaiktorTruceEvaluateDurationDaysV1 evaluate_duration_days = nullptr;
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  void *private_evaluator_boundary_context = nullptr;
+  RaiktorTruceAppendPrivateEvaluatorBoundaryV1
+      append_private_evaluator_boundary = nullptr;
+  // Deterministic fixture hook: model process exit immediately after the
+  // durable pre-call row, without invoking the evaluator in the test process.
+  bool private_fixture_stop_after_pre_call = false;
+#endif
 };
 
 struct RaiktorSurrenderTruceRequestV1 {

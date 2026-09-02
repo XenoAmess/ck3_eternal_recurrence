@@ -56,6 +56,12 @@ struct Fixture {
   bool fail_first_frame = false;
   bool fail_second_frame = false;
   bool drift_second_frame = false;
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  std::array<RaiktorTrucePrivateEvaluatorBoundaryV1, 3>
+      evaluator_boundaries{};
+  std::size_t evaluator_boundary_count = 0;
+  bool fixture_stop_after_pre_call = false;
+#endif
 
   Fixture() {
     root_vtable[11] = reinterpret_cast<void *>(0x1);
@@ -179,6 +185,19 @@ std::int32_t Evaluate(void *script_value, void *effect_context,
                                          : g_fixture->second_days;
 }
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+bool AppendEvaluatorBoundary(
+    void *context,
+    const RaiktorTrucePrivateEvaluatorBoundaryV1 &boundary) {
+  auto &fixture = *static_cast<Fixture *>(context);
+  if (fixture.evaluator_boundary_count >= fixture.evaluator_boundaries.size()) {
+    return false;
+  }
+  fixture.evaluator_boundaries[fixture.evaluator_boundary_count++] = boundary;
+  return true;
+}
+#endif
+
 RaiktorSurrenderTruceNativeEnvironmentV1 Fixture::Environment() const {
   return {
       true,
@@ -191,6 +210,11 @@ RaiktorSurrenderTruceNativeEnvironmentV1 Fixture::Environment() const {
       reinterpret_cast<std::uintptr_t>(context_vtable.data()),
       reinterpret_cast<std::uintptr_t>(truce_vtable.data()),
       Evaluate,
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+      const_cast<Fixture *>(this),
+      AppendEvaluatorBoundary,
+      fixture_stop_after_pre_call,
+#endif
   };
 }
 
@@ -254,8 +278,65 @@ int main() {
         capture.evaluator_second_days != 1825 ||
         capture.evaluator_call_count != 2 ||
         !capture.evaluator_nonnegative || !capture.evaluator_stable ||
-        fixture.evaluator_calls != 2 || fixture.frame_reads != 1) {
+        fixture.evaluator_calls != 2 || fixture.frame_reads != 1 ||
+        fixture.evaluator_boundary_count != 3 ||
+        fixture.evaluator_boundaries[0].stage != "pre_call" ||
+        fixture.evaluator_boundaries[0].completed_call_count != 0 ||
+        fixture.evaluator_boundaries[0].evaluated_days != -1 ||
+        fixture.evaluator_boundaries[1].stage != "post_call_1" ||
+        fixture.evaluator_boundaries[1].completed_call_count != 1 ||
+        fixture.evaluator_boundaries[1].evaluated_days != 1825 ||
+        fixture.evaluator_boundaries[2].stage != "post_call_2" ||
+        fixture.evaluator_boundaries[2].completed_call_count != 2 ||
+        fixture.evaluator_boundaries[2].evaluated_days != 1825) {
       std::cerr << "private targeted evaluator capture failed\n";
+      return 1;
+    }
+    for (const auto &boundary : fixture.evaluator_boundaries) {
+      if (boundary.exact_path !=
+              "root[7].default.children[1].children[0].children[0]" ||
+          !boundary.exact_path_verified ||
+          boundary.truce_effect !=
+              reinterpret_cast<std::uintptr_t>(fixture.truce.data()) ||
+          boundary.truce_vtable != reinterpret_cast<std::uintptr_t>(
+                                       fixture.truce_vtable.data()) ||
+          boundary.duration_script_value != reinterpret_cast<std::uintptr_t>(
+                                                fixture.truce.data() + 0x108) ||
+          boundary.effect_context != reinterpret_cast<std::uintptr_t>(
+                                         fixture.effect_context.data()) ||
+          boundary.evaluation_context != reinterpret_cast<std::uintptr_t>(
+                                             fixture.effect_context.data() +
+                                             0x28) ||
+          boundary.evaluator_function !=
+              reinterpret_cast<std::uintptr_t>(Evaluate) ||
+          boundary.planned_call_count != 2) {
+        std::cerr << "private evaluator boundary identity failed\n";
+        return 1;
+      }
+    }
+  }
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    fixture.root_children[7] = fixture.private_scripted.data();
+    fixture.fixture_stop_after_pre_call = true;
+    Store(fixture.root, 0x48, std::int32_t{13});
+    Store(fixture.root, 0x4C, std::int32_t{12});
+    const auto value = ObserveRaiktorSurrenderTruceV1(
+        fixture.Environment(), fixture.Access(), fixture.Request());
+    const auto &capture = LastRaiktorTrucePrivateShapeCaptureV1();
+    if (!ExpectFailure(value,
+                       RaiktorSurrenderTruceFailureV1::root_shape_drift,
+                       "fixture process exit after pre-call") ||
+        capture.targeted_index7_status !=
+            "fixture_process_exit_after_pre_call" ||
+        capture.evaluator_capture_status !=
+            "fixture_process_exit_after_pre_call" ||
+        fixture.evaluator_boundary_count != 1 ||
+        fixture.evaluator_boundaries[0].stage != "pre_call" ||
+        fixture.evaluator_boundaries[0].completed_call_count != 0 ||
+        fixture.evaluator_calls != 0 || fixture.frame_reads != 1) {
+      std::cerr << "pre-call process-exit simulation failed\n";
       return 1;
     }
   }

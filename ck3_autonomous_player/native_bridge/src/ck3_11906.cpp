@@ -52,6 +52,88 @@ constexpr wchar_t kG2TrucePrivateCapturePathEnvironment[] =
     L"XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH";
 constexpr std::size_t kG2TrucePrivateCapturePathCapacity = 1024;
 
+bool AppendAndFlushG2TrucePrivateRow(const char *row,
+                                     std::size_t length) noexcept {
+  if (row == nullptr || length == 0 ||
+      length > static_cast<std::size_t>(std::numeric_limits<DWORD>::max())) {
+    return false;
+  }
+  std::array<wchar_t, kG2TrucePrivateCapturePathCapacity> path{};
+  const DWORD path_length = GetEnvironmentVariableW(
+      kG2TrucePrivateCapturePathEnvironment, path.data(),
+      static_cast<DWORD>(path.size()));
+  if (path_length == 0 || path_length >= path.size()) {
+    return false;
+  }
+  const HANDLE artifact = CreateFileW(
+      path.data(), FILE_APPEND_DATA, FILE_SHARE_READ, nullptr, OPEN_ALWAYS,
+      FILE_ATTRIBUTE_NORMAL, nullptr);
+  if (artifact == INVALID_HANDLE_VALUE) {
+    return false;
+  }
+  DWORD written = 0;
+  const bool write_ok =
+      WriteFile(artifact, row, static_cast<DWORD>(length), &written, nullptr) !=
+          FALSE &&
+      written == length;
+  const bool flush_ok = FlushFileBuffers(artifact) != FALSE;
+  CloseHandle(artifact);
+  return write_ok && flush_ok;
+}
+
+bool AppendG2TrucePrivateEvaluatorBoundaryV1(
+    void *, const RaiktorTrucePrivateEvaluatorBoundaryV1 &boundary) noexcept {
+  const auto module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto as_rva = [module_base](std::uintptr_t address) noexcept {
+    return address >= module_base ? address - module_base : address;
+  };
+  const bool duration_is_truce_plus_0x108 =
+      boundary.truce_effect <=
+          std::numeric_limits<std::uintptr_t>::max() - 0x108 &&
+      boundary.duration_script_value == boundary.truce_effect + 0x108;
+  std::array<char, 2048> row{};
+  const int length = std::snprintf(
+      row.data(), row.size(),
+      "{\"schema\":\"xar.ck3.g2_truce_private_evaluator_boundary.v1\","
+      "\"stage\":\"%.*s\",\"exact_path\":\"%.*s\","
+      "\"exact_path_verified\":%s,\"truce_effect\":\"0x%llX\","
+      "\"truce_vtable\":\"0x%llX\",\"truce_vtable_rva\":\"0x%llX\","
+      "\"expected_truce_vtable_rva\":\"0x%llX\","
+      "\"duration_script_value\":\"0x%llX\","
+      "\"duration_offset_from_truce\":264,"
+      "\"duration_is_truce_plus_0x108\":%s,"
+      "\"effect_context\":\"0x%llX\","
+      "\"evaluation_context\":\"0x%llX\","
+      "\"evaluator_function\":\"0x%llX\","
+      "\"evaluator_function_rva\":\"0x%llX\","
+      "\"expected_evaluator_function_rva\":\"0x%llX\","
+      "\"planned_call_count\":%llu,\"completed_call_count\":%llu,"
+      "\"evaluated_days\":%d}\r\n",
+      static_cast<int>(boundary.stage.size()), boundary.stage.data(),
+      static_cast<int>(boundary.exact_path.size()), boundary.exact_path.data(),
+      boundary.exact_path_verified ? "true" : "false",
+      static_cast<unsigned long long>(boundary.truce_effect),
+      static_cast<unsigned long long>(boundary.truce_vtable),
+      static_cast<unsigned long long>(as_rva(boundary.truce_vtable)),
+      static_cast<unsigned long long>(kRaiktorTruceEffectVtableRva),
+      static_cast<unsigned long long>(boundary.duration_script_value),
+      duration_is_truce_plus_0x108 ? "true" : "false",
+      static_cast<unsigned long long>(boundary.effect_context),
+      static_cast<unsigned long long>(boundary.evaluation_context),
+      static_cast<unsigned long long>(boundary.evaluator_function),
+      static_cast<unsigned long long>(as_rva(boundary.evaluator_function)),
+      static_cast<unsigned long long>(kRaiktorTruceDurationEvaluatorRva),
+      static_cast<unsigned long long>(boundary.planned_call_count),
+      static_cast<unsigned long long>(boundary.completed_call_count),
+      boundary.evaluated_days);
+  if (length <= 0 || static_cast<std::size_t>(length) >= row.size()) {
+    return false;
+  }
+  return AppendAndFlushG2TrucePrivateRow(row.data(),
+                                        static_cast<std::size_t>(length));
+}
+
 void AppendG2TrucePrivateCaptureV1(
     std::int32_t war_id, std::int32_t casus_belli_database_index,
     std::int32_t primary_attacker_character_id,
@@ -60,14 +142,6 @@ void AppendG2TrucePrivateCaptureV1(
     const void *evaluation_context,
     const RaiktorSurrenderTruceObservationV1 &observation,
     bool context_destroyed) noexcept {
-  std::array<wchar_t, kG2TrucePrivateCapturePathCapacity> path{};
-  const DWORD path_length = GetEnvironmentVariableW(
-      kG2TrucePrivateCapturePathEnvironment, path.data(),
-      static_cast<DWORD>(path.size()));
-  if (path_length == 0 || path_length >= path.size()) {
-    return;
-  }
-
   const auto failure =
       RaiktorSurrenderTruceFailureReasonV1(observation.failure);
   const auto &shape = LastRaiktorTrucePrivateShapeCaptureV1();
@@ -497,17 +571,8 @@ void AppendG2TrucePrivateCaptureV1(
     return;
   }
 
-  const HANDLE artifact = CreateFileW(
-      path.data(), FILE_APPEND_DATA, FILE_SHARE_READ, nullptr, OPEN_ALWAYS,
-      FILE_ATTRIBUTE_NORMAL, nullptr);
-  if (artifact == INVALID_HANDLE_VALUE) {
-    return;
-  }
-  DWORD written = 0;
-  (void)WriteFile(artifact, row.data(), static_cast<DWORD>(length), &written,
-                  nullptr);
-  (void)FlushFileBuffers(artifact);
-  CloseHandle(artifact);
+  (void)AppendAndFlushG2TrucePrivateRow(
+      row.data(), static_cast<std::size_t>(length));
 }
 #endif
 
@@ -4269,7 +4334,13 @@ bool ReadRaiktorSurrenderTruceDuration(
       bindings.hidden_effect_vtable,
       bindings.jomini_context_effect_vtable,
       bindings.truce_effect_vtable,
-      bindings.evaluate_truce_duration_days};
+      bindings.evaluate_truce_duration_days,
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+      nullptr,
+      AppendG2TrucePrivateEvaluatorBoundaryV1,
+      false,
+#endif
+  };
   const RaiktorSurrenderTruceAccessV1 access{
       &frame_context, nullptr, ReadRaiktorTruceProductionFrame};
   const RaiktorSurrenderTruceRequestV1 request{
