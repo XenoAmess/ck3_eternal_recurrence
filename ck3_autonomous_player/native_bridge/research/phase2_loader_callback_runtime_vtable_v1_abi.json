@@ -1,0 +1,78 @@
+{
+  "contract": "phase2-loader-callback-runtime-vtable-v1",
+  "schema_version": 1,
+  "status": "private-runtime-observed",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "09f21c8958d9f880d4993c69ce967abc88bdb175",
+    "static_contract": "phase2-loader-callback-static-slice-v1",
+    "callback_call_rva": "0x3B9AB90",
+    "expected_instruction_bytes": "FF5010"
+  },
+  "preflight": {
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\open_kaishek-preflight-17caa288.json",
+    "artifact_sha256": "ED265EA237651B1DD4149792EE0427663D5BC932E4749B6F20A8600F377557D9",
+    "boundary": "offline schema and syntax validation only; validator RED is the known schema-only corpus boundary"
+  },
+  "capture": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\callback-debug-capture.json",
+    "artifact_sha256": "F78961E40F93C0D91E71EACFEFB65A6F5D0F6CCA9276B42F570D05F97834B816",
+    "capture_binary_sha256": "5903F6D34D561908E951A5C1FE530DC653C9CCCED0C7017BBF0066479C390ADB",
+    "pid": 46232,
+    "thread_id": 48304,
+    "image_base": "0x7FF68DA70000",
+    "node": "0x21A39F97B00",
+    "receiver_rcx": "0x21A39F97B50",
+    "receiver_from_node_plus_0x88": "0x21A39F97B50",
+    "receiver_matches_node": true,
+    "runtime_vptr": "0x7FF691AFA450",
+    "runtime_vptr_rva": "0x408A450",
+    "slot_2_target": "0x7FF68E3B7BD0",
+    "slot_2_target_rva": "0x947BD0",
+    "paused_at_callback_instruction": true,
+    "original_breakpoint_byte_restored": true
+  },
+  "static_candidate_comparison": {
+    "candidate_vtable_rvas": [
+      "0x4558700",
+      "0x4558770"
+    ],
+    "candidate_slot_target_rva": "0x3B9BA70",
+    "runtime_vptr_matches_candidate": false,
+    "runtime_slot_target_matches_candidate": false,
+    "conclusion": "the captured runtime callback object is not either previously recorded construction candidate; no type or business meaning is inferred"
+  },
+  "cleanup": {
+    "capture_artifact_cleanup_field": "unproven because the first probe implementation waited before draining EXIT_PROCESS_DEBUG_EVENT",
+    "independent_inventory_artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\callback-debug-capture-cleanup.json",
+    "independent_inventory_sha256": "35087FA3CBD071AC2DF65666B5EF79BE6E951AEE0DC5BA36A725998A7562112B",
+    "captured_pid_present": false,
+    "ck3_process_count": 0,
+    "cleanup_result": "GREEN"
+  },
+  "limits": [
+    "one callback invocation was observed; callback return and object lifetime after return were not observed",
+    "the runtime vptr and slot target identify one concrete object but do not establish its RTTI type or source-file attribution",
+    "the isolated startup was stopped immediately after the paused observation and did not reach phase-two seed/native readiness",
+    "no public bridge field, production detour, offset, action, or readiness state changed"
+  ],
+  "next_entry": {
+    "required": "bind the observed runtime vtable/slot target to an exact-build symbol or RTTI owner, then make one separately authorized bounded entry/return lifetime observation",
+    "forbidden": [
+      "repeat the database_callback_stall timeout",
+      "promote the static candidate vtables to runtime identity",
+      "widen the public bridge before callback ABI and lifetime close"
+    ]
+  }
+}
