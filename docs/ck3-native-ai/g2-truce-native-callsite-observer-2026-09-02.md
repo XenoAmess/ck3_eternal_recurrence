@@ -233,3 +233,50 @@ package.  Before another live, the integrated runner/postprocessor must be
 refrozen into a fresh immutable candidate and pass the updated no-launch
 verification.  Only a later authorized live can supply actual native returns;
 this wiring package does not supply `evaluated_days` itself.
+
+## Refrozen integrated candidate (2026-09-03)
+
+[READY_TO_RUN; no CK3 launch] A fresh immutable candidate now carries the
+runner-to-acceptance finalizer. Its clean product source identity is exact
+integration HEAD `0d83cc3d0affaa29878ae2311d0bd23cd2780059`; the source-wide
+ZIP intentionally includes the unrelated report-only HEAD delta rather than
+pretending to be a narrower tree. Candidate-only source-identity constants are
+separately pinned by harness commit
+`426651e9a7d532707f6355b200b8c33d7a018f12`.
+
+The candidate directory is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-native-callsite-observer-ready-20260903T003347`:
+
+- ready manifest SHA-256:
+  `19AF7FD08C639C5E3D92A3E3E2F403FC3645A2ABBC4C2A9AD29AC83E317AD613`;
+- no-launch preflight SHA-256:
+  `64F3C71D82FBDE80B00F7905DD398034051D9E835F5CD849110A8882ECB03008`;
+- verify-only summary SHA-256:
+  `0CBCBBAB741CC5A96C59106DB079AD465399EFFFEEB7A97FF0A1F4CDE91A367C`;
+- clean source ZIP SHA-256:
+  `6906AF774916AF36409159404B9213B99ED0655A24966F51B31A91FA8D452242`;
+- private/default DLL SHA-256:
+  `ED81759CBDE64691D4AA4CC7694FB7205838BC573E551B550E43192A68EB628E` /
+  `45E33995923F8CA4F0B0E3D6BB8AB97E51DEC1A791282C6E3657B331990FC7FC`;
+- injector SHA-256:
+  `1505736C62B6F92990702320296EF1D17FA2A5269F79B5F797023CCE7259013A`;
+- native fixture SHA-256:
+  `431FB61715299B4469E7A14CCDADF63E550BA3473362A77118A15EEB7CB14AD9`;
+- runner/postprocessor/verifier SHA-256:
+  `5C0F335A3F3E1EFC92DC4F1B867D3DB4F4DBD3B3EA20F2B6C04A434CD8F63B50` /
+  `FEEE7E0037B0A9FEFFB6D4FA5160756930B0C8711CFD2701A69CC596D85CA424` /
+  `8D63EB8398454FA6D7E3E5DE956CA91D502EF09C7AE5AB7208DC95AFE3AD15D0`.
+
+MSVC 19.51 Release private/default builds, the frozen native fixture, and the
+24-test focused Python suite in both normal and optimized (`-O`) modes were
+GREEN. The updated verifier rechecked the executable, two exact anchors,
+source identity, all frozen hashes/read-only attributes, private/default
+markers, explicit `--ready-manifest` command binding, empty process inventory,
+and absent fresh attempt without launching CK3.
+
+The old READY directory was not modified. This candidate still has no native
+return row and therefore does not claim `evaluated_days`. The public projector
+continues to pin the previous manifest; it must not be changed unless a later
+authorized live produces a valid typed GREEN from this exact candidate.
+Expiry, war-bound, action, decision, and automatic-surrender readiness remain
+unchanged and false.
