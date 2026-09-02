@@ -22,6 +22,10 @@ OWNER_EXTRACTOR = (
     ROOT
     / "native_bridge/research/extract_phase2_loader_callback_runtime_owner.py"
 )
+LATER_STALL_CONTRACT = (
+    ROOT
+    / "native_bridge/research/phase2_loader_callback_later_stall_v1_abi.json"
+)
 
 
 class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
@@ -31,6 +35,9 @@ class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
         cls.runtime = json.loads(RUNTIME_CONTRACT.read_text(encoding="utf-8"))
         cls.owner = json.loads(OWNER_CONTRACT.read_text(encoding="utf-8"))
         cls.extractor = OWNER_EXTRACTOR.read_text(encoding="utf-8")
+        cls.later_stall = json.loads(
+            LATER_STALL_CONTRACT.read_text(encoding="utf-8")
+        )
 
     def test_probe_is_bound_to_the_frozen_callback_contract(self) -> None:
         self.assertIn("kCallbackCallRva = 0x3B9AB90", self.source)
@@ -101,6 +108,41 @@ class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
         self.assertIn("EXPECTED_COL_RVA = 0x45BD3B0", self.extractor)
         self.assertIn("EXPECTED_TYPE_DESCRIPTOR_RVA = 0x514FE60", self.extractor)
         self.assertIn("EXPECTED_SLOT_2_BYTES = bytes.fromhex", self.extractor)
+
+    def test_later_stall_sequence_records_bounded_no_go(self) -> None:
+        contract = self.later_stall
+        self.assertEqual(contract["status"], "private-bounded-sequence-no-go")
+        self.assertFalse(contract["production_installed"])
+        self.assertFalse(contract["production_abi_changed"])
+        self.assertFalse(contract["readiness_promotion"])
+        capture = contract["capture"]
+        self.assertEqual(capture["result"], "RED")
+        self.assertEqual(
+            capture["reason"], "callback-sequence-stall-boundary-unobservable"
+        )
+        self.assertEqual(capture["entry_count"], 2)
+        self.assertEqual(capture["last_successful_sequence"], 2)
+        self.assertEqual(capture["first_unreturned_sequence"], 0)
+        self.assertTrue(all(entry["returned"] for entry in capture["entries"]))
+        self.assertEqual(
+            capture["entries"][0]["node_name"], "CGameConceptTypeDatabase"
+        )
+        self.assertEqual(
+            capture["entries"][1]["node_name"], "CJominiLoadScreenDatabase"
+        )
+        self.assertFalse(
+            capture["timeout_boundary"]["instruction_pointer_is_ck3_rva"]
+        )
+        self.assertIsNone(capture["timeout_boundary"]["node_name"])
+        self.assertEqual(contract["cleanup"]["result"], "GREEN")
+
+    def test_sequence_probe_remains_private_and_bounded(self) -> None:
+        self.assertIn('else if (name == L"--sequence")', self.source)
+        self.assertIn("options.sequence || !capture.callback_return_observed", self.source)
+        self.assertIn("callback-sequence-stall-boundary-unobservable", self.source)
+        self.assertIn("private_test_only", self.source)
+        self.assertIn("public_bridge_abi_changed", self.source)
+        self.assertIn("production_detour_installed", self.source)
 
 
 if __name__ == "__main__":

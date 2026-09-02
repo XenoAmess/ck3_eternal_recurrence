@@ -1,0 +1,103 @@
+{
+  "contract": "phase2-loader-callback-later-stall-v1",
+  "schema_version": 1,
+  "status": "private-bounded-sequence-no-go",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "2070220340ea1ae56971434f46ec95d855653968",
+    "concrete_owner_contract": "phase2-loader-callback-concrete-owner-v1",
+    "private_probe": "phase2_loader_callback_debug_capture.cpp",
+    "private_probe_executable_sha256": "7B33E76BD6E6907BFB91B9AD7015AD214437BFCE83F5519103C52A464CC60D16"
+  },
+  "preflight": {
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\later-stalled-open-kaishek-preflight.json",
+    "artifact_sha256": "1E8DCBC7EBAB3D1D23EF31DF5684AAF61B81FAE8BC0BDE92A1C57E8F2F770F30",
+    "boundary": "offline parser/IR/runtime validation only; the known full-root schema-only validator remains RED"
+  },
+  "capture": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\later-stalled-callback-sequence.json",
+    "artifact_sha256": "7E1B3A97558F1BCF5F1B507022988BE55515C9BDCB0A024E9317C8AB0A8F9976",
+    "timeout_ms": 60000,
+    "elapsed_seconds": 60.264,
+    "result": "RED",
+    "reason": "callback-sequence-stall-boundary-unobservable",
+    "entry_count": 2,
+    "last_successful_sequence": 2,
+    "first_unreturned_sequence": 0,
+    "entries": [
+      {
+        "sequence": 1,
+        "node_name": "CGameConceptTypeDatabase",
+        "wrapper_vptr_rva": "0x408A450",
+        "wrapper_slot_2_target_rva": "0x947BD0",
+        "concrete_callback_rva": "0x2045330",
+        "global_pointer_rva": "0x570C0F0",
+        "global_vptr_rva": "0x4403F88",
+        "global_slot_2_target_rva": "0x2C4CCA0",
+        "returned": true,
+        "same_thread": true,
+        "entry_elapsed_seconds": 13.185,
+        "return_elapsed_seconds": 13.296
+      },
+      {
+        "sequence": 2,
+        "node_name": "CJominiLoadScreenDatabase",
+        "wrapper_vptr_rva": "0x408A450",
+        "wrapper_slot_2_target_rva": "0x947BD0",
+        "concrete_callback_rva": "0x3455CA0",
+        "global_pointer_rva": "0x57D7B50",
+        "global_vptr_rva": "0x44E4728",
+        "global_slot_2_target_rva": "0x3453430",
+        "returned": true,
+        "same_thread": true,
+        "entry_elapsed_seconds": 14.717,
+        "return_elapsed_seconds": 14.717
+      }
+    ],
+    "timeout_boundary": {
+      "thread_id": 48388,
+      "instruction_pointer": "0x7FFE27F35312",
+      "instruction_pointer_is_ck3_rva": false,
+      "node": "0x0",
+      "node_name": null,
+      "receiver": "0x0",
+      "thread_suspended": true
+    }
+  },
+  "cleanup": {
+    "original_breakpoint_byte_restored": true,
+    "continuation_breakpoint_byte_restored": true,
+    "process_terminated": true,
+    "real_user_profile_targeted": false,
+    "post_capture_ck3_process_count": 0,
+    "post_capture_probe_process_count": 0,
+    "result": "GREEN"
+  },
+  "limits": [
+    "both observed callback entries returned successfully, so neither is the stalled node",
+    "the 60-second boundary stopped outside ck3.exe with no node or receiver in the captured callback registers",
+    "the capture cannot distinguish a caller-side wait from a later node that never reached callback entry",
+    "no callback or loader readiness can be promoted from this bounded negative observation"
+  ],
+  "next_entry": {
+    "required": "statically slice only the callback caller around RVA 0x3B9AB90 after a successful return, binding its next-node advancement and wait edge before authorizing another live observation",
+    "authorized_in_this_package": false,
+    "forbidden": [
+      "repeat this 60-second sequence capture without a newly bound caller-side stop point",
+      "repeat the old 300-second loader timeout",
+      "generalize into whole-executable reverse engineering",
+      "widen the public bridge or promote readiness"
+    ]
+  }
+}

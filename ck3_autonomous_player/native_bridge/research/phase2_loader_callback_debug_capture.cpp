@@ -10,9 +10,11 @@
 #include <windows.h>
 #include <bcrypt.h>
 
+#include <algorithm>
 #include <array>
 #include <chrono>
 #include <cstdint>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -45,6 +47,31 @@ struct Options {
   std::filesystem::path userdir;
   std::filesystem::path output;
   DWORD timeout_ms = 45000;
+  bool sequence = false;
+};
+
+struct SequenceEntry {
+  std::size_t sequence = 0;
+  DWORD entry_thread_id = 0;
+  DWORD return_thread_id = 0;
+  std::uint64_t node = 0;
+  std::string node_name;
+  std::uint64_t receiver = 0;
+  std::uint64_t wrapper_vptr = 0;
+  std::uint64_t wrapper_slot_2_target = 0;
+  std::uint64_t concrete_callback = 0;
+  std::uint64_t global_pointer_rva = 0;
+  std::uint64_t global_object = 0;
+  std::uint64_t global_vptr = 0;
+  std::uint64_t global_slot_2_target = 0;
+  bool trampoline_decoded = false;
+  bool returned = false;
+  bool same_thread = false;
+  bool receiver_survived = false;
+  bool wrapper_vptr_survived = false;
+  bool concrete_callback_survived = false;
+  double entry_elapsed_seconds = 0.0;
+  double return_elapsed_seconds = 0.0;
 };
 
 struct Capture {
@@ -84,6 +111,14 @@ struct Capture {
   std::string reason = "not-started";
   std::string exe_sha256;
   double elapsed_seconds = 0.0;
+  std::vector<SequenceEntry> sequence_entries;
+  std::uint64_t timeout_thread_rip = 0;
+  std::uint64_t timeout_thread_rva = 0;
+  std::uint64_t timeout_node = 0;
+  std::string timeout_node_name;
+  std::uint64_t timeout_receiver = 0;
+  DWORD timeout_thread_id = 0;
+  bool timeout_thread_suspended = false;
 };
 
 std::string Narrow(const std::wstring& value) {
@@ -217,6 +252,59 @@ bool ReadRemote(HANDLE process, std::uint64_t address, T* value) {
                            value, sizeof(T), &read) && read == sizeof(T);
 }
 
+std::string ReadRemoteCString(HANDLE process, std::uint64_t address,
+                              std::size_t limit = 192) {
+  if (address == 0 || limit == 0) return {};
+  std::vector<char> buffer(limit, '\0');
+  SIZE_T read = 0;
+  if (!ReadProcessMemory(process, reinterpret_cast<const void*>(address),
+                         buffer.data(), buffer.size(), &read) || read == 0) {
+    return {};
+  }
+  const auto end = std::find(buffer.begin(), buffer.begin() + read, '\0');
+  return std::string(buffer.begin(), end);
+}
+
+std::string ReadNodeName(HANDLE process, std::uint64_t node) {
+  std::uint64_t name_pointer = 0;
+  if (!ReadRemote(process, node + 0x08, &name_pointer)) return {};
+  return ReadRemoteCString(process, name_pointer);
+}
+
+void DecodeConcreteTrampoline(HANDLE process, std::uint64_t image_base,
+                              SequenceEntry* entry) {
+  if (entry->concrete_callback < image_base) return;
+  const std::uint64_t callback_rva = entry->concrete_callback - image_base;
+  std::array<std::uint8_t, 14> code{};
+  SIZE_T read = 0;
+  if (!ReadProcessMemory(process,
+                         reinterpret_cast<const void*>(entry->concrete_callback),
+                         code.data(), code.size(), &read) ||
+      read != code.size()) {
+    return;
+  }
+  if (code[0] != 0x48 || code[1] != 0x8B || code[2] != 0x0D ||
+      code[7] != 0x48 || code[8] != 0x8B || code[9] != 0x01 ||
+      code[10] != 0x48 || code[11] != 0xFF || code[12] != 0x60 ||
+      code[13] != 0x10) {
+    return;
+  }
+  std::int32_t displacement = 0;
+  std::memcpy(&displacement, code.data() + 3, sizeof(displacement));
+  entry->global_pointer_rva = callback_rva + 7 + displacement;
+  const std::uint64_t global_pointer_address =
+      image_base + entry->global_pointer_rva;
+  if (!ReadRemote(process, global_pointer_address, &entry->global_object) ||
+      entry->global_object == 0 ||
+      !ReadRemote(process, entry->global_object, &entry->global_vptr) ||
+      entry->global_vptr == 0 ||
+      !ReadRemote(process, entry->global_vptr + 0x10,
+                  &entry->global_slot_2_target)) {
+    return;
+  }
+  entry->trampoline_decoded = true;
+}
+
 bool WriteBreakpointByte(HANDLE process, std::uint64_t address,
                          std::uint8_t value) {
   DWORD old_protection = 0;
@@ -262,6 +350,7 @@ Options ParseOptions(int argc, wchar_t** argv) {
     else if (name == L"--userdir") options.userdir = next();
     else if (name == L"--output") options.output = next();
     else if (name == L"--timeout-ms") options.timeout_ms = std::stoul(next());
+    else if (name == L"--sequence") options.sequence = true;
     else throw std::runtime_error("unknown option: " + Narrow(name));
   }
   if (options.exe.empty() || options.userdir.empty() || options.output.empty()) {
@@ -276,6 +365,15 @@ Options ParseOptions(int argc, wchar_t** argv) {
 void WriteReport(const Options& options, const Capture& capture) {
   std::ofstream output(options.output, std::ios::binary | std::ios::trunc);
   if (!output) throw std::runtime_error("could not create output artifact");
+  std::size_t last_successful_sequence = 0;
+  std::size_t first_unreturned_sequence = 0;
+  for (const auto& row : capture.sequence_entries) {
+    if (row.returned) {
+      last_successful_sequence = row.sequence;
+    } else if (first_unreturned_sequence == 0) {
+      first_unreturned_sequence = row.sequence;
+    }
+  }
   output << "{\n"
          << "  \"schema\": \"xar.phase2.loader_callback_private_debug_capture.v2\",\n"
          << "  \"result\": \"" << capture.result << "\",\n"
@@ -353,6 +451,76 @@ void WriteReport(const Options& options, const Capture& capture) {
          << "    \"callback_function_survived_return\": "
          << (capture.callback_function_survived_return ? "true" : "false")
          << "\n"
+         << "  },\n";
+  output << "  \"sequence_observation\": {\n"
+         << "    \"enabled\": " << (options.sequence ? "true" : "false")
+         << ",\n"
+         << "    \"entry_count\": " << capture.sequence_entries.size()
+         << ",\n"
+         << "    \"last_successful_sequence\": "
+         << last_successful_sequence << ",\n"
+         << "    \"first_unreturned_sequence\": "
+         << first_unreturned_sequence << ",\n"
+         << "    \"entries\": [\n";
+  for (std::size_t index = 0; index < capture.sequence_entries.size(); ++index) {
+    const auto& row = capture.sequence_entries[index];
+    auto module_rva = [&](std::uint64_t address) {
+      return address >= capture.image_base ? address - capture.image_base : 0;
+    };
+    output << "      {\n"
+           << "        \"sequence\": " << row.sequence << ",\n"
+           << "        \"node\": \"" << Hex(row.node) << "\",\n"
+           << "        \"node_name\": \"" << JsonEscape(row.node_name)
+           << "\",\n"
+           << "        \"entry_thread_id\": " << row.entry_thread_id << ",\n"
+           << "        \"return_thread_id\": " << row.return_thread_id << ",\n"
+           << "        \"receiver\": \"" << Hex(row.receiver) << "\",\n"
+           << "        \"wrapper_vptr_rva\": \""
+           << Hex(module_rva(row.wrapper_vptr)) << "\",\n"
+           << "        \"wrapper_slot_2_target_rva\": \""
+           << Hex(module_rva(row.wrapper_slot_2_target)) << "\",\n"
+           << "        \"concrete_callback_rva\": \""
+           << Hex(module_rva(row.concrete_callback)) << "\",\n"
+           << "        \"trampoline_decoded\": "
+           << (row.trampoline_decoded ? "true" : "false") << ",\n"
+           << "        \"global_pointer_rva\": \""
+           << Hex(row.global_pointer_rva) << "\",\n"
+           << "        \"global_object\": \"" << Hex(row.global_object)
+           << "\",\n"
+           << "        \"global_vptr_rva\": \""
+           << Hex(module_rva(row.global_vptr)) << "\",\n"
+           << "        \"global_slot_2_target_rva\": \""
+           << Hex(module_rva(row.global_slot_2_target)) << "\",\n"
+           << "        \"returned\": " << (row.returned ? "true" : "false")
+           << ",\n"
+           << "        \"same_thread\": "
+           << (row.same_thread ? "true" : "false") << ",\n"
+           << "        \"receiver_survived\": "
+           << (row.receiver_survived ? "true" : "false") << ",\n"
+           << "        \"wrapper_vptr_survived\": "
+           << (row.wrapper_vptr_survived ? "true" : "false") << ",\n"
+           << "        \"concrete_callback_survived\": "
+           << (row.concrete_callback_survived ? "true" : "false") << ",\n"
+           << "        \"entry_elapsed_seconds\": " << std::fixed
+           << std::setprecision(3) << row.entry_elapsed_seconds << ",\n"
+           << "        \"return_elapsed_seconds\": " << row.return_elapsed_seconds
+           << "\n"
+           << "      }" << (index + 1 == capture.sequence_entries.size() ? "" : ",")
+           << "\n";
+  }
+  output << "    ],\n"
+         << "    \"timeout_thread_id\": " << capture.timeout_thread_id << ",\n"
+         << "    \"timeout_thread_rip\": \"" << Hex(capture.timeout_thread_rip)
+         << "\",\n"
+         << "    \"timeout_thread_rva\": \"" << Hex(capture.timeout_thread_rva)
+         << "\",\n"
+         << "    \"timeout_node\": \"" << Hex(capture.timeout_node) << "\",\n"
+         << "    \"timeout_node_name\": \""
+         << JsonEscape(capture.timeout_node_name) << "\",\n"
+         << "    \"timeout_receiver\": \"" << Hex(capture.timeout_receiver)
+         << "\",\n"
+         << "    \"timeout_thread_suspended\": "
+         << (capture.timeout_thread_suspended ? "true" : "false") << "\n"
          << "  },\n"
          << "  \"cleanup\": {\n"
          << "    \"original_breakpoint_byte_restored\": "
@@ -427,7 +595,7 @@ Capture Run(const Options& options) {
     const auto deadline = started + std::chrono::milliseconds(options.timeout_ms);
     bool initial_breakpoint_seen = false;
     while (std::chrono::steady_clock::now() < deadline &&
-           !capture.callback_return_observed) {
+           (options.sequence || !capture.callback_return_observed)) {
       const auto remaining = std::chrono::duration_cast<std::chrono::milliseconds>(
           deadline - std::chrono::steady_clock::now());
       const DWORD wait_ms = static_cast<DWORD>(
@@ -513,6 +681,22 @@ Capture Run(const Options& options) {
               capture.vptr_rva == kObservedRuntimeVtableRva;
           capture.slot_target_matches_runtime_owner =
               capture.slot_target_rva == kObservedRuntimeSlotTargetRva;
+          if (options.sequence) {
+            SequenceEntry row;
+            row.sequence = capture.sequence_entries.size() + 1;
+            row.entry_thread_id = event.dwThreadId;
+            row.node = capture.node;
+            row.node_name = ReadNodeName(process_info.hProcess, capture.node);
+            row.receiver = capture.receiver;
+            row.wrapper_vptr = capture.vptr;
+            row.wrapper_slot_2_target = capture.slot_target;
+            row.concrete_callback = capture.callback_function;
+            row.entry_elapsed_seconds = std::chrono::duration<double>(
+                std::chrono::steady_clock::now() - started).count();
+            DecodeConcreteTrampoline(process_info.hProcess, capture.image_base,
+                                     &row);
+            capture.sequence_entries.push_back(row);
+          }
           if (!WriteBreakpointByte(process_info.hProcess,
                                    capture.callback_address,
                                    kCallbackBytes[0])) {
@@ -536,6 +720,7 @@ Capture Run(const Options& options) {
             throw std::runtime_error("could not install return breakpoint");
           }
           capture.return_breakpoint_installed = true;
+          capture.continuation_byte_restored = false;
           HANDLE resume_thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
                                                 THREAD_QUERY_INFORMATION,
                                             FALSE, event.dwThreadId);
@@ -578,7 +763,45 @@ Capture Run(const Options& options) {
           capture.callback_function_survived_return =
               capture.post_callback_function == capture.callback_function;
           capture.callback_return_observed = true;
-          capture.result = capture.vptr_matches_runtime_owner &&
+          if (options.sequence && !capture.sequence_entries.empty()) {
+            auto& row = capture.sequence_entries.back();
+            row.returned = true;
+            row.return_thread_id = event.dwThreadId;
+            row.same_thread = capture.return_thread_matches;
+            row.receiver_survived = capture.receiver_survived_return;
+            row.wrapper_vptr_survived = capture.vptr_survived_return;
+            row.concrete_callback_survived =
+                capture.callback_function_survived_return;
+            row.return_elapsed_seconds = std::chrono::duration<double>(
+                std::chrono::steady_clock::now() - started).count();
+            HANDLE resume_thread = OpenThread(
+                THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
+                    THREAD_QUERY_INFORMATION,
+                FALSE, event.dwThreadId);
+            if (!resume_thread) {
+              throw std::runtime_error(
+                  "OpenThread failed before continuation resume");
+            }
+            CONTEXT context{};
+            context.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER;
+            const bool context_ok =
+                GetThreadContext(resume_thread, &context) != FALSE;
+            context.Rip = continuation_address;
+            const bool context_set =
+                context_ok && SetThreadContext(resume_thread, &context) != FALSE;
+            CloseHandle(resume_thread);
+            if (!context_set) {
+              throw std::runtime_error(
+                  "SetThreadContext failed before continuation resume");
+            }
+            if (!WriteBreakpointByte(process_info.hProcess,
+                                     capture.callback_address, 0xCC)) {
+              throw std::runtime_error(
+                  "could not rearm callback entry breakpoint");
+            }
+            capture.original_byte_restored = false;
+          } else {
+            capture.result = capture.vptr_matches_runtime_owner &&
                                    capture.slot_target_matches_runtime_owner &&
                                    capture.return_thread_matches &&
                                    capture.receiver_survived_return &&
@@ -591,6 +814,7 @@ Capture Run(const Options& options) {
           capture.reason = capture.result == "GREEN"
                                ? "callback-entry-return-lifetime-observed"
                                : "callback-entry-return-lifetime-mismatch";
+          }
         } else if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
                    !initial_breakpoint_seen) {
           initial_breakpoint_seen = true;
@@ -603,7 +827,48 @@ Capture Run(const Options& options) {
       current_event_active = false;
     }
 
-    if (!capture.callback_observed) {
+    if (options.sequence) {
+      if (capture.thread_id != 0) {
+        HANDLE thread = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT |
+                                       THREAD_QUERY_INFORMATION,
+                                   FALSE, capture.thread_id);
+        if (thread) {
+          if (SuspendThread(thread) != static_cast<DWORD>(-1)) {
+            capture.timeout_thread_suspended = true;
+            CONTEXT context{};
+            context.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER;
+            if (GetThreadContext(thread, &context)) {
+              capture.timeout_thread_id = capture.thread_id;
+              capture.timeout_thread_rip = context.Rip;
+              capture.timeout_thread_rva =
+                  context.Rip >= capture.image_base
+                      ? context.Rip - capture.image_base
+                      : 0;
+              capture.timeout_node = context.Rsi;
+              capture.timeout_node_name =
+                  ReadNodeName(process_info.hProcess, capture.timeout_node);
+              ReadRemote(process_info.hProcess, capture.timeout_node + 0x88,
+                         &capture.timeout_receiver);
+            }
+          }
+          CloseHandle(thread);
+        }
+      }
+      const bool has_pending = !capture.sequence_entries.empty() &&
+                               !capture.sequence_entries.back().returned;
+      const bool has_unentered_candidate = capture.timeout_thread_suspended &&
+                                           !capture.timeout_node_name.empty();
+      capture.result = !capture.sequence_entries.empty() &&
+                               (has_pending || has_unentered_candidate)
+                           ? "GREEN"
+                           : "RED";
+      capture.reason =
+          has_pending
+              ? "callback-sequence-first-unreturned-observed"
+              : (has_unentered_candidate
+                     ? "callback-sequence-first-unentered-candidate-observed"
+                     : "callback-sequence-stall-boundary-unobservable");
+    } else if (!capture.callback_observed) {
       capture.result = "RED";
       capture.reason = "callback-breakpoint-timeout";
     } else if (!capture.callback_return_observed) {
