@@ -216,6 +216,10 @@
   并分别冻结 [truce](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json)
   与 [war-bound](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json)
   source contract；四域 production-live read-only primitive 不等于六域、决策或 action-ready。
+  2026-09-02 的唯一 paused private pre-reset capture 已将缺失 duration
+  收窄为 evaluator 前的 `root_shape_drift`，详见
+  [g2-truce-private-live-capture-2026-09-02.md](g2-truce-private-live-capture-2026-09-02.md)；
+  该 RED 不升级 truce、expiry、decision 或 action readiness。
 - [inference] [player-counterpolicy.md](player-counterpolicy.md) 把上述已证事实映射为我方 planner 的
   lexicographic counter-policy、enemy endpoint epoch、multi-stack 路线矩阵、cohesion / merge 边界与测试矩阵；
   该文档描述我方策略，不代表 CK3 原生 AI 的 static fact。

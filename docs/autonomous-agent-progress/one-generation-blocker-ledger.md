@@ -777,3 +777,18 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - 这只改变 truce duration leaf 的 public-wire 状态，不提升完整六域 aggregate、policy 或 action readiness。没有 paused CK3 live
   artifact，`truce_ready` 的实机双读/同帧 probe 仍 pending；generic war-bound source/pre/loss、campaign/budget、white-peace、typed
   submit 与 postcondition 仍未闭合，故 `GEN-034` 继续 **unresolved**。
+
+## 2026-09-02：GEN-034 private pre-reset live RED
+
+- 一次 frozen exact-build paused、只读双查询已用显式 OFF-by-default 的 instrumented DLL 捕获 production reset 前的 typed failure；
+  两行均为 `root_shape_drift`（code `9`）、`pointer_shape_verified=false`、`evaluated_days=-1`、
+  `expiry_observable=false`、`context_destroyed=true`。这证明当前 reader 在调用 duration evaluator 前即退出，不能把
+  `war_days` schema、静态 evaluator call-site 或 `current_date + days` 冒充 live duration/expiry。
+- runner report SHA-256 为
+  `31377779207957E3D18D7260945F5CD933DCCC497F2C1844A95D5CC01F02421E`；private JSONL SHA-256 为
+  `47514E299D87F6878229115BB60897F5E23FA28DACEE81937619D21A44D268EF`。同帧 identity、四域只读 payload、
+  source invariant 与 cleanup GREEN；没有 time advance 或 surrender/white-peace/enforce mutation。
+- `GEN-034` 继续 **unresolved**，`truce_ready=false`、`decision_ready=false`。下一入口缩小为 private staged
+  loaded-tree shape capture：标出 `ResolveUniqueTruceNode` 的具体失败检查及对应 vtable/count/capacity 实值；没有该新证据前不改
+  offset/shape contract、不扩 public wire/readiness、不重复本次 checkpoint replay。完整证据边界见
+  [G2 private truce live capture](../ck3-native-ai/g2-truce-private-live-capture-2026-09-02.md)。

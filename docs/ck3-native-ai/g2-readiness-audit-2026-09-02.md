@@ -428,3 +428,23 @@ mis-scoped. The frozen paused artifact and logs contain no hidden truce
 diagnostic. No code, public wire, offset, or CK3 run changed; the next possible
 entry is a separately scoped private/test-only capture before the reset, after
 an exact-build DLL and offline open_kaishek preflight are available.
+
+## 2026-09-02 16:39 private pre-reset paused capture
+
+One explicitly instrumented, OFF-by-default DLL was run against the frozen
+CharacterID `29829` / WarID `50331699` / `date_raw=53223936` checkpoint after
+the `open_kaishek` `17caa28` war-days preflight passed. Both same-frame
+read-only terms queries reached the private capture and returned the identical
+typed failure `root_shape_drift` (`failure_code=9`) before the duration
+evaluator. `pointer_shape_verified=false`, `evaluated_days=-1`, and
+`expiry_observable=false`; both effect contexts were destroyed successfully.
+
+The retained report SHA-256 is
+`31377779207957E3D18D7260945F5CD933DCCC497F2C1844A95D5CC01F02421E` and the
+private JSONL SHA-256 is
+`47514E299D87F6878229115BB60897F5E23FA28DACEE81937619D21A44D268EF`;
+paths and the full boundary are recorded in
+[g2-truce-private-live-capture-2026-09-02.md](g2-truce-private-live-capture-2026-09-02.md).
+No mutation was sent and cleanup was GREEN. `GEN-034` therefore remains
+unresolved; the next admissible live entry is a staged private loaded-tree
+shape capture, not another identical duration replay.

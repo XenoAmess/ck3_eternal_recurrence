@@ -34,6 +34,12 @@ option(
   OFF
 )
 
+option(
+  XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1
+  "Write the private GEN-034 truce reader result before production reset"
+  OFF
+)
+
 add_library(xar_bridge_protocol STATIC
   src/protocol.cpp
 )
@@ -137,6 +143,11 @@ target_compile_definitions(xar_ck3_bridge PRIVATE
 if(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1
   )
 endif()
 set_target_properties(xar_ck3_bridge PROPERTIES

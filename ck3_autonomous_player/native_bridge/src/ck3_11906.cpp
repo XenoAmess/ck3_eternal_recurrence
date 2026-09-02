@@ -47,6 +47,75 @@ thread_local std::array<std::uintptr_t,
                         kMaximumWarExitDiagnosticRootChildren>
     g_war_exit_loaded_root_child_vtable_rvas{};
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+constexpr wchar_t kG2TrucePrivateCapturePathEnvironment[] =
+    L"XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH";
+constexpr std::size_t kG2TrucePrivateCapturePathCapacity = 1024;
+
+void AppendG2TrucePrivateCaptureV1(
+    std::int32_t war_id, std::int32_t casus_belli_database_index,
+    std::int32_t primary_attacker_character_id,
+    std::int32_t primary_defender_character_id,
+    std::int32_t claimant_character_id, const void *effect_context,
+    const void *evaluation_context,
+    const RaiktorSurrenderTruceObservationV1 &observation,
+    bool context_destroyed) noexcept {
+  std::array<wchar_t, kG2TrucePrivateCapturePathCapacity> path{};
+  const DWORD path_length = GetEnvironmentVariableW(
+      kG2TrucePrivateCapturePathEnvironment, path.data(),
+      static_cast<DWORD>(path.size()));
+  if (path_length == 0 || path_length >= path.size()) {
+    return;
+  }
+
+  std::array<char, 2048> row{};
+  const auto failure =
+      RaiktorSurrenderTruceFailureReasonV1(observation.failure);
+  const int length = std::snprintf(
+      row.data(), row.size(),
+      "{\"schema\":\"xar.ck3.g2_truce_private_capture.v1\","
+      "\"war_id\":%d,\"casus_belli_database_index\":%d,"
+      "\"primary_attacker_character_id\":%d,"
+      "\"primary_defender_character_id\":%d,"
+      "\"claimant_character_id\":%d,"
+      "\"effect_context\":\"0x%p\","
+      "\"evaluation_context\":\"0x%p\","
+      "\"status\":%u,\"failure_code\":%u,"
+      "\"failure\":\"%.*s\",\"evaluated_days\":%d,"
+      "\"pointer_shape_verified\":%s,"
+      "\"evaluator_double_read_stable\":%s,"
+      "\"same_frame_stable\":%s,\"expiry_observable\":%s,"
+      "\"context_destroyed\":%s}\r\n",
+      war_id, casus_belli_database_index,
+      primary_attacker_character_id, primary_defender_character_id,
+      claimant_character_id, effect_context, evaluation_context,
+      static_cast<unsigned>(observation.status),
+      static_cast<unsigned>(observation.failure),
+      static_cast<int>(failure.size()), failure.data(),
+      observation.evaluated_days,
+      observation.pointer_shape_verified ? "true" : "false",
+      observation.evaluator_double_read_stable ? "true" : "false",
+      observation.same_frame_stable ? "true" : "false",
+      observation.expiry_observable ? "true" : "false",
+      context_destroyed ? "true" : "false");
+  if (length <= 0 || static_cast<std::size_t>(length) >= row.size()) {
+    return;
+  }
+
+  const HANDLE artifact = CreateFileW(
+      path.data(), FILE_APPEND_DATA, FILE_SHARE_READ, nullptr, OPEN_ALWAYS,
+      FILE_ATTRIBUTE_NORMAL, nullptr);
+  if (artifact == INVALID_HANDLE_VALUE) {
+    return;
+  }
+  DWORD written = 0;
+  (void)WriteFile(artifact, row.data(), static_cast<DWORD>(length), &written,
+                  nullptr);
+  (void)FlushFileBuffers(artifact);
+  CloseHandle(artifact);
+}
+#endif
+
 void SetWarExitPreviewUnavailableReason(std::string_view reason) noexcept {
   if (g_last_war_exit_preview_unavailable_reason.empty()) {
     g_last_war_exit_preview_unavailable_reason = reason;
@@ -3816,6 +3885,17 @@ bool ReadRaiktorSurrenderTruceDuration(
 #endif
   const bool context_destroyed =
       DestroyWarEffectContext(bindings, effect_context);
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  // This evidence row is emitted before the production failure path clears
+  // the observation. It is compiled only into an explicitly instrumented
+  // candidate and never changes the public terms wire or readiness fields.
+  AppendG2TrucePrivateCaptureV1(
+      war_id, casus_belli_database_index,
+      primary_attacker_character_id, primary_defender_character_id,
+      claimant_character_id, effect_context,
+      static_cast<std::byte *>(effect_context) + 0x28, output,
+      context_destroyed);
+#endif
   if (!context_destroyed ||
       output.status != RaiktorSurrenderTruceStatusV1::available ||
       output.failure != RaiktorSurrenderTruceFailureV1::none ||
