@@ -592,3 +592,28 @@ same `14` under `-O`) is GREEN in both runs; the parent static workflow
 `33587172920` is also SUCCESS. This closes the bytecode-hygiene gate only: no
 CK3 rerun, loader callback diagnosis, seed readiness, or phase-two capability
 status changed.
+
+## 2026-09-02 11:36 loader callback static slice
+
+The exact-build, read-only callback inspection is now captured in the
+machine-readable contract
+`ck3_autonomous_player/native_bridge/research/phase2_loader_callback_static_slice_v1_abi.json`
+and reproducible extractor
+`ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_slice.py`.
+The retained artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\loader-callback-native-slice-20260902.json`
+has SHA-256
+`DB578C67A98FC131B829B718C356E11E31DE84CCC649E81D79EB9EFE5C25452A`.
+
+For CK3 `1.19.0.6` (EXE SHA
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`), the
+slice closes the loader loop range `0x3B9AB00..0x3B9ACED`, its 35-byte
+prologue/PDATA and unwind handler, the `RCX -> node+0x88 -> vptr -> slot 2`
+call shape, eight direct callers, and the same-function continuation. Runtime
+node vptr identity, callback return semantics/lifetime, thread identity,
+source-file attribution, and readiness remain explicitly unknown. Focused
+normal and optimized tests are `8/8` GREEN; the extractor and compilation are
+offline-only. No callback hook, bridge/public ABI field, CK3 launch, save write,
+or readiness promotion was made. The next entry remains a private, paused
+exact-build observation of callback identity/completion, not another identical
+loader timeout.
