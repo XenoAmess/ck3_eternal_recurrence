@@ -110,6 +110,10 @@ class G2TruceNativeCallsiteObserverRunnerTests(unittest.TestCase):
             [rva for rva, _ in VERIFIER.ANCHORS],
             [0x2EDAF01, 0x2EDB58F],
         )
+        verifier_source = (
+            RESEARCH / "verify_g2_truce_native_callsite_observer_candidate.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn('"all_frozen_files_read_only"', verifier_source)
 
 
 if __name__ == "__main__":

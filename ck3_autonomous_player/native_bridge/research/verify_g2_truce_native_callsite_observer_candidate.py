@@ -36,6 +36,11 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
+def is_read_only(path: Path) -> bool:
+    attributes = getattr(path.stat(), "st_file_attributes", 0)
+    return bool(attributes & 0x1)
+
+
 def process_inventory() -> dict[str, list[int]]:
     result = {"ck3.exe": [], "ck3_probe.exe": []}
     completed = subprocess.run(
@@ -134,6 +139,7 @@ def verify(manifest_path: Path) -> dict[str, object]:
         "source_commit_exact": source.get("commit") == EXPECTED_SOURCE_COMMIT,
         "all_frozen_files_exist": all(path.is_file() for path in files.values()),
         "all_frozen_hashes_match": actual_hashes == expected_hashes,
+        "all_frozen_files_read_only": all(is_read_only(path) for path in files.values()),
         "source_zip_contains_observer_contract": required_source_files <= names,
         "private_option_default_off_in_source": private_option_default_off,
         "direct_capture_combination_rejected": direct_combination_rejected,
