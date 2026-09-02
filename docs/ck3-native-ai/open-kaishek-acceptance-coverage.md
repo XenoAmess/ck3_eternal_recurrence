@@ -251,3 +251,26 @@ IR/runtime SKIPPED, `ck3_started=false`, `save_mutated=false`, and
 pillar artifact is the known schema-only corpus boundary, not a slice failure.
 These increments improve offline acceleration only and leave phase-two loader
 and G2 `GEN-034` readiness unchanged.
+
+## 2026-09-02 12:40 `is_acclaimed` schema slice
+
+The canonical accelerator advanced to `main == origin/main ==
+638f4c0`.  The new exact-build-backed `is_acclaimed` descriptor is a narrow
+`TRIGGER/CHARACTER/BOOLEAN` shape with zero parameters, deterministic
+read-only metadata, and `certified=false`.  It enables parser/validator
+preflight for the Character leaf used by the combat manifest; it does not
+introduce an `ACCOLADE` scope, a native evaluator, or runtime certification.
+
+Focused profile, validator, ZG361 fixture, package, and CLI smoke checks were
+GREEN.  The retained parent preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\kaishek-is-acclaimed-20260902.json`
+(SHA-256
+`D48913E0F4A831B0220EE2A818393CB3AA42B88D8B976097CF9652DEF30FFC73`).
+Its dedicated fixture parser/validator stages are `1 file / 163 bytes /
+0 diagnostics`; IR/runtime are explicitly `SKIPPED`, with
+`ck3_started=false`, `save_mutated=false`, and `network_used=false`.  The
+rebuilt CLI JAR SHA-256 is
+`D1341CD872D07E8081A4E53040655C420FB4A8EEDD24DC5DE616761CDFF068A2`.
+The two initial CI failures were caused by a missing preflight registration;
+the follow-up commit `638f4c0` contains that fix, while its final CI was still
+in progress at handoff.  No phase-two or G2 readiness label changes.
