@@ -1,0 +1,74 @@
+{
+  "contract": "phase2-post-call-live-postprocess-v1",
+  "schema_version": 1,
+  "status": "offline-private-evidence-parser-live-validated",
+  "baseline": {
+    "parent_commit": "b2601df27794ae6bf1fade7995059096f7039f8d",
+    "observer_abi": "phase2-post-call-observer-v1",
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "input": {
+    "runner_report": "recursive heartbeat discovery with duplicate pid/sequence collapse",
+    "observer_object": "phase2_post_call_observer_v1",
+    "control_fields": [
+      "private_build",
+      "installed",
+      "failure"
+    ],
+    "telemetry_field_count": 27,
+    "strict_schema": "all frozen fields required; unknown observer fields rejected",
+    "maximum_list_count": 4096,
+    "selected_callback_slot2_target_rva": "0x88B480"
+  },
+  "decision_matrix": [
+    {"condition": "observer missing, schema drift, or invalid types", "decision": "observer-schema-missing/invalid", "status": "RED"},
+    {"condition": "installed=false or failure!=0", "decision": "observer-install-or-runtime-failure", "status": "RED"},
+    {"condition": "counter, QPC, or relational contract invalid", "decision": "observer-counter-contract-invalid", "status": "RED"},
+    {"condition": "hit_count == 0", "decision": "no-hook-hit", "status": "NO-GO"},
+    {"condition": "read/context missing, count > 4096, or truncated scan", "decision": "context-incomplete", "status": "NO-GO"},
+    {"condition": "hits observed and every list empty", "decision": "empty-list", "status": "NO-GO"},
+    {"condition": "bounded descriptors scanned and selector never matched", "decision": "scan-no-selected", "status": "NO-GO"},
+    {"condition": "selected last state is 0, 2, or 3", "decision": "selected-state0/2/3", "status": "GREEN"}
+  ],
+  "live_validation": {
+    "runner_report": "Z:\\p2r-postcall\\live-artifacts\\runner-report.json",
+    "runner_report_sha256": "35174DC74CE6D8B5301ABDD07B29AE02FCC9BC0CE8ECCA2104E983AEE805025C",
+    "cleanup_sha256": "0E754E64FF5583799220172A420D717DA46F40D0C437341E8E53530B7A146CEB",
+    "postprocess_artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\post-call-live-postprocess.json",
+    "postprocess_artifact_sha256": "C886C18EB38126335629AE36EE8B0C6345828E4A7B3F9C93A5E79EAE98178559",
+    "typed_result": "scan-no-selected",
+    "status": "NO-GO",
+    "final_counts": {
+      "hit": 1,
+      "nonempty": 1,
+      "descriptor_seen": 27,
+      "selected": 0,
+      "read_failure": 0,
+      "scan_truncated": 0,
+      "last_list_count": 27
+    }
+  },
+  "next_distinct_observation": {
+    "kind": "private-slot2-rva-histogram-with-task-identity",
+    "minimum_evidence": "for every descriptor in the bounded producer list, retain callback slot2 target RVA plus task and owner identity",
+    "reason": "v1 proves a complete 27-descriptor scan but retains only the last raw descriptor, so it cannot distinguish an outdated selector from a different task population",
+    "do_not_repeat": "the existing 0x3407DA1 v1 last-value-only capture"
+  },
+  "source_hashes": {
+    "parser_sha256": "69AFF8E41B7B8F91756F112C145ABACB0F5AB86335E704BE5881E365FE21E622",
+    "test_sha256": "F058E0ABF0F066D7082F10322F9E21204F8528B7D949AB0E320A74C66796ACCD"
+  },
+  "acceptance": {
+    "focused_tests": "8/8 GREEN",
+    "real_live_typed": "scan-no-selected",
+    "ck3_started_by_postprocessor": false
+  },
+  "scope": {
+    "read_only": true,
+    "private_evidence_only": true,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "daily_or_weekly_report_changed": false
+  }
+}
