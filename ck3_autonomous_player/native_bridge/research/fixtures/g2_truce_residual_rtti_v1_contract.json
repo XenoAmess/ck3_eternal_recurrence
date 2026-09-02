@@ -1,0 +1,32 @@
+{
+  "schema": "xar.ck3.g2_truce_residual_rtti.contract.v1",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "residual_types": {
+    "0x44D1D50": {
+      "col_rva": "0x4B4FC98",
+      "type_descriptor_rva": "0x5655F78",
+      "rtti_type_name": ".?AVCShowAsTooltipEffect@@",
+      "object_size": "0x60",
+      "common_pointer_offset": "0x40",
+      "common_count_offset": "0x4C",
+      "common_walk_rva": "0x3380980"
+    },
+    "0x44D27B8": {
+      "col_rva": "0x4B50238",
+      "type_descriptor_rva": "0x5655EF8",
+      "rtti_type_name": ".?AVCJominiContextEffect@@",
+      "object_size": "0x100",
+      "common_pointer_offset": "0x40",
+      "common_count_offset": "0x4C",
+      "common_walk_rva": "0x3389790",
+      "separate_scope_pointer_offset": "0x60",
+      "separate_scope_count_offset": "0x6C"
+    }
+  },
+  "unique_truce_scripted_effect_index": 7,
+  "unique_next_read_only_path": "root index7 default common child1 (hidden_effect) -> its common child0 (scope:attacker Context) -> its common child0 (expected CAddTruceEffect<0>)",
+  "readiness": "static-source-correlated/not-live"
+}

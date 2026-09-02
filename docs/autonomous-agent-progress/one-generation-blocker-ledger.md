@@ -829,3 +829,23 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   `0x44D1D50` 与 `0x44D27B8` 的 exact RTTI/COL/container 语义；静态不能唯一化前
   不再启动 CK3。public/readiness/production shape 不变，`GEN-034` 继续
   **unresolved**。
+
+## 2026-09-02：GEN-034 residual RTTI 与源码顺序纠正
+
+- 离线 exact-build RTTI 将 `0x44D1D50` 定名为
+  `CShowAsTooltipEffect`（`0x60`），将 `0x44D27B8` 定名为
+  `CJominiContextEffect`（`0x100`）；两者都在 `+0x40/+0x4C` 持有 common
+  effect vector。Context 的 `+0x60/+0x6C` 是另一份 scope/configuration
+  storage，不是 effect child vector。
+- 冻结原版 `raiktor_claim_cb.on_defeat` 顶层顺序与前序 live shape 一一吻合：
+  index `7` 是四 child 的 `add_truce_attacker_defeat_effect`，index `9` 是一
+  child 的 discontent，index `10` 是一 child 的 LAAMP tooltip，index `11`
+  是二 child 的 mandala。故先前仅按 `1/1` shape 缩到 `9/10` 的路线被纠正；
+  唯一下一只读路径返回 index `7` 的
+  `default child1 hidden_effect -> child0 Context -> child0 expected CAddTruce`。
+- `+0x258=null` 只覆盖实机读取过的三个父 CIf 对象，不能外推到递归 child；
+  因 index `9/10` 已被源码语义排除，后者无需继续探测。artifact SHA-256 为
+  `3A56A1ACBF49591C0787EADE412C2C8F23E49E253DAC00C4ADB7A7624B628DB3`，
+  focused test `4/4` GREEN，未启动 CK3。production shape/public ABI/readiness
+  均不变，`GEN-034` 仍 **unresolved**；index 7 路径必须经一次 bounded live
+  后才能更新生产合同。

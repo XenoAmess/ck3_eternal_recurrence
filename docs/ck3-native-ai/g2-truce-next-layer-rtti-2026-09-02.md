@@ -123,3 +123,57 @@ COL/type/container semantics, then select only a uniquely justified nested
 field. The recursive `0x44D1E18` occurrence remains a known CIf container but
 does not by itself identify Truce. Public ABI/readiness and production shape
 constants remain unchanged; `GEN-034` remains unresolved.
+
+## Residual RTTI and frozen-source correction
+
+The bounded offline extractor on parent baseline
+`2ee8eab130477b9d346024d146337bf2213e78d0` resolved both residual vtables:
+
+| Vtable RVA | COL / type descriptor | Exact RTTI | Size | Container semantics |
+| --- | --- | --- | ---: | --- |
+| `0x44D1D50` | `0x4B4FC98 / 0x5655F78` | `CShowAsTooltipEffect` | `0x60` | slot `0x3380980` walks the inherited `CJominiEffect` common vector at pointer `+0x40`, count `+0x4C`, dispatching child slot `+0x58` |
+| `0x44D27B8` | `0x4B50238 / 0x5655EF8` | `CJominiContextEffect` | `0x100` | slot `0x3389790` walks common effect children at `+0x40/+0x4C`; `+0x60/+0x6C` is separate scope/configuration storage, confirmed by slot `0x3389610` |
+
+Both are real containers, so RTTI alone does not choose between them. Frozen
+stock-source order does: `raiktor_claim_cb.on_defeat` has exactly twelve
+top-level effects, and index `7` is
+`add_truce_attacker_defeat_effect`; indices `9/10/11` are respectively
+`on_lost_aggression_war_discontent_loss`,
+`laamp_as_mercenary_payout_tooltip_effect`, and
+`mandala_war_defeat_effects`. Their definitions have respectively `4`, `1`,
+`1`, and `2` top-level children, exactly matching the earlier live defaults
+`7=4/4`, `9=1/1`, `10=1/1`, and `11=2/2`. Index `6` is the eight-argument
+`modify_all_participants_fame_values` call and matches its live selector count
+of eight. The descendant identities close the correlation independently:
+index `9` reaches `CTargetingFactionsDiscontentEffect`, while index `10`
+reaches the exact `CShowAsTooltipEffect -> Context -> active task contract`
+shape authored by the LAAMP payout tooltip.
+
+This corrects the prior shape-only narrowing: the unique truce scripted-effect
+entry is index `7`, not either residual index `9/10` branch. The next private
+read-only path is therefore only:
+
+`root index7 default child1 (hidden_effect) -> child0 (scope:attacker Context) -> child0 (expected CAddTruceEffect<0>)`.
+
+That path is source-correlated/static and still requires one bounded live
+validation before any production contract can change.
+
+The earlier `+0x258=null` result applies exactly to the three captured parent
+`CIfEffect` objects. It does not prove that the distinct recursive CIf child
+also has a null optional pointer. No further read of that child is needed for
+the truce search because source correlation excludes the complete index `9/10`
+branches; this is the precise closure, rather than propagating null across
+objects.
+
+Reproducible inputs and result:
+
+- extractor: `extract_g2_truce_residual_rtti.py`;
+- contract: `g2_truce_residual_rtti_v1_contract.json`;
+- focused exact-build tests: `4/4` GREEN;
+- artifact:
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-residual-rtti-20260902T1915\g2-truce-residual-rtti.json`,
+  SHA-256
+  `3A56A1ACBF49591C0787EADE412C2C8F23E49E253DAC00C4ADB7A7624B628DB3`.
+
+No CK3 process was started. Public ABI, readiness, production shape constants,
+and all mutation paths remain unchanged; `GEN-034` is still unresolved.

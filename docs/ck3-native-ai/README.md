@@ -230,7 +230,13 @@
   [g2-truce-private-live-capture-2026-09-02.md](g2-truce-private-live-capture-2026-09-02.md)；
   下一层 `1+6` capture 仍未直接命中 Truce；exact-build RTTI 已将七个位置
   缩到四个 `MultipleTarget` container 位置，并确认 `CIfEffect+0x258` 是另一个
-  optional owned effect pointer。详见
+  optional owned effect pointer。后续 residual RTTI 又将 `0x44D1D50 / 0x44D27B8`
+  定名为 `CShowAsTooltipEffect / CJominiContextEffect`，并以冻结原版脚本的
+  12 项顶层顺序纠正 shape-only narrowing：唯一 truce scripted-effect 是 index
+  `7`（其 4 个源码 children 与 live `4/4` 一致），index `9/10` 分别是
+  discontent 与 LAAMP tooltip。下一 private read-only 路径只沿 index 7 的
+  `hidden_effect -> scope:attacker -> CAddTruce` 验证；尚未改 production 合同。
+  详见
   [g2-truce-next-layer-rtti-2026-09-02.md](g2-truce-next-layer-rtti-2026-09-02.md)。
   这些 RED/static 结果不升级 truce、expiry、decision 或 action readiness。
 - [inference] [player-counterpolicy.md](player-counterpolicy.md) 把上述已证事实映射为我方 planner 的
