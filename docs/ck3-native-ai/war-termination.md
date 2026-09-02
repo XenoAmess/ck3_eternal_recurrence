@@ -2094,3 +2094,24 @@ and the exact `bookmark.1071.a` arm remain unchanged; console and bridge
 gameplay mutation remain forbidden. This contract is only a static candidate:
 it does not authorize a CK3 run, change the public ABI, or promote
 `war_bound_armies_ready`.
+
+#### 300-second attempt pre-launch terminal and corrected candidate
+
+[harness RED / CK3 not started] The first authorized execution of the staged
+contract stopped before process creation because the private capture binary
+still bounded `--timeout-ms` to 900,000 while the new enclosing manifest
+required 1,200,000. The runner reported
+`DebuggerOwnedProcessTimeout / process_discovery`; no readiness screenshot,
+Robert selection, game-time advance, bookmark event, action arm, or capture
+was produced. The retained report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-war-bound-private-capture-300s-20260902T2040\attempt-001\report.json`
+(SHA-256
+`F96DAE07F65DB42BE383E59CB15DD2766E13DE644A1D60A307CDF52D624BC1E2`)
+and cleanup is `cleanup.json` (SHA-256
+`E12A76D3AE98B6CF5CDD9275A33F67DB07322689850485770BC38CBB73A89D40`).
+
+This observed harness mismatch is fixed offline by extending only the private
+capture argument bound to 1,200,000 ms. The rebuilt executable SHA-256 is
+`524D44FD38F18D2B574C7009C8F16ECABB2E83E4CD56DDDB04F577B8D20B9202`;
+the manifest now binds that product hash and its timeout maximum. The failed
+attempt is not reusable and no second CK3 run is authorized by this fix.

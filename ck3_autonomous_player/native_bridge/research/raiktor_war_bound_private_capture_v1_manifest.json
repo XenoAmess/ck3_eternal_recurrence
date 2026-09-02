@@ -13,6 +13,10 @@
     "file_size": 95206008,
     "architecture": "msvc-x64"
   },
+  "capture_product": {
+    "executable_sha256": "524D44FD38F18D2B574C7009C8F16ECABB2E83E4CD56DDDB04F577B8D20B9202",
+    "timeout_max_ms": 1200000
+  },
   "observation": {
     "stop_rva": "0x2E7F951",
     "window_end_rva_exclusive": "0x2E7F9A6",

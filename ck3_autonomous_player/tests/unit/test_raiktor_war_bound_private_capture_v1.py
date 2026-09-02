@@ -51,6 +51,13 @@ class RaiktorWarBoundPrivateCaptureV1Tests(unittest.TestCase):
         self.assertIn("public_bridge_abi_changed", self.source)
         self.assertIn("production_detour_installed", self.source)
 
+    def test_staged_runner_budget_is_accepted_by_private_capture(self) -> None:
+        self.assertIn("parsed > 1200000", self.source)
+        self.assertEqual(
+            self.manifest["readiness_contract"]["capture_process_timeout_ms"],
+            1200000,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -40,6 +40,11 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
             [60, 120, 180, 240, 300],
         )
         self.assertEqual(readiness["capture_process_timeout_ms"], 1200000)
+        self.assertEqual(manifest["capture_product"]["timeout_max_ms"], 1200000)
+        self.assertEqual(
+            manifest["capture_product"]["executable_sha256"],
+            MODULE.EXPECTED_CAPTURE_EXE_SHA256,
+        )
         self.assertIn("MainMenuReadinessTimeout", readiness["typed_terminals"])
 
     def test_readiness_cli_must_match_manifest(self) -> None:

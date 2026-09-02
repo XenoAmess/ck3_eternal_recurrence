@@ -22,10 +22,10 @@ import time
 
 
 EXPECTED_MANIFEST_SHA256 = (
-    "CD5CF0B7C19C72721139485D5242F94EF3531E1EA93F5FA0298A90BF77B9533A"
+    "EBD2AFC166BCA6F3632CC04F5988618EC7A4B13A8C61AC9003BE1582AB940C18"
 )
 EXPECTED_CAPTURE_EXE_SHA256 = (
-    "C40BED2DEFED5ACF56589788CAC98D282757085279DFFFA7E3E79BD274C52C2F"
+    "524D44FD38F18D2B574C7009C8F16ECABB2E83E4CD56DDDB04F577B8D20B9202"
 )
 EXPECTED_CK3_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -160,8 +160,15 @@ def validate_readiness_contract(
 ) -> dict[str, object]:
     attempt = manifest.get("attempt_contract")
     readiness = manifest.get("readiness_contract")
+    capture_product = manifest.get("capture_product")
     if not isinstance(attempt, dict) or not isinstance(readiness, dict):
         raise RuntimeError("manifest lacks the persisted attempt/readiness contracts")
+    if not isinstance(capture_product, dict):
+        raise RuntimeError("manifest lacks the frozen capture product")
+    if capture_product.get("executable_sha256") != EXPECTED_CAPTURE_EXE_SHA256:
+        raise RuntimeError("manifest capture-product hash mismatch")
+    if capture_product.get("timeout_max_ms") != 1200000:
+        raise RuntimeError("manifest capture-product timeout range mismatch")
     expected = {
         "process_discovery_timeout_seconds": 30,
         "main_menu_timeout_seconds": 300,

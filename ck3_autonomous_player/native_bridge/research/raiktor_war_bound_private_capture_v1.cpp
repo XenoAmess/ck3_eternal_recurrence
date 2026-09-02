@@ -556,7 +556,7 @@ Options ParseOptions(int argc, wchar_t **argv) {
     else if (name == L"--arm-file") options.arm_file = value();
     else if (name == L"--timeout-ms") {
       const auto parsed = std::stoul(value());
-      if (parsed < 1000 || parsed > 900000) {
+      if (parsed < 1000 || parsed > 1200000) {
         throw std::runtime_error("timeout out of range");
       }
       options.timeout_ms = static_cast<DWORD>(parsed);
