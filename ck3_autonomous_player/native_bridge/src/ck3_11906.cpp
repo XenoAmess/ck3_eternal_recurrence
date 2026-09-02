@@ -4312,6 +4312,21 @@ bool ReadRaiktorSurrenderTruceDuration(
   }
   bindings.populate_war_effect_context(effect_context, war, false);
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  // Native CAddTruce callers load the pointer stored in the +0x28 field into
+  // R8.  The private evaluator candidate must not pass the field's address.
+  void *const evaluation_context =
+      LoadAt<void *>(effect_context, 0x28);
+  if (evaluation_context == nullptr) {
+    DestroyWarEffectContext(bindings, effect_context);
+    return false;
+  }
+#else
+  // Preserve the production/default-OFF path byte-for-byte semantically.
+  void *const evaluation_context =
+      static_cast<std::byte *>(effect_context) + 0x28;
+#endif
+
   RaiktorTruceProductionFrameContext frame_context{
       &bindings,
       game_state,
@@ -4344,7 +4359,7 @@ bool ReadRaiktorSurrenderTruceDuration(
   const RaiktorSurrenderTruceAccessV1 access{
       &frame_context, nullptr, ReadRaiktorTruceProductionFrame};
   const RaiktorSurrenderTruceRequestV1 request{
-      effect_context, static_cast<std::byte *>(effect_context) + 0x28};
+      effect_context, evaluation_context};
   output = ObserveRaiktorSurrenderTruceV1(environment, access, request);
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
   g_last_raiktor_surrender_truce_failure = output.failure;
@@ -4359,8 +4374,7 @@ bool ReadRaiktorSurrenderTruceDuration(
       war_id, casus_belli_database_index,
       primary_attacker_character_id, primary_defender_character_id,
       claimant_character_id, effect_context,
-      static_cast<std::byte *>(effect_context) + 0x28, output,
-      context_destroyed);
+      evaluation_context, output, context_destroyed);
 #endif
   if (!context_destroyed ||
       output.status != RaiktorSurrenderTruceStatusV1::available ||

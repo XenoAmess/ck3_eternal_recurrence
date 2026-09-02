@@ -1406,8 +1406,12 @@ RaiktorSurrenderTruceObservationV1 ObserveRaiktorSurrenderTruceV1(
   if (access.read_frame == nullptr || request.effect_context == nullptr ||
       effect_context >
           (std::numeric_limits<std::uintptr_t>::max)() - 0x28 ||
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+      request.evaluation_context == nullptr) {
+#else
       request.evaluation_context !=
           reinterpret_cast<void *>(effect_context + 0x28)) {
+#endif
     return fail(RaiktorSurrenderTruceFailureV1::invalid_request);
   }
 

@@ -17,6 +17,13 @@ void Store(std::array<std::byte, Size> &storage, std::size_t offset,
   std::memcpy(storage.data() + offset, &value, sizeof(value));
 }
 
+template <typename Value, std::size_t Size>
+Value Load(const std::array<std::byte, Size> &storage, std::size_t offset) {
+  Value value{};
+  std::memcpy(&value, storage.data() + offset, sizeof(value));
+  return value;
+}
+
 struct Fixture {
   std::array<void *, 12> root_vtable{};
   std::array<void *, 1> scripted_vtable{};
@@ -48,6 +55,7 @@ struct Fixture {
   std::array<std::byte, 1> war{};
   std::array<std::byte, 1> cb{};
   std::array<std::byte, 0x100> effect_context{};
+  std::array<std::byte, 1> evaluation_context{};
   RaiktorSurrenderTruceFrameV1 frame;
   int frame_reads = 0;
   int evaluator_calls = 0;
@@ -101,6 +109,8 @@ struct Fixture {
     Store(context_effect, 0x4C, std::int32_t{1});
     Store(context_effect, 0x6C, std::int32_t{1});
     Store(truce, 0x00, static_cast<void *>(truce_vtable.data()));
+    Store(effect_context, 0x28,
+          static_cast<void *>(evaluation_context.data()));
 
     private_default_children.fill(unknown.data());
     private_default_children[1] = private_hidden.data();
@@ -152,7 +162,11 @@ struct Fixture {
   RaiktorSurrenderTruceNativeEnvironmentV1 Environment() const;
   RaiktorSurrenderTruceAccessV1 Access();
   RaiktorSurrenderTruceRequestV1 Request() {
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+    return {effect_context.data(), Load<void *>(effect_context, 0x28)};
+#else
     return {effect_context.data(), effect_context.data() + 0x28};
+#endif
   }
 };
 
@@ -177,7 +191,11 @@ std::int32_t Evaluate(void *script_value, void *effect_context,
   if (g_fixture == nullptr ||
       script_value != g_fixture->truce.data() + 0x108 ||
       effect_context != g_fixture->effect_context.data() ||
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+      evaluation_context != g_fixture->evaluation_context.data()) {
+#else
       evaluation_context != g_fixture->effect_context.data() + 0x28) {
+#endif
     return -1;
   }
   ++g_fixture->evaluator_calls;
@@ -272,8 +290,8 @@ int main() {
         capture.evaluator_effect_context != reinterpret_cast<std::uintptr_t>(
                                                 fixture.effect_context.data()) ||
         capture.evaluator_evaluation_context !=
-            reinterpret_cast<std::uintptr_t>(fixture.effect_context.data() +
-                                             0x28) ||
+            reinterpret_cast<std::uintptr_t>(
+                fixture.evaluation_context.data()) ||
         capture.evaluator_first_days != 1825 ||
         capture.evaluator_second_days != 1825 ||
         capture.evaluator_call_count != 2 ||
@@ -305,8 +323,7 @@ int main() {
           boundary.effect_context != reinterpret_cast<std::uintptr_t>(
                                          fixture.effect_context.data()) ||
           boundary.evaluation_context != reinterpret_cast<std::uintptr_t>(
-                                             fixture.effect_context.data() +
-                                             0x28) ||
+                                             fixture.evaluation_context.data()) ||
           boundary.evaluator_function !=
               reinterpret_cast<std::uintptr_t>(Evaluate) ||
           boundary.planned_call_count != 2) {
@@ -341,6 +358,30 @@ int main() {
     }
   }
 #endif
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    Store(fixture.effect_context, 0x28, static_cast<void *>(nullptr));
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+    const auto request = fixture.Request();
+#else
+    const RaiktorSurrenderTruceRequestV1 request{
+        fixture.effect_context.data(), nullptr};
+#endif
+    const auto value = ObserveRaiktorSurrenderTruceV1(
+        fixture.Environment(), fixture.Access(), request);
+    if (!ExpectFailure(value,
+                       RaiktorSurrenderTruceFailureV1::invalid_request,
+                       "null evaluation context") ||
+        fixture.evaluator_calls != 0 || fixture.frame_reads != 0
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+        || fixture.evaluator_boundary_count != 0
+#endif
+    ) {
+      std::cerr << "null evaluation context did not fail before evaluation\n";
+      return 1;
+    }
+  }
   {
     Fixture fixture;
     g_fixture = &fixture;
@@ -456,7 +497,11 @@ int main() {
     const auto value = ObserveRaiktorSurrenderTruceV1(
         fixture.Environment(), fixture.Access(), request);
     if (!ExpectFailure(value,
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+                       RaiktorSurrenderTruceFailureV1::duration_negative,
+#else
                        RaiktorSurrenderTruceFailureV1::invalid_request,
+#endif
                        "evaluation context")) {
       return 1;
     }
