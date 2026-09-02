@@ -30,6 +30,7 @@ jobs:
           python -m pip install -r tools/requirements-promo-toolchain.txt
           python -m xar_promo --version
           python -m xar_promo --help | Out-Null
+          python tools/test_promo_toolchain_loader.py
       - name: Compile Python tools
         run: |
           python -m compileall -q tools

@@ -82,9 +82,9 @@ RED 已保留为环境问题证据，不能覆盖这次干净目录结果。
 `docs/architecture-and-migration.md`。本仓库不再包含工具链源码；公开命令必须以当前
 `<verified-python> -m xar_promo --help` 及各子命令 `--help` 的实际输出为准；library 中存在函数或 handler 不代表 CLI 已暴露该能力。
 
-### 当前冻结 CLI（`xar-promo 0.1.0`）
+### 当前冻结 CLI（`xar-promo 0.2.1`）
 
-下表按 2026-09-01 实际 `--help` 记录；尖括号表示由项目提供的路径、ID 或 import target，不是可照抄的字面值。
+下表按 2026-09-02 实际 `--help` 记录；尖括号表示由项目提供的路径、ID 或 import target，不是可照抄的字面值。
 
 | 命令 | 实际调用形态 | 验收含义 / 副作用 |
 | --- | --- | --- |
@@ -104,7 +104,7 @@ RED 已保留为环境问题证据，不能覆盖这次干净目录结果。
 不得把 composer 塞进 registry，也不得虚构一个通用默认 composer。
 
 先安装独立仓库的冻结 wheel，再用选定且已验证的解释器做无副作用 CLI smoke。仓库提供
-`tools/requirements-promo-toolchain.txt`，默认指向 GitHub Release `v0.1.0`；离线或本地源码验收时，
+`tools/requirements-promo-toolchain.txt`，默认指向 GitHub Release `v0.2.1`；离线或本地源码验收时，
 可设置 `XAR_PROMO_SOURCE`（兼容别名 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向独立 checkout 或其 `src` 目录，
 以覆盖已安装 wheel：
 

@@ -21,10 +21,12 @@ from pathlib import Path
 
 
 PROMO_TOOLCHAIN_REPOSITORY = "https://github.com/XenoAmess/xar_promo_toolchain"
-PROMO_TOOLCHAIN_RELEASE_TAG = "v0.1.0"
+PROMO_TOOLCHAIN_VERSION = "0.2.1"
+PROMO_TOOLCHAIN_RELEASE_TAG = f"v{PROMO_TOOLCHAIN_VERSION}"
 PROMO_TOOLCHAIN_WHEEL_URL = (
     f"{PROMO_TOOLCHAIN_REPOSITORY}/releases/download/"
-    f"{PROMO_TOOLCHAIN_RELEASE_TAG}/xar_promo_toolchain-0.1.0-py3-none-any.whl"
+    f"{PROMO_TOOLCHAIN_RELEASE_TAG}/"
+    f"xar_promo_toolchain-{PROMO_TOOLCHAIN_VERSION}-py3-none-any.whl"
 )
 
 
@@ -87,6 +89,7 @@ def ensure_promo_toolchain() -> Path | None:
 __all__ = [
     "PROMO_TOOLCHAIN_RELEASE_TAG",
     "PROMO_TOOLCHAIN_REPOSITORY",
+    "PROMO_TOOLCHAIN_VERSION",
     "PROMO_TOOLCHAIN_WHEEL_URL",
     "ensure_promo_toolchain",
 ]
