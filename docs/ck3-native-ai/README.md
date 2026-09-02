@@ -221,7 +221,8 @@
   精确到 `root_capacity_mismatch`（actual `capacity/count=13/12`，旧合同
   `19/14`）。后续 root-child 枚举完整读出 12/12 个 vtable，但 scripted
   effect 有五个候选 index `6/7/9/10/11`，已排除“按 vtable 唯一定位”的
-  假设；详见
+  假设；候选级 shape 又证明旧 default `6/5` 无一匹配，且 indices `9/10`
+  同为 selector `0`、default `1/1`，仍需 sole-child 类型证据。详见
   [g2-truce-private-live-capture-2026-09-02.md](g2-truce-private-live-capture-2026-09-02.md)；
   该 RED 不升级 truce、expiry、decision 或 action readiness。
 - [inference] [player-counterpolicy.md](player-counterpolicy.md) 把上述已证事实映射为我方 planner 的

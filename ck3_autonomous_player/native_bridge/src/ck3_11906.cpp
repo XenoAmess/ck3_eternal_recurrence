@@ -68,7 +68,6 @@ void AppendG2TrucePrivateCaptureV1(
     return;
   }
 
-  std::array<char, 8192> row{};
   const auto failure =
       RaiktorSurrenderTruceFailureReasonV1(observation.failure);
   const auto &shape = LastRaiktorTrucePrivateShapeCaptureV1();
@@ -77,6 +76,49 @@ void AppendG2TrucePrivateCaptureV1(
   const auto as_rva = [module_base](std::uintptr_t address) noexcept {
     return address >= module_base ? address - module_base : address;
   };
+  std::array<char, 4096> scripted_candidates_json{};
+  std::size_t scripted_candidates_length = 0;
+  scripted_candidates_json[scripted_candidates_length++] = '[';
+  for (std::size_t slot = 0; slot < shape.scripted_candidates.size(); ++slot) {
+    const auto &candidate = shape.scripted_candidates[slot];
+    const int candidate_length = std::snprintf(
+        scripted_candidates_json.data() + scripted_candidates_length,
+        scripted_candidates_json.size() - scripted_candidates_length,
+        "%s{\"root_index\":%d,\"status\":\"%.*s\","
+        "\"child\":\"0x%llX\",\"child_vtable_rva\":\"0x%llX\","
+        "\"selector_count\":%d,\"template\":\"0x%llX\","
+        "\"template_vtable_rva\":\"0x%llX\","
+        "\"default_effect\":\"0x%llX\","
+        "\"default_vtable_rva\":\"0x%llX\","
+        "\"default_children\":\"0x%llX\","
+        "\"default_capacity\":%d,\"default_count\":%d,"
+        "\"semantic_shape_match\":%s}",
+        slot == 0 ? "" : ",", candidate.root_index,
+        static_cast<int>(candidate.status.size()), candidate.status.data(),
+        static_cast<unsigned long long>(candidate.child),
+        static_cast<unsigned long long>(as_rva(candidate.child_vtable)),
+        candidate.selector_count,
+        static_cast<unsigned long long>(candidate.scripted_template),
+        static_cast<unsigned long long>(as_rva(candidate.template_vtable)),
+        static_cast<unsigned long long>(candidate.default_effect),
+        static_cast<unsigned long long>(as_rva(candidate.default_vtable)),
+        static_cast<unsigned long long>(candidate.default_children),
+        candidate.default_capacity, candidate.default_count,
+        candidate.semantic_shape_match ? "true" : "false");
+    if (candidate_length <= 0 ||
+        static_cast<std::size_t>(candidate_length) >=
+            scripted_candidates_json.size() - scripted_candidates_length) {
+      return;
+    }
+    scripted_candidates_length += static_cast<std::size_t>(candidate_length);
+  }
+  if (scripted_candidates_length + 2 > scripted_candidates_json.size()) {
+    return;
+  }
+  scripted_candidates_json[scripted_candidates_length++] = ']';
+  scripted_candidates_json[scripted_candidates_length] = '\0';
+
+  std::array<char, 16384> row{};
   const int length = std::snprintf(
       row.data(), row.size(),
       "{\"schema\":\"xar.ck3.g2_truce_private_capture.v1\","
@@ -109,6 +151,10 @@ void AppendG2TrucePrivateCaptureV1(
       "\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\"],"
       "\"root_scripted_match_count\":%llu,"
       "\"root_scripted_match_index\":%d,"
+      "\"scripted_candidate_capture_completed\":%llu,"
+      "\"scripted_semantic_match_count\":%llu,"
+      "\"scripted_semantic_match_root_index\":%d,"
+      "\"scripted_candidates\":%.*s,"
       "\"scripted_effect\":\"0x%llX\","
       "\"scripted_vtable\":\"0x%llX\",\"scripted_vtable_rva\":\"0x%llX\","
       "\"expected_scripted_vtable_rva\":\"0x%llX\","
@@ -183,6 +229,12 @@ void AppendG2TrucePrivateCaptureV1(
       static_cast<unsigned long long>(as_rva(shape.root_child_vtables[15])),
       static_cast<unsigned long long>(shape.root_scripted_match_count),
       shape.root_scripted_match_index,
+      static_cast<unsigned long long>(
+          shape.scripted_candidate_capture_completed),
+      static_cast<unsigned long long>(shape.scripted_semantic_match_count),
+      shape.scripted_semantic_match_root_index,
+      static_cast<int>(scripted_candidates_length),
+      scripted_candidates_json.data(),
       static_cast<unsigned long long>(shape.scripted_effect),
       static_cast<unsigned long long>(shape.scripted_vtable),
       static_cast<unsigned long long>(as_rva(shape.scripted_vtable)),

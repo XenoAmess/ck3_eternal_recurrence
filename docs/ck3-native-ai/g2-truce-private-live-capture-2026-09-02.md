@@ -208,3 +208,63 @@ default subtree shape to distinguish the unique `cadd_truce` script. Do not
 repeat root enumeration and do not promote index 9 merely because it was the
 old hard-coded value. Cleanup and source invariants were GREEN, no mutation or
 time advance was sent, and `GEN-034` readiness remains unchanged.
+
+## Five scripted-candidate shape follow-up
+
+A fresh branch from parent baseline
+`9b8bd246247d61bf0c3233d38c45477e9a4d5fd4` added a distinct private
+capture for only the five vtable-matched root indices `6/7/9/10/11`. For each
+candidate it records selector count, template pointer/vtable, default-effect
+pointer/vtable, and the default vector pointer/capacity/count. It neither
+changes nor bypasses the production `19/14/index 9` gate.
+
+The focused private source contract passed `5/5`; the native game-access
+fixture and fresh instrumented MSVC build passed. The offline gate again bound
+`open_kaishek` `17caa288eb980aab0b652358e9e94a9901131619` and CLI JAR
+SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`.
+The GREEN `ck3-war-days-trigger-11906` preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-scripted-candidate-capture-20260902T173317\open-kaishek-preflight.json`,
+SHA-256
+`E3A8AA2A469D65F7145B5DDBE6BFBF06EABEB67376B14A4BC68B9C972BC6D234`.
+Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `99C4462D1FD5AADB6BBFDAE7EDD779C84570B2CA9F277C981C24C6F42ED9D743`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `FFC5739AAAB2E9A99654BC62B0D03C1C6C05F3CC956C996C054A48B56ADF8DE3`.
+
+The single paused live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-scripted-candidate-capture-20260902T173317\live\report.json`,
+  SHA-256
+  `A2F1B623AF5E1FB5B636656F3C1CE905FDC655E56B48A4FA5DB2B654CFEEB8C0`;
+- private JSONL beside it, SHA-256
+  `D5E538CD4329E166991ACFDF0ED78561A1A7F42C5C4DD6D5D231D66A3679F53B`.
+
+Both rows are identical. The five candidate results are:
+
+| Root index | Selector count | Template vtable RVA | Default vtable RVA | Default capacity/count | Capture status |
+| --- | ---: | --- | --- | --- | --- |
+| `6` | `8` | `0x44DCD38` | none | none | `default_effect_null` |
+| `7` | `0` | `0x44DCD38` | `0x44CF030` | `4/4` | `complete` |
+| `9` | `0` | `0x44DCD38` | `0x44CF030` | `1/1` | `complete` |
+| `10` | `0` | `0x44DCD38` | `0x44CF030` | `1/1` | `complete` |
+| `11` | `0` | `0x44DCD38` | `0x44CF030` | `2/2` | `complete` |
+
+The stale expected default shape `6/5` matches none of them
+(`scripted_semantic_match_count=0`). This disproves the old downstream shape
+for the current loaded tree. The minimal capture excludes indices 6, 7, and
+11 from sharing the same default vector shape, but indices 9 and 10 remain
+indistinguishable at `selector=0`, correct template/default vtables, and
+`capacity/count=1/1`. The old hard-coded index 9 is not sufficient evidence to
+name CAddTruce.
+
+The next smallest distinct entry is therefore restricted to indices 9 and 10:
+record the sole default child's vtable and the minimum safe nested shape needed
+to distinguish their effect types. Do not repeat the five-candidate prefix,
+promote the old index by assumption, or alter the production root contract
+before that evidence. The runner remains expected RED before duration;
+cleanup/source invariants were GREEN, no mutation or time advance was sent,
+and `GEN-034` readiness remains unchanged.

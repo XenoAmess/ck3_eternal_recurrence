@@ -141,6 +141,123 @@ void CaptureLoadedRootChildrenForG2(
     }
   }
 }
+
+constexpr std::array<std::size_t, 5> kPrivateScriptedCandidateIndices = {
+    6, 7, 9, 10, 11};
+
+void CaptureLoadedScriptedCandidatesForG2(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access, void *root_children,
+    std::int32_t root_count) noexcept {
+  auto &capture = g_private_shape_capture;
+  for (std::size_t slot = 0; slot < kPrivateScriptedCandidateIndices.size();
+       ++slot) {
+    const auto root_index = kPrivateScriptedCandidateIndices[slot];
+    auto &candidate = capture.scripted_candidates[slot];
+    candidate.root_index = static_cast<std::int32_t>(root_index);
+    if (root_children == nullptr || root_count < 0 ||
+        root_index >= static_cast<std::size_t>(root_count)) {
+      candidate.status = "root_index_unavailable";
+      continue;
+    }
+
+    void *child = nullptr;
+    if (!ReadValue(access, root_children, root_index * sizeof(void *), child)) {
+      candidate.status = "child_pointer_read_failed";
+      continue;
+    }
+    candidate.child = reinterpret_cast<std::uintptr_t>(child);
+    if (child == nullptr) {
+      candidate.status = "child_pointer_null";
+      continue;
+    }
+    if (!ReadValue(access, child, 0, candidate.child_vtable)) {
+      candidate.status = "child_vtable_read_failed";
+      continue;
+    }
+    if (candidate.child_vtable != environment.scripted_effect_vtable) {
+      candidate.status = "child_vtable_mismatch";
+      continue;
+    }
+    if (!ReadValue(access, child, kScriptedSelectorCountOffset,
+                   candidate.selector_count)) {
+      candidate.status = "selector_count_read_failed";
+      continue;
+    }
+
+    void *scripted_template = nullptr;
+    if (!ReadValue(access, child, kScriptedTemplateOffset,
+                   scripted_template)) {
+      candidate.status = "template_pointer_read_failed";
+      continue;
+    }
+    candidate.scripted_template =
+        reinterpret_cast<std::uintptr_t>(scripted_template);
+    if (scripted_template == nullptr) {
+      candidate.status = "template_pointer_null";
+      continue;
+    }
+    if (!ReadValue(access, scripted_template, 0, candidate.template_vtable)) {
+      candidate.status = "template_vtable_read_failed";
+      continue;
+    }
+    if (candidate.template_vtable != environment.scripted_template_vtable) {
+      candidate.status = "template_vtable_mismatch";
+      continue;
+    }
+
+    void *default_effect = nullptr;
+    if (!ReadValue(access, scripted_template, kTemplateDefaultEffectOffset,
+                   default_effect)) {
+      candidate.status = "default_effect_read_failed";
+      continue;
+    }
+    candidate.default_effect =
+        reinterpret_cast<std::uintptr_t>(default_effect);
+    if (default_effect == nullptr) {
+      candidate.status = "default_effect_null";
+      continue;
+    }
+    if (!ReadValue(access, default_effect, 0, candidate.default_vtable)) {
+      candidate.status = "default_vtable_read_failed";
+      continue;
+    }
+    if (candidate.default_vtable != environment.jomini_effect_vtable) {
+      candidate.status = "default_vtable_mismatch";
+      continue;
+    }
+
+    void *default_children = nullptr;
+    if (!ReadValue(access, default_effect, kEffectChildrenOffset,
+                   default_children)) {
+      candidate.status = "default_children_read_failed";
+      continue;
+    }
+    candidate.default_children =
+        reinterpret_cast<std::uintptr_t>(default_children);
+    if (!ReadValue(access, default_effect, kEffectCapacityOffset,
+                   candidate.default_capacity)) {
+      candidate.status = "default_capacity_read_failed";
+      continue;
+    }
+    if (!ReadValue(access, default_effect, kEffectCountOffset,
+                   candidate.default_count)) {
+      candidate.status = "default_count_read_failed";
+      continue;
+    }
+    candidate.status = "complete";
+    ++capture.scripted_candidate_capture_completed;
+    candidate.semantic_shape_match =
+        default_children != nullptr && candidate.selector_count == 0 &&
+        candidate.default_capacity == kScriptDefaultCapacity &&
+        candidate.default_count == kScriptDefaultCount;
+    if (candidate.semantic_shape_match) {
+      ++capture.scripted_semantic_match_count;
+      capture.scripted_semantic_match_root_index =
+          static_cast<std::int32_t>(root_index);
+    }
+  }
+}
 #endif
 
 bool EnvironmentIsExact(
@@ -244,6 +361,8 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
   CaptureLoadedRootChildrenForG2(environment, access, root_children,
                                  root_capacity, root_count);
+  CaptureLoadedScriptedCandidatesForG2(environment, access, root_children,
+                                       root_count);
 #endif
   if (root_children == nullptr) {
     XAR_G2_SHAPE_STAGE("root_children_null");

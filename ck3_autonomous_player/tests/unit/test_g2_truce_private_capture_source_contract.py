@@ -128,6 +128,44 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
 
+    def test_only_five_candidates_receive_private_shape_capture(self) -> None:
+        resolver = (
+            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
+        ).read_text(encoding="utf-8")
+        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertRegex(
+            resolver,
+            r"kPrivateScriptedCandidateIndices\s*=\s*\{\s*"
+            r"6,\s*7,\s*9,\s*10,\s*11\s*\}",
+        )
+        call = resolver.index("CaptureLoadedScriptedCandidatesForG2(", 1)
+        call = resolver.index(
+            "CaptureLoadedScriptedCandidatesForG2(", call + 1
+        )
+        stale_gate = resolver.index(
+            'XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', call
+        )
+        self.assertLess(call, stale_gate)
+        self.assertIn("kDefeatRootCapacity = 19", resolver)
+        self.assertIn("kDefeatRootCount = 14", resolver)
+        self.assertIn("kDefeatRootTruceScriptIndex = 9", resolver)
+
+        for field in (
+            '"scripted_candidate_capture_completed"',
+            '"scripted_semantic_match_count"',
+            '"scripted_semantic_match_root_index"',
+            '"scripted_candidates"',
+            '"selector_count"',
+            '"template_vtable_rva"',
+            '"default_capacity"',
+            '"default_count"',
+            '"semantic_shape_match"',
+        ):
+            self.assertIn(field.replace('"', '\\"'), writer)
+
 
 if __name__ == "__main__":
     unittest.main()

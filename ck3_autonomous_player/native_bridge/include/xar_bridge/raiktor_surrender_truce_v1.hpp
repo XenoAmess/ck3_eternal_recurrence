@@ -123,6 +123,22 @@ struct RaiktorSurrenderTruceObservationV1 {
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
 // One-off staged evidence for the private GEN-034 reader. This type and its
 // accessor do not exist in the default production DLL or on the MCP wire.
+struct RaiktorTrucePrivateScriptedCandidateV1 {
+  std::int32_t root_index = -1;
+  std::string_view status = "not_attempted";
+  std::uintptr_t child = 0;
+  std::uintptr_t child_vtable = 0;
+  std::int32_t selector_count = -1;
+  std::uintptr_t scripted_template = 0;
+  std::uintptr_t template_vtable = 0;
+  std::uintptr_t default_effect = 0;
+  std::uintptr_t default_vtable = 0;
+  std::uintptr_t default_children = 0;
+  std::int32_t default_capacity = -1;
+  std::int32_t default_count = -1;
+  bool semantic_shape_match = false;
+};
+
 struct RaiktorTrucePrivateShapeCaptureV1 {
   std::string_view failed_check = "not_started";
   std::uintptr_t root_vtable = 0;
@@ -137,6 +153,11 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::int32_t root_child_capture_failed_index = -1;
   std::size_t root_scripted_match_count = 0;
   std::int32_t root_scripted_match_index = -1;
+  std::array<RaiktorTrucePrivateScriptedCandidateV1, 5>
+      scripted_candidates{};
+  std::size_t scripted_candidate_capture_completed = 0;
+  std::size_t scripted_semantic_match_count = 0;
+  std::int32_t scripted_semantic_match_root_index = -1;
   std::uintptr_t scripted_effect = 0;
   std::uintptr_t scripted_vtable = 0;
   std::int32_t scripted_selector_count = -1;
