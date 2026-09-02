@@ -58,6 +58,96 @@ CALLBACK_BYTES = {
     0x3B9AB90: bytes.fromhex("FF 50 10"),
 }
 
+# Direct branch boundaries in the one function under review.  Keeping the
+# opcode bytes beside the expected target/fall-through makes the CFG check
+# independent of a disassembler version while still proving the rel8/rel32
+# target arithmetic against the exact image.
+CFG_BRANCHES = (
+    {
+        "rva": 0x3B9AB36,
+        "bytes": bytes.fromhex("0F 84 88 01 00 00"),
+        "target_rva": 0x3B9ACC4,
+        "fallthrough_rva": 0x3B9AB3C,
+        "condition": "node_range_empty",
+    },
+    {
+        "rva": 0x3B9AB5B,
+        "bytes": bytes.fromhex("74 36"),
+        "target_rva": 0x3B9AB93,
+        "fallthrough_rva": 0x3B9AB5D,
+        "condition": "initial_callback_field_is_null",
+    },
+    {
+        "rva": 0x3B9AB87,
+        "bytes": bytes.fromhex("0F 84 54 01 00 00"),
+        "target_rva": 0x3B9ACE1,
+        "fallthrough_rva": 0x3B9AB8D,
+        "condition": "reloaded_callback_field_is_null",
+    },
+    {
+        "rva": 0x3B9ABAE,
+        "bytes": bytes.fromhex("74 17"),
+        "target_rva": 0x3B9ABC7,
+        "fallthrough_rva": 0x3B9ABB0,
+        "condition": "dependency_chain_is_sentinel",
+    },
+    {
+        "rva": 0x3B9ABC5,
+        "bytes": bytes.fromhex("75 E9"),
+        "target_rva": 0x3B9ABB0,
+        "fallthrough_rva": 0x3B9ABC7,
+        "condition": "dependency_chain_not_sentinel",
+    },
+    {
+        "rva": 0x3B9AC3E,
+        "bytes": bytes.fromhex("7D 40"),
+        "target_rva": 0x3B9AC80,
+        "fallthrough_rva": 0x3B9AC40,
+        "condition": "counter_at_or_above_threshold",
+    },
+    {
+        "rva": 0x3B9AC4D,
+        "bytes": bytes.fromhex("74 31"),
+        "target_rva": 0x3B9AC80,
+        "fallthrough_rva": 0x3B9AC4F,
+        "condition": "optional_helper_return_is_null",
+    },
+    {
+        "rva": 0x3B9AC88,
+        "bytes": bytes.fromhex("72 2D"),
+        "target_rva": 0x3B9ACB7,
+        "fallthrough_rva": 0x3B9AC8A,
+        "condition": "allocation_size_below_small_threshold",
+    },
+    {
+        "rva": 0x3B9AC9B,
+        "bytes": bytes.fromhex("72 15"),
+        "target_rva": 0x3B9ACB2,
+        "fallthrough_rva": 0x3B9AC9D,
+        "condition": "allocation_size_below_page_threshold",
+    },
+    {
+        "rva": 0x3B9ACB0,
+        "bytes": bytes.fromhex("77 35"),
+        "target_rva": 0x3B9ACE7,
+        "fallthrough_rva": 0x3B9ACB2,
+        "condition": "allocation_header_distance_too_large",
+    },
+    {
+        "rva": 0x3B9ACBE,
+        "bytes": bytes.fromhex("0F 85 8C FE FF FF"),
+        "target_rva": 0x3B9AB50,
+        "fallthrough_rva": 0x3B9ACC4,
+        "condition": "next_node_exists",
+    },
+)
+
+CFG_TERMINAL_BYTES = {
+    0x3B9ACE0: bytes.fromhex("C3"),
+    0x3B9ACE1: bytes.fromhex("E8 A2 7D 28 00"),
+    0x3B9ACE7: bytes.fromhex("E8 04 A1 29 00"),
+}
+
 VTABLES = (
     {
         "type_descriptor_rva": 0x56F1390,
@@ -95,6 +185,126 @@ def bytes_at(data: bytes, image: pefile.PE, rva: int, size: int) -> bytes:
     if len(value) != size:
         raise ValueError(f"short read at RVA 0x{rva:X}: {len(value)} != {size}")
     return value
+
+
+def verify_rel_branch(
+    data: bytes, image: pefile.PE, branch: dict[str, Any]
+) -> dict[str, Any]:
+    """Verify one exact short/near conditional branch and return its edge."""
+
+    rva = int(branch["rva"])
+    expected = bytes(branch["bytes"])
+    actual = bytes_at(data, image, rva, len(expected))
+    if actual != expected:
+        raise ValueError(
+            f"CFG branch bytes changed at 0x{rva:X}: "
+            f"{actual.hex().upper()} != {expected.hex().upper()}"
+        )
+    if len(expected) == 2:
+        displacement = struct.unpack("<b", expected[1:2])[0]
+    elif len(expected) == 6 and expected[0] == 0x0F:
+        displacement = struct.unpack("<i", expected[2:6])[0]
+    else:
+        raise ValueError(f"unsupported conditional branch encoding at 0x{rva:X}")
+    target = rva + len(expected) + displacement
+    fallthrough = rva + len(expected)
+    if target != int(branch["target_rva"]):
+        raise ValueError(
+            f"CFG target changed at 0x{rva:X}: 0x{target:X} != "
+            f"0x{int(branch['target_rva']):X}"
+        )
+    if fallthrough != int(branch["fallthrough_rva"]):
+        raise ValueError(
+            f"CFG fallthrough changed at 0x{rva:X}: 0x{fallthrough:X} != "
+            f"0x{int(branch['fallthrough_rva']):X}"
+        )
+    return {
+        "rva": f"0x{rva:X}",
+        "bytes_hex": actual.hex().upper(),
+        "target_rva": f"0x{target:X}",
+        "fallthrough_rva": f"0x{fallthrough:X}",
+        "condition": branch["condition"],
+    }
+
+
+def extract_cfg(data: bytes, image: pefile.PE) -> dict[str, Any]:
+    """Return the bounded function CFG and explicitly marked null edges."""
+
+    branches = [verify_rel_branch(data, image, branch) for branch in CFG_BRANCHES]
+    terminal_bytes: dict[str, str] = {}
+    for rva, expected in CFG_TERMINAL_BYTES.items():
+        actual = bytes_at(data, image, rva, len(expected))
+        if actual != expected:
+            raise ValueError(
+                f"terminal bytes changed at 0x{rva:X}: "
+                f"{actual.hex().upper()} != {expected.hex().upper()}"
+            )
+        terminal_bytes[f"0x{rva:X}"] = actual.hex().upper()
+
+    error_call_targets = {
+        0x3B9ACE1: 0x3E22A88,
+        0x3B9ACE7: 0x3E34DF0,
+    }
+    error_edges: list[dict[str, str]] = []
+    for rva, expected_target in error_call_targets.items():
+        raw = bytes.fromhex(terminal_bytes[f"0x{rva:X}"])
+        if raw[0] != 0xE8 or len(raw) != 5:
+            raise ValueError(f"expected a direct error call at 0x{rva:X}")
+        target = rva + 5 + struct.unpack("<i", raw[1:])[0]
+        if target != expected_target:
+            raise ValueError(
+                f"error call target changed at 0x{rva:X}: "
+                f"0x{target:X} != 0x{expected_target:X}"
+            )
+        error_edges.append(
+            {"from_rva": f"0x{rva:X}", "target_rva": f"0x{target:X}"}
+        )
+
+    return {
+        "branch_edges": branches,
+        "terminal_instruction_bytes": terminal_bytes,
+        "normal_return_rva": "0x3B9ACE0",
+        "opaque_error_call_edges": error_edges,
+        "null_edges": [
+            {
+                "field": "node+0x88",
+                "initial_check_rva": "0x3B9AB53",
+                "initial_branch_rva": "0x3B9AB5B",
+                "initial_null_target_rva": "0x3B9AB93",
+                "reload_rva": "0x3B9AB7D",
+                "reload_test_rva": "0x3B9AB84",
+                "reload_null_target_rva": "0x3B9ACE1",
+                "initial_null_effect": "skip callback and continue timing aggregation",
+                "reload_null_effect": "enter opaque error call",
+                "path_condition": "initial check non-null, then reload reads null",
+                "race_or_lifetime_cause": "unknown",
+            },
+            {
+                "field": "optional helper return in RAX",
+                "test_rva": "0x3B9AC4A",
+                "null_target_rva": "0x3B9AC80",
+                "effect": "skip optional post-log construction",
+            },
+        ],
+        "loop_edges": [
+            {
+                "from_rva": "0x3B9ABC5",
+                "target_rva": "0x3B9ABB0",
+                "condition": "dependency_chain_not_sentinel",
+            },
+            {
+                "from_rva": "0x3B9ACBE",
+                "target_rva": "0x3B9AB50",
+                "condition": "next_node_exists",
+            },
+        ],
+        "padding_after_function_body": {
+            "normal_return_rva": "0x3B9ACE0",
+            "error_call_rvas": ["0x3B9ACE1", "0x3B9ACE7"],
+            "function_end_rva_exclusive": "0x3B9ACED",
+            "int3_padding_rvas": ["0x3B9ACE6", "0x3B9ACEC"],
+        },
+    }
 
 
 def rva_from_va(image_base: int, value: int) -> int | None:
@@ -266,6 +476,7 @@ def extract(exe: Path, fixture: Path | None = None) -> dict[str, Any]:
         raise ValueError("unexpected exact-build unwind handler RVA")
 
     vtables = [decode_vtable(data, image, item) for item in VTABLES]
+    cfg = extract_cfg(data, image)
     direct_calls = find_direct_calls(image, data, FUNCTION_RVA)
     if direct_calls != list(CALLSITE_RVAS):
         raise ValueError(
@@ -309,6 +520,7 @@ def extract(exe: Path, fixture: Path | None = None) -> dict[str, Any]:
                 "unwind": unwind,
             },
             "callback_instruction_bytes": callback_bytes,
+            "cfg": cfg,
         },
         "win64_parameter_flow": {
             "calling_convention": "MSVC x64",

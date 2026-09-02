@@ -1,0 +1,157 @@
+{
+  "contract": "phase2-loader-callback-cfg-v1",
+  "schema_version": 1,
+  "status": "static-ready",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "source": {
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "product_version": "1.19.0.6",
+    "static_slice_contract": "phase2-loader-callback-static-slice-v1",
+    "static_slice_contract_sha256": "DC57B7A1CAD0E4DF06B8E82961AFF99FD7A8629AF0DF7370707E6C62C92BBE8A"
+  },
+  "artifact": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-bounded-gate-20260902\\loader-callback-native-slice-cfg-20260902.json",
+    "sha256": "0BB03760C6F204F703D2A11AF573CBBE0C1A911D3E95CD0AA9AA7E0161762A5A"
+  },
+  "function": {
+    "rva": "0x3B9AB00",
+    "end_rva_exclusive": "0x3B9ACED",
+    "branch_edges": [
+      {
+        "rva": "0x3B9AB36",
+        "bytes_hex": "0F8488010000",
+        "target_rva": "0x3B9ACC4",
+        "fallthrough_rva": "0x3B9AB3C",
+        "condition": "node_range_empty"
+      },
+      {
+        "rva": "0x3B9AB5B",
+        "bytes_hex": "7436",
+        "target_rva": "0x3B9AB93",
+        "fallthrough_rva": "0x3B9AB5D",
+        "condition": "initial_callback_field_is_null"
+      },
+      {
+        "rva": "0x3B9AB87",
+        "bytes_hex": "0F8454010000",
+        "target_rva": "0x3B9ACE1",
+        "fallthrough_rva": "0x3B9AB8D",
+        "condition": "reloaded_callback_field_is_null"
+      },
+      {
+        "rva": "0x3B9ABAE",
+        "bytes_hex": "7417",
+        "target_rva": "0x3B9ABC7",
+        "fallthrough_rva": "0x3B9ABB0",
+        "condition": "dependency_chain_is_sentinel"
+      },
+      {
+        "rva": "0x3B9ABC5",
+        "bytes_hex": "75E9",
+        "target_rva": "0x3B9ABB0",
+        "fallthrough_rva": "0x3B9ABC7",
+        "condition": "dependency_chain_not_sentinel"
+      },
+      {
+        "rva": "0x3B9AC3E",
+        "bytes_hex": "7D40",
+        "target_rva": "0x3B9AC80",
+        "fallthrough_rva": "0x3B9AC40",
+        "condition": "counter_at_or_above_threshold"
+      },
+      {
+        "rva": "0x3B9AC4D",
+        "bytes_hex": "7431",
+        "target_rva": "0x3B9AC80",
+        "fallthrough_rva": "0x3B9AC4F",
+        "condition": "optional_helper_return_is_null"
+      },
+      {
+        "rva": "0x3B9AC88",
+        "bytes_hex": "722D",
+        "target_rva": "0x3B9ACB7",
+        "fallthrough_rva": "0x3B9AC8A",
+        "condition": "allocation_size_below_small_threshold"
+      },
+      {
+        "rva": "0x3B9AC9B",
+        "bytes_hex": "7215",
+        "target_rva": "0x3B9ACB2",
+        "fallthrough_rva": "0x3B9AC9D",
+        "condition": "allocation_size_below_page_threshold"
+      },
+      {
+        "rva": "0x3B9ACB0",
+        "bytes_hex": "7735",
+        "target_rva": "0x3B9ACE7",
+        "fallthrough_rva": "0x3B9ACB2",
+        "condition": "allocation_header_distance_too_large"
+      },
+      {
+        "rva": "0x3B9ACBE",
+        "bytes_hex": "0F858CFEFFFF",
+        "target_rva": "0x3B9AB50",
+        "fallthrough_rva": "0x3B9ACC4",
+        "condition": "next_node_exists"
+      }
+    ],
+    "null_edges": [
+      {
+        "field": "node+0x88",
+        "initial_check_rva": "0x3B9AB53",
+        "initial_branch_rva": "0x3B9AB5B",
+        "initial_null_target_rva": "0x3B9AB93",
+        "reload_rva": "0x3B9AB7D",
+        "reload_test_rva": "0x3B9AB84",
+        "reload_null_target_rva": "0x3B9ACE1",
+        "initial_null_effect": "skip callback and continue timing aggregation",
+        "reload_null_effect": "enter opaque error call",
+        "path_condition": "initial check non-null, then reload reads null",
+        "race_or_lifetime_cause": "unknown"
+      },
+      {
+        "field": "optional helper return in RAX",
+        "test_rva": "0x3B9AC4A",
+        "null_target_rva": "0x3B9AC80",
+        "effect": "skip optional post-log construction"
+      }
+    ],
+    "loop_edges": [
+      {
+        "from_rva": "0x3B9ABC5",
+        "target_rva": "0x3B9ABB0",
+        "condition": "dependency_chain_not_sentinel"
+      },
+      {
+        "from_rva": "0x3B9ACBE",
+        "target_rva": "0x3B9AB50",
+        "condition": "next_node_exists"
+      }
+    ],
+    "normal_return_rva": "0x3B9ACE0",
+    "opaque_error_call_edges": [
+      {
+        "from_rva": "0x3B9ACE1",
+        "target_rva": "0x3E22A88"
+      },
+      {
+        "from_rva": "0x3B9ACE7",
+        "target_rva": "0x3E34DF0"
+      }
+    ],
+    "terminal_instruction_bytes": {
+      "0x3B9ACE0": "C3",
+      "0x3B9ACE1": "E8A27D2800",
+      "0x3B9ACE7": "E804A12900"
+    }
+  },
+  "limits": [
+    "Branch labels describe exact local predicates only; they do not name the C++ source-level types.",
+    "The reload-null edge proves a static path, not a scheduler race or a use-after-free.",
+    "Opaque error-call targets are not assigned a failure meaning without runtime evidence.",
+    "This CFG does not identify the callback OS thread, object lifetime, source script, loader readiness, or a production hook."
+  ],
+  "next_entry": "private paused exact-build observation of the reload-null path and node vptr, if an authorized debugger/instrumentation path is provisioned"
+}
