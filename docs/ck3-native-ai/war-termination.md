@@ -2003,3 +2003,28 @@ post-finalize window, and unchanged production-readiness boundary. It does not
 start or attach to CK3. Until the action-bound capture exists, source
 attribution, pre soldiers, proven loss, and `war_bound_armies_ready` all remain
 false.
+
+### Raiktor action-bound war-army private capture (2026-09-02)
+
+[static-ready-to-run / private only] The exact-build `spawn_army` seam now has
+an opt-in debugger capture at RVA `0x2E7F951`, inside the frozen
+post-finalize/pre-cleanup window ending at `0x2E7F9A6`. The executable is not
+linked into `xar_ck3_bridge.dll`. It requires an exact one-shot action-arm file
+for `bookmark.1071` option `bookmark.1071.a` index 0, then accepts exactly six
+unique `R14` loaded effect nodes whose vptr is the frozen `spawn_army` runtime
+vtable. The first nonnegative full-generation WarID is latched and every new
+persistent regiment in all six source executions must carry that exact ID.
+
+For each source execution, the capture records the created `RSI` CArmy full
+generation ID, resolves its current CArmyRegiment roster through the frozen
+component storage, and sums the actual `+0x38` current-soldier values in the
+same stopped frame. It also freezes the execute-local persistent CRegiment
+vector and proves its seven-row current-regiment mapping equals the CArmy
+roster. The authored 3000 total is not used as observation data.
+
+The source and invocation contract are
+`native_bridge/research/raiktor_war_bound_private_capture_v1.cpp` and
+`raiktor_war_bound_private_capture_v1_manifest.json`. Static self-test/build do
+not constitute live evidence. A future GREEN run must wait for the P0 seed
+slot, and still must not promote the public terms ABI or
+`war_bound_armies_ready` until the private live artifact has been reviewed.

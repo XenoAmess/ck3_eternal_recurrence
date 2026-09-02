@@ -1,0 +1,46 @@
+{
+  "contract": "raiktor-war-bound-private-capture-v1",
+  "schema_version": 1,
+  "status": "static-ready-to-run",
+  "read_only": true,
+  "private_test_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "observation": {
+    "stop_rva": "0x2E7F951",
+    "window_end_rva_exclusive": "0x2E7F9A6",
+    "spawn_army_runtime_vtable_rva": "0x443C6E8",
+    "effect_loaded_node_register": "R14",
+    "created_carmy_register": "RSI",
+    "persistent_vector_begin": "[RSP+0x60]",
+    "persistent_vector_count": "int32 [RSP+0x6C]",
+    "evaluated_name": "MSVC string at RBP+0x70"
+  },
+  "action_filter": {
+    "arm_file_exact_utf8": "event_definition_key=bookmark.1071\noption_key=bookmark.1071.a\noption_index=0\n",
+    "required_unique_loaded_nodes": 6,
+    "required_unique_army_generation_ids": 6,
+    "required_exact_full_generation_war_id": "one nonnegative WarID latched from the first armed source execution and matched by every created persistent regiment in all six executions",
+    "supporting_name_only": "norman_highwaymen"
+  },
+  "captured_per_execution": [
+    "loaded spawn_army node pointer",
+    "created CArmy pointer and full generation ID",
+    "exact bound WarID",
+    "current CArmyRegiment full generation IDs",
+    "measured initial current soldiers",
+    "new persistent CRegiment full generation IDs and roster mapping"
+  ],
+  "build_command": "cmake -S ck3_autonomous_player/native_bridge -B <build> -DXAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1=ON -DBUILD_TESTING=ON && cmake --build <build> --target xar_ck3_raiktor_war_bound_private_capture_v1",
+  "self_test_command": "<build>/xar_ck3_raiktor_war_bound_private_capture_v1.exe --self-test",
+  "live_command": "<build>/xar_ck3_raiktor_war_bound_private_capture_v1.exe --exe <ck3.exe> --userdir <isolated-userdir> --output <capture.json> --arm-file <action-arm.txt>",
+  "run_boundary": "Do not run until the P0 seed slot is released. The coordinator must atomically write the exact arm-file body immediately before selecting bookmark.1071.a in the paused seed.",
+  "publication_boundary": "A GREEN private capture remains private live evidence. It does not change the public terms ABI or war_bound_armies_ready."
+}

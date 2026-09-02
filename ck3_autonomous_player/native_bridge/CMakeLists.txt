@@ -40,6 +40,12 @@ option(
   OFF
 )
 
+option(
+  XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1
+  "Build the private exact-build Raiktor spawn-army debugger capture"
+  OFF
+)
+
 add_library(xar_bridge_protocol STATIC
   src/protocol.cpp
 )
@@ -173,6 +179,26 @@ add_executable(xar_ck3_bridge_target
   src/target.cpp
 )
 
+if(XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1)
+  add_executable(xar_ck3_raiktor_war_bound_private_capture_v1
+    research/raiktor_war_bound_private_capture_v1.cpp
+  )
+  target_compile_definitions(
+    xar_ck3_raiktor_war_bound_private_capture_v1 PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  target_link_libraries(
+    xar_ck3_raiktor_war_bound_private_capture_v1 PRIVATE bcrypt)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_raiktor_war_bound_private_capture_v1 PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+endif()
+
 if(MSVC)
   foreach(target
       xar_bridge_protocol
@@ -188,6 +214,13 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  if(XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1)
+    add_test(
+      NAME xar_ck3_native_bridge_raiktor_war_bound_private_capture_v1
+      COMMAND xar_ck3_raiktor_war_bound_private_capture_v1 --self-test
+    )
+  endif()
+
   add_executable(xar_bridge_protocol_test
     src/protocol_test.cpp
   )
