@@ -42,8 +42,11 @@ THEME_WARNING_PATTERN = re.compile(
     re.IGNORECASE,
 )
 DATABASE_NODE_PATTERN = re.compile(
-    r"Database Node Init Time:\s*([^\s]+)\s+-\s+\d+\s+ms\s+-\s+\d+\s+ms",
-    re.IGNORECASE,
+    r"^\[(?P<timestamp>[^\]]+)\]\[[^\]]+\]\[(?P<source_line>[^\]]+)\]:\s*"
+    r"Database Node Init Time:\s*(?P<node>.+?)\s+-\s+"
+    r"(?P<init_ms>\d+)\s+ms\s+-\s+(?P<inclusive_ms>\d+)\s+ms"
+    r"\s+including dependencies\s*$",
+    re.IGNORECASE | re.MULTILINE,
 )
 
 
@@ -86,6 +89,29 @@ def _message(line: str) -> str:
 def _source_path(context: str) -> str | None:
     match = PRODUCT_PATH_PATTERN.search(context.replace("\\", "/"))
     return match.group(0) if match is not None else None
+
+
+def _database_node_details(debug_text: str) -> list[dict[str, Any]]:
+    """Return typed, read-only details for completed database nodes.
+
+    CK3 emits this line only after a node callback returns.  Keeping the
+    timestamp and native source line alongside the node/timing values gives a
+    later loader-side callback probe a stable join key without guessing which
+    production script caused a stall.
+    """
+
+    details: list[dict[str, Any]] = []
+    for match in DATABASE_NODE_PATTERN.finditer(debug_text):
+        details.append(
+            {
+                "timestamp": match.group("timestamp"),
+                "source_line": match.group("source_line"),
+                "node": match.group("node").strip(),
+                "init_ms": int(match.group("init_ms")),
+                "inclusive_ms": int(match.group("inclusive_ms")),
+            }
+        )
+    return details
 
 
 def extract_fatal_errors(error_log: bytes) -> list[dict[str, Any]]:
@@ -212,14 +238,23 @@ def inspect_loader_logs(
     else:
         stage = "awaiting_logs"
     fatal_errors = extract_fatal_errors(error_log)
-    database_nodes = DATABASE_NODE_PATTERN.findall(debug_text)
+    database_node_details = _database_node_details(debug_text)
     return {
         "stage": stage,
         "database_init_seen": any(
             marker in debug_text for marker in DATABASE_MARKERS
         ),
-        "database_node_count": len(database_nodes),
-        "last_database_node": database_nodes[-1] if database_nodes else None,
+        "database_node_count": len(database_node_details),
+        # Keep the original scalar field stable for existing consumers.
+        "last_database_node": (
+            database_node_details[-1]["node"]
+            if database_node_details
+            else None
+        ),
+        "database_nodes": database_node_details,
+        "last_database_node_detail": (
+            database_node_details[-1] if database_node_details else None
+        ),
         "event_wait_authorized": stage
         in {"native_ready", "load_save", "in_game"},
         "fatal_error_count": len(fatal_errors),

@@ -61,6 +61,31 @@ def main() -> int:
             "last database dependency node was not observed",
         )
         require(
+            dependency_snapshot["database_nodes"]
+            == [
+                {
+                    "timestamp": "00:00:01",
+                    "source_line": "database_dependencies.cpp:433",
+                    "node": "CGameConceptTypeDatabase",
+                    "init_ms": 3,
+                    "inclusive_ms": 3,
+                },
+                {
+                    "timestamp": "00:00:02",
+                    "source_line": "database_dependencies.cpp:433",
+                    "node": "CJominiLoadScreenDatabase",
+                    "init_ms": 4,
+                    "inclusive_ms": 4,
+                },
+            ],
+            "database dependency node context was not typed",
+        )
+        require(
+            dependency_snapshot["last_database_node_detail"]
+            == dependency_snapshot["database_nodes"][-1],
+            "last database dependency detail did not preserve node context",
+        )
+        require(
             dependency_snapshot["stage"] == "engine_start"
             and dependency_snapshot["event_wait_authorized"] is False,
             "database dependency observation changed loader authorization",
