@@ -1,6 +1,6 @@
 # Raiktor 三方退出决策静态核心
 
-状态：**static/fixture-ready，not live，not action-ready**。本专题只记录
+状态：**static policy / public session binding production-live evidence，not action-ready**。本专题记录
 `raiktor-three-way-exit-policy-v1` 的输入、选择规则和当前真实 RED；它不修改
 native bridge、MCP、planner 或 CK3 写口，也不关闭 `GEN-034`。
 
@@ -22,12 +22,12 @@ peace、surrender。输出最多是静态 `recommended_outcome`；始终保持
 cooldown、唯一 submit、ACK 后状态与六域 action-boundary postcondition 都不在本核心
 内，不能由 fixture GREEN 推导为已完成。
 
-还有一个必须保留的继承边界：当前 six-domain v1 只携带 revision/date/WarID/CB/角色
-身份，没有 `connection_id / episode_id / ck3_pid`。campaign 与 white-peace 证书会绑定
-完整 frame，但这不能反向证明 six-domain child 的 session provenance。因而本静态核心
-即使收到标成 production 的 synthetic/provider flags，也固定保持
-`production_recommendation_ready=false`；以后必须先在 public aggregate wire 补齐并实机
-验证这三个字段，才能由上层 production gate 升级。
+还有一个必须保留的继承边界：six-domain v1 child 本身只携带
+revision/date/WarID/CB/角色身份，不能单独证明跨 connection/episode/PID 的 session
+provenance。public aggregate 的 additive session wrapper 现已补齐并实机验证这些字段，
+所以该 wrapper 可以作为 production-live session-binding evidence；它不会反向改写 child
+schema，也不会替代 campaign、owner budget、white-peace、truce 或 war-bound provider。
+因而本静态核心仍固定保持 `production_recommendation_ready=false`。
 
 ## 三类新增输入
 
@@ -103,9 +103,11 @@ action-bound loss provider 时，这三项继续为 false。新核心没有 `300
 
 当前冻结 checkpoint 的 typed RED 是：
 
-- public same-frame six-domain aggregate 仍需由其它施工包完成实机闭环；truce 的
-  `evaluated_days` leaf 已接入 terms/MCP public wire，但尚无 paused/live shape artifact；
-- six-domain public aggregate 还必须补齐 connection/episode/PID session binding；
+- public same-frame aggregate 的 connection/episode/PID/revision/cache session binding 已有
+  production-live evidence，但 aggregate 仍因 truce 与 source-specific war-bound 缺失而
+  `status=incomplete`；
+- truce 的 `evaluated_days` leaf 已接入 terms/MCP public wire，但尚无可提升 readiness 的
+  paused/live shape evidence；
 - `raiktor-campaign-dominance-certificate-provider-v1` unavailable；
 - `raiktor-owner-budget-profile-provider-v1` unavailable；
 - `raiktor-white-peace-comparison-provider-v1` unavailable。
@@ -251,9 +253,9 @@ blocker. Truce expiry, source-specific war-bound attribution, production
 decision providers, typed submit, pending/cooldown, and action-boundary
 observers remain blocked, so no surrender literal is advertised.
 
-This package adds no native reader, RVA/RTTI work, or mutation. The binding is
-not production-live until the same wrapper is published and verified on one
-real paused query lifecycle.
+This package added no native reader, RVA/RTTI work, or mutation. At this static
+stage the binding was not production-live; the later paused acceptance below
+closes only that session-binding evidence gap.
 
 ## 2026-09-02 public query wiring
 
@@ -274,12 +276,13 @@ also unavailable until its strict same-frame payload reaches this query. A
 missing episode, process, receipt or aggregate field returns typed
 `status=unavailable`; it is never defaulted.
 
-Focused driver and MCP SDK tests prove the additive wrapper survives the real
-public return and cache paths. This is not production-live evidence:
+Focused driver and MCP SDK tests proved the additive wrapper survives the real
+public return and cache paths. At this static stage it was not production-live
+evidence:
 `action_terms_ready=false`, `automatic_surrender_ready=false`, and no surrender
-literal or mutation was added. The next live dependency is one paused Raiktor
-query that validates the wrapper's session binding, followed by the missing
-strict truce and generic war-bound public inputs.
+literal or mutation was added. The paused run below later validates the
+wrapper's session binding; strict truce and generic war-bound public inputs
+remain missing.
 
 ## 2026-09-02 paused session-binding acceptance entry
 
@@ -303,13 +306,43 @@ checks the driver episode/date anchor and frozen public-wiring contract, writes
 a `ready-to-run` JSON report, and exits without preparing a profile or calling
 the managed CK3 session. Omit `--preflight-only` only after the exclusive CK3
 slot is assigned; the wrapper repeats this no-launch check immediately before
-delegating to the live runner. Until that live report exists, production-live
-and surrender readiness remain false.
+delegating to the live runner. Before the later report existed, both the
+session-binding live claim and surrender readiness remained false.
 
 The frozen-input preflight is retained at
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-public-session-binding-ready-20260902\no-launch-preflight-v2.json`
 (SHA-256
 `8A71627001E8B0AA3C974BCE016A7710078ADE6B9F4F089B665EEF8F30DC61DB`).
-All checks are GREEN, `ck3_started=false`, `profile_prepared=false`, and the
-reserved `live-attempt` path does not yet exist. This is readiness evidence,
-not a paused/live capability artifact.
+All checks are GREEN, `ck3_started=false`, `profile_prepared=false`, and at
+preflight capture time the reserved `live-attempt` path did not exist. This is
+readiness evidence, not a paused/live capability artifact.
+
+## 2026-09-02 patched public session-binding GREEN
+
+[production-live evidence; read-only session binding only] The patched wrapper
+completed one exact-build, cold-checkpoint paused acceptance at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-public-session-binding-live-patched-20260902T2010\report.json`.
+The report is GREEN (`ok=true`, `error=null`) with SHA-256
+`DD46F69ABB6B1DFA2C35B5FA72D394EC99291CA6F4421C37B8179343432B135D`.
+Its canonical session-binding summary SHA-256 is
+`118A7D0C2FF12A419E99221CF2A8126FA8DB95143BB34C6F26A0978EAEA60FDD`;
+the embedded cleanup summary SHA-256 is
+`AF1263B34F0AE88FE52148903470CEC1FEF2D1E5C4477F80C585EF0A9E564D9B`.
+
+The runner issued exactly two
+`query-war-termination-terms-v1-50331699` commands (`query_sequence=1 -> 2`)
+and `mutation_commands=[]`. Both results and their matching cache rows bind
+the same `snapshot_id=native:3`, public revision `4`, native revision `3`,
+connection generation `1`, episode `native-29829-809d91e48a8d`, character
+`29829`, CK3 PID `10360`, and WarID `50331699`. Both session normalization,
+query-receipt, cache equality, repeat-binding, and read-only boundary checks
+are GREEN.
+
+The observed result deliberately remains an incomplete six-domain aggregate:
+`missing_domains=[truce, generic_war_bound_current]`, with both domains typed
+`{"available": false}`. `action_terms_ready=false` and
+`automatic_surrender_ready=false`; cleanup proves shutdown, process-tree
+removal, and driver closure. This artifact promotes only the additive public
+session binding to production-live evidence. It does **not** promote truce,
+generic/source-specific war-bound loss, the complete six-domain decision, any
+termination action, or automatic surrender; `GEN-034` remains unresolved.

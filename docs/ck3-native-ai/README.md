@@ -206,7 +206,11 @@
 - [production-live read-only primitive + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
   冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；一次 exact-build
   paused probe 已把 gold/prestige/prisoner/favor 四个窄域提升为 read-only primitive，但仍不发布
-  surrender/white-peace action 或关闭 `GEN-034`。四域 terms wire/runner 入口见
+  surrender/white-peace action 或关闭 `GEN-034`。additive public session wrapper 已在同一 paused
+  frame 完成 connection/episode/PID/revision/cache 双查询验收，GREEN report SHA-256 为
+  `DD46F69ABB6B1DFA2C35B5FA72D394EC99291CA6F4421C37B8179343432B135D`；这只把 session binding
+  提升为 production-live evidence，truce 与 generic/source-specific war-bound 仍为 typed unavailable，
+  aggregate 仍 incomplete，action/automatic surrender 仍为 false。四域 terms wire/runner 入口见
   [run_war_termination_terms_live_acceptance.py](../../ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py)，
   四域状态与策略边界见
   [raiktor_continue_vs_surrender_policy_v1_contract.json](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json)
