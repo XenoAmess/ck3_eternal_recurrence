@@ -1,0 +1,84 @@
+{
+  "contract": "phase2-producer-consumer-correlation-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-source-ready",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "input_commit": "161962558e78d2351d136fb6d9fe15a35f12e983",
+    "input_live_terminal_index_sha256": "5F5985701FF304D59ABA611806E85A5CA5696ACC5078BC8A63A55DBAB3FFA468"
+  },
+  "scope": {
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1",
+    "installed_by_default": false,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "ck3_started": false
+  },
+  "exact_seams": {
+    "producer": {
+      "physical_patch_rva": "0x3B9CFD2",
+      "post_publish_rva": "0x3B9CFD7",
+      "physical_anchor_hex": "B802000000874360E861702800488BF8",
+      "selected_callback_slot2_rva": "0x88B480",
+      "identity_source": "selected_last_task_pointer from the exact D7 post-publish selection"
+    },
+    "consumer": {
+      "patch_rva": "0x3B9DEA7",
+      "patch_bytes": 15,
+      "anchor_hex": "8B436083C0FE83F8010F86AD000000",
+      "continue_rva": "0x3B9DEB6",
+      "retire_rva": "0x3B9DF63",
+      "task_register": "RBX",
+      "telemetry_call_only_on_complete_values": [2, 3]
+    }
+  },
+  "correlation": {
+    "heartbeat_object": "phase2_producer_consumer_correlation_observer_v1",
+    "identity_rule": "consumer RBX equals the dynamic selected_last_task_pointer retained by the producer observer",
+    "memory_order": "producer publishes selected task with release; consumer loads with acquire",
+    "required_fields": [
+      "private_build", "producer_installed", "consumer_installed",
+      "producer_failure", "consumer_failure", "producer_selected_count",
+      "selected_task_pointer", "consumer_raw_hit_count",
+      "consumer_match_count", "consumer_read_failure_count",
+      "last_task_pointer", "last_state", "last_reference_count",
+      "last_callback_pointer", "last_callback_present", "last_thread_id",
+      "last_timestamp_qpc"
+    ]
+  },
+  "lifecycle": {
+    "install": "reuse the existing exact producer and completion observer transactions while the new primary thread is suspended",
+    "rollback": "each existing hook retains its tested recoverable rollback contract",
+    "uninstall": "each existing hook restores its exact anchor after quiescence",
+    "game_state_mutation": "none"
+  },
+  "source_hashes": {
+    "completion_observer_header_sha256": "0D1D03C0784429DC836EE6CFBBCB55058766492C2EAADE68189F13CEAC096885",
+    "completion_observer_implementation_sha256": "1A67494432AEB200C432E085E37CEE02DB4C53176A418F7C21C6276058D77779",
+    "completion_observer_fixture_sha256": "210B735083D10BC2C7549A697DF788C6393B1B4B9E0102694676AFFAB5C780E0"
+  },
+  "acceptance": {
+    "private_bridge_sha256": "6066A60C01F7F6D9AC4F967C3953EDD95C93409976F54A908711C91864B92305",
+    "private_injector_sha256": "7AB181019C70EB789C358B61AD6FA7E5C210398835B82B84E894F5BC21069382",
+    "default_bridge_sha256": "D7BBC5B04445CB20F2DDB2C0AD068147F30CA26BA532C34A93C2708015953B68",
+    "default_injector_sha256": "EB8DDFD845A45319B212B5CC8A1A39427F7642F8FBF4B50DAF356FB68D0A44EE",
+    "private_token_present": true,
+    "default_token_absent": true,
+    "native_fixtures": "completion correlation and producer histogram fixtures GREEN in private and default builds",
+    "python_contract": "normal and optimized-mode contract tests GREEN"
+  },
+  "decision_matrix": {
+    "producer_selected_count_zero": "producer selection was not observed; correlation is inconclusive",
+    "producer_selected_nonzero_consumer_match_zero": "the completion-state consumer did not present the retained producer task",
+    "consumer_match_nonzero": "the completion-state consumer presented the exact retained producer task; inspect state/reference/callback identity",
+    "consumer_read_failure_nonzero": "context read failed; typed diagnostic RED"
+  },
+  "limits": [
+    "the completion thunk calls the recorder only for state 2 or 3, so this observer does not report the retained task while it is in state 0 or 1",
+    "a zero match proves only absence from complete-state visits during the bounded observation, not absence from every scheduler container",
+    "the observer does not change task state, callback lifetime, reference count, loader flow, public ABI, or readiness"
+  ],
+  "readiness": "native-readiness RED; distinct private correlation seam source-ready"
+}

@@ -1,6 +1,7 @@
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
 
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -106,6 +107,8 @@ int main() {
   environment.virtual_free_override = &FixtureFree;
   environment.virtual_protect_override = &FixtureProtect;
   environment.flush_instruction_cache_override = &FixtureFlush;
+  std::atomic<std::uint64_t> correlation_task{0};
+  environment.correlation_task_source = &correlation_task;
   if (!xar::bridge::InstallPhase2CompletionObserverV1(state, environment)) {
     return Fail("offline observer installation failed");
   }
@@ -136,6 +139,7 @@ int main() {
   std::memcpy(task.data() + 0x38, &callback_address, sizeof(callback_address));
   std::memcpy(task.data() + 0x64, &one_reference, sizeof(one_reference));
   const auto task_address = reinterpret_cast<std::uintptr_t>(task.data());
+  correlation_task.store(task_address, std::memory_order_release);
   void *runner_memory = MakeStubRunner(patch);
   if (runner_memory == nullptr) return Fail("stub runner allocation failed");
 #pragma warning(push)
@@ -170,6 +174,15 @@ int main() {
       diagnostics.last_task != task_address ||
       diagnostics.last_callback != callback_address ||
       diagnostics.last_reference_count != 1 ||
+      diagnostics.correlation_match_count != 1 ||
+      diagnostics.correlation_read_failure_count != 0 ||
+      diagnostics.correlation_last_task != task_address ||
+      diagnostics.correlation_last_callback != callback_address ||
+      !diagnostics.correlation_last_callback_present ||
+      diagnostics.correlation_last_state != 2 ||
+      diagnostics.correlation_last_reference_count != 1 ||
+      diagnostics.correlation_last_thread_id == 0 ||
+      diagnostics.correlation_last_timestamp_qpc == 0 ||
       diagnostics.last_observed_retired || !diagnostics.last_will_retire) {
     return Fail("state2 telemetry mismatch");
   }
@@ -183,6 +196,8 @@ int main() {
       diagnostics.raw_state3_count != 1 ||
       diagnostics.selected_event_count != 2 ||
       diagnostics.state2_count != 1 || diagnostics.state3_count != 1 ||
+      diagnostics.correlation_match_count != 2 ||
+      diagnostics.correlation_last_state != 3 ||
       diagnostics.last_state != 3 || diagnostics.last_thread_id == 0 ||
       diagnostics.last_timestamp_qpc == 0 ||
       !diagnostics.last_observed_retired || !diagnostics.last_will_retire) {
@@ -199,7 +214,10 @@ int main() {
       diagnostics.raw_last_callback != callback_address ||
       diagnostics.raw_last_callback_slot2_target != vtable[2] ||
       diagnostics.raw_last_reference_count != 1 ||
-      diagnostics.selected_event_count != 2) {
+      diagnostics.selected_event_count != 2 ||
+      diagnostics.correlation_match_count != 3 ||
+      diagnostics.correlation_last_task != task_address ||
+      diagnostics.correlation_last_state != 2) {
     return Fail("non-selected callback leaked into telemetry");
   }
 

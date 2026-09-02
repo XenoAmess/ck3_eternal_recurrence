@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase2-producer-consumer-correlation-observer-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "private_build", "producer_installed", "consumer_installed",
+    "producer_failure", "consumer_failure", "producer_selected_count",
+    "selected_task_pointer", "consumer_raw_hit_count",
+    "consumer_match_count", "consumer_read_failure_count",
+    "last_task_pointer", "last_state", "last_reference_count",
+    "last_callback_pointer", "last_callback_present", "last_thread_id",
+    "last_timestamp_qpc"
+  ],
+  "properties": {
+    "private_build": {"const": true},
+    "producer_installed": {"type": "boolean"},
+    "consumer_installed": {"type": "boolean"},
+    "producer_failure": {"type": "integer", "minimum": 0},
+    "consumer_failure": {"type": "integer", "minimum": 0},
+    "producer_selected_count": {"type": "integer", "minimum": 0},
+    "selected_task_pointer": {"type": "integer", "minimum": 0},
+    "consumer_raw_hit_count": {"type": "integer", "minimum": 0},
+    "consumer_match_count": {"type": "integer", "minimum": 0},
+    "consumer_read_failure_count": {"type": "integer", "minimum": 0},
+    "last_task_pointer": {"type": "integer", "minimum": 0},
+    "last_state": {"type": "integer", "enum": [0, 2, 3]},
+    "last_reference_count": {"type": "integer", "minimum": 0},
+    "last_callback_pointer": {"type": "integer", "minimum": 0},
+    "last_callback_present": {"type": "boolean"},
+    "last_thread_id": {"type": "integer", "minimum": 0},
+    "last_timestamp_qpc": {"type": "integer", "minimum": 0}
+  }
+}

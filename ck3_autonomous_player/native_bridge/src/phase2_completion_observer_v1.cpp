@@ -334,6 +334,7 @@ void ClearResolved(Phase2CompletionObserverV1State &state) noexcept {
   state.virtual_free = nullptr;
   state.virtual_protect = nullptr;
   state.flush_instruction_cache = nullptr;
+  state.correlation_task_source = nullptr;
 }
 
 } // namespace
@@ -363,9 +364,28 @@ void RecordPhase2CompletionObservationV1(
                                               std::memory_order_relaxed);
   state.raw_last_reference_count.store(reference_count,
                                         std::memory_order_relaxed);
-  if (!slot2_read || !reference_count_read) {
-    return;
+  const auto *correlation_source = state.correlation_task_source;
+  if (correlation_source != nullptr &&
+      correlation_source->load(std::memory_order_acquire) == task) {
+    if (!callback_read || !reference_count_read) {
+      state.correlation_read_failure_count.fetch_add(
+          1, std::memory_order_relaxed);
+    }
+    state.correlation_last_task.store(task, std::memory_order_relaxed);
+    state.correlation_last_callback.store(callback, std::memory_order_relaxed);
+    state.correlation_last_callback_present.store(
+        callback_read && callback != 0 ? 1U : 0U, std::memory_order_relaxed);
+    state.correlation_last_state.store(observed_state,
+                                        std::memory_order_relaxed);
+    state.correlation_last_reference_count.store(reference_count,
+                                                  std::memory_order_relaxed);
+    state.correlation_last_thread_id.store(thread_id,
+                                            std::memory_order_relaxed);
+    state.correlation_last_timestamp_qpc.store(timestamp_qpc,
+                                                std::memory_order_relaxed);
+    state.correlation_match_count.fetch_add(1, std::memory_order_release);
   }
+  if (!slot2_read || !reference_count_read) return;
   std::uintptr_t expected_target = 0;
   if (!AddRva(state.module_base, kPhase2SelectedCallbackTargetRvaV1,
               expected_target) ||
@@ -446,6 +466,7 @@ bool InstallPhase2CompletionObserverV1(
       environment.flush_instruction_cache_override != nullptr
           ? environment.flush_instruction_cache_override
           : &DefaultFlushInstructionCache;
+  state.correlation_task_source = environment.correlation_task_source;
   const auto virtual_alloc = environment.virtual_alloc_override != nullptr
                                  ? environment.virtual_alloc_override
                                  : &DefaultVirtualAlloc;
@@ -473,6 +494,18 @@ bool InstallPhase2CompletionObserverV1(
   state.raw_last_callback_slot2_target.store(0,
                                               std::memory_order_relaxed);
   state.raw_last_reference_count.store(0, std::memory_order_relaxed);
+  state.correlation_match_count.store(0, std::memory_order_relaxed);
+  state.correlation_read_failure_count.store(0, std::memory_order_relaxed);
+  state.correlation_last_task.store(0, std::memory_order_relaxed);
+  state.correlation_last_callback.store(0, std::memory_order_relaxed);
+  state.correlation_last_callback_present.store(0,
+                                                  std::memory_order_relaxed);
+  state.correlation_last_state.store(0, std::memory_order_relaxed);
+  state.correlation_last_reference_count.store(0,
+                                                 std::memory_order_relaxed);
+  state.correlation_last_thread_id.store(0, std::memory_order_relaxed);
+  state.correlation_last_timestamp_qpc.store(0,
+                                              std::memory_order_relaxed);
   state.stub = virtual_alloc(state.memory_context,
                              kPhase2CompletionObserverStubBytesV1,
                              MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
@@ -579,6 +612,25 @@ Phase2CompletionObserverV1Diagnostics ReadPhase2CompletionObserverV1Diagnostics(
       state.last_observed_retired.load(std::memory_order_relaxed) != 0;
   output.last_will_retire =
       state.last_will_retire.load(std::memory_order_relaxed) != 0;
+  output.correlation_match_count =
+      state.correlation_match_count.load(std::memory_order_relaxed);
+  output.correlation_read_failure_count =
+      state.correlation_read_failure_count.load(std::memory_order_relaxed);
+  output.correlation_last_task =
+      state.correlation_last_task.load(std::memory_order_relaxed);
+  output.correlation_last_callback =
+      state.correlation_last_callback.load(std::memory_order_relaxed);
+  output.correlation_last_callback_present =
+      state.correlation_last_callback_present.load(std::memory_order_relaxed) !=
+      0;
+  output.correlation_last_state =
+      state.correlation_last_state.load(std::memory_order_relaxed);
+  output.correlation_last_reference_count =
+      state.correlation_last_reference_count.load(std::memory_order_relaxed);
+  output.correlation_last_thread_id =
+      state.correlation_last_thread_id.load(std::memory_order_relaxed);
+  output.correlation_last_timestamp_qpc =
+      state.correlation_last_timestamp_qpc.load(std::memory_order_relaxed);
   return output;
 }
 

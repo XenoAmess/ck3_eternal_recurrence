@@ -1,0 +1,50 @@
+{
+  "contract": "phase2-producer-consumer-correlation-observer-v1-source",
+  "required_header_tokens": [
+    "correlation_task_source",
+    "correlation_match_count",
+    "correlation_read_failure_count",
+    "correlation_last_task",
+    "correlation_last_callback_present",
+    "correlation_last_reference_count",
+    "correlation_last_timestamp_qpc"
+  ],
+  "required_implementation_tokens": [
+    "correlation_source->load(std::memory_order_acquire) == task",
+    "correlation_match_count.fetch_add",
+    "correlation_read_failure_count.fetch_add",
+    "state.correlation_task_source = environment.correlation_task_source",
+    "callback_read && callback != 0"
+  ],
+  "required_bridge_tokens": [
+    "phase2_producer_consumer_correlation_observer_v1",
+    "producer_selected_count",
+    "selected_task_pointer",
+    "consumer_raw_hit_count",
+    "consumer_match_count",
+    "consumer_read_failure_count",
+    "last_callback_present",
+    "&g_phase2_producer_identity_observer_v1.selected_last_task_pointer"
+  ],
+  "required_cmake_tokens": [
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1",
+    "Correlate the private phase-two producer selection with its completion consumer",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1=1",
+    "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1=1"
+  ],
+  "required_report_fields": [
+    "private_build", "producer_installed", "consumer_installed",
+    "producer_failure", "consumer_failure", "producer_selected_count",
+    "selected_task_pointer", "consumer_raw_hit_count",
+    "consumer_match_count", "consumer_read_failure_count",
+    "last_task_pointer", "last_state", "last_reference_count",
+    "last_callback_pointer", "last_callback_present", "last_thread_id",
+    "last_timestamp_qpc"
+  ],
+  "fixture_cases": [
+    "dynamic producer task identity matches completion state2 and state3",
+    "correlation remains matched when the old callback-slot selector rejects the task",
+    "correlation publishes callback presence, reference count, thread and QPC",
+    "existing exact hook install, uninstall and rollback fixtures remain GREEN"
+  ]
+}

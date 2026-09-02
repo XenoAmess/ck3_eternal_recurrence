@@ -440,6 +440,47 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += ",\"last_will_retire\":";
   result += phase2_completion_observer.last_will_retire ? "true" : "false";
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1)
+  result += "},\"phase2_producer_consumer_correlation_observer_v1\":{";
+  result += "\"private_build\":true,\"producer_installed\":";
+  result += phase2_producer_identity_observer.installed ? "true" : "false";
+  result += ",\"consumer_installed\":";
+  result += phase2_completion_observer.installed ? "true" : "false";
+  result += ",\"producer_failure\":";
+  result += Number(phase2_producer_identity_observer.failure_flags);
+  result += ",\"consumer_failure\":";
+  result += Number(phase2_completion_observer.failure_flags);
+  result += ",\"producer_selected_count\":";
+  result += Number(
+      phase2_producer_identity_observer.selected_0x88B480_match_count);
+  result += ",\"selected_task_pointer\":";
+  result += Number(
+      phase2_producer_identity_observer.selected_last_task_pointer);
+  result += ",\"consumer_raw_hit_count\":";
+  result += Number(phase2_completion_observer.raw_hit_count);
+  result += ",\"consumer_match_count\":";
+  result += Number(phase2_completion_observer.correlation_match_count);
+  result += ",\"consumer_read_failure_count\":";
+  result += Number(
+      phase2_completion_observer.correlation_read_failure_count);
+  result += ",\"last_task_pointer\":";
+  result += Number(phase2_completion_observer.correlation_last_task);
+  result += ",\"last_state\":";
+  result += Number(phase2_completion_observer.correlation_last_state);
+  result += ",\"last_reference_count\":";
+  result += Number(
+      phase2_completion_observer.correlation_last_reference_count);
+  result += ",\"last_callback_pointer\":";
+  result += Number(phase2_completion_observer.correlation_last_callback);
+  result += ",\"last_callback_present\":";
+  result += phase2_completion_observer.correlation_last_callback_present
+      ? "true" : "false";
+  result += ",\"last_thread_id\":";
+  result += Number(phase2_completion_observer.correlation_last_thread_id);
+  result += ",\"last_timestamp_qpc\":";
+  result += Number(
+      phase2_completion_observer.correlation_last_timestamp_qpc);
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1)
   result += "},\"phase2_wrapper_entry_observer_v1\":{";
   result += "\"private_build\":true,\"installed\":";
@@ -8190,6 +8231,10 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     environment.primary_thread_suspended_proven = true;
     environment.module_base =
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+#if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1)
+    environment.correlation_task_source =
+        &g_phase2_producer_identity_observer_v1.selected_last_task_pointer;
+#endif
     if (!xar::bridge::InstallPhase2CompletionObserverV1(
             g_phase2_completion_observer_v1, environment)) {
       return FALSE;

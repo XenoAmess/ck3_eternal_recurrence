@@ -61,6 +61,7 @@ struct Phase2CompletionObserverV1Environment {
   Phase2CompletionObserverVirtualProtectV1 virtual_protect_override = nullptr;
   Phase2CompletionObserverFlushInstructionCacheV1
       flush_instruction_cache_override = nullptr;
+  const std::atomic<std::uint64_t> *correlation_task_source = nullptr;
 };
 
 struct Phase2CompletionObserverV1State {
@@ -85,6 +86,15 @@ struct Phase2CompletionObserverV1State {
   std::atomic<std::uint32_t> last_reference_count{0};
   std::atomic<std::uint32_t> last_observed_retired{0};
   std::atomic<std::uint32_t> last_will_retire{0};
+  std::atomic<std::uint64_t> correlation_match_count{0};
+  std::atomic<std::uint64_t> correlation_read_failure_count{0};
+  std::atomic<std::uint64_t> correlation_last_task{0};
+  std::atomic<std::uint64_t> correlation_last_callback{0};
+  std::atomic<std::uint32_t> correlation_last_callback_present{0};
+  std::atomic<std::uint32_t> correlation_last_state{0};
+  std::atomic<std::uint32_t> correlation_last_reference_count{0};
+  std::atomic<std::uint32_t> correlation_last_thread_id{0};
+  std::atomic<std::uint64_t> correlation_last_timestamp_qpc{0};
 
   std::uintptr_t module_base = 0;
   std::uintptr_t patch_target = 0;
@@ -100,6 +110,7 @@ struct Phase2CompletionObserverV1State {
   Phase2CompletionObserverVirtualProtectV1 virtual_protect = nullptr;
   Phase2CompletionObserverFlushInstructionCacheV1 flush_instruction_cache =
       nullptr;
+  const std::atomic<std::uint64_t> *correlation_task_source = nullptr;
 };
 
 struct Phase2CompletionObserverV1Diagnostics {
@@ -123,6 +134,15 @@ struct Phase2CompletionObserverV1Diagnostics {
   std::uint32_t last_reference_count = 0;
   bool last_observed_retired = false;
   bool last_will_retire = false;
+  std::uint64_t correlation_match_count = 0;
+  std::uint64_t correlation_read_failure_count = 0;
+  std::uint64_t correlation_last_task = 0;
+  std::uint64_t correlation_last_callback = 0;
+  bool correlation_last_callback_present = false;
+  std::uint32_t correlation_last_state = 0;
+  std::uint32_t correlation_last_reference_count = 0;
+  std::uint32_t correlation_last_thread_id = 0;
+  std::uint64_t correlation_last_timestamp_qpc = 0;
 };
 
 bool InstallPhase2CompletionObserverV1(
