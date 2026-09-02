@@ -218,3 +218,36 @@ binds the current open_k commit/JAR; fixture parser/validator are GREEN and
 IR/runtime are explicitly SKIPPED, with
 `ck3_started=false`, `save_mutated=false`, and `network_used=false`. This
 offline slice leaves phase-two and G2 readiness unchanged.
+
+## 2026-09-02 11:40 culture schema follow-up
+
+The canonical accelerator then advanced on the same minimal fast-forward path
+to `main == origin/main == e92b94f8b4cc03f1a91afafaf2a23f5e4560a1e4`.
+Two exact-build-backed, syntax/profile-only culture triggers are now present:
+`has_cultural_pillar` (`89141b3`) and `has_cultural_parameter` (`e92b94f`),
+both `TRIGGER/CULTURE/STRING`, deterministic/read-only, and
+`certified=false`. Neither adds a runtime evaluator or changes CK3 behavior.
+
+The pillar slice binds evaluator RVA `0x282D900..0x282D97B` (124-byte SHA-256
+`7B8B0972F9A0324E408E4B9DE88C209BF9CE52409091BA934303BF8596D28054`) and
+uses the selected-culture pillar span/count and key anchors. Its rebuilt CLI
+JAR is SHA-256
+`DBE1ECA09FDE50DB43E0537BCFDBB7554E11F3D5229AD1319BBB6B71F286BDF6`; the
+dedicated parent preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T1140-cultural-pillar\open-kaishek-preflight-cultural-pillar.json`
+(SHA-256
+`33A62106B3F129A480129308359981F72A13DE32F4253A58062F91CEDE6E018E`).
+
+The parameter slice is covered by the dedicated fixture artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\kaishek-has-cultural-parameter-20260902.json`
+(SHA-256
+`D834CE5998C5DB697894A608F2A971051D5F45E8FEDFCD8C9F67682DB8B2FA78`) and
+the rebuilt JAR SHA-256
+`98029BA80F688A49BF18116EF9A3DDCF61AB9C61E51F9371CBF7736E3DB6C316`.
+The focused profile/validator/ZG361 suites are GREEN (pillar `17/27/18`,
+parameter `18/28/20`); both fixture preflights report parser/validator GREEN,
+IR/runtime SKIPPED, `ck3_started=false`, `save_mutated=false`, and
+`network_used=false`. The full-root `cli-red`/bounded validator result in the
+pillar artifact is the known schema-only corpus boundary, not a slice failure.
+These increments improve offline acceleration only and leave phase-two loader
+and G2 `GEN-034` readiness unchanged.
