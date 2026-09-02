@@ -137,6 +137,20 @@ class G2TruceNativeCallsiteObserverLivePostprocessTests(unittest.TestCase):
         self.assertEqual(
             evidence["source_zip_sha256"], POSTPROCESSOR.EXPECTED_SOURCE_ZIP_SHA256
         )
+        self.assertTrue(result["proofs"]["session_identity"]["ok"])
+        self.assertEqual(
+            result["session_identity"],
+            {
+                "snapshot_id": "native:7",
+                "snapshot_revision": 91,
+                "native_revision": 7,
+                "date_raw": 53_175_816,
+                "connection_generation": 12,
+                "episode_run_id": "native-29829-fixture",
+                "episode_character_id": 29_829,
+                "process_id": 1003,
+            },
+        )
 
     def test_sample_bound_is_typed_read_failure(self) -> None:
         case = copy.deepcopy(self.fixture["cases"][0])
@@ -165,6 +179,18 @@ class G2TruceNativeCallsiteObserverLivePostprocessTests(unittest.TestCase):
         self.assertFalse(result["proofs"]["runner_policy"]["ok"])
         self.assertFalse(result["evaluated_days"]["observable"])
         self.assertFalse(result["readiness"]["promoted"])
+
+    def test_session_identity_mismatch_cannot_publish_a_return(self) -> None:
+        case = copy.deepcopy(self.fixture["cases"][2])
+        case["report"]["readiness"]["connection_generation"] = 0
+        case["report"]["session"]["pid"] += 1
+        result = self._analyze(case)
+
+        self.assertEqual(result["classification"], "read_or_install_failure")
+        self.assertEqual(result["status"], "RED")
+        self.assertFalse(result["proofs"]["session_identity"]["ok"])
+        self.assertIsNone(result["session_identity"])
+        self.assertFalse(result["evaluated_days"]["observable"])
 
 
 if __name__ == "__main__":

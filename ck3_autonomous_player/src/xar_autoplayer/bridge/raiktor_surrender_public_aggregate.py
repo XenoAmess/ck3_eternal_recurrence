@@ -14,6 +14,9 @@ from xar_autoplayer.bridge.raiktor_surrender_six_domain_contract import (
     BACKEND_ID,
     normalize_raiktor_surrender_six_domain,
 )
+from xar_autoplayer.bridge.raiktor_surrender_truce_contract import (
+    project_raiktor_surrender_truce_from_passive_observer,
+)
 
 
 _RAIKTOR_SLICE = "raiktor_claim_cb_attacker_defeat_disposition"
@@ -31,8 +34,10 @@ _DOMAIN_ORDER = (
 def project_raiktor_surrender_six_domain(
     snapshot_value: object,
     terms_value: object,
+    *,
+    passive_truce_postprocess_value: object | None = None,
 ) -> dict[str, object] | None:
-    """Return an honestly incomplete aggregate, or ``None`` if unprojectable."""
+    """Return the identity-bound observed aggregate, or ``None`` if invalid."""
 
     if not isinstance(snapshot_value, dict) or not isinstance(terms_value, dict):
         return None
@@ -102,6 +107,24 @@ def project_raiktor_surrender_six_domain(
     prestige = terms_value.get("attacker_fame")
     prisoners = terms_value.get("prisoner_release")
     favor = terms_value.get("conditional_favor_hook")
+    diagnostics = snapshot_value.get("diagnostics")
+    diagnostics = diagnostics if isinstance(diagnostics, dict) else {}
+    passive_truce = project_raiktor_surrender_truce_from_passive_observer(
+        passive_truce_postprocess_value,
+        expected_snapshot_id=snapshot_value.get("snapshot_id"),
+        expected_snapshot_revision=snapshot_value["revision"],
+        expected_native_revision=snapshot_value["native_revision"],
+        expected_date_raw=snapshot_value["date_raw"],
+        expected_connection_generation=diagnostics.get(
+            "connection_generation"
+        ),
+        expected_episode_run_id=snapshot_value.get("episode_run_id"),
+        expected_process_id=diagnostics.get("bridge_pid"),
+        expected_war_id=war_id,
+        expected_casus_belli_database_index=casus_belli["database_index"],
+        expected_attacker_character_id=attacker_id,
+        expected_defender_character_id=defender_id,
+    )
     domain_payloads: dict[str, dict[str, object] | None] = {
         "gold": (
             {
@@ -175,9 +198,9 @@ def project_raiktor_surrender_six_domain(
             and favor.get("actual_applies_observable") is True
             else None
         ),
-        # The current public terms row has no pointer-shape/double-read proof.
-        # evaluated_days/expiry alone must never be promoted into strict truce.
-        "truce": None,
+        # A bare public evaluated_days leaf is insufficient.  Only the frozen
+        # passive postprocessor's session-bound two-return GREEN may fill v1.
+        "truce": passive_truce,
         "generic_war_bound_current": None,
     }
     domains = {
@@ -206,7 +229,7 @@ def project_raiktor_surrender_six_domain(
                 domain_payloads["prisoner_release"] is not None
             ),
             "favor_hook_ready": domain_payloads["favor_hook"] is not None,
-            "truce_ready": False,
+            "truce_ready": domain_payloads["truce"] is not None,
             "generic_war_bound_current_ready": False,
             "postwar_cleanup_ready": False,
             "source_specific_war_bound_ready": False,

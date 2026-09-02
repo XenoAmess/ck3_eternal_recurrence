@@ -156,7 +156,7 @@ two-site result.  The output preserves the exact two call RVAs and the native
 register mapping (`RCX=script_value`, `RDX=effect_context`,
 `R8=evaluation_context`), plus pre/post thread IDs, QPC values and return
 `EAX`.  Install success, ordinary heartbeat presence, and no-hit samples never
-become `evaluated_days`, and this private result never changes public
+become `evaluated_days`; the postprocessor itself never changes public
 readiness.
 
 Deterministic fixtures cover no-hit, pre-only, stable two-site return, and
@@ -165,3 +165,36 @@ register/thread/QPC/EAX preservation, and the rule that policy or manifest
 mismatch suppresses an otherwise return-shaped result.  This package is
 offline-only: it did not modify the frozen READY candidate, start CK3, invoke
 the direct evaluator, execute Context, or issue a mutation.
+
+## Static truce aggregation intake
+
+[static-ready; no CK3 launch] The postprocessor now also validates one reusable
+session identity from runner readiness, every heartbeat sample, the managed
+session and the cold-checkpoint driver anchor. It requires a paused/map-ready
+snapshot plus matching snapshot/public/native revisions, date, connection
+generation, episode run, episode character and CK3 PID. A mismatch changes the
+postprocessor result to `read_or_install_failure / RED` and suppresses both the
+identity and `evaluated_days`.
+
+The existing public six-domain projector accepts this postprocessor result as
+an optional input. It fills the existing `raiktor-surrender-truce-v1` payload
+only when all of the following hold:
+
+- status/classification are exactly `GREEN / two_site_return_observed`;
+- manifest SHA, source commit `36fafd811b29bba11758d1ebc3929be8cbd4c9d4`,
+  source ZIP and read-only runner-policy proofs match the frozen contract;
+- both exact callsites have returned, the final two samples are stable and the
+  two signed `EAX` values agree on one nonnegative `evaluated_days`;
+- postprocessor session identity matches the aggregate snapshot's
+  connection/episode/PID/revision/date identity exactly.
+
+On that narrow path only `truce_ready` becomes true and the value is carried by
+the already frozen strict truce schema. Expiry remains
+`expiry_observable=false / expiry_date_raw=null`. No-hit, pre-only, partial
+return, read/install failure, unequal return, manifest/source drift or session
+drift all remain the existing typed `{"available": false}` truce domain.
+Because generic/source-specific war-bound evidence is still missing, the
+aggregate remains incomplete and `six_dynamic_domains_ready`,
+`action_terms_ready`, `decision_ready` and `automatic_surrender_ready` remain
+false. No public action or mutation surface was added. This is a static intake
+seam, not a claim that a GREEN passive live artifact already exists.

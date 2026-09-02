@@ -220,6 +220,11 @@
   并分别冻结 [truce](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json)
   与 [war-bound](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json)
   source contract；四域 production-live read-only primitive 不等于六域、决策或 action-ready。
+  [passive native-callsite observer](g2-truce-native-callsite-observer-2026-09-02.md)
+  已增加静态 session-bound postprocessor intake：仅 GREEN、双 callsite 稳定相等 return 与
+  manifest/source/session identity 全匹配时可填充既有 truce v1；当前尚无对应 GREEN live
+  artifact，no-hit/pre-only/partial/read failure 仍 typed unavailable，且 decision/action/automatic
+  surrender readiness 不变。
   2026-09-02 的 paused private pre-reset capture 先将缺失 duration 收窄为
   evaluator 前的 `root_shape_drift`；随后唯一 staged capture 将首个失败检查
   精确到 `root_capacity_mismatch`（actual `capacity/count=13/12`，旧合同

@@ -46,6 +46,10 @@ def _nonnegative(value: Any) -> bool:
     return _is_int(value) and value >= 0
 
 
+def _positive(value: Any) -> bool:
+    return _is_int(value) and value > 0
+
+
 def _validate_manifest(
     manifest: dict[str, Any], manifest_sha256: str, expected_manifest_sha256: str
 ) -> dict[str, Any]:
@@ -108,6 +112,8 @@ def _validate_sample(sample: Any) -> tuple[dict[str, Any] | None, list[str]]:
         errors.append("observer_failure_nonzero")
     if not _nonnegative(sample.get("sequence")):
         errors.append("sequence_invalid")
+    if not _positive(sample.get("pid")):
+        errors.append("pid_invalid")
     rows = sample.get("callsites")
     if not isinstance(rows, list) or len(rows) != 2:
         return None, errors + ["callsites_not_two_rows"]
@@ -158,7 +164,7 @@ def _validate_sample(sample: Any) -> tuple[dict[str, Any] | None, list[str]]:
         return None, errors
     return {
         "sequence": int(sample["sequence"]),
-        "pid": sample.get("pid"),
+        "pid": int(sample["pid"]),
         "callsites": normalized_rows,
     }, []
 
@@ -178,6 +184,65 @@ def _signature(sample: dict[str, Any]) -> tuple[Any, ...]:
             )
         )
     return tuple(values)
+
+
+def _validate_session_identity(
+    report: dict[str, Any], samples: list[dict[str, Any]]
+) -> dict[str, Any]:
+    readiness = report.get("readiness")
+    readiness = readiness if isinstance(readiness, dict) else {}
+    session = report.get("session")
+    session = session if isinstance(session, dict) else {}
+    anchor = report.get("driver_anchor")
+    anchor = anchor if isinstance(anchor, dict) else {}
+    checkpoint = anchor.get("last_checkpoint")
+    checkpoint = checkpoint if isinstance(checkpoint, dict) else {}
+    identity = {
+        "snapshot_id": readiness.get("snapshot_id"),
+        "snapshot_revision": readiness.get("revision"),
+        "native_revision": readiness.get("native_revision"),
+        "date_raw": readiness.get("date_raw"),
+        "connection_generation": readiness.get("connection_generation"),
+        "episode_run_id": readiness.get("episode_run_id"),
+        "episode_character_id": readiness.get("episode_character_id"),
+        "process_id": readiness.get("bridge_pid"),
+    }
+    checks = {
+        "map_ready": readiness.get("map_ready") is True,
+        "paused": readiness.get("paused") is True,
+        "snapshot_id": isinstance(identity["snapshot_id"], str)
+        and bool(identity["snapshot_id"]),
+        "snapshot_revision": _positive(identity["snapshot_revision"]),
+        "native_revision": _positive(identity["native_revision"]),
+        "date_raw": _is_int(identity["date_raw"])
+        and INT32_MIN <= identity["date_raw"] <= INT32_MAX,
+        "connection_generation": _positive(
+            identity["connection_generation"]
+        ),
+        "episode_run_id": isinstance(identity["episode_run_id"], str)
+        and bool(identity["episode_run_id"]),
+        "episode_character_id": _positive(identity["episode_character_id"]),
+        "played_character_matches_episode": readiness.get(
+            "played_character_id"
+        )
+        == identity["episode_character_id"],
+        "driver_character_matches_episode": anchor.get(
+            "episode_character_id"
+        )
+        == identity["episode_character_id"],
+        "checkpoint_date_matches_frame": checkpoint.get("date_raw")
+        == identity["date_raw"],
+        "process_id": _positive(identity["process_id"]),
+        "managed_session_ready": session.get("ok") is True,
+        "managed_session_pid_matches": session.get("pid")
+        == identity["process_id"],
+        "all_samples_match_process": bool(samples)
+        and all(
+            sample.get("pid") == identity["process_id"]
+            for sample in samples
+        ),
+    }
+    return {"identity": identity, "checks": checks, "ok": all(checks.values())}
 
 
 def analyze(
@@ -238,10 +303,12 @@ def analyze(
         len(normalized) >= 2
         and _signature(normalized[-1]) == _signature(normalized[-2])
     )
+    session_identity_proof = _validate_session_identity(report, normalized)
 
     evidence_red = bool(
         manifest_proof["ok"] is not True
         or policy_proof["ok"] is not True
+        or session_identity_proof["ok"] is not True
         or not bounded
         or sample_errors
         or counter_regressions
@@ -286,6 +353,7 @@ def analyze(
         "proofs": {
             "manifest": manifest_proof,
             "runner_policy": policy_proof,
+            "session_identity": session_identity_proof,
             "samples_bounded": bounded,
             "sample_errors": sample_errors,
             "counter_regressions": counter_regressions,
@@ -315,6 +383,11 @@ def analyze(
             else None,
             "source": "native return EAX" if evaluated_observable else None,
         },
+        "session_identity": (
+            dict(session_identity_proof["identity"])
+            if session_identity_proof["ok"] is True
+            else None
+        ),
         "readiness": {
             "promoted": False,
             "public_readiness_changed": False,

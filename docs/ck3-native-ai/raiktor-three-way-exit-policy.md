@@ -107,7 +107,9 @@ action-bound loss provider 时，这三项继续为 false。新核心没有 `300
   production-live evidence，但 aggregate 仍因 truce 与 source-specific war-bound 缺失而
   `status=incomplete`；
 - truce 的 `evaluated_days` leaf 已接入 terms/MCP public wire，但尚无可提升 readiness 的
-  paused/live shape evidence；
+  paused/live shape evidence；passive callsite postprocessor 已有静态 intake，可在 GREEN、
+  两处 return 稳定相等且 manifest/source/session identity 全匹配时复用现有 truce v1，
+  但当前没有该 GREEN live artifact，因此本项仍 unavailable；
 - `raiktor-campaign-dominance-certificate-provider-v1` unavailable；
 - `raiktor-owner-budget-profile-provider-v1` unavailable；
 - `raiktor-white-peace-comparison-provider-v1` unavailable。

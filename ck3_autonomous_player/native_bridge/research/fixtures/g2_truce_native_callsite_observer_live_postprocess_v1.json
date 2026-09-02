@@ -37,6 +37,24 @@
         },
         "exact_build_proof": {"ok": true},
         "source_invariant": {"unchanged": true},
+        "driver_anchor": {
+          "episode_character_id": 29829,
+          "last_checkpoint": {"date_raw": 53175816}
+        },
+        "readiness": {
+          "bridge_pid": 1001,
+          "connection_generation": 12,
+          "snapshot_id": "native:7",
+          "revision": 91,
+          "native_revision": 7,
+          "date_raw": 53175816,
+          "map_ready": true,
+          "paused": true,
+          "played_character_id": 29829,
+          "episode_character_id": 29829,
+          "episode_run_id": "native-29829-fixture"
+        },
+        "session": {"pid": 1001, "ok": true},
         "observation": {
           "samples": [
             {
@@ -95,6 +113,24 @@
         },
         "exact_build_proof": {"ok": true},
         "source_invariant": {"unchanged": true},
+        "driver_anchor": {
+          "episode_character_id": 29829,
+          "last_checkpoint": {"date_raw": 53175816}
+        },
+        "readiness": {
+          "bridge_pid": 1002,
+          "connection_generation": 12,
+          "snapshot_id": "native:7",
+          "revision": 91,
+          "native_revision": 7,
+          "date_raw": 53175816,
+          "map_ready": true,
+          "paused": true,
+          "played_character_id": 29829,
+          "episode_character_id": 29829,
+          "episode_run_id": "native-29829-fixture"
+        },
+        "session": {"pid": 1002, "ok": true},
         "observation": {
           "samples": [
             {
@@ -153,6 +189,24 @@
         },
         "exact_build_proof": {"ok": true},
         "source_invariant": {"unchanged": true},
+        "driver_anchor": {
+          "episode_character_id": 29829,
+          "last_checkpoint": {"date_raw": 53175816}
+        },
+        "readiness": {
+          "bridge_pid": 1003,
+          "connection_generation": 12,
+          "snapshot_id": "native:7",
+          "revision": 91,
+          "native_revision": 7,
+          "date_raw": 53175816,
+          "map_ready": true,
+          "paused": true,
+          "played_character_id": 29829,
+          "episode_character_id": 29829,
+          "episode_run_id": "native-29829-fixture"
+        },
+        "session": {"pid": 1003, "ok": true},
         "observation": {
           "samples": [
             {
@@ -246,6 +300,24 @@
         },
         "exact_build_proof": {"ok": true},
         "source_invariant": {"unchanged": true},
+        "driver_anchor": {
+          "episode_character_id": 29829,
+          "last_checkpoint": {"date_raw": 53175816}
+        },
+        "readiness": {
+          "bridge_pid": 1004,
+          "connection_generation": 12,
+          "snapshot_id": "native:7",
+          "revision": 91,
+          "native_revision": 7,
+          "date_raw": 53175816,
+          "map_ready": true,
+          "paused": true,
+          "played_character_id": 29829,
+          "episode_character_id": 29829,
+          "episode_run_id": "native-29829-fixture"
+        },
+        "session": {"pid": 1004, "ok": true},
         "observation": {
           "samples": [
             {
