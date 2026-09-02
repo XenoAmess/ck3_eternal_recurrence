@@ -9,7 +9,7 @@
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "product_version": "1.19.0.6",
     "static_slice_contract": "phase2-loader-callback-static-slice-v1",
-    "static_slice_contract_sha256": "DC57B7A1CAD0E4DF06B8E82961AFF99FD7A8629AF0DF7370707E6C62C92BBE8A"
+    "static_slice_contract_sha256": "4E196FB245F7A93E056930B9DE91CA07AA26F12BA71EAED0BE081897F394C36C"
   },
   "artifact": {
     "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-bounded-gate-20260902\\loader-callback-native-slice-cfg-20260902.json",

@@ -49,6 +49,46 @@
       "0x3B9AB84": "4885C9",
       "0x3B9AB8D": "488B01",
       "0x3B9AB90": "FF5010"
+    },
+    "callback_dispatch_window": {
+      "start_rva": "0x3B9AB50",
+      "end_rva_exclusive": "0x3B9AB93",
+      "length_bytes": 67,
+      "bytes_hex": "488B334883BE880000000074364489B5E00100004C8B4E084C8D05D9DA9B00BA00020000488D4DE0E86377C7FC488B8E880000004885C90F8454010000488B01FF5010",
+      "bytes_sha256": "AF5F3A3C54CC163F415E7A04FC53BC89BD1200B3977E6044AE5D8BFE0E3CEC8C",
+      "instruction_boundaries": [
+        {"label": "current_node_load", "rva": "0x3B9AB50", "end_rva_exclusive": "0x3B9AB53", "length_bytes": 3},
+        {"label": "initial_null_compare", "rva": "0x3B9AB53", "end_rva_exclusive": "0x3B9AB5B", "length_bytes": 8},
+        {"label": "initial_null_skip", "rva": "0x3B9AB5B", "end_rva_exclusive": "0x3B9AB5D", "length_bytes": 2},
+        {"label": "diagnostic_counter_store", "rva": "0x3B9AB5D", "end_rva_exclusive": "0x3B9AB64", "length_bytes": 7},
+        {"label": "node_name_load", "rva": "0x3B9AB64", "end_rva_exclusive": "0x3B9AB68", "length_bytes": 4},
+        {"label": "diagnostic_format_load", "rva": "0x3B9AB68", "end_rva_exclusive": "0x3B9AB6F", "length_bytes": 7},
+        {"label": "diagnostic_buffer_size", "rva": "0x3B9AB6F", "end_rva_exclusive": "0x3B9AB74", "length_bytes": 5},
+        {"label": "diagnostic_buffer_address", "rva": "0x3B9AB74", "end_rva_exclusive": "0x3B9AB78", "length_bytes": 4},
+        {"label": "diagnostic_helper_call", "rva": "0x3B9AB78", "end_rva_exclusive": "0x3B9AB7D", "length_bytes": 5},
+        {"label": "callback_receiver_load", "rva": "0x3B9AB7D", "end_rva_exclusive": "0x3B9AB84", "length_bytes": 7},
+        {"label": "callback_receiver_test", "rva": "0x3B9AB84", "end_rva_exclusive": "0x3B9AB87", "length_bytes": 3},
+        {"label": "callback_null_fail_branch", "rva": "0x3B9AB87", "end_rva_exclusive": "0x3B9AB8D", "length_bytes": 6},
+        {"label": "callback_vptr_load", "rva": "0x3B9AB8D", "end_rva_exclusive": "0x3B9AB90", "length_bytes": 3},
+        {"label": "callback_virtual_call", "rva": "0x3B9AB90", "end_rva_exclusive": "0x3B9AB93", "length_bytes": 3}
+      ],
+      "control_flow_edges": [
+        {"from_rva": "0x3B9AB5B", "kind": "je_short", "target_rva": "0x3B9AB93", "target_role": "post_callback_continuation"},
+        {"from_rva": "0x3B9AB87", "kind": "je_near", "target_rva": "0x3B9ACE1", "target_role": "exact_build_failure_path"}
+      ],
+      "callback_call": {
+        "rva": "0x3B9AB90",
+        "end_rva_exclusive": "0x3B9AB93",
+        "length_bytes": 3,
+        "bytes_hex": "FF5010",
+        "continuation_rva": "0x3B9AB93"
+      },
+      "post_callback_first_read": {
+        "rva": "0x3B9AB93",
+        "bytes_hex": "4C8B8E98000000",
+        "node_offset": "0x98",
+        "role": "init_time_load"
+      }
     }
   },
   "win64_parameter_flow": {
@@ -104,7 +144,17 @@
       "0x3B9AEF4"
     ],
     "count": 8,
-    "argument_setup_observed": "local 16-byte pair address passed in RCX at each listed callsite"
+    "argument_setup_observed": "local 16-byte pair address passed in RCX at each listed callsite",
+    "callsite_records": [
+      {"callsite_rva": "0x821E45", "callsite_end_rva_exclusive": "0x821E4A", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E8B68C3703", "target_rva": "0x3B9AB00", "continuation_rva": "0x821E4A", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x88B5DC", "callsite_end_rva_exclusive": "0x88B5E1", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E81FF53003", "target_rva": "0x3B9AB00", "continuation_rva": "0x88B5E1", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x1B3984D", "callsite_end_rva_exclusive": "0x1B39852", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E8AE120602", "target_rva": "0x3B9AB00", "continuation_rva": "0x1B39852", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x1E18C56", "callsite_end_rva_exclusive": "0x1E18C5B", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E8A51ED801", "target_rva": "0x3B9AB00", "continuation_rva": "0x1E18C5B", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x1E21CD3", "callsite_end_rva_exclusive": "0x1E21CD8", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E8288ED701", "target_rva": "0x3B9AB00", "continuation_rva": "0x1E21CD8", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x203FF96", "callsite_end_rva_exclusive": "0x203FF9B", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E865ABB501", "target_rva": "0x3B9AB00", "continuation_rva": "0x203FF9B", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x2041D8C", "callsite_end_rva_exclusive": "0x2041D91", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E86F8DB501", "target_rva": "0x3B9AB00", "continuation_rva": "0x2041D91", "continuation_inside_target_function": false},
+      {"callsite_rva": "0x3B9AEF4", "callsite_end_rva_exclusive": "0x3B9AEF9", "instruction_length_bytes": 5, "encoding": "E8 rel32", "bytes_hex": "E807FCFFFF", "target_rva": "0x3B9AB00", "continuation_rva": "0x3B9AEF9", "continuation_inside_target_function": false}
+    ]
   },
   "thread_lifecycle": {
     "bounded_dispatch": "direct_synchronous_call",

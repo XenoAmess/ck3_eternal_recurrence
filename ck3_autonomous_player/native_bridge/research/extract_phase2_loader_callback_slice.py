@@ -148,6 +148,29 @@ CFG_TERMINAL_BYTES = {
     0x3B9ACE7: bytes.fromhex("E8 04 A1 29 00"),
 }
 
+# The existing v1 slice records the callback instructions individually.  Keep
+# the complete guarded dispatch window as a second, machine-readable boundary:
+# it starts at the current-node load and ends at the first instruction after
+# the indirect call.  This is an observation boundary only; it is not a patch
+# or detour prescription.
+CALLBACK_DISPATCH_START_RVA = 0x3B9AB50
+CALLBACK_DISPATCH_END_RVA = 0x3B9AB93
+CALLBACK_DISPATCH_INSTRUCTIONS = (
+    ("current_node_load", 0x3B9AB50, bytes.fromhex("48 8B 33")),
+    ("initial_null_compare", 0x3B9AB53, bytes.fromhex("48 83 BE 88 00 00 00 00")),
+    ("initial_null_skip", 0x3B9AB5B, bytes.fromhex("74 36")),
+    ("diagnostic_counter_store", 0x3B9AB5D, bytes.fromhex("44 89 B5 E0 01 00 00")),
+    ("node_name_load", 0x3B9AB64, bytes.fromhex("4C 8B 4E 08")),
+    ("diagnostic_format_load", 0x3B9AB68, bytes.fromhex("4C 8D 05 D9 DA 9B 00")),
+    ("diagnostic_buffer_size", 0x3B9AB6F, bytes.fromhex("BA 00 02 00 00")),
+    ("diagnostic_buffer_address", 0x3B9AB74, bytes.fromhex("48 8D 4D E0")),
+    ("diagnostic_helper_call", 0x3B9AB78, bytes.fromhex("E8 63 77 C7 FC")),
+    ("callback_receiver_load", 0x3B9AB7D, bytes.fromhex("48 8B 8E 88 00 00 00")),
+    ("callback_receiver_test", 0x3B9AB84, bytes.fromhex("48 85 C9")),
+    ("callback_null_fail_branch", 0x3B9AB87, bytes.fromhex("0F 84 54 01 00 00")),
+    ("callback_vptr_load", 0x3B9AB8D, bytes.fromhex("48 8B 01")),
+    ("callback_virtual_call", 0x3B9AB90, bytes.fromhex("FF 50 10")),
+)
 VTABLES = (
     {
         "type_descriptor_rva": 0x56F1390,
@@ -436,6 +459,145 @@ def find_direct_calls(image: pefile.PE, data: bytes, target_rva: int) -> list[in
     return hits
 
 
+def relative_target(rva: int, instruction: bytes) -> int:
+    """Decode the bounded x64 relative branch/call target used by this slice."""
+
+    if len(instruction) == 2 and instruction[0] in (0x74, 0x75):
+        return rva + 2 + struct.unpack("<b", instruction[1:2])[0]
+    if len(instruction) >= 5 and instruction[0] == 0xE8:
+        return rva + 5 + struct.unpack_from("<i", instruction, 1)[0]
+    if len(instruction) == 6 and instruction[:2] in (b"\x0F\x84", b"\x0F\x85"):
+        return rva + 6 + struct.unpack_from("<i", instruction, 2)[0]
+    raise ValueError(f"unsupported relative instruction at 0x{rva:X}")
+
+
+def decode_dispatch_window(image: pefile.PE, data: bytes) -> dict[str, Any]:
+    """Return exact instruction boundaries and CFG edges around the callback.
+
+    This intentionally decodes only fixed bytes from the pinned executable. It
+    does not infer a C++ ABI, install a detour, or claim that either branch is
+    safe to intercept in a running process.
+    """
+
+    expected_rva = CALLBACK_DISPATCH_START_RVA
+    instructions: list[dict[str, Any]] = []
+    for label, rva, expected in CALLBACK_DISPATCH_INSTRUCTIONS:
+        if rva != expected_rva:
+            raise ValueError(
+                f"dispatch instruction gap/overlap before 0x{rva:X}: expected 0x{expected_rva:X}"
+            )
+        actual = bytes_at(data, image, rva, len(expected))
+        if actual != expected:
+            raise ValueError(
+                f"dispatch instruction mismatch at 0x{rva:X}: "
+                f"{actual.hex().upper()} != {expected.hex().upper()}"
+            )
+        instructions.append(
+            {
+                "label": label,
+                "rva": f"0x{rva:X}",
+                "end_rva_exclusive": f"0x{rva + len(expected):X}",
+                "length_bytes": len(expected),
+                "bytes_hex": actual.hex().upper(),
+            }
+        )
+        expected_rva = rva + len(expected)
+    if expected_rva != CALLBACK_DISPATCH_END_RVA:
+        raise ValueError(
+            f"dispatch window end mismatch: 0x{expected_rva:X} != "
+            f"0x{CALLBACK_DISPATCH_END_RVA:X}"
+        )
+
+    initial_skip = CALLBACK_DISPATCH_INSTRUCTIONS[2]
+    fail_branch = CALLBACK_DISPATCH_INSTRUCTIONS[11]
+    initial_target = relative_target(initial_skip[1], initial_skip[2])
+    fail_target = relative_target(fail_branch[1], fail_branch[2])
+    if initial_target != CALLBACK_DISPATCH_END_RVA:
+        raise ValueError(
+            f"initial null branch target 0x{initial_target:X} does not reach continuation"
+        )
+    if fail_target != FUNCTION_END_RVA - 0xC:
+        # The exact-build failure path begins at 0x3B9ACE1, immediately before
+        # the function's trailing int3 padding.  Keep this relationship explicit
+        # instead of silently treating it as a normal continuation.
+        raise ValueError(f"unexpected callback null failure target 0x{fail_target:X}")
+
+    window_bytes = bytes_at(
+        data,
+        image,
+        CALLBACK_DISPATCH_START_RVA,
+        CALLBACK_DISPATCH_END_RVA - CALLBACK_DISPATCH_START_RVA,
+    )
+    return {
+        "start_rva": f"0x{CALLBACK_DISPATCH_START_RVA:X}",
+        "end_rva_exclusive": f"0x{CALLBACK_DISPATCH_END_RVA:X}",
+        "length_bytes": CALLBACK_DISPATCH_END_RVA - CALLBACK_DISPATCH_START_RVA,
+        "bytes_hex": window_bytes.hex().upper(),
+        "bytes_sha256": sha256(window_bytes),
+        "instructions": instructions,
+        "control_flow_edges": [
+            {
+                "from_rva": "0x3B9AB5B",
+                "kind": "je_short",
+                "target_rva": f"0x{initial_target:X}",
+                "target_role": "post_callback_continuation",
+            },
+            {
+                "from_rva": "0x3B9AB87",
+                "kind": "je_near",
+                "target_rva": f"0x{fail_target:X}",
+                "target_role": "exact_build_failure_path",
+            },
+        ],
+        "callback_call": {
+            "rva": "0x3B9AB90",
+            "end_rva_exclusive": "0x3B9AB93",
+            "length_bytes": 3,
+            "bytes_hex": "FF5010",
+            "continuation_rva": "0x3B9AB93",
+        },
+        "post_callback_first_read": {
+            "rva": "0x3B9AB93",
+            "bytes_hex": bytes_at(data, image, 0x3B9AB93, 7).hex().upper(),
+            "node_offset": "0x98",
+            "role": "init_time_load",
+        },
+    }
+
+
+def decode_direct_callers(
+    image: pefile.PE, data: bytes, callsites: list[int]
+) -> list[dict[str, Any]]:
+    """Attach exact E8 span and fall-through continuation to every caller."""
+
+    records: list[dict[str, Any]] = []
+    for rva in callsites:
+        instruction = bytes_at(data, image, rva, 5)
+        if instruction[0] != 0xE8:
+            raise ValueError(f"caller at 0x{rva:X} is not an E8 rel32 call")
+        target = relative_target(rva, instruction)
+        if target != FUNCTION_RVA:
+            raise ValueError(
+                f"caller at 0x{rva:X} targets 0x{target:X}, expected 0x{FUNCTION_RVA:X}"
+            )
+        continuation = rva + len(instruction)
+        records.append(
+            {
+                "callsite_rva": f"0x{rva:X}",
+                "callsite_end_rva_exclusive": f"0x{continuation:X}",
+                "instruction_length_bytes": len(instruction),
+                "encoding": "E8 rel32",
+                "bytes_hex": instruction.hex().upper(),
+                "target_rva": f"0x{target:X}",
+                "continuation_rva": f"0x{continuation:X}",
+                "continuation_inside_target_function": (
+                    FUNCTION_RVA <= continuation < FUNCTION_END_RVA
+                ),
+            }
+        )
+    return records
+
+
 def extract(exe: Path, fixture: Path | None = None) -> dict[str, Any]:
     source = exe.resolve()
     data = source.read_bytes()
@@ -483,6 +645,8 @@ def extract(exe: Path, fixture: Path | None = None) -> dict[str, Any]:
             "direct callback-loop callsites changed: "
             f"{[f'0x{x:X}' for x in direct_calls]}"
         )
+    dispatch_window = decode_dispatch_window(image, data)
+    direct_callers = decode_direct_callers(image, data, direct_calls)
     fixture_info: dict[str, Any] | None = None
     if fixture is not None:
         fixture_path = fixture.resolve()
@@ -521,6 +685,7 @@ def extract(exe: Path, fixture: Path | None = None) -> dict[str, Any]:
             },
             "callback_instruction_bytes": callback_bytes,
             "cfg": cfg,
+            "callback_dispatch_window": dispatch_window,
         },
         "win64_parameter_flow": {
             "calling_convention": "MSVC x64",
@@ -548,6 +713,7 @@ def extract(exe: Path, fixture: Path | None = None) -> dict[str, Any]:
             "direct_relative_callsite_rvas": [f"0x{rva:X}" for rva in direct_calls],
             "count": len(direct_calls),
             "argument_setup_observed": "local 16-byte pair address passed in RCX at each listed callsite",
+            "callsite_records": direct_callers,
         },
         "thread_lifecycle": {
             "bounded_dispatch": "direct_synchronous_call",

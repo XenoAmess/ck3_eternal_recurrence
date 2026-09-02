@@ -151,6 +151,47 @@ class Phase2LoaderCallbackStaticSliceTests(unittest.TestCase):
             self.abi["evidence_limits"],
         )
 
+    def test_guarded_dispatch_window_and_null_edges_are_exact(self) -> None:
+        window = self.abi["function"]["callback_dispatch_window"]
+        self.assertEqual(window["start_rva"], "0x3B9AB50")
+        self.assertEqual(window["end_rva_exclusive"], "0x3B9AB93")
+        self.assertEqual(window["length_bytes"], 67)
+        self.assertEqual(
+            window["bytes_sha256"],
+            "AF5F3A3C54CC163F415E7A04FC53BC89BD1200B3977E6044AE5D8BFE0E3CEC8C",
+        )
+        boundaries = window["instruction_boundaries"]
+        self.assertEqual(len(boundaries), 14)
+        self.assertEqual(boundaries[0]["rva"], "0x3B9AB50")
+        self.assertEqual(boundaries[-1]["end_rva_exclusive"], "0x3B9AB93")
+        self.assertEqual(
+            [edge["target_rva"] for edge in window["control_flow_edges"]],
+            ["0x3B9AB93", "0x3B9ACE1"],
+        )
+        call = window["callback_call"]
+        self.assertEqual(call["length_bytes"], 3)
+        self.assertEqual(call["bytes_hex"], "FF5010")
+        self.assertEqual(call["continuation_rva"], "0x3B9AB93")
+        self.assertEqual(window["post_callback_first_read"]["node_offset"], "0x98")
+
+    def test_each_direct_caller_has_a_five_byte_fallthrough(self) -> None:
+        records = self.abi["callers"]["callsite_records"]
+        self.assertEqual(len(records), 8)
+        self.assertEqual(
+            [record["callsite_rva"] for record in records],
+            self.abi["callers"]["direct_relative_callsite_rvas"],
+        )
+        self.assertTrue(
+            all(
+                record["encoding"] == "E8 rel32"
+                and record["instruction_length_bytes"] == 5
+                and record["target_rva"] == "0x3B9AB00"
+                and record["callsite_end_rva_exclusive"] == record["continuation_rva"]
+                and not record["continuation_inside_target_function"]
+                for record in records
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
