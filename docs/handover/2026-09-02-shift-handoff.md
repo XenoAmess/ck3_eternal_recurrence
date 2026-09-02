@@ -11,7 +11,7 @@
 | G2 | `production-live read-only primitive / GEN-034 unresolved` | paused exact-build 四个窄域只读 primitive、truce evaluator call-site contract、离线失败 seam 已固定 | `evaluated_days` live 结果、war-bound/策略/typed action/postcondition；不能执行 surrender/white-peace/enforce mutation |
 | open_kaishek | `main` clean；schema/preflight 证据持续增加 | `is_acclaimed`、`can_be_acclaimed` 均已合入并通过 focused CI，均 `certified=false` | 不得把离线 parser/validator 预验当作 CK3 native/runtime 或 production readiness；`ACCOLADE` scope 仍是条件性后续项 |
 
-交接材料索引：[`audit-2026-09-02.md`](audit-2026-09-02.md)、[`2026-09-02-g2-open-kaishek-handoff.md`](2026-09-02-g2-open-kaishek-handoff.md)、以及本文件。持续进度见日报和周报。
+交接材料索引：[`audit-2026-09-02.md`](audit-2026-09-02.md)、[`2026-09-02-g2-open-kaishek-handoff.md`](2026-09-02-g2-open-kaishek-handoff.md)、以及本文件。前两份是早于 `fefdb6d` 的事实快照；本文件与日报/周报的最新追加以 `96ab298` 为准。
 
 ## 1. 当前主线与发布锚点
 
