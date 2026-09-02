@@ -403,7 +403,7 @@ def build_runbook(
         {
             "ordinal": 3,
             "id": "bind_green_footage_and_authoring_ledger",
-            "gate": "rerun this planner against the strict media-entry intake for one same-session/PID/revision GREEN capture; require all 8 span postconditions and raw/timeline/report/index hashes bound, footage_pending cleared, and the byte-bound 10/10 authoring ledger still GREEN",
+            "gate": "rerun this planner against the strict media-entry intake for one lineage-bound GREEN capture bundle; all 8 spans must bind the same canonical seed/save lineage and exact source/game/mod mount, while each span independently proves continuous pre-action-post session/PID/generation/revisions, start/end checkpoint hashes, postcondition, and cleanup; clean CK3 restarts between spans are allowed; footage_pending must clear and the byte-bound 10/10 authoring ledger must remain GREEN",
         },
         {
             "ordinal": 4,
@@ -512,7 +512,40 @@ def build_runbook(
         "execution_attestation": {"commands_executed": False, "ck3_started": False, "tts_generated": False, "subtitle_media_generated": False, "ffmpeg_started": False, "candidate_generated": False},
         "project": project,
         "authoring_claim_ledger": authoring,
-        "fixed_contract": {"voice": VOICE, "subtitle_locales": ["zh-CN", "en"], "chapter_count": 10, "canonical_span_count": 8, "canonical_spans": [scenario.span_id for scenario in PHASE2_CAPTURE_SCENARIOS]},
+        "fixed_contract": {
+            "voice": VOICE,
+            "subtitle_locales": ["zh-CN", "en"],
+            "chapter_count": 10,
+            "canonical_span_count": 8,
+            "canonical_spans": [scenario.span_id for scenario in PHASE2_CAPTURE_SCENARIOS],
+            "footage_session_policy": {
+                "cross_span_restart_allowed": True,
+                "cross_span_pid_or_generation_equality_required": False,
+                "shared_identity": [
+                    "canonical_seed_save_lineage",
+                    "source_commit_and_tree",
+                    "game_version_and_exe",
+                    "product_only_mod_mount_tree",
+                ],
+                "per_span_continuity": [
+                    "session_id",
+                    "bridge_pid",
+                    "connection_generation",
+                    "pre_action_post_revision_chain",
+                    "start_end_checkpoint_hashes",
+                    "postcondition",
+                    "cleanup",
+                ],
+                "seed_generation_to_loaded_proof_same_session": True,
+                "forbidden_sources": ["phase1", "old-version", "fixture"],
+                "legacy_single_session_compatible": True,
+                "capture_reuse": {
+                    "independent_edit_projects_allowed": True,
+                    "same_verified_source_hashes_required_per_candidate": True,
+                    "source_copy_or_regeneration_required": False,
+                },
+            },
+        },
         "inputs": {
             "repository": {
                 "root": str(ROOT),
@@ -535,10 +568,10 @@ def build_runbook(
         "dependency_graph": final_promo_execution_dag(),
         "ordered_steps": steps,
         "hash_backfill_fields": [
-            "promo_toolchain.head_after_fetch", "authoring_ledger.bytes_sha256", "authoring_ledger.each_claim_cue_and_language_lines", "project_config.promoted_bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "claims_audit.report_sha256_subject_sha256", "review_round_1.receipt_sha256_candidate_sha256", "review_round_2.receipt_sha256_candidate_sha256", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256_deliverable_sha256", "publish_target.authority_sha256_target_account_credential_reference_locator_prefix", "publication.receipt_sha256_target_id_account_id_locator_export_manifest_sha256_candidate_sha256"
+            "promo_toolchain.head_after_fetch", "authoring_ledger.bytes_sha256", "authoring_ledger.each_claim_cue_and_language_lines", "project_config.promoted_bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.canonical_seed_save_lineage.source_game_mount", "capture.seed_generation_loaded_same_session", "capture.each_clean_span.session_pre_action_post_revision_checkpoint_cleanup", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "claims_audit.report_sha256_subject_sha256", "review_round_1.receipt_sha256_candidate_sha256", "review_round_2.receipt_sha256_candidate_sha256", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256_deliverable_sha256", "publish_target.authority_sha256_target_account_credential_reference_locator_prefix", "publication.receipt_sha256_target_id_account_id_locator_export_manifest_sha256_candidate_sha256"
         ],
         "release_gates": [
-            "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "the byte-bound 10/10 bilingual authoring ledger is GREEN and only footage-supported claims are promoted into the project", "all eight canonical spans come from one GREEN capture and have clean begin/end gates", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p at 1920x1080 plus AAC 48kHz stereo and under 1200 seconds", "claims audit passes against the exact candidate", "two independent named reviewers each provide a full-duration 1x receipt bound to that candidate and audit", "approved run signoff binds the exact final MP4 SHA-256", "export manifest and exported deliverable hashes match the candidate", "an owner-approved publish target names the platform, account, credential reference and locator prefix", "a real HTTPS locator under that authorized prefix and remote-verification receipt bind the same target, export and candidate; only then may status be COMPLETE"
+            "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "the byte-bound 10/10 bilingual authoring ledger is GREEN and only footage-supported claims are promoted into the project", "all eight canonical spans share one canonical seed/save lineage and exact source/game/mod mount, and each span has a continuous session plus clean begin/end gates; clean CK3 restarts are allowed only between spans", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p at 1920x1080 plus AAC 48kHz stereo and under 1200 seconds", "claims audit passes against the exact candidate", "two independent named reviewers each provide a full-duration 1x receipt bound to that candidate and audit", "approved run signoff binds the exact final MP4 SHA-256", "export manifest and exported deliverable hashes match the candidate", "an owner-approved publish target names the platform, account, credential reference and locator prefix", "a real HTTPS locator under that authorized prefix and remote-verification receipt bind the same target, export and candidate; only then may status be COMPLETE"
         ],
         "planned_paths": {"work_dir": str(work_dir.resolve()), "candidate_run_manifest": str(candidate_run), "deliverable": str(deliverable)},
     }

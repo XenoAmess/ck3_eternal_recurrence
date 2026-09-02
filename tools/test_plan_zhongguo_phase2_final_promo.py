@@ -161,6 +161,33 @@ class FinalPromoRunbookTests(unittest.TestCase):
             self.assertEqual(len(runbook["fixed_contract"]["canonical_spans"]), 8)
             self.assertEqual(runbook["fixed_contract"]["chapter_count"], 10)
             self.assertEqual(runbook["fixed_contract"]["voice"], planner.VOICE)
+            session_policy = runbook["fixed_contract"]["footage_session_policy"]
+            self.assertTrue(session_policy["cross_span_restart_allowed"])
+            self.assertFalse(
+                session_policy["cross_span_pid_or_generation_equality_required"]
+            )
+            self.assertTrue(
+                session_policy["seed_generation_to_loaded_proof_same_session"]
+            )
+            self.assertEqual(
+                session_policy["forbidden_sources"],
+                ["phase1", "old-version", "fixture"],
+            )
+            self.assertEqual(
+                session_policy["capture_reuse"],
+                {
+                    "independent_edit_projects_allowed": True,
+                    "same_verified_source_hashes_required_per_candidate": True,
+                    "source_copy_or_regeneration_required": False,
+                },
+            )
+            bind_step = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "bind_green_footage_and_authoring_ledger"
+            )
+            self.assertIn("clean CK3 restarts between spans are allowed", bind_step["gate"])
+            self.assertNotIn("same-session/PID", bind_step["gate"])
             self.assertEqual(
                 runbook["ordered_steps"][0]["id"],
                 "fetch_and_verify_promo_origin_main",

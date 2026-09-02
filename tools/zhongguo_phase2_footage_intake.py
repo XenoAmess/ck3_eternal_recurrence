@@ -4,7 +4,10 @@
 This is a media-entry contract, not a native observer schema.  It only reads
 and hashes existing files.  It never launches CK3, invokes FFmpeg, or repairs a
 partial capture.  Any absent or incomplete real bundle remains typed
-``footage_pending``.
+``footage_pending``.  A schema-v2 span-session contract may aggregate clean
+spans across managed CK3 restarts, while preserving one canonical seed/save
+lineage and exact source/game/mod-mount identity.  The legacy one-session
+runner envelope remains accepted without weakening its original checks.
 """
 
 from __future__ import annotations
@@ -30,6 +33,9 @@ TIMELINE_RELATIVE = "cell/promo/capture-timeline.json"
 INDEX_RELATIVE = "evidence-index.json"
 LOADED_SEED_RELATIVE = "cell/04_phase2_seed_loaded.json"
 _SHA = re.compile(r"^[0-9A-Fa-f]{64}$")
+_GIT_SHA = re.compile(r"^[0-9A-Fa-f]{40}$")
+SPAN_SESSION_CONTRACT_VERSION = 2
+PHASE2_GAME_VERSION = "1.19.0.6"
 
 
 def final_promo_execution_dag() -> dict[str, list[str]]:
@@ -62,6 +68,38 @@ def _positive_int(value: object) -> bool:
 
 def _revision(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def _nonempty(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _sha(value: object) -> bool:
+    return isinstance(value, str) and _SHA.fullmatch(value) is not None
+
+
+def _canonical_lineage(value: object) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    source = value.get("source") if isinstance(value.get("source"), Mapping) else {}
+    game = value.get("game") if isinstance(value.get("game"), Mapping) else {}
+    mount = value.get("mod_mount") if isinstance(value.get("mod_mount"), Mapping) else {}
+    return (
+        value.get("schema_version") == 1
+        and value.get("phase") == "zhongguo_phase2"
+        and value.get("evidence_class") == "real_ck3"
+        and value.get("fixture_used") is False
+        and value.get("prior_phase_footage_used") is False
+        and _nonempty(value.get("seed_lineage_id"))
+        and _sha(value.get("canonical_seed_save_sha256"))
+        and isinstance(source.get("git_commit"), str)
+        and _GIT_SHA.fullmatch(str(source["git_commit"])) is not None
+        and _sha(source.get("tree_sha256"))
+        and game.get("version") == PHASE2_GAME_VERSION
+        and _sha(game.get("exe_sha256"))
+        and mount.get("kind") == "product-only"
+        and _sha(mount.get("tree_sha256"))
+    )
 
 
 def _sha256(path: Path) -> dict[str, object]:
@@ -106,6 +144,12 @@ def validate_footage_intake(capture_root: Path | None) -> dict[str, object]:
         "checks": {},
         "files": {},
         "session_binding": None,
+        "reuse_policy": {
+            "immutable_source_bundle": True,
+            "independent_edit_projects_may_reuse_verified_spans": True,
+            "source_copy_or_regeneration_required": False,
+            "each_candidate_must_bind_same_verified_hashes": True,
+        },
         "spans": [],
         "errors": [],
         "execution_attestation": {
@@ -413,52 +457,301 @@ def validate_footage_intake(capture_root: Path | None) -> dict[str, object]:
     tracked_pid = cell.get("tracked_full_acceptance_pid") if isinstance(cell, Mapping) else None
     pid_lineage = native.get("pid_lineage")
     generation_lineage = native.get("connection_generation_lineage")
-    session_binding = {
-        "tracked_ck3_pid": tracked_pid,
-        "connection_generation": startup.get("connection_generation"),
-        "snapshot_id": observed.get("snapshot_id"),
-        "revision": observed.get("revision"),
-        "native_revision": observed.get("native_revision"),
-    }
-    report["session_binding"] = session_binding
     completed_pids = collect_named(completed, "bridge_pid")
     completed_generations = collect_named(completed, "connection_generation")
     completed_revisions = collect_named(completed, "revision")
     completed_native_revisions = collect_named(completed, "native_revision")
-    checks["same_managed_session_pid_revision"] = (
-        _positive_int(tracked_pid)
-        and startup.get("bridge_pid") == tracked_pid
-        and _positive_int(startup.get("connection_generation"))
-        and loaded.get("schema_version") == 2
-        and loaded.get("result") == "GREEN"
-        and observed.get("bridge_pid") == tracked_pid
-        and observed.get("connection_generation") == startup.get("connection_generation")
-        and final_binding.get("connected") is True
-        and final_binding.get("bridge_pid") == tracked_pid
-        and final_binding.get("connection_generation")
-        == startup.get("connection_generation")
-        and isinstance(observed.get("snapshot_id"), str)
-        and bool(observed.get("snapshot_id"))
-        and _revision(observed.get("revision"))
-        and _positive_int(observed.get("native_revision"))
-        and isinstance(pid_lineage, list)
-        and pid_lineage == [tracked_pid]
-        and isinstance(generation_lineage, list)
-        and generation_lineage == [startup.get("connection_generation")]
-        and native.get("restart_count") == 0
-        and cleanup.get("result") == "GREEN"
-        and bool(completed_pids)
-        and all(value == tracked_pid for value in completed_pids)
-        and bool(completed_generations)
-        and all(
-            value == startup.get("connection_generation")
-            for value in completed_generations
-        )
-        and bool(completed_revisions)
-        and all(_revision(value) for value in completed_revisions)
-        and bool(completed_native_revisions)
-        and all(_positive_int(value) for value in completed_native_revisions)
+
+    # Compatibility is intentionally one-way: an old runner bundle must still
+    # satisfy the original single-session contract.  As soon as any v2
+    # span-session field is present, the complete new contract is mandatory and
+    # cannot silently fall back to the legacy checks.
+    span_session_rows = [
+        row.get("session_evidence")
+        for row in completed
+        if isinstance(row, Mapping) and "session_evidence" in row
+    ]
+    multi_session_contract = (
+        scenario.get("span_session_contract_version") is not None
+        or timeline.get("capture_lineage") is not None
+        or cell.get("seed_generation_loaded_chain") is not None
+        or bool(span_session_rows)
     )
+
+    if not multi_session_contract:
+        legacy_binding_ok = (
+            _positive_int(tracked_pid)
+            and startup.get("bridge_pid") == tracked_pid
+            and _positive_int(startup.get("connection_generation"))
+            and loaded.get("schema_version") == 2
+            and loaded.get("result") == "GREEN"
+            and observed.get("bridge_pid") == tracked_pid
+            and observed.get("connection_generation") == startup.get("connection_generation")
+            and final_binding.get("connected") is True
+            and final_binding.get("bridge_pid") == tracked_pid
+            and final_binding.get("connection_generation")
+            == startup.get("connection_generation")
+            and isinstance(observed.get("snapshot_id"), str)
+            and bool(observed.get("snapshot_id"))
+            and _revision(observed.get("revision"))
+            and _positive_int(observed.get("native_revision"))
+            and isinstance(pid_lineage, list)
+            and pid_lineage == [tracked_pid]
+            and isinstance(generation_lineage, list)
+            and generation_lineage == [startup.get("connection_generation")]
+            and native.get("restart_count") == 0
+            and cleanup.get("result") == "GREEN"
+            and bool(completed_pids)
+            and all(value == tracked_pid for value in completed_pids)
+            and bool(completed_generations)
+            and all(
+                value == startup.get("connection_generation")
+                for value in completed_generations
+            )
+            and bool(completed_revisions)
+            and all(_revision(value) for value in completed_revisions)
+            and bool(completed_native_revisions)
+            and all(_positive_int(value) for value in completed_native_revisions)
+        )
+        checks["legacy_single_session_contract"] = legacy_binding_ok
+        report["session_binding"] = {
+            "mode": "legacy-single-session-v1",
+            "tracked_ck3_pid": tracked_pid,
+            "connection_generation": startup.get("connection_generation"),
+            "snapshot_id": observed.get("snapshot_id"),
+            "revision": observed.get("revision"),
+            "native_revision": observed.get("native_revision"),
+        }
+    else:
+        lineage_value = timeline.get("capture_lineage")
+        lineage = lineage_value if isinstance(lineage_value, Mapping) else {}
+        source = lineage.get("source") if isinstance(lineage.get("source"), Mapping) else {}
+        checks["canonical_phase2_seed_source_game_mount_lineage"] = (
+            scenario.get("span_session_contract_version")
+            == SPAN_SESSION_CONTRACT_VERSION
+            and _canonical_lineage(lineage)
+            and timeline.get("source_git_commit") == source.get("git_commit")
+            and timeline.get("source_clean_tree_sha256") == source.get("tree_sha256")
+        )
+
+        def verify_declared_record(value: object, label: str) -> bool:
+            if not isinstance(value, Mapping):
+                errors.append(f"{label}_record_missing")
+                return False
+            relative = _relative(root, value.get("path"))
+            if relative is None or not verify_indexed(relative, label):
+                return False
+            actual = verified_records[label]
+            valid = (
+                value.get("bytes") == actual["bytes"]
+                and isinstance(value.get("sha256"), str)
+                and str(value["sha256"]).upper() == actual["sha256"]
+                and int(actual["bytes"]) > 0
+            )
+            if not valid:
+                errors.append(f"{label}_declared_record_mismatch")
+            return valid
+
+        seed_value = cell.get("seed_generation_loaded_chain")
+        seed_chain = seed_value if isinstance(seed_value, Mapping) else {}
+        generated = (
+            seed_chain.get("generated")
+            if isinstance(seed_chain.get("generated"), Mapping)
+            else {}
+        )
+        loaded_chain = (
+            seed_chain.get("loaded")
+            if isinstance(seed_chain.get("loaded"), Mapping)
+            else {}
+        )
+        seed_pid = seed_chain.get("bridge_pid")
+        seed_generation = seed_chain.get("connection_generation")
+        generated_save_ok = verify_declared_record(
+            generated.get("save"), "canonical_seed_generated_save"
+        )
+        loaded_save_ok = verify_declared_record(
+            loaded_chain.get("save"), "canonical_seed_loaded_save"
+        )
+        canonical_seed_sha = str(lineage.get("canonical_seed_save_sha256", "")).upper()
+        generated_save = generated.get("save") if isinstance(generated.get("save"), Mapping) else {}
+        loaded_save = loaded_chain.get("save") if isinstance(loaded_chain.get("save"), Mapping) else {}
+        checks["seed_generation_to_loaded_proof_continuous"] = (
+            seed_chain.get("schema_version") == 1
+            and seed_chain.get("result") == "GREEN"
+            and _nonempty(seed_chain.get("session_id"))
+            and _positive_int(seed_pid)
+            and _positive_int(seed_generation)
+            and generated.get("session_id") == seed_chain.get("session_id")
+            and loaded_chain.get("session_id") == seed_chain.get("session_id")
+            and generated.get("bridge_pid") == seed_pid
+            and loaded_chain.get("bridge_pid") == seed_pid
+            and generated.get("connection_generation") == seed_generation
+            and loaded_chain.get("connection_generation") == seed_generation
+            and _revision(generated.get("revision"))
+            and _revision(loaded_chain.get("revision"))
+            and int(loaded_chain.get("revision", -1))
+            >= int(generated.get("revision", 0))
+            and _positive_int(generated.get("native_revision"))
+            and _positive_int(loaded_chain.get("native_revision"))
+            and int(loaded_chain.get("native_revision", 0))
+            >= int(generated.get("native_revision", 1))
+            and generated_save_ok
+            and loaded_save_ok
+            and str(generated_save.get("sha256", "")).upper() == canonical_seed_sha
+            and str(loaded_save.get("sha256", "")).upper() == canonical_seed_sha
+            and loaded.get("schema_version") == 2
+            and loaded.get("result") == "GREEN"
+            and observed.get("bridge_pid") == seed_pid
+            and observed.get("connection_generation") == seed_generation
+            and observed.get("revision") == loaded_chain.get("revision")
+            and observed.get("native_revision") == loaded_chain.get("native_revision")
+            and str(observed.get("save_sha256", "")).upper() == canonical_seed_sha
+        )
+
+        per_span_ok = len(span_session_rows) == len(expected_span_ids)
+        exact_lineage_ok = per_span_ok
+        phase2_source_only = per_span_ok
+        session_summaries: list[dict[str, object]] = []
+        for expected, row in zip(PHASE2_CAPTURE_SCENARIOS, completed):
+            session = (
+                row.get("session_evidence")
+                if isinstance(row, Mapping)
+                and isinstance(row.get("session_evidence"), Mapping)
+                else {}
+            )
+            pre = session.get("pre") if isinstance(session.get("pre"), Mapping) else {}
+            action = (
+                session.get("action")
+                if isinstance(session.get("action"), Mapping)
+                else {}
+            )
+            post = session.get("post") if isinstance(session.get("post"), Mapping) else {}
+            span_cleanup = (
+                session.get("cleanup")
+                if isinstance(session.get("cleanup"), Mapping)
+                else {}
+            )
+            session_id = session.get("session_id")
+            pid = session.get("bridge_pid")
+            generation = session.get("connection_generation")
+            start_checkpoint_ok = verify_declared_record(
+                session.get("start_checkpoint"),
+                f"{expected.span_id}_start_checkpoint",
+            )
+            end_checkpoint_ok = verify_declared_record(
+                session.get("end_checkpoint"),
+                f"{expected.span_id}_end_checkpoint",
+            )
+            start_checkpoint = (
+                session.get("start_checkpoint")
+                if isinstance(session.get("start_checkpoint"), Mapping)
+                else {}
+            )
+            end_checkpoint = (
+                session.get("end_checkpoint")
+                if isinstance(session.get("end_checkpoint"), Mapping)
+                else {}
+            )
+            stage_identity_ok = all(
+                stage.get("session_id") == session_id
+                and stage.get("bridge_pid") == pid
+                and stage.get("connection_generation") == generation
+                for stage in (pre, action, post)
+            )
+            revision_chain_ok = (
+                _revision(pre.get("revision"))
+                and _positive_int(pre.get("native_revision"))
+                and action.get("pre_revision") == pre.get("revision")
+                and action.get("pre_native_revision") == pre.get("native_revision")
+                and _revision(action.get("post_revision"))
+                and _positive_int(action.get("post_native_revision"))
+                and post.get("revision") == action.get("post_revision")
+                and post.get("native_revision") == action.get("post_native_revision")
+                and int(post.get("revision", -1)) >= int(pre.get("revision", 0))
+                and int(post.get("native_revision", 0))
+                >= int(pre.get("native_revision", 1))
+            )
+            checkpoint_chain_ok = (
+                start_checkpoint_ok
+                and end_checkpoint_ok
+                and start_checkpoint.get("save_lineage_id")
+                == lineage.get("seed_lineage_id")
+                and end_checkpoint.get("save_lineage_id")
+                == lineage.get("seed_lineage_id")
+                and str(pre.get("checkpoint_sha256", "")).upper()
+                == str(start_checkpoint.get("sha256", "")).upper()
+                and str(post.get("checkpoint_sha256", "")).upper()
+                == str(end_checkpoint.get("sha256", "")).upper()
+            )
+            binding = (
+                row.get("postcondition_evidence", {}).get("binding", {})
+                if isinstance(row, Mapping)
+                and isinstance(row.get("postcondition_evidence"), Mapping)
+                and isinstance(row["postcondition_evidence"].get("binding"), Mapping)
+                else {}
+            )
+            postcondition_bound = (
+                binding.get("bridge_pid") == pid
+                and binding.get("connection_generation") == generation
+                and binding.get("revision") == post.get("revision")
+                and binding.get("native_revision") == post.get("native_revision")
+            )
+            row_ok = (
+                session.get("schema_version") == 1
+                and session.get("result") == "GREEN"
+                and session.get("span_id") == expected.span_id
+                and _nonempty(session_id)
+                and _positive_int(pid)
+                and _positive_int(generation)
+                and stage_identity_ok
+                and revision_chain_ok
+                and checkpoint_chain_ok
+                and postcondition_bound
+                and span_cleanup.get("result") == "GREEN"
+                and span_cleanup.get("process_tree_gone") is True
+                and span_cleanup.get("driver_closed") is True
+            )
+            per_span_ok = per_span_ok and row_ok
+            lineage_binding = session.get("lineage_binding")
+            exact_lineage_ok = exact_lineage_ok and lineage_binding == lineage
+            if isinstance(lineage_binding, Mapping):
+                phase2_source_only = phase2_source_only and (
+                    lineage_binding.get("phase") == "zhongguo_phase2"
+                    and lineage_binding.get("evidence_class") == "real_ck3"
+                    and lineage_binding.get("fixture_used") is False
+                    and lineage_binding.get("prior_phase_footage_used") is False
+                )
+            else:
+                phase2_source_only = False
+            session_summaries.append(
+                {
+                    "span_id": expected.span_id,
+                    "session_id": session_id,
+                    "bridge_pid": pid,
+                    "connection_generation": generation,
+                    "start_checkpoint_sha256": start_checkpoint.get("sha256"),
+                    "end_checkpoint_sha256": end_checkpoint.get("sha256"),
+                    "cleanup_green": span_cleanup.get("result") == "GREEN",
+                }
+            )
+        checks["each_span_pre_action_post_session_continuous"] = per_span_ok
+        checks["cross_span_canonical_lineage_exact"] = exact_lineage_ok
+        checks["phase2_real_source_only"] = phase2_source_only
+        report["session_binding"] = {
+            "mode": "lineage-bound-span-sessions-v2",
+            "seed_lineage_id": lineage.get("seed_lineage_id"),
+            "canonical_seed_save_sha256": lineage.get(
+                "canonical_seed_save_sha256"
+            ),
+            "source": dict(source),
+            "game": dict(lineage.get("game", {}))
+            if isinstance(lineage.get("game"), Mapping)
+            else {},
+            "mod_mount": dict(lineage.get("mod_mount", {}))
+            if isinstance(lineage.get("mod_mount"), Mapping)
+            else {},
+            "span_sessions": session_summaries,
+        }
     requirements = loaded.get("span_requirements")
     checks["loaded_seed_v2_eight_rows_green"] = (
         isinstance(requirements, list)

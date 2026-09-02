@@ -131,7 +131,9 @@ class Phase2AuthoringClaimsTest(unittest.TestCase):
 
     def test_rejects_readiness_overclaim(self) -> None:
         payload = copy.deepcopy(self.ledger)
-        payload["readiness_review"]["same_run_phase2_clean_spans_verified"] = 8
+        payload["readiness_review"][
+            "lineage_bound_phase2_clean_spans_verified"
+        ] = 8
         errors = self._validate_mutation(payload)
         self.assertTrue(any("zero-footage RED terminal" in row for row in errors))
 

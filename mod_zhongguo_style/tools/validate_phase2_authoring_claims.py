@@ -65,7 +65,7 @@ EXPECTED_PROMOTION_MAPPING = {
 EXPECTED_READINESS_REVIEW = {
     "reviewed_through_commit": "d0fa15670fc9b0c049cc6d9228c839c04135e21c",
     "current_state": "static-ready-native-readiness-red-not-live",
-    "same_run_phase2_clean_spans_verified": 0,
+    "lineage_bound_phase2_clean_spans_verified": 0,
     "latest_phase2_terminal": {
         "result": "RED",
         "reason_code": "LegalConsentNotAuthorized",
@@ -274,7 +274,7 @@ def validate_ledger(path: Path) -> list[str]:
             if chapter.get("draft_state") != "pending-real-footage":
                 errors.append(f"{chapter_id} must remain pending-real-footage")
             if (
-                binding.get("kind") != "same-run-real-ck3-clean-span"
+                binding.get("kind") != "lineage-bound-real-ck3-clean-span"
                 or binding.get("producer_key") != EXPECTED_SPAN_MAP[chapter_id]
                 or binding.get("required_postcondition")
                 != EXPECTED_POSTCONDITIONS[chapter_id]

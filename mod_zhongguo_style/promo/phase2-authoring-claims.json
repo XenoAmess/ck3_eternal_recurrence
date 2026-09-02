@@ -17,7 +17,7 @@
     },
     {
       "path": "mod_zhongguo_style/promo/phase2-readiness-2026-09-02.md",
-      "sha256": "A74912A0E34C89C04761C63183FA71B96F7B21196C2B759B961EB3AC0D956457"
+      "sha256": "0CDDD7DE470B9A359D7D0366F7285D9A835FD865CAFDAC889095D941039CA964"
     },
     {
       "path": "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md",
@@ -39,7 +39,7 @@
   "readiness_review": {
     "reviewed_through_commit": "d0fa15670fc9b0c049cc6d9228c839c04135e21c",
     "current_state": "static-ready-native-readiness-red-not-live",
-    "same_run_phase2_clean_spans_verified": 0,
+    "lineage_bound_phase2_clean_spans_verified": 0,
     "latest_phase2_terminal": {
       "result": "RED",
       "reason_code": "LegalConsentNotAuthorized",
@@ -61,7 +61,7 @@
   "authoring_status": "draft-only-not-builder-input",
   "global_release_boundaries": [
     "No chapter may be called live, complete, release-ready, exported, or published from static wiring, fixtures, generated cards, MCP schemas, command acknowledgements, or this draft.",
-    "The eight gameplay chapters require clean spans from one real managed CK3 capture run, with their canonical producer keys, begin/end marks, source-byte hashes, visible product surfaces, and provider-observed postconditions.",
+    "The eight gameplay chapters require lineage-bound clean spans from real managed CK3 sessions, with one canonical seed/save lineage and exact source/game/mod mount; each span binds its own continuous pre-action-post session, checkpoints, postcondition, and cleanup.",
     "Opening and finale cards may be generated only during a future candidate build; they cannot substitute for any gameplay span.",
     "Chinese narration and simultaneous Chinese/English subtitles remain draft text until final footage is reviewed; no TTS, subtitle render, or media output is authorized by this ledger.",
     "Release use additionally requires the media-preflight receipt, capture evidence, final render validation, and human review gates already defined by the phase-two readiness ledger."
@@ -112,7 +112,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "facts-quota-calibration",
         "required_postcondition": "scoreboard/query revision changes and the visible calibration event is identity-ready",
         "required_for_release": true,
@@ -155,7 +155,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "receipts-appeals-pip",
         "required_postcondition": "the same PIP owner/subject/cycle/case reaches the selected response state",
         "required_for_release": true,
@@ -198,7 +198,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "manager-governance",
         "required_postcondition": "the AI-owned case reaches a provider-observed terminal business state",
         "required_for_release": true,
@@ -241,7 +241,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "promotion-compensation",
         "required_postcondition": "promotion choice and compensation receipt remain bound to the same frozen case",
         "required_for_release": true,
@@ -283,7 +283,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "hc-workforce",
         "required_postcondition": "A/B/C each proves the same owner/subject case from a hash-identical checkpoint",
         "required_for_release": true,
@@ -326,7 +326,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "projects-metrics",
         "required_postcondition": "project choice and metrics result are visible on identity-ready product events",
         "required_for_release": true,
@@ -369,7 +369,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "incidents-operations",
         "required_postcondition": "X/Y/Z transitions and closure are provider-observed, never inferred from ACK",
         "required_for_release": true,
@@ -412,7 +412,7 @@
       "type": "ck3_clean_span",
       "draft_state": "pending-real-footage",
       "footage_binding": {
-        "kind": "same-run-real-ck3-clean-span",
+        "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "cross-cycle-endgame",
         "required_postcondition": "the terminal event is bound to the carried debt/default-change cycle",
         "required_for_release": true,

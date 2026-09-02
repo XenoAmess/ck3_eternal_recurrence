@@ -23,10 +23,17 @@
 - `open_kaishek` 支撑主线锚点为 `17caa28`。它继续随项目演进提供离线预验，但不会把当前 loader/native RED、
   缺失 paused artifact 或缺失视频素材升级为 live。
 
-## 八段必须来自同一次真实二期 capture
+## 八段必须来自同一 canonical lineage 的真实二期 capture
 
 真实 producer 必须在 gameplay HUD 出现后开始录制，使用真实历史角色，按固定合同产生下列八段 clean span；
 每段都要有 begin/end mark、完整原始 MKV 时间范围、fixture/test UI 缺席门与同源 bytes/SHA 绑定：
+
+八段不再强制共用一个 CK3 PID、connection generation 或 managed session。允许在 span 边界完成清理后 clean restart；
+但八段必须绑定同一个 canonical seed/save lineage，以及完全相同的 source commit/tree、游戏版本/EXE 和
+product-only mod mount tree。每一段内部的 pre → action → post 必须保持同一 session identity、PID、generation
+和显式衔接的 revision/native_revision，并绑定 start/end checkpoint/save SHA、provider postcondition 与 GREEN
+process/driver cleanup。seed generation → loaded-seed proof 自身仍必须在同一连续 managed session 内完成。
+一期、旧版本与 fixture 素材不得混入。
 
 1. `phase2_fact_quota_calibration` / `facts-quota-calibration`：事实档、配额档、背靠背互评与校准债。
 2. `phase2_receipt_appeal_pip` / `receipts-appeals-pip`：告身、申诉、PIP 与跨周期追踪。

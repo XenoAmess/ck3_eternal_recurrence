@@ -22,21 +22,26 @@ after the corresponding real footage and claim can be reviewed.
   `tools/zhongguo_phase2_promo_producer.py`. Each ledger row also freezes the
   matching provider-observed postcondition from
   `tools/zhongguo_phase2_capture_choreography.py`.
-- All eight gameplay cues require clean spans from one real managed CK3 run.
-  Static wiring, fixtures, old phase-one footage, generated cards, MCP schemas,
-  and command ACKs cannot satisfy that requirement.
+- All eight gameplay cues require real managed CK3 clean spans bound to one
+  canonical seed/save lineage and the same exact source commit/tree, game
+  version/EXE, and product-only mod mount. Each span must keep its own
+  pre-action-post session/PID/generation/revision chain continuous and bind
+  start/end checkpoint hashes, the provider-observed postcondition, and GREEN
+  cleanup. Clean CK3 restarts are allowed between spans; fixtures, old
+  phase-one or old-version footage, generated cards, MCP schemas, and command
+  ACKs cannot satisfy the requirement.
 - `static-ready` describes the current evidence available to write a bounded
   draft. It does not mean `fixture-live`, `production-live`, `complete`, or
   `release-ready`.
 - The final wording may be shortened after the real footage duration is known.
-  Claims may not be strengthened unless the same-run evidence and human review
+  Claims may not be strengthened unless the lineage-bound evidence and human review
   support them.
 
 ## Review through `d0fa156`
 
 The 2026-09-03 content review is frozen in the JSON `readiness_review` block.
 At `d0fa15670fc9b0c049cc6d9228c839c04135e21c`, there are still zero verified
-same-run phase-two clean spans. The latest phase-two terminal remains
+lineage-bound phase-two clean spans. The latest phase-two terminal remains
 `RED/LegalConsentNotAuthorized`: the run stopped before the producer seam,
 recorded zero producer entries, and generated no footage. The exact evidence is
 `docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md`. This newer
@@ -105,7 +110,7 @@ The final-video no-media planner binds this exact ledger by bytes and SHA-256:
 ```powershell
 py tools/plan_zhongguo_phase2_final_promo.py `
   --output <new-runbook.json> `
-  --capture-root <same-run-green-capture> `
+  --capture-root <lineage-bound-green-capture> `
   --seed-preflight-report <preflight.json> `
   --media-preflight-report <media-receipt.json> `
   --expected-media-preflight-sha256 <receipt-sha256> `
@@ -139,17 +144,31 @@ observer schema. It accepts only the runner's canonical `report.json`,
 `cell/promo/capture-timeline.json`, `evidence-index.json`, and
 `cell/04_phase2_seed_loaded.json` paths. It byte-verifies those files, the
 nonempty raw recording, and every clean-frame image/gate against the same
-evidence index. It then requires one managed PID and connection generation,
-valid loaded-seed revision identities, no session restart, ordered recording
-marks, eight canonical clean spans, and all eight provider-observed
-postconditions GREEN. Missing, partial, cross-session, or hash-mismatched input
-stays typed `footage_pending`; the planner neither repairs nor promotes it.
+evidence index. The legacy schema still accepts an unchanged all-eight-span
+single managed session. The span-session-v2 schema instead requires one
+canonical seed/save lineage and exact source/game/mod-mount identity across all
+eight spans. Within each span, pre → action → post must remain on one managed
+session/PID/generation with an explicitly linked revision chain, byte-bound
+start/end checkpoints in the same save lineage, a provider-observed GREEN
+postcondition, and GREEN process/driver cleanup. Different spans may use clean
+CK3 restarts and therefore different PIDs or connection generations. The seed
+generation → loaded-seed proof remains a separate same-session continuity gate.
+Ordered recording marks and eight clean-frame gates are still mandatory.
+Missing, partial, intra-span discontinuous, lineage-drifting, phase-one,
+old-version, fixture, or hash-mismatched input stays typed `footage_pending`;
+the planner neither repairs nor promotes it.
+
+A GREEN intake is an immutable source binding, not a one-use token. The same
+verified eight-span bundle may feed two independent edit projects. Each project
+and candidate must independently bind the unchanged timeline/report/index/raw,
+checkpoint, and gate hashes; reusing the bundle neither copies nor regenerates
+footage and cannot upgrade an unsupported claim.
 
 Inspect an existing capture without producing media:
 
 ```powershell
 py tools/zhongguo_phase2_footage_intake.py `
-  --capture-root <same-run-green-capture> `
+  --capture-root <lineage-bound-green-capture> `
   --output <new-intake-report.json>
 ```
 
