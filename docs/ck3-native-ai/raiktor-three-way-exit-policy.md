@@ -185,3 +185,18 @@ war-bound losses remain unobserved, so `truce_ready=false`,
 checkpoint/driver invariants were GREEN. This artifact supersedes the earlier
 "no paused artifact" wording for the narrow component rows while preserving
 the full-exit RED boundary.
+
+## 2026-09-02 evaluator evidence and current preflight
+
+The frozen exact-build evaluator contract was rechecked statically: RVA
+`0x3373000` takes `(script_value, effect_context, evaluation_context)` and
+returns `int32`; both CAddTruce callers use `+0x108` and `context+0x28`.
+There is no evidence-backed alternate offset, so the public v1 wire and
+six-domain frozen hashes remain unchanged. A future paused probe must bind
+`open_kaishek` `36b4743d5da013ba1f85790ebcffad2629442ed1` and JAR SHA
+`DFEA464B657D627BBB1AEF34C12CD91419830644D47F891782A3C9D718C44D61`; its
+offline preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T1042-war-days\open-kaishek-preflight-war-days.json`
+(SHA-256
+`CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`).
+No CK3 rerun or termination write is justified by this static result.

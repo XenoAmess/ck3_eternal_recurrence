@@ -1945,3 +1945,16 @@ sent. CK3 cleanup is proven (`tree_gone=true`, `driver_closed=true`), and the
 checkpoint/driver source hashes are unchanged. The next implementation target
 is a narrowly scoped native observation of `evaluated_days`; expiry must not be
 inferred and an identical runner retry is not justified.
+
+## 2026-09-02 current offline binding
+
+The latest offline accelerator is `open_kaishek`
+`36b4743d5da013ba1f85790ebcffad2629442ed1` with JAR SHA-256
+`DFEA464B657D627BBB1AEF34C12CD91419830644D47F891782A3C9D718C44D61`.
+Its parent-adapter `war_days` preflight is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T1042-war-days\open-kaishek-preflight-war-days.json`
+(SHA-256
+`CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`),
+with parser and dedicated fixture validation GREEN, bounded root validation
+RED, and no CK3 process. This schema-only slice does not alter the static
+war-exit tree or authorize a termination action.

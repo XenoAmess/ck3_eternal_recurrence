@@ -200,3 +200,23 @@ Focused profile/validator tests are `13/13` and `23/23`; the rebuilt JAR SHA-
 `DCCCF51A8B68EEC6CCF8D391D7B0E839361DECB9E37098C31BBB78EB296247A1`.
 This is offline syntax/profile evidence only and does not change the G2 live
 gate or authorize any action.
+
+## 2026-09-02 current accelerator binding
+
+For any future native entry after a real truce-reader change, bind the current
+clean `open_kaishek` mainline
+`36b4743d5da013ba1f85790ebcffad2629442ed1` and JAR SHA-256
+`DFEA464B657D627BBB1AEF34C12CD91419830644D47F891782A3C9D718C44D61`.
+The latest parent-adapter preflight using its dedicated `war_days` fixture is
+retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T1042-war-days\open-kaishek-preflight-war-days.json`
+(SHA-256
+`CDC7DCD22888208C7585A2932F266912CAE4C08A9D0836D7EF6580796FC8571F`).
+It is offline only: product parser `76/23,831,335/0` and the dedicated
+fixture parser/validator are GREEN, the bounded root validator is the known
+schema-only RED (`232,973`), and `ck3_started=false`.
+
+The static evaluator call-site review closed the proposed alternate offset:
+CAddTruce uses `truce_effect+0x108` and `context+0x28` at both known call sites.
+No public schema/ABI widening or termination write is authorized; stop at the
+existing semantic-ready/truce gate if internal evidence is still unavailable.
