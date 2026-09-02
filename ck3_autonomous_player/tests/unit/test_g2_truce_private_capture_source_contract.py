@@ -90,6 +90,62 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
 
+    def test_nested_capture_is_bounded_to_four_rtti_justified_entries(self) -> None:
+        resolver = (
+            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
+        ).read_text(encoding="utf-8")
+        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
+            encoding="utf-8"
+        )
+        header = (
+            NATIVE
+            / "include"
+            / "xar_bridge"
+            / "raiktor_surrender_truce_v1.hpp"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("kPrivateScriptedListVtableRva = 0x41B1E90", resolver)
+        self.assertIn("kPrivateIfEffectVtableRva = 0x44D1E18", resolver)
+        self.assertIn("kPrivateIfOptionalEffectOffset = 0x258", resolver)
+        self.assertEqual(
+            resolver.count("CapturePrivateNestedContainerForG2("), 5
+        )
+        for call_shape in (
+            "capture, 0, environment, access, 9, -1, context_child0",
+            "capture, 1, environment, access, 10, 3, next_child",
+            "capture, 2, environment, access, 10, 4, next_child",
+            "capture, 3, environment, access, 10, 5, next_child",
+        ):
+            self.assertIn(call_shape, resolver)
+        helper = resolver[
+            resolver.index("void CapturePrivateNestedContainerForG2("):
+            resolver.index("void CaptureLoadedScriptedCandidatesForG2(")
+        ]
+        self.assertIn("common_child_vtable == environment.truce_effect_vtable", helper)
+        self.assertIn("nested.optional_effect_vtable == environment.truce_effect_vtable", helper)
+        self.assertNotIn("evaluate_duration_days", helper)
+        self.assertNotIn("kTruceDurationScriptValueOffset", helper)
+        self.assertIn(
+            "std::array<RaiktorTrucePrivateNestedContainerV1, 4>", header
+        )
+        self.assertIn(
+            "std::array<std::uintptr_t, 16> common_child_vtables", header
+        )
+
+        for field in (
+            '"nested_container_capture_completed"',
+            '"nested_truce_match_count"',
+            '"nested_truce_match_container_slot"',
+            '"nested_truce_match_common_child_index"',
+            '"nested_truce_match_optional_effect"',
+            '"nested_containers"',
+            '"common_vector_status"',
+            '"common_child_vtable_rvas"',
+            '"optional_effect_vtable_rva"',
+            '"optional_truce_match"',
+        ):
+            self.assertIn(field.replace('"', '\\"'), writer)
+
     def test_prior_root_enumeration_is_not_replayed(self) -> None:
         resolver = (
             NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"

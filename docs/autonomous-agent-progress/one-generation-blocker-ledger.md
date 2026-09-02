@@ -813,3 +813,19 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   的 COL/type descriptor/RTTI 与 bounded container shape，优先确定仍可能通向
   `0x4461CA8` 的唯一路径；在静态证据未唯一化前不再启动 CK3，不改 production
   `19/14/index 9`、public ABI 或 readiness。`GEN-034` 继续 **unresolved**。
+
+## 2026-09-02：GEN-034 four-entry nested live NO-GO
+
+- RTTI 收窄后的唯一 bounded live 已完成四个入口。index 9
+  `CIfEffect+0x258=null`；index 10 scripted-list common `1/1` 为
+  `0x44D1D50`；两个 CIf common 分别为 `1/1:[0x44D1E18]` 与
+  `2/2:[0x44D2138,0x44D27B8]`，且两者 `+0x258=null`。两条记录完全
+  一致，Truce `0x4461CA8` match count 为零。
+- report/private JSONL SHA-256 分别为
+  `A89D7EBE4BC31352D51BF0AB7FB1FE6351B288F71CF1B9482C00F478506DCDC3` /
+  `DF77E246787B8B1EE11DCB933442FBECA66547C048F2E02674DE02B955FD011E`；
+  cleanup/source invariant GREEN，无 evaluator 或 mutation。
+- 所有已读 `CIfEffect+0x258` 均已收口为 null，不再列作 pending。下一包只离线解析
+  `0x44D1D50` 与 `0x44D27B8` 的 exact RTTI/COL/container 语义；静态不能唯一化前
+  不再启动 CK3。public/readiness/production shape 不变，`GEN-034` 继续
+  **unresolved**。

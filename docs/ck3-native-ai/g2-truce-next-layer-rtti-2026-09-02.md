@@ -68,3 +68,58 @@ revisit the four excluded leaf positions or any earlier root/Context prefix.
 Until that evidence exists, `evaluated_days`, expiry, decision, and action
 remain not-live, the production `19/14/index 9` constants remain unchanged,
 and `GEN-034` remains unresolved.
+
+## Four-entry bounded live follow-up
+
+An OFF-by-default candidate on parent baseline
+`b078d3aa9cd77760fb627f9aff77b58d2eca4285` captured only the four entries
+above. Common vectors were capped at 16 children, and the three CIf optional
+pointers were read only at the statically proven `+0x258` offset. The capture
+only compared vtables to `0x4461CA8`; it did not compute or evaluate duration.
+
+The source contract passed `7/7`; the instrumented Release build and native
+game-access test passed. Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `DD852843C961D73EA653D658A17751BEEEB84BCA37DFC4AC03BBFCB1EEDB95B7`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `D5ED892C8B64F9DECED1726EB5A5B18A863D343C81FA4FE0CDED29C745117067`.
+
+The live bound `open_kaishek`
+`0390b9a959fa1a59a968000ed49e827a03b8d4e4`, the unchanged CLI JAR
+SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`,
+and GREEN preflight artifact
+`Z:\ck3_mod_rewrite_process_assets\zg361\open-kaishek-support-20260902T1836\g2-next-layer-corpus-preflight.json`,
+SHA-256
+`CD2509F1670B306FAC4BA6B0F1DA63B32E2DCFF47788D2B7F7C7EF1C35FFF220`.
+
+The single live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-composite-ready-20260902T185429\live-openk0390\report.json`,
+  SHA-256
+  `A89D7EBE4BC31352D51BF0AB7FB1FE6351B288F71CF1B9482C00F478506DCDC3`;
+- private JSONL beside it, SHA-256
+  `DF77E246787B8B1EE11DCB933442FBECA66547C048F2E02674DE02B955FD011E`.
+
+Both rows are identical and all four captures completed:
+
+| Entry | Common capacity/count and child vtables | `+0x258` |
+| --- | --- | --- |
+| index 9 `CIfEffect` | not repeated; prior common child was `0x4446EF0` | null |
+| index 10 child 3 scripted-list | `1/1`: `0x44D1D50` | not applicable |
+| index 10 child 4 `CIfEffect` | `1/1`: `0x44D1E18` | null |
+| index 10 child 5 `CIfEffect` | `2/2`: `0x44D2138`, `0x44D27B8` | null |
+
+No common or optional entry matched `CAddTruceEffect<0>`. All three observed
+`CIfEffect+0x258` fields are now conclusively null for this frozen loaded
+tree; they must not remain listed as pending paths. Cleanup and source
+invariants were GREEN, and no mutation or time advance was sent.
+
+Index 9 is exhausted under the bounded RTTI-backed layout. The next static
+entry is restricted to `0x44D1D50` and `0x44D27B8`: resolve their exact
+COL/type/container semantics, then select only a uniquely justified nested
+field. The recursive `0x44D1E18` occurrence remains a known CIf container but
+does not by itself identify Truce. Public ABI/readiness and production shape
+constants remain unchanged; `GEN-034` remains unresolved.

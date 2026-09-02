@@ -195,7 +195,88 @@ void AppendG2TrucePrivateCaptureV1(
   scripted_candidates_json[scripted_candidates_length++] = ']';
   scripted_candidates_json[scripted_candidates_length] = '\0';
 
-  std::array<char, 16384> row{};
+  std::array<char, 8192> nested_containers_json{};
+  std::size_t nested_containers_length = 0;
+  nested_containers_json[nested_containers_length++] = '[';
+  for (std::size_t slot = 0; slot < shape.nested_containers.size(); ++slot) {
+    const auto &nested = shape.nested_containers[slot];
+    std::array<char, 1024> child_vtables_json{};
+    std::size_t child_vtables_length = 0;
+    child_vtables_json[child_vtables_length++] = '[';
+    for (std::size_t child_index = 0;
+         child_index < nested.common_capture_limit; ++child_index) {
+      const int child_length = std::snprintf(
+          child_vtables_json.data() + child_vtables_length,
+          child_vtables_json.size() - child_vtables_length,
+          "%s\"0x%llX\"", child_index == 0 ? "" : ",",
+          static_cast<unsigned long long>(
+              as_rva(nested.common_child_vtables[child_index])));
+      if (child_length <= 0 ||
+          static_cast<std::size_t>(child_length) >=
+              child_vtables_json.size() - child_vtables_length) {
+        return;
+      }
+      child_vtables_length += static_cast<std::size_t>(child_length);
+    }
+    if (child_vtables_length + 2 > child_vtables_json.size()) return;
+    child_vtables_json[child_vtables_length++] = ']';
+    child_vtables_json[child_vtables_length] = '\0';
+
+    const int nested_length = std::snprintf(
+        nested_containers_json.data() + nested_containers_length,
+        nested_containers_json.size() - nested_containers_length,
+        "%s{\"root_index\":%d,\"source_child_index\":%d,"
+        "\"status\":\"%.*s\",\"node\":\"0x%llX\","
+        "\"node_vtable_rva\":\"0x%llX\","
+        "\"common_vector_requested\":%s,"
+        "\"common_vector_status\":\"%.*s\","
+        "\"common_children\":\"0x%llX\","
+        "\"common_capacity\":%d,\"common_count\":%d,"
+        "\"common_capture_limit\":%llu,"
+        "\"common_capture_completed\":%llu,"
+        "\"common_capture_failed_index\":%d,"
+        "\"common_child_vtable_rvas\":%.*s,"
+        "\"common_truce_match_count\":%llu,"
+        "\"common_truce_match_index\":%d,"
+        "\"optional_effect_requested\":%s,"
+        "\"optional_effect_status\":\"%.*s\","
+        "\"optional_effect\":\"0x%llX\","
+        "\"optional_effect_vtable_rva\":\"0x%llX\","
+        "\"optional_truce_match\":%s}",
+        slot == 0 ? "" : ",", nested.root_index,
+        nested.source_child_index, static_cast<int>(nested.status.size()),
+        nested.status.data(), static_cast<unsigned long long>(nested.node),
+        static_cast<unsigned long long>(as_rva(nested.node_vtable)),
+        nested.common_vector_requested ? "true" : "false",
+        static_cast<int>(nested.common_vector_status.size()),
+        nested.common_vector_status.data(),
+        static_cast<unsigned long long>(nested.common_children),
+        nested.common_capacity, nested.common_count,
+        static_cast<unsigned long long>(nested.common_capture_limit),
+        static_cast<unsigned long long>(nested.common_capture_completed),
+        nested.common_capture_failed_index,
+        static_cast<int>(child_vtables_length), child_vtables_json.data(),
+        static_cast<unsigned long long>(nested.common_truce_match_count),
+        nested.common_truce_match_index,
+        nested.optional_effect_requested ? "true" : "false",
+        static_cast<int>(nested.optional_effect_status.size()),
+        nested.optional_effect_status.data(),
+        static_cast<unsigned long long>(nested.optional_effect),
+        static_cast<unsigned long long>(
+            as_rva(nested.optional_effect_vtable)),
+        nested.optional_truce_match ? "true" : "false");
+    if (nested_length <= 0 ||
+        static_cast<std::size_t>(nested_length) >=
+            nested_containers_json.size() - nested_containers_length) {
+      return;
+    }
+    nested_containers_length += static_cast<std::size_t>(nested_length);
+  }
+  if (nested_containers_length + 2 > nested_containers_json.size()) return;
+  nested_containers_json[nested_containers_length++] = ']';
+  nested_containers_json[nested_containers_length] = '\0';
+
+  std::array<char, 32768> row{};
   const int length = std::snprintf(
       row.data(), row.size(),
       "{\"schema\":\"xar.ck3.g2_truce_private_capture.v1\","
@@ -241,6 +322,12 @@ void AppendG2TrucePrivateCaptureV1(
       "\"next_layer_truce_match_count\":%llu,"
       "\"next_layer_truce_match_root_index\":%d,"
       "\"next_layer_truce_match_child_index\":%d,"
+      "\"nested_container_capture_completed\":%llu,"
+      "\"nested_truce_match_count\":%llu,"
+      "\"nested_truce_match_container_slot\":%d,"
+      "\"nested_truce_match_common_child_index\":%d,"
+      "\"nested_truce_match_optional_effect\":%s,"
+      "\"nested_containers\":%.*s,"
       "\"scripted_candidates\":%.*s,"
       "\"scripted_effect\":\"0x%llX\","
       "\"scripted_vtable\":\"0x%llX\",\"scripted_vtable_rva\":\"0x%llX\","
@@ -331,6 +418,14 @@ void AppendG2TrucePrivateCaptureV1(
       static_cast<unsigned long long>(shape.next_layer_truce_match_count),
       shape.next_layer_truce_match_root_index,
       shape.next_layer_truce_match_child_index,
+      static_cast<unsigned long long>(
+          shape.nested_container_capture_completed),
+      static_cast<unsigned long long>(shape.nested_truce_match_count),
+      shape.nested_truce_match_container_slot,
+      shape.nested_truce_match_common_child_index,
+      shape.nested_truce_match_optional_effect ? "true" : "false",
+      static_cast<int>(nested_containers_length),
+      nested_containers_json.data(),
       static_cast<int>(scripted_candidates_length),
       scripted_candidates_json.data(),
       static_cast<unsigned long long>(shape.scripted_effect),

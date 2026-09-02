@@ -170,6 +170,30 @@ struct RaiktorTrucePrivateScriptedCandidateV1 {
   std::uintptr_t next_layer_truce_duration_script_value = 0;
 };
 
+struct RaiktorTrucePrivateNestedContainerV1 {
+  std::int32_t root_index = -1;
+  std::int32_t source_child_index = -1;
+  std::string_view status = "not_attempted";
+  std::uintptr_t node = 0;
+  std::uintptr_t node_vtable = 0;
+  bool common_vector_requested = false;
+  std::string_view common_vector_status = "not_requested";
+  std::uintptr_t common_children = 0;
+  std::int32_t common_capacity = -1;
+  std::int32_t common_count = -1;
+  std::array<std::uintptr_t, 16> common_child_vtables{};
+  std::size_t common_capture_limit = 0;
+  std::size_t common_capture_completed = 0;
+  std::int32_t common_capture_failed_index = -1;
+  std::size_t common_truce_match_count = 0;
+  std::int32_t common_truce_match_index = -1;
+  bool optional_effect_requested = false;
+  std::string_view optional_effect_status = "not_requested";
+  std::uintptr_t optional_effect = 0;
+  std::uintptr_t optional_effect_vtable = 0;
+  bool optional_truce_match = false;
+};
+
 struct RaiktorTrucePrivateShapeCaptureV1 {
   std::string_view failed_check = "not_started";
   std::uintptr_t root_vtable = 0;
@@ -199,6 +223,13 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::size_t next_layer_truce_match_count = 0;
   std::int32_t next_layer_truce_match_root_index = -1;
   std::int32_t next_layer_truce_match_child_index = -1;
+  std::array<RaiktorTrucePrivateNestedContainerV1, 4>
+      nested_containers{};
+  std::size_t nested_container_capture_completed = 0;
+  std::size_t nested_truce_match_count = 0;
+  std::int32_t nested_truce_match_container_slot = -1;
+  std::int32_t nested_truce_match_common_child_index = -1;
+  bool nested_truce_match_optional_effect = false;
   std::uintptr_t scripted_effect = 0;
   std::uintptr_t scripted_vtable = 0;
   std::int32_t scripted_selector_count = -1;

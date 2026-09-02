@@ -146,6 +146,147 @@ constexpr std::array<std::size_t, 2> kPrivateScriptedCandidateIndices = {
     9, 10};
 constexpr std::uintptr_t kPrivateIndex9ContextChild0VtableRva = 0x44D1E18;
 constexpr std::uintptr_t kPrivateIndex10ContextChild0VtableRva = 0x41E36D0;
+constexpr std::uintptr_t kPrivateScriptedListVtableRva = 0x41B1E90;
+constexpr std::uintptr_t kPrivateIfEffectVtableRva = 0x44D1E18;
+constexpr std::size_t kPrivateIfOptionalEffectOffset = 0x258;
+
+void CapturePrivateNestedContainerForG2(
+    RaiktorTrucePrivateShapeCaptureV1 &capture, std::size_t capture_slot,
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access, std::int32_t root_index,
+    std::int32_t source_child_index, void *node, std::uintptr_t node_vtable,
+    std::uintptr_t expected_vtable_rva, bool capture_common_vector,
+    bool capture_optional_effect) noexcept {
+  if (capture_slot >= capture.nested_containers.size()) return;
+  auto &nested = capture.nested_containers[capture_slot];
+  nested.root_index = root_index;
+  nested.source_child_index = source_child_index;
+  nested.node = reinterpret_cast<std::uintptr_t>(node);
+  nested.node_vtable = node_vtable;
+  nested.common_vector_requested = capture_common_vector;
+  nested.optional_effect_requested = capture_optional_effect;
+  if (node == nullptr ||
+      node_vtable != environment.module_base + expected_vtable_rva) {
+    nested.status = "exact_node_mismatch";
+    return;
+  }
+
+  if (capture_common_vector) {
+    void *common_children = nullptr;
+    if (!ReadValue(access, node, kEffectChildrenOffset, common_children)) {
+      nested.status = "common_children_read_failed";
+      nested.common_vector_status = nested.status;
+      return;
+    }
+    nested.common_children =
+        reinterpret_cast<std::uintptr_t>(common_children);
+    if (!ReadValue(access, node, kEffectCapacityOffset,
+                   nested.common_capacity)) {
+      nested.status = "common_capacity_read_failed";
+      nested.common_vector_status = nested.status;
+      return;
+    }
+    if (!ReadValue(access, node, kEffectCountOffset, nested.common_count)) {
+      nested.status = "common_count_read_failed";
+      nested.common_vector_status = nested.status;
+      return;
+    }
+    if (nested.common_capacity < 0 || nested.common_count < 0 ||
+        nested.common_count > nested.common_capacity) {
+      nested.status = "common_vector_bounds_invalid";
+      nested.common_vector_status = nested.status;
+      return;
+    }
+    if (nested.common_count > 0 && common_children == nullptr) {
+      nested.status = "common_children_null";
+      nested.common_vector_status = nested.status;
+      return;
+    }
+
+    const auto declared_count = static_cast<std::size_t>(nested.common_count);
+    nested.common_capture_limit =
+        declared_count < nested.common_child_vtables.size()
+            ? declared_count
+            : nested.common_child_vtables.size();
+    for (std::size_t index = 0; index < nested.common_capture_limit; ++index) {
+      void *common_child = nullptr;
+      if (!ReadValue(access, common_children, index * sizeof(void *),
+                     common_child)) {
+        nested.status = "common_child_pointer_read_failed";
+        nested.common_vector_status = nested.status;
+        nested.common_capture_failed_index = static_cast<std::int32_t>(index);
+        return;
+      }
+      if (common_child == nullptr) {
+        nested.status = "common_child_null";
+        nested.common_vector_status = nested.status;
+        nested.common_capture_failed_index = static_cast<std::int32_t>(index);
+        return;
+      }
+      std::uintptr_t common_child_vtable = 0;
+      if (!ReadValue(access, common_child, 0, common_child_vtable)) {
+        nested.status = "common_child_vtable_read_failed";
+        nested.common_vector_status = nested.status;
+        nested.common_capture_failed_index = static_cast<std::int32_t>(index);
+        return;
+      }
+      nested.common_child_vtables[index] = common_child_vtable;
+      nested.common_capture_completed = index + 1;
+      if (common_child_vtable == environment.truce_effect_vtable) {
+        ++nested.common_truce_match_count;
+        nested.common_truce_match_index = static_cast<std::int32_t>(index);
+        ++capture.nested_truce_match_count;
+        capture.nested_truce_match_container_slot =
+            static_cast<std::int32_t>(capture_slot);
+        capture.nested_truce_match_common_child_index =
+            static_cast<std::int32_t>(index);
+        capture.nested_truce_match_optional_effect = false;
+      }
+    }
+    nested.common_vector_status =
+        nested.common_capture_limit == declared_count ? "complete"
+                                                       : "truncated";
+    if (nested.common_vector_status == "truncated") {
+      nested.status = "common_vector_truncated";
+      return;
+    }
+  }
+
+  if (capture_optional_effect) {
+    void *optional_effect = nullptr;
+    if (!ReadValue(access, node, kPrivateIfOptionalEffectOffset,
+                   optional_effect)) {
+      nested.status = "optional_effect_read_failed";
+      nested.optional_effect_status = nested.status;
+      return;
+    }
+    nested.optional_effect =
+        reinterpret_cast<std::uintptr_t>(optional_effect);
+    if (optional_effect == nullptr) {
+      nested.optional_effect_status = "null";
+    } else {
+      if (!ReadValue(access, optional_effect, 0,
+                     nested.optional_effect_vtable)) {
+        nested.status = "optional_effect_vtable_read_failed";
+        nested.optional_effect_status = nested.status;
+        return;
+      }
+      nested.optional_effect_status = "complete";
+      nested.optional_truce_match =
+          nested.optional_effect_vtable == environment.truce_effect_vtable;
+      if (nested.optional_truce_match) {
+        ++capture.nested_truce_match_count;
+        capture.nested_truce_match_container_slot =
+            static_cast<std::int32_t>(capture_slot);
+        capture.nested_truce_match_common_child_index = -1;
+        capture.nested_truce_match_optional_effect = true;
+      }
+    }
+  }
+
+  nested.status = "complete";
+  ++capture.nested_container_capture_completed;
+}
 
 void CaptureLoadedScriptedCandidatesForG2(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
@@ -457,6 +598,12 @@ void CaptureLoadedScriptedCandidatesForG2(
 
     candidate.next_layer_capture_limit =
         static_cast<std::size_t>(expected_next_layer_count);
+    if (root_index == 9) {
+      CapturePrivateNestedContainerForG2(
+          capture, 0, environment, access, 9, -1, context_child0,
+          candidate.context_child0_vtable, kPrivateIfEffectVtableRva, false,
+          true);
+    }
     bool next_layer_failed = false;
     for (std::size_t next_index = 0;
          next_index < candidate.next_layer_capture_limit; ++next_index) {
@@ -481,6 +628,19 @@ void CaptureLoadedScriptedCandidatesForG2(
       }
       candidate.next_layer_child_vtables[next_index] = next_child_vtable;
       candidate.next_layer_capture_completed = next_index + 1;
+      if (root_index == 10 && next_index == 3) {
+        CapturePrivateNestedContainerForG2(
+            capture, 1, environment, access, 10, 3, next_child,
+            next_child_vtable, kPrivateScriptedListVtableRva, true, false);
+      } else if (root_index == 10 && next_index == 4) {
+        CapturePrivateNestedContainerForG2(
+            capture, 2, environment, access, 10, 4, next_child,
+            next_child_vtable, kPrivateIfEffectVtableRva, true, true);
+      } else if (root_index == 10 && next_index == 5) {
+        CapturePrivateNestedContainerForG2(
+            capture, 3, environment, access, 10, 5, next_child,
+            next_child_vtable, kPrivateIfEffectVtableRva, true, true);
+      }
       if (next_child_vtable == environment.truce_effect_vtable) {
         const void *duration_address = nullptr;
         if (!CheckedAddress(next_child, kTruceDurationScriptValueOffset,
