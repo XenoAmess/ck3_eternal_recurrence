@@ -1,0 +1,81 @@
+{
+  "contract": "raiktor-truce-evaluator-callsite-v1",
+  "schema_version": 1,
+  "status": "static-ready",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "pe_timestamp": "0x6A1EEE6D",
+    "image_base": "0x140000000",
+    "size_of_image": "0x5C2D000",
+    "architecture": "x86_64"
+  },
+  "evaluator": {
+    "rva": "0x3373000",
+    "signature": "int32 __fastcall(void *script_value, void *effect_context, void *evaluation_context)",
+    "entry_span_end_rva_exclusive": "0x3373040",
+    "entry_bytes_hex": "48895C240848896C2410488974241848897C242041564883EC60488BD94533F6488B4910498BF0488BEA4885C974514883793010488D4118448B40107203488B",
+    "entry_span_sha256": "372D1E4FA6A208D55700A18FF550C3B2F023FC30FD8FBCAB343D0B98B6A09671",
+    "return_rva": "0x337312E",
+    "return_kind": "int32_in_EAX"
+  },
+  "call_sites": [
+    {
+      "effect_kind": "attacker_defeat_truce",
+      "sequence_start_rva": "0x2EDAF01",
+      "call_instruction_rva": "0x2EDAF0F",
+      "sequence_end_rva_exclusive": "0x2EDAF14",
+      "bytes_hex": "488D8E080100004D8B4728498BD7E8EC804900",
+      "sequence_sha256": "1FAE6B4E26AC04D4999B8DDBCECCF0A243DF0795F41979DB53BB8B9FBBC39D00",
+      "post_call_bytes_hex": "8D0C408D04CF",
+      "post_call_sha256": "0670A696402A7F1EEDC03EB2C2E7222A75FB15AEA9E0B35585306D31D5702A62",
+      "operands": {
+        "script_value": "RCX = [RSI+0x108]",
+        "effect_context": "RDX = R15",
+        "evaluation_context": "R8 = [R15+0x28]",
+        "target_rva": "0x3373000"
+      }
+    },
+    {
+      "effect_kind": "attacker_defeat_truce",
+      "sequence_start_rva": "0x2EDB58F",
+      "call_instruction_rva": "0x2EDB59E",
+      "sequence_end_rva_exclusive": "0x2EDB5A3",
+      "bytes_hex": "488D8E080100004D8B442428498BD4E85D7A4900",
+      "sequence_sha256": "DDDA2E8AF70DAA91A1513C3DF3FE05714D6FAB8B2F6D7CC9B2C83D0EFCC85990",
+      "post_call_bytes_hex": "8D0C408D04CF",
+      "post_call_sha256": "0670A696402A7F1EEDC03EB2C2E7222A75FB15AEA9E0B35585306D31D5702A62",
+      "operands": {
+        "script_value": "RCX = [RSI+0x108]",
+        "effect_context": "RDX = R12",
+        "evaluation_context": "R8 = [R12+0x28]",
+        "target_rva": "0x3373000"
+      }
+    }
+  ],
+  "shared_contract": {
+    "caddtruce_duration_offset": "0x108",
+    "evaluation_context_offset": "0x28",
+    "calling_convention": "MSVC x64 RCX,RDX,R8",
+    "direct_call_target_rva": "0x3373000",
+    "return_consumed_as_days": true,
+    "expiry_semantics_observed": false
+  },
+  "evidence_limits": [
+    "static instruction bytes do not prove the runtime loaded-tree pointer or evaluator result",
+    "the call sites identify the duration object and context offsets but do not establish persisted expiry semantics",
+    "no public wire, readiness bit, detour, action, or CK3/live claim follows"
+  ],
+  "next_entry": {
+    "required": "one paused exact-build private observation of the evaluator inputs/result or a bounded private capture before the existing output reset",
+    "forbidden": [
+      "public v1 wire or readiness change",
+      "offset substitution without new executable evidence",
+      "CK3 launch or save mutation"
+    ]
+  }
+}
