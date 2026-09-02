@@ -1,0 +1,79 @@
+{
+  "contract": "phase2-producer-identity-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-source-ready",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "input_commits": {
+      "slot2_identity": "b869f668b3e0276a64e47f223c61f162e24dcf28",
+      "acceptance_contract": "3fe4a215"
+    }
+  },
+  "scope": {
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1",
+    "installed_by_default": false,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "ck3_started": false
+  },
+  "exact_seam": {
+    "physical_patch_rva": "0x3B9CFD2",
+    "physical_continue_rva": "0x3B9CFE2",
+    "physical_patch_bytes": 16,
+    "physical_anchor_hex": "B802000000874360E861702800488BF8",
+    "physical_anchor_sha256": "9A7AE24D86BC3453A89A92E6B948EE54A6DA043029CCF76E2B3D1443BD1BBE1E",
+    "logical_hooks": [
+      {
+        "rva": "0x3B9CFD2",
+        "meaning": "pre-publish producer identity and state",
+        "anchor_sha256": "9A7AE24D86BC3453A89A92E6B948EE54A6DA043029CCF76E2B3D1443BD1BBE1E"
+      },
+      {
+        "rva": "0x3B9CFD7",
+        "meaning": "post-xchg state publication",
+        "anchor_hex": "874360",
+        "anchor_sha256": "5D5BFFD230909B1D43C43F744071889F298B8BC6F3253DA74F979D4A19BEEB6B"
+      }
+    ],
+    "emulated_original_flow": [
+      "mov eax, 2", "xchg dword ptr [rbx+0x60], eax",
+      "call module+0x3E24040", "mov rdi, rax", "jump module+0x3B9CFE2"
+    ],
+    "lifecycle": "one non-overlapping exact transaction, recoverable install rollback, exact uninstall restore"
+  },
+  "telemetry": {
+    "heartbeat_object": "phase2_producer_identity_observer_v1",
+    "task_register": "RBX",
+    "callback_field_offset": "0x38",
+    "owner_field_offset": "0x58",
+    "state_field_offset": "0x60",
+    "callback_vptr_offset": "0x0",
+    "callback_slot2_offset": "0x10",
+    "report_schema": "research/phase2_producer_identity_observer_v1_report.schema.json",
+    "required_fields": [
+      "installed", "failure", "producer_0x3B9CFD2_entry_count",
+      "producer_0x3B9CFD7_entry_count", "last_task_pointer",
+      "last_callback_pointer", "last_callback_vptr", "last_callback_slot2",
+      "last_callback_slot2_rva", "last_owner_pointer",
+      "last_state_before_publish", "last_state_after_publish",
+      "read_failure_count", "last_thread_id", "last_timestamp_qpc"
+    ]
+  },
+  "acceptance": {
+    "native_fixture": "executed stub, state 1 to 2, identity, original call, uninstall, and recoverable rollback GREEN",
+    "private_bridge_build": "MSVC x64 Release SHA-256 736A8D168FA102C17BC64343CEF2680164606DEB8CA82A5177F0AAD846293FB6",
+    "private_bridge_injector": "MSVC x64 Release SHA-256 1F949F28E09A42DDC378F2D0D9D439A8766BA3F85A86F8E53C1828E94A06E8AC",
+    "default_bridge_build": "MSVC x64 Release SHA-256 42AFF30F4862544821FBB5452D950BA9C317D2CB337E4700C25466E5F7B6BAEC; private heartbeat token absent",
+    "default_bridge_injector": "MSVC x64 Release SHA-256 0FEA5AC9E6FFE5625D8B8B83CCC98A9B0A3D53921E7562332D10E936AE13C2E2",
+    "manifest": "generated after commit; no launch authorization implied by source alone",
+    "live_status": "not run; source-ready only"
+  },
+  "limits": [
+    "0x3B9CFD2 and 0x3B9CFD7 are adjacent logical points covered by one physical detour",
+    "telemetry is private-only and does not promote loader readiness",
+    "no CK3 process was started"
+  ],
+  "readiness": "native-readiness RED; producer identity observer source-ready"
+}

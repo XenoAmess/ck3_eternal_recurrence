@@ -1,0 +1,43 @@
+{
+  "contract": "phase2-producer-identity-observer-v1-source-contract",
+  "required_header_tokens": [
+    "kPhase2ProducerIdentityPreRvaV1 = 0x3B9CFD2",
+    "kPhase2ProducerIdentityPublishRvaV1 = 0x3B9CFD7",
+    "kPhase2ProducerIdentityPatchBytesV1 = 16",
+    "kPhase2ProducerIdentityInstalledByDefaultV1 = false",
+    "producer_0x3B9CFD2_entry_count",
+    "last_state_before_publish",
+    "last_state_after_publish",
+    "UninstallPhase2ProducerIdentityObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor{0xB8, 0x02, 0x00, 0x00, 0x00, 0x87, 0x43, 0x60",
+    "emit_observation(0)",
+    "emit_observation(1)",
+    "state.original_call_target",
+    "WriteTarget(state",
+    "ReleaseStub(state)",
+    "SafeReadU64(task + 0x38",
+    "SafeReadU64(task + 0x58",
+    "SafeReadU32(task + 0x60"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1",
+    "phase2_producer_identity_observer_v1",
+    "ReadPhase2ProducerIdentityDiagnosticsV1",
+    "InstallPhase2ProducerIdentityObserverV1"
+  ],
+  "required_cmake_tokens": [
+    "option(\n  XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1",
+    "src/phase2_producer_identity_observer_v1.cpp",
+    "xar_ck3_phase2_producer_identity_observer_v1_test"
+  ],
+  "required_report_fields": [
+    "installed", "failure", "producer_0x3B9CFD2_entry_count",
+    "producer_0x3B9CFD7_entry_count", "last_task_pointer",
+    "last_callback_pointer", "last_callback_vptr", "last_callback_slot2",
+    "last_callback_slot2_rva", "last_owner_pointer",
+    "last_state_before_publish", "last_state_after_publish",
+    "read_failure_count", "last_thread_id", "last_timestamp_qpc"
+  ]
+}

@@ -14,6 +14,7 @@
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
 #include "xar_bridge/phase2_post_call_list_identity_observer_v1.hpp"
 #include "xar_bridge/phase2_post_call_observer_v1.hpp"
+#include "xar_bridge/phase2_producer_identity_observer_v1.hpp"
 #include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
@@ -83,6 +84,11 @@ constexpr bool kPhase2PostCallListIdentityObserverEnabledV1 = true;
 #else
 constexpr bool kPhase2PostCallListIdentityObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
+constexpr bool kPhase2ProducerIdentityObserverEnabledV1 = true;
+#else
+constexpr bool kPhase2ProducerIdentityObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
 constexpr bool kPhase2CompletionObserverEnabledV1 = true;
 #else
@@ -126,6 +132,8 @@ static xar::bridge::Phase2PostCallObserverV1State
     g_phase2_post_call_observer_v1{};
 static xar::bridge::Phase2PostCallListIdentityStateV1
     g_phase2_post_call_list_identity_observer_v1{};
+static xar::bridge::Phase2ProducerIdentityStateV1
+    g_phase2_producer_identity_observer_v1{};
 static xar::bridge::Phase2WrapperEntryObserverV1State
     g_phase2_wrapper_entry_observer_v1{};
 static xar::bridge::G2TruceNativeCallsiteObserverV1State
@@ -286,6 +294,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto g2_truce_native_callsite_observer =
       xar::bridge::ReadG2TruceNativeCallsiteObserverV1Diagnostics(
           g_g2_truce_native_callsite_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
+  const auto phase2_producer_identity_observer =
+      xar::bridge::ReadPhase2ProducerIdentityDiagnosticsV1(
+          g_phase2_producer_identity_observer_v1);
 #endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
@@ -604,6 +617,30 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
     result += '}';
   }
   result += ']';
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
+  result += "},\"phase2_producer_identity_observer_v1\":{";
+  result += "\"private_build\":true,\"installed\":";
+  result += phase2_producer_identity_observer.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(phase2_producer_identity_observer.failure_flags);
+#define XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(name) \
+  result += ",\"" #name "\":";                       \
+  result += Number(phase2_producer_identity_observer.name)
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(producer_0x3B9CFD2_entry_count);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(producer_0x3B9CFD7_entry_count);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(read_failure_count);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_task_pointer);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_pointer);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_vptr);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_slot2);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_slot2_rva);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_owner_pointer);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_state_before_publish);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_state_after_publish);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_thread_id);
+  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_timestamp_qpc);
+#undef XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD
 #endif
   result += "}}";
   return result;
@@ -8137,6 +8174,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallG2TruceNativeCallsiteObserverV1(
             g_g2_truce_native_callsite_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kPhase2ProducerIdentityObserverEnabledV1) {
+    xar::bridge::Phase2ProducerIdentityEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPhase2ProducerIdentityObserverV1(
+            g_phase2_producer_identity_observer_v1, environment)) {
       return FALSE;
     }
   }

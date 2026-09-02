@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase2-producer-identity-observer-v1-report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "private_build", "installed", "failure",
+    "producer_0x3B9CFD2_entry_count", "producer_0x3B9CFD7_entry_count",
+    "read_failure_count", "last_task_pointer", "last_callback_pointer",
+    "last_callback_vptr", "last_callback_slot2", "last_callback_slot2_rva",
+    "last_owner_pointer", "last_state_before_publish",
+    "last_state_after_publish", "last_thread_id", "last_timestamp_qpc"
+  ],
+  "properties": {
+    "private_build": {"const": true},
+    "installed": {"type": "boolean"},
+    "failure": {"type": "integer", "minimum": 0},
+    "producer_0x3B9CFD2_entry_count": {"type": "integer", "minimum": 0},
+    "producer_0x3B9CFD7_entry_count": {"type": "integer", "minimum": 0},
+    "read_failure_count": {"type": "integer", "minimum": 0},
+    "last_task_pointer": {"type": "integer", "minimum": 0},
+    "last_callback_pointer": {"type": "integer", "minimum": 0},
+    "last_callback_vptr": {"type": "integer", "minimum": 0},
+    "last_callback_slot2": {"type": "integer", "minimum": 0},
+    "last_callback_slot2_rva": {"type": "integer", "minimum": 0},
+    "last_owner_pointer": {"type": "integer", "minimum": 0},
+    "last_state_before_publish": {"type": "integer", "minimum": 0},
+    "last_state_after_publish": {"type": "integer", "minimum": 0},
+    "last_thread_id": {"type": "integer", "minimum": 0},
+    "last_timestamp_qpc": {"type": "integer", "minimum": 0}
+  }
+}
