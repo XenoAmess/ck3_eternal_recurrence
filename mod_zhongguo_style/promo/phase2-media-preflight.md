@@ -12,7 +12,9 @@ the exact local production path without starting CK3 or synthesizing speech:
   subtitle safe area; and
 - one disposable FFmpeg render exercises libass, libx264, yuv420p, AAC,
   48 kHz, and stereo. The temporary ASS and null-mux render are deleted. Only
-  the JSON environment receipt is retained.
+  the JSON environment receipt is retained. The receipt binds byte counts and
+  SHA-256 values for both fonts and both media executables and expires after
+  24 hours.
 
 ```powershell
 $promo = "Z:\workspace\xar_promo_toolchain"
@@ -26,6 +28,34 @@ $receipt = "Z:\ck3_mod_rewrite_process_assets\zg361\promo\media-preflight-$stamp
   --output $receipt
 Get-FileHash $receipt -Algorithm SHA256
 ```
+
+Pass both the receipt and the displayed SHA-256 to the phase-two builder as
+`--media-preflight-report` and `--expected-media-preflight-sha256`. The builder
+revalidates its policy, age, toolchain checkout, exact fonts/media executables,
+and byte identity before composition and after a long candidate build. A
+candidate run preserves the receipt as a raw artifact. Release readiness, and
+therefore any later export or external publication, remains RED without it.
+
+```powershell
+$receiptSha = (Get-FileHash $receipt -Algorithm SHA256).Hash
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" `
+  mod_zhongguo_style\tools\build_phase2_promo_video.py `
+  --project-config mod_zhongguo_style\promo\phase2-promo-project.json `
+  --capture-root $greenCapture `
+  --seed-preflight-report $seedPreflight `
+  --media-preflight-report $receipt `
+  --expected-media-preflight-sha256 $receiptSha `
+  --work-dir $newCandidateDirectory `
+  --tts-cache $xiaoxiaoCache `
+  --ffmpeg (Get-Command ffmpeg -ErrorAction Stop).Source `
+  --ffprobe (Get-Command ffprobe -ErrorAction Stop).Source `
+  --run-id $newRunId
+```
+
+The signed run supplied to the final readiness check must contain the same
+receipt bytes as the raw `phase2-media-environment-preflight` artifact. A fresh
+receipt passed only on the command line cannot bless an older signed/exported
+run that did not preserve it.
 
 A GREEN receipt is environment evidence only. It is not a capture, narration,
 candidate video, human review, release approval, or publication claim. Every

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import importlib.metadata
 import json
 import os
@@ -58,6 +59,7 @@ FPS = 30
 EXPECTED_EDGE_TTS_VERSION = "7.2.8"
 EXPECTED_PILLOW_VERSION = "12.3.0"
 EXPECTED_TOOLCHAIN_VERSION = toolchain_loader.PROMO_TOOLCHAIN_VERSION
+RECEIPT_VALID_FOR_SECONDS = 24 * 60 * 60
 VOICE = "zh-CN-XiaoxiaoNeural"
 ZH_FONT_NAME = "Microsoft YaHei UI"
 EN_FONT_NAME = "Segoe UI"
@@ -71,6 +73,19 @@ class MediaPreflightError(RuntimeError):
 
 
 RunProcess = Callable[..., subprocess.CompletedProcess[str]]
+
+
+def _file_record(path: Path) -> dict[str, object]:
+    resolved = path.expanduser().resolve()
+    digest = hashlib.sha256()
+    try:
+        size = resolved.stat().st_size
+        with resolved.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+    except OSError as exc:
+        raise MediaPreflightError(f"could not bind environment file {resolved}: {exc}") from exc
+    return {"path": str(resolved), "bytes": size, "sha256": digest.hexdigest().upper()}
 
 
 def _program(value: str | None, name: str) -> Path:
@@ -366,12 +381,16 @@ def run_preflight(args: argparse.Namespace, *, runner: RunProcess = subprocess.r
             runner=runner,
         )
 
+    generated_at = dt.datetime.now(dt.timezone.utc)
+    expires_at = generated_at + dt.timedelta(seconds=RECEIPT_VALID_FOR_SECONDS)
     return {
         "schema_version": 1,
         "kind": "zhongguo-361-phase2-media-environment-preflight",
         "result": "GREEN",
         "scope": "environment-only; no CK3 capture, narration, candidate, review, or release claim",
-        "generated_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "generated_at_utc": generated_at.isoformat(timespec="seconds"),
+        "valid_for_seconds": RECEIPT_VALID_FOR_SECONDS,
+        "expires_at_utc": expires_at.isoformat(timespec="seconds"),
         "project": {"id": config.project_id, "chapters": len(config.chapters)},
         "promo_toolchain": {
             "version": xar_promo.__version__,
@@ -381,14 +400,14 @@ def run_preflight(args: argparse.Namespace, *, runner: RunProcess = subprocess.r
         "packages": {"edge-tts": edge_version, "Pillow": pillow_version},
         "voice": {"id": VOICE, "catalogue_match": voice_lines[0]},
         "fonts": {
-            "zh-CN": {"family": ZH_FONT_NAME, "path": str(args.zh_font_file.resolve())},
-            "en": {"family": EN_FONT_NAME, "path": str(args.en_font_file.resolve())},
+            "zh-CN": {"family": ZH_FONT_NAME, **_file_record(args.zh_font_file)},
+            "en": {"family": EN_FONT_NAME, **_file_record(args.en_font_file)},
         },
         "subtitle_layout": layout,
         "media": {
-            "ffmpeg": str(ffmpeg),
+            "ffmpeg": _file_record(ffmpeg),
             "ffmpeg_version": ffmpeg_version,
-            "ffprobe": str(ffprobe),
+            "ffprobe": _file_record(ffprobe),
             "ffprobe_version": ffprobe_version,
             "verified_filter": "ass/libass",
             "verified_video_encoder": "libx264",

@@ -10,7 +10,9 @@ and clean-capture policy out of the generic package.
 content-addressed Edge TTS cache, probes the real narration durations, and
 retains the complete attempt.  It never invokes OCR or silently synthesizes
 missing narration.  Rendering a candidate is not a release approval: missing
-phase-two live claims or a byte-bound human sign-off remains RED.
+phase-two live claims or a byte-bound human sign-off remains RED. Release,
+export, and external publication also require a fresh byte-bound receipt from
+``preflight_phase2_media.py`` preserved in the signed candidate run.
 """
 
 from __future__ import annotations
@@ -18,10 +20,14 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import importlib.metadata
 import json
+import math
 import mimetypes
 import os
 import re
+import shutil
+import subprocess
 import sys
 from dataclasses import dataclass, replace
 from decimal import Decimal
@@ -34,7 +40,10 @@ REPOSITORY_TOOLS = REPOSITORY_ROOT / "tools"
 if str(REPOSITORY_TOOLS) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_TOOLS))
 
-from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
+from promo_toolchain_loader import (  # noqa: E402
+    PROMO_TOOLCHAIN_VERSION,
+    ensure_promo_toolchain,
+)
 
 
 # The reusable package is installed from the independent GitHub release in
@@ -42,6 +51,7 @@ from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
 # explicitly point at a checkout/src directory for local development.
 PACKAGE_SOURCE = ensure_promo_toolchain()
 
+import xar_promo  # noqa: E402
 from xar_promo.errors import ArtifactError, ManifestError, PromoToolchainError  # noqa: E402
 from xar_promo.adapters.ck3 import CK3CaptureError  # noqa: E402
 from xar_promo.layout import FontSpec, SafeArea, WrapPolicy  # noqa: E402
@@ -109,6 +119,13 @@ DEFAULT_PROJECT_CONFIG = (
     REPOSITORY_ROOT / "mod_zhongguo_style" / "promo" / "phase2-promo-project.json"
 )
 DEFAULT_EDGE_TTS_VERSION = "7.2.8"
+MEDIA_PREFLIGHT_KIND = "zhongguo-361-phase2-media-environment-preflight"
+MEDIA_PREFLIGHT_SCOPE = (
+    "environment-only; no CK3 capture, narration, candidate, review, or release claim"
+)
+MEDIA_PREFLIGHT_ARTIFACT_ID = "phase2-media-environment-preflight"
+MEDIA_PREFLIGHT_VALID_FOR_SECONDS = 24 * 60 * 60
+MEDIA_PREFLIGHT_MAX_FUTURE_SKEW_SECONDS = 5 * 60
 DELIVERABLE_ARTIFACT_ID = "zhongguo-361-phase2-video"
 DELIVERABLE_RELATIVE_PATH = Path("deliverable/zhongguo-361-phase2.mp4")
 WIDTH = 1920
@@ -157,6 +174,362 @@ CAPTURE_REPORT_RELATIVE_PATHS = (
 
 class Phase2PromoBuildError(PromoToolchainError):
     """The project-specific entry cannot honestly produce the requested state."""
+
+
+@dataclass(frozen=True, slots=True)
+class MediaPreflightBinding:
+    """Byte-bound, short-lived proof of the actual media production host."""
+
+    path: Path
+    bytes: int
+    sha256: str
+    generated_at_utc: dt.datetime
+    expires_at_utc: dt.datetime
+    toolchain_source_root: Path
+    toolchain_head: str
+    tracked_files: tuple[tuple[Path, int, str], ...]
+
+    def to_mapping(self) -> dict[str, object]:
+        return {
+            "path": str(self.path),
+            "bytes": self.bytes,
+            "sha256": self.sha256,
+            "generated_at_utc": self.generated_at_utc.isoformat(timespec="seconds"),
+            "expires_at_utc": self.expires_at_utc.isoformat(timespec="seconds"),
+            "toolchain_source_root": str(self.toolchain_source_root),
+            "toolchain_head": self.toolchain_head,
+            "result": "GREEN",
+        }
+
+    def verify_unchanged(self, *, now: dt.datetime | None = None) -> None:
+        _require_unexpired_media_preflight(
+            self.generated_at_utc,
+            self.expires_at_utc,
+            now=now,
+        )
+        try:
+            current = (self.path.stat().st_size, sha256_file(self.path).upper())
+        except OSError as exc:
+            raise Phase2PromoBuildError(
+                f"bound phase-two media preflight became unavailable: {self.path}"
+            ) from exc
+        if current != (self.bytes, self.sha256):
+            raise Phase2PromoBuildError(
+                f"bound phase-two media preflight changed during the attempt: {self.path}"
+            )
+        for path, size, digest in self.tracked_files:
+            try:
+                current_file = (path.stat().st_size, sha256_file(path).upper())
+            except OSError as exc:
+                raise Phase2PromoBuildError(
+                    f"media preflight dependency became unavailable: {path}"
+                ) from exc
+            if current_file != (size, digest):
+                raise Phase2PromoBuildError(
+                    f"media preflight dependency changed during the attempt: {path}"
+                )
+        checkout = _current_toolchain_identity()
+        if (
+            checkout["source_root"] != self.toolchain_source_root
+            or checkout["head"] != self.toolchain_head
+            or checkout["origin_main"] != self.toolchain_head
+            or checkout["clean"] is not True
+        ):
+            raise Phase2PromoBuildError(
+                "promo-toolchain checkout changed after the bound media preflight"
+            )
+
+
+def _read_media_preflight(path: Path) -> dict[str, object]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except OSError as exc:
+        raise Phase2PromoBuildError(
+            f"could not read phase-two media preflight: {path}: {exc}"
+        ) from exc
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise Phase2PromoBuildError(
+            f"invalid phase-two media preflight: {path}: {exc}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise Phase2PromoBuildError("phase-two media preflight root must be an object")
+    return payload
+
+
+def _utc_timestamp(value: object, label: str) -> dt.datetime:
+    if not isinstance(value, str) or not value.strip():
+        raise Phase2PromoBuildError(f"phase-two media preflight {label} must be a timestamp")
+    try:
+        parsed = dt.datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise Phase2PromoBuildError(
+            f"phase-two media preflight {label} is invalid"
+        ) from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise Phase2PromoBuildError(
+            f"phase-two media preflight {label} must include a UTC offset"
+        )
+    return parsed.astimezone(dt.timezone.utc)
+
+
+def _require_unexpired_media_preflight(
+    generated: dt.datetime,
+    expires: dt.datetime,
+    *,
+    now: dt.datetime | None = None,
+) -> None:
+    current = dt.datetime.now(dt.timezone.utc) if now is None else now
+    if current.tzinfo is None or current.utcoffset() is None:
+        raise Phase2PromoBuildError("media preflight comparison time must be timezone-aware")
+    current = current.astimezone(dt.timezone.utc)
+    if expires - generated != dt.timedelta(seconds=MEDIA_PREFLIGHT_VALID_FOR_SECONDS):
+        raise Phase2PromoBuildError("phase-two media preflight validity window must be 24 hours")
+    if generated > current + dt.timedelta(seconds=MEDIA_PREFLIGHT_MAX_FUTURE_SKEW_SECONDS):
+        raise Phase2PromoBuildError("phase-two media preflight timestamp is in the future")
+    if current >= expires:
+        raise Phase2PromoBuildError("phase-two media preflight has expired")
+
+
+def _resolve_media_program(value: str, label: str) -> Path:
+    located = shutil.which(value)
+    candidate = Path(located if located is not None else value).expanduser().resolve()
+    if not candidate.is_file():
+        raise Phase2PromoBuildError(f"could not resolve phase-two {label}: {value}")
+    return candidate
+
+
+def _current_toolchain_identity() -> dict[str, object]:
+    if PACKAGE_SOURCE is None:
+        raise Phase2PromoBuildError(
+            "phase-two release media requires XAR_PROMO_SOURCE bound to the updated promo-toolchain main checkout"
+        )
+    source_root = PACKAGE_SOURCE.parent if PACKAGE_SOURCE.name == "src" else PACKAGE_SOURCE
+
+    def git(*arguments: str) -> str:
+        try:
+            result = subprocess.run(
+                ["git", "-C", os.fspath(source_root), *arguments],
+                shell=False,
+                check=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except OSError as exc:
+            raise Phase2PromoBuildError(
+                f"could not inspect promo-toolchain checkout: {exc}"
+            ) from exc
+        if result.returncode != 0:
+            raise Phase2PromoBuildError(
+                "could not inspect promo-toolchain checkout: "
+                + (result.stderr or result.stdout).strip()
+            )
+        return result.stdout.strip()
+
+    return {
+        "source_root": source_root.resolve(),
+        "head": git("rev-parse", "HEAD"),
+        "origin_main": git("rev-parse", "origin/main"),
+        "clean": not bool(git("status", "--short")),
+    }
+
+
+def _bound_environment_file(
+    value: object,
+    *,
+    label: str,
+    expected_path: Path,
+) -> tuple[Path, int, str]:
+    if not isinstance(value, Mapping):
+        raise Phase2PromoBuildError(f"phase-two media preflight {label} must be a file record")
+    raw_path = value.get("path")
+    raw_bytes = value.get("bytes")
+    raw_sha = value.get("sha256")
+    if not isinstance(raw_path, str) or not Path(raw_path).is_absolute():
+        raise Phase2PromoBuildError(f"phase-two media preflight {label}.path must be absolute")
+    path = Path(raw_path).expanduser().resolve()
+    if path != expected_path:
+        raise Phase2PromoBuildError(
+            f"phase-two media preflight {label} is bound to {path}, expected {expected_path}"
+        )
+    if isinstance(raw_bytes, bool) or not isinstance(raw_bytes, int) or raw_bytes < 0:
+        raise Phase2PromoBuildError(f"phase-two media preflight {label}.bytes is invalid")
+    if not isinstance(raw_sha, str) or _SHA256.fullmatch(raw_sha) is None:
+        raise Phase2PromoBuildError(f"phase-two media preflight {label}.sha256 is invalid")
+    digest = raw_sha.upper()
+    try:
+        actual = (path.stat().st_size, sha256_file(path).upper())
+    except OSError as exc:
+        raise Phase2PromoBuildError(
+            f"phase-two media preflight {label} is unavailable: {path}"
+        ) from exc
+    if actual != (raw_bytes, digest):
+        raise Phase2PromoBuildError(
+            f"phase-two media preflight {label} no longer matches its bound bytes"
+        )
+    return path, raw_bytes, digest
+
+
+def _validate_media_layout(value: object) -> None:
+    if not isinstance(value, Mapping):
+        raise Phase2PromoBuildError("phase-two media preflight subtitle_layout must be an object")
+    if value.get("frame") != [WIDTH, HEIGHT]:
+        raise Phase2PromoBuildError("phase-two media preflight subtitle frame must be 1920x1080")
+    expected_margins = {"left": 90, "top": 64, "right": 90, "bottom": 64}
+    if value.get("safe_margins") != expected_margins:
+        raise Phase2PromoBuildError("phase-two media preflight subtitle safe margins drifted")
+    tracks = value.get("tracks")
+    if not isinstance(tracks, list) or {row.get("id") for row in tracks if isinstance(row, Mapping)} != {"zh-CN", "en"}:
+        raise Phase2PromoBuildError("phase-two media preflight must contain exact zh-CN/en tracks")
+    safe_left, safe_top = 90.0, 64.0
+    safe_right, safe_bottom = WIDTH - 90.0, HEIGHT - 64.0
+    for row in tracks:
+        if not isinstance(row, Mapping):
+            raise Phase2PromoBuildError("phase-two media preflight subtitle track is invalid")
+        bounds = row.get("bounds")
+        lines = row.get("lines")
+        if not isinstance(bounds, list) or len(bounds) != 4 or not isinstance(lines, list) or not lines:
+            raise Phase2PromoBuildError("phase-two media preflight subtitle track lacks bounds or lines")
+        if any(isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(float(number)) for number in bounds):
+            raise Phase2PromoBuildError("phase-two media preflight subtitle bounds are invalid")
+        left, top, right, bottom = (float(number) for number in bounds)
+        if not (safe_left <= left < right <= safe_right and safe_top <= top < bottom <= safe_bottom):
+            raise Phase2PromoBuildError("phase-two media preflight subtitle track escaped the safe area")
+        for line in lines:
+            if not isinstance(line, Mapping) or not isinstance(line.get("text"), str) or not line["text"].strip():
+                raise Phase2PromoBuildError("phase-two media preflight subtitle line is invalid")
+            width, x = line.get("width"), line.get("x")
+            if any(isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(float(number)) for number in (width, x)):
+                raise Phase2PromoBuildError("phase-two media preflight subtitle line geometry is invalid")
+            if float(width) < 0 or float(x) < left or float(x) + float(width) > right + 0.01:
+                raise Phase2PromoBuildError("phase-two media preflight subtitle line escaped its track")
+
+
+def load_media_preflight_binding(
+    report_path: str | Path,
+    expected_sha256: str,
+    *,
+    project_config,
+    edge_tts_version: str,
+    ffmpeg: str,
+    ffprobe: str,
+    zh_font_file: Path,
+    en_font_file: Path,
+    now: dt.datetime | None = None,
+) -> MediaPreflightBinding:
+    path = Path(report_path).expanduser().resolve()
+    if not path.is_file():
+        raise Phase2PromoBuildError(f"phase-two media preflight does not exist: {path}")
+    if not isinstance(expected_sha256, str) or _SHA256.fullmatch(expected_sha256) is None:
+        raise Phase2PromoBuildError("--expected-media-preflight-sha256 must be a SHA-256 digest")
+    expected_digest = expected_sha256.upper()
+    actual_digest = sha256_file(path).upper()
+    if actual_digest != expected_digest:
+        raise Phase2PromoBuildError("phase-two media preflight SHA-256 does not match")
+    payload = _read_media_preflight(path)
+    expected_scalars = {
+        "schema_version": 1,
+        "kind": MEDIA_PREFLIGHT_KIND,
+        "result": "GREEN",
+        "scope": MEDIA_PREFLIGHT_SCOPE,
+        "valid_for_seconds": MEDIA_PREFLIGHT_VALID_FOR_SECONDS,
+    }
+    for key, expected in expected_scalars.items():
+        if payload.get(key) != expected:
+            raise Phase2PromoBuildError(
+                f"phase-two media preflight {key} must be {expected!r}"
+            )
+    generated = _utc_timestamp(payload.get("generated_at_utc"), "generated_at_utc")
+    expires = _utc_timestamp(payload.get("expires_at_utc"), "expires_at_utc")
+    _require_unexpired_media_preflight(generated, expires, now=now)
+
+    project = payload.get("project")
+    if not isinstance(project, Mapping) or project.get("id") != project_config.project_id or project.get("chapters") != len(project_config.chapters):
+        raise Phase2PromoBuildError("phase-two media preflight is bound to a different project config")
+    tool = payload.get("promo_toolchain")
+    checkout = _current_toolchain_identity()
+    if not isinstance(tool, Mapping) or tool.get("version") != PROMO_TOOLCHAIN_VERSION:
+        raise Phase2PromoBuildError("phase-two media preflight promo-toolchain version is invalid")
+    if getattr(xar_promo, "__version__", None) != tool.get("version"):
+        raise Phase2PromoBuildError("active promo-toolchain version differs from media preflight")
+    if (
+        tool.get("source_root") != str(checkout["source_root"])
+        or tool.get("head") != checkout["head"]
+        or tool.get("origin_main") != checkout["origin_main"]
+        or checkout["head"] != checkout["origin_main"]
+        or tool.get("clean") is not True
+        or checkout["clean"] is not True
+    ):
+        raise Phase2PromoBuildError("phase-two media preflight is not bound to the active clean promo-toolchain main")
+
+    packages = payload.get("packages")
+    if not isinstance(packages, Mapping) or packages.get("edge-tts") != DEFAULT_EDGE_TTS_VERSION or packages.get("Pillow") != "12.3.0":
+        raise Phase2PromoBuildError("phase-two media preflight package versions are invalid")
+    if edge_tts_version != packages["edge-tts"]:
+        raise Phase2PromoBuildError("builder Edge TTS version differs from media preflight")
+    if importlib.metadata.version("edge-tts") != packages["edge-tts"] or importlib.metadata.version("Pillow") != packages["Pillow"]:
+        raise Phase2PromoBuildError("active media package versions differ from preflight")
+    voice = payload.get("voice")
+    if not isinstance(voice, Mapping) or voice.get("id") != PHASE2_POLICY.voice or PHASE2_POLICY.voice not in str(voice.get("catalogue_match", "")):
+        raise Phase2PromoBuildError("phase-two media preflight did not bind XiaoxiaoNeural")
+
+    fonts = payload.get("fonts")
+    if not isinstance(fonts, Mapping):
+        raise Phase2PromoBuildError("phase-two media preflight fonts must be an object")
+    zh = fonts.get("zh-CN")
+    en = fonts.get("en")
+    if not isinstance(zh, Mapping) or zh.get("family") != "Microsoft YaHei UI":
+        raise Phase2PromoBuildError("phase-two media preflight Chinese font family is invalid")
+    if not isinstance(en, Mapping) or en.get("family") != "Segoe UI":
+        raise Phase2PromoBuildError("phase-two media preflight English font family is invalid")
+    tracked = [
+        _bound_environment_file(zh, label="fonts.zh-CN", expected_path=zh_font_file.expanduser().resolve()),
+        _bound_environment_file(en, label="fonts.en", expected_path=en_font_file.expanduser().resolve()),
+    ]
+    _validate_media_layout(payload.get("subtitle_layout"))
+
+    media = payload.get("media")
+    if not isinstance(media, Mapping):
+        raise Phase2PromoBuildError("phase-two media preflight media must be an object")
+    expected_media = {
+        "verified_filter": "ass/libass",
+        "verified_video_encoder": "libx264",
+        "verified_audio_encoder": "aac/48000Hz/stereo",
+        "disposable_test_output_retained": False,
+    }
+    for key, expected in expected_media.items():
+        if media.get(key) != expected:
+            raise Phase2PromoBuildError(f"phase-two media preflight {key} must be {expected!r}")
+    if not isinstance(media.get("ffmpeg_version"), str) or not media["ffmpeg_version"].strip():
+        raise Phase2PromoBuildError("phase-two media preflight lacks FFmpeg version evidence")
+    if not isinstance(media.get("ffprobe_version"), str) or not media["ffprobe_version"].strip():
+        raise Phase2PromoBuildError("phase-two media preflight lacks ffprobe version evidence")
+    tracked.extend(
+        (
+            _bound_environment_file(
+                media.get("ffmpeg"),
+                label="media.ffmpeg",
+                expected_path=_resolve_media_program(ffmpeg, "ffmpeg"),
+            ),
+            _bound_environment_file(
+                media.get("ffprobe"),
+                label="media.ffprobe",
+                expected_path=_resolve_media_program(ffprobe, "ffprobe"),
+            ),
+        )
+    )
+    return MediaPreflightBinding(
+        path=path,
+        bytes=path.stat().st_size,
+        sha256=actual_digest,
+        generated_at_utc=generated,
+        expires_at_utc=expires,
+        toolchain_source_root=checkout["source_root"],
+        toolchain_head=str(checkout["head"]),
+        tracked_files=tuple(tracked),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -873,6 +1246,7 @@ class Phase2BuildOutcome:
     blockers: tuple[str, ...]
     run_manifest_path: Path | None
     seed_preflight: SeedPreflightBinding | None = None
+    media_preflight: MediaPreflightBinding | None = None
 
 
 def _portable_id(value: str, *, prefix: str = "") -> str:
@@ -1465,6 +1839,7 @@ def _result_mapping(
     *,
     final_duration_seconds: float | None = None,
     seed_preflight: SeedPreflightBinding | None = None,
+    media_preflight: MediaPreflightBinding | None = None,
 ) -> dict[str, object]:
     value: dict[str, object] = {
         "schema_version": 1,
@@ -1480,6 +1855,9 @@ def _result_mapping(
         ),
         "seed_preflight": (
             None if seed_preflight is None else seed_preflight.to_mapping()
+        ),
+        "media_preflight": (
+            None if media_preflight is None else media_preflight.to_mapping()
         ),
     }
     if result.failure is not None:
@@ -1562,6 +1940,7 @@ def _persist_candidate_run(
     run_id: str,
     *,
     seed_preflight: SeedPreflightBinding | None = None,
+    media_preflight: MediaPreflightBinding | None = None,
 ) -> Path:
     if result.audit_record is None:
         raise Phase2PromoBuildError("successful build lacks a byte-bound deliverable record")
@@ -1616,6 +1995,16 @@ def _persist_candidate_run(
             label="ZhongGuo 361 phase-two seed no-launch preflight",
             media_type="application/json",
         )
+    if media_preflight is not None:
+        preserve_artifact(
+            run_path,
+            media_preflight.path,
+            artifact_id=MEDIA_PREFLIGHT_ARTIFACT_ID,
+            collection="raw",
+            role="preflight",
+            label="ZhongGuo 361 phase-two media environment preflight",
+            media_type="application/json",
+        )
     return run_path
 
 
@@ -1624,6 +2013,7 @@ def _approved_deliverable(
     *,
     config_path: Path,
     result: PipelineResult,
+    media_preflight: MediaPreflightBinding | None = None,
 ) -> bool:
     if run_manifest_path is None:
         return False
@@ -1631,6 +2021,23 @@ def _approved_deliverable(
     validate_profile(loaded, "release")
     if loaded.run is None:
         return False
+    if media_preflight is not None:
+        retained_media_preflight = next(
+            (
+                artifact
+                for artifact in loaded.run.artifacts
+                if artifact.artifact_id == MEDIA_PREFLIGHT_ARTIFACT_ID
+                and artifact.collection == "raw"
+                and artifact.role == "preflight"
+            ),
+            None,
+        )
+        if (
+            retained_media_preflight is None
+            or (retained_media_preflight.bytes, retained_media_preflight.sha256)
+            != (media_preflight.bytes, media_preflight.sha256)
+        ):
+            return False
     if (
         loaded.run.project_config.bytes != config_path.stat().st_size
         or loaded.run.project_config.sha256 != sha256_file(config_path)
@@ -1678,6 +2085,7 @@ def execute(
     capture_root = args.capture_root.expanduser().resolve()
     workdir = args.work_dir.expanduser().resolve()
     seed_preflight: SeedPreflightBinding | None = None
+    media_preflight: MediaPreflightBinding | None = None
     if not args.validate_only and workdir.exists():
         raise Phase2PromoBuildError(
             f"full build requires a new attempt directory; retain the existing one: {workdir}"
@@ -1687,6 +2095,23 @@ def execute(
     final_duration_seconds: float | None = None
     try:
         config = load_phase2_project_config(config_path)
+        media_report = getattr(args, "media_preflight_report", None)
+        media_sha = getattr(args, "expected_media_preflight_sha256", None)
+        if (media_report is None) != (media_sha is None):
+            raise Phase2PromoBuildError(
+                "--media-preflight-report and --expected-media-preflight-sha256 must be supplied together"
+            )
+        if media_report is not None:
+            media_preflight = load_media_preflight_binding(
+                media_report,
+                media_sha,
+                project_config=config,
+                edge_tts_version=args.edge_tts_version,
+                ffmpeg=args.ffmpeg,
+                ffprobe=args.ffprobe,
+                zh_font_file=args.zh_font_file,
+                en_font_file=args.en_font_file,
+            )
         _require_ready_authoring(config)
         seed_preflight_path = getattr(args, "seed_preflight_report", None)
         if seed_preflight_path is not None:
@@ -1771,6 +2196,7 @@ def execute(
                             None,
                         ),
                         seed_preflight=seed_preflight,
+                        media_preflight=media_preflight,
                     ),
                 )
                 raise
@@ -1787,6 +2213,8 @@ def execute(
                 ) from exc
         if seed_preflight is not None:
             seed_preflight.verify_unchanged()
+        if media_preflight is not None:
+            media_preflight.verify_unchanged()
     except Exception as exc:
         if not args.validate_only and not workdir.exists():
             _write_entry_failure(workdir, failure_phase, exc)
@@ -1804,6 +2232,7 @@ def execute(
                 result,
                 final_duration_seconds=final_duration_seconds,
                 seed_preflight=seed_preflight,
+                media_preflight=media_preflight,
             ),
         )
         if result.succeeded:
@@ -1814,6 +2243,7 @@ def execute(
                     result,
                     args.run_id,
                     seed_preflight=seed_preflight,
+                    media_preflight=media_preflight,
                 )
             except Exception as exc:
                 # ``_persist_candidate_run`` creates the run incrementally.
@@ -1869,6 +2299,7 @@ def execute(
             args.signed_run_manifest,
             config_path=config_path,
             result=result,
+            media_preflight=media_preflight,
         )
     except (ArtifactError, ManifestError) as exc:
         raise Phase2PromoBuildError(f"invalid signed run manifest: {exc}") from exc
@@ -1880,6 +2311,10 @@ def execute(
         )
     else:
         blockers.extend(seed_preflight.release_blockers)
+    if media_preflight is None:
+        blockers.append(
+            "phase-two media environment preflight is not bound; pass --media-preflight-report and --expected-media-preflight-sha256 before release/export/publish"
+        )
     blockers.extend(candidate.blockers)
     blockers = list(dict.fromkeys(blockers))
     return Phase2BuildOutcome(
@@ -1889,6 +2324,7 @@ def execute(
         blockers=tuple(blockers),
         run_manifest_path=run_path,
         seed_preflight=seed_preflight,
+        media_preflight=media_preflight,
     )
 
 
@@ -1913,6 +2349,18 @@ def parser() -> argparse.ArgumentParser:
             "optional GREEN preflight.json from run_zg361_phase2_seed_capture.py "
             "--preflight-only; required for a release-ready outcome"
         ),
+    )
+    result.add_argument(
+        "--media-preflight-report",
+        type=Path,
+        help=(
+            "optional GREEN receipt from preflight_phase2_media.py; required "
+            "with its SHA-256 for release/export/publish readiness"
+        ),
+    )
+    result.add_argument(
+        "--expected-media-preflight-sha256",
+        help="expected SHA-256 of --media-preflight-report",
     )
     result.add_argument("--work-dir", type=Path, required=True)
     result.add_argument(
@@ -1961,6 +2409,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             "PREFLIGHT: "
             f"{outcome.seed_preflight.path} "
             f"sha256={outcome.seed_preflight.sha256}"
+        )
+    if outcome.media_preflight is None:
+        print("MEDIA PREFLIGHT: unbound")
+    else:
+        print(
+            "MEDIA PREFLIGHT: "
+            f"{outcome.media_preflight.path} "
+            f"sha256={outcome.media_preflight.sha256}"
         )
     print(f"WORK: {outcome.result.workdir}")
     if outcome.run_manifest_path is not None:

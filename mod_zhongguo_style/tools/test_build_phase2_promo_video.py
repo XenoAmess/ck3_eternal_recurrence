@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import ast
 import contextlib
+import datetime as dt
 import hashlib
 import io
 import json
@@ -31,6 +32,8 @@ if str(REPOSITORY_TOOLS) not in sys.path:
 from promo_toolchain_loader import ensure_promo_toolchain  # noqa: E402
 
 ensure_promo_toolchain()
+
+import xar_promo  # noqa: E402
 
 import build_phase2_promo_video as promo  # noqa: E402
 
@@ -102,6 +105,8 @@ def _args(
     *,
     validate_only: bool,
     seed_preflight_report: Path | None = None,
+    media_preflight_report: Path | None = None,
+    expected_media_preflight_sha256: str | None = None,
 ):
     values = [
         "--project-config",
@@ -113,9 +118,102 @@ def _args(
     ]
     if seed_preflight_report is not None:
         values.extend(("--seed-preflight-report", str(seed_preflight_report)))
+    if media_preflight_report is not None:
+        values.extend(("--media-preflight-report", str(media_preflight_report)))
+    if expected_media_preflight_sha256 is not None:
+        values.extend(
+            ("--expected-media-preflight-sha256", expected_media_preflight_sha256)
+        )
     if validate_only:
         values.append("--validate-only")
     return promo.parser().parse_args(values)
+
+
+def _write_media_preflight_report(
+    root: Path,
+    *,
+    config_path: Path,
+    generated_at: dt.datetime | None = None,
+) -> tuple[Path, str, dict[str, Path]]:
+    root.mkdir(parents=True, exist_ok=True)
+    files = {
+        "zh_font": root / "msyh.ttc",
+        "en_font": root / "segoeui.ttf",
+        "ffmpeg": root / "ffmpeg.exe",
+        "ffprobe": root / "ffprobe.exe",
+    }
+    for name, path in files.items():
+        path.write_bytes(("BOUND-" + name).encode("ascii"))
+
+    def record(path: Path) -> dict[str, object]:
+        return {
+            "path": str(path.resolve()),
+            "bytes": path.stat().st_size,
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest().upper(),
+        }
+
+    config = load_phase2_project_config(config_path)
+    created = generated_at or dt.datetime.now(dt.timezone.utc)
+    expires = created + dt.timedelta(seconds=promo.MEDIA_PREFLIGHT_VALID_FOR_SECONDS)
+    source_root = Path("C:/fake-promo-toolchain").resolve()
+    payload = {
+        "schema_version": 1,
+        "kind": promo.MEDIA_PREFLIGHT_KIND,
+        "result": "GREEN",
+        "scope": promo.MEDIA_PREFLIGHT_SCOPE,
+        "generated_at_utc": created.isoformat(timespec="seconds"),
+        "valid_for_seconds": promo.MEDIA_PREFLIGHT_VALID_FOR_SECONDS,
+        "expires_at_utc": expires.isoformat(timespec="seconds"),
+        "project": {"id": config.project_id, "chapters": len(config.chapters)},
+        "promo_toolchain": {
+            "version": xar_promo.__version__,
+            "source_root": str(source_root),
+            "head": "a" * 40,
+            "origin_main": "a" * 40,
+            "clean": True,
+        },
+        "packages": {"edge-tts": "7.2.8", "Pillow": "12.3.0"},
+        "voice": {
+            "id": promo.PHASE2_POLICY.voice,
+            "catalogue_match": promo.PHASE2_POLICY.voice + " Female Warm",
+        },
+        "fonts": {
+            "zh-CN": {"family": "Microsoft YaHei UI", **record(files["zh_font"])},
+            "en": {"family": "Segoe UI", **record(files["en_font"])},
+        },
+        "subtitle_layout": {
+            "frame": [promo.WIDTH, promo.HEIGHT],
+            "safe_margins": {"left": 90, "top": 64, "right": 90, "bottom": 64},
+            "tracks": [
+                {
+                    "id": "en",
+                    "bounds": [110.0, 974.0, 1810.0, 1016.0],
+                    "lines": [{"text": "English probe", "width": 200.0, "x": 860.0}],
+                },
+                {
+                    "id": "zh-CN",
+                    "bounds": [90.0, 898.0, 1830.0, 958.0],
+                    "lines": [{"text": "Chinese probe", "width": 240.0, "x": 840.0}],
+                },
+            ],
+        },
+        "media": {
+            "ffmpeg": record(files["ffmpeg"]),
+            "ffmpeg_version": "fixture ffmpeg",
+            "ffprobe": record(files["ffprobe"]),
+            "ffprobe_version": "fixture ffprobe",
+            "verified_filter": "ass/libass",
+            "verified_video_encoder": "libx264",
+            "verified_audio_encoder": "aac/48000Hz/stereo",
+            "disposable_test_output_retained": False,
+        },
+    }
+    report = root / "media-preflight.json"
+    report.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return report, hashlib.sha256(report.read_bytes()).hexdigest(), files
 
 
 def _write_seed_preflight_report(
@@ -454,6 +552,171 @@ class Phase2PromoEntryTests(unittest.TestCase):
         _FakeComposer.instances.clear()
         _RealDurationFakeComposer.instances.clear()
         _OverlongFakeComposer.instances.clear()
+
+    @staticmethod
+    def _media_identity() -> dict[str, object]:
+        return {
+            "source_root": Path("C:/fake-promo-toolchain").resolve(),
+            "head": "a" * 40,
+            "origin_main": "a" * 40,
+            "clean": True,
+        }
+
+    def test_media_preflight_is_hash_bound_unexpired_and_rechecked(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            report, digest, files = _write_media_preflight_report(
+                root / "media",
+                config_path=CHECKED_CONFIG,
+            )
+            config = load_phase2_project_config(CHECKED_CONFIG)
+            with mock.patch.object(
+                promo,
+                "_current_toolchain_identity",
+                return_value=self._media_identity(),
+            ):
+                binding = promo.load_media_preflight_binding(
+                    report,
+                    digest,
+                    project_config=config,
+                    edge_tts_version=promo.DEFAULT_EDGE_TTS_VERSION,
+                    ffmpeg=str(files["ffmpeg"]),
+                    ffprobe=str(files["ffprobe"]),
+                    zh_font_file=files["zh_font"],
+                    en_font_file=files["en_font"],
+                )
+                self.assertEqual(report.resolve(), binding.path)
+                self.assertEqual(digest.upper(), binding.sha256)
+                self.assertEqual(4, len(binding.tracked_files))
+                binding.verify_unchanged()
+                original_font = files["zh_font"].read_bytes()
+                files["zh_font"].write_bytes(original_font + b"-changed")
+                with self.assertRaisesRegex(
+                    promo.Phase2PromoBuildError,
+                    "dependency changed during the attempt",
+                ):
+                    binding.verify_unchanged()
+                files["zh_font"].write_bytes(original_font)
+                report.write_text(
+                    report.read_text(encoding="utf-8") + " ",
+                    encoding="utf-8",
+                )
+                with self.assertRaisesRegex(
+                    promo.Phase2PromoBuildError,
+                    "changed during the attempt",
+                ):
+                    binding.verify_unchanged()
+
+    def test_media_preflight_rejects_expired_and_wrong_hash_receipts(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=2)
+            report, digest, files = _write_media_preflight_report(
+                root / "media",
+                config_path=CHECKED_CONFIG,
+                generated_at=old,
+            )
+            config = load_phase2_project_config(CHECKED_CONFIG)
+            kwargs = {
+                "project_config": config,
+                "edge_tts_version": promo.DEFAULT_EDGE_TTS_VERSION,
+                "ffmpeg": str(files["ffmpeg"]),
+                "ffprobe": str(files["ffprobe"]),
+                "zh_font_file": files["zh_font"],
+                "en_font_file": files["en_font"],
+            }
+            with mock.patch.object(
+                promo,
+                "_current_toolchain_identity",
+                return_value=self._media_identity(),
+            ):
+                with self.assertRaisesRegex(promo.Phase2PromoBuildError, "expired"):
+                    promo.load_media_preflight_binding(report, digest, **kwargs)
+                with self.assertRaisesRegex(
+                    promo.Phase2PromoBuildError,
+                    "SHA-256 does not match",
+                ):
+                    promo.load_media_preflight_binding(report, "0" * 64, **kwargs)
+
+    def test_planned_authoring_stays_red_with_valid_media_preflight(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            report, digest, files = _write_media_preflight_report(
+                root / "media",
+                config_path=CHECKED_CONFIG,
+            )
+            workdir = root / "must-not-exist"
+            args = _args(
+                CHECKED_CONFIG,
+                root / "missing-capture",
+                workdir,
+                validate_only=True,
+                media_preflight_report=report,
+                expected_media_preflight_sha256=digest,
+            )
+            args.ffmpeg = str(files["ffmpeg"])
+            args.ffprobe = str(files["ffprobe"])
+            args.zh_font_file = files["zh_font"]
+            args.en_font_file = files["en_font"]
+            runner = mock.Mock()
+            with mock.patch.object(
+                promo,
+                "_current_toolchain_identity",
+                return_value=self._media_identity(),
+            ):
+                with self.assertRaisesRegex(promo.Phase2PromoBuildError, "remains planned"):
+                    promo.execute(args, pipeline_runner=runner)
+            runner.assert_not_called()
+            self.assertFalse(workdir.exists())
+
+    def test_full_candidate_preserves_bound_media_preflight(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config_path = _write_ready_config(root)
+            report, digest, files = _write_media_preflight_report(
+                root / "media",
+                config_path=config_path,
+            )
+            workdir = root / "candidate"
+            args = _args(
+                config_path,
+                root / "capture",
+                workdir,
+                validate_only=False,
+                media_preflight_report=report,
+                expected_media_preflight_sha256=digest,
+            )
+            args.ffmpeg = str(files["ffmpeg"])
+            args.ffprobe = str(files["ffprobe"])
+            args.zh_font_file = files["zh_font"]
+            args.en_font_file = files["en_font"]
+            with mock.patch.object(
+                promo,
+                "_current_toolchain_identity",
+                return_value=self._media_identity(),
+            ):
+                outcome = promo.execute(
+                    args,
+                    composer_factory=_RealDurationFakeComposer,
+                    pipeline_runner=lambda _invocation, **_kwargs: _successful_result(
+                        workdir,
+                        load_phase2_project_config(config_path),
+                    ),
+                )
+            self.assertIsNotNone(outcome.media_preflight)
+            self.assertNotIn("media environment preflight is not bound", " ".join(outcome.blockers))
+            summary = json.loads(
+                (workdir / "phase2-pipeline-result.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(outcome.media_preflight.to_mapping(), summary["media_preflight"])
+            loaded = load_document(outcome.run_manifest_path, check_files=True)
+            artifacts = [
+                artifact
+                for artifact in loaded.run.artifacts
+                if artifact.artifact_id == promo.MEDIA_PREFLIGHT_ARTIFACT_ID
+            ]
+            self.assertEqual(1, len(artifacts))
+            self.assertEqual(("raw", "preflight"), (artifacts[0].collection, artifacts[0].role))
 
     def test_seed_preflight_binding_requires_green_no_launch_contract(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
