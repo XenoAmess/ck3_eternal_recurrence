@@ -792,3 +792,24 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   loaded-tree shape capture：标出 `ResolveUniqueTruceNode` 的具体失败检查及对应 vtable/count/capacity 实值；没有该新证据前不改
   offset/shape contract、不扩 public wire/readiness、不重复本次 checkpoint replay。完整证据边界见
   [G2 private truce live capture](../ck3-native-ai/g2-truce-private-live-capture-2026-09-02.md)。
+
+## 2026-09-02：GEN-034 exact next-layer live NO-GO
+
+- 在此前 exact Context 证据基础上，唯一一次 bounded private live 只读取
+  index 9 的 `0x44D1E18(1/1)` 唯一 child，以及 index 10 的
+  `0x41E36D0(6/6)` 六个 children。两条 capture 完全一致：index 9 为
+  `[0x4446EF0]`；index 10 为
+  `[0x44D2138, 0x44D2138, 0x44786C8, 0x41B1E90, 0x44D1E18,
+  0x44D1E18]`。没有节点匹配 Truce vtable `0x4461CA8`，因此没有生成
+  duration 地址，也没有调用 evaluator。
+- live report SHA-256 为
+  `804496739A9945083AAA7E5D641DC8E9ECF0660B58A725BA499DCF4065CDE3C7`；
+  private JSONL SHA-256 为
+  `DF6AD111C22034F8287D7695F4905B84FE24543F33004AD369F60902FAC00A37`。
+  cleanup/source invariant GREEN，未推进时间、未发送战争终止 mutation。
+- 本结论覆盖本页顶部 GEN-034 行中“下一包枚举 1+6 children”的旧待办：该
+  待办已完成且结果为 NO-GO。下一最小入口改为离线解析五个唯一 RVA
+  `0x4446EF0 / 0x44D2138 / 0x44786C8 / 0x41B1E90 / 0x44D1E18`
+  的 COL/type descriptor/RTTI 与 bounded container shape，优先确定仍可能通向
+  `0x4461CA8` 的唯一路径；在静态证据未唯一化前不再启动 CK3，不改 production
+  `19/14/index 9`、public ABI 或 readiness。`GEN-034` 继续 **unresolved**。

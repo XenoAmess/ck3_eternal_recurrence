@@ -198,6 +198,48 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             resolver,
         )
 
+    def test_next_layer_capture_is_exactly_bounded_to_known_nine_and_ten_shapes(self) -> None:
+        resolver = (
+            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
+        ).read_text(encoding="utf-8")
+        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn(
+            "kPrivateIndex9ContextChild0VtableRva = 0x44D1E18",
+            resolver,
+        )
+        self.assertIn(
+            "kPrivateIndex10ContextChild0VtableRva = 0x41E36D0",
+            resolver,
+        )
+        self.assertIn("root_index == 9 ? 1 : 6", resolver)
+        self.assertIn('"unexpected_index9_shape"', resolver)
+        self.assertIn('"unexpected_index10_shape"', resolver)
+        self.assertIn(
+            "next_child_vtable == environment.truce_effect_vtable",
+            resolver,
+        )
+        self.assertNotIn("evaluate_duration_days(", resolver[
+            resolver.index("const auto expected_child0_vtable"):
+            resolver.index("bool EnvironmentIsExact(")
+        ])
+
+        for field in (
+            '"next_layer_status"',
+            '"next_layer_capture_limit"',
+            '"next_layer_capture_completed"',
+            '"next_layer_child_vtable_rvas"',
+            '"next_layer_truce_match_count"',
+            '"next_layer_truce_match_index"',
+            '"next_layer_truce_duration_script_value"',
+            '"next_layer_candidate_capture_completed"',
+            '"next_layer_truce_match_root_index"',
+            '"next_layer_truce_match_child_index"',
+        ):
+            self.assertIn(field.replace('"', '\\"'), writer)
+
 
 if __name__ == "__main__":
     unittest.main()

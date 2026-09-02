@@ -144,6 +144,8 @@ void CaptureLoadedRootChildrenForG2(
 
 constexpr std::array<std::size_t, 2> kPrivateScriptedCandidateIndices = {
     9, 10};
+constexpr std::uintptr_t kPrivateIndex9ContextChild0VtableRva = 0x44D1E18;
+constexpr std::uintptr_t kPrivateIndex10ContextChild0VtableRva = 0x41E36D0;
 
 void CaptureLoadedScriptedCandidatesForG2(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
@@ -436,6 +438,72 @@ void CaptureLoadedScriptedCandidatesForG2(
         candidate.truce_vtable_match = false;
       }
     }
+
+    const auto expected_child0_vtable =
+        environment.module_base +
+        (root_index == 9 ? kPrivateIndex9ContextChild0VtableRva
+                         : kPrivateIndex10ContextChild0VtableRva);
+    const auto expected_next_layer_count =
+        static_cast<std::int32_t>(root_index == 9 ? 1 : 6);
+    if (candidate.context_child0_vtable != expected_child0_vtable ||
+        candidate.context_child0_children == 0 ||
+        candidate.context_child0_capacity != expected_next_layer_count ||
+        candidate.context_child0_count != expected_next_layer_count) {
+      candidate.next_layer_status =
+          root_index == 9 ? "unexpected_index9_shape"
+                          : "unexpected_index10_shape";
+      continue;
+    }
+
+    candidate.next_layer_capture_limit =
+        static_cast<std::size_t>(expected_next_layer_count);
+    bool next_layer_failed = false;
+    for (std::size_t next_index = 0;
+         next_index < candidate.next_layer_capture_limit; ++next_index) {
+      void *next_child = nullptr;
+      if (!ReadValue(access, context_child0_children,
+                     next_index * sizeof(void *), next_child)) {
+        candidate.next_layer_status = "child_pointer_read_failed";
+        next_layer_failed = true;
+        break;
+      }
+      if (next_child == nullptr) {
+        candidate.next_layer_status = "child_null";
+        next_layer_failed = true;
+        break;
+      }
+
+      std::uintptr_t next_child_vtable = 0;
+      if (!ReadValue(access, next_child, 0, next_child_vtable)) {
+        candidate.next_layer_status = "child_vtable_read_failed";
+        next_layer_failed = true;
+        break;
+      }
+      candidate.next_layer_child_vtables[next_index] = next_child_vtable;
+      candidate.next_layer_capture_completed = next_index + 1;
+      if (next_child_vtable == environment.truce_effect_vtable) {
+        const void *duration_address = nullptr;
+        if (!CheckedAddress(next_child, kTruceDurationScriptValueOffset,
+                            duration_address)) {
+          candidate.next_layer_status = "truce_duration_address_failed";
+          next_layer_failed = true;
+          break;
+        }
+        ++candidate.next_layer_truce_match_count;
+        candidate.next_layer_truce_match_index =
+            static_cast<std::int32_t>(next_index);
+        candidate.next_layer_truce_duration_script_value =
+            reinterpret_cast<std::uintptr_t>(duration_address);
+        ++capture.next_layer_truce_match_count;
+        capture.next_layer_truce_match_root_index =
+            static_cast<std::int32_t>(root_index);
+        capture.next_layer_truce_match_child_index =
+            static_cast<std::int32_t>(next_index);
+      }
+    }
+    if (next_layer_failed) continue;
+    candidate.next_layer_status = "complete";
+    ++capture.next_layer_candidate_capture_completed;
   }
 }
 #endif

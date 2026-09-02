@@ -113,7 +113,16 @@ void AppendG2TrucePrivateCaptureV1(
         "\"context_child0_capacity\":%d,"
         "\"context_child0_count\":%d,"
         "\"context_child0_duration_script_value\":\"0x%llX\","
-        "\"truce_vtable_match\":%s}",
+        "\"truce_vtable_match\":%s,"
+        "\"next_layer_status\":\"%.*s\","
+        "\"next_layer_capture_limit\":%llu,"
+        "\"next_layer_capture_completed\":%llu,"
+        "\"next_layer_child_vtable_rvas\":["
+        "\"0x%llX\",\"0x%llX\",\"0x%llX\","
+        "\"0x%llX\",\"0x%llX\",\"0x%llX\"],"
+        "\"next_layer_truce_match_count\":%llu,"
+        "\"next_layer_truce_match_index\":%d,"
+        "\"next_layer_truce_duration_script_value\":\"0x%llX\"}",
         slot == 0 ? "" : ",", candidate.root_index,
         static_cast<int>(candidate.status.size()), candidate.status.data(),
         static_cast<unsigned long long>(candidate.child),
@@ -150,7 +159,29 @@ void AppendG2TrucePrivateCaptureV1(
         candidate.context_child0_capacity, candidate.context_child0_count,
         static_cast<unsigned long long>(
             candidate.context_child0_duration_script_value),
-        candidate.truce_vtable_match ? "true" : "false");
+        candidate.truce_vtable_match ? "true" : "false",
+        static_cast<int>(candidate.next_layer_status.size()),
+        candidate.next_layer_status.data(),
+        static_cast<unsigned long long>(candidate.next_layer_capture_limit),
+        static_cast<unsigned long long>(
+            candidate.next_layer_capture_completed),
+        static_cast<unsigned long long>(
+            as_rva(candidate.next_layer_child_vtables[0])),
+        static_cast<unsigned long long>(
+            as_rva(candidate.next_layer_child_vtables[1])),
+        static_cast<unsigned long long>(
+            as_rva(candidate.next_layer_child_vtables[2])),
+        static_cast<unsigned long long>(
+            as_rva(candidate.next_layer_child_vtables[3])),
+        static_cast<unsigned long long>(
+            as_rva(candidate.next_layer_child_vtables[4])),
+        static_cast<unsigned long long>(
+            as_rva(candidate.next_layer_child_vtables[5])),
+        static_cast<unsigned long long>(
+            candidate.next_layer_truce_match_count),
+        candidate.next_layer_truce_match_index,
+        static_cast<unsigned long long>(
+            candidate.next_layer_truce_duration_script_value));
     if (candidate_length <= 0 ||
         static_cast<std::size_t>(candidate_length) >=
             scripted_candidates_json.size() - scripted_candidates_length) {
@@ -206,6 +237,10 @@ void AppendG2TrucePrivateCaptureV1(
       "\"context_capture_completed\":%llu,"
       "\"truce_vtable_match_count\":%llu,"
       "\"truce_vtable_match_root_index\":%d,"
+      "\"next_layer_candidate_capture_completed\":%llu,"
+      "\"next_layer_truce_match_count\":%llu,"
+      "\"next_layer_truce_match_root_index\":%d,"
+      "\"next_layer_truce_match_child_index\":%d,"
       "\"scripted_candidates\":%.*s,"
       "\"scripted_effect\":\"0x%llX\","
       "\"scripted_vtable\":\"0x%llX\",\"scripted_vtable_rva\":\"0x%llX\","
@@ -291,6 +326,11 @@ void AppendG2TrucePrivateCaptureV1(
       static_cast<unsigned long long>(shape.context_capture_completed),
       static_cast<unsigned long long>(shape.truce_vtable_match_count),
       shape.truce_vtable_match_root_index,
+      static_cast<unsigned long long>(
+          shape.next_layer_candidate_capture_completed),
+      static_cast<unsigned long long>(shape.next_layer_truce_match_count),
+      shape.next_layer_truce_match_root_index,
+      shape.next_layer_truce_match_child_index,
       static_cast<int>(scripted_candidates_length),
       scripted_candidates_json.data(),
       static_cast<unsigned long long>(shape.scripted_effect),

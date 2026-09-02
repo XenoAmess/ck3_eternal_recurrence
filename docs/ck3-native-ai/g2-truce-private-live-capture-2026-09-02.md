@@ -386,3 +386,62 @@ only the six children under `0x41E36D0(6/6)`. Record child vtables and stop as
 soon as an exact `0x4461CA8` match is classified. Do not revisit other root
 indices or repeat Context-prefix fields. Cleanup/source invariants were GREEN,
 no mutation or time advance was sent, and public/readiness remain unchanged.
+
+## Bounded next-layer enumeration
+
+A fresh branch from parent baseline
+`1f8ac3b2dd9423e8a24c314c22d27dbc5eeff052` added an OFF-by-default
+private capture for exactly the two previously observed shapes. It reads the
+single child below index 9's `0x44D1E18(1/1)` node and the six children below
+index 10's `0x41E36D0(6/6)` node. It records vtables and computes a duration
+address only after an exact `0x4461CA8` match; it never calls the evaluator.
+
+The focused source contract passed `6/6`; the instrumented Release build and
+native game-access test passed. The live bound current `open_kaishek`
+`425514e2e937bb829b2415f9da7870609e9c736f`, CLI JAR SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`,
+and the existing equivalent GREEN preflight artifact SHA-256
+`BBEEE5782733D09A0A3A66F6B9A6F2448693E704E77FA504CD6DF4A17E134792`.
+Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `C3EACADC47ED4BAEF62EF6A7167474FBCE47CA61D171521F9C6F80726070837B`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `5DE51478D15407B87D0BDAF3FCBD7C074BE3AE8FA54CA72847B180FF386D532B`.
+
+The first runner invocation used the global Python by mistake and stopped
+before launching CK3 because `nvidia-cublas` metadata was absent. Its retained
+report SHA-256 is
+`C5873DDF88A3A3FA173F0A364F17F038007B4602124B15D399684A2BE1E446C4`;
+the source hashes were unchanged. A runtime-only precheck then confirmed all
+required distributions in the established project venv, including
+`nvidia-cublas 13.6.0.2`. This harness RED did not consume a live attempt.
+
+The authorized single live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-next-layer-ready-20260902T182142\live-tools-venv\report.json`,
+  SHA-256
+  `804496739A9945083AAA7E5D641DC8E9ECF0660B58A725BA499DCF4065CDE3C7`;
+- private JSONL beside it, SHA-256
+  `DF6AD111C22034F8287D7695F4905B84FE24543F33004AD369F60902FAC00A37`.
+
+Both rows are identical and both bounded captures completed:
+
+| Root path | Captured children | Child vtable RVAs | Truce matches |
+| --- | ---: | --- | ---: |
+| index `9` | `1/1` | `0x4446EF0` | `0` |
+| index `10` | `6/6` | `0x44D2138`, `0x44D2138`, `0x44786C8`, `0x41B1E90`, `0x44D1E18`, `0x44D1E18` | `0` |
+
+None is the frozen Truce vtable `0x4461CA8`; therefore no duration address was
+produced and the public double-sample remained the expected
+`root_shape_drift` RED. Cleanup was GREEN, source checkpoint/driver hashes
+were unchanged, and no mutation or time advance was sent.
+
+This closes direct next-layer vtable equality as a NO-GO. Before any further
+CK3 run, resolve the five unique RVAs (`0x4446EF0`, `0x44D2138`,
+`0x44786C8`, `0x41B1E90`, `0x44D1E18`) through exact-build COL/type
+descriptor/RTTI and compare their bounded container shapes. The next live
+entry, if still necessary, must follow only the uniquely justified nested
+path. Public ABI/readiness and the production `19/14/index 9` contract remain
+unchanged; `GEN-034` remains unresolved.

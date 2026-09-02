@@ -161,6 +161,13 @@ struct RaiktorTrucePrivateScriptedCandidateV1 {
   std::int32_t context_child0_count = -1;
   std::uintptr_t context_child0_duration_script_value = 0;
   bool truce_vtable_match = false;
+  std::string_view next_layer_status = "not_attempted";
+  std::array<std::uintptr_t, 6> next_layer_child_vtables{};
+  std::size_t next_layer_capture_limit = 0;
+  std::size_t next_layer_capture_completed = 0;
+  std::size_t next_layer_truce_match_count = 0;
+  std::int32_t next_layer_truce_match_index = -1;
+  std::uintptr_t next_layer_truce_duration_script_value = 0;
 };
 
 struct RaiktorTrucePrivateShapeCaptureV1 {
@@ -188,6 +195,10 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::size_t context_capture_completed = 0;
   std::size_t truce_vtable_match_count = 0;
   std::int32_t truce_vtable_match_root_index = -1;
+  std::size_t next_layer_candidate_capture_completed = 0;
+  std::size_t next_layer_truce_match_count = 0;
+  std::int32_t next_layer_truce_match_root_index = -1;
+  std::int32_t next_layer_truce_match_child_index = -1;
   std::uintptr_t scripted_effect = 0;
   std::uintptr_t scripted_vtable = 0;
   std::int32_t scripted_selector_count = -1;
