@@ -1165,12 +1165,17 @@ telemetry、advertising、marketing、personalized content、data sharing 及其
 中英文/同义形式；也授权确认、关闭或继续处理任何 CK3 游戏内通知，无需再次
 询问。普通画面没有协议或通知时记录 `state=no_modal`、零点击并继续原流程。
 
-该授权不包含自动购买。任何涉及真实货币、平台商店、DLC/商品订单、
-`payment`、`checkout`、`purchase` 或会产生付费义务的控件都是硬拒绝项：
-不得点击、不得确认，必须保存证据并 typed stop。通知中的购买按钮同样禁止；
-Windows、Chrome 等系统 Toast 仍只允许关闭通知自身，不得点击正文。游戏内
-协议/通知处理前必须完成语义分类与 purchase denylist 检查，不能仅凭按钮位置
-点击。
+该授权不包含使用真实货币在 Paradox、Steam 或其他外部平台自动购买。外部商店、
+DLC/商品订单、`payment`、`checkout`、真实货币价格或会产生现实付费义务的
+**可执行控件**都是硬拒绝项：不得点击、不得确认，必须保存证据并 typed stop。
+CK3 内金币、威望、虔诚、宗族威望、影响力、正统性等游戏资源支出属于正常游戏
+动作，不适用现实购买禁令；正文只出现 `buy/purchase` 而唯一动作是关闭/好的时，
+允许关闭通知。分类必须同时读取 exact OCR action row、Steam/Paradox Store/DLC/
+cart/checkout/order/payment 与真实货币信号、以及 CK3 内资源信号：购买控件或
+Confirm/Continue 与明确外部商业上下文组合时硬停；外部商业与游戏内资源信号
+冲突、且存在可执行交易动作时零点击并 typed `CommerceActionAmbiguous`。不得仅凭
+正文关键词或按钮位置判断。Windows、Chrome 等系统 Toast 仍只允许关闭通知自身，
+不得点击正文。
 
 允许点击时，证据必须包含识别到的标题/版本、按钮标签、前后截图及 SHA-256，
 并记录隔离 `-userdir/account/PDX/SDK/ck3/account.json` 的前后哈希、完整 marker
