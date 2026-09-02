@@ -16,20 +16,77 @@ if str(TOOLS) not in sys.path:
 import plan_zhongguo_phase2_final_promo as planner  # noqa: E402
 
 
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def _media_receipt(*, production_pending: bool = True) -> dict[str, object]:
+    return {
+        "result": "GREEN",
+        "preflight_implementation": {
+            "sha256": _sha(
+                planner.ROOT
+                / "mod_zhongguo_style/tools/preflight_phase2_media.py"
+            )
+        },
+        "project": {
+            "chapters": 10,
+            "config": {"sha256": _sha(planner.DEFAULT_CONFIG)},
+        },
+        "voice": {
+            "id": planner.VOICE,
+            "provider": "edge-tts",
+            "configured": True,
+            "credential_presence": "not-applicable",
+            "credential_value_exposed": False,
+            "synthesis_performed": False,
+        },
+        "subtitle_layout": {"tracks": [{"id": "zh-CN"}, {"id": "en"}]},
+        "subtitle_engine": {
+            "automatic_wrap_measured_in_memory": True,
+            "ass_written": False,
+        },
+        "media": {
+            "capability_query": {
+                "video_encoder": "libx264",
+                "video_geometry": [1920, 1080],
+                "pixel_format": "yuv420p",
+                "audio_encoder": "aac",
+                "audio_sample_rate": 48000,
+                "audio_channels": 2,
+                "container_muxer": "mp4",
+            }
+        },
+        "execution_attestation": {
+            "ck3_started": False,
+            "tts_synthesis_performed": False,
+            "subtitle_media_written": False,
+            "ffmpeg_encode_started": False,
+            "work_directory_created": False,
+            "candidate_generated": False,
+        },
+        "final_promo_readiness": {
+            "result": "RED" if production_pending else "GREEN",
+            "reason_codes": (
+                [
+                    "fresh_promo_tool_fetch_required",
+                    "footage_pending",
+                    "publish_target_pending",
+                ]
+                if production_pending
+                else []
+            ),
+        },
+    }
+
+
 class FinalPromoRunbookTests(unittest.TestCase):
     def test_missing_footage_is_typed_and_planning_generates_no_media(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             media = root / "media.json"
             media.write_text(
-                json.dumps(
-                    {
-                        "result": "GREEN",
-                        "project": {"chapters": 10},
-                        "voice": {"id": planner.VOICE},
-                        "subtitle_layout": {"tracks": [{"id": "zh-CN"}, {"id": "en"}]},
-                    }
-                ),
+                json.dumps(_media_receipt()),
                 encoding="utf-8",
             )
             media_sha = hashlib.sha256(media.read_bytes()).hexdigest()
@@ -50,8 +107,17 @@ class FinalPromoRunbookTests(unittest.TestCase):
                 ffprobe="missing-ffprobe-must-not-run",
             )
             self.assertEqual(runbook["result"], "RED")
-            self.assertEqual(runbook["reason_code"], "footage_pending")
-            self.assertEqual(runbook["blockers"][0], "footage_pending")
+            self.assertEqual(
+                runbook["reason_code"], "fresh_promo_tool_fetch_required"
+            )
+            self.assertEqual(
+                runbook["blockers"][:3],
+                [
+                    "fresh_promo_tool_fetch_required",
+                    "footage_pending",
+                    "publish_target_pending",
+                ],
+            )
             self.assertIn("candidate_media_pending", runbook["blockers"])
             self.assertIn("publish_target_pending", runbook["blockers"])
             self.assertIn("publish_pending", runbook["blockers"])
@@ -71,6 +137,26 @@ class FinalPromoRunbookTests(unittest.TestCase):
             self.assertEqual(runbook["authoring_claim_ledger"]["result"], "GREEN")
             self.assertEqual(
                 len(runbook["authoring_claim_ledger"]["claims"]), 10
+            )
+            self.assertTrue(
+                runbook["authoring_claim_ledger"]["checks"]
+                ["chinese_primary_english_secondary"]
+            )
+            self.assertTrue(
+                runbook["authoring_claim_ledger"]["checks"]
+                ["semantic_line_breaks_then_measured_wrap"]
+            )
+            self.assertEqual(
+                len(
+                    runbook["authoring_claim_ledger"]
+                    ["visible_observation_contracts"]
+                ),
+                8,
+            )
+            self.assertTrue(
+                all(
+                    runbook["inputs"]["media_preflight"]["checks"].values()
+                )
             )
             self.assertEqual(len(runbook["fixed_contract"]["canonical_spans"]), 8)
             self.assertEqual(runbook["fixed_contract"]["chapter_count"], 10)
@@ -142,16 +228,7 @@ class FinalPromoRunbookTests(unittest.TestCase):
             root = Path(raw)
             media = root / "media.json"
             media.write_text(
-                json.dumps(
-                    {
-                        "result": "GREEN",
-                        "project": {"chapters": 10},
-                        "voice": {"id": planner.VOICE},
-                        "subtitle_layout": {
-                            "tracks": [{"id": "zh-CN"}, {"id": "en"}]
-                        },
-                    }
-                ),
+                json.dumps(_media_receipt(production_pending=False)),
                 encoding="utf-8",
             )
             media_sha = hashlib.sha256(media.read_bytes()).hexdigest()

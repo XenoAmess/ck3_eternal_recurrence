@@ -122,6 +122,17 @@ Its first future production step still requires fetching the standalone promo
 tool and proving a clean `HEAD == origin/main` before refreshing the media
 receipt or running any builder command.
 
+The runbook also revalidates the environment receipt's exact SHA-256 and its
+bound preflight implementation/project config. It requires the no-secret
+Xiaoxiao provider record, in-memory measured wrapping, no-ASS/no-encode
+attestation, and the H.264/yuv420p/1920×1080 plus AAC 48 kHz stereo capability
+contract. Its authoring section exposes all eight canonical producer keys,
+provider-observed postconditions, and per-span visible-observation lists. With
+the current receipt and absent live inputs, the production-start boundary is
+typed `fresh_promo_tool_fetch_required`, `footage_pending`, and
+`publish_target_pending`; the environment itself can remain GREEN without
+claiming that the final video is ready.
+
 `--capture-root` is consumed through the dedicated media-entry intake schema
 `zg361_phase2_footage_intake`; this does not extend or reinterpret the native
 observer schema. It accepts only the runner's canonical `report.json`,

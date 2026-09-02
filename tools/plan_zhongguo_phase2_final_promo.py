@@ -149,33 +149,80 @@ def _authoring_ledger_gate(path: Path) -> tuple[dict[str, object], list[str]]:
     chapters = payload.get("chapters")
     rows = chapters if isinstance(chapters, list) else []
     ids = tuple(row.get("id") for row in rows if isinstance(row, Mapping))
-    ready = not errors and ids == EXPECTED_CHAPTERS and len(rows) == 10
+    language = payload.get("language_policy")
+    language = language if isinstance(language, Mapping) else {}
+    promotion = payload.get("promotion_mapping")
+    promotion = promotion if isinstance(promotion, Mapping) else {}
+    gameplay_rows = [
+        row
+        for row in rows
+        if isinstance(row, Mapping) and row.get("type") == "ck3_clean_span"
+    ]
+    expected_producers = {
+        scenario.span_id: scenario.producer_key for scenario in PHASE2_CAPTURE_SCENARIOS
+    }
+    visible_contracts: list[dict[str, object]] = []
+    for row in gameplay_rows:
+        binding = row.get("footage_binding")
+        binding = binding if isinstance(binding, Mapping) else {}
+        claim = row.get("claim")
+        claim = claim if isinstance(claim, Mapping) else {}
+        observations = claim.get("required_visible_observations")
+        visible_contracts.append(
+            {
+                "span_id": row.get("id"),
+                "producer_key": binding.get("producer_key"),
+                "required_postcondition": binding.get("required_postcondition"),
+                "required_visible_observations": (
+                    list(observations) if isinstance(observations, list) else []
+                ),
+            }
+        )
+    checks = {
+        "validator_green": not errors,
+        "exact_ten_claims": len(rows) == 10,
+        "canonical_order": ids == EXPECTED_CHAPTERS,
+        "chinese_primary_english_secondary": language.get("primary_narration")
+        == "zh-CN"
+        and language.get("primary_visual_text") == "zh-CN"
+        and language.get("secondary_visual_text") == "en"
+        and language.get("simultaneous_subtitles") == ["zh-CN", "en"],
+        "semantic_line_breaks_then_measured_wrap": promotion.get("narration_zh_cn")
+        == "cue.narration_zh_cn"
+        and promotion.get("subtitle_zh_cn")
+        == "newline_join(cue.subtitle_zh_cn_lines)"
+        and promotion.get("subtitle_en") == "newline_join(cue.subtitle_en_lines)"
+        and promotion.get("semantic_breaks")
+        == "explicit-newline-between-editorial-lines"
+        and promotion.get("automatic_wrap")
+        == "promo-renderer-wraps-within-each-editorial-line",
+        "xiaoxiao": language.get("current_builder_voice") == VOICE,
+        "eight_visible_observation_contracts": len(visible_contracts) == 8
+        and all(
+            row["producer_key"] == expected_producers.get(row["span_id"])
+            and isinstance(row["required_postcondition"], str)
+            and bool(str(row["required_postcondition"]).strip())
+            and len(row["required_visible_observations"]) >= 2
+            for row in visible_contracts
+        ),
+        "draft_not_release_claim": all(
+            isinstance(row, Mapping)
+            and isinstance(row.get("cue"), Mapping)
+            and row["cue"].get("release_usable") is False
+            for row in rows
+        ),
+    }
+    ready = all(checks.values())
     return {
         "record": None if not ledger_path.is_file() else _sha256(ledger_path),
         "result": "GREEN" if ready else "RED",
         "status": payload.get("authoring_status"),
-        "checks": {
-            "validator_green": not errors,
-            "exact_ten_claims": len(rows) == 10,
-            "canonical_order": ids == EXPECTED_CHAPTERS,
-            "chinese_first": isinstance(payload.get("language_policy"), Mapping)
-            and payload["language_policy"].get("primary_narration") == "zh-CN",
-            "simultaneous_zh_cn_en": isinstance(
-                payload.get("language_policy"), Mapping
-            )
-            and payload["language_policy"].get("simultaneous_subtitles")
-            == ["zh-CN", "en"],
-            "xiaoxiao": isinstance(payload.get("language_policy"), Mapping)
-            and payload["language_policy"].get("current_builder_voice") == VOICE,
-            "draft_not_release_claim": all(
-                isinstance(row, Mapping)
-                and isinstance(row.get("cue"), Mapping)
-                and row["cue"].get("release_usable") is False
-                for row in rows
-            ),
-        },
+        "checks": checks,
         "validation_errors": errors,
         "claims": rows,
+        "language_contract": dict(language),
+        "promotion_mapping": dict(promotion),
+        "visible_observation_contracts": visible_contracts,
         "promotion_boundary": (
             "10/10 authoring is complete as a reviewed draft input; promote "
             "only after the corresponding real footage supports each claim"
@@ -224,20 +271,85 @@ def build_runbook(
 
     media = _file_input(media_preflight_report)
     media_checks = {"expected_sha_bound": False, "receipt_green": False}
+    media_payload: Mapping[str, object] = {}
     if media_preflight_report is not None and media_preflight_report.is_file():
         payload = _json(media_preflight_report)
+        media_payload = payload
         record = media["record"]
         assert isinstance(record, Mapping)
+        receipt_project = payload.get("project")
+        receipt_project = receipt_project if isinstance(receipt_project, Mapping) else {}
+        receipt_voice = payload.get("voice")
+        receipt_voice = receipt_voice if isinstance(receipt_voice, Mapping) else {}
+        receipt_subtitles = payload.get("subtitle_engine")
+        receipt_subtitles = receipt_subtitles if isinstance(receipt_subtitles, Mapping) else {}
+        receipt_media = payload.get("media")
+        receipt_media = receipt_media if isinstance(receipt_media, Mapping) else {}
+        capability = receipt_media.get("capability_query")
+        capability = capability if isinstance(capability, Mapping) else {}
+        execution = payload.get("execution_attestation")
+        execution = execution if isinstance(execution, Mapping) else {}
+        readiness = payload.get("final_promo_readiness")
+        readiness = readiness if isinstance(readiness, Mapping) else {}
+        implementation = payload.get("preflight_implementation")
+        implementation = implementation if isinstance(implementation, Mapping) else {}
+        receipt_config = receipt_project.get("config")
+        receipt_config = receipt_config if isinstance(receipt_config, Mapping) else {}
         media_checks = {
             "expected_sha_bound": isinstance(expected_media_preflight_sha256, str) and record["sha256"] == expected_media_preflight_sha256.upper(),
             "receipt_green": payload.get("result") == "GREEN",
-            "ten_chapter_project": isinstance(payload.get("project"), Mapping) and payload["project"].get("chapters") == 10,
-            "xiaoxiao": isinstance(payload.get("voice"), Mapping) and payload["voice"].get("id") == VOICE,
+            "preflight_implementation_bound": implementation.get("sha256")
+            == _sha256(ROOT / "mod_zhongguo_style/tools/preflight_phase2_media.py")["sha256"],
+            "project_config_bound": receipt_config.get("sha256") == project["record"]["sha256"],
+            "ten_chapter_project": receipt_project.get("chapters") == 10,
+            "xiaoxiao_provider_configured_without_secret": receipt_voice.get("id") == VOICE
+            and receipt_voice.get("provider") == "edge-tts"
+            and receipt_voice.get("configured") is True
+            and receipt_voice.get("credential_presence") == "not-applicable"
+            and receipt_voice.get("credential_value_exposed") is False
+            and receipt_voice.get("synthesis_performed") is False,
             "bilingual_safe_area": isinstance(payload.get("subtitle_layout"), Mapping) and {row.get("id") for row in payload["subtitle_layout"].get("tracks", []) if isinstance(row, Mapping)} == {"zh-CN", "en"},
+            "semantic_wrap_dependency": receipt_subtitles.get("automatic_wrap_measured_in_memory") is True
+            and receipt_subtitles.get("ass_written") is False,
+            "codec_geometry_audio_capabilities": capability.get("video_encoder") == "libx264"
+            and capability.get("video_geometry") == [1920, 1080]
+            and capability.get("pixel_format") == "yuv420p"
+            and capability.get("audio_encoder") == "aac"
+            and capability.get("audio_sample_rate") == 48000
+            and capability.get("audio_channels") == 2
+            and capability.get("container_muxer") == "mp4",
+            "no_media_execution": all(
+                execution.get(key) is False
+                for key in (
+                    "ck3_started",
+                    "tts_synthesis_performed",
+                    "subtitle_media_written",
+                    "ffmpeg_encode_started",
+                    "work_directory_created",
+                    "candidate_generated",
+                )
+            ),
+            "typed_production_boundary": (
+                readiness.get("result") == "RED"
+                and readiness.get("reason_codes")
+                == [
+                    "fresh_promo_tool_fetch_required",
+                    "footage_pending",
+                    "publish_target_pending",
+                ]
+            )
+            or (
+                readiness.get("result") == "GREEN"
+                and readiness.get("reason_codes") == []
+            ),
         }
     media["checks"] = media_checks
     if not all(media_checks.values()):
         blockers.append("media_receipt_pending")
+    elif "fresh_promo_tool_fetch_required" in media_payload.get(
+        "final_promo_readiness", {}
+    ).get("reason_codes", []):
+        blockers.insert(0, "fresh_promo_tool_fetch_required")
 
     tool_identity = {
         "root": str(promo),
