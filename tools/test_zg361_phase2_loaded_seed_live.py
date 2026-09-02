@@ -169,6 +169,22 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
         )
         self.assertIn("launch CK3", plan["forbidden_operations"])
         self.assertIn("run any phase-two span handler", plan["forbidden_operations"])
+        self.assertEqual(
+            plan["integrated_consumer"],
+            "run_zhongguo_acceptance._phase2_promo_seed_proof_probe",
+        )
+        self.assertLess(
+            plan["lifecycle_order"].index(
+                "enter eight-span capture executor and start recorder"
+            ),
+            plan["lifecycle_order"].index(
+                "cleanup supervisor and driver in the owning runner finally block"
+            ),
+        )
+        self.assertIn(
+            "loaded_feature_manifest_unavailable",
+            plan["typed_pre_record_stops"],
+        )
 
     def test_existing_session_proves_eight_rows_without_actions(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -264,6 +280,50 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
         self.assertEqual(persisted["result"], "RED")
         self.assertFalse(persisted["same_session_continuation_authorized"])
         self.assertEqual(persisted["expected_connection_generation"], 3)
+
+    def test_owner_supplied_first_snapshot_flows_inline_to_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            contract = json.loads(
+                _ready_contract(root).read_text(encoding="utf-8")
+            )
+            service = _ExistingService()
+            report = live.run_existing_session_loaded_seed_v2(
+                service,
+                seed_contract=contract,
+                artifacts=root / "artifacts",
+                tracked_ck3_pid=4321,
+                expected_connection_generation=4,
+                first_snapshot=_snapshot(),
+            )
+        self.assertEqual(service.calls, [("manifest", 10), ("snapshot", 10)])
+        self.assertTrue(report["first_snapshot_supplied_by_owner"])
+        self.assertTrue(report["seed_contract_inline"])
+        self.assertTrue(report["same_session_continuation_authorized"])
+
+    def test_missing_manifest_stops_before_second_snapshot(self) -> None:
+        class SnapshotOnlyService:
+            def snapshot(self) -> dict[str, object]:
+                raise AssertionError("second snapshot must remain unreachable")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            contract = json.loads(
+                _ready_contract(root).read_text(encoding="utf-8")
+            )
+            with self.assertRaises(live.LoadedSeedLiveError) as raised:
+                live.run_existing_session_loaded_seed_v2(
+                    SnapshotOnlyService(),
+                    seed_contract=contract,
+                    artifacts=root / "artifacts",
+                    tracked_ck3_pid=4321,
+                    expected_connection_generation=4,
+                    first_snapshot=_snapshot(),
+                )
+        self.assertEqual(
+            raised.exception.reason_code,
+            "loaded_feature_manifest_unavailable",
+        )
 
 
 if __name__ == "__main__":

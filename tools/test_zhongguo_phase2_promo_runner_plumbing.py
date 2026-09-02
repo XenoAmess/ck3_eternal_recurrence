@@ -208,6 +208,137 @@ def _enter_common_run_cell_patches(
 
 
 class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
+    def test_inline_loaded_seed_handoff_binds_owner_session_before_capture(self) -> None:
+        snapshot = {
+            "snapshot_id": "phase2-seed:10",
+            "revision": 10,
+            "native_revision": 110,
+            "date_raw": 777,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 9001, "alive": True},
+            "diagnostics": {
+                "bridge_pid": 4321,
+                "connection_generation": 4,
+            },
+        }
+        manifest = {
+            "status": "available",
+            "loaded_feature_manifest_ready": True,
+            "binding": {
+                key: snapshot[key]
+                for key in (
+                    "snapshot_id",
+                    "revision",
+                    "native_revision",
+                    "date_raw",
+                )
+            },
+            "effective_feature_flags": {
+                "status": "available",
+                "items": [
+                    {"key": "all_under_heaven", "enabled": True},
+                    {"key": "merit_admin", "enabled": True},
+                ],
+            },
+            "script_dlc_keys": {
+                "status": "available",
+                "keys": ["All Under Heaven"],
+            },
+        }
+        calls: list[tuple[str, int]] = []
+
+        class Service:
+            def query_loaded_feature_manifest_v1(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                calls.append(("manifest", expected_revision))
+                return copy.deepcopy(manifest)
+
+            def snapshot(self) -> dict[str, object]:
+                calls.append(("snapshot", 10))
+                return copy.deepcopy(snapshot)
+
+        contract = {
+            "status": "ready",
+            "ready": True,
+            "saved_state": {
+                "date_raw": 777,
+                "played_character_id": 9001,
+                "played_character_alive": True,
+                "paused_on_load": True,
+                "map_ready": True,
+            },
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            context = SimpleNamespace(
+                title_navigation_service=Service(),
+                seed_contract=contract,
+                native_session_binding={
+                    "bridge_pid": 4321,
+                    "connection_generation": 4,
+                },
+                tracked_ck3_pid=4321,
+                artifacts=artifacts,
+            )
+            proof = capture._phase2_promo_seed_proof_probe(context, snapshot)
+            handoff = json.loads(
+                (
+                    artifacts
+                    / capture.loaded_seed_live.REPORT_NAME
+                ).read_text(encoding="utf-8")
+            )
+        self.assertEqual(calls, [("manifest", 10), ("snapshot", 10)])
+        self.assertEqual(proof["schema_version"], 2)
+        self.assertEqual(proof["result"], "GREEN")
+        self.assertEqual(len(proof["span_requirements"]), 8)
+        self.assertTrue(handoff["same_session_continuation_authorized"])
+        self.assertEqual(handoff["expected_connection_generation"], 4)
+
+    def test_inline_loaded_seed_missing_manifest_is_typed_before_capture(self) -> None:
+        snapshot = {
+            "snapshot_id": "phase2-seed:10",
+            "revision": 10,
+            "native_revision": 110,
+            "date_raw": 777,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 9001, "alive": True},
+            "diagnostics": {
+                "bridge_pid": 4321,
+                "connection_generation": 4,
+            },
+        }
+
+        class MissingManifestService:
+            def query_loaded_feature_manifest_v1(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                del expected_revision
+                return {"status": "unavailable"}
+
+            def snapshot(self) -> dict[str, object]:
+                raise AssertionError("manifest RED must precede second snapshot")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            context = SimpleNamespace(
+                title_navigation_service=MissingManifestService(),
+                seed_contract={"status": "ready", "ready": True},
+                native_session_binding={
+                    "bridge_pid": 4321,
+                    "connection_generation": 4,
+                },
+                tracked_ck3_pid=4321,
+                artifacts=Path(temporary),
+            )
+            with self.assertRaises(Phase2PromoProducerUnavailable) as raised:
+                capture._phase2_promo_seed_proof_probe(context, snapshot)
+        self.assertEqual(
+            raised.exception.reason_code,
+            "loaded_feature_manifest_unavailable",
+        )
+
     def setUp(self) -> None:
         self.prior_producer = capture._PHASE2_PROMO_CAPTURE_PRODUCER
         self.prior_visual_primitives = dict(
@@ -492,16 +623,23 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
 
     def test_phase2_promo_reuses_seed_supervisor_loader_and_context(self) -> None:
         seen: dict[str, object] = {}
+        lifecycle: list[str] = []
 
         def runtime_probe(context: object) -> dict[str, object]:
+            lifecycle.append("loaded-seed")
             seen["context"] = context
             return {"ready": True, "source": "managed-phase2-unit"}
 
         def choreography(
             context: object, runtime: dict[str, object]
         ) -> dict[str, object]:
+            lifecycle.append("footage")
             self.assertIs(context, seen["context"])
             self.assertEqual(runtime["source"], "managed-phase2-unit")
+            self.assertNotIn("cleanup", lifecycle)
+            self.assertFalse(
+                context.title_navigation_service.driver.closed  # type: ignore[union-attr]
+            )
             return {
                 "result": "GREEN",
                 "capture_mode": capture.PHASE2_PROMO_CAPTURE_MODE,
@@ -541,8 +679,6 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             "loader_error_log_scan": {"result": "GREEN"},
             "runtime_mount_inventory": ["product", "fixture"],
         }
-        lifecycle: list[str] = []
-
         def install_seed(*_args: object, **_kwargs: object) -> dict[str, object]:
             lifecycle.append("seed")
             return copy.deepcopy(seed_install)
@@ -637,7 +773,18 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     phase2_seed_contract_path=root / "generated-seed.json",
                 )
 
-        self.assertEqual(lifecycle, ["seed", "supervisor", "binding", "loader", "cleanup"])
+        self.assertEqual(
+            lifecycle,
+            [
+                "seed",
+                "supervisor",
+                "binding",
+                "loader",
+                "loaded-seed",
+                "footage",
+                "cleanup",
+            ],
+        )
         install.assert_called_once()
         self.assertEqual(
             install.call_args.kwargs["contract_path"],
@@ -655,6 +802,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertEqual(context.native_session_binding, binding)  # type: ignore[union-attr]
         self.assertEqual(context.loader_gate, loader_gate)  # type: ignore[union-attr]
         self.assertEqual(context.tracked_ck3_pid, 4321)  # type: ignore[union-attr]
+        self.assertTrue(context.title_navigation_service.driver.closed)  # type: ignore[union-attr]
         self.assertEqual(report["result"], "GREEN")
         self.assertTrue(report["loader_gate_executed"])
         self.assertTrue(report["gameplay_green_claimed"])

@@ -134,10 +134,12 @@ if str(TOOLS_DIRECTORY) not in sys.path:
 
 from zhongguo_phase2_promo_producer import (
     Phase2PromoCaptureContext,
+    Phase2PromoProducerUnavailable,
     Phase2PromoVisualPrimitive,
     make_managed_phase2_promo_capture_producer,
     phase2_promo_producer_typed_error_payload,
 )
+import zg361_phase2_loaded_seed_live as loaded_seed_live
 from zhongguo_phase2_visual_handlers import (
     CompositePhase2SpanDriver,
     ENDGAME_HANDLER,
@@ -1118,25 +1120,35 @@ def _phase2_promo_seed_proof_probe(
         raise acceptance.RunnerError(
             "phase-two promo seed contract is unavailable"
         )
-    query_manifest = getattr(
-        context.title_navigation_service,
-        "query_loaded_feature_manifest_v1",
-        None,
+    native_binding = context.native_session_binding
+    expected_generation = (
+        native_binding.get("connection_generation")
+        if isinstance(native_binding, Mapping)
+        else None
     )
-    revision = snapshot.get("revision")
-    if not callable(query_manifest) or isinstance(revision, bool) or not isinstance(
-        revision, int
-    ):
-        raise acceptance.RunnerError(
-            "phase-two promo loaded-feature provider is unavailable"
+    try:
+        handoff = loaded_seed_live.run_existing_session_loaded_seed_v2(
+            context.title_navigation_service,
+            seed_contract=dict(context.seed_contract),
+            artifacts=context.artifacts,
+            tracked_ck3_pid=context.tracked_ck3_pid,
+            expected_connection_generation=expected_generation,  # type: ignore[arg-type]
+            first_snapshot=snapshot,
         )
-    loaded_feature_manifest = query_manifest(expected_revision=revision)
-    return prove_phase2_loaded_seed(
-        dict(snapshot),
-        dict(context.seed_contract),
-        context.artifacts,
-        loaded_feature_manifest=loaded_feature_manifest,
-    )
+    except loaded_seed_live.LoadedSeedLiveError as error:
+        raise Phase2PromoProducerUnavailable(
+            error.reason_code,
+            "phase-two loaded-seed inline handoff blocked before recording",
+            evidence=error.evidence,
+        ) from error
+    proof = handoff.get("loaded_seed_proof")
+    if not isinstance(proof, Mapping):
+        raise Phase2PromoProducerUnavailable(
+            "loaded_seed_v2_proof_missing",
+            "phase-two loaded-seed inline handoff returned no proof",
+            evidence={"handoff": handoff},
+        )
+    return dict(proof)
 
 
 def _ensure_phase2_promo_capture_producer() -> Phase2PromoCaptureProducer:

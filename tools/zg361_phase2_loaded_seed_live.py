@@ -124,6 +124,34 @@ def build_no_launch_plan(seed_contract_path: Path) -> dict[str, object]:
             "start a recorder",
         ],
         "same_session_continuation": True,
+        "integrated_consumer": (
+            "run_zhongguo_acceptance._phase2_promo_seed_proof_probe"
+        ),
+        "lifecycle_order": [
+            "install canonical seed before launch",
+            "start managed native session and bind PID/generation",
+            "complete the managed loader gate",
+            "obtain owner paused snapshot",
+            "run loaded-seed v2 manifest/same-frame proof inline",
+            "enter eight-span capture executor and start recorder",
+            "stop recorder",
+            "cleanup supervisor and driver in the owning runner finally block",
+        ],
+        "typed_pre_record_stops": [
+            "canonical_seed_not_ready",
+            "loaded_feature_manifest_unavailable",
+            "managed_session_generation_mismatch",
+            "state_changed_after_manifest",
+            "eight_row_loaded_proof_not_green",
+        ],
+        "upstream_observer_gate_boundary": {
+            "owner": "run_zg361_phase2_seed_capture",
+            "when_requested": (
+                "must be GREEN before the seed-generation launch boundary"
+            ),
+            "missing_manifest_reason": "native_observer_manifest_pending",
+            "session_reuse_claimed": False,
+        },
         "live_executed": False,
         "provider_live_proof_claimed": False,
     }
@@ -132,10 +160,12 @@ def build_no_launch_plan(seed_contract_path: Path) -> dict[str, object]:
 def run_existing_session_loaded_seed_v2(
     service: ExistingPausedSession,
     *,
-    seed_contract_path: Path,
+    seed_contract_path: Path | None = None,
+    seed_contract: Mapping[str, object] | None = None,
     artifacts: Path,
     tracked_ck3_pid: int,
     expected_connection_generation: int,
+    first_snapshot: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Prove one canonical seed/manifest frame without any gameplay action."""
 
@@ -152,7 +182,13 @@ def run_existing_session_loaded_seed_v2(
         "service_session_reused": True,
         "tracked_ck3_pid": tracked_ck3_pid,
         "expected_connection_generation": expected_connection_generation,
-        "seed_contract_path": str(Path(seed_contract_path).resolve()),
+        "seed_contract_path": (
+            str(Path(seed_contract_path).resolve())
+            if seed_contract_path is not None
+            else None
+        ),
+        "seed_contract_inline": seed_contract is not None,
+        "first_snapshot_supplied_by_owner": first_snapshot is not None,
         "first_binding": None,
         "second_binding": None,
         "loaded_feature_manifest": None,
@@ -179,7 +215,13 @@ def run_existing_session_loaded_seed_v2(
             or expected_connection_generation <= 0
         ):
             raise LoadedSeedLiveError("expected_connection_generation_invalid")
-        contract = phase2.load_phase2_seed_contract(seed_contract_path)
+        if (seed_contract_path is None) == (seed_contract is None):
+            raise LoadedSeedLiveError("seed_contract_input_ambiguous")
+        contract = (
+            phase2.load_phase2_seed_contract(seed_contract_path)
+            if seed_contract_path is not None
+            else dict(seed_contract or {})
+        )
         if not (
             contract.get("ready") is True
             and contract.get("status") == "ready"
@@ -188,9 +230,12 @@ def run_existing_session_loaded_seed_v2(
                 "canonical_seed_not_ready",
                 {"seed_blocker": contract.get("blocker")},
             )
-        first = service.snapshot()
-        if not isinstance(first, dict):
+        first_value = (
+            service.snapshot() if first_snapshot is None else first_snapshot
+        )
+        if not isinstance(first_value, Mapping):
             raise LoadedSeedLiveError("first_snapshot_invalid")
+        first = dict(first_value)
         first_binding = phase2._phase2_paused_binding(
             first, label="phase-two loaded-seed v2 first snapshot"
         )
@@ -212,9 +257,36 @@ def run_existing_session_loaded_seed_v2(
                     "first_binding": first_binding,
                 },
             )
-        manifest = service.query_loaded_feature_manifest_v1(
-            expected_revision=int(first_binding["revision"])
+        query_manifest = getattr(
+            service, "query_loaded_feature_manifest_v1", None
         )
+        if not callable(query_manifest):
+            raise LoadedSeedLiveError("loaded_feature_manifest_unavailable")
+        try:
+            manifest = query_manifest(
+                expected_revision=int(first_binding["revision"])
+            )
+        except BaseException as error:
+            raise LoadedSeedLiveError(
+                "loaded_feature_manifest_unavailable",
+                {"cause": f"{type(error).__name__}: {error}"},
+            ) from error
+        if not (
+            isinstance(manifest, Mapping)
+            and manifest.get("status") == "available"
+            and manifest.get("loaded_feature_manifest_ready") is True
+        ):
+            raise LoadedSeedLiveError(
+                "loaded_feature_manifest_unavailable",
+                {
+                    "manifest": (
+                        dict(manifest)
+                        if isinstance(manifest, Mapping)
+                        else {"actual_type": type(manifest).__name__}
+                    )
+                },
+            )
+        manifest = dict(manifest)
         report["loaded_feature_manifest"] = manifest
         second = service.snapshot()
         if not isinstance(second, dict):

@@ -71,6 +71,25 @@ generation), and emits the schema-v2 eight-row proof.  It executes no
 span action and starts no recorder; GREEN merely authorizes the caller to keep
 using that same session for the separately serialized next step.
 
+The managed `--phase2-promo-capture` path now performs that call inline in
+`_phase2_promo_seed_proof_probe`.  It reuses the paused snapshot already
+obtained by the owning runner, queries the native loaded-feature manifest,
+then takes the second binding snapshot.  The existing eight-span choreography
+is reachable only after the wrapper returns GREEN; its recorder starts inside
+that choreography, while supervisor and driver cleanup remains in the outer
+runner's `finally` after choreography/recorder completion.  A missing native
+manifest is `loaded_feature_manifest_unavailable`; a missing or blocked seed,
+generation drift, frame drift, or non-GREEN eight-row proof likewise raises a
+typed producer RED before `recorder.start()`.
+
+The seed-generation runner's finalized `paused_seed_ready` report still is
+not an inline-session token.  Its new list-domain observer manifest gate runs
+before its launch boundary and a missing manifest remains a typed no-launch
+RED.  Once that runner returns, its `finally` has already reclaimed the
+service, supervisor and driver; the promotion capture must therefore use the
+managed `--phase2-promo-capture` owner process, which installs the canonical
+checkpoint and repeats the loaded-seed proof in its own exact session.
+
 `zhongguo_phase2_visual_handlers.py` supplies the real-surface adapter for the
 four catalogue entries that previously had no visual-handler boundary.  The
 scoreboard adapter consumes the existing production action cell and accepts
