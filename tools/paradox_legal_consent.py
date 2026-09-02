@@ -3,7 +3,8 @@
 
 The project owner permanently authorizes acceptance of any agreement/consent
 shown inside CK3 and confirmation, continuation, or dismissal of CK3 in-game
-notices.  Purchase, payment, order, checkout, or store actions remain forbidden.
+notices. External real-money purchase/payment/order/checkout/store actions remain
+forbidden; CK3 in-game resource spending stays with the gameplay policy.
 This module is runner-neutral: callers supply their existing OCR, click and
 screen-grab adapters and an isolated ``-userdir``.
 """
@@ -19,12 +20,14 @@ import time
 
 LEGAL_CONSENT_PROFILE_SUFFIX = Path("account/PDX/SDK/ck3/account.json")
 LEGAL_MODAL_HEADER_REGION = (0.10, 0.02, 0.90, 0.32)
-LEGAL_AUTHORIZATION_VERSION = "2026-09-03-any-ck3-agreement-and-notice-v2"
+LEGAL_AUTHORIZATION_VERSION = "2026-09-03-action-aware-commerce-v3"
+LEGAL_COMMERCE_CLASSIFIER_VERSION = "action-aware-v1"
 LEGAL_AUTHORIZATION_TEXT = (
     "Project owner permanently authorizes accepting any agreement or consent "
     "shown inside CK3 and confirming, continuing, closing, or dismissing CK3 "
-    "in-game notices; purchase, payment, order, checkout, and store actions "
-    "are not authorized."
+    "in-game notices. External real-money purchase, payment, order, checkout, "
+    "and store actions are not authorized; CK3 in-game resource spending is "
+    "outside this commerce gate and remains governed by gameplay policy."
 )
 LEGAL_ORIGIN_TERMS = (
     "paradox",
@@ -167,6 +170,86 @@ LEGAL_PURCHASE_BUTTONS = (
     "加入购物车",
     "前往商店",
 )
+LEGAL_EXTERNAL_COMMERCE_TERMS = (
+    "steam",
+    "paradox store",
+    "dlc",
+    "downloadable content",
+    "shopping cart",
+    "cart",
+    "checkout",
+    "place order",
+    "order total",
+    "payment",
+    "credit card",
+    "debit card",
+    "paypal",
+    "store page",
+    "open store",
+    "购物车",
+    "结账",
+    "订单总额",
+    "付款",
+    "支付",
+    "信用卡",
+    "商店页面",
+    "前往商店",
+)
+LEGAL_INTERNAL_RESOURCE_TERMS = (
+    "gold",
+    "ducat",
+    "ducats",
+    "prestige",
+    "piety",
+    "renown",
+    "influence",
+    "legitimacy",
+    "claim",
+    "金币",
+    "金钱",
+    "威望",
+    "虔诚",
+    "宗族威望",
+    "影响力",
+    "正统性",
+    "宣称",
+)
+LEGAL_COMMERCE_MENTION_TERMS = (
+    "buy",
+    "purchase",
+    "price",
+    "cost",
+    "购买",
+    "买入",
+    "价格",
+    "售价",
+    "花费",
+)
+LEGAL_COMMERCE_CONFIRM_BUTTONS = (
+    "Confirm",
+    "Continue",
+    "确认",
+    "继续",
+)
+LEGAL_DISMISS_ONLY_BUTTONS = (
+    "Close",
+    "OK",
+    "关闭",
+    "好的",
+)
+LEGAL_REAL_CURRENCY_CODES = (
+    "usd",
+    "eur",
+    "gbp",
+    "cny",
+    "rmb",
+    "jpy",
+    "cad",
+    "aud",
+    "hkd",
+    "twd",
+    "krw",
+)
 
 
 class TypedTerminalError(RuntimeError):
@@ -219,6 +302,37 @@ def _matching_terms(text: str, terms: tuple[str, ...]) -> list[str]:
     return matches
 
 
+def _normalized_action_labels(rows: list[str]) -> list[str]:
+    known = {
+        label.casefold(): label
+        for label in (
+            *LEGAL_ACCEPT_BUTTONS,
+            *LEGAL_NOTIFICATION_BUTTONS,
+            *LEGAL_PURCHASE_BUTTONS,
+        )
+    }
+    observed: list[str] = []
+    for row in rows:
+        normalized = " ".join(str(row).split()).strip(" .:：!?！？").casefold()
+        label = known.get(normalized)
+        if label is not None and label not in observed:
+            observed.append(label)
+    return observed
+
+
+def _real_currency_matches(text: str) -> list[str]:
+    matches: list[str] = []
+    for match in re.finditer(r"(?:[$€£¥]\s*\d+(?:[.,]\d{1,2})?)", text):
+        matches.append(match.group(0))
+    code_pattern = "|".join(re.escape(code) for code in LEGAL_REAL_CURRENCY_CODES)
+    for match in re.finditer(
+        rf"(?:\d+(?:[.,]\d{{1,2}})?\s*(?:{code_pattern})\b|\b(?:{code_pattern})\s*\d+(?:[.,]\d{{1,2}})?)",
+        text,
+    ):
+        matches.append(match.group(0))
+    return list(dict.fromkeys(matches))
+
+
 def diagnose_legal_modal(
     rows: list[str], *, ck3_context_confirmed: bool = False
 ) -> dict[str, object]:
@@ -228,20 +342,54 @@ def diagnose_legal_modal(
     normalized_text = " ".join(normalized_rows).casefold()
     origin_terms = _matching_terms(normalized_text, LEGAL_ORIGIN_TERMS)
     game_context = ck3_context_confirmed or bool(origin_terms)
+    action_labels = _normalized_action_labels(rows)
+    purchase_action_labels = [
+        label for label in action_labels if label in LEGAL_PURCHASE_BUTTONS
+    ]
+    commerce_confirm_labels = [
+        label for label in action_labels if label in LEGAL_COMMERCE_CONFIRM_BUTTONS
+    ]
+    dismiss_only_labels = [
+        label for label in action_labels if label in LEGAL_DISMISS_ONLY_BUTTONS
+    ]
     purchase_terms = _matching_terms(normalized_text, LEGAL_PURCHASE_TERMS)
+    external_commerce_terms = _matching_terms(
+        normalized_text, LEGAL_EXTERNAL_COMMERCE_TERMS
+    )
+    internal_resource_terms = _matching_terms(
+        normalized_text, LEGAL_INTERNAL_RESOURCE_TERMS
+    )
+    commerce_mentions = _matching_terms(
+        normalized_text, LEGAL_COMMERCE_MENTION_TERMS
+    )
+    currency_matches = _real_currency_matches(normalized_text)
     allowed = _matching_terms(normalized_text, LEGAL_ALLOWED_TERMS)
     hints = _matching_terms(normalized_text, LEGAL_DOCUMENT_HINTS)
     categories = _matching_terms(normalized_text, LEGAL_PROTOCOL_CATEGORY_TERMS)
     notification_hints = _matching_terms(normalized_text, LEGAL_NOTIFICATION_HINTS)
     safe_action_terms = _matching_terms(normalized_text, LEGAL_SAFE_ACTION_TERMS)
     agreement_semantics = bool(allowed or hints)
+    external_commerce = bool(external_commerce_terms or currency_matches)
+    internal_resource = bool(internal_resource_terms)
+    actionable_commerce = bool(purchase_action_labels) or bool(
+        commerce_confirm_labels and external_commerce
+    )
+    commerce_conflict = bool(
+        actionable_commerce and external_commerce and internal_resource
+    )
     if not game_context:
         classification_state = "not_ck3_or_paradox"
-    elif purchase_terms:
-        classification_state = "purchase_forbidden"
+    elif commerce_conflict:
+        classification_state = "commerce_action_ambiguous"
+    elif internal_resource and not external_commerce:
+        classification_state = "ck3_internal_resource_action"
+    elif purchase_action_labels:
+        classification_state = "external_purchase_forbidden"
+    elif commerce_confirm_labels and external_commerce:
+        classification_state = "external_purchase_forbidden"
     elif agreement_semantics or categories:
         classification_state = "authorized_agreement"
-    elif safe_action_terms:
+    elif dismiss_only_labels or commerce_confirm_labels:
         classification_state = "authorized_notification"
     else:
         classification_state = "not_recognized_modal"
@@ -252,8 +400,25 @@ def diagnose_legal_modal(
         "origin_terms": origin_terms,
         "game_context_recognized": game_context,
         "allowed_terms": allowed,
-        "denied_terms": purchase_terms,
+        "denied_terms": (
+            purchase_terms
+            if classification_state
+            in {"external_purchase_forbidden", "commerce_action_ambiguous"}
+            else []
+        ),
         "purchase_terms": purchase_terms,
+        "action_labels": action_labels,
+        "purchase_action_labels": purchase_action_labels,
+        "commerce_confirm_labels": commerce_confirm_labels,
+        "dismiss_only_labels": dismiss_only_labels,
+        "external_commerce_terms": external_commerce_terms,
+        "real_currency_matches": currency_matches,
+        "internal_resource_terms": internal_resource_terms,
+        "commerce_mention_terms": commerce_mentions,
+        "external_commerce_context": external_commerce,
+        "internal_resource_context": internal_resource,
+        "actionable_commerce": actionable_commerce,
+        "commerce_context_conflict": commerce_conflict,
         "legal_document_hints": hints,
         "protocol_category_terms": categories,
         "notification_hints": notification_hints,
@@ -262,10 +427,14 @@ def diagnose_legal_modal(
         "evidence_required": bool(
             game_context
             and (
-                purchase_terms
+                action_labels
+                or purchase_terms
+                or external_commerce_terms
+                or currency_matches
+                or internal_resource_terms
+                or commerce_mentions
                 or agreement_semantics
                 or categories
-                or safe_action_terms
             )
         ),
         "authorization_text": LEGAL_AUTHORIZATION_TEXT,
@@ -321,15 +490,23 @@ def classify_authorized_legal_modal(
     assert isinstance(joined, str)
     if not diagnostics["game_context_recognized"]:
         return None
-    purchase_terms = diagnostics["purchase_terms"]
-    assert isinstance(purchase_terms, list)
-    if purchase_terms:
+    classification_state = str(diagnostics["classification_state"])
+    if classification_state == "commerce_action_ambiguous":
+        raise TypedTerminalError(
+            "CommerceActionAmbiguous",
+            "ck3_modal",
+            "actionable commerce OCR mixes external and CK3-resource contexts",
+            diagnostics=diagnostics,
+        )
+    if classification_state == "external_purchase_forbidden":
         raise TypedTerminalError(
             "PurchaseActionNotAuthorized",
             "ck3_modal",
-            f"CK3 modal contains forbidden purchase/action tokens: {purchase_terms}",
+            "CK3 modal exposes an external purchase/payment/store action",
             diagnostics=diagnostics,
         )
+    if classification_state == "ck3_internal_resource_action":
+        return None
     allowed = diagnostics["allowed_terms"]
     assert isinstance(allowed, list)
     hints = diagnostics["legal_document_hints"]
@@ -338,10 +515,12 @@ def classify_authorized_legal_modal(
     assert isinstance(categories, list)
     notification_hints = diagnostics["notification_hints"]
     assert isinstance(notification_hints, list)
+    action_labels = diagnostics["action_labels"]
+    assert isinstance(action_labels, list)
     safe_action_terms = diagnostics["safe_action_terms"]
     assert isinstance(safe_action_terms, list)
     if not allowed and not hints and not categories:
-        if not safe_action_terms:
+        if not action_labels:
             return None
         title = cleaned[0] if cleaned else ""
         return {
@@ -402,16 +581,17 @@ def validate_legal_consent_source(
             "CK3 in-game notifications via confirm, continue, close, or dismiss controls",
         ],
         "explicitly_not_authorized": [
-            "purchase",
-            "payment",
-            "paid order",
-            "checkout",
-            "store action",
+            "external real-money purchase",
+            "external payment or paid order",
+            "external checkout or cart action",
+            "Steam or Paradox Store purchase action",
         ],
         "accepted_marker_present": False,
         "allow_exact_semantic_modal_acceptance": True,
         "allow_all_ck3_agreements_and_notifications": True,
-        "forbid_purchase_payment_order_checkout_store_actions": True,
+        "commerce_classifier_version": LEGAL_COMMERCE_CLASSIFIER_VERSION,
+        "forbid_external_real_money_commerce_actions": True,
+        "ck3_internal_resources_not_external_commerce": True,
         "real_profile_read_only": True,
     }
     for key, value in expected.items():
@@ -487,10 +667,9 @@ def newly_persisted_legal_markers(
 
 
 def _authorized_legal_marker(marker: str) -> bool:
-    normalized = marker.casefold().replace("_", "-").replace(".", "-")
-    if not normalized:
-        return False
-    return not _matching_terms(normalized.replace("-", " "), LEGAL_PURCHASE_TERMS)
+    # This value already came from Paradox's viewedLegalDocuments collection;
+    # it records agreement acknowledgement, never a purchase action.
+    return bool(marker.strip())
 
 
 def accept_authorized_legal_modal(
@@ -530,24 +709,6 @@ def accept_authorized_legal_modal(
         {"stage": "legal_consent_before", "path": before_path.name}
     )
     before_state = account_legal_state(userdir)
-    for forbidden_label in LEGAL_PURCHASE_BUTTONS:
-        forbidden_point = acceptance.find_ocr_text(
-            image,
-            forbidden_label,
-            acceptance.FULL_SCREEN_REGION,
-            contains=True,
-        )
-        if forbidden_point is not None:
-            diagnostics = diagnose_legal_modal(
-                rows, ck3_context_confirmed=ck3_context_confirmed
-            )
-            diagnostics["forbidden_control_label"] = forbidden_label
-            raise TypedTerminalError(
-                "PurchaseActionNotAuthorized",
-                "ck3_modal",
-                f"forbidden purchase control is visible: {forbidden_label}",
-                diagnostics=diagnostics,
-            )
     accept_point = None
     button_label = None
     button_labels = (
@@ -668,11 +829,18 @@ __all__ = [
     "LEGAL_AUTHORIZATION_TEXT",
     "LEGAL_AUTHORIZATION_VERSION",
     "LEGAL_CONSENT_PROFILE_SUFFIX",
+    "LEGAL_COMMERCE_CONFIRM_BUTTONS",
+    "LEGAL_COMMERCE_CLASSIFIER_VERSION",
+    "LEGAL_COMMERCE_MENTION_TERMS",
     "LEGAL_DENIED_TERMS",
+    "LEGAL_DISMISS_ONLY_BUTTONS",
+    "LEGAL_EXTERNAL_COMMERCE_TERMS",
+    "LEGAL_INTERNAL_RESOURCE_TERMS",
     "LEGAL_MODAL_HEADER_REGION",
     "LEGAL_NOTIFICATION_BUTTONS",
     "LEGAL_PURCHASE_BUTTONS",
     "LEGAL_PURCHASE_TERMS",
+    "LEGAL_REAL_CURRENCY_CODES",
     "LEGAL_SAFE_ACTION_TERMS",
     "TypedTerminalError",
     "_authorized_legal_marker",

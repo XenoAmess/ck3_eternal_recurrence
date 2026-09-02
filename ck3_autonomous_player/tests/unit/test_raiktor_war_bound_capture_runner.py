@@ -55,20 +55,24 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
         self.assertIn("PrivateAttachReadinessTimeout", readiness["typed_terminals"])
         self.assertIn("LegalConsentNotAuthorized", readiness["typed_terminals"])
         self.assertIn("PurchaseActionNotAuthorized", readiness["typed_terminals"])
+        self.assertIn("CommerceActionAmbiguous", readiness["typed_terminals"])
         self.assertIn("LegalConsentMarkerNotPersisted", readiness["typed_terminals"])
         self.assertIn("starts one CK3 normally", manifest["live_command"])
         legal = manifest["legal_consent_contract"]
         self.assertTrue(legal["allow_exact_semantic_modal_acceptance"])
         self.assertTrue(legal["allow_all_ck3_agreements_and_notifications"])
-        self.assertTrue(
-            legal["forbid_purchase_payment_order_checkout_store_actions"]
-        )
+        self.assertEqual(legal["commerce_classifier_version"], "action-aware-v1")
+        self.assertTrue(legal["forbid_external_real_money_commerce_actions"])
+        self.assertTrue(legal["ck3_internal_resources_not_external_commerce"])
         self.assertFalse(legal["accepted_marker_present"])
         self.assertEqual(
             legal["source_profile_relative_path"],
             "account/PDX/SDK/ck3/account.json",
         )
-        self.assertIn("purchase", legal["explicitly_not_authorized"])
+        self.assertIn(
+            "external real-money purchase",
+            legal["explicitly_not_authorized"],
+        )
         self.assertEqual(
             legal["authorization_version"],
             MODULE.LEGAL_AUTHORIZATION_VERSION,
@@ -191,13 +195,66 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
             )
         with self.assertRaises(MODULE.TypedTerminalError) as caught:
             MODULE.classify_authorized_legal_modal([
-                "Paradox Interactive Store Purchase Notice",
+                "Steam Store",
                 "Buy Now",
-            ])
+            ], ck3_context_confirmed=True)
         self.assertEqual(caught.exception.terminal, "PurchaseActionNotAuthorized")
         self.assertEqual(
             caught.exception.diagnostics["classification_state"],
-            "purchase_forbidden",
+            "external_purchase_forbidden",
+        )
+
+    def test_action_aware_commerce_matrix(self) -> None:
+        informational = MODULE.classify_authorized_legal_modal(
+            ["A purchase is available", "Close"],
+            ck3_context_confirmed=True,
+        )
+        self.assertIsNotNone(informational)
+        assert informational is not None
+        self.assertEqual(informational["modal_kind"], "notification")
+
+        with self.assertRaises(MODULE.TypedTerminalError) as steam:
+            MODULE.classify_authorized_legal_modal(
+                ["Steam DLC", "Buy Now"],
+                ck3_context_confirmed=True,
+            )
+        self.assertEqual(steam.exception.terminal, "PurchaseActionNotAuthorized")
+
+        with self.assertRaises(MODULE.TypedTerminalError) as priced:
+            MODULE.classify_authorized_legal_modal(
+                ["Special offer $19.99", "Confirm"],
+                ck3_context_confirmed=True,
+            )
+        self.assertEqual(priced.exception.terminal, "PurchaseActionNotAuthorized")
+        self.assertEqual(
+            priced.exception.diagnostics["real_currency_matches"],
+            ["$19.99"],
+        )
+
+        internal_rows = ["Purchase Claim", "Cost: 150 Gold", "Confirm"]
+        self.assertIsNone(MODULE.classify_authorized_legal_modal(
+            internal_rows,
+            ck3_context_confirmed=True,
+        ))
+        internal = MODULE.diagnose_legal_modal(
+            internal_rows,
+            ck3_context_confirmed=True,
+        )
+        self.assertEqual(
+            internal["classification_state"],
+            "ck3_internal_resource_action",
+        )
+        self.assertIn("gold", internal["internal_resource_terms"])
+
+        with self.assertRaises(MODULE.TypedTerminalError) as conflict:
+            MODULE.classify_authorized_legal_modal(
+                ["Steam DLC", "Cost: 100 Gold / USD 4.99", "Confirm"],
+                ck3_context_confirmed=True,
+            )
+        self.assertEqual(conflict.exception.terminal, "CommerceActionAmbiguous")
+        self.assertEqual(
+            conflict.exception.diagnostics["classification_state"],
+            "commerce_action_ambiguous",
         )
 
     def test_authorized_agreement_version_is_recorded_when_visible(self) -> None:
@@ -256,7 +313,7 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
 
             def find_ocr_text(self, _image, label, _region, contains=False):
                 del contains
-                return (50, 50) if label == "Continue" else None
+                return (50, 50) if label == "Close" else None
 
             def deliberate_click(self, _point, _label) -> None:
                 self.clicks += 1
@@ -285,21 +342,21 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
                 userdir,
                 ui_dir,
                 FakeImage(b"notification-before"),
-                ["Server maintenance complete", "Continue"],
+                ["A purchase is available", "Close"],
                 1,
                 stages,
                 ck3_context_confirmed=True,
             )
         self.assertEqual(acceptance.clicks, 1)
         self.assertEqual(evidence["modal_kind"], "notification")
-        self.assertEqual(evidence["button_label"], "Continue")
+        self.assertEqual(evidence["button_label"], "Close")
         self.assertEqual(evidence["marker_delta"]["added"], [])
         self.assertEqual(
             evidence["authorization_version"],
             MODULE.LEGAL_AUTHORIZATION_VERSION,
         )
 
-    def test_purchase_control_hard_stops_before_click(self) -> None:
+    def test_external_purchase_control_hard_stops_before_click(self) -> None:
         class FakeImage:
             def save(self, path: Path) -> None:
                 path.write_bytes(b"purchase-control")
@@ -325,9 +382,10 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
                     userdir,
                     root / "ui",
                     FakeImage(),
-                    ["Paradox Interactive Privacy Policy"],
+                    ["Steam DLC", "Purchase"],
                     1,
                     [],
+                    ck3_context_confirmed=True,
                 )
         self.assertEqual(raised.exception.terminal, "PurchaseActionNotAuthorized")
 

@@ -1222,12 +1222,8 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     capture.acceptance,
                     "ocr_results",
                     return_value=[
-                        (
-                            "Paradox Interactive Store Purchase Notice",
-                            1.0,
-                            (10, 10),
-                            None,
-                        )
+                        ("Steam DLC", 1.0, (10, 10), None),
+                        ("Buy Now", 1.0, (10, 30), None),
                     ],
                 ),
                 mock.patch.object(
@@ -1257,19 +1253,23 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertEqual(persisted["state"], "typed_stop")
         self.assertEqual(
             persisted["classification_diagnostics"]["classification_state"],
-            "purchase_forbidden",
+            "external_purchase_forbidden",
         )
         self.assertEqual(len(persisted["classification_attempts"]), 1)
         self.assertEqual(
             attempt["raw_ocr_rows"],
-            ["Paradox Interactive Store Purchase Notice"],
+            ["Steam DLC", "Buy Now"],
         )
         self.assertEqual(
             attempt["normalized_rows"],
-            ["Paradox Interactive Store Purchase Notice"],
+            ["Steam DLC", "Buy Now"],
         )
-        self.assertEqual(attempt["classification_state"], "purchase_forbidden")
-        self.assertEqual(attempt["purchase_terms"], ["purchase"])
+        self.assertEqual(
+            attempt["classification_state"],
+            "external_purchase_forbidden",
+        )
+        self.assertEqual(attempt["purchase_action_labels"], ["Buy Now"])
+        self.assertIn("steam", attempt["external_commerce_terms"])
         self.assertEqual(
             attempt["authorization_version"],
             capture.legal_consent.LEGAL_AUTHORIZATION_VERSION,
@@ -1350,6 +1350,18 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     "allowed_terms",
                     "denied_terms",
                     "purchase_terms",
+                    "action_labels",
+                    "purchase_action_labels",
+                    "commerce_confirm_labels",
+                    "dismiss_only_labels",
+                    "external_commerce_terms",
+                    "real_currency_matches",
+                    "internal_resource_terms",
+                    "commerce_mention_terms",
+                    "external_commerce_context",
+                    "internal_resource_context",
+                    "actionable_commerce",
+                    "commerce_context_conflict",
                     "legal_document_hints",
                     "protocol_category_terms",
                     "notification_hints",

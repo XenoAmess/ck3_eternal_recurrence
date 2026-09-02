@@ -30,6 +30,7 @@ from paradox_legal_consent import (  # noqa: E402
     LEGAL_ALLOWED_TERMS,
     LEGAL_AUTHORIZATION_TEXT,
     LEGAL_AUTHORIZATION_VERSION,
+    LEGAL_COMMERCE_CLASSIFIER_VERSION,
     LEGAL_CONSENT_PROFILE_SUFFIX,
     LEGAL_DENIED_TERMS,
     LEGAL_NOTIFICATION_BUTTONS,
@@ -40,6 +41,7 @@ from paradox_legal_consent import (  # noqa: E402
     accept_authorized_legal_modal,
     account_legal_state,
     classify_authorized_legal_modal,
+    diagnose_legal_modal,
     newly_persisted_legal_markers,
     persist_preclassification_evidence,
     sha256,
@@ -48,7 +50,7 @@ from paradox_legal_consent import (  # noqa: E402
 
 
 EXPECTED_MANIFEST_SHA256 = (
-    "7578FA0D74554490E45188F6DAD36995D4FF03604500446B6B253CD0B574D342"
+    "0D7E4B948F6D6600A6D4412FADAA328728ED451B01330E652548995CF2B9BDAD"
 )
 EXPECTED_CAPTURE_EXE_SHA256 = (
     "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72"
@@ -229,6 +231,9 @@ def navigate_lobby_with_authorized_legal(
                 {
                     "authorization_text": LEGAL_AUTHORIZATION_TEXT,
                     "authorization_version": LEGAL_AUTHORIZATION_VERSION,
+                    "commerce_classifier_version": (
+                        LEGAL_COMMERCE_CLASSIFIER_VERSION
+                    ),
                     "classification_attempts": classification_attempts,
                 },
             )
@@ -879,12 +884,14 @@ def main() -> int:
             "fresh_attempt": True,
             "legal_consent_authorization": LEGAL_AUTHORIZATION_TEXT,
             "legal_consent_authorization_version": LEGAL_AUTHORIZATION_VERSION,
+            "commerce_classifier_version": LEGAL_COMMERCE_CLASSIFIER_VERSION,
             "legal_consent_click_count": len(legal_acceptances),
         },
         "legal_consent": {
             "preflight": legal_consent,
             "authorization_text": LEGAL_AUTHORIZATION_TEXT,
             "authorization_version": LEGAL_AUTHORIZATION_VERSION,
+            "commerce_classifier_version": LEGAL_COMMERCE_CLASSIFIER_VERSION,
             "acceptances": legal_acceptances,
             "classification_attempts": legal_classification_attempts,
             "classification_diagnostics": classification_diagnostics,
