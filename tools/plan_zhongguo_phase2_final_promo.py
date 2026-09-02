@@ -18,6 +18,7 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 from zhongguo_phase2_capture_choreography import PHASE2_CAPTURE_SCENARIOS
+from zhongguo_phase2_footage_intake import validate_footage_intake
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -37,16 +38,6 @@ EXPECTED_CHAPTERS = (
     *(scenario.span_id for scenario in PHASE2_CAPTURE_SCENARIOS),
     "phase2_finale",
 )
-TIMELINE_CANDIDATES = (
-    Path("cell/promo/capture-timeline.json"),
-    Path("cell/promo/timeline.json"),
-    Path("promo/capture-timeline.json"),
-    Path("capture-timeline.json"),
-)
-REPORT_CANDIDATES = (Path("report.json"), Path("cell/report.json"))
-INDEX_CANDIDATES = (Path("evidence-index.json"), Path("cell/evidence-index.json"))
-
-
 class RunbookError(RuntimeError):
     pass
 
@@ -87,12 +78,6 @@ def _git(root: Path, *args: str) -> str:
     if completed.returncode:
         raise RunbookError((completed.stderr or completed.stdout).strip())
     return completed.stdout.strip()
-
-
-def _first(root: Path | None, candidates: Sequence[Path]) -> Path | None:
-    if root is None or not root.is_dir():
-        return None
-    return next(((root / relative).resolve() for relative in candidates if (root / relative).is_file()), None)
 
 
 def _file_input(path: Path | None) -> dict[str, object]:
@@ -213,10 +198,8 @@ def build_runbook(
     authoring, authoring_blockers = _authoring_ledger_gate(authoring_ledger)
     blockers.extend(authoring_blockers)
 
-    timeline = _first(capture, TIMELINE_CANDIDATES)
-    report = _first(capture, REPORT_CANDIDATES)
-    index = _first(capture, INDEX_CANDIDATES)
-    footage_ready = capture is not None and capture.is_dir() and all(value is not None for value in (timeline, report, index))
+    footage = validate_footage_intake(capture)
+    footage_ready = footage["result"] == "GREEN"
     if not footage_ready:
         blockers.insert(0, "footage_pending")
 
@@ -279,7 +262,7 @@ def build_runbook(
         {
             "ordinal": 3,
             "id": "bind_green_footage_and_authoring_ledger",
-            "gate": "rerun this planner against the same-run GREEN capture; require footage_pending cleared and the byte-bound 10/10 authoring ledger still GREEN",
+            "gate": "rerun this planner against the strict media-entry intake for one same-session/PID/revision GREEN capture; require all 8 span postconditions and raw/timeline/report/index hashes bound, footage_pending cleared, and the byte-bound 10/10 authoring ledger still GREEN",
         },
         {
             "ordinal": 4,
@@ -368,7 +351,7 @@ def build_runbook(
                 "claim_count": len(authoring["claims"]),
             },
             "promo_toolchain": tool_identity,
-            "capture": {"root": capture_arg, "ready": footage_ready, "timeline": _file_input(timeline), "report": _file_input(report), "evidence_index": _file_input(index)},
+            "capture": footage,
             "seed_preflight": _file_input(seed_preflight_report),
             "media_preflight": media,
             "tts_cache": {"path": str(tts_cache.resolve()), "required_voice": VOICE, "must_be_prepopulated_content_addressed": True},

@@ -314,6 +314,9 @@ def run_phase2_capture_choreography(
                 "handler": scenario.handler,
                 "gameplay_entrypoint": scenario.gameplay_entrypoint,
                 "result": "GREEN",
+                "surface_visible": True,
+                "postcondition_green": True,
+                "postcondition_evidence": dict(result),
             }
         )
     return {

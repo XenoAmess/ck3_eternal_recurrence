@@ -75,3 +75,23 @@ JSON and does not fetch, render subtitles, invoke TTS/FFmpeg, or create a video.
 Its first future production step still requires fetching the standalone promo
 tool and proving a clean `HEAD == origin/main` before refreshing the media
 receipt or running any builder command.
+
+`--capture-root` is consumed through the dedicated media-entry intake schema
+`zg361_phase2_footage_intake`; this does not extend or reinterpret the native
+observer schema. It accepts only the runner's canonical `report.json`,
+`cell/promo/capture-timeline.json`, `evidence-index.json`, and
+`cell/04_phase2_seed_loaded.json` paths. It byte-verifies those files, the
+nonempty raw recording, and every clean-frame image/gate against the same
+evidence index. It then requires one managed PID and connection generation,
+valid loaded-seed revision identities, no session restart, ordered recording
+marks, eight canonical clean spans, and all eight provider-observed
+postconditions GREEN. Missing, partial, cross-session, or hash-mismatched input
+stays typed `footage_pending`; the planner neither repairs nor promotes it.
+
+Inspect an existing capture without producing media:
+
+```powershell
+py tools/zhongguo_phase2_footage_intake.py `
+  --capture-root <same-run-green-capture> `
+  --output <new-intake-report.json>
+```

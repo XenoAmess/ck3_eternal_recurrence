@@ -51,6 +51,18 @@ class FinalPromoRunbookTests(unittest.TestCase):
             self.assertEqual(runbook["result"], "RED")
             self.assertEqual(runbook["reason_code"], "footage_pending")
             self.assertEqual(runbook["blockers"], ["footage_pending"])
+            self.assertEqual(
+                runbook["inputs"]["capture"]["kind"],
+                "zg361_phase2_footage_intake",
+            )
+            self.assertEqual(
+                runbook["inputs"]["capture"]["scope"],
+                "phase2_media_entry_only_no_native_observer_schema",
+            )
+            self.assertEqual(
+                runbook["inputs"]["capture"]["reason_code"],
+                "footage_pending",
+            )
             self.assertEqual(runbook["authoring_claim_ledger"]["result"], "GREEN")
             self.assertEqual(
                 len(runbook["authoring_claim_ledger"]["claims"]), 10

@@ -208,6 +208,14 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
         self.assertEqual(evidence["capture_contract_version"], 1)
         self.assertEqual(evidence["capture_contract"], canonical_phase2_capture_contract())
         self.assertEqual([item["span_id"] for item in evidence["completed_spans"]], expected)
+        self.assertTrue(
+            all(
+                item["surface_visible"] is True
+                and item["postcondition_green"] is True
+                and item["postcondition_evidence"]["postcondition_green"] is True
+                for item in evidence["completed_spans"]
+            )
+        )
 
     def test_executor_stops_before_clean_hold_when_action_is_red(self) -> None:
         red_span = PHASE2_CAPTURE_SCENARIOS[2].span_id
