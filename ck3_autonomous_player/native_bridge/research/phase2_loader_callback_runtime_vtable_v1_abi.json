@@ -68,7 +68,9 @@
     "no public bridge field, production detour, offset, action, or readiness state changed"
   ],
   "next_entry": {
-    "required": "bind the observed runtime vtable/slot target to an exact-build symbol or RTTI owner, then make one separately authorized bounded entry/return lifetime observation",
+    "status": "closed-by-phase2-loader-callback-runtime-owner-v1",
+    "closed_by": "phase2_loader_callback_runtime_owner_v1_abi.json",
+    "required": "bind concrete callback RVA 0x2045330 to its bounded constructor/caller source owner or observe the stalled node's later callback identity",
     "forbidden": [
       "repeat the database_callback_stall timeout",
       "promote the static candidate vtables to runtime identity",

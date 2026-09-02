@@ -14,6 +14,14 @@ RUNTIME_CONTRACT = (
     ROOT
     / "native_bridge/research/phase2_loader_callback_runtime_vtable_v1_abi.json"
 )
+OWNER_CONTRACT = (
+    ROOT
+    / "native_bridge/research/phase2_loader_callback_runtime_owner_v1_abi.json"
+)
+OWNER_EXTRACTOR = (
+    ROOT
+    / "native_bridge/research/extract_phase2_loader_callback_runtime_owner.py"
+)
 
 
 class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
@@ -21,10 +29,15 @@ class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.source = PROBE.read_text(encoding="utf-8")
         cls.runtime = json.loads(RUNTIME_CONTRACT.read_text(encoding="utf-8"))
+        cls.owner = json.loads(OWNER_CONTRACT.read_text(encoding="utf-8"))
+        cls.extractor = OWNER_EXTRACTOR.read_text(encoding="utf-8")
 
     def test_probe_is_bound_to_the_frozen_callback_contract(self) -> None:
         self.assertIn("kCallbackCallRva = 0x3B9AB90", self.source)
         self.assertIn("kCallbackSlotTargetRva = 0x3B9BA70", self.source)
+        self.assertIn("kCallbackContinuationRva = 0x3B9AB93", self.source)
+        self.assertIn("kObservedRuntimeVtableRva = 0x408A450", self.source)
+        self.assertIn("kObservedRuntimeSlotTargetRva = 0x947BD0", self.source)
         self.assertIn("0x4558700", self.source)
         self.assertIn("0x4558770", self.source)
         self.assertIn("{0xFF, 0x50, 0x10}", self.source)
@@ -60,6 +73,34 @@ class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
         self.assertFalse(comparison["runtime_vptr_matches_candidate"])
         self.assertFalse(comparison["runtime_slot_target_matches_candidate"])
         self.assertEqual(self.runtime["cleanup"]["cleanup_result"], "GREEN")
+
+    def test_rtti_owner_and_entry_return_evidence_stay_private(self) -> None:
+        self.assertEqual(self.owner["status"], "private-entry-return-observed")
+        self.assertFalse(self.owner["production_installed"])
+        self.assertFalse(self.owner["production_abi_changed"])
+        self.assertFalse(self.owner["readiness_promotion"])
+        static = self.owner["static_owner_evidence"]
+        self.assertEqual(static["runtime_vtable_rva"], "0x408A450")
+        self.assertEqual(static["complete_object_locator_rva"], "0x45BD3B0")
+        self.assertEqual(static["type_descriptor_rva"], "0x514FE60")
+        self.assertEqual(static["slot_2_target_rva"], "0x947BD0")
+        self.assertEqual(static["slot_2_bytes"], "48FF6108")
+        self.assertEqual(static["callback_storage"], "receiver+0x08")
+        observation = self.owner["entry_return_observation"]
+        self.assertTrue(observation["same_thread"])
+        self.assertEqual(observation["concrete_callback_rva"], "0x2045330")
+        self.assertTrue(observation["receiver_survived_return"])
+        self.assertTrue(observation["vptr_survived_return"])
+        self.assertTrue(observation["callback_function_survived_return"])
+        self.assertEqual(
+            self.owner["cleanup"]["primary_artifact_result"], "RED"
+        )
+        self.assertEqual(
+            self.owner["cleanup"]["combined_cleanup_result"], "GREEN"
+        )
+        self.assertIn("EXPECTED_COL_RVA = 0x45BD3B0", self.extractor)
+        self.assertIn("EXPECTED_TYPE_DESCRIPTOR_RVA = 0x514FE60", self.extractor)
+        self.assertIn("EXPECTED_SLOT_2_BYTES = bytes.fromhex", self.extractor)
 
 
 if __name__ == "__main__":

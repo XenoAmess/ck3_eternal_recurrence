@@ -1,0 +1,95 @@
+{
+  "contract": "phase2-loader-callback-runtime-owner-v1",
+  "schema_version": 1,
+  "status": "private-entry-return-observed",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "2c64c420666f0b0adacad783f732bcef7545e884",
+    "runtime_vtable_contract": "phase2-loader-callback-runtime-vtable-v1",
+    "extractor": "extract_phase2_loader_callback_runtime_owner.py",
+    "extractor_sha256": "C3FFF00252D40D1A750AF761FB706EC5A310636ACB22B3873139BDCD57DC3168"
+  },
+  "static_owner_evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\runtime-owner-extract.json",
+    "artifact_sha256": "1EFA4CA63C955EB03FAEBCE66FEDCCD1AF0CBE97497D1FA22594825C23C05A10",
+    "runtime_vtable_rva": "0x408A450",
+    "complete_object_locator_rva": "0x45BD3B0",
+    "type_descriptor_rva": "0x514FE60",
+    "class_hierarchy_rva": "0x45B6270",
+    "rtti_type_name": ".?AV?$_Func_impl_no_alloc@P6AXXZX$$V@std@@",
+    "undecorated_type": "class std::_Func_impl_no_alloc<void (__cdecl*)(void),void>",
+    "base_type_names": [
+      ".?AV?$_Func_impl_no_alloc@P6AXXZX$$V@std@@",
+      ".?AV?$_Func_base@X$$V@std@@"
+    ],
+    "slot_2_target_rva": "0x947BD0",
+    "slot_2_bytes": "48FF6108",
+    "slot_2_shape": "jmp qword ptr [rcx+0x08]",
+    "callback_storage": "receiver+0x08",
+    "callback_signature": "void (__cdecl*)(void)",
+    "invoke_return_kind": "void"
+  },
+  "preflight": {
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\entry-return-open-kaishek-preflight.json",
+    "artifact_sha256": "A8CEBA9DB43ADFEA5E7AA1E851C00FBCA55D07BADBAEAD251CCBA6116135586E",
+    "boundary": "offline schema and syntax validation only; known schema-only validator RED"
+  },
+  "entry_return_observation": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\callback-entry-return-capture.json",
+    "artifact_sha256": "88906E06EE88A910E8A9D1C2E190CC29EB6624DABD52B6C10140A722F2F64919",
+    "capture_binary_sha256": "B598CC2864525C437DF95CD67D2100215060B973FBF0D067AF014A851C1CDF6A",
+    "elapsed_seconds": 14.834,
+    "pid": 23768,
+    "entry_thread_id": 34296,
+    "return_thread_id": 34296,
+    "same_thread": true,
+    "entry_rva": "0x3B9AB90",
+    "continuation_rva": "0x3B9AB93",
+    "runtime_vtable_rva": "0x408A450",
+    "slot_2_target_rva": "0x947BD0",
+    "concrete_callback_rva": "0x2045330",
+    "receiver_matches_node_plus_0x88": true,
+    "receiver_survived_return": true,
+    "vptr_survived_return": true,
+    "callback_function_survived_return": true,
+    "entry_breakpoint_byte_restored": true,
+    "continuation_breakpoint_byte_restored": true,
+    "semantic_result": "callback entry, synchronous return, and immediate post-return wrapper lifetime observed"
+  },
+  "cleanup": {
+    "primary_artifact_result": "RED",
+    "primary_artifact_reason": "callback-entry-return-lifetime-observed; cleanup-unproven",
+    "reason_for_primary_cleanup_boundary": "process handle was checked before closing the kill-on-close Job",
+    "independent_inventory_artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\callback-entry-return-cleanup.json",
+    "independent_inventory_sha256": "EA9A9BD3275D1F7418AAAD4983CAE333D10D8A826E0B507CFEB1E47148238456",
+    "captured_pid_present": false,
+    "ck3_process_count": 0,
+    "combined_cleanup_result": "GREEN"
+  },
+  "limits": [
+    "the RTTI owner is the std::function wrapper type; the concrete callback at RVA 0x2045330 has not been assigned a business or source-file identity",
+    "one invocation proves same-thread synchronous return and wrapper validity at the immediate continuation only, not arbitrary long-term lifetime",
+    "the run stopped at the first observed callback and did not reach seed or native readiness",
+    "the primary artifact remains RED as recorded; supplemental cleanup evidence does not rewrite it",
+    "no public bridge field, production detour, action, or readiness state changed"
+  ],
+  "next_entry": {
+    "required": "bind concrete callback RVA 0x2045330 to its bounded constructor/caller source owner or observe the stalled node's later callback identity before proposing any loader fix",
+    "forbidden": [
+      "repeat the database_callback_stall timeout",
+      "generalize one wrapper invocation to all loader nodes",
+      "widen public bridge or promote readiness"
+    ]
+  }
+}

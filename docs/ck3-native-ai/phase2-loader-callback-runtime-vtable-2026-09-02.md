@@ -68,9 +68,9 @@ The utility now drains the exit debug event before checking the handle; this
 cleanup-only correction was compiled and self-tested but was not used to
 repeat the runtime capture.
 
-Phase two remains **native-readiness RED + not-live**. Callback return,
-post-return object lifetime, RTTI/source attribution, seed readiness, and the
-formal paused acceptance remain open. The next evidence entry is to bind RVA
-`0x408A450`/`0x947BD0` to an exact-build RTTI or source-symbol owner and only
-then make one separately authorized entry/return lifetime observation. Do not
-repeat the existing loader timeout or widen the public bridge.
+Phase two remains **native-readiness RED + not-live**. This note's immediate
+RTTI/return-lifetime next entry was subsequently closed by
+[the runtime-owner observation](phase2-loader-callback-runtime-owner-2026-09-02.md).
+Concrete callback source attribution, later stalled-node identity, seed
+readiness, and formal paused acceptance remain open. Do not repeat the
+existing loader timeout or widen the public bridge.

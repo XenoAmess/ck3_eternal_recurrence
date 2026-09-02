@@ -27,7 +27,10 @@
 namespace {
 
 constexpr std::uint64_t kCallbackCallRva = 0x3B9AB90;
+constexpr std::uint64_t kCallbackContinuationRva = 0x3B9AB93;
 constexpr std::uint64_t kCallbackSlotTargetRva = 0x3B9BA70;
+constexpr std::uint64_t kObservedRuntimeVtableRva = 0x408A450;
+constexpr std::uint64_t kObservedRuntimeSlotTargetRva = 0x947BD0;
 constexpr std::array<std::uint64_t, 2> kCandidateVtableRvas = {
     0x4558700,
     0x4558770,
@@ -47,10 +50,14 @@ struct Options {
 struct Capture {
   bool breakpoint_installed = false;
   bool callback_observed = false;
+  bool return_breakpoint_installed = false;
+  bool callback_return_observed = false;
   bool original_byte_restored = false;
+  bool continuation_byte_restored = false;
   bool process_terminated = false;
   DWORD pid = 0;
   DWORD thread_id = 0;
+  DWORD return_thread_id = 0;
   std::uint64_t image_base = 0;
   std::uint64_t callback_address = 0;
   std::uint64_t node = 0;
@@ -58,11 +65,21 @@ struct Capture {
   std::uint64_t receiver_from_node = 0;
   std::uint64_t vptr = 0;
   std::uint64_t slot_target = 0;
+  std::uint64_t callback_function = 0;
+  std::uint64_t post_receiver_from_node = 0;
+  std::uint64_t post_vptr = 0;
+  std::uint64_t post_callback_function = 0;
   std::uint64_t vptr_rva = 0;
   std::uint64_t slot_target_rva = 0;
   bool receiver_matches_node = false;
   bool vptr_matches_candidate = false;
   bool slot_target_matches = false;
+  bool vptr_matches_runtime_owner = false;
+  bool slot_target_matches_runtime_owner = false;
+  bool return_thread_matches = false;
+  bool receiver_survived_return = false;
+  bool vptr_survived_return = false;
+  bool callback_function_survived_return = false;
   std::string result = "RED";
   std::string reason = "not-started";
   std::string exe_sha256;
@@ -260,7 +277,7 @@ void WriteReport(const Options& options, const Capture& capture) {
   std::ofstream output(options.output, std::ios::binary | std::ios::trunc);
   if (!output) throw std::runtime_error("could not create output artifact");
   output << "{\n"
-         << "  \"schema\": \"xar.phase2.loader_callback_private_debug_capture.v1\",\n"
+         << "  \"schema\": \"xar.phase2.loader_callback_private_debug_capture.v2\",\n"
          << "  \"result\": \"" << capture.result << "\",\n"
          << "  \"reason\": \"" << JsonEscape(capture.reason) << "\",\n"
          << "  \"exact_build\": {\n"
@@ -290,6 +307,8 @@ void WriteReport(const Options& options, const Capture& capture) {
          << "\",\n"
          << "    \"callback_address\": \""
          << Hex(capture.callback_address) << "\",\n"
+         << "    \"callback_continuation_rva\": \""
+         << Hex(kCallbackContinuationRva) << "\",\n"
          << "    \"node\": \"" << Hex(capture.node) << "\",\n"
          << "    \"receiver_rcx\": \"" << Hex(capture.receiver)
          << "\",\n"
@@ -306,11 +325,40 @@ void WriteReport(const Options& options, const Capture& capture) {
          << "    \"slot_2_target_rva\": \""
          << Hex(capture.slot_target_rva) << "\",\n"
          << "    \"slot_2_target_matches_static_contract\": "
-         << (capture.slot_target_matches ? "true" : "false") << "\n"
+         << (capture.slot_target_matches ? "true" : "false") << ",\n"
+         << "    \"vptr_matches_runtime_owner_contract\": "
+         << (capture.vptr_matches_runtime_owner ? "true" : "false") << ",\n"
+         << "    \"slot_2_matches_runtime_owner_contract\": "
+         << (capture.slot_target_matches_runtime_owner ? "true" : "false")
+         << ",\n"
+         << "    \"callback_function_at_receiver_plus_0x08\": \""
+         << Hex(capture.callback_function) << "\",\n"
+         << "    \"return_breakpoint_installed\": "
+         << (capture.return_breakpoint_installed ? "true" : "false") << ",\n"
+         << "    \"callback_return_observed\": "
+         << (capture.callback_return_observed ? "true" : "false") << ",\n"
+         << "    \"return_thread_id\": " << capture.return_thread_id << ",\n"
+         << "    \"return_thread_matches_entry\": "
+         << (capture.return_thread_matches ? "true" : "false") << ",\n"
+         << "    \"post_return_receiver_from_node_plus_0x88\": \""
+         << Hex(capture.post_receiver_from_node) << "\",\n"
+         << "    \"post_return_vptr\": \"" << Hex(capture.post_vptr)
+         << "\",\n"
+         << "    \"post_return_callback_function\": \""
+         << Hex(capture.post_callback_function) << "\",\n"
+         << "    \"receiver_survived_return\": "
+         << (capture.receiver_survived_return ? "true" : "false") << ",\n"
+         << "    \"vptr_survived_return\": "
+         << (capture.vptr_survived_return ? "true" : "false") << ",\n"
+         << "    \"callback_function_survived_return\": "
+         << (capture.callback_function_survived_return ? "true" : "false")
+         << "\n"
          << "  },\n"
          << "  \"cleanup\": {\n"
          << "    \"original_breakpoint_byte_restored\": "
          << (capture.original_byte_restored ? "true" : "false") << ",\n"
+         << "    \"continuation_breakpoint_byte_restored\": "
+         << (capture.continuation_byte_restored ? "true" : "false") << ",\n"
          << "    \"process_terminated\": "
          << (capture.process_terminated ? "true" : "false") << ",\n"
          << "    \"real_user_profile_targeted\": false\n"
@@ -319,7 +367,8 @@ void WriteReport(const Options& options, const Capture& capture) {
          << "    \"private_test_only\": true,\n"
          << "    \"public_bridge_abi_changed\": false,\n"
          << "    \"production_detour_installed\": false,\n"
-         << "    \"callback_return_observed\": false,\n"
+         << "    \"callback_return_observed\": "
+         << (capture.callback_return_observed ? "true" : "false") << ",\n"
          << "    \"readiness_promotion\": false\n"
          << "  },\n"
          << "  \"elapsed_seconds\": " << std::fixed << std::setprecision(3)
@@ -378,7 +427,7 @@ Capture Run(const Options& options) {
     const auto deadline = started + std::chrono::milliseconds(options.timeout_ms);
     bool initial_breakpoint_seen = false;
     while (std::chrono::steady_clock::now() < deadline &&
-           !capture.callback_observed) {
+           !capture.callback_return_observed) {
       const auto remaining = std::chrono::duration_cast<std::chrono::milliseconds>(
           deadline - std::chrono::steady_clock::now());
       const DWORD wait_ms = static_cast<DWORD>(
@@ -446,6 +495,10 @@ Capture Run(const Options& options) {
                           &capture.slot_target)) {
             throw std::runtime_error("could not read callback vtable slot 2");
           }
+          if (!ReadRemote(process_info.hProcess, capture.receiver + 0x08,
+                          &capture.callback_function)) {
+            throw std::runtime_error("could not read callback function pointer");
+          }
           capture.receiver_matches_node =
               capture.receiver != 0 &&
               capture.receiver == capture.receiver_from_node;
@@ -456,6 +509,10 @@ Capture Run(const Options& options) {
           }
           capture.slot_target_matches =
               capture.slot_target_rva == kCallbackSlotTargetRva;
+          capture.vptr_matches_runtime_owner =
+              capture.vptr_rva == kObservedRuntimeVtableRva;
+          capture.slot_target_matches_runtime_owner =
+              capture.slot_target_rva == kObservedRuntimeSlotTargetRva;
           if (!WriteBreakpointByte(process_info.hProcess,
                                    capture.callback_address,
                                    kCallbackBytes[0])) {
@@ -467,15 +524,73 @@ Capture Run(const Options& options) {
                          &restored) &&
               restored == kCallbackBytes[0];
           capture.callback_observed = true;
-          capture.result =
-              capture.receiver_matches_node && capture.vptr_matches_candidate &&
-                      capture.slot_target_matches &&
-                      capture.original_byte_restored
-                  ? "GREEN"
-                  : "RED";
+          const std::uint64_t continuation_address =
+              capture.image_base + kCallbackContinuationRva;
+          std::uint8_t continuation_byte = 0;
+          if (!ReadRemote(process_info.hProcess, continuation_address,
+                          &continuation_byte) || continuation_byte != 0x4C) {
+            throw std::runtime_error("callback continuation byte mismatch");
+          }
+          if (!WriteBreakpointByte(process_info.hProcess, continuation_address,
+                                   0xCC)) {
+            throw std::runtime_error("could not install return breakpoint");
+          }
+          capture.return_breakpoint_installed = true;
+          HANDLE resume_thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
+                                                THREAD_QUERY_INFORMATION,
+                                            FALSE, event.dwThreadId);
+          if (!resume_thread) {
+            throw std::runtime_error("OpenThread failed before callback resume");
+          }
+          context.Rip = capture.callback_address;
+          const bool context_set = SetThreadContext(resume_thread, &context) != FALSE;
+          CloseHandle(resume_thread);
+          if (!context_set) {
+            throw std::runtime_error("SetThreadContext failed before callback resume");
+          }
+        } else if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
+                   address == capture.image_base + kCallbackContinuationRva &&
+                   capture.callback_observed) {
+          capture.return_thread_id = event.dwThreadId;
+          capture.return_thread_matches =
+              capture.return_thread_id == capture.thread_id;
+          const std::uint64_t continuation_address =
+              capture.image_base + kCallbackContinuationRva;
+          if (!WriteBreakpointByte(process_info.hProcess, continuation_address,
+                                   0x4C)) {
+            throw std::runtime_error("could not restore continuation byte");
+          }
+          std::uint8_t restored = 0;
+          capture.continuation_byte_restored =
+              ReadRemote(process_info.hProcess, continuation_address, &restored) &&
+              restored == 0x4C;
+          if (!ReadRemote(process_info.hProcess, capture.node + 0x88,
+                          &capture.post_receiver_from_node) ||
+              !ReadRemote(process_info.hProcess, capture.receiver,
+                          &capture.post_vptr) ||
+              !ReadRemote(process_info.hProcess, capture.receiver + 0x08,
+                          &capture.post_callback_function)) {
+            throw std::runtime_error("callback object was unreadable after return");
+          }
+          capture.receiver_survived_return =
+              capture.post_receiver_from_node == capture.receiver;
+          capture.vptr_survived_return = capture.post_vptr == capture.vptr;
+          capture.callback_function_survived_return =
+              capture.post_callback_function == capture.callback_function;
+          capture.callback_return_observed = true;
+          capture.result = capture.vptr_matches_runtime_owner &&
+                                   capture.slot_target_matches_runtime_owner &&
+                                   capture.return_thread_matches &&
+                                   capture.receiver_survived_return &&
+                                   capture.vptr_survived_return &&
+                                   capture.callback_function_survived_return &&
+                                   capture.original_byte_restored &&
+                                   capture.continuation_byte_restored
+                               ? "GREEN"
+                               : "RED";
           capture.reason = capture.result == "GREEN"
-                               ? "runtime-vtable-identity-observed"
-                               : "runtime-vtable-identity-mismatch";
+                               ? "callback-entry-return-lifetime-observed"
+                               : "callback-entry-return-lifetime-mismatch";
         } else if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
                    !initial_breakpoint_seen) {
           initial_breakpoint_seen = true;
@@ -491,6 +606,9 @@ Capture Run(const Options& options) {
     if (!capture.callback_observed) {
       capture.result = "RED";
       capture.reason = "callback-breakpoint-timeout";
+    } else if (!capture.callback_return_observed) {
+      capture.result = "RED";
+      capture.reason = "callback-return-breakpoint-timeout";
     }
   } catch (const std::exception& error) {
     capture.result = "RED";
@@ -502,6 +620,12 @@ Capture Run(const Options& options) {
         capture.callback_address != 0) {
       capture.original_byte_restored = WriteBreakpointByte(
           process_info.hProcess, capture.callback_address, kCallbackBytes[0]);
+    }
+    if (capture.return_breakpoint_installed &&
+        !capture.continuation_byte_restored && capture.image_base != 0) {
+      capture.continuation_byte_restored = WriteBreakpointByte(
+          process_info.hProcess,
+          capture.image_base + kCallbackContinuationRva, 0x4C);
     }
     TerminateProcess(process_info.hProcess, 0);
     if (current_event_active) {
@@ -540,6 +664,12 @@ Capture Run(const Options& options) {
     CloseHandle(job);
     job = nullptr;
   }
+  // Closing the kill-on-close Job is the final cleanup fallback.  Recheck the
+  // process handle after that close so the report reflects this last step.
+  if (process_info.hProcess && !capture.process_terminated) {
+    capture.process_terminated =
+        WaitForSingleObject(process_info.hProcess, 5000) == WAIT_OBJECT_0;
+  }
   if (process_info.hThread) CloseHandle(process_info.hThread);
   if (process_info.hProcess) CloseHandle(process_info.hProcess);
   finish_elapsed();
@@ -555,7 +685,10 @@ Capture Run(const Options& options) {
 int wmain(int argc, wchar_t** argv) {
   if (argc == 2 && std::wstring(argv[1]) == L"--self-test") {
     const bool ok = kCallbackCallRva == 0x3B9AB90 &&
+                    kCallbackContinuationRva == 0x3B9AB93 &&
                     kCallbackSlotTargetRva == 0x3B9BA70 &&
+                    kObservedRuntimeVtableRva == 0x408A450 &&
+                    kObservedRuntimeSlotTargetRva == 0x947BD0 &&
                     kCallbackBytes == std::array<std::uint8_t, 3>{0xFF, 0x50, 0x10};
     std::cout << (ok ? "phase2-private-debug-capture-self-test=GREEN\n"
                      : "phase2-private-debug-capture-self-test=RED\n");
