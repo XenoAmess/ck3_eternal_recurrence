@@ -60,3 +60,35 @@ repository under
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-index7-evaluator-ready-20260902T2040`.
 No CK3 process was started while preparing this package. A live run requires a
 separate P0-coordinated authorization.
+
+## First evaluator attempt: envelope diagnostic RED
+
+The single authorized evaluator attempt passed readiness and exact-build
+proof, then ended after `166.314s` with CK3 process exit code `1`. The old
+runner surfaced only `official MCP result lacks structured_content` and wrote
+`mcp_sequence=null`; no private v3 JSONL was created, so the reader and
+evaluator result were not observed. Source hashes were unchanged, no mutation
+or time advance occurred, and all CK3/probe/python processes exited.
+
+Frozen terminal evidence:
+
+- report SHA-256
+  `4460C7E89A5F16BBE194A295D7C207788FCD38CE52D60359C8FEF5D746FBE383`;
+- terminal summary SHA-256
+  `EF5AB8F1913554AC26010DDC676B1753A2199684A33A56B4A56B94B26D1D5D28`.
+
+The runner now parses each official MCP result immediately. A result without
+object-valued `structured_content` raises typed
+`OfficialMcpResultEnvelopeError` and preserves the failed tool, concrete result
+type, `is_error`, original content blocks, and structured-content value in the
+final report's `mcp_sequence`. It does not parse text as a successful payload
+and therefore does not relax exact-build, readiness, or result gates. The
+deterministic regression fixture is pinned to the real report SHA and its
+observed terminal shape (`mcp_sequence=null`, readiness present, exact-build
+GREEN, process exit `1`, JSONL absent).
+
+This diagnostic fix alone is not a reason to repeat the evaluator live. The
+same candidate would still place its first durable row after the native calls,
+so another process exit could again leave no evaluator-boundary evidence. A
+future distinct attempt first needs separately reviewed instrumentation that
+durably records the exact pre-call tuple before invoking the evaluator.

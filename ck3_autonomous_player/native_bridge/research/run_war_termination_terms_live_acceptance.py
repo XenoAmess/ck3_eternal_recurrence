@@ -247,21 +247,64 @@ def _exact_build_proof(
     }
 
 
-def _structured(result: Any) -> dict[str, object]:
-    value = getattr(result, "structured_content", None)
-    if not isinstance(value, dict):
-        raise RuntimeError("official MCP result lacks structured_content")
-    return copy.deepcopy(value)
+def _content_record(item: object) -> object:
+    dump = getattr(item, "model_dump", None)
+    if callable(dump):
+        try:
+            return dump(mode="json", by_alias=True)
+        except (TypeError, ValueError):
+            pass
+    if isinstance(item, dict):
+        return copy.deepcopy(item)
+    return {
+        "type": type(item).__name__,
+        "text": str(getattr(item, "text", item)),
+    }
 
 
 def _mcp_record(result: Any) -> dict[str, object]:
     return {
+        "result_type": type(result).__name__,
         "is_error": bool(getattr(result, "is_error", False)),
         "structured_content": copy.deepcopy(
             getattr(result, "structured_content", None)
         ),
-        "content": [str(item) for item in getattr(result, "content", [])],
+        "content": [
+            _content_record(item) for item in getattr(result, "content", [])
+        ],
     }
+
+
+class OfficialMcpResultEnvelopeError(RuntimeError):
+    """Typed diagnostic for an official MCP result without structured data."""
+
+    def __init__(self, tool_name: str, result: Any) -> None:
+        self.tool_name = tool_name
+        self.result_record = _mcp_record(result)
+        content = self.result_record.get("content")
+        content_count = len(content) if isinstance(content, list) else 0
+        super().__init__(
+            "official MCP tool "
+            f"{tool_name} returned no structured_content "
+            f"(result_type={self.result_record['result_type']}, "
+            f"is_error={self.result_record['is_error']}, "
+            f"content_count={content_count})"
+        )
+
+    def diagnostic(self) -> dict[str, object]:
+        return {
+            "status": "official_mcp_envelope_error",
+            "ok": False,
+            "failed_tool": self.tool_name,
+            "result": copy.deepcopy(self.result_record),
+        }
+
+
+def _structured(result: Any, *, tool_name: str) -> dict[str, object]:
+    value = getattr(result, "structured_content", None)
+    if not isinstance(value, dict):
+        raise OfficialMcpResultEnvelopeError(tool_name, result)
+    return copy.deepcopy(value)
 
 
 def _same_paused_binding(before: dict[str, object], after: dict[str, object]) -> bool:
@@ -409,8 +452,11 @@ async def _run_mcp_sequence(
         listed = await client.list_tools()
         tool_names = sorted(tool.name for tool in listed.tools)
         capabilities_result = await client.call_tool("ck3_get_capabilities", {})
+        capabilities = _structured(
+            capabilities_result, tool_name="ck3_get_capabilities"
+        )
         before_result = await client.call_tool("ck3_take_snapshot", {})
-        before = _structured(before_result)
+        before = _structured(before_result, tool_name="ck3_take_snapshot:before")
         revision = before.get("revision")
         if isinstance(revision, bool) or not isinstance(revision, int) or revision < 0:
             raise RuntimeError("paused MCP snapshot lacks a public revision")
@@ -418,18 +464,24 @@ async def _run_mcp_sequence(
             "ck3_query_war_termination_terms",
             {"war_id": war_id, "expected_revision": revision},
         )
+        first = _structured(
+            first_result,
+            tool_name="ck3_query_war_termination_terms:first",
+        )
         between_result = await client.call_tool("ck3_take_snapshot", {})
+        between = _structured(
+            between_result, tool_name="ck3_take_snapshot:between"
+        )
         second_result = await client.call_tool(
             "ck3_query_war_termination_terms",
             {"war_id": war_id, "expected_revision": revision},
         )
+        second = _structured(
+            second_result,
+            tool_name="ck3_query_war_termination_terms:second",
+        )
         after_result = await client.call_tool("ck3_take_snapshot", {})
-
-    capabilities = _structured(capabilities_result)
-    between = _structured(between_result)
-    after = _structured(after_result)
-    first = _structured(first_result)
-    second = _structured(second_result)
+        after = _structured(after_result, tool_name="ck3_take_snapshot:after")
     first_checks = _terms_checks(first, war_id=war_id)
     second_checks = _terms_checks(second, war_id=war_id)
     pointer_checks = _pointer_contract_checks()
@@ -703,6 +755,8 @@ def _run(
         if mcp_sequence.get("ok") is not True:
             raise RuntimeError("paused double-sample MCP proof failed")
     except BaseException as error:
+        if isinstance(error, OfficialMcpResultEnvelopeError):
+            mcp_sequence = error.diagnostic()
         primary_error = f"{type(error).__name__}: {error}"
     finally:
         stop_started = time.monotonic()

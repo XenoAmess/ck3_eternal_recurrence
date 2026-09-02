@@ -1,0 +1,36 @@
+{
+  "schema": "xar.ck3.g2_index7_evaluator_mcp_envelope_red.v1",
+  "source_report": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-evaluator-ready-20260902T2040\\live-authorized-index7-evaluator\\report.json",
+  "source_report_sha256": "4460C7E89A5F16BBE194A295D7C207788FCD38CE52D60359C8FEF5D746FBE383",
+  "observed_report_shape": {
+    "status": "red",
+    "error": "RuntimeError: official MCP result lacks structured_content",
+    "mcp_sequence": null,
+    "readiness_present": true,
+    "exact_build_proof_ok": true,
+    "session_exit_reason": "process_exit",
+    "session_exit_code": 1,
+    "private_jsonl_present": false
+  },
+  "diagnostic_gap": "the old runner discarded the official MCP error envelope and retained neither the failed tool nor its content blocks",
+  "deterministic_error_envelope": {
+    "result_type": "CallToolResult",
+    "is_error": true,
+    "structured_content": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "native session exited before the official tool returned structured data"
+      }
+    ]
+  },
+  "expected_diagnostic": {
+    "status": "official_mcp_envelope_error",
+    "ok": false,
+    "failed_tool": "ck3_query_war_termination_terms:first",
+    "result_type": "CallToolResult",
+    "is_error": true,
+    "structured_content": null,
+    "content_count": 1
+  }
+}
