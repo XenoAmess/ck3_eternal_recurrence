@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import copy
 from contextlib import ExitStack, nullcontext
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import sys
 import tempfile
+import time
 import types
 from types import SimpleNamespace
 import unittest
@@ -50,15 +52,21 @@ def _install_optional_desktop_import_stubs() -> None:
 _install_optional_desktop_import_stubs()
 
 import run_zhongguo_acceptance as capture  # noqa: E402
+import zhongguo_phase2_footage_intake as footage_intake  # noqa: E402
 from zhongguo_phase2_promo_producer import (  # noqa: E402
     Phase2PromoCaptureContext,
     Phase2PromoProducerUnavailable,
     canonical_phase2_capture_contract,
+    make_managed_phase2_promo_capture_producer,
     make_phase2_promo_capture_scaffold,
 )
 from zhongguo_phase2_capture_choreography import (  # noqa: E402
+    PHASE2_CAPTURE_SCENARIOS,
     phase2_choreography_readiness,
 )
+
+
+_REAL_PROMO_RECORDER = capture.PromoRecorder
 
 
 class _FakeDriver:
@@ -1124,6 +1132,391 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertTrue(
             capability.call_args.kwargs["managed_restore_supervisor"]
         )
+
+    def test_production_sidecars_feed_strict_footage_intake_unchanged(self) -> None:
+        """Exercise the planned producer bundle through the real intake contract.
+
+        The fixture replaces only live CK3, desktop sampling and FFmpeg.  The
+        managed producer, eight-span choreography, PromoRecorder clean-hold /
+        timeline implementation, run_cell report, main matrix and evidence
+        index are the production implementations.
+        """
+
+        tracked_pid = 4321
+        connection_generation = 1
+        snapshot = {
+            "snapshot_id": "phase2-cross-contract:100",
+            "revision": 100,
+            "native_revision": 200,
+            "date_raw": 777,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 9001, "alive": True},
+            "diagnostics": {
+                "bridge_pid": tracked_pid,
+                "connection_generation": connection_generation,
+            },
+        }
+        seed_contract = {
+            "status": "ready",
+            "ready": True,
+            "saved_state": {
+                "date_raw": 777,
+                "played_character_id": 9001,
+                "played_character_alive": True,
+                "paused_on_load": True,
+                "map_ready": True,
+            },
+        }
+        seed_install = {
+            "result": "GREEN",
+            "contract": copy.deepcopy(seed_contract),
+            "targets": {"continue": "canonical-phase2.ck3"},
+        }
+        manifest = {
+            "status": "available",
+            "loaded_feature_manifest_ready": True,
+            "binding": {
+                "snapshot_id": snapshot["snapshot_id"],
+                "revision": snapshot["revision"],
+                "native_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+            },
+            "effective_feature_flags": {
+                "status": "available",
+                "items": [
+                    {"key": "all_under_heaven", "enabled": True},
+                    {"key": "merit_admin", "enabled": True},
+                ],
+            },
+            "script_dlc_keys": {
+                "status": "available",
+                "keys": ["All Under Heaven"],
+            },
+        }
+        loader_gate = {
+            "result": "GREEN",
+            "mode": "phase2_promo_capture",
+            "same_pid_gameplay_continuation_authorized": True,
+            "native_readiness": {"result": "GREEN"},
+            "phase2_capability_preflight": {"result": "GREEN"},
+            "loader_error_log_scan": {"result": "GREEN"},
+            "runtime_mount_inventory": ["product", "fixture"],
+        }
+
+        class ContractDriver:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def available_handlers(self) -> tuple[str, ...]:
+                return tuple(item.handler for item in PHASE2_CAPTURE_SCENARIOS)
+
+            def run_span(self, scenario, _context, _runtime):
+                self.calls += 1
+                return {
+                    "result": "GREEN",
+                    "surface_visible": True,
+                    "postcondition_green": True,
+                    "provider_observed": True,
+                    "handler": scenario.handler,
+                    "binding": {
+                        "snapshot_id": f"phase2-cross-contract:{100 + self.calls}",
+                        "revision": 100 + self.calls,
+                        "native_revision": 200 + self.calls,
+                        "date_raw": 777 + self.calls,
+                        "bridge_pid": tracked_pid,
+                        "connection_generation": connection_generation,
+                    },
+                }
+
+        class FixtureStdin:
+            def write(self, _value: bytes) -> None:
+                return None
+
+            def flush(self) -> None:
+                return None
+
+        class FixtureProcess:
+            stdin = FixtureStdin()
+
+            def poll(self) -> None:
+                return None
+
+            def wait(self, *, timeout: int) -> int:
+                del timeout
+                return 0
+
+            def terminate(self) -> None:  # pragma: no cover - success path
+                raise AssertionError("fixture recorder must not require termination")
+
+        class NoLaunchPromoRecorder(_REAL_PROMO_RECORDER):
+            def start(self) -> None:
+                self.raw_dir.mkdir(parents=True)
+                self.raw_path.write_bytes(b"no-media-static-raw-capture-fixture")
+                self.log_path.write_text(
+                    "FFmpeg intentionally not invoked by static fixture\n",
+                    encoding="utf-8",
+                )
+                self.process = FixtureProcess()  # type: ignore[assignment]
+                self.started_monotonic = time.monotonic()
+                self.started_at_utc = "2026-09-02T00:00:00+00:00"
+                self.mark("recording_started_after_gameplay_hud")
+
+            def hold(self, seconds: float = 2.5) -> None:
+                # Preserve strictly increasing production marks without a
+                # blocking sleep or creating any media.
+                assert self.started_monotonic is not None
+                self.started_monotonic -= seconds
+
+        def file_record(path: Path) -> dict[str, object]:
+            return {
+                "path": str(path.resolve()),
+                "bytes": path.stat().st_size,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest().upper(),
+            }
+
+        def clean_frame_fixture(
+            artifacts: Path, stem: str, *, label: str, phase: str
+        ) -> dict[str, object]:
+            samples: list[dict[str, object]] = []
+            for sample_index, suffix in enumerate(("", "_drawer_confirmation"), 1):
+                image_path = artifacts / f"{stem}{suffix}.png"
+                image_path.write_bytes(
+                    f"static-clean-frame:{label}:{phase}:{sample_index}".encode()
+                )
+                ocr_path = artifacts / f"{stem}{suffix}_ocr.json"
+                capture.write_json(
+                    ocr_path,
+                    {"schema_version": 1, "items": [], "static_fixture": True},
+                )
+                samples.append(
+                    {
+                        "sample_index": sample_index,
+                        "normalized_decisions_header_ocr": "",
+                        "image": file_record(image_path),
+                        "ocr": file_record(ocr_path),
+                    }
+                )
+            gate_path = artifacts / f"{stem}_gate.json"
+            payload = {
+                "schema_version": 1,
+                "result": "GREEN",
+                "span": label,
+                "phase": phase,
+                "full_screen": True,
+                "fixture_test_ui_absent": True,
+                "native_decisions_drawer_absent": True,
+                "forbidden_hits": [],
+                "drawer_absence_consecutive_samples": 2,
+                "drawer_absence_samples": samples,
+                "image": samples[0]["image"],
+                "ocr": samples[0]["ocr"],
+            }
+            capture.write_json(gate_path, payload)
+            payload["gate"] = file_record(gate_path)
+            return payload
+
+        def seed_proof(context, observed_snapshot):
+            return capture.prove_phase2_loaded_seed(
+                dict(observed_snapshot),
+                dict(context.seed_contract),
+                context.artifacts,
+                loaded_feature_manifest=manifest,
+            )
+
+        producer = make_managed_phase2_promo_capture_producer(
+            paused_snapshot_probe=lambda _context: copy.deepcopy(snapshot),
+            seed_proof_probe=seed_proof,
+            reviewed_history_id="han_6875",
+            span_driver_factory=lambda _context: ContractDriver(),
+        )
+        capture.register_phase2_promo_capture_producer(producer)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact_root = (root / "capture").resolve()
+            bridge = SimpleNamespace(pipe_name=r"\\.\pipe\phase2-contract-unit")
+
+            def artifact_hash(path: Path) -> str:
+                candidate = Path(path).resolve()
+                try:
+                    candidate.relative_to(artifact_root)
+                except ValueError:
+                    return capture.EXPECTED_EXE_SHA256
+                return hashlib.sha256(candidate.read_bytes()).hexdigest().upper()
+
+            with ExitStack() as stack:
+                _enter_common_run_cell_patches(stack, root)
+                stack.enter_context(
+                    mock.patch.object(capture, "PromoRecorder", NoLaunchPromoRecorder)
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "assert_promo_frame_clean",
+                        side_effect=clean_frame_fixture,
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture.isolated,
+                        "sha256_file",
+                        side_effect=artifact_hash,
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "install_phase2_seed",
+                        return_value=copy.deepcopy(seed_install),
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "start_phase2_native_session_supervisor",
+                        return_value={"kind": "static-no-launch-supervisor"},
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "wait_for_phase2_native_session_binding",
+                        return_value={
+                            "bridge_pid": tracked_pid,
+                            "connection_generation": connection_generation,
+                        },
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "run_loader_gate",
+                        return_value=copy.deepcopy(loader_gate),
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "stop_phase2_native_session_supervisor",
+                        return_value={
+                            "result": "GREEN",
+                            "cleanup_proven": True,
+                            "contract_errors": [],
+                            "pid_lineage": [tracked_pid],
+                            "connection_generation_lineage": [
+                                connection_generation
+                            ],
+                            "session_report": {"restart_count": 0},
+                        },
+                    )
+                )
+                forbidden_launch = stack.enter_context(
+                    mock.patch.object(capture, "launch_native_ck3")
+                )
+                forbidden_ffmpeg = stack.enter_context(
+                    mock.patch.object(
+                        capture.shutil,
+                        "which",
+                        side_effect=AssertionError(
+                            "static cross-contract fixture must not resolve FFmpeg"
+                        ),
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "promo_real_character_provenance",
+                        return_value={
+                            "result": "GREEN",
+                            "history_id": "han_6875",
+                            "static_fixture": True,
+                        },
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "resolve_native_bridge_config",
+                        return_value=bridge,
+                    )
+                )
+                preflight = stack.enter_context(
+                    mock.patch.object(
+                        capture,
+                        "preflight",
+                        return_value={
+                            "native_bridge_runtime": {"identity": "static-unit"}
+                        },
+                    )
+                )
+                steam_root = root / "steam"
+                stack.enter_context(
+                    mock.patch.object(
+                        capture.terminal,
+                        "steam_userdata_root",
+                        return_value=steam_root,
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture.isolated,
+                        "steam_workshop_app_roots",
+                        return_value=[],
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(capture.isolated, "registered_workshop_targets")
+                )
+                stack.enter_context(
+                    mock.patch.object(capture.isolated, "ensure_test_paths_safe")
+                )
+                stack.enter_context(
+                    mock.patch.object(
+                        capture.isolated, "protected_snapshot", return_value={}
+                    )
+                )
+                stack.enter_context(
+                    mock.patch.object(capture.isolated, "verify_protected_storage")
+                )
+                exit_code = capture.main(
+                    artifacts_dir=str(artifact_root),
+                    keep_userdir=True,
+                    phase2_promo_capture=True,
+                    phase2_seed_contract=str(root / "canonical-seed.json"),
+                )
+
+            strict = footage_intake.validate_footage_intake(artifact_root)
+            timeline = json.loads(
+                (artifact_root / "cell" / "promo" / "capture-timeline.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            outer = json.loads(
+                (artifact_root / "report.json").read_text(encoding="utf-8")
+            )
+            index = json.loads(
+                (artifact_root / "evidence-index.json").read_text(encoding="utf-8")
+            )
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(strict["result"], "GREEN", strict["errors"])
+        self.assertTrue(all(strict["checks"].values()), strict["checks"])
+        self.assertEqual(outer["cell"]["promo_capture"], timeline)
+        self.assertEqual(len(timeline["clean_frame_gates"]), 8)
+        self.assertEqual(
+            sum(len(row["frames"]) for row in timeline["clean_frame_gates"]),
+            16,
+        )
+        self.assertEqual(len(timeline["marks"]), 18)
+        indexed_paths = {row["path"] for row in index["files"]}
+        self.assertIn("report.json", indexed_paths)
+        self.assertIn("cell/04_phase2_seed_loaded.json", indexed_paths)
+        self.assertIn("cell/promo/capture-timeline.json", indexed_paths)
+        self.assertIn("cell/promo/raw/zg361-promo-live-full-take-01.mkv", indexed_paths)
+        forbidden_launch.assert_not_called()
+        forbidden_ffmpeg.assert_not_called()
+        self.assertFalse(preflight.call_args.kwargs["require_visual_tools"])
 
 
 if __name__ == "__main__":
