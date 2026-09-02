@@ -26,18 +26,18 @@ CHARACTER_CUT = Phase2PromoCut(
     cut_id="character-led",
     project_config_name="phase2-promo-character-project.json",
     authoring_ledger_name="phase2-authoring-character-claims.json",
-    default_run_id="phase2-character-candidate",
-    deliverable_artifact_id="zhongguo-361-phase2-character-video",
-    deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-character.mp4"),
+    default_run_id="phase2-character-led-candidate",
+    deliverable_artifact_id="zhongguo-361-phase2-character-led-video",
+    deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-character-led.mp4"),
 )
 
 INSTITUTION_CUT = Phase2PromoCut(
     cut_id="institution-led",
     project_config_name="phase2-promo-institution-project.json",
     authoring_ledger_name="phase2-authoring-institution-claims.json",
-    default_run_id="phase2-institution-candidate",
-    deliverable_artifact_id="zhongguo-361-phase2-institution-video",
-    deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-institution.mp4"),
+    default_run_id="phase2-institution-led-candidate",
+    deliverable_artifact_id="zhongguo-361-phase2-institution-led-video",
+    deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-institution-led.mp4"),
 )
 
 # Compatibility only.  Existing validate-only commands and old frozen receipts

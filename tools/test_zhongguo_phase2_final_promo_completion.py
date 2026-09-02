@@ -310,8 +310,8 @@ class FinalPromoCompletionTests(unittest.TestCase):
             outer = json.loads(attestation.read_text(encoding="utf-8"))
             run_path = Path(outer["candidate"]["run_manifest"]["path"])
             run = json.loads(run_path.read_text(encoding="utf-8"))
-            run["artifacts"][0]["id"] = "zhongguo-361-phase2-character-led"
-            run["signoffs"][0]["artifact_id"] = "zhongguo-361-phase2-character-led"
+            run["artifacts"][0]["id"] = "zhongguo-361-phase2-character-led-video"
+            run["signoffs"][0]["artifact_id"] = "zhongguo-361-phase2-character-led-video"
             _write(run_path, run)
             outer["candidate"]["run_manifest"] = _record(run_path)
             export_path = Path(outer["export"]["manifest"]["path"])
@@ -319,7 +319,7 @@ class FinalPromoCompletionTests(unittest.TestCase):
             export["source_run"]["bytes"] = _record(run_path)["bytes"]
             export["source_run"]["sha256"] = _record(run_path)["sha256"]
             export["files"][0]["source"]["artifact_id"] = (
-                "zhongguo-361-phase2-character-led"
+                "zhongguo-361-phase2-character-led-video"
             )
             _write(export_path, export)
             outer["export"]["manifest"] = _record(export_path)
@@ -336,9 +336,13 @@ class FinalPromoCompletionTests(unittest.TestCase):
                 attestation,
                 footage_intake={"result": "GREEN"},
                 publish_target=PUBLISH_TARGET,
-                deliverable_id="zhongguo-361-phase2-character-led",
+                deliverable_id="zhongguo-361-phase2-character-led-video",
             )
         self.assertEqual(report["status"], "COMPLETE", report)
+        self.assertEqual(
+            report["deliverable_artifact_id"],
+            "zhongguo-361-phase2-character-led-video",
+        )
 
 
 if __name__ == "__main__":

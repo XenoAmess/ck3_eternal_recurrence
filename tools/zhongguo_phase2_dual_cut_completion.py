@@ -22,14 +22,17 @@ from zhongguo_phase2_final_promo_completion import (
     KIND as SINGLE_COMPLETION_KIND,
     validate_final_promo_completion,
 )
+from zhongguo_phase2_promo_cuts import CUTS
 
 
 KIND = "zg361_phase2_dual_cut_completion"
 ATTESTATION_KIND_DUAL = "zg361_phase2_dual_cut_completion_attestation"
-ROLES = ("character-led", "institution-led")
+ROLES = tuple(cut.cut_id for cut in CUTS)
 OUTPUT_NAMES = {
-    "character-led": "zhongguo-361-phase2-character-led.mp4",
-    "institution-led": "zhongguo-361-phase2-institution-led.mp4",
+    cut.cut_id: cut.deliverable_relative_path.name for cut in CUTS
+}
+DELIVERABLE_IDS = {
+    cut.cut_id: cut.deliverable_artifact_id for cut in CUTS
 }
 _SHA = re.compile(r"^[0-9A-Fa-f]{64}$")
 
@@ -84,7 +87,9 @@ def _contained(path: Path, root: Path) -> bool:
         return False
 
 
-def _single_report(cut: Mapping[str, object]) -> tuple[dict[str, object] | None, str]:
+def _single_report(
+    cut: Mapping[str, object], role: str | None = None
+) -> tuple[dict[str, object] | None, str]:
     """Load an existing report or recompute it from exact receipt inputs."""
 
     completion = cut.get("completion")
@@ -110,14 +115,23 @@ def _single_report(cut: Mapping[str, object]) -> tuple[dict[str, object] | None,
             target_payload = _json(target[0])
         except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
             return None, "completion_receipts_invalid"
+        expected_deliverable_id = (
+            "zhongguo-361-phase2-video"
+            if role is None
+            else DELIVERABLE_IDS[role]
+        )
+        declared_deliverable_id = completion.get("deliverable_id")
+        if (
+            declared_deliverable_id is not None
+            and declared_deliverable_id != expected_deliverable_id
+        ):
+            return None, "completion_deliverable_id_invalid"
         return (
             validate_final_promo_completion(
                 attestation[0],
                 footage_intake=footage_payload,
                 publish_target=target_payload,
-                deliverable_id=str(
-                    completion.get("deliverable_id", "zhongguo-361-phase2-video")
-                ),
+                deliverable_id=expected_deliverable_id,
             ),
             "",
         )
@@ -135,7 +149,7 @@ def _cut_identity(cut: Mapping[str, object], role: str) -> tuple[dict[str, objec
     if work_dir is None or not work_dir.is_dir():
         errors.append("work_dir_invalid")
 
-    report, report_error = _single_report(cut)
+    report, report_error = _single_report(cut, role)
     if report is None:
         errors.append(report_error)
         return {"role": role, "work_dir": None}, errors
@@ -150,6 +164,8 @@ def _cut_identity(cut: Mapping[str, object], role: str) -> tuple[dict[str, objec
         and all(value is True for value in checks.values())
     ):
         errors.append("single_cut_not_complete")
+    if report.get("deliverable_artifact_id") != DELIVERABLE_IDS[role]:
+        errors.append("deliverable_artifact_id_invalid")
 
     attestation = _bound_file(report.get("attestation"))
     candidate = _bound_file(report.get("candidate_media"))
@@ -219,6 +235,7 @@ def _cut_identity(cut: Mapping[str, object], role: str) -> tuple[dict[str, objec
         "run_id": attempt_id,
         "work_dir": str(work_dir) if work_dir else None,
         "output_name": expected_name,
+        "deliverable_artifact_id": DELIVERABLE_IDS[role],
         "candidate": candidate[1],
         "completion_attestation": attestation[1],
         "exported_path": str(exported_path) if exported_path else None,

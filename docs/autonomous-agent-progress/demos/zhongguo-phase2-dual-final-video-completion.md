@@ -35,8 +35,10 @@ fixture 画面混入二期。双片 attestation 必须为每版列出相同顺�
 
 1. `completion.mode = "report"`：引用已由单片闸门生成的 hash-bound completion report；
 2. `completion.mode = "receipts"`：引用 hash-bound completion attestation、footage intake report 与 publish-target report，
-   由工具重新调用既有单片 completion validator。双版自定义 artifact ID 可放在 `completion.deliverable_id`；未提供时兼容
-   旧的 `zhongguo-361-phase2-video`。
+   由工具重新调用既有单片 completion validator。双版 artifact ID 固定为
+   `zhongguo-361-phase2-character-led-video` 与 `zhongguo-361-phase2-institution-led-video`；receipts 模式可显式复述
+   `completion.deliverable_id`，但值必须与当前 role 一致。单片 validator 自身仍保留旧 `zhongguo-361-phase2-video` 默认值，供
+   legacy 单片入口兼容使用。
 
 输入的最小外形如下。`path` 必须是绝对路径，每个记录还必须带实际 `bytes` 与 `sha256`：
 

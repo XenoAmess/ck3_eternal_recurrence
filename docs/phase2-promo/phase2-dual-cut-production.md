@@ -9,8 +9,8 @@
 
 | 剪辑 ID | 导演主角 | 项目配置 | 声明/旁白账本 | 默认运行 ID | 候选交付物 |
 |---|---|---|---|---|---|
-| `character-led` | 一名官员走过完整考核季 | `phase2-promo-character-project.json` | `phase2-authoring-character-claims.json` | `phase2-character-candidate` | `zhongguo-361-phase2-character-video` → `deliverable/zhongguo-361-phase2-character.mp4` |
-| `institution-led` | 制造、批准并延续一个 C 的制度 | `phase2-promo-institution-project.json` | `phase2-authoring-institution-claims.json` | `phase2-institution-candidate` | `zhongguo-361-phase2-institution-video` → `deliverable/zhongguo-361-phase2-institution.mp4` |
+| `character-led` | 一名官员走过完整考核季 | `phase2-promo-character-project.json` | `phase2-authoring-character-claims.json` | `phase2-character-led-candidate` | `zhongguo-361-phase2-character-led-video` → `deliverable/zhongguo-361-phase2-character-led.mp4` |
+| `institution-led` | 制造、批准并延续一个 C 的制度 | `phase2-promo-institution-project.json` | `phase2-authoring-institution-claims.json` | `phase2-institution-led-candidate` | `zhongguo-361-phase2-institution-led-video` → `deliverable/zhongguo-361-phase2-institution-led.mp4` |
 
 两份权威导演处理稿分别为 `phase2-character-director-treatment.md` 与
 `phase2-institution-director-treatment.md`；它们与本文件分工：处理稿决定戏剧结构，本文件决定两条可复现的制作与证据边界。

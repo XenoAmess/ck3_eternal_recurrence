@@ -142,6 +142,7 @@ def validate_final_promo_completion(
         "status": "pending",
         "reason_codes": ([] if footage_green else ["footage_pending"]),
         "attestation": None,
+        "deliverable_artifact_id": deliverable_id,
         "publish_target": dict(target_gate),
         "candidate_media": None,
         "checks": {

@@ -82,6 +82,7 @@ def _single_report(root: Path, role: str, marker: bytes, run_id: str) -> Path:
             "result": "GREEN",
             "status": "COMPLETE",
             "reason_codes": [],
+            "deliverable_artifact_id": dual.DELIVERABLE_IDS[role],
             "attestation": _record(attestation),
             "candidate_media": media,
             "checks": {
@@ -147,6 +148,29 @@ class DualCutCompletionTests(unittest.TestCase):
         self.assertEqual(
             report["cuts"][0]["source_spans"],
             report["cuts"][1]["source_spans"],
+        )
+        self.assertEqual(
+            [row["deliverable_artifact_id"] for row in report["cuts"]],
+            [dual.DELIVERABLE_IDS[role] for role in dual.ROLES],
+        )
+
+    def test_report_with_wrong_deliverable_id_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            attestation = _dual_fixture(root)
+            outer = json.loads(attestation.read_text(encoding="utf-8"))
+            report_path = Path(outer["cuts"][0]["completion"]["report"]["path"])
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            report["deliverable_artifact_id"] = dual.DELIVERABLE_IDS[
+                "institution-led"
+            ]
+            _write(report_path, report)
+            outer["cuts"][0]["completion"]["report"] = _record(report_path)
+            _write(attestation, outer)
+            result = dual.validate_dual_cut_completion(attestation)
+        self.assertEqual(result["result"], "RED")
+        self.assertIn(
+            "deliverable_artifact_id_invalid", result["cuts"][0]["errors"]
         )
 
     def test_same_candidate_sha_cannot_impersonate_two_cuts(self) -> None:
@@ -242,6 +266,31 @@ class DualCutCompletionTests(unittest.TestCase):
         self.assertEqual(error, "")
         self.assertIsNotNone(report)
         self.assertEqual(report["status"], "COMPLETE")
+
+    def test_receipt_mode_rejects_another_roles_deliverable_id(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            attestation = single_receipt_fixture(root / "single")
+            footage = root / "footage.json"
+            target = root / "target.json"
+            _write(footage, {"result": "GREEN"})
+            _write(target, PUBLISH_TARGET)
+            report, error = dual._single_report(
+                {
+                    "completion": {
+                        "mode": "receipts",
+                        "attestation": _record(attestation),
+                        "footage_intake": _record(footage),
+                        "publish_target": _record(target),
+                        "deliverable_id": dual.DELIVERABLE_IDS[
+                            "institution-led"
+                        ],
+                    }
+                },
+                "character-led",
+            )
+        self.assertIsNone(report)
+        self.assertEqual(error, "completion_deliverable_id_invalid")
 
     def test_cli_refuses_to_overwrite_existing_report(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

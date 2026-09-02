@@ -125,6 +125,26 @@ class FinalPromoRunbookTests(unittest.TestCase):
             character["planned_paths"]["deliverable"],
             institution["planned_paths"]["deliverable"],
         )
+        self.assertEqual(
+            character["cut"],
+            {
+                "id": "character-led",
+                "preset_project_id": "zhongguo-361-phase2-promo",
+                "run_id": "phase2-character-led-candidate",
+                "deliverable_artifact_id": "zhongguo-361-phase2-character-led-video",
+                "deliverable_relative_path": "deliverable/zhongguo-361-phase2-character-led.mp4",
+            },
+        )
+        self.assertEqual(
+            institution["cut"],
+            {
+                "id": "institution-led",
+                "preset_project_id": "zhongguo-361-phase2-promo",
+                "run_id": "phase2-institution-led-candidate",
+                "deliverable_artifact_id": "zhongguo-361-phase2-institution-led-video",
+                "deliverable_relative_path": "deliverable/zhongguo-361-phase2-institution-led.mp4",
+            },
+        )
         self.assertEqual(character["reason_code"], "footage_pending")
         self.assertEqual(institution["reason_code"], "footage_pending")
 

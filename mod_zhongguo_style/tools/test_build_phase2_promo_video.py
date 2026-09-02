@@ -568,6 +568,28 @@ class Phase2PromoEntryTests(unittest.TestCase):
             character.deliverable_relative_path,
             institution.deliverable_relative_path,
         )
+        self.assertEqual(
+            character.default_run_id, "phase2-character-led-candidate"
+        )
+        self.assertEqual(
+            institution.default_run_id, "phase2-institution-led-candidate"
+        )
+        self.assertEqual(
+            character.deliverable_artifact_id,
+            "zhongguo-361-phase2-character-led-video",
+        )
+        self.assertEqual(
+            institution.deliverable_artifact_id,
+            "zhongguo-361-phase2-institution-led-video",
+        )
+        self.assertEqual(
+            character.deliverable_relative_path.name,
+            "zhongguo-361-phase2-character-led.mp4",
+        )
+        self.assertEqual(
+            institution.deliverable_relative_path.name,
+            "zhongguo-361-phase2-institution-led.mp4",
+        )
         with self.assertRaisesRegex(promo.Phase2PromoBuildError, "requires project config"):
             promo.select_cut(
                 promo_root / "phase2-promo-character-project.json",
