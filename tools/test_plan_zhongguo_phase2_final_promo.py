@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 TOOLS = Path(__file__).resolve().parent
@@ -50,7 +51,10 @@ class FinalPromoRunbookTests(unittest.TestCase):
             )
             self.assertEqual(runbook["result"], "RED")
             self.assertEqual(runbook["reason_code"], "footage_pending")
-            self.assertEqual(runbook["blockers"], ["footage_pending"])
+            self.assertEqual(runbook["blockers"][0], "footage_pending")
+            self.assertIn("candidate_media_pending", runbook["blockers"])
+            self.assertIn("publish_pending", runbook["blockers"])
+            self.assertEqual(runbook["completion_gate"]["status"], "pending")
             self.assertEqual(
                 runbook["inputs"]["capture"]["kind"],
                 "zg361_phase2_footage_intake",
@@ -118,6 +122,64 @@ class FinalPromoRunbookTests(unittest.TestCase):
             first = planner.build_runbook(**kwargs)
             second = planner.build_runbook(**kwargs)
             self.assertEqual(first, second)
+
+    def test_complete_status_requires_green_final_attestation_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            media = root / "media.json"
+            media.write_text(
+                json.dumps(
+                    {
+                        "result": "GREEN",
+                        "project": {"chapters": 10},
+                        "voice": {"id": planner.VOICE},
+                        "subtitle_layout": {
+                            "tracks": [{"id": "zh-CN"}, {"id": "en"}]
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            media_sha = hashlib.sha256(media.read_bytes()).hexdigest()
+            completion_gate = {
+                "schema_version": 1,
+                "kind": "zg361_phase2_final_promo_completion",
+                "result": "GREEN",
+                "status": "COMPLETE",
+                "reason_codes": [],
+                "checks": {},
+            }
+            with (
+                mock.patch.object(
+                    planner,
+                    "validate_footage_intake",
+                    return_value={"result": "GREEN", "reason_code": None},
+                ),
+                mock.patch.object(
+                    planner,
+                    "validate_final_promo_completion",
+                    return_value=completion_gate,
+                ),
+            ):
+                runbook = planner.build_runbook(
+                    project_config=planner.DEFAULT_CONFIG,
+                    authoring_ledger=planner.DEFAULT_AUTHORING_LEDGER,
+                    promo_tool_root=Path(r"Z:\workspace\xar_promo_toolchain"),
+                    capture_root=root / "capture",
+                    seed_preflight_report=None,
+                    media_preflight_report=media,
+                    expected_media_preflight_sha256=media_sha,
+                    tts_cache=root / "tts",
+                    work_dir=root / "work",
+                    python=Path(sys.executable),
+                    ffmpeg="ffmpeg",
+                    ffprobe="ffprobe",
+                    completion_attestation=root / "completion.json",
+                )
+            self.assertEqual(runbook["result"], "GREEN")
+            self.assertEqual(runbook["status"], "COMPLETE")
+            self.assertEqual(runbook["blockers"], [])
+            self.assertEqual(runbook["completion_gate"], completion_gate)
 
 
 if __name__ == "__main__":

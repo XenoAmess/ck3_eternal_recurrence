@@ -22,6 +22,9 @@ from zhongguo_phase2_footage_intake import (
     final_promo_execution_dag,
     validate_footage_intake,
 )
+from zhongguo_phase2_final_promo_completion import (
+    validate_final_promo_completion,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -193,6 +196,7 @@ def build_runbook(
     python: Path,
     ffmpeg: str,
     ffprobe: str,
+    completion_attestation: Path | None = None,
 ) -> dict[str, object]:
     config = project_config.expanduser().resolve()
     promo = promo_tool_root.expanduser().resolve()
@@ -205,6 +209,12 @@ def build_runbook(
     footage_ready = footage["result"] == "GREEN"
     if not footage_ready:
         blockers.insert(0, "footage_pending")
+
+    completion = validate_final_promo_completion(
+        completion_attestation,
+        footage_intake=footage,
+    )
+    blockers.extend(str(code) for code in completion["reason_codes"])
 
     media = _file_input(media_preflight_report)
     media_checks = {"expected_sha_bound": False, "receipt_green": False}
@@ -233,6 +243,11 @@ def build_runbook(
         "production_refresh_required": True,
     }
     capture_arg = "<FOOTAGE_PENDING>" if capture is None else str(capture)
+    completion_arg = (
+        "<FINAL_COMPLETION_ATTESTATION_PENDING>"
+        if completion_attestation is None
+        else str(completion_attestation.expanduser().resolve())
+    )
     seed_arg = "<SEED_PREFLIGHT_PENDING>" if seed_preflight_report is None else str(seed_preflight_report.resolve())
     # Step 1 is deliberately authoritative.  Even when a prior receipt is
     # supplied as a planning input, production commands consume the new
@@ -328,15 +343,44 @@ def build_runbook(
             "id": "external_publish",
             "gate": "separate explicit operator action; verify remote page after upload; keep publish_performed=false until it actually succeeds",
         },
+        {
+            "ordinal": 13,
+            "id": "verify_complete_attestation",
+            "command": [
+                str(python.resolve()),
+                str(Path(__file__).resolve()),
+                "--output",
+                "<NEW_COMPLETE_RUNBOOK_JSON>",
+                "--promo-tool-root",
+                str(promo),
+                "--capture-root",
+                capture_arg,
+                "--seed-preflight-report",
+                seed_arg,
+                "--media-preflight-report",
+                media_arg,
+                "--expected-media-preflight-sha256",
+                media_sha_arg,
+                "--tts-cache",
+                str(tts_cache.resolve()),
+                "--work-dir",
+                str(work_dir.resolve()),
+                "--completion-attestation",
+                completion_arg,
+            ],
+            "gate": "COMPLETE only when candidate probe, claims audit, two independent 1x receipts, approved signoff, exact export manifest/files, and verified HTTPS publication receipt all bind the same bytes",
+        },
     ]
 
+    blockers = list(dict.fromkeys(blockers))
+    complete = not blockers and completion["status"] == "COMPLETE"
     return {
         "schema_version": 1,
         "kind": "zg361_phase2_final_promo_deterministic_runbook",
-        "result": "GREEN" if not blockers else "RED",
-        "status": "ready-to-execute" if not blockers else "waiting-for-inputs",
+        "result": "GREEN" if complete else "RED",
+        "status": "COMPLETE" if complete else "waiting-for-inputs",
         "reason_code": None if not blockers else blockers[0],
-        "blockers": list(dict.fromkeys(blockers)),
+        "blockers": blockers,
         "scope": "no-media planning only",
         "execution_attestation": {"commands_executed": False, "ck3_started": False, "tts_generated": False, "subtitle_media_generated": False, "ffmpeg_started": False, "candidate_generated": False},
         "project": project,
@@ -359,13 +403,14 @@ def build_runbook(
             "media_preflight": media,
             "tts_cache": {"path": str(tts_cache.resolve()), "required_voice": VOICE, "must_be_prepopulated_content_addressed": True},
         },
+        "completion_gate": completion,
         "dependency_graph": final_promo_execution_dag(),
         "ordered_steps": steps,
         "hash_backfill_fields": [
-            "promo_toolchain.head_after_fetch", "authoring_ledger.bytes_sha256", "authoring_ledger.each_claim_cue_and_language_lines", "project_config.promoted_bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "final_review.package_sha256_reviewer_reviewed_at_decision", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256", "publication.publish_performed_remote_url_verified_at"
+            "promo_toolchain.head_after_fetch", "authoring_ledger.bytes_sha256", "authoring_ledger.each_claim_cue_and_language_lines", "project_config.promoted_bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "claims_audit.report_sha256_subject_sha256", "review_round_1.receipt_sha256_candidate_sha256", "review_round_2.receipt_sha256_candidate_sha256", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256_deliverable_sha256", "publication.receipt_sha256_locator_export_manifest_sha256_candidate_sha256"
         ],
         "release_gates": [
-            "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "the byte-bound 10/10 bilingual authoring ledger is GREEN and only footage-supported claims are promoted into the project", "all eight canonical spans come from one GREEN capture and have clean begin/end gates", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p plus AAC 48kHz stereo and under 1200 seconds", "both independent 1x human review checkpoints are complete", "approved signoff binds the exact final MP4 SHA-256", "export release profile and allowlist are GREEN", "publish_performed remains false until external upload and page verification really complete"
+            "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "the byte-bound 10/10 bilingual authoring ledger is GREEN and only footage-supported claims are promoted into the project", "all eight canonical spans come from one GREEN capture and have clean begin/end gates", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p at 1920x1080 plus AAC 48kHz stereo and under 1200 seconds", "claims audit passes against the exact candidate", "two independent named reviewers each provide a full-duration 1x receipt bound to that candidate and audit", "approved run signoff binds the exact final MP4 SHA-256", "export manifest and exported deliverable hashes match the candidate", "a real HTTPS locator and remote-verification receipt bind the same export and candidate; only then may status be COMPLETE"
         ],
         "planned_paths": {"work_dir": str(work_dir.resolve()), "candidate_run_manifest": str(candidate_run), "deliverable": str(deliverable)},
     }
@@ -388,6 +433,14 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--python", type=Path, default=Path(sys.executable))
     result.add_argument("--ffmpeg", default="ffmpeg")
     result.add_argument("--ffprobe", default="ffprobe")
+    result.add_argument(
+        "--completion-attestation",
+        type=Path,
+        help=(
+            "optional existing final candidate/audit/review/export/publish binding; "
+            "without it the runbook cannot become COMPLETE"
+        ),
+    )
     return result
 
 
@@ -411,6 +464,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         python=args.python,
         ffmpeg=args.ffmpeg,
         ffprobe=args.ffprobe,
+        completion_attestation=args.completion_attestation,
     )
     output.write_text(json.dumps(runbook, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"runbook={output}")

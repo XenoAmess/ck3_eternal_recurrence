@@ -107,3 +107,25 @@ authoring promotion → Xiaoxiao cache validation → zh-CN/en subtitle safe-zon
 layout → composition → claims audit → final full-speed review and sign-off →
 export → explicit publication. The two 1× reviews remain human gates and are
 never inferred from automated validation.
+
+## Final completion attestation
+
+Planning readiness and a rendered candidate are not completion. The runbook
+accepts an optional `--completion-attestation` and stays RED with typed pending
+codes until its final read-only gate closes every boundary. The attestation
+must point to existing, byte-bound files; the validator never creates them.
+
+The final gate requires the same candidate bytes in the native xar_promo run
+manifest, latest approved signoff, bound ffprobe envelope, claims audit, both
+independent named 1× review receipts, export manifest and exported file, and
+publication receipt. The probe must report H.264/yuv420p 1920×1080 video, AAC
+48 kHz stereo, and a positive duration below 1,200 seconds. The export remains
+the existing offline `xar_promo_release_bundle` with its exact allowlist; the
+separate publication receipt must contain a non-placeholder HTTPS locator,
+timestamp, `remote_verified=true`, and hashes for the same candidate and export
+manifest. Missing boundaries are reported as `candidate_media_pending`,
+`claims_audit_pending`, `review_round_1_pending`,
+`review_round_2_pending`, `export_pending`, and `publish_pending`.
+`footage_pending` is always ordered before them when the real eight-span input
+is absent. Only an empty blocker list and a GREEN completion gate changes the
+runbook status to `COMPLETE`.
