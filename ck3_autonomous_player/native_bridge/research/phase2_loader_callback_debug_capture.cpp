@@ -33,6 +33,8 @@ constexpr std::uint64_t kCallbackContinuationRva = 0x3B9AB93;
 constexpr std::uint64_t kNodeLoadedStopRva = 0x3B9AB53;
 constexpr std::uint64_t kLoopExitRva = 0x3B9ACC4;
 constexpr std::uint64_t kNormalReturnRva = 0x3B9ACE0;
+constexpr std::uint64_t kSelectedOuterEntryContinuationRva = 0x88B5E1;
+constexpr std::uint64_t kSelectedOuterReturnRva = 0x88B648;
 constexpr std::uint64_t kCallbackSlotTargetRva = 0x3B9BA70;
 constexpr std::uint64_t kObservedRuntimeVtableRva = 0x408A450;
 constexpr std::uint64_t kObservedRuntimeSlotTargetRva = 0x947BD0;
@@ -60,6 +62,7 @@ struct Options {
   bool sequence = false;
   bool next_node = false;
   bool outer_caller = false;
+  bool selected_outer_caller = false;
 };
 
 struct SequenceEntry {
@@ -107,6 +110,17 @@ struct OuterCallerObservation {
   std::uint64_t continuation_rva = 0;
   bool same_thread = false;
   bool matches_frozen_candidate = false;
+  double elapsed_seconds = 0.0;
+};
+
+struct SelectedOuterCallerObservation {
+  std::size_t callback_sequence = 0;
+  DWORD inner_return_thread_id = 0;
+  DWORD outer_return_thread_id = 0;
+  std::uint64_t return_address = 0;
+  std::uint64_t continuation_rva = 0;
+  bool same_thread = false;
+  bool continuation_in_image = false;
   double elapsed_seconds = 0.0;
 };
 
@@ -167,6 +181,12 @@ struct Capture {
   DWORD awaiting_outer_caller_thread_id = 0;
   bool normal_return_breakpoint_installed = false;
   bool normal_return_breakpoint_byte_restored = false;
+  std::vector<SelectedOuterCallerObservation>
+      selected_outer_caller_observations;
+  std::size_t awaiting_selected_outer_caller_sequence = 0;
+  DWORD awaiting_selected_outer_caller_thread_id = 0;
+  bool selected_outer_return_breakpoint_installed = false;
+  bool selected_outer_return_breakpoint_byte_restored = false;
 };
 
 std::string Narrow(const std::wstring& value) {
@@ -423,6 +443,12 @@ Options ParseOptions(int argc, wchar_t** argv) {
       options.next_node = true;
       options.sequence = true;
     }
+    else if (name == L"--selected-outer-caller") {
+      options.selected_outer_caller = true;
+      options.outer_caller = true;
+      options.next_node = true;
+      options.sequence = true;
+    }
     else throw std::runtime_error("unknown option: " + Narrow(name));
   }
   if (options.exe.empty() || options.userdir.empty() || options.output.empty()) {
@@ -456,6 +482,12 @@ void WriteReport(const Options& options, const Capture& capture) {
   for (const auto& row : capture.outer_caller_observations) {
     if (row.callback_sequence == last_successful_sequence) {
       last_outer_caller = &row;
+    }
+  }
+  const SelectedOuterCallerObservation* last_selected_outer_caller = nullptr;
+  for (const auto& row : capture.selected_outer_caller_observations) {
+    if (row.callback_sequence == last_successful_sequence) {
+      last_selected_outer_caller = &row;
     }
   }
   output << "{\n"
@@ -690,6 +722,51 @@ void WriteReport(const Options& options, const Capture& capture) {
          << "    \"normal_return_breakpoint_byte_restored\": "
          << (capture.normal_return_breakpoint_byte_restored ? "true" : "false")
          << "\n"
+         << "  },\n";
+  output << "  \"selected_outer_caller_observation\": {\n"
+         << "    \"enabled\": "
+         << (options.selected_outer_caller ? "true" : "false") << ",\n"
+         << "    \"selected_outer_entry_continuation_rva\": \""
+         << Hex(kSelectedOuterEntryContinuationRva) << "\",\n"
+         << "    \"selected_outer_return_rva\": \""
+         << Hex(kSelectedOuterReturnRva) << "\",\n"
+         << "    \"last_successful_callback_sequence\": "
+         << last_successful_sequence << ",\n"
+         << "    \"matching_return_observed\": "
+         << (last_selected_outer_caller ? "true" : "false") << ",\n"
+         << "    \"observations\": [\n";
+  for (std::size_t index = 0;
+       index < capture.selected_outer_caller_observations.size(); ++index) {
+    const auto& row = capture.selected_outer_caller_observations[index];
+    output << "      {\n"
+           << "        \"callback_sequence\": " << row.callback_sequence
+           << ",\n"
+           << "        \"inner_return_thread_id\": "
+           << row.inner_return_thread_id << ",\n"
+           << "        \"outer_return_thread_id\": "
+           << row.outer_return_thread_id << ",\n"
+           << "        \"same_thread\": "
+           << (row.same_thread ? "true" : "false") << ",\n"
+           << "        \"return_address\": \"" << Hex(row.return_address)
+           << "\",\n"
+           << "        \"continuation_rva\": \""
+           << Hex(row.continuation_rva) << "\",\n"
+           << "        \"continuation_in_image\": "
+           << (row.continuation_in_image ? "true" : "false") << ",\n"
+           << "        \"elapsed_seconds\": " << std::fixed
+           << std::setprecision(3) << row.elapsed_seconds << "\n"
+           << "      }"
+           << (index + 1 ==
+                       capture.selected_outer_caller_observations.size()
+                   ? ""
+                   : ",")
+           << "\n";
+  }
+  output << "    ],\n"
+         << "    \"return_breakpoint_byte_restored\": "
+         << (capture.selected_outer_return_breakpoint_byte_restored ? "true"
+                                                                    : "false")
+         << "\n"
          << "  },\n"
          << "  \"cleanup\": {\n"
          << "    \"original_breakpoint_byte_restored\": "
@@ -766,6 +843,21 @@ Capture Run(const Options& options) {
         restored == kNormalReturnByte;
     capture.normal_return_breakpoint_installed = false;
     return capture.normal_return_breakpoint_byte_restored;
+  };
+  auto restore_selected_outer_return_breakpoint = [&]() {
+    if (!process_info.hProcess || capture.image_base == 0 ||
+        !capture.selected_outer_return_breakpoint_installed) {
+      return true;
+    }
+    const auto address = capture.image_base + kSelectedOuterReturnRva;
+    const bool wrote = WriteBreakpointByte(
+        process_info.hProcess, address, kNormalReturnByte);
+    std::uint8_t restored = 0;
+    capture.selected_outer_return_breakpoint_byte_restored =
+        wrote && ReadRemote(process_info.hProcess, address, &restored) &&
+        restored == kNormalReturnByte;
+    capture.selected_outer_return_breakpoint_installed = false;
+    return capture.selected_outer_return_breakpoint_byte_restored;
   };
 
   try {
@@ -858,6 +950,16 @@ Capture Run(const Options& options) {
                 "normal return observation instruction byte mismatch");
           }
         }
+        if (options.selected_outer_caller) {
+          std::uint8_t return_byte = 0;
+          if (!ReadRemote(process_info.hProcess,
+                          capture.image_base + kSelectedOuterReturnRva,
+                          &return_byte) ||
+              return_byte != kNormalReturnByte) {
+            throw std::runtime_error(
+                "selected outer return instruction byte mismatch");
+          }
+        }
         if (!WriteBreakpointByte(process_info.hProcess,
                                  capture.callback_address, 0xCC)) {
           throw std::runtime_error("could not install callback breakpoint");
@@ -875,6 +977,58 @@ Capture Run(const Options& options) {
         const auto address = reinterpret_cast<std::uint64_t>(
             exception.ExceptionAddress);
         if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
+            options.selected_outer_caller &&
+            capture.awaiting_selected_outer_caller_sequence != 0 &&
+            capture.selected_outer_return_breakpoint_installed &&
+            address == capture.image_base + kSelectedOuterReturnRva) {
+          HANDLE thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT |
+                                         THREAD_QUERY_INFORMATION,
+                                     FALSE, event.dwThreadId);
+          if (!thread) {
+            throw std::runtime_error(
+                "OpenThread failed at selected outer return");
+          }
+          CONTEXT context{};
+          context.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER;
+          const bool context_ok = GetThreadContext(thread, &context) != FALSE;
+          CloseHandle(thread);
+          if (!context_ok) {
+            throw std::runtime_error(
+                "GetThreadContext failed at selected outer return");
+          }
+          SelectedOuterCallerObservation row;
+          row.callback_sequence =
+              capture.awaiting_selected_outer_caller_sequence;
+          row.inner_return_thread_id =
+              capture.awaiting_selected_outer_caller_thread_id;
+          row.outer_return_thread_id = event.dwThreadId;
+          row.same_thread =
+              row.inner_return_thread_id == row.outer_return_thread_id;
+          if (!ReadRemote(process_info.hProcess, context.Rsp,
+                          &row.return_address)) {
+            throw std::runtime_error(
+                "could not read selected outer return address from [RSP]");
+          }
+          if (row.return_address >= capture.image_base) {
+            row.continuation_rva = row.return_address - capture.image_base;
+          }
+          row.continuation_in_image =
+              row.return_address >= capture.image_base &&
+              row.continuation_rva < kExpectedExeSize;
+          row.elapsed_seconds = std::chrono::duration<double>(
+              std::chrono::steady_clock::now() - started).count();
+          if (!restore_selected_outer_return_breakpoint()) {
+            throw std::runtime_error(
+                "could not restore selected outer return breakpoint");
+          }
+          if (!ResetThreadInstructionPointer(event.dwThreadId, address)) {
+            throw std::runtime_error(
+                "could not reset instruction pointer at selected outer return");
+          }
+          capture.selected_outer_caller_observations.push_back(row);
+          capture.awaiting_selected_outer_caller_sequence = 0;
+          capture.awaiting_selected_outer_caller_thread_id = 0;
+        } else if (exception.ExceptionCode == EXCEPTION_BREAKPOINT &&
             options.outer_caller &&
             capture.awaiting_outer_caller_sequence != 0 &&
             capture.normal_return_breakpoint_installed &&
@@ -912,6 +1066,33 @@ Capture Run(const Options& options) {
           }
           row.elapsed_seconds = std::chrono::duration<double>(
               std::chrono::steady_clock::now() - started).count();
+          if (options.selected_outer_caller &&
+              row.continuation_rva == kSelectedOuterEntryContinuationRva) {
+            if (capture.selected_outer_return_breakpoint_installed ||
+                capture.awaiting_selected_outer_caller_sequence != 0) {
+              throw std::runtime_error(
+                  "previous selected outer return observation remained pending");
+            }
+            const auto selected_return_address =
+                capture.image_base + kSelectedOuterReturnRva;
+            std::uint8_t selected_return_byte = 0;
+            if (!ReadRemote(process_info.hProcess, selected_return_address,
+                            &selected_return_byte) ||
+                selected_return_byte != kNormalReturnByte) {
+              throw std::runtime_error(
+                  "selected outer return breakpoint source byte mismatch");
+            }
+            if (!WriteBreakpointByte(process_info.hProcess,
+                                     selected_return_address, 0xCC)) {
+              throw std::runtime_error(
+                  "could not install selected outer return breakpoint");
+            }
+            capture.selected_outer_return_breakpoint_installed = true;
+            capture.selected_outer_return_breakpoint_byte_restored = false;
+            capture.awaiting_selected_outer_caller_sequence =
+                row.callback_sequence;
+            capture.awaiting_selected_outer_caller_thread_id = event.dwThreadId;
+          }
           if (!restore_outer_return_breakpoint()) {
             throw std::runtime_error(
                 "could not restore normal return breakpoint");
@@ -1262,7 +1443,42 @@ Capture Run(const Options& options) {
                                !capture.sequence_entries.back().returned;
       const bool has_unentered_candidate = capture.timeout_thread_suspended &&
                                             !capture.timeout_node_name.empty();
-      if (options.outer_caller) {
+      if (options.selected_outer_caller) {
+        std::size_t last_successful_sequence = 0;
+        for (const auto& row : capture.sequence_entries) {
+          if (row.returned) last_successful_sequence = row.sequence;
+        }
+        const NextNodeTransition* transition = nullptr;
+        for (const auto& row : capture.next_node_transitions) {
+          if (row.callback_sequence == last_successful_sequence) {
+            transition = &row;
+          }
+        }
+        const OuterCallerObservation* caller = nullptr;
+        for (const auto& row : capture.outer_caller_observations) {
+          if (row.callback_sequence == last_successful_sequence) caller = &row;
+        }
+        const SelectedOuterCallerObservation* selected_caller = nullptr;
+        for (const auto& row : capture.selected_outer_caller_observations) {
+          if (row.callback_sequence == last_successful_sequence) {
+            selected_caller = &row;
+          }
+        }
+        capture.result =
+            last_successful_sequence != 0 && transition &&
+                    transition->outcome == "vector-exhausted" &&
+                    transition->same_thread && caller && caller->same_thread &&
+                    caller->continuation_rva ==
+                        kSelectedOuterEntryContinuationRva &&
+                    selected_caller && selected_caller->same_thread &&
+                    selected_caller->continuation_in_image
+                ? "GREEN"
+                : "RED";
+        capture.reason =
+            capture.result == "GREEN"
+                ? "selected-outer-caller-continuation-mapped"
+                : "selected-outer-caller-continuation-unobserved";
+      } else if (options.outer_caller) {
         std::size_t last_successful_sequence = 0;
         for (const auto& row : capture.sequence_entries) {
           if (row.returned) last_successful_sequence = row.sequence;
@@ -1333,6 +1549,10 @@ Capture Run(const Options& options) {
   }
 
   if (process_info.hProcess) {
+    if (!restore_selected_outer_return_breakpoint()) {
+      capture.result = "RED";
+      capture.reason += "; selected-outer-return-breakpoint-cleanup-failed";
+    }
     if (!restore_outer_return_breakpoint()) {
       capture.result = "RED";
       capture.reason += "; normal-return-breakpoint-cleanup-failed";
@@ -1412,8 +1632,10 @@ int wmain(int argc, wchar_t** argv) {
     const bool ok = kCallbackCallRva == 0x3B9AB90 &&
                      kCallbackContinuationRva == 0x3B9AB93 &&
                      kNodeLoadedStopRva == 0x3B9AB53 &&
-                     kLoopExitRva == 0x3B9ACC4 &&
-                     kNormalReturnRva == 0x3B9ACE0 &&
+                      kLoopExitRva == 0x3B9ACC4 &&
+                      kNormalReturnRva == 0x3B9ACE0 &&
+                      kSelectedOuterEntryContinuationRva == 0x88B5E1 &&
+                      kSelectedOuterReturnRva == 0x88B648 &&
                      kCallbackSlotTargetRva == 0x3B9BA70 &&
                     kObservedRuntimeVtableRva == 0x408A450 &&
                     kObservedRuntimeSlotTargetRva == 0x947BD0 &&

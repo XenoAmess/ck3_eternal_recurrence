@@ -1,0 +1,76 @@
+{
+  "contract": "phase2-selected-outer-return-live-v1",
+  "schema_version": 1,
+  "status": "private-selected-outer-continuation-mapped",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "f122cdcd81a968247c77f9de5b73ab745897ea67",
+    "static_owner_commit": "ab80039",
+    "static_owner_contract": "phase2-selected-outer-callers-v1",
+    "private_probe": "phase2_loader_callback_debug_capture.cpp",
+    "private_probe_source_sha256": "03B4D7CC233372A0550EFE04F1C79267E5DAB7DE71A6E2C863E6A9DA51A45E07",
+    "private_probe_executable_sha256": "AE3861D2C84522363208F8484AED131F785E5C055CCFDC8D57E07DEDAABE0AF0"
+  },
+  "preflight": {
+    "open_kaishek_commit": "425514e2e937bb829b2415f9da7870609e9c736f",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\open-kaishek-support-20260902T1807\\phase2-outer-caller-preflight.json",
+    "artifact_sha256": "80FC14AF5081A85ECBCAC998FDCF8FE26A11644E24407865D24EB8EF2CB70823",
+    "parser_status": "GREEN",
+    "ir_status": "GREEN",
+    "runtime_status": "GREEN",
+    "validator_status": "RED",
+    "boundary": "known full-root schema-only validator RED; offline structural support"
+  },
+  "capture": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\selected-outer-return-observation-20260902T1838.json",
+    "artifact_sha256": "F10CDD414FA4EDD74E256BB2D084C8F5117467B32E7CCB3E70F5CAB45B9A4958",
+    "timeout_ms": 60000,
+    "elapsed_seconds": 60.251,
+    "result": "GREEN",
+    "reason": "selected-outer-caller-continuation-mapped",
+    "callback_entry_count": 2,
+    "last_successful_callback_sequence": 2,
+    "last_transition": "vector-exhausted",
+    "inner_normal_return_rva": "0x3B9ACE0",
+    "inner_continuation_rva": "0x88B5E1",
+    "selected_outer_return_rva": "0x88B648",
+    "selected_outer_continuation_rva": "0x3B9CFD2",
+    "same_thread": true,
+    "continuation_in_image": true
+  },
+  "cleanup": {
+    "callback_breakpoint_byte_restored": true,
+    "continuation_breakpoint_byte_restored": true,
+    "node_loaded_breakpoint_byte_restored": true,
+    "loop_exit_breakpoint_byte_restored": true,
+    "normal_return_breakpoint_byte_restored": true,
+    "selected_outer_return_breakpoint_byte_restored": true,
+    "process_terminated": true,
+    "real_user_profile_targeted": false,
+    "post_capture_ck3_process_count": 0,
+    "post_capture_probe_process_count": 0,
+    "result": "GREEN"
+  },
+  "next_distinct_stop_point": {
+    "rva": "0x3B9CFD2",
+    "role": "exact runtime continuation after the selected 0x88B480 owner returns",
+    "required_next_step": "bounded static PDATA and local CFG/call-context binding before any further live observation",
+    "authorized_in_this_package": false
+  },
+  "limits": [
+    "the runtime continuation is mapped but its downstream wait/post-init meaning is not assigned",
+    "no public bridge, production loader, or readiness state changed",
+    "the prior 300-second loader timeout was not repeated"
+  ],
+  "readiness": "native-readiness RED + private-live evidence only"
+}
