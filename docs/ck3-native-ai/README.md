@@ -228,7 +228,11 @@
   分别为 `0x44D1E18(1/1)` 与 `0x41E36D0(6/6)`，仍未命中 Truce vtable，
   不能命名 CAddTruce。详见
   [g2-truce-private-live-capture-2026-09-02.md](g2-truce-private-live-capture-2026-09-02.md)；
-  该 RED 不升级 truce、expiry、decision 或 action readiness。
+  下一层 `1+6` capture 仍未直接命中 Truce；exact-build RTTI 已将七个位置
+  缩到四个 `MultipleTarget` container 位置，并确认 `CIfEffect+0x258` 是另一个
+  optional owned effect pointer。详见
+  [g2-truce-next-layer-rtti-2026-09-02.md](g2-truce-next-layer-rtti-2026-09-02.md)。
+  这些 RED/static 结果不升级 truce、expiry、decision 或 action readiness。
 - [inference] [player-counterpolicy.md](player-counterpolicy.md) 把上述已证事实映射为我方 planner 的
   lexicographic counter-policy、enemy endpoint epoch、multi-stack 路线矩阵、cohesion / merge 边界与测试矩阵；
   该文档描述我方策略，不代表 CK3 原生 AI 的 static fact。

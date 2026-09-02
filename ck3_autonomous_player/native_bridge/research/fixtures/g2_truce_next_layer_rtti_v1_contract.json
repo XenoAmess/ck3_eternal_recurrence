@@ -1,0 +1,72 @@
+{
+  "schema": "xar.ck3.g2_truce_next_layer_rtti.contract.v1",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "candidate_types": {
+    "0x4446EF0": {
+      "col_rva": "0x4AB0FC0",
+      "type_descriptor_rva": "0x55D1758",
+      "rtti_type_name": ".?AVCTargetingFactionsDiscontentEffect@@",
+      "object_size": "0x168",
+      "multiple_target_effect_base": false
+    },
+    "0x44D2138": {
+      "col_rva": "0x4B4FD60",
+      "type_descriptor_rva": "0x5656100",
+      "rtti_type_name": ".?AV?$CSaveEventTargetAsEffect@$00@@",
+      "object_size": "0x68",
+      "multiple_target_effect_base": false
+    },
+    "0x44786C8": {
+      "col_rva": "0x4ACE7D0",
+      "type_descriptor_rva": "0x55DFE68",
+      "rtti_type_name": ".?AV?$CSaveScopeValueAsEffect@$00@@",
+      "object_size": "0x278",
+      "multiple_target_effect_base": false
+    },
+    "0x41B1E90": {
+      "col_rva": "0x479C520",
+      "type_descriptor_rva": "0x5320BB0",
+      "rtti_type_name": ".?AV?$CScriptedListEffect@VCEveryInScriptedListEffect@@VCCharacterActiveTaskContractList@@@@",
+      "object_size": "0x270",
+      "multiple_target_effect_base": true
+    },
+    "0x44D1E18": {
+      "col_rva": "0x4B50288",
+      "type_descriptor_rva": "0x56570B8",
+      "rtti_type_name": ".?AVCIfEffect@@",
+      "object_size": "0x260",
+      "multiple_target_effect_base": true
+    }
+  },
+  "target_type": {
+    "vtable_rva": "0x4461CA8",
+    "col_rva": "0x4AC06B8",
+    "type_descriptor_rva": "0x55D9598",
+    "rtti_type_name": ".?AV?$CAddTruceEffect@$0A@@@",
+    "object_size": "0x1F8"
+  },
+  "cif_optional_effect_storage": {
+    "field_offset": "0x258",
+    "destructor_span_rva": "0x338C2DF",
+    "destructor_span_hex": "488B89580200004885C9740A488B01BA01000000FF10"
+  },
+  "bounded_path_classification": {
+    "remaining_multiple_target_positions": [
+      "index10.context_child0.child3",
+      "index9.context_child0",
+      "index10.context_child0.child4",
+      "index10.context_child0.child5"
+    ],
+    "excluded_from_common_multiple_target_walk": [
+      "index9.context_child0.child0",
+      "index10.context_child0.child0",
+      "index10.context_child0.child1",
+      "index10.context_child0.child2"
+    ],
+    "unique_path_identified": false
+  },
+  "readiness": "static-confirmed/not-live"
+}
