@@ -6,8 +6,11 @@ from __future__ import annotations
 from dataclasses import replace
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 from types import SimpleNamespace
 import tempfile
 import threading
@@ -1194,6 +1197,62 @@ def test_static_preflight_runs_optimized_seed_smokes() -> None:
             all(kwargs.get("cwd") == fixture.clean for _command, kwargs in calls),
             "seed preflight smoke did not use the frozen clean source cwd",
         )
+        require(
+            all("-B" in command for command, _kwargs in calls),
+            "seed preflight child omitted the no-bytecode switch",
+        )
+        require(
+            all(
+                kwargs.get("env", {}).get("PYTHONDONTWRITEBYTECODE") == "1"
+                for _command, kwargs in calls
+            ),
+            "seed preflight child omitted the no-bytecode environment guard",
+        )
+
+
+def test_runner_import_guard_prevents_clean_source_bytecode() -> None:
+    """The first adapter import must not create a cache in a clean export."""
+
+    with tempfile.TemporaryDirectory(prefix="xar-phase2-bytecode-") as raw:
+        root = Path(raw)
+        tools_dir = root / "tools"
+        tools_dir.mkdir()
+        shutil.copy2(capture.__file__, tools_dir / "run_zg361_phase2_seed_capture.py")
+        shutil.copy2(
+            Path(capture.__file__).with_name("kaishek_preflight.py"),
+            tools_dir / "kaishek_preflight.py",
+        )
+        script = tools_dir / "run_zg361_phase2_seed_capture.py"
+        environment = {
+            key: value
+            for key, value in os.environ.items()
+            if key not in {"PYTHONDONTWRITEBYTECODE", "PYTHONPYCACHEPREFIX"}
+        }
+        environment["PYTHONPATH"] = str(tools_dir)
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-S",
+                "-c",
+                f"import runpy; runpy.run_path({str(script)!r})",
+            ],
+            cwd=root,
+            env=environment,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        require(
+            completed.returncode == 0,
+            f"runner import guard smoke failed: {completed.stderr}",
+        )
+        bytecode = [
+            path
+            for path in root.rglob("*")
+            if path.is_file()
+            and ("__pycache__" in path.parts or path.suffix.lower() in {".pyc", ".pyo"})
+        ]
+        require(not bytecode, f"runner import wrote bytecode: {bytecode}")
 
 
 def test_static_contract() -> None:
@@ -1255,6 +1314,7 @@ def main() -> int:
     test_bootstrap_runtime_hash_drift_is_preserved()
     test_seed_source_path_must_be_absolute()
     test_static_preflight_runs_optimized_seed_smokes()
+    test_runner_import_guard_prevents_clean_source_bytecode()
     test_static_contract()
     print("GREEN: reusable phase-two seed capture is MCP-only and bounded")
     return 0

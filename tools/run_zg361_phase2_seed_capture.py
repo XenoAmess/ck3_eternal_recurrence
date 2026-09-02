@@ -21,6 +21,16 @@ import re
 import shutil
 import subprocess
 import sys
+
+# The runner is executed from inside the immutable clean export.  Set the
+# process-wide guard before importing even the optional adapter below: a
+# module import can otherwise leave a ``tools/__pycache__`` entry before the
+# source manifest is taken.  Child Python commands receive the same guard (and
+# an explicit ``-B`` at their call site), while the detached watchdog has its
+# own equivalent entrypoint guard.
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+sys.dont_write_bytecode = True
+
 import threading
 import time
 import traceback
@@ -1162,7 +1172,9 @@ def _run_seed_static_preflight(
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     for name, script, optimized in commands:
-        command = [sys.executable]
+        # ``-B`` protects imports before the fixture code runs; the explicit
+        # environment guard also propagates through any nested child process.
+        command = [sys.executable, "-B"]
         if optimized:
             command.append("-O")
         command.append(str(script))
