@@ -1,0 +1,113 @@
+{
+  "format_version": 1,
+  "kind": "xar-promo-review-checklist",
+  "checklist_id": "zg361-phase2-character-led-final-review-r2",
+  "deliverable": null,
+  "items": [
+    {
+      "id": "final-exact-binding",
+      "instruction": "Confirm the instantiated checklist binds the exact candidate MP4 by artifact ID, byte count, and SHA-256 and that its basename is zhongguo-361-phase2-character-led.mp4.",
+      "required": true
+    },
+    {
+      "id": "final-full-playback-1x",
+      "instruction": "Watch the exact candidate continuously from first frame to final frame at exactly 1.0x without skipping, scrubbing, fast playback, or substituting extracted frames.",
+      "required": true
+    },
+    {
+      "id": "final-picture-sound-sync",
+      "instruction": "Confirm picture and sound remain present, synchronized, intelligible, and uninterrupted throughout the candidate.",
+      "required": true
+    },
+    {
+      "id": "final-bilingual-subtitles",
+      "instruction": "Confirm Chinese remains the primary visual and narration layer, English remains secondary, both tracks match the spoken meaning, timing is correct, and every line stays readable inside the safe area.",
+      "required": true
+    },
+    {
+      "id": "final-first-last-frame",
+      "instruction": "Confirm the first and final frames enter and exit cleanly and no launcher, loading screen, stale frame, or unintended desktop content appears.",
+      "required": true
+    },
+    {
+      "id": "final-ten-chapters",
+      "instruction": "Confirm all ten character-led chapters are watched continuously, their starts, ends, and declared boundaries match the storyboard, and all eight canonical gameplay spans appear in the declared order.",
+      "required": true
+    },
+    {
+      "id": "final-lead-recognition",
+      "instruction": "Confirm the audience can identify the lead historical official and the dramatic question within the first 35 seconds using only facts actually visible in the candidate.",
+      "required": true
+    },
+    {
+      "id": "final-organizational-departures",
+      "instruction": "Confirm every departure from the lead character has an intelligible organizational reason and is not presented as the lead's personal experience unless identity and same-case evidence support it.",
+      "required": true
+    },
+    {
+      "id": "final-no-fabricated-causality",
+      "instruction": "Confirm adjacent edits, narration, sound design, and overlays do not fabricate unsupported same-person, same-case, chronological, or causal continuity.",
+      "required": true
+    },
+    {
+      "id": "final-key-surfaces-readable",
+      "instruction": "Confirm every key identity, number, revision, branch label, and result surface used by a claim is shown completely and remains readable long enough at 1.0x.",
+      "required": true
+    },
+    {
+      "id": "final-claims-match-shots",
+      "instruction": "Confirm each retained narration and subtitle claim is supported by its mapped canonical span and that no deleted or narrowed source-review claim was restored without new exact evidence and re-review.",
+      "required": true
+    },
+    {
+      "id": "final-historical-characters",
+      "instruction": "Confirm every policy-covered visible character is historical or provenance-bound and no prohibited generated official name is visible.",
+      "required": true
+    },
+    {
+      "id": "final-no-test-ui",
+      "instruction": "Confirm fixture-only and test-only UI, debug overlays, test markers, launcher, loading screens, and obstructing system notifications are absent from the final composition.",
+      "required": true
+    },
+    {
+      "id": "final-no-concealment",
+      "instruction": "Confirm compliance comes from clean source material and not from crop, mask, blur, redaction, or overlays that conceal disallowed content.",
+      "required": true
+    },
+    {
+      "id": "final-cards-honest",
+      "instruction": "Confirm opening and finale cards are editorial framing only, and the final evidence card lists only spans actually included and does not claim complete, live-proven, exported, or published beyond the bound evidence.",
+      "required": true
+    },
+    {
+      "id": "final-independent-cut",
+      "instruction": "Confirm this is a genuinely character-led edit with its own narration, subtitle timing, pacing, candidate bytes, and review chain rather than a retitled institution-led cut.",
+      "required": true
+    },
+    {
+      "id": "final-output-quality",
+      "instruction": "Confirm transitions, lower thirds, music, effects, and pacing are publication quality and do not obscure product evidence or imply that an action ACK proves an outcome.",
+      "required": true
+    }
+  ],
+  "metadata": {
+    "template_status": "unbound-future-review-template",
+    "cut_id": "character-led",
+    "review_round": "final-deliverable-1x",
+    "expected_output_path": "deliverable/zhongguo-361-phase2-character-led.mp4",
+    "required_prior_gate": "approved source-footage review response bound to the exact source-review manifest used by this candidate",
+    "pending_bindings": [
+      "candidate artifact path, ID, bytes, and SHA-256",
+      "storyboard path and SHA-256",
+      "bound ffprobe path and SHA-256",
+      "review-package path and SHA-256",
+      "claims bundle and automated audit paths and SHA-256 values",
+      "project config, authoring overlay, and promo tool exact versions",
+      "normalized instantiated checklist SHA-256",
+      "named reviewer, reviewed-at timestamp, row results, and decision in a separate review response",
+      "separate final sign-off after approval"
+    ]
+  },
+  "template_only": true,
+  "is_signoff": false
+}

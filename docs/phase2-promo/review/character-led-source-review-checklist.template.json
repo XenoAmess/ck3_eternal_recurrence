@@ -1,0 +1,121 @@
+{
+  "format_version": 1,
+  "kind": "xar-promo-review-checklist",
+  "checklist_id": "zg361-phase2-character-led-source-review-r1",
+  "deliverable": null,
+  "items": [
+    {
+      "id": "source-exact-bindings",
+      "instruction": "Confirm the instantiated checklist binds the source-review manifest and every included clip by artifact ID, byte count, and SHA-256; no placeholder or unbound clip remains.",
+      "required": true
+    },
+    {
+      "id": "source-lineage",
+      "instruction": "Confirm all eight spans share the required canonical seed/save lineage and exact source, CK3 executable, and mod-mount identity, while each span retains its own continuous pre-action-post session identity and cleanup receipt.",
+      "required": true
+    },
+    {
+      "id": "source-full-clips-1x",
+      "instruction": "Watch every clip intended for the character-led cut continuously from first frame to final frame at exactly 1.0x, without skipping, scrubbing, fast playback, or substituting sampled frames.",
+      "required": true
+    },
+    {
+      "id": "source-historical-character",
+      "instruction": "Confirm the lead and every policy-covered visible character are historical or provenance-bound characters, and record which spans genuinely support the same lead identity.",
+      "required": true
+    },
+    {
+      "id": "source-no-generated-name",
+      "instruction": "Confirm no prohibited world-generated official name is visible in any included clip.",
+      "required": true
+    },
+    {
+      "id": "source-no-test-ui",
+      "instruction": "Confirm fixture-only and test-only decisions, buttons, events, labels, markers, overlays, launcher, loading screens, and obstructing system notifications are absent.",
+      "required": true
+    },
+    {
+      "id": "source-no-concealment",
+      "instruction": "Confirm compliance comes from clean source footage and not from cropping, masking, blurring, redaction, or hiding disallowed content.",
+      "required": true
+    },
+    {
+      "id": "claim-fact-quota",
+      "instruction": "In phase2_fact_quota_calibration, confirm fact and quota records are separately readable, the calibration event is identity-ready, and the provider-observed scoreboard or query revision advances after the action.",
+      "required": true
+    },
+    {
+      "id": "claim-receipt-pip",
+      "instruction": "In phase2_receipt_appeal_pip, confirm the real receipt and PIP surfaces are visible, owner-subject-cycle-case identity stays stable, and the selected response state is provider-observed after the action.",
+      "required": true
+    },
+    {
+      "id": "claim-manager",
+      "instruction": "In phase2_manager_governance, confirm the real identity-ready manager event is visible and the AI-owned case reaches a provider-observed terminal business state rather than only an ACK or elapsed time.",
+      "required": true
+    },
+    {
+      "id": "claim-promotion",
+      "instruction": "In phase2_promotion_compensation, confirm the real promotion choice and compensation result events are visible and remain bound to the same frozen case.",
+      "required": true
+    },
+    {
+      "id": "claim-workforce",
+      "instruction": "In phase2_hc_workforce, confirm A, B, and C use the same owner-subject case from a hash-identical checkpoint, the no-opening outcome is visible, and the branches are not represented as one chronological history.",
+      "required": true
+    },
+    {
+      "id": "claim-projects",
+      "instruction": "In phase2_projects_metrics, confirm the project-choice event and contribution or metrics result are identity-ready, visible, and provider-observed after the action.",
+      "required": true
+    },
+    {
+      "id": "claim-incidents",
+      "instruction": "In phase2_incidents_operations, confirm X, Y, and Z surfaces appear in order and every transition plus closure is provider-observed after its action, never inferred from an ACK.",
+      "required": true
+    },
+    {
+      "id": "claim-cross-cycle",
+      "instruction": "In phase2_cross_cycle_endgame, confirm the terminal institutional event is identity-ready and remains bound to the carried-debt or default-change cycle shown.",
+      "required": true
+    },
+    {
+      "id": "source-character-causality",
+      "instruction": "Confirm narration keeps only lead-character experiences supported by visible identity and same-case evidence; unsupported spans are framed as simultaneous institutional context without causal wording.",
+      "required": true
+    },
+    {
+      "id": "source-claim-disposition",
+      "instruction": "For every planned narration claim, record keep, narrow, or delete according to the observed footage; do not search for decorative footage to preserve unsupported wording.",
+      "required": true
+    }
+  ],
+  "metadata": {
+    "template_status": "unbound-future-review-template",
+    "cut_id": "character-led",
+    "review_round": "source-footage-1x",
+    "expected_output_basename": "zhongguo-361-phase2-character-led.mp4",
+    "canonical_spans": [
+      "phase2_fact_quota_calibration",
+      "phase2_receipt_appeal_pip",
+      "phase2_manager_governance",
+      "phase2_promotion_compensation",
+      "phase2_hc_workforce",
+      "phase2_projects_metrics",
+      "phase2_incidents_operations",
+      "phase2_cross_cycle_endgame"
+    ],
+    "pending_bindings": [
+      "source-review-manifest artifact path, ID, bytes, and SHA-256",
+      "eight clip artifact paths, IDs, bytes, and SHA-256 values",
+      "capture and intake report paths and SHA-256 values",
+      "canonical seed/save lineage and per-span session identities",
+      "exact source commit, CK3 executable identity, and mod-mount identity",
+      "normalized instantiated checklist SHA-256",
+      "named reviewer, reviewed-at timestamp, row results, and decision in a separate review response"
+    ]
+  },
+  "template_only": true,
+  "is_signoff": false
+}
+
