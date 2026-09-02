@@ -371,3 +371,32 @@ call sites belong to different effect types. This closes the static call
 contract without proving the dynamic loaded-tree/context state; no code,
 public ABI, or CK3 run changed. The next G2 entry remains an internal trace or
 equivalent paused evidence path.
+
+## 2026-09-02 11:00 open_kaishek `has_innovation` slice
+
+The offline accelerator now has an exact-build-backed `has_innovation`
+`TRIGGER/CULTURE/STRING` schema slice at
+`dad0ea2a864cbb4b9ea4a4e9dd388f606485830a` (JAR SHA-256
+`478D2F4040316C5223470BB350AF286256D78ECA3EB7B413B0383EEF88B86911`). It is
+profile/fixture evidence only (`certified=false`); the native evaluator and
+G2 truce reader are unchanged. The retained parent preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-fresh-semantic-ready-20260902T1058-has-innovation\open-kaishek-preflight-has-innovation.json`
+(SHA-256
+`7D447CF0F286F253A62EC42EA5AA57B6251777A70111F44A460CCD74984C011A`). Its
+parser is GREEN, bounded root validation is the expected schema-only RED,
+and no CK3 process or mutation occurred; `GEN-034` therefore remains
+unchanged.
+
+## 2026-09-02 11:02 current-adapter fixture preflight
+
+The current parent adapter was exercised once against the dedicated
+`has_innovation` fixture using open_kaishek `dad0ea2a864cbb4b9ea4a4e9dd388f606485830a`
+and JAR SHA-256
+`478D2F4040316C5223470BB350AF286256D78ECA3EB7B413B0383EEF88B86911`.
+Artifact:
+`Z:\ck3_mod_rewrite_process_assets\zg361\kaishek-has-innovation-adapter-fixture-only-20260902.json`
+(SHA-256
+`A8F852B8586F0AEC3975B75E7A118105286C79E9E64D2C7E8D26EFAADAEA317B`).
+Fixture parser/validator are GREEN and IR/runtime are SKIPPED; the full-root
+validator's existing schema-only RED is unrelated. No CK3 process or
+mutation occurred, and `GEN-034` remains unchanged.
