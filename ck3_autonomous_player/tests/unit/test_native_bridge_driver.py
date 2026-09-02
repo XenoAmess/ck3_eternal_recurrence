@@ -76,6 +76,10 @@ from xar_autoplayer.bridge.war_contract import (
     start_assault_step,
     stop_assault_step,
 )
+
+from test_war_termination_terms_contract import (
+    _available_raiktor_observed_terms,
+)
 from xar_autoplayer.strategy import _battle_sentinel_advance_validation
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import write_bytes_atomic, write_json_atomic
@@ -10260,6 +10264,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             result["war_termination_terms"]["claims"][0]["state"],
             "strong_explicit",
         )
+        self.assertEqual(
+            result["raiktor_surrender_aggregate_session"]["status"],
+            "unavailable",
+        )
+        self.assertEqual(
+            result["raiktor_surrender_aggregate_session"]["failure"]["code"],
+            "aggregate_frame_unavailable",
+        )
         cached = driver.take_snapshot()["war_termination_terms"]
         self.assertEqual(len(cached), 1)
         self.assertEqual(cached[0]["queried_revision"], revision)
@@ -10302,6 +10314,85 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(unsupported["status"], "unsupported")
         self.assertNotIn(
             "claimant_character_id", unsupported["war_termination_terms"]
+        )
+
+    def test_raiktor_terms_query_publishes_session_bound_aggregate(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        terms = _available_raiktor_observed_terms()
+        war_id = int(terms["war_id"])
+        active_war = _war(war_id=war_id, targeted_title_ids=[1_800])
+        active_war["primary_opponent_character_id"] = 41_002
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-terms-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_175_816,
+                played_character={"character_id": 29_829, "alive": True},
+                active_wars=[active_war],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 12,
+                        "war_termination_terms": terms,
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        revision = int(driver.take_snapshot()["revision"])
+        result = GameplayBridgeService(driver).query_war_termination_terms(
+            war_id, expected_revision=revision
+        )
+
+        binding = result["raiktor_surrender_aggregate_session"]
+        self.assertEqual(binding["status"], "available")
+        self.assertEqual(binding["binding"]["process_id"], 4242)
+        self.assertEqual(
+            binding["binding"]["connection_generation"],
+            result["queried_connection_generation"],
+        )
+        aggregate = binding["aggregate"]
+        self.assertEqual(
+            aggregate["missing_domains"],
+            ["truce", "generic_war_bound_current"],
+        )
+        self.assertFalse(aggregate["readiness"]["action_terms_ready"])
+        self.assertFalse(
+            aggregate["readiness"]["automatic_surrender_ready"]
+        )
+        self.assertFalse(
+            any(
+                "surrender-war" in step
+                for step in driver.capabilities()["action_steps"]
+            )
+        )
+        cached = driver.take_snapshot()["war_termination_terms"]
+        self.assertEqual(len(cached), 1)
+        self.assertEqual(
+            cached[0]["raiktor_surrender_aggregate_session"], binding
         )
 
     def test_unsupported_claim_terms_keep_termination_commands_frozen(

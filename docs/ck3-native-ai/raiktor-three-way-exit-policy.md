@@ -254,3 +254,29 @@ observers remain blocked, so no surrender literal is advertised.
 This package adds no native reader, RVA/RTTI work, or mutation. The binding is
 not production-live until the same wrapper is published and verified on one
 real paused query lifecycle.
+
+## 2026-09-02 public query wiring
+
+[static-ready; read-only; no CK3 launch] The existing
+`ck3_query_war_termination_terms` driver/service/MCP path now publishes one
+additive `raiktor_surrender_aggregate_session` wrapper. The projection reuses
+the query receipt's snapshot/public/native revisions, connection generation,
+episode run, episode character and bridge PID. The same wrapper is retained in
+the exact-frame `war_termination_terms` snapshot cache; existing terms fields
+and the generic `claim_cb` response remain unchanged.
+
+For `raiktor_claim_cb`, the adapter can promote the already normalized public
+claims base plus live gold, prestige, prisoner-release and favor-hook rows into
+the frozen six-domain shape. It deliberately leaves truce unavailable because
+the public terms row does not carry the strict pointer-shape and evaluator
+double-read proof, even when `evaluated_days` is present. Generic war-bound is
+also unavailable until its strict same-frame payload reaches this query. A
+missing episode, process, receipt or aggregate field returns typed
+`status=unavailable`; it is never defaulted.
+
+Focused driver and MCP SDK tests prove the additive wrapper survives the real
+public return and cache paths. This is not production-live evidence:
+`action_terms_ready=false`, `automatic_surrender_ready=false`, and no surrender
+literal or mutation was added. The next live dependency is one paused Raiktor
+query that validates the wrapper's session binding, followed by the missing
+strict truce and generic war-bound public inputs.

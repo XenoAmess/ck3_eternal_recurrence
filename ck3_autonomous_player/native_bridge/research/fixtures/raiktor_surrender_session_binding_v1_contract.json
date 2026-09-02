@@ -31,10 +31,13 @@
     "pid_discovery": false,
     "missing_field_default": null,
     "cross_frame_binding_allowed": false,
+    "public_terms_query_wrapper": "raiktor_surrender_aggregate_session",
     "binding_is_live_evidence": false
   },
   "readiness": {
-    "stage": "static-ready-session-binding",
+    "stage": "static-ready-public-query-wiring",
+    "public_query_wiring": true,
+    "cached_snapshot_projection": true,
     "production_live": false,
     "truce_ready": false,
     "source_specific_war_bound_ready": false,

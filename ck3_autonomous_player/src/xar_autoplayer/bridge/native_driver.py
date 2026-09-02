@@ -329,6 +329,12 @@ from .war_contract import (
     war_termination_active_war_signature,
     war_termination_negative_query_signature,
 )
+from .raiktor_surrender_public_aggregate import (
+    project_raiktor_surrender_six_domain,
+)
+from .raiktor_surrender_session_binding_contract import (
+    bind_raiktor_surrender_aggregate_session,
+)
 
 
 PROTOCOL_VERSION = 1
@@ -2413,6 +2419,9 @@ class NativeHeadlessGameplayDriver:
                         "queried_native_revision": native_revision,
                         "episode_run_id": episode_run_id,
                         "queried_connection_generation": connection_generation,
+                        "raiktor_surrender_aggregate_session": copy.deepcopy(
+                            cached["raiktor_surrender_aggregate_session"]
+                        ),
                     }
                 )
             for war_id in stale_ids:
@@ -9770,19 +9779,34 @@ class NativeHeadlessGameplayDriver:
             "connection_generation": connection_generation,
             "episode_run_id": starting.get("episode_run_id"),
         }
+        query_receipt = {
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+            "queried_connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+        }
+        aggregate = project_raiktor_surrender_six_domain(starting, terms)
+        aggregate_session = bind_raiktor_surrender_aggregate_session(
+            starting,
+            query_receipt,
+            aggregate,
+        )
         with self._driver_state_lock:
             self._war_termination_terms[war_id] = {
                 "terms": copy.deepcopy(terms),
                 "query_sequence": query_sequence,
                 "cache_binding": cache_binding,
+                "raiktor_surrender_aggregate_session": copy.deepcopy(
+                    aggregate_session
+                ),
             }
         return {
             **result,
             "war_termination_terms": terms,
             "query_sequence": query_sequence,
-            "queried_snapshot_id": starting.get("snapshot_id"),
-            "queried_revision": starting.get("revision"),
-            "queried_native_revision": starting.get("native_revision"),
+            **query_receipt,
+            "raiktor_surrender_aggregate_session": aggregate_session,
         }
 
     def _execute_war_termination_exit_terms_query(

@@ -16,6 +16,9 @@ from xar_autoplayer.bridge.war_contract import (
     parse_query_war_termination_terms_step,
     query_war_termination_terms_step,
 )
+from xar_autoplayer.bridge.raiktor_surrender_public_aggregate import (
+    project_raiktor_surrender_six_domain,
+)
 
 
 WAR_ID = 16_777_290
@@ -332,6 +335,67 @@ def _available_raiktor_observed_terms() -> dict[str, object]:
 
 
 class WarTerminationTermsContractTests(unittest.TestCase):
+    def test_public_raiktor_terms_project_four_domains_without_overclaim(
+        self,
+    ) -> None:
+        terms = normalize_war_termination_terms(
+            _available_raiktor_observed_terms(), expected_war_id=WAR_ID
+        )
+        snapshot = {
+            "snapshot_id": "native:91",
+            "revision": 91,
+            "native_revision": 7,
+            "date_raw": 53_175_816,
+            "paused": True,
+            "episode_character_id": 29_829,
+            "played_character": {"character_id": 29_829, "alive": True},
+            "active_wars": [
+                {
+                    "war_id": WAR_ID,
+                    "player_side": "attacker",
+                    "player_is_primary_war_leader": True,
+                    "primary_opponent_character_id": 41_002,
+                }
+            ],
+        }
+
+        aggregate = project_raiktor_surrender_six_domain(snapshot, terms)
+
+        self.assertIsInstance(aggregate, dict)
+        assert isinstance(aggregate, dict)
+        self.assertEqual(aggregate["status"], "incomplete")
+        self.assertEqual(
+            aggregate["missing_domains"],
+            ["truce", "generic_war_bound_current"],
+        )
+        self.assertTrue(aggregate["readiness"]["gold_ready"])
+        self.assertTrue(aggregate["readiness"]["prestige_ready"])
+        self.assertTrue(aggregate["readiness"]["prisoner_release_ready"])
+        self.assertTrue(aggregate["readiness"]["favor_hook_ready"])
+        self.assertFalse(aggregate["readiness"]["truce_ready"])
+        self.assertFalse(aggregate["readiness"]["action_terms_ready"])
+        self.assertFalse(
+            aggregate["readiness"]["automatic_surrender_ready"]
+        )
+
+    def test_public_raiktor_projection_does_not_invent_missing_owner(self) -> None:
+        terms = normalize_war_termination_terms(
+            _available_raiktor_observed_terms(), expected_war_id=WAR_ID
+        )
+        snapshot = {
+            "revision": 91,
+            "native_revision": 7,
+            "date_raw": 53_175_816,
+            "paused": True,
+            "episode_character_id": None,
+            "played_character": {"character_id": 29_829, "alive": True},
+            "active_wars": [],
+        }
+
+        self.assertIsNone(
+            project_raiktor_surrender_six_domain(snapshot, terms)
+        )
+
     def test_capability_and_literal_are_versioned_and_canonical(self) -> None:
         self.assertEqual(
             QUERY_WAR_TERMINATION_TERMS_CAPABILITY,

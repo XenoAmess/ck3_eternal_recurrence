@@ -11278,6 +11278,62 @@ class GameplayBridgeTests(unittest.TestCase):
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
+    async def test_mcp_terms_query_preserves_session_binding_wrapper(
+        self,
+    ) -> None:
+        from mcp import Client
+        from xar_autoplayer.bridge.mcp_server import create_server
+
+        wrapper = {
+            "schema_version": 1,
+            "backend_id": (
+                "ck3-1.19.0.6-raiktor-six-domain-session-binding-v1"
+            ),
+            "status": "unavailable",
+            "failure": {
+                "code": "aggregate_frame_unavailable",
+                "fields": ["aggregate.frame"],
+            },
+            "binding": None,
+            "aggregate": None,
+            "observed_binding": {},
+            "readiness": {
+                "snapshot_binding_ready": False,
+                "query_receipt_binding_ready": False,
+                "same_frame_revision_ready": False,
+                "episode_owner_ready": False,
+                "process_binding_ready": False,
+                "aggregate_session_binding_ready": False,
+            },
+        }
+        driver = CallbackGameplayDriver(
+            backend_id="native-fixture",
+            snapshot=lambda: _snapshot(4),
+            execute=lambda step, revision: {
+                "step": step,
+                "expected_revision": revision,
+                "query_sequence": 10,
+                "war_termination_terms": _termination_terms(),
+                "raiktor_surrender_aggregate_session": wrapper,
+            },
+            action_steps=("query-war-termination-terms-v1-88",),
+        )
+        server = create_server(driver)
+
+        async with Client(server) as client:
+            terms = await client.call_tool(
+                "ck3_query_war_termination_terms",
+                {"war_id": 88, "expected_revision": 4},
+            )
+
+        self.assertFalse(terms.is_error)
+        self.assertEqual(
+            terms.structured_content[
+                "raiktor_surrender_aggregate_session"
+            ],
+            wrapper,
+        )
+
     async def test_mcp_settle_one_life_returns_final_score(self) -> None:
         from mcp import Client
         from xar_autoplayer.bridge.mcp_server import create_server
