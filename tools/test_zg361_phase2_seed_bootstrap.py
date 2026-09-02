@@ -112,6 +112,63 @@ def paused_snapshot_payload() -> dict[str, object]:
     }
 
 
+def provider_probes_payload() -> dict[str, object]:
+    selectors = {
+        "schema_version": 1,
+        "b2_pip_owner_character_id": 32904,
+        "incident_owner_character_id": 32904,
+        "workforce_owner_character_id": 32904,
+        "ai_owned_case_owner_character_id": 32904,
+        "ai_owned_case_subject_character_id": 29037,
+    }
+    readiness = {
+        "b2_pip_ready": True,
+        "incident_profiles_ready": True,
+        "incident_mixed_na_positive": True,
+        "workforce_collective_ready": True,
+        "ai_owned_case_ready": True,
+    }
+    available = {"status": "available", "readiness": {"ready": True}}
+    return {
+        "schema_version": 1,
+        "result": "captured",
+        "mcp_only": True,
+        "snapshot": {
+            "revision": 82,
+            "date_raw": 53147016,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 29037, "alive": True},
+        },
+        "selectors": selectors,
+        "responses": {
+            "b2_pip": {"response": copy.deepcopy(available)},
+            "incident_x": {
+                "response": {
+                    **copy.deepcopy(available),
+                    "terminal": {"kind": "na"},
+                }
+            },
+            "incident_y": {
+                "response": {
+                    **copy.deepcopy(available),
+                    "terminal": {"kind": "incident"},
+                }
+            },
+            "incident_z": {
+                "response": {
+                    **copy.deepcopy(available),
+                    "terminal": {"kind": "incident"},
+                }
+            },
+            "workforce_collective": {"response": copy.deepcopy(available)},
+            "ai_owned_case": {"response": copy.deepcopy(available)},
+        },
+        "readiness": readiness,
+        "all_product_providers_ready": True,
+    }
+
+
 def main() -> int:
     capture = bootstrap.extract_event_capture(event_payload())
     assert capture["played_character_id"] == 29037
@@ -302,11 +359,15 @@ def main() -> int:
             fixture_tree_sha256="c" * 64,
         )
         assert result["result"] == "GREEN"
-        assert result["status"] == bootstrap.BLOCKED_STATUS
-        assert result["ready"] is False
+        assert result["status"] == bootstrap.READY_STATUS
+        assert result["ready"] is True
+        assert result["blocker"] == ""
+        assert result["provider_baseline_ready"] is False
         contract_path = Path(result["contract_path"])
         contract = bootstrap.read_json(contract_path)
-        assert contract["ready"] is False
+        assert contract["ready"] is True
+        assert contract["status"] == "ready"
+        assert contract["blocker"] == ""
         assert contract["saved_state"]["played_character_id"] == 29037
         assert contract["saved_state"]["player_history_id"] == "han_6875"
         assert contract["domain_query_matrix"] == capture[
@@ -329,6 +390,53 @@ def main() -> int:
             "evidence-index.json",
         ):
             assert (output_dir / preserved).is_file()
+
+        provider_path = root / "provider-probes.json"
+        write_json(provider_path, provider_probes_payload())
+        ready_output = root / "materialized-ready"
+        ready_result = bootstrap.materialize_candidate(
+            event_context_path=Path(captured["event_context_path"]),
+            paused_snapshot_path=Path(captured["paused_snapshot_path"]),
+            event_close_path=Path(captured["event_close_path"]),
+            checkpoint_response_path=Path(captured["checkpoint_response_path"]),
+            provider_probes_path=provider_path,
+            profile=profile,
+            output_dir=ready_output,
+            base_contract_path=bootstrap.DEFAULT_BASE_CONTRACT,
+            source_git_commit="a" * 40,
+            product_tree_sha256="b" * 64,
+            fixture_tree_sha256="c" * 64,
+        )
+        assert ready_result["status"] == bootstrap.READY_STATUS
+        assert ready_result["ready"] is True
+        assert ready_result["blocker"] == ""
+        assert ready_result["provider_baseline_ready"] is True
+        ready_contract = bootstrap.read_json(Path(ready_result["contract_path"]))
+        assert ready_contract["status"] == "ready"
+        assert ready_contract["ready"] is True
+        assert ready_contract["blocker"] == ""
+        assert (ready_output / "provider-probes.json").is_file()
+        ready_report = bootstrap.read_json(Path(ready_result["report_path"]))
+        provider_attestation = ready_report["cell"]["scenario_evidence"][
+            "phase2_product_provider_attestation"
+        ]
+        assert provider_attestation["all_product_providers_ready"] is True
+        assert all(provider_attestation["readiness"].values())
+
+        contradictory_providers = provider_probes_payload()
+        contradictory_providers["readiness"]["workforce_collective_ready"] = False
+        write_json(provider_path, contradictory_providers)
+        try:
+            bootstrap.validate_provider_probes(
+                bootstrap.read_json(provider_path),
+                expected_selectors=capture["domain_query_matrix"],
+                expected_date_raw=53147016,
+                expected_character_id=29037,
+            )
+        except bootstrap.SeedBootstrapError as error:
+            assert "declared readiness differs" in str(error)
+        else:
+            raise AssertionError("contradictory provider readiness was accepted")
 
         contradictory_checkpoint = bootstrap.read_json(checkpoint_path)
         contradictory_checkpoint["checkpoint"]["date_raw"] += 1

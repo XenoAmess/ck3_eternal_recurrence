@@ -328,7 +328,11 @@ class FakeSeed:
         output = Path(kwargs["output_dir"])
         output.mkdir(parents=True)
         capture.write_json(output / "seed-contract.json", {"ready": True})
-        return {"result": "GREEN", "ready": True}
+        return {
+            "result": "GREEN",
+            "ready": True,
+            "provider_baseline_ready": True,
+        }
 
 
 class FakeBridgeUnavailableError(RuntimeError):
@@ -641,8 +645,17 @@ def test_green_capture() -> None:
             and seed.materialize_kwargs["product_tree_sha256"]
             == report["bootstrap"]["tree_sha256"]["product"]
             and seed.materialize_kwargs["fixture_tree_sha256"]
-            == report["bootstrap"]["tree_sha256"]["fixture"],
+            == report["bootstrap"]["tree_sha256"]["fixture"]
+            and seed.materialize_kwargs["provider_probes_path"]
+            == fixture.artifacts / "provider-probes.json",
             "candidate provenance did not use independently observed runtime hashes",
+        )
+        require(
+            report["live_verdict"] == "paused_seed_ready"
+            and report["provider_baseline_verdict"]
+            == "ready_provider_matrix_captured"
+            and report["candidate"]["ready"] is True,
+            "provider-GREEN capture did not produce a ready candidate",
         )
         require(
             report["keyboard_watchdog"]["green_attestation_count"] >= 1,

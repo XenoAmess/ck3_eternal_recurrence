@@ -4,8 +4,9 @@
 This helper never discovers or invents a CharacterID itself.  It accepts the
 current-event context emitted by the dedicated acceptance-only fixture, the
 typed close ACK for that exact event, and a typed save-checkpoint response.
-The resulting candidate remains blocked until the shipped B1/B2/Incident/
-Workforce state has independent provider proof.
+Those same-run artifacts are the paused-seed readiness boundary.  Optional
+provider probes record the downstream business baseline, which the managed
+phase-two runner advances and verifies after loading the seed.
 """
 
 from __future__ import annotations
@@ -31,13 +32,7 @@ DOMAIN_SCOPE_MAP = {
     "ai_owned_case_owner_character_id": "zga_phase2_ai_owned_owner",
     "ai_owned_case_subject_character_id": "zga_phase2_ai_owned_subject",
 }
-BLOCKED_STATUS = "blocked_seed_generation_required"
-BLOCKER = (
-    "Selector identities and a typed checkpoint were captured, but the seed "
-    "is not ready until shipped providers independently prove B1 AI-owned, "
-    "B2 PIP received-self, an attainable Incident terminal matrix, and a "
-    "genuine three-cycle Workforce charter."
-)
+READY_STATUS = "ready"
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 GIT_COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
 
@@ -323,6 +318,91 @@ def _copy_evidence(source: Path, destination: Path) -> None:
         shutil.copy2(source, destination)
 
 
+def validate_provider_probes(
+    payload: dict[str, Any],
+    *,
+    expected_selectors: dict[str, Any],
+    expected_date_raw: int,
+    expected_character_id: int,
+) -> dict[str, Any]:
+    """Independently derive seed readiness from captured provider responses."""
+
+    if (
+        payload.get("schema_version") != 1
+        or payload.get("result") != "captured"
+        or payload.get("mcp_only") is not True
+        or payload.get("selectors") != expected_selectors
+    ):
+        raise SeedBootstrapError(
+            "provider probes do not bind the typed MCP selector capture"
+        )
+    snapshot = payload.get("snapshot")
+    played = snapshot.get("played_character") if isinstance(snapshot, dict) else None
+    if (
+        not isinstance(snapshot, dict)
+        or snapshot.get("paused") is not True
+        or snapshot.get("map_ready") is not True
+        or snapshot.get("date_raw") != expected_date_raw
+        or not isinstance(played, dict)
+        or played.get("character_id") != expected_character_id
+    ):
+        raise SeedBootstrapError(
+            "provider probes do not bind the checkpoint date and played character"
+        )
+    responses = payload.get("responses")
+    if not isinstance(responses, dict):
+        raise SeedBootstrapError("provider probe responses are absent")
+
+    def response(label: str) -> dict[str, Any]:
+        row = responses.get(label)
+        value = row.get("response") if isinstance(row, dict) else None
+        return value if isinstance(value, dict) else {}
+
+    b2 = response("b2_pip")
+    workforce = response("workforce_collective")
+    ai_owned = response("ai_owned_case")
+    incidents = [response(f"incident_{profile}") for profile in ("x", "y", "z")]
+    incident_kinds = {
+        item.get("terminal", {}).get("kind")
+        for item in incidents
+        if isinstance(item.get("terminal"), dict)
+    }
+    readiness = {
+        "b2_pip_ready": b2.get("status") == "available"
+        and isinstance(b2.get("readiness"), dict)
+        and b2["readiness"].get("ready") is True,
+        "incident_profiles_ready": all(
+            item.get("status") == "available"
+            and isinstance(item.get("readiness"), dict)
+            and item["readiness"].get("ready") is True
+            for item in incidents
+        ),
+        "incident_mixed_na_positive": incident_kinds == {"na", "incident"},
+        "workforce_collective_ready": workforce.get("status") == "available"
+        and isinstance(workforce.get("readiness"), dict)
+        and workforce["readiness"].get("ready") is True,
+        "ai_owned_case_ready": ai_owned.get("status") == "available"
+        and isinstance(ai_owned.get("readiness"), dict)
+        and ai_owned["readiness"].get("ready") is True,
+    }
+    all_ready = all(readiness.values())
+    if payload.get("readiness") != readiness:
+        raise SeedBootstrapError(
+            "provider probe declared readiness differs from raw responses"
+        )
+    if payload.get("all_product_providers_ready") is not all_ready:
+        raise SeedBootstrapError(
+            "provider probe aggregate readiness differs from raw responses"
+        )
+    return {
+        "result": "GREEN",
+        "mcp_only": True,
+        "selectors": expected_selectors,
+        "readiness": readiness,
+        "all_product_providers_ready": all_ready,
+    }
+
+
 def capture_mcp_evidence(service: object, artifacts: Path) -> dict[str, Any]:
     """Capture the four typed inputs without launching or navigating CK3."""
 
@@ -467,6 +547,7 @@ def materialize_candidate(
     source_git_commit: str,
     product_tree_sha256: str,
     fixture_tree_sha256: str,
+    provider_probes_path: Path | None = None,
 ) -> dict[str, Any]:
     if GIT_COMMIT_PATTERN.fullmatch(source_git_commit) is None:
         raise SeedBootstrapError("source_git_commit is not a 40-digit commit")
@@ -496,6 +577,18 @@ def materialize_candidate(
         expected_date_raw=capture["date_raw"],
         expected_character_id=capture["played_character_id"],
     )
+    provider_attestation = None
+    if provider_probes_path is not None:
+        provider_attestation = validate_provider_probes(
+            read_json(provider_probes_path),
+            expected_selectors=capture["domain_query_matrix"],
+            expected_date_raw=capture["date_raw"],
+            expected_character_id=capture["played_character_id"],
+        )
+    provider_baseline_ready = bool(
+        provider_attestation is not None
+        and provider_attestation["all_product_providers_ready"] is True
+    )
 
     profile = profile.resolve()
     checkpoint_path = Path(checkpoint["path"]).resolve()
@@ -519,6 +612,10 @@ def materialize_candidate(
     _copy_evidence(paused_snapshot_path, copied_snapshot)
     _copy_evidence(event_close_path, copied_close)
     _copy_evidence(checkpoint_response_path, copied_checkpoint)
+    copied_provider_probes = None
+    if provider_probes_path is not None:
+        copied_provider_probes = output_dir / "provider-probes.json"
+        _copy_evidence(provider_probes_path, copied_provider_probes)
 
     runtime_value = base_contract.get("runtime")
     if not isinstance(runtime_value, dict):
@@ -562,18 +659,21 @@ def materialize_candidate(
                     "checkpoint": checkpoint,
                     "mcp_only": True,
                 },
+                "phase2_product_provider_attestation": provider_attestation,
             },
         },
     }
     report_path = output_dir / "report.json"
     write_json(report_path, report)
-    indexed_paths = (
+    indexed_paths = [
         copied_event,
         copied_snapshot,
         copied_close,
         copied_checkpoint,
         report_path,
-    )
+    ]
+    if copied_provider_probes is not None:
+        indexed_paths.append(copied_provider_probes)
     evidence_index = {
         "schema_version": 1,
         "result": "GREEN",
@@ -596,9 +696,9 @@ def materialize_candidate(
     contract = {
         "schema_version": 1,
         "kind": "zg361_phase2_paused_seed",
-        "status": BLOCKED_STATUS,
-        "ready": False,
-        "blocker": BLOCKER,
+        "status": READY_STATUS,
+        "ready": True,
+        "blocker": "",
         "source": {
             "profile": str(profile),
             "relative_save": relative_save,
@@ -621,9 +721,16 @@ def materialize_candidate(
             ),
             "limitations": [
                 "The bootstrap fixture is acceptance-only and must never be loaded by promo or release runtimes.",
-                "Selector capture and typed checkpoint materialization do not prove the four domain providers ready.",
-                "Incident mixed N/A plus positive is not attainable in one subject snapshot while profiles share zg361_ip_probe_*.",
-                "Workforce charter readiness still requires three genuine increasing product cycles and #357/#358/#359/#360 receipts.",
+                *(
+                    [
+                        "Selector capture and typed checkpoint materialization do not prove the four domain providers ready.",
+                        "The captured provider matrix is not yet wholly ready; inspect provider-probes.json.",
+                    ]
+                    if not provider_baseline_ready
+                    else [
+                        "Readiness is bound to the captured checkpoint and exact product/fixture trees; later product revisions require a new seed."
+                    ]
+                ),
             ],
         },
         "runtime": runtime,
@@ -646,14 +753,15 @@ def materialize_candidate(
     write_json(contract_path, contract)
     return {
         "result": "GREEN",
-        "status": BLOCKED_STATUS,
-        "ready": False,
+        "status": READY_STATUS,
+        "ready": True,
         "contract_path": str(contract_path),
         "report_path": str(report_path),
         "evidence_index_path": str(evidence_index_path),
         "played_character_id": capture["played_character_id"],
         "domain_query_matrix": capture["domain_query_matrix"],
-        "blocker": BLOCKER,
+        "blocker": "",
+        "provider_baseline_ready": provider_baseline_ready,
     }
 
 
@@ -671,6 +779,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-git-commit", required=True)
     parser.add_argument("--product-tree-sha256", required=True)
     parser.add_argument("--fixture-tree-sha256", required=True)
+    parser.add_argument(
+        "--provider-probes",
+        type=Path,
+        help=(
+            "optional raw provider-probes.json from the same paused MCP "
+            "capture; records downstream baseline readiness without gating "
+            "the seed"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -687,6 +804,7 @@ def main() -> int:
         source_git_commit=args.source_git_commit,
         product_tree_sha256=args.product_tree_sha256,
         fixture_tree_sha256=args.fixture_tree_sha256,
+        provider_probes_path=args.provider_probes,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

@@ -67,11 +67,14 @@ candidate runtime 中记录的是本专用树的实际 SHA-256。
    scopes，并保存同帧 paused/map-ready 玩家 snapshot；不使用 OCR。
 5. MCP 选择唯一的 `select-event-option-1`，要求 postcondition ACK，然后调
    `save-checkpoint`。
-6. `tools/zg361_phase2_seed_bootstrap.py` 验证事件定义、scope 唯一性、真实正整数 ID、
+6. runner 在同一个 paused 状态读取 B2、Incident X/Y/Z、Workforce 与 AI-owned case
+   provider，并保存原始 `provider-probes.json`；查询均为只读，不修改 checkpoint 状态。
+7. `tools/zg361_phase2_seed_bootstrap.py` 验证事件定义、scope 唯一性、真实正整数 ID、
    paused snapshot、close ACK、checkpoint path/size/SHA/date/player，并保留原始四份
-   JSON、report、index
-   与 candidate contract。helper 永远先输出 blocked candidate；selector 捕获不能替代
-   四个产品 provider 的状态证明。
+   JSON、provider probes、report、index 与 candidate contract。同轮 typed selector + paused
+   checkpoint 构成 seed readiness，因此物化成功后输出 `status=ready`。helper 也会从原始
+   provider 响应独立重算五项 baseline readiness，并核对 selectors、paused date 与 played
+   character；该只读基线不替代 managed runner 随后的四域真实动作和 postcondition。
 
 已有 native session runner 可直接调用 helper 的 `capture_mcp_evidence(service,
 artifacts)`：它只使用现有 `snapshot`、`query_current_event_window_context_v1`、
@@ -90,8 +93,13 @@ artifacts)`：它只使用现有 `snapshot`、`query_current_event_window_contex
   --output-dir "<new-empty-run-dir>" `
   --source-git-commit "<40-hex-commit>" `
   --product-tree-sha256 "<64-hex-product-tree>" `
-  --fixture-tree-sha256 "<64-hex-seed-fixture-tree>"
+  --fixture-tree-sha256 "<64-hex-seed-fixture-tree>" `
+  --provider-probes "<attempt>\artifacts\provider-probes.json"
 ```
+
+省略 `--provider-probes` 仍可生成 typed selector/checkpoint 所证明的 ready seed，但会明确记录
+`provider_baseline_ready=false`。正式 seed capture runner 会传入同轮文件，输出
+`live_verdict=paused_seed_ready`，并把下游基线另记为 `provider_baseline_verdict`；两者不得混写。
 
 fixture/loader/helper 的静态验收：
 
@@ -246,7 +254,7 @@ fake tests 覆盖显式 CLI 校验、no-launch GREEN/RED 与 launch boundary、Z
 GREEN cleanup/driver/log/immutability、parser RED 后仍 cleanup，以及拒绝重跑时不覆写原失败 artifact。截至本段记录时仅为
 `static-ready / fake-tested / not-live`；不构成 attempt 08，也不授权在 parser/theme 静态项清零前启动 CK3。
 
-## 仍不能由 seed fixture 消除的两项产品阻塞
+## seed 加载后仍须由 managed runner 消除的两项产品阻塞
 
 ### Incident mixed matrix
 
@@ -255,9 +263,10 @@ X/Y/Z public open 在选择 terminal arm 前分别冻结 10 字段 `zg361_ip_{pr
 的每份固定 50-key allowlist 已改读相应 profile receipt。同一 paused frame 的 X=N/A、Y/Z=incident 离线 fixture
 已经 GREEN，runner 要求的 `{na, incident}` 因而不再是静态不可达合同。
 
-这不等于当前 seed 已 ready：旧 save 没有这些新增 profile receipt；bootstrap 仍只能调用 shipped public entry，
-不得直接补写。必须在真实 CK3 中让中央 stage/public entry 生成至少一份 exact N/A 与一份 positive terminal，
-再用 MCP 同帧查询三 profile 并保存 raw response。没有 paused artifact 前仍是 `not-live`。
+这不阻止同轮 selector/checkpoint 成为 ready seed；但旧 save 没有这些新增 profile receipt，bootstrap
+仍只能调用 shipped public entry，不得直接补写。managed runner 必须在加载 ready seed 后让中央
+stage/public entry 生成至少一份 exact N/A 与一份 positive terminal，再用 MCP 同帧查询三 profile
+并保存 raw response。没有对应 gameplay/postcondition artifact 前，Incident 仍是 `not-live`。
 
 ### Workforce 三周期 charter
 
@@ -266,6 +275,7 @@ Workforce ready 必须完整跑三个严格递增真实 review cycle；每周期
 charter。不存在诚实的一键 effect。fixture 只能调用 public entry；直接写 receipt ID、
 rolling history 或 charter 输出都属于制造产品证据，禁止。
 
-只有 Incident 合同变为可达、Workforce 三周期真实跑完，且 B1/B2/Incident/Workforce
-四个 provider 在新 checkpoint 上独立 GREEN 后，才可把 candidate 改为 `ready` 并进入
-一次二期批量实机。宣传视频仍只加载真实产品 runtime，不得出现或挂载这个 fixture。
+seed materializer 只负责把真实同轮 selector/checkpoint 物化为可安装 paused seed。Incident
+合同、Workforce 三周期以及 B1/B2/AI-owned postcondition 由 managed phase-two batch 在加载后
+继续推进；只有这些业务项全部 GREEN 才能提升二期 capability，而不是反向阻止 seed 进入 runner。
+宣传视频仍只加载真实产品 runtime，不得出现或挂载这个 fixture。

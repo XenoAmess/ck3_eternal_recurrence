@@ -2062,12 +2062,14 @@ def run_capture(
             source_git_commit=config.frozen_git_sha,
             product_tree_sha256=initial_runtime_tree_sha256["product"],
             fixture_tree_sha256=initial_runtime_tree_sha256["fixture"],
+            provider_probes_path=artifacts / "provider-probes.json",
         )
         report["candidate"] = candidate
         report["result"] = "GREEN"
-        report["live_verdict"] = (
+        report["live_verdict"] = "paused_seed_ready"
+        report["provider_baseline_verdict"] = (
             "ready_provider_matrix_captured"
-            if probes.get("all_product_providers_ready") is True
+            if candidate.get("provider_baseline_ready") is True
             else "blocked_provider_matrix_captured"
         )
     except BaseException as error:
