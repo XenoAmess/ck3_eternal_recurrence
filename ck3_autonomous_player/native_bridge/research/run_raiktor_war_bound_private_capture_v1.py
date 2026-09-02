@@ -23,7 +23,7 @@ import time
 
 
 EXPECTED_MANIFEST_SHA256 = (
-    "6D1AEB1728AA3DB173A3222FADC4E2582046E49C804B91D664B51CA0D50D054F"
+    "D60C1ECF8E5F7D10A3809557D09662A3D8B714907533BD6BAFBCCFA6307EE426"
 )
 EXPECTED_CAPTURE_EXE_SHA256 = (
     "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72"
@@ -45,6 +45,34 @@ EXPECTED_ARM_BYTES = (
     b"event_definition_key=bookmark.1071\n"
     b"option_key=bookmark.1071.a\n"
     b"option_index=0\n"
+)
+LEGAL_CONSENT_PROFILE_SUFFIX = Path("account/PDX/SDK/ck3/account.json")
+LEGAL_MODAL_HEADER_REGION = (0.10, 0.02, 0.90, 0.32)
+LEGAL_ALLOWED_TERMS = (
+    "user agreement",
+    "end user license agreement",
+    "eula",
+    "terms of use",
+    "用户协议",
+    "最终用户许可协议",
+    "用户许可协议",
+    "使用条款",
+    "使用条件",
+)
+LEGAL_DENIED_TERMS = (
+    "privacy",
+    "telemetry",
+    "advertising",
+    "advertisement",
+    "marketing",
+    "personalized",
+    "data sharing",
+    "隐私",
+    "遥测",
+    "广告",
+    "营销",
+    "个性化",
+    "数据共享",
 )
 TARGET_TITLE = "觊觎大位的修士"
 TARGET_OPTION = "我会将他扶上君士坦丁堡的皇位！"
@@ -154,6 +182,335 @@ def require_fresh_userdir(path: Path) -> None:
                 "preflight",
                 f"isolated userdir contains prior {relative} files: {candidate}",
             )
+
+
+def _legal_document_markers(payload: dict[str, object]) -> list[str]:
+    viewed = payload.get("viewedLegalDocuments")
+    if not isinstance(viewed, dict):
+        return []
+    markers: list[str] = []
+    for bucket in ("online", "localOnly"):
+        values = viewed.get(bucket, [])
+        if isinstance(values, list):
+            markers.extend(value for value in values if isinstance(value, str))
+    return markers
+
+
+def classify_authorized_legal_modal(rows: list[str]) -> dict[str, object] | None:
+    cleaned = [" ".join(row.split()) for row in rows if row.strip()]
+    joined = " ".join(cleaned).casefold()
+    if "paradox" not in joined:
+        return None
+    denied = [term for term in LEGAL_DENIED_TERMS if term in joined]
+    if denied:
+        raise TypedTerminalError(
+            "LegalConsentNotAuthorized",
+            "legal_consent",
+            f"legal modal header contains non-authorized category tokens: {denied}",
+        )
+    allowed = [term for term in LEGAL_ALLOWED_TERMS if term in joined]
+    if not allowed:
+        return None
+    title = next(
+        (row for row in cleaned if any(term in row.casefold() for term in allowed)),
+        cleaned[0] if cleaned else "",
+    )
+    version = next(
+        (
+            row for row in cleaned
+            if any(token in row.casefold() for token in (
+                "last update", "last updated", "effective", "version",
+                "更新", "生效", "版本",
+            ))
+        ),
+        None,
+    )
+    return {
+        "title": title,
+        "version": version,
+        "allowed_terms": allowed,
+        "denied_terms": denied,
+    }
+
+
+def validate_legal_consent_source(
+    source: Path, contract: dict[str, object]
+) -> dict[str, object]:
+    expected = {
+        "source_profile_relative_path": LEGAL_CONSENT_PROFILE_SUFFIX.as_posix(),
+        "source_sha256": "8933437F2000BB639D588A541B798F97C6D87BA7D891613FAC23D1812AB9EB28",
+        "authorized_document_kinds": [
+            "User Agreement", "EULA", "Terms of Use", "semantic equivalents"
+        ],
+        "explicitly_not_authorized": [
+            "privacy", "telemetry", "advertising", "marketing",
+            "personalized content", "data sharing",
+        ],
+        "accepted_marker_present": False,
+        "allow_exact_semantic_modal_acceptance": True,
+        "real_profile_read_only": True,
+    }
+    for key, value in expected.items():
+        if contract.get(key) != value:
+            raise RuntimeError(f"manifest legal-consent contract mismatch for {key}")
+    if not source.is_file():
+        raise TypedTerminalError(
+            "LegalConsentRequired",
+            "preflight_legal_consent",
+            "real-profile legal-consent source is absent",
+        )
+    source_parts = tuple(part.casefold() for part in source.resolve().parts)
+    suffix_parts = tuple(part.casefold() for part in LEGAL_CONSENT_PROFILE_SUFFIX.parts)
+    if source_parts[-len(suffix_parts):] != suffix_parts:
+        raise RuntimeError("legal-consent source path is not the frozen CK3 account file")
+    observed_hash = sha256(source)
+    if observed_hash != contract["source_sha256"]:
+        raise RuntimeError(
+            f"legal-consent source hash mismatch: {observed_hash}"
+        )
+    try:
+        payload = json.loads(source.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"legal-consent source is invalid JSON: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise RuntimeError("legal-consent source root is not an object")
+    markers = _legal_document_markers(payload)
+    return {
+        "source_path": str(source.resolve()),
+        "source_sha256": observed_hash,
+        "accepted_marker_present": False,
+        "observed_legal_marker_count": len(markers),
+        "real_profile_read_only": True,
+    }
+
+
+def account_legal_state(userdir: Path) -> dict[str, object]:
+    path = userdir / LEGAL_CONSENT_PROFILE_SUFFIX
+    if not path.is_file():
+        return {"path": str(path.resolve()), "exists": False, "sha256": None,
+                "markers": []}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise RuntimeError("isolated userdir account.json root is not an object")
+    return {
+        "path": str(path.resolve()),
+        "exists": True,
+        "sha256": sha256(path),
+        "markers": sorted(_legal_document_markers(payload)),
+    }
+
+
+def newly_persisted_legal_markers(
+    before: dict[str, object], after: dict[str, object]
+) -> list[str]:
+    before_markers = set(str(value) for value in before.get("markers", []))
+    return sorted(
+        str(value) for value in after.get("markers", [])
+        if str(value) not in before_markers
+    )
+
+
+def _authorized_legal_marker(marker: str) -> bool:
+    normalized = marker.casefold().replace("_", "-").replace(".", "-")
+    if any(term.replace(" ", "-") in normalized for term in LEGAL_DENIED_TERMS):
+        return False
+    return any(token in normalized for token in (
+        "user-agreement", "end-user-license-agreement", "eula", "terms-of-use"
+    ))
+
+
+def accept_authorized_legal_modal(
+    acceptance: object,
+    image_grab: object,
+    userdir: Path,
+    ui_dir: Path,
+    image: object,
+    rows: list[str],
+    index: int,
+    stage_artifacts: list[dict[str, object]],
+) -> dict[str, object]:
+    classification = classify_authorized_legal_modal(rows)
+    if classification is None:
+        raise TypedTerminalError(
+            "LegalConsentNotAuthorized",
+            "legal_consent",
+            "visible modal is not an allowlisted Paradox legal agreement",
+        )
+    before_path = ui_dir / f"legal_consent_{index:02d}_before.png"
+    image.save(before_path)
+    stage_artifacts.append({
+        "stage": "legal_consent_before",
+        "path": before_path.name,
+    })
+    before_state = account_legal_state(userdir)
+    accept_point = None
+    for label in ("好的", "我同意", "接受", "I Agree", "Accept", "OK"):
+        accept_point = acceptance.find_ocr_text(
+            image, label, acceptance.FULL_SCREEN_REGION, contains=True
+        )
+        if accept_point is not None:
+            break
+    if accept_point is None:
+        raise TypedTerminalError(
+            "LegalConsentControlNotFound",
+            "legal_consent",
+            "allowlisted legal agreement is visible but its accept control was not found",
+        )
+    acceptance.deliberate_click(
+        accept_point,
+        f"authorized Paradox legal agreement #{index}: {classification['title']}",
+    )
+    deadline = time.monotonic() + 20
+    after_image = None
+    while time.monotonic() < deadline:
+        acceptance.focus_ck3()
+        after_image = image_grab.grab()
+        after_rows = [
+            str(row[0]) for row in acceptance.ocr_results(
+                after_image, LEGAL_MODAL_HEADER_REGION
+            )
+        ]
+        try:
+            remaining = classify_authorized_legal_modal(after_rows)
+        except TypedTerminalError as next_modal:
+            if next_modal.terminal == "LegalConsentNotAuthorized":
+                break
+            raise
+        if (
+            remaining is None
+            or remaining.get("title") != classification.get("title")
+            or remaining.get("version") != classification.get("version")
+        ):
+            break
+        time.sleep(0.25)
+    else:
+        raise TypedTerminalError(
+            "LegalConsentAcceptanceTimeout",
+            "legal_consent",
+            "allowlisted legal agreement did not close after the authorized click",
+        )
+    assert after_image is not None
+    after_path = ui_dir / f"legal_consent_{index:02d}_after.png"
+    after_image.save(after_path)
+    stage_artifacts.append({
+        "stage": "legal_consent_after",
+        "path": after_path.name,
+    })
+    marker_deadline = time.monotonic() + 15
+    after_state = account_legal_state(userdir)
+    new_markers = newly_persisted_legal_markers(before_state, after_state)
+    while not new_markers and time.monotonic() < marker_deadline:
+        time.sleep(0.25)
+        after_state = account_legal_state(userdir)
+        new_markers = newly_persisted_legal_markers(before_state, after_state)
+    allowed_new_markers = [
+        marker for marker in new_markers if _authorized_legal_marker(marker)
+    ]
+    if not allowed_new_markers:
+        raise TypedTerminalError(
+            "LegalConsentMarkerNotPersisted",
+            "legal_consent",
+            "authorized agreement closed but no new allowlisted accepted marker was persisted in the isolated userdir",
+        )
+    return {
+        **classification,
+        "authorized_click": True,
+        "button_label": label,
+        "before_screenshot": before_path.name,
+        "after_screenshot": after_path.name,
+        "marker_path": after_state["path"],
+        "marker_sha256_before": before_state["sha256"],
+        "marker_sha256_after": after_state["sha256"],
+        "new_accepted_markers": allowed_new_markers,
+        "real_profile_modified": False,
+    }
+
+
+def navigate_lobby_with_authorized_legal(
+    acceptance: object,
+    pyautogui: object,
+    image_grab: object,
+    userdir: Path,
+    ui_dir: Path,
+    stage_artifacts: list[dict[str, object]],
+    legal_evidence: list[dict[str, object]],
+) -> None:
+    new_game = acceptance.wait_for_ocr_text(
+        "新游戏", acceptance.MAIN_MENU_REGION, 15,
+        ui_dir, "01_main_menu.png"
+    )
+    acceptance.deliberate_click(new_game, "main-menu New Game")
+    robert = None
+    deadline = time.monotonic() + 45
+    while time.monotonic() < deadline:
+        acceptance.focus_ck3()
+        image = image_grab.grab()
+        robert = acceptance.find_ocr_text(
+            image, "公爵罗贝尔", acceptance.RULER_REGION, contains=True
+        )
+        if robert is not None:
+            image.save(ui_dir / "02_bookmark.png")
+            break
+        rows = [
+            str(row[0]) for row in acceptance.ocr_results(
+                image, LEGAL_MODAL_HEADER_REGION
+            )
+        ]
+        classification = classify_authorized_legal_modal(rows)
+        if classification is not None:
+            legal_evidence.append(accept_authorized_legal_modal(
+                acceptance,
+                image_grab,
+                userdir,
+                ui_dir,
+                image,
+                rows,
+                len(legal_evidence) + 1,
+                stage_artifacts,
+            ))
+            continue
+        time.sleep(0.25)
+    if robert is None:
+        raise TypedTerminalError(
+            "LobbyNavigationFailure",
+            "lobby_navigation",
+            "Robert bookmark did not appear and no allowlisted legal modal was handled",
+        )
+
+    screen_width, screen_height = pyautogui.size()
+    ruler_candidates = [
+        robert,
+        (robert[0] - int(screen_width * 0.041),
+         robert[1] - int(screen_height * 0.057)),
+        (robert[0], robert[1] - int(screen_height * 0.09)),
+    ]
+    selected = False
+    for candidate in ruler_candidates:
+        acceptance.deliberate_click(candidate, "Robert 1066 bookmark candidate")
+        pyautogui.moveTo(int(screen_width * 0.50), int(screen_height * 0.95))
+        try:
+            acceptance.wait_for_ocr_text(
+                "公爵罗贝尔", acceptance.RULER_DETAIL_REGION, 5,
+                ui_dir, "03_ruler_selected.png", contains=True, stable_hits=1
+            )
+            selected = True
+            break
+        except Exception:
+            continue
+    if not selected:
+        raise TypedTerminalError(
+            "LobbyNavigationFailure",
+            "lobby_navigation",
+            "unable to select Robert after three OCR-verified candidates",
+        )
+    start = acceptance.wait_for_ocr_text(
+        "开始", acceptance.START_REGION, 15,
+        ui_dir, "03_start_enabled.png"
+    )
+    acceptance.click_until_text_disappears(
+        start, "开始", acceptance.START_REGION, ui_dir
+    )
+    return None
 
 
 def validate_readiness_contract(
@@ -333,6 +690,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--open-kaishek-preflight", type=Path, required=True)
     parser.add_argument("--open-kaishek-parse", type=Path, required=True)
     parser.add_argument("--tools-root", type=Path, required=True)
+    parser.add_argument(
+        "--legal-consent-source",
+        type=Path,
+        required=True,
+        help=(
+            "read-only real-profile account.json used only to bind the pre-run "
+            "legal marker state; any explicitly authorized acceptance is persisted "
+            "only inside the disposable userdir"
+        ),
+    )
     parser.add_argument("--userdir", type=Path, required=True)
     parser.add_argument("--artifact-dir", type=Path, required=True)
     parser.add_argument("--capture-timeout-ms", type=int, default=1200000)
@@ -396,6 +763,13 @@ def main() -> int:
     ):
         raise RuntimeError("open_kaishek preflight/source parse contract mismatch")
 
+    legal_contract = manifest.get("legal_consent_contract")
+    if not isinstance(legal_contract, dict):
+        raise RuntimeError("manifest lacks the persisted legal-consent contract")
+    legal_consent = validate_legal_consent_source(
+        args.legal_consent_source, legal_contract
+    )
+
     before_inventory = process_inventory()
     if before_inventory:
         raise RuntimeError(f"pre-start process inventory is nonempty: {before_inventory}")
@@ -406,6 +780,8 @@ def main() -> int:
             "open_kaishek_commit": commit,
             "open_kaishek_status": preflight.get("status"),
             "source_parse_status": source_parse.get("status"),
+            "legal_consent": legal_consent,
+            "legal_consent_seed_installed": False,
             "attempt_contract": manifest["attempt_contract"],
             "readiness_contract": readiness,
             "artifact_directory_created": False,
@@ -427,6 +803,7 @@ def main() -> int:
     capture_process: subprocess.Popen[str] | None = None
     attach_target: dict[str, object] | None = None
     attach_ready: dict[str, object] | None = None
+    legal_acceptances: list[dict[str, object]] = []
     target_seen = False
     target_selected = False
     arm_sha256: str | None = None
@@ -516,7 +893,17 @@ def main() -> int:
                 "private capture did not publish attach readiness in time",
             )
         try:
-            acceptance.navigate_lobby(ui_dir, ironman=False)
+            navigate_lobby_with_authorized_legal(
+                acceptance,
+                pyautogui,
+                ImageGrab,
+                args.userdir,
+                ui_dir,
+                stage_artifacts,
+                legal_acceptances,
+            )
+        except TypedTerminalError:
+            raise
         except Exception as exc:
             raise TypedTerminalError(
                 "LobbyNavigationFailure", "lobby_navigation", str(exc)
@@ -706,6 +1093,13 @@ def main() -> int:
             "gameplay_command_api_mutations": [],
             "private_read_only_capture": True,
             "fresh_attempt": True,
+            "legal_consent_authorization": "explicit semantic allowlist",
+            "legal_consent_click_count": len(legal_acceptances),
+        },
+        "legal_consent": {
+            "preflight": legal_consent,
+            "acceptances": legal_acceptances,
+            "real_profile_modified": False,
         },
         "readiness_contract": readiness,
         "readiness_stage_artifacts": stage_artifacts,

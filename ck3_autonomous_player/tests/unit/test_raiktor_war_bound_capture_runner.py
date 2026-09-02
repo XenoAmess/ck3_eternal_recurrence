@@ -53,7 +53,17 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
         self.assertIn("MainMenuReadinessTimeout", readiness["typed_terminals"])
         self.assertIn("AttachTargetIdentityMismatch", readiness["typed_terminals"])
         self.assertIn("PrivateAttachReadinessTimeout", readiness["typed_terminals"])
-        self.assertIn("normally launches exactly one CK3", manifest["live_command"])
+        self.assertIn("LegalConsentNotAuthorized", readiness["typed_terminals"])
+        self.assertIn("LegalConsentMarkerNotPersisted", readiness["typed_terminals"])
+        self.assertIn("starts one CK3 normally", manifest["live_command"])
+        legal = manifest["legal_consent_contract"]
+        self.assertTrue(legal["allow_exact_semantic_modal_acceptance"])
+        self.assertFalse(legal["accepted_marker_present"])
+        self.assertEqual(
+            legal["source_profile_relative_path"],
+            "account/PDX/SDK/ck3/account.json",
+        )
+        self.assertIn("telemetry", legal["explicitly_not_authorized"])
 
     def test_readiness_cli_must_match_manifest(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
@@ -119,12 +129,150 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
         normal_start = self.runner_source.index("ck3_process = subprocess.Popen")
         main_menu = self.runner_source.index("wait_for_main_menu_readiness(", normal_start)
         attach = self.runner_source.index("capture_process = subprocess.Popen", main_menu)
-        lobby = self.runner_source.index("acceptance.navigate_lobby", attach)
+        lobby = self.runner_source.index(
+            "navigate_lobby_with_authorized_legal(", attach
+        )
         self.assertLess(normal_start, main_menu)
         self.assertLess(main_menu, attach)
         self.assertLess(attach, lobby)
         self.assertNotIn('"-debug_mode"', self.runner_source)
         self.assertIn("validate_running_ck3(ck3_pid, args.ck3_exe)", self.runner_source)
+
+    def test_legal_modal_allowlist_accepts_agreements_and_captures_version(self) -> None:
+        agreement = MODULE.classify_authorized_legal_modal([
+            "Paradox Interactive - User Agreement",
+            "Last update January 21, 2026",
+            "好的",
+        ])
+        self.assertIsNotNone(agreement)
+        assert agreement is not None
+        self.assertEqual(
+            agreement["title"], "Paradox Interactive - User Agreement"
+        )
+        self.assertEqual(
+            agreement["version"], "Last update January 21, 2026"
+        )
+        self.assertIsNotNone(MODULE.classify_authorized_legal_modal([
+            "Paradox Interactive 最终用户许可协议", "版本 4.0", "我同意"
+        ]))
+        self.assertIsNotNone(MODULE.classify_authorized_legal_modal([
+            "Paradox Interactive Terms of Use", "Effective 2026-08-01", "Accept"
+        ]))
+
+    def test_legal_modal_denylist_prevents_optional_consent_click(self) -> None:
+        with self.assertRaises(MODULE.TypedTerminalError) as privacy:
+            MODULE.classify_authorized_legal_modal([
+                "Paradox Interactive Privacy Policy", "Accept"
+            ])
+        self.assertEqual(privacy.exception.terminal, "LegalConsentNotAuthorized")
+        with self.assertRaises(MODULE.TypedTerminalError) as caught:
+            MODULE.classify_authorized_legal_modal([
+                "Paradox Interactive User Agreement",
+                "I also agree to personalized advertising and data sharing",
+                "Accept",
+            ])
+        self.assertEqual(caught.exception.terminal, "LegalConsentNotAuthorized")
+
+    def test_new_accepted_marker_must_be_allowlisted(self) -> None:
+        before = {
+            "markers": ["eula-2016-11-08", "Terms-of-use-2019-04-05"]
+        }
+        after = {
+            "markers": [
+                "eula-2016-11-08",
+                "Terms-of-use-2019-04-05",
+                "user-agreement-2026-01-21",
+            ]
+        }
+        new_markers = MODULE.newly_persisted_legal_markers(before, after)
+        self.assertEqual(new_markers, ["user-agreement-2026-01-21"])
+        self.assertTrue(MODULE._authorized_legal_marker(new_markers[0]))
+        self.assertFalse(MODULE._authorized_legal_marker("privacy-policy-2026-01-21"))
+
+    def test_authorized_handler_clicks_once_and_records_isolated_marker(self) -> None:
+        class FakeImage:
+            def __init__(self, payload: bytes) -> None:
+                self.payload = payload
+
+            def save(self, path: Path) -> None:
+                path.write_bytes(self.payload)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "userdir"
+            ui_dir = root / "ui"
+            account = userdir / MODULE.LEGAL_CONSENT_PROFILE_SUFFIX
+            account.parent.mkdir(parents=True)
+            ui_dir.mkdir()
+            account.write_text(json.dumps({
+                "viewedLegalDocuments": {
+                    "online": ["Terms-of-use-2019-04-05"],
+                    "localOnly": ["eula-2016-11-08"],
+                }
+            }), encoding="utf-8")
+
+            class FakeAcceptance:
+                FULL_SCREEN_REGION = (0, 0, 1, 1)
+
+                def __init__(self) -> None:
+                    self.clicks = 0
+
+                def find_ocr_text(self, _image, label, _region, contains=False):
+                    del contains
+                    return (50, 50) if label == "好的" else None
+
+                def deliberate_click(self, _point, _label) -> None:
+                    self.clicks += 1
+                    account.write_text(json.dumps({
+                        "viewedLegalDocuments": {
+                            "online": [
+                                "Terms-of-use-2019-04-05",
+                                "user-agreement-2026-01-21",
+                            ],
+                            "localOnly": ["eula-2016-11-08"],
+                        }
+                    }), encoding="utf-8")
+
+                def focus_ck3(self) -> None:
+                    return None
+
+                def ocr_results(self, _image, _region):
+                    return [("公爵罗贝尔", 0, (0, 0), 0)]
+
+            class FakeGrab:
+                @staticmethod
+                def grab():
+                    return FakeImage(b"after")
+
+            acceptance = FakeAcceptance()
+            stages: list[dict[str, object]] = []
+            evidence = MODULE.accept_authorized_legal_modal(
+                acceptance,
+                FakeGrab,
+                userdir,
+                ui_dir,
+                FakeImage(b"before"),
+                [
+                    "Paradox Interactive - User Agreement",
+                    "Last update January 21, 2026",
+                    "好的",
+                ],
+                1,
+                stages,
+            )
+        self.assertEqual(acceptance.clicks, 1)
+        self.assertEqual(evidence["button_label"], "好的")
+        self.assertEqual(
+            evidence["new_accepted_markers"],
+            ["user-agreement-2026-01-21"],
+        )
+        self.assertNotEqual(
+            evidence["marker_sha256_before"], evidence["marker_sha256_after"]
+        )
+        self.assertEqual(
+            [stage["stage"] for stage in stages],
+            ["legal_consent_before", "legal_consent_after"],
+        )
 
 
 if __name__ == "__main__":

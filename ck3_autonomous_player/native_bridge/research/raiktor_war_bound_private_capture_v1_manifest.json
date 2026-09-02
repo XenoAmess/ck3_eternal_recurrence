@@ -50,6 +50,37 @@
     "startup_mode": "launch one CK3 normally without an operating-system debugger; do not send gameplay input before main-menu readiness",
     "attach_mode": "after main-menu readiness, revalidate the unique PID, executable path, exact-build SHA-256, then attach the private read-only capture and require its ready artifact before lobby input"
   },
+  "legal_consent_contract": {
+    "source_profile_relative_path": "account/PDX/SDK/ck3/account.json",
+    "source_sha256": "8933437F2000BB639D588A541B798F97C6D87BA7D891613FAC23D1812AB9EB28",
+    "authorized_document_kinds": [
+      "User Agreement",
+      "EULA",
+      "Terms of Use",
+      "semantic equivalents"
+    ],
+    "explicitly_not_authorized": [
+      "privacy",
+      "telemetry",
+      "advertising",
+      "marketing",
+      "personalized content",
+      "data sharing"
+    ],
+    "accepted_marker_present": false,
+    "accepted_marker": null,
+    "allow_exact_semantic_modal_acceptance": true,
+    "real_profile_read_only": true,
+    "evidence_required": [
+      "recognized title",
+      "visible version or last-update text when present",
+      "before screenshot",
+      "after screenshot",
+      "isolated-userdir marker path",
+      "marker SHA-256 before and after",
+      "new allowlisted marker"
+    ]
+  },
   "readiness_contract": {
     "process_discovery_timeout_seconds": 30,
     "main_menu_timeout_seconds": 300,
@@ -61,6 +92,11 @@
     "post_selection_capture_timeout_seconds": 30,
     "typed_terminals": [
       "FreshAttemptRequired",
+      "LegalConsentRequired",
+      "LegalConsentNotAuthorized",
+      "LegalConsentControlNotFound",
+      "LegalConsentAcceptanceTimeout",
+      "LegalConsentMarkerNotPersisted",
       "NormalCK3ProcessTimeout",
       "CK3ExitedBeforeMainMenu",
       "MainMenuReadinessTimeout",
@@ -80,7 +116,7 @@
   },
   "build_command": "cmake -S ck3_autonomous_player/native_bridge -B <build> -DXAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1=ON -DBUILD_TESTING=ON && cmake --build <build> --target xar_ck3_raiktor_war_bound_private_capture_v1",
   "self_test_command": "<build>/xar_ck3_raiktor_war_bound_private_capture_v1.exe --self-test",
-  "live_command": "python native_bridge/research/run_raiktor_war_bound_private_capture_v1.py ... --artifact-dir <fresh-attempt> --capture-timeout-ms 1200000 --main-menu-timeout-seconds 300 --ui-timeout-seconds 520; the runner normally launches exactly one CK3, waits for main-menu readiness without gameplay input, validates its PID/path/build, then invokes the private product with --attach-pid <exact-pid> --ready-file <fresh-attempt>/attach-ready.json",
-  "run_boundary": "Do not run until the P0 seed slot is released and the coordinator explicitly authorizes one distinct attempt. The runner must use a fresh artifact directory and isolated userdir, capture each persisted main-menu readiness stage without a debugger or gameplay input, attach only after exact PID/path/build validation, require the private attach-ready artifact before lobby input, and atomically write the exact arm-file body only immediately before selecting naturally scheduled bookmark.1071.a.",
+  "live_command": "python native_bridge/research/run_raiktor_war_bound_private_capture_v1.py ... --legal-consent-source <read-only-real-profile-account.json> --artifact-dir <fresh-attempt> --capture-timeout-ms 1200000 --main-menu-timeout-seconds 300 --ui-timeout-seconds 520; the runner binds the real profile read-only, starts one CK3 normally, waits for main-menu readiness without gameplay input, validates its PID/path/build, invokes the private product with --attach-pid <exact-pid> --ready-file <fresh-attempt>/attach-ready.json, and may accept only an OCR-confirmed Paradox User Agreement/EULA/Terms of Use semantic equivalent while preserving before/after and isolated-marker evidence",
+  "run_boundary": "The project owner explicitly authorizes the runner to accept Paradox Interactive User Agreement, EULA, Terms of Use, and semantic equivalents. Privacy, telemetry, advertising, marketing, personalized-content, data-sharing, and future non-equivalent prompts are not authorized and must reach a typed terminal without a click. Every authorized agreement click must preserve recognized title/version text, before/after screenshots, and a new allowlisted accepted marker path plus before/after SHA-256 in the disposable isolated userdir; the real profile remains read-only. A live attempt additionally requires a fresh artifact directory, isolated userdir, empty P0 slot, and explicit coordinator authorization. The runner captures each persisted main-menu readiness stage without a debugger or gameplay input, attaches only after exact PID/path/build validation, requires the private attach-ready artifact before lobby input, and atomically writes the exact arm-file body only immediately before selecting naturally scheduled bookmark.1071.a.",
   "publication_boundary": "A GREEN private capture remains private live evidence. It does not change the public terms ABI or war_bound_armies_ready."
 }

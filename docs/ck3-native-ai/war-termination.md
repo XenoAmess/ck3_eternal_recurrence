@@ -2163,3 +2163,59 @@ build, early exit, readiness timeout, and invalid ready artifact have distinct
 typed terminals. The candidate is verify-only GREEN with no attempt directory
 created and no CK3 process. It does not change the public ABI or promote
 `war_bound_armies_ready`.
+
+#### Normal-start attach live: legal-agreement harness RED
+
+[harness RED / native observation attached but source event not reached] The
+single authorized normal-start attempt reached OCR-confirmed main-menu
+readiness after 156.225 seconds. Its 60-second, 120-second, and ready-stage
+screenshot SHA-256 values are respectively
+`F5774E85842AB395DCDAA10EA6B2B8A00D7313A2D3D84D7D1FD2D46AF87755B7`,
+`490BFAA0E8DE56F2C930986450046280DCABD268BF1352817DD12A90C12C0817`,
+and `CF443C821FA8DD4E20E6F6E43B504198863F757F4A715E679BEA6653362CEA6B`.
+The runner then rebound the only CK3 PID `62456` to the exact executable path
+and build hash, and the private observer published a valid attach-ready
+artifact (SHA-256
+`F9D1F27973DBF7F3D782D09D4B56D33C38E4F6DBFFAA3DB7B2C07015DBF4A90B`).
+
+Lobby navigation exposed a previously unhandled `Paradox Interactive - User
+Agreement` modal whose visible last-update text was `January 21, 2026`. The
+attempt stopped at `LobbyNavigationFailure / lobby_navigation`; it did not
+click the agreement, select Robert, advance time, observe `bookmark.1071`,
+publish an action arm, or capture a source execution. The modal screenshot
+SHA-256 is
+`194C47121D40A38768C89D819B139DA07ABDCBAEAC8DA959A2AC607B2B439597`.
+The terminal report SHA-256 is
+`CE99F7E0DAD1DDC28644BF59FE3BA40751049E60BD7EE7B9BE679BFC2EDC43CF`;
+cleanup SHA-256 is
+`D0B4238BD5376D80458E22B7C1B4BA49EB8CAD15B90B535DF031FB3EB16B19C4`
+and records CK3/Python/private-capture counts of zero, the process tree gone,
+and no second CK3. Frozen source hashes remained unchanged. This remains a
+harness RED rather than a capability RED, and public readiness remains false.
+
+#### Explicitly authorized legal-agreement handler
+
+[static-ready / no new CK3 run] The project owner subsequently granted a
+narrow, explicit authorization for the runner to accept Paradox Interactive
+User Agreement, EULA, Terms of Use, and semantic equivalents. That authority
+does not include privacy, telemetry, advertising, marketing, personalized
+content, or data-sharing consent. The runner now requires the visible modal to
+contain both the Paradox identity and an allowlisted agreement term, and it
+reaches `LegalConsentNotAuthorized` without a click if a denied category is
+also present. Missing controls, failure to close, and failure to persist a new
+allowlisted marker have separate typed terminals.
+
+Every authorized click preserves the recognized title and visible
+version/last-update row when present, before/after screenshots, the disposable
+userdir marker path, its before/after SHA-256, and the newly added agreement
+marker. The real profile is read-only and is bound at preflight; only the
+isolated userdir may receive the accepted state. Offline inspection found
+three older legal-document markers but no marker for the displayed 2026
+agreement. The semantic allowlist/denylist, fixture click, marker delta, and
+normal/optimized unit suites pass; verify-only is `READY_TO_RUN`, creates no
+attempt directory, observes no CK3/Python process, and does not perform an
+acceptance click. The frozen manifest SHA-256 is
+`D60C1ECF8E5F7D10A3809557D09662A3D8B714907533BD6BAFBCCFA6307EE426`.
+A fresh live attempt still requires an empty P0 slot and coordinator approval;
+this static harness change does not alter the public ABI or
+`war_bound_armies_ready`.
