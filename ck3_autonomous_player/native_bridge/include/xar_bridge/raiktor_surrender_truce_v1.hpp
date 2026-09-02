@@ -137,6 +137,15 @@ struct RaiktorTrucePrivateScriptedCandidateV1 {
   std::int32_t default_capacity = -1;
   std::int32_t default_count = -1;
   bool semantic_shape_match = false;
+  std::string_view sole_child_status = "not_attempted";
+  std::uintptr_t sole_child = 0;
+  std::uintptr_t sole_child_vtable = 0;
+  std::uintptr_t sole_child_children = 0;
+  std::int32_t sole_child_capacity = -1;
+  std::int32_t sole_child_count = -1;
+  std::uintptr_t sole_child_nested0 = 0;
+  std::uintptr_t sole_child_nested0_vtable = 0;
+  bool caddtruce_prefix_match = false;
 };
 
 struct RaiktorTrucePrivateShapeCaptureV1 {
@@ -153,11 +162,14 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::int32_t root_child_capture_failed_index = -1;
   std::size_t root_scripted_match_count = 0;
   std::int32_t root_scripted_match_index = -1;
-  std::array<RaiktorTrucePrivateScriptedCandidateV1, 5>
+  std::array<RaiktorTrucePrivateScriptedCandidateV1, 2>
       scripted_candidates{};
   std::size_t scripted_candidate_capture_completed = 0;
   std::size_t scripted_semantic_match_count = 0;
   std::int32_t scripted_semantic_match_root_index = -1;
+  std::size_t sole_child_capture_completed = 0;
+  std::size_t caddtruce_prefix_match_count = 0;
+  std::int32_t caddtruce_prefix_match_root_index = -1;
   std::uintptr_t scripted_effect = 0;
   std::uintptr_t scripted_vtable = 0;
   std::int32_t scripted_selector_count = -1;

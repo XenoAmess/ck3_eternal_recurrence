@@ -90,7 +90,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
 
-    def test_root_child_enumeration_is_private_and_precedes_stale_shape_gate(self) -> None:
+    def test_prior_root_enumeration_is_not_replayed(self) -> None:
         resolver = (
             NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
         ).read_text(encoding="utf-8")
@@ -109,11 +109,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             "#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)", 0, helper
         )
         self.assertGreaterEqual(helper_guard, 0)
-        call = resolver.index("CaptureLoadedRootChildrenForG2(", helper + 1)
-        stale_gate = resolver.index(
-            'XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', call
-        )
-        self.assertLess(call, stale_gate)
+        self.assertEqual(resolver.count("CaptureLoadedRootChildrenForG2("), 1)
         self.assertIn(
             "child_vtable == environment.scripted_effect_vtable", resolver
         )
@@ -128,7 +124,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
 
-    def test_only_five_candidates_receive_private_shape_capture(self) -> None:
+    def test_only_indices_nine_and_ten_receive_nested_capture(self) -> None:
         resolver = (
             NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
         ).read_text(encoding="utf-8")
@@ -139,7 +135,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         self.assertRegex(
             resolver,
             r"kPrivateScriptedCandidateIndices\s*=\s*\{\s*"
-            r"6,\s*7,\s*9,\s*10,\s*11\s*\}",
+            r"9,\s*10\s*\}",
         )
         call = resolver.index("CaptureLoadedScriptedCandidatesForG2(", 1)
         call = resolver.index(
@@ -163,6 +159,14 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             '"default_capacity"',
             '"default_count"',
             '"semantic_shape_match"',
+            '"sole_child_status"',
+            '"sole_child_vtable_rva"',
+            '"sole_child_capacity"',
+            '"sole_child_count"',
+            '"sole_child_nested0_vtable_rva"',
+            '"caddtruce_prefix_match"',
+            '"caddtruce_prefix_match_count"',
+            '"caddtruce_prefix_match_root_index"',
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
 

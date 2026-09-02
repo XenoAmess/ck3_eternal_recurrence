@@ -142,8 +142,8 @@ void CaptureLoadedRootChildrenForG2(
   }
 }
 
-constexpr std::array<std::size_t, 5> kPrivateScriptedCandidateIndices = {
-    6, 7, 9, 10, 11};
+constexpr std::array<std::size_t, 2> kPrivateScriptedCandidateIndices = {
+    9, 10};
 
 void CaptureLoadedScriptedCandidatesForG2(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
@@ -256,6 +256,84 @@ void CaptureLoadedScriptedCandidatesForG2(
       capture.scripted_semantic_match_root_index =
           static_cast<std::int32_t>(root_index);
     }
+
+    if (default_children == nullptr) {
+      candidate.sole_child_status = "default_children_null";
+      continue;
+    }
+    if (candidate.default_count != 1 || candidate.default_capacity < 1) {
+      candidate.sole_child_status = "default_not_singleton";
+      continue;
+    }
+
+    void *sole_child = nullptr;
+    if (!ReadValue(access, default_children, 0, sole_child)) {
+      candidate.sole_child_status = "sole_child_read_failed";
+      continue;
+    }
+    candidate.sole_child = reinterpret_cast<std::uintptr_t>(sole_child);
+    if (sole_child == nullptr) {
+      candidate.sole_child_status = "sole_child_null";
+      continue;
+    }
+    if (!ReadValue(access, sole_child, 0, candidate.sole_child_vtable)) {
+      candidate.sole_child_status = "sole_child_vtable_read_failed";
+      continue;
+    }
+
+    void *sole_child_children = nullptr;
+    if (!ReadValue(access, sole_child, kEffectChildrenOffset,
+                   sole_child_children)) {
+      candidate.sole_child_status = "sole_child_children_read_failed";
+      continue;
+    }
+    candidate.sole_child_children =
+        reinterpret_cast<std::uintptr_t>(sole_child_children);
+    if (!ReadValue(access, sole_child, kEffectCapacityOffset,
+                   candidate.sole_child_capacity)) {
+      candidate.sole_child_status = "sole_child_capacity_read_failed";
+      continue;
+    }
+    if (!ReadValue(access, sole_child, kEffectCountOffset,
+                   candidate.sole_child_count)) {
+      candidate.sole_child_status = "sole_child_count_read_failed";
+      continue;
+    }
+    if (sole_child_children == nullptr || candidate.sole_child_count < 1 ||
+        candidate.sole_child_capacity < candidate.sole_child_count) {
+      candidate.sole_child_status = "complete_without_nested0";
+      ++capture.sole_child_capture_completed;
+      continue;
+    }
+
+    void *nested0 = nullptr;
+    if (!ReadValue(access, sole_child_children, 0, nested0)) {
+      candidate.sole_child_status = "nested0_read_failed";
+      continue;
+    }
+    candidate.sole_child_nested0 = reinterpret_cast<std::uintptr_t>(nested0);
+    if (nested0 == nullptr) {
+      candidate.sole_child_status = "nested0_null";
+      continue;
+    }
+    if (!ReadValue(access, nested0, 0,
+                   candidate.sole_child_nested0_vtable)) {
+      candidate.sole_child_status = "nested0_vtable_read_failed";
+      continue;
+    }
+    candidate.sole_child_status = "complete";
+    ++capture.sole_child_capture_completed;
+    candidate.caddtruce_prefix_match =
+        candidate.sole_child_vtable == environment.hidden_effect_vtable &&
+        candidate.sole_child_capacity == 1 &&
+        candidate.sole_child_count == 1 &&
+        candidate.sole_child_nested0_vtable ==
+            environment.context_effect_vtable;
+    if (candidate.caddtruce_prefix_match) {
+      ++capture.caddtruce_prefix_match_count;
+      capture.caddtruce_prefix_match_root_index =
+          static_cast<std::int32_t>(root_index);
+    }
   }
 }
 #endif
@@ -359,8 +437,6 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
   }
   XAR_G2_SHAPE_VALUE(root_count, root_count);
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
-  CaptureLoadedRootChildrenForG2(environment, access, root_children,
-                                 root_capacity, root_count);
   CaptureLoadedScriptedCandidatesForG2(environment, access, root_children,
                                        root_count);
 #endif

@@ -268,3 +268,61 @@ promote the old index by assumption, or alter the production root contract
 before that evidence. The runner remains expected RED before duration;
 cleanup/source invariants were GREEN, no mutation or time advance was sent,
 and `GEN-034` readiness remains unchanged.
+
+## Indices 9/10 sole-child follow-up
+
+A fresh branch from parent baseline
+`3d88d2af49431004b28e1b5d22ba99255e34b844` narrowed the private
+instrumentation to root indices `9/10` only. The prior 12-child enumeration is
+not replayed. For each candidate it reads the sole default child's vtable,
+common effect vector capacity/count, and its first nested child's vtable. It
+also tests only the already-frozen `Hidden(1/1) -> Context` prefix; no new
+production identity or offset is inferred.
+
+The focused private source contract passed `5/5`; the native game-access
+fixture and fresh instrumented MSVC build passed. The offline gate bound
+`open_kaishek` `17caa288eb980aab0b652358e9e94a9901131619` and CLI JAR
+SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`.
+The GREEN `ck3-war-days-trigger-11906` preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-sole-child-20260902T174428\open-kaishek-preflight.json`,
+SHA-256
+`34D8F588FEB0FD1B289532F9BF5DBF86F89F0DFD68ACD7AA31A735409BC28C40`.
+Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `06247E00A4282CE8FBFF8B7500E58624EC913EA1E5FEA6E1911D65F0CE8251D0`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `09AE215DC57B0CE6B885083BED909AB2234E422506C230B8EB93058BCF48F7C9`.
+
+The single paused live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-sole-child-20260902T174428\live\report.json`,
+  SHA-256
+  `3E1F6139FF8FEFBDAD7DC0DD11C823F2A8D365ED9C20B304A90481BCE9F992B7`;
+- private JSONL beside it, SHA-256
+  `55769B6FC23443A0B50EF070A877E18DE7C3F18C3F5C3700B5119F5E26D70322`.
+
+Both rows are identical and both candidates completed:
+
+| Root index | Sole-child vtable RVA | Sole-child capacity/count | Nested child 0 vtable RVA |
+| --- | --- | --- | --- |
+| `9` | `0x44D27B8` (frozen Context vtable) | `1/1` | `0x44D1E18` |
+| `10` | `0x44D1D50` | `1/1` | `0x44D27B8` (frozen Context vtable) |
+
+The paths are now structurally distinct, but neither matches the stale frozen
+`Hidden(0x44D1C88) -> Context` prefix, so
+`caddtruce_prefix_match_count=0`. The proximity of `0x44D1D50` to the old
+Hidden RVA is not type evidence. Index 9 contains Context first and then an
+unidentified effect; index 10 contains an unidentified effect and then
+Context. This capture cannot yet prove which path reaches CAddTruce, so the
+result is an explicit NO-GO rather than an index promotion.
+
+The next smallest entry is limited to the exact Context node already observed
+on each path: read its `scope_count`, common `children/capacity/count`, and
+child-0 vtable. A unique child-0 match to the frozen Truce vtable
+`0x4461CA8` would identify the CAddTruce path; absence on both paths requires a
+new ledger entry rather than a broader walk. Cleanup/source invariants were
+GREEN, no mutation or time advance was sent, and production/readiness remain
+unchanged.

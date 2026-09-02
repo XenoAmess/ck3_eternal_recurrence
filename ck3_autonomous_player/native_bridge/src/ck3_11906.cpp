@@ -92,7 +92,15 @@ void AppendG2TrucePrivateCaptureV1(
         "\"default_vtable_rva\":\"0x%llX\","
         "\"default_children\":\"0x%llX\","
         "\"default_capacity\":%d,\"default_count\":%d,"
-        "\"semantic_shape_match\":%s}",
+        "\"semantic_shape_match\":%s,"
+        "\"sole_child_status\":\"%.*s\","
+        "\"sole_child\":\"0x%llX\","
+        "\"sole_child_vtable_rva\":\"0x%llX\","
+        "\"sole_child_children\":\"0x%llX\","
+        "\"sole_child_capacity\":%d,\"sole_child_count\":%d,"
+        "\"sole_child_nested0\":\"0x%llX\","
+        "\"sole_child_nested0_vtable_rva\":\"0x%llX\","
+        "\"caddtruce_prefix_match\":%s}",
         slot == 0 ? "" : ",", candidate.root_index,
         static_cast<int>(candidate.status.size()), candidate.status.data(),
         static_cast<unsigned long long>(candidate.child),
@@ -104,7 +112,17 @@ void AppendG2TrucePrivateCaptureV1(
         static_cast<unsigned long long>(as_rva(candidate.default_vtable)),
         static_cast<unsigned long long>(candidate.default_children),
         candidate.default_capacity, candidate.default_count,
-        candidate.semantic_shape_match ? "true" : "false");
+        candidate.semantic_shape_match ? "true" : "false",
+        static_cast<int>(candidate.sole_child_status.size()),
+        candidate.sole_child_status.data(),
+        static_cast<unsigned long long>(candidate.sole_child),
+        static_cast<unsigned long long>(as_rva(candidate.sole_child_vtable)),
+        static_cast<unsigned long long>(candidate.sole_child_children),
+        candidate.sole_child_capacity, candidate.sole_child_count,
+        static_cast<unsigned long long>(candidate.sole_child_nested0),
+        static_cast<unsigned long long>(
+            as_rva(candidate.sole_child_nested0_vtable)),
+        candidate.caddtruce_prefix_match ? "true" : "false");
     if (candidate_length <= 0 ||
         static_cast<std::size_t>(candidate_length) >=
             scripted_candidates_json.size() - scripted_candidates_length) {
@@ -154,6 +172,9 @@ void AppendG2TrucePrivateCaptureV1(
       "\"scripted_candidate_capture_completed\":%llu,"
       "\"scripted_semantic_match_count\":%llu,"
       "\"scripted_semantic_match_root_index\":%d,"
+      "\"sole_child_capture_completed\":%llu,"
+      "\"caddtruce_prefix_match_count\":%llu,"
+      "\"caddtruce_prefix_match_root_index\":%d,"
       "\"scripted_candidates\":%.*s,"
       "\"scripted_effect\":\"0x%llX\","
       "\"scripted_vtable\":\"0x%llX\",\"scripted_vtable_rva\":\"0x%llX\","
@@ -233,6 +254,9 @@ void AppendG2TrucePrivateCaptureV1(
           shape.scripted_candidate_capture_completed),
       static_cast<unsigned long long>(shape.scripted_semantic_match_count),
       shape.scripted_semantic_match_root_index,
+      static_cast<unsigned long long>(shape.sole_child_capture_completed),
+      static_cast<unsigned long long>(shape.caddtruce_prefix_match_count),
+      shape.caddtruce_prefix_match_root_index,
       static_cast<int>(scripted_candidates_length),
       scripted_candidates_json.data(),
       static_cast<unsigned long long>(shape.scripted_effect),
