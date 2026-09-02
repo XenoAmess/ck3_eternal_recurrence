@@ -64,6 +64,20 @@ option(
   OFF
 )
 
+option(
+  XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1
+  "Install the private exact-build phase-two post-call list identity observer"
+  OFF
+)
+
+if(
+  XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1 AND
+  XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1
+)
+  message(FATAL_ERROR
+    "The two private phase-two post-call observers share RVA 0x3407DA1")
+endif()
+
 add_library(xar_bridge_protocol STATIC
   src/protocol.cpp
 )
@@ -119,6 +133,7 @@ add_library(xar_ck3_bridge SHARED
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp
   src/phase2_completion_observer_v1.cpp
+  src/phase2_post_call_list_identity_observer_v1.cpp
   src/phase2_post_call_observer_v1.cpp
   src/phase2_wrapper_entry_observer_v1.cpp
   src/route_contact_horizon_v1_mailbox.cpp
@@ -190,6 +205,11 @@ endif()
 if(XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1=1
   )
 endif()
 set_target_properties(xar_ck3_bridge PROPERTIES
@@ -2021,6 +2041,29 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_phase2_post_call_observer_v1
     COMMAND xar_ck3_phase2_post_call_observer_v1_test
+  )
+
+  add_executable(xar_ck3_phase2_post_call_list_identity_observer_v1_test
+    src/phase2_post_call_list_identity_observer_v1.cpp
+    src/phase2_post_call_list_identity_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_phase2_post_call_list_identity_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_phase2_post_call_list_identity_observer_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_phase2_post_call_list_identity_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_phase2_post_call_list_identity_observer_v1
+    COMMAND xar_ck3_phase2_post_call_list_identity_observer_v1_test
   )
 
   add_test(

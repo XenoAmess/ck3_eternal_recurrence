@@ -11,6 +11,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
+#include "xar_bridge/phase2_post_call_list_identity_observer_v1.hpp"
 #include "xar_bridge/phase2_post_call_observer_v1.hpp"
 #include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
@@ -76,6 +77,11 @@ constexpr bool kPhase2PostCallObserverEnabledV1 = true;
 #else
 constexpr bool kPhase2PostCallObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1)
+constexpr bool kPhase2PostCallListIdentityObserverEnabledV1 = true;
+#else
+constexpr bool kPhase2PostCallListIdentityObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
 constexpr bool kPhase2CompletionObserverEnabledV1 = true;
 #else
@@ -83,6 +89,8 @@ constexpr bool kPhase2CompletionObserverEnabledV1 = false;
 #endif
 static_assert(!(kStartupFailureContainmentEnabledV1 &&
                 kStartupParticle2StageRecorderEnabledV1));
+static_assert(!(kPhase2PostCallObserverEnabledV1 &&
+                kPhase2PostCallListIdentityObserverEnabledV1));
 
 wchar_t g_pipe_name[kPipeNameCapacity]{};
 HANDLE g_stop_event = nullptr;
@@ -110,6 +118,8 @@ static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
 static xar::bridge::Phase2PostCallObserverV1State
     g_phase2_post_call_observer_v1{};
+static xar::bridge::Phase2PostCallListIdentityStateV1
+    g_phase2_post_call_list_identity_observer_v1{};
 static xar::bridge::Phase2WrapperEntryObserverV1State
     g_phase2_wrapper_entry_observer_v1{};
 
@@ -258,6 +268,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto phase2_post_call_observer =
       xar::bridge::ReadPhase2PostCallObserverV1Diagnostics(
           g_phase2_post_call_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1)
+  const auto phase2_post_call_list_identity_observer =
+      xar::bridge::ReadPhase2PostCallListIdentityDiagnosticsV1(
+          g_phase2_post_call_list_identity_observer_v1);
 #endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
@@ -457,6 +472,86 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   XAR_APPEND_PHASE2_POST_CALL_FIELD(last_thread_id);
   XAR_APPEND_PHASE2_POST_CALL_FIELD(last_timestamp_qpc);
 #undef XAR_APPEND_PHASE2_POST_CALL_FIELD
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1)
+  result += "},\"phase2_post_call_list_identity_observer_v1\":{";
+  result += "\"private_build\":true,\"installed\":";
+  result += phase2_post_call_list_identity_observer.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(phase2_post_call_list_identity_observer.failure_flags);
+  result += ",\"snapshot_consistent\":";
+  result += phase2_post_call_list_identity_observer.snapshot_consistent
+      ? "true" : "false";
+#define XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(name) \
+  result += ",\"" #name "\":";                         \
+  result += Number(phase2_post_call_list_identity_observer.name)
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(hit_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(capture_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(capture_contention_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(snapshot_sequence);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_producer_list);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_list_begin);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_list_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_scan_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_read_failure_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_scan_truncated_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_sample_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_sample_overflow_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_histogram_bin_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_histogram_overflow_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_selected_target_count);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_thread_id);
+  XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD(last_timestamp_qpc);
+#undef XAR_APPEND_PHASE2_POST_CALL_IDENTITY_FIELD
+  result += ",\"samples\":[";
+  for (std::uint32_t index = 0;
+       index < phase2_post_call_list_identity_observer.last_sample_count;
+       ++index) {
+    if (index != 0) result += ',';
+    const auto &sample = phase2_post_call_list_identity_observer.samples[index];
+    result += "{\"descriptor_index\":";
+    result += Number(sample.descriptor_index);
+    result += ",\"read_complete\":";
+    result += sample.read_complete ? "true" : "false";
+    result += ",\"descriptor\":";
+    result += Number(sample.descriptor);
+    result += ",\"task\":";
+    result += Number(sample.task);
+    result += ",\"owner\":";
+    result += Number(sample.owner);
+    result += ",\"callback\":";
+    result += Number(sample.callback);
+    result += ",\"callback_slot2_target\":";
+    result += Number(sample.callback_slot2_target);
+    result += ",\"callback_slot2_rva\":";
+    result += Number(sample.callback_slot2_rva);
+    result += ",\"state\":";
+    result += Number(sample.state);
+    result += '}';
+  }
+  result += "],\"histogram\":[";
+  for (std::uint32_t index = 0;
+       index < phase2_post_call_list_identity_observer.last_histogram_bin_count;
+       ++index) {
+    if (index != 0) result += ',';
+    const auto &bin = phase2_post_call_list_identity_observer.histogram[index];
+    result += "{\"callback_slot2_target\":";
+    result += Number(bin.callback_slot2_target);
+    result += ",\"callback_slot2_rva\":";
+    result += Number(bin.callback_slot2_rva);
+    result += ",\"count\":";
+    result += Number(bin.count);
+    result += ",\"first_task\":";
+    result += Number(bin.first_task);
+    result += ",\"first_owner\":";
+    result += Number(bin.first_owner);
+    result += ",\"last_task\":";
+    result += Number(bin.last_task);
+    result += ",\"last_owner\":";
+    result += Number(bin.last_owner);
+    result += '}';
+  }
+  result += ']';
 #endif
   result += "}}";
   return result;
@@ -7968,6 +8063,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallPhase2PostCallObserverV1(
             g_phase2_post_call_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kPhase2PostCallListIdentityObserverEnabledV1) {
+    xar::bridge::Phase2PostCallListIdentityEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPhase2PostCallListIdentityObserverV1(
+            g_phase2_post_call_list_identity_observer_v1, environment)) {
       return FALSE;
     }
   }

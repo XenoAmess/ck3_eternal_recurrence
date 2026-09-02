@@ -1,0 +1,82 @@
+{
+  "contract": "phase2-post-call-list-identity-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-ready-to-live",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "7f59aba3b6565646869ce5dd13fb8e41663d7c9b"
+  },
+  "scope": {
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1",
+    "installed_by_default": false,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "ck3_started": false
+  },
+  "exact_hook": {
+    "patch_rva": "0x3407DA1",
+    "continue_rva": "0x3407DAF",
+    "null_target_rva": "0x3407DBD",
+    "patch_bytes": 14,
+    "anchor_hex": "90488B4C24684885C97411488B01",
+    "stub_bytes": 87,
+    "maximum_descriptors": 4096,
+    "lifecycle": "exact anchor, transactional install/rollback, quiescent standalone unload"
+  },
+  "private_telemetry": {
+    "heartbeat_object": "phase2_post_call_list_identity_observer_v1",
+    "sample_capacity": 64,
+    "histogram_capacity": 64,
+    "capacity_overflow_explicit": true,
+    "selected_target_rva": "0x88B480",
+    "sample_fields": [
+      "descriptor_index",
+      "read_complete",
+      "descriptor",
+      "task",
+      "owner",
+      "callback",
+      "callback_slot2_target",
+      "callback_slot2_rva",
+      "state"
+    ],
+    "histogram_fields": [
+      "callback_slot2_target",
+      "callback_slot2_rva",
+      "count",
+      "first_task",
+      "first_owner",
+      "last_task",
+      "last_owner"
+    ],
+    "overflow_fields": [
+      "last_scan_truncated_count",
+      "last_sample_overflow_count",
+      "last_histogram_overflow_count",
+      "capture_contention_count"
+    ],
+    "consistency": "atomic odd/even snapshot_sequence with bounded read retries"
+  },
+  "acceptance": {
+    "native_fixture": "install, executed stub, 3-descriptor identity/histogram, both 64-entry overflows, uninstall and recoverable rollback GREEN",
+    "python_contract": "4/4 GREEN",
+    "private_bridge_build": "MSVC x64 Release SHA-256 F096A98618DFCD47F2CA926ABA939045DB6067F1C47808ECB8566BF96AE80F07",
+    "default_bridge_build": "MSVC x64 Release SHA-256 DE3FE4276CF63F91447C19C0BA625B91F78A0F42CD591FE809ED23877CE2E04E; private heartbeat tokens absent",
+    "live_status": "not run; source-ready only"
+  },
+  "source_hashes": {
+    "header_sha256": "234DAEDBCDA6E7D0550E181088A16ACB8E955C2D3916193D03ACAED46361D242",
+    "implementation_sha256": "E662E08CC1D4DD856A591A254ACB25A1A16423176A2E82C02DF9682B9A45ACAE",
+    "fixture_test_sha256": "141AFAC79907D6715344847607A1F8BEC038A1233890FF2E2B649952E2ED49E6",
+    "source_contract_sha256": "1458928326417DCE3E004F35DA2A3BF34753E8A10C3E8BD728D0BE28D1FC14A9",
+    "python_test_sha256": "2085A9FEBE4FD22245064DDA7E2C9F1B43CE3CA6C3F84BBC1909020E26BF8B24"
+  },
+  "limits": [
+    "only the most recent bounded hit is retained",
+    "64 descriptor identities and 64 unique slot2 targets are retained; overflow is explicit",
+    "no public capability or readiness gate is promoted"
+  ],
+  "readiness": "native-readiness RED; private list identity observer source-ready"
+}

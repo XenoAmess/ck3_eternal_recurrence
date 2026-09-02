@@ -1,0 +1,37 @@
+{
+  "contract": "phase2-post-call-list-identity-observer-v1-source",
+  "required_header_tokens": [
+    "kPhase2PostCallListIdentityPatchRvaV1 =",
+    "0x3407DA1",
+    "kPhase2PostCallListIdentityMaxDescriptorsV1 =",
+    "4096",
+    "kPhase2PostCallListIdentitySampleCapacityV1 = 64",
+    "kPhase2PostCallListIdentityHistogramCapacityV1 =",
+    "last_sample_overflow_count",
+    "last_histogram_overflow_count",
+    "callback_slot2_rva",
+    "first_task",
+    "last_owner"
+  ],
+  "required_implementation_tokens": [
+    "RecordPhase2PostCallListIdentityObservationV1",
+    "sample.callback_slot2_target - state.module_base",
+    "kPhase2PostCallListIdentitySelectedTargetRvaV1",
+    "capture.sample_overflow_count",
+    "capture.histogram_overflow_count",
+    "snapshot_sequence.fetch_add",
+    "WriteTarget(state, state.original_patch_bytes.data()",
+    "WriteTarget(state, state.installed_patch_bytes.data()"
+  ],
+  "required_bridge_tokens": [
+    "phase2_post_call_list_identity_observer_v1",
+    "last_selected_target_count",
+    "callback_slot2_rva",
+    "\\\"samples\\\":[",
+    "\\\"histogram\\\":["
+  ],
+  "required_cmake_tokens": [
+    "option(\n  XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1",
+    "xar_ck3_phase2_post_call_list_identity_observer_v1_test"
+  ]
+}
