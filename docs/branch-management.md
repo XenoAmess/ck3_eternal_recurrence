@@ -124,12 +124,17 @@ include the `agent/kaishek-acceptance-coverage-*` pair,
 `g2-gen034-native-contract-tests`, `promo/phase2-producer-typed-red-20260901`,
 and the three `wip/phase2-*` refs. The G2 fresh-run branch
 `feat/g2-next-run-preflight-20260902` was merged as `a1f424e` and its ref was
-retired after its own CI success.
+retired after its own CI success. The later G2 protocol regression was pushed
+as `a84c53d`; the short-lived `g2/action-step-regression-20260902` ref was
+retired immediately. The phase2 loader observation was merged as `a5c079e`
+from `phase2/loader-observe-20260902`, whose ref was also retired after the
+focused fixture passed.
 
 The independent `Z:\workspace\open_kaishek` checkout follows the same rule:
 `feat/government-flag-schema-20260902` was merged as `450b559` and
-`feat/perk-schema-20260902` as `a670589`; both refs were deleted immediately.
-Its canonical `main` is `a670589`, and only the two pre-existing user branches
+`feat/perk-schema-20260902` as `a670589`, then the dynasty-perk slice as
+`757fb1b`; all three short-lived refs were deleted immediately.
+Its canonical `main` is `757fb1b`, and only the two pre-existing user branches
 (`feat/cli-batch-replay` and `feat/zg361-appeal-replay`) remain. Historical
 parent refs with distinct user-facing release/evidence ownership are retained
 until their owners request retirement.

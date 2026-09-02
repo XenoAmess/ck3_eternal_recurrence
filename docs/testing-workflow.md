@@ -1199,3 +1199,30 @@ The corresponding direct preflight artifact is
 Parser remains GREEN (`76/23,831,410/0`); validator/root scan remain the
 bounded schema-only `RED/233,014`, with no CK3 launch. This is a syntax/schema
 increment only and does not alter the phase2 loader gate or G2 readiness.
+
+## 2026-09-02 current open_kaishek / G2 provenance
+
+The canonical offline accelerator is `open_kaishek` `main` at
+`757fb1b0d0b92fd234961f32e853f9cdef7069d1`, with CLI JAR SHA-256
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`.
+One direct adapter preflight against the frozen phase-two mod corpus is
+retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-dynasty-perk-preflight-20260902-adapter.json`
+(SHA-256
+`37A1B6788306FD7FF8C1DFBAEDE1BE44B5B26602CE7E85334FF6A8B042A14426`).
+The parser/root scan and fixture IR/runtime are GREEN; the expected bounded
+validator remains RED with `233,014` diagnostics, and no CK3 process started.
+
+Parent mainline `a84c53d` adds a no-launch regression that only expands a
+concrete `query-war-termination-terms-v1-50331699` action step for a paused,
+positive full-generation WarID. It keeps the template action non-executable,
+does not widen ABI or authorize termination writes, and leaves G2 at
+`static/query-ready + paused/live=false + GEN-034 unresolved`.
+
+The phase-two loader observer is now on parent mainline as `a5c079e`. It
+retains the compatible `database_node_count`/`last_database_node` fields and
+adds typed `database_nodes` plus `last_database_node_detail` (timestamp,
+native source line, node, init milliseconds, and inclusive milliseconds).
+The focused parser fixture is GREEN; this is diagnostic context only and does
+not alter the loader stage, timeout, event authorization, or live evidence
+boundary.

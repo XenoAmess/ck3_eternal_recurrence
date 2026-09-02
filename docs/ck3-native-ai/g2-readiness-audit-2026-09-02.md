@@ -255,3 +255,27 @@ The corresponding offline preflight artifact
 is parser GREEN (`76/23,831,410/0`) with the expected bounded validator
 `RED/233,014`; CK3 was not started. This schema increment does not change the
 G2 semantic-ready gate, action-step requirement, or `GEN-034` status.
+
+## 2026-09-02 09:40 concrete termination action-step regression
+
+Parent mainline now includes `a84c53d`, a focused regression at
+`NativeProtocolState.capabilities()`. When the frame is paused and the active
+war has a positive full-generation WarID, the hello advertises the concrete
+`query-war-termination-terms-v1-50331699` action step; it must never advertise
+the template `query-war-termination-terms-v1-N` as executable. The native
+adapter/bridge focused suite passed `204` tests. This locks the
+template-to-concrete boundary found in the old DLL provenance; it does not
+authorize surrender/white-peace writes, widen the ABI, or create a paused
+semantic-ready artifact. CK3 was not started and no repeated RED gate was run.
+
+The offline accelerator is now `open_kaishek`
+`757fb1b0d0b92fd234961f32e853f9cdef7069d1` with CLI JAR SHA-256
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`.
+Its direct parent preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-dynasty-perk-preflight-20260902-adapter.json`
+(SHA-256
+`37A1B6788306FD7FF8C1DFBAEDE1BE44B5B26602CE7E85334FF6A8B042A14426`):
+parser/root-scan is GREEN (`75/23,831,185/0`), fixture IR/runtime is GREEN,
+and the bounded profile validator remains the expected RED (`233,014`). The
+preflight is offline (`ck3_started=false`) and therefore leaves `GEN-034` at
+`static/query-ready + paused/live=false`.

@@ -350,3 +350,45 @@ actionable unresolved delta (SHA
 No new instrumentation or same-shape CK3 gate is justified. The next phase2
 施工入口 is a loader-side callback/node observation that supplies a concrete
 file or symbol; until then the `a89282d` baseline stays frozen.
+
+## 2026-09-02 09:40 offline candidate closure and accelerator refresh
+
+The frozen `a89282d` mod corpus was preflighted once with the current
+`open_kaishek` mainline `757fb1b0d0b92fd234961f32e853f9cdef7069d1` (CLI JAR
+SHA-256
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`).
+The retained artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\static-candidate-mod-preflight-20260902.json`
+(SHA-256
+`1EC2D07D2ADD278C61BDE98F3536364C77282DA4D6BD7CE6D005EF2A98EB21A1`).
+Parser/root scan stayed GREEN (`76` files, `23,831,410` bytes, zero
+diagnostics), fixture IR/runtime stayed GREEN, and the bounded validator
+remained the known schema-only RED (`233,014`; `zg361_jingcha.txt` unknown
+opcodes). The run was offline and did not mutate a save or start CK3.
+
+The same pass re-used the retained 24-file dependency inventory
+(`1,656` definitions / `2,764` edges, zero duplicate business definitions;
+report SHA-256
+`8E2C811BC95DE60ED37700DF6692979B677E909064B36C73688A6655E6CF697A`).
+The generator/phase2 wiring suites (`577 + 43` tests) were GREEN. There is no
+evidence-backed source/effect change that explains the `database_init` stop,
+so no speculative generated split or same-shape CK3 gate was added. The
+baseline remains frozen; the next actionable entry is still loader-side
+callback/source-context observation.
+
+The `has_dynasty_perk` schema slice in `open_kaishek` is syntax/profile-only
+and has zero occurrences in the frozen phase-two root, so it does not reduce
+the loader RED or change native readiness.
+
+## 2026-09-02 09:46 typed loader-node context
+
+Parent commit `a5c079e` extends `tools/zg361_phase2_loader_stage.py` with a
+read-only `database_nodes` list and `last_database_node_detail`. Each entry
+preserves the timestamp, native source line, node name, initialization time,
+and inclusive dependency time while retaining the existing count/last-node
+scalars. The focused loader fixture test is GREEN. This is an observation
+join key for a future loader-side callback probe; it changes no stage,
+timeout, event authorization, or CK3 launch behavior. Re-parsing the retained
+logs still yields `2` nodes for the current run versus `303` for the older
+successful run, so the `a89282d` production baseline and native-readiness RED
+remain unchanged.

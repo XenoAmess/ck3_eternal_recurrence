@@ -41,9 +41,9 @@ The offline accelerator is pinned independently of the parent repository:
 | Item | Required value |
 | --- | --- |
 | Checkout | `Z:\workspace\open_kaishek` |
-| Git | `main == origin/main == a6705894bb41d87aa5e53530d77910369c6eb209` |
+| Git | `main == origin/main == 757fb1b0d0b92fd234961f32e853f9cdef7069d1` |
 | CLI JAR | `Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar` |
-| JAR SHA-256 | `392B130B7F6DCB516627EAE284CF673C7F109D6857A5C6388AE56F02EC0BF1AD` |
+| JAR SHA-256 | `D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476` |
 
 Run the following against a fresh, immutable copy of the intended phase-two
 source tree before any native runner command (the root path is deliberately a
@@ -150,3 +150,14 @@ preflight above.  Preserve its full RED artifact if the gate is unavailable;
 otherwise bind the one paused double-read artifact and update the existing G2
 readiness audit.  Until then, no further native code or speculative bridge
 change is planned.
+
+## 2026-09-02 09:40 protocol regression update
+
+Parent `a84c53d` now has a focused `NativeProtocolState.capabilities()`
+regression: only a paused frame with a positive full-generation WarID expands
+the concrete `query-war-termination-terms-v1-50331699` action step. The
+template `query-war-termination-terms-v1-N` remains non-executable. This
+regression is offline/static evidence only; it does not bypass the semantic
+snapshot gate or authorize any termination write. The next live attempt still
+uses the updated `757fb1b`/JAR binding above and stops if the concrete literal
+or paused semantic snapshot is absent.

@@ -80,3 +80,25 @@ parser `76/23,831,410/0` is GREEN, while the validator remains the bounded
 schema-only `RED/233,014`; CK3 was not started. The short-lived schema branch
 was merged and removed promptly. This evidence updates only offline
 preflight provenance, not any live/readiness status.
+
+## Current accelerator provenance (2026-09-02 09:40)
+
+`Z:\workspace\open_kaishek` is clean on `main == origin/main` at
+`757fb1b0d0b92fd234961f32e853f9cdef7069d1`. The latest exact-build-backed
+schema increment is the scalar `has_dynasty_perk` descriptor; it adds profile
+and validator coverage only and makes no runtime-certification claim. The
+rebuilt CLI JAR is 316,162 bytes with SHA-256
+`D4BA0FF5E6A9C85ED0853FD78D44940E98445F2867E9D6CA5902AF0E19B29476`.
+
+The direct frozen-phase2 preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\kaishek-dynasty-perk-preflight-20260902-adapter.json`
+(SHA-256
+`37A1B6788306FD7FF8C1DFBAEDE1BE44B5B26602CE7E85334FF6A8B042A14426`).
+Parser/root-scan is GREEN (`75/23,831,185/0`), fixture IR/runtime is GREEN,
+and the bounded validator remains RED (`233,014`); `ck3_started=false`.
+This is offline schema/fixture evidence, not CK3 live or MCP readiness.
+
+The parent loader observer `a5c079e` consumes this preflight only as an
+offline accelerator and records typed database-node context for later native
+callback correlation. It does not turn parser/validator output into a CK3
+live result.
