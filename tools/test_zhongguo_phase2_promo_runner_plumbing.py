@@ -1201,6 +1201,10 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         forbidden_click.assert_not_called()
 
     def test_phase2_legal_gate_denies_telemetry_before_click(self) -> None:
+        class FakeImage:
+            def save(self, path: Path) -> None:
+                Path(path).write_bytes(b"phase2-legal-preclassification")
+
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             userdir = root / "native-state" / "profile"
@@ -1212,7 +1216,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 mock.patch.object(
                     capture.acceptance.ImageGrab,
                     "grab",
-                    return_value=object(),
+                    return_value=FakeImage(),
                 ),
                 mock.patch.object(
                     capture.acceptance,
@@ -1241,9 +1245,101 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     encoding="utf-8"
                 )
             )
+            attempt = persisted["classification_attempts"][0]
+            screenshot = Path(attempt["preclassification_screenshot"])
+            screenshot_exists = screenshot.is_file()
+            screenshot_hash_matches = (
+                attempt["preclassification_screenshot_sha256"]
+                == capture.legal_consent.sha256(screenshot)
+            )
         self.assertEqual(raised.exception.reason_code, "LegalConsentNotAuthorized")
         self.assertEqual(persisted["result"], "RED")
         self.assertEqual(persisted["state"], "typed_stop")
+        self.assertEqual(
+            persisted["classification_diagnostics"]["classification_state"],
+            "denied",
+        )
+        self.assertEqual(len(persisted["classification_attempts"]), 1)
+        self.assertEqual(
+            attempt["raw_ocr_rows"],
+            ["Paradox Interactive Telemetry Consent"],
+        )
+        self.assertEqual(
+            attempt["normalized_rows"],
+            ["Paradox Interactive Telemetry Consent"],
+        )
+        self.assertEqual(attempt["classification_state"], "denied")
+        self.assertTrue(screenshot_exists)
+        self.assertTrue(screenshot_hash_matches)
+        forbidden_click.assert_not_called()
+
+    def test_phase2_legal_gate_preserves_ambiguous_legal_input(self) -> None:
+        class FakeImage:
+            def save(self, path: Path) -> None:
+                Path(path).write_bytes(b"phase2-ambiguous-legal-modal")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "native-state" / "profile"
+            artifacts = root / "artifacts"
+            userdir.mkdir(parents=True)
+            artifacts.mkdir()
+            with (
+                mock.patch.object(capture.acceptance, "focus_ck3"),
+                mock.patch.object(
+                    capture.acceptance.ImageGrab,
+                    "grab",
+                    return_value=FakeImage(),
+                ),
+                mock.patch.object(
+                    capture.acceptance,
+                    "ocr_results",
+                    return_value=[
+                        ("Paradox   Interactive", 1.0, (10, 10), None),
+                        ("License Notice", 1.0, (10, 30), None),
+                    ],
+                ),
+                mock.patch.object(
+                    capture.acceptance, "deliberate_click"
+                ) as forbidden_click,
+            ):
+                with self.assertRaises(
+                    capture.Phase2LegalConsentBlocked
+                ) as raised:
+                    capture.handle_phase2_optional_legal_consent(
+                        userdir, artifacts
+                    )
+            persisted = json.loads(
+                (artifacts / "01_phase2_legal_consent.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            attempt = persisted["classification_attempts"][0]
+            screenshot = Path(attempt["preclassification_screenshot"])
+            self.assertTrue(screenshot.is_file())
+        self.assertEqual(raised.exception.reason_code, "LegalConsentNotAuthorized")
+        self.assertEqual(attempt["classification_state"], "ambiguous_legal")
+        self.assertEqual(
+            attempt["normalized_rows"],
+            ["Paradox Interactive", "License Notice"],
+        )
+        self.assertEqual(attempt["legal_document_hints"], ["license"])
+        self.assertEqual(
+            persisted["classification_diagnostics"],
+            {
+                key: attempt[key]
+                for key in (
+                    "normalized_rows",
+                    "normalized_text",
+                    "paradox_token_present",
+                    "allowed_terms",
+                    "denied_terms",
+                    "legal_document_hints",
+                    "classification_state",
+                    "evidence_required",
+                )
+            },
+        )
         forbidden_click.assert_not_called()
 
     def test_production_sidecars_feed_strict_footage_intake_unchanged(self) -> None:

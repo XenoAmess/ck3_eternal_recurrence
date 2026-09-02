@@ -73,10 +73,18 @@ LEGAL_ACCEPT_BUTTONS = ("好的", "我同意", "接受", "I Agree", "Accept", "O
 class TypedTerminalError(RuntimeError):
     """A legal-consent boundary stopped without an unauthorized click."""
 
-    def __init__(self, terminal: str, stage: str, detail: str) -> None:
+    def __init__(
+        self,
+        terminal: str,
+        stage: str,
+        detail: str,
+        *,
+        diagnostics: dict[str, object] | None = None,
+    ) -> None:
         super().__init__(detail)
         self.terminal = terminal
         self.stage = stage
+        self.diagnostics = diagnostics
 
 
 def sha256(path: Path) -> str:
@@ -99,29 +107,99 @@ def _legal_document_markers(payload: dict[str, object]) -> list[str]:
     return markers
 
 
+def diagnose_legal_modal(rows: list[str]) -> dict[str, object]:
+    """Normalize OCR rows and expose the exact token-based classification input."""
+
+    normalized_rows = [" ".join(str(row).split()) for row in rows if str(row).strip()]
+    normalized_text = " ".join(normalized_rows).casefold()
+    paradox_present = "paradox" in normalized_text
+    denied = [term for term in LEGAL_DENIED_TERMS if term in normalized_text]
+    allowed = [term for term in LEGAL_ALLOWED_TERMS if term in normalized_text]
+    hints = [term for term in LEGAL_DOCUMENT_HINTS if term in normalized_text]
+    if not paradox_present:
+        classification_state = "not_paradox"
+    elif denied:
+        classification_state = "denied"
+    elif allowed:
+        classification_state = "authorized_candidate"
+    elif hints:
+        classification_state = "ambiguous_legal"
+    else:
+        classification_state = "not_legal_modal"
+    return {
+        "normalized_rows": normalized_rows,
+        "normalized_text": normalized_text,
+        "paradox_token_present": paradox_present,
+        "allowed_terms": allowed,
+        "denied_terms": denied,
+        "legal_document_hints": hints,
+        "classification_state": classification_state,
+        "evidence_required": bool(
+            paradox_present and (allowed or denied or hints)
+        ),
+    }
+
+
+def persist_preclassification_evidence(
+    image: object,
+    rows: list[str],
+    ui_dir: Path,
+    index: int,
+) -> dict[str, object]:
+    """Persist the exact frame and OCR inputs before any legal classification."""
+
+    diagnostics = diagnose_legal_modal(rows)
+    evidence: dict[str, object] = {
+        "index": index,
+        "raw_ocr_rows": [str(row) for row in rows],
+        **diagnostics,
+        "preclassification_screenshot": None,
+        "preclassification_screenshot_sha256": None,
+    }
+    if not diagnostics["evidence_required"]:
+        return evidence
+    ui_dir.mkdir(parents=True, exist_ok=True)
+    path = ui_dir / f"legal_consent_{index:02d}_preclassification.png"
+    image.save(path)
+    evidence.update(
+        {
+            "preclassification_screenshot": str(path.resolve()),
+            "preclassification_screenshot_sha256": sha256(path),
+        }
+    )
+    return evidence
+
+
 def classify_authorized_legal_modal(
     rows: list[str],
 ) -> dict[str, object] | None:
     """Classify an OCR header, returning ``None`` when no legal modal exists."""
 
-    cleaned = [" ".join(row.split()) for row in rows if row.strip()]
-    joined = " ".join(cleaned).casefold()
-    if "paradox" not in joined:
+    diagnostics = diagnose_legal_modal(rows)
+    cleaned = diagnostics["normalized_rows"]
+    joined = diagnostics["normalized_text"]
+    assert isinstance(cleaned, list)
+    assert isinstance(joined, str)
+    if not diagnostics["paradox_token_present"]:
         return None
-    denied = [term for term in LEGAL_DENIED_TERMS if term in joined]
+    denied = diagnostics["denied_terms"]
+    assert isinstance(denied, list)
     if denied:
         raise TypedTerminalError(
             "LegalConsentNotAuthorized",
             "legal_consent",
             f"legal modal header contains non-authorized category tokens: {denied}",
+            diagnostics=diagnostics,
         )
-    allowed = [term for term in LEGAL_ALLOWED_TERMS if term in joined]
+    allowed = diagnostics["allowed_terms"]
+    assert isinstance(allowed, list)
     if not allowed:
-        if any(term in joined for term in LEGAL_DOCUMENT_HINTS):
+        if diagnostics["legal_document_hints"]:
             raise TypedTerminalError(
                 "LegalConsentNotAuthorized",
                 "legal_consent",
                 "Paradox legal/consent modal does not match the authorized document kinds",
+                diagnostics=diagnostics,
             )
         return None
     title = next(
@@ -408,7 +486,9 @@ __all__ = [
     "accept_authorized_legal_modal",
     "account_legal_state",
     "classify_authorized_legal_modal",
+    "diagnose_legal_modal",
     "newly_persisted_legal_markers",
+    "persist_preclassification_evidence",
     "sha256",
     "validate_legal_consent_source",
 ]

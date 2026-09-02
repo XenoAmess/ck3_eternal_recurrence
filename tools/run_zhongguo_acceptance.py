@@ -1347,6 +1347,8 @@ def handle_phase2_optional_legal_consent(
         "image_used": True,
         "authorized_click_count": 0,
         "acceptances": [],
+        "classification_attempts": [],
+        "classification_diagnostics": None,
         "state": None,
         "failure_reason": None,
     }
@@ -1355,8 +1357,10 @@ def handle_phase2_optional_legal_consent(
         if maximum_agreements <= 0:
             raise ValueError("maximum_agreements must be positive")
         acceptances: list[dict[str, object]] = []
+        classification_attempts: list[dict[str, object]] = []
         stage_artifacts: list[dict[str, object]] = []
-        for index in range(1, maximum_agreements + 1):
+
+        def observe(index: int) -> tuple[object, list[str]]:
             acceptance.focus_ck3()
             image = acceptance.ImageGrab.grab()
             rows = [
@@ -1365,6 +1369,35 @@ def handle_phase2_optional_legal_consent(
                     image, legal_consent.LEGAL_MODAL_HEADER_REGION
                 )
             ]
+            attempt = legal_consent.persist_preclassification_evidence(
+                image,
+                rows,
+                ui_dir,
+                index,
+            )
+            if attempt["evidence_required"]:
+                classification_attempts.append(attempt)
+                screenshot = attempt["preclassification_screenshot"]
+                assert isinstance(screenshot, str)
+                stage_artifacts.append(
+                    {
+                        "stage": "legal_consent_preclassification",
+                        "path": Path(screenshot).name,
+                    }
+                )
+                evidence.update(
+                    {
+                        "classification_attempts": classification_attempts,
+                        "stage_artifacts": stage_artifacts,
+                    }
+                )
+                # This write deliberately precedes classification: even a typed
+                # stop must leave the exact OCR input and source frame behind.
+                write_json(evidence_path, evidence)
+            return image, rows
+
+        for index in range(1, maximum_agreements + 1):
+            image, rows = observe(index)
             classification = legal_consent.classify_authorized_legal_modal(rows)
             if classification is None:
                 break
@@ -1381,14 +1414,7 @@ def handle_phase2_optional_legal_consent(
                 )
             )
         else:
-            acceptance.focus_ck3()
-            image = acceptance.ImageGrab.grab()
-            rows = [
-                str(row[0])
-                for row in acceptance.ocr_results(
-                    image, legal_consent.LEGAL_MODAL_HEADER_REGION
-                )
-            ]
+            _image, rows = observe(maximum_agreements + 1)
             if legal_consent.classify_authorized_legal_modal(rows) is not None:
                 raise legal_consent.TypedTerminalError(
                     "LegalConsentSequenceLimit",
@@ -1401,6 +1427,7 @@ def handle_phase2_optional_legal_consent(
                 "state": "accepted" if acceptances else "no_modal",
                 "authorized_click_count": len(acceptances),
                 "acceptances": acceptances,
+                "classification_attempts": classification_attempts,
                 "stage_artifacts": stage_artifacts,
                 "failure_reason": None,
             }
@@ -1408,6 +1435,28 @@ def handle_phase2_optional_legal_consent(
         write_json(evidence_path, evidence)
         return evidence
     except legal_consent.TypedTerminalError as error:
+        diagnostics = error.diagnostics
+        if classification_attempts:
+            classification_attempts[-1].update(
+                {
+                    "classification_result": "typed_stop",
+                    "typed_terminal": error.terminal,
+                }
+            )
+            if diagnostics is None:
+                diagnostics = {
+                    key: classification_attempts[-1][key]
+                    for key in (
+                        "normalized_rows",
+                        "normalized_text",
+                        "paradox_token_present",
+                        "allowed_terms",
+                        "denied_terms",
+                        "legal_document_hints",
+                        "classification_state",
+                        "evidence_required",
+                    )
+                }
         evidence.update(
             {
                 "result": "RED",
@@ -1415,6 +1464,8 @@ def handle_phase2_optional_legal_consent(
                 "state": "typed_stop",
                 "failure_stage": error.stage,
                 "failure_reason": str(error),
+                "classification_attempts": classification_attempts,
+                "classification_diagnostics": diagnostics,
             }
         )
         write_json(evidence_path, evidence)
