@@ -34,7 +34,7 @@
 
 成片第一次出现时用一个克制的双语 lower-third：
 
-> `[真实姓名]｜本轮受评官员`  
+> `[真实姓名]｜本轮受评官员`
 > `[HISTORICAL NAME] | OFFICIAL UNDER REVIEW`
 
 若某个 canonical span 的真实产品事件不能证明它仍属于同一人物，就不把该段冒充他的亲历。镜头改为“他所在制度的另一处正在发生什么”，旁白使用“与此同时”“在同一套制度里”，不能使用“因此他”“正因为刚才”之类因果连接词。
@@ -62,42 +62,42 @@
 
 ### 01｜00:00–00:35　冷开场：他的名字被写进榜单
 
-类型：`generated_card` + 经审阅的极短实机闪切  
+类型：`generated_card` + 经审阅的极短实机闪切
 章节 ID：`phase2_minimal_recap`
 
 画面编排：黑场先听到翻页声；榜单一闪，切人物肖像，再切一份尚未揭示结果的案卷。标题不立刻说“C”，先让观众看见一个人被压缩成一行数据。八秒后出双语片名：
 
-> **《一个 C 的漫长一年》**  
+> **《一个 C 的漫长一年》**
 > **THE LONG YEAR OF ONE C**
 
 中文旁白草案：
 
-> 上一次，我们看见一份考核怎样追着一个官员走。  
+> 上一次，我们看见一份考核怎样追着一个官员走。
 > 这一次，我们跟着他多走一年，看看一个档位怎样长出经理、名额、项目，以及下一轮。
 
 英文次字幕：
 
-> Last time, one rating followed an official.  
+> Last time, one rating followed an official.
 > This time, we stay for the managers, openings, projects, and the next cycle it creates.
 
 证据边界：开场卡只负责立题，不证明任何 gameplay capability；最终姓名、档位和肖像必须由真实素材决定。
 
 ### 02｜00:35–01:45　两本账：他做了什么，与组织需要什么
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_fact_quota_calibration`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_fact_quota_calibration`
 producer key：`facts-quota-calibration`
 
 画面编排：先以较长停留展示事实档与配额档确实分开；轻推至主角所在行。校准前保留 revision/榜单状态，再展示身份明确的校准事件与动作后的修订变化。不要用快切遮掉关键数字。
 
 中文旁白草案：
 
-> 先别急着替他喊冤。事实档记录他做了什么，配额档记录组织今天需要多少个好结果。  
+> 先别急着替他喊冤。事实档记录他做了什么，配额档记录组织今天需要多少个好结果。
 > 校准落笔之后，榜单和查询修订号必须一起变化。否则我们看到的只是一次点击，不是一次决定。
 
 英文次字幕：
 
-> Facts record what he did; quota grades record what the organization needs today.  
+> Facts record what he did; quota grades record what the organization needs today.
 > After calibration, the board and observed revision must change together.
 
 必须拍到：事实档/配额档为不同可读记录；校准事件 identity-ready；动作后 scoreboard/query revision 变化。
@@ -106,20 +106,20 @@ producer key：`facts-quota-calibration`
 
 ### 03｜01:45–02:40　案卷：按钮过去了，记录没有
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_receipt_appeal_pip`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_receipt_appeal_pip`
 producer key：`receipts-appeals-pip`
 
 画面编排：从人物脸部切到告身/回执，画面上短暂框出 owner、subject、cycle、case 四个身份位。展示 PIP 回应界面、选择动作及之后的 selected response state；回避把一次特定结果剪成“所有申诉都会成功”。
 
 中文旁白草案：
 
-> 他可以认下，也可以回应。但申诉和 PIP 不是按完按钮就算翻案。  
+> 他可以认下，也可以回应。但申诉和 PIP 不是按完按钮就算翻案。
 > 上司、当事人、周期和案件都还是同一份，所选结果真正落到账里，这一步才结束。
 
 英文次字幕：
 
-> He may accept or respond, but an appeal is not proven by its button.  
+> He may accept or respond, but an appeal is not proven by its button.
 > The same owner, subject, cycle, and case must reach the selected state.
 
 必须拍到：正式告身/PIP surface；同一四元身份贯穿；provider-observed selected response state。
@@ -128,20 +128,20 @@ producer key：`receipts-appeals-pip`
 
 ### 04｜02:40–03:35　经理也有经理
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_manager_governance`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_manager_governance`
 producer key：`manager-governance`
 
 画面编排：第一次主动离开主角。先把他的经理放在画面权力位置，再展示经理自己的正式治理事件；等待 AI-owned case 到达可观察的业务终态。末尾切回主角肖像，但不宣称经理案卷已经改变了他的档位。
 
 中文旁白草案：
 
-> 给他落笔的人，也活在另一张考核表里。  
+> 给他落笔的人，也活在另一张考核表里。
 > 经理会留下自己的案卷；真实事件抵达业务终态，连责才算发生。组织最公平的地方，大概是每个人都有上司。
 
 英文次字幕：
 
-> The person rating him lives inside another review.  
+> The person rating him lives inside another review.
 > Manager accountability counts only when the real case reaches a business terminal.
 
 必须拍到：真实 manager-governance 事件 identity-ready；AI-owned case provider-observed terminal business state。
@@ -150,20 +150,20 @@ producer key：`manager-governance`
 
 ### 05｜03:35–04:35　晋升不是一句“以后再说”
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_promotion_compensation`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_promotion_compensation`
 producer key：`promotion-compensation`
 
 画面编排：把晋升选择与薪酬回执做成同一案件的视觉对照。先拍选择，不立刻庆祝；等正式结果出现后，再用 lower-third 标识 frozen case identity 一致。若真实路径是失败或保留，按实际结果写旁白，不剪成成功。
 
 中文旁白草案：
 
-> 好评也不能拿一句“组织会看见你”结账。  
+> 好评也不能拿一句“组织会看见你”结账。
 > 晋升选择与薪酬回执留在同一个冻结案卷里，机会才从口号变成一项可追踪的结果。
 
 英文次字幕：
 
-> A good rating cannot be settled with “the organization sees you.”  
+> A good rating cannot be settled with “the organization sees you.”
 > The choice and compensation receipt must remain in one frozen case.
 
 必须拍到：真实 promotion choice 与 compensation result event；两者绑定同一 frozen case。
@@ -172,20 +172,20 @@ producer key：`promotion-compensation`
 
 ### 06｜04:35–05:30　没有位置，也是位置的答案
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_hc_workforce`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_hc_workforce`
 producer key：`hc-workforce`
 
 画面编排：使用 hash-identical checkpoint 展示 A/B/C 三条 workforce 结果，每条都保留足够时间让观众看清同一 owner/subject。用三联画或连续回放表达“同一个人面对三种制度选择”，但屏幕必须明确这是同一检查点的分支证明，不是假装它们按时间先后都发生过。
 
 中文旁白草案：
 
-> 他可以准备好，组织却未必准备好一把椅子。  
+> 他可以准备好，组织却未必准备好一把椅子。
 > HC 让继任与流动受真实名额约束。没有编制也是一个完整结果，不是系统忘了做下一页。
 
 英文次字幕：
 
-> He may be ready while the organization has no chair ready for him.  
+> He may be ready while the organization has no chair ready for him.
 > Headcount constrains succession and mobility; no opening is a real outcome.
 
 必须拍到：A/B/C 从 hash-identical checkpoint 出发；同一 owner/subject case；no-opening outcome 明确可见。
@@ -194,20 +194,20 @@ producer key：`hc-workforce`
 
 ### 07｜05:30–06:30　功劳需要一个签名
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_projects_metrics`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_projects_metrics`
 producer key：`projects-metrics`
 
 画面编排：从主角和同侪同屏开始，展示 identity-ready project-choice event；动作后等待贡献/指标 result event。数字变化可以放大，但不得加动画伪造不存在的项目关系图。
 
 中文旁白草案：
 
-> 项目结束，不等于功劳自动找到了主人。  
+> 项目结束，不等于功劳自动找到了主人。
 > 选择必须离开按钮，贡献与指标必须出现在身份明确的正式结果里。否则所谓抢功，只是一句很像大厂的旁白。
 
 英文次字幕：
 
-> A finished project does not make credit find its owner.  
+> A finished project does not make credit find its owner.
 > Contribution and metrics must appear on identity-ready result events, not stop at an ACK.
 
 必须拍到：真实 project-choice event；identity-ready contribution/metrics result；动作之后的 provider observation。
@@ -216,20 +216,20 @@ producer key：`projects-metrics`
 
 ### 08｜06:30–07:30　事故会等到考核结束吗
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_incidents_operations`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_incidents_operations`
 producer key：`incidents-operations`
 
 画面编排：节奏突然加快，但 X/Y/Z 三个正式 surface 都至少完整停留一次。每次动作后留出状态观察，不用按钮点击声冒充完成。最终 closure 出现后安静两秒，让“结案”和“没有事故”形成反差。
 
 中文旁白草案：
 
-> 就在大家讨论他的潜力时，事故开始按自己的节奏工作。  
+> 就在大家讨论他的潜力时，事故开始按自己的节奏工作。
 > X、Y、Z 三个阶段和最终结案，都要由后续真实状态作证。命令回执最多证明有人点过，不能证明问题已经消失。
 
 英文次字幕：
 
-> While everyone reviews his potential, the incident keeps its own schedule.  
+> While everyone reviews his potential, the incident keeps its own schedule.
 > X, Y, Z, and closure need later real-state proof; an ACK proves only that someone clicked.
 
 必须拍到：X/Y/Z surface 按序可见；每次 transition 与 closure 均在动作后由 provider observation 证明。
@@ -238,20 +238,20 @@ producer key：`incidents-operations`
 
 ### 09｜07:30–08:45　下一轮：人可以调走，账不会
 
-类型：`ck3_clean_span`  
-章节 ID：`phase2_cross_cycle_endgame`  
+类型：`ck3_clean_span`
+章节 ID：`phase2_cross_cycle_endgame`
 producer key：`cross-cycle-endgame`
 
 画面编排：回到主角，从本轮案卷缓慢溶解到下一周期界面。展示 terminal institutional event，并把其 carried debt/default-change cycle identity 作为屏幕证据。最后一次看到主角时，不给他胜利或失败特写，而让榜单覆盖人物界面的一部分。
 
 中文旁白草案：
 
-> 他可以换岗位，经理可以换名字，本轮也可以改掉明天的默认规则。  
+> 他可以换岗位，经理可以换名字，本轮也可以改掉明天的默认规则。
 > 但昨天的制度债仍要偿还。终局不是重置按钮，只是组织翻到了下一页。
 
 英文次字幕：
 
-> He may move, managers may change, and this cycle may alter tomorrow's default.  
+> He may move, managers may change, and this cycle may alter tomorrow's default.
 > Yesterday's debt remains. The endgame turns the page; it does not reset the ledger.
 
 必须拍到：terminal institutional event identity-ready；事件绑定 carried debt/default-change cycle。
@@ -260,26 +260,26 @@ producer key：`cross-cycle-endgame`
 
 ### 10｜08:45–09:30　结尾：他离开镜头，案卷留在桌上
 
-类型：`generated_card`  
+类型：`generated_card`
 章节 ID：`phase2_finale`
 
 画面编排：主角肖像淡出，留下冻结案卷、榜单和制度债的三个视觉符号；最后生成双语证据卡，列出实际入片的八个 span，不写“全部能力完成”。片名回扣后静默半秒结束。
 
 中文旁白草案：
 
-> 一期结束时，一个官员背了 C。  
-> 二期结束时，他终于看见：榜单、案卷与制度债，会把每个人的选择带进下一轮。  
+> 一期结束时，一个官员背了 C。
+> 二期结束时，他终于看见：榜单、案卷与制度债，会把每个人的选择带进下一轮。
 > 旅人，人会调任，账不会。组织会记得，也会等你回来解释。
 
 英文次字幕：
 
-> Phase one ended with one official carrying the C.  
-> Phase two reveals the boards, cases, and debt carrying everyone's choices forward.  
+> Phase one ended with one official carrying the C.
+> Phase two reveals the boards, cases, and debt carrying everyone's choices forward.
 > Traveler, people transfer. The ledger does not.
 
 结尾主标题：
 
-> **人会调任，账不会**  
+> **人会调任，账不会**
 > **PEOPLE TRANSFER. THE LEDGER REMAINS.**
 
 证据边界：生成卡不是 gameplay 证明；只有八段均通过、两轮 1× 审阅、媒体/声明审计、导出与明确发布收据全部闭合后，才能在交付记录中写 release-ready/exported/published。成片内不使用“组织能力建设完成”。
