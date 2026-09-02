@@ -1,0 +1,91 @@
+{
+  "contract": "phase2-runtime-caller-3407d9c-v1",
+  "schema_version": 1,
+  "status": "runtime-caller-and-post-return-carrier-bound",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "50b372e9c448d59fcb7a859da807f5d09415b42e"
+  },
+  "live_evidence": {
+    "runner_report": "Z:\\p2r-wrap\\live-artifacts\\runner-report.json",
+    "runner_report_sha256": "0556C55EF7D26535A8D9B5F0199BCA32CDB178323DE95F48678B2D38B4683BE7",
+    "postprocess": "Z:\\p2r-wrap\\live-artifacts\\wrapper-entry-live-analysis.json",
+    "postprocess_sha256": "D74E8345B51E87F73B5DF6C65B7766B4618748FCE0FD8DFD9CD374D736B054F8",
+    "entry_count": 1220,
+    "sampling_boundary": "one final heartbeat; 0x3407D9C is the last sampled caller, not a lossless distribution of all 1220 entries",
+    "last_callsite_rva": "0x3407D9C",
+    "last_scheduler_owner": "0x22ED9921A00",
+    "last_producer_list": "0xF282FFEE70",
+    "last_thread_id": 44900
+  },
+  "caller": {
+    "function": "[0x3407C70,0x3407F80)",
+    "unwind_rva": "0x4C3DD40",
+    "bytes_sha256": "A262CC81AFD1235583E2AA6618D48106CA1557BB227AF6A0DAB63CBC60000F17",
+    "wrapper_call_rva": "0x3407D9C",
+    "continuation_rva": "0x3407DA1",
+    "source_symbol": "not present in the pinned stripped executable; PDATA and full-function bytes are the exact owner identity"
+  },
+  "call_arguments": {
+    "rcx": "scheduler owner pointer loaded from global RVA 0x5772E98",
+    "rdx": "address of caller-local object at [RSP+0x30]",
+    "r8": "third function argument passed through unchanged",
+    "r9d": "derived batch count in R15D; wrapper path excludes empty range, mode 3, and derived count 1",
+    "fifth": "address of caller-local producer-list object at [RBP+0xE0]",
+    "sixth": "caller's fifth stack argument saved at [RBP+0x260]",
+    "producer_list_layout": {
+      "begin_pointer_offset": "0x0",
+      "count_offset": "0xC",
+      "element": "descriptor pointer",
+      "descriptor_task_offset": "0x18",
+      "descriptor_owner_offset": "0x20"
+    }
+  },
+  "post_return_lifetime": {
+    "continuation": "0x3407DA1",
+    "temporary_argument_destroy": "0x3407DA2..0x3407DBA",
+    "producer_to_destination_empty_path": "0x3407DCC call 0x3B67B80",
+    "producer_to_destination_nonempty_path": "0x3407DE1..0x3407E0D via 0x3B67DE0 then 0x817F80",
+    "producer_storage_release": "0x3407E14..0x3407E89",
+    "destination_reverse_state0_retry": "0x3407E90..0x3407ED7",
+    "destination_forward_state0_retry_and_release": "0x3407EE4..0x3407F23",
+    "destination_storage_release": "0x3407F2D call 0x817F80",
+    "normal_function_return": "0x3407F7F"
+  },
+  "next_distinct_observer": {
+    "patch_rva": "0x3407DA1",
+    "continue_rva": "0x3407DAF",
+    "patch_bytes": 14,
+    "anchor_hex": "90488B4C24684885C97411488B01",
+    "anchor_sha256": "65A4228B227424B730FA6F7A84DD15602E2063FD9227733901135CF00E4805A4",
+    "read": [
+      "producer-list carrier address RBP+0xE0",
+      "descriptor-array begin at carrier+0x0 and count at carrier+0xC",
+      "descriptor+0x18 task and descriptor+0x20 owner",
+      "task+0x38 callback, callback vslot2, task+0x60 state"
+    ],
+    "filter": "callback vslot2 target module+0x88B480",
+    "purpose": "observe the selected synchronous task immediately after wrapper return and before producer-list transfer, retry, and release",
+    "live_authorized": false
+  },
+  "evidence": {
+    "extractor": "extract_phase2_runtime_caller_3407d9c.py",
+    "extractor_sha256": "0CF9AC76CCFFA0BFD3270415D2243F9D383C778B8E2D87EC4B71CCDC15C1DB57",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\runtime-caller-3407d9c-static-extract.json",
+    "artifact_sha256": "4D79ABEBBB2AA41A02E0762B4874DB85768BD8A5A45B648FD91D5495DF27817D"
+  },
+  "scope": {
+    "ck3_started": false,
+    "production_code_changed": false,
+    "public_abi_changed": false,
+    "readiness_promotion": false,
+    "daily_or_weekly_report_changed": false
+  },
+  "limits": [
+    "the final heartbeat identifies the last sampled caller only",
+    "no thread or OS-wait primitive is inferred",
+    "the next observer is proposed but not implemented or run"
+  ],
+  "readiness": "native-readiness RED + runtime caller and next private seam statically bound"
+}
