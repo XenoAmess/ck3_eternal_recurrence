@@ -114,3 +114,15 @@ CLI rechecks the CK3 adapter's load-time bytes/SHA-256 snapshot with
 `CaptureBundle.verify_unchanged()` before writing the pipeline result or
 candidate run.  A changed or missing source is retained as a RED attempt with
 the typed `capture-source-immutability` phase for diagnosis.
+
+`run_zhongguo_phase2_capture_attempt.py` is the one-command hand-off for a
+fresh eight-span attempt.  Without `--execute` it only creates an external
+`capture-plan.json`; it never starts CK3, the recorder, FFmpeg, or a media
+build.  The plan binds a GREEN filtered-completion observer, a non-legacy
+ready seed contract, the fresh byte-addressed media preflight receipt, the
+bridge pair, all eight default handlers, the schema-v2 loaded-seed gate,
+clean-frame begin/end marks, finite runner timeouts, and managed cleanup.  A
+missing observer or seed remains typed `waiting-for-bound-inputs`; the old
+`98687d...` save is explicitly rejected.  Only a blocker-free plan may cross
+the sole `--execute` subprocess boundary, which delegates directly to
+`run_zhongguo_acceptance.py --phase2-promo-capture` in a new capture directory.
