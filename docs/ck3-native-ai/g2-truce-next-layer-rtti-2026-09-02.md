@@ -212,3 +212,29 @@ No evaluator or mutation was called, game time did not advance, and no second
 live attempt was started. `GEN-034` remains unresolved; the exact index-7 path
 still needs one successful paused private capture in a separately authorized
 run.
+
+## Distinct readiness-300 package
+
+The `122.731s` failed session is shorter than the `205.7s` same-checkpoint
+GREEN control. That concrete control makes a `300s` readiness budget a distinct
+load-window test rather than a repetition of the old `120s` timeout. The next
+package freezes `--readiness-timeout 300` and a `420s` total session bound in
+`g2_index7_targeted_readiness300_v1.json`; the exact index-7-only DLL remains
+unchanged.
+
+`prepare_g2_index7_targeted_readiness300.py` is a no-launch preflight. It
+rejects a reused attempt directory, verifies the Python runtime, runner,
+checkpoint, driver state, CK3 executable, DLL, injector, and open_kaishek
+preflight hashes, checks the private v2 markers in the DLL, and emits one
+PowerShell command. It cannot launch CK3. The verify-only artifact is:
+
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-index7-readiness300-ready-20260902T2017\no-launch-preflight-v2.json`
+
+with SHA-256
+`3966520341699BCBA9BD7E4F2259068281E503A57CD08807BEC19FEA3E519DAA`;
+the frozen manifest SHA-256 is
+`A4A295A378AF943F0EB7FB82DB8C552395169F50ED8CB50E7510960671A733DB`.
+All preflight/hash checks were GREEN and the future attempt directory remained
+absent. Focused preflight plus private-reader source contracts were `10/10`
+GREEN. This preparation started no CK3 process and does not authorize the live
+command by itself.

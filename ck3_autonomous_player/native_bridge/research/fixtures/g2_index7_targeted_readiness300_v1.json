@@ -1,0 +1,63 @@
+{
+  "schema": "xar.ck3.g2_index7_targeted_readiness300.v1",
+  "baseline_commit": "1411cbf3483f353fc83704349bd602b639bb7445",
+  "evidence": {
+    "failed_attempt_session_seconds": 122.731,
+    "failed_attempt_report_sha256": "6997DDA2C233974CE679F93C452A519E55CE309DAB8D3A4D50D6861A8BAE2C58",
+    "same_checkpoint_green_control_seconds": 205.7,
+    "interpretation": "the 120-second readiness budget expired before a known same-checkpoint successful load duration"
+  },
+  "timeouts": {
+    "session_seconds": 420.0,
+    "readiness_seconds": 300.0
+  },
+  "identity": {
+    "war_id": 50331699,
+    "character_id": 29829,
+    "date_raw": 53223936
+  },
+  "paths": {
+    "python": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "runner": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+    "source_checkpoint": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\profile\\save games\\xar_checkpoint.ck3",
+    "source_driver_state": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\native-session\\driver-state.json",
+    "game_dir": "Z:\\ck3_mod_rewrite\\Crusader Kings III",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-targeted-ready-20260902T1930\\build\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-targeted-ready-20260902T1930\\build\\xar_ck3_bridge_injector.exe",
+    "open_kaishek_preflight": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\open-kaishek-support-20260902T1836\\g2-next-layer-corpus-preflight.json",
+    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-readiness300-ready-20260902T2017\\live-authorized-index7-readiness300"
+  },
+  "sha256": {
+    "python": "D70FCED7F461F38F9F224D8673FB74E96E4FACB4283FF4E8697543B457FEA8A0",
+    "runner": "43861D1FD8C160DFD54145EBFCC2039400F5648D36CEE1024C0D9FC6710206A4",
+    "checkpoint": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "C8B4D8015CE251FC09DD9AE4348BD469B57CF8F554349BB5B9698B17D8B6A036",
+    "bridge_injector": "FA5F8441F641698CB8374A4AFD7BBB44299BDA7D21C255315C4D5FBDFCAFE0E7",
+    "open_kaishek_preflight": "CD2509F1670B306FAC4BA6B0F1DA63B32E2DCFF47788D2B7F7C7EF1C35FFF220"
+  },
+  "private_capture": {
+    "environment_variable": "XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH",
+    "output_filename": "g2-index7-private-v2.jsonl",
+    "schema": "xar.ck3.g2_truce_private_capture.v2",
+    "root_index": 7,
+    "path": "default child1 hidden_effect -> child0 Context -> child0 expected CAddTruceEffect<0>",
+    "target_vtable_rva": "0x4461CA8",
+    "duration_input_offset": "0x108"
+  },
+  "open_kaishek": {
+    "commit": "0390b9a959fa1a59a968000ed49e827a03b8d4e4",
+    "jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB"
+  },
+  "boundaries": {
+    "index7_only": true,
+    "duration_input_address_only": true,
+    "evaluator_called": false,
+    "mutation_enabled": false,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "production_shape_contract_changed": false,
+    "preflight_launches_ck3": false
+  }
+}
