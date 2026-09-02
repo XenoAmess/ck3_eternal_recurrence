@@ -87,6 +87,62 @@ bool ReadValue(const RaiktorSurrenderTruceAccessV1 &access,
          ReadBytes(access, address, &output, sizeof(output));
 }
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+void CaptureLoadedRootChildrenForG2(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access, void *root_children,
+    std::int32_t root_capacity, std::int32_t root_count) noexcept {
+  auto &capture = g_private_shape_capture;
+  if (root_children == nullptr) {
+    capture.root_child_capture_status = "root_children_null";
+    return;
+  }
+  if (root_capacity < 0 || root_count < 0 || root_count > root_capacity) {
+    capture.root_child_capture_status = "root_vector_bounds_invalid";
+    return;
+  }
+
+  const auto declared_count = static_cast<std::size_t>(root_count);
+  const auto capture_limit =
+      declared_count < capture.root_child_vtables.size()
+          ? declared_count
+          : capture.root_child_vtables.size();
+  capture.root_child_capture_limit = capture_limit;
+  capture.root_child_capture_status =
+      capture_limit == declared_count ? "complete" : "truncated";
+
+  for (std::size_t index = 0; index < capture_limit; ++index) {
+    void *child = nullptr;
+    if (!ReadValue(access, root_children, index * sizeof(void *), child)) {
+      capture.root_child_capture_status = "child_pointer_read_failed";
+      capture.root_child_capture_failed_index =
+          static_cast<std::int32_t>(index);
+      return;
+    }
+    if (child == nullptr) {
+      capture.root_child_capture_status = "child_pointer_null";
+      capture.root_child_capture_failed_index =
+          static_cast<std::int32_t>(index);
+      return;
+    }
+
+    std::uintptr_t child_vtable = 0;
+    if (!ReadValue(access, child, 0, child_vtable)) {
+      capture.root_child_capture_status = "child_vtable_read_failed";
+      capture.root_child_capture_failed_index =
+          static_cast<std::int32_t>(index);
+      return;
+    }
+    capture.root_child_vtables[index] = child_vtable;
+    capture.root_child_capture_completed = index + 1;
+    if (child_vtable == environment.scripted_effect_vtable) {
+      ++capture.root_scripted_match_count;
+      capture.root_scripted_match_index = static_cast<std::int32_t>(index);
+    }
+  }
+}
+#endif
+
 bool EnvironmentIsExact(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment) noexcept {
   if (!environment.exact_build_admitted ||
@@ -185,6 +241,10 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
   XAR_G2_SHAPE_VALUE(root_count, root_count);
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+  CaptureLoadedRootChildrenForG2(environment, access, root_children,
+                                 root_capacity, root_count);
+#endif
   if (root_children == nullptr) {
     XAR_G2_SHAPE_STAGE("root_children_null");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;

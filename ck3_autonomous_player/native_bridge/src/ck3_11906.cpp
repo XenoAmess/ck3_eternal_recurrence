@@ -98,6 +98,17 @@ void AppendG2TrucePrivateCaptureV1(
       "\"root_slot11\":\"0x%llX\",\"root_children\":\"0x%llX\","
       "\"root_capacity\":%d,\"expected_root_capacity\":19,"
       "\"root_count\":%d,\"expected_root_count\":14,"
+      "\"root_child_capture_status\":\"%.*s\","
+      "\"root_child_capture_limit\":%llu,"
+      "\"root_child_capture_completed\":%llu,"
+      "\"root_child_capture_failed_index\":%d,"
+      "\"root_child_vtable_rvas\":["
+      "\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\","
+      "\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\","
+      "\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\","
+      "\"0x%llX\",\"0x%llX\",\"0x%llX\",\"0x%llX\"],"
+      "\"root_scripted_match_count\":%llu,"
+      "\"root_scripted_match_index\":%d,"
       "\"scripted_effect\":\"0x%llX\","
       "\"scripted_vtable\":\"0x%llX\",\"scripted_vtable_rva\":\"0x%llX\","
       "\"expected_scripted_vtable_rva\":\"0x%llX\","
@@ -149,6 +160,29 @@ void AppendG2TrucePrivateCaptureV1(
       static_cast<unsigned long long>(shape.root_slot11),
       static_cast<unsigned long long>(shape.root_children),
       shape.root_capacity, shape.root_count,
+      static_cast<int>(shape.root_child_capture_status.size()),
+      shape.root_child_capture_status.data(),
+      static_cast<unsigned long long>(shape.root_child_capture_limit),
+      static_cast<unsigned long long>(shape.root_child_capture_completed),
+      shape.root_child_capture_failed_index,
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[0])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[1])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[2])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[3])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[4])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[5])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[6])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[7])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[8])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[9])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[10])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[11])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[12])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[13])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[14])),
+      static_cast<unsigned long long>(as_rva(shape.root_child_vtables[15])),
+      static_cast<unsigned long long>(shape.root_scripted_match_count),
+      shape.root_scripted_match_index,
       static_cast<unsigned long long>(shape.scripted_effect),
       static_cast<unsigned long long>(shape.scripted_vtable),
       static_cast<unsigned long long>(as_rva(shape.scripted_vtable)),

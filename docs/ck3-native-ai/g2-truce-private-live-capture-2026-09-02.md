@@ -148,3 +148,63 @@ a private capture, record their vtables, and locate a unique
 contract. Do not blindly replace constants from this one boundary and do not
 repeat either prior undifferentiated probe. Public truce, expiry, decision, and
 action readiness remain unchanged; `GEN-034` is still unresolved.
+
+## Root-child enumeration follow-up
+
+A fresh branch from parent baseline
+`4dc8b650a0056f31afb56880c6ff1d3f22702097` added a second private-only
+stage before the stale root capacity gate. It uses the runtime vector bounds,
+caps collection at 16 children, and records every child vtable plus the number
+and last index of matches to the exact-build scripted-effect vtable. The
+production `19/14/index 9` contract, public wire, readiness, and all action
+paths are unchanged.
+
+The focused private source contract passed `4/4`; the native game-access
+fixture and fresh instrumented MSVC build also passed. The required offline
+gate bound `open_kaishek`
+`17caa288eb980aab0b652358e9e94a9901131619` and CLI JAR SHA-256
+`421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB`.
+The `ck3-war-days-trigger-11906` preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-root-child-capture-20260902T171309\open-kaishek-preflight.json`,
+SHA-256
+`614026B2BB82805324323083CF2CD5EDD372707BB86A9E72954FA321C4E307ED`.
+Candidate identities were:
+
+- `xar_ck3_bridge.dll` SHA-256
+  `E4991667AA7B34620A9103B98B3099931DEDC1571831C729559BB47F68311BB9`;
+- `xar_ck3_bridge_injector.exe` SHA-256
+  `728FDA6F9A995FB52D818909C6E40546CCFD1E0D36F15979E383C646CBADA7A8`.
+
+The single paused live attempt retained:
+
+- report
+  `Z:\ck3_mod_rewrite_process_assets\zg361\g2-root-child-capture-20260902T171309\live\report.json`,
+  SHA-256
+  `1E24C2B4A1DD298DA3D8AC8EDF9360836A2E71724BB967D12621AFF8689367C7`;
+- private JSONL beside it, SHA-256
+  `83EAD5659D71E6877EFCB1641EA319B371C5E623FCA76442558BD8FFF30AE93E`.
+
+Both rows are identical and report `root_child_capture_status=complete`,
+`capture_limit=12`, `completed=12`, and no failed index. In order, the child
+vtable RVAs are:
+
+```text
+0: 0x44D27B8   1: 0x44D27B8   2: 0x44DF210   3: 0x44D1E18
+4: 0x44D27B8   5: 0x444B548   6: 0x44CF0F8   7: 0x44CF0F8
+8: 0x44D27B8   9: 0x44CF0F8  10: 0x44CF0F8  11: 0x44CF0F8
+```
+
+The exact scripted-effect vtable RVA `0x44CF0F8` therefore has five matches,
+at indices `6, 7, 9, 10, 11`; vtable identity alone does not locate a unique
+truce script child. `root_scripted_match_count=5` and the stored
+`root_scripted_match_index=11` is only the last match, not a uniqueness claim.
+The attempt consequently remains at the same expected
+`root_capacity_mismatch` return and never evaluates duration.
+
+This is a useful negative result and closes the vtable-only hypothesis. The
+next smallest distinct private capture is limited to those five candidate
+children: record each selector count, template pointer/vtable, and only enough
+default subtree shape to distinguish the unique `cadd_truce` script. Do not
+repeat root enumeration and do not promote index 9 merely because it was the
+old hard-coded value. Cleanup and source invariants were GREEN, no mutation or
+time advance was sent, and `GEN-034` readiness remains unchanged.

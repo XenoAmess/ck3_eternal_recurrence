@@ -90,6 +90,44 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         ):
             self.assertIn(field.replace('"', '\\"'), writer)
 
+    def test_root_child_enumeration_is_private_and_precedes_stale_shape_gate(self) -> None:
+        resolver = (
+            NATIVE / "src" / "raiktor_surrender_truce_v1.cpp"
+        ).read_text(encoding="utf-8")
+        writer = (NATIVE / "src" / "ck3_11906.cpp").read_text(
+            encoding="utf-8"
+        )
+        header = (
+            NATIVE
+            / "include"
+            / "xar_bridge"
+            / "raiktor_surrender_truce_v1.hpp"
+        ).read_text(encoding="utf-8")
+
+        helper = resolver.index("void CaptureLoadedRootChildrenForG2(")
+        helper_guard = resolver.rfind(
+            "#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)", 0, helper
+        )
+        self.assertGreaterEqual(helper_guard, 0)
+        call = resolver.index("CaptureLoadedRootChildrenForG2(", helper + 1)
+        stale_gate = resolver.index(
+            'XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', call
+        )
+        self.assertLess(call, stale_gate)
+        self.assertIn(
+            "child_vtable == environment.scripted_effect_vtable", resolver
+        )
+        self.assertIn("std::array<std::uintptr_t, 16> root_child_vtables", header)
+
+        for field in (
+            '"root_child_capture_status"',
+            '"root_child_capture_completed"',
+            '"root_child_vtable_rvas"',
+            '"root_scripted_match_count"',
+            '"root_scripted_match_index"',
+        ):
+            self.assertIn(field.replace('"', '\\"'), writer)
+
 
 if __name__ == "__main__":
     unittest.main()

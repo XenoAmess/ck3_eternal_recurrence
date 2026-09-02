@@ -130,6 +130,13 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
   std::uintptr_t root_children = 0;
   std::int32_t root_capacity = -1;
   std::int32_t root_count = -1;
+  std::string_view root_child_capture_status = "not_attempted";
+  std::array<std::uintptr_t, 16> root_child_vtables{};
+  std::size_t root_child_capture_limit = 0;
+  std::size_t root_child_capture_completed = 0;
+  std::int32_t root_child_capture_failed_index = -1;
+  std::size_t root_scripted_match_count = 0;
+  std::int32_t root_scripted_match_index = -1;
   std::uintptr_t scripted_effect = 0;
   std::uintptr_t scripted_vtable = 0;
   std::int32_t scripted_selector_count = -1;
