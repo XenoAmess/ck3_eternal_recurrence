@@ -1,0 +1,68 @@
+{
+  "contract": "phase2-outer-completion-edge-v1",
+  "schema_version": 1,
+  "status": "static-post-init-edge-bound",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "8c57144c5a6e492c6afcf29b756d019228ee38c1",
+    "prior_live_commit": "7ee5ccb",
+    "prior_live_artifact_sha256": "F10CDD414FA4EDD74E256BB2D084C8F5117467B32E7CCB3E70F5CAB45B9A4958",
+    "extractor": "extract_phase2_outer_completion_edge.py",
+    "extractor_sha256": "37A74EC8D556372A9A1DDCB6D7067F79E2629C706AB21F48C54B376663DBFA4F"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\outer-completion-edge-static-extract.json",
+    "artifact_sha256": "D831486D634D17BD2DEF3607AE2E72F99DB16B4682823B80EE291DAD7450158B",
+    "ck3_started": false,
+    "runtime_continuation_rva": "0x3B9CFD2",
+    "logical_owner": {
+      "entry_rva": "0x3B9CF50",
+      "end_rva_exclusive": "0x3B9D04D",
+      "bytes_sha256": "63B6E134E77569D6E261BD9B99091BCEF5D41F531F5F67592C64BC890EDAEA83",
+      "chained_pdata": [
+        ["0x3B9CF50", "0x3B9CF72", "0x4C3AB8C"],
+        ["0x3B9CF72", "0x3B9CFCC", "0x4F1003C"],
+        ["0x3B9CFCC", "0x3B9D04D", "0x4F10050"]
+      ],
+      "direct_relative_caller_count": 1267,
+      "caller_boundary": "generic helper; no unique loader owner inferred"
+    },
+    "bounded_cfg": {
+      "callback_receiver": "[RBX+0x38]",
+      "callback_dispatch_rva": "0x3B9CFCF",
+      "callback_slot": 2,
+      "completion_value_load_rva": "0x3B9CFD2",
+      "completion_value": 2,
+      "completion_publish_rva": "0x3B9CFD7",
+      "completion_instruction": "xchg dword ptr [rbx+0x60], eax",
+      "state_offset": "0x60",
+      "start_time_offset": "0x70",
+      "elapsed_time_offset": "0x68",
+      "elapsed_store_rva": "0x3B9D02A",
+      "true_return_rva": "0x3B9D039",
+      "busy_return_rva": "0x3B9D046",
+      "null_callback_trap_rva": "0x3B9D047"
+    }
+  },
+  "conclusion": {
+    "closed": "0x3B9CFD7 directly publishes state value 2 after the selected callback returns",
+    "edge_class": "post-init callback completion",
+    "next_distinct_stop_point_rva": "0x3B9CFD7",
+    "additional_live_required": false
+  },
+  "limits": [
+    "state value 2 is bound only within this generic callback helper",
+    "the generic helper's 1267 callers were not expanded",
+    "no wait primitive is assigned and no public bridge or readiness changed"
+  ],
+  "readiness": "native-readiness RED + static post-init edge bound"
+}
