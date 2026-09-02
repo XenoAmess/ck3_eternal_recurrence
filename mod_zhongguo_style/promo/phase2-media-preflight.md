@@ -10,11 +10,11 @@ the exact local production path without starting CK3 or synthesizing speech:
 - the Microsoft YaHei UI and Segoe UI files load with Pillow 12.3.0;
 - measured Simplified-Chinese/English wrapping stays inside the 1920x1080
   subtitle safe area; and
-- one disposable FFmpeg render exercises libass, libx264, yuv420p, AAC,
-  48 kHz, and stereo. The temporary ASS and null-mux render are deleted. Only
-  the JSON environment receipt is retained. The receipt binds byte counts and
-  SHA-256 values for both fonts and both media executables and expires after
-  24 hours.
+- read-only FFmpeg/ffprobe capability queries verify libass, libx264, yuv420p,
+  MP4, AAC, 48 kHz, and stereo without starting an encode or writing ASS/probe
+  media. Only the JSON environment receipt is created. It binds byte counts and
+  SHA-256 values for the preflight implementation, project config, both fonts,
+  and both media executables, and expires after 24 hours.
 
 ```powershell
 $promo = "Z:\workspace\xar_promo_toolchain"
@@ -61,3 +61,20 @@ A GREEN receipt is environment evidence only. It is not a capture, narration,
 candidate video, human review, release approval, or publication claim. Every
 real production session must use a new receipt path; the command refuses to
 overwrite an earlier result.
+
+The Xiaoxiao check reads the live Edge TTS voice catalogue but does not
+synthesize audio. Edge TTS does not require a project credential, so the
+receipt records credential presence as `not-applicable` and never emits a
+secret value.
+
+To bind future paths and current non-media blockers without creating the paths,
+add `--planned-work-dir`, `--planned-tts-cache`, `--planned-export-dir`,
+`--capture-root`, and (when available) `--publish-target-authority`. The receipt
+records the nearest existing writable ancestor and free bytes with
+`path_created=false` and `write_probe_performed=false`.
+
+The environment result can be GREEN while `final_promo_readiness` remains typed
+RED for `fresh_promo_tool_fetch_required`, `footage_pending`, or
+`publish_target_pending`. Formal production must still fetch and fast-forward
+the promo tool immediately before use; this preflight records
+`remote_fetch_performed_by_preflight=false`.

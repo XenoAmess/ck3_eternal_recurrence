@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Verify the local media environment for the ZhongGuo phase-two film.
 
-This command does not consume CK3 captures, synthesize narration, or create a
-promo candidate.  It performs a short disposable encoder test and writes one
-exclusive JSON receipt describing the environment that passed.
+This command does not consume CK3 captures, synthesize narration, write
+subtitle media, encode a probe, or create a promo candidate/work directory.
+It queries installed capabilities and writes one exclusive JSON receipt.
 """
 
 from __future__ import annotations
@@ -17,7 +17,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 from typing import Callable, Sequence
 
@@ -28,6 +27,10 @@ if str(REPOSITORY_TOOLS) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_TOOLS))
 
 import promo_toolchain_loader as toolchain_loader  # noqa: E402
+from zhongguo_phase2_footage_intake import validate_footage_intake  # noqa: E402
+from zhongguo_phase2_publish_target import (  # noqa: E402
+    validate_publish_target_authority,
+)
 
 
 PACKAGE_SOURCE = toolchain_loader.ensure_promo_toolchain()
@@ -171,7 +174,45 @@ def _toolchain_source_main(*, runner: RunProcess) -> dict[str, object]:
         "head": head,
         "origin_main": remote_main,
         "clean": True,
+        "remote_fetch_performed_by_preflight": False,
+        "production_refresh_still_required": True,
     }
+
+
+def _planned_path(path: Path | None) -> dict[str, object]:
+    """Inspect a future output path without creating it or probing with a file."""
+
+    if path is None:
+        return {
+            "configured": False,
+            "ready": False,
+            "path_created": False,
+            "write_probe_performed": False,
+        }
+    resolved = path.expanduser().resolve()
+    ancestor = resolved
+    while not ancestor.exists() and ancestor != ancestor.parent:
+        ancestor = ancestor.parent
+    ancestor_ready = ancestor.is_dir() and os.access(ancestor, os.W_OK)
+    target_shape_ok = not resolved.exists() or resolved.is_dir()
+    free_bytes = shutil.disk_usage(ancestor).free if ancestor.is_dir() else 0
+    return {
+        "configured": True,
+        "path": str(resolved),
+        "target_exists": resolved.exists(),
+        "target_is_directory_or_absent": target_shape_ok,
+        "nearest_existing_ancestor": str(ancestor),
+        "ancestor_writable": ancestor_ready,
+        "free_bytes_observed": free_bytes,
+        "ready": ancestor_ready and target_shape_ok and free_bytes > 0,
+        "path_created": False,
+        "write_probe_performed": False,
+    }
+
+
+def _require_capability(text: str, token: str, label: str) -> None:
+    if token.casefold() not in text.casefold():
+        raise MediaPreflightError(f"FFmpeg capability is missing: {label}")
 
 
 def _load_fonts(zh_font: Path, en_font: Path):
@@ -336,50 +377,69 @@ def run_preflight(args: argparse.Namespace, *, runner: RunProcess = subprocess.r
         raise MediaPreflightError(f"Edge TTS voice catalogue does not contain {VOICE}")
 
     layout, ass = _layout_and_ass(args.zh_font_file, args.en_font_file)
-    with tempfile.TemporaryDirectory(prefix="xar-phase2-media-preflight-") as raw_temp:
-        temp = Path(raw_temp)
-        ass_path = temp / "probe.ass"
-        ass_path.write_text(ass, encoding="utf-8")
-        _run(
-            (
-                ffmpeg,
-                "-hide_banner",
-                "-nostdin",
-                "-loglevel",
-                "error",
-                "-f",
-                "lavfi",
-                "-i",
-                f"color=c=black:s={WIDTH}x{HEIGHT}:r={FPS}:d=0.25",
-                "-f",
-                "lavfi",
-                "-i",
-                "anullsrc=r=48000:cl=stereo:d=0.25",
-                "-vf",
-                "ass=probe.ass",
-                "-t",
-                "0.25",
-                "-c:v",
-                "libx264",
-                "-preset",
-                "ultrafast",
-                "-pix_fmt",
-                "yuv420p",
-                "-c:a",
-                "aac",
-                "-ar",
-                "48000",
-                "-ac",
-                "2",
-                "-f",
-                "null",
-                "-",
-            ),
-            action="checking libass/libx264/AAC render path",
-            cwd=temp,
+    if not ass.startswith("[Script Info]") or not all(
+        style in ass for style in ("ChinesePrimary", "EnglishSecondary")
+    ):
+        raise MediaPreflightError("in-memory subtitle document contract drifted")
+
+    capability_results = {
+        "encoders": _run(
+            (ffmpeg, "-hide_banner", "-encoders"),
+            action="querying FFmpeg encoders",
             timeout=args.encoder_timeout_seconds,
             runner=runner,
-        )
+        ),
+        "filters": _run(
+            (ffmpeg, "-hide_banner", "-filters"),
+            action="querying FFmpeg filters",
+            timeout=args.encoder_timeout_seconds,
+            runner=runner,
+        ),
+        "pixel_formats": _run(
+            (ffmpeg, "-hide_banner", "-pix_fmts"),
+            action="querying FFmpeg pixel formats",
+            timeout=args.encoder_timeout_seconds,
+            runner=runner,
+        ),
+        "formats": _run(
+            (ffmpeg, "-hide_banner", "-formats"),
+            action="querying FFmpeg formats",
+            timeout=args.encoder_timeout_seconds,
+            runner=runner,
+        ),
+        "ffprobe_formats": _run(
+            (ffprobe, "-hide_banner", "-formats"),
+            action="querying ffprobe formats",
+            timeout=args.encoder_timeout_seconds,
+            runner=runner,
+        ),
+    }
+    capability_text = {
+        key: f"{value.stdout}\n{value.stderr}" for key, value in capability_results.items()
+    }
+    _require_capability(capability_text["encoders"], "libx264", "libx264 encoder")
+    _require_capability(capability_text["encoders"], "aac", "AAC encoder")
+    _require_capability(capability_text["filters"], "ass", "ASS/libass filter")
+    _require_capability(capability_text["pixel_formats"], "yuv420p", "yuv420p")
+    _require_capability(capability_text["formats"], "mp4", "MP4 muxer")
+    _require_capability(capability_text["ffprobe_formats"], "mp4", "MP4 demuxer")
+
+    path_targets = {
+        "work_dir": _planned_path(args.planned_work_dir),
+        "tts_cache": _planned_path(args.planned_tts_cache),
+        "export_dir": _planned_path(args.planned_export_dir),
+    }
+    configured_paths = [row for row in path_targets.values() if row["configured"]]
+    if configured_paths and not all(row["ready"] for row in configured_paths):
+        raise MediaPreflightError("one or more planned output paths are not usable")
+
+    footage = validate_footage_intake(args.capture_root)
+    publish_target = validate_publish_target_authority(args.publish_target_authority)
+    production_blockers = ["fresh_promo_tool_fetch_required"]
+    if footage["result"] != "GREEN":
+        production_blockers.append("footage_pending")
+    if publish_target["result"] != "GREEN":
+        production_blockers.append("publish_target_pending")
 
     generated_at = dt.datetime.now(dt.timezone.utc)
     expires_at = generated_at + dt.timedelta(seconds=RECEIPT_VALID_FOR_SECONDS)
@@ -391,35 +451,89 @@ def run_preflight(args: argparse.Namespace, *, runner: RunProcess = subprocess.r
         "generated_at_utc": generated_at.isoformat(timespec="seconds"),
         "valid_for_seconds": RECEIPT_VALID_FOR_SECONDS,
         "expires_at_utc": expires_at.isoformat(timespec="seconds"),
-        "project": {"id": config.project_id, "chapters": len(config.chapters)},
+        "preflight_implementation": _file_record(Path(__file__)),
+        "project": {
+            "id": config.project_id,
+            "chapters": len(config.chapters),
+            "config": _file_record(args.project_config),
+        },
         "promo_toolchain": {
             "version": xar_promo.__version__,
             **_toolchain_source_main(runner=runner),
         },
         "python": {"executable": sys.executable, "version": sys.version.split()[0]},
         "packages": {"edge-tts": edge_version, "Pillow": pillow_version},
-        "voice": {"id": VOICE, "catalogue_match": voice_lines[0]},
+        "voice": {
+            "id": VOICE,
+            "provider": "edge-tts",
+            "configured": True,
+            "live_catalogue_checked": True,
+            "catalogue_match": voice_lines[0],
+            "credential_required": False,
+            "credential_presence": "not-applicable",
+            "credential_value_exposed": False,
+            "synthesis_performed": False,
+        },
         "fonts": {
             "zh-CN": {"family": ZH_FONT_NAME, **_file_record(args.zh_font_file)},
             "en": {"family": EN_FONT_NAME, **_file_record(args.en_font_file)},
         },
         "subtitle_layout": layout,
+        "subtitle_engine": {
+            "layout_module": "xar_promo.layout",
+            "render_module": "xar_promo.subtitles",
+            "pillow_version": pillow_version,
+            "automatic_wrap_measured_in_memory": True,
+            "ass_written": False,
+        },
         "media": {
             "ffmpeg": _file_record(ffmpeg),
             "ffmpeg_version": ffmpeg_version,
             "ffprobe": _file_record(ffprobe),
             "ffprobe_version": ffprobe_version,
+            "capability_query": {
+                "filter": "ass/libass",
+                "video_encoder": "libx264",
+                "video_geometry": [WIDTH, HEIGHT],
+                "frame_rate": FPS,
+                "pixel_format": "yuv420p",
+                "audio_encoder": "aac",
+                "audio_sample_rate": 48000,
+                "audio_channels": 2,
+                "container_muxer": "mp4",
+                "ffprobe_demuxer": "mp4",
+            },
             "verified_filter": "ass/libass",
             "verified_video_encoder": "libx264",
             "verified_audio_encoder": "aac/48000Hz/stereo",
+            "ffmpeg_encode_started": False,
+            "probe_media_created": False,
             "disposable_test_output_retained": False,
+        },
+        "planned_paths": path_targets,
+        "footage_gate": footage,
+        "publish_target_gate": publish_target,
+        "final_promo_readiness": {
+            "result": "RED" if production_blockers else "GREEN",
+            "status": "waiting-for-inputs" if production_blockers else "ready",
+            "reason_codes": production_blockers,
+            "environment_preflight_green": True,
+        },
+        "execution_attestation": {
+            "ck3_started": False,
+            "tts_synthesis_performed": False,
+            "subtitle_media_written": False,
+            "ffmpeg_encode_started": False,
+            "work_directory_created": False,
+            "candidate_generated": False,
         },
     }
 
 
 def _write_new(path: Path, payload: dict[str, object]) -> None:
     path = path.expanduser().resolve()
-    path.parent.mkdir(parents=True, exist_ok=True)
+    if not path.parent.is_dir():
+        raise MediaPreflightError(f"receipt parent does not exist: {path.parent}")
     data = (json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8")
     try:
         with path.open("xb") as handle:
@@ -441,6 +555,11 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--en-font-file", type=Path, default=windows_fonts / "segoeui.ttf")
     result.add_argument("--voice-timeout-seconds", type=float, default=60.0)
     result.add_argument("--encoder-timeout-seconds", type=float, default=60.0)
+    result.add_argument("--planned-work-dir", type=Path)
+    result.add_argument("--planned-tts-cache", type=Path)
+    result.add_argument("--planned-export-dir", type=Path)
+    result.add_argument("--capture-root", type=Path)
+    result.add_argument("--publish-target-authority", type=Path)
     return result
 
 

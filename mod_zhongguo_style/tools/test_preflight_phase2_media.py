@@ -87,6 +87,16 @@ class Phase2MediaPreflightTests(unittest.TestCase):
                 self.assertEqual(media_preflight.main(("--output", os.fspath(output))), 2)
             self.assertFalse(output.exists())
 
+    def test_planned_path_check_does_not_create_target(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "future" / "candidate-work"
+            report = media_preflight._planned_path(target)
+            self.assertTrue(report["ready"])
+            self.assertFalse(report["target_exists"])
+            self.assertFalse(report["path_created"])
+            self.assertFalse(report["write_probe_performed"])
+            self.assertFalse(target.exists())
+
 
 if __name__ == "__main__":
     unittest.main()
