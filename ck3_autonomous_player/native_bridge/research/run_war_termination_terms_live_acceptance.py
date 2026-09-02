@@ -531,7 +531,12 @@ async def _run_mcp_sequence(
     }
 
 
-def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
+def _run(
+    args: argparse.Namespace,
+    *,
+    sequence_runner: Any = _run_mcp_sequence,
+    report_kind: str = "ck3_war_termination_terms_four_domain_live_acceptance",
+) -> tuple[dict[str, object], int]:
     started_wall = utc_now()
     started = time.monotonic()
     attempt = args.attempt_dir.expanduser().resolve()
@@ -688,7 +693,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         if exact_build.get("ok") is not True:
             raise RuntimeError("exact-build/capability proof failed")
         mcp_sequence = asyncio.run(
-            _run_mcp_sequence(
+            sequence_runner(
                 driver,
                 war_id=args.war_id,
                 expected_character_id=args.expected_character_id,
@@ -751,7 +756,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     )
     payload: dict[str, object] = {
         "format_version": 1,
-        "kind": "ck3_war_termination_terms_four_domain_live_acceptance",
+        "kind": report_kind,
         "started_at": started_wall,
         "finished_at": utc_now(),
         "elapsed_seconds": round(max(0.0, time.monotonic() - started), 3),

@@ -280,3 +280,36 @@ public return and cache paths. This is not production-live evidence:
 literal or mutation was added. The next live dependency is one paused Raiktor
 query that validates the wrapper's session binding, followed by the missing
 strict truce and generic war-bound public inputs.
+
+## 2026-09-02 paused session-binding acceptance entry
+
+[ready-to-run; no CK3 launch in this package] The dedicated
+`run_raiktor_surrender_session_binding_live_acceptance.py` wrapper reuses the
+existing terms runner's exact-build, cold-checkpoint, double-query and cleanup
+flow. It adds strict checks for the query receipt's connection generation,
+episode run, snapshot/public/native revisions, and the wrapper's episode
+character plus CK3 process ID. After each query it also requires the matching
+`war_termination_terms` cache row to carry the same wrapper, query sequence and
+session fields.
+
+The acceptance remains read-only: the only permitted gameplay commands are
+two `query-war-termination-terms-v1-<WarID>` calls. Both projected aggregates
+must remain incomplete with truce and generic war-bound typed unavailable,
+`action_terms_ready=false`, and `automatic_surrender_ready=false`.
+
+Run `--preflight-only` first with the frozen checkpoint/driver-state inputs.
+This mode hashes the input bundle, exact CK3 executable and bridge binaries,
+checks the driver episode/date anchor and frozen public-wiring contract, writes
+a `ready-to-run` JSON report, and exits without preparing a profile or calling
+the managed CK3 session. Omit `--preflight-only` only after the exclusive CK3
+slot is assigned; the wrapper repeats this no-launch check immediately before
+delegating to the live runner. Until that live report exists, production-live
+and surrender readiness remain false.
+
+The frozen-input preflight is retained at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-public-session-binding-ready-20260902\no-launch-preflight-v2.json`
+(SHA-256
+`8A71627001E8B0AA3C974BCE016A7710078ADE6B9F4F089B665EEF8F30DC61DB`).
+All checks are GREEN, `ck3_started=false`, `profile_prepared=false`, and the
+reserved `live-attempt` path does not yet exist. This is readiness evidence,
+not a paused/live capability artifact.
