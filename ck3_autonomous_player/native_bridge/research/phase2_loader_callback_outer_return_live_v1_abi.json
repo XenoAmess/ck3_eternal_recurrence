@@ -1,0 +1,102 @@
+{
+  "contract": "phase2-loader-callback-outer-return-live-v1",
+  "schema_version": 1,
+  "status": "private-outer-caller-mapped",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "062548173d717b6bcc8234cfb3bee0df1eb7be4c",
+    "outer_caller_static_contract": "phase2-loader-callback-outer-caller-v1",
+    "outer_caller_static_contract_sha256": "E91A2C1A73720211EBDA87664CC0495363A2919A9914FE942EBCB36B5CBC86A5",
+    "private_probe": "phase2_loader_callback_debug_capture.cpp",
+    "private_probe_source_sha256": "D0E90CBCCBF0730F0BB426F09E670EA03044FA1F7F6977BFD4755F363707E0FE",
+    "private_probe_executable_sha256": "BA65B217FE7F15E69B4EB14C5C4251032B58E66F62BCB6A30D769E6DC26BFDBD"
+  },
+  "preflight": {
+    "open_kaishek_commit": "425514e2e937bb829b2415f9da7870609e9c736f",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\open-kaishek-support-20260902T1807\\phase2-outer-caller-preflight.json",
+    "artifact_sha256": "80FC14AF5081A85ECBCAC998FDCF8FE26A11644E24407865D24EB8EF2CB70823",
+    "parser_status": "GREEN",
+    "ir_status": "GREEN",
+    "runtime_status": "GREEN",
+    "validator_status": "RED",
+    "boundary": "the validator is the known full-root schema-only RED; this is offline structural support"
+  },
+  "capture": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\outer-return-caller-observation.json",
+    "artifact_sha256": "D694436E19762B1449FBEE38090A29C4451B64B332015646056868E9861C5CC1",
+    "timeout_ms": 60000,
+    "elapsed_seconds": 60.241,
+    "result": "GREEN",
+    "reason": "seq2-outer-caller-continuation-mapped",
+    "callback_entry_count": 2,
+    "normal_return_rva": "0x3B9ACE0",
+    "observations": [
+      {
+        "callback_sequence": 1,
+        "node_name": "CGameConceptTypeDatabase",
+        "vector_transition": "vector-exhausted",
+        "return_address": "runtime-address-redacted-by-rva-binding",
+        "continuation_rva": "0x2041D91",
+        "same_thread": true,
+        "matches_frozen_candidate": true,
+        "elapsed_seconds": 14.065
+      },
+      {
+        "callback_sequence": 2,
+        "node_name": "CJominiLoadScreenDatabase",
+        "vector_transition": "vector-exhausted",
+        "return_address": "runtime-address-redacted-by-rva-binding",
+        "continuation_rva": "0x88B5E1",
+        "same_thread": true,
+        "matches_frozen_candidate": true,
+        "elapsed_seconds": 15.840
+      }
+    ],
+    "sequence_2_mapping": {
+      "selected_from_candidate_count": 8,
+      "callsite_rva": "0x88B5DC",
+      "continuation_rva": "0x88B5E1",
+      "owner_function_rva": "0x88B480",
+      "owner_function_end_rva_exclusive": "0x88B649",
+      "owner_unwind_rva": "0x4C42814"
+    }
+  },
+  "cleanup": {
+    "callback_breakpoint_byte_restored": true,
+    "continuation_breakpoint_byte_restored": true,
+    "node_loaded_breakpoint_byte_restored": true,
+    "loop_exit_breakpoint_byte_restored": true,
+    "normal_return_breakpoint_byte_restored": true,
+    "process_terminated": true,
+    "real_user_profile_targeted": false,
+    "post_capture_ck3_process_count": 0,
+    "post_capture_probe_process_count": 0,
+    "result": "GREEN"
+  },
+  "next_outer_stop_point": {
+    "rva": "0x88B5E1",
+    "instruction": "nop",
+    "role": "exact sequence-2 caller continuation after loader-loop normal return",
+    "first_downstream_call_rva": "0x88B5E9",
+    "first_downstream_call_target_rva": "0x82D880",
+    "first_downstream_return_rva": "0x88B5EE",
+    "downstream_call_semantics": "unknown",
+    "required_before_more_live": "bounded static slice of this caller continuation path"
+  },
+  "limits": [
+    "the mapping identifies the exact external caller continuation, not the meaning of its downstream helper",
+    "the loader stall remains outside the completed callback vector and is not yet attributed to a wait edge",
+    "no public bridge, production loader, or readiness state changed"
+  ],
+  "readiness": "native-readiness RED + not-live"
+}

@@ -154,6 +154,14 @@ class Phase2LoaderCallbackDebugCaptureContractTests(unittest.TestCase):
         self.assertIn("last-returned-callback-vector-exhausted", self.source)
         self.assertIn("restore_transition_breakpoints", self.source)
 
+    def test_outer_caller_probe_reads_rsp_at_the_frozen_normal_return(self) -> None:
+        self.assertIn("kNormalReturnRva = 0x3B9ACE0", self.source)
+        self.assertIn("kOuterContinuationRvas", self.source)
+        self.assertIn('else if (name == L"--outer-caller")', self.source)
+        self.assertIn("ReadRemote(process_info.hProcess, context.Rsp", self.source)
+        self.assertIn("seq2-outer-caller-continuation-mapped", self.source)
+        self.assertIn("restore_outer_return_breakpoint", self.source)
+
 
 if __name__ == "__main__":
     unittest.main()
