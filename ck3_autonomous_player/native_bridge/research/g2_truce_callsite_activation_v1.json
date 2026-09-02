@@ -1,0 +1,80 @@
+{
+  "schema": "xar.ck3.g2_truce_callsite_activation.fixture.v1",
+  "status": "static-ready",
+  "read_only": true,
+  "exact_build": {
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "specializations": [
+    {
+      "template_parameter": 0,
+      "vtable_rva": "0x4461CA8",
+      "rtti_type_name": ".?AV?$CAddTruceEffect@$0A@@@",
+      "execute_slot": 22,
+      "execute_rva": "0x2EDAD20",
+      "execute_pdata": ["0x2EDAD20", "0x2EDB27C", "0x4DFE04C"],
+      "execute_sha256": "0CC65B9CFAE1F080C333E4B219388B19AA231E11FDF69AA9470D6E6E5B9EF199",
+      "preview_slot": 23,
+      "preview_rva": "0x2E87140",
+      "predicate_span": "0x2EDAE3C..0x2EDAE4C",
+      "predicate_sha256": "9ED1F405367C3578FA62235471508C3D35731E7EF48C3A8D9212A4D587F3A190",
+      "predicate_taken_target": "0x2EDAEDA",
+      "evaluator_call_rva": "0x2EDAF0F"
+    },
+    {
+      "template_parameter": 1,
+      "vtable_rva": "0x4461D70",
+      "rtti_type_name": ".?AV?$CAddTruceEffect@$00@@",
+      "execute_slot": 22,
+      "execute_rva": "0x2EDB3A0",
+      "execute_pdata": ["0x2EDB3A0", "0x2EDB9A5", "0x4DFE0C4"],
+      "execute_sha256": "DED15DD333E2B6D037B31BBA5DF1DD521885C8F3715C3CB5C040087B657F92E0",
+      "preview_slot": 23,
+      "preview_rva": "0x2E87140",
+      "predicate_span": "0x2EDB4CA..0x2EDB4DA",
+      "predicate_sha256": "2E053D5AC4C4E62B2B7505297535F7D7514C1DE1B449891462EBD735F02AF6F9",
+      "predicate_taken_target": "0x2EDB56A",
+      "evaluator_call_rva": "0x2EDB59E"
+    }
+  ],
+  "current_loaded_path": {
+    "observed_vtable_rva": "0x4461CA8",
+    "observed_specialization": 0,
+    "only_applicable_callsite": "0x2EDAF0F",
+    "source_live_report_sha256": "24D9661AEC29E8247BF63E54082487BD6A2E296F4E2A0A965227BDB454A63706"
+  },
+  "frozen_no_hit_live": {
+    "report_sha256": "1F319AE1F9D947D1BC766E304E8329CEE80E845B35833E45A2BB6F6E1DEB0AC9",
+    "classification": "no_native_callsite_hit",
+    "site_0_counts": [0, 0],
+    "site_1_counts": [0, 0],
+    "active_war_id": 50331699,
+    "player_character_id": 29829,
+    "primary_opponent_character_id": 36769,
+    "termination_or_context_effect_submitted": false
+  },
+  "activation": {
+    "dispatch": "CAddTruceEffect<0> virtual execute slot 22",
+    "local_predicate": "resolved source CharacterID != resolved target CharacterID",
+    "no_hit_cause": "no mutating execute dispatch in paused heartbeat-only run"
+  },
+  "next_distinct_read_only_seam": {
+    "rva": "0x2E87140",
+    "slot": 23,
+    "kind": "shared effect preview entry",
+    "activation": "game-native effect-description preview traversal",
+    "calls_duration_evaluator": false,
+    "evaluated_days_observable": false
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "time_advanced": false,
+    "effect_executed": false,
+    "mutation_sent": false,
+    "public_abi_changed": false,
+    "public_readiness_changed": false,
+    "evaluated_days_observable": false
+  }
+}

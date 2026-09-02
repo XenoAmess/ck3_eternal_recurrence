@@ -226,6 +226,10 @@
   live 已在 exact build 上成功安装两处 observer，但 241 samples 内两处均为稳定 `0/0`，typed
   `NO-GO / no_native_callsite_hit`；因此仍无 GREEN return artifact，no-hit/pre-only/partial/read
   failure 继续 unavailable，且 decision/action/automatic surrender readiness 不变。
+  [activation/CFG follow-up](g2-truce-callsite-activation-2026-09-03.md) 进一步证明实际
+  index-7 节点只对应 `CAddTruceEffect<0>` 的 site0；两处 hook 属于不同模板特化，而 paused
+  heartbeat-only run 没有 dispatch mutating execute slot。共享只读 preview slot 可作为更早
+  traversal observer，但它不调用 duration evaluator，不能生成 `evaluated_days`。
   2026-09-02 的 paused private pre-reset capture 先将缺失 duration 收窄为
   evaluator 前的 `root_shape_drift`；随后唯一 staged capture 将首个失败检查
   精确到 `root_capacity_mismatch`（actual `capacity/count=13/12`，旧合同
