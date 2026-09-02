@@ -18,6 +18,20 @@ gate or RED action raises `Phase2ChoreographyBlocked` and never creates a clean
 gate for that span.  This module does not register a producer or start/stop a
 recorder.
 
+`zhongguo_phase2_visual_handlers.py` supplies the real-surface adapter for the
+four catalogue entries that previously had no visual-handler boundary.  The
+scoreboard adapter consumes the existing production action cell and accepts
+only an `open` action with advertised capability, independently verified
+postcondition and a typed-visible modal in the later query.  Promotion,
+projects/metrics and cross-cycle/endgame consume exact source and result event
+keys through `query-current-event-window-context-v1` and
+`select-event-option-N`; their injected bounded advancement and provider
+verifier must both return GREEN, and the verifier must explicitly attest
+`provider_observed=true`.  An ACK, a result event, or a static fixture alone is
+therefore insufficient.  `CompositePhase2SpanDriver` combines these four
+handlers with the four already-owned gameplay handlers without allowing two
+delegates to claim the same handler.
+
 Build an unregistered scaffold while the runtime implementation is absent:
 
 ```python
