@@ -48,6 +48,11 @@ DATABASE_NODE_PATTERN = re.compile(
     r"\s+including dependencies\s*$",
     re.IGNORECASE | re.MULTILINE,
 )
+DATABASE_POST_INIT_PATTERN = re.compile(
+    r"^\[(?P<timestamp>[^\]]+)\]\[[^\]]+\]\[(?P<source_line>[^\]]+)\]:\s*"
+    r"PostInit\s+-\s*(?P<value>.+?)\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
 
 
 class LoaderStageError(RuntimeError):
@@ -112,6 +117,25 @@ def _database_node_details(debug_text: str) -> list[dict[str, Any]]:
             }
         )
     return details
+
+
+def _database_post_init_details(debug_text: str) -> list[dict[str, Any]]:
+    """Return passive observations of CK3's ``PostInit - %s`` records.
+
+    The exact-build callback scan locates this format string next to the
+    database-node loop, but does not establish its return semantics or a
+    script-file owner.  Keep the captured value as opaque text and never use
+    it for readiness or authorization.
+    """
+
+    return [
+        {
+            "timestamp": match.group("timestamp"),
+            "source_line": match.group("source_line"),
+            "value": match.group("value").strip(),
+        }
+        for match in DATABASE_POST_INIT_PATTERN.finditer(debug_text)
+    ]
 
 
 def extract_fatal_errors(error_log: bytes) -> list[dict[str, Any]]:
@@ -239,6 +263,7 @@ def inspect_loader_logs(
         stage = "awaiting_logs"
     fatal_errors = extract_fatal_errors(error_log)
     database_node_details = _database_node_details(debug_text)
+    database_post_init_details = _database_post_init_details(debug_text)
     return {
         "stage": stage,
         "database_init_seen": any(
@@ -255,6 +280,15 @@ def inspect_loader_logs(
         "last_database_node_detail": (
             database_node_details[-1] if database_node_details else None
         ),
+        # ``Database Node Init Time`` is printed only after the node's
+        # indirect init callback returns (exact-build static contract).  This
+        # is telemetry, not proof of callback return value or full readiness.
+        "database_callback_count": len(database_node_details),
+        "last_database_callback": (
+            database_node_details[-1] if database_node_details else None
+        ),
+        "database_post_init_count": len(database_post_init_details),
+        "database_post_init": database_post_init_details,
         "event_wait_authorized": stage
         in {"native_ready", "load_save", "in_game"},
         "fatal_error_count": len(fatal_errors),
@@ -324,6 +358,8 @@ def wait_for_phase2_seed_loader_stage(
     deadline = started + timeout_seconds
     last_identity: tuple[str, str] | None = None
     last_progress_at = started
+    last_database_progress_key: tuple[object, ...] | None = None
+    last_database_progress_at = started
     last_emitted_state: tuple[object, ...] | None = None
     sequence = 0
     last_observation: dict[str, Any] | None = None
@@ -350,11 +386,42 @@ def wait_for_phase2_seed_loader_stage(
             last_identity = identity
             last_progress_at = now
         quiet_seconds = max(0.0, now - last_progress_at)
+        last_callback = observation.get("last_database_callback")
+        if isinstance(last_callback, dict):
+            callback_detail_key: tuple[object, ...] = tuple(
+                last_callback.get(name)
+                for name in (
+                    "timestamp",
+                    "source_line",
+                    "node",
+                    "init_ms",
+                    "inclusive_ms",
+                )
+            )
+        else:
+            callback_detail_key = ()
+        database_progress_key = (
+            observation.get("database_callback_count", 0),
+            callback_detail_key,
+        )
+        if database_progress_key != last_database_progress_key:
+            last_database_progress_key = database_progress_key
+            last_database_progress_at = now
+        database_callback_quiet_seconds = max(
+            0.0, now - last_database_progress_at
+        )
         observation.update(
             {
                 "schema_version": 1,
                 "elapsed_seconds": round(max(0.0, now - started), 3),
                 "quiet_seconds": round(quiet_seconds, 3),
+                # Unlike ``quiet_seconds`` (which follows either log), this
+                # clock follows only completed database callback records.  It
+                # makes a loader stall visible even while unrelated event or
+                # onaction lines continue to arrive.
+                "database_callback_quiet_seconds": round(
+                    database_callback_quiet_seconds, 3
+                ),
                 "native_probe_error": native_probe_error,
             }
         )
@@ -458,6 +525,7 @@ def wait_for_phase2_seed_loader_stage(
                 "state": "loader_parse_red",
                 "result": "RED",
                 **observation,
+                "reason_code": "known_parser_errors_stalled_database",
             }
             append_jsonl(progress_jsonl, result)
             raise LoaderParseRed(
@@ -472,15 +540,26 @@ def wait_for_phase2_seed_loader_stage(
         state = "save_resume_red"
         error_type: type[LoaderStageError] = LoaderResumeRed
         message = "CK3 reached frontend but did not enter Load Save/In Game"
+        reason_code = "frontend_without_load_save"
     else:
         state = "loader_stage_timeout"
         error_type = LoaderStageTimeout
         message = "CK3 did not reach Load Save/In Game/native readiness"
+        if observation.get("database_callback_count", 0):
+            reason_code = "database_callback_stall"
+        elif observation.get("stage") == "database_init":
+            if observation.get("fatal_error_count", 0):
+                reason_code = "known_parser_errors_reached_deadline"
+            else:
+                reason_code = "database_init_without_callback_completion"
+        else:
+            reason_code = "no_loader_terminal"
     result = {
         "sequence": sequence + 1,
         "state": state,
         "result": "RED",
         **observation,
+        "reason_code": reason_code,
     }
     append_jsonl(progress_jsonl, result)
     raise error_type(message, result)

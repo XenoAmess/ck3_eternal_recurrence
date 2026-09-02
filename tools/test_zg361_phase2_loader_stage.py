@@ -48,6 +48,8 @@ def main() -> int:
                 b"Database Node Init Time: CGameConceptTypeDatabase - 3 ms - 3 ms including dependencies\n"
                 b"[00:00:02][D][database_dependencies.cpp:433]: "
                 b"Database Node Init Time: CJominiLoadScreenDatabase - 4 ms - 4 ms including dependencies\n"
+                b"[00:00:03][D][database_dependencies.cpp:433]: "
+                b"PostInit - CJominiLoadScreenDatabase\n"
             ),
             b"",
         )
@@ -89,6 +91,23 @@ def main() -> int:
             dependency_snapshot["stage"] == "engine_start"
             and dependency_snapshot["event_wait_authorized"] is False,
             "database dependency observation changed loader authorization",
+        )
+        require(
+            dependency_snapshot["database_callback_count"] == 2
+            and dependency_snapshot["last_database_callback"]
+            == dependency_snapshot["database_nodes"][-1],
+            "database callback completion telemetry was not preserved",
+        )
+        require(
+            dependency_snapshot["database_post_init_count"] == 1
+            and dependency_snapshot["database_post_init"] == [
+                {
+                    "timestamp": "00:00:03",
+                    "source_line": "database_dependencies.cpp:433",
+                    "value": "CJominiLoadScreenDatabase",
+                }
+            ],
+            "PostInit telemetry was not captured as opaque text",
         )
 
         # attempt07's concrete product errors stop a stagnant database load.
@@ -140,6 +159,11 @@ def main() -> int:
             require(
                 error.evidence["fatal_error_count"] == 4,
                 "fatal signatures were not deduplicated/scoped to product paths",
+            )
+            require(
+                error.evidence["reason_code"]
+                == "known_parser_errors_stalled_database",
+                "parser RED did not expose its bounded reason code",
             )
             require(
                 error.evidence["theme_warning_count"] == 1,
@@ -325,12 +349,63 @@ def main() -> int:
                 error.evidence["theme_warning_count"] == 1,
                 "theme-only warning was not observed",
             )
+            require(
+                error.evidence["reason_code"]
+                == "database_init_without_callback_completion",
+                "theme-only timeout did not expose its database boundary",
+            )
         require(
             all(
                 row["state"] != "loader_parse_red"
                 for row in rows(theme_progress)
             ),
             "theme-only warning emitted a false parser RED",
+        )
+
+        # A database node timing line proves one callback completed, but
+        # unrelated event-manager chatter must not hide that callbacks have
+        # stopped.  The terminal remains the compatible timeout state while
+        # its reason identifies the bounded callback stall.
+        callback_logs = root / "callback-stall" / "logs"
+        callback_logs.mkdir(parents=True)
+        callback_debug = callback_logs / "debug.log"
+        callback_debug.write_text(
+            "[00:00:01][D][database_dependencies.cpp:433]: "
+            "Database Node Init Time: CJominiLoadScreenDatabase - 4 ms - 4 ms including dependencies\n"
+            "[00:00:02][D][jomini_eventmanager.cpp:594]: Loaded events\n",
+            encoding="utf-8",
+        )
+        (callback_logs / "error.log").write_text("", encoding="utf-8")
+        callback_progress = root / "callback-stall" / "loader-progress.jsonl"
+        callback_time = FakeTime()
+        try:
+            loader.wait_for_phase2_seed_loader_stage(
+                callback_logs,
+                callback_progress,
+                timeout_seconds=4.0,
+                fatal_stall_seconds=2.0,
+                poll_interval_seconds=1.0,
+                clock=callback_time.clock,
+                sleeper=callback_time.sleep,
+            )
+            raise AssertionError("callback stall did not reach its bound")
+        except loader.LoaderStageTimeout as error:
+            require(
+                error.evidence["reason_code"] == "database_callback_stall",
+                "database callback stall was reported as an untyped timeout",
+            )
+            require(
+                error.evidence["database_callback_count"] == 1,
+                "callback stall evidence lost completed callback count",
+            )
+            require(
+                error.evidence["database_callback_quiet_seconds"] >= 3.0,
+                "callback-specific quiet clock did not advance",
+            )
+        require(
+            rows(callback_progress)[-1]["reason_code"]
+            == "database_callback_stall",
+            "append-only callback timeout lacked its reason code",
         )
 
         # Even a known historical parser error cannot steal the terminal once
