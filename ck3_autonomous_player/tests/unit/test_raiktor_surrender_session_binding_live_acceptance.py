@@ -243,7 +243,7 @@ class RaiktorSurrenderSessionBindingLiveAcceptanceTests(unittest.TestCase):
 class RaiktorSurrenderSessionBindingSequenceTests(
     unittest.IsolatedAsyncioTestCase
 ):
-    async def test_sequence_extends_base_double_query_without_new_command(
+    async def test_typed_unavailable_binding_is_green_despite_legacy_base_red(
         self,
     ) -> None:
         before = _snapshot()
@@ -252,7 +252,12 @@ class RaiktorSurrenderSessionBindingSequenceTests(
         second["query_sequence"] = 15
         after["war_termination_terms"][0]["query_sequence"] = 15
         base = {
-            "ok": True,
+            "ok": False,
+            "checks": {
+                "first_four_domains": False,
+                "second_four_domains": False,
+                "truce_probe": False,
+            },
             "allowed_gameplay_commands": [
                 f"query-war-termination-terms-v1-{WAR_ID}",
                 f"query-war-termination-terms-v1-{WAR_ID}",
@@ -278,7 +283,78 @@ class RaiktorSurrenderSessionBindingSequenceTests(
 
         self.assertTrue(result["ok"])
         self.assertTrue(result["session_binding"]["ok"])
+        self.assertFalse(
+            result["session_binding"]["legacy_base_sequence_ok"]
+        )
+        self.assertTrue(
+            result["session_binding"]["first"]["checks"]
+            ["truce_typed_unavailable"]
+        )
+        self.assertTrue(
+            result["session_binding"]["first"]["checks"]
+            ["war_bound_typed_unavailable"]
+        )
+        self.assertTrue(
+            result["session_binding"]["first"]["checks"]
+            ["aggregate_incomplete"]
+        )
+        self.assertTrue(
+            result["session_binding"]["first"]["checks"]
+            ["action_terms_closed"]
+        )
+        self.assertTrue(
+            result["session_binding"]["first"]["checks"]
+            ["automatic_surrender_closed"]
+        )
         self.assertEqual(result["mutation_commands"], [])
+
+    async def test_binding_mismatch_remains_red(self) -> None:
+        before = _snapshot()
+        first, between = _query_and_cache()
+        second, after = _query_and_cache()
+        second["query_sequence"] = 15
+        after["war_termination_terms"][0]["query_sequence"] = 15
+        second["raiktor_surrender_aggregate_session"]["binding"][
+            "process_id"
+        ] += 1
+        after["war_termination_terms"][0][
+            "raiktor_surrender_aggregate_session"
+        ]["binding"]["process_id"] += 1
+        base = {
+            "ok": False,
+            "allowed_gameplay_commands": [
+                f"query-war-termination-terms-v1-{WAR_ID}",
+                f"query-war-termination-terms-v1-{WAR_ID}",
+            ],
+            "mutation_commands": [],
+            "before_snapshot": {"structured_content": before},
+            "first_query": {"structured_content": first},
+            "between_snapshot": {"structured_content": between},
+            "second_query": {"structured_content": second},
+            "after_snapshot": {"structured_content": after},
+        }
+        with mock.patch.object(
+            HARNESS.terms_live,
+            "_run_mcp_sequence",
+            new=mock.AsyncMock(return_value=base),
+        ):
+            result = await HARNESS._run_session_binding_mcp_sequence(
+                object(),
+                war_id=WAR_ID,
+                expected_character_id=ATTACKER_ID,
+                expected_date_raw=DATE_RAW,
+            )
+
+        self.assertFalse(result["ok"])
+        self.assertFalse(result["session_binding"]["ok"])
+        self.assertTrue(
+            result["session_binding"]["first"]["checks"]
+            ["wrapper_strictly_normalized"]
+        )
+        self.assertFalse(
+            result["session_binding"]["second"]["checks"]
+            ["wrapper_strictly_normalized"]
+        )
 
 
 if __name__ == "__main__":

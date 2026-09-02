@@ -216,7 +216,6 @@ async def _run_session_binding_mcp_sequence(
         expected_character_id=expected_character_id,
     )
     checks = {
-        "base_terms_sequence": sequence.get("ok") is True,
         "first_session_binding": first_binding["ok"] is True,
         "second_session_binding": second_binding["ok"] is True,
         "session_binding_repeat_equal": first_binding.get("binding")
@@ -233,6 +232,7 @@ async def _run_session_binding_mcp_sequence(
         "session_binding": {
             "first": first_binding,
             "second": second_binding,
+            "legacy_base_sequence_ok": sequence.get("ok") is True,
             "checks": checks,
             "ok": all(checks.values()),
         },
