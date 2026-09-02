@@ -14,7 +14,7 @@
     "architecture": "msvc-x64"
   },
   "capture_product": {
-    "executable_sha256": "524D44FD38F18D2B574C7009C8F16ECABB2E83E4CD56DDDB04F577B8D20B9202",
+    "executable_sha256": "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72",
     "timeout_max_ms": 1200000
   },
   "observation": {
@@ -46,21 +46,29 @@
     "fresh_attempt_required": true,
     "artifact_directory": "must not exist or must be completely empty before verify-only and launch; prior reports, captures, screenshots, arms, or sidecars are never resumed",
     "isolated_userdir": "must contain no prior save, log, or shader-cache files",
-    "reuse_previous_attempt": false
+    "reuse_previous_attempt": false,
+    "startup_mode": "launch one CK3 normally without an operating-system debugger; do not send gameplay input before main-menu readiness",
+    "attach_mode": "after main-menu readiness, revalidate the unique PID, executable path, exact-build SHA-256, then attach the private read-only capture and require its ready artifact before lobby input"
   },
   "readiness_contract": {
     "process_discovery_timeout_seconds": 30,
     "main_menu_timeout_seconds": 300,
     "main_menu_stage_capture_seconds": [60, 120, 180, 240, 300],
+    "private_attach_timeout_seconds": 30,
     "map_hud_timeout_seconds": 90,
     "natural_bookmark_timeout_seconds": 520,
     "capture_process_timeout_ms": 1200000,
     "post_selection_capture_timeout_seconds": 30,
     "typed_terminals": [
       "FreshAttemptRequired",
-      "DebuggerOwnedProcessTimeout",
-      "DebuggerExitedBeforeMainMenu",
+      "NormalCK3ProcessTimeout",
+      "CK3ExitedBeforeMainMenu",
       "MainMenuReadinessTimeout",
+      "AttachTargetIdentityMismatch",
+      "AttachTargetBuildMismatch",
+      "PrivateAttachExitedBeforeReady",
+      "PrivateAttachReadinessTimeout",
+      "PrivateAttachReadinessInvalid",
       "LobbyNavigationFailure",
       "MapHudReadinessTimeout",
       "NaturalScenarioNavigationFailure",
@@ -72,7 +80,7 @@
   },
   "build_command": "cmake -S ck3_autonomous_player/native_bridge -B <build> -DXAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1=ON -DBUILD_TESTING=ON && cmake --build <build> --target xar_ck3_raiktor_war_bound_private_capture_v1",
   "self_test_command": "<build>/xar_ck3_raiktor_war_bound_private_capture_v1.exe --self-test",
-  "live_command": "python native_bridge/research/run_raiktor_war_bound_private_capture_v1.py ... --artifact-dir <fresh-attempt> --capture-timeout-ms 1200000 --main-menu-timeout-seconds 300 --ui-timeout-seconds 520",
-  "run_boundary": "Do not run until the P0 seed slot is released and the coordinator explicitly authorizes one distinct attempt. The runner must use a fresh artifact directory and isolated userdir, capture each persisted main-menu readiness stage, and atomically write the exact arm-file body only immediately before selecting naturally scheduled bookmark.1071.a.",
+  "live_command": "python native_bridge/research/run_raiktor_war_bound_private_capture_v1.py ... --artifact-dir <fresh-attempt> --capture-timeout-ms 1200000 --main-menu-timeout-seconds 300 --ui-timeout-seconds 520; the runner normally launches exactly one CK3, waits for main-menu readiness without gameplay input, validates its PID/path/build, then invokes the private product with --attach-pid <exact-pid> --ready-file <fresh-attempt>/attach-ready.json",
+  "run_boundary": "Do not run until the P0 seed slot is released and the coordinator explicitly authorizes one distinct attempt. The runner must use a fresh artifact directory and isolated userdir, capture each persisted main-menu readiness stage without a debugger or gameplay input, attach only after exact PID/path/build validation, require the private attach-ready artifact before lobby input, and atomically write the exact arm-file body only immediately before selecting naturally scheduled bookmark.1071.a.",
   "publication_boundary": "A GREEN private capture remains private live evidence. It does not change the public terms ABI or war_bound_armies_ready."
 }

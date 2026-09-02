@@ -58,6 +58,18 @@ class RaiktorWarBoundPrivateCaptureV1Tests(unittest.TestCase):
             1200000,
         )
 
+    def test_attach_mode_validates_target_and_detaches(self) -> None:
+        for token in (
+            'L"--attach-pid"',
+            "QueryFullProcessImageNameW",
+            "std::filesystem::equivalent(observed_exe, absolute_exe)",
+            "DebugActiveProcess(options.attach_pid)",
+            "DebugSetProcessKillOnExit(FALSE)",
+            "raiktor-war-bound-private-attach-ready-v1",
+            "DebugActiveProcessStop(process_info.dwProcessId)",
+        ):
+            self.assertIn(token, self.source)
+
 
 if __name__ == "__main__":
     unittest.main()

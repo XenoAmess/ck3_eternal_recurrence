@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Run one bounded UI-driven private Raiktor war-army capture.
 
-The C++ debugger owns the isolated CK3 process and performs the read-only
-native observation. This runner only navigates a disposable vanilla Robert
-1066 game, waits for the naturally scheduled bookmark.1071 event, atomically
-arms the exact option contract, and clicks option A. It never opens the debug
-console, injects the bridge, or issues a gameplay command API mutation.
+The runner normally starts one isolated CK3 and waits for main-menu readiness
+without gameplay input. It then validates the exact PID/build before attaching
+the private C++ read-only observer, navigates a disposable vanilla Robert 1066
+game, waits for the naturally scheduled bookmark.1071 event, atomically arms
+the exact option contract, and clicks option A. It never opens the debug console,
+injects the bridge, or issues a gameplay command API mutation.
 """
 
 from __future__ import annotations
@@ -22,10 +23,10 @@ import time
 
 
 EXPECTED_MANIFEST_SHA256 = (
-    "EBD2AFC166BCA6F3632CC04F5988618EC7A4B13A8C61AC9003BE1582AB940C18"
+    "6D1AEB1728AA3DB173A3222FADC4E2582046E49C804B91D664B51CA0D50D054F"
 )
 EXPECTED_CAPTURE_EXE_SHA256 = (
-    "524D44FD38F18D2B574C7009C8F16ECABB2E83E4CD56DDDB04F577B8D20B9202"
+    "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72"
 )
 EXPECTED_CK3_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -173,6 +174,7 @@ def validate_readiness_contract(
         "process_discovery_timeout_seconds": 30,
         "main_menu_timeout_seconds": 300,
         "main_menu_stage_capture_seconds": [60, 120, 180, 240, 300],
+        "private_attach_timeout_seconds": 30,
         "map_hud_timeout_seconds": 90,
         "natural_bookmark_timeout_seconds": 520,
         "capture_process_timeout_ms": 1200000,
@@ -201,7 +203,7 @@ def validate_readiness_contract(
 def wait_for_main_menu_readiness(
     acceptance: object,
     image_grab: object,
-    capture_process: subprocess.Popen[str],
+    ck3_process: subprocess.Popen[str],
     ui_dir: Path,
     timeout_seconds: int,
     stage_seconds: list[int],
@@ -211,11 +213,11 @@ def wait_for_main_menu_readiness(
     pending = list(stage_seconds)
     last_image = None
     while time.monotonic() - started < timeout_seconds:
-        if capture_process.poll() is not None:
+        if ck3_process.poll() is not None:
             raise TypedTerminalError(
-                "DebuggerExitedBeforeMainMenu",
+                "CK3ExitedBeforeMainMenu",
                 "main_menu_readiness",
-                "private capture process exited before main-menu readiness",
+                "normally launched CK3 exited before main-menu readiness",
             )
         acceptance.focus_ck3()
         last_image = image_grab.grab()
@@ -255,6 +257,69 @@ def wait_for_main_menu_readiness(
         "main_menu_readiness",
         f"main menu was not OCR-ready within {timeout_seconds} seconds",
     )
+
+
+def validate_running_ck3(pid: int, expected_exe: Path) -> dict[str, object]:
+    rows = process_inventory()
+    matches = [
+        row for row in rows
+        if str(row.get("Name", "")).lower() == "ck3.exe"
+        and int(row.get("ProcessId", -1)) == pid
+    ]
+    ck3_rows = [row for row in rows if str(row.get("Name", "")).lower() == "ck3.exe"]
+    if len(matches) != 1 or len(ck3_rows) != 1:
+        raise TypedTerminalError(
+            "AttachTargetIdentityMismatch",
+            "pre_attach_identity",
+            f"expected one CK3 process at PID {pid}, observed {ck3_rows}",
+        )
+    actual_exe = Path(str(matches[0].get("ExecutablePath", "")))
+    if actual_exe.resolve() != expected_exe.resolve():
+        raise TypedTerminalError(
+            "AttachTargetIdentityMismatch",
+            "pre_attach_identity",
+            f"PID {pid} executable path mismatch: {actual_exe}",
+        )
+    actual_hash = sha256(actual_exe)
+    if actual_hash != EXPECTED_CK3_SHA256:
+        raise TypedTerminalError(
+            "AttachTargetBuildMismatch",
+            "pre_attach_identity",
+            f"PID {pid} executable hash mismatch: {actual_hash}",
+        )
+    return {
+        "pid": pid,
+        "executable_path": str(actual_exe.resolve()),
+        "executable_sha256": actual_hash,
+    }
+
+
+def load_attach_ready(path: Path, pid: int) -> dict[str, object]:
+    try:
+        ready = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise TypedTerminalError(
+            "PrivateAttachReadinessInvalid",
+            "private_attach",
+            f"attach readiness artifact is invalid: {exc}",
+        ) from exc
+    expected = {
+        "schema": "raiktor-war-bound-private-attach-ready-v1",
+        "attach_mode": True,
+        "pid": pid,
+        "exe_sha256": EXPECTED_CK3_SHA256,
+        "observation_stop_rva": "0x2E7F951",
+        "breakpoint_installed": True,
+    }
+    for key, value in expected.items():
+        if ready.get(key) != value:
+            raise TypedTerminalError(
+                "PrivateAttachReadinessInvalid",
+                "private_attach",
+                f"attach readiness mismatch for {key}: {ready.get(key)!r}",
+            )
+    ready["sha256"] = sha256(path)
+    return ready
 
 
 def parse_args() -> argparse.Namespace:
@@ -357,20 +422,11 @@ def main() -> int:
     import pyautogui  # pylint: disable=import-error
     from PIL import ImageGrab  # pylint: disable=import-error
 
-    command = [
-        str(args.capture_exe.resolve()),
-        "--exe",
-        str(args.ck3_exe.resolve()),
-        "--userdir",
-        str(args.userdir.resolve()),
-        "--output",
-        str(capture_path.resolve()),
-        "--arm-file",
-        str(arm_path.resolve()),
-        "--timeout-ms",
-        str(args.capture_timeout_ms),
-    ]
+    attach_ready_path = args.artifact_dir / "attach-ready.json"
+    ck3_process: subprocess.Popen[str] | None = None
     capture_process: subprocess.Popen[str] | None = None
+    attach_target: dict[str, object] | None = None
+    attach_ready: dict[str, object] | None = None
     target_seen = False
     target_selected = False
     arm_sha256: str | None = None
@@ -381,38 +437,84 @@ def main() -> int:
     terminal_stage: str | None = None
     stage_artifacts: list[dict[str, object]] = []
     try:
-        capture_process = subprocess.Popen(
-            command,
-            cwd=str(args.capture_exe.resolve().parent),
+        ck3_command = [
+            str(args.ck3_exe.resolve()),
+            f"-userdir={args.userdir.resolve()}",
+        ]
+        ck3_process = subprocess.Popen(
+            ck3_command,
+            cwd=str(args.ck3_exe.resolve().parent),
             text=True,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
         )
-        ck3_pid = None
+        ck3_pid = ck3_process.pid
         deadline = time.monotonic() + int(
             readiness["process_discovery_timeout_seconds"]
         )
-        while time.monotonic() < deadline and capture_process.poll() is None:
-            rows = process_inventory()
-            ck3_rows = [row for row in rows if str(row.get("Name", "")).lower() == "ck3.exe"]
-            if len(ck3_rows) == 1:
-                ck3_pid = int(ck3_rows[0]["ProcessId"])
+        while time.monotonic() < deadline and ck3_process.poll() is None:
+            try:
+                attach_target = validate_running_ck3(ck3_pid, args.ck3_exe)
                 break
+            except TypedTerminalError:
+                pass
             time.sleep(0.25)
-        if ck3_pid is None:
+        if attach_target is None:
             raise TypedTerminalError(
-                "DebuggerOwnedProcessTimeout",
+                "NormalCK3ProcessTimeout",
                 "process_discovery",
-                "debugger-owned CK3 process did not appear uniquely",
+                "normally launched CK3 process did not appear uniquely",
             )
         acceptance.ACTIVE_CK3_PID = ck3_pid
         wait_for_main_menu_readiness(
             acceptance,
             ImageGrab,
-            capture_process,
+            ck3_process,
             ui_dir,
             int(readiness["main_menu_timeout_seconds"]),
             list(readiness["main_menu_stage_capture_seconds"]),
             stage_artifacts,
         )
+        attach_target = validate_running_ck3(ck3_pid, args.ck3_exe)
+        capture_command = [
+            str(args.capture_exe.resolve()),
+            "--attach-pid",
+            str(ck3_pid),
+            "--exe",
+            str(args.ck3_exe.resolve()),
+            "--output",
+            str(capture_path.resolve()),
+            "--arm-file",
+            str(arm_path.resolve()),
+            "--ready-file",
+            str(attach_ready_path.resolve()),
+            "--timeout-ms",
+            str(args.capture_timeout_ms),
+        ]
+        capture_process = subprocess.Popen(
+            capture_command,
+            cwd=str(args.capture_exe.resolve().parent),
+            text=True,
+        )
+        attach_deadline = time.monotonic() + int(
+            readiness["private_attach_timeout_seconds"]
+        )
+        while time.monotonic() < attach_deadline:
+            if attach_ready_path.is_file():
+                attach_ready = load_attach_ready(attach_ready_path, ck3_pid)
+                break
+            if capture_process.poll() is not None:
+                raise TypedTerminalError(
+                    "PrivateAttachExitedBeforeReady",
+                    "private_attach",
+                    "private capture exited before attach readiness",
+                )
+            time.sleep(0.1)
+        if attach_ready is None:
+            raise TypedTerminalError(
+                "PrivateAttachReadinessTimeout",
+                "private_attach",
+                "private capture did not publish attach readiness in time",
+            )
         try:
             acceptance.navigate_lobby(ui_dir, ironman=False)
         except Exception as exc:
@@ -537,6 +639,16 @@ def main() -> int:
                 capture_process.wait(timeout=10)
             except subprocess.TimeoutExpired:
                 pass
+        if ck3_process is not None and ck3_process.poll() is None:
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(ck3_process.pid)],
+                capture_output=True,
+                timeout=20,
+            )
+            try:
+                ck3_process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                pass
         acceptance.ACTIVE_CK3_PID = None
 
     time.sleep(1)
@@ -560,12 +672,16 @@ def main() -> int:
         and target_selected
         and capture_process is not None
         and capture_process.returncode == 0
+        and attach_ready is not None
         and capture is not None
         and capture.get("result") == "GREEN"
         and capture.get("source_execution_count") == 6
         and capture.get("public_bridge_abi_changed") is False
         and capture.get("production_detour_installed") is False
         and capture.get("readiness_promotion") is False
+        and capture.get("attach_mode") is True
+        and capture.get("debugger_detached") is True
+        and capture.get("process_terminated") is False
         and capture.get("arm_proof_sha256") == arm_sha256
         and not after_inventory
         and source_unchanged
@@ -581,6 +697,9 @@ def main() -> int:
         "elapsed_seconds": round((finished - started).total_seconds(), 3),
         "policy": {
             "single_ck3": True,
+            "normal_cold_start_before_attach": True,
+            "gameplay_input_before_main_menu": False,
+            "debugger_attach_after_main_menu": True,
             "natural_scheduled_event": True,
             "debug_console_used": False,
             "bridge_injected": False,
@@ -590,6 +709,9 @@ def main() -> int:
         },
         "readiness_contract": readiness,
         "readiness_stage_artifacts": stage_artifacts,
+        "ck3_pid": ck3_process.pid if ck3_process is not None else None,
+        "attach_target": attach_target,
+        "attach_ready": attach_ready,
         "frozen_inputs_before": hashes,
         "frozen_inputs_after": after_hashes,
         "source_unchanged": source_unchanged,

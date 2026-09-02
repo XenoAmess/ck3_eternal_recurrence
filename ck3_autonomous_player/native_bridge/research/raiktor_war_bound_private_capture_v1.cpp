@@ -66,10 +66,12 @@ constexpr char kExpectedArmyName[] = "norman_highwaymen";
 
 struct Options {
   bool self_test = false;
+  DWORD attach_pid = 0;
   std::filesystem::path exe;
   std::filesystem::path userdir;
   std::filesystem::path output;
   std::filesystem::path arm_file;
+  std::filesystem::path ready_file;
   DWORD timeout_ms = 180000;
 };
 
@@ -108,6 +110,8 @@ struct CaptureResult {
   bool breakpoint_installed = false;
   bool original_breakpoint_byte_restored = false;
   bool process_terminated = false;
+  bool attach_mode = false;
+  bool debugger_detached = false;
   std::vector<SourceExecutionCapture> executions;
 };
 
@@ -469,6 +473,35 @@ bool CaptureSourceExecution(HANDLE process, std::uint64_t image_base,
   return true;
 }
 
+std::filesystem::path QueryProcessImagePath(HANDLE process) {
+  std::vector<wchar_t> buffer(32768, L'\0');
+  DWORD size = static_cast<DWORD>(buffer.size());
+  if (!QueryFullProcessImageNameW(process, 0, buffer.data(), &size) ||
+      size == 0) {
+    throw std::runtime_error("QueryFullProcessImageNameW failed");
+  }
+  return std::filesystem::path(std::wstring(buffer.data(), size));
+}
+
+void WriteReadyFile(const Options &options, const CaptureResult &capture) {
+  if (options.ready_file.empty()) return;
+  if (!options.ready_file.parent_path().empty()) {
+    std::filesystem::create_directories(options.ready_file.parent_path());
+  }
+  std::ofstream output(options.ready_file, std::ios::binary | std::ios::trunc);
+  if (!output) throw std::runtime_error("could not open attach ready file");
+  output << "{\n"
+         << "  \"schema\": \"raiktor-war-bound-private-attach-ready-v1\",\n"
+         << "  \"attach_mode\": true,\n"
+         << "  \"pid\": " << capture.pid << ",\n"
+         << "  \"exe_sha256\": \"" << capture.exe_sha256 << "\",\n"
+         << "  \"image_base\": \"" << Hex(capture.image_base) << "\",\n"
+         << "  \"observation_stop_rva\": \"" << Hex(kObservationStopRva)
+         << "\",\n"
+         << "  \"breakpoint_installed\": true\n"
+         << "}\n";
+}
+
 void WriteManifest(const Options &options, const CaptureResult &capture) {
   std::ofstream output(options.output, std::ios::binary | std::ios::trunc);
   if (!output) throw std::runtime_error("could not open output manifest");
@@ -504,6 +537,10 @@ void WriteManifest(const Options &options, const CaptureResult &capture) {
          << ",\n"
          << "  \"process_terminated\": "
          << (capture.process_terminated ? "true" : "false") << ",\n"
+         << "  \"attach_mode\": "
+         << (capture.attach_mode ? "true" : "false") << ",\n"
+         << "  \"debugger_detached\": "
+         << (capture.debugger_detached ? "true" : "false") << ",\n"
          << "  \"executions\": [\n";
   for (std::size_t i = 0; i < capture.executions.size(); ++i) {
     const auto &row = capture.executions[i];
@@ -550,10 +587,18 @@ Options ParseOptions(int argc, wchar_t **argv) {
       return argv[i];
     };
     if (name == L"--self-test") options.self_test = true;
+    else if (name == L"--attach-pid") {
+      const auto parsed = std::stoul(value());
+      if (parsed == 0 || parsed > MAXDWORD) {
+        throw std::runtime_error("attach PID out of range");
+      }
+      options.attach_pid = static_cast<DWORD>(parsed);
+    }
     else if (name == L"--exe") options.exe = value();
     else if (name == L"--userdir") options.userdir = value();
     else if (name == L"--output") options.output = value();
     else if (name == L"--arm-file") options.arm_file = value();
+    else if (name == L"--ready-file") options.ready_file = value();
     else if (name == L"--timeout-ms") {
       const auto parsed = std::stoul(value());
       if (parsed < 1000 || parsed > 1200000) {
@@ -564,11 +609,13 @@ Options ParseOptions(int argc, wchar_t **argv) {
       throw std::runtime_error("unknown option: " + Narrow(name));
     }
   }
-  if (!options.self_test && (options.exe.empty() || options.userdir.empty() ||
-                             options.output.empty() ||
-                             options.arm_file.empty())) {
+  if (!options.self_test &&
+      (options.exe.empty() || options.output.empty() ||
+       options.arm_file.empty() || options.ready_file.empty() ||
+       (options.attach_pid == 0 && options.userdir.empty()))) {
     throw std::runtime_error(
-        "required: --exe --userdir --output --arm-file");
+        "required: --exe --output --arm-file --ready-file and either "
+        "--attach-pid or --userdir");
   }
   return options;
 }
@@ -625,6 +672,7 @@ int SelfTest() {
 
 int Run(const Options &options) {
   CaptureResult capture{};
+  capture.attach_mode = options.attach_pid != 0;
   const auto absolute_exe = std::filesystem::absolute(options.exe);
   if (std::filesystem::file_size(absolute_exe) != kExpectedExeSize) {
     throw std::runtime_error("CK3 executable size mismatch");
@@ -634,35 +682,64 @@ int Run(const Options &options) {
     throw std::runtime_error("CK3 executable hash mismatch");
   }
 
-  std::filesystem::create_directories(options.userdir);
+  if (!capture.attach_mode) {
+    std::filesystem::create_directories(options.userdir);
+  }
   if (!options.output.parent_path().empty()) {
     std::filesystem::create_directories(options.output.parent_path());
   }
-  HANDLE job = CreateKillOnCloseJob();
-  std::wstring command = Quote(absolute_exe.wstring()) + L" -debug_mode -userdir=" +
-                         Quote(std::filesystem::absolute(options.userdir).wstring());
-  std::vector<wchar_t> mutable_command(command.begin(), command.end());
-  mutable_command.push_back(L'\0');
-  STARTUPINFOW startup{};
-  startup.cb = sizeof(startup);
+  HANDLE job = nullptr;
   PROCESS_INFORMATION process_info{};
-  if (!CreateProcessW(absolute_exe.c_str(), mutable_command.data(), nullptr,
-                      nullptr, FALSE,
-                      DEBUG_ONLY_THIS_PROCESS | CREATE_NEW_PROCESS_GROUP, nullptr,
-                      absolute_exe.parent_path().c_str(), &startup,
-                      &process_info)) {
-    CloseHandle(job);
-    throw std::runtime_error("CreateProcessW failed");
-  }
-  if (!AssignProcessToJobObject(job, process_info.hProcess)) {
-    TerminateProcess(process_info.hProcess, 1);
+  if (capture.attach_mode) {
+    process_info.dwProcessId = options.attach_pid;
+    process_info.hProcess = OpenProcess(
+        PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_VM_WRITE |
+            PROCESS_VM_OPERATION | SYNCHRONIZE,
+        FALSE, options.attach_pid);
+    if (!process_info.hProcess) {
+      throw std::runtime_error("OpenProcess for attach failed");
+    }
+    const auto observed_exe = QueryProcessImagePath(process_info.hProcess);
+    if (!std::filesystem::equivalent(observed_exe, absolute_exe)) {
+      CloseHandle(process_info.hProcess);
+      throw std::runtime_error("attached PID executable path mismatch");
+    }
+    if (!DebugActiveProcess(options.attach_pid)) {
+      CloseHandle(process_info.hProcess);
+      throw std::runtime_error("DebugActiveProcess failed");
+    }
+    if (!DebugSetProcessKillOnExit(FALSE)) {
+      DebugActiveProcessStop(options.attach_pid);
+      CloseHandle(process_info.hProcess);
+      throw std::runtime_error("DebugSetProcessKillOnExit failed");
+    }
+  } else {
+    job = CreateKillOnCloseJob();
+    std::wstring command =
+        Quote(absolute_exe.wstring()) + L" -debug_mode -userdir=" +
+        Quote(std::filesystem::absolute(options.userdir).wstring());
+    std::vector<wchar_t> mutable_command(command.begin(), command.end());
+    mutable_command.push_back(L'\0');
+    STARTUPINFOW startup{};
+    startup.cb = sizeof(startup);
+    if (!CreateProcessW(absolute_exe.c_str(), mutable_command.data(), nullptr,
+                        nullptr, FALSE,
+                        DEBUG_ONLY_THIS_PROCESS | CREATE_NEW_PROCESS_GROUP,
+                        nullptr, absolute_exe.parent_path().c_str(), &startup,
+                        &process_info)) {
+      CloseHandle(job);
+      throw std::runtime_error("CreateProcessW failed");
+    }
+    if (!AssignProcessToJobObject(job, process_info.hProcess)) {
+      TerminateProcess(process_info.hProcess, 1);
+      CloseHandle(process_info.hThread);
+      CloseHandle(process_info.hProcess);
+      CloseHandle(job);
+      throw std::runtime_error("AssignProcessToJobObject failed");
+    }
     CloseHandle(process_info.hThread);
-    CloseHandle(process_info.hProcess);
-    CloseHandle(job);
-    throw std::runtime_error("AssignProcessToJobObject failed");
   }
   capture.pid = process_info.dwProcessId;
-  CloseHandle(process_info.hThread);
 
   const auto start = std::chrono::steady_clock::now();
   std::uint64_t breakpoint = 0;
@@ -695,6 +772,12 @@ int Run(const Options &options) {
       } else {
         capture.breakpoint_installed = true;
         breakpoint_live = true;
+        try {
+          WriteReadyFile(options, capture);
+        } catch (const std::exception &) {
+          capture.reason = "attach-ready-file-write-failed";
+          done = true;
+        }
       }
       if (event.u.CreateProcessInfo.hFile) {
         CloseHandle(event.u.CreateProcessInfo.hFile);
@@ -794,15 +877,22 @@ int Run(const Options &options) {
     capture.original_breakpoint_byte_restored = WriteRemoteByte(
         process_info.hProcess, breakpoint, kObservationStopByte);
   }
-  if (!process_exited) {
-    capture.process_terminated =
-        TerminateProcess(process_info.hProcess, capture.result == "GREEN" ? 0 : 1) != FALSE;
+  if (!process_exited && capture.attach_mode) {
+    capture.debugger_detached =
+        DebugActiveProcessStop(process_info.dwProcessId) != FALSE;
+    if (!capture.debugger_detached) {
+      capture.result = "RED";
+      capture.reason = "debugger-detach-failed";
+    }
+  } else if (!process_exited) {
+    capture.process_terminated = TerminateProcess(
+        process_info.hProcess, capture.result == "GREEN" ? 0 : 1) != FALSE;
     WaitForSingleObject(process_info.hProcess, 10000);
   } else {
     capture.process_terminated = true;
   }
   CloseHandle(process_info.hProcess);
-  CloseHandle(job);
+  if (job) CloseHandle(job);
   WriteManifest(options, capture);
   return capture.result == "GREEN" ? 0 : 1;
 }

@@ -28,6 +28,10 @@ SPEC.loader.exec_module(MODULE)
 
 
 class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.runner_source = RUNNER.read_text(encoding="utf-8")
+
     def test_manifest_persists_distinct_300_second_readiness(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         attempt = manifest["attempt_contract"]
@@ -40,12 +44,16 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
             [60, 120, 180, 240, 300],
         )
         self.assertEqual(readiness["capture_process_timeout_ms"], 1200000)
+        self.assertEqual(readiness["private_attach_timeout_seconds"], 30)
         self.assertEqual(manifest["capture_product"]["timeout_max_ms"], 1200000)
         self.assertEqual(
             manifest["capture_product"]["executable_sha256"],
             MODULE.EXPECTED_CAPTURE_EXE_SHA256,
         )
         self.assertIn("MainMenuReadinessTimeout", readiness["typed_terminals"])
+        self.assertIn("AttachTargetIdentityMismatch", readiness["typed_terminals"])
+        self.assertIn("PrivateAttachReadinessTimeout", readiness["typed_terminals"])
+        self.assertIn("normally launches exactly one CK3", manifest["live_command"])
 
     def test_readiness_cli_must_match_manifest(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
@@ -87,6 +95,36 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
             capture, error = MODULE.load_capture_artifact(path)
         self.assertEqual(capture, {"result": "RED"})
         self.assertIsNone(error)
+
+    def test_attach_ready_requires_exact_pid_build_and_breakpoint(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "attach-ready.json"
+            path.write_text(json.dumps({
+                "schema": "raiktor-war-bound-private-attach-ready-v1",
+                "attach_mode": True,
+                "pid": 4242,
+                "exe_sha256": MODULE.EXPECTED_CK3_SHA256,
+                "image_base": "0x140000000",
+                "observation_stop_rva": "0x2E7F951",
+                "breakpoint_installed": True,
+            }), encoding="utf-8")
+            ready = MODULE.load_attach_ready(path, 4242)
+            self.assertEqual(ready["pid"], 4242)
+            self.assertIn("sha256", ready)
+            with self.assertRaises(MODULE.TypedTerminalError) as caught:
+                MODULE.load_attach_ready(path, 4243)
+        self.assertEqual(caught.exception.terminal, "PrivateAttachReadinessInvalid")
+
+    def test_runner_waits_for_main_menu_before_private_attach(self) -> None:
+        normal_start = self.runner_source.index("ck3_process = subprocess.Popen")
+        main_menu = self.runner_source.index("wait_for_main_menu_readiness(", normal_start)
+        attach = self.runner_source.index("capture_process = subprocess.Popen", main_menu)
+        lobby = self.runner_source.index("acceptance.navigate_lobby", attach)
+        self.assertLess(normal_start, main_menu)
+        self.assertLess(main_menu, attach)
+        self.assertLess(attach, lobby)
+        self.assertNotIn('"-debug_mode"', self.runner_source)
+        self.assertIn("validate_running_ck3(ck3_pid, args.ck3_exe)", self.runner_source)
 
 
 if __name__ == "__main__":

@@ -2080,7 +2080,7 @@ separate `readiness_main_menu_ready.png`. Each written stage row is included
 in the terminal report with its SHA-256.
 
 The manifest also freezes the surrounding budgets: 30 seconds for the unique
-debugger-owned CK3 process, 90 seconds for the map HUD, 520 seconds for the
+CK3 process, 90 seconds for the map HUD, 520 seconds for the
 naturally scheduled `bookmark.1071`, 30 seconds after selecting the exact
 option, and 1,200,000 ms for the enclosing private capture process. CLI values
 must equal these persisted values. Loader, lobby, map, natural-event, early
@@ -2115,3 +2115,51 @@ capture argument bound to 1,200,000 ms. The rebuilt executable SHA-256 is
 `524D44FD38F18D2B574C7009C8F16ECABB2E83E4CD56DDDB04F577B8D20B9202`;
 the manifest now binds that product hash and its timeout maximum. The failed
 attempt is not reusable and no second CK3 run is authorized by this fix.
+
+#### Corrected 300-second attempt: main-menu readiness RED
+
+[harness RED / native observation not reached] The one authorized corrected
+run started private capture PID `57276` and its only CK3 child PID `53544`.
+It remained on the rendered "starting game" screen for the full 300-second
+window and ended at the first typed terminal,
+`MainMenuReadinessTimeout / main_menu_readiness`, after 304.042 seconds.
+Robert was not selected, game time did not advance, `bookmark.1071` did not
+appear, and neither the action-arm file nor `capture.json` was created.
+
+The stage screenshot SHA-256 values are: 60 s
+`3B9364435BCBB9DD26E00E6DD253A779460855A1EE6110C6845A18D5B93522B1`;
+120 s `67855E77C20AABD860CB40D25D109AE61644FFDF2963772CB28B2F2B9BC57987`;
+180 s `DB07AB3274A78A736ACB228400B439969E4FC5115F2C4AE33D00E3551FA52DFE`;
+240 s `4404159292672F616F96BF5F5DD53D3301DD8FE221713A6D974E7DE38AA79380`;
+and the 300 s terminal
+`5B0560EB156F127562565B44FC715EBFB76A6EED7420176F1A8D84D339482B37`.
+The report SHA-256 is
+`A0A2024330C85B586F7CD7392252E7599B5633D3173DD185458ECF62A1AA9B9F`
+and cleanup SHA-256 is
+`DBCF0FC9593D622B6A17E127D982BBB8CA7D555EEB5D8BB449AE0510BA19784C`.
+Cleanup returned all involved process counts to zero, and all frozen inputs
+were unchanged. No console, bridge, gameplay command mutation, or second CK3
+was used.
+
+#### Normal-start then private-attach harness
+
+[static-ready / no CK3 run] Repeated debugger-owned cold starts are replaced
+by a distinct two-stage harness. Stage one launches exactly one CK3 normally,
+without an operating-system debugger and without any gameplay input, then
+retains the same 60/120/180/240/300-second main-menu evidence. After main-menu
+readiness, the runner revalidates the unique PID, its actual executable path,
+and exact-build SHA-256. Only then does the private product call
+`DebugActiveProcess` for that PID, install the same RVA `0x2E7F951`
+breakpoint, and publish `attach-ready.json` binding PID, build hash, image
+base, RVA, and installed state. Lobby navigation cannot begin before that
+ready artifact passes its exact fixture contract.
+
+The private capture opts out of debugger kill-on-exit, restores its original
+breakpoint byte, and detaches at its terminal; the owning runner remains
+responsible for final single-CK3 cleanup. Fresh userdir/attempt requirements,
+natural Robert 1066 and `bookmark.1071.a`, exact action-arm bytes, and the
+console/bridge/gameplay-mutation prohibition are unchanged. Attach target,
+build, early exit, readiness timeout, and invalid ready artifact have distinct
+typed terminals. The candidate is verify-only GREEN with no attempt directory
+created and no CK3 process. It does not change the public ABI or promote
+`war_bound_armies_ready`.
