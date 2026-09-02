@@ -1,0 +1,83 @@
+{
+  "contract": "phase2-completion-consumer-v1",
+  "schema_version": 1,
+  "status": "static-completion-consumer-bound",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "61cf17fa361f6b1873cc9ab001ec5832b222ebe2",
+    "completion_edge_contract": "phase2-outer-completion-edge-v1",
+    "extractor": "extract_phase2_completion_consumer.py",
+    "extractor_sha256": "F4EF4572B56EBCB1B69927D66094BAC9DC350B99501093C019882F3BC9B5DB17"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\completion-consumer-static-extract.json",
+    "artifact_sha256": "4E189772BEAD64B7EBE0E6804155CF66AB885770E7DDD76BF37C5BAE9E2CDCD9",
+    "ck3_started": false,
+    "bounded_slice": {
+      "begin_rva": "0x3B9A190",
+      "end_rva_exclusive": "0x3B9E266",
+      "bytes_sha256": "A96B0EDEFAE0770A756CA3AABECFD77FCA4BB9DB7A829264FAA169A6D7D08CCA",
+      "state_zero_gate_read_rvas": ["0x3B9A1EA", "0x3B9A241", "0x3B9B9A4", "0x3B9B9E0"],
+      "completion_consumer_read_rvas": ["0x3B9DEA7"]
+    },
+    "consumer": {
+      "function_rva": "0x3B9DD50",
+      "function_end_rva_exclusive": "0x3B9E025",
+      "unwind_rva": "0x4F10198",
+      "bytes_sha256": "084EEA10A407EA4A654FE02FB10E9435E3549EA4C3F48EDE29206CEE36480832",
+      "direct_call_rvas": ["0x3B9E10B", "0x3B9E175"],
+      "state_read_rva": "0x3B9DEA7",
+      "state_offset": "0x60",
+      "complete_values": [2, 3],
+      "complete_branch_rva": "0x3B9DEB0",
+      "reference_count_offset": "0x64",
+      "retired_value": 3,
+      "retired_publish_rva": "0x3B9DF7B",
+      "callback_offset": "0x38",
+      "callback_destroy_rva": "0x3B9DF94",
+      "callback_clear_rva": "0x3B9DF97",
+      "owner_offset": "0x58",
+      "owner_release_rva": "0x3B9DFAA"
+    },
+    "wrapper": {
+      "function_rva": "0x3B9E030",
+      "function_end_rva_exclusive": "0x3B9E266",
+      "unwind_rva": "0x4F101D4",
+      "bytes_sha256": "C311284A4604FF68449A7C84CE8A607FA1175A2E6539F4F537FE28CF841CE249"
+    }
+  },
+  "observation_entry": {
+    "rva": "0x3B9DEA7",
+    "read": [
+      "RBX task pointer",
+      "dword [RBX+0x60] state",
+      "qword [RBX+0x38] callback",
+      "callback vtable slot 2 target"
+    ],
+    "selected_task_filter": "callback slot 2 target RVA equals 0x88B480",
+    "mutation_required": false,
+    "public_schema_change_required": false,
+    "live_required_for_static_contract": false
+  },
+  "conclusion": {
+    "completion_release": "bounded scheduler poll consumes state 2/3; final reference transitions to state 3, destroys the callback, and releases task storage",
+    "explicit_os_wait_or_signal_found": false,
+    "next_distinct_stop_point_rva": "0x3B9DEA7",
+    "next_live_required": false
+  },
+  "limits": [
+    "the completion release is a scheduler poll/retire edge, not an OS wait primitive",
+    "the generic executor's 1267 callers were not expanded",
+    "no public bridge, production hook, or readiness state changed"
+  ],
+  "readiness": "native-readiness RED + static completion consumer bound"
+}
