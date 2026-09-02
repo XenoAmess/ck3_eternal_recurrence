@@ -2067,3 +2067,30 @@ native observation point remains RVA `0x2E7F951`, gated by the exact
 `bookmark.1071.a` action arm and six source executions. Source attribution,
 measured initial soldiers, proven loss, the public ABI, and
 `war_bound_armies_ready` all remain unchanged/false.
+
+#### Distinct staged loader-readiness contract (2026-09-02)
+
+[static-ready / no new CK3 run] The loader-stage RED above is not a reason to
+repeat the same 120-second attempt. Same-machine controls reached the public
+session at 149.8 seconds and a historical cold control at 205.7 seconds, so a
+distinct future attempt now has a persisted 300-second main-menu readiness
+budget. The private-capture manifest freezes screenshots at 60, 120, 180,
+240, and the 300-second terminal; readiness before the deadline also writes a
+separate `readiness_main_menu_ready.png`. Each written stage row is included
+in the terminal report with its SHA-256.
+
+The manifest also freezes the surrounding budgets: 30 seconds for the unique
+debugger-owned CK3 process, 90 seconds for the map HUD, 520 seconds for the
+naturally scheduled `bookmark.1071`, 30 seconds after selecting the exact
+option, and 1,200,000 ms for the enclosing private capture process. CLI values
+must equal these persisted values. Loader, lobby, map, natural-event, early
+capture exit, and post-selection failures each have distinct typed terminals.
+
+Every future execution requires a new absent-or-empty artifact directory and
+an isolated userdir with no prior save, log, or shader-cache files. Verify-only
+does not create the attempt directory. Prior screenshots, reports, captures,
+or action arms cannot be resumed. Robert 1066, the natural event schedule,
+and the exact `bookmark.1071.a` arm remain unchanged; console and bridge
+gameplay mutation remain forbidden. This contract is only a static candidate:
+it does not authorize a CK3 run, change the public ABI, or promote
+`war_bound_armies_ready`.
