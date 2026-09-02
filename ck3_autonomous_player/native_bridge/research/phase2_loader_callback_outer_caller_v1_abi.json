@@ -1,0 +1,77 @@
+{
+  "contract": "phase2-loader-callback-outer-caller-v1",
+  "schema_version": 1,
+  "status": "static-caller-ambiguous-no-go",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "26f2b0b9378f8417dd4a18eb6dd49077f9428224",
+    "next_node_live_contract": "phase2-loader-callback-next-node-live-v1",
+    "next_node_live_contract_sha256": "FCF5267CFDECE8E4B80D94A7B707C7053B5B2E6A3C7FC3A5E306650E022CE551",
+    "extractor": "extract_phase2_loader_callback_outer_callers.py",
+    "extractor_sha256": "CC5B1362AA442CA39DE3FC88892CF45113A96F4EA1EEF63D525D4666AA4C4788"
+  },
+  "preflight": {
+    "reused_without_rerun": true,
+    "reason": "the immediately preceding package used the same exact executable and current open_kaishek checkout/JAR",
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\next-node-open-kaishek-preflight.json",
+    "artifact_sha256": "85C7FF727E9305314C2B5DF6F57FBA7D9ECC9ED1CAD8B30B24409276812984B5"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\outer-caller-static-extract.json",
+    "artifact_sha256": "494B4773E54DCAB0774B08CD1A361AE35A97BD5F07B748782083938BDCEA177A",
+    "ck3_started": false,
+    "callee_rva": "0x3B9AB00",
+    "normal_return_rva": "0x3B9ACE0",
+    "normal_return_address_source": "[RSP] before RET",
+    "direct_caller_count": 8,
+    "candidate_continuations": [
+      "0x821E4A",
+      "0x88B5E1",
+      "0x1B39852",
+      "0x1E18C5B",
+      "0x1E21CD8",
+      "0x203FF9B",
+      "0x2041D91",
+      "0x3B9AEF9"
+    ],
+    "distinct_pdata_owner_count": 8,
+    "argument_shape": "all eight callsites pass an address of a caller-local 16-byte pair in RCX",
+    "continuation_shapes": {
+      "nop": 6,
+      "immediate_global_read": 1,
+      "immediate_jump": 1,
+      "callee_return_value_consumed": 0
+    }
+  },
+  "selection": {
+    "target_callback_sequence": 2,
+    "target_node_name": "CJominiLoadScreenDatabase",
+    "candidate_count_before": 8,
+    "candidate_count_after": 8,
+    "selected_continuation_rva": null,
+    "result": "NO-GO",
+    "reason": "the direct call instructions, caller-local RCX setup, and continuations encode no runtime node or concrete callback identity"
+  },
+  "next_entry": {
+    "required": "one separately authorized bounded private observation at normal return RVA 0x3B9ACE0 after callback sequence 2, reading [RSP] and matching it to the eight verified continuation RVAs",
+    "authorized_in_this_package": false,
+    "forbidden": [
+      "infer a caller from continuation shape",
+      "expand into vector construction or whole-loader reverse engineering",
+      "start CK3 in this static package",
+      "widen the public bridge or promote readiness"
+    ]
+  },
+  "readiness": "native-readiness RED + not-live"
+}
