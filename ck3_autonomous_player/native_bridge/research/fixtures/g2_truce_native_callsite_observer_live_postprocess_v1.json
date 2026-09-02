@@ -27,6 +27,9 @@
       "expected_evaluated_days_observable": false,
       "report": {
         "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "status": "red",
+        "ok": false,
+        "error": "RuntimeError: observation_timeout_without_stable_native_return",
         "policy": {
           "heartbeat_only": true,
           "mcp_queries": [],
@@ -36,6 +39,7 @@
           "time_advanced": false
         },
         "exact_build_proof": {"ok": true},
+        "cleanup": {"ok": true},
         "source_invariant": {"unchanged": true},
         "driver_anchor": {
           "episode_character_id": 29829,
@@ -56,6 +60,7 @@
         },
         "session": {"pid": 1001, "ok": true},
         "observation": {
+          "result": "observation_timeout_without_stable_native_return",
           "samples": [
             {
               "sequence": 10,
@@ -103,6 +108,9 @@
       "expected_evaluated_days_observable": false,
       "report": {
         "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "status": "red",
+        "ok": false,
+        "error": "RuntimeError: process_exit_before_stable_native_return",
         "policy": {
           "heartbeat_only": true,
           "mcp_queries": [],
@@ -112,6 +120,7 @@
           "time_advanced": false
         },
         "exact_build_proof": {"ok": true},
+        "cleanup": {"ok": true},
         "source_invariant": {"unchanged": true},
         "driver_anchor": {
           "episode_character_id": 29829,
@@ -132,6 +141,7 @@
         },
         "session": {"pid": 1002, "ok": true},
         "observation": {
+          "result": "process_exit_before_stable_native_return",
           "samples": [
             {
               "sequence": 20,
@@ -179,6 +189,9 @@
       "expected_evaluated_days_observable": true,
       "report": {
         "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "status": "green",
+        "ok": true,
+        "error": null,
         "policy": {
           "heartbeat_only": true,
           "mcp_queries": [],
@@ -188,6 +201,7 @@
           "time_advanced": false
         },
         "exact_build_proof": {"ok": true},
+        "cleanup": {"ok": true},
         "source_invariant": {"unchanged": true},
         "driver_anchor": {
           "episode_character_id": 29829,
@@ -208,6 +222,7 @@
         },
         "session": {"pid": 1003, "ok": true},
         "observation": {
+          "result": "two_stable_native_pre_post_samples",
           "samples": [
             {
               "sequence": 30,
@@ -290,6 +305,9 @@
       "expected_evaluated_days_observable": false,
       "report": {
         "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "status": "red",
+        "ok": false,
+        "error": "RuntimeError: observer_schema_or_install_red",
         "policy": {
           "heartbeat_only": true,
           "mcp_queries": [],
@@ -299,6 +317,7 @@
           "time_advanced": false
         },
         "exact_build_proof": {"ok": true},
+        "cleanup": {"ok": true},
         "source_invariant": {"unchanged": true},
         "driver_anchor": {
           "episode_character_id": 29829,
@@ -319,6 +338,7 @@
         },
         "session": {"pid": 1004, "ok": true},
         "observation": {
+          "result": "observer_schema_or_install_red",
           "samples": [
             {
               "sequence": 40,

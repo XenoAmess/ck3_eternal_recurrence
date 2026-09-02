@@ -86,6 +86,8 @@ def _validate_policy(report: dict[str, Any]) -> dict[str, Any]:
     exact_build_proof = (
         exact_build_proof if isinstance(exact_build_proof, dict) else {}
     )
+    cleanup = report.get("cleanup")
+    cleanup = cleanup if isinstance(cleanup, dict) else {}
     checks = {
         "report_kind": report.get("kind") == EXPECTED_REPORT_KIND,
         "heartbeat_only": policy.get("heartbeat_only") is True,
@@ -96,6 +98,7 @@ def _validate_policy(report: dict[str, Any]) -> dict[str, Any]:
         "no_time_advance": policy.get("time_advanced") is False,
         "source_unchanged": source_invariant.get("unchanged") is True,
         "exact_build_proven": exact_build_proof.get("ok") is True,
+        "managed_cleanup_proven": cleanup.get("ok") is True,
     }
     return {"checks": checks, "ok": all(checks.values())}
 
@@ -245,6 +248,54 @@ def _validate_session_identity(
     return {"identity": identity, "checks": checks, "ok": all(checks.values())}
 
 
+def _validate_runner_terminal(
+    report: dict[str, Any], classification: str
+) -> dict[str, Any]:
+    observation = report.get("observation")
+    observation = observation if isinstance(observation, dict) else {}
+    result = observation.get("result")
+    if classification == "two_site_return_observed":
+        expected_results = {"two_stable_native_pre_post_samples"}
+        expected_ok = True
+        expected_status = "green"
+        error_ok = report.get("error") is None
+    elif classification == "no_native_callsite_hit":
+        expected_results = {
+            "observation_timeout_without_stable_native_return"
+        }
+        expected_ok = False
+        expected_status = "red"
+        error_ok = isinstance(report.get("error"), str)
+    elif classification in {
+        "pre_only_native_callsite",
+        "incomplete_two_site_return",
+    }:
+        expected_results = {
+            "observation_timeout_without_stable_native_return",
+            "process_exit_before_stable_native_return",
+        }
+        expected_ok = False
+        expected_status = "red"
+        error_ok = isinstance(report.get("error"), str)
+    else:
+        expected_results = {
+            "observer_schema_or_install_red",
+            "not_started",
+            "process_exit_before_stable_native_return",
+            "observation_timeout_without_stable_native_return",
+        }
+        expected_ok = False
+        expected_status = "red"
+        error_ok = isinstance(report.get("error"), str)
+    checks = {
+        "runner_ok": report.get("ok") is expected_ok,
+        "runner_status": report.get("status") == expected_status,
+        "observation_result": result in expected_results,
+        "error_coherent": error_ok,
+    }
+    return {"checks": checks, "ok": all(checks.values())}
+
+
 def analyze(
     report: Any,
     manifest: Any,
@@ -330,6 +381,11 @@ def analyze(
         classification = "incomplete_two_site_return"
         status = "NO-GO"
 
+    terminal_proof = _validate_runner_terminal(report, classification)
+    if terminal_proof["ok"] is not True:
+        classification = "read_or_install_failure"
+        status = "RED"
+
     evaluated_observable = classification == "two_site_return_observed"
     source = manifest.get("source")
     source = source if isinstance(source, dict) else {}
@@ -354,6 +410,7 @@ def analyze(
             "manifest": manifest_proof,
             "runner_policy": policy_proof,
             "session_identity": session_identity_proof,
+            "runner_terminal": terminal_proof,
             "samples_bounded": bounded,
             "sample_errors": sample_errors,
             "counter_regressions": counter_regressions,

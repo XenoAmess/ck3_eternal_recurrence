@@ -141,6 +141,7 @@ def verify(manifest_path: Path) -> dict[str, object]:
         "all_frozen_hashes_match": actual_hashes == expected_hashes,
         "all_frozen_files_read_only": all(is_read_only(path) for path in files.values()),
         "source_zip_contains_observer_contract": required_source_files <= names,
+        "postprocessor_frozen_with_candidate": "postprocessor" in files,
         "private_option_default_off_in_source": private_option_default_off,
         "direct_capture_combination_rejected": direct_combination_rejected,
         "private_marker_present": PRIVATE_MARKER in private_data,
@@ -166,6 +167,9 @@ def verify(manifest_path: Path) -> dict[str, object]:
         ),
         "unique_command_uses_passive_runner": (
             "run_g2_truce_native_callsite_observer_live.py" in command
+        ),
+        "unique_command_binds_ready_manifest": (
+            "--ready-manifest" in command
         ),
         "unique_command_has_no_direct_capture_environment": (
             "XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE" not in command

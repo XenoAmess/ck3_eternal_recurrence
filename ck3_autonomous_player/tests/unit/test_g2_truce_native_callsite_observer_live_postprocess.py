@@ -192,6 +192,20 @@ class G2TruceNativeCallsiteObserverLivePostprocessTests(unittest.TestCase):
         self.assertIsNone(result["session_identity"])
         self.assertFalse(result["evaluated_days"]["observable"])
 
+    def test_cleanup_or_runner_terminal_mismatch_suppresses_return(self) -> None:
+        case = copy.deepcopy(self.fixture["cases"][2])
+        case["report"]["cleanup"]["ok"] = False
+        case["report"]["status"] = "red"
+        case["report"]["ok"] = False
+        case["report"]["error"] = "RuntimeError: cleanup not proven"
+        result = self._analyze(case)
+
+        self.assertEqual(result["classification"], "read_or_install_failure")
+        self.assertEqual(result["status"], "RED")
+        self.assertFalse(result["proofs"]["runner_policy"]["ok"])
+        self.assertFalse(result["proofs"]["runner_terminal"]["ok"])
+        self.assertFalse(result["evaluated_days"]["observable"])
+
 
 if __name__ == "__main__":
     unittest.main()

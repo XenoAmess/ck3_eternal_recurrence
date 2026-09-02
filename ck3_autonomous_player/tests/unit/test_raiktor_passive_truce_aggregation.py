@@ -174,6 +174,14 @@ class RaiktorPassiveTruceAggregationTests(unittest.TestCase):
             sample["callsites"][1]["post_call_count"] = 0
             sample["callsites"][1]["last_post_thread_id"] = 0
             sample["callsites"][1]["last_post_timestamp_qpc"] = 0
+        case["report"]["status"] = "red"
+        case["report"]["ok"] = False
+        case["report"]["error"] = (
+            "RuntimeError: observation_timeout_without_stable_native_return"
+        )
+        case["report"]["observation"]["result"] = (
+            "observation_timeout_without_stable_native_return"
+        )
         manifest_sha = self.fixture["manifest_sha256"]
         postprocess = POSTPROCESSOR.analyze(
             case["report"],

@@ -198,3 +198,38 @@ aggregate remains incomplete and `six_dynamic_domains_ready`,
 `action_terms_ready`, `decision_ready` and `automatic_surrender_ready` remain
 false. No public action or mutation surface was added. This is a static intake
 seam, not a claim that a GREEN passive live artifact already exists.
+
+## Runner-to-acceptance evidence path (2026-09-03)
+
+[static-ready; no CK3 launch] The source runner now requires an explicit
+`--ready-manifest`.  After its managed session has ended and cleanup has
+produced the immutable raw `report.json`, it hashes that exact manifest, runs
+the bounded typed postprocessor against the same bytes, and atomically writes
+two sibling files:
+
+- `typed-postprocess.json`, containing the complete typed result;
+- `acceptance-report.json`, binding the raw report, ready manifest, runner
+  source, postprocessor source and typed result by SHA-256.
+
+The postprocessor also requires successful managed cleanup and a runner
+terminal coherent with the classified observation. A return-shaped heartbeat
+cannot remain GREEN when the raw runner reports failure, an unexpected stop
+reason, or unproven cleanup.
+
+The acceptance report carries `identity_bound_truce_input_eligible=true` only
+for `GREEN / two_site_return_observed` with observable two-site return values.
+That flag only says the typed result may be offered to the already strict
+identity-bound projector; it is not an action or decision readiness claim.
+No-hit, pre-only, partial-return and read/install terminals retain their typed
+non-GREEN classifications.  Every acceptance report keeps expiry and
+war-bound observation false, and keeps action terms, decision, and automatic
+surrender readiness false.
+
+The no-launch verifier for the next candidate additionally requires the
+postprocessor to be a frozen candidate file and the unique command to carry
+the manifest-binding argument.  The previously frozen
+`469ACAC7...093B64FDD` candidate directory was not modified by this static
+package.  Before another live, the integrated runner/postprocessor must be
+refrozen into a fresh immutable candidate and pass the updated no-launch
+verification.  Only a later authorized live can supply actual native returns;
+this wiring package does not supply `evaluated_days` itself.

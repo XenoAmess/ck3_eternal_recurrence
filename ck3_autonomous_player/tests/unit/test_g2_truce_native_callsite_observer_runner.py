@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
+import tempfile
 import unittest
 
 
@@ -101,6 +104,77 @@ class G2TruceNativeCallsiteObserverRunnerTests(unittest.TestCase):
         self.assertNotIn("query_war_termination_terms", source)
         self.assertNotIn("surrender_war", source)
 
+    def test_runner_materializes_bound_typed_acceptance_after_cleanup(self) -> None:
+        fixture = json.loads(
+            (
+                RESEARCH
+                / "fixtures/"
+                "g2_truce_native_callsite_observer_live_postprocess_v1.json"
+            ).read_text(encoding="utf-8")
+        )
+        cases = {
+            case["name"]: case for case in fixture["cases"]
+        }
+        for name, expected_ok in (
+            ("both_native_sites_return_twice_stable", True),
+            ("installed_heartbeat_without_native_hit", False),
+        ):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
+                root = Path(raw)
+                report_path = root / "report.json"
+                manifest_path = root / "ready-to-run.json"
+                RUNNER._write_json_atomic(report_path, cases[name]["report"])
+                RUNNER._write_json_atomic(manifest_path, fixture["manifest"])
+                manifest_sha256 = hashlib.sha256(
+                    manifest_path.read_bytes()
+                ).hexdigest().upper()
+
+                result = RUNNER._materialize_acceptance_evidence(
+                    report_path=report_path,
+                    manifest_path=manifest_path,
+                    expected_manifest_sha256=manifest_sha256,
+                )
+
+                acceptance = result["acceptance"]
+                self.assertEqual(acceptance["ok"], expected_ok)
+                self.assertEqual(
+                    acceptance["input_evidence"]["runner_report_sha256"],
+                    hashlib.sha256(report_path.read_bytes()).hexdigest().upper(),
+                )
+                self.assertEqual(
+                    acceptance["input_evidence"]["ready_manifest_sha256"],
+                    manifest_sha256,
+                )
+                self.assertEqual(
+                    Path(result["typed_path"]).name, "typed-postprocess.json"
+                )
+                self.assertEqual(
+                    Path(result["acceptance_path"]).name,
+                    "acceptance-report.json",
+                )
+                self.assertFalse(
+                    acceptance["readiness"]["action_terms_ready"]
+                )
+                self.assertFalse(
+                    acceptance["readiness"]["decision_ready"]
+                )
+                self.assertFalse(
+                    acceptance["readiness"]["automatic_surrender_ready"]
+                )
+                self.assertFalse(
+                    acceptance["projection"]["expiry_observable"]
+                )
+                self.assertFalse(
+                    acceptance["projection"]["war_bound_observable"]
+                )
+
+    def test_runner_requires_manifest_binding_for_future_candidate(self) -> None:
+        source = (
+            RESEARCH / "run_g2_truce_native_callsite_observer_live.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn('"--ready-manifest"', source)
+        self.assertIn('"acceptance-report.json"', source)
+
     def test_verifier_freezes_exact_source_and_two_anchors(self) -> None:
         self.assertEqual(
             VERIFIER.EXPECTED_SOURCE_COMMIT,
@@ -114,6 +188,8 @@ class G2TruceNativeCallsiteObserverRunnerTests(unittest.TestCase):
             RESEARCH / "verify_g2_truce_native_callsite_observer_candidate.py"
         ).read_text(encoding="utf-8")
         self.assertIn('"all_frozen_files_read_only"', verifier_source)
+        self.assertIn('"postprocessor_frozen_with_candidate"', verifier_source)
+        self.assertIn('"unique_command_binds_ready_manifest"', verifier_source)
 
 
 if __name__ == "__main__":

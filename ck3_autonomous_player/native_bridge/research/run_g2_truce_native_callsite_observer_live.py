@@ -25,6 +25,10 @@ from typing import Any
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
+RESEARCH_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(RESEARCH_ROOT))
+
+import analyze_g2_truce_native_callsite_observer_live as postprocessor  # noqa: E402
 
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
@@ -58,6 +62,7 @@ EXPECTED_EXECUTABLE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 EXPECTED_CALL_RVAS = (0x2EDAF0F, 0x2EDB59E)
+MAX_MANIFEST_BYTES = 4 * 1024 * 1024
 REQUIRED_CALLSITE_FIELDS = (
     "call_instruction_rva",
     "pre_call_count",
@@ -87,6 +92,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-bridge-injector-sha256", required=True)
     parser.add_argument("--expected-character-id", type=int, required=True)
     parser.add_argument("--expected-date-raw", type=int, required=True)
+    parser.add_argument("--ready-manifest", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=420.0)
     parser.add_argument("--readiness-timeout", type=float, default=300.0)
     parser.add_argument("--observation-timeout", type=float, default=60.0)
@@ -116,6 +122,114 @@ def _write_json_atomic(path: Path, payload: object) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def _materialize_acceptance_evidence(
+    *,
+    report_path: Path,
+    manifest_path: Path,
+    expected_manifest_sha256: str | None = None,
+) -> dict[str, object]:
+    """Bind one raw runner report to its typed offline acceptance result."""
+
+    report_path = report_path.expanduser().resolve()
+    manifest_path = manifest_path.expanduser().resolve()
+    report_bytes = report_path.read_bytes()
+    manifest_bytes = manifest_path.read_bytes()
+    if len(report_bytes) > postprocessor.MAX_REPORT_BYTES:
+        raise AgentError("runner report exceeds bounded postprocessor limit")
+    if len(manifest_bytes) > MAX_MANIFEST_BYTES:
+        raise AgentError("ready manifest exceeds bounded postprocessor limit")
+    report_sha256 = hashlib.sha256(report_bytes).hexdigest().upper()
+    manifest_sha256 = hashlib.sha256(manifest_bytes).hexdigest().upper()
+    expected_manifest_sha256 = (
+        _expected_sha256(
+            expected_manifest_sha256, "ready-manifest SHA-256"
+        )
+        if expected_manifest_sha256 is not None
+        else manifest_sha256
+    )
+    typed = postprocessor.analyze(
+        json.loads(report_bytes.decode("utf-8")),
+        json.loads(manifest_bytes.decode("utf-8")),
+        report_sha256=report_sha256,
+        manifest_sha256=manifest_sha256,
+        expected_manifest_sha256=expected_manifest_sha256,
+    )
+    typed_path = report_path.with_name("typed-postprocess.json")
+    _write_json_atomic(typed_path, typed)
+    typed_sha256 = _sha256_file(typed_path)
+    evaluated = typed.get("evaluated_days")
+    evaluated = evaluated if isinstance(evaluated, dict) else {}
+    projection_eligible = bool(
+        typed.get("status") == "GREEN"
+        and typed.get("classification") == "two_site_return_observed"
+        and evaluated.get("observable") is True
+    )
+    runner_path = Path(__file__).resolve()
+    postprocessor_path = Path(postprocessor.__file__).resolve()
+    acceptance_path = report_path.with_name("acceptance-report.json")
+    acceptance = {
+        "format_version": 1,
+        "kind": "ck3_g2_truce_native_callsite_observer_typed_acceptance",
+        "status": typed.get("status"),
+        "classification": typed.get("classification"),
+        "ok": projection_eligible,
+        "input_evidence": {
+            "runner_report_path": str(report_path),
+            "runner_report_sha256": report_sha256,
+            "ready_manifest_path": str(manifest_path),
+            "ready_manifest_sha256": manifest_sha256,
+            "expected_ready_manifest_sha256": expected_manifest_sha256,
+            "runner_source_path": str(runner_path),
+            "runner_source_sha256": _sha256_file(runner_path),
+            "postprocessor_source_path": str(postprocessor_path),
+            "postprocessor_source_sha256": _sha256_file(postprocessor_path),
+        },
+        "typed_postprocess": {
+            "path": str(typed_path),
+            "sha256": typed_sha256,
+            "contract": typed.get("contract"),
+            "status": typed.get("status"),
+            "classification": typed.get("classification"),
+        },
+        "projection": {
+            "identity_bound_truce_input_eligible": projection_eligible,
+            "evaluated_days": {
+                "observable": projection_eligible,
+                "site_0": (
+                    evaluated.get("site_0") if projection_eligible else None
+                ),
+                "site_1": (
+                    evaluated.get("site_1") if projection_eligible else None
+                ),
+            },
+            "expiry_observable": False,
+            "war_bound_observable": False,
+        },
+        "readiness": {
+            "action_terms_ready": False,
+            "decision_ready": False,
+            "automatic_surrender_ready": False,
+        },
+        "boundaries": {
+            "heartbeat_or_install_is_evaluated_days": False,
+            "no_hit_is_evaluated_days": False,
+            "direct_evaluator_invoked": False,
+            "context_effect_executed": False,
+            "mutation_executed": False,
+            "ck3_started_by_postprocessing": False,
+        },
+    }
+    _write_json_atomic(acceptance_path, acceptance)
+    return {
+        "acceptance": acceptance,
+        "acceptance_path": str(acceptance_path),
+        "acceptance_sha256": _sha256_file(acceptance_path),
+        "typed": typed,
+        "typed_path": str(typed_path),
+        "typed_sha256": typed_sha256,
+    }
 
 
 def _copy_exact(source: Path, target: Path, expected_sha256: str) -> dict[str, object]:
@@ -532,9 +646,16 @@ def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
         payload, exit_code = _run(args)
+        evidence = _materialize_acceptance_evidence(
+            report_path=Path(str(payload["report_path"])),
+            manifest_path=args.ready_manifest,
+        )
     except BaseException as error:
         print(f"ERROR: {type(error).__name__}: {error}", file=sys.stderr)
         return 2
+    acceptance = evidence["acceptance"]
+    if acceptance.get("ok") is not True:
+        exit_code = 1
     print(
         json.dumps(
             {
@@ -542,6 +663,12 @@ def main(argv: list[str] | None = None) -> int:
                 "status": payload.get("status"),
                 "report_path": payload.get("report_path"),
                 "observation_result": payload.get("observation", {}).get("result"),
+                "typed_postprocess_path": evidence["typed_path"],
+                "typed_postprocess_sha256": evidence["typed_sha256"],
+                "acceptance_report_path": evidence["acceptance_path"],
+                "acceptance_report_sha256": evidence["acceptance_sha256"],
+                "typed_status": acceptance.get("status"),
+                "typed_classification": acceptance.get("classification"),
                 "error": payload.get("error"),
             },
             ensure_ascii=False,
