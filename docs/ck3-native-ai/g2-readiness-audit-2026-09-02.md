@@ -400,3 +400,17 @@ Artifact:
 Fixture parser/validator are GREEN and IR/runtime are SKIPPED; the full-root
 validator's existing schema-only RED is unrelated. No CK3 process or
 mutation occurred, and `GEN-034` remains unchanged.
+
+## 2026-09-02 11:13 truce internal-diagnostic boundary
+
+A bounded source/fixture audit found no reusable private truce diagnostic sink.
+`ObserveRaiktorSurrenderTruceV1` keeps its typed failure only in a local return
+value, while `ReadRaiktorSurrenderTruceDuration` resets the output on failure
+before the caller can retain it. `ReadWarTerminationTerms` consequently
+publishes only the existing `evaluated_days_observable=false/null` row. The
+thread-local unavailable-reason accessor belongs to the disabled exit-terms
+path and is not read by the truce bridge, so reusing it would be stale and
+mis-scoped. The frozen paused artifact and logs contain no hidden truce
+diagnostic. No code, public wire, offset, or CK3 run changed; the next possible
+entry is a separately scoped private/test-only capture before the reset, after
+an exact-build DLL and offline open_kaishek preflight are available.
