@@ -565,3 +565,30 @@ the companion full-root run retains the known bounded schema-only RED
 (`232,973`). Both are offline (`ck3_started=false`, no save mutation). This
 is an offline dependency check only and leaves the loader callback-stall
 diagnosis and phase-two readiness unchanged.
+
+## 2026-09-02 11:28 clean-export bytecode hygiene closure
+
+Parent commit `e1f9faa6b974a39711bcf458d87aa3426e16247c` closes the observed
+clean-export bytecode contamination at the runner boundary. The runner now
+sets `PYTHONDONTWRITEBYTECODE=1` and `sys.dont_write_bytecode` before optional
+imports, and passes `-B` to normal and optimized child commands. A new
+import-guard regression proves that importing the runner in an otherwise clean
+export creates no `__pycache__`, `.pyc`, or `.pyo` files.
+
+The retained preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-bounded-gate-20260902\pycache-repro-current\artifacts-38cf20e-valid\preflight.json`
+(SHA-256
+`83FE0797D93468086FBC4C5BAB31F2728741922A72FEC1B018CE4A6CA2D0E62F`). Its
+`frozen_git_commit` is `38cf20e63cdd4b41fe772453d1429de3bc06e1ed`, a
+patch-equivalent duplicate of `e1f9faa` (both trees are
+`60100213ff6eb3111e4366b6b6f66f770c02587e`; this is not claimed as an
+`e1f9faa`-bound run). All preflight checks are GREEN, including
+`clean_source_unchanged`, archive equivalence, and runtime projection
+invariance; `seed_ready=false` and `ck3_launch_attempted=false` remain
+explicit.
+
+The focused seed-capture suite (`14` test functions in normal mode and the
+same `14` under `-O`) is GREEN in both runs; the parent static workflow
+`33587172920` is also SUCCESS. This closes the bytecode-hygiene gate only: no
+CK3 rerun, loader callback diagnosis, seed readiness, or phase-two capability
+status changed.
