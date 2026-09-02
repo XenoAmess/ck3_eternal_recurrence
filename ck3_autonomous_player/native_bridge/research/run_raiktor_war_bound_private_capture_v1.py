@@ -28,8 +28,12 @@ if str(PROJECT_TOOLS) not in sys.path:
 
 from paradox_legal_consent import (  # noqa: E402
     LEGAL_ALLOWED_TERMS,
+    LEGAL_AUTHORIZATION_TEXT,
+    LEGAL_AUTHORIZATION_VERSION,
     LEGAL_CONSENT_PROFILE_SUFFIX,
     LEGAL_DENIED_TERMS,
+    LEGAL_NOTIFICATION_BUTTONS,
+    LEGAL_PURCHASE_BUTTONS,
     LEGAL_MODAL_HEADER_REGION,
     TypedTerminalError,
     _authorized_legal_marker,
@@ -37,13 +41,14 @@ from paradox_legal_consent import (  # noqa: E402
     account_legal_state,
     classify_authorized_legal_modal,
     newly_persisted_legal_markers,
+    persist_preclassification_evidence,
     sha256,
     validate_legal_consent_source,
 )
 
 
 EXPECTED_MANIFEST_SHA256 = (
-    "70D9DDA9397733E2454D7842C78144CA653B435765F690D911A325A4BF308B74"
+    "7578FA0D74554490E45188F6DAD36995D4FF03604500446B6B253CD0B574D342"
 )
 EXPECTED_CAPTURE_EXE_SHA256 = (
     "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72"
@@ -121,6 +126,15 @@ def atomic_arm(path: Path) -> str:
     return observed
 
 
+def atomic_json(path: Path, payload: dict[str, object]) -> None:
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    os.replace(temporary, path)
+
+
 def load_capture_artifact(path: Path) -> tuple[dict[str, object] | None, str | None]:
     """Load a terminal capture without masking an earlier harness failure."""
     if not path.is_file():
@@ -169,6 +183,8 @@ def navigate_lobby_with_authorized_legal(
     ui_dir: Path,
     stage_artifacts: list[dict[str, object]],
     legal_evidence: list[dict[str, object]],
+    classification_attempts: list[dict[str, object]],
+    classification_evidence_path: Path,
 ) -> None:
     new_game = acceptance.wait_for_ocr_text(
         "新游戏", acceptance.MAIN_MENU_REGION, 15,
@@ -188,10 +204,37 @@ def navigate_lobby_with_authorized_legal(
             break
         rows = [
             str(row[0]) for row in acceptance.ocr_results(
-                image, LEGAL_MODAL_HEADER_REGION
+                image, acceptance.FULL_SCREEN_REGION
             )
         ]
-        classification = classify_authorized_legal_modal(rows)
+        attempt = persist_preclassification_evidence(
+            image,
+            rows,
+            ui_dir,
+            len(classification_attempts) + 1,
+            ck3_context_confirmed=True,
+        )
+        if attempt["evidence_required"]:
+            classification_attempts.append(attempt)
+            screenshot = attempt["preclassification_screenshot"]
+            assert isinstance(screenshot, str)
+            stage_artifacts.append(
+                {
+                    "stage": "legal_consent_preclassification",
+                    "path": Path(screenshot).name,
+                }
+            )
+            atomic_json(
+                classification_evidence_path,
+                {
+                    "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+                    "authorization_version": LEGAL_AUTHORIZATION_VERSION,
+                    "classification_attempts": classification_attempts,
+                },
+            )
+        classification = classify_authorized_legal_modal(
+            rows, ck3_context_confirmed=True
+        )
         if classification is not None:
             legal_evidence.append(accept_authorized_legal_modal(
                 acceptance,
@@ -202,6 +245,7 @@ def navigate_lobby_with_authorized_legal(
                 rows,
                 len(legal_evidence) + 1,
                 stage_artifacts,
+                ck3_context_confirmed=True,
             ))
             continue
         time.sleep(0.25)
@@ -539,6 +583,7 @@ def main() -> int:
     attach_target: dict[str, object] | None = None
     attach_ready: dict[str, object] | None = None
     legal_acceptances: list[dict[str, object]] = []
+    legal_classification_attempts: list[dict[str, object]] = []
     target_seen = False
     target_selected = False
     arm_sha256: str | None = None
@@ -547,6 +592,7 @@ def main() -> int:
     error: str | None = None
     typed_terminal: str | None = None
     terminal_stage: str | None = None
+    classification_diagnostics: dict[str, object] | None = None
     stage_artifacts: list[dict[str, object]] = []
     try:
         ck3_command = [
@@ -636,6 +682,8 @@ def main() -> int:
                 ui_dir,
                 stage_artifacts,
                 legal_acceptances,
+                legal_classification_attempts,
+                args.artifact_dir / "legal-modal-observations.json",
             )
         except TypedTerminalError:
             raise
@@ -750,6 +798,7 @@ def main() -> int:
         error = f"{type(caught).__name__}: {caught}"
         typed_terminal = getattr(caught, "terminal", "UnhandledHarnessFailure")
         terminal_stage = getattr(caught, "stage", "unclassified")
+        classification_diagnostics = getattr(caught, "diagnostics", None)
     finally:
         if capture_process is not None and capture_process.poll() is None:
             subprocess.run(
@@ -828,12 +877,17 @@ def main() -> int:
             "gameplay_command_api_mutations": [],
             "private_read_only_capture": True,
             "fresh_attempt": True,
-            "legal_consent_authorization": "explicit semantic allowlist",
+            "legal_consent_authorization": LEGAL_AUTHORIZATION_TEXT,
+            "legal_consent_authorization_version": LEGAL_AUTHORIZATION_VERSION,
             "legal_consent_click_count": len(legal_acceptances),
         },
         "legal_consent": {
             "preflight": legal_consent,
+            "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+            "authorization_version": LEGAL_AUTHORIZATION_VERSION,
             "acceptances": legal_acceptances,
+            "classification_attempts": legal_classification_attempts,
+            "classification_diagnostics": classification_diagnostics,
             "real_profile_modified": False,
         },
         "readiness_contract": readiness,

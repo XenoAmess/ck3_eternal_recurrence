@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Shared allowlisted handling for necessary Paradox legal agreements.
+"""Shared handling for authorized CK3 agreements and in-game notices.
 
-The project owner authorizes acceptance only for a Paradox User Agreement,
-EULA, Terms of Use, or an exact semantic equivalent.  Privacy, telemetry,
-advertising, marketing, personalization and data-sharing prompts are outside
-that authority.  This module is intentionally runner-neutral: callers supply
-their existing OCR, click and screen-grab adapters and an isolated ``-userdir``.
+The project owner permanently authorizes acceptance of any agreement/consent
+shown inside CK3 and confirmation, continuation, or dismissal of CK3 in-game
+notices.  Purchase, payment, order, checkout, or store actions remain forbidden.
+This module is runner-neutral: callers supply their existing OCR, click and
+screen-grab adapters and an isolated ``-userdir``.
 """
 
 from __future__ import annotations
@@ -13,11 +13,25 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import re
 import time
 
 
 LEGAL_CONSENT_PROFILE_SUFFIX = Path("account/PDX/SDK/ck3/account.json")
 LEGAL_MODAL_HEADER_REGION = (0.10, 0.02, 0.90, 0.32)
+LEGAL_AUTHORIZATION_VERSION = "2026-09-03-any-ck3-agreement-and-notice-v2"
+LEGAL_AUTHORIZATION_TEXT = (
+    "Project owner permanently authorizes accepting any agreement or consent "
+    "shown inside CK3 and confirming, continuing, closing, or dismissing CK3 "
+    "in-game notices; purchase, payment, order, checkout, and store actions "
+    "are not authorized."
+)
+LEGAL_ORIGIN_TERMS = (
+    "paradox",
+    "crusader kings iii",
+    "crusader kings 3",
+    "ck3",
+)
 LEGAL_ALLOWED_TERMS = (
     "user agreement",
     "end user license agreement",
@@ -29,7 +43,7 @@ LEGAL_ALLOWED_TERMS = (
     "使用条款",
     "使用条件",
 )
-LEGAL_DENIED_TERMS = (
+LEGAL_PROTOCOL_CATEGORY_TERMS = (
     "privacy",
     "telemetry",
     "advertising",
@@ -46,6 +60,32 @@ LEGAL_DENIED_TERMS = (
     "个性化",
     "数据共享",
 )
+LEGAL_PURCHASE_TERMS = (
+    "purchase",
+    "buy now",
+    "buy",
+    "payment",
+    "paid content",
+    "place order",
+    "checkout",
+    "add to cart",
+    "shopping cart",
+    "store page",
+    "open store",
+    "购买",
+    "买入",
+    "付款",
+    "付费",
+    "支付",
+    "下单",
+    "订单",
+    "结账",
+    "购物车",
+    "商店页面",
+    "前往商店",
+)
+# Compatibility export retained for runners which imported the old denylist.
+LEGAL_DENIED_TERMS = LEGAL_PURCHASE_TERMS
 LEGAL_DOCUMENT_HINTS = (
     "agreement",
     "license",
@@ -67,7 +107,66 @@ LEGAL_VERSION_TERMS = (
     "生效",
     "版本",
 )
-LEGAL_ACCEPT_BUTTONS = ("好的", "我同意", "接受", "I Agree", "Accept", "OK")
+LEGAL_NOTIFICATION_HINTS = (
+    "notification",
+    "notice",
+    "message",
+    "announcement",
+    "news",
+    "通知",
+    "提示",
+    "消息",
+    "公告",
+)
+LEGAL_ACCEPT_BUTTONS = (
+    "我同意",
+    "接受",
+    "I Agree",
+    "Accept",
+    "确认",
+    "Confirm",
+    "继续",
+    "Continue",
+    "好的",
+    "OK",
+)
+LEGAL_NOTIFICATION_BUTTONS = (
+    "关闭",
+    "Close",
+    "确认",
+    "Confirm",
+    "继续",
+    "Continue",
+    "好的",
+    "OK",
+)
+LEGAL_SAFE_ACTION_TERMS = (
+    "close",
+    "confirm",
+    "continue",
+    "ok",
+    "关闭",
+    "确认",
+    "继续",
+    "好的",
+)
+LEGAL_PURCHASE_BUTTONS = (
+    "Buy Now",
+    "Purchase",
+    "Pay Now",
+    "Place Order",
+    "Checkout",
+    "Add to Cart",
+    "Open Store",
+    "购买",
+    "立即购买",
+    "付款",
+    "支付",
+    "下单",
+    "结账",
+    "加入购物车",
+    "前往商店",
+)
 
 
 class TypedTerminalError(RuntimeError):
@@ -107,36 +206,70 @@ def _legal_document_markers(payload: dict[str, object]) -> list[str]:
     return markers
 
 
-def diagnose_legal_modal(rows: list[str]) -> dict[str, object]:
+def _matching_terms(text: str, terms: tuple[str, ...]) -> list[str]:
+    matches: list[str] = []
+    for term in terms:
+        if term.isascii():
+            pattern = rf"(?<!\w){re.escape(term)}(?!\w)"
+            matched = re.search(pattern, text) is not None
+        else:
+            matched = term in text
+        if matched:
+            matches.append(term)
+    return matches
+
+
+def diagnose_legal_modal(
+    rows: list[str], *, ck3_context_confirmed: bool = False
+) -> dict[str, object]:
     """Normalize OCR rows and expose the exact token-based classification input."""
 
     normalized_rows = [" ".join(str(row).split()) for row in rows if str(row).strip()]
     normalized_text = " ".join(normalized_rows).casefold()
-    paradox_present = "paradox" in normalized_text
-    denied = [term for term in LEGAL_DENIED_TERMS if term in normalized_text]
-    allowed = [term for term in LEGAL_ALLOWED_TERMS if term in normalized_text]
-    hints = [term for term in LEGAL_DOCUMENT_HINTS if term in normalized_text]
-    if not paradox_present:
-        classification_state = "not_paradox"
-    elif denied:
-        classification_state = "denied"
-    elif allowed:
-        classification_state = "authorized_candidate"
-    elif hints:
-        classification_state = "ambiguous_legal"
+    origin_terms = _matching_terms(normalized_text, LEGAL_ORIGIN_TERMS)
+    game_context = ck3_context_confirmed or bool(origin_terms)
+    purchase_terms = _matching_terms(normalized_text, LEGAL_PURCHASE_TERMS)
+    allowed = _matching_terms(normalized_text, LEGAL_ALLOWED_TERMS)
+    hints = _matching_terms(normalized_text, LEGAL_DOCUMENT_HINTS)
+    categories = _matching_terms(normalized_text, LEGAL_PROTOCOL_CATEGORY_TERMS)
+    notification_hints = _matching_terms(normalized_text, LEGAL_NOTIFICATION_HINTS)
+    safe_action_terms = _matching_terms(normalized_text, LEGAL_SAFE_ACTION_TERMS)
+    agreement_semantics = bool(allowed or hints)
+    if not game_context:
+        classification_state = "not_ck3_or_paradox"
+    elif purchase_terms:
+        classification_state = "purchase_forbidden"
+    elif agreement_semantics or categories:
+        classification_state = "authorized_agreement"
+    elif safe_action_terms:
+        classification_state = "authorized_notification"
     else:
-        classification_state = "not_legal_modal"
+        classification_state = "not_recognized_modal"
     return {
         "normalized_rows": normalized_rows,
         "normalized_text": normalized_text,
-        "paradox_token_present": paradox_present,
+        "ck3_context_confirmed": ck3_context_confirmed,
+        "origin_terms": origin_terms,
+        "game_context_recognized": game_context,
         "allowed_terms": allowed,
-        "denied_terms": denied,
+        "denied_terms": purchase_terms,
+        "purchase_terms": purchase_terms,
         "legal_document_hints": hints,
+        "protocol_category_terms": categories,
+        "notification_hints": notification_hints,
+        "safe_action_terms": safe_action_terms,
         "classification_state": classification_state,
         "evidence_required": bool(
-            paradox_present and (allowed or denied or hints)
+            game_context
+            and (
+                purchase_terms
+                or agreement_semantics
+                or categories
+                or safe_action_terms
+            )
         ),
+        "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+        "authorization_version": LEGAL_AUTHORIZATION_VERSION,
     }
 
 
@@ -145,10 +278,14 @@ def persist_preclassification_evidence(
     rows: list[str],
     ui_dir: Path,
     index: int,
+    *,
+    ck3_context_confirmed: bool = False,
 ) -> dict[str, object]:
     """Persist the exact frame and OCR inputs before any legal classification."""
 
-    diagnostics = diagnose_legal_modal(rows)
+    diagnostics = diagnose_legal_modal(
+        rows, ck3_context_confirmed=ck3_context_confirmed
+    )
     evidence: dict[str, object] = {
         "index": index,
         "raw_ocr_rows": [str(row) for row in rows],
@@ -171,39 +308,62 @@ def persist_preclassification_evidence(
 
 
 def classify_authorized_legal_modal(
-    rows: list[str],
+    rows: list[str], *, ck3_context_confirmed: bool = False
 ) -> dict[str, object] | None:
     """Classify an OCR header, returning ``None`` when no legal modal exists."""
 
-    diagnostics = diagnose_legal_modal(rows)
+    diagnostics = diagnose_legal_modal(
+        rows, ck3_context_confirmed=ck3_context_confirmed
+    )
     cleaned = diagnostics["normalized_rows"]
     joined = diagnostics["normalized_text"]
     assert isinstance(cleaned, list)
     assert isinstance(joined, str)
-    if not diagnostics["paradox_token_present"]:
+    if not diagnostics["game_context_recognized"]:
         return None
-    denied = diagnostics["denied_terms"]
-    assert isinstance(denied, list)
-    if denied:
+    purchase_terms = diagnostics["purchase_terms"]
+    assert isinstance(purchase_terms, list)
+    if purchase_terms:
         raise TypedTerminalError(
-            "LegalConsentNotAuthorized",
-            "legal_consent",
-            f"legal modal header contains non-authorized category tokens: {denied}",
+            "PurchaseActionNotAuthorized",
+            "ck3_modal",
+            f"CK3 modal contains forbidden purchase/action tokens: {purchase_terms}",
             diagnostics=diagnostics,
         )
     allowed = diagnostics["allowed_terms"]
     assert isinstance(allowed, list)
-    if not allowed:
-        if diagnostics["legal_document_hints"]:
-            raise TypedTerminalError(
-                "LegalConsentNotAuthorized",
-                "legal_consent",
-                "Paradox legal/consent modal does not match the authorized document kinds",
-                diagnostics=diagnostics,
-            )
+    hints = diagnostics["legal_document_hints"]
+    assert isinstance(hints, list)
+    categories = diagnostics["protocol_category_terms"]
+    assert isinstance(categories, list)
+    notification_hints = diagnostics["notification_hints"]
+    assert isinstance(notification_hints, list)
+    safe_action_terms = diagnostics["safe_action_terms"]
+    assert isinstance(safe_action_terms, list)
+    if not allowed and not hints and not categories:
+        if not safe_action_terms:
+            return None
+        title = cleaned[0] if cleaned else ""
+        return {
+            "modal_kind": "notification",
+            "title": title,
+            "version": None,
+            "allowed_terms": [],
+            "denied_terms": [],
+            "protocol_category_terms": categories,
+            "notification_hints": notification_hints,
+            "safe_action_terms": safe_action_terms,
+            "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+            "authorization_version": LEGAL_AUTHORIZATION_VERSION,
+        }
+    if not cleaned:
         return None
     title = next(
-        (row for row in cleaned if any(term in row.casefold() for term in allowed)),
+        (
+            row
+            for row in cleaned
+            if any(term in row.casefold() for term in (*allowed, *hints))
+        ),
         cleaned[0] if cleaned else "",
     )
     version = next(
@@ -215,10 +375,16 @@ def classify_authorized_legal_modal(
         None,
     )
     return {
+        "modal_kind": "agreement",
         "title": title,
         "version": version,
         "allowed_terms": allowed,
-        "denied_terms": denied,
+        "denied_terms": [],
+        "protocol_category_terms": categories,
+        "notification_hints": notification_hints,
+        "safe_action_terms": safe_action_terms,
+        "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+        "authorization_version": LEGAL_AUTHORIZATION_VERSION,
     }
 
 
@@ -228,22 +394,24 @@ def validate_legal_consent_source(
     expected = {
         "source_profile_relative_path": LEGAL_CONSENT_PROFILE_SUFFIX.as_posix(),
         "source_sha256": "8933437F2000BB639D588A541B798F97C6D87BA7D891613FAC23D1812AB9EB28",
+        "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+        "authorization_version": LEGAL_AUTHORIZATION_VERSION,
         "authorized_document_kinds": [
-            "User Agreement",
-            "EULA",
-            "Terms of Use",
-            "semantic equivalents",
+            "any CK3/Paradox in-game agreement, consent, terms, or policy",
+            "privacy, telemetry, advertising, marketing, personalization, and data-sharing agreements",
+            "CK3 in-game notifications via confirm, continue, close, or dismiss controls",
         ],
         "explicitly_not_authorized": [
-            "privacy",
-            "telemetry",
-            "advertising",
-            "marketing",
-            "personalized content",
-            "data sharing",
+            "purchase",
+            "payment",
+            "paid order",
+            "checkout",
+            "store action",
         ],
         "accepted_marker_present": False,
         "allow_exact_semantic_modal_acceptance": True,
+        "allow_all_ck3_agreements_and_notifications": True,
+        "forbid_purchase_payment_order_checkout_store_actions": True,
         "real_profile_read_only": True,
     }
     for key, value in expected.items():
@@ -320,17 +488,9 @@ def newly_persisted_legal_markers(
 
 def _authorized_legal_marker(marker: str) -> bool:
     normalized = marker.casefold().replace("_", "-").replace(".", "-")
-    if any(term.replace(" ", "-") in normalized for term in LEGAL_DENIED_TERMS):
+    if not normalized:
         return False
-    return any(
-        token in normalized
-        for token in (
-            "user-agreement",
-            "end-user-license-agreement",
-            "eula",
-            "terms-of-use",
-        )
-    )
+    return not _matching_terms(normalized.replace("-", " "), LEGAL_PURCHASE_TERMS)
 
 
 def accept_authorized_legal_modal(
@@ -342,10 +502,14 @@ def accept_authorized_legal_modal(
     rows: list[str],
     index: int,
     stage_artifacts: list[dict[str, object]],
+    *,
+    ck3_context_confirmed: bool = False,
 ) -> dict[str, object]:
-    """Accept one exact legal modal and prove its isolated marker delta."""
+    """Handle one authorized CK3 modal and preserve its evidence."""
 
-    classification = classify_authorized_legal_modal(rows)
+    classification = classify_authorized_legal_modal(
+        rows, ck3_context_confirmed=ck3_context_confirmed
+    )
     if classification is None:
         raise TypedTerminalError(
             "LegalConsentNotAuthorized",
@@ -358,12 +522,7 @@ def accept_authorized_legal_modal(
             "legal_consent",
             "allowlisted legal agreement has no recognized title",
         )
-    if not classification.get("version"):
-        raise TypedTerminalError(
-            "LegalConsentVersionMissing",
-            "legal_consent",
-            "allowlisted legal agreement has no recognized version/effective date",
-        )
+    modal_kind = str(classification.get("modal_kind"))
     ui_dir.mkdir(parents=True, exist_ok=True)
     before_path = ui_dir / f"legal_consent_{index:02d}_before.png"
     image.save(before_path)
@@ -371,9 +530,32 @@ def accept_authorized_legal_modal(
         {"stage": "legal_consent_before", "path": before_path.name}
     )
     before_state = account_legal_state(userdir)
+    for forbidden_label in LEGAL_PURCHASE_BUTTONS:
+        forbidden_point = acceptance.find_ocr_text(
+            image,
+            forbidden_label,
+            acceptance.FULL_SCREEN_REGION,
+            contains=True,
+        )
+        if forbidden_point is not None:
+            diagnostics = diagnose_legal_modal(
+                rows, ck3_context_confirmed=ck3_context_confirmed
+            )
+            diagnostics["forbidden_control_label"] = forbidden_label
+            raise TypedTerminalError(
+                "PurchaseActionNotAuthorized",
+                "ck3_modal",
+                f"forbidden purchase control is visible: {forbidden_label}",
+                diagnostics=diagnostics,
+            )
     accept_point = None
     button_label = None
-    for label in LEGAL_ACCEPT_BUTTONS:
+    button_labels = (
+        LEGAL_ACCEPT_BUTTONS
+        if modal_kind == "agreement"
+        else LEGAL_NOTIFICATION_BUTTONS
+    )
+    for label in button_labels:
         accept_point = acceptance.find_ocr_text(
             image, label, acceptance.FULL_SCREEN_REGION, contains=True
         )
@@ -388,7 +570,7 @@ def accept_authorized_legal_modal(
         )
     acceptance.deliberate_click(
         accept_point,
-        f"authorized Paradox legal agreement #{index}: {classification['title']}",
+        f"authorized CK3 {modal_kind} #{index}: {classification['title']}",
     )
     deadline = time.monotonic() + 20
     after_image = None
@@ -398,11 +580,13 @@ def accept_authorized_legal_modal(
         after_rows = [
             str(row[0])
             for row in acceptance.ocr_results(
-                after_image, LEGAL_MODAL_HEADER_REGION
+                after_image, acceptance.FULL_SCREEN_REGION
             )
         ]
         try:
-            remaining = classify_authorized_legal_modal(after_rows)
+            remaining = classify_authorized_legal_modal(
+                after_rows, ck3_context_confirmed=ck3_context_confirmed
+            )
         except TypedTerminalError as next_modal:
             if next_modal.terminal == "LegalConsentNotAuthorized":
                 break
@@ -426,13 +610,14 @@ def accept_authorized_legal_modal(
     stage_artifacts.append(
         {"stage": "legal_consent_after", "path": after_path.name}
     )
-    marker_deadline = time.monotonic() + 15
     after_state = account_legal_state(userdir)
     new_markers = newly_persisted_legal_markers(before_state, after_state)
-    while not new_markers and time.monotonic() < marker_deadline:
-        time.sleep(0.25)
-        after_state = account_legal_state(userdir)
-        new_markers = newly_persisted_legal_markers(before_state, after_state)
+    if modal_kind == "agreement":
+        marker_deadline = time.monotonic() + 15
+        while not new_markers and time.monotonic() < marker_deadline:
+            time.sleep(0.25)
+            after_state = account_legal_state(userdir)
+            new_markers = newly_persisted_legal_markers(before_state, after_state)
     unauthorized_new = [
         marker for marker in new_markers if not _authorized_legal_marker(marker)
     ]
@@ -446,7 +631,7 @@ def accept_authorized_legal_modal(
     allowed_new_markers = [
         marker for marker in new_markers if _authorized_legal_marker(marker)
     ]
-    if not allowed_new_markers:
+    if modal_kind == "agreement" and not allowed_new_markers:
         raise TypedTerminalError(
             "LegalConsentMarkerNotPersisted",
             "legal_consent",
@@ -471,6 +656,8 @@ def accept_authorized_legal_modal(
             "added": allowed_new_markers,
         },
         "new_accepted_markers": allowed_new_markers,
+        "authorization_text": LEGAL_AUTHORIZATION_TEXT,
+        "authorization_version": LEGAL_AUTHORIZATION_VERSION,
         "real_profile_modified": False,
     }
 
@@ -478,9 +665,15 @@ def accept_authorized_legal_modal(
 __all__ = [
     "LEGAL_ACCEPT_BUTTONS",
     "LEGAL_ALLOWED_TERMS",
+    "LEGAL_AUTHORIZATION_TEXT",
+    "LEGAL_AUTHORIZATION_VERSION",
     "LEGAL_CONSENT_PROFILE_SUFFIX",
     "LEGAL_DENIED_TERMS",
     "LEGAL_MODAL_HEADER_REGION",
+    "LEGAL_NOTIFICATION_BUTTONS",
+    "LEGAL_PURCHASE_BUTTONS",
+    "LEGAL_PURCHASE_TERMS",
+    "LEGAL_SAFE_ACTION_TERMS",
     "TypedTerminalError",
     "_authorized_legal_marker",
     "accept_authorized_legal_modal",

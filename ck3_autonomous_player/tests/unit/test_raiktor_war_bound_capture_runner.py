@@ -54,16 +54,29 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
         self.assertIn("AttachTargetIdentityMismatch", readiness["typed_terminals"])
         self.assertIn("PrivateAttachReadinessTimeout", readiness["typed_terminals"])
         self.assertIn("LegalConsentNotAuthorized", readiness["typed_terminals"])
+        self.assertIn("PurchaseActionNotAuthorized", readiness["typed_terminals"])
         self.assertIn("LegalConsentMarkerNotPersisted", readiness["typed_terminals"])
         self.assertIn("starts one CK3 normally", manifest["live_command"])
         legal = manifest["legal_consent_contract"]
         self.assertTrue(legal["allow_exact_semantic_modal_acceptance"])
+        self.assertTrue(legal["allow_all_ck3_agreements_and_notifications"])
+        self.assertTrue(
+            legal["forbid_purchase_payment_order_checkout_store_actions"]
+        )
         self.assertFalse(legal["accepted_marker_present"])
         self.assertEqual(
             legal["source_profile_relative_path"],
             "account/PDX/SDK/ck3/account.json",
         )
-        self.assertIn("telemetry", legal["explicitly_not_authorized"])
+        self.assertIn("purchase", legal["explicitly_not_authorized"])
+        self.assertEqual(
+            legal["authorization_version"],
+            MODULE.LEGAL_AUTHORIZATION_VERSION,
+        )
+        self.assertEqual(
+            legal["authorization_text"],
+            MODULE.LEGAL_AUTHORIZATION_TEXT,
+        )
 
     def test_readiness_cli_must_match_manifest(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
@@ -159,56 +172,164 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
             "Paradox Interactive Terms of Use", "Effective 2026-08-01", "Accept"
         ]))
 
-    def test_legal_modal_denylist_prevents_optional_consent_click(self) -> None:
-        with self.assertRaises(MODULE.TypedTerminalError) as privacy:
-            MODULE.classify_authorized_legal_modal([
-                "Paradox Interactive Privacy Policy", "Accept"
-            ])
-        self.assertEqual(privacy.exception.terminal, "LegalConsentNotAuthorized")
+    def test_broad_authorization_accepts_protocols_but_rejects_purchase(self) -> None:
+        for rows in (
+            ["Paradox Interactive Privacy Policy", "Accept"],
+            ["Paradox Interactive Telemetry Consent", "Continue"],
+            ["Paradox Interactive Telemetry", "Accept"],
+            ["Paradox Interactive Data Sharing Agreement", "I Agree"],
+            ["Paradox Interactive Data Sharing", "Continue"],
+            ["Paradox Interactive 遥测与数据共享政策", "接受"],
+        ):
+            classification = MODULE.classify_authorized_legal_modal(rows)
+            self.assertIsNotNone(classification)
+            assert classification is not None
+            self.assertEqual(classification["modal_kind"], "agreement")
+            self.assertEqual(
+                classification["authorization_version"],
+                MODULE.LEGAL_AUTHORIZATION_VERSION,
+            )
         with self.assertRaises(MODULE.TypedTerminalError) as caught:
             MODULE.classify_authorized_legal_modal([
-                "Paradox Interactive User Agreement",
-                "I also agree to personalized advertising and data sharing",
-                "Accept",
+                "Paradox Interactive Store Purchase Notice",
+                "Buy Now",
             ])
-        self.assertEqual(caught.exception.terminal, "LegalConsentNotAuthorized")
+        self.assertEqual(caught.exception.terminal, "PurchaseActionNotAuthorized")
+        self.assertEqual(
+            caught.exception.diagnostics["classification_state"],
+            "purchase_forbidden",
+        )
 
-    def test_legal_modal_requires_version_before_any_click(self) -> None:
-        class ForbiddenAcceptance:
-            FULL_SCREEN_REGION = (0, 0, 1, 1)
-
-            @staticmethod
-            def find_ocr_text(*_args, **_kwargs):
-                raise AssertionError("missing version must stop before button lookup")
-
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            userdir = root / "userdir"
-            ui_dir = root / "ui"
-            userdir.mkdir()
-            with self.assertRaises(MODULE.TypedTerminalError) as raised:
-                MODULE.accept_authorized_legal_modal(
-                    ForbiddenAcceptance(),
-                    object(),
-                    userdir,
-                    ui_dir,
-                    object(),
-                    ["Paradox Interactive User Agreement", "Accept"],
-                    1,
-                    [],
-                )
-        self.assertEqual(raised.exception.terminal, "LegalConsentVersionMissing")
+    def test_authorized_agreement_version_is_recorded_when_visible(self) -> None:
+        classification = MODULE.classify_authorized_legal_modal(
+            ["Paradox Interactive Privacy Policy", "Accept"]
+        )
+        self.assertIsNotNone(classification)
+        assert classification is not None
+        self.assertIsNone(classification["version"])
+        self.assertEqual(
+            classification["authorization_version"],
+            MODULE.LEGAL_AUTHORIZATION_VERSION,
+        )
 
     def test_shared_classifier_preserves_chinese_policy_terms(self) -> None:
         allowed = MODULE.classify_authorized_legal_modal(
             ["Paradox Interactive 最终用户许可协议", "版本 4.0", "我同意"]
         )
         self.assertIsNotNone(allowed)
-        with self.assertRaises(MODULE.TypedTerminalError) as denied:
-            MODULE.classify_authorized_legal_modal(
-                ["Paradox Interactive 遥测与数据共享政策", "接受"]
+        broad = MODULE.classify_authorized_legal_modal(
+            ["Paradox Interactive 遥测与数据共享政策", "接受"]
+        )
+        self.assertIsNotNone(broad)
+        assert broad is not None
+        self.assertEqual(broad["modal_kind"], "agreement")
+
+    def test_ck3_notification_requires_safe_dismiss_control_contract(self) -> None:
+        notice = MODULE.classify_authorized_legal_modal(
+            ["Server maintenance complete", "Continue"],
+            ck3_context_confirmed=True,
+        )
+        self.assertIsNotNone(notice)
+        assert notice is not None
+        self.assertEqual(notice["modal_kind"], "notification")
+        self.assertIsNone(MODULE.classify_authorized_legal_modal(
+            ["Maintenance Notice"],
+            ck3_context_confirmed=True,
+        ))
+        self.assertIn("Continue", MODULE.LEGAL_NOTIFICATION_BUTTONS)
+        self.assertNotIn("Buy Now", MODULE.LEGAL_NOTIFICATION_BUTTONS)
+        self.assertIn("Buy Now", MODULE.LEGAL_PURCHASE_BUTTONS)
+
+    def test_notification_handler_dismisses_without_requiring_legal_marker(self) -> None:
+        class FakeImage:
+            def __init__(self, payload: bytes) -> None:
+                self.payload = payload
+
+            def save(self, path: Path) -> None:
+                path.write_bytes(self.payload)
+
+        class FakeAcceptance:
+            FULL_SCREEN_REGION = (0, 0, 1, 1)
+
+            def __init__(self) -> None:
+                self.clicks = 0
+
+            def find_ocr_text(self, _image, label, _region, contains=False):
+                del contains
+                return (50, 50) if label == "Continue" else None
+
+            def deliberate_click(self, _point, _label) -> None:
+                self.clicks += 1
+
+            def focus_ck3(self) -> None:
+                return None
+
+            def ocr_results(self, _image, _region):
+                return [("Crusader Kings III", 0, (0, 0), 0)]
+
+        class FakeGrab:
+            @staticmethod
+            def grab():
+                return FakeImage(b"notification-after")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "userdir"
+            ui_dir = root / "ui"
+            userdir.mkdir()
+            acceptance = FakeAcceptance()
+            stages: list[dict[str, object]] = []
+            evidence = MODULE.accept_authorized_legal_modal(
+                acceptance,
+                FakeGrab,
+                userdir,
+                ui_dir,
+                FakeImage(b"notification-before"),
+                ["Server maintenance complete", "Continue"],
+                1,
+                stages,
+                ck3_context_confirmed=True,
             )
-        self.assertEqual(denied.exception.terminal, "LegalConsentNotAuthorized")
+        self.assertEqual(acceptance.clicks, 1)
+        self.assertEqual(evidence["modal_kind"], "notification")
+        self.assertEqual(evidence["button_label"], "Continue")
+        self.assertEqual(evidence["marker_delta"]["added"], [])
+        self.assertEqual(
+            evidence["authorization_version"],
+            MODULE.LEGAL_AUTHORIZATION_VERSION,
+        )
+
+    def test_purchase_control_hard_stops_before_click(self) -> None:
+        class FakeImage:
+            def save(self, path: Path) -> None:
+                path.write_bytes(b"purchase-control")
+
+        class FakeAcceptance:
+            FULL_SCREEN_REGION = (0, 0, 1, 1)
+
+            def find_ocr_text(self, _image, label, _region, contains=False):
+                del contains
+                return (50, 50) if label == "Purchase" else None
+
+            def deliberate_click(self, *_args) -> None:
+                raise AssertionError("purchase control must never be clicked")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "userdir"
+            userdir.mkdir()
+            with self.assertRaises(MODULE.TypedTerminalError) as raised:
+                MODULE.accept_authorized_legal_modal(
+                    FakeAcceptance(),
+                    object(),
+                    userdir,
+                    root / "ui",
+                    FakeImage(),
+                    ["Paradox Interactive Privacy Policy"],
+                    1,
+                    [],
+                )
+        self.assertEqual(raised.exception.terminal, "PurchaseActionNotAuthorized")
 
     def test_new_accepted_marker_must_be_allowlisted(self) -> None:
         before = {
@@ -224,7 +345,8 @@ class RaiktorWarBoundCaptureRunnerTests(unittest.TestCase):
         new_markers = MODULE.newly_persisted_legal_markers(before, after)
         self.assertEqual(new_markers, ["user-agreement-2026-01-21"])
         self.assertTrue(MODULE._authorized_legal_marker(new_markers[0]))
-        self.assertFalse(MODULE._authorized_legal_marker("privacy-policy-2026-01-21"))
+        self.assertTrue(MODULE._authorized_legal_marker("privacy-policy-2026-01-21"))
+        self.assertTrue(MODULE._authorized_legal_marker("telemetry-consent-v4"))
 
     def test_authorized_handler_clicks_once_and_records_isolated_marker(self) -> None:
         class FakeImage:

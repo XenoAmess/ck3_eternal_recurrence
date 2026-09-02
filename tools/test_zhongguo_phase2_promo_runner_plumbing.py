@@ -1200,7 +1200,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertEqual(persisted, evidence)
         forbidden_click.assert_not_called()
 
-    def test_phase2_legal_gate_denies_telemetry_before_click(self) -> None:
+    def test_phase2_legal_gate_denies_purchase_before_click(self) -> None:
         class FakeImage:
             def save(self, path: Path) -> None:
                 Path(path).write_bytes(b"phase2-legal-preclassification")
@@ -1223,7 +1223,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     "ocr_results",
                     return_value=[
                         (
-                            "Paradox Interactive Telemetry Consent",
+                            "Paradox Interactive Store Purchase Notice",
                             1.0,
                             (10, 10),
                             None,
@@ -1252,28 +1252,33 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 attempt["preclassification_screenshot_sha256"]
                 == capture.legal_consent.sha256(screenshot)
             )
-        self.assertEqual(raised.exception.reason_code, "LegalConsentNotAuthorized")
+        self.assertEqual(raised.exception.reason_code, "PurchaseActionNotAuthorized")
         self.assertEqual(persisted["result"], "RED")
         self.assertEqual(persisted["state"], "typed_stop")
         self.assertEqual(
             persisted["classification_diagnostics"]["classification_state"],
-            "denied",
+            "purchase_forbidden",
         )
         self.assertEqual(len(persisted["classification_attempts"]), 1)
         self.assertEqual(
             attempt["raw_ocr_rows"],
-            ["Paradox Interactive Telemetry Consent"],
+            ["Paradox Interactive Store Purchase Notice"],
         )
         self.assertEqual(
             attempt["normalized_rows"],
-            ["Paradox Interactive Telemetry Consent"],
+            ["Paradox Interactive Store Purchase Notice"],
         )
-        self.assertEqual(attempt["classification_state"], "denied")
+        self.assertEqual(attempt["classification_state"], "purchase_forbidden")
+        self.assertEqual(attempt["purchase_terms"], ["purchase"])
+        self.assertEqual(
+            attempt["authorization_version"],
+            capture.legal_consent.LEGAL_AUTHORIZATION_VERSION,
+        )
         self.assertTrue(screenshot_exists)
         self.assertTrue(screenshot_hash_matches)
         forbidden_click.assert_not_called()
 
-    def test_phase2_legal_gate_preserves_ambiguous_legal_input(self) -> None:
+    def test_phase2_legal_gate_authorizes_broad_protocol_before_control_lookup(self) -> None:
         class FakeImage:
             def save(self, path: Path) -> None:
                 Path(path).write_bytes(b"phase2-ambiguous-legal-modal")
@@ -1296,12 +1301,17 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                     "ocr_results",
                     return_value=[
                         ("Paradox   Interactive", 1.0, (10, 10), None),
-                        ("License Notice", 1.0, (10, 30), None),
+                        ("Telemetry", 1.0, (10, 30), None),
                     ],
                 ),
                 mock.patch.object(
                     capture.acceptance, "deliberate_click"
                 ) as forbidden_click,
+                mock.patch.object(
+                    capture.acceptance,
+                    "find_ocr_text",
+                    return_value=None,
+                ),
             ):
                 with self.assertRaises(
                     capture.Phase2LegalConsentBlocked
@@ -1317,13 +1327,16 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             attempt = persisted["classification_attempts"][0]
             screenshot = Path(attempt["preclassification_screenshot"])
             self.assertTrue(screenshot.is_file())
-        self.assertEqual(raised.exception.reason_code, "LegalConsentNotAuthorized")
-        self.assertEqual(attempt["classification_state"], "ambiguous_legal")
+        self.assertEqual(
+            raised.exception.reason_code,
+            "LegalConsentControlNotFound",
+        )
+        self.assertEqual(attempt["classification_state"], "authorized_agreement")
         self.assertEqual(
             attempt["normalized_rows"],
-            ["Paradox Interactive", "License Notice"],
+            ["Paradox Interactive", "Telemetry"],
         )
-        self.assertEqual(attempt["legal_document_hints"], ["license"])
+        self.assertEqual(attempt["protocol_category_terms"], ["telemetry"])
         self.assertEqual(
             persisted["classification_diagnostics"],
             {
@@ -1331,12 +1344,20 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 for key in (
                     "normalized_rows",
                     "normalized_text",
-                    "paradox_token_present",
+                    "ck3_context_confirmed",
+                    "origin_terms",
+                    "game_context_recognized",
                     "allowed_terms",
                     "denied_terms",
+                    "purchase_terms",
                     "legal_document_hints",
+                    "protocol_category_terms",
+                    "notification_hints",
+                    "safe_action_terms",
                     "classification_state",
                     "evidence_required",
+                    "authorization_text",
+                    "authorization_version",
                 )
             },
         )

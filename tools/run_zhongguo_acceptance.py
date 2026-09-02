@@ -1326,16 +1326,14 @@ def handle_phase2_optional_legal_consent(
         "result": "RED",
         "reason_code": None,
         "scope": "phase2_managed_isolated_userdir_legal_consent",
-        "authorization": (
-            "Paradox User Agreement, EULA, Terms of Use or exact semantic equivalent"
-        ),
+        "authorization": legal_consent.LEGAL_AUTHORIZATION_TEXT,
+        "authorization_version": legal_consent.LEGAL_AUTHORIZATION_VERSION,
         "explicitly_not_authorized": [
-            "privacy",
-            "telemetry",
-            "advertising",
-            "marketing",
-            "personalized content",
-            "data sharing",
+            "purchase",
+            "payment",
+            "paid order",
+            "checkout",
+            "store action",
         ],
         "isolated_userdir": str(profile),
         "marker_relative_path": (
@@ -1366,7 +1364,7 @@ def handle_phase2_optional_legal_consent(
             rows = [
                 str(row[0])
                 for row in acceptance.ocr_results(
-                    image, legal_consent.LEGAL_MODAL_HEADER_REGION
+                    image, acceptance.FULL_SCREEN_REGION
                 )
             ]
             attempt = legal_consent.persist_preclassification_evidence(
@@ -1374,6 +1372,7 @@ def handle_phase2_optional_legal_consent(
                 rows,
                 ui_dir,
                 index,
+                ck3_context_confirmed=True,
             )
             if attempt["evidence_required"]:
                 classification_attempts.append(attempt)
@@ -1398,7 +1397,9 @@ def handle_phase2_optional_legal_consent(
 
         for index in range(1, maximum_agreements + 1):
             image, rows = observe(index)
-            classification = legal_consent.classify_authorized_legal_modal(rows)
+            classification = legal_consent.classify_authorized_legal_modal(
+                rows, ck3_context_confirmed=True
+            )
             if classification is None:
                 break
             acceptances.append(
@@ -1411,11 +1412,14 @@ def handle_phase2_optional_legal_consent(
                     rows,
                     index,
                     stage_artifacts,
+                    ck3_context_confirmed=True,
                 )
             )
         else:
             _image, rows = observe(maximum_agreements + 1)
-            if legal_consent.classify_authorized_legal_modal(rows) is not None:
+            if legal_consent.classify_authorized_legal_modal(
+                rows, ck3_context_confirmed=True
+            ) is not None:
                 raise legal_consent.TypedTerminalError(
                     "LegalConsentSequenceLimit",
                     "legal_consent",
@@ -1449,12 +1453,20 @@ def handle_phase2_optional_legal_consent(
                     for key in (
                         "normalized_rows",
                         "normalized_text",
-                        "paradox_token_present",
+                        "ck3_context_confirmed",
+                        "origin_terms",
+                        "game_context_recognized",
                         "allowed_terms",
                         "denied_terms",
+                        "purchase_terms",
                         "legal_document_hints",
+                        "protocol_category_terms",
+                        "notification_hints",
+                        "safe_action_terms",
                         "classification_state",
                         "evidence_required",
+                        "authorization_text",
+                        "authorization_version",
                     )
                 }
         evidence.update(
