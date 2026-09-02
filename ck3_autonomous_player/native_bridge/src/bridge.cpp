@@ -347,6 +347,19 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(phase2_completion_observer.state2_count);
   result += ",\"state3_count\":";
   result += Number(phase2_completion_observer.state3_count);
+  result += ",\"raw_hit_count\":";
+  result += Number(phase2_completion_observer.raw_hit_count);
+  result += ",\"raw_state2_count\":";
+  result += Number(phase2_completion_observer.raw_state2_count);
+  result += ",\"raw_state3_count\":";
+  result += Number(phase2_completion_observer.raw_state3_count);
+  result += ",\"raw_last_callback\":";
+  result += Number(phase2_completion_observer.raw_last_callback);
+  result += ",\"raw_last_callback_slot2_target\":";
+  result += Number(
+      phase2_completion_observer.raw_last_callback_slot2_target);
+  result += ",\"raw_last_reference_count\":";
+  result += Number(phase2_completion_observer.raw_last_reference_count);
   result += ",\"last_state\":";
   result += Number(phase2_completion_observer.last_state);
   result += ",\"last_thread_id\":";

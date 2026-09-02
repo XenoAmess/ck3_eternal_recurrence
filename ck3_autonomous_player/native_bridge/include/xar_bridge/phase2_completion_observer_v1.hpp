@@ -18,7 +18,7 @@ inline constexpr std::uintptr_t kPhase2CompletionObserverRetireRvaV1 =
 inline constexpr std::uintptr_t kPhase2SelectedCallbackTargetRvaV1 =
     0x88B480;
 inline constexpr std::size_t kPhase2CompletionObserverPatchBytesV1 = 15;
-inline constexpr std::size_t kPhase2CompletionObserverStubBytesV1 = 85;
+inline constexpr std::size_t kPhase2CompletionObserverStubBytesV1 = 101;
 inline constexpr bool kPhase2CompletionObserverInstalledByDefaultV1 = false;
 
 enum Phase2CompletionObserverFailureV1 : std::uint32_t {
@@ -70,6 +70,12 @@ struct Phase2CompletionObserverV1State {
   std::atomic<std::uint64_t> selected_event_count{0};
   std::atomic<std::uint64_t> state2_count{0};
   std::atomic<std::uint64_t> state3_count{0};
+  std::atomic<std::uint64_t> raw_hit_count{0};
+  std::atomic<std::uint64_t> raw_state2_count{0};
+  std::atomic<std::uint64_t> raw_state3_count{0};
+  std::atomic<std::uint64_t> raw_last_callback{0};
+  std::atomic<std::uint64_t> raw_last_callback_slot2_target{0};
+  std::atomic<std::uint32_t> raw_last_reference_count{0};
   std::atomic<std::uint64_t> last_timestamp_qpc{0};
   std::atomic<std::uint64_t> last_task{0};
   std::atomic<std::uint64_t> last_callback{0};
@@ -102,6 +108,12 @@ struct Phase2CompletionObserverV1Diagnostics {
   std::uint64_t selected_event_count = 0;
   std::uint64_t state2_count = 0;
   std::uint64_t state3_count = 0;
+  std::uint64_t raw_hit_count = 0;
+  std::uint64_t raw_state2_count = 0;
+  std::uint64_t raw_state3_count = 0;
+  std::uint64_t raw_last_callback = 0;
+  std::uint64_t raw_last_callback_slot2_target = 0;
+  std::uint32_t raw_last_reference_count = 0;
   std::uint64_t last_timestamp_qpc = 0;
   std::uint64_t last_task = 0;
   std::uint64_t last_callback = 0;

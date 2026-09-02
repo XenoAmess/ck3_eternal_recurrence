@@ -1,0 +1,74 @@
+{
+  "contract": "phase2-completion-observer-red-analysis-v1",
+  "schema_version": 1,
+  "status": "static-ordering-bound-raw-diagnostic-ready",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "f893ff818aab4459bc16ff4cea0a4fa2086a2ea1"
+  },
+  "prior_live": {
+    "frozen_commit": "25b603660abc47b1dbaf842d8b7600c5730216cf",
+    "runner_report": "Z:\\p2r-25b6\\live-artifacts\\runner-report.json",
+    "runner_report_sha256": "25A3C8C56A46A674D7E4F064D5FB7E02577F15737CD2ADC907CAC44038C13FE7",
+    "terminal_evidence_index": "Z:\\p2r-25b6\\live-artifacts\\terminal-evidence-index.json",
+    "terminal_evidence_index_sha256": "AF847AEF53B7E16AAFAEC06916D8A7BE1D1206A8AF4B374FB4235B41298C8FB9",
+    "completion_publish_observed": true,
+    "completion_publish_rva": "0x3B9CFD7",
+    "observer_final": {
+      "installed": true,
+      "failure": 0,
+      "selected_event_count": 0,
+      "state2_count": 0,
+      "state3_count": 0
+    },
+    "cleanup": "GREEN",
+    "rerun_performed": false
+  },
+  "bounded_exact_build_cfg": {
+    "wrapper": {
+      "begin_rva": "0x3B9E030",
+      "end_rva_exclusive": "0x3B9E266",
+      "bytes_sha256": "C311284A4604FF68449A7C84CE8A607FA1175A2E6539F4F537FE28CF841CE249"
+    },
+    "consumer_calls_before_producer_loop": [
+      "0x3B9E10B",
+      "0x3B9E175"
+    ],
+    "consumer_state_read_rva": "0x3B9DEA7",
+    "producer_loop": {
+      "begin_rva": "0x3B9E230",
+      "back_edge_rva": "0x3B9E246",
+      "callback_helper_rva": "0x3B9CF50",
+      "selected_completion_publish_rva": "0x3B9CFD7"
+    },
+    "wrapper_return_rva": "0x3B9E265",
+    "ordering": "both calls to the completion consumer precede the producer loop; a state2 published by the selected callback can only be observed by this consumer on a later wrapper invocation"
+  },
+  "diagnostic_adjustment": {
+    "hook_rva": "0x3B9DEA7",
+    "selector_unchanged": "callback vtable slot2 target RVA == 0x88B480",
+    "private_only_fields": [
+      "raw_hit_count",
+      "raw_state2_count",
+      "raw_state3_count",
+      "raw_last_callback",
+      "raw_last_callback_slot2_target",
+      "raw_last_reference_count"
+    ],
+    "interpretation": {
+      "raw_hit_zero": "the patched consumer state-read instruction was never reached",
+      "raw_hit_positive_raw_complete_zero": "the consumer ran but did not observe any task in state2/state3",
+      "raw_complete_positive_selected_zero": "the completion consumer ran, but the last completed task identity did not match the selected 0x88B480 callback",
+      "selected_positive": "the selected completion reached the consumer and existing retire telemetry applies"
+    },
+    "native_flow_changed": false,
+    "public_abi_changed": false,
+    "readiness_promotion": false
+  },
+  "conclusion": {
+    "why_current_filter_did_not_hit": "the live artifact alone cannot choose between no later wrapper invocation and a selector mismatch; exact static ordering proves the selected state2 is published after both consumer calls in the same wrapper invocation, so zero selected hits is consistent with no later consumer pass and does not invalidate the selector",
+    "next_distinct_observation": "one bounded run of the new private raw diagnostic; do not repeat the legacy timeout without these fields",
+    "ck3_started_for_this_package": false
+  }
+}

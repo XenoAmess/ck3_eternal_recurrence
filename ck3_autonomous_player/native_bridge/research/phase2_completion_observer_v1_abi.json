@@ -1,11 +1,11 @@
 {
   "contract": "phase2-completion-observer-v1",
   "schema_version": 1,
-  "status": "private-observer-ready-to-live",
+  "status": "private-observer-raw-diagnostic-ready-to-live",
   "build": {
     "product_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-    "parent_baseline_commit": "c98181e65c477606d4dfa33e58d49cba3cae24f3"
+    "parent_baseline_commit": "f893ff818aab4459bc16ff4cea0a4fa2086a2ea1"
   },
   "scope": {
     "read_only_game_state": true,
@@ -24,6 +24,7 @@
     "retire_rva": "0x3B9DF63",
     "selected_callback_slot2_target_rva": "0x88B480",
     "replayed_semantics": "read [RBX+0x60], subtract 2, compare 1, route values 2/3 to native retire branch and all other values to native continuation",
+    "raw_hit_counter": "inline lock inc before state classification; no call is added to the native non-complete path",
     "telemetry_call_only_on_complete_values": [2, 3]
   },
   "private_telemetry": {
@@ -32,6 +33,12 @@
       "selected_event_count",
       "state2_count",
       "state3_count",
+      "raw_hit_count",
+      "raw_state2_count",
+      "raw_state3_count",
+      "raw_last_callback",
+      "raw_last_callback_slot2_target",
+      "raw_last_reference_count",
       "last_state",
       "last_thread_id",
       "last_timestamp_qpc",
@@ -40,6 +47,7 @@
       "last_will_retire"
     ],
     "selected_filter": "read [RBX+0x38] callback, then callback vtable slot 2; publish only when target equals module_base+0x88B480",
+    "raw_diagnostic_boundary": "raw_hit_count counts every patched state read; raw state2/state3 and last callback/vslot2/reference count publish before the selected equality filter",
     "timestamp_clock": "QueryPerformanceCounter",
     "retire_status": "last_observed_retired is state==3; last_will_retire is pre-retire reference_count==1"
   },
@@ -52,17 +60,20 @@
     "live_cleanup": "bounded runner must terminate the isolated process; standalone uninstall remains fixture-covered"
   },
   "source_hashes": {
-    "header_sha256": "A5B3A6B0C9CEE23EA07A60B13EDC7CBE3D4F4C590E89C7B00F0D82C2DFED0574",
-    "implementation_sha256": "6809AFB2B70A0C36D918DECF5EAC485060156739A3179C6DE6461F03C042EC80",
-    "fixture_test_sha256": "9F93675326EBF3C950ED61748956383E88BFC121D0885C29A14AAF708C569B7A"
+    "header_sha256": "F5FB9324BBABE72E2C376CFCD3CD8F9B0D52A25B53822C69800BA26F3B27E07E",
+    "implementation_sha256": "D6052453F6D61F45B153860BE115C2B2482FE0B7D428E64BDFD95D659638E9AA",
+    "fixture_test_sha256": "575A28C318BC18BBCB9A792F55F4D22CEC643F3E278604907EF31B12A8995CBD"
   },
   "acceptance": {
-    "offline_fixture": "install/filter/state2/state3/retire telemetry/uninstall/recoverable rollback GREEN",
-    "private_bridge_build": "MSVC x64 Release /W4 private-option DLL build GREEN",
-    "live_status": "not run; waiting for serialized CK3 authorization"
+    "offline_fixture": "install/raw-counter address/filter/state2/state3/selector-miss/retire telemetry/uninstall/recoverable rollback GREEN",
+    "private_bridge_build": "MSVC x64 Release private-option DLL SHA-256 70ABF66CDC2B279E679DA6D9381674DF1570422DBD3AA056FC6F30A90433F6A6",
+    "default_bridge_build": "MSVC x64 Release default DLL SHA-256 C6BD9BBFC3F3BCF55083F68D3151774AA38E3976F82F7B8E5E5FC08AD89CA759; private heartbeat tokens absent",
+    "prior_live_status": "typed RED at frozen commit 25b6036: completion publish observed, observer installed without failure, selected counters remained zero",
+    "prior_live_terminal_index_sha256": "AF847AEF53B7E16AAFAEC06916D8A7BE1D1206A8AF4B374FB4235B41298C8FB9",
+    "raw_diagnostic_live_status": "not run; waiting for a newly frozen serialized CK3 authorization"
   },
   "limits": [
-    "the hook records completion consumption and does not change task, callback, state, reference count, or loader flow",
+    "the hook records raw visits and completion consumption and does not change task, callback, state, reference count, or loader flow",
     "the private heartbeat extension is absent from default builds",
     "no public bridge capability or readiness gate is promoted"
   ],

@@ -44,6 +44,32 @@ bool MakeExecutable(void *address, std::size_t size) {
   return VirtualProtect(address, size, PAGE_EXECUTE_READ, &old) != FALSE;
 }
 
+using StubRunner = void (*)(void *task) noexcept;
+
+void *MakeStubRunner(void *patch) {
+  std::array<std::uint8_t, 26> code{
+      0x53,                         // push rbx
+      0x48, 0x8B, 0xD9,             // mov rbx, rcx
+      0x48, 0x83, 0xEC, 0x28,       // sub rsp, 0x28
+      0x48, 0xB8,                   // mov rax, patch
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0xFF, 0xD0,                   // call rax
+      0x48, 0x83, 0xC4, 0x28,       // add rsp, 0x28
+      0x5B,                         // pop rbx
+      0xC3};                        // ret
+  const auto patch_address = reinterpret_cast<std::uint64_t>(patch);
+  std::memcpy(code.data() + 10, &patch_address, sizeof(patch_address));
+  void *runner = VirtualAlloc(nullptr, 4096, MEM_RESERVE | MEM_COMMIT,
+                              PAGE_READWRITE);
+  if (runner == nullptr) return nullptr;
+  std::memcpy(runner, code.data(), code.size());
+  if (!MakeExecutable(runner, 4096)) {
+    VirtualFree(runner, 0, MEM_RELEASE);
+    return nullptr;
+  }
+  return runner;
+}
+
 int Fail(const char *message) {
   std::cerr << message << '\n';
   return 1;
@@ -59,6 +85,7 @@ int main() {
                              PAGE_READWRITE);
   if (patch == nullptr) return Fail("fixture patch allocation failed");
   std::memcpy(patch, anchor.data(), anchor.size());
+  static_cast<std::uint8_t *>(patch)[anchor.size()] = 0xC3;
   if (!MakeExecutable(patch, 4096)) return Fail("fixture patch protect failed");
 
   Phase2CompletionObserverV1State state{};
@@ -72,7 +99,8 @@ int main() {
       reinterpret_cast<std::uintptr_t>(patch);
   environment.continue_target_override =
       reinterpret_cast<std::uintptr_t>(patch) + anchor.size();
-  environment.retire_target_override = 0x20000100;
+  environment.retire_target_override =
+      reinterpret_cast<std::uintptr_t>(patch) + anchor.size();
   environment.memory_context = &fixture;
   environment.virtual_alloc_override = &FixtureAlloc;
   environment.virtual_free_override = &FixtureFree;
@@ -85,6 +113,15 @@ int main() {
       static_cast<const std::uint8_t *>(patch)[0] != 0xFF ||
       static_cast<const std::uint8_t *>(patch)[1] != 0x25) {
     return Fail("observer patch was not installed");
+  }
+  const auto *stub = static_cast<const std::uint8_t *>(state.stub);
+  std::uint64_t raw_counter_address = 0;
+  std::memcpy(&raw_counter_address, stub + 6, sizeof(raw_counter_address));
+  if (stub[3] != 0x50 || stub[4] != 0x48 || stub[5] != 0xB8 ||
+      raw_counter_address !=
+          reinterpret_cast<std::uintptr_t>(&state.raw_hit_count) ||
+      std::memcmp(stub + 14, "\xF0\x48\xFF\x00\x58", 5) != 0) {
+    return Fail("raw hook-hit counter stub mismatch");
   }
 
   std::array<std::uint64_t, 3> vtable{};
@@ -99,15 +136,37 @@ int main() {
   std::memcpy(task.data() + 0x38, &callback_address, sizeof(callback_address));
   std::memcpy(task.data() + 0x64, &one_reference, sizeof(one_reference));
   const auto task_address = reinterpret_cast<std::uintptr_t>(task.data());
+  void *runner_memory = MakeStubRunner(patch);
+  if (runner_memory == nullptr) return Fail("stub runner allocation failed");
+#pragma warning(push)
+#pragma warning(disable : 4191)
+  const auto run_stub = reinterpret_cast<StubRunner>(runner_memory);
+#pragma warning(pop)
 
-  xar::bridge::RecordPhase2CompletionObservationV1(
-      state, task_address, 2, 1234, 5678);
+  run_stub(task.data());
   auto diagnostics =
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(state);
-  if (!diagnostics.installed || diagnostics.selected_event_count != 1 ||
+  if (!diagnostics.installed || diagnostics.raw_hit_count != 1 ||
+      diagnostics.raw_state2_count != 0 ||
+      diagnostics.raw_state3_count != 0 ||
+      diagnostics.selected_event_count != 0) {
+    return Fail("non-complete raw hook telemetry mismatch");
+  }
+
+  const std::uint32_t state2 = 2;
+  std::memcpy(task.data() + 0x60, &state2, sizeof(state2));
+  run_stub(task.data());
+  diagnostics = xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(state);
+  if (!diagnostics.installed || diagnostics.raw_hit_count != 2 ||
+      diagnostics.raw_state2_count != 1 ||
+      diagnostics.raw_state3_count != 0 ||
+      diagnostics.raw_last_callback != callback_address ||
+      diagnostics.raw_last_callback_slot2_target != vtable[2] ||
+      diagnostics.raw_last_reference_count != 1 ||
+      diagnostics.selected_event_count != 1 ||
       diagnostics.state2_count != 1 || diagnostics.state3_count != 0 ||
-      diagnostics.last_state != 2 || diagnostics.last_thread_id != 1234 ||
-      diagnostics.last_timestamp_qpc != 5678 ||
+      diagnostics.last_state != 2 || diagnostics.last_thread_id == 0 ||
+      diagnostics.last_timestamp_qpc == 0 ||
       diagnostics.last_task != task_address ||
       diagnostics.last_callback != callback_address ||
       diagnostics.last_reference_count != 1 ||
@@ -115,22 +174,32 @@ int main() {
     return Fail("state2 telemetry mismatch");
   }
 
-  xar::bridge::RecordPhase2CompletionObservationV1(
-      state, task_address, 3, 4321, 8765);
+  const std::uint32_t state3 = 3;
+  std::memcpy(task.data() + 0x60, &state3, sizeof(state3));
+  run_stub(task.data());
   diagnostics = xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(state);
-  if (diagnostics.selected_event_count != 2 ||
+  if (diagnostics.raw_hit_count != 3 ||
+      diagnostics.raw_state2_count != 1 ||
+      diagnostics.raw_state3_count != 1 ||
+      diagnostics.selected_event_count != 2 ||
       diagnostics.state2_count != 1 || diagnostics.state3_count != 1 ||
-      diagnostics.last_state != 3 || diagnostics.last_thread_id != 4321 ||
-      diagnostics.last_timestamp_qpc != 8765 ||
+      diagnostics.last_state != 3 || diagnostics.last_thread_id == 0 ||
+      diagnostics.last_timestamp_qpc == 0 ||
       !diagnostics.last_observed_retired || !diagnostics.last_will_retire) {
     return Fail("state3 telemetry mismatch");
   }
 
   vtable[2] += 1;
-  xar::bridge::RecordPhase2CompletionObservationV1(
-      state, task_address, 2, 1, 1);
-  if (xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(state)
-          .selected_event_count != 2) {
+  std::memcpy(task.data() + 0x60, &state2, sizeof(state2));
+  run_stub(task.data());
+  diagnostics = xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(state);
+  if (diagnostics.raw_hit_count != 4 ||
+      diagnostics.raw_state2_count != 2 ||
+      diagnostics.raw_state3_count != 1 ||
+      diagnostics.raw_last_callback != callback_address ||
+      diagnostics.raw_last_callback_slot2_target != vtable[2] ||
+      diagnostics.raw_last_reference_count != 1 ||
+      diagnostics.selected_event_count != 2) {
     return Fail("non-selected callback leaked into telemetry");
   }
 
@@ -139,6 +208,7 @@ int main() {
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(state).installed) {
     return Fail("observer uninstall did not restore exact anchor");
   }
+  VirtualFree(runner_memory, 0, MEM_RELEASE);
 
   Phase2CompletionObserverV1State rollback_state{};
   FixtureMemory rollback_fixture{};

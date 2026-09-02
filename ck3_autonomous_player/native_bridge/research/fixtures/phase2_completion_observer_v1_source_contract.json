@@ -6,6 +6,12 @@
     "kPhase2SelectedCallbackTargetRvaV1 =",
     "0x88B480",
     "selected_event_count",
+    "raw_hit_count",
+    "raw_state2_count",
+    "raw_state3_count",
+    "raw_last_callback",
+    "raw_last_callback_slot2_target",
+    "raw_last_reference_count",
     "last_timestamp_qpc",
     "last_observed_retired",
     "last_will_retire",
@@ -14,6 +20,7 @@
   "required_implementation_tokens": [
     "kPatchAnchor",
     "Phase2CompletionObserverThunkV1",
+    "lock inc qword ptr [rax]",
     "QueryPerformanceCounter",
     "task + 0x38",
     "+ 0x10",
@@ -27,6 +34,11 @@
     "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1",
     "phase2_completion_observer_v1",
     "InstallPhase2CompletionObserverV1",
+    "raw_hit_count",
+    "raw_state2_count",
+    "raw_state3_count",
+    "raw_last_callback_slot2_target",
+    "raw_last_reference_count",
     "last_timestamp_qpc",
     "last_will_retire"
   ],
@@ -35,6 +47,8 @@
     "readiness_promotion\":true"
   ],
   "fixture_cases": [
+    "generated stub increments the exact state-owned raw hook-hit counter before classifying state",
+    "unfiltered complete telemetry is retained when the selected slot2 filter rejects a task",
     "selected state2 publishes thread, QPC timestamp, reference count and will-retire",
     "selected state3 publishes observed-retired",
     "non-selected slot2 target is ignored",

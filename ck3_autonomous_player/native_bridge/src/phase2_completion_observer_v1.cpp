@@ -183,8 +183,15 @@ bool BuildStub(Phase2CompletionObserverV1State &state,
                           kPhase2CompletionObserverStubBytesV1> &stub) noexcept {
   std::size_t cursor = 0;
   Emit(stub, cursor,
-       {0x8B, 0x43, 0x60,       // mov eax, [rbx+0x60]
-        0x83, 0xC0, 0xFE,       // add eax, -2
+       {0x8B, 0x43, 0x60});      // mov eax, [rbx+0x60]
+  Emit(stub, cursor, {0x50});    // push rax
+  Emit(stub, cursor, {0x48, 0xB8}); // mov rax, raw_hit_count
+  EmitU64(stub, cursor,
+          reinterpret_cast<std::uintptr_t>(&state.raw_hit_count));
+  Emit(stub, cursor, {0xF0, 0x48, 0xFF, 0x00}); // lock inc qword ptr [rax]
+  Emit(stub, cursor, {0x58});                    // pop rax
+  Emit(stub, cursor,
+       {0x83, 0xC0, 0xFE,       // add eax, -2
         0x83, 0xF8, 0x01});      // cmp eax, 1
   Emit(stub, cursor, {0x77, 0x3C}); // ja non-complete
 
@@ -336,16 +343,27 @@ void RecordPhase2CompletionObservationV1(
     std::uint32_t observed_state, std::uint32_t thread_id,
     std::uint64_t timestamp_qpc) noexcept {
   if (observed_state != 2 && observed_state != 3) return;
+  if (observed_state == 2) {
+    state.raw_state2_count.fetch_add(1, std::memory_order_relaxed);
+  } else {
+    state.raw_state3_count.fetch_add(1, std::memory_order_relaxed);
+  }
   std::uint64_t callback = 0;
   std::uint64_t vtable = 0;
   std::uint64_t slot2_target = 0;
   std::uint32_t reference_count = 0;
-  if (!SafeReadU64(task + 0x38, callback) || callback == 0 ||
-      !SafeReadU64(static_cast<std::uintptr_t>(callback), vtable) ||
-      vtable == 0 ||
-      !SafeReadU64(static_cast<std::uintptr_t>(vtable) + 0x10,
-                   slot2_target) ||
-      !SafeReadU32(task + 0x64, reference_count)) {
+  const bool callback_read = SafeReadU64(task + 0x38, callback);
+  const bool vtable_read = callback_read && callback != 0 &&
+      SafeReadU64(static_cast<std::uintptr_t>(callback), vtable);
+  const bool slot2_read = vtable_read && vtable != 0 &&
+      SafeReadU64(static_cast<std::uintptr_t>(vtable) + 0x10, slot2_target);
+  const bool reference_count_read = SafeReadU32(task + 0x64, reference_count);
+  state.raw_last_callback.store(callback, std::memory_order_relaxed);
+  state.raw_last_callback_slot2_target.store(slot2_target,
+                                              std::memory_order_relaxed);
+  state.raw_last_reference_count.store(reference_count,
+                                        std::memory_order_relaxed);
+  if (!slot2_read || !reference_count_read) {
     return;
   }
   std::uintptr_t expected_target = 0;
@@ -448,6 +466,13 @@ bool InstallPhase2CompletionObserverV1(
   state.selected_event_count.store(0, std::memory_order_relaxed);
   state.state2_count.store(0, std::memory_order_relaxed);
   state.state3_count.store(0, std::memory_order_relaxed);
+  state.raw_hit_count.store(0, std::memory_order_relaxed);
+  state.raw_state2_count.store(0, std::memory_order_relaxed);
+  state.raw_state3_count.store(0, std::memory_order_relaxed);
+  state.raw_last_callback.store(0, std::memory_order_relaxed);
+  state.raw_last_callback_slot2_target.store(0,
+                                              std::memory_order_relaxed);
+  state.raw_last_reference_count.store(0, std::memory_order_relaxed);
   state.stub = virtual_alloc(state.memory_context,
                              kPhase2CompletionObserverStubBytesV1,
                              MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
@@ -528,6 +553,17 @@ Phase2CompletionObserverV1Diagnostics ReadPhase2CompletionObserverV1Diagnostics(
       state.selected_event_count.load(std::memory_order_acquire);
   output.state2_count = state.state2_count.load(std::memory_order_relaxed);
   output.state3_count = state.state3_count.load(std::memory_order_relaxed);
+  output.raw_hit_count = state.raw_hit_count.load(std::memory_order_relaxed);
+  output.raw_state2_count =
+      state.raw_state2_count.load(std::memory_order_relaxed);
+  output.raw_state3_count =
+      state.raw_state3_count.load(std::memory_order_relaxed);
+  output.raw_last_callback =
+      state.raw_last_callback.load(std::memory_order_relaxed);
+  output.raw_last_callback_slot2_target =
+      state.raw_last_callback_slot2_target.load(std::memory_order_relaxed);
+  output.raw_last_reference_count =
+      state.raw_last_reference_count.load(std::memory_order_relaxed);
   output.last_timestamp_qpc =
       state.last_timestamp_qpc.load(std::memory_order_relaxed);
   output.last_task = state.last_task.load(std::memory_order_relaxed);

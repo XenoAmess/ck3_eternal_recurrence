@@ -23,6 +23,12 @@ class Phase2CompletionObserverContractTests(unittest.TestCase):
                 / "research/fixtures/phase2_completion_observer_v1_source_contract.json"
             ).read_text(encoding="utf-8")
         )
+        cls.red_analysis = json.loads(
+            (
+                NATIVE
+                / "research/phase2_completion_observer_red_analysis_v1.json"
+            ).read_text(encoding="utf-8")
+        )
         cls.header = (
             NATIVE / "include/xar_bridge/phase2_completion_observer_v1.hpp"
         ).read_text(encoding="utf-8")
@@ -48,6 +54,12 @@ class Phase2CompletionObserverContractTests(unittest.TestCase):
         self.assertEqual(hook["retire_rva"], "0x3B9DF63")
         self.assertEqual(hook["selected_callback_slot2_target_rva"], "0x88B480")
         fields = self.contract["private_telemetry"]["seed_gate_fields"]
+        self.assertIn("raw_hit_count", fields)
+        self.assertIn("raw_state2_count", fields)
+        self.assertIn("raw_state3_count", fields)
+        self.assertIn("raw_last_callback", fields)
+        self.assertIn("raw_last_callback_slot2_target", fields)
+        self.assertIn("raw_last_reference_count", fields)
         self.assertIn("last_thread_id", fields)
         self.assertIn("last_timestamp_qpc", fields)
         self.assertIn("last_observed_retired", fields)
@@ -62,6 +74,23 @@ class Phase2CompletionObserverContractTests(unittest.TestCase):
             self.assertIn(token, self.bridge)
         for token in self.fixture["forbidden_default_tokens"]:
             self.assertNotIn(token, self.bridge)
+
+    def test_red_artifact_closes_consumer_before_producer_ordering(self) -> None:
+        cfg = self.red_analysis["bounded_exact_build_cfg"]
+        self.assertEqual(
+            cfg["consumer_calls_before_producer_loop"],
+            ["0x3B9E10B", "0x3B9E175"],
+        )
+        self.assertEqual(cfg["consumer_state_read_rva"], "0x3B9DEA7")
+        self.assertEqual(
+            cfg["producer_loop"]["selected_completion_publish_rva"],
+            "0x3B9CFD7",
+        )
+        self.assertEqual(cfg["wrapper_return_rva"], "0x3B9E265")
+        diagnostic = self.red_analysis["diagnostic_adjustment"]
+        self.assertFalse(diagnostic["native_flow_changed"])
+        self.assertFalse(diagnostic["public_abi_changed"])
+        self.assertFalse(diagnostic["readiness_promotion"])
 
 
 if __name__ == "__main__":
