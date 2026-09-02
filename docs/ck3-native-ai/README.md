@@ -203,9 +203,10 @@
   fail-closed schema 草案。
 - [static-confirmed] [war-termination.md](war-termination.md) 记录原版 AI 的执行要求、白和、投降三棵主动提出与
   接受树，包括战分、时长、债务、其它战争、人格、人质与 auto-accept 边界。
-- [static/fixture-ready, not live/action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
-  冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；它不发布 action literal，
-  不关闭 `GEN-034`。四域 terms wire/runner 入口见
+- [production-live read-only primitive + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
+  冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；一次 exact-build
+  paused probe 已把 gold/prestige/prisoner/favor 四个窄域提升为 read-only primitive，但仍不发布
+  surrender/white-peace action 或关闭 `GEN-034`。四域 terms wire/runner 入口见
   [run_war_termination_terms_live_acceptance.py](../../ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py)，
   四域状态与策略边界见
   [raiktor_continue_vs_surrender_policy_v1_contract.json](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json)

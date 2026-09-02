@@ -424,3 +424,19 @@ a future read-only probe once the vtable slot semantics are closed. The
 repeated `onaction.cpp:429 Total of : 881` remains non-discriminating, so no
 `onaction_total` field is justified. No CK3 launch, ABI widening, or new gate
 was added; `a89282d` remains the frozen phase-two production baseline.
+
+## 2026-09-02 10:19 loader callback contract
+
+The static callback anchor is now captured in machine-readable contracts on
+parent mainline `56e786c` (source branch commit `7758b9b`, merged and retired):
+
+- `ck3_autonomous_player/native_bridge/research/phase2_loader_callback_v1_abi.json`
+- `ck3_autonomous_player/native_bridge/research/fixtures/phase2_loader_callback_v1_source_contract.json`
+- `ck3_autonomous_player/tests/unit/test_phase2_loader_callback_contract.py`
+
+The focused contract suite is `4/4` GREEN. It binds the exact executable,
+loop range, callback vcall, node offsets, dependency timing, and format-string
+RVAs while explicitly leaving callback return semantics, vtable slot meaning,
+production script-file attribution, and production readiness as `unknown`.
+This is a reusable static/fixture observation boundary only: it adds no bridge
+detour, ABI field, timeout, event authorization, or CK3 launch.

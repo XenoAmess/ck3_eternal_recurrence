@@ -140,6 +140,11 @@ Its canonical `main` is `7da444d`, and only the two pre-existing user branches
 parent refs with distinct user-facing release/evidence ownership are retained
 until their owners request retirement.
 
+The loader callback contract was merged as `56e786c` from
+`phase2/callback-probe-20260902` (`7758b9b`); the source branch and remote ref
+were deleted immediately after the focused `4/4` test passed. Its detached
+worktree and static artifacts remain available for evidence.
+
 ## 合并与清理 checklist
 
 - [ ] base SHA、owner、reason、acceptance、deadline 和 status 已进 ledger；

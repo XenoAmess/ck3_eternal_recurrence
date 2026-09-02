@@ -1248,3 +1248,11 @@ equal; gold, prestige, prisoner-release, and favor-hook components are
 production-live read-only primitives. The run sent no mutation and proved
 process cleanup. `truce.evaluated_days` and war-bound losses remain absent, so
 this evidence does not enable a termination decision or action.
+
+The phase-two loader callback boundary is separately frozen in parent commit
+`56e786c` as
+`native_bridge/research/phase2_loader_callback_v1_abi.json` plus its source
+contract and synthetic join test (`4/4` GREEN). It binds the exact-build loop
+and per-node vcall/timing offsets only; callback return semantics and source
+file attribution remain unknown. This contract is static/fixture evidence and
+does not authorize a native detour or change the phase-two loader gate.
