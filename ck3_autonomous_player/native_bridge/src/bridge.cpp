@@ -619,28 +619,90 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += ']';
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
-  result += "},\"phase2_producer_identity_observer_v1\":{";
+  result += "},\"phase2_producer_slot2_histogram_observer_v2\":{";
   result += "\"private_build\":true,\"installed\":";
   result += phase2_producer_identity_observer.installed ? "true" : "false";
   result += ",\"failure\":";
   result += Number(phase2_producer_identity_observer.failure_flags);
-#define XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(name) \
-  result += ",\"" #name "\":";                       \
+#define XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(name) \
+  result += ",\"" #name "\":";                        \
   result += Number(phase2_producer_identity_observer.name)
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(producer_0x3B9CFD2_entry_count);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(producer_0x3B9CFD7_entry_count);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(read_failure_count);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_task_pointer);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_pointer);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_vptr);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_slot2);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_callback_slot2_rva);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_owner_pointer);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_state_before_publish);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_state_after_publish);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_thread_id);
-  XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD(last_timestamp_qpc);
-#undef XAR_APPEND_PHASE2_PRODUCER_IDENTITY_FIELD
+  XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(producer_0x3B9CFD2_entry_count);
+  XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(producer_0x3B9CFD7_entry_count);
+  XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(read_failure_count);
+  XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(histogram_read_failure_count);
+  result += ",\"histogram_capacity\":";
+  result += Number(xar::bridge::kPhase2ProducerIdentityHistogramCapacityV1);
+  XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(histogram_bin_count);
+  XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD(histogram_overflow_count);
+  result += ",\"callback_slot2_rva_histogram\":[";
+  bool first_phase2_producer_histogram_bin = true;
+  for (const auto &bin :
+       phase2_producer_identity_observer.callback_slot2_rva_histogram) {
+    if (bin.callback_slot2_rva == 0 || bin.count == 0) continue;
+    if (!first_phase2_producer_histogram_bin) result += ',';
+    first_phase2_producer_histogram_bin = false;
+    result += "{\"slot2_rva\":";
+    result += Number(bin.callback_slot2_rva);
+    result += ",\"count\":";
+    result += Number(bin.count);
+    result += '}';
+  }
+  result += ']';
+  result += ",\"selected_slot2_rva\":";
+  result += Number(xar::bridge::kPhase2ProducerIdentitySelectedSlot2RvaV1);
+  result += ",\"selected_count\":";
+  result += Number(
+      phase2_producer_identity_observer.selected_0x88B480_match_count);
+  const auto append_selected_identity =
+      [&](const char *name, std::uint64_t task_pointer,
+          std::uint32_t task_state, std::uint64_t callback_pointer,
+          std::uint64_t vptr, std::uint64_t slot2_target,
+          std::uint64_t slot2_rva, std::uint64_t owner_pointer,
+          std::uint32_t thread_id, std::uint64_t timestamp_qpc) {
+        result += ",\"";
+        result += name;
+        result += "\":{\"task_pointer\":";
+        result += Number(task_pointer);
+        result += ",\"task_state\":";
+        result += Number(task_state);
+        result += ",\"callback_pointer\":";
+        result += Number(callback_pointer);
+        result += ",\"vptr\":";
+        result += Number(vptr);
+        result += ",\"slot2_target\":";
+        result += Number(slot2_target);
+        result += ",\"slot2_rva\":";
+        result += Number(slot2_rva);
+        result += ",\"owner_pointer\":";
+        result += Number(owner_pointer);
+        result += ",\"thread_id\":";
+        result += Number(thread_id);
+        result += ",\"timestamp_qpc\":";
+        result += Number(timestamp_qpc);
+        result += '}';
+      };
+  append_selected_identity(
+      "selected_first", phase2_producer_identity_observer.selected_first_task_pointer,
+      phase2_producer_identity_observer.selected_first_state,
+      phase2_producer_identity_observer.selected_first_callback_pointer,
+      phase2_producer_identity_observer.selected_first_callback_vptr,
+      phase2_producer_identity_observer.selected_first_callback_slot2,
+      phase2_producer_identity_observer.selected_first_callback_slot2_rva,
+      phase2_producer_identity_observer.selected_first_owner_pointer,
+      phase2_producer_identity_observer.selected_first_thread_id,
+      phase2_producer_identity_observer.selected_first_timestamp_qpc);
+  append_selected_identity(
+      "selected_last", phase2_producer_identity_observer.selected_last_task_pointer,
+      phase2_producer_identity_observer.selected_last_state,
+      phase2_producer_identity_observer.selected_last_callback_pointer,
+      phase2_producer_identity_observer.selected_last_callback_vptr,
+      phase2_producer_identity_observer.selected_last_callback_slot2,
+      phase2_producer_identity_observer.selected_last_callback_slot2_rva,
+      phase2_producer_identity_observer.selected_last_owner_pointer,
+      phase2_producer_identity_observer.selected_last_thread_id,
+      phase2_producer_identity_observer.selected_last_timestamp_qpc);
+#undef XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD
 #endif
   result += "}}";
   return result;

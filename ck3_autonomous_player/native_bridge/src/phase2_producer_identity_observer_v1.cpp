@@ -360,13 +360,13 @@ void RecordPhase2ProducerIdentityObservationV1(
       SafeReadU64(static_cast<std::uintptr_t>(vtable) + 0x10, slot2_target);
   const bool owner_read = SafeReadU64(task + 0x58, owner);
   const bool state_read = SafeReadU32(task + 0x60, observed_state);
+  const std::uint64_t slot2_rva =
+      slot2_target >= state.module_base ? slot2_target - state.module_base : 0;
   state.last_task_pointer.store(task, std::memory_order_relaxed);
   state.last_callback_pointer.store(callback, std::memory_order_relaxed);
   state.last_callback_vptr.store(vtable, std::memory_order_relaxed);
   state.last_callback_slot2.store(slot2_target, std::memory_order_relaxed);
-  state.last_callback_slot2_rva.store(
-      slot2_target >= state.module_base ? slot2_target - state.module_base : 0,
-      std::memory_order_relaxed);
+  state.last_callback_slot2_rva.store(slot2_rva, std::memory_order_relaxed);
   state.last_owner_pointer.store(owner, std::memory_order_relaxed);
   if (stage == 0) {
     state.last_state_before_publish.store(observed_state,
@@ -383,6 +383,70 @@ void RecordPhase2ProducerIdentityObservationV1(
   if (failures != 0) {
     state.read_failure_count.fetch_add(failures, std::memory_order_relaxed);
   }
+  if (stage != 1) return;
+  if (!slot2_read || slot2_rva == 0) {
+    state.histogram_read_failure_count.fetch_add(1,
+                                                  std::memory_order_relaxed);
+    return;
+  }
+  bool histogram_recorded = false;
+  for (auto &bin : state.callback_slot2_rva_histogram) {
+    std::uint64_t observed_rva =
+        bin.callback_slot2_rva.load(std::memory_order_acquire);
+    if (observed_rva == 0) {
+      std::uint64_t empty = 0;
+      if (bin.callback_slot2_rva.compare_exchange_strong(
+              empty, slot2_rva, std::memory_order_acq_rel,
+              std::memory_order_acquire)) {
+        state.histogram_bin_count.fetch_add(1, std::memory_order_relaxed);
+        observed_rva = slot2_rva;
+      } else {
+        observed_rva = empty;
+      }
+    }
+    if (observed_rva == slot2_rva) {
+      bin.count.fetch_add(1, std::memory_order_relaxed);
+      histogram_recorded = true;
+      break;
+    }
+  }
+  if (!histogram_recorded) {
+    state.histogram_overflow_count.fetch_add(1, std::memory_order_relaxed);
+  }
+
+  if (slot2_rva != kPhase2ProducerIdentitySelectedSlot2RvaV1) return;
+  const auto previous_selected =
+      state.selected_0x88B480_match_count.fetch_add(
+          1, std::memory_order_relaxed);
+  if (previous_selected == 0) {
+    state.selected_first_task_pointer.store(task, std::memory_order_relaxed);
+    state.selected_first_callback_pointer.store(callback,
+                                                  std::memory_order_relaxed);
+    state.selected_first_callback_vptr.store(vtable,
+                                               std::memory_order_relaxed);
+    state.selected_first_callback_slot2.store(slot2_target,
+                                                std::memory_order_relaxed);
+    state.selected_first_callback_slot2_rva.store(slot2_rva,
+                                                    std::memory_order_relaxed);
+    state.selected_first_owner_pointer.store(owner, std::memory_order_relaxed);
+    state.selected_first_state.store(observed_state, std::memory_order_relaxed);
+    state.selected_first_thread_id.store(thread_id, std::memory_order_relaxed);
+    state.selected_first_timestamp_qpc.store(timestamp_qpc,
+                                               std::memory_order_relaxed);
+  }
+  state.selected_last_task_pointer.store(task, std::memory_order_relaxed);
+  state.selected_last_callback_pointer.store(callback,
+                                               std::memory_order_relaxed);
+  state.selected_last_callback_vptr.store(vtable, std::memory_order_relaxed);
+  state.selected_last_callback_slot2.store(slot2_target,
+                                             std::memory_order_relaxed);
+  state.selected_last_callback_slot2_rva.store(slot2_rva,
+                                                 std::memory_order_relaxed);
+  state.selected_last_owner_pointer.store(owner, std::memory_order_relaxed);
+  state.selected_last_state.store(observed_state, std::memory_order_relaxed);
+  state.selected_last_thread_id.store(thread_id, std::memory_order_relaxed);
+  state.selected_last_timestamp_qpc.store(timestamp_qpc,
+                                            std::memory_order_relaxed);
 }
 
 bool InstallPhase2ProducerIdentityObserverV1(
@@ -468,6 +532,35 @@ bool InstallPhase2ProducerIdentityObserverV1(
   state.last_state_after_publish.store(0, std::memory_order_relaxed);
   state.last_thread_id.store(0, std::memory_order_relaxed);
   state.last_timestamp_qpc.store(0, std::memory_order_relaxed);
+  state.histogram_bin_count.store(0, std::memory_order_relaxed);
+  state.histogram_overflow_count.store(0, std::memory_order_relaxed);
+  state.histogram_read_failure_count.store(0, std::memory_order_relaxed);
+  for (auto &bin : state.callback_slot2_rva_histogram) {
+    bin.callback_slot2_rva.store(0, std::memory_order_relaxed);
+    bin.count.store(0, std::memory_order_relaxed);
+  }
+  state.selected_0x88B480_match_count.store(0, std::memory_order_relaxed);
+#define XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(name) \
+  state.name.store(0, std::memory_order_relaxed)
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_task_pointer);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_pointer);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_vptr);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_slot2);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_slot2_rva);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_owner_pointer);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_state);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_thread_id);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_timestamp_qpc);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_task_pointer);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_pointer);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_vptr);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_slot2);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_slot2_rva);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_owner_pointer);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_state);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_thread_id);
+  XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_timestamp_qpc);
+#undef XAR_RESET_PHASE2_PRODUCER_SELECTED_FIELD
   state.stub = virtual_alloc(state.memory_context,
                              kPhase2ProducerIdentityStubBytesV1,
                              MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
@@ -559,6 +652,44 @@ Phase2ProducerIdentityDiagnosticsV1 ReadPhase2ProducerIdentityDiagnosticsV1(
   output.last_state_after_publish = state.last_state_after_publish.load(std::memory_order_relaxed);
   output.last_thread_id = state.last_thread_id.load(std::memory_order_relaxed);
   output.last_timestamp_qpc = state.last_timestamp_qpc.load(std::memory_order_relaxed);
+  output.histogram_bin_count =
+      state.histogram_bin_count.load(std::memory_order_relaxed);
+  output.histogram_overflow_count =
+      state.histogram_overflow_count.load(std::memory_order_relaxed);
+  output.histogram_read_failure_count =
+      state.histogram_read_failure_count.load(std::memory_order_relaxed);
+  for (std::size_t index = 0;
+       index < kPhase2ProducerIdentityHistogramCapacityV1; ++index) {
+    output.callback_slot2_rva_histogram[index].callback_slot2_rva =
+        state.callback_slot2_rva_histogram[index].callback_slot2_rva.load(
+            std::memory_order_relaxed);
+    output.callback_slot2_rva_histogram[index].count =
+        state.callback_slot2_rva_histogram[index].count.load(
+            std::memory_order_relaxed);
+  }
+  output.selected_0x88B480_match_count =
+      state.selected_0x88B480_match_count.load(std::memory_order_relaxed);
+#define XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(name) \
+  output.name = state.name.load(std::memory_order_relaxed)
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_task_pointer);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_pointer);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_vptr);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_slot2);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_callback_slot2_rva);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_owner_pointer);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_state);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_thread_id);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_first_timestamp_qpc);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_task_pointer);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_pointer);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_vptr);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_slot2);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_callback_slot2_rva);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_owner_pointer);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_state);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_thread_id);
+  XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD(selected_last_timestamp_qpc);
+#undef XAR_READ_PHASE2_PRODUCER_SELECTED_FIELD
   return output;
 }
 

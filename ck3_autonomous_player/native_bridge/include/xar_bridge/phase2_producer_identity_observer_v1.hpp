@@ -16,6 +16,9 @@ inline constexpr std::uintptr_t kPhase2ProducerIdentityOriginalCallRvaV1 = 0x3E2
 inline constexpr std::size_t kPhase2ProducerIdentityPatchBytesV1 = 16;
 inline constexpr std::size_t kPhase2ProducerIdentityStubBytesV1 = 133;
 inline constexpr bool kPhase2ProducerIdentityInstalledByDefaultV1 = false;
+inline constexpr std::uintptr_t kPhase2ProducerIdentitySelectedSlot2RvaV1 =
+    0x88B480;
+inline constexpr std::size_t kPhase2ProducerIdentityHistogramCapacityV1 = 64;
 
 enum Phase2ProducerIdentityFailureV1 : std::uint32_t {
   phase2_producer_identity_failure_none = 0,
@@ -72,6 +75,34 @@ struct Phase2ProducerIdentityStateV1 {
   std::atomic<std::uint32_t> last_state_after_publish{0};
   std::atomic<std::uint32_t> last_thread_id{0};
   std::atomic<std::uint64_t> last_timestamp_qpc{0};
+  std::atomic<std::uint32_t> histogram_bin_count{0};
+  std::atomic<std::uint64_t> histogram_overflow_count{0};
+  std::atomic<std::uint64_t> histogram_read_failure_count{0};
+  struct HistogramBin {
+    std::atomic<std::uint64_t> callback_slot2_rva{0};
+    std::atomic<std::uint64_t> count{0};
+  };
+  std::array<HistogramBin, kPhase2ProducerIdentityHistogramCapacityV1>
+      callback_slot2_rva_histogram{};
+  std::atomic<std::uint64_t> selected_0x88B480_match_count{0};
+  std::atomic<std::uint64_t> selected_first_task_pointer{0};
+  std::atomic<std::uint64_t> selected_first_callback_pointer{0};
+  std::atomic<std::uint64_t> selected_first_callback_vptr{0};
+  std::atomic<std::uint64_t> selected_first_callback_slot2{0};
+  std::atomic<std::uint64_t> selected_first_callback_slot2_rva{0};
+  std::atomic<std::uint64_t> selected_first_owner_pointer{0};
+  std::atomic<std::uint32_t> selected_first_state{0};
+  std::atomic<std::uint32_t> selected_first_thread_id{0};
+  std::atomic<std::uint64_t> selected_first_timestamp_qpc{0};
+  std::atomic<std::uint64_t> selected_last_task_pointer{0};
+  std::atomic<std::uint64_t> selected_last_callback_pointer{0};
+  std::atomic<std::uint64_t> selected_last_callback_vptr{0};
+  std::atomic<std::uint64_t> selected_last_callback_slot2{0};
+  std::atomic<std::uint64_t> selected_last_callback_slot2_rva{0};
+  std::atomic<std::uint64_t> selected_last_owner_pointer{0};
+  std::atomic<std::uint32_t> selected_last_state{0};
+  std::atomic<std::uint32_t> selected_last_thread_id{0};
+  std::atomic<std::uint64_t> selected_last_timestamp_qpc{0};
 
   std::uintptr_t module_base = 0;
   std::uintptr_t patch_target = 0;
@@ -84,6 +115,11 @@ struct Phase2ProducerIdentityStateV1 {
   Phase2ProducerIdentityVirtualFreeV1 virtual_free = nullptr;
   Phase2ProducerIdentityVirtualProtectV1 virtual_protect = nullptr;
   Phase2ProducerIdentityFlushV1 flush_instruction_cache = nullptr;
+};
+
+struct Phase2ProducerIdentityHistogramBinDiagnosticsV1 {
+  std::uint64_t callback_slot2_rva = 0;
+  std::uint64_t count = 0;
 };
 
 struct Phase2ProducerIdentityDiagnosticsV1 {
@@ -102,6 +138,31 @@ struct Phase2ProducerIdentityDiagnosticsV1 {
   std::uint32_t last_state_after_publish = 0;
   std::uint32_t last_thread_id = 0;
   std::uint64_t last_timestamp_qpc = 0;
+  std::uint32_t histogram_bin_count = 0;
+  std::uint64_t histogram_overflow_count = 0;
+  std::uint64_t histogram_read_failure_count = 0;
+  std::array<Phase2ProducerIdentityHistogramBinDiagnosticsV1,
+             kPhase2ProducerIdentityHistogramCapacityV1>
+      callback_slot2_rva_histogram{};
+  std::uint64_t selected_0x88B480_match_count = 0;
+  std::uint64_t selected_first_task_pointer = 0;
+  std::uint64_t selected_first_callback_pointer = 0;
+  std::uint64_t selected_first_callback_vptr = 0;
+  std::uint64_t selected_first_callback_slot2 = 0;
+  std::uint64_t selected_first_callback_slot2_rva = 0;
+  std::uint64_t selected_first_owner_pointer = 0;
+  std::uint32_t selected_first_state = 0;
+  std::uint32_t selected_first_thread_id = 0;
+  std::uint64_t selected_first_timestamp_qpc = 0;
+  std::uint64_t selected_last_task_pointer = 0;
+  std::uint64_t selected_last_callback_pointer = 0;
+  std::uint64_t selected_last_callback_vptr = 0;
+  std::uint64_t selected_last_callback_slot2 = 0;
+  std::uint64_t selected_last_callback_slot2_rva = 0;
+  std::uint64_t selected_last_owner_pointer = 0;
+  std::uint32_t selected_last_state = 0;
+  std::uint32_t selected_last_thread_id = 0;
+  std::uint64_t selected_last_timestamp_qpc = 0;
 };
 
 bool InstallPhase2ProducerIdentityObserverV1(

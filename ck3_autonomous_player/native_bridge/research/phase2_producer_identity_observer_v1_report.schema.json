@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "phase2-producer-identity-observer-v1-report",
+  "$id": "phase2-producer-slot2-histogram-observer-v2-report",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "private_build", "installed", "failure",
     "producer_0x3B9CFD2_entry_count", "producer_0x3B9CFD7_entry_count",
-    "read_failure_count", "last_task_pointer", "last_callback_pointer",
-    "last_callback_vptr", "last_callback_slot2", "last_callback_slot2_rva",
-    "last_owner_pointer", "last_state_before_publish",
-    "last_state_after_publish", "last_thread_id", "last_timestamp_qpc"
+    "read_failure_count", "histogram_read_failure_count",
+    "histogram_capacity", "histogram_bin_count", "histogram_overflow_count",
+    "callback_slot2_rva_histogram", "selected_slot2_rva", "selected_count",
+    "selected_first", "selected_last"
   ],
   "properties": {
     "private_build": {"const": true},
@@ -18,15 +18,48 @@
     "producer_0x3B9CFD2_entry_count": {"type": "integer", "minimum": 0},
     "producer_0x3B9CFD7_entry_count": {"type": "integer", "minimum": 0},
     "read_failure_count": {"type": "integer", "minimum": 0},
-    "last_task_pointer": {"type": "integer", "minimum": 0},
-    "last_callback_pointer": {"type": "integer", "minimum": 0},
-    "last_callback_vptr": {"type": "integer", "minimum": 0},
-    "last_callback_slot2": {"type": "integer", "minimum": 0},
-    "last_callback_slot2_rva": {"type": "integer", "minimum": 0},
-    "last_owner_pointer": {"type": "integer", "minimum": 0},
-    "last_state_before_publish": {"type": "integer", "minimum": 0},
-    "last_state_after_publish": {"type": "integer", "minimum": 0},
-    "last_thread_id": {"type": "integer", "minimum": 0},
-    "last_timestamp_qpc": {"type": "integer", "minimum": 0}
+    "histogram_read_failure_count": {"type": "integer", "minimum": 0},
+    "histogram_capacity": {"const": 64},
+    "histogram_bin_count": {"type": "integer", "minimum": 0, "maximum": 64},
+    "histogram_overflow_count": {"type": "integer", "minimum": 0},
+    "callback_slot2_rva_histogram": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot2_rva", "count"],
+        "properties": {
+          "slot2_rva": {"type": "integer", "minimum": 1},
+          "count": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "selected_slot2_rva": {"const": 8959104},
+    "selected_count": {"type": "integer", "minimum": 0},
+    "selected_first": {"$ref": "#/$defs/selected_identity"},
+    "selected_last": {"$ref": "#/$defs/selected_identity"}
+  },
+  "$defs": {
+    "selected_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_pointer", "task_state", "callback_pointer", "vptr",
+        "slot2_target", "slot2_rva", "owner_pointer", "thread_id",
+        "timestamp_qpc"
+      ],
+      "properties": {
+        "task_pointer": {"type": "integer", "minimum": 0},
+        "task_state": {"type": "integer", "minimum": 0},
+        "callback_pointer": {"type": "integer", "minimum": 0},
+        "vptr": {"type": "integer", "minimum": 0},
+        "slot2_target": {"type": "integer", "minimum": 0},
+        "slot2_rva": {"type": "integer", "minimum": 0},
+        "owner_pointer": {"type": "integer", "minimum": 0},
+        "thread_id": {"type": "integer", "minimum": 0},
+        "timestamp_qpc": {"type": "integer", "minimum": 0}
+      }
+    }
   }
 }

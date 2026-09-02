@@ -45,14 +45,29 @@ class Phase2ProducerIdentityObserverContractTests(unittest.TestCase):
             self.assertIn(token, self.bridge)
         for token in self.fixture["required_cmake_tokens"]:
             self.assertIn(token, self.cmake)
-        self.assertEqual(set(self.fixture["required_report_fields"]), set(self.schema["required"]) - {"private_build"})
+        self.assertEqual(
+            set(self.fixture["required_report_fields"]), set(self.schema["required"])
+        )
+        self.assertEqual(self.schema["properties"]["histogram_capacity"]["const"], 64)
+        self.assertEqual(
+            self.schema["properties"]["selected_slot2_rva"]["const"], 0x88B480
+        )
 
     def test_manifest_is_accepted_by_wiring_shape(self) -> None:
         manifest = GENERATOR.create_manifest(ROOT.parent, "a" * 40, "b" * 64, "c" * 64)
         self.assertEqual(manifest["kind"], "zg361_phase2_native_observer_seam")
         self.assertFalse(manifest["launch"]["performed"])
         self.assertEqual(manifest["build"]["private_option"], "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1")
+        self.assertEqual(
+            manifest["seam"]["heartbeat_object"],
+            "phase2_producer_slot2_histogram_observer_v2",
+        )
+        self.assertEqual(
+            manifest["report_contract"]["artifact_name"],
+            "phase2-producer-slot2-histogram-observer-v2.json",
+        )
         self.assertEqual(set(manifest["report_contract"]["required_fields"]), set(self.fixture["required_report_fields"]))
+
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ GIT_SHA = re.compile(r"^[0-9a-fA-F]{40}$")
 SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 OPTION = "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1"
-HEARTBEAT = "phase2_producer_identity_observer_v1"
+HEARTBEAT = "phase2_producer_slot2_histogram_observer_v2"
 ABI = Path("ck3_autonomous_player/native_bridge/research/phase2_producer_identity_observer_v1_abi.json")
 SOURCE_CONTRACT = Path("ck3_autonomous_player/native_bridge/research/fixtures/phase2_producer_identity_observer_v1_source_contract.json")
 REPORT_SCHEMA = "ck3_autonomous_player/native_bridge/research/phase2_producer_identity_observer_v1_report.schema.json"
@@ -71,7 +71,7 @@ def create_manifest(
         "report_contract": {
             "schema": REPORT_SCHEMA,
             "schema_sha256": digest(schema),
-            "artifact_name": "phase2-producer-identity-observer-v1.json",
+            "artifact_name": "phase2-producer-slot2-histogram-observer-v2.json",
             "required_fields": fields,
         },
         "launch": {"performed": False, "authorized_by_manifest_alone": False},

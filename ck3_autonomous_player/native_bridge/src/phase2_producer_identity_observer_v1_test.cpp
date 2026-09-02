@@ -137,12 +137,68 @@ int main() {
       diagnostics.last_state_before_publish != 1 ||
       diagnostics.last_state_after_publish != 2 ||
       diagnostics.last_thread_id == 0 || diagnostics.last_timestamp_qpc == 0 ||
+      diagnostics.histogram_bin_count != 1 ||
+      diagnostics.histogram_overflow_count != 0 ||
+      diagnostics.histogram_read_failure_count != 0 ||
+      diagnostics.callback_slot2_rva_histogram[0].callback_slot2_rva !=
+          0x88B480 ||
+      diagnostics.callback_slot2_rva_histogram[0].count != 1 ||
+      diagnostics.selected_0x88B480_match_count != 1 ||
+      diagnostics.selected_first_task_pointer !=
+          reinterpret_cast<std::uintptr_t>(task.data()) ||
+      diagnostics.selected_first_callback_pointer != callback ||
+      diagnostics.selected_first_callback_vptr !=
+          reinterpret_cast<std::uintptr_t>(vtable.data()) ||
+      diagnostics.selected_first_callback_slot2 != vtable[2] ||
+      diagnostics.selected_first_callback_slot2_rva != 0x88B480 ||
+      diagnostics.selected_first_owner_pointer != owner ||
+      diagnostics.selected_first_state != 2 ||
+      diagnostics.selected_first_thread_id == 0 ||
+      diagnostics.selected_first_timestamp_qpc == 0 ||
+      diagnostics.selected_last_task_pointer !=
+          diagnostics.selected_first_task_pointer ||
+      diagnostics.selected_last_callback_pointer !=
+          diagnostics.selected_first_callback_pointer ||
+      diagnostics.selected_last_callback_vptr !=
+          diagnostics.selected_first_callback_vptr ||
+      diagnostics.selected_last_callback_slot2 !=
+          diagnostics.selected_first_callback_slot2 ||
+      diagnostics.selected_last_callback_slot2_rva != 0x88B480 ||
+      diagnostics.selected_last_owner_pointer != owner ||
+      diagnostics.selected_last_state != 2 ||
+      diagnostics.selected_last_thread_id == 0 ||
+      diagnostics.selected_last_timestamp_qpc == 0 ||
       published != 2 || g_original_call_count != 1 || call_result != 0x12345678) {
     return Fail("producer identity telemetry or original flow mismatch");
   }
 
-  xar::bridge::RecordPhase2ProducerIdentityObservationV1(state, 0, 0, 7, 9);
-  if (xar::bridge::ReadPhase2ProducerIdentityDiagnosticsV1(state).read_failure_count < 5) {
+  for (std::size_t index = 1;
+       index <= xar::bridge::kPhase2ProducerIdentityHistogramCapacityV1;
+       ++index) {
+    vtable[2] = environment.module_base + 0x1000 + index * 0x10;
+    xar::bridge::RecordPhase2ProducerIdentityObservationV1(
+        state, reinterpret_cast<std::uintptr_t>(task.data()), 1, 7,
+        100 + index);
+  }
+  const auto bounded =
+      xar::bridge::ReadPhase2ProducerIdentityDiagnosticsV1(state);
+  if (bounded.producer_0x3B9CFD7_entry_count !=
+          xar::bridge::kPhase2ProducerIdentityHistogramCapacityV1 + 1 ||
+      bounded.histogram_bin_count !=
+          xar::bridge::kPhase2ProducerIdentityHistogramCapacityV1 ||
+      bounded.histogram_overflow_count != 1 ||
+      bounded.histogram_read_failure_count != 0 ||
+      bounded.selected_0x88B480_match_count != 1 ||
+      bounded.selected_first_task_pointer != diagnostics.selected_first_task_pointer ||
+      bounded.selected_last_task_pointer != diagnostics.selected_last_task_pointer) {
+    return Fail("bounded histogram or selected identity mismatch");
+  }
+
+  xar::bridge::RecordPhase2ProducerIdentityObservationV1(state, 0, 1, 7, 9);
+  const auto failed_read =
+      xar::bridge::ReadPhase2ProducerIdentityDiagnosticsV1(state);
+  if (failed_read.read_failure_count < 5 ||
+      failed_read.histogram_read_failure_count != 1) {
     return Fail("read failures were not explicit");
   }
   if (!xar::bridge::UninstallPhase2ProducerIdentityObserverV1(state) ||
@@ -164,6 +220,6 @@ int main() {
     return Fail("recoverable install rollback mismatch");
   }
   VirtualFree(patch, 0, MEM_RELEASE);
-  std::cout << "phase2-producer-identity-observer-v1=GREEN\n";
+  std::cout << "phase2-producer-slot2-histogram-observer-v2=GREEN\n";
   return 0;
 }
