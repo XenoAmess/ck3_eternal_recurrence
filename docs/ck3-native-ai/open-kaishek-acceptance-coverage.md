@@ -194,3 +194,27 @@ The full-root companion preflight remains the known bounded validator RED
 (`232,973` diagnostics). Both runs are offline (`ck3_started=false`,
 `save_mutated=false`, `network_used=false`), so this increment does not
 change phase-two or G2 live readiness.
+
+## 2026-09-02 11:20 `has_cultural_tradition` schema slice
+
+The accelerator advanced on its minimal fast-forward path to
+`main == origin/main == fd85dd6` (implementation `f12a0a9` plus the
+preflight registration commit `fd85dd6`). The exact-build-backed
+`has_cultural_tradition` descriptor is `TRIGGER/CULTURE/STRING`,
+deterministic/read-only, and `certified=false`; profile, validator, dedicated
+fixture, CLI, full Maven, and package checks passed. Static evidence binds the
+exact-build evaluator at RVA `0x282D990` (376-byte slice SHA-256
+`2073F14B5611955D899F21A35DD945239EE325C2EAD6652EBA1DBCBE5CAC78A9`) and the
+culture/tradition storage anchors. No runtime evaluator or CK3 live claim is
+made. The rebuilt CLI JAR SHA-256 is
+`D94929A6ADF8140483962137E01B6B1319E88216EDD2B6E68612DF286A1CFEF8`, and
+GitHub CI run `33586554036` succeeded.
+
+The current-adapter fixture-only preflight artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\kaishek-has-cultural-tradition-20260902.json`
+(SHA-256
+`AB96FBF00CFC4D491FADEABE8F82CB485A8A48B1CDCF68315C87B0DEB80474FF`). It
+binds the current open_k commit/JAR; fixture parser/validator are GREEN and
+IR/runtime are explicitly SKIPPED, with
+`ck3_started=false`, `save_mutated=false`, and `network_used=false`. This
+offline slice leaves phase-two and G2 readiness unchanged.
