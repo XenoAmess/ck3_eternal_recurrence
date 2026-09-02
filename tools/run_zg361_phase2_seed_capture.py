@@ -1263,6 +1263,7 @@ def _run_list_domain_observer_gate(
     *,
     game_version: str,
     dependency_hashes: dict[str, str],
+    clean_source_tree_sha256: str,
 ) -> dict[str, Any] | None:
     """Freeze the next observer seam without selecting a native address here."""
 
@@ -1281,6 +1282,9 @@ def _run_list_domain_observer_gate(
         game_executable_sha256=dependency_hashes["game_executable"],
         bridge_dll_sha256=dependency_hashes["bridge_dll"],
         bridge_injector_sha256=dependency_hashes["bridge_injector"],
+        source_zip_sha256=dependency_hashes["source_zip"],
+        clean_source_tree_sha256=clean_source_tree_sha256,
+        pipe_name=config.pipe_name,
     )
     write_json(artifacts / "list-domain-observer-gate.json", gate)
     return gate
@@ -1506,6 +1510,7 @@ def run_preflight(
             artifacts,
             game_version=observed_game_version,
             dependency_hashes=dependency_hashes_before,
+            clean_source_tree_sha256=source_manifest_before["tree_sha256"],
         )
         if report["list_domain_observer_gate"] is not None:
             report["checks"]["list_domain_observer_gate"] = report[
@@ -1972,6 +1977,7 @@ def run_capture(
             artifacts,
             game_version=observed_game_version,
             dependency_hashes=dependency_hashes_before,
+            clean_source_tree_sha256=source_manifest_before["tree_sha256"],
         )
         if (
             report["list_domain_observer_gate"] is not None

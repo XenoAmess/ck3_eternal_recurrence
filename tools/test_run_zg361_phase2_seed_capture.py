@@ -1046,7 +1046,7 @@ def test_list_domain_observer_pending_is_typed_no_launch_red() -> None:
         require(report["result"] == "RED", "missing native seam false-GREENed")
         require(isinstance(gate, dict), "typed observer gate was not embedded")
         require(
-            gate.get("status") == "waiting-native-seam"
+            gate.get("status") == "waiting-producer-histogram-v2"
             and gate.get("failure_reason") == "native_observer_manifest_pending",
             "missing native seam was not classified as waiting",
         )
@@ -1099,6 +1099,13 @@ def test_list_domain_observer_manifest_binds_frozen_no_launch_inputs() -> None:
                         "bridge_dll_sha256": sha256(fixture.dll),
                         "bridge_injector_sha256": sha256(fixture.injector),
                     },
+                    "session_binding": {
+                        "source_zip_sha256": sha256(fixture.source_zip),
+                        "clean_source_tree_sha256": capture.tree_manifest(
+                            fixture.clean
+                        )["tree_sha256"],
+                        "pipe_name": fixture.pipe,
+                    },
                     "seam": {
                         "hooks": [
                             {"rva": "0x3B9CFD2", "anchor_sha256": "b" * 64},
@@ -1106,8 +1113,9 @@ def test_list_domain_observer_manifest_binds_frozen_no_launch_inputs() -> None:
                         ],
                         "task_register": "RBX",
                         "callback_field_offset": "0x38",
-                        "heartbeat_object": "phase2_next_observer_v1",
+                        "heartbeat_object": "phase2_producer_slot2_histogram_observer_v2",
                         "prior_list_domain_callback_slot2_rva": "0x817C20",
+                        "histogram": canonical["native_seam"]["histogram"],
                         "abi": {
                             "path": abi.relative_to(fixture.clean).as_posix(),
                             "sha256": sha256(abi),
@@ -1118,8 +1126,8 @@ def test_list_domain_observer_manifest_binds_frozen_no_launch_inputs() -> None:
                         },
                     },
                     "report_contract": {
-                        "schema": "phase2_next_observer_v1",
-                        "artifact_name": "phase2-next-observer.json",
+                        "schema": "phase2-producer-slot2-histogram-v2",
+                        "artifact_name": "phase2-producer-slot2-histogram-v2.json",
                         "required_fields": canonical["native_seam"]["required_report_fields"],
                     },
                 },
@@ -1152,6 +1160,35 @@ def test_list_domain_observer_manifest_binds_frozen_no_launch_inputs() -> None:
             "native seam manifest was not frozen as an external dependency",
         )
         require("supervisor-start" not in calls, "no-launch seam test started CK3")
+
+        sixteen_bin_manifest = json.loads(manifest.read_text(encoding="utf-8"))
+        sixteen_bin_manifest["seam"]["histogram"]["capacity"] = 16
+        manifest.write_text(json.dumps(sixteen_bin_manifest), encoding="utf-8")
+        rejected = capture.evaluate_observer_gate(
+            contract_path=fixture.clean
+            / "tools"
+            / "zg361_phase2_list_domain_acceptance_contract.json",
+            observer_manifest_path=manifest,
+            clean_source=fixture.clean,
+            frozen_git_commit=fixture.git_sha,
+            game_version="1.19.0.6",
+            game_executable_sha256=sha256(
+                fixture.game / "binaries" / "ck3.exe"
+            ),
+            bridge_dll_sha256=sha256(fixture.dll),
+            bridge_injector_sha256=sha256(fixture.injector),
+            source_zip_sha256=sha256(fixture.source_zip),
+            clean_source_tree_sha256=capture.tree_manifest(fixture.clean)[
+                "tree_sha256"
+            ],
+            pipe_name=fixture.pipe,
+        )
+        require(
+            rejected["result"] == "RED"
+            and rejected["failure_reason"]
+            == "native seam bounded histogram contract drifted",
+            "16-bin native candidate bypassed the canonical 64-bin gate",
+        )
 
 
 def test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override() -> None:

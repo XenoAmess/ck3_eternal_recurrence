@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "contract": "phase2-producer-histogram-live-postprocess-v2",
+  "status": "waiting-native-observer-v2",
+  "read_only": true,
+  "prior_live_input": {
+    "producer_0x3B9CFD2_entry_count": 1838,
+    "producer_0x3B9CFD7_entry_count": 1838,
+    "last_callback_slot2_rva": "0x817C20",
+    "limitation": "v1 retained only the last identity and did not observe a distribution",
+    "repeat_forbidden": true
+  },
+  "observer": {
+    "heartbeat_object": "phase2_producer_slot2_histogram_observer_v2",
+    "report_schema": "phase2-producer-slot2-histogram-v2",
+    "producer_hooks": [
+      "0x3B9CFD2",
+      "0x3B9CFD7"
+    ],
+    "task_register": "RBX",
+    "callback_field_offset": "0x38",
+    "histogram_capacity": 64,
+    "histogram_sampling_hook": "0x3B9CFD7",
+    "histogram_key": "callback_slot2_rva",
+    "selected_slot2_rva": "0x88B480"
+  },
+  "identity_binding": [
+    "observer_manifest_sha256",
+    "source_git_commit",
+    "source_zip_sha256",
+    "clean_source_tree_sha256",
+    "game_executable_sha256",
+    "bridge_dll_sha256",
+    "bridge_injector_sha256",
+    "pipe_name",
+    "bridge_pid"
+  ],
+  "selected_identity_fields": [
+    "task_pointer",
+    "task_state",
+    "callback_pointer",
+    "vptr",
+    "slot2_target",
+    "slot2_rva",
+    "owner_pointer",
+    "thread_id",
+    "timestamp_qpc"
+  ],
+  "decision_contract": [
+    {
+      "condition": "manifest/source/session identity mismatch or observer schema/counters invalid",
+      "status": "RED",
+      "next_gate_allowed": false
+    },
+    {
+      "condition": "histogram overflow or read failure",
+      "status": "NO-GO",
+      "next_gate_allowed": false
+    },
+    {
+      "condition": "selected_count == 0",
+      "status": "NO-GO",
+      "next_gate_allowed": false
+    },
+    {
+      "condition": "selected_count > 0 but first/last state or identity differs",
+      "status": "NO-GO",
+      "next_gate_allowed": false
+    },
+    {
+      "condition": "selected_count > 0, bounded complete histogram, stable first/last selected identity fields, and non-regressing QPC",
+      "status": "GREEN",
+      "next_gate_allowed": true
+    }
+  ],
+  "readiness_boundary": "GREEN permits only the next Phase2 acceptance gate; it does not promote public native readiness"
+}

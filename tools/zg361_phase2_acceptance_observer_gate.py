@@ -90,6 +90,9 @@ def evaluate_observer_gate(
     game_executable_sha256: str,
     bridge_dll_sha256: str,
     bridge_injector_sha256: str,
+    source_zip_sha256: str,
+    clean_source_tree_sha256: str,
+    pipe_name: str,
 ) -> dict[str, Any]:
     """Return a replayable GREEN gate or a typed waiting/RED gate."""
 
@@ -97,13 +100,23 @@ def evaluate_observer_gate(
     if contract.get("schema_version") != 1 or contract.get("kind") != CONTRACT_KIND:
         raise ObserverGateError("acceptance observer contract schema/kind mismatch")
     known = contract.get("known_live_input")
+    producer_v1 = contract.get("producer_v1_live_input")
     seam_contract = contract.get("native_seam")
-    if not isinstance(known, dict) or not isinstance(seam_contract, dict):
+    if not all(isinstance(row, dict) for row in (known, producer_v1, seam_contract)):
         raise ObserverGateError("acceptance observer contract sections are malformed")
+    assert isinstance(known, dict) and isinstance(producer_v1, dict)
+    assert isinstance(seam_contract, dict)
     if known.get("callback_slot2_rva") != "0x817C20":
         raise ObserverGateError("known list-domain callback slot2 binding drifted")
     if known.get("repeat_live_forbidden") is not True:
         raise ObserverGateError("known list-domain attempt must remain non-repeatable")
+    if (
+        producer_v1.get("producer_0x3B9CFD2_entry_count") != 1838
+        or producer_v1.get("producer_0x3B9CFD7_entry_count") != 1838
+        or producer_v1.get("last_callback_slot2_rva") != "0x817C20"
+        or producer_v1.get("repeat_live_forbidden") is not True
+    ):
+        raise ObserverGateError("producer v1 last-only live input drifted")
     required_fields = seam_contract.get("required_report_fields")
     if not isinstance(required_fields, list) or not all(
         isinstance(field, str) and field for field in required_fields
@@ -114,7 +127,7 @@ def evaluate_observer_gate(
         "schema_version": 1,
         "kind": GATE_KIND,
         "result": "RED",
-        "status": "waiting-native-seam",
+        "status": "waiting-producer-histogram-v2",
         "runner_observer_gate_ready": False,
         "launch_authorized_by_gate": False,
         "contract": {
@@ -123,12 +136,12 @@ def evaluate_observer_gate(
             "sha256": _sha256(contract_path),
         },
         "known_live_input": known,
+        "producer_v1_live_input": producer_v1,
         "observer_manifest": None,
         "pending_native_seam_fields": [
             "hooks[0x3B9CFD2].anchor_sha256",
             "hooks[0x3B9CFD7].anchor_sha256",
             "private_build_option",
-            "heartbeat_object",
             "abi.path",
             "abi.sha256",
             "source_contract.path",
@@ -136,6 +149,9 @@ def evaluate_observer_gate(
             "report_contract.schema",
             "report_contract.artifact_name",
             "report_contract.required_fields",
+            "session_binding.source_zip_sha256",
+            "session_binding.clean_source_tree_sha256",
+            "session_binding.pipe_name",
         ],
         "failure_reason": "native_observer_manifest_pending",
     }
@@ -164,10 +180,15 @@ def evaluate_observer_gate(
         build = manifest.get("build")
         seam = manifest.get("seam")
         report_contract = manifest.get("report_contract")
-        if not all(isinstance(row, dict) for row in (exact_build, build, seam, report_contract)):
+        session_binding = manifest.get("session_binding")
+        if not all(
+            isinstance(row, dict)
+            for row in (exact_build, build, seam, report_contract, session_binding)
+        ):
             raise ObserverGateError("native observer manifest sections are malformed")
         assert isinstance(exact_build, dict) and isinstance(build, dict)
         assert isinstance(seam, dict) and isinstance(report_contract, dict)
+        assert isinstance(session_binding, dict)
         if exact_build.get("game_version") != game_version:
             raise ObserverGateError("native observer game version binding drifted")
         if _require_sha(exact_build.get("game_executable_sha256"), "exact_build.game_executable_sha256") != game_executable_sha256.lower():
@@ -178,6 +199,12 @@ def evaluate_observer_gate(
             raise ObserverGateError("native observer DLL binding drifted")
         if _require_sha(build.get("bridge_injector_sha256"), "build.bridge_injector_sha256") != bridge_injector_sha256.lower():
             raise ObserverGateError("native observer injector binding drifted")
+        if _require_sha(session_binding.get("source_zip_sha256"), "session_binding.source_zip_sha256") != source_zip_sha256.lower():
+            raise ObserverGateError("native observer source ZIP binding drifted")
+        if _require_sha(session_binding.get("clean_source_tree_sha256"), "session_binding.clean_source_tree_sha256") != clean_source_tree_sha256.lower():
+            raise ObserverGateError("native observer source tree binding drifted")
+        if session_binding.get("pipe_name") != pipe_name:
+            raise ObserverGateError("native observer pipe binding drifted")
         hooks = seam.get("hooks")
         if not isinstance(hooks, list) or len(hooks) != 2:
             raise ObserverGateError("native seam must bind exactly two producer hooks")
@@ -198,10 +225,14 @@ def evaluate_observer_gate(
             raise ObserverGateError("native seam task register must remain RBX")
         if seam.get("callback_field_offset") != "0x38":
             raise ObserverGateError("native seam callback field must remain [RBX+0x38]")
-        if not isinstance(seam.get("heartbeat_object"), str) or not seam.get("heartbeat_object"):
-            raise ObserverGateError("native seam heartbeat_object is missing")
+        if seam.get("heartbeat_object") != seam_contract.get("heartbeat_object"):
+            raise ObserverGateError("native seam heartbeat object drifted")
         if seam.get("prior_list_domain_callback_slot2_rva") != "0x817C20":
             raise ObserverGateError("native seam does not bind the known 0x817C20 domain")
+        histogram = seam.get("histogram")
+        expected_histogram = seam_contract.get("histogram")
+        if not isinstance(histogram, dict) or histogram != expected_histogram:
+            raise ObserverGateError("native seam bounded histogram contract drifted")
         abi = _source_artifact(clean_source, seam.get("abi"), "seam.abi")
         source_contract = _source_artifact(
             clean_source, seam.get("source_contract"), "seam.source_contract"
@@ -209,15 +240,14 @@ def evaluate_observer_gate(
         schema = report_contract.get("schema")
         artifact_name = report_contract.get("artifact_name")
         observed_fields = report_contract.get("required_fields")
-        if not isinstance(schema, str) or not schema:
-            raise ObserverGateError("report_contract.schema is missing")
+        if schema != seam_contract.get("report_schema"):
+            raise ObserverGateError("report_contract.schema drifted")
         if not isinstance(artifact_name, str) or Path(artifact_name).name != artifact_name:
             raise ObserverGateError("report_contract.artifact_name must be a file name")
         if not isinstance(observed_fields, list):
             raise ObserverGateError("report_contract.required_fields is malformed")
-        missing = sorted(set(required_fields) - set(observed_fields))
-        if missing:
-            raise ObserverGateError(f"native observer report fields are missing: {missing}")
+        if observed_fields != required_fields:
+            raise ObserverGateError("native observer report fields drifted")
     except ObserverGateError as error:
         base["status"] = "native-seam-invalid"
         base["failure_reason"] = str(error)
@@ -244,6 +274,11 @@ def evaluate_observer_gate(
                 "abi": abi,
                 "source_contract": source_contract,
                 "report_contract": report_contract,
+                "session_binding": {
+                    "source_zip_sha256": source_zip_sha256.lower(),
+                    "clean_source_tree_sha256": clean_source_tree_sha256.lower(),
+                    "pipe_name": pipe_name,
+                },
             },
         }
     )

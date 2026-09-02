@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "zg361_phase2_list_domain_acceptance_contract",
-  "status": "waiting-native-seam",
+  "status": "waiting-producer-histogram-v2",
   "known_live_input": {
     "observed_list_count": 27,
     "callback_slot2_rva": "0x817C20",
@@ -17,7 +17,15 @@
     "conclusion": "the observed post-call list is a parallel-for range-worker domain, not the loader completion consumer list",
     "repeat_live_forbidden": true
   },
+  "producer_v1_live_input": {
+    "producer_0x3B9CFD2_entry_count": 1838,
+    "producer_0x3B9CFD7_entry_count": 1838,
+    "last_callback_slot2_rva": "0x817C20",
+    "limitation": "v1 retained only the last producer identity and cannot establish the slot2 distribution",
+    "repeat_live_forbidden": true
+  },
   "native_seam": {
+    "version": 2,
     "hook_rvas": [
       "0x3B9CFD2",
       "0x3B9CFD7"
@@ -29,26 +37,46 @@
     "task_register": "RBX",
     "callback_field_offset": "0x38",
     "private_build_option": null,
-    "heartbeat_object": null,
+    "heartbeat_object": "phase2_producer_slot2_histogram_observer_v2",
     "abi_path": null,
     "abi_sha256": null,
     "source_contract_path": null,
     "source_contract_sha256": null,
-    "report_schema": null,
+    "report_schema": "phase2-producer-slot2-histogram-v2",
     "report_artifact_name": null,
+    "histogram": {
+      "capacity": 64,
+      "key": "callback_slot2_rva",
+      "selected_slot2_rva": "0x88B480",
+      "selected_first_last_identity_required": true
+    },
     "required_report_fields": [
+      "private_build",
       "installed",
       "failure",
       "producer_0x3B9CFD2_entry_count",
       "producer_0x3B9CFD7_entry_count",
-      "last_task_pointer",
-      "last_callback_pointer",
-      "last_callback_vptr",
-      "last_callback_slot2",
-      "last_callback_slot2_rva",
-      "read_failure_count",
-      "last_thread_id",
-      "last_timestamp_qpc"
+      "histogram_capacity",
+      "histogram_bin_count",
+      "histogram_overflow_count",
+      "histogram_read_failure_count",
+      "callback_slot2_rva_histogram",
+      "selected_slot2_rva",
+      "selected_count",
+      "selected_first",
+      "selected_last",
+      "read_failure_count"
+    ],
+    "selected_identity_fields": [
+      "task_pointer",
+      "task_state",
+      "callback_pointer",
+      "vptr",
+      "slot2_target",
+      "slot2_rva",
+      "owner_pointer",
+      "thread_id",
+      "timestamp_qpc"
     ]
   },
   "acceptance_gate": {
@@ -58,6 +86,9 @@
     "injector_binary_hash": true,
     "source_manifest_bound_abi_and_contract": true,
     "no_launch_preflight_required": true,
-    "fresh_attempt_and_artifacts_required": true
+    "fresh_attempt_and_artifacts_required": true,
+    "selected_zero_decision": "NO-GO",
+    "selected_consistent_decision": "allow-next-gate",
+    "overflow_or_read_failure_decision": "NO-GO"
   }
 }

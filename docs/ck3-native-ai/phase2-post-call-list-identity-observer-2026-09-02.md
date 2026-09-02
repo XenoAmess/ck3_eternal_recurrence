@@ -49,10 +49,17 @@ hashes. Existing seed/paused calls that do not opt in are unchanged.
 
 The verified next seam is the real producer pair `0x3B9CFD2` and `0x3B9CFD7`.
 At each entry it observes the `RBX` task and the callback object at
-`[RBX+0x38]`; the report contract requires both entry counters plus the last
-task pointer, callback pointer, callback vptr, callback slot 2 and slot-2 RVA,
-read failures, last thread and timestamp. Acceptance does not choose another
-address. The remaining native-owned manifest fields are the two anchor hashes,
-private option and heartbeat name, ABI/source-contract paths and hashes, and
-the final report schema/artifact name. Until those fields arrive, this is
-`static-ready` wiring only and no CK3 attempt is authorized.
+`[RBX+0x38]`. The first private producer observer reached both seams 1,838
+times and retained `0x817C20` as its last slot-2 RVA, but its last-value-only
+shape cannot establish the distribution. It must not be repeated.
+
+The distinct v2 contract therefore requires a bounded 64-bin slot-2 histogram,
+an exact `0x88B480` selected count and the first/last selected task, state,
+callback, vptr and slot-2 identities. Overflow and read failure are explicit.
+Acceptance does not choose another address. The remaining native-owned
+manifest fields are the two anchor hashes, private option, ABI/source-contract
+paths and hashes, and final report artifact name. The heartbeat and report
+schema are fixed by the acceptance contract. Until the native v2 manifest
+arrives, this remains static wiring and no CK3 attempt is authorized. See
+`phase2-producer-histogram-live-postprocess-2026-09-03.md` for the parser and
+decision matrix.
