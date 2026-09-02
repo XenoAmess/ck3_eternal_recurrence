@@ -1,0 +1,92 @@
+{
+  "contract": "phase2-loader-callback-concrete-owner-v1",
+  "schema_version": 1,
+  "status": "static-owner-bound",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "62e685589e2b2aee28cc19c547522876c90e30f5",
+    "runtime_owner_contract": "phase2-loader-callback-runtime-owner-v1",
+    "extractor": "extract_phase2_loader_callback_concrete_owner.py",
+    "extractor_sha256": "311CE24028AC6CCBCF38081C62A7F9F638D08DAFA43704450471E6DA91644A45"
+  },
+  "preflight": {
+    "open_kaishek_commit": "17caa288eb980aab0b652358e9e94a9901131619",
+    "cli_jar_sha256": "421F49C93B21DBE5D96BFD81FFBFE422EB098B2170ECC498A415D4125490F2CB",
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\concrete-owner-open-kaishek-preflight.json",
+    "artifact_sha256": "642A7293BB33ECBBA644585941F5352A27DACD4F103271898A476DC592F0ED66",
+    "boundary": "offline schema and syntax validation only; known schema-only validator RED"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\concrete-callback-owner-extract.json",
+    "artifact_sha256": "972538E9301963269BC38E2ED15B4105F2FC7053E88FD260FED881D5A6E2A68A",
+    "ck3_started": false,
+    "concrete_callback": {
+      "rva": "0x2045330",
+      "end_rva_exclusive": "0x204533E",
+      "bytes_sha256": "092F32531DBDD034D01C2E94CDA5D66338F4854841156548B3BD54485CE48B0B",
+      "shape": "load global object pointer; load vptr; tail-jump vtable slot 2",
+      "global_object_pointer_rva": "0x570C0F0"
+    },
+    "direct_construction_path": {
+      "rip_relative_reference_count": 1,
+      "construction_reference_rva": "0x8235A5",
+      "construction_reference_bytes": "488D05841D8201",
+      "unique_code_owner_rva": "0x823570",
+      "code_owner_end_rva_exclusive": "0x823647",
+      "code_owner_bytes_sha256": "1BC7728BEC32836A5E9FD6188BA51A727F6633D87A37BD8BB1B47DA4E9352C55",
+      "unwind_info_rva": "0x4C3F330",
+      "wrapper_vtable_rva": "0x408A450",
+      "registration_call_rva": "0x8235FD",
+      "registration_target_rva": "0x2043D80"
+    },
+    "source_owner": {
+      "bounded_identity": "shared CInterfaceApplication/CGameApplication virtual slot 23 registration body",
+      "class_method_name": null,
+      "vtable_slots": [
+        {
+          "rtti_type_name": ".?AVCInterfaceApplication@@",
+          "complete_object_locator_rva": "0x45C4FC0",
+          "type_descriptor_rva": "0x51665E0",
+          "vtable_rva": "0x4093158",
+          "slot_index": 23,
+          "slot_rva": "0x4093210",
+          "slot_target_rva": "0x823570"
+        },
+        {
+          "rtti_type_name": ".?AVCGameApplication@@",
+          "complete_object_locator_rva": "0x48F22C8",
+          "type_descriptor_rva": "0x5166560",
+          "vtable_rva": "0x428BC78",
+          "slot_index": 23,
+          "slot_rva": "0x428BD30",
+          "slot_target_rva": "0x823570"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "the concrete callback has one construction reference and one unique code body, while that body is shared by CInterfaceApplication and CGameApplication virtual slot 23",
+    "no method name is assigned without source symbols",
+    "the callback tail-dispatches the global pointer at RVA 0x570C0F0; its runtime type and slot-2 owner remain unknown",
+    "no later stalled node, script filename, loader readiness, or production detour follows",
+    "no CK3 process was started for this package"
+  ],
+  "next_entry": {
+    "required": "only if loader diagnosis still requires it, make one bounded private observation of the global object vptr/slot-2 identity for the later stalled-node callback",
+    "authorized_in_this_package": false,
+    "forbidden": [
+      "repeat the database_callback_stall timeout",
+      "generalize the first callback owner to every loader node",
+      "widen public bridge or promote readiness"
+    ]
+  }
+}

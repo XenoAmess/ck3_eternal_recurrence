@@ -85,7 +85,9 @@
     "no public bridge field, production detour, action, or readiness state changed"
   ],
   "next_entry": {
-    "required": "bind concrete callback RVA 0x2045330 to its bounded constructor/caller source owner or observe the stalled node's later callback identity before proposing any loader fix",
+    "status": "closed-by-phase2-loader-callback-concrete-owner-v1",
+    "closed_by": "phase2_loader_callback_concrete_owner_v1_abi.json",
+    "required": "only if loader diagnosis still requires it, observe the global object vptr/slot-2 identity for the later stalled-node callback",
     "forbidden": [
       "repeat the database_callback_stall timeout",
       "generalize one wrapper invocation to all loader nodes",

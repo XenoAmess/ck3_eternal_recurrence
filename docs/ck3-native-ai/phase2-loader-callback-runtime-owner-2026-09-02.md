@@ -67,10 +67,9 @@ The utility now rechecks after closing the Job, but no second CK3 run was made.
 
 ## Boundary and next entry
 
-Phase two remains **native-readiness RED + not-live**. This one invocation
-does not identify the business/source-file owner of concrete callback RVA
-`0x2045330`, generalize to later loader nodes, or prove seed readiness. The
-next bounded entry is either a static constructor/caller binding for
-`0x2045330` or a separately authorized observation of the later stalled
-node's callback identity. Do not repeat the `database_callback_stall` timeout
-and do not widen the public bridge/readiness contract.
+Phase two remains **native-readiness RED + not-live**. This note's immediate
+constructor/caller binding was subsequently closed by
+[the concrete-owner contract](phase2-loader-callback-concrete-owner-2026-09-02.md).
+Later stalled-node identity and seed readiness remain open. Do not repeat the
+`database_callback_stall` timeout or widen the public bridge/readiness
+contract.
