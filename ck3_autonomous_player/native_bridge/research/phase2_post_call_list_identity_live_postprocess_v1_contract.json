@@ -1,0 +1,51 @@
+{
+  "contract": "phase2-post-call-list-identity-live-postprocess-v1",
+  "schema_version": 1,
+  "status": "GREEN",
+  "decision": "complete-list-excludes-loader-callback",
+  "read_only": true,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "source": {
+    "runner_report": "Z:\\p2r-listid\\live-artifacts\\runner-report.json",
+    "runner_report_sha256": "109CB334D56B6A50F75F8AA8C4A9EBD349B2703A28ED71694E90E0262BE15471",
+    "cleanup_report": "Z:\\p2r-listid\\live-artifacts\\09_phase2_native_session_cleanup.json",
+    "cleanup_report_sha256": "2B60336D7ADBCE222618B618A97C49D24CE9B8DCE7B2605DC2936B39E22A7621",
+    "analyzer": "analyze_phase2_post_call_list_identity_live.py",
+    "analyzer_sha256": "45106FF0796D9C3F3A12CFDA46F7B877678746D76EACA6903DEAF986D05976B2"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\post-call-list-identity-live-postprocess.json",
+    "artifact_sha256": "8F549C73A71BF2054FAE10AC851D11F41FF153C3C6145AB553E3979856931959",
+    "installed": true,
+    "failure": 0,
+    "snapshot_consistent": true,
+    "hit_count": 1,
+    "capture_count": 1,
+    "list_count": 27,
+    "scan_count": 27,
+    "sample_count": 27,
+    "histogram_bin_count": 1,
+    "loss_or_overflow": false,
+    "slot2_rva_distribution": [
+      {"rva": "0x817C20", "count": 27}
+    ],
+    "owner_distribution": [
+      {"owner": "0x2686F59B440", "count": 27}
+    ],
+    "state_distribution": [
+      {"state": 0, "count": 2},
+      {"state": 1, "count": 25}
+    ],
+    "task_equals_callback_count": 27,
+    "task_and_descriptor_stride_bytes": 192,
+    "loader_callback_0x88B480_count": 0
+  },
+  "limits": [
+    "v1 records callback slot2 but not callback vptr",
+    "the typed GREEN result validates a complete bounded capture, not loader readiness",
+    "no CK3 process was started for postprocessing"
+  ]
+}

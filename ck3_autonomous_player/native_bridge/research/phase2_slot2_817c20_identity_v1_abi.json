@@ -1,0 +1,78 @@
+{
+  "contract": "phase2-slot2-817c20-static-identity-v1",
+  "schema_version": 1,
+  "status": "static-generic-task-domain-bound-owner-specialization-unresolved",
+  "read_only": true,
+  "production_installed": false,
+  "production_abi_changed": false,
+  "readiness_promotion": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "architecture": "msvc-x64"
+  },
+  "source": {
+    "parent_baseline_commit": "c2b9e88b2e433e7d93f8668e97e97df39c443c39",
+    "runner_report_sha256": "109CB334D56B6A50F75F8AA8C4A9EBD349B2703A28ED71694E90E0262BE15471",
+    "typed_postprocess_sha256": "8F549C73A71BF2054FAE10AC851D11F41FF153C3C6145AB553E3979856931959",
+    "extractor": "extract_phase2_slot2_817c20_identity.py",
+    "extractor_sha256": "A680E4FE144B6733C0A7636FAFEE00E592EA38A075308C160C45E7CD427E7153"
+  },
+  "evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\slot2-817c20-static-extract.json",
+    "artifact_sha256": "8B5083889D8D9FEC9A6F2ED67FA8C43400FA43CA11B77AABC2733B0E113F35A8",
+    "ck3_started": false,
+    "function": {
+      "entry_rva": "0x817C20",
+      "end_rva_exclusive": "0x817C9C",
+      "size_bytes": 124,
+      "bytes_sha256": "3EFBF1BCD7A64FF8ACD10A7E6E954D9561DB8C77EE755171CB284F3E81F76C3C",
+      "pdata_fragments": [
+        ["0x817C20", "0x817C43", "0x4C3DF7C", 0],
+        ["0x817C43", "0x817C8E", "0x4C3DF8C", 4],
+        ["0x817C8E", "0x817C9C", "0x4C3DFA0", 4]
+      ]
+    },
+    "rtti": {
+      "valid_vtable_count": 278,
+      "all_slot2_targets_rva": "0x817C20",
+      "canonical_rows_sha256": "BCE3AAEEA887157CC07FE219D6BDC545C1EB63883C993C4EC096530AE96C7222",
+      "common_owner_family": "std::_Func_impl_no_alloc<reference_wrapper<SPdxParallelFor<SPdxParallelForOverArrayOperatorFromCallTraits<...>>>>"
+    },
+    "bounded_cfg": {
+      "shared_state": "[RCX+0x8]",
+      "atomic_next_index_offset": "0x0",
+      "total_bound_offset": "0x14",
+      "batch_size_offset": "0x1C",
+      "element_pointer_array_carrier_offset": "0x28",
+      "atomic_claim_rvas": ["0x817C3B", "0x817C81"],
+      "element_dispatch_rva": "0x817C71",
+      "element_dispatch": "virtual slot 1"
+    },
+    "live_tuple": {
+      "list_count": 27,
+      "slot2_0x817C20_count": 27,
+      "owner": "0x2686F59B440",
+      "state1_count": 25,
+      "state0_count": 2,
+      "loader_callback_0x88B480_count": 0
+    }
+  },
+  "conclusion": {
+    "task_domain": "generic SPdxParallelForOverArray range-worker std::function callback",
+    "current_list_is_loader_completion_list": false,
+    "unique_runtime_rtti_owner_resolved": false,
+    "unresolved_reason": "278 exact RTTI vtables share slot2 0x817C20 and live v1 omitted callback vptr",
+    "next_distinct_primary_seam_rva": "0x3B9CFD7",
+    "preceding_task_identity_rva": "0x3B9CFD2",
+    "next_capture": "RBX task, [RBX+0x38] callback, callback vptr/slot2, [RBX+0x58] owner, [RBX+0x60] state before/after publish",
+    "do_not_repeat": "0x3407DA1 slot2 histogram live"
+  },
+  "limits": [
+    "the exact generic task domain is bound but the runtime RTTI specialization is not unique",
+    "no wait primitive or loader readiness is inferred",
+    "no CK3 process, public ABI, readiness gate, or production loader changed"
+  ],
+  "readiness": "native-readiness RED + unrelated parallel-for task domain excluded"
+}
