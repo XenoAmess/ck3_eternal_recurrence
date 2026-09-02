@@ -15,6 +15,18 @@ if str(TOOLS) not in sys.path:
 import zhongguo_phase2_final_promo_completion as completion  # noqa: E402
 
 
+PUBLISH_TARGET = {
+    "result": "GREEN",
+    "authority": {"sha256": "B" * 64},
+    "target": {
+        "target_id": "video-target",
+        "platform": "video-platform",
+        "account_id": "publisher-account",
+        "locator_prefix": "https://media.project-owner.net/watch/",
+    },
+}
+
+
 def _write(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
@@ -190,8 +202,12 @@ def _fixture(root: Path) -> Path:
             "kind": completion.PUBLISH_KIND,
             "result": "GREEN",
             "attempt_id": attempt_id,
+            "target_id": "video-target",
+            "platform": "video-platform",
+            "account_id": "publisher-account",
+            "target_authority_sha256": "B" * 64,
             "published_at": "2026-09-02T23:00:00+08:00",
-            "locator": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360",
+            "locator": "https://media.project-owner.net/watch/phase2-final-001",
             "remote_verified": True,
             "candidate_media": {
                 "bytes": media["bytes"],
@@ -234,7 +250,7 @@ def _fixture(root: Path) -> Path:
 class FinalPromoCompletionTests(unittest.TestCase):
     def test_missing_attestation_has_typed_pending_gates(self) -> None:
         report = completion.validate_final_promo_completion(
-            None, footage_intake={"result": "RED"}
+            None, footage_intake={"result": "RED"}, publish_target={"result": "RED"}
         )
         self.assertEqual(report["result"], "RED")
         self.assertEqual(report["reason_codes"][0], "footage_pending")
@@ -245,7 +261,9 @@ class FinalPromoCompletionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             attestation = _fixture(Path(raw))
             report = completion.validate_final_promo_completion(
-                attestation, footage_intake={"result": "GREEN"}
+                attestation,
+                footage_intake={"result": "GREEN"},
+                publish_target=PUBLISH_TARGET,
             )
         self.assertEqual(report["result"], "GREEN", report)
         self.assertEqual(report["status"], "COMPLETE")
@@ -264,10 +282,25 @@ class FinalPromoCompletionTests(unittest.TestCase):
             outer["publication"] = _record(publish_path)
             _write(attestation, outer)
             report = completion.validate_final_promo_completion(
-                attestation, footage_intake={"result": "GREEN"}
+                attestation,
+                footage_intake={"result": "GREEN"},
+                publish_target=PUBLISH_TARGET,
             )
         self.assertEqual(report["result"], "RED")
         self.assertIn("publish_pending", report["reason_codes"])
+        self.assertFalse(report["checks"]["publish_verified"])
+
+    def test_missing_publish_target_blocks_otherwise_complete_receipts(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            attestation = _fixture(Path(raw))
+            report = completion.validate_final_promo_completion(
+                attestation,
+                footage_intake={"result": "GREEN"},
+                publish_target={"result": "RED", "reason_code": "publish_target_pending"},
+            )
+        self.assertEqual(report["result"], "RED")
+        self.assertIn("publish_target_pending", report["reason_codes"])
+        self.assertFalse(report["checks"]["publish_target_verified"])
         self.assertFalse(report["checks"]["publish_verified"])
 
 

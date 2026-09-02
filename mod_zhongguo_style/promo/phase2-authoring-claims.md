@@ -108,6 +108,16 @@ layout → composition → claims audit → final full-speed review and sign-off
 export → explicit publication. The two 1× reviews remain human gates and are
 never inferred from automated validation.
 
+## Publication target authority
+
+There is currently no named external video platform, account, credential
+reference, or upload authorization in the handover or project documents. Local
+artifact paths and the offline xar_promo export bundle are not publication;
+the Steam Workshop media-strip instructions cover static images, not this
+video. The planner therefore reports typed `publish_target_pending` and emits
+no upload command. The explicit validate-only authority and publication-receipt
+fields are documented in `phase2-publish-target.md`.
+
 ## Final completion attestation
 
 Planning readiness and a rendered candidate are not completion. The runbook
@@ -121,11 +131,13 @@ independent named 1× review receipts, export manifest and exported file, and
 publication receipt. The probe must report H.264/yuv420p 1920×1080 video, AAC
 48 kHz stereo, and a positive duration below 1,200 seconds. The export remains
 the existing offline `xar_promo_release_bundle` with its exact allowlist; the
-separate publication receipt must contain a non-placeholder HTTPS locator,
+separate publication receipt must match the owner-approved target/platform/
+account, contain a non-placeholder HTTPS locator under its authorized prefix,
 timestamp, `remote_verified=true`, and hashes for the same candidate and export
 manifest. Missing boundaries are reported as `candidate_media_pending`,
 `claims_audit_pending`, `review_round_1_pending`,
-`review_round_2_pending`, `export_pending`, and `publish_pending`.
+`review_round_2_pending`, `export_pending`, `publish_target_pending`, and
+`publish_pending`.
 `footage_pending` is always ordered before them when the real eight-span input
 is absent. Only an empty blocker list and a GREEN completion gate changes the
 runbook status to `COMPLETE`.

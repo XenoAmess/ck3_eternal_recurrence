@@ -53,6 +53,7 @@ class FinalPromoRunbookTests(unittest.TestCase):
             self.assertEqual(runbook["reason_code"], "footage_pending")
             self.assertEqual(runbook["blockers"][0], "footage_pending")
             self.assertIn("candidate_media_pending", runbook["blockers"])
+            self.assertIn("publish_target_pending", runbook["blockers"])
             self.assertIn("publish_pending", runbook["blockers"])
             self.assertEqual(runbook["completion_gate"]["status"], "pending")
             self.assertEqual(
@@ -90,6 +91,19 @@ class FinalPromoRunbookTests(unittest.TestCase):
                 runbook["dependency_graph"]["composition"],
                 ["zh_cn_en_subtitle_layout_safe_zone"],
             )
+            self.assertEqual(
+                runbook["dependency_graph"]["publish"],
+                ["export", "publish_target_authority"],
+            )
+            self.assertEqual(
+                runbook["inputs"]["publish_target_authority"]["reason_code"],
+                "publish_target_pending",
+            )
+            publish_step = next(
+                step for step in runbook["ordered_steps"]
+                if step["id"] == "external_publish"
+            )
+            self.assertIsNone(publish_step["command"])
             self.assertEqual(
                 [step["id"] for step in runbook["ordered_steps"] if step.get("human_pause")],
                 [
@@ -159,6 +173,21 @@ class FinalPromoRunbookTests(unittest.TestCase):
                     planner,
                     "validate_final_promo_completion",
                     return_value=completion_gate,
+                ),
+                mock.patch.object(
+                    planner,
+                    "validate_publish_target_authority",
+                    return_value={
+                        "result": "GREEN",
+                        "reason_code": None,
+                        "authority": {"sha256": "B" * 64},
+                        "target": {
+                            "target_id": "target",
+                            "platform": "platform",
+                            "account_id": "account",
+                            "locator_prefix": "https://media.project-owner.net/watch/",
+                        },
+                    },
                 ),
             ):
                 runbook = planner.build_runbook(

@@ -30,6 +30,7 @@ PENDING_CODES = (
     "review_round_1_pending",
     "review_round_2_pending",
     "export_pending",
+    "publish_target_pending",
     "publish_pending",
 )
 
@@ -94,6 +95,7 @@ def _publish_locator(value: object) -> bool:
         not hostname
         or hostname == "localhost"
         or hostname.endswith(".invalid")
+        or hostname.endswith(".test")
         or hostname in {"example.com", "example.org", "example.net"}
     )
     return (
@@ -116,10 +118,19 @@ def validate_final_promo_completion(
     attestation_path: Path | None,
     *,
     footage_intake: Mapping[str, object],
+    publish_target: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Return COMPLETE only when every immutable final boundary is closed."""
 
     footage_green = footage_intake.get("result") == "GREEN"
+    target_gate = publish_target if isinstance(publish_target, Mapping) else {}
+    target_green = target_gate.get("result") == "GREEN"
+    target = target_gate.get("target") if isinstance(target_gate.get("target"), Mapping) else {}
+    target_authority = (
+        target_gate.get("authority")
+        if isinstance(target_gate.get("authority"), Mapping)
+        else {}
+    )
     result: dict[str, object] = {
         "schema_version": 1,
         "kind": KIND,
@@ -127,6 +138,7 @@ def validate_final_promo_completion(
         "status": "pending",
         "reason_codes": ([] if footage_green else ["footage_pending"]),
         "attestation": None,
+        "publish_target": dict(target_gate),
         "candidate_media": None,
         "checks": {
             "footage_green": footage_green,
@@ -135,6 +147,7 @@ def validate_final_promo_completion(
             "review_round_1_verified": False,
             "review_round_2_verified": False,
             "export_verified": False,
+            "publish_target_verified": target_green,
             "publish_verified": False,
         },
         "execution_attestation": {
@@ -402,7 +415,9 @@ def validate_final_promo_completion(
     checks["export_verified"] = export_ok
 
     publish_bound = _bound_file(payload.get("publication"))
-    publish_ok = bool(publish_bound and export_ok and export_manifest_bound)
+    publish_ok = bool(
+        target_green and publish_bound and export_ok and export_manifest_bound
+    )
     if publish_ok:
         try:
             publish_payload = _json(publish_bound[0])
@@ -418,9 +433,18 @@ def validate_final_promo_completion(
             and publish_payload.get("kind") == PUBLISH_KIND
             and publish_payload.get("result") == "GREEN"
             and publish_payload.get("attempt_id") == attempt_id
+            and publish_payload.get("target_id") == target.get("target_id")
+            and publish_payload.get("platform") == target.get("platform")
+            and publish_payload.get("account_id") == target.get("account_id")
+            and isinstance(target_authority.get("sha256"), str)
+            and publish_payload.get("target_authority_sha256")
+            == target_authority.get("sha256")
             and publish_payload.get("remote_verified") is True
             and _timestamp(publish_payload.get("published_at"))
             and _publish_locator(locator)
+            and isinstance(locator, str)
+            and isinstance(target.get("locator_prefix"), str)
+            and locator.startswith(str(target["locator_prefix"]))
             and _media_binding(publish_payload.get("candidate_media"), media_record)
             and _media_binding(publish_payload.get("exported_media"), media_record)
             and _media_binding(
@@ -435,6 +459,7 @@ def validate_final_promo_completion(
         "review_round_1_verified": "review_round_1_pending",
         "review_round_2_verified": "review_round_2_pending",
         "export_verified": "export_pending",
+        "publish_target_verified": "publish_target_pending",
         "publish_verified": "publish_pending",
     }
     reason_codes.extend(

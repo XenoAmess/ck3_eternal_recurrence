@@ -37,6 +37,7 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 | `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
 | `phase2-promo-project.json` | 二期十章 authoring 配置；章节必须从 `planned` 变为 `ready` 才能消费 capture |
 | `phase2-readiness-2026-09-02.md` | 当前工具 HEAD、typed RED 与八段实录到发布的精确缺口清单 |
+| `phase2-publish-target.md` | 最终视频本地导出与外部发布边界；显式目标/账号/credential reference/receipt 合同 |
 | 独立仓库 [`src/xar_promo/schemas/phase2-capture-contract-v1.schema.json`](https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.2.1/src/xar_promo/schemas/phase2-capture-contract-v1.schema.json) | 二期 producer 的固定 mode/version/span map 合同 |
 | `storyboard.md` | 约 7–8 分钟的剪辑结构与节奏说明 |
 | `shot-list.md` | 一次自动集中实录的实际 marks、六张政策卡与不可夸张的产品边界 |

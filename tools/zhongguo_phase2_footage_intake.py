@@ -51,7 +51,8 @@ def final_promo_execution_dag() -> dict[str, list[str]]:
         "final_video_review_1x": ["claims_audit"],
         "approved_signoff": ["final_video_review_1x"],
         "export": ["approved_signoff"],
-        "publish": ["export", "explicit_operator_action"],
+        "publish_target_authority": ["explicit_operator_action"],
+        "publish": ["export", "publish_target_authority"],
     }
 
 
