@@ -31,7 +31,7 @@
   "current_blockers": [
     "truce evaluated_days is not yet paused/live on the current checkpoint",
     "persisted truce expiry is not observable",
-    "six-domain aggregate lacks connection, episode and CK3 PID binding",
+    "six-domain session binding aggregator is static-ready but not public/live",
     "source-specific war-bound pre/action-bound/post cleanup is unavailable",
     "campaign, owner-budget and white-peace providers are unavailable",
     "typed surrender submit, pending/cooldown and post-state observers are not enabled"

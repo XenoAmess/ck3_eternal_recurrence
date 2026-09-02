@@ -229,3 +229,28 @@ and `ck3_autonomous_player/tests/unit/test_raiktor_surrender_execution_policy.py
 This is a static construction seam for the future live provider; it does not
 change `automatic_surrender_ready=false`, `GEN-034=unresolved`, the public
 action surface, or any production-live claim.
+
+## 2026-09-02 aggregate session-binding seam
+
+[static-ready; read-only; no CK3 launch] The new
+`raiktor-six-domain-session-binding-v1` aggregator binds an already normalized
+six-domain result to fields already published by the Python bridge. It requires
+one paused snapshot, its terms-query receipt, and the aggregate to agree on
+snapshot/public/native revisions and date. It also requires the snapshot and
+receipt to agree on `connection_generation` and `episode_run_id`, binds
+`episode_character_id` to the aggregate primary attacker, and projects the
+existing `snapshot.diagnostics.bridge_pid` unchanged as canonical
+`process_id`.
+
+Missing, invalid, or drifting fields return typed `status=unavailable`; no
+default identity, PID lookup, inferred episode, or cross-frame fallback exists.
+The surrender execution projection consumes an exact available binding and
+also hashes the enclosed aggregate against its terms input. A static fixture
+can therefore remove only the old `six_domain_session_provenance_not_bound`
+blocker. Truce expiry, source-specific war-bound attribution, production
+decision providers, typed submit, pending/cooldown, and action-boundary
+observers remain blocked, so no surrender literal is advertised.
+
+This package adds no native reader, RVA/RTTI work, or mutation. The binding is
+not production-live until the same wrapper is published and verified on one
+real paused query lifecycle.

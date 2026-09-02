@@ -17,6 +17,9 @@ from __future__ import annotations
 from xar_autoplayer.bridge.raiktor_surrender_six_domain_contract import (
     normalize_raiktor_surrender_six_domain,
 )
+from xar_autoplayer.bridge.raiktor_surrender_session_binding_contract import (
+    normalize_raiktor_surrender_aggregate_session_binding,
+)
 from xar_autoplayer.simulation.raiktor_continue_vs_surrender_policy import (
     canonical_policy_input_sha256,
 )
@@ -60,6 +63,7 @@ def project_raiktor_surrender_execution_readiness(
     decision_value: object,
     candidate_value: object,
     surrender_terms_value: object,
+    aggregate_session_binding_value: object | None = None,
 ) -> dict[str, object]:
     """Project the current fail-closed surrender lifecycle.
 
@@ -116,9 +120,13 @@ def project_raiktor_surrender_execution_readiness(
         if name in missing_domains:
             terms_blockers.append(f"{name}_not_ready")
 
-    # The v1 aggregate's exact frame is deliberately narrower than the
-    # candidate frame.  Never infer session provenance from its parent.
-    terms_blockers.append("six_domain_session_provenance_not_bound")
+    session_binding_ready = _session_binding_ready(
+        aggregate_session_binding_value,
+        candidate_frame=frame,
+        surrender_terms=surrender_terms_value,
+    )
+    if not session_binding_ready:
+        terms_blockers.append("six_domain_session_provenance_not_bound")
 
     truce = terms["domains"]["truce"]
     if truce.get("available") is not True:
@@ -171,7 +179,7 @@ def project_raiktor_surrender_execution_readiness(
             "status": terms["status"],
             "missing_domains": list(terms["missing_domains"]),
             "action_terms_ready": readiness["action_terms_ready"],
-            "session_provenance_ready": False,
+            "session_provenance_ready": session_binding_ready,
             "truce_evaluated_days_ready": (
                 truce.get("available") is True
             ),
@@ -263,6 +271,41 @@ def _require_decision_candidate_binding(
     expected = canonical_policy_input_sha256(candidate)
     if pairwise.get("candidate_sha256") != expected:
         raise ValueError("three-way decision belongs to another candidate")
+
+
+def _session_binding_ready(
+    value: object | None,
+    *,
+    candidate_frame: dict[str, object],
+    surrender_terms: object,
+) -> bool:
+    if not isinstance(value, dict) or value.get("status") != "available":
+        return False
+    binding = value.get("binding")
+    if not isinstance(binding, dict):
+        return False
+    try:
+        normalized = normalize_raiktor_surrender_aggregate_session_binding(
+            value,
+            expected_snapshot_id=candidate_frame["snapshot_id"],
+            expected_snapshot_revision=candidate_frame["snapshot_revision"],
+            expected_native_revision=candidate_frame["native_revision"],
+            expected_date_raw=candidate_frame["date_raw"],
+            expected_connection_generation=binding.get(
+                "connection_generation"
+            ),
+            expected_episode_run_id=candidate_frame["episode_id"],
+            expected_episode_character_id=candidate_frame[
+                "primary_attacker_character_id"
+            ],
+            expected_process_id=candidate_frame["ck3_pid"],
+            expected_war_id=candidate_frame["war_id"],
+        )
+    except ValueError:
+        return False
+    return canonical_policy_input_sha256(normalized["aggregate"]) == (
+        canonical_policy_input_sha256(surrender_terms)
+    )
 
 
 def _candidate_frame(value: object) -> dict[str, object]:
