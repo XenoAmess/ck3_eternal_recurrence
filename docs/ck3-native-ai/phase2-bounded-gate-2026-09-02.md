@@ -440,3 +440,22 @@ RVAs while explicitly leaving callback return semantics, vtable slot meaning,
 production script-file attribution, and production readiness as `unknown`.
 This is a reusable static/fixture observation boundary only: it adds no bridge
 detour, ABI field, timeout, event authorization, or CK3 launch.
+
+## 2026-09-02 10:30 phase-two error-cluster closure
+
+The retained frozen `a89282d` phase-two artifact has `error.log=0` and no
+debug `[E]`/`[W]` entries; its loader reaches only two database nodes before
+the bounded timeout. The large error sets in older attempts are stale
+corpora, not a new current fatal: their unset-variable, unknown-trigger,
+unknown-effect, `TICKET_STATE`, list-target, and persistent-key cases already
+map to the historical fixes in `641e862`, `c79057c`, `e1d8ebf`, `bd5c795`,
+`88095ba`, `32848a5`, and `dab001c`. The current source retains the B1 list
+anchors, and the open_kaishek offline parser/fixture remains GREEN with only
+the known bounded validator schema boundary.
+
+There is therefore no evidence-backed script/generated-file edit to make in
+this pass. The G2 fresh debug log (which completes the database-node list and
+reaches paused state) further points to loader/native callback context rather
+than current event/value/effect registration. Keep `a89282d` frozen and use
+the new callback contract as the next observation entry; do not repeat the
+same CK3 timeout or broaden the gate without a new file/symbol artifact.
