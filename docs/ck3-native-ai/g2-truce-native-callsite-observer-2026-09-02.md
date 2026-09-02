@@ -130,3 +130,38 @@ cached heartbeats.  It contains no private direct-capture environment, MCP
 query, Context effect, surrender, white-peace, enforce, or other mutation.
 The future stop condition is two stable native pre/post samples, a typed
 terminal, or timeout.  Preparation did not execute that command.
+
+## Bounded live-result postprocessor
+
+`native_bridge/research/analyze_g2_truce_native_callsite_observer_live.py`
+is the private, offline consumer for the future runner report.  It reads at
+most 32 MiB and 512 heartbeat samples and binds its output to the frozen
+manifest SHA-256
+`469ACAC772AFBA730FD4C669ADE3CFB2728AC0F81B796C9BEF88B5C093B64FDD`,
+source commit `36fafd811b29bba11758d1ebc3929be8cbd4c9d4`, and source ZIP SHA-256
+`F3F3E81EFFE0D832A280A81AF96FC2FB267BE6D9A134AB3A0F35F3BA95841E17`.
+
+The typed result contract is:
+
+| Observed boundary | Classification | Status | `evaluated_days` |
+| --- | --- | --- | --- |
+| exact install/heartbeat, both sites at zero calls | `no_native_callsite_hit` | `NO-GO` | unavailable |
+| at least one native pre-call, no native return | `pre_only_native_callsite` | `RED` | unavailable |
+| both sites returned and the final two full rows are stable | `two_site_return_observed` | `GREEN` | each site's signed native `EAX` |
+| manifest/policy/source mismatch, malformed read, install failure, counter regression, missing sample, or bound exceeded | `read_or_install_failure` | `RED` | unavailable |
+
+A partial return that does not cover both sites is typed
+`incomplete_two_site_return` / `NO-GO`; it is not promoted to the successful
+two-site result.  The output preserves the exact two call RVAs and the native
+register mapping (`RCX=script_value`, `RDX=effect_context`,
+`R8=evaluation_context`), plus pre/post thread IDs, QPC values and return
+`EAX`.  Install success, ordinary heartbeat presence, and no-hit samples never
+become `evaluated_days`, and this private result never changes public
+readiness.
+
+Deterministic fixtures cover no-hit, pre-only, stable two-site return, and
+read/install failure.  They also verify the sample bound, evidence hashes,
+register/thread/QPC/EAX preservation, and the rule that policy or manifest
+mismatch suppresses an otherwise return-shaped result.  This package is
+offline-only: it did not modify the frozen READY candidate, start CK3, invoke
+the direct evaluator, execute Context, or issue a mutation.

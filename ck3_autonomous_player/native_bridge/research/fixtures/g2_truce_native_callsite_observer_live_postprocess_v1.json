@@ -1,0 +1,264 @@
+{
+  "contract": "g2-truce-native-callsite-observer-live-postprocess-fixture-v1",
+  "manifest_sha256": "469ACAC772AFBA730FD4C669ADE3CFB2728AC0F81B796C9BEF88B5C093B64FDD",
+  "manifest": {
+    "source": {
+      "commit": "36fafd811b29bba11758d1ebc3929be8cbd4c9d4"
+    },
+    "candidate": {
+      "files": {
+        "source_zip": {
+          "sha256": "F3F3E81EFFE0D832A280A81AF96FC2FB267BE6D9A134AB3A0F35F3BA95841E17"
+        }
+      }
+    },
+    "heartbeat_schema": "g2_truce_native_callsite_observer_v1",
+    "report_schema": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+    "boundaries": {
+      "direct_evaluator_enabled": false,
+      "heartbeat_only": true
+    }
+  },
+  "cases": [
+    {
+      "name": "installed_heartbeat_without_native_hit",
+      "expected_status": "NO-GO",
+      "expected_classification": "no_native_callsite_hit",
+      "expected_evaluated_days_observable": false,
+      "report": {
+        "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "policy": {
+          "heartbeat_only": true,
+          "mcp_queries": [],
+          "evaluator_requests": [],
+          "context_effects": [],
+          "mutation_commands": [],
+          "time_advanced": false
+        },
+        "exact_build_proof": {"ok": true},
+        "source_invariant": {"unchanged": true},
+        "observation": {
+          "samples": [
+            {
+              "sequence": 10,
+              "pid": 1001,
+              "schema_ok": true,
+              "installed_mask": 3,
+              "failure": 0,
+              "callsites": [
+                {
+                  "call_instruction_rva": 49131279,
+                  "pre_call_count": 0,
+                  "post_call_count": 0,
+                  "last_script_value": 0,
+                  "last_effect_context": 0,
+                  "last_evaluation_context": 0,
+                  "last_pre_thread_id": 0,
+                  "last_pre_timestamp_qpc": 0,
+                  "last_return_eax": 0,
+                  "last_post_thread_id": 0,
+                  "last_post_timestamp_qpc": 0
+                },
+                {
+                  "call_instruction_rva": 49132958,
+                  "pre_call_count": 0,
+                  "post_call_count": 0,
+                  "last_script_value": 0,
+                  "last_effect_context": 0,
+                  "last_evaluation_context": 0,
+                  "last_pre_thread_id": 0,
+                  "last_pre_timestamp_qpc": 0,
+                  "last_return_eax": 0,
+                  "last_post_thread_id": 0,
+                  "last_post_timestamp_qpc": 0
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "native_pre_call_without_return",
+      "expected_status": "RED",
+      "expected_classification": "pre_only_native_callsite",
+      "expected_evaluated_days_observable": false,
+      "report": {
+        "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "policy": {
+          "heartbeat_only": true,
+          "mcp_queries": [],
+          "evaluator_requests": [],
+          "context_effects": [],
+          "mutation_commands": [],
+          "time_advanced": false
+        },
+        "exact_build_proof": {"ok": true},
+        "source_invariant": {"unchanged": true},
+        "observation": {
+          "samples": [
+            {
+              "sequence": 20,
+              "pid": 1002,
+              "schema_ok": true,
+              "installed_mask": 3,
+              "failure": 0,
+              "callsites": [
+                {
+                  "call_instruction_rva": 49131279,
+                  "pre_call_count": 1,
+                  "post_call_count": 0,
+                  "last_script_value": 4096,
+                  "last_effect_context": 8192,
+                  "last_evaluation_context": 8240,
+                  "last_pre_thread_id": 71,
+                  "last_pre_timestamp_qpc": 9001,
+                  "last_return_eax": 0,
+                  "last_post_thread_id": 0,
+                  "last_post_timestamp_qpc": 0
+                },
+                {
+                  "call_instruction_rva": 49132958,
+                  "pre_call_count": 0,
+                  "post_call_count": 0,
+                  "last_script_value": 0,
+                  "last_effect_context": 0,
+                  "last_evaluation_context": 0,
+                  "last_pre_thread_id": 0,
+                  "last_pre_timestamp_qpc": 0,
+                  "last_return_eax": 0,
+                  "last_post_thread_id": 0,
+                  "last_post_timestamp_qpc": 0
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "both_native_sites_return_twice_stable",
+      "expected_status": "GREEN",
+      "expected_classification": "two_site_return_observed",
+      "expected_evaluated_days_observable": true,
+      "report": {
+        "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "policy": {
+          "heartbeat_only": true,
+          "mcp_queries": [],
+          "evaluator_requests": [],
+          "context_effects": [],
+          "mutation_commands": [],
+          "time_advanced": false
+        },
+        "exact_build_proof": {"ok": true},
+        "source_invariant": {"unchanged": true},
+        "observation": {
+          "samples": [
+            {
+              "sequence": 30,
+              "pid": 1003,
+              "schema_ok": true,
+              "installed_mask": 3,
+              "failure": 0,
+              "callsites": [
+                {
+                  "call_instruction_rva": 49131279,
+                  "pre_call_count": 1,
+                  "post_call_count": 1,
+                  "last_script_value": 4352,
+                  "last_effect_context": 8448,
+                  "last_evaluation_context": 8496,
+                  "last_pre_thread_id": 72,
+                  "last_pre_timestamp_qpc": 9101,
+                  "last_return_eax": 1825,
+                  "last_post_thread_id": 72,
+                  "last_post_timestamp_qpc": 9117
+                },
+                {
+                  "call_instruction_rva": 49132958,
+                  "pre_call_count": 1,
+                  "post_call_count": 1,
+                  "last_script_value": 4608,
+                  "last_effect_context": 8704,
+                  "last_evaluation_context": 8752,
+                  "last_pre_thread_id": 73,
+                  "last_pre_timestamp_qpc": 9201,
+                  "last_return_eax": 1825,
+                  "last_post_thread_id": 73,
+                  "last_post_timestamp_qpc": 9217
+                }
+              ]
+            },
+            {
+              "sequence": 31,
+              "pid": 1003,
+              "schema_ok": true,
+              "installed_mask": 3,
+              "failure": 0,
+              "callsites": [
+                {
+                  "call_instruction_rva": 49131279,
+                  "pre_call_count": 1,
+                  "post_call_count": 1,
+                  "last_script_value": 4352,
+                  "last_effect_context": 8448,
+                  "last_evaluation_context": 8496,
+                  "last_pre_thread_id": 72,
+                  "last_pre_timestamp_qpc": 9101,
+                  "last_return_eax": 1825,
+                  "last_post_thread_id": 72,
+                  "last_post_timestamp_qpc": 9117
+                },
+                {
+                  "call_instruction_rva": 49132958,
+                  "pre_call_count": 1,
+                  "post_call_count": 1,
+                  "last_script_value": 4608,
+                  "last_effect_context": 8704,
+                  "last_evaluation_context": 8752,
+                  "last_pre_thread_id": 73,
+                  "last_pre_timestamp_qpc": 9201,
+                  "last_return_eax": 1825,
+                  "last_post_thread_id": 73,
+                  "last_post_timestamp_qpc": 9217
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "observer_install_or_read_failure",
+      "expected_status": "RED",
+      "expected_classification": "read_or_install_failure",
+      "expected_evaluated_days_observable": false,
+      "report": {
+        "kind": "ck3_g2_truce_native_callsite_observer_live_acceptance",
+        "policy": {
+          "heartbeat_only": true,
+          "mcp_queries": [],
+          "evaluator_requests": [],
+          "context_effects": [],
+          "mutation_commands": [],
+          "time_advanced": false
+        },
+        "exact_build_proof": {"ok": true},
+        "source_invariant": {"unchanged": true},
+        "observation": {
+          "samples": [
+            {
+              "sequence": 40,
+              "pid": 1004,
+              "schema_ok": false,
+              "installed_mask": 1,
+              "failure": 16,
+              "callsites": []
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
