@@ -88,3 +88,45 @@ The fixture contract is
 future live, if separately authorized and scheduled, needs only one bounded
 native execution and must stop after stable matching pre/post rows or a typed
 terminal.  It must not enable the retired direct-evaluator capture.
+
+## Frozen no-launch candidate
+
+The observer source remains exactly
+`36fafd811b29bba11758d1ebc3929be8cbd4c9d4`.  The heartbeat-only runner and
+no-launch verifier are separately pinned at
+`abdce016e86f23e509f2d43b13ad311ab26994d9`; this does not change the DLL
+source tree.
+
+The immutable candidate is under
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-native-callsite-observer-ready-20260902T231252`:
+
+- ready-to-run manifest SHA-256:
+  `469ACAC772AFBA730FD4C669ADE3CFB2728AC0F81B796C9BEF88B5C093B64FDD`;
+- no-launch preflight SHA-256:
+  `9A971A98AD90C596C21F2665EC4A02958F1AA2669037C1AA4F587837D2E0E3DE`;
+- exact source ZIP SHA-256:
+  `F3F3E81EFFE0D832A280A81AF96FC2FB267BE6D9A134AB3A0F35F3BA95841E17`;
+- private DLL SHA-256:
+  `916224B04C2E4AF598C93777218CC99CCC560BEFE69EC7E8E834F8CD5B0E975C`;
+- default DLL SHA-256:
+  `91F4FE2A7B1A094FDDDD6A7456F0C24942E9D71D259AB91AEA34D5F7CCEB36A0`;
+- injector SHA-256:
+  `2427ED9E8CE04FB8CEA4A0E62109B1593CC2D820D4B496D8C891A50EB5E80891`;
+- native fixture SHA-256:
+  `E5492BBFA7944DD825A4AB850B1C64E630FB6AA3D4B104129463532538527D2F`;
+- runner/verifier SHA-256:
+  `7A5A62BDCFF7A95FFAF2611737B6905CF423CB5F37361F60947D9DF988CAA192` /
+  `9F5C68ACEC21EE7CD15A2DA776DD04475E7E5C4FD68ED1AC95B5C2A0999BCFF4`.
+
+The preflight revalidated the executable hash, both exact anchors, every
+frozen hash, read-only file attributes, private marker presence, default
+marker absence, report/heartbeat schema, project virtual environment, and
+the 300-second readiness / 420-second total / 60-second observation bounds.
+It also confirmed that CK3 and the probe inventory remained empty and that the
+fresh attempt path remained absent.
+
+The single frozen live command only launches the passive runner and samples
+cached heartbeats.  It contains no private direct-capture environment, MCP
+query, Context effect, surrender, white-peace, enforce, or other mutation.
+The future stop condition is two stable native pre/post samples, a typed
+terminal, or timeout.  Preparation did not execute that command.
