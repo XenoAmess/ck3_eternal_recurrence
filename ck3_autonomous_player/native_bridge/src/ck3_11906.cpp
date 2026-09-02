@@ -22,6 +22,11 @@ namespace {
 thread_local std::string_view
     g_last_war_termination_exit_terms_unavailable_reason{};
 thread_local std::string_view g_last_war_exit_preview_unavailable_reason{};
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+thread_local RaiktorSurrenderTruceFailureV1
+    g_last_raiktor_surrender_truce_failure =
+        RaiktorSurrenderTruceFailureV1::none;
+#endif
 thread_local std::array<char, 4096> g_war_exit_preview_diagnostic_buffer{};
 thread_local std::uintptr_t g_war_exit_loaded_root_vtable_rva = 0;
 thread_local std::int32_t g_war_exit_loaded_root_selector_count = -1;
@@ -3748,6 +3753,12 @@ bool ReadRaiktorSurrenderTruceDuration(
     std::int32_t primary_defender_character_id,
     std::int32_t claimant_character_id,
     RaiktorSurrenderTruceObservationV1 &output) noexcept {
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+  // Keep the native typed reason only on the test thread; the production
+  // reader remains ABI/wire identical.
+  g_last_raiktor_surrender_truce_failure =
+      RaiktorSurrenderTruceFailureV1::invalid_request;
+#endif
   output = {};
   if (!bindings.enabled || game_state == nullptr || jomini_state == nullptr ||
       war == nullptr || casus_belli == nullptr || war_id <= 0 ||
@@ -3800,6 +3811,9 @@ bool ReadRaiktorSurrenderTruceDuration(
   const RaiktorSurrenderTruceRequestV1 request{
       effect_context, static_cast<std::byte *>(effect_context) + 0x28};
   output = ObserveRaiktorSurrenderTruceV1(environment, access, request);
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+  g_last_raiktor_surrender_truce_failure = output.failure;
+#endif
   const bool context_destroyed =
       DestroyWarEffectContext(bindings, effect_context);
   if (!context_destroyed ||
@@ -3808,9 +3822,19 @@ bool ReadRaiktorSurrenderTruceDuration(
       output.owner_character_id != primary_attacker_character_id ||
       output.toward_character_id != primary_defender_character_id ||
       output.evaluated_days < 0 || output.expiry_observable) {
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+    if (g_last_raiktor_surrender_truce_failure ==
+        RaiktorSurrenderTruceFailureV1::none) {
+      g_last_raiktor_surrender_truce_failure =
+          RaiktorSurrenderTruceFailureV1::invalid_request;
+    }
+#endif
     output = {};
     return false;
   }
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+  g_last_raiktor_surrender_truce_failure = RaiktorSurrenderTruceFailureV1::none;
+#endif
   return true;
 }
 
@@ -8530,6 +8554,13 @@ bool ResolvePendingCharacterInteractionActiveWarV1(
 std::string_view LastWarTerminationExitTermsUnavailableReason() noexcept {
   return g_last_war_termination_exit_terms_unavailable_reason;
 }
+
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+RaiktorSurrenderTruceFailureV1
+LastRaiktorSurrenderTruceFailureForOfflineReFixture() noexcept {
+  return g_last_raiktor_surrender_truce_failure;
+}
+#endif
 
 Bindings BindCurrentProcess(bool executable_matches) noexcept {
   Bindings result{};
@@ -15341,6 +15372,10 @@ ReadWarTerminationOptionsResult ReadWarTerminationOptions(
 ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept {
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+  g_last_raiktor_surrender_truce_failure =
+      RaiktorSurrenderTruceFailureV1::none;
+#endif
   output = {};
   if (!HasWarTerminationTermsBindings(bindings)) {
     return ReadWarTerminationTermsResult::unavailable;

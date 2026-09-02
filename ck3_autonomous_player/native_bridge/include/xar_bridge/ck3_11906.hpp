@@ -1,6 +1,9 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+#include "xar_bridge/raiktor_surrender_truce_v1.hpp"
+#endif
 
 #include <array>
 #include <cstddef>
@@ -1089,6 +1092,11 @@ bool ReadFrozenWarBoundRegimentCleanupObservation(
     FrozenWarBoundRegimentCleanupObservation &output) noexcept;
 
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
+// Test-only typed retention from the private Raiktor truce reader.  This is
+// intentionally absent from production builds and is not serialized.
+RaiktorSurrenderTruceFailureV1
+LastRaiktorSurrenderTruceFailureForOfflineReFixture() noexcept;
+
 // Offline-only entry point for the exact-build loaded-effect fixtures.  The
 // production entry point remains disabled until the native visitor/scope ABI
 // that crashed at CK3 RVA 0x334C668 is closed and revalidated live.

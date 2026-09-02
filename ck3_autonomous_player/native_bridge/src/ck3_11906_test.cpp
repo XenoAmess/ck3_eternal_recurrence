@@ -9061,6 +9061,8 @@ int main() {
           "conditional_favor_hook_application") ==
           termination_terms.raiktor_surrender
               ->unobserved_dynamic_effects.end() ||
+      xar::ck3_11906::LastRaiktorSurrenderTruceFailureForOfflineReFixture() !=
+          xar::ck3_11906::RaiktorSurrenderTruceFailureV1::unsupported_build ||
       g_character_claim_read_calls != claim_reads_before_raiktor + 4 ||
       g_character_claim_destroy_calls !=
           claim_destroys_before_raiktor + 3 ||
