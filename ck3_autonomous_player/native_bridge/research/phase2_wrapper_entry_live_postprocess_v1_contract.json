@@ -1,0 +1,78 @@
+{
+  "contract": "phase2-wrapper-entry-live-postprocess-v1",
+  "schema_version": 1,
+  "status": "offline-private-evidence-parser-ready",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "parent_baseline_commit": "755c300abf70455bfd39b2ee8341b5d6de980753"
+  },
+  "inputs": {
+    "runner_report": "recursive heartbeat discovery; duplicate pid/sequence snapshots collapse to one",
+    "caller_artifact": {
+      "callsite_count": 618,
+      "callsite_list_sha256": "32B88FEACB2D43E2284C116C53A448D8C1F14FDBD4B2BFB97C0725622E861A8C",
+      "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "observer_object": "phase2_wrapper_entry_observer_v1",
+    "required_fields": [
+      "installed",
+      "failure",
+      "entry_count",
+      "last_return_address",
+      "last_callsite_rva",
+      "last_scheduler_owner",
+      "last_producer_list",
+      "last_thread_id",
+      "last_timestamp_qpc"
+    ]
+  },
+  "return_dimension": {
+    "status": "not_observed_by_v1",
+    "affects_decision": false,
+    "entry_no_return_classification": "not_evaluated"
+  },
+  "decision_matrix": [
+    {"condition": "observer object absent or invalid", "decision": "observer-schema-missing/invalid", "status": "RED"},
+    {"condition": "installed=false or failure!=0", "decision": "observer-install-or-runtime-failure", "status": "RED"},
+    {"condition": "entry_count regresses", "decision": "entry-counter-regressed", "status": "RED"},
+    {"condition": "positive-entry QPC regresses", "decision": "entry-qpc-regressed", "status": "RED"},
+    {"condition": "final entry_count == 0", "decision": "no-entry-observed", "status": "NO-GO"},
+    {"condition": "sampled caller outside frozen 618-callsite set", "decision": "entry-caller-outside-frozen-set", "status": "RED"},
+    {"condition": "positive entry with zero caller context", "decision": "entry-context-incomplete", "status": "NO-GO"},
+    {"condition": "positive entry with frozen caller and nonzero context", "decision": "entry-caller-owner-carrier-observed", "status": "GREEN"},
+    {"condition": "return count unavailable in frozen v1", "decision": "not_observed_by_v1", "status": "NOT-RED"}
+  ],
+  "outputs": {
+    "caller": "sampled last-callsite distribution and invalid caller list",
+    "scheduler_owner": "sampled last-owner distribution and distinct nonzero count",
+    "producer_list_carrier": "sampled last-carrier distribution and stable/changed classification",
+    "thread_qpc": "thread distribution, zero-context list and sampled QPC monotonicity",
+    "input_evidence": "absolute input paths and byte SHA-256"
+  },
+  "source_hashes": {
+    "parser_sha256": "F463C5DD99AF29B35CE2B38FF6B8F5618F71DBEACD9D91A7AA6DBD2EA67AD690",
+    "test_sha256": "59052D747D422B6012721EE4CD2EFF8B5A63DC688CDD46565E80692D493F031A"
+  },
+  "acceptance": {
+    "focused_tests": "7/7 GREEN",
+    "old_raw_negative_control": {
+      "expected_decision": "observer-schema-missing",
+      "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-native-gate-20260902\\wrapper-entry-postprocessor-old-raw-control.json",
+      "artifact_sha256": "9CB4BF4ACEF808FE190C51D7D4F751B1EF0C441E362F35341F3AB56586F41561"
+    },
+    "ck3_started": false
+  },
+  "scope": {
+    "read_only": true,
+    "private_evidence_only": true,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "daily_or_weekly_report_changed": false
+  },
+  "limits": [
+    "sampled distributions describe heartbeat last values, not every wrapper entry",
+    "frozen v1 has no return counter; absence is explicit and never a RED reason",
+    "the parser does not launch CK3 or mutate source evidence"
+  ]
+}
