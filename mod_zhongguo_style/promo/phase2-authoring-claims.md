@@ -95,3 +95,15 @@ py tools/zhongguo_phase2_footage_intake.py `
   --capture-root <same-run-green-capture> `
   --output <new-intake-report.json>
 ```
+
+The same intake now runs inside
+`mod_zhongguo_style/tools/build_phase2_promo_video.py` for both validation and
+full-candidate execution. After the fresh promo-tool media receipt is bound, a
+RED intake raises typed `footage_pending` before ready-authoring checks, TTS
+cache access, subtitle layout, composer construction, FFmpeg, or attempt-folder
+creation. The planner and builder share one dependency DAG: promo-tool refresh
+and receipt → verified eight-span footage → first full-speed source review and
+authoring promotion → Xiaoxiao cache validation → zh-CN/en subtitle safe-zone
+layout → composition → claims audit → final full-speed review and sign-off →
+export → explicit publication. The two 1× reviews remain human gates and are
+never inferred from automated validation.

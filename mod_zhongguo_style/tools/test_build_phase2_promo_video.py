@@ -552,6 +552,21 @@ class Phase2PromoEntryTests(unittest.TestCase):
         _FakeComposer.instances.clear()
         _RealDurationFakeComposer.instances.clear()
         _OverlongFakeComposer.instances.clear()
+        self.real_footage_validator = promo.validate_footage_intake
+        self.footage_validator_patch = mock.patch.object(
+            promo,
+            "validate_footage_intake",
+            return_value={
+                "schema_version": 1,
+                "kind": "zg361_phase2_footage_intake",
+                "scope": "phase2_media_entry_only_no_native_observer_schema",
+                "result": "GREEN",
+                "reason_code": None,
+                "errors": [],
+            },
+        )
+        self.footage_validator_patch.start()
+        self.addCleanup(self.footage_validator_patch.stop)
 
     @staticmethod
     def _media_identity() -> dict[str, object]:
@@ -669,6 +684,64 @@ class Phase2PromoEntryTests(unittest.TestCase):
             runner.assert_not_called()
             self.assertFalse(workdir.exists())
 
+    def test_footage_pending_stops_before_authoring_tts_pipeline_or_workdir(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            report, digest, files = _write_media_preflight_report(
+                root / "media",
+                config_path=CHECKED_CONFIG,
+            )
+            capture = root / "missing-capture"
+            for validate_only in (True, False):
+                with self.subTest(validate_only=validate_only):
+                    workdir = root / f"must-not-exist-{validate_only}"
+                    tts_cache = root / f"tts-must-not-be-read-{validate_only}"
+                    args = _args(
+                        CHECKED_CONFIG,
+                        capture,
+                        workdir,
+                        validate_only=validate_only,
+                        media_preflight_report=report,
+                        expected_media_preflight_sha256=digest,
+                    )
+                    args.tts_cache = tts_cache
+                    args.ffmpeg = str(files["ffmpeg"])
+                    args.ffprobe = str(files["ffprobe"])
+                    args.zh_font_file = files["zh_font"]
+                    args.en_font_file = files["en_font"]
+                    composer = mock.Mock()
+                    runner = mock.Mock()
+                    with mock.patch.object(
+                        promo,
+                        "_current_toolchain_identity",
+                        return_value=self._media_identity(),
+                    ):
+                        with self.assertRaises(promo.Phase2FootagePending) as raised:
+                            promo.execute(
+                                args,
+                                composer_factory=composer,
+                                pipeline_runner=runner,
+                                footage_validator=self.real_footage_validator,
+                            )
+
+                    self.assertEqual(
+                        raised.exception.reason_code, "footage_pending"
+                    )
+                    self.assertEqual(raised.exception.report["result"], "RED")
+                    self.assertEqual(
+                        raised.exception.report["scope"],
+                        "phase2_media_entry_only_no_native_observer_schema",
+                    )
+                    self.assertEqual(
+                        raised.exception.report["dependency_graph"],
+                        promo.final_promo_execution_dag(),
+                    )
+                    composer.assert_not_called()
+                    runner.assert_not_called()
+                    self.assertFalse(capture.exists())
+                    self.assertFalse(tts_cache.exists())
+                    self.assertFalse(workdir.exists())
+
     def test_full_candidate_preserves_bound_media_preflight(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -709,6 +782,10 @@ class Phase2PromoEntryTests(unittest.TestCase):
                 (workdir / "phase2-pipeline-result.json").read_text(encoding="utf-8")
             )
             self.assertEqual(outcome.media_preflight.to_mapping(), summary["media_preflight"])
+            self.assertEqual("GREEN", summary["footage_intake"]["result"])
+            self.assertEqual(
+                promo.final_promo_execution_dag(), summary["dependency_graph"]
+            )
             loaded = load_document(outcome.run_manifest_path, check_files=True)
             artifacts = [
                 artifact

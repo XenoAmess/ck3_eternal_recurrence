@@ -13,6 +13,11 @@ missing narration.  Rendering a candidate is not a release approval: missing
 phase-two live claims or a byte-bound human sign-off remains RED. Release,
 export, and external publication also require a fresh byte-bound receipt from
 ``preflight_phase2_media.py`` preserved in the signed candidate run.
+
+Both modes run the same strict footage intake immediately after an optional
+fresh media receipt is bound and before authoring, TTS-cache access, composer
+construction, pipeline invocation, or work-directory creation.  A RED intake
+raises typed ``footage_pending`` and creates no attempt artifact.
 """
 
 from __future__ import annotations
@@ -43,6 +48,10 @@ if str(REPOSITORY_TOOLS) not in sys.path:
 from promo_toolchain_loader import (  # noqa: E402
     PROMO_TOOLCHAIN_VERSION,
     ensure_promo_toolchain,
+)
+from zhongguo_phase2_footage_intake import (  # noqa: E402
+    final_promo_execution_dag,
+    validate_footage_intake,
 )
 
 
@@ -174,6 +183,21 @@ CAPTURE_REPORT_RELATIVE_PATHS = (
 
 class Phase2PromoBuildError(PromoToolchainError):
     """The project-specific entry cannot honestly produce the requested state."""
+
+
+class Phase2FootagePending(Phase2PromoBuildError):
+    """Typed pre-composition stop for absent or unverified real footage."""
+
+    reason_code = "footage_pending"
+
+    def __init__(self, report: Mapping[str, object]) -> None:
+        self.report = dict(report)
+        errors = self.report.get("errors")
+        detail = ", ".join(str(value) for value in errors) if isinstance(errors, list) else ""
+        super().__init__(
+            "footage_pending: strict eight-span footage intake is RED"
+            + (f" ({detail})" if detail else "")
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1247,6 +1271,8 @@ class Phase2BuildOutcome:
     run_manifest_path: Path | None
     seed_preflight: SeedPreflightBinding | None = None
     media_preflight: MediaPreflightBinding | None = None
+    footage_intake: Mapping[str, object] | None = None
+    dependency_graph: Mapping[str, Sequence[str]] | None = None
 
 
 def _portable_id(value: str, *, prefix: str = "") -> str:
@@ -1840,6 +1866,7 @@ def _result_mapping(
     final_duration_seconds: float | None = None,
     seed_preflight: SeedPreflightBinding | None = None,
     media_preflight: MediaPreflightBinding | None = None,
+    footage_intake: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     value: dict[str, object] = {
         "schema_version": 1,
@@ -1859,6 +1886,10 @@ def _result_mapping(
         "media_preflight": (
             None if media_preflight is None else media_preflight.to_mapping()
         ),
+        "footage_intake": (
+            None if footage_intake is None else dict(footage_intake)
+        ),
+        "dependency_graph": final_promo_execution_dag(),
     }
     if result.failure is not None:
         value["failure"] = {
@@ -2080,12 +2111,14 @@ def execute(
     registry: ComponentRegistry | None = None,
     composer_factory=None,
     pipeline_runner=None,
+    footage_validator=None,
 ) -> Phase2BuildOutcome:
     config_path = args.project_config.expanduser().resolve()
     capture_root = args.capture_root.expanduser().resolve()
     workdir = args.work_dir.expanduser().resolve()
     seed_preflight: SeedPreflightBinding | None = None
     media_preflight: MediaPreflightBinding | None = None
+    footage_intake: dict[str, object] | None = None
     if not args.validate_only and workdir.exists():
         raise Phase2PromoBuildError(
             f"full build requires a new attempt directory; retain the existing one: {workdir}"
@@ -2112,6 +2145,22 @@ def execute(
                 zh_font_file=args.zh_font_file,
                 en_font_file=args.en_font_file,
             )
+        validator = (
+            validate_footage_intake
+            if footage_validator is None
+            else footage_validator
+        )
+        raw_footage_intake = validator(capture_root)
+        if not isinstance(raw_footage_intake, Mapping):
+            raise Phase2PromoBuildError(
+                "phase-two footage validator must return a typed mapping"
+            )
+        footage_intake = {
+            **dict(raw_footage_intake),
+            "dependency_graph": final_promo_execution_dag(),
+        }
+        if footage_intake.get("result") != "GREEN":
+            raise Phase2FootagePending(footage_intake)
         _require_ready_authoring(config)
         seed_preflight_path = getattr(args, "seed_preflight_report", None)
         if seed_preflight_path is not None:
@@ -2197,6 +2246,7 @@ def execute(
                         ),
                         seed_preflight=seed_preflight,
                         media_preflight=media_preflight,
+                        footage_intake=footage_intake,
                     ),
                 )
                 raise
@@ -2215,6 +2265,10 @@ def execute(
             seed_preflight.verify_unchanged()
         if media_preflight is not None:
             media_preflight.verify_unchanged()
+    except Phase2FootagePending:
+        # This is a pre-composition input state, not a failed media attempt.
+        # Do not create a work directory or a synthetic failure artifact.
+        raise
     except Exception as exc:
         if not args.validate_only and not workdir.exists():
             _write_entry_failure(workdir, failure_phase, exc)
@@ -2233,6 +2287,7 @@ def execute(
                 final_duration_seconds=final_duration_seconds,
                 seed_preflight=seed_preflight,
                 media_preflight=media_preflight,
+                footage_intake=footage_intake,
             ),
         )
         if result.succeeded:
@@ -2325,6 +2380,8 @@ def execute(
         run_manifest_path=run_path,
         seed_preflight=seed_preflight,
         media_preflight=media_preflight,
+        footage_intake=footage_intake,
+        dependency_graph=final_promo_execution_dag(),
     )
 
 
@@ -2394,6 +2451,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     except KeyboardInterrupt:
         print("RELEASE: RED\nERROR: interrupted", file=sys.stderr)
         return 130
+    except Phase2FootagePending as exc:
+        print(
+            "RELEASE: RED\n"
+            f"REASON_CODE: {exc.reason_code}\n"
+            f"FOOTAGE INTAKE: {json.dumps(exc.report, ensure_ascii=False, sort_keys=True)}",
+            file=sys.stderr,
+        )
+        return 2
     except Exception as exc:
         print(f"RELEASE: RED\nERROR: {exc}", file=sys.stderr)
         return 2
@@ -2402,6 +2467,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"{label}: {'GREEN' if outcome.result.succeeded else 'RED'}")
     print(f"RELEASE: {'GREEN' if outcome.release_ready else 'RED'}")
     print(f"CAPTURE: {outcome.candidate.bundle.artifact_root}")
+    print(f"FOOTAGE INTAKE: {outcome.footage_intake['result']}")
     if outcome.seed_preflight is None:
         print("PREFLIGHT: unbound")
     else:

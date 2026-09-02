@@ -18,7 +18,10 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 from zhongguo_phase2_capture_choreography import PHASE2_CAPTURE_SCENARIOS
-from zhongguo_phase2_footage_intake import validate_footage_intake
+from zhongguo_phase2_footage_intake import (
+    final_promo_execution_dag,
+    validate_footage_intake,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -356,19 +359,7 @@ def build_runbook(
             "media_preflight": media,
             "tts_cache": {"path": str(tts_cache.resolve()), "required_voice": VOICE, "must_be_prepopulated_content_addressed": True},
         },
-        "dependency_graph": {
-            "fetch_and_verify_promo_origin_main": [],
-            "fresh_media_receipt": ["fetch_and_verify_promo_origin_main"],
-            "bind_inputs": ["fresh_media_receipt", "ten_chapter_authoring_ledger", "eight_span_green_capture", "seed_preflight"],
-            "source_review_1x": ["bind_inputs"],
-            "promote_authoring": ["source_review_1x"],
-            "validate_only": ["promote_authoring"],
-            "candidate_build": ["validate_only", "xiaoxiao_cache", "bilingual_authoring"],
-            "final_review_1x": ["candidate_build", "byte_bound_probe", "automated_audit"],
-            "signoff": ["final_review_1x"],
-            "export": ["signoff", "release_policy"],
-            "publish": ["export", "explicit_operator_action"],
-        },
+        "dependency_graph": final_promo_execution_dag(),
         "ordered_steps": steps,
         "hash_backfill_fields": [
             "promo_toolchain.head_after_fetch", "authoring_ledger.bytes_sha256", "authoring_ledger.each_claim_cue_and_language_lines", "project_config.promoted_bytes_sha256", "seed_preflight.bytes_sha256", "media_preflight.bytes_sha256", "capture.timeline.bytes_sha256", "capture.report.bytes_sha256", "capture.evidence_index.bytes_sha256", "capture.raw_recording.bytes_sha256", "capture.each_clean_span.start_end", "tts.each_cue.text_sha256_audio_bytes_sha256_provider_version_voice", "subtitles.zh_cn_ass_bytes_sha256", "subtitles.en_ass_bytes_sha256", "generated_cards.each_bytes_sha256", "chapters.each_mp4_bytes_sha256", "source_review.reviewer_reviewed_at_capture_sha256_all_eight", "deliverable.mp4_bytes_sha256", "deliverable.bound_ffprobe_envelope_sha256_duration_codecs", "final_review.package_sha256_reviewer_reviewed_at_decision", "signed_run_manifest.bytes_sha256", "export.bundle_manifest_sha256", "publication.publish_performed_remote_url_verified_at"

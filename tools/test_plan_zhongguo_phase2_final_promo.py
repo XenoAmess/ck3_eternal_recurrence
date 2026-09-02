@@ -76,6 +76,17 @@ class FinalPromoRunbookTests(unittest.TestCase):
             )
             self.assertTrue(runbook["ordered_steps"][0]["required_first"])
             self.assertEqual(
+                runbook["dependency_graph"], planner.final_promo_execution_dag()
+            )
+            self.assertEqual(
+                runbook["dependency_graph"]["verified_eight_span_footage"],
+                ["fresh_promo_tool_receipt"],
+            )
+            self.assertEqual(
+                runbook["dependency_graph"]["composition"],
+                ["zh_cn_en_subtitle_layout_safe_zone"],
+            )
+            self.assertEqual(
                 [step["id"] for step in runbook["ordered_steps"] if step.get("human_pause")],
                 [
                     "source_footage_human_review_1x",

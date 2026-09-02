@@ -32,6 +32,29 @@ LOADED_SEED_RELATIVE = "cell/04_phase2_seed_loaded.json"
 _SHA = re.compile(r"^[0-9A-Fa-f]{64}$")
 
 
+def final_promo_execution_dag() -> dict[str, list[str]]:
+    """Return the shared production dependency graph as a fresh mapping."""
+
+    return {
+        "fetch_and_verify_promo_origin_main": [],
+        "fresh_promo_tool_receipt": ["fetch_and_verify_promo_origin_main"],
+        "verified_eight_span_footage": ["fresh_promo_tool_receipt"],
+        "source_footage_review_1x": ["verified_eight_span_footage"],
+        "promoted_bilingual_authoring": ["source_footage_review_1x"],
+        "xiaoxiao_tts": [
+            "verified_eight_span_footage",
+            "promoted_bilingual_authoring",
+        ],
+        "zh_cn_en_subtitle_layout_safe_zone": ["xiaoxiao_tts"],
+        "composition": ["zh_cn_en_subtitle_layout_safe_zone"],
+        "claims_audit": ["composition"],
+        "final_video_review_1x": ["claims_audit"],
+        "approved_signoff": ["final_video_review_1x"],
+        "export": ["approved_signoff"],
+        "publish": ["export", "explicit_operator_action"],
+    }
+
+
 def _positive_int(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value > 0
 
