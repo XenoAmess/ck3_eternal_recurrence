@@ -90,8 +90,25 @@ gate and must not overwrite the frozen artifacts above.
   `Total of : 881` stall, missing history marker, nonzero exit, or incomplete
   cleanup is RED and must be retained as a failed attempt.
 
-**Status: PENDING.** No thirty-minute run is attributed to this audit; the
-already completed exact run remains the evidence and is RED.
+**Status: PENDING.** No valid thirty-minute A+B run is attributed to this
+audit; the already completed exact run remains the functional evidence and is
+RED.
+
+### Attempt observed after the plan (invalid target)
+
+The run directory
+`_runtime/formal-phase2-full-exact-1800-20260903/` later completed a
+30-minute timeout, but its mounted tree was not the exact candidate described
+above. Its report SHA-256 is
+`241254233107098CF5F385F1C4472D94CA3E1C8D93D6CFFF869A8C38C0F7A79A`; the
+product tree records 264 files / 15,937,535 bytes and contains the monolith
+`zg361_workforce_endgame_runtime_effects.txt` (4,636,271 bytes), with no
+`_part_a` or `_part_b`. A valid exact A+B tree is 265 files / 15,938,098
+bytes, so the 563-byte difference is the duplicated part-B header. The run
+also stopped at `Total of : 881` (frontend/history not verified), with CK3
+exit 1 and cleanup proven. Classify this attempt as an invalid-target
+monolithic control, not as an exact-split result; a correctly mounted
+30-minute A+B run is still pending.
 
 ## Corrected A/B test plan and result
 
