@@ -257,17 +257,6 @@ class CaptureConfig:
     bridge_dll: Path
     bridge_injector: Path
     pipe_name: str
-    # ``game_dir`` remains an explicit field for API callers.  CLI callers may
-    # omit it and use ``resolve_ck3_game_dir``; the selected source/candidates
-    # are retained as immutable provenance rather than silently rewriting a
-    # caller-provided path.
-    game_dir_source: str = "explicit-cli"
-    game_dir_candidates: tuple[dict[str, object], ...] = ()
-    # Optional immutable bundle manifest emitted by the Release bridge build.
-    # When supplied it is checked against the selected DLL/injector before a
-    # launch and copied into the receipt as build provenance.  Leaving it
-    # unset preserves API compatibility for synthetic/unit callers.
-    bridge_bundle_manifest: Path | None = None
     seed_contract: Path | None = None
     loader_timeout_seconds: float = DEFAULT_LOADER_TIMEOUT_SECONDS
     native_readiness_timeout_seconds: float = (
@@ -299,6 +288,17 @@ class CaptureConfig:
     frontend_first_timeout_seconds: float = (
         DEFAULT_FRONTEND_FIRST_TIMEOUT_SECONDS
     )
+    # ``game_dir`` remains an explicit field for API callers.  CLI callers may
+    # omit it and use ``resolve_ck3_game_dir``; the selected source/candidates
+    # are retained as immutable provenance rather than silently rewriting a
+    # caller-provided path.
+    game_dir_source: str = "explicit-cli"
+    game_dir_candidates: tuple[dict[str, object], ...] = ()
+    # Optional immutable bundle manifest emitted by the Release bridge build.
+    # When supplied it is checked against the selected DLL/injector before a
+    # launch and copied into the receipt as build provenance.  Leaving it
+    # unset preserves API compatibility for synthetic/unit callers.
+    bridge_bundle_manifest: Path | None = None
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
