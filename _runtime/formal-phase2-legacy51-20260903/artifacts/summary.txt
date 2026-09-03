@@ -1,0 +1,15 @@
+Exact old-core Phase-2 startup summary (2026-09-03)
+
+Run: formal-phase2-legacy51-20260903
+Source overlay: phase2-bisect-source-legacy51-20260903 (exact legacy 51-file product core)
+Executable: Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe (1.19.0.6, SHA-256 2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86)
+Mode: no bridge, product+fixture, full settings, warm shadercache; no save/gameplay/store/purchase
+
+GREEN evidence:
+- CK3 PID 53316 started 11:37:39 Asia/Shanghai.
+- debug.log: `Setting idler 'Frontend'` and `End loading of history` at 11:38:30; `Total startup duration: 51.726461 seconds` at 11:38:31.
+- Harness report result=frontend; visible SDL_app window title Crusader Kings III; frontend_main.gui complete.
+- WM_CLOSE sent 11:38:36; exit_code=0; cleanup_proven=true; job/tree gone; final tasklist/WMI inventory empty.
+- Screenshot: frontend.png (SHA-256 f5774e85842ab395dcdaa10ea6b2b8a00d7313a2d3d84d7d1fd2d46af87755b7).
+
+Conclusion: CK3 installation and startup observer are functional. The exact old 51-file core reaches Frontend in ~52s; the current broad product projection (279 files) is the suspected long-load regression.

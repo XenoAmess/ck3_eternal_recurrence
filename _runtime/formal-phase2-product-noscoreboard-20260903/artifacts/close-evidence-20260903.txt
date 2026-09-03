@@ -1,0 +1,20 @@
+CK3 product-no-scoreboard A/B close evidence (2026-09-03)
+
+Run: formal-phase2-product-noscoreboard-20260903
+Executable: Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe
+Build: 1.19.0.6 (Scribe), SHA-256 2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86
+Bridge: none; projection product-no-scoreboard; full settings and warm shadercache
+Actions: no save, gameplay, store or purchase actions
+
+Observed startup:
+- PID 33956 created at 11:32:39 Asia/Shanghai; visible SDL_app CK3 window, Responding=True.
+- debug.log completed GUI asset loading and reached `Total of : 880` on_action at 11:33:16.
+- Memory stabilized around 6.8 GB; no error.log entries were present during observation.
+- No `End loading of history`, `Setting idler 'Frontend'`, or `Total startup duration` marker appeared by the four-minute cutoff.
+
+Close:
+- WM_CLOSE posted to visible CK3 window after the four-minute limit; the app did not respond within eight seconds.
+- Disposable observer was interrupted so its finally cleanup stopped the tracked process/job.
+- Independent post-close process inventory showed no ck3.exe and no xar_ck3_bridge_injector.exe.
+
+Classification: product-no-scoreboard still reaches post-on_action but does not reach the formal Frontend marker within four minutes. Scoreboard is not the sole startup bottleneck. Window cleanup is proven; formal Frontend readiness remains RED/unresolved.
