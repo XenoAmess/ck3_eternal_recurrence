@@ -96,11 +96,14 @@ exact r3 候选为 `_runtime/phase2-incident-x-production-closure-20260904-r3`�
 `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-incident-x-full-entry-20260904-r2`，report/map SHA 为
 `1D41298B8987AA473304AE70FC53628639DE7700BBE5A9D7484A6BF76F566FE2` /
 `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。本轮同样没有加载性能 RED，不做追加 A/B；
-Incident/X 仅提升为 `startup/full-entry production-candidate GREEN`，不代表 delayed-path 或 seed live。五个 seed roots 的
-固定点为 `385 effects / 161 events / 6 triggers`；相对 Incident/X r3 仍需 Workforce `307 effects / 140 events`，6 triggers
-已有，并需 3 个文件中的 24 个可见 loc keys（AD 15、attribution 5、remediation 4）。Manager 43-effect owner 不在闭包内。
-下一施工项是只继续按用途拆分并闭合 `zg361_we_open_portfolio_effect` 所需 Workforce owners；seed-capable exact candidate
-通过 full-entry 后才运行 seed/paused-native。
+Incident/X 仅提升为 `startup/full-entry production-candidate GREEN`，不代表 delayed-path 或 seed live。早先记录的
+callable/event-only 中间计数漏掉 appointment + exit court-position definition 的 `on_court_position_*` native callbacks，
+现已被 supersede，不再作为规模或施工依据。权威固定点为
+`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的 Workforce 增量为
+`314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增 loc 为 `28 keys / 5 files`。
+Manager 43-effect owner 增量仍为 0。最终 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成。
+下一施工项是只继续按用途物化 `zg361_we_open_portfolio_effect` 所需 Workforce owners、appointment/exit court-position owners
+与 native callbacks；seed-capable exact candidate 通过 full-entry 后才运行 seed/paused-native。
 
 ## 2026-W35 最高优先级：先完整游玩一代人
 

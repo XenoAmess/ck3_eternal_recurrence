@@ -203,10 +203,14 @@ exact mount、material errors 0 与 `cleanup.ck3_running_after=false`。`report.
   `1D41298B8987AA473304AE70FC53628639DE7700BBE5A9D7484A6BF76F566FE2` /
   `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。没有加载性能 RED，故未做追加 A/B。
 - 实现与静态合同提交 `df77ed636c51c51f99f534d8efbb559b94c639d2` 已推送。该 GREEN 只覆盖 Incident/X 入口层；
-  fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。五个 seed roots 的固定点为
-  `385 effects / 161 events / 6 triggers`；相对 Incident/X r3 还需 Workforce `307 effects / 140 events`，6 triggers 已有，
-  并补 3 个文件中的 24 个可见 loc keys（AD 15、attribution 5、remediation 4）。Manager 43-effect owner 不在闭包内。
-  下一 checkpoint 必须只把所需 Workforce owners 按用途拆分、构造 exact production closure 并完成同树 full-entry，之后才进入
+  fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。此前记录的 callable/event-only 中间计数漏掉
+  court-position definition 的 `on_court_position_*` native callbacks，现已被 supersede，不再作为规模或施工依据。
+  加入 appointment + exit court-position owners 后，五个 seed roots 的权威固定点为
+  `397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的增量为
+  `314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增 loc 为 `28 keys / 5 files`；
+  最终 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成，不在当前阶段冻结。Manager 43-effect owner
+  增量仍为 0。下一 checkpoint 必须只把这份
+  native-callback-aware Workforce closure 按用途物化、构造 exact production candidate 并完成同树 full-entry，之后才进入
   seed/paused-native。
 
 ## 预计时间

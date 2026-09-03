@@ -274,11 +274,15 @@ GUI/decision/interaction/on_action”。
 4. 保存 paused artifact 后才升级 readiness。
 
 固定 seed fixture 还会调用 Workforce 入口 `zg361_we_open_portfolio_effect`；当前 Incident/X 候选并未包含该入口的完整生产闭包。
-五个 seed roots 的固定点为 `385 effects / 161 events / 6 triggers`；相对 Incident/X r3 仍需加入 Workforce 的
-`307 effects / 140 events`，6 个 triggers 已存在，并补 3 个文件中的 24 个可见本地化 key（AD 15、attribution 5、
-remediation 4）。Manager 的 43-effect owner 不在这条闭包内，不应顺手拉入。因此下一施工项不是直接拿 B2 r2 或当前
-Incident/X tree 跑 seed，而是只把所需 Workforce owners 继续按用途拆分并构造 exact closure；该候选通过同树 full-entry 后，
-才进入 seed/paused-native。
+此前记录的 callable/event-only 中间计数漏掉 court-position definition 的 `on_court_position_*` native callbacks，现已被
+supersede，不再作为任何规模或施工依据。
+纳入 appointment + exit 两个 court-position owners 后，五个 seed roots 的权威固定点为
+`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的增量为
+`314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增可见本地化为 `28 keys / 5 files`，
+最终 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成，不在当前阶段冻结。Manager 43-effect owner
+的增量仍为 0，不在这条闭包内。因此下一施工项不是
+直接拿 B2 r2 或当前 Incident/X tree 跑 seed，而是只把该 native-callback-aware Workforce closure 按用途物化；候选通过同树
+full-entry 后，才进入 seed/paused-native。
 
 C 路的逐编号 consumer 到期后先核对原 write/debt 五元身份与 incident provenance。核验通过时不直接改
 mutable KPI，而是把每笔 `-1` 聚合进受评者的 `zg361_ip_policy_kpi_*` pending；只有 staging 成功才关闭原债务。

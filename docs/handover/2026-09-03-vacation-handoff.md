@@ -2,7 +2,7 @@
 
 **原交接时间：** 2026-09-03 20:45（Asia/Shanghai）
 
-**接班执行更新：** 2026-09-04 02:45（Asia/Shanghai）
+**接班执行更新：** 2026-09-04 03:03（Asia/Shanghai）
 
 **工作树：** `Z:\ck3_mod_rewrite\_root-promo-split-20260902`
 
@@ -12,13 +12,13 @@
 
 ## 一句话结论
 
-天朝二期还没有到全量可交付或可制作成片的阶段，但 B1、B2 与 Incident/X 的启动 checkpoint 已解除。B1 正式 59-file 生成树 r3 在 245.770 秒 full-entry GREEN；fresh B2 r2 以 119 files / 8,891,635 B 在 164.781 秒 GREEN；Incident/X r3 又以 135 files / 9,158,442 B 在 188.303 秒通过 8 个入口门、3 条 marker、exact mount、material-error 0 与 cleanup。三者当前均只能写为 **startup/full-entry production-candidate GREEN**。fixed seed 的 no-launch preflight 已证明 fixture 还要求 Workforce 的 `zg361_we_open_portfolio_effect`；下一步必须只按用途拆分并闭合该入口所需 owners，再跑 seed-capable exact candidate 的 full-entry，GREEN 后才进入 seed/paused-native。Manager 43-effect owner 不在该闭包内，不应拉入。未改写的 58 文件单体 B1 的 1205.343 秒 RED 继续保留，不能把文件尺寸写成唯一根因；B2 与 Incident/X 均没有加载性能 RED，所以未触发追加文件边界 A/B。CK3 已退出；footage 仍为 0/8，G2 继续 paused。
+天朝二期还没有到全量可交付或可制作成片的阶段，但 B1、B2 与 Incident/X 的启动 checkpoint 已解除。B1 正式 59-file 生成树 r3 在 245.770 秒 full-entry GREEN；fresh B2 r2 以 119 files / 8,891,635 B 在 164.781 秒 GREEN；Incident/X r3 又以 135 files / 9,158,442 B 在 188.303 秒通过 8 个入口门、3 条 marker、exact mount、material-error 0 与 cleanup。三者当前均只能写为 **startup/full-entry production-candidate GREEN**。fixed seed 的 no-launch preflight 已证明 fixture 还要求 Workforce 的 `zg361_we_open_portfolio_effect`；下一步必须按用途物化该入口所需 owners 及 appointment/exit court-position native callbacks，再跑 seed-capable exact candidate 的 full-entry，GREEN 后才进入 seed/paused-native。Manager 43-effect owner 不在该闭包内，不应拉入。未改写的 58 文件单体 B1 的 1205.343 秒 RED 继续保留，不能把文件尺寸写成唯一根因；B2 与 Incident/X 均没有加载性能 RED，所以未触发追加文件边界 A/B。CK3 已退出；footage 仍为 0/8，G2 继续 paused。
 
 ## 当前工作清单
 
 | 工作包 | 当前状态 | 下一项 | 预计交付窗口（接班人重新开始后） |
 |---|---|---|---|
-| 天朝二期代码/内容 | B1 59-file r3、B2 119-file r2 与 Incident/X 135-file r3 均为 startup/full-entry GREEN；Incident/X 用时 188.303 秒，8 gates / 3 markers / exact mount / material 0 / cleanup GREEN | 只闭合 Workforce `zg361_we_open_portfolio_effect` 所需用途分片与 exact full-entry，再进入 seed/paused-native | delayed-path/seed/OODA 尚未验证，不给全量 ETA |
+| 天朝二期代码/内容 | B1 59-file r3、B2 119-file r2 与 Incident/X 135-file r3 均为 startup/full-entry GREEN；Incident/X 用时 188.303 秒，8 gates / 3 markers / exact mount / material 0 / cleanup GREEN | 闭合 Workforce `zg361_we_open_portfolio_effect` 与 appointment/exit native callbacks 的用途分片及 exact full-entry，再进入 seed/paused-native | delayed-path/seed/OODA 尚未验证，不给全量 ETA |
 | 两版最终宣传视频 | `footage_pending`，真实二期素材仍为 `0/8`，两份目标 MP4 均未生成 | 先取得 8 个 clean CK3 spans；随后再 fetch/pull 宣传工具主线、TTS、渲染、字幕审片、分别导出两版 | 素材齐后制作约 45–90 分钟，另需两轮人工审片；当前不能承诺日期 |
 | 宣传工具 | 已满足“制作前更新”前置条件：`Z:\workspace\xar_promo_toolchain` clean，`HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`（v0.2.1） | 正式 TTS/渲染前再次执行 `git fetch origin main --prune`，把 checkout SHA 写入两份 builder receipt | 工具本身已完成；等待素材 |
 | G2 | **按用户要求暂缓**，不再扩展当前迭代 | 只有用户解除暂停后才恢复；恢复前先读 G2 专题和最新 schema boundary | 暂无 |
@@ -140,8 +140,8 @@ production loop 均未晋级。
    seed preflight 证明 fixed fixture 还要求 Incident `zg361_ip_open_x_case_effect` 与 Workforce
    `zg361_we_open_portfolio_effect`，所以不能直接复用 B2 r2 进入 seed。full-entry GREEN 不替代 delayed-path 或生产功能验收。
 5. Incident/X 已由下面记录的 r3 exact candidate 完成静态闭包与 full-entry，关闭第一个 fixture root；旧 Manager 简中候选
-   不在 fixed seed 的当前闭包内。下一步必须只按用途拆分 `zg361_we_open_portfolio_effect` 所需 Workforce owners 并完成 exact
-   full-entry，之后才启动 seed/paused-native。
+   不在 fixed seed 的当前闭包内。下一步必须按用途物化 `zg361_we_open_portfolio_effect` 所需 Workforce owners、
+   appointment/exit court-position owners 与 native callbacks，并完成 exact full-entry，之后才启动 seed/paused-native。
 6. 项目所有者在 2026-09-04 明确要求：进入 B2 前先按用途/调用链拆分 effect，目标每文件 `1–10` 个，原则上不超过 `20` 个；超过 `20` 必须记录理由和实机证据。若后续出现没有明确 material/parser 首错的加载性能 RED，优先按 `docs/testing-workflow.md` 做同条件文件边界 A/B，并把结论限制为“文件边界/单文件体量很可能参与”。
    B2 自身现已完成 25 个用途分片：152/152 unique、每片 `1–9`、清单 SHA `06274A5E…7FAB`，静态/投影/release GREEN；该分片
    工作包独立交付时尚无 CK3 live，后续组合 r2 live 见下文。正式提交 `e1297f83738fd61d53812406b26e23637201d2c5` 已推送。其 Workforce effect owner 现也已拆为 76 个用途片：
@@ -195,9 +195,11 @@ production loop 均未晋级。
   `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。没有加载性能 RED，故未做追加 A/B。
 - 用途分片与闭包实现提交 `df77ed636c51c51f99f534d8efbb559b94c639d2` 已推送。Incident/X 当前只能写为
   `startup/full-entry production-candidate GREEN`；X delayed-path、KPI consumer、paused native 与 seed 仍未验收。
-- fixed seed 五个 roots 的固定点为 `385 effects / 161 events / 6 triggers`；相对 Incident/X r3 还需 Workforce
-  `307 effects / 140 events`，6 triggers 已有，并补 3 个文件中的 24 个可见 loc keys（AD 15、attribution 5、
-  remediation 4）。Manager 43-effect owner 不在闭包内，不应顺手纳入。
+- 早先记录的 callable/event-only 中间计数漏掉 appointment + exit court-position definition 的 `on_court_position_*`
+  native callbacks，现已被 supersede，不再作为规模或施工依据。权威固定点为
+  `397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的 Workforce 增量为
+  `314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增 loc 为 `28 keys / 5 files`。
+  Manager 43-effect owner 增量仍为 0。最终 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成。
 
 ## 交接时的授权边界
 
@@ -221,7 +223,8 @@ production loop 均未晋级。
   提交 `0865589cb7ef37160e50247f0fdeb1f27a03fe54` 已推送；后续已纳入 exact r2 full-entry。
 - [x] fresh r2 无 stub B2 closure 已以 119 files / 8,891,635 B 在 164.781 秒通过 exact full-entry；report、地图截图与 cleanup 证据已保存。no-launch preflight 随后证明它不能单独满足 fixed seed fixture。
 - [x] Incident 已拆为 27 effect + 12 event 用途分片，每片最多 7；exact X r3 候选以 135 files / 9,158,442 B 在 188.303 秒通过 full-entry。实现提交 `df77ed636c51c51f99f534d8efbb559b94c639d2` 已推送，r1 harness RED 与 r2 GREEN artifact 均保留。
-- [ ] seed 前仍须闭合 Workforce `zg361_we_open_portfolio_effect` 所需 owners 的按用途分片、exact closure 与同树 full-entry。
+- [ ] seed 前仍须闭合 Workforce `zg361_we_open_portfolio_effect` 所需 owners、appointment/exit court-position native callbacks
+  的按用途分片、exact closure 与同树 full-entry。
 - [ ] 下一位接班人重新开始前，先确认工作区 dirty/untracked 清单，不要覆盖或清理上述 disposable artifact。
 
 这就是当前可以安全交出的边界：正式 B1、fresh B2 r2 与 Incident/X r3 的 startup/full-entry checkpoint 均已 GREEN，失败、修复与 cleanup 证据齐全；但 Workforce seed 入口闭包、delayed-path、seed、native/production loop、8/8 素材与两部最终宣传视频仍未完成。

@@ -38,7 +38,7 @@
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | B1、fresh B2 r2 与 Incident/X r3 候选均已 full-entry GREEN；Incident/X 为 135 files / 9,158,442 B，用时 188.303 秒，8 gates / 3 markers / exact mount / material 0 / cleanup GREEN | 只闭合并实测 Workforce `zg361_we_open_portfolio_effect` 的用途分片；随后才进 seed/paused-native | 后续门通过后再估；不沿用旧 2–5 分钟线性启动估算 |
+| 二期产品代码与发布树 | B1、fresh B2 r2 与 Incident/X r3 候选均已 full-entry GREEN；Incident/X 为 135 files / 9,158,442 B，用时 188.303 秒，8 gates / 3 markers / exact mount / material 0 / cleanup GREEN | 物化并实测 Workforce `zg361_we_open_portfolio_effect` 及 appointment/exit native callbacks 的用途分片；随后才进 seed/paused-native | 后续门通过后再估；不沿用旧 2–5 分钟线性启动估算 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
@@ -193,8 +193,12 @@ entry gates、3/3 markers、exact mount、`material_error_lines=[]` 与 cleanup 
 `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。没有加载性能 RED，因此未做追加 A/B。
 
 用途分片与 closure 工具已由 `df77ed636c51c51f99f534d8efbb559b94c639d2` 提交并推送。该 GREEN 只覆盖 Incident/X
-入口层；fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。五个 seed roots 的固定点为
-`385 effects / 161 events / 6 triggers`；相对 Incident/X r3 还需 Workforce `307 effects / 140 events`，6 triggers 已有，
-以及 3 个文件中的 24 个可见 loc keys（AD 15、attribution 5、remediation 4）。Manager 43-effect owner 不在闭包内，不得拉入。
-下一项是按用途拆分所需 Workforce owners、构造 exact closure 并跑同树 full-entry；GREEN 后才进入 seed/paused-native。
-footage 仍为 `0/8`，两份 MP4 均未生成。
+入口层；fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。此前记录的 callable/event-only 中间计数
+漏掉 court-position definition 的 `on_court_position_*` native callbacks，现已被 supersede，不再作为规模或施工依据。
+加入 appointment + exit court-position owners 后，五个 seed roots 的权威固定点为
+`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的增量为
+`314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增 loc 为 `28 keys / 5 files`。最终
+overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成，不在当前阶段冻结。Manager 43-effect owner
+增量仍为 0，不在闭包内。下一项是按用途物化这份
+native-callback-aware Workforce closure 并跑同树 full-entry；GREEN 后才进入 seed/paused-native。footage 仍为 `0/8`，
+两份 MP4 均未生成。
