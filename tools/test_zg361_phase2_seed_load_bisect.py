@@ -38,6 +38,29 @@ class Phase2SeedLoadBisectTests(unittest.TestCase):
         self.assertEqual(68, sum(int(value["files"]) for value in groups.values()))
         self.assertEqual(314, sum(int(value["definitions"]) for value in groups.values()))
 
+        fact_subgroups = bisect.fact_subgroup_metadata(parent["by_kind"]["effect"])
+        self.assertEqual(bisect.EXPECTED_FACT_SUBGROUPS, {
+            name: {key: value[key] for key in ("files", "definitions", "bytes")}
+            for name, value in fact_subgroups.items()
+        })
+        self.assertEqual(20, sum(int(value["files"]) for value in fact_subgroups.values()))
+        self.assertEqual(76, sum(int(value["definitions"]) for value in fact_subgroups.values()))
+
+    def test_fact_subgroup_selection_is_normalized_and_coarse_conflict_is_rejected(self) -> None:
+        self.assertEqual(
+            (("ab",), ("runtime",)),
+            bisect.normalize_selection(
+                ("ab", "ab"),
+                ("runtime", "runtime"),
+            ),
+        )
+        self.assertEqual(
+            (("facts",), ()),
+            bisect.normalize_selection(("facts",), ()),
+        )
+        with self.assertRaisesRegex(bisect.SeedLoadBisectError, "conflicts"):
+            bisect.normalize_selection(("facts",), ("endgame-control",))
+
     def test_stub_renderer_preserves_bom_names_and_balance(self) -> None:
         source = (
             bisect.BOM
@@ -147,6 +170,60 @@ class Phase2SeedLoadBisectTests(unittest.TestCase):
                 bisect.tree_rows(output / "source"),
                 bisect.tree_rows(output / "materialized-check"),
             )
+
+    def test_fact_subgroup_candidates_are_exact_complements(self) -> None:
+        self._require_parent()
+        parent = bisect.validate_parent()
+        parent_rows = {str(row["path"]): row for row in parent["rows"]}
+        facts_paths = {
+            str(row["path"])
+            for row in parent["by_kind"]["effect"]
+            if bisect.classify_effect_path(str(row["path"])) == "facts"
+        }
+        selected_paths: dict[str, set[str]] = {}
+        expected = {
+            "runtime": {"files": 13, "definitions": 51},
+            "endgame-control": {"files": 7, "definitions": 25},
+        }
+
+        with tempfile.TemporaryDirectory(prefix="zg361-seed-load-facts-") as temp:
+            for subgroup, counts in expected.items():
+                output = Path(temp) / subgroup
+                report = bisect.materialize(
+                    output=output,
+                    projection_name=f"phase2-seed-entry-effect-facts-{subgroup}-test",
+                    real_fact_subgroups=(subgroup,),
+                )
+                selection = report["selection"]
+                self.assertEqual([], selection["real_groups"])
+                self.assertEqual([subgroup], selection["real_fact_subgroups"])
+                self.assertEqual(counts["files"], selection["real_effect_files"])
+                self.assertEqual(counts["definitions"], selection["real_definitions"])
+                self.assertEqual(68 - counts["files"], selection["stub_effect_files"])
+                self.assertEqual(314 - counts["definitions"], selection["stubbed_definitions"])
+                self.assertEqual("mixed", selection["groups"]["facts"]["body_mode"])
+
+                modes = selection["effect_file_modes"]
+                real_rows = [row for row in modes if row["body_mode"] == "real"]
+                selected_paths[subgroup] = {str(row["path"]) for row in real_rows}
+                self.assertTrue(all(row["coarse_group"] == "facts" for row in real_rows))
+                self.assertTrue(all(row["fact_subgroup"] == subgroup for row in real_rows))
+                candidate_rows = {
+                    str(row["path"]): row
+                    for row in bisect.tree_rows(output / "source")
+                }
+                for row in modes:
+                    path = str(row["path"])
+                    if row["body_mode"] == "real":
+                        self.assertEqual(parent_rows[path], candidate_rows[path])
+                    else:
+                        self.assertNotEqual(parent_rows[path], candidate_rows[path])
+
+        self.assertFalse(selected_paths["runtime"] & selected_paths["endgame-control"])
+        self.assertEqual(
+            facts_paths,
+            selected_paths["runtime"] | selected_paths["endgame-control"],
+        )
 
 
 if __name__ == "__main__":

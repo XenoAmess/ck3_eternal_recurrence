@@ -58,12 +58,20 @@ EXPECTED_GROUPS = {
     "al": {"files": 5, "definitions": 8, "bytes": 126_985},
     "root": {"files": 2, "definitions": 3, "bytes": 17_761},
 }
+EXPECTED_FACT_SUBGROUPS = {
+    "runtime": {"files": 13, "definitions": 51, "bytes": 254_704},
+    "endgame-control": {"files": 7, "definitions": 25, "bytes": 148_537},
+}
+
+ENDGAME_CONTROL_FACT_CODES = frozenset(
+    {"009a", "010", "011", "012", "013", "014c", "015c"}
+)
 
 ENDGAME_GROUP_CODES = {
     "ab": frozenset({"017", "018", "025a", "026", "027", "036", "037", "038", "039", "040", "041"}),
     "ac": frozenset({"008", "014a", "019", "020", "024a", "028a", "029", "030", "042", "043", "044", "045", "046a", "046b", "047", "048a", "048b"}),
     "ad": frozenset({"021", "022a", "031a", "032", "033a", "049", "050a", "050b", "051", "052", "053a", "053b", "054"}),
-    "facts": frozenset({"009a", "010", "011", "012", "013", "014c", "015c"}),
+    "facts": ENDGAME_CONTROL_FACT_CODES,
     "al": frozenset({"014e", "023c", "035c", "061a", "061b"}),
     "root": frozenset({"001", "024d"}),
 }
@@ -134,6 +142,45 @@ def classify_effect_path(relative: str) -> str:
         if len(matches) == 1:
             return matches[0]
     raise SeedLoadBisectError(f"unclassified seed overlay effect shard: {relative}")
+
+
+def classify_fact_subgroup(relative: str) -> str | None:
+    """Return the frozen semantic subgroup for a coarse ``facts`` shard."""
+
+    if classify_effect_path(relative) != "facts":
+        return None
+    name = PurePosixPath(relative).name
+    match = ENDGAME_RE.match(name)
+    if match and match.group(1) in ENDGAME_CONTROL_FACT_CODES:
+        return "endgame-control"
+    if any(name.startswith(prefix) for prefix in FACT_PREFIXES):
+        return "runtime"
+    raise SeedLoadBisectError(f"unclassified facts subgroup: {relative}")
+
+
+def normalize_selection(
+    real_groups: Sequence[str],
+    real_fact_subgroups: Sequence[str],
+) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Normalize selections and reject ambiguous coarse/subgroup facts input."""
+
+    normalized_groups = tuple(sorted(set(real_groups)))
+    normalized_fact_subgroups = tuple(sorted(set(real_fact_subgroups)))
+    unknown_groups = sorted(set(normalized_groups) - set(EXPECTED_GROUPS))
+    unknown_fact_subgroups = sorted(
+        set(normalized_fact_subgroups) - set(EXPECTED_FACT_SUBGROUPS)
+    )
+    if unknown_groups:
+        raise SeedLoadBisectError(f"unknown real effect groups: {unknown_groups}")
+    if unknown_fact_subgroups:
+        raise SeedLoadBisectError(
+            f"unknown real facts subgroups: {unknown_fact_subgroups}"
+        )
+    if "facts" in normalized_groups and normalized_fact_subgroups:
+        raise SeedLoadBisectError(
+            "coarse real group 'facts' conflicts with --real-fact-subgroups"
+        )
+    return normalized_groups, normalized_fact_subgroups
 
 
 def _require_hash(path: Path, expected: str, label: str) -> None:
@@ -254,6 +301,36 @@ def group_metadata(effect_rows: Sequence[Mapping[str, object]]) -> dict[str, dic
     return groups
 
 
+def fact_subgroup_metadata(
+    effect_rows: Sequence[Mapping[str, object]],
+) -> dict[str, dict[str, object]]:
+    subgroups = {
+        name: {"files": 0, "definitions": 0, "bytes": 0, "paths": []}
+        for name in EXPECTED_FACT_SUBGROUPS
+    }
+    for row in effect_rows:
+        relative = str(row["path"])
+        subgroup = classify_fact_subgroup(relative)
+        if subgroup is None:
+            continue
+        value = subgroups[subgroup]
+        value["files"] = int(value["files"]) + 1
+        value["definitions"] = int(value["definitions"]) + int(row["definitions"])
+        value["bytes"] = int(value["bytes"]) + int(row["bytes"])
+        value["paths"].append(relative)
+    for subgroup, expected in EXPECTED_FACT_SUBGROUPS.items():
+        observed = {
+            key: subgroups[subgroup][key]
+            for key in ("files", "definitions", "bytes")
+        }
+        if observed != expected:
+            raise SeedLoadBisectError(
+                f"seed facts subgroup {subgroup} drifted: {observed} != {expected}"
+            )
+        subgroups[subgroup]["paths"] = sorted(subgroups[subgroup]["paths"])
+    return subgroups
+
+
 def brace_balance(path: Path) -> tuple[int, bool]:
     depth = 0
     quoted = False
@@ -271,6 +348,7 @@ def materialize(
     projection_name: str,
     parent_root: Path = DEFAULT_PARENT_ROOT,
     real_groups: Sequence[str] = (),
+    real_fact_subgroups: Sequence[str] = (),
 ) -> dict[str, Any]:
     output = output.resolve()
     parent_root = parent_root.resolve()
@@ -288,11 +366,15 @@ def materialize(
     parent = validate_parent(parent_root)
     effect_rows = parent["by_kind"]["effect"]
     groups = group_metadata(effect_rows)
-    normalized_real_groups = tuple(sorted(set(real_groups)))
-    unknown_groups = sorted(set(normalized_real_groups) - set(EXPECTED_GROUPS))
-    if unknown_groups:
-        raise SeedLoadBisectError(f"unknown real effect groups: {unknown_groups}")
-    mode = "effect-group-restore" if normalized_real_groups else "all-effect-stub"
+    fact_subgroups = fact_subgroup_metadata(effect_rows)
+    normalized_real_groups, normalized_real_fact_subgroups = normalize_selection(
+        real_groups, real_fact_subgroups
+    )
+    mode = (
+        "effect-group-restore"
+        if normalized_real_groups or normalized_real_fact_subgroups
+        else "all-effect-stub"
+    )
     output.mkdir(parents=True)
     source = output / "source"
     shutil.copytree(parent["product"], source)
@@ -305,7 +387,13 @@ def materialize(
     for row in sorted(effect_rows, key=lambda item: str(item["path"])):
         relative = str(row["path"])
         group = classify_effect_path(relative)
-        body_mode = "real" if group in normalized_real_groups else "stub"
+        fact_subgroup = classify_fact_subgroup(relative)
+        body_mode = (
+            "real"
+            if group in normalized_real_groups
+            or fact_subgroup in normalized_real_fact_subgroups
+            else "stub"
+        )
         path = source / PurePosixPath(relative)
         original = path.read_bytes()
         _header, original_blocks = find_blocks(original)
@@ -327,6 +415,8 @@ def materialize(
             {
                 "path": relative,
                 "group": group,
+                "coarse_group": group,
+                "fact_subgroup": fact_subgroup,
                 "body_mode": body_mode,
                 "definitions": len(observed_names),
                 "definition_names": observed_names,
@@ -368,6 +458,8 @@ def materialize(
         str(row["path"])
         for row in effect_rows
         if classify_effect_path(str(row["path"])) in normalized_real_groups
+        or classify_fact_subgroup(str(row["path"]))
+        in normalized_real_fact_subgroups
     }
     stub_effect_paths = effect_paths - real_effect_paths
     real_effect_mismatches = sorted(
@@ -417,6 +509,27 @@ def materialize(
     if source_rows != product_rows or source_rows != replay_rows:
         raise SeedLoadBisectError("source/product/materialized-check rows differ")
 
+    def coarse_body_mode(name: str) -> str:
+        if name in normalized_real_groups:
+            return "real"
+        if name != "facts" or not normalized_real_fact_subgroups:
+            return "stub"
+        if len(normalized_real_fact_subgroups) == len(EXPECTED_FACT_SUBGROUPS):
+            return "real"
+        return "mixed"
+
+    subgroup_modes = {
+        name: {
+            **value,
+            "body_mode": (
+                "real"
+                if "facts" in normalized_real_groups
+                or name in normalized_real_fact_subgroups
+                else "stub"
+            ),
+        }
+        for name, value in fact_subgroups.items()
+    }
     block_manifest = {
         "schema_version": 1,
         "kind": "zg361_phase2_seed_load_bisect_blocks",
@@ -425,13 +538,15 @@ def materialize(
         "forbidden_for_seed_release": True,
         "parent_formal_overlay_tree_sha256": EXPECTED_PARENT["formal_overlay_tree_sha256"],
         "real_groups": list(normalized_real_groups),
+        "real_fact_subgroups": list(normalized_real_fact_subgroups),
         "groups": {
             name: {
                 **value,
-                "body_mode": "real" if name in normalized_real_groups else "stub",
+                "body_mode": coarse_body_mode(name),
             }
             for name, value in groups.items()
         },
+        "fact_subgroups": subgroup_modes,
         "effect_files": rendered_files,
     }
     write_json(output / "block-manifest.json", block_manifest)
@@ -465,6 +580,7 @@ def materialize(
             "effect_files": len(effect_rows),
             "definitions": len(rendered_names),
             "real_groups": list(normalized_real_groups),
+            "real_fact_subgroups": list(normalized_real_fact_subgroups),
             "real_effect_files": len(real_effect_paths),
             "stub_effect_files": len(stub_effect_paths),
             "stubbed_definitions": len(stub_names),
@@ -472,14 +588,17 @@ def materialize(
             "groups": {
                 name: {
                     **value,
-                    "body_mode": "real" if name in normalized_real_groups else "stub",
+                    "body_mode": coarse_body_mode(name),
                 }
                 for name, value in groups.items()
             },
+            "fact_subgroups": subgroup_modes,
             "effect_file_modes": [
                 {
                     "path": row["path"],
                     "group": row["group"],
+                    "coarse_group": row["coarse_group"],
+                    "fact_subgroup": row["fact_subgroup"],
                     "body_mode": row["body_mode"],
                     "definitions": row["definitions"],
                     "rendered_bytes": row["rendered_bytes"],
@@ -548,8 +667,19 @@ def main(argv: list[str] | None = None) -> int:
         default=(),
         help="Restore these complete purpose groups; all other overlay effects stay stubbed.",
     )
+    parser.add_argument(
+        "--real-fact-subgroups",
+        nargs="*",
+        choices=sorted(EXPECTED_FACT_SUBGROUPS),
+        default=(),
+        help="Restore selected facts subgroups without restoring the whole coarse facts group.",
+    )
     args = parser.parse_args(argv)
-    inferred_mode = "effect-group-restore" if args.real_groups else "all-effect-stub"
+    inferred_mode = (
+        "effect-group-restore"
+        if args.real_groups or args.real_fact_subgroups
+        else "all-effect-stub"
+    )
     if args.mode is not None and args.mode != inferred_mode:
         parser.error(f"--mode {args.mode} conflicts with --real-groups")
     try:
@@ -558,6 +688,7 @@ def main(argv: list[str] | None = None) -> int:
             projection_name=args.projection_name,
             parent_root=args.parent_root,
             real_groups=args.real_groups,
+            real_fact_subgroups=args.real_fact_subgroups,
         )
     except (SeedLoadBisectError, OSError, ValueError) as error:
         print(f"RED: {error}")
