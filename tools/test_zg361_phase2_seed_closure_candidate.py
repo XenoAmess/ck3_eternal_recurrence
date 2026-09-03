@@ -65,8 +65,8 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual(0, candidate["expected_effect_files_over_target"])
         self.assertEqual(0, candidate["expected_effect_files_over_hard_max"])
         self.assertEqual([], candidate["effect_boundary_exceptions"])
-        self.assertEqual(12_097_740, candidate["expected_bytes"])
-        self.assertEqual(2_939_298, self.contract["overlay"]["bytes"])
+        self.assertEqual(12_097_988, candidate["expected_bytes"])
+        self.assertEqual(2_939_546, self.contract["overlay"]["bytes"])
 
     def test_fixture_root_order_drift_is_rejected(self) -> None:
         altered = copy.deepcopy(self.contract)
@@ -346,8 +346,15 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             with self.assertRaisesRegex(closure.SeedClosureError, "duplicate"):
                 closure.validate_whole_file_closure(root)
 
-    def test_bom_brace_stub_and_forbidden_gates_reject_mutations(self) -> None:
-        for mode in ("bom", "brace", "stub", "forbidden"):
+    def test_format_and_parser_hazard_gates_reject_mutations(self) -> None:
+        for mode in (
+            "bom",
+            "brace",
+            "stub",
+            "forbidden",
+            "scalar_revoke",
+            "self_call",
+        ):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory(
                 prefix=f"zg361-seed-format-{mode}-"
             ) as temp:
@@ -362,6 +369,20 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
                     data += b"{\n"
                 elif mode == "stub":
                     data += b"# DIAGNOSTIC STUB\n"
+                elif mode == "scalar_revoke":
+                    data = (
+                        closure.BOM
+                        + b"zg361_probe_effect = {\n"
+                        + b"\trevoke_court_position = zg361_probe_court_position\n"
+                        + b"}\n"
+                    )
+                elif mode == "self_call":
+                    data = (
+                        closure.BOM
+                        + b"zg361_probe_effect = {\n"
+                        + b"\tzg361_probe_effect = { FLAG = yes }\n"
+                        + b"}\n"
+                    )
                 path.write_bytes(data)
                 altered = copy.deepcopy(self.contract)
                 if mode == "forbidden":
@@ -396,7 +417,7 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
             self.assertEqual(249, result["candidate"]["expected_file_count"])
-            self.assertEqual(12_097_740, result["candidate"]["expected_bytes"])
+            self.assertEqual(12_097_988, result["candidate"]["expected_bytes"])
             self.assertEqual(114, result["overlay"]["file_count"])
             selection = result["checks"]["selection"]
             self.assertEqual(397, selection["full"]["effects"])
@@ -419,6 +440,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             self.assertEqual([], boundaries["over_target"])
             self.assertEqual([], boundaries["over_hard_max"])
             self.assertEqual([], boundaries["exceptions"])
+            formatting = result["checks"]["formatting"]
+            self.assertEqual([], formatting["scalar_revoke_hits"])
+            self.assertEqual([], formatting["self_call_hits"])
             replay = result["checks"]["deterministic_materialization"]
             self.assertTrue(replay["source_equals_product"])
             self.assertTrue(replay["source_equals_replay"])

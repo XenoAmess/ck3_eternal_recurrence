@@ -57,6 +57,10 @@ LOC_ASSIGN_RE = re.compile(
     r"\b(?:title|desc|name)\s*=\s*"
     r"((?:zg361[a-z0-9_]*|zg361)\.[A-Za-z0-9_.-]+)\b"
 )
+SCALAR_REVOKE_COURT_POSITION_RE = re.compile(
+    r"(?m)^[ \t]*revoke_court_position[ \t]*=[ \t]*"
+    r"[A-Za-z0-9_.:-]+[ \t]*$"
+)
 
 
 class SeedClosureError(ValueError):
@@ -1017,6 +1021,8 @@ def validate_formatting_and_forbidden(
     bom_missing: list[str] = []
     unbalanced: list[dict[str, object]] = []
     marker_hits: list[dict[str, str]] = []
+    scalar_revoke_hits: list[dict[str, object]] = []
+    self_call_hits: list[dict[str, object]] = []
     for row in overlay_rows:
         relative = str(row["path"])
         path = root / PurePosixPath(relative)
@@ -1035,10 +1041,55 @@ def validate_formatting_and_forbidden(
                 unbalanced.append(
                     {"path": relative, "depth": depth, "unterminated_quote": quoted}
                 )
-    if forbidden_present or bom_missing or unbalanced or marker_hits:
+    effect_root = root / "common" / "scripted_effects"
+    unbalanced_paths = {str(row["path"]) for row in unbalanced}
+    for path in sorted(effect_root.rglob("*.txt")):
+        relative = path.relative_to(root).as_posix()
+        text = closure_utils._mask_comments_and_strings(
+            path.read_text(encoding="utf-8-sig")
+        )
+        for match in SCALAR_REVOKE_COURT_POSITION_RE.finditer(text):
+            scalar_revoke_hits.append(
+                {"path": relative, "line": text.count("\n", 0, match.start()) + 1}
+            )
+        if relative in unbalanced_paths:
+            continue
+        try:
+            _data, blocks = closure_utils._blocks(path, relative)
+        except closure_utils.B2ClosureError as error:
+            raise SeedClosureError(str(error)) from error
+        for block in blocks:
+            block_text = closure_utils._mask_comments_and_strings(
+                block.data.decode("utf-8-sig")
+            )
+            self_call = re.search(
+                rf"(?m)^[ \t]+{re.escape(block.name)}[ \t]*=",
+                block_text,
+            )
+            if self_call is not None:
+                self_call_hits.append(
+                    {
+                        "path": relative,
+                        "effect": block.name,
+                        "line_in_block": block_text.count(
+                            "\n", 0, self_call.start()
+                        )
+                        + 1,
+                    }
+                )
+    if (
+        forbidden_present
+        or bom_missing
+        or unbalanced
+        or marker_hits
+        or scalar_revoke_hits
+        or self_call_hits
+    ):
         raise SeedClosureError(
             "format/no-stub/forbidden gate failed: "
-            f"forbidden={forbidden_present}, bom={bom_missing}, braces={unbalanced}, markers={marker_hits}"
+            f"forbidden={forbidden_present}, bom={bom_missing}, "
+            f"braces={unbalanced}, markers={marker_hits}, "
+            f"scalar_revoke={scalar_revoke_hits}, self_calls={self_call_hits}"
         )
     return {
         "status": "GREEN",
@@ -1046,6 +1097,8 @@ def validate_formatting_and_forbidden(
         "bom_missing": [],
         "brace_unbalanced": [],
         "stub_marker_hits": [],
+        "scalar_revoke_hits": [],
+        "self_call_hits": [],
     }
 
 
@@ -1322,11 +1375,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT / "_runtime/phase2-seed-entry-production-closure-20260904-r4-final",
+        default=ROOT / "_runtime/phase2-seed-entry-production-closure-20260904-r5-final",
     )
     parser.add_argument(
         "--projection-name",
-        default="phase2-seed-entry-production-closure-20260904-r4",
+        default="phase2-seed-entry-production-closure-20260904-r5",
     )
     parser.add_argument("--contract", type=Path, default=CONTRACT_PATH)
     parser.add_argument("--baseline-root", type=Path)
