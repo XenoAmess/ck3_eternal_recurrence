@@ -176,7 +176,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             f"events/{group.filename}"
             for group in gen.EVENT_GROUPS
         }
-        self.assertEqual(134, len(outputs))
+        self.assertEqual(136, len(outputs))
         self.assertEqual(
             expected_effects,
             {path for path in outputs if path.startswith("common/scripted_effects/")},
@@ -236,7 +236,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(source_blocks, reconstructed)
 
     def test_04c_effect_parts_obey_purpose_boundaries(self) -> None:
-        self.assertEqual(86, len(gen.EFFECT_GROUPS))
+        self.assertEqual(88, len(gen.EFFECT_GROUPS))
         self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
         for group, path in zip(gen.EFFECT_GROUPS, EFFECT_PATHS, strict=True):
             with self.subTest(path=path.name):
@@ -399,6 +399,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 "zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
                 "zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
                 "zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
+                "zg361_workforce_endgame_046_ac_m257_m262_effects.txt",
+                "zg361_workforce_endgame_061_al_m361_effects.txt",
             },
         )
         self.assertEqual(
@@ -445,6 +447,41 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 "zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
                 "zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
                 "zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
+            }.issubset(gen.RETIRED_EFFECT_FILENAMES)
+        )
+
+    def test_04d4_second_live_red_boundary_ab_splits_we046_and_we061(self) -> None:
+        groups = {group.filename: group.effect_names for group in gen.EFFECT_GROUPS}
+        self.assertEqual(
+            gen._mechanism_effect_names(257),
+            groups["zg361_workforce_endgame_046a_ac_m257_effects.txt"],
+        )
+        self.assertEqual(
+            gen._mechanism_effect_names(262),
+            groups["zg361_workforce_endgame_046b_ac_m262_effects.txt"],
+        )
+        self.assertEqual(
+            gen._mechanism_effect_names(257, 262),
+            groups["zg361_workforce_endgame_046a_ac_m257_effects.txt"]
+            + groups["zg361_workforce_endgame_046b_ac_m262_effects.txt"],
+        )
+        self.assertEqual(
+            ("zg361_we_m361_consume_effect", "zg361_we_m361_route_a_effect"),
+            groups["zg361_workforce_endgame_061a_al_m361_consume_route_a_effects.txt"],
+        )
+        self.assertEqual(
+            ("zg361_we_m361_route_b_effect", "zg361_we_m361_route_c_effect"),
+            groups["zg361_workforce_endgame_061b_al_m361_route_b_c_effects.txt"],
+        )
+        self.assertEqual(
+            gen._mechanism_effect_names(361),
+            groups["zg361_workforce_endgame_061a_al_m361_consume_route_a_effects.txt"]
+            + groups["zg361_workforce_endgame_061b_al_m361_route_b_c_effects.txt"],
+        )
+        self.assertTrue(
+            {
+                "zg361_workforce_endgame_046_ac_m257_m262_effects.txt",
+                "zg361_workforce_endgame_061_al_m361_effects.txt",
             }.issubset(gen.RETIRED_EFFECT_FILENAMES)
         )
 
@@ -536,7 +573,7 @@ second_effect = { value = 2 }
             check=False,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("GREEN: 134", result.stdout)
+        self.assertIn("GREEN: 136", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
         paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]
@@ -1544,6 +1581,7 @@ second_effect = { value = 2 }
             "357–359",
             "其余七语是英文结构占位",
             "phase2-seed-entry-x-full-entry-20260904-r1",
+            "phase2-seed-entry-boundary-ab-full-entry-20260904-r2",
             "不能证明",
         ):
             self.assertIn(phrase, self.spec_text)

@@ -57,10 +57,10 @@
     ]
   },
   "candidate": {
-    "projection": "phase2-seed-entry-production-closure-20260904-r2",
-    "expected_file_count": 243,
-    "expected_overlay_file_count": 108,
-    "expected_effect_files": 66,
+    "projection": "phase2-seed-entry-production-closure-20260904-r3",
+    "expected_file_count": 245,
+    "expected_overlay_file_count": 110,
+    "expected_effect_files": 68,
     "expected_event_files": 35,
     "expected_court_position_files": 2,
     "expected_localization_files": 5,
@@ -82,17 +82,17 @@
       "zg361_is_current_liege_review_record_trigger",
       "zg361_is_elimination_candidate_trigger"
     ],
-    "expected_bytes": 12096688,
-    "source_tree_sha256": "090d0bb229a5857657c6bf7d436f0311cd19b7f6dacea59c9ee5694e590a72ce",
-    "formal_overlay_tree_sha256": "09e9c33716092cc66b46edf0c28e3a44d1f08bad6f84e41dcdf8ba98e5066eb3",
-    "file_list_sha256": "9a992ad48872092693171b9c2f107f8cb8c12447c3cd5a765f8e42ed621a8916",
-    "projection_manifest_sha256": "0712c6338b750ccf853a96a6e525fb3ea091624d25b5b4a5bf988ccdc8ccd306",
+    "expected_bytes": 12097112,
+    "source_tree_sha256": "6094e52cc25f17d6b163f0978beb0b095d4c55e8599c908020a9049765946908",
+    "formal_overlay_tree_sha256": "2a40ee35ec48f404c5d7d62f7377a42a2743b15719f8725a58e229fb0899c9aa",
+    "file_list_sha256": "9db65e55345a477087b3957ef480e3e16439e8ad9cff54c809ff5a25b4f9529c",
+    "projection_manifest_sha256": "0eff8b4342a99bb56eb778adb495c89f2da02966164e16cd244ff965a535e3ef",
     "ck3_launch": "NOT_RUN_BY_BUILDER",
     "live_status": "pending"
   },
   "overlay": {
-    "bytes": 2938246,
-    "inventory_sha256": "d716a366fddebcf1a154edf52b952e40d26872903a36c34339a5d2298fad8841",
+    "bytes": 2938670,
+    "inventory_sha256": "2dc6c75a3052f58d81698e71f7c203f120d8250c0d63b6a19e703dd863194e64",
     "files": []
   },
   "forbidden_paths": [
@@ -101,6 +101,8 @@
     "common/scripted_effects/zg361_workforce_ad_fact_runtime_effects.txt",
     "common/scripted_effects/zg361_workforce_exit_fact_effects.txt",
     "common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_046_ac_m257_m262_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_061_al_m361_effects.txt",
     "common/scripted_effects/zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
     "common/scripted_effects/zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
     "common/scripted_effects/zg361_workforce_endgame_053_ad_m274_m275_effects.txt",

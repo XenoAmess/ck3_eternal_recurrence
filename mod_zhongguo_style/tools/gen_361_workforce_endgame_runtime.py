@@ -48,6 +48,8 @@ RETIRED_EFFECT_FILENAMES = (
     "zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
     "zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
     "zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
+    "zg361_workforce_endgame_046_ac_m257_m262_effects.txt",
+    "zg361_workforce_endgame_061_al_m361_effects.txt",
 )
 RETIRED_EFFECT_PATHS = tuple(
     MOD_ROOT / "common" / "scripted_effects" / filename
@@ -7893,7 +7895,8 @@ EFFECT_GROUPS = (
     EffectGroup("zg361_workforce_endgame_043_ac_m260_m261_effects.txt", "AC mechanisms M260-M261", _mechanism_effect_names(260, 261)),
     EffectGroup("zg361_workforce_endgame_044_ac_m256_m258_effects.txt", "AC mechanisms M256 and M258", _mechanism_effect_names(256, 258)),
     EffectGroup("zg361_workforce_endgame_045_ac_m259_effects.txt", "AC mechanism M259", _mechanism_effect_names(259)),
-    EffectGroup("zg361_workforce_endgame_046_ac_m257_m262_effects.txt", "AC mechanisms M257 and M262", _mechanism_effect_names(257, 262)),
+    EffectGroup("zg361_workforce_endgame_046a_ac_m257_effects.txt", "AC mechanism M257", _mechanism_effect_names(257)),
+    EffectGroup("zg361_workforce_endgame_046b_ac_m262_effects.txt", "AC mechanism M262", _mechanism_effect_names(262)),
     EffectGroup("zg361_workforce_endgame_047_ac_m263_effects.txt", "AC mechanism M263", _mechanism_effect_names(263)),
     EffectGroup("zg361_workforce_endgame_048a_ac_m264_effects.txt", "AC mechanism M264", _mechanism_effect_names(264)),
     EffectGroup("zg361_workforce_endgame_048b_ac_m265_effects.txt", "AC mechanism M265", _mechanism_effect_names(265)),
@@ -7911,7 +7914,16 @@ EFFECT_GROUPS = (
     EffectGroup("zg361_workforce_endgame_058_al_m360_route_a_effects.txt", "AL M360 route A", ("zg361_we_m360_route_a_effect",)),
     EffectGroup("zg361_workforce_endgame_059_al_m360_route_b_effects.txt", "AL M360 route B", ("zg361_we_m360_route_b_effect",)),
     EffectGroup("zg361_workforce_endgame_060_al_m360_route_c_effects.txt", "AL M360 route C", ("zg361_we_m360_route_c_effect",)),
-    EffectGroup("zg361_workforce_endgame_061_al_m361_effects.txt", "AL mechanism M361", _mechanism_effect_names(361)),
+    EffectGroup(
+        "zg361_workforce_endgame_061a_al_m361_consume_route_a_effects.txt",
+        "AL M361 consumer and route A",
+        ("zg361_we_m361_consume_effect", "zg361_we_m361_route_a_effect"),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_061b_al_m361_route_b_c_effects.txt",
+        "AL M361 routes B and C",
+        ("zg361_we_m361_route_b_effect", "zg361_we_m361_route_c_effect"),
+    ),
 )
 
 B2_EFFECT_CLOSURE_NAMES = (
