@@ -931,6 +931,118 @@ def test_real_phase2_frontend_first_option_validation() -> None:
             )
 
 
+def test_real_phase2_frontend_first_binding_uses_first_mcp_generation() -> None:
+    import run_zhongguo_acceptance as zgrun
+
+    class BindingService:
+        def __init__(self, *, bridge_pid: int, generation: object) -> None:
+            self.bridge_pid = bridge_pid
+            self.generation = generation
+
+        def capabilities(self) -> dict[str, object]:
+            return {
+                "mode": zgrun.NATIVE_BRIDGE_MODE,
+                "backend_id": zgrun.NATIVE_BRIDGE_MODE,
+                "visual_fallback": False,
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": self.bridge_pid,
+                    "connection_generation": self.generation,
+                },
+            }
+
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        warmup_path = root / "frontend-first-warmup.json"
+        warmup_path.write_text(
+            json.dumps(
+                {
+                    "status": "ready",
+                    "warmup_bridge": {
+                        "mode": "disabled",
+                        "dll_injection": False,
+                        "mcp": False,
+                    },
+                    "warmup_pid": 1111,
+                    "final_pid": 4321,
+                }
+            ),
+            encoding="utf-8",
+        )
+        session_done = threading.Event()
+        stop_thread = threading.Event()
+        session_thread = threading.Thread(target=stop_thread.wait)
+        session_thread.start()
+        supervisor = {
+            "session_done": session_done,
+            "session_state": {},
+            "session_thread": session_thread,
+            "frontend_first_enabled": True,
+            "frontend_first_load_save_name": "phase2_seed",
+            "frontend_first_evidence_path": str(warmup_path),
+        }
+        try:
+            green_artifacts = root / "green"
+            green_artifacts.mkdir()
+            binding = zgrun.wait_for_phase2_native_session_binding(
+                BindingService(bridge_pid=4321, generation=1),
+                supervisor,
+                green_artifacts,
+                timeout_s=0.1,
+                poll_interval_s=0.0,
+            )
+            require(binding["bridge_pid"] == 4321, "final PID binding drifted")
+            require(
+                binding["connection_generation"] == 1,
+                "first MCP connection was not accepted as generation one",
+            )
+            require(
+                binding["checks"]["frontend_first_warmup_ready"] is True,
+                "ready frontend warm-up was not proven",
+            )
+            require(
+                binding["checks"]["frontend_first_final_pid_matches"] is True,
+                "final injected PID was not matched",
+            )
+            require(
+                binding["checks"]["initial_connection_generation_one"] is True,
+                "frontend-first binding lost the initial generation invariant",
+            )
+
+            red_cases = (
+                ("wrong-final-pid", 9999, 1, "frontend_first_final_pid_matches"),
+                ("invalid-generation", 4321, 0, "initial_connection_generation_one"),
+            )
+            for label, bridge_pid, generation, failed_check in red_cases:
+                red_artifacts = root / label
+                red_artifacts.mkdir()
+                try:
+                    zgrun.wait_for_phase2_native_session_binding(
+                        BindingService(
+                            bridge_pid=bridge_pid,
+                            generation=generation,
+                        ),
+                        supervisor,
+                        red_artifacts,
+                        timeout_s=0.02,
+                        poll_interval_s=0.0,
+                    )
+                except zgrun.acceptance.RunnerError as error:
+                    require(
+                        failed_check in str(error),
+                        f"{label} RED did not identify {failed_check}",
+                    )
+                else:
+                    raise AssertionError(f"frontend-first binding accepted {label}")
+        finally:
+            stop_thread.set()
+            session_thread.join(timeout=1.0)
+        require(
+            session_thread.is_alive() is False,
+            "frontend-first binding test thread did not stop",
+        )
+
+
 def test_green_capture() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
@@ -2023,6 +2135,7 @@ def main() -> int:
     test_release_bridge_bundle_provenance_binds_pair_and_rejects_debug()
     test_phase2_frontend_first_options_reach_seed_supervisor()
     test_real_phase2_frontend_first_option_validation()
+    test_real_phase2_frontend_first_binding_uses_first_mcp_generation()
     test_green_capture()
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()

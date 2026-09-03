@@ -5376,6 +5376,11 @@ def wait_for_phase2_native_session_binding(
                     "positive_bridge_pid": isinstance(bridge_pid, int)
                     and not isinstance(bridge_pid, bool)
                     and bridge_pid > 0,
+                    "initial_connection_generation_one": isinstance(
+                        connection_generation, int
+                    )
+                    and not isinstance(connection_generation, bool)
+                    and connection_generation == 1,
                 }
                 if frontend_first_enabled:
                     expected_final_pid = (
@@ -5394,19 +5399,8 @@ def wait_for_phase2_native_session_binding(
                             )
                             and not isinstance(expected_final_pid, bool)
                             and bridge_pid == expected_final_pid,
-                            "frontend_first_generation_after_warmup": isinstance(
-                                connection_generation, int
-                            )
-                            and not isinstance(connection_generation, bool)
-                            and connection_generation >= 2,
                         }
                     )
-                else:
-                    checks[
-                        "initial_connection_generation_one"
-                    ] = isinstance(connection_generation, int) and not isinstance(
-                        connection_generation, bool
-                    ) and connection_generation == 1
                 if all(checks.values()):
                     binding = {
                         "bridge_pid": bridge_pid,
