@@ -41,6 +41,13 @@ def read_central_effect_shards() -> str:
     )
 
 
+def read_central_event_shards() -> str:
+    return "\n".join(
+        read(f"events/{group.filename}")
+        for group in generator.EVENT_GROUPS
+    )
+
+
 def block(text: str, key: str) -> str:
     match = re.search(rf"(?m)^{re.escape(key)}\s*=\s*\{{", text)
     if match is None:
@@ -101,7 +108,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.effects = read_central_effect_shards()
         cls.triggers = read("common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt")
-        cls.events = read("events/zg361_phase2_central_runtime_events.txt")
+        cls.events = read_central_event_shards()
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.b1 = "\n".join(
             read(f"common/scripted_effects/{filename}")
@@ -123,14 +130,14 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 22)
+        self.assertEqual(len(rendered), 23)
         allowed = {
             *{
                 f"common/scripted_effects/{group.filename}"
                 for group in generator.EFFECT_GROUPS
             },
             "common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt",
-            "events/zg361_phase2_central_runtime_events.txt",
+            *{f"events/{group.filename}" for group in generator.EVENT_GROUPS},
             "docs/361-phase2-central-runtime-spec.md",
             *{
                 f"localization/{language}/zg361_phase2_central_l_{language}.yml"
@@ -254,9 +261,55 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         ):
             generator._validate_effect_groups(source, source_blocks)
 
-    def test_legacy_effect_monolith_is_absent(self) -> None:
+    def test_event_aggregate_baseline_is_frozen(self) -> None:
+        payload = generator.historical_event_payload()
+        self.assertEqual(generator.HISTORICAL_EVENT_BYTES, len(payload))
+        self.assertEqual(
+            generator.HISTORICAL_EVENT_SHA256,
+            hashlib.sha256(payload).hexdigest().upper(),
+        )
+        self.assertEqual(
+            generator.HISTORICAL_EVENT_COUNT,
+            len(generator.top_level_effect_blocks(payload)),
+        )
+
+    def test_event_shards_are_exact_purpose_projection(self) -> None:
+        source_blocks = generator.top_level_effect_blocks(generator.render_events())
+        parts = generator.render_event_parts()
+        projected_blocks = tuple(
+            block_row
+            for group in generator.EVENT_GROUPS
+            for block_row in generator.top_level_effect_blocks(parts[group.filename])
+        )
+        self.assertEqual(source_blocks, projected_blocks)
+        self.assertEqual(
+            ("zg361p2c.1", "zg361p2c.2", "zg361p2c.3"),
+            generator.EVENT_GROUPS[0].event_names,
+        )
+        self.assertEqual(
+            ("zg361p2c.4", "zg361p2c.5", "zg361p2c.6"),
+            generator.EVENT_GROUPS[1].event_names,
+        )
+        for group in generator.EVENT_GROUPS:
+            with self.subTest(filename=group.filename):
+                self.assertLessEqual(len(group.event_names), 10)
+                payload = (
+                    MOD_ROOT / "events" / group.filename
+                ).read_bytes()
+                self.assertTrue(payload.startswith(generator.BOM))
+                text = payload.decode("utf-8-sig")
+                self.assertIn("namespace = zg361p2c", text)
+                self.assertIn(f"# PURPOSE: {group.purpose}.", text)
+                self.assertEqual(
+                    len(group.event_names),
+                    len(generator.top_level_effect_blocks(payload)),
+                )
+
+    def test_legacy_monoliths_are_absent(self) -> None:
         self.assertFalse(generator.LEGACY_EFFECT_PATH.exists())
+        self.assertFalse(generator.LEGACY_EVENT_PATH.exists())
         self.assertEqual((), generator.unexpected_effect_paths(generator.outputs()))
+        self.assertEqual((), generator.unexpected_event_paths(generator.outputs()))
 
     def test_generated_script_braces_and_event_namespace(self) -> None:
         assert_balanced(self, self.effects, "central effects")

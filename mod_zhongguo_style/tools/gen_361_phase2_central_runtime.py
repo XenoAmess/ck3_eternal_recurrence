@@ -32,6 +32,13 @@ EFFECT_HARD_MAX = 20
 # that exact shard and supplies both its cohesion reason and concrete CK3 live
 # evidence.  The current purpose split needs no exception.
 EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
+LEGACY_EVENT_FILENAME = "zg361_phase2_central_runtime_events.txt"
+LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
+EVENT_SHARD_GLOB = "zg361_phase2_central_*_events.txt"
+HISTORICAL_EVENT_BYTES = 12_440
+HISTORICAL_EVENT_SHA256 = "BFDC761091DA43D1950FFDD29EE727B3F049CD0A0A1F7DBCFDA5BE7511CD1859"
+HISTORICAL_EVENT_COUNT = 6
+EVENT_TARGET_MAX = 10
 
 
 @dataclass(frozen=True)
@@ -39,6 +46,13 @@ class EffectGroup:
     filename: str
     purpose: str
     effect_names: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class EventGroup:
+    filename: str
+    purpose: str
+    event_names: tuple[str, ...]
 
 LANGUAGES = (
     ("english", "l_english"),
@@ -159,6 +173,20 @@ EFFECT_GROUPS = (
         "zg361_phase2_central_010_serial_pump_effects.txt",
         "single-stage serial pump dispatcher",
         ("zg361_p2c_pump_effect",),
+    ),
+)
+
+
+EVENT_GROUPS = (
+    EventGroup(
+        "zg361_phase2_central_001_serial_dispatch_events.txt",
+        "central pump, summary and delivered-result tickets",
+        ("zg361p2c.1", "zg361p2c.2", "zg361p2c.3"),
+    ),
+    EventGroup(
+        "zg361_phase2_central_002_m275_requisition_events.txt",
+        "M275 requisition source, consume and verification frames",
+        ("zg361p2c.4", "zg361p2c.5", "zg361p2c.6"),
     ),
 )
 
@@ -2719,6 +2747,80 @@ zg361p2c.6 = {
 '''
 
 
+def historical_event_payload() -> bytes:
+    """Return the pre-shard event aggregate exactly as it was written."""
+
+    return BOM + render_events().replace("\r\n", "\n").encode("utf-8")
+
+
+def _validate_event_groups(
+    source: str,
+    source_blocks: tuple[tuple[str, str], ...],
+) -> None:
+    payload = BOM + source.replace("\r\n", "\n").encode("utf-8")
+    if len(payload) != HISTORICAL_EVENT_BYTES:
+        raise ValueError(
+            "phase-two central event aggregate byte count drifted: "
+            f"{len(payload)} != {HISTORICAL_EVENT_BYTES}"
+        )
+    digest = hashlib.sha256(payload).hexdigest().upper()
+    if digest != HISTORICAL_EVENT_SHA256:
+        raise ValueError(
+            "phase-two central event aggregate SHA-256 drifted: "
+            f"{digest} != {HISTORICAL_EVENT_SHA256}"
+        )
+
+    source_names = tuple(name for name, _block in source_blocks)
+    configured_names = tuple(
+        name for group in EVENT_GROUPS for name in group.event_names
+    )
+    filenames = tuple(group.filename for group in EVENT_GROUPS)
+    if len(source_names) != HISTORICAL_EVENT_COUNT:
+        raise ValueError(
+            f"phase-two central aggregate must contain {HISTORICAL_EVENT_COUNT} "
+            f"top-level events, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("phase-two central aggregate contains duplicate events")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("phase-two central event shard filenames must be unique")
+    if source_names != configured_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        unexpected = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "phase-two central event groups must preserve exact source order and coverage; "
+            f"missing={missing}, unexpected={unexpected}"
+        )
+    for group in EVENT_GROUPS:
+        count = len(group.event_names)
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+        if not 1 <= count <= EVENT_TARGET_MAX:
+            raise ValueError(
+                f"{group.filename} must contain 1..{EVENT_TARGET_MAX} events"
+            )
+
+
+def render_event_parts() -> dict[str, str]:
+    """Split central tickets into serial-pipeline and M275-only shards."""
+
+    source = render_events()
+    source_blocks = top_level_effect_blocks(source)
+    _validate_event_groups(source, source_blocks)
+    by_name = dict(source_blocks)
+    parts: dict[str, str] = {}
+    for group in EVENT_GROUPS:
+        body = "\n\n".join(by_name[name] for name in group.event_names)
+        parts[group.filename] = (
+            HEADER
+            + "namespace = zg361p2c\n\n"
+            + f"# PURPOSE: {group.purpose}.\n\n"
+            + body
+            + "\n"
+        )
+    return parts
+
+
 def render_localization(language: str, header: str) -> str:
     chinese = language == "simp_chinese"
     if chinese:
@@ -2852,8 +2954,11 @@ def outputs() -> dict[Path, str]:
     }
     rendered.update({
         MOD_ROOT / "common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt": render_m360_triggers(),
-        MOD_ROOT / "events/zg361_phase2_central_runtime_events.txt": render_events(),
         MOD_ROOT / "docs/361-phase2-central-runtime-spec.md": render_spec(),
+    })
+    rendered.update({
+        MOD_ROOT / "events" / filename: content
+        for filename, content in render_event_parts().items()
     })
     for language, header in LANGUAGES:
         rendered[MOD_ROOT / f"localization/{language}/zg361_phase2_central_l_{language}.yml"] = render_localization(language, header)
@@ -2871,6 +2976,17 @@ def unexpected_effect_paths(rendered: dict[Path, str]) -> tuple[Path, ...]:
     return tuple(sorted(unexpected))
 
 
+def unexpected_event_paths(rendered: dict[Path, str]) -> tuple[Path, ...]:
+    """Return legacy or stale central event projections on disk."""
+
+    events_dir = MOD_ROOT / "events"
+    expected = {path for path in rendered if path.parent == events_dir}
+    unexpected = set(events_dir.glob(EVENT_SHARD_GLOB)) - expected
+    if LEGACY_EVENT_PATH.is_file():
+        unexpected.add(LEGACY_EVENT_PATH)
+    return tuple(sorted(unexpected))
+
+
 def write_or_check(check: bool) -> int:
     rendered = outputs()
     stale: list[str] = []
@@ -2879,13 +2995,17 @@ def write_or_check(check: bool) -> int:
         if check:
             if not path.exists() or path.read_bytes() != payload:
                 stale.append(path.relative_to(MOD_ROOT).as_posix())
-    unexpected = unexpected_effect_paths(rendered)
+    unexpected_effects = unexpected_effect_paths(rendered)
+    unexpected_events = unexpected_event_paths(rendered)
+    unexpected = (*unexpected_effects, *unexpected_events)
     if check and (stale or unexpected):
         print("stale generated phase-two central files:")
         for item in stale:
             print(f"  {item}")
-        for path in unexpected:
+        for path in unexpected_effects:
             print(f"  unexpected effect projection: {path.relative_to(MOD_ROOT).as_posix()}")
+        for path in unexpected_events:
+            print(f"  unexpected event projection: {path.relative_to(MOD_ROOT).as_posix()}")
         return 1
     if not check:
         for path in unexpected:
