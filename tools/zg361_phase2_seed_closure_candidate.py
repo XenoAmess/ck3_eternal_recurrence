@@ -1322,11 +1322,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT / "_runtime/phase2-seed-entry-production-closure-20260904-r1",
+        default=ROOT / "_runtime/phase2-seed-entry-production-closure-20260904-r4-final",
     )
     parser.add_argument(
         "--projection-name",
-        default="phase2-seed-entry-production-closure-20260904-r1",
+        default="phase2-seed-entry-production-closure-20260904-r4",
     )
     parser.add_argument("--contract", type=Path, default=CONTRACT_PATH)
     parser.add_argument("--baseline-root", type=Path)

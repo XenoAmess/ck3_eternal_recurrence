@@ -55,9 +55,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             fixture["ordered_root_effects"],
         )
         candidate = self.contract["candidate"]
-        self.assertEqual(245, candidate["expected_file_count"])
-        self.assertEqual(110, candidate["expected_overlay_file_count"])
-        self.assertEqual(68, candidate["expected_effect_files"])
+        self.assertEqual(249, candidate["expected_file_count"])
+        self.assertEqual(114, candidate["expected_overlay_file_count"])
+        self.assertEqual(72, candidate["expected_effect_files"])
         self.assertEqual(35, candidate["expected_event_files"])
         self.assertEqual(2, candidate["expected_court_position_files"])
         self.assertEqual(5, candidate["expected_localization_files"])
@@ -65,8 +65,8 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual(0, candidate["expected_effect_files_over_target"])
         self.assertEqual(0, candidate["expected_effect_files_over_hard_max"])
         self.assertEqual([], candidate["effect_boundary_exceptions"])
-        self.assertEqual(12_097_112, candidate["expected_bytes"])
-        self.assertEqual(2_938_670, self.contract["overlay"]["bytes"])
+        self.assertEqual(12_097_740, candidate["expected_bytes"])
+        self.assertEqual(2_939_298, self.contract["overlay"]["bytes"])
 
     def test_fixture_root_order_drift_is_rejected(self) -> None:
         altered = copy.deepcopy(self.contract)
@@ -161,12 +161,12 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual([], selection["manager_triggers"])
         self.assertEqual([], selection["workforce_m360_effects"])
         self.assertEqual([], selection["workforce_m360_events"])
-        self.assertEqual(110, len(rows))
+        self.assertEqual(114, len(rows))
         by_kind = {
             kind: [row for row in rows if row["kind"] == kind]
             for kind in ("effect", "event", "court_position", "localization")
         }
-        self.assertEqual(68, len(by_kind["effect"]))
+        self.assertEqual(72, len(by_kind["effect"]))
         self.assertEqual(35, len(by_kind["event"]))
         self.assertEqual(2, len(by_kind["court_position"]))
         self.assertEqual(5, len(by_kind["localization"]))
@@ -186,6 +186,11 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             "common/scripted_effects/zg361_workforce_endgame_053b_ad_m275_effects.txt",
             "common/scripted_effects/zg361_workforce_endgame_061a_al_m361_consume_route_a_effects.txt",
             "common/scripted_effects/zg361_workforce_endgame_061b_al_m361_route_b_c_effects.txt",
+            "common/scripted_effects/zg361_workforce_appointment_fact_audit_reconciliation_effects.txt",
+            "common/scripted_effects/zg361_workforce_appointment_fact_native_lifecycle_effects.txt",
+            "common/scripted_effects/zg361_workforce_appointment_fact_native_request_effects.txt",
+            "common/scripted_effects/zg361_workforce_appointment_fact_receipt_publication_effects.txt",
+            "common/scripted_effects/zg361_workforce_appointment_fact_workforce_consume_effects.txt",
         }
         retired_paths = {
             "common/scripted_effects/zg361_workforce_endgame_046_ac_m257_m262_effects.txt",
@@ -193,11 +198,23 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             "common/scripted_effects/zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
             "common/scripted_effects/zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
             "common/scripted_effects/zg361_workforce_endgame_061_al_m361_effects.txt",
+            "common/scripted_effects/zg361_workforce_appointment_fact_effects.txt",
         }
         self.assertTrue(split_paths <= set(by_path))
         expected_definitions = {
-            path: (2 if "_061" in path else 4) for path in split_paths
+            path: (2 if "_061" in path else 4)
+            for path in split_paths
+            if "appointment_fact_" not in path
         }
+        expected_definitions.update(
+            {
+                "common/scripted_effects/zg361_workforce_appointment_fact_audit_reconciliation_effects.txt": 1,
+                "common/scripted_effects/zg361_workforce_appointment_fact_native_lifecycle_effects.txt": 5,
+                "common/scripted_effects/zg361_workforce_appointment_fact_native_request_effects.txt": 1,
+                "common/scripted_effects/zg361_workforce_appointment_fact_receipt_publication_effects.txt": 1,
+                "common/scripted_effects/zg361_workforce_appointment_fact_workforce_consume_effects.txt": 2,
+            }
+        )
         self.assertTrue(
             all(
                 by_path[path]["definitions"] == expected_definitions[path]
@@ -378,9 +395,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             )
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
-            self.assertEqual(245, result["candidate"]["expected_file_count"])
-            self.assertEqual(12_097_112, result["candidate"]["expected_bytes"])
-            self.assertEqual(110, result["overlay"]["file_count"])
+            self.assertEqual(249, result["candidate"]["expected_file_count"])
+            self.assertEqual(12_097_740, result["candidate"]["expected_bytes"])
+            self.assertEqual(114, result["overlay"]["file_count"])
             selection = result["checks"]["selection"]
             self.assertEqual(397, selection["full"]["effects"])
             self.assertEqual(164, selection["full"]["events"])
