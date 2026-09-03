@@ -1,0 +1,28 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py
+# PURPOSE: dispatch, audit, publish, and verify a closed-PIP exit.
+
+namespace = zg361workforceexitfact
+
+zg361workforceexitfact.9002 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_dispatch_native_exit_effect = yes }
+}
+
+zg361workforceexitfact.9003 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_audit_exit_effect = yes }
+}
+
+zg361workforceexitfact.9004 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_publish_to_workforce_m277_effect = yes }
+}
+
+zg361workforceexitfact.9005 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_verify_publish_effect = yes }
+}

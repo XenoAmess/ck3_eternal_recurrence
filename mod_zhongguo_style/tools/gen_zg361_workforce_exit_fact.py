@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Generate the independent real Workforce #277 native-exit fact package.
 
@@ -17,6 +17,8 @@ live package/core state rather than caller parameters.
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
+import hashlib
 from pathlib import Path
 from typing import Final
 
@@ -49,8 +51,17 @@ PROBATION_ROLE_FAILURE_EFFECT: Final[str] = (
 ROLE_FAILURE_REASON_KIND: Final[int] = 1
 ROLE_FAILURE_EXCLUSION_REASON: Final[int] = 1
 
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / f"{PREFIX}_effects.txt"
-EVENTS_PATH = MOD_ROOT / "events" / f"{PREFIX}_events.txt"
+LEGACY_EFFECT_FILENAME: Final[str] = f"{PREFIX}_effects.txt"
+LEGACY_EFFECT_PATH = (
+    MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+)
+# Retained only as a compatibility name for callers that need to assert that
+# the historical aggregate is absent.  It is never part of outputs().
+EFFECTS_PATH = LEGACY_EFFECT_PATH
+LEGACY_EVENT_FILENAME: Final[str] = f"{PREFIX}_events.txt"
+LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
+# Compatibility name for absence checks; outputs() owns purpose shards only.
+EVENTS_PATH = LEGACY_EVENT_PATH
 POSITION_PATH = (
     MOD_ROOT
     / "common"
@@ -60,6 +71,26 @@ POSITION_PATH = (
 )
 SPEC_PATH = MOD_ROOT / "docs" / f"{PREFIX}_runtime_spec.md"
 LOC_BASENAME = f"{PREFIX}_l_{{language}}.yml"
+EFFECT_SHARD_GLOB: Final[str] = f"{PREFIX}*_effects.txt"
+EVENT_SHARD_GLOB: Final[str] = f"{PREFIX}*_events.txt"
+HISTORICAL_EFFECT_COUNT: Final[int] = 17
+HISTORICAL_EFFECT_BYTES: Final[int] = 85_587
+HISTORICAL_EFFECT_SHA256: Final[str] = (
+    "a897659b49e3d221561233193e78566ed1f70a3ccdcbcb1b7736601ee70e2e73"
+)
+EFFECT_TARGET_MAX: Final[int] = 10
+EFFECT_HARD_MAX: Final[int] = 20
+# An entry is legal only for a >20-definition shard and must carry both a
+# concrete engineering reason and CK3 live evidence.  This split needs none.
+EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
+HISTORICAL_EVENT_COUNT: Final[int] = 9
+HISTORICAL_EVENT_BYTES: Final[int] = 1_920
+HISTORICAL_EVENT_SHA256: Final[str] = (
+    "650e0db22e910b4abe05f66ce7cbb76d1e44929239b68cf4972d140548322c46"
+)
+EVENT_TARGET_MAX: Final[int] = 10
+EVENT_HARD_MAX: Final[int] = 20
+EVENT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
 
 LANGUAGES: Final[tuple[str, ...]] = (
     "english",
@@ -71,6 +102,123 @@ LANGUAGES: Final[tuple[str, ...]] = (
     "russian",
     "simp_chinese",
     "spanish",
+)
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class EventGroup:
+    filename: str
+    purpose: str
+    event_ids: tuple[int, ...]
+
+
+# Purpose boundaries keep the direct arm graph in two small shards.  A real
+# product must also load the career-slot type, so the seed closure includes
+# its native callbacks and their role-failure publication path as two further
+# complete shards.  Closed-PIP exit and #277 handoff remain separate.
+EFFECT_GROUPS: Final[tuple[EffectGroup, ...]] = (
+    EffectGroup(
+        f"{PREFIX}_arm_pending_effects.txt",
+        "clear the pending native career-slot arm request",
+        (f"{PREFIX}_clear_arm_pending_effect",),
+    ),
+    EffectGroup(
+        f"{PREFIX}_arm_lifecycle_effects.txt",
+        "authorize, dispatch, audit, and clean up the native career-slot arm",
+        (
+            f"{PREFIX}_arm_from_m274_effect",
+            f"{PREFIX}_dispatch_native_arm_effect",
+            f"{PREFIX}_audit_arm_effect",
+            f"{PREFIX}_dispatch_cleanup_revoke_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_closed_pip_exit_effects.txt",
+        "clear, request, dispatch, and audit a closed-PIP native exit",
+        (
+            f"{PREFIX}_clear_exit_pending_effect",
+            f"{PREFIX}_request_closed_pip_exit_effect",
+            f"{PREFIX}_dispatch_native_exit_effect",
+            f"{PREFIX}_audit_exit_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_native_callbacks_effects.txt",
+        "record native career-slot receipt and end callbacks",
+        (
+            f"{PREFIX}_on_native_slot_received_effect",
+            f"{PREFIX}_on_native_slot_ended_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_role_failure_effects.txt",
+        "clear, capture, publish, and verify the role-failure fact",
+        (
+            f"{PREFIX}_clear_role_failure_receipt_effect",
+            f"{PREFIX}_capture_role_failure_effect",
+            f"{PREFIX}_verify_role_failure_publish_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_m277_handoff_effects.txt",
+        "publish, verify, and consume the immutable Workforce #277 handoff",
+        (
+            f"{PREFIX}_publish_to_workforce_m277_effect",
+            f"{PREFIX}_verify_publish_effect",
+            f"{PREFIX}_consume_after_m277_effect",
+        ),
+    ),
+)
+
+SEED_EFFECT_CLOSURE_NAMES: Final[tuple[str, ...]] = (
+    f"{PREFIX}_clear_arm_pending_effect",
+    f"{PREFIX}_clear_role_failure_receipt_effect",
+    f"{PREFIX}_capture_role_failure_effect",
+    f"{PREFIX}_verify_role_failure_publish_effect",
+    f"{PREFIX}_on_native_slot_received_effect",
+    f"{PREFIX}_on_native_slot_ended_effect",
+    f"{PREFIX}_arm_from_m274_effect",
+    f"{PREFIX}_dispatch_native_arm_effect",
+    f"{PREFIX}_audit_arm_effect",
+    f"{PREFIX}_dispatch_cleanup_revoke_effect",
+)
+
+EVENT_GROUPS: Final[tuple[EventGroup, ...]] = (
+    EventGroup(
+        f"{PREFIX}_arm_events.txt",
+        "dispatch, audit, or clean up the native career-slot arm",
+        (ARM_DISPATCH_EVENT_ID, ARM_AUDIT_EVENT_ID, CLEANUP_REVOKE_EVENT_ID),
+    ),
+    EventGroup(
+        f"{PREFIX}_closed_pip_exit_events.txt",
+        "dispatch, audit, publish, and verify a closed-PIP exit",
+        (
+            EXIT_DISPATCH_EVENT_ID,
+            EXIT_AUDIT_EVENT_ID,
+            PUBLISH_EVENT_ID,
+            PUBLISH_VERIFY_EVENT_ID,
+        ),
+    ),
+    EventGroup(
+        f"{PREFIX}_role_failure_events.txt",
+        "publish and verify the distinct role-failure fact",
+        (ROLE_FAILURE_PUBLISH_EVENT_ID, ROLE_FAILURE_VERIFY_EVENT_ID),
+    ),
+)
+
+SEED_EVENT_CLOSURE_IDS: Final[tuple[int, ...]] = (
+    ARM_DISPATCH_EVENT_ID,
+    ARM_AUDIT_EVENT_ID,
+    CLEANUP_REVOKE_EVENT_ID,
+    ROLE_FAILURE_PUBLISH_EVENT_ID,
+    ROLE_FAILURE_VERIFY_EVENT_ID,
 )
 
 
@@ -1481,6 +1629,206 @@ def render_effects() -> bytes:
     )
 
 
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in generated exit-fact script")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced generated exit-fact script block")
+        index += 1
+    raise ValueError("unterminated generated exit-fact script block")
+
+
+def top_level_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level assignment blocks, ignoring comments/strings."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (text[index].isalnum() or text[index] in "_."):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
+    source_names = tuple(name for name, _block in source_blocks)
+    source_rank = {name: rank for rank, name in enumerate(source_names)}
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != HISTORICAL_EFFECT_COUNT:
+        raise ValueError(
+            "Workforce exit-fact aggregate must contain exactly "
+            f"{HISTORICAL_EFFECT_COUNT} effects, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("Workforce exit-fact aggregate contains duplicate effects")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce exit-fact shard filenames must be unique")
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("Workforce exit-fact purpose map contains duplicate effects")
+    if set(source_names) != set(configured_names):
+        raise ValueError(
+            "Workforce exit-fact purpose map must cover 17/17 effects exactly: "
+            f"missing={sorted(set(source_names) - set(configured_names))}, "
+            f"extra={sorted(set(configured_names) - set(source_names))}"
+        )
+    for group in EFFECT_GROUPS:
+        if not group.effect_names:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+        ranks = tuple(source_rank[name] for name in group.effect_names)
+        if ranks != tuple(sorted(ranks)):
+            raise ValueError(
+                f"{group.filename} must preserve aggregate block order"
+            )
+
+    reconstructed = tuple(sorted(configured_names, key=source_rank.__getitem__))
+    if reconstructed != source_names:
+        raise ValueError("Workforce exit-fact shards cannot reconstruct the aggregate")
+
+    seed_closure = set(SEED_EFFECT_CLOSURE_NAMES)
+    selected = [
+        group for group in EFFECT_GROUPS
+        if seed_closure.intersection(group.effect_names)
+    ]
+    mixed = [
+        group.filename
+        for group in selected
+        if not set(group.effect_names).issubset(seed_closure)
+    ]
+    selected_names = {name for group in selected for name in group.effect_names}
+    if (
+        len(SEED_EFFECT_CLOSURE_NAMES) != 10
+        or len(seed_closure) != 10
+        or len(selected) != 4
+        or mixed
+        or selected_names != seed_closure
+    ):
+        raise ValueError(
+            "Workforce seed product closure must be an exact four-shard, ten-effect union: "
+            f"shards={len(selected)}, mixed={mixed}, "
+            f"missing={sorted(seed_closure - selected_names)}, "
+            f"extra={sorted(selected_names - seed_closure)}"
+        )
+
+    over_hard = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "Workforce exit-fact hard-limit exceptions must exactly match >20 shards"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without reason "
+                "and CK3 live evidence"
+            )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards with all 17 effect blocks byte-identical."""
+
+    aggregate = render_effects()
+    if len(aggregate) != HISTORICAL_EFFECT_BYTES:
+        raise ValueError(
+            "Workforce exit-fact aggregate byte count drifted: "
+            f"{len(aggregate)} != {HISTORICAL_EFFECT_BYTES}"
+        )
+    digest = hashlib.sha256(aggregate).hexdigest()
+    if digest != HISTORICAL_EFFECT_SHA256:
+        raise ValueError(
+            "Workforce exit-fact aggregate SHA-256 drifted: "
+            f"{digest} != {HISTORICAL_EFFECT_SHA256}"
+        )
+    source_blocks = top_level_blocks(aggregate)
+    _validate_effect_groups(source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
+
+
+def effect_paths() -> tuple[Path, ...]:
+    return tuple(
+        MOD_ROOT / "common" / "scripted_effects" / group.filename
+        for group in EFFECT_GROUPS
+    )
+
+
 def render_events() -> bytes:
     return generated(
         f"""
@@ -1550,6 +1898,126 @@ namespace = {NAMESPACE}
 }}
 """
     )
+
+
+def _validate_event_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
+    source_names = tuple(name for name, _block in source_blocks)
+    source_ids = tuple(int(name.removeprefix(f"{NAMESPACE}.")) for name in source_names)
+    source_rank = {event_id: rank for rank, event_id in enumerate(source_ids)}
+    configured_ids = tuple(
+        event_id for group in EVENT_GROUPS for event_id in group.event_ids
+    )
+    filenames = tuple(group.filename for group in EVENT_GROUPS)
+    if len(source_ids) != HISTORICAL_EVENT_COUNT:
+        raise ValueError(
+            "Workforce exit-fact aggregate must contain exactly "
+            f"{HISTORICAL_EVENT_COUNT} events, found {len(source_ids)}"
+        )
+    if len(source_ids) != len(set(source_ids)):
+        raise ValueError("Workforce exit-fact aggregate contains duplicate events")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce exit-fact event shard filenames must be unique")
+    if len(configured_ids) != len(set(configured_ids)):
+        raise ValueError("Workforce exit-fact purpose map contains duplicate events")
+    if set(source_ids) != set(configured_ids):
+        raise ValueError(
+            "Workforce exit-fact purpose map must cover 9/9 events exactly: "
+            f"missing={sorted(set(source_ids) - set(configured_ids))}, "
+            f"extra={sorted(set(configured_ids) - set(source_ids))}"
+        )
+    for group in EVENT_GROUPS:
+        if not group.event_ids:
+            raise ValueError(f"{group.filename} must contain at least one event")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+        ranks = tuple(source_rank[event_id] for event_id in group.event_ids)
+        if ranks != tuple(sorted(ranks)):
+            raise ValueError(
+                f"{group.filename} must preserve aggregate event order"
+            )
+
+    reconstructed = tuple(sorted(configured_ids, key=source_rank.__getitem__))
+    if reconstructed != source_ids:
+        raise ValueError(
+            "Workforce exit-fact event shards cannot reconstruct the aggregate"
+        )
+
+    seed_closure = set(SEED_EVENT_CLOSURE_IDS)
+    selected = [
+        group for group in EVENT_GROUPS
+        if seed_closure.intersection(group.event_ids)
+    ]
+    mixed = [
+        group.filename
+        for group in selected
+        if not set(group.event_ids).issubset(seed_closure)
+    ]
+    selected_ids = {event_id for group in selected for event_id in group.event_ids}
+    if (
+        len(SEED_EVENT_CLOSURE_IDS) != 5
+        or len(seed_closure) != 5
+        or len(selected) != 2
+        or mixed
+        or selected_ids != seed_closure
+    ):
+        raise ValueError(
+            "Workforce seed product event closure must be two exact shards with five events: "
+            f"shards={len(selected)}, mixed={mixed}, "
+            f"missing={sorted(seed_closure - selected_ids)}, "
+            f"extra={sorted(selected_ids - seed_closure)}"
+        )
+
+    over_hard = {
+        group.filename
+        for group in EVENT_GROUPS
+        if len(group.event_ids) > EVENT_HARD_MAX
+    }
+    if set(EVENT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "Workforce exit-fact event hard-limit exceptions must exactly match >20 shards"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EVENT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EVENT_HARD_MAX} events without reason "
+                "and CK3 live evidence"
+            )
+
+
+def render_event_parts() -> dict[str, bytes]:
+    """Render purpose shards with all nine event blocks byte-identical."""
+
+    aggregate = render_events()
+    if len(aggregate) != HISTORICAL_EVENT_BYTES:
+        raise ValueError(
+            "Workforce exit-fact event aggregate byte count drifted: "
+            f"{len(aggregate)} != {HISTORICAL_EVENT_BYTES}"
+        )
+    digest = hashlib.sha256(aggregate).hexdigest()
+    if digest != HISTORICAL_EVENT_SHA256:
+        raise ValueError(
+            "Workforce exit-fact event aggregate SHA-256 drifted: "
+            f"{digest} != {HISTORICAL_EVENT_SHA256}"
+        )
+    source_blocks = top_level_blocks(aggregate)
+    _validate_event_groups(source_blocks)
+    by_id = {
+        int(name.removeprefix(f"{NAMESPACE}.")): block_text
+        for name, block_text in source_blocks
+    }
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            f"namespace = {NAMESPACE}\n\n"
+            + "\n\n".join(by_id[event_id] for event_id in group.event_ids)
+        )
+        for group in EVENT_GROUPS
+    }
+
+
+def event_paths() -> tuple[Path, ...]:
+    return tuple(MOD_ROOT / "events" / group.filename for group in EVENT_GROUPS)
 
 
 def _loc_rows(language: str) -> dict[str, str]:
@@ -1643,16 +2111,31 @@ def validate_contract() -> None:
         raise ValueError("the persistent carrier must not impersonate the bounded #274 type")
     if len(LANGUAGES) != 9 or len(set(LANGUAGES)) != 9:
         raise ValueError("exactly nine unique CK3 localization projections are required")
+    # This also freezes aggregate identity, verifies the exact 17/17 purpose
+    # map, proves the ten-effect seed product closure is a whole-shard union, and
+    # enforces the >20 exception evidence contract.
+    render_effect_parts()
+    render_event_parts()
 
 
 def outputs() -> dict[Path, bytes]:
     validate_contract()
     rendered: dict[Path, bytes] = {
-        EFFECTS_PATH: render_effects(),
-        EVENTS_PATH: render_events(),
         POSITION_PATH: render_court_position(),
         SPEC_PATH: render_spec(),
     }
+    rendered.update(
+        {
+            MOD_ROOT / "common" / "scripted_effects" / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
+    rendered.update(
+        {
+            MOD_ROOT / "events" / filename: payload
+            for filename, payload in render_event_parts().items()
+        }
+    )
     for language in LANGUAGES:
         rendered[
             MOD_ROOT
@@ -1663,20 +2146,60 @@ def outputs() -> dict[Path, bytes]:
     return rendered
 
 
+def unexpected_effect_paths(
+    rendered: dict[Path, bytes], effects_dir: Path | None = None
+) -> tuple[Path, ...]:
+    effects_dir = effects_dir or MOD_ROOT / "common" / "scripted_effects"
+    expected_names = {
+        path.name
+        for path in rendered
+        if path.parent == MOD_ROOT / "common" / "scripted_effects"
+    }
+    return tuple(
+        sorted(
+            path
+            for path in effects_dir.glob(EFFECT_SHARD_GLOB)
+            if path.name not in expected_names
+        )
+    )
+
+
+def unexpected_event_paths(
+    rendered: dict[Path, bytes], events_dir: Path | None = None
+) -> tuple[Path, ...]:
+    events_dir = events_dir or MOD_ROOT / "events"
+    expected_names = {
+        path.name for path in rendered if path.parent == MOD_ROOT / "events"
+    }
+    return tuple(
+        sorted(
+            path
+            for path in events_dir.glob(EVENT_SHARD_GLOB)
+            if path.name not in expected_names
+        )
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     rendered = outputs()
+    unexpected = (
+        *unexpected_effect_paths(rendered),
+        *unexpected_event_paths(rendered),
+    )
     stale = [
         path
         for path, payload in rendered.items()
         if not path.is_file() or path.read_bytes() != payload
     ]
     if args.check:
-        if stale:
+        if stale or unexpected:
             print("RED: stale Workforce exit-fact generated files:")
             for path in stale:
+                print(path.relative_to(MOD_ROOT))
+            for path in unexpected:
                 print(path.relative_to(MOD_ROOT))
             return 1
         print(
@@ -1684,6 +2207,8 @@ def main() -> int:
             f"({READINESS})"
         )
         return 0
+    for path in unexpected:
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)

@@ -1,0 +1,277 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py
+# PURPOSE: authorize, dispatch, audit, and clean up the native career-slot arm.
+
+zg361_workforce_exit_fact_arm_from_m274_effect = {
+    remove_variable = zg361_workforce_exit_fact_status
+    remove_variable = zg361_workforce_exit_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_slot_active
+            var:zg361_workforce_exit_fact_slot_active = 1
+            var:zg361_workforce_exit_fact_slot_owner = $TICKET_OWNER$
+            var:zg361_workforce_exit_fact_slot_subject = $TICKET_SUBJECT$
+            var:zg361_workforce_exit_fact_slot_cycle = $TICKET_CYCLE$
+            var:zg361_workforce_exit_fact_slot_case = $TICKET_CASE$
+            var:zg361_workforce_exit_fact_slot_state = 4
+            $TICKET_SUBJECT$ = {
+                has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+                is_court_position_employer = {
+                    court_position = zg361_workforce_exit_fact_career_slot_court_position
+                    who = $TICKET_OWNER$
+                }
+            }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 2 }
+    }
+    else_if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ad_owner
+                SUBJECT_VAR = zg361_case_ad_subject
+                CYCLE_VAR = zg361_case_ad_cycle_serial
+                CASE_VAR = zg361_case_ad_case_serial
+                STATE_VAR = zg361_case_ad_state
+                ACTIVE_VAR = zg361_case_ad_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = 4
+            }
+            $TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+            $TICKET_SUBJECT$ = this
+            is_alive = yes
+            is_landed = yes
+            liege = $TICKET_OWNER$
+            has_variable = zg361_we_m274_business_object_created
+            var:zg361_we_m274_business_object_created = 1
+            var:zg361_we_m274_object_owner = $TICKET_OWNER$
+            var:zg361_we_m274_object_subject = $TICKET_SUBJECT$
+            var:zg361_we_m274_object_cycle = $TICKET_CYCLE$
+            var:zg361_we_m274_object_case = $TICKET_CASE$
+            var:zg361_we_m274_object_state = 4
+            var:zg361_we_m274_object_consumed = 1
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_hire_case = $TICKET_CASE$
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_appointed_character = $TICKET_SUBJECT$
+            var:zg361_we_m274_position_type_id = 3612741
+            var:zg361_we_m274_position_receipt_id > 0
+            var:zg361_we_m274_position_receipt_hash > 0
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = $TICKET_CASE$
+            var:zg361_ch_hc_occupied >= 1
+            has_variable = zg361_workforce_appointment_fact_receipt_active
+            var:zg361_workforce_appointment_fact_receipt_active = 1
+            var:zg361_workforce_appointment_fact_receipt_consumed = 1
+            var:zg361_workforce_appointment_fact_receipt_consumed_operation = 274
+            var:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+            var:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+            var:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+            var:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+            var:zg361_workforce_appointment_fact_receipt_state = 4
+            var:zg361_workforce_appointment_fact_receipt_result = 1
+            var:zg361_workforce_appointment_fact_receipt_position_type_id = 3612741
+            var:zg361_workforce_appointment_fact_receipt_id = var:zg361_we_m274_position_receipt_id
+            var:zg361_workforce_appointment_fact_receipt_hash = var:zg361_we_m274_position_receipt_hash
+            var:zg361_workforce_appointment_fact_receipt_native_callback_seen = 1
+            var:zg361_workforce_appointment_fact_receipt_position_still_active = 0
+            var:zg361_workforce_appointment_fact_receipt_position_released_by_package = 1
+            var:zg361_workforce_appointment_fact_receipt_position_release_joined_by_consumer = 1
+            NOT = { has_court_position = zg361_workforce_appointment_fact_court_position }
+            OR = {
+                NOT = { has_variable = zg361_workforce_exit_fact_arm_pending }
+                var:zg361_workforce_exit_fact_arm_pending = 0
+            }
+            OR = {
+                NOT = { has_variable = zg361_workforce_exit_fact_slot_active }
+                var:zg361_workforce_exit_fact_slot_active = 0
+            }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_arm_pending value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_arm_owner value = $TICKET_OWNER$ }
+        set_variable = { name = zg361_workforce_exit_fact_arm_subject value = $TICKET_SUBJECT$ }
+        set_variable = { name = zg361_workforce_exit_fact_arm_cycle value = $TICKET_CYCLE$ }
+        set_variable = { name = zg361_workforce_exit_fact_arm_case value = $TICKET_CASE$ }
+        set_variable = { name = zg361_workforce_exit_fact_arm_state value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_arm_m274_position_type_id value = var:zg361_we_m274_position_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_arm_m274_receipt_id value = var:zg361_we_m274_position_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_arm_m274_receipt_hash value = var:zg361_we_m274_position_receipt_hash }
+        remove_variable = zg361_workforce_exit_fact_native_receive_callback_seen
+        remove_variable = zg361_workforce_exit_fact_native_receive_callback_owner
+        remove_variable = zg361_workforce_exit_fact_native_receive_callback_subject
+        remove_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
+        remove_variable = zg361_workforce_exit_fact_cleanup_revoke_callback_seen
+        remove_variable = zg361_workforce_exit_fact_cleanup_revoke_callback_reason
+        set_variable = { name = zg361_workforce_exit_fact_arm_request_authorized value = 1 }
+        $TICKET_OWNER$ = { set_variable = { name = zg361_workforce_exit_fact_window_open value = 1 } }
+        trigger_event = { id = zg361workforceexitfact.9000 days = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 5 }
+    }
+    else = {
+        set_variable = { name = zg361_workforce_exit_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_red_code value = 27701 }
+    }
+}
+
+zg361_workforce_exit_fact_dispatch_native_arm_effect = {
+    remove_variable = zg361_workforce_exit_fact_status
+    remove_variable = zg361_workforce_exit_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_arm_pending
+            var:zg361_workforce_exit_fact_arm_pending = 1
+            var:zg361_workforce_exit_fact_arm_subject = this
+            var:zg361_workforce_exit_fact_arm_state = 4
+            has_variable = zg361_workforce_exit_fact_arm_request_authorized
+            var:zg361_workforce_exit_fact_arm_request_authorized = 1
+            var:zg361_workforce_exit_fact_arm_owner = {
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_workforce_exit_fact_window_open
+                var:zg361_workforce_exit_fact_window_open = 1
+                can_appoint_char_to_court_position = {
+                    CHAR = root
+                    COURT_POS = zg361_workforce_exit_fact_career_slot_court_position
+                }
+            }
+            is_alive = yes
+            is_landed = yes
+            liege = var:zg361_workforce_exit_fact_arm_owner
+            var:zg361_we_m274_business_object_created = 1
+            var:zg361_we_m274_object_owner = var:zg361_workforce_exit_fact_arm_owner
+            var:zg361_we_m274_object_subject = this
+            var:zg361_we_m274_object_cycle = var:zg361_workforce_exit_fact_arm_cycle
+            var:zg361_we_m274_object_case = var:zg361_workforce_exit_fact_arm_case
+            var:zg361_we_m274_object_consumed = 1
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_position_type_id = var:zg361_workforce_exit_fact_arm_m274_position_type_id
+            var:zg361_we_m274_position_receipt_id = var:zg361_workforce_exit_fact_arm_m274_receipt_id
+            var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_exit_fact_arm_m274_receipt_hash
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = var:zg361_workforce_exit_fact_arm_case
+            var:zg361_ch_hc_occupied >= 1
+            NOT = { has_court_position = zg361_workforce_appointment_fact_court_position }
+            NOT = { has_court_position = zg361_workforce_exit_fact_career_slot_court_position }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_arm_request_dispatched value = 1 }
+        var:zg361_workforce_exit_fact_arm_owner = {
+            appoint_court_position = {
+                recipient = root
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+            }
+            remove_variable = zg361_workforce_exit_fact_window_open
+        }
+        trigger_event = { id = zg361workforceexitfact.9001 days = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 5 }
+    }
+    else = {
+        if = {
+            limit = { has_variable = zg361_workforce_exit_fact_arm_owner }
+            var:zg361_workforce_exit_fact_arm_owner = { remove_variable = zg361_workforce_exit_fact_window_open }
+        }
+        zg361_workforce_exit_fact_clear_arm_pending_effect = yes
+        set_variable = { name = zg361_workforce_exit_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_red_code value = 27702 }
+    }
+}
+
+zg361_workforce_exit_fact_audit_arm_effect = {
+    remove_variable = zg361_workforce_exit_fact_status
+    remove_variable = zg361_workforce_exit_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_arm_pending
+            var:zg361_workforce_exit_fact_arm_pending = 1
+            var:zg361_workforce_exit_fact_arm_subject = this
+            var:zg361_workforce_exit_fact_arm_state = 4
+            var:zg361_workforce_exit_fact_arm_request_authorized = 1
+            var:zg361_workforce_exit_fact_arm_request_dispatched = 1
+            var:zg361_workforce_exit_fact_native_receive_callback_seen = 1
+            var:zg361_workforce_exit_fact_native_receive_callback_owner = var:zg361_workforce_exit_fact_arm_owner
+            var:zg361_workforce_exit_fact_native_receive_callback_subject = this
+            has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+                who = var:zg361_workforce_exit_fact_arm_owner
+            }
+            var:zg361_we_m274_business_object_created = 1
+            var:zg361_we_m274_object_owner = var:zg361_workforce_exit_fact_arm_owner
+            var:zg361_we_m274_object_subject = this
+            var:zg361_we_m274_object_cycle = var:zg361_workforce_exit_fact_arm_cycle
+            var:zg361_we_m274_object_case = var:zg361_workforce_exit_fact_arm_case
+            var:zg361_we_m274_object_consumed = 1
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_position_type_id = var:zg361_workforce_exit_fact_arm_m274_position_type_id
+            var:zg361_we_m274_position_receipt_id = var:zg361_workforce_exit_fact_arm_m274_receipt_id
+            var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_exit_fact_arm_m274_receipt_hash
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = var:zg361_workforce_exit_fact_arm_case
+            var:zg361_ch_hc_occupied >= 1
+            var:zg361_workforce_appointment_fact_receipt_consumed = 1
+            var:zg361_workforce_appointment_fact_receipt_position_still_active = 0
+            var:zg361_workforce_appointment_fact_receipt_position_released_by_package = 1
+            var:zg361_workforce_appointment_fact_receipt_position_release_joined_by_consumer = 1
+            NOT = { has_court_position = zg361_workforce_appointment_fact_court_position }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_slot_active value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_slot_owner value = var:zg361_workforce_exit_fact_arm_owner }
+        set_variable = { name = zg361_workforce_exit_fact_slot_subject value = this }
+        set_variable = { name = zg361_workforce_exit_fact_slot_cycle value = var:zg361_workforce_exit_fact_arm_cycle }
+        set_variable = { name = zg361_workforce_exit_fact_slot_case value = var:zg361_workforce_exit_fact_arm_case }
+        set_variable = { name = zg361_workforce_exit_fact_slot_state value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_slot_position_type_id value = var:zg361_workforce_exit_fact_arm_m274_position_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_slot_appointment_receipt_id value = var:zg361_workforce_exit_fact_arm_m274_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_slot_appointment_receipt_hash value = var:zg361_workforce_exit_fact_arm_m274_receipt_hash }
+        set_variable = { name = zg361_workforce_exit_fact_slot_carrier_type_id value = 3612771 }
+        set_variable = { name = zg361_workforce_exit_fact_slot_id value = { value = var:zg361_workforce_exit_fact_arm_m274_receipt_id multiply = 1000 add = 277 } }
+        set_variable = { name = zg361_workforce_exit_fact_slot_hash value = { value = var:zg361_workforce_exit_fact_arm_m274_receipt_hash multiply = 1000 add = 3612771 } }
+        set_variable = { name = zg361_workforce_exit_fact_slot_native_receive_seen value = 1 }
+        zg361_workforce_exit_fact_clear_arm_pending_effect = yes
+        set_variable = { name = zg361_workforce_exit_fact_status value = 1 }
+    }
+    else = {
+        if = {
+            limit = {
+                has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+                has_variable = zg361_workforce_exit_fact_arm_owner
+                is_court_position_employer = {
+                    court_position = zg361_workforce_exit_fact_career_slot_court_position
+                    who = var:zg361_workforce_exit_fact_arm_owner
+                }
+            }
+            set_variable = { name = zg361_workforce_exit_fact_cleanup_revoke_requested value = 1 }
+            trigger_event = { id = zg361workforceexitfact.9006 days = 1 }
+        }
+        else = { zg361_workforce_exit_fact_clear_arm_pending_effect = yes }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 5 }
+        set_variable = { name = zg361_workforce_exit_fact_red_code value = 27703 }
+    }
+}
+
+zg361_workforce_exit_fact_dispatch_cleanup_revoke_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
+            var:zg361_workforce_exit_fact_cleanup_revoke_requested = 1
+            has_variable = zg361_workforce_exit_fact_arm_pending
+            var:zg361_workforce_exit_fact_arm_pending = 1
+            has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+                who = var:zg361_workforce_exit_fact_arm_owner
+            }
+        }
+        var:zg361_workforce_exit_fact_arm_owner = {
+            revoke_court_position = {
+                recipient = root
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+            }
+        }
+    }
+    zg361_workforce_exit_fact_clear_arm_pending_effect = yes
+    remove_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
+    set_variable = { name = zg361_workforce_exit_fact_status value = 4 }
+    set_variable = { name = zg361_workforce_exit_fact_red_code value = 27703 }
+}

@@ -1,0 +1,389 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py
+# PURPOSE: clear, request, dispatch, and audit a closed-PIP native exit.
+
+zg361_workforce_exit_fact_clear_exit_pending_effect = {
+    remove_variable = zg361_workforce_exit_fact_exit_pending
+    remove_variable = zg361_workforce_exit_fact_exit_owner
+    remove_variable = zg361_workforce_exit_fact_exit_subject
+    remove_variable = zg361_workforce_exit_fact_exit_cycle
+    remove_variable = zg361_workforce_exit_fact_exit_case
+    remove_variable = zg361_workforce_exit_fact_exit_state
+    remove_variable = zg361_workforce_exit_fact_exit_slot_was_active
+    remove_variable = zg361_workforce_exit_fact_exit_former_slot_id
+    remove_variable = zg361_workforce_exit_fact_exit_former_slot_hash
+    remove_variable = zg361_workforce_exit_fact_exit_position_type_id
+    remove_variable = zg361_workforce_exit_fact_exit_carrier_type_id
+    remove_variable = zg361_workforce_exit_fact_exit_appointment_receipt_id
+    remove_variable = zg361_workforce_exit_fact_exit_appointment_receipt_hash
+    remove_variable = zg361_workforce_exit_fact_exit_pip_cycle
+    remove_variable = zg361_workforce_exit_fact_exit_pip_case
+    remove_variable = zg361_workforce_exit_fact_exit_pip_state
+    remove_variable = zg361_workforce_exit_fact_exit_pip_case_id
+    remove_variable = zg361_workforce_exit_fact_exit_pip_case_hash
+    remove_variable = zg361_workforce_exit_fact_exit_pip_closure_receipt_id
+    remove_variable = zg361_workforce_exit_fact_exit_pip_closure_receipt_hash
+    remove_variable = zg361_workforce_exit_fact_exit_pip_outcome_code
+    remove_variable = zg361_workforce_exit_fact_exit_pip_result_grade
+    remove_variable = zg361_workforce_exit_fact_exit_displaced_hours
+    remove_variable = zg361_workforce_exit_fact_exit_displaced_cost_amount
+    remove_variable = zg361_workforce_exit_fact_exit_displaced_cost_receipt
+    remove_variable = zg361_workforce_exit_fact_exit_displaced_cost_hash
+    remove_variable = zg361_workforce_exit_fact_exit_hc_occupied_before
+    remove_variable = zg361_workforce_exit_fact_exit_hc_frozen_before
+    remove_variable = zg361_workforce_exit_fact_exit_request_authorized
+    remove_variable = zg361_workforce_exit_fact_exit_request_dispatched
+}
+
+zg361_workforce_exit_fact_request_closed_pip_exit_effect = {
+    remove_variable = zg361_workforce_exit_fact_status
+    remove_variable = zg361_workforce_exit_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_receipt_active
+            var:zg361_workforce_exit_fact_receipt_active = 1
+            var:zg361_workforce_exit_fact_receipt_sealed = 1
+            var:zg361_workforce_exit_fact_receipt_owner = $TICKET_OWNER$
+            var:zg361_workforce_exit_fact_receipt_subject = $TICKET_SUBJECT$
+            var:zg361_workforce_exit_fact_receipt_cycle = $TICKET_CYCLE$
+            var:zg361_workforce_exit_fact_receipt_case = $TICKET_CASE$
+            var:zg361_workforce_exit_fact_receipt_state = 6
+        }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 2 }
+    }
+    else_if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ad_owner
+                SUBJECT_VAR = zg361_case_ad_subject
+                CYCLE_VAR = zg361_case_ad_cycle_serial
+                CASE_VAR = zg361_case_ad_case_serial
+                STATE_VAR = zg361_case_ad_state
+                ACTIVE_VAR = zg361_case_ad_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = 6
+            }
+            $TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+            $TICKET_SUBJECT$ = this
+            has_variable = zg361_workforce_exit_fact_slot_active
+            var:zg361_workforce_exit_fact_slot_active = 1
+            var:zg361_workforce_exit_fact_slot_owner = $TICKET_OWNER$
+            var:zg361_workforce_exit_fact_slot_subject = $TICKET_SUBJECT$
+            var:zg361_workforce_exit_fact_slot_cycle = $TICKET_CYCLE$
+            var:zg361_workforce_exit_fact_slot_case = $TICKET_CASE$
+            var:zg361_workforce_exit_fact_slot_state = 4
+            var:zg361_workforce_exit_fact_slot_position_type_id = 3612741
+            var:zg361_workforce_exit_fact_slot_appointment_receipt_id = var:zg361_we_m274_position_receipt_id
+            var:zg361_workforce_exit_fact_slot_appointment_receipt_hash = var:zg361_we_m274_position_receipt_hash
+            var:zg361_workforce_exit_fact_slot_carrier_type_id = 3612771
+            var:zg361_workforce_exit_fact_slot_id > 0
+            var:zg361_workforce_exit_fact_slot_hash > 0
+            has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+                who = $TICKET_OWNER$
+            }
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_hire_case = $TICKET_CASE$
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_appointed_character = $TICKET_SUBJECT$
+            var:zg361_we_m274_position_type_id = 3612741
+            var:zg361_we_m274_position_receipt_id > 0
+            var:zg361_we_m274_position_receipt_hash > 0
+            var:zg361_we_m269_outcome_settled = 1
+            var:zg361_we_m269_not_applicable_no_hire = 0
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = $TICKET_CASE$
+            has_variable = zg361_ch_hc_occupied
+            var:zg361_ch_hc_occupied >= 1
+            has_variable = zg361_ch_hc_frozen
+            has_variable = zg361_we_hours_total
+            has_variable = zg361_we_hours_output
+            has_variable = zg361_we_hours_on_call
+            has_variable = zg361_we_hours_meeting
+            has_variable = zg361_we_hours_governance
+            var:zg361_we_hours_total >= 0
+            var:zg361_we_hours_output >= 0
+            var:zg361_we_hours_on_call >= 0
+            var:zg361_we_hours_meeting >= 0
+            var:zg361_we_hours_governance >= 0
+            has_variable = zg361_we_offer_gold_paid
+            var:zg361_we_offer_gold_paid > 0
+            has_variable = zg361_b2_workforce_pip_pending
+            has_variable = zg361_b2_workforce_pip_consumed
+            has_variable = zg361_b2_workforce_pip_owner
+            has_variable = zg361_b2_workforce_pip_subject
+            has_variable = zg361_b2_workforce_pip_cycle
+            has_variable = zg361_b2_workforce_pip_case
+            has_variable = zg361_b2_workforce_pip_state
+            has_variable = zg361_b2_workforce_pip_case_id
+            has_variable = zg361_b2_workforce_pip_case_hash
+            has_variable = zg361_b2_workforce_pip_closure_receipt_id
+            has_variable = zg361_b2_workforce_pip_closure_receipt_hash
+            has_variable = zg361_b2_pip_outcome_code
+            has_variable = zg361_b2_pip_outcome_result_grade
+            var:zg361_b2_workforce_pip_pending = 1
+            var:zg361_b2_workforce_pip_consumed = 0
+            var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+            var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+            var:zg361_b2_workforce_pip_cycle > 0
+            var:zg361_b2_workforce_pip_case > 0
+            var:zg361_b2_workforce_pip_state = 4
+            var:zg361_b2_pip_outcome_code = 2
+            var:zg361_b2_pip_outcome_result_grade = 1
+            var:zg361_b2_workforce_pip_case_id > 0
+            var:zg361_b2_workforce_pip_case_hash > 0
+            var:zg361_b2_workforce_pip_closure_receipt_id > 0
+            var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+            NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+            NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
+            OR = {
+                NOT = { has_variable = zg361_workforce_exit_fact_exit_pending }
+                var:zg361_workforce_exit_fact_exit_pending = 0
+            }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pending value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_exit_owner value = $TICKET_OWNER$ }
+        set_variable = { name = zg361_workforce_exit_fact_exit_subject value = $TICKET_SUBJECT$ }
+        set_variable = { name = zg361_workforce_exit_fact_exit_cycle value = $TICKET_CYCLE$ }
+        set_variable = { name = zg361_workforce_exit_fact_exit_case value = $TICKET_CASE$ }
+        set_variable = { name = zg361_workforce_exit_fact_exit_state value = 6 }
+        set_variable = { name = zg361_workforce_exit_fact_exit_slot_was_active value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_exit_former_slot_id value = var:zg361_workforce_exit_fact_slot_id }
+        set_variable = { name = zg361_workforce_exit_fact_exit_former_slot_hash value = var:zg361_workforce_exit_fact_slot_hash }
+        set_variable = { name = zg361_workforce_exit_fact_exit_position_type_id value = var:zg361_we_m274_position_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_exit_carrier_type_id value = var:zg361_workforce_exit_fact_slot_carrier_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_exit_appointment_receipt_id value = var:zg361_we_m274_position_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_exit_appointment_receipt_hash value = var:zg361_we_m274_position_receipt_hash }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_cycle value = var:zg361_b2_workforce_pip_cycle }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_case value = var:zg361_b2_workforce_pip_case }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_state value = var:zg361_b2_workforce_pip_state }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_case_id value = var:zg361_b2_workforce_pip_case_id }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_case_hash value = var:zg361_b2_workforce_pip_case_hash }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_closure_receipt_id value = var:zg361_b2_workforce_pip_closure_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_closure_receipt_hash value = var:zg361_b2_workforce_pip_closure_receipt_hash }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_outcome_code value = var:zg361_b2_pip_outcome_code }
+        set_variable = { name = zg361_workforce_exit_fact_exit_pip_result_grade value = var:zg361_b2_pip_outcome_result_grade }
+        set_variable = { name = zg361_workforce_exit_fact_exit_displaced_hours value = { value = var:zg361_we_hours_output add = var:zg361_we_hours_on_call add = var:zg361_we_hours_meeting add = var:zg361_we_hours_governance } }
+        set_variable = { name = zg361_workforce_exit_fact_exit_displaced_cost_amount value = var:zg361_we_offer_gold_paid }
+        set_variable = { name = zg361_workforce_exit_fact_exit_displaced_cost_receipt value = { value = var:zg361_we_m274_position_receipt_id multiply = 1000 add = { value = var:zg361_we_offer_gold_paid multiply = 10 } add = 5 } }
+        set_variable = { name = zg361_workforce_exit_fact_exit_displaced_cost_hash value = { value = var:zg361_we_m274_position_receipt_hash multiply = 100000 add = { value = var:zg361_we_offer_gold_paid multiply = 100 } add = 2775 } }
+        set_variable = { name = zg361_workforce_exit_fact_exit_hc_occupied_before value = var:zg361_ch_hc_occupied }
+        set_variable = { name = zg361_workforce_exit_fact_exit_hc_frozen_before value = var:zg361_ch_hc_frozen }
+        remove_variable = zg361_workforce_exit_fact_native_exit_revoked_callback_seen
+        remove_variable = zg361_workforce_exit_fact_native_exit_revoked_callback_owner
+        remove_variable = zg361_workforce_exit_fact_native_exit_revoked_callback_subject
+        set_variable = { name = zg361_workforce_exit_fact_exit_request_authorized value = 1 }
+        trigger_event = { id = zg361workforceexitfact.9002 days = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 5 }
+    }
+    else = {
+        set_variable = { name = zg361_workforce_exit_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_red_code value = 27704 }
+    }
+}
+
+zg361_workforce_exit_fact_dispatch_native_exit_effect = {
+    remove_variable = zg361_workforce_exit_fact_status
+    remove_variable = zg361_workforce_exit_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_exit_pending
+            var:zg361_workforce_exit_fact_exit_pending = 1
+            var:zg361_workforce_exit_fact_exit_subject = this
+            var:zg361_workforce_exit_fact_exit_state = 6
+            has_variable = zg361_workforce_exit_fact_exit_request_authorized
+            var:zg361_workforce_exit_fact_exit_request_authorized = 1
+            var:zg361_workforce_exit_fact_exit_slot_was_active = 1
+            var:zg361_workforce_exit_fact_slot_active = 1
+            var:zg361_workforce_exit_fact_slot_owner = var:zg361_workforce_exit_fact_exit_owner
+            var:zg361_workforce_exit_fact_slot_subject = this
+            var:zg361_workforce_exit_fact_slot_cycle = var:zg361_workforce_exit_fact_exit_cycle
+            var:zg361_workforce_exit_fact_slot_case = var:zg361_workforce_exit_fact_exit_case
+            var:zg361_workforce_exit_fact_slot_id = var:zg361_workforce_exit_fact_exit_former_slot_id
+            var:zg361_workforce_exit_fact_slot_hash = var:zg361_workforce_exit_fact_exit_former_slot_hash
+            var:zg361_workforce_exit_fact_slot_carrier_type_id = var:zg361_workforce_exit_fact_exit_carrier_type_id
+            var:zg361_workforce_exit_fact_exit_carrier_type_id = 3612771
+            has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+                who = var:zg361_workforce_exit_fact_exit_owner
+            }
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ad_owner
+                SUBJECT_VAR = zg361_case_ad_subject
+                CYCLE_VAR = zg361_case_ad_cycle_serial
+                CASE_VAR = zg361_case_ad_case_serial
+                STATE_VAR = zg361_case_ad_state
+                ACTIVE_VAR = zg361_case_ad_active
+                EXPECTED_OWNER = var:zg361_workforce_exit_fact_exit_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_workforce_exit_fact_exit_cycle
+                EXPECTED_CASE = var:zg361_workforce_exit_fact_exit_case
+                EXPECTED_STATE = 6
+            }
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_hire_case = var:zg361_workforce_exit_fact_exit_case
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_position_type_id = var:zg361_workforce_exit_fact_exit_position_type_id
+            var:zg361_we_m274_position_receipt_id = var:zg361_workforce_exit_fact_exit_appointment_receipt_id
+            var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_exit_fact_exit_appointment_receipt_hash
+            var:zg361_we_m269_outcome_settled = 1
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = var:zg361_workforce_exit_fact_exit_case
+            var:zg361_ch_hc_occupied = var:zg361_workforce_exit_fact_exit_hc_occupied_before
+            var:zg361_ch_hc_frozen = var:zg361_workforce_exit_fact_exit_hc_frozen_before
+            var:zg361_b2_workforce_pip_pending = 1
+            var:zg361_b2_workforce_pip_consumed = 0
+            var:zg361_b2_workforce_pip_owner = var:zg361_workforce_exit_fact_exit_owner
+            var:zg361_b2_workforce_pip_subject = this
+            var:zg361_b2_workforce_pip_cycle = var:zg361_workforce_exit_fact_exit_pip_cycle
+            var:zg361_b2_workforce_pip_case = var:zg361_workforce_exit_fact_exit_pip_case
+            var:zg361_b2_workforce_pip_state = 4
+            var:zg361_b2_workforce_pip_case_id = var:zg361_workforce_exit_fact_exit_pip_case_id
+            var:zg361_b2_workforce_pip_case_hash = var:zg361_workforce_exit_fact_exit_pip_case_hash
+            var:zg361_b2_workforce_pip_closure_receipt_id = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_id
+            var:zg361_b2_workforce_pip_closure_receipt_hash = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_hash
+            var:zg361_b2_pip_outcome_code = 2
+            var:zg361_b2_pip_outcome_result_grade = 1
+        }
+        set_variable = { name = zg361_workforce_exit_fact_exit_request_dispatched value = 1 }
+        var:zg361_workforce_exit_fact_exit_owner = {
+            revoke_court_position = {
+                recipient = root
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+            }
+        }
+        trigger_event = { id = zg361workforceexitfact.9003 days = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_status value = 5 }
+    }
+    else = {
+        zg361_workforce_exit_fact_clear_exit_pending_effect = yes
+        set_variable = { name = zg361_workforce_exit_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_red_code value = 27709 }
+    }
+}
+
+zg361_workforce_exit_fact_audit_exit_effect = {
+    remove_variable = zg361_workforce_exit_fact_status
+    remove_variable = zg361_workforce_exit_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_exit_pending
+            var:zg361_workforce_exit_fact_exit_pending = 1
+            var:zg361_workforce_exit_fact_exit_subject = this
+            var:zg361_workforce_exit_fact_exit_state = 6
+            var:zg361_workforce_exit_fact_exit_slot_was_active = 1
+            var:zg361_workforce_exit_fact_exit_former_slot_id > 0
+            var:zg361_workforce_exit_fact_exit_former_slot_hash > 0
+            var:zg361_workforce_exit_fact_exit_position_type_id = 3612741
+            var:zg361_workforce_exit_fact_exit_carrier_type_id = 3612771
+            var:zg361_workforce_exit_fact_exit_appointment_receipt_id > 0
+            var:zg361_workforce_exit_fact_exit_appointment_receipt_hash > 0
+            has_variable = zg361_workforce_exit_fact_exit_request_authorized
+            var:zg361_workforce_exit_fact_exit_request_authorized = 1
+            has_variable = zg361_workforce_exit_fact_exit_request_dispatched
+            var:zg361_workforce_exit_fact_exit_request_dispatched = 1
+            has_variable = zg361_workforce_exit_fact_native_exit_revoked_callback_seen
+            var:zg361_workforce_exit_fact_native_exit_revoked_callback_seen = 1
+            var:zg361_workforce_exit_fact_native_exit_revoked_callback_owner = var:zg361_workforce_exit_fact_exit_owner
+            var:zg361_workforce_exit_fact_native_exit_revoked_callback_subject = this
+            NOT = { has_court_position = zg361_workforce_exit_fact_career_slot_court_position }
+            var:zg361_workforce_exit_fact_slot_active = 0
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ad_owner
+                SUBJECT_VAR = zg361_case_ad_subject
+                CYCLE_VAR = zg361_case_ad_cycle_serial
+                CASE_VAR = zg361_case_ad_case_serial
+                STATE_VAR = zg361_case_ad_state
+                ACTIVE_VAR = zg361_case_ad_active
+                EXPECTED_OWNER = var:zg361_workforce_exit_fact_exit_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_workforce_exit_fact_exit_cycle
+                EXPECTED_CASE = var:zg361_workforce_exit_fact_exit_case
+                EXPECTED_STATE = 6
+            }
+            var:zg361_we_m274_hired = 1
+            var:zg361_we_m274_hire_case = var:zg361_workforce_exit_fact_exit_case
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_position_type_id = var:zg361_workforce_exit_fact_exit_position_type_id
+            var:zg361_we_m274_position_receipt_id = var:zg361_workforce_exit_fact_exit_appointment_receipt_id
+            var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_exit_fact_exit_appointment_receipt_hash
+            var:zg361_we_m269_outcome_settled = 1
+            var:zg361_we_formal_hc_active = 1
+            var:zg361_we_formal_hc_active_case = var:zg361_workforce_exit_fact_exit_case
+            var:zg361_ch_hc_occupied = var:zg361_workforce_exit_fact_exit_hc_occupied_before
+            var:zg361_ch_hc_frozen = var:zg361_workforce_exit_fact_exit_hc_frozen_before
+            var:zg361_b2_workforce_pip_pending = 1
+            var:zg361_b2_workforce_pip_consumed = 0
+            var:zg361_b2_workforce_pip_owner = var:zg361_workforce_exit_fact_exit_owner
+            var:zg361_b2_workforce_pip_subject = this
+            var:zg361_b2_workforce_pip_cycle = var:zg361_workforce_exit_fact_exit_pip_cycle
+            var:zg361_b2_workforce_pip_case = var:zg361_workforce_exit_fact_exit_pip_case
+            var:zg361_b2_workforce_pip_state = var:zg361_workforce_exit_fact_exit_pip_state
+            var:zg361_b2_workforce_pip_case_id = var:zg361_workforce_exit_fact_exit_pip_case_id
+            var:zg361_b2_workforce_pip_case_hash = var:zg361_workforce_exit_fact_exit_pip_case_hash
+            var:zg361_b2_workforce_pip_closure_receipt_id = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_id
+            var:zg361_b2_workforce_pip_closure_receipt_hash = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_hash
+            var:zg361_b2_pip_outcome_code = var:zg361_workforce_exit_fact_exit_pip_outcome_code
+            var:zg361_b2_pip_outcome_result_grade = var:zg361_workforce_exit_fact_exit_pip_result_grade
+            var:zg361_workforce_exit_fact_exit_pip_state = 4
+            var:zg361_workforce_exit_fact_exit_pip_outcome_code = 2
+            var:zg361_workforce_exit_fact_exit_pip_result_grade = 1
+            var:zg361_workforce_exit_fact_exit_displaced_hours >= 0
+            var:zg361_workforce_exit_fact_exit_displaced_cost_amount > 0
+            var:zg361_workforce_exit_fact_exit_displaced_cost_receipt > 0
+            var:zg361_workforce_exit_fact_exit_displaced_cost_hash > 0
+            OR = {
+                NOT = { has_variable = zg361_workforce_exit_fact_receipt_active }
+                var:zg361_workforce_exit_fact_receipt_active = 0
+            }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_active value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_consumed value = 0 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_published value = 0 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_owner value = var:zg361_workforce_exit_fact_exit_owner }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_subject value = this }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_cycle value = var:zg361_workforce_exit_fact_exit_cycle }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_case value = var:zg361_workforce_exit_fact_exit_case }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_state value = 6 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_reason_kind value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_misconduct_present value = 0 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_position_type_id value = var:zg361_workforce_exit_fact_exit_position_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_carrier_type_id value = var:zg361_workforce_exit_fact_exit_carrier_type_id }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_appointment_receipt_id value = var:zg361_workforce_exit_fact_exit_appointment_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_appointment_receipt_hash value = var:zg361_workforce_exit_fact_exit_appointment_receipt_hash }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_former_slot_id value = var:zg361_workforce_exit_fact_exit_former_slot_id }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_former_slot_hash value = var:zg361_workforce_exit_fact_exit_former_slot_hash }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_cycle value = var:zg361_workforce_exit_fact_exit_pip_cycle }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_case value = var:zg361_workforce_exit_fact_exit_pip_case }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_state value = var:zg361_workforce_exit_fact_exit_pip_state }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_case_id value = var:zg361_workforce_exit_fact_exit_pip_case_id }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_case_hash value = var:zg361_workforce_exit_fact_exit_pip_case_hash }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_closure_receipt_id value = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_id }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_closure_receipt_hash value = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_hash }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_outcome_code value = var:zg361_workforce_exit_fact_exit_pip_outcome_code }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_pip_result_grade value = var:zg361_workforce_exit_fact_exit_pip_result_grade }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_displaced_hours value = var:zg361_workforce_exit_fact_exit_displaced_hours }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_displaced_cost_amount value = var:zg361_workforce_exit_fact_exit_displaced_cost_amount }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_displaced_cost_receipt value = var:zg361_workforce_exit_fact_exit_displaced_cost_receipt }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_displaced_cost_hash value = var:zg361_workforce_exit_fact_exit_displaced_cost_hash }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_hc_occupied_before value = var:zg361_workforce_exit_fact_exit_hc_occupied_before }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_hc_frozen_before value = var:zg361_workforce_exit_fact_exit_hc_frozen_before }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_native_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_native_end_reason value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_id value = { value = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_id multiply = 1000 add = 277 } }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_hash value = { value = var:zg361_workforce_exit_fact_exit_pip_closure_receipt_hash multiply = 100000 add = { value = var:zg361_workforce_exit_fact_exit_appointment_receipt_hash multiply = 10 } add = var:zg361_workforce_exit_fact_exit_former_slot_hash add = var:zg361_workforce_exit_fact_exit_displaced_hours add = var:zg361_workforce_exit_fact_exit_displaced_cost_amount add = 1 } }
+        set_variable = { name = zg361_workforce_exit_fact_receipt_sealed value = 1 }
+        zg361_workforce_exit_fact_clear_exit_pending_effect = yes
+        set_variable = { name = zg361_workforce_exit_fact_status value = 1 }
+        trigger_event = { id = zg361workforceexitfact.9004 days = 1 }
+    }
+    else = {
+        zg361_workforce_exit_fact_clear_exit_pending_effect = yes
+        set_variable = { name = zg361_workforce_exit_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_exit_fact_red_code value = 27705 }
+    }
+}

@@ -1,12 +1,17 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Static contracts for the real Workforce #277 native-exit fact package."""
 
 from __future__ import annotations
 
+from contextlib import redirect_stdout
+import hashlib
+import io
 import re
 import sys
+import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -72,8 +77,10 @@ def localization_keys(source: str) -> set[str]:
 class WorkforceExitFactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = text(gen.EFFECTS_PATH)
-        cls.events = text(gen.EVENTS_PATH)
+        # Semantic assertions retain the historical definition order so the
+        # block helper cannot confuse an earlier call site with its provider.
+        cls.effects = gen.render_effects().decode("utf-8-sig")
+        cls.events = gen.render_events().decode("utf-8-sig")
         cls.position = text(gen.POSITION_PATH)
         cls.spec = text(gen.SPEC_PATH)
 
@@ -83,10 +90,10 @@ class WorkforceExitFactTests(unittest.TestCase):
         self.assertEqual(gen.POSITION_CARRIER_TYPE_ID, 3_612_771)
         self.assertNotEqual(gen.M274_POSITION_TYPE_ID, gen.POSITION_CARRIER_TYPE_ID)
         self.assertEqual(gen.REASON_KIND_PIP, 1)
-        self.assertEqual(len(gen.outputs()), 13)
+        self.assertEqual(len(gen.outputs()), 20)
         expected = {
-            gen.EFFECTS_PATH,
-            gen.EVENTS_PATH,
+            *gen.effect_paths(),
+            *gen.event_paths(),
             gen.POSITION_PATH,
             gen.SPEC_PATH,
             *(
@@ -104,8 +111,213 @@ class WorkforceExitFactTests(unittest.TestCase):
             self.assertTrue(path.exists(), path)
             self.assertEqual(path.read_bytes(), payload, path)
             self.assertTrue(payload.startswith(gen.BOM), path)
-        for path in (gen.EFFECTS_PATH, gen.EVENTS_PATH, gen.POSITION_PATH):
+        for path in (*gen.effect_paths(), *gen.event_paths(), gen.POSITION_PATH):
             self.assertTrue(text(path).startswith(gen.HEADER.rstrip()), path)
+
+    def test_effect_purpose_shards_preserve_frozen_aggregate_blocks(self) -> None:
+        aggregate = gen.render_effects()
+        self.assertEqual(gen.HISTORICAL_EFFECT_BYTES, len(aggregate))
+        self.assertEqual(
+            gen.HISTORICAL_EFFECT_SHA256,
+            hashlib.sha256(aggregate).hexdigest(),
+        )
+        source_blocks = gen.top_level_blocks(aggregate)
+        self.assertEqual(gen.HISTORICAL_EFFECT_COUNT, len(source_blocks))
+        self.assertEqual(gen.HISTORICAL_EFFECT_COUNT, len(dict(source_blocks)))
+
+        rendered = gen.render_effect_parts()
+        self.assertEqual(
+            [group.filename for group in gen.EFFECT_GROUPS],
+            list(rendered),
+        )
+        shard_blocks: dict[str, str] = {}
+        for group in gen.EFFECT_GROUPS:
+            payload = rendered[group.filename]
+            self.assertTrue(payload.startswith(gen.BOM))
+            self.assertIn(f"# PURPOSE: {group.purpose}.", payload.decode("utf-8-sig"))
+            rows = gen.top_level_blocks(payload)
+            self.assertEqual(group.effect_names, tuple(name for name, _ in rows))
+            self.assertGreaterEqual(len(rows), 1)
+            self.assertLessEqual(len(rows), gen.EFFECT_TARGET_MAX)
+            for name, body in rows:
+                self.assertNotIn(name, shard_blocks)
+                shard_blocks[name] = body
+        self.assertEqual(dict(source_blocks), shard_blocks)
+        self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
+        self.assertEqual(
+            [],
+            [
+                group.filename
+                for group in gen.EFFECT_GROUPS
+                if len(group.effect_names) > gen.EFFECT_TARGET_MAX
+            ],
+        )
+        self.assertEqual(
+            [],
+            [
+                group.filename
+                for group in gen.EFFECT_GROUPS
+                if len(group.effect_names) > gen.EFFECT_HARD_MAX
+            ],
+        )
+
+    def test_seed_product_closure_is_exact_four_shards_and_ten_effects(self) -> None:
+        closure = set(gen.SEED_EFFECT_CLOSURE_NAMES)
+        selected = [
+            group
+            for group in gen.EFFECT_GROUPS
+            if closure.intersection(group.effect_names)
+        ]
+        selected_names = {
+            name for group in selected for name in group.effect_names
+        }
+        self.assertEqual(10, len(closure))
+        self.assertEqual(4, len(selected))
+        self.assertEqual(closure, selected_names)
+        self.assertTrue(
+            all(set(group.effect_names).issubset(closure) for group in selected)
+        )
+
+    def test_seed_product_closure_accounts_for_court_position_callbacks(self) -> None:
+        position = block(self.position, gen.POSITION_KEY)
+        callback_names = {
+            f"{gen.PREFIX}_on_native_slot_received_effect",
+            f"{gen.PREFIX}_on_native_slot_ended_effect",
+        }
+        observed_callbacks = set(
+            re.findall(rf"\b({re.escape(gen.PREFIX)}_[a-z0-9_]+_effect)\s*=", position)
+        )
+        self.assertEqual(callback_names, observed_callbacks)
+        self.assertTrue(callback_names.issubset(set(gen.SEED_EFFECT_CLOSURE_NAMES)))
+
+        ended = block(self.effects, f"{gen.PREFIX}_on_native_slot_ended_effect")
+        self.assertIn(f"{gen.PREFIX}_capture_role_failure_effect = yes", ended)
+        self.assertTrue(
+            {
+                f"{gen.PREFIX}_clear_role_failure_receipt_effect",
+                f"{gen.PREFIX}_capture_role_failure_effect",
+                f"{gen.PREFIX}_verify_role_failure_publish_effect",
+            }.issubset(set(gen.SEED_EFFECT_CLOSURE_NAMES))
+        )
+        self.assertTrue(
+            {
+                gen.ROLE_FAILURE_PUBLISH_EVENT_ID,
+                gen.ROLE_FAILURE_VERIFY_EVENT_ID,
+            }.issubset(set(gen.SEED_EVENT_CLOSURE_IDS))
+        )
+
+    def test_event_purpose_shards_preserve_frozen_aggregate_blocks(self) -> None:
+        aggregate = gen.render_events()
+        self.assertEqual(gen.HISTORICAL_EVENT_BYTES, len(aggregate))
+        self.assertEqual(
+            gen.HISTORICAL_EVENT_SHA256,
+            hashlib.sha256(aggregate).hexdigest(),
+        )
+        source_blocks = gen.top_level_blocks(aggregate)
+        self.assertEqual(gen.HISTORICAL_EVENT_COUNT, len(source_blocks))
+        self.assertEqual(gen.HISTORICAL_EVENT_COUNT, len(dict(source_blocks)))
+
+        rendered = gen.render_event_parts()
+        self.assertEqual(
+            [group.filename for group in gen.EVENT_GROUPS],
+            list(rendered),
+        )
+        shard_blocks: dict[str, str] = {}
+        for group in gen.EVENT_GROUPS:
+            payload = rendered[group.filename]
+            self.assertTrue(payload.startswith(gen.BOM))
+            self.assertIn(f"# PURPOSE: {group.purpose}.", payload.decode("utf-8-sig"))
+            rows = gen.top_level_blocks(payload)
+            expected_names = tuple(
+                f"{gen.NAMESPACE}.{event_id}" for event_id in group.event_ids
+            )
+            self.assertEqual(expected_names, tuple(name for name, _ in rows))
+            self.assertGreaterEqual(len(rows), 1)
+            self.assertLessEqual(len(rows), gen.EVENT_TARGET_MAX)
+            for name, body in rows:
+                self.assertNotIn(name, shard_blocks)
+                shard_blocks[name] = body
+        self.assertEqual(dict(source_blocks), shard_blocks)
+        self.assertEqual({}, gen.EVENT_HARD_LIMIT_EXCEPTIONS)
+        self.assertEqual(
+            [],
+            [
+                group.filename
+                for group in gen.EVENT_GROUPS
+                if len(group.event_ids) > gen.EVENT_TARGET_MAX
+            ],
+        )
+        self.assertEqual(
+            [],
+            [
+                group.filename
+                for group in gen.EVENT_GROUPS
+                if len(group.event_ids) > gen.EVENT_HARD_MAX
+            ],
+        )
+
+    def test_seed_product_event_closure_is_two_exact_five_event_shards(self) -> None:
+        closure = set(gen.SEED_EVENT_CLOSURE_IDS)
+        selected = [
+            group
+            for group in gen.EVENT_GROUPS
+            if closure.intersection(group.event_ids)
+        ]
+        selected_ids = {event_id for group in selected for event_id in group.event_ids}
+        self.assertEqual(5, len(closure))
+        self.assertEqual(2, len(selected))
+        self.assertEqual(closure, selected_ids)
+        self.assertTrue(
+            all(set(group.event_ids).issubset(closure) for group in selected)
+        )
+
+    def test_legacy_monoliths_are_absent_and_check_rejects_them(self) -> None:
+        self.assertFalse(gen.LEGACY_EFFECT_PATH.exists())
+        self.assertFalse(gen.LEGACY_EVENT_PATH.exists())
+        self.assertNotIn(gen.LEGACY_EFFECT_PATH, gen.outputs())
+        self.assertNotIn(gen.LEGACY_EVENT_PATH, gen.outputs())
+        with tempfile.TemporaryDirectory(prefix="zg361-exit-fact-split-") as temp:
+            root = Path(temp)
+            effects_dir = root / "common" / "scripted_effects"
+            effects_dir.mkdir(parents=True)
+            events_dir = root / "events"
+            events_dir.mkdir(parents=True)
+            expected_path = effects_dir / gen.EFFECT_GROUPS[0].filename
+            expected_payload = gen.render_effect_parts()[gen.EFFECT_GROUPS[0].filename]
+            expected_path.write_bytes(expected_payload)
+            expected_event_path = events_dir / gen.EVENT_GROUPS[0].filename
+            expected_event_payload = gen.render_event_parts()[gen.EVENT_GROUPS[0].filename]
+            expected_event_path.write_bytes(expected_event_payload)
+            legacy_path = effects_dir / gen.LEGACY_EFFECT_FILENAME
+            legacy_path.write_bytes(gen.render_effects())
+            legacy_event_path = events_dir / gen.LEGACY_EVENT_FILENAME
+            legacy_event_path.write_bytes(gen.render_events())
+            rendered = {
+                expected_path: expected_payload,
+                expected_event_path: expected_event_payload,
+            }
+
+            with (
+                mock.patch.object(gen, "MOD_ROOT", root),
+                mock.patch.object(gen, "outputs", return_value=rendered),
+                mock.patch.object(sys, "argv", ["generator", "--check"]),
+                redirect_stdout(io.StringIO()),
+            ):
+                self.assertEqual(1, gen.main())
+            self.assertTrue(legacy_path.exists())
+            self.assertTrue(legacy_event_path.exists())
+
+            with (
+                mock.patch.object(gen, "MOD_ROOT", root),
+                mock.patch.object(gen, "outputs", return_value=rendered),
+                mock.patch.object(sys, "argv", ["generator"]),
+                redirect_stdout(io.StringIO()),
+            ):
+                self.assertEqual(0, gen.main())
+            self.assertFalse(legacy_path.exists())
+            self.assertFalse(legacy_event_path.exists())
+            self.assertEqual(expected_payload, expected_path.read_bytes())
+            self.assertEqual(expected_event_payload, expected_event_path.read_bytes())
 
     def test_nine_language_structure_and_authored_zh_en(self) -> None:
         self.assertEqual(len(gen.LANGUAGES), 9)
@@ -709,11 +921,12 @@ class WorkforceExitFactTests(unittest.TestCase):
             self.assertIn(needle, self.spec)
 
     def test_generated_paradox_files_have_balanced_braces(self) -> None:
-        for path, source in (
-            (gen.EFFECTS_PATH, self.effects),
-            (gen.EVENTS_PATH, self.events),
+        sources = [
+            *((path, text(path)) for path in gen.effect_paths()),
+            *((path, text(path)) for path in gen.event_paths()),
             (gen.POSITION_PATH, self.position),
-        ):
+        ]
+        for path, source in sources:
             self.assertEqual(source.count("{"), source.count("}"), path)
 
 

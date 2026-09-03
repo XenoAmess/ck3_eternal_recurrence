@@ -1,0 +1,95 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py
+# PURPOSE: record native career-slot receipt and end callbacks.
+
+zg361_workforce_exit_fact_on_native_slot_received_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_arm_pending
+            var:zg361_workforce_exit_fact_arm_pending = 1
+            var:zg361_workforce_exit_fact_arm_subject = this
+            var:zg361_workforce_exit_fact_arm_owner = scope:liege
+            has_variable = zg361_workforce_exit_fact_arm_request_authorized
+            var:zg361_workforce_exit_fact_arm_request_authorized = 1
+            has_court_position = zg361_workforce_exit_fact_career_slot_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_exit_fact_career_slot_court_position
+                who = scope:liege
+            }
+        }
+        set_variable = { name = zg361_workforce_exit_fact_native_receive_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_native_receive_callback_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_exit_fact_native_receive_callback_subject value = this }
+    }
+}
+
+zg361_workforce_exit_fact_on_native_slot_ended_effect = {
+    if = {
+        limit = { $END_REASON$ = 2 }
+        zg361_workforce_exit_fact_capture_role_failure_effect = yes
+    }
+    set_variable = { name = zg361_workforce_exit_fact_slot_active value = 0 }
+    set_variable = { name = zg361_workforce_exit_fact_native_last_end_reason value = $END_REASON$ }
+    set_variable = { name = zg361_workforce_exit_fact_native_last_end_owner value = scope:liege }
+    set_variable = { name = zg361_workforce_exit_fact_native_last_end_subject value = this }
+    if = {
+        limit = { $END_REASON$ = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_native_revoked_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_native_revoked_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_exit_fact_native_revoked_subject value = this }
+    }
+    else_if = {
+        limit = { $END_REASON$ = 2 }
+        set_variable = { name = zg361_workforce_exit_fact_native_invalidated_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_native_invalidated_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_exit_fact_native_invalidated_subject value = this }
+    }
+    else_if = {
+        limit = { $END_REASON$ = 3 }
+        set_variable = { name = zg361_workforce_exit_fact_native_vacated_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_native_vacated_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_exit_fact_native_vacated_subject value = this }
+    }
+    if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_exit_pending
+            var:zg361_workforce_exit_fact_exit_pending = 1
+            var:zg361_workforce_exit_fact_exit_subject = this
+            var:zg361_workforce_exit_fact_exit_owner = scope:liege
+            has_variable = zg361_workforce_exit_fact_exit_request_authorized
+            var:zg361_workforce_exit_fact_exit_request_authorized = 1
+            $END_REASON$ = 1
+        }
+        set_variable = { name = zg361_workforce_exit_fact_native_exit_revoked_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_native_exit_revoked_callback_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_exit_fact_native_exit_revoked_callback_subject value = this }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_workforce_normal_exit_fact_pending
+            var:zg361_workforce_normal_exit_fact_pending = 1
+            var:zg361_workforce_normal_exit_fact_pending_subject = this
+            var:zg361_workforce_normal_exit_fact_pending_owner = scope:liege
+            has_variable = zg361_workforce_normal_exit_fact_request_authorized
+            has_variable = zg361_workforce_normal_exit_fact_request_dispatched
+            var:zg361_workforce_normal_exit_fact_request_authorized = 1
+            var:zg361_workforce_normal_exit_fact_request_dispatched = 1
+            $END_REASON$ = 1
+        }
+        set_variable = { name = zg361_workforce_normal_exit_fact_native_revoke_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_native_revoke_callback_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_normal_exit_fact_native_revoke_callback_subject value = this }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
+            var:zg361_workforce_exit_fact_cleanup_revoke_requested = 1
+        }
+        set_variable = { name = zg361_workforce_exit_fact_cleanup_revoke_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_cleanup_revoke_callback_reason value = $END_REASON$ }
+        remove_variable = zg361_workforce_exit_fact_cleanup_revoke_requested
+    }
+    else = {
+        set_variable = { name = zg361_workforce_exit_fact_unexpected_native_end_seen value = 1 }
+        set_variable = { name = zg361_workforce_exit_fact_unexpected_native_end_reason value = $END_REASON$ }
+    }
+}

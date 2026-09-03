@@ -1,0 +1,16 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py
+# PURPOSE: clear the pending native career-slot arm request.
+
+zg361_workforce_exit_fact_clear_arm_pending_effect = {
+    remove_variable = zg361_workforce_exit_fact_arm_pending
+    remove_variable = zg361_workforce_exit_fact_arm_owner
+    remove_variable = zg361_workforce_exit_fact_arm_subject
+    remove_variable = zg361_workforce_exit_fact_arm_cycle
+    remove_variable = zg361_workforce_exit_fact_arm_case
+    remove_variable = zg361_workforce_exit_fact_arm_state
+    remove_variable = zg361_workforce_exit_fact_arm_m274_position_type_id
+    remove_variable = zg361_workforce_exit_fact_arm_m274_receipt_id
+    remove_variable = zg361_workforce_exit_fact_arm_m274_receipt_hash
+    remove_variable = zg361_workforce_exit_fact_arm_request_authorized
+    remove_variable = zg361_workforce_exit_fact_arm_request_dispatched
+}

@@ -1,0 +1,22 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_exit_fact.py
+# PURPOSE: dispatch, audit, or clean up the native career-slot arm.
+
+namespace = zg361workforceexitfact
+
+zg361workforceexitfact.9000 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_dispatch_native_arm_effect = yes }
+}
+
+zg361workforceexitfact.9001 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_audit_arm_effect = yes }
+}
+
+zg361workforceexitfact.9006 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_workforce_exit_fact_dispatch_cleanup_revoke_effect = yes }
+}
