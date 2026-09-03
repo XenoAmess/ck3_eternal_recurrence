@@ -131,6 +131,36 @@ normally 280 files (279 - 1 + 2) and about 29,351,609 bytes (the duplicated
 is authoritative. A GREEN result on 265 would therefore only justify another
 static and live run on the full 279/280 target.
 
+For launch bookkeeping, the canonical identity of a batch is
+`phase2-incremental-batches-20260903/manifest.json#batch:<id>` plus the
+materialized tree hash. The following inventory is the expected cumulative
+shape from that manifest; a runner must recompute and record the tree SHA for
+the actual disposable product before starting CK3.
+
+| order | batch id | overlay scope | expected cumulative files / bytes |
+| ---: | --- | --- | ---: |
+| 0 | `none` | frozen Phase-1-compatible core | 51 / 7,137,587 |
+| 1 | `core-current` | 18 current non-scoreboard replacements | 51 / 7,164,060 |
+| 2 | `scoreboard-current` | 3 current scoreboard replacements | 51 / 13,738,324 |
+| 3 | `central-case-kernel` | 14 Phase2/case-kernel additions | 65 / 14,076,562 |
+| 4 | `b1-b2` | B1/B2 business cluster (22 additions) | 87 / 14,985,603 |
+| 5 | `incident` | incident-platform cluster (12 additions) | 99 / 15,770,021 |
+| 6 | `manager` | manager-governance cluster (13 additions) | 112 / 16,238,012 |
+| 7 | `workforce` | workforce cluster (101 additions) | 213 / 22,006,983 |
+| 8 | `phase3` | Phase3 metrics cluster (11 additions) | 224 / 24,065,978 |
+| 9 | `career` | career HC/learning cluster (22 additions) | 246 / 25,689,352 |
+| 10 | `feedback` | feedback/promotion/PIP cluster (11 additions) | 257 / 27,202,019 |
+| 11 | `credit` | credit-project cluster (11 additions) | 268 / 28,678,343 |
+| 12 | `compensation` | compensation/generated-compensation cluster (11 additions) | 279 / 29,351,046 |
+
+For each row, the hard target is the exact cumulative tree produced by the
+listed overlay, not a similarly sized directory and not the 265-file exact
+A+B diagnostic. Replacement rows must retain the baseline path while matching
+the current blob SHA; addition rows must prove that no unlisted current file
+was silently included. If a future split is tested inside the broad target,
+give it a new batch/projection identity and expected 280-file manifest rather
+than reusing the 265-file diagnostic identity.
+
 Every cumulative batch must pass these gates before it can be called GREEN:
 
 1. Materialize from the frozen 51-file baseline into a fresh disposable
