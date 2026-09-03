@@ -274,10 +274,14 @@ GUI/decision/interaction/on_action”。
 4. 保存 paused artifact 后才升级 readiness。
 
 固定 seed fixture 还会调用 Workforce 入口 `zg361_we_open_portfolio_effect`；当前 Incident/X 候选并未包含该入口的完整生产闭包。
-此前记录的 callable/event-only 中间计数漏掉 court-position definition 的 `on_court_position_*` native callbacks，现已被
-supersede，不再作为任何规模或施工依据。
-纳入 appointment + exit 两个 court-position owners 后，五个 seed roots 的权威固定点为
-`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的增量为
+此前 callable/event-only 扫描的五-root `2034 effects / 578 events` 与 Workforce root `385 effects / 161 events` 漏掉
+court-position definition 的 `on_court_position_*` native callbacks，现已被 supersede。callbacks 对五-root union 净增
+`8 effects / 2 events`；单独遍历 Workforce root 时还会从 role-failure 继续进入 probation publish，另拉入 `4 effects` 与
+`zg361wpf.1`。
+`zg361_we_open_portfolio_effect` 的完整闭包为
+`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；五个 product roots 在 candidate 内的完整
+materialized closure 为 `2042 effects / 580 events / 6 triggers / 0 values / 2 court-position definitions`。Workforce root 与
+Incident/X r3 provider 的交集为 `83 effects / 22 events / 6 triggers`，故相对 r3 的增量仍为
 `314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增可见本地化为 `28 keys / 5 files`，
 最终 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成，不在当前阶段冻结。Manager 43-effect owner
 的增量仍为 0，不在这条闭包内。因此下一施工项不是

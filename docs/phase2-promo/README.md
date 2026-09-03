@@ -193,10 +193,14 @@ entry gates、3/3 markers、exact mount、`material_error_lines=[]` 与 cleanup 
 `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。没有加载性能 RED，因此未做追加 A/B。
 
 用途分片与 closure 工具已由 `df77ed636c51c51f99f534d8efbb559b94c639d2` 提交并推送。该 GREEN 只覆盖 Incident/X
-入口层；fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。此前记录的 callable/event-only 中间计数
-漏掉 court-position definition 的 `on_court_position_*` native callbacks，现已被 supersede，不再作为规模或施工依据。
-加入 appointment + exit court-position owners 后，五个 seed roots 的权威固定点为
-`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；相对 Incident/X r3 的增量为
+入口层；fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。此前 callable/event-only 扫描的五-root
+`2034 effects / 578 events` 与 Workforce root `385 effects / 161 events` 漏掉 court-position definition 的
+`on_court_position_*` native callbacks，现已被 supersede。callbacks 对五-root union 净增 `8 effects / 2 events`；单独遍历
+Workforce root 时还会从 role-failure 继续进入 probation publish，另拉入 `4 effects` 与 `zg361wpf.1`。
+`zg361_we_open_portfolio_effect` 的完整闭包为
+`397 effects / 164 events / 6 triggers / 0 values / 2 court-position definitions`；五个 product roots 在 candidate 内的完整
+materialized closure 为 `2042 effects / 580 events / 6 triggers / 0 values / 2 court-position definitions`。Workforce root 与
+Incident/X r3 provider 的交集为 `83 effects / 22 events / 6 triggers`，故相对 r3 的增量仍为
 `314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增 loc 为 `28 keys / 5 files`。最终
 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成，不在当前阶段冻结。Manager 43-effect owner
 增量仍为 0，不在闭包内。下一项是按用途物化这份
