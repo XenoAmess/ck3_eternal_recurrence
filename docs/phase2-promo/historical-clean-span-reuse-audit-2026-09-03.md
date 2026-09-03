@@ -54,9 +54,11 @@ The external asset root `Z:\ck3_mod_rewrite_process_assets\zg361` was scanned
 recursively for `capture-timeline.json` and the canonical Phase 2 IDs:
 
 - 40 timeline files were found.
-- Exactly one has `clean=true`; **zero** contain any of the eight current
-  Phase 2 IDs.
-- The one clean timeline is
+- **Zero** timelines contain any of the eight current Phase 2 IDs. The
+  historical run/evidence envelope identifies only one completed clean promo
+  take among these timelines; `clean=true` is not a literal top-level field in
+  that older timeline schema.
+- That historical clean take is
   `promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\cell\promo\capture-timeline.json`
   (schema 2, SHA-256
   `02F39DC0CEF2F62E558592F96E49CF38CC07B4E1487054364AC6854655497F3B`).
