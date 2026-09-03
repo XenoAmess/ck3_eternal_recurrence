@@ -11,3 +11,7 @@
 | workforce blocks 162–323（right） | `_runtime/formal-phase2-workforce-right-full-20260903/report.json` | GREEN：Frontend，exit 0，`cleanup_proven=true` | 264 files / 14,282,642 B；segment 2,981,378 B，SHA-256 `AA50319D1331896E41EB9DE7BC80D1167A3BAC3E4725C50FD85D42DAADACC1E1`；同样有 21 个截断段解析错误 |
 
 结论：guard-on bridge 本身能到主菜单；event-core 在补齐全语言 localization 后仍卡在 Total 881（且 parser/loc error 为 0）。Workforce 左、右分段分别可到 Frontend，因此当前 stall 只在完整组合/跨段依赖或特定完整块交互中出现，不能把任一半段单独判定为根因。所有 run 结束后 CK3、injector、watchdog 进程清空。
+
+补充：将两半作为不同文件名同时加载的 disposable A/B
+`_runtime/formal-phase2-workforce-split-20260903/report.json` 也到达
+Frontend（exit 0、cleanup GREEN）。该轮 error.log 仍有 21 个截断段解析错误；后续取证指出当前分段器在 BOM/块边界可能产生 corruption，故该结果仅作启动可达性记录，不能作为生产拆文件修复依据。
