@@ -1247,10 +1247,18 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             "gui/zg361_scoreboard.gui",
             "common/scripted_effects/zg361_b1_runtime_effects.txt",
             "common/scripted_effects/zg361_b1_runtime_effects_part2.txt",
-            "common/scripted_effects/zg361_b2_runtime_effects.txt",
             "common/scripted_effects/zg361_case_kernel_effects.txt",
         }
         self.assertFalse(rendered_paths & forbidden)
+        self.assertFalse(
+            any(
+                path.startswith(
+                    "common/scripted_effects/zg361_b2_"
+                )
+                and path.endswith(".txt")
+                for path in rendered_paths
+            )
+        )
         self.assertFalse(any(path.startswith("gui/") for path in rendered_paths))
         self.assertNotIn("button_", self.effects)
 

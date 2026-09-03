@@ -1,0 +1,71 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_015_pip_response_effects.txt
+
+zg361_b2_accept_pip_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_owner = var:zg361_b2_m015_object_owner
+			var:zg361_b2_pip_cycle = var:zg361_b2_m015_object_cycle
+			var:zg361_b2_pip_case = var:zg361_b2_m015_object_receipt_case
+			var:zg361_b2_pip_state = 1
+			var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case
+			var:zg361_b2_pip_subject_response = 0
+		}
+		set_variable = { name = zg361_b2_pip_subject_response value = 1 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_subject_response_author value = this }
+		set_variable = { name = zg361_b2_pip_state value = 2 } # executing
+		set_variable = { name = zg361_b2_m015_state value = 2 }
+		zg361_b2_m016_commit_support_effect = yes
+		zg361_b2_schedule_pip_deadline_effect = yes
+	}
+}
+
+zg361_b2_negotiate_pip_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_owner = var:zg361_b2_m015_object_owner
+			var:zg361_b2_pip_cycle = var:zg361_b2_m015_object_cycle
+			var:zg361_b2_pip_case = var:zg361_b2_m015_object_receipt_case
+			var:zg361_b2_pip_state = 1
+			var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case
+			var:zg361_b2_pip_subject_response = 0
+		}
+		set_variable = { name = zg361_b2_pip_subject_response value = 2 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_subject_response_author value = this }
+		set_variable = { name = zg361_b2_pip_goal_revision_used value = 1 }
+		set_variable = { name = zg361_b2_pip_state value = 2 }
+		set_variable = { name = zg361_b2_m015_state value = 2 }
+		zg361_b2_m016_commit_support_effect = yes
+		zg361_b2_schedule_pip_deadline_effect = yes
+	}
+}
+
+zg361_b2_refuse_pip_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_owner = var:zg361_b2_m015_object_owner
+			var:zg361_b2_pip_cycle = var:zg361_b2_m015_object_cycle
+			var:zg361_b2_pip_case = var:zg361_b2_m015_object_receipt_case
+			var:zg361_b2_pip_state = 1
+			var:zg361_b2_pip_refusal_receipt = 0
+			var:zg361_b2_pip_subject_response = 0
+		}
+		set_variable = { name = zg361_b2_pip_subject_response value = 3 }
+		set_variable = { name = zg361_b2_pip_subject_response_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_subject_response_author value = this }
+		set_variable = { name = zg361_b2_pip_refusal_receipt value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_state value = 5 } # refused terminal
+		set_variable = { name = zg361_b2_m015_state value = 5 }
+		set_variable = { name = zg361_b2_pip_performance_evidence_delta value = -15 }
+		zg361_b2_publish_pip_performance_evidence_effect = yes
+		remove_character_modifier = zg361_pip
+		zg361_b2_m015_consume_business_object_effect = yes
+		# Refusal is next-cycle evidence only; it does not settle another current penalty.
+		debug_log = "ZG361B2: PIP refusal recorded without current-cycle double penalty"
+	}
+}

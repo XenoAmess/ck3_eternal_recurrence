@@ -10,6 +10,7 @@ around those proven writes; it does not duplicate the money/merit ledger.
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 
 from zg361_b2_runtime_data import B2_BINDINGS, validate_b2_bindings
@@ -31,6 +32,240 @@ WIRED_IDS = CORE_IDS
 # here would create two lifecycle owners for the same mechanisms.
 SEMANTIC_IDS = CORE_IDS
 INTERFACE_IDS = (69,)
+
+LEGACY_EFFECT_FILENAME = "zg361_b2_runtime_effects.txt"
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# A future shard above the principled ceiling must name both the engineering
+# reason and a concrete CK3 live artifact.  The current layout needs none.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+
+
+def _policy_effect_names(mechanism_id: int) -> tuple[str, ...]:
+    key = f"{mechanism_id:03d}"
+    return (
+        f"zg361_b2_m{key}_resolve_policy_effect",
+        f"zg361_b2_m{key}_post_policy_debt_effect",
+        f"zg361_b2_m{key}_open_business_object_effect",
+        f"zg361_b2_m{key}_consume_business_object_effect",
+    )
+
+
+# B2 is intentionally emitted as small purpose-oriented files.  These groups
+# are semantic ownership boundaries, not arbitrary byte ranges: the policy
+# lifecycle for a mechanism stays beside the domain operations it governs.
+# The target is 1-10 effects per file and the hard ceiling is 20.
+EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "zg361_b2_014_appeal_lifecycle_effects.txt",
+        _policy_effect_names(14)
+        + (
+            "zg361_b2_on_appeal_filed_effect",
+            "zg361_b2_on_appeal_upheld_effect",
+            "zg361_b2_on_appeal_expired_effect",
+            "zg361_b2_on_appeal_corrected_effect",
+        ),
+    ),
+    (
+        "zg361_b2_015_pip_open_effects.txt",
+        _policy_effect_names(15)
+        + (
+            "zg361_b2_clear_pip_case_tuple_effect",
+            "zg361_b2_assign_pip_independent_reviewer_effect",
+            "zg361_b2_m015_open_pip_effect",
+        ),
+    ),
+    (
+        "zg361_b2_015_pip_response_effects.txt",
+        (
+            "zg361_b2_accept_pip_effect",
+            "zg361_b2_negotiate_pip_effect",
+            "zg361_b2_refuse_pip_effect",
+        ),
+    ),
+    (
+        "zg361_b2_016_pip_support_effects.txt",
+        _policy_effect_names(16)
+        + (
+            "zg361_b2_m016_commit_support_effect",
+            "zg361_b2_release_pip_support_effect",
+            "zg361_b2_publish_pip_performance_evidence_effect",
+            "zg361_b2_record_pip_midpoint_effect",
+        ),
+    ),
+    (
+        "zg361_b2_017_pip_settlement_effects.txt",
+        _policy_effect_names(17)
+        + (
+            "zg361_b2_schedule_pip_deadline_effect",
+            "zg361_b2_resolve_pip_due_effect",
+            "zg361_b2_settle_pip_outcome_effect",
+            "zg361_b2_m017_open_disposition_effect",
+        ),
+    ),
+    (
+        "zg361_b2_017_pip_workforce_handoff_effects.txt",
+        (
+            "zg361_b2_publish_workforce_pip_settlement_effect",
+            "zg361_b2_replay_workforce_probation_fact_handoff_effect",
+        ),
+    ),
+    (
+        "zg361_b2_069_delivery_effects.txt",
+        _policy_effect_names(69)
+        + (
+            "zg361_b2_pre_notice_settlement_gate_effect",
+            "zg361_b2_on_result_frozen_effect",
+            "zg361_b2_on_notice_delivered_effect",
+            "zg361_b2_m069_record_delivery_effect",
+        ),
+    ),
+    (
+        "zg361_b2_070_observation_effects.txt",
+        _policy_effect_names(70) + ("zg361_b2_m070_open_observation_effect",),
+    ),
+    (
+        "zg361_b2_071_escalation_effects.txt",
+        _policy_effect_names(71)
+        + (
+            "zg361_b2_m071_open_escalation_effect",
+            "zg361_b2_publish_evidence_escalation_effect",
+        ),
+    ),
+    (
+        "zg361_b2_072_access_audit_effects.txt",
+        _policy_effect_names(72)
+        + (
+            "zg361_b2_m072_lock_pre_delivery_access_effect",
+            "zg361_b2_record_case_access_effect",
+            "zg361_b2_m072_close_access_log_effect",
+        ),
+    ),
+    (
+        "zg361_b2_073_reporting_effects.txt",
+        _policy_effect_names(73)
+        + (
+            "zg361_b2_publish_anonymous_report_effect",
+            "zg361_b2_defer_escalation_effect",
+            "zg361_b2_m073_triage_report_effect",
+        ),
+    ),
+    (
+        "zg361_b2_074_redundancy_effects.txt",
+        _policy_effect_names(74)
+        + (
+            "zg361_b2_m074_open_redundancy_offer_effect",
+            "zg361_b2_m074_accept_redundancy_effect",
+            "zg361_b2_m074_reject_redundancy_effect",
+        ),
+    ),
+    (
+        "zg361_b2_075_exit_offer_effects.txt",
+        _policy_effect_names(75)
+        + (
+            "zg361_b2_m075_open_exit_offer_effect",
+            "zg361_b2_m075_accept_exit_offer_effect",
+            "zg361_b2_m075_reject_exit_offer_effect",
+        ),
+    ),
+    (
+        "zg361_b2_076_liability_effects.txt",
+        _policy_effect_names(76) + ("zg361_b2_m076_allocate_liability_effect",),
+    ),
+    (
+        "zg361_b2_077_reviewer_effects.txt",
+        _policy_effect_names(77)
+        + (
+            "zg361_b2_m077_assign_reviewer_effect",
+            "zg361_b2_m077_subject_recusal_effect",
+            "zg361_b2_m077_owner_recusal_effect",
+            "zg361_b2_m077_pick_replacement_effect",
+        ),
+    ),
+    (
+        "zg361_b2_078_fairness_effects.txt",
+        _policy_effect_names(78)
+        + (
+            "zg361_b2_m078_update_fairness_effect",
+            "zg361_b2_m078_record_cohort_sample_effect",
+            "zg361_b2_m078_apply_resolved_sample_effect",
+        ),
+    ),
+    (
+        "zg361_b2_079_skip_level_effects.txt",
+        _policy_effect_names(79)
+        + (
+            "zg361_b2_m079_open_skip_level_effect",
+            "zg361_b2_m079_release_seat_effect",
+        ),
+    ),
+    (
+        "zg361_b2_080_metric_defect_effects.txt",
+        _policy_effect_names(80) + ("zg361_b2_m080_open_metric_defect_effect",),
+    ),
+    (
+        "zg361_b2_081_projection_access_effects.txt",
+        _policy_effect_names(81)
+        + (
+            "zg361_b2_m081_project_case_access_effect",
+            "zg361_b2_m081_publish_case_projection_effect",
+        ),
+    ),
+    (
+        "zg361_b2_358_non_aggravation_effects.txt",
+        _policy_effect_names(358)
+        + (
+            "zg361_b2_m358_publish_workforce_receipt_effect",
+            "zg361_b2_m358_freeze_non_aggravation_effect",
+            "zg361_b2_m358_apply_disclosed_aggravation_effect",
+            "zg361_b2_m358_close_non_aggravation_effect",
+            "zg361_b2_m358_open_separate_case_effect",
+        ),
+    ),
+    (
+        "zg361_b2_358_separate_adverse_action_effects.txt",
+        (
+            "zg361_b2_prepare_adverse_action_effect",
+            "zg361_b2_finish_adverse_action_effect",
+            "zg361_b2_cancel_blocked_action_effect",
+            "zg361_b2_deliver_separate_case_effect",
+            "zg361_b2_execute_pending_adverse_action_effect",
+        ),
+    ),
+    (
+        "zg361_b2_359_quota_return_effects.txt",
+        _policy_effect_names(359)
+        + (
+            "zg361_b2_m359_publish_workforce_receipt_effect",
+            "zg361_b2_m359_open_quota_return_effect",
+            "zg361_b2_m359_return_pp_nomination_slot_effect",
+            "zg361_b2_m359_post_next_cycle_debt_effect",
+            "zg361_b2_m359_open_boundary_review_effect",
+        ),
+    ),
+    (
+        "zg361_b2_359_boundary_redelivery_effects.txt",
+        (
+            "zg361_b2_prepare_boundary_redelivery_effect",
+            "zg361_b2_deliver_boundary_notice_effect",
+            "zg361_b2_contest_boundary_notice_effect",
+            "zg361_b2_apply_boundary_redelivery_effect",
+            "zg361_b2_apply_due_quota_debt_effect",
+        ),
+    ),
+    (
+        "zg361_b2_collective_receipt_handoff_effects.txt",
+        ("zg361_b2_submit_completed_al_receipts_effect",),
+    ),
+    (
+        "zg361_b2_debt_consumers_effects.txt",
+        (
+            "zg361_b2_consume_pip_performance_evidence_effect",
+            "zg361_b2_consume_management_debt_effect",
+            "zg361_b2_consume_due_policy_debts_effect",
+        ),
+    ),
+)
 
 # One subject can pass through more than one terminal PIP over a long game.
 # These fields describe exactly one current PIP case and therefore must never
@@ -477,8 +712,8 @@ zg361_b2_m078_apply_resolved_sample_effect = {
 '''
 
 
-def render_effects() -> bytes:
-    return generated(render_pip_case_tuple_reset() + r'''
+def render_effect_source() -> str:
+    return render_pip_case_tuple_reset() + r'''
 # ZhongGuo 361 B2 — delivery, appeal justice and first PIP product runtime.
 #
 # State is stored on the assessed official.  Every timed event freezes owner,
@@ -3661,7 +3896,120 @@ zg361_b2_consume_management_debt_effect = {
 		set_variable = { name = zg361_b2_management_debt_consumed_year value = current_year }
 	}
 }
-''' + render_policy_object_kernel() + render_fairness_kernel())
+''' + render_policy_object_kernel() + render_fairness_kernel()
+
+
+def render_effects() -> bytes:
+    """Render the frozen historical monolith for semantic validation only.
+
+    The monolith remains deliberately available as an in-memory reference.  It
+    is not a product output after the purpose split.
+    """
+
+    return generated(render_effect_source())
+
+
+def _top_level_effect_blocks(source: str) -> tuple[tuple[str, str], ...]:
+    matches = tuple(
+        re.finditer(
+            r"(?m)^(zg361_b2_[a-z0-9_]+_effect)\s*=\s*\{",
+            source,
+        )
+    )
+    blocks: list[tuple[str, str]] = []
+    for match in matches:
+        opening = source.index("{", match.start(), match.end())
+        depth = 0
+        quoted = False
+        escaped = False
+        commented = False
+        for index in range(opening, len(source)):
+            char = source[index]
+            if commented:
+                if char == "\n":
+                    commented = False
+                continue
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    quoted = False
+                continue
+            if char == "#":
+                commented = True
+            elif char == '"':
+                quoted = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    blocks.append(
+                        (match.group(1), source[match.start() : index + 1])
+                    )
+                    break
+        else:
+            raise ValueError(f"unterminated B2 effect block: {match.group(1)}")
+    return tuple(blocks)
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render the 25 purpose shards without changing any effect block bytes."""
+
+    historical_blocks = _top_level_effect_blocks(render_effect_source())
+    historical_names = tuple(name for name, _block in historical_blocks)
+    block_by_name = dict(historical_blocks)
+    configured_names = tuple(
+        name for _filename, names in EFFECT_GROUPS for name in names
+    )
+
+    if len(EFFECT_GROUPS) != 25:
+        raise ValueError("B2 runtime must remain split into exactly 25 purpose files")
+    if len(historical_names) != 152 or len(set(historical_names)) != 152:
+        raise ValueError("B2 historical render must contain 152 unique effects")
+    if len(configured_names) != 152 or len(set(configured_names)) != 152:
+        raise ValueError("B2 purpose map must contain 152 unique effects")
+    if set(configured_names) != set(historical_names):
+        missing = sorted(set(historical_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(historical_names))
+        raise ValueError(f"B2 purpose map mismatch: missing={missing}, extra={extra}")
+
+    rendered: dict[str, bytes] = {}
+    for filename, names in EFFECT_GROUPS:
+        if not names:
+            raise ValueError(
+                f"B2 purpose file must contain at least one effect: {filename}"
+            )
+        if len(names) > EFFECT_HARD_MAX:
+            exception = EFFECT_HARD_LIMIT_EXCEPTIONS.get(filename)
+            if (
+                exception is None
+                or len(exception) != 2
+                or not exception[0].strip()
+                or not exception[1].strip()
+            ):
+                raise ValueError(
+                    f"B2 purpose file exceeds {EFFECT_HARD_MAX} effects without "
+                    f"a reason and CK3 live-evidence reference: {filename}"
+                )
+        body = "\n\n".join(block_by_name[name] for name in names)
+        rendered[filename] = generated(
+            f"# B2 purpose shard: {filename}\n\n{body}"
+        )
+    exception_files = set(EFFECT_HARD_LIMIT_EXCEPTIONS)
+    oversized_files = {
+        filename
+        for filename, names in EFFECT_GROUPS
+        if len(names) > EFFECT_HARD_MAX
+    }
+    if exception_files != oversized_files:
+        raise ValueError(
+            "B2 hard-limit exceptions must exactly match oversized shards: "
+            f"exceptions={sorted(exception_files)}, oversized={sorted(oversized_files)}"
+        )
+    return rendered
 
 
 def render_events() -> bytes:
@@ -4621,12 +4969,16 @@ def render_english_placeholder_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_wired_scope()
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_b2_runtime_effects.txt": render_effects(),
+        effects_dir / filename: payload
+        for filename, payload in render_effect_parts().items()
+    }
+    rendered.update({
         MOD_ROOT / "events" / "zg361_b2_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_b2_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_b2_l_simp_chinese.yml": render_simp_chinese_localization(),
-    }
+    })
     for language in (
         "french",
         "german",
@@ -4651,17 +5003,24 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    legacy_effect_path = (
+        MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+    )
     if args.check:
-        if stale:
+        if stale or legacy_effect_path.exists():
             print("RED: stale B2 generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            if legacy_effect_path.exists():
+                print(f"{legacy_effect_path.relative_to(MOD_ROOT)} (legacy monolith)")
             return 1
         print("GREEN: B2 generated files are current")
         return 0
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+    if legacy_effect_path.exists():
+        legacy_effect_path.unlink()
     print(f"GREEN: generated {len(rendered)} B2 runtime files")
     return 0
 

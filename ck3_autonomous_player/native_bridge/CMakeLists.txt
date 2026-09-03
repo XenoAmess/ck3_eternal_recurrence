@@ -1532,7 +1532,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/zhongguo-workforce-normal-exit-snapshot-v1.md
       ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_workforce_normal_exit_fact_effects.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_workforce_rehire_fact_effects.txt
-      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_b2_runtime_effects.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_b2_075_exit_offer_effects.txt
   )
 
   add_executable(

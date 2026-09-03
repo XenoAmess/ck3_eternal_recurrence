@@ -1,0 +1,281 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_016_pip_support_effects.txt
+
+zg361_b2_m016_resolve_policy_effect = {
+	set_variable = { name = zg361_b2_m016_route value = 1 }
+	if = {
+		limit = { var:zg361_b2_pip_owner = { has_variable = zg361_mechanism_016_choice } }
+		set_variable = { name = zg361_b2_m016_route value = var:zg361_b2_pip_owner.var:zg361_mechanism_016_choice }
+	}
+}
+
+zg361_b2_m016_post_policy_debt_effect = {
+	zg361_b2_m016_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m016_route = 3
+			OR = {
+				NOT = { has_variable = zg361_b2_m016_policy_debt_receipt_case }
+				NOT = { var:zg361_b2_m016_policy_debt_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m016_policy_debt_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m016_policy_debt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m016_policy_debt_subject value = this }
+		set_variable = { name = zg361_b2_m016_policy_debt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m016_policy_debt_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m016_policy_debt_expected_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m016_policy_debt_due_cycle value = { value = var:zg361_b2_case_cycle add = 1 } }
+		set_variable = { name = zg361_b2_m016_policy_debt_active value = 1 }
+		set_variable = { name = zg361_b2_m016_policy_debt_audit_state value = 1 }
+		set_variable = { name = zg361_b2_m016_visible_revision value = var:zg361_b2_case_feedback_revision }
+	}
+}
+
+zg361_b2_m016_open_business_object_effect = {
+	zg361_b2_m016_resolve_policy_effect = yes
+	if = {
+		limit = { var:zg361_b2_m016_route = 3 }
+		zg361_b2_m016_post_policy_debt_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_m016_object_receipt_case }
+				NOT = { var:zg361_b2_m016_object_receipt_case = var:zg361_b2_pip_case }
+			}
+			NOT = { var:zg361_b2_m016_object_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m016_object_owner value = var:zg361_b2_pip_owner }
+		set_variable = { name = zg361_b2_m016_object_subject value = this }
+		set_variable = { name = zg361_b2_m016_object_cycle value = var:zg361_b2_pip_cycle }
+		set_variable = { name = zg361_b2_m016_object_receipt_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_m016_object_state value = var:zg361_b2_pip_state }
+		set_variable = { name = zg361_b2_m016_object_route value = var:zg361_b2_m016_route }
+		set_variable = { name = zg361_b2_m016_object_active value = 1 }
+		set_variable = { name = zg361_b2_m016_object_consumed value = 0 }
+		set_variable = { name = zg361_b2_m016_visible_revision value = var:zg361_b2_case_feedback_revision }
+		if = {
+			limit = { var:zg361_b2_m016_route = 2 }
+			set_variable = { name = zg361_b2_m016_procedural_risk value = 1 }
+		}
+	}
+}
+
+zg361_b2_m016_consume_business_object_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m016_object_active = 1
+			var:zg361_b2_m016_object_consumed = 0
+			var:zg361_b2_m016_object_owner = var:zg361_b2_pip_owner
+			var:zg361_b2_m016_object_subject = this
+			var:zg361_b2_m016_object_cycle = var:zg361_b2_pip_cycle
+			var:zg361_b2_m016_object_receipt_case = var:zg361_b2_pip_case
+		}
+		set_variable = { name = zg361_b2_m016_object_consumed value = 1 }
+		set_variable = { name = zg361_b2_m016_object_active value = 0 }
+		set_variable = { name = zg361_b2_m016_consumer_revision value = var:zg361_b2_case_feedback_revision }
+		set_variable = { name = zg361_b2_m016_consumer_receipt_case value = var:zg361_b2_pip_case }
+	}
+}
+
+zg361_b2_m016_commit_support_effect = {
+	zg361_b2_m016_open_business_object_effect = yes
+	save_temporary_scope_as = zg361_b2_support_subject
+	var:zg361_b2_pip_owner = { save_temporary_scope_as = zg361_b2_support_owner }
+	set_variable = { name = zg361_b2_pip_support_reserved value = 0 }
+	# A support package is atomic: one real mentor, one capacity slot and the
+	# exact public budget must all exist before any of them is consumed.
+	if = {
+		limit = {
+			var:zg361_b2_m016_object_active = 1
+			var:zg361_b2_m016_route = 1
+		}
+		scope:zg361_b2_support_owner = {
+			ordered_vassal = {
+				limit = {
+					is_alive = yes
+					NOT = { this = scope:zg361_b2_support_owner }
+					NOT = { this = scope:zg361_b2_support_subject }
+				}
+				order_by = learning
+				position = 0
+				save_scope_as = zg361_b2_support_mentor
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:zg361_b2_support_mentor
+				scope:zg361_b2_support_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 25
+				}
+			}
+			scope:zg361_b2_support_owner = {
+		if = {
+			limit = { NOT = { has_variable = zg361_b2_pip_capacity_used } }
+			set_variable = { name = zg361_b2_pip_capacity_used value = 0 }
+		}
+		if = {
+			limit = { var:zg361_b2_pip_capacity_used < 2 }
+			change_variable = { name = zg361_b2_pip_capacity_used add = 1 }
+			remove_treasury = 25
+			scope:zg361_b2_support_subject = {
+				set_variable = { name = zg361_b2_pip_support_reserved value = 1 }
+				set_variable = { name = zg361_b2_pip_support_hours value = 12 }
+				set_variable = { name = zg361_b2_pip_support_attention value = 1 }
+				set_variable = { name = zg361_b2_pip_support_mentor value = scope:zg361_b2_support_mentor }
+				set_variable = { name = zg361_b2_pip_support_budget_owner value = scope:zg361_b2_support_owner }
+				set_variable = { name = zg361_b2_pip_support_budget_allocated value = 25 }
+				set_variable = { name = zg361_b2_pip_support_budget_spent value = 25 }
+				set_variable = { name = zg361_b2_pip_support_absent value = 0 }
+				set_variable = { name = zg361_b2_m016_state value = 2 }
+				set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
+			}
+		}
+			}
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m016_object_active = 1
+			var:zg361_b2_pip_support_reserved = 0
+		}
+		set_variable = { name = zg361_b2_pip_support_hours value = 0 }
+		set_variable = { name = zg361_b2_pip_support_attention value = 0 }
+		set_variable = { name = zg361_b2_pip_support_absent value = 1 }
+		set_variable = { name = zg361_b2_m016_state value = 1 }
+		set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
+		if = {
+			limit = { var:zg361_b2_m016_route = 2 }
+			set_variable = { name = zg361_b2_pip_support_withheld value = 1 }
+			set_variable = { name = zg361_b2_pip_support_budget_unchanged value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_b2_pip_support_atomic_shortfall value = 1 }
+		}
+	}
+}
+
+zg361_b2_release_pip_support_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_support_reserved = 1
+			var:zg361_b2_m016_receipt_serial = var:zg361_b2_pip_case
+		}
+		var:zg361_b2_pip_owner = {
+			if = {
+				limit = { has_variable = zg361_b2_pip_capacity_used var:zg361_b2_pip_capacity_used >= 1 }
+				change_variable = { name = zg361_b2_pip_capacity_used add = -1 }
+			}
+		}
+		set_variable = { name = zg361_b2_pip_support_reserved value = 0 }
+		set_variable = { name = zg361_b2_pip_support_released value = 1 }
+	}
+}
+
+zg361_b2_publish_pip_performance_evidence_effect = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_pip_performance_evidence_status }
+				NOT = { var:zg361_b2_pip_performance_evidence_status = 1 }
+			}
+			OR = {
+				var:zg361_b2_pip_performance_evidence_delta = 10
+				var:zg361_b2_pip_performance_evidence_delta = -10
+				var:zg361_b2_pip_performance_evidence_delta = -15
+			}
+		}
+		set_variable = { name = zg361_b2_pip_performance_evidence_owner value = var:zg361_b2_pip_owner }
+		set_variable = { name = zg361_b2_pip_performance_evidence_subject value = this }
+		set_variable = { name = zg361_b2_pip_performance_evidence_source_cycle value = var:zg361_b2_pip_cycle }
+		set_variable = { name = zg361_b2_pip_performance_evidence_source_case value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_performance_evidence_due_cycle value = var:zg361_b2_pip_cycle }
+		change_variable = { name = zg361_b2_pip_performance_evidence_due_cycle add = 1 }
+		set_variable = { name = zg361_b2_pip_performance_evidence_status value = 1 }
+	}
+	else = { debug_log = "ZG361B2: pending PIP performance evidence conserved; duplicate publish ignored" }
+}
+
+zg361_b2_record_pip_midpoint_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_state = 2
+			OR = {
+				NOT = { has_variable = zg361_b2_pip_midpoint_receipt }
+				NOT = { var:zg361_b2_pip_midpoint_receipt = var:zg361_b2_pip_case }
+			}
+		}
+		set_variable = { name = zg361_b2_pip_midpoint_receipt value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_pip_midpoint_resource_delivery_valid value = 0 }
+		if = {
+			limit = {
+				var:zg361_b2_pip_support_reserved = 1
+				var:zg361_b2_pip_support_budget_spent = 25
+				var:zg361_b2_pip_support_hours = 12
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_resource_delivery_valid value = 1 }
+		}
+		# Fail closed until the immutable baseline provenance matches this exact
+		# PIP.  The producer then re-evaluates the subject's real eight-component
+		# KPI and records current-baseline; support delivery is a separate fact and
+		# can never manufacture this delta.
+		set_variable = { name = zg361_b2_pip_midpoint_progress_status value = 0 }
+		set_variable = { name = zg361_b2_pip_midpoint_progress_red_code value = 1 }
+		if = {
+			limit = {
+				has_variable = zg361_b2_pip_progress_source_kind
+				has_variable = zg361_b2_pip_progress_baseline_owner
+				has_variable = zg361_b2_pip_progress_baseline_subject
+				has_variable = zg361_b2_pip_progress_baseline_cycle
+				has_variable = zg361_b2_pip_progress_baseline_case
+				has_variable = zg361_b2_pip_progress_baseline_task_kind
+				has_variable = zg361_b2_pip_progress_baseline_value
+				has_variable = zg361_b2_pip_progress_target_value
+				has_variable = zg361_b2_pip_progress_baseline_status
+				has_variable = zg361_b2_pip_progress_baseline_red_code
+				var:zg361_b2_pip_progress_source_kind = var:zg361_b2_pip_progress_baseline_task_kind
+				var:zg361_b2_pip_progress_source_kind >= 1
+				var:zg361_b2_pip_progress_source_kind <= 3
+				var:zg361_b2_pip_progress_baseline_owner = var:zg361_b2_pip_owner
+				var:zg361_b2_pip_progress_baseline_subject = this
+				var:zg361_b2_pip_progress_baseline_cycle = var:zg361_b2_pip_cycle
+				var:zg361_b2_pip_progress_baseline_case = var:zg361_b2_pip_case
+				var:zg361_b2_pip_progress_baseline_task_kind = var:zg361_b2_pip_task_kind
+				var:zg361_b2_pip_progress_baseline_status = 1
+				var:zg361_b2_pip_progress_baseline_red_code = 0
+				exists = liege
+				liege = var:zg361_b2_pip_owner
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_progress_source_kind value = var:zg361_b2_pip_progress_source_kind }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_owner value = var:zg361_b2_pip_owner }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_subject value = this }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_cycle value = var:zg361_b2_pip_cycle }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_case value = var:zg361_b2_pip_case }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_task_kind value = var:zg361_b2_pip_task_kind }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_collaboration_evidence_value }
+			if = {
+				limit = { var:zg361_b2_pip_progress_source_kind = 1 }
+				set_variable = { name = zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_governance_evidence_value }
+			}
+			else_if = {
+				limit = { var:zg361_b2_pip_progress_source_kind = 2 }
+				set_variable = { name = zg361_b2_pip_midpoint_progress_current_value value = zg361_kpi_capability_evidence_value }
+			}
+			set_variable = {
+				name = zg361_b2_pip_midpoint_progress_delta
+				value = { value = var:zg361_b2_pip_midpoint_progress_current_value subtract = var:zg361_b2_pip_progress_baseline_value }
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_progress_met value = 0 }
+			if = {
+				limit = { var:zg361_b2_pip_midpoint_progress_current_value >= var:zg361_b2_pip_progress_target_value }
+				set_variable = { name = zg361_b2_pip_midpoint_progress_met value = 1 }
+			}
+			set_variable = { name = zg361_b2_pip_midpoint_progress_year value = current_year }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_status value = 1 }
+			set_variable = { name = zg361_b2_pip_midpoint_progress_red_code value = 0 }
+		}
+		set_variable = { name = zg361_b2_pip_midpoint_state value = 2 }
+	}
+}

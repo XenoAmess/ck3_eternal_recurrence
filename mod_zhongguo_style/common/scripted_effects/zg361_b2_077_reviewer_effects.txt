@@ -1,0 +1,234 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_077_reviewer_effects.txt
+
+zg361_b2_m077_resolve_policy_effect = {
+	set_variable = { name = zg361_b2_m077_route value = 1 }
+	if = {
+		limit = { var:zg361_b2_case_owner = { has_variable = zg361_mechanism_077_choice } }
+		set_variable = { name = zg361_b2_m077_route value = var:zg361_b2_case_owner.var:zg361_mechanism_077_choice }
+	}
+}
+
+zg361_b2_m077_post_policy_debt_effect = {
+	zg361_b2_m077_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m077_route = 3
+			OR = {
+				NOT = { has_variable = zg361_b2_m077_policy_debt_receipt_case }
+				NOT = { var:zg361_b2_m077_policy_debt_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m077_policy_debt_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m077_policy_debt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m077_policy_debt_subject value = this }
+		set_variable = { name = zg361_b2_m077_policy_debt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m077_policy_debt_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m077_policy_debt_expected_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m077_policy_debt_due_cycle value = { value = var:zg361_b2_case_cycle add = 1 } }
+		set_variable = { name = zg361_b2_m077_policy_debt_active value = 1 }
+		set_variable = { name = zg361_b2_m077_policy_debt_audit_state value = 1 }
+		set_variable = { name = zg361_b2_m077_visible_revision value = var:zg361_b2_case_feedback_revision }
+	}
+}
+
+zg361_b2_m077_open_business_object_effect = {
+	zg361_b2_m077_resolve_policy_effect = yes
+	if = {
+		limit = { var:zg361_b2_m077_route = 3 }
+		zg361_b2_m077_post_policy_debt_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_m077_object_receipt_case }
+				NOT = { var:zg361_b2_m077_object_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m077_object_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m077_object_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m077_object_subject value = this }
+		set_variable = { name = zg361_b2_m077_object_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m077_object_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m077_object_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m077_object_route value = var:zg361_b2_m077_route }
+		set_variable = { name = zg361_b2_m077_object_active value = 1 }
+		set_variable = { name = zg361_b2_m077_object_consumed value = 0 }
+		set_variable = { name = zg361_b2_m077_visible_revision value = var:zg361_b2_case_feedback_revision }
+		if = {
+			limit = { var:zg361_b2_m077_route = 2 }
+			set_variable = { name = zg361_b2_m077_procedural_risk value = 1 }
+		}
+	}
+}
+
+zg361_b2_m077_consume_business_object_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m077_object_active = 1
+			var:zg361_b2_m077_object_consumed = 0
+			var:zg361_b2_m077_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m077_object_subject = this
+			var:zg361_b2_m077_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m077_object_receipt_case = var:zg361_b2_case_serial
+		}
+		set_variable = { name = zg361_b2_m077_object_consumed value = 1 }
+		set_variable = { name = zg361_b2_m077_object_active value = 0 }
+		set_variable = { name = zg361_b2_m077_consumer_revision value = var:zg361_b2_case_feedback_revision }
+		set_variable = { name = zg361_b2_m077_consumer_receipt_case value = var:zg361_b2_case_serial }
+	}
+}
+
+zg361_b2_m077_assign_reviewer_effect = {
+	if = {
+		limit = { var:zg361_b2_m077_object_active = 1 }
+	set_variable = { name = zg361_b2_m077_state value = 1 }
+	set_variable = { name = zg361_b2_m077_independent value = 0 }
+	save_temporary_scope_as = zg361_b2_review_subject
+	var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_review_owner }
+	if = {
+		limit = { var:zg361_b2_m077_route = 1 }
+		var:zg361_b2_case_owner = {
+		if = {
+			limit = { exists = liege }
+			liege = {
+				ordered_vassal = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+						NOT = { this = scope:zg361_b2_review_owner }
+						NOT = { this = scope:zg361_b2_review_subject }
+						NOT = { is_close_family_of = scope:zg361_b2_review_owner }
+						NOT = { is_close_family_of = scope:zg361_b2_review_subject }
+					}
+					order_by = stewardship
+					position = 0
+					save_scope_as = zg361_b2_independent_reviewer
+				}
+			}
+		}
+	}
+	}
+	if = {
+		limit = { exists = scope:zg361_b2_independent_reviewer }
+		set_variable = { name = zg361_b2_m077_reviewer value = scope:zg361_b2_independent_reviewer }
+		set_variable = { name = zg361_b2_m077_independent value = 1 }
+	}
+	else = {
+		set_variable = { name = zg361_b2_m077_reviewer value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m077_self_correction value = 1 }
+		set_variable = { name = zg361_b2_m077_independence_disclosed value = 1 }
+	}
+	set_variable = { name = zg361_b2_m077_recusal_subject_used value = 0 }
+	set_variable = { name = zg361_b2_m077_recusal_owner_used value = 0 }
+	# The core appeal resolves in the same effect stack, so a later UI-only
+	# recusal would be decorative.  Consume each side's token synchronously when
+	# the selected reviewer has an observable friend/lover/rival conflict.
+	if = {
+		limit = {
+			var:zg361_b2_m077_independent = 1
+			var:zg361_b2_m077_reviewer = {
+				OR = {
+					has_relation_friend = scope:zg361_b2_review_subject
+					has_relation_lover = scope:zg361_b2_review_subject
+					has_relation_rival = scope:zg361_b2_review_subject
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m077_subject_conflict_reason value = 1 }
+		zg361_b2_m077_subject_recusal_effect = yes
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m077_independent = 1
+			var:zg361_b2_m077_reviewer = {
+				OR = {
+					has_relation_friend = scope:zg361_b2_review_owner
+					has_relation_lover = scope:zg361_b2_review_owner
+					has_relation_rival = scope:zg361_b2_review_owner
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m077_owner_conflict_reason value = 2 }
+		zg361_b2_m077_owner_recusal_effect = yes
+	}
+	set_variable = { name = zg361_b2_m077_quality_bonus value = 0 }
+	if = {
+		limit = { var:zg361_b2_m077_independent = 1 }
+		set_variable = { name = zg361_b2_m077_quality_bonus value = 10 }
+		set_variable = { name = zg361_b2_m077_review_time_cost value = 30 }
+	}
+	set_variable = { name = zg361_b2_m077_receipt_serial value = var:zg361_b2_case_serial }
+	}
+}
+
+zg361_b2_m077_subject_recusal_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m077_object_active = 1
+			var:zg361_b2_m077_route = 1
+			var:zg361_b2_m077_recusal_subject_used = 0
+			has_variable = zg361_b2_m077_subject_conflict_reason
+			var:zg361_b2_m077_subject_conflict_reason >= 1
+			has_variable = zg361_b2_m077_reviewer
+		}
+		set_variable = { name = zg361_b2_m077_recused_reviewer value = var:zg361_b2_m077_reviewer }
+		set_variable = { name = zg361_b2_m077_recusal_subject_used value = 1 }
+		set_variable = { name = zg361_b2_m077_recusal_reason_frozen value = var:zg361_b2_m077_subject_conflict_reason }
+		zg361_b2_m077_pick_replacement_effect = yes
+	}
+}
+
+zg361_b2_m077_owner_recusal_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m077_object_active = 1
+			var:zg361_b2_m077_route = 1
+			var:zg361_b2_m077_recusal_owner_used = 0
+			has_variable = zg361_b2_m077_owner_conflict_reason
+			var:zg361_b2_m077_owner_conflict_reason >= 1
+			has_variable = zg361_b2_m077_reviewer
+		}
+		set_variable = { name = zg361_b2_m077_recused_reviewer value = var:zg361_b2_m077_reviewer }
+		set_variable = { name = zg361_b2_m077_recusal_owner_used value = 1 }
+		set_variable = { name = zg361_b2_m077_recusal_reason_frozen value = var:zg361_b2_m077_owner_conflict_reason }
+		zg361_b2_m077_pick_replacement_effect = yes
+	}
+}
+
+zg361_b2_m077_pick_replacement_effect = {
+	save_temporary_scope_as = zg361_b2_recusal_subject
+	var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_recusal_owner }
+	var:zg361_b2_case_owner = {
+		if = {
+			limit = { exists = liege }
+			liege = {
+				ordered_vassal = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+						NOT = { this = scope:zg361_b2_recusal_owner }
+						NOT = { this = scope:zg361_b2_recusal_subject }
+						NOT = { this = scope:zg361_b2_recusal_subject.var:zg361_b2_m077_recused_reviewer }
+						NOT = { is_close_family_of = scope:zg361_b2_recusal_owner }
+						NOT = { is_close_family_of = scope:zg361_b2_recusal_subject }
+					}
+					order_by = stewardship
+					position = 0
+					save_scope_as = zg361_b2_replacement_reviewer
+				}
+			}
+		}
+	}
+	if = {
+		limit = { exists = scope:zg361_b2_replacement_reviewer }
+		set_variable = { name = zg361_b2_m077_reviewer value = scope:zg361_b2_replacement_reviewer }
+	}
+	else = {
+		set_variable = { name = zg361_b2_m077_replacement_unavailable value = 1 }
+		set_variable = { name = zg361_b2_m077_reviewer value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m077_independent value = 0 }
+		set_variable = { name = zg361_b2_m077_self_correction value = 1 }
+		set_variable = { name = zg361_b2_m077_independence_disclosed value = 1 }
+	}
+}

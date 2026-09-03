@@ -1,0 +1,139 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_358_separate_adverse_action_effects.txt
+
+zg361_b2_prepare_adverse_action_effect = {
+	set_variable = { name = zg361_b2_adverse_action_allowed value = 1 }
+	if = {
+		limit = {
+			has_variable = zg361_b2_separate_action_authorized
+			var:zg361_b2_separate_action_authorized = 1
+		}
+		set_variable = { name = zg361_b2_adverse_action_allowed value = 1 }
+	}
+	else_if = {
+		# The base result itself grants a ninety-day appeal window.  No D+2
+		# elimination may outrun that window even before the subject files.
+		limit = {
+			has_variable = zg361_result_appeal_open
+			var:zg361_result_appeal_open = 1
+			has_variable = zg361_result_case_state
+			var:zg361_result_case_state = 3
+			NOT = { has_variable = zg361_b2_retaliation_state }
+		}
+		set_variable = { name = zg361_b2_adverse_action_allowed value = 0 }
+		set_variable = { name = zg361_b2_m074_state value = 2 }
+		set_variable = { name = zg361_b2_m074_reason value = 4 } # appeal window pending
+		set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+		set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+		debug_log = "ZG361B2: adverse action held until base appeal window closes"
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_b2_retaliation_state
+			var:zg361_b2_retaliation_state = 1
+			var:zg361_b2_retaliation_subject = this
+		}
+		if = {
+			limit = { var:zg361_b2_retaliation_new_fact = 1 }
+			set_variable = { name = zg361_b2_adverse_action_allowed value = 0 }
+			set_variable = { name = zg361_b2_m070_finding value = 2 } # new fact, separate case
+			set_variable = { name = zg361_b2_m074_state value = 3 }
+			set_variable = { name = zg361_b2_m074_reason value = 1 }
+			zg361_b2_m358_open_separate_case_effect = yes
+			if = {
+				limit = { is_ai = yes }
+				zg361_b2_deliver_separate_case_effect = yes
+				set_variable = { name = zg361_b2_separate_action_authorized value = 1 }
+				set_variable = { name = zg361_b2_adverse_action_allowed value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { var:zg361_b2_m070_route = 2 }
+				# Expedient policy really permits the action, but freezes an
+				# explicit retaliation finding and a heavier manager liability.
+				set_variable = { name = zg361_b2_adverse_action_allowed value = 1 }
+				set_variable = { name = zg361_b2_m070_finding value = 3 }
+				set_variable = { name = zg361_b2_m070_retaliation_action_executed value = var:zg361_b2_pending_adverse_action }
+				set_variable = { name = zg361_b2_m070_retaliation_receipt value = var:zg361_b2_retaliation_case }
+				set_variable = { name = zg361_b2_m074_state value = 4 }
+				set_variable = { name = zg361_b2_m074_reason value = 2 }
+				set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+				set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+				var:zg361_b2_retaliation_owner = { change_variable = { name = zg361_b2_management_debt add = 2 } }
+				debug_log = "ZG361B2: expedient post-appeal retaliation executed and disclosed"
+			}
+			else = {
+				set_variable = { name = zg361_b2_adverse_action_allowed value = 0 }
+				change_variable = { name = zg361_b2_retaliation_suspended_n add = 1 }
+				set_variable = { name = zg361_b2_m070_finding value = 1 } # pending independent review
+				set_variable = { name = zg361_b2_m074_state value = 2 }
+				set_variable = { name = zg361_b2_m074_reason value = 2 }
+				set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+				set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+				var:zg361_b2_retaliation_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+				debug_log = "ZG361B2: unsupported post-appeal adverse action suspended"
+			}
+		}
+	}
+	else = {
+		set_variable = { name = zg361_b2_m074_state value = 1 }
+		set_variable = { name = zg361_b2_m074_reason value = 3 }
+	}
+	set_variable = { name = zg361_b2_m074_receipt_serial value = var:zg361_result_case_serial }
+}
+
+zg361_b2_finish_adverse_action_effect = {
+	remove_variable = zg361_b2_pending_adverse_action
+	remove_variable = zg361_b2_adverse_action_allowed
+	remove_variable = zg361_b2_separate_action_authorized
+}
+
+zg361_b2_cancel_blocked_action_effect = {
+	remove_variable = zg361_b2_adverse_action_allowed
+	if = {
+		limit = { NOT = { has_variable = zg361_b2_separate_notice_state } }
+		remove_variable = zg361_b2_pending_adverse_action
+	}
+}
+
+zg361_b2_deliver_separate_case_effect = {
+	if = {
+		limit = {
+			OR = {
+				var:zg361_b2_separate_notice_state = 1
+				var:zg361_b2_separate_notice_state = 2
+			}
+		}
+		set_variable = { name = zg361_b2_separate_notice_state value = 3 }
+		set_variable = { name = zg361_b2_separate_delivery_receipt value = var:zg361_b2_separate_notice_case }
+		set_variable = { name = zg361_b2_separate_appeal_open value = 1 }
+		var:zg361_b2_separate_notice_owner = { save_scope_as = zg361_b2_separate_deadline_owner }
+		save_scope_as = zg361_b2_separate_deadline_subject
+		save_scope_value_as = { name = zg361_b2_separate_deadline_cycle value = var:zg361_b2_separate_notice_cycle }
+		save_scope_value_as = { name = zg361_b2_separate_deadline_case value = var:zg361_b2_separate_notice_case }
+		save_scope_value_as = { name = zg361_b2_separate_deadline_state value = var:zg361_b2_separate_notice_state }
+		trigger_event = { id = zg361b2.162 days = 90 }
+	}
+}
+
+zg361_b2_execute_pending_adverse_action_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_separate_notice_state = 3
+			var:zg361_b2_separate_delivery_receipt = var:zg361_b2_separate_notice_case
+			has_variable = zg361_b2_pending_adverse_action
+		}
+		set_variable = { name = zg361_b2_separate_action_authorized value = 1 }
+		if = { limit = { var:zg361_b2_pending_adverse_action = 1 } zg361_eliminate_purge_effect = yes }
+		else_if = { limit = { var:zg361_b2_pending_adverse_action = 2 } zg361_eliminate_stepdown_effect = yes }
+		else_if = { limit = { var:zg361_b2_pending_adverse_action = 3 } zg361_eliminate_demote_effect = yes }
+		else_if = { limit = { var:zg361_b2_pending_adverse_action = 4 } zg361_eliminate_extend_effect = yes }
+		if = {
+			limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
+			set_variable = { name = zg361_b2_m017_state value = 3 }
+			set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+			zg361_b2_m017_consume_business_object_effect = yes
+		}
+	}
+}

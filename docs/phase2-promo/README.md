@@ -38,7 +38,7 @@
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | B1 正式 generator split 为 59 files / 7,858,254 B；r3 已通过 8/8 gates、3 markers、material 0 与 cleanup，checkpoint 为 startup/full-entry production-candidate GREEN | 验证 delayed-path 与后续全量功能门，再进入 seed → 8 段实机采集 | 后续门通过后，采集与 intake 约 20–40 分钟 |
+| 二期产品代码与发布树 | B1 正式 generator split 已 full-entry GREEN；B2 现为 25 个用途分片、152/152 unique、每片 1–9，静态/投影/release GREEN | 先拆 B2 生产依赖中的 4.64 MB Workforce endgame 单体，再构造无 stub 的 B2 full-entry/seed 候选 | 后续门通过后再估；不沿用旧 2–5 分钟线性启动估算 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
@@ -113,3 +113,14 @@ open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--prefligh
 r1/r2 均在约 0.3 秒因 probe game-path 配置错误结束，`ck3_started=false`，只保留为 harness/config RED，不计作内容失败。修正后的 r3 用时 **245.770 s**，8/8 entry gates、3 个 game-state markers、material error 0 与 cleanup 全部 GREEN。B1 checkpoint 因而晋级为 **startup/full-entry production-candidate GREEN**。
 
 该晋级不覆盖 delayed-path、seed、生产 OODA 或 footage；真实素材仍为 `0/8`，两条 MP4 仍未生成。原始未拆分单文件 full B1 的唯一 1205.343 秒 RED 继续保留；拆分是已验证的实施候选，但根因仍未唯一证明。G2 保持 paused。
+
+### B2 generator 用途分片（2026-09-04）
+
+B2 的 `253,920 B / 152-effect` 旧单体已由 generator 替换为 25 个用途分片；152/152 个顶层正文逐 block 字节一致，每片
+`1–9` 个、合计 `250,551 B`，清单 SHA-256 为
+`06274A5E0D89EF97C19EF3C099E8AEF946C4153BC78C065EC260806D27F67FAB`。broad/release 均包含全部分片且不含旧单体；
+当前仅为文件布局 `static-ready`，没有新增 CK3 live。完整映射与限制见
+[`361-b2-runtime-spec.md`](../../mod_zhongguo_style/docs/361-b2-runtime-spec.md)。
+
+无 stub 的 B2 production closure 仍会触及 `4,636,271 B / 324-effect` Workforce endgame 单体；它必须先按相同用途规则拆分，
+不能把旧的 P2/P3 startup/projection RED 或 stub 候选冒充正式 B2。

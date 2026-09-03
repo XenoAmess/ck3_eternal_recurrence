@@ -8,18 +8,25 @@ the readiness recorded by the phase-two program.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
 import unittest
 
 from gen_361_b2_runtime import (
     DELEGATED_IDS,
+    EFFECT_GROUPS,
+    EFFECT_HARD_MAX,
+    EFFECT_HARD_LIMIT_EXCEPTIONS,
+    EFFECT_TARGET_MAX,
     INTERFACE_IDS,
+    LEGACY_EFFECT_FILENAME,
     MOD_ROOT,
     PIP_CASE_TUPLE_FIELDS,
     SEMANTIC_IDS,
     WIRED_IDS,
     outputs,
+    render_effects,
 )
 from zg361_b2_runtime_data import B2_BINDINGS
 
@@ -71,7 +78,11 @@ def top_level_block(text: str, key: str) -> str:
 class B2CK3RuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read("common/scripted_effects/zg361_b2_runtime_effects.txt")
+        cls.effect_parts = {
+            filename: read(f"common/scripted_effects/{filename}")
+            for filename, _names in EFFECT_GROUPS
+        }
+        cls.effects = "\n\n".join(cls.effect_parts.values())
         cls.events = read("events/zg361_b2_runtime_events.txt")
         cls.probation_effects = read(
             "common/scripted_effects/zg361_workforce_probation_fact_effects.txt"
@@ -126,7 +137,17 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
     def test_generator_is_current_deterministic_bom_and_independent(self) -> None:
         rendered = outputs()
-        self.assertEqual(len(rendered), 11)
+        self.assertEqual(len(rendered), 35)
+        effects_dir = MOD_ROOT / "common" / "scripted_effects"
+        self.assertEqual(
+            {
+                path.name
+                for path in rendered
+                if path.parent == effects_dir
+            },
+            {filename for filename, _names in EFFECT_GROUPS},
+        )
+        self.assertNotIn(effects_dir / LEGACY_EFFECT_FILENAME, rendered)
         for path, payload in rendered.items():
             with self.subTest(path=path.name):
                 self.assertEqual(path.read_bytes(), payload)
@@ -153,6 +174,55 @@ class B2CK3RuntimeTests(unittest.TestCase):
             self.effects.replace(m359_refund, "").replace(m359_open, "")
             + self.events,
         )
+
+    def test_effects_are_complete_byte_identical_purpose_shards(self) -> None:
+        self.assertEqual(len(EFFECT_GROUPS), 25)
+        self.assertEqual(EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+        self.assertFalse(
+            (
+                MOD_ROOT
+                / "common"
+                / "scripted_effects"
+                / LEGACY_EFFECT_FILENAME
+            ).exists()
+        )
+
+        historical_bytes = render_effects()
+        self.assertEqual(len(historical_bytes), 253_920)
+        self.assertEqual(
+            hashlib.sha256(historical_bytes).hexdigest(),
+            "70b38fa3ec0ca276c09dcf092a8291b030405dec3b43b0e7b4582f2b2733c4f2",
+        )
+        historical = historical_bytes.decode("utf-8-sig")
+        historical_names = re.findall(
+            r"(?m)^(zg361_b2_[a-z0-9_]+_effect)\s*=\s*\{",
+            historical,
+        )
+        configured_names = [
+            name for _filename, names in EFFECT_GROUPS for name in names
+        ]
+        self.assertEqual(len(historical_names), 152)
+        self.assertEqual(len(set(historical_names)), 152)
+        self.assertEqual(len(configured_names), 152)
+        self.assertEqual(len(set(configured_names)), 152)
+        self.assertEqual(set(configured_names), set(historical_names))
+
+        for filename, expected_names in EFFECT_GROUPS:
+            with self.subTest(filename=filename):
+                self.assertGreaterEqual(len(expected_names), 1)
+                self.assertLessEqual(len(expected_names), EFFECT_TARGET_MAX)
+                self.assertLessEqual(len(expected_names), EFFECT_HARD_MAX)
+                part = self.effect_parts[filename]
+                actual_names = re.findall(
+                    r"(?m)^(zg361_b2_[a-z0-9_]+_effect)\s*=\s*\{",
+                    part,
+                )
+                self.assertEqual(actual_names, list(expected_names))
+                for name in expected_names:
+                    self.assertEqual(
+                        top_level_block(part, name),
+                        top_level_block(historical, name),
+                    )
 
     def test_all_scheduled_events_exist_once_and_braces_close(self) -> None:
         definition_list = re.findall(

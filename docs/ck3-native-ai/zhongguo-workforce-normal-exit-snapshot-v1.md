@@ -16,7 +16,7 @@
 - JSON Schema：`schemas/zhongguo-workforce-normal-exit-snapshot-v1.schema.json`
 - 机器 ABI：`native_bridge/research/zhongguo_workforce_normal_exit_snapshot_v1_abi.json`
 - 来源 fixture：`native_bridge/research/fixtures/zhongguo_workforce_normal_exit_snapshot_v1_source_contract.json`
-- 产品 producer：`mod_zhongguo_style/common/scripted_effects/zg361_b2_runtime_effects.txt`、`zg361_workforce_normal_exit_fact_effects.txt` 与 `zg361_workforce_rehire_fact_effects.txt`
+- 产品 producer：`mod_zhongguo_style/common/scripted_effects/zg361_b2_075_exit_offer_effects.txt`、`zg361_workforce_normal_exit_fact_effects.txt` 与 `zg361_workforce_rehire_fact_effects.txt`
 
 ## MCP 请求、subject 与 owner 边界
 

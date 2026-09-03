@@ -1,0 +1,171 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_074_redundancy_effects.txt
+
+zg361_b2_m074_resolve_policy_effect = {
+	set_variable = { name = zg361_b2_m074_route value = 1 }
+	if = {
+		limit = { var:zg361_b2_case_owner = { has_variable = zg361_mechanism_074_choice } }
+		set_variable = { name = zg361_b2_m074_route value = var:zg361_b2_case_owner.var:zg361_mechanism_074_choice }
+	}
+}
+
+zg361_b2_m074_post_policy_debt_effect = {
+	zg361_b2_m074_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m074_route = 3
+			OR = {
+				NOT = { has_variable = zg361_b2_m074_policy_debt_receipt_case }
+				NOT = { var:zg361_b2_m074_policy_debt_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m074_policy_debt_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m074_policy_debt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m074_policy_debt_subject value = this }
+		set_variable = { name = zg361_b2_m074_policy_debt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m074_policy_debt_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m074_policy_debt_expected_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m074_policy_debt_due_cycle value = { value = var:zg361_b2_case_cycle add = 1 } }
+		set_variable = { name = zg361_b2_m074_policy_debt_active value = 1 }
+		set_variable = { name = zg361_b2_m074_policy_debt_audit_state value = 1 }
+		set_variable = { name = zg361_b2_m074_visible_revision value = var:zg361_b2_case_feedback_revision }
+	}
+}
+
+zg361_b2_m074_open_business_object_effect = {
+	zg361_b2_m074_resolve_policy_effect = yes
+	if = {
+		limit = { var:zg361_b2_m074_route = 3 }
+		zg361_b2_m074_post_policy_debt_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_m074_object_receipt_case }
+				NOT = { var:zg361_b2_m074_object_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m074_object_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m074_object_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m074_object_subject value = this }
+		set_variable = { name = zg361_b2_m074_object_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m074_object_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m074_object_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m074_object_route value = var:zg361_b2_m074_route }
+		set_variable = { name = zg361_b2_m074_object_active value = 1 }
+		set_variable = { name = zg361_b2_m074_object_consumed value = 0 }
+		set_variable = { name = zg361_b2_m074_visible_revision value = var:zg361_b2_case_feedback_revision }
+		if = {
+			limit = { var:zg361_b2_m074_route = 2 }
+			set_variable = { name = zg361_b2_m074_procedural_risk value = 1 }
+		}
+	}
+}
+
+zg361_b2_m074_consume_business_object_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m074_object_active = 1
+			var:zg361_b2_m074_object_consumed = 0
+			var:zg361_b2_m074_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m074_object_subject = this
+			var:zg361_b2_m074_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m074_object_receipt_case = var:zg361_b2_case_serial
+		}
+		set_variable = { name = zg361_b2_m074_object_consumed value = 1 }
+		set_variable = { name = zg361_b2_m074_object_active value = 0 }
+		set_variable = { name = zg361_b2_m074_consumer_revision value = var:zg361_b2_case_feedback_revision }
+		set_variable = { name = zg361_b2_m074_consumer_receipt_case value = var:zg361_b2_case_serial }
+	}
+}
+
+zg361_b2_m074_open_redundancy_offer_effect = {
+	zg361_b2_m074_open_business_object_effect = yes
+	if = {
+		limit = { var:zg361_b2_m074_object_active = 1 var:zg361_b2_m074_state = 0 }
+		set_variable = { name = zg361_b2_m074_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m074_subject value = this }
+		set_variable = { name = zg361_b2_m074_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m074_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m074_state value = 1 }
+		set_variable = { name = zg361_b2_m074_reason value = 1 } # organizational redundancy
+		set_variable = { name = zg361_b2_m074_offer_gold value = 50 }
+		set_variable = { name = zg361_b2_m074_redundancy_eligible value = 0 }
+		set_variable = { name = zg361_b2_m074_treasury_paid value = 0 }
+		set_variable = { name = zg361_b2_m074_personal_received value = 0 }
+		set_variable = { name = zg361_b2_m074_actual_exit value = 0 }
+		set_variable = { name = zg361_b2_m074_hc_released value = 0 }
+		set_variable = { name = zg361_b2_m074_receipt_serial value = var:zg361_b2_case_serial }
+		if = {
+			limit = { var:zg361_b2_m074_route = 2 }
+			set_variable = { name = zg361_b2_m074_reason value = 2 } # disguised performance exit
+			set_variable = { name = zg361_b2_m074_offer_gold value = 0 }
+			set_variable = { name = zg361_b2_m074_redundancy_eligible value = 1 }
+			set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+			set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_b2_m074_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 50
+				}
+			}
+			set_variable = { name = zg361_b2_m074_redundancy_eligible value = 1 }
+		}
+	}
+}
+
+zg361_b2_m074_accept_redundancy_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m074_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m074_subject = this
+			var:zg361_b2_m074_object_active = 1
+			var:zg361_b2_m074_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m074_case = var:zg361_b2_case_serial
+			var:zg361_b2_m074_state = 1
+			var:zg361_b2_m074_redundancy_eligible = 1
+			var:zg361_b2_m074_receipt_serial = var:zg361_b2_m074_case
+			OR = {
+				var:zg361_b2_m074_route = 2
+				var:zg361_b2_m074_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 50
+				}
+			}
+		}
+		if = {
+			limit = { var:zg361_b2_m074_route = 1 }
+			var:zg361_b2_m074_owner = { remove_treasury = 50 }
+			add_gold = 50
+			set_variable = { name = zg361_b2_m074_treasury_paid value = 50 }
+			set_variable = { name = zg361_b2_m074_personal_received value = 50 }
+			set_variable = { name = zg361_b2_m074_neutral_record value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_b2_m074_treasury_paid value = 0 }
+			set_variable = { name = zg361_b2_m074_personal_received value = 0 }
+			set_variable = { name = zg361_b2_m074_unfunded_disguised_exit value = 1 }
+		}
+		set_variable = { name = zg361_b2_m074_actual_exit value = 1 }
+		set_variable = { name = zg361_b2_m074_hc_released value = 1 }
+		set_variable = { name = zg361_b2_m074_state value = 3 }
+		var:zg361_b2_m074_owner = { save_scope_as = zg361_b2_redundancy_audit_owner }
+		save_scope_as = zg361_b2_redundancy_audit_subject
+		save_scope_value_as = { name = zg361_b2_redundancy_audit_cycle value = var:zg361_b2_m074_cycle }
+		save_scope_value_as = { name = zg361_b2_redundancy_audit_case value = var:zg361_b2_m074_case }
+		save_scope_value_as = { name = zg361_b2_redundancy_audit_state value = var:zg361_b2_m074_state }
+		trigger_event = { id = zg361b2.171 days = 30 }
+		force_step_down_landed_titles = yes
+	}
+}
+
+zg361_b2_m074_reject_redundancy_effect = {
+	if = {
+		limit = { var:zg361_b2_m074_state = 1 }
+		set_variable = { name = zg361_b2_m074_state value = 5 }
+		set_variable = { name = zg361_b2_m074_redundancy_eligible value = 0 }
+		zg361_b2_m074_consume_business_object_effect = yes
+	}
+}

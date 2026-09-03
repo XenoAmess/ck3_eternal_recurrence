@@ -1,0 +1,131 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_359_boundary_redelivery_effects.txt
+
+zg361_b2_prepare_boundary_redelivery_effect = {
+	set_variable = { name = zg361_b2_redelivery_source_subject value = scope:zg361_b2_corrected_subject }
+	set_variable = { name = zg361_b2_redelivery_owner value = scope:zg361_b2_corrected_subject.var:zg361_b2_case_owner }
+	set_variable = { name = zg361_b2_redelivery_subject value = this }
+	set_variable = { name = zg361_b2_redelivery_cycle value = scope:zg361_b2_corrected_subject.var:zg361_b2_case_cycle }
+	set_variable = { name = zg361_b2_redelivery_case value = { value = scope:zg361_b2_corrected_subject.var:zg361_b2_case_serial add = 200000 } }
+	set_variable = { name = zg361_b2_redelivery_state value = 1 }
+	set_variable = { name = zg361_b2_redelivery_contested value = 0 }
+	set_variable = { name = zg361_b2_redelivery_receipt value = 0 }
+	if = {
+		limit = { is_ai = yes }
+		set_variable = { name = zg361_b2_redelivery_method value = 4 }
+		zg361_b2_deliver_boundary_notice_effect = yes
+	}
+	else = {
+		var:zg361_b2_redelivery_owner = { save_scope_as = zg361_b2_redelivery_prompt_owner }
+		save_scope_as = zg361_b2_redelivery_prompt_subject
+		save_scope_value_as = { name = zg361_b2_redelivery_prompt_cycle value = var:zg361_b2_redelivery_cycle }
+		save_scope_value_as = { name = zg361_b2_redelivery_prompt_case value = var:zg361_b2_redelivery_case }
+		save_scope_value_as = { name = zg361_b2_redelivery_prompt_state value = var:zg361_b2_redelivery_state }
+		trigger_event = { id = zg361b2.131 days = 1 }
+	}
+}
+
+zg361_b2_deliver_boundary_notice_effect = {
+	if = {
+		limit = {
+			OR = {
+				var:zg361_b2_redelivery_state = 1
+				var:zg361_b2_redelivery_state = 2
+			}
+		}
+		set_variable = { name = zg361_b2_redelivery_state value = 3 }
+		set_variable = { name = zg361_b2_redelivery_receipt value = var:zg361_b2_redelivery_case }
+		zg361_b2_apply_boundary_redelivery_effect = yes
+	}
+}
+
+zg361_b2_contest_boundary_notice_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_redelivery_state = 3
+			var:zg361_b2_redelivery_receipt = var:zg361_b2_redelivery_case
+		}
+		set_variable = { name = zg361_b2_redelivery_contested value = 1 }
+		set_variable = { name = zg361_b2_redelivery_state value = 4 }
+		set_variable = { name = zg361_result_objection_recorded value = 1 }
+		zg361_b2_on_appeal_filed_effect = yes
+	}
+}
+
+zg361_b2_apply_boundary_redelivery_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_redelivery_state = 3
+			var:zg361_b2_redelivery_receipt = var:zg361_b2_redelivery_case
+			var:zg361_result_case_owner = var:zg361_b2_redelivery_owner
+			var:zg361_result_cycle_serial = var:zg361_b2_redelivery_cycle
+			var:zg361_result_grade = 2
+			var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+		}
+		remove_character_modifier = zg361_grade_35
+		set_variable = { name = zg361_b2_redelivery_original_result_case value = var:zg361_result_case_serial }
+		set_variable = { name = zg361_result_case_serial value = var:zg361_b2_redelivery_case }
+		set_variable = { name = zg361_last_grade value = 1 }
+		set_variable = { name = zg361_result_grade value = 1 }
+		set_variable = { name = zg361_result_grade_reason value = 9 }
+		set_variable = { name = zg361_result_case_state value = 3 }
+		set_variable = { name = zg361_result_delivery_method value = var:zg361_b2_redelivery_method }
+		set_variable = { name = zg361_result_delivered_year value = current_year }
+		set_variable = { name = zg361_result_settlement_posted_serial value = 0 }
+		set_variable = { name = zg361_result_refund_posted_serial value = 0 }
+		set_variable = { name = zg361_result_treasury_paid value = 0 }
+		set_variable = { name = zg361_result_gold_paid value = 0 }
+		set_variable = { name = zg361_result_merit_paid value = 0 }
+		set_variable = { name = zg361_result_treasury_refunded value = 0 }
+		set_variable = { name = zg361_result_gold_refunded value = 0 }
+		set_variable = { name = zg361_result_merit_refunded value = 0 }
+		set_variable = { name = zg361_result_salary_cut_active value = 0 }
+		set_variable = { name = zg361_result_appeal_open value = 0 }
+		save_temporary_scope_as = zg361_b2_adjusted_boundary_subject
+		var:zg361_b2_redelivery_owner = {
+			if = {
+				limit = {
+					has_variable = zg361_review_serial
+					var:zg361_review_serial = scope:zg361_b2_adjusted_boundary_subject.var:zg361_b2_redelivery_cycle
+					has_variable = zg361_last_35_n
+					var:zg361_last_35_n >= 1
+				}
+				change_variable = { name = zg361_last_35_n add = -1 }
+				change_variable = { name = zg361_last_325_n add = 1 }
+			}
+			set_variable = { name = zg361_b2_scoreboard_redelivery_dirty value = 1 }
+		}
+		var:zg361_b2_redelivery_source_subject = {
+			set_variable = { name = zg361_b2_m359_state value = 3 }
+			set_variable = { name = zg361_b2_m359_redelivery_subject value = scope:zg361_b2_adjusted_boundary_subject }
+			set_variable = { name = zg361_b2_m359_redelivery_receipt value = scope:zg361_b2_adjusted_boundary_subject.var:zg361_b2_redelivery_case }
+			zg361_b2_m359_consume_business_object_effect = yes
+		}
+		# Reuse the proven product settlement and appeal/refund chain.  The
+		# redelivery receipt authorizes this reset once; all actual money/merit
+		# writes and the new D+90 appeal timer remain owned by the core effect.
+		zg361_b2_on_result_frozen_effect = yes
+		zg361_settle_delivered_325_effect = yes
+	}
+}
+
+zg361_b2_apply_due_quota_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b2_quota_debt
+			var:zg361_b2_quota_debt >= 1
+			has_variable = zg361_b2_quota_debt_due_cycle
+			var:zg361_review_serial >= var:zg361_b2_quota_debt_due_cycle
+			trigger_if = {
+				limit = { has_variable = zg361_b2_quota_debt_consumed_cycle }
+				NOT = { var:zg361_b2_quota_debt_consumed_cycle = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+		}
+		change_variable = { name = zg361_bottom_slots add = var:zg361_b2_quota_debt }
+		set_variable = { name = zg361_b2_quota_debt_consumed_slots value = var:zg361_b2_quota_debt }
+		set_variable = { name = zg361_b2_quota_debt value = 0 }
+		set_variable = { name = zg361_b2_quota_debt_consumed_cycle value = var:zg361_review_serial }
+		debug_log = "ZG361B2: next-cycle quota debt consumed once"
+	}
+}

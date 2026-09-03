@@ -23,6 +23,55 @@
   单元测试 GREEN 不得写成 fixture-live、production-live，亦不得提升 `domain_runtime` 或
   `player_visible_loop`。
 
+## effect 文件分片合同（2026-09-04）
+
+B2 在拆分前的冻结基线是单文件
+`common/scripted_effects/zg361_b2_runtime_effects.txt`：`253,920 B`、`152` 个唯一顶层 effect，
+SHA-256 为 `70B38FA3EC0CA276C09DCF092A8291B030405DEC3B43B0E7B4582F2B2733C4F2`。该单体只用于证明迁移前后的
+语义身份，不再是正式产品输出；历史 projection、报告和 artifact 继续引用它们当时实际装载的单体，禁止回写或重建后冒充原证据。
+
+从 B2 起，effect 文件必须按用途和调用链分组：目标为每文件 `1–10` 个 effect，原则上不得超过 `20` 个。
+当前正式布局为下列 `25` 个分片，精确覆盖冻结基线的 `152/152` 个顶层定义；每片 `1–9` 个，因此没有超限例外：
+
+| 正式文件（位于 `common/scripted_effects/`） | effect 数 | 用途 |
+|---|---:|---|
+| `zg361_b2_014_appeal_lifecycle_effects.txt` | 8 | #014 申诉案卷 policy 生命周期与申诉 filed/upheld/expired/corrected 回调 |
+| `zg361_b2_015_pip_open_effects.txt` | 7 | #015 policy 生命周期、PIP 五元组清理、独立复核人和开案 |
+| `zg361_b2_015_pip_response_effects.txt` | 3 | PIP 接受、协商与拒绝三种本人回应 |
+| `zg361_b2_016_pip_support_effects.txt` | 8 | #016 policy 生命周期、支持提交/释放、绩效证据和中期检查 |
+| `zg361_b2_017_pip_settlement_effects.txt` | 8 | #017 policy 生命周期、到期调度、结算和末位处置 |
+| `zg361_b2_017_pip_workforce_handoff_effects.txt` | 2 | PIP 结算发布与 Workforce probation fact 重放 |
+| `zg361_b2_069_delivery_effects.txt` | 8 | #069 policy 生命周期、结算前门禁、结果冻结、正式送达与回执 |
+| `zg361_b2_070_observation_effects.txt` | 5 | #070 policy 生命周期与反报复观察期 |
+| `zg361_b2_071_escalation_effects.txt` | 6 | #071 policy 生命周期、公开升级和证据升级发布 |
+| `zg361_b2_072_access_audit_effects.txt` | 7 | #072 policy 生命周期、送达前 ACL、读取记录和访问日志关闭 |
+| `zg361_b2_073_reporting_effects.txt` | 7 | #073 policy 生命周期、匿名举报、延后升级和报告分流 |
+| `zg361_b2_074_redundancy_effects.txt` | 7 | #074 policy 生命周期与裁撤方案开立、接受、拒绝 |
+| `zg361_b2_075_exit_offer_effects.txt` | 7 | #075 policy 生命周期与正常离职方案开立、接受、拒绝 |
+| `zg361_b2_076_liability_effects.txt` | 5 | #076 policy 生命周期与责任份额分配 |
+| `zg361_b2_077_reviewer_effects.txt` | 8 | #077 policy 生命周期、复核人指派、双方回避和替补选择 |
+| `zg361_b2_078_fairness_effects.txt` | 7 | #078 policy 生命周期、公平更新与 cohort 样本消费 |
+| `zg361_b2_079_skip_level_effects.txt` | 6 | #079 policy 生命周期、隔级调查开案与席位释放 |
+| `zg361_b2_080_metric_defect_effects.txt` | 5 | #080 policy 生命周期与指标缺陷单开立 |
+| `zg361_b2_081_projection_access_effects.txt` | 6 | #081 policy 生命周期、案卷访问投影与摘要发布 |
+| `zg361_b2_358_non_aggravation_effects.txt` | 9 | #358 policy 生命周期、Workforce receipt 与不加重冻结/应用/关闭 |
+| `zg361_b2_358_separate_adverse_action_effects.txt` | 5 | 独立不利行动的准备、送达、执行与取消 |
+| `zg361_b2_359_quota_return_effects.txt` | 9 | #359 policy 生命周期、Workforce receipt、配额回流与边界复核 |
+| `zg361_b2_359_boundary_redelivery_effects.txt` | 5 | 边界复核后的准备、重新送达、争议、应用与到期配额债 |
+| `zg361_b2_collective_receipt_handoff_effects.txt` | 1 | 已完成 AL receipts 向 Workforce 的统一 adapter |
+| `zg361_b2_debt_consumers_effects.txt` | 3 | 跨周期 PIP 证据、management debt 与到期 policy debt 消费者 |
+
+当前 25 片合计 `250,551 B`，单片为 `3,156–25,977 B`；按
+`filename<TAB>bytes<TAB>effect_count<TAB>uppercase_sha256<LF>`、文件名升序生成的清单 SHA-256 为
+`06274A5E0D89EF97C19EF3C099E8AEF946C4153BC78C065EC260806D27F67FAB`。最大分片是
+`zg361_b2_078_fairness_effects.txt`（`25,977 B / 7 effects`），当前不存在超过 `10` 或 `20` 的文件。
+
+生成器必须保留拆分前的历史正文作为内存中的语义基线，但正式 `outputs()` 只允许产出上述分片。旧单体与分片不得共存：
+CK3 会同时加载同目录文件，共存会造成同名顶层定义重复；`--check` 和静态测试必须把遗留单体判为 RED。拆分只允许落在完整顶层
+effect block 边界；验证必须证明历史名称集合被唯一、完整覆盖，各分片内部顺序与用途映射一致，并逐 block 比较正文的字节身份，
+不能用“测试能解析”替代语义同一性。跨分片的全局排列不属于该合同，也不得写成保持了历史全局顺序。
+任何未来超过 `20` 个 effect 的分片都必须在本节记录具体理由、文件体量和对应实机证据；没有这些记录不得作为正式输出。
+
 ## 逐项冻结合同
 
 19 个原生 CK3 对象及共享 typed contract 都必须冻结以下字段：

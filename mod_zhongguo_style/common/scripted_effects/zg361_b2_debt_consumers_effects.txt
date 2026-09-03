@@ -1,0 +1,335 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_debt_consumers_effects.txt
+
+zg361_b2_consume_pip_performance_evidence_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_pip_performance_evidence_status = 1
+			var:zg361_b2_pip_performance_evidence_subject = this
+			has_variable = zg361_b2_pip_performance_evidence_source_cycle
+			has_variable = zg361_b2_pip_performance_evidence_due_cycle
+			# The KPI hook runs before either cycle path publishes its new serial.
+			# Active B1 therefore consumes against its prospective frozen serial;
+			# legacy/no-B1 consumes when the previous serial reaches source_cycle.
+			OR = {
+				AND = {
+					root = {
+						has_character_flag = zg361_b1_cycle_active
+						has_variable = zg361_b1_cycle_serial
+					}
+					root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+				}
+				AND = {
+					root = {
+						NOT = { has_character_flag = zg361_b1_cycle_active }
+						has_variable = zg361_review_serial
+					}
+					root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_source_cycle
+				}
+			}
+			OR = {
+				var:zg361_b2_pip_performance_evidence_delta = 10
+				var:zg361_b2_pip_performance_evidence_delta = -10
+				var:zg361_b2_pip_performance_evidence_delta = -15
+			}
+		}
+		change_variable = { name = zg361_evidence_growth add = var:zg361_b2_pip_performance_evidence_delta }
+		change_variable = { name = zg361_kpi add = var:zg361_b2_pip_performance_evidence_delta }
+		set_variable = { name = zg361_b2_pip_performance_evidence_status value = 2 }
+		# Legacy records the producer's due cycle. Active B1 records the actual
+		# frozen serial that admitted this compute (including a safe catch-up).
+		set_variable = { name = zg361_b2_pip_performance_evidence_consumed_cycle value = var:zg361_b2_pip_performance_evidence_due_cycle }
+		if = {
+			limit = {
+				root = {
+					has_character_flag = zg361_b1_cycle_active
+					has_variable = zg361_b1_cycle_serial
+				}
+				root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+			}
+			set_variable = { name = zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+		}
+		set_variable = { name = zg361_b2_pip_performance_evidence_consumed_case value = var:zg361_b2_pip_performance_evidence_source_case }
+		debug_log = "ZG361B2: terminal PIP evidence consumed once by a later KPI computation"
+	}
+}
+
+zg361_b2_consume_management_debt_effect = {
+	if = {
+		limit = { has_variable = zg361_b2_management_debt var:zg361_b2_management_debt >= 1 }
+		set_variable = { name = zg361_b2_management_debt_applied value = { value = var:zg361_b2_management_debt multiply = 10 max = 30 } }
+		change_variable = { name = zg361_evidence_organization subtract = var:zg361_b2_management_debt_applied }
+		change_variable = { name = zg361_kpi subtract = var:zg361_b2_management_debt_applied }
+		set_variable = { name = zg361_b2_management_debt value = 0 }
+		set_variable = { name = zg361_b2_management_debt_consumed_year value = current_year }
+	}
+}
+
+zg361_b2_consume_due_policy_debts_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m014_policy_debt_active = 1
+			has_variable = zg361_b2_m014_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m014_policy_debt_due_cycle
+			has_variable = zg361_b2_m014_policy_debt_owner
+		}
+		var:zg361_b2_m014_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m014_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m014_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m014_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m015_policy_debt_active = 1
+			has_variable = zg361_b2_m015_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m015_policy_debt_due_cycle
+			has_variable = zg361_b2_m015_policy_debt_owner
+		}
+		var:zg361_b2_m015_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m015_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m015_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m015_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m016_policy_debt_active = 1
+			has_variable = zg361_b2_m016_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m016_policy_debt_due_cycle
+			has_variable = zg361_b2_m016_policy_debt_owner
+		}
+		var:zg361_b2_m016_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m016_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m016_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m016_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m017_policy_debt_active = 1
+			has_variable = zg361_b2_m017_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m017_policy_debt_due_cycle
+			has_variable = zg361_b2_m017_policy_debt_owner
+		}
+		var:zg361_b2_m017_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m017_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m017_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m017_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m069_policy_debt_active = 1
+			has_variable = zg361_b2_m069_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m069_policy_debt_due_cycle
+			has_variable = zg361_b2_m069_policy_debt_owner
+		}
+		var:zg361_b2_m069_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m069_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m069_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m069_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m070_policy_debt_active = 1
+			has_variable = zg361_b2_m070_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m070_policy_debt_due_cycle
+			has_variable = zg361_b2_m070_policy_debt_owner
+		}
+		var:zg361_b2_m070_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m070_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m070_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m070_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m071_policy_debt_active = 1
+			has_variable = zg361_b2_m071_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m071_policy_debt_due_cycle
+			has_variable = zg361_b2_m071_policy_debt_owner
+		}
+		var:zg361_b2_m071_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m071_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m071_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m071_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m072_policy_debt_active = 1
+			has_variable = zg361_b2_m072_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m072_policy_debt_due_cycle
+			has_variable = zg361_b2_m072_policy_debt_owner
+		}
+		var:zg361_b2_m072_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m072_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m072_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m072_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m073_policy_debt_active = 1
+			has_variable = zg361_b2_m073_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m073_policy_debt_due_cycle
+			has_variable = zg361_b2_m073_policy_debt_owner
+		}
+		var:zg361_b2_m073_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m073_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m073_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m073_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m074_policy_debt_active = 1
+			has_variable = zg361_b2_m074_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m074_policy_debt_due_cycle
+			has_variable = zg361_b2_m074_policy_debt_owner
+		}
+		var:zg361_b2_m074_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m074_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m074_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m074_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m075_policy_debt_active = 1
+			has_variable = zg361_b2_m075_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m075_policy_debt_due_cycle
+			has_variable = zg361_b2_m075_policy_debt_owner
+		}
+		var:zg361_b2_m075_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m075_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m075_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m075_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m076_policy_debt_active = 1
+			has_variable = zg361_b2_m076_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m076_policy_debt_due_cycle
+			has_variable = zg361_b2_m076_policy_debt_owner
+		}
+		var:zg361_b2_m076_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m076_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m076_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m076_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m077_policy_debt_active = 1
+			has_variable = zg361_b2_m077_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m077_policy_debt_due_cycle
+			has_variable = zg361_b2_m077_policy_debt_owner
+		}
+		var:zg361_b2_m077_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m077_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m077_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m077_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m078_policy_debt_active = 1
+			has_variable = zg361_b2_m078_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m078_policy_debt_due_cycle
+			has_variable = zg361_b2_m078_policy_debt_owner
+		}
+		var:zg361_b2_m078_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m078_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m078_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m078_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m079_policy_debt_active = 1
+			has_variable = zg361_b2_m079_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m079_policy_debt_due_cycle
+			has_variable = zg361_b2_m079_policy_debt_owner
+		}
+		var:zg361_b2_m079_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m079_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m079_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m079_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m080_policy_debt_active = 1
+			has_variable = zg361_b2_m080_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m080_policy_debt_due_cycle
+			has_variable = zg361_b2_m080_policy_debt_owner
+		}
+		var:zg361_b2_m080_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m080_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m080_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m080_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m081_policy_debt_active = 1
+			has_variable = zg361_b2_m081_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m081_policy_debt_due_cycle
+			has_variable = zg361_b2_m081_policy_debt_owner
+		}
+		var:zg361_b2_m081_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m081_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m081_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m081_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m358_policy_debt_active = 1
+			has_variable = zg361_b2_m358_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m358_policy_debt_due_cycle
+			has_variable = zg361_b2_m358_policy_debt_owner
+		}
+		var:zg361_b2_m358_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m358_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m358_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m358_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m359_policy_debt_active = 1
+			has_variable = zg361_b2_m359_policy_debt_due_cycle
+			var:zg361_result_cycle_serial >= var:zg361_b2_m359_policy_debt_due_cycle
+			has_variable = zg361_b2_m359_policy_debt_owner
+		}
+		var:zg361_b2_m359_policy_debt_owner = {
+			change_variable = { name = zg361_b2_management_debt add = 1 }
+		}
+		set_variable = { name = zg361_b2_m359_policy_debt_active value = 0 }
+		set_variable = { name = zg361_b2_m359_policy_debt_audit_state value = 3 }
+		set_variable = { name = zg361_b2_m359_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }
+	}
+}

@@ -1,0 +1,303 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_069_delivery_effects.txt
+
+zg361_b2_m069_resolve_policy_effect = {
+	set_variable = { name = zg361_b2_m069_route value = 1 }
+	if = {
+		limit = { var:zg361_b2_case_owner = { has_variable = zg361_mechanism_069_choice } }
+		set_variable = { name = zg361_b2_m069_route value = var:zg361_b2_case_owner.var:zg361_mechanism_069_choice }
+	}
+}
+
+zg361_b2_m069_post_policy_debt_effect = {
+	zg361_b2_m069_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m069_route = 3
+			OR = {
+				NOT = { has_variable = zg361_b2_m069_policy_debt_receipt_case }
+				NOT = { var:zg361_b2_m069_policy_debt_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m069_policy_debt_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m069_policy_debt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m069_policy_debt_subject value = this }
+		set_variable = { name = zg361_b2_m069_policy_debt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m069_policy_debt_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m069_policy_debt_expected_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m069_policy_debt_due_cycle value = { value = var:zg361_b2_case_cycle add = 1 } }
+		set_variable = { name = zg361_b2_m069_policy_debt_active value = 1 }
+		set_variable = { name = zg361_b2_m069_policy_debt_audit_state value = 1 }
+		set_variable = { name = zg361_b2_m069_visible_revision value = var:zg361_b2_case_feedback_revision }
+	}
+}
+
+zg361_b2_m069_open_business_object_effect = {
+	zg361_b2_m069_resolve_policy_effect = yes
+	if = {
+		limit = { var:zg361_b2_m069_route = 3 }
+		zg361_b2_m069_post_policy_debt_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_m069_object_receipt_case }
+				NOT = { var:zg361_b2_m069_object_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m069_object_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m069_object_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m069_object_subject value = this }
+		set_variable = { name = zg361_b2_m069_object_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m069_object_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m069_object_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m069_object_route value = var:zg361_b2_m069_route }
+		set_variable = { name = zg361_b2_m069_object_active value = 1 }
+		set_variable = { name = zg361_b2_m069_object_consumed value = 0 }
+		set_variable = { name = zg361_b2_m069_visible_revision value = var:zg361_b2_case_feedback_revision }
+		if = {
+			limit = { var:zg361_b2_m069_route = 2 }
+			set_variable = { name = zg361_b2_m069_procedural_risk value = 1 }
+		}
+	}
+}
+
+zg361_b2_m069_consume_business_object_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m069_object_active = 1
+			var:zg361_b2_m069_object_consumed = 0
+			var:zg361_b2_m069_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m069_object_subject = this
+			var:zg361_b2_m069_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m069_object_receipt_case = var:zg361_b2_case_serial
+		}
+		set_variable = { name = zg361_b2_m069_object_consumed value = 1 }
+		set_variable = { name = zg361_b2_m069_object_active value = 0 }
+		set_variable = { name = zg361_b2_m069_consumer_revision value = var:zg361_b2_case_feedback_revision }
+		set_variable = { name = zg361_b2_m069_consumer_receipt_case value = var:zg361_b2_case_serial }
+	}
+}
+
+zg361_b2_pre_notice_settlement_gate_effect = {
+	set_variable = { name = zg361_b2_m069_settlement_allowed value = 0 }
+	zg361_b2_m069_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_case_owner = var:zg361_result_case_owner
+			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+			var:zg361_b2_case_serial = var:zg361_result_case_serial
+			var:zg361_b2_notice_state = 1
+			var:zg361_b2_m069_route != 3
+			var:zg361_b2_m069_object_active = 1
+		}
+		set_variable = { name = zg361_b2_m069_settlement_allowed value = 1 }
+		set_variable = { name = zg361_b2_m069_pre_settlement_gate_seen value = var:zg361_b2_case_serial }
+	}
+	else_if = {
+		limit = { var:zg361_b2_m069_route = 3 }
+		zg361_b2_m069_post_policy_debt_effect = yes
+		set_variable = { name = zg361_b2_m069_settlement_blocked_case value = var:zg361_b2_case_serial }
+		debug_log = "ZG361B2: route-C formal-result settlement blocked before resource writes"
+	}
+	else = { debug_log = "ZG361B2: stale formal-result settlement gate denied" }
+}
+
+zg361_b2_on_result_frozen_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+		}
+		# Consume prior-cycle C receipts before replacing the subject's current
+		# case identity.  A debt is charged to its frozen owner, never the new one.
+		zg361_b2_consume_due_policy_debts_effect = yes
+		# A skip-level remand is consumed only by the next real result from the
+		# same direct manager.  This is the downstream consumer; the skip-level
+		# reviewer never writes a grade in the old case.
+		if = {
+			limit = {
+				var:zg361_b2_m079_remand_active = 1
+				var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
+				var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
+			}
+			set_variable = { name = zg361_b2_m079_remand_active value = 0 }
+			set_variable = { name = zg361_b2_m079_remand_consumer_case value = var:zg361_result_case_serial }
+			set_variable = { name = zg361_b2_m079_manager_rework_completed value = 1 }
+		}
+		# Repaired/suppressed defect tickets are likewise checked against a later
+		# metric version.  Repetition after suppression assigns liability to the
+		# frozen suppressor and does not rewrite the old evidence.
+		if = {
+			limit = {
+				OR = {
+					var:zg361_b2_m080_state = 3
+					var:zg361_b2_m080_state = 4
+				}
+				var:zg361_b2_m080_owner = var:zg361_result_case_owner
+				var:zg361_result_cycle_serial > var:zg361_b2_m080_cycle
+			}
+			set_variable = { name = zg361_b2_m080_consumer_case value = var:zg361_result_case_serial }
+			if = {
+				limit = { var:zg361_b2_m080_metric_repaired = 1 }
+				set_variable = { name = zg361_b2_m080_repair_verified value = 1 }
+			}
+			else_if = {
+				limit = {
+					var:zg361_b2_m080_suppressed = 1
+					var:zg361_result_grade_reason = var:zg361_b2_m080_defect_type
+				}
+				set_variable = { name = zg361_b2_m080_repeated_after_suppression value = 1 }
+				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+			}
+			set_variable = { name = zg361_b2_m080_state value = 5 }
+		}
+		# A later, freshly frozen result by the same owner is the only automatic
+		# source of "new fact" for a pending retaliation observation.  Merely
+		# reusing the appealed result never authorizes a harsher action.
+		if = {
+			limit = {
+				has_variable = zg361_b2_retaliation_state
+				var:zg361_b2_retaliation_state = 1
+				has_variable = zg361_b2_retaliation_subject
+				var:zg361_b2_retaliation_subject = this
+				has_variable = zg361_b2_retaliation_owner
+				var:zg361_b2_retaliation_owner = var:zg361_result_case_owner
+				has_variable = zg361_b2_retaliation_cycle
+				var:zg361_result_cycle_serial > var:zg361_b2_retaliation_cycle
+			}
+			set_variable = { name = zg361_b2_retaliation_new_fact value = 1 }
+			set_variable = { name = zg361_b2_retaliation_new_fact_cycle value = var:zg361_result_cycle_serial }
+		}
+		set_variable = { name = zg361_b2_case_owner value = var:zg361_result_case_owner }
+		set_variable = { name = zg361_b2_case_subject value = this }
+		set_variable = { name = zg361_b2_case_cycle value = var:zg361_result_cycle_serial }
+		set_variable = { name = zg361_b2_case_serial value = var:zg361_result_case_serial }
+		set_variable = { name = zg361_b2_notice_state value = 1 } # prepared
+		set_variable = { name = zg361_b2_notice_reason value = var:zg361_result_grade_reason }
+		set_variable = { name = zg361_b2_delivery_year value = 0 }
+		set_variable = { name = zg361_b2_appeal_state value = 0 }
+		set_variable = { name = zg361_b2_case_feedback_revision value = 1 }
+
+		# A new result case resets its own B2 rows, but a one-year retaliation
+		# observation and an active PIP have their own immutable identities.  The
+		# latter must survive a later result freeze until its D+365 settlement and
+		# exact capacity release have closed.
+		set_variable = { name = zg361_b2_m014_state value = 0 }
+		if = {
+			limit = {
+				NOT = { var:zg361_b2_m015_object_active = 1 }
+				NOT = { var:zg361_b2_m016_object_active = 1 }
+				NOT = { var:zg361_b2_m017_object_active = 1 }
+				NOT = {
+					OR = {
+						var:zg361_b2_pip_state = 1
+						var:zg361_b2_pip_state = 2
+						var:zg361_b2_pip_state = 4
+					}
+				}
+			}
+			set_variable = { name = zg361_b2_m015_state value = 0 }
+			set_variable = { name = zg361_b2_m016_state value = 0 }
+			set_variable = { name = zg361_b2_m017_state value = 0 }
+		}
+		set_variable = { name = zg361_b2_m069_state value = 0 }
+		set_variable = { name = zg361_b2_m069_receipt_serial value = 0 }
+		set_variable = { name = zg361_b2_m071_state value = 0 }
+		set_variable = { name = zg361_b2_m073_state value = 0 }
+		set_variable = { name = zg361_b2_m074_state value = 0 }
+		set_variable = { name = zg361_b2_m075_state value = 0 }
+		set_variable = { name = zg361_b2_m076_state value = 0 }
+		set_variable = { name = zg361_b2_m077_state value = 0 }
+		set_variable = { name = zg361_b2_m078_state value = 0 }
+		set_variable = { name = zg361_b2_m079_state value = 0 }
+		set_variable = { name = zg361_b2_m080_state value = 0 }
+		set_variable = { name = zg361_b2_m358_state value = 0 }
+		set_variable = { name = zg361_b2_m359_state value = 0 }
+
+		zg361_b2_m069_open_business_object_effect = yes
+		zg361_b2_m072_open_business_object_effect = yes
+		zg361_b2_m081_open_business_object_effect = yes
+		if = {
+			limit = { var:zg361_b2_m069_object_active = 1 }
+			set_variable = { name = zg361_b2_m069_state value = 1 }
+		}
+		if = {
+			limit = { var:zg361_b2_m072_object_active = 1 }
+			zg361_b2_m072_lock_pre_delivery_access_effect = yes
+		}
+		if = {
+			limit = { var:zg361_b2_m081_object_active = 1 }
+			zg361_b2_m081_project_case_access_effect = yes
+		}
+		zg361_b2_m078_record_cohort_sample_effect = yes
+		debug_log = "ZG361B2: result-bound justice case prepared"
+	}
+}
+
+zg361_b2_on_notice_delivered_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b2_case_owner
+			var:zg361_b2_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_b2_case_subject
+			var:zg361_b2_case_subject = this
+			has_variable = zg361_b2_case_cycle
+			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+			has_variable = zg361_b2_case_serial
+			var:zg361_b2_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_b2_notice_state
+			var:zg361_b2_notice_state = 1
+			var:zg361_result_case_state = 3
+			var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+		}
+		if = {
+			limit = { var:zg361_b2_m069_object_active = 1 }
+			zg361_b2_m069_record_delivery_effect = yes
+			zg361_b2_m069_consume_business_object_effect = yes
+		}
+		else = {
+			# The shared settlement currently calls this adapter after posting.
+			# Keep the violation visible until the shared pre-settlement gate lands.
+			set_variable = { name = zg361_b2_m069_c_post_settlement_violation value = 1 }
+			zg361_b2_m069_post_policy_debt_effect = yes
+		}
+		if = {
+			limit = { var:zg361_b2_m072_object_active = 1 }
+			zg361_b2_m072_close_access_log_effect = yes
+		}
+		if = {
+			limit = { var:zg361_b2_m081_object_active = 1 }
+			zg361_b2_m081_publish_case_projection_effect = yes
+		}
+		zg361_b2_m015_open_pip_effect = yes
+		debug_log = "ZG361B2: delivered result consumed by justice runtime"
+	}
+	else = { debug_log = "ZG361B2: stale delivered-result adapter ignored" }
+}
+
+zg361_b2_m069_record_delivery_effect = {
+	set_variable = { name = zg361_b2_notice_state value = 3 } # delivered/appeal open
+	set_variable = { name = zg361_b2_delivery_year value = current_year }
+	set_variable = { name = zg361_b2_delivery_method value = var:zg361_result_delivery_method }
+	set_variable = { name = zg361_b2_m069_state value = 3 }
+	set_variable = { name = zg361_b2_m069_receipt_serial value = var:zg361_b2_case_serial }
+	set_variable = { name = zg361_b2_m069_appeal_clock_open value = 1 }
+	if = {
+		limit = { var:zg361_b2_m069_route = 2 }
+		set_variable = { name = zg361_b2_m069_aggregate_publication_shortcut value = 1 }
+		set_variable = { name = zg361_b2_m069_individual_reason_unseen_risk value = 1 }
+		var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_result_delivery_witness
+			var:zg361_result_delivery_witness_receipt = var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_b2_m069_witness value = var:zg361_result_delivery_witness }
+		set_variable = { name = zg361_b2_m069_witness_receipt value = var:zg361_result_delivery_witness_receipt }
+	}
+}

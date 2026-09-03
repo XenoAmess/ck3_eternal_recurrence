@@ -1,0 +1,106 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_070_observation_effects.txt
+
+zg361_b2_m070_resolve_policy_effect = {
+	set_variable = { name = zg361_b2_m070_route value = 1 }
+	if = {
+		limit = { var:zg361_b2_case_owner = { has_variable = zg361_mechanism_070_choice } }
+		set_variable = { name = zg361_b2_m070_route value = var:zg361_b2_case_owner.var:zg361_mechanism_070_choice }
+	}
+}
+
+zg361_b2_m070_post_policy_debt_effect = {
+	zg361_b2_m070_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m070_route = 3
+			OR = {
+				NOT = { has_variable = zg361_b2_m070_policy_debt_receipt_case }
+				NOT = { var:zg361_b2_m070_policy_debt_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m070_policy_debt_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m070_policy_debt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m070_policy_debt_subject value = this }
+		set_variable = { name = zg361_b2_m070_policy_debt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m070_policy_debt_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m070_policy_debt_expected_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m070_policy_debt_due_cycle value = { value = var:zg361_b2_case_cycle add = 1 } }
+		set_variable = { name = zg361_b2_m070_policy_debt_active value = 1 }
+		set_variable = { name = zg361_b2_m070_policy_debt_audit_state value = 1 }
+		set_variable = { name = zg361_b2_m070_visible_revision value = var:zg361_b2_case_feedback_revision }
+	}
+}
+
+zg361_b2_m070_open_business_object_effect = {
+	zg361_b2_m070_resolve_policy_effect = yes
+	if = {
+		limit = { var:zg361_b2_m070_route = 3 }
+		zg361_b2_m070_post_policy_debt_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_m070_object_receipt_case }
+				NOT = { var:zg361_b2_m070_object_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m070_object_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m070_object_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m070_object_subject value = this }
+		set_variable = { name = zg361_b2_m070_object_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m070_object_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m070_object_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m070_object_route value = var:zg361_b2_m070_route }
+		set_variable = { name = zg361_b2_m070_object_active value = 1 }
+		set_variable = { name = zg361_b2_m070_object_consumed value = 0 }
+		set_variable = { name = zg361_b2_m070_visible_revision value = var:zg361_b2_case_feedback_revision }
+		if = {
+			limit = { var:zg361_b2_m070_route = 2 }
+			set_variable = { name = zg361_b2_m070_procedural_risk value = 1 }
+		}
+	}
+}
+
+zg361_b2_m070_consume_business_object_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m070_object_active = 1
+			var:zg361_b2_m070_object_consumed = 0
+			var:zg361_b2_m070_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m070_object_subject = this
+			var:zg361_b2_m070_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m070_object_receipt_case = var:zg361_b2_case_serial
+		}
+		set_variable = { name = zg361_b2_m070_object_consumed value = 1 }
+		set_variable = { name = zg361_b2_m070_object_active value = 0 }
+		set_variable = { name = zg361_b2_m070_consumer_revision value = var:zg361_b2_case_feedback_revision }
+		set_variable = { name = zg361_b2_m070_consumer_receipt_case value = var:zg361_b2_case_serial }
+	}
+}
+
+zg361_b2_m070_open_observation_effect = {
+	if = {
+		limit = { var:zg361_b2_m070_object_active = 1 }
+	set_variable = { name = zg361_b2_retaliation_owner value = var:zg361_b2_case_owner }
+	set_variable = { name = zg361_b2_retaliation_subject value = this }
+	set_variable = { name = zg361_b2_retaliation_cycle value = var:zg361_b2_case_cycle }
+	set_variable = { name = zg361_b2_retaliation_case value = var:zg361_b2_case_serial }
+	set_variable = { name = zg361_b2_retaliation_state value = 1 }
+	set_variable = { name = zg361_b2_retaliation_new_fact value = 0 }
+	set_variable = { name = zg361_b2_retaliation_suspended_n value = 0 }
+	set_variable = { name = zg361_b2_m070_state value = 1 }
+	set_variable = { name = zg361_b2_m070_receipt_serial value = var:zg361_b2_case_serial }
+	if = {
+		limit = { var:zg361_b2_m070_route = 2 }
+		set_variable = { name = zg361_b2_m070_immediate_action_risk value = 1 }
+		set_variable = { name = zg361_b2_m070_reason_reversal_weight value = 2 }
+	}
+	var:zg361_b2_retaliation_owner = { save_scope_as = zg361_b2_retaliation_deadline_owner }
+	save_scope_as = zg361_b2_retaliation_deadline_subject
+	save_scope_value_as = { name = zg361_b2_retaliation_deadline_cycle value = var:zg361_b2_retaliation_cycle }
+	save_scope_value_as = { name = zg361_b2_retaliation_deadline_case value = var:zg361_b2_retaliation_case }
+	save_scope_value_as = { name = zg361_b2_retaliation_deadline_state value = var:zg361_b2_retaliation_state }
+	trigger_event = { id = zg361b2.120 days = 365 }
+	}
+}

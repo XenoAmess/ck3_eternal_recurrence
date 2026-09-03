@@ -1,0 +1,155 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+# B2 purpose shard: zg361_b2_079_skip_level_effects.txt
+
+zg361_b2_m079_resolve_policy_effect = {
+	set_variable = { name = zg361_b2_m079_route value = 1 }
+	if = {
+		limit = { var:zg361_b2_case_owner = { has_variable = zg361_mechanism_079_choice } }
+		set_variable = { name = zg361_b2_m079_route value = var:zg361_b2_case_owner.var:zg361_mechanism_079_choice }
+	}
+}
+
+zg361_b2_m079_post_policy_debt_effect = {
+	zg361_b2_m079_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m079_route = 3
+			OR = {
+				NOT = { has_variable = zg361_b2_m079_policy_debt_receipt_case }
+				NOT = { var:zg361_b2_m079_policy_debt_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m079_policy_debt_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m079_policy_debt_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m079_policy_debt_subject value = this }
+		set_variable = { name = zg361_b2_m079_policy_debt_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m079_policy_debt_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m079_policy_debt_expected_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m079_policy_debt_due_cycle value = { value = var:zg361_b2_case_cycle add = 1 } }
+		set_variable = { name = zg361_b2_m079_policy_debt_active value = 1 }
+		set_variable = { name = zg361_b2_m079_policy_debt_audit_state value = 1 }
+		set_variable = { name = zg361_b2_m079_visible_revision value = var:zg361_b2_case_feedback_revision }
+	}
+}
+
+zg361_b2_m079_open_business_object_effect = {
+	zg361_b2_m079_resolve_policy_effect = yes
+	if = {
+		limit = { var:zg361_b2_m079_route = 3 }
+		zg361_b2_m079_post_policy_debt_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = zg361_b2_m079_object_receipt_case }
+				NOT = { var:zg361_b2_m079_object_receipt_case = var:zg361_b2_case_serial }
+			}
+			NOT = { var:zg361_b2_m079_object_active = 1 }
+		}
+		set_variable = { name = zg361_b2_m079_object_owner value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m079_object_subject value = this }
+		set_variable = { name = zg361_b2_m079_object_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m079_object_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m079_object_state value = var:zg361_b2_notice_state }
+		set_variable = { name = zg361_b2_m079_object_route value = var:zg361_b2_m079_route }
+		set_variable = { name = zg361_b2_m079_object_active value = 1 }
+		set_variable = { name = zg361_b2_m079_object_consumed value = 0 }
+		set_variable = { name = zg361_b2_m079_visible_revision value = var:zg361_b2_case_feedback_revision }
+		if = {
+			limit = { var:zg361_b2_m079_route = 2 }
+			set_variable = { name = zg361_b2_m079_procedural_risk value = 1 }
+		}
+	}
+}
+
+zg361_b2_m079_consume_business_object_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m079_object_active = 1
+			var:zg361_b2_m079_object_consumed = 0
+			var:zg361_b2_m079_object_owner = var:zg361_b2_case_owner
+			var:zg361_b2_m079_object_subject = this
+			var:zg361_b2_m079_object_cycle = var:zg361_b2_case_cycle
+			var:zg361_b2_m079_object_receipt_case = var:zg361_b2_case_serial
+		}
+		set_variable = { name = zg361_b2_m079_object_consumed value = 1 }
+		set_variable = { name = zg361_b2_m079_object_active value = 0 }
+		set_variable = { name = zg361_b2_m079_consumer_revision value = var:zg361_b2_case_feedback_revision }
+		set_variable = { name = zg361_b2_m079_consumer_receipt_case value = var:zg361_b2_case_serial }
+	}
+}
+
+zg361_b2_m079_open_skip_level_effect = {
+	zg361_b2_m079_open_business_object_effect = yes
+	if = {
+		limit = { var:zg361_b2_m079_object_active = 1 var:zg361_b2_m079_state = 0 }
+		set_variable = { name = zg361_b2_m079_state value = 1 }
+		set_variable = { name = zg361_b2_m079_receipt_serial value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m079_evidence_task value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m079_direct_grade_write_allowed value = 0 }
+		if = {
+			limit = { var:zg361_b2_m079_route = 2 }
+			set_variable = { name = zg361_b2_m079_instant_promise_attempted value = 1 }
+			set_variable = { name = zg361_b2_m079_overreach_risk value = 1 }
+		}
+		var:zg361_b2_case_owner = {
+			if = {
+				limit = { exists = liege liege = { is_alive = yes } }
+				liege = { save_temporary_scope_as = zg361_b2_skip_level_reviewer }
+			}
+		}
+		if = {
+			limit = { exists = scope:zg361_b2_skip_level_reviewer }
+			set_variable = { name = zg361_b2_m079_reviewer value = scope:zg361_b2_skip_level_reviewer }
+			set_variable = { name = zg361_b2_m079_seat_reserved value = 0 }
+			save_temporary_scope_as = zg361_b2_skip_subject
+			scope:zg361_b2_skip_level_reviewer = {
+				if = {
+					limit = { NOT = { has_variable = zg361_b2_skip_seats_used } }
+					set_variable = { name = zg361_b2_skip_seats_used value = 0 }
+				}
+				if = {
+					limit = { var:zg361_b2_skip_seats_used < 2 }
+					change_variable = { name = zg361_b2_skip_seats_used add = 1 }
+					scope:zg361_b2_skip_subject = { set_variable = { name = zg361_b2_m079_seat_reserved value = 1 } }
+				}
+			}
+			if = {
+				limit = { var:zg361_b2_m079_seat_reserved = 1 }
+				scope:zg361_b2_skip_level_reviewer = { save_scope_as = zg361_b2_skip_deadline_owner }
+				save_scope_as = zg361_b2_skip_deadline_subject
+				save_scope_value_as = { name = zg361_b2_skip_deadline_cycle value = var:zg361_b2_case_cycle }
+				save_scope_value_as = { name = zg361_b2_skip_deadline_case value = var:zg361_b2_case_serial }
+				save_scope_value_as = { name = zg361_b2_skip_deadline_state value = var:zg361_b2_m079_state }
+				trigger_event = { id = zg361b2.140 days = 30 }
+			}
+			else = {
+				set_variable = { name = zg361_b2_m079_state value = 4 }
+				set_variable = { name = zg361_b2_m079_capacity_denied value = 1 }
+				zg361_b2_m079_consume_business_object_effect = yes
+			}
+		}
+		else = {
+			set_variable = { name = zg361_b2_m079_state value = 4 }
+			set_variable = { name = zg361_b2_m079_reviewer_unavailable value = 1 }
+			zg361_b2_m079_consume_business_object_effect = yes
+		}
+	}
+}
+
+zg361_b2_m079_release_seat_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m079_seat_reserved = 1
+			has_variable = zg361_b2_m079_reviewer
+		}
+		var:zg361_b2_m079_reviewer = {
+			if = {
+				limit = { has_variable = zg361_b2_skip_seats_used var:zg361_b2_skip_seats_used >= 1 }
+				change_variable = { name = zg361_b2_skip_seats_used add = -1 }
+			}
+		}
+		set_variable = { name = zg361_b2_m079_seat_reserved value = 0 }
+		set_variable = { name = zg361_b2_m079_seat_released value = 1 }
+	}
+}

@@ -139,6 +139,8 @@ production loop 均未晋级。
 4. 下一 distinct gate 是冻结正式 59-file checkpoint 后进入 seed/paused-native bridge；先取得真实 seed/只读 snapshot，再决定 observer 与 8-span。full-entry GREEN 不替代 B1 delayed-path 或生产功能验收。
 5. Incident 简中闭包（safe-core 基线 + 3 条增量）和 Manager 简中闭包（+4 条增量）已经静态物化，可作为后续候选；B2 的 stub 不可冒充生产功能。静态域清单中的 manifest/hash 以工作区 `docs/phase2-promo/phase2-safe-core-next-domain-closure-2026-09-03.md` 为准。
 6. 项目所有者在 2026-09-04 明确要求：进入 B2 前先按用途/调用链拆分 effect，目标每文件 `1–10` 个，原则上不超过 `20` 个；超过 `20` 必须记录理由和实机证据。若后续出现没有明确 material/parser 首错的加载性能 RED，优先按 `docs/testing-workflow.md` 做同条件文件边界 A/B，并把结论限制为“文件边界/单文件体量很可能参与”。
+   B2 自身现已完成 25 个用途分片：152/152 unique、每片 `1–9`、清单 SHA `06274A5E…7FAB`，静态/投影/release GREEN；但尚无
+   新 CK3 live。其生产可达链仍触及 `4,636,271 B / 324-effect` Workforce endgame 单体，下一步先拆该 owner，再构造无 stub 候选。
 7. 视频路线保持两条独立交付：人物版与制度群像版都不能因另一版完成而自动签核。只有 8/8 clean CK3 spans、source review、字幕/媒体检查和 builder receipt 齐全后，才运行 TTS/render/export；制作前再次 fetch 宣传工具 `origin/main`。
 8. G2 维持暂停。open_kaishek 的 15ab978 是明确的 activity-schema negative boundary；它的 RED 是覆盖缺口，不是 CK3 runtime 失败。恢复时先重跑 Maven/fixture 并更新本项目绑定，不要猜 activity opcode allow-list。
 

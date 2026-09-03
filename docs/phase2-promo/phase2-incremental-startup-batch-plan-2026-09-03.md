@@ -120,10 +120,28 @@ P7 原始 event closure 为 **99 文件 / 20,929,655 B（约 19.96 MiB）**；�
 
 因此固定 checkpoint 4 可以晋级为 **startup/full-entry production-candidate GREEN**；此前“balanced-files 条件分支不自动通过 checkpoint 4”的历史判断由本节正式 r3 结果推进。它仍不是 delayed-path、seed、生产 OODA 或完整 Phase2 GREEN。原始未拆分单文件 full B1 的唯一 1205.343 秒 RED 继续作为失败 attempt 保留；正式拆分提供可实施候选，但不唯一证明根因。
 
-下一项改为验证 delayed-path 与后续全量 projection，随后才允许 seed。footage 仍为 `0/8`，两条 MP4 未生成；G2 保持 paused。本轮 open_kaishek 仍只有单 effect parser smoke，真实正文 validator `UNKNOWN_OPCODE`、IR/runtime `SKIPPED`，不参与 checkpoint 晋级判断。
+### 2026-09-04 B2 正式用途分片
+
+旧 B2 单体 `253,920 B / 152 effects / 70B38FA3…3C4F2` 已从 canonical 产品树移除；generator 现按机制用途输出
+25 个 effect 文件，精确覆盖 152/152 个唯一顶层定义，每片 `1–9` 个、合计 `250,551 B`，没有超过 `10` 或 `20` 的例外。
+逐 block 正文与历史内存渲染字节一致，分片清单 SHA-256 为
+`06274A5E0D89EF97C19EF3C099E8AEF946C4153BC78C065EC260806D27F67FAB`。完整映射见
+[`361-b2-runtime-spec.md`](../../mod_zhongguo_style/docs/361-b2-runtime-spec.md)。
+
+静态结果：B2/manager 聚焦 142/142、CI 同口径 `test_gen_361*` 107/107、`test_zg361*` 1256/1256、
+`validate_local.py`、native normal-exit source-contract 1/1、projection 8/8、release tests 7/7 与可复现 release `--check` 均
+GREEN；新 release 为 304 files，manifest `DF1741C3…02D0`、ZIP `2C18050A…1884`，broad/release 均只有 25 个分片、没有旧单体。
+这些只把 B2 文件布局提升为 **static-ready**，没有新增 CK3 live 结果。
+
+B2 的三个直接 Workforce owner 沿 delayed-event 可达链还会进入 68 个 effect / 24 个 event，其中
+`zg361_workforce_endgame_runtime_effects.txt` 仍是 `4,636,271 B / 324 effects` 的单体。下一步先按相同用途规则拆该正式 owner，
+再建立无 stub 的 B2 production closure 候选；不能为了抢跑把 4.64 MB 单体原样带回，也不能把旧 stub checkpoint 冒充生产 B2。
+之后才验证 B1 delayed-path、B2 full-entry/seed。footage 仍为 `0/8`，两条 MP4 未生成；G2 保持 paused。
 
 ## 预计时间
 
-离线物化/预检通常数分钟。使用已 warm 的有效 profile 时，单次 CK3 边界约 2–5 分钟；若遇到 300 秒无进展的加载边界，立即封存并转二分。17 个固定 checkpoint 的理论观察窗口约 35–85 分钟，workforce 条件轮再加约 6–30 分钟；实际以首失败位置为准。完成首个有效 checkpoint 后再更新剩余 ETA。
+离线物化/预检通常数分钟。实测 full-entry 已在约 171–1205 秒间明显波动；下一 distinct 候选使用 1200 秒初始观察窗，
+以阶段 marker、引擎时间和 probe wall time为准，不再沿用早期 2–5 分钟线性估算。出现无明确 material/parser 首错的加载性能 RED 时，
+保留原 attempt 后立即按用途/完整顶层定义边界继续拆分并做同条件 A/B。
 
 本计划只负责定位二期加载边界；seed、8 段 clean footage、两版宣传片仍须在闭包通过后另行验收。宣传工具在开始视频制作前必须再次确认 `origin/main` 最新版本。
