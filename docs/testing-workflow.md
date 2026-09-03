@@ -942,6 +942,29 @@ CK3 build label 上移，版本 OCR ROI 必须覆盖多行 footer。反过来，
 
 ## 排障心法
 
+### 加载性能 RED：先验证文件边界与单文件体量
+
+2026-09-03/04 的 Phase2 B1 给出了一次可复现但仍有边界的实证：旧生成单文件含 `77` 个顶层 effect、正文
+`495,777 B`，唯一一次未拆分 full-entry attempt 在 `1205.343 s` 时仍停在主菜单前；把完全相同的定义按完整顶层块
+拆为 `41 + 36` 后，诊断候选与 generator 正式候选都进入游戏。正式 `59-file` 候选在 `245.770 s` 通过 8/8
+full-entry gates、三条 game-state marker、material-error 0 与 cleanup。两个分片去掉各自 BOM/generated header 后按原顺序
+重组，与旧正文逐字节一致，SHA-256 为
+`CDB388005FFEAC6D332380E910FBBF929F49871047E118D047C63B8751C001B4`。
+
+这组证据支持“**文件边界/单文件体量很可能参与了本次启动问题**”，但由于旧单文件 RED 只有一次，尚未证明固定阈值，也不能
+声称它是唯一根因。今后遇到没有对应 material/parser error 的加载耗时 RED，按以下最小 A/B 取证：
+
+1. 保留原始 RED artifact，不覆盖失败 attempt；固定 CK3 exact build/EXE SHA、profile、候选树、探针和 timeout。
+2. 只在完整顶层定义边界拆分，保持定义名、顺序和正文不变；各文件继续满足 UTF-8 BOM 与生成头合同。
+3. 记录拆分前后文件数、字节数、SHA-256 与顶层定义数，并用去除分片包装后的重组检查证明正文逐字节一致。
+4. 用相同 full-entry probe/profile 比较阶段时间、总 wall time、marker、error/debug log、material error 与进程清理。
+5. 若拆分由 RED 变 GREEN，将拆分下沉到 generator 和正式 projection/release；禁止手改 `GENERATED FILE` 输出。
+6. 不把这个案例泛化成“所有大文件都会失败”。有新证据时继续记录实际阈值和构建差异。
+
+B2 及后续 effect 文件从设计时就按用途分组：目标每文件 `1–10` 个顶层 effect，原则上不超过 `20` 个。静态测试应枚举每个
+分片的定义数、唯一性和 generator `--check` 覆盖；确需超过 `20` 的例外必须在对应专题先写明理由及实机证据。
+B1 已通过的 `41 + 36` 双文件结构保留为本轮冻结恢复基线，不反向改写既有 live evidence；后续功能分片不得把它当作新文件模板。
+
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑

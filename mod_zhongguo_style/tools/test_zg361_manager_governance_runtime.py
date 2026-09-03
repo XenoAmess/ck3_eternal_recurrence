@@ -1246,6 +1246,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             "common/character_interactions/zg361_interactions.txt",
             "gui/zg361_scoreboard.gui",
             "common/scripted_effects/zg361_b1_runtime_effects.txt",
+            "common/scripted_effects/zg361_b1_runtime_effects_part2.txt",
             "common/scripted_effects/zg361_b2_runtime_effects.txt",
             "common/scripted_effects/zg361_case_kernel_effects.txt",
         }

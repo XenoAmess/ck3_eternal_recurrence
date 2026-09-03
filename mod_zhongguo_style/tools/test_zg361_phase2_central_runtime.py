@@ -86,7 +86,13 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         cls.triggers = read("common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt")
         cls.events = read("events/zg361_phase2_central_runtime_events.txt")
         cls.core = read("common/scripted_effects/zg361_effects.txt")
-        cls.b1 = read("common/scripted_effects/zg361_b1_runtime_effects.txt")
+        cls.b1 = "\n".join(
+            read(f"common/scripted_effects/{filename}")
+            for filename in (
+                "zg361_b1_runtime_effects.txt",
+                "zg361_b1_runtime_effects_part2.txt",
+            )
+        )
         cls.workforce = read("common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt")
         cls.spec = read("docs/361-phase2-central-runtime-spec.md")
 

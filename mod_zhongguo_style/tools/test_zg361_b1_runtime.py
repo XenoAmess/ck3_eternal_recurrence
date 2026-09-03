@@ -12,13 +12,31 @@ from pathlib import Path
 import re
 import unittest
 
-from gen_361_b1_runtime import MOD_ROOT, outputs
+from gen_361_b1_runtime import (
+    EFFECT_BLOCK_COUNTS,
+    EFFECT_SPLIT_KEY,
+    HEADER,
+    MOD_ROOT,
+    generated,
+    outputs,
+    render_effects,
+)
 from zg361_b1_quota_model import compute_quota
 from zg361_b1_runtime_data import B1_BINDINGS, B1_IDS, STAGE_SEQUENCE
 
 
 def read(relative: str) -> str:
     return (MOD_ROOT / relative).read_text(encoding="utf-8-sig")
+
+
+B1_EFFECT_FILES = (
+    "common/scripted_effects/zg361_b1_runtime_effects.txt",
+    "common/scripted_effects/zg361_b1_runtime_effects_part2.txt",
+)
+
+
+def read_b1_effects() -> str:
+    return "\n".join(read(relative) for relative in B1_EFFECT_FILES)
 
 
 def top_level_block(text: str, key: str) -> str:
@@ -57,7 +75,8 @@ def without_comments(text: str) -> str:
 class B1RuntimeFoundationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read("common/scripted_effects/zg361_b1_runtime_effects.txt")
+        cls.effect_parts = tuple(read(relative) for relative in B1_EFFECT_FILES)
+        cls.effects = "\n".join(cls.effect_parts)
         cls.events = read("events/zg361_b1_runtime_events.txt")
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.jingcha = read(
@@ -117,6 +136,29 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             with self.subTest(path=path.name):
                 self.assertEqual(path.read_bytes(), payload)
                 self.assertTrue(payload.startswith(b"\xef\xbb\xbf"))
+
+    def test_effect_split_boundary_uniqueness_counts_and_identity(self) -> None:
+        keys_by_part = tuple(
+            tuple(re.findall(r"(?m)^(zg361_b1_[A-Za-z0-9_]+)\s*=\s*\{", part))
+            for part in self.effect_parts
+        )
+        self.assertEqual(tuple(map(len, keys_by_part)), EFFECT_BLOCK_COUNTS)
+        self.assertEqual(keys_by_part[1][0], EFFECT_SPLIT_KEY)
+        self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
+        all_keys = keys_by_part[0] + keys_by_part[1]
+        self.assertEqual(len(all_keys), 77)
+        self.assertEqual(len(set(all_keys)), 77)
+
+        bodies = []
+        for relative in B1_EFFECT_FILES:
+            payload = (MOD_ROOT / relative).read_bytes()
+            text = payload.decode("utf-8-sig")
+            self.assertTrue(text.startswith(HEADER), relative)
+            bodies.append(text.removeprefix(HEADER))
+        reconstructed = generated(
+            bodies[0].rstrip() + "\n\n" + bodies[1].lstrip()
+        )
+        self.assertEqual(reconstructed, render_effects())
 
     def test_cycle_uses_persistent_subject_roster(self) -> None:
         self.assertIn("clear_variable_list = zg361_b1_subjects", self.effects)

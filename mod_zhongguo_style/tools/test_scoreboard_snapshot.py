@@ -70,7 +70,11 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             (
                 MOD_ROOT / "common" / "scripted_effects" / filename
             ).read_text(encoding="utf-8-sig")
-            for filename in ("zg361_effects.txt", "zg361_b1_runtime_effects.txt")
+            for filename in (
+                "zg361_effects.txt",
+                "zg361_b1_runtime_effects.txt",
+                "zg361_b1_runtime_effects_part2.txt",
+            )
         )
         self.assertTrue(all(isinstance(field, FieldSpec) for field in BASE_FIELDS))
         self.assertTrue(all(isinstance(field, FieldSpec) for field in CASE_FIELDS))

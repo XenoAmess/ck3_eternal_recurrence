@@ -6,6 +6,7 @@
 
 - **正常玩家启动链仍然可用。** 2026-09-03 08:19–08:22（Asia/Shanghai）从 Steam → Dowser → Paradox Launcher → CK3 启动，CK3 到达 Frontend，Steam 记录进程退出码 `0`，`system.log` 记录了完整图形初始化和数据库启动。
 - **自动采集链失败的是另一条路径。** 它直接创建 `ck3.exe`，使用隔离 `-userdir`，经常带 `-loadsave`/`-continuelastsave`，并在部分运行中使用挂起创建、bridge/observer/guard 和受控桌面。昨晚多数运行其实到过 `Frontend`/`In Game`，失败发生在 bridge/采集器收尾；今晨另有无 mod/无 bridge 裸跑在 CK3 pre-loader 崩溃。无论哪一种，都尚未产生可用的 Phase2 seed/footage。
+- **自动路径现在有可复现的成功启动基线。** 使用显式非空 disposable `-userdir`、完整 `pdx_settings.txt`/account/dlc 和已 warm 的 DX11 shader cache 后，无 Mod 裸跑于 42.253 秒到达 `Frontend`；同一 profile 条件下当前 Release bridge 为 54.634 秒、RBX guard candidate 为 45.582 秒，三轮均 `WM_CLOSE`、exit `0` 且 cleanup proven。这个组合是当前 runner 的有效启动门，不等于 Phase2 全量 projection 已通过。
 - **“昨晚突然坏了”不是已证实的游戏更新或 mod 损坏。** Steam 的 CK3 `buildid=23530548`、EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，以及 Steam 安装目录与项目参考副本的文件树均未发生对应变化。
 - **单一根因尚未闭合。** 当前最有证据的类别是“启动链/执行上下文不同”：完整 Launcher handoff、session token、真实 Documents profile、图形初始化、窗口站/桌面和受控进程创建时序，与自动化的 direct/isolated/suspended 路径同时发生变化。不能把其中任一项单独宣布为根因。
 
@@ -13,10 +14,16 @@
 
 | 时间（Asia/Shanghai） | 路径 | 结果 | 解释边界 |
 |---|---|---|---|
+| 9 月 2 日约 01:08–16:39 | direct evaluator；隔离 profile，等待 native readiness | 多个 run 在 readiness 超时后由 harness stop；有的进程退出码为空或被记为 RED，日志已加载 frontend assets/events | 这是采集验收 RED，不等于 CK3 没有启动；“打不开”并不是从 18:32 才第一次出现的进程事实 |
 | 9 月 2 日 16:40–18:29 | 轻量 direct `ck3.exe` 探针；多为无存档参数 | 多次进程级 exit `0` | 证明探针能启动并被 runner 收尾，不等于完整玩家前端或 native readiness |
 | 9 月 2 日 18:32–9 月 3 日 01:41 | 实际 evaluator/capture；隔离 profile，常带 `-loadsave`/`-continuelastsave`，部分带 bridge/debug | runner 多记为 exit `1`，但多份 per-run `debug.log` 已到 `Frontend`/`In Game`；异常落在 `xar_ck3_bridge.dll!XarCk3BridgeStop` 收尾路径 | 这是日志里第一个清楚的“工作形态切换”点；**不能把这些 exit `1` 直接解释成 CK3 没启动**。它们主要说明采集/bridge 收尾失败；参数相关性不是因果证明 |
 | 9 月 3 日约 05:46 | 无 mod、无 bridge 的裸 direct 启动 | 在 CK3 早期 pre-loader 以 `C0000005 @ ck3+0x1DABD89` 退出 | 这是目前最早有明确证据的“真正未到 Frontend”失败；它与昨晚多数 capture 的 cleanup RED 是两个层次的问题 |
 | 9 月 3 日 08:19–08:22 | Steam → Dowser → Paradox Launcher → CK3；无自定义 `-userdir`、无 bridge | 到 Frontend，exit `0` | 这是当前“玩家可玩启动”正证据 |
+| 9 月 3 日 12:48 | 显式非空 disposable profile；无 Mod/无 bridge 裸跑 | 42.253 秒到达 `Frontend`，`error.log=0` | profile 含完整 settings/account/dlc 与 warm DX11 cache；证明裸跑在有效启动资产组合下可复现 |
+| 9 月 3 日 12:52 | 同一类有效 profile + 当前 Release bridge | 54.634 秒到达 `Frontend`，bridge hello，exit `0` | `ck3_build_match=true`，WM_CLOSE/cleanup proven |
+| 9 月 3 日 12:55 | 同一类有效 profile + RBX guard candidate | 45.582 秒到达 `Frontend`，exit `0` | 444/444 build、focused guard 2/2；未替换现有 freeze |
+| 9 月 3 日 13:06–13:15 | event-core → locaug → locfull，单槽 projection A/B | locaug 在 `Total 881` 后停滞且有 68 个缺失 loc；locfull 补齐 198 个 loc 后仍停滞但 `error.log=0` | 缺失 localization 已排除；正式 history/DB init 仍未闭合 |
+| 9 月 3 日 13:17–13:19 | workforce blocks 0–161 + full loc | 100.574 秒到 `Frontend` 与 `End loading of history` | 这是截断投影的负载定位证据；因省略 blocks 162–323 出现级联错误，不能当完整功能 GREEN |
 
 9 月 3 日 08:19 左右 Paradox Launcher 从 `2026.11-rc` 更新到 `2026.11-rc.1`，随后正常 Launcher 链成功启动 CK3。因此该更新发生在失败尝试之后且紧接着成功，不能作为“导致 CK3 不能打开”的证据。9 月 2 日的 Steam 客户端更新也同时覆盖了成功和失败运行，不能单独归因。
 
@@ -40,7 +47,7 @@
 
 - CK3 depot 在昨夜没有更新；两个安装树的文件数、关键二进制和 EXE SHA 一致。
 - 失败并不需要 Phase2 mod 或 bridge：无 mod、无 bridge 的 direct probe 也在同一早期 CK3 RVA `0x1DABD89` 复现过。
-- `-noWorkshop`、`-gdpr-compliant`、不同 CWD、`-nographics`/OpenGL，以及两种 `userdir` 参数形式都没有单独解除故障。
+- `-noWorkshop`、`-gdpr-compliant`、不同 CWD、`-nographics`/OpenGL，以及两种 `userdir` 参数形式都没有单独解除故障；成功启动依赖的是完整 profile 资产与 warm cache 的组合，不能把某一个参数单独宣布为根因。
 
 ### 尚未唯一定位
 
@@ -49,9 +56,9 @@
 - 真实 Documents profile、隔离 profile、图形/窗口初始化和挂起注入时序的组合差异；
 - 当前 exact source/freeze 与旧成功 freeze 的启动前状态差异。
 
-## 下一项最小验证
+## 当前启动判断与下一项最小验证
 
-不再重复同一 sandbox 形态的启动。下一次 CK3 串行实验应在真实交互 `xenoa / WinSta0\\Default` 环境中，固定 EXE、source、profile、CWD 和参数，先做无 mod/无 bridge 的 A/B；随后才做带 bridge 的 Phase2 seed。若需要保留完整 Steam/Paradox handoff，则另做 launcher-aware capture，并把 session 参数视为输入证据而不是隐式假设。
+“CK3 完全打不开”已经被上述三轮有效 profile 实机证据否定；剩余 RED 属于 Phase2 projection 的依赖闭包/体量和采集业务门。后续 CK3 串行实验继续固定 EXE、source、profile、CWD 和参数，并复用已验证的 profile 模板；先补齐 central effects/triggers 与 workforce localization，再做窄 A/B。若需要保留完整 Steam/Paradox handoff，则另做 launcher-aware capture，并把 session 参数视为输入证据而不是隐式假设。
 
 在上述 A/B 之前，Phase2 的真实素材计数保持 `0/8`，两条最终视频保持未生成；这不是因为玩家无法启动 CK3，而是因为自动采集链尚未通过其生产级启动门。
 
@@ -60,3 +67,19 @@
 `formal-phase2-full-exact-1800-20260903` 的 1800 秒观察窗口已经结束。挂载目标是未拆分 monolith（264 files / 15,937,535 bytes），不是 exact A+B；report SHA-256 为 `241254233107098CF5F385F1C4472D94CA3E1C8D93D6CFFF869A8C38C0F7A79A`。它以 `timeout` 结束在 `Total of : 881`，没有 Frontend/history marker，`error.log=0`，CK3 exit `1`，cleanup proven；因此只能作为非拆分 control，不能证明 split 通过。
 
 B7 workforce stub 的 300 秒观察也在 `Total of : 881` 结束，Frontend/history 均未到达，仍为 RED。7200 秒续测已取消。后续采用 [`phase2-incremental-startup-batch-plan-2026-09-03.md`](phase2-incremental-startup-batch-plan-2026-09-03.md)；第 1 批 `core-current` 已实际启动，并于 15:04:20 到达 `Frontend` 与 `End loading of history`。该批为 `STARTUP_GREEN`，但整体 report 的 decision 仍是 observer coverage `heartbeat_not_observed`，且 `error.log` 有 projection-missing symbols（含 `Unknown effect`/trigger 等），故分类为 `STARTUP_GREEN / PARSER-或-PROJECTION_RED`，不是完整功能 GREEN。旧 `4ff` preflight 的 `ck3_launch_attempted=false` 仍属于启动前源码配套 RED，不计作 CK3 启动失败。
+
+## B1 拆分对启动归因的更新
+
+同一自动 probe/profile 随后让 all-stub、left-real、right-real、event-root closure、excluded-A、excluded-B、all-but-76 和无 stub 的 `balanced-files` 全部进入暂停地图；耗时依次为 255.113、180.403、178.968、181.360、193.588、184.817、171.228 和 180.396 秒。这进一步否定“自动启动环境普遍失效”：该环境能稳定承载多个 B1 诊断投影。
+
+其中 `balanced-files` 保留全部 77 个定义，逐 block 正文字节与原始单 effect 一致，仅拆为 255,134 B 与 240,709 B 两个 effect 文件；整个候选为 59 files / 7,858,264 B。因此拆文件是可实施候选。仍须保留边界：未改写的 58-file 单 effect full B1 只有一次 1205.343 秒 pre-menu RED，真子集或拆分候选 GREEN 不等于原始 full B1 GREEN，现有对照也没有唯一证明根因。
+
+该结论只涉及启动/文件布局诊断。Phase2 seed 与真实素材仍未产生，footage 为 `0/8`，两条最终视频未生成；G2 已暂停。本轮 open_kaishek 仅做单 effect 离线 parser smoke，真实正文 validator 仍有 `UNKNOWN_OPCODE`，IR/runtime `SKIPPED`，不能解释 CK3 live 结果。
+
+## 正式 generator split 的 r3 复核
+
+诊断拆分已进入正式生成器：59 files / 7,858,254 B，两个 effect 文件包含 `41 + 36` 个定义；将定义按原顺序重组可与原始单文件正文 exact 对齐，formal tree SHA-256 为 `9EED00504E1AAF34F352B440CFB4DFEBF3BB1206966457834727A81BAB4FC50A`。
+
+前两次 probe（r1/r2）约 0.3 秒即因 game-path 配置错误结束且未启动 CK3，因此只属于 harness/config RED。路径修正后的 r3 在 245.770 秒取得 full-entry GREEN，8/8 gates、3 markers、material error 0 与 cleanup 全部通过。这使 B1 checkpoint 可以提升为 startup/full-entry production-candidate GREEN，也进一步说明自动启动环境能够承载正式生成器拆分候选。
+
+该对照仍不唯一证明原始单文件 1205.343 秒 RED 的根因；它只给出可实施的拆分路径。delayed-path、seed、生产 OODA 和 footage 尚未验证，素材仍为 `0/8`，双片未生成；G2 继续 paused。

@@ -48,6 +48,18 @@ source query → ACK → independent later query。独立只读后置验证器�
 单次启动批量覆盖 managed-capable、received-only、open、三种 switch、close 与两阶段 reopen；证据不齐时 capability、
 `production_live_ready` 和二期首段 footage gate 全部继续保持 false。
 
+2026-09-04 的启动恢复没有改变上述动作门：B1 effect 已在 generator 中按 41/36 个完整定义拆为两份，全部 77 个正文重组后与旧
+495,777 B 单文件逐字节一致；正式 59-file 候选在 exact CK3 1.19.0.6 上以 245.770 秒通过主菜单、选角、开始、HUD、地图、暂停、
+exact mount 与 game-state-ready 全部入口门。该结果只把 B1 提升为 `startup/full-entry production-candidate GREEN`；delayed-path、
+seed、paused native snapshot、scoreboard action postcondition 与 8/8 footage 仍未完成。原单文件一次 1205.343 秒 RED 继续保留，现有
+证据支持拆文件作为实证修复，但不把“文件过大”写成唯一根因。详情见
+[`2026-09-03-vacation-handoff.md`](../handover/2026-09-03-vacation-handoff.md) 与
+[`phase2-promo/README.md`](../phase2-promo/README.md)。
+
+B1 的 `41 + 36` 是恢复期历史边界；从 B2 起，后续 effect 按用途/调用链分组，目标每文件 `1–10` 个、原则上不超过 `20` 个，
+超限必须有理由与证据。后续加载性能 RED 按 [`testing-workflow.md`](../testing-workflow.md#加载性能-red先验证文件边界与单文件体量)
+保留同条件文件边界 A/B。
+
 ## 2026-W35 最高优先级：先完整游玩一代人
 
 所有者在 2026-08-27 09:47（Asia/Shanghai）明确把本周最高目标改为：**Agent 作为玩家，无人接管地完整游玩一局 CK3

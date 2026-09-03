@@ -19,6 +19,8 @@ from zg361_b1_runtime_data import B1_BINDINGS, validate_b1_bindings
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
+EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
+EFFECT_BLOCK_COUNTS = (41, 36)
 
 
 def generated(text: str) -> bytes:
@@ -760,7 +762,7 @@ def render_stage_s_policy_freeze_blocks() -> str:
     return "\n".join(blocks)
 
 
-def render_effects() -> bytes:
+def render_effect_source() -> str:
     bindings = "\n".join(
         f"# {row.mechanism_id:03d} {row.stage} {row.scope}: "
         f"{row.meaningful_write} -> {row.consumer}"
@@ -8601,7 +8603,7 @@ zg361_b1_submit_peer_negative_effect = {
     body = body.replace(
         "__RESULT_ADAPTER_PEER_SLOTS__", render_result_adapter_peer_slots()
     )
-    return generated(
+    return (
         bindings
         + "\n\n"
         + body
@@ -8612,6 +8614,44 @@ zg361_b1_submit_peer_negative_effect = {
         + "\n\n"
         + render_m360_source_producer()
     )
+
+
+def render_effects() -> bytes:
+    """Render the historical monolith for exact semantic-identity checks."""
+
+    return generated(render_effect_source())
+
+
+def render_effect_parts() -> tuple[bytes, bytes]:
+    """Split the B1 definitions at the CK3-live-proven top-level boundary."""
+
+    source = render_effect_source()
+    marker = f"\n{EFFECT_SPLIT_KEY} = {{"
+    if source.count(marker) != 1:
+        raise ValueError(f"expected one B1 split marker, found {source.count(marker)}")
+    split_at = source.index(marker) + 1
+    sources = (source[:split_at], source[split_at:])
+
+    keys_by_part = tuple(
+        tuple(
+            line.split(" = ", 1)[0]
+            for line in part.splitlines()
+            if line.startswith("zg361_b1_") and line.endswith(" = {")
+        )
+        for part in sources
+    )
+    if tuple(map(len, keys_by_part)) != EFFECT_BLOCK_COUNTS:
+        raise ValueError(
+            "unexpected B1 effect block counts: "
+            f"{tuple(map(len, keys_by_part))} != {EFFECT_BLOCK_COUNTS}"
+        )
+    all_keys = keys_by_part[0] + keys_by_part[1]
+    if len(set(all_keys)) != sum(EFFECT_BLOCK_COUNTS):
+        raise ValueError("duplicate B1 top-level effect definition across split files")
+    if keys_by_part[1][0] != EFFECT_SPLIT_KEY:
+        raise ValueError("B1 part 2 does not begin at the frozen split boundary")
+
+    return generated(sources[0]), generated(sources[1])
 
 
 def render_events() -> bytes:
@@ -9487,8 +9527,10 @@ def render_english_placeholder_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_b1_bindings()
+    effects_part1, effects_part2 = render_effect_parts()
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt": render_effects(),
+        MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt": effects_part1,
+        MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects_part2.txt": effects_part2,
         MOD_ROOT / "events" / "zg361_b1_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_b1_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_b1_l_simp_chinese.yml": render_simp_chinese_localization(),

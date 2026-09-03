@@ -38,17 +38,17 @@
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | 静态校验 GREEN；279 文件 release projection 可复现 | 正常 `WinSta0\\Default` 串行做 seed → 8 段实机采集 | 从可用正常桌面起约 20–40 分钟完成采集与 intake |
+| 二期产品代码与发布树 | B1 正式 generator split 为 59 files / 7,858,254 B；r3 已通过 8/8 gates、3 markers、material 0 与 cleanup，checkpoint 为 startup/full-entry production-candidate GREEN | 验证 delayed-path 与后续全量功能门，再进入 seed → 8 段实机采集 | 后续门通过后，采集与 intake 约 20–40 分钟 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
-| G2 / open_kaishek | G2 `evaluated_days` 观察器静态实现与共享桥接线已回归；open_kaishek 只读能力合同 `981c793` 已推送 `origin/main`，Maven `125/125` 通过 | 取得 paused exact-build evaluator 双读结果后再提升认证 | 依赖 CK3 到达 evaluator 的真实启动环境；当前保持 `static-ready-no-launch` |
+| G2 / open_kaishek | G2 已按用户要求暂停；本轮 open_kaishek 仅对单个 B1 effect 做离线 parser smoke，真实正文 validator 仍有 `UNKNOWN_OPCODE`，IR/runtime `SKIPPED` | 仅在用户解除 G2 暂停后恢复 paused exact-build evaluator 双读；不得用 parser smoke 提升认证 | 暂无；当前不进入 native/runtime live |
 
 这里的“尚无 MP4”是刻意保留的事实状态，不是漏写路径：没有真实八段 CK3 素材、具名审阅和 fresh tool receipt 时，制作器会 fail-closed，不生成占位宣传片。
 
 ## 最新实机边界（2026-09-03）
 
-已用冻结源码做过多条 Default 桌面尝试：带四项启动保护的桥接运行曾推进到 `ck3+0x3BE33A9` 冷启动 VFS 崩溃；另有不加载 mod、不注入桥的最小 CK3 启动在约 `1.3s` 于 `ck3+0x1DABD89` 崩溃。与此同时，9 月 2 日晚间的若干实际 evaluator/capture 已到过 `Frontend`/`In Game`，但在 bridge/采集器收尾阶段 RED。对应 crash dump、session cleanup 和 relay 日志保存在
+有效 profile 的最新对照已改变启动判断：显式非空 disposable `-userdir`、完整 `pdx_settings.txt/account/dlc` 与 warm DX11 cache 下，无 Mod 裸跑 42.253 秒到达 `Frontend`；当前 Release bridge 54.634 秒、RBX guard candidate 45.582 秒也都到达 `Frontend`，并以 `WM_CLOSE`、exit `0`、cleanup proven 收尾。早先缺 profile 资产的 direct probe 仍可在 `ck3+0x1DABD89` 崩溃，但不能再据此宣称 CK3 本体完全打不开。剩余 RED 是 Phase2 broad/workforce 依赖闭包与事件本地化 fan-out；event-locaug 虽出现窗口和 `frontend_main.gui`，但未完成 history load。对应 crash dump、session cleanup 和 relay 日志保存在
 `Z:\\ck3_mod_rewrite\\_runtime\\phase2-seed-20260903\\`，这些运行均没有产生满足合同的可入片游戏素材，当前 footage 仍是 `0/8`；详细分层见
 [`manual-vs-automated-launch-diagnosis-2026-09-03.md`](manual-vs-automated-launch-diagnosis-2026-09-03.md)。
 
@@ -56,7 +56,7 @@
 
 实机启动复现、解锁条件和诚实 ETA 见 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
 
-最新 A/B 结果：`-noWorkshop` 以及 `--userdir=<isolated path>` 两种无 mod、无 bridge 启动方式都在同一 `ck3+0x1DABD89` 崩溃；Steam `-applaunch` 入口则未拉起 CK3 子进程。探针回执见 [`live-startup-probe-no-workshop-2026-09-03.md`](live-startup-probe-no-workshop-2026-09-03.md)。
+最新 A/B 结果：冷/不完整 profile 的 `-noWorkshop` 以及 `--userdir=<isolated path>` 探针仍在同一 `ck3+0x1DABD89` 崩溃；复用完整有效 profile 后裸跑、当前 bridge、RBX guard 均 GREEN。Steam `-applaunch` 入口仅是 no-launch harness 结果。详细回执见 [`live-startup-probe-no-workshop-2026-09-03.md`](live-startup-probe-no-workshop-2026-09-03.md) 与 [`ck3-startup-recovery-live-evidence-2026-09-03.md`](ck3-startup-recovery-live-evidence-2026-09-03.md)。
 
 两版的独立审片入口为：
 
@@ -97,3 +97,19 @@ open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--prefligh
 `formal-phase2-full-exact-1800-20260903` 已完成并封存。该轮实际挂载的是未拆分 monolith（264 files / 15,937,535 bytes），不是目标 exact A+B 树；report SHA-256 为 `241254233107098CF5F385F1C4472D94CA3E1C8D93D6CFFF869A8C38C0F7A79A`。结果为 `timeout`，最后停在 `Total of : 881`，未到 `Frontend`/history，`error.log=0`，CK3 exit `1`，cleanup 已证明。因此本轮只能作为非拆分 control，不能用来判定 split 功能 GREEN。
 
 随后 B7 workforce stub 的 300 秒轮次仍在 `Total of : 881` 停止，Frontend/history 均为 false，结论保持 RED。7200 秒续测已取消，不再创建 `formal-phase2-full-exact-7200-20260903`。当前改按 [`phase2-incremental-startup-batch-plan-2026-09-03.md`](phase2-incremental-startup-batch-plan-2026-09-03.md) 推进；第 1 批 `core-current` 已实际启动，并于 15:04:20 同时到达 `Frontend` 与 `End loading of history`。该批启动层为 `STARTUP_GREEN`，但整体报告仍为 RED：observer coverage 只报 `heartbeat_not_observed`，`error.log` 同时记录 projection-missing symbols（含 `Unknown effect`/trigger 等）。因此当前分类是 `STARTUP_GREEN / PARSER-或-PROJECTION_RED`，不是完整功能 GREEN。旧 `4ff` preflight 的 `ck3_launch_attempted=false` 仍只算启动前配套 RED，不计作 CK3 启动失败。
+
+### B1 effect 拆分最新实机边界
+
+未改写的 58-file、单 effect full B1 仍只有一次 `1205.343 s` pre-menu RED。随后 all-stub（255.113 s）、left-real（180.403 s）、right-real（178.968 s）、event-root closure（181.360 s）、excluded-A（193.588 s）、excluded-B（184.817 s）以及 all-but-76（保留 77 个真 block 中的 76 个，171.228 s）均取得 full-entry GREEN。
+
+进一步的 `balanced-files` 候选没有 stub，保留全部 77 个定义且逐 block 正文字节与原始 effect 一致，只把单文件拆成两份；它为 59 files / 7,858,264 B，两份 effect 分别为 255,134 B 与 240,709 B，并在 180.396 s 取得 full-entry GREEN。因此拆文件已是可实施候选，但现有样本不能唯一证明根因，也不能把原始未改写 full B1 改写为 GREEN。产品全量、seed 与素材门仍未通过，真实 footage 保持 `0/8`，两条 MP4 仍不存在。
+
+本轮 open_kaishek 只覆盖单个 effect 文件的离线 parser smoke；含真实正文的候选 validator 仍报 `UNKNOWN_OPCODE`，IR/runtime 均跳过。该结果不构成 B1 语义、CK3 native/runtime 或 G2 readiness 证据；G2 继续保持用户要求的暂停状态。
+
+### 正式 B1 generator split 与 r3 验收
+
+正式生成器已将 B1 effect 物化为两个文件，分别包含 `41 + 36` 个定义；候选为 **59 files / 7,858,254 B**，全部定义按顺序重组后的正文与原始单文件 **exact**。formal tree SHA-256 为 `9EED00504E1AAF34F352B440CFB4DFEBF3BB1206966457834727A81BAB4FC50A`。
+
+r1/r2 均在约 0.3 秒因 probe game-path 配置错误结束，`ck3_started=false`，只保留为 harness/config RED，不计作内容失败。修正后的 r3 用时 **245.770 s**，8/8 entry gates、3 个 game-state markers、material error 0 与 cleanup 全部 GREEN。B1 checkpoint 因而晋级为 **startup/full-entry production-candidate GREEN**。
+
+该晋级不覆盖 delayed-path、seed、生产 OODA 或 footage；真实素材仍为 `0/8`，两条 MP4 仍未生成。原始未拆分单文件 full B1 的唯一 1205.343 秒 RED 继续保留；拆分是已验证的实施候选，但根因仍未唯一证明。G2 保持 paused。
