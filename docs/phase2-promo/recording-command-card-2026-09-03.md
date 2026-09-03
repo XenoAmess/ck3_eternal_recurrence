@@ -9,6 +9,12 @@
 - 在该 checkout 下复跑完整工具测试：`263` 项通过、`2` 项跳过。
 - 双版交付队列报告：`Z:\ck3_mod_rewrite\_root-promo-split-20260902\_runtime\promo-inventory-20260903\delivery-queue-20260903-1236.json`，SHA-256 `4C7369DFBA31BF407EB42C8B3D46963E42153691D1BBCC4615F17B60FC129723`。
 - 队列当前为 `RED / BLOCKED`，共享真实素材 `0/8`；下一步是 `capture_eight_clean_spans`。
+- 当前执行权威 runbook 是 `_runtime/phase2-dual-runbooks-20260903-0800/character-runbook.json`
+  （SHA-256 `55E2751FBC8408682B04251C3706928A2C78B9B70F61D11D3D6C829DC572E408`）和
+  `_runtime/phase2-dual-runbooks-20260903-0800/institution-runbook.json`
+  （SHA-256 `6A3FD533B0656722CF8296224A286586F5AF8B568ECDA6C7B9B3A157007BF2BF`）；两者均为
+  `RED / footage_pending`。下面 `promo-inventory-20260903` 中的两个 runbook SHA 是较早的
+  planner 输出，仅作历史回执保留，不得与当前 runbook、素材 intake 或后续 receipt 混用。
 - 当前 fixture intake 只有旧 fixture 截图，缺少 `cell/promo/capture-timeline.json` 和 `cell/04_phase2_seed_loaded.json`，所以不能升级成二期素材。
 - 当前没有二期 MP4、TTS 音频、候选片或发布回执。两版必须各自完成审阅、导出和哈希绑定。
 
@@ -16,8 +22,8 @@
 
 | cut | 导演稿 | 项目配置 | authoring ledger | 当前 runbook | 目标交付物 |
 |---|---|---|---|---|---|
-| `character-led` | `docs/phase2-promo/phase2-character-director-treatment.md` | `mod_zhongguo_style/promo/phase2-promo-character-project.json` | `mod_zhongguo_style/promo/phase2-authoring-character-claims.json` | `_runtime/promo-inventory-20260903/character-runbook.json`（`RED / footage_pending`，SHA-256 `AD411E9A4F8C0A73CCDB71D4B836E8D9638AC3316914BDF417FF757D6D094E03`） | `zhongguo-361-phase2-character-led-video` → `deliverable/zhongguo-361-phase2-character-led.mp4` |
-| `institution-led` | `docs/phase2-promo/phase2-institution-director-treatment.md` | `mod_zhongguo_style/promo/phase2-promo-institution-project.json` | `mod_zhongguo_style/promo/phase2-authoring-institution-claims.json` | `_runtime/promo-inventory-20260903/institution-runbook.json`（`RED / footage_pending`，SHA-256 `8A560980CE249E99B50C3E29AD0E219226C0296F51B66CFCB6F12B2BFBCC156F`） | `zhongguo-361-phase2-institution-led-video` → `deliverable/zhongguo-361-phase2-institution-led.mp4` |
+| `character-led` | `docs/phase2-promo/phase2-character-director-treatment.md` | `mod_zhongguo_style/promo/phase2-promo-character-project.json` | `mod_zhongguo_style/promo/phase2-authoring-character-claims.json` | `_runtime/phase2-dual-runbooks-20260903-0800/character-runbook.json`（`RED / footage_pending`，SHA-256 `55E2751FBC8408682B04251C3706928A2C78B9B70F61D11D3D6C829DC572E408`） | `zhongguo-361-phase2-character-led-video` → `deliverable/zhongguo-361-phase2-character-led.mp4` |
+| `institution-led` | `docs/phase2-promo/phase2-institution-director-treatment.md` | `mod_zhongguo_style/promo/phase2-promo-institution-project.json` | `mod_zhongguo_style/promo/phase2-authoring-institution-claims.json` | `_runtime/phase2-dual-runbooks-20260903-0800/institution-runbook.json`（`RED / footage_pending`，SHA-256 `6A3FD533B0656722CF8296224A286586F5AF8B568ECDA6C7B9B3A157007BF2BF`） | `zhongguo-361-phase2-institution-led-video` → `deliverable/zhongguo-361-phase2-institution-led.mp4` |
 
 两版共用同一套、按固定顺序取得的八段真实 source span：
 
