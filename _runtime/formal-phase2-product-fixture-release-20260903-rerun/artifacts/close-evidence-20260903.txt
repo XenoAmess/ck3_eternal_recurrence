@@ -1,0 +1,21 @@
+CK3 formal Phase-2 rerun close evidence (2026-09-03)
+
+Run: formal-phase2-product-fixture-release-20260903-rerun
+Executable: Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe
+Build: 1.19.0.6 (Scribe), SHA-256 2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86
+Bridge: bridge-fresh-release-freeze165b-20260903 matching Release DLL/injector
+Projection: product-fixture; no save, gameplay, store or purchase actions
+
+Observed startup:
+- PID 34204 created at 11:20:03 Asia/Shanghai.
+- Visible window title: Crusader Kings III (SDL_app), Responding=True.
+- Read-only screenshot `during-load.png` at 11:22 shows complete Chinese CK3 main menu, version 1.19.0.6.
+- debug.log reached event loading completion (`Total of : 881`) at 11:20:58; error.log was empty.
+
+Close:
+- WM_CLOSE posted to the visible CK3 window at approximately 11:30:06 after the ten-minute observation limit.
+- Alt+F4 was attempted once; no desktop click or store/payment action was made.
+- The controlled observer process was interrupted after the close attempts; subsequent process inventory showed no ck3.exe and no xar_ck3_bridge_injector.exe.  No CK3 process remains.
+- The disposable report remains partial (no close/shutdown fields because the observer was interrupted); this file records the independent post-close inventory.
+
+Classification: CK3 window/main-menu startup GREEN; formal Frontend log/bridge-hello readiness RED or unresolved because product+fixture loading did not emit End loading of history/Frontend within ten minutes and the observer report was interrupted.  Do not claim full gameplay readiness from this run.
