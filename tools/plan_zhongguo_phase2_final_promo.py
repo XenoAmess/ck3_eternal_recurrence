@@ -77,8 +77,15 @@ def _json(path: Path) -> Mapping[str, object]:
 
 
 def _git(root: Path, *args: str) -> str:
+    # The promo tool is intentionally kept in an isolated checkout.  On
+    # Windows that checkout can be materialized by a different local service
+    # account (for example, the build/sandbox account), which makes recent
+    # Git versions reject it as a "dubious ownership" repository.  Bind the
+    # safe-directory exception to this exact checkout for each read-only
+    # probe instead of requiring a global Git configuration mutation.
+    safe_root = str(root.expanduser().resolve())
     completed = subprocess.run(
-        ["git", "-C", str(root), *args],
+        ["git", "-c", f"safe.directory={safe_root}", "-C", safe_root, *args],
         check=False,
         shell=False,
         stdout=subprocess.PIPE,

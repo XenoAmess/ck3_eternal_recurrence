@@ -81,6 +81,23 @@ def _media_receipt(*, production_pending: bool = True) -> dict[str, object]:
 
 
 class FinalPromoRunbookTests(unittest.TestCase):
+    def test_git_probe_binds_safe_directory_to_exact_checkout(self) -> None:
+        with tempfile.TemporaryDirectory() as raw, mock.patch.object(
+            planner.subprocess,
+            "run",
+            return_value=mock.Mock(returncode=0, stdout="abc\n", stderr=""),
+        ) as run:
+            checkout = Path(raw)
+            self.assertEqual(planner._git(checkout, "rev-parse", "HEAD"), "abc")
+            argv = run.call_args.args[0]
+            self.assertEqual(argv[:4], [
+                "git",
+                "-c",
+                f"safe.directory={checkout.resolve()}",
+                "-C",
+            ])
+            self.assertEqual(argv[4:], [str(checkout.resolve()), "rev-parse", "HEAD"])
+
     def test_dual_cut_runbooks_keep_shared_spans_and_distinct_outputs(self) -> None:
         promo_dir = planner.ROOT / "mod_zhongguo_style" / "promo"
         rows = []

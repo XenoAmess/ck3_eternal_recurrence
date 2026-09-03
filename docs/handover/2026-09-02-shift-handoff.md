@@ -232,3 +232,21 @@ The root truce contract test now asserts that `xar_autoplayer.bridge` exports th
 ## 2026-09-03 userdir argument checkpoint (09:08)
 
 - The same isolated probe with `--userdir=<path>` reproduced `ck3+0x1DABD89`; short versus equal-sign userdir syntax is not the cause. No seed or footage was created.
+
+### 2026-09-03 08:35 open_kaishek push and Maven verification
+
+The open_kaishek compatibility branch was pushed successfully to `origin/main` at
+`981c79388a07e447b18f8e4472a16fd65e28c083` (base `0390b9a`). Full Maven tests passed
+using the isolated repository `Z:/ck3_mod_rewrite/_runtime/m2-openkaishek`:
+`125 tests, 0 failures, 0 errors, 0 skipped`. Refreshed patch and bundle hashes,
+including the push receipt, are in
+`artifacts/open-kaishek-sync/2026-09-03/open-kaishek-main-981c793-receipt.json`.
+No activity opcode or allow-list was guessed; this remains a read-only compatibility
+sync and does not promote CK3 native/runtime readiness.
+
+## 2026-09-03 open_kaishek sync checkpoint (08:35)
+
+- Compatibility branch push completed: `HEAD == origin/main == 981c79388a07e447b18f8e4472a16fd65e28c083` after advancing remote `main` from `0390b9a959fa1a59a968000ed49e827a03b8d4e4`.
+- Isolated-repository Maven test run passed all `125` tests with zero failures/errors/skips. The two Zhongguo business-postcondition fixtures and seven CK3 1.19.0.6 schema fixtures are parser/validator `GREEN`, while IR/runtime are deliberately `SKIPPED` and `ck3_started=false`.
+- Regenerated artifacts: `artifacts/open-kaishek-sync/2026-09-03/0002-g2-truce-capability-sync.patch` (SHA-256 `0AB47A75A830FB9861009D20E252B6F93FF0D8A7355CB4535E4B9FE9010957EE`) and `open-kaishek-main-981c793.bundle` (SHA-256 `DCE6AF147692A8F9873D1D99CFE42D57D59D6C87B4596A3E60BF2F1BE47804E3`; bundle verify passed). Full receipt: `artifacts/open-kaishek-sync/2026-09-03/open-kaishek-main-981c793-receipt.json`.
+- Scope remains static compatibility only: no CK3 activity opcode/allow-list guess, native evaluator claim, or live launch was introduced.

@@ -45,3 +45,19 @@ The Git bundle verifies successfully when checked from the open_kaishek clone th
 `raiktor_surrender_truce_contract.py` now exposes the same capability ID, profile ID, and open_kaishek commit as descriptive constants. A unit test checks the exact values; these constants do not alter the existing paused/stability/expiry checks and do not promote native or runtime readiness.
 
 The three constants are also exported from `xar_autoplayer.bridge`, and the public import smoke check passed with `G2_OPEN_KAISHEK_PUBLIC_EXPORT_GREEN`. This only makes the frozen compatibility identity available to consumers; it does not create a native query or action path.
+
+## 2026-09-03 08:35 remote sync receipt
+
+The compatibility branch was pushed successfully: `origin/main` now points to
+`981c79388a07e447b18f8e4472a16fd65e28c083` (base `0390b9a`). An isolated Maven
+repository was used to avoid the host cache ACL issue; the full test suite passed
+with `125 tests, 0 failures, 0 errors, 0 skipped`. The refreshed patch and bundle
+receipts are recorded in `artifacts/open-kaishek-sync/2026-09-03/`:
+
+- patch SHA-256: `0AB47A75A830FB9861009D20E252B6F93FF0D8A7355CB4535E4B9FE9010957EE`;
+- bundle SHA-256: `DCE6AF147692A8F9873D1D99CFE42D57D59D6C87B4596A3E60BF2F1BE47804E3`;
+- `git bundle verify` passed when checked against prerequisite `0390b9a`.
+
+This receipt covers only the two compatibility commits and the read-only G2
+capability contract. No CK3 activity opcode or allow-list was guessed or changed;
+native/runtime certification remains false pending the exact-build paused artifact.
