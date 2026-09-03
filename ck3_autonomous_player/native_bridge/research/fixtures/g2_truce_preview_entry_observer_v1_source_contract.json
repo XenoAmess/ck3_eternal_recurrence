@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "contract_id": "g2-truce-preview-entry-observer-v1",
+  "status": "static-ready-no-launch",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "preview_function": {
+    "rva": "0x2E87140",
+    "end_rva": "0x2E8723B",
+    "unwind_rva": "0x4DF9914",
+    "unwind_prolog_size": 21,
+    "function_sha256": "941E91BF0B43EB8029940BA378D75A7CF6B65DB1431B126B7265FAD84EDE7E1F",
+    "calls_duration_evaluator": false,
+    "reads_duration_member": false
+  },
+  "hook": {
+    "patch_rva": "0x2E87155",
+    "continue_rva": "0x2E87165",
+    "patch_size": 16,
+    "anchor_hex": "48 8B 02 4D 8B F0 4C 8B D2 48 8B F9 66 83 38 04",
+    "anchor_sha256": "F5B206324844555C64D660A376350E28C0E9710717BA121E04B380415254FC63",
+    "after_unwind_prolog": true,
+    "incoming": {
+      "RCX": "effect_this",
+      "RDX": "preview_context",
+      "R8": "preview_collector"
+    }
+  },
+  "exact_type_filter": [
+    {
+      "type": "CAddTruceEffect<0>",
+      "vtable_rva": "0x4461CA8"
+    },
+    {
+      "type": "CAddTruceEffect<1>",
+      "vtable_rva": "0x4461D70"
+    }
+  ],
+  "observer_contract": {
+    "proposed_cmake_option": "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1",
+    "default_enabled": false,
+    "shared_wiring_applied": true,
+    "wiring_snippet": "../g2_truce_preview_entry_observer_v1_wiring.diff",
+    "records_only_exact_vtable_matches": true,
+    "telemetry": [
+      "accepted_count",
+      "normal_effect_count",
+      "forced_effect_count",
+      "effect_this",
+      "effect_vtable",
+      "preview_context",
+      "preview_collector"
+    ],
+    "preserves_flags_volatile_gprs_and_xmm0_through_xmm5": true,
+    "replays_exact_anchor": true,
+    "calls_duration_evaluator": false,
+    "reads_duration_member": false,
+    "changes_control_flow_return_value_or_object_state": false,
+    "hot_path_allocation_lock_or_syscall": false,
+    "global_evaluator_hook": false,
+    "action_or_mutation": false
+  },
+  "readiness": {
+    "preview_traversal_observable": "candidate-only",
+    "evaluated_days_observable": false,
+    "promotes_evaluated_days": false,
+    "ck3_launch_performed": false
+  }
+}

@@ -39,6 +39,15 @@ flowchart LR
 
 截至本页盘点，没有理由宣称“全游戏自治”或“高智商 CK3 智能体”已经完成。
 
+## 2026-09-03 天朝二期 P0：考核榜观测与动作门
+
+考核榜第十八槽只读 state、provider-owned revision 和第二十二槽 exact semantic-activation transport 已静态接通，但正式动作
+capability 仍为 `static-ready / production-live pending`。当前缺口不是更多 fixture，而是同一 paused 会话里的真实
+source query → ACK → independent later query。独立只读后置验证器与默认关闭、且绝不自动晋级生产广告的候选诊断开关见
+[`zhongguo-scoreboard-production-promotion-v1.md`](../ck3-native-ai/zhongguo-scoreboard-production-promotion-v1.md)。下一次允许占用 CK3 时应
+单次启动批量覆盖 managed-capable、received-only、open、三种 switch、close 与两阶段 reopen；证据不齐时 capability、
+`production_live_ready` 和二期首段 footage gate 全部继续保持 false。
+
 ## 2026-W35 最高优先级：先完整游玩一代人
 
 所有者在 2026-08-27 09:47（Asia/Shanghai）明确把本周最高目标改为：**Agent 作为玩家，无人接管地完整游玩一局 CK3

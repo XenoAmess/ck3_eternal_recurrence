@@ -1,0 +1,50 @@
+{
+  "contract": "startup_widget_null_flag_call_guard_v1_source_contract",
+  "schema_version": 1,
+  "status": "static_candidate_no_live_claim",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "observed_failure": {
+    "date": "2026-09-03",
+    "exception_code": "0xC0000005",
+    "exception_rva": "0x369CB58",
+    "read_address": "0xD0",
+    "registers": {
+      "rcx": "0x0",
+      "rsi": "0x0",
+      "rdx": "0x1",
+      "r8": "0x0"
+    },
+    "minidump_sha256": "4D430A32157AFC08ADB27B8E2126564D950BF86D67383FDE0DED0943662734F6",
+    "exception_json_sha256": "ABA231DFCFF16B9587F378EAFAC84ADEAFA8637DBF3FDDA98D849D908DA56FDA"
+  },
+  "caller": {
+    "owner_begin_rva": "0xAF4C90",
+    "owner_end_rva": "0xAF4F22",
+    "unwind_info_rva": "0x4C5D434",
+    "pdata_row_rva": "0x58CE704",
+    "unwind_size_of_prolog": 33,
+    "null_producer_rva": "0xAF4EBE",
+    "null_test_rva": "0xAF4EC6",
+    "failure_helper_call_rva": "0xAF4ECD",
+    "patch_rva": "0xAF4EE0",
+    "direct_call_rva": "0xAF4EE8",
+    "call_target_rva": "0x369CB30",
+    "continue_rva": "0xAF4EED",
+    "patch_bytes_hex": "45 33 C0 B2 01 48 8B CF E8 43 7C BA 02",
+    "production_anchor_bytes_hex": "45 33 C0 B2 01 48 8B CF E8 43 7C BA 02 49 8B CF E8 5B 06 97 02 48 8B CE E8 33 00 00 00"
+  },
+  "guard_semantics": {
+    "scope": "single caller-local direct call",
+    "default_enabled": false,
+    "nonnull_path": "replay xor r8d,r8d; mov dl,1; mov rcx,rdi; call original target; jump continue",
+    "null_path": "replay argument setup; increment diagnostic counter; skip only the direct call; jump continue",
+    "continue_rva": "0xAF4EED",
+    "global_callee_patch": false,
+    "query_semantics_changed": false,
+    "mutation_semantics_changed": false
+  },
+  "readiness_boundary": "Source/fixture candidate only. No guarded CK3 launch has run, and no G2 current-soldier evidence is promoted."
+}

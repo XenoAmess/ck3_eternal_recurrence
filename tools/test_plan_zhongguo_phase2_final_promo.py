@@ -126,6 +126,104 @@ class FinalPromoRunbookTests(unittest.TestCase):
             institution["planned_paths"]["deliverable"],
         )
         self.assertEqual(
+            character["editorial_plan"]["chapter_order"][2:4],
+            ["phase2_receipt_appeal_pip", "phase2_manager_governance"],
+        )
+        self.assertEqual(
+            institution["editorial_plan"]["chapter_order"][2:4],
+            ["phase2_manager_governance", "phase2_receipt_appeal_pip"],
+        )
+        self.assertEqual(len(character["editorial_plan"]["reprises"]), 0)
+        self.assertEqual(len(institution["editorial_plan"]["reprises"]), 2)
+        self.assertTrue(
+            all(
+                reprise["duration_seconds"] == 2.0
+                and reprise["narration"] == "generated-silence"
+                and reprise["new_evidence_claim"] is False
+                for reprise in institution["editorial_plan"]["reprises"]
+            )
+        )
+        for runbook, cut_name in (
+            (character, "character"),
+            (institution, "institution"),
+        ):
+            self.assertEqual(
+                [step["ordinal"] for step in runbook["ordered_steps"]],
+                list(range(1, 15)),
+            )
+            signoff = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "record_signoff"
+            )
+            self.assertIn("built in step 8", signoff["gate"])
+            preflight = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "refresh_media_receipt_after_fetch"
+            )["command"]
+            self.assertIn("--project-config", preflight)
+            self.assertIn(
+                runbook["planned_paths"]["promoted_project_config"],
+                preflight,
+            )
+            self.assertIn("--expected-toolchain-head", preflight)
+            prime = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "prime_reviewed_xiaoxiao_cache"
+            )["command"]
+            self.assertIn("prime_phase2_tts_cache.py", str(prime[1]))
+            self.assertIn(runbook["planned_paths"]["promoted_project_config"], prime)
+            promote = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "promote_reviewed_authoring_into_project"
+            )["command"]
+            self.assertIn("promote_phase2_reviewed_authoring.py", str(promote[1]))
+            self.assertIn(
+                runbook["planned_paths"]["source_review_receipt"], promote
+            )
+            post_step = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "prepare_exact_deliverable_review"
+            )
+            self.assertIn(
+                "materialize_phase2_post_candidate.py",
+                str(post_step["commands"][0][1]),
+            )
+            self.assertIn("--validate-only", post_step["commands"][0])
+            self.assertNotIn("--validate-only", post_step["commands"][1])
+            self.assertEqual(
+                runbook["planned_paths"]["evidence_bundle"],
+                post_step["commands"][2][
+                    post_step["commands"][2].index("--evidence-bundle") + 1
+                ],
+            )
+            self.assertEqual(
+                runbook["planned_paths"]["release_export_policy"],
+                next(
+                    step
+                    for step in runbook["ordered_steps"]
+                    if step["id"] == "export_preflight_then_local_bundle"
+                )["commands"][1][-2],
+            )
+            post_candidate_steps = [
+                step for step in runbook["ordered_steps"] if step["ordinal"] >= 9
+            ]
+            self.assertNotIn(
+                "<",
+                json.dumps(post_candidate_steps, ensure_ascii=False),
+            )
+            signoff = next(
+                step for step in post_candidate_steps if step["id"] == "record_signoff"
+            )
+            self.assertIsNone(signoff["command"])
+            self.assertFalse(
+                signoff["command_interface"]["automatic_execution_allowed"]
+            )
+        self.assertEqual(
             character["cut"],
             {
                 "id": "character-led",
@@ -256,10 +354,10 @@ class FinalPromoRunbookTests(unittest.TestCase):
             bind_step = next(
                 step
                 for step in runbook["ordered_steps"]
-                if step["id"] == "bind_green_footage_and_authoring_ledger"
+                if step["id"] == "bind_green_footage_intake"
             )
-            self.assertIn("clean CK3 restarts between spans are allowed", bind_step["gate"])
-            self.assertNotIn("same-session/PID", bind_step["gate"])
+            self.assertIn("eight-span capture bundle", bind_step["gate"])
+            self.assertIn("--capture-root", bind_step["command"])
             self.assertEqual(
                 runbook["ordered_steps"][0]["id"],
                 "fetch_and_verify_promo_origin_main",

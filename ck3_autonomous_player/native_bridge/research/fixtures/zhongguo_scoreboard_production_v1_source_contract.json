@@ -1,0 +1,158 @@
+{
+  "contract": "zhongguo_scoreboard_production_v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "query_capability": "game.command.query-zhongguo-scoreboard-state-v1",
+  "production_action_capability": "game.command.activate-zhongguo-scoreboard-v1",
+  "transport_capability": "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+  "production_capability_advertised_by_default": false,
+  "candidate_verifier_enabled_by_default": false,
+  "candidate_verifier_switch": "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1",
+  "candidate_switch_promotes_capability": false,
+  "promotion_evidence_status": "paused_live_artifact_pending",
+  "read_only_postcondition_verifier": "VerifyZhongguoScoreboardReadOnlyPostconditionV1",
+  "verifier_mutates_game_or_provider": false,
+  "required_same_session_binding": [
+    "public_revision",
+    "native_revision",
+    "connection_generation",
+    "date_raw",
+    "player_character_id",
+    "provider_session_id",
+    "tree_fingerprint_v1",
+    "window_instance_pointer"
+  ],
+  "required_independent_later_query": [
+    "different_request_nonce",
+    "observation_sequence_advanced",
+    "observed_state_revision_advanced",
+    "semantic_fingerprint_changed",
+    "modal_visibility_matches_action",
+    "exactly_one_expected_page_visible_when_open",
+    "no_page_visible_when_closed"
+  ],
+  "forbidden_promotion_evidence": [
+    "fixture",
+    "transport_registration",
+    "native_handled_boolean",
+    "action_ack_without_later_query",
+    "query_sequence",
+    "ocr",
+    "screen_coordinates",
+    "gui_definition_presence"
+  ],
+  "batch_collector": {
+    "module": "xar_autoplayer.bridge.zhongguo_scoreboard_action_batch",
+    "function": "run_zhongguo_scoreboard_action_batch",
+    "schema_version": 3,
+    "evidence_stage": "transport-batch-unattested",
+    "surfaces": [
+      "managed-capable",
+      "received-only"
+    ],
+    "accepted_postconditions_are_verified_when_advertisement_is_false": true,
+    "received_only_switch_managed_expected_result": "managed_acl_denied",
+    "reopen_composition": "close-query-open-query",
+    "binding_policy": "per-surface-single-session-with-canonical-clean-restart",
+    "global_single_session_required": false,
+    "per_surface_binding": [
+      "bridge_pid",
+      "connection_generation",
+      "player_character_id",
+      "date_raw",
+      "provider_session_id"
+    ],
+    "cross_surface_transition": {
+      "kind": "canonical-checkpoint-clean-restart",
+      "pid_must_change": true,
+      "connection_generation_increment": 1,
+      "checkpoint_identity_required": [
+        "checkpoint_sha256",
+        "checkpoint_bytes",
+        "save_lineage_id"
+      ],
+      "fixture_used": false,
+      "ocr_used": false,
+      "coordinates_used": false,
+      "console_used": false,
+      "generic_character_rebind_used": false
+    },
+    "false_advertisement_result": "RED",
+    "false_advertisement_promotion_eligible": false,
+    "shared_runner_integration": "wired_fail_closed_product_surface_checkpoints_pending"
+  },
+  "required_product_surface_inputs": {
+    "current_status": "not_captured",
+    "service_entrypoint": "prepare_zhongguo_scoreboard_surface_v1",
+    "entries": [
+      {
+        "surface_id": "managed-capable",
+        "played_character_role": "scoreboard_managed_owner",
+        "required_acl": "managed.surface_available=true and current_player_can_assess_others=true"
+      },
+      {
+        "surface_id": "received-only",
+        "played_character_role": "received_self_subject",
+        "required_acl": "managed.surface_available=false and received_self.surface_available=true"
+      }
+    ],
+    "required_checkpoint_identity": [
+      "absolute_path",
+      "bytes",
+      "sha256",
+      "save_lineage_id",
+      "date_raw",
+      "player_character_id",
+      "real_ck3_product_state_query_receipt"
+    ],
+    "ready_receipt_required_fields": [
+      "surface_id",
+      "status=ready",
+      "evidence_class=real_ck3",
+      "state_origin=product-checkpoint",
+      "transition_kind=canonical-checkpoint-clean-restart",
+      "restore_materialized=true",
+      "provider_observed=true",
+      "checkpoint_sha256",
+      "checkpoint_bytes",
+      "save_lineage_id",
+      "lifecycle.previous_pid",
+      "lifecycle.pid",
+      "lifecycle.previous_connection_generation",
+      "lifecycle.connection_generation",
+      "fixture_used=false",
+      "ocr_used=false",
+      "coordinates_used=false",
+      "console_used=false",
+      "generic_character_rebind_used=false"
+    ],
+    "existing_phase2_event_registry_reusable_as_is": false,
+    "reason": "the existing registry covers four event spans and contains no scoreboard surface checkpoints"
+  },
+  "minimum_serial_live": {
+    "runner_invocations": 1,
+    "managed_checkpoint_clean_restarts": 2,
+    "mode": "per-surface paused exact-build MCP-only batch",
+    "surfaces": [
+      "managed-capable player",
+      "received-only player"
+    ],
+    "actions": [
+      "open",
+      "switch-managed",
+      "switch-received",
+      "switch-system",
+      "close",
+      "reopen as close-query-open-query"
+    ],
+    "retained_frames": [
+      "source query",
+      "verification-pending ACK",
+      "independent later query",
+      "typed verifier result",
+      "hello capability list",
+      "managed cleanup receipt"
+    ]
+  },
+  "current_readiness": "static-ready-live-pending"
+}

@@ -792,6 +792,13 @@ bool TestFrozenExecutableAndContracts(int argc, char **argv) {
       !Contains(bridge, "ReadStartupLocalizeCurrentRootGuardV1Diagnostics") ||
       !Contains(bridge, "startup_localize_current_root_guard_v1") ||
       !Contains(bridge, "native_miss_count") ||
+      !Contains(cmake, "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1") ||
+      !Contains(cmake,
+                "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1") ||
+      !Contains(bridge,
+                "#if defined(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1)") ||
+      !Contains(bridge,
+                "constexpr bool kStartupFailureContainmentEnabledV1 = true") ||
       !Contains(bridge,
                 "constexpr bool kStartupFailureContainmentEnabledV1 = false") ||
       !Contains(bridge, "startup_failure_containment_enabled") ||

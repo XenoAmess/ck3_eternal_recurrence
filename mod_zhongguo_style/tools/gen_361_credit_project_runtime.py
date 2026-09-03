@@ -479,6 +479,14 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             f"change_variable = {{ name = zg361_cp_hard_output add = {delivery} }}",
             f"change_variable = {{ name = zg361_cp_visibility_points add = {visibility} }}",
             f"set_variable = {{ name = zg361_cp_m26_booked_hours value = {booked} }}",
+            # A contribution receipt is a durable business identity, not the
+            # six-field case-kernel operation receipt.  Keep the cursor across
+            # portfolio reinitialization and bind the published revision to
+            # the case revision produced by the successful operation above.
+            "if = { limit = { NOT = { has_variable = zg361_cp_contribution_receipt_cursor } } set_variable = { name = zg361_cp_contribution_receipt_cursor value = 0 } }",
+            "change_variable = { name = zg361_cp_contribution_receipt_cursor add = 1 }",
+            "set_variable = { name = zg361_cp_m26_contribution_receipt_id value = var:zg361_cp_contribution_receipt_cursor }",
+            "set_variable = { name = zg361_cp_m26_contribution_receipt_revision value = var:zg361_case_e_revision }",
         ]
     elif mid == 27:
         shares = ((7000, 2000, 1000), (5000, 3000, 2000), (4000, 4000, 2000))[choice - 1]

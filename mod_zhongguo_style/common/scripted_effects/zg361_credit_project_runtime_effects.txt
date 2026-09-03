@@ -3841,6 +3841,10 @@ zg361_cp_m26_route_a_effect = {
 			change_variable = { name = zg361_cp_hard_output add = 20 }
 			change_variable = { name = zg361_cp_visibility_points add = 7 }
 			set_variable = { name = zg361_cp_m26_booked_hours value = 23 }
+			if = { limit = { NOT = { has_variable = zg361_cp_contribution_receipt_cursor } } set_variable = { name = zg361_cp_contribution_receipt_cursor value = 0 } }
+			change_variable = { name = zg361_cp_contribution_receipt_cursor add = 1 }
+			set_variable = { name = zg361_cp_m26_contribution_receipt_id value = var:zg361_cp_contribution_receipt_cursor }
+			set_variable = { name = zg361_cp_m26_contribution_receipt_revision value = var:zg361_case_e_revision }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			set_variable = { name = zg361_cp_m26_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_cp_m26_write_subject value = $TICKET_SUBJECT$ }
@@ -4234,6 +4238,10 @@ zg361_cp_m26_route_b_effect = {
 			change_variable = { name = zg361_cp_hard_output add = 15 }
 			change_variable = { name = zg361_cp_visibility_points add = 17 }
 			set_variable = { name = zg361_cp_m26_booked_hours value = 22 }
+			if = { limit = { NOT = { has_variable = zg361_cp_contribution_receipt_cursor } } set_variable = { name = zg361_cp_contribution_receipt_cursor value = 0 } }
+			change_variable = { name = zg361_cp_contribution_receipt_cursor add = 1 }
+			set_variable = { name = zg361_cp_m26_contribution_receipt_id value = var:zg361_cp_contribution_receipt_cursor }
+			set_variable = { name = zg361_cp_m26_contribution_receipt_revision value = var:zg361_case_e_revision }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			set_variable = { name = zg361_cp_m26_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_cp_m26_write_subject value = $TICKET_SUBJECT$ }

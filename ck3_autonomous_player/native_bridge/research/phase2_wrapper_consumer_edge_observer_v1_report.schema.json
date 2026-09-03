@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase2-wrapper-consumer-edge-observer-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "private_build", "installed", "failure_flags", "entry_count",
+    "edge_0x3B9E10B_count", "edge_0x3B9E175_count",
+    "other_caller_count", "selected_after_publish_entry_count",
+    "selected_after_publish_edge_0x3B9E10B_count",
+    "selected_after_publish_edge_0x3B9E175_count",
+    "selected_after_publish_other_caller_count", "last_return_address",
+    "last_callsite_rva", "last_consumer_context", "last_item_count",
+    "last_selected_task", "last_thread_id", "last_timestamp_qpc",
+    "wrapper_post_publish_entry_count",
+    "wrapper_post_publish_last_callsite_rva",
+    "consumer_identity_match_count"
+  ],
+  "properties": {
+    "private_build": {"const": true},
+    "installed": {"type": "boolean"},
+    "failure_flags": {"type": "integer", "minimum": 0},
+    "entry_count": {"type": "integer", "minimum": 0},
+    "edge_0x3B9E10B_count": {"type": "integer", "minimum": 0},
+    "edge_0x3B9E175_count": {"type": "integer", "minimum": 0},
+    "other_caller_count": {"type": "integer", "minimum": 0},
+    "selected_after_publish_entry_count": {"type": "integer", "minimum": 0},
+    "selected_after_publish_edge_0x3B9E10B_count": {"type": "integer", "minimum": 0},
+    "selected_after_publish_edge_0x3B9E175_count": {"type": "integer", "minimum": 0},
+    "selected_after_publish_other_caller_count": {"type": "integer", "minimum": 0},
+    "last_return_address": {"type": "integer", "minimum": 0},
+    "last_callsite_rva": {"type": "integer", "minimum": 0},
+    "last_consumer_context": {"type": "integer", "minimum": 0},
+    "last_item_count": {"type": "integer", "minimum": 0},
+    "last_selected_task": {"type": "integer", "minimum": 0},
+    "last_thread_id": {"type": "integer", "minimum": 0},
+    "last_timestamp_qpc": {"type": "integer", "minimum": 0},
+    "wrapper_post_publish_entry_count": {"type": "integer", "minimum": 0},
+    "wrapper_post_publish_last_callsite_rva": {"type": "integer", "minimum": 0},
+    "consumer_identity_match_count": {"type": "integer", "minimum": 0}
+  }
+}

@@ -56,6 +56,7 @@ struct Phase2WrapperEntryObserverV1Environment {
   Phase2WrapperEntryObserverVirtualProtectV1 virtual_protect_override = nullptr;
   Phase2WrapperEntryObserverFlushInstructionCacheV1
       flush_instruction_cache_override = nullptr;
+  const std::atomic<std::uint64_t> *selected_task_source = nullptr;
 };
 
 struct Phase2WrapperEntryObserverV1State {
@@ -63,6 +64,9 @@ struct Phase2WrapperEntryObserverV1State {
   std::atomic<std::uint32_t> failure_flags{
       phase2_wrapper_entry_observer_failure_none};
   std::atomic<std::uint64_t> entry_count{0};
+  std::atomic<std::uint64_t> selected_after_publish_entry_count{0};
+  std::atomic<std::uint64_t> selected_after_publish_last_task{0};
+  std::atomic<std::uint64_t> selected_after_publish_last_callsite_rva{0};
   std::atomic<std::uint64_t> last_return_address{0};
   std::atomic<std::uint64_t> last_callsite_rva{0};
   std::atomic<std::uint64_t> last_scheduler_owner{0};
@@ -83,12 +87,16 @@ struct Phase2WrapperEntryObserverV1State {
   Phase2WrapperEntryObserverVirtualProtectV1 virtual_protect = nullptr;
   Phase2WrapperEntryObserverFlushInstructionCacheV1 flush_instruction_cache =
       nullptr;
+  const std::atomic<std::uint64_t> *selected_task_source = nullptr;
 };
 
 struct Phase2WrapperEntryObserverV1Diagnostics {
   bool installed = false;
   std::uint32_t failure_flags = phase2_wrapper_entry_observer_failure_none;
   std::uint64_t entry_count = 0;
+  std::uint64_t selected_after_publish_entry_count = 0;
+  std::uint64_t selected_after_publish_last_task = 0;
+  std::uint64_t selected_after_publish_last_callsite_rva = 0;
   std::uint64_t last_return_address = 0;
   std::uint64_t last_callsite_rva = 0;
   std::uint64_t last_scheduler_owner = 0;

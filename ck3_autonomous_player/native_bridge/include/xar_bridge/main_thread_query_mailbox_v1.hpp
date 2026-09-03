@@ -208,7 +208,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // received-self incident, fixed ZhongGuo scoreboard-state and fixed
   // Workforce collective/rolling-three-cycle, AI-owned B1 case and Workforce
   // normal-exit/HC lifecycle snapshot and fail-closed scoreboard-action
-  // transport executors.
+  // transport executors, plus the two Phase-2 closed business postconditions.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_tertiary = nullptr;
@@ -231,6 +231,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_vigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_unvigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duovigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_trivigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quattuorvigintary = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -324,6 +326,8 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_vigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_unvigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duovigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_trivigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quattuorvigintary = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

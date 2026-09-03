@@ -1,0 +1,29 @@
+{
+  "contract": "zhongguo_projects_metrics_postcondition_v1_source_contract",
+  "readiness": "static_and_fixture_ready_not_live",
+  "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+  "allowlist_count": 24,
+  "source_event": "zg361cp.26",
+  "result_event": "zg361p3.229",
+  "generated_sources": [
+    "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py",
+    "mod_zhongguo_style/tools/gen_361_phase3_metrics_delivery_runtime.py"
+  ],
+  "generated_outputs": [
+    "mod_zhongguo_style/common/scripted_effects/zg361_credit_project_runtime_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_phase3_metrics_delivery_runtime_effects.txt"
+  ],
+  "required_invariants": [
+    "cp26_a_b_only_mint_positive_monotonic_receipt_id",
+    "cp26_receipt_revision_is_post_operation_case_e_revision",
+    "phase3_initializer_requires_current_owner_subject_cycle",
+    "m229_a_b_only_copy_same_receipt_id_and_revision",
+    "route_c_never_mints_business_lineage",
+    "provider_reads_played_subject_scope_only",
+    "source_result_contribution_metrics_share_project_correlation_identity",
+    "metrics_backlinks_same_receipt_id_and_revision",
+    "fixture_is_not_production_live"
+  ],
+  "mailbox_fixed_slot": "permitted_executor_quattuorvigintary",
+  "shared_wiring": "default_off_complete_not_advertised"
+}

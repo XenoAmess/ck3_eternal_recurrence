@@ -1,0 +1,77 @@
+{
+  "format_version": 1,
+  "kind": "ck3_raiktor_generic_war_bound_guarded_current_live_manifest",
+  "status": "consumed-live-red-no-retry",
+  "prelaunch_manifest_sha256": "6B66FC222685686C46667D51C55EB59F7EA6BE052B11E65CD7E5F2757408C1AC",
+  "source_commit": "3c378569d65794bd1ec9dceda25f0cd6a364f3ca",
+  "guard_configuration": {
+    "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "ON",
+    "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+    "install_order": [
+      "InstallStartupParticle2NullGuardV1",
+      "InstallStartupParticle2ConsumerGuardV1",
+      "InstallStartupDx11RenderContextDrawGuardV1",
+      "InstallStartupLocalizeCurrentRootGuardV1"
+    ]
+  },
+  "frozen_inputs": {
+    "checkpoint_sha256": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state_sha256": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "B96C3A0146BDC3DB17AE867423254B503EC21FE30EE02931830E790548EA4093",
+    "bridge_injector_sha256": "13CE2D7A53F179DD735DFD021D8A000ECE11F288A62DB69983FA0EDE4AE0A33A"
+  },
+  "expected_identity": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "date_raw": 53223936
+  },
+  "production_source_sha256": {
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt": "D2D88B0D0DDF10DACCE38202139EE49305A2ADC06C97A73E13CC123116EF049C",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_war_bound_regiment_v1.hpp": "8D364337C1099648BA587D4B88428A1F7930459935E1B2D227C1E53A7DC5209B",
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp": "F4B17535CF3686A153348C705EEA79C320D68C2BB0C7EF3FE01570ACBF381457",
+    "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp": "0E2A6E897D6F7607A8DD7E00E39C6ED7DFCD74FC0EB54832649C202F02CD7023",
+    "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_regiment_v1.cpp": "D4C310A2CF7BEABBBAF2160D8428786FFADE3F5C3654700E2B53A971CF06EF97",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "0D71971BB700A5AEE5400F57A722B8D5B5086D2AEB4ADCCEFBD9752EBB0C4C51",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_public_aggregate.py": "C425E654CCAA11B609226ADAD5B45C29DE3263568960CC8F68D0B8813284D68A",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_session_binding_contract.py": "6BBD1733E985692572D92F9BAE9C77C0CF878572B062857DEFBF52348907AE3E",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_regiment_contract.py": "314C814F56638466580B073E7C926420B588F70F201E94FEF5B1B96100783205"
+  },
+  "query_contract": {
+    "terms_query_count": 2,
+    "allowed_gameplay_commands": [
+      "query-war-termination-terms-v1-50331699",
+      "query-war-termination-terms-v1-50331699"
+    ],
+    "mutation_commands": [],
+    "strict_equal_layers": ["child", "aggregate", "session", "cache"],
+    "paused": true
+  },
+  "readiness_boundary": {
+    "generic_war_bound_current_ready": true,
+    "source_specific_war_bound_ready": false,
+    "pre_soldiers_ready": false,
+    "proven_soldier_loss_ready": false,
+    "action_terms_ready": false,
+    "automatic_surrender_ready": false
+  },
+  "live_result": {
+    "pid": 7676,
+    "status": "red",
+    "process_exit_code": 1,
+    "query_count": 0,
+    "required_query_count": 2,
+    "mutation_commands": [],
+    "time_advanced": false,
+    "readiness_promoted": false,
+    "exception_code": "C0000005",
+    "exception_access": "read",
+    "exception_read_address": "0xD0",
+    "exception_rva": "ck3+0x369CB58",
+    "crossed_prior_particle2_fault_rva": "ck3+0x1DABD89",
+    "cleanup_proven": true,
+    "source_inputs_unchanged": true,
+    "second_launch_forbidden": true
+  },
+  "launch_authorization": "consumed-no-retry"
+}

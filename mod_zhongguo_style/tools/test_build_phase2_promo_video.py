@@ -12,6 +12,7 @@ import json
 import sys
 import tempfile
 import unittest
+import wave
 from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
@@ -164,7 +165,11 @@ def _write_media_preflight_report(
         "generated_at_utc": created.isoformat(timespec="seconds"),
         "valid_for_seconds": promo.MEDIA_PREFLIGHT_VALID_FOR_SECONDS,
         "expires_at_utc": expires.isoformat(timespec="seconds"),
-        "project": {"id": config.project_id, "chapters": len(config.chapters)},
+        "project": {
+            "id": config.project_id,
+            "chapters": len(config.chapters),
+            "config": record(config_path),
+        },
         "promo_toolchain": {
             "version": xar_promo.__version__,
             "source_root": str(source_root),
@@ -1718,6 +1723,115 @@ class Phase2PromoEntryTests(unittest.TestCase):
         self.assertFalse(
             any("ocr" in name.casefold() or "tesseract" in name.casefold() for name in imports)
         )
+
+    def test_institution_cut_reorders_front_end_and_reprises_without_changing_sources(self) -> None:
+        cut = promo.cut_for_id("institution-led")
+        chapters = tuple(
+            SimpleNamespace(chapter_id=chapter_id)
+            for chapter_id in promo.LEGACY_CUT.editorial_chapter_order
+        )
+        segments = {}
+        for chapter in chapters:
+            chapter_id = chapter.chapter_id
+            segments[chapter_id] = [
+                promo.SegmentDraft(
+                    segment_id=chapter_id,
+                    visual_source=promo.VisualSource(
+                        f"visual.{chapter_id}",
+                        promo.VIDEO,
+                        Path("same-canonical-capture.mkv"),
+                        "ck3-capture-bundle",
+                        metadata={"clean_span_id": chapter_id},
+                    ),
+                    render_options=promo.RenderOptions(
+                        width=1920,
+                        height=1080,
+                        fps=30,
+                        duration_seconds=5,
+                    ),
+                    subtitles={},
+                )
+            ]
+        result = promo._apply_editorial_cut(
+            SimpleNamespace(chapters=chapters), segments, cut
+        )
+        ids = [segment.segment_id for segment in result]
+        self.assertEqual(12, len(ids))
+        self.assertLess(
+            ids.index("phase2_manager_governance"),
+            ids.index("phase2_receipt_appeal_pip"),
+        )
+        self.assertEqual(
+            "phase2_receipt_appeal_pip.reprise1",
+            ids[ids.index("phase2_projects_metrics") + 1],
+        )
+        self.assertEqual(
+            "phase2_manager_governance.reprise2",
+            ids[ids.index("phase2_cross_cycle_endgame") + 1],
+        )
+        self.assertEqual(
+            "phase2_receipt_appeal_pip",
+            result[ids.index("phase2_receipt_appeal_pip.reprise1")]
+            .visual_source.metadata["clean_span_id"],
+        )
+        for reprise_id in (
+            "phase2_receipt_appeal_pip.reprise1",
+            "phase2_manager_governance.reprise2",
+        ):
+            reprise = result[ids.index(reprise_id)]
+            self.assertEqual(2.0, reprise.render_options.duration_seconds)
+            self.assertIsNone(reprise.narration_request)
+            self.assertIsNone(reprise.prepared_narration)
+            self.assertEqual("generated-silence", reprise.visual_source.metadata["editorial_reprise_narration"])
+            self.assertEqual("none", reprise.visual_source.metadata["editorial_reprise_claim"])
+            self.assertEqual(
+                {"zh-CN": "制度回声", "en": "INSTITUTIONAL ECHO"},
+                dict(reprise.subtitles),
+            )
+
+    def test_reprise_silence_is_exact_and_refuses_non_reprise(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = promo.VisualSource(
+                "visual.reprise",
+                promo.VIDEO,
+                Path("capture.mkv"),
+                "ck3-capture-bundle",
+                metadata={"editorial_reprise": True},
+            )
+            segment = promo.SegmentDraft(
+                segment_id="segment.reprise",
+                visual_source=source,
+                render_options=promo.RenderOptions(
+                    width=1920,
+                    height=1080,
+                    fps=30,
+                    duration_seconds=2.0,
+                ),
+                subtitles={"zh-CN": "制度回声", "en": "INSTITUTIONAL ECHO"},
+            )
+            artifact = promo._RepriseSilenceResolver()(segment, workdir=root)
+            self.assertEqual("editorial-reprise-silence", artifact.origin)
+            self.assertTrue(artifact.metadata["no_extra_narration"])
+            with wave.open(str(artifact.path), "rb") as wav:
+                self.assertEqual(48_000, wav.getframerate())
+                self.assertEqual(2, wav.getnchannels())
+                self.assertEqual(96_000, wav.getnframes())
+                self.assertEqual(
+                    b"\x00" * 256,
+                    wav.readframes(64),
+                )
+
+            non_reprise = promo.replace(
+                segment,
+                segment_id="segment.normal",
+                visual_source=promo.replace(source, metadata={}),
+            )
+            with self.assertRaisesRegex(
+                promo.Phase2PromoBuildError,
+                "no prepared Xiaoxiao narration",
+            ):
+                promo._RepriseSilenceResolver()(non_reprise, workdir=root)
 
     def test_exact_target_latest_rejection_beats_older_approval(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

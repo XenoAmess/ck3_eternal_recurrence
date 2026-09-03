@@ -286,6 +286,7 @@ void ClearResolved(Phase2WrapperEntryObserverV1State &state) noexcept {
   state.virtual_free = nullptr;
   state.virtual_protect = nullptr;
   state.flush_instruction_cache = nullptr;
+  state.selected_task_source = nullptr;
 }
 
 } // namespace
@@ -297,6 +298,17 @@ void RecordPhase2WrapperEntryObservationV1(
   std::uint64_t callsite_rva = 0;
   if (return_address >= state.module_base + 5) {
     callsite_rva = return_address - state.module_base - 5;
+  }
+  const auto selected_task = state.selected_task_source != nullptr
+      ? state.selected_task_source->load(std::memory_order_acquire)
+      : 0;
+  if (selected_task != 0) {
+    state.selected_after_publish_last_task.store(selected_task,
+                                                  std::memory_order_relaxed);
+    state.selected_after_publish_last_callsite_rva.store(
+        callsite_rva, std::memory_order_relaxed);
+    state.selected_after_publish_entry_count.fetch_add(
+        1, std::memory_order_relaxed);
   }
   state.last_return_address.store(return_address, std::memory_order_relaxed);
   state.last_callsite_rva.store(callsite_rva, std::memory_order_relaxed);
@@ -358,6 +370,7 @@ bool InstallPhase2WrapperEntryObserverV1(
       environment.flush_instruction_cache_override != nullptr
           ? environment.flush_instruction_cache_override
           : &DefaultFlushInstructionCache;
+  state.selected_task_source = environment.selected_task_source;
   const auto virtual_alloc = environment.virtual_alloc_override != nullptr
                                  ? environment.virtual_alloc_override
                                  : &DefaultVirtualAlloc;
@@ -375,6 +388,12 @@ bool InstallPhase2WrapperEntryObserverV1(
   }
 
   state.entry_count.store(0, std::memory_order_relaxed);
+  state.selected_after_publish_entry_count.store(0,
+                                                  std::memory_order_relaxed);
+  state.selected_after_publish_last_task.store(0,
+                                                std::memory_order_relaxed);
+  state.selected_after_publish_last_callsite_rva.store(
+      0, std::memory_order_relaxed);
   state.last_return_address.store(0, std::memory_order_relaxed);
   state.last_callsite_rva.store(0, std::memory_order_relaxed);
   state.last_scheduler_owner.store(0, std::memory_order_relaxed);
@@ -459,6 +478,13 @@ ReadPhase2WrapperEntryObserverV1Diagnostics(
   output.installed = state.installed.load(std::memory_order_acquire) != 0;
   output.failure_flags = state.failure_flags.load(std::memory_order_acquire);
   output.entry_count = state.entry_count.load(std::memory_order_acquire);
+  output.selected_after_publish_entry_count =
+      state.selected_after_publish_entry_count.load(std::memory_order_acquire);
+  output.selected_after_publish_last_task =
+      state.selected_after_publish_last_task.load(std::memory_order_relaxed);
+  output.selected_after_publish_last_callsite_rva =
+      state.selected_after_publish_last_callsite_rva.load(
+          std::memory_order_relaxed);
   output.last_return_address =
       state.last_return_address.load(std::memory_order_relaxed);
   output.last_callsite_rva =

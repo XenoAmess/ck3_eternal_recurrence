@@ -178,6 +178,18 @@ zg361_comp_open_l_case_effect = {
             set_variable = { name = zg361_comp_m090_pay_personal_status value = 0 }
             set_variable = { name = zg361_comp_m090_bounded_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m090_bounded_personal_status value = 0 }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 0 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 0 }
+            remove_variable = zg361_comp_promotion_receipt_owner
+            remove_variable = zg361_comp_promotion_receipt_subject
+            remove_variable = zg361_comp_promotion_receipt_cycle
+            remove_variable = zg361_comp_promotion_receipt_case
+            remove_variable = zg361_comp_promotion_receipt_choice_serial
+            remove_variable = zg361_comp_promotion_receipt_serial
+            remove_variable = zg361_comp_promotion_receipt_choice_revision
+            remove_variable = zg361_comp_promotion_receipt_revision
+            remove_variable = zg361_comp_promotion_receipt_operation
+            remove_variable = zg361_comp_promotion_receipt_route
             set_variable = { name = zg361_comp_m082_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m082_consumed value = 0 }
             set_variable = { name = zg361_comp_m082_route value = 0 }
@@ -414,6 +426,18 @@ zg361_comp_open_ae_case_effect = {
             set_variable = { name = zg361_comp_m282_pay_personal_status value = 0 }
             set_variable = { name = zg361_comp_m289_pay_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m289_pay_personal_status value = 0 }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 0 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 0 }
+            remove_variable = zg361_comp_promotion_receipt_owner
+            remove_variable = zg361_comp_promotion_receipt_subject
+            remove_variable = zg361_comp_promotion_receipt_cycle
+            remove_variable = zg361_comp_promotion_receipt_case
+            remove_variable = zg361_comp_promotion_receipt_choice_serial
+            remove_variable = zg361_comp_promotion_receipt_serial
+            remove_variable = zg361_comp_promotion_receipt_choice_revision
+            remove_variable = zg361_comp_promotion_receipt_revision
+            remove_variable = zg361_comp_promotion_receipt_operation
+            remove_variable = zg361_comp_promotion_receipt_route
             set_variable = { name = zg361_comp_m278_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m278_consumed value = 0 }
             set_variable = { name = zg361_comp_m278_route value = 0 }
@@ -678,6 +702,18 @@ zg361_comp_open_af_case_effect = {
                 if = { limit = { NOT = { has_variable = zg361_comp_af_queue_head } } set_variable = { name = zg361_comp_af_queue_head value = 0 } }
                 if = { limit = { NOT = { has_variable = zg361_comp_af_queue_tail } } set_variable = { name = zg361_comp_af_queue_tail value = 0 } }
             }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 0 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 0 }
+            remove_variable = zg361_comp_promotion_receipt_owner
+            remove_variable = zg361_comp_promotion_receipt_subject
+            remove_variable = zg361_comp_promotion_receipt_cycle
+            remove_variable = zg361_comp_promotion_receipt_case
+            remove_variable = zg361_comp_promotion_receipt_choice_serial
+            remove_variable = zg361_comp_promotion_receipt_serial
+            remove_variable = zg361_comp_promotion_receipt_choice_revision
+            remove_variable = zg361_comp_promotion_receipt_revision
+            remove_variable = zg361_comp_promotion_receipt_operation
+            remove_variable = zg361_comp_promotion_receipt_route
             set_variable = { name = zg361_comp_m290_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m290_consumed value = 0 }
             set_variable = { name = zg361_comp_m290_route value = 0 }
@@ -4103,6 +4139,39 @@ zg361_comp_m082_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m082_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m082_receipt_active = 1
+                var:zg361_comp_m082_consumed = 1
+                var:zg361_comp_m082_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m082_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 82 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m082_receipt_route }
+        }
         zg361_comp_l_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 082"
     }
@@ -4274,6 +4343,39 @@ zg361_comp_m083_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m083_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m083_receipt_active = 1
+                var:zg361_comp_m083_consumed = 1
+                var:zg361_comp_m083_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m083_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 83 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m083_receipt_route }
+        }
         zg361_comp_l_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 083"
     }
@@ -4476,6 +4578,39 @@ zg361_comp_m084_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m084_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m084_receipt_active = 1
+                var:zg361_comp_m084_consumed = 1
+                var:zg361_comp_m084_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m084_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 84 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m084_receipt_route }
+        }
         zg361_comp_l_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 084"
     }
@@ -4644,6 +4779,39 @@ zg361_comp_m085_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m085_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m085_receipt_active = 1
+                var:zg361_comp_m085_consumed = 1
+                var:zg361_comp_m085_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m085_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 85 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m085_receipt_route }
+        }
         zg361_comp_l_try_advance_02_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 085"
     }
@@ -4827,6 +4995,39 @@ zg361_comp_m086_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m086_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m086_receipt_active = 1
+                var:zg361_comp_m086_consumed = 1
+                var:zg361_comp_m086_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m086_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 86 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m086_receipt_route }
+        }
         zg361_comp_l_try_advance_02_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 086"
     }
@@ -4995,6 +5196,39 @@ zg361_comp_m087_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m087_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m087_receipt_active = 1
+                var:zg361_comp_m087_consumed = 1
+                var:zg361_comp_m087_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m087_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 87 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m087_receipt_route }
+        }
         zg361_comp_l_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 087"
     }
@@ -5176,6 +5410,39 @@ zg361_comp_m088_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m088_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m088_receipt_active = 1
+                var:zg361_comp_m088_consumed = 1
+                var:zg361_comp_m088_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m088_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 88 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m088_receipt_route }
+        }
         zg361_comp_l_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 088"
     }
@@ -5351,6 +5618,39 @@ zg361_comp_m089_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m089_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m089_receipt_active = 1
+                var:zg361_comp_m089_consumed = 1
+                var:zg361_comp_m089_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m089_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 89 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m089_receipt_route }
+        }
         zg361_comp_l_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 089"
     }
@@ -5542,6 +5842,39 @@ zg361_comp_m090_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m090_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m090_receipt_active = 1
+                var:zg361_comp_m090_consumed = 1
+                var:zg361_comp_m090_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m090_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 90 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m090_receipt_route }
+        }
         zg361_comp_l_try_advance_04_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 090"
     }
@@ -5711,6 +6044,39 @@ zg361_comp_m091_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m091_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m091_receipt_active = 1
+                var:zg361_comp_m091_consumed = 1
+                var:zg361_comp_m091_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m091_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 91 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m091_receipt_route }
+        }
         zg361_comp_l_try_advance_04_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 091"
     }
@@ -5878,6 +6244,39 @@ zg361_comp_m278_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m278_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m278_receipt_active = 1
+                var:zg361_comp_m278_consumed = 1
+                var:zg361_comp_m278_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m278_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 278 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m278_receipt_route }
+        }
         zg361_comp_ae_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 278"
     }
@@ -6043,6 +6442,39 @@ zg361_comp_m279_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m279_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m279_receipt_active = 1
+                var:zg361_comp_m279_consumed = 1
+                var:zg361_comp_m279_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m279_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 279 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m279_receipt_route }
+        }
         zg361_comp_ae_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 279"
     }
@@ -6210,6 +6642,39 @@ zg361_comp_m280_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m280_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m280_receipt_active = 1
+                var:zg361_comp_m280_consumed = 1
+                var:zg361_comp_m280_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m280_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 280 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m280_receipt_route }
+        }
         zg361_comp_ae_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 280"
     }
@@ -6414,6 +6879,39 @@ zg361_comp_m281_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m281_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m281_receipt_active = 1
+                var:zg361_comp_m281_consumed = 1
+                var:zg361_comp_m281_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m281_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 281 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m281_receipt_route }
+        }
         zg361_comp_ae_try_advance_02_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 281"
     }
@@ -6608,6 +7106,39 @@ zg361_comp_m282_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m282_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m282_receipt_active = 1
+                var:zg361_comp_m282_consumed = 1
+                var:zg361_comp_m282_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m282_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 282 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m282_receipt_route }
+        }
         zg361_comp_ae_try_advance_02_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 282"
     }
@@ -6786,6 +7317,39 @@ zg361_comp_m283_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m283_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m283_receipt_active = 1
+                var:zg361_comp_m283_consumed = 1
+                var:zg361_comp_m283_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m283_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 283 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m283_receipt_route }
+        }
         zg361_comp_ae_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 283"
     }
@@ -6956,6 +7520,39 @@ zg361_comp_m284_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m284_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m284_receipt_active = 1
+                var:zg361_comp_m284_consumed = 1
+                var:zg361_comp_m284_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m284_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 284 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m284_receipt_route }
+        }
         zg361_comp_ae_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 284"
     }
@@ -7142,6 +7739,39 @@ zg361_comp_m285_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m285_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m285_receipt_active = 1
+                var:zg361_comp_m285_consumed = 1
+                var:zg361_comp_m285_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m285_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 285 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m285_receipt_route }
+        }
         zg361_comp_ae_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 285"
     }
@@ -7316,6 +7946,39 @@ zg361_comp_m286_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m286_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m286_receipt_active = 1
+                var:zg361_comp_m286_consumed = 1
+                var:zg361_comp_m286_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m286_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 286 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m286_receipt_route }
+        }
         zg361_comp_ae_try_advance_04_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 286"
     }
@@ -7481,6 +8144,39 @@ zg361_comp_m287_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m287_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m287_receipt_active = 1
+                var:zg361_comp_m287_consumed = 1
+                var:zg361_comp_m287_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m287_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 287 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m287_receipt_route }
+        }
         zg361_comp_ae_try_advance_04_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 287"
     }
@@ -7653,6 +8349,39 @@ zg361_comp_m288_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m288_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m288_receipt_active = 1
+                var:zg361_comp_m288_consumed = 1
+                var:zg361_comp_m288_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m288_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 288 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m288_receipt_route }
+        }
         zg361_comp_ae_try_advance_05_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 288"
     }
@@ -7850,6 +8579,39 @@ zg361_comp_m289_consume_effect = {
         zg361_comp_ae_recalculate_statement_effect = yes
 
         set_variable = { name = zg361_comp_m289_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m289_receipt_active = 1
+                var:zg361_comp_m289_consumed = 1
+                var:zg361_comp_m289_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m289_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 289 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m289_receipt_route }
+        }
         zg361_comp_ae_try_advance_05_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 289"
     }
@@ -8025,6 +8787,39 @@ zg361_comp_m290_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m290_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m290_receipt_active = 1
+                var:zg361_comp_m290_consumed = 1
+                var:zg361_comp_m290_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m290_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 290 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m290_receipt_route }
+        }
         zg361_comp_af_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 290"
     }
@@ -8196,6 +8991,39 @@ zg361_comp_m291_consume_effect = {
 
         zg361_comp_af_recalculate_units_effect = yes
         set_variable = { name = zg361_comp_m291_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m291_receipt_active = 1
+                var:zg361_comp_m291_consumed = 1
+                var:zg361_comp_m291_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m291_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 291 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m291_receipt_route }
+        }
         zg361_comp_af_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 291"
     }
@@ -8390,6 +9218,39 @@ zg361_comp_m292_consume_effect = {
 
         zg361_comp_af_recalculate_units_effect = yes
         set_variable = { name = zg361_comp_m292_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m292_receipt_active = 1
+                var:zg361_comp_m292_consumed = 1
+                var:zg361_comp_m292_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m292_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 292 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m292_receipt_route }
+        }
         zg361_comp_af_try_advance_01_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 292"
     }
@@ -8588,6 +9449,39 @@ zg361_comp_m293_consume_effect = {
 
         zg361_comp_af_recalculate_units_effect = yes
         set_variable = { name = zg361_comp_m293_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m293_receipt_active = 1
+                var:zg361_comp_m293_consumed = 1
+                var:zg361_comp_m293_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m293_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 293 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m293_receipt_route }
+        }
         zg361_comp_af_try_advance_02_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 293"
     }
@@ -8758,6 +9652,39 @@ zg361_comp_m294_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m294_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m294_receipt_active = 1
+                var:zg361_comp_m294_consumed = 1
+                var:zg361_comp_m294_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m294_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 294 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m294_receipt_route }
+        }
         zg361_comp_af_try_advance_02_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 294"
     }
@@ -8924,6 +9851,39 @@ zg361_comp_m295_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m295_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m295_receipt_active = 1
+                var:zg361_comp_m295_consumed = 1
+                var:zg361_comp_m295_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m295_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 295 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m295_receipt_route }
+        }
         zg361_comp_af_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 295"
     }
@@ -9092,6 +10052,39 @@ zg361_comp_m296_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m296_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m296_receipt_active = 1
+                var:zg361_comp_m296_consumed = 1
+                var:zg361_comp_m296_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m296_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 296 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m296_receipt_route }
+        }
         zg361_comp_af_try_advance_03_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 296"
     }
@@ -9258,6 +10251,39 @@ zg361_comp_m297_consume_effect = {
 
         zg361_comp_af_recalculate_units_effect = yes
         set_variable = { name = zg361_comp_m297_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m297_receipt_active = 1
+                var:zg361_comp_m297_consumed = 1
+                var:zg361_comp_m297_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m297_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 297 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m297_receipt_route }
+        }
         zg361_comp_af_try_start_vesting_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 297"
     }
@@ -9424,6 +10450,39 @@ zg361_comp_m298_consume_effect = {
 
 
         set_variable = { name = zg361_comp_m298_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m298_receipt_active = 1
+                var:zg361_comp_m298_consumed = 1
+                var:zg361_comp_m298_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m298_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 298 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m298_receipt_route }
+        }
         zg361_comp_af_try_start_vesting_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 298"
     }
@@ -9595,6 +10654,39 @@ zg361_comp_m299_consume_effect = {
 
         zg361_comp_af_check_conservation_effect = yes
         set_variable = { name = zg361_comp_m299_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m299_receipt_active = 1
+                var:zg361_comp_m299_consumed = 1
+                var:zg361_comp_m299_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m299_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 299 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m299_receipt_route }
+        }
         zg361_comp_af_try_advance_05_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 299"
     }
@@ -9829,6 +10921,39 @@ zg361_comp_m300_consume_effect = {
 
         zg361_comp_af_check_conservation_effect = yes
         set_variable = { name = zg361_comp_m300_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m300_receipt_active = 1
+                var:zg361_comp_m300_consumed = 1
+                var:zg361_comp_m300_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m300_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 300 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m300_receipt_route }
+        }
         zg361_comp_af_try_advance_05_effect = yes
         debug_log = "ZG361COMP: consumed mechanism 300"
     }

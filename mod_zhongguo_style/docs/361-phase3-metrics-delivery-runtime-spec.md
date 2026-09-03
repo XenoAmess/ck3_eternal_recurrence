@@ -300,3 +300,16 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 - 九语中只有简体中文和英文是原创文案，其余七语仍是英文结构占位。
 
 所以不得写 `fixture-live`、`production-live primitive`、`production-live loop` 或 `complete`。下一阶段必须经 MCP 优先的 paused 实机批量验收，保存日志、snapshot 与可复现 artifact 后，才能按证据逐级提升 readiness。
+
+## #026 → #229 项目关联与 metrics 回链
+
+`zg361_p3_initialize_portfolio_effect` 会先清空旧的项目来源投影并把 `zg361_p3_project_source_ready` 置零。只有下列条件同时成立时才冻结 CP #026 的来源：当前 manager/subject/cycle 与 #026 receipt 的 owner/subject/cycle 一致，四元 case identity 完整，且 contribution receipt ID/revision 均存在并为正数。冻结字段包括 source owner/subject/cycle/case、contribution receipt ID/revision/value，完成后才把 ready 置一。
+
+#229 的 A/B 真实业务事务在 case AA 操作成功后，从上述冻结来源原样写出：
+
+- `zg361_p3_m229_result_owner/subject/cycle/case`；
+- `zg361_p3_m229_source_contribution_receipt_id/revision`；
+- `zg361_p3_m229_metrics_revision = zg361_case_aa_revision`；
+- `zg361_p3_m229_dictionary_key_code = zg361_p3_metric_dictionary_owner`。
+
+这里必须区分两种身份：AA 仍有自己的 kernel 五元 operation receipt，不能假装与 CP 的 E 案卷同号；上述 `result_*` 是 metrics 明确声明所消费的“项目关联身份”。只读 provider 必须同时验证 AA 自己的 consumed tuple/choice/visible projection，并要求 source、result、contribution、metrics 四组项目关联身份完全一致，且 metrics 回链的 receipt ID **和 revision** 都等于冻结 contribution receipt。#229-C 不发布这组业务 lineage。此次没有玩家可见文本变化，因此无需新增本地化。

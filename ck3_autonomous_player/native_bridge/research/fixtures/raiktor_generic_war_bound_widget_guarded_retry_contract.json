@@ -1,0 +1,61 @@
+{
+  "schema": "xar.ck3.raiktor_generic_war_bound_widget_guarded_retry_contract.v1",
+  "purpose": "No-launch freeze gate for the same two-query G2 current-soldier acceptance with the fifth caller-local null-RDI widget flag-call guard enabled",
+  "implementation_status": "wired-default-off-build-opt-in-no-live-yet",
+  "game_version": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "frozen_previous_four_guard_bridge_dll_sha256": "B96C3A0146BDC3DB17AE867423254B503EC21FE30EE02931830E790548EA4093",
+  "activation": {
+    "containment_option": "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1",
+    "widget_guard_option": "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1",
+    "default": "OFF",
+    "required_containment_cache_value": "ON",
+    "required_widget_guard_cache_value": "ON",
+    "stage_recorder_option": "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1",
+    "required_stage_recorder_cache_value": "OFF"
+  },
+  "guard_install_order": [
+    "InstallStartupParticle2NullGuardV1",
+    "InstallStartupParticle2ConsumerGuardV1",
+    "InstallStartupDx11RenderContextDrawGuardV1",
+    "InstallStartupLocalizeCurrentRootGuardV1",
+    "InstallStartupWidgetNullFlagCallGuardV1"
+  ],
+  "caller_local_guard_source_contract": "startup_widget_null_flag_call_guard_v1_source_contract.json",
+  "query_contract": {
+    "terms_query_count": 2,
+    "allowed_gameplay_commands": [
+      "query-war-termination-terms-v1-50331699",
+      "query-war-termination-terms-v1-50331699"
+    ],
+    "mutation_commands": [],
+    "strict_equal_layers": ["child", "aggregate", "session", "cache"],
+    "paused": true
+  },
+  "readiness_boundary": {
+    "generic_war_bound_current_ready": true,
+    "source_specific_war_bound_ready": false,
+    "pre_soldiers_ready": false,
+    "proven_soldier_loss_ready": false,
+    "action_terms_ready": false,
+    "automatic_surrender_ready": false
+  },
+  "no_launch_boundary": {
+    "ck3_started": false,
+    "profile_prepared": false,
+    "query_count": 0,
+    "mutation_executed": false,
+    "readiness_promoted": false,
+    "attempt_dir_must_be_absent": true
+  },
+  "required_tests": {
+    "native": [
+      "xar_ck3_native_bridge_startup_widget_null_flag_call_guard_v1"
+    ],
+    "python": [
+      "ck3_autonomous_player.tests.unit.test_startup_widget_null_flag_call_guard_v1_contract",
+      "ck3_autonomous_player.tests.unit.test_raiktor_generic_war_bound_widget_guarded_retry"
+    ],
+    "python_modes": ["normal", "optimized"]
+  }
+}

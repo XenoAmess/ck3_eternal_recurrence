@@ -222,6 +222,7 @@ class Phase2PromoCaptureContext:
     seed_install: Mapping[str, object] | None = None
     native_session_binding: Mapping[str, object] | None = None
     loader_gate: Mapping[str, object] | None = None
+    source_checkpoint_registry: Mapping[str, object] | None = None
 
 
 class RuntimeProbe(Protocol):
@@ -406,6 +407,7 @@ class Phase2PromoProducerScaffold:
         seed_install: Mapping[str, object] | None = None,
         native_session_binding: Mapping[str, object] | None = None,
         loader_gate: Mapping[str, object] | None = None,
+        source_checkpoint_registry: Mapping[str, object] | None = None,
     ) -> Phase2PromoCaptureContext:
         if not isinstance(artifacts, Path):
             self._red(
@@ -477,6 +479,7 @@ class Phase2PromoProducerScaffold:
             ("seed_install", seed_install),
             ("native_session_binding", native_session_binding),
             ("loader_gate", loader_gate),
+            ("source_checkpoint_registry", source_checkpoint_registry),
         ):
             if value is None:
                 optional_snapshots[name] = None
@@ -508,6 +511,9 @@ class Phase2PromoProducerScaffold:
             seed_install=optional_snapshots["seed_install"],
             native_session_binding=optional_snapshots["native_session_binding"],
             loader_gate=optional_snapshots["loader_gate"],
+            source_checkpoint_registry=optional_snapshots[
+                "source_checkpoint_registry"
+            ],
         )
 
     def _validate_runtime(
@@ -643,6 +649,7 @@ class Phase2PromoProducerScaffold:
         seed_install: Mapping[str, object] | None = None,
         native_session_binding: Mapping[str, object] | None = None,
         loader_gate: Mapping[str, object] | None = None,
+        source_checkpoint_registry: Mapping[str, object] | None = None,
     ) -> dict[str, object]:
         """Perform only dependency validation and evidence hand-off.
 
@@ -662,6 +669,7 @@ class Phase2PromoProducerScaffold:
             seed_install=seed_install,
             native_session_binding=native_session_binding,
             loader_gate=loader_gate,
+            source_checkpoint_registry=source_checkpoint_registry,
         )
         runtime = self._validate_runtime(context)
         if self.choreography is None:

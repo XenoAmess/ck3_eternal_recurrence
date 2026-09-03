@@ -175,6 +175,24 @@ class Phase2SpanDriver(Protocol):
         runtime: Mapping[str, object],
     ) -> Mapping[str, object]: ...
 
+    # Optional lifecycle hooks are discovered structurally at runtime.  They
+    # let the live driver stage a product source before the span receipt and
+    # close/drain the captured surface only after the clean hold.  Drivers
+    # without the hooks retain the original producer-neutral behaviour.
+    def prepare_span(
+        self,
+        scenario: Phase2CaptureScenario,
+        context: Phase2PromoCaptureContext,
+        runtime: Mapping[str, object],
+    ) -> Mapping[str, object]: ...
+
+    def finalize_span(
+        self,
+        scenario: Phase2CaptureScenario,
+        context: Phase2PromoCaptureContext,
+        runtime: Mapping[str, object],
+    ) -> Mapping[str, object]: ...
+
 
 class Phase2Recorder(Protocol):
     def clean_hold(self, label: str, artifacts: Path, seconds: float = 2.5) -> None: ...
@@ -239,6 +257,40 @@ def _span_stage_receipt(
     return receipt
 
 
+def _span_lifecycle_receipt(
+    driver: Phase2SpanDriver,
+    hook_name: str,
+    scenario: Phase2CaptureScenario,
+    context: Phase2PromoCaptureContext,
+    runtime: Mapping[str, object],
+) -> dict[str, object] | None:
+    hook = getattr(driver, hook_name, None)
+    if hook is None:
+        return None
+    if not callable(hook):
+        raise Phase2ChoreographyBlocked(
+            "span_lifecycle_hook_invalid",
+            {"span_id": scenario.span_id, "hook": hook_name},
+        )
+    value = hook(scenario, context, runtime)
+    receipt = dict(value) if isinstance(value, Mapping) else {}
+    if not (
+        receipt.get("result") == "GREEN"
+        and receipt.get("span_id") == scenario.span_id
+        and receipt.get("provider_observed") is True
+        and receipt.get("ui_state_verified") is True
+    ):
+        raise Phase2ChoreographyBlocked(
+            "span_lifecycle_not_green",
+            {
+                "span_id": scenario.span_id,
+                "hook": hook_name,
+                "receipt": receipt,
+            },
+        )
+    return receipt
+
+
 def phase2_choreography_readiness(
     context: Phase2PromoCaptureContext,
     runtime: Mapping[str, object],
@@ -253,6 +305,21 @@ def phase2_choreography_readiness(
     available = set(driver.available_handlers())
     required = {scenario.handler for scenario in PHASE2_CAPTURE_SCENARIOS}
     runtime_snapshot = runtime.get("paused_snapshot")
+    driver_preflight_hook = getattr(driver, "preflight", None)
+    if callable(driver_preflight_hook):
+        try:
+            driver_preflight = driver_preflight_hook(context, runtime)
+        except Exception as error:
+            driver_preflight = {
+                "result": "RED",
+                "reason_code": getattr(
+                    error, "reason_code", "span_driver_preflight_failed"
+                ),
+                "evidence": getattr(error, "evidence", {}),
+                "exception_type": type(error).__name__,
+            }
+    else:
+        driver_preflight = {"result": "GREEN", "status": "not_required"}
     checks = {
         "runtime_probe_ready": runtime.get("ready") is True,
         "seed_contract_ready": isinstance(seed, Mapping)
@@ -272,6 +339,8 @@ def phase2_choreography_readiness(
         "paused_map_ready": isinstance(runtime_snapshot, Mapping)
         and runtime_snapshot.get("paused") is True
         and runtime_snapshot.get("map_ready") is True,
+        "span_driver_preflight_green": isinstance(driver_preflight, Mapping)
+        and driver_preflight.get("result") == "GREEN",
         "all_span_handlers_available": required.issubset(available),
     }
     missing_handlers = sorted(required - available)
@@ -282,6 +351,7 @@ def phase2_choreography_readiness(
         ("native_session_bound", "native_session_not_bound"),
         ("loader_gate_green", "loader_gate_not_green"),
         ("paused_map_ready", "paused_snapshot_not_ready"),
+        ("span_driver_preflight_green", "span_driver_preflight_red"),
         ("all_span_handlers_available", "span_handlers_missing"),
     )
     reason = next((code for check, code in blocker_order if checks[check] is not True), None)
@@ -293,6 +363,7 @@ def phase2_choreography_readiness(
         "reason_code": reason,
         "checks": checks,
         "missing_handlers": missing_handlers,
+        "span_driver_preflight": dict(driver_preflight),
         "span_readiness": [
             {
                 "span_id": scenario.span_id,
@@ -346,6 +417,9 @@ def run_phase2_capture_choreography(
         )
     lineage = dict(lineage_value) if isinstance(lineage_value, Mapping) else None
     for scenario in PHASE2_CAPTURE_SCENARIOS:
+        preparation = _span_lifecycle_receipt(
+            driver, "prepare_span", scenario, context, runtime
+        )
         pre_receipt = None
         if callable(receipt_provider):
             pre_receipt = _span_stage_receipt(
@@ -501,6 +575,9 @@ def run_phase2_capture_choreography(
             context.artifacts,
             seconds=clean_hold_seconds,
         )
+        finalization = _span_lifecycle_receipt(
+            driver, "finalize_span", scenario, context, runtime
+        )
         completed_row = {
                 "span_id": scenario.span_id,
                 "producer_key": scenario.producer_key,
@@ -511,6 +588,10 @@ def run_phase2_capture_choreography(
                 "postcondition_green": True,
                 "postcondition_evidence": postcondition_evidence,
             }
+        if preparation is not None:
+            completed_row["source_staging"] = preparation
+        if finalization is not None:
+            completed_row["surface_close_and_drain"] = finalization
         if session_evidence is not None:
             completed_row["session_evidence"] = session_evidence
         completed.append(completed_row)

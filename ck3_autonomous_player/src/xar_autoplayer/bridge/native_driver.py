@@ -166,6 +166,22 @@ from .zhongguo_b2_pip_snapshot_contract import (
     normalize_native_zhongguo_b2_pip_snapshot_v1,
     parse_query_zhongguo_b2_pip_snapshot_v1_step,
 )
+from .zhongguo_promotion_compensation_postcondition_contract import (
+    QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY,
+    QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_STEP,
+    QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_STEP_PREFIX,
+    ZhongguoPromotionCompensationQueryV1,
+    normalize_native_zhongguo_promotion_compensation_v1,
+    parse_query_zhongguo_promotion_compensation_v1_step,
+)
+from .zhongguo_projects_metrics_postcondition_contract import (
+    QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY,
+    QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP,
+    QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP_PREFIX,
+    ZhongguoProjectsMetricsQueryV1,
+    normalize_native_zhongguo_projects_metrics_v1,
+    parse_query_zhongguo_projects_metrics_v1_step,
+)
 from .zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_STEP,
@@ -368,6 +384,12 @@ _NATIVE_DRIVER_STATE_VERSION = 2
 _MAX_ROLLBACK_WAR_FAILURES = 2
 _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT = 2
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
+_PHASE2_SOURCE_CHECKPOINT_STAGE_STEP = (
+    "restore-phase2-span-source-checkpoint-v1"
+)
+_CHECKPOINT_ANCHOR_STEPS = frozenset(
+    {"save-checkpoint", _PHASE2_SOURCE_CHECKPOINT_STAGE_STEP}
+)
 _MANAGED_RESTORE_TRANSACTION_STATUS = "awaiting_checkpoint_rebind"
 _START_NEXT_EPISODE_STEP = "start-next-episode"
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
@@ -755,6 +777,18 @@ class NativeProtocolState:
         hello = dict(self._hello) if self._hello else None
         heartbeat = dict(self._last_heartbeat) if self._last_heartbeat else None
         pong = dict(self._last_pong) if self._last_pong else None
+        private_observers: dict[str, object] = {}
+        if isinstance(heartbeat, dict):
+            preview_observer = heartbeat.get(
+                "g2_truce_preview_entry_observer_v1"
+            )
+            if isinstance(preview_observer, dict):
+                # Keep private native evidence available to diagnostics and
+                # MCP inspection without adding it to bridge capabilities or
+                # making it a routable gameplay step.
+                private_observers[
+                    "g2_truce_preview_entry_observer_v1"
+                ] = dict(preview_observer)
         return {
             "protocol_version": PROTOCOL_VERSION,
             "pipe_name": self.pipe_name,
@@ -764,6 +798,7 @@ class NativeProtocolState:
             "bridge_version": hello.get("bridge_version") if hello else None,
             "hello": hello,
             "last_heartbeat": heartbeat,
+            "private_observers": private_observers,
             "last_pong": pong,
             "last_error": dict(self._last_error) if self._last_error else None,
             "semantic_state_available": self._semantic_snapshot is not None,
@@ -1151,6 +1186,7 @@ class NativeHeadlessGameplayDriver:
         )
         self._driver_state_lock = threading.RLock()
         self._driver_state_write_lock = threading.Lock()
+        self._phase2_source_restore_lock = threading.Lock()
         self._driver_state_dirty = False
         self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
@@ -1560,6 +1596,14 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_promotion_compensation_v1_query_supported": (
+                QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_projects_metrics_v1_query_supported": (
+                QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "zhongguo_workforce_collective_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
@@ -1887,6 +1931,14 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_b2_pip_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_promotion_compensation_v1_query_supported": (
+                QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_projects_metrics_v1_query_supported": (
+                QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "zhongguo_workforce_collective_snapshot_v1_query_supported": (
@@ -3165,6 +3217,30 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo B2 PIP snapshot v1 query step"
             )
+        zhongguo_promotion_compensation_query = (
+            parse_query_zhongguo_promotion_compensation_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_STEP_PREFIX
+            )
+            and zhongguo_promotion_compensation_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo promotion/compensation v1 query step"
+            )
+        zhongguo_projects_metrics_query = (
+            parse_query_zhongguo_projects_metrics_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP_PREFIX)
+            and zhongguo_projects_metrics_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo projects/metrics v1 query step"
+            )
         zhongguo_workforce_collective_query = (
             parse_query_zhongguo_workforce_collective_snapshot_v1_step(step)
         )
@@ -3413,6 +3489,38 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_b2_pip_snapshot_v1_query(
                 zhongguo_b2_pip_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_promotion_compensation_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL does not advertise the ZhongGuo "
+                    "promotion/compensation postcondition query"
+                )
+            return self._execute_zhongguo_promotion_compensation_v1_query(
+                zhongguo_promotion_compensation_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_projects_metrics_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL does not advertise the ZhongGuo "
+                    "projects/metrics postcondition query"
+                )
+            return self._execute_zhongguo_projects_metrics_v1_query(
+                zhongguo_projects_metrics_query,
                 expected_revision=expected_revision,
             )
         if zhongguo_workforce_collective_query is not None:
@@ -4464,7 +4572,10 @@ class NativeHeadlessGameplayDriver:
         ):
             return None
         for row in reversed(self._command_history):
-            if row.get("command") != "save-checkpoint" or row.get("ok") is not True:
+            if (
+                row.get("command") not in _CHECKPOINT_ANCHOR_STEPS
+                or row.get("ok") is not True
+            ):
                 continue
             result = row.get("result")
             saved = result.get("checkpoint") if isinstance(result, dict) else None
@@ -4525,7 +4636,7 @@ class NativeHeadlessGameplayDriver:
         return bool(
             isinstance(anchor, dict)
             and anchor.get("index") == history_index
-            and anchor.get("command") == "save-checkpoint"
+            and anchor.get("command") in _CHECKPOINT_ANCHOR_STEPS
             and anchor.get("ok") is True
             and isinstance(saved, dict)
             and saved.get("sha256") == sha256
@@ -8525,6 +8636,292 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": connection_generation,
         }
 
+    def _execute_zhongguo_promotion_compensation_v1_query(
+        self,
+        query: ZhongguoPromotionCompensationQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one paused, player-owned promotion/compensation receipt."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation query requires a "
+                "paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo promotion/compensation starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation query lacks an "
+                "int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        snapshot_id = starting.get("snapshot_id")
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation query lacks its "
+                "paused snapshot binding"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_promotion_compensation_postcondition",
+            "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation query returned a "
+                "malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation query lacks "
+                "query_sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_promotion_compensation_v1(
+                result.get(
+                    "zhongguo_promotion_compensation_postcondition"
+                ),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation frame is malformed: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation envelope status "
+                "disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_played = current.get("played_character")
+        current_player_id = (
+            current_played.get("character_id")
+            if isinstance(current_played, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo promotion/compensation query crossed a "
+                "snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_promotion_compensation_postcondition": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
+    def _execute_zhongguo_projects_metrics_v1_query(
+        self,
+        query: ZhongguoProjectsMetricsQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one paused, played-subject projects/metrics receipt."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics query requires a "
+                "paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo projects/metrics starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics query lacks an "
+                "int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        snapshot_id = starting.get("snapshot_id")
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics query lacks its "
+                "paused snapshot binding"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_projects_metrics_postcondition",
+            "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics query returned a "
+                "malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics query lacks "
+                "query_sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_projects_metrics_v1(
+                result.get(
+                    "zhongguo_projects_metrics_postcondition"
+                ),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics frame is malformed: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics envelope status "
+                "disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_played = current.get("played_character")
+        current_player_id = (
+            current_played.get("character_id")
+            if isinstance(current_played, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo projects/metrics query crossed a "
+                "snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_projects_metrics_postcondition": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
+
+
     def _execute_zhongguo_workforce_collective_snapshot_v1_query(
         self,
         query: ZhongguoWorkforceCollectiveQueryV1,
@@ -10289,6 +10686,279 @@ class NativeHeadlessGameplayDriver:
                 ),
             },
         }
+
+    def restore_phase2_span_source_checkpoint_v1(
+        self,
+        *,
+        checkpoint_path: str,
+        expected_checkpoint_bytes: int,
+        expected_checkpoint_sha256: str,
+        expected_save_lineage_id: str,
+        expected_event_definition_key: str,
+        expected_owner_character_id: int,
+        expected_player_character_id: int,
+        expected_date_raw: int,
+        allow_generic_character_rebind: bool,
+        allow_fixture: bool,
+        allow_console: bool,
+    ) -> dict[str, object]:
+        """Restore one registry-bound Phase2 source through native lifecycle.
+
+        This is deliberately not an action-step or a general save loader.  It
+        accepts the complete identity already authenticated by the Phase2
+        source registry, stages only those bytes as the managed checkpoint,
+        and then reuses the ordinary restore-checkpoint lifecycle.
+        """
+
+        if not (
+            allow_generic_character_rebind is False
+            and allow_fixture is False
+            and allow_console is False
+        ):
+            raise BridgeUnavailableError(
+                "Phase2 source restore forbids generic rebind, fixture, and console"
+            )
+        if not isinstance(checkpoint_path, str) or not checkpoint_path:
+            raise ValueError("checkpoint_path must be a nonempty absolute path")
+        source_path = Path(checkpoint_path)
+        if not source_path.is_absolute():
+            raise ValueError("checkpoint_path must be absolute")
+        source_path = source_path.resolve()
+        if not source_path.is_file():
+            raise BridgeUnavailableError(
+                f"Phase2 source checkpoint is absent: {source_path}"
+            )
+        if (
+            isinstance(expected_checkpoint_bytes, bool)
+            or not isinstance(expected_checkpoint_bytes, int)
+            or expected_checkpoint_bytes <= 0
+        ):
+            raise ValueError(
+                "expected_checkpoint_bytes must be a positive integer"
+            )
+        normalized_sha256 = (
+            expected_checkpoint_sha256.lower()
+            if isinstance(expected_checkpoint_sha256, str)
+            else ""
+        )
+        if (
+            len(normalized_sha256) != 64
+            or any(
+                character not in "0123456789abcdef"
+                for character in normalized_sha256
+            )
+        ):
+            raise ValueError("expected_checkpoint_sha256 must be a SHA-256 digest")
+        if (
+            not isinstance(expected_save_lineage_id, str)
+            or not expected_save_lineage_id
+        ):
+            raise ValueError("expected_save_lineage_id must be nonempty")
+        if (
+            not isinstance(expected_event_definition_key, str)
+            or not expected_event_definition_key
+        ):
+            raise ValueError("expected_event_definition_key must be nonempty")
+        for value, name in (
+            (expected_owner_character_id, "expected_owner_character_id"),
+            (expected_player_character_id, "expected_player_character_id"),
+        ):
+            if not _positive_native_id(value):
+                raise ValueError(f"{name} must be a positive native ID")
+        if isinstance(expected_date_raw, bool) or not isinstance(
+            expected_date_raw, int
+        ):
+            raise ValueError("expected_date_raw must be an integer")
+        if (
+            source_path.stat().st_size != expected_checkpoint_bytes
+            or _sha256_file(source_path) != normalized_sha256
+        ):
+            raise BridgeUnavailableError(
+                "Phase2 source checkpoint bytes differ from the registry"
+            )
+
+        managed_path = self._checkpoint_path()
+        if self.state_dir is None or managed_path is None:
+            raise UnsupportedStepError(
+                "Phase2 source restore requires managed state_dir and save_dir"
+            )
+
+        with self._phase2_source_restore_lock:
+            starting = self.take_snapshot()
+            diagnostics = starting.get("diagnostics")
+            diagnostics = diagnostics if isinstance(diagnostics, dict) else {}
+            starting_pid = diagnostics.get("bridge_pid")
+            starting_generation = diagnostics.get("connection_generation")
+            starting_revision = starting.get("revision")
+            if not (
+                starting.get("paused") is True
+                and starting.get("map_ready") is True
+                and _positive_native_id(starting_pid)
+                and _positive_native_id(starting_generation)
+                and isinstance(starting_revision, int)
+                and not isinstance(starting_revision, bool)
+                and starting_revision >= 0
+            ):
+                raise BridgeUnavailableError(
+                    "Phase2 source restore requires a paused map-ready "
+                    "PID/generation binding"
+                )
+            with self._driver_state_lock:
+                episode_run_id = self._episode_run_id
+                session_bridge_pid = self._session_bridge_pid
+            if (
+                not isinstance(episode_run_id, str)
+                or not episode_run_id
+                or session_bridge_pid != starting_pid
+            ):
+                raise BridgeUnavailableError(
+                    "Phase2 source restore requires an active managed episode binding"
+                )
+
+            managed_path.parent.mkdir(parents=True, exist_ok=True)
+            if source_path != managed_path.resolve():
+                temporary = managed_path.with_name(
+                    f".{managed_path.name}.phase2-{uuid.uuid4().hex}.tmp"
+                )
+                try:
+                    shutil.copyfile(source_path, temporary)
+                    if (
+                        temporary.stat().st_size != expected_checkpoint_bytes
+                        or _sha256_file(temporary) != normalized_sha256
+                    ):
+                        raise BridgeUnavailableError(
+                            "Phase2 staged checkpoint differs from the registry"
+                        )
+                    os.replace(temporary, managed_path)
+                finally:
+                    try:
+                        temporary.unlink()
+                    except FileNotFoundError:
+                        pass
+            if (
+                managed_path.stat().st_size != expected_checkpoint_bytes
+                or _sha256_file(managed_path) != normalized_sha256
+            ):
+                raise BridgeUnavailableError(
+                    "Phase2 managed checkpoint differs after staging"
+                )
+
+            with self._driver_state_lock:
+                history_index = len(self._command_history) + 1
+                checkpoint = {
+                    "status": "registered_source",
+                    "path": str(managed_path.resolve()),
+                    "source_path": str(source_path),
+                    "name": managed_path.name,
+                    "size": expected_checkpoint_bytes,
+                    "sha256": normalized_sha256,
+                    "date_raw": expected_date_raw,
+                    "history_index": history_index,
+                    "episode_character_id": expected_player_character_id,
+                    "episode_run_id": episode_run_id,
+                    "save_lineage_id": expected_save_lineage_id,
+                    "event_definition_key": expected_event_definition_key,
+                    "owner_character_id": expected_owner_character_id,
+                    "player_character_id": expected_player_character_id,
+                    "strategy": "phase2-canonical-source-registry-v1",
+                }
+                stage_result = {
+                    "step": _PHASE2_SOURCE_CHECKPOINT_STAGE_STEP,
+                    "accepted": True,
+                    "status": "registered_source",
+                    "checkpoint": copy.deepcopy(checkpoint),
+                    "fixture_used": False,
+                    "console_used": False,
+                    "generic_character_rebind_used": False,
+                }
+                self._command_history.append(
+                    {
+                        "index": history_index,
+                        "command": _PHASE2_SOURCE_CHECKPOINT_STAGE_STEP,
+                        "ok": True,
+                        "result": stage_result,
+                    }
+                )
+                self._episode_character_id = expected_player_character_id
+                self._last_checkpoint = checkpoint
+                self._rollback_war_failures = []
+                self._rollback_war_failures_migration_required = False
+                self._driver_state_dirty = True
+            self._persist_driver_state()
+
+            restored = self.execute_step(
+                _RESTORE_CHECKPOINT_STEP,
+                expected_revision=int(starting_revision),
+            )
+            restored_checkpoint = restored.get("checkpoint")
+            lifecycle = restored.get("lifecycle")
+            ending = self.take_snapshot()
+            ending_diagnostics = ending.get("diagnostics")
+            ending_diagnostics = (
+                ending_diagnostics
+                if isinstance(ending_diagnostics, dict)
+                else {}
+            )
+            ending_player = ending.get("played_character")
+            ending_player_id = (
+                ending_player.get("character_id")
+                if isinstance(ending_player, dict)
+                else None
+            )
+            ending_pid = ending_diagnostics.get("bridge_pid")
+            ending_generation = ending_diagnostics.get(
+                "connection_generation"
+            )
+            if not (
+                isinstance(restored_checkpoint, dict)
+                and restored_checkpoint.get("status") == "restored"
+                and restored_checkpoint.get("size") == expected_checkpoint_bytes
+                and restored_checkpoint.get("sha256") == normalized_sha256
+                and restored.get("restored_date_raw") == expected_date_raw
+                and isinstance(lifecycle, dict)
+                and lifecycle.get("previous_pid") == starting_pid
+                and lifecycle.get("pid") == ending_pid
+                and lifecycle.get("previous_connection_generation")
+                == starting_generation
+                and lifecycle.get("connection_generation") == ending_generation
+                and ending_pid != starting_pid
+                and ending_generation == starting_generation + 1
+                and ending.get("paused") is True
+                and ending.get("map_ready") is True
+                and ending.get("date_raw") == expected_date_raw
+                and ending_player_id == expected_player_character_id
+            ):
+                raise BridgeUnavailableError(
+                    "Phase2 source restore lacks exact "
+                    "checkpoint/session/player/date proof"
+                )
+            return {
+                "schema_version": 1,
+                "result": "GREEN",
+                "provider_observed": True,
+                "restore_materialized": True,
+                "checkpoint_sha256": normalized_sha256.upper(),
+                "checkpoint_bytes": expected_checkpoint_bytes,
+                "save_lineage_id": expected_save_lineage_id,
+                "event_definition_key": expected_event_definition_key,
+                "event_identity_validation": "runner_exact_query_required",
+                "owner_character_id": expected_owner_character_id,
+                "player_character_id": expected_player_character_id,
+                "date_raw": expected_date_raw,
+                "checkpoint": {
+                    "source_path": str(source_path),
+                    "managed_path": str(managed_path.resolve()),
+                    "bytes": expected_checkpoint_bytes,
+                    "sha256": normalized_sha256.upper(),
+                },
+                "lifecycle": copy.deepcopy(lifecycle),
+                "snapshot_id": ending.get("snapshot_id"),
+                "revision": ending.get("revision"),
+                "native_revision": ending.get("native_revision"),
+                "fixture_used": False,
+                "console_used": False,
+                "generic_character_rebind_used": False,
+            }
 
     def _execute_restore_checkpoint(
         self, *, expected_revision: int | None
@@ -12640,6 +13310,7 @@ class ConfiguredHybridFallbackDriver:
             QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
+            QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY,
             QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
@@ -13142,10 +13813,36 @@ class ConfiguredHybridFallbackDriver:
                 "queried_native_revision": starting.get("native_revision"),
                 "queried_connection_generation": connection_generation,
             }
+        zhongguo_promotion_compensation_query = (
+            parse_query_zhongguo_promotion_compensation_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_STEP_PREFIX
+            )
+            and zhongguo_promotion_compensation_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo promotion/compensation v1 query step"
+            )
+        zhongguo_projects_metrics_query = (
+            parse_query_zhongguo_projects_metrics_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP_PREFIX)
+            and zhongguo_projects_metrics_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo projects/metrics v1 query step"
+            )
         if (
             zhongguo_ai_owned_case_query is not None
             or zhongguo_result_case_query is not None
             or zhongguo_b2_pip_query is not None
+            or zhongguo_promotion_compensation_query is not None
+            or zhongguo_projects_metrics_query is not None
             or zhongguo_workforce_collective_query is not None
             or zhongguo_workforce_normal_exit_query is not None
             or zhongguo_incident_query is not None
@@ -13172,10 +13869,18 @@ class ConfiguredHybridFallbackDriver:
                                 QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY
                                 if zhongguo_incident_query is not None
                                 else (
-                                    QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
-                                    if zhongguo_b2_pip_query is not None
+                                QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
+                                    if zhongguo_projects_metrics_query is not None
                                     else (
-                                        QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                                        QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+                                        if zhongguo_promotion_compensation_query is not None
+                                        else (
+                                            QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY
+                                            if zhongguo_b2_pip_query is not None
+                                            else (
+                                                QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY
+                                            )
+                                        )
                                     )
                                 )
                             )
@@ -17099,6 +17804,13 @@ def _action_steps(
             continue
         elif (
             capability
+            == QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+        ):
+            # Owner and nonce are explicit MCP inputs. Default descriptors do
+            # not advertise this until a paused production artifact exists.
+            continue
+        elif (
+            capability
             == QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
         ):
             # Owner is an equality filter, nonce is explicit, and the paused
@@ -18727,7 +19439,7 @@ def _checkpoint_history_index(
     saved = result.get("checkpoint") if isinstance(result, dict) else None
     return index if (
         anchor.get("index") == index
-        and anchor.get("command") == "save-checkpoint"
+        and anchor.get("command") in _CHECKPOINT_ANCHOR_STEPS
         and anchor.get("ok") is True
         and isinstance(saved, dict)
         and all(

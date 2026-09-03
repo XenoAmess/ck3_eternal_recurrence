@@ -359,10 +359,18 @@ class FakeSubjectService:
 
 
 class FakeTransitionService:
-    def __init__(self, *, before: int, after: int, event_key: str) -> None:
+    def __init__(
+        self,
+        *,
+        before: int,
+        after: int,
+        event_key: str,
+        advance_revision: bool = True,
+    ) -> None:
         self.player = before
         self.after = after
         self.event_key = event_key
+        self.advance_revision = advance_revision
         self.event_id = 991
         self.revision = 30
         self.selected: list[tuple[int, int, int]] = []
@@ -429,7 +437,8 @@ class FakeTransitionService:
             (option_number, int(event_instance_id), int(expected_revision))
         )
         self.player = self.after
-        self.revision += 1
+        if self.advance_revision:
+            self.revision += 1
         return {"accepted": True, "status": "submitted"}
 
 
@@ -495,6 +504,7 @@ class WorkforcePhase2ActionTests(unittest.TestCase):
         )
         self.assertEqual(result["result"], "GREEN")
         self.assertFalse(result["ack_used_as_identity_postcondition"])
+        self.assertEqual(result["selection_expected_revision"], 30)
         self.assertEqual(
             result["native_played_character_postcondition"][
                 "played_character_id"
@@ -502,6 +512,33 @@ class WorkforcePhase2ActionTests(unittest.TestCase):
             OWNER,
         )
         self.assertEqual(service.selected, [(1, 991, 30)])
+
+    def test_typed_fixture_transition_rejects_unversioned_identity_change(
+        self,
+    ) -> None:
+        event_key = "zga_phase2_workforce.1"
+        service = FakeTransitionService(
+            before=SUBJECT,
+            after=OWNER,
+            event_key=event_key,
+            advance_revision=False,
+        )
+        with self.assertRaisesRegex(
+            WorkforceActionCellError,
+            "without advancing the revision",
+        ):
+            select_typed_fixture_player_transition(
+                service,
+                expected_event_definition_key=event_key,
+                expected_player_before=SUBJECT,
+                expected_player_after=OWNER,
+                owner_character_id=OWNER,
+                subject_character_id=SUBJECT,
+                owner_scope_name="zga_phase2_workforce_owner",
+                subject_scope_name="zga_phase2_workforce_subject",
+                settle_polls=0,
+                poll_interval_s=0,
+            )
 
     def test_subject_side_proves_route_receipt_collective_history_and_charter(self) -> None:
         for route in ("A", "B", "C"):

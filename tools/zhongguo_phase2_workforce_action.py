@@ -338,6 +338,7 @@ def select_typed_fixture_player_transition(
         "subject_character_id": subject,
         "expected_player_before": before_player,
         "expected_player_after": after_player,
+        "selection_expected_revision": None,
         "event_context": None,
         "selection_submission": None,
         "post_submission_snapshots": [],
@@ -393,6 +394,7 @@ def select_typed_fixture_player_transition(
             event_instance_id=event_id,
             expected_revision=revision,
         )
+        evidence["selection_expected_revision"] = revision
         evidence["selection_submission"] = submission
         _require(
             isinstance(submission, dict)
@@ -420,6 +422,11 @@ def select_typed_fixture_player_transition(
                 "fixture transition advanced the frozen game date",
             )
             if after_played == after_player:
+                _require(
+                    after_revision > revision,
+                    "fixture transition changed played CharacterID without "
+                    "advancing the revision bound to its option submission",
+                )
                 evidence["native_played_character_postcondition"] = row
                 evidence["result"] = "GREEN"
                 _write_json(evidence_path, evidence)

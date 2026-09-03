@@ -34,6 +34,7 @@ import re
 import shutil
 import subprocess
 import sys
+import wave
 from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
@@ -57,6 +58,7 @@ from zhongguo_phase2_promo_cuts import (  # noqa: E402
     CUT_BY_ID,
     LEGACY_CUT,
     Phase2PromoCut,
+    Phase2PromoReprise,
     cut_for_config_name,
     cut_for_id,
 )
@@ -74,6 +76,7 @@ from xar_promo.layout import FontSpec, SafeArea, WrapPolicy  # noqa: E402
 from xar_promo.media import probe_media, require_streams  # noqa: E402
 from xar_promo.operations import preserve_artifact, start_run  # noqa: E402
 from xar_promo.pipeline import (  # noqa: E402
+    NarrationArtifact,
     PipelineDependencies,
     PipelineDraft,
     PipelineInvocation,
@@ -459,6 +462,7 @@ def load_media_preflight_binding(
     expected_sha256: str,
     *,
     project_config,
+    project_config_path: Path | None = None,
     edge_tts_version: str,
     ffmpeg: str,
     ffprobe: str,
@@ -495,6 +499,15 @@ def load_media_preflight_binding(
     project = payload.get("project")
     if not isinstance(project, Mapping) or project.get("id") != project_config.project_id or project.get("chapters") != len(project_config.chapters):
         raise Phase2PromoBuildError("phase-two media preflight is bound to a different project config")
+    tracked: list[tuple[Path, int, str]] = []
+    if project_config_path is not None:
+        tracked.append(
+            _bound_environment_file(
+                project.get("config"),
+                label="project.config",
+                expected_path=project_config_path.expanduser().resolve(),
+            )
+        )
     tool = payload.get("promo_toolchain")
     checkout = _current_toolchain_identity()
     if not isinstance(tool, Mapping) or tool.get("version") != PROMO_TOOLCHAIN_VERSION:
@@ -531,10 +544,10 @@ def load_media_preflight_binding(
         raise Phase2PromoBuildError("phase-two media preflight Chinese font family is invalid")
     if not isinstance(en, Mapping) or en.get("family") != "Segoe UI":
         raise Phase2PromoBuildError("phase-two media preflight English font family is invalid")
-    tracked = [
+    tracked.extend([
         _bound_environment_file(zh, label="fonts.zh-CN", expected_path=zh_font_file.expanduser().resolve()),
         _bound_environment_file(en, label="fonts.en", expected_path=en_font_file.expanduser().resolve()),
-    ]
+    ])
     _validate_media_layout(payload.get("subtitle_layout"))
 
     media = payload.get("media")
@@ -1368,6 +1381,100 @@ def _require_ready_authoring(config) -> None:
         )
 
 
+def _apply_editorial_cut(
+    config,
+    segments_by_chapter: Mapping[str, Sequence[SegmentDraft]],
+    cut: Phase2PromoCut,
+) -> tuple[SegmentDraft, ...]:
+    """Project canonical evidence into one cut's explicit front-end order.
+
+    Capture validation remains bound to the preset's canonical eight-span
+    order.  This seam only changes the order in which already-bound segments
+    are concatenated, and may insert an explicitly declared short visual
+    reprise.  A reprise is deliberately not a replay of the original segment:
+    it has an explicit trim, a non-claim label, and generated silence so the
+    original narration can never run twice.
+    """
+
+    canonical = tuple(chapter.chapter_id for chapter in config.chapters)
+    order = tuple(cut.editorial_chapter_order)
+    if len(order) != len(canonical) or set(order) != set(canonical):
+        raise Phase2PromoBuildError(
+            f"cut {cut.cut_id!r} editorial order must be an exact chapter permutation"
+        )
+    reprises_by_boundary: dict[str, list[Phase2PromoReprise]] = {}
+    for reprise in cut.reprises:
+        if reprise.source_chapter_id not in segments_by_chapter:
+            raise Phase2PromoBuildError(
+                f"cut {cut.cut_id!r} reprise source is not a project chapter: "
+                f"{reprise.source_chapter_id}"
+            )
+        if reprise.after_chapter_id not in order:
+            raise Phase2PromoBuildError(
+                f"cut {cut.cut_id!r} reprise boundary is not in editorial order: "
+                f"{reprise.after_chapter_id}"
+            )
+        source_segments = tuple(segments_by_chapter[reprise.source_chapter_id])
+        if len(source_segments) != 1:
+            raise Phase2PromoBuildError(
+                f"cut {cut.cut_id!r} reprise source must resolve to exactly one "
+                f"segment: {reprise.source_chapter_id}"
+            )
+        source_duration = source_segments[0].render_options.duration_seconds
+        if reprise.start_offset_seconds + reprise.duration_seconds > source_duration:
+            raise Phase2PromoBuildError(
+                f"cut {cut.cut_id!r} reprise trim exceeds source segment duration: "
+                f"{reprise.source_chapter_id}"
+            )
+        reprises_by_boundary.setdefault(reprise.after_chapter_id, []).append(reprise)
+
+    result: list[SegmentDraft] = []
+    reprise_sequence = 0
+    for chapter_id in order:
+        result.extend(segments_by_chapter[chapter_id])
+        for reprise in reprises_by_boundary.get(chapter_id, []):
+            source_segment = segments_by_chapter[reprise.source_chapter_id][0]
+            reprise_sequence += 1
+            suffix = f".reprise{reprise_sequence}"
+            metadata = dict(source_segment.visual_source.metadata)
+            metadata.update(
+                {
+                    "editorial_reprise": True,
+                    "editorial_reprise_of": source_segment.segment_id,
+                    "editorial_reprise_after": chapter_id,
+                    "editorial_reprise_duration_seconds": reprise.duration_seconds,
+                    "editorial_reprise_start_offset_seconds": reprise.start_offset_seconds,
+                    "editorial_reprise_narration": "generated-silence",
+                    "editorial_reprise_claim": "none",
+                }
+            )
+            result.append(
+                replace(
+                    source_segment,
+                    segment_id=source_segment.segment_id + suffix,
+                    visual_source=replace(
+                        source_segment.visual_source,
+                        source_id=source_segment.visual_source.source_id + suffix,
+                        metadata=metadata,
+                    ),
+                    render_options=replace(
+                        source_segment.render_options,
+                        duration_seconds=reprise.duration_seconds,
+                    ),
+                    subtitles={
+                        "zh-CN": "制度回声",
+                        "en": "INSTITUTIONAL ECHO",
+                    },
+                    narration_request=None,
+                    prepared_narration=None,
+                    start_seconds=(
+                        source_segment.start_seconds + reprise.start_offset_seconds
+                    ),
+                )
+            )
+    return tuple(result)
+
+
 def _draft_duration(_project, _chapter, cue) -> Decimal:
     # Authoring-only estimate.  A full build replaces this with ffprobe-observed
     # cache audio through Storyboard's narration-duration resolver.
@@ -1621,6 +1728,64 @@ def _validation_narration_resolver(segment: SegmentDraft, *, workdir: Path):
     raise Phase2PromoBuildError("validation-only narration resolver must never execute")
 
 
+class _RepriseSilenceResolver:
+    """Create the exact silent audio bed for an editorial reprise.
+
+    The WAV is preserved by the reusable pipeline as that segment's narration
+    artifact.  Non-reprise segments must still resolve from the reviewed,
+    content-addressed Xiaoxiao cache and therefore fail closed here.
+    """
+
+    SAMPLE_RATE = 48_000
+    CHANNELS = 2
+    SAMPLE_WIDTH = 2
+
+    def __call__(self, segment: SegmentDraft, *, workdir: Path) -> NarrationArtifact:
+        metadata = segment.visual_source.metadata
+        if metadata.get("editorial_reprise") is not True:
+            raise Phase2PromoBuildError(
+                f"segment {segment.segment_id!r} has no prepared Xiaoxiao narration"
+            )
+        if segment.narration_request is not None or segment.prepared_narration is not None:
+            raise Phase2PromoBuildError(
+                f"editorial reprise {segment.segment_id!r} must not reuse narration"
+            )
+        duration = float(segment.render_options.duration_seconds)
+        frame_count = round(duration * self.SAMPLE_RATE)
+        output = workdir / "narration-resolver" / f"{segment.segment_id}.wav"
+        output.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with output.open("xb") as raw:
+                with wave.open(raw, "wb") as wav:
+                    wav.setnchannels(self.CHANNELS)
+                    wav.setsampwidth(self.SAMPLE_WIDTH)
+                    wav.setframerate(self.SAMPLE_RATE)
+                    wav.writeframes(
+                        b"\x00"
+                        * frame_count
+                        * self.CHANNELS
+                        * self.SAMPLE_WIDTH
+                    )
+                raw.flush()
+                os.fsync(raw.fileno())
+        except FileExistsError as exc:
+            raise Phase2PromoBuildError(
+                f"refusing to overwrite reprise silence: {output}"
+            ) from exc
+        return NarrationArtifact(
+            output,
+            "audio/wav",
+            "editorial-reprise-silence",
+            {
+                "duration_seconds": duration,
+                "sample_rate": self.SAMPLE_RATE,
+                "channels": self.CHANNELS,
+                "sample_width": self.SAMPLE_WIDTH,
+                "no_extra_narration": True,
+            },
+        )
+
+
 class Phase2ProjectComposer:
     """Project-owned implementation of the frozen ``PipelineComposer`` seam."""
 
@@ -1755,7 +1920,9 @@ class Phase2ProjectComposer:
             row.duration_source == "resolved-narration" for row in timeline.cues
         )
 
-        segments: list[SegmentDraft] = []
+        segments_by_chapter: dict[str, list[SegmentDraft]] = {
+            chapter.chapter_id: [] for chapter in config.chapters
+        }
         for chapter in config.chapters:
             span = (
                 candidate.bundle.clean_span(chapter.chapter_id)
@@ -1811,7 +1978,7 @@ class Phase2ProjectComposer:
                         f"unsupported phase-two chapter type: {chapter.kind}"
                     )
                 entry = entries.get(key)
-                segments.append(
+                segments_by_chapter[chapter.chapter_id].append(
                     SegmentDraft(
                         segment_id=segment_id,
                         visual_source=visual,
@@ -1834,6 +2001,8 @@ class Phase2ProjectComposer:
                     )
                 )
 
+        segments = _apply_editorial_cut(config, segments_by_chapter, self.cut)
+
         dependencies = PipelineDependencies(
             ffmpeg=self.ffmpeg,
             subtitle_renderer=_SubtitleRenderer(),
@@ -1844,13 +2013,15 @@ class Phase2ProjectComposer:
                 self.en_font_file,
             ),
             narration_resolver=(
-                _validation_narration_resolver if validate_only else None
+                _validation_narration_resolver
+                if validate_only
+                else _RepriseSilenceResolver()
             ),
         )
         return PipelineInvocation(
             PipelineDraft(
                 config=config,
-                segments=tuple(segments),
+                segments=segments,
                 deliverable_relative_path=self.cut.deliverable_relative_path,
                 deliverable_artifact_id=self.cut.deliverable_artifact_id,
                 deliverable_media_type="video/mp4",
@@ -2165,6 +2336,7 @@ def execute(
                 media_report,
                 media_sha,
                 project_config=config,
+                project_config_path=config_path,
                 edge_tts_version=args.edge_tts_version,
                 ffmpeg=args.ffmpeg,
                 ffprobe=args.ffprobe,

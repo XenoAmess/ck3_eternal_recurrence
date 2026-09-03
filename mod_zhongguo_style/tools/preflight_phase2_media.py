@@ -435,7 +435,15 @@ def run_preflight(args: argparse.Namespace, *, runner: RunProcess = subprocess.r
 
     footage = validate_footage_intake(args.capture_root)
     publish_target = validate_publish_target_authority(args.publish_target_authority)
-    production_blockers = ["fresh_promo_tool_fetch_required"]
+    toolchain = _toolchain_source_main(runner=runner)
+    expected_head = args.expected_toolchain_head
+    fresh_fetch_verified = (
+        isinstance(expected_head, str)
+        and expected_head.strip() == toolchain["head"]
+        and toolchain["head"] == toolchain["origin_main"]
+        and toolchain["clean"] is True
+    )
+    production_blockers = [] if fresh_fetch_verified else ["fresh_promo_tool_fetch_required"]
     if footage["result"] != "GREEN":
         production_blockers.append("footage_pending")
     if publish_target["result"] != "GREEN":
@@ -459,7 +467,10 @@ def run_preflight(args: argparse.Namespace, *, runner: RunProcess = subprocess.r
         },
         "promo_toolchain": {
             "version": xar_promo.__version__,
-            **_toolchain_source_main(runner=runner),
+            **toolchain,
+            "expected_head_from_fresh_fetch": expected_head,
+            "fresh_fetch_verified": fresh_fetch_verified,
+            "production_refresh_still_required": not fresh_fetch_verified,
         },
         "python": {"executable": sys.executable, "version": sys.version.split()[0]},
         "packages": {"edge-tts": edge_version, "Pillow": pillow_version},
@@ -548,6 +559,13 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--output", type=Path, required=True)
     result.add_argument("--project-config", type=Path, default=DEFAULT_PROJECT_CONFIG)
+    result.add_argument(
+        "--expected-toolchain-head",
+        help=(
+            "HEAD printed by the immediately preceding fetch/ff-only verification; "
+            "must still equal clean origin/main to clear the production refresh gate"
+        ),
+    )
     result.add_argument("--ffmpeg")
     result.add_argument("--ffprobe")
     windows_fonts = Path(os.environ.get("WINDIR", r"C:\Windows")) / "Fonts"

@@ -885,8 +885,10 @@ bool TestFrozenExecutableAndSourceContract(int argc, char **argv) {
       return false;
     }
   }
-  const std::array<std::string_view, 11> bridge_tokens{
+  const std::array<std::string_view, 13> bridge_tokens{
       "startup_particle2_stage_recorder_v1.hpp",
+      "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1",
+      "kStartupFailureContainmentEnabledV1 = true",
       "kStartupFailureContainmentEnabledV1 = false",
       "kStartupParticle2StageRecorderEnabledV1",
       "static_assert(!(kStartupFailureContainmentEnabledV1 &&",
@@ -901,6 +903,11 @@ bool TestFrozenExecutableAndSourceContract(int argc, char **argv) {
     if (!Contains(bridge, token)) {
       return false;
     }
+  }
+  if (!Contains(cmake, "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1") ||
+      !Contains(cmake,
+                "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1")) {
+    return false;
   }
 
   g_failure_stage = "frozen_executable_hash";

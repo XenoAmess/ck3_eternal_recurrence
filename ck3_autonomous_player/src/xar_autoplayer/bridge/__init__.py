@@ -38,6 +38,11 @@ from .settlement_contract import (
     parse_completed_tutorial_lessons,
     settlement_ready_for_episode,
 )
+from .raiktor_surrender_truce_contract import (
+    OPEN_KAISHEK_G2_CAPABILITY_ID,
+    OPEN_KAISHEK_G2_PROFILE_COMMIT,
+    OPEN_KAISHEK_G2_PROFILE_ID,
+)
 from .mod_driver import DataModGameplayDriver, load_data_mod_driver
 from .native_driver import (
     ConfiguredHybridFallbackDriver,
@@ -62,6 +67,9 @@ __all__ = [
     "ARRANGE_MARRIAGE_CAPABILITY",
     "EVENT_OPTION_STEP_PREFIX",
     "ONE_LIFE_SETTLEMENT_CAPABILITY",
+    "OPEN_KAISHEK_G2_CAPABILITY_ID",
+    "OPEN_KAISHEK_G2_PROFILE_COMMIT",
+    "OPEN_KAISHEK_G2_PROFILE_ID",
     "GameplayBridgeDriver",
     "HybridGameplayDriver",
     "ConfiguredHybridFallbackDriver",

@@ -539,7 +539,12 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             },
             driver,
         )
-        self.assertEqual(readiness["result"], "GREEN")
+        self.assertEqual(readiness["result"], "RED")
+        self.assertEqual(readiness["reason_code"], "span_driver_preflight_red")
+        self.assertEqual(
+            readiness["span_driver_preflight"]["reason_code"],
+            "source_checkpoint_preflight_red",
+        )
         self.assertEqual(readiness["missing_handlers"], [])
         self.assertTrue(readiness["checks"]["all_span_handlers_available"])
         self.assertTrue(

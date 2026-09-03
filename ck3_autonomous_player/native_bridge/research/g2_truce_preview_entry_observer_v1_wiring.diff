@@ -1,0 +1,85 @@
+# Applied coordination record.  The shared bridge/CMake/diagnostic wiring in
+# this diff is present in the current tree; retain this file as the exact
+# reviewable integration slice.
+--- a/ck3_autonomous_player/native_bridge/CMakeLists.txt
++++ b/ck3_autonomous_player/native_bridge/CMakeLists.txt
+@@
++option(
++  XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
++  "Install the private exact-vtable G2 truce preview traversal observer"
++  OFF
++)
+@@ add_library(xar_ck3_bridge SHARED
++  src/g2_truce_preview_entry_observer_v1.cpp
+@@
++if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
++  target_compile_definitions(xar_ck3_bridge PRIVATE
++    XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1=1
++  )
++endif()
+@@ BUILD_TESTING
++add_executable(xar_ck3_g2_truce_preview_entry_observer_v1_test
++  src/g2_truce_preview_entry_observer_v1.cpp
++  src/g2_truce_preview_entry_observer_v1_test.cpp
++)
++target_include_directories(
++  xar_ck3_g2_truce_preview_entry_observer_v1_test PRIVATE include)
++target_compile_definitions(
++  xar_ck3_g2_truce_preview_entry_observer_v1_test PRIVATE
++  NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
++add_test(
++  NAME xar_ck3_native_bridge_g2_truce_preview_entry_observer_v1
++  COMMAND xar_ck3_g2_truce_preview_entry_observer_v1_test)
+
+--- a/ck3_autonomous_player/native_bridge/src/bridge.cpp
++++ b/ck3_autonomous_player/native_bridge/src/bridge.cpp
+@@ includes
++#include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
+@@ feature constants
++#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
++constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = true;
++#else
++constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = false;
++#endif
+@@ process lifetime state
++static xar::bridge::G2TrucePreviewEntryObserverV1State
++    g_g2_truce_preview_entry_observer_v1{};
+@@ heartbeat snapshot
++#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
++  const auto g2_truce_preview_entry_observer =
++      xar::bridge::ReadG2TrucePreviewEntryObserverV1Diagnostics(
++          g_g2_truce_preview_entry_observer_v1);
++#endif
+@@ heartbeat feature flags
++  result += ",\"g2_truce_preview_entry_observer_enabled\":";
++  result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
+@@ heartbeat private diagnostics
++#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
++  result += "},\"g2_truce_preview_entry_observer_v1\":{";
++  result += "\"private_build\":true,\"read_only\":true,\"installed\":";
++  result += g2_truce_preview_entry_observer.installed ? "true" : "false";
++#define XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(name) \
++  result += ",\"" #name "\":";                 \
++  result += Number(g2_truce_preview_entry_observer.name)
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(failure_flags);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(accepted_count);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(normal_effect_count);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(forced_effect_count);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(last_effect_this);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(last_effect_vtable);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(last_preview_context);
++  XAR_APPEND_G2_TRUCE_PREVIEW_FIELD(last_preview_collector);
++#undef XAR_APPEND_G2_TRUCE_PREVIEW_FIELD
++#endif
+@@ suspended-process install
++  if (kG2TrucePreviewEntryObserverEnabledV1) {
++    xar::bridge::G2TrucePreviewEntryObserverEnvironmentV1 environment{};
++    environment.exact_build_admitted = true;
++    environment.primary_thread_suspended_proven = true;
++    environment.module_base =
++        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
++    if (!xar::bridge::InstallG2TrucePreviewEntryObserverV1(
++            g_g2_truce_preview_entry_observer_v1, environment)) {
++      return FALSE;
++    }
++  }

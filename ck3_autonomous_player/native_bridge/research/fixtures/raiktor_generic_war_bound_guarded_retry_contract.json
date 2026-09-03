@@ -1,0 +1,79 @@
+{
+  "schema": "xar.ck3.raiktor_generic_war_bound_guarded_retry_contract.v1",
+  "purpose": "No-launch freeze gate for one current-source bridge DLL with the existing exact-build startup containment chain enabled",
+  "implementation_status": "wired-default-off-build-opt-in",
+  "game_version": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "frozen_unguarded_bridge_dll_sha256": "0A5DB50CFA1344FD3575D97D14CA0A3C65951DBD7F8E66A5508574CF181266DC",
+  "activation": {
+    "cmake_option": "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1",
+    "default": "OFF",
+    "compile_definition": "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1",
+    "required_cache_value": "ON",
+    "stage_recorder_option": "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1",
+    "required_stage_recorder_cache_value": "OFF"
+  },
+  "minimal_source_patch": {
+    "cmake_option_block": "option( XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1 \"Install the existing exact-build startup containment chain\" OFF )",
+    "cmake_compile_definition_block": "if(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1) target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1) endif()",
+    "bridge_constant_binding": "#if defined(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1) constexpr bool kStartupFailureContainmentEnabledV1 = true; #else constexpr bool kStartupFailureContainmentEnabledV1 = false; #endif",
+    "files_not_changed": [
+      "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp",
+      "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py"
+    ]
+  },
+  "guard_install_order": [
+    "InstallStartupParticle2NullGuardV1",
+    "InstallStartupParticle2ConsumerGuardV1",
+    "InstallStartupDx11RenderContextDrawGuardV1",
+    "InstallStartupLocalizeCurrentRootGuardV1"
+  ],
+  "runner_contract": {
+    "bridge_dll_argument_count": 1,
+    "separate_startup_guard_dll_argument": false,
+    "prepare_startup_export": "XarCk3BridgePrepareStartup"
+  },
+  "query_contract": {
+    "terms_query_count": 2,
+    "allowed_gameplay_commands": [
+      "query-war-termination-terms-v1-50331699",
+      "query-war-termination-terms-v1-50331699"
+    ],
+    "mutation_commands": [],
+    "strict_equal_layers": [
+      "child",
+      "aggregate",
+      "session",
+      "cache"
+    ],
+    "paused": true
+  },
+  "readiness_boundary": {
+    "generic_war_bound_current_ready": true,
+    "source_specific_war_bound_ready": false,
+    "pre_soldiers_ready": false,
+    "proven_soldier_loss_ready": false,
+    "action_terms_ready": false,
+    "automatic_surrender_ready": false
+  },
+  "no_launch_boundary": {
+    "ck3_started": false,
+    "profile_prepared": false,
+    "query_count": 0,
+    "mutation_executed": false,
+    "readiness_promoted": false,
+    "attempt_dir_must_be_absent": true
+  },
+  "required_tests": {
+    "native": [
+      "xar_ck3_native_bridge_raiktor_war_bound_regiment_v1",
+      "xar_ck3_native_bridge_startup_particle2_stage_recorder_v1",
+      "xar_ck3_native_bridge_startup_particle2_null_guard_v1",
+      "xar_ck3_native_bridge_startup_particle2_consumer_null_guard_v1",
+      "xar_ck3_native_bridge_startup_dx11_render_context_draw_guard_v1",
+      "xar_ck3_native_bridge_startup_localize_current_root_guard_v1"
+    ],
+    "python": "ck3_autonomous_player.tests.unit.test_raiktor_generic_war_bound_guarded_retry",
+    "python_modes": ["normal", "optimized"]
+  }
+}

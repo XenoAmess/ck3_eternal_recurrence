@@ -1,0 +1,76 @@
+{
+  "format_version": 1,
+  "kind": "ck3_raiktor_generic_war_bound_rbx_guarded_current_live_manifest",
+  "status": "consumed-live-red-no-retry",
+  "source_commit": "3c378569d65794bd1ec9dceda25f0cd6a364f3ca",
+  "guard_configuration": {
+    "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "ON",
+    "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "ON",
+    "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "ON",
+    "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+    "install_order": [
+      "InstallStartupParticle2NullGuardV1",
+      "InstallStartupParticle2ConsumerGuardV1",
+      "InstallStartupDx11RenderContextDrawGuardV1",
+      "InstallStartupLocalizeCurrentRootGuardV1",
+      "InstallStartupWidgetNullFlagCallGuardV1",
+      "InstallStartupRbxNullCallGuardV1"
+    ]
+  },
+  "frozen_inputs": {
+    "checkpoint_sha256": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state_sha256": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "A4B81851B74095A6A0AB3C09B1C751FB40B22775C79F9D9E74DB481EFA9946F1",
+    "bridge_injector_sha256": "D715D4A859024037022262FB0F63098E4107FF75318F6DF51A846CBE004F242D"
+  },
+  "expected_identity": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "date_raw": 53223936
+  },
+  "production_source_sha256": {
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt": "43EE49807CC05DC174EFDF703E2BC9FFCAA0B00021F837ECB9E3D3B5EDA8A6A7",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_war_bound_regiment_v1.hpp": "8D364337C1099648BA587D4B88428A1F7930459935E1B2D227C1E53A7DC5209B",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/startup_widget_null_flag_call_guard_v1.hpp": "17B4A6CF02EA0136F604763FC1E35777362DFB4ED4152BA9598FC920FA6BB2A8",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/startup_rbx_null_call_guard_v1.hpp": "ED7E98D3A60F4BB71897478ED82FD66F27BFFC766D876E0CEB38671AB8976E78",
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp": "C73EB79A3676F00815C1CF50EBC4EAA8459CAEE67ACE2B5B6F442B55BD9FF4DF",
+    "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp": "0E2A6E897D6F7607A8DD7E00E39C6ED7DFCD74FC0EB54832649C202F02CD7023",
+    "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_regiment_v1.cpp": "D4C310A2CF7BEABBBAF2160D8428786FFADE3F5C3654700E2B53A971CF06EF97",
+    "ck3_autonomous_player/native_bridge/src/startup_widget_null_flag_call_guard_v1.cpp": "93865866C0A535F05DD9AB02ED52DDE07A7BFC6F84DBC5FF253DA9444641AB8F",
+    "ck3_autonomous_player/native_bridge/src/startup_rbx_null_call_guard_v1.cpp": "22377050919A160CC12B12910FA1EFAA314919B3A6C7C1A069B030DD93DB2D8F",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "0D71971BB700A5AEE5400F57A722B8D5B5086D2AEB4ADCCEFBD9752EBB0C4C51",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_public_aggregate.py": "C425E654CCAA11B609226ADAD5B45C29DE3263568960CC8F68D0B8813284D68A",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_session_binding_contract.py": "6BBD1733E985692572D92F9BAE9C77C0CF878572B062857DEFBF52348907AE3E",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_regiment_contract.py": "314C814F56638466580B073E7C926420B588F70F201E94FEF5B1B96100783205"
+  },
+  "query_contract": {
+    "terms_query_count": 2,
+    "allowed_gameplay_commands": [
+      "query-war-termination-terms-v1-50331699",
+      "query-war-termination-terms-v1-50331699"
+    ],
+    "mutation_commands": [],
+    "strict_equal_layers": ["child", "aggregate", "session", "cache"],
+    "paused": true
+  },
+  "readiness_boundary": {
+    "generic_war_bound_current_ready": true,
+    "source_specific_war_bound_ready": false,
+    "pre_soldiers_ready": false,
+    "proven_soldier_loss_ready": false,
+    "action_terms_ready": false,
+    "automatic_surrender_ready": false
+  },
+  "launch_authorization": "consumed-one-actual-launch-no-retry",
+  "terminal_result": {
+    "status": "RED_STARTUP_SUCCESSOR_CRASH_NO_RETRY",
+    "pid": 46068,
+    "crossed_previous_fault_rva": "0x3B67345",
+    "successor_fault_rva": "0x3BE33A9",
+    "query_count": 0,
+    "mutation_commands": [],
+    "readiness_promoted": false,
+    "cleanup_proven": true
+  }
+}

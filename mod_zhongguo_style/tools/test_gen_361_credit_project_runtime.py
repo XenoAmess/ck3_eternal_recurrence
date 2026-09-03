@@ -246,6 +246,31 @@ class ReceiptAndConsumerTests(unittest.TestCase):
                     self.assertIn("NOT = {", route)
                     self.assertIn(f"RECEIPT_CHOICE_VAR = zg361_cp_m{spec.mid}_receipt_choice", route)
 
+    def test_m26_success_signs_durable_contribution_receipt(self) -> None:
+        for letter in "ab":
+            route = block(self.effects, f"zg361_cp_m26_route_{letter}_effect")
+            with self.subTest(route=letter):
+                record = route.index("zg361_case_kernel_record_operation_effect")
+                increment = route.index(
+                    "change_variable = { name = zg361_cp_contribution_receipt_cursor add = 1 }"
+                )
+                receipt_id = route.index(
+                    "name = zg361_cp_m26_contribution_receipt_id value = var:zg361_cp_contribution_receipt_cursor"
+                )
+                receipt_revision = route.index(
+                    "name = zg361_cp_m26_contribution_receipt_revision value = var:zg361_case_e_revision"
+                )
+                consumer = route.index("zg361_cp_m26_consume_effect = yes")
+                self.assertLess(record, increment)
+                self.assertLess(increment, receipt_id)
+                self.assertLess(receipt_id, receipt_revision)
+                self.assertLess(receipt_revision, consumer)
+
+        route_c = block(self.effects, "zg361_cp_m26_route_c_effect")
+        self.assertNotIn("zg361_cp_contribution_receipt_cursor", route_c)
+        self.assertNotIn("zg361_cp_m26_contribution_receipt_id", route_c)
+        self.assertNotIn("zg361_cp_m26_contribution_receipt_revision", route_c)
+
     def test_a_and_b_preflight_precede_receipt_business_write_and_consumer(self) -> None:
         for spec in gen.MECHANISMS:
             for letter in "ab":

@@ -433,7 +433,7 @@ def main() -> int:
 
     def positive_result_case_response(nonce: str) -> dict[str, object]:
         return {
-            "schema_version": 1,
+            "schema_version": 3,
             "status": "available",
             "case_kind": "zhongguo.result.received-self",
             "request_nonce": nonce,
@@ -3284,6 +3284,12 @@ def main() -> int:
                         capture.QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
                         capture.QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
                         capture.QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
+                        capture.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+                        "game.command.select-event-option-N",
+                    ],
+                    "action_steps": [
+                        "save-checkpoint",
+                        "restore-checkpoint",
                     ],
                     "zhongguo_b2_pip_snapshot_v1_query_supported": (
                         not self.missing_b2_flag
@@ -3292,6 +3298,22 @@ def main() -> int:
                     "zhongguo_workforce_collective_snapshot_v1_query_supported": True,
                     "zhongguo_ai_owned_case_snapshot_v1_query_supported": True,
                 }
+
+            def save_checkpoint(self, **_kwargs: object) -> dict[str, object]:
+                raise AssertionError("static preflight unexpectedly saved")
+
+            def restore_checkpoint(self, **_kwargs: object) -> dict[str, object]:
+                raise AssertionError("static preflight unexpectedly restored")
+
+            def query_current_event_window_context_v1(
+                self, *_args: object, **_kwargs: object
+            ) -> dict[str, object]:
+                raise AssertionError("static preflight unexpectedly queried")
+
+            def select_event_option(
+                self, *_args: object, **_kwargs: object
+            ) -> dict[str, object]:
+                raise AssertionError("static preflight unexpectedly selected")
 
             def snapshot(self) -> dict[str, object]:
                 return {
@@ -3511,29 +3533,47 @@ def main() -> int:
             "scoreboard_named_widget_action_and_postcondition_matrix",
         )
         scoreboard_runner_red = {
-            "schema_version": 1,
+            "schema_version": 2,
             "cell_id": (
                 "scoreboard_named_widget_action_and_postcondition_matrix"
             ),
             "result": "RED",
             "mcp_only": True,
-            "source_query": {"status": "available"},
-            "action_result": {
-                "accepted": False,
-                "status": "unavailable",
-                "rejection_reason": "action_dispatch_unavailable",
+            "surface_matrix": {
+                "managed-capable": {"surface_complete": True},
+                "received-only": {"surface_complete": True},
             },
-            "later_query": {"status": "available"},
-            "verified_postcondition": None,
-            "verified_pass": False,
+            "action_matrix": {
+                "managed-capable": [],
+                "received-only": [],
+            },
+            "candidate_batch_complete": True,
+            "all_postconditions_verified": True,
+            "all_expected_acl_denials_verified": True,
+            "per_surface_single_session_binding_verified": True,
+            "cross_surface_clean_restart_verified": True,
             "production_capability_advertised": False,
-            "failure_reason": "action_dispatch_unavailable",
+            "promotion_eligible": False,
+            "failure_reason": "production_capability_not_advertised",
         }
         scoreboard_runner_artifacts = temporary_root / "scoreboard-runner-red"
         scoreboard_runner_artifacts.mkdir()
+        missing_surface_provider = (
+            capture.run_phase2_scoreboard_gameplay_action_cell(
+                object(), scoreboard_runner_artifacts
+            )
+        )
+        assert missing_surface_provider["result"] == "RED"
+        assert missing_surface_provider["promotion_eligible"] is False
+        assert missing_surface_provider["failure_reason"] == (
+            "scoreboard_surface_preparation_provider_missing"
+        )
+        assert missing_surface_provider["action_matrix"] == {
+            "managed-capable": []
+        }
         with mock.patch.object(
             capture,
-            "run_zhongguo_scoreboard_action_cell",
+            "run_zhongguo_scoreboard_action_batch",
             return_value=copy.deepcopy(scoreboard_runner_red),
         ):
             scoreboard_runner_result = (
@@ -3553,7 +3593,7 @@ def main() -> int:
         forged_scoreboard_green["production_capability_advertised"] = True
         with mock.patch.object(
             capture,
-            "run_zhongguo_scoreboard_action_cell",
+            "run_zhongguo_scoreboard_action_batch",
             return_value=forged_scoreboard_green,
         ):
             try:
@@ -3564,7 +3604,7 @@ def main() -> int:
                 assert "forged GREEN" in str(error)
             else:
                 raise AssertionError(
-                    "scoreboard runner accepted GREEN without verified PASS"
+                    "scoreboard runner accepted GREEN without promotion eligibility"
                 )
         for cell_id in (
             "b2_pip_snapshot_query_matrix",
@@ -4055,7 +4095,7 @@ def main() -> int:
             assert cleanup_red["checks"][failed_check] is False
 
         workforce_gate_artifacts = temporary_root / (
-            "phase2-workforce-m360-pre-mutation-red"
+            "phase2-workforce-m360-runner-ready"
         )
         workforce_gate_artifacts.mkdir()
 
@@ -4090,56 +4130,43 @@ def main() -> int:
             ) -> dict[str, object]:
                 raise AssertionError("Workforce gate selected #360")
 
+            def query_current_event_window_context_v1(
+                self, *_args: object, **_kwargs: object
+            ) -> dict[str, object]:
+                raise AssertionError("Workforce preflight queried an event")
+
         workforce_gate_service = WorkforceGateService()
         workforce_prior_lineage = {
             "scope": "phase2_one_save_one_restore_two_pid_lineage",
             "pid_lineage": [4321, 5432],
         }
-        workforce_helper_calls: list[str] = []
-
-        def forbidden_workforce_helper(
-            *_args: object, **_kwargs: object
-        ) -> dict[str, object]:
-            workforce_helper_calls.append("called")
-            raise AssertionError("M360 helper must not run before rebind")
-
-        with mock.patch.object(
-            capture,
-            "run_m360_action_and_postcondition",
-            new=forbidden_workforce_helper,
-        ):
-            try:
-                capture.preflight_phase2_workforce_m360_gameplay_action_cell(
-                    workforce_gate_service,
-                    workforce_gate_artifacts,
-                    owner_character_id=9200,
-                    subject_character_id=9001,
-                    seed_contract=ready_seed_contract,
-                    prior_lineage=workforce_prior_lineage,
-                )
-            except capture.acceptance.RunnerError as error:
-                assert "RED before mutation" in str(error)
-                assert "exact_owner_subject_player_transition" in str(error)
-                assert "same_checkpoint_three_route_restore_lineage" in str(
-                    error
-                )
-            else:
-                raise AssertionError(
-                    "Workforce #360 gate ran without a real player transition"
-                )
-        assert workforce_helper_calls == []
+        workforce_preflight = (
+            capture.preflight_phase2_workforce_m360_gameplay_action_cell(
+                workforce_gate_service,
+                workforce_gate_artifacts,
+                owner_character_id=9200,
+                subject_character_id=9001,
+                seed_contract=ready_seed_contract,
+                prior_lineage=workforce_prior_lineage,
+            )
+        )
         assert workforce_gate_service.calls == ["capabilities"]
         workforce_gate = json.loads(
             (
                 workforce_gate_artifacts
-                / "08_phase2_workforce_m360_gameplay_action_cell.json"
+                / (
+                    "07d_phase2_workforce_m360_gameplay_action_"
+                    "preflight.json"
+                )
             ).read_text(encoding="utf-8")
         )
-        assert workforce_gate["result"] == "RED"
+        assert workforce_gate == workforce_preflight
+        assert workforce_gate["result"] == "GREEN"
         assert workforce_gate["stage"] == (
-            "pre_mutation_owner_subject_transition_gate"
+            "static_runner_ready_live_proof_pending"
         )
         assert workforce_gate["gameplay_action_executed"] is False
+        assert workforce_gate["live_proof_claimed"] is False
         assert workforce_gate["checkpoint_created_for_workforce"] is False
         assert workforce_gate["helper_invoked"] is False
         assert workforce_gate["expected_event_definition_key"] == (
@@ -4148,20 +4175,13 @@ def main() -> int:
         assert workforce_gate["owner_character_id"] == 9200
         assert workforce_gate["subject_character_id"] == 9001
         assert workforce_gate["prior_lineage"] == workforce_prior_lineage
-        assert set(workforce_gate["routes"]) == {"A", "B", "C"}
-        assert all(
-            row["result"] == "NOT_RUN"
-            and row["action_ack"] is None
-            and row["business_postcondition"] is None
-            and row["restore_from_shared_pre_m360_checkpoint"] is False
-            for row in workforce_gate["routes"].values()
-        )
-        assert [
-            row["id"] for row in workforce_gate["missing_requirements"]
-        ] == [
-            "exact_owner_subject_player_transition",
-            "same_checkpoint_three_route_restore_lineage",
-        ]
+        assert workforce_gate["missing_requirements"] == []
+        assert workforce_gate["requirements"][
+            "exact_owner_subject_player_transition"
+        ]["result"] == "RUNNER_READY"
+        assert workforce_gate["requirements"][
+            "same_checkpoint_three_route_restore_lineage"
+        ]["independent_route_restores"] == ["A", "B", "C"]
         assert workforce_gate["ocr_used"] is False
         assert workforce_gate["coordinates_used"] is False
         assert workforce_gate["console_used"] is False
@@ -4459,13 +4479,11 @@ def main() -> int:
                     seed_contract=wired_seed_contract,
                 )
             except capture.acceptance.RunnerError as error:
-                assert "Workforce #360 gameplay action cell RED before mutation" in str(
-                    error
-                )
-                assert "exact_owner_subject_player_transition" in str(error)
+                assert "runner preflight GREEN" in str(error)
+                assert "isolated userdir/bootstrap" in str(error)
             else:
                 raise AssertionError(
-                    "Workforce #360 missing rebind claimed the full batch GREEN"
+                    "Workforce #360 missing runtime context claimed the batch GREEN"
                 )
         scoreboard_action_cell.assert_called_once_with(
             wired_service, wired_scenario_artifacts

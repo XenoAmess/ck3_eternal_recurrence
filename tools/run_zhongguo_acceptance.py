@@ -7,7 +7,7 @@ import argparse
 from contextlib import ExitStack
 import ctypes
 from ctypes import wintypes
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import json
 import os
@@ -105,6 +105,9 @@ from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract impor
 from xar_autoplayer.bridge.zhongguo_scoreboard_state_contract import (
     QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
 )
+from xar_autoplayer.bridge.zhongguo_scoreboard_action_batch import (
+    run_zhongguo_scoreboard_action_batch,
+)
 from xar_autoplayer.bridge.zhongguo_scoreboard_action_cell import (
     run_zhongguo_scoreboard_action_cell,
 )
@@ -150,6 +153,19 @@ from zhongguo_phase2_visual_handlers import (
     Phase2VisualHandlerError,
 )
 from zhongguo_phase2_capture_choreography import PHASE2_CAPTURE_SCENARIOS
+from zhongguo_phase2_event_choreography import (
+    Phase2EventChoreographer,
+    Phase2EventChoreographyError,
+    Phase2EventSequencePlan,
+    SequencedPhase2SpanDriver,
+    phase2_event_sequence_plan,
+)
+from zhongguo_phase2_source_checkpoint_provider import (
+    CHECKPOINT_REQUIRED_HANDLERS,
+    Phase2SourceCheckpoint,
+    Phase2SourceCheckpointError,
+    Phase2SourceCheckpointProvider,
+)
 
 import promo_real_character_contract as real_characters
 
@@ -910,6 +926,451 @@ _PHASE2_PROMO_CAPTURE_PRODUCER: Phase2PromoCaptureProducer | None = None
 _PHASE2_PROMO_VISUAL_PRIMITIVES: dict[str, Phase2PromoVisualPrimitive] = {}
 
 
+def _phase2_scoreboard_modal_visible(
+    service: GameplayBridgeService,
+    *,
+    nonce: str,
+    expected_revision: int,
+) -> tuple[bool, dict[str, object]]:
+    """Read the contracted scoreboard modal visibility from its provider."""
+
+    response = service.query_zhongguo_scoreboard_state_v1(
+        nonce, expected_revision=expected_revision
+    )
+    widgets = response.get("widgets") if isinstance(response, dict) else None
+    modal = next(
+        (
+            row
+            for row in widgets
+            if isinstance(row, dict)
+            and row.get("stable_identity") == "zg361_scoreboard_modal"
+        ),
+        None,
+    ) if isinstance(widgets, list) else None
+    visible = modal.get("effective_visible") if isinstance(modal, dict) else None
+    if not (
+        isinstance(response, dict)
+        and response.get("status") == "available"
+        and isinstance(visible, dict)
+        and visible.get("status") == "available"
+        and isinstance(visible.get("value"), bool)
+    ):
+        raise Phase2EventChoreographyError(
+            "scoreboard_visibility_provider_unavailable",
+            {"nonce": nonce, "response": response},
+        )
+    return bool(visible["value"]), response
+
+
+class _Phase2RealEventChoreographyService:
+    """Bind cross-span choreography to real native MCP primitives only."""
+
+    def __init__(self, service: GameplayBridgeService) -> None:
+        self.service = service
+
+    def _source_checkpoint_restore_available(self) -> bool:
+        restore = getattr(
+            self.service, "restore_phase2_span_source_checkpoint_v1", None
+        )
+        readiness = getattr(
+            self.service,
+            "phase2_span_source_checkpoint_restore_available_v1",
+            None,
+        )
+        return bool(
+            callable(restore)
+            and (not callable(readiness) or readiness() is True)
+        )
+
+    @staticmethod
+    def _common(plan: Phase2EventSequencePlan) -> dict[str, object]:
+        return {
+            "result": "GREEN",
+            "span_id": plan.span_id,
+            "provider_observed": True,
+            "ui_state_verified": True,
+            "console_used": False,
+            "test_fixture_used": False,
+        }
+
+    def preflight_source_checkpoints(
+        self,
+        context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        capture_lineage = getattr(
+            context.recorder, "phase2_capture_lineage", None
+        )
+        expected_seed_lineage_id = (
+            capture_lineage.get("seed_lineage_id")
+            if isinstance(capture_lineage, Mapping)
+            else None
+        )
+        restore_available = self._source_checkpoint_restore_available()
+        provider = Phase2SourceCheckpointProvider(
+            (
+                context.source_checkpoint_registry
+                if isinstance(context.source_checkpoint_registry, Mapping)
+                else None
+            ),
+            restore_registered_checkpoint=(
+                (lambda _entry: {}) if restore_available else None
+            ),
+            expected_seed_lineage_id=(
+                str(expected_seed_lineage_id)
+                if isinstance(expected_seed_lineage_id, str)
+                else None
+            ),
+        )
+        try:
+            preflight = provider.preflight()
+        except Phase2SourceCheckpointError as error:
+            raise Phase2EventChoreographyError(
+                "source_checkpoint_preflight_red",
+                {
+                    "upstream_reason_code": error.reason_code,
+                    "source_checkpoint_evidence": error.evidence,
+                },
+            ) from error
+        if preflight.get("restore_interface_available") is not True:
+            raise Phase2EventChoreographyError(
+                "source_checkpoint_preflight_red",
+                {
+                    "upstream_reason_code": (
+                        "registered_checkpoint_restore_provider_missing"
+                    ),
+                    "source_checkpoint_preflight": preflight,
+                },
+            )
+        return preflight
+
+    def _restore_registered_source(
+        self,
+        plan: Phase2EventSequencePlan,
+        context: Phase2PromoCaptureContext,
+    ) -> dict[str, object]:
+        registry = context.source_checkpoint_registry
+        capture_lineage = getattr(
+            context.recorder, "phase2_capture_lineage", None
+        )
+        expected_seed_lineage_id = (
+            capture_lineage.get("seed_lineage_id")
+            if isinstance(capture_lineage, Mapping)
+            else None
+        )
+        restore_method = getattr(
+            self.service, "restore_phase2_span_source_checkpoint_v1", None
+        )
+        restore_available = self._source_checkpoint_restore_available()
+
+        def restore(entry: Phase2SourceCheckpoint) -> Mapping[str, object]:
+            if not (restore_available and callable(restore_method)):
+                raise Phase2SourceCheckpointError(
+                    "registered_checkpoint_restore_provider_missing",
+                    {"handler": plan.handler},
+                )
+            return restore_method(
+                checkpoint_path=str(entry.path),
+                expected_checkpoint_bytes=entry.bytes,
+                expected_checkpoint_sha256=entry.sha256,
+                expected_save_lineage_id=entry.save_lineage_id,
+                expected_event_definition_key=(
+                    entry.source_event_definition_key
+                ),
+                expected_owner_character_id=entry.owner_character_id,
+                expected_player_character_id=entry.player_character_id,
+                expected_date_raw=entry.date_raw,
+                allow_generic_character_rebind=False,
+                allow_fixture=False,
+                allow_console=False,
+            )
+
+        provider = Phase2SourceCheckpointProvider(
+            registry if isinstance(registry, Mapping) else None,
+            restore_registered_checkpoint=(
+                restore if restore_available else None
+            ),
+            expected_seed_lineage_id=(
+                str(expected_seed_lineage_id)
+                if isinstance(expected_seed_lineage_id, str)
+                else None
+            ),
+        )
+        try:
+            restored = provider.restore(plan)
+        except Phase2SourceCheckpointError as error:
+            raise Phase2EventChoreographyError(
+                "source_checkpoint_provider_red",
+                {
+                    "upstream_reason_code": error.reason_code,
+                    "source_checkpoint_evidence": error.evidence,
+                },
+            ) from error
+        expected = restored["expected"]
+        assert isinstance(expected, Mapping)
+        observed = self._wait_event(
+            str(expected["event_definition_key"]),
+            plan,
+            context,
+            operation="registered_source_restore",
+        )
+        binding = observed.get("binding")
+        if not (
+            isinstance(binding, Mapping)
+            and binding.get("player_character_id")
+            == expected.get("player_character_id")
+            and binding.get("date_raw") == expected.get("date_raw")
+        ):
+            raise Phase2EventChoreographyError(
+                "restored_source_live_binding_mismatch",
+                {
+                    "plan": asdict(plan),
+                    "expected": dict(expected),
+                    "observed_binding": binding,
+                },
+            )
+        return {
+            **self._common(plan),
+            "event_definition_key": expected["event_definition_key"],
+            "surface_visible": True,
+            "registered_checkpoint_restore": restored,
+            "live_event_observation": observed,
+        }
+
+    def stage_span_source(
+        self,
+        plan: Phase2EventSequencePlan,
+        _scenario: object,
+        context: Phase2PromoCaptureContext,
+        runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        if plan.handler in CHECKPOINT_REQUIRED_HANDLERS:
+            return self._restore_registered_source(plan, context)
+        if plan.source_kind == "event_free_map":
+            snapshot = self.service.snapshot()
+            binding = _phase2_paused_binding(
+                snapshot, label=f"phase-two {plan.span_id} source staging"
+            )
+            if isinstance(snapshot.get("active_event"), dict):
+                identity = query_event_definition_identity(self.service, snapshot)
+                raise Phase2EventChoreographyError(
+                    "event_free_source_blocked",
+                    {"plan": asdict(plan), "event_identity": identity},
+                )
+            modal_visible, scoreboard = _phase2_scoreboard_modal_visible(
+                self.service,
+                nonce=f"zg361.phase2.promo.{plan.span_id}.source",
+                expected_revision=int(binding["revision"]),
+            )
+            if modal_visible:
+                raise Phase2EventChoreographyError(
+                    "event_free_source_blocked",
+                    {"plan": asdict(plan), "scoreboard": scoreboard},
+                )
+            return {
+                **self._common(plan),
+                "no_active_event": True,
+                "binding": binding,
+                "scoreboard_modal_visible": False,
+            }
+
+        if not isinstance(plan.source_event, str):
+            raise Phase2EventChoreographyError(
+                "product_source_event_missing", {"plan": asdict(plan)}
+            )
+        return self._wait_event(
+            plan.source_event,
+            plan,
+            context,
+            operation="source",
+        )
+
+    def _wait_event(
+        self,
+        event_definition_key: str,
+        plan: Phase2EventSequencePlan,
+        context: Phase2PromoCaptureContext,
+        *,
+        operation: str,
+    ) -> dict[str, object]:
+        gate = wait_for_native_event_definition(
+            self.service,
+            context.artifacts,
+            stem=f"phase2_promo_{plan.span_id}_{operation}_{event_definition_key.replace('.', '_')}",
+            expected_event_definition_key=event_definition_key,
+            timeout_s=45.0,
+            clear_unexpected_single_option_events=False,
+        )
+        identity = gate.get("identity") if isinstance(gate, dict) else None
+        if not (
+            isinstance(identity, dict)
+            and identity.get("event_definition_key") == event_definition_key
+        ):
+            raise Phase2EventChoreographyError(
+                "exact_product_event_not_observed",
+                {
+                    "plan": asdict(plan),
+                    "expected_event": event_definition_key,
+                    "gate": gate,
+                },
+            )
+        return {
+            **self._common(plan),
+            "event_definition_key": event_definition_key,
+            "surface_visible": True,
+            "identity": identity,
+            "binding": _phase2_paused_binding(
+                gate["snapshot"],
+                label=(
+                    f"phase-two {plan.span_id} {operation} exact event"
+                ),
+            ),
+            "wait_gate": gate.get("evidence"),
+        }
+
+    def wait_for_product_event(
+        self,
+        event_definition_key: str,
+        plan: Phase2EventSequencePlan,
+        context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        return self._wait_event(
+            event_definition_key, plan, context, operation="post_action"
+        )
+
+    def close_capture_surface(
+        self,
+        surface_kind: str,
+        surface_id: str,
+        plan: Phase2EventSequencePlan,
+        context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        if surface_kind == "product_event":
+            snapshot = self.service.snapshot()
+            binding = _phase2_paused_binding(
+                snapshot, label=f"phase-two {plan.span_id} event close"
+            )
+            identity = query_event_definition_identity(self.service, snapshot)
+            if identity.get("event_definition_key") != surface_id:
+                raise Phase2EventChoreographyError(
+                    "capture_event_identity_changed_before_close",
+                    {
+                        "plan": asdict(plan),
+                        "expected_event": surface_id,
+                        "identity": identity,
+                    },
+                )
+            close = select_single_option_interruption_native(
+                self.service,
+                context.artifacts,
+                f"phase2_promo_{plan.span_id}_{surface_id.replace('.', '_')}_close",
+                expected_event_instance_id=int(identity["event_instance_id"]),
+            )
+            if close.get("result") != "GREEN":
+                raise Phase2EventChoreographyError(
+                    "capture_event_close_not_green",
+                    {"plan": asdict(plan), "close": close},
+                )
+            return {
+                **self._common(plan),
+                "surface_kind": surface_kind,
+                "surface_id": surface_id,
+                "transition_materialized": True,
+                "binding_before": binding,
+                "close": close,
+            }
+
+        if surface_kind == "named_widget" and surface_id == "zg361_scoreboard_modal":
+            close = run_zhongguo_scoreboard_action_cell(
+                self.service,
+                nonce_prefix=f"zg361.phase2.promo.{plan.span_id}.close",
+            )
+            request = close.get("action_request") if isinstance(close, dict) else None
+            later = close.get("later_query") if isinstance(close, dict) else None
+            widgets = later.get("widgets") if isinstance(later, dict) else None
+            modal = next(
+                (
+                    row
+                    for row in widgets
+                    if isinstance(row, dict)
+                    and row.get("stable_identity") == surface_id
+                ),
+                None,
+            ) if isinstance(widgets, list) else None
+            visible = modal.get("effective_visible") if isinstance(modal, dict) else None
+            if not (
+                isinstance(close, dict)
+                and close.get("result") == "GREEN"
+                and isinstance(request, dict)
+                and request.get("action") == "close"
+                and isinstance(visible, dict)
+                and visible.get("status") == "available"
+                and visible.get("value") is False
+            ):
+                raise Phase2EventChoreographyError(
+                    "scoreboard_close_not_green",
+                    {"plan": asdict(plan), "close": close},
+                )
+            return {
+                **self._common(plan),
+                "surface_kind": surface_kind,
+                "surface_id": surface_id,
+                "transition_materialized": True,
+                "close": close,
+            }
+
+        raise Phase2EventChoreographyError(
+            "capture_surface_close_provider_missing",
+            {
+                "plan": asdict(plan),
+                "surface_kind": surface_kind,
+                "surface_id": surface_id,
+            },
+        )
+
+    def drain_after_span(
+        self,
+        plan: Phase2EventSequencePlan,
+        _context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        snapshot = self.service.snapshot()
+        binding = _phase2_paused_binding(
+            snapshot, label=f"phase-two {plan.span_id} drain"
+        )
+        active_event = snapshot.get("active_event")
+        modal_visible, scoreboard = _phase2_scoreboard_modal_visible(
+            self.service,
+            nonce=f"zg361.phase2.promo.{plan.span_id}.drain",
+            expected_revision=int(binding["revision"]),
+        )
+        no_active_event = active_event is None
+        no_blocking_surface = no_active_event and not modal_visible
+        if not no_blocking_surface:
+            identity = (
+                query_event_definition_identity(self.service, snapshot)
+                if isinstance(active_event, dict)
+                else None
+            )
+            raise Phase2EventChoreographyError(
+                "span_drain_not_empty",
+                {
+                    "plan": asdict(plan),
+                    "active_event_identity": identity,
+                    "scoreboard_modal_visible": modal_visible,
+                },
+            )
+        return {
+            **self._common(plan),
+            "no_active_event": True,
+            "no_blocking_surface": True,
+            "binding": binding,
+            "scoreboard": scoreboard,
+        }
+
+
 class _Phase2AcceptanceActionSpanDriver:
     """Expose the four already-wired acceptance action cells as promo spans."""
 
@@ -920,8 +1381,14 @@ class _Phase2AcceptanceActionSpanDriver:
         "capture_incidents_operations",
     )
 
-    def __init__(self, service: GameplayBridgeService) -> None:
+    def __init__(
+        self,
+        service: GameplayBridgeService,
+        *,
+        event_choreographer: Phase2EventChoreographer,
+    ) -> None:
         self.service = service
+        self.event_choreographer = event_choreographer
 
     def available_handlers(self) -> tuple[str, ...]:
         return self._HANDLERS
@@ -930,7 +1397,7 @@ class _Phase2AcceptanceActionSpanDriver:
         self,
         scenario: object,
         context: Phase2PromoCaptureContext,
-        _runtime: Mapping[str, object],
+        runtime: Mapping[str, object],
     ) -> Mapping[str, object]:
         handler = str(getattr(scenario, "handler"))
         if handler not in self._HANDLERS:
@@ -988,6 +1455,14 @@ class _Phase2AcceptanceActionSpanDriver:
                 "acceptance_action_cell_not_green",
                 {"handler": handler, "action_cell": evidence},
             )
+        plan = phase2_event_sequence_plan(handler)
+        post_action = (
+            self.event_choreographer.present_post_action_events(
+                scenario, context, runtime
+            )
+            if plan.post_action_events
+            else None
+        )
         visible = _phase2_promo_visible_scenario_surface(self.service, scenario)
         return {
             "result": "GREEN",
@@ -995,6 +1470,7 @@ class _Phase2AcceptanceActionSpanDriver:
             "postcondition_green": True,
             "handler": handler,
             "action_cell": dict(evidence),
+            "post_action_event_sequence": post_action,
             "visible_surface": visible,
         }
 
@@ -1079,8 +1555,11 @@ def _phase2_promo_event_postcondition(
 
 def _make_default_phase2_promo_span_driver(
     context: Phase2PromoCaptureContext,
-) -> CompositePhase2SpanDriver:
+) -> SequencedPhase2SpanDriver:
     service = context.title_navigation_service
+    event_choreographer = Phase2EventChoreographer(
+        _Phase2RealEventChoreographyService(service)
+    )
     visual = Phase2VisualHandlerAdapter(
         service,
         scoreboard_action_cell=run_phase2_scoreboard_gameplay_action_cell,
@@ -1093,9 +1572,13 @@ def _make_default_phase2_promo_span_driver(
             for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER, ENDGAME_HANDLER)
         },
     )
-    return CompositePhase2SpanDriver(
-        _Phase2AcceptanceActionSpanDriver(service), visual
+    composite = CompositePhase2SpanDriver(
+        _Phase2AcceptanceActionSpanDriver(
+            service, event_choreographer=event_choreographer
+        ),
+        visual,
     )
+    return SequencedPhase2SpanDriver(composite, event_choreographer)
 
 
 def register_phase2_promo_capture_producer(
@@ -1234,6 +1717,7 @@ def run_phase2_promo_capture_scenario(
     seed_install: Mapping[str, object] | None = None,
     native_session_binding: Mapping[str, object] | None = None,
     loader_gate: Mapping[str, object] | None = None,
+    source_checkpoint_registry: Mapping[str, object] | None = None,
     capture_receipt_context: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Invoke only the explicitly registered sequel visual producer.
@@ -1298,6 +1782,7 @@ def run_phase2_promo_capture_scenario(
         ("seed_install", seed_install),
         ("native_session_binding", native_session_binding),
         ("loader_gate", loader_gate),
+        ("source_checkpoint_registry", source_checkpoint_registry),
     ):
         if value is not None:
             producer_kwargs[name] = value
@@ -6535,20 +7020,47 @@ def compare_phase2_domain_query_stages(
 def run_phase2_scoreboard_gameplay_action_cell(
     service: GameplayBridgeService,
     artifacts: Path,
+    *,
+    prepare_surface: Callable[[str], dict[str, object]] | None = None,
 ) -> dict[str, object]:
-    """Preserve the named-widget action ledger without promoting transport.
+    """Preserve the two-surface named-widget action ledger fail-closed.
 
-    The current exact-build provider may return typed unavailable or a
-    verification-pending ACK between two independent scoreboard queries.  A
-    future GREEN result is accepted only when the reusable cell supplies both
-    an advertised production capability and an independently verified
-    provider-observed revision/postcondition transition.
+    Surface staging is deliberately a narrow provider seam.  Until the real
+    managed provider exists, the production runner records an explicit RED
+    without dispatching a partial matrix.  A false capability advertisement
+    still allows every accepted action's independent verifier to be retained,
+    but can never produce GREEN or promotion eligibility.
     """
 
     evidence_path = artifacts / (
         "07c_phase2_scoreboard_named_widget_action_cell.json"
     )
-    evidence = run_zhongguo_scoreboard_action_cell(service)
+    if prepare_surface is None:
+        provider = getattr(
+            service, "prepare_zhongguo_scoreboard_surface_v1", None
+        )
+
+        def prepare_surface(surface_id: str) -> dict[str, object]:
+            if not callable(provider):
+                return {
+                    "surface_id": surface_id,
+                    "status": "unavailable",
+                    "failure_reason": (
+                        "scoreboard_surface_preparation_provider_missing"
+                    ),
+                }
+            receipt = provider(surface_id)
+            if not isinstance(receipt, dict):
+                raise acceptance.RunnerError(
+                    "scoreboard surface preparation returned a non-object"
+                )
+            return receipt
+
+    evidence = run_zhongguo_scoreboard_action_batch(
+        service,
+        prepare_surface=prepare_surface,
+        nonce_prefix="zg361.scoreboard.phase2-live-batch",
+    )
     if not isinstance(evidence, dict):
         raise acceptance.RunnerError(
             "phase-two scoreboard action cell returned a non-object"
@@ -6557,18 +7069,25 @@ def run_phase2_scoreboard_gameplay_action_cell(
     result = evidence.get("result")
     if result == "GREEN":
         if not (
-            evidence.get("verified_pass") is True
+            evidence.get("candidate_batch_complete") is True
+            and evidence.get("all_postconditions_verified") is True
+            and evidence.get("all_expected_acl_denials_verified") is True
+            and evidence.get(
+                "per_surface_single_session_binding_verified"
+            )
+            is True
+            and evidence.get("cross_surface_clean_restart_verified") is True
             and evidence.get("production_capability_advertised") is True
-            and isinstance(evidence.get("verified_postcondition"), dict)
+            and evidence.get("promotion_eligible") is True
         ):
             raise acceptance.RunnerError(
-                "phase-two scoreboard action cell forged GREEN without an "
-                "advertised capability and verified later-query postcondition"
+                "phase-two scoreboard batch forged GREEN without its full "
+                "two-surface proof and advertised production capability"
             )
     elif result == "RED":
-        if evidence.get("verified_pass") is not False:
+        if evidence.get("promotion_eligible") is not False:
             raise acceptance.RunnerError(
-                "phase-two scoreboard RED ledger contains a verified PASS"
+                "phase-two scoreboard RED ledger claimed promotion eligibility"
             )
     else:
         raise acceptance.RunnerError(
@@ -6738,27 +7257,26 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
     seed_contract: dict[str, object],
     prior_lineage: dict[str, object],
 ) -> dict[str, object]:
-    """Record the exact missing owner/subject transition before any M360 action.
+    """Prove the narrow Workforce runner can execute both former blockers.
 
-    The reusable helper already proves one owner-side option ACK and one
-    subject-side business postcondition.  The current public bridge and seed,
-    however, expose no revision-bound way to play the exact owner and then the
-    exact received-self subject.  They also expose only the one restore already
-    consumed by the B2/AI-owned lineage, not three independent A/B/C restores
-    from one pre-M360 checkpoint.  Fail before calling the mutating helper; a
-    legacy acceptance-fixture switch or an ACK is not an acceptable substitute.
+    This is a non-mutating preflight, not a gameplay receipt.  Exact player
+    rebinding remains mediated by the dedicated typed-event fixture and must be
+    confirmed by a later paused native snapshot.  The A/B/C lineage remains a
+    managed save/restore operation and must prove three independent restores
+    of one byte-identical checkpoint in the live action artifact.
     """
 
     evidence_path = artifacts / (
-        "08_phase2_workforce_m360_gameplay_action_cell.json"
+        "07d_phase2_workforce_m360_gameplay_action_preflight.json"
     )
     evidence: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2,
+        "evidence_class": "static_execution_preflight",
         "cell_id": (
             "workforce_collective_gameplay_action_and_postcondition_matrix"
         ),
         "result": "RED",
-        "stage": "pre_mutation_owner_subject_transition_gate",
+        "stage": "pre_mutation_runner_contract",
         "mcp_only": True,
         "ocr_used": False,
         "image_used": False,
@@ -6766,6 +7284,8 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
         "console_used": False,
         "test_decision_used": False,
         "gameplay_action_executed": False,
+        "gameplay_business_postcondition_claimed": False,
+        "live_proof_claimed": False,
         "checkpoint_created_for_workforce": False,
         "helper_invoked": False,
         "helper_entrypoint": (
@@ -6776,19 +7296,12 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
         "owner_character_id": owner_character_id,
         "subject_character_id": subject_character_id,
         "required_routes": ["A", "B", "C"],
-        "routes": {
-            route: {
-                "result": "NOT_RUN",
-                "action_ack": None,
-                "business_postcondition": None,
-                "restore_from_shared_pre_m360_checkpoint": False,
-            }
-            for route in ("A", "B", "C")
-        },
         "runtime_enabled_mods": None,
         "observed_public_surface": None,
+        "fixture_contract": None,
         "prior_lineage": prior_lineage,
         "checks": {},
+        "requirements": {},
         "missing_requirements": [],
         "failure_reason": None,
     }
@@ -6834,6 +7347,88 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
             if isinstance(action_steps, list)
             else set()
         )
+        required_fixture_files = (
+            "descriptor.mod",
+            "common/scripted_guis/zga_phase2_workforce_guis.txt",
+            "events/zga_phase2_workforce_events.txt",
+            "gui/zga_phase2_workforce_bridge.gui",
+            (
+                "gui/scripted_widgets/"
+                "zga_phase2_workforce_scripted_widgets.txt"
+            ),
+            (
+                "localization/english/"
+                "zga_phase2_workforce_l_english.yml"
+            ),
+            (
+                "localization/simp_chinese/"
+                "zga_phase2_workforce_l_simp_chinese.yml"
+            ),
+        )
+        fixture_source = PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE.resolve()
+        fixture_snapshot = (
+            isolated.tree_snapshot(fixture_source)
+            if fixture_source.is_dir()
+            else {}
+        )
+        expected_fixture_paths = set(required_fixture_files)
+        observed_fixture_paths = {
+            str(value).replace("\\", "/") for value in fixture_snapshot
+        }
+        fixture_file_set_exact = (
+            observed_fixture_paths == expected_fixture_paths
+        )
+        fixture_bom_exact = fixture_file_set_exact and all(
+            (fixture_source / relative).read_bytes().startswith(b"\xef\xbb\xbf")
+            for relative in required_fixture_files
+        )
+        event_text = (
+            (
+                fixture_source
+                / "events"
+                / "zga_phase2_workforce_events.txt"
+            ).read_text(encoding="utf-8-sig")
+            if fixture_bom_exact
+            else ""
+        )
+        gui_text = (
+            (
+                fixture_source
+                / "common"
+                / "scripted_guis"
+                / "zga_phase2_workforce_guis.txt"
+            ).read_text(encoding="utf-8-sig")
+            if fixture_bom_exact
+            else ""
+        )
+        exact_fixture_transition_contract = all(
+            token in event_text
+            for token in (
+                "zga_phase2_workforce.1 = {",
+                "zga_phase2_workforce.3 = {",
+                (
+                    "set_player_character = "
+                    "scope:zga_phase2_workforce_owner"
+                ),
+                (
+                    "set_player_character = "
+                    "scope:zga_phase2_workforce_subject"
+                ),
+                "save_scope_as = zga_phase2_workforce_owner",
+                "save_scope_as = zga_phase2_workforce_subject",
+                "zg361_we_resume_m360_from_central_source_effect = {",
+                "has_variable = zg361_we_m360_receipt_choice",
+            )
+        ) and event_text.count("set_player_character =") == 2
+        fixture_summon_contract = all(
+            token in gui_text
+            for token in (
+                "zga_phase2_workforce_summon_gui = {",
+                "var:zg361_case_al_state = 4",
+                "var:zg361_p2c_m360_source_status = 1",
+                "trigger_event = zga_phase2_workforce.1",
+            )
+        )
         runtime = seed_contract.get("runtime")
         enabled_mods = (
             runtime.get("enabled_mods")
@@ -6847,8 +7442,35 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
             "has_exact_character_player_rebind_method": callable(
                 getattr(service, "set_player_character_v1", None)
             ),
-            "has_dedicated_workforce_action_fixture_contract": False,
+            "has_dedicated_workforce_action_fixture_contract": (
+                fixture_file_set_exact
+                and fixture_bom_exact
+                and exact_fixture_transition_contract
+                and fixture_summon_contract
+            ),
             "legacy_fixture_switch_accepted": False,
+        }
+        evidence["fixture_contract"] = {
+            "source": str(fixture_source),
+            "tree_sha256": (
+                isolated.snapshot_digest(fixture_snapshot)
+                if fixture_snapshot
+                else None
+            ),
+            "expected_files": list(required_fixture_files),
+            "observed_files": sorted(observed_fixture_paths),
+            "player_transition_count": event_text.count(
+                "set_player_character ="
+            ),
+            "fixture_file_set_exact": fixture_file_set_exact,
+            "fixture_bom_exact": fixture_bom_exact,
+            "exact_fixture_transition_contract": (
+                exact_fixture_transition_contract
+            ),
+            "fixture_summon_contract": fixture_summon_contract,
+            "acceptance_only": True,
+            "release_included": False,
+            "promo_included": False,
         }
         prior_scope = prior_lineage.get("scope")
         prior_pid_lineage = prior_lineage.get("pid_lineage")
@@ -6866,42 +7488,124 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
                 "game.command.select-event-option-N" in public_capabilities
             ),
             "save_checkpoint_available": "save-checkpoint" in public_steps,
-            "public_exact_character_player_rebind_available": False,
-            "dedicated_action_fixture_exact_scope_switch_available": False,
-            "same_pre_m360_checkpoint_three_route_restore_available": False,
-            "prior_lineage_is_not_a_workforce_three_branch_lineage": (
+            "restore_checkpoint_available": (
+                "restore-checkpoint" in public_steps
+            ),
+            "snapshot_method_available": callable(
+                getattr(service, "snapshot", None)
+            ),
+            "save_checkpoint_method_available": callable(
+                getattr(service, "save_checkpoint", None)
+            ),
+            "restore_checkpoint_method_available": callable(
+                getattr(service, "restore_checkpoint", None)
+            ),
+            "event_context_method_available": callable(
+                getattr(
+                    service,
+                    "query_current_event_window_context_v1",
+                    None,
+                )
+            ),
+            "select_event_option_method_available": callable(
+                getattr(service, "select_event_option", None)
+            ),
+            "public_generic_character_rebind_remains_unavailable": not callable(
+                getattr(service, "set_player_character_v1", None)
+            ),
+            "dedicated_action_fixture_exact_scope_switch_available": (
+                fixture_file_set_exact
+                and fixture_bom_exact
+                and exact_fixture_transition_contract
+                and fixture_summon_contract
+                and callable(select_typed_fixture_player_transition)
+            ),
+            "same_pre_m360_checkpoint_three_route_restore_available": (
+                "save-checkpoint" in public_steps
+                and "restore-checkpoint" in public_steps
+                and callable(getattr(service, "save_checkpoint", None))
+                and callable(getattr(service, "restore_checkpoint", None))
+                and callable(run_phase2_workforce_m360_gameplay_action_cell)
+            ),
+            "prior_lineage_can_extend_into_workforce_lineage": (
                 prior_scope == "phase2_one_save_one_restore_two_pid_lineage"
                 and isinstance(prior_pid_lineage, list)
                 and len(prior_pid_lineage) == 2
             ),
         }
         evidence["checks"] = checks
-        missing = [
-            {
-                "id": "exact_owner_subject_player_transition",
-                "reason": (
-                    "no public revision-bound exact-CharacterID player rebind "
-                    "and no dedicated phase-two action fixture exposes a typed "
-                    "owner-to-subject switch through current-event MCP"
+        exact_transition_checks = (
+            "helper_entrypoint_available",
+            "owner_subject_distinct",
+            "current_event_context_available",
+            "exact_event_option_ack_available",
+            "snapshot_method_available",
+            "event_context_method_available",
+            "select_event_option_method_available",
+            "dedicated_action_fixture_exact_scope_switch_available",
+        )
+        restore_lineage_checks = (
+            "save_checkpoint_available",
+            "restore_checkpoint_available",
+            "save_checkpoint_method_available",
+            "restore_checkpoint_method_available",
+            "same_pre_m360_checkpoint_three_route_restore_available",
+            "prior_lineage_can_extend_into_workforce_lineage",
+        )
+        exact_transition_ready = all(
+            checks[name] is True for name in exact_transition_checks
+        )
+        restore_lineage_ready = all(
+            checks[name] is True for name in restore_lineage_checks
+        )
+        evidence["requirements"] = {
+            "exact_owner_subject_player_transition": {
+                "result": "RUNNER_READY" if exact_transition_ready else "RED",
+                "revision_bound_by": (
+                    "current-event query and select-event-option expected_revision"
+                ),
+                "identity_postcondition": (
+                    "later paused native played CharacterID equals exact target"
                 ),
             },
-            {
-                "id": "same_checkpoint_three_route_restore_lineage",
-                "reason": (
-                    "the current runner lineage is one save/one restore/two "
-                    "PIDs; A/B/C require three independent restores from one "
-                    "pre-zg361we.360 checkpoint"
-                ),
+            "same_checkpoint_three_route_restore_lineage": {
+                "result": "RUNNER_READY" if restore_lineage_ready else "RED",
+                "shared_checkpoint": "one saved pre-zg361we.360 size/SHA-256",
+                "independent_route_restores": ["A", "B", "C"],
+                "additional_restores": [
+                    "fixture activation",
+                    "final frozen baseline",
+                ],
             },
-        ]
+        }
+        missing: list[dict[str, str]] = []
+        if not exact_transition_ready:
+            missing.append(
+                {
+                    "id": "exact_owner_subject_player_transition",
+                    "reason": "one or more typed fixture/revision/identity checks failed",
+                }
+            )
+        if not restore_lineage_ready:
+            missing.append(
+                {
+                    "id": "same_checkpoint_three_route_restore_lineage",
+                    "reason": "one or more shared-checkpoint restore lineage checks failed",
+                }
+            )
         evidence["missing_requirements"] = missing
-        reason = "; ".join(
-            f"{row['id']}: {row['reason']}" for row in missing
-        )
-        raise acceptance.RunnerError(
-            "phase-two Workforce #360 gameplay action cell RED before "
-            f"mutation: {reason}"
-        )
+        if missing:
+            reason = "; ".join(
+                f"{row['id']}: {row['reason']}" for row in missing
+            )
+            raise acceptance.RunnerError(
+                "phase-two Workforce #360 static preflight RED before "
+                f"mutation: {reason}"
+            )
+        evidence["result"] = "GREEN"
+        evidence["stage"] = "static_runner_ready_live_proof_pending"
+        write_json(evidence_path, evidence)
+        return evidence
     except BaseException as error:
         evidence["result"] = "RED"
         evidence["gameplay_action_executed"] = False
@@ -7561,6 +8265,7 @@ def run_phase2_workforce_m360_gameplay_action_cell(
         "owner_character_id": owner,
         "subject_character_id": subject,
         "prior_lineage": prior_lineage,
+        "preflight": None,
         "fixture_install": None,
         "activation_checkpoint": None,
         "activation_restore": None,
@@ -7636,6 +8341,20 @@ def run_phase2_workforce_m360_gameplay_action_cell(
             raise acceptance.RunnerError(
                 "phase-two Workforce action cell received invalid identities"
             )
+        evidence["preflight"] = (
+            preflight_phase2_workforce_m360_gameplay_action_cell(
+                service,
+                artifacts,
+                owner_character_id=owner,
+                subject_character_id=subject,
+                seed_contract={
+                    "runtime": {
+                        "enabled_mods": bootstrap.get("enabled_mods")
+                    }
+                },
+                prior_lineage=prior_lineage,
+            )
+        )
         initial_snapshot = service.snapshot()
         if not isinstance(initial_snapshot, dict):
             raise acceptance.RunnerError(
@@ -11638,6 +12357,7 @@ def wait_for_native_event_definition(
     stem: str,
     expected_event_definition_key: str,
     timeout_s: float = 45.0,
+    clear_unexpected_single_option_events: bool = True,
 ) -> dict[str, object]:
     """Reach one product event using native state, identity and ACK only.
 
@@ -11710,7 +12430,7 @@ def wait_for_native_event_definition(
                     "evidence": evidence,
                 }
 
-            if option_count == 1:
+            if option_count == 1 and clear_unexpected_single_option_events:
                 cleared = select_single_option_interruption_native(
                     service,
                     artifacts,
@@ -11726,8 +12446,10 @@ def wait_for_native_event_definition(
                 continue
 
             finish_red(
-                "unexpected multi-option event blocks native phase-two path: "
-                f"{identity['event_definition_key']} options={option_count}"
+                "unexpected event blocks native phase-two path: "
+                f"{identity['event_definition_key']} options={option_count}; "
+                "single-option auto-clear="
+                f"{clear_unexpected_single_option_events}"
             )
 
         if snapshot.get("paused") is True or snapshot.get("speed") != 5:
@@ -13768,9 +14490,10 @@ def run_phase2_live_scenario(
         # real #360 product action and typed subject/owner cards then run A/B/C
         # from one hash-identical checkpoint, followed by a final baseline
         # restore.  Tests that call this function without an isolated userdir
-        # retain the old honest pre-mutation RED instead of manufacturing one.
+        # may prove the non-mutating runner preflight, but still fail before
+        # claiming that a gameplay action or business postcondition occurred.
         if userdir is None or bootstrap is None:
-            workforce_action = (
+            workforce_preflight = (
                 preflight_phase2_workforce_m360_gameplay_action_cell(
                     service,
                     artifacts,
@@ -13783,6 +14506,47 @@ def run_phase2_live_scenario(
                     seed_contract=seed_contract,
                     prior_lineage=lineage,
                 )
+            )
+            workforce_action = {
+                "schema_version": 2,
+                "cell_id": (
+                    "workforce_collective_gameplay_action_and_postcondition_matrix"
+                ),
+                "result": "RED",
+                "stage": "isolated_runtime_context_gate",
+                "mcp_only": True,
+                "gameplay_action_executed": False,
+                "gameplay_business_postcondition_claimed": False,
+                "helper_invoked": False,
+                "owner_character_id": owner_contract[
+                    "workforce_owner_character_id"
+                ],
+                "subject_character_id": int(
+                    restored_binding["player_character_id"]
+                ),
+                "preflight": workforce_preflight,
+                "missing_requirements": [
+                    {
+                        "id": "isolated_workforce_runtime_context",
+                        "reason": (
+                            "the action runner requires the managed isolated "
+                            "userdir and bootstrap to activate its non-release fixture"
+                        ),
+                    }
+                ],
+                "failure_reason": (
+                    "runner preflight passed, but no isolated userdir/bootstrap "
+                    "was supplied for live execution"
+                ),
+            }
+            write_json(
+                artifacts
+                / "08_phase2_workforce_m360_gameplay_action_cell.json",
+                workforce_action,
+            )
+            raise acceptance.RunnerError(
+                "phase-two Workforce #360 runner preflight GREEN, but live "
+                "execution lacks its isolated userdir/bootstrap context"
             )
         else:
             workforce_action = run_phase2_workforce_m360_gameplay_action_cell(
@@ -13944,22 +14708,48 @@ def run_phase2_live_scenario(
                     evidence["scoreboard_gameplay_action_cell"] = (
                         scoreboard_value
                     )
-                    action_result = scoreboard_value.get("action_result")
+                    action_matrix = scoreboard_value.get("action_matrix")
+                    scoreboard_action_accepted = bool(
+                        isinstance(action_matrix, dict)
+                        and any(
+                            isinstance(row, dict)
+                            and isinstance(row.get("action_result"), dict)
+                            and row["action_result"].get("accepted") is True
+                            for rows in action_matrix.values()
+                            if isinstance(rows, list)
+                            for row in rows
+                        )
+                    )
                     evidence["gameplay_acceptance_executed"] = bool(
                         evidence["gameplay_acceptance_executed"]
-                        or (
-                            isinstance(action_result, dict)
-                            and action_result.get("accepted") is True
-                        )
+                        or scoreboard_action_accepted
                     )
                     completed = evidence["completed_gameplay_action_cells"]
                     if (
                         scoreboard_value.get("result") == "GREEN"
-                        and scoreboard_value.get("verified_pass") is True
+                        and scoreboard_value.get("candidate_batch_complete")
+                        is True
+                        and scoreboard_value.get(
+                            "all_postconditions_verified"
+                        )
+                        is True
+                        and scoreboard_value.get(
+                            "all_expected_acl_denials_verified"
+                        )
+                        is True
+                        and scoreboard_value.get(
+                            "per_surface_single_session_binding_verified"
+                        )
+                        is True
+                        and scoreboard_value.get(
+                            "cross_surface_clean_restart_verified"
+                        )
+                        is True
                         and scoreboard_value.get(
                             "production_capability_advertised"
                         )
                         is True
+                        and scoreboard_value.get("promotion_eligible") is True
                         and isinstance(completed, list)
                         and (
                             "scoreboard_named_widget_action_and_postcondition_matrix"
@@ -14207,6 +14997,7 @@ def run_cell(
     runtime_identity: dict[str, object] | None = None,
     phase2_seed_install: dict[str, object] | None = None,
     phase2_seed_contract_path: Path | None = None,
+    phase2_source_checkpoint_registry: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
@@ -14473,6 +15264,9 @@ def run_cell(
                     seed_install=phase2_seed_install_evidence,
                     native_session_binding=phase2_initial_binding,
                     loader_gate=loader_gate_evidence,
+                    source_checkpoint_registry=(
+                        phase2_source_checkpoint_registry
+                    ),
                     capture_receipt_context={
                         "bootstrap": bootstrap,
                         "runtime_identity": runtime_identity,
@@ -14968,6 +15762,7 @@ def main(
     bridge_injector: str | None = None,
     bridge_pipe: str | None = None,
     phase2_seed_contract: str | None = None,
+    phase2_source_checkpoint_registry: str | None = None,
 ) -> int:
     selected_runtime_modes = sum(
         bool(value)
@@ -15004,6 +15799,25 @@ def main(
         if phase2_seed_contract
         else None
     )
+    source_checkpoint_registry_value: Mapping[str, object] | None = None
+    if phase2_source_checkpoint_registry:
+        registry_path = Path(
+            phase2_source_checkpoint_registry
+        ).expanduser().resolve()
+        try:
+            loaded_registry = json.loads(
+                registry_path.read_text(encoding="utf-8-sig")
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise acceptance.RunnerError(
+                "cannot load phase-two source checkpoint registry: "
+                f"{type(error).__name__}: {error}"
+            ) from error
+        if not isinstance(loaded_registry, dict):
+            raise acceptance.RunnerError(
+                "phase-two source checkpoint registry must be a JSON object"
+            )
+        source_checkpoint_registry_value = loaded_registry
     native_bridge = resolve_native_bridge_config(
         bridge_dll, bridge_injector, bridge_pipe
     )
@@ -15083,6 +15897,9 @@ def main(
         runtime_source=runtime_source,
         runtime_identity=runtime_identity,
         phase2_seed_contract_path=phase2_seed_contract_path,
+        phase2_source_checkpoint_registry=(
+            source_checkpoint_registry_value
+        ),
     )
     result = report["result"]
     error_reason = report["error_reason"]
@@ -15283,6 +16100,13 @@ if __name__ == "__main__":
             "promo mode; keeps a generated candidate out of the source tree"
         ),
     )
+    parser.add_argument(
+        "--phase2-source-checkpoint-registry",
+        help=(
+            "real-CK3 canonical per-span source checkpoint registry; "
+            "required by the Phase2 promo source preflight"
+        ),
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -15301,6 +16125,9 @@ if __name__ == "__main__":
                 bridge_injector=arguments.bridge_injector,
                 bridge_pipe=arguments.bridge_pipe,
                 phase2_seed_contract=arguments.phase2_seed_contract,
+                phase2_source_checkpoint_registry=(
+                    arguments.phase2_source_checkpoint_registry
+                ),
             )
         )
     except acceptance.RunnerError as error:

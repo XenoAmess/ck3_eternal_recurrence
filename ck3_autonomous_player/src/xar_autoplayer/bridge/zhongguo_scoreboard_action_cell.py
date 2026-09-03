@@ -50,6 +50,12 @@ _ENTRY_IDS = (
     "zg361_scoreboard_entry_received",
     "zg361_scoreboard_entry_system",
 )
+_TAB_IDS = {
+    "switch-managed": "zg361_scoreboard_tab_managed",
+    "switch-received": "zg361_scoreboard_tab_received",
+    "switch-system": "zg361_scoreboard_tab_system",
+}
+_PRIMITIVE_ACTIONS = frozenset({"open", *_TAB_IDS, "close"})
 
 
 def _available(value: object, expected_type: type, label: str) -> object:
@@ -80,6 +86,7 @@ def _widgets(value: dict[str, object]) -> dict[str, dict[str, object]]:
 
 def _action_target(
     source: dict[str, object],
+    requested_action: str | None = None,
 ) -> tuple[str, dict[str, object]]:
     widgets = _widgets(source)
     modal = widgets.get(_MODAL_ID)
@@ -88,6 +95,25 @@ def _action_target(
     modal_visible = _available(
         modal.get("effective_visible"), bool, "scoreboard modal visibility"
     )
+    if requested_action is not None:
+        if requested_action not in _PRIMITIVE_ACTIONS:
+            raise ValueError("scoreboard batch action is not a primitive")
+        if requested_action == "open":
+            if modal_visible is True:
+                raise ValueError("scoreboard is already open")
+        elif modal_visible is not True:
+            raise ValueError("scoreboard is not open")
+        if requested_action == "close":
+            target = widgets.get(_CLOSE_ID)
+            if target is None:
+                raise ValueError("scoreboard close target is absent")
+            return requested_action, target
+        if requested_action in _TAB_IDS:
+            target = widgets.get(_TAB_IDS[requested_action])
+            if target is None:
+                raise ValueError("scoreboard tab target is absent")
+            return requested_action, target
+
     if modal_visible is True:
         target = widgets.get(_CLOSE_ID)
         if target is None:
@@ -119,6 +145,7 @@ def run_zhongguo_scoreboard_action_cell(
     service: _ScoreboardService,
     *,
     nonce_prefix: str = "zg361.scoreboard.action-cell",
+    requested_action: str | None = None,
 ) -> dict[str, object]:
     """Run source query -> typed action result -> independent later query.
 
@@ -158,7 +185,7 @@ def run_zhongguo_scoreboard_action_cell(
         window = widgets.get(_WINDOW_ID)
         if window is None:
             raise ValueError("scoreboard window witness is absent")
-        action, target = _action_target(source)
+        action, target = _action_target(source, requested_action)
         request = {
             "request_nonce": f"{nonce_prefix}.dispatch",
             "action": action,
@@ -248,11 +275,6 @@ def run_zhongguo_scoreboard_action_cell(
                 raise ValueError("scoreboard unavailable action lacks a reason")
             evidence["failure_reason"] = reason
             return evidence
-        if action_result.get("production_capability_advertised") is not True:
-            evidence["failure_reason"] = (
-                "provider_owned_revision_verification_unavailable"
-            )
-            return evidence
         ack = action_result.get("action_ack")
         if not isinstance(ack, dict):
             raise ValueError("scoreboard action ACK is absent")
@@ -271,6 +293,9 @@ def run_zhongguo_scoreboard_action_cell(
         evidence["verified_pass"] = proof.get("postcondition_verified") is True
         if evidence["verified_pass"] is not True:
             raise ValueError("scoreboard postcondition was not verified")
+        if action_result.get("production_capability_advertised") is not True:
+            evidence["failure_reason"] = "production_capability_not_advertised"
+            return evidence
         evidence["result"] = "GREEN"
         return evidence
     except Exception as error:

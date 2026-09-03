@@ -392,6 +392,51 @@ class CompensationRuntimeTests(unittest.TestCase):
                     source,
                 )
 
+    def test_consumers_publish_one_result_case_correlated_promotion_receipt(self) -> None:
+        required_guard = (
+            "var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case"
+        )
+        for mechanism_id in generator.EXPECTED_IDS:
+            with self.subTest(mechanism=mechanism_id):
+                source = top_level_block(
+                    self.effects, f"zg361_comp_m{mechanism_id:03d}_consume_effect"
+                )
+                consumed = source.index(
+                    f"name = zg361_comp_m{mechanism_id:03d}_consumed value = 1"
+                )
+                published = source.index(
+                    "name = zg361_comp_promotion_receipt_posted value = 1"
+                )
+                self.assertLess(consumed, published)
+                self.assertIn(required_guard, source)
+                self.assertIn(
+                    "name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial",
+                    source,
+                )
+                self.assertIn(
+                    "name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case",
+                    source,
+                )
+                self.assertIn(
+                    f"name = zg361_comp_promotion_receipt_operation value = {mechanism_id}",
+                    source,
+                )
+                self.assertIn(
+                    f"name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m{mechanism_id:03d}_visible_revision",
+                    source,
+                )
+
+        for domain in generator.DOMAINS:
+            opener = top_level_block(
+                self.effects, f"zg361_comp_open_{domain.key}_case_effect"
+            )
+            self.assertIn(
+                "name = zg361_comp_promotion_receipt_active value = 0", opener
+            )
+            self.assertIn(
+                "remove_variable = zg361_comp_promotion_receipt_serial", opener
+            )
+
     def test_every_numbered_write_has_one_guarded_consumer_and_stage_barrier(self) -> None:
         for mechanism_id in generator.EXPECTED_IDS:
             domain = generator.DOMAIN_BY_ID[mechanism_id].key

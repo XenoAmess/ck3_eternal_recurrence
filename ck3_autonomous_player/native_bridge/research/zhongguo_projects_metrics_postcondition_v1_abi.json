@@ -1,0 +1,112 @@
+{
+  "contract": "zhongguo_projects_metrics_postcondition_v1",
+  "status": "static_and_fixture_ready_not_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+  "step": "query-zhongguo-projects-metrics-postcondition-v1",
+  "case_kind": "zhongguo.projects-metrics.project-correlation",
+  "request": {
+    "public_inputs": [
+      "request_nonce",
+      "expected_revision",
+      "owner_character_id"
+    ],
+    "forbidden_inputs": [
+      "subject_character_id",
+      "variable_name",
+      "receipt_id",
+      "receipt_revision",
+      "dictionary_key",
+      "arbitrary_extra_field"
+    ]
+  },
+  "subject_acl": {
+    "scope": "paused_played_character_only",
+    "subject_source": "same_frame_snapshot.played_character_id",
+    "owner_source": "zg361_p3_project_source_owner",
+    "owner_filter": "actual_owner_equals_required_owner_and_differs_from_player",
+    "owner_scope_read": false,
+    "third_party_subject_read": false
+  },
+  "native_variable_abi": {
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "numeric_kind": 1,
+    "character_kind": 4,
+    "fixed_scale": 100000
+  },
+  "allowlist": [
+    "zg361_p3_project_source_ready",
+    "zg361_p3_project_source_owner",
+    "zg361_p3_project_source_subject",
+    "zg361_p3_project_source_cycle",
+    "zg361_p3_project_source_case",
+    "zg361_p3_project_source_contribution_receipt_id",
+    "zg361_p3_project_source_contribution_receipt_revision",
+    "zg361_p3_project_source_contribution_value",
+    "zg361_p3_m229_result_owner",
+    "zg361_p3_m229_result_subject",
+    "zg361_p3_m229_result_cycle",
+    "zg361_p3_m229_result_case",
+    "zg361_p3_m229_source_contribution_receipt_id",
+    "zg361_p3_m229_source_contribution_receipt_revision",
+    "zg361_p3_m229_metrics_revision",
+    "zg361_p3_m229_dictionary_key_code",
+    "zg361_p3_m229_consumed_owner",
+    "zg361_p3_m229_consumed_subject",
+    "zg361_p3_m229_consumed_cycle",
+    "zg361_p3_m229_consumed_case",
+    "zg361_p3_m229_consumed_state",
+    "zg361_p3_m229_receipt_choice",
+    "zg361_p3_m229_visible_value",
+    "zg361_p3_m229_visible_provenance_case"
+  ],
+  "product_lineage": {
+    "contribution_producer": "zg361_cp_m26_route_a_effect_or_route_b_effect",
+    "contribution_receipt_id": "subject_local_monotonic_zg361_cp_contribution_receipt_cursor",
+    "contribution_receipt_revision": "post_operation_zg361_case_e_revision",
+    "phase3_freeze": "zg361_p3_initialize_portfolio_effect_current_owner_subject_cycle_guard",
+    "metrics_producer": "zg361_p3_m229_route_a_effect_or_route_b_effect",
+    "metrics_source_id": "exact_copy_of_frozen_contribution_receipt_id",
+    "metrics_source_revision": "exact_copy_of_frozen_contribution_receipt_revision",
+    "metrics_revision": "post_operation_zg361_case_aa_revision",
+    "route_c": "does_not_publish_contribution_or_metrics_lineage"
+  },
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox",
+    "two_complete_allowlist_reads": true,
+    "frame_before_after_equal": true,
+    "raw_rows_first_second_equal": true,
+    "engine_pointers_retained": false
+  },
+  "dictionary_key_mapping": {
+    "1": "metric_dictionary_subject_v1",
+    "2": "metric_dictionary_manager_v1"
+  },
+  "readiness": {
+    "same_project_case_identity": "source_result_contribution_metrics_four_tuple_bytewise_equal",
+    "receipt_lineage_ready": "metrics_source_receipt_id_and_revision_equal_contribution_receipt_id_and_revision",
+    "result_operation_committed": "m229_consumed_tuple_choice_and_visible_projection_consistent",
+    "production_live_ready": false
+  },
+  "typed_negatives": {
+    "source_marker_absent": "project_source_not_found",
+    "source_marker_not_one": "project_source_not_ready",
+    "double_read_or_frame_drift": "state_changed",
+    "identity_or_receipt_drift": "available_with_readiness_false",
+    "missing_business_field": "available_with_component_readiness_false"
+  },
+  "unsupported_claims": [
+    "production_live_acceptance",
+    "event_visibility",
+    "source_or_result_snapshot_id_binding",
+    "arbitrary_project_or_variable_query",
+    "route_c_business_result",
+    "cross_cycle_lineage"
+  ]
+}

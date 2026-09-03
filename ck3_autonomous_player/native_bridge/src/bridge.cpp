@@ -5,9 +5,11 @@
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#include "xar_bridge/cold_map_vfs_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
 #include "xar_bridge/g2_truce_native_callsite_observer_v1.hpp"
+#include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
@@ -16,11 +18,14 @@
 #include "xar_bridge/phase2_post_call_observer_v1.hpp"
 #include "xar_bridge/phase2_producer_identity_observer_v1.hpp"
 #include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
+#include "xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp"
 #include "xar_bridge/startup_localize_current_root_guard_v1.hpp"
+#include "xar_bridge/startup_rbx_null_call_guard_v1.hpp"
+#include "xar_bridge/startup_widget_null_flag_call_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_consumer_null_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_null_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_stage_recorder_v1.hpp"
@@ -32,7 +37,10 @@
 #include "xar_bridge/zhongguo_case_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_promotion_compensation_postcondition_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_projects_metrics_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_scoreboard_production_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.hpp"
@@ -63,7 +71,26 @@ constexpr DWORD kHeartbeatIntervalMs = 250;
 // production default leaves the original executable bytes untouched.  The
 // separate build-time stage recorder is opt-in and only counts the three
 // particle2 factory null exits without suppressing or redirecting native flow.
+#if defined(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1)
+constexpr bool kStartupFailureContainmentEnabledV1 = true;
+#else
 constexpr bool kStartupFailureContainmentEnabledV1 = false;
+#endif
+#if defined(XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1)
+constexpr bool kStartupWidgetNullFlagCallGuardEnabledV1 = true;
+#else
+constexpr bool kStartupWidgetNullFlagCallGuardEnabledV1 = false;
+#endif
+#if defined(XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1)
+constexpr bool kStartupRbxNullCallGuardEnabledV1 = true;
+#else
+constexpr bool kStartupRbxNullCallGuardEnabledV1 = false;
+#endif
+#if defined(XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1)
+constexpr bool kColdMapVfsObserverEnabledV1 = true;
+#else
+constexpr bool kColdMapVfsObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
 constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
 #else
@@ -94,13 +121,29 @@ constexpr bool kPhase2CompletionObserverEnabledV1 = true;
 #else
 constexpr bool kPhase2CompletionObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1)
+constexpr bool kPhase2WrapperConsumerEdgeObserverEnabledV1 = true;
+#else
+constexpr bool kPhase2WrapperConsumerEdgeObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
 constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = true;
 #else
 constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
+constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = true;
+#else
+constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = false;
+#endif
 static_assert(!(kStartupFailureContainmentEnabledV1 &&
                 kStartupParticle2StageRecorderEnabledV1));
+static_assert(!kStartupWidgetNullFlagCallGuardEnabledV1 ||
+              kStartupFailureContainmentEnabledV1);
+static_assert(!kStartupRbxNullCallGuardEnabledV1 ||
+              kStartupWidgetNullFlagCallGuardEnabledV1);
+static_assert(!kColdMapVfsObserverEnabledV1 ||
+              kStartupRbxNullCallGuardEnabledV1);
 static_assert(!(kPhase2PostCallObserverEnabledV1 &&
                 kPhase2PostCallListIdentityObserverEnabledV1));
 
@@ -126,6 +169,11 @@ static xar::bridge::StartupDx11RenderContextDrawGuardV1State
     g_startup_dx11_render_context_draw_guard_v1{};
 static xar::bridge::StartupLocalizeCurrentRootGuardV1State
     g_startup_localize_current_root_guard_v1{};
+static xar::bridge::StartupWidgetNullFlagCallGuardV1State
+    g_startup_widget_null_flag_call_guard_v1{};
+static xar::bridge::StartupRbxNullCallGuardV1State
+    g_startup_rbx_null_call_guard_v1{};
+static xar::bridge::ColdMapVfsObserverV1State g_cold_map_vfs_observer_v1{};
 static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
 static xar::bridge::Phase2PostCallObserverV1State
@@ -136,8 +184,12 @@ static xar::bridge::Phase2ProducerIdentityStateV1
     g_phase2_producer_identity_observer_v1{};
 static xar::bridge::Phase2WrapperEntryObserverV1State
     g_phase2_wrapper_entry_observer_v1{};
+static xar::bridge::Phase2WrapperConsumerEdgeStateV1
+    g_phase2_wrapper_consumer_edge_observer_v1{};
 static xar::bridge::G2TruceNativeCallsiteObserverV1State
     g_g2_truce_native_callsite_observer_v1{};
+static xar::bridge::G2TrucePreviewEntryObserverV1State
+    g_g2_truce_preview_entry_observer_v1{};
 
 bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
@@ -270,6 +322,17 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto startup_localize_guard =
       xar::bridge::ReadStartupLocalizeCurrentRootGuardV1Diagnostics(
           g_startup_localize_current_root_guard_v1);
+  const auto startup_widget_null_flag_call_guard =
+      xar::bridge::ReadStartupWidgetNullFlagCallGuardV1Diagnostics(
+          g_startup_widget_null_flag_call_guard_v1);
+  const auto startup_rbx_null_call_guard =
+      xar::bridge::ReadStartupRbxNullCallGuardV1Diagnostics(
+          g_startup_rbx_null_call_guard_v1);
+#if defined(XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1)
+  const auto cold_map_vfs_observer =
+      xar::bridge::ReadColdMapVfsObserverV1Diagnostics(
+          g_cold_map_vfs_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   const auto phase2_completion_observer =
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(
@@ -279,6 +342,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto phase2_wrapper_entry_observer =
       xar::bridge::ReadPhase2WrapperEntryObserverV1Diagnostics(
           g_phase2_wrapper_entry_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1)
+  const auto phase2_wrapper_consumer_edge_observer =
+      xar::bridge::ReadPhase2WrapperConsumerEdgeDiagnosticsV1(
+          g_phase2_wrapper_consumer_edge_observer_v1);
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1)
   const auto phase2_post_call_observer =
@@ -294,6 +362,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   const auto g2_truce_native_callsite_observer =
       xar::bridge::ReadG2TruceNativeCallsiteObserverV1Diagnostics(
           g_g2_truce_native_callsite_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
+  const auto g2_truce_preview_entry_observer =
+      xar::bridge::ReadG2TrucePreviewEntryObserverV1Diagnostics(
+          g_g2_truce_preview_entry_observer_v1);
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
   const auto phase2_producer_identity_observer =
@@ -311,6 +384,23 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += kStartupFailureContainmentEnabledV1 ? "true" : "false";
   result += ",\"startup_particle2_stage_recorder_enabled\":";
   result += kStartupParticle2StageRecorderEnabledV1 ? "true" : "false";
+  result += ",\"startup_widget_null_flag_call_guard_enabled\":";
+  result += kStartupWidgetNullFlagCallGuardEnabledV1 ? "true" : "false";
+  result += ",\"startup_rbx_null_call_guard_enabled\":";
+  result += kStartupRbxNullCallGuardEnabledV1 ? "true" : "false";
+  result += ",\"cold_map_vfs_observer_enabled\":";
+  result += kColdMapVfsObserverEnabledV1 ? "true" : "false";
+  result += ",\"g2_truce_preview_entry_observer_enabled\":";
+  result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
+  result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
+  result += xar::ck3_11906::kZhongguoScoreboardProductionCandidateEnabledV1
+                ? "true"
+                : "false";
+  result += ",\"zhongguo_scoreboard_production_capability_advertised\":";
+  result += xar::ck3_11906::
+                    kZhongguoScoreboardActionV1ProductionCapabilityAdvertised
+                ? "true"
+                : "false";
   result += ",\"main_thread_query_mailbox_v1\":{";
   result += "\"candidate_id\":";
   AppendJsonString(result,
@@ -402,6 +492,56 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(startup_localize_guard.failure_flags);
   result += ",\"native_miss_count\":";
   result += Number(startup_localize_guard.native_miss_count);
+  result += "},\"startup_widget_null_flag_call_guard_v1\":{";
+  result += "\"installed\":";
+  result += startup_widget_null_flag_call_guard.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(startup_widget_null_flag_call_guard.failure_flags);
+  result += ",\"suppressed_count\":";
+  result += Number(startup_widget_null_flag_call_guard.suppressed_count);
+  result += "},\"startup_rbx_null_call_guard_v1\":{";
+  result += "\"installed\":";
+  result += startup_rbx_null_call_guard.installed ? "true" : "false";
+  result += ",\"failure\":";
+  result += Number(startup_rbx_null_call_guard.failure_flags);
+  result += ",\"suppressed_count\":";
+  result += Number(startup_rbx_null_call_guard.suppressed_count);
+#if defined(XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1)
+  result += "},\"cold_map_vfs_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"installed\":";
+  result += cold_map_vfs_observer.installed ? "true" : "false";
+#define XAR_APPEND_COLD_MAP_VFS_FIELD(name) \
+  result += ",\"" #name "\":";              \
+  result += Number(cold_map_vfs_observer.name)
+  XAR_APPEND_COLD_MAP_VFS_FIELD(installed_mask);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(failure_flags);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_count);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_descriptor);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_data);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_length);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_flag);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_word0);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(ctor_word1);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_count);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_address);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_tag);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_payload);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_length);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_capacity);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_word0);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(variant_word1);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_count);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_object);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_state);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_aux_state);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_variant_tag);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_payload);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_length);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_capacity);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_word0);
+  XAR_APPEND_COLD_MAP_VFS_FIELD(poll_word1);
+#undef XAR_APPEND_COLD_MAP_VFS_FIELD
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   result += "},\"phase2_completion_observer_v1\":{";
   result += "\"private_build\":true,\"installed\":";
@@ -489,6 +629,15 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(phase2_wrapper_entry_observer.failure_flags);
   result += ",\"entry_count\":";
   result += Number(phase2_wrapper_entry_observer.entry_count);
+  result += ",\"selected_after_publish_entry_count\":";
+  result += Number(
+      phase2_wrapper_entry_observer.selected_after_publish_entry_count);
+  result += ",\"selected_after_publish_last_task\":";
+  result += Number(
+      phase2_wrapper_entry_observer.selected_after_publish_last_task);
+  result += ",\"selected_after_publish_last_callsite_rva\":";
+  result += Number(
+      phase2_wrapper_entry_observer.selected_after_publish_last_callsite_rva);
   result += ",\"last_return_address\":";
   result += Number(phase2_wrapper_entry_observer.last_return_address);
   result += ",\"last_callsite_rva\":";
@@ -501,6 +650,42 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(phase2_wrapper_entry_observer.last_thread_id);
   result += ",\"last_timestamp_qpc\":";
   result += Number(phase2_wrapper_entry_observer.last_timestamp_qpc);
+#endif
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1)
+  result += "},\"phase2_wrapper_consumer_edge_observer_v1\":{";
+  result += "\"private_build\":true,\"installed\":";
+  result += phase2_wrapper_consumer_edge_observer.installed ? "true" : "false";
+#define XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(name) \
+  result += ",\"" #name "\":";                    \
+  result += Number(phase2_wrapper_consumer_edge_observer.name)
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(failure_flags);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(entry_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(edge_0x3B9E10B_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(edge_0x3B9E175_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(other_caller_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(selected_after_publish_entry_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(
+      selected_after_publish_edge_0x3B9E10B_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(
+      selected_after_publish_edge_0x3B9E175_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(
+      selected_after_publish_other_caller_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_return_address);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_callsite_rva);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_consumer_context);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_item_count);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_selected_task);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_thread_id);
+  XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD(last_timestamp_qpc);
+#undef XAR_APPEND_PHASE2_WRAPPER_EDGE_FIELD
+  result += ",\"wrapper_post_publish_entry_count\":";
+  result += Number(
+      phase2_wrapper_entry_observer.selected_after_publish_entry_count);
+  result += ",\"wrapper_post_publish_last_callsite_rva\":";
+  result += Number(
+      phase2_wrapper_entry_observer.selected_after_publish_last_callsite_rva);
+  result += ",\"consumer_identity_match_count\":";
+  result += Number(phase2_completion_observer.correlation_match_count);
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1)
   result += "},\"phase2_post_call_observer_v1\":{";
@@ -658,6 +843,28 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
     result += '}';
   }
   result += ']';
+#endif
+#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
+  result += "},\"g2_truce_preview_entry_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"advertised\":false,\"installed\":";
+  result += g2_truce_preview_entry_observer.installed ? "true" : "false";
+  result += ",\"failure_flags\":";
+  result += Number(g2_truce_preview_entry_observer.failure_flags);
+  result += ",\"accepted_count\":";
+  result += Number(g2_truce_preview_entry_observer.accepted_count);
+  result += ",\"normal_effect_count\":";
+  result += Number(g2_truce_preview_entry_observer.normal_effect_count);
+  result += ",\"forced_effect_count\":";
+  result += Number(g2_truce_preview_entry_observer.forced_effect_count);
+  result += ",\"last_effect_this\":";
+  result += Number(g2_truce_preview_entry_observer.last_effect_this);
+  result += ",\"last_effect_vtable\":";
+  result += Number(g2_truce_preview_entry_observer.last_effect_vtable);
+  result += ",\"last_preview_context\":";
+  result += Number(g2_truce_preview_entry_observer.last_preview_context);
+  result += ",\"last_preview_collector\":";
+  result += Number(g2_truce_preview_entry_observer.last_preview_collector);
+  result += '}';
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
   result += "},\"phase2_producer_slot2_histogram_observer_v2\":{";
@@ -3112,6 +3319,66 @@ std::string ZhongguoB2PipSnapshotResultFrame(
   return result;
 }
 
+std::string ZhongguoPromotionCompensationResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::ZhongguoPromotionCompensationPostconditionV1 &snapshot) {
+  const auto payload = xar::ck3_11906::
+      SerializeZhongguoPromotionCompensationPostconditionV1(snapshot);
+  if (payload.empty()) return {};
+  const std::string_view status =
+      snapshot.status ==
+              xar::game::ZhongguoPromotionCompensationStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"query-zhongguo-promotion-compensation-postcondition-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"zhongguo_promotion_compensation_postcondition\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
+std::string ZhongguoProjectsMetricsResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::ZhongguoProjectsMetricsPostconditionV1 &snapshot) {
+  const auto payload = xar::ck3_11906::
+      SerializeZhongguoProjectsMetricsPostconditionV1(snapshot);
+  if (payload.empty()) return {};
+  const std::string_view status =
+      snapshot.status ==
+              xar::game::ZhongguoProjectsMetricsPostconditionStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"query-zhongguo-projects-metrics-postcondition-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"zhongguo_projects_metrics_postcondition\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string ZhongguoIncidentSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoIncidentSnapshotV1 &snapshot) {
@@ -3237,9 +3504,12 @@ std::string ZhongguoScoreboardActionResultFrame(
   }
   result += ",\"action_ack\":";
   result += acknowledged ? payload : "null";
-  result +=
-      ",\"production_capability_advertised\":false,"
-      "\"backend_id\":\"native-headless\"}}";
+  result += ",\"production_capability_advertised\":";
+  result += xar::ck3_11906::
+                    kZhongguoScoreboardActionV1ProductionCapabilityAdvertised
+                ? "true"
+                : "false";
+  result += ",\"backend_id\":\"native-headless\"}}";
   return result;
 }
 
@@ -3946,6 +4216,10 @@ public:
             ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1;
     environment.permitted_executor_duovigintary =
         &xar::ck3_11906::ExecuteZhongguoScoreboardActionMailboxV1;
+    environment.permitted_executor_trivigintary =
+        &xar::ck3_11906::ExecuteZhongguoPromotionCompensationMailboxQueryV1;
+    environment.permitted_executor_quattuorvigintary =
+        &xar::ck3_11906::ExecuteZhongguoProjectsMetricsMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -4109,6 +4383,8 @@ struct WorkerState {
   std::uint64_t zhongguo_workforce_collective_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_ai_owned_case_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_workforce_normal_exit_snapshot_query_sequence = 0;
+  std::uint64_t zhongguo_promotion_compensation_query_sequence = 0;
+  std::uint64_t zhongguo_projects_metrics_query_sequence = 0;
   std::uint64_t loaded_feature_manifest_query_sequence = 0;
   std::uint64_t pending_character_interaction_context_query_sequence = 0;
   std::uint64_t event_window_context_query_sequence = 0;
@@ -4201,6 +4477,10 @@ void RunConnectedSession(
       state.zhongguo_ai_owned_case_snapshot_query_sequence;
   auto &zhongguo_workforce_normal_exit_snapshot_query_sequence =
       state.zhongguo_workforce_normal_exit_snapshot_query_sequence;
+  auto &zhongguo_promotion_compensation_query_sequence =
+      state.zhongguo_promotion_compensation_query_sequence;
+  auto &zhongguo_projects_metrics_query_sequence =
+      state.zhongguo_projects_metrics_query_sequence;
   auto &loaded_feature_manifest_query_sequence =
       state.loaded_feature_manifest_query_sequence;
   auto &pending_character_interaction_context_query_sequence =
@@ -4540,6 +4820,128 @@ void RunConnectedSession(
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
+          }
+        } else if (
+            step == xar::ck3_11906::
+                        kZhongguoProjectsMetricsPostconditionV1Step) {
+          xar::ck3_11906::ZhongguoProjectsMetricsPostconditionRequestV1 request{};
+          std::int32_t requested_owner_character_id = -1;
+          if (!xar::ck3_11906::
+                  ParseZhongguoProjectsMetricsPostconditionRequestV1(
+                      incoming.payload, request,
+                      requested_owner_character_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo projects/metrics request is malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo projects/metrics revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.played_character_id ==
+                    requested_owner_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo projects/metrics snapshot changed "
+                            "or is not ready"));
+            } else {
+              xar::ck3_11906::
+                  ZhongguoProjectsMetricsMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment = xar::ck3_11906::
+                  BindZhongguoProjectsMetricsNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request = std::move(request);
+              query.requested_owner_character_id =
+                  requested_owner_character_id;
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecuteZhongguoProjectsMetricsMailboxQueryV1,
+                  &query, query.ticket);
+              if (submit !=
+                  xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main projects/metrics executor is "
+                    "unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main projects/metrics executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kZhongguoProjectsMetricsV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kZhongguoProjectsMetricsV1ExecutingWaitSliceMilliseconds);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            ZhongguoProjectsMetricsMailboxCompletionV1::
+                                                completed &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoProjectsMetricsResultFrame(
+                      request_id,
+                      zhongguo_projects_metrics_query_sequence + 1,
+                      query.result);
+                  if (!response.empty())
+                    ++zhongguo_projects_metrics_query_sequence;
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      ZhongguoProjectsMetricsFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main projects/metrics result was not "
+                      "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
           }
         } else if (step ==
                    "acknowledge-pending-character-interaction") {
@@ -5145,6 +5547,128 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "application-main ZhongGuo B2 PIP result was not "
+                      "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (
+            step == xar::ck3_11906::
+                        kZhongguoPromotionCompensationPostconditionV1Step) {
+          xar::ck3_11906::ZhongguoPromotionCompensationRequestV1 request{};
+          std::int32_t requested_owner_character_id = -1;
+          if (!xar::ck3_11906::
+                  ParseZhongguoPromotionCompensationPostconditionRequestV1(
+                      incoming.payload, request,
+                      requested_owner_character_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo promotion/compensation request is malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo promotion/compensation revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.played_character_id !=
+                    requested_owner_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo promotion/compensation snapshot changed "
+                            "or is not ready"));
+            } else {
+              xar::ck3_11906::
+                  ZhongguoPromotionCompensationMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment = xar::ck3_11906::
+                  BindZhongguoPromotionCompensationNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request = std::move(request);
+              query.requested_owner_character_id =
+                  requested_owner_character_id;
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecuteZhongguoPromotionCompensationMailboxQueryV1,
+                  &query, query.ticket);
+              if (submit !=
+                  xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main promotion/compensation executor is "
+                    "unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main promotion/compensation executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kZhongguoPromotionCompensationV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kZhongguoPromotionCompensationV1ExecutingWaitSliceMilliseconds);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            ZhongguoPromotionCompensationMailboxCompletionV1::
+                                                completed &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoPromotionCompensationResultFrame(
+                      request_id,
+                      zhongguo_promotion_compensation_query_sequence + 1,
+                      query.result);
+                  if (!response.empty())
+                    ++zhongguo_promotion_compensation_query_sequence;
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      ZhongguoPromotionCompensationFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main promotion/compensation result was not "
                       "reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
@@ -8395,8 +8919,25 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     environment.primary_thread_suspended_proven = true;
     environment.module_base =
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+#if defined(XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1)
+    environment.selected_task_source =
+        &g_phase2_producer_identity_observer_v1.selected_last_task_pointer;
+#endif
     if (!xar::bridge::InstallPhase2WrapperEntryObserverV1(
             g_phase2_wrapper_entry_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kPhase2WrapperConsumerEdgeObserverEnabledV1) {
+    xar::bridge::Phase2WrapperConsumerEdgeEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    environment.selected_task_source =
+        &g_phase2_producer_identity_observer_v1.selected_last_task_pointer;
+    if (!xar::bridge::InstallPhase2WrapperConsumerEdgeObserverV1(
+            g_phase2_wrapper_consumer_edge_observer_v1, environment)) {
       return FALSE;
     }
   }
@@ -8430,6 +8971,28 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallG2TruceNativeCallsiteObserverV1(
             g_g2_truce_native_callsite_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kG2TrucePreviewEntryObserverEnabledV1) {
+    xar::bridge::G2TrucePreviewEntryObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallG2TrucePreviewEntryObserverV1(
+            g_g2_truce_preview_entry_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kColdMapVfsObserverEnabledV1) {
+    xar::bridge::ColdMapVfsObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallColdMapVfsObserverV1(
+            g_cold_map_vfs_observer_v1, environment)) {
       return FALSE;
     }
   }
@@ -8531,6 +9094,70 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     (void)consumer_restored;
     (void)producer_restored;
     return FALSE;
+  }
+
+  if (kStartupWidgetNullFlagCallGuardEnabledV1) {
+    xar::bridge::StartupWidgetNullFlagCallGuardV1Environment
+        widget_flag_environment{};
+    widget_flag_environment.exact_build_admitted = true;
+    widget_flag_environment.primary_thread_suspended_proven = true;
+    widget_flag_environment.module_base = environment.module_base;
+    if (!xar::bridge::InstallStartupWidgetNullFlagCallGuardV1(
+            g_startup_widget_null_flag_call_guard_v1,
+            widget_flag_environment)) {
+      // PrepareStartup still owns a suspended primary thread. Unwind the four
+      // preceding exact-build guards in strict reverse order; the launcher
+      // terminates the suspended target if any restore cannot be proven.
+      const bool localize_restored =
+          xar::bridge::UninstallStartupLocalizeCurrentRootGuardV1(
+              g_startup_localize_current_root_guard_v1);
+      const bool draw_restored =
+          xar::bridge::UninstallStartupDx11RenderContextDrawGuardV1(
+              g_startup_dx11_render_context_draw_guard_v1);
+      const bool consumer_restored =
+          xar::bridge::UninstallStartupParticle2ConsumerGuardV1(
+              g_startup_particle2_consumer_null_guard_v1);
+      const bool producer_restored =
+          xar::bridge::UninstallStartupParticle2NullGuardV1(
+              g_startup_particle2_null_guard_v1);
+      (void)localize_restored;
+      (void)draw_restored;
+      (void)consumer_restored;
+      (void)producer_restored;
+      return FALSE;
+    }
+  }
+  if (kStartupRbxNullCallGuardEnabledV1) {
+    xar::bridge::StartupRbxNullCallGuardV1Environment rbx_environment{};
+    rbx_environment.exact_build_admitted = true;
+    rbx_environment.primary_thread_suspended_proven = true;
+    rbx_environment.module_base = environment.module_base;
+    if (!xar::bridge::InstallStartupRbxNullCallGuardV1(
+            g_startup_rbx_null_call_guard_v1, rbx_environment)) {
+      // All prior guards were installed while the primary thread remained
+      // suspended. Restore all five in strict reverse order before failing.
+      const bool widget_restored =
+          xar::bridge::UninstallStartupWidgetNullFlagCallGuardV1(
+              g_startup_widget_null_flag_call_guard_v1);
+      const bool localize_restored =
+          xar::bridge::UninstallStartupLocalizeCurrentRootGuardV1(
+              g_startup_localize_current_root_guard_v1);
+      const bool draw_restored =
+          xar::bridge::UninstallStartupDx11RenderContextDrawGuardV1(
+              g_startup_dx11_render_context_draw_guard_v1);
+      const bool consumer_restored =
+          xar::bridge::UninstallStartupParticle2ConsumerGuardV1(
+              g_startup_particle2_consumer_null_guard_v1);
+      const bool producer_restored =
+          xar::bridge::UninstallStartupParticle2NullGuardV1(
+              g_startup_particle2_null_guard_v1);
+      (void)widget_restored;
+      (void)localize_restored;
+      (void)draw_restored;
+      (void)consumer_restored;
+      (void)producer_restored;
+      return FALSE;
+    }
   }
   return TRUE;
 }

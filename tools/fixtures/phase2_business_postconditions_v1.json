@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "cases": {
+    "capture_fact_quota_calibration": {
+      "schema_version": 1,
+      "handler": "capture_fact_quota_calibration",
+      "observation": {
+        "provider_observed": true,
+        "action_ack_only": false,
+        "connection_generation": 4,
+        "player_character_id": 29037,
+        "source_snapshot_id": "p2:scoreboard:before",
+        "result_snapshot_id": "p2:scoreboard:after",
+        "source_revision": 70,
+        "result_revision": 72,
+        "source_native_revision": 700,
+        "result_native_revision": 702
+      },
+      "calibration_event": {
+        "definition_key": "zg361.1",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 702,
+        "event_instance_id": 36101,
+        "root_character_id": 29037
+      },
+      "scoreboard_before": {
+        "observed_state_revision": 21,
+        "semantic_fingerprint": "scoreboard-before-calibration",
+        "modal_visible": false
+      },
+      "scoreboard_after": {
+        "observed_state_revision": 22,
+        "semantic_fingerprint": "scoreboard-after-calibration",
+        "modal_visible": true
+      }
+    },
+    "capture_promotion_compensation": {
+      "schema_version": 1,
+      "handler": "capture_promotion_compensation",
+      "observation": {
+        "provider_observed": true,
+        "action_ack_only": false,
+        "connection_generation": 4,
+        "player_character_id": 29037,
+        "source_snapshot_id": "p2:promotion:before",
+        "result_snapshot_id": "p2:promotion:after",
+        "source_revision": 80,
+        "result_revision": 83,
+        "source_native_revision": 800,
+        "result_native_revision": 803
+      },
+      "source_event": {
+        "definition_key": "zg361pp.147",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 800,
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 14,
+          "case_serial": 14007
+        }
+      },
+      "result_event": {
+        "definition_key": "zg361comp.1",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 803,
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 14,
+          "case_serial": 14007
+        }
+      },
+      "frozen_case": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 14,
+          "case_serial": 14007
+        },
+        "frozen": true
+      },
+      "promotion_choice": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 14,
+          "case_serial": 14007
+        },
+        "option_number": 1,
+        "receipt_serial": 14701,
+        "provider_observed": true
+      },
+      "compensation_receipt": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 14,
+          "case_serial": 14007
+        },
+        "receipt_serial": 15001,
+        "posted": true,
+        "provider_observed": true
+      }
+    },
+    "capture_projects_metrics": {
+      "schema_version": 1,
+      "handler": "capture_projects_metrics",
+      "observation": {
+        "provider_observed": true,
+        "action_ack_only": false,
+        "connection_generation": 4,
+        "player_character_id": 29037,
+        "source_snapshot_id": "p2:projects:before",
+        "result_snapshot_id": "p2:projects:after",
+        "source_revision": 90,
+        "result_revision": 94,
+        "source_native_revision": 900,
+        "result_native_revision": 904
+      },
+      "source_event": {
+        "definition_key": "zg361cp.26",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 900,
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 15,
+          "case_serial": 15026
+        }
+      },
+      "result_event": {
+        "definition_key": "zg361p3.229",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 904,
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 15,
+          "case_serial": 15026
+        }
+      },
+      "contribution": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 15,
+          "case_serial": 15026
+        },
+        "receipt_id": 26001,
+        "value": -3,
+        "provider_observed": true
+      },
+      "metrics_result": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 15,
+          "case_serial": 15026
+        },
+        "source_contribution_receipt_id": 26001,
+        "metrics_revision": 22901,
+        "dictionary_key": "metric_dictionary_v1",
+        "provider_observed": true
+      }
+    },
+    "capture_cross_cycle_endgame": {
+      "schema_version": 1,
+      "handler": "capture_cross_cycle_endgame",
+      "observation": {
+        "provider_observed": true,
+        "action_ack_only": false,
+        "connection_generation": 4,
+        "player_character_id": 29037,
+        "source_snapshot_id": "p2:endgame:before",
+        "result_snapshot_id": "p2:endgame:after",
+        "source_revision": 100,
+        "result_revision": 105,
+        "source_native_revision": 1000,
+        "result_native_revision": 1005
+      },
+      "source_event": {
+        "definition_key": "zg361we.356",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 1000,
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 16,
+          "case_serial": 16056
+        }
+      },
+      "result_event": {
+        "definition_key": "zg361we.361",
+        "visible": true,
+        "identity_ready": true,
+        "snapshot_revision": 1005,
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 16,
+          "case_serial": 16056
+        }
+      },
+      "carried_debt": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 16,
+          "case_serial": 16056
+        },
+        "origin_cycle_serial": 16,
+        "carried_into_cycle_serial": 17,
+        "provider_observed": true
+      },
+      "default_change": {
+        "identity": {
+          "owner_character_id": 29037,
+          "subject_character_id": 29038,
+          "cycle_serial": 16,
+          "case_serial": 16056
+        },
+        "charter_id": 36101,
+        "adopted_cycle_serial": 16,
+        "effective_cycle_serial": 17,
+        "provider_observed": true
+      }
+    }
+  }
+}

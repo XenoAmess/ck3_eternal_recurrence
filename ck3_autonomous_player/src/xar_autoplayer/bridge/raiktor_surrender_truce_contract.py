@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from typing import Final
 
 
 _KEYS = {
@@ -39,6 +40,17 @@ PASSIVE_SOURCE_ZIP_SHA256 = (
     "F3F3E81EFFE0D832A280A81AF96FC2FB267BE6D9A134AB3A0F35F3BA95841E17"
 )
 PASSIVE_CALL_RVAS = (0x2EDAF0F, 0x2EDB59E)
+
+# Cross-project compatibility binding maintained with the open_kaishek G2
+# profile.  This is descriptive metadata only: it does not promote the
+# native/runtime readiness gate or provide an evaluator value.
+OPEN_KAISHEK_G2_CAPABILITY_ID: Final = (
+    "game.command.query-g2-truce-evaluated-days-v1"
+)
+OPEN_KAISHEK_G2_PROFILE_ID: Final = "ck3-1.19.0.6-g2-truce-evaluator-v1"
+OPEN_KAISHEK_G2_PROFILE_COMMIT: Final = (
+    "981c79388a07e447b18f8e4472a16fd65e28c083"
+)
 
 
 def normalize_raiktor_surrender_truce(

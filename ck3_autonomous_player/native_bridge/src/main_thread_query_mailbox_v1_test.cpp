@@ -309,6 +309,18 @@ bool ExecuteDuovigintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteTrivigintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecuteQuattuorvigintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -1132,6 +1144,9 @@ bool TestMailboxStateMachine() {
   typed_environment.permitted_executor_vigintary = &ExecuteVigintary;
   typed_environment.permitted_executor_unvigintary = &ExecuteUnvigintary;
   typed_environment.permitted_executor_duovigintary = &ExecuteDuovigintary;
+  typed_environment.permitted_executor_trivigintary = &ExecuteTrivigintary;
+  typed_environment.permitted_executor_quattuorvigintary =
+      &ExecuteQuattuorvigintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1149,14 +1164,15 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 22> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 24> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
       &ExecuteDuodenary, &ExecuteThirdenary, &ExecuteQuattuordenary,
       &ExecuteQuindenary, &ExecuteSexdenary, &ExecuteSeptendenary,
       &ExecuteOctodenary, &ExecuteNovemdenary, &ExecuteVigintary,
-      &ExecuteUnvigintary, &ExecuteDuovigintary};
+      &ExecuteUnvigintary, &ExecuteDuovigintary, &ExecuteTrivigintary,
+      &ExecuteQuattuorvigintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1193,6 +1209,7 @@ bool TestMailboxStateMachine() {
 
 bool TestSourceContract(int argc, char **argv) {
   if (argc != 7) {
+    std::fprintf(stderr, "mailbox source contract argc=%d\n", argc);
     return false;
   }
   const auto source = ReadFile(argv[1]);
@@ -1203,6 +1220,11 @@ bool TestSourceContract(int argc, char **argv) {
   const auto bridge = ReadFile(argv[6]);
   if (source.empty() || abi.empty() || fixture.empty() ||
       documentation.empty() || executable.empty() || bridge.empty()) {
+    std::fprintf(stderr,
+                 "mailbox source input empty source=%zu abi=%zu fixture=%zu "
+                 "docs=%zu exe=%zu bridge=%zu\n",
+                 source.size(), abi.size(), fixture.size(), documentation.size(),
+                 executable.size(), bridge.size());
     return false;
   }
   using namespace xar::ck3_11906;
@@ -1213,9 +1235,10 @@ bool TestSourceContract(int argc, char **argv) {
       kGlobalRngWrapperSlotRva != 0x4FEB1C8 ||
       kMainThreadQueryMaximumDrainPerPump != 1 ||
       kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs != 2) {
+    std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 62> source_tokens{
+  constexpr std::array<std::string_view, 64> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1276,11 +1299,15 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_vigintary",
       "mailbox.permitted_executor_unvigintary",
       "mailbox.permitted_executor_duovigintary",
+      "mailbox.permitted_executor_trivigintary",
+      "mailbox.permitted_executor_quattuorvigintary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };
   for (const auto token : source_tokens) {
     if (!Contains(source, token)) {
+      std::fprintf(stderr, "mailbox source contract missing token: %.*s\n",
+                   static_cast<int>(token.size()), token.data());
       return false;
     }
   }
@@ -1319,6 +1346,8 @@ bool TestSourceContract(int argc, char **argv) {
   for (const auto token : contract_tokens) {
     if (!Contains(abi, token) && !Contains(fixture, token) &&
         !Contains(documentation, token)) {
+      std::fprintf(stderr, "mailbox ABI/docs contract missing token: %.*s\n",
+                   static_cast<int>(token.size()), token.data());
       return false;
     }
   }
@@ -1333,10 +1362,11 @@ bool TestSourceContract(int argc, char **argv) {
       Contains(abi, "\"permit_dll_unload\"") ||
       Contains(fixture, "\"unload_gate\"") ||
       Contains(source, "0x2909D30") || Contains(source, "war_entry")) {
+    std::fprintf(stderr, "mailbox ABI/docs aggregate contract failed\n");
     return false;
   }
 
-  constexpr std::array<std::string_view, 86> bridge_tokens{
+  constexpr std::array<std::string_view, 92> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1382,6 +1412,10 @@ bool TestSourceContract(int argc, char **argv) {
       "ExecuteZhongguoWorkforceCollectiveSnapshotMailboxQueryV1",
       "ExecuteZhongguoAiOwnedCaseSnapshotMailboxQueryV1",
       "ExecuteZhongguoScoreboardActionMailboxV1",
+      "ExecuteZhongguoPromotionCompensationMailboxQueryV1",
+      "kZhongguoPromotionCompensationPostconditionV1Step",
+      "ExecuteZhongguoProjectsMetricsMailboxQueryV1",
+      "kZhongguoProjectsMetricsPostconditionV1Step",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",
       "request.expected_snapshot_revision != state_revision",
@@ -1414,6 +1448,8 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_vigintary",
       "permitted_executor_unvigintary",
       "permitted_executor_duovigintary",
+      "permitted_executor_trivigintary",
+      "permitted_executor_quattuorvigintary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",
@@ -1426,12 +1462,15 @@ bool TestSourceContract(int argc, char **argv) {
   };
   for (const auto token : bridge_tokens) {
     if (!Contains(bridge, token)) {
+      std::fprintf(stderr, "mailbox bridge contract missing token: %.*s\n",
+                   static_cast<int>(token.size()), token.data());
       return false;
     }
   }
   if (Contains(bridge, "g_lifecycle.exchange(1)") ||
       Contains(bridge, "game.command.main-thread-query-mailbox") ||
       Contains(bridge, "game.command.query-main-thread")) {
+    std::fprintf(stderr, "mailbox bridge forbidden token contract failed\n");
     return false;
   }
   // The stale-revision branch must precede every route snapshot/native call,
@@ -1486,6 +1525,7 @@ bool TestSourceContract(int argc, char **argv) {
         route_executing_wait_slice < route_completion_snapshot &&
         route_completion_snapshot < route_completion_read &&
         route_completion_read < route_revision_publish)) {
+    std::fprintf(stderr, "mailbox route ordering contract failed\n");
     return false;
   }
   const auto lifetime_constructor = bridge.find(
@@ -1507,6 +1547,7 @@ bool TestSourceContract(int argc, char **argv) {
       !(lifetime_constructor < maybe_install && maybe_install < iat_install) ||
       !(connected_session < hello_publish &&
         hello_publish < readiness_observer)) {
+    std::fprintf(stderr, "mailbox lifetime ordering contract failed\n");
     return false;
   }
 
@@ -1516,6 +1557,7 @@ bool TestSourceContract(int argc, char **argv) {
       !ImportNameAtIat(executable, 0x3FD2EE8, "PeekMessageW") ||
       !ImportNameAtIat(executable, 0x3FD2570, "GetCurrentThreadId") ||
       !RvaIsReadOnlyDataSection(executable, 0x3FD2EE8, ".rdata")) {
+    std::fprintf(stderr, "mailbox executable identity contract failed\n");
     return false;
   }
   return BytesAt(executable, 0x3CFE7AB,

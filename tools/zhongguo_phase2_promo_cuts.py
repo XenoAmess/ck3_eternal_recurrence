@@ -9,7 +9,42 @@ verified source bytes without sharing run, deliverable, or output names.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from pathlib import Path
+
+
+@dataclass(frozen=True, slots=True)
+class Phase2PromoReprise:
+    """Insert one short, silent cut-back to an already-verified source chapter.
+
+    Reprises never change capture order or create a second evidence claim.  The
+    project composer trims the source visual to this explicit duration and
+    supplies newly generated silence instead of replaying the original
+    narration.
+    """
+
+    source_chapter_id: str
+    after_chapter_id: str
+    duration_seconds: float
+    start_offset_seconds: float = 0.0
+
+    def __post_init__(self) -> None:
+        if (
+            isinstance(self.duration_seconds, bool)
+            or not isinstance(self.duration_seconds, (int, float))
+            or not math.isfinite(float(self.duration_seconds))
+            or self.duration_seconds <= 0
+        ):
+            raise ValueError("reprise duration_seconds must be finite and positive")
+        if (
+            isinstance(self.start_offset_seconds, bool)
+            or not isinstance(self.start_offset_seconds, (int, float))
+            or not math.isfinite(float(self.start_offset_seconds))
+            or self.start_offset_seconds < 0
+        ):
+            raise ValueError(
+                "reprise start_offset_seconds must be finite and non-negative"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,6 +55,22 @@ class Phase2PromoCut:
     default_run_id: str
     deliverable_artifact_id: str
     deliverable_relative_path: Path
+    editorial_chapter_order: tuple[str, ...]
+    reprises: tuple[Phase2PromoReprise, ...] = ()
+
+
+CANONICAL_CHAPTER_ORDER = (
+    "phase2_minimal_recap",
+    "phase2_fact_quota_calibration",
+    "phase2_receipt_appeal_pip",
+    "phase2_manager_governance",
+    "phase2_promotion_compensation",
+    "phase2_hc_workforce",
+    "phase2_projects_metrics",
+    "phase2_incidents_operations",
+    "phase2_cross_cycle_endgame",
+    "phase2_finale",
+)
 
 
 CHARACTER_CUT = Phase2PromoCut(
@@ -29,6 +80,7 @@ CHARACTER_CUT = Phase2PromoCut(
     default_run_id="phase2-character-led-candidate",
     deliverable_artifact_id="zhongguo-361-phase2-character-led-video",
     deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-character-led.mp4"),
+    editorial_chapter_order=CANONICAL_CHAPTER_ORDER,
 )
 
 INSTITUTION_CUT = Phase2PromoCut(
@@ -38,6 +90,30 @@ INSTITUTION_CUT = Phase2PromoCut(
     default_run_id="phase2-institution-led-candidate",
     deliverable_artifact_id="zhongguo-361-phase2-institution-led-video",
     deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-institution-led.mp4"),
+    editorial_chapter_order=(
+        "phase2_minimal_recap",
+        "phase2_fact_quota_calibration",
+        "phase2_manager_governance",
+        "phase2_receipt_appeal_pip",
+        "phase2_promotion_compensation",
+        "phase2_hc_workforce",
+        "phase2_projects_metrics",
+        "phase2_incidents_operations",
+        "phase2_cross_cycle_endgame",
+        "phase2_finale",
+    ),
+    reprises=(
+        Phase2PromoReprise(
+            source_chapter_id="phase2_receipt_appeal_pip",
+            after_chapter_id="phase2_projects_metrics",
+            duration_seconds=2.0,
+        ),
+        Phase2PromoReprise(
+            source_chapter_id="phase2_manager_governance",
+            after_chapter_id="phase2_cross_cycle_endgame",
+            duration_seconds=2.0,
+        ),
+    ),
 )
 
 # Compatibility only.  Existing validate-only commands and old frozen receipts
@@ -50,6 +126,7 @@ LEGACY_CUT = Phase2PromoCut(
     default_run_id="phase2-candidate",
     deliverable_artifact_id="zhongguo-361-phase2-video",
     deliverable_relative_path=Path("deliverable/zhongguo-361-phase2.mp4"),
+    editorial_chapter_order=CANONICAL_CHAPTER_ORDER,
 )
 
 CUTS = (CHARACTER_CUT, INSTITUTION_CUT)
@@ -79,7 +156,9 @@ __all__ = [
     "CUT_BY_CONFIG_NAME",
     "INSTITUTION_CUT",
     "LEGACY_CUT",
+    "CANONICAL_CHAPTER_ORDER",
     "Phase2PromoCut",
+    "Phase2PromoReprise",
     "SUPPORTED_CUTS",
     "cut_for_config_name",
     "cut_for_id",

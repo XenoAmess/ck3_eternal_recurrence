@@ -811,8 +811,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     output = args.output.expanduser().resolve()
     if output.exists():
         parser.error(f"refusing to overwrite typed intake report: {output}")
+    if not output.parent.exists():
+        output.parent.mkdir(parents=True, exist_ok=False)
     if not output.parent.is_dir():
-        parser.error(f"output parent does not exist: {output.parent}")
+        parser.error(f"output parent is not a directory: {output.parent}")
     report = validate_footage_intake(args.capture_root)
     output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",

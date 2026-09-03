@@ -1,0 +1,96 @@
+{
+  "contract": "phase2-wrapper-consumer-edge-observer-v1",
+  "schema_version": 1,
+  "status": "private-observer-source-ready",
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "input_commit": "3c378569d65794bd1ec9dceda25f0cd6a364f3ca",
+    "input_live_terminal_index_sha256": "0476483AAAA30BF22B7C5579DEAEE40F071DC3DD3E7F6E02ACBB9C3B1225A6AD"
+  },
+  "scope": {
+    "private_build_option": "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1",
+    "installed_by_default": false,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "readiness_changed": false,
+    "ck3_started": false
+  },
+  "exact_seams": {
+    "selected_publish": {
+      "post_publish_rva": "0x3B9CFD7",
+      "selected_callback_slot2_rva": "0x88B480",
+      "identity_source": "producer selected_last_task_pointer, release/acquire"
+    },
+    "wrapper_entry": {
+      "patch_rva": "0x3B9E030",
+      "anchor_hex": "48895C240848896C24184889742420",
+      "post_publish_rule": "selected task pointer is nonzero at entry"
+    },
+    "consumer_entry": {
+      "function_rva": "0x3B9DD50",
+      "patch_bytes": 16,
+      "anchor_hex": "4055565741544155415641574883EC60",
+      "continue_rva": "0x3B9DD60",
+      "context_register": "RCX",
+      "item_count_register": "EDX"
+    },
+    "wrapper_call_edges": [
+      {"call_rva": "0x3B9E10B", "return_rva": "0x3B9E110"},
+      {"call_rva": "0x3B9E175", "return_rva": "0x3B9E17A"}
+    ],
+    "consumer_identity": {
+      "patch_rva": "0x3B9DEA7",
+      "task_register": "RBX",
+      "source": "phase2-producer-consumer-correlation-observer-v1"
+    }
+  },
+  "heartbeat": {
+    "object": "phase2_wrapper_consumer_edge_observer_v1",
+    "required_fields": [
+      "private_build", "installed", "failure_flags", "entry_count",
+      "edge_0x3B9E10B_count", "edge_0x3B9E175_count",
+      "other_caller_count", "selected_after_publish_entry_count",
+      "selected_after_publish_edge_0x3B9E10B_count",
+      "selected_after_publish_edge_0x3B9E175_count",
+      "selected_after_publish_other_caller_count", "last_return_address",
+      "last_callsite_rva", "last_consumer_context", "last_item_count",
+      "last_selected_task", "last_thread_id", "last_timestamp_qpc",
+      "wrapper_post_publish_entry_count",
+      "wrapper_post_publish_last_callsite_rva",
+      "consumer_identity_match_count"
+    ]
+  },
+  "decision_matrix": {
+    "selected_zero": "producer selection not observed",
+    "selected_nonzero_wrapper_post_publish_zero": "wrapper never scheduled after publish in the bounded window",
+    "wrapper_post_publish_nonzero_consumer_edges_zero": "wrapper entered after publish but selected another branch before either consumer call",
+    "consumer_edge_nonzero_identity_match_zero": "consumer edge ran after publish but never presented the retained selected task at 0x3B9DEA7",
+    "consumer_identity_match_nonzero": "the exact retained selected task reached the completion-state consumer"
+  },
+  "lifecycle": {
+    "install": "all exact hooks install while the primary thread is suspended",
+    "rollback": "failed target writes restore the exact 16-byte consumer prologue",
+    "uninstall": "restores the exact prologue after quiescence",
+    "game_state_mutation": "none"
+  },
+  "source_hashes": {
+    "consumer_edge_header_sha256": "B15528656AC2E13715E03CCA82A3904BA4C0F6116D10CEF8D84DD24158FCDB5C",
+    "consumer_edge_implementation_sha256": "9A9C32DAFB07D802FB86D6AA0A96F4A48EF4323D52123810285ED74CEE0156B7",
+    "consumer_edge_fixture_sha256": "CD77EB115C28D8DFFFC6D77FB33418FB01E0442A9284A4167F18D958EB805CA4",
+    "wrapper_entry_header_sha256": "FA3F80D4C28EEABE3D86CA25086BB9A4A494A785F712D6D5C7D7714C4C55810A",
+    "wrapper_entry_implementation_sha256": "6E02BD7BF1AB99B9589E938CB16DB161064E8D7A361100B5C56DE2DAFDF51219",
+    "wrapper_entry_fixture_sha256": "07C11B5B3669ABBB117A25B99B0199F512BCF6D5E52344CAB3100340BEFEE458"
+  },
+  "acceptance": {
+    "default_bridge_sha256": "579DD32DEBA833A507ACE0BD379CA3C5B185B70D6B6FD28910039F022FEB5F10",
+    "default_injector_sha256": "F9FF1BC7BA43F72362307FEF1C281F5D76A0440A3BA0A0A8B7B3334D6E8FFB58",
+    "private_bridge_sha256": "1973833EF50F584B95C580CFB2F9165E4F86D53E2408DB3451F7BA2429FBD6F4",
+    "private_injector_sha256": "936D3A8982DAE594D53799E11629BFF33A7A78EDB2F378F21396FCF2D2C0BF2D",
+    "default_heartbeat_token_present": false,
+    "private_heartbeat_token_present": true,
+    "native_fixtures": "default and private Release: 2/2 GREEN",
+    "python_contract": "30/30 GREEN in normal and optimized mode"
+  },
+  "readiness": "native-readiness RED; one bounded private live manifest still required"
+}

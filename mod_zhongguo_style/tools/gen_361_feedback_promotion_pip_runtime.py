@@ -902,7 +902,12 @@ set_variable = {{ name = {p}_understood_grade value = var:zg361_pp_t_frozen_grad
 set_variable = {{ name = {p}_understanding_gap value = 0 }}
 set_variable = {{ name = {p}_frozen_evidence_hash value = var:zg361_pp_t_frozen_evidence_hash }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_understood_grade value = 0 }} set_variable = {{ name = {p}_understanding_gap value = 1 }} }}''',
-        147: f'''set_variable = {{ name = {p}_evidence_hash_consumed value = var:zg361_pp_t_frozen_evidence_hash }}
+        147: f'''# The delivered result case is the cross-product business identity.  The
+# T case receipt below remains the internal case-kernel ticket; this serial
+# gives promotion and compensation one stable, positive correlation key.
+set_variable = {{ name = {p}_receipt_serial value = var:zg361_pp_t_result_case }}
+set_variable = {{ name = {p}_receipt_revision value = var:zg361_case_t_revision }}
+set_variable = {{ name = {p}_evidence_hash_consumed value = var:zg361_pp_t_frozen_evidence_hash }}
 set_variable = {{ name = {p}_supported_praise_n value = 1 }}
 set_variable = {{ name = {p}_supported_critique_n value = 1 }}
 set_variable = {{ name = {p}_unsupported_sentence_n value = 0 }}
@@ -2358,6 +2363,9 @@ trigger_else = {{ always = yes }}'''
 \t\tif = {{ limit = {{ var:zg361_pp_{mechanism.domain}_{extra_resource}_partition = var:zg361_pp_{mechanism.domain}_{extra_resource}_authorized }} set_variable = {{ name = zg361_pp_{mechanism.domain}_{extra_resource}_conserved value = 1 }} }}'''
         )
     extra_conservation = "\n\t\t".join(extra_conservation_rows)
+    receipt_revision = ""
+    if mechanism.mechanism_id == 147:
+        receipt_revision = f'''set_variable = {{ name = {p}_receipt_revision value = var:zg361_case_t_revision }}'''
     return f'''zg361_pp_m{mechanism.mechanism_id:03d}_consume_effect = {{
 \tif = {{
 \t\tlimit = {{
@@ -2374,6 +2382,7 @@ trigger_else = {{ always = yes }}'''
 \t\t}}
 \t\tset_variable = {{ name = {p}_consumed value = 1 }}
 \t\tset_variable = {{ name = {p}_consumer_revision value = var:zg361_case_{mechanism.domain}_revision }}
+\t\t{receipt_revision}
 \t\tif = {{ limit = {{ NOT = {{ var:{p}_route = 3 }} }} set_variable = {{ name = {p}_consumer_value value = var:{p}_{mechanism.field} }} }}
 \t\tchange_variable = {{ name = zg361_pp_{mechanism.domain}_completed add = 1 }}
 \t\tset_variable = {{ name = zg361_pp_{mechanism.domain}_resource_partition value = var:zg361_pp_{mechanism.domain}_{domain.resource}_available }}

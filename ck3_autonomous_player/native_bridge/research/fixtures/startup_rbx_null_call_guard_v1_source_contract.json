@@ -1,0 +1,56 @@
+{
+  "contract": "startup_rbx_null_call_guard_v1_source_contract",
+  "schema_version": 1,
+  "status": "static_candidate_no_live_claim",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "observed_failure": {
+    "date": "2026-09-03",
+    "exception_code": "0xC0000005",
+    "exception_rva": "0x3B67345",
+    "read_address": "0x8",
+    "registers": {
+      "rcx": "0x0",
+      "rbx": "0x0",
+      "rsi": "0x0"
+    },
+    "minidump_sha256": "596171DF429F18A92FA3C3FDB915BFB2501FFFF0B8403C555B73B9D5C78CFF27",
+    "exception_txt_sha256": "AA52848DDFEE607FF55B54DB23E39BCA4BAF6C3AB4E6A609C7A6EB7CD7EE40A8"
+  },
+  "callee": {
+    "begin_rva": "0x3B67330",
+    "end_rva": "0x3B6735C",
+    "pdata_row_rva": "0x5AB60E4",
+    "unwind_info_rva": "0x4CA4FD0",
+    "unwind_size_of_prolog": 21,
+    "fault_instruction_rva": "0x3B67345",
+    "fault_instruction_hex": "48 8B 79 08"
+  },
+  "caller": {
+    "owner_begin_rva": "0x390A700",
+    "owner_end_rva": "0x390AA46",
+    "pdata_row_rva": "0x5A9DAB4",
+    "unwind_info_rva": "0x4ED3A9C",
+    "unwind_size_of_prolog": 41,
+    "patch_rva": "0x390A9E2",
+    "direct_call_rva": "0x390A9ED",
+    "call_target_rva": "0x3B67330",
+    "continue_rva": "0x390A9F2",
+    "post_call_null_test_rva": "0x390A9F3",
+    "patch_bytes_hex": "48 89 5D 6F 48 8B 55 77 48 8B CB E8 3E C9 25 00",
+    "production_anchor_bytes_hex": "48 89 5D 6F 48 8B 55 77 48 8B CB E8 3E C9 25 00 90 48 85 DB 74 0E 48 8B 03 BA 01 00 00 00 48 8B CB FF 10 90"
+  },
+  "guard_semantics": {
+    "scope": "single caller-local direct call",
+    "default_enabled": false,
+    "nonnull_path": "replay store [rbp+0x6f]=rbx; load rdx from [rbp+0x77]; mov rcx,rbx; call original target; jump continue",
+    "null_path": "replay store [rbp+0x6f]=rbx; increment diagnostic counter; skip only direct call; jump continue",
+    "continue_rva": "0x390A9F2",
+    "global_callee_patch": false,
+    "query_semantics_changed": false,
+    "mutation_semantics_changed": false
+  },
+  "readiness_boundary": "Source/fixture candidate only. No sixth-guard CK3 launch has run and no G2 evidence is promoted."
+}

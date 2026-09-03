@@ -18,6 +18,7 @@ from test_zhongguo_scoreboard_action_contract import (  # noqa: E402
     PLAYER,
     PUBLIC_REVISION,
     _frame,
+    _post,
     _request,
 )
 from test_zhongguo_scoreboard_state_v1_bridge import (  # noqa: E402
@@ -83,6 +84,7 @@ class _ActionServiceDriver(_StateServiceDriver):
         super().__init__()
         self.forged_ack = forged_ack
         self.valid_ack = valid_ack
+        self.action_applied = False
         self.request: ZhongguoScoreboardActionRequestV1 | None = None
 
     def capabilities(self) -> dict[str, object]:
@@ -101,7 +103,12 @@ class _ActionServiceDriver(_StateServiceDriver):
         query = parse_query_zhongguo_scoreboard_state_v1_step(step)
         if query is None or expected_revision != PUBLIC_REVISION:
             raise AssertionError("service changed the typed scoreboard query")
-        frame = _frame(open_tab=None)
+        source = _frame(open_tab=None)
+        frame = (
+            _post(source, active_tab="received")
+            if self.action_applied
+            else source
+        )
         frame["request_nonce"] = query.request_nonce
         return {
             **_scoreboard_state_result(frame),
@@ -140,6 +147,7 @@ class _ActionServiceDriver(_StateServiceDriver):
                     ),
                 }
             )
+            self.action_applied = True
         elif self.forged_ack:
             result.update(
                 {
@@ -377,9 +385,10 @@ class ZhongguoScoreboardActionV1ServiceTests(unittest.TestCase):
         self.assertFalse(evidence["production_capability_advertised"])
         self.assertEqual(
             evidence["failure_reason"],
-            "provider_owned_revision_verification_unavailable",
+            "production_capability_not_advertised",
         )
-        self.assertIsNone(evidence["verified_postcondition"])
+        self.assertIsInstance(evidence["verified_postcondition"], dict)
+        self.assertTrue(evidence["verified_pass"])
 
     def test_native_result_normalizer_rejects_false_production_mirror(self) -> None:
         request = _request(

@@ -564,6 +564,22 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             setv("zg361_p3_metric_definition_debt", (0, 1, 2)[choice - 1]),
             setv("zg361_p3_metric_confidence", (100, 80, 60)[choice - 1]),
             setv("zg361_p3_metric_provenance_case", "$TICKET_CASE$"),
+            # Freeze the cross-domain business correlation only when the
+            # portfolio initializer proved a current CP #026 receipt.  The
+            # AA kernel keeps its own case identity; these fields are the
+            # explicit project/contribution identity consumed by the metrics
+            # provider and never infer lineage from coincident case numbers.
+            "if = {",
+            "\tlimit = { has_variable = zg361_p3_project_source_ready var:zg361_p3_project_source_ready = 1 has_variable = zg361_p3_project_source_owner has_variable = zg361_p3_project_source_subject has_variable = zg361_p3_project_source_cycle has_variable = zg361_p3_project_source_case has_variable = zg361_p3_project_source_contribution_receipt_id has_variable = zg361_p3_project_source_contribution_receipt_revision has_variable = zg361_p3_project_source_contribution_value }",
+            "\tset_variable = { name = zg361_p3_m229_result_owner value = var:zg361_p3_project_source_owner }",
+            "\tset_variable = { name = zg361_p3_m229_result_subject value = var:zg361_p3_project_source_subject }",
+            "\tset_variable = { name = zg361_p3_m229_result_cycle value = var:zg361_p3_project_source_cycle }",
+            "\tset_variable = { name = zg361_p3_m229_result_case value = var:zg361_p3_project_source_case }",
+            "\tset_variable = { name = zg361_p3_m229_source_contribution_receipt_id value = var:zg361_p3_project_source_contribution_receipt_id }",
+            "\tset_variable = { name = zg361_p3_m229_source_contribution_receipt_revision value = var:zg361_p3_project_source_contribution_receipt_revision }",
+            "\tset_variable = { name = zg361_p3_m229_metrics_revision value = var:zg361_case_aa_revision }",
+            "\tset_variable = { name = zg361_p3_m229_dictionary_key_code value = var:zg361_p3_metric_dictionary_owner }",
+            "}",
         ]
     elif mid == 230:
         lines += [
@@ -1734,6 +1750,17 @@ def render_portfolio_entries() -> str:
 # only manager-scope ABI exposed to a future central dispatcher.
 zg361_p3_initialize_portfolio_effect = {
 	save_temporary_scope_as = zg361_p3_portfolio_subject_scope
+	# Remove only the prior Phase3 projection.  The authoritative CP receipt
+	# remains owned by the subject and is copied below only through a complete,
+	# current owner/subject/cycle guard.
+	remove_variable = zg361_p3_project_source_owner
+	remove_variable = zg361_p3_project_source_subject
+	remove_variable = zg361_p3_project_source_cycle
+	remove_variable = zg361_p3_project_source_case
+	remove_variable = zg361_p3_project_source_contribution_receipt_id
+	remove_variable = zg361_p3_project_source_contribution_receipt_revision
+	remove_variable = zg361_p3_project_source_contribution_value
+	set_variable = { name = zg361_p3_project_source_ready value = 0 }
 	set_variable = { name = zg361_p3_portfolio_subject value = this }
 	set_variable = { name = zg361_p3_portfolio_cycle value = root.var:zg361_review_serial }
 	root = { set_variable = { name = zg361_p3_manager_portfolio_cycle value = var:zg361_review_serial } }
@@ -1746,6 +1773,30 @@ zg361_p3_initialize_portfolio_effect = {
 	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
 	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
 	set_variable = { name = zg361_p3_portfolio_deferred value = 0 }
+	if = {
+		limit = {
+			has_variable = zg361_cp_m26_receipt_owner
+			has_variable = zg361_cp_m26_receipt_subject
+			has_variable = zg361_cp_m26_receipt_cycle
+			has_variable = zg361_cp_m26_receipt_case
+			has_variable = zg361_cp_m26_contribution_receipt_id
+			has_variable = zg361_cp_m26_contribution_receipt_revision
+			has_variable = zg361_cp_m26_visible_value
+			var:zg361_cp_m26_receipt_owner = root
+			var:zg361_cp_m26_receipt_subject = this
+			var:zg361_cp_m26_receipt_cycle = root.var:zg361_review_serial
+			var:zg361_cp_m26_contribution_receipt_id > 0
+			var:zg361_cp_m26_contribution_receipt_revision > 0
+		}
+		set_variable = { name = zg361_p3_project_source_owner value = var:zg361_cp_m26_receipt_owner }
+		set_variable = { name = zg361_p3_project_source_subject value = var:zg361_cp_m26_receipt_subject }
+		set_variable = { name = zg361_p3_project_source_cycle value = var:zg361_cp_m26_receipt_cycle }
+		set_variable = { name = zg361_p3_project_source_case value = var:zg361_cp_m26_receipt_case }
+		set_variable = { name = zg361_p3_project_source_contribution_receipt_id value = var:zg361_cp_m26_contribution_receipt_id }
+		set_variable = { name = zg361_p3_project_source_contribution_receipt_revision value = var:zg361_cp_m26_contribution_receipt_revision }
+		set_variable = { name = zg361_p3_project_source_contribution_value value = var:zg361_cp_m26_visible_value }
+		set_variable = { name = zg361_p3_project_source_ready value = 1 }
+	}
 	if = {
 		limit = { NOT = { has_variable = zg361_p3_policy_debt_open_n } }
 		set_variable = { name = zg361_p3_policy_debt_open_n value = 0 }

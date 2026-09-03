@@ -2,7 +2,7 @@
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has twenty-one bounded production query/action uses plus one exact scoreboard semantic-activation transport whose production capability remains unadvertised pending live postcondition evidence:
+`main_thread_query_mailbox_v1` now has twenty-one bounded production query/action uses plus three default-off transports whose production capabilities remain unadvertised pending live postcondition evidence:
 `query-war-entry-assessments-v1`, `query-route-contact-horizon-v1-N`,
 `query-actual-contact-scope-v1-N`, `query-combat-simulation-inputs-v3-N`,
 `query-battle-control-snapshot-v1-N`, `query-battle-transition-v1-N`,
@@ -19,12 +19,14 @@
 and `query-zhongguo-workforce-collective-snapshot-v1`, plus
 `query-zhongguo-ai-owned-case-snapshot-v1` and
 `query-zhongguo-workforce-normal-exit-snapshot-v1`, plus
-`activate-zhongguo-scoreboard-v1` in a transport-only slot whose exact
+`activate-zhongguo-scoreboard-v1`,
+`query-zhongguo-promotion-compensation-postcondition-v1`, and
+`query-zhongguo-projects-metrics-postcondition-v1` in transport-only slots. The scoreboard's exact
 shortcut-manager semantic activation may return a verification-pending ACK,
 while its production capability remains unadvertised until an independent
 paused later-query artifact proves the postcondition. The candidate identity
 remains `application_main_thread_war_entry_v1`; the heartbeat query scope is
-`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport`.
+`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_promotion_compensation_projects_metrics_fail_closed_transport`.
 It is not a general native-call, effect, or scripted-VM executor.
 
 The first paused live counter run reached SDL `PeekMessageW` return
@@ -163,6 +165,10 @@ unvigintary slot is fixed to
 The duovigintary slot is fixed to
 `ExecuteZhongguoScoreboardActionMailboxV1`; it returns either typed unavailable
 or `acknowledged_verification_pending`, never a verified postcondition.
+The trivigintary and quattuorvigintary slots are fixed to
+`ExecuteZhongguoPromotionCompensationMailboxQueryV1` and
+`ExecuteZhongguoProjectsMetricsMailboxQueryV1`. Both are read-only and remain
+unadvertised until reviewed paused live postconditions exist.
 `TrySubmitMainThreadQueryV1` rejects every other callback. The war-entry bridge
 additionally requires exactly one target. Timeout can cancel a queued request
 only. Once state is `executing`, the worker retains the caller-owned context
@@ -1000,7 +1006,7 @@ unobserved.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executors | true in build | twenty-two fixed slots plus submit identity gate; slot 22 is the unpromoted scoreboard action transport |
+| Only permitted executors | true in build | twenty-four fixed slots plus submit identity gate; slots 22–24 are unpromoted/default-off scoreboard, promotion/compensation and projects/metrics transports |
 | Ongoing battle-control executor | true | fifth typed slot; cold checkpoint maneuver→main ledger acceptance and managed cleanup are live-confirmed in [ongoing-battle-frame.md](ongoing-battle-frame.md) |
 | By-CombatID lifecycle executor | true in build | sixth typed slot; direct full-ID combat resolution, stable double sample, phase/winner/result and ordered sides; live acceptance pending |
 | Campaign-root executor | true | ninth typed slot; exact-build player/title/capital/liege/government/rules query is production-live confirmed in [campaign-root-context.md](campaign-root-context.md) |
@@ -1017,6 +1023,8 @@ unobserved.
 | ZhongGuo AI-owned B1 case snapshot executor | static/fixture-ready | twentieth typed slot; proves a living AI `celestial_government` duke+ owner and direct subject, then returns the fixed B1 identity/stage/background route/roster-lock receipt projection; no live claim |
 | ZhongGuo Workforce normal-exit/HC-partition snapshot executor | static/fixture-ready | twenty-first typed slot; player-subject received-self lifecycle projects pre, migrating, sealed and rehire-captured states with an immutable receipt and independent current-HC match; no live claim |
 | ZhongGuo scoreboard named-widget action executor | static/fixture-ready | twenty-second typed slot; exact shortcut-manager semantic activation, callback-group/modal admission and provider-observation binding return only verification-pending ACK or typed unavailable; production capability and paused later-query evidence remain absent |
+| ZhongGuo promotion/compensation postcondition executor | static/fixture-ready | twenty-third typed slot; fixed product-shaped receipt projection; default adapter does not advertise it and no live claim is made |
+| ZhongGuo projects/metrics postcondition executor | static/fixture-ready | twenty-fourth typed slot; fixed 24-variable CP #026→P3 #229 identity/receipt projection; default adapter does not advertise it and no live claim is made |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | true | P0 live frame and cold restore preserve CombatID, Province and native side order |

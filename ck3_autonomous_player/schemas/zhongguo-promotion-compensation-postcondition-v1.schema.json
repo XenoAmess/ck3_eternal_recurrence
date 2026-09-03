@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-promotion-compensation-postcondition-v1.schema.json",
+  "title": "ZhongGuo promotion compensation postcondition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "capability", "source_backend_id",
+    "request_nonce", "snapshot_revision", "date_raw", "paused",
+    "player_character_id", "subject_character_id",
+    "promotion_compensation", "readiness", "unavailable_reason"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "capability": {"const": "game.command.query-zhongguo-promotion-compensation-postcondition-v1"},
+    "source_backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-promotion-compensation-postcondition-v1"},
+    "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+    "snapshot_revision": {"type": "integer", "minimum": 1},
+    "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "paused": {"const": true},
+    "player_character_id": {"type": "integer", "minimum": 1},
+    "subject_character_id": {"type": "integer", "minimum": 1},
+    "promotion_compensation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_identity", "result_identity", "frozen_case", "promotion_choice", "compensation_receipt"],
+      "properties": {
+        "source_identity": {"$ref": "#/$defs/identity"},
+        "result_identity": {"$ref": "#/$defs/identity"},
+        "frozen_case": {
+          "type": "object", "additionalProperties": false,
+          "required": ["identity", "frozen"],
+          "properties": {"identity": {"$ref": "#/$defs/identity"}, "frozen": {"const": true}}
+        },
+        "promotion_choice": {
+          "type": "object", "additionalProperties": false,
+          "required": ["identity", "option_number", "receipt_serial", "active", "consumed"],
+          "properties": {
+            "identity": {"$ref": "#/$defs/identity"},
+            "option_number": {"$ref": "#/$defs/typed_integer"},
+            "receipt_serial": {"$ref": "#/$defs/typed_integer"},
+            "active": {"$ref": "#/$defs/typed_boolean"},
+            "consumed": {"$ref": "#/$defs/typed_boolean"}
+          }
+        },
+        "compensation_receipt": {
+          "type": "object", "additionalProperties": false,
+          "required": ["identity", "operation_id", "option_number", "receipt_serial", "active", "consumed", "posted"],
+          "properties": {
+            "identity": {"$ref": "#/$defs/identity"},
+            "operation_id": {"$ref": "#/$defs/typed_integer"},
+            "option_number": {"$ref": "#/$defs/typed_integer"},
+            "receipt_serial": {"$ref": "#/$defs/typed_integer"},
+            "active": {"$ref": "#/$defs/typed_boolean"},
+            "consumed": {"$ref": "#/$defs/typed_boolean"},
+            "posted": {"$ref": "#/$defs/typed_boolean"}
+          }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["player_owner_binding_ready", "portfolio_subject_binding_ready", "source_identity_ready", "result_identity_ready", "frozen_case_identity_ready", "promotion_choice_receipt_ready", "compensation_receipt_posted", "same_case_identity_ready", "revision_binding_ready", "receipt_serials_ready", "same_frame_ready", "ready"],
+      "properties": {
+        "player_owner_binding_ready": {"type": "boolean"},
+        "portfolio_subject_binding_ready": {"type": "boolean"},
+        "source_identity_ready": {"type": "boolean"},
+        "result_identity_ready": {"type": "boolean"},
+        "frozen_case_identity_ready": {"type": "boolean"},
+        "promotion_choice_receipt_ready": {"type": "boolean"},
+        "compensation_receipt_posted": {"type": "boolean"},
+        "same_case_identity_ready": {"type": "boolean"},
+        "revision_binding_ready": {"type": "boolean"},
+        "receipt_serials_ready": {"type": "boolean"},
+        "same_frame_ready": {"type": "boolean"},
+        "ready": {"type": "boolean"}
+      }
+    },
+    "unavailable_reason": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "typed_integer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "value", "unavailable_reason"],
+      "properties": {
+        "status": {"enum": ["available", "unavailable"]},
+        "value": {"type": ["integer", "null"]},
+        "unavailable_reason": {"type": ["string", "null"]}
+      }
+    },
+    "typed_boolean": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "value", "unavailable_reason"],
+      "properties": {
+        "status": {"enum": ["available", "unavailable"]},
+        "value": {"type": ["boolean", "null"]},
+        "unavailable_reason": {"type": ["string", "null"]}
+      }
+    },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "revision"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typed_integer"},
+        "subject_character_id": {"$ref": "#/$defs/typed_integer"},
+        "cycle_serial": {"$ref": "#/$defs/typed_integer"},
+        "case_serial": {"$ref": "#/$defs/typed_integer"},
+        "revision": {"$ref": "#/$defs/typed_integer"}
+      }
+    }
+  }
+}

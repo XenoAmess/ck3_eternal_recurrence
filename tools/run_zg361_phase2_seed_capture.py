@@ -55,6 +55,12 @@ DEFAULT_NATIVE_READINESS_TIMEOUT_SECONDS = 300.0
 DEFAULT_EVENT_TIMEOUT_SECONDS = 300.0
 DEFAULT_BINDING_TIMEOUT_SECONDS = 300.0
 DEFAULT_KEYBOARD_WATCHDOG_INTERVAL_SECONDS = 15.0
+PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_KEY = (
+    "phase2_wrapper_consumer_edge_observer_v1"
+)
+PHASE2_PRODUCER_CORRELATION_OBSERVER_KEY = (
+    "phase2_producer_consumer_correlation_observer_v1"
+)
 GIT_SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 PIPE_PREFIX = "\\\\.\\pipe\\"
 WINDOWS_ENGLISH_US_HKL = 0x04090409
@@ -98,6 +104,10 @@ class CaptureConfig:
     # CLI-only mode that stops before any native session or bridge transport
     # is started.  Full capture remains the default for existing callers.
     preflight_only: bool = False
+    # Private loader-only observation: launch/bind the exact bridge and sample
+    # cached heartbeats without inspecting the desktop or sending UI/gameplay
+    # input.  This mode deliberately does not attempt seed capture.
+    native_observer_only: bool = False
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
@@ -1765,6 +1775,119 @@ def _phase2_native_session_probe(
     }
 
 
+def _phase2_wrapper_edge_decision(
+    edge: dict[str, Any], correlation: dict[str, Any]
+) -> tuple[str, str]:
+    if edge.get("private_build") is not True:
+        return "RED", "observer_not_private"
+    if edge.get("failure_flags") != 0:
+        return "RED", "observer_install_or_runtime_failure"
+    if edge.get("installed") is not True:
+        return "RED", "observer_not_installed"
+    selected = correlation.get("producer_selected_count", 0)
+    wrapper_post_publish = edge.get("wrapper_post_publish_entry_count", 0)
+    exact_edges = edge.get("selected_after_publish_edge_0x3B9E10B_count", 0) + edge.get(
+        "selected_after_publish_edge_0x3B9E175_count", 0
+    )
+    other_callers = edge.get("selected_after_publish_other_caller_count", 0)
+    identity_matches = edge.get("consumer_identity_match_count", 0)
+    if selected == 0:
+        return "NO-GO", "producer_selected_task_not_observed"
+    if wrapper_post_publish == 0:
+        return "NO-GO", "selected_task_wrapper_never_rescheduled"
+    if exact_edges == 0:
+        return (
+            "NO-GO",
+            "wrapper_entered_consumer_other_caller"
+            if other_callers > 0
+            else "wrapper_entered_other_branch",
+        )
+    if identity_matches == 0:
+        return "NO-GO", "consumer_edge_without_retained_task_identity"
+    return "GREEN", "selected_task_reached_completion_consumer"
+
+
+def observe_phase2_wrapper_consumer_edge(
+    service: Any,
+    artifacts: Path,
+    *,
+    timeout_seconds: float,
+    clock: Callable[[], float] = time.monotonic,
+    sleeper: Callable[[float], None] = time.sleep,
+) -> dict[str, Any]:
+    """Sample only bridge heartbeats; never inspect or operate the desktop."""
+
+    if timeout_seconds <= 0:
+        raise ValueError("native observer timeout must be positive")
+    progress = artifacts / "phase2-wrapper-consumer-edge-heartbeats.jsonl"
+    deadline = clock() + timeout_seconds
+    samples: list[dict[str, Any]] = []
+    seen: set[tuple[object, object]] = set()
+    final_status = "RED"
+    final_decision = "heartbeat_not_observed"
+    final_edge: dict[str, Any] | None = None
+    final_correlation: dict[str, Any] | None = None
+    while True:
+        capabilities = service.capabilities()
+        diagnostics = (
+            capabilities.get("diagnostics")
+            if isinstance(capabilities, dict)
+            else None
+        )
+        heartbeat = (
+            diagnostics.get("last_heartbeat")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if isinstance(heartbeat, dict):
+            identity = (heartbeat.get("pid"), heartbeat.get("sequence"))
+            edge = heartbeat.get(PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_KEY)
+            correlation = heartbeat.get(PHASE2_PRODUCER_CORRELATION_OBSERVER_KEY)
+            if isinstance(edge, dict) and isinstance(correlation, dict):
+                final_edge = dict(edge)
+                final_correlation = dict(correlation)
+                final_status, final_decision = _phase2_wrapper_edge_decision(
+                    final_edge, final_correlation
+                )
+                if identity not in seen:
+                    seen.add(identity)
+                    row = {
+                        "schema_version": 1,
+                        "pid": heartbeat.get("pid"),
+                        "sequence": heartbeat.get("sequence"),
+                        "status": final_status,
+                        "decision": final_decision,
+                        "producer_selected_count": final_correlation.get(
+                            "producer_selected_count"
+                        ),
+                        "observer": final_edge,
+                    }
+                    samples.append(row)
+                    append_jsonl(progress, row)
+                if final_status == "GREEN" or final_edge.get("failure_flags") != 0:
+                    break
+        now = clock()
+        if now >= deadline:
+            break
+        sleeper(min(0.25, max(0.0, deadline - now)))
+    return {
+        "schema_version": 1,
+        "result": final_status,
+        "decision": final_decision,
+        "observer_key": PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_KEY,
+        "correlation_key": PHASE2_PRODUCER_CORRELATION_OBSERVER_KEY,
+        "heartbeat_only": True,
+        "image_used": False,
+        "ocr_used": False,
+        "ui_input_sent": False,
+        "gameplay_commands": [],
+        "sample_count": len(samples),
+        "samples": samples,
+        "final_observer": final_edge,
+        "final_correlation": final_correlation,
+    }
+
+
 def run_capture(
     raw_config: CaptureConfig,
     *,
@@ -1801,9 +1924,12 @@ def run_capture(
             ),
         },
         "mcp_only": True,
+        "native_observer_only": config.native_observer_only,
         "gameplay_control_transport": "MCP-only",
         "non_gameplay_platform_operation": (
-            "US-English HKL watchdog + optional legal-agreement gate"
+            "none"
+            if config.native_observer_only
+            else "US-English HKL watchdog + optional legal-agreement gate"
         ),
         "ocr_used": False,
         "image_used": False,
@@ -1830,6 +1956,7 @@ def run_capture(
         "loader_error_log_scan": None,
         "bootstrap_event": None,
         "capture": None,
+        "native_observer": None,
         "provider_probes": None,
         "candidate": None,
         "keyboard_watchdog": None,
@@ -2082,6 +2209,33 @@ def run_capture(
         runner_log(
             f"CK3 PID {binding['bridge_pid']} bound on explicit pipe {config.pipe_name}"
         )
+        if config.native_observer_only:
+            report["legal_consent"] = {
+                "schema_version": 1,
+                "result": "NOT_APPLICABLE",
+                "state": "not_inspected_no_input",
+                "reason": (
+                    "native-observer-only mode does not inspect the desktop or "
+                    "send legal, UI, or gameplay input"
+                ),
+                "image_used": False,
+                "ocr_used": False,
+                "authorized_click_count": 0,
+                "real_money_click_count": 0,
+                "real_profile_read": False,
+                "real_profile_modified": False,
+            }
+            observer = observe_phase2_wrapper_consumer_edge(
+                service,
+                artifacts,
+                timeout_seconds=config.event_timeout_seconds,
+                clock=active_runtime.clock,
+                sleeper=active_runtime.sleep,
+            )
+            report["native_observer"] = observer
+            report["result"] = observer["result"]
+            report["live_verdict"] = observer["decision"]
+            return report
         try:
             legal_evidence = zgrun.handle_phase2_optional_legal_consent(
                 config.profile_dir, artifacts
@@ -2409,7 +2563,7 @@ def run_capture(
                 "unchanged"
             ) is not True:
                 _flip_red(report, "GREEN capture lacks dependency immutability proof")
-            if len(green_keyboard_rows) < 1:
+            if not config.native_observer_only and len(green_keyboard_rows) < 1:
                 _flip_red(report, "GREEN capture lacks a US English HKL attestation")
             logs_row = report.get("logs_copy")
             if not isinstance(logs_row, dict) or not logs_row.get("files"):
@@ -2462,6 +2616,15 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         help="validate frozen inputs and projections without launching CK3",
     )
     parser.add_argument(
+        "--native-observer-only",
+        action="store_true",
+        help=(
+            "after exact bridge binding, sample only the private Phase-2 "
+            "wrapper/consumer heartbeat; do not inspect the desktop or send "
+            "legal, UI, or gameplay input"
+        ),
+    )
+    parser.add_argument(
         "--list-domain-observer-gate",
         action="store_true",
         help=(
@@ -2498,6 +2661,7 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         list_domain_observer_gate=args.list_domain_observer_gate,
         acceptance_observer_manifest=args.acceptance_observer_manifest,
         preflight_only=args.preflight_only,
+        native_observer_only=args.native_observer_only,
     )
 
 

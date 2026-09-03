@@ -125,3 +125,14 @@ aggregate 只有在逐号消费结束后仍无 blocked 标记、open-debt 已归
 静态专测覆盖精确 ID、A/B 旧业务、C 无业务写、五元债、exact-due 单次 sink、settled duplicate、future/stale/cross-owner fail-closed、public adapter ordering、玩家/AI deferred cascade 与最终守恒；普通模式和 `python -O` 必须同时通过。
 
 本包没有启动 CK3，没有 parser 输出、paused snapshot、MCP、fixture 或生产实机证据。因此最高状态只能是 `static-ready`，不能标记 `fixture-live`、`production-live` 或 `complete`。静态 GREEN 不能替代中央调用、玩家/AI 双路线、跨周期消费、存读档和实机日志验收。
+
+## #026 contribution receipt 跨包合同
+
+#026 的 A/B 成功事务在 shared case-kernel operation 成功、`case_e_revision` 已递增之后，额外签发一份供后续指标包消费的业务 receipt：
+
+- `zg361_cp_contribution_receipt_cursor` 是受评人作用域、跨 portfolio 保留的单调游标；不存在时从零初始化，每次 #026 A/B 成功恰好加一；
+- `zg361_cp_m26_contribution_receipt_id` 取本次游标值；
+- `zg361_cp_m26_contribution_receipt_revision` 取本次成功操作后的 `zg361_case_e_revision`；
+- receipt 仍由既有 `zg361_cp_m26_receipt_owner/subject/cycle/case` 四元身份限定，贡献值仍读取既有 `zg361_cp_m26_visible_value`。
+
+这两个字段只由 #026 A/B 的真实业务写路径产生；C 延期不签发 contribution receipt，也不允许由 case serial、choice ACK 或事件名反推 receipt。Phase 3 初始化器只能在 owner 等于当前 root、subject 等于当前 this、cycle 等于当前 review serial，且 receipt ID/revision 均为正数时冻结该来源。此次只增加无玩家可见文本的持久变量，不新增或修改本地化 key。

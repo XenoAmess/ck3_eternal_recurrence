@@ -1,0 +1,101 @@
+{
+  "schema": "xar.ck3.g2_truce_preview_entry_observer_seam.v1",
+  "result": "STATIC_READ_ONLY_OBSERVER_SEAM_IDENTIFIED",
+  "status": "static-ready-no-launch",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "preview_function": {
+    "rva": "0x2E87140",
+    "pdata": ["0x2E87140", "0x2E8723B", "0x4DF9914"],
+    "unwind_prolog_size": "0x15",
+    "function_sha256": "941E91BF0B43EB8029940BA378D75A7CF6B65DB1431B126B7265FAD84EDE7E1F",
+    "shared_pointer_reference_count": 8,
+    "shared_pointer_reference_rvas": [
+      "0x443F480", "0x4446948", "0x445D8A0", "0x4461D60",
+      "0x4461E28", "0x4462A48", "0x4462CC0", "0x4473150"
+    ],
+    "calls_duration_evaluator": false,
+    "consumes_duration_at_this_plus_0x108": false
+  },
+  "observer_seam": {
+    "patch_rva": "0x2E87155",
+    "continue_rva": "0x2E87165",
+    "patch_bytes": 16,
+    "anchor_hex": "488B024D8BF04C8BD2488BF966833804",
+    "anchor_sha256": "F5B206324844555C64D660A376350E28C0E9710717BA121E04B380415254FC63",
+    "after_unwind_prolog": true,
+    "instructions": [
+      {"rva": "0x2E87155", "bytes": "488B02", "mnemonic": "mov", "operands": "rax, qword ptr [rdx]"},
+      {"rva": "0x2E87158", "bytes": "4D8BF0", "mnemonic": "mov", "operands": "r14, r8"},
+      {"rva": "0x2E8715B", "bytes": "4C8BD2", "mnemonic": "mov", "operands": "r10, rdx"},
+      {"rva": "0x2E8715E", "bytes": "488BF9", "mnemonic": "mov", "operands": "rdi, rcx"},
+      {"rva": "0x2E87161", "bytes": "66833804", "mnemonic": "cmp", "operands": "word ptr [rax], 4"}
+    ],
+    "incoming_registers": {
+      "RCX": "effect_this; preserved natively into RDI",
+      "RDX": "preview source/context; preserved natively into R10 after [RDX] read",
+      "R8": "preview output/collector; preserved natively into R14"
+    },
+    "caddtruce_filter": "read [RCX] and accept only exact vtable RVA 0x4461CA8 or 0x4461D70",
+    "minimal_telemetry": [
+      "hit_count",
+      "RCX effect_this",
+      "[RCX] exact vtable",
+      "RDX preview source/context",
+      "R8 preview output/collector",
+      "derived address RCX+0x108 (identity only; never evaluate or dereference for days)"
+    ]
+  },
+  "caddtruce_types": [
+    {
+      "template_parameter": 0,
+      "vtable_rva": "0x4461CA8",
+      "preview_slot_address_rva": "0x4461D60",
+      "rtti_type_name": ".?AV?$CAddTruceEffect@$0A@@@",
+      "preview_target_rva": "0x2E87140"
+    },
+    {
+      "template_parameter": 1,
+      "vtable_rva": "0x4461D70",
+      "preview_slot_address_rva": "0x4461E28",
+      "rtti_type_name": ".?AV?$CAddTruceEffect@$00@@",
+      "preview_target_rva": "0x2E87140"
+    }
+  ],
+  "data_flow": {
+    "this": "RCX -> RDI; native preview later reads this+0x10 and this+0x60",
+    "preview_source_context": "RDX -> native [RDX] read -> R10",
+    "preview_output_collector": "R8 -> R14 -> virtual call [R14]+0x8",
+    "duration_script_value": "known execute layout is this+0x108, but preview does not read or evaluate it"
+  },
+  "observer_rules": {
+    "default_enabled": false,
+    "read_only_telemetry": true,
+    "replay_exact_anchor": true,
+    "preserve_registers_and_flags": true,
+    "no_guard": true,
+    "no_branch_or_return_change": true,
+    "no_evaluator_call": true,
+    "no_effect_execute": true,
+    "no_action_or_mutation": true
+  },
+  "evidence_limit": {
+    "preview_hit_value": "proves a game-native read-only preview traversed an exact CAddTruce object",
+    "preview_hit_is_evaluated_days": false,
+    "can_close_evaluated_days_gap": false,
+    "next_after_preview_hit": "none justified statically; require new native evidence before widening observation"
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "effect_executed": false,
+    "mutation_sent": false,
+    "public_abi_changed": false,
+    "public_readiness_changed": false,
+    "evaluated_days_observable": false
+  }
+}

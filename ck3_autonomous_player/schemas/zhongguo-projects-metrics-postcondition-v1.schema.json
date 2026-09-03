@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-projects-metrics-postcondition-v1.schema.json",
+  "title": "ZhongGuo projects contribution to metrics postcondition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "capability", "case_kind", "request_nonce",
+    "snapshot_revision", "date_raw", "paused", "player_character_id",
+    "requested_owner_character_id", "source_identity", "result_identity",
+    "projects_metrics", "readiness", "source_backend_id", "provenance",
+    "unavailable_reason"
+  ],
+  "$defs": {
+    "fieldUnavailableReason": {
+      "enum": ["variable_absent", "value_type_mismatch", "value_out_of_range", "postcondition_unavailable"]
+    },
+    "topLevelUnavailableReason": {
+      "enum": [
+        "unsupported_build", "requires_application_main", "requires_paused",
+        "map_not_ready", "subject_not_found", "owner_filter_mismatch",
+        "variable_identifier_unavailable", "variable_context_unavailable",
+        "project_source_not_found", "project_source_not_ready",
+        "state_changed", "internal_error"
+      ]
+    },
+    "typedInteger": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldUnavailableReason"}
+          }
+        }
+      ]
+    },
+    "typedString": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"enum": ["metric_dictionary_subject_v1", "metric_dictionary_manager_v1"]},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldUnavailableReason"}
+          }
+        }
+      ]
+    },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "capability": {"const": "game.command.query-zhongguo-projects-metrics-postcondition-v1"},
+    "case_kind": {"const": "zhongguo.projects-metrics.project-correlation"},
+    "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+    "snapshot_revision": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "paused": {"const": true},
+    "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "requested_owner_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "source_identity": {"$ref": "#/$defs/identity"},
+    "result_identity": {"$ref": "#/$defs/identity"},
+    "projects_metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_identity", "result_identity", "contribution", "metrics_result"],
+      "properties": {
+        "source_identity": {"$ref": "#/$defs/identity"},
+        "result_identity": {"$ref": "#/$defs/identity"},
+        "contribution": {
+          "type": "object", "additionalProperties": false,
+          "required": ["identity", "receipt_id", "receipt_revision", "value", "provider_observed"],
+          "properties": {
+            "identity": {"$ref": "#/$defs/identity"},
+            "receipt_id": {"$ref": "#/$defs/typedInteger"},
+            "receipt_revision": {"$ref": "#/$defs/typedInteger"},
+            "value": {"$ref": "#/$defs/typedInteger"},
+            "provider_observed": {"const": true}
+          }
+        },
+        "metrics_result": {
+          "type": "object", "additionalProperties": false,
+          "required": ["identity", "source_contribution_receipt_id", "source_contribution_receipt_revision", "metrics_revision", "dictionary_key", "provider_observed"],
+          "properties": {
+            "identity": {"$ref": "#/$defs/identity"},
+            "source_contribution_receipt_id": {"$ref": "#/$defs/typedInteger"},
+            "source_contribution_receipt_revision": {"$ref": "#/$defs/typedInteger"},
+            "metrics_revision": {"$ref": "#/$defs/typedInteger"},
+            "dictionary_key": {"$ref": "#/$defs/typedString"},
+            "provider_observed": {"const": true}
+          }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "player_subject_binding_ready", "owner_binding_ready",
+        "source_identity_ready", "result_identity_ready", "contribution_ready",
+        "metrics_ready", "same_project_case_identity", "receipt_lineage_ready",
+        "result_operation_committed", "same_frame_ready", "ready"
+      ],
+      "properties": {
+        "player_subject_binding_ready": {"type": "boolean"},
+        "owner_binding_ready": {"type": "boolean"},
+        "source_identity_ready": {"type": "boolean"},
+        "result_identity_ready": {"type": "boolean"},
+        "contribution_ready": {"type": "boolean"},
+        "metrics_ready": {"type": "boolean"},
+        "same_project_case_identity": {"type": "boolean"},
+        "receipt_lineage_ready": {"type": "boolean"},
+        "result_operation_committed": {"type": "boolean"},
+        "same_frame_ready": {"type": "boolean"},
+        "ready": {"type": "boolean"}
+      }
+    },
+    "source_backend_id": {"const": "native-headless"},
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "game_version", "executable_sha256", "backend_id", "consumer_id",
+        "allowlist_id", "variable_context_for_scope_rva",
+        "variable_identifier_table_rva", "variable_identifier_lookup_rva",
+        "variable_identifier_name_rva", "character_storage_slot_rva",
+        "character_fallback_slot_rva"
+      ],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+        "backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-projects-metrics-postcondition-v1"},
+        "consumer_id": {"const": "xar-autoplayer-zhongguo-projects-metrics-postcondition-v1"},
+        "allowlist_id": {"const": "zg361-cp26-p3m229-lineage-v1"},
+        "variable_context_for_scope_rva": {"const": "0x3329A40"},
+        "variable_identifier_table_rva": {"const": "0x3B971A0"},
+        "variable_identifier_lookup_rva": {"const": "0x3B97020"},
+        "variable_identifier_name_rva": {"const": "0x3B97090"},
+        "character_storage_slot_rva": {"const": "0x570C130"},
+        "character_fallback_slot_rva": {"const": "0x570C138"}
+      }
+    },
+    "unavailable_reason": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/topLevelUnavailableReason"}]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "available"}}},
+      "then": {"properties": {"unavailable_reason": {"type": "null"}}},
+      "else": {"properties": {"unavailable_reason": {"$ref": "#/$defs/topLevelUnavailableReason"}}}
+    }
+  ]
+}

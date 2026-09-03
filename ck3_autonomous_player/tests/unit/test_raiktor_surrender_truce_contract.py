@@ -6,7 +6,15 @@ import unittest
 
 from xar_autoplayer.bridge.raiktor_surrender_truce_contract import (
     BACKEND_ID,
+    OPEN_KAISHEK_G2_CAPABILITY_ID,
+    OPEN_KAISHEK_G2_PROFILE_COMMIT,
+    OPEN_KAISHEK_G2_PROFILE_ID,
     normalize_raiktor_surrender_truce,
+)
+from xar_autoplayer.bridge import (
+    OPEN_KAISHEK_G2_CAPABILITY_ID as PUBLIC_G2_CAPABILITY_ID,
+    OPEN_KAISHEK_G2_PROFILE_COMMIT as PUBLIC_G2_PROFILE_COMMIT,
+    OPEN_KAISHEK_G2_PROFILE_ID as PUBLIC_G2_PROFILE_ID,
 )
 
 
@@ -50,6 +58,25 @@ def _normalize(value: object) -> dict[str, object]:
 
 
 class RaiktorSurrenderTruceContractTests(unittest.TestCase):
+    def test_open_kaishek_g2_profile_binding_is_descriptive_only(self) -> None:
+        self.assertEqual(
+            OPEN_KAISHEK_G2_CAPABILITY_ID,
+            "game.command.query-g2-truce-evaluated-days-v1",
+        )
+        self.assertEqual(
+            OPEN_KAISHEK_G2_PROFILE_ID,
+            "ck3-1.19.0.6-g2-truce-evaluator-v1",
+        )
+        self.assertEqual(
+            OPEN_KAISHEK_G2_PROFILE_COMMIT,
+            "981c79388a07e447b18f8e4472a16fd65e28c083",
+        )
+
+    def test_open_kaishek_binding_is_publicly_exported(self) -> None:
+        self.assertEqual(PUBLIC_G2_CAPABILITY_ID, OPEN_KAISHEK_G2_CAPABILITY_ID)
+        self.assertEqual(PUBLIC_G2_PROFILE_ID, OPEN_KAISHEK_G2_PROFILE_ID)
+        self.assertEqual(PUBLIC_G2_PROFILE_COMMIT, OPEN_KAISHEK_G2_PROFILE_COMMIT)
+
     def test_accepts_exact_evaluated_days_without_expiry_claim(self) -> None:
         value = _observation()
         self.assertEqual(_normalize(value), value)

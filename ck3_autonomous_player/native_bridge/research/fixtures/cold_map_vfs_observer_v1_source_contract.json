@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "contract_id": "cold-map-vfs-observer-v1",
+  "status": "static-ready-no-launch",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "live_evidence": {
+    "report_sha256": "EB5ECAB0CC503EB1DE8927A8B6B11FD0F728676564F860C9A7A0172A9984D08C",
+    "minidump_sha256": "F08D7EC24540D70005CB2D222D8EC4F8A4B65F2A5EACA8A47544E0CCC4DC8908",
+    "fault_rva": "0x3BE33A9",
+    "fault_rcx": "0x206E65704F534656",
+    "fault_rcx_little_endian_ascii": "VFSOpen "
+  },
+  "hooks": [
+    {
+      "name": "ctor_input_path",
+      "patch_rva": "0x3B55A40",
+      "continue_rva": "0x3B55A4F",
+      "patch_size": 15,
+      "file_offset": "0x3B54E40",
+      "anchor_hex": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20",
+      "pdata": {"begin_rva": "0x3B55A40", "end_rva": "0x3B55B12", "unwind_rva": "0x4F0A4F0"},
+      "input": "RDX descriptor: data +0x00, uint32 length +0x08, byte flag +0x0C",
+      "placement": "before exact prologue replay"
+    },
+    {
+      "name": "variant_after_move",
+      "patch_rva": "0x3B55ADE",
+      "continue_rva": "0x3B55AEC",
+      "variant_move_rva": "0x3B56830",
+      "patch_size": 14,
+      "file_offset": "0x3B54EDE",
+      "anchor_hex": "49 8D 4E 38 E8 49 0D 00 00 80 7C 24 40 01",
+      "pdata": {"begin_rva": "0x3B55A40", "end_rva": "0x3B55B12", "unwind_rva": "0x4F0A4F0"},
+      "input": "destination R14+0x38: payload +0x00, length +0x10, capacity +0x18, tag +0x20",
+      "placement": "replay original move call, observe destination, replay original CMP"
+    },
+    {
+      "name": "poll_state_and_tag",
+      "patch_rva": "0x3B55D50",
+      "continue_rva": "0x3B55D5F",
+      "patch_size": 15,
+      "file_offset": "0x3B55150",
+      "anchor_hex": "40 53 48 83 EC 20 0F B6 41 0C 48 8B D9 3C 0A",
+      "pdata": {"begin_rva": "0x3B55D50", "end_rva": "0x3B55DB7", "unwind_rva": "0x4C38E20"},
+      "input": "RCX operation: state +0x0C, aux +0x0D, variant +0x38, tag +0x58",
+      "placement": "before exact prologue/state-load/CMP replay"
+    }
+  ],
+  "observer_contract": {
+    "cmake_option": "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1",
+    "default_enabled": false,
+    "install_is_all_or_none": true,
+    "records_only": true,
+    "preserves_flags_and_volatile_gprs": true,
+    "changes_control_flow_return_value_state_or_timing": false,
+    "hot_path_allocation_lock_or_syscall": false,
+    "global_callee_patch": false,
+    "seventh_guard": false
+  }
+}

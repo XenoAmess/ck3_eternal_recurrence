@@ -1,0 +1,36 @@
+{
+  "contract": "phase2-wrapper-consumer-edge-observer-v1-source",
+  "required_header_tokens": [
+    "kPhase2WrapperConsumerEdgePatchRvaV1", "0x3B9DD50",
+    "kPhase2WrapperConsumerEdgePatchBytesV1 = 16",
+    "selected_after_publish_edge_0x3B9E10B_count",
+    "selected_after_publish_edge_0x3B9E175_count",
+    "selected_after_publish_other_caller_count"
+  ],
+  "required_implementation_tokens": [
+    "0x40, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55",
+    "selected_task_source->load(std::memory_order_acquire)",
+    "callsite_rva == kPhase2WrapperConsumerEdgeCallRva0V1",
+    "callsite_rva == kPhase2WrapperConsumerEdgeCallRva1V1",
+    "selected_after_publish_entry_count.fetch_add"
+  ],
+  "required_bridge_tokens": [
+    "phase2_wrapper_consumer_edge_observer_v1",
+    "wrapper_post_publish_entry_count",
+    "consumer_identity_match_count",
+    "&g_phase2_producer_identity_observer_v1.selected_last_task_pointer"
+  ],
+  "required_cmake_tokens": [
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1=1",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1=1",
+    "xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test"
+  ],
+  "fixture_cases": [
+    "exact 16-byte consumer prologue install/replay/uninstall",
+    "zero-selected entry is not counted as post-publish",
+    "both exact wrapper call edges and other caller are classified",
+    "selected task release/acquire enables post-publish counters",
+    "recoverable failed install restores the exact anchor"
+  ]
+}

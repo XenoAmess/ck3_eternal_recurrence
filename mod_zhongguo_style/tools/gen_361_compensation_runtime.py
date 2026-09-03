@@ -1075,6 +1075,50 @@ def freeze_business_object(mechanism_id: int, domain: str, state: int) -> str:
         set_variable = {{ name = {p}_visible_revision value = var:{row["revision"]} }}'''
 
 
+def publish_promotion_compensation_receipt(mechanism_id: int) -> str:
+    """Publish one receipt correlated to the real #147 choice and result case.
+
+    The numbered compensation case keeps its own L/AE/AF kernel identity.  This
+    projection is written only after that numbered write has been consumed and
+    binds the immutable delivered-result identity used by both visible events.
+    """
+
+    p = f"zg361_comp_m{mechanism_id:03d}"
+    return f'''if = {{
+            limit = {{
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:{p}_receipt_active = 1
+                var:{p}_consumed = 1
+                var:{p}_visible_revision > 0
+            }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_active value = 1 }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_posted value = 1 }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_revision value = var:{p}_visible_revision }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_operation value = {mechanism_id} }}
+            set_variable = {{ name = zg361_comp_promotion_receipt_route value = var:{p}_receipt_route }}
+        }}'''
+
+
 def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
     p = f"zg361_comp_m{mechanism_id:03d}"
     reconcile_statement = recalculate_statement_call(mechanism_id)
@@ -1098,6 +1142,7 @@ def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
         {reconcile_statement}
         {reconcile_lti}
         set_variable = {{ name = {p}_consumed value = 1 }}
+        {publish_promotion_compensation_receipt(mechanism_id)}
         {barrier}
         debug_log = "ZG361COMP: consumed mechanism {mechanism_id:03d}"
     }}
@@ -1368,7 +1413,20 @@ zg361_comp_freeze_current_result_effect = {
 
 
 def render_open(domain: DomainSpec) -> str:
-    resets = []
+    resets = [
+        "set_variable = { name = zg361_comp_promotion_receipt_active value = 0 }",
+        "set_variable = { name = zg361_comp_promotion_receipt_posted value = 0 }",
+        "remove_variable = zg361_comp_promotion_receipt_owner",
+        "remove_variable = zg361_comp_promotion_receipt_subject",
+        "remove_variable = zg361_comp_promotion_receipt_cycle",
+        "remove_variable = zg361_comp_promotion_receipt_case",
+        "remove_variable = zg361_comp_promotion_receipt_choice_serial",
+        "remove_variable = zg361_comp_promotion_receipt_serial",
+        "remove_variable = zg361_comp_promotion_receipt_choice_revision",
+        "remove_variable = zg361_comp_promotion_receipt_revision",
+        "remove_variable = zg361_comp_promotion_receipt_operation",
+        "remove_variable = zg361_comp_promotion_receipt_route",
+    ]
     for mechanism_id in (item for stage in domain.stages for item in stage):
         p = f"zg361_comp_m{mechanism_id:03d}"
         resets.extend(

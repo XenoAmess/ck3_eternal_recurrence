@@ -120,12 +120,12 @@ recovery restore 谱系供 shutdown 逐 PID 核对。
 
 ## 4. 当前验收
 
-2026-09-01 静态/fixture 验收：
+2026-09-03 静态/fixture 验收：
 
-- 动作 helper normal Python：10/10 GREEN；
-- 动作 helper `python -O`：10/10 GREEN；
+- 动作 helper normal Python：11/11 GREEN；
+- 动作 helper `python -O`：11/11 GREEN；
 - fixture isolation contract：normal / `python -O` 均 GREEN；
-- runner transition/restore 专测：normal / `python -O` 均 4/4 GREEN；
+- runner transition/restore 专测：normal / `python -O` 均 6/6 GREEN；
 - 全量 `test_run_zhongguo_promo_capture.py`：normal / `python -O` 均 GREEN；
 - 覆盖 A/B/C option ACK、三路线业务事实、显式身份接缝、缺接缝 blocker、错误
   receipt 不得被 ACK 掩盖、received-self ACL、有界时间推进，以及 active event
@@ -180,3 +180,33 @@ carrier；carrier 先调用 shipped public resume effect 排真实 `zg361we.360`
    option 触发；
 4. 只在 phase-two Workforce stage 动态追加到一次性 userdir；普通 acceptance/promo
    不加载，release builder 不引用，staging/宣传素材不得包含。
+
+### 4.3 运行前门禁已不再把两项能力误报成永久缺失
+
+`preflight_phase2_workforce_m360_gameplay_action_cell()` 现在是独立的非变更
+preflight，并写入
+`07d_phase2_workforce_m360_gameplay_action_preflight.json`。它只在下列合同同时
+成立时返回 `GREEN / static_runner_ready_live_proof_pending`：
+
+- current-event query 与 option submit 均可用；提交使用当前 paused snapshot 的
+  `expected_revision`，切人后还必须观察到更大的 revision、未推进的日期与精确目标
+  `played CharacterID`；
+- acceptance-only fixture 的 7 个文件、UTF-8 BOM、两张 typed 切人卡、owner/subject
+  named scope、真实产品 resume effect 与召唤条件均存在；
+- `save-checkpoint` / `restore-checkpoint` 及受管 session 方法均可用，且前置谱系确为
+  一次 save/restore 的两 PID 谱系，可以继续扩展为同一 pre-#360 checkpoint 的
+  A/B/C 三次独立 restore；
+- 公开 bridge 仍不需要增加通用 `set_player_character` 命令，旧一期切人 fixture 也
+  继续禁止复用。
+
+这个 preflight 明确保留
+`gameplay_action_executed=false`、`gameplay_business_postcondition_claimed=false` 和
+`live_proof_claimed=false`。缺少 isolated userdir/bootstrap 时，即使 preflight GREEN，
+主 batch 仍会在 `isolated_runtime_context_gate` 返回 RED；不会把静态 runner 能力冒充
+真实 A/B/C 行为或业务回执。
+
+下一次串行 live 的验收顺序固定为：激活 fixture 并恢复一次 → 保存共享 pre-#360
+checkpoint → A/B/C 各自恢复同一 size/SHA-256 后完成
+`subject→owner→真实 #360→subject→provider` → 最后恢复冻结基线。只有五次 Workforce
+restore 与此前 base restore 共同形成连续 7 PID / 6 restart 谱系、每路双向
+CharacterID/revision 证据和三份业务 postcondition 都 GREEN，才晋级 `fixture-live`。

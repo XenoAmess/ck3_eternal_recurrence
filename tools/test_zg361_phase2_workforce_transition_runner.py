@@ -335,6 +335,136 @@ class MultiRestoreLineageTests(unittest.TestCase):
             thread.join(timeout=2)
 
 
+class WorkforcePreflightTests(unittest.TestCase):
+    class Service:
+        def __init__(self, *, restore_ready: bool = True) -> None:
+            self.restore_ready = restore_ready
+            self.calls: list[str] = []
+
+        def capabilities(self) -> dict[str, object]:
+            self.calls.append("capabilities")
+            steps = ["save-checkpoint"]
+            if self.restore_ready:
+                steps.append("restore-checkpoint")
+            return {
+                "bridge_capabilities": [
+                    runner.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+                    "game.command.select-event-option-N",
+                ],
+                "action_steps": steps,
+            }
+
+        def snapshot(self) -> dict[str, object]:
+            raise AssertionError("preflight must not read a gameplay snapshot")
+
+        def save_checkpoint(self, **_kwargs: object) -> dict[str, object]:
+            raise AssertionError("preflight must not save")
+
+        def restore_checkpoint(self, **_kwargs: object) -> dict[str, object]:
+            raise AssertionError("preflight must not restore")
+
+        def query_current_event_window_context_v1(
+            self, *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            raise AssertionError("preflight must not query an active event")
+
+        def select_event_option(
+            self, *_args: object, **_kwargs: object
+        ) -> dict[str, object]:
+            raise AssertionError("preflight must not select an option")
+
+    @staticmethod
+    def prior_lineage() -> dict[str, object]:
+        return {
+            "scope": "phase2_one_save_one_restore_two_pid_lineage",
+            "pid_lineage": [10, 20],
+        }
+
+    def test_preflight_closes_both_runner_requirements_without_mutation(
+        self,
+    ) -> None:
+        service = self.Service()
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            evidence = (
+                runner.preflight_phase2_workforce_m360_gameplay_action_cell(
+                    service,
+                    artifacts,
+                    owner_character_id=OWNER,
+                    subject_character_id=SUBJECT,
+                    seed_contract={
+                        "runtime": {"enabled_mods": ["mod/product.mod"]}
+                    },
+                    prior_lineage=self.prior_lineage(),
+                )
+            )
+            persisted = json.loads(
+                (
+                    artifacts
+                    / (
+                        "07d_phase2_workforce_m360_gameplay_action_"
+                        "preflight.json"
+                    )
+                ).read_text(encoding="utf-8")
+            )
+        self.assertEqual(evidence, persisted)
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(
+            evidence["stage"], "static_runner_ready_live_proof_pending"
+        )
+        self.assertFalse(evidence["gameplay_action_executed"])
+        self.assertFalse(evidence["live_proof_claimed"])
+        self.assertEqual(evidence["missing_requirements"], [])
+        self.assertEqual(
+            evidence["requirements"][
+                "exact_owner_subject_player_transition"
+            ]["result"],
+            "RUNNER_READY",
+        )
+        self.assertEqual(
+            evidence["requirements"][
+                "same_checkpoint_three_route_restore_lineage"
+            ]["independent_route_restores"],
+            ["A", "B", "C"],
+        )
+        self.assertEqual(service.calls, ["capabilities"])
+
+    def test_preflight_fails_closed_when_restore_surface_is_missing(
+        self,
+    ) -> None:
+        service = self.Service(restore_ready=False)
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            with self.assertRaisesRegex(
+                runner.acceptance.RunnerError,
+                "same_checkpoint_three_route_restore_lineage",
+            ):
+                runner.preflight_phase2_workforce_m360_gameplay_action_cell(
+                    service,
+                    artifacts,
+                    owner_character_id=OWNER,
+                    subject_character_id=SUBJECT,
+                    seed_contract={"runtime": {"enabled_mods": []}},
+                    prior_lineage=self.prior_lineage(),
+                )
+            evidence = json.loads(
+                (
+                    artifacts
+                    / (
+                        "07d_phase2_workforce_m360_gameplay_action_"
+                        "preflight.json"
+                    )
+                ).read_text(encoding="utf-8")
+            )
+        self.assertEqual(evidence["result"], "RED")
+        self.assertFalse(evidence["gameplay_action_executed"])
+        self.assertEqual(
+            [row["id"] for row in evidence["missing_requirements"]],
+            ["same_checkpoint_three_route_restore_lineage"],
+        )
+        self.assertEqual(service.calls, ["capabilities"])
+
+
 class WorkforceMatrixTests(unittest.TestCase):
     def test_matrix_restores_one_checkpoint_for_a_b_c_and_final(self) -> None:
         class Service:
@@ -459,6 +589,13 @@ class WorkforceMatrixTests(unittest.TestCase):
                 "install_phase2_workforce_action_fixture",
                 side_effect=fixture_install,
             )
+        ), mock.patch.object(
+            runner,
+            "preflight_phase2_workforce_m360_gameplay_action_cell",
+            return_value={
+                "result": "GREEN",
+                "stage": "static_runner_ready_live_proof_pending",
+            },
         ), mock.patch.object(
             runner,
             "_save_phase2_workforce_checkpoint",

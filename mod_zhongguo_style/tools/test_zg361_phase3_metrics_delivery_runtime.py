@@ -220,6 +220,60 @@ class GeneratorContractTests(unittest.TestCase):
                 if spec.mid in gen.STAGE_LAST[spec.domain]:
                     self.assertLess(debt, route.index(f"zg361_case_{spec.domain}_advance_"))
 
+    def test_m229_freezes_explicit_cp_receipt_lineage(self) -> None:
+        initializer = block(self.effects, "zg361_p3_initialize_portfolio_effect")
+        required = (
+            "zg361_cp_m26_receipt_owner",
+            "zg361_cp_m26_receipt_subject",
+            "zg361_cp_m26_receipt_cycle",
+            "zg361_cp_m26_receipt_case",
+            "zg361_cp_m26_contribution_receipt_id",
+            "zg361_cp_m26_contribution_receipt_revision",
+            "zg361_cp_m26_visible_value",
+        )
+        for key in required:
+            self.assertIn(f"has_variable = {key}", initializer)
+        self.assertIn("var:zg361_cp_m26_receipt_owner = root", initializer)
+        self.assertIn("var:zg361_cp_m26_receipt_subject = this", initializer)
+        self.assertIn(
+            "var:zg361_cp_m26_receipt_cycle = root.var:zg361_review_serial",
+            initializer,
+        )
+        self.assertIn(
+            "name = zg361_p3_project_source_contribution_receipt_id value = var:zg361_cp_m26_contribution_receipt_id",
+            initializer,
+        )
+        self.assertIn(
+            "name = zg361_p3_project_source_contribution_receipt_revision value = var:zg361_cp_m26_contribution_receipt_revision",
+            initializer,
+        )
+
+        for letter in "ab":
+            route = block(self.effects, f"zg361_p3_m229_route_{letter}_effect")
+            with self.subTest(route=letter):
+                self.assertIn("has_variable = zg361_p3_project_source_ready", route)
+                self.assertIn("var:zg361_p3_project_source_ready = 1", route)
+                self.assertIn(
+                    "name = zg361_p3_m229_source_contribution_receipt_id value = var:zg361_p3_project_source_contribution_receipt_id",
+                    route,
+                )
+                self.assertIn(
+                    "name = zg361_p3_m229_source_contribution_receipt_revision value = var:zg361_p3_project_source_contribution_receipt_revision",
+                    route,
+                )
+                self.assertIn(
+                    "name = zg361_p3_m229_metrics_revision value = var:zg361_case_aa_revision",
+                    route,
+                )
+                self.assertIn(
+                    "name = zg361_p3_m229_dictionary_key_code value = var:zg361_p3_metric_dictionary_owner",
+                    route,
+                )
+
+        route_c = block(self.effects, "zg361_p3_m229_route_c_effect")
+        self.assertNotIn("zg361_p3_m229_source_contribution_receipt_id", route_c)
+        self.assertNotIn("zg361_p3_m229_metrics_revision", route_c)
+
     def test_typed_red_idempotent_and_stale_are_explicit(self) -> None:
         for spec in gen.MECHANISMS:
             for choice, letter in enumerate("abc", 1):

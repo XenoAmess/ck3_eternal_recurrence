@@ -497,6 +497,25 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 24 | campaign setup / bookmark / ruler / game rules | fixed Robert `visual-narrow`；地图内 root context independent/vassal `live-primitive` | 从候选开局中按目标选择并验证地图初始状态。 |
 | 25 | map/world search / title and character discovery | war-scoped partial | 通用查找角色、头衔、领地和战略邻域，供所有上层 planner 复用。 |
 
+### 2026-09-03 G2 paused terms next gate
+
+The frozen `generic_war_bound_current` two-query runner remains source- and
+binary-identical and passes a fresh no-launch verification. Its common
+suspended launcher inherits the caller desktop, so it is directly executable
+when invoked from Windows `Default`; the current Codex sandbox desktop is
+explicitly ineligible and no CK3 launch was performed. This does not promote
+the old RED to live readiness: only generic current-soldier evidence is in
+scope, with source attribution, pre/loss, action and automatic surrender still
+closed. The adjacent `evaluated_days` line remains read-only observation work;
+its next evidence-backed seam is the shared `CAddTruce` slot-23 preview entry
+at post-prolog `0x2E87155` (continue `0x2E87165`), filtered by exact vtables
+`0x4461CA8/0x4461D70`. A hit proves only native preview traversal: that function
+does not call evaluator `0x3373000` or read duration field `this+0x108`, so it
+cannot promote `evaluated_days`. See
+[`g2-truce-preview-entry-observer-seam-2026-09-03.md`](g2-truce-preview-entry-observer-seam-2026-09-03.md).
+Neither line may introduce an action or mutation before its exact ABI and
+paused evidence are complete.
+
 ## 施工节奏与提交门
 
 每个工作包按以下小循环持续推进，不等待“大版本”统一收尾：

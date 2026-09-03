@@ -141,7 +141,7 @@
     "transport": "existing_250ms_heartbeat_metadata_not_capability_not_command_not_MCP",
     "object_key": "main_thread_query_mailbox_v1",
     "executor_submission_enabled": true,
-    "fixed_executor_slots": 22,
+    "fixed_executor_slots": 24,
     "permitted_executors": [
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
@@ -166,7 +166,7 @@
       "ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1",
       "ExecuteZhongguoScoreboardActionMailboxV1"
     ],
-    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport",
+    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_promotion_compensation_projects_metrics_fail_closed_transport",
     "required_fields": [
       "installed",
       "stop",

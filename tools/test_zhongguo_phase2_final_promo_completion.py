@@ -78,6 +78,9 @@ def _fixture(root: Path) -> Path:
         },
     )
     run = root / "candidate" / "run-manifest.json"
+    preserved_candidate = root / "candidate" / "artifacts" / "candidate.mp4"
+    preserved_candidate.parent.mkdir(parents=True)
+    preserved_candidate.write_bytes(candidate.read_bytes())
     _write(
         run,
         {
@@ -88,7 +91,7 @@ def _fixture(root: Path) -> Path:
                 {
                     "id": completion.DELIVERABLE_ID,
                     "role": "deliverable",
-                    "path": candidate.name,
+                    "path": preserved_candidate.relative_to(run.parent).as_posix(),
                     "bytes": media["bytes"],
                     "sha256": media["sha256"],
                 }
@@ -117,13 +120,7 @@ def _fixture(root: Path) -> Path:
                 "subject_sha256": media["sha256"],
                 "manual_approval_granted": False,
             },
-            "manual_signoff": {
-                "state": "approved",
-                "record": {
-                    "artifact_bytes": media["bytes"],
-                    "artifact_sha256": media["sha256"],
-                },
-            },
+            "manual_signoff": {"state": "not-provided"},
         },
     )
     reviews = []

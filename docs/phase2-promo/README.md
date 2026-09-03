@@ -12,6 +12,54 @@
 两版的配置、authoring ledger、cut/run/artifact/output ID 与制作命令统一维护在
 [`phase2-dual-cut-production.md`](phase2-dual-cut-production.md)。
 
+## 双片交付登记（2026-09-03 继续执行）
+
+本轮分别生成的人物版与制度群像版制作包见
+[dual-video-production-packet-2026-09-03.md](dual-video-production-packet-2026-09-03.md)。
+
+两条路线都是正式交付物，不互相替代：
+
+- 人物版：[`phase2-character-director-treatment.md`](phase2-character-director-treatment.md) → `zhongguo-361-phase2-character-led.mp4`
+- 制度群像版：[`phase2-institution-director-treatment.md`](phase2-institution-director-treatment.md) → `zhongguo-361-phase2-institution-led.mp4`
+
+两套配置、authoring claims、审片计划和独立输出路径均已落盘。宣传工具已在可写 fresh clone
+固定到 `origin/main` 的 `57c42fca13ea459432c1caf76e069a1fbccf602c`，并通过二期 builder 的 26 项测试；
+正式 TTS/渲染仍必须等待 8/8 段真实 CK3 clean spans。当前两份 MP4 尚未生成，启动阻塞和可核验日志见
+[`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
+
+`docs/` 保存两版的导演稿、生产合同、审片模板和状态索引；大体积 MP4 按项目约定落在外部
+`artifacts/demos/YYYY-MM-DD/`（并在本页登记路径、时长、编码和 SHA-256），不把成片二进制塞进 Git。
+
+## 交付进度（2026-09-03）
+
+| 工作包 | 当前进度 | 下一项 | 预计时间点 |
+|---|---|---|---|
+| 二期产品代码与发布树 | 静态校验 GREEN；279 文件 release projection 可复现 | 正常 `WinSta0\\Default` 串行做 seed → 8 段实机采集 | 从可用正常桌面起约 20–40 分钟完成采集与 intake |
+| 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
+| 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
+| 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
+| G2 / open_kaishek | G2 `evaluated_days` 观察器静态实现，正在接入共享桥；open_kaishek 已在可写 clone 提交只读能力合同 `981c793` | 完成共享接线与聚合回归；取得 paused exact-build evaluator 结果后再提升认证 | G2 静态接线收口后；canonical push 仍受只读 checkout/凭据阻塞 |
+
+这里的“尚无 MP4”是刻意保留的事实状态，不是漏写路径：没有真实八段 CK3 素材、具名审阅和 fresh tool receipt 时，制作器会 fail-closed，不生成占位宣传片。
+
+## 最新实机边界（2026-09-03）
+
+已用冻结源码做过两条 Default 桌面尝试：带四项启动保护的桥接运行推进到 `ck3+0x3BE33A9` 冷启动 VFS 崩溃；不加载 mod、不注入桥的最小 CK3 启动也在约 `1.3s` 于 `ck3+0x1DABD89` 崩溃。对应 crash dump、session cleanup 和 relay 日志保存在
+`Z:\\ck3_mod_rewrite\\_runtime\\phase2-seed-20260903\\`，因此这批运行没有产生可入片的游戏素材，当前 footage 仍是 `0/8`。
+
+宣传工具已在可写 fresh clone `Z:\\ck3_mod_rewrite\\_runtime\\promo-tool-fresh-20260903` 更新并核对到 `origin/main`（`57c42fca13ea459432c1caf76e069a1fbccf602c`）。等 CK3 启动/seed 边界修复并取得八段素材后，仍会分别完成两版 TTS、字幕、候选、人工审阅、导出和独立哈希记录。
+
+实机启动复现、解锁条件和诚实 ETA 见 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
+
+最新 A/B 结果：`-noWorkshop` 以及 `--userdir=<isolated path>` 两种无 mod、无 bridge 启动方式都在同一 `ck3+0x1DABD89` 崩溃；探针回执见 [`live-startup-probe-no-workshop-2026-09-03.md`](live-startup-probe-no-workshop-2026-09-03.md)。
+
+两版的独立审片入口为：
+
+- 人物版：[`review/character-led-review-plan.md`](review/character-led-review-plan.md)
+- 制度群像版：[`review/institution-led-review-plan.md`](review/institution-led-review-plan.md)
+
+每个入口都包含第一轮原始素材/声明审阅和第二轮最终候选片审阅模板；模板不是通过回执，只有绑定真实媒体字节并完成全长 `1×` 审阅后才能签核。
+
 ## 共同素材与独立交付
 
 两版共享同一套真实二期证据基础：十个 canonical authoring chapters，其中开场/结尾为双语生成卡，中间为八个真实 CK3 clean spans。共享 source span 是为了避免重复制造游戏事实，不代表两版是同一条视频。
@@ -30,3 +78,11 @@
 本目录中的两份 treatment 是导演内容的 **canonical authority**。`mod_zhongguo_style/promo/` 下保留同名入口文件，仅用于兼容原有浏览路径并指向这里；不得在两个目录分别维护两份正文。后续导演修改只编辑本目录的权威稿。
 
 项目配置、authoring claim matrix、capture contract、媒体构建和 readiness 状态仍由各自原有文件负责。导演稿只定义叙事与拍摄方案，不会自行把 `planned`、`static-ready` 或候选素材提升为 live、complete、exported 或 published。
+
+## 最新 seed preflight 回执（2026-09-03 06:51）
+
+以 clean freeze `165b47742fd05ff3713b8be4452711002328d57d`、source ZIP SHA-256
+`77aa3e30f1c20763576dbeea71b1c7451cfd63a15fb53a46fc58a373d72338e8`、guard-on bridge 和同步
+open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--preflight-only`：结果 `GREEN / preflight-ready`，source/archive、依赖、projection、bridge 和静态测试均 GREEN，`ck3_launch_attempted=false`；seed 合同仍为 `blocked_seed_generation_required`，因为尚未取得新真实 seed。回执位于
+`_runtime/phase2-seed-20260903/artifacts-preflight-current-03/preflight.json`，SHA-256
+`9057F967CFE97036AD4E3918C2640892371EBB006BBADDE18EE36DA7A4CABE2E`。这确认后续实机采集入口可直接复用，但不等同于 live 或视频完成。

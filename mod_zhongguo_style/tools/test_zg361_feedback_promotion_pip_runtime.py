@@ -111,6 +111,29 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             for suffix in ("owner", "subject", "cycle", "case", "state"):
                 self.assertIn(f"zg361_pp_m{mid:03d}_object_{suffix}", block)
 
+    def test_m147_publishes_result_case_serial_and_post_record_revision(self) -> None:
+        core = effect_block(self.effects, "zg361_pp_m147_core_effect")
+        consumer = effect_block(self.effects, "zg361_pp_m147_consume_effect")
+        opener = effect_block(self.effects, "zg361_pp_open_t_case_effect")
+        self.assertIn(
+            "name = zg361_pp_m147_receipt_serial value = var:zg361_pp_t_result_case",
+            core,
+        )
+        self.assertIn(
+            "name = zg361_pp_m147_receipt_revision value = var:zg361_case_t_revision",
+            core,
+        )
+        self.assertIn(
+            "name = zg361_pp_m147_receipt_revision value = var:zg361_case_t_revision",
+            consumer,
+        )
+        self.assertLess(
+            core.index("zg361_case_kernel_record_operation_effect"),
+            core.index("name = zg361_pp_m147_receipt_serial"),
+        )
+        self.assertIn("remove_variable = zg361_pp_m147_receipt_serial", opener)
+        self.assertIn("remove_variable = zg361_pp_m147_receipt_revision", opener)
+
     def test_c_route_is_policy_debt_only_not_business_operation(self) -> None:
         # The shared operation call is inside an explicit route != 3 branch;
         # the else branch writes only identity receipt fields and policy debt.

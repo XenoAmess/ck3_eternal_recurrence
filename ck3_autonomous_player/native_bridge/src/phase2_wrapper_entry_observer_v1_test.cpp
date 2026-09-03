@@ -67,6 +67,7 @@ int main() {
   if (!MakeExecutable(patch, 4096)) return Fail("fixture patch protect failed");
 
   Phase2WrapperEntryObserverV1State state{};
+  std::atomic<std::uint64_t> selected_task{0};
   FixtureMemory fixture{};
   Phase2WrapperEntryObserverV1Environment environment{};
   environment.exact_build_admitted = true;
@@ -81,6 +82,7 @@ int main() {
   environment.virtual_free_override = &FixtureFree;
   environment.virtual_protect_override = &FixtureProtect;
   environment.flush_instruction_cache_override = &FixtureFlush;
+  environment.selected_task_source = &selected_task;
   if (!xar::bridge::InstallPhase2WrapperEntryObserverV1(state, environment)) {
     return Fail("offline wrapper observer installation failed");
   }
@@ -125,6 +127,18 @@ int main() {
       diagnostics.last_producer_list != producer_list ||
       diagnostics.last_thread_id != 7 || diagnostics.last_timestamp_qpc != 9) {
     return Fail("wrapper callsite mapping seam mismatch");
+  }
+
+  selected_task.store(0xAABBCCDDEEFF0011ULL, std::memory_order_release);
+  xar::bridge::RecordPhase2WrapperEntryObservationV1(
+      state, environment.module_base + 0x23455, owner, producer_list, 8, 10);
+  diagnostics =
+      xar::bridge::ReadPhase2WrapperEntryObserverV1Diagnostics(state);
+  if (diagnostics.selected_after_publish_entry_count != 1 ||
+      diagnostics.selected_after_publish_last_task !=
+          0xAABBCCDDEEFF0011ULL ||
+      diagnostics.selected_after_publish_last_callsite_rva != 0x23450) {
+    return Fail("wrapper post-publish classification mismatch");
   }
 
   if (!xar::bridge::UninstallPhase2WrapperEntryObserverV1(state) ||

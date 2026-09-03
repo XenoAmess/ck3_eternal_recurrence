@@ -494,7 +494,9 @@ zg361_pp_open_t_case_effect = {
 		remove_variable = zg361_pp_m147_receipt_case
 		remove_variable = zg361_pp_m147_receipt_cycle
 		remove_variable = zg361_pp_m147_receipt_owner
+		remove_variable = zg361_pp_m147_receipt_revision
 		remove_variable = zg361_pp_m147_receipt_route
+		remove_variable = zg361_pp_m147_receipt_serial
 		remove_variable = zg361_pp_m147_receipt_state
 		remove_variable = zg361_pp_m147_receipt_subject
 		remove_variable = zg361_pp_m147_route
@@ -6335,6 +6337,7 @@ zg361_pp_m146_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m146_consumed value = 1 }
 		set_variable = { name = zg361_pp_m146_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m146_route = 3 } } set_variable = { name = zg361_pp_m146_consumer_value value = var:zg361_pp_m146_delivery_style } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -6640,6 +6643,11 @@ zg361_pp_m147_core_effect = {
 					set_variable = { name = zg361_pp_m147_object_cycle value = var:zg361_case_t_cycle_serial }
 					set_variable = { name = zg361_pp_m147_object_case value = var:zg361_case_t_case_serial }
 					set_variable = { name = zg361_pp_m147_object_state value = 1 }
+					# The delivered result case is the cross-product business identity.  The
+					# T case receipt below remains the internal case-kernel ticket; this serial
+					# gives promotion and compensation one stable, positive correlation key.
+					set_variable = { name = zg361_pp_m147_receipt_serial value = var:zg361_pp_t_result_case }
+					set_variable = { name = zg361_pp_m147_receipt_revision value = var:zg361_case_t_revision }
 					set_variable = { name = zg361_pp_m147_evidence_hash_consumed value = var:zg361_pp_t_frozen_evidence_hash }
 					set_variable = { name = zg361_pp_m147_supported_praise_n value = 1 }
 					set_variable = { name = zg361_pp_m147_supported_critique_n value = 1 }
@@ -6685,6 +6693,7 @@ zg361_pp_m147_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m147_consumed value = 1 }
 		set_variable = { name = zg361_pp_m147_consumer_revision value = var:zg361_case_t_revision }
+		set_variable = { name = zg361_pp_m147_receipt_revision value = var:zg361_case_t_revision }
 		if = { limit = { NOT = { var:zg361_pp_m147_route = 3 } } set_variable = { name = zg361_pp_m147_consumer_value value = var:zg361_pp_m147_polarity_template } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -7035,6 +7044,7 @@ zg361_pp_m148_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m148_consumed value = 1 }
 		set_variable = { name = zg361_pp_m148_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m148_route = 3 } } set_variable = { name = zg361_pp_m148_consumer_value value = var:zg361_pp_m148_meeting_order } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -7461,6 +7471,7 @@ zg361_pp_m149_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m149_consumed value = 1 }
 		set_variable = { name = zg361_pp_m149_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m149_route = 3 } } set_variable = { name = zg361_pp_m149_consumer_value value = var:zg361_pp_m149_bargain_terms } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -7892,6 +7903,7 @@ zg361_pp_m150_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m150_consumed value = 1 }
 		set_variable = { name = zg361_pp_m150_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m150_route = 3 } } set_variable = { name = zg361_pp_m150_consumer_value value = var:zg361_pp_m150_sacrifice_promise } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -8321,6 +8333,7 @@ zg361_pp_m151_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m151_consumed value = 1 }
 		set_variable = { name = zg361_pp_m151_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m151_route = 3 } } set_variable = { name = zg361_pp_m151_consumer_value value = var:zg361_pp_m151_receipt_agreement } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -8688,6 +8701,7 @@ zg361_pp_m152_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m152_consumed value = 1 }
 		set_variable = { name = zg361_pp_m152_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m152_route = 3 } } set_variable = { name = zg361_pp_m152_consumer_value value = var:zg361_pp_m152_actionability_score } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -9039,6 +9053,7 @@ zg361_pp_m153_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m153_consumed value = 1 }
 		set_variable = { name = zg361_pp_m153_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m153_route = 3 } } set_variable = { name = zg361_pp_m153_consumer_value value = var:zg361_pp_m153_action_item } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -9390,6 +9405,7 @@ zg361_pp_m154_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m154_consumed value = 1 }
 		set_variable = { name = zg361_pp_m154_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m154_route = 3 } } set_variable = { name = zg361_pp_m154_consumer_value value = var:zg361_pp_m154_minutes_mode } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -9687,6 +9703,7 @@ zg361_pp_m155_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m155_consumed value = 1 }
 		set_variable = { name = zg361_pp_m155_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m155_route = 3 } } set_variable = { name = zg361_pp_m155_consumer_value value = var:zg361_pp_m155_public_private_boundary } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -10033,6 +10050,7 @@ zg361_pp_m156_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m156_consumed value = 1 }
 		set_variable = { name = zg361_pp_m156_consumer_revision value = var:zg361_case_t_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m156_route = 3 } } set_variable = { name = zg361_pp_m156_consumer_value value = var:zg361_pp_m156_team_briefing } }
 		change_variable = { name = zg361_pp_t_completed add = 1 }
 		set_variable = { name = zg361_pp_t_resource_partition value = var:zg361_pp_t_operation_capacity_available }
@@ -10400,6 +10418,7 @@ zg361_pp_m157_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m157_consumed value = 1 }
 		set_variable = { name = zg361_pp_m157_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m157_route = 3 } } set_variable = { name = zg361_pp_m157_consumer_value value = var:zg361_pp_m157_nomination_access } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -10722,6 +10741,7 @@ zg361_pp_m158_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m158_consumed value = 1 }
 		set_variable = { name = zg361_pp_m158_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m158_route = 3 } } set_variable = { name = zg361_pp_m158_consumer_value value = var:zg361_pp_m158_nomination_quota } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -11032,6 +11052,7 @@ zg361_pp_m159_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m159_consumed value = 1 }
 		set_variable = { name = zg361_pp_m159_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m159_route = 3 } } set_variable = { name = zg361_pp_m159_consumer_value value = var:zg361_pp_m159_shelved_star } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -11420,6 +11441,7 @@ zg361_pp_m160_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m160_consumed value = 1 }
 		set_variable = { name = zg361_pp_m160_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m160_route = 3 } } set_variable = { name = zg361_pp_m160_consumer_value value = var:zg361_pp_m160_prescreen_rubric } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -11851,6 +11873,7 @@ zg361_pp_m161_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m161_consumed value = 1 }
 		set_variable = { name = zg361_pp_m161_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m161_route = 3 } } set_variable = { name = zg361_pp_m161_consumer_value value = var:zg361_pp_m161_sham_competition } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -12228,6 +12251,7 @@ zg361_pp_m162_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m162_consumed value = 1 }
 		set_variable = { name = zg361_pp_m162_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m162_route = 3 } } set_variable = { name = zg361_pp_m162_consumer_value value = var:zg361_pp_m162_tenure_exception } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -12540,6 +12564,7 @@ zg361_pp_m163_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m163_consumed value = 1 }
 		set_variable = { name = zg361_pp_m163_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m163_route = 3 } } set_variable = { name = zg361_pp_m163_consumer_value value = var:zg361_pp_m163_observation_window } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -12849,6 +12874,7 @@ zg361_pp_m164_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m164_consumed value = 1 }
 		set_variable = { name = zg361_pp_m164_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m164_route = 3 } } set_variable = { name = zg361_pp_m164_consumer_value value = var:zg361_pp_m164_cross_team_evidence } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -13230,6 +13256,7 @@ zg361_pp_m165_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m165_consumed value = 1 }
 		set_variable = { name = zg361_pp_m165_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m165_route = 3 } } set_variable = { name = zg361_pp_m165_consumer_value value = var:zg361_pp_m165_next_level_trial } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -13662,6 +13689,7 @@ zg361_pp_m166_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m166_consumed value = 1 }
 		set_variable = { name = zg361_pp_m166_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m166_route = 3 } } set_variable = { name = zg361_pp_m166_consumer_value value = var:zg361_pp_m166_packet_withdrawal } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -13957,6 +13985,7 @@ zg361_pp_m167_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m167_consumed value = 1 }
 		set_variable = { name = zg361_pp_m167_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m167_route = 3 } } set_variable = { name = zg361_pp_m167_consumer_value value = var:zg361_pp_m167_sponsor_credit } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -14255,6 +14284,7 @@ zg361_pp_m168_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m168_consumed value = 1 }
 		set_variable = { name = zg361_pp_m168_consumer_revision value = var:zg361_case_u_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m168_route = 3 } } set_variable = { name = zg361_pp_m168_consumer_value value = var:zg361_pp_m168_manager_hit_rate } }
 		change_variable = { name = zg361_pp_u_completed add = 1 }
 		set_variable = { name = zg361_pp_u_resource_partition value = var:zg361_pp_u_operation_capacity_available }
@@ -14609,6 +14639,7 @@ zg361_pp_m169_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m169_consumed value = 1 }
 		set_variable = { name = zg361_pp_m169_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m169_route = 3 } } set_variable = { name = zg361_pp_m169_consumer_value value = var:zg361_pp_m169_expertise_mix } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -14980,6 +15011,7 @@ zg361_pp_m170_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m170_consumed value = 1 }
 		set_variable = { name = zg361_pp_m170_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m170_route = 3 } } set_variable = { name = zg361_pp_m170_consumer_value value = var:zg361_pp_m170_panel_selection } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -15340,6 +15372,7 @@ zg361_pp_m171_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m171_consumed value = 1 }
 		set_variable = { name = zg361_pp_m171_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m171_route = 3 } } set_variable = { name = zg361_pp_m171_consumer_value value = var:zg361_pp_m171_panel_recusal } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -15701,6 +15734,7 @@ zg361_pp_m172_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m172_consumed value = 1 }
 		set_variable = { name = zg361_pp_m172_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m172_route = 3 } } set_variable = { name = zg361_pp_m172_consumer_value value = var:zg361_pp_m172_decision_rule } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -16054,6 +16088,7 @@ zg361_pp_m173_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m173_consumed value = 1 }
 		set_variable = { name = zg361_pp_m173_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m173_route = 3 } } set_variable = { name = zg361_pp_m173_consumer_value value = var:zg361_pp_m173_blind_live_review } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -16406,6 +16441,7 @@ zg361_pp_m174_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m174_consumed value = 1 }
 		set_variable = { name = zg361_pp_m174_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m174_route = 3 } } set_variable = { name = zg361_pp_m174_consumer_value value = var:zg361_pp_m174_defense_time } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -16759,6 +16795,7 @@ zg361_pp_m175_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m175_consumed value = 1 }
 		set_variable = { name = zg361_pp_m175_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m175_route = 3 } } set_variable = { name = zg361_pp_m175_consumer_value value = var:zg361_pp_m175_coaching_pool } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -17110,6 +17147,7 @@ zg361_pp_m176_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m176_consumed value = 1 }
 		set_variable = { name = zg361_pp_m176_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m176_route = 3 } } set_variable = { name = zg361_pp_m176_consumer_value value = var:zg361_pp_m176_individual_attribution } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -17460,6 +17498,7 @@ zg361_pp_m177_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m177_consumed value = 1 }
 		set_variable = { name = zg361_pp_m177_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m177_route = 3 } } set_variable = { name = zg361_pp_m177_consumer_value value = var:zg361_pp_m177_scale_leverage } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -17841,6 +17880,7 @@ zg361_pp_m178_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m178_consumed value = 1 }
 		set_variable = { name = zg361_pp_m178_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m178_route = 3 } } set_variable = { name = zg361_pp_m178_consumer_value value = var:zg361_pp_m178_dual_evidence } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -18194,6 +18234,7 @@ zg361_pp_m179_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m179_consumed value = 1 }
 		set_variable = { name = zg361_pp_m179_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m179_route = 3 } } set_variable = { name = zg361_pp_m179_consumer_value value = var:zg361_pp_m179_rejection_feedback } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -18554,6 +18595,7 @@ zg361_pp_m180_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m180_consumed value = 1 }
 		set_variable = { name = zg361_pp_m180_consumer_revision value = var:zg361_case_v_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m180_route = 3 } } set_variable = { name = zg361_pp_m180_consumer_value value = var:zg361_pp_m180_retry_cooldown } }
 		change_variable = { name = zg361_pp_v_completed add = 1 }
 		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
@@ -18876,6 +18918,7 @@ zg361_pp_m181_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m181_consumed value = 1 }
 		set_variable = { name = zg361_pp_m181_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m181_route = 3 } } set_variable = { name = zg361_pp_m181_consumer_value value = var:zg361_pp_m181_triage_category } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -19182,6 +19225,7 @@ zg361_pp_m182_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m182_consumed value = 1 }
 		set_variable = { name = zg361_pp_m182_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m182_route = 3 } } set_variable = { name = zg361_pp_m182_consumer_value value = var:zg361_pp_m182_pip_evidence_gate } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -19497,6 +19541,7 @@ zg361_pp_m183_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m183_consumed value = 1 }
 		set_variable = { name = zg361_pp_m183_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m183_route = 3 } } set_variable = { name = zg361_pp_m183_consumer_value value = var:zg361_pp_m183_pip_acknowledgement } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -19810,6 +19855,7 @@ zg361_pp_m184_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m184_consumed value = 1 }
 		set_variable = { name = zg361_pp_m184_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m184_route = 3 } } set_variable = { name = zg361_pp_m184_consumer_value value = var:zg361_pp_m184_pip_caseload } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -20105,6 +20151,7 @@ zg361_pp_m185_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m185_consumed value = 1 }
 		set_variable = { name = zg361_pp_m185_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m185_route = 3 } } set_variable = { name = zg361_pp_m185_consumer_value value = var:zg361_pp_m185_pip_midpoint } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -20408,6 +20455,7 @@ zg361_pp_m186_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m186_consumed value = 1 }
 		set_variable = { name = zg361_pp_m186_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m186_route = 3 } } set_variable = { name = zg361_pp_m186_consumer_value value = var:zg361_pp_m186_goal_creep_lock } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -20706,6 +20754,7 @@ zg361_pp_m187_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m187_consumed value = 1 }
 		set_variable = { name = zg361_pp_m187_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m187_route = 3 } } set_variable = { name = zg361_pp_m187_consumer_value value = var:zg361_pp_m187_graduation_gate } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -21005,6 +21054,7 @@ zg361_pp_m188_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m188_consumed value = 1 }
 		set_variable = { name = zg361_pp_m188_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m188_route = 3 } } set_variable = { name = zg361_pp_m188_consumer_value value = var:zg361_pp_m188_relapse_window } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -21428,6 +21478,7 @@ zg361_pp_m189_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m189_consumed value = 1 }
 		set_variable = { name = zg361_pp_m189_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m189_route = 3 } } set_variable = { name = zg361_pp_m189_consumer_value value = var:zg361_pp_m189_terminal_fork } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -21906,6 +21957,7 @@ zg361_pp_m190_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m190_consumed value = 1 }
 		set_variable = { name = zg361_pp_m190_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m190_route = 3 } } set_variable = { name = zg361_pp_m190_consumer_value value = var:zg361_pp_m190_transfer_disclosure } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }
@@ -22274,6 +22326,7 @@ zg361_pp_m191_consume_effect = {
 		}
 		set_variable = { name = zg361_pp_m191_consumed value = 1 }
 		set_variable = { name = zg361_pp_m191_consumer_revision value = var:zg361_case_w_revision }
+
 		if = { limit = { NOT = { var:zg361_pp_m191_route = 3 } } set_variable = { name = zg361_pp_m191_consumer_value value = var:zg361_pp_m191_exit_cost_statement } }
 		change_variable = { name = zg361_pp_w_completed add = 1 }
 		set_variable = { name = zg361_pp_w_resource_partition value = var:zg361_pp_w_operation_capacity_available }

@@ -355,17 +355,19 @@ def build_runbook(
                 )
             ),
             "typed_production_boundary": (
-                readiness.get("result") == "RED"
+                isinstance(readiness.get("reason_codes"), list)
                 and readiness.get("reason_codes")
                 == [
-                    "fresh_promo_tool_fetch_required",
-                    "footage_pending",
-                    "publish_target_pending",
+                    code
+                    for code in (
+                        "fresh_promo_tool_fetch_required",
+                        "footage_pending",
+                        "publish_target_pending",
+                    )
+                    if code in readiness.get("reason_codes", [])
                 ]
-            )
-            or (
-                readiness.get("result") == "GREEN"
-                and readiness.get("reason_codes") == []
+                and readiness.get("result")
+                == ("RED" if readiness.get("reason_codes") else "GREEN")
             ),
         }
     media["checks"] = media_checks
@@ -386,24 +388,64 @@ def build_runbook(
         "production_refresh_required": True,
     }
     capture_arg = "<FOOTAGE_PENDING>" if capture is None else str(capture)
-    completion_arg = (
-        "<FINAL_COMPLETION_ATTESTATION_PENDING>"
-        if completion_attestation is None
-        else str(completion_attestation.expanduser().resolve())
-    )
-    publish_target_arg = (
-        "<PUBLISH_TARGET_AUTHORITY_PENDING>"
-        if publish_target_authority is None
-        else str(publish_target_authority.expanduser().resolve())
-    )
     seed_arg = "<SEED_PREFLIGHT_PENDING>" if seed_preflight_report is None else str(seed_preflight_report.resolve())
     # Step 1 is deliberately authoritative.  Even when a prior receipt is
     # supplied as a planning input, production commands consume the new
     # receipt made *after* the mandatory remote refresh.
-    media_arg = "<NEW_MEDIA_RECEIPT_JSON>"
     media_sha_arg = "<NEW_MEDIA_RECEIPT_SHA256>"
     candidate_run = work_dir.expanduser().resolve() / "candidate-run" / "run-manifest.json"
     deliverable = work_dir.expanduser().resolve() / cut.deliverable_relative_path
+    authoring_attempt = work_dir.expanduser().resolve().with_name(
+        work_dir.expanduser().resolve().name + "-authoring"
+    )
+    promoted_config = authoring_attempt / config.name
+    footage_intake_report = authoring_attempt / "footage-intake.json"
+    source_review_receipt = authoring_attempt / "source-review-receipt.json"
+    promotion_receipt = authoring_attempt / "authoring-promotion-receipt.json"
+    tts_prime_receipt = authoring_attempt / "tts-cache-prime-receipt.json"
+    media_receipt = authoring_attempt / "media-preflight.json"
+    export_directory = work_dir.expanduser().resolve().with_name(
+        work_dir.expanduser().resolve().name + "-export"
+    )
+    post_candidate_root = candidate_run.parent / "post-candidate"
+    post_candidate_receipt = post_candidate_root / "materialization-receipt.json"
+    evidence_bundle = post_candidate_root / "evidence-bundle.json"
+    automated_audit_report = post_candidate_root / "automated-audit.json"
+    final_storyboard = post_candidate_root / "final-storyboard.json"
+    bound_probe = post_candidate_root / "bound-ffprobe.json"
+    pending_review_directory = post_candidate_root / "pending-review"
+    review_command_audit_directory = post_candidate_root / "review-command-audit"
+    claims_source_review_receipt = (
+        post_candidate_root / "human-reviews" / "claims-and-source-pass.json"
+    )
+    final_candidate_review_receipt = (
+        post_candidate_root / "human-reviews" / "final-candidate-pass.json"
+    )
+    release_export_policy = post_candidate_root / "release-export-policy.json"
+    cli_prefix = [str(python.resolve()), "-m", "xar_promo.cli"]
+    media_arg = str(media_receipt)
+    media_preflight_command = [
+        str(python.resolve()),
+        str(ROOT / "mod_zhongguo_style/tools/preflight_phase2_media.py"),
+        "--output",
+        media_arg,
+        "--project-config",
+        str(promoted_config),
+        "--expected-toolchain-head",
+        "<FETCHED_PROMO_TOOL_HEAD>",
+        "--planned-work-dir",
+        str(work_dir.resolve()),
+        "--planned-tts-cache",
+        str(tts_cache.resolve()),
+        "--planned-export-dir",
+        str(export_directory),
+        "--capture-root",
+        capture_arg,
+    ]
+    if publish_target_authority is not None:
+        media_preflight_command.extend(
+            ("--publish-target-authority", str(publish_target_authority.resolve()))
+        )
 
     steps: list[dict[str, object]] = [
         {
@@ -421,109 +463,108 @@ def build_runbook(
         },
         {
             "ordinal": 2,
-            "id": "refresh_media_receipt_after_fetch",
-            "gate": "new receipt path; 24-hour validity; tool commit from step 1; Xiaoxiao, fonts, subtitle safe area, FFmpeg/ffprobe bytes GREEN",
-            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/preflight_phase2_media.py"), "--output", "<NEW_MEDIA_RECEIPT_JSON>"],
+            "id": "bind_green_footage_intake",
+            "gate": "one new hash-bound intake report for the immutable eight-span capture bundle",
+            "command": [str(python.resolve()), str(ROOT / "tools/zhongguo_phase2_footage_intake.py"), "--capture-root", capture_arg, "--output", str(footage_intake_report)],
         },
         {
             "ordinal": 3,
-            "id": "bind_green_footage_and_authoring_ledger",
-            "gate": "rerun this planner against the strict media-entry intake for one lineage-bound GREEN capture bundle; all 8 spans must bind the same canonical seed/save lineage and exact source/game/mod mount, while each span independently proves continuous pre-action-post session/PID/generation/revisions, start/end checkpoint hashes, postcondition, and cleanup; clean CK3 restarts between spans are allowed; footage_pending must clear and the byte-bound 10/10 authoring ledger must remain GREEN",
+            "id": "source_footage_human_review_1x",
+            "human_pause": True,
+            "gate": "named human watches all eight raw spans completely at 1x and writes the cut-specific source-review receipt at the declared path; confirms every promoted cue is supported; historical characters only; no fixture/test UI; no crop, mask, or redaction",
+            "receipt_path": str(source_review_receipt),
         },
         {
             "ordinal": 4,
-            "id": "source_footage_human_review_1x",
-            "human_pause": True,
-            "gate": "named human watches all eight raw spans completely at 1x and signs exact timeline/raw/report/index hashes; confirms every drafted claim is supported; historical characters only; no fixture/test UI; no crop, mask, or redaction",
+            "id": "promote_reviewed_authoring_into_project",
+            "gate": "the command consumes the real source-review receipt and GREEN intake; it cannot infer approval and writes a new ready project instead of overwriting the draft",
+            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/promote_phase2_reviewed_authoring.py"), "--project-config", str(config), "--authoring-ledger", str(authoring_ledger.expanduser().resolve()), "--footage-intake-report", str(footage_intake_report), "--source-review-receipt", str(source_review_receipt), "--output-project", str(promoted_config), "--output-receipt", str(promotion_receipt)],
         },
         {
             "ordinal": 5,
-            "id": "promote_reviewed_authoring_into_project",
-            "manual_gate": True,
-            "gate": "copy only footage-supported ledger cues into the ten project chapters, set ready/artifact_ids, revalidate both files, and record their new SHA-256; this is text/config work, not TTS or subtitle rendering",
+            "id": "refresh_media_receipt_after_fetch",
+            "gate": "new cut-specific receipt path; promoted config SHA; 24-hour validity; expected tool HEAD from step 1; Xiaoxiao, fonts, subtitle safe area, FFmpeg/ffprobe bytes GREEN",
+            "command": media_preflight_command,
         },
         {
             "ordinal": 6,
-            "id": "validate_only",
-            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--cut", cut.cut_id, "--project-config", str(config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", cut.default_run_id, "--validate-only"],
-            "gate": "read-only GREEN; exact 10 chapters/8 spans/runtime claims; no work directory created",
+            "id": "prime_reviewed_xiaoxiao_cache",
+            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/prime_phase2_tts_cache.py"), "--cut", cut.cut_id, "--project-config", str(promoted_config), "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--tts-cache", str(tts_cache.resolve()), "--output", str(tts_prime_receipt), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe],
+            "gate": "real Edge TTS only after the fresh cut-specific media receipt; every reviewed cue must have a valid content-addressed Xiaoxiao entry; failures remain RED and must never be replaced with fabricated audio",
         },
         {
             "ordinal": 7,
-            "id": "build_unreviewed_candidate",
-            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--cut", cut.cut_id, "--project-config", str(config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", cut.default_run_id],
-            "gate": "new external work directory; offline content-addressed Xiaoxiao cache only; capture and receipt bytes unchanged after build",
+            "id": "validate_only",
+            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--cut", cut.cut_id, "--project-config", str(promoted_config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", cut.default_run_id, "--validate-only"],
+            "gate": "read-only GREEN; exact 10 chapters/8 spans/runtime claims; no work directory created",
         },
         {
             "ordinal": 8,
-            "id": "prepare_exact_deliverable_review",
-            "commands": [
-                ["xar-promo", "audit", str(candidate_run), "--subject-artifact-id", cut.deliverable_artifact_id, "--evidence-bundle", "<AUTOMATED_EVIDENCE_BUNDLE_JSON>", "--report", "<AUTOMATED_AUDIT_REPORT_JSON>", "--report-artifact-id", f"{cut.cut_id}-automated-audit"],
-                ["xar-promo", "review", str(deliverable), "--storyboard", "<FINAL_STORYBOARD_JSON>", "--probe", "<BOUND_FFPROBE_ENVELOPE_JSON>", "--output-directory", "<NEW_PENDING_REVIEW_DIRECTORY>", "--audit-directory", "<NEW_REVIEW_COMMAND_AUDIT_DIRECTORY>", "--ffmpeg", ffmpeg, "--plan-only"],
-                ["xar-promo", "review", str(deliverable), "--storyboard", "<FINAL_STORYBOARD_JSON>", "--probe", "<BOUND_FFPROBE_ENVELOPE_JSON>", "--output-directory", "<NEW_PENDING_REVIEW_DIRECTORY>", "--audit-directory", "<NEW_REVIEW_COMMAND_AUDIT_DIRECTORY>", "--ffmpeg", ffmpeg],
-            ],
-            "gate": "create byte-bound ffprobe envelope and pending review package for the exact final MP4; automated audit is not approval",
+            "id": "build_unreviewed_candidate",
+            "command": [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/build_phase2_promo_video.py"), "--cut", cut.cut_id, "--project-config", str(promoted_config), "--capture-root", capture_arg, "--seed-preflight-report", seed_arg, "--media-preflight-report", media_arg, "--expected-media-preflight-sha256", media_sha_arg, "--work-dir", str(work_dir.resolve()), "--tts-cache", str(tts_cache.resolve()), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--run-id", cut.default_run_id],
+            "gate": "new external work directory; offline content-addressed Xiaoxiao cache only; capture and receipt bytes unchanged after build",
         },
         {
             "ordinal": 9,
-            "id": "final_video_human_review_1x",
-            "human_pause": True,
-            "gate": "independent named human watches the exact MP4 completely at 1x; verifies narration claims, Xiaoxiao audio, zh-CN/en synchronization and wrapping, safe area, opening/finale, chapter boundaries, no loading/test UI; then explicitly approves or rejects its SHA-256",
+            "id": "prepare_exact_deliverable_review",
+            "commands": [
+                [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/materialize_phase2_post_candidate.py"), "--cut", cut.cut_id, "--project-config", str(promoted_config), "--run-manifest", str(candidate_run), "--output-root", str(post_candidate_root), "--export-directory", str(export_directory), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe, "--validate-only"],
+                [str(python.resolve()), str(ROOT / "mod_zhongguo_style/tools/materialize_phase2_post_candidate.py"), "--cut", cut.cut_id, "--project-config", str(promoted_config), "--run-manifest", str(candidate_run), "--output-root", str(post_candidate_root), "--export-directory", str(export_directory), "--ffmpeg", ffmpeg, "--ffprobe", ffprobe],
+                cli_prefix + ["audit", str(candidate_run), "--subject-artifact-id", cut.deliverable_artifact_id, "--evidence-bundle", str(evidence_bundle), "--report", str(automated_audit_report), "--report-artifact-id", f"{cut.cut_id}-automated-audit"],
+            ],
+            "gate": "materialize the cut-specific bound probe, exact final storyboard, frame evidence bundle, pending review package and release policy; then run the concrete automated integrity audit, which cannot grant approval",
         },
         {
             "ordinal": 10,
-            "id": "record_signoff",
-            "command": ["xar-promo", "signoff", "--run-manifest", str(candidate_run), "--artifact-id", cut.deliverable_artifact_id, "--reviewer", "<NAMED_HUMAN>", "--decision", "<approved-or-rejected>"],
-            "gate": "approval is valid only for the exact deliverable bytes reviewed in step 7",
+            "id": "final_video_human_review_1x",
+            "human_pause": True,
+            "gate": "independent named human watches the exact MP4 completely at 1x; verifies narration claims, Xiaoxiao audio, zh-CN/en synchronization and wrapping, safe area, opening/finale, chapter boundaries, no loading/test UI; then explicitly approves or rejects its SHA-256",
+            "review_package": str(pending_review_directory / "review-package.json"),
+            "review_template": str(pending_review_directory / "review-template.json"),
+            "required_receipts": [
+                str(claims_source_review_receipt),
+                str(final_candidate_review_receipt),
+            ],
+            "distinct_named_reviewers_required": True,
         },
         {
             "ordinal": 11,
+            "id": "record_signoff",
+            "command": None,
+            "command_interface": {
+                "fixed_argv": cli_prefix + ["signoff", "--run-manifest", str(candidate_run), "--artifact-id", cut.deliverable_artifact_id],
+                "required_human_arguments": ["--reviewer", "--decision"],
+                "allowed_decisions": ["approved", "rejected"],
+                "automatic_execution_allowed": False,
+            },
+            "gate": "approval is valid only for the exact deliverable bytes built in step 8",
+        },
+        {
+            "ordinal": 12,
             "id": "export_preflight_then_local_bundle",
             "commands": [
-                ["xar-promo", "validate", str(candidate_run), "--profile", "release"],
-                ["xar-promo", "export", str(candidate_run), "<NEW_EXPORT_DIRECTORY>", "--policy", "<RELEASE_EXPORT_POLICY_JSON>", "--validate-only"],
-                ["xar-promo", "export", str(candidate_run), "<NEW_EXPORT_DIRECTORY>", "--policy", "<RELEASE_EXPORT_POLICY_JSON>"],
+                cli_prefix + ["validate", str(candidate_run), "--profile", "release"],
+                cli_prefix + ["export", str(candidate_run), str(export_directory), "--policy", str(release_export_policy), "--validate-only"],
+                cli_prefix + ["export", str(candidate_run), str(export_directory), "--policy", str(release_export_policy)],
             ],
             "gate": "release profile GREEN, selected deliverable approved, strict allowlist GREEN; export is local and does not publish",
         },
         {
-            "ordinal": 12,
+            "ordinal": 13,
             "id": "external_publish",
             "command": None,
             "gate": "separate explicit operator action only after a GREEN publish-target authority names the platform, account, credential reference and locator prefix; no repository tool uploads; verify remote page and preserve a byte-bound receipt after the authorized upload",
             "publish_target": publish_target["target"],
         },
         {
-            "ordinal": 13,
+            "ordinal": 14,
             "id": "verify_complete_attestation",
-            "command": [
-                str(python.resolve()),
-                str(Path(__file__).resolve()),
-                "--output",
-                "<NEW_COMPLETE_RUNBOOK_JSON>",
-                "--promo-tool-root",
-                str(promo),
-                "--project-config",
-                str(config),
-                "--authoring-ledger",
-                str(authoring_ledger.expanduser().resolve()),
-                "--capture-root",
-                capture_arg,
-                "--seed-preflight-report",
-                seed_arg,
-                "--media-preflight-report",
-                media_arg,
-                "--expected-media-preflight-sha256",
-                media_sha_arg,
-                "--tts-cache",
-                str(tts_cache.resolve()),
-                "--work-dir",
-                str(work_dir.resolve()),
-                "--completion-attestation",
-                completion_arg,
-                "--publish-target-authority",
-                publish_target_arg,
-            ],
+            "command": None,
+            "command_interface": {
+                "fixed_argv": [str(python.resolve()), str(Path(__file__).resolve()), "--output", str(work_dir.resolve().with_name(work_dir.resolve().name + "-complete-runbook.json")), "--promo-tool-root", str(promo), "--project-config", str(promoted_config), "--authoring-ledger", str(authoring_ledger.expanduser().resolve()), "--capture-root", capture_arg, "--tts-cache", str(tts_cache.resolve()), "--work-dir", str(work_dir.resolve())],
+                "required_runtime_bindings": ["--seed-preflight-report", "--media-preflight-report", "--expected-media-preflight-sha256", "--completion-attestation", "--publish-target-authority"],
+                "automatic_completion_claim_allowed": False,
+            },
             "gate": "COMPLETE only when candidate probe, claims audit, two independent 1x receipts, approved signoff, exact export manifest/files, explicit publish-target authority, and its verified HTTPS publication receipt all bind the same bytes",
         },
     ]
@@ -544,6 +585,21 @@ def build_runbook(
             "run_id": cut.default_run_id,
             "deliverable_artifact_id": cut.deliverable_artifact_id,
             "deliverable_relative_path": cut.deliverable_relative_path.as_posix(),
+        },
+        "editorial_plan": {
+            "chapter_order": list(cut.editorial_chapter_order),
+            "reprises": [
+                {
+                    "source_chapter_id": reprise.source_chapter_id,
+                    "after_chapter_id": reprise.after_chapter_id,
+                    "duration_seconds": reprise.duration_seconds,
+                    "start_offset_seconds": reprise.start_offset_seconds,
+                    "narration": "generated-silence",
+                    "new_evidence_claim": False,
+                }
+                for reprise in cut.reprises
+            ],
+            "capture_order_changed": False,
         },
         "execution_attestation": {"commands_executed": False, "ck3_started": False, "tts_generated": False, "subtitle_media_generated": False, "ffmpeg_started": False, "candidate_generated": False},
         "project": project,
@@ -611,7 +667,30 @@ def build_runbook(
         "release_gates": [
             "step 1 fetched toolchain is clean and exactly origin/main", "fresh receipt is bound to that tool commit and remains unexpired", "the byte-bound 10/10 bilingual authoring ledger is GREEN and only footage-supported claims are promoted into the project", "all eight canonical spans share one canonical seed/save lineage and exact source/game/mod mount, and each span has a continuous session plus clean begin/end gates; clean CK3 restarts are allowed only between spans", "Xiaoxiao narration is content-addressed and ffprobe-measured", "zh-CN and en subtitles remain synchronized and inside 1920x1080 safe margins", "final video is H.264/yuv420p at 1920x1080 plus AAC 48kHz stereo and under 1200 seconds", "claims audit passes against the exact candidate", "two independent named reviewers each provide a full-duration 1x receipt bound to that candidate and audit", "approved run signoff binds the exact final MP4 SHA-256", "export manifest and exported deliverable hashes match the candidate", "an owner-approved publish target names the platform, account, credential reference and locator prefix", "a real HTTPS locator under that authorized prefix and remote-verification receipt bind the same target, export and candidate; only then may status be COMPLETE"
         ],
-        "planned_paths": {"work_dir": str(work_dir.resolve()), "candidate_run_manifest": str(candidate_run), "deliverable": str(deliverable)},
+        "planned_paths": {
+            "authoring_attempt": str(authoring_attempt),
+            "footage_intake_report": str(footage_intake_report),
+            "source_review_receipt": str(source_review_receipt),
+            "promoted_project_config": str(promoted_config),
+            "authoring_promotion_receipt": str(promotion_receipt),
+            "tts_cache_prime_receipt": str(tts_prime_receipt),
+            "media_preflight_receipt": str(media_receipt),
+            "post_candidate_root": str(post_candidate_root),
+            "post_candidate_receipt": str(post_candidate_receipt),
+            "bound_probe": str(bound_probe),
+            "final_storyboard": str(final_storyboard),
+            "evidence_bundle": str(evidence_bundle),
+            "automated_audit_report": str(automated_audit_report),
+            "pending_review_directory": str(pending_review_directory),
+            "review_command_audit_directory": str(review_command_audit_directory),
+            "claims_source_review_receipt": str(claims_source_review_receipt),
+            "final_candidate_review_receipt": str(final_candidate_review_receipt),
+            "release_export_policy": str(release_export_policy),
+            "export_directory": str(export_directory),
+            "work_dir": str(work_dir.resolve()),
+            "candidate_run_manifest": str(candidate_run),
+            "deliverable": str(deliverable),
+        },
     }
 
 

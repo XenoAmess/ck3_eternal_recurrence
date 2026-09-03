@@ -35,6 +35,36 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1
+  "Install the existing exact-build startup containment chain"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1
+  "Skip only the proven null-RDI startup widget flag call on the exact build"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1
+  "Skip only the proven null-RBX startup call on the exact build"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1
+  "Observe the exact-build cold-map VFS ctor, moved variant, and poll state"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1
+  "Enable the read-only scoreboard production-evidence candidate without advertising production capability"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1
   "Write the private GEN-034 truce reader result before production reset"
   OFF
@@ -43,6 +73,12 @@ option(
 option(
   XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1
   "Install the private exact-build G2 truce evaluator callsite observer"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
+  "Install the private exact-vtable G2 truce preview traversal observer"
   OFF
 )
 
@@ -96,6 +132,12 @@ option(
   OFF
 )
 
+option(
+  XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1
+  "Classify post-publish phase-two wrapper and exact consumer call edges"
+  OFF
+)
+
 if(
   XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1 AND
   XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1
@@ -127,6 +169,7 @@ target_compile_definitions(xar_bridge_injector PUBLIC
 )
 
 add_library(xar_ck3_bridge SHARED
+  src/cold_map_vfs_observer_v1.cpp
   src/actual_contact_scope_v1_mailbox.cpp
   src/battle_control_snapshot_v1_mailbox.cpp
   src/battle_reinforcement_assignment_v1_mailbox.cpp
@@ -152,6 +195,7 @@ add_library(xar_ck3_bridge SHARED
   src/event_window_context_v1_serializer.cpp
   src/game_adapter.cpp
   src/g2_truce_native_callsite_observer_v1.cpp
+  src/g2_truce_preview_entry_observer_v1.cpp
   src/loaded_feature_manifest_v1.cpp
   src/loaded_feature_manifest_v1_mailbox.cpp
   src/loaded_feature_manifest_v1_serializer.cpp
@@ -164,11 +208,14 @@ add_library(xar_ck3_bridge SHARED
   src/phase2_post_call_observer_v1.cpp
   src/phase2_producer_identity_observer_v1.cpp
   src/phase2_wrapper_entry_observer_v1.cpp
+  src/phase2_wrapper_consumer_edge_observer_v1.cpp
   src/route_contact_horizon_v1_mailbox.cpp
   src/raiktor_war_bound_regiment_v1.cpp
   src/raiktor_surrender_truce_v1.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
+  src/startup_rbx_null_call_guard_v1.cpp
+  src/startup_widget_null_flag_call_guard_v1.cpp
   src/startup_particle2_consumer_null_guard_v1.cpp
   src/startup_particle2_null_guard_v1.cpp
   src/startup_particle2_stage_recorder_v1.cpp
@@ -192,8 +239,14 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_incident_snapshot_v1.cpp
   src/zhongguo_incident_snapshot_v1_mailbox.cpp
   src/zhongguo_incident_snapshot_v1_serializer.cpp
+  src/zhongguo_promotion_compensation_postcondition_v1.cpp
+  src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+  src/zhongguo_projects_metrics_postcondition_v1.cpp
+  src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp
+  src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp
   src/zhongguo_scoreboard_action_v1.cpp
   src/zhongguo_scoreboard_action_v1_mailbox.cpp
+  src/zhongguo_scoreboard_production_v1.cpp
   src/zhongguo_scoreboard_state_v1.cpp
   src/zhongguo_scoreboard_state_v1_mailbox.cpp
   src/zhongguo_scoreboard_state_v1_serializer.cpp
@@ -211,6 +264,46 @@ target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
 target_compile_definitions(xar_ck3_bridge PRIVATE
   XAR_BRIDGE_VERSION="${PROJECT_VERSION}"
 )
+if(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1)
+  # The fifth caller-local guard is meaningful only after the four previously
+  # live-proven startup faults are contained.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+    XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1)
+  # This successor seam is reached only after all five previous live-proven
+  # startup faults are contained in the same exact-build bridge.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+    XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1)
+  # Read-only successor observer. It is reached in the frozen G2 startup
+  # candidate only after the six independently live-proven guards.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+    XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1)
+  # Candidate-only read-only verifier diagnostics. The action result and
+  # hello capability list remain fail-closed until a retained live artifact
+  # is reviewed and production promotion is made as a separate source change.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1=1
@@ -224,6 +317,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
@@ -253,6 +351,15 @@ if(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
 endif()
 if(XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1=1
+    XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1=1
+    XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1=1
+    XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1=1
     XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1=1
     XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1=1
     XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1=1
@@ -445,6 +552,10 @@ if(BUILD_TESTING)
     src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp
     src/zhongguo_incident_snapshot_v1.cpp
     src/zhongguo_incident_snapshot_v1_mailbox.cpp
+    src/zhongguo_promotion_compensation_postcondition_v1.cpp
+    src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+    src/zhongguo_projects_metrics_postcondition_v1.cpp
+    src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp
     src/zhongguo_scoreboard_action_v1.cpp
     src/zhongguo_scoreboard_action_v1_mailbox.cpp
     src/zhongguo_scoreboard_state_v1.cpp
@@ -1186,6 +1297,45 @@ if(BUILD_TESTING)
     COMMAND xar_ck3_zhongguo_scoreboard_action_v1_test
   )
 
+  add_executable(xar_ck3_zhongguo_scoreboard_production_v1_test
+    src/zhongguo_scoreboard_production_v1.cpp
+    src/zhongguo_scoreboard_production_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_scoreboard_production_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_scoreboard_production_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_scoreboard_production_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_scoreboard_production_v1
+    COMMAND xar_ck3_zhongguo_scoreboard_production_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_scoreboard_production_v1_candidate_test
+    src/zhongguo_scoreboard_production_v1.cpp
+    src/zhongguo_scoreboard_production_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_scoreboard_production_v1_candidate_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_scoreboard_production_v1_candidate_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1=1)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_scoreboard_production_v1_candidate_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_scoreboard_production_v1_candidate
+    COMMAND xar_ck3_zhongguo_scoreboard_production_v1_candidate_test
+  )
+
   add_executable(xar_ck3_zhongguo_scoreboard_action_v1_mailbox_test
     src/zhongguo_scoreboard_action_v1.cpp
     src/zhongguo_scoreboard_action_v1_mailbox.cpp
@@ -1246,6 +1396,92 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_zhongguo_workforce_normal_exit_snapshot_v1
     COMMAND xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test
+    src/zhongguo_promotion_compensation_postcondition_v1.cpp
+    src/zhongguo_promotion_compensation_postcondition_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_promotion_compensation_postcondition_v1
+    COMMAND xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test
+  )
+
+  add_executable(
+    xar_ck3_zg_promo_comp_mailbox_v1_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/zhongguo_promotion_compensation_postcondition_v1.cpp
+    src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+    src/zhongguo_promotion_compensation_postcondition_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zg_promo_comp_mailbox_v1_test
+    PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zg_promo_comp_mailbox_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zg_promo_comp_mailbox_v1_test
+      PRIVATE /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_promotion_compensation_postcondition_v1_mailbox
+    COMMAND xar_ck3_zg_promo_comp_mailbox_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_projects_metrics_postcondition_v1_test
+    src/zhongguo_case_snapshot_v1.cpp
+    src/zhongguo_projects_metrics_postcondition_v1.cpp
+    src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp
+    src/zhongguo_projects_metrics_postcondition_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_projects_metrics_postcondition_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_projects_metrics_postcondition_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_projects_metrics_postcondition_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1
+    COMMAND xar_ck3_zhongguo_projects_metrics_postcondition_v1_test
+  )
+
+  add_executable(xar_ck3_zg_projects_metrics_mailbox_v1_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/zhongguo_case_snapshot_v1.cpp
+    src/zhongguo_projects_metrics_postcondition_v1.cpp
+    src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp
+    src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp
+    src/zhongguo_projects_metrics_postcondition_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zg_projects_metrics_mailbox_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zg_projects_metrics_mailbox_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zg_projects_metrics_mailbox_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1_mailbox
+    COMMAND xar_ck3_zg_projects_metrics_mailbox_v1_test
   )
 
   add_executable(
@@ -1820,6 +2056,29 @@ if(BUILD_TESTING)
     COMMAND xar_ck3_g2_truce_native_callsite_observer_v1_test
   )
 
+  add_executable(xar_ck3_g2_truce_preview_entry_observer_v1_test
+    src/g2_truce_preview_entry_observer_v1.cpp
+    src/g2_truce_preview_entry_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_g2_truce_preview_entry_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_g2_truce_preview_entry_observer_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_g2_truce_preview_entry_observer_v1_test
+      PRIVATE /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_g2_truce_preview_entry_observer_v1
+    COMMAND xar_ck3_g2_truce_preview_entry_observer_v1_test
+  )
+
   add_executable(xar_ck3_raiktor_war_bound_regiment_v1_test
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_war_bound_regiment_v1_test.cpp
@@ -2046,6 +2305,52 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
+  add_executable(xar_ck3_startup_widget_null_flag_call_guard_v1_test
+    src/startup_widget_null_flag_call_guard_v1.cpp
+    src/startup_widget_null_flag_call_guard_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_startup_widget_null_flag_call_guard_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_startup_widget_null_flag_call_guard_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_startup_widget_null_flag_call_guard_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_startup_widget_null_flag_call_guard_v1
+    COMMAND xar_ck3_startup_widget_null_flag_call_guard_v1_test
+  )
+
+  add_executable(xar_ck3_startup_rbx_null_call_guard_v1_test
+    src/startup_rbx_null_call_guard_v1.cpp
+    src/startup_rbx_null_call_guard_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_startup_rbx_null_call_guard_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_startup_rbx_null_call_guard_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_startup_rbx_null_call_guard_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_startup_rbx_null_call_guard_v1
+    COMMAND xar_ck3_startup_rbx_null_call_guard_v1_test
+  )
+
   add_executable(xar_ck3_phase2_completion_observer_v1_test
     src/phase2_completion_observer_v1.cpp
     src/phase2_completion_observer_v1_test.cpp
@@ -2090,6 +2395,29 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_phase2_wrapper_entry_observer_v1
     COMMAND xar_ck3_phase2_wrapper_entry_observer_v1_test
+  )
+
+  add_executable(xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test
+    src/phase2_wrapper_consumer_edge_observer_v1.cpp
+    src/phase2_wrapper_consumer_edge_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_phase2_wrapper_consumer_edge_observer_v1
+    COMMAND xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test
   )
 
   add_executable(xar_ck3_phase2_post_call_observer_v1_test
@@ -2159,6 +2487,26 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_phase2_producer_identity_observer_v1
     COMMAND xar_ck3_phase2_producer_identity_observer_v1_test
+  )
+
+  add_executable(xar_ck3_cold_map_vfs_observer_v1_test
+    src/cold_map_vfs_observer_v1.cpp
+    src/cold_map_vfs_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_cold_map_vfs_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_cold_map_vfs_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_cold_map_vfs_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_cold_map_vfs_observer_v1
+    COMMAND xar_ck3_cold_map_vfs_observer_v1_test
   )
 
   add_test(
