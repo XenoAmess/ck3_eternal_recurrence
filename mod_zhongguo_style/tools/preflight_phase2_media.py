@@ -141,6 +141,28 @@ def _first_line(result: subprocess.CompletedProcess[str]) -> str:
     raise MediaPreflightError("external command returned no version text")
 
 
+def _git_checkout_command(source_root: Path, *arguments: str) -> tuple[str, ...]:
+    """Build a read-only Git probe bound to this exact checkout.
+
+    The promo checkout can be materialized by a different Windows service
+    account than the one running this process.  Recent Git versions then
+    reject even harmless ``rev-parse``/``status`` calls as a dubious-ownership
+    repository.  Supplying a path-scoped safe-directory exception avoids a
+    global Git configuration mutation while keeping the identity check tied
+    to the explicitly selected checkout.
+    """
+
+    safe_root = str(source_root.expanduser().resolve())
+    return (
+        "git",
+        "-c",
+        f"safe.directory={safe_root}",
+        "-C",
+        safe_root,
+        *arguments,
+    )
+
+
 def _toolchain_source_main(*, runner: RunProcess) -> dict[str, object]:
     if PACKAGE_SOURCE is None:
         raise MediaPreflightError(
@@ -149,12 +171,12 @@ def _toolchain_source_main(*, runner: RunProcess) -> dict[str, object]:
         )
     source_root = PACKAGE_SOURCE.parent if PACKAGE_SOURCE.name == "src" else PACKAGE_SOURCE
     head = _run(
-        ("git", "-C", source_root, "rev-parse", "HEAD"),
+        _git_checkout_command(source_root, "rev-parse", "HEAD"),
         action="reading promo-toolchain HEAD",
         runner=runner,
     ).stdout.strip()
     remote_main = _run(
-        ("git", "-C", source_root, "rev-parse", "origin/main"),
+        _git_checkout_command(source_root, "rev-parse", "origin/main"),
         action="reading promo-toolchain origin/main",
         runner=runner,
     ).stdout.strip()
@@ -163,7 +185,7 @@ def _toolchain_source_main(*, runner: RunProcess) -> dict[str, object]:
             f"promo-toolchain HEAD is not local origin/main: {head} != {remote_main}"
         )
     status = _run(
-        ("git", "-C", source_root, "status", "--short"),
+        _git_checkout_command(source_root, "status", "--short"),
         action="checking promo-toolchain cleanliness",
         runner=runner,
     ).stdout.strip()

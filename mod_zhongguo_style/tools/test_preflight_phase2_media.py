@@ -60,6 +60,35 @@ class Phase2MediaPreflightTests(unittest.TestCase):
             ):
                 media_preflight._toolchain_source_main(runner=runner)
 
+    def test_source_checkout_probes_bind_safe_directory_to_exact_checkout(self) -> None:
+        source = Path("C:/promo/src")
+        calls: list[list[str]] = []
+        responses = iter(
+            (
+                subprocess.CompletedProcess([], 0, "a" * 40 + "\n", ""),
+                subprocess.CompletedProcess([], 0, "a" * 40 + "\n", ""),
+                subprocess.CompletedProcess([], 0, "\n", ""),
+            )
+        )
+
+        def runner(*args, **_kwargs):
+            calls.append(list(args[0]))
+            return next(responses)
+
+        with mock.patch.object(media_preflight, "PACKAGE_SOURCE", source):
+            identity = media_preflight._toolchain_source_main(runner=runner)
+
+        safe_root = str(source.parent.resolve())
+        self.assertEqual(identity["head"], "a" * 40)
+        self.assertEqual(identity["origin_main"], "a" * 40)
+        self.assertTrue(identity["clean"])
+        self.assertEqual(len(calls), 3)
+        for command in calls:
+            self.assertEqual(
+                command[:5],
+                ["git", "-c", f"safe.directory={safe_root}", "-C", safe_root],
+            )
+
     def test_receipt_is_exclusive_and_keeps_honest_scope(self) -> None:
         payload = {
             "schema_version": 1,

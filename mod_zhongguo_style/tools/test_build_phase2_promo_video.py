@@ -9,6 +9,7 @@ import datetime as dt
 import hashlib
 import io
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -599,6 +600,33 @@ class Phase2PromoEntryTests(unittest.TestCase):
             promo.select_cut(
                 promo_root / "phase2-promo-character-project.json",
                 "institution-led",
+            )
+
+    def test_toolchain_identity_probes_bind_safe_directory_to_exact_checkout(self) -> None:
+        source = Path("C:/promo/toolchain")
+        responses = iter(
+            (
+                subprocess.CompletedProcess([], 0, "a" * 40 + "\n", ""),
+                subprocess.CompletedProcess([], 0, "a" * 40 + "\n", ""),
+                subprocess.CompletedProcess([], 0, "\n", ""),
+            )
+        )
+
+        with mock.patch.object(promo, "PACKAGE_SOURCE", source), mock.patch.object(
+            promo.subprocess, "run", side_effect=lambda *args, **_kwargs: next(responses)
+        ) as run:
+            identity = promo._current_toolchain_identity()
+
+        safe_root = str(source.resolve())
+        self.assertEqual(identity["head"], "a" * 40)
+        self.assertEqual(identity["origin_main"], "a" * 40)
+        self.assertTrue(identity["clean"])
+        self.assertEqual(run.call_count, 3)
+        for call in run.call_args_list:
+            command = list(call.args[0])
+            self.assertEqual(
+                command[:5],
+                ["git", "-c", f"safe.directory={safe_root}", "-C", safe_root],
             )
 
     def setUp(self) -> None:

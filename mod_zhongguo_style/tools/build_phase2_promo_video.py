@@ -348,6 +348,27 @@ def _resolve_media_program(value: str, label: str) -> Path:
     return candidate
 
 
+def _git_checkout_command(source_root: Path, *arguments: str) -> list[str]:
+    """Build a read-only Git probe bound to this exact promo checkout.
+
+    The checkout may be created by a different Windows service account than
+    the one running the builder.  Recent Git versions otherwise reject
+    harmless identity/status probes as a dubious-ownership repository.  A
+    path-scoped exception keeps the probe usable without mutating global Git
+    configuration or trusting any other checkout.
+    """
+
+    safe_root = str(source_root.expanduser().resolve())
+    return [
+        "git",
+        "-c",
+        f"safe.directory={safe_root}",
+        "-C",
+        safe_root,
+        *arguments,
+    ]
+
+
 def _current_toolchain_identity() -> dict[str, object]:
     if PACKAGE_SOURCE is None:
         raise Phase2PromoBuildError(
@@ -358,7 +379,7 @@ def _current_toolchain_identity() -> dict[str, object]:
     def git(*arguments: str) -> str:
         try:
             result = subprocess.run(
-                ["git", "-C", os.fspath(source_root), *arguments],
+                _git_checkout_command(source_root, *arguments),
                 shell=False,
                 check=False,
                 stdout=subprocess.PIPE,
