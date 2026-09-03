@@ -10,6 +10,7 @@
 - 两版 authoring 文本已经独立落盘且与各自 project config 的 SHA-256 绑定：人物版 `10` 条旁白 cue（`364` 个中文字符）、`20` 条简中字幕行和 `20` 条英文字幕行；制度版 `10` 条旁白 cue（`361` 个中文字符）、`20` 条简中字幕行和 `20` 条英文字幕行。两版均保持 `release_usable=false`，要等真实 source review 才能提升。
 - 对上述 draft 文本做了只读字体像素预检：人物版最长中文/英文行分别为 `1104/1010 px`，制度版为 `1104/983 px`；对应当前 `1920×1080` 字幕轨可用宽度为 `1740/1700 px`。这是排版准备证据，不替代最终成片抽帧和两轮人审。
 - CK3 的环境启动门现在已有有效 warm profile 证据：无 Mod/无 bridge、当前 Release bridge、RBX guard candidate 均到达 `Frontend` 并以 exit `0`/cleanup proven 收尾；这三轮没有执行 gameplay，也没有产生可入片的二期素材。剩余问题是 Phase2 projection/seed/capture，不再是“CK3 本体完全打不开”。
+- 进一步的 Phase2 A/B 表明 b1/case-kernel 与 workforce 左右半截断可启动，但完整 workforce/broad 合并仍在 `Total 881` 后停滞；完整 localization fan-out 已单独验证为 parser=0 但仍未进入 history。故当前不能把任一半截断运行当作完整二期能力或宣传素材。
 - `preflight_phase2_media.py` 和 `build_phase2_promo_video.py` 的 Git 身份探针已改为对同一 checkout 使用路径限定的 `git -c safe.directory=<resolved> -C <resolved>`；不修改全局 Git 配置。修复前实际遇到的 dubious-ownership 错误已消失。
 - 两版无媒体 preflight 均完成：
   - 人物版 receipt：`_runtime/promo-preflight-character-20260903-1259.json`，SHA-256 `BE74D3D07FF4C79096B6280BCB9D8222D977BBA37B0DAD57A7E2A9BD37AFACD6`
