@@ -1,28 +1,31 @@
 ﻿# 361 三期事故、积弊与共享平台 CK3 运行时
 
-状态：`ck3-static-ready`
+状态：全包 `static-ready`；Incident/X 子闭包 `startup/full-entry production-candidate GREEN`
 
-实机状态：`not-live-tested`
+实机状态：exact Incident/X production closure 已完成入口层实机；delayed-path/业务语义仍未实测
 
 本包把 Python L0 参考模型中的 X192–204、Y205–216、Z217–228 共 37 条机制投影为实际
 Paradox scripted effects 与 character events。中央 phase-two stages 4–6 已逐域接入 X/Y/Z，并能把
 “确有事故”和“本轮无事故，N/A”分开收口；下一轮组织证据的只读输入也已接入权威八分项 KPI。
-共享考核 effect 中的一次性消费调用已经合并，但尚无 CK3 实机证据，因此不得写成 `fixture-live`、
+共享考核 effect 中的一次性消费调用已经合并。2026-09-04 的 exact Incident/X production closure 已通过
+CK3 full-entry，但该轮没有触发 X 案卷或验证 delayed event，因此仍不得把本包写成 `fixture-live`、
 `production-live` 或 `complete`。
 
 ## 文件与所有权
 
 - 权威生成器：`tools/gen_361_incident_platform_runtime.py`
-- 生成 effect：`common/scripted_effects/zg361_incident_platform_runtime_effects.txt`
+- 生成 effect：27 个按 capture/probe/KPI、X/Y/Z apply/debt/dispatch/deadline/lifecycle 与 portfolio 用途分组的
+  `common/scripted_effects/zg361_incident_platform_*_effects.txt`
 - 生成 script value：`common/script_values/zg361_incident_platform_runtime_values.txt`
-- 生成 event：`events/zg361_incident_platform_runtime_events.txt`
+- 生成 event：12 个按 X/Y/Z deadline/result/debt 用途分组的 `events/zg361_incident_platform_*_events.txt`
 - 本地化：九个 `localization/*/zg361_incident_platform_l_*.yml`
 - 静态契约：`tools/test_zg361_incident_platform_runtime.py`
 - Python 参考：`tools/zg361_phase3_incident_platform_model.py`
 
 本包不修改共享 `zg361_effects.txt`、`zg361_events.txt`、interaction、on_action、考核榜 GUI 或共享
-case kernel。中央 stages 4–6 的适配器由 `gen_361_phase2_central_runtime.py` 生成；共享 KPI 冻结点只保留
-一行明确的待插入调用，避免多个并行施工包争写同一中央文件。
+case kernel。旧 `zg361_incident_platform_runtime_effects.txt` 与
+`zg361_incident_platform_runtime_events.txt` 已从产品树移除，generator `--check` 会拒绝其回流。中央 stages 4–6
+的适配器由 `gen_361_phase2_central_runtime.py` 生成；共享 KPI 冻结点只保留一行明确调用，避免多个并行施工包争写同一中央文件。
 
 ## 真实适用性：没有事故就是 N/A
 
@@ -122,7 +125,8 @@ Z: proposed -> adopted -> migrating -> dual_running -> valued -> settled
 
 延迟 character event 的 ROOT 是接收事件的受评官员，不再是最初开案的管理者。因而所有后段政策读取、
 AI 判断和付费都显式解引用案卷中的 `zg361_case_*_owner`，不能偷用 `root`。这是本包的静态
-source-derived 结论，尚待 CK3 实机日志验证；若实机行为不同，应保留失败 artifact 后修正，不能用 OCR 猜状态。
+source-derived 结论。当前 full-entry 只证明这些文件能随 exact 候选进入暂停地图且没有 material error；ROOT/scope 与
+延迟生命周期仍待 seed 业务实机日志验证。若实机行为不同，应保留失败 artifact 后修正，不能用 OCR 猜状态。
 
 ## 每条机制不是政策卡空壳
 
@@ -223,26 +227,58 @@ policy-debt 到期事件、完整五元 done/operation/object/debt 身份、阶�
 真实管理者国库同帧冻结且绝不补零、双付款原子预检、容量/份额守恒、九语 key 集以及“零新增
 GUI/decision/interaction/on_action”。
 
+### 2026-09-04 用途分片与 Incident/X production closure
+
+- 历史 aggregate effect 为 `700,085 B / 124 effects`，SHA-256
+  `0C228FAABB5F6B7DCDABFD32A071CA82F0C1EF15C08AB0BD07C25AF3A467DACD`；历史 aggregate event 为
+  `8,573 B / 54 events`，SHA-256
+  `49577D5475FBF6B22006021F4FADED2A248C7E193840A283FB043F7AAAC0E091`。两者现在只作为 generator 内存中的冻结
+  parity reference，不再作为产品文件。
+- 完整输出为 27 个 effect 用途分片和 12 个 event 用途分片；124/124 effects 与 54/54 events 的顶层 block 均保持逐字节
+  parity。所有分片最多 `7` 个定义，落在目标 `1–10` 内，没有超过 20 的例外。
+- X production 增量精确选择 11 个 effect 分片和 4 个 event 分片，含 47 个 Incident effects / 20 个 events；加上冻结
+  case-kernel 依赖后，production 固定点为 `60 effects / 20 events / 6 triggers`，没有 Y/Z 定义夹带。
+- `zg361_ip_consume_due_kpi_inputs_effect` 已在 `zg361_compute_kpi_effect` 的 subject scope 中，紧接组织证据与 KPI
+  冻结语句之后、后续 consumer/档位判断之前恰好调用一次；normal/`-O` 静态测试锁定“先冻结、后消费”，当前 X
+  production closure 也显式包含该 consumer。
+- exact 候选位于 `_runtime/phase2-incident-x-production-closure-20260904-r3`，为 `135 files / 9,158,442 B`。
+  source/formal/file-list SHA-256 分别为
+  `ACC693206AAA03AEEDFB829911778275ED4D4F2EEF31CF4DCE6DE7D46F34BF3E` /
+  `AF8F0DECE9477FDD60B6C96D0E09A27BFC9E55CEED40A9804B70ACB986D57A2D` /
+  `045F56D78FB036CDF69225912F9B046673FCD528E99A69571363133A65EA2262`；projection SHA-256 为
+  `CF379F38DA8C471DDCCDB6522D7E0864098596737862B5E2A703AECA94E40CB7`。
+- 首次 live attempt `phase2-incident-x-full-entry-20260904-r1` 在 `0.338 s` 因 probe 从当前 worktree 推导出不存在的游戏目录而
+  harness RED；CK3 未启动，report SHA-256 为
+  `1CF7A2B014D8BBD9F39C6D1423B2E39BB5B7BCDBA21D1505CD4CECB7F5DFDC51`。这不是候选内容 RED。
+- r2 显式设置 `XAR_CK3_EXE` / `XAR_CK3_GAME_DIR` 后，在 exact CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 上以 `188.303 s` 完成 full-entry GREEN：
+  8/8 entry gates、3/3 game-state markers、exact mount、`material_error_lines=[]` 与 cleanup 全部通过。artifact 为
+  `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-incident-x-full-entry-20260904-r2`，report SHA-256
+  `1D41298B8987AA473304AE70FC53628639DE7700BBE5A9D7484A6BF76F566FE2`，地图截图 SHA-256
+  `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`，`ck3_running_after=false`。
+- 本轮没有加载性能 RED，因此没有触发追加文件边界 A/B。该结果只把 Incident/X 候选提升为
+  `startup/full-entry production-candidate GREEN`；没有证明 X delayed-path、N/A/incident 分支、KPI consumer、paused native
+  snapshot 或 production OODA。
+
+用途分片、消费者迁移与静态合同已由提交 `df77ed636c51c51f99f534d8efbb559b94c639d2` 推送。
+
 仍需由统一批次完成：
 
-1. 在 `zg361_compute_kpi_effect` 的 subject scope 中，紧接
-   `zg361_evidence_organization` 与 `zg361_kpi` 两条冻结语句之后、任何后续 consumer/档位判断之前，**恰好调用一次**：
-
-   ```text
-   zg361_ip_consume_due_kpi_inputs_effect = yes
-   ```
-
-   必须先冻结，后消费：script value 读取 pending，consumer 随后将 `pending=0`、`consumed=1`，并保存
-   owner/subject/origin cycle/current cycle/case/score/incident receipt；提前调用会吞掉本轮分值，漏调用会让
-   pending 跨轮重复计入。该调用现已在共享冻结点合并，并由 normal/`-O` 静态测试锁定。
-2. 用 CK3 parser/error.log 排除 Paradox 语法和 scope 误判；
-3. Incident provider 把三份 profile 固定 allowlist 从 49 增至 50，并只从受评者变量
+1. full-entry 已用 CK3 parser/error.log 排除当前入口层 material error；仍需用真实 X delayed-path 验证 scope 与生命周期语义；
+2. Incident provider 把三份 profile 固定 allowlist 从 49 增至 50，并只从受评者变量
    `zg361_ip_probe_manager_treasury` 解码 Q100000 国库余额；provenance 必须从 `not_recorded_by_mod` 更新为本
    mod 变量，缺字段仍是 typed unavailable，禁止读取 caller-selected owner scope 或补 0。随后通过 MCP 查询
    applicability probe、N/A/incident tuple、owner/subject/cycle/case/state、每编号 receipt、三项资源快照、
    pending 与 consumed receipt；
-4. 在一次启动中覆盖 incident/N/A、X/Y/Z 正常、stale、重复调用、资金不足、玩家/AI、伯爵/男爵 subject；
-5. 保存 paused artifact 后才升级 readiness。
+3. 在一次启动中覆盖 incident/N/A、X/Y/Z 正常、stale、重复调用、资金不足、玩家/AI、伯爵/男爵 subject；
+4. 保存 paused artifact 后才升级 readiness。
+
+固定 seed fixture 还会调用 Workforce 入口 `zg361_we_open_portfolio_effect`；当前 Incident/X 候选并未包含该入口的完整生产闭包。
+五个 seed roots 的固定点为 `385 effects / 161 events / 6 triggers`；相对 Incident/X r3 仍需加入 Workforce 的
+`307 effects / 140 events`，6 个 triggers 已存在，并补 3 个文件中的 24 个可见本地化 key（AD 15、attribution 5、
+remediation 4）。Manager 的 43-effect owner 不在这条闭包内，不应顺手拉入。因此下一施工项不是直接拿 B2 r2 或当前
+Incident/X tree 跑 seed，而是只把所需 Workforce owners 继续按用途拆分并构造 exact closure；该候选通过同树 full-entry 后，
+才进入 seed/paused-native。
 
 C 路的逐编号 consumer 到期后先核对原 write/debt 五元身份与 incident provenance。核验通过时不直接改
 mutable KPI，而是把每笔 `-1` 聚合进受评者的 `zg361_ip_policy_kpi_*` pending；只有 staging 成功才关闭原债务。

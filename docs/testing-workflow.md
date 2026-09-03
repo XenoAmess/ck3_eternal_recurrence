@@ -965,6 +965,26 @@ B2 及后续 effect 文件从设计时就按用途分组：目标每文件 `1–
 分片的定义数、唯一性和 generator `--check` 覆盖；确需超过 `20` 的例外必须在对应专题先写明理由及实机证据。
 B1 已通过的 `41 + 36` 双文件结构保留为本轮冻结恢复基线，不反向改写既有 live evidence；后续功能分片不得把它当作新文件模板。
 
+2026-09-04 的 Incident owner 给出了这条规则的下一组实证。旧 aggregate effect 为 `700,085 B / 124 effects`，旧 aggregate
+event 为 `8,573 B / 54 events`；generator 现分别输出 27 个与 12 个用途分片，所有分片最多 `7` 个定义，逐顶层 block
+parity SHA-256 分别保持为
+`0C228FAABB5F6B7DCDABFD32A071CA82F0C1EF15C08AB0BD07C25AF3A467DACD` 与
+`49577D5475FBF6B22006021F4FADED2A248C7E193840A283FB043F7AAAC0E091`。X production closure 只选 11 个 effect 分片、
+4 个 event 分片，承载 47 个 Incident effects / 20 个 events；连同既有 case-kernel 后固定点为
+`60 effects / 20 events / 6 triggers`。
+
+该 closure 的 r3 product 为 `135 files / 9,158,442 B`，formal tree SHA-256
+`AF8F0DECE9477FDD60B6C96D0E09A27BFC9E55CEED40A9804B70ACB986D57A2D`。首次 probe r1 在 `0.338 s` 因默认从
+worktree 推导出的游戏目录不存在而 harness RED，CK3 没有启动；report SHA-256
+`1CF7A2B014D8BBD9F39C6D1423B2E39BB5B7BCDBA21D1505CD4CECB7F5DFDC51`。显式设置 `XAR_CK3_EXE` /
+`XAR_CK3_GAME_DIR` 后，r2 在 exact CK3 `1.19.0.6`、EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 上以 `188.303 s` 通过 8/8 entry gates、
+3/3 markers、exact mount、material-error 0 与 cleanup；report/map SHA-256 为
+`1D41298B8987AA473304AE70FC53628639DE7700BBE5A9D7484A6BF76F566FE2` /
+`F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。本轮没有加载性能 RED，不需要追加 A/B；它证明
+用途分片后的 exact tree 可进入暂停地图，不证明 Incident delayed-path 或 seed 业务语义。这也是正常 GREEN 候选，不是
+“同一正文单体 vs 分片”的因果 A/B，不能据此进一步把 B1 的唯一根因写成文件体量。
+
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑

@@ -106,7 +106,7 @@ P7 原始 event closure 为 **99 文件 / 20,929,655 B（约 19.96 MiB）**；�
 
 `balanced-files` 只改变文件布局：全部 77 个定义的正文与原始 effect 逐 block 字节一致，拆成 255,134 B 与 240,709 B 两个 effect 文件；投影总计 59 files / 7,858,264 B。该结果把拆文件提升为可实施候选，但这些条件分支不计入 17 个固定 checkpoint，也不自动通过 checkpoint 4。未改写的 58-file 单 effect full B1 仍只有一次 1205.343 秒 RED；所有真子集与拆分候选 GREEN 不等于原始 full-union GREEN，不能宣称根因已经唯一证明。
 
-下一步仅需将 balanced-files 方案重建为可审阅候选，验证正式 B1 业务与全量 projection 门；通过后才进入 seed。open_kaishek 对这些投影只做单 effect 离线 parser smoke，含真实正文的 validator 仍为 `UNKNOWN_OPCODE`、IR/runtime `SKIPPED`，不得用来替代 CK3 实机结论。footage 保持 `0/8`，两条 MP4 未生成；G2 按用户要求暂停。
+该诊断时点的下一步是将 balanced-files 方案重建为可审阅候选，验证正式 B1 业务与全量 projection 门；后续完成情况见下文。open_kaishek 对这些投影只做单 effect 离线 parser smoke，含真实正文的 validator 仍为 `UNKNOWN_OPCODE`、IR/runtime `SKIPPED`，不得用来替代 CK3 实机结论。footage 保持 `0/8`，两条 MP4 未生成；G2 按用户要求暂停。
 
 ### 正式 generator split 与 checkpoint 晋级
 
@@ -131,7 +131,7 @@ P7 原始 event closure 为 **99 文件 / 20,929,655 B（约 19.96 MiB）**；�
 静态结果：B2/manager 聚焦 142/142、CI 同口径 `test_gen_361*` 107/107、`test_zg361*` 1256/1256、
 `validate_local.py`、native normal-exit source-contract 1/1、projection 8/8、release tests 7/7 与可复现 release `--check` 均
 GREEN；新 release 为 304 files，manifest `DF1741C3…02D0`、ZIP `2C18050A…1884`，broad/release 均只有 25 个分片、没有旧单体。
-这些只把 B2 文件布局提升为 **static-ready**，没有新增 CK3 live 结果。
+该 B2 分片工作包独立交付时只把文件布局提升为 **static-ready**；后续组合 r2 live 见本节下文。
 
 B2 的三个直接 Workforce owner 沿 effect 调用、literal event ID 与 `EVENT = <id>` 参数化 deadline ABI 的真实静态可达链会进入
 71 个 effect / 28 个 event。旧 `68 / 24` 扫描漏掉了 `zg361we.4606/.4706/.4801/.4901` 四个参数化事件，以及由此新增的
@@ -139,7 +139,7 @@ B2 的三个直接 Workforce owner 沿 effect 调用、literal event ID 与 `EVE
 旧 `zg361_workforce_endgame_runtime_effects.txt`（`4,636,271 B / 324 effects`）现已由 generator 替换为 76 个用途分片：
 324/324 顶层 block 按历史顺序逐字节一致，每片 `1–10` 个、无超过 20 的例外，总计 `4,635,596 B`，清单 SHA-256 为
 `E5DD22CEF71D60E069884A27BE924234B4FAD42490AEF2B52B966AFD95585858`。B2 的 40 个 Workforce effect 正好由其中 16 个完整分片
-承载（341,602 B，extra=0、missing=0）；该布局目前只到 **static-ready**，没有新 CK3 live。
+承载（341,602 B，extra=0、missing=0）；该 owner 分片独立交付时只到 **static-ready**，后续已纳入组合 r2 full-entry。
 
 旧 `zg361_workforce_endgame_runtime_events.txt` 的冻结基线为 `168,729 B / 149 unique events`，SHA-256
 `637F65CC72C176E6E19BE982F41B203DC326047939B79A80E5E43D3A9D361EF7`。generator 现将其替换为 35 个用途分片：
@@ -149,15 +149,69 @@ B2 的三个直接 Workforce owner 沿 effect 调用、literal event ID 与 `EVE
 精确承载，extra=0、missing=0，不再因旧单体对约 210 个 effect 的静态引用拉回几乎全图。generator `--check` 覆盖 120 个输出，
 Workforce 主测试 116/116、`test_zg361*` 1265/1265、`test_gen_361*` 107/107、visual/projection 8/8、release 9/9 与
 `validate_local.py` 均 GREEN。可复现 release `--check` 为 413 files，manifest `E68E89F3…60B4`、ZIP `4A7C7995…1E67`；
-这些仍只记 **static-ready / no new CK3 live**。
+这些分片工作包的独立交付状态仍只记 **static-ready**；组合 r2 的 live 结果见下节。
 
-下一步物化 119-file、无 stub 的 B2 production closure；先在同一冻结 B1 基线上跑下一 distinct
-full-entry，GREEN 后才复用完全相同的 projection/hash 进入 seed。不能把旧 stub checkpoint 冒充生产 B2。
+fresh B2 production closure r2 已在同一冻结 B1 基线上物化为 119 files / 8,891,635 B，静态与重放门均 GREEN；
+随后 exact r2 已通过 full-entry GREEN。不能把旧 stub checkpoint 或 full-entry 冒充 delayed-path/seed/生产功能 live；
+该时点曾计划复用完全相同的 tree/projection/hash 进入 seed/paused-native；随后 no-launch seed preflight 发现固定 fixture
+还要求 Incident 与 Workforce 入口，故直接 seed 计划已被后续闭包工作取代。
 footage 仍为 `0/8`，两条 MP4 未生成；G2 保持 paused。
+
+### fresh B2 no-stub r2 静态候选与 full-entry
+
+- 路径：`_runtime/phase2-b2-production-closure-20260904-r2`；冻结 B1 59 文件 + overlay 60 文件，总计 119 files / 8,891,635 B。
+- 业务闭包：B2 25 effect 分片 / 152 effects（每片 `1–9`）；其中 Workforce 依赖精确为 16 effect 分片 / 40 effects 与
+  7 event 分片 / 19 events；三 root 固定点为 71 effects / 28 events，selected events 总计 51。
+- 完整性：无 legacy monolith、stub、duplicate、missing callable 或 missing event。
+- 文件边界门只覆盖 B2 起新增的 60-file overlay：44 个 effect 文件 / 218 definitions，最大为 probation owner 的 15，
+  且只有它超过 10；overlay 中超过 20 为 0。119-file 整树继承冻结 B1 的 5 个 grandfathered 超 20 effect 文件：
+  B1 part1=41、part2=36、case_kernel=229、`zg361_effects`=26、`generated_mechanism`=1449；它们不是本轮新增，且已有
+  B1 full-entry 证据。
+- 身份：source tree `F3B36DFDBE74827FF373B06C7C621D1EC72AA15E575F5ABBF1186E636C625184`；formal tree
+  `3DD3DA79F11EC892DF72024E25EE985ACAB26E21FD4C1281C35E5DEB0642C4D3`；file-list
+  `6C3FE72E3FBB3E1AB6543BEE9226F24203D1063951999AAF6BD7E9053B7533FF`；projection
+  `2C8F0979113F75866191C3AE10C699F3801D83AEF91ADCFD9C4B526B469EAE28`；contract
+  `F5BC105C1C3EF8E55E82053F61D3B453E6B92A7E0AE224EDECBD072B6EF49180`。
+
+r1 仅保留为被 r2 取代的静态 artifact。exact r2 live artifact 为
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-b2-no-stub-full-entry-20260904-r1`；164.781 秒通过 8 个入口门、3 条 marker、
+exact mount、material errors 0 与 `cleanup.ck3_running_after=false`。`report.json` SHA-256 为
+`4DAAD3649E4FC37373EF2B95F9DE24FB15D23E1319403F37A89228E4B44674F1`，`complete_entry_map.png` SHA-256 为
+`F867A24AE1267BA032BC8CDB2EE623A966FF8E7ED1AE9ED78251B115958F875C`。本轮没有加载性能 RED，故不做 A/B。
+
+### Incident/X 用途分片、production closure 与 full-entry
+
+- 旧 Incident aggregate effect 为 `700,085 B / 124 effects`，旧 aggregate event 为 `8,573 B / 54 events`；generator 现按
+  用途输出 27 个 effect 分片和 12 个 event 分片，所有分片最多 `7` 个定义，无超过 10/20 的例外。124/124 effects 与
+  54/54 events 保持逐 block 字节 parity，历史 aggregate SHA-256 为
+  `0C228FAABB5F6B7DCDABFD32A071CA82F0C1EF15C08AB0BD07C25AF3A467DACD` /
+  `49577D5475FBF6B22006021F4FADED2A248C7E193840A283FB043F7AAAC0E091`。
+- X production 增量精确选择 11 个 effect 分片 / 47 个 Incident effects 和 4 个 event 分片 / 20 events；连同冻结
+  case-kernel 后固定点为 `60 effects / 20 events / 6 triggers`，没有 Y/Z 定义夹带。16-file overlay 为 `266,807 B`。
+- r3 候选路径为 `_runtime/phase2-incident-x-production-closure-20260904-r3`，共 `135 files / 9,158,442 B`。source/formal/file-list
+  SHA-256 为 `ACC693206AAA03AEEDFB829911778275ED4D4F2EEF31CF4DCE6DE7D46F34BF3E` /
+  `AF8F0DECE9477FDD60B6C96D0E09A27BFC9E55CEED40A9804B70ACB986D57A2D` /
+  `045F56D78FB036CDF69225912F9B046673FCD528E99A69571363133A65EA2262`；projection/contract SHA-256 为
+  `CF379F38DA8C471DDCCDB6522D7E0864098596737862B5E2A703AECA94E40CB7` /
+  `ED4B5E82430187B1C79E2AEFE29748C5D51749782CC340644DB434C14A0B468A`。
+- 首次 live attempt r1 在 `0.338 s` 因默认 worktree 游戏路径不存在而 harness RED，CK3 未启动；report SHA-256
+  `1CF7A2B014D8BBD9F39C6D1423B2E39BB5B7BCDBA21D1505CD4CECB7F5DFDC51`。r2 显式设置 `XAR_CK3_EXE` /
+  `XAR_CK3_GAME_DIR` 后，在 exact CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 上以 `188.303 s` full-entry GREEN：8/8 gates、
+  3/3 markers、exact mount、material errors 0、cleanup GREEN。artifact 为
+  `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-incident-x-full-entry-20260904-r2`；report/map SHA-256 为
+  `1D41298B8987AA473304AE70FC53628639DE7700BBE5A9D7484A6BF76F566FE2` /
+  `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。没有加载性能 RED，故未做追加 A/B。
+- 实现与静态合同提交 `df77ed636c51c51f99f534d8efbb559b94c639d2` 已推送。该 GREEN 只覆盖 Incident/X 入口层；
+  fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。五个 seed roots 的固定点为
+  `385 effects / 161 events / 6 triggers`；相对 Incident/X r3 还需 Workforce `307 effects / 140 events`，6 triggers 已有，
+  并补 3 个文件中的 24 个可见 loc keys（AD 15、attribution 5、remediation 4）。Manager 43-effect owner 不在闭包内。
+  下一 checkpoint 必须只把所需 Workforce owners 按用途拆分、构造 exact production closure 并完成同树 full-entry，之后才进入
+  seed/paused-native。
 
 ## 预计时间
 
-离线物化/预检通常数分钟。实测 full-entry 已在约 171–1205 秒间明显波动；下一 distinct 候选使用 1200 秒初始观察窗，
+离线物化/预检通常数分钟。fresh r2 与 Incident/X r3 full-entry 分别实测为 164.781 / 188.303 秒；历史 full-entry/startup attempt 仍有约 171–1205 秒波动，后续 Workforce distinct 候选使用 1200 秒初始观察窗，
 以阶段 marker、引擎时间和 probe wall time为准，不再沿用早期 2–5 分钟线性估算。出现无明确 material/parser 首错的加载性能 RED 时，
 保留原 attempt 后立即按用途/完整顶层定义边界继续拆分并做同条件 A/B。
 
