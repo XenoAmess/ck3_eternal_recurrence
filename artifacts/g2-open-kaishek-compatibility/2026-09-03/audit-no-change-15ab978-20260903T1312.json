@@ -1,0 +1,47 @@
+{
+  "schema": "xar.ck3.g2_open_kaishek_sync_audit.v2",
+  "observed_at": "2026-09-03T13:12:32+08:00",
+  "result": "NO-CHANGE",
+  "root": {
+    "path": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902",
+    "head": "d61a2bfee5bc0797a973de6424c198927025d9d6",
+    "pin": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "pin_files": [
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
+      "ck3_autonomous_player/tests/unit/test_raiktor_surrender_truce_contract.py",
+      "ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json"
+    ]
+  },
+  "open_kaishek": {
+    "path": "Z:\\workspace\\open_kaishek",
+    "head": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "origin_main": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "clean": true,
+    "jar_sha256": "FC85947E9976B80345C10A9789A6520C8ABCEF557365284570C18C4677D891CC",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1"
+  },
+  "comparison": {
+    "root_public_contract_changed_after_fd18aa8": false,
+    "t0_t1_public_interface_changed_after_fd18aa8": false,
+    "open_kaishek_truce_contract_changed_since_981c793": false,
+    "open_kaishek_activity_schema_fixture_added_since_981c793": true,
+    "activity_fixture_is_runtime_capability": false,
+    "notes": "Root changes after fd18aa8 are Phase2/promo documentation and tooling; no G2 capability ID, profile ID, wire field, or CLI contract changed. The 15ab978 activity fixture remains parser-GREEN/validator-RED and does not alter the truce contract."
+  },
+  "verification": {
+    "command": "verify_g2_open_kaishek_compatibility.py --checkout Z:\\workspace\\open_kaishek --require-checkout --require-clean",
+    "status": "GREEN_STATIC",
+    "ok": true,
+    "targeted_pytest": "12 passed, 16 subtests passed",
+    "native_certified": false,
+    "runtime_certified": false
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "purchase_or_payment_action": false
+  }
+}
