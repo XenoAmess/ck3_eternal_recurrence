@@ -62,6 +62,12 @@ EXPECTED_FACT_SUBGROUPS = {
     "runtime": {"files": 13, "definitions": 51, "bytes": 254_704},
     "endgame-control": {"files": 7, "definitions": 25, "bytes": 148_537},
 }
+EXPECTED_FACT_RUNTIME_GROUPS = {
+    "central-requisition": {"files": 1, "definitions": 2, "bytes": 13_417},
+    "ad-panel": {"files": 4, "definitions": 21, "bytes": 51_371},
+    "appointment-attribution": {"files": 3, "definitions": 15, "bytes": 113_314},
+    "exit-remediation": {"files": 5, "definitions": 13, "bytes": 76_602},
+}
 
 ENDGAME_CONTROL_FACT_CODES = frozenset(
     {"009a", "010", "011", "012", "013", "014c", "015c"}
@@ -158,17 +164,43 @@ def classify_fact_subgroup(relative: str) -> str | None:
     raise SeedLoadBisectError(f"unclassified facts subgroup: {relative}")
 
 
+def classify_fact_runtime_group(relative: str) -> str | None:
+    """Return the frozen leaf purpose for a ``facts/runtime`` shard."""
+
+    if classify_fact_subgroup(relative) != "runtime":
+        return None
+    name = PurePosixPath(relative).name
+    if name.startswith("zg361_phase2_central_002_"):
+        return "central-requisition"
+    if name.startswith("zg361_workforce_ad_fact_"):
+        return "ad-panel"
+    if name.startswith(
+        ("zg361_workforce_appointment_fact_", "zg361_workforce_attribution_fact_")
+    ):
+        return "appointment-attribution"
+    if name.startswith(
+        ("zg361_workforce_exit_fact_", "zg361_workforce_remediation_fact_")
+    ):
+        return "exit-remediation"
+    raise SeedLoadBisectError(f"unclassified facts/runtime leaf purpose: {relative}")
+
+
 def normalize_selection(
     real_groups: Sequence[str],
     real_fact_subgroups: Sequence[str],
-) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    real_fact_runtime_groups: Sequence[str] = (),
+) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
     """Normalize selections and reject ambiguous coarse/subgroup facts input."""
 
     normalized_groups = tuple(sorted(set(real_groups)))
     normalized_fact_subgroups = tuple(sorted(set(real_fact_subgroups)))
+    normalized_fact_runtime_groups = tuple(sorted(set(real_fact_runtime_groups)))
     unknown_groups = sorted(set(normalized_groups) - set(EXPECTED_GROUPS))
     unknown_fact_subgroups = sorted(
         set(normalized_fact_subgroups) - set(EXPECTED_FACT_SUBGROUPS)
+    )
+    unknown_fact_runtime_groups = sorted(
+        set(normalized_fact_runtime_groups) - set(EXPECTED_FACT_RUNTIME_GROUPS)
     )
     if unknown_groups:
         raise SeedLoadBisectError(f"unknown real effect groups: {unknown_groups}")
@@ -176,11 +208,25 @@ def normalize_selection(
         raise SeedLoadBisectError(
             f"unknown real facts subgroups: {unknown_fact_subgroups}"
         )
-    if "facts" in normalized_groups and normalized_fact_subgroups:
+    if unknown_fact_runtime_groups:
         raise SeedLoadBisectError(
-            "coarse real group 'facts' conflicts with --real-fact-subgroups"
+            f"unknown real facts/runtime groups: {unknown_fact_runtime_groups}"
         )
-    return normalized_groups, normalized_fact_subgroups
+    if "facts" in normalized_groups and (
+        normalized_fact_subgroups or normalized_fact_runtime_groups
+    ):
+        raise SeedLoadBisectError(
+            "coarse real group 'facts' conflicts with facts subgroup/leaf selection"
+        )
+    if "runtime" in normalized_fact_subgroups and normalized_fact_runtime_groups:
+        raise SeedLoadBisectError(
+            "real facts subgroup 'runtime' conflicts with --real-fact-runtime-groups"
+        )
+    return (
+        normalized_groups,
+        normalized_fact_subgroups,
+        normalized_fact_runtime_groups,
+    )
 
 
 def _require_hash(path: Path, expected: str, label: str) -> None:
@@ -331,6 +377,36 @@ def fact_subgroup_metadata(
     return subgroups
 
 
+def fact_runtime_group_metadata(
+    effect_rows: Sequence[Mapping[str, object]],
+) -> dict[str, dict[str, object]]:
+    groups = {
+        name: {"files": 0, "definitions": 0, "bytes": 0, "paths": []}
+        for name in EXPECTED_FACT_RUNTIME_GROUPS
+    }
+    for row in effect_rows:
+        relative = str(row["path"])
+        group = classify_fact_runtime_group(relative)
+        if group is None:
+            continue
+        value = groups[group]
+        value["files"] = int(value["files"]) + 1
+        value["definitions"] = int(value["definitions"]) + int(row["definitions"])
+        value["bytes"] = int(value["bytes"]) + int(row["bytes"])
+        value["paths"].append(relative)
+    for group, expected in EXPECTED_FACT_RUNTIME_GROUPS.items():
+        observed = {
+            key: groups[group][key]
+            for key in ("files", "definitions", "bytes")
+        }
+        if observed != expected:
+            raise SeedLoadBisectError(
+                f"seed facts/runtime group {group} drifted: {observed} != {expected}"
+            )
+        groups[group]["paths"] = sorted(groups[group]["paths"])
+    return groups
+
+
 def brace_balance(path: Path) -> tuple[int, bool]:
     depth = 0
     quoted = False
@@ -349,6 +425,7 @@ def materialize(
     parent_root: Path = DEFAULT_PARENT_ROOT,
     real_groups: Sequence[str] = (),
     real_fact_subgroups: Sequence[str] = (),
+    real_fact_runtime_groups: Sequence[str] = (),
 ) -> dict[str, Any]:
     output = output.resolve()
     parent_root = parent_root.resolve()
@@ -367,12 +444,19 @@ def materialize(
     effect_rows = parent["by_kind"]["effect"]
     groups = group_metadata(effect_rows)
     fact_subgroups = fact_subgroup_metadata(effect_rows)
-    normalized_real_groups, normalized_real_fact_subgroups = normalize_selection(
-        real_groups, real_fact_subgroups
+    fact_runtime_groups = fact_runtime_group_metadata(effect_rows)
+    (
+        normalized_real_groups,
+        normalized_real_fact_subgroups,
+        normalized_real_fact_runtime_groups,
+    ) = normalize_selection(
+        real_groups, real_fact_subgroups, real_fact_runtime_groups
     )
     mode = (
         "effect-group-restore"
-        if normalized_real_groups or normalized_real_fact_subgroups
+        if normalized_real_groups
+        or normalized_real_fact_subgroups
+        or normalized_real_fact_runtime_groups
         else "all-effect-stub"
     )
     output.mkdir(parents=True)
@@ -388,10 +472,12 @@ def materialize(
         relative = str(row["path"])
         group = classify_effect_path(relative)
         fact_subgroup = classify_fact_subgroup(relative)
+        fact_runtime_group = classify_fact_runtime_group(relative)
         body_mode = (
             "real"
             if group in normalized_real_groups
             or fact_subgroup in normalized_real_fact_subgroups
+            or fact_runtime_group in normalized_real_fact_runtime_groups
             else "stub"
         )
         path = source / PurePosixPath(relative)
@@ -417,6 +503,7 @@ def materialize(
                 "group": group,
                 "coarse_group": group,
                 "fact_subgroup": fact_subgroup,
+                "fact_runtime_group": fact_runtime_group,
                 "body_mode": body_mode,
                 "definitions": len(observed_names),
                 "definition_names": observed_names,
@@ -460,6 +547,8 @@ def materialize(
         if classify_effect_path(str(row["path"])) in normalized_real_groups
         or classify_fact_subgroup(str(row["path"]))
         in normalized_real_fact_subgroups
+        or classify_fact_runtime_group(str(row["path"]))
+        in normalized_real_fact_runtime_groups
     }
     stub_effect_paths = effect_paths - real_effect_paths
     real_effect_mismatches = sorted(
@@ -509,26 +598,29 @@ def materialize(
     if source_rows != product_rows or source_rows != replay_rows:
         raise SeedLoadBisectError("source/product/materialized-check rows differ")
 
-    def coarse_body_mode(name: str) -> str:
-        if name in normalized_real_groups:
-            return "real"
-        if name != "facts" or not normalized_real_fact_subgroups:
-            return "stub"
-        if len(normalized_real_fact_subgroups) == len(EXPECTED_FACT_SUBGROUPS):
-            return "real"
-        return "mixed"
+    def aggregate_body_mode(field: str, value: str) -> str:
+        modes = {
+            str(row["body_mode"])
+            for row in rendered_files
+            if row[field] == value
+        }
+        if not modes:
+            raise SeedLoadBisectError(f"no effect files for {field}={value}")
+        return next(iter(modes)) if len(modes) == 1 else "mixed"
 
     subgroup_modes = {
         name: {
             **value,
-            "body_mode": (
-                "real"
-                if "facts" in normalized_real_groups
-                or name in normalized_real_fact_subgroups
-                else "stub"
-            ),
+            "body_mode": aggregate_body_mode("fact_subgroup", name),
         }
         for name, value in fact_subgroups.items()
+    }
+    runtime_group_modes = {
+        name: {
+            **value,
+            "body_mode": aggregate_body_mode("fact_runtime_group", name),
+        }
+        for name, value in fact_runtime_groups.items()
     }
     block_manifest = {
         "schema_version": 1,
@@ -539,14 +631,16 @@ def materialize(
         "parent_formal_overlay_tree_sha256": EXPECTED_PARENT["formal_overlay_tree_sha256"],
         "real_groups": list(normalized_real_groups),
         "real_fact_subgroups": list(normalized_real_fact_subgroups),
+        "real_fact_runtime_groups": list(normalized_real_fact_runtime_groups),
         "groups": {
             name: {
                 **value,
-                "body_mode": coarse_body_mode(name),
+                "body_mode": aggregate_body_mode("coarse_group", name),
             }
             for name, value in groups.items()
         },
         "fact_subgroups": subgroup_modes,
+        "fact_runtime_groups": runtime_group_modes,
         "effect_files": rendered_files,
     }
     write_json(output / "block-manifest.json", block_manifest)
@@ -581,6 +675,7 @@ def materialize(
             "definitions": len(rendered_names),
             "real_groups": list(normalized_real_groups),
             "real_fact_subgroups": list(normalized_real_fact_subgroups),
+            "real_fact_runtime_groups": list(normalized_real_fact_runtime_groups),
             "real_effect_files": len(real_effect_paths),
             "stub_effect_files": len(stub_effect_paths),
             "stubbed_definitions": len(stub_names),
@@ -588,17 +683,19 @@ def materialize(
             "groups": {
                 name: {
                     **value,
-                    "body_mode": coarse_body_mode(name),
+                    "body_mode": aggregate_body_mode("coarse_group", name),
                 }
                 for name, value in groups.items()
             },
             "fact_subgroups": subgroup_modes,
+            "fact_runtime_groups": runtime_group_modes,
             "effect_file_modes": [
                 {
                     "path": row["path"],
                     "group": row["group"],
                     "coarse_group": row["coarse_group"],
                     "fact_subgroup": row["fact_subgroup"],
+                    "fact_runtime_group": row["fact_runtime_group"],
                     "body_mode": row["body_mode"],
                     "definitions": row["definitions"],
                     "rendered_bytes": row["rendered_bytes"],
@@ -674,14 +771,23 @@ def main(argv: list[str] | None = None) -> int:
         default=(),
         help="Restore selected facts subgroups without restoring the whole coarse facts group.",
     )
+    parser.add_argument(
+        "--real-fact-runtime-groups",
+        nargs="*",
+        choices=sorted(EXPECTED_FACT_RUNTIME_GROUPS),
+        default=(),
+        help="Restore selected leaf purposes within facts/runtime.",
+    )
     args = parser.parse_args(argv)
     inferred_mode = (
         "effect-group-restore"
-        if args.real_groups or args.real_fact_subgroups
+        if args.real_groups
+        or args.real_fact_subgroups
+        or args.real_fact_runtime_groups
         else "all-effect-stub"
     )
     if args.mode is not None and args.mode != inferred_mode:
-        parser.error(f"--mode {args.mode} conflicts with --real-groups")
+        parser.error(f"--mode {args.mode} conflicts with the real-body selection")
     try:
         report = materialize(
             output=args.output,
@@ -689,6 +795,7 @@ def main(argv: list[str] | None = None) -> int:
             parent_root=args.parent_root,
             real_groups=args.real_groups,
             real_fact_subgroups=args.real_fact_subgroups,
+            real_fact_runtime_groups=args.real_fact_runtime_groups,
         )
     except (SeedLoadBisectError, OSError, ValueError) as error:
         print(f"RED: {error}")

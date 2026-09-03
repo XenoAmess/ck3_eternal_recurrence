@@ -46,20 +46,45 @@ class Phase2SeedLoadBisectTests(unittest.TestCase):
         self.assertEqual(20, sum(int(value["files"]) for value in fact_subgroups.values()))
         self.assertEqual(76, sum(int(value["definitions"]) for value in fact_subgroups.values()))
 
+        runtime_groups = bisect.fact_runtime_group_metadata(parent["by_kind"]["effect"])
+        self.assertEqual(bisect.EXPECTED_FACT_RUNTIME_GROUPS, {
+            name: {key: value[key] for key in ("files", "definitions", "bytes")}
+            for name, value in runtime_groups.items()
+        })
+        self.assertEqual(13, sum(int(value["files"]) for value in runtime_groups.values()))
+        self.assertEqual(51, sum(int(value["definitions"]) for value in runtime_groups.values()))
+        self.assertEqual(254_704, sum(int(value["bytes"]) for value in runtime_groups.values()))
+
     def test_fact_subgroup_selection_is_normalized_and_coarse_conflict_is_rejected(self) -> None:
         self.assertEqual(
-            (("ab",), ("runtime",)),
+            (("ab",), ("runtime",), ()),
             bisect.normalize_selection(
                 ("ab", "ab"),
                 ("runtime", "runtime"),
             ),
         )
         self.assertEqual(
-            (("facts",), ()),
+            (("facts",), (), ()),
             bisect.normalize_selection(("facts",), ()),
+        )
+        self.assertEqual(
+            (
+                (),
+                ("endgame-control",),
+                ("ad-panel", "central-requisition"),
+            ),
+            bisect.normalize_selection(
+                (),
+                ("endgame-control",),
+                ("central-requisition", "ad-panel", "ad-panel"),
+            ),
         )
         with self.assertRaisesRegex(bisect.SeedLoadBisectError, "conflicts"):
             bisect.normalize_selection(("facts",), ("endgame-control",))
+        with self.assertRaisesRegex(bisect.SeedLoadBisectError, "conflicts"):
+            bisect.normalize_selection(("facts",), (), ("central-requisition",))
+        with self.assertRaisesRegex(bisect.SeedLoadBisectError, "conflicts"):
+            bisect.normalize_selection((), ("runtime",), ("ad-panel",))
 
     def test_stub_renderer_preserves_bom_names_and_balance(self) -> None:
         source = (
@@ -224,6 +249,79 @@ class Phase2SeedLoadBisectTests(unittest.TestCase):
             facts_paths,
             selected_paths["runtime"] | selected_paths["endgame-control"],
         )
+
+    def test_fact_runtime_halves_are_exact_complements(self) -> None:
+        self._require_parent()
+        parent = bisect.validate_parent()
+        parent_rows = {str(row["path"]): row for row in parent["rows"]}
+        runtime_paths = {
+            str(row["path"])
+            for row in parent["by_kind"]["effect"]
+            if bisect.classify_fact_subgroup(str(row["path"])) == "runtime"
+        }
+        selected_paths: dict[str, set[str]] = {}
+        halves = {
+            "a": {
+                "groups": ("central-requisition", "ad-panel"),
+                "files": 5,
+                "definitions": 23,
+            },
+            "b": {
+                "groups": ("appointment-attribution", "exit-remediation"),
+                "files": 8,
+                "definitions": 28,
+            },
+        }
+
+        with tempfile.TemporaryDirectory(prefix="zg361-seed-load-runtime-leaves-") as temp:
+            for half, expected in halves.items():
+                output = Path(temp) / half
+                report = bisect.materialize(
+                    output=output,
+                    projection_name=f"phase2-seed-entry-effect-facts-runtime-half-{half}-test",
+                    real_fact_runtime_groups=expected["groups"],
+                )
+                selection = report["selection"]
+                self.assertEqual([], selection["real_groups"])
+                self.assertEqual([], selection["real_fact_subgroups"])
+                self.assertEqual(
+                    sorted(expected["groups"]),
+                    selection["real_fact_runtime_groups"],
+                )
+                self.assertEqual(expected["files"], selection["real_effect_files"])
+                self.assertEqual(expected["definitions"], selection["real_definitions"])
+                self.assertEqual(68 - expected["files"], selection["stub_effect_files"])
+                self.assertEqual(
+                    314 - expected["definitions"],
+                    selection["stubbed_definitions"],
+                )
+                self.assertEqual("mixed", selection["groups"]["facts"]["body_mode"])
+                self.assertEqual(
+                    "mixed",
+                    selection["fact_subgroups"]["runtime"]["body_mode"],
+                )
+
+                modes = selection["effect_file_modes"]
+                real_rows = [row for row in modes if row["body_mode"] == "real"]
+                selected_paths[half] = {str(row["path"]) for row in real_rows}
+                self.assertTrue(all(row["coarse_group"] == "facts" for row in real_rows))
+                self.assertTrue(all(row["fact_subgroup"] == "runtime" for row in real_rows))
+                self.assertTrue(
+                    all(row["fact_runtime_group"] in expected["groups"] for row in real_rows)
+                )
+                candidate_rows = {
+                    str(row["path"]): row
+                    for row in bisect.tree_rows(output / "source")
+                }
+                for row in modes:
+                    path = str(row["path"])
+                    if row["body_mode"] == "real":
+                        self.assertEqual(parent_rows[path], candidate_rows[path])
+                    else:
+                        self.assertNotEqual(parent_rows[path], candidate_rows[path])
+
+        self.assertFalse(selected_paths["a"] & selected_paths["b"])
+        self.assertEqual(runtime_paths, selected_paths["a"] | selected_paths["b"])
 
 
 if __name__ == "__main__":
