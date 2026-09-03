@@ -1,0 +1,51 @@
+{
+  "schema": "xar.ck3.g2_open_kaishek_compatibility.v1",
+  "status": "static-observation-only",
+  "purpose": "Freeze the root/open_kaishek G2 truce capability identity and detect cross-repository drift without starting CK3 or adding a Paradox opcode.",
+  "root_binding": {
+    "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "open_kaishek_commit": "981c79388a07e447b18f8e4472a16fd65e28c083"
+  },
+  "open_kaishek": {
+    "default_root": "Z:\\workspace\\open_kaishek",
+    "capability_source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/G2TruceEvaluatorCapabilityProfile.java",
+    "ck3_profile_source": "kaishek-ck3-11906-profile/src/main/java/com/xenoamess/kaishek/profile/Ck3Profile11906.java",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "game_version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "required_fields": [
+      "owner_character_id",
+      "toward_character_id",
+      "evaluated_days",
+      "evaluated_days_observable",
+      "current_date_raw",
+      "expiry_observable",
+      "expiry_date_raw",
+      "frame_identity"
+    ],
+    "invariants": [
+      "owner_and_toward_are_distinct_characters",
+      "evaluated_days_is_nonnegative_when_observable",
+      "two_evaluator_reads_match_on_one_paused_frame",
+      "expiry_is_not_inferred_from_evaluated_days",
+      "read_only_observer_never_submits_termination"
+    ],
+    "read_only": true,
+    "deterministic": true,
+    "native_certified": false,
+    "runtime_certified": false
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "allowlist_changed": false,
+    "native_query_added": false,
+    "readiness_promoted": false
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "boundaries": {
+    "allowlist_changed": false,
+    "ck3_started": false,
+    "mutation_sent": false,
+    "native_query_added": false,
+    "paradox_opcode_added": false,
+    "process_attached": false,
+    "readiness_promoted": false,
+    "save_mutated": false
+  },
+  "checks": {
+    "capability_capability_id_matches": true,
+    "capability_deterministic_matches": true,
+    "capability_invariants_matches": true,
+    "capability_native_certified_matches": true,
+    "capability_profile_id_matches": true,
+    "capability_read_only_matches": true,
+    "capability_required_fields_matches": true,
+    "capability_runtime_certified_matches": true,
+    "capability_source_parse": true,
+    "checkout_available": true,
+    "checkout_clean": true,
+    "checkout_head_matches_fixture": true,
+    "checkout_origin_main_matches_fixture": true,
+    "ck3_exe_sha256_matches": true,
+    "ck3_game_version_matches": true,
+    "ck3_profile_source_parse": true,
+    "fixture_boundaries_closed": true,
+    "fixture_capability_id_present": true,
+    "fixture_certification_closed": true,
+    "fixture_deterministic_present": true,
+    "fixture_invariants_present": true,
+    "fixture_native_certified_present": true,
+    "fixture_profile_id_present": true,
+    "fixture_read_only_present": true,
+    "fixture_required_fields_present": true,
+    "fixture_runtime_certified_present": true,
+    "fixture_schema": true,
+    "fixture_static_status": true,
+    "root_capability_matches_fixture": true,
+    "root_commit_matches_fixture": true,
+    "root_constants_parse": true,
+    "root_profile_matches_fixture": true
+  },
+  "errors": [],
+  "external": {
+    "available": true,
+    "capability": {
+      "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+      "deterministic": true,
+      "invariants": [
+        "owner_and_toward_are_distinct_characters",
+        "evaluated_days_is_nonnegative_when_observable",
+        "two_evaluator_reads_match_on_one_paused_frame",
+        "expiry_is_not_inferred_from_evaluated_days",
+        "read_only_observer_never_submits_termination"
+      ],
+      "native_certified": false,
+      "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+      "read_only": true,
+      "required_fields": [
+        "owner_character_id",
+        "toward_character_id",
+        "evaluated_days",
+        "evaluated_days_observable",
+        "current_date_raw",
+        "expiry_observable",
+        "expiry_date_raw",
+        "frame_identity"
+      ],
+      "runtime_certified": false
+    },
+    "ck3_profile": {
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "game_version": "1.19.0.6"
+    },
+    "clean": true,
+    "head": "981c79388a07e447b18f8e4472a16fd65e28c083",
+    "origin_main": "981c79388a07e447b18f8e4472a16fd65e28c083",
+    "path": "Z:\\workspace\\open_kaishek",
+    "status": "checked"
+  },
+  "fixture": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\ck3_autonomous_player\\native_bridge\\research\\fixtures\\g2_open_kaishek_compatibility_v1.json",
+  "ok": true,
+  "readiness": {
+    "native_certified": false,
+    "production_live": false,
+    "runtime_certified": false,
+    "stage": "static-ready"
+  },
+  "root_binding": {
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "open_kaishek_commit": "981c79388a07e447b18f8e4472a16fd65e28c083",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1"
+  },
+  "schema": "xar.ck3.g2_open_kaishek_compatibility_audit.v1",
+  "status": "GREEN_STATIC"
+}
