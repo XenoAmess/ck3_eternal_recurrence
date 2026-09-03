@@ -27,6 +27,10 @@
 正式 TTS/渲染仍必须等待 8/8 段真实 CK3 clean spans。当前两份 MP4 尚未生成，启动阻塞和可核验日志见
 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
 
+最新一次双版本前置复核见
+[`promo-preflight-audit-2026-09-03.md`](promo-preflight-audit-2026-09-03.md)，两份 runbook 位于
+`_runtime/phase2-preflight-audit-20260903-0930/`，均诚实停在 `RED / footage_pending`。
+
 `docs/` 保存两版的导演稿、生产合同、审片模板和状态索引；大体积 MP4 按项目约定落在外部
 `artifacts/demos/YYYY-MM-DD/`（并在本页登记路径、时长、编码和 SHA-256），不把成片二进制塞进 Git。
 
@@ -38,7 +42,7 @@
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
-| G2 / open_kaishek | G2 `evaluated_days` 观察器静态实现，正在接入共享桥；open_kaishek 已在可写 clone 提交只读能力合同 `981c793` | 完成共享接线与聚合回归；取得 paused exact-build evaluator 结果后再提升认证 | G2 静态接线收口后；canonical push 仍受只读 checkout/凭据阻塞 |
+| G2 / open_kaishek | G2 `evaluated_days` 观察器静态实现与共享桥接线已回归；open_kaishek 只读能力合同 `981c793` 已推送 `origin/main`，Maven `125/125` 通过 | 取得 paused exact-build evaluator 双读结果后再提升认证 | 依赖 CK3 到达 evaluator 的真实启动环境；当前保持 `static-ready-no-launch` |
 
 这里的“尚无 MP4”是刻意保留的事实状态，不是漏写路径：没有真实八段 CK3 素材、具名审阅和 fresh tool receipt 时，制作器会 fail-closed，不生成占位宣传片。
 
@@ -51,7 +55,7 @@
 
 实机启动复现、解锁条件和诚实 ETA 见 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
 
-最新 A/B 结果：`-noWorkshop` 以及 `--userdir=<isolated path>` 两种无 mod、无 bridge 启动方式都在同一 `ck3+0x1DABD89` 崩溃；探针回执见 [`live-startup-probe-no-workshop-2026-09-03.md`](live-startup-probe-no-workshop-2026-09-03.md)。
+最新 A/B 结果：`-noWorkshop` 以及 `--userdir=<isolated path>` 两种无 mod、无 bridge 启动方式都在同一 `ck3+0x1DABD89` 崩溃；Steam `-applaunch` 入口则未拉起 CK3 子进程。探针回执见 [`live-startup-probe-no-workshop-2026-09-03.md`](live-startup-probe-no-workshop-2026-09-03.md)。
 
 两版的独立审片入口为：
 
