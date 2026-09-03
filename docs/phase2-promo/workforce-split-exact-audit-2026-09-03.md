@@ -60,6 +60,11 @@ marker therefore cannot promote an arm to `fixture-live` or `production-live`.
 | single-block include diagnostics (`block3`, `block4`) | reports SHA `83F7D2C6ABA34C3934FF206367A72456C22280DBC9620A44109BBF57295820C9` and `1A538954FFD55D62DF0C2BCF618997DC8C3A398ECFCA67DD30E500B47A6C9691`; each reached frontend/history with 200 frames only because almost all workforce definitions were omitted; each retained 6,919 unused-variable diagnostics | coverage-limited partial arm; not functional GREEN |
 | left/right halves (`left-full`, `right-full`) | reports SHA `F19609136D13574411AA3993A65A8B2600EBB4707E908C53CD729638F1870C37` and `B6ACC4AC0671FCF3F7514F10C444311A4BFA6618A98059C79EB674D4742E89AA`; both reached frontend/history with 200 frames, but each mounted only one half and logged thousands of unused-variable diagnostics | coverage-limited half diagnostics; not functional GREEN |
 
+In short: `control-exclude-m360` is coverage-limited; the old split is
+malformed and coverage-limited; and the single-block include plus left/right
+halves are coverage-limited diagnostics (with any bytes inherited from the old
+split also malformed). **None of these arms is functional GREEN.**
+
 The single-block and half runs answer only “can this reduced projection reach a
 frontend?” They do not establish complete definitions, gameplay behavior,
 cross-file references, or a valid split. The exact BOM-correct full split is
