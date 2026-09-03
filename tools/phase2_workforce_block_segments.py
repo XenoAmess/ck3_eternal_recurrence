@@ -67,7 +67,10 @@ def find_blocks(data: bytes) -> tuple[bytes, list[dict[str, object]]]:
     bom = data.startswith(b"\xef\xbb\xbf")
     text = data.decode("utf-8-sig" if bom else "utf-8")
     lines = text.splitlines(keepends=True)
-    byte_offsets: list[int] = [0]
+    # ``utf-8-sig`` strips the BOM from ``text`` while the source byte slices
+    # below still address the original bytes.  Seed the offset table past the
+    # three-byte BOM so every block and header slice remains byte-exact.
+    byte_offsets: list[int] = [3 if bom else 0]
     encoded_lines: list[bytes] = []
     for line in lines:
         encoded = line.encode("utf-8")
