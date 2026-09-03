@@ -1,10 +1,11 @@
 ﻿#!/usr/bin/env python3
-"""Materialize the frozen seed r3 all-effect-stub load diagnostic.
+"""Materialize frozen seed r3 effect-group load diagnostics.
 
 This tool is deliberately diagnostic-only.  It copies the exact 245-file
-seed-entry r3 product, replaces only the 314 effects in the 68-file seed
-overlay with same-name empty bodies, and writes a hash-bound projection plus
-an exact replay.  It never edits the canonical mod and never launches CK3.
+seed-entry r3 product, optionally retains complete purpose groups among the
+314 effects in the 68-file seed overlay, replaces every other effect with a
+same-name empty body, and writes a hash-bound projection plus an exact replay.
+It never edits the canonical mod and never launches CK3.
 """
 
 from __future__ import annotations
@@ -269,6 +270,7 @@ def materialize(
     output: Path,
     projection_name: str,
     parent_root: Path = DEFAULT_PARENT_ROOT,
+    real_groups: Sequence[str] = (),
 ) -> dict[str, Any]:
     output = output.resolve()
     parent_root = parent_root.resolve()
@@ -286,6 +288,11 @@ def materialize(
     parent = validate_parent(parent_root)
     effect_rows = parent["by_kind"]["effect"]
     groups = group_metadata(effect_rows)
+    normalized_real_groups = tuple(sorted(set(real_groups)))
+    unknown_groups = sorted(set(normalized_real_groups) - set(EXPECTED_GROUPS))
+    if unknown_groups:
+        raise SeedLoadBisectError(f"unknown real effect groups: {unknown_groups}")
+    mode = "effect-group-restore" if normalized_real_groups else "all-effect-stub"
     output.mkdir(parents=True)
     source = output / "source"
     shutil.copytree(parent["product"], source)
@@ -293,8 +300,12 @@ def materialize(
     rendered_files: list[dict[str, object]] = []
     original_names: list[str] = []
     rendered_names: list[str] = []
+    real_names: list[str] = []
+    stub_names: list[str] = []
     for row in sorted(effect_rows, key=lambda item: str(item["path"])):
         relative = str(row["path"])
+        group = classify_effect_path(relative)
+        body_mode = "real" if group in normalized_real_groups else "stub"
         path = source / PurePosixPath(relative)
         original = path.read_bytes()
         _header, original_blocks = find_blocks(original)
@@ -302,7 +313,8 @@ def materialize(
         observed_names = [str(block["name"]) for block in original_blocks]
         if observed_names != expected_names:
             raise SeedLoadBisectError(f"parent effect definition order drifted: {relative}")
-        rendered, block_rows = render_effect_variant(original, [])
+        real_indices = range(len(original_blocks)) if body_mode == "real" else ()
+        rendered, block_rows = render_effect_variant(original, real_indices)
         path.write_bytes(rendered)
         _rendered_header, after_blocks = find_blocks(rendered)
         after_names = [str(block["name"]) for block in after_blocks]
@@ -310,11 +322,12 @@ def materialize(
             raise SeedLoadBisectError(f"stub rendering changed definition names: {relative}")
         original_names.extend(observed_names)
         rendered_names.extend(after_names)
+        (real_names if body_mode == "real" else stub_names).extend(after_names)
         rendered_files.append(
             {
                 "path": relative,
-                "group": classify_effect_path(relative),
-                "body_mode": "stub",
+                "group": group,
+                "body_mode": body_mode,
                 "definitions": len(observed_names),
                 "definition_names": observed_names,
                 "original_bytes": len(original),
@@ -325,7 +338,7 @@ def materialize(
                     {
                         "index": int(before["index"]),
                         "name": str(before["name"]),
-                        "body_mode": "stub",
+                        "body_mode": body_mode,
                         "original_bytes": int(before["bytes"]),
                         "original_sha256": str(before["sha256"]),
                         "rendered_bytes": int(after["bytes"]),
@@ -351,6 +364,27 @@ def materialize(
     )
     if retained_mismatches:
         raise SeedLoadBisectError(f"retained parent files changed: {retained_mismatches}")
+    real_effect_paths = {
+        str(row["path"])
+        for row in effect_rows
+        if classify_effect_path(str(row["path"])) in normalized_real_groups
+    }
+    stub_effect_paths = effect_paths - real_effect_paths
+    real_effect_mismatches = sorted(
+        path
+        for path in real_effect_paths
+        if source_by_path[path] != parent_rows_by_path[path]
+    )
+    unexpected_stub_identity = sorted(
+        path
+        for path in stub_effect_paths
+        if source_by_path[path] == parent_rows_by_path[path]
+    )
+    if real_effect_mismatches or unexpected_stub_identity:
+        raise SeedLoadBisectError(
+            "real/stub effect identity gate failed: "
+            f"real={real_effect_mismatches}, stub={unexpected_stub_identity}"
+        )
 
     bom_missing: list[str] = []
     brace_errors: list[dict[str, object]] = []
@@ -386,11 +420,18 @@ def materialize(
     block_manifest = {
         "schema_version": 1,
         "kind": "zg361_phase2_seed_load_bisect_blocks",
-        "mode": "all-effect-stub",
+        "mode": mode,
         "diagnostic_only": True,
         "forbidden_for_seed_release": True,
         "parent_formal_overlay_tree_sha256": EXPECTED_PARENT["formal_overlay_tree_sha256"],
-        "groups": groups,
+        "real_groups": list(normalized_real_groups),
+        "groups": {
+            name: {
+                **value,
+                "body_mode": "real" if name in normalized_real_groups else "stub",
+            }
+            for name, value in groups.items()
+        },
         "effect_files": rendered_files,
     }
     write_json(output / "block-manifest.json", block_manifest)
@@ -398,7 +439,7 @@ def materialize(
         "schema_version": 1,
         "kind": "zg361_phase2_seed_load_bisect_preflight",
         "status": "GREEN_STATIC_DIAGNOSTIC",
-        "mode": "all-effect-stub",
+        "mode": mode,
         "diagnostic_only": True,
         "forbidden_for_seed_release": True,
         "seed_or_feature_certification": False,
@@ -423,9 +464,29 @@ def materialize(
         "selection": {
             "effect_files": len(effect_rows),
             "definitions": len(rendered_names),
-            "stubbed_definitions": len(rendered_names),
-            "real_definitions": 0,
-            "groups": groups,
+            "real_groups": list(normalized_real_groups),
+            "real_effect_files": len(real_effect_paths),
+            "stub_effect_files": len(stub_effect_paths),
+            "stubbed_definitions": len(stub_names),
+            "real_definitions": len(real_names),
+            "groups": {
+                name: {
+                    **value,
+                    "body_mode": "real" if name in normalized_real_groups else "stub",
+                }
+                for name, value in groups.items()
+            },
+            "effect_file_modes": [
+                {
+                    "path": row["path"],
+                    "group": row["group"],
+                    "body_mode": row["body_mode"],
+                    "definitions": row["definitions"],
+                    "rendered_bytes": row["rendered_bytes"],
+                    "rendered_sha256": row["rendered_sha256"],
+                }
+                for row in rendered_files
+            ],
         },
         "checks": {
             "parent_identity": {"status": "GREEN"},
@@ -439,6 +500,18 @@ def materialize(
                 "retained_overlay_localization": EXPECTED_PARENT["localization_files"],
                 "mismatches": [],
             },
+            "real_effect_identity": {
+                "status": "GREEN",
+                "files": len(real_effect_paths),
+                "definitions": len(real_names),
+                "mismatches": [],
+            },
+            "stub_effect_identity": {
+                "status": "GREEN",
+                "files": len(stub_effect_paths),
+                "definitions": len(stub_names),
+                "unexpected_parent_identical": [],
+            },
             "definition_surface": {"status": "GREEN", "unique": True, "expected": EXPECTED_PARENT["effect_definitions"], "observed": len(rendered_names)},
             "bom_and_braces": {"status": "GREEN", "bom_missing": [], "brace_errors": []},
             "deterministic_materialization": {"status": "GREEN", "source_equals_product": True, "source_equals_replay": True},
@@ -449,7 +522,7 @@ def materialize(
         },
         "runtime": {"live_status": "pending", "ck3_launch": "NOT_RUN"},
         "limits": [
-            "All 314 selected effect bodies are empty diagnostic stubs.",
+            "Selected real groups retain exact parent bytes; every other selected effect body is an empty diagnostic stub.",
             "A CK3 GREEN result can certify only a startup/load boundary.",
             "This tree must never be used for seed capture, gameplay evidence, release, or Workshop upload.",
         ],
@@ -463,20 +536,35 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--projection-name", required=True)
     parser.add_argument("--parent-root", type=Path, default=DEFAULT_PARENT_ROOT)
-    parser.add_argument("--mode", choices=("all-effect-stub",), default="all-effect-stub")
+    parser.add_argument(
+        "--mode",
+        choices=("all-effect-stub", "effect-group-restore"),
+        help="Defaults from whether --real-groups is empty.",
+    )
+    parser.add_argument(
+        "--real-groups",
+        nargs="*",
+        choices=sorted(EXPECTED_GROUPS),
+        default=(),
+        help="Restore these complete purpose groups; all other overlay effects stay stubbed.",
+    )
     args = parser.parse_args(argv)
+    inferred_mode = "effect-group-restore" if args.real_groups else "all-effect-stub"
+    if args.mode is not None and args.mode != inferred_mode:
+        parser.error(f"--mode {args.mode} conflicts with --real-groups")
     try:
         report = materialize(
             output=args.output,
             projection_name=args.projection_name,
             parent_root=args.parent_root,
+            real_groups=args.real_groups,
         )
     except (SeedLoadBisectError, OSError, ValueError) as error:
         print(f"RED: {error}")
         return 1
     candidate = report["candidate"]
     print(
-        "GREEN_STATIC_DIAGNOSTIC: all-effect-stub "
+        f"GREEN_STATIC_DIAGNOSTIC: {report['mode']} "
         f"{candidate['files']} files / {candidate['bytes']} bytes / "
         f"formal SHA {candidate['formal_overlay_tree_sha256']}"
     )

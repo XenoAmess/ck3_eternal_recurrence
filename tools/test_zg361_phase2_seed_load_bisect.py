@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-"""Tests for the frozen seed-entry all-effect-stub diagnostic builder."""
+"""Tests for the frozen seed-entry effect-group diagnostic builder."""
 
 from __future__ import annotations
 
@@ -89,6 +89,56 @@ class Phase2SeedLoadBisectTests(unittest.TestCase):
             self.assertTrue(
                 report["checks"]["deterministic_materialization"]["source_equals_replay"]
             )
+            self.assertEqual(
+                bisect.tree_rows(output / "source"),
+                bisect.tree_rows(output / "product"),
+            )
+            self.assertEqual(
+                bisect.tree_rows(output / "source"),
+                bisect.tree_rows(output / "materialized-check"),
+            )
+
+    def test_ab_ac_restore_is_exact_and_other_groups_are_stubbed(self) -> None:
+        self._require_parent()
+        parent = bisect.validate_parent()
+        parent_rows = {
+            str(row["path"]): row
+            for row in parent["rows"]
+        }
+        with tempfile.TemporaryDirectory(prefix="zg361-seed-load-h1-") as temp:
+            output = Path(temp) / "candidate"
+            report = bisect.materialize(
+                output=output,
+                projection_name="phase2-seed-entry-effect-h1-ab-ac-test",
+                real_groups=("ac", "ab", "ab"),
+            )
+
+            self.assertEqual("effect-group-restore", report["mode"])
+            self.assertEqual(["ab", "ac"], report["selection"]["real_groups"])
+            self.assertEqual(28, report["selection"]["real_effect_files"])
+            self.assertEqual(40, report["selection"]["stub_effect_files"])
+            self.assertEqual(164, report["selection"]["real_definitions"])
+            self.assertEqual(150, report["selection"]["stubbed_definitions"])
+            self.assertTrue(report["diagnostic_only"])
+            self.assertTrue(report["forbidden_for_seed_release"])
+
+            modes = report["selection"]["effect_file_modes"]
+            self.assertEqual(68, len(modes))
+            self.assertEqual(28, sum(row["body_mode"] == "real" for row in modes))
+            self.assertEqual(40, sum(row["body_mode"] == "stub" for row in modes))
+            candidate_rows = {
+                str(row["path"]): row
+                for row in bisect.tree_rows(output / "source")
+            }
+            for row in modes:
+                path = str(row["path"])
+                if row["group"] in {"ab", "ac"}:
+                    self.assertEqual("real", row["body_mode"])
+                    self.assertEqual(parent_rows[path], candidate_rows[path])
+                else:
+                    self.assertEqual("stub", row["body_mode"])
+                    self.assertNotEqual(parent_rows[path], candidate_rows[path])
+
             self.assertEqual(
                 bisect.tree_rows(output / "source"),
                 bisect.tree_rows(output / "product"),
