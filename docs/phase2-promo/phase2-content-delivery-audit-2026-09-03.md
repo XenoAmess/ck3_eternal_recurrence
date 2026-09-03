@@ -66,6 +66,15 @@ runner 正常清理，窗口与 `frontend_main.gui` 均出现，但没有
 后连第一条数据库初始化标记都没有。此项维持 `native/provider = RED`，失败 attempt
 保留供下一轮 workforce/central 分段 A/B 归因。
 
+随后对同一闭环运行了 workforce 左半（blocks `0–161`）的完整投影：
+`_runtime/formal-phase2-workforce-left-full-20260903/report.json`，报告
+SHA-256 为 `F19609136D13574411AA3993A65A8B2600EBB4707E908C53CD729638F1870C37`。
+该投影（264 files / 12,932,133 bytes）在约 100.57 秒后取得
+`result=frontend_window_verified`、`End loading of history`，退出码 0 且清理证明为真；
+因此 workforce 左半本身不是启动阻塞源，下一轮应优先细分右半 blocks `162–323`。
+该运行的 6,960 条 `error.log` 记录均为 unused-variable 诊断，没有 unknown effect、
+parser 或 missing-loc 错误；它们不应被误报为导致停滞的解析故障。
+
 ## 依赖解除后的时间估计
 
 这是条件 ETA，不是承诺的日历时间：
