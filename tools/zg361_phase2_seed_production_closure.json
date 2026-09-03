@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_seed_entry_production_closure",
+  "description": "Callback-closed production product for the checked-in five-root Phase-2 seed fixture, layered over Incident-X r3.",
+  "readiness": "static-ready-not-live",
+  "baseline": {
+    "root": "_runtime/phase2-incident-x-production-closure-20260904-r3",
+    "source": "source",
+    "product": "product",
+    "materialized_check": "materialized-check",
+    "manifest": "projection.json",
+    "projection": "phase2-incident-x-production-closure-20260904-r3",
+    "file_count": 135,
+    "bytes": 9158442,
+    "manifest_sha256": "cf379f38da8c471ddccdb6522d7e0864098596737862b5e2a703aeca94e40cb7",
+    "source_tree_sha256": "acc693206aaa03aeedfb829911778275ed4d4f2eef31cf4dce6de7d46f34bf3e",
+    "formal_overlay_tree_sha256": "af8f0dece9477fdd60b6c96d0e09a27bfc9e55ceed40a9804b70acb986d57a2d",
+    "file_list_sha256": "045f56d78fb036cdf69225912f9b046673fcd528e99a69571363133a65ea2262",
+    "preflight_sha256": "3c994e39e5fd67b680c13f9bc79f2d7ca84a9dc877cef56383ce040127606ef5",
+    "closure_contract_sha256": "ed4b5e82430187b1c79e2aefe29748c5d51749782cc340644db434c14a0b468a"
+  },
+  "fixture": {
+    "event_file": "tools/fixtures/zg361_phase2_seed_bootstrap/events/zga_phase2_seed_events.txt",
+    "bytes": 4503,
+    "sha256": "b35cf0c0e32932ea136da71f8d91bef4dbdcddf681f230ac6822cee0c30fa853",
+    "ordered_root_effects": [
+      "zg361_b1_open_cycle_effect",
+      "zg361_ip_open_x_case_effect",
+      "zg361_we_open_portfolio_effect",
+      "zg361_b2_on_result_frozen_effect",
+      "zg361_b2_on_notice_delivered_effect"
+    ]
+  },
+  "expansion": {
+    "root_effect": "zg361_we_open_portfolio_effect",
+    "expected_full": {
+      "effects": 397,
+      "events": 164,
+      "triggers": 6,
+      "values": 0,
+      "court_positions": 2
+    },
+    "expected_delta": {
+      "effects": 314,
+      "events": 142,
+      "triggers": 0,
+      "values": 0,
+      "court_positions": 2
+    },
+    "reachable_triggers": [
+      "zg361_case_kernel_can_open_trigger",
+      "zg361_case_kernel_deadline_is_current_trigger",
+      "zg361_case_kernel_full_guard_trigger",
+      "zg361_case_kernel_receipt_is_current_trigger",
+      "zg361_is_celestial_liege_trigger",
+      "zg361_is_reviewable_vassal_trigger"
+    ]
+  },
+  "candidate": {
+    "projection": "phase2-seed-entry-production-closure-20260904-r1",
+    "expected_file_count": 240,
+    "expected_overlay_file_count": 105,
+    "expected_effect_files": 63,
+    "expected_event_files": 35,
+    "expected_court_position_files": 2,
+    "expected_localization_files": 5,
+    "expected_new_localization_keys": 28,
+    "expected_five_root_closure": {
+      "effects": 2042,
+      "events": 580,
+      "triggers": 6,
+      "values": 0,
+      "court_positions": 2
+    },
+    "effect_target_per_file": 10,
+    "effect_hard_max_per_file": 20,
+    "expected_effect_files_over_target": 0,
+    "expected_effect_files_over_hard_max": 0,
+    "effect_boundary_exceptions": [],
+    "expected_inherited_additional_triggers": [
+      "zg361_can_calibrate_demote_trigger",
+      "zg361_is_current_liege_review_record_trigger",
+      "zg361_is_elimination_candidate_trigger"
+    ],
+    "expected_bytes": 12096083,
+    "source_tree_sha256": "d7154f92c3144addee3fe91d4818a19845fb92eb8ed91f4e2a9d4fe07b7b06c6",
+    "formal_overlay_tree_sha256": "abf73534367abe655556f8f435396742c1b6fd396414f6f24ab5af62a1983ec4",
+    "file_list_sha256": "1ae18f8097e2097f17d240130915a85d1380d84c6299cc9dbe8e44657cc0a60d",
+    "projection_manifest_sha256": "f415882444ffa247f44c24decc16fa4e40f7779e748fed7efa5a877219187210",
+    "ck3_launch": "NOT_RUN_BY_BUILDER",
+    "live_status": "pending"
+  },
+  "overlay": {
+    "bytes": 2937641,
+    "inventory_sha256": "c50075bb4948a4cca1cfe2c2f191e0434a19994885215fc2acafff29bbc36882",
+    "files": []
+  },
+  "forbidden_paths": [
+    "common/scripted_effects/zg361_phase2_central_runtime_effects.txt",
+    "events/zg361_phase2_central_runtime_events.txt",
+    "common/scripted_effects/zg361_workforce_ad_fact_runtime_effects.txt",
+    "common/scripted_effects/zg361_workforce_exit_fact_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt",
+    "events/zg361_workforce_endgame_runtime_events.txt",
+    "common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
+    "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt",
+    "events/zg361_manager_governance_runtime_events.txt",
+    "localization/simp_chinese/zg361_manager_governance_l_simp_chinese.yml",
+    "common/scripted_effects/zg361_phase2_central_008_stage10_manager_governance_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_023b_al_m360_due_debt_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_024c_manager_collective_cleanup_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_035b_al_stage04_m360_deadline_effects.txt",
+    "events/zg361_phase2_central_001_serial_dispatch_events.txt",
+    "events/zg361_workforce_endgame_event_011a_al_m360_collective_events.txt",
+    "events/zg361_workforce_endgame_event_021a_al_stage04_m360_deadline_events.txt",
+    "events/zg361_workforce_endgame_event_035a_al_m360_collective_debt_events.txt"
+  ],
+  "stub_markers": [
+    "# DISPOSABLE DIAGNOSTIC STUBS",
+    "ZG361 B2 diagnostic stub:",
+    "ZG361 incident diagnostic stub:",
+    "# DIAGNOSTIC STUB",
+    "# DIAGNOSTIC FILE SPLIT",
+    "body_mode = stub"
+  ]
+}
