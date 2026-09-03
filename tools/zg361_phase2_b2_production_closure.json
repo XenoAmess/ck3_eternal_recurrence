@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_b2_production_closure",
+  "description": "No-stub B2 production closure over the frozen 59-file B1 formal projection.",
+  "readiness": "static-ready-not-live",
+  "baseline": {
+    "root": "_runtime/phase2-b1-formal-split-20260903-r1",
+    "source": "_runtime/phase2-b1-formal-split-20260903-r1/source",
+    "manifest": "_runtime/phase2-b1-formal-split-20260903-r1/projection.json",
+    "projection": "phase2-b1-formal-split-20260903-r1",
+    "file_count": 59,
+    "bytes": 7858254,
+    "manifest_sha256": "5e97c3d8beeced78844bc2d868fe6b49fe5a5fba837bbb896d367e78f94e4808",
+    "source_tree_sha256": "df46e56ee668265df71c2ab05c237d52bfd602f8c9cc18c023107ec35836b2d2",
+    "formal_overlay_tree_sha256": "9eed00504e1aaf34f352b440cfb4dfebf3bb1206966457834727a81bab4fc50a",
+    "file_list_sha256": "0ef1c558dc02d0fc770e06546b4cdfbe1b4c7d3d21d4838ec122340ad0ccc746"
+  },
+  "candidate": {
+    "expected_file_count": 119,
+    "expected_overlay_file_count": 60,
+    "expected_b2_effect_count": 152,
+    "expected_b2_event_count": 23,
+    "expected_dependency_effect_closure_count": 71,
+    "expected_dependency_event_closure_count": 28,
+    "expected_selected_event_count": 51,
+    "effect_target_per_file": 10,
+    "effect_hard_max_per_file": 20,
+    "ck3_launch": "NOT_RUN_BY_BUILDER",
+    "live_status": "pending"
+  },
+  "root_effects": [
+    "zg361_we_submit_al_357_359_receipts_effect",
+    "zg361_workforce_probation_fact_publish_from_pip_settlement_effect",
+    "zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect"
+  ],
+  "b2": {
+    "effect_shards": [
+      "common/scripted_effects/zg361_b2_014_appeal_lifecycle_effects.txt",
+      "common/scripted_effects/zg361_b2_015_pip_open_effects.txt",
+      "common/scripted_effects/zg361_b2_015_pip_response_effects.txt",
+      "common/scripted_effects/zg361_b2_016_pip_support_effects.txt",
+      "common/scripted_effects/zg361_b2_017_pip_settlement_effects.txt",
+      "common/scripted_effects/zg361_b2_017_pip_workforce_handoff_effects.txt",
+      "common/scripted_effects/zg361_b2_069_delivery_effects.txt",
+      "common/scripted_effects/zg361_b2_070_observation_effects.txt",
+      "common/scripted_effects/zg361_b2_071_escalation_effects.txt",
+      "common/scripted_effects/zg361_b2_072_access_audit_effects.txt",
+      "common/scripted_effects/zg361_b2_073_reporting_effects.txt",
+      "common/scripted_effects/zg361_b2_074_redundancy_effects.txt",
+      "common/scripted_effects/zg361_b2_075_exit_offer_effects.txt",
+      "common/scripted_effects/zg361_b2_076_liability_effects.txt",
+      "common/scripted_effects/zg361_b2_077_reviewer_effects.txt",
+      "common/scripted_effects/zg361_b2_078_fairness_effects.txt",
+      "common/scripted_effects/zg361_b2_079_skip_level_effects.txt",
+      "common/scripted_effects/zg361_b2_080_metric_defect_effects.txt",
+      "common/scripted_effects/zg361_b2_081_projection_access_effects.txt",
+      "common/scripted_effects/zg361_b2_358_non_aggravation_effects.txt",
+      "common/scripted_effects/zg361_b2_358_separate_adverse_action_effects.txt",
+      "common/scripted_effects/zg361_b2_359_quota_return_effects.txt",
+      "common/scripted_effects/zg361_b2_359_boundary_redelivery_effects.txt",
+      "common/scripted_effects/zg361_b2_collective_receipt_handoff_effects.txt",
+      "common/scripted_effects/zg361_b2_debt_consumers_effects.txt"
+    ],
+    "event_file": "events/zg361_b2_runtime_events.txt",
+    "localization_file": "localization/simp_chinese/zg361_b2_l_simp_chinese.yml"
+  },
+  "dependencies": {
+    "case_kernel": {
+      "file": "common/scripted_effects/zg361_case_kernel_effects.txt",
+      "already_in_baseline": true,
+      "reachable_effects": [
+        "zg361_case_ad_advance_05_effect",
+        "zg361_case_ad_advance_06_effect",
+        "zg361_case_al_advance_01_effect",
+        "zg361_case_al_advance_02_effect",
+        "zg361_case_al_advance_03_effect",
+        "zg361_case_al_open_effect",
+        "zg361_case_kernel_expire_deadline_effect",
+        "zg361_case_kernel_initialize_case_effect",
+        "zg361_case_kernel_record_operation_effect",
+        "zg361_case_kernel_schedule_deadline_effect",
+        "zg361_case_kernel_transition_effect"
+      ]
+    },
+    "workforce_endgame": {
+      "effect_shards": [
+        "common/scripted_effects/zg361_workforce_endgame_002_al_receipt_bridge_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_006_completed_357_359_history_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_009b_m276_rehire_history_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_014b_m269_future_consume_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_014d_m355_m356_future_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_015b_m269_postsettlement_handoff_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_016_m276_rehire_finalize_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_022b_ad_due_debt_stage06_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_023a_al_m355_m356_due_debt_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_024b_ad_nonmanager_terminal_cleanup_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_033b_ad_deadline_stage06_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_034a_al_initialize_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_034c_al_ai_launch_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_035a_al_stage01_deadline_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_055_ad_m276_m277_effects.txt",
+        "common/scripted_effects/zg361_workforce_endgame_056_al_m355_m356_effects.txt"
+      ],
+      "reachable_effects": [
+        "zg361_we_submit_al_357_359_receipts_effect",
+        "zg361_we_record_completed_357_359_history_effect",
+        "zg361_we_submit_m276_rehire_history_effect",
+        "zg361_we_m269_future_consume_effect",
+        "zg361_we_m355_target_install_effect",
+        "zg361_we_m356_cutoff_audit_effect",
+        "zg361_we_m269_postsettlement_handoff_effect",
+        "zg361_we_m276_audit_prepared_rehire_effect",
+        "zg361_we_m276_audit_rehire_finalize_effect",
+        "zg361_we_m276_finalize_rehire_effect",
+        "zg361_we_queue_m276_rehire_finalize_effect",
+        "zg361_we_m276_consume_due_debt_effect",
+        "zg361_we_m277_consume_due_debt_effect",
+        "zg361_we_m355_consume_due_debt_effect",
+        "zg361_we_m356_consume_due_debt_effect",
+        "zg361_we_finalize_nonmanager_na_effect",
+        "zg361_we_release_abandoned_ad_resources_effect",
+        "zg361_we_ad_schedule_stage_06_deadline_effect",
+        "zg361_we_ad_timeout_stage_06_effect",
+        "zg361_we_al_initialize_effect",
+        "zg361_we_al_launch_effect",
+        "zg361_we_al_run_authorized_ai_effect",
+        "zg361_we_al_schedule_stage_01_deadline_effect",
+        "zg361_we_al_timeout_stage_01_effect",
+        "zg361_we_m276_consume_effect",
+        "zg361_we_m276_route_a_effect",
+        "zg361_we_m276_route_b_effect",
+        "zg361_we_m276_route_c_effect",
+        "zg361_we_m277_consume_effect",
+        "zg361_we_m277_route_a_effect",
+        "zg361_we_m277_route_b_effect",
+        "zg361_we_m277_route_c_effect",
+        "zg361_we_m355_consume_effect",
+        "zg361_we_m355_route_a_effect",
+        "zg361_we_m355_route_b_effect",
+        "zg361_we_m355_route_c_effect",
+        "zg361_we_m356_consume_effect",
+        "zg361_we_m356_route_a_effect",
+        "zg361_we_m356_route_b_effect",
+        "zg361_we_m356_route_c_effect"
+      ],
+      "event_shards": [
+        "events/zg361_workforce_endgame_event_007_m276_rehire_lifecycle_events.txt",
+        "events/zg361_workforce_endgame_event_008_m277_pip_exit_events.txt",
+        "events/zg361_workforce_endgame_event_009_m355_target_ratchet_events.txt",
+        "events/zg361_workforce_endgame_event_010_m356_outcome_timing_events.txt",
+        "events/zg361_workforce_endgame_event_019_ad_deadline_stage06_events.txt",
+        "events/zg361_workforce_endgame_event_020_al_deadline_stage01_events.txt",
+        "events/zg361_workforce_endgame_event_023_m269_postsettlement_events.txt"
+      ],
+      "reachable_events": [
+        "zg361we.276",
+        "zg361we.277",
+        "zg361we.355",
+        "zg361we.356",
+        "zg361we.4606",
+        "zg361we.4706",
+        "zg361we.4801",
+        "zg361we.4901",
+        "zg361we.5269",
+        "zg361we.5355",
+        "zg361we.5356",
+        "zg361we.5377",
+        "zg361we.5379",
+        "zg361we.5380",
+        "zg361we.5381",
+        "zg361we.6276",
+        "zg361we.6277",
+        "zg361we.6355",
+        "zg361we.6356"
+      ],
+      "localization_file": "localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
+      "referenced_localization_keys": 20
+    },
+    "normal_exit": {
+      "effect_file": "common/scripted_effects/zg361_workforce_normal_exit_fact_effects.txt",
+      "reachable_effects": [
+        "zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect",
+        "zg361_workforce_normal_exit_fact_audit_native_then_accept_m075_effect",
+        "zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect",
+        "zg361_workforce_normal_exit_fact_clear_pending_effect",
+        "zg361_workforce_normal_exit_fact_dispatch_native_revoke_effect",
+        "zg361_workforce_normal_exit_fact_migrate_hc_partition_effect"
+      ],
+      "event_file": "events/zg361_workforce_normal_exit_fact_events.txt",
+      "reachable_events": [
+        "zg361workforcenormalexitfact.1",
+        "zg361workforcenormalexitfact.9100",
+        "zg361workforcenormalexitfact.9101",
+        "zg361workforcenormalexitfact.9102",
+        "zg361workforcenormalexitfact.9103",
+        "zg361workforcenormalexitfact.9104"
+      ],
+      "localization_file": "localization/simp_chinese/zg361_workforce_normal_exit_fact_l_simp_chinese.yml",
+      "referenced_localization_keys": 3
+    },
+    "probation": {
+      "effect_file": "common/scripted_effects/zg361_workforce_probation_fact_effects.txt",
+      "reachable_effects": [
+        "zg361_workforce_probation_fact_finalize_consumption_receipt_effect",
+        "zg361_workforce_probation_fact_materialize_and_consume_effect",
+        "zg361_workforce_probation_fact_publish_canonical_effect",
+        "zg361_workforce_probation_fact_publish_from_normal_exit_effect",
+        "zg361_workforce_probation_fact_publish_from_pip_settlement_effect",
+        "zg361_workforce_probation_fact_schedule_consume_effect",
+        "zg361_workforce_probation_fact_schedule_consume_retry_effect"
+      ],
+      "event_file": "events/zg361_workforce_probation_fact_events.txt",
+      "reachable_events": [
+        "zg361wpf.1",
+        "zg361wpf.2"
+      ],
+      "localization_file": "localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml",
+      "referenced_localization_keys": 3
+    },
+    "rehire": {
+      "effect_file": "common/scripted_effects/zg361_workforce_rehire_fact_effects.txt",
+      "reachable_effects": [
+        "zg361_workforce_rehire_fact_capture_exit_effect",
+        "zg361_workforce_rehire_fact_capture_growth_effect",
+        "zg361_workforce_rehire_fact_clear_legacy_envelope_effect",
+        "zg361_workforce_rehire_fact_finalize_m276_effect",
+        "zg361_workforce_rehire_fact_prepare_m276_effect"
+      ],
+      "event_file": "events/zg361_workforce_rehire_fact_events.txt",
+      "reachable_events": [
+        "zg361wrf.1"
+      ],
+      "localization_file": "localization/simp_chinese/zg361_workforce_rehire_fact_l_simp_chinese.yml",
+      "referenced_localization_keys": 3
+    },
+    "b2_cycle": {
+      "reachable_effects": [
+        "zg361_b2_m075_accept_exit_offer_effect",
+        "zg361_b2_m075_consume_business_object_effect"
+      ]
+    }
+  },
+  "forbidden_paths": [
+    "common/scripted_effects/zg361_b2_runtime_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt",
+    "events/zg361_workforce_endgame_runtime_events.txt"
+  ],
+  "stub_markers": [
+    "# DISPOSABLE DIAGNOSTIC STUBS",
+    "ZG361 B2 diagnostic stub:",
+    "# DIAGNOSTIC STUB",
+    "# DIAGNOSTIC FILE SPLIT",
+    "body_mode = stub"
+  ]
+}
