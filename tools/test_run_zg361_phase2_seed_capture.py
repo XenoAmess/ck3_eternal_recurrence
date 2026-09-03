@@ -371,6 +371,7 @@ class Fixture:
         self.artifacts = self.attempt / "artifacts"
         self.game = root / "game"
         self.old_save = root / "old-save.ck3"
+        self.settings_template = root / "known-good" / "pdx_settings.txt"
         self.dll = root / "bridge.dll"
         self.injector = root / "injector.exe"
         self.source_zip = self.attempt / "head-source.zip"
@@ -407,6 +408,8 @@ class Fixture:
         rules.write_text("game_rules = {}\n", encoding="utf-8")
         self.dll.write_bytes(b"fake-bridge-dll")
         self.injector.write_bytes(b"fake-injector")
+        _write_full_settings(self.settings_template)
+        _write_warm_shadercache(self.settings_template.parent)
         self.attempt.mkdir(parents=True)
         self.rebuild_source_zip()
 
@@ -433,6 +436,7 @@ class Fixture:
             event_timeout_seconds=14.0,
             binding_timeout_seconds=12.0,
             keyboard_watchdog_interval_seconds=0.01,
+            profile_settings_template=self.settings_template,
         )
 
     def runtime(
@@ -578,6 +582,18 @@ def _write_full_settings(path: Path, *, lines: int = 24) -> None:
     path.write_text("\n".join(body) + "\n", encoding="utf-8")
 
 
+def _write_warm_shadercache(root: Path) -> Path:
+    """Create the smallest valid DX11 cache pair for profile-gate tests."""
+
+    cache = root / "shadercache"
+    for lane, stem in (("ps_5_0", "0000000000000001"), ("vs_5_0", "0000000000000002")):
+        lane_dir = cache / "dx11" / lane
+        lane_dir.mkdir(parents=True, exist_ok=True)
+        (lane_dir / f"{stem}.bin").write_bytes(b"compiled-shader")
+        (lane_dir / f"{stem}.scache").write_bytes(b"shader-cache-record")
+    return cache
+
+
 def test_game_dir_resolution_prefers_steam_and_preserves_explicit() -> None:
     with tempfile.TemporaryDirectory() as raw:
         root = Path(raw)
@@ -651,6 +667,7 @@ def test_profile_settings_requires_explicit_template_and_records_auto_candidate(
         fixture = Fixture(root)
         template = root / "known-good" / "pdx_settings.txt"
         _write_full_settings(template)
+        _write_warm_shadercache(template.parent)
         config = replace(fixture.config(), profile_settings_template=template)
         evidence = capture.prepare_profile_settings(config)
         require(evidence["result"] == "GREEN", "explicit settings template was not copied")
@@ -666,6 +683,7 @@ def test_profile_settings_requires_explicit_template_and_records_auto_candidate(
         try:
             fresh = replace(fixture.config(), attempt_dir=root / "attempt-auto")
             fresh = replace(fresh, artifacts_dir=fresh.attempt_dir / "artifacts")
+            fresh = replace(fresh, profile_settings_template=None)
             auto_evidence = capture.prepare_profile_settings(fresh)
         finally:
             if previous_auto is None:
@@ -684,6 +702,106 @@ def test_profile_settings_requires_explicit_template_and_records_auto_candidate(
             not (fresh.profile_dir / "pdx_settings.txt").exists(),
             "implicit profile settings copy changed isolated state",
         )
+
+
+def test_formal_profile_assets_fail_typed_for_missing_template_or_cache() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        fixture = Fixture(root)
+        missing = root / "missing" / "pdx_settings.txt"
+        try:
+            capture.prepare_profile_settings(
+                replace(fixture.config(), profile_settings_template=missing)
+            )
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence.get("result") == "BLOCKED",
+                "missing settings did not return typed BLOCKED evidence",
+            )
+            require(error.evidence.get("profile_ready") is False,
+                    "missing settings was marked ready")
+        else:
+            raise AssertionError("missing settings template was accepted")
+
+        no_cache = root / "no-cache" / "pdx_settings.txt"
+        _write_full_settings(no_cache)
+        try:
+            capture.prepare_profile_settings(
+                replace(fixture.config(), profile_settings_template=no_cache)
+            )
+        except capture.SeedCaptureError as error:
+            require(
+                "shadercache" in str(error).lower(),
+                "missing cache failure omitted cache reason",
+            )
+            require(error.evidence.get("result") == "BLOCKED",
+                    "missing cache did not return typed BLOCKED evidence")
+        else:
+            raise AssertionError("settings without a warm cache was accepted")
+
+
+def test_formal_profile_assets_reject_preexisting_unpinned_cache() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        fixture = Fixture(root)
+        config = fixture.config()
+        destination_cache = config.profile_dir / "shadercache" / "dx11" / "ps_5_0"
+        destination_cache.mkdir(parents=True)
+        (destination_cache / "stale.bin").write_bytes(b"stale")
+        try:
+            capture.prepare_profile_settings(config)
+        except capture.SeedCaptureError as error:
+            require(error.evidence.get("result") == "BLOCKED",
+                    "preexisting cache mismatch was not typed BLOCKED")
+            require("refusing to merge" in str(error).lower(),
+                    "preexisting cache refusal was not recorded")
+        else:
+            raise AssertionError("preexisting unpinned cache was merged")
+
+
+def test_formal_profile_assets_reject_copy_manifest_drift() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        fixture = Fixture(root)
+        original_copytree = capture.shutil.copytree
+
+        def corrupt_copytree(*args: object, **kwargs: object) -> str:
+            result = original_copytree(*args, **kwargs)
+            destination = Path(str(args[1])) if len(args) > 1 else Path()
+            if destination.name == "shadercache":
+                target = destination / "dx11" / "ps_5_0" / "0000000000000001.bin"
+                target.write_bytes(b"tampered-after-copy")
+            return result
+
+        capture.shutil.copytree = corrupt_copytree  # type: ignore[assignment]
+        try:
+            try:
+                capture.prepare_profile_settings(fixture.config())
+            except capture.SeedCaptureError as error:
+                require(error.evidence.get("result") == "BLOCKED",
+                        "copy drift did not return typed BLOCKED evidence")
+                require("manifest equality" in str(error).lower(),
+                        "copy drift reason was not persisted")
+            else:
+                raise AssertionError("tampered shadercache copy was accepted")
+        finally:
+            capture.shutil.copytree = original_copytree  # type: ignore[assignment]
+
+
+def test_tree_manifest_records_byte_sizes_under_bytes_key() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        item = root / "nested" / "shader.bin"
+        item.parent.mkdir(parents=True)
+        item.write_bytes(b"12345")
+        manifest = capture.tree_manifest(root)
+        require(manifest["files"] == [{
+            "path": "nested/shader.bin",
+            "bytes": 5,
+            "sha256": sha256(item),
+        }], "tree manifest did not preserve bytes field")
+        require("size" not in manifest["files"][0],
+                "tree manifest retained the stale size field")
 
 
 def test_release_bridge_bundle_provenance_binds_pair_and_rejects_debug() -> None:
@@ -1748,6 +1866,10 @@ def main() -> int:
     test_game_dir_resolution_prefers_steam_and_preserves_explicit()
     test_game_dir_resolution_never_falls_back_to_repository()
     test_profile_settings_requires_explicit_template_and_records_auto_candidate()
+    test_formal_profile_assets_fail_typed_for_missing_template_or_cache()
+    test_formal_profile_assets_reject_preexisting_unpinned_cache()
+    test_formal_profile_assets_reject_copy_manifest_drift()
+    test_tree_manifest_records_byte_sizes_under_bytes_key()
     test_release_bridge_bundle_provenance_binds_pair_and_rejects_debug()
     test_phase2_frontend_first_options_reach_seed_supervisor()
     test_green_capture()

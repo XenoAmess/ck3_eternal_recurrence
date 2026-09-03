@@ -279,10 +279,10 @@ class CaptureConfig:
     # cached heartbeats without inspecting the desktop or sending UI/gameplay
     # input.  This mode deliberately does not attempt seed capture.
     native_observer_only: bool = False
-    # Optional profile settings template.  When unset, the runner only
-    # inspects the real local CK3 profile for provenance; it never copies
-    # operator-specific high/ultra renderer values.  A known-GREEN template
-    # must be pinned explicitly for an isolated run.
+    # Profile settings template for a formal isolated run.  When unset, the
+    # runner only inspects the real local CK3 profile for provenance; it never
+    # copies operator-specific renderer values and a native launch is blocked.
+    # No-launch/legacy callers may omit it and retain inspection-only behavior.
     profile_settings_template: Path | None = None
     frontend_first_load_save_name: str | None = None
     frontend_first_timeout_seconds: float = (
@@ -689,26 +689,163 @@ def _directory_provenance(path: Path) -> dict[str, Any]:
     }
 
 
-def prepare_profile_settings(config: CaptureConfig) -> dict[str, Any]:
-    """Apply an explicitly pinned full settings template, if supplied.
+def _warm_shadercache_manifest(path: Path) -> dict[str, Any]:
+    """Return a byte-bound manifest for an explicitly pinned CK3 cache.
 
-    The isolated bootstrap intentionally writes a small deterministic settings
-    file.  A real user's ``pdx_settings.txt`` contains machine/GPU-specific
-    choices and is therefore inspected for provenance but never copied by
-    default.  Callers can pin a known-good file with
-    ``--profile-settings-template`` (or ``XAR_CK3_SETTINGS_TEMPLATE``); the
-    source remains read-only and the copied bytes are verified.
+    The bounded ``_directory_provenance`` sample above is useful for cheap
+    diagnostics, but it cannot establish that a cache was copied completely
+    (the known-good cache has thousands of files).  A cache selected for a
+    formal Phase2 launch is an explicit operator input, so pay the one-time
+    full-tree cost here and compare the resulting content digest after copy.
+    The source is never modified.
+    """
+
+    root = Path(path).expanduser().resolve()
+    if not root.is_dir():
+        return {
+            "path": str(root),
+            "exists": False,
+            "ready": False,
+            "failure_reason": "shadercache directory is missing",
+            "file_count": 0,
+            "bytes": 0,
+            "tree_sha256": None,
+            "required_lanes": {},
+            "symlink_count": 0,
+        }
+
+    symlinks = [
+        item
+        for item in root.rglob("*")
+        if item.is_symlink()
+    ]
+    if symlinks:
+        return {
+            "path": str(root),
+            "exists": True,
+            "ready": False,
+            "failure_reason": "shadercache contains symlinks",
+            "file_count": 0,
+            "bytes": 0,
+            "tree_sha256": None,
+            "required_lanes": {},
+            "symlink_count": len(symlinks),
+            "symlink_paths": [
+                str(item.relative_to(root)).replace("\\", "/")
+                for item in symlinks[:16]
+            ],
+        }
+
+    try:
+        manifest = tree_manifest(root)
+    except (OSError, UnicodeError, ValueError) as error:
+        return {
+            "path": str(root),
+            "exists": True,
+            "ready": False,
+            "failure_reason": f"shadercache manifest failed: {type(error).__name__}: {error}",
+            "file_count": 0,
+            "bytes": 0,
+            "tree_sha256": None,
+            "required_lanes": {},
+            "symlink_count": 0,
+        }
+
+    entries = manifest.get("files", [])
+    if not isinstance(entries, list):
+        entries = []
+    lane_counts: dict[str, dict[str, int]] = {}
+    total_bytes = 0
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        relative = str(entry.get("path", "")).replace("\\", "/")
+        total_bytes += int(entry.get("bytes", 0))
+        lane = None
+        for candidate in ("dx11/ps_5_0", "dx11/vs_5_0"):
+            if relative.startswith(candidate + "/"):
+                lane = candidate
+                break
+        if lane is None:
+            continue
+        suffix = Path(relative).suffix.lower()
+        counts = lane_counts.setdefault(lane, {})
+        counts[suffix] = counts.get(suffix, 0) + 1
+
+    # A CK3 DX11 cache is considered warm only when both shader lanes have at
+    # least one compiled binary and one companion cache record.  This is a
+    # deliberately small, observable contract: it rejects an empty/partial
+    # profile while allowing the exact machine-specific file count to vary.
+    required_lanes = {
+        lane: {
+            ".bin": counts.get(".bin", 0),
+            ".scache": counts.get(".scache", 0),
+        }
+        for lane, counts in lane_counts.items()
+    }
+    ready = bool(
+        manifest.get("file_count", 0) > 0
+        and total_bytes > 0
+        and all(
+            required_lanes.get(lane, {}).get(".bin", 0) > 0
+            and required_lanes.get(lane, {}).get(".scache", 0) > 0
+            for lane in ("dx11/ps_5_0", "dx11/vs_5_0")
+        )
+    )
+    return {
+        "path": str(root),
+        "exists": True,
+        "ready": ready,
+        "failure_reason": None
+        if ready
+        else "shadercache lacks both populated DX11 PS/VS lanes",
+        "file_count": int(manifest.get("file_count", 0)),
+        "bytes": total_bytes,
+        "tree_sha256": manifest.get("tree_sha256"),
+        "required_lanes": required_lanes,
+        "symlink_count": 0,
+    }
+
+
+def _profile_startup_assets_error(
+    evidence: dict[str, Any], reason: str
+) -> SeedCaptureError:
+    """Build one typed, reportable RED for an incomplete startup profile."""
+
+    evidence["result"] = "BLOCKED"
+    evidence["profile_ready"] = False
+    evidence["failure_reason"] = reason
+    return SeedCaptureError(
+        "formal Phase2 startup profile is not ready: " + reason,
+        evidence,
+    )
+
+
+def prepare_profile_settings(config: CaptureConfig) -> dict[str, Any]:
+    """Prepare the settings/cache pair required by a formal Phase2 launch.
+
+    ``bootstrap_userdir`` deliberately creates a tiny deterministic settings
+    file so legacy acceptance tests can construct an isolated profile.  That
+    file is not a sufficient renderer profile for the formal Phase2 path.  A
+    launch therefore has to pin a full ``pdx_settings.txt`` explicitly (CLI
+    or ``XAR_CK3_SETTINGS_TEMPLATE``) *and* provide its sibling populated
+    ``shadercache`` tree.  The whole cache is copied and content-compared;
+    silently falling back to the operator's live profile or an empty cache is
+    prohibited.
     """
 
     destination = (config.profile_dir / "pdx_settings.txt").resolve()
+    destination_cache = (config.profile_dir / "shadercache").resolve()
     evidence: dict[str, Any] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "result": "NOT_AVAILABLE",
-        "strategy": "explicit-full-settings-template-only",
+        "strategy": "explicit-full-settings-plus-warm-shadercache",
         "template_required_for_copy": True,
         "auto_copy": False,
         "cache_copy": False,
+        "profile_ready": False,
         "destination": str(destination),
+        "destination_cache": str(destination_cache),
         "source": None,
         "source_kind": None,
         "source_sha256": None,
@@ -719,28 +856,13 @@ def prepare_profile_settings(config: CaptureConfig) -> dict[str, Any]:
         "auto_candidate": None,
         "auto_shadercache": None,
         "selected_shadercache": None,
+        "cache_source": None,
+        "cache_source_manifest": None,
+        "cache_destination_manifest": None,
         "failure_reason": None,
     }
 
-    if destination.is_file() and _settings_file_is_full(destination):
-        destination_profile = destination.parent
-        evidence.update(
-            {
-                "result": "PRESERVED",
-                "preserved_existing": True,
-                "destination_bytes": destination.stat().st_size,
-                "destination_sha256": sha256_file(destination),
-                "selected_shadercache": _directory_provenance(
-                    destination_profile / "shadercache"
-                ),
-            }
-        )
-        return evidence
-
-    explicit_sources = {
-        "explicit-config",
-        "explicit-env",
-    }
+    explicit_sources = {"explicit-config", "explicit-env"}
     explicit_candidates = _profile_settings_candidates(config)
     auto_path = _real_profile_settings_path()
     auto_full = auto_path.is_file() and _settings_file_is_full(auto_path)
@@ -766,72 +888,122 @@ def prepare_profile_settings(config: CaptureConfig) -> dict[str, Any]:
     evidence["auto_shadercache"] = _directory_provenance(
         auto_path.parent / "shadercache"
     )
-    for source_path, source_kind in explicit_candidates:
-        if not source_path.is_file() or not _settings_file_is_full(source_path):
-            if source_kind in explicit_sources:
-                raise SeedCaptureError(
-                    "explicit profile settings template is missing or not a "
-                    f"full CK3 settings file: {source_path}"
-                )
-            continue
-        try:
-            source_bytes = source_path.stat().st_size
-            source_sha256 = sha256_file(source_path)
-            if source_path == destination:
-                # Already handled above when full; retain a defensive branch
-                # for a file that changes between checks.
-                evidence.update(
-                    {
-                        "result": "PRESERVED",
-                        "preserved_existing": True,
-                        "source": str(source_path),
-                        "source_kind": source_kind,
-                        "source_bytes": source_bytes,
-                        "source_sha256": source_sha256,
-                        "destination_bytes": source_bytes,
-                        "destination_sha256": source_sha256,
-                        "selected_shadercache": _directory_provenance(
-                            source_path.parent / "shadercache"
-                        ),
-                    }
-                )
-                return evidence
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source_path, destination)
-            evidence.update(
-                {
-                    "result": "GREEN",
-                    "source": str(source_path),
-                    "source_kind": source_kind,
-                    "source_bytes": source_bytes,
-                    "source_sha256": source_sha256,
-                    "destination_bytes": destination.stat().st_size,
-                    "destination_sha256": sha256_file(destination),
-                    "selected_shadercache": _directory_provenance(
-                        source_path.parent / "shadercache"
-                    ),
-                }
-            )
-            return evidence
-        except OSError as error:
-            if source_kind in explicit_sources:
-                raise SeedCaptureError(
-                    f"could not copy explicit profile settings template: {error}"
-                ) from error
-            evidence["failure_reason"] = f"{type(error).__name__}: {error}"
 
-    if auto_full:
-        evidence["result"] = "AVAILABLE_NOT_SELECTED"
-    evidence["destination_bytes"] = (
-        destination.stat().st_size if destination.is_file() else None
+    # Never treat a full file left by CK3 or found in the real profile as an
+    # implicit selection.  The caller must pin the exact known-good pair.
+    if not explicit_candidates:
+        evidence["result"] = (
+            "AVAILABLE_NOT_SELECTED" if auto_full else "NOT_AVAILABLE"
+        )
+        evidence["failure_reason"] = (
+            "formal Phase2 launch requires --profile-settings-template (or "
+            "XAR_CK3_SETTINGS_TEMPLATE) plus a populated sibling shadercache"
+        )
+        evidence["destination_bytes"] = (
+            destination.stat().st_size if destination.is_file() else None
+        )
+        if destination.is_file():
+            try:
+                evidence["destination_sha256"] = sha256_file(destination)
+            except OSError as error:
+                evidence["failure_reason"] += (
+                    f"; destination hash failed: {type(error).__name__}: {error}"
+                )
+        evidence["selected_shadercache"] = _directory_provenance(
+            destination_cache
+        )
+        return evidence
+
+    source_path, source_kind = explicit_candidates[0]
+    evidence.update(
+        {
+            "source": str(source_path),
+            "source_kind": source_kind,
+        }
     )
-    if destination.is_file():
-        try:
-            evidence["destination_sha256"] = sha256_file(destination)
-        except OSError as error:
-            evidence["failure_reason"] = f"{type(error).__name__}: {error}"
-    evidence["selected_shadercache"] = _directory_provenance(
-        destination.parent / "shadercache"
+    if not source_path.is_file() or not _settings_file_is_full(source_path):
+        raise _profile_startup_assets_error(
+            evidence,
+            "explicit profile settings template is missing or not a full CK3 "
+            f"settings file: {source_path}",
+        )
+
+    try:
+        source_bytes = source_path.stat().st_size
+        source_sha256 = sha256_file(source_path)
+    except OSError as error:
+        raise _profile_startup_assets_error(
+            evidence,
+            f"could not inspect explicit profile settings template: {error}",
+        ) from error
+    evidence.update(
+        {
+            "source_bytes": source_bytes,
+            "source_sha256": source_sha256,
+        }
+    )
+
+    cache_source = (source_path.parent / "shadercache").resolve()
+    evidence["cache_source"] = str(cache_source)
+    source_cache_manifest = _warm_shadercache_manifest(cache_source)
+    evidence["cache_source_manifest"] = source_cache_manifest
+    if source_cache_manifest.get("ready") is not True:
+        raise _profile_startup_assets_error(
+            evidence,
+            "explicit settings template does not have a complete warm "
+            "shadercache sibling: "
+            + str(source_cache_manifest.get("failure_reason")),
+        )
+
+    try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        if source_path != destination:
+            shutil.copy2(source_path, destination)
+
+        # A fresh seed profile should not contain a cache yet.  Refuse a
+        # pre-existing tree rather than merging stale shaders into the pinned
+        # source; this keeps the copy reversible and its digest meaningful.
+        if cache_source != destination_cache:
+            if destination_cache.exists():
+                raise OSError(
+                    "isolated profile shadercache already exists; refusing "
+                    "to merge an unpinned cache"
+                )
+            shutil.copytree(cache_source, destination_cache, copy_function=shutil.copy2)
+
+        destination_cache_manifest = _warm_shadercache_manifest(destination_cache)
+        evidence["cache_destination_manifest"] = destination_cache_manifest
+        if (
+            destination_cache_manifest.get("ready") is not True
+            or destination_cache_manifest.get("tree_sha256")
+            != source_cache_manifest.get("tree_sha256")
+            or destination_cache_manifest.get("file_count")
+            != source_cache_manifest.get("file_count")
+            or destination_cache_manifest.get("bytes")
+            != source_cache_manifest.get("bytes")
+        ):
+            raise OSError(
+                "copied shadercache failed source/destination manifest equality"
+            )
+
+        destination_bytes = destination.stat().st_size
+        destination_sha256 = sha256_file(destination)
+    except (OSError, UnicodeError, ValueError) as error:
+        raise _profile_startup_assets_error(
+            evidence,
+            f"could not materialize pinned settings/cache pair: {type(error).__name__}: {error}",
+        ) from error
+
+    evidence.update(
+        {
+            "result": "PRESERVED" if source_path == destination else "GREEN",
+            "profile_ready": True,
+            "cache_copy": source_path != destination,
+            "preserved_existing": source_path == destination,
+            "destination_bytes": destination_bytes,
+            "destination_sha256": destination_sha256,
+            "selected_shadercache": _directory_provenance(destination_cache),
+        }
     )
     return evidence
 
@@ -2947,7 +3119,32 @@ def run_capture(
             "manifest": bootstrap.get("manifest"),
             "single_mount_contract": True,
         }
-        report["profile_settings"] = prepare_profile_settings(config)
+        try:
+            report["profile_settings"] = prepare_profile_settings(config)
+        except SeedCaptureError as error:
+            # Preserve the typed profile evidence in the durable report before
+            # the outer failure/cleanup path runs.  In particular, an invalid
+            # or missing warm cache must be distinguishable from a CK3 loader
+            # failure; neither case may cross the native launch boundary.
+            if isinstance(error.evidence, dict) and error.evidence:
+                report["profile_settings"] = error.evidence
+            raise
+        profile_settings = report["profile_settings"]
+        if (
+            not isinstance(profile_settings, dict)
+            or profile_settings.get("profile_ready") is not True
+            or profile_settings.get("result") not in {"GREEN", "PRESERVED"}
+        ):
+            evidence = (
+                profile_settings
+                if isinstance(profile_settings, dict)
+                else {"value": profile_settings}
+            )
+            reason = str(
+                evidence.get("failure_reason")
+                or "pinned full settings and warm shadercache were not prepared"
+            )
+            raise _profile_startup_assets_error(evidence, reason)
         shutil.copy2(old_save, config.profile_dir / "save games" / "autosave.ck3")
         shutil.copy2(old_save, config.profile_dir / "last_save.ck3")
         report["frontend_first_warmup"]["save_materialization"] = (
@@ -3448,8 +3645,8 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         "--profile-settings-template",
         type=Path,
         help=(
-            "optional full pdx_settings.txt template for the fresh isolated "
-            "profile; source is read-only"
+            "full pdx_settings.txt template for a formal isolated profile; "
+            "source is read-only and its sibling shadercache is required"
         ),
     )
     parser.add_argument(
