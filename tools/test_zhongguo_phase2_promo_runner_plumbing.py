@@ -1221,6 +1221,79 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertEqual(persisted, evidence)
         forbidden_click.assert_not_called()
 
+    def test_phase2_legal_gate_retries_transient_screen_grab_before_classification(
+        self,
+    ) -> None:
+        """A bridge-bound window may need a few frames before ImageGrab works."""
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            userdir = root / "native-state" / "profile"
+            artifacts = root / "artifacts"
+            userdir.mkdir(parents=True)
+            artifacts.mkdir()
+            with (
+                mock.patch.object(capture.acceptance, "focus_ck3"),
+                mock.patch.object(
+                    capture.acceptance.ImageGrab,
+                    "grab",
+                    side_effect=[
+                        OSError("screen grab failed"),
+                        OSError("screen grab failed"),
+                        object(),
+                    ],
+                ) as grab,
+                mock.patch.object(
+                    capture.acceptance,
+                    "ocr_results",
+                    return_value=[
+                        ("Crusader Kings III", 1.0, (10, 10), None)
+                    ],
+                ),
+                mock.patch.object(
+                    capture.acceptance, "deliberate_click"
+                ) as forbidden_click,
+                mock.patch.object(
+                    capture.time, "sleep", return_value=None
+                ) as sleeper,
+            ):
+                evidence = capture.handle_phase2_optional_legal_consent(
+                    userdir, artifacts
+                )
+            persisted = json.loads(
+                (artifacts / "01_phase2_legal_consent.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(evidence["state"], "no_modal")
+        self.assertEqual(evidence["authorized_click_count"], 0)
+        self.assertEqual(grab.call_count, 3)
+        self.assertEqual(sleeper.call_count, 2)
+        self.assertEqual(evidence["screen_capture_retry_count"], 2)
+        self.assertEqual(
+            evidence["screen_capture_attempts"],
+            [
+                {
+                    "index": 1,
+                    "attempt": 1,
+                    "error_type": "OSError",
+                    "error": "screen grab failed",
+                    "retry": True,
+                },
+                {
+                    "index": 1,
+                    "attempt": 2,
+                    "error_type": "OSError",
+                    "error": "screen grab failed",
+                    "retry": True,
+                },
+            ],
+        )
+        self.assertEqual(persisted, evidence)
+        forbidden_click.assert_not_called()
+
     def test_phase2_legal_gate_denies_purchase_before_click(self) -> None:
         class FakeImage:
             def save(self, path: Path) -> None:

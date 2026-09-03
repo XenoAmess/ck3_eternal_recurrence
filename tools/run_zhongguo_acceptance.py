@@ -186,6 +186,11 @@ PHASE2_PAUSED_READINESS_TIMEOUT_S = 300.0
 PHASE2_B2_PROMPT_TIMEOUT_S = 120.0
 PHASE2_SUPERVISOR_READINESS_TIMEOUT_S = 300.0
 PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S = 21600.0
+# The native bridge can bind before the CK3 window has a capturable desktop
+# surface.  Keep the legal-consent inspection bounded, but give the window a
+# short settle period before treating a transient ImageGrab failure as RED.
+PHASE2_LEGAL_CONSENT_SCREEN_READY_TIMEOUT_S = 15.0
+PHASE2_LEGAL_CONSENT_SCREEN_RETRY_INTERVAL_S = 0.25
 LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
 LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
@@ -1913,6 +1918,8 @@ def handle_phase2_optional_legal_consent(
         "acceptances": [],
         "classification_attempts": [],
         "classification_diagnostics": None,
+        "screen_capture_attempts": [],
+        "screen_capture_retry_count": 0,
         "state": None,
         "failure_reason": None,
     }
@@ -1923,10 +1930,63 @@ def handle_phase2_optional_legal_consent(
         acceptances: list[dict[str, object]] = []
         classification_attempts: list[dict[str, object]] = []
         stage_artifacts: list[dict[str, object]] = []
+        screen_capture_attempts: list[dict[str, object]] = []
 
         def observe(index: int) -> tuple[object, list[str]]:
-            acceptance.focus_ck3()
-            image = acceptance.ImageGrab.grab()
+            deadline = (
+                time.monotonic()
+                + PHASE2_LEGAL_CONSENT_SCREEN_READY_TIMEOUT_S
+            )
+            image: object | None = None
+            capture_attempt_number = 0
+            while image is None:
+                try:
+                    capture_attempt_number += 1
+                    focused = acceptance.focus_ck3()
+                    if focused is False:
+                        raise acceptance.RunnerError(
+                            "CK3 window is not ready for legal-consent inspection"
+                        )
+                    captured = acceptance.ImageGrab.grab()
+                    if captured is None:
+                        raise acceptance.RunnerError(
+                            "screen capture returned no image"
+                        )
+                    image = captured
+                except (OSError, acceptance.RunnerError) as error:
+                    now = time.monotonic()
+                    retry = now < deadline
+                    screen_capture_attempts.append(
+                        {
+                            "index": index,
+                            "attempt": capture_attempt_number,
+                            "error_type": type(error).__name__,
+                            "error": str(error),
+                            "retry": retry,
+                        }
+                    )
+                    evidence.update(
+                        {
+                            "screen_capture_attempts": screen_capture_attempts,
+                            "screen_capture_retry_count": len(
+                                screen_capture_attempts
+                            ),
+                        }
+                    )
+                    # Preserve a typed, replayable failure even when the
+                    # desktop never becomes capturable.  The commerce
+                    # classifier is still reached only after a successful
+                    # frame and remains the hard stop for purchase actions.
+                    write_json(evidence_path, evidence)
+                    if not retry:
+                        raise
+                    time.sleep(
+                        min(
+                            PHASE2_LEGAL_CONSENT_SCREEN_RETRY_INTERVAL_S,
+                            max(0.0, deadline - now),
+                        )
+                    )
+            assert image is not None
             rows = [
                 str(row[0])
                 for row in acceptance.ocr_results(
