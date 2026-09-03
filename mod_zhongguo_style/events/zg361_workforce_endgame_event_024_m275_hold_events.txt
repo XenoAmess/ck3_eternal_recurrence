@@ -1,0 +1,11 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M275 future hold deadline.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5275 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m275_hold_due_effect = yes }
+}

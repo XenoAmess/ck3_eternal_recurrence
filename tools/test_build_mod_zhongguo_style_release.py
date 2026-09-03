@@ -36,6 +36,8 @@ WORKFORCE_LEGACY_EFFECT_FILENAME = "zg361_workforce_endgame_runtime_effects.txt"
 WORKFORCE_SHARD_GLOB = "zg361_workforce_endgame_*_effects.txt"
 WORKFORCE_SHARD_COUNT = 76
 WORKFORCE_EFFECT_COUNT = 324
+WORKFORCE_EVENT_SHARD_COUNT = 35
+WORKFORCE_EVENT_COUNT = 149
 
 
 def thumbnail_bytes(width: int = 640, height: int = 640) -> bytes:
@@ -208,6 +210,53 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
         self.assertEqual(WORKFORCE_EFFECT_COUNT, len(counts))
         return tuple(path.name for path in shards), tuple(definitions)
 
+    def assert_workforce_event_shard_inventory(
+        self, product_root: Path
+    ) -> tuple[
+        tuple[str, ...], tuple[str, ...], tuple[tuple[str, bytes], ...]
+    ]:
+        events = product_root / "events"
+        self.assertFalse(
+            events.joinpath(workforce_gen.LEGACY_EVENT_FILENAME).exists(),
+            f"legacy workforce event monolith leaked into {product_root}",
+        )
+        expected_groups = tuple(workforce_gen.EVENT_GROUPS)
+        expected_files = tuple(group.filename for group in expected_groups)
+        self.assertEqual(WORKFORCE_EVENT_SHARD_COUNT, len(expected_files))
+        self.assertEqual(WORKFORCE_EVENT_SHARD_COUNT, len(set(expected_files)))
+
+        actual_files = tuple(
+            sorted(path.name for path in events.glob(workforce_gen.EVENT_SHARD_GLOB))
+        )
+        self.assertEqual(tuple(sorted(expected_files)), actual_files)
+
+        definitions: list[str] = []
+        payloads: list[tuple[str, bytes]] = []
+        for group in expected_groups:
+            path = events / group.filename
+            payload = path.read_bytes()
+            names = paradox_top_level_assignment_names(
+                payload.decode("utf-8-sig")
+            )
+            expected_names = tuple(
+                f"{workforce_gen.NAMESPACE}.{event_id}"
+                for event_id in group.event_ids
+            )
+            self.assertEqual(
+                expected_names,
+                names,
+                f"workforce event shard order/content mismatch: {path.name}",
+            )
+            definitions.extend(names)
+            payloads.append((group.filename, payload))
+
+        counts = Counter(definitions)
+        duplicates = sorted(name for name, count in counts.items() if count != 1)
+        self.assertEqual([], duplicates, "duplicate workforce top-level events")
+        self.assertEqual(WORKFORCE_EVENT_COUNT, len(definitions))
+        self.assertEqual(WORKFORCE_EVENT_COUNT, len(counts))
+        return expected_files, tuple(definitions), tuple(payloads)
+
     @staticmethod
     def launcher_descriptor(
         item_id: str = WORKSHOP_ID, separator: bytes = b"\n", final_newline: bool = False
@@ -291,6 +340,18 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
             )
         self.assertEqual(canonical_files, release_files)
         self.assertEqual(canonical_definitions, release_definitions)
+
+    def test_workforce_event_shards_are_exact_in_canonical_and_release_trees(self):
+        canonical = release.DEFAULT_SOURCE.resolve()
+        canonical_inventory = self.assert_workforce_event_shard_inventory(canonical)
+        with tempfile.TemporaryDirectory(prefix="zhongguo-361-workforce-event-release-test-") as name:
+            staging, _, _, _ = release.build_release(
+                canonical,
+                Path(name) / release.PRODUCT_ID,
+                revision=REVISION,
+            )
+            release_inventory = self.assert_workforce_event_shard_inventory(staging)
+        self.assertEqual(canonical_inventory, release_inventory)
 
     def test_reproducibility_api_and_versioned_sidecars(self):
         with self.fixture() as (root, source):

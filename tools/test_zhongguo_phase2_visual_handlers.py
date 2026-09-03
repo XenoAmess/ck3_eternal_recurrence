@@ -11,7 +11,11 @@ import unittest
 TOOLS = Path(__file__).resolve().parent
 if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
+WORKFORCE_TOOLS = TOOLS.parent / "mod_zhongguo_style" / "tools"
+if str(WORKFORCE_TOOLS) not in sys.path:
+    sys.path.insert(1, str(WORKFORCE_TOOLS))
 
+import gen_361_workforce_endgame_runtime as workforce_gen  # noqa: E402
 from zhongguo_phase2_capture_choreography import (  # noqa: E402
     PHASE2_CAPTURE_SCENARIOS,
     Phase2CaptureScenario,
@@ -41,6 +45,40 @@ VISUAL_HANDLERS = (
     PROJECTS_HANDLER,
     ENDGAME_HANDLER,
 )
+
+
+def _workforce_event_owner_sources(
+    repository: Path, event_keys: tuple[str, ...]
+) -> str:
+    requested_ids: list[int] = []
+    for event_key in event_keys:
+        namespace, separator, suffix = event_key.partition(".")
+        if separator != "." or namespace != workforce_gen.NAMESPACE:
+            raise AssertionError(f"not a workforce event key: {event_key}")
+        requested_ids.append(int(suffix))
+
+    owners = [
+        group
+        for group in workforce_gen.EVENT_GROUPS
+        if set(requested_ids).intersection(group.event_ids)
+    ]
+    for event_id in requested_ids:
+        matches = [group.filename for group in owners if event_id in group.event_ids]
+        if len(matches) != 1:
+            raise AssertionError(
+                f"workforce event {workforce_gen.NAMESPACE}.{event_id} has "
+                f"{len(matches)} owner shards: {matches}"
+            )
+
+    return "\n".join(
+        (
+            repository
+            / "mod_zhongguo_style"
+            / "events"
+            / group.filename
+        ).read_text(encoding="utf-8-sig")
+        for group in owners
+    )
 
 
 def _scenario(handler: str) -> Phase2CaptureScenario:
@@ -226,17 +264,20 @@ class Phase2VisualHandlerTests(unittest.TestCase):
                 "mod_zhongguo_style/events/zg361_credit_project_runtime_events.txt",
                 "mod_zhongguo_style/events/zg361_phase3_metrics_delivery_runtime_events.txt",
             ),
-            ENDGAME_HANDLER: (
-                "mod_zhongguo_style/events/zg361_workforce_endgame_runtime_events.txt",
-                "mod_zhongguo_style/events/zg361_workforce_endgame_runtime_events.txt",
-            ),
         }
         repository = TOOLS.parent
-        for handler, (source_path, result_path) in event_sources.items():
+        for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER, ENDGAME_HANDLER):
             with self.subTest(handler=handler):
                 plan = EVENT_PATH_PLANS[handler]
-                source = (repository / source_path).read_text(encoding="utf-8-sig")
-                result = (repository / result_path).read_text(encoding="utf-8-sig")
+                if handler == ENDGAME_HANDLER:
+                    owner_sources = _workforce_event_owner_sources(
+                        repository, (plan.source_event, plan.result_event)
+                    )
+                    source = result = owner_sources
+                else:
+                    source_path, result_path = event_sources[handler]
+                    source = (repository / source_path).read_text(encoding="utf-8-sig")
+                    result = (repository / result_path).read_text(encoding="utf-8-sig")
                 self.assertIn(f"\n{plan.source_event} = {{", "\n" + source)
                 self.assertIn(f"\n{plan.result_event} = {{", "\n" + result)
 

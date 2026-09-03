@@ -1,0 +1,41 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M275 remediation commit boundaries.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5276 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_workforce_remediation_fact_open_effect = yes
+		if = {
+			limit = {
+				OR = {
+					var:zg361_workforce_remediation_fact_runtime_status = 1
+					var:zg361_workforce_remediation_fact_runtime_status = 2
+				}
+			}
+			debug_log = "ZG361WE: #275 remediation requirement opened from committed route B"
+		}
+		else = { set_variable = { name = zg361_we_future_red_code value = 2752 } }
+	}
+}
+
+zg361we.5277 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_workforce_remediation_fact_consume_effect = yes
+		if = {
+			limit = {
+				OR = {
+					var:zg361_workforce_remediation_fact_runtime_status = 1
+					var:zg361_workforce_remediation_fact_runtime_status = 2
+				}
+			}
+			debug_log = "ZG361WE: #275 remediation receipt consumed after committed HC release"
+		}
+		else = { set_variable = { name = zg361_we_future_red_code value = 2753 } }
+	}
+}

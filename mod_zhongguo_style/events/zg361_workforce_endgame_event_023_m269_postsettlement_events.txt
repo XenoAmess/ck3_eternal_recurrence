@@ -1,0 +1,17 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure M269 post-settlement lifecycle.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5269 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_future_consume_effect = yes }
+}
+
+zg361we.5377 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_postsettlement_handoff_effect = yes }
+}

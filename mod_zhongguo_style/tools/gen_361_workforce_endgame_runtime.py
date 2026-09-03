@@ -37,6 +37,17 @@ EFFECT_HARD_MAX = 20
 # A future shard above the hard limit is invalid unless this map contains both
 # a concrete purpose-cohesion reason and a reference to CK3 live evidence.
 EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+LEGACY_EVENT_FILENAME = "zg361_workforce_endgame_runtime_events.txt"
+LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
+EVENT_SHARD_GLOB = "zg361_workforce_endgame_event_*_events.txt"
+HISTORICAL_EVENT_BYTES = 168_729
+HISTORICAL_EVENT_SHA256 = "637F65CC72C176E6E19BE982F41B203DC326047939B79A80E5E43D3A9D361EF7"
+HISTORICAL_EVENT_COUNT = 149
+EVENT_TARGET_MAX = 10
+EVENT_HARD_MAX = 20
+# A future shard above the hard limit is invalid unless this map contains both
+# a concrete purpose-cohesion reason and a reference to CK3 live evidence.
+EVENT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
 PREFIX = "zg361_we"
 NAMESPACE = "zg361we"
 APPOINTMENT_WRAPPER = "zg361_workforce_appointment_fact_m274_appoint_and_consume_effect"
@@ -88,6 +99,13 @@ class EffectGroup:
     filename: str
     purpose: str
     effect_names: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class EventGroup:
+    filename: str
+    purpose: str
+    event_ids: tuple[int, ...]
 
 
 DOMAIN_ORDER = {domain.lower(): order for domain, order in WORKFORCE_EXECUTION_ORDER.items()}
@@ -7870,6 +7888,195 @@ B2_EFFECT_CLOSURE_NAMES = (
 )
 
 
+EVENT_GROUPS = (
+    EventGroup(
+        "zg361_workforce_endgame_event_001_ab_mechanisms_stage01_03_events.txt",
+        "AB stage 01-03 mechanism choices",
+        (242, 243, 244, 245, 246, 247),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_002_ab_mechanisms_stage04_06_events.txt",
+        "AB stage 04-06 mechanism choices",
+        (248, 249, 250, 251, 252, 253),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_003_ac_mechanisms_stage01_03_events.txt",
+        "AC stage 01-03 mechanism choices",
+        (254, 255, 260, 261, 256, 258, 259),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_004_ac_mechanisms_stage04_06_events.txt",
+        "AC stage 04-06 mechanism choices",
+        (257, 262, 263, 264, 265),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_005_ad_mechanisms_stage01_03_events.txt",
+        "AD stage 01-03 mechanism choices",
+        (266, 273, 271, 267, 268, 270, 272),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_006_ad_offer_outcome_events.txt",
+        "AD offer appointment refusal and attribution choices",
+        (274, 275, 269),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_007_m276_rehire_lifecycle_events.txt",
+        "B2 closure M276 rehire lifecycle",
+        (276, 5379, 5380, 5381, 6276),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_008_m277_pip_exit_events.txt",
+        "B2 closure M277 closed-PIP exit lifecycle",
+        (277, 6277),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_009_m355_target_ratchet_events.txt",
+        "B2 closure M355 target ratchet lifecycle",
+        (355, 5355, 6355),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_010_m356_outcome_timing_events.txt",
+        "B2 closure M356 outcome timing lifecycle",
+        (356, 5356, 6356),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_011_al_collective_charter_events.txt",
+        "AL M360-M361 collective and charter choices",
+        (360, 361),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_012_m264_handoff_events.txt",
+        "M264 subject handoff choices and delayed relays",
+        (5264, 5265, 5266, 5267, 5268),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_013_ab_deadline_stage01_03_events.txt",
+        "AB stage 01-03 deadlines and relays",
+        (4201, 4301, 4202, 4302, 4203, 4303),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_014_ab_deadline_stage04_06_events.txt",
+        "AB stage 04-06 deadlines and relays",
+        (4204, 4304, 4205, 4305, 4206, 4306),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_015_ac_deadline_stage01_03_events.txt",
+        "AC stage 01-03 deadlines and relays",
+        (4401, 4501, 4402, 4502, 4403, 4503),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_016_ac_deadline_stage04_06_events.txt",
+        "AC stage 04-06 deadlines and relays",
+        (4404, 4504, 4405, 4505, 4406, 4506),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_017_ad_deadline_stage01_03_events.txt",
+        "AD stage 01-03 deadlines and relays",
+        (4601, 4701, 4602, 4702, 4603, 4703),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_018_ad_deadline_stage04_05_events.txt",
+        "AD stage 04-05 deadlines and relays",
+        (4604, 4704, 4605, 4705),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_019_ad_deadline_stage06_events.txt",
+        "B2 closure AD stage 06 deadline and relay",
+        (4606, 4706),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_020_al_deadline_stage01_events.txt",
+        "B2 closure AL stage 01 deadline and relay",
+        (4801, 4901),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_021_al_deadline_stage04_05_events.txt",
+        "AL stage 04-05 deadlines and relays",
+        (4804, 4904, 4805, 4905),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_022_ac_future_transitions_events.txt",
+        "AC future-cycle transitions",
+        (5257, 5262, 5263),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_023_m269_postsettlement_events.txt",
+        "B2 closure M269 post-settlement lifecycle",
+        (5269, 5377),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_024_m275_hold_events.txt",
+        "M275 future hold deadline",
+        (5275,),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_025_m361_future_charter_events.txt",
+        "M361 future charter installation",
+        (5361,),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_026_m274_attribution_events.txt",
+        "M274 appointment and attribution audit relays",
+        (5370, 5371, 5372, 5373),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_027_m269_attribution_events.txt",
+        "M269 attribution cancellation audit and result publication",
+        (5374, 5375, 5376, 5378),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_028_m275_remediation_events.txt",
+        "M275 remediation commit boundaries",
+        (5276, 5277),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_029_ab_debt_stage01_03_events.txt",
+        "AB stage 01-03 due-debt callbacks",
+        (6242, 6243, 6244, 6245, 6246, 6247),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_030_ab_debt_stage04_06_events.txt",
+        "AB stage 04-06 due-debt callbacks",
+        (6248, 6249, 6250, 6251, 6252, 6253),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_031_ac_debt_stage01_03_events.txt",
+        "AC stage 01-03 due-debt callbacks",
+        (6254, 6255, 6256, 6258, 6259, 6260, 6261),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_032_ac_debt_stage04_06_events.txt",
+        "AC stage 04-06 due-debt callbacks",
+        (6257, 6262, 6263, 6264, 6265),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_033_ad_debt_stage01_03_events.txt",
+        "AD stage 01-03 due-debt callbacks",
+        (6266, 6267, 6268, 6270, 6271, 6272, 6273),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_034_ad_debt_stage04_05_events.txt",
+        "AD stage 04-05 due-debt callbacks",
+        (6269, 6274, 6275),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_035_al_collective_charter_debt_events.txt",
+        "AL collective and charter due-debt callbacks",
+        (6360, 6361),
+    ),
+)
+
+B2_EVENT_CLOSURE_IDS = (
+    276, 5379, 5380, 5381, 6276,
+    277, 6277,
+    355, 5355, 6355,
+    356, 5356, 6356,
+    5269, 5377,
+    4606, 4706,
+    4801, 4901,
+)
+
+
 def _skip_quoted_string(text: str, index: int) -> int:
     index += 1
     escaped = False
@@ -8576,6 +8783,102 @@ def render_events() -> bytes:
     return generated("\n\n".join(sections))
 
 
+def _validate_event_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
+    source_names = tuple(name for name, _ in source_blocks)
+    source_ids = tuple(int(name.removeprefix(f"{NAMESPACE}.")) for name in source_names)
+    source_rank = {event_id: rank for rank, event_id in enumerate(source_ids)}
+    configured_ids = tuple(event_id for group in EVENT_GROUPS for event_id in group.event_ids)
+    filenames = tuple(group.filename for group in EVENT_GROUPS)
+    if len(source_ids) != HISTORICAL_EVENT_COUNT:
+        raise ValueError(
+            f"workforce/endgame source must contain {HISTORICAL_EVENT_COUNT} top-level events, "
+            f"found {len(source_ids)}"
+        )
+    if len(source_ids) != len(set(source_ids)):
+        raise ValueError("workforce/endgame source contains duplicate top-level events")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("workforce/endgame event shard filenames must be unique")
+    if len(configured_ids) != len(set(configured_ids)):
+        raise ValueError("workforce/endgame event groups contain duplicate event IDs")
+    if set(source_ids) != set(configured_ids):
+        missing = sorted(set(source_ids) - set(configured_ids))
+        unexpected = sorted(set(configured_ids) - set(source_ids))
+        raise ValueError(
+            "workforce/endgame event groups must preserve exact source coverage; "
+            f"missing={missing}, unexpected={unexpected}"
+        )
+    for group in EVENT_GROUPS:
+        ranks = tuple(source_rank[event_id] for event_id in group.event_ids)
+        if ranks != tuple(sorted(ranks)):
+            raise ValueError(f"{group.filename} must preserve source order within its purpose shard")
+    # Purpose groups deliberately join lifecycle callbacks emitted by different
+    # generator sections.  Reconstructing by the frozen source rank proves that
+    # the global 149-block order and every block body remain recoverable exactly.
+    reconstructed_ids = tuple(sorted(configured_ids, key=source_rank.__getitem__))
+    if reconstructed_ids != source_ids:
+        raise ValueError("workforce/endgame event shards cannot reconstruct global source order")
+    b2_closure = set(B2_EVENT_CLOSURE_IDS)
+    if len(B2_EVENT_CLOSURE_IDS) != 19 or len(b2_closure) != 19:
+        raise ValueError("B2 workforce closure must contain exactly 19 unique events")
+    selected_b2_groups = [
+        group for group in EVENT_GROUPS if b2_closure.intersection(group.event_ids)
+    ]
+    mixed_b2_groups = [
+        group.filename
+        for group in selected_b2_groups
+        if not set(group.event_ids).issubset(b2_closure)
+    ]
+    if len(selected_b2_groups) != 7:
+        raise ValueError(
+            f"B2 workforce closure must be exactly seven whole event shards, found {len(selected_b2_groups)}"
+        )
+    if mixed_b2_groups:
+        raise ValueError(f"B2 workforce closure is mixed with unrelated events: {mixed_b2_groups}")
+    projected_b2_closure = {
+        event_id for group in selected_b2_groups for event_id in group.event_ids
+    }
+    if projected_b2_closure != b2_closure:
+        raise ValueError(
+            "B2 workforce closure event-shard union must be exact; "
+            f"missing={sorted(b2_closure - projected_b2_closure)}, "
+            f"extra={sorted(projected_b2_closure - b2_closure)}"
+        )
+    over_hard = {group.filename for group in EVENT_GROUPS if len(group.event_ids) > EVENT_HARD_MAX}
+    unknown_exceptions = set(EVENT_HARD_LIMIT_EXCEPTIONS) - over_hard
+    if unknown_exceptions:
+        raise ValueError(f"stale workforce/endgame event hard-limit exceptions: {sorted(unknown_exceptions)}")
+    for filename in sorted(over_hard):
+        reason, live_evidence = EVENT_HARD_LIMIT_EXCEPTIONS.get(filename, ("", ""))
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EVENT_HARD_MAX} events without a reason and CK3 live-evidence reference"
+            )
+    for group in EVENT_GROUPS:
+        if not group.event_ids:
+            raise ValueError(f"{group.filename} must contain at least one event")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+
+
+def render_event_parts() -> dict[str, bytes]:
+    source_blocks = top_level_effect_blocks(render_events())
+    _validate_event_groups(source_blocks)
+    by_id = {
+        int(name.removeprefix(f"{NAMESPACE}.")): block
+        for name, block in source_blocks
+    }
+    parts: dict[str, bytes] = {}
+    for group in EVENT_GROUPS:
+        body = "\n\n".join(by_id[event_id] for event_id in group.event_ids)
+        parts[group.filename] = generated(
+            f"# PURPOSE: {group.purpose}.\n"
+            f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n\n"
+            f"namespace = {NAMESPACE}\n\n"
+            f"{body}"
+        )
+    return parts
+
+
 def esc(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
 
@@ -8652,7 +8955,10 @@ def outputs() -> dict[Path, bytes]:
         MOD_ROOT / "common" / "scripted_effects" / filename: payload
         for filename, payload in render_effect_parts().items()
     }
-    rendered[MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"] = render_events()
+    rendered.update({
+        MOD_ROOT / "events" / filename: payload
+        for filename, payload in render_event_parts().items()
+    })
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / f"zg361_workforce_endgame_l_{language}.yml"
@@ -8670,24 +8976,36 @@ def unexpected_effect_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
     return tuple(sorted(set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected))
 
 
+def unexpected_event_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
+    events_dir = MOD_ROOT / "events"
+    expected = {path for path in rendered if path.parent == events_dir}
+    unexpected = set(events_dir.glob(EVENT_SHARD_GLOB)) - expected
+    if LEGACY_EVENT_PATH.is_file():
+        unexpected.add(LEGACY_EVENT_PATH)
+    return tuple(sorted(unexpected))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
-    unexpected = unexpected_effect_paths(rendered)
+    unexpected_effects = unexpected_effect_paths(rendered)
+    unexpected_events = unexpected_event_paths(rendered)
     if args.check:
-        if stale or unexpected:
+        if stale or unexpected_effects or unexpected_events:
             print("RED: stale workforce/endgame generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
-            for path in unexpected:
+            for path in unexpected_effects:
                 print(f"unexpected effect shard: {path.relative_to(MOD_ROOT)}")
+            for path in unexpected_events:
+                print(f"unexpected event shard: {path.relative_to(MOD_ROOT)}")
             return 1
         print(f"GREEN: {len(rendered)} workforce/endgame generated files are current ({READINESS})")
         return 0
-    for path in unexpected:
+    for path in (*unexpected_effects, *unexpected_events):
         path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)

@@ -22,7 +22,10 @@ EFFECT_PATHS = tuple(
     MOD_ROOT / "common" / "scripted_effects" / group.filename
     for group in gen.EFFECT_GROUPS
 )
-EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"
+EVENT_PATHS = tuple(
+    MOD_ROOT / "events" / group.filename
+    for group in gen.EVENT_GROUPS
+)
 SPEC_PATH = MOD_ROOT / "docs" / "361-workforce-endgame-ck3-runtime-spec.md"
 LEDGER_PATH = MOD_ROOT / "docs" / "361-workforce-external-producer-ledger-2026-08-31.md"
 EXPECTED_IDS = set(range(242, 278)) | {355, 356, 360, 361}
@@ -119,7 +122,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.effects = "\n\n".join(read(path) for path in EFFECT_PATHS)
-        cls.events = read(EVENTS_PATH)
+        cls.events = "\n\n".join(read(path) for path in EVENT_PATHS)
         cls.spec_text = read(SPEC_PATH)
         cls.ledger_text = read(LEDGER_PATH)
         cls.specs = gen.by_id()
@@ -169,16 +172,24 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             f"common/scripted_effects/{group.filename}"
             for group in gen.EFFECT_GROUPS
         }
-        self.assertEqual(86, len(outputs))
+        expected_events = {
+            f"events/{group.filename}"
+            for group in gen.EVENT_GROUPS
+        }
+        self.assertEqual(120, len(outputs))
         self.assertEqual(
             expected_effects,
             {path for path in outputs if path.startswith("common/scripted_effects/")},
+        )
+        self.assertEqual(
+            expected_events,
+            {path for path in outputs if path.startswith("events/")},
         )
         self.assertNotIn(
             f"common/scripted_effects/{gen.LEGACY_EFFECT_FILENAME}",
             outputs,
         )
-        self.assertIn("events/zg361_workforce_endgame_runtime_events.txt", outputs)
+        self.assertNotIn(f"events/{gen.LEGACY_EVENT_FILENAME}", outputs)
         self.assertFalse(any("on_action" in path or "gui/" in path or "scoreboard" in path for path in outputs))
         self.assertFalse(any("case_kernel" in path or "b1_" in path or "b2_" in path for path in outputs))
 
@@ -192,6 +203,16 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(
             gen.HISTORICAL_EFFECT_COUNT,
             len(gen.top_level_effect_blocks(payload)),
+        )
+        event_payload = gen.render_events()
+        self.assertEqual(gen.HISTORICAL_EVENT_BYTES, len(event_payload))
+        self.assertEqual(
+            gen.HISTORICAL_EVENT_SHA256,
+            hashlib.sha256(event_payload).hexdigest().upper(),
+        )
+        self.assertEqual(
+            gen.HISTORICAL_EVENT_COUNT,
+            len(gen.top_level_effect_blocks(event_payload)),
         )
 
     def test_04b_effect_parts_are_exact_unique_block_projection(self) -> None:
@@ -226,7 +247,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
 
     def test_04d_legacy_monolith_is_absent(self) -> None:
         self.assertFalse(gen.LEGACY_EFFECT_PATH.exists())
+        self.assertFalse(gen.LEGACY_EVENT_PATH.exists())
         self.assertEqual((), gen.unexpected_effect_paths(gen.outputs()))
+        self.assertEqual((), gen.unexpected_event_paths(gen.outputs()))
 
     def test_04f_b2_workforce_closure_is_exact_whole_shard_union(self) -> None:
         closure = set(gen.B2_EFFECT_CLOSURE_NAMES)
@@ -242,6 +265,57 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for group in selected:
             with self.subTest(path=group.filename):
                 self.assertLessEqual(set(group.effect_names), closure)
+
+    def test_04g_event_parts_are_exact_unique_source_order_projection(self) -> None:
+        source_blocks = gen.top_level_effect_blocks(gen.render_events())
+        source_rank = {name: rank for rank, (name, _) in enumerate(source_blocks)}
+        parts = gen.render_event_parts()
+        projected_blocks = tuple(
+            block_row
+            for group in gen.EVENT_GROUPS
+            for block_row in gen.top_level_effect_blocks(parts[group.filename])
+        )
+        self.assertEqual(149, len(projected_blocks))
+        self.assertEqual(149, len({name for name, _ in projected_blocks}))
+        self.assertEqual(dict(source_blocks), dict(projected_blocks))
+        for group in gen.EVENT_GROUPS:
+            names = tuple(f"{gen.NAMESPACE}.{event_id}" for event_id in group.event_ids)
+            ranks = tuple(source_rank[name] for name in names)
+            self.assertEqual(tuple(sorted(ranks)), ranks, group.filename)
+        reconstructed = tuple(sorted(projected_blocks, key=lambda row: source_rank[row[0]]))
+        self.assertEqual(source_blocks, reconstructed)
+
+    def test_04h_event_parts_obey_purpose_boundaries(self) -> None:
+        self.assertEqual(35, len(gen.EVENT_GROUPS))
+        self.assertEqual({}, gen.EVENT_HARD_LIMIT_EXCEPTIONS)
+        for group, path in zip(gen.EVENT_GROUPS, EVENT_PATHS, strict=True):
+            with self.subTest(path=path.name):
+                count = len(group.event_ids)
+                self.assertGreaterEqual(count, 1)
+                self.assertLessEqual(count, gen.EVENT_TARGET_MAX)
+                self.assertLessEqual(count, gen.EVENT_HARD_MAX)
+                payload = path.read_bytes()
+                self.assertTrue(payload.startswith(gen.BOM))
+                text = payload.decode("utf-8-sig")
+                self.assertTrue(text.startswith(gen.HEADER))
+                self.assertIn(f"# PURPOSE: {group.purpose}.", text)
+                self.assertIn(f"namespace = {gen.NAMESPACE}", text)
+                self.assertEqual(count, len(gen.top_level_effect_blocks(payload)))
+
+    def test_04i_b2_events_are_exact_seven_whole_shards(self) -> None:
+        closure = set(gen.B2_EVENT_CLOSURE_IDS)
+        selected = [
+            group
+            for group in gen.EVENT_GROUPS
+            if closure.intersection(group.event_ids)
+        ]
+        projected = {event_id for group in selected for event_id in group.event_ids}
+        self.assertEqual(19, len(closure))
+        self.assertEqual(7, len(selected))
+        self.assertEqual(closure, projected)
+        for group in selected:
+            with self.subTest(path=group.filename):
+                self.assertLessEqual(set(group.event_ids), closure)
 
     def test_04e_top_level_parser_ignores_column_zero_nested_calls(self) -> None:
         sample = """outer_effect = {
@@ -265,7 +339,7 @@ second_effect = { value = 2 }
             check=False,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("GREEN: 86", result.stdout)
+        self.assertIn("GREEN: 120", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
         paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]
@@ -274,7 +348,7 @@ second_effect = { value = 2 }
                 self.assertTrue(path.read_bytes().startswith(gen.BOM))
 
     def test_07_generated_braces_balance(self) -> None:
-        for path in (*EFFECT_PATHS, EVENTS_PATH):
+        for path in (*EFFECT_PATHS, *EVENT_PATHS):
             with self.subTest(path=path.name):
                 text = read(path)
                 self.assertEqual(text.count("{"), text.count("}"))
@@ -598,7 +672,11 @@ second_effect = { value = 2 }
                 if re.match(r"^\s*zg361_we_m\d+_route_c_effect = \{$", line):
                     all_route_c_rows.append((path, line))
         self.assertEqual(120, len(all_route_c_rows))
-        expected_route_c_paths = {EVENTS_PATH.resolve()}
+        expected_route_c_paths = {
+            path.resolve()
+            for path in EVENT_PATHS
+            if re.search(r"(?m)^\s*zg361_we_m\d+_route_c_effect = \{$", read(path))
+        }
         expected_route_c_paths.update(
             path.resolve()
             for path in EFFECT_PATHS

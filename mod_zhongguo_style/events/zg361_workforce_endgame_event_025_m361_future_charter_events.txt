@@ -1,0 +1,11 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M361 future charter installation.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5361 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m361_future_default_install_effect = yes }
+}

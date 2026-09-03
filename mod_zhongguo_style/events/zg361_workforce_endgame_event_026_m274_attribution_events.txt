@@ -1,0 +1,46 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M274 appointment and attribution audit relays.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5370 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		set_variable = { name = zg361_we_m274_native_resume_audit_scheduled value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_we_m274_native_resume_pending_owner
+				has_variable = zg361_we_m274_native_resume_pending_subject
+				has_variable = zg361_we_m274_native_resume_pending_cycle
+				has_variable = zg361_we_m274_native_resume_pending_case
+				var:zg361_we_m274_native_resume_pending_subject = this
+			}
+			zg361_we_resume_m274_after_native_appointment_effect = {
+				TICKET_OWNER = var:zg361_we_m274_native_resume_pending_owner
+				TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_we_m274_native_resume_pending_cycle
+				TICKET_CASE = var:zg361_we_m274_native_resume_pending_case
+			}
+		}
+	}
+}
+
+zg361we.5371 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_audit_probation_and_arm_attribution_effect = yes }
+}
+
+zg361we.5372 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_audit_signature_and_dispatch_disposition_effect = yes }
+}
+
+zg361we.5373 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_audit_disposition_and_launch_m269_effect = yes }
+}

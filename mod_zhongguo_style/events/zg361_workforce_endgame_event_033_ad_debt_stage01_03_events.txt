@@ -1,0 +1,47 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AD stage 01-03 due-debt callbacks.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.6266 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m266_consume_due_debt_effect = yes }
+}
+
+zg361we.6267 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m267_consume_due_debt_effect = yes }
+}
+
+zg361we.6268 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m268_consume_due_debt_effect = yes }
+}
+
+zg361we.6270 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m270_consume_due_debt_effect = yes }
+}
+
+zg361we.6271 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m271_consume_due_debt_effect = yes }
+}
+
+zg361we.6272 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m272_consume_due_debt_effect = yes }
+}
+
+zg361we.6273 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m273_consume_due_debt_effect = yes }
+}

@@ -1,0 +1,82 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure M356 outcome timing lifecycle.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.356 = {
+	type = character_event
+	theme = stewardship
+	title = zg361we.356.t
+	desc = zg361we.356.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_we_al_owner
+		exists = scope:zg361_we_al_subject
+		exists = scope:zg361_we_al_cycle
+		exists = scope:zg361_we_al_case
+		this = scope:zg361_we_al_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_we_al_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_al_owner
+				SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial
+				CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state
+				ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = scope:zg361_we_al_owner
+				EXPECTED_SUBJECT = scope:zg361_we_al_subject
+				EXPECTED_CYCLE = scope:zg361_we_al_cycle
+				EXPECTED_CASE = scope:zg361_we_al_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361we.356.a
+		scope:zg361_we_al_subject = {
+			zg361_we_m356_route_a_effect = {
+				TICKET_OWNER = scope:zg361_we_al_owner
+				TICKET_SUBJECT = scope:zg361_we_al_subject
+				TICKET_CYCLE = scope:zg361_we_al_cycle
+				TICKET_CASE = scope:zg361_we_al_case
+			}
+		}
+	}
+	option = {
+		name = zg361we.356.b
+		scope:zg361_we_al_subject = {
+			zg361_we_m356_route_b_effect = {
+				TICKET_OWNER = scope:zg361_we_al_owner
+				TICKET_SUBJECT = scope:zg361_we_al_subject
+				TICKET_CYCLE = scope:zg361_we_al_cycle
+				TICKET_CASE = scope:zg361_we_al_case
+			}
+		}
+	}
+	option = {
+		name = zg361we.356.c
+		scope:zg361_we_al_subject = {
+			zg361_we_m356_route_c_effect = {
+				TICKET_OWNER = scope:zg361_we_al_owner
+				TICKET_SUBJECT = scope:zg361_we_al_subject
+				TICKET_CYCLE = scope:zg361_we_al_cycle
+				TICKET_CASE = scope:zg361_we_al_case
+				TICKET_STATE = 1
+			}
+		}
+	}
+}
+
+zg361we.5356 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m356_cutoff_audit_effect = yes }
+}
+
+zg361we.6356 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m356_consume_due_debt_effect = yes }
+}

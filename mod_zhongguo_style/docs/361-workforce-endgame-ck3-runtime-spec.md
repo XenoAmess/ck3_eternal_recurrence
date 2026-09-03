@@ -11,7 +11,7 @@
 - `tools/zg361_phase3_workforce_endgame_model.py`
 - `tools/test_zg361_phase3_workforce_endgame_model.py`
 - `common/scripted_effects/zg361_workforce_endgame_*_effects.txt`（76 个按用途分片）
-- `events/zg361_workforce_endgame_runtime_events.txt`
+- `events/zg361_workforce_endgame_event_*_events.txt`（35 个按用途分片）
 - `localization/*/zg361_workforce_endgame_l_*.yml`
 - `docs/361-workforce-external-producer-ledger-2026-08-31.md`（旧现场 303 项 loader 告警责任与消债账本）
 
@@ -92,6 +92,28 @@ byte-identity 迁移误写成已经解决加载性能。
 `E5DD22CEF71D60E069884A27BE924234B4FAD42490AEF2B52B966AFD95585858`。本节只把分片实现提升为
 static-ready；尚无新 CK3 loader、paused snapshot 或完整业务路径证据，整体 readiness 仍是
 `ck3-script-static-ready-not-live`，不得据此写成任何 live 等级。
+
+### Event 文件边界合同
+
+旧单体 `events/zg361_workforce_endgame_runtime_events.txt` 的冻结基线为 `168,729 B`、SHA-256
+`637F65CC72C176E6E19BE982F41B203DC326047939B79A80E5E43D3A9D361EF7`、149 个唯一顶层 event。
+它与旧 effect 单体一样只作为历史语义基线记录；canonical 生成结果不得让它与用途分片共存。
+
+当前生成器把 149 个 event 按业务用途投影为 35 个分片，合计 `175,403 B`，单片最小 `349 B`、最大
+`16,842 B`；最大片是 `zg361_workforce_endgame_event_003_ac_mechanisms_stage01_03_events.txt`。
+每片包含 `1–7` 个 event，数量分布为
+`{1:2, 2:7, 3:5, 4:4, 5:4, 6:9, 7:4}`，没有超过 20 个 event 的例外。B2 权威闭包中的 19 个
+Workforce event 恰好是 7 个**完整分片**的精确并集，extra=0、missing=0；不再需要挂载旧 event 单体，
+也不会因该单体对约 210 个 effect 的引用而把几乎整个 Workforce 图重新拉入 B2 候选。
+
+event 分片 manifest 按文件名排序，每行严格为
+`filename<TAB>bytes<TAB>event_count<TAB>uppercase_sha256<LF>`；当前 manifest SHA-256 为
+`1E1EEE665105139653BC3D00B092522A41C97FE16164E27ACBDB6FC0C967F8DA`。生成器 `--check` 当前覆盖
+120 个输出，Workforce 主测试 116/116、全 `test_zg361*` 1265/1265、全 `test_gen_361*` 107/107、visual 8/8、
+projection 8/8、release tests 9/9 与 `validate_local.py` 均 GREEN。可复现 release `--check` 为 413 files，manifest
+SHA-256 `E68E89F363E1CF8161EBC8EA8D8D7602A51AB6B170BAEFEF2EE7FBD8D24060B4`、ZIP SHA-256
+`4A7C79950989F49F068F01EDF705E2B9F5AE524A063FCAED34B6B717BDF11E67`。这些仍是静态/发布树证据；本节没有新增
+CK3 loader 或业务实机证据，readiness 仍为 `ck3-script-static-ready-not-live`。
 
 ## 2. 五元身份、原子顺序与状态码
 

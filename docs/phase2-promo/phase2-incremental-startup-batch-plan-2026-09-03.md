@@ -141,9 +141,18 @@ B2 的三个直接 Workforce owner 沿 effect 调用、literal event ID 与 `EVE
 `E5DD22CEF71D60E069884A27BE924234B4FAD42490AEF2B52B966AFD95585858`。B2 的 40 个 Workforce effect 正好由其中 16 个完整分片
 承载（341,602 B，extra=0、missing=0）；该布局目前只到 **static-ready**，没有新 CK3 live。
 
-下一步先拆 `zg361_workforce_endgame_runtime_events.txt`（`168,729 B / 149 events`）。若保留完整 event 单体，它对约 210 个
-Workforce effect 的静态引用会重新拉回几乎全图，无法形成可归因的 no-stub B2 候选。event 拆分后先跑同一冻结 B1 基线上的
-B2 full-entry，GREEN 后才复用完全相同的 projection/hash 进入 seed；不能把旧 stub checkpoint 冒充生产 B2。
+旧 `zg361_workforce_endgame_runtime_events.txt` 的冻结基线为 `168,729 B / 149 unique events`，SHA-256
+`637F65CC72C176E6E19BE982F41B203DC326047939B79A80E5E43D3A9D361EF7`。generator 现将其替换为 35 个用途分片：
+149/149 unique、合计 `175,403 B`，单片 `1–7` 个 event（最小 `349 B`、最大 `16,842 B`），没有超过 20 的例外；
+数量分布为 `{1:2, 2:7, 3:5, 4:4, 5:4, 6:9, 7:4}`，manifest SHA-256 为
+`1E1EEE665105139653BC3D00B092522A41C97FE16164E27ACBDB6FC0C967F8DA`。B2 所需 19 个 Workforce event 恰好由 7 个完整分片
+精确承载，extra=0、missing=0，不再因旧单体对约 210 个 effect 的静态引用拉回几乎全图。generator `--check` 覆盖 120 个输出，
+Workforce 主测试 116/116、`test_zg361*` 1265/1265、`test_gen_361*` 107/107、visual/projection 8/8、release 9/9 与
+`validate_local.py` 均 GREEN。可复现 release `--check` 为 413 files，manifest `E68E89F3…60B4`、ZIP `4A7C7995…1E67`；
+这些仍只记 **static-ready / no new CK3 live**。
+
+下一步物化 119-file、无 stub 的 B2 production closure；先在同一冻结 B1 基线上跑下一 distinct
+full-entry，GREEN 后才复用完全相同的 projection/hash 进入 seed。不能把旧 stub checkpoint 冒充生产 B2。
 footage 仍为 `0/8`，两条 MP4 未生成；G2 保持 paused。
 
 ## 预计时间

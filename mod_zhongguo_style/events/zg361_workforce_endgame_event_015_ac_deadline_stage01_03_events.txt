@@ -1,0 +1,209 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AC stage 01-03 deadlines and relays.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.4401 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_case_kernel_expire_deadline_effect = {
+			OWNER_VAR = zg361_case_ac_owner
+			SUBJECT_VAR = zg361_case_ac_subject
+			CYCLE_VAR = zg361_case_ac_cycle_serial
+			CASE_VAR = zg361_case_ac_case_serial
+			STATE_VAR = zg361_case_ac_state
+			ACTIVE_VAR = zg361_case_ac_active
+			REVISION_VAR = zg361_case_ac_revision
+			TIMELINE_VAR = zg361_case_ac_timeline_serial
+			FEEDBACK_VAR = zg361_case_ac_feedback_revision
+			DEADLINE_OWNER_VAR = zg361_we_ac_s01_deadline_owner
+			DEADLINE_SUBJECT_VAR = zg361_we_ac_s01_deadline_subject
+			DEADLINE_CYCLE_VAR = zg361_we_ac_s01_deadline_cycle
+			DEADLINE_CASE_VAR = zg361_we_ac_s01_deadline_case
+			DEADLINE_STATE_VAR = zg361_we_ac_s01_deadline_state
+			DEADLINE_PENDING_VAR = zg361_we_ac_s01_deadline_pending
+			DEADLINE_EXPIRED_VAR = zg361_we_ac_s01_deadline_expired
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			var:zg361_we_ac_s01_deadline_owner = { save_scope_as = zg361_we_ac_s01_relay_owner }
+			save_scope_as = zg361_we_ac_s01_relay_subject
+			save_scope_value_as = { name = zg361_we_ac_s01_relay_cycle value = var:zg361_we_ac_s01_deadline_cycle }
+			save_scope_value_as = { name = zg361_we_ac_s01_relay_case value = var:zg361_we_ac_s01_deadline_case }
+			save_scope_value_as = { name = zg361_we_ac_s01_relay_state value = var:zg361_we_ac_s01_deadline_state }
+			var:zg361_we_ac_s01_deadline_owner = { trigger_event = { id = zg361we.4501 } }
+		}
+	}
+}
+
+zg361we.4501 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_we_ac_s01_relay_owner
+				exists = scope:zg361_we_ac_s01_relay_subject
+				exists = scope:zg361_we_ac_s01_relay_cycle
+				exists = scope:zg361_we_ac_s01_relay_case
+				exists = scope:zg361_we_ac_s01_relay_state
+				this = scope:zg361_we_ac_s01_relay_owner
+				scope:zg361_we_ac_s01_relay_subject = {
+					zg361_case_kernel_full_guard_trigger = {
+						OWNER_VAR = zg361_case_ac_owner
+						SUBJECT_VAR = zg361_case_ac_subject
+						CYCLE_VAR = zg361_case_ac_cycle_serial
+						CASE_VAR = zg361_case_ac_case_serial
+						STATE_VAR = zg361_case_ac_state
+						ACTIVE_VAR = zg361_case_ac_active
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = scope:zg361_we_ac_s01_relay_cycle
+						EXPECTED_CASE = scope:zg361_we_ac_s01_relay_case
+						EXPECTED_STATE = scope:zg361_we_ac_s01_relay_state
+					}
+				}
+			}
+			scope:zg361_we_ac_s01_relay_subject = { zg361_we_ac_timeout_stage_01_effect = yes }
+		}
+		else = { debug_log = "ZG361WE: stale AC stage 1 owner-root relay ignored" }
+	}
+}
+
+zg361we.4402 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_case_kernel_expire_deadline_effect = {
+			OWNER_VAR = zg361_case_ac_owner
+			SUBJECT_VAR = zg361_case_ac_subject
+			CYCLE_VAR = zg361_case_ac_cycle_serial
+			CASE_VAR = zg361_case_ac_case_serial
+			STATE_VAR = zg361_case_ac_state
+			ACTIVE_VAR = zg361_case_ac_active
+			REVISION_VAR = zg361_case_ac_revision
+			TIMELINE_VAR = zg361_case_ac_timeline_serial
+			FEEDBACK_VAR = zg361_case_ac_feedback_revision
+			DEADLINE_OWNER_VAR = zg361_we_ac_s02_deadline_owner
+			DEADLINE_SUBJECT_VAR = zg361_we_ac_s02_deadline_subject
+			DEADLINE_CYCLE_VAR = zg361_we_ac_s02_deadline_cycle
+			DEADLINE_CASE_VAR = zg361_we_ac_s02_deadline_case
+			DEADLINE_STATE_VAR = zg361_we_ac_s02_deadline_state
+			DEADLINE_PENDING_VAR = zg361_we_ac_s02_deadline_pending
+			DEADLINE_EXPIRED_VAR = zg361_we_ac_s02_deadline_expired
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			var:zg361_we_ac_s02_deadline_owner = { save_scope_as = zg361_we_ac_s02_relay_owner }
+			save_scope_as = zg361_we_ac_s02_relay_subject
+			save_scope_value_as = { name = zg361_we_ac_s02_relay_cycle value = var:zg361_we_ac_s02_deadline_cycle }
+			save_scope_value_as = { name = zg361_we_ac_s02_relay_case value = var:zg361_we_ac_s02_deadline_case }
+			save_scope_value_as = { name = zg361_we_ac_s02_relay_state value = var:zg361_we_ac_s02_deadline_state }
+			var:zg361_we_ac_s02_deadline_owner = { trigger_event = { id = zg361we.4502 } }
+		}
+	}
+}
+
+zg361we.4502 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_we_ac_s02_relay_owner
+				exists = scope:zg361_we_ac_s02_relay_subject
+				exists = scope:zg361_we_ac_s02_relay_cycle
+				exists = scope:zg361_we_ac_s02_relay_case
+				exists = scope:zg361_we_ac_s02_relay_state
+				this = scope:zg361_we_ac_s02_relay_owner
+				scope:zg361_we_ac_s02_relay_subject = {
+					zg361_case_kernel_full_guard_trigger = {
+						OWNER_VAR = zg361_case_ac_owner
+						SUBJECT_VAR = zg361_case_ac_subject
+						CYCLE_VAR = zg361_case_ac_cycle_serial
+						CASE_VAR = zg361_case_ac_case_serial
+						STATE_VAR = zg361_case_ac_state
+						ACTIVE_VAR = zg361_case_ac_active
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = scope:zg361_we_ac_s02_relay_cycle
+						EXPECTED_CASE = scope:zg361_we_ac_s02_relay_case
+						EXPECTED_STATE = scope:zg361_we_ac_s02_relay_state
+					}
+				}
+			}
+			scope:zg361_we_ac_s02_relay_subject = { zg361_we_ac_timeout_stage_02_effect = yes }
+		}
+		else = { debug_log = "ZG361WE: stale AC stage 2 owner-root relay ignored" }
+	}
+}
+
+zg361we.4403 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_case_kernel_expire_deadline_effect = {
+			OWNER_VAR = zg361_case_ac_owner
+			SUBJECT_VAR = zg361_case_ac_subject
+			CYCLE_VAR = zg361_case_ac_cycle_serial
+			CASE_VAR = zg361_case_ac_case_serial
+			STATE_VAR = zg361_case_ac_state
+			ACTIVE_VAR = zg361_case_ac_active
+			REVISION_VAR = zg361_case_ac_revision
+			TIMELINE_VAR = zg361_case_ac_timeline_serial
+			FEEDBACK_VAR = zg361_case_ac_feedback_revision
+			DEADLINE_OWNER_VAR = zg361_we_ac_s03_deadline_owner
+			DEADLINE_SUBJECT_VAR = zg361_we_ac_s03_deadline_subject
+			DEADLINE_CYCLE_VAR = zg361_we_ac_s03_deadline_cycle
+			DEADLINE_CASE_VAR = zg361_we_ac_s03_deadline_case
+			DEADLINE_STATE_VAR = zg361_we_ac_s03_deadline_state
+			DEADLINE_PENDING_VAR = zg361_we_ac_s03_deadline_pending
+			DEADLINE_EXPIRED_VAR = zg361_we_ac_s03_deadline_expired
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			var:zg361_we_ac_s03_deadline_owner = { save_scope_as = zg361_we_ac_s03_relay_owner }
+			save_scope_as = zg361_we_ac_s03_relay_subject
+			save_scope_value_as = { name = zg361_we_ac_s03_relay_cycle value = var:zg361_we_ac_s03_deadline_cycle }
+			save_scope_value_as = { name = zg361_we_ac_s03_relay_case value = var:zg361_we_ac_s03_deadline_case }
+			save_scope_value_as = { name = zg361_we_ac_s03_relay_state value = var:zg361_we_ac_s03_deadline_state }
+			var:zg361_we_ac_s03_deadline_owner = { trigger_event = { id = zg361we.4503 } }
+		}
+	}
+}
+
+zg361we.4503 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_we_ac_s03_relay_owner
+				exists = scope:zg361_we_ac_s03_relay_subject
+				exists = scope:zg361_we_ac_s03_relay_cycle
+				exists = scope:zg361_we_ac_s03_relay_case
+				exists = scope:zg361_we_ac_s03_relay_state
+				this = scope:zg361_we_ac_s03_relay_owner
+				scope:zg361_we_ac_s03_relay_subject = {
+					zg361_case_kernel_full_guard_trigger = {
+						OWNER_VAR = zg361_case_ac_owner
+						SUBJECT_VAR = zg361_case_ac_subject
+						CYCLE_VAR = zg361_case_ac_cycle_serial
+						CASE_VAR = zg361_case_ac_case_serial
+						STATE_VAR = zg361_case_ac_state
+						ACTIVE_VAR = zg361_case_ac_active
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = scope:zg361_we_ac_s03_relay_cycle
+						EXPECTED_CASE = scope:zg361_we_ac_s03_relay_case
+						EXPECTED_STATE = scope:zg361_we_ac_s03_relay_state
+					}
+				}
+			}
+			scope:zg361_we_ac_s03_relay_subject = { zg361_we_ac_timeout_stage_03_effect = yes }
+		}
+		else = { debug_log = "ZG361WE: stale AC stage 3 owner-root relay ignored" }
+	}
+}

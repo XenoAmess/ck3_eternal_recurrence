@@ -1,0 +1,73 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure AL stage 01 deadline and relay.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.4801 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_case_kernel_expire_deadline_effect = {
+			OWNER_VAR = zg361_case_al_owner
+			SUBJECT_VAR = zg361_case_al_subject
+			CYCLE_VAR = zg361_case_al_cycle_serial
+			CASE_VAR = zg361_case_al_case_serial
+			STATE_VAR = zg361_case_al_state
+			ACTIVE_VAR = zg361_case_al_active
+			REVISION_VAR = zg361_case_al_revision
+			TIMELINE_VAR = zg361_case_al_timeline_serial
+			FEEDBACK_VAR = zg361_case_al_feedback_revision
+			DEADLINE_OWNER_VAR = zg361_we_al_s01_deadline_owner
+			DEADLINE_SUBJECT_VAR = zg361_we_al_s01_deadline_subject
+			DEADLINE_CYCLE_VAR = zg361_we_al_s01_deadline_cycle
+			DEADLINE_CASE_VAR = zg361_we_al_s01_deadline_case
+			DEADLINE_STATE_VAR = zg361_we_al_s01_deadline_state
+			DEADLINE_PENDING_VAR = zg361_we_al_s01_deadline_pending
+			DEADLINE_EXPIRED_VAR = zg361_we_al_s01_deadline_expired
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			var:zg361_we_al_s01_deadline_owner = { save_scope_as = zg361_we_al_s01_relay_owner }
+			save_scope_as = zg361_we_al_s01_relay_subject
+			save_scope_value_as = { name = zg361_we_al_s01_relay_cycle value = var:zg361_we_al_s01_deadline_cycle }
+			save_scope_value_as = { name = zg361_we_al_s01_relay_case value = var:zg361_we_al_s01_deadline_case }
+			save_scope_value_as = { name = zg361_we_al_s01_relay_state value = var:zg361_we_al_s01_deadline_state }
+			var:zg361_we_al_s01_deadline_owner = { trigger_event = { id = zg361we.4901 } }
+		}
+	}
+}
+
+zg361we.4901 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_we_al_s01_relay_owner
+				exists = scope:zg361_we_al_s01_relay_subject
+				exists = scope:zg361_we_al_s01_relay_cycle
+				exists = scope:zg361_we_al_s01_relay_case
+				exists = scope:zg361_we_al_s01_relay_state
+				this = scope:zg361_we_al_s01_relay_owner
+				scope:zg361_we_al_s01_relay_subject = {
+					zg361_case_kernel_full_guard_trigger = {
+						OWNER_VAR = zg361_case_al_owner
+						SUBJECT_VAR = zg361_case_al_subject
+						CYCLE_VAR = zg361_case_al_cycle_serial
+						CASE_VAR = zg361_case_al_case_serial
+						STATE_VAR = zg361_case_al_state
+						ACTIVE_VAR = zg361_case_al_active
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = scope:zg361_we_al_s01_relay_cycle
+						EXPECTED_CASE = scope:zg361_we_al_s01_relay_case
+						EXPECTED_STATE = scope:zg361_we_al_s01_relay_state
+					}
+				}
+			}
+			scope:zg361_we_al_s01_relay_subject = { zg361_we_al_timeout_stage_01_effect = yes }
+		}
+		else = { debug_log = "ZG361WE: stale AL stage 1 owner-root relay ignored" }
+	}
+}

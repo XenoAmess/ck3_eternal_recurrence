@@ -2,7 +2,7 @@
 
 **原交接时间：** 2026-09-03 20:45（Asia/Shanghai）
 
-**接班执行更新：** 2026-09-04 00:08（Asia/Shanghai）
+**接班执行更新：** 2026-09-04 01:39（Asia/Shanghai）
 
 **工作树：** `Z:\ck3_mod_rewrite\_root-promo-split-20260902`
 
@@ -12,13 +12,13 @@
 
 ## 一句话结论
 
-天朝二期还没有到全量可交付或可制作成片的阶段，但 B1 启动 checkpoint 已解除。53 文件 case-kernel 与 55 文件 ABI safe-core 均有完整进图 GREEN；未改写的 58 文件单体 B1 仍只保留一次 1205.343 秒 **pre-menu startup-time / harness RED**。接班后先证明七个 stub 子集与 77/77 正文双文件诊断候选 full-entry GREEN，再把 41/36 边界下沉到正式 generator；正式 59-file 生成树 r3 在 245.770 秒通过全部入口门、exact mount、三条 marker、material-error 0 与 cleanup。它将 B1 提升到 **startup/full-entry production-candidate GREEN**，但不能凭一次旧 RED把文件尺寸写成唯一根因，也不能把 delayed-path、seed、native bridge 或 Phase2 全量写成 GREEN。CK3 已退出；footage 仍为 0/8，G2 继续 paused。
+天朝二期还没有到全量可交付或可制作成片的阶段，但 B1 启动 checkpoint 已解除。53 文件 case-kernel 与 55 文件 ABI safe-core 均有完整进图 GREEN；未改写的 58 文件单体 B1 仍只保留一次 1205.343 秒 **pre-menu startup-time / harness RED**。接班后先证明七个 stub 子集与 77/77 正文双文件诊断候选 full-entry GREEN，再把 41/36 边界下沉到正式 generator；正式 59-file 生成树 r3 在 245.770 秒通过全部入口门、exact mount、三条 marker、material-error 0 与 cleanup。它将 B1 提升到 **startup/full-entry production-candidate GREEN**，但不能凭一次旧 RED把文件尺寸写成唯一根因。B2、Workforce effect 与 Workforce event 已分别拆成 25/76/35 个用途片且静态/release 矩阵 GREEN；下一项是物化 119-file 无 stub B2 候选，不能把这些静态结果写成 delayed-path、seed、native bridge 或 Phase2 全量 GREEN。CK3 已退出；footage 仍为 0/8，G2 继续 paused。
 
 ## 当前工作清单
 
 | 工作包 | 当前状态 | 下一项 | 预计交付窗口（接班人重新开始后） |
 |---|---|---|---|
-| 天朝二期代码/内容 | 53/55 基线 GREEN；正式 generator 已拆成 41+36 blocks，59-file r3 为 startup/full-entry production-candidate GREEN；原单体 B1 仍为一次 harness RED | 冻结正式 checkpoint 后进入 distinct seed/paused-native bridge；再按 postcondition 获取 8/8 spans | delayed-path/seed/OODA 尚未验证，不给全量 ETA |
+| 天朝二期代码/内容 | B1 59-file r3 为 startup/full-entry GREEN；B2/Workforce effect/event 已按用途拆为 25/76/35 片，B2 所需 40 effects / 19 events 可精确选 16/7 片；静态/release GREEN，CK3 live 尚未完成 | 物化 119-file 无 stub B2 候选；先 full-entry，同树 GREEN 后进入 seed/paused-native bridge | delayed-path/seed/OODA 尚未验证，不给全量 ETA |
 | 两版最终宣传视频 | `footage_pending`，真实二期素材仍为 `0/8`，两份目标 MP4 均未生成 | 先取得 8 个 clean CK3 spans；随后再 fetch/pull 宣传工具主线、TTS、渲染、字幕审片、分别导出两版 | 素材齐后制作约 45–90 分钟，另需两轮人工审片；当前不能承诺日期 |
 | 宣传工具 | 已满足“制作前更新”前置条件：`Z:\workspace\xar_promo_toolchain` clean，`HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`（v0.2.1） | 正式 TTS/渲染前再次执行 `git fetch origin main --prune`，把 checkout SHA 写入两份 builder receipt | 工具本身已完成；等待素材 |
 | G2 | **按用户要求暂缓**，不再扩展当前迭代 | 只有用户解除暂停后才恢复；恢复前先读 G2 专题和最新 schema boundary | 暂无 |
@@ -136,12 +136,16 @@ production loop 均未晋级。
 1. 先读 [`docs/phase2-promo/phase2-incremental-startup-batch-plan-2026-09-03.md`](../phase2-promo/phase2-incremental-startup-batch-plan-2026-09-03.md)、[`docs/phase2-promo/README.md`](../phase2-promo/README.md) 和 [`phase2-safe-core-next-domain-closure-2026-09-03.md`](../phase2-promo/phase2-safe-core-next-domain-closure-2026-09-03.md)。确认没有 CK3 后再做静态检查；不要重跑已证明的 53/55 基线或七个 stub 子集。
 2. balanced-files 的 41/36 边界已下沉到 `tools/gen_361_b1_runtime.py`，正式 r3 已 full-entry GREEN；不要再重跑旧单文件或七个 stub 子集，也不要手改 `GENERATED FILE` 产品。
 3. CK3 槽位严格串行：固定 `1.19.0.6` EXE、已验证 profile/cache 和 probe 脚本；一次只跑一个候选，timeout 先用 1200 s。每 30–60 s 只读记录进程、debug.log、memory 和 marker；若自然结束，保存 report/screenshot/log hash，确认 `ck3_running_after=false` 后再开下一轮。
-4. 下一 distinct gate 是冻结正式 59-file checkpoint 后进入 seed/paused-native bridge；先取得真实 seed/只读 snapshot，再决定 observer 与 8-span。full-entry GREEN 不替代 B1 delayed-path 或生产功能验收。
+4. 下一 distinct gate 是物化 119-file、无 stub 的 B2 production closure；先跑 full-entry，只有同一 projection/hash GREEN 后才进入 seed/paused-native bridge。full-entry GREEN 不替代 B1 delayed-path 或生产功能验收。
 5. Incident 简中闭包（safe-core 基线 + 3 条增量）和 Manager 简中闭包（+4 条增量）已经静态物化，可作为后续候选；B2 的 stub 不可冒充生产功能。静态域清单中的 manifest/hash 以工作区 `docs/phase2-promo/phase2-safe-core-next-domain-closure-2026-09-03.md` 为准。
 6. 项目所有者在 2026-09-04 明确要求：进入 B2 前先按用途/调用链拆分 effect，目标每文件 `1–10` 个，原则上不超过 `20` 个；超过 `20` 必须记录理由和实机证据。若后续出现没有明确 material/parser 首错的加载性能 RED，优先按 `docs/testing-workflow.md` 做同条件文件边界 A/B，并把结论限制为“文件边界/单文件体量很可能参与”。
    B2 自身现已完成 25 个用途分片：152/152 unique、每片 `1–9`、清单 SHA `06274A5E…7FAB`，静态/投影/release GREEN；但尚无
    新 CK3 live。正式提交 `e1297f83738fd61d53812406b26e23637201d2c5` 已推送。其 Workforce effect owner 现也已拆为 76 个用途片：
-   324/324 parity、每片 `1–10`、无超限例外；B2 40-effect 闭包精确落在 16 个完整片内。下一步拆 149-event 单体，再构造无 stub 候选。
+   324/324 parity、每片 `1–10`、无超限例外；B2 40-effect 闭包精确落在 16 个完整片内。Workforce event owner 也已从
+   `168,729 B / 149-event` 单体拆为 35 个用途片：每片 `1–7`，B2 19-event 闭包精确落在 7 个完整片内，manifest SHA
+   `1E1EEE66…F8DA`；generator `--check`、主测试 116/116、全量生成/业务、visual/projection、release 与
+   `validate_local.py` 均 GREEN，413-file release manifest/ZIP 为 `E68E89F3…60B4` / `4A7C7995…1E67`。
+   CK3 live 仍待完成。
 7. 视频路线保持两条独立交付：人物版与制度群像版都不能因另一版完成而自动签核。只有 8/8 clean CK3 spans、source review、字幕/媒体检查和 builder receipt 齐全后，才运行 TTS/render/export；制作前再次 fetch 宣传工具 `origin/main`。
 8. G2 维持暂停。open_kaishek 的 15ab978 是明确的 activity-schema negative boundary；它的 RED 是覆盖缺口，不是 CK3 runtime 失败。恢复时先重跑 Maven/fixture 并更新本项目绑定，不要猜 activity opcode allow-list。
 
@@ -162,7 +166,9 @@ production loop 均未晋级。
 - [x] B1 正式拆分与证据主提交 `4aea7afe3f6d3f4f82f7551869aba8faeae0c66b`；非强推 merge
   `89808bb5799d651847b14460e38c4369e94209f7` 已推送，分支与远端同步。
 - [x] B2 正式用途分片提交 `e1297f83738fd61d53812406b26e23637201d2c5` 已推送；25 片均为 `1–9` effect，当前没有超限例外。
-- [x] Workforce effect 的 76 片实现与静态证据已由 `76fbf436a023f7d022f3eab6581e43fc632be3d0` 提交并推送；当前没有新 CK3 live，event 单体仍待拆。
+- [x] Workforce effect 的 76 片实现与静态证据已由 `76fbf436a023f7d022f3eab6581e43fc632be3d0` 提交并推送；当前没有新 CK3 live。
+- [x] Workforce event 已实现 35 个用途片，149/149 unique、每片 1–7，B2 19 events=7 片精确并集；静态/release 矩阵 GREEN。
+  实现提交与 CK3 live 尚待完成。
 - [ ] 下一位接班人重新开始前，先确认工作区 dirty/untracked 清单，不要覆盖或清理上述 disposable artifact。
 
 这就是当前可以安全交出的边界：正式 B1 startup/full-entry checkpoint 已 GREEN，失败与修复证据齐全、现场已收尾；但 delayed-path、seed、native/production loop、8/8 素材与两部最终宣传视频仍未完成。

@@ -1,0 +1,32 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M269 attribution cancellation audit and result publication.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5374 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_begin_attribution_debt_cancel_effect = yes }
+}
+
+zg361we.5375 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_ack_attribution_debt_cancel_effect = yes }
+}
+
+zg361we.5376 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_audit_attribution_debt_advance_effect = yes }
+}
+
+zg361we.5378 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		set_variable = { name = zg361_we_m269_result_relay_queued value = 0 }
+		zg361_we_m269_publish_signed_result_effect = yes
+	}
+}

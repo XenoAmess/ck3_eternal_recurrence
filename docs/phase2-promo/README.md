@@ -38,7 +38,7 @@
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | B1 正式 generator split 已 full-entry GREEN；B2 为 25 片；Workforce effect 为 76 片且 B2 40-effect 闭包可精确选 16 片 | 拆分 Workforce 的 149-event 单体，再构造无 stub 的 B2 full-entry 候选；同树 GREEN 后才进 seed | 后续门通过后再估；不沿用旧 2–5 分钟线性启动估算 |
+| 二期产品代码与发布树 | B1 正式 generator split 已 full-entry GREEN；B2 为 25 片；Workforce effect/event 为 76/35 片，B2 的 40 effects / 19 events 可精确选 16/7 片；静态/release 矩阵 GREEN | 物化 119-file、无 stub 的 B2 full-entry 候选；同树 GREEN 后才进 seed | 后续门通过后再估；不沿用旧 2–5 分钟线性启动估算 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
@@ -127,6 +127,16 @@ Workforce 的 `4,636,271 B / 324-effect` 旧单体也已由 generator 替换为 
 extra=0、missing=0）；全量分片清单 SHA-256 为
 `E5DD22CEF71D60E069884A27BE924234B4FAD42490AEF2B52B966AFD95585858`。当前仍只有静态证据。
 
-无 stub 的 B2 production closure 还需要把 `168,729 B / 149-event` Workforce event 单体按用途拆开；否则完整 event 文件会引用约
-210 个 Workforce effect，重新拉回几乎全图。权威固定点是 `71 effects / 28 events`，旧 `68/24` 漏扫了 `EVENT = <id>` 参数 ABI。
+Workforce 的 `168,729 B / 149-event` 旧 event 单体（SHA-256
+`637F65CC72C176E6E19BE982F41B203DC326047939B79A80E5E43D3A9D361EF7`）现也已按用途拆为 35 片，合计 `175,403 B`；
+每片 `1–7` 个 event，最小 `349 B`、最大 `16,842 B`，数量分布为 `{1:2, 2:7, 3:5, 4:4, 5:4, 6:9, 7:4}`，
+无超过 20 的例外。manifest SHA-256 为
+`1E1EEE665105139653BC3D00B092522A41C97FE16164E27ACBDB6FC0C967F8DA`；B2 的 19 个 Workforce event 是其中 7 个完整分片的
+精确并集，extra=0、missing=0，不再由旧单体的约 210 个 effect 引用拉回几乎全图。generator `--check` 当前覆盖 120 个输出；
+Workforce 主测试 116/116、`test_zg361*` 1265/1265、`test_gen_361*` 107/107、visual/projection 8/8、release 9/9 与
+`validate_local.py` 均 GREEN。可复现 release `--check` 为 413 files，manifest `E68E89F3…60B4`、ZIP `4A7C7995…1E67`；
+仍没有新增 CK3 live。
+
+权威固定点仍为 `71 effects / 28 events`，旧 `68/24` 漏扫了 `EVENT = <id>` 参数 ABI。下一步物化 119-file、无 stub 的
+B2 production closure；先跑下一 distinct full-entry，同一 projection/hash GREEN 后才进入 seed。
 不能把旧的 P2/P3 startup/projection RED 或 stub 候选冒充正式 B2。

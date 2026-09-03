@@ -62,8 +62,9 @@ B1 的 `41 + 36` 是恢复期历史边界；从 B2 起，后续 effect 按用途
 
 B2 canonical generator 已按该规则完成 25 个用途分片：152/152 个顶层 effect 逐 block 字节一致，每片 `1–9` 个。其 Workforce
 effect owner 也已从 `4,636,271 B / 324-effect` 单体改为 76 个用途分片，每片 `1–10` 个；B2 所需 40 个 Workforce effect 可由
-16 个完整分片精确承载，不夹带其余定义。两者 readiness 仍为 `static-ready`，没有新 CK3 live。下一依赖是拆分
-`168,729 B / 149-event` Workforce event 单体，再构造无 stub 的 B2 full-entry 候选；相同 projection full-entry GREEN 后才进入 seed。
+16 个完整分片精确承载，不夹带其余定义。Workforce 的 `168,729 B / 149-event` 单体随后拆为 35 个用途分片，每片 `1–7` 个；
+B2 所需 19 个 Workforce event 是其中 7 个完整分片的精确并集。当前 readiness 仍为 `static-ready`，没有新 CK3 live。
+静态/发布矩阵已通过，下一依赖是物化 119-file、无 stub 的 B2 full-entry 候选；相同 projection/hash full-entry GREEN 后才进入 seed。
 
 ## 2026-W35 最高优先级：先完整游玩一代人
 
