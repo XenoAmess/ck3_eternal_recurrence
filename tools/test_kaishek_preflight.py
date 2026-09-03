@@ -18,6 +18,104 @@ class KaishekPreflightTests(unittest.TestCase):
         # require a parent-code edit.
         self.assertEqual(adapter.CLI_CONTRACT_COMMIT, "b306a95")
         self.assertEqual(adapter.DEFAULT_TIMEOUT_SECONDS, 180.0)
+        self.assertFalse(adapter.DEFAULT_REQUIRE_ORIGIN_SYNC)
+
+    @staticmethod
+    def _checkout_with_refs(
+        temporary: str,
+        *,
+        head: str,
+        origin_main: str | None,
+    ) -> tuple[Path, Path]:
+        root = Path(temporary) / "open-kaishek"
+        git = root / ".git"
+        (git / "refs" / "heads").mkdir(parents=True)
+        (git / "refs" / "remotes" / "origin").mkdir(parents=True)
+        (git / "refs" / "heads" / "main").write_text(head + "\n", encoding="utf-8")
+        if origin_main is not None:
+            (git / "refs" / "remotes" / "origin" / "main").write_text(
+                origin_main + "\n", encoding="utf-8"
+            )
+        (git / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
+        jar = root / "kaishek-cli" / "target" / "kaishek-cli-0.1.0-SNAPSHOT.jar"
+        jar.parent.mkdir(parents=True)
+        jar.write_bytes(b"jar-fixture")
+        return root, jar
+
+    def test_opt_in_origin_sync_rejects_stale_checkout_before_cli(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            head = "0123456789abcdef0123456789abcdef01234567"
+            origin = "fedcba9876543210fedcba9876543210fedcba98"
+            root, jar = self._checkout_with_refs(
+                temporary, head=head, origin_main=origin
+            )
+            with mock.patch.object(adapter.subprocess, "run") as run:
+                result = adapter.run_preflight(
+                    open_kaishek_root=root,
+                    jar_path=jar,
+                    require_origin_sync=True,
+                )
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(result["result"], "FAILED")
+            self.assertFalse(result["ok"])
+            self.assertEqual(result["reason"], "origin-sync-stale")
+            self.assertEqual(result["provenance"]["open_kaishek_head"], head)
+            self.assertEqual(result["provenance"]["open_kaishek_origin_main"], origin)
+            self.assertEqual(result["provenance"]["origin_sync_state"], "stale")
+            run.assert_not_called()
+
+    def test_opt_in_origin_sync_allows_matching_checkout_and_archives_refs(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            commit = "0123456789abcdef0123456789abcdef01234567"
+            root, jar = self._checkout_with_refs(
+                temporary, head=commit, origin_main=commit
+            )
+            cli_report = {
+                "schema": adapter.CLI_SCHEMA,
+                "status": "GREEN",
+                "profile_id": "ck3-1.19.0.6-zg361",
+                "fixture_id": "synthetic-361-014",
+                "provenance": {
+                    "ck3_started": "false",
+                    "save_mutated": "false",
+                    "network_used": "false",
+                },
+            }
+            completed = mock.Mock(
+                returncode=0, stdout=json.dumps(cli_report), stderr=""
+            )
+            with mock.patch.object(adapter.subprocess, "run", return_value=completed):
+                with mock.patch.object(adapter.shutil, "which", return_value="java.exe"):
+                    result = adapter.run_preflight(
+                        open_kaishek_root=root,
+                        jar_path=jar,
+                        require_origin_sync=True,
+                    )
+            self.assertEqual(result["status"], "green")
+            self.assertTrue(result["ok"])
+            self.assertEqual(result["provenance"]["open_kaishek_head"], commit)
+            self.assertEqual(result["provenance"]["open_kaishek_origin_main"], commit)
+            self.assertEqual(result["provenance"]["origin_sync_state"], "synced")
+            self.assertTrue(result["provenance"]["origin_sync_required"])
+
+    def test_origin_sync_environment_switch_is_explicit_and_missing_ref_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            commit = "0123456789abcdef0123456789abcdef01234567"
+            root, jar = self._checkout_with_refs(
+                temporary, head=commit, origin_main=None
+            )
+            with mock.patch.object(adapter.subprocess, "run") as run:
+                result = adapter.run_preflight(
+                    open_kaishek_root=root,
+                    jar_path=jar,
+                    env={"XAR_KAISHEK_REQUIRE_ORIGIN_SYNC": "1"},
+                )
+            self.assertEqual(result["reason"], "origin-sync-ref-missing")
+            self.assertEqual(
+                result["provenance"]["origin_sync_state"],
+                "origin-main-unavailable",
+            )
+            run.assert_not_called()
 
     def test_missing_checkout_is_not_applicable_and_is_archived(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -50,6 +50,11 @@ DEFAULT_FIXTURE = "synthetic-361-014"
 # parser/validator pass; callers can override it with
 # XAR_KAISHEK_PREFLIGHT_TIMEOUT_SECONDS.
 DEFAULT_TIMEOUT_SECONDS = 180.0
+# Freshness checking is deliberately opt-in.  Existing callers may use a
+# detached evidence checkout or an explicitly pinned local build; those
+# workflows must keep working while production acceptance can request that the
+# checked-out ``main`` is exactly the locally known ``origin/main`` ref.
+DEFAULT_REQUIRE_ORIGIN_SYNC = False
 
 _UNAVAILABLE = "not-applicable"
 _UNSUPPORTED = "unsupported"
@@ -142,6 +147,69 @@ def _git_commit(checkout: Path | None) -> str | None:
     return head if len(head) == 40 and all(c in "0123456789abcdef" for c in head) else None
 
 
+def _git_ref_commit(checkout: Path | None, ref: str) -> str | None:
+    """Read a commit ref from a normal checkout without invoking Git.
+
+    The adapter is intentionally usable when Git is not on ``PATH``.  Resolve
+    the remote-tracking ref from loose refs first and then ``packed-refs``;
+    symbolic ``HEAD`` continues to use :func:`_git_commit` so detached and
+    worktree checkouts retain their existing behavior.
+    """
+
+    if checkout is None:
+        return None
+    if ref in {"HEAD", "head"}:
+        return _git_commit(checkout)
+    git_dir = _git_dir(checkout)
+    if git_dir is None:
+        return None
+    normalized = ref.strip()
+    if normalized.startswith("refs/"):
+        relative = normalized
+    else:
+        relative = f"refs/{normalized}"
+    try:
+        value = (git_dir / relative).read_text(encoding="utf-8").strip()
+    except OSError:
+        value = ""
+    if not value:
+        packed = git_dir / "packed-refs"
+        try:
+            for line in packed.read_text(encoding="utf-8").splitlines():
+                if line and not line.startswith("#") and not line.startswith("^"):
+                    try:
+                        sha, name = line.split(" ", 1)
+                    except ValueError:
+                        continue
+                    if name.strip() == relative:
+                        value = sha.strip()
+                        break
+        except OSError:
+            value = ""
+    value = value.strip().lower()
+    return value if len(value) == 40 and all(c in "0123456789abcdef" for c in value) else None
+
+
+def _origin_sync_state(
+    checkout: Path | None,
+) -> tuple[str | None, str | None, str]:
+    """Return ``(HEAD, origin/main, state)`` for provenance and opt-in gating."""
+
+    head = _git_commit(checkout)
+    origin = _git_ref_commit(checkout, "refs/remotes/origin/main")
+    if checkout is None or not checkout.is_dir():
+        state = "checkout-unavailable"
+    elif head is None:
+        state = "head-unavailable"
+    elif origin is None:
+        state = "origin-main-unavailable"
+    elif head == origin:
+        state = "synced"
+    else:
+        state = "stale"
+    return head, origin, state
+
+
 def _sha256_file(path: Path | None) -> str | None:
     if path is None or not path.is_file():
         return None
@@ -175,6 +243,10 @@ def _base_result(
     commit: str | None,
     ck3_build: str | None,
     ck3_exe_sha256: str | None,
+    origin_sync_required: bool,
+    open_kaishek_head: str | None,
+    open_kaishek_origin_main: str | None,
+    origin_sync_state: str,
 ) -> dict[str, Any]:
     result_name = {
         _GREEN: "GREEN",
@@ -195,6 +267,10 @@ def _base_result(
         "corpus_root": str(corpus_root) if corpus_root is not None else None,
         "ck3_exact_build": ck3_build,
         "ck3_exe_sha256": ck3_exe_sha256,
+        "origin_sync_required": origin_sync_required,
+        "open_kaishek_head": open_kaishek_head,
+        "open_kaishek_origin_main": open_kaishek_origin_main,
+        "origin_sync_state": origin_sync_state,
         "command": list(command),
         "preflight_timeout_seconds": timeout_seconds,
         "python": sys.executable,
@@ -322,6 +398,7 @@ def run_preflight(
     ck3_exe_sha256: str | None = None,
     open_kaishek_release: str | None = None,
     open_kaishek_commit: str | None = None,
+    require_origin_sync: bool | None = None,
     env: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     """Run the optional ``open_kaishek preflight`` command.
@@ -331,6 +408,13 @@ def run_preflight(
     values have environment overrides so a CI job can point at a different
     checkout without editing the runner.  Missing optional dependencies return
     ``status == "not-applicable"`` (or ``failed`` when ``required=True``).
+
+    ``require_origin_sync`` is an explicit, opt-in freshness gate.  When true
+    (or when ``XAR_KAISHEK_REQUIRE_ORIGIN_SYNC=1`` is set), the adapter requires
+    the checkout's local ``HEAD`` to equal its already-fetched
+    ``refs/remotes/origin/main`` ref before invoking the CLI.  It never fetches
+    or mutates the checkout; callers that need a detached/pinned evidence tree
+    can leave the gate disabled.
     """
 
     environ = dict(os.environ)
@@ -406,12 +490,24 @@ def run_preflight(
         if required is not None
         else _env_bool(environ, "XAR_KAISHEK_PREFLIGHT_REQUIRED", False)
     )
+    origin_sync_required = (
+        require_origin_sync
+        if require_origin_sync is not None
+        else _env_bool(
+            environ,
+            "XAR_KAISHEK_REQUIRE_ORIGIN_SYNC",
+            _env_bool(environ, "OPEN_KAISHEK_REQUIRE_ORIGIN_SYNC", False),
+        )
+    )
     release = open_kaishek_release or _first_env(
         environ,
         "XAR_OPEN_KAISHEK_RELEASE",
         "OPEN_KAISHEK_RELEASE",
         "KAISHEK_RELEASE",
     ) or "unreleased"
+    open_kaishek_head, open_kaishek_origin_main, origin_sync_state = _origin_sync_state(
+        checkout
+    )
     commit_override = open_kaishek_commit or _first_env(
         environ,
         "XAR_OPEN_KAISHEK_COMMIT",
@@ -440,6 +536,10 @@ def run_preflight(
         commit=commit,
         ck3_build=ck3_build,
         ck3_exe_sha256=ck3_exe_sha256,
+        origin_sync_required=bool(origin_sync_required),
+        open_kaishek_head=open_kaishek_head,
+        open_kaishek_origin_main=open_kaishek_origin_main,
+        origin_sync_state=origin_sync_state,
     )
 
     if _env_bool(environ, "XAR_KAISHEK_PREFLIGHT_DISABLED", False):
@@ -459,6 +559,23 @@ def run_preflight(
             payload["ok"] = False
             payload["reason"] = "required-open_kaishek-root-missing"
         return _finish(payload, artifact_path=artifact)
+    if origin_sync_required:
+        if checkout is None or not checkout.is_dir():
+            payload["status"] = _FAILED
+            payload["result"] = "FAILED"
+            payload["ok"] = False
+            payload["reason"] = "origin-sync-checkout-missing"
+            return _finish(payload, artifact_path=artifact)
+        if origin_sync_state != "synced":
+            payload["status"] = _FAILED
+            payload["result"] = "FAILED"
+            payload["ok"] = False
+            payload["reason"] = {
+                "stale": "origin-sync-stale",
+                "origin-main-unavailable": "origin-sync-ref-missing",
+                "head-unavailable": "origin-sync-head-missing",
+            }.get(origin_sync_state, "origin-sync-unavailable")
+            return _finish(payload, artifact_path=artifact)
     if jar is None or not jar.is_file():
         payload["reason"] = "cli-jar-missing" if checkout.is_dir() else "open_kaishek-root-missing"
         if required_value:
@@ -604,6 +721,7 @@ __all__ = [
     "CLI_SCHEMA",
     "DEFAULT_FIXTURE",
     "DEFAULT_PROFILE",
+    "DEFAULT_REQUIRE_ORIGIN_SYNC",
     "DEFAULT_TIMEOUT_SECONDS",
     "run",
     "run_preflight",
