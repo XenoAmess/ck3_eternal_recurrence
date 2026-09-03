@@ -2086,7 +2086,15 @@ seal 后的下一事件才调用既有严格 `zg361_we_submit_m277_closed_pip_ex
 
 未来 core 应在 `receipt_published=1` 后才开放 #277 A/B/C。#277 A/B 的 operation receipt 成功后，必须在下一事件/帧调用 `consume_after_m277_effect`；它只观察而不修改：case-kernel receipt 的 choice 必须为 1/2，m277 business object 已创建且其 owner/subject/cycle/case/state/id/type 全吻合，object 已由 contract 277 消费并留有专用 consumer marker；legacy exit source 与 B2 source 已由 core 消费、`formal_hc_active=0`、occupied 恰减一、frozen 恰加一、m277 五字段与 immutable receipt 完全一致。随后它只把 detailed receipt 的 `consumed` 从 0 改为 1。B2 ACK 或 m277 记账字段本身不能冒充真实 operation。真实离任发生在 refill-policy 选择之前；route C 不会撤销既成离任，但必须让 exit/B2 source 保持未消费，且不得再次 revoke。typed RED 或 stale tuple 则不得启动 native exit、发布或消费。
 
-## 5. ABI 与 readiness
+## 5. 文件边界、aggregate parity 与 seed 选择
+
+为避免重新引入大单体加载边界，本生成器不再把 17 个 effect 写入一个文件，而是按用途生成六片：`arm_pending=1`、`arm_lifecycle=4`、`closed_pip_exit=4`、`native_callbacks=2`、`role_failure=3`、`m277_handoff=3`。九个 event 同样按用途生成三片：`arm=3`（9000/9001/9006）、`closed_pip_exit=4`（9002--9005）、`role_failure=2`（9007--9008）。当前每片均在 1--10 个定义内，未使用任何超过 20 个定义的例外。
+
+拆分只改变文件边界，不改变顶层定义本身。历史 effect aggregate 固定为 `85,587 bytes / SHA-256 a897659b49e3d221561233193e78566ed1f70a3ccdcbcb1b7736601ee70e2e73 / 17 definitions`；历史 event aggregate 固定为 `1,920 bytes / SHA-256 650e0db22e910b4abe05f66ce7cbb76d1e44929239b68cf4972d140548322c46 / 9 definitions`。生成与 L0 会把每个 shard 的定义重新映射回 aggregate，逐 block 比较字节，并拒绝缺失、重复、额外定义或 aggregate hash/bytes 漂移。旧 `common/scripted_effects/zg361_workforce_exit_fact_effects.txt` 与 `events/zg361_workforce_exit_fact_events.txt` 已退役；普通生成会删除这两个旧 owner，`--check` 则在它们或任何未声明的同前缀 shard 仍存在时返回 RED。
+
+Workforce seed 选择必须计算完整产品边，而不能只看 effect/event root 图。`{POSITION_KEY}` 自身引用 `on_native_slot_received` 与 `on_native_slot_ended`；后者还能进入 role-failure capture/publish/verify。因此 callback-aware 最小选择是 court-position 文件本身，加四个 effect shards（`arm_pending`、`arm_lifecycle`、`native_callbacks`、`role_failure`，合计 10 effects）与两个 event shards（`arm`、`role_failure`，合计 5 events）。只选择直接 arm 图看到的 5 effects/3 events 会漏掉原生岗位 callback，是不完整 closure。`closed_pip_exit` 与 `m277_handoff` 两组暂不属于这一 seed arm closure。
+
+## 6. ABI 与 readiness
 
 公开入口：
 

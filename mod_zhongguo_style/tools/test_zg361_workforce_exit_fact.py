@@ -917,6 +917,22 @@ class WorkforceExitFactTests(unittest.TestCase):
             "native 岗位结束不等于先释放 HC",
             "core-wired / static-ready / not live",
             "exact normal-exit authorization branch",
+            "arm_pending=1",
+            "arm_lifecycle=4",
+            "closed_pip_exit=4",
+            "native_callbacks=2",
+            "role_failure=3",
+            "m277_handoff=3",
+            "arm=3",
+            "role_failure=2",
+            gen.HISTORICAL_EFFECT_SHA256,
+            gen.HISTORICAL_EVENT_SHA256,
+            gen.LEGACY_EFFECT_FILENAME,
+            gen.LEGACY_EVENT_FILENAME,
+            "callback-aware 最小选择",
+            "合计 10 effects",
+            "合计 5 events",
+            "只选择直接 arm 图看到的 5 effects/3 events",
         ):
             self.assertIn(needle, self.spec)
 

@@ -2937,7 +2937,26 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 - 普通 count/baron 的 N/A-close seam 必须冻结 `terminal_na=1/reason=360361/owned_operations=38/skipped_manager_only=2/success=0`、`final_conservation_ok=1`、清 AL active 并写 closed=1/status=7；中央据此把 stage 11 记为 N/A。旧 runtime 若没有该 seam，中央仍以 `terminal_state=5` 外部阻点暂停：不调用无权限 ABI、不写 completed-cycle、不伪造 Workforce success，也不每两日永久重试。
 - 所有结论目前只是生成可复现、静态语法/结构测试证据；尚未经过 MCP-first CK3 paused snapshot、存读档或多轮实机验收。
 
-## 6. 测试口径
+## 6. 生成式 whole-file 分片权威
+
+- Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
+  `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1`，最大为 9。32 个顶层 effect block 与冻结聚合逐字节、
+  顺序和定义集合一致；冻结聚合为 126,811 bytes，SHA-256
+  `94D893631FCF1C6FDF25F19D536C99664112E6C16AC39BFC2D4EDC36C13B3CEB`。
+- Central event 已拆为两个各含 3 个定义的用途 shard：
+  `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
+  `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`。6 个 event block
+  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 12,440 bytes，SHA-256
+  `BFDC761091DA43D1950FFDD29EE727B3F049CD0A0A1F7DBCFDA5BE7511CD1859`。
+- 旧 `zg361_phase2_central_runtime_effects.txt` 与 `zg361_phase2_central_runtime_events.txt` 已退役；
+  生成器不再输出它们，`--check` 会拒绝旧单体或其他 stale shard。
+- exact seed whole-file 闭包只选择 M275 的
+  `zg361_phase2_central_002_m275_requisition_effects.txt`（2E）与
+  `zg361_phase2_central_002_m275_requisition_events.txt`（3V），即 `2E+3V`；不得连带载入 `.1`–`.3`
+  的通用 Central tickets 或其他 Central effects。分片包装头不属于旧聚合；上述 SHA/bytes 冻结的是生成器内
+  的历史聚合，而 block parity 保证每个实际业务定义未被改写。
+
+## 7. 测试口径
 
 `tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 proof 互斥、D+2 初始化、exact 3.25 wake、
 单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、#360 frozen-order 组合、

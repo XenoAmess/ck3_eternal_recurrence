@@ -6,6 +6,29 @@
 Workforce core 现通过公开 ABI 接线，不复制签署算法，也不允许 caller 提供 bps。简体中文与英文是本轮创作文案；法、德、
 日、韩、波、俄、西沿用英文占位，只保证可加载结构，不算发布翻译。
 
+## 当前生成布局与 seed 闭包
+
+生成器仍在内存中按原顺序保留冻结聚合，用于逐个顶层定义块的 byte-for-byte parity 校验；产品树只落盘用途分片：
+
+- effects 冻结聚合为 **96,536 bytes / 7 definitions**，SHA-256
+  `f541b448b84327147caab66d30c46c2090025fd4332366bdd5e13daf5cc023a4`：
+  - `common/scripted_effects/zg361_workforce_attribution_fact_signature_effects.txt`：4；
+  - `common/scripted_effects/zg361_workforce_attribution_fact_probation_publish_effects.txt`：2；
+  - `common/scripted_effects/zg361_workforce_attribution_fact_m269_debt_cancel_effects.txt`：1。
+- events 冻结聚合为 **6,116 bytes / 3 definitions**，SHA-256
+  `bd8215c385113f4f63a6fdf4adcc001804ae58a70ffb16b6a0f993cbaad4d60c`：
+  - `events/zg361_workforce_attribution_fact_signature_events.txt`：2；
+  - `events/zg361_workforce_attribution_fact_probation_publish_events.txt`：1。
+
+旧单体 `common/scripted_effects/zg361_workforce_attribution_fact_effects.txt` 与
+`events/zg361_workforce_attribution_fact_events.txt` 已退役，不再属于生成输出；`--check` 会拒绝它们以及同前缀的意外旧分片。
+三个 effect 分片分别为 4/2/1 个定义，均处于每文件 1–10 个的目标区间，无 `>10` 偏离或 `>20` 例外。
+
+seed 严格按完整 purpose shard 取精确并集：`signature_effects` + `m269_debt_cancel_effects`，即 **5/7 effects**；
+events 只取 `signature_events`，即 **2/3 events**。`probation_publish_effects` 的 2 个 effect 与
+`probation_publish_events` 的 1 个 event 属于后续 probation 交付，不被 seed 顺带拉入。以上是静态布局与闭包证据，
+不替代 CK3 loader 或 paused snapshot 实机证据。
+
 ## 1. 为什么不能再裸传 bps
 
 旧的 probation fact API 要求调用者给出 `ATTRIBUTION_BPS_2/3`，第一份再按 `10000-bps_2-bps_3` 推导。这只能验证算术

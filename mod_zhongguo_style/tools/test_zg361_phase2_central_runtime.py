@@ -311,6 +311,18 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertEqual((), generator.unexpected_effect_paths(generator.outputs()))
         self.assertEqual((), generator.unexpected_event_paths(generator.outputs()))
 
+    def test_generated_spec_records_the_whole_file_shard_authority(self) -> None:
+        self.assertIn("## 6. 生成式 whole-file 分片权威", self.spec)
+        self.assertIn("3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1", self.spec)
+        self.assertIn("最大为 9", self.spec)
+        self.assertIn(generator.HISTORICAL_EFFECT_SHA256, self.spec)
+        self.assertIn(generator.HISTORICAL_EVENT_SHA256, self.spec)
+        self.assertIn(generator.LEGACY_EFFECT_FILENAME, self.spec)
+        self.assertIn(generator.LEGACY_EVENT_FILENAME, self.spec)
+        self.assertIn(generator.EFFECT_GROUPS[1].filename, self.spec)
+        self.assertIn(generator.EVENT_GROUPS[1].filename, self.spec)
+        self.assertIn("`2E+3V`", self.spec)
+
     def test_generated_script_braces_and_event_namespace(self) -> None:
         assert_balanced(self, self.effects, "central effects")
         assert_balanced(self, self.triggers, "central triggers")
