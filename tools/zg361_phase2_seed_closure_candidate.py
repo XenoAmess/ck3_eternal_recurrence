@@ -620,9 +620,38 @@ def select_overlay(
         _mapping(expansion.get("expected_delta"), "expansion.expected_delta"),
         "expansion.expected_delta",
     )
-    manager_delta = sorted(name for name in delta_effects if name.startswith("zg361_mg_"))
-    if manager_delta:
-        raise SeedClosureError(f"Manager effects leaked into seed overlay: {manager_delta}")
+    manager_effects = sorted(
+        name for name in closure.effects if name.startswith("zg361_mg_")
+    )
+    manager_events = sorted(
+        name for name in closure.events if name.startswith("zg361mg.")
+    )
+    manager_triggers = sorted(
+        name for name in closure.triggers if name.startswith("zg361_mg_")
+    )
+    workforce_m360_effects = sorted(
+        name
+        for name in closure.effects
+        if name.startswith("zg361_we_") and "_m360_" in name
+    )
+    workforce_m360_event_ids = {"zg361we.360", "zg361we.4804", "zg361we.4904", "zg361we.6360"}
+    workforce_m360_events = sorted(set(closure.events) & workforce_m360_event_ids)
+    if any(
+        (
+            manager_effects,
+            manager_events,
+            manager_triggers,
+            workforce_m360_effects,
+            workforce_m360_events,
+        )
+    ):
+        raise SeedClosureError(
+            "Manager/Workforce-M360 leaked into the seed closure: "
+            f"manager_effects={manager_effects}, manager_events={manager_events}, "
+            f"manager_triggers={manager_triggers}, "
+            f"m360_effects={workforce_m360_effects}, "
+            f"m360_events={workforce_m360_events}"
+        )
     rows = [
         *_owner_rows(
             canonical_source,
@@ -689,7 +718,11 @@ def select_overlay(
         "full": _closure_counts(closure),
         "delta": delta_counts,
         "delta_localization_keys": sorted(delta_loc_keys),
-        "manager_effect_delta": manager_delta,
+        "manager_effects": manager_effects,
+        "manager_events": manager_events,
+        "manager_triggers": manager_triggers,
+        "workforce_m360_effects": workforce_m360_effects,
+        "workforce_m360_events": workforce_m360_events,
         "effect_names": sorted(delta_effects),
         "event_ids": sorted(delta_events),
         "court_position_names": sorted(delta_positions),
@@ -729,15 +762,20 @@ def validate_overlay_contract(
         "overlay.inventory_sha256",
         optional=True,
     )
-    expected_bytes = _integer(overlay.get("bytes"), "overlay.bytes")
+    expected_bytes_raw = overlay.get("bytes")
+    expected_bytes = (
+        None
+        if expected_bytes_raw is None
+        else _integer(expected_bytes_raw, "overlay.bytes")
+    )
     normalized = [dict(row) for row in observed]
     observed_inventory_sha = overlay_inventory_sha256(normalized)
     observed_bytes = sum(int(row["bytes"]) for row in normalized)
-    if observed_bytes != expected_bytes:
+    if expected_bytes is not None and observed_bytes != expected_bytes:
         raise SeedClosureError(
             f"overlay bytes drifted: {observed_bytes} != {expected_bytes}"
         )
-    if not frozen and expected_inventory_sha is None:
+    if not frozen and (expected_inventory_sha is None or expected_bytes is None):
         if not allow_unfrozen:
             raise SeedClosureError(
                 "overlay contract is not frozen; run --print-candidate-contract, "

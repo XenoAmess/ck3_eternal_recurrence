@@ -55,9 +55,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             fixture["ordered_root_effects"],
         )
         candidate = self.contract["candidate"]
-        self.assertEqual(240, candidate["expected_file_count"])
-        self.assertEqual(105, candidate["expected_overlay_file_count"])
-        self.assertEqual(63, candidate["expected_effect_files"])
+        self.assertEqual(243, candidate["expected_file_count"])
+        self.assertEqual(108, candidate["expected_overlay_file_count"])
+        self.assertEqual(66, candidate["expected_effect_files"])
         self.assertEqual(35, candidate["expected_event_files"])
         self.assertEqual(2, candidate["expected_court_position_files"])
         self.assertEqual(5, candidate["expected_localization_files"])
@@ -65,8 +65,8 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual(0, candidate["expected_effect_files_over_target"])
         self.assertEqual(0, candidate["expected_effect_files_over_hard_max"])
         self.assertEqual([], candidate["effect_boundary_exceptions"])
-        self.assertEqual(12_096_083, candidate["expected_bytes"])
-        self.assertEqual(2_937_641, self.contract["overlay"]["bytes"])
+        self.assertEqual(12_096_688, candidate["expected_bytes"])
+        self.assertEqual(2_938_246, self.contract["overlay"]["bytes"])
 
     def test_fixture_root_order_drift_is_rejected(self) -> None:
         altered = copy.deepcopy(self.contract)
@@ -156,13 +156,17 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             },
             selection["delta"],
         )
-        self.assertEqual([], selection["manager_effect_delta"])
-        self.assertEqual(105, len(rows))
+        self.assertEqual([], selection["manager_effects"])
+        self.assertEqual([], selection["manager_events"])
+        self.assertEqual([], selection["manager_triggers"])
+        self.assertEqual([], selection["workforce_m360_effects"])
+        self.assertEqual([], selection["workforce_m360_events"])
+        self.assertEqual(108, len(rows))
         by_kind = {
             kind: [row for row in rows if row["kind"] == kind]
             for kind in ("effect", "event", "court_position", "localization")
         }
-        self.assertEqual(63, len(by_kind["effect"]))
+        self.assertEqual(66, len(by_kind["effect"]))
         self.assertEqual(35, len(by_kind["event"]))
         self.assertEqual(2, len(by_kind["court_position"]))
         self.assertEqual(5, len(by_kind["localization"]))
@@ -170,6 +174,24 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual(142, sum(row["definitions"] for row in by_kind["event"]))
         self.assertEqual(28, sum(row["definitions"] for row in by_kind["localization"]))
         self.assertEqual(10, max(row["definitions"] for row in by_kind["effect"]))
+        by_path = {row["path"]: row for row in rows}
+        split_paths = {
+            "common/scripted_effects/zg361_workforce_endgame_048a_ac_m264_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_048b_ac_m265_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_050a_ad_m271_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_050b_ad_m267_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_053a_ad_m274_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_053b_ad_m275_effects.txt",
+        }
+        retired_paths = {
+            "common/scripted_effects/zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
+            "common/scripted_effects/zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
+        }
+        self.assertTrue(split_paths <= set(by_path))
+        self.assertTrue(all(by_path[path]["definitions"] == 4 for path in split_paths))
+        self.assertTrue(retired_paths.isdisjoint(by_path))
+        self.assertTrue(retired_paths <= set(self.contract["forbidden_paths"]))
         overlay = closure.validate_overlay_contract(
             rows, self.contract, allow_unfrozen=False
         )
@@ -214,7 +236,7 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         ]
         altered = copy.deepcopy(self.contract)
         altered["overlay"] = {
-            "bytes": 12,
+            "bytes": None,
             "inventory_sha256": None,
             "files": [],
         }
@@ -224,6 +246,7 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual("PENDING_FREEZE", pending["status"])
         with self.assertRaisesRegex(closure.SeedClosureError, "not frozen"):
             closure.validate_overlay_contract(observed, altered, allow_unfrozen=False)
+        altered["overlay"]["bytes"] = 12
         altered["overlay"]["inventory_sha256"] = closure.overlay_inventory_sha256(
             observed
         )
@@ -341,9 +364,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             )
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
-            self.assertEqual(240, result["candidate"]["expected_file_count"])
-            self.assertEqual(12_096_083, result["candidate"]["expected_bytes"])
-            self.assertEqual(105, result["overlay"]["file_count"])
+            self.assertEqual(243, result["candidate"]["expected_file_count"])
+            self.assertEqual(12_096_688, result["candidate"]["expected_bytes"])
+            self.assertEqual(108, result["overlay"]["file_count"])
             selection = result["checks"]["selection"]
             self.assertEqual(397, selection["full"]["effects"])
             self.assertEqual(164, selection["full"]["events"])

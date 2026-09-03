@@ -10,7 +10,7 @@
 - `tools/test_zg361_workforce_endgame_runtime.py`
 - `tools/zg361_phase3_workforce_endgame_model.py`
 - `tools/test_zg361_phase3_workforce_endgame_model.py`
-- `common/scripted_effects/zg361_workforce_endgame_*_effects.txt`（83 个按用途分片）
+- `common/scripted_effects/zg361_workforce_endgame_*_effects.txt`（86 个按用途分片）
 - `events/zg361_workforce_endgame_event_*_events.txt`（39 个按用途分片）
 - `localization/*/zg361_workforce_endgame_l_*.yml`
 - `docs/361-workforce-external-producer-ledger-2026-08-31.md`（旧现场 303 项 loader 告警责任与消债账本）
@@ -47,7 +47,7 @@ charter version）、object id、五元身份、consumer callable、资源账与
 变量、未消费对象及前序 C debt 都不能冒充业务前置。缺业务前置时 A/B 在 receipt 前 typed RED，C 仍只登记本项 debt。
 
 中央、B1、Manager/Governance 与 Workforce 之间现已有静态生成的 #360 调用链，但当前没有中央 `on_action`、
-decision、interaction、GUI 或 scoreboard 业务接线；没有 CK3 parser/error.log；没有 paused snapshot；没有 Workforce/跨周期
+decision、interaction、GUI 或 scoreboard 业务接线；没有通过的 CK3 loader/paused snapshot；没有 Workforce/跨周期
 MCP query 或考核榜 typed action（固定四实例/current-player ACL 的只读 query 已存在但尚未 live）；
 没有 CK3 实机事件点击、存读档或 Steam build 证据。因此
 不得写成 fixture-live、production-live primitive、production-live loop 或 complete。
@@ -62,11 +62,11 @@ MCP query 或考核榜 typed action（固定四实例/current-player ACL 的只�
 它只作为历史语义基线保留，生成结果不得与新的用途分片共存；正常生成会删除旧单体，`--check` 发现旧单体则
 必须报错。
 
-当前生成器把这 324 个 effect 投影为 83 个用途分片：每个历史顶层 block 逐字节相同，全集 324/324，无遗漏、
-无新增、无重复；按冻结 source rank 重排所有分片后可逐 block、逐字节复原历史全集。83 片合计 `4,637,324 B`，
+当前生成器把这 324 个 effect 投影为 86 个用途分片：每个历史顶层 block 逐字节相同，全集 324/324，无遗漏、
+无新增、无重复；按冻结 source rank 重排所有分片后可逐 block、逐字节复原历史全集。86 片合计 `4,637,929 B`，
 单片最小 `511 B`、最大 `478,588 B`。所有文件均为 1–10 个
 effect，effect 数量分布为
-`{1:25, 2:12, 3:7, 4:10, 5:1, 6:7, 7:3, 8:17, 10:1}`，当前 over-10、over-20 和 hard-limit
+`{1:25, 2:12, 3:7, 4:16, 5:1, 6:7, 7:3, 8:14, 10:1}`，当前 over-10、over-20 和 hard-limit
 exception 均为空。
 以后如确需超过 20，必须在生成器合同与本文同时记录不可避免的理由和对应 CK3 实机证据，不能只凭静态测试放行。
 B2 权威 40-effect 闭包现在恰好是其中 16 个**完整分片**的精确并集：覆盖 40/40，extra=0、missing=0，
@@ -79,9 +79,25 @@ B2 权威 40-effect 闭包现在恰好是其中 16 个**完整分片**的精确�
 | 024a–024d | 4 | 放弃资源释放、Manager collective 清理与通用 portfolio finalize 各自独立 |
 | 025–035（含字母后缀） | 19 | 四域 control、dispatcher 与 deadline/timeout；AB/AC/AD lifecycle 与 subject-read 分开，AL stage 04/05 分开 |
 | 036–041 | 6 | AB #242–#253 机制 |
-| 042–048 | 7 | AC #254–#265 机制 |
-| 049–055 | 7 | AD #266–#277 机制 |
+| 042–048（048 含字母后缀） | 8 | AC #254–#265 机制；M264 与 M265 各自独立 |
+| 049–055（050/053 含字母后缀） | 9 | AD #266–#277 机制；M271/M267 与 M274/M275 各自独立 |
 | 056–061 | 6 | AL #355/#356/#360/#361 机制 |
+
+2026-09-04 的 exact 候选
+`_runtime/phase2-seed-entry-production-closure-20260904-r1-live/product`（240 files / `12,096,083 B`）
+在 `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-seed-entry-x-full-entry-20260904-r1` 留下加载性能 RED：
+`03:33:31` exact mount、`03:33:49` GUI、`03:34:59` events/on_action `Total 880`，material error 为 0；
+`303.344 s` 超时截图仍停在“启动游戏中……”，cleanup 为 true。该证据只触发第一轮受控文件边界 A/B，不能证明
+文件体量是唯一根因，也不能预先把拆分后的变体写成 GREEN。
+
+本轮只把该候选新引入且体量最大的三个双机制 effect 文件拆成六个单机制文件；24 个顶层 block 的内容及
+source 顺序逐字节不变，变化仅为文件边界和新增的三个生成头（全族合计增加 `605 B`）：
+
+| 退役双机制文件 | 新单机制文件（bytes / effects / SHA-256） |
+|---|---|
+| `048_ac_m264_m265`（`139,834 B`） | `048a_ac_m264`（`72,192 / 4 / 03DA971ABD16F3EC2CC2C0CFC6FD050D31FE0DB3254531E1AA3AF59E13EC8057`）；`048b_ac_m265`（`67,845 / 4 / F761C6EAB20BCE75E35E7BBC2DB610187187412021808D1CEBAB07D11C0215EC`） |
+| `050_ad_m271_m267`（`169,907 B`） | `050a_ad_m271`（`62,896 / 4 / A622B09795972E8335C1EDCEE532CC3B4F9A6294553E3C1091FD594D900D17CA`）；`050b_ad_m267`（`107,210 / 4 / DC83AE374EEA9943D2BF1E512C3CB25503734E19639F8DCBB12ED8E73B5B509D`） |
+| `053_ad_m274_m275`（`155,825 B`） | `053a_ad_m274`（`69,827 / 4 / 3266D7B95569E9D51CD108B2AE9A58D0EFABACB53298B481EA6D9203A677B4B7`）；`053b_ad_m275`（`86,201 / 4 / BF2F55180F5B9B7D2FDCEA2FA221A45B10854552D7E3BB86BFB9DE1280B8E735`） |
 
 最大分片是
 `zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt`，`478,588 B`，但其中只有一个
@@ -91,7 +107,7 @@ byte-identity 迁移误写成已经解决加载性能。
 
 用途分片 manifest 按文件名排序，每行严格为
 `filename<TAB>bytes<TAB>effect_count<TAB>uppercase_sha256<LF>`；当前 manifest SHA-256 为
-`44D740673F4E841639634059CA384F40DAADA0961F1311603A0F6A31428978FC`。本节只把分片实现提升为
+`A1605777812415E9AD6265E2A8028677F0DDFB4F757FEBE32C31809328282FBE`。本节只把分片实现提升为
 static-ready；尚无新 CK3 loader、paused snapshot 或完整业务路径证据，整体 readiness 仍是
 `ck3-script-static-ready-not-live`，不得据此写成任何 live 等级。
 
@@ -118,7 +134,8 @@ Workforce event 恰好是 7 个**完整分片**的精确并集，extra=0、missi
 
 ### Mixed owner 退役与 seed 完整分片边界
 
-除 effect/event 历史单体外，以下 7 个 effect mixed owner 与 4 个 event mixed owner 已退役；正常生成会删除，
+除 effect/event 历史单体外，以下 7 个 effect mixed owner、3 个受控 A/B 前的双机制 effect 路径与 4 个
+event mixed owner 已退役；正常生成会删除，
 `--check` 只要发现任一路径仍存在就必须 RED：
 
 ```text
@@ -129,6 +146,9 @@ common/scripted_effects/zg361_workforce_endgame_025_ab_control_effects.txt
 common/scripted_effects/zg361_workforce_endgame_028_ac_control_effects.txt
 common/scripted_effects/zg361_workforce_endgame_031_ad_control_effects.txt
 common/scripted_effects/zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt
+common/scripted_effects/zg361_workforce_endgame_048_ac_m264_m265_effects.txt
+common/scripted_effects/zg361_workforce_endgame_050_ad_m271_m267_effects.txt
+common/scripted_effects/zg361_workforce_endgame_053_ad_m274_m275_effects.txt
 events/zg361_workforce_endgame_event_011_al_collective_charter_events.txt
 events/zg361_workforce_endgame_event_021_al_deadline_stage04_05_events.txt
 events/zg361_workforce_endgame_event_027_m269_attribution_events.txt
@@ -148,10 +168,9 @@ Manager 子系统的 `zg361_mg_*` / `zg361mg.*` effect/event 定义保持为零�
 event 分片 manifest 按文件名排序，每行严格为
 `filename<TAB>bytes<TAB>event_count<TAB>uppercase_sha256<LF>`；当前 manifest SHA-256 为
 `4D313E286819E5A018739B0AD7FE433955C3EF38F88E293AF9FFC5121E0BB6E0`。生成器 `--check` 当前覆盖
-131 个输出；Workforce 主测试 118/118、B2 closure builder 测试 10/10、release tests 9/9、
-`validate_local.py` 与 diff/BOM 检查均 GREEN。可复现 release `--check` 为 484 files，manifest
-SHA-256 `11632C77BE8833ECCBBBDB6363FC2DE2FB0370234EDE1E5996BF1AA78C666ED3`、ZIP SHA-256
-`A48E3F1A6D13F8E43087D5595C734A6C6BB9A35A8CCA6BB146B843FF208EC04F`。这些仍是静态/发布树证据；本节没有新增
+134 个输出；Workforce 主测试 119/119 与生成器 `--check` 均 GREEN。可复现 release `--check` 为 487 files，manifest
+SHA-256 `8743A9F5F272D5C400D8CF3E661A45286B0CD49095BC5E870F6F26284996FCDE`、ZIP SHA-256
+`A26714BD52F4F9BDD54568782862509859B7DEF848DDF9317D6939DA5ACA8814`。这些仍是静态/发布树证据；本节没有新增
 CK3 loader 或业务实机证据，readiness 仍为 `ck3-script-static-ready-not-live`。
 
 ## 2. 五元身份、原子顺序与状态码

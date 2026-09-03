@@ -176,7 +176,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             f"events/{group.filename}"
             for group in gen.EVENT_GROUPS
         }
-        self.assertEqual(131, len(outputs))
+        self.assertEqual(134, len(outputs))
         self.assertEqual(
             expected_effects,
             {path for path in outputs if path.startswith("common/scripted_effects/")},
@@ -236,7 +236,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(source_blocks, reconstructed)
 
     def test_04c_effect_parts_obey_purpose_boundaries(self) -> None:
-        self.assertEqual(83, len(gen.EFFECT_GROUPS))
+        self.assertEqual(86, len(gen.EFFECT_GROUPS))
         self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
         for group, path in zip(gen.EFFECT_GROUPS, EFFECT_PATHS, strict=True):
             with self.subTest(path=path.name):
@@ -396,6 +396,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 "zg361_workforce_endgame_028_ac_control_effects.txt",
                 "zg361_workforce_endgame_031_ad_control_effects.txt",
                 "zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt",
+                "zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
+                "zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
+                "zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
             },
         )
         self.assertEqual(
@@ -406,6 +409,43 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 "zg361_workforce_endgame_event_027_m269_attribution_events.txt",
                 "zg361_workforce_endgame_event_035_al_collective_charter_debt_events.txt",
             },
+        )
+
+    def test_04d3_live_red_boundary_ab_splits_large_mechanism_pairs(self) -> None:
+        groups = {group.filename: group.effect_names for group in gen.EFFECT_GROUPS}
+        expected = {
+            "zg361_workforce_endgame_048a_ac_m264_effects.txt": gen._mechanism_effect_names(264),
+            "zg361_workforce_endgame_048b_ac_m265_effects.txt": gen._mechanism_effect_names(265),
+            "zg361_workforce_endgame_050a_ad_m271_effects.txt": gen._mechanism_effect_names(271),
+            "zg361_workforce_endgame_050b_ad_m267_effects.txt": gen._mechanism_effect_names(267),
+            "zg361_workforce_endgame_053a_ad_m274_effects.txt": gen._mechanism_effect_names(274),
+            "zg361_workforce_endgame_053b_ad_m275_effects.txt": gen._mechanism_effect_names(275),
+        }
+        for filename, names in expected.items():
+            with self.subTest(filename=filename):
+                self.assertEqual(4, len(names))
+                self.assertEqual(names, groups[filename])
+        self.assertEqual(
+            gen._mechanism_effect_names(264, 265),
+            groups["zg361_workforce_endgame_048a_ac_m264_effects.txt"]
+            + groups["zg361_workforce_endgame_048b_ac_m265_effects.txt"],
+        )
+        self.assertEqual(
+            gen._mechanism_effect_names(271, 267),
+            groups["zg361_workforce_endgame_050a_ad_m271_effects.txt"]
+            + groups["zg361_workforce_endgame_050b_ad_m267_effects.txt"],
+        )
+        self.assertEqual(
+            gen._mechanism_effect_names(274, 275),
+            groups["zg361_workforce_endgame_053a_ad_m274_effects.txt"]
+            + groups["zg361_workforce_endgame_053b_ad_m275_effects.txt"],
+        )
+        self.assertTrue(
+            {
+                "zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
+                "zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
+                "zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
+            }.issubset(gen.RETIRED_EFFECT_FILENAMES)
         )
 
     def test_04f_b2_workforce_closure_is_exact_whole_shard_union(self) -> None:
@@ -496,7 +536,7 @@ second_effect = { value = 2 }
             check=False,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("GREEN: 131", result.stdout)
+        self.assertIn("GREEN: 134", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
         paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]
@@ -1497,12 +1537,14 @@ second_effect = { value = 2 }
         for phrase in (
             "CK3 script static-ready",
             "没有中央 `on_action`",
-            "没有 CK3 parser/error.log",
+            "没有通过的 CK3 loader/paused snapshot",
             "paused snapshot",
             "没有 Workforce/跨周期",
             "考核榜 typed action",
             "357–359",
             "其余七语是英文结构占位",
+            "phase2-seed-entry-x-full-entry-20260904-r1",
+            "不能证明",
         ):
             self.assertIn(phrase, self.spec_text)
 

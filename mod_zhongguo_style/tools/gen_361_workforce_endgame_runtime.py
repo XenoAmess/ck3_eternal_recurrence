@@ -45,6 +45,9 @@ RETIRED_EFFECT_FILENAMES = (
     "zg361_workforce_endgame_028_ac_control_effects.txt",
     "zg361_workforce_endgame_031_ad_control_effects.txt",
     "zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt",
+    "zg361_workforce_endgame_048_ac_m264_m265_effects.txt",
+    "zg361_workforce_endgame_050_ad_m271_m267_effects.txt",
+    "zg361_workforce_endgame_053_ad_m274_m275_effects.txt",
 )
 RETIRED_EFFECT_PATHS = tuple(
     MOD_ROOT / "common" / "scripted_effects" / filename
@@ -7892,12 +7895,15 @@ EFFECT_GROUPS = (
     EffectGroup("zg361_workforce_endgame_045_ac_m259_effects.txt", "AC mechanism M259", _mechanism_effect_names(259)),
     EffectGroup("zg361_workforce_endgame_046_ac_m257_m262_effects.txt", "AC mechanisms M257 and M262", _mechanism_effect_names(257, 262)),
     EffectGroup("zg361_workforce_endgame_047_ac_m263_effects.txt", "AC mechanism M263", _mechanism_effect_names(263)),
-    EffectGroup("zg361_workforce_endgame_048_ac_m264_m265_effects.txt", "AC mechanisms M264-M265", _mechanism_effect_names(264, 265)),
+    EffectGroup("zg361_workforce_endgame_048a_ac_m264_effects.txt", "AC mechanism M264", _mechanism_effect_names(264)),
+    EffectGroup("zg361_workforce_endgame_048b_ac_m265_effects.txt", "AC mechanism M265", _mechanism_effect_names(265)),
     EffectGroup("zg361_workforce_endgame_049_ad_m266_m273_effects.txt", "AD mechanisms M266 and M273", _mechanism_effect_names(266, 273)),
-    EffectGroup("zg361_workforce_endgame_050_ad_m271_m267_effects.txt", "AD mechanisms M271 and M267", _mechanism_effect_names(271, 267)),
+    EffectGroup("zg361_workforce_endgame_050a_ad_m271_effects.txt", "AD mechanism M271", _mechanism_effect_names(271)),
+    EffectGroup("zg361_workforce_endgame_050b_ad_m267_effects.txt", "AD mechanism M267", _mechanism_effect_names(267)),
     EffectGroup("zg361_workforce_endgame_051_ad_m268_m270_effects.txt", "AD mechanisms M268 and M270", _mechanism_effect_names(268, 270)),
     EffectGroup("zg361_workforce_endgame_052_ad_m272_effects.txt", "AD mechanism M272", _mechanism_effect_names(272)),
-    EffectGroup("zg361_workforce_endgame_053_ad_m274_m275_effects.txt", "AD mechanisms M274-M275", _mechanism_effect_names(274, 275)),
+    EffectGroup("zg361_workforce_endgame_053a_ad_m274_effects.txt", "AD mechanism M274", _mechanism_effect_names(274)),
+    EffectGroup("zg361_workforce_endgame_053b_ad_m275_effects.txt", "AD mechanism M275", _mechanism_effect_names(275)),
     EffectGroup("zg361_workforce_endgame_054_ad_m269_effects.txt", "AD mechanism M269", _mechanism_effect_names(269)),
     EffectGroup("zg361_workforce_endgame_055_ad_m276_m277_effects.txt", "AD mechanisms M276-M277", _mechanism_effect_names(276, 277)),
     EffectGroup("zg361_workforce_endgame_056_al_m355_m356_effects.txt", "AL mechanisms M355-M356", _mechanism_effect_names(355, 356)),
