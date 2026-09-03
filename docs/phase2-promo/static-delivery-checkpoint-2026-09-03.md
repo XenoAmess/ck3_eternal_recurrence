@@ -49,6 +49,14 @@ tools/test_zhongguo_phase2_promo_runner_plumbing.py
 为验证“更新到远端主线”后的工具本身没有回归，又以该 fresh checkout 的 `src` 作为
 `PYTHONPATH` 执行其完整测试集：`261 passed, 2 skipped, 160 subtests passed`。跳过项是工具仓库明确标记的可选环境测试；没有启动 CK3 或写入媒体。
 
+使用真实 fresh checkout 再执行一次双 cut planner（没有 capture 目录）也得到预期的
+`RED [footage_pending]`，没有误生成候选媒体：
+
+- 人物版 runbook：`Z:\ck3_mod_rewrite\_runtime\phase2-static-checkpoint-20260903-0928\character-runbook.json`，SHA-256 `FACEE6CBFC6C59A21C6ADC8935F6CB97FE330DC8A5A91C606951EBA65064C687`；
+- 制度群像版 runbook：`Z:\ck3_mod_rewrite\_runtime\phase2-static-checkpoint-20260903-0928\institution-runbook.json`，SHA-256 `577424DB041C3707E64BB83D0224EF433F58A236702615E700044FF711D5EB5E`。
+
+该结果证明当前门禁会在素材缺失时安全停在正确状态；它不是故障，也不是成片回执。
+
 ## 尚未修好的部分
 
 两条正式片（人物版、制度群像版）仍各为 `footage 0/8`，目标 MP4 不存在。CK3 启动/采集边界仍需在稳定桌面会话取得八段真实 clean spans；本检查点没有尝试再次启动 CK3，也没有把旧 fixture 升格为二期素材。
