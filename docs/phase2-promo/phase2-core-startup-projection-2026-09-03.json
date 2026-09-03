@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_core_startup_projection",
+  "status": "formal_frontend_green_core_projection",
+  "purpose": "Machine-readable 51-file projection used by the 2026-09-03 CK3 startup recovery bisect. This is a controlled startup/bisect input, not a release or workshop manifest.",
+  "observed_at": "2026-09-03T11:48:45+08:00",
+  "projection_contract": {
+    "projection_name": "release-runtime-allowlist-equivalent",
+    "path_format": "POSIX relative paths",
+    "exact_file_count": 51,
+    "exact_payload_bytes": 7137587,
+    "baseline_tree_sha256": "ddac4703d99b7e498e276c37c685af28b2006ad73f4124f9cd77e745aa14a693",
+    "formal_overlay_tree_sha256": "84e36658728e57b43005300c6e51e398edb6420e3c43dd2f42762c491bc9e36a",
+    "file_list_sha256": "d05e00e28d2881361496c43bcac760e9052777952391a86339b5062967e9696b",
+    "tree_hash_algorithms": {
+      "formal_overlay_tree_sha256": "sha256(canonical-json(sorted list of {path,bytes,sha256})) as emitted by ck3_formal_phase2_settings_save_ab.product_tree",
+      "bootstrap_snapshot_tree_sha256": "sha256(canonical-json(sorted path -> {size,sha256} map)) as emitted by bootstrap.tree_sha256"
+    },
+    "includes": [
+      "descriptor.mod",
+      "thumbnail.png"
+    ],
+    "excludes": [
+      "tools/",
+      "docs/",
+      "promo/",
+      "images/",
+      "all files not listed here"
+    ]
+  },
+  "provenance": {
+    "formal_currentbridge_run": {
+      "run_id": "formal-phase2-legacy51-currentbridge-20260903",
+      "report_path": "Z:/ck3_mod_rewrite/_runtime/formal-phase2-legacy51-currentbridge-20260903/report.json",
+      "product_overlay_path": "Z:/ck3_mod_rewrite/_runtime/formal-phase2-legacy51-currentbridge-20260903/profile/mod-content/zhongguo_361",
+      "product_tree_sha256": "84e36658728e57b43005300c6e51e398edb6420e3c43dd2f42762c491bc9e36a",
+      "bootstrap_snapshot_tree_sha256": "ddac4703d99b7e498e276c37c685af28b2006ad73f4124f9cd77e745aa14a693",
+      "file_count": 51,
+      "payload_bytes": 7137587,
+      "result": "frontend",
+      "frontend_observed_at": "2026-09-03T03:50:04.024217+00:00",
+      "launch_call_started_at": "2026-09-03T03:49:12.778681+00:00",
+      "startup_seconds_to_frontend": 51.245536,
+      "bridge_mode": "native",
+      "bridge_dll_sha256": "1FBA822831F52D161FD4EEF6A657E48FA11AF98B9CAA706C236C5F41FF184E96",
+      "injector_sha256": "5891D5B2A80A39939D47A056EACDB147BA3F10B599CE2174ECB374321DE72411",
+      "ck3_exit_code": 0,
+      "cleanup_proven": true,
+      "gameplay_actions": [],
+      "purchase_or_store_actions": []
+    },
+    "historical_green_run": {
+      "run_id": "zga_20260830_191131_7e82d061",
+      "report_path": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061/cell/report.json",
+      "bisect_copy_path": "Z:/ck3_mod_rewrite/_runtime/phase2-bisect-source-legacy51-20260903/mod_zhongguo_style",
+      "source_commit": "fa5c78dd4b524037d8b113d0498328437085825c",
+      "result": "GREEN",
+      "frontend_observed": true,
+      "startup_seconds": 51.726461,
+      "ck3_exit_code": 0,
+      "cleanup_proven": true,
+      "game_version": "1.19.0.6",
+      "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "reconstruction_note": "The formal currentbridge overlay is the byte-authoritative baseline for this manifest. The historical source commit identifies lineage only; it is not accepted as a byte substitute. Seven non-English base localization blobs in the captured overlay differ from the raw Git checkout and must be hash-checked from the overlay."
+  },
+  "current_canonical_comparison": {
+    "source_root": "mod_zhongguo_style",
+    "projection_method": "tools/build_release.py::release_entries (rendered production bytes)",
+    "current_file_count": 279,
+    "current_payload_bytes": 29351046,
+    "expected_paths_present": 51,
+    "same_bytes": 30,
+    "changed_bytes": 21,
+    "missing_paths": 0,
+    "extra_file_count": 228,
+    "extra_payload_bytes": 15612722,
+    "extra_files_by_top_level": {
+      "common": 28,
+      "events": 20,
+      "localization": 180
+    },
+    "changed_files": [
+      {
+        "path": "common/activities/activity_types/zg361_jingcha.txt",
+        "baseline_bytes": 4745,
+        "baseline_sha256": "222c487dc1d759076560ff8f11423c428e113ee52d8bc27ca0f36fbca64a5b95",
+        "current_bytes": 4711,
+        "current_sha256": "c1957c857a56c85561d6d902f1c79b294337aba74119d1273ddf8721696a7ad4"
+      },
+      {
+        "path": "common/character_interactions/zg361_interactions.txt",
+        "baseline_bytes": 6664,
+        "baseline_sha256": "d578bbead4ad5fb38fbea2628494b928675967edd0e14e74c415adbda9b0fa85",
+        "current_bytes": 6212,
+        "current_sha256": "1c1f0494e91edd661c46d03c53d70b6c82143f652fb566a8afefd69301053e30"
+      },
+      {
+        "path": "common/script_values/zg361_values.txt",
+        "baseline_bytes": 11014,
+        "baseline_sha256": "54ae1e7480399abd9908941f02aaf27dfd2ee300bacc039e60a201ccbbab5917",
+        "current_bytes": 12071,
+        "current_sha256": "f9fe148fa3aad706242b7681d60472b3cf5443f33f637c132bf4cd79c48541f5"
+      },
+      {
+        "path": "common/scripted_effects/zg361_effects.txt",
+        "baseline_bytes": 50219,
+        "baseline_sha256": "5cb03f9c75d9a31c889d246516a21e20b89cbd33fe8666fdea7ff634d7092342",
+        "current_bytes": 63804,
+        "current_sha256": "def1db5fdce8d310a2abba35bf9864bcfd5f2664474322356d30483c74acf3e4"
+      },
+      {
+        "path": "common/scripted_effects/zg361_generated_scoreboard_snapshots.txt",
+        "baseline_bytes": 480700,
+        "baseline_sha256": "4ff14d5a561a9edf4be0ef5bce9e8c439d15673143c0afb20a5109e79c7f5667",
+        "current_bytes": 5417763,
+        "current_sha256": "210184f67f625ef2e320ebbc582440cb28ce097138dd0a856c68f4203db0b49a"
+      },
+      {
+        "path": "common/scripted_effects/zg361_jingcha_mandate_effects.txt",
+        "baseline_bytes": 5027,
+        "baseline_sha256": "0e71920734b0ee5b4db1d26193f55d1d0a7445e8e4f7b7926dd1628c29a80efd",
+        "current_bytes": 5181,
+        "current_sha256": "31899fad9e5f9a7bcbb95a4c2d4047bb0bb4aa3d0f30af8cc099876fd394d09d"
+      },
+      {
+        "path": "common/scripted_guis/zg361_generated_scoreboard_slots.txt",
+        "baseline_bytes": 76973,
+        "baseline_sha256": "d41619c148ac710a023358fa5c4cf690f3e5cf58ac1c93770fc6e507c8e2077f",
+        "current_bytes": 1463854,
+        "current_sha256": "7322133cbff6e59001e46fc1fa307343909ef717b7daf4a10f4ab3fb5d8fc8f4"
+      },
+      {
+        "path": "common/scripted_guis/zg361_scoreboard_guis.txt",
+        "baseline_bytes": 1722,
+        "baseline_sha256": "d1ac97d5d5a0c4e7fb4afb07b659d172bbeb3ff5cd960efa9ffc8caf3ffdf494",
+        "current_bytes": 1725,
+        "current_sha256": "8a18c6f39805b46131f32310fe1beacf40ef9cc28e8509ea1ad2683ed3a687a5"
+      },
+      {
+        "path": "common/scripted_triggers/zg361_triggers.txt",
+        "baseline_bytes": 3131,
+        "baseline_sha256": "4b021422405c5ee3aa0ceae8988a02be6bb9b4c8f733db8128508425e64f550e",
+        "current_bytes": 4497,
+        "current_sha256": "311c19626a50fa1c615787d448b88dc7b021b17b8238886c74c62dec87d25d9c"
+      },
+      {
+        "path": "events/zg361_events.txt",
+        "baseline_bytes": 18150,
+        "baseline_sha256": "e46f9f308ee0cf805bb806cd300bd032ebcd558c65719f51a1921cf25e830dd1",
+        "current_bytes": 21776,
+        "current_sha256": "145adbdf5c593e0953cd6dade1176f7b3ab105464fae9e2b5ee35deef101c823"
+      },
+      {
+        "path": "events/zg361_jingcha_events.txt",
+        "baseline_bytes": 1954,
+        "baseline_sha256": "ecbadbcb0eb9c2750121c4b6feddfe186468e0c49be608bd4aea95913b67a383",
+        "current_bytes": 1963,
+        "current_sha256": "d6cfd9a8308e1a6e39777e64585a323b3ccda7c30737be5184f9f1936a2cfdca"
+      },
+      {
+        "path": "gui/zg361_scoreboard.gui",
+        "baseline_bytes": 704330,
+        "baseline_sha256": "decb98240a4fe328e2a5fb18606713c88760a13343d337312a62a7667c1bdb5c",
+        "current_bytes": 954650,
+        "current_sha256": "e826595484ee582594d107f264abc0ec2e37fcf163346f9fedb3ceabcd1324e3"
+      },
+      {
+        "path": "localization/english/zg361_l_english.yml",
+        "baseline_bytes": 20767,
+        "baseline_sha256": "552aa867fef705ee5d6f9797e3cb8d94ca06f826cebd5cb4dc402cd9383e501b",
+        "current_bytes": 24160,
+        "current_sha256": "eb241578da17484f34394a5259687b62e91c61868a784aa0415d04d76662a959"
+      },
+      {
+        "path": "localization/french/zg361_l_french.yml",
+        "baseline_bytes": 23460,
+        "baseline_sha256": "9ccafb2257dac981469f9cfe26156e102db0f0e2147d542e4affb7ba104f4f63",
+        "current_bytes": 23534,
+        "current_sha256": "9f2ab97921796675f95d0a919fe80c997cb1a4847c1e0b9809c8cea1fd2d1612"
+      },
+      {
+        "path": "localization/german/zg361_l_german.yml",
+        "baseline_bytes": 23124,
+        "baseline_sha256": "bc1930eddd26e0d49a71f92ac42f6b598930db142d1b1eebb101b0cb22360571",
+        "current_bytes": 23204,
+        "current_sha256": "cd1dc2b13821ef7b2d25a6652882b26a14ccac04d13476144b4b009417fb9681"
+      },
+      {
+        "path": "localization/japanese/zg361_l_japanese.yml",
+        "baseline_bytes": 22754,
+        "baseline_sha256": "1c7eae856df8db8c9097d6e706ab3e341deb6f960d7571b86627cded1ae416a6",
+        "current_bytes": 22838,
+        "current_sha256": "16f9513ebd22d3c9d962c56bcaca7b8af03104d4d8a2c531711dc7cdefd10761"
+      },
+      {
+        "path": "localization/korean/zg361_l_korean.yml",
+        "baseline_bytes": 22241,
+        "baseline_sha256": "fe39c72019b9b3e85120f87258d25e737ad9d06fa27c026599a6da6969607399",
+        "current_bytes": 22318,
+        "current_sha256": "42b01e5382ff0a0bfc5cc4447eee62f3895fd53d71f61e9bb6bd6e13fc9608a6"
+      },
+      {
+        "path": "localization/polish/zg361_l_polish.yml",
+        "baseline_bytes": 21999,
+        "baseline_sha256": "6fdebb0f2eb7235715ecd36fcbbdebefbec92c5299e0d9111abaae803df5cdd6",
+        "current_bytes": 22076,
+        "current_sha256": "7d200cd1ff1dd5cce3bde11a765391bf71a94438d0dd2ad296f1516f3bc449c1"
+      },
+      {
+        "path": "localization/russian/zg361_l_russian.yml",
+        "baseline_bytes": 32393,
+        "baseline_sha256": "b6b408579085988305c933eab1c7af8e11b68ec545848eb10b049c22f80411b8",
+        "current_bytes": 32506,
+        "current_sha256": "7fd7949c7ff549ad245d38e02f38402113a5240391ac1a66766a4851f1e92841"
+      },
+      {
+        "path": "localization/simp_chinese/zg361_l_simp_chinese.yml",
+        "baseline_bytes": 18683,
+        "baseline_sha256": "5efd38021ea30dc6ba22a5918c9541f49a48a5002ca47fd2879a3c15434c8b3d",
+        "current_bytes": 21861,
+        "current_sha256": "796254accc1d3a43d099dda1f68a41d2d13ed7a916485365df9304aef9e7b337"
+      },
+      {
+        "path": "localization/spanish/zg361_l_spanish.yml",
+        "baseline_bytes": 22753,
+        "baseline_sha256": "9836156e913a767af98ef58eeacc2c248c6ad1bf5ace47d98781448e66d8167c",
+        "current_bytes": 22836,
+        "current_sha256": "a8b79a811471e09d57615e867f9e711e8172bfbc1dc6c7d2112637d288f015b4"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "common/activities/activity_types/zg361_jingcha.txt",
+      "bytes": 4745,
+      "sha256": "222c487dc1d759076560ff8f11423c428e113ee52d8bc27ca0f36fbca64a5b95"
+    },
+    {
+      "path": "common/character_interactions/zg361_interactions.txt",
+      "bytes": 6664,
+      "sha256": "d578bbead4ad5fb38fbea2628494b928675967edd0e14e74c415adbda9b0fa85"
+    },
+    {
+      "path": "common/decision_group_types/zg361_decision_group_types.txt",
+      "bytes": 222,
+      "sha256": "79cb72445433fda03a207a4316c8060b7f4bd73e38af0357c41a1cdfefb83971"
+    },
+    {
+      "path": "common/decisions/zg361_decisions.txt",
+      "bytes": 4231,
+      "sha256": "4e76a865130a6eb410a7915978bfad2281db3f6ba6a086b8611e6e45c8720025"
+    },
+    {
+      "path": "common/decisions/zg361_mechanism_decisions.txt",
+      "bytes": 1486,
+      "sha256": "d3d5ef68ac7eda23f91b644dc17b87bdd4366fb3541c34f7d33f1c7cbaec84b5"
+    },
+    {
+      "path": "common/game_rules/zg361_game_rules.txt",
+      "bytes": 655,
+      "sha256": "ca1a412ebb7da6df780f14863b98e272f36b4e3664d6f9240f6d9143dc47d9be"
+    },
+    {
+      "path": "common/modifiers/zg361_generated_mechanism_modifiers.txt",
+      "bytes": 532,
+      "sha256": "6a735eb76eb781a8226b6fc8a434d056868c82844b75d3a3a0e99c8e5adcf755"
+    },
+    {
+      "path": "common/modifiers/zg361_modifiers.txt",
+      "bytes": 1114,
+      "sha256": "9846632241b3a838ac8813dce674ac55ca8aae267b07c9ce3ca0a1ea63de825b"
+    },
+    {
+      "path": "common/on_action/zg361_on_actions.txt",
+      "bytes": 326,
+      "sha256": "5e1d0a6a4c16ef5a6531b6226b633e0a5387883df04829c0304472281b90a232"
+    },
+    {
+      "path": "common/opinion_modifiers/zg361_opinions.txt",
+      "bytes": 1450,
+      "sha256": "b33f36304a4bdefb9da8cfbedab22f1c0559c2cca82c8eda892ee051db50be26"
+    },
+    {
+      "path": "common/script_values/zg361_generated_mechanism_values.txt",
+      "bytes": 2513,
+      "sha256": "3ae8c498715bf10d5736b717b9bf98f5521230a46df8938575a874a280d48815"
+    },
+    {
+      "path": "common/script_values/zg361_values.txt",
+      "bytes": 11014,
+      "sha256": "54ae1e7480399abd9908941f02aaf27dfd2ee300bacc039e60a201ccbbab5917"
+    },
+    {
+      "path": "common/scripted_effects/zg361_effects.txt",
+      "bytes": 50219,
+      "sha256": "5cb03f9c75d9a31c889d246516a21e20b89cbd33fe8666fdea7ff634d7092342"
+    },
+    {
+      "path": "common/scripted_effects/zg361_generated_mechanism_effects.txt",
+      "bytes": 1019397,
+      "sha256": "9e0479b33b322c3d51921180b5a4c34adc13bb9cea9f0f7a70d577a945edd052"
+    },
+    {
+      "path": "common/scripted_effects/zg361_generated_scoreboard_snapshots.txt",
+      "bytes": 480700,
+      "sha256": "4ff14d5a561a9edf4be0ef5bce9e8c439d15673143c0afb20a5109e79c7f5667"
+    },
+    {
+      "path": "common/scripted_effects/zg361_jingcha_mandate_effects.txt",
+      "bytes": 5027,
+      "sha256": "0e71920734b0ee5b4db1d26193f55d1d0a7445e8e4f7b7926dd1628c29a80efd"
+    },
+    {
+      "path": "common/scripted_guis/zg361_generated_mechanism_guis.txt",
+      "bytes": 795,
+      "sha256": "2836dbc3dd96497aaddffaf1216755a0c89d92e93e2f12f350aeb6aec12efea6"
+    },
+    {
+      "path": "common/scripted_guis/zg361_generated_scoreboard_slots.txt",
+      "bytes": 76973,
+      "sha256": "d41619c148ac710a023358fa5c4cf690f3e5cf58ac1c93770fc6e507c8e2077f"
+    },
+    {
+      "path": "common/scripted_guis/zg361_scoreboard_guis.txt",
+      "bytes": 1722,
+      "sha256": "d1ac97d5d5a0c4e7fb4afb07b659d172bbeb3ff5cd960efa9ffc8caf3ffdf494"
+    },
+    {
+      "path": "common/scripted_triggers/zg361_triggers.txt",
+      "bytes": 3131,
+      "sha256": "4b021422405c5ee3aa0ceae8988a02be6bb9b4c8f733db8128508425e64f550e"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 134,
+      "sha256": "f5abadb77d4934279083739e961e44ef16898b32e414b34a58c3bee861e08660"
+    },
+    {
+      "path": "events/zg361_events.txt",
+      "bytes": 18150,
+      "sha256": "e46f9f308ee0cf805bb806cd300bd032ebcd558c65719f51a1921cf25e830dd1"
+    },
+    {
+      "path": "events/zg361_generated_mechanism_events.txt",
+      "bytes": 429368,
+      "sha256": "3bc29ab5d9649182b5da79fb1ec47738af5a8eddd022afe471218c5d4e6f3a52"
+    },
+    {
+      "path": "events/zg361_jingcha_events.txt",
+      "bytes": 1954,
+      "sha256": "ecbadbcb0eb9c2750121c4b6feddfe186468e0c49be608bd4aea95913b67a383"
+    },
+    {
+      "path": "gfx/interface/icons/activities/activity_zg361_jingcha.dds",
+      "bytes": 34248,
+      "sha256": "fb5546cd4b55612dac91130752a61ec202e4fb4f16540a10b411ccd987fbb0a4"
+    },
+    {
+      "path": "gfx/interface/icons/activities/activity_zg361_jingcha_header.dds",
+      "bytes": 27024,
+      "sha256": "71ce90e29f241d2135778291b3b589fb25aeff5a2196d439efd68385dc37c5b0"
+    },
+    {
+      "path": "gfx/interface/icons/activity_phases/zg361_jingcha_phase.dds",
+      "bytes": 78528,
+      "sha256": "901ed9bc156f4a5d6e2cce2ad84a9b67af2917fab39a21486dc2149d6b5a7a17"
+    },
+    {
+      "path": "gfx/interface/illustrations/activity_header_backgrounds/activity_zg361_jingcha.dds",
+      "bytes": 675136,
+      "sha256": "cb295d1ac35483fbea6ad096edcdf7c90a92501560281f7f0cd380eb17d89202"
+    },
+    {
+      "path": "gui/scripted_widgets/zg361_scripted_widgets.txt",
+      "bytes": 178,
+      "sha256": "eeeaa8c43348286a020190f1feeb30f5c64ecb1167879d0da0e0f2d8463c1d41"
+    },
+    {
+      "path": "gui/zg361_decision_bridge.gui",
+      "bytes": 962,
+      "sha256": "fbc11f032c5e20e7dd05def0661f667c45871858518970fceba2e76bca93e2b3"
+    },
+    {
+      "path": "gui/zg361_mechanism_bridge.gui",
+      "bytes": 971,
+      "sha256": "5949689e092e932683c0e18cb1ee8b712d236520dacb49ac2a787bd36f2bcc4f"
+    },
+    {
+      "path": "gui/zg361_scoreboard.gui",
+      "bytes": 704330,
+      "sha256": "decb98240a4fe328e2a5fb18606713c88760a13343d337312a62a7667c1bdb5c"
+    },
+    {
+      "path": "localization/english/zg361_l_english.yml",
+      "bytes": 20767,
+      "sha256": "552aa867fef705ee5d6f9797e3cb8d94ca06f826cebd5cb4dc402cd9383e501b"
+    },
+    {
+      "path": "localization/english/zg361_mechanisms_l_english.yml",
+      "bytes": 234525,
+      "sha256": "5b1c9ff0f6f073bd21d9302c927a7311d1effed79aa76ab139b639dd0484e1c1"
+    },
+    {
+      "path": "localization/french/zg361_l_french.yml",
+      "bytes": 23460,
+      "sha256": "9ccafb2257dac981469f9cfe26156e102db0f0e2147d542e4affb7ba104f4f63"
+    },
+    {
+      "path": "localization/french/zg361_mechanisms_l_french.yml",
+      "bytes": 294676,
+      "sha256": "2715e173fbc62785b0ac4c9507c0bf8b6d6a23efcdedeb2a9d0278015baee283"
+    },
+    {
+      "path": "localization/german/zg361_l_german.yml",
+      "bytes": 23124,
+      "sha256": "bc1930eddd26e0d49a71f92ac42f6b598930db142d1b1eebb101b0cb22360571"
+    },
+    {
+      "path": "localization/german/zg361_mechanisms_l_german.yml",
+      "bytes": 278960,
+      "sha256": "9030ffea0a9b68bbf72f7f140493f5dd4c9e044b4c6be3f53617bffe0a815b54"
+    },
+    {
+      "path": "localization/japanese/zg361_l_japanese.yml",
+      "bytes": 22754,
+      "sha256": "1c7eae856df8db8c9097d6e706ab3e341deb6f960d7571b86627cded1ae416a6"
+    },
+    {
+      "path": "localization/japanese/zg361_mechanisms_l_japanese.yml",
+      "bytes": 272493,
+      "sha256": "bfe9024949418ddb725dcd28e2a52e77533ad59e89e1918799cffe48d6204088"
+    },
+    {
+      "path": "localization/korean/zg361_l_korean.yml",
+      "bytes": 22241,
+      "sha256": "fe39c72019b9b3e85120f87258d25e737ad9d06fa27c026599a6da6969607399"
+    },
+    {
+      "path": "localization/korean/zg361_mechanisms_l_korean.yml",
+      "bytes": 264338,
+      "sha256": "b1c14f40f945c9852dd7ef6bee309e793edc3cbddc00b5fe4e897ceb8dffd8de"
+    },
+    {
+      "path": "localization/polish/zg361_l_polish.yml",
+      "bytes": 21999,
+      "sha256": "6fdebb0f2eb7235715ecd36fcbbdebefbec92c5299e0d9111abaae803df5cdd6"
+    },
+    {
+      "path": "localization/polish/zg361_mechanisms_l_polish.yml",
+      "bytes": 262633,
+      "sha256": "ffd0b6db0d21e5a5eb3ede9f35ea9f660ec08f38a35f1fd7913d6ded592d1745"
+    },
+    {
+      "path": "localization/russian/zg361_l_russian.yml",
+      "bytes": 32393,
+      "sha256": "b6b408579085988305c933eab1c7af8e11b68ec545848eb10b049c22f80411b8"
+    },
+    {
+      "path": "localization/russian/zg361_mechanisms_l_russian.yml",
+      "bytes": 444659,
+      "sha256": "fb3d42c282e00ee0481e00d3666d349671601b41915b6461005b3e5aa2fe3ba7"
+    },
+    {
+      "path": "localization/simp_chinese/zg361_l_simp_chinese.yml",
+      "bytes": 18683,
+      "sha256": "5efd38021ea30dc6ba22a5918c9541f49a48a5002ca47fd2879a3c15434c8b3d"
+    },
+    {
+      "path": "localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
+      "bytes": 248357,
+      "sha256": "ef7a7b0cc60e5af99393d9b3ab97b841e024dc7007e66b97b703271c1a8bfb62"
+    },
+    {
+      "path": "localization/spanish/zg361_l_spanish.yml",
+      "bytes": 22753,
+      "sha256": "9836156e913a767af98ef58eeacc2c248c6ad1bf5ace47d98781448e66d8167c"
+    },
+    {
+      "path": "localization/spanish/zg361_mechanisms_l_spanish.yml",
+      "bytes": 285154,
+      "sha256": "9451bf397674d189c785da2081b8a4d030906fabb4de487741300a4ccdc7faf7"
+    },
+    {
+      "path": "thumbnail.png",
+      "bytes": 699719,
+      "sha256": "b4e92139a227b55e8d52ccc58cfbe2c9cac11a5f40e1b75efdfa5d2d512da5ce"
+    }
+  ]
+}
+
