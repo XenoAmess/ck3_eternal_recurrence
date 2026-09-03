@@ -29,10 +29,26 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py\n"
 
-EFFECTS_PATH = MOD_ROOT / "common/scripted_effects/zg361_incident_platform_runtime_effects.txt"
-EVENTS_PATH = MOD_ROOT / "events/zg361_incident_platform_runtime_events.txt"
+LEGACY_EFFECT_FILENAME = "zg361_incident_platform_runtime_effects.txt"
+LEGACY_EVENT_FILENAME = "zg361_incident_platform_runtime_events.txt"
+EFFECTS_PATH = MOD_ROOT / "common/scripted_effects" / LEGACY_EFFECT_FILENAME
+EVENTS_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
+LEGACY_EFFECT_PATH = EFFECTS_PATH
+LEGACY_EVENT_PATH = EVENTS_PATH
 VALUES_PATH = MOD_ROOT / "common/script_values/zg361_incident_platform_runtime_values.txt"
 LOC_BASENAME = "zg361_incident_platform_l_{language}.yml"
+EFFECT_SHARD_GLOB = "zg361_incident_platform_*_effects.txt"
+EVENT_SHARD_GLOB = "zg361_incident_platform_*_events.txt"
+HISTORICAL_EFFECT_COUNT = 124
+HISTORICAL_EVENT_COUNT = 54
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+EVENT_TARGET_MAX = 10
+EVENT_HARD_MAX = 20
+# Any future exception must provide both the engineering reason and a concrete
+# CK3 live artifact.  The purpose split below has no exceptions.
+EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
+EVENT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
 
 LANGUAGES: Final[tuple[str, ...]] = (
     "english",
@@ -85,6 +101,20 @@ class Domain:
         )
 
 
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class EventGroup:
+    filename: str
+    purpose: str
+    event_ids: tuple[int, ...]
+
+
 DOMAINS: Final[tuple[Domain, ...]] = (
     Domain("X", "x", 192, 204, 7, 8, 100, (7, 14, 14, 30, 60, 90), 190, "事故、值守与复盘", "Incident, on-call and postmortem"),
     Domain("Y", "y", 205, 216, 5, 6, 200, (30, 60, 90, 90), 290, "积弊、维护与交接", "Maintenance debt and handover"),
@@ -98,6 +128,277 @@ DOMAIN_BY_ID: Final[dict[int, Domain]] = {
 DEBT_EVENT: Final[dict[int, int]] = {
     mechanism_id: 7000 + mechanism_id for mechanism_id in EXPECTED_IDS
 }
+
+
+def _apply_effect_names(first_id: int, last_id: int) -> tuple[str, ...]:
+    return tuple(
+        f"zg361_ip_m{mechanism_id:03d}_apply_effect"
+        for mechanism_id in range(first_id, last_id + 1)
+    )
+
+
+def _debt_effect_names(first_id: int, last_id: int) -> tuple[str, ...]:
+    return tuple(
+        f"zg361_ip_m{mechanism_id:03d}_consume_due_debt_effect"
+        for mechanism_id in range(first_id, last_id + 1)
+    )
+
+
+def _dispatch_effect_names(domain: str, last_stage: int) -> tuple[str, ...]:
+    return tuple(
+        f"zg361_ip_{domain}_dispatch_{stage:02d}_effect"
+        for stage in range(1, last_stage + 1)
+    )
+
+
+def _due_effect_names(domain: str, final_state: int) -> tuple[str, ...]:
+    return tuple(
+        f"zg361_ip_{domain}_due_{state:02d}_effect"
+        for state in range(2, final_state)
+    )
+
+
+# The historical 124-effect implementation remains the semantic source of
+# truth in memory.  Product output is split by lifecycle purpose, with 1-10
+# definitions per file.  Group order is descriptive; block bytes and each
+# group's internal historical order are preserved exactly.
+EFFECT_GROUPS: Final[tuple[EffectGroup, ...]] = (
+    EffectGroup(
+        "zg361_incident_platform_capture_effects.txt",
+        "capture one observed incident and freeze its immutable source facts",
+        ("zg361_ip_capture_real_incident_effect",),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_probe_effects.txt",
+        "freeze the X incident probe or close it as honestly not applicable",
+        ("zg361_ip_freeze_x_probe_effect", "zg361_ip_mark_x_not_applicable_effect"),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_yz_probe_effects.txt",
+        "freeze or reject the maintenance-debt and shared-platform probes",
+        (
+            "zg361_ip_freeze_y_probe_effect",
+            "zg361_ip_freeze_z_probe_effect",
+            "zg361_ip_mark_y_not_applicable_effect",
+            "zg361_ip_mark_z_not_applicable_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_policy_debt_stage_effects.txt",
+        "stage the policy-debt KPI written by numbered route-C outcomes",
+        ("zg361_ip_stage_policy_debt_kpi_effect",),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_policy_debt_consume_effects.txt",
+        "consume due policy-debt KPI inputs before the next review",
+        ("zg361_ip_consume_due_kpi_inputs_effect",),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_apply_192_198_effects.txt",
+        "apply X incident mechanisms 192 through 198",
+        _apply_effect_names(192, 198),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_apply_199_204_effects.txt",
+        "apply X incident mechanisms 199 through 204",
+        _apply_effect_names(199, 204),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_apply_205_210_effects.txt",
+        "apply Y maintenance-debt mechanisms 205 through 210",
+        _apply_effect_names(205, 210),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_apply_211_216_effects.txt",
+        "apply Y maintenance-debt mechanisms 211 through 216",
+        _apply_effect_names(211, 216),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_apply_217_222_effects.txt",
+        "apply Z shared-platform mechanisms 217 through 222",
+        _apply_effect_names(217, 222),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_apply_223_228_effects.txt",
+        "apply Z shared-platform mechanisms 223 through 228",
+        _apply_effect_names(223, 228),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_debt_192_198_effects.txt",
+        "consume due route-C debt for X mechanisms 192 through 198",
+        _debt_effect_names(192, 198),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_debt_199_204_effects.txt",
+        "consume due route-C debt for X mechanisms 199 through 204",
+        _debt_effect_names(199, 204),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_debt_205_210_effects.txt",
+        "consume due route-C debt for Y mechanisms 205 through 210",
+        _debt_effect_names(205, 210),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_debt_211_216_effects.txt",
+        "consume due route-C debt for Y mechanisms 211 through 216",
+        _debt_effect_names(211, 216),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_debt_217_222_effects.txt",
+        "consume due route-C debt for Z mechanisms 217 through 222",
+        _debt_effect_names(217, 222),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_debt_223_228_effects.txt",
+        "consume due route-C debt for Z mechanisms 223 through 228",
+        _debt_effect_names(223, 228),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_dispatch_effects.txt",
+        "dispatch the seven ordered X incident stages",
+        _dispatch_effect_names("x", 7),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_deadline_effects.txt",
+        "resolve X incident deadline states two through seven",
+        _due_effect_names("x", 8),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_x_lifecycle_effects.txt",
+        "open, bind, and finalize one X incident case",
+        (
+            "zg361_ip_finalize_x_effect",
+            "zg361_ip_open_x_case_on_subject_effect",
+            "zg361_ip_open_x_case_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_dispatch_effects.txt",
+        "dispatch the five ordered Y maintenance-debt stages",
+        _dispatch_effect_names("y", 5),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_deadline_effects.txt",
+        "resolve Y maintenance-debt deadline states two through five",
+        _due_effect_names("y", 6),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_y_lifecycle_effects.txt",
+        "open, bind, and finalize one Y maintenance-debt case",
+        (
+            "zg361_ip_finalize_y_effect",
+            "zg361_ip_open_y_case_on_subject_effect",
+            "zg361_ip_open_y_case_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_dispatch_effects.txt",
+        "dispatch the five ordered Z shared-platform stages",
+        _dispatch_effect_names("z", 5),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_deadline_effects.txt",
+        "resolve Z shared-platform deadline states two through five",
+        _due_effect_names("z", 6),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_lifecycle_effects.txt",
+        "open, bind, and finalize one Z shared-platform case",
+        (
+            "zg361_ip_finalize_z_effect",
+            "zg361_ip_open_z_case_on_subject_effect",
+            "zg361_ip_open_z_case_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_portfolio_effects.txt",
+        "open the bounded X/Y/Z portfolio for one assessed official",
+        ("zg361_ip_open_portfolio_effect",),
+    ),
+)
+
+X_EFFECT_CLOSURE_NAMES: Final[tuple[str, ...]] = (
+    "zg361_ip_capture_real_incident_effect",
+    "zg361_ip_freeze_x_probe_effect",
+    "zg361_ip_mark_x_not_applicable_effect",
+    "zg361_ip_stage_policy_debt_kpi_effect",
+    *_apply_effect_names(192, 204),
+    *_debt_effect_names(192, 204),
+    "zg361_ip_finalize_x_effect",
+    *_dispatch_effect_names("x", 7),
+    *_due_effect_names("x", 8),
+    "zg361_ip_open_x_case_on_subject_effect",
+    "zg361_ip_open_x_case_effect",
+)
+
+EVENT_GROUPS: Final[tuple[EventGroup, ...]] = (
+    EventGroup(
+        "zg361_incident_platform_x_deadline_events.txt",
+        "dispatch X incident deadline states two through seven",
+        tuple(range(102, 108)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_x_result_events.txt",
+        "show the player-visible X incident closure receipt",
+        (190,),
+    ),
+    EventGroup(
+        "zg361_incident_platform_y_deadline_events.txt",
+        "dispatch Y maintenance-debt deadline states two through five",
+        tuple(range(202, 206)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_y_result_events.txt",
+        "show the player-visible Y maintenance-debt closure receipt",
+        (290,),
+    ),
+    EventGroup(
+        "zg361_incident_platform_z_deadline_events.txt",
+        "dispatch Z shared-platform deadline states two through five",
+        tuple(range(302, 306)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_z_result_events.txt",
+        "show the player-visible Z shared-platform closure receipt",
+        (390,),
+    ),
+    EventGroup(
+        "zg361_incident_platform_x_debt_7192_7198_events.txt",
+        "consume due X route-C debt for mechanisms 192 through 198",
+        tuple(range(7192, 7199)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_x_debt_7199_7204_events.txt",
+        "consume due X route-C debt for mechanisms 199 through 204",
+        tuple(range(7199, 7205)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_y_debt_7205_7210_events.txt",
+        "consume due Y route-C debt for mechanisms 205 through 210",
+        tuple(range(7205, 7211)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_y_debt_7211_7216_events.txt",
+        "consume due Y route-C debt for mechanisms 211 through 216",
+        tuple(range(7211, 7217)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_z_debt_7217_7222_events.txt",
+        "consume due Z route-C debt for mechanisms 217 through 222",
+        tuple(range(7217, 7223)),
+    ),
+    EventGroup(
+        "zg361_incident_platform_z_debt_7223_7228_events.txt",
+        "consume due Z route-C debt for mechanisms 223 through 228",
+        tuple(range(7223, 7229)),
+    ),
+)
+
+X_EVENT_CLOSURE_IDS: Final[tuple[int, ...]] = (
+    *range(102, 108),
+    190,
+    *range(7192, 7205),
+)
 
 
 # Route values are frozen, deterministic CK3 facts.  The first field of every
@@ -1501,6 +1802,12 @@ def render_policy_debt_consumer(mechanism_id: int) -> str:
 
 
 def render_effects() -> bytes:
+    """Render the frozen historical monolith for parity validation only.
+
+    Product output is emitted by :func:`render_effect_parts`; retaining this
+    in-memory form gives the purpose map one byte-stable source of truth.
+    """
+
     sections: list[str] = [
         "# X/Y/Z phase-three runtime. Readiness: CK3 static-ready; not live.\n"
         "# Public entries are zg361_ip_open_{x,y,z}_case_effect and\n"
@@ -1546,7 +1853,179 @@ zg361_ip_open_portfolio_effect = {
     return generated("\n\n".join(sections))
 
 
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in generated script")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced generated script block")
+        index += 1
+    raise ValueError("unterminated generated script block")
+
+
+def top_level_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level assignment blocks, ignoring comments/strings."""
+
+    text = payload.decode("utf-8-sig") if isinstance(payload, bytes) else payload.lstrip("\ufeff")
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (text[index].isalnum() or text[index] in "_."):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
+    source_names = tuple(name for name, _block in source_blocks)
+    source_rank = {name: rank for rank, name in enumerate(source_names)}
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != HISTORICAL_EFFECT_COUNT:
+        raise ValueError(
+            f"incident source must contain {HISTORICAL_EFFECT_COUNT} top-level effects, "
+            f"found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("incident source contains duplicate top-level effects")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("incident effect shard filenames must be unique")
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("incident effect groups contain duplicate definitions")
+    if set(source_names) != set(configured_names):
+        missing = sorted(set(source_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "incident effect purpose map must cover the historical 124/124 exactly; "
+            f"missing={missing}, extra={extra}"
+        )
+    for group in EFFECT_GROUPS:
+        ranks = tuple(source_rank[name] for name in group.effect_names)
+        if ranks != tuple(sorted(ranks)):
+            raise ValueError(
+                f"{group.filename} must preserve historical block order within its purpose shard"
+            )
+        if not group.effect_names:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+    reconstructed_names = tuple(sorted(configured_names, key=source_rank.__getitem__))
+    if reconstructed_names != source_names:
+        raise ValueError("incident effect shards cannot reconstruct historical source order")
+
+    closure = set(X_EFFECT_CLOSURE_NAMES)
+    if len(X_EFFECT_CLOSURE_NAMES) != 46 or len(closure) != 46:
+        raise ValueError("incident X closure must contain exactly 46 unique effects")
+    selected = [
+        group for group in EFFECT_GROUPS if closure.intersection(group.effect_names)
+    ]
+    mixed = [
+        group.filename
+        for group in selected
+        if not set(group.effect_names).issubset(closure)
+    ]
+    selected_names = {name for group in selected for name in group.effect_names}
+    if len(selected) != 10 or mixed or selected_names != closure:
+        raise ValueError(
+            "incident X closure must be an exact ten-shard union; "
+            f"shards={len(selected)}, mixed={mixed}, "
+            f"missing={sorted(closure - selected_names)}, "
+            f"extra={sorted(selected_names - closure)}"
+        )
+
+    over_hard = {
+        group.filename for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "incident effect hard-limit exceptions must exactly match oversized shards"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without reason and CK3 live evidence"
+            )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards while keeping all 124 effect blocks byte-identical."""
+
+    source_blocks = top_level_blocks(render_effects())
+    _validate_effect_groups(source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
+
+
 def render_events() -> bytes:
+    """Render the frozen historical event monolith for parity validation."""
+
     sections = ["namespace = zg361ip"]
     for domain in DOMAINS:
         for state in range(2, domain.final_state):
@@ -1574,6 +2053,99 @@ zg361ip.{DEBT_EVENT[mechanism_id]} = {{
 \timmediate = {{ {_prefix(mechanism_id)}_consume_due_debt_effect = yes }}
 }}''')
     return generated("\n\n".join(sections))
+
+
+def _validate_event_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
+    source_names = tuple(name for name, _block in source_blocks)
+    source_ids = tuple(int(name.removeprefix("zg361ip.")) for name in source_names)
+    source_rank = {event_id: rank for rank, event_id in enumerate(source_ids)}
+    configured_ids = tuple(
+        event_id for group in EVENT_GROUPS for event_id in group.event_ids
+    )
+    filenames = tuple(group.filename for group in EVENT_GROUPS)
+    if len(source_ids) != HISTORICAL_EVENT_COUNT:
+        raise ValueError(
+            f"incident source must contain {HISTORICAL_EVENT_COUNT} top-level events, "
+            f"found {len(source_ids)}"
+        )
+    if len(source_ids) != len(set(source_ids)):
+        raise ValueError("incident source contains duplicate top-level events")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("incident event shard filenames must be unique")
+    if len(configured_ids) != len(set(configured_ids)):
+        raise ValueError("incident event groups contain duplicate event IDs")
+    if set(source_ids) != set(configured_ids):
+        missing = sorted(set(source_ids) - set(configured_ids))
+        extra = sorted(set(configured_ids) - set(source_ids))
+        raise ValueError(
+            "incident event purpose map must cover the historical 54/54 exactly; "
+            f"missing={missing}, extra={extra}"
+        )
+    for group in EVENT_GROUPS:
+        ranks = tuple(source_rank[event_id] for event_id in group.event_ids)
+        if ranks != tuple(sorted(ranks)):
+            raise ValueError(
+                f"{group.filename} must preserve historical block order within its purpose shard"
+            )
+        if not group.event_ids:
+            raise ValueError(f"{group.filename} must contain at least one event")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+    reconstructed_ids = tuple(sorted(configured_ids, key=source_rank.__getitem__))
+    if reconstructed_ids != source_ids:
+        raise ValueError("incident event shards cannot reconstruct historical source order")
+
+    closure = set(X_EVENT_CLOSURE_IDS)
+    if len(X_EVENT_CLOSURE_IDS) != 20 or len(closure) != 20:
+        raise ValueError("incident X closure must contain exactly 20 unique events")
+    selected = [group for group in EVENT_GROUPS if closure.intersection(group.event_ids)]
+    mixed = [
+        group.filename
+        for group in selected
+        if not set(group.event_ids).issubset(closure)
+    ]
+    selected_ids = {event_id for group in selected for event_id in group.event_ids}
+    if len(selected) != 4 or mixed or selected_ids != closure:
+        raise ValueError(
+            "incident X event closure must be an exact four-shard union; "
+            f"shards={len(selected)}, mixed={mixed}, "
+            f"missing={sorted(closure - selected_ids)}, "
+            f"extra={sorted(selected_ids - closure)}"
+        )
+
+    over_hard = {
+        group.filename for group in EVENT_GROUPS
+        if len(group.event_ids) > EVENT_HARD_MAX
+    }
+    if set(EVENT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "incident event hard-limit exceptions must exactly match oversized shards"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EVENT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EVENT_HARD_MAX} events without reason and CK3 live evidence"
+            )
+
+
+def render_event_parts() -> dict[str, bytes]:
+    """Render purpose shards while keeping all 54 event blocks byte-identical."""
+
+    source_blocks = top_level_blocks(render_events())
+    _validate_event_groups(source_blocks)
+    by_id = {
+        int(name.removeprefix("zg361ip.")): block_text
+        for name, block_text in source_blocks
+    }
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            "namespace = zg361ip\n\n"
+            + "\n\n".join(by_id[event_id] for event_id in group.event_ids)
+        )
+        for group in EVENT_GROUPS
+    }
 
 
 def _loc_rows(language: str) -> dict[str, str]:
@@ -1623,10 +2195,16 @@ def render_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     rendered = {
-        EFFECTS_PATH: render_effects(),
-        EVENTS_PATH: render_events(),
         VALUES_PATH: render_values(),
     }
+    rendered.update({
+        MOD_ROOT / "common" / "scripted_effects" / filename: payload
+        for filename, payload in render_effect_parts().items()
+    })
+    rendered.update({
+        MOD_ROOT / "events" / filename: payload
+        for filename, payload in render_event_parts().items()
+    })
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / LOC_BASENAME.format(language=language)
@@ -1634,17 +2212,50 @@ def outputs() -> dict[Path, bytes]:
     return rendered
 
 
+def unexpected_effect_paths(
+    rendered: dict[Path, bytes], effects_dir: Path | None = None
+) -> tuple[Path, ...]:
+    effects_dir = effects_dir or MOD_ROOT / "common" / "scripted_effects"
+    expected = {path for path in rendered if path.parent == effects_dir}
+    return tuple(sorted(set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected))
+
+
+def unexpected_event_paths(
+    rendered: dict[Path, bytes], events_dir: Path | None = None
+) -> tuple[Path, ...]:
+    events_dir = events_dir or MOD_ROOT / "events"
+    expected = {path for path in rendered if path.parent == events_dir}
+    return tuple(sorted(set(events_dir.glob(EVENT_SHARD_GLOB)) - expected))
+
+
 def write_outputs(*, check: bool) -> None:
+    rendered = outputs()
     stale: list[str] = []
-    for path, payload in outputs().items():
+    for path, payload in rendered.items():
         if check:
             if not path.exists() or path.read_bytes() != payload:
                 stale.append(str(path.relative_to(MOD_ROOT)))
             continue
+    unexpected_effects = unexpected_effect_paths(rendered)
+    unexpected_events = unexpected_event_paths(rendered)
+    if check:
+        if stale or unexpected_effects or unexpected_events:
+            rows = [*stale]
+            rows.extend(
+                f"{path.relative_to(MOD_ROOT)} (unexpected effect shard or legacy monolith)"
+                for path in unexpected_effects
+            )
+            rows.extend(
+                f"{path.relative_to(MOD_ROOT)} (unexpected event shard or legacy monolith)"
+                for path in unexpected_events
+            )
+            raise SystemExit("stale incident-platform generated files:\n" + "\n".join(rows))
+        return
+    for path in (*unexpected_effects, *unexpected_events):
+        path.unlink()
+    for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
-    if stale:
-        raise SystemExit("stale generated files:\n" + "\n".join(stale))
 
 
 def validate_source_data() -> None:

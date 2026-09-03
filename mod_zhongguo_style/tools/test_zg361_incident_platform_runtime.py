@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -148,8 +149,14 @@ class SourceDataTests(unittest.TestCase):
 class GeneratedFileTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = text(gen.EFFECTS_PATH)
-        cls.events = text(gen.EVENTS_PATH)
+        cls.effects = "\n".join(
+            text(gen.MOD_ROOT / "common" / "scripted_effects" / group.filename)
+            for group in gen.EFFECT_GROUPS
+        )
+        cls.events = "\n".join(
+            text(gen.MOD_ROOT / "events" / group.filename)
+            for group in gen.EVENT_GROUPS
+        )
         cls.values = text(gen.VALUES_PATH)
         cls.core_values = text(MOD_ROOT / "common/script_values/zg361_values.txt")
 
@@ -158,6 +165,81 @@ class GeneratedFileTests(unittest.TestCase):
         for path, payload in gen.outputs().items():
             self.assertTrue(path.read_bytes().startswith(gen.BOM), path)
             self.assertEqual(path.read_bytes(), payload, path)
+
+    def test_purpose_shards_cover_every_historical_block_byte_for_byte(self) -> None:
+        historical_effects = dict(gen.top_level_blocks(gen.render_effects()))
+        emitted_effects = {
+            name: body
+            for payload in gen.render_effect_parts().values()
+            for name, body in gen.top_level_blocks(payload)
+        }
+        self.assertEqual(len(historical_effects), 124)
+        self.assertEqual(emitted_effects, historical_effects)
+        self.assertEqual(sum(len(group.effect_names) for group in gen.EFFECT_GROUPS), 124)
+        self.assertTrue(all(1 <= len(group.effect_names) <= 10 for group in gen.EFFECT_GROUPS))
+        self.assertEqual(gen.EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+
+        historical_events = dict(gen.top_level_blocks(gen.render_events()))
+        emitted_events = {
+            name: body
+            for payload in gen.render_event_parts().values()
+            for name, body in gen.top_level_blocks(payload)
+        }
+        self.assertEqual(len(historical_events), 54)
+        self.assertEqual(emitted_events, historical_events)
+        self.assertEqual(sum(len(group.event_ids) for group in gen.EVENT_GROUPS), 54)
+        self.assertTrue(all(1 <= len(group.event_ids) <= 10 for group in gen.EVENT_GROUPS))
+        self.assertEqual(gen.EVENT_HARD_LIMIT_EXCEPTIONS, {})
+
+    def test_x_closure_is_an_exact_whole_shard_union(self) -> None:
+        effect_closure = set(gen.X_EFFECT_CLOSURE_NAMES)
+        selected_effect_groups = [
+            group for group in gen.EFFECT_GROUPS
+            if effect_closure.intersection(group.effect_names)
+        ]
+        self.assertEqual(len(effect_closure), 46)
+        self.assertEqual(len(selected_effect_groups), 10)
+        self.assertEqual(
+            {name for group in selected_effect_groups for name in group.effect_names},
+            effect_closure,
+        )
+
+        event_closure = set(gen.X_EVENT_CLOSURE_IDS)
+        selected_event_groups = [
+            group for group in gen.EVENT_GROUPS
+            if event_closure.intersection(group.event_ids)
+        ]
+        self.assertEqual(len(event_closure), 20)
+        self.assertEqual(len(selected_event_groups), 4)
+        self.assertEqual(
+            {event_id for group in selected_event_groups for event_id in group.event_ids},
+            event_closure,
+        )
+
+    def test_legacy_monoliths_are_not_outputs_and_are_detected_as_stale(self) -> None:
+        rendered = gen.outputs()
+        self.assertNotIn(gen.LEGACY_EFFECT_PATH, rendered)
+        self.assertNotIn(gen.LEGACY_EVENT_PATH, rendered)
+        self.assertFalse(gen.LEGACY_EFFECT_PATH.exists())
+        self.assertFalse(gen.LEGACY_EVENT_PATH.exists())
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            effects_dir = root / "common" / "scripted_effects"
+            events_dir = root / "events"
+            effects_dir.mkdir(parents=True)
+            events_dir.mkdir(parents=True)
+            old_effect = effects_dir / gen.LEGACY_EFFECT_FILENAME
+            old_event = events_dir / gen.LEGACY_EVENT_FILENAME
+            old_effect.write_bytes(b"legacy")
+            old_event.write_bytes(b"legacy")
+            self.assertEqual(
+                gen.unexpected_effect_paths({}, effects_dir),
+                (old_effect,),
+            )
+            self.assertEqual(
+                gen.unexpected_event_paths({}, events_dir),
+                (old_event,),
+            )
 
     def test_trigger_arithmetic_never_uses_a_value_block_rhs(self) -> None:
         self.assertIsNone(
@@ -742,7 +824,6 @@ class GeneratedFileTests(unittest.TestCase):
         self.assertNotIn("highest_held_title_tier", self.effects)
 
     def test_ai_is_silent_but_player_gets_one_closure_notice_per_domain(self) -> None:
-        self.assertEqual(self.events.count("# Player manager closure notice"), 3)
         for domain in gen.DOMAINS:
             event = block(self.events, f"zg361ip.{domain.result_event} =")
             self.assertIn("is_ai = no", event)

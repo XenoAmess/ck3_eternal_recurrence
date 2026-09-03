@@ -38,8 +38,8 @@ bool HasAll(std::string_view value,
 } // namespace
 
 int main(int argc, char **argv) {
-  if (argc != 12) {
-    std::cerr << "expected eleven source-contract paths\n";
+  if (argc < 12) {
+    std::cerr << "expected nine fixed sources, producer shard(s), and documentation\n";
     return 1;
   }
   const auto header = ReadFile(argv[1]);
@@ -51,8 +51,17 @@ int main(int argc, char **argv) {
   const auto bridge = ReadFile(argv[7]);
   const auto abi = ReadFile(argv[8]);
   const auto fixture = ReadFile(argv[9]);
-  const auto producer = ReadFile(argv[10]);
-  const auto documentation = ReadFile(argv[11]);
+  std::string producer;
+  for (int index = 10; index < argc - 1; ++index) {
+    const auto shard = ReadFile(argv[index]);
+    if (shard.empty()) {
+      std::cerr << "incident producer shard is missing: " << argv[index] << '\n';
+      return 1;
+    }
+    producer.append(shard);
+    producer.push_back('\n');
+  }
+  const auto documentation = ReadFile(argv[argc - 1]);
   if (header.empty() || reader.empty() || serializer.empty() ||
       mailbox.empty() || adapter.empty() || game_adapter.empty() ||
       bridge.empty() || abi.empty() || fixture.empty() || producer.empty() ||
@@ -176,7 +185,7 @@ int main(int argc, char **argv) {
           "mailbox") ||
       !require_tokens(
           adapter,
-          {"std::array<std::string_view, 72>",
+          {"std::array<std::string_view, 74>",
            "kZhongguoIncidentSnapshotV1Capability"},
           "adapter") ||
       !require_tokens(

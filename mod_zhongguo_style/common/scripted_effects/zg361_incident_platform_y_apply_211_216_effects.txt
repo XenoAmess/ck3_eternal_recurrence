@@ -1,0 +1,1139 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: apply Y maintenance-debt mechanisms 211 through 216.
+
+zg361_ip_m211_apply_effect = {
+	set_variable = { name = zg361_ip_m211_choice value = 1 }
+	if = {
+		limit = { var:zg361_case_y_owner = { has_variable = zg361_mechanism_211_choice } }
+		if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_211_choice = 2 } set_variable = { name = zg361_ip_m211_choice value = 2 } }
+		else_if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_211_choice = 3 } set_variable = { name = zg361_ip_m211_choice value = 3 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes is_at_war = yes } }
+		set_variable = { name = zg361_ip_m211_choice value = 3 }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes stewardship < 10 } }
+		set_variable = { name = zg361_ip_m211_choice value = 2 }
+	}
+	if = {
+		limit = {
+			var:zg361_ip_m211_choice < 3
+			NOT = {
+trigger_if = {
+			limit = {
+				has_variable = zg361_ip_m210_business_object_created
+				has_variable = zg361_ip_m210_object_type_code
+				has_variable = zg361_ip_m210_object_maintenance_ownership_transfer
+				has_variable = zg361_ip_m210_object_owner
+				has_variable = zg361_ip_m210_object_subject
+				has_variable = zg361_ip_m210_object_cycle
+				has_variable = zg361_ip_m210_object_case
+				has_variable = zg361_ip_m210_object_state
+				has_variable = zg361_ip_m210_consumer_contract
+				has_variable = zg361_ip_m210_object_consumed
+				has_variable = zg361_ip_m210_consumer_rotate_maintenance_owner
+			}
+			var:zg361_ip_m210_business_object_created = 1
+			var:zg361_ip_m210_object_type_code = 210
+			var:zg361_ip_m210_object_maintenance_ownership_transfer = 1
+			var:zg361_ip_m210_object_owner = $TICKET_OWNER$
+			var:zg361_ip_m210_object_subject = $TICKET_SUBJECT$
+			var:zg361_ip_m210_object_cycle = $TICKET_CYCLE$
+			var:zg361_ip_m210_object_case = $TICKET_CASE$
+			var:zg361_ip_m210_object_state = 3
+			var:zg361_ip_m210_consumer_contract = 210
+			var:zg361_ip_m210_object_consumed = 1
+			var:zg361_ip_m210_consumer_rotate_maintenance_owner = 1
+		}
+		trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_ip_m211_choice value = 3 }
+		set_variable = { name = zg361_ip_m211_prerequisite_deferred value = 1 }
+	}
+	if = {
+		limit = {
+has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:zg361_ip_y_input_owner = $TICKET_OWNER$
+			var:zg361_ip_y_input_subject = $TICKET_SUBJECT$
+			var:zg361_ip_y_input_cycle = $TICKET_CYCLE$
+			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m211_done_owner has_variable = zg361_ip_m211_done_subject has_variable = zg361_ip_m211_done_cycle has_variable = zg361_ip_m211_done_case has_variable = zg361_ip_m211_done_state }
+				OR = {
+					NOT = { var:zg361_ip_m211_done_owner = $TICKET_OWNER$ }
+					NOT = { var:zg361_ip_m211_done_subject = $TICKET_SUBJECT$ }
+					NOT = { var:zg361_ip_m211_done_cycle = $TICKET_CYCLE$ }
+					NOT = { var:zg361_ip_m211_done_case = $TICKET_CASE$ }
+					NOT = { var:zg361_ip_m211_done_state = $TICKET_STATE$ }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_y_owner
+			SUBJECT_VAR = zg361_case_y_subject
+			CYCLE_VAR = zg361_case_y_cycle_serial
+			CASE_VAR = zg361_case_y_case_serial
+			STATE_VAR = zg361_case_y_state
+			REVISION_VAR = zg361_case_y_revision
+			ACTIVE_VAR = zg361_case_y_active
+			TIMELINE_VAR = zg361_case_y_timeline_serial
+			FEEDBACK_VAR = zg361_case_y_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_y_last_operation
+			LAST_CHOICE_VAR = zg361_case_y_last_choice
+			RECEIPT_OWNER_VAR = zg361_ip_m211_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_ip_m211_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_ip_m211_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_ip_m211_receipt_case
+			RECEIPT_STATE_VAR = zg361_ip_m211_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_ip_m211_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = var:zg361_ip_m211_choice
+			OPERATION_ID = 211
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+		set_variable = { name = zg361_ip_m211_result_score value = 4 }
+		if = {
+			limit = { var:zg361_ip_m211_choice = 2 }
+			set_variable = { name = zg361_ip_m211_result_score value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_ip_m211_choice = 3 }
+			set_variable = { name = zg361_ip_m211_result_score value = -2 }
+		}
+		if = {
+			limit = { var:zg361_ip_m211_choice < 3 }
+			set_variable = { name = zg361_ip_m211_runbook_quality value = 2 }
+			set_variable = { name = zg361_ip_m211_non_author_validated value = 1 }
+			if = {
+				limit = { var:zg361_ip_m211_choice = 2 }
+				set_variable = { name = zg361_ip_m211_runbook_quality value = 0 }
+				set_variable = { name = zg361_ip_m211_non_author_validated value = 0 }
+			}
+			set_variable = { name = zg361_ip_m211_business_object_created value = 1 }
+			set_variable = { name = zg361_ip_m211_object_type_code value = 211 }
+			set_variable = { name = zg361_ip_m211_object_runbook_acceptance value = 1 }
+			set_variable = { name = zg361_ip_m211_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m211_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m211_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m211_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m211_object_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m211_object_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m211_object_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m211_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m211_object_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 211 } }
+			set_variable = { name = zg361_ip_m211_consumer_contract value = 211 }
+			set_variable = { name = zg361_ip_m211_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m211_resource_runbook value = 1 }
+			set_variable = { name = zg361_ip_m211_resource_capacity value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m211_business_object_created value = 0 }
+			set_variable = { name = zg361_ip_m211_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m211_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m211_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m211_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m211_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m211_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m211_debt_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m211_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m211_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m211_debt_type_code value = 211 }
+			set_variable = { name = zg361_ip_m211_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 211 } }
+			set_variable = { name = zg361_ip_m211_debt_consumer_contract value = 211 }
+			set_variable = { name = zg361_ip_m211_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_ip_m211_debt_open value = 1 }
+			set_variable = { name = zg361_ip_m211_debt_consumed value = 0 }
+			set_variable = { name = zg361_ip_m211_debt_escalation_count value = 0 }
+			change_variable = { name = zg361_ip_y_policy_debt add = 1 }
+			trigger_event = { id = zg361ip.7211 days = 365 }
+		}
+				change_variable = { name = zg361_ip_y_score_delta add = var:zg361_ip_m211_result_score }
+				change_variable = { name = zg361_ip_y_evidence_n add = 1 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 211 }
+				if = {
+					limit = { var:zg361_ip_m211_business_object_created = 1 }
+		set_variable = { name = zg361_ip_m211_rotation_used value = var:zg361_ip_m210_owner_rotated }
+					set_variable = { name = zg361_ip_m211_consumer_validate_runbook value = 1 }
+					set_variable = { name = zg361_ip_m211_object_consumed value = 1 }
+				}
+				else = { set_variable = { name = zg361_ip_m211_debt_visible_to_settlement value = 1 } }
+				set_variable = { name = zg361_ip_m211_done_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_ip_m211_done_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_ip_m211_done_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_ip_m211_done_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_ip_m211_done_state value = $TICKET_STATE$ }
+			}
+		}
+	}
+}
+
+zg361_ip_m212_apply_effect = {
+	set_variable = { name = zg361_ip_m212_choice value = 1 }
+	if = {
+		limit = { var:zg361_case_y_owner = { has_variable = zg361_mechanism_212_choice } }
+		if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_212_choice = 2 } set_variable = { name = zg361_ip_m212_choice value = 2 } }
+		else_if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_212_choice = 3 } set_variable = { name = zg361_ip_m212_choice value = 3 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes is_at_war = yes } }
+		set_variable = { name = zg361_ip_m212_choice value = 3 }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes stewardship < 10 } }
+		set_variable = { name = zg361_ip_m212_choice value = 2 }
+	}
+	if = {
+		limit = {
+			var:zg361_ip_m212_choice < 3
+			NOT = {
+always = yes
+			}
+		}
+		set_variable = { name = zg361_ip_m212_choice value = 3 }
+		set_variable = { name = zg361_ip_m212_prerequisite_deferred value = 1 }
+	}
+	if = {
+		limit = {
+has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:zg361_ip_y_input_owner = $TICKET_OWNER$
+			var:zg361_ip_y_input_subject = $TICKET_SUBJECT$
+			var:zg361_ip_y_input_cycle = $TICKET_CYCLE$
+			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m212_done_owner has_variable = zg361_ip_m212_done_subject has_variable = zg361_ip_m212_done_cycle has_variable = zg361_ip_m212_done_case has_variable = zg361_ip_m212_done_state }
+				OR = {
+					NOT = { var:zg361_ip_m212_done_owner = $TICKET_OWNER$ }
+					NOT = { var:zg361_ip_m212_done_subject = $TICKET_SUBJECT$ }
+					NOT = { var:zg361_ip_m212_done_cycle = $TICKET_CYCLE$ }
+					NOT = { var:zg361_ip_m212_done_case = $TICKET_CASE$ }
+					NOT = { var:zg361_ip_m212_done_state = $TICKET_STATE$ }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_y_owner
+			SUBJECT_VAR = zg361_case_y_subject
+			CYCLE_VAR = zg361_case_y_cycle_serial
+			CASE_VAR = zg361_case_y_case_serial
+			STATE_VAR = zg361_case_y_state
+			REVISION_VAR = zg361_case_y_revision
+			ACTIVE_VAR = zg361_case_y_active
+			TIMELINE_VAR = zg361_case_y_timeline_serial
+			FEEDBACK_VAR = zg361_case_y_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_y_last_operation
+			LAST_CHOICE_VAR = zg361_case_y_last_choice
+			RECEIPT_OWNER_VAR = zg361_ip_m212_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_ip_m212_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_ip_m212_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_ip_m212_receipt_case
+			RECEIPT_STATE_VAR = zg361_ip_m212_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_ip_m212_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = var:zg361_ip_m212_choice
+			OPERATION_ID = 212
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+		set_variable = { name = zg361_ip_m212_result_score value = 4 }
+		if = {
+			limit = { var:zg361_ip_m212_choice = 2 }
+			set_variable = { name = zg361_ip_m212_result_score value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_ip_m212_choice = 3 }
+			set_variable = { name = zg361_ip_m212_result_score value = -2 }
+		}
+		if = {
+			limit = { var:zg361_ip_m212_choice < 3 }
+			set_variable = { name = zg361_ip_m212_automation_saved_hours value = 20 }
+			set_variable = { name = zg361_ip_m212_automation_credit value = 20 }
+			if = {
+				limit = { var:zg361_ip_m212_choice = 2 }
+				set_variable = { name = zg361_ip_m212_automation_saved_hours value = 0 }
+				set_variable = { name = zg361_ip_m212_automation_credit value = 0 }
+			}
+			set_variable = { name = zg361_ip_m212_business_object_created value = 1 }
+			set_variable = { name = zg361_ip_m212_object_type_code value = 212 }
+			set_variable = { name = zg361_ip_m212_object_automation_savings_observation value = 1 }
+			set_variable = { name = zg361_ip_m212_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m212_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m212_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m212_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m212_object_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m212_object_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m212_object_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m212_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m212_object_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 212 } }
+			set_variable = { name = zg361_ip_m212_consumer_contract value = 212 }
+			set_variable = { name = zg361_ip_m212_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m212_resource_capacity value = 1 }
+			set_variable = { name = zg361_ip_m212_resource_credit value = 1 }
+			set_variable = { name = zg361_ip_m212_object_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m212_business_object_created value = 0 }
+			set_variable = { name = zg361_ip_m212_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m212_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m212_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m212_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m212_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m212_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m212_debt_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m212_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m212_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m212_debt_type_code value = 212 }
+			set_variable = { name = zg361_ip_m212_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 212 } }
+			set_variable = { name = zg361_ip_m212_debt_consumer_contract value = 212 }
+			set_variable = { name = zg361_ip_m212_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_ip_m212_debt_open value = 1 }
+			set_variable = { name = zg361_ip_m212_debt_consumed value = 0 }
+			set_variable = { name = zg361_ip_m212_debt_escalation_count value = 0 }
+			change_variable = { name = zg361_ip_y_policy_debt add = 1 }
+			trigger_event = { id = zg361ip.7212 days = 365 }
+		}
+				change_variable = { name = zg361_ip_y_score_delta add = var:zg361_ip_m212_result_score }
+				change_variable = { name = zg361_ip_y_evidence_n add = 1 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 212 }
+				if = {
+					limit = { var:zg361_ip_m212_business_object_created = 1 }
+		set_variable = { name = zg361_ip_m212_future_capacity_credit value = var:zg361_ip_m212_automation_saved_hours }
+					set_variable = { name = zg361_ip_m212_consumer_settle_automation_credit value = 1 }
+					set_variable = { name = zg361_ip_m212_object_consumed value = 1 }
+				}
+				else = { set_variable = { name = zg361_ip_m212_debt_visible_to_settlement value = 1 } }
+				set_variable = { name = zg361_ip_m212_done_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_ip_m212_done_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_ip_m212_done_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_ip_m212_done_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_ip_m212_done_state value = $TICKET_STATE$ }
+			}
+		}
+	}
+}
+
+zg361_ip_m213_apply_effect = {
+	set_variable = { name = zg361_ip_m213_choice value = 1 }
+	if = {
+		limit = { var:zg361_case_y_owner = { has_variable = zg361_mechanism_213_choice } }
+		if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_213_choice = 2 } set_variable = { name = zg361_ip_m213_choice value = 2 } }
+		else_if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_213_choice = 3 } set_variable = { name = zg361_ip_m213_choice value = 3 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes is_at_war = yes } }
+		set_variable = { name = zg361_ip_m213_choice value = 3 }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes stewardship < 10 } }
+		set_variable = { name = zg361_ip_m213_choice value = 2 }
+	}
+	if = {
+		limit = {
+			var:zg361_ip_m213_choice < 3
+			NOT = {
+always = yes
+			}
+		}
+		set_variable = { name = zg361_ip_m213_choice value = 3 }
+		set_variable = { name = zg361_ip_m213_prerequisite_deferred value = 1 }
+	}
+	if = {
+		limit = {
+has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:zg361_ip_y_input_owner = $TICKET_OWNER$
+			var:zg361_ip_y_input_subject = $TICKET_SUBJECT$
+			var:zg361_ip_y_input_cycle = $TICKET_CYCLE$
+			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m213_done_owner has_variable = zg361_ip_m213_done_subject has_variable = zg361_ip_m213_done_cycle has_variable = zg361_ip_m213_done_case has_variable = zg361_ip_m213_done_state }
+				OR = {
+					NOT = { var:zg361_ip_m213_done_owner = $TICKET_OWNER$ }
+					NOT = { var:zg361_ip_m213_done_subject = $TICKET_SUBJECT$ }
+					NOT = { var:zg361_ip_m213_done_cycle = $TICKET_CYCLE$ }
+					NOT = { var:zg361_ip_m213_done_case = $TICKET_CASE$ }
+					NOT = { var:zg361_ip_m213_done_state = $TICKET_STATE$ }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_y_owner
+			SUBJECT_VAR = zg361_case_y_subject
+			CYCLE_VAR = zg361_case_y_cycle_serial
+			CASE_VAR = zg361_case_y_case_serial
+			STATE_VAR = zg361_case_y_state
+			REVISION_VAR = zg361_case_y_revision
+			ACTIVE_VAR = zg361_case_y_active
+			TIMELINE_VAR = zg361_case_y_timeline_serial
+			FEEDBACK_VAR = zg361_case_y_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_y_last_operation
+			LAST_CHOICE_VAR = zg361_case_y_last_choice
+			RECEIPT_OWNER_VAR = zg361_ip_m213_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_ip_m213_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_ip_m213_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_ip_m213_receipt_case
+			RECEIPT_STATE_VAR = zg361_ip_m213_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_ip_m213_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = var:zg361_ip_m213_choice
+			OPERATION_ID = 213
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+		set_variable = { name = zg361_ip_m213_result_score value = 4 }
+		if = {
+			limit = { var:zg361_ip_m213_choice = 2 }
+			set_variable = { name = zg361_ip_m213_result_score value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_ip_m213_choice = 3 }
+			set_variable = { name = zg361_ip_m213_result_score value = -2 }
+		}
+		if = {
+			limit = { var:zg361_ip_m213_choice < 3 }
+			set_variable = { name = zg361_ip_m213_validated_findings value = 4 }
+			set_variable = { name = zg361_ip_m213_review_hours value = 5 }
+			set_variable = { name = zg361_ip_m213_blocking_hours value = 1 }
+			if = {
+				limit = { var:zg361_ip_m213_choice = 2 }
+				set_variable = { name = zg361_ip_m213_validated_findings value = 0 }
+				set_variable = { name = zg361_ip_m213_review_hours value = 0 }
+				set_variable = { name = zg361_ip_m213_blocking_hours value = 0 }
+			}
+			set_variable = { name = zg361_ip_m213_business_object_created value = 1 }
+			set_variable = { name = zg361_ip_m213_object_type_code value = 213 }
+			set_variable = { name = zg361_ip_m213_object_review_contribution value = 1 }
+			set_variable = { name = zg361_ip_m213_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m213_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m213_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m213_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m213_object_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m213_object_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m213_object_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m213_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m213_object_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 213 } }
+			set_variable = { name = zg361_ip_m213_consumer_contract value = 213 }
+			set_variable = { name = zg361_ip_m213_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m213_resource_capacity value = 1 }
+			set_variable = { name = zg361_ip_m213_resource_credit value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m213_business_object_created value = 0 }
+			set_variable = { name = zg361_ip_m213_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m213_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m213_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m213_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m213_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m213_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m213_debt_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m213_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m213_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m213_debt_type_code value = 213 }
+			set_variable = { name = zg361_ip_m213_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 213 } }
+			set_variable = { name = zg361_ip_m213_debt_consumer_contract value = 213 }
+			set_variable = { name = zg361_ip_m213_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_ip_m213_debt_open value = 1 }
+			set_variable = { name = zg361_ip_m213_debt_consumed value = 0 }
+			set_variable = { name = zg361_ip_m213_debt_escalation_count value = 0 }
+			change_variable = { name = zg361_ip_y_policy_debt add = 1 }
+			trigger_event = { id = zg361ip.7213 days = 365 }
+		}
+				change_variable = { name = zg361_ip_y_score_delta add = var:zg361_ip_m213_result_score }
+				change_variable = { name = zg361_ip_y_evidence_n add = 1 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 213 }
+				if = {
+					limit = { var:zg361_ip_m213_business_object_created = 1 }
+		set_variable = { name = zg361_ip_m213_review_credit value = var:zg361_ip_m213_validated_findings }
+		set_variable = { name = zg361_ip_m213_comment_count_used value = 0 }
+		set_variable = { name = zg361_ip_m213_review_capacity_used value = { value = var:zg361_ip_m213_review_hours add = var:zg361_ip_m213_blocking_hours } }
+					set_variable = { name = zg361_ip_m213_consumer_record_review_credit value = 1 }
+					set_variable = { name = zg361_ip_m213_object_consumed value = 1 }
+				}
+				else = { set_variable = { name = zg361_ip_m213_debt_visible_to_settlement value = 1 } }
+				set_variable = { name = zg361_ip_m213_done_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_ip_m213_done_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_ip_m213_done_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_ip_m213_done_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_ip_m213_done_state value = $TICKET_STATE$ }
+			}
+		}
+	}
+}
+
+zg361_ip_m214_apply_effect = {
+	set_variable = { name = zg361_ip_m214_choice value = 1 }
+	if = {
+		limit = { var:zg361_case_y_owner = { has_variable = zg361_mechanism_214_choice } }
+		if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_214_choice = 2 } set_variable = { name = zg361_ip_m214_choice value = 2 } }
+		else_if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_214_choice = 3 } set_variable = { name = zg361_ip_m214_choice value = 3 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes is_at_war = yes } }
+		set_variable = { name = zg361_ip_m214_choice value = 3 }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes stewardship < 10 } }
+		set_variable = { name = zg361_ip_m214_choice value = 2 }
+	}
+	if = {
+		limit = {
+			var:zg361_ip_m214_choice < 3
+			NOT = {
+trigger_if = {
+			limit = {
+				has_variable = zg361_ip_m213_business_object_created
+				has_variable = zg361_ip_m213_object_type_code
+				has_variable = zg361_ip_m213_object_review_contribution
+				has_variable = zg361_ip_m213_object_owner
+				has_variable = zg361_ip_m213_object_subject
+				has_variable = zg361_ip_m213_object_cycle
+				has_variable = zg361_ip_m213_object_case
+				has_variable = zg361_ip_m213_object_state
+				has_variable = zg361_ip_m213_consumer_contract
+				has_variable = zg361_ip_m213_object_consumed
+				has_variable = zg361_ip_m213_consumer_record_review_credit
+			}
+			var:zg361_ip_m213_business_object_created = 1
+			var:zg361_ip_m213_object_type_code = 213
+			var:zg361_ip_m213_object_review_contribution = 1
+			var:zg361_ip_m213_object_owner = $TICKET_OWNER$
+			var:zg361_ip_m213_object_subject = $TICKET_SUBJECT$
+			var:zg361_ip_m213_object_cycle = $TICKET_CYCLE$
+			var:zg361_ip_m213_object_case = $TICKET_CASE$
+			var:zg361_ip_m213_object_state = 4
+			var:zg361_ip_m213_consumer_contract = 213
+			var:zg361_ip_m213_object_consumed = 1
+			var:zg361_ip_m213_consumer_record_review_credit = 1
+		}
+		trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_ip_m214_choice value = 3 }
+		set_variable = { name = zg361_ip_m214_prerequisite_deferred value = 1 }
+	}
+	if = {
+		limit = {
+has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:zg361_ip_y_input_owner = $TICKET_OWNER$
+			var:zg361_ip_y_input_subject = $TICKET_SUBJECT$
+			var:zg361_ip_y_input_cycle = $TICKET_CYCLE$
+			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m214_done_owner has_variable = zg361_ip_m214_done_subject has_variable = zg361_ip_m214_done_cycle has_variable = zg361_ip_m214_done_case has_variable = zg361_ip_m214_done_state }
+				OR = {
+					NOT = { var:zg361_ip_m214_done_owner = $TICKET_OWNER$ }
+					NOT = { var:zg361_ip_m214_done_subject = $TICKET_SUBJECT$ }
+					NOT = { var:zg361_ip_m214_done_cycle = $TICKET_CYCLE$ }
+					NOT = { var:zg361_ip_m214_done_case = $TICKET_CASE$ }
+					NOT = { var:zg361_ip_m214_done_state = $TICKET_STATE$ }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_y_owner
+			SUBJECT_VAR = zg361_case_y_subject
+			CYCLE_VAR = zg361_case_y_cycle_serial
+			CASE_VAR = zg361_case_y_case_serial
+			STATE_VAR = zg361_case_y_state
+			REVISION_VAR = zg361_case_y_revision
+			ACTIVE_VAR = zg361_case_y_active
+			TIMELINE_VAR = zg361_case_y_timeline_serial
+			FEEDBACK_VAR = zg361_case_y_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_y_last_operation
+			LAST_CHOICE_VAR = zg361_case_y_last_choice
+			RECEIPT_OWNER_VAR = zg361_ip_m214_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_ip_m214_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_ip_m214_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_ip_m214_receipt_case
+			RECEIPT_STATE_VAR = zg361_ip_m214_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_ip_m214_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = var:zg361_ip_m214_choice
+			OPERATION_ID = 214
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+		set_variable = { name = zg361_ip_m214_result_score value = 4 }
+		if = {
+			limit = { var:zg361_ip_m214_choice = 2 }
+			set_variable = { name = zg361_ip_m214_result_score value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_ip_m214_choice = 3 }
+			set_variable = { name = zg361_ip_m214_result_score value = -2 }
+		}
+		if = {
+			limit = { var:zg361_ip_m214_choice < 3 }
+			set_variable = { name = zg361_ip_m214_coverage_percent value = 80 }
+			set_variable = { name = zg361_ip_m214_critical_misses value = 0 }
+			set_variable = { name = zg361_ip_m214_quality_score value = 80 }
+			if = {
+				limit = { var:zg361_ip_m214_choice = 2 }
+				set_variable = { name = zg361_ip_m214_coverage_percent value = 98 }
+				set_variable = { name = zg361_ip_m214_critical_misses value = 2 }
+				set_variable = { name = zg361_ip_m214_quality_score value = 35 }
+			}
+			set_variable = { name = zg361_ip_m214_business_object_created value = 1 }
+			set_variable = { name = zg361_ip_m214_object_type_code value = 214 }
+			set_variable = { name = zg361_ip_m214_object_quality_scope_snapshot value = 1 }
+			set_variable = { name = zg361_ip_m214_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m214_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m214_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m214_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m214_object_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m214_object_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m214_object_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m214_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m214_object_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 214 } }
+			set_variable = { name = zg361_ip_m214_consumer_contract value = 214 }
+			set_variable = { name = zg361_ip_m214_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m214_resource_quality value = 1 }
+			set_variable = { name = zg361_ip_m214_resource_risk value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m214_business_object_created value = 0 }
+			set_variable = { name = zg361_ip_m214_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m214_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m214_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m214_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m214_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m214_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m214_debt_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m214_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m214_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m214_debt_type_code value = 214 }
+			set_variable = { name = zg361_ip_m214_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 214 } }
+			set_variable = { name = zg361_ip_m214_debt_consumer_contract value = 214 }
+			set_variable = { name = zg361_ip_m214_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_ip_m214_debt_open value = 1 }
+			set_variable = { name = zg361_ip_m214_debt_consumed value = 0 }
+			set_variable = { name = zg361_ip_m214_debt_escalation_count value = 0 }
+			change_variable = { name = zg361_ip_y_policy_debt add = 1 }
+			trigger_event = { id = zg361ip.7214 days = 365 }
+		}
+				change_variable = { name = zg361_ip_y_score_delta add = var:zg361_ip_m214_result_score }
+				change_variable = { name = zg361_ip_y_evidence_n add = 1 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 214 }
+				if = {
+					limit = { var:zg361_ip_m214_business_object_created = 1 }
+		set_variable = { name = zg361_ip_m214_review_findings_used value = var:zg361_ip_m213_validated_findings }
+					set_variable = { name = zg361_ip_m214_consumer_record_quality_scope value = 1 }
+					set_variable = { name = zg361_ip_m214_object_consumed value = 1 }
+				}
+				else = { set_variable = { name = zg361_ip_m214_debt_visible_to_settlement value = 1 } }
+				set_variable = { name = zg361_ip_m214_done_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_ip_m214_done_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_ip_m214_done_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_ip_m214_done_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_ip_m214_done_state value = $TICKET_STATE$ }
+			}
+		}
+	}
+}
+
+zg361_ip_m215_apply_effect = {
+	set_variable = { name = zg361_ip_m215_choice value = 1 }
+	if = {
+		limit = { var:zg361_case_y_owner = { has_variable = zg361_mechanism_215_choice } }
+		if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_215_choice = 2 } set_variable = { name = zg361_ip_m215_choice value = 2 } }
+		else_if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_215_choice = 3 } set_variable = { name = zg361_ip_m215_choice value = 3 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes is_at_war = yes } }
+		set_variable = { name = zg361_ip_m215_choice value = 3 }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes stewardship < 10 } }
+		set_variable = { name = zg361_ip_m215_choice value = 2 }
+	}
+	if = {
+		limit = {
+			var:zg361_ip_m215_choice < 3
+			NOT = {
+trigger_if = {
+			limit = {
+				has_variable = zg361_ip_m214_business_object_created
+				has_variable = zg361_ip_m214_object_type_code
+				has_variable = zg361_ip_m214_object_quality_scope_snapshot
+				has_variable = zg361_ip_m214_object_owner
+				has_variable = zg361_ip_m214_object_subject
+				has_variable = zg361_ip_m214_object_cycle
+				has_variable = zg361_ip_m214_object_case
+				has_variable = zg361_ip_m214_object_state
+				has_variable = zg361_ip_m214_consumer_contract
+				has_variable = zg361_ip_m214_object_consumed
+				has_variable = zg361_ip_m214_consumer_record_quality_scope
+			}
+			var:zg361_ip_m214_business_object_created = 1
+			var:zg361_ip_m214_object_type_code = 214
+			var:zg361_ip_m214_object_quality_scope_snapshot = 1
+			var:zg361_ip_m214_object_owner = $TICKET_OWNER$
+			var:zg361_ip_m214_object_subject = $TICKET_SUBJECT$
+			var:zg361_ip_m214_object_cycle = $TICKET_CYCLE$
+			var:zg361_ip_m214_object_case = $TICKET_CASE$
+			var:zg361_ip_m214_object_state = 4
+			var:zg361_ip_m214_consumer_contract = 214
+			var:zg361_ip_m214_object_consumed = 1
+			var:zg361_ip_m214_consumer_record_quality_scope = 1
+		}
+		trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_ip_m215_choice value = 3 }
+		set_variable = { name = zg361_ip_m215_prerequisite_deferred value = 1 }
+	}
+	if = {
+		limit = {
+has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:zg361_ip_y_input_owner = $TICKET_OWNER$
+			var:zg361_ip_y_input_subject = $TICKET_SUBJECT$
+			var:zg361_ip_y_input_cycle = $TICKET_CYCLE$
+			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m215_done_owner has_variable = zg361_ip_m215_done_subject has_variable = zg361_ip_m215_done_cycle has_variable = zg361_ip_m215_done_case has_variable = zg361_ip_m215_done_state }
+				OR = {
+					NOT = { var:zg361_ip_m215_done_owner = $TICKET_OWNER$ }
+					NOT = { var:zg361_ip_m215_done_subject = $TICKET_SUBJECT$ }
+					NOT = { var:zg361_ip_m215_done_cycle = $TICKET_CYCLE$ }
+					NOT = { var:zg361_ip_m215_done_case = $TICKET_CASE$ }
+					NOT = { var:zg361_ip_m215_done_state = $TICKET_STATE$ }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_y_owner
+			SUBJECT_VAR = zg361_case_y_subject
+			CYCLE_VAR = zg361_case_y_cycle_serial
+			CASE_VAR = zg361_case_y_case_serial
+			STATE_VAR = zg361_case_y_state
+			REVISION_VAR = zg361_case_y_revision
+			ACTIVE_VAR = zg361_case_y_active
+			TIMELINE_VAR = zg361_case_y_timeline_serial
+			FEEDBACK_VAR = zg361_case_y_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_y_last_operation
+			LAST_CHOICE_VAR = zg361_case_y_last_choice
+			RECEIPT_OWNER_VAR = zg361_ip_m215_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_ip_m215_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_ip_m215_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_ip_m215_receipt_case
+			RECEIPT_STATE_VAR = zg361_ip_m215_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_ip_m215_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = var:zg361_ip_m215_choice
+			OPERATION_ID = 215
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+		set_variable = { name = zg361_ip_m215_result_score value = 4 }
+		if = {
+			limit = { var:zg361_ip_m215_choice = 2 }
+			set_variable = { name = zg361_ip_m215_result_score value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_ip_m215_choice = 3 }
+			set_variable = { name = zg361_ip_m215_result_score value = -2 }
+		}
+		if = {
+			limit = { var:zg361_ip_m215_choice < 3 }
+			set_variable = { name = zg361_ip_m215_legacy_retired value = 1 }
+			set_variable = { name = zg361_ip_m215_hc_released value = 1 }
+			set_variable = { name = zg361_ip_m215_necessity_appeal value = 1 }
+			if = {
+				limit = { var:zg361_ip_m215_choice = 2 }
+				set_variable = { name = zg361_ip_m215_legacy_retired value = 1 }
+				set_variable = { name = zg361_ip_m215_hc_released value = 1 }
+				set_variable = { name = zg361_ip_m215_necessity_appeal value = 0 }
+			}
+			set_variable = { name = zg361_ip_m215_business_object_created value = 1 }
+			set_variable = { name = zg361_ip_m215_object_type_code value = 215 }
+			set_variable = { name = zg361_ip_m215_object_legacy_retirement_plan value = 1 }
+			set_variable = { name = zg361_ip_m215_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m215_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m215_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m215_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m215_object_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m215_object_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m215_object_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m215_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m215_object_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 215 } }
+			set_variable = { name = zg361_ip_m215_consumer_contract value = 215 }
+			set_variable = { name = zg361_ip_m215_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m215_resource_capacity value = 1 }
+			set_variable = { name = zg361_ip_m215_resource_hc value = 1 }
+			set_variable = { name = zg361_ip_m215_object_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m215_business_object_created value = 0 }
+			set_variable = { name = zg361_ip_m215_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m215_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m215_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m215_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m215_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m215_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m215_debt_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m215_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m215_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m215_debt_type_code value = 215 }
+			set_variable = { name = zg361_ip_m215_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 215 } }
+			set_variable = { name = zg361_ip_m215_debt_consumer_contract value = 215 }
+			set_variable = { name = zg361_ip_m215_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_ip_m215_debt_open value = 1 }
+			set_variable = { name = zg361_ip_m215_debt_consumed value = 0 }
+			set_variable = { name = zg361_ip_m215_debt_escalation_count value = 0 }
+			change_variable = { name = zg361_ip_y_policy_debt add = 1 }
+			trigger_event = { id = zg361ip.7215 days = 365 }
+		}
+				change_variable = { name = zg361_ip_y_score_delta add = var:zg361_ip_m215_result_score }
+				change_variable = { name = zg361_ip_y_evidence_n add = 1 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 215 }
+				if = {
+					limit = { var:zg361_ip_m215_business_object_created = 1 }
+		set_variable = { name = zg361_ip_m215_quality_gate_used value = var:zg361_ip_m214_quality_score }
+					set_variable = { name = zg361_ip_m215_consumer_retire_legacy_service value = 1 }
+					set_variable = { name = zg361_ip_m215_object_consumed value = 1 }
+				}
+				else = { set_variable = { name = zg361_ip_m215_debt_visible_to_settlement value = 1 } }
+				set_variable = { name = zg361_ip_m215_done_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_ip_m215_done_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_ip_m215_done_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_ip_m215_done_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_ip_m215_done_state value = $TICKET_STATE$ }
+			}
+		}
+	}
+}
+
+zg361_ip_m216_apply_effect = {
+	set_variable = { name = zg361_ip_m216_choice value = 1 }
+	if = {
+		limit = { var:zg361_case_y_owner = { has_variable = zg361_mechanism_216_choice } }
+		if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_216_choice = 2 } set_variable = { name = zg361_ip_m216_choice value = 2 } }
+		else_if = { limit = { var:zg361_case_y_owner.var:zg361_mechanism_216_choice = 3 } set_variable = { name = zg361_ip_m216_choice value = 3 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes is_at_war = yes } }
+		set_variable = { name = zg361_ip_m216_choice value = 3 }
+	}
+	else_if = {
+		limit = { var:zg361_case_y_owner = { is_ai = yes stewardship < 10 } }
+		set_variable = { name = zg361_ip_m216_choice value = 2 }
+	}
+	if = {
+		limit = {
+			var:zg361_ip_m216_choice < 3
+			NOT = {
+trigger_if = {
+			limit = {
+				has_variable = zg361_ip_m215_business_object_created
+				has_variable = zg361_ip_m215_object_type_code
+				has_variable = zg361_ip_m215_object_legacy_retirement_plan
+				has_variable = zg361_ip_m215_object_owner
+				has_variable = zg361_ip_m215_object_subject
+				has_variable = zg361_ip_m215_object_cycle
+				has_variable = zg361_ip_m215_object_case
+				has_variable = zg361_ip_m215_object_state
+				has_variable = zg361_ip_m215_consumer_contract
+				has_variable = zg361_ip_m215_object_consumed
+				has_variable = zg361_ip_m215_consumer_retire_legacy_service
+			}
+			var:zg361_ip_m215_business_object_created = 1
+			var:zg361_ip_m215_object_type_code = 215
+			var:zg361_ip_m215_object_legacy_retirement_plan = 1
+			var:zg361_ip_m215_object_owner = $TICKET_OWNER$
+			var:zg361_ip_m215_object_subject = $TICKET_SUBJECT$
+			var:zg361_ip_m215_object_cycle = $TICKET_CYCLE$
+			var:zg361_ip_m215_object_case = $TICKET_CASE$
+			var:zg361_ip_m215_object_state = 5
+			var:zg361_ip_m215_consumer_contract = 215
+			var:zg361_ip_m215_object_consumed = 1
+			var:zg361_ip_m215_consumer_retire_legacy_service = 1
+		}
+		trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_ip_m216_choice value = 3 }
+		set_variable = { name = zg361_ip_m216_prerequisite_deferred value = 1 }
+	}
+	if = {
+		limit = {
+has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:zg361_ip_y_input_owner = $TICKET_OWNER$
+			var:zg361_ip_y_input_subject = $TICKET_SUBJECT$
+			var:zg361_ip_y_input_cycle = $TICKET_CYCLE$
+			var:zg361_ip_y_input_incident_serial = var:zg361_ip_incident_serial
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_incident_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m216_done_owner has_variable = zg361_ip_m216_done_subject has_variable = zg361_ip_m216_done_cycle has_variable = zg361_ip_m216_done_case has_variable = zg361_ip_m216_done_state }
+				OR = {
+					NOT = { var:zg361_ip_m216_done_owner = $TICKET_OWNER$ }
+					NOT = { var:zg361_ip_m216_done_subject = $TICKET_SUBJECT$ }
+					NOT = { var:zg361_ip_m216_done_cycle = $TICKET_CYCLE$ }
+					NOT = { var:zg361_ip_m216_done_case = $TICKET_CASE$ }
+					NOT = { var:zg361_ip_m216_done_state = $TICKET_STATE$ }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_y_owner
+			SUBJECT_VAR = zg361_case_y_subject
+			CYCLE_VAR = zg361_case_y_cycle_serial
+			CASE_VAR = zg361_case_y_case_serial
+			STATE_VAR = zg361_case_y_state
+			REVISION_VAR = zg361_case_y_revision
+			ACTIVE_VAR = zg361_case_y_active
+			TIMELINE_VAR = zg361_case_y_timeline_serial
+			FEEDBACK_VAR = zg361_case_y_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_y_last_operation
+			LAST_CHOICE_VAR = zg361_case_y_last_choice
+			RECEIPT_OWNER_VAR = zg361_ip_m216_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_ip_m216_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_ip_m216_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_ip_m216_receipt_case
+			RECEIPT_STATE_VAR = zg361_ip_m216_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_ip_m216_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = var:zg361_ip_m216_choice
+			OPERATION_ID = 216
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+		set_variable = { name = zg361_ip_m216_result_score value = 4 }
+		if = {
+			limit = { var:zg361_ip_m216_choice = 2 }
+			set_variable = { name = zg361_ip_m216_result_score value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_ip_m216_choice = 3 }
+			set_variable = { name = zg361_ip_m216_result_score value = -2 }
+		}
+		if = {
+			limit = { var:zg361_ip_m216_choice < 3 }
+			set_variable = { name = zg361_ip_m216_handover_categories value = 4 }
+			set_variable = { name = zg361_ip_m216_handover_waiver value = 0 }
+			set_variable = { name = zg361_ip_m216_handover_percent value = 100 }
+			if = {
+				limit = { var:zg361_ip_m216_choice = 2 }
+				set_variable = { name = zg361_ip_m216_handover_categories value = 0 }
+				set_variable = { name = zg361_ip_m216_handover_waiver value = 0 }
+				set_variable = { name = zg361_ip_m216_handover_percent value = 0 }
+			}
+			set_variable = { name = zg361_ip_m216_business_object_created value = 1 }
+			set_variable = { name = zg361_ip_m216_object_type_code value = 216 }
+			set_variable = { name = zg361_ip_m216_object_handover_bundle value = 1 }
+			set_variable = { name = zg361_ip_m216_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m216_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m216_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m216_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m216_object_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m216_object_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m216_object_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m216_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m216_object_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 216 } }
+			set_variable = { name = zg361_ip_m216_consumer_contract value = 216 }
+			set_variable = { name = zg361_ip_m216_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m216_resource_handover value = 1 }
+			set_variable = { name = zg361_ip_m216_resource_capacity value = 1 }
+			set_variable = { name = zg361_ip_m216_object_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m216_business_object_created value = 0 }
+			set_variable = { name = zg361_ip_m216_object_consumed value = 0 }
+			set_variable = { name = zg361_ip_m216_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_ip_m216_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_ip_m216_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_ip_m216_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_ip_m216_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_ip_m216_debt_incident_serial value = var:zg361_ip_incident_serial }
+			set_variable = { name = zg361_ip_m216_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }
+			set_variable = { name = zg361_ip_m216_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+			set_variable = { name = zg361_ip_m216_debt_type_code value = 216 }
+			set_variable = { name = zg361_ip_m216_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 216 } }
+			set_variable = { name = zg361_ip_m216_debt_consumer_contract value = 216 }
+			set_variable = { name = zg361_ip_m216_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_ip_m216_debt_open value = 1 }
+			set_variable = { name = zg361_ip_m216_debt_consumed value = 0 }
+			set_variable = { name = zg361_ip_m216_debt_escalation_count value = 0 }
+			change_variable = { name = zg361_ip_y_policy_debt add = 1 }
+			trigger_event = { id = zg361ip.7216 days = 365 }
+		}
+				change_variable = { name = zg361_ip_y_score_delta add = var:zg361_ip_m216_result_score }
+				change_variable = { name = zg361_ip_y_evidence_n add = 1 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 216 }
+				if = {
+					limit = { var:zg361_ip_m216_business_object_created = 1 }
+		set_variable = { name = zg361_ip_m216_retirement_gate_used value = var:zg361_ip_m215_legacy_retired }
+					set_variable = { name = zg361_ip_m216_consumer_complete_handover value = 1 }
+					set_variable = { name = zg361_ip_m216_object_consumed value = 1 }
+				}
+				else = { set_variable = { name = zg361_ip_m216_debt_visible_to_settlement value = 1 } }
+				set_variable = { name = zg361_ip_m216_done_owner value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_ip_m216_done_subject value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_ip_m216_done_cycle value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_ip_m216_done_case value = $TICKET_CASE$ }
+				set_variable = { name = zg361_ip_m216_done_state value = $TICKET_STATE$ }
+			}
+		}
+	}
+}

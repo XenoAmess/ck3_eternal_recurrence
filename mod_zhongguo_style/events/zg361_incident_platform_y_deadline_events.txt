@@ -1,0 +1,28 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: dispatch Y maintenance-debt deadline states two through five.
+
+namespace = zg361ip
+
+zg361ip.202 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_02_effect = yes }
+}
+
+zg361ip.203 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_03_effect = yes }
+}
+
+zg361ip.204 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_04_effect = yes }
+}
+
+zg361ip.205 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_05_effect = yes }
+}

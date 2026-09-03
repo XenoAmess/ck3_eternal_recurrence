@@ -1,0 +1,27 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: open the bounded X/Y/Z portfolio for one assessed official.
+
+zg361_ip_open_portfolio_effect = {
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			any_vassal = { zg361_is_reviewable_vassal_trigger = yes }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_portfolio_cycle }
+				NOT = { var:zg361_ip_portfolio_cycle = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_ip_portfolio_cycle value = var:zg361_review_serial }
+		ordered_vassal = {
+			limit = { zg361_is_reviewable_vassal_trigger = yes }
+			order_by = stewardship
+			position = 0
+			zg361_ip_open_x_case_on_subject_effect = yes
+			zg361_ip_open_y_case_on_subject_effect = yes
+			zg361_ip_open_z_case_on_subject_effect = yes
+		}
+	}
+}

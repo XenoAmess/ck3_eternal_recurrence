@@ -1,0 +1,138 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: resolve Z shared-platform deadline states two through five.
+
+zg361_ip_z_due_02_effect = {
+	zg361_case_kernel_expire_deadline_effect = {
+		OWNER_VAR = zg361_case_z_owner
+		SUBJECT_VAR = zg361_case_z_subject
+		CYCLE_VAR = zg361_case_z_cycle_serial
+		CASE_VAR = zg361_case_z_case_serial
+		STATE_VAR = zg361_case_z_state
+		REVISION_VAR = zg361_case_z_revision
+		ACTIVE_VAR = zg361_case_z_active
+		TIMELINE_VAR = zg361_case_z_timeline_serial
+		FEEDBACK_VAR = zg361_case_z_feedback_revision
+		DEADLINE_OWNER_VAR = zg361_ip_z_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_ip_z_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_ip_z_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_ip_z_deadline_case
+		DEADLINE_STATE_VAR = zg361_ip_z_deadline_state
+		DEADLINE_PENDING_VAR = zg361_ip_z_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_ip_z_deadline_expired
+	}
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied }
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_ip_z_dispatch_02_effect = {
+				TICKET_OWNER = var:zg361_ip_z_deadline_owner
+		TICKET_SUBJECT = var:zg361_ip_z_deadline_subject
+		TICKET_CYCLE = var:zg361_ip_z_deadline_cycle
+		TICKET_CASE = var:zg361_ip_z_deadline_case
+		TICKET_STATE = 2
+			}
+		}
+	}
+}
+
+zg361_ip_z_due_03_effect = {
+	zg361_case_kernel_expire_deadline_effect = {
+		OWNER_VAR = zg361_case_z_owner
+		SUBJECT_VAR = zg361_case_z_subject
+		CYCLE_VAR = zg361_case_z_cycle_serial
+		CASE_VAR = zg361_case_z_case_serial
+		STATE_VAR = zg361_case_z_state
+		REVISION_VAR = zg361_case_z_revision
+		ACTIVE_VAR = zg361_case_z_active
+		TIMELINE_VAR = zg361_case_z_timeline_serial
+		FEEDBACK_VAR = zg361_case_z_feedback_revision
+		DEADLINE_OWNER_VAR = zg361_ip_z_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_ip_z_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_ip_z_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_ip_z_deadline_case
+		DEADLINE_STATE_VAR = zg361_ip_z_deadline_state
+		DEADLINE_PENDING_VAR = zg361_ip_z_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_ip_z_deadline_expired
+	}
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied }
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_ip_z_dispatch_03_effect = {
+				TICKET_OWNER = var:zg361_ip_z_deadline_owner
+		TICKET_SUBJECT = var:zg361_ip_z_deadline_subject
+		TICKET_CYCLE = var:zg361_ip_z_deadline_cycle
+		TICKET_CASE = var:zg361_ip_z_deadline_case
+		TICKET_STATE = 3
+			}
+		}
+	}
+}
+
+zg361_ip_z_due_04_effect = {
+	zg361_case_kernel_expire_deadline_effect = {
+		OWNER_VAR = zg361_case_z_owner
+		SUBJECT_VAR = zg361_case_z_subject
+		CYCLE_VAR = zg361_case_z_cycle_serial
+		CASE_VAR = zg361_case_z_case_serial
+		STATE_VAR = zg361_case_z_state
+		REVISION_VAR = zg361_case_z_revision
+		ACTIVE_VAR = zg361_case_z_active
+		TIMELINE_VAR = zg361_case_z_timeline_serial
+		FEEDBACK_VAR = zg361_case_z_feedback_revision
+		DEADLINE_OWNER_VAR = zg361_ip_z_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_ip_z_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_ip_z_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_ip_z_deadline_case
+		DEADLINE_STATE_VAR = zg361_ip_z_deadline_state
+		DEADLINE_PENDING_VAR = zg361_ip_z_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_ip_z_deadline_expired
+	}
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied }
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_ip_z_dispatch_04_effect = {
+				TICKET_OWNER = var:zg361_ip_z_deadline_owner
+		TICKET_SUBJECT = var:zg361_ip_z_deadline_subject
+		TICKET_CYCLE = var:zg361_ip_z_deadline_cycle
+		TICKET_CASE = var:zg361_ip_z_deadline_case
+		TICKET_STATE = 4
+			}
+		}
+	}
+}
+
+zg361_ip_z_due_05_effect = {
+	zg361_case_kernel_expire_deadline_effect = {
+		OWNER_VAR = zg361_case_z_owner
+		SUBJECT_VAR = zg361_case_z_subject
+		CYCLE_VAR = zg361_case_z_cycle_serial
+		CASE_VAR = zg361_case_z_case_serial
+		STATE_VAR = zg361_case_z_state
+		REVISION_VAR = zg361_case_z_revision
+		ACTIVE_VAR = zg361_case_z_active
+		TIMELINE_VAR = zg361_case_z_timeline_serial
+		FEEDBACK_VAR = zg361_case_z_feedback_revision
+		DEADLINE_OWNER_VAR = zg361_ip_z_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_ip_z_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_ip_z_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_ip_z_deadline_case
+		DEADLINE_STATE_VAR = zg361_ip_z_deadline_state
+		DEADLINE_PENDING_VAR = zg361_ip_z_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_ip_z_deadline_expired
+	}
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied }
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_ip_z_dispatch_05_effect = {
+				TICKET_OWNER = var:zg361_ip_z_deadline_owner
+		TICKET_SUBJECT = var:zg361_ip_z_deadline_subject
+		TICKET_CYCLE = var:zg361_ip_z_deadline_cycle
+		TICKET_CASE = var:zg361_ip_z_deadline_case
+		TICKET_STATE = 5
+			}
+		}
+	}
+}

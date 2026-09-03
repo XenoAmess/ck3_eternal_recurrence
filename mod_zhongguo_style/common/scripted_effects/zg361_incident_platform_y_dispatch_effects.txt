@@ -1,0 +1,382 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: dispatch the five ordered Y maintenance-debt stages.
+
+zg361_ip_y_dispatch_01_effect = {
+	zg361_ip_m205_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+	}
+	zg361_ip_m206_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+	}
+	zg361_ip_m207_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m205_done_owner has_variable = zg361_ip_m205_done_subject has_variable = zg361_ip_m205_done_cycle has_variable = zg361_ip_m205_done_case has_variable = zg361_ip_m205_done_state }
+				var:zg361_ip_m205_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m205_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m205_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m205_done_case = $TICKET_CASE$
+				var:zg361_ip_m205_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m206_done_owner has_variable = zg361_ip_m206_done_subject has_variable = zg361_ip_m206_done_cycle has_variable = zg361_ip_m206_done_case has_variable = zg361_ip_m206_done_state }
+				var:zg361_ip_m206_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m206_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m206_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m206_done_case = $TICKET_CASE$
+				var:zg361_ip_m206_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m207_done_owner has_variable = zg361_ip_m207_done_subject has_variable = zg361_ip_m207_done_cycle has_variable = zg361_ip_m207_done_case has_variable = zg361_ip_m207_done_state }
+				var:zg361_ip_m207_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m207_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m207_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m207_done_case = $TICKET_CASE$
+				var:zg361_ip_m207_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_y_advance_01_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_case_kernel_schedule_deadline_effect = {
+				OWNER_VAR = zg361_case_y_owner
+				SUBJECT_VAR = zg361_case_y_subject
+				CYCLE_VAR = zg361_case_y_cycle_serial
+				CASE_VAR = zg361_case_y_case_serial
+				STATE_VAR = zg361_case_y_state
+				ACTIVE_VAR = zg361_case_y_active
+				DEADLINE_OWNER_VAR = zg361_ip_y_deadline_owner
+				DEADLINE_SUBJECT_VAR = zg361_ip_y_deadline_subject
+				DEADLINE_CYCLE_VAR = zg361_ip_y_deadline_cycle
+				DEADLINE_CASE_VAR = zg361_ip_y_deadline_case
+				DEADLINE_STATE_VAR = zg361_ip_y_deadline_state
+				DEADLINE_DAYS_VAR = zg361_ip_y_deadline_days
+				DEADLINE_PENDING_VAR = zg361_ip_y_deadline_pending
+				DEADLINE_EXPIRED_VAR = zg361_ip_y_deadline_expired
+				TICKET_OWNER = var:zg361_case_y_owner
+				TICKET_SUBJECT = var:zg361_case_y_subject
+				TICKET_CYCLE = var:zg361_case_y_cycle_serial
+				TICKET_CASE = var:zg361_case_y_case_serial
+				TICKET_STATE = 2
+				DAYS = 30
+				EVENT = zg361ip.202
+			}
+			}
+		}
+	}
+}
+
+zg361_ip_y_dispatch_02_effect = {
+	zg361_ip_m208_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 2
+	}
+	zg361_ip_m209_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 2
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m208_done_owner has_variable = zg361_ip_m208_done_subject has_variable = zg361_ip_m208_done_cycle has_variable = zg361_ip_m208_done_case has_variable = zg361_ip_m208_done_state }
+				var:zg361_ip_m208_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m208_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m208_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m208_done_case = $TICKET_CASE$
+				var:zg361_ip_m208_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m209_done_owner has_variable = zg361_ip_m209_done_subject has_variable = zg361_ip_m209_done_cycle has_variable = zg361_ip_m209_done_case has_variable = zg361_ip_m209_done_state }
+				var:zg361_ip_m209_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m209_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m209_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m209_done_case = $TICKET_CASE$
+				var:zg361_ip_m209_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_y_advance_02_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_case_kernel_schedule_deadline_effect = {
+				OWNER_VAR = zg361_case_y_owner
+				SUBJECT_VAR = zg361_case_y_subject
+				CYCLE_VAR = zg361_case_y_cycle_serial
+				CASE_VAR = zg361_case_y_case_serial
+				STATE_VAR = zg361_case_y_state
+				ACTIVE_VAR = zg361_case_y_active
+				DEADLINE_OWNER_VAR = zg361_ip_y_deadline_owner
+				DEADLINE_SUBJECT_VAR = zg361_ip_y_deadline_subject
+				DEADLINE_CYCLE_VAR = zg361_ip_y_deadline_cycle
+				DEADLINE_CASE_VAR = zg361_ip_y_deadline_case
+				DEADLINE_STATE_VAR = zg361_ip_y_deadline_state
+				DEADLINE_DAYS_VAR = zg361_ip_y_deadline_days
+				DEADLINE_PENDING_VAR = zg361_ip_y_deadline_pending
+				DEADLINE_EXPIRED_VAR = zg361_ip_y_deadline_expired
+				TICKET_OWNER = var:zg361_case_y_owner
+				TICKET_SUBJECT = var:zg361_case_y_subject
+				TICKET_CYCLE = var:zg361_case_y_cycle_serial
+				TICKET_CASE = var:zg361_case_y_case_serial
+				TICKET_STATE = 3
+				DAYS = 60
+				EVENT = zg361ip.203
+			}
+			}
+		}
+	}
+}
+
+zg361_ip_y_dispatch_03_effect = {
+	zg361_ip_m210_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+	}
+	zg361_ip_m211_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+	}
+	zg361_ip_m212_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m210_done_owner has_variable = zg361_ip_m210_done_subject has_variable = zg361_ip_m210_done_cycle has_variable = zg361_ip_m210_done_case has_variable = zg361_ip_m210_done_state }
+				var:zg361_ip_m210_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m210_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m210_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m210_done_case = $TICKET_CASE$
+				var:zg361_ip_m210_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m211_done_owner has_variable = zg361_ip_m211_done_subject has_variable = zg361_ip_m211_done_cycle has_variable = zg361_ip_m211_done_case has_variable = zg361_ip_m211_done_state }
+				var:zg361_ip_m211_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m211_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m211_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m211_done_case = $TICKET_CASE$
+				var:zg361_ip_m211_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m212_done_owner has_variable = zg361_ip_m212_done_subject has_variable = zg361_ip_m212_done_cycle has_variable = zg361_ip_m212_done_case has_variable = zg361_ip_m212_done_state }
+				var:zg361_ip_m212_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m212_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m212_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m212_done_case = $TICKET_CASE$
+				var:zg361_ip_m212_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_y_advance_03_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_case_kernel_schedule_deadline_effect = {
+				OWNER_VAR = zg361_case_y_owner
+				SUBJECT_VAR = zg361_case_y_subject
+				CYCLE_VAR = zg361_case_y_cycle_serial
+				CASE_VAR = zg361_case_y_case_serial
+				STATE_VAR = zg361_case_y_state
+				ACTIVE_VAR = zg361_case_y_active
+				DEADLINE_OWNER_VAR = zg361_ip_y_deadline_owner
+				DEADLINE_SUBJECT_VAR = zg361_ip_y_deadline_subject
+				DEADLINE_CYCLE_VAR = zg361_ip_y_deadline_cycle
+				DEADLINE_CASE_VAR = zg361_ip_y_deadline_case
+				DEADLINE_STATE_VAR = zg361_ip_y_deadline_state
+				DEADLINE_DAYS_VAR = zg361_ip_y_deadline_days
+				DEADLINE_PENDING_VAR = zg361_ip_y_deadline_pending
+				DEADLINE_EXPIRED_VAR = zg361_ip_y_deadline_expired
+				TICKET_OWNER = var:zg361_case_y_owner
+				TICKET_SUBJECT = var:zg361_case_y_subject
+				TICKET_CYCLE = var:zg361_case_y_cycle_serial
+				TICKET_CASE = var:zg361_case_y_case_serial
+				TICKET_STATE = 4
+				DAYS = 90
+				EVENT = zg361ip.204
+			}
+			}
+		}
+	}
+}
+
+zg361_ip_y_dispatch_04_effect = {
+	zg361_ip_m213_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 4
+	}
+	zg361_ip_m214_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 4
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m213_done_owner has_variable = zg361_ip_m213_done_subject has_variable = zg361_ip_m213_done_cycle has_variable = zg361_ip_m213_done_case has_variable = zg361_ip_m213_done_state }
+				var:zg361_ip_m213_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m213_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m213_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m213_done_case = $TICKET_CASE$
+				var:zg361_ip_m213_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m214_done_owner has_variable = zg361_ip_m214_done_subject has_variable = zg361_ip_m214_done_cycle has_variable = zg361_ip_m214_done_case has_variable = zg361_ip_m214_done_state }
+				var:zg361_ip_m214_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m214_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m214_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m214_done_case = $TICKET_CASE$
+				var:zg361_ip_m214_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_y_advance_04_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_case_kernel_schedule_deadline_effect = {
+				OWNER_VAR = zg361_case_y_owner
+				SUBJECT_VAR = zg361_case_y_subject
+				CYCLE_VAR = zg361_case_y_cycle_serial
+				CASE_VAR = zg361_case_y_case_serial
+				STATE_VAR = zg361_case_y_state
+				ACTIVE_VAR = zg361_case_y_active
+				DEADLINE_OWNER_VAR = zg361_ip_y_deadline_owner
+				DEADLINE_SUBJECT_VAR = zg361_ip_y_deadline_subject
+				DEADLINE_CYCLE_VAR = zg361_ip_y_deadline_cycle
+				DEADLINE_CASE_VAR = zg361_ip_y_deadline_case
+				DEADLINE_STATE_VAR = zg361_ip_y_deadline_state
+				DEADLINE_DAYS_VAR = zg361_ip_y_deadline_days
+				DEADLINE_PENDING_VAR = zg361_ip_y_deadline_pending
+				DEADLINE_EXPIRED_VAR = zg361_ip_y_deadline_expired
+				TICKET_OWNER = var:zg361_case_y_owner
+				TICKET_SUBJECT = var:zg361_case_y_subject
+				TICKET_CYCLE = var:zg361_case_y_cycle_serial
+				TICKET_CASE = var:zg361_case_y_case_serial
+				TICKET_STATE = 5
+				DAYS = 90
+				EVENT = zg361ip.205
+			}
+			}
+		}
+	}
+}
+
+zg361_ip_y_dispatch_05_effect = {
+	zg361_ip_m215_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 5
+	}
+	zg361_ip_m216_apply_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 5
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m215_done_owner has_variable = zg361_ip_m215_done_subject has_variable = zg361_ip_m215_done_cycle has_variable = zg361_ip_m215_done_case has_variable = zg361_ip_m215_done_state }
+				var:zg361_ip_m215_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m215_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m215_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m215_done_case = $TICKET_CASE$
+				var:zg361_ip_m215_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+			trigger_if = {
+				limit = { has_variable = zg361_ip_m216_done_owner has_variable = zg361_ip_m216_done_subject has_variable = zg361_ip_m216_done_cycle has_variable = zg361_ip_m216_done_case has_variable = zg361_ip_m216_done_state }
+				var:zg361_ip_m216_done_owner = $TICKET_OWNER$
+				var:zg361_ip_m216_done_subject = $TICKET_SUBJECT$
+				var:zg361_ip_m216_done_cycle = $TICKET_CYCLE$
+				var:zg361_ip_m216_done_case = $TICKET_CASE$
+				var:zg361_ip_m216_done_state = $TICKET_STATE$
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_y_advance_05_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_ip_finalize_y_effect = yes
+			}
+		}
+	}
+}

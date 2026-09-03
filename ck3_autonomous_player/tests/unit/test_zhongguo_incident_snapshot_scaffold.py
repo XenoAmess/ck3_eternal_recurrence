@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 from pathlib import Path
@@ -16,7 +16,10 @@ MAILBOX_HEADER = ROOT / "native_bridge/include/xar_bridge/zhongguo_incident_snap
 ABI = ROOT / "native_bridge/research/zhongguo_incident_snapshot_v1_abi.json"
 FIXTURE = ROOT / "native_bridge/research/fixtures/zhongguo_incident_snapshot_v1_source_contract.json"
 SCHEMA = ROOT / "schemas/zhongguo-incident-snapshot-v1.schema.json"
-EFFECTS = REPO / "mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_runtime_effects.txt"
+EFFECTS_DIR = REPO / "mod_zhongguo_style/common/scripted_effects"
+EFFECT_SHARDS = tuple(
+    sorted(EFFECTS_DIR.glob("zg361_incident_platform_*_effects.txt"))
+)
 
 
 def _allowlist(header: str, profile: str) -> list[str]:
@@ -38,7 +41,13 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
         cls.serializer = SERIALIZER.read_text(encoding="utf-8")
         cls.mailbox = MAILBOX.read_text(encoding="utf-8")
         cls.mailbox_header = MAILBOX_HEADER.read_text(encoding="utf-8")
-        cls.effects = EFFECTS.read_text(encoding="utf-8-sig")
+        if len(EFFECT_SHARDS) != 27:
+            raise AssertionError(
+                f"expected 27 incident purpose shards, found {len(EFFECT_SHARDS)}"
+            )
+        cls.effects = "\n".join(
+            path.read_text(encoding="utf-8-sig") for path in EFFECT_SHARDS
+        )
         cls.abi = json.loads(ABI.read_text(encoding="utf-8"))
         cls.fixture = json.loads(FIXTURE.read_text(encoding="utf-8"))
         json.loads(SCHEMA.read_text(encoding="utf-8"))

@@ -1,0 +1,154 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: open, bind, and finalize one Y maintenance-debt case.
+
+zg361_ip_finalize_y_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_case_y_owner
+			has_variable = zg361_case_y_subject
+			has_variable = zg361_case_y_cycle_serial
+			has_variable = zg361_case_y_case_serial
+			has_variable = zg361_case_y_state
+			has_variable = zg361_case_y_active
+			has_variable = zg361_ip_y_input_owner
+			has_variable = zg361_ip_y_input_subject
+			has_variable = zg361_ip_y_input_cycle
+			has_variable = zg361_ip_y_input_incident_serial
+			has_variable = zg361_ip_y_input_source_kind
+			has_variable = zg361_ip_y_input_consequence_kind
+			has_variable = zg361_ip_y_probe_owner
+			has_variable = zg361_ip_y_probe_subject
+			has_variable = zg361_ip_y_probe_cycle
+			has_variable = zg361_ip_y_probe_result
+			has_variable = zg361_ip_y_probe_source_kind
+			has_variable = zg361_ip_y_probe_consequence_kind
+			var:zg361_case_y_state = 6
+			var:zg361_case_y_active = 0
+			var:zg361_ip_y_input_owner = var:zg361_case_y_owner
+			var:zg361_ip_y_input_subject = var:zg361_case_y_subject
+			var:zg361_ip_y_input_cycle = var:zg361_case_y_cycle_serial
+			var:zg361_ip_y_probe_owner = var:zg361_case_y_owner
+			var:zg361_ip_y_probe_subject = var:zg361_case_y_subject
+			var:zg361_ip_y_probe_cycle = var:zg361_case_y_cycle_serial
+			var:zg361_ip_y_probe_result = 1
+			var:zg361_ip_y_input_incident_serial > 0
+			var:zg361_ip_y_input_source_kind = var:zg361_ip_y_probe_source_kind
+			var:zg361_ip_y_input_consequence_kind = var:zg361_ip_y_probe_consequence_kind
+			var:zg361_ip_y_input_source_kind > 0
+			var:zg361_ip_y_input_consequence_kind > 0
+			trigger_if = {
+				limit = { has_variable = zg361_ip_y_final_case }
+				NOT = { var:zg361_ip_y_final_case = var:zg361_case_y_case_serial }
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_ip_y_final_score value = 0 }
+		if = {
+			limit = { var:zg361_ip_y_evidence_n > 0 }
+			set_variable = { name = zg361_ip_y_final_score value = { value = var:zg361_ip_y_score_delta divide = var:zg361_ip_y_evidence_n round = yes max = 4 min = -4 } }
+		}
+		set_variable = { name = zg361_ip_y_final_applicable value = 1 }
+		set_variable = { name = zg361_ip_y_final_owner value = var:zg361_case_y_owner }
+		set_variable = { name = zg361_ip_y_final_subject value = var:zg361_case_y_subject }
+		set_variable = { name = zg361_ip_y_final_cycle value = var:zg361_case_y_cycle_serial }
+		set_variable = { name = zg361_ip_y_final_case value = var:zg361_case_y_case_serial }
+		set_variable = { name = zg361_ip_y_final_state value = 6 }
+		set_variable = { name = zg361_ip_y_final_revision value = var:zg361_case_y_revision }
+		set_variable = { name = zg361_ip_y_final_incident_serial value = var:zg361_ip_y_input_incident_serial }
+		set_variable = { name = zg361_ip_y_final_source_kind value = var:zg361_ip_y_input_source_kind }
+		set_variable = { name = zg361_ip_y_final_consequence_kind value = var:zg361_ip_y_input_consequence_kind }
+		set_variable = { name = zg361_ip_y_final_kpi_staged value = 0 }
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_ip_y_kpi_pending has_variable = zg361_ip_y_kpi_consumed }
+					OR = { var:zg361_ip_y_kpi_pending = 0 var:zg361_ip_y_kpi_consumed = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+			set_variable = { name = zg361_ip_y_kpi_pending value = 1 }
+			set_variable = { name = zg361_ip_y_kpi_consumed value = 0 }
+			set_variable = { name = zg361_ip_y_kpi_owner value = var:zg361_case_y_owner }
+			set_variable = { name = zg361_ip_y_kpi_subject value = var:zg361_case_y_subject }
+			set_variable = { name = zg361_ip_y_kpi_origin_cycle value = var:zg361_case_y_cycle_serial }
+			set_variable = { name = zg361_ip_y_kpi_case value = var:zg361_case_y_case_serial }
+			set_variable = { name = zg361_ip_y_kpi_state value = 6 }
+			set_variable = { name = zg361_ip_y_kpi_score value = var:zg361_ip_y_final_score }
+			set_variable = { name = zg361_ip_y_kpi_due_cycle value = var:zg361_case_y_cycle_serial }
+			change_variable = { name = zg361_ip_y_kpi_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_y_kpi_due_offset value = 1 }
+			set_variable = { name = zg361_ip_y_kpi_incident_serial value = var:zg361_ip_y_input_incident_serial }
+			set_variable = { name = zg361_ip_y_kpi_source_kind value = var:zg361_ip_y_input_source_kind }
+			set_variable = { name = zg361_ip_y_kpi_consequence_kind value = var:zg361_ip_y_input_consequence_kind }
+			set_variable = { name = zg361_ip_y_final_kpi_staged value = 1 }
+		}
+		else = { set_variable = { name = zg361_ip_y_kpi_collision value = 1 } }
+		save_scope_as = zg361_ip_result_subject
+		if = {
+			limit = { var:zg361_case_y_owner = { is_alive = yes is_ai = no } }
+			var:zg361_case_y_owner = { trigger_event = { id = zg361ip.290 } }
+		}
+		debug_log = "ZG361IP: Y case closed and next-cycle KPI staged"
+	}
+}
+
+zg361_ip_open_y_case_on_subject_effect = {
+	if = { limit = { has_variable = zg361_ip_y_final_score } set_variable = { name = zg361_ip_y_previous_final_score value = var:zg361_ip_y_final_score } }
+	zg361_ip_capture_real_incident_effect = yes
+	if = {
+		limit = {
+			has_variable = zg361_ip_capture_status
+			var:zg361_ip_capture_status = 1
+			has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = root
+			var:zg361_ip_incident_subject = this
+			var:zg361_ip_incident_cycle = root.var:zg361_review_serial
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+		}
+		set_variable = { name = zg361_ip_y_input_owner value = root }
+		set_variable = { name = zg361_ip_y_input_subject value = this }
+		set_variable = { name = zg361_ip_y_input_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_ip_y_input_incident_serial value = var:zg361_ip_incident_serial }
+		set_variable = { name = zg361_ip_y_input_source_kind value = var:zg361_ip_incident_source_kind }
+		set_variable = { name = zg361_ip_y_input_consequence_kind value = var:zg361_ip_incident_consequence_kind }
+		zg361_case_y_open_effect = yes
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied }
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+				zg361_ip_freeze_y_probe_effect = yes
+				set_variable = { name = zg361_ip_y_final_applicable value = 1 }
+				set_variable = { name = zg361_ip_y_score_delta value = 0 }
+				set_variable = { name = zg361_ip_y_evidence_n value = 0 }
+				set_variable = { name = zg361_ip_y_last_consumer value = 0 }
+				if = { limit = { NOT = { has_variable = zg361_ip_y_policy_debt } } set_variable = { name = zg361_ip_y_policy_debt value = 0 } }
+				set_variable = { name = zg361_ip_y_deadline_pending value = 0 }
+				set_variable = { name = zg361_ip_y_deadline_expired value = 0 }
+				zg361_ip_y_dispatch_01_effect = {
+					TICKET_OWNER = var:zg361_case_y_owner
+					TICKET_SUBJECT = var:zg361_case_y_subject
+					TICKET_CYCLE = var:zg361_case_y_cycle_serial
+					TICKET_CASE = var:zg361_case_y_case_serial
+					TICKET_STATE = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_capture_status var:zg361_ip_capture_status = 0 }
+		zg361_ip_freeze_y_probe_effect = yes
+		zg361_ip_mark_y_not_applicable_effect = yes
+	}
+}
+
+zg361_ip_open_y_case_effect = {
+	$SUBJECT$ = { zg361_ip_open_y_case_on_subject_effect = yes }
+}

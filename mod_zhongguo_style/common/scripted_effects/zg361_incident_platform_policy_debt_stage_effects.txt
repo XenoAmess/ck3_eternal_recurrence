@@ -1,0 +1,68 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: stage the policy-debt KPI written by numbered route-C outcomes.
+
+zg361_ip_stage_policy_debt_kpi_effect = {
+	set_variable = { name = zg361_ip_policy_kpi_stage_status value = 0 }
+	if = {
+		limit = {
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = $DEBT_OWNER$
+			$DEBT_OWNER$ = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= $DEBT_DUE_CYCLE$
+			}
+			$DEBT_DUE_CYCLE$ > $DEBT_CYCLE$
+			OR = {
+				AND = {
+					has_variable = zg361_ip_policy_kpi_pending
+					has_variable = zg361_ip_policy_kpi_consumed
+					has_variable = zg361_ip_policy_kpi_owner
+					has_variable = zg361_ip_policy_kpi_subject
+					has_variable = zg361_ip_policy_kpi_origin_cycle
+					has_variable = zg361_ip_policy_kpi_due_cycle
+					has_variable = zg361_ip_policy_kpi_due_offset
+					var:zg361_ip_policy_kpi_pending = 1
+					var:zg361_ip_policy_kpi_consumed = 0
+					var:zg361_ip_policy_kpi_owner = $DEBT_OWNER$
+					var:zg361_ip_policy_kpi_subject = this
+					var:zg361_ip_policy_kpi_origin_cycle = $DEBT_DUE_CYCLE$
+					var:zg361_ip_policy_kpi_due_offset = 1
+					var:zg361_ip_policy_kpi_due_cycle > var:zg361_ip_policy_kpi_origin_cycle
+				}
+				trigger_if = {
+					limit = { has_variable = zg361_ip_policy_kpi_pending has_variable = zg361_ip_policy_kpi_consumed }
+					OR = { var:zg361_ip_policy_kpi_pending = 0 var:zg361_ip_policy_kpi_consumed = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_ip_policy_kpi_pending has_variable = zg361_ip_policy_kpi_consumed }
+					OR = { var:zg361_ip_policy_kpi_pending = 0 var:zg361_ip_policy_kpi_consumed = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+			set_variable = { name = zg361_ip_policy_kpi_pending value = 1 }
+			set_variable = { name = zg361_ip_policy_kpi_consumed value = 0 }
+			set_variable = { name = zg361_ip_policy_kpi_owner value = $DEBT_OWNER$ }
+			set_variable = { name = zg361_ip_policy_kpi_subject value = this }
+			set_variable = { name = zg361_ip_policy_kpi_origin_cycle value = $DEBT_DUE_CYCLE$ }
+			set_variable = { name = zg361_ip_policy_kpi_due_cycle value = $DEBT_DUE_CYCLE$ }
+			change_variable = { name = zg361_ip_policy_kpi_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_policy_kpi_due_offset value = 1 }
+			set_variable = { name = zg361_ip_policy_kpi_score value = 0 }
+			set_variable = { name = zg361_ip_policy_kpi_entry_count value = 0 }
+		}
+		change_variable = { name = zg361_ip_policy_kpi_score add = -1 }
+		change_variable = { name = zg361_ip_policy_kpi_entry_count add = 1 }
+		set_variable = { name = zg361_ip_policy_kpi_last_mechanism value = $MECHANISM_ID$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_cycle value = $DEBT_CYCLE$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_due_cycle value = $DEBT_DUE_CYCLE$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_case value = $DEBT_CASE$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_incident_serial value = $INCIDENT_SERIAL$ }
+		set_variable = { name = zg361_ip_policy_kpi_stage_status value = 1 }
+	}
+}

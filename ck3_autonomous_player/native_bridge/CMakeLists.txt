@@ -1241,6 +1241,35 @@ if(BUILD_TESTING)
       xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test PRIVATE
       /W4 /permissive- /EHsc)
   endif()
+  set(ZG361_INCIDENT_PRODUCER_SHARDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_capture_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_policy_debt_consume_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_policy_debt_stage_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_portfolio_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_apply_192_198_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_apply_199_204_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_deadline_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_debt_192_198_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_debt_199_204_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_dispatch_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_lifecycle_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_x_probe_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_apply_205_210_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_apply_211_216_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_deadline_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_debt_205_210_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_debt_211_216_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_dispatch_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_lifecycle_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_yz_probe_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_217_222_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_223_228_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_deadline_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_debt_217_222_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_debt_223_228_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_dispatch_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_lifecycle_effects.txt
+  )
   add_test(
     NAME xar_ck3_native_bridge_zhongguo_incident_snapshot_v1_source_contract
     COMMAND xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test
@@ -1253,7 +1282,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/zhongguo_incident_snapshot_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/zhongguo_incident_snapshot_v1_source_contract.json
-      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_runtime_effects.txt
+      ${ZG361_INCIDENT_PRODUCER_SHARDS}
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/zhongguo-incident-snapshot-v1.md
   )
 

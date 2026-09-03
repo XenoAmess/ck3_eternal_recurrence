@@ -1,0 +1,13 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: show the player-visible Z shared-platform closure receipt.
+
+namespace = zg361ip
+
+zg361ip.390 = {
+	type = character_event
+	theme = vassal
+	title = zg361ip.390.t
+	desc = zg361ip.390.desc
+	trigger = { is_ai = no has_game_rule = zg361_on exists = scope:zg361_ip_result_subject }
+	option = { name = zg361ip.result.ok }
+}

@@ -1,0 +1,115 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: capture one observed incident and freeze its immutable source facts.
+
+zg361_ip_capture_real_incident_effect = {
+	set_variable = { name = zg361_ip_capture_status value = 0 }
+	if = {
+		limit = {
+			root = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				government_has_flag = government_has_treasury
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			has_variable = zg361_ip_probe_owner
+			has_variable = zg361_ip_probe_subject
+			has_variable = zg361_ip_probe_cycle
+			has_variable = zg361_ip_probe_serial
+			has_variable = zg361_ip_probe_result
+			has_variable = zg361_ip_probe_source_kind
+			has_variable = zg361_ip_probe_consequence_kind
+			has_variable = zg361_ip_probe_subject_gold
+			has_variable = zg361_ip_probe_manager_treasury
+			has_variable = zg361_ip_probe_capital_control
+			var:zg361_ip_probe_owner = root
+			var:zg361_ip_probe_subject = this
+			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
+		}
+		set_variable = { name = zg361_ip_capture_status value = var:zg361_ip_probe_result }
+	}
+	else_if = {
+		limit = {
+			root = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				government_has_flag = government_has_treasury
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+		}
+		if = { limit = { NOT = { has_variable = zg361_ip_probe_serial } } set_variable = { name = zg361_ip_probe_serial value = 0 } }
+		change_variable = { name = zg361_ip_probe_serial add = 1 }
+		set_variable = { name = zg361_ip_probe_owner value = root }
+		set_variable = { name = zg361_ip_probe_subject value = this }
+		set_variable = { name = zg361_ip_probe_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_ip_probe_result value = 0 }
+		set_variable = { name = zg361_ip_probe_source_kind value = 0 }
+		set_variable = { name = zg361_ip_probe_consequence_kind value = 0 }
+		set_variable = { name = zg361_ip_probe_world_consequence value = 0 }
+		set_variable = { name = zg361_ip_probe_resource_consequence value = 0 }
+		set_variable = { name = zg361_ip_probe_subject_gold value = gold }
+		# ROOT passed the explicit treasury-capability guard above. Freeze its
+		# signed balance onto THIS in the same probe frame. Absence remains
+		# absence: there is deliberately no zero fallback.
+		set_variable = { name = zg361_ip_probe_manager_treasury value = root.treasury }
+		set_variable = { name = zg361_ip_probe_capital_control value = capital_county.county_control }
+		if = {
+			limit = {
+				is_at_war = yes
+				capital_county = { county_control <= 50 }
+			}
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 1 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 1 }
+			set_variable = { name = zg361_ip_probe_world_consequence value = 1 }
+		}
+		else_if = {
+			limit = { gold < 0 }
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 3 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 2 }
+			set_variable = { name = zg361_ip_probe_resource_consequence value = 1 }
+		}
+		else_if = {
+			limit = { root = { government_has_flag = government_has_treasury treasury < 0 } }
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 4 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 2 }
+			set_variable = { name = zg361_ip_probe_resource_consequence value = 1 }
+		}
+		else_if = {
+			limit = { capital_county = { county_control <= 50 } }
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 5 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 3 }
+			set_variable = { name = zg361_ip_probe_world_consequence value = 1 }
+		}
+		set_variable = { name = zg361_ip_capture_status value = var:zg361_ip_probe_result }
+		if = {
+			limit = {
+				var:zg361_ip_probe_result = 1
+				var:zg361_ip_probe_source_kind > 0
+				var:zg361_ip_probe_consequence_kind > 0
+			}
+			if = { limit = { NOT = { has_variable = zg361_ip_incident_serial } } set_variable = { name = zg361_ip_incident_serial value = 0 } }
+			change_variable = { name = zg361_ip_incident_serial add = 1 }
+			set_variable = { name = zg361_ip_incident_active value = 1 }
+			set_variable = { name = zg361_ip_incident_owner value = root }
+			set_variable = { name = zg361_ip_incident_subject value = this }
+			set_variable = { name = zg361_ip_incident_cycle value = root.var:zg361_review_serial }
+			set_variable = { name = zg361_ip_incident_probe_serial value = var:zg361_ip_probe_serial }
+			set_variable = { name = zg361_ip_incident_source_kind value = var:zg361_ip_probe_source_kind }
+			set_variable = { name = zg361_ip_incident_consequence_kind value = var:zg361_ip_probe_consequence_kind }
+			set_variable = { name = zg361_ip_incident_world_consequence value = var:zg361_ip_probe_world_consequence }
+			set_variable = { name = zg361_ip_incident_resource_consequence value = var:zg361_ip_probe_resource_consequence }
+			set_variable = { name = zg361_ip_incident_subject_gold value = var:zg361_ip_probe_subject_gold }
+			set_variable = { name = zg361_ip_incident_capital_control value = var:zg361_ip_probe_capital_control }
+			set_variable = { name = zg361_ip_incident_open_year value = current_year }
+			debug_log = "ZG361IP: observed CK3 world/resource incident receipt"
+		}
+		else = { debug_log = "ZG361IP: no observed incident; X/Y/Z remain N/A" }
+	}
+}

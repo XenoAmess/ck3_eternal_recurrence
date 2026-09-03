@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_incident_x_production_closure",
+  "description": "Production X-incident closure layered over the frozen B2 r2 119-file projection.",
+  "readiness": "static-ready-not-live",
+  "baseline": {
+    "root": "_runtime/phase2-b2-production-closure-20260904-r2",
+    "source": "_runtime/phase2-b2-production-closure-20260904-r2/source",
+    "manifest": "_runtime/phase2-b2-production-closure-20260904-r2/projection.json",
+    "projection": "phase2-b2-production-closure-20260904-r2",
+    "file_count": 119,
+    "bytes": 8891635,
+    "manifest_sha256": "2c8f0979113f75866191c3ae10c699f3801d83aef91adcfd9c4b526b469eae28",
+    "source_tree_sha256": "f3b36dfdbe74827ff373b06c7c621d1ec72aa15e575f5abbf1186e636c625184",
+    "formal_overlay_tree_sha256": "3dd3da79f11ec892df72024e25ee985acab26e21fd4c1281c35e5deb0642c4d3",
+    "file_list_sha256": "6c3fe72e3fbb3e1ab6543bee9226f24203d1063951999aaf6bd7e9053b7533ff"
+  },
+  "candidate": {
+    "expected_file_count": 135,
+    "expected_overlay_file_count": 16,
+    "expected_incident_effect_shards": 11,
+    "expected_incident_event_shards": 4,
+    "expected_incident_effect_definitions": 47,
+    "expected_incident_event_definitions": 20,
+    "expected_fixture_effect_closure_count": 59,
+    "expected_production_effect_closure_count": 60,
+    "expected_event_closure_count": 20,
+    "expected_trigger_closure_count": 6,
+    "effect_target_per_file": 10,
+    "effect_hard_max_per_file": 20,
+    "ck3_launch": "NOT_RUN_BY_BUILDER",
+    "live_status": "pending"
+  },
+  "fixture_root_effects": [
+    "zg361_ip_open_x_case_effect"
+  ],
+  "production_root_effects": [
+    "zg361_ip_open_x_case_effect",
+    "zg361_ip_consume_due_kpi_inputs_effect"
+  ],
+  "incident": {
+    "effect_shards": [
+      "common/scripted_effects/zg361_incident_platform_capture_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_probe_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_policy_debt_stage_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_policy_debt_consume_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_apply_192_198_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_apply_199_204_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_debt_192_198_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_debt_199_204_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_dispatch_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_deadline_effects.txt",
+      "common/scripted_effects/zg361_incident_platform_x_lifecycle_effects.txt"
+    ],
+    "event_shards": [
+      "events/zg361_incident_platform_x_deadline_events.txt",
+      "events/zg361_incident_platform_x_result_events.txt",
+      "events/zg361_incident_platform_x_debt_7192_7198_events.txt",
+      "events/zg361_incident_platform_x_debt_7199_7204_events.txt"
+    ],
+    "localization_file": "localization/simp_chinese/zg361_incident_platform_l_simp_chinese.yml",
+    "fixture_reachable_effects": [
+      "zg361_ip_capture_real_incident_effect",
+      "zg361_ip_finalize_x_effect",
+      "zg361_ip_freeze_x_probe_effect",
+      "zg361_ip_m192_apply_effect",
+      "zg361_ip_m192_consume_due_debt_effect",
+      "zg361_ip_m193_apply_effect",
+      "zg361_ip_m193_consume_due_debt_effect",
+      "zg361_ip_m194_apply_effect",
+      "zg361_ip_m194_consume_due_debt_effect",
+      "zg361_ip_m195_apply_effect",
+      "zg361_ip_m195_consume_due_debt_effect",
+      "zg361_ip_m196_apply_effect",
+      "zg361_ip_m196_consume_due_debt_effect",
+      "zg361_ip_m197_apply_effect",
+      "zg361_ip_m197_consume_due_debt_effect",
+      "zg361_ip_m198_apply_effect",
+      "zg361_ip_m198_consume_due_debt_effect",
+      "zg361_ip_m199_apply_effect",
+      "zg361_ip_m199_consume_due_debt_effect",
+      "zg361_ip_m200_apply_effect",
+      "zg361_ip_m200_consume_due_debt_effect",
+      "zg361_ip_m201_apply_effect",
+      "zg361_ip_m201_consume_due_debt_effect",
+      "zg361_ip_m202_apply_effect",
+      "zg361_ip_m202_consume_due_debt_effect",
+      "zg361_ip_m203_apply_effect",
+      "zg361_ip_m203_consume_due_debt_effect",
+      "zg361_ip_m204_apply_effect",
+      "zg361_ip_m204_consume_due_debt_effect",
+      "zg361_ip_mark_x_not_applicable_effect",
+      "zg361_ip_open_x_case_effect",
+      "zg361_ip_open_x_case_on_subject_effect",
+      "zg361_ip_stage_policy_debt_kpi_effect",
+      "zg361_ip_x_dispatch_01_effect",
+      "zg361_ip_x_dispatch_02_effect",
+      "zg361_ip_x_dispatch_03_effect",
+      "zg361_ip_x_dispatch_04_effect",
+      "zg361_ip_x_dispatch_05_effect",
+      "zg361_ip_x_dispatch_06_effect",
+      "zg361_ip_x_dispatch_07_effect",
+      "zg361_ip_x_due_02_effect",
+      "zg361_ip_x_due_03_effect",
+      "zg361_ip_x_due_04_effect",
+      "zg361_ip_x_due_05_effect",
+      "zg361_ip_x_due_06_effect",
+      "zg361_ip_x_due_07_effect"
+    ],
+    "production_only_effects": [
+      "zg361_ip_consume_due_kpi_inputs_effect"
+    ],
+    "reachable_events": [
+      "zg361ip.102",
+      "zg361ip.103",
+      "zg361ip.104",
+      "zg361ip.105",
+      "zg361ip.106",
+      "zg361ip.107",
+      "zg361ip.190",
+      "zg361ip.7192",
+      "zg361ip.7193",
+      "zg361ip.7194",
+      "zg361ip.7195",
+      "zg361ip.7196",
+      "zg361ip.7197",
+      "zg361ip.7198",
+      "zg361ip.7199",
+      "zg361ip.7200",
+      "zg361ip.7201",
+      "zg361ip.7202",
+      "zg361ip.7203",
+      "zg361ip.7204"
+    ],
+    "referenced_localization_keys": [
+      "zg361ip.190.desc",
+      "zg361ip.190.t",
+      "zg361ip.result.ok"
+    ]
+  },
+  "dependencies": {
+    "case_kernel": {
+      "effect_file": "common/scripted_effects/zg361_case_kernel_effects.txt",
+      "trigger_file": "common/scripted_triggers/zg361_case_kernel_triggers.txt",
+      "already_in_baseline": true,
+      "reachable_effects": [
+        "zg361_case_kernel_expire_deadline_effect",
+        "zg361_case_kernel_initialize_case_effect",
+        "zg361_case_kernel_record_operation_effect",
+        "zg361_case_kernel_schedule_deadline_effect",
+        "zg361_case_kernel_transition_effect",
+        "zg361_case_x_advance_01_effect",
+        "zg361_case_x_advance_02_effect",
+        "zg361_case_x_advance_03_effect",
+        "zg361_case_x_advance_04_effect",
+        "zg361_case_x_advance_05_effect",
+        "zg361_case_x_advance_06_effect",
+        "zg361_case_x_advance_07_effect",
+        "zg361_case_x_open_effect"
+      ],
+      "reachable_triggers": [
+        "zg361_case_kernel_can_open_trigger",
+        "zg361_case_kernel_deadline_is_current_trigger",
+        "zg361_case_kernel_full_guard_trigger",
+        "zg361_case_kernel_receipt_is_current_trigger",
+        "zg361_is_celestial_liege_trigger",
+        "zg361_is_reviewable_vassal_trigger"
+      ]
+    }
+  },
+  "forbidden_paths": [
+    "common/scripted_effects/zg361_incident_platform_runtime_effects.txt",
+    "events/zg361_incident_platform_runtime_events.txt",
+    "common/scripted_effects/zg361_b2_runtime_effects.txt",
+    "common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt",
+    "events/zg361_workforce_endgame_runtime_events.txt"
+  ],
+  "stub_markers": [
+    "# DISPOSABLE DIAGNOSTIC STUBS",
+    "ZG361 B2 diagnostic stub:",
+    "ZG361 incident diagnostic stub:",
+    "# DIAGNOSTIC STUB",
+    "# DIAGNOSTIC FILE SPLIT",
+    "body_mode = stub"
+  ]
+}

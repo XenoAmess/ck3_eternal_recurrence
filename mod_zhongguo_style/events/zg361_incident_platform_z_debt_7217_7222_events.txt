@@ -1,0 +1,40 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: consume due Z route-C debt for mechanisms 217 through 222.
+
+namespace = zg361ip
+
+zg361ip.7217 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m217_consume_due_debt_effect = yes }
+}
+
+zg361ip.7218 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m218_consume_due_debt_effect = yes }
+}
+
+zg361ip.7219 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m219_consume_due_debt_effect = yes }
+}
+
+zg361ip.7220 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m220_consume_due_debt_effect = yes }
+}
+
+zg361ip.7221 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m221_consume_due_debt_effect = yes }
+}
+
+zg361ip.7222 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m222_consume_due_debt_effect = yes }
+}

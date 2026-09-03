@@ -1,0 +1,764 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: consume due route-C debt for X mechanisms 199 through 204.
+
+zg361_ip_m199_consume_due_debt_effect = {
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {
+		limit = { has_variable = zg361_ip_m199_debt_cycle has_variable = zg361_ip_m199_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m199_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m199_debt_case multiply = 1000 } add = 199 }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_ip_m199_debt_owner
+			has_variable = zg361_ip_m199_debt_subject
+			has_variable = zg361_ip_m199_debt_cycle
+			has_variable = zg361_ip_m199_debt_case
+			has_variable = zg361_ip_m199_debt_state
+			has_variable = zg361_ip_m199_debt_incident_serial
+			has_variable = zg361_ip_m199_debt_incident_source_kind
+			has_variable = zg361_ip_m199_debt_incident_consequence_kind
+			has_variable = zg361_ip_m199_debt_type_code
+			has_variable = zg361_ip_m199_debt_id
+			has_variable = zg361_ip_m199_debt_consumer_contract
+			has_variable = zg361_ip_m199_debt_due_cycle
+			has_variable = zg361_ip_m199_debt_open
+			has_variable = zg361_ip_m199_debt_consumed
+			has_variable = zg361_ip_m199_debt_escalation_count
+			has_variable = zg361_ip_m199_done_owner
+			has_variable = zg361_ip_m199_done_subject
+			has_variable = zg361_ip_m199_done_cycle
+			has_variable = zg361_ip_m199_done_case
+			has_variable = zg361_ip_m199_done_state
+			has_variable = zg361_ip_m199_business_object_created
+			has_variable = zg361_ip_x_policy_debt
+			var:zg361_ip_m199_debt_open = 1
+			var:zg361_ip_m199_debt_consumed = 0
+			var:zg361_ip_m199_business_object_created = 0
+			var:zg361_ip_m199_debt_type_code = 199
+			var:zg361_ip_m199_debt_consumer_contract = 199
+			var:zg361_ip_m199_debt_state = 4
+			var:zg361_ip_m199_debt_incident_serial > 0
+			var:zg361_ip_m199_debt_incident_source_kind > 0
+			var:zg361_ip_m199_debt_incident_consequence_kind > 0
+			var:zg361_ip_m199_debt_owner = var:zg361_ip_m199_done_owner
+			var:zg361_ip_m199_debt_subject = this
+			var:zg361_ip_m199_debt_subject = var:zg361_ip_m199_done_subject
+			var:zg361_ip_m199_debt_cycle = var:zg361_ip_m199_done_cycle
+			var:zg361_ip_m199_debt_case = var:zg361_ip_m199_done_case
+			var:zg361_ip_m199_debt_state = var:zg361_ip_m199_done_state
+			var:zg361_ip_m199_debt_id = scope:zg361_ip_expected_debt_id
+			var:zg361_ip_m199_debt_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_ip_m199_debt_due_cycle
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_ip_x_policy_debt >= 1
+				var:zg361_ip_m199_debt_owner = { zg361_is_celestial_liege_trigger = yes }
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:zg361_ip_m199_debt_owner
+			}
+			zg361_ip_stage_policy_debt_kpi_effect = {
+				DEBT_OWNER = var:zg361_ip_m199_debt_owner
+				DEBT_CYCLE = var:zg361_ip_m199_debt_cycle
+				DEBT_DUE_CYCLE = var:zg361_ip_m199_debt_due_cycle
+				DEBT_CASE = var:zg361_ip_m199_debt_case
+				MECHANISM_ID = 199
+				INCIDENT_SERIAL = var:zg361_ip_m199_debt_incident_serial
+			}
+			if = {
+				limit = { has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }
+				change_variable = { name = zg361_ip_x_policy_debt add = -1 }
+				set_variable = { name = zg361_ip_m199_debt_open value = 0 }
+				set_variable = { name = zg361_ip_m199_debt_consumed value = 1 }
+				set_variable = { name = zg361_ip_m199_debt_resolution value = 1 }
+				set_variable = { name = zg361_ip_m199_debt_settled_cycle value = var:zg361_ip_m199_debt_due_cycle }
+				set_variable = { name = zg361_ip_m199_debt_kpi_cost value = 1 }
+				set_variable = { name = zg361_ip_m199_debt_kpi_staged value = 1 }
+				set_variable = { name = zg361_ip_debt_status value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_ip_m199_debt_kpi_staged value = 0 }
+				set_variable = { name = zg361_ip_m199_debt_resolution value = 2 }
+				set_variable = { name = zg361_ip_debt_status value = 5 }
+				trigger_event = { id = zg361ip.7199 days = 90 }
+			}
+		}
+		else_if = {
+			limit = {
+				var:zg361_ip_m199_debt_escalation_count < 2
+				var:zg361_ip_m199_debt_owner = {
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+			change_variable = { name = zg361_ip_m199_debt_escalation_count add = 1 }
+			change_variable = { name = zg361_ip_m199_debt_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_m199_debt_resolution value = 2 }
+			set_variable = { name = zg361_ip_m199_debt_escalated_cycle value = var:zg361_ip_m199_debt_due_cycle }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+			trigger_event = { id = zg361ip.7199 days = 365 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m199_debt_resolution value = 3 }
+			set_variable = { name = zg361_ip_m199_debt_blocked_reason value = 80199 }
+			set_variable = { name = zg361_ip_debt_red_code value = 80199 }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_m199_debt_open has_variable = zg361_ip_m199_debt_consumed var:zg361_ip_m199_debt_open = 0 var:zg361_ip_m199_debt_consumed = 1 }
+		set_variable = { name = zg361_ip_debt_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ip_m199_debt_open
+			has_variable = zg361_ip_m199_debt_due_cycle
+			has_variable = zg361_ip_m199_debt_owner
+			var:zg361_ip_m199_debt_open = 1
+			var:zg361_ip_m199_debt_owner = { has_variable = zg361_review_serial var:zg361_review_serial < root.var:zg361_ip_m199_debt_due_cycle }
+		}
+		set_variable = { name = zg361_ip_debt_status value = 5 }
+		trigger_event = { id = zg361ip.7199 days = 90 }
+	}
+	else = { set_variable = { name = zg361_ip_debt_status value = 3 } set_variable = { name = zg361_ip_debt_red_code value = 81199 } }
+}
+
+zg361_ip_m200_consume_due_debt_effect = {
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {
+		limit = { has_variable = zg361_ip_m200_debt_cycle has_variable = zg361_ip_m200_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m200_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m200_debt_case multiply = 1000 } add = 200 }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_ip_m200_debt_owner
+			has_variable = zg361_ip_m200_debt_subject
+			has_variable = zg361_ip_m200_debt_cycle
+			has_variable = zg361_ip_m200_debt_case
+			has_variable = zg361_ip_m200_debt_state
+			has_variable = zg361_ip_m200_debt_incident_serial
+			has_variable = zg361_ip_m200_debt_incident_source_kind
+			has_variable = zg361_ip_m200_debt_incident_consequence_kind
+			has_variable = zg361_ip_m200_debt_type_code
+			has_variable = zg361_ip_m200_debt_id
+			has_variable = zg361_ip_m200_debt_consumer_contract
+			has_variable = zg361_ip_m200_debt_due_cycle
+			has_variable = zg361_ip_m200_debt_open
+			has_variable = zg361_ip_m200_debt_consumed
+			has_variable = zg361_ip_m200_debt_escalation_count
+			has_variable = zg361_ip_m200_done_owner
+			has_variable = zg361_ip_m200_done_subject
+			has_variable = zg361_ip_m200_done_cycle
+			has_variable = zg361_ip_m200_done_case
+			has_variable = zg361_ip_m200_done_state
+			has_variable = zg361_ip_m200_business_object_created
+			has_variable = zg361_ip_x_policy_debt
+			var:zg361_ip_m200_debt_open = 1
+			var:zg361_ip_m200_debt_consumed = 0
+			var:zg361_ip_m200_business_object_created = 0
+			var:zg361_ip_m200_debt_type_code = 200
+			var:zg361_ip_m200_debt_consumer_contract = 200
+			var:zg361_ip_m200_debt_state = 2
+			var:zg361_ip_m200_debt_incident_serial > 0
+			var:zg361_ip_m200_debt_incident_source_kind > 0
+			var:zg361_ip_m200_debt_incident_consequence_kind > 0
+			var:zg361_ip_m200_debt_owner = var:zg361_ip_m200_done_owner
+			var:zg361_ip_m200_debt_subject = this
+			var:zg361_ip_m200_debt_subject = var:zg361_ip_m200_done_subject
+			var:zg361_ip_m200_debt_cycle = var:zg361_ip_m200_done_cycle
+			var:zg361_ip_m200_debt_case = var:zg361_ip_m200_done_case
+			var:zg361_ip_m200_debt_state = var:zg361_ip_m200_done_state
+			var:zg361_ip_m200_debt_id = scope:zg361_ip_expected_debt_id
+			var:zg361_ip_m200_debt_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_ip_m200_debt_due_cycle
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_ip_x_policy_debt >= 1
+				var:zg361_ip_m200_debt_owner = { zg361_is_celestial_liege_trigger = yes }
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:zg361_ip_m200_debt_owner
+			}
+			zg361_ip_stage_policy_debt_kpi_effect = {
+				DEBT_OWNER = var:zg361_ip_m200_debt_owner
+				DEBT_CYCLE = var:zg361_ip_m200_debt_cycle
+				DEBT_DUE_CYCLE = var:zg361_ip_m200_debt_due_cycle
+				DEBT_CASE = var:zg361_ip_m200_debt_case
+				MECHANISM_ID = 200
+				INCIDENT_SERIAL = var:zg361_ip_m200_debt_incident_serial
+			}
+			if = {
+				limit = { has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }
+				change_variable = { name = zg361_ip_x_policy_debt add = -1 }
+				set_variable = { name = zg361_ip_m200_debt_open value = 0 }
+				set_variable = { name = zg361_ip_m200_debt_consumed value = 1 }
+				set_variable = { name = zg361_ip_m200_debt_resolution value = 1 }
+				set_variable = { name = zg361_ip_m200_debt_settled_cycle value = var:zg361_ip_m200_debt_due_cycle }
+				set_variable = { name = zg361_ip_m200_debt_kpi_cost value = 1 }
+				set_variable = { name = zg361_ip_m200_debt_kpi_staged value = 1 }
+				set_variable = { name = zg361_ip_debt_status value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_ip_m200_debt_kpi_staged value = 0 }
+				set_variable = { name = zg361_ip_m200_debt_resolution value = 2 }
+				set_variable = { name = zg361_ip_debt_status value = 5 }
+				trigger_event = { id = zg361ip.7200 days = 90 }
+			}
+		}
+		else_if = {
+			limit = {
+				var:zg361_ip_m200_debt_escalation_count < 2
+				var:zg361_ip_m200_debt_owner = {
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+			change_variable = { name = zg361_ip_m200_debt_escalation_count add = 1 }
+			change_variable = { name = zg361_ip_m200_debt_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_m200_debt_resolution value = 2 }
+			set_variable = { name = zg361_ip_m200_debt_escalated_cycle value = var:zg361_ip_m200_debt_due_cycle }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+			trigger_event = { id = zg361ip.7200 days = 365 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m200_debt_resolution value = 3 }
+			set_variable = { name = zg361_ip_m200_debt_blocked_reason value = 80200 }
+			set_variable = { name = zg361_ip_debt_red_code value = 80200 }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_m200_debt_open has_variable = zg361_ip_m200_debt_consumed var:zg361_ip_m200_debt_open = 0 var:zg361_ip_m200_debt_consumed = 1 }
+		set_variable = { name = zg361_ip_debt_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ip_m200_debt_open
+			has_variable = zg361_ip_m200_debt_due_cycle
+			has_variable = zg361_ip_m200_debt_owner
+			var:zg361_ip_m200_debt_open = 1
+			var:zg361_ip_m200_debt_owner = { has_variable = zg361_review_serial var:zg361_review_serial < root.var:zg361_ip_m200_debt_due_cycle }
+		}
+		set_variable = { name = zg361_ip_debt_status value = 5 }
+		trigger_event = { id = zg361ip.7200 days = 90 }
+	}
+	else = { set_variable = { name = zg361_ip_debt_status value = 3 } set_variable = { name = zg361_ip_debt_red_code value = 81200 } }
+}
+
+zg361_ip_m201_consume_due_debt_effect = {
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {
+		limit = { has_variable = zg361_ip_m201_debt_cycle has_variable = zg361_ip_m201_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m201_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m201_debt_case multiply = 1000 } add = 201 }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_ip_m201_debt_owner
+			has_variable = zg361_ip_m201_debt_subject
+			has_variable = zg361_ip_m201_debt_cycle
+			has_variable = zg361_ip_m201_debt_case
+			has_variable = zg361_ip_m201_debt_state
+			has_variable = zg361_ip_m201_debt_incident_serial
+			has_variable = zg361_ip_m201_debt_incident_source_kind
+			has_variable = zg361_ip_m201_debt_incident_consequence_kind
+			has_variable = zg361_ip_m201_debt_type_code
+			has_variable = zg361_ip_m201_debt_id
+			has_variable = zg361_ip_m201_debt_consumer_contract
+			has_variable = zg361_ip_m201_debt_due_cycle
+			has_variable = zg361_ip_m201_debt_open
+			has_variable = zg361_ip_m201_debt_consumed
+			has_variable = zg361_ip_m201_debt_escalation_count
+			has_variable = zg361_ip_m201_done_owner
+			has_variable = zg361_ip_m201_done_subject
+			has_variable = zg361_ip_m201_done_cycle
+			has_variable = zg361_ip_m201_done_case
+			has_variable = zg361_ip_m201_done_state
+			has_variable = zg361_ip_m201_business_object_created
+			has_variable = zg361_ip_x_policy_debt
+			var:zg361_ip_m201_debt_open = 1
+			var:zg361_ip_m201_debt_consumed = 0
+			var:zg361_ip_m201_business_object_created = 0
+			var:zg361_ip_m201_debt_type_code = 201
+			var:zg361_ip_m201_debt_consumer_contract = 201
+			var:zg361_ip_m201_debt_state = 3
+			var:zg361_ip_m201_debt_incident_serial > 0
+			var:zg361_ip_m201_debt_incident_source_kind > 0
+			var:zg361_ip_m201_debt_incident_consequence_kind > 0
+			var:zg361_ip_m201_debt_owner = var:zg361_ip_m201_done_owner
+			var:zg361_ip_m201_debt_subject = this
+			var:zg361_ip_m201_debt_subject = var:zg361_ip_m201_done_subject
+			var:zg361_ip_m201_debt_cycle = var:zg361_ip_m201_done_cycle
+			var:zg361_ip_m201_debt_case = var:zg361_ip_m201_done_case
+			var:zg361_ip_m201_debt_state = var:zg361_ip_m201_done_state
+			var:zg361_ip_m201_debt_id = scope:zg361_ip_expected_debt_id
+			var:zg361_ip_m201_debt_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_ip_m201_debt_due_cycle
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_ip_x_policy_debt >= 1
+				var:zg361_ip_m201_debt_owner = { zg361_is_celestial_liege_trigger = yes }
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:zg361_ip_m201_debt_owner
+			}
+			zg361_ip_stage_policy_debt_kpi_effect = {
+				DEBT_OWNER = var:zg361_ip_m201_debt_owner
+				DEBT_CYCLE = var:zg361_ip_m201_debt_cycle
+				DEBT_DUE_CYCLE = var:zg361_ip_m201_debt_due_cycle
+				DEBT_CASE = var:zg361_ip_m201_debt_case
+				MECHANISM_ID = 201
+				INCIDENT_SERIAL = var:zg361_ip_m201_debt_incident_serial
+			}
+			if = {
+				limit = { has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }
+				change_variable = { name = zg361_ip_x_policy_debt add = -1 }
+				set_variable = { name = zg361_ip_m201_debt_open value = 0 }
+				set_variable = { name = zg361_ip_m201_debt_consumed value = 1 }
+				set_variable = { name = zg361_ip_m201_debt_resolution value = 1 }
+				set_variable = { name = zg361_ip_m201_debt_settled_cycle value = var:zg361_ip_m201_debt_due_cycle }
+				set_variable = { name = zg361_ip_m201_debt_kpi_cost value = 1 }
+				set_variable = { name = zg361_ip_m201_debt_kpi_staged value = 1 }
+				set_variable = { name = zg361_ip_debt_status value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_ip_m201_debt_kpi_staged value = 0 }
+				set_variable = { name = zg361_ip_m201_debt_resolution value = 2 }
+				set_variable = { name = zg361_ip_debt_status value = 5 }
+				trigger_event = { id = zg361ip.7201 days = 90 }
+			}
+		}
+		else_if = {
+			limit = {
+				var:zg361_ip_m201_debt_escalation_count < 2
+				var:zg361_ip_m201_debt_owner = {
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+			change_variable = { name = zg361_ip_m201_debt_escalation_count add = 1 }
+			change_variable = { name = zg361_ip_m201_debt_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_m201_debt_resolution value = 2 }
+			set_variable = { name = zg361_ip_m201_debt_escalated_cycle value = var:zg361_ip_m201_debt_due_cycle }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+			trigger_event = { id = zg361ip.7201 days = 365 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m201_debt_resolution value = 3 }
+			set_variable = { name = zg361_ip_m201_debt_blocked_reason value = 80201 }
+			set_variable = { name = zg361_ip_debt_red_code value = 80201 }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_m201_debt_open has_variable = zg361_ip_m201_debt_consumed var:zg361_ip_m201_debt_open = 0 var:zg361_ip_m201_debt_consumed = 1 }
+		set_variable = { name = zg361_ip_debt_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ip_m201_debt_open
+			has_variable = zg361_ip_m201_debt_due_cycle
+			has_variable = zg361_ip_m201_debt_owner
+			var:zg361_ip_m201_debt_open = 1
+			var:zg361_ip_m201_debt_owner = { has_variable = zg361_review_serial var:zg361_review_serial < root.var:zg361_ip_m201_debt_due_cycle }
+		}
+		set_variable = { name = zg361_ip_debt_status value = 5 }
+		trigger_event = { id = zg361ip.7201 days = 90 }
+	}
+	else = { set_variable = { name = zg361_ip_debt_status value = 3 } set_variable = { name = zg361_ip_debt_red_code value = 81201 } }
+}
+
+zg361_ip_m202_consume_due_debt_effect = {
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {
+		limit = { has_variable = zg361_ip_m202_debt_cycle has_variable = zg361_ip_m202_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m202_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m202_debt_case multiply = 1000 } add = 202 }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_ip_m202_debt_owner
+			has_variable = zg361_ip_m202_debt_subject
+			has_variable = zg361_ip_m202_debt_cycle
+			has_variable = zg361_ip_m202_debt_case
+			has_variable = zg361_ip_m202_debt_state
+			has_variable = zg361_ip_m202_debt_incident_serial
+			has_variable = zg361_ip_m202_debt_incident_source_kind
+			has_variable = zg361_ip_m202_debt_incident_consequence_kind
+			has_variable = zg361_ip_m202_debt_type_code
+			has_variable = zg361_ip_m202_debt_id
+			has_variable = zg361_ip_m202_debt_consumer_contract
+			has_variable = zg361_ip_m202_debt_due_cycle
+			has_variable = zg361_ip_m202_debt_open
+			has_variable = zg361_ip_m202_debt_consumed
+			has_variable = zg361_ip_m202_debt_escalation_count
+			has_variable = zg361_ip_m202_done_owner
+			has_variable = zg361_ip_m202_done_subject
+			has_variable = zg361_ip_m202_done_cycle
+			has_variable = zg361_ip_m202_done_case
+			has_variable = zg361_ip_m202_done_state
+			has_variable = zg361_ip_m202_business_object_created
+			has_variable = zg361_ip_x_policy_debt
+			var:zg361_ip_m202_debt_open = 1
+			var:zg361_ip_m202_debt_consumed = 0
+			var:zg361_ip_m202_business_object_created = 0
+			var:zg361_ip_m202_debt_type_code = 202
+			var:zg361_ip_m202_debt_consumer_contract = 202
+			var:zg361_ip_m202_debt_state = 6
+			var:zg361_ip_m202_debt_incident_serial > 0
+			var:zg361_ip_m202_debt_incident_source_kind > 0
+			var:zg361_ip_m202_debt_incident_consequence_kind > 0
+			var:zg361_ip_m202_debt_owner = var:zg361_ip_m202_done_owner
+			var:zg361_ip_m202_debt_subject = this
+			var:zg361_ip_m202_debt_subject = var:zg361_ip_m202_done_subject
+			var:zg361_ip_m202_debt_cycle = var:zg361_ip_m202_done_cycle
+			var:zg361_ip_m202_debt_case = var:zg361_ip_m202_done_case
+			var:zg361_ip_m202_debt_state = var:zg361_ip_m202_done_state
+			var:zg361_ip_m202_debt_id = scope:zg361_ip_expected_debt_id
+			var:zg361_ip_m202_debt_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_ip_m202_debt_due_cycle
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_ip_x_policy_debt >= 1
+				var:zg361_ip_m202_debt_owner = { zg361_is_celestial_liege_trigger = yes }
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:zg361_ip_m202_debt_owner
+			}
+			zg361_ip_stage_policy_debt_kpi_effect = {
+				DEBT_OWNER = var:zg361_ip_m202_debt_owner
+				DEBT_CYCLE = var:zg361_ip_m202_debt_cycle
+				DEBT_DUE_CYCLE = var:zg361_ip_m202_debt_due_cycle
+				DEBT_CASE = var:zg361_ip_m202_debt_case
+				MECHANISM_ID = 202
+				INCIDENT_SERIAL = var:zg361_ip_m202_debt_incident_serial
+			}
+			if = {
+				limit = { has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }
+				change_variable = { name = zg361_ip_x_policy_debt add = -1 }
+				set_variable = { name = zg361_ip_m202_debt_open value = 0 }
+				set_variable = { name = zg361_ip_m202_debt_consumed value = 1 }
+				set_variable = { name = zg361_ip_m202_debt_resolution value = 1 }
+				set_variable = { name = zg361_ip_m202_debt_settled_cycle value = var:zg361_ip_m202_debt_due_cycle }
+				set_variable = { name = zg361_ip_m202_debt_kpi_cost value = 1 }
+				set_variable = { name = zg361_ip_m202_debt_kpi_staged value = 1 }
+				set_variable = { name = zg361_ip_debt_status value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_ip_m202_debt_kpi_staged value = 0 }
+				set_variable = { name = zg361_ip_m202_debt_resolution value = 2 }
+				set_variable = { name = zg361_ip_debt_status value = 5 }
+				trigger_event = { id = zg361ip.7202 days = 90 }
+			}
+		}
+		else_if = {
+			limit = {
+				var:zg361_ip_m202_debt_escalation_count < 2
+				var:zg361_ip_m202_debt_owner = {
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+			change_variable = { name = zg361_ip_m202_debt_escalation_count add = 1 }
+			change_variable = { name = zg361_ip_m202_debt_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_m202_debt_resolution value = 2 }
+			set_variable = { name = zg361_ip_m202_debt_escalated_cycle value = var:zg361_ip_m202_debt_due_cycle }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+			trigger_event = { id = zg361ip.7202 days = 365 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m202_debt_resolution value = 3 }
+			set_variable = { name = zg361_ip_m202_debt_blocked_reason value = 80202 }
+			set_variable = { name = zg361_ip_debt_red_code value = 80202 }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_m202_debt_open has_variable = zg361_ip_m202_debt_consumed var:zg361_ip_m202_debt_open = 0 var:zg361_ip_m202_debt_consumed = 1 }
+		set_variable = { name = zg361_ip_debt_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ip_m202_debt_open
+			has_variable = zg361_ip_m202_debt_due_cycle
+			has_variable = zg361_ip_m202_debt_owner
+			var:zg361_ip_m202_debt_open = 1
+			var:zg361_ip_m202_debt_owner = { has_variable = zg361_review_serial var:zg361_review_serial < root.var:zg361_ip_m202_debt_due_cycle }
+		}
+		set_variable = { name = zg361_ip_debt_status value = 5 }
+		trigger_event = { id = zg361ip.7202 days = 90 }
+	}
+	else = { set_variable = { name = zg361_ip_debt_status value = 3 } set_variable = { name = zg361_ip_debt_red_code value = 81202 } }
+}
+
+zg361_ip_m203_consume_due_debt_effect = {
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {
+		limit = { has_variable = zg361_ip_m203_debt_cycle has_variable = zg361_ip_m203_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m203_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m203_debt_case multiply = 1000 } add = 203 }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_ip_m203_debt_owner
+			has_variable = zg361_ip_m203_debt_subject
+			has_variable = zg361_ip_m203_debt_cycle
+			has_variable = zg361_ip_m203_debt_case
+			has_variable = zg361_ip_m203_debt_state
+			has_variable = zg361_ip_m203_debt_incident_serial
+			has_variable = zg361_ip_m203_debt_incident_source_kind
+			has_variable = zg361_ip_m203_debt_incident_consequence_kind
+			has_variable = zg361_ip_m203_debt_type_code
+			has_variable = zg361_ip_m203_debt_id
+			has_variable = zg361_ip_m203_debt_consumer_contract
+			has_variable = zg361_ip_m203_debt_due_cycle
+			has_variable = zg361_ip_m203_debt_open
+			has_variable = zg361_ip_m203_debt_consumed
+			has_variable = zg361_ip_m203_debt_escalation_count
+			has_variable = zg361_ip_m203_done_owner
+			has_variable = zg361_ip_m203_done_subject
+			has_variable = zg361_ip_m203_done_cycle
+			has_variable = zg361_ip_m203_done_case
+			has_variable = zg361_ip_m203_done_state
+			has_variable = zg361_ip_m203_business_object_created
+			has_variable = zg361_ip_x_policy_debt
+			var:zg361_ip_m203_debt_open = 1
+			var:zg361_ip_m203_debt_consumed = 0
+			var:zg361_ip_m203_business_object_created = 0
+			var:zg361_ip_m203_debt_type_code = 203
+			var:zg361_ip_m203_debt_consumer_contract = 203
+			var:zg361_ip_m203_debt_state = 6
+			var:zg361_ip_m203_debt_incident_serial > 0
+			var:zg361_ip_m203_debt_incident_source_kind > 0
+			var:zg361_ip_m203_debt_incident_consequence_kind > 0
+			var:zg361_ip_m203_debt_owner = var:zg361_ip_m203_done_owner
+			var:zg361_ip_m203_debt_subject = this
+			var:zg361_ip_m203_debt_subject = var:zg361_ip_m203_done_subject
+			var:zg361_ip_m203_debt_cycle = var:zg361_ip_m203_done_cycle
+			var:zg361_ip_m203_debt_case = var:zg361_ip_m203_done_case
+			var:zg361_ip_m203_debt_state = var:zg361_ip_m203_done_state
+			var:zg361_ip_m203_debt_id = scope:zg361_ip_expected_debt_id
+			var:zg361_ip_m203_debt_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_ip_m203_debt_due_cycle
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_ip_x_policy_debt >= 1
+				var:zg361_ip_m203_debt_owner = { zg361_is_celestial_liege_trigger = yes }
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:zg361_ip_m203_debt_owner
+			}
+			zg361_ip_stage_policy_debt_kpi_effect = {
+				DEBT_OWNER = var:zg361_ip_m203_debt_owner
+				DEBT_CYCLE = var:zg361_ip_m203_debt_cycle
+				DEBT_DUE_CYCLE = var:zg361_ip_m203_debt_due_cycle
+				DEBT_CASE = var:zg361_ip_m203_debt_case
+				MECHANISM_ID = 203
+				INCIDENT_SERIAL = var:zg361_ip_m203_debt_incident_serial
+			}
+			if = {
+				limit = { has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }
+				change_variable = { name = zg361_ip_x_policy_debt add = -1 }
+				set_variable = { name = zg361_ip_m203_debt_open value = 0 }
+				set_variable = { name = zg361_ip_m203_debt_consumed value = 1 }
+				set_variable = { name = zg361_ip_m203_debt_resolution value = 1 }
+				set_variable = { name = zg361_ip_m203_debt_settled_cycle value = var:zg361_ip_m203_debt_due_cycle }
+				set_variable = { name = zg361_ip_m203_debt_kpi_cost value = 1 }
+				set_variable = { name = zg361_ip_m203_debt_kpi_staged value = 1 }
+				set_variable = { name = zg361_ip_debt_status value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_ip_m203_debt_kpi_staged value = 0 }
+				set_variable = { name = zg361_ip_m203_debt_resolution value = 2 }
+				set_variable = { name = zg361_ip_debt_status value = 5 }
+				trigger_event = { id = zg361ip.7203 days = 90 }
+			}
+		}
+		else_if = {
+			limit = {
+				var:zg361_ip_m203_debt_escalation_count < 2
+				var:zg361_ip_m203_debt_owner = {
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+			change_variable = { name = zg361_ip_m203_debt_escalation_count add = 1 }
+			change_variable = { name = zg361_ip_m203_debt_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_m203_debt_resolution value = 2 }
+			set_variable = { name = zg361_ip_m203_debt_escalated_cycle value = var:zg361_ip_m203_debt_due_cycle }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+			trigger_event = { id = zg361ip.7203 days = 365 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m203_debt_resolution value = 3 }
+			set_variable = { name = zg361_ip_m203_debt_blocked_reason value = 80203 }
+			set_variable = { name = zg361_ip_debt_red_code value = 80203 }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_m203_debt_open has_variable = zg361_ip_m203_debt_consumed var:zg361_ip_m203_debt_open = 0 var:zg361_ip_m203_debt_consumed = 1 }
+		set_variable = { name = zg361_ip_debt_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ip_m203_debt_open
+			has_variable = zg361_ip_m203_debt_due_cycle
+			has_variable = zg361_ip_m203_debt_owner
+			var:zg361_ip_m203_debt_open = 1
+			var:zg361_ip_m203_debt_owner = { has_variable = zg361_review_serial var:zg361_review_serial < root.var:zg361_ip_m203_debt_due_cycle }
+		}
+		set_variable = { name = zg361_ip_debt_status value = 5 }
+		trigger_event = { id = zg361ip.7203 days = 90 }
+	}
+	else = { set_variable = { name = zg361_ip_debt_status value = 3 } set_variable = { name = zg361_ip_debt_red_code value = 81203 } }
+}
+
+zg361_ip_m204_consume_due_debt_effect = {
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {
+		limit = { has_variable = zg361_ip_m204_debt_cycle has_variable = zg361_ip_m204_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_ip_expected_debt_id
+			value = { value = var:zg361_ip_m204_debt_cycle multiply = 1000000 add = { value = var:zg361_ip_m204_debt_case multiply = 1000 } add = 204 }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_ip_m204_debt_owner
+			has_variable = zg361_ip_m204_debt_subject
+			has_variable = zg361_ip_m204_debt_cycle
+			has_variable = zg361_ip_m204_debt_case
+			has_variable = zg361_ip_m204_debt_state
+			has_variable = zg361_ip_m204_debt_incident_serial
+			has_variable = zg361_ip_m204_debt_incident_source_kind
+			has_variable = zg361_ip_m204_debt_incident_consequence_kind
+			has_variable = zg361_ip_m204_debt_type_code
+			has_variable = zg361_ip_m204_debt_id
+			has_variable = zg361_ip_m204_debt_consumer_contract
+			has_variable = zg361_ip_m204_debt_due_cycle
+			has_variable = zg361_ip_m204_debt_open
+			has_variable = zg361_ip_m204_debt_consumed
+			has_variable = zg361_ip_m204_debt_escalation_count
+			has_variable = zg361_ip_m204_done_owner
+			has_variable = zg361_ip_m204_done_subject
+			has_variable = zg361_ip_m204_done_cycle
+			has_variable = zg361_ip_m204_done_case
+			has_variable = zg361_ip_m204_done_state
+			has_variable = zg361_ip_m204_business_object_created
+			has_variable = zg361_ip_x_policy_debt
+			var:zg361_ip_m204_debt_open = 1
+			var:zg361_ip_m204_debt_consumed = 0
+			var:zg361_ip_m204_business_object_created = 0
+			var:zg361_ip_m204_debt_type_code = 204
+			var:zg361_ip_m204_debt_consumer_contract = 204
+			var:zg361_ip_m204_debt_state = 7
+			var:zg361_ip_m204_debt_incident_serial > 0
+			var:zg361_ip_m204_debt_incident_source_kind > 0
+			var:zg361_ip_m204_debt_incident_consequence_kind > 0
+			var:zg361_ip_m204_debt_owner = var:zg361_ip_m204_done_owner
+			var:zg361_ip_m204_debt_subject = this
+			var:zg361_ip_m204_debt_subject = var:zg361_ip_m204_done_subject
+			var:zg361_ip_m204_debt_cycle = var:zg361_ip_m204_done_cycle
+			var:zg361_ip_m204_debt_case = var:zg361_ip_m204_done_case
+			var:zg361_ip_m204_debt_state = var:zg361_ip_m204_done_state
+			var:zg361_ip_m204_debt_id = scope:zg361_ip_expected_debt_id
+			var:zg361_ip_m204_debt_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_ip_m204_debt_due_cycle
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_ip_x_policy_debt >= 1
+				var:zg361_ip_m204_debt_owner = { zg361_is_celestial_liege_trigger = yes }
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:zg361_ip_m204_debt_owner
+			}
+			zg361_ip_stage_policy_debt_kpi_effect = {
+				DEBT_OWNER = var:zg361_ip_m204_debt_owner
+				DEBT_CYCLE = var:zg361_ip_m204_debt_cycle
+				DEBT_DUE_CYCLE = var:zg361_ip_m204_debt_due_cycle
+				DEBT_CASE = var:zg361_ip_m204_debt_case
+				MECHANISM_ID = 204
+				INCIDENT_SERIAL = var:zg361_ip_m204_debt_incident_serial
+			}
+			if = {
+				limit = { has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }
+				change_variable = { name = zg361_ip_x_policy_debt add = -1 }
+				set_variable = { name = zg361_ip_m204_debt_open value = 0 }
+				set_variable = { name = zg361_ip_m204_debt_consumed value = 1 }
+				set_variable = { name = zg361_ip_m204_debt_resolution value = 1 }
+				set_variable = { name = zg361_ip_m204_debt_settled_cycle value = var:zg361_ip_m204_debt_due_cycle }
+				set_variable = { name = zg361_ip_m204_debt_kpi_cost value = 1 }
+				set_variable = { name = zg361_ip_m204_debt_kpi_staged value = 1 }
+				set_variable = { name = zg361_ip_debt_status value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_ip_m204_debt_kpi_staged value = 0 }
+				set_variable = { name = zg361_ip_m204_debt_resolution value = 2 }
+				set_variable = { name = zg361_ip_debt_status value = 5 }
+				trigger_event = { id = zg361ip.7204 days = 90 }
+			}
+		}
+		else_if = {
+			limit = {
+				var:zg361_ip_m204_debt_escalation_count < 2
+				var:zg361_ip_m204_debt_owner = {
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+			change_variable = { name = zg361_ip_m204_debt_escalation_count add = 1 }
+			change_variable = { name = zg361_ip_m204_debt_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_m204_debt_resolution value = 2 }
+			set_variable = { name = zg361_ip_m204_debt_escalated_cycle value = var:zg361_ip_m204_debt_due_cycle }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+			trigger_event = { id = zg361ip.7204 days = 365 }
+		}
+		else = {
+			set_variable = { name = zg361_ip_m204_debt_resolution value = 3 }
+			set_variable = { name = zg361_ip_m204_debt_blocked_reason value = 80204 }
+			set_variable = { name = zg361_ip_debt_red_code value = 80204 }
+			set_variable = { name = zg361_ip_debt_status value = 5 }
+		}
+	}
+	else_if = {
+		limit = { has_variable = zg361_ip_m204_debt_open has_variable = zg361_ip_m204_debt_consumed var:zg361_ip_m204_debt_open = 0 var:zg361_ip_m204_debt_consumed = 1 }
+		set_variable = { name = zg361_ip_debt_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ip_m204_debt_open
+			has_variable = zg361_ip_m204_debt_due_cycle
+			has_variable = zg361_ip_m204_debt_owner
+			var:zg361_ip_m204_debt_open = 1
+			var:zg361_ip_m204_debt_owner = { has_variable = zg361_review_serial var:zg361_review_serial < root.var:zg361_ip_m204_debt_due_cycle }
+		}
+		set_variable = { name = zg361_ip_debt_status value = 5 }
+		trigger_event = { id = zg361ip.7204 days = 90 }
+	}
+	else = { set_variable = { name = zg361_ip_debt_status value = 3 } set_variable = { name = zg361_ip_debt_red_code value = 81204 } }
+}

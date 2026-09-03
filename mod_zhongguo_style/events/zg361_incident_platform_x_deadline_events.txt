@@ -1,0 +1,40 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+# PURPOSE: dispatch X incident deadline states two through seven.
+
+namespace = zg361ip
+
+zg361ip.102 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_02_effect = yes }
+}
+
+zg361ip.103 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_03_effect = yes }
+}
+
+zg361ip.104 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_04_effect = yes }
+}
+
+zg361ip.105 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_05_effect = yes }
+}
+
+zg361ip.106 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_06_effect = yes }
+}
+
+zg361ip.107 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_07_effect = yes }
+}
