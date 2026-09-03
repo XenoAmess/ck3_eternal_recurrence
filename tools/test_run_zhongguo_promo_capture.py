@@ -4876,6 +4876,49 @@ def main() -> int:
             benign_artifacts / "02_loader_error.log"
         ).read_bytes() == benign_bytes
 
+        diagnostic_userdir = temporary_root / "diagnostic-loader-profile"
+        (diagnostic_userdir / "logs").mkdir(parents=True)
+        diagnostic_bytes = (
+            b"[12:00:00][E] Variable 'zg361_loader_observation' is set "
+            b"but is never used\n"
+        )
+        (diagnostic_userdir / "logs" / "error.log").write_bytes(
+            diagnostic_bytes
+        )
+        diagnostic_artifacts = temporary_root / "diagnostic-loader-artifacts"
+        diagnostic_artifacts.mkdir()
+        diagnostic_scan = capture.scan_loader_error_log(
+            diagnostic_userdir,
+            diagnostic_artifacts,
+            timeout_s=1.0,
+            stable_samples=1,
+            poll_interval_s=0.0,
+            minimum_quiet_s=0.0,
+        )
+        assert diagnostic_scan["result"] == "GREEN"
+        assert diagnostic_scan["matches"] == []
+        assert diagnostic_scan["project_attributed_line_count"] == 1
+        assert (
+            diagnostic_artifacts / "02_loader_error.log"
+        ).read_bytes() == diagnostic_bytes
+
+        r4_parser_bytes = (
+            b"[05:56:36][E][jomini_script_system.cpp:303]: Script system error!\n"
+            b"  Error: revoke_court_position effect [ Expected opening bracket ]\n"
+            b"  Script location: file: common/scripted_effects/"
+            b"zg361_workforce_appointment_fact_native_lifecycle_effects.txt "
+            b"line: 84\n"
+        )
+        r4_parser_matches = capture._loader_error_matches(r4_parser_bytes)
+        assert [match["category"] for match in r4_parser_matches] == [
+            "parser_or_script",
+            "parser_or_script",
+        ]
+        assert all(
+            match["project_attributed_context"] is True
+            for match in r4_parser_matches
+        )
+
         quiet_artifacts = temporary_root / "quiet-loader-artifacts"
         quiet_artifacts.mkdir()
         quiet_scan = capture.scan_loader_error_log(

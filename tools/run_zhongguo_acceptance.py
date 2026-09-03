@@ -394,6 +394,8 @@ LOADER_ERROR_SIGNATURES = {
         "could not parse",
         "unexpected token",
         "unexpected keyword",
+        "script system error",
+        "expected opening bracket",
         "invalid syntax",
         "unknown trigger",
         "unknown effect",
@@ -9574,7 +9576,12 @@ def phase2_native_session_liveness_gate(
 
 
 def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
-    """Return every project-attributed loader signature in one log image."""
+    """Return explicit project-attributed loader signatures in one log image.
+
+    CK3 writes non-fatal script-usage diagnostics to ``error.log`` too.  Those
+    lines remain in the frozen full-log artifact and its attributed-line count,
+    but only the bounded signature catalog below is a loader failure gate.
+    """
 
     lines = payload.decode("utf-8", errors="replace").splitlines()
     matches: list[dict[str, object]] = []
@@ -9593,9 +9600,7 @@ def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
             for category, patterns in LOADER_ERROR_SIGNATURES.items()
             if any(pattern in lowered for pattern in patterns)
         ]
-        if attributed_line and not categories:
-            categories = ["project_attributed_error"]
-        elif categories and not attributed_context:
+        if categories and not attributed_context:
             categories = []
         for category in categories:
             matches.append(
@@ -9642,6 +9647,7 @@ def scan_loader_error_log(
         "full_log_artifact": frozen.name,
         "full_log_size": None,
         "full_log_sha256": None,
+        "project_attributed_line_count": None,
         "stable_samples_required": stable_samples,
         "minimum_quiet_seconds_required": minimum_quiet_s,
         "quiet_seconds_observed": 0.0,
@@ -9728,6 +9734,11 @@ def scan_loader_error_log(
         frozen.write_bytes(payload)
         evidence["full_log_size"] = len(payload)
         evidence["full_log_sha256"] = release.sha256_bytes(payload)
+        evidence["project_attributed_line_count"] = sum(
+            1
+            for line in payload.decode("utf-8", errors="replace").splitlines()
+            if any(token in line.lower() for token in PROJECT_TOKENS)
+        )
         quiet_seconds = (
             max(0.0, time.monotonic() - identity_since)
             if identity_since is not None
