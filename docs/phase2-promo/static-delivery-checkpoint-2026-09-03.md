@@ -46,6 +46,9 @@ tools/test_zhongguo_phase2_promo_runner_plumbing.py
 - 原版 release check GREEN，`86 files`，deterministic manifest/ZIP；
 - 白绮独立版 release check GREEN，`27 files`。
 
+为验证“更新到远端主线”后的工具本身没有回归，又以该 fresh checkout 的 `src` 作为
+`PYTHONPATH` 执行其完整测试集：`261 passed, 2 skipped, 160 subtests passed`。跳过项是工具仓库明确标记的可选环境测试；没有启动 CK3 或写入媒体。
+
 ## 尚未修好的部分
 
 两条正式片（人物版、制度群像版）仍各为 `footage 0/8`，目标 MP4 不存在。CK3 启动/采集边界仍需在稳定桌面会话取得八段真实 clean spans；本检查点没有尝试再次启动 CK3，也没有把旧 fixture 升格为二期素材。
