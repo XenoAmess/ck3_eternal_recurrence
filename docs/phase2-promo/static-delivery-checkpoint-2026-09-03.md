@@ -37,6 +37,8 @@ tools/test_zhongguo_phase2_promo_runner_plumbing.py
 
 结果：`78 passed, 36 subtests passed`。唯一警告是工作区 `.pytest_cache` ACL，未影响断言。
 
+随后补跑 `tools/test_zhongguo_phase2_*.py` 的完整二期静态测试集合（15 个模块，覆盖业务后置条件、事件编排、provider packet、发布目标、source checkpoint、视觉处理和 workforce action）：`130 passed, 67 subtests passed`；同一 `.pytest_cache` ACL 警告仍不影响断言。
+
 随后执行 `tools/validate_static.py`、`tools/build_release.py --check` 和
 `tools/build_vivhite_release.py --check`，结果分别为：
 
@@ -51,4 +53,3 @@ tools/test_zhongguo_phase2_promo_runner_plumbing.py
 ## 结论
 
 可以继续推进：T0 的导演稿、双 cut 配置、authoring ledger、runbook、工具 freshness 和静态发布链均已可用。当前未完成的是实机素材及其后续两条独立 TTS、候选、审片、导出和哈希回执，而不是静态制作脚本故障。
-
