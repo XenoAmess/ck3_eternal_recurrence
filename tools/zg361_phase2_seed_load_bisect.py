@@ -68,6 +68,52 @@ EXPECTED_FACT_RUNTIME_GROUPS = {
     "appointment-attribution": {"files": 3, "definitions": 15, "bytes": 113_314},
     "exit-remediation": {"files": 5, "definitions": 13, "bytes": 76_602},
 }
+TARGETED_MUTATION = "appointment-seal-no-self-call"
+TARGETED_MUTATION_BASELINE = {
+    "files": 245,
+    "bytes": 9_559_000,
+    "source_tree_sha256": "2a0c9c5c64185e866dc604b09b3dce0d9a70b2ae6f852aade93a45e503e69ae2",
+    "formal_overlay_tree_sha256": "18b1140b8423b6410cd2bf4a0352245bbbadabe1dc8ce1e3c180366f5836e549",
+}
+MUTATION_TARGET_PATH = (
+    "common/scripted_effects/zg361_workforce_appointment_fact_effects.txt"
+)
+MUTATION_TARGET_EFFECT = (
+    "zg361_workforce_appointment_fact_seal_and_publish_effect"
+)
+MUTATION_PARENT_FILE = {
+    "bytes": 51_862,
+    "sha256": "886bfd5ec9e15aa744f8bd39e55f9cb3dbd652f4d5b6c2e0eecfaa8197fecc4c",
+}
+MUTATION_PARENT_BLOCK = {
+    "index": 5,
+    "start_byte": 7_368,
+    "bytes": 13_084,
+    "sha256": "37d2467c4f9a0608e950aee1b8d99a6efabf87cb5888b782190e97abb3911c80",
+}
+MUTATION_CALL = (
+    b"        zg361_workforce_appointment_fact_seal_and_publish_effect = {\n"
+    b"            TICKET_OWNER = $TICKET_OWNER$\n"
+    b"            TICKET_SUBJECT = $TICKET_SUBJECT$\n"
+    b"            TICKET_CYCLE = $TICKET_CYCLE$\n"
+    b"            TICKET_CASE = $TICKET_CASE$\n"
+    b"        }\n"
+)
+MUTATION_CALL_IDENTITY = {
+    "bytes": 249,
+    "sha256": "b929c1bd55ec204eb37bdbfd487ac73b16c240f1619ddb124f6f920cb4a45ee2",
+    "block_relative_start": 12_634,
+    "absolute_start": 20_002,
+    "absolute_end": 20_251,
+}
+MUTATION_RESULT_FILE = {
+    "bytes": 51_613,
+    "sha256": "dfd906eb8dcc57bd7f420099ca83ed71af4971de91e723a69d4dfcb737fff57a",
+}
+MUTATION_RESULT_BLOCK = {
+    "bytes": 12_835,
+    "sha256": "98bdf56d92f49bb20e9a99e0a3c737cc282de3fcf736858003e7405200686e90",
+}
 
 ENDGAME_CONTROL_FACT_CODES = frozenset(
     {"009a", "010", "011", "012", "013", "014c", "015c"}
@@ -106,6 +152,104 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def source_tree_sha256_from_rows(rows: Sequence[Mapping[str, object]]) -> str:
+    payload = {
+        str(row["path"]): {
+            "size": int(row["bytes"]),
+            "sha256": str(row["sha256"]),
+        }
+        for row in rows
+    }
+    canonical = json.dumps(
+        payload, ensure_ascii=True, sort_keys=True, separators=(",", ":")
+    ).encode("ascii")
+    return sha256_bytes(canonical)
+
+
+def formal_tree_sha256_from_rows(rows: Sequence[Mapping[str, object]]) -> str:
+    payload = [
+        {
+            "path": str(row["path"]),
+            "bytes": int(row["bytes"]),
+            "sha256": str(row["sha256"]),
+        }
+        for row in sorted(rows, key=lambda item: str(item["path"]))
+    ]
+    canonical = json.dumps(
+        payload, ensure_ascii=True, sort_keys=False, separators=(",", ":")
+    ).encode("ascii")
+    return sha256_bytes(canonical)
+
+
+def remove_appointment_seal_self_call(
+    source: bytes,
+    blocks: Sequence[Mapping[str, object]],
+) -> tuple[bytes, dict[str, object]]:
+    """Apply the one frozen diagnostic mutation to an exact parent file."""
+
+    if len(source) != MUTATION_PARENT_FILE["bytes"] or sha256_bytes(source) != MUTATION_PARENT_FILE["sha256"]:
+        raise SeedLoadBisectError("targeted mutation parent file identity drifted")
+    matches = [block for block in blocks if block["name"] == MUTATION_TARGET_EFFECT]
+    if len(matches) != 1:
+        raise SeedLoadBisectError("targeted mutation effect block is not unique")
+    block = matches[0]
+    observed_block = {
+        "index": int(block["index"]),
+        "start_byte": int(block["start_byte"]),
+        "bytes": int(block["bytes"]),
+        "sha256": str(block["sha256"]),
+    }
+    if observed_block != MUTATION_PARENT_BLOCK:
+        raise SeedLoadBisectError(
+            f"targeted mutation parent block identity drifted: {observed_block}"
+        )
+    if len(MUTATION_CALL) != MUTATION_CALL_IDENTITY["bytes"] or sha256_bytes(MUTATION_CALL) != MUTATION_CALL_IDENTITY["sha256"]:
+        raise SeedLoadBisectError("targeted mutation compiled call identity drifted")
+    start = int(block["start_byte"])
+    end = int(block["end_byte"])
+    raw_block = source[start:end]
+    if raw_block.count(MUTATION_CALL) != 1:
+        raise SeedLoadBisectError("targeted self-call count is not exactly one inside target block")
+    relative_start = raw_block.find(MUTATION_CALL)
+    absolute_start = start + relative_start
+    absolute_end = absolute_start + len(MUTATION_CALL)
+    observed_span = {
+        "bytes": len(MUTATION_CALL),
+        "sha256": sha256_bytes(MUTATION_CALL),
+        "block_relative_start": relative_start,
+        "absolute_start": absolute_start,
+        "absolute_end": absolute_end,
+    }
+    if observed_span != MUTATION_CALL_IDENTITY:
+        raise SeedLoadBisectError(
+            f"targeted mutation call span identity drifted: {observed_span}"
+        )
+    mutated = source[:absolute_start] + source[absolute_end:]
+    if len(mutated) != MUTATION_RESULT_FILE["bytes"] or sha256_bytes(mutated) != MUTATION_RESULT_FILE["sha256"]:
+        raise SeedLoadBisectError("targeted mutation result file identity drifted")
+    _header, mutated_blocks = find_blocks(mutated)
+    mutated_target = next(
+        block for block in mutated_blocks if block["name"] == MUTATION_TARGET_EFFECT
+    )
+    mutated_block_identity = {
+        "bytes": int(mutated_target["bytes"]),
+        "sha256": str(mutated_target["sha256"]),
+    }
+    if mutated_block_identity != MUTATION_RESULT_BLOCK:
+        raise SeedLoadBisectError("targeted mutation result block identity drifted")
+    return mutated, {
+        "name": TARGETED_MUTATION,
+        "target_path": MUTATION_TARGET_PATH,
+        "target_effect": MUTATION_TARGET_EFFECT,
+        "removed_call_count": 1,
+        "removed_span": observed_span,
+        "parent_file": MUTATION_PARENT_FILE,
+        "parent_block": MUTATION_PARENT_BLOCK,
+        "result_file": MUTATION_RESULT_FILE,
+        "result_block": MUTATION_RESULT_BLOCK,
+    }
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -426,6 +570,7 @@ def materialize(
     real_groups: Sequence[str] = (),
     real_fact_subgroups: Sequence[str] = (),
     real_fact_runtime_groups: Sequence[str] = (),
+    targeted_mutation: str | None = None,
 ) -> dict[str, Any]:
     output = output.resolve()
     parent_root = parent_root.resolve()
@@ -452,22 +597,39 @@ def materialize(
     ) = normalize_selection(
         real_groups, real_fact_subgroups, real_fact_runtime_groups
     )
-    mode = (
-        "effect-group-restore"
-        if normalized_real_groups
+    if targeted_mutation not in {None, TARGETED_MUTATION}:
+        raise SeedLoadBisectError(f"unknown targeted mutation: {targeted_mutation}")
+    if targeted_mutation is not None:
+        expected_runtime_groups = ("appointment-attribution", "exit-remediation")
+        if (
+            normalized_real_groups
+            or normalized_real_fact_subgroups
+            or normalized_real_fact_runtime_groups != expected_runtime_groups
+        ):
+            raise SeedLoadBisectError(
+                "targeted mutation requires the exact runtime half-B selection"
+            )
+        mode = "targeted-mutation"
+    elif (
+        normalized_real_groups
         or normalized_real_fact_subgroups
         or normalized_real_fact_runtime_groups
-        else "all-effect-stub"
-    )
+    ):
+        mode = "effect-group-restore"
+    else:
+        mode = "all-effect-stub"
     output.mkdir(parents=True)
     source = output / "source"
     shutil.copytree(parent["product"], source)
 
+    parent_rows_by_path = {str(row["path"]): row for row in parent["rows"]}
+    baseline_rows_by_path = dict(parent_rows_by_path)
     rendered_files: list[dict[str, object]] = []
     original_names: list[str] = []
     rendered_names: list[str] = []
     real_names: list[str] = []
     stub_names: list[str] = []
+    mutation_report: dict[str, object] | None = None
     for row in sorted(effect_rows, key=lambda item: str(item["path"])):
         relative = str(row["path"])
         group = classify_effect_path(relative)
@@ -489,6 +651,21 @@ def materialize(
             raise SeedLoadBisectError(f"parent effect definition order drifted: {relative}")
         real_indices = range(len(original_blocks)) if body_mode == "real" else ()
         rendered, block_rows = render_effect_variant(original, real_indices)
+        baseline_rows_by_path[relative] = {
+            "path": relative,
+            "bytes": len(rendered),
+            "sha256": sha256_bytes(rendered),
+        }
+        file_mutation: str | None = None
+        if targeted_mutation is not None and relative == MUTATION_TARGET_PATH:
+            if rendered != original:
+                raise SeedLoadBisectError(
+                    "targeted mutation target is not byte-exact in half-B baseline"
+                )
+            rendered, mutation_report = remove_appointment_seal_self_call(
+                rendered, original_blocks
+            )
+            file_mutation = targeted_mutation
         path.write_bytes(rendered)
         _rendered_header, after_blocks = find_blocks(rendered)
         after_names = [str(block["name"]) for block in after_blocks]
@@ -505,6 +682,7 @@ def materialize(
                 "fact_subgroup": fact_subgroup,
                 "fact_runtime_group": fact_runtime_group,
                 "body_mode": body_mode,
+                "diagnostic_mutation": file_mutation,
                 "definitions": len(observed_names),
                 "definition_names": observed_names,
                 "original_bytes": len(original),
@@ -516,6 +694,11 @@ def materialize(
                         "index": int(before["index"]),
                         "name": str(before["name"]),
                         "body_mode": body_mode,
+                        "diagnostic_mutation": (
+                            file_mutation
+                            if before["name"] == MUTATION_TARGET_EFFECT
+                            else None
+                        ),
                         "original_bytes": int(before["bytes"]),
                         "original_sha256": str(before["sha256"]),
                         "rendered_bytes": int(after["bytes"]),
@@ -526,14 +709,45 @@ def materialize(
             }
         )
 
+    if targeted_mutation is not None and mutation_report is None:
+        raise SeedLoadBisectError("targeted mutation target file was not rendered")
     if len(original_names) != EXPECTED_PARENT["effect_definitions"] or original_names != rendered_names or len(set(rendered_names)) != len(rendered_names):
         raise SeedLoadBisectError("stubbed overlay definition surface is not unique and exact")
 
-    parent_rows_by_path = {str(row["path"]): row for row in parent["rows"]}
+    baseline_rows = [
+        baseline_rows_by_path[path]
+        for path in sorted(baseline_rows_by_path)
+    ]
+    baseline_identity = {
+        "files": len(baseline_rows),
+        "bytes": sum(int(row["bytes"]) for row in baseline_rows),
+        "source_tree_sha256": source_tree_sha256_from_rows(baseline_rows),
+        "formal_overlay_tree_sha256": formal_tree_sha256_from_rows(baseline_rows),
+    }
+    if targeted_mutation is not None and baseline_identity != TARGETED_MUTATION_BASELINE:
+        raise SeedLoadBisectError(
+            f"targeted mutation half-B baseline drifted: {baseline_identity}"
+        )
     source_rows = tree_rows(source)
     source_by_path = {str(row["path"]): row for row in source_rows}
     if set(source_by_path) != set(parent_rows_by_path):
         raise SeedLoadBisectError("diagnostic path set differs from frozen parent")
+    changed_from_baseline = sorted(
+        path
+        for path in source_by_path
+        if source_by_path[path] != baseline_rows_by_path[path]
+    )
+    expected_baseline_changes = (
+        [MUTATION_TARGET_PATH] if targeted_mutation is not None else []
+    )
+    if changed_from_baseline != expected_baseline_changes:
+        raise SeedLoadBisectError(
+            "diagnostic tree differs from its baseline outside the exact mutation: "
+            f"{changed_from_baseline}"
+        )
+    if mutation_report is not None:
+        mutation_report["baseline_candidate"] = baseline_identity
+        mutation_report["changed_paths_from_baseline"] = changed_from_baseline
     effect_paths = {str(row["path"]) for row in effect_rows}
     retained_paths = set(parent_rows_by_path) - effect_paths
     retained_mismatches = sorted(
@@ -561,7 +775,10 @@ def materialize(
         for path in stub_effect_paths
         if source_by_path[path] == parent_rows_by_path[path]
     )
-    if real_effect_mismatches or unexpected_stub_identity:
+    expected_real_mismatches = (
+        [MUTATION_TARGET_PATH] if targeted_mutation is not None else []
+    )
+    if real_effect_mismatches != expected_real_mismatches or unexpected_stub_identity:
         raise SeedLoadBisectError(
             "real/stub effect identity gate failed: "
             f"real={real_effect_mismatches}, stub={unexpected_stub_identity}"
@@ -628,6 +845,7 @@ def materialize(
         "mode": mode,
         "diagnostic_only": True,
         "forbidden_for_seed_release": True,
+        "diagnostic_mutation": mutation_report,
         "parent_formal_overlay_tree_sha256": EXPECTED_PARENT["formal_overlay_tree_sha256"],
         "real_groups": list(normalized_real_groups),
         "real_fact_subgroups": list(normalized_real_fact_subgroups),
@@ -653,6 +871,7 @@ def materialize(
         "forbidden_for_seed_release": True,
         "seed_or_feature_certification": False,
         "ck3_launch": "NOT_RUN",
+        "diagnostic_mutation": mutation_report,
         "parent": {
             "root": str(parent_root),
             "product": str(parent["product"]),
@@ -697,6 +916,7 @@ def materialize(
                     "fact_subgroup": row["fact_subgroup"],
                     "fact_runtime_group": row["fact_runtime_group"],
                     "body_mode": row["body_mode"],
+                    "diagnostic_mutation": row["diagnostic_mutation"],
                     "definitions": row["definitions"],
                     "rendered_bytes": row["rendered_bytes"],
                     "rendered_sha256": row["rendered_sha256"],
@@ -720,7 +940,8 @@ def materialize(
                 "status": "GREEN",
                 "files": len(real_effect_paths),
                 "definitions": len(real_names),
-                "mismatches": [],
+                "mismatches": real_effect_mismatches,
+                "allowed_exact_diagnostic_mutation": expected_real_mismatches,
             },
             "stub_effect_identity": {
                 "status": "GREEN",
@@ -730,6 +951,20 @@ def materialize(
             },
             "definition_surface": {"status": "GREEN", "unique": True, "expected": EXPECTED_PARENT["effect_definitions"], "observed": len(rendered_names)},
             "bom_and_braces": {"status": "GREEN", "bom_missing": [], "brace_errors": []},
+            "baseline_byte_diff": {
+                "status": "GREEN",
+                "baseline": baseline_identity,
+                "changed_paths": changed_from_baseline,
+                "expected_changed_paths": expected_baseline_changes,
+            },
+            "targeted_mutation": {
+                "status": "GREEN" if mutation_report is not None else "NOT_REQUESTED",
+                "removed_call_count": (
+                    mutation_report["removed_call_count"]
+                    if mutation_report is not None
+                    else 0
+                ),
+            },
             "deterministic_materialization": {"status": "GREEN", "source_equals_product": True, "source_equals_replay": True},
         },
         "block_manifest": {
@@ -738,7 +973,7 @@ def materialize(
         },
         "runtime": {"live_status": "pending", "ck3_launch": "NOT_RUN"},
         "limits": [
-            "Selected real groups retain exact parent bytes; every other selected effect body is an empty diagnostic stub.",
+            "Selected real groups retain exact parent bytes except the explicitly hash-bound diagnostic mutation; every other selected effect body is an empty diagnostic stub.",
             "A CK3 GREEN result can certify only a startup/load boundary.",
             "This tree must never be used for seed capture, gameplay evidence, release, or Workshop upload.",
         ],
@@ -754,7 +989,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--parent-root", type=Path, default=DEFAULT_PARENT_ROOT)
     parser.add_argument(
         "--mode",
-        choices=("all-effect-stub", "effect-group-restore"),
+        choices=("all-effect-stub", "effect-group-restore", "targeted-mutation"),
         help="Defaults from whether --real-groups is empty.",
     )
     parser.add_argument(
@@ -778,14 +1013,18 @@ def main(argv: list[str] | None = None) -> int:
         default=(),
         help="Restore selected leaf purposes within facts/runtime.",
     )
-    args = parser.parse_args(argv)
-    inferred_mode = (
-        "effect-group-restore"
-        if args.real_groups
-        or args.real_fact_subgroups
-        or args.real_fact_runtime_groups
-        else "all-effect-stub"
+    parser.add_argument(
+        "--targeted-mutation",
+        choices=(TARGETED_MUTATION,),
+        help="Apply one frozen diagnostic-only mutation to its exact required baseline.",
     )
+    args = parser.parse_args(argv)
+    if args.targeted_mutation:
+        inferred_mode = "targeted-mutation"
+    elif args.real_groups or args.real_fact_subgroups or args.real_fact_runtime_groups:
+        inferred_mode = "effect-group-restore"
+    else:
+        inferred_mode = "all-effect-stub"
     if args.mode is not None and args.mode != inferred_mode:
         parser.error(f"--mode {args.mode} conflicts with the real-body selection")
     try:
@@ -796,6 +1035,7 @@ def main(argv: list[str] | None = None) -> int:
             real_groups=args.real_groups,
             real_fact_subgroups=args.real_fact_subgroups,
             real_fact_runtime_groups=args.real_fact_runtime_groups,
+            targeted_mutation=args.targeted_mutation,
         )
     except (SeedLoadBisectError, OSError, ValueError) as error:
         print(f"RED: {error}")

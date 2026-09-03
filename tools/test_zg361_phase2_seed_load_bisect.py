@@ -323,6 +323,57 @@ class Phase2SeedLoadBisectTests(unittest.TestCase):
         self.assertFalse(selected_paths["a"] & selected_paths["b"])
         self.assertEqual(runtime_paths, selected_paths["a"] | selected_paths["b"])
 
+    def test_half_b_targeted_mutation_removes_only_the_bound_self_call(self) -> None:
+        self._require_parent()
+        with tempfile.TemporaryDirectory(prefix="zg361-seed-load-no-self-call-") as temp:
+            output = Path(temp) / "candidate"
+            report = bisect.materialize(
+                output=output,
+                projection_name="phase2-seed-entry-effect-facts-runtime-half-b-no-self-call-test",
+                real_fact_runtime_groups=(
+                    "appointment-attribution",
+                    "exit-remediation",
+                ),
+                targeted_mutation=bisect.TARGETED_MUTATION,
+            )
+            self.assertEqual("targeted-mutation", report["mode"])
+            mutation = report["diagnostic_mutation"]
+            self.assertEqual(1, mutation["removed_call_count"])
+            self.assertEqual(
+                [bisect.MUTATION_TARGET_PATH],
+                mutation["changed_paths_from_baseline"],
+            )
+            self.assertEqual(
+                bisect.TARGETED_MUTATION_BASELINE,
+                mutation["baseline_candidate"],
+            )
+            self.assertEqual(
+                [bisect.MUTATION_TARGET_PATH],
+                report["checks"]["baseline_byte_diff"]["changed_paths"],
+            )
+            target = output / "source" / bisect.MUTATION_TARGET_PATH
+            self.assertEqual(bisect.MUTATION_RESULT_FILE["bytes"], target.stat().st_size)
+            self.assertEqual(
+                bisect.MUTATION_RESULT_FILE["sha256"],
+                bisect.sha256_file(target),
+            )
+            _header, blocks = find_blocks(target.read_bytes())
+            target_block = next(
+                block for block in blocks
+                if block["name"] == bisect.MUTATION_TARGET_EFFECT
+            )
+            raw = target.read_bytes()[target_block["start_byte"]:target_block["end_byte"]]
+            self.assertEqual(0, raw.count(bisect.MUTATION_CALL))
+            self.assertEqual(314, report["checks"]["definition_surface"]["observed"])
+            self.assertEqual(
+                bisect.tree_rows(output / "source"),
+                bisect.tree_rows(output / "product"),
+            )
+            self.assertEqual(
+                bisect.tree_rows(output / "source"),
+                bisect.tree_rows(output / "materialized-check"),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
