@@ -1,0 +1,223 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: metrics delivery, credit project and career learning stages.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_stage_07_metrics_delivery_effect = {
+    if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_result_case_owner = root
+                var:zg361_result_cycle_serial = root.var:zg361_p2c_cycle
+                var:zg361_result_case_serial = root.var:zg361_p2c_result_case
+                OR = { var:zg361_result_case_state = 1 var:zg361_result_case_state = 2 }
+            }
+        }
+        zg361_p2c_mark_external_wait_effect = { REASON = 325 STAGE_VAR = zg361_p2c_stage_07_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_p3_portfolio_closed = 1
+                var:zg361_p3_portfolio_owner = root
+                var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_p3_portfolio_result_owner = root
+                var:zg361_p3_portfolio_result_subject = this
+                var:zg361_p3_portfolio_result_cycle = root.var:zg361_p2c_cycle
+                var:zg361_p3_portfolio_result_case = root.var:zg361_p2c_result_case
+                var:zg361_p3_final_owner = root
+                var:zg361_p3_final_subject = this
+                var:zg361_p3_final_cycle = root.var:zg361_p2c_cycle
+                var:zg361_p3_final_conservation_ok = 1
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_07_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_p3_portfolio_owner = root
+                var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
+                OR = { var:zg361_case_aa_active = 1 var:zg361_case_ag_active = 1 var:zg361_case_aj_active = 1 }
+            }
+        }
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+    else_if = {
+        # AA -> AG -> AJ use D+1 edges.  During the bounded edge gap no case is
+        # active, but the frozen portfolio tuple is still authoritative.
+        limit = {
+            var:zg361_p2c_stage_status = 1
+            var:zg361_p2c_subject = {
+                var:zg361_p3_portfolio_closed = 0
+                var:zg361_p3_portfolio_owner = root
+                var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_p3_portfolio_result_owner = root
+                var:zg361_p3_portfolio_result_subject = this
+                var:zg361_p3_portfolio_result_cycle = root.var:zg361_p2c_cycle
+                var:zg361_p3_portfolio_result_case = root.var:zg361_p2c_result_case
+            }
+        }
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_stage_status != 1
+            var:zg361_p2c_subject = {
+                var:zg361_result_case_owner = root
+                var:zg361_result_cycle_serial = root.var:zg361_p2c_cycle
+                var:zg361_result_case_serial = root.var:zg361_p2c_result_case
+                var:zg361_result_case_state >= 3
+            }
+        }
+        zg361_p3_open_portfolio_effect = { SUBJECT = var:zg361_p2c_subject }
+        if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    var:zg361_p3_portfolio_owner = root
+                    var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_p3_portfolio_result_case = root.var:zg361_p2c_result_case
+                    var:zg361_case_aa_active = 1
+                }
+            }
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+        else = { zg361_p2c_record_red_effect = { CODE = 707 STAGE_VAR = zg361_p2c_stage_07_status } }
+    }
+    else = { zg361_p2c_record_red_effect = { CODE = 757 STAGE_VAR = zg361_p2c_stage_07_status } }
+}
+
+zg361_p2c_stage_08_credit_project_effect = {
+    if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_cp_portfolio_closed = 1
+                var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_cp_final_owner = root
+                var:zg361_cp_final_subject = this
+                var:zg361_cp_final_cycle = root.var:zg361_p2c_cycle
+                var:zg361_cp_final_conservation_ok = 1
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_08_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_stage_status = 0
+            NOR = {
+                any_vassal = { zg361_is_reviewable_vassal_trigger = yes NOT = { this = root.var:zg361_p2c_subject } }
+                liege = { zg361_is_celestial_liege_trigger = yes }
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_08_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
+                OR = { var:zg361_case_e_active = 1 var:zg361_case_i_active = 1 var:zg361_case_j_active = 1 var:zg361_case_r_active = 1 }
+            }
+        }
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+    else_if = {
+        # E -> I -> J -> R also crosses D+1 edges.  Keep polling the exact
+        # frozen subject portfolio instead of converting a healthy gap to RED.
+        limit = {
+            var:zg361_p2c_stage_status = 1
+            var:zg361_p2c_subject = {
+                var:zg361_cp_portfolio_closed = 0
+                var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
+            }
+        }
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+    else_if = {
+        limit = { var:zg361_p2c_stage_status = 0 }
+        zg361_cp_open_portfolio_effect = { SUBJECT = var:zg361_p2c_subject }
+        if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_case_e_owner = root
+                    var:zg361_case_e_subject = this
+                    var:zg361_case_e_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_e_active = 1
+                }
+            }
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+        else = { zg361_p2c_record_red_effect = { CODE = 808 STAGE_VAR = zg361_p2c_stage_08_status } }
+    }
+    else = { zg361_p2c_record_red_effect = { CODE = 858 STAGE_VAR = zg361_p2c_stage_08_status } }
+}
+
+zg361_p2c_stage_09_career_learning_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_p2c_cl_partial_open
+            var:zg361_p2c_cl_partial_open = 1
+            var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+            var:zg361_cl_portfolio_ah_completed >= var:zg361_cl_portfolio_ah_expected
+            var:zg361_cl_portfolio_ai_completed >= var:zg361_cl_portfolio_ai_expected
+            trigger_if = { limit = { is_ai = no } NOT = { has_variable = zg361_cl_digest_pending } }
+            trigger_else = { always = yes }
+        }
+        zg361_p2c_record_red_effect = { CODE = 910 STAGE_VAR = zg361_p2c_stage_09_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+            var:zg361_p2c_cl_frozen_count > 0
+            var:zg361_cl_portfolio_ah_expected = var:zg361_p2c_cl_frozen_count
+            var:zg361_cl_portfolio_ai_expected = var:zg361_p2c_cl_frozen_count
+            var:zg361_cl_portfolio_ah_completed >= var:zg361_cl_portfolio_ah_expected
+            var:zg361_cl_portfolio_ai_completed >= var:zg361_cl_portfolio_ai_expected
+            trigger_if = { limit = { is_ai = no } NOT = { has_variable = zg361_cl_digest_pending } }
+            trigger_else = { always = yes }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_09_status }
+    }
+    else_if = {
+        limit = { var:zg361_p2c_stage_status = 0 }
+        if = { limit = { has_variable_list = zg361_p2c_cl_subjects } clear_variable_list = zg361_p2c_cl_subjects }
+        set_variable = { name = zg361_p2c_cl_frozen_count value = 0 }
+        remove_variable = zg361_p2c_cl_partial_open
+        every_vassal = {
+            limit = { zg361_is_reviewable_vassal_trigger = yes liege = root }
+            save_temporary_scope_as = zg361_p2c_cl_subject_to_store
+            root = {
+                add_to_variable_list = { name = zg361_p2c_cl_subjects target = scope:zg361_p2c_cl_subject_to_store }
+                change_variable = { name = zg361_p2c_cl_frozen_count add = 1 }
+            }
+        }
+        zg361_cl_dispatch_direct_reports_effect = yes
+        if = {
+            limit = {
+                var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+                var:zg361_p2c_cl_frozen_count > 0
+                var:zg361_cl_portfolio_ah_expected = var:zg361_p2c_cl_frozen_count
+                var:zg361_cl_portfolio_ai_expected = var:zg361_p2c_cl_frozen_count
+            }
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+        else = {
+            # Some reports may already own live AH/AI cases.  Let those exact
+            # cases close before recording the partial-open RED, so no player
+            # window or delayed ticket is orphaned by the central layer.
+            set_variable = { name = zg361_p2c_cl_partial_open value = 1 }
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+    }
+    else = {
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+}

@@ -1,0 +1,99 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: serial lane, pump scheduling, summary and terminal status controls.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_mark_lane_busy_effect = {
+    set_variable = { name = zg361_p2c_stage_status value = 1 }
+    if = { limit = { is_ai = no } set_variable = { name = zg361_p2c_ui_lane_busy value = 1 } }
+    else = { set_variable = { name = zg361_p2c_ui_lane_busy value = 0 } }
+}
+
+zg361_p2c_schedule_pump_effect = {
+    if = {
+        limit = { var:zg361_p2c_active = 1 }
+        if = { limit = { NOT = { has_variable = zg361_p2c_ticket_serial } } set_variable = { name = zg361_p2c_ticket_serial value = 0 } }
+        change_variable = { name = zg361_p2c_ticket_serial add = 1 }
+        save_scope_as = zg361_p2c_ticket_manager
+        save_scope_value_as = { name = zg361_p2c_ticket_cycle value = var:zg361_p2c_cycle }
+        save_scope_value_as = { name = zg361_p2c_ticket_case value = var:zg361_p2c_case_serial }
+        save_scope_value_as = { name = zg361_p2c_ticket_stage value = var:zg361_p2c_stage }
+        save_scope_value_as = { name = zg361_p2c_ticket_identity value = var:zg361_p2c_ticket_serial }
+        trigger_event = { id = zg361p2c.1 days = $DAYS$ }
+    }
+}
+
+zg361_p2c_queue_summary_effect = {
+    if = {
+        limit = { is_ai = no NOT = { has_variable = zg361_p2c_summary_pending } }
+        set_variable = { name = zg361_p2c_summary_pending value = 1 }
+        save_scope_value_as = { name = zg361_p2c_summary_cycle value = var:zg361_p2c_cycle }
+        save_scope_value_as = { name = zg361_p2c_summary_case value = var:zg361_p2c_case_serial }
+        trigger_event = { id = zg361p2c.2 days = 1 }
+    }
+    else_if = { limit = { is_ai = yes } debug_log = "ZG361P2C: eligible AI central portfolio completed silently" }
+}
+
+zg361_p2c_record_stage_effect = {
+    set_variable = { name = $STAGE_VAR$ value = $STATUS$ }
+    set_variable = { name = zg361_p2c_stage_status value = $STATUS$ }
+    if = { limit = { var:zg361_p2c_stage_status = 2 } change_variable = { name = zg361_p2c_success_n add = 1 } }
+    else_if = { limit = { var:zg361_p2c_stage_status = 3 } change_variable = { name = zg361_p2c_na_n add = 1 } }
+    else_if = { limit = { var:zg361_p2c_stage_status = 4 } change_variable = { name = zg361_p2c_red_n add = 1 } }
+    change_variable = { name = zg361_p2c_stage add = 1 }
+    set_variable = { name = zg361_p2c_stage_status value = 0 }
+    set_variable = { name = zg361_p2c_wait_reason value = 0 }
+    set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+    zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+}
+
+zg361_p2c_record_red_effect = {
+    set_variable = { name = zg361_p2c_last_red_code value = $CODE$ }
+    zg361_p2c_record_stage_effect = { STATUS = 4 STAGE_VAR = $STAGE_VAR$ }
+}
+
+zg361_p2c_mark_external_wait_effect = {
+    if = {
+        limit = { NOT = { var:zg361_p2c_wait_reason = $REASON$ } }
+        change_variable = { name = zg361_p2c_external_n add = 1 }
+    }
+    set_variable = { name = $STAGE_VAR$ value = 5 }
+    set_variable = { name = zg361_p2c_stage_status value = 5 }
+    set_variable = { name = zg361_p2c_wait_reason value = $REASON$ }
+    set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+    zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+}
+
+zg361_p2c_abort_stale_effect = {
+    set_variable = { name = zg361_p2c_last_red_code value = $CODE$ }
+    set_variable = { name = zg361_p2c_stage_status value = 4 }
+    change_variable = { name = zg361_p2c_red_n add = 1 }
+    set_variable = { name = zg361_p2c_active value = 0 }
+    set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+    set_variable = { name = zg361_p2c_terminal_state value = 4 }
+    set_variable = { name = zg361_p2c_completed_cycle value = var:zg361_p2c_cycle }
+    zg361_p2c_queue_summary_effect = yes
+    debug_log = "ZG361P2C: frozen central tuple became stale; typed RED"
+}
+
+zg361_p2c_finish_effect = {
+    set_variable = { name = zg361_p2c_active value = 0 }
+    set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+    set_variable = { name = zg361_p2c_terminal_state value = 2 }
+    if = { limit = { var:zg361_p2c_red_n > 0 } set_variable = { name = zg361_p2c_terminal_state value = 4 } }
+    set_variable = { name = zg361_p2c_completed_cycle value = var:zg361_p2c_cycle }
+    zg361_p2c_queue_summary_effect = yes
+    debug_log = "ZG361P2C: serial phase-two portfolio reached a terminal summary"
+}
+
+zg361_p2c_suspend_external_effect = {
+    if = { limit = { NOT = { var:zg361_p2c_wait_reason = $REASON$ } } change_variable = { name = zg361_p2c_external_n add = 1 } }
+    set_variable = { name = $STAGE_VAR$ value = 5 }
+    set_variable = { name = zg361_p2c_stage_status value = 5 }
+    set_variable = { name = zg361_p2c_wait_reason value = $REASON$ }
+    set_variable = { name = zg361_p2c_active value = 0 }
+    set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+    set_variable = { name = zg361_p2c_terminal_state value = 5 }
+    set_variable = { name = zg361_p2c_suspended_cycle value = var:zg361_p2c_cycle }
+    zg361_p2c_queue_summary_effect = yes
+    debug_log = "ZG361P2C: central portfolio suspended on an external domain dependency"
+}

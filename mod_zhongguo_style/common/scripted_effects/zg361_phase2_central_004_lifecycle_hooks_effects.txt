@@ -1,0 +1,199 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: B1 publication initialization and exact delivered-result wake-up hooks.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_on_review_published_effect = {
+    # A newer B1 publication may arrive while an older central portfolio is
+    # still active.  Terminate the old immutable tuple first; never overwrite
+    # its case/stage/ticket in place.
+    if = {
+        limit = {
+            has_variable = zg361_p2c_active
+            var:zg361_p2c_active = 1
+            has_variable = zg361_p2c_cycle
+            has_variable = zg361_review_serial
+            NOT = { var:zg361_p2c_cycle = var:zg361_review_serial }
+        }
+        set_variable = { name = zg361_p2c_previous_aborted_cycle value = var:zg361_p2c_cycle }
+        set_variable = { name = zg361_p2c_deferred_reinit_cycle value = var:zg361_review_serial }
+        set_variable = { name = zg361_p2c_deferred_reinit_b1_case value = var:zg361_b1_case_serial }
+        set_variable = { name = zg361_p2c_deferred_reinit value = 1 }
+        zg361_p2c_abort_stale_effect = { CODE = 9101 }
+        trigger_event = { id = zg361p2c.3 days = 2 }
+    }
+    if = {
+        limit = {
+            has_game_rule = zg361_on
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_review_serial
+            has_variable = zg361_b1_cycle_serial
+            has_variable = zg361_b1_case_serial
+            has_variable = zg361_b1_cycle_state
+            has_variable = zg361_b1_closure_state
+            var:zg361_b1_cycle_serial = var:zg361_review_serial
+            var:zg361_b1_cycle_state = 8
+            var:zg361_b1_closure_state = 4
+            # Publication closure has exactly one proof route selected by the
+            # explicit M013 mode.  A stale/current receipt can never satisfy
+            # route C, and policy debt can never substitute for route A/B.
+            OR = {
+                AND = {
+                    has_variable = zg361_b1_m013_mode
+                    var:zg361_b1_m013_mode != 3
+                    has_variable = zg361_b1_m013_receipt_serial
+                    var:zg361_b1_m013_receipt_serial = var:zg361_b1_case_serial
+                }
+                AND = {
+                    has_variable = zg361_b1_m013_mode
+                    var:zg361_b1_m013_mode = 3
+                    has_variable = zg361_b1_m013_policy_debt_serial
+                    var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_case_serial
+                }
+            }
+            NOT = { has_character_flag = zg361_review_in_progress }
+            NOT = { has_variable = zg361_p2c_deferred_reinit }
+            trigger_if = {
+                limit = { has_variable = zg361_p2c_active }
+                var:zg361_p2c_active = 0
+            }
+            trigger_else = { always = yes }
+            trigger_if = {
+                limit = { has_variable = zg361_p2c_started_cycle }
+                NOT = { var:zg361_p2c_started_cycle = var:zg361_review_serial }
+            }
+            trigger_else = { always = yes }
+            trigger_if = {
+                limit = { has_variable = zg361_p2c_completed_cycle }
+                NOT = { var:zg361_p2c_completed_cycle = var:zg361_review_serial }
+            }
+            trigger_else = { always = yes }
+            any_vassal = {
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                has_variable = zg361_b1_case_owner
+                has_variable = zg361_b1_case_subject
+                has_variable = zg361_b1_cycle_serial
+                has_variable = zg361_b1_case_serial
+                has_variable = zg361_b1_case_state
+                var:zg361_b1_case_owner = root
+                var:zg361_b1_case_subject = this
+                var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
+                var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+                var:zg361_b1_case_state = 8
+                has_variable = zg361_result_case_owner
+                has_variable = zg361_result_cycle_serial
+                has_variable = zg361_result_case_serial
+                has_variable = zg361_result_case_state
+                has_variable = zg361_result_grade
+                var:zg361_result_case_owner = root
+                var:zg361_result_cycle_serial = root.var:zg361_review_serial
+            }
+        }
+        if = { limit = { NOT = { has_variable = zg361_p2c_case_cursor } } set_variable = { name = zg361_p2c_case_cursor value = 0 } }
+        if = { limit = { var:zg361_p2c_case_cursor >= 999999 } set_variable = { name = zg361_p2c_case_cursor value = 0 } }
+        change_variable = { name = zg361_p2c_case_cursor add = 1 }
+        ordered_vassal = {
+            limit = {
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                var:zg361_b1_case_owner = root
+                var:zg361_b1_case_subject = this
+                var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
+                var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+                var:zg361_b1_case_state = 8
+                has_variable = zg361_result_case_owner
+                has_variable = zg361_result_cycle_serial
+                has_variable = zg361_result_case_serial
+                has_variable = zg361_result_case_state
+                has_variable = zg361_result_grade
+                var:zg361_result_case_owner = root
+                var:zg361_result_cycle_serial = root.var:zg361_review_serial
+            }
+            order_by = stewardship
+            position = 0
+            save_temporary_scope_as = zg361_p2c_selected_subject
+            root = {
+                set_variable = { name = zg361_p2c_started_cycle value = var:zg361_review_serial }
+                set_variable = { name = zg361_p2c_active value = 1 }
+                set_variable = { name = zg361_p2c_case_serial value = var:zg361_p2c_case_cursor }
+                set_variable = { name = zg361_p2c_b1_owner value = this }
+                set_variable = { name = zg361_p2c_b1_cycle value = var:zg361_b1_cycle_serial }
+                set_variable = { name = zg361_p2c_b1_case value = var:zg361_b1_case_serial }
+                set_variable = { name = zg361_p2c_cycle value = var:zg361_review_serial }
+                set_variable = { name = zg361_p2c_subject value = scope:zg361_p2c_selected_subject }
+                set_variable = { name = zg361_p2c_result_owner value = this }
+                set_variable = { name = zg361_p2c_result_subject value = scope:zg361_p2c_selected_subject }
+                set_variable = { name = zg361_p2c_result_cycle value = scope:zg361_p2c_selected_subject.var:zg361_result_cycle_serial }
+                set_variable = { name = zg361_p2c_result_case value = scope:zg361_p2c_selected_subject.var:zg361_result_case_serial }
+                set_variable = { name = zg361_p2c_result_state_at_publish value = scope:zg361_p2c_selected_subject.var:zg361_result_case_state }
+                set_variable = { name = zg361_p2c_result_grade_at_publish value = scope:zg361_p2c_selected_subject.var:zg361_result_grade }
+                set_variable = { name = zg361_p2c_stage value = 1 }
+                set_variable = { name = zg361_p2c_stage_status value = 0 }
+                set_variable = { name = zg361_p2c_wait_reason value = 0 }
+                set_variable = { name = zg361_p2c_ticket_serial value = 0 }
+                set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+                set_variable = { name = zg361_p2c_success_n value = 0 }
+                set_variable = { name = zg361_p2c_na_n value = 0 }
+                set_variable = { name = zg361_p2c_red_n value = 0 }
+                set_variable = { name = zg361_p2c_external_n value = 0 }
+                remove_variable = zg361_p2c_last_red_code
+                remove_variable = zg361_p2c_summary_pending
+                zg361_p2c_clear_m360_source_effect = yes
+                if = { limit = { has_variable_list = zg361_p2c_mg_subjects } clear_variable_list = zg361_p2c_mg_subjects }
+                set_variable = { name = zg361_p2c_mg_expected value = 0 }
+                set_variable = { name = zg361_p2c_mg_completed value = 0 }
+                set_variable = { name = zg361_p2c_mg_invalid value = 0 }
+                set_variable = { name = zg361_p2c_last_noop_code value = 0 }
+                zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+            }
+        }
+        debug_log = "ZG361P2C: post-publication central tuple frozen; first pump D+2"
+    }
+    else_if = {
+        limit = {
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_review_serial
+            OR = {
+                AND = { has_variable = zg361_p2c_started_cycle var:zg361_p2c_started_cycle = var:zg361_review_serial }
+                AND = { has_variable = zg361_p2c_completed_cycle var:zg361_p2c_completed_cycle = var:zg361_review_serial }
+            }
+        }
+        set_variable = { name = zg361_p2c_last_noop_code value = 1 }
+        debug_log = "ZG361P2C: duplicate publication hook ignored"
+    }
+    else = { debug_log = "ZG361P2C: unauthorized or incomplete publication hook ignored" }
+}
+
+zg361_p2c_on_result_delivered_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_result_case_owner
+            has_variable = zg361_result_cycle_serial
+            has_variable = zg361_result_case_serial
+            has_variable = zg361_result_case_state
+            var:zg361_result_case_state = 3
+        }
+        save_temporary_scope_as = zg361_p2c_delivered_subject
+        var:zg361_result_case_owner = {
+            if = {
+                limit = {
+                    zg361_is_celestial_liege_trigger = yes
+                    has_variable = zg361_p2c_active
+                    var:zg361_p2c_active = 1
+                    has_variable = zg361_p2c_subject
+                    has_variable = zg361_p2c_cycle
+                    has_variable = zg361_p2c_result_case
+                    var:zg361_p2c_subject = scope:zg361_p2c_delivered_subject
+                    var:zg361_p2c_cycle = scope:zg361_p2c_delivered_subject.var:zg361_result_cycle_serial
+                    var:zg361_p2c_result_case = scope:zg361_p2c_delivered_subject.var:zg361_result_case_serial
+                    OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 7 }
+                    var:zg361_p2c_wait_reason = 325
+                }
+                set_variable = { name = zg361_p2c_stage_status value = 0 }
+                set_variable = { name = zg361_p2c_wait_reason value = 0 }
+                zg361_p2c_schedule_pump_effect = { DAYS = 1 }
+                debug_log = "ZG361P2C: exact delivered 3.25 woke its waiting central case"
+            }
+        }
+    }
+}

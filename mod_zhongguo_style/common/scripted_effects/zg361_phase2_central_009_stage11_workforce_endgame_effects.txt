@@ -1,0 +1,222 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: workforce adapter and workforce endgame stage.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_call_workforce_adapter_effect = {
+    zg361_we_open_portfolio_effect = { SUBJECT = var:zg361_p2c_subject }
+}
+
+zg361_p2c_stage_11_workforce_endgame_effect = {
+    if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_closed = 1
+                var:zg361_we_portfolio_status = 6
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_we_final_conservation_ok = 1
+            }
+        }
+        if = {
+            limit = { var:zg361_p2c_m360_source_status = 1 }
+            set_variable = { name = zg361_p2c_m360_source_status value = 2 }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status }
+    }
+    else_if = {
+        # Cycles one/two (and a non-top third cycle) have genuinely consumed
+        # #360 but do not yet expose #361.  Status 8 is a valid
+        # history-accruing close, not RED and not fabricated success.
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_closed = 1
+                var:zg361_we_portfolio_status = 8
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_we_portfolio_terminal_history_accruing = 1
+                var:zg361_we_portfolio_history_cycle_count >= 1
+                var:zg361_we_portfolio_history_cycle_count <= 3
+                var:zg361_we_portfolio_terminal_owned_operations = 39
+                var:zg361_we_portfolio_terminal_skipped_charter = 1
+                var:zg361_we_portfolio_terminal_success = 0
+                var:zg361_we_final_conservation_ok = 1
+                var:zg361_case_al_active = 0
+                var:zg361_case_al_state = 8
+            }
+        }
+        if = {
+            limit = { var:zg361_p2c_m360_source_status = 1 }
+            set_variable = { name = zg361_p2c_m360_source_status value = 2 }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status }
+    }
+    else_if = {
+        # Workforce owns the non-manager close: 38 ordinary operations settle,
+        # manager-only #360/#361 write no receipt, AL is closed, and status 7 is
+        # N/A rather than business success.
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_closed = 1
+                var:zg361_we_portfolio_status = 7
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_we_portfolio_terminal_na = 1
+                OR = {
+                    var:zg361_we_portfolio_terminal_reason = 360361
+                    var:zg361_we_portfolio_terminal_reason = 360362
+                }
+                var:zg361_we_portfolio_terminal_owned_operations = 38
+                var:zg361_we_portfolio_terminal_skipped_manager_only = 2
+                var:zg361_we_portfolio_terminal_success = 0
+                var:zg361_we_final_conservation_ok = 1
+                var:zg361_case_al_active = 0
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_11_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_status = 5
+                var:zg361_we_awaiting_al_357_359 = 1
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+            }
+        }
+        # The only automatic resume attempt consumes source receipts minted by
+        # the real B1 facts/quota close and B2 appeal/quota-return consumers.
+        # It cannot manufacture ids/hashes and route-C debts remain waiting.
+        if = {
+            limit = {
+                var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }
+            }
+            var:zg361_p2c_subject = {
+                zg361_b2_submit_completed_al_receipts_effect = {
+                    TICKET_OWNER = root TICKET_SUBJECT = this
+                    TICKET_CYCLE = root.var:zg361_p2c_cycle
+                    TICKET_CASE = var:zg361_case_al_case_serial
+                }
+            }
+        }
+        # Once exact external receipts advance AL to state 4, Central freezes a
+        # route-neutral three-manager source.  It never calls the old opener,
+        # because that opener could expose #360 before this source is READY.
+        if = {
+            limit = {
+                var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }
+                var:zg361_p2c_subject = {
+                    var:zg361_we_al_external_stage_receipts_verified = 1
+                    var:zg361_we_al_external_receipt_owner = root
+                    var:zg361_we_al_external_receipt_subject = this
+                    var:zg361_we_al_external_receipt_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_we_al_external_receipt_case = var:zg361_case_al_case_serial
+                    var:zg361_we_al_external_receipt_count = 3
+                    var:zg361_we_al_external_last_operation = 359
+                    OR = { var:zg361_case_al_state = 4 var:zg361_case_al_state = 5 }
+                }
+            }
+            zg361_p2c_prepare_m360_source_effect = yes
+            if = {
+                limit = { var:zg361_p2c_m360_source_status = 1 }
+                zg361_we_resume_m360_from_central_source_effect = {
+                    TICKET_OWNER = root
+                    TICKET_SUBJECT = var:zg361_p2c_subject
+                    TICKET_CYCLE = var:zg361_p2c_cycle
+                    TICKET_CASE = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+                }
+                set_variable = { name = zg361_p2c_stage_status value = 1 }
+                zg361_p2c_mark_lane_busy_effect = yes
+                zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+            }
+            else_if = {
+                limit = { var:zg361_p2c_m360_source_status = 5 }
+                zg361_p2c_mark_external_wait_effect = { REASON = 360410 STAGE_VAR = zg361_p2c_stage_11_status }
+            }
+            else_if = {
+                limit = { var:zg361_p2c_m360_source_status = 7 }
+                var:zg361_p2c_subject = {
+                    zg361_we_finalize_manager_collective_na_effect = {
+                        TICKET_OWNER = root
+                        TICKET_SUBJECT = this
+                        TICKET_CYCLE = root.var:zg361_p2c_cycle
+                        TICKET_CASE = var:zg361_case_al_case_serial
+                        REASON = 360362
+                    }
+                }
+                if = {
+                    limit = {
+                        var:zg361_p2c_subject = {
+                            var:zg361_we_portfolio_closed = 1
+                            var:zg361_we_portfolio_status = 7
+                            var:zg361_we_portfolio_terminal_reason = 360362
+                            var:zg361_we_final_conservation_ok = 1
+                            var:zg361_case_al_active = 0
+                        }
+                    }
+                    zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_11_status }
+                }
+                else = { zg361_p2c_record_red_effect = { CODE = 1192 STAGE_VAR = zg361_p2c_stage_11_status } }
+            }
+            else = { zg361_p2c_record_red_effect = { CODE = 1191 STAGE_VAR = zg361_p2c_stage_11_status } }
+        }
+        else_if = {
+            # #360/#361 are manager-only by contract.  Without a Workforce
+            # public N/A-close seam, a count/baron cannot legally close AL.
+            # Suspend the central case as an external blocker: no success,
+            # no completed-cycle marker, and no permanent D+2 retry loop.
+            limit = {
+                var:zg361_p2c_subject = { NOT = { zg361_is_celestial_liege_trigger = yes } }
+            }
+            zg361_p2c_suspend_external_effect = { REASON = 360361 STAGE_VAR = zg361_p2c_stage_11_status }
+        }
+        else = { zg361_p2c_mark_external_wait_effect = { REASON = 357359 STAGE_VAR = zg361_p2c_stage_11_status } }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                OR = { var:zg361_case_ab_active = 1 var:zg361_case_ac_active = 1 var:zg361_case_ad_active = 1 var:zg361_case_al_active = 1 }
+            }
+        }
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+    else_if = {
+        # AB -> AC -> AD -> AL has the same D+1 transition gap semantics.
+        limit = {
+            var:zg361_p2c_stage_status = 1
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_closed = 0
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                NOT = { var:zg361_we_portfolio_status = 5 }
+            }
+        }
+        zg361_p2c_mark_lane_busy_effect = yes
+        zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_stage_status = 0
+            var:zg361_p2c_subject = {
+                has_variable = zg361_ch_hc_authorized
+                has_variable = zg361_ch_hc_available
+                has_variable = zg361_ch_hc_reserved
+                has_variable = zg361_ch_hc_occupied
+                has_variable = zg361_ch_hc_frozen
+                has_variable = zg361_ch_hc_reclaimed
+            }
+        }
+        zg361_p2c_call_workforce_adapter_effect = yes
+        if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_case_ab_owner = root
+                    var:zg361_case_ab_subject = this
+                    var:zg361_case_ab_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_ab_active = 1
+                }
+            }
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+        else = { zg361_p2c_record_red_effect = { CODE = 1111 STAGE_VAR = zg361_p2c_stage_11_status } }
+    }
+    else = { zg361_p2c_record_red_effect = { CODE = 1161 STAGE_VAR = zg361_p2c_stage_11_status } }
+}

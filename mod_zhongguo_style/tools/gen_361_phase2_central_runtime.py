@@ -10,13 +10,35 @@ Generated source is static-ready evidence, not CK3/MCP live evidence.
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
+import hashlib
 from pathlib import Path
+from typing import Final
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py\n"
 READINESS = "static-ready"
+LEGACY_EFFECT_FILENAME = "zg361_phase2_central_runtime_effects.txt"
+LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
+HISTORICAL_EFFECT_BYTES = 126_811
+HISTORICAL_EFFECT_SHA256 = "94D893631FCF1C6FDF25F19D536C99664112E6C16AC39BFC2D4EDC36C13B3CEB"
+HISTORICAL_EFFECT_COUNT = 32
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# A future shard above the hard principle is allowed only when this map names
+# that exact shard and supplies both its cohesion reason and concrete CK3 live
+# evidence.  The current purpose split needs no exception.
+EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
 
 LANGUAGES = (
     ("english", "l_english"),
@@ -42,6 +64,102 @@ STAGES = (
     (9, "career_learning", "zg361_cl_dispatch_direct_reports_effect"),
     (10, "manager_governance", "zg361_mg_dispatch_subordinate_managers_effect"),
     (11, "workforce_endgame", "zg361_we_open_portfolio_effect"),
+)
+
+
+# Keep this ordered exactly like ``render_effects()``.  The boundaries are
+# operational: each file owns one coherent source, dispatcher, lifecycle or
+# stage family, and every shard remains inside the 1..10 target (and therefore
+# the <=20 hard principle) without cutting a top-level definition.
+EFFECT_GROUPS = (
+    EffectGroup(
+        "zg361_phase2_central_001_m360_source_effects.txt",
+        "M360 route-neutral source clearing, envelope freezing and cohort preparation",
+        (
+            "zg361_p2c_clear_m360_source_effect",
+            "zg361_p2c_freeze_m360_source_envelope_effect",
+            "zg361_p2c_prepare_m360_source_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_002_m275_requisition_effects.txt",
+        "M275 runner-up requisition scheduling and immutable source production",
+        (
+            "zg361_p2c_schedule_m275_runner_requisition_effect",
+            "zg361_p2c_open_m275_runner_requisition_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_003_dispatch_control_effects.txt",
+        "serial lane, pump scheduling, summary and terminal status controls",
+        (
+            "zg361_p2c_mark_lane_busy_effect",
+            "zg361_p2c_schedule_pump_effect",
+            "zg361_p2c_queue_summary_effect",
+            "zg361_p2c_record_stage_effect",
+            "zg361_p2c_record_red_effect",
+            "zg361_p2c_mark_external_wait_effect",
+            "zg361_p2c_abort_stale_effect",
+            "zg361_p2c_finish_effect",
+            "zg361_p2c_suspend_external_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_004_lifecycle_hooks_effects.txt",
+        "B1 publication initialization and exact delivered-result wake-up hooks",
+        (
+            "zg361_p2c_on_review_published_effect",
+            "zg361_p2c_on_result_delivered_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_005_stage01_03_effects.txt",
+        "career, compensation and feedback promotion PIP adapters and stages",
+        (
+            "zg361_p2c_call_career_hc_adapter_effect",
+            "zg361_p2c_call_compensation_adapter_effect",
+            "zg361_p2c_call_pp_adapter_effect",
+            "zg361_p2c_stage_01_career_hc_effect",
+            "zg361_p2c_stage_02_compensation_effect",
+            "zg361_p2c_stage_03_feedback_promotion_pip_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_006_incident_stages_effects.txt",
+        "ordered incident X, Y and Z stages",
+        (
+            "zg361_p2c_stage_04_x_effect",
+            "zg361_p2c_stage_05_y_effect",
+            "zg361_p2c_stage_06_z_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_007_stage07_09_effects.txt",
+        "metrics delivery, credit project and career learning stages",
+        (
+            "zg361_p2c_stage_07_metrics_delivery_effect",
+            "zg361_p2c_stage_08_credit_project_effect",
+            "zg361_p2c_stage_09_career_learning_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_008_stage10_manager_governance_effects.txt",
+        "manager governance strict-lag stage",
+        ("zg361_p2c_stage_10_manager_governance_effect",),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_009_stage11_workforce_endgame_effects.txt",
+        "workforce adapter and workforce endgame stage",
+        (
+            "zg361_p2c_call_workforce_adapter_effect",
+            "zg361_p2c_stage_11_workforce_endgame_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_phase2_central_010_serial_pump_effects.txt",
+        "single-stage serial pump dispatcher",
+        ("zg361_p2c_pump_effect",),
+    ),
 )
 
 M360_FREEZE_GLOBAL_FIELDS = (
@@ -2190,6 +2308,183 @@ zg361_p2c_pump_effect = {
 '''
 
 
+def historical_effect_payload() -> bytes:
+    """Return the pre-shard aggregate exactly as it was written on disk."""
+
+    return BOM + render_effects().replace("\r\n", "\n").encode("utf-8")
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in phase-two central effects")
+
+
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _block_end(text: str, open_brace: int) -> int:
+    depth = 0
+    index = open_brace
+    while index < len(text):
+        char = text[index]
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced phase-two central effect block")
+        index += 1
+    raise ValueError("unterminated phase-two central effect block")
+
+
+def top_level_effect_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return complete top-level definitions without changing their bytes."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (
+            text[index].isalnum() or text[index] in "_."
+        ):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(
+    source: str,
+    source_blocks: tuple[tuple[str, str], ...],
+) -> None:
+    payload = BOM + source.replace("\r\n", "\n").encode("utf-8")
+    if len(payload) != HISTORICAL_EFFECT_BYTES:
+        raise ValueError(
+            "phase-two central aggregate byte count drifted: "
+            f"{len(payload)} != {HISTORICAL_EFFECT_BYTES}"
+        )
+    digest = hashlib.sha256(payload).hexdigest().upper()
+    if digest != HISTORICAL_EFFECT_SHA256:
+        raise ValueError(
+            "phase-two central aggregate SHA-256 drifted: "
+            f"{digest} != {HISTORICAL_EFFECT_SHA256}"
+        )
+
+    source_names = tuple(name for name, _block in source_blocks)
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != HISTORICAL_EFFECT_COUNT:
+        raise ValueError(
+            f"phase-two central aggregate must contain {HISTORICAL_EFFECT_COUNT} "
+            f"top-level effects, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("phase-two central aggregate contains duplicate effects")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("phase-two central effect shard filenames must be unique")
+    if source_names != configured_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        unexpected = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "phase-two central effect groups must preserve exact source order and coverage; "
+            f"missing={missing}, unexpected={unexpected}"
+        )
+    for group in EFFECT_GROUPS:
+        count = len(group.effect_names)
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+        if count < 1:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+
+    over_hard = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "phase-two central effect hard-limit exceptions must exactly match "
+            "shards above the hard principle"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without reason "
+                "and CK3 live evidence"
+            )
+
+
+def render_effect_parts() -> dict[str, str]:
+    """Project the frozen aggregate into purpose-cohesive definition shards."""
+
+    source = render_effects()
+    source_blocks = top_level_effect_blocks(source)
+    _validate_effect_groups(source, source_blocks)
+    by_name = dict(source_blocks)
+    parts: dict[str, str] = {}
+    for group in EFFECT_GROUPS:
+        body = "\n\n".join(by_name[name] for name in group.effect_names)
+        parts[group.filename] = (
+            HEADER
+            + f"# PURPOSE: {group.purpose}.\n"
+            + f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n\n"
+            + body
+            + "\n"
+        )
+    return parts
+
+
 def render_events() -> str:
     return HEADER + r'''namespace = zg361p2c
 
@@ -2552,31 +2847,53 @@ fixture-live 或 production-live 证据。
 
 def outputs() -> dict[Path, str]:
     rendered = {
-        MOD_ROOT / "common/scripted_effects/zg361_phase2_central_runtime_effects.txt": render_effects(),
+        MOD_ROOT / "common" / "scripted_effects" / filename: content
+        for filename, content in render_effect_parts().items()
+    }
+    rendered.update({
         MOD_ROOT / "common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt": render_m360_triggers(),
         MOD_ROOT / "events/zg361_phase2_central_runtime_events.txt": render_events(),
         MOD_ROOT / "docs/361-phase2-central-runtime-spec.md": render_spec(),
-    }
+    })
     for language, header in LANGUAGES:
         rendered[MOD_ROOT / f"localization/{language}/zg361_phase2_central_l_{language}.yml"] = render_localization(language, header)
     return rendered
 
 
+def unexpected_effect_paths(rendered: dict[Path, str]) -> tuple[Path, ...]:
+    """Return legacy or stale central effect projections on disk."""
+
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
+    expected = {path for path in rendered if path.parent == effects_dir}
+    unexpected = set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected
+    if LEGACY_EFFECT_PATH.is_file():
+        unexpected.add(LEGACY_EFFECT_PATH)
+    return tuple(sorted(unexpected))
+
+
 def write_or_check(check: bool) -> int:
+    rendered = outputs()
     stale: list[str] = []
-    for path, content in outputs().items():
+    for path, content in rendered.items():
         payload = BOM + content.replace("\r\n", "\n").encode("utf-8")
         if check:
             if not path.exists() or path.read_bytes() != payload:
                 stale.append(path.relative_to(MOD_ROOT).as_posix())
-        else:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(payload)
-    if stale:
+    unexpected = unexpected_effect_paths(rendered)
+    if check and (stale or unexpected):
         print("stale generated phase-two central files:")
         for item in stale:
             print(f"  {item}")
+        for path in unexpected:
+            print(f"  unexpected effect projection: {path.relative_to(MOD_ROOT).as_posix()}")
         return 1
+    if not check:
+        for path in unexpected:
+            path.unlink()
+        for path, content in rendered.items():
+            payload = BOM + content.replace("\r\n", "\n").encode("utf-8")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
     return 0
 
 

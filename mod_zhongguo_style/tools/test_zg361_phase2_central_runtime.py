@@ -7,10 +7,12 @@ MCP, fixture-live, production-live, save/load, or release evidence.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
 import sys
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -29,6 +31,13 @@ def read_workforce_effect_shards() -> str:
     return "\n".join(
         read(f"common/scripted_effects/{group.filename}")
         for group in workforce_generator.EFFECT_GROUPS
+    )
+
+
+def read_central_effect_shards() -> str:
+    return "\n".join(
+        read(f"common/scripted_effects/{group.filename}")
+        for group in generator.EFFECT_GROUPS
     )
 
 
@@ -90,7 +99,7 @@ def assert_balanced(test: unittest.TestCase, text: str, label: str) -> None:
 class Phase2CentralRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read("common/scripted_effects/zg361_phase2_central_runtime_effects.txt")
+        cls.effects = read_central_effect_shards()
         cls.triggers = read("common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt")
         cls.events = read("events/zg361_phase2_central_runtime_events.txt")
         cls.core = read("common/scripted_effects/zg361_effects.txt")
@@ -114,9 +123,12 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 13)
+        self.assertEqual(len(rendered), 22)
         allowed = {
-            "common/scripted_effects/zg361_phase2_central_runtime_effects.txt",
+            *{
+                f"common/scripted_effects/{group.filename}"
+                for group in generator.EFFECT_GROUPS
+            },
             "common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt",
             "events/zg361_phase2_central_runtime_events.txt",
             "docs/361-phase2-central-runtime-spec.md",
@@ -130,6 +142,121 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             expected = generator.BOM + content.replace("\r\n", "\n").encode("utf-8")
             self.assertEqual(path.read_bytes(), expected, path)
             self.assertTrue(path.read_bytes().startswith(generator.BOM), path)
+
+    def test_effect_aggregate_baseline_is_frozen(self) -> None:
+        payload = generator.historical_effect_payload()
+        self.assertEqual(generator.HISTORICAL_EFFECT_BYTES, len(payload))
+        self.assertEqual(
+            generator.HISTORICAL_EFFECT_SHA256,
+            hashlib.sha256(payload).hexdigest().upper(),
+        )
+        self.assertEqual(
+            generator.HISTORICAL_EFFECT_COUNT,
+            len(generator.top_level_effect_blocks(payload)),
+        )
+
+    def test_effect_shards_are_exact_unique_block_projection(self) -> None:
+        source_blocks = generator.top_level_effect_blocks(generator.render_effects())
+        parts = generator.render_effect_parts()
+        projected_blocks = tuple(
+            block_row
+            for group in generator.EFFECT_GROUPS
+            for block_row in generator.top_level_effect_blocks(parts[group.filename])
+        )
+        self.assertEqual(source_blocks, projected_blocks)
+        self.assertEqual(32, len(projected_blocks))
+        self.assertEqual(32, len({name for name, _body in projected_blocks}))
+
+    def test_effect_shards_obey_purpose_and_size_contract(self) -> None:
+        self.assertEqual(10, len(generator.EFFECT_GROUPS))
+        self.assertEqual({}, generator.EFFECT_HARD_LIMIT_EXCEPTIONS)
+        for group in generator.EFFECT_GROUPS:
+            with self.subTest(filename=group.filename):
+                count = len(group.effect_names)
+                self.assertGreaterEqual(count, 1)
+                self.assertLessEqual(count, generator.EFFECT_TARGET_MAX)
+                self.assertLessEqual(count, generator.EFFECT_HARD_MAX)
+                payload = (
+                    MOD_ROOT / "common" / "scripted_effects" / group.filename
+                ).read_bytes()
+                self.assertTrue(payload.startswith(generator.BOM))
+                text = payload.decode("utf-8-sig")
+                self.assertTrue(text.startswith(generator.HEADER))
+                self.assertIn(f"# PURPOSE: {group.purpose}.", text)
+                self.assertEqual(
+                    count,
+                    len(generator.top_level_effect_blocks(payload)),
+                )
+
+    def test_effect_hard_limit_exception_contract_keeps_11_to_20_reachable(self) -> None:
+        source = generator.render_effects()
+        source_blocks = generator.top_level_effect_blocks(source)
+        names = tuple(name for name, _body in source_blocks)
+
+        def groups(sizes: tuple[int, ...]) -> tuple[generator.EffectGroup, ...]:
+            result: list[generator.EffectGroup] = []
+            offset = 0
+            for index, size in enumerate(sizes):
+                result.append(
+                    generator.EffectGroup(
+                        f"synthetic_{index}_effects.txt",
+                        f"synthetic purpose {index}",
+                        names[offset : offset + size],
+                    )
+                )
+                offset += size
+            self.assertEqual(len(names), offset)
+            return tuple(result)
+
+        target_overages = groups((11, 11, 10))
+        with (
+            mock.patch.object(generator, "EFFECT_GROUPS", target_overages),
+            mock.patch.object(generator, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
+        ):
+            generator._validate_effect_groups(source, source_blocks)
+
+        hard_overage = groups((21, 11))
+        oversized_filename = hard_overage[0].filename
+        with (
+            mock.patch.object(generator, "EFFECT_GROUPS", hard_overage),
+            mock.patch.object(generator, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
+            self.assertRaisesRegex(ValueError, "must exactly match"),
+        ):
+            generator._validate_effect_groups(source, source_blocks)
+
+        valid_exception = {
+            oversized_filename: (
+                "one indivisible purpose boundary",
+                "artifacts/ck3-live/report.json",
+            )
+        }
+        with (
+            mock.patch.object(generator, "EFFECT_GROUPS", hard_overage),
+            mock.patch.object(
+                generator,
+                "EFFECT_HARD_LIMIT_EXCEPTIONS",
+                valid_exception,
+            ),
+        ):
+            generator._validate_effect_groups(source, source_blocks)
+
+        empty_evidence = {
+            oversized_filename: ("one indivisible purpose boundary", "")
+        }
+        with (
+            mock.patch.object(generator, "EFFECT_GROUPS", hard_overage),
+            mock.patch.object(
+                generator,
+                "EFFECT_HARD_LIMIT_EXCEPTIONS",
+                empty_evidence,
+            ),
+            self.assertRaisesRegex(ValueError, "without reason and CK3 live evidence"),
+        ):
+            generator._validate_effect_groups(source, source_blocks)
+
+    def test_legacy_effect_monolith_is_absent(self) -> None:
+        self.assertFalse(generator.LEGACY_EFFECT_PATH.exists())
+        self.assertEqual((), generator.unexpected_effect_paths(generator.outputs()))
 
     def test_generated_script_braces_and_event_namespace(self) -> None:
         assert_balanced(self, self.effects, "central effects")

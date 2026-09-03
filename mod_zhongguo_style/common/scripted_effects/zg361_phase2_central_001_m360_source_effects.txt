@@ -1,0 +1,372 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: M360 route-neutral source clearing, envelope freezing and cohort preparation.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_clear_m360_source_effect = {
+remove_variable = zg361_p2c_m360_source_status
+    remove_variable = zg361_p2c_m360_source_reason
+    remove_variable = zg361_p2c_m360_source_upstream_reason
+    remove_variable = zg361_p2c_m360_source_owner
+    remove_variable = zg361_p2c_m360_source_subject
+    remove_variable = zg361_p2c_m360_source_p2c_cycle
+    remove_variable = zg361_p2c_m360_source_p2c_case
+    remove_variable = zg361_p2c_m360_source_al_cycle
+    remove_variable = zg361_p2c_m360_source_al_case
+    remove_variable = zg361_p2c_m360_source_cohort_count
+    remove_variable = zg361_p2c_m360_source_total_quota
+    remove_variable = zg361_p2c_m360_source_c1_manager
+    remove_variable = zg361_p2c_m360_source_c1_b1_cycle
+    remove_variable = zg361_p2c_m360_source_c1_b1_case
+    remove_variable = zg361_p2c_m360_source_c1_b1_source_id
+    remove_variable = zg361_p2c_m360_source_c1_b1_source_hash
+    remove_variable = zg361_p2c_m360_source_c1_quota
+    remove_variable = zg361_p2c_m360_source_c1_mg_cycle
+    remove_variable = zg361_p2c_m360_source_c1_mg_case
+    remove_variable = zg361_p2c_m360_source_c1_mg_snapshot_source_serial
+    remove_variable = zg361_p2c_m360_source_c1_mg_snapshot_revision
+    remove_variable = zg361_p2c_m360_source_c2_manager
+    remove_variable = zg361_p2c_m360_source_c2_b1_cycle
+    remove_variable = zg361_p2c_m360_source_c2_b1_case
+    remove_variable = zg361_p2c_m360_source_c2_b1_source_id
+    remove_variable = zg361_p2c_m360_source_c2_b1_source_hash
+    remove_variable = zg361_p2c_m360_source_c2_quota
+    remove_variable = zg361_p2c_m360_source_c2_mg_cycle
+    remove_variable = zg361_p2c_m360_source_c2_mg_case
+    remove_variable = zg361_p2c_m360_source_c2_mg_snapshot_source_serial
+    remove_variable = zg361_p2c_m360_source_c2_mg_snapshot_revision
+    remove_variable = zg361_p2c_m360_source_c3_manager
+    remove_variable = zg361_p2c_m360_source_c3_b1_cycle
+    remove_variable = zg361_p2c_m360_source_c3_b1_case
+    remove_variable = zg361_p2c_m360_source_c3_b1_source_id
+    remove_variable = zg361_p2c_m360_source_c3_b1_source_hash
+    remove_variable = zg361_p2c_m360_source_c3_quota
+    remove_variable = zg361_p2c_m360_source_c3_mg_cycle
+    remove_variable = zg361_p2c_m360_source_c3_mg_case
+    remove_variable = zg361_p2c_m360_source_c3_mg_snapshot_source_serial
+    remove_variable = zg361_p2c_m360_source_c3_mg_snapshot_revision
+    set_variable = { name = zg361_p2c_m360_source_status value = 0 }
+    set_variable = { name = zg361_p2c_m360_source_reason value = 0 }
+}
+
+zg361_p2c_freeze_m360_source_envelope_effect = {
+    set_variable = { name = zg361_p2c_m360_source_owner value = this }
+    set_variable = { name = zg361_p2c_m360_source_subject value = var:zg361_p2c_subject }
+    set_variable = { name = zg361_p2c_m360_source_p2c_cycle value = var:zg361_p2c_cycle }
+    set_variable = { name = zg361_p2c_m360_source_p2c_case value = var:zg361_p2c_case_serial }
+    set_variable = { name = zg361_p2c_m360_source_al_cycle value = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial }
+    set_variable = { name = zg361_p2c_m360_source_al_case value = var:zg361_p2c_subject.var:zg361_case_al_case_serial }
+}
+
+zg361_p2c_prepare_m360_source_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_p2c_m360_source_status
+            var:zg361_p2c_m360_source_status = 1
+        }
+        if = {
+            limit = {
+                has_variable = zg361_p2c_m360_source_owner
+                has_variable = zg361_p2c_m360_source_subject
+                has_variable = zg361_p2c_m360_source_p2c_cycle
+                has_variable = zg361_p2c_m360_source_p2c_case
+                has_variable = zg361_p2c_m360_source_al_cycle
+                has_variable = zg361_p2c_m360_source_al_case
+                has_variable = zg361_p2c_m360_source_cohort_count
+                has_variable = zg361_p2c_m360_source_total_quota
+                var:zg361_p2c_m360_source_owner = this
+                var:zg361_p2c_m360_source_subject = var:zg361_p2c_subject
+                var:zg361_p2c_m360_source_p2c_cycle = var:zg361_p2c_cycle
+                var:zg361_p2c_m360_source_p2c_case = var:zg361_p2c_case_serial
+                var:zg361_p2c_m360_source_al_cycle = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial
+                var:zg361_p2c_m360_source_al_case = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+                var:zg361_p2c_m360_source_cohort_count = 3
+                var:zg361_p2c_m360_source_total_quota >= 1
+                var:zg361_p2c_m360_source_total_quota <= 6
+var:zg361_p2c_m360_source_c1_manager = {
+                    zg361_p2c_m360_frozen_manager_exact_trigger = {
+                        EXPECTED_OWNER = root
+                        EXPECTED_P2C_CYCLE = root.var:zg361_p2c_m360_source_p2c_cycle
+                        EXPECTED_P2C_CASE = root.var:zg361_p2c_m360_source_p2c_case
+                        EXPECTED_B1_CYCLE = root.var:zg361_p2c_m360_source_c1_b1_cycle
+                        EXPECTED_B1_CASE = root.var:zg361_p2c_m360_source_c1_b1_case
+                        EXPECTED_B1_SOURCE_ID = root.var:zg361_p2c_m360_source_c1_b1_source_id
+                        EXPECTED_B1_SOURCE_HASH = root.var:zg361_p2c_m360_source_c1_b1_source_hash
+                        EXPECTED_QUOTA = root.var:zg361_p2c_m360_source_c1_quota
+                        EXPECTED_MG_CYCLE = root.var:zg361_p2c_m360_source_c1_mg_cycle
+                        EXPECTED_MG_CASE = root.var:zg361_p2c_m360_source_c1_mg_case
+                        EXPECTED_MG_SOURCE_SERIAL = root.var:zg361_p2c_m360_source_c1_mg_snapshot_source_serial
+                        EXPECTED_MG_REVISION = root.var:zg361_p2c_m360_source_c1_mg_snapshot_revision
+                    }
+                }
+                var:zg361_p2c_m360_source_c2_manager = {
+                    zg361_p2c_m360_frozen_manager_exact_trigger = {
+                        EXPECTED_OWNER = root
+                        EXPECTED_P2C_CYCLE = root.var:zg361_p2c_m360_source_p2c_cycle
+                        EXPECTED_P2C_CASE = root.var:zg361_p2c_m360_source_p2c_case
+                        EXPECTED_B1_CYCLE = root.var:zg361_p2c_m360_source_c2_b1_cycle
+                        EXPECTED_B1_CASE = root.var:zg361_p2c_m360_source_c2_b1_case
+                        EXPECTED_B1_SOURCE_ID = root.var:zg361_p2c_m360_source_c2_b1_source_id
+                        EXPECTED_B1_SOURCE_HASH = root.var:zg361_p2c_m360_source_c2_b1_source_hash
+                        EXPECTED_QUOTA = root.var:zg361_p2c_m360_source_c2_quota
+                        EXPECTED_MG_CYCLE = root.var:zg361_p2c_m360_source_c2_mg_cycle
+                        EXPECTED_MG_CASE = root.var:zg361_p2c_m360_source_c2_mg_case
+                        EXPECTED_MG_SOURCE_SERIAL = root.var:zg361_p2c_m360_source_c2_mg_snapshot_source_serial
+                        EXPECTED_MG_REVISION = root.var:zg361_p2c_m360_source_c2_mg_snapshot_revision
+                    }
+                }
+                var:zg361_p2c_m360_source_c3_manager = {
+                    zg361_p2c_m360_frozen_manager_exact_trigger = {
+                        EXPECTED_OWNER = root
+                        EXPECTED_P2C_CYCLE = root.var:zg361_p2c_m360_source_p2c_cycle
+                        EXPECTED_P2C_CASE = root.var:zg361_p2c_m360_source_p2c_case
+                        EXPECTED_B1_CYCLE = root.var:zg361_p2c_m360_source_c3_b1_cycle
+                        EXPECTED_B1_CASE = root.var:zg361_p2c_m360_source_c3_b1_case
+                        EXPECTED_B1_SOURCE_ID = root.var:zg361_p2c_m360_source_c3_b1_source_id
+                        EXPECTED_B1_SOURCE_HASH = root.var:zg361_p2c_m360_source_c3_b1_source_hash
+                        EXPECTED_QUOTA = root.var:zg361_p2c_m360_source_c3_quota
+                        EXPECTED_MG_CYCLE = root.var:zg361_p2c_m360_source_c3_mg_cycle
+                        EXPECTED_MG_CASE = root.var:zg361_p2c_m360_source_c3_mg_case
+                        EXPECTED_MG_SOURCE_SERIAL = root.var:zg361_p2c_m360_source_c3_mg_snapshot_source_serial
+                        EXPECTED_MG_REVISION = root.var:zg361_p2c_m360_source_c3_mg_snapshot_revision
+                    }
+                }
+            }
+            # Exact READY replay is a no-op.
+            set_variable = { name = zg361_p2c_m360_source_reason value = 0 }
+        }
+        else = {
+            set_variable = { name = zg361_p2c_m360_source_status value = 4 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360495 }
+            debug_log = "ZG361P2C RED: frozen M360 manager/source tuple drifted"
+        }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_p2c_m360_source_status
+            OR = {
+                var:zg361_p2c_m360_source_status = 2
+                var:zg361_p2c_m360_source_status = 4
+                var:zg361_p2c_m360_source_status = 7
+            }
+        }
+        # Consumed, RED and structural N/A are terminal and never reselect.
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                zg361_case_kernel_full_guard_trigger = {
+                    OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+                    CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+                    STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+                    EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                    EXPECTED_CYCLE = root.var:zg361_p2c_cycle
+                    EXPECTED_CASE = var:zg361_case_al_case_serial EXPECTED_STATE = 4
+                }
+                has_variable = zg361_we_al_external_stage_receipts_verified
+                var:zg361_we_al_external_stage_receipts_verified = 1
+                var:zg361_we_al_external_receipt_owner = root
+                var:zg361_we_al_external_receipt_subject = this
+                var:zg361_we_al_external_receipt_cycle = root.var:zg361_p2c_cycle
+                var:zg361_we_al_external_receipt_case = var:zg361_case_al_case_serial
+                var:zg361_we_al_external_receipt_state = 4
+                var:zg361_we_al_external_receipt_count = 3
+                var:zg361_we_al_external_last_operation = 359
+            }
+        }
+        set_variable = { name = zg361_p2c_m360_probe_primary_in_frozen value = 0 }
+        set_variable = { name = zg361_p2c_m360_probe_valid_n value = 0 }
+        set_variable = { name = zg361_p2c_m360_probe_structural_na_n value = 0 }
+        set_variable = { name = zg361_p2c_m360_probe_wait_n value = 0 }
+        set_variable = { name = zg361_p2c_m360_probe_invalid_n value = 0 }
+        every_in_list = {
+            variable = zg361_p2c_mg_subjects
+            if = {
+                limit = { this = root.var:zg361_p2c_subject }
+                root = { set_variable = { name = zg361_p2c_m360_probe_primary_in_frozen value = 1 } }
+            }
+            if = {
+                limit = {
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 3
+                }
+                root = { change_variable = { name = zg361_p2c_m360_probe_invalid_n add = 1 } }
+            }
+            else_if = {
+                limit = {
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 2
+                }
+                root = { change_variable = { name = zg361_p2c_m360_probe_structural_na_n add = 1 } }
+            }
+            else_if = {
+                limit = {
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 1
+                }
+                if = {
+                    limit = {
+                        zg361_p2c_m360_candidate_ready_trigger = {
+                            EXPECTED_OWNER = root
+                            EXPECTED_P2C_CYCLE = root.var:zg361_p2c_cycle
+                            EXPECTED_P2C_CASE = root.var:zg361_p2c_case_serial
+                        }
+                    }
+                    root = { change_variable = { name = zg361_p2c_m360_probe_valid_n add = 1 } }
+                }
+                else = { root = { change_variable = { name = zg361_p2c_m360_probe_invalid_n add = 1 } } }
+            }
+            else_if = {
+                limit = {
+                    has_variable = zg361_b1_cycle_state
+                    has_variable = zg361_b1_closure_state
+                    var:zg361_b1_cycle_state = 8
+                    var:zg361_b1_closure_state = 4
+                }
+                root = { change_variable = { name = zg361_p2c_m360_probe_invalid_n add = 1 } }
+            }
+            else = { root = { change_variable = { name = zg361_p2c_m360_probe_wait_n add = 1 } } }
+        }
+        if = {
+            limit = {
+                var:zg361_p2c_subject = { NOT = { zg361_is_celestial_liege_trigger = yes } }
+            }
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = { name = zg361_p2c_m360_source_status value = 7 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360421 }
+        }
+        else_if = {
+            limit = { var:zg361_p2c_m360_probe_primary_in_frozen = 0 }
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = { name = zg361_p2c_m360_source_status value = 7 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360422 }
+        }
+        else_if = {
+            limit = { var:zg361_p2c_m360_probe_invalid_n > 0 }
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = { name = zg361_p2c_m360_source_status value = 4 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360492 }
+        }
+        else_if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 2
+                }
+            }
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = { name = zg361_p2c_m360_source_status value = 7 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360424 }
+            set_variable = { name = zg361_p2c_m360_source_upstream_reason value = var:zg361_p2c_subject.var:zg361_b1_m360_source_reason }
+        }
+        else_if = {
+            limit = { var:zg361_p2c_m360_probe_wait_n > 0 }
+            set_variable = { name = zg361_p2c_m360_source_status value = 5 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360410 }
+        }
+        else_if = {
+            limit = { var:zg361_p2c_m360_probe_valid_n < 3 }
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = { name = zg361_p2c_m360_source_status value = 7 }
+            set_variable = { name = zg361_p2c_m360_source_reason value = 360423 }
+        }
+        else = {
+            set_variable = { name = zg361_p2c_m360_selection_found value = 0 }
+            ordered_in_list = {
+                variable = zg361_p2c_mg_subjects
+                order_by = { value = var:zg361_p2c_mg_frozen_order multiply = -1 }
+                max = { value = var:zg361_p2c_mg_expected max = 80 }
+                if = {
+                    limit = {
+                        root.var:zg361_p2c_m360_selection_found = 0
+                        NOT = { this = root.var:zg361_p2c_subject }
+                        zg361_p2c_m360_candidate_ready_trigger = {
+                            EXPECTED_OWNER = root
+                            EXPECTED_P2C_CYCLE = root.var:zg361_p2c_cycle
+                            EXPECTED_P2C_CASE = root.var:zg361_p2c_case_serial
+                        }
+                    }
+                    save_temporary_scope_as = zg361_p2c_m360_candidate_2
+                    root = {
+                        save_scope_value_as = {
+                            name = zg361_p2c_m360_remaining_quota
+                            value = { value = 6 subtract = var:zg361_p2c_subject.var:zg361_b1_m360_source_quota subtract = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_quota }
+                        }
+                        ordered_in_list = {
+                            variable = zg361_p2c_mg_subjects
+                            order_by = { value = var:zg361_p2c_mg_frozen_order multiply = -1 }
+                            max = { value = var:zg361_p2c_mg_expected max = 80 }
+                            if = {
+                                limit = {
+                                    root.var:zg361_p2c_m360_selection_found = 0
+                                    NOT = { this = root.var:zg361_p2c_subject }
+                                    NOT = { this = scope:zg361_p2c_m360_candidate_2 }
+                                    var:zg361_b1_m360_source_quota <= scope:zg361_p2c_m360_remaining_quota
+                                    zg361_p2c_m360_candidate_ready_trigger = {
+                                        EXPECTED_OWNER = root
+                                        EXPECTED_P2C_CYCLE = root.var:zg361_p2c_cycle
+                                        EXPECTED_P2C_CASE = root.var:zg361_p2c_case_serial
+                                    }
+                                }
+                                save_temporary_scope_as = zg361_p2c_m360_candidate_3
+                                root = {
+set_variable = { name = zg361_p2c_m360_source_c1_manager value = var:zg361_p2c_subject }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_b1_cycle value = var:zg361_p2c_subject.var:zg361_b1_m360_source_cycle }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_b1_case value = var:zg361_p2c_subject.var:zg361_b1_m360_source_case }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_b1_source_id value = var:zg361_p2c_subject.var:zg361_b1_m360_source_id }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_b1_source_hash value = var:zg361_p2c_subject.var:zg361_b1_m360_source_hash }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_quota value = var:zg361_p2c_subject.var:zg361_b1_m360_source_quota }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_mg_cycle value = var:zg361_p2c_subject.var:zg361_case_f_cycle_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_mg_case value = var:zg361_p2c_subject.var:zg361_case_f_case_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_mg_snapshot_source_serial value = var:zg361_p2c_subject.var:zg361_mg_snapshot_source_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c1_mg_snapshot_revision value = var:zg361_p2c_subject.var:zg361_mg_team_snapshot_revision }
+set_variable = { name = zg361_p2c_m360_source_c2_manager value = scope:zg361_p2c_m360_candidate_2 }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_b1_cycle value = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_cycle }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_b1_case value = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_case }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_b1_source_id value = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_id }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_b1_source_hash value = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_hash }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_quota value = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_quota }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_mg_cycle value = scope:zg361_p2c_m360_candidate_2.var:zg361_case_f_cycle_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_mg_case value = scope:zg361_p2c_m360_candidate_2.var:zg361_case_f_case_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_mg_snapshot_source_serial value = scope:zg361_p2c_m360_candidate_2.var:zg361_mg_snapshot_source_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c2_mg_snapshot_revision value = scope:zg361_p2c_m360_candidate_2.var:zg361_mg_team_snapshot_revision }
+set_variable = { name = zg361_p2c_m360_source_c3_manager value = scope:zg361_p2c_m360_candidate_3 }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_b1_cycle value = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_cycle }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_b1_case value = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_case }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_b1_source_id value = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_id }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_b1_source_hash value = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_hash }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_quota value = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_quota }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_mg_cycle value = scope:zg361_p2c_m360_candidate_3.var:zg361_case_f_cycle_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_mg_case value = scope:zg361_p2c_m360_candidate_3.var:zg361_case_f_case_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_mg_snapshot_source_serial value = scope:zg361_p2c_m360_candidate_3.var:zg361_mg_snapshot_source_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_c3_mg_snapshot_revision value = scope:zg361_p2c_m360_candidate_3.var:zg361_mg_team_snapshot_revision }
+                                    set_variable = { name = zg361_p2c_m360_source_status value = 1 }
+                                    set_variable = { name = zg361_p2c_m360_source_reason value = 0 }
+                                    set_variable = { name = zg361_p2c_m360_source_owner value = this }
+                                    set_variable = { name = zg361_p2c_m360_source_subject value = var:zg361_p2c_subject }
+                                    set_variable = { name = zg361_p2c_m360_source_p2c_cycle value = var:zg361_p2c_cycle }
+                                    set_variable = { name = zg361_p2c_m360_source_p2c_case value = var:zg361_p2c_case_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_al_cycle value = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_al_case value = var:zg361_p2c_subject.var:zg361_case_al_case_serial }
+                                    set_variable = { name = zg361_p2c_m360_source_cohort_count value = 3 }
+                                    set_variable = { name = zg361_p2c_m360_source_total_quota value = { value = var:zg361_p2c_subject.var:zg361_b1_m360_source_quota add = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_quota add = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_quota } }
+                                    set_variable = { name = zg361_p2c_m360_selection_found value = 1 }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if = {
+                limit = { var:zg361_p2c_m360_selection_found = 0 }
+                zg361_p2c_freeze_m360_source_envelope_effect = yes
+                set_variable = { name = zg361_p2c_m360_source_status value = 7 }
+                set_variable = { name = zg361_p2c_m360_source_reason value = 360425 }
+            }
+        }
+    }
+    else = {
+        set_variable = { name = zg361_p2c_m360_source_status value = 4 }
+        set_variable = { name = zg361_p2c_m360_source_reason value = 360491 }
+        debug_log = "ZG361P2C RED: M360 preparation lost the exact AL tuple"
+    }
+}

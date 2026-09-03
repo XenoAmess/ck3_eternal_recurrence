@@ -1,0 +1,59 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: single-stage serial pump dispatcher.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_pump_effect = {
+    if = {
+        limit = {
+            has_game_rule = zg361_on
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_p2c_active
+            var:zg361_p2c_active = 1
+            has_variable = zg361_p2c_case_serial
+            has_variable = zg361_p2c_b1_cycle
+            has_variable = zg361_p2c_b1_case
+            has_variable = zg361_p2c_cycle
+            has_variable = zg361_p2c_subject
+            has_variable = zg361_p2c_result_case
+            has_variable = zg361_review_serial
+            has_variable = zg361_b1_cycle_serial
+            has_variable = zg361_b1_case_serial
+            has_variable = zg361_b1_closure_state
+            var:zg361_review_serial = var:zg361_p2c_cycle
+            var:zg361_b1_cycle_serial = var:zg361_p2c_b1_cycle
+            var:zg361_b1_case_serial = var:zg361_p2c_b1_case
+            var:zg361_b1_closure_state = 4
+            var:zg361_p2c_subject = {
+                is_alive = yes
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                var:zg361_b1_case_owner = root
+                var:zg361_b1_case_subject = this
+                var:zg361_b1_cycle_serial = root.var:zg361_p2c_b1_cycle
+                var:zg361_b1_case_serial = root.var:zg361_p2c_b1_case
+                var:zg361_b1_case_state = 8
+                var:zg361_result_case_owner = root
+                var:zg361_result_cycle_serial = root.var:zg361_p2c_cycle
+                var:zg361_result_case_serial = root.var:zg361_p2c_result_case
+            }
+        }
+        if = { limit = { var:zg361_p2c_stage = 1 } zg361_p2c_stage_01_career_hc_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 2 } zg361_p2c_stage_02_compensation_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 3 } zg361_p2c_stage_03_feedback_promotion_pip_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 4 } zg361_p2c_stage_04_x_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 5 } zg361_p2c_stage_05_y_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 6 } zg361_p2c_stage_06_z_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_metrics_delivery_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_credit_project_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 9 } zg361_p2c_stage_09_career_learning_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 10 } zg361_p2c_stage_10_manager_governance_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 11 } zg361_p2c_stage_11_workforce_endgame_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage >= 12 } zg361_p2c_finish_effect = yes }
+        else = { zg361_p2c_abort_stale_effect = { CODE = 9002 } }
+    }
+    else_if = {
+        limit = { has_variable = zg361_p2c_active var:zg361_p2c_active = 1 }
+        zg361_p2c_abort_stale_effect = { CODE = 9001 }
+    }
+    else = { debug_log = "ZG361P2C: inactive central pump ignored" }
+}

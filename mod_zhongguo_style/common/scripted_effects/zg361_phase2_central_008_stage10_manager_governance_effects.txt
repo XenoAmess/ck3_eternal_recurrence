@@ -1,0 +1,180 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# PURPOSE: manager governance strict-lag stage.
+# READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_p2c_stage_10_manager_governance_effect = {
+    if = {
+        limit = { var:zg361_p2c_stage_status = 0 }
+        if = { limit = { has_variable_list = zg361_p2c_mg_subjects } clear_variable_list = zg361_p2c_mg_subjects }
+        set_variable = { name = zg361_p2c_mg_expected value = 0 }
+        set_variable = { name = zg361_p2c_mg_frozen_order_cursor value = 0 }
+        every_vassal = {
+            limit = {
+                zg361_is_celestial_liege_trigger = yes
+                liege = root
+                has_variable = zg361_review_serial
+                var:zg361_review_serial < root.var:zg361_p2c_cycle
+            }
+            save_temporary_scope_as = zg361_p2c_mg_subject_to_store
+            root = {
+                change_variable = { name = zg361_p2c_mg_frozen_order_cursor add = 1 }
+                add_to_variable_list = { name = zg361_p2c_mg_subjects target = scope:zg361_p2c_mg_subject_to_store }
+                change_variable = { name = zg361_p2c_mg_expected add = 1 }
+            }
+            set_variable = { name = zg361_p2c_mg_frozen_owner value = root }
+            set_variable = { name = zg361_p2c_mg_frozen_cycle value = root.var:zg361_p2c_cycle }
+            set_variable = { name = zg361_p2c_mg_frozen_case value = root.var:zg361_p2c_case_serial }
+            set_variable = { name = zg361_p2c_mg_frozen_order value = root.var:zg361_p2c_mg_frozen_order_cursor }
+        }
+        if = {
+            limit = { var:zg361_p2c_mg_expected = 0 }
+            zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_10_status }
+        }
+        else = {
+            zg361_mg_dispatch_subordinate_managers_effect = yes
+            set_variable = { name = zg361_p2c_mg_started value = 0 }
+            set_variable = { name = zg361_p2c_mg_active value = 0 }
+            every_in_list = {
+                variable = zg361_p2c_mg_subjects
+                if = {
+                    limit = {
+                        has_variable = zg361_case_f_owner
+                        has_variable = zg361_case_f_subject
+                        has_variable = zg361_case_f_cycle_serial
+                        has_variable = zg361_case_f_active
+                        has_variable = zg361_case_ak_owner
+                        has_variable = zg361_case_ak_subject
+                        has_variable = zg361_case_ak_cycle_serial
+                        has_variable = zg361_case_ak_active
+                        var:zg361_case_f_owner = root
+                        var:zg361_case_f_subject = this
+                        var:zg361_case_f_cycle_serial = root.var:zg361_p2c_cycle
+                        var:zg361_case_ak_owner = root
+                        var:zg361_case_ak_subject = this
+                        var:zg361_case_ak_cycle_serial = root.var:zg361_p2c_cycle
+                    }
+                    root = { change_variable = { name = zg361_p2c_mg_started add = 1 } }
+                }
+                if = {
+                    limit = {
+                        OR = {
+                            AND = { has_variable = zg361_case_f_owner var:zg361_case_f_owner = root has_variable = zg361_case_f_cycle_serial var:zg361_case_f_cycle_serial = root.var:zg361_p2c_cycle has_variable = zg361_case_f_active var:zg361_case_f_active = 1 }
+                            AND = { has_variable = zg361_case_ak_owner var:zg361_case_ak_owner = root has_variable = zg361_case_ak_cycle_serial var:zg361_case_ak_cycle_serial = root.var:zg361_p2c_cycle has_variable = zg361_case_ak_active var:zg361_case_ak_active = 1 }
+                        }
+                    }
+                    root = { change_variable = { name = zg361_p2c_mg_active add = 1 } }
+                }
+            }
+            set_variable = { name = zg361_p2c_mg_open_failed value = 0 }
+            if = {
+                limit = { var:zg361_p2c_mg_started < var:zg361_p2c_mg_expected }
+                set_variable = { name = zg361_p2c_mg_open_failed value = 1 }
+            }
+            set_variable = { name = zg361_p2c_stage_status value = 1 }
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+    }
+    else = {
+        set_variable = { name = zg361_p2c_mg_completed value = 0 }
+        set_variable = { name = zg361_p2c_mg_invalid value = 0 }
+        set_variable = { name = zg361_p2c_mg_started value = 0 }
+        set_variable = { name = zg361_p2c_mg_active value = 0 }
+        every_in_list = {
+            variable = zg361_p2c_mg_subjects
+            if = {
+                limit = {
+                    has_variable = zg361_case_f_owner
+                    has_variable = zg361_case_f_subject
+                    has_variable = zg361_case_f_cycle_serial
+                    has_variable = zg361_case_f_active
+                    has_variable = zg361_case_ak_owner
+                    has_variable = zg361_case_ak_subject
+                    has_variable = zg361_case_ak_cycle_serial
+                    has_variable = zg361_case_ak_active
+                    var:zg361_case_f_owner = root
+                    var:zg361_case_f_subject = this
+                    var:zg361_case_f_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_ak_owner = root
+                    var:zg361_case_ak_subject = this
+                    var:zg361_case_ak_cycle_serial = root.var:zg361_p2c_cycle
+                }
+                root = { change_variable = { name = zg361_p2c_mg_started add = 1 } }
+            }
+            if = {
+                limit = {
+                    OR = {
+                        AND = { has_variable = zg361_case_f_owner var:zg361_case_f_owner = root has_variable = zg361_case_f_cycle_serial var:zg361_case_f_cycle_serial = root.var:zg361_p2c_cycle has_variable = zg361_case_f_active var:zg361_case_f_active = 1 }
+                        AND = { has_variable = zg361_case_ak_owner var:zg361_case_ak_owner = root has_variable = zg361_case_ak_cycle_serial var:zg361_case_ak_cycle_serial = root.var:zg361_p2c_cycle has_variable = zg361_case_ak_active var:zg361_case_ak_active = 1 }
+                    }
+                }
+                root = { change_variable = { name = zg361_p2c_mg_active add = 1 } }
+            }
+            if = {
+                limit = {
+                    is_alive = yes
+                    liege = root
+                    zg361_is_celestial_liege_trigger = yes
+                    var:zg361_case_f_owner = root
+                    var:zg361_case_f_subject = this
+                    var:zg361_case_f_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_f_state = 5
+                    var:zg361_case_f_active = 0
+                    var:zg361_case_ak_owner = root
+                    var:zg361_case_ak_subject = this
+                    var:zg361_case_ak_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_ak_state = 6
+                    var:zg361_case_ak_active = 0
+                }
+                root = { change_variable = { name = zg361_p2c_mg_completed add = 1 } }
+            }
+            else_if = {
+                limit = { OR = { is_alive = no NOT = { liege = root } NOT = { zg361_is_celestial_liege_trigger = yes } } }
+                root = { change_variable = { name = zg361_p2c_mg_invalid add = 1 } }
+            }
+            else_if = {
+                limit = {
+                    has_variable = zg361_case_f_owner
+                    has_variable = zg361_case_f_cycle_serial
+                    has_variable = zg361_case_f_state
+                    has_variable = zg361_case_f_active
+                    has_variable = zg361_case_ak_owner
+                    has_variable = zg361_case_ak_cycle_serial
+                    has_variable = zg361_case_ak_state
+                    has_variable = zg361_case_ak_active
+                    var:zg361_case_f_owner = root
+                    var:zg361_case_f_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_f_active = 0
+                    var:zg361_case_ak_owner = root
+                    var:zg361_case_ak_cycle_serial = root.var:zg361_p2c_cycle
+                    var:zg361_case_ak_active = 0
+                    OR = { var:zg361_case_f_state != 5 var:zg361_case_ak_state != 6 }
+                }
+                root = { change_variable = { name = zg361_p2c_mg_invalid add = 1 } }
+            }
+        }
+        if = {
+            limit = { var:zg361_p2c_mg_invalid > 0 }
+            zg361_p2c_record_red_effect = { CODE = 1010 STAGE_VAR = zg361_p2c_stage_10_status }
+        }
+        else_if = {
+            limit = {
+                var:zg361_p2c_mg_open_failed = 1
+                var:zg361_p2c_mg_active = 0
+            }
+            zg361_p2c_record_red_effect = { CODE = 1011 STAGE_VAR = zg361_p2c_stage_10_status }
+        }
+        else_if = {
+            limit = {
+                var:zg361_p2c_mg_open_failed = 0
+                var:zg361_p2c_mg_started >= var:zg361_p2c_mg_expected
+                var:zg361_p2c_mg_completed >= var:zg361_p2c_mg_expected
+            }
+            zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_10_status }
+        }
+        else = {
+            zg361_p2c_mark_lane_busy_effect = yes
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+    }
+}
