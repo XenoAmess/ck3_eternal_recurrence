@@ -213,6 +213,6 @@ The broad 279-file product and no-scoreboard runs already stalled after roughly
 880/881 `on_actions`, while the exact 51-file overlay reached `Frontend` and
 exited with code 0.  This scan narrows the next experiment to the direct
 dependency closure; it does **not** certify that any group is production-live,
- nor does it prove that the static closure is the only cause of the broad-load
- stall.  Runtime-error triage remains separate: fixture-only unknown effects
- must not be conflated with the current full-product projection.
+nor does it prove that the static closure is the only cause of the broad-load
+stall.  Runtime-error triage remains separate: fixture-only unknown effects
+must not be conflated with the current full-product projection.
