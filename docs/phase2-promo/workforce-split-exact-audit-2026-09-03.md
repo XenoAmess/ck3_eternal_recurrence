@@ -111,6 +111,48 @@ exit 1 and cleanup proven. Classify this attempt as an invalid-target
 monolithic control, not as an exact-split result; a correctly mounted
 30-minute A+B run is still pending.
 
+## Thirteen-batch endpoint and canonical launch gates
+
+The 13-batch incremental plan and the exact-split experiment answer different
+questions and must keep separate target identities:
+
+| target | inventory | purpose | acceptance role |
+| --- | --- | --- | --- |
+| current broad projection | 279 files / 29,351,046 bytes (tree `eafb3261d2087b43793f7a9edb68e5708f4bc5536532706287710b8928015574`), source `2bfd10b` plus current generated projections | cumulative reconstruction of the current full Phase 2 product, including every feature cluster | **13-batch endpoint and eventual T0 production/gameplay/promo target** |
+| exact A+B diagnostic tree | 265 files / 15,938,098 bytes (tree `2bd3e81c5dfe9a185148d46b8e3d6cf5b01d2eefcbd187d2bc72c9d5edcb4f87`), exact source SHA `926453fe4b3621b5381743d61f5d03ac29c1d498181702e05a9532739d334d8a` | reduced locfull-oriented tree used only to test whether replacing the 4.636 MB workforce monolith with two byte-exact files changes the `Total881` stall | **diagnostic only; never a substitute endpoint** |
+
+The 265-file tree is not the 279-file product with a different filename. It is
+a separate reduced projection (locfull-261 lineage plus its required extra
+files, with the monolith replaced by A+B), and it omits or differs from some
+of the broad product's feature-cluster files. If a future implementation
+splits the monolith inside the broad 279-file tree, the expected inventory is
+normally 280 files (279 - 1 + 2) and about 29,351,609 bytes (the duplicated
+563-byte header is counted twice); the generated manifest, not this arithmetic,
+is authoritative. A GREEN result on 265 would therefore only justify another
+static and live run on the full 279/280 target.
+
+Every cumulative batch must pass these gates before it can be called GREEN:
+
+1. Materialize from the frozen 51-file baseline into a fresh disposable
+   product; never mount the source tree directly. Overlay only the files and
+   blobs named by that batch's manifest.
+2. Before CK3 launch, assert the batch ID, projection name, source SHA, exact
+   file list, expected file count/bytes/tree SHA, and feature paths. For a
+   split arm also assert both part paths are present and the old monolith is
+   absent. A mismatch is `INVALID_TARGET`, not a CK3 result.
+3. Use one CK3 process under the serial gate and a fresh `-userdir`; record
+   executable/DLC/load-order pins, product tree, report, debug/error logs, and
+   hashes. No gameplay or purchase/store action belongs in a startup batch.
+4. Require the full acceptance contract: CK3 window, completed
+   `gui/frontend_main.gui`, `End loading of history`, 200 heartbeat frames,
+   exit code 0, cleanup proven, and no parser or missing-localization errors.
+   Frontend-only reachability is coverage-limited and is never functional
+   GREEN.
+5. On failure, preserve the report and logs, stop cumulative expansion at that
+   boundary, and test the new cluster alone against the 51-file baseline (or
+   the immediately preceding successful cumulative product). Do not promote a
+   265-file diagnostic result to the 279-file broad endpoint.
+
 ## Corrected A/B test plan and result
 
 All arms use the same Steam CK3 executable/CWD, DLC load, disposable userdir,
