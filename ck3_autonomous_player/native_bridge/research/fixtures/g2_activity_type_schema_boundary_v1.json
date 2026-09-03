@@ -1,0 +1,66 @@
+{
+  "schema": "xar.ck3.g2_activity_type_schema_boundary.v1",
+  "status": "static-observation-only",
+  "purpose": "Freeze the observed Jingcha activity surface without guessing an open_kaishek opcode or claiming a native activity capability.",
+  "source": {
+    "relative_path": "mod_zhongguo_style/common/activities/activity_types/zg361_jingcha.txt",
+    "root_key": "activity_zg361_jingcha",
+    "bytes": 4711,
+    "sha256": "C1957C857A56C85561D6D902F1C79B294337ABA74119D1273DDF8721696A7AD4",
+    "utf8_bom": true,
+    "top_level_keys": [
+      "is_shown",
+      "can_start_showing_failures_only",
+      "is_valid",
+      "on_invalidated",
+      "province_filter",
+      "ai_province_filter",
+      "max_province_icons",
+      "allow_zero_guest_invites",
+      "open_invite",
+      "province_description",
+      "province_score",
+      "cost",
+      "ui_predicted_cost",
+      "cooldown",
+      "phases",
+      "on_start",
+      "on_complete",
+      "ai_will_do",
+      "ai_check_interval",
+      "ai_will_select_province",
+      "host_intents",
+      "guest_intents",
+      "can_be_activity_guest",
+      "guest_invite_rules",
+      "max_guests",
+      "guest_join_chance",
+      "background"
+    ],
+    "root_ai_will_do_value": 0
+  },
+  "open_kaishek_boundary": {
+    "profile_id": "ck3-1.19.0.6-zg361",
+    "parser_status": "GREEN",
+    "validator_status": "RED",
+    "diagnostic_class": "UNKNOWN_OPCODE",
+    "activity_schema_bound": false,
+    "allowlist_update_authorized": false,
+    "native_activity_capability": false,
+    "runtime_certified": false
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "public_abi_changed": false,
+    "readiness_promoted": false,
+    "activity_action_ready": false
+  },
+  "next_evidence": [
+    "freeze the exact CK3 activity-type data for the pinned build",
+    "map top-level activity keys to their native scope and evaluation phase",
+    "add a read-only fixture only after the source and exact-build call chain agree"
+  ]
+}
