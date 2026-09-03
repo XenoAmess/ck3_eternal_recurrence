@@ -174,13 +174,15 @@ class FakeZhongguoRunner:
         self.process_exit = process_exit
         self.supervisor: dict[str, object] | None = None
         self.supervisor_options: dict[str, object] = {}
+        self.bootstrap_projection_kwargs: dict[str, object] = {}
         self.isolated = FakeIsolated()
         self.EXPECTED_EXE_SHA256 = sha256(executable)
 
     def bootstrap_userdir(
-        self, profile: Path, product_source: Path
+        self, profile: Path, product_source: Path, **kwargs: object
     ) -> dict[str, object]:
         self.calls.append("bootstrap")
+        self.bootstrap_projection_kwargs = dict(kwargs)
         product = profile / "mod-content" / "zhongguo_361"
         fixture = profile / "mod-content" / "fixture"
         shutil.copytree(product_source, product)
@@ -207,7 +209,10 @@ class FakeZhongguoRunner:
             "tree_snapshots": snapshots,
             "tree_sha256": hashes,
             "enabled_mods": list(capture.EXPECTED_ENABLED_MODS),
-            "manifest": {"projection": "fake", "tree_sha256": hashes["product"]},
+            "manifest": {
+                "projection": kwargs.get("product_projection", "broad"),
+                "tree_sha256": hashes["product"],
+            },
         }
 
     def make_spec(self, state_dir: Path, _game_dir: Path) -> SimpleNamespace:
@@ -1250,6 +1255,31 @@ def test_cli_validation_and_artifact_preservation() -> None:
         require(parsed.clean_source == fixture.clean.resolve(), "CLI source drifted")
         require(parsed.pipe_name == fixture.pipe, "CLI explicit pipe drifted")
         require(parsed.loader_timeout_seconds == 60.0, "CLI timeout drifted")
+        require(parsed.product_projection == "broad", "default product projection drifted")
+        projection_manifest = fixture.root / "cli-projection.json"
+        projection_manifest.write_text("{}", encoding="utf-8")
+        parsed_projection = capture.parse_args(
+            [
+                "--clean-source", str(fixture.clean),
+                "--attempt-dir", str(fixture.attempt / "projection-attempt"),
+                "--artifacts-dir", str(fixture.attempt / "projection-attempt" / "artifacts"),
+                "--source-zip", str(fixture.source_zip),
+                "--git-sha", fixture.git_sha,
+                "--game-dir", str(fixture.game),
+                "--bridge-dll", str(fixture.dll),
+                "--injector", str(fixture.injector),
+                "--pipe", fixture.pipe,
+                "--product-projection", "workforce",
+                "--product-projection-manifest", str(projection_manifest),
+                "--product-source", str(fixture.clean / "mod_zhongguo_style"),
+            ]
+        ).resolved()
+        require(parsed_projection.product_projection == "workforce",
+                "named product projection CLI option drifted")
+        require(parsed_projection.product_projection_manifest == projection_manifest.resolve(),
+                "product projection manifest CLI option drifted")
+        require(parsed_projection.product_source == (fixture.clean / "mod_zhongguo_style").resolve(),
+                "external product source CLI option drifted")
         parsed_preflight = capture.parse_args(
             [
                 "--clean-source",
@@ -1311,6 +1341,96 @@ def test_cli_validation_and_artifact_preservation() -> None:
             sha256(report_path) == report_hash,
             "repeat-run rejection overwrote the preserved failure report",
         )
+
+
+def test_product_projection_options_reach_isolated_bootstrap() -> None:
+    """Projection selection survives CLI/config plumbing without launching CK3."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        manifest = fixture.root / "workforce-projection.json"
+        manifest.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "kind": "zg361_phase2_product_projection",
+                    "projection": "workforce",
+                    "files": ["descriptor.mod", "thumbnail.png"],
+                }
+            ),
+            encoding="utf-8",
+        )
+        config = replace(
+            fixture.config().resolved(),
+            product_projection="workforce",
+            product_projection_manifest=manifest.resolve(),
+            product_source_override=(fixture.clean / "mod_zhongguo_style").resolve(),
+        )
+        capture.validate_config(config)
+        calls: list[str] = []
+        runtime = fixture.runtime(calls)
+        config.profile_dir.mkdir(parents=True)
+        bootstrap = capture._bootstrap_product_projection(runtime.zgrun, config)
+        require(bootstrap["enabled_mods"] == list(capture.EXPECTED_ENABLED_MODS),
+                "projection bootstrap changed enabled mods")
+        require(
+            runtime.zgrun.bootstrap_projection_kwargs
+            == {
+                "product_projection": "workforce",
+                "product_projection_manifest": manifest.resolve(),
+            },
+            "named projection options did not reach isolated bootstrap",
+        )
+        require(calls == ["bootstrap"], "projection smoke crossed an unexpected runtime boundary")
+
+
+def test_named_product_projection_requires_manifest_before_runtime() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        config = replace(
+            fixture.config(),
+            product_projection="workforce",
+            seed_contract=(fixture.clean / "tools" / "zg361_phase2_seed_contract.json"),
+        )
+        try:
+            capture.validate_config(config)
+        except capture.SeedCaptureError as error:
+            require(
+                "requires an explicit manifest" in str(error),
+                "named projection manifest requirement was mistyped",
+            )
+        else:
+            raise AssertionError("named projection without manifest passed validation")
+
+
+def test_stale_bootstrap_cannot_silently_downgrade_named_projection() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        manifest = fixture.root / "projection.json"
+        manifest.write_text("{}", encoding="utf-8")
+        config = replace(
+            fixture.config().resolved(),
+            product_projection="core",
+            product_projection_manifest=manifest.resolve(),
+        )
+
+        class StaleBootstrap:
+            def bootstrap_userdir(self, _profile: Path, _source: Path, **_kwargs: object):
+                return {"manifest": {"projection": "broad"}}
+
+        try:
+            capture._bootstrap_product_projection(StaleBootstrap(), config)
+        except capture.SeedCaptureError as error:
+            require(
+                "did not honor" in str(error),
+                "stale bootstrap downgrade was not typed",
+            )
+            require(
+                error.evidence.get("observed_projection") == "broad",
+                "stale bootstrap evidence omitted observed projection",
+            )
+        else:
+            raise AssertionError("stale bootstrap silently accepted named projection")
 
 
 def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
@@ -1821,6 +1941,9 @@ def test_static_contract() -> None:
         "--bridge-dll",
         "--injector",
         "--bridge-bundle-manifest",
+        "--product-projection",
+        "--product-projection-manifest",
+        "--product-source",
         "--pipe",
         "--preflight-only",
         "--list-domain-observer-gate",
@@ -1840,6 +1963,7 @@ def test_static_contract() -> None:
         "driver.close()",
         "AUTOMATIC_GAME_DIR_REQUIRES_STEAM",
         "CACHE_PROVENANCE_SCAN_LIMIT",
+        "_bootstrap_product_projection(",
     ):
         require(token in source, f"runner contract token missing: {token}")
     require(
@@ -1877,6 +2001,9 @@ def main() -> int:
     test_native_session_process_exit_cleanup()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
+    test_product_projection_options_reach_isolated_bootstrap()
+    test_named_product_projection_requires_manifest_before_runtime()
+    test_stale_bootstrap_cannot_silently_downgrade_named_projection()
     test_no_launch_preflight_green_does_not_cross_native_boundary()
     test_list_domain_observer_pending_is_typed_no_launch_red()
     test_list_domain_observer_manifest_binds_frozen_no_launch_inputs()

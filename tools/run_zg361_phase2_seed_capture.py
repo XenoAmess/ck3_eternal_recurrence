@@ -299,6 +299,15 @@ class CaptureConfig:
     # launch and copied into the receipt as build provenance.  Leaving it
     # unset preserves API compatibility for synthetic/unit callers.
     bridge_bundle_manifest: Path | None = None
+    # Phase-2 product projection controls.  ``broad`` preserves the historical
+    # copy-all runtime projection; ``core`` resolves the checked-in historical
+    # 51-file manifest.  Other named groups require an explicit manifest.  An
+    # external product source is useful for replaying an exact historical
+    # projection (for example the offline bisect trees) while the frozen clean
+    # source continues to provide the runner and static contracts.
+    product_projection: str = "broad"
+    product_projection_manifest: Path | None = None
+    product_source_override: Path | None = None
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
@@ -332,6 +341,17 @@ class CaptureConfig:
                 if self.bridge_bundle_manifest is not None
                 else None
             ),
+            product_projection=self.product_projection,
+            product_projection_manifest=(
+                self.product_projection_manifest.resolve()
+                if self.product_projection_manifest is not None
+                else None
+            ),
+            product_source_override=(
+                self.product_source_override.resolve()
+                if self.product_source_override is not None
+                else None
+            ),
             frontend_first_load_save_name=self.frontend_first_load_save_name,
         )
 
@@ -345,7 +365,11 @@ class CaptureConfig:
 
     @property
     def product_source(self) -> Path:
-        return self.clean_source / "mod_zhongguo_style"
+        return (
+            self.product_source_override
+            if self.product_source_override is not None
+            else self.clean_source / "mod_zhongguo_style"
+        )
 
     @property
     def fixture_source(self) -> Path:
@@ -1385,6 +1409,8 @@ def validate_config(config: CaptureConfig) -> None:
     }
     if config.bridge_bundle_manifest is not None:
         required_files["bridge bundle manifest"] = config.bridge_bundle_manifest
+    if config.product_projection_manifest is not None:
+        required_files["product projection manifest"] = config.product_projection_manifest
     for label, path in required_files.items():
         if not isinstance(path, Path) or not path.is_file():
             raise SeedCaptureError(f"{label} is missing: {path}")
@@ -1407,6 +1433,23 @@ def validate_config(config: CaptureConfig) -> None:
         )
     if GIT_SHA_PATTERN.fullmatch(config.frozen_git_sha) is None:
         raise SeedCaptureError("frozen git SHA must be exactly 40 hexadecimal digits")
+    if (
+        not isinstance(config.product_projection, str)
+        or not config.product_projection.strip()
+        or "/" in config.product_projection
+        or "\\" in config.product_projection
+    ):
+        raise SeedCaptureError(
+            "product projection name must be a non-empty path-free identifier"
+        )
+    if (
+        config.product_projection != "broad"
+        and config.product_projection != "core"
+        and config.product_projection_manifest is None
+    ):
+        raise SeedCaptureError(
+            f"product projection {config.product_projection!r} requires an explicit manifest"
+        )
     if not isinstance(config.game_dir_source, str) or not config.game_dir_source:
         raise SeedCaptureError("game directory provenance source is missing")
     if not config.pipe_name.startswith(PIPE_PREFIX):
@@ -1442,6 +1485,14 @@ def validate_config(config: CaptureConfig) -> None:
         config.bridge_bundle_manifest, Path
     ):
         raise SeedCaptureError("bridge bundle manifest path is malformed")
+    if config.product_projection_manifest is not None and not isinstance(
+        config.product_projection_manifest, Path
+    ):
+        raise SeedCaptureError("product projection manifest path is malformed")
+    if config.product_source_override is not None and not isinstance(
+        config.product_source_override, Path
+    ):
+        raise SeedCaptureError("product source override path is malformed")
     if _is_relative_to(config.attempt_dir, config.clean_source):
         raise SeedCaptureError("attempt directory must be outside the clean source")
     if _is_relative_to(config.artifacts_dir, config.clean_source):
@@ -1454,6 +1505,69 @@ def validate_config(config: CaptureConfig) -> None:
         raise SeedCaptureError(
             f"artifacts directory is not empty: {config.artifacts_dir}"
         )
+
+
+def _bootstrap_product_projection(zgrun: Any, config: CaptureConfig) -> dict[str, Any]:
+    """Mount the selected product projection through the isolated runner API.
+
+    The default call intentionally keeps the two-argument API used by older
+    frozen clean exports and CK3-free fakes.  Projection-specific arguments are
+    sent only when requested; an old runtime then fails with a typed message
+    instead of silently mounting the broad tree.
+    """
+
+    kwargs: dict[str, object] = {}
+    if (
+        config.product_projection != "broad"
+        or config.product_projection_manifest is not None
+    ):
+        kwargs["product_projection"] = config.product_projection
+        kwargs["product_projection_manifest"] = config.product_projection_manifest
+    bootstrap_fn = getattr(zgrun, "bootstrap_userdir", None)
+    if not callable(bootstrap_fn):
+        raise SeedCaptureError("isolated runtime lacks bootstrap_userdir")
+    try:
+        result = bootstrap_fn(config.profile_dir, config.product_source, **kwargs)
+    except TypeError as error:
+        if kwargs and "unexpected keyword" in str(error).lower():
+            raise SeedCaptureError(
+                "selected product projection is unsupported by the frozen runtime; "
+                "refresh the clean source export before retrying",
+                {
+                    "projection": config.product_projection,
+                    "manifest": (
+                        str(config.product_projection_manifest)
+                        if config.product_projection_manifest is not None
+                        else None
+                    ),
+                },
+            ) from error
+        raise
+    if kwargs:
+        # A stale frozen export might accept **kwargs yet ignore the selected
+        # projection.  Inspect the bootstrap receipt and fail closed rather
+        # than silently running a broad mount under a named/core request.
+        manifest = result.get("manifest") if isinstance(result, dict) else None
+        projection = manifest.get("projection") if isinstance(manifest, dict) else None
+        actual_name: object = None
+        if isinstance(projection, dict):
+            actual_name = projection.get("name", projection.get("projection"))
+        elif isinstance(projection, str):
+            actual_name = projection
+        if actual_name != config.product_projection:
+            raise SeedCaptureError(
+                "isolated bootstrap did not honor the selected product projection",
+                {
+                    "requested_projection": config.product_projection,
+                    "observed_projection": actual_name,
+                    "manifest": (
+                        str(config.product_projection_manifest)
+                        if config.product_projection_manifest is not None
+                        else None
+                    ),
+                },
+            )
+    return result
 
 
 def prepare_output_paths(config: CaptureConfig) -> None:
@@ -2260,6 +2374,13 @@ def run_preflight(
         },
         "paths": {
             "clean_source": str(config.clean_source),
+            "product_source": str(config.product_source),
+            "product_projection": config.product_projection,
+            "product_projection_manifest": (
+                str(config.product_projection_manifest)
+                if config.product_projection_manifest is not None
+                else None
+            ),
             "source_zip": str(config.source_zip),
             "attempt": str(config.attempt_dir),
             "artifacts": str(artifacts),
@@ -2409,6 +2530,10 @@ def run_preflight(
             "bridge_dll": config.bridge_dll,
             "bridge_injector": config.bridge_injector,
         }
+        if config.product_projection_manifest is not None:
+            dependency_paths["product_projection_manifest"] = (
+                config.product_projection_manifest
+            )
         if config.acceptance_observer_manifest is not None:
             dependency_paths["acceptance_observer_manifest"] = (
                 config.acceptance_observer_manifest
@@ -2500,9 +2625,7 @@ def run_preflight(
             "result"
         ]
 
-        bootstrap = zgrun.bootstrap_userdir(
-            config.profile_dir, config.product_source
-        )
+        bootstrap = _bootstrap_product_projection(zgrun, config)
         enabled_mods = tuple(bootstrap.get("enabled_mods", ()))
         if enabled_mods != EXPECTED_ENABLED_MODS:
             raise SeedCaptureError(
@@ -2845,6 +2968,13 @@ def run_capture(
         },
         "paths": {
             "clean_source": str(config.clean_source),
+            "product_source": str(config.product_source),
+            "product_projection": config.product_projection,
+            "product_projection_manifest": (
+                str(config.product_projection_manifest)
+                if config.product_projection_manifest is not None
+                else None
+            ),
             "source_zip": str(config.source_zip),
             "attempt": str(config.attempt_dir),
             "artifacts": str(artifacts),
@@ -3029,6 +3159,10 @@ def run_capture(
             "bridge_dll": config.bridge_dll,
             "bridge_injector": config.bridge_injector,
         }
+        if config.product_projection_manifest is not None:
+            dependency_paths["product_projection_manifest"] = (
+                config.product_projection_manifest
+            )
         if config.acceptance_observer_manifest is not None:
             dependency_paths["acceptance_observer_manifest"] = (
                 config.acceptance_observer_manifest
@@ -3080,7 +3214,7 @@ def run_capture(
                 report["list_domain_observer_gate"],
             )
 
-        bootstrap = zgrun.bootstrap_userdir(config.profile_dir, config.product_source)
+        bootstrap = _bootstrap_product_projection(zgrun, config)
         enabled_mods = tuple(bootstrap.get("enabled_mods", ()))
         if enabled_mods != EXPECTED_ENABLED_MODS:
             raise SeedCaptureError(
@@ -3617,6 +3751,31 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
     parser.add_argument("--pipe", required=True)
     parser.add_argument("--seed-contract", type=Path)
     parser.add_argument(
+        "--product-projection",
+        default="broad",
+        help=(
+            "product runtime projection to mount: broad (default), core "
+            "(the byte-authoritative 51-file baseline), or a named group "
+            "defined by --product-projection-manifest"
+        ),
+    )
+    parser.add_argument(
+        "--product-projection-manifest",
+        type=Path,
+        help=(
+            "hash-bound product projection manifest/catalog; required for "
+            "named groups other than broad/core"
+        ),
+    )
+    parser.add_argument(
+        "--product-source",
+        type=Path,
+        help=(
+            "explicit product root for projection replay (for example an "
+            "offline Phase2 bisect tree); defaults to clean-source/mod_zhongguo_style"
+        ),
+    )
+    parser.add_argument(
         "--loader-timeout-seconds",
         type=float,
         default=DEFAULT_LOADER_TIMEOUT_SECONDS,
@@ -3704,6 +3863,9 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         bridge_injector=args.injector,
         pipe_name=args.pipe,
         bridge_bundle_manifest=args.bridge_bundle_manifest,
+        product_projection=args.product_projection,
+        product_projection_manifest=args.product_projection_manifest,
+        product_source_override=args.product_source,
         game_dir_source=game_dir_source,
         game_dir_candidates=game_dir_candidates,
         seed_contract=args.seed_contract,

@@ -1,0 +1,274 @@
+ {
+   "description": "Byte-authoritative 51-file product projection captured by the formal currentbridge GREEN run; source must be the matching frozen overlay.",
+   "formal_overlay_tree_sha256": "84e36658728e57b43005300c6e51e398edb6420e3c43dd2f42762c491bc9e36a",
+   "file_list_sha256": "d05e00e28d2881361496c43bcac760e9052777952391a86339b5062967e9696b",
+   "files": [
+     {
+       "bytes": 4745,
+       "path": "common/activities/activity_types/zg361_jingcha.txt",
+       "sha256": "222c487dc1d759076560ff8f11423c428e113ee52d8bc27ca0f36fbca64a5b95"
+     },
+     {
+       "bytes": 6664,
+       "path": "common/character_interactions/zg361_interactions.txt",
+       "sha256": "d578bbead4ad5fb38fbea2628494b928675967edd0e14e74c415adbda9b0fa85"
+     },
+     {
+       "bytes": 222,
+       "path": "common/decision_group_types/zg361_decision_group_types.txt",
+       "sha256": "79cb72445433fda03a207a4316c8060b7f4bd73e38af0357c41a1cdfefb83971"
+     },
+     {
+       "bytes": 4231,
+       "path": "common/decisions/zg361_decisions.txt",
+       "sha256": "4e76a865130a6eb410a7915978bfad2281db3f6ba6a086b8611e6e45c8720025"
+     },
+     {
+       "bytes": 1486,
+       "path": "common/decisions/zg361_mechanism_decisions.txt",
+       "sha256": "d3d5ef68ac7eda23f91b644dc17b87bdd4366fb3541c34f7d33f1c7cbaec84b5"
+     },
+     {
+       "bytes": 655,
+       "path": "common/game_rules/zg361_game_rules.txt",
+       "sha256": "ca1a412ebb7da6df780f14863b98e272f36b4e3664d6f9240f6d9143dc47d9be"
+     },
+     {
+       "bytes": 532,
+       "path": "common/modifiers/zg361_generated_mechanism_modifiers.txt",
+       "sha256": "6a735eb76eb781a8226b6fc8a434d056868c82844b75d3a3a0e99c8e5adcf755"
+     },
+     {
+       "bytes": 1114,
+       "path": "common/modifiers/zg361_modifiers.txt",
+       "sha256": "9846632241b3a838ac8813dce674ac55ca8aae267b07c9ce3ca0a1ea63de825b"
+     },
+     {
+       "bytes": 326,
+       "path": "common/on_action/zg361_on_actions.txt",
+       "sha256": "5e1d0a6a4c16ef5a6531b6226b633e0a5387883df04829c0304472281b90a232"
+     },
+     {
+       "bytes": 1450,
+       "path": "common/opinion_modifiers/zg361_opinions.txt",
+       "sha256": "b33f36304a4bdefb9da8cfbedab22f1c0559c2cca82c8eda892ee051db50be26"
+     },
+     {
+       "bytes": 2513,
+       "path": "common/script_values/zg361_generated_mechanism_values.txt",
+       "sha256": "3ae8c498715bf10d5736b717b9bf98f5521230a46df8938575a874a280d48815"
+     },
+     {
+       "bytes": 11014,
+       "path": "common/script_values/zg361_values.txt",
+       "sha256": "54ae1e7480399abd9908941f02aaf27dfd2ee300bacc039e60a201ccbbab5917"
+     },
+     {
+       "bytes": 50219,
+       "path": "common/scripted_effects/zg361_effects.txt",
+       "sha256": "5cb03f9c75d9a31c889d246516a21e20b89cbd33fe8666fdea7ff634d7092342"
+     },
+     {
+       "bytes": 1019397,
+       "path": "common/scripted_effects/zg361_generated_mechanism_effects.txt",
+       "sha256": "9e0479b33b322c3d51921180b5a4c34adc13bb9cea9f0f7a70d577a945edd052"
+     },
+     {
+       "bytes": 480700,
+       "path": "common/scripted_effects/zg361_generated_scoreboard_snapshots.txt",
+       "sha256": "4ff14d5a561a9edf4be0ef5bce9e8c439d15673143c0afb20a5109e79c7f5667"
+     },
+     {
+       "bytes": 5027,
+       "path": "common/scripted_effects/zg361_jingcha_mandate_effects.txt",
+       "sha256": "0e71920734b0ee5b4db1d26193f55d1d0a7445e8e4f7b7926dd1628c29a80efd"
+     },
+     {
+       "bytes": 795,
+       "path": "common/scripted_guis/zg361_generated_mechanism_guis.txt",
+       "sha256": "2836dbc3dd96497aaddffaf1216755a0c89d92e93e2f12f350aeb6aec12efea6"
+     },
+     {
+       "bytes": 76973,
+       "path": "common/scripted_guis/zg361_generated_scoreboard_slots.txt",
+       "sha256": "d41619c148ac710a023358fa5c4cf690f3e5cf58ac1c93770fc6e507c8e2077f"
+     },
+     {
+       "bytes": 1722,
+       "path": "common/scripted_guis/zg361_scoreboard_guis.txt",
+       "sha256": "d1ac97d5d5a0c4e7fb4afb07b659d172bbeb3ff5cd960efa9ffc8caf3ffdf494"
+     },
+     {
+       "bytes": 3131,
+       "path": "common/scripted_triggers/zg361_triggers.txt",
+       "sha256": "4b021422405c5ee3aa0ceae8988a02be6bb9b4c8f733db8128508425e64f550e"
+     },
+     {
+       "bytes": 134,
+       "path": "descriptor.mod",
+       "sha256": "f5abadb77d4934279083739e961e44ef16898b32e414b34a58c3bee861e08660"
+     },
+     {
+       "bytes": 18150,
+       "path": "events/zg361_events.txt",
+       "sha256": "e46f9f308ee0cf805bb806cd300bd032ebcd558c65719f51a1921cf25e830dd1"
+     },
+     {
+       "bytes": 429368,
+       "path": "events/zg361_generated_mechanism_events.txt",
+       "sha256": "3bc29ab5d9649182b5da79fb1ec47738af5a8eddd022afe471218c5d4e6f3a52"
+     },
+     {
+       "bytes": 1954,
+       "path": "events/zg361_jingcha_events.txt",
+       "sha256": "ecbadbcb0eb9c2750121c4b6feddfe186468e0c49be608bd4aea95913b67a383"
+     },
+     {
+       "bytes": 34248,
+       "path": "gfx/interface/icons/activities/activity_zg361_jingcha.dds",
+       "sha256": "fb5546cd4b55612dac91130752a61ec202e4fb4f16540a10b411ccd987fbb0a4"
+     },
+     {
+       "bytes": 27024,
+       "path": "gfx/interface/icons/activities/activity_zg361_jingcha_header.dds",
+       "sha256": "71ce90e29f241d2135778291b3b589fb25aeff5a2196d439efd68385dc37c5b0"
+     },
+     {
+       "bytes": 78528,
+       "path": "gfx/interface/icons/activity_phases/zg361_jingcha_phase.dds",
+       "sha256": "901ed9bc156f4a5d6e2cce2ad84a9b67af2917fab39a21486dc2149d6b5a7a17"
+     },
+     {
+       "bytes": 675136,
+       "path": "gfx/interface/illustrations/activity_header_backgrounds/activity_zg361_jingcha.dds",
+       "sha256": "cb295d1ac35483fbea6ad096edcdf7c90a92501560281f7f0cd380eb17d89202"
+     },
+     {
+       "bytes": 178,
+       "path": "gui/scripted_widgets/zg361_scripted_widgets.txt",
+       "sha256": "eeeaa8c43348286a020190f1feeb30f5c64ecb1167879d0da0e0f2d8463c1d41"
+     },
+     {
+       "bytes": 962,
+       "path": "gui/zg361_decision_bridge.gui",
+       "sha256": "fbc11f032c5e20e7dd05def0661f667c45871858518970fceba2e76bca93e2b3"
+     },
+     {
+       "bytes": 971,
+       "path": "gui/zg361_mechanism_bridge.gui",
+       "sha256": "5949689e092e932683c0e18cb1ee8b712d236520dacb49ac2a787bd36f2bcc4f"
+     },
+     {
+       "bytes": 704330,
+       "path": "gui/zg361_scoreboard.gui",
+       "sha256": "decb98240a4fe328e2a5fb18606713c88760a13343d337312a62a7667c1bdb5c"
+     },
+     {
+       "bytes": 20767,
+       "path": "localization/english/zg361_l_english.yml",
+       "sha256": "552aa867fef705ee5d6f9797e3cb8d94ca06f826cebd5cb4dc402cd9383e501b"
+     },
+     {
+       "bytes": 234525,
+       "path": "localization/english/zg361_mechanisms_l_english.yml",
+       "sha256": "5b1c9ff0f6f073bd21d9302c927a7311d1effed79aa76ab139b639dd0484e1c1"
+     },
+     {
+       "bytes": 23460,
+       "path": "localization/french/zg361_l_french.yml",
+       "sha256": "9ccafb2257dac981469f9cfe26156e102db0f0e2147d542e4affb7ba104f4f63"
+     },
+     {
+       "bytes": 294676,
+       "path": "localization/french/zg361_mechanisms_l_french.yml",
+       "sha256": "2715e173fbc62785b0ac4c9507c0bf8b6d6a23efcdedeb2a9d0278015baee283"
+     },
+     {
+       "bytes": 23124,
+       "path": "localization/german/zg361_l_german.yml",
+       "sha256": "bc1930eddd26e0d49a71f92ac42f6b598930db142d1b1eebb101b0cb22360571"
+     },
+     {
+       "bytes": 278960,
+       "path": "localization/german/zg361_mechanisms_l_german.yml",
+       "sha256": "9030ffea0a9b68bbf72f7f140493f5dd4c9e044b4c6be3f53617bffe0a815b54"
+     },
+     {
+       "bytes": 22754,
+       "path": "localization/japanese/zg361_l_japanese.yml",
+       "sha256": "1c7eae856df8db8c9097d6e706ab3e341deb6f960d7571b86627cded1ae416a6"
+     },
+     {
+       "bytes": 272493,
+       "path": "localization/japanese/zg361_mechanisms_l_japanese.yml",
+       "sha256": "bfe9024949418ddb725dcd28e2a52e77533ad59e89e1918799cffe48d6204088"
+     },
+     {
+       "bytes": 22241,
+       "path": "localization/korean/zg361_l_korean.yml",
+       "sha256": "fe39c72019b9b3e85120f87258d25e737ad9d06fa27c026599a6da6969607399"
+     },
+     {
+       "bytes": 264338,
+       "path": "localization/korean/zg361_mechanisms_l_korean.yml",
+       "sha256": "b1c14f40f945c9852dd7ef6bee309e793edc3cbddc00b5fe4e897ceb8dffd8de"
+     },
+     {
+       "bytes": 21999,
+       "path": "localization/polish/zg361_l_polish.yml",
+       "sha256": "6fdebb0f2eb7235715ecd36fcbbdebefbec92c5299e0d9111abaae803df5cdd6"
+     },
+     {
+       "bytes": 262633,
+       "path": "localization/polish/zg361_mechanisms_l_polish.yml",
+       "sha256": "ffd0b6db0d21e5a5eb3ede9f35ea9f660ec08f38a35f1fd7913d6ded592d1745"
+     },
+     {
+       "bytes": 32393,
+       "path": "localization/russian/zg361_l_russian.yml",
+       "sha256": "b6b408579085988305c933eab1c7af8e11b68ec545848eb10b049c22f80411b8"
+     },
+     {
+       "bytes": 444659,
+       "path": "localization/russian/zg361_mechanisms_l_russian.yml",
+       "sha256": "fb3d42c282e00ee0481e00d3666d349671601b41915b6461005b3e5aa2fe3ba7"
+     },
+     {
+       "bytes": 18683,
+       "path": "localization/simp_chinese/zg361_l_simp_chinese.yml",
+       "sha256": "5efd38021ea30dc6ba22a5918c9541f49a48a5002ca47fd2879a3c15434c8b3d"
+     },
+     {
+       "bytes": 248357,
+       "path": "localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
+       "sha256": "ef7a7b0cc60e5af99393d9b3ab97b841e024dc7007e66b97b703271c1a8bfb62"
+     },
+     {
+       "bytes": 22753,
+       "path": "localization/spanish/zg361_l_spanish.yml",
+       "sha256": "9836156e913a767af98ef58eeacc2c248c6ad1bf5ace47d98781448e66d8167c"
+     },
+     {
+       "bytes": 285154,
+       "path": "localization/spanish/zg361_mechanisms_l_spanish.yml",
+       "sha256": "9451bf397674d189c785da2081b8a4d030906fabb4de487741300a4ccdc7faf7"
+     },
+     {
+       "bytes": 699719,
+       "path": "thumbnail.png",
+       "sha256": "b4e92139a227b55e8d52ccc58cfbe2c9cac11a5f40e1b75efdfa5d2d512da5ce"
+     }
+   ],
+   "kind": "zg361_phase2_product_projection",
+   "observed_runtime_tree_sha256": "ddac4703d99b7e498e276c37c685af28b2006ad73f4124f9cd77e745aa14a693",
+   "projection": "core",
+   "schema_version": 1,
+   "source_artifact": "formal currentbridge run formal-phase2-legacy51-currentbridge-20260903",
+   "historical_lineage": "phase2 formal GREEN run zga_20260830_191131_7e82d061 (lineage only)",
+   "source_git_commit": "58457a18e49b9195b15f08d0053e4d19f171d645",
+   "source_tree_sha256": "ddac4703d99b7e498e276c37c685af28b2006ad73f4124f9cd77e745aa14a693",
+   "tree_hash_algorithms": {
+     "formal_overlay_tree_sha256": "sha256(canonical JSON sorted list of {path,bytes,sha256})",
+     "source_tree_sha256": "sha256(canonical JSON sorted path -> {size,sha256} map)"
+   }
+ }

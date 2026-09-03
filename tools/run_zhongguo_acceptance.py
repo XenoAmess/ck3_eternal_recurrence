@@ -31,6 +31,10 @@ import run_terminal_acceptance as terminal
 import run_vivhite_acceptance as isolated
 import kaishek_preflight
 import paradox_legal_consent as legal_consent
+from zg361_phase2_product_projection import (
+    ProductProjectionError,
+    materialize_projection,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -3487,6 +3491,8 @@ def bootstrap_userdir(
     workshop_manifest: Path | None = None,
     *,
     include_acceptance_fixture: bool = True,
+    product_projection: str = "broad",
+    product_projection_manifest: Path | None = None,
 ) -> dict[str, object]:
     product_source = Path(product_source).resolve()
     canonical_descriptor = (
@@ -3507,23 +3513,40 @@ def bootstrap_userdir(
 
     product = userdir / "mod-content" / "zhongguo_361"
     product.mkdir(parents=True)
-    product_files: list[str] = []
-    for source_path in sorted(
-        path for path in product_source.rglob("*") if path.is_file()
-    ):
-        relative = source_path.relative_to(product_source)
-        if (
-            relative.as_posix() == "README.md"
-            or relative.parts[0] in SOURCE_ONLY_RUNTIME_ROOTS
-        ):
-            continue
-        destination = product / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        if relative.as_posix() == "descriptor.mod" and canonical_descriptor is not None:
-            destination.write_bytes(canonical_descriptor)
-        else:
-            shutil.copy2(source_path, destination)
-        product_files.append(relative.as_posix())
+    try:
+        projection = materialize_projection(
+            product_source,
+            product,
+            projection_name=product_projection,
+            manifest_path=product_projection_manifest,
+            descriptor_override=canonical_descriptor,
+        )
+    except ProductProjectionError as error:
+        raise acceptance.RunnerError(f"product projection failed: {error}") from error
+    # Workshop upload/acceptance can require the launcher-canonical descriptor
+    # bytes.  Apply that transformation only after the selected projection has
+    # been verified and copied; the resulting tree hash is recomputed below.
+    if canonical_descriptor is not None:
+        (product / "descriptor.mod").write_bytes(canonical_descriptor)
+        projection["tree_sha256"] = isolated.snapshot_digest(
+            isolated.tree_snapshot(product)
+        )
+        projection["files"] = [
+            {
+                "path": path.relative_to(product).as_posix(),
+                "bytes": path.stat().st_size,
+                "sha256": isolated.sha256_file(path),
+            }
+            for path in sorted(
+                item for item in product.rglob("*") if item.is_file()
+            )
+        ]
+        projection["bytes"] = sum(int(row["bytes"]) for row in projection["files"])
+    product_files = [
+        str(row["path"])
+        for row in projection.get("files", [])
+        if isinstance(row, dict) and isinstance(row.get("path"), str)
+    ]
 
     isolated.write_outer_descriptor(
         product / "descriptor.mod", userdir / "mod" / PRODUCT_OUTER, product
@@ -3559,7 +3582,7 @@ def bootstrap_userdir(
     )
     snapshots = {key: isolated.tree_snapshot(path) for key, path in targets.items()}
     manifest = {
-        "projection": "release-runtime-allowlist-equivalent",
+        "projection": projection,
         "files": product_files,
         "tree_sha256": isolated.snapshot_digest(snapshots["product"]),
     }
