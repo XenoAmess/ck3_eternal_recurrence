@@ -32,3 +32,11 @@ ck3.exe -nolauncher -noWorkshop -debug_mode -userdir=<isolated userdir>
 ## `--userdir=<isolated path>` 复核
 
 随后用等号形式显式传递隔离 userdir：`-nolauncher -noWorkshop -debug_mode --userdir=<isolated path>`。CK3 同样在约 15 秒内以退出码 `1` 结束，`meta.yml` 仍记录 `1.19.0.6`，异常仍为 `C0000005` at `ck3+0x1DABD89`。因此不是短参数传递形式导致的差异，仍没有 loader/database readiness 或视频素材。
+
+## Steam `-applaunch` entry probe (2026-09-03)
+
+As a separate launch entry, the running Steam client was invoked with
+`steam.exe -applaunch 1158310` and monitored for 35 seconds. No `ck3`/`dowser`
+child process appeared and no new crash directory was created. This is a launch
+harness result rather than CK3 success: it produced no loader/database readiness,
+seed, or footage, and involved no store, purchase, or payment action.

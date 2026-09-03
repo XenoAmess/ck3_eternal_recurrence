@@ -250,3 +250,11 @@ sync and does not promote CK3 native/runtime readiness.
 - Isolated-repository Maven test run passed all `125` tests with zero failures/errors/skips. The two Zhongguo business-postcondition fixtures and seven CK3 1.19.0.6 schema fixtures are parser/validator `GREEN`, while IR/runtime are deliberately `SKIPPED` and `ck3_started=false`.
 - Regenerated artifacts: `artifacts/open-kaishek-sync/2026-09-03/0002-g2-truce-capability-sync.patch` (SHA-256 `0AB47A75A830FB9861009D20E252B6F93FF0D8A7355CB4535E4B9FE9010957EE`) and `open-kaishek-main-981c793.bundle` (SHA-256 `DCE6AF147692A8F9873D1D99CFE42D57D59D6C87B4596A3E60BF2F1BE47804E3`; bundle verify passed). Full receipt: `artifacts/open-kaishek-sync/2026-09-03/open-kaishek-main-981c793-receipt.json`.
 - Scope remains static compatibility only: no CK3 activity opcode/allow-list guess, native evaluator claim, or live launch was introduced.
+
+## 2026-09-03 09:20 Steam entry probe
+
+The running Steam client was invoked through `steam.exe -applaunch 1158310` and
+monitored for 35 seconds. No CK3/dowser child appeared and no new crash directory
+was created, so this closes only the alternate Steam entry hypothesis as a
+no-launch harness result. It did not produce loader readiness, a seed, footage, or
+any store/purchase/payment action.
