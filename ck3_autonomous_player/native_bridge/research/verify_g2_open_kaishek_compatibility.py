@@ -206,6 +206,16 @@ def audit(
         _equal(checks, "root_commit_matches_fixture", root_binding["open_kaishek_commit"], expected_root["open_kaishek_commit"])
 
     expected_open = fixture["open_kaishek"]
+    # The fixture has two identity views on purpose: ``root_binding`` is the
+    # value exported by the Python side, while ``open_kaishek`` describes the
+    # companion profile.  Keep a cross-section check here so a stale edit to
+    # either half cannot produce a locally-GREEN but globally-drifted audit.
+    checks["fixture_root_profile_matches_open_kaishek"] = (
+        expected_root.get("profile_id") == expected_open.get("profile_id")
+    )
+    checks["fixture_root_capability_matches_open_kaishek"] = (
+        expected_root.get("capability_id") == expected_open.get("capability_id")
+    )
     checks["fixture_schema"] = fixture.get("schema") == "xar.ck3.g2_open_kaishek_compatibility.v1"
     checks["fixture_static_status"] = fixture.get("status") == "static-observation-only"
     for key in (

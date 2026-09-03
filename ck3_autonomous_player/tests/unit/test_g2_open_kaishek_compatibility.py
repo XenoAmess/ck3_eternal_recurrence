@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import copy
 import json
 import importlib.util
 import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -36,9 +38,51 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             report = audit(checkout=Path(directory) / "missing")
         self.assertTrue(report["ok"], report)
         self.assertEqual(report["status"], "GREEN_STATIC_NO_CHECKOUT")
+        self.assertTrue(
+            report["checks"]["fixture_root_profile_matches_open_kaishek"]
+        )
+        self.assertTrue(
+            report["checks"]["fixture_root_capability_matches_open_kaishek"]
+        )
         self.assertFalse(report["external"]["available"])
         self.assertFalse(report["readiness"]["native_certified"])
         self.assertFalse(report["readiness"]["runtime_certified"])
+
+    def test_fixture_identity_sections_cannot_drift(self) -> None:
+        fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+        for section, key in (
+            ("root_binding", "profile_id"),
+            ("root_binding", "capability_id"),
+            ("open_kaishek", "profile_id"),
+            ("open_kaishek", "capability_id"),
+        ):
+            with self.subTest(section=section, key=key):
+                mutated = copy.deepcopy(fixture)
+                mutated[section][key] = "drifted-g2-identity"
+                with tempfile.TemporaryDirectory() as directory:
+                    fixture_path = Path(directory) / "fixture.json"
+                    fixture_path.write_text(
+                        json.dumps(mutated, indent=2) + "\n",
+                        encoding="utf-8",
+                    )
+                    with mock.patch.object(MODULE, "FIXTURE_PATH", fixture_path):
+                        report = audit(
+                            checkout=Path(directory) / "missing"
+                        )
+                self.assertFalse(report["ok"], report)
+                self.assertEqual(report["status"], "RED")
+                if section == "root_binding":
+                    self.assertFalse(
+                        report["checks"][
+                            f"root_{key.removesuffix('_id')}_matches_fixture"
+                        ]
+                    )
+                else:
+                    self.assertFalse(
+                        report["checks"][
+                            f"fixture_root_{key.removesuffix('_id')}_matches_open_kaishek"
+                        ]
+                    )
 
     def test_available_checkout_matches_when_present(self) -> None:
         checkout = _configured_checkout()
