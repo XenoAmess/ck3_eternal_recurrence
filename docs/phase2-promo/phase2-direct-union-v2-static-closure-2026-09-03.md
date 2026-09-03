@@ -104,6 +104,22 @@ Its compatible source-tree digest is
 formal overlay digest is
 `94848c5219583f561bb2bcb8b6e1cd2a8db820536b5639c0e0b310ad559382e5`.
 
+The subsequent serial callable-core attempt is **RED**, which is consistent
+with the intentionally omitted central owner above. Its `error.log` is 441 B
+(SHA-256
+`65c6f3c11320bc22c22879a218a14f7e66a513560fe06312ca65fddfaa03adf7`) and
+contains exactly:
+
+```text
+else/else_if not following an if or else_if ... line 10711 (zg361_we_m275_hold_due_effect)
+Unknown effect: zg361_p2c_schedule_m275_runner_requisition_effect ... line 10722
+```
+
+The run timed out without observing Frontend. This is a concrete parser/load
+signal, not a reason to alter the canonical workforce file: the next narrow
+diagnostic is to add the owning `zg361_phase2_central_runtime_effects.txt`
+file to a fresh candidate and recompute its manifest.
+
 ### Callable + event-owner closure
 
 * 57 script files and 10,493,252 script bytes selected.
@@ -186,6 +202,14 @@ map only; it is intentionally not copied into a recommended overlay because it
 would reintroduce the broad-load confounder. The exact round data is retained
 in the external `analysis.json` beside the two candidate manifests.
 
+The corrected exact workforce A+B diagnostic tree is already materialized at
+`Z:\ck3_mod_rewrite\_runtime\phase2-workforce-split-exact-clean-20260903\mod_zhongguo_style`:
+265 files / 15,938,098 bytes, with the monolith absent and the two part files
+covering blocks 0–161 and 162–323. Its exact-pair manifest is
+`Z:\ck3_mod_rewrite\_runtime\phase2-workforce-split-exact-20260903\manifest.json`
+(`concat_matches_source=true`). This target is diagnostic only; the associated
+serial run stopped at `Total of : 881` and did not reach history completion.
+
 ## Workforce top-level block segments
 
 The disposable segment generator is checked in at
@@ -195,11 +219,13 @@ comments and quoted strings, and writes new files. It never edits the source.
 Every output starts with the exact six-line header and UTF-8 BOM from the
 source. Ranges are zero-based and inclusive.
 
-The generated manifest is external (not committed):
+The first generated manifest (`phase2-workforce-block-bisect-20260903`) was
+superseded after a BOM-offset defect was found. The corrected manifest is
+external (not committed):
 
 ```text
-Z:\ck3_mod_rewrite\_runtime\phase2-workforce-block-bisect-20260903\manifest.json
-SHA-256: 81ff6c5c3bc99dddbd44f4146c4fe858da2b982ccf858d8df78fddcbf13fba6d
+Z:\ck3_mod_rewrite\_runtime\phase2-workforce-segments-corrected-20260903\manifest.json
+SHA-256: 9caa5a082e5d08baf003bf93a4a4ba96ce975c07a57669963976ea26cb4d37ad
 ```
 
 Source facts recorded by that manifest:
@@ -208,7 +234,7 @@ Source facts recorded by that manifest:
 | --- | --- |
 | source | `...direct-union-v2\common\scripted_effects\zg361_workforce_endgame_runtime_effects.txt` |
 | bytes / SHA-256 | 4,636,271 / `926453fe4b3621b5381743d61f5d03ac29c1d498181702e05a9532739d334d8a` |
-| BOM / header | UTF-8 BOM present / 560 bytes, 6 lines |
+| BOM / header | UTF-8 BOM present / 563 bytes, 7 lines (including the BOM-bearing header line) |
 | complete top-level blocks | 324 |
 | source lines | 74,737 |
 | generated outputs | 324 individual blocks + 21 chunks (16 each, final short) + 2 halves |
@@ -217,8 +243,8 @@ The first serial split is:
 
 | segment | blocks | bytes | SHA-256 |
 | --- | ---: | ---: | --- |
-| `halves/left.txt` | 0–161 | 1,638,028 | `83e38bbd214decf48e546e60db4f37b1006dfafcede1eb448883411f613a1eaa` |
-| `halves/right.txt` | 162–323 | 2,981,378 | `aa50319d1331896e41eb9de7bc80d1167a3bac3e4725c50fd85d42daadacc1e1` |
+| `halves/left.txt` | 0–161 | 1,638,031 | `823c746bec51bed5ffcc46b2810ff97f1058388e0bb8bb2d579c760a95ee1c65` |
+| `halves/right.txt` | 162–323 | 2,981,381 | `8c6cfea5a613c12591f94a0ffd56049320da43213374bde53206f6e4e2a90de5` |
 
 The largest blocks (useful when a half is RED and a finer split is needed) are:
 
@@ -237,7 +263,7 @@ Generate a fresh disposable snapshot or a selected range as follows:
 
 ```powershell
 $src = 'Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\direct-union-v2\common\scripted_effects\zg361_workforce_endgame_runtime_effects.txt'
-$out = 'Z:\ck3_mod_rewrite\_runtime\phase2-workforce-block-bisect-rerun-20260903'
+$out = 'Z:\ck3_mod_rewrite\_runtime\phase2-workforce-segments-rerun-20260903'
 py tools/phase2_workforce_block_segments.py --source $src --output $out --chunk-size 16
 py tools/phase2_workforce_block_segments.py --source $src --output "$out-left" --ranges 0-161
 py tools/phase2_workforce_block_segments.py --source $src --output "$out-right" --ranges 162-323
@@ -293,12 +319,15 @@ and keep them separate from the already observed v2 empty-error-log evidence.
 
 * `py -m py_compile tools/phase2_workforce_block_segments.py` — passed.
 * Generator run against the pinned direct-v2 workforce file — passed; 324
-  balanced blocks, BOM/header preserved, manifest and hashes above reproduced.
-* Selected-range run for 0–161 — passed; output hash matches the recorded
-  left-half hash.
+  balanced blocks, the 563-byte BOM-bearing header was preserved, and the
+  corrected manifest/hash set above was reproduced.
+* Selected-range run for 0–161 — passed; output hash matches the corrected
+  left-half hash `823c746bec51bed5ffcc46b2810ff97f1058388e0bb8bb2d579c760a95ee1c65`.
 * Static closure fixed points and projection manifests were inspected from the
   external `analysis.json`/manifest files; no CK3 launch was performed.
 
-This document and the generator are the only committed deliverables from this
-read-only scan. All candidate trees, manifests, logs, and segments remain in
-`_runtime` and are intentionally excluded from Git.
+The pre-fix manifest (`phase2-workforce-block-bisect-20260903`, header 560 B)
+and its hashes are retained only as invalid historical evidence. This document
+and the generator are the only committed deliverables from this read-only scan.
+All candidate trees, manifests, logs, and segments remain in `_runtime` and are
+intentionally excluded from Git.
