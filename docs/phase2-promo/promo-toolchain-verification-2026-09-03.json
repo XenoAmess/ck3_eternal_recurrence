@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-09-03T12:51:56+08:00",
+  "repository": "https://github.com/XenoAmess/xar_promo_toolchain.git",
+  "clone": "Z:/ck3_mod_rewrite/_runtime/promo-tool-fresh-20260903",
+  "remote": "origin/main",
+  "head": "57c42fca13ea459432c1caf76e069a1fbccf602c",
+  "origin_main": "57c42fca13ea459432c1caf76e069a1fbccf602c",
+  "in_sync": true,
+  "worktree_clean": true,
+  "update_operation": "git fetch origin main --prune",
+  "fetch_completed_at": "2026-09-03T12:51:56+08:00",
+  "tests": {
+    "command": "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -m unittest discover -s tests -q",
+    "result": "passed",
+    "run": 263,
+    "skipped": 2,
+    "completed_at": "2026-09-03T12:52:10+08:00"
+  },
+  "ck3_started": false,
+  "video_started": false
+}
