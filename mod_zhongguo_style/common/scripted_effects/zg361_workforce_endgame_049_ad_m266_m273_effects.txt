@@ -1,0 +1,2219 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AD mechanisms M266 and M273.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m266_consume_effect = {
+	if = {
+		limit = { has_variable = zg361_we_m266_debt_cycle has_variable = zg361_we_m266_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_we_m266_expected_debt_id
+			value = { value = var:zg361_we_m266_debt_cycle multiply = 1000000 add = { value = var:zg361_we_m266_debt_case multiply = 1000 } add = 266 }
+		}
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+				has_variable = zg361_we_m266_write_owner
+				has_variable = zg361_we_m266_write_subject
+				has_variable = zg361_we_m266_write_cycle
+				has_variable = zg361_we_m266_write_case
+				has_variable = zg361_we_m266_write_state
+				has_variable = zg361_we_open_requisition_266
+				has_variable = zg361_we_m266_choice
+				has_variable = zg361_we_m266_business_object_created
+				has_variable = zg361_case_ad_owner
+				has_variable = zg361_case_ad_subject
+				has_variable = zg361_case_ad_cycle_serial
+				has_variable = zg361_case_ad_case_serial
+				has_variable = zg361_case_ad_state
+				}
+			var:zg361_we_m266_write_owner = var:zg361_case_ad_owner
+			var:zg361_we_m266_write_subject = var:zg361_case_ad_subject
+			var:zg361_we_m266_write_cycle = var:zg361_case_ad_cycle_serial
+			var:zg361_we_m266_write_case = var:zg361_case_ad_case_serial
+			var:zg361_we_m266_write_state = var:zg361_case_ad_state
+				trigger_if = {
+					limit = { var:zg361_we_m266_business_object_created = 1 }
+					trigger_if = {
+						limit = {
+						has_variable = zg361_we_m266_object_type_code
+						has_variable = zg361_we_m266_object_vacancy_requisition
+						has_variable = zg361_we_m266_object_owner
+						has_variable = zg361_we_m266_object_subject
+						has_variable = zg361_we_m266_object_cycle
+						has_variable = zg361_we_m266_object_case
+						has_variable = zg361_we_m266_object_state
+						has_variable = zg361_we_m266_object_id
+						has_variable = zg361_we_m266_consumer_contract
+						has_variable = zg361_we_m266_resource_formal_hc
+						has_variable = zg361_we_m266_resource_vacancy
+						}
+					var:zg361_we_m266_object_type_code = 266
+					var:zg361_we_m266_consumer_contract = 266
+					var:zg361_we_m266_object_owner = var:zg361_we_m266_write_owner
+					var:zg361_we_m266_object_subject = var:zg361_we_m266_write_subject
+					var:zg361_we_m266_object_cycle = var:zg361_we_m266_write_cycle
+					var:zg361_we_m266_object_case = var:zg361_we_m266_write_case
+					var:zg361_we_m266_object_state = var:zg361_we_m266_write_state
+					}
+					trigger_else = { always = no }
+				}
+				trigger_else = {
+					trigger_if = {
+						limit = {
+						has_variable = zg361_we_m266_debt_owner
+						has_variable = zg361_we_m266_debt_subject
+						has_variable = zg361_we_m266_debt_cycle
+						has_variable = zg361_we_m266_debt_case
+						has_variable = zg361_we_m266_debt_state
+						has_variable = zg361_we_m266_debt_type_code
+						has_variable = zg361_we_m266_debt_id
+						has_variable = zg361_we_m266_debt_consumer_contract
+						has_variable = zg361_we_m266_debt_due_cycle
+						has_variable = zg361_we_m266_debt_open
+						has_variable = zg361_we_m266_debt_consumed
+						has_variable = zg361_we_m266_debt_escalation_count
+						}
+					var:zg361_we_m266_choice = 3
+					var:zg361_we_m266_debt_open = 1
+					var:zg361_we_m266_debt_consumed = 0
+					var:zg361_we_m266_debt_type_code = 266
+					var:zg361_we_m266_debt_consumer_contract = 266
+					var:zg361_we_m266_debt_owner = var:zg361_we_m266_write_owner
+					var:zg361_we_m266_debt_subject = var:zg361_we_m266_write_subject
+					var:zg361_we_m266_debt_cycle = var:zg361_we_m266_write_cycle
+					var:zg361_we_m266_debt_case = var:zg361_we_m266_write_case
+					var:zg361_we_m266_debt_state = var:zg361_we_m266_write_state
+					var:zg361_we_m266_debt_id = scope:zg361_we_m266_expected_debt_id
+					}
+					trigger_else = { always = no }
+				}
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_m266_consumed_owner
+						has_variable = zg361_we_m266_consumed_subject
+						has_variable = zg361_we_m266_consumed_cycle
+						has_variable = zg361_we_m266_consumed_case
+						has_variable = zg361_we_m266_consumed_state
+					}
+					NOT = {
+					var:zg361_we_m266_consumed_owner = var:zg361_we_m266_write_owner
+					var:zg361_we_m266_consumed_subject = var:zg361_we_m266_write_subject
+					var:zg361_we_m266_consumed_cycle = var:zg361_we_m266_write_cycle
+					var:zg361_we_m266_consumed_case = var:zg361_we_m266_write_case
+					var:zg361_we_m266_consumed_state = var:zg361_we_m266_write_state
+					}
+				}
+				trigger_else = { always = yes }
+			}
+			trigger_else = { always = no }
+		}
+		set_variable = { name = zg361_we_m266_consumed_owner value = var:zg361_we_m266_write_owner }
+		set_variable = { name = zg361_we_m266_consumed_subject value = var:zg361_we_m266_write_subject }
+		set_variable = { name = zg361_we_m266_consumed_cycle value = var:zg361_we_m266_write_cycle }
+		set_variable = { name = zg361_we_m266_consumed_case value = var:zg361_we_m266_write_case }
+		set_variable = { name = zg361_we_m266_consumed_state value = var:zg361_we_m266_write_state }
+		set_variable = { name = zg361_we_m266_visible_value value = var:zg361_we_open_requisition_266 }
+		set_variable = { name = zg361_we_m266_visible_provenance_case value = var:zg361_we_m266_write_case }
+		if = { limit = { var:zg361_we_m266_business_object_created = 1 } set_variable = { name = zg361_we_m266_object_consumed value = 1 } set_variable = { name = zg361_we_m266_consumer_open_requisition_266 value = 1 } }
+		else = { set_variable = { name = zg361_we_m266_debt_visible_to_settlement value = 1 } }
+		change_variable = { name = zg361_we_ad_visible_revision add = 1 }
+	}
+}
+
+zg361_we_m266_route_a_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_operation_total
+					has_variable = zg361_we_operation_used
+					has_variable = zg361_ch_hc_available
+				}
+				var:zg361_we_operation_used < var:zg361_we_operation_total
+				var:zg361_ch_hc_available >= 1
+				trigger_if = { limit = { has_variable = zg361_we_m266_hc_reservation_active } var:zg361_we_m266_hc_reservation_active = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m269_outcome_pending } var:zg361_we_m269_outcome_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m275_hold_pending } var:zg361_we_m275_hold_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m275_runner_reopen_pending } var:zg361_we_m275_runner_reopen_pending = 0 } trigger_else = { always = yes }
+				var:zg361_case_ad_owner = { trigger_if = { limit = { has_variable = zg361_we_ad_hc_flight_pending } var:zg361_we_ad_hc_flight_pending = 0 } trigger_else = { always = yes } }
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ad_owner
+			SUBJECT_VAR = zg361_case_ad_subject
+			CYCLE_VAR = zg361_case_ad_cycle_serial
+			CASE_VAR = zg361_case_ad_case_serial
+			STATE_VAR = zg361_case_ad_state
+			REVISION_VAR = zg361_case_ad_revision
+			ACTIVE_VAR = zg361_case_ad_active
+			TIMELINE_VAR = zg361_case_ad_timeline_serial
+			FEEDBACK_VAR = zg361_case_ad_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ad_last_operation
+			LAST_CHOICE_VAR = zg361_case_ad_last_choice
+			RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+			RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = 1
+			OPERATION_ID = 266
+			CHOICE = 1
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_we_runtime_applied value = 1 }
+			set_variable = { name = zg361_we_open_requisition_266 value = 1 }
+			change_variable = { name = zg361_we_operation_used add = 1 }
+			set_variable = { name = zg361_we_m266_choice value = 1 }
+			set_variable = { name = zg361_we_m266_business_object_created value = 1 }
+			set_variable = { name = zg361_we_m266_object_type_code value = 266 }
+			set_variable = { name = zg361_we_m266_object_vacancy_requisition value = 1 }
+			set_variable = { name = zg361_we_m266_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m266_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m266_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m266_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_object_state value = 1 }
+			set_variable = { name = zg361_we_m266_object_id value = { value = $TICKET_CASE$ multiply = 1000 add = 266 } }
+			set_variable = { name = zg361_we_m266_consumer_contract value = 266 }
+			set_variable = { name = zg361_we_m266_object_consumed value = 0 }
+			set_variable = { name = zg361_we_m266_resource_formal_hc value = 1 }
+			set_variable = { name = zg361_we_m266_resource_vacancy value = 1 }
+			change_variable = { name = zg361_ch_hc_available add = -1 }
+			change_variable = { name = zg361_ch_hc_reserved add = 1 }
+			set_variable = { name = zg361_we_m266_standard_bar value = 70 }
+			set_variable = { name = zg361_we_m266_selected_bar value = 70 }
+			set_variable = { name = zg361_we_m266_urgency_level value = 2 }
+			set_variable = { name = zg361_we_m266_hc_receipt value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_hc_reservation_active value = 1 }
+			set_variable = { name = zg361_we_m266_vacancy_serial value = $TICKET_CASE$ }
+			var:zg361_case_ad_owner = { set_variable = { name = zg361_we_ad_hc_flight_pending value = 1 } set_variable = { name = zg361_we_ad_hc_flight_subject value = $TICKET_SUBJECT$ } set_variable = { name = zg361_we_ad_hc_flight_cycle value = $TICKET_CYCLE$ } set_variable = { name = zg361_we_ad_hc_flight_case value = $TICKET_CASE$ } }
+			set_variable = { name = zg361_we_m266_write_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m266_write_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m266_write_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m266_write_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_write_state value = 1 }
+			set_variable = { name = zg361_we_m266_provenance_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_provenance_choice value = 1 }
+			zg361_we_m266_consume_effect = yes
+			set_variable = { name = zg361_we_runtime_status value = 1 }
+
+		}
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			NOT = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_operation_total
+						has_variable = zg361_we_operation_used
+						has_variable = zg361_ch_hc_available
+					}
+					var:zg361_we_operation_used < var:zg361_we_operation_total
+					var:zg361_ch_hc_available >= 1
+					trigger_if = { limit = { has_variable = zg361_we_m266_hc_reservation_active } var:zg361_we_m266_hc_reservation_active = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_m269_outcome_pending } var:zg361_we_m269_outcome_pending = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_m275_hold_pending } var:zg361_we_m275_hold_pending = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_m275_runner_reopen_pending } var:zg361_we_m275_runner_reopen_pending = 0 } trigger_else = { always = yes }
+					var:zg361_case_ad_owner = { trigger_if = { limit = { has_variable = zg361_we_ad_hc_flight_pending } var:zg361_we_ad_hc_flight_pending = 0 } trigger_else = { always = yes } }
+				}
+				trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2661 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # typed RED, no receipt or business write
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+				RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+				RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+				RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+				RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+				RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+				RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+				EXPECTED_CHOICE = 1
+			}
+		}
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent no-op
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2669 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # route collision typed RED
+	}
+	else = { set_variable = { name = zg361_we_runtime_status value = 3 } } # stale no-op
+}
+
+zg361_we_m266_route_b_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_operation_total
+					has_variable = zg361_we_operation_used
+					has_variable = zg361_ch_hc_available
+				}
+				var:zg361_we_operation_used < var:zg361_we_operation_total
+				var:zg361_ch_hc_available >= 1
+				trigger_if = { limit = { has_variable = zg361_we_m266_hc_reservation_active } var:zg361_we_m266_hc_reservation_active = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m269_outcome_pending } var:zg361_we_m269_outcome_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m275_hold_pending } var:zg361_we_m275_hold_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m275_runner_reopen_pending } var:zg361_we_m275_runner_reopen_pending = 0 } trigger_else = { always = yes }
+				var:zg361_case_ad_owner = { trigger_if = { limit = { has_variable = zg361_we_ad_hc_flight_pending } var:zg361_we_ad_hc_flight_pending = 0 } trigger_else = { always = yes } }
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ad_owner
+			SUBJECT_VAR = zg361_case_ad_subject
+			CYCLE_VAR = zg361_case_ad_cycle_serial
+			CASE_VAR = zg361_case_ad_case_serial
+			STATE_VAR = zg361_case_ad_state
+			REVISION_VAR = zg361_case_ad_revision
+			ACTIVE_VAR = zg361_case_ad_active
+			TIMELINE_VAR = zg361_case_ad_timeline_serial
+			FEEDBACK_VAR = zg361_case_ad_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ad_last_operation
+			LAST_CHOICE_VAR = zg361_case_ad_last_choice
+			RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+			RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = 1
+			OPERATION_ID = 266
+			CHOICE = 2
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_we_runtime_applied value = 1 }
+			set_variable = { name = zg361_we_open_requisition_266 value = 2 }
+			change_variable = { name = zg361_we_operation_used add = 1 }
+			set_variable = { name = zg361_we_m266_choice value = 2 }
+			set_variable = { name = zg361_we_m266_business_object_created value = 1 }
+			set_variable = { name = zg361_we_m266_object_type_code value = 266 }
+			set_variable = { name = zg361_we_m266_object_vacancy_requisition value = 1 }
+			set_variable = { name = zg361_we_m266_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m266_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m266_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m266_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_object_state value = 1 }
+			set_variable = { name = zg361_we_m266_object_id value = { value = $TICKET_CASE$ multiply = 1000 add = 266 } }
+			set_variable = { name = zg361_we_m266_consumer_contract value = 266 }
+			set_variable = { name = zg361_we_m266_object_consumed value = 0 }
+			set_variable = { name = zg361_we_m266_resource_formal_hc value = 1 }
+			set_variable = { name = zg361_we_m266_resource_vacancy value = 1 }
+			change_variable = { name = zg361_ch_hc_available add = -1 }
+			change_variable = { name = zg361_ch_hc_reserved add = 1 }
+			set_variable = { name = zg361_we_m266_standard_bar value = 70 }
+			set_variable = { name = zg361_we_m266_selected_bar value = 60 }
+			set_variable = { name = zg361_we_m266_urgency_level value = 4 }
+			set_variable = { name = zg361_we_m266_hc_receipt value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_hc_reservation_active value = 1 }
+			set_variable = { name = zg361_we_m266_vacancy_serial value = $TICKET_CASE$ }
+			var:zg361_case_ad_owner = { set_variable = { name = zg361_we_ad_hc_flight_pending value = 1 } set_variable = { name = zg361_we_ad_hc_flight_subject value = $TICKET_SUBJECT$ } set_variable = { name = zg361_we_ad_hc_flight_cycle value = $TICKET_CYCLE$ } set_variable = { name = zg361_we_ad_hc_flight_case value = $TICKET_CASE$ } }
+			set_variable = { name = zg361_we_m266_write_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m266_write_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m266_write_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m266_write_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_write_state value = 1 }
+			set_variable = { name = zg361_we_m266_provenance_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_provenance_choice value = 2 }
+			zg361_we_m266_consume_effect = yes
+			set_variable = { name = zg361_we_runtime_status value = 1 }
+
+		}
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			NOT = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_operation_total
+						has_variable = zg361_we_operation_used
+						has_variable = zg361_ch_hc_available
+					}
+					var:zg361_we_operation_used < var:zg361_we_operation_total
+					var:zg361_ch_hc_available >= 1
+					trigger_if = { limit = { has_variable = zg361_we_m266_hc_reservation_active } var:zg361_we_m266_hc_reservation_active = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_m269_outcome_pending } var:zg361_we_m269_outcome_pending = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_m275_hold_pending } var:zg361_we_m275_hold_pending = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_m275_runner_reopen_pending } var:zg361_we_m275_runner_reopen_pending = 0 } trigger_else = { always = yes }
+					var:zg361_case_ad_owner = { trigger_if = { limit = { has_variable = zg361_we_ad_hc_flight_pending } var:zg361_we_ad_hc_flight_pending = 0 } trigger_else = { always = yes } }
+				}
+				trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2662 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # typed RED, no receipt or business write
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+				RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+				RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+				RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+				RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+				RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+				RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+				EXPECTED_CHOICE = 2
+			}
+		}
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent no-op
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2669 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # route collision typed RED
+	}
+	else = { set_variable = { name = zg361_we_runtime_status value = 3 } } # stale no-op
+}
+
+zg361_we_m266_route_c_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_operation_total
+					has_variable = zg361_we_operation_used
+				}
+				var:zg361_we_operation_used < var:zg361_we_operation_total
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ad_owner
+			SUBJECT_VAR = zg361_case_ad_subject
+			CYCLE_VAR = zg361_case_ad_cycle_serial
+			CASE_VAR = zg361_case_ad_case_serial
+			STATE_VAR = zg361_case_ad_state
+			REVISION_VAR = zg361_case_ad_revision
+			ACTIVE_VAR = zg361_case_ad_active
+			TIMELINE_VAR = zg361_case_ad_timeline_serial
+			FEEDBACK_VAR = zg361_case_ad_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ad_last_operation
+			LAST_CHOICE_VAR = zg361_case_ad_last_choice
+			RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+			RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = 1
+			OPERATION_ID = 266
+			CHOICE = 3
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_we_runtime_applied value = 1 }
+			set_variable = { name = zg361_we_open_requisition_266 value = 3 }
+			change_variable = { name = zg361_we_operation_used add = 1 }
+			set_variable = { name = zg361_we_m266_choice value = 3 }
+			set_variable = { name = zg361_we_m266_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m266_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m266_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m266_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_we_m266_debt_type_code value = 266 }
+			set_variable = { name = zg361_we_m266_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 266 } }
+			set_variable = { name = zg361_we_m266_debt_consumer_contract value = 266 }
+			set_variable = { name = zg361_we_m266_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_we_m266_debt_open value = 1 }
+			set_variable = { name = zg361_we_m266_debt_consumed value = 0 }
+			set_variable = { name = zg361_we_m266_debt_escalation_count value = 0 }
+			set_variable = { name = zg361_we_m266_business_object_created value = 0 }
+			change_variable = { name = zg361_we_policy_debt add = 1 }
+			trigger_event = { id = zg361we.6266 days = 365 }
+			set_variable = { name = zg361_we_m266_write_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m266_write_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m266_write_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m266_write_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_write_state value = 1 }
+			set_variable = { name = zg361_we_m266_provenance_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m266_provenance_choice value = 3 }
+			zg361_we_m266_consume_effect = yes
+			set_variable = { name = zg361_we_runtime_status value = 1 }
+
+		}
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			NOT = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_operation_total
+						has_variable = zg361_we_operation_used
+					}
+					var:zg361_we_operation_used < var:zg361_we_operation_total
+				}
+				trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2663 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # typed RED, no receipt or business write
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+				RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+				RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+				RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+				RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+				RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+				RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+				EXPECTED_CHOICE = 3
+			}
+		}
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent no-op
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m266_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m266_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m266_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m266_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m266_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m266_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2669 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # route collision typed RED
+	}
+	else = { set_variable = { name = zg361_we_runtime_status value = 3 } } # stale no-op
+}
+
+zg361_we_m273_consume_effect = {
+	if = {
+		limit = { has_variable = zg361_we_m273_debt_cycle has_variable = zg361_we_m273_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_we_m273_expected_debt_id
+			value = { value = var:zg361_we_m273_debt_cycle multiply = 1000000 add = { value = var:zg361_we_m273_debt_case multiply = 1000 } add = 273 }
+		}
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+				has_variable = zg361_we_m273_write_owner
+				has_variable = zg361_we_m273_write_subject
+				has_variable = zg361_we_m273_write_cycle
+				has_variable = zg361_we_m273_write_case
+				has_variable = zg361_we_m273_write_state
+				has_variable = zg361_we_assign_candidate_owner_273
+				has_variable = zg361_we_m273_choice
+				has_variable = zg361_we_m273_business_object_created
+				has_variable = zg361_case_ad_owner
+				has_variable = zg361_case_ad_subject
+				has_variable = zg361_case_ad_cycle_serial
+				has_variable = zg361_case_ad_case_serial
+				has_variable = zg361_case_ad_state
+				}
+			var:zg361_we_m273_write_owner = var:zg361_case_ad_owner
+			var:zg361_we_m273_write_subject = var:zg361_case_ad_subject
+			var:zg361_we_m273_write_cycle = var:zg361_case_ad_cycle_serial
+			var:zg361_we_m273_write_case = var:zg361_case_ad_case_serial
+			var:zg361_we_m273_write_state = var:zg361_case_ad_state
+				trigger_if = {
+					limit = { var:zg361_we_m273_business_object_created = 1 }
+					trigger_if = {
+						limit = {
+						has_variable = zg361_we_m273_object_type_code
+						has_variable = zg361_we_m273_object_candidate_ownership
+						has_variable = zg361_we_m273_object_owner
+						has_variable = zg361_we_m273_object_subject
+						has_variable = zg361_we_m273_object_cycle
+						has_variable = zg361_we_m273_object_case
+						has_variable = zg361_we_m273_object_state
+						has_variable = zg361_we_m273_object_id
+						has_variable = zg361_we_m273_consumer_contract
+						has_variable = zg361_we_m273_resource_candidate
+						has_variable = zg361_we_m273_resource_credit
+						}
+					var:zg361_we_m273_object_type_code = 273
+					var:zg361_we_m273_consumer_contract = 273
+					var:zg361_we_m273_object_owner = var:zg361_we_m273_write_owner
+					var:zg361_we_m273_object_subject = var:zg361_we_m273_write_subject
+					var:zg361_we_m273_object_cycle = var:zg361_we_m273_write_cycle
+					var:zg361_we_m273_object_case = var:zg361_we_m273_write_case
+					var:zg361_we_m273_object_state = var:zg361_we_m273_write_state
+					}
+					trigger_else = { always = no }
+				}
+				trigger_else = {
+					trigger_if = {
+						limit = {
+						has_variable = zg361_we_m273_debt_owner
+						has_variable = zg361_we_m273_debt_subject
+						has_variable = zg361_we_m273_debt_cycle
+						has_variable = zg361_we_m273_debt_case
+						has_variable = zg361_we_m273_debt_state
+						has_variable = zg361_we_m273_debt_type_code
+						has_variable = zg361_we_m273_debt_id
+						has_variable = zg361_we_m273_debt_consumer_contract
+						has_variable = zg361_we_m273_debt_due_cycle
+						has_variable = zg361_we_m273_debt_open
+						has_variable = zg361_we_m273_debt_consumed
+						has_variable = zg361_we_m273_debt_escalation_count
+						}
+					var:zg361_we_m273_choice = 3
+					var:zg361_we_m273_debt_open = 1
+					var:zg361_we_m273_debt_consumed = 0
+					var:zg361_we_m273_debt_type_code = 273
+					var:zg361_we_m273_debt_consumer_contract = 273
+					var:zg361_we_m273_debt_owner = var:zg361_we_m273_write_owner
+					var:zg361_we_m273_debt_subject = var:zg361_we_m273_write_subject
+					var:zg361_we_m273_debt_cycle = var:zg361_we_m273_write_cycle
+					var:zg361_we_m273_debt_case = var:zg361_we_m273_write_case
+					var:zg361_we_m273_debt_state = var:zg361_we_m273_write_state
+					var:zg361_we_m273_debt_id = scope:zg361_we_m273_expected_debt_id
+					}
+					trigger_else = { always = no }
+				}
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_m273_consumed_owner
+						has_variable = zg361_we_m273_consumed_subject
+						has_variable = zg361_we_m273_consumed_cycle
+						has_variable = zg361_we_m273_consumed_case
+						has_variable = zg361_we_m273_consumed_state
+					}
+					NOT = {
+					var:zg361_we_m273_consumed_owner = var:zg361_we_m273_write_owner
+					var:zg361_we_m273_consumed_subject = var:zg361_we_m273_write_subject
+					var:zg361_we_m273_consumed_cycle = var:zg361_we_m273_write_cycle
+					var:zg361_we_m273_consumed_case = var:zg361_we_m273_write_case
+					var:zg361_we_m273_consumed_state = var:zg361_we_m273_write_state
+					}
+				}
+				trigger_else = { always = yes }
+			}
+			trigger_else = { always = no }
+		}
+		set_variable = { name = zg361_we_m273_consumed_owner value = var:zg361_we_m273_write_owner }
+		set_variable = { name = zg361_we_m273_consumed_subject value = var:zg361_we_m273_write_subject }
+		set_variable = { name = zg361_we_m273_consumed_cycle value = var:zg361_we_m273_write_cycle }
+		set_variable = { name = zg361_we_m273_consumed_case value = var:zg361_we_m273_write_case }
+		set_variable = { name = zg361_we_m273_consumed_state value = var:zg361_we_m273_write_state }
+		set_variable = { name = zg361_we_m273_visible_value value = var:zg361_we_assign_candidate_owner_273 }
+		set_variable = { name = zg361_we_m273_visible_provenance_case value = var:zg361_we_m273_write_case }
+		if = { limit = { var:zg361_we_m273_business_object_created = 1 } set_variable = { name = zg361_we_m273_object_consumed value = 1 } set_variable = { name = zg361_we_m273_consumer_assign_candidate_owner_273 value = 1 } }
+		else = { set_variable = { name = zg361_we_m273_debt_visible_to_settlement value = 1 } }
+		change_variable = { name = zg361_we_ad_visible_revision add = 1 }
+	}
+}
+
+zg361_we_m273_route_a_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_operation_total
+					has_variable = zg361_we_operation_used
+					has_variable = zg361_we_m266_business_object_created
+					has_variable = zg361_we_m266_object_type_code
+					has_variable = zg361_we_m266_object_owner
+					has_variable = zg361_we_m266_object_subject
+					has_variable = zg361_we_m266_object_cycle
+					has_variable = zg361_we_m266_object_case
+					has_variable = zg361_we_m266_object_consumed
+					has_variable = zg361_we_m266_consumer_open_requisition_266
+				}
+				var:zg361_we_operation_used < var:zg361_we_operation_total
+				var:zg361_we_m266_business_object_created = 1
+				var:zg361_we_m266_object_type_code = 266
+				var:zg361_we_m266_object_owner = $TICKET_OWNER$
+				var:zg361_we_m266_object_subject = $TICKET_SUBJECT$
+				var:zg361_we_m266_object_cycle = $TICKET_CYCLE$
+				var:zg361_we_m266_object_case = $TICKET_CASE$
+				var:zg361_we_m266_object_consumed = 1
+				var:zg361_we_m266_consumer_open_requisition_266 = 1
+				trigger_if = { limit = { has_variable = zg361_we_candidate_active } var:zg361_we_candidate_active = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_formal_hc_pending } var:zg361_we_formal_hc_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_formal_hc_active } var:zg361_we_formal_hc_active = 0 } trigger_else = { always = yes }
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ad_owner
+			SUBJECT_VAR = zg361_case_ad_subject
+			CYCLE_VAR = zg361_case_ad_cycle_serial
+			CASE_VAR = zg361_case_ad_case_serial
+			STATE_VAR = zg361_case_ad_state
+			REVISION_VAR = zg361_case_ad_revision
+			ACTIVE_VAR = zg361_case_ad_active
+			TIMELINE_VAR = zg361_case_ad_timeline_serial
+			FEEDBACK_VAR = zg361_case_ad_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ad_last_operation
+			LAST_CHOICE_VAR = zg361_case_ad_last_choice
+			RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+			RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = 1
+			OPERATION_ID = 273
+			CHOICE = 1
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_we_runtime_applied value = 1 }
+			set_variable = { name = zg361_we_assign_candidate_owner_273 value = 1 }
+			change_variable = { name = zg361_we_operation_used add = 1 }
+			set_variable = { name = zg361_we_m273_choice value = 1 }
+			set_variable = { name = zg361_we_m273_business_object_created value = 1 }
+			set_variable = { name = zg361_we_m273_object_type_code value = 273 }
+			set_variable = { name = zg361_we_m273_object_candidate_ownership value = 1 }
+			set_variable = { name = zg361_we_m273_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m273_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_object_state value = 1 }
+			set_variable = { name = zg361_we_m273_object_id value = { value = $TICKET_CASE$ multiply = 1000 add = 273 } }
+			set_variable = { name = zg361_we_m273_consumer_contract value = 273 }
+			set_variable = { name = zg361_we_m273_object_consumed value = 0 }
+			set_variable = { name = zg361_we_m273_resource_candidate value = 1 }
+			set_variable = { name = zg361_we_m273_resource_credit value = 1 }
+			set_variable = { name = zg361_we_candidate_active value = 1 }
+			set_variable = { name = zg361_we_candidate_active_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_candidate_active_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_candidate_fingerprint value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_owner_frozen value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_scout_credit_bps value = 3000 }
+			set_variable = { name = zg361_we_m273_hiring_credit_bps value = 7000 }
+			set_variable = { name = zg361_we_m273_credit_total_bps value = 10000 }
+			set_variable = { name = zg361_we_m273_additional_hc_reserved value = 0 }
+			set_variable = { name = zg361_we_m273_write_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_write_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_write_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m273_write_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_write_state value = 1 }
+			set_variable = { name = zg361_we_m273_provenance_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_provenance_choice value = 1 }
+			zg361_we_m273_consume_effect = yes
+			zg361_wad_begin_referral_source_effect = {
+				TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+				TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+			}
+			set_variable = { name = zg361_we_runtime_status value = 1 }
+
+		}
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			NOT = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_operation_total
+						has_variable = zg361_we_operation_used
+						has_variable = zg361_we_m266_business_object_created
+						has_variable = zg361_we_m266_object_type_code
+						has_variable = zg361_we_m266_object_owner
+						has_variable = zg361_we_m266_object_subject
+						has_variable = zg361_we_m266_object_cycle
+						has_variable = zg361_we_m266_object_case
+						has_variable = zg361_we_m266_object_consumed
+						has_variable = zg361_we_m266_consumer_open_requisition_266
+					}
+					var:zg361_we_operation_used < var:zg361_we_operation_total
+					var:zg361_we_m266_business_object_created = 1
+					var:zg361_we_m266_object_type_code = 266
+					var:zg361_we_m266_object_owner = $TICKET_OWNER$
+					var:zg361_we_m266_object_subject = $TICKET_SUBJECT$
+					var:zg361_we_m266_object_cycle = $TICKET_CYCLE$
+					var:zg361_we_m266_object_case = $TICKET_CASE$
+					var:zg361_we_m266_object_consumed = 1
+					var:zg361_we_m266_consumer_open_requisition_266 = 1
+					trigger_if = { limit = { has_variable = zg361_we_candidate_active } var:zg361_we_candidate_active = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_formal_hc_pending } var:zg361_we_formal_hc_pending = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_formal_hc_active } var:zg361_we_formal_hc_active = 0 } trigger_else = { always = yes }
+				}
+				trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2731 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # typed RED, no receipt or business write
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+				RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+				RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+				RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+				RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+				RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+				RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+				EXPECTED_CHOICE = 1
+			}
+		}
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent no-op
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2739 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # route collision typed RED
+	}
+	else = { set_variable = { name = zg361_we_runtime_status value = 3 } } # stale no-op
+}
+
+zg361_we_m273_route_b_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_operation_total
+					has_variable = zg361_we_operation_used
+					has_variable = zg361_we_m266_business_object_created
+					has_variable = zg361_we_m266_object_type_code
+					has_variable = zg361_we_m266_object_owner
+					has_variable = zg361_we_m266_object_subject
+					has_variable = zg361_we_m266_object_cycle
+					has_variable = zg361_we_m266_object_case
+					has_variable = zg361_we_m266_object_consumed
+					has_variable = zg361_we_m266_consumer_open_requisition_266
+				}
+				var:zg361_we_operation_used < var:zg361_we_operation_total
+				var:zg361_we_m266_business_object_created = 1
+				var:zg361_we_m266_object_type_code = 266
+				var:zg361_we_m266_object_owner = $TICKET_OWNER$
+				var:zg361_we_m266_object_subject = $TICKET_SUBJECT$
+				var:zg361_we_m266_object_cycle = $TICKET_CYCLE$
+				var:zg361_we_m266_object_case = $TICKET_CASE$
+				var:zg361_we_m266_object_consumed = 1
+				var:zg361_we_m266_consumer_open_requisition_266 = 1
+				trigger_if = { limit = { has_variable = zg361_we_candidate_active } var:zg361_we_candidate_active = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_formal_hc_pending } var:zg361_we_formal_hc_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_formal_hc_active } var:zg361_we_formal_hc_active = 0 } trigger_else = { always = yes }
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ad_owner
+			SUBJECT_VAR = zg361_case_ad_subject
+			CYCLE_VAR = zg361_case_ad_cycle_serial
+			CASE_VAR = zg361_case_ad_case_serial
+			STATE_VAR = zg361_case_ad_state
+			REVISION_VAR = zg361_case_ad_revision
+			ACTIVE_VAR = zg361_case_ad_active
+			TIMELINE_VAR = zg361_case_ad_timeline_serial
+			FEEDBACK_VAR = zg361_case_ad_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ad_last_operation
+			LAST_CHOICE_VAR = zg361_case_ad_last_choice
+			RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+			RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = 1
+			OPERATION_ID = 273
+			CHOICE = 2
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_we_runtime_applied value = 1 }
+			set_variable = { name = zg361_we_assign_candidate_owner_273 value = 2 }
+			change_variable = { name = zg361_we_operation_used add = 1 }
+			set_variable = { name = zg361_we_m273_choice value = 2 }
+			set_variable = { name = zg361_we_m273_business_object_created value = 1 }
+			set_variable = { name = zg361_we_m273_object_type_code value = 273 }
+			set_variable = { name = zg361_we_m273_object_candidate_ownership value = 1 }
+			set_variable = { name = zg361_we_m273_object_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_object_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_object_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m273_object_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_object_state value = 1 }
+			set_variable = { name = zg361_we_m273_object_id value = { value = $TICKET_CASE$ multiply = 1000 add = 273 } }
+			set_variable = { name = zg361_we_m273_consumer_contract value = 273 }
+			set_variable = { name = zg361_we_m273_object_consumed value = 0 }
+			set_variable = { name = zg361_we_m273_resource_candidate value = 1 }
+			set_variable = { name = zg361_we_m273_resource_credit value = 1 }
+			set_variable = { name = zg361_we_candidate_active value = 1 }
+			set_variable = { name = zg361_we_candidate_active_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_candidate_active_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_candidate_fingerprint value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_owner_frozen value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_scout_credit_bps value = 10000 }
+			set_variable = { name = zg361_we_m273_hiring_credit_bps value = 0 }
+			set_variable = { name = zg361_we_m273_credit_total_bps value = 10000 }
+			set_variable = { name = zg361_we_m273_additional_hc_reserved value = 0 }
+			set_variable = { name = zg361_we_m273_write_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_write_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_write_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m273_write_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_write_state value = 1 }
+			set_variable = { name = zg361_we_m273_provenance_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_provenance_choice value = 2 }
+			zg361_we_m273_consume_effect = yes
+			zg361_wad_begin_referral_source_effect = {
+				TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+				TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+			}
+			set_variable = { name = zg361_we_runtime_status value = 1 }
+
+		}
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			NOT = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_operation_total
+						has_variable = zg361_we_operation_used
+						has_variable = zg361_we_m266_business_object_created
+						has_variable = zg361_we_m266_object_type_code
+						has_variable = zg361_we_m266_object_owner
+						has_variable = zg361_we_m266_object_subject
+						has_variable = zg361_we_m266_object_cycle
+						has_variable = zg361_we_m266_object_case
+						has_variable = zg361_we_m266_object_consumed
+						has_variable = zg361_we_m266_consumer_open_requisition_266
+					}
+					var:zg361_we_operation_used < var:zg361_we_operation_total
+					var:zg361_we_m266_business_object_created = 1
+					var:zg361_we_m266_object_type_code = 266
+					var:zg361_we_m266_object_owner = $TICKET_OWNER$
+					var:zg361_we_m266_object_subject = $TICKET_SUBJECT$
+					var:zg361_we_m266_object_cycle = $TICKET_CYCLE$
+					var:zg361_we_m266_object_case = $TICKET_CASE$
+					var:zg361_we_m266_object_consumed = 1
+					var:zg361_we_m266_consumer_open_requisition_266 = 1
+					trigger_if = { limit = { has_variable = zg361_we_candidate_active } var:zg361_we_candidate_active = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_formal_hc_pending } var:zg361_we_formal_hc_pending = 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { has_variable = zg361_we_formal_hc_active } var:zg361_we_formal_hc_active = 0 } trigger_else = { always = yes }
+				}
+				trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2732 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # typed RED, no receipt or business write
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+				RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+				RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+				RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+				RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+				RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+				RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+				EXPECTED_CHOICE = 2
+			}
+		}
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent no-op
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2739 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # route collision typed RED
+	}
+	else = { set_variable = { name = zg361_we_runtime_status value = 3 } } # stale no-op
+}
+
+zg361_we_m273_route_c_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_operation_total
+					has_variable = zg361_we_operation_used
+				}
+				var:zg361_we_operation_used < var:zg361_we_operation_total
+			}
+			trigger_else = { always = no }
+		}
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ad_owner
+			SUBJECT_VAR = zg361_case_ad_subject
+			CYCLE_VAR = zg361_case_ad_cycle_serial
+			CASE_VAR = zg361_case_ad_case_serial
+			STATE_VAR = zg361_case_ad_state
+			REVISION_VAR = zg361_case_ad_revision
+			ACTIVE_VAR = zg361_case_ad_active
+			TIMELINE_VAR = zg361_case_ad_timeline_serial
+			FEEDBACK_VAR = zg361_case_ad_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ad_last_operation
+			LAST_CHOICE_VAR = zg361_case_ad_last_choice
+			RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+			RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = 1
+			OPERATION_ID = 273
+			CHOICE = 3
+		}
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_we_runtime_applied value = 1 }
+			set_variable = { name = zg361_we_assign_candidate_owner_273 value = 3 }
+			change_variable = { name = zg361_we_operation_used add = 1 }
+			set_variable = { name = zg361_we_m273_choice value = 3 }
+			set_variable = { name = zg361_we_m273_debt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_debt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_debt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m273_debt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_debt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_we_m273_debt_type_code value = 273 }
+			set_variable = { name = zg361_we_m273_debt_id value = { value = $TICKET_CYCLE$ multiply = 1000000 add = { value = $TICKET_CASE$ multiply = 1000 } add = 273 } }
+			set_variable = { name = zg361_we_m273_debt_consumer_contract value = 273 }
+			set_variable = { name = zg361_we_m273_debt_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_we_m273_debt_open value = 1 }
+			set_variable = { name = zg361_we_m273_debt_consumed value = 0 }
+			set_variable = { name = zg361_we_m273_debt_escalation_count value = 0 }
+			set_variable = { name = zg361_we_m273_business_object_created value = 0 }
+			change_variable = { name = zg361_we_policy_debt add = 1 }
+			trigger_event = { id = zg361we.6273 days = 365 }
+			set_variable = { name = zg361_we_m273_write_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_m273_write_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_m273_write_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_m273_write_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_write_state value = 1 }
+			set_variable = { name = zg361_we_m273_provenance_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_m273_provenance_choice value = 3 }
+			zg361_we_m273_consume_effect = yes
+			set_variable = { name = zg361_we_runtime_status value = 1 }
+
+		}
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+						RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+						EXPECTED_OWNER = $TICKET_OWNER$
+						EXPECTED_SUBJECT = $TICKET_SUBJECT$
+						EXPECTED_CYCLE = $TICKET_CYCLE$
+						EXPECTED_CASE = $TICKET_CASE$
+						EXPECTED_STATE = 1
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+			NOT = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_operation_total
+						has_variable = zg361_we_operation_used
+					}
+					var:zg361_we_operation_used < var:zg361_we_operation_total
+				}
+				trigger_else = { always = no }
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2733 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # typed RED, no receipt or business write
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+				RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+				RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+				RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+				RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+				RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+				RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+				EXPECTED_CHOICE = 3
+			}
+		}
+		set_variable = { name = zg361_we_runtime_status value = 2 } # idempotent no-op
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner
+				SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial
+				CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state
+				ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = 1
+			}
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_we_m273_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_we_m273_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_we_m273_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_we_m273_receipt_case
+					RECEIPT_STATE_VAR = zg361_we_m273_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_we_m273_receipt_choice
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+		}
+		set_variable = { name = zg361_we_last_red_code value = 2739 }
+		set_variable = { name = zg361_we_runtime_status value = 4 } # route collision typed RED
+	}
+	else = { set_variable = { name = zg361_we_runtime_status value = 3 } } # stale no-op
+}

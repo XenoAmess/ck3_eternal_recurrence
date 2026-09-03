@@ -15,6 +15,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import gen_361_phase2_central_runtime as generator
+import gen_361_workforce_endgame_runtime as workforce_generator
 
 
 MOD_ROOT = generator.MOD_ROOT
@@ -22,6 +23,13 @@ MOD_ROOT = generator.MOD_ROOT
 
 def read(relative: str) -> str:
     return (MOD_ROOT / relative).read_text(encoding="utf-8-sig")
+
+
+def read_workforce_effect_shards() -> str:
+    return "\n".join(
+        read(f"common/scripted_effects/{group.filename}")
+        for group in workforce_generator.EFFECT_GROUPS
+    )
 
 
 def block(text: str, key: str) -> str:
@@ -93,7 +101,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
                 "zg361_b1_runtime_effects_part2.txt",
             )
         )
-        cls.workforce = read("common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt")
+        cls.workforce = read_workforce_effect_shards()
         cls.spec = read("docs/361-phase2-central-runtime-spec.md")
 
     def test_stage_inventory_and_public_abis_are_exact(self) -> None:

@@ -11,16 +11,23 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Iterable
 
 
-DEFAULT_RELATIVE_SOURCE = Path(
-    "mod_zhongguo_style/common/scripted_effects/"
-    "zg361_workforce_endgame_runtime_effects.txt"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_GENERATOR_PATH = (
+    REPO_ROOT
+    / "mod_zhongguo_style"
+    / "tools"
+    / "gen_361_workforce_endgame_runtime.py"
 )
+DEFAULT_RENDERER_NAME = "render_effects"
+DEFAULT_SNAPSHOT_NAME = "zg361_workforce_endgame_runtime_effects.txt"
 BLOCK_RE = re.compile(
     r"^\ufeff?\s*([A-Za-z_][A-Za-z0-9_.:-]*)\s*=\s*\{"
 )
@@ -28,6 +35,72 @@ BLOCK_RE = re.compile(
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def load_source(source: Path | None) -> tuple[bytes, dict[str, object]]:
+    """Load an explicit file or the generator-owned historical aggregate.
+
+    The default deliberately calls ``render_effects()``.  It must not rebuild
+    the old aggregate by concatenating purpose shards because their file order
+    is not the frozen historical top-level-effect order used by bisect ranges.
+    """
+
+    if source is not None:
+        source_path = source.resolve()
+        return source_path.read_bytes(), {
+            "source_kind": "file",
+            "read_only_source": str(source_path),
+            "snapshot_name": source_path.name,
+        }
+
+    generator_path = DEFAULT_GENERATOR_PATH.resolve()
+    module_name = "_phase2_workforce_historical_aggregate_renderer"
+    spec = importlib.util.spec_from_file_location(module_name, generator_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load historical renderer: {generator_path}")
+    module = importlib.util.module_from_spec(spec)
+    generator_dir = str(generator_path.parent)
+    inserted_path = generator_dir not in sys.path
+    if inserted_path:
+        sys.path.insert(0, generator_dir)
+    sys.modules[module_name] = module
+    try:
+        spec.loader.exec_module(module)
+        renderer = getattr(module, DEFAULT_RENDERER_NAME)
+        data = renderer()
+    finally:
+        sys.modules.pop(module_name, None)
+        if inserted_path:
+            sys.path.remove(generator_dir)
+    if not isinstance(data, bytes):
+        raise TypeError(
+            f"{generator_path}:{DEFAULT_RENDERER_NAME}() must return bytes"
+        )
+
+    expected_bytes = getattr(module, "HISTORICAL_EFFECT_BYTES", None)
+    expected_sha256 = getattr(module, "HISTORICAL_EFFECT_SHA256", None)
+    if expected_bytes is not None and len(data) != int(expected_bytes):
+        raise ValueError(
+            "historical renderer byte count drift: "
+            f"expected {expected_bytes}, got {len(data)}"
+        )
+    if expected_sha256 is not None and sha256(data).upper() != str(expected_sha256).upper():
+        raise ValueError(
+            "historical renderer SHA-256 drift: "
+            f"expected {expected_sha256}, got {sha256(data)}"
+        )
+
+    renderer_identity = f"{generator_path}:{DEFAULT_RENDERER_NAME}()"
+    return data, {
+        "source_kind": "synthetic_historical_renderer",
+        "read_only_source": renderer_identity,
+        "snapshot_name": DEFAULT_SNAPSHOT_NAME,
+        "source_renderer": {
+            "path": str(generator_path),
+            "callable": f"{DEFAULT_RENDERER_NAME}()",
+            "ordering": "historical aggregate renderer order; never purpose-shard concatenation",
+        },
+    }
 
 
 def scan_line(line: str, in_quote: bool) -> tuple[int, bool]:
@@ -179,15 +252,11 @@ def main() -> int:
     if args.chunk_size <= 0:
         parser.error("--chunk-size must be positive")
 
-    source_path = args.source
-    if source_path is None:
-        source_path = Path.cwd() / DEFAULT_RELATIVE_SOURCE
-    source_path = source_path.resolve()
-    data = source_path.read_bytes()
+    data, source_metadata = load_source(args.source)
     header, blocks = find_blocks(data)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    snapshot = output / "source" / source_path.name
+    snapshot = output / "source" / str(source_metadata["snapshot_name"])
     snapshot.parent.mkdir(parents=True, exist_ok=True)
     snapshot.write_bytes(data)
 
@@ -235,7 +304,7 @@ def main() -> int:
     manifest = {
         "schema_version": 1,
         "kind": "zg361_workforce_endgame_block_segments",
-        "read_only_source": str(source_path),
+        **source_metadata,
         "source_bytes": len(data),
         "source_sha256": sha256(data),
         "utf8_bom": data.startswith(b"\xef\xbb\xbf"),
@@ -248,6 +317,10 @@ def main() -> int:
             "Disposable output; no canonical source is changed.",
             "Every generated segment starts with the exact original header/BOM.",
             "Block ranges are zero-based and inclusive.",
+            (
+                "The default source is the generator's synthetic historical aggregate; "
+                "it is not reconstructed by concatenating purpose shards."
+            ),
         ],
     }
     manifest_path = output / "manifest.json"
@@ -256,7 +329,8 @@ def main() -> int:
         encoding="utf-8",
     )
     print(json.dumps({
-        "source": str(source_path),
+        "source": str(source_metadata["read_only_source"]),
+        "source_kind": str(source_metadata["source_kind"]),
         "source_bytes": len(data),
         "source_sha256": sha256(data),
         "block_count": len(blocks),

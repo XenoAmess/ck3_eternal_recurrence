@@ -1,0 +1,187 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M276 rehire preparation and finalization.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m276_audit_prepared_rehire_effect = {
+	remove_variable = zg361_we_m276_rehire_handoff_status
+	if = {
+		limit = {
+			has_variable = zg361_we_m276_rehire_prepare_pending
+			has_variable = zg361_we_m276_rehire_prepare_owner
+			has_variable = zg361_we_m276_rehire_prepare_subject
+			has_variable = zg361_we_m276_rehire_prepare_cycle
+			has_variable = zg361_we_m276_rehire_prepare_case
+			var:zg361_we_m276_rehire_prepare_pending = 1
+			var:zg361_we_m276_rehire_prepare_subject = this
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = var:zg361_we_m276_rehire_prepare_owner EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_we_m276_rehire_prepare_cycle
+				EXPECTED_CASE = var:zg361_we_m276_rehire_prepare_case EXPECTED_STATE = 6
+			}
+			has_variable = zg361_workforce_rehire_fact_state
+			has_variable = zg361_workforce_rehire_fact_published
+			has_variable = zg361_workforce_rehire_fact_consumed
+			has_variable = zg361_workforce_rehire_fact_prepared_owner
+			has_variable = zg361_workforce_rehire_fact_prepared_subject
+			has_variable = zg361_workforce_rehire_fact_prepared_cycle
+			has_variable = zg361_workforce_rehire_fact_prepared_case
+			var:zg361_workforce_rehire_fact_state = 3
+			var:zg361_workforce_rehire_fact_published = 1
+			var:zg361_workforce_rehire_fact_consumed = 0
+			var:zg361_workforce_rehire_fact_prepared_owner = var:zg361_we_m276_rehire_prepare_owner
+			var:zg361_workforce_rehire_fact_prepared_subject = this
+			var:zg361_workforce_rehire_fact_prepared_cycle = var:zg361_we_m276_rehire_prepare_cycle
+			var:zg361_workforce_rehire_fact_prepared_case = var:zg361_we_m276_rehire_prepare_case
+		}
+		set_variable = { name = zg361_we_m276_rehire_prepare_pending value = 0 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 1 }
+		if = {
+			limit = { var:zg361_we_m276_rehire_prepare_owner = { is_ai = yes } }
+			zg361_we_m276_route_a_effect = {
+				TICKET_OWNER = var:zg361_we_m276_rehire_prepare_owner TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_we_m276_rehire_prepare_cycle
+				TICKET_CASE = var:zg361_we_m276_rehire_prepare_case
+			}
+			zg361_we_queue_m276_rehire_finalize_effect = {
+				TICKET_OWNER = var:zg361_we_m276_rehire_prepare_owner TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_we_m276_rehire_prepare_cycle
+				TICKET_CASE = var:zg361_we_m276_rehire_prepare_case CHOICE = 1
+			}
+		}
+		else = {
+			var:zg361_we_m276_rehire_prepare_owner = { save_scope_as = zg361_we_ad_owner }
+			save_scope_as = zg361_we_ad_subject
+			save_scope_value_as = { name = zg361_we_ad_cycle value = var:zg361_we_m276_rehire_prepare_cycle }
+			save_scope_value_as = { name = zg361_we_ad_case value = var:zg361_we_m276_rehire_prepare_case }
+			var:zg361_we_m276_rehire_prepare_owner = { trigger_event = { id = zg361we.276 } }
+		}
+	}
+	else = {
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 4 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_red_code value = 27661 }
+	}
+}
+
+zg361_we_queue_m276_rehire_finalize_effect = {
+	remove_variable = zg361_we_m276_rehire_handoff_status
+	if = {
+		limit = {
+			this = $TICKET_SUBJECT$
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+			}
+			OR = { $CHOICE$ = 1 $CHOICE$ = 2 }
+			trigger_if = {
+				limit = { has_variable = zg361_we_m276_rehire_finalize_pending }
+				var:zg361_we_m276_rehire_finalize_pending = 0
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_we_m276_rehire_finalize_owner value = $TICKET_OWNER$ }
+		set_variable = { name = zg361_we_m276_rehire_finalize_subject value = $TICKET_SUBJECT$ }
+		set_variable = { name = zg361_we_m276_rehire_finalize_cycle value = $TICKET_CYCLE$ }
+		set_variable = { name = zg361_we_m276_rehire_finalize_case value = $TICKET_CASE$ }
+		set_variable = { name = zg361_we_m276_rehire_finalize_choice value = $CHOICE$ }
+		if = {
+			limit = { $TICKET_OWNER$ = { is_ai = yes } }
+			set_variable = { name = zg361_we_m276_rehire_finalize_mode value = 2 }
+		}
+		else = { set_variable = { name = zg361_we_m276_rehire_finalize_mode value = 1 } }
+		trigger_event = { id = zg361we.5380 days = 1 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 5 }
+		set_variable = { name = zg361_we_m276_rehire_finalize_pending value = 1 } # commit last
+	}
+	else_if = {
+		limit = {
+			var:zg361_we_m276_rehire_finalize_pending = 1
+			var:zg361_we_m276_rehire_finalize_owner = $TICKET_OWNER$
+			var:zg361_we_m276_rehire_finalize_subject = $TICKET_SUBJECT$
+			var:zg361_we_m276_rehire_finalize_cycle = $TICKET_CYCLE$
+			var:zg361_we_m276_rehire_finalize_case = $TICKET_CASE$
+			var:zg361_we_m276_rehire_finalize_choice = $CHOICE$
+		}
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 5 }
+	}
+	else = {
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 4 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_red_code value = 27662 }
+	}
+}
+
+zg361_we_m276_finalize_rehire_effect = {
+	remove_variable = zg361_we_m276_rehire_handoff_status
+	if = {
+		limit = {
+			var:zg361_we_m276_rehire_finalize_pending = 1
+			var:zg361_we_m276_rehire_finalize_subject = this
+			OR = { var:zg361_we_m276_rehire_finalize_choice = 1 var:zg361_we_m276_rehire_finalize_choice = 2 }
+		}
+		zg361_workforce_rehire_fact_finalize_m276_effect = yes
+		trigger_event = { id = zg361we.5381 days = 1 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 5 }
+	}
+	else = {
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 4 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_red_code value = 27663 }
+	}
+}
+
+zg361_we_m276_audit_rehire_finalize_effect = {
+	remove_variable = zg361_we_m276_rehire_handoff_status
+	if = {
+		limit = {
+			var:zg361_we_m276_rehire_finalize_pending = 1
+			var:zg361_we_m276_rehire_finalize_subject = this
+			has_variable = zg361_workforce_rehire_fact_state
+			has_variable = zg361_workforce_rehire_fact_consumed
+			has_variable = zg361_workforce_rehire_fact_consume_owner
+			has_variable = zg361_workforce_rehire_fact_consume_subject
+			has_variable = zg361_workforce_rehire_fact_consume_cycle
+			has_variable = zg361_workforce_rehire_fact_consume_case
+			has_variable = zg361_workforce_rehire_fact_consume_choice
+			var:zg361_workforce_rehire_fact_state = 4
+			var:zg361_workforce_rehire_fact_consumed = 1
+			var:zg361_workforce_rehire_fact_consume_owner = var:zg361_we_m276_rehire_finalize_owner
+			var:zg361_workforce_rehire_fact_consume_subject = this
+			var:zg361_workforce_rehire_fact_consume_cycle = var:zg361_we_m276_rehire_finalize_cycle
+			var:zg361_workforce_rehire_fact_consume_case = var:zg361_we_m276_rehire_finalize_case
+			var:zg361_workforce_rehire_fact_consume_choice = var:zg361_we_m276_rehire_finalize_choice
+		}
+		set_variable = { name = zg361_we_m276_rehire_finalize_completed value = 1 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 1 }
+		set_variable = { name = zg361_we_m276_rehire_finalize_pending value = 0 } # completion commit last
+		if = {
+			limit = {
+				has_variable = zg361_we_ad_external_pip_exit_ready
+				var:zg361_we_ad_external_pip_exit_ready = 1
+			}
+			if = {
+				limit = { var:zg361_we_m276_rehire_finalize_mode = 2 }
+				zg361_we_m277_route_a_effect = {
+					TICKET_OWNER = var:zg361_we_m276_rehire_finalize_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_we_m276_rehire_finalize_cycle
+					TICKET_CASE = var:zg361_we_m276_rehire_finalize_case
+				}
+			}
+			else = {
+				var:zg361_we_m276_rehire_finalize_owner = { save_scope_as = zg361_we_ad_owner }
+				save_scope_as = zg361_we_ad_subject
+				save_scope_value_as = { name = zg361_we_ad_cycle value = var:zg361_we_m276_rehire_finalize_cycle }
+				save_scope_value_as = { name = zg361_we_ad_case value = var:zg361_we_m276_rehire_finalize_case }
+				var:zg361_we_m276_rehire_finalize_owner = { trigger_event = { id = zg361we.277 } }
+			}
+		}
+		else = { set_variable = { name = zg361_we_m276_waiting_for_m277_provider value = 1 } }
+	}
+	else = {
+		set_variable = { name = zg361_we_m276_rehire_handoff_status value = 4 }
+		set_variable = { name = zg361_we_m276_rehire_handoff_red_code value = 27664 }
+	}
+}

@@ -133,10 +133,18 @@ P7 原始 event closure 为 **99 文件 / 20,929,655 B（约 19.96 MiB）**；�
 GREEN；新 release 为 304 files，manifest `DF1741C3…02D0`、ZIP `2C18050A…1884`，broad/release 均只有 25 个分片、没有旧单体。
 这些只把 B2 文件布局提升为 **static-ready**，没有新增 CK3 live 结果。
 
-B2 的三个直接 Workforce owner 沿 delayed-event 可达链还会进入 68 个 effect / 24 个 event，其中
-`zg361_workforce_endgame_runtime_effects.txt` 仍是 `4,636,271 B / 324 effects` 的单体。下一步先按相同用途规则拆该正式 owner，
-再建立无 stub 的 B2 production closure 候选；不能为了抢跑把 4.64 MB 单体原样带回，也不能把旧 stub checkpoint 冒充生产 B2。
-之后才验证 B1 delayed-path、B2 full-entry/seed。footage 仍为 `0/8`，两条 MP4 未生成；G2 保持 paused。
+B2 的三个直接 Workforce owner 沿 effect 调用、literal event ID 与 `EVENT = <id>` 参数化 deadline ABI 的真实静态可达链会进入
+71 个 effect / 28 个 event。旧 `68 / 24` 扫描漏掉了 `zg361we.4606/.4706/.4801/.4901` 四个参数化事件，以及由此新增的
+三个 effect；该旧口径现已被取代。其中
+旧 `zg361_workforce_endgame_runtime_effects.txt`（`4,636,271 B / 324 effects`）现已由 generator 替换为 76 个用途分片：
+324/324 顶层 block 按历史顺序逐字节一致，每片 `1–10` 个、无超过 20 的例外，总计 `4,635,596 B`，清单 SHA-256 为
+`E5DD22CEF71D60E069884A27BE924234B4FAD42490AEF2B52B966AFD95585858`。B2 的 40 个 Workforce effect 正好由其中 16 个完整分片
+承载（341,602 B，extra=0、missing=0）；该布局目前只到 **static-ready**，没有新 CK3 live。
+
+下一步先拆 `zg361_workforce_endgame_runtime_events.txt`（`168,729 B / 149 events`）。若保留完整 event 单体，它对约 210 个
+Workforce effect 的静态引用会重新拉回几乎全图，无法形成可归因的 no-stub B2 候选。event 拆分后先跑同一冻结 B1 基线上的
+B2 full-entry，GREEN 后才复用完全相同的 projection/hash 进入 seed；不能把旧 stub checkpoint 冒充生产 B2。
+footage 仍为 `0/8`，两条 MP4 未生成；G2 保持 paused。
 
 ## 预计时间
 

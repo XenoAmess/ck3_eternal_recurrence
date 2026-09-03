@@ -1,0 +1,251 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AC future-cycle transitions.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m257_future_consume_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m257_write_owner
+					has_variable = zg361_we_m257_write_subject
+					has_variable = zg361_we_m257_write_cycle
+					has_variable = zg361_we_m257_write_case
+					has_variable = zg361_we_m257_write_state
+					has_variable = zg361_we_m257_receipt_owner
+					has_variable = zg361_we_m257_receipt_subject
+					has_variable = zg361_we_m257_receipt_cycle
+					has_variable = zg361_we_m257_receipt_case
+					has_variable = zg361_we_m257_receipt_state
+					has_variable = zg361_we_m257_receipt_choice
+				}
+				var:zg361_we_m257_write_subject = this
+				var:zg361_we_m257_write_owner = var:zg361_we_m257_receipt_owner
+				var:zg361_we_m257_write_subject = var:zg361_we_m257_receipt_subject
+				var:zg361_we_m257_write_cycle = var:zg361_we_m257_receipt_cycle
+				var:zg361_we_m257_write_case = var:zg361_we_m257_receipt_case
+				var:zg361_we_m257_write_state = var:zg361_we_m257_receipt_state
+				var:zg361_we_m257_receipt_state = 4
+				OR = { var:zg361_we_m257_receipt_choice = 1 var:zg361_we_m257_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			has_variable = zg361_we_m257_conversion_pending
+			var:zg361_we_m257_conversion_pending = 1
+			has_variable = zg361_we_formal_hc_pending
+			var:zg361_we_formal_hc_pending = 1
+			var:zg361_we_formal_hc_pending_owner = var:zg361_we_m257_write_owner
+			var:zg361_we_formal_hc_pending_case = var:zg361_we_m257_write_case
+			var:zg361_we_m257_conversion_official = this
+			has_variable = zg361_ch_hc_reserved
+			var:zg361_ch_hc_reserved >= 1
+			has_variable = zg361_we_shadow_hc_active
+			var:zg361_we_shadow_hc_active >= 1
+			var:zg361_we_m257_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m257_effective_cycle }
+		}
+		change_variable = { name = zg361_ch_hc_reserved add = -1 }
+		change_variable = { name = zg361_ch_hc_occupied add = 1 }
+		change_variable = { name = zg361_we_shadow_hc_active add = -1 }
+		change_variable = { name = zg361_we_shadow_hc_available add = 1 }
+		set_variable = { name = zg361_we_formal_hc_pending value = 0 }
+		set_variable = { name = zg361_we_formal_hc_active value = 1 }
+		set_variable = { name = zg361_we_formal_hc_active_case value = var:zg361_we_m257_write_case }
+		set_variable = { name = zg361_we_m257_conversion_pending value = 0 }
+		set_variable = { name = zg361_we_m257_conversion_settled value = 1 }
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m257_write_owner
+					has_variable = zg361_we_m257_write_subject
+					has_variable = zg361_we_m257_write_cycle
+					has_variable = zg361_we_m257_write_case
+					has_variable = zg361_we_m257_write_state
+					has_variable = zg361_we_m257_receipt_owner
+					has_variable = zg361_we_m257_receipt_subject
+					has_variable = zg361_we_m257_receipt_cycle
+					has_variable = zg361_we_m257_receipt_case
+					has_variable = zg361_we_m257_receipt_state
+					has_variable = zg361_we_m257_receipt_choice
+				}
+				var:zg361_we_m257_write_subject = this
+				var:zg361_we_m257_write_owner = var:zg361_we_m257_receipt_owner
+				var:zg361_we_m257_write_subject = var:zg361_we_m257_receipt_subject
+				var:zg361_we_m257_write_cycle = var:zg361_we_m257_receipt_cycle
+				var:zg361_we_m257_write_case = var:zg361_we_m257_receipt_case
+				var:zg361_we_m257_write_state = var:zg361_we_m257_receipt_state
+				var:zg361_we_m257_receipt_state = 4
+				OR = { var:zg361_we_m257_receipt_choice = 1 var:zg361_we_m257_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m257_conversion_pending = 1
+			var:zg361_we_m257_write_owner = { var:zg361_review_serial < root.var:zg361_we_m257_effective_cycle }
+		}
+		trigger_event = { id = zg361we.5257 days = 90 }
+	}
+	else = { set_variable = { name = zg361_we_future_red_code value = 2571 } }
+}
+
+zg361_we_m262_secondment_due_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m262_write_owner
+					has_variable = zg361_we_m262_write_subject
+					has_variable = zg361_we_m262_write_cycle
+					has_variable = zg361_we_m262_write_case
+					has_variable = zg361_we_m262_write_state
+					has_variable = zg361_we_m262_receipt_owner
+					has_variable = zg361_we_m262_receipt_subject
+					has_variable = zg361_we_m262_receipt_cycle
+					has_variable = zg361_we_m262_receipt_case
+					has_variable = zg361_we_m262_receipt_state
+					has_variable = zg361_we_m262_receipt_choice
+				}
+				var:zg361_we_m262_write_subject = this
+				var:zg361_we_m262_write_owner = var:zg361_we_m262_receipt_owner
+				var:zg361_we_m262_write_subject = var:zg361_we_m262_receipt_subject
+				var:zg361_we_m262_write_cycle = var:zg361_we_m262_receipt_cycle
+				var:zg361_we_m262_write_case = var:zg361_we_m262_receipt_case
+				var:zg361_we_m262_write_state = var:zg361_we_m262_receipt_state
+				var:zg361_we_m262_receipt_state = 4
+				OR = { var:zg361_we_m262_receipt_choice = 1 var:zg361_we_m262_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m262_review_pending = 1
+			var:zg361_we_m262_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m262_due_cycle }
+			var:zg361_case_ac_active = 1
+			var:zg361_case_ac_state = 5
+			var:zg361_case_ac_owner = var:zg361_we_m262_write_owner
+			var:zg361_case_ac_subject = this
+			var:zg361_case_ac_cycle_serial = var:zg361_we_m262_write_cycle
+			var:zg361_case_ac_case_serial = var:zg361_we_m262_write_case
+		}
+		set_variable = { name = zg361_we_m262_review_pending value = 0 }
+		var:zg361_we_m262_write_owner = { save_scope_as = zg361_we_ac_owner }
+		save_scope_as = zg361_we_ac_subject
+		save_scope_value_as = { name = zg361_we_ac_cycle value = var:zg361_we_m262_write_cycle }
+		save_scope_value_as = { name = zg361_we_ac_case value = var:zg361_we_m262_write_case }
+		zg361_we_ac_schedule_stage_05_deadline_effect = yes
+		if = {
+			limit = { var:zg361_we_m262_write_owner = { is_ai = yes } }
+			zg361_we_m263_route_a_effect = { TICKET_OWNER = var:zg361_we_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_we_m262_write_cycle TICKET_CASE = var:zg361_we_m262_write_case }
+		}
+		else = { var:zg361_we_m262_write_owner = { trigger_event = { id = zg361we.263 } } }
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m262_write_owner
+					has_variable = zg361_we_m262_write_subject
+					has_variable = zg361_we_m262_write_cycle
+					has_variable = zg361_we_m262_write_case
+					has_variable = zg361_we_m262_write_state
+					has_variable = zg361_we_m262_receipt_owner
+					has_variable = zg361_we_m262_receipt_subject
+					has_variable = zg361_we_m262_receipt_cycle
+					has_variable = zg361_we_m262_receipt_case
+					has_variable = zg361_we_m262_receipt_state
+					has_variable = zg361_we_m262_receipt_choice
+				}
+				var:zg361_we_m262_write_subject = this
+				var:zg361_we_m262_write_owner = var:zg361_we_m262_receipt_owner
+				var:zg361_we_m262_write_subject = var:zg361_we_m262_receipt_subject
+				var:zg361_we_m262_write_cycle = var:zg361_we_m262_receipt_cycle
+				var:zg361_we_m262_write_case = var:zg361_we_m262_receipt_case
+				var:zg361_we_m262_write_state = var:zg361_we_m262_receipt_state
+				var:zg361_we_m262_receipt_state = 4
+				OR = { var:zg361_we_m262_receipt_choice = 1 var:zg361_we_m262_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m262_review_pending = 1
+			var:zg361_we_m262_write_owner = { var:zg361_review_serial < root.var:zg361_we_m262_due_cycle }
+		}
+		trigger_event = { id = zg361we.5262 days = 90 }
+	}
+	else = { set_variable = { name = zg361_we_future_red_code value = 2621 } }
+}
+
+zg361_we_m263_extension_due_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m263_write_owner
+					has_variable = zg361_we_m263_write_subject
+					has_variable = zg361_we_m263_write_cycle
+					has_variable = zg361_we_m263_write_case
+					has_variable = zg361_we_m263_write_state
+					has_variable = zg361_we_m263_receipt_owner
+					has_variable = zg361_we_m263_receipt_subject
+					has_variable = zg361_we_m263_receipt_cycle
+					has_variable = zg361_we_m263_receipt_case
+					has_variable = zg361_we_m263_receipt_state
+					has_variable = zg361_we_m263_receipt_choice
+				}
+				var:zg361_we_m263_write_subject = this
+				var:zg361_we_m263_write_owner = var:zg361_we_m263_receipt_owner
+				var:zg361_we_m263_write_subject = var:zg361_we_m263_receipt_subject
+				var:zg361_we_m263_write_cycle = var:zg361_we_m263_receipt_cycle
+				var:zg361_we_m263_write_case = var:zg361_we_m263_receipt_case
+				var:zg361_we_m263_write_state = var:zg361_we_m263_receipt_state
+				var:zg361_we_m263_receipt_state = 5
+				OR = { var:zg361_we_m263_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m263_extension_pending = 1
+			var:zg361_we_m263_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m263_extension_due_cycle }
+			var:zg361_case_ac_active = 1
+			var:zg361_case_ac_state = 5
+			var:zg361_case_ac_case_serial = var:zg361_we_m263_write_case
+		}
+		set_variable = { name = zg361_we_m263_extension_pending value = 0 }
+		set_variable = { name = zg361_we_m263_return_choice value = 1 }
+		set_variable = { name = zg361_we_m263_terminal_choice value = 1 }
+		set_variable = { name = zg361_we_m263_resolved_choice value = 1 }
+		zg361_case_ac_advance_05_effect = { TICKET_OWNER = var:zg361_we_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_we_m263_write_cycle TICKET_CASE = var:zg361_we_m263_write_case }
+		if = {
+			limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+			zg361_we_ac_schedule_stage_06_deadline_effect = yes
+			var:zg361_we_m263_write_owner = { save_scope_as = zg361_we_ac_owner }
+			save_scope_as = zg361_we_ac_subject
+			save_scope_value_as = { name = zg361_we_ac_cycle value = var:zg361_we_m263_write_cycle }
+			save_scope_value_as = { name = zg361_we_ac_case value = var:zg361_we_m263_write_case }
+			zg361_we_m264_begin_handoff_effect = { TICKET_OWNER = var:zg361_we_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_we_m263_write_cycle TICKET_CASE = var:zg361_we_m263_write_case }
+		}
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m263_write_owner
+					has_variable = zg361_we_m263_write_subject
+					has_variable = zg361_we_m263_write_cycle
+					has_variable = zg361_we_m263_write_case
+					has_variable = zg361_we_m263_write_state
+					has_variable = zg361_we_m263_receipt_owner
+					has_variable = zg361_we_m263_receipt_subject
+					has_variable = zg361_we_m263_receipt_cycle
+					has_variable = zg361_we_m263_receipt_case
+					has_variable = zg361_we_m263_receipt_state
+					has_variable = zg361_we_m263_receipt_choice
+				}
+				var:zg361_we_m263_write_subject = this
+				var:zg361_we_m263_write_owner = var:zg361_we_m263_receipt_owner
+				var:zg361_we_m263_write_subject = var:zg361_we_m263_receipt_subject
+				var:zg361_we_m263_write_cycle = var:zg361_we_m263_receipt_cycle
+				var:zg361_we_m263_write_case = var:zg361_we_m263_receipt_case
+				var:zg361_we_m263_write_state = var:zg361_we_m263_receipt_state
+				var:zg361_we_m263_receipt_state = 5
+				OR = { var:zg361_we_m263_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m263_extension_pending = 1
+			var:zg361_we_m263_write_owner = { var:zg361_review_serial < root.var:zg361_we_m263_extension_due_cycle }
+		}
+		trigger_event = { id = zg361we.5263 days = 90 }
+	}
+	else = { set_variable = { name = zg361_we_future_red_code value = 2631 } }
+}

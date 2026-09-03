@@ -1,0 +1,86 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M361 future default install.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m361_future_default_install_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m361_write_owner
+					has_variable = zg361_we_m361_write_subject
+					has_variable = zg361_we_m361_write_cycle
+					has_variable = zg361_we_m361_write_case
+					has_variable = zg361_we_m361_write_state
+					has_variable = zg361_we_m361_receipt_owner
+					has_variable = zg361_we_m361_receipt_subject
+					has_variable = zg361_we_m361_receipt_cycle
+					has_variable = zg361_we_m361_receipt_case
+					has_variable = zg361_we_m361_receipt_state
+					has_variable = zg361_we_m361_receipt_choice
+				}
+				var:zg361_we_m361_write_subject = this
+				var:zg361_we_m361_write_owner = var:zg361_we_m361_receipt_owner
+				var:zg361_we_m361_write_subject = var:zg361_we_m361_receipt_subject
+				var:zg361_we_m361_write_cycle = var:zg361_we_m361_receipt_cycle
+				var:zg361_we_m361_write_case = var:zg361_we_m361_receipt_case
+				var:zg361_we_m361_write_state = var:zg361_we_m361_receipt_state
+				var:zg361_we_m361_receipt_state = 5
+				OR = { var:zg361_we_m361_receipt_choice = 1 var:zg361_we_m361_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m361_future_install_pending = 1
+			var:zg361_we_m361_write_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:zg361_we_m361_effective_cycle
+				has_variable = zg361_we_realm_charter_current_version
+				var:zg361_we_realm_charter_current_version = root.var:zg361_we_m361_adopted_version
+			}
+		}
+		set_variable = { name = zg361_we_m361_future_install_pending value = 0 }
+		var:zg361_we_m361_write_owner = {
+			set_variable = { name = zg361_we_realm_future_default_effective_cycle value = root.var:zg361_we_m361_effective_cycle }
+			set_variable = { name = zg361_we_realm_future_default_quota value = root.var:zg361_we_m361_future_quota_default }
+			set_variable = { name = zg361_we_realm_future_default_appeal value = root.var:zg361_we_m361_future_appeal_default }
+			set_variable = { name = zg361_we_realm_future_default_bonus value = root.var:zg361_we_m361_future_bonus_default }
+			set_variable = { name = zg361_we_realm_future_default_hc value = root.var:zg361_we_m361_future_hc_default }
+			set_variable = { name = zg361_we_realm_future_default_manager_accountability value = root.var:zg361_we_m361_future_manager_accountability_default }
+			set_variable = { name = zg361_we_realm_future_default_transparency value = root.var:zg361_we_m361_future_transparency_default }
+			set_variable = { name = zg361_we_realm_charter_history_append_only value = 1 }
+		}
+		set_variable = { name = zg361_we_charter_history_append_only value = 1 }
+		set_variable = { name = zg361_we_charter_current_case_rewritten value = 0 }
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m361_write_owner
+					has_variable = zg361_we_m361_write_subject
+					has_variable = zg361_we_m361_write_cycle
+					has_variable = zg361_we_m361_write_case
+					has_variable = zg361_we_m361_write_state
+					has_variable = zg361_we_m361_receipt_owner
+					has_variable = zg361_we_m361_receipt_subject
+					has_variable = zg361_we_m361_receipt_cycle
+					has_variable = zg361_we_m361_receipt_case
+					has_variable = zg361_we_m361_receipt_state
+					has_variable = zg361_we_m361_receipt_choice
+				}
+				var:zg361_we_m361_write_subject = this
+				var:zg361_we_m361_write_owner = var:zg361_we_m361_receipt_owner
+				var:zg361_we_m361_write_subject = var:zg361_we_m361_receipt_subject
+				var:zg361_we_m361_write_cycle = var:zg361_we_m361_receipt_cycle
+				var:zg361_we_m361_write_case = var:zg361_we_m361_receipt_case
+				var:zg361_we_m361_write_state = var:zg361_we_m361_receipt_state
+				var:zg361_we_m361_receipt_state = 5
+				OR = { var:zg361_we_m361_receipt_choice = 1 var:zg361_we_m361_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m361_future_install_pending = 1
+			var:zg361_we_m361_write_owner = { var:zg361_review_serial < root.var:zg361_we_m361_effective_cycle }
+		}
+		trigger_event = { id = zg361we.5361 days = 90 }
+	}
+	else = { set_variable = { name = zg361_we_future_red_code value = 3611 } }
+}

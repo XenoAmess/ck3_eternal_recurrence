@@ -1,0 +1,21 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: abandoned AC resource release.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_release_abandoned_ac_resources_effect = {
+	if = {
+		limit = { has_variable = zg361_we_contract_gold_reserved var:zg361_we_contract_gold_reserved > 0 }
+		set_variable = { name = zg361_we_ac_release_gold value = var:zg361_we_contract_gold_reserved }
+		change_variable = { name = zg361_we_gold_reserved add = { value = var:zg361_we_ac_release_gold multiply = -1 } }
+		change_variable = { name = zg361_we_gold_available add = var:zg361_we_ac_release_gold }
+		set_variable = { name = zg361_we_contract_gold_reserved value = 0 }
+		set_variable = { name = zg361_we_ac_abandoned_contract_refunded value = 1 }
+	}
+	if = {
+		limit = { has_variable = zg361_we_shadow_hc_active var:zg361_we_shadow_hc_active > 0 }
+		set_variable = { name = zg361_we_ac_release_shadow value = var:zg361_we_shadow_hc_active }
+		change_variable = { name = zg361_we_shadow_hc_available add = var:zg361_we_ac_release_shadow }
+		set_variable = { name = zg361_we_shadow_hc_active value = 0 }
+		set_variable = { name = zg361_we_ac_abandoned_shadow_released value = 1 }
+	}
+}

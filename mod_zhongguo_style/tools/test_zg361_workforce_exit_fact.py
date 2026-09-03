@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import gen_zg361_workforce_exit_fact as gen
+import gen_361_workforce_endgame_runtime as workforce_gen
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -19,6 +20,19 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 
 def text(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
+
+
+def workforce_effect_owner_source(effect_name: str) -> str:
+    owners = tuple(
+        group.filename
+        for group in workforce_gen.EFFECT_GROUPS
+        if effect_name in group.effect_names
+    )
+    if len(owners) != 1:
+        raise AssertionError(
+            f"expected exactly one workforce shard owner for {effect_name}, found {owners}"
+        )
+    return text(MOD_ROOT / "common" / "scripted_effects" / owners[0])
 
 
 def block(source: str, name: str) -> str:
@@ -570,11 +584,8 @@ class WorkforceExitFactTests(unittest.TestCase):
             self.assertNotIn(f"set_variable = {{ name = {alias}", self.effects)
 
     def test_legacy_adapter_call_supplies_every_required_parameter(self) -> None:
-        core = text(
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_workforce_endgame_runtime_effects.txt"
+        core = workforce_effect_owner_source(
+            "zg361_we_submit_m277_closed_pip_exit_effect"
         )
         adapter = block(core, "zg361_we_submit_m277_closed_pip_exit_effect")
         required = set(re.findall(r"\$([A-Z][A-Z0-9_]*)\$", adapter))

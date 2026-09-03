@@ -10,7 +10,7 @@
 - `tools/test_zg361_workforce_endgame_runtime.py`
 - `tools/zg361_phase3_workforce_endgame_model.py`
 - `tools/test_zg361_phase3_workforce_endgame_model.py`
-- `common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt`
+- `common/scripted_effects/zg361_workforce_endgame_*_effects.txt`（76 个按用途分片）
 - `events/zg361_workforce_endgame_runtime_events.txt`
 - `localization/*/zg361_workforce_endgame_l_*.yml`
 - `docs/361-workforce-external-producer-ledger-2026-08-31.md`（旧现场 303 项 loader 告警责任与消债账本）
@@ -53,6 +53,45 @@ MCP query 或考核榜 typed action（固定四实例/current-player ACL 的只�
 不得写成 fixture-live、production-live primitive、production-live loop 或 complete。
 
 日常本地化只正式创作英文和简体中文；其余七语是英文结构占位，不能称作发布级翻译。
+
+### Effect 文件边界合同
+
+旧单体 `common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt` 的冻结基线为
+`4,636,271 B`、SHA-256
+`926453FE4B3621B5381743D61F5D03AC29C1D498181702E05A9532739D334D8A`、324 个唯一顶层 effect。
+它只作为历史语义基线保留，生成结果不得与新的用途分片共存；正常生成会删除旧单体，`--check` 发现旧单体则
+必须报错。
+
+当前生成器把这 324 个 effect 投影为 76 个用途分片：每个历史顶层 block 逐字节相同，全集 324/324，无遗漏、
+无新增、无重复；76 片合计 `4,635,596 B`，单片最小 `511 B`、最大 `478,588 B`。所有文件均为 1–10 个
+effect，effect 数量分布为
+`{1:17, 2:12, 3:3, 4:15, 5:1, 6:7, 7:3, 8:17, 10:1}`，当前没有超过 20 个 effect 的例外。
+以后如确需超过 20，必须在生成器合同与本文同时记录不可避免的理由和对应 CK3 实机证据，不能只凭静态测试放行。
+B2 权威 40-effect 闭包现在恰好是其中 16 个**完整分片**的精确并集：覆盖 40/40，extra=0、missing=0，
+不依赖从较大文件中按 effect 过滤。
+
+| 分片编号 | 文件数 | 用途 |
+|---|---:|---|
+| 001–016（含字母后缀） | 23 | portfolio/AL 入口、#360/#361 bridge、AC handoff、AD fact/source/attribution 与 future transition |
+| 017–023（含字母后缀） | 9 | AB/AC/AD/AL 分阶段 due-debt consumer |
+| 024a–024c | 3 | 放弃资源释放与 portfolio 终态清理 |
+| 025–035（含字母后缀） | 15 | 四域 control、dispatcher 与 deadline/timeout |
+| 036–041 | 6 | AB #242–#253 机制 |
+| 042–048 | 7 | AC #254–#265 机制 |
+| 049–055 | 7 | AD #266–#277 机制 |
+| 056–061 | 6 | AL #355/#356/#360/#361 机制 |
+
+最大分片是
+`zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt`，`478,588 B`，但其中只有一个
+顶层 effect。它已无法在保持顶层 effect block 逐字节相同的前提下继续按 effect 边界拆分；若后续实机加载证据仍指向
+该文件，下一步应是对这个单 effect 做有语义变化的内部 helper 重构，并重新走静态与 CK3 实机验收，而不能把当前
+byte-identity 迁移误写成已经解决加载性能。
+
+用途分片 manifest 按文件名排序，每行严格为
+`filename<TAB>bytes<TAB>effect_count<TAB>uppercase_sha256<LF>`；当前 manifest SHA-256 为
+`E5DD22CEF71D60E069884A27BE924234B4FAD42490AEF2B52B966AFD95585858`。本节只把分片实现提升为
+static-ready；尚无新 CK3 loader、paused snapshot 或完整业务路径证据，整体 readiness 仍是
+`ck3-script-static-ready-not-live`，不得据此写成任何 live 等级。
 
 ## 2. 五元身份、原子顺序与状态码
 

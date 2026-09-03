@@ -1,0 +1,157 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AB domain controls.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_ab_initialize_effect = {
+	set_variable = { name = zg361_we_ab_visible_revision value = 0 }
+	remove_variable = zg361_we_record_presence_output_242
+	remove_variable = zg361_we_m242_visible_value
+	remove_variable = zg361_we_record_after_hours_reply_243
+	remove_variable = zg361_we_m243_visible_value
+	remove_variable = zg361_we_record_voluntary_effort_244
+	remove_variable = zg361_we_m244_visible_value
+	remove_variable = zg361_we_record_overtime_245
+	remove_variable = zg361_we_m245_visible_value
+	remove_variable = zg361_we_settle_overtime_246
+	remove_variable = zg361_we_m246_visible_value
+	remove_variable = zg361_we_open_sprint_247
+	remove_variable = zg361_we_m247_visible_value
+	remove_variable = zg361_we_record_understaffing_248
+	remove_variable = zg361_we_m248_visible_value
+	remove_variable = zg361_we_record_meeting_249
+	remove_variable = zg361_we_m249_visible_value
+	remove_variable = zg361_we_record_meeting_contribution_250
+	remove_variable = zg361_we_m250_visible_value
+	remove_variable = zg361_we_record_meeting_refusal_251
+	remove_variable = zg361_we_m251_visible_value
+	remove_variable = zg361_we_normalize_leave_252
+	remove_variable = zg361_we_m252_visible_value
+	remove_variable = zg361_we_record_recovery_response_253
+	remove_variable = zg361_we_m253_visible_value
+	set_variable = { name = zg361_we_ab_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s02_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s02_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s03_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s03_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s05_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ab_s06_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ab_s06_deadline_expired value = 0 }
+}
+
+zg361_we_ab_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_ab_subject
+				ACTIVE_VAR = zg361_case_ab_active
+			}
+		}
+		set_variable = { name = zg361_we_ab_subject_seen_revision value = var:zg361_we_ab_visible_revision }
+	}
+}
+
+zg361_we_ab_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m242_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m243_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m244_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m245_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m246_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m247_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m248_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m249_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m250_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m251_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m252_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+		zg361_we_m253_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ab_owner
+			TICKET_SUBJECT = scope:zg361_we_ab_subject
+			TICKET_CYCLE = scope:zg361_we_ab_cycle
+			TICKET_CASE = scope:zg361_we_ab_case
+		}
+	}
+}
+
+zg361_we_ab_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_ab_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_initialize_portfolio_effect = yes
+		zg361_we_ab_initialize_effect = yes
+		var:zg361_case_ab_owner = { save_scope_as = zg361_we_ab_owner }
+		save_scope_as = zg361_we_ab_subject
+		save_scope_value_as = { name = zg361_we_ab_cycle value = var:zg361_case_ab_cycle_serial }
+		save_scope_value_as = { name = zg361_we_ab_case value = var:zg361_case_ab_case_serial }
+		zg361_we_ab_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_ab_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_ab_owner = { trigger_event = { id = zg361we.242 } }
+		}
+	}
+}

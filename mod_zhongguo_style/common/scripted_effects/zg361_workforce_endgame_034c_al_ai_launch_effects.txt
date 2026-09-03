@@ -1,0 +1,44 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure AL authorized AI and launch controls.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_al_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m355_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_al_owner
+			TICKET_SUBJECT = scope:zg361_we_al_subject
+			TICKET_CYCLE = scope:zg361_we_al_cycle
+			TICKET_CASE = scope:zg361_we_al_case
+		}
+		zg361_we_m356_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_al_owner
+			TICKET_SUBJECT = scope:zg361_we_al_subject
+			TICKET_CYCLE = scope:zg361_we_al_cycle
+			TICKET_CASE = scope:zg361_we_al_case
+		}
+	}
+}
+
+zg361_we_al_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_al_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_al_initialize_effect = yes
+		var:zg361_case_al_owner = { save_scope_as = zg361_we_al_owner }
+		save_scope_as = zg361_we_al_subject
+		save_scope_value_as = { name = zg361_we_al_cycle value = var:zg361_case_al_cycle_serial }
+		save_scope_value_as = { name = zg361_we_al_case value = var:zg361_case_al_case_serial }
+		zg361_we_al_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_al_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_al_owner = { trigger_event = { id = zg361we.355 } }
+		}
+	}
+}

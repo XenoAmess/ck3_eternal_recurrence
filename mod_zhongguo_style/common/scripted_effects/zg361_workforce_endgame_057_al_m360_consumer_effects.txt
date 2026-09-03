@@ -1,0 +1,125 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AL M360 consumer.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m360_consume_effect = {
+	if = {
+		limit = { has_variable = zg361_we_m360_debt_cycle has_variable = zg361_we_m360_debt_case }
+		save_temporary_scope_value_as = {
+			name = zg361_we_m360_expected_debt_id
+			value = { value = var:zg361_we_m360_debt_cycle multiply = 1000000 add = { value = var:zg361_we_m360_debt_case multiply = 1000 } add = 360 }
+		}
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+				has_variable = zg361_we_m360_write_owner
+				has_variable = zg361_we_m360_write_subject
+				has_variable = zg361_we_m360_write_cycle
+				has_variable = zg361_we_m360_write_case
+				has_variable = zg361_we_m360_write_state
+				has_variable = zg361_we_resolve_collective_action_360
+				has_variable = zg361_we_m360_choice
+				has_variable = zg361_we_m360_business_object_created
+				has_variable = zg361_case_al_owner
+				has_variable = zg361_case_al_subject
+				has_variable = zg361_case_al_cycle_serial
+				has_variable = zg361_case_al_case_serial
+				has_variable = zg361_case_al_state
+				}
+			var:zg361_we_m360_write_owner = var:zg361_case_al_owner
+			var:zg361_we_m360_write_subject = var:zg361_case_al_subject
+			var:zg361_we_m360_write_cycle = var:zg361_case_al_cycle_serial
+			var:zg361_we_m360_write_case = var:zg361_case_al_case_serial
+			var:zg361_we_m360_write_state = var:zg361_case_al_state
+				trigger_if = {
+					limit = { var:zg361_we_m360_business_object_created = 1 }
+					trigger_if = {
+						limit = {
+						has_variable = zg361_we_m360_object_type_code
+						has_variable = zg361_we_m360_object_collective_action
+						has_variable = zg361_we_m360_object_owner
+						has_variable = zg361_we_m360_object_subject
+						has_variable = zg361_we_m360_object_cycle
+						has_variable = zg361_we_m360_object_case
+						has_variable = zg361_we_m360_object_state
+						has_variable = zg361_we_m360_object_id
+						has_variable = zg361_we_m360_consumer_contract
+						has_variable = zg361_we_m360_resource_cohort
+						has_variable = zg361_we_m360_resource_quota
+						has_variable = zg361_we_m360_resource_manager_score
+						has_variable = zg361_we_m360_object_due_cycle
+						}
+					var:zg361_we_m360_object_type_code = 360
+					var:zg361_we_m360_consumer_contract = 360
+					var:zg361_we_m360_object_owner = var:zg361_we_m360_write_owner
+					var:zg361_we_m360_object_subject = var:zg361_we_m360_write_subject
+					var:zg361_we_m360_object_cycle = var:zg361_we_m360_write_cycle
+					var:zg361_we_m360_object_case = var:zg361_we_m360_write_case
+					var:zg361_we_m360_object_state = var:zg361_we_m360_write_state
+					}
+					trigger_else = { always = no }
+				}
+				trigger_else = {
+					trigger_if = {
+						limit = {
+						has_variable = zg361_we_m360_debt_owner
+						has_variable = zg361_we_m360_debt_subject
+						has_variable = zg361_we_m360_debt_cycle
+						has_variable = zg361_we_m360_debt_case
+						has_variable = zg361_we_m360_debt_state
+						has_variable = zg361_we_m360_debt_type_code
+						has_variable = zg361_we_m360_debt_id
+						has_variable = zg361_we_m360_debt_consumer_contract
+						has_variable = zg361_we_m360_debt_due_cycle
+						has_variable = zg361_we_m360_debt_open
+						has_variable = zg361_we_m360_debt_consumed
+						has_variable = zg361_we_m360_debt_escalation_count
+						}
+					var:zg361_we_m360_choice = 3
+					var:zg361_we_m360_debt_open = 1
+					var:zg361_we_m360_debt_consumed = 0
+					var:zg361_we_m360_debt_type_code = 360
+					var:zg361_we_m360_debt_consumer_contract = 360
+					var:zg361_we_m360_debt_owner = var:zg361_we_m360_write_owner
+					var:zg361_we_m360_debt_subject = var:zg361_we_m360_write_subject
+					var:zg361_we_m360_debt_cycle = var:zg361_we_m360_write_cycle
+					var:zg361_we_m360_debt_case = var:zg361_we_m360_write_case
+					var:zg361_we_m360_debt_state = var:zg361_we_m360_write_state
+					var:zg361_we_m360_debt_id = scope:zg361_we_m360_expected_debt_id
+					}
+					trigger_else = { always = no }
+				}
+				trigger_if = {
+					limit = {
+						has_variable = zg361_we_m360_consumed_owner
+						has_variable = zg361_we_m360_consumed_subject
+						has_variable = zg361_we_m360_consumed_cycle
+						has_variable = zg361_we_m360_consumed_case
+						has_variable = zg361_we_m360_consumed_state
+					}
+					NOT = {
+					var:zg361_we_m360_consumed_owner = var:zg361_we_m360_write_owner
+					var:zg361_we_m360_consumed_subject = var:zg361_we_m360_write_subject
+					var:zg361_we_m360_consumed_cycle = var:zg361_we_m360_write_cycle
+					var:zg361_we_m360_consumed_case = var:zg361_we_m360_write_case
+					var:zg361_we_m360_consumed_state = var:zg361_we_m360_write_state
+					}
+				}
+				trigger_else = { always = yes }
+			}
+			trigger_else = { always = no }
+		}
+		set_variable = { name = zg361_we_m360_consumed_owner value = var:zg361_we_m360_write_owner }
+		set_variable = { name = zg361_we_m360_consumed_subject value = var:zg361_we_m360_write_subject }
+		set_variable = { name = zg361_we_m360_consumed_cycle value = var:zg361_we_m360_write_cycle }
+		set_variable = { name = zg361_we_m360_consumed_case value = var:zg361_we_m360_write_case }
+		set_variable = { name = zg361_we_m360_consumed_state value = var:zg361_we_m360_write_state }
+		set_variable = { name = zg361_we_m360_visible_value value = var:zg361_we_resolve_collective_action_360 }
+		set_variable = { name = zg361_we_m360_visible_provenance_case value = var:zg361_we_m360_write_case }
+		if = { limit = { var:zg361_we_m360_business_object_created = 1 } set_variable = { name = zg361_we_m360_object_consumed value = 1 } set_variable = { name = zg361_we_m360_consumer_resolve_collective_action_360 value = 1 } }
+		else = { set_variable = { name = zg361_we_m360_debt_visible_to_settlement value = 1 } }
+		change_variable = { name = zg361_we_al_visible_revision add = 1 }
+	}
+}

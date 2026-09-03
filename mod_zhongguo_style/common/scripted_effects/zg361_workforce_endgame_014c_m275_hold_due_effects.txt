@@ -1,0 +1,109 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M275 future hold deadline.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m275_hold_due_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m275_write_owner
+					has_variable = zg361_we_m275_write_subject
+					has_variable = zg361_we_m275_write_cycle
+					has_variable = zg361_we_m275_write_case
+					has_variable = zg361_we_m275_write_state
+					has_variable = zg361_we_m275_receipt_owner
+					has_variable = zg361_we_m275_receipt_subject
+					has_variable = zg361_we_m275_receipt_cycle
+					has_variable = zg361_we_m275_receipt_case
+					has_variable = zg361_we_m275_receipt_state
+					has_variable = zg361_we_m275_receipt_choice
+				}
+				var:zg361_we_m275_write_subject = this
+				var:zg361_we_m275_write_owner = var:zg361_we_m275_receipt_owner
+				var:zg361_we_m275_write_subject = var:zg361_we_m275_receipt_subject
+				var:zg361_we_m275_write_cycle = var:zg361_we_m275_receipt_cycle
+				var:zg361_we_m275_write_case = var:zg361_we_m275_receipt_case
+				var:zg361_we_m275_write_state = var:zg361_we_m275_receipt_state
+				var:zg361_we_m275_receipt_state = 4
+				OR = { var:zg361_we_m275_receipt_choice = 1 var:zg361_we_m275_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m275_hold_pending = 1
+			OR = {
+				var:zg361_we_m275_receipt_choice = 1
+				AND = {
+					var:zg361_we_m275_receipt_choice = 2
+					has_variable = zg361_we_ad_external_m275_remediation_receipt
+					var:zg361_we_ad_external_m275_remediation_receipt = 1
+					has_variable = zg361_we_ad_external_m275_remediated_reason_id
+					var:zg361_we_ad_external_m275_remediated_reason_id = var:zg361_we_m275_refusal_reason_id
+				}
+			}
+			has_variable = zg361_we_m266_hc_reservation_active
+			var:zg361_we_m266_hc_reservation_active = 1
+			var:zg361_we_m266_hc_receipt = var:zg361_we_m275_hc_lineage_receipt
+			var:zg361_we_m275_hc_lineage_receipt = var:zg361_we_m275_write_case
+			has_variable = zg361_ch_hc_reserved
+			var:zg361_ch_hc_reserved >= 1
+			var:zg361_we_m275_write_owner = { has_variable = zg361_we_ad_hc_flight_pending var:zg361_we_ad_hc_flight_pending = 1 var:zg361_we_ad_hc_flight_subject = root.var:zg361_we_m275_write_subject var:zg361_we_ad_hc_flight_cycle = root.var:zg361_we_m275_write_cycle var:zg361_we_ad_hc_flight_case = root.var:zg361_we_m275_write_case }
+			var:zg361_we_m275_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m275_hold_due_cycle }
+		}
+		if = {
+			limit = { var:zg361_we_m275_receipt_choice = 1 }
+			set_variable = { name = zg361_we_m275_runner_reopen_pending value = 1 }
+			set_variable = { name = zg361_we_m275_runner_attempt_opened value = 0 }
+			set_variable = { name = zg361_we_m275_old_attempt_reopened value = 0 }
+			set_variable = { name = zg361_we_m275_hold_released value = 0 }
+			zg361_p2c_schedule_m275_runner_requisition_effect = {
+				TICKET_OWNER = var:zg361_we_m275_write_owner
+				TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_we_m275_write_cycle
+				TICKET_CASE = var:zg361_we_m275_write_case
+			}
+		}
+		else = {
+			set_variable = { name = zg361_we_m275_hold_pending value = 0 }
+			change_variable = { name = zg361_ch_hc_reserved add = -1 }
+			change_variable = { name = zg361_ch_hc_available add = 1 }
+			set_variable = { name = zg361_we_m266_hc_reservation_active value = 0 }
+			set_variable = { name = zg361_we_m275_reason_remediated value = 1 }
+			set_variable = { name = zg361_we_m275_hold_released value = 1 }
+			set_variable = { name = zg361_we_m275_old_attempt_reopened value = 0 }
+			var:zg361_we_m275_write_owner = { set_variable = { name = zg361_we_ad_hc_flight_pending value = 0 } }
+			trigger_event = { id = zg361we.5277 days = 1 }
+		}
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m275_write_owner
+					has_variable = zg361_we_m275_write_subject
+					has_variable = zg361_we_m275_write_cycle
+					has_variable = zg361_we_m275_write_case
+					has_variable = zg361_we_m275_write_state
+					has_variable = zg361_we_m275_receipt_owner
+					has_variable = zg361_we_m275_receipt_subject
+					has_variable = zg361_we_m275_receipt_cycle
+					has_variable = zg361_we_m275_receipt_case
+					has_variable = zg361_we_m275_receipt_state
+					has_variable = zg361_we_m275_receipt_choice
+				}
+				var:zg361_we_m275_write_subject = this
+				var:zg361_we_m275_write_owner = var:zg361_we_m275_receipt_owner
+				var:zg361_we_m275_write_subject = var:zg361_we_m275_receipt_subject
+				var:zg361_we_m275_write_cycle = var:zg361_we_m275_receipt_cycle
+				var:zg361_we_m275_write_case = var:zg361_we_m275_receipt_case
+				var:zg361_we_m275_write_state = var:zg361_we_m275_receipt_state
+				var:zg361_we_m275_receipt_state = 4
+				OR = { var:zg361_we_m275_receipt_choice = 1 var:zg361_we_m275_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m275_hold_pending = 1
+		}
+		if = { limit = { var:zg361_we_m275_receipt_choice = 2 var:zg361_we_m275_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m275_hold_due_cycle } } set_variable = { name = zg361_we_m275_unremediated_reason_blocks_release value = 1 } }
+		trigger_event = { id = zg361we.5275 days = 90 }
+	}
+	else = { set_variable = { name = zg361_we_future_red_code value = 2751 } }
+}

@@ -1,0 +1,44 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure M276 rehire-history receipt.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_submit_m276_rehire_history_effect = {
+	remove_variable = zg361_we_adapter_status
+	remove_variable = zg361_we_adapter_blocked_reason
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+			}
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+			$TICKET_SUBJECT$ = this
+			trigger_if = { limit = { has_variable = zg361_we_ad_external_rehire_ready } var:zg361_we_ad_external_rehire_ready = 0 } trigger_else = { always = yes }
+			$REHIRE_ID$ > 0 $HISTORICAL_CASE_ID$ > 0 $HISTORICAL_CASE_HASH$ > 0
+			$HISTORICAL_CYCLE$ < $TICKET_CYCLE$
+			NOT = { $HISTORICAL_CASE_ID$ = $TICKET_CASE$ }
+			$GROWTH_EVIDENCE_ID$ > 0 $GROWTH_EVIDENCE_HASH$ > 0
+			$FUTURE_COHORT_CYCLE$ > $TICKET_CYCLE$
+			$HISTORY_RETAINED$ = 1 $MISCONDUCT_HISTORY_RETAINED$ = 1
+		}
+		set_variable = { name = zg361_we_ad_external_rehire_ready value = 1 }
+		set_variable = { name = zg361_we_ad_external_rehire_consumed value = 0 }
+		set_variable = { name = zg361_we_ad_external_rehire_id value = $REHIRE_ID$ }
+		set_variable = { name = zg361_we_ad_external_rehire_historical_case_id value = $HISTORICAL_CASE_ID$ }
+		set_variable = { name = zg361_we_ad_external_rehire_historical_case_hash value = $HISTORICAL_CASE_HASH$ }
+		set_variable = { name = zg361_we_ad_external_rehire_historical_cycle value = $HISTORICAL_CYCLE$ }
+		set_variable = { name = zg361_we_ad_external_rehire_growth_evidence_id value = $GROWTH_EVIDENCE_ID$ }
+		set_variable = { name = zg361_we_ad_external_rehire_growth_evidence_hash value = $GROWTH_EVIDENCE_HASH$ }
+		set_variable = { name = zg361_we_ad_external_rehire_future_cohort_cycle value = $FUTURE_COHORT_CYCLE$ }
+		set_variable = { name = zg361_we_ad_rehire_history_owner value = $TICKET_OWNER$ }
+		set_variable = { name = zg361_we_ad_rehire_history_subject value = $TICKET_SUBJECT$ }
+		set_variable = { name = zg361_we_ad_rehire_history_cycle value = $TICKET_CYCLE$ }
+		set_variable = { name = zg361_we_ad_rehire_history_case value = $TICKET_CASE$ }
+		set_variable = { name = zg361_we_ad_rehire_history_state value = 6 }
+		set_variable = { name = zg361_we_adapter_status value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 2761 } }
+}

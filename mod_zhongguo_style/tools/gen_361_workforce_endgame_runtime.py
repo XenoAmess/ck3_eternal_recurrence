@@ -26,6 +26,17 @@ MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
+LEGACY_EFFECT_FILENAME = "zg361_workforce_endgame_runtime_effects.txt"
+LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+EFFECT_SHARD_GLOB = "zg361_workforce_endgame_*_effects.txt"
+HISTORICAL_EFFECT_BYTES = 4_636_271
+HISTORICAL_EFFECT_SHA256 = "926453FE4B3621B5381743D61F5D03AC29C1D498181702E05A9532739D334D8A"
+HISTORICAL_EFFECT_COUNT = 324
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# A future shard above the hard limit is invalid unless this map contains both
+# a concrete purpose-cohesion reason and a reference to CK3 live evidence.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
 PREFIX = "zg361_we"
 NAMESPACE = "zg361we"
 APPOINTMENT_WRAPPER = "zg361_workforce_appointment_fact_m274_appoint_and_consume_effect"
@@ -70,6 +81,13 @@ class Mechanism:
     desc_cn: str
     routes_en: tuple[str, str, str]
     routes_cn: tuple[str, str, str]
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
 
 
 DOMAIN_ORDER = {domain.lower(): order for domain, order in WORKFORCE_EXECUTION_ORDER.items()}
@@ -7452,6 +7470,7 @@ def render_finalize() -> str:
 
 
 def render_effects() -> bytes:
+    """Render the historical aggregate in memory as the semantic baseline."""
     validate_specs()
     sections = [
         "# ZhongGuo 361 workforce/endgame: AB/AC/AD plus AL 355/356/360/361.\n"
@@ -7484,6 +7503,525 @@ def render_effects() -> bytes:
         for choice in (1, 2, 3):
             sections.append(render_route_effect(spec, choice))
     return generated("\n\n".join(sections))
+
+
+def _mechanism_effect_names(*mids: int) -> tuple[str, ...]:
+    names: list[str] = []
+    for mid in mids:
+        names.append(f"{PREFIX}_m{mid}_consume_effect")
+        names.extend(f"{PREFIX}_m{mid}_route_{letter}_effect" for letter in "abc")
+    return tuple(names)
+
+
+def _due_debt_effect_names(*mids: int) -> tuple[str, ...]:
+    return tuple(f"{PREFIX}_m{mid}_consume_due_debt_effect" for mid in mids)
+
+
+def _domain_control_effect_names(domain: str) -> tuple[str, ...]:
+    return (
+        f"{PREFIX}_{domain}_initialize_effect",
+        f"{PREFIX}_{domain}_subject_read_effect",
+        f"{PREFIX}_{domain}_run_authorized_ai_effect",
+        f"{PREFIX}_{domain}_launch_effect",
+    )
+
+
+def _deadline_effect_names(domain: str, *states: int) -> tuple[str, ...]:
+    names: list[str] = []
+    for state in states:
+        names.extend((
+            f"{PREFIX}_{domain}_schedule_stage_{state:02d}_deadline_effect",
+            f"{PREFIX}_{domain}_timeout_stage_{state:02d}_effect",
+        ))
+    return tuple(names)
+
+
+EFFECT_GROUPS = (
+    EffectGroup(
+        "zg361_workforce_endgame_001_portfolio_effects.txt",
+        "portfolio initialization and public manager entry",
+        ("zg361_we_initialize_portfolio_effect", "zg361_we_open_portfolio_effect"),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_002_al_receipt_bridge_effects.txt",
+        "B2-owned AL 357-359 receipt submission bridge",
+        ("zg361_we_submit_al_357_359_receipts_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
+        "materialize central M360 route A source",
+        ("zg361_we_materialize_m360_route_a_from_central_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
+        "materialize central M360 route B source",
+        ("zg361_we_materialize_m360_route_b_from_central_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_005_m360_central_source_effects.txt",
+        "consume and resume the central M360 source",
+        (
+            "zg361_we_mark_central_m360_source_consumed_effect",
+            "zg361_we_resume_m360_from_central_source_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_006_completed_357_359_history_effects.txt",
+        "completed AL 357-359 cycle history ledger",
+        ("zg361_we_record_completed_357_359_history_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_007_m361_charter_history_gate_effects.txt",
+        "M361 charter evidence and history-accruing gate",
+        (
+            "zg361_we_prepare_m361_charter_evidence_effect",
+            "zg361_we_finalize_history_accruing_effect",
+            "zg361_we_after_m360_history_gate_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_008_m264_handoff_effects.txt",
+        "AC M264 subject handoff lifecycle",
+        (
+            "zg361_we_ac_freeze_m262_host_manager_effect",
+            "zg361_we_m264_begin_handoff_effect",
+            "zg361_we_m264_dispatch_handoff_step_1_effect",
+            "zg361_we_m264_dispatch_handoff_step_2_effect",
+            "zg361_we_m264_dispatch_handoff_step_3_effect",
+            "zg361_we_m264_queue_owner_review_effect",
+            "zg361_we_m264_complete_documentation_effect",
+            "zg361_we_m264_complete_shadowing_effect",
+            "zg361_we_m264_complete_practical_effect",
+            "zg361_we_m264_refuse_handoff_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_009a_ad_fact_receipt_pre_rehire_effects.txt",
+        "AD fact adapters accepting an already-confirmed appointment receipt and runner reopen fact",
+        (
+            "zg361_we_submit_ad_appointment_receipt_effect",
+            "zg361_we_consume_m275_runner_reopen_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_009b_m276_rehire_history_effects.txt",
+        "B2 closure M276 rehire-history receipt",
+        ("zg361_we_submit_m276_rehire_history_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_009c_m277_exit_adapter_effects.txt",
+        "AD M277 closed-PIP exit adapter",
+        ("zg361_we_submit_m277_closed_pip_exit_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_010_ad_source_consume_effects.txt",
+        "AD referral panel and offer source consumption",
+        (
+            "zg361_we_consume_referral_source_after_m271_effect",
+            "zg361_we_consume_panel_source_after_m267_effect",
+            "zg361_we_consume_offer_source_after_m274_effect",
+            "zg361_we_consume_offer_source_after_m275_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_011_ad_source_retire_effects.txt",
+        "AD referral panel and offer source debt retirement",
+        (
+            "zg361_we_retire_referral_source_after_m267_debt_effect",
+            "zg361_we_retire_panel_source_after_m267_debt_effect",
+            "zg361_we_retire_offer_source_after_m274_debt_effect",
+            "zg361_we_retire_offer_source_after_m275_debt_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_012_ad_source_resume_effects.txt",
+        "AD source resumption and AI continuations",
+        (
+            "zg361_we_continue_ai_ad_after_fact_na_effect",
+            "zg361_we_continue_ai_ad_after_offer_refusal_effect",
+            "zg361_we_resume_m271_from_referral_source_effect",
+            "zg361_we_resume_m267_from_panel_source_effect",
+            "zg361_we_resume_m274_from_offer_source_effect",
+            "zg361_we_queue_m274_appointment_ack_effect",
+            "zg361_we_resume_m274_after_native_appointment_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_013_m274_attribution_pipeline_effects.txt",
+        "M274 post-consume attribution pipeline",
+        (
+            "zg361_we_m274_postconsume_fact_handoff_effect",
+            "zg361_we_m274_audit_probation_and_arm_attribution_effect",
+            "zg361_we_m274_audit_signature_and_dispatch_disposition_effect",
+            "zg361_we_m274_audit_disposition_and_launch_m269_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_014a_ac_future_transitions_effects.txt",
+        "AC future-cycle transitions",
+        (
+            "zg361_we_m257_future_consume_effect",
+            "zg361_we_m262_secondment_due_effect",
+            "zg361_we_m263_extension_due_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_014b_m269_future_consume_effects.txt",
+        "B2 closure M269 future consumer",
+        ("zg361_we_m269_future_consume_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_014c_m275_hold_due_effects.txt",
+        "M275 future hold deadline",
+        ("zg361_we_m275_hold_due_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_014d_m355_m356_future_effects.txt",
+        "B2 closure M355 target install and M356 cutoff audit",
+        (
+            "zg361_we_m355_target_install_effect",
+            "zg361_we_m356_cutoff_audit_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_014e_m361_future_install_effects.txt",
+        "M361 future default install",
+        ("zg361_we_m361_future_default_install_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_015a_m269_attribution_settlement_effects.txt",
+        "M269 attribution result and debt cancellation",
+        (
+            "zg361_we_m269_publish_signed_result_effect",
+            "zg361_we_m269_begin_attribution_debt_cancel_effect",
+            "zg361_we_m269_ack_attribution_debt_cancel_effect",
+            "zg361_we_m269_audit_attribution_debt_advance_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_015b_m269_postsettlement_handoff_effects.txt",
+        "B2 closure M269 post-settlement handoff",
+        ("zg361_we_m269_postsettlement_handoff_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_016_m276_rehire_finalize_effects.txt",
+        "M276 rehire preparation and finalization",
+        (
+            "zg361_we_m276_audit_prepared_rehire_effect",
+            "zg361_we_queue_m276_rehire_finalize_effect",
+            "zg361_we_m276_finalize_rehire_effect",
+            "zg361_we_m276_audit_rehire_finalize_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_017_ab_due_debt_stage01_03_effects.txt",
+        "AB stage 01-03 due-debt consumers",
+        _due_debt_effect_names(242, 243, 244, 245, 246, 247),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_018_ab_due_debt_stage04_06_effects.txt",
+        "AB stage 04-06 due-debt consumers",
+        _due_debt_effect_names(248, 249, 250, 251, 252, 253),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_019_ac_due_debt_stage01_03_effects.txt",
+        "AC stage 01-03 due-debt consumers",
+        _due_debt_effect_names(254, 255, 260, 261, 256, 258, 259),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_020_ac_due_debt_stage04_06_effects.txt",
+        "AC stage 04-06 due-debt consumers",
+        _due_debt_effect_names(257, 262, 263, 264, 265),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_021_ad_due_debt_stage01_03_effects.txt",
+        "AD stage 01-03 due-debt consumers",
+        _due_debt_effect_names(266, 273, 271, 267, 268, 270, 272),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_022a_ad_due_debt_stage04_05_effects.txt",
+        "AD stage 04-05 due-debt consumers",
+        _due_debt_effect_names(274, 275, 269),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_022b_ad_due_debt_stage06_effects.txt",
+        "B2 closure AD stage 06 due-debt consumers",
+        _due_debt_effect_names(276, 277),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_023a_al_m355_m356_due_debt_effects.txt",
+        "B2 closure AL M355-M356 due-debt consumers",
+        _due_debt_effect_names(355, 356),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_023b_al_m360_m361_due_debt_effects.txt",
+        "AL M360-M361 due-debt consumers",
+        _due_debt_effect_names(360, 361),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_024a_abandoned_ac_cleanup_effects.txt",
+        "abandoned AC resource release",
+        ("zg361_we_release_abandoned_ac_resources_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_024b_ad_nonmanager_terminal_cleanup_effects.txt",
+        "B2 closure abandoned AD release and non-manager N/A finalization",
+        (
+            "zg361_we_release_abandoned_ad_resources_effect",
+            "zg361_we_finalize_nonmanager_na_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
+        "manager collective N/A and portfolio finalization",
+        (
+            "zg361_we_finalize_manager_collective_na_effect",
+            "zg361_we_finalize_portfolio_effect",
+        ),
+    ),
+    EffectGroup("zg361_workforce_endgame_025_ab_control_effects.txt", "AB domain controls", _domain_control_effect_names("ab")),
+    EffectGroup("zg361_workforce_endgame_026_ab_deadline_stage01_03_effects.txt", "AB stage 01-03 deadlines", _deadline_effect_names("ab", 1, 2, 3)),
+    EffectGroup("zg361_workforce_endgame_027_ab_deadline_stage04_06_effects.txt", "AB stage 04-06 deadlines", _deadline_effect_names("ab", 4, 5, 6)),
+    EffectGroup("zg361_workforce_endgame_028_ac_control_effects.txt", "AC domain controls", _domain_control_effect_names("ac")),
+    EffectGroup("zg361_workforce_endgame_029_ac_deadline_stage01_03_effects.txt", "AC stage 01-03 deadlines", _deadline_effect_names("ac", 1, 2, 3)),
+    EffectGroup("zg361_workforce_endgame_030_ac_deadline_stage04_06_effects.txt", "AC stage 04-06 deadlines", _deadline_effect_names("ac", 4, 5, 6)),
+    EffectGroup("zg361_workforce_endgame_031_ad_control_effects.txt", "AD domain controls", _domain_control_effect_names("ad")),
+    EffectGroup("zg361_workforce_endgame_032_ad_deadline_stage01_03_effects.txt", "AD stage 01-03 deadlines", _deadline_effect_names("ad", 1, 2, 3)),
+    EffectGroup("zg361_workforce_endgame_033a_ad_deadline_stage04_05_effects.txt", "AD stage 04-05 deadlines", _deadline_effect_names("ad", 4, 5)),
+    EffectGroup("zg361_workforce_endgame_033b_ad_deadline_stage06_effects.txt", "B2 closure AD stage 06 deadline", _deadline_effect_names("ad", 6)),
+    EffectGroup("zg361_workforce_endgame_034a_al_initialize_effects.txt", "B2 closure AL initialization", ("zg361_we_al_initialize_effect",)),
+    EffectGroup("zg361_workforce_endgame_034b_al_subject_read_effects.txt", "AL subject read", ("zg361_we_al_subject_read_effect",)),
+    EffectGroup(
+        "zg361_workforce_endgame_034c_al_ai_launch_effects.txt",
+        "B2 closure AL authorized AI and launch controls",
+        ("zg361_we_al_run_authorized_ai_effect", "zg361_we_al_launch_effect"),
+    ),
+    EffectGroup("zg361_workforce_endgame_035a_al_stage01_deadline_effects.txt", "B2 closure AL stage 01 deadline", _deadline_effect_names("al", 1)),
+    EffectGroup("zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt", "AL stage 04-05 deadlines", _deadline_effect_names("al", 4, 5)),
+    EffectGroup("zg361_workforce_endgame_036_ab_m242_m243_effects.txt", "AB stage 01 mechanisms M242-M243", _mechanism_effect_names(242, 243)),
+    EffectGroup("zg361_workforce_endgame_037_ab_m244_m245_effects.txt", "AB stage 02 mechanisms M244-M245", _mechanism_effect_names(244, 245)),
+    EffectGroup("zg361_workforce_endgame_038_ab_m246_m247_effects.txt", "AB stage 03 mechanisms M246-M247", _mechanism_effect_names(246, 247)),
+    EffectGroup("zg361_workforce_endgame_039_ab_m248_m249_effects.txt", "AB stage 04 mechanisms M248-M249", _mechanism_effect_names(248, 249)),
+    EffectGroup("zg361_workforce_endgame_040_ab_m250_m251_effects.txt", "AB stage 05 mechanisms M250-M251", _mechanism_effect_names(250, 251)),
+    EffectGroup("zg361_workforce_endgame_041_ab_m252_m253_effects.txt", "AB stage 06 mechanisms M252-M253", _mechanism_effect_names(252, 253)),
+    EffectGroup("zg361_workforce_endgame_042_ac_m254_m255_effects.txt", "AC mechanisms M254-M255", _mechanism_effect_names(254, 255)),
+    EffectGroup("zg361_workforce_endgame_043_ac_m260_m261_effects.txt", "AC mechanisms M260-M261", _mechanism_effect_names(260, 261)),
+    EffectGroup("zg361_workforce_endgame_044_ac_m256_m258_effects.txt", "AC mechanisms M256 and M258", _mechanism_effect_names(256, 258)),
+    EffectGroup("zg361_workforce_endgame_045_ac_m259_effects.txt", "AC mechanism M259", _mechanism_effect_names(259)),
+    EffectGroup("zg361_workforce_endgame_046_ac_m257_m262_effects.txt", "AC mechanisms M257 and M262", _mechanism_effect_names(257, 262)),
+    EffectGroup("zg361_workforce_endgame_047_ac_m263_effects.txt", "AC mechanism M263", _mechanism_effect_names(263)),
+    EffectGroup("zg361_workforce_endgame_048_ac_m264_m265_effects.txt", "AC mechanisms M264-M265", _mechanism_effect_names(264, 265)),
+    EffectGroup("zg361_workforce_endgame_049_ad_m266_m273_effects.txt", "AD mechanisms M266 and M273", _mechanism_effect_names(266, 273)),
+    EffectGroup("zg361_workforce_endgame_050_ad_m271_m267_effects.txt", "AD mechanisms M271 and M267", _mechanism_effect_names(271, 267)),
+    EffectGroup("zg361_workforce_endgame_051_ad_m268_m270_effects.txt", "AD mechanisms M268 and M270", _mechanism_effect_names(268, 270)),
+    EffectGroup("zg361_workforce_endgame_052_ad_m272_effects.txt", "AD mechanism M272", _mechanism_effect_names(272)),
+    EffectGroup("zg361_workforce_endgame_053_ad_m274_m275_effects.txt", "AD mechanisms M274-M275", _mechanism_effect_names(274, 275)),
+    EffectGroup("zg361_workforce_endgame_054_ad_m269_effects.txt", "AD mechanism M269", _mechanism_effect_names(269)),
+    EffectGroup("zg361_workforce_endgame_055_ad_m276_m277_effects.txt", "AD mechanisms M276-M277", _mechanism_effect_names(276, 277)),
+    EffectGroup("zg361_workforce_endgame_056_al_m355_m356_effects.txt", "AL mechanisms M355-M356", _mechanism_effect_names(355, 356)),
+    EffectGroup("zg361_workforce_endgame_057_al_m360_consumer_effects.txt", "AL M360 consumer", ("zg361_we_m360_consume_effect",)),
+    EffectGroup("zg361_workforce_endgame_058_al_m360_route_a_effects.txt", "AL M360 route A", ("zg361_we_m360_route_a_effect",)),
+    EffectGroup("zg361_workforce_endgame_059_al_m360_route_b_effects.txt", "AL M360 route B", ("zg361_we_m360_route_b_effect",)),
+    EffectGroup("zg361_workforce_endgame_060_al_m360_route_c_effects.txt", "AL M360 route C", ("zg361_we_m360_route_c_effect",)),
+    EffectGroup("zg361_workforce_endgame_061_al_m361_effects.txt", "AL mechanism M361", _mechanism_effect_names(361)),
+)
+
+B2_EFFECT_CLOSURE_NAMES = (
+    "zg361_we_ad_schedule_stage_06_deadline_effect",
+    "zg361_we_ad_timeout_stage_06_effect",
+    "zg361_we_al_initialize_effect",
+    "zg361_we_al_launch_effect",
+    "zg361_we_al_run_authorized_ai_effect",
+    "zg361_we_al_schedule_stage_01_deadline_effect",
+    "zg361_we_al_timeout_stage_01_effect",
+    "zg361_we_finalize_nonmanager_na_effect",
+    "zg361_we_m269_future_consume_effect",
+    "zg361_we_m269_postsettlement_handoff_effect",
+    "zg361_we_m276_audit_prepared_rehire_effect",
+    "zg361_we_m276_audit_rehire_finalize_effect",
+    "zg361_we_m276_consume_due_debt_effect",
+    "zg361_we_m276_consume_effect",
+    "zg361_we_m276_finalize_rehire_effect",
+    "zg361_we_m276_route_a_effect",
+    "zg361_we_m276_route_b_effect",
+    "zg361_we_m276_route_c_effect",
+    "zg361_we_m277_consume_due_debt_effect",
+    "zg361_we_m277_consume_effect",
+    "zg361_we_m277_route_a_effect",
+    "zg361_we_m277_route_b_effect",
+    "zg361_we_m277_route_c_effect",
+    "zg361_we_m355_consume_due_debt_effect",
+    "zg361_we_m355_consume_effect",
+    "zg361_we_m355_route_a_effect",
+    "zg361_we_m355_route_b_effect",
+    "zg361_we_m355_route_c_effect",
+    "zg361_we_m355_target_install_effect",
+    "zg361_we_m356_consume_due_debt_effect",
+    "zg361_we_m356_consume_effect",
+    "zg361_we_m356_cutoff_audit_effect",
+    "zg361_we_m356_route_a_effect",
+    "zg361_we_m356_route_b_effect",
+    "zg361_we_m356_route_c_effect",
+    "zg361_we_queue_m276_rehire_finalize_effect",
+    "zg361_we_record_completed_357_359_history_effect",
+    "zg361_we_release_abandoned_ad_resources_effect",
+    "zg361_we_submit_al_357_359_receipts_effect",
+    "zg361_we_submit_m276_rehire_history_effect",
+)
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in generated script")
+
+
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _block_end(text: str, open_brace: int) -> int:
+    depth = 0
+    index = open_brace
+    while index < len(text):
+        char = text[index]
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced generated script block")
+        index += 1
+    raise ValueError("unterminated generated script block")
+
+
+def top_level_effect_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return true top-level assignments using brace depth, never line shape."""
+    text = payload.decode("utf-8-sig") if isinstance(payload, bytes) else payload.lstrip("\ufeff")
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (text[index].isalnum() or text[index] in "_."):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
+    source_names = tuple(name for name, _ in source_blocks)
+    configured_names = tuple(name for group in EFFECT_GROUPS for name in group.effect_names)
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != HISTORICAL_EFFECT_COUNT:
+        raise ValueError(
+            f"workforce/endgame source must contain {HISTORICAL_EFFECT_COUNT} top-level effects, "
+            f"found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("workforce/endgame source contains duplicate top-level effects")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("workforce/endgame effect shard filenames must be unique")
+    if source_names != configured_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        unexpected = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "workforce/endgame effect groups must preserve exact source order and coverage; "
+            f"missing={missing}, unexpected={unexpected}"
+        )
+    b2_closure = set(B2_EFFECT_CLOSURE_NAMES)
+    if len(B2_EFFECT_CLOSURE_NAMES) != 40 or len(b2_closure) != 40:
+        raise ValueError("B2 workforce closure must contain exactly 40 unique effects")
+    selected_b2_groups = [
+        group for group in EFFECT_GROUPS if b2_closure.intersection(group.effect_names)
+    ]
+    mixed_b2_groups = [
+        group.filename
+        for group in selected_b2_groups
+        if not set(group.effect_names).issubset(b2_closure)
+    ]
+    if mixed_b2_groups:
+        raise ValueError(f"B2 workforce closure is mixed with unrelated effects: {mixed_b2_groups}")
+    projected_b2_closure = {
+        name for group in selected_b2_groups for name in group.effect_names
+    }
+    if projected_b2_closure != b2_closure:
+        raise ValueError(
+            "B2 workforce closure shard union must be exact; "
+            f"missing={sorted(b2_closure - projected_b2_closure)}, "
+            f"extra={sorted(projected_b2_closure - b2_closure)}"
+        )
+    over_hard = {group.filename for group in EFFECT_GROUPS if len(group.effect_names) > EFFECT_HARD_MAX}
+    unknown_exceptions = set(EFFECT_HARD_LIMIT_EXCEPTIONS) - over_hard
+    if unknown_exceptions:
+        raise ValueError(f"stale workforce/endgame hard-limit exceptions: {sorted(unknown_exceptions)}")
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS.get(filename, ("", ""))
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without a reason and CK3 live-evidence reference"
+            )
+    for group in EFFECT_GROUPS:
+        if not group.effect_names:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    source_blocks = top_level_effect_blocks(render_effects())
+    _validate_effect_groups(source_blocks)
+    by_name = dict(source_blocks)
+    parts: dict[str, bytes] = {}
+    for group in EFFECT_GROUPS:
+        body = "\n\n".join(by_name[name] for name in group.effect_names)
+        parts[group.filename] = generated(
+            f"# PURPOSE: {group.purpose}.\n"
+            f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n\n"
+            f"{body}"
+        )
+    return parts
 
 
 def event_guard(spec: Mechanism) -> str:
@@ -8111,14 +8649,25 @@ def render_localization(language: str) -> bytes:
 def outputs() -> dict[Path, bytes]:
     validate_specs()
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_endgame_runtime_effects.txt": render_effects(),
-        MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt": render_events(),
+        MOD_ROOT / "common" / "scripted_effects" / filename: payload
+        for filename, payload in render_effect_parts().items()
     }
+    rendered[MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"] = render_events()
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / f"zg361_workforce_endgame_l_{language}.yml"
         ] = render_localization(language)
     return rendered
+
+
+def unexpected_effect_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
+    expected = {
+        path
+        for path in rendered
+        if path.parent == effects_dir and path.name != LEGACY_EFFECT_FILENAME
+    }
+    return tuple(sorted(set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected))
 
 
 def main() -> int:
@@ -8127,14 +8676,19 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    unexpected = unexpected_effect_paths(rendered)
     if args.check:
-        if stale:
+        if stale or unexpected:
             print("RED: stale workforce/endgame generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in unexpected:
+                print(f"unexpected effect shard: {path.relative_to(MOD_ROOT)}")
             return 1
         print(f"GREEN: {len(rendered)} workforce/endgame generated files are current ({READINESS})")
         return 0
+    for path in unexpected:
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)

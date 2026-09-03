@@ -1,0 +1,627 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AD source resumption and AI continuations.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_continue_ai_ad_after_fact_na_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 2
+			}
+			$TICKET_OWNER$ = { is_ai = yes zg361_is_celestial_liege_trigger = yes }
+		}
+		zg361_we_m268_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 2 }
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 }
+			zg361_we_m270_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 2 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 3 }
+			zg361_we_m272_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 3 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 4 }
+			zg361_we_m274_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 4 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 }
+			zg361_we_m275_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 4 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 5 }
+			zg361_we_m269_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 5 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 6 }
+			zg361_we_m276_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 }
+			zg361_we_m277_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }
+		}
+	}
+}
+
+zg361_we_continue_ai_ad_after_offer_refusal_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}
+			$TICKET_OWNER$ = { is_ai = yes zg361_is_celestial_liege_trigger = yes }
+		}
+		if = {
+			limit = { has_variable = zg361_we_m267_runner_up_present var:zg361_we_m267_runner_up_present = 1 }
+			zg361_we_m275_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+		}
+		else_if = {
+			limit = { has_variable = zg361_we_m267_runner_up_present var:zg361_we_m267_runner_up_present = 0 }
+			zg361_we_m275_route_b_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 5 }
+			zg361_we_m269_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 6 }
+			zg361_we_m276_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 }
+			zg361_we_m277_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 6 }
+		}
+	}
+}
+
+zg361_we_resume_m271_from_referral_source_effect = {
+	remove_variable = zg361_we_ad_source_status
+	if = {
+		limit = {
+			has_variable = zg361_wad_referral_source_id
+			has_variable = zg361_wad_referral_source_cycle
+			has_variable = zg361_wad_referral_source_case
+			has_variable = zg361_wad_referral_source_disposition
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_ad_expected_referral_source_hash
+			value = { value = var:zg361_wad_referral_source_id multiply = 1000000 add = { value = var:zg361_wad_referral_source_cycle multiply = 10000 } add = { value = var:zg361_wad_referral_source_case multiply = 10 } add = var:zg361_wad_referral_source_disposition }
+		}
+	}
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			has_variable = zg361_wad_referral_source_pending
+			has_variable = zg361_wad_referral_source_consumed
+			has_variable = zg361_wad_referral_source_retired
+			has_variable = zg361_wad_referral_source_owner
+			has_variable = zg361_wad_referral_source_subject
+			has_variable = zg361_wad_referral_source_cycle
+			has_variable = zg361_wad_referral_source_case
+			has_variable = zg361_wad_referral_source_state
+			has_variable = zg361_wad_referral_source_id
+			has_variable = zg361_wad_referral_source_hash
+			has_variable = zg361_wad_referral_source_disposition
+			var:zg361_wad_referral_source_pending = 1
+			var:zg361_wad_referral_source_consumed = 0
+			var:zg361_wad_referral_source_retired = 0
+			var:zg361_wad_referral_source_owner = $TICKET_OWNER$
+			var:zg361_wad_referral_source_subject = $TICKET_SUBJECT$
+			var:zg361_wad_referral_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_referral_source_case = $TICKET_CASE$
+			var:zg361_wad_referral_source_state = 1
+			var:zg361_wad_referral_source_id > 0
+			var:zg361_wad_referral_source_hash = scope:zg361_we_ad_expected_referral_source_hash
+			var:zg361_wad_referral_source_disposition = 1
+			has_variable = zg361_wad_referral_source_referral_id
+			has_variable = zg361_wad_referral_source_referrer
+			has_variable = zg361_wad_referral_source_relationship
+			has_variable = zg361_wad_referral_source_evidence_receipt
+			var:zg361_wad_referral_source_referral_id > 0
+			var:zg361_wad_referral_source_evidence_receipt > 0
+			NOT = { var:zg361_wad_referral_source_id = var:zg361_wad_referral_source_referral_id }
+			NOT = { var:zg361_wad_referral_source_id = var:zg361_wad_referral_source_evidence_receipt }
+			NOT = { var:zg361_wad_referral_source_referral_id = var:zg361_wad_referral_source_evidence_receipt }
+			var:zg361_wad_referral_source_referrer = { zg361_is_celestial_liege_trigger = yes }
+			NOT = { var:zg361_wad_referral_source_referrer = $TICKET_SUBJECT$ }
+			var:zg361_wad_referral_source_relationship >= 1
+			var:zg361_wad_referral_source_relationship <= 3
+		}
+		if = {
+			limit = { $TICKET_OWNER$ = { is_ai = yes } }
+			zg361_we_m271_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+		}
+		else = {
+			save_scope_as = zg361_we_ad_subject
+			$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+			save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+			save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+			$TICKET_OWNER$ = { trigger_event = { id = zg361we.271 } }
+		}
+		set_variable = { name = zg361_we_ad_source_status value = 1 }
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			has_variable = zg361_wad_referral_source_pending
+			has_variable = zg361_wad_referral_source_consumed
+			has_variable = zg361_wad_referral_source_retired
+			has_variable = zg361_wad_referral_source_owner
+			has_variable = zg361_wad_referral_source_subject
+			has_variable = zg361_wad_referral_source_cycle
+			has_variable = zg361_wad_referral_source_case
+			has_variable = zg361_wad_referral_source_state
+			has_variable = zg361_wad_referral_source_id
+			has_variable = zg361_wad_referral_source_hash
+			has_variable = zg361_wad_referral_source_disposition
+			var:zg361_wad_referral_source_pending = 1
+			var:zg361_wad_referral_source_consumed = 0
+			var:zg361_wad_referral_source_retired = 0
+			var:zg361_wad_referral_source_owner = $TICKET_OWNER$
+			var:zg361_wad_referral_source_subject = $TICKET_SUBJECT$
+			var:zg361_wad_referral_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_referral_source_case = $TICKET_CASE$
+			var:zg361_wad_referral_source_state = 1
+			var:zg361_wad_referral_source_id > 0
+			var:zg361_wad_referral_source_hash = scope:zg361_we_ad_expected_referral_source_hash
+			OR = { var:zg361_wad_referral_source_disposition = 2 var:zg361_wad_referral_source_disposition = 3 }
+		}
+		zg361_we_m271_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 1 }
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 }
+			zg361_we_m267_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 1 }
+		}
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 2 }
+			if = {
+				limit = { $TICKET_OWNER$ = { is_ai = yes } }
+				zg361_we_continue_ai_ad_after_fact_na_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+			}
+			else = {
+				save_scope_as = zg361_we_ad_subject
+				$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+				save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+				save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+				$TICKET_OWNER$ = { trigger_event = { id = zg361we.268 } }
+			}
+		}
+		set_variable = { name = zg361_we_ad_source_status value = 1 }
+	}
+	else_if = { limit = { has_variable = zg361_wad_referral_source_pending var:zg361_wad_referral_source_pending = 0 } set_variable = { name = zg361_we_ad_source_status value = 5 } }
+	else = { set_variable = { name = zg361_we_ad_source_status value = 4 } }
+}
+
+zg361_we_resume_m267_from_panel_source_effect = {
+	remove_variable = zg361_we_ad_source_status
+	if = {
+		limit = {
+			has_variable = zg361_wad_panel_source_id
+			has_variable = zg361_wad_panel_source_cycle
+			has_variable = zg361_wad_panel_source_case
+			has_variable = zg361_wad_panel_source_disposition
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_ad_expected_panel_source_hash
+			value = { value = var:zg361_wad_panel_source_id multiply = 1000000 add = { value = var:zg361_wad_panel_source_cycle multiply = 10000 } add = { value = var:zg361_wad_panel_source_case multiply = 10 } add = var:zg361_wad_panel_source_disposition }
+		}
+	}
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			has_variable = zg361_wad_panel_source_pending
+			has_variable = zg361_wad_panel_source_consumed
+			has_variable = zg361_wad_panel_source_retired
+			has_variable = zg361_wad_panel_source_owner
+			has_variable = zg361_wad_panel_source_subject
+			has_variable = zg361_wad_panel_source_cycle
+			has_variable = zg361_wad_panel_source_case
+			has_variable = zg361_wad_panel_source_state
+			has_variable = zg361_wad_panel_source_id
+			has_variable = zg361_wad_panel_source_hash
+			has_variable = zg361_wad_panel_source_disposition
+			var:zg361_wad_panel_source_pending = 1
+			var:zg361_wad_panel_source_consumed = 0
+			var:zg361_wad_panel_source_retired = 0
+			var:zg361_wad_panel_source_owner = $TICKET_OWNER$
+			var:zg361_wad_panel_source_subject = $TICKET_SUBJECT$
+			var:zg361_wad_panel_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_panel_source_case = $TICKET_CASE$
+			var:zg361_wad_panel_source_state = 1
+			var:zg361_wad_panel_source_id > 0
+			var:zg361_wad_panel_source_hash = scope:zg361_we_ad_expected_panel_source_hash
+			var:zg361_wad_panel_source_disposition = 1
+			has_variable = zg361_wad_panel_source_referrer
+			has_variable = zg361_wad_panel_source_referrer_vote_policy
+			has_variable = zg361_wad_panel_runner_up_present
+			var:zg361_wad_panel_source_referrer_vote_policy >= 0
+			var:zg361_wad_panel_source_referrer_vote_policy <= 1
+			var:zg361_wad_panel_runner_up_present >= 0
+			var:zg361_wad_panel_runner_up_present <= 1
+			has_variable = zg361_wad_panel_source_interviewer_1
+			has_variable = zg361_wad_panel_source_vote_1
+			has_variable = zg361_wad_panel_source_vote_evidence_1
+			has_variable = zg361_wad_panel_vote_receipt_actor_1
+			var:zg361_wad_panel_source_interviewer_1 = { zg361_is_celestial_liege_trigger = yes }
+			NOT = { var:zg361_wad_panel_source_interviewer_1 = $TICKET_SUBJECT$ }
+			var:zg361_wad_panel_source_vote_1 >= 1
+			var:zg361_wad_panel_source_vote_1 <= 3
+			var:zg361_wad_panel_source_vote_evidence_1 > 0
+			var:zg361_wad_panel_vote_receipt_actor_1 = var:zg361_wad_panel_source_interviewer_1
+			NOT = { var:zg361_wad_panel_source_id = var:zg361_wad_panel_source_vote_evidence_1 }
+			has_variable = zg361_wad_panel_source_interviewer_2
+			has_variable = zg361_wad_panel_source_vote_2
+			has_variable = zg361_wad_panel_source_vote_evidence_2
+			has_variable = zg361_wad_panel_vote_receipt_actor_2
+			var:zg361_wad_panel_source_interviewer_2 = { zg361_is_celestial_liege_trigger = yes }
+			NOT = { var:zg361_wad_panel_source_interviewer_2 = $TICKET_SUBJECT$ }
+			var:zg361_wad_panel_source_vote_2 >= 1
+			var:zg361_wad_panel_source_vote_2 <= 3
+			var:zg361_wad_panel_source_vote_evidence_2 > 0
+			var:zg361_wad_panel_vote_receipt_actor_2 = var:zg361_wad_panel_source_interviewer_2
+			NOT = { var:zg361_wad_panel_source_id = var:zg361_wad_panel_source_vote_evidence_2 }
+			has_variable = zg361_wad_panel_source_interviewer_3
+			has_variable = zg361_wad_panel_source_vote_3
+			has_variable = zg361_wad_panel_source_vote_evidence_3
+			has_variable = zg361_wad_panel_vote_receipt_actor_3
+			var:zg361_wad_panel_source_interviewer_3 = { zg361_is_celestial_liege_trigger = yes }
+			NOT = { var:zg361_wad_panel_source_interviewer_3 = $TICKET_SUBJECT$ }
+			var:zg361_wad_panel_source_vote_3 >= 1
+			var:zg361_wad_panel_source_vote_3 <= 3
+			var:zg361_wad_panel_source_vote_evidence_3 > 0
+			var:zg361_wad_panel_vote_receipt_actor_3 = var:zg361_wad_panel_source_interviewer_3
+			NOT = { var:zg361_wad_panel_source_id = var:zg361_wad_panel_source_vote_evidence_3 }
+			NOT = { var:zg361_wad_panel_source_interviewer_1 = var:zg361_wad_panel_source_interviewer_2 }
+			NOT = { var:zg361_wad_panel_source_interviewer_1 = var:zg361_wad_panel_source_interviewer_3 }
+			NOT = { var:zg361_wad_panel_source_interviewer_2 = var:zg361_wad_panel_source_interviewer_3 }
+			NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_2 }
+			NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_3 }
+			NOT = { var:zg361_wad_panel_source_vote_evidence_2 = var:zg361_wad_panel_source_vote_evidence_3 }
+			trigger_if = { limit = { var:zg361_wad_panel_runner_up_present = 1 } has_variable = zg361_wad_panel_source_runner_up has_variable = zg361_wad_panel_source_runner_up_evidence var:zg361_wad_panel_source_runner_up_evidence > 0 NOT = { var:zg361_wad_panel_source_runner_up = $TICKET_SUBJECT$ } } trigger_else = { NOT = { has_variable = zg361_wad_panel_source_runner_up } NOT = { has_variable = zg361_wad_panel_source_runner_up_evidence } }
+		}
+		if = {
+			limit = { $TICKET_OWNER$ = { is_ai = yes } }
+			zg361_we_m267_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+			if = { limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 2 } zg361_we_m268_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ } }
+			if = { limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 } zg361_we_m270_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ } }
+			if = { limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 3 } zg361_we_m272_route_a_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ } }
+		}
+		else = {
+			save_scope_as = zg361_we_ad_subject
+			$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+			save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+			save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+			$TICKET_OWNER$ = { trigger_event = { id = zg361we.267 } }
+		}
+		set_variable = { name = zg361_we_ad_source_status value = 1 }
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			has_variable = zg361_wad_panel_source_pending
+			has_variable = zg361_wad_panel_source_consumed
+			has_variable = zg361_wad_panel_source_retired
+			has_variable = zg361_wad_panel_source_owner
+			has_variable = zg361_wad_panel_source_subject
+			has_variable = zg361_wad_panel_source_cycle
+			has_variable = zg361_wad_panel_source_case
+			has_variable = zg361_wad_panel_source_state
+			has_variable = zg361_wad_panel_source_id
+			has_variable = zg361_wad_panel_source_hash
+			has_variable = zg361_wad_panel_source_disposition
+			var:zg361_wad_panel_source_pending = 1
+			var:zg361_wad_panel_source_consumed = 0
+			var:zg361_wad_panel_source_retired = 0
+			var:zg361_wad_panel_source_owner = $TICKET_OWNER$
+			var:zg361_wad_panel_source_subject = $TICKET_SUBJECT$
+			var:zg361_wad_panel_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_panel_source_case = $TICKET_CASE$
+			var:zg361_wad_panel_source_state = 1
+			var:zg361_wad_panel_source_id > 0
+			var:zg361_wad_panel_source_hash = scope:zg361_we_ad_expected_panel_source_hash
+			var:zg361_wad_panel_source_disposition = 3
+		}
+		zg361_we_m267_route_c_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ TICKET_STATE = 1 }
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ad_state = 2 }
+			if = {
+				limit = { $TICKET_OWNER$ = { is_ai = yes } }
+				zg361_we_continue_ai_ad_after_fact_na_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+			}
+			else = {
+				save_scope_as = zg361_we_ad_subject
+				$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+				save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+				save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+				$TICKET_OWNER$ = { trigger_event = { id = zg361we.268 } }
+			}
+		}
+		set_variable = { name = zg361_we_ad_source_status value = 1 }
+	}
+	else_if = { limit = { has_variable = zg361_wad_panel_source_pending var:zg361_wad_panel_source_pending = 0 } set_variable = { name = zg361_we_ad_source_status value = 5 } }
+	else = { set_variable = { name = zg361_we_ad_source_status value = 4 } }
+}
+
+zg361_we_resume_m274_from_offer_source_effect = {
+	remove_variable = zg361_we_ad_source_status
+	if = {
+		limit = {
+			has_variable = zg361_wad_offer_source_id
+			has_variable = zg361_wad_offer_source_cycle
+			has_variable = zg361_wad_offer_source_case
+			has_variable = zg361_wad_offer_source_response
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_ad_expected_offer_source_hash
+			value = { value = var:zg361_wad_offer_source_id multiply = 1000000 add = { value = var:zg361_wad_offer_source_cycle multiply = 10000 } add = { value = var:zg361_wad_offer_source_case multiply = 10 } add = var:zg361_wad_offer_source_response }
+		}
+	}
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}
+			has_variable = zg361_wad_offer_source_pending
+			has_variable = zg361_wad_offer_source_consumed
+			has_variable = zg361_wad_offer_source_retired
+			has_variable = zg361_wad_offer_source_owner
+			has_variable = zg361_wad_offer_source_subject
+			has_variable = zg361_wad_offer_source_cycle
+			has_variable = zg361_wad_offer_source_case
+			has_variable = zg361_wad_offer_source_state
+			has_variable = zg361_wad_offer_source_id
+			has_variable = zg361_wad_offer_source_hash
+			has_variable = zg361_wad_offer_source_response
+			var:zg361_wad_offer_source_pending = 1
+			var:zg361_wad_offer_source_consumed = 0
+			var:zg361_wad_offer_source_retired = 0
+			var:zg361_wad_offer_source_owner = $TICKET_OWNER$
+			var:zg361_wad_offer_source_subject = $TICKET_SUBJECT$
+			var:zg361_wad_offer_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_offer_source_case = $TICKET_CASE$
+			var:zg361_wad_offer_source_state = 4
+			var:zg361_wad_offer_source_id > 0
+			var:zg361_wad_offer_source_hash = scope:zg361_we_ad_expected_offer_source_hash
+			var:zg361_wad_offer_source_response = 1
+			has_variable = zg361_wad_offer_source_response_receipt
+			var:zg361_wad_offer_source_response_receipt > 0
+			NOT = { var:zg361_wad_offer_source_id = var:zg361_wad_offer_source_response_receipt }
+			NOT = { has_variable = zg361_wad_offer_source_refusal_reason_id }
+		}
+		if = {
+			limit = { $TICKET_OWNER$ = { is_ai = yes } }
+			zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+			zg361_we_queue_m274_appointment_ack_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+		}
+		else = {
+			save_scope_as = zg361_we_ad_subject
+			$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+			save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+			save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+			$TICKET_OWNER$ = { trigger_event = { id = zg361we.274 } }
+		}
+		set_variable = { name = zg361_we_ad_source_status value = 1 }
+	}
+	else_if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}
+			has_variable = zg361_wad_offer_source_pending
+			has_variable = zg361_wad_offer_source_consumed
+			has_variable = zg361_wad_offer_source_retired
+			has_variable = zg361_wad_offer_source_owner
+			has_variable = zg361_wad_offer_source_subject
+			has_variable = zg361_wad_offer_source_cycle
+			has_variable = zg361_wad_offer_source_case
+			has_variable = zg361_wad_offer_source_state
+			has_variable = zg361_wad_offer_source_id
+			has_variable = zg361_wad_offer_source_hash
+			has_variable = zg361_wad_offer_source_response
+			var:zg361_wad_offer_source_pending = 1
+			var:zg361_wad_offer_source_consumed = 0
+			var:zg361_wad_offer_source_retired = 0
+			var:zg361_wad_offer_source_owner = $TICKET_OWNER$
+			var:zg361_wad_offer_source_subject = $TICKET_SUBJECT$
+			var:zg361_wad_offer_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_offer_source_case = $TICKET_CASE$
+			var:zg361_wad_offer_source_state = 4
+			var:zg361_wad_offer_source_id > 0
+			var:zg361_wad_offer_source_hash = scope:zg361_we_ad_expected_offer_source_hash
+			var:zg361_wad_offer_source_response = 2
+			has_variable = zg361_wad_offer_source_response_receipt
+			var:zg361_wad_offer_source_response_receipt > 0
+			NOT = { var:zg361_wad_offer_source_id = var:zg361_wad_offer_source_response_receipt }
+			has_variable = zg361_wad_offer_source_refusal_reason_id
+			var:zg361_wad_offer_source_refusal_reason_id >= 1
+			var:zg361_wad_offer_source_refusal_reason_id <= 3
+		}
+		zg361_we_m274_route_b_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+		if = {
+			limit = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 }
+			if = {
+				limit = { $TICKET_OWNER$ = { is_ai = yes } }
+				zg361_we_continue_ai_ad_after_offer_refusal_effect = { TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = this TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }
+			}
+			else = {
+				save_scope_as = zg361_we_ad_subject
+				$TICKET_OWNER$ = { save_scope_as = zg361_we_ad_owner }
+				save_scope_value_as = { name = zg361_we_ad_cycle value = $TICKET_CYCLE$ }
+				save_scope_value_as = { name = zg361_we_ad_case value = $TICKET_CASE$ }
+				$TICKET_OWNER$ = { trigger_event = { id = zg361we.275 } }
+			}
+		}
+		set_variable = { name = zg361_we_ad_source_status value = 1 }
+	}
+	else_if = { limit = { has_variable = zg361_wad_offer_source_pending var:zg361_wad_offer_source_pending = 0 } set_variable = { name = zg361_we_ad_source_status value = 5 } }
+	else = { set_variable = { name = zg361_we_ad_source_status value = 4 } }
+}
+
+zg361_we_queue_m274_appointment_ack_effect = {
+	remove_variable = zg361_we_m274_native_resume_status
+	if = {
+		limit = {
+			this = $TICKET_SUBJECT$
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes highest_held_title_tier >= tier_duchy }
+			trigger_if = {
+				limit = { has_variable = zg361_we_m274_native_resume_audit_scheduled }
+				var:zg361_we_m274_native_resume_audit_scheduled = 0
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_we_m274_native_resume_pending_owner value = $TICKET_OWNER$ }
+		set_variable = { name = zg361_we_m274_native_resume_pending_subject value = $TICKET_SUBJECT$ }
+		set_variable = { name = zg361_we_m274_native_resume_pending_cycle value = $TICKET_CYCLE$ }
+		set_variable = { name = zg361_we_m274_native_resume_pending_case value = $TICKET_CASE$ }
+		trigger_event = { id = zg361we.5370 days = 1 }
+		set_variable = { name = zg361_we_m274_native_resume_status value = 5 }
+		set_variable = { name = zg361_we_m274_native_resume_audit_scheduled value = 1 } # commit last
+	}
+	else_if = {
+		limit = {
+			var:zg361_we_m274_native_resume_audit_scheduled = 1
+			var:zg361_we_m274_native_resume_pending_owner = $TICKET_OWNER$
+			var:zg361_we_m274_native_resume_pending_subject = $TICKET_SUBJECT$
+			var:zg361_we_m274_native_resume_pending_cycle = $TICKET_CYCLE$
+			var:zg361_we_m274_native_resume_pending_case = $TICKET_CASE$
+		}
+		set_variable = { name = zg361_we_m274_native_resume_status value = 5 }
+	}
+	else = {
+		set_variable = { name = zg361_we_m274_native_resume_status value = 4 }
+		set_variable = { name = zg361_we_m274_native_resume_red_code value = 27490 }
+	}
+}
+
+zg361_we_resume_m274_after_native_appointment_effect = {
+	remove_variable = zg361_we_m274_native_resume_status
+	remove_variable = zg361_we_m274_native_resume_red_code
+	if = {
+		limit = {
+			has_variable = zg361_we_m274_native_resume_continuation_consumed
+			has_variable = zg361_we_m274_native_resume_continuation_owner
+			has_variable = zg361_we_m274_native_resume_continuation_subject
+			has_variable = zg361_we_m274_native_resume_continuation_cycle
+			has_variable = zg361_we_m274_native_resume_continuation_case
+			has_variable = zg361_we_m274_native_resume_continuation_mode
+			var:zg361_we_m274_native_resume_continuation_consumed = 1
+			var:zg361_we_m274_native_resume_continuation_owner = $TICKET_OWNER$
+			var:zg361_we_m274_native_resume_continuation_subject = $TICKET_SUBJECT$
+			var:zg361_we_m274_native_resume_continuation_cycle = $TICKET_CYCLE$
+			var:zg361_we_m274_native_resume_continuation_case = $TICKET_CASE$
+		}
+		set_variable = { name = zg361_we_m274_native_resume_status value = 2 }
+	}
+	else_if = {
+		limit = {
+			this = $TICKET_SUBJECT$
+			has_variable = zg361_we_m274_business_object_created
+			has_variable = zg361_we_m274_object_owner
+			has_variable = zg361_we_m274_object_subject
+			has_variable = zg361_we_m274_object_cycle
+			has_variable = zg361_we_m274_object_case
+			has_variable = zg361_we_m274_object_consumed
+			var:zg361_we_m274_business_object_created = 1
+			var:zg361_we_m274_object_owner = $TICKET_OWNER$
+			var:zg361_we_m274_object_subject = $TICKET_SUBJECT$
+			var:zg361_we_m274_object_cycle = $TICKET_CYCLE$
+			var:zg361_we_m274_object_case = $TICKET_CASE$
+			var:zg361_we_m274_object_consumed = 1
+			has_variable = zg361_workforce_appointment_fact_receipt_consumed
+			has_variable = zg361_workforce_appointment_fact_receipt_consumed_operation
+			var:zg361_workforce_appointment_fact_receipt_consumed = 1
+			var:zg361_workforce_appointment_fact_receipt_consumed_operation = 274
+		}
+		zg361_we_m274_postconsume_fact_handoff_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
+		set_variable = { name = zg361_we_m274_native_resume_status value = 5 }
+	}
+	else_if = {
+		limit = {
+			this = $TICKET_SUBJECT$
+			has_variable = zg361_workforce_appointment_fact_receipt_active
+			has_variable = zg361_workforce_appointment_fact_receipt_published
+			has_variable = zg361_workforce_appointment_fact_receipt_consumed
+			var:zg361_workforce_appointment_fact_receipt_active = 1
+			var:zg361_workforce_appointment_fact_receipt_published = 1
+			var:zg361_workforce_appointment_fact_receipt_consumed = 0
+			var:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+			var:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+			var:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+			var:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+		}
+		zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
+		zg361_we_queue_m274_appointment_ack_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
+	}
+	else_if = {
+		limit = {
+			this = $TICKET_SUBJECT$
+			trigger_if = {
+				limit = { has_variable = zg361_workforce_appointment_fact_status }
+				NOT = { var:zg361_workforce_appointment_fact_status = 4 }
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_we_queue_m274_appointment_ack_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
+	}
+	else = {
+		set_variable = { name = zg361_we_m274_native_resume_status value = 4 }
+		set_variable = { name = zg361_we_m274_native_resume_red_code value = 27491 }
+	}
+}

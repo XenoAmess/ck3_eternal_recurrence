@@ -1,0 +1,191 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: portfolio initialization and public manager entry.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_initialize_portfolio_effect = {
+	save_scope_as = zg361_we_portfolio_subject
+	root = { save_scope_as = zg361_we_portfolio_owner }
+	set_variable = { name = zg361_we_portfolio_cycle value = root.var:zg361_review_serial }
+	set_variable = { name = zg361_we_operation_total value = 40 }
+	set_variable = { name = zg361_we_operation_used value = 0 }
+	set_variable = { name = zg361_we_hours_total value = 400 }
+	set_variable = { name = zg361_we_hours_available value = 400 }
+	set_variable = { name = zg361_we_hours_output value = 0 }
+	set_variable = { name = zg361_we_hours_on_call value = 0 }
+	set_variable = { name = zg361_we_hours_meeting value = 0 }
+	set_variable = { name = zg361_we_hours_leave value = 0 }
+	set_variable = { name = zg361_we_hours_governance value = 0 }
+	if = { limit = { NOT = { has_variable = zg361_we_overtime_pending } } set_variable = { name = zg361_we_overtime_pending value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_leave_bank } } set_variable = { name = zg361_we_leave_bank value = 0 } }
+	# Gold and shadow-HC books are fixed-cap persistent books.  A new review
+	# never resets debt and never mints another allocation.
+	if = { limit = { NOT = { has_variable = zg361_we_gold_total } } set_variable = { name = zg361_we_gold_total value = 200 } }
+	if = { limit = { NOT = { has_variable = zg361_we_gold_available } } set_variable = { name = zg361_we_gold_available value = 200 } }
+	if = { limit = { NOT = { has_variable = zg361_we_gold_reserved } } set_variable = { name = zg361_we_gold_reserved value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_gold_paid } } set_variable = { name = zg361_we_gold_paid value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_contract_gold_reserved } } set_variable = { name = zg361_we_contract_gold_reserved value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_contract_gold_paid } } set_variable = { name = zg361_we_contract_gold_paid value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_contract_gold_recovered } } set_variable = { name = zg361_we_contract_gold_recovered value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_referral_gold_reserved } } set_variable = { name = zg361_we_referral_gold_reserved value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_referral_gold_paid } } set_variable = { name = zg361_we_referral_gold_paid value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_offer_gold_reserved } } set_variable = { name = zg361_we_offer_gold_reserved value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_offer_gold_paid } } set_variable = { name = zg361_we_offer_gold_paid value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_offer_gold_refunded } } set_variable = { name = zg361_we_offer_gold_refunded value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_target_gold_reserved } } set_variable = { name = zg361_we_target_gold_reserved value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_shadow_hc_total } } set_variable = { name = zg361_we_shadow_hc_total value = 4 } set_variable = { name = zg361_we_shadow_hc_available value = 4 } set_variable = { name = zg361_we_shadow_hc_active value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_shadow_hc_available } } set_variable = { name = zg361_we_shadow_hc_available value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_shadow_hc_active } } set_variable = { name = zg361_we_shadow_hc_active value = 0 } }
+	if = { limit = { NOT = { has_variable = zg361_we_manager_score } } set_variable = { name = zg361_we_manager_score value = 100 } }
+	if = { limit = { NOT = { has_variable = zg361_we_policy_debt } } set_variable = { name = zg361_we_policy_debt value = 0 } }
+	root = {
+		if = { limit = { NOT = { has_variable = zg361_we_realm_trust } } set_variable = { name = zg361_we_realm_trust value = 100 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_current_version } } set_variable = { name = zg361_we_realm_charter_current_version value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_previous_version } } set_variable = { name = zg361_we_realm_charter_previous_version value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_history_count } } set_variable = { name = zg361_we_realm_charter_history_count value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_current_id } } set_variable = { name = zg361_we_realm_charter_current_id value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_previous_id } } set_variable = { name = zg361_we_realm_charter_previous_id value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_current_report_id } } set_variable = { name = zg361_we_realm_charter_current_report_id value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_current_adopted_cycle } } set_variable = { name = zg361_we_realm_charter_current_adopted_cycle value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_current_effective_cycle } } set_variable = { name = zg361_we_realm_charter_current_effective_cycle value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_report_serial } } set_variable = { name = zg361_we_realm_charter_report_serial value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_charter_id_serial } } set_variable = { name = zg361_we_realm_charter_id_serial value = 0 } }
+		if = { limit = { NOT = { has_variable = zg361_we_realm_current_default_quota } } set_variable = { name = zg361_we_realm_current_default_quota value = 0 } set_variable = { name = zg361_we_realm_current_default_appeal value = 0 } set_variable = { name = zg361_we_realm_current_default_bonus value = 0 } set_variable = { name = zg361_we_realm_current_default_hc value = 0 } set_variable = { name = zg361_we_realm_current_default_manager_accountability value = 0 } set_variable = { name = zg361_we_realm_current_default_transparency value = 0 } }
+		if = {
+			limit = {
+				has_variable = zg361_we_realm_future_default_effective_cycle
+				var:zg361_review_serial >= var:zg361_we_realm_future_default_effective_cycle
+			}
+			set_variable = { name = zg361_we_realm_current_default_quota value = var:zg361_we_realm_future_default_quota }
+			set_variable = { name = zg361_we_realm_current_default_appeal value = var:zg361_we_realm_future_default_appeal }
+			set_variable = { name = zg361_we_realm_current_default_bonus value = var:zg361_we_realm_future_default_bonus }
+			set_variable = { name = zg361_we_realm_current_default_hc value = var:zg361_we_realm_future_default_hc }
+			set_variable = { name = zg361_we_realm_current_default_manager_accountability value = var:zg361_we_realm_future_default_manager_accountability }
+			set_variable = { name = zg361_we_realm_current_default_transparency value = var:zg361_we_realm_future_default_transparency }
+		}
+	}
+	set_variable = { name = zg361_we_portfolio_default_quota value = root.var:zg361_we_realm_current_default_quota }
+	set_variable = { name = zg361_we_portfolio_default_appeal value = root.var:zg361_we_realm_current_default_appeal }
+	set_variable = { name = zg361_we_portfolio_default_bonus value = root.var:zg361_we_realm_current_default_bonus }
+	set_variable = { name = zg361_we_portfolio_default_hc value = root.var:zg361_we_realm_current_default_hc }
+	set_variable = { name = zg361_we_portfolio_default_manager_accountability value = root.var:zg361_we_realm_current_default_manager_accountability }
+	set_variable = { name = zg361_we_portfolio_default_transparency value = root.var:zg361_we_realm_current_default_transparency }
+	set_variable = { name = zg361_we_portfolio_status value = 1 }
+	set_variable = { name = zg361_we_portfolio_closed value = 0 }
+	remove_variable = zg361_we_portfolio_terminal_history_accruing
+	remove_variable = zg361_we_portfolio_history_cycle_count
+	remove_variable = zg361_we_awaiting_al_357_359
+}
+
+zg361_we_open_portfolio_effect = {
+	remove_variable = zg361_we_runtime_applied
+	remove_variable = zg361_we_last_red_code
+	if = {
+		# Recovery opener is #361-only.  Central's READY-gated public resume is
+		# the sole path that may expose #360.
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			$SUBJECT$ = { zg361_is_reviewable_vassal_trigger = yes liege = root }
+			$SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }
+			$SUBJECT$ = {
+				has_variable = zg361_case_al_active
+				var:zg361_case_al_active = 1
+				var:zg361_case_al_owner = root
+				var:zg361_case_al_subject = this
+				var:zg361_case_al_cycle_serial = root.var:zg361_review_serial
+				var:zg361_case_al_state = 5
+				has_variable = zg361_we_al_external_stage_receipts_verified
+				var:zg361_we_al_external_stage_receipts_verified = 1
+				has_variable = zg361_we_al_external_receipt_owner
+				has_variable = zg361_we_al_external_receipt_subject
+				has_variable = zg361_we_al_external_receipt_cycle
+				has_variable = zg361_we_al_external_receipt_case
+				has_variable = zg361_we_al_external_receipt_state
+				has_variable = zg361_we_al_external_receipt_count
+				has_variable = zg361_we_al_external_last_operation
+				var:zg361_we_al_external_receipt_owner = root
+				var:zg361_we_al_external_receipt_subject = this
+				var:zg361_we_al_external_receipt_cycle = var:zg361_case_al_cycle_serial
+				var:zg361_we_al_external_receipt_case = var:zg361_case_al_case_serial
+				var:zg361_we_al_external_receipt_state = 4
+				var:zg361_we_al_external_receipt_count = 3
+				var:zg361_we_al_external_last_operation = 359
+			}
+			trigger_if = {
+				limit = { $SUBJECT$ = { var:zg361_case_al_state = 5 } }
+				root = {
+					trigger_if = {
+						limit = { exists = liege }
+						NOT = { liege = { zg361_is_celestial_liege_trigger = yes } }
+					}
+					trigger_else = { always = yes }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		$SUBJECT$ = {
+			remove_variable = zg361_we_awaiting_al_357_359
+			var:zg361_case_al_owner = { save_scope_as = zg361_we_al_owner }
+			save_scope_as = zg361_we_al_subject
+			save_scope_value_as = { name = zg361_we_al_cycle value = var:zg361_case_al_cycle_serial }
+			save_scope_value_as = { name = zg361_we_al_case value = var:zg361_case_al_case_serial }
+			if = {
+				limit = { var:zg361_case_al_state = 5 }
+				zg361_we_al_schedule_stage_05_deadline_effect = yes
+				if = {
+					limit = { root = { is_ai = yes } }
+					zg361_we_m361_route_a_effect = { TICKET_OWNER = var:zg361_case_al_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_al_cycle_serial TICKET_CASE = var:zg361_case_al_case_serial }
+				}
+				else = { root = { trigger_event = { id = zg361we.361 } } }
+			}
+		}
+	}
+	else_if = {
+		# Start one new portfolio. Replay cannot reset an active/same-cycle book.
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			trigger_if = { limit = { has_variable = zg361_we_ad_hc_flight_pending } var:zg361_we_ad_hc_flight_pending = 0 } trigger_else = { always = yes }
+			$SUBJECT$ = { zg361_is_reviewable_vassal_trigger = yes liege = root }
+			# Counts/barons are valid direct assessed subjects for AB/AC/AD. Only
+			# manager-specific routes and the AL #360/#361 resume require duke+.
+			$SUBJECT$ = {
+				has_variable = zg361_ch_hc_authorized
+				has_variable = zg361_ch_hc_available
+				has_variable = zg361_ch_hc_reserved
+				has_variable = zg361_ch_hc_occupied
+				has_variable = zg361_ch_hc_frozen
+				has_variable = zg361_ch_hc_reclaimed
+				trigger_if = { limit = { has_variable = zg361_we_m257_conversion_pending } var:zg361_we_m257_conversion_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m262_review_pending } var:zg361_we_m262_review_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m263_extension_pending } var:zg361_we_m263_extension_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m269_outcome_pending } var:zg361_we_m269_outcome_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m275_hold_pending } var:zg361_we_m275_hold_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m355_target_install_pending } var:zg361_we_m355_target_install_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m356_audit_pending } var:zg361_we_m356_audit_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m361_future_install_pending } var:zg361_we_m361_future_install_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m275_runner_reopen_pending } var:zg361_we_m275_runner_reopen_pending = 0 } trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_we_m266_hc_reservation_active } var:zg361_we_m266_hc_reservation_active = 0 } trigger_else = { always = yes }
+			}
+			$SUBJECT$ = {
+				trigger_if = { limit = { has_variable = zg361_we_portfolio_cycle } NOT = { var:zg361_we_portfolio_cycle = root.var:zg361_review_serial } }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_ab_active } var:zg361_case_ab_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_ac_active } var:zg361_case_ac_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_ad_active } var:zg361_case_ad_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_al_active } var:zg361_case_al_active = 0 }
+				trigger_else = { always = yes }
+			}
+		}
+		$SUBJECT$ = { zg361_we_ab_launch_effect = yes }
+	}
+	else = {
+		set_variable = { name = zg361_we_last_red_code value = 9001 }
+		set_variable = { name = zg361_we_runtime_status value = 4 }
+	}
+}

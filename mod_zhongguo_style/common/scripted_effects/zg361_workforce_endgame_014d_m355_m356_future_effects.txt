@@ -1,0 +1,144 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure M355 target install and M356 cutoff audit.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m355_target_install_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m355_write_owner
+					has_variable = zg361_we_m355_write_subject
+					has_variable = zg361_we_m355_write_cycle
+					has_variable = zg361_we_m355_write_case
+					has_variable = zg361_we_m355_write_state
+					has_variable = zg361_we_m355_receipt_owner
+					has_variable = zg361_we_m355_receipt_subject
+					has_variable = zg361_we_m355_receipt_cycle
+					has_variable = zg361_we_m355_receipt_case
+					has_variable = zg361_we_m355_receipt_state
+					has_variable = zg361_we_m355_receipt_choice
+				}
+				var:zg361_we_m355_write_subject = this
+				var:zg361_we_m355_write_owner = var:zg361_we_m355_receipt_owner
+				var:zg361_we_m355_write_subject = var:zg361_we_m355_receipt_subject
+				var:zg361_we_m355_write_cycle = var:zg361_we_m355_receipt_cycle
+				var:zg361_we_m355_write_case = var:zg361_we_m355_receipt_case
+				var:zg361_we_m355_write_state = var:zg361_we_m355_receipt_state
+				var:zg361_we_m355_receipt_state = 1
+				OR = { var:zg361_we_m355_receipt_choice = 1 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m355_target_install_pending = 1
+			has_variable = zg361_we_target_gold_reserved
+			var:zg361_we_target_gold_reserved >= 10
+			var:zg361_we_m355_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m355_effective_cycle gold >= 10 }
+		}
+		change_variable = { name = zg361_we_target_gold_reserved add = -10 }
+		change_variable = { name = zg361_we_gold_reserved add = -10 }
+		change_variable = { name = zg361_we_gold_paid add = 10 }
+		var:zg361_we_m355_write_owner = { remove_short_term_gold = 10 }
+		add_gold = 10
+		set_variable = { name = zg361_we_m355_target_install_pending value = 0 }
+		set_variable = { name = zg361_we_m355_target_installed_future_cycle value = var:zg361_we_m355_effective_cycle }
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m355_write_owner
+					has_variable = zg361_we_m355_write_subject
+					has_variable = zg361_we_m355_write_cycle
+					has_variable = zg361_we_m355_write_case
+					has_variable = zg361_we_m355_write_state
+					has_variable = zg361_we_m355_receipt_owner
+					has_variable = zg361_we_m355_receipt_subject
+					has_variable = zg361_we_m355_receipt_cycle
+					has_variable = zg361_we_m355_receipt_case
+					has_variable = zg361_we_m355_receipt_state
+					has_variable = zg361_we_m355_receipt_choice
+				}
+				var:zg361_we_m355_write_subject = this
+				var:zg361_we_m355_write_owner = var:zg361_we_m355_receipt_owner
+				var:zg361_we_m355_write_subject = var:zg361_we_m355_receipt_subject
+				var:zg361_we_m355_write_cycle = var:zg361_we_m355_receipt_cycle
+				var:zg361_we_m355_write_case = var:zg361_we_m355_receipt_case
+				var:zg361_we_m355_write_state = var:zg361_we_m355_receipt_state
+				var:zg361_we_m355_receipt_state = 1
+				OR = { var:zg361_we_m355_receipt_choice = 1 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m355_target_install_pending = 1
+		}
+		set_variable = { name = zg361_we_future_red_code value = 3551 }
+		trigger_event = { id = zg361we.5355 days = 90 }
+	}
+}
+
+zg361_we_m356_cutoff_audit_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m356_write_owner
+					has_variable = zg361_we_m356_write_subject
+					has_variable = zg361_we_m356_write_cycle
+					has_variable = zg361_we_m356_write_case
+					has_variable = zg361_we_m356_write_state
+					has_variable = zg361_we_m356_receipt_owner
+					has_variable = zg361_we_m356_receipt_subject
+					has_variable = zg361_we_m356_receipt_cycle
+					has_variable = zg361_we_m356_receipt_case
+					has_variable = zg361_we_m356_receipt_state
+					has_variable = zg361_we_m356_receipt_choice
+				}
+				var:zg361_we_m356_write_subject = this
+				var:zg361_we_m356_write_owner = var:zg361_we_m356_receipt_owner
+				var:zg361_we_m356_write_subject = var:zg361_we_m356_receipt_subject
+				var:zg361_we_m356_write_cycle = var:zg361_we_m356_receipt_cycle
+				var:zg361_we_m356_write_case = var:zg361_we_m356_receipt_case
+				var:zg361_we_m356_write_state = var:zg361_we_m356_receipt_state
+				var:zg361_we_m356_receipt_state = 1
+				OR = { var:zg361_we_m356_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m356_audit_pending = 1
+			var:zg361_we_m356_write_owner = { has_variable = zg361_review_serial var:zg361_review_serial >= root.var:zg361_we_m356_report_cycle }
+		}
+		set_variable = { name = zg361_we_m356_audit_pending value = 0 }
+		set_variable = { name = zg361_we_m356_audit_settled value = 1 }
+		set_variable = { name = zg361_we_m356_credited_cycle value = var:zg361_we_m356_completion_cycle }
+		set_variable = { name = zg361_we_m356_duplicate_credit_reversed value = 1 }
+		change_variable = { name = zg361_we_manager_score add = -5 }
+	}
+	else_if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_we_m356_write_owner
+					has_variable = zg361_we_m356_write_subject
+					has_variable = zg361_we_m356_write_cycle
+					has_variable = zg361_we_m356_write_case
+					has_variable = zg361_we_m356_write_state
+					has_variable = zg361_we_m356_receipt_owner
+					has_variable = zg361_we_m356_receipt_subject
+					has_variable = zg361_we_m356_receipt_cycle
+					has_variable = zg361_we_m356_receipt_case
+					has_variable = zg361_we_m356_receipt_state
+					has_variable = zg361_we_m356_receipt_choice
+				}
+				var:zg361_we_m356_write_subject = this
+				var:zg361_we_m356_write_owner = var:zg361_we_m356_receipt_owner
+				var:zg361_we_m356_write_subject = var:zg361_we_m356_receipt_subject
+				var:zg361_we_m356_write_cycle = var:zg361_we_m356_receipt_cycle
+				var:zg361_we_m356_write_case = var:zg361_we_m356_receipt_case
+				var:zg361_we_m356_write_state = var:zg361_we_m356_receipt_state
+				var:zg361_we_m356_receipt_state = 1
+				OR = { var:zg361_we_m356_receipt_choice = 2 }
+			}
+			trigger_else = { always = no }
+			var:zg361_we_m356_audit_pending = 1
+		}
+		trigger_event = { id = zg361we.5356 days = 90 }
+	}
+}

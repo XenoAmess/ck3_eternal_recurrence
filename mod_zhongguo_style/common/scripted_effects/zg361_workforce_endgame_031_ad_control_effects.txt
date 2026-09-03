@@ -1,0 +1,96 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AD domain controls.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_ad_initialize_effect = {
+	set_variable = { name = zg361_we_ad_visible_revision value = 0 }
+	remove_variable = zg361_we_open_requisition_266
+	remove_variable = zg361_we_m266_visible_value
+	remove_variable = zg361_we_assign_candidate_owner_273
+	remove_variable = zg361_we_m273_visible_value
+	remove_variable = zg361_we_register_referral_271
+	remove_variable = zg361_we_m271_visible_value
+	remove_variable = zg361_we_seal_interview_votes_267
+	remove_variable = zg361_we_m267_visible_value
+	remove_variable = zg361_we_calibrate_interviewers_268
+	remove_variable = zg361_we_m268_visible_value
+	remove_variable = zg361_we_set_hiring_risk_policy_270
+	remove_variable = zg361_we_m270_visible_value
+	remove_variable = zg361_we_issue_offer_272
+	remove_variable = zg361_we_m272_visible_value
+	remove_variable = zg361_we_resolve_counteroffer_274
+	remove_variable = zg361_we_m274_visible_value
+	remove_variable = zg361_we_handle_offer_refusal_275
+	remove_variable = zg361_we_m275_visible_value
+	remove_variable = zg361_we_write_back_hire_quality_269
+	remove_variable = zg361_we_m269_visible_value
+	remove_variable = zg361_we_register_rehire_276
+	remove_variable = zg361_we_m276_visible_value
+	remove_variable = zg361_we_record_pip_exit_277
+	remove_variable = zg361_we_m277_visible_value
+	set_variable = { name = zg361_we_ad_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s02_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s02_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s03_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s03_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s05_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_ad_s06_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_ad_s06_deadline_expired value = 0 }
+}
+
+zg361_we_ad_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_ad_subject
+				ACTIVE_VAR = zg361_case_ad_active
+			}
+		}
+		set_variable = { name = zg361_we_ad_subject_seen_revision value = var:zg361_we_ad_visible_revision }
+	}
+}
+
+zg361_we_ad_run_authorized_ai_effect = {
+	# The project owner's second AI exception is silent/background-only.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		zg361_we_m266_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ad_owner
+			TICKET_SUBJECT = scope:zg361_we_ad_subject
+			TICKET_CYCLE = scope:zg361_we_ad_cycle
+			TICKET_CASE = scope:zg361_we_ad_case
+		}
+		zg361_we_m273_route_a_effect = {
+			TICKET_OWNER = scope:zg361_we_ad_owner
+			TICKET_SUBJECT = scope:zg361_we_ad_subject
+			TICKET_CYCLE = scope:zg361_we_ad_cycle
+			TICKET_CASE = scope:zg361_we_ad_case
+		}
+	}
+}
+
+zg361_we_ad_launch_effect = {
+	remove_variable = zg361_we_runtime_applied
+	zg361_case_ad_open_effect = yes
+	if = {
+		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+		zg361_we_ad_initialize_effect = yes
+		var:zg361_case_ad_owner = { save_scope_as = zg361_we_ad_owner }
+		save_scope_as = zg361_we_ad_subject
+		save_scope_value_as = { name = zg361_we_ad_cycle value = var:zg361_case_ad_cycle_serial }
+		save_scope_value_as = { name = zg361_we_ad_case value = var:zg361_case_ad_case_serial }
+		zg361_we_ad_schedule_stage_01_deadline_effect = yes
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_we_ad_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_we_ad_owner = { trigger_event = { id = zg361we.266 } }
+		}
+	}
+}

@@ -1,0 +1,98 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AD stage 04-05 deadlines.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_ad_schedule_stage_04_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s04_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s04_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s04_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s04_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s04_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s04_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s04_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s04_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 4
+		DAYS = 90
+		EVENT = zg361we.4604
+	}
+}
+
+zg361_we_ad_timeout_stage_04_effect = {
+	zg361_we_m274_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 4
+	}
+	zg361_we_m275_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 4
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 5
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.269 } }
+	}
+	debug_log = "ZG361WE: AD stage 4 exact deadline consumed"
+}
+
+zg361_we_ad_schedule_stage_05_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ad_owner
+		SUBJECT_VAR = zg361_case_ad_subject
+		CYCLE_VAR = zg361_case_ad_cycle_serial
+		CASE_VAR = zg361_case_ad_case_serial
+		STATE_VAR = zg361_case_ad_state
+		ACTIVE_VAR = zg361_case_ad_active
+		DEADLINE_OWNER_VAR = zg361_we_ad_s05_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ad_s05_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ad_s05_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ad_s05_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ad_s05_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ad_s05_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ad_s05_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ad_s05_deadline_expired
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 5
+		DAYS = 90
+		EVENT = zg361we.4605
+	}
+}
+
+zg361_we_ad_timeout_stage_05_effect = {
+	zg361_we_m269_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ad_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ad_cycle_serial
+		TICKET_CASE = var:zg361_case_ad_case_serial
+		TICKET_STATE = 5
+	}
+	if = {
+		limit = {
+			var:zg361_case_ad_owner = { is_ai = no }
+			var:zg361_case_ad_state = 6
+		}
+		var:zg361_case_ad_owner = { trigger_event = { id = zg361we.276 } }
+	}
+	debug_log = "ZG361WE: AD stage 5 exact deadline consumed"
+}

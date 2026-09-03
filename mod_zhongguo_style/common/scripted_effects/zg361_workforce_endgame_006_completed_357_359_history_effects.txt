@@ -1,0 +1,183 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: completed AL 357-359 cycle history ledger.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_record_completed_357_359_history_effect = {
+	remove_variable = zg361_we_adapter_status
+	remove_variable = zg361_we_adapter_blocked_reason
+	save_scope_as = zg361_we_history_subject
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}
+			$TICKET_SUBJECT$ = this
+			has_variable = zg361_we_al_external_m357_owner
+			has_variable = zg361_we_al_external_m357_subject
+			has_variable = zg361_we_al_external_m357_cycle
+			has_variable = zg361_we_al_external_m357_case
+			has_variable = zg361_we_al_external_m357_state
+			has_variable = zg361_we_al_external_m357_receipt_id
+			has_variable = zg361_we_al_external_m357_receipt_hash
+			var:zg361_we_al_external_m357_owner = $TICKET_OWNER$
+			var:zg361_we_al_external_m357_subject = $TICKET_SUBJECT$
+			var:zg361_we_al_external_m357_cycle = $TICKET_CYCLE$
+			var:zg361_we_al_external_m357_case = $TICKET_CASE$
+			var:zg361_we_al_external_m357_state = 2
+			var:zg361_we_al_external_m357_receipt_id > 0
+			var:zg361_we_al_external_m357_receipt_hash > 0
+			has_variable = zg361_we_al_external_m358_owner
+			has_variable = zg361_we_al_external_m358_subject
+			has_variable = zg361_we_al_external_m358_cycle
+			has_variable = zg361_we_al_external_m358_case
+			has_variable = zg361_we_al_external_m358_state
+			has_variable = zg361_we_al_external_m358_receipt_id
+			has_variable = zg361_we_al_external_m358_receipt_hash
+			var:zg361_we_al_external_m358_owner = $TICKET_OWNER$
+			var:zg361_we_al_external_m358_subject = $TICKET_SUBJECT$
+			var:zg361_we_al_external_m358_cycle = $TICKET_CYCLE$
+			var:zg361_we_al_external_m358_case = $TICKET_CASE$
+			var:zg361_we_al_external_m358_state = 3
+			var:zg361_we_al_external_m358_receipt_id > 0
+			var:zg361_we_al_external_m358_receipt_hash > 0
+			has_variable = zg361_we_al_external_m359_owner
+			has_variable = zg361_we_al_external_m359_subject
+			has_variable = zg361_we_al_external_m359_cycle
+			has_variable = zg361_we_al_external_m359_case
+			has_variable = zg361_we_al_external_m359_state
+			has_variable = zg361_we_al_external_m359_receipt_id
+			has_variable = zg361_we_al_external_m359_receipt_hash
+			var:zg361_we_al_external_m359_owner = $TICKET_OWNER$
+			var:zg361_we_al_external_m359_subject = $TICKET_SUBJECT$
+			var:zg361_we_al_external_m359_cycle = $TICKET_CYCLE$
+			var:zg361_we_al_external_m359_case = $TICKET_CASE$
+			var:zg361_we_al_external_m359_state = 3
+			var:zg361_we_al_external_m359_receipt_id > 0
+			var:zg361_we_al_external_m359_receipt_hash > 0
+			NOT = { var:zg361_we_al_external_m357_receipt_id = var:zg361_we_al_external_m358_receipt_id }
+			NOT = { var:zg361_we_al_external_m357_receipt_id = var:zg361_we_al_external_m359_receipt_id }
+			NOT = { var:zg361_we_al_external_m358_receipt_id = var:zg361_we_al_external_m359_receipt_id }
+			NOT = { var:zg361_we_al_external_m357_receipt_hash = var:zg361_we_al_external_m358_receipt_hash }
+			NOT = { var:zg361_we_al_external_m357_receipt_hash = var:zg361_we_al_external_m359_receipt_hash }
+			NOT = { var:zg361_we_al_external_m358_receipt_hash = var:zg361_we_al_external_m359_receipt_hash }
+			$TICKET_OWNER$ = {
+				zg361_is_celestial_liege_trigger = yes
+				trigger_if = {
+					limit = { has_variable = zg361_we_completed_cycle_ledger_count var:zg361_we_completed_cycle_ledger_count > 0 }
+					has_variable = zg361_we_completed_cycle_ledger_last_cycle
+					var:zg361_we_completed_cycle_ledger_last_cycle < $TICKET_CYCLE$
+				}
+				trigger_else = { always = yes }
+			}
+		}
+		$TICKET_OWNER$ = {
+			if = { limit = { NOT = { has_variable = zg361_we_completed_cycle_ledger_count } } set_variable = { name = zg361_we_completed_cycle_ledger_count value = 0 } }
+			if = {
+				limit = { var:zg361_we_completed_cycle_ledger_count >= 3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_owner_1 value = var:zg361_we_completed_cycle_ledger_owner_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_subject_1 value = var:zg361_we_completed_cycle_ledger_subject_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_cycle_1 value = var:zg361_we_completed_cycle_ledger_cycle_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_case_1 value = var:zg361_we_completed_cycle_ledger_case_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_id_1 value = var:zg361_we_completed_cycle_ledger_m357_receipt_id_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_hash_1 value = var:zg361_we_completed_cycle_ledger_m357_receipt_hash_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_id_1 value = var:zg361_we_completed_cycle_ledger_m358_receipt_id_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_hash_1 value = var:zg361_we_completed_cycle_ledger_m358_receipt_hash_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_id_1 value = var:zg361_we_completed_cycle_ledger_m359_receipt_id_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_hash_1 value = var:zg361_we_completed_cycle_ledger_m359_receipt_hash_2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_owner_2 value = var:zg361_we_completed_cycle_ledger_owner_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_subject_2 value = var:zg361_we_completed_cycle_ledger_subject_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_cycle_2 value = var:zg361_we_completed_cycle_ledger_cycle_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_case_2 value = var:zg361_we_completed_cycle_ledger_case_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_id_2 value = var:zg361_we_completed_cycle_ledger_m357_receipt_id_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_hash_2 value = var:zg361_we_completed_cycle_ledger_m357_receipt_hash_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_id_2 value = var:zg361_we_completed_cycle_ledger_m358_receipt_id_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_hash_2 value = var:zg361_we_completed_cycle_ledger_m358_receipt_hash_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_id_2 value = var:zg361_we_completed_cycle_ledger_m359_receipt_id_3 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_hash_2 value = var:zg361_we_completed_cycle_ledger_m359_receipt_hash_3 }
+			}
+			if = { limit = { var:zg361_we_completed_cycle_ledger_count < 3 } change_variable = { name = zg361_we_completed_cycle_ledger_count add = 1 } }
+			if = {
+				limit = { var:zg361_we_completed_cycle_ledger_count = 1 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_owner_1 value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_subject_1 value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_cycle_1 value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_case_1 value = $TICKET_CASE$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_id_1 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_hash_1 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_hash }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_id_1 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_hash_1 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_hash }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_id_1 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_hash_1 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_hash }
+			}
+			else_if = {
+				limit = { var:zg361_we_completed_cycle_ledger_count = 2 }
+				set_variable = { name = zg361_we_completed_cycle_ledger_owner_2 value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_subject_2 value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_cycle_2 value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_case_2 value = $TICKET_CASE$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_id_2 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_hash_2 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_hash }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_id_2 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_hash_2 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_hash }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_id_2 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_hash_2 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_hash }
+			}
+			else = {
+				set_variable = { name = zg361_we_completed_cycle_ledger_owner_3 value = $TICKET_OWNER$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_subject_3 value = $TICKET_SUBJECT$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_cycle_3 value = $TICKET_CYCLE$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_case_3 value = $TICKET_CASE$ }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_id_3 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m357_receipt_hash_3 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_hash }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_id_3 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m358_receipt_hash_3 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_hash }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_id_3 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_id }
+				set_variable = { name = zg361_we_completed_cycle_ledger_m359_receipt_hash_3 value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_hash }
+			}
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_m357_receipt_id value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_id }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_m357_receipt_hash value = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_hash }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_m358_receipt_id value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_id }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_m358_receipt_hash value = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_hash }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_m359_receipt_id value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_id }
+			set_variable = { name = zg361_we_completed_cycle_ledger_last_m359_receipt_hash value = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_hash }
+		}
+		set_variable = { name = zg361_we_adapter_status value = 1 }
+	}
+	else_if = {
+		limit = {
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = {
+				has_variable = zg361_we_completed_cycle_ledger_last_owner
+				has_variable = zg361_we_completed_cycle_ledger_last_subject
+				has_variable = zg361_we_completed_cycle_ledger_last_cycle
+				has_variable = zg361_we_completed_cycle_ledger_last_case
+				has_variable = zg361_we_completed_cycle_ledger_last_m357_receipt_id
+				has_variable = zg361_we_completed_cycle_ledger_last_m357_receipt_hash
+				has_variable = zg361_we_completed_cycle_ledger_last_m358_receipt_id
+				has_variable = zg361_we_completed_cycle_ledger_last_m358_receipt_hash
+				has_variable = zg361_we_completed_cycle_ledger_last_m359_receipt_id
+				has_variable = zg361_we_completed_cycle_ledger_last_m359_receipt_hash
+				var:zg361_we_completed_cycle_ledger_last_owner = $TICKET_OWNER$
+				var:zg361_we_completed_cycle_ledger_last_subject = $TICKET_SUBJECT$
+				var:zg361_we_completed_cycle_ledger_last_cycle = $TICKET_CYCLE$
+				var:zg361_we_completed_cycle_ledger_last_case = $TICKET_CASE$
+				var:zg361_we_completed_cycle_ledger_last_m357_receipt_id = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_id
+				var:zg361_we_completed_cycle_ledger_last_m357_receipt_hash = scope:zg361_we_history_subject.var:zg361_we_al_external_m357_receipt_hash
+				var:zg361_we_completed_cycle_ledger_last_m358_receipt_id = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_id
+				var:zg361_we_completed_cycle_ledger_last_m358_receipt_hash = scope:zg361_we_history_subject.var:zg361_we_al_external_m358_receipt_hash
+				var:zg361_we_completed_cycle_ledger_last_m359_receipt_id = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_id
+				var:zg361_we_completed_cycle_ledger_last_m359_receipt_hash = scope:zg361_we_history_subject.var:zg361_we_al_external_m359_receipt_hash
+			}
+		}
+		set_variable = { name = zg361_we_adapter_status value = 2 }
+	}
+	else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 3611 } }
+}

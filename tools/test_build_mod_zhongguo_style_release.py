@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 import zipfile
+from collections import Counter
 from contextlib import contextmanager
 from pathlib import Path, PurePosixPath
 from unittest import mock
@@ -18,6 +19,8 @@ from unittest import mock
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_mod_zhongguo_style_release as release  # noqa: E402
+sys.path.insert(0, str(release.DEFAULT_SOURCE / "tools"))
+import gen_361_workforce_endgame_runtime as workforce_gen  # noqa: E402
 
 
 REVISION = "a" * 40
@@ -29,12 +32,96 @@ DESCRIPTOR = (
     b'picture="thumbnail.png"\n'
     b'supported_version="1.19.0.6"\n'
 )
+WORKFORCE_LEGACY_EFFECT_FILENAME = "zg361_workforce_endgame_runtime_effects.txt"
+WORKFORCE_SHARD_GLOB = "zg361_workforce_endgame_*_effects.txt"
+WORKFORCE_SHARD_COUNT = 76
+WORKFORCE_EFFECT_COUNT = 324
 
 
 def thumbnail_bytes(width: int = 640, height: int = 640) -> bytes:
     # The builder verifies the PNG signature/IHDR dimensions and the Steam size
     # limit; image decoding belongs to the asset compositor/static validator.
     return release.PNG_SIGNATURE + b"\x00\x00\x00\x0dIHDR" + struct.pack(">II", width, height) + b"fixture"
+
+
+def paradox_top_level_assignment_names(text: str) -> tuple[str, ...]:
+    """Parse true top-level ``name = { ... }`` assignments by brace depth."""
+
+    names: list[str] = []
+    depth = 0
+    index = 0
+
+    def skip_layout(cursor: int) -> int:
+        while cursor < len(text):
+            if text[cursor].isspace():
+                cursor += 1
+                continue
+            if text[cursor] == "#":
+                newline = text.find("\n", cursor)
+                cursor = len(text) if newline < 0 else newline + 1
+                continue
+            break
+        return cursor
+
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            newline = text.find("\n", index)
+            index = len(text) if newline < 0 else newline + 1
+            continue
+        if char == '"':
+            index += 1
+            escaped = False
+            while index < len(text):
+                char = text[index]
+                index += 1
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    break
+            else:
+                raise AssertionError("unterminated quoted string in Paradox script")
+            continue
+        if char == "{":
+            depth += 1
+            index += 1
+            continue
+        if char == "}":
+            depth -= 1
+            if depth < 0:
+                raise AssertionError("unexpected closing brace in Paradox script")
+            index += 1
+            continue
+        if depth != 0 or char.isspace():
+            index += 1
+            continue
+
+        start = index
+        while index < len(text) and not (
+            text[index].isspace() or text[index] in '=\"#{}'
+        ):
+            index += 1
+        if index == start:
+            index += 1
+            continue
+        name = text[start:index]
+        cursor = skip_layout(index)
+        if cursor >= len(text) or text[cursor] != "=":
+            index = cursor
+            continue
+        cursor = skip_layout(cursor + 1)
+        if cursor >= len(text) or text[cursor] != "{":
+            index = cursor
+            continue
+        names.append(name)
+        depth = 1
+        index = cursor + 1
+
+    if depth != 0:
+        raise AssertionError(f"unclosed brace depth {depth} in Paradox script")
+    return tuple(names)
 
 
 class ZhongGuo361ReleaseTests(unittest.TestCase):
@@ -91,6 +178,35 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
             revision=REVISION,
             **kwargs,
         )
+
+    def assert_workforce_shard_inventory(
+        self, product_root: Path
+    ) -> tuple[tuple[str, ...], tuple[str, ...]]:
+        effects = product_root / "common/scripted_effects"
+        self.assertFalse(
+            effects.joinpath(WORKFORCE_LEGACY_EFFECT_FILENAME).exists(),
+            f"legacy workforce effect monolith leaked into {product_root}",
+        )
+        expected_files = tuple(group.filename for group in workforce_gen.EFFECT_GROUPS)
+        self.assertEqual(WORKFORCE_SHARD_COUNT, len(expected_files))
+        self.assertEqual(WORKFORCE_SHARD_COUNT, len(set(expected_files)))
+        shards = tuple(sorted(effects.glob(WORKFORCE_SHARD_GLOB)))
+        self.assertEqual(WORKFORCE_SHARD_COUNT, len(shards))
+        self.assertEqual(tuple(sorted(expected_files)), tuple(path.name for path in shards))
+
+        definitions: list[str] = []
+        for path in shards:
+            names = paradox_top_level_assignment_names(
+                path.read_text(encoding="utf-8-sig")
+            )
+            self.assertTrue(names, f"workforce effect shard is empty: {path.name}")
+            definitions.extend(names)
+        counts = Counter(definitions)
+        duplicates = sorted(name for name, count in counts.items() if count != 1)
+        self.assertEqual([], duplicates, "duplicate workforce top-level effects")
+        self.assertEqual(WORKFORCE_EFFECT_COUNT, len(definitions))
+        self.assertEqual(WORKFORCE_EFFECT_COUNT, len(counts))
+        return tuple(path.name for path in shards), tuple(definitions)
 
     @staticmethod
     def launcher_descriptor(
@@ -158,6 +274,23 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
                     [item.filename for item in archive.infolist()],
                 )
                 self.assertTrue(all(item.date_time == release.ZIP_TIMESTAMP for item in archive.infolist()))
+
+    def test_workforce_effect_shards_are_exact_in_canonical_and_release_trees(self):
+        canonical = release.DEFAULT_SOURCE.resolve()
+        canonical_files, canonical_definitions = self.assert_workforce_shard_inventory(
+            canonical
+        )
+        with tempfile.TemporaryDirectory(prefix="zhongguo-361-workforce-release-test-") as name:
+            staging, _, _, _ = release.build_release(
+                canonical,
+                Path(name) / release.PRODUCT_ID,
+                revision=REVISION,
+            )
+            release_files, release_definitions = self.assert_workforce_shard_inventory(
+                staging
+            )
+        self.assertEqual(canonical_files, release_files)
+        self.assertEqual(canonical_definitions, release_definitions)
 
     def test_reproducibility_api_and_versioned_sidecars(self):
         with self.fixture() as (root, source):

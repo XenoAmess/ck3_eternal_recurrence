@@ -1,0 +1,47 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure AL stage 01 deadline.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_al_schedule_stage_01_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		ACTIVE_VAR = zg361_case_al_active
+		DEADLINE_OWNER_VAR = zg361_we_al_s01_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_al_s01_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_al_s01_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_al_s01_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_al_s01_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_al_s01_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_al_s01_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_al_s01_deadline_expired
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 1
+		DAYS = 180
+		EVENT = zg361we.4801
+	}
+}
+
+zg361_we_al_timeout_stage_01_effect = {
+	zg361_we_m355_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m356_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_al_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_al_cycle_serial
+		TICKET_CASE = var:zg361_case_al_case_serial
+		TICKET_STATE = 1
+	}
+	debug_log = "ZG361WE: AL stage 1 exact deadline consumed"
+}

@@ -1,0 +1,21 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure AL initialization.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_al_initialize_effect = {
+	set_variable = { name = zg361_we_al_visible_revision value = 0 }
+	remove_variable = zg361_we_apply_target_ratchet_355
+	remove_variable = zg361_we_m355_visible_value
+	remove_variable = zg361_we_settle_outcome_timing_356
+	remove_variable = zg361_we_m356_visible_value
+	remove_variable = zg361_we_resolve_collective_action_360
+	remove_variable = zg361_we_m360_visible_value
+	remove_variable = zg361_we_adopt_charter_361
+	remove_variable = zg361_we_m361_visible_value
+	set_variable = { name = zg361_we_al_s01_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_al_s01_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_al_s04_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_al_s04_deadline_expired value = 0 }
+	set_variable = { name = zg361_we_al_s05_deadline_pending value = 0 }
+	set_variable = { name = zg361_we_al_s05_deadline_expired value = 0 }
+}

@@ -1,0 +1,74 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AD M277 closed-PIP exit adapter.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_submit_m277_closed_pip_exit_effect = {
+	remove_variable = zg361_we_adapter_status
+	remove_variable = zg361_we_adapter_blocked_reason
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+			}
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+			$TICKET_SUBJECT$ = this
+			trigger_if = { limit = { has_variable = zg361_we_ad_external_pip_exit_ready } var:zg361_we_ad_external_pip_exit_ready = 0 } trigger_else = { always = yes }
+			has_variable = zg361_we_m274_hired
+			has_variable = zg361_we_m274_position_type_id
+			has_variable = zg361_we_formal_hc_active
+			has_variable = zg361_we_formal_hc_active_case
+			var:zg361_we_m274_hired = 1
+			var:zg361_we_m274_position_type_id > 0
+			var:zg361_we_formal_hc_active = 1
+			var:zg361_we_formal_hc_active_case = $TICKET_CASE$
+			has_variable = zg361_b2_workforce_pip_pending
+			has_variable = zg361_b2_workforce_pip_consumed
+			has_variable = zg361_b2_workforce_pip_owner
+			has_variable = zg361_b2_workforce_pip_subject
+			has_variable = zg361_b2_workforce_pip_cycle
+			has_variable = zg361_b2_workforce_pip_case
+			has_variable = zg361_b2_workforce_pip_state
+			has_variable = zg361_b2_workforce_pip_case_id
+			has_variable = zg361_b2_workforce_pip_case_hash
+			has_variable = zg361_b2_workforce_pip_closure_receipt_id
+			has_variable = zg361_b2_workforce_pip_closure_receipt_hash
+			var:zg361_b2_workforce_pip_pending = 1
+			var:zg361_b2_workforce_pip_consumed = 0
+			var:zg361_b2_workforce_pip_owner = $TICKET_OWNER$
+			var:zg361_b2_workforce_pip_subject = $TICKET_SUBJECT$
+			var:zg361_b2_workforce_pip_cycle > 0
+			var:zg361_b2_workforce_pip_case > 0
+			OR = {
+				var:zg361_b2_workforce_pip_state = 3
+				var:zg361_b2_workforce_pip_state = 4
+			}
+			var:zg361_b2_workforce_pip_case_id > 0
+			var:zg361_b2_workforce_pip_case_hash > 0
+			var:zg361_b2_workforce_pip_closure_receipt_id > 0
+			var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+			NOT = { var:zg361_b2_workforce_pip_case_id = var:zg361_b2_workforce_pip_closure_receipt_id }
+			NOT = { var:zg361_b2_workforce_pip_case_hash = var:zg361_b2_workforce_pip_closure_receipt_hash }
+			$EXIT_CONFIRMED$ = 1 $EXIT_RECEIPT_ID$ > 0 $EXIT_RECEIPT_HASH$ > 0
+			$FORMER_SLOT_ID$ > 0
+			$DISPLACED_HOURS$ >= 0 $DISPLACED_COST_RECEIPT$ > 0
+			$EXITED_CHARACTER$ = $TICKET_SUBJECT$
+			NOT = { $EXIT_RECEIPT_ID$ = var:zg361_b2_workforce_pip_case_id }
+			NOT = { $EXIT_RECEIPT_ID$ = var:zg361_b2_workforce_pip_closure_receipt_id }
+			NOT = { $EXIT_RECEIPT_HASH$ = var:zg361_b2_workforce_pip_case_hash }
+			NOT = { $EXIT_RECEIPT_HASH$ = var:zg361_b2_workforce_pip_closure_receipt_hash }
+		}
+		set_variable = { name = zg361_we_ad_external_pip_exit_ready value = 1 }
+		set_variable = { name = zg361_we_ad_external_pip_exit_consumed value = 0 }
+		set_variable = { name = zg361_we_ad_external_exit_receipt_id value = $EXIT_RECEIPT_ID$ }
+		set_variable = { name = zg361_we_ad_external_exit_receipt_hash value = $EXIT_RECEIPT_HASH$ }
+		set_variable = { name = zg361_we_ad_external_exit_former_slot_id value = $FORMER_SLOT_ID$ }
+		set_variable = { name = zg361_we_ad_external_exit_displaced_hours value = $DISPLACED_HOURS$ }
+		set_variable = { name = zg361_we_ad_external_exit_displaced_cost_receipt value = $DISPLACED_COST_RECEIPT$ }
+		set_variable = { name = zg361_we_adapter_status value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 2771 } }
+}

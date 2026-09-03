@@ -1,0 +1,156 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AB stage 01-03 deadlines.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_ab_schedule_stage_01_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s01_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s01_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s01_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s01_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s01_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s01_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s01_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s01_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 1
+		DAYS = 90
+		EVENT = zg361we.4201
+	}
+}
+
+zg361_we_ab_timeout_stage_01_effect = {
+	zg361_we_m242_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 1
+	}
+	zg361_we_m243_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 1
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 2
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.244 } }
+	}
+	debug_log = "ZG361WE: AB stage 1 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_02_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s02_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s02_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s02_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s02_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s02_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s02_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s02_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s02_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 2
+		DAYS = 90
+		EVENT = zg361we.4202
+	}
+}
+
+zg361_we_ab_timeout_stage_02_effect = {
+	zg361_we_m244_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 2
+	}
+	zg361_we_m245_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 2
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 3
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.246 } }
+	}
+	debug_log = "ZG361WE: AB stage 2 exact deadline consumed"
+}
+
+zg361_we_ab_schedule_stage_03_deadline_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		ACTIVE_VAR = zg361_case_ab_active
+		DEADLINE_OWNER_VAR = zg361_we_ab_s03_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_we_ab_s03_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_we_ab_s03_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_we_ab_s03_deadline_case
+		DEADLINE_STATE_VAR = zg361_we_ab_s03_deadline_state
+		DEADLINE_DAYS_VAR = zg361_we_ab_s03_deadline_days
+		DEADLINE_PENDING_VAR = zg361_we_ab_s03_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_we_ab_s03_deadline_expired
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 3
+		DAYS = 90
+		EVENT = zg361we.4203
+	}
+}
+
+zg361_we_ab_timeout_stage_03_effect = {
+	zg361_we_m246_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 3
+	}
+	zg361_we_m247_route_c_effect = {
+		TICKET_OWNER = var:zg361_case_ab_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_ab_cycle_serial
+		TICKET_CASE = var:zg361_case_ab_case_serial
+		TICKET_STATE = 3
+	}
+	if = {
+		limit = {
+			var:zg361_case_ab_owner = { is_ai = no }
+			var:zg361_case_ab_state = 4
+		}
+		var:zg361_case_ab_owner = { trigger_event = { id = zg361we.248 } }
+	}
+	debug_log = "ZG361WE: AB stage 3 exact deadline consumed"
+}

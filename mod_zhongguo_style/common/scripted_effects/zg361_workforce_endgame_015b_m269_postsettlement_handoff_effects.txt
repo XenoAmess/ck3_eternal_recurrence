@@ -1,0 +1,100 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: B2 closure M269 post-settlement handoff.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m269_postsettlement_handoff_effect = {
+	remove_variable = zg361_we_m269_postsettlement_status
+	if = {
+		limit = {
+			has_variable = zg361_we_m269_postsettlement_pending
+			has_variable = zg361_we_m269_postsettlement_phase
+			has_variable = zg361_we_m269_postsettlement_owner
+			has_variable = zg361_we_m269_postsettlement_subject
+			has_variable = zg361_we_m269_postsettlement_cycle
+			has_variable = zg361_we_m269_postsettlement_case
+			has_variable = zg361_we_m269_outcome_settled
+			has_variable = zg361_we_m269_outcome_pending
+			has_variable = zg361_we_m269_write_owner
+			has_variable = zg361_we_m269_write_cycle
+			has_variable = zg361_we_m269_write_case
+			has_variable = zg361_case_ad_state
+			var:zg361_we_m269_postsettlement_pending = 1
+			var:zg361_we_m269_postsettlement_phase = 1
+			var:zg361_we_m269_postsettlement_subject = this
+			var:zg361_case_ad_state = 5
+			var:zg361_we_m269_outcome_settled = 1
+			var:zg361_we_m269_outcome_pending = 0
+			var:zg361_we_m269_postsettlement_owner = var:zg361_we_m269_write_owner
+			var:zg361_we_m269_postsettlement_cycle = var:zg361_we_m269_write_cycle
+			var:zg361_we_m269_postsettlement_case = var:zg361_we_m269_write_case
+			has_variable = zg361_we_m269_attribution_signature_receipt_id
+			has_variable = zg361_we_m269_attribution_signature_receipt_hash
+		}
+		set_variable = { name = zg361_we_m269_postsettlement_phase value = 2 }
+		zg361_workforce_probation_fact_finalize_consumption_receipt_effect = yes
+		zg361_case_ad_advance_05_effect = {
+			TICKET_OWNER = var:zg361_we_m269_postsettlement_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_we_m269_postsettlement_cycle
+			TICKET_CASE = var:zg361_we_m269_postsettlement_case
+		}
+		trigger_event = { id = zg361we.5377 days = 1 }
+		set_variable = { name = zg361_we_m269_postsettlement_status value = 5 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_we_m269_postsettlement_pending
+			has_variable = zg361_we_m269_postsettlement_phase
+			has_variable = zg361_we_m269_postsettlement_owner
+			has_variable = zg361_we_m269_postsettlement_subject
+			has_variable = zg361_we_m269_postsettlement_cycle
+			has_variable = zg361_we_m269_postsettlement_case
+			has_variable = zg361_case_ad_state
+			has_variable = zg361_case_ad_owner
+			has_variable = zg361_case_ad_subject
+			has_variable = zg361_case_ad_cycle_serial
+			has_variable = zg361_case_ad_case_serial
+			var:zg361_we_m269_postsettlement_pending = 1
+			var:zg361_we_m269_postsettlement_phase = 2
+			var:zg361_we_m269_postsettlement_subject = this
+			var:zg361_case_ad_state = 6
+			var:zg361_case_ad_owner = var:zg361_we_m269_postsettlement_owner
+			var:zg361_case_ad_subject = this
+			var:zg361_case_ad_cycle_serial = var:zg361_we_m269_postsettlement_cycle
+			var:zg361_case_ad_case_serial = var:zg361_we_m269_postsettlement_case
+		}
+		zg361_we_ad_schedule_stage_06_deadline_effect = yes
+		if = {
+			limit = {
+				has_variable = zg361_workforce_rehire_fact_state
+				var:zg361_workforce_rehire_fact_state = 1
+			}
+			zg361_workforce_rehire_fact_capture_growth_effect = yes
+		}
+		else_if = {
+			limit = {
+				has_variable = zg361_workforce_rehire_fact_state
+				has_variable = zg361_workforce_rehire_fact_published
+				has_variable = zg361_workforce_rehire_fact_consumed
+				has_variable = zg361_workforce_rehire_fact_exit_owner
+				var:zg361_workforce_rehire_fact_state = 2
+				var:zg361_workforce_rehire_fact_published = 1
+				var:zg361_workforce_rehire_fact_consumed = 0
+				var:zg361_workforce_rehire_fact_exit_owner = var:zg361_we_m269_postsettlement_owner
+			}
+			set_variable = { name = zg361_we_m276_rehire_prepare_owner value = var:zg361_we_m269_postsettlement_owner }
+			set_variable = { name = zg361_we_m276_rehire_prepare_subject value = this }
+			set_variable = { name = zg361_we_m276_rehire_prepare_cycle value = var:zg361_we_m269_postsettlement_cycle }
+			set_variable = { name = zg361_we_m276_rehire_prepare_case value = var:zg361_we_m269_postsettlement_case }
+			zg361_workforce_rehire_fact_prepare_m276_effect = yes
+			trigger_event = { id = zg361we.5379 days = 1 }
+			set_variable = { name = zg361_we_m276_rehire_prepare_pending value = 1 } # commit last
+		}
+		set_variable = { name = zg361_we_m269_postsettlement_ready value = 1 }
+		set_variable = { name = zg361_we_m269_postsettlement_status value = 1 }
+		set_variable = { name = zg361_we_m269_postsettlement_pending value = 0 }
+	}
+	else = {
+		set_variable = { name = zg361_we_m269_postsettlement_status value = 4 }
+		set_variable = { name = zg361_we_m269_postsettlement_red_code value = 26961 }
+	}
+}

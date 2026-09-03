@@ -49,6 +49,8 @@
 | activity `on_complete` 中直接 `every_attending_character` 报 `Inconsistent effect scopes (character vs. activity)` | `on_complete` 入口是 host character scope，而 attending-character 迭代器需要 activity scope | 仿原版 activity：先 `scope:activity = { every_attending_character = { ... } }`。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
 | 自定义 activity phase 加载时报 `gfx/interface/icons/activity_phases/<phase>.dds not found` | phase key 会隐式映射同名 DDS，只写本地化不会复用活动本身的图标 | 提供同名 phase DDS，或在语义合适时复用已随本体发布的 phase key（如 `imperial_examination_phase_examination`）。2026-08-28 CK3 1.19.0.6 主菜单加载实测 |
 | `ordered_in_list` 明明有多项，却只执行一次 | `ordered_*` 没写 `max` 时默认只取排名第一项，不等价于 `every_in_list` | 需要全量排序迭代时显式写 `max = list_size:<list>`。2026-08-28 CK3 1.19.0.6 三人以上官员榜实测只产生 1 行定位 |
+| 拆分 generated effect 时，行首正则多算出“重复顶层定义” | 生成器插值出的嵌套 scripted-effect 调用可能没有缩进、同样顶格；行首形状不代表 brace depth 为 0 | 顶层 block 扫描必须忽略注释/字符串并跟踪花括号深度，只在 depth 0 接受定义。2026-09-04 Workforce 4.64 MB 单体静态取证：行首正则误报 326，brace-depth 结果为 324 |
+| 静态可达扫描显示 effect/event 闭包齐全，投影仍缺 deadline 事件 | 事件 ID 不只会出现在 `trigger_event = { id = ... }`；通用 helper 还可用 `EVENT = zg361we.<id>` 作为 scripted-effect 参数传递 | 闭包扫描同时识别 literal `id =` 与已冻结的 event-ID 参数 ABI，并继续展开目标事件。2026-09-04 B2/Workforce 静态取证：旧扫描漏 4 个事件与 3 个后继 effect，`68/24` 更正为 `71/28`；尚待该候选 CK3 实机互证 |
 
 ## 变量
 
