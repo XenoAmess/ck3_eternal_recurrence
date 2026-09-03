@@ -1309,6 +1309,184 @@ def test_native_session_process_exit_cleanup() -> None:
         )
 
 
+def _known_predecessor_context(root_character_id: int = 29037) -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 5,
+        "date_raw": capture.KNOWN_PRE_BOOTSTRAP_EVENT["date_raw"],
+        "current_event_instance_id": 10,
+        "window_match_count": 1,
+        "event_definition_key": capture.KNOWN_PRE_BOOTSTRAP_EVENT[
+            "event_definition_key"
+        ],
+        "calculated_event_id": capture.KNOWN_PRE_BOOTSTRAP_EVENT[
+            "calculated_event_id"
+        ],
+        "root_scope": {
+            "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": root_character_id,
+            }
+        },
+        "saved_scopes": [
+            {
+                "name": "zg361_reviewing_superior",
+                "scope": {
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": 32904,
+                    }
+                },
+            }
+        ],
+        "options": [
+            {
+                "rendered_index": index,
+                "native_option_index": index,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+            for index in range(4)
+        ],
+    }
+
+
+class KnownPredecessorService:
+    def __init__(self, *, root_character_id: int = 29037) -> None:
+        self.state = "predecessor"
+        self.revision = 5
+        self.root_character_id = root_character_id
+        self.selections: list[tuple[int, int, int]] = []
+
+    def snapshot(self) -> dict[str, object]:
+        active_event = (
+            {"instance_id": 10, "option_count": 4}
+            if self.state == "predecessor"
+            else {"instance_id": 11, "option_count": 1}
+        )
+        return {
+            "revision": self.revision,
+            "date_raw": capture.KNOWN_PRE_BOOTSTRAP_EVENT["date_raw"],
+            "paused": True,
+            "map_ready": True,
+            "speed": 1,
+            "active_event": active_event,
+        }
+
+    def query_current_event_window_context_v1(
+        self, event_instance_id: int, **_kwargs: object
+    ) -> dict[str, object]:
+        if self.state == "predecessor":
+            require(event_instance_id == 10, "wrong predecessor instance queried")
+            return {
+                "current_event_window_context": _known_predecessor_context(
+                    self.root_character_id
+                )
+            }
+        require(event_instance_id == 11, "wrong seed instance queried")
+        return {
+            "current_event_window_context": {
+                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+            }
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        self.selections.append(
+            (option_number, event_instance_id, expected_revision)
+        )
+        require(self.state == "predecessor", "predecessor selected twice")
+        self.state = "seed"
+        self.revision += 1
+        return {
+            "step": "select-event-option-1",
+            "accepted": True,
+            "status": "submitted",
+            "option_number": 1,
+            "option_index": 0,
+            "event_selection": {
+                "postcondition_verified": True,
+                "old_event_instance_id": 10,
+                "new_event_instance_id": 11,
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+        }
+
+
+def test_exact_known_predecessor_is_drained_once() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownPredecessorService()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_EVENT[
+                "source_save_sha256"
+            ],
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        require(
+            snapshot["active_event"] == {"instance_id": 11, "option_count": 1},
+            "waiter did not reach the exact seed event after predecessor drain",
+        )
+        require(
+            service.selections == [(1, 10, 5)],
+            "known predecessor was not closed exactly once with option 1",
+        )
+        drain = json.loads(
+            (artifacts / "known-pre-bootstrap-event-drain.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        require(drain["result"] == "GREEN", "predecessor drain lacks GREEN proof")
+        require(
+            all(drain["identity_checks"].values())
+            and all(drain["selection_checks"].values()),
+            "predecessor drain did not preserve its exact identity/ACK gates",
+        )
+
+
+def test_known_predecessor_identity_drift_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownPredecessorService(root_character_id=99999)
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                artifacts,
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=10.0,
+                source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_EVENT[
+                    "source_save_sha256"
+                ],
+                clock=FakeTime().clock,
+                sleeper=lambda _seconds: None,
+            )
+            raise AssertionError("drifted known predecessor escaped its identity gate")
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence["state"]
+                == "known_pre_bootstrap_event_identity_mismatch",
+                "known predecessor identity RED was not typed",
+            )
+        require(not service.selections, "identity-drifted event was selected")
+
+
 def test_total_event_deadline() -> None:
     class EventFreeService:
         def __init__(self) -> None:
@@ -2139,6 +2317,8 @@ def main() -> int:
     test_green_capture()
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()
+    test_exact_known_predecessor_is_drained_once()
+    test_known_predecessor_identity_drift_fails_closed()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
     test_product_projection_options_reach_isolated_bootstrap()

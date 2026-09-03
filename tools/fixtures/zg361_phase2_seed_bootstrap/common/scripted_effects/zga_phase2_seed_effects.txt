@@ -1,6 +1,22 @@
 ﻿# Acceptance-only orchestration. The fixture selects only real history and
 # existing liege/vassal relations. Product state is written solely by shipped
 # public effects; this file never writes a zg361_* variable or receipt.
+zga_phase2_seed_maybe_begin_effect = {
+	if = {
+		limit = {
+			this = character:han_6875
+			is_ai = no
+			is_alive = yes
+			is_landed = yes
+			zg361_is_reviewable_vassal_trigger = yes
+			NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }
+		}
+		add_character_flag = zga_phase2_seed_bootstrap_started
+		debug_log = "ZGAP2SEED: load-safe bootstrap activation"
+		trigger_event = zga_phase2_seed.100
+	}
+}
+
 zga_phase2_seed_begin_effect = {
 	if = {
 		limit = {

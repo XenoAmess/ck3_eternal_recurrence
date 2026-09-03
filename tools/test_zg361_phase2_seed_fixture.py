@@ -22,6 +22,19 @@ EFFECTS = (
     / "zga_phase2_seed_effects.txt"
 )
 EVENTS = FIXTURE / "events" / "zga_phase2_seed_events.txt"
+SCRIPTED_GUIS = (
+    FIXTURE
+    / "common"
+    / "scripted_guis"
+    / "zga_phase2_seed_scripted_guis.txt"
+)
+BRIDGE_GUI = FIXTURE / "gui" / "zga_phase2_seed_bridge.gui"
+SCRIPTED_WIDGETS = (
+    FIXTURE
+    / "gui"
+    / "scripted_widgets"
+    / "zga_phase2_seed_scripted_widgets.txt"
+)
 BOM = b"\xef\xbb\xbf"
 REQUIRED_SCOPES = (
     "zga_phase2_b2_owner",
@@ -69,9 +82,9 @@ def top_level_block(text: str, key: str) -> str:
 def main() -> int:
     assert FIXTURE.is_dir()
     assert not (FIXTURE / "common" / "decisions").exists()
-    assert not (FIXTURE / "gui").exists()
     script_files = (
         tuple(FIXTURE.rglob("*.txt"))
+        + tuple(FIXTURE.rglob("*.gui"))
         + tuple(FIXTURE.rglob("*.yml"))
         + tuple(FIXTURE.rglob("*.mod"))
     )
@@ -82,6 +95,9 @@ def main() -> int:
     on_actions = bom_text(ON_ACTIONS)
     effects = bom_text(EFFECTS)
     events = bom_text(EVENTS)
+    scripted_guis = bom_text(SCRIPTED_GUIS)
+    bridge_gui = bom_text(BRIDGE_GUI)
+    scripted_widgets = bom_text(SCRIPTED_WIDGETS)
     fixture_text = "\n".join(bom_text(path) for path in script_files)
     assert "on_game_start_after_lobby = {" in on_actions
     assert "on_actions = {" in on_actions
@@ -90,6 +106,12 @@ def main() -> int:
     assert "is_ai = no" in on_actions
 
     assert "this = character:han_6875" in effects
+    maybe_begin = top_level_block(effects, "zga_phase2_seed_maybe_begin_effect")
+    assert "this = character:han_6875" in maybe_begin
+    assert "is_ai = no" in maybe_begin
+    assert "NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }" in maybe_begin
+    assert "add_character_flag = zga_phase2_seed_bootstrap_started" in maybe_begin
+    assert "trigger_event = zga_phase2_seed.100" in maybe_begin
     assert "save_scope_as = zga_phase2_seed_player" in effects
     assert "liege = {" in effects
     assert "trigger_event = zga_phase2_seed.101" in effects
@@ -110,6 +132,25 @@ def main() -> int:
     for scope_name in REQUIRED_SCOPES:
         assert final_event.count(f"save_scope_as = {scope_name}") == 1
     assert "trigger_event = zga_phase2_seed.1" in subject
+
+    load_safe_bridge = top_level_block(
+        scripted_guis, "zga_phase2_seed_bootstrap_bridge_gui"
+    )
+    assert "scope = character" in load_safe_bridge
+    assert "this = character:han_6875" in load_safe_bridge
+    assert "is_ai = no" in load_safe_bridge
+    assert "NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }" in load_safe_bridge
+    assert "zga_phase2_seed_maybe_begin_effect = yes" in load_safe_bridge
+    assert 'name = "zga_phase2_seed_bridge_window"' in bridge_gui
+    assert "size = { 1 1 }" in bridge_gui
+    assert 'visible = "[GetPlayer.IsValid]"' in bridge_gui
+    assert "alwaystransparent = yes" in bridge_gui
+    assert "filter_mouse" not in bridge_gui
+    assert "GetScriptedGui('zga_phase2_seed_bootstrap_bridge_gui').IsShown" in bridge_gui
+    assert "GetScriptedGui('zga_phase2_seed_bootstrap_bridge_gui').Execute" in bridge_gui
+    assert scripted_widgets.strip() == (
+        "gui/zga_phase2_seed_bridge.gui = zga_phase2_seed_bridge_window"
+    )
 
     # Only shipped entry points may write product state. The external fixture
     # cannot manufacture characters, titles, relations, output variables,

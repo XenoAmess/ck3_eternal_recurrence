@@ -1,0 +1,1 @@
+﻿gui/zga_phase2_seed_bridge.gui = zga_phase2_seed_bridge_window

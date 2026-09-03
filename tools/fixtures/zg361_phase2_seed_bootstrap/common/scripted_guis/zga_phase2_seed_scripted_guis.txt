@@ -1,0 +1,14 @@
+﻿zga_phase2_seed_bootstrap_bridge_gui = {
+	scope = character
+	is_shown = {
+		this = character:han_6875
+		is_ai = no
+		is_alive = yes
+		is_landed = yes
+		zg361_is_reviewable_vassal_trigger = yes
+		NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }
+	}
+	effect = {
+		zga_phase2_seed_maybe_begin_effect = yes
+	}
+}

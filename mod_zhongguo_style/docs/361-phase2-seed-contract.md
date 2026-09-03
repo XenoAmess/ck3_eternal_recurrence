@@ -47,8 +47,10 @@ AI owner 不能等于 subject。禁止填假 ID 只为让 loader 通过。
 专用外部 fixture 位于
 `tools/fixtures/zg361_phase2_seed_bootstrap/`。它与普通
 `tools/fixtures/zg361_acceptance/` 分离，只有 seed-generation acceptance 可以挂载，
-发布构建和宣传运行时永远不能加载。它没有 decision、GUI、角色/头衔/关系创建命令，
-也不直接写任何 `zg361_*` 产品变量、receipt 或 Workforce history。
+发布构建和宣传运行时永远不能加载。它没有 decision 或可点击 GUI；唯一 GUI 是注册到
+`scripted_widgets` 的 `1×1` 全透明自动 load bridge，在 `GetPlayer` 对旧存档有效后调用同一条
+幂等 bootstrap 链。它没有角色/头衔/关系创建命令，也不直接写任何 `zg361_*` 产品变量、
+receipt 或 Workforce history。
 seed-generation profile 应把此树单独复制到既有外层 mod ID
 `zga_acceptance_fixture.mod` 的目标目录；不得与普通 acceptance fixture 同时合并，且
 candidate runtime 中记录的是本专用树的实际 SHA-256。
@@ -234,7 +236,10 @@ source/ZIP 逐文件等价、旧 save/CK3/rules/bridge/injector 哈希、exact-b
 5. loader GREEN 后验证 debug inventory 中 product 与 fixture 各 `Enabled/Mounted` 一次，再运行 native readiness 与完整项目
    `error.log` quiet scan；
 6. 最后才进入一个总 monotonic deadline 的 exact `zga_phase2_seed.1` waiter；默认 `300s`，不会按 snapshot unavailable、调速、
-   pause/resume 等子状态重置计时；
+   pause/resume 等子状态重置计时。直接 `-load_save` 不经过 lobby，不能依赖 `on_game_start_after_lobby`；专用 `1×1` bridge 的
+   `is_shown` 与执行 effect 都复核 `han_6875`、玩家、存活、有地、直属受评关系和一次性 flag。冻结旧档另有一个已实机复现的
+   正式产品前驱 `zg361.4`：runner 只在 source SHA、日期、root、reviewing-superior、4 个 authored options 全部精确匹配时，
+   选择历史同源运行已经验证过的 option 1，并证明旧 instance 消失后继续等 seed；任何其他可见事件仍立即 RED；
 7. MCP 捕获五 selector、关闭事件、保存 checkpoint、逐项查询四域 provider 并物化 candidate；
 8. 无论 GREEN/RED 都停止 supervisor、证明进程 cleanup、关闭 driver、复制并哈希 CK3 logs、复核 mounted runtime/source/external
    dependency unchanged，最后写 `runner-report.json`。

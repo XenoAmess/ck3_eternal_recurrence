@@ -49,6 +49,20 @@ EXPECTED_ENABLED_MODS = (
     "mod/zga_acceptance_fixture.mod",
 )
 SEED_EVENT_DEFINITION_KEY = "zga_phase2_seed.1"
+KNOWN_PRE_BOOTSTRAP_EVENT = {
+    "source_save_sha256": (
+        "98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3"
+    ),
+    "event_definition_key": "zg361.4",
+    "calculated_event_id": 3320004,
+    "date_raw": 53147016,
+    "root_character_id": 29037,
+    "reviewing_superior_character_id": 32904,
+    "option_count": 4,
+    "selected_option_number": 1,
+    "selected_native_option_index": 0,
+}
+POST_PREDECESSOR_WAIT_SECONDS = 5.0
 LOADER_FATAL_STALL_SECONDS = 45.0
 DEFAULT_LOADER_TIMEOUT_SECONDS = 300.0
 DEFAULT_NATIVE_READINESS_TIMEOUT_SECONDS = 300.0
@@ -1810,12 +1824,125 @@ def _positive_revision(snapshot: dict[str, Any]) -> int:
     return revision
 
 
+def _typed_character_id(scope: object) -> int | None:
+    if not isinstance(scope, dict):
+        return None
+    identity = scope.get("typed_identity")
+    if not isinstance(identity, dict):
+        return None
+    character_id = identity.get("character_id")
+    if (
+        identity.get("status") != "available"
+        or identity.get("kind") != "character"
+        or not isinstance(character_id, int)
+        or isinstance(character_id, bool)
+        or character_id <= 0
+    ):
+        return None
+    return character_id
+
+
+def _known_pre_bootstrap_event_checks(
+    *,
+    source_save_sha256: str | None,
+    snapshot: dict[str, Any],
+    context: dict[str, Any],
+    event_instance_id: int,
+) -> dict[str, bool]:
+    expected = KNOWN_PRE_BOOTSTRAP_EVENT
+    active = snapshot.get("active_event")
+    active_event = active if isinstance(active, dict) else {}
+    options = context.get("options")
+    option_rows = options if isinstance(options, list) else []
+    authored_options_exact = len(option_rows) == expected["option_count"]
+    if authored_options_exact:
+        for index, row in enumerate(option_rows):
+            if not isinstance(row, dict) or not (
+                row.get("rendered_index") == index
+                and row.get("native_option_index") == index
+                and row.get("shown") is True
+                and row.get("enabled") is True
+                and row.get("fallback") is False
+                and row.get("cancel") is False
+            ):
+                authored_options_exact = False
+                break
+
+    saved_scopes = context.get("saved_scopes")
+    saved_scope_rows = saved_scopes if isinstance(saved_scopes, list) else []
+    reviewing_superior_ids = {
+        character_id
+        for row in saved_scope_rows
+        if isinstance(row, dict)
+        and row.get("name") == "zg361_reviewing_superior"
+        and (character_id := _typed_character_id(row.get("scope"))) is not None
+    }
+    return {
+        "source_save_sha256": source_save_sha256
+        == expected["source_save_sha256"],
+        "context_schema": context.get("schema")
+        == "current-event-window-context-v1",
+        "context_schema_version": context.get("schema_version") == 1,
+        "context_available": context.get("status") == "available",
+        "unique_window": context.get("window_match_count") == 1,
+        "event_definition_key": context.get("event_definition_key")
+        == expected["event_definition_key"],
+        "calculated_event_id": context.get("calculated_event_id")
+        == expected["calculated_event_id"],
+        "event_instance_id": context.get("current_event_instance_id")
+        == event_instance_id,
+        "snapshot_date_raw": snapshot.get("date_raw") == expected["date_raw"],
+        "context_date_raw": context.get("date_raw") == expected["date_raw"],
+        "root_character_id": _typed_character_id(context.get("root_scope"))
+        == expected["root_character_id"],
+        "reviewing_superior_character_id": reviewing_superior_ids
+        == {expected["reviewing_superior_character_id"]},
+        "snapshot_option_count": active_event.get("option_count")
+        == expected["option_count"],
+        "authored_options_exact": authored_options_exact,
+    }
+
+
+def _known_pre_bootstrap_selection_checks(
+    selection: object, *, event_instance_id: int
+) -> dict[str, bool]:
+    submission = selection if isinstance(selection, dict) else {}
+    event_selection_value = submission.get("event_selection")
+    event_selection = (
+        event_selection_value if isinstance(event_selection_value, dict) else {}
+    )
+    expected = KNOWN_PRE_BOOTSTRAP_EVENT
+    return {
+        "selection_object": isinstance(selection, dict),
+        "step": submission.get("step") == "select-event-option-1",
+        "accepted": submission.get("accepted") is True,
+        "status": submission.get("status") == "submitted",
+        "option_number": submission.get("option_number")
+        == expected["selected_option_number"],
+        "option_index": submission.get("option_index")
+        == expected["selected_native_option_index"],
+        "postcondition_verified": event_selection.get("postcondition_verified")
+        is True,
+        "old_event_instance_id": event_selection.get("old_event_instance_id")
+        == event_instance_id,
+        "selected_option_number": event_selection.get("selected_option_number")
+        == expected["selected_option_number"],
+        "selected_native_option_index": event_selection.get(
+            "selected_native_option_index"
+        )
+        == expected["selected_native_option_index"],
+        "old_instance_not_retained": event_selection.get("new_event_instance_id")
+        != event_instance_id,
+    }
+
+
 def wait_for_bootstrap_event(
     service: Any,
     artifacts: Path,
     *,
     bridge_unavailable_error: type[BaseException],
     timeout_seconds: float,
+    source_save_sha256: str | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     logger: Callable[[str], None] | None = None,
@@ -1830,7 +1957,11 @@ def wait_for_bootstrap_event(
     sequence = 0
     next_progress_log = 60.0
     resumed = False
-    while clock() < deadline:
+    predecessor_drained = False
+    post_predecessor_deadline: float | None = None
+    while clock() < deadline and (
+        post_predecessor_deadline is None or clock() < post_predecessor_deadline
+    ):
         now = clock()
         try:
             snapshot = service.snapshot()
@@ -1899,6 +2030,120 @@ def wait_for_bootstrap_event(
                 else None
             )
             if key != SEED_EVENT_DEFINITION_KEY:
+                if (
+                    key == KNOWN_PRE_BOOTSTRAP_EVENT["event_definition_key"]
+                    and not predecessor_drained
+                    and isinstance(context, dict)
+                ):
+                    identity_checks = _known_pre_bootstrap_event_checks(
+                        source_save_sha256=source_save_sha256,
+                        snapshot=snapshot,
+                        context=context,
+                        event_instance_id=event_id,
+                    )
+                    drain_evidence = {
+                        "schema_version": 1,
+                        "state": "known_pre_bootstrap_event_observed",
+                        "source_save_sha256": source_save_sha256,
+                        "event_instance_id": event_id,
+                        "event_definition_key": key,
+                        "identity_checks": identity_checks,
+                        "query": query,
+                        "selection": None,
+                        "selection_checks": None,
+                        "result": None,
+                    }
+                    if not all(identity_checks.values()):
+                        drain_evidence["state"] = (
+                            "known_pre_bootstrap_event_identity_mismatch"
+                        )
+                        drain_evidence["result"] = "RED"
+                        write_json(
+                            artifacts / "known-pre-bootstrap-event-drain.json",
+                            drain_evidence,
+                        )
+                        append_jsonl(evidence_path, drain_evidence)
+                        raise SeedCaptureError(
+                            "known pre-bootstrap event identity drifted",
+                            drain_evidence,
+                        )
+                    selection_snapshot = service.snapshot()
+                    if not isinstance(selection_snapshot, dict):
+                        raise SeedCaptureError(
+                            "predecessor pre-selection snapshot is not an object"
+                        )
+                    selection_active_value = selection_snapshot.get("active_event")
+                    selection_active = (
+                        selection_active_value
+                        if isinstance(selection_active_value, dict)
+                        else {}
+                    )
+                    selection_revision = _positive_revision(selection_snapshot)
+                    pre_selection_checks = {
+                        "paused": selection_snapshot.get("paused") is True,
+                        "date_raw": selection_snapshot.get("date_raw")
+                        == KNOWN_PRE_BOOTSTRAP_EVENT["date_raw"],
+                        "event_instance_id": selection_active.get("instance_id")
+                        == event_id,
+                        "option_count": selection_active.get("option_count")
+                        == KNOWN_PRE_BOOTSTRAP_EVENT["option_count"],
+                    }
+                    drain_evidence["pre_selection_snapshot"] = selection_snapshot
+                    drain_evidence["pre_selection_checks"] = pre_selection_checks
+                    if not all(pre_selection_checks.values()):
+                        drain_evidence["state"] = (
+                            "known_pre_bootstrap_event_changed_before_selection"
+                        )
+                        drain_evidence["result"] = "RED"
+                        write_json(
+                            artifacts / "known-pre-bootstrap-event-drain.json",
+                            drain_evidence,
+                        )
+                        append_jsonl(evidence_path, drain_evidence)
+                        raise SeedCaptureError(
+                            "known pre-bootstrap event changed before selection",
+                            drain_evidence,
+                        )
+                    selection = service.select_event_option(
+                        KNOWN_PRE_BOOTSTRAP_EVENT["selected_option_number"],
+                        event_instance_id=event_id,
+                        expected_revision=selection_revision,
+                    )
+                    selection_checks = _known_pre_bootstrap_selection_checks(
+                        selection, event_instance_id=event_id
+                    )
+                    drain_evidence["selection"] = selection
+                    drain_evidence["selection_checks"] = selection_checks
+                    if not all(selection_checks.values()):
+                        drain_evidence["state"] = (
+                            "known_pre_bootstrap_event_selection_red"
+                        )
+                        drain_evidence["result"] = "RED"
+                        write_json(
+                            artifacts / "known-pre-bootstrap-event-drain.json",
+                            drain_evidence,
+                        )
+                        append_jsonl(evidence_path, drain_evidence)
+                        raise SeedCaptureError(
+                            "known pre-bootstrap event option 1 did not close cleanly",
+                            drain_evidence,
+                        )
+                    predecessor_drained = True
+                    post_predecessor_deadline = min(
+                        deadline, clock() + POST_PREDECESSOR_WAIT_SECONDS
+                    )
+                    drain_evidence["state"] = "known_pre_bootstrap_event_drained"
+                    drain_evidence["result"] = "GREEN"
+                    drain_evidence["post_drain_wait_seconds"] = (
+                        POST_PREDECESSOR_WAIT_SECONDS
+                    )
+                    write_json(
+                        artifacts / "known-pre-bootstrap-event-drain.json",
+                        drain_evidence,
+                    )
+                    append_jsonl(evidence_path, drain_evidence)
+                    sleeper(0.1)
+                    continue
                 evidence = {
                     "state": "unexpected_visible_event",
                     "expected_event_definition_key": SEED_EVENT_DEFINITION_KEY,
@@ -1920,6 +2165,9 @@ def wait_for_bootstrap_event(
             }
             append_jsonl(evidence_path, terminal)
             return snapshot
+        if predecessor_drained:
+            sleeper(0.1)
+            continue
         if snapshot.get("map_ready") is True:
             revision = _positive_revision(snapshot)
             if snapshot.get("speed") != 1:
@@ -1932,10 +2180,18 @@ def wait_for_bootstrap_event(
         "schema_version": 1,
         "sequence": sequence + 1,
         "elapsed_seconds": round(max(0.0, clock() - started), 3),
-        "state": "bootstrap_event_timeout",
+        "state": (
+            "bootstrap_event_absent_after_known_predecessor"
+            if predecessor_drained
+            else "bootstrap_event_timeout"
+        ),
         "result": "RED",
         "timeout_seconds": timeout_seconds,
         "timeline_resumed": resumed,
+        "known_pre_bootstrap_event_drained": predecessor_drained,
+        "post_predecessor_wait_seconds": (
+            POST_PREDECESSOR_WAIT_SECONDS if predecessor_drained else None
+        ),
     }
     append_jsonl(evidence_path, evidence)
     raise SeedCaptureError(
@@ -3479,6 +3735,7 @@ def run_capture(
             artifacts,
             bridge_unavailable_error=active_runtime.bridge_unavailable_error,
             timeout_seconds=config.event_timeout_seconds,
+            source_save_sha256=observed_save_sha,
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,
             logger=runner_log,
