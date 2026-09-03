@@ -1,0 +1,231 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_capture_entry_gap.v1",
+  "observed_at": "2026-09-03T13:25:36+08:00",
+  "result": "NO_CURRENT_USABLE_PAUSED_EVALUATOR_ENTRY",
+  "scope": {
+    "kind": "exact_build_read_only_review",
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "public_abi_changed": false,
+    "public_readiness_changed": false,
+    "offset_or_allowlist_guess": false,
+    "purchase_or_payment_action": false
+  },
+  "current_pins": {
+    "root": {
+      "worktree": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902",
+      "observed_head": "132902bacbe61fae63d612c47f6e8bb36d160c58",
+      "pin_fixture": "ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json",
+      "pin_fixture_sha256": "02E84FD473339FCF6903FE3F14B4CBB6BC5E2B21DD96A0B63A56DCC907ABA83F",
+      "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+      "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+      "open_kaishek_commit": "15ab978f879ed4562aacb74dacdaee702fbce54b"
+    },
+    "open_kaishek": {
+      "checkout": "Z:\\workspace\\open_kaishek",
+      "head": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+      "origin_main": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+      "clean": true,
+      "jar": "Z:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+      "jar_sha256": "FC85947E9976B80345C10A9789A6520C8ABCEF557365284570C18C4677D891CC"
+    }
+  },
+  "exact_build_review": {
+    "game_version": "1.19.0.6",
+    "executable": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\binaries\\ck3.exe",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "verifier": {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_truce_evaluator_callsite_v1.py",
+      "command": "verify_raiktor_truce_evaluator_callsite_v1.py --exe Z:\\ck3_mod_rewrite\\Crusader Kings III\\binaries\\ck3.exe",
+      "exit_code": 0,
+      "output": "PASS: exact_build=1 evaluator=1 call_sites=2 read_only=1",
+      "reads_only": true
+    },
+    "abi_fixture": {
+      "path": "ck3_autonomous_player/native_bridge/research/raiktor_truce_evaluator_callsite_v1_abi.json",
+      "sha256": "55E5203647D2D0D0F017E990CBB736F42E306EFEE1269D7918DF39735A812799",
+      "status": "static-ready",
+      "evaluator_rva": "0x3373000",
+      "signature": "int32 __fastcall(void *script_value, void *effect_context, void *evaluation_context)",
+      "return": "signed int32 in EAX",
+      "call_sites": [
+        {
+          "sequence": "0x2EDAF01..0x2EDAF14",
+          "call": "0x2EDAF0F",
+          "script_value": "RCX = [RSI+0x108]",
+          "effect_context": "RDX = R15",
+          "evaluation_context": "R8 = [R15+0x28]"
+        },
+        {
+          "sequence": "0x2EDB58F..0x2EDB5A3",
+          "call": "0x2EDB59E",
+          "script_value": "RCX = [RSI+0x108]",
+          "effect_context": "RDX = R12",
+          "evaluation_context": "R8 = [R12+0x28]"
+        }
+      ],
+      "shared_contract": {
+        "duration_offset": "0x108",
+        "evaluation_context_offset": "0x28",
+        "calling_convention": "MSVC x64 RCX,RDX,R8",
+        "expiry_semantics_observed": false
+      }
+    }
+  },
+  "paused_capture_evidence": {
+    "latest_paused_semantic_report": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-fresh-semantic-ready-20260902T100431236\\report.json",
+      "sha256": "4A7C66D34C851698572F4BBA2970ECAA00C005C2DC338ABCD75A7FD304F0B991",
+      "status": "red_truce_duration_unobserved",
+      "frame": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53223936,
+        "character_id": 29829,
+        "war_id": 50331699,
+        "opponent_character_id": 36769,
+        "paused": true,
+        "map_ready": true
+      },
+      "two_equal_read_only_terms_queries": true,
+      "evaluated_days_observable": false,
+      "evaluated_days": null,
+      "expiry_observable": false,
+      "expiry_date_raw": null,
+      "mutation_commands": [],
+      "time_advanced": false,
+      "cleanup_proven": true
+    },
+    "passive_callsite_candidate": {
+      "manifest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-native-callsite-observer-ready-20260903T003347\\ready-to-run.json",
+      "manifest_sha256": "19AF7FD08C639C5E3D92A3E3E2F403FC3645A2ABBC4C2A9AD29AC83E317AD613",
+      "no_launch_preflight_sha256": "64F3C71D82FBDE80B00F7905DD398034051D9E835F5CD849110A8882ECB03008",
+      "state": "READY_TO_LIVE_WAITING_FOR_EXPLICIT_GO",
+      "heartbeat_only": true,
+      "direct_evaluator_enabled": false,
+      "mcp_queries": [],
+      "evaluator_requests": [],
+      "mutation_enabled": false,
+      "latest_live_report": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-native-callsite-observer-ready-20260903T003347\\live-authorized-passive-native-callsite-observer-v2\\report.json",
+      "latest_live_report_sha256": "1F319AE1F9D947D1BC766E304E8329CEE80E845B35833E45A2BB6F6E1DEB0AC9",
+      "latest_live_classification": "NO-GO/no_native_callsite_hit",
+      "latest_live_native_pre_count": 0,
+      "latest_live_native_post_count": 0,
+      "usable_for_evaluated_days": false,
+      "reason": "The paused heartbeat-only run never dispatched mutating CAddTruce execute slot 22; zero-hit stability is not an evaluator return."
+    },
+    "validated_index7_shape": {
+      "report": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-readiness300-ready-20260902T2017\\live-authorized-index7-readiness300\\report.json",
+      "report_sha256": "24D9661AEC29E8247BF63E54082487BD6A2E296F4E2A0A965227BDB454A63706",
+      "private_jsonl_sha256": "6807E408870D7A7B47E9B6EC609BEFB270FC0E4571912D5FEA4432E09F8705C3",
+      "private_capture_status": "green_shape_only",
+      "bound_open_kaishek_commit": "0390b9a959fa1a59a968000ed49e827a03b8d4e4",
+      "rows": 2,
+      "byte_semantic_equal": true,
+      "truce_vtable_rva": "0x4461CA8",
+      "duration_script_value_relation": "truce_effect+0x108",
+      "duration_evaluator_called": false,
+      "evaluated_days_observed": false,
+      "mutation_commands": [],
+      "time_advanced": false,
+      "purpose": "This older live artifact validates the source-correlated input shape only; it is not a current-pin evaluator result."
+    },
+    "direct_evaluator_candidate": {
+      "manifest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-eval-context-fix-ready-20260902T2219\\ready-to-live.json",
+      "manifest_sha256": "6A46EB300B100A72D91D4A4DA2063F43411DD71B5A37C088D2B18C95D72F3651",
+      "source_commit": "388fa3f0323b5ab677ee439f70cc796394f63bca",
+      "bound_open_kaishek_commit": "0390b9a959fa1a59a968000ed49e827a03b8d4e4",
+      "current_open_kaishek_commit": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+      "state": "STALE_PIN_NOT_ADMISSIBLE",
+      "historical_live_report": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-index7-eval-context-fix-ready-20260902T2219\\live-authorized-index7-evaluator-context-pointer-fix\\report.json",
+      "historical_live_report_sha256": "1A238BFE5194CE94E9C3CB784360E98E9A99EF758D0802D33478F52DC91C45AC",
+      "historical_private_jsonl_sha256": "D15B54483D879826995789213E58B705A4933F44E7ACD4C7EFD248E421B31228",
+      "historical_result": "RED_NATIVE_PROCESS_EXIT_DURING_FIRST_EVALUATOR_CALL",
+      "historical_completed_call_count": 0,
+      "historical_evaluated_days": null,
+      "usable_for_current_pin": false,
+      "reason": "The only direct candidate is frozen against an older open_kaishek pin and its one live attempt recorded pre_call then exited before a return; do not reuse its binary or manifest."
+    }
+  },
+  "assessment": {
+    "paused_evaluator_entry_available_now": false,
+    "native_certified": false,
+    "runtime_certified": false,
+    "truce_ready": false,
+    "decision_ready": false,
+    "gen034": "unresolved",
+    "blocking_gaps": [
+      "No current-pin private candidate has a successful evaluator return.",
+      "No paused same-frame pair of non-negative evaluator results is available.",
+      "Persisted truce expiry remains unobserved and must not be inferred.",
+      "Current CK3 startup recovery is a prerequisite for any new live slot."
+    ]
+  },
+  "next_single_slot_capture": {
+    "run_authorized_in_this_review": false,
+    "slot_count": 1,
+    "instrumentation_modes": {
+      "required": "direct_evaluator_private_capture_only",
+      "passive_observer_and_direct_capture_combined": false,
+      "cmake_combination_is_rejected": true,
+      "default_build_option": "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1=OFF"
+    },
+    "checklist": [
+      {
+        "step": 1,
+        "action": "Wait for the separately tracked CK3 startup blocker to be resolved; verify no CK3/injector/probe process and reserve one fresh attempt directory.",
+        "must_hold": ["ck3_process_count=0", "injector_process_count=0", "attempt_directory_absent=true"]
+      },
+      {
+        "step": 2,
+        "action": "Run the root/open_kaishek static compatibility verifier, then run the current open_kaishek OfflinePreflight against a fresh immutable source copy; archive JSON and SHA-256.",
+        "command_template": "verify_g2_open_kaishek_compatibility.py --checkout Z:\\workspace\\open_kaishek --require-checkout --require-clean",
+        "must_hold": ["HEAD==origin/main==15ab978f879ed4562aacb74dacdaee702fbce54b", "profile_id_matches", "capability_id_matches", "native_certified=false", "runtime_certified=false"]
+      },
+      {
+        "step": 3,
+        "action": "Build one fresh private direct-capture DLL from the current root source and pin, using the already verified ABI shape (duration +0x108 and loaded context pointer *(effect_context+0x28)); keep the option OFF in the default build and do not edit the public bridge/readiness.",
+        "must_hold": ["current_source_commit_frozen", "current_open_kaishek_preflight_bound", "private_option_ON_only_in_candidate", "public_abi_changed=false", "public_readiness_changed=false"]
+      },
+      {
+        "step": 4,
+        "action": "Before launch, re-run the exact executable/call-site verifier and hash the checkpoint, driver state, candidate DLL, injector, runner, source archive and preflight. Reject any mismatch; do not substitute offsets or allow-list entries.",
+        "must_hold": ["exe_sha256_matches", "call_sites=2", "evaluator_rva=0x3373000", "checkpoint_unchanged", "driver_state_unchanged"]
+      },
+      {
+        "step": 5,
+        "action": "Use exactly one managed runner invocation with XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH pointing to a new private JSONL sidecar. Submit only the existing two read-only terms queries; send no Context effect, surrender, white-peace, enforce, time advance, or store action.",
+        "must_hold": ["one_bridge_dll_slot", "mcp_terms_queries=2", "mutation_commands=[]", "time_advanced=false"]
+      },
+      {
+        "step": 6,
+        "action": "Accept only a paused frame whose identity is CharacterID 29829 / WarID 50331699 / date_raw 53223936 and whose durable sidecar has exact index-7 Truce vtable 0x4461CA8, duration +0x108, evaluator RVA 0x3373000, two completed non-negative equal results, and matching frame/session identity.",
+        "must_hold": ["same_paused_frame=true", "evaluator_call_count=2", "evaluator_results_equal=true", "evaluator_results_nonnegative=true", "cleanup_proven=true"]
+      },
+      {
+        "step": 7,
+        "action": "If the process exits before a return, a row is missing, or any identity/hash check fails, preserve the complete RED artifact, stop the slot, and do not replay the same checkpoint or promote readiness.",
+        "must_hold": ["failure_artifact_retained=true", "retry_same_shape=false", "native_certified=false", "runtime_certified=false"]
+      }
+    ],
+    "acceptance": {
+      "required": [
+        "current root/open_kaishek pin and exact build bound",
+        "one paused frame with two equal non-negative evaluator returns",
+        "exact source-correlated index-7 CAddTruce shape",
+        "read-only policy and proven cleanup"
+      ],
+      "forbidden": [
+        "offset substitution",
+        "activity opcode or allow-list guess",
+        "passive+direct instrumentation combination",
+        "public wire/readiness change before artifact",
+        "truce expiry inference"
+      ]
+    }
+  }
+}
