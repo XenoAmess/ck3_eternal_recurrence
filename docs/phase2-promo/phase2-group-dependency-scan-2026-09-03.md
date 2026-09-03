@@ -78,14 +78,28 @@ seed run.
   `zg361_case_kernel_transition_effect`,
   `zg361_case_x_open_effect`, `zg361_case_x_advance_01_effect`).
 * **Workforce root — 236 definitions, 234 absent (conservative upper bound).**
-  The closure includes all syntactic AB/AC/AD/AL branches, WAD helpers and
-  workforce fact adapters.  The old-core gap is the workforce/domain body plus
-  the seven shared kernel symbols
-  (`can_open`, `full_guard`, `initialize`, `receipt_is_current`,
-  `record_operation`, `schedule_deadline`, `transition`) and the 24
+  The direct-root closure follows the syntactic AB/AC/AD/AL branches, WAD
+  helpers and workforce fact adapters reached from
+  `zg361_we_open_portfolio_effect`.  Its old-core gap includes the seven shared
+  kernel symbols (`can_open`, `full_guard`, `initialize`, `receipt_is_current`,
+  `record_operation`, `schedule_deadline`, `transition`) and 24 reachable
   `zg361_case_{ab,ac,ad,al}_{open,advance_*}` symbols.  A prior branch-pruned
   pass counted 207; 236 is intentionally retained here as the safer static
   upper bound and must not be read as a live execution count.
+
+  A separate **whole-file parser scan** is required for a mounted CK3
+  projection: CK3 parses every definition in the workforce files even when a
+  branch is not reached by the seed.  The raw workforce variant therefore has
+  42 unresolved current-defined callables: 27 AB/AC/AD/AL case symbols (the
+  three additional AL stage helpers are not on the direct-root graph), seven
+  kernel symbols, six manager M360 callables (`c1/c2/c3_can_apply_trigger` and
+  `c1/c2/c3_apply_collective_cost_effect`),
+  `zg361_b2_m075_accept_exit_offer_effect`, and
+  `zg361_p2c_schedule_m275_runner_requisition_effect`.  Adding the owner files
+  iteratively resolves the callable names only after 13 additional script
+  files are mounted; including referenced event definitions grows that static
+  file closure to 72.  This is the parser/load closure, not an assertion that
+  all 72 files execute during the seed card.
 * **B2 result root — 15 definitions, all absent.**  These are the B2 result
   consumer and its `m069`, `m072`, `m078` and `m081` helpers.
 * **B2 notice root — 27 definitions, 22 absent.**  The B2 notice helpers are
@@ -95,7 +109,7 @@ seed run.
 The old-core comparison explains why mounting a domain file alone is not a
 valid closure.  In particular, `case_kernel` is a shared ABI layer, while the
 B1 KPI path also needs the incident and manager value definitions.  At file
-granularity the smallest shared additions are:
+granularity the smallest direct-root shared additions are:
 
 | shared input | size | script lines | why it is needed |
 | --- | ---: | ---: | --- |
@@ -107,8 +121,10 @@ granularity the smallest shared additions are:
 
 The values above are source-file sizes; they are not proposed release edits.
 For an A/B, copy only the required bytes into a disposable profile or mount a
-whole named group plus the shared layer.  Do not alter the canonical tree based
-on this static result alone.
+whole named group plus the shared layer.  Before calling a workforce A/B
+parser-clean, also account for the whole-file 42-callable set above; the live
+workforce+case-kernel attempt still reported missing manager triggers.  Do not
+alter the canonical tree based on this static result alone.
 
 ## Group size ledger
 
