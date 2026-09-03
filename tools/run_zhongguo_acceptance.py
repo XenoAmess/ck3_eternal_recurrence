@@ -10,6 +10,7 @@ from ctypes import wintypes
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import json
+import math
 import os
 import platform
 import re

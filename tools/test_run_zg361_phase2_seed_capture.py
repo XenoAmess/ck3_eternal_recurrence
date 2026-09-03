@@ -905,6 +905,32 @@ def test_phase2_frontend_first_options_reach_seed_supervisor() -> None:
         require("supervisor-start" in calls, "phase2 supervisor was not started")
 
 
+def test_real_phase2_frontend_first_option_validation() -> None:
+    import run_zhongguo_acceptance as zgrun
+
+    zgrun._validate_phase2_frontend_first_options(
+        "phase2_seed",
+        12.5,
+        phase2_runtime_mode=True,
+    )
+    for invalid_timeout in (float("nan"), float("inf"), float("-inf")):
+        try:
+            zgrun._validate_phase2_frontend_first_options(
+                "phase2_seed",
+                invalid_timeout,
+                phase2_runtime_mode=True,
+            )
+        except zgrun.acceptance.RunnerError as error:
+            require(
+                "finite and positive" in str(error),
+                "frontend-first timeout rejection was mistyped",
+            )
+        else:
+            raise AssertionError(
+                "non-finite frontend-first timeout passed real runner validation"
+            )
+
+
 def test_green_capture() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
@@ -1996,6 +2022,7 @@ def main() -> int:
     test_tree_manifest_records_byte_sizes_under_bytes_key()
     test_release_bridge_bundle_provenance_binds_pair_and_rejects_debug()
     test_phase2_frontend_first_options_reach_seed_supervisor()
+    test_real_phase2_frontend_first_option_validation()
     test_green_capture()
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()
