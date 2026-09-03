@@ -7,6 +7,8 @@
 - fresh promo-tool checkout：`Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903`
 - 最近一次 `git fetch origin main --prune` 后，`HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树 clean。
 - 独立工具测试：`263 passed, 2 skipped`。
+- 两版 authoring 文本已经独立落盘且与各自 project config 的 SHA-256 绑定：人物版 `10` 条旁白 cue（`364` 个中文字符）、`20` 条简中字幕行和 `20` 条英文字幕行；制度版 `10` 条旁白 cue（`361` 个中文字符）、`20` 条简中字幕行和 `20` 条英文字幕行。两版均保持 `release_usable=false`，要等真实 source review 才能提升。
+- 对上述 draft 文本做了只读字体像素预检：人物版最长中文/英文行分别为 `1104/1010 px`，制度版为 `1104/983 px`；对应当前 `1920×1080` 字幕轨可用宽度为 `1740/1700 px`。这是排版准备证据，不替代最终成片抽帧和两轮人审。
 - `preflight_phase2_media.py` 和 `build_phase2_promo_video.py` 的 Git 身份探针已改为对同一 checkout 使用路径限定的 `git -c safe.directory=<resolved> -C <resolved>`；不修改全局 Git 配置。修复前实际遇到的 dubious-ownership 错误已消失。
 - 两版无媒体 preflight 均完成：
   - 人物版 receipt：`_runtime/promo-preflight-character-20260903-1259.json`，SHA-256 `BE74D3D07FF4C79096B6280BCB9D8222D977BBA37B0DAD57A7E2A9BD37AFACD6`
