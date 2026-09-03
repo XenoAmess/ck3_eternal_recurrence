@@ -41,6 +41,31 @@
 | 双片准备 | 保持两套独立 runbook/claims ledger；素材到齐前不运行 TTS/渲染。可提前复核命令、字幕安全区和审片模板 | 两套配置 SHA 与 shared claims SHA 相互匹配，仍标 `footage_pending` |
 | 工具 freshness | 正式 TTS/渲染前对 fresh promo checkout 再做一次 `fetch origin main --prune`、clean 和 `HEAD == origin/main` 检查 | 保存 tool-head、测试摘要和 receipt；不使用旧 checkout |
 
+## 13:10–13:15 实机闭环更新（只记录既有独占运行）
+
+为定位 `on_action` 后的启动停滞，恢复 runner 依次比较了同一 Steam
+EXE/CWD、有效 userdir、DLC 与 warm cache 下的几个静态投影。这里的
+`frontend_gui_complete` 只表示 `gui/frontend_main.gui` 已加载，正式 Frontend
+仍要求 `End loading of history`；因此不能把前者单独升级为 GREEN。
+
+| 投影 | product 文件/字节 | 结果 | `error.log` | 最后加载标记 |
+| --- | ---: | --- | ---: | --- |
+| legacy 51（对照） | 51 / 7,137,587 | `frontend` | 0 | `Total of : 879`，随后 history 完成 |
+| callable-core | 66 / 14,430,022 | `timeout` | 2 | `Total of : 881` |
+| event-core | 81 / 14,802,010 | `timeout` | 323 | `Total of : 881` |
+| event + loc augmentation | 162 / 15,060,079 | `timeout` | 68 | `Total of : 881` |
+| event + full loc fan-out | 261 / 15,924,897 | `timeout` | 0 | `Total of : 881` |
+
+最新完整本地化尝试的报告为
+`_runtime/formal-phase2-event-locfull-20260903/report.json`，SHA-256
+`C43FAF6AC59A7D4A185D77D6A5509E17CF960E6D38A8939EC39F9C1E3F3BFAC1`。它在 180 秒超时并由
+runner 正常清理，窗口与 `frontend_main.gui` 均出现，但没有
+`End loading of history`。`locfull` 将 event-core 的本地化错误降为零，仍未改变
+`Total881` 停滞，故缺失本地化键不是当前挂点的充分解释。对照日志显示无 Mod 的
+`Total879` 后会进入 `Database Node Init Time` 与 history；新增投影在 `Total881`
+后连第一条数据库初始化标记都没有。此项维持 `native/provider = RED`，失败 attempt
+保留供下一轮 workforce/central 分段 A/B 归因。
+
 ## 依赖解除后的时间估计
 
 这是条件 ETA，不是承诺的日历时间：
@@ -55,4 +80,3 @@
 本审计只读源文件和既有 evidence，运行了静态校验、发布树检查、authoring validator 与无 CK3 的
 phase2 单元测试。没有启动真实 CK3、没有点击协议/通知、没有访问商店、没有购买/付款、没有调用
 TTS 或 FFmpeg，也没有修改生成文件或 canonical runtime。
-
