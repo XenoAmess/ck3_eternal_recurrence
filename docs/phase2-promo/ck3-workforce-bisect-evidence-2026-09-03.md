@@ -3,7 +3,7 @@
 ## 运行输入
 
 - 变体：`Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\workforce`
-- 隔离 product：152 个文件，12,913,177 bytes；另挂载 Phase2 seed fixture。
+- 隔离 product：152 个文件，12,906,558 bytes；另挂载 6,619-byte Phase2 seed fixture（product 数字不含 fixture）。
 - CK3：1.19.0.6 / Steam buildid 23530548，正式 Steam EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - bridge：当前 matching Release DLL/injector；完整 pinned settings 与 warm shadercache。
 - report：`Z:\ck3_mod_rewrite\_runtime\formal-phase2-workforce-20260903\report.json`
