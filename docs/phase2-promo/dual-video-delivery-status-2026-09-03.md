@@ -21,7 +21,7 @@
 
 ## 当前未完成与原因
 
-目前两条目标 MP4 均不存在，原因不是脚本或导出命令缺失，而是 CK3 `1.19.0.6` 在进入 mod loader/database 前崩溃，无法产生本轮要求的 8 段 clean spans。复现与 dump 证据见 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。因此当前不能把旧截图、旧 fixture 或占位视频写成“最终成片”。
+目前两条目标 MP4 均不存在，原因不是脚本或导出命令缺失，而是本轮尚未取得满足 lineage、identity 和 postcondition 合同的 8 段二期 clean spans。自动化尝试中有些运行确实到过 `Frontend`/`In Game`，但在 bridge/采集器收尾阶段 RED；另有无 mod、无 bridge 的裸跑在 9 月 3 日约 05:46 于 pre-loader 崩溃。两类失败都没有产出可入片素材，不能把它们笼统写成“CK3 一直打不开”。复现与 dump 证据见 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md) 及 [`manual-vs-automated-launch-diagnosis-2026-09-03.md`](manual-vs-automated-launch-diagnosis-2026-09-03.md)。因此当前不能把旧截图、旧 fixture 或占位视频写成“最终成片”。
 
 本次对已有一期/fixture 静帧目录做了只读 intake 复核，结果为 `RED / footage_pending`（`ck3_started=false`、`ffmpeg_started=false`、`media_generated=false`）；回执位于 `Z:\ck3_mod_rewrite\_runtime\phase2-dual-video-status-20260903\fixture-intake-red.json`，SHA-256 为 `D34CF4070C0D474A06F29BA2C3A0707E4BA391D42D5C700992A6BE826D67A2A2`。这确认旧 fixture 不能直接升级为两条二期成片。
 

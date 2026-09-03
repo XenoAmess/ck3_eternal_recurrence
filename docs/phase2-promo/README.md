@@ -48,8 +48,9 @@
 
 ## 最新实机边界（2026-09-03）
 
-已用冻结源码做过两条 Default 桌面尝试：带四项启动保护的桥接运行推进到 `ck3+0x3BE33A9` 冷启动 VFS 崩溃；不加载 mod、不注入桥的最小 CK3 启动也在约 `1.3s` 于 `ck3+0x1DABD89` 崩溃。对应 crash dump、session cleanup 和 relay 日志保存在
-`Z:\\ck3_mod_rewrite\\_runtime\\phase2-seed-20260903\\`，因此这批运行没有产生可入片的游戏素材，当前 footage 仍是 `0/8`。
+已用冻结源码做过多条 Default 桌面尝试：带四项启动保护的桥接运行曾推进到 `ck3+0x3BE33A9` 冷启动 VFS 崩溃；另有不加载 mod、不注入桥的最小 CK3 启动在约 `1.3s` 于 `ck3+0x1DABD89` 崩溃。与此同时，9 月 2 日晚间的若干实际 evaluator/capture 已到过 `Frontend`/`In Game`，但在 bridge/采集器收尾阶段 RED。对应 crash dump、session cleanup 和 relay 日志保存在
+`Z:\\ck3_mod_rewrite\\_runtime\\phase2-seed-20260903\\`，这些运行均没有产生满足合同的可入片游戏素材，当前 footage 仍是 `0/8`；详细分层见
+[`manual-vs-automated-launch-diagnosis-2026-09-03.md`](manual-vs-automated-launch-diagnosis-2026-09-03.md)。
 
 宣传工具已在可写 fresh clone `Z:\\ck3_mod_rewrite\\_runtime\\promo-tool-fresh-20260903` 更新并核对到 `origin/main`（`57c42fca13ea459432c1caf76e069a1fbccf602c`）。等 CK3 启动/seed 边界修复并取得八段素材后，仍会分别完成两版 TTS、字幕、候选、人工审阅、导出和独立哈希记录。
 

@@ -28,8 +28,9 @@
 
 ## 当前硬阻塞与解锁后顺序
 
-CK3 `1.19.0.6` 在进入 mod loader/database 前崩溃，尚未产生可入片素材。阻塞证据见
-[live-startup-blocker-2026-09-03.md](live-startup-blocker-2026-09-03.md)。解锁后按以下顺序执行：
+当前尚未产生可入片素材：自动化运行有的到过 `Frontend`/`In Game` 后在 bridge/采集器收尾阶段 RED，另有无 mod、无 bridge 裸跑在 9 月 3 日约 05:46 于 pre-loader 崩溃。两类结果都不能满足八段 clean-span 合同，也不能概括为“CK3 一直打不开”。阻塞证据见
+[live-startup-blocker-2026-09-03.md](live-startup-blocker-2026-09-03.md) 与
+[manual-vs-automated-launch-diagnosis-2026-09-03.md](manual-vs-automated-launch-diagnosis-2026-09-03.md)。解锁后按以下顺序执行：
 
 1. 取得同一 seed/save lineage 的 8 段真实 CK3 clean spans，并完成 footage intake。
 2. 人物版与制度群像版分别做具名 source review、TTS、双语字幕、候选片和 claims audit。
