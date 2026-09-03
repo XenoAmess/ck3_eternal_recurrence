@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
-# PURPOSE: AB domain controls.
+# PURPOSE: AB domain initialization authorized AI and launch lifecycle.
 # READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
 
 zg361_we_ab_initialize_effect = {
@@ -40,18 +40,6 @@ zg361_we_ab_initialize_effect = {
 	set_variable = { name = zg361_we_ab_s05_deadline_expired value = 0 }
 	set_variable = { name = zg361_we_ab_s06_deadline_pending value = 0 }
 	set_variable = { name = zg361_we_ab_s06_deadline_expired value = 0 }
-}
-
-zg361_we_ab_subject_read_effect = {
-	if = {
-		limit = {
-			zg361_case_kernel_subject_self_guard_trigger = {
-				SUBJECT_VAR = zg361_case_ab_subject
-				ACTIVE_VAR = zg361_case_ab_active
-			}
-		}
-		set_variable = { name = zg361_we_ab_subject_seen_revision value = var:zg361_we_ab_visible_revision }
-	}
 }
 
 zg361_we_ab_run_authorized_ai_effect = {

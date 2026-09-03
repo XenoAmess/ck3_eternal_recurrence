@@ -176,7 +176,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             f"events/{group.filename}"
             for group in gen.EVENT_GROUPS
         }
-        self.assertEqual(120, len(outputs))
+        self.assertEqual(131, len(outputs))
         self.assertEqual(
             expected_effects,
             {path for path in outputs if path.startswith("common/scripted_effects/")},
@@ -217,6 +217,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
 
     def test_04b_effect_parts_are_exact_unique_block_projection(self) -> None:
         source_blocks = gen.top_level_effect_blocks(gen.render_effects())
+        source_rank = {name: rank for rank, (name, _) in enumerate(source_blocks)}
         parts = gen.render_effect_parts()
         projected_blocks = tuple(
             block_row
@@ -225,12 +226,17 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 parts[group.filename]
             )
         )
-        self.assertEqual(source_blocks, projected_blocks)
         self.assertEqual(324, len(projected_blocks))
         self.assertEqual(324, len({name for name, _ in projected_blocks}))
+        self.assertEqual(dict(source_blocks), dict(projected_blocks))
+        for group in gen.EFFECT_GROUPS:
+            ranks = tuple(source_rank[name] for name in group.effect_names)
+            self.assertEqual(tuple(sorted(ranks)), ranks, group.filename)
+        reconstructed = tuple(sorted(projected_blocks, key=lambda row: source_rank[row[0]]))
+        self.assertEqual(source_blocks, reconstructed)
 
     def test_04c_effect_parts_obey_purpose_boundaries(self) -> None:
-        self.assertEqual(76, len(gen.EFFECT_GROUPS))
+        self.assertEqual(83, len(gen.EFFECT_GROUPS))
         self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
         for group, path in zip(gen.EFFECT_GROUPS, EFFECT_PATHS, strict=True):
             with self.subTest(path=path.name):
@@ -248,8 +254,159 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     def test_04d_legacy_monolith_is_absent(self) -> None:
         self.assertFalse(gen.LEGACY_EFFECT_PATH.exists())
         self.assertFalse(gen.LEGACY_EVENT_PATH.exists())
+        self.assertTrue(all(not path.exists() for path in gen.RETIRED_EFFECT_PATHS))
+        self.assertTrue(all(not path.exists() for path in gen.RETIRED_EVENT_PATHS))
         self.assertEqual((), gen.unexpected_effect_paths(gen.outputs()))
         self.assertEqual((), gen.unexpected_event_paths(gen.outputs()))
+
+    def test_04d1_manager_cleanup_and_portfolio_finalize_are_separate_shards(self) -> None:
+        groups = {group.filename: group for group in gen.EFFECT_GROUPS}
+        manager = groups[
+            "zg361_workforce_endgame_024c_manager_collective_cleanup_effects.txt"
+        ]
+        portfolio = groups[
+            "zg361_workforce_endgame_024d_portfolio_finalize_effects.txt"
+        ]
+        self.assertEqual(
+            ("zg361_we_finalize_manager_collective_na_effect",),
+            manager.effect_names,
+        )
+        self.assertEqual(
+            ("zg361_we_finalize_portfolio_effect",),
+            portfolio.effect_names,
+        )
+        self.assertNotIn(
+            "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
+            groups,
+        )
+
+    def test_04d2_seed_boundary_mixed_owners_are_exact_purpose_shards(self) -> None:
+        effect_groups = {group.filename: group.effect_names for group in gen.EFFECT_GROUPS}
+        event_groups = {group.filename: group.event_ids for group in gen.EVENT_GROUPS}
+        self.assertEqual(
+            ("zg361_we_m269_publish_signed_result_effect",),
+            effect_groups["zg361_workforce_endgame_015a_m269_signed_result_publication_effects.txt"],
+        )
+        self.assertEqual(
+            (
+                "zg361_we_m269_begin_attribution_debt_cancel_effect",
+                "zg361_we_m269_ack_attribution_debt_cancel_effect",
+                "zg361_we_m269_audit_attribution_debt_advance_effect",
+            ),
+            effect_groups["zg361_workforce_endgame_015c_m269_attribution_debt_cancellation_effects.txt"],
+        )
+        self.assertEqual(
+            ("zg361_we_m360_consume_due_debt_effect",),
+            effect_groups["zg361_workforce_endgame_023b_al_m360_due_debt_effects.txt"],
+        )
+        self.assertEqual(
+            ("zg361_we_m361_consume_due_debt_effect",),
+            effect_groups["zg361_workforce_endgame_023c_al_m361_due_debt_effects.txt"],
+        )
+        for domain, number in (("ab", "025"), ("ac", "028"), ("ad", "031")):
+            with self.subTest(domain=domain):
+                self.assertEqual(
+                    (
+                        f"zg361_we_{domain}_initialize_effect",
+                        f"zg361_we_{domain}_run_authorized_ai_effect",
+                        f"zg361_we_{domain}_launch_effect",
+                    ),
+                    effect_groups[
+                        f"zg361_workforce_endgame_{number}a_{domain}_lifecycle_control_effects.txt"
+                    ],
+                )
+                self.assertEqual(
+                    (f"zg361_we_{domain}_subject_read_effect",),
+                    effect_groups[
+                        f"zg361_workforce_endgame_{number}b_{domain}_subject_read_effects.txt"
+                    ],
+                )
+        self.assertEqual(
+            (
+                "zg361_we_al_schedule_stage_04_deadline_effect",
+                "zg361_we_al_timeout_stage_04_effect",
+            ),
+            effect_groups["zg361_workforce_endgame_035b_al_stage04_m360_deadline_effects.txt"],
+        )
+        self.assertEqual(
+            (
+                "zg361_we_al_schedule_stage_05_deadline_effect",
+                "zg361_we_al_timeout_stage_05_effect",
+            ),
+            effect_groups["zg361_workforce_endgame_035c_al_stage05_m361_deadline_effects.txt"],
+        )
+        self.assertEqual((360,), event_groups["zg361_workforce_endgame_event_011a_al_m360_collective_events.txt"])
+        self.assertEqual((361,), event_groups["zg361_workforce_endgame_event_011b_al_m361_charter_events.txt"])
+        self.assertEqual(
+            (4804, 4904),
+            event_groups["zg361_workforce_endgame_event_021a_al_stage04_m360_deadline_events.txt"],
+        )
+        self.assertEqual(
+            (4805, 4905),
+            event_groups["zg361_workforce_endgame_event_021b_al_stage05_m361_deadline_events.txt"],
+        )
+        self.assertEqual(
+            (5374, 5375, 5376),
+            event_groups[
+                "zg361_workforce_endgame_event_027a_m269_attribution_debt_cancellation_events.txt"
+            ],
+        )
+        self.assertEqual(
+            (5378,),
+            event_groups[
+                "zg361_workforce_endgame_event_027b_m269_signed_result_publication_events.txt"
+            ],
+        )
+        self.assertEqual((6360,), event_groups["zg361_workforce_endgame_event_035a_al_m360_collective_debt_events.txt"])
+        self.assertEqual((6361,), event_groups["zg361_workforce_endgame_event_035b_al_m361_charter_debt_events.txt"])
+
+        seed_boundary_effect_files = (
+            "zg361_workforce_endgame_015c_m269_attribution_debt_cancellation_effects.txt",
+            "zg361_workforce_endgame_023c_al_m361_due_debt_effects.txt",
+            "zg361_workforce_endgame_024d_portfolio_finalize_effects.txt",
+            "zg361_workforce_endgame_025a_ab_lifecycle_control_effects.txt",
+            "zg361_workforce_endgame_028a_ac_lifecycle_control_effects.txt",
+            "zg361_workforce_endgame_031a_ad_lifecycle_control_effects.txt",
+            "zg361_workforce_endgame_035c_al_stage05_m361_deadline_effects.txt",
+        )
+        seed_boundary_effects = {
+            name for filename in seed_boundary_effect_files for name in effect_groups[filename]
+        }
+        self.assertEqual(16, len(seed_boundary_effects))
+        self.assertFalse(any("m360" in name for name in seed_boundary_effects))
+        self.assertNotIn("zg361_we_finalize_manager_collective_na_effect", seed_boundary_effects)
+        seed_boundary_event_files = (
+            "zg361_workforce_endgame_event_011b_al_m361_charter_events.txt",
+            "zg361_workforce_endgame_event_021b_al_stage05_m361_deadline_events.txt",
+            "zg361_workforce_endgame_event_027a_m269_attribution_debt_cancellation_events.txt",
+            "zg361_workforce_endgame_event_035b_al_m361_charter_debt_events.txt",
+        )
+        seed_boundary_events = {
+            event_id for filename in seed_boundary_event_files for event_id in event_groups[filename]
+        }
+        self.assertEqual({361, 4805, 4905, 5374, 5375, 5376, 6361}, seed_boundary_events)
+        self.assertTrue({360, 4804, 4904, 5378, 6360}.isdisjoint(seed_boundary_events))
+        self.assertEqual(
+            set(gen.RETIRED_EFFECT_FILENAMES),
+            {
+                "zg361_workforce_endgame_015a_m269_attribution_settlement_effects.txt",
+                "zg361_workforce_endgame_023b_al_m360_m361_due_debt_effects.txt",
+                "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
+                "zg361_workforce_endgame_025_ab_control_effects.txt",
+                "zg361_workforce_endgame_028_ac_control_effects.txt",
+                "zg361_workforce_endgame_031_ad_control_effects.txt",
+                "zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt",
+            },
+        )
+        self.assertEqual(
+            set(gen.RETIRED_EVENT_FILENAMES),
+            {
+                "zg361_workforce_endgame_event_011_al_collective_charter_events.txt",
+                "zg361_workforce_endgame_event_021_al_deadline_stage04_05_events.txt",
+                "zg361_workforce_endgame_event_027_m269_attribution_events.txt",
+                "zg361_workforce_endgame_event_035_al_collective_charter_debt_events.txt",
+            },
+        )
 
     def test_04f_b2_workforce_closure_is_exact_whole_shard_union(self) -> None:
         closure = set(gen.B2_EFFECT_CLOSURE_NAMES)
@@ -286,7 +443,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(source_blocks, reconstructed)
 
     def test_04h_event_parts_obey_purpose_boundaries(self) -> None:
-        self.assertEqual(35, len(gen.EVENT_GROUPS))
+        self.assertEqual(39, len(gen.EVENT_GROUPS))
         self.assertEqual({}, gen.EVENT_HARD_LIMIT_EXCEPTIONS)
         for group, path in zip(gen.EVENT_GROUPS, EVENT_PATHS, strict=True):
             with self.subTest(path=path.name):
@@ -339,7 +496,7 @@ second_effect = { value = 2 }
             check=False,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("GREEN: 120", result.stdout)
+        self.assertIn("GREEN: 131", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
         paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]

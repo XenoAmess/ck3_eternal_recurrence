@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
-# PURPOSE: AL M360-M361 collective and charter choices.
+# PURPOSE: AL M360 collective choice.
 # READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
 
 namespace = zg361we
@@ -166,94 +166,6 @@ zg361we.360 = {
 		if = {
 			limit = { scope:zg361_we_al_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_al_state = 5 } }
 			trigger_event = { id = zg361we.361 }
-		}
-	}
-}
-
-zg361we.361 = {
-	type = character_event
-	theme = stewardship
-	title = zg361we.361.t
-	desc = zg361we.361.desc
-	trigger = {
-		is_ai = no
-		exists = scope:zg361_we_al_owner
-		exists = scope:zg361_we_al_subject
-		exists = scope:zg361_we_al_cycle
-		exists = scope:zg361_we_al_case
-		this = scope:zg361_we_al_owner
-		zg361_is_celestial_liege_trigger = yes
-		trigger_if = {
-			limit = { exists = liege }
-			NOT = { liege = { zg361_is_celestial_liege_trigger = yes } }
-		}
-		trigger_else = { always = yes }
-		scope:zg361_we_al_subject = {
-			has_variable = zg361_we_al_external_stage_receipts_verified
-			var:zg361_we_al_external_stage_receipts_verified = 1
-		}
-		scope:zg361_we_al_subject = {
-			has_variable = zg361_we_m361_evidence_count
-			var:zg361_we_m361_evidence_count = 3
-			has_variable = zg361_we_m361_evidence_ready
-			var:zg361_we_m361_evidence_ready = 1
-			has_variable = zg361_we_m361_evidence_consumed
-			var:zg361_we_m361_evidence_consumed = 0
-			var:zg361_we_m361_evidence_owner = scope:zg361_we_al_owner
-			var:zg361_we_m361_evidence_subject = this
-			var:zg361_we_m361_evidence_cycle = scope:zg361_we_al_cycle
-			var:zg361_we_m361_evidence_case = scope:zg361_we_al_case
-			has_variable = zg361_we_m361_prepared_report_id
-			has_variable = zg361_we_m361_prepared_charter_id
-		}
-		scope:zg361_we_al_subject = {
-			zg361_case_kernel_full_guard_trigger = {
-				OWNER_VAR = zg361_case_al_owner
-				SUBJECT_VAR = zg361_case_al_subject
-				CYCLE_VAR = zg361_case_al_cycle_serial
-				CASE_VAR = zg361_case_al_case_serial
-				STATE_VAR = zg361_case_al_state
-				ACTIVE_VAR = zg361_case_al_active
-				EXPECTED_OWNER = scope:zg361_we_al_owner
-				EXPECTED_SUBJECT = scope:zg361_we_al_subject
-				EXPECTED_CYCLE = scope:zg361_we_al_cycle
-				EXPECTED_CASE = scope:zg361_we_al_case
-				EXPECTED_STATE = 5
-			}
-		}
-	}
-	option = {
-		name = zg361we.361.a
-		scope:zg361_we_al_subject = {
-			zg361_we_m361_route_a_effect = {
-				TICKET_OWNER = scope:zg361_we_al_owner
-				TICKET_SUBJECT = scope:zg361_we_al_subject
-				TICKET_CYCLE = scope:zg361_we_al_cycle
-				TICKET_CASE = scope:zg361_we_al_case
-			}
-		}
-	}
-	option = {
-		name = zg361we.361.b
-		scope:zg361_we_al_subject = {
-			zg361_we_m361_route_b_effect = {
-				TICKET_OWNER = scope:zg361_we_al_owner
-				TICKET_SUBJECT = scope:zg361_we_al_subject
-				TICKET_CYCLE = scope:zg361_we_al_cycle
-				TICKET_CASE = scope:zg361_we_al_case
-			}
-		}
-	}
-	option = {
-		name = zg361we.361.c
-		scope:zg361_we_al_subject = {
-			zg361_we_m361_route_c_effect = {
-				TICKET_OWNER = scope:zg361_we_al_owner
-				TICKET_SUBJECT = scope:zg361_we_al_subject
-				TICKET_CYCLE = scope:zg361_we_al_cycle
-				TICKET_CASE = scope:zg361_we_al_case
-				TICKET_STATE = 5
-			}
 		}
 	}
 }

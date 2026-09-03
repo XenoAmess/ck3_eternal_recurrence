@@ -6,13 +6,16 @@
 
 生成结果：
 
-- `common/scripted_effects/zg361_workforce_ad_fact_runtime_effects.txt`
+- `common/scripted_effects/zg361_workforce_ad_fact_referral_effects.txt`（referral，5 effects）
+- `common/scripted_effects/zg361_workforce_ad_fact_panel_setup_effects.txt`（panel setup，5 effects）
+- `common/scripted_effects/zg361_workforce_ad_fact_panel_voting_effects.txt`（panel voting，8 effects）
+- `common/scripted_effects/zg361_workforce_ad_fact_offer_response_effects.txt`（offer response，3 effects）
 - `events/zg361_workforce_ad_fact_runtime_events.txt`
 - `localization/*/zg361_workforce_ad_fact_l_*.yml`
 
 L0：`tools/test_zg361_workforce_ad_fact_runtime.py` 与 `tools/test_zg361_workforce_endgame_runtime.py`
 
-事实生成器仍只拥有上述 11 个投影文件；消费与续跑接线由 `gen_361_workforce_endgame_runtime.py` 及其生成物拥有。两者都不修改共享 case kernel、provider、冻结的旧 loader ledger 或 #360。简体中文与英文是日常开发原创文本；其余七语仅为英文结构占位，不称为完成翻译。
+事实生成器仍只拥有上述 14 个投影文件；消费与续跑接线由 `gen_361_workforce_endgame_runtime.py` 及其生成物拥有。两者都不修改共享 case kernel、provider、冻结的旧 loader ledger 或 #360。简体中文与英文是日常开发原创文本；其余七语仅为英文结构占位，不称为完成翻译。
 
 ## 1. 这 16 项如何成为真实事实
 
@@ -113,6 +116,6 @@ producer 重放同一 pending tuple 只返回 status=2；不同 tuple 遇到未�
 
 ## 5. L0 与尚未完成
 
-测试冻结：16 项旧 alias 被三格 source 替代；11 个事实生成物与 BOM；三个 full-guard 入口；真实 relation selector；三名互异 manager；逐真人/AI actor 票与单调 receipt；runner-up 存在才写 evidence；subject 本人拒绝；source id/hash commit-last；operation-success 后消费；C-only retire；tuple-bound replay/reuse；AI N/A/拒绝续跑；#271 B 延迟到 #267 验证后支付；五个事件 theme；九语 key 一致与英文占位。
+测试冻结：16 项旧 alias 被三格 source 替代；14 个事实生成物与 BOM；三个 full-guard 入口；真实 relation selector；三名互异 manager；逐真人/AI actor 票与单调 receipt；runner-up 存在才写 evidence；subject 本人拒绝；source id/hash commit-last；operation-success 后消费；C-only retire；tuple-bound replay/reuse；AI N/A/拒绝续跑；#271 B 延迟到 #267 验证后支付；五个事件 theme；九语 key 一致与英文占位。
 
 当前静态接线把旧 loader 账本中的 AD 30 项再替换 16 项，静态预期只剩 14 项真正外部 producer 字段；冻结的 2026-08-31 ledger 仍保留当时“剩余 30”的历史原文，不回写成新证据。下一步必须运行新 loader 差量与 MCP-first paused 验收，证明 theme、alias warning、真实角色事件分流、消费/退役、付款和 AI 后台链在 CK3 内均按预期发生；静态可达性不能冒充 live GREEN。

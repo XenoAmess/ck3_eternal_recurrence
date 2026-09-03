@@ -37,6 +37,19 @@ EFFECT_HARD_MAX = 20
 # A future shard above the hard limit is invalid unless this map contains both
 # a concrete purpose-cohesion reason and a reference to CK3 live evidence.
 EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+RETIRED_EFFECT_FILENAMES = (
+    "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
+    "zg361_workforce_endgame_015a_m269_attribution_settlement_effects.txt",
+    "zg361_workforce_endgame_023b_al_m360_m361_due_debt_effects.txt",
+    "zg361_workforce_endgame_025_ab_control_effects.txt",
+    "zg361_workforce_endgame_028_ac_control_effects.txt",
+    "zg361_workforce_endgame_031_ad_control_effects.txt",
+    "zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt",
+)
+RETIRED_EFFECT_PATHS = tuple(
+    MOD_ROOT / "common" / "scripted_effects" / filename
+    for filename in RETIRED_EFFECT_FILENAMES
+)
 LEGACY_EVENT_FILENAME = "zg361_workforce_endgame_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_workforce_endgame_event_*_events.txt"
@@ -48,6 +61,15 @@ EVENT_HARD_MAX = 20
 # A future shard above the hard limit is invalid unless this map contains both
 # a concrete purpose-cohesion reason and a reference to CK3 live evidence.
 EVENT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+RETIRED_EVENT_FILENAMES = (
+    "zg361_workforce_endgame_event_011_al_collective_charter_events.txt",
+    "zg361_workforce_endgame_event_021_al_deadline_stage04_05_events.txt",
+    "zg361_workforce_endgame_event_027_m269_attribution_events.txt",
+    "zg361_workforce_endgame_event_035_al_collective_charter_debt_events.txt",
+)
+RETIRED_EVENT_PATHS = tuple(
+    MOD_ROOT / "events" / filename for filename in RETIRED_EVENT_FILENAMES
+)
 PREFIX = "zg361_we"
 NAMESPACE = "zg361we"
 APPOINTMENT_WRAPPER = "zg361_workforce_appointment_fact_m274_appoint_and_consume_effect"
@@ -7535,15 +7557,6 @@ def _due_debt_effect_names(*mids: int) -> tuple[str, ...]:
     return tuple(f"{PREFIX}_m{mid}_consume_due_debt_effect" for mid in mids)
 
 
-def _domain_control_effect_names(domain: str) -> tuple[str, ...]:
-    return (
-        f"{PREFIX}_{domain}_initialize_effect",
-        f"{PREFIX}_{domain}_subject_read_effect",
-        f"{PREFIX}_{domain}_run_authorized_ai_effect",
-        f"{PREFIX}_{domain}_launch_effect",
-    )
-
-
 def _deadline_effect_names(domain: str, *states: int) -> tuple[str, ...]:
     names: list[str] = []
     for state in states:
@@ -7707,10 +7720,14 @@ EFFECT_GROUPS = (
         ("zg361_we_m361_future_default_install_effect",),
     ),
     EffectGroup(
-        "zg361_workforce_endgame_015a_m269_attribution_settlement_effects.txt",
-        "M269 attribution result and debt cancellation",
+        "zg361_workforce_endgame_015a_m269_signed_result_publication_effects.txt",
+        "M269 signed attribution-result publication",
+        ("zg361_we_m269_publish_signed_result_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_015c_m269_attribution_debt_cancellation_effects.txt",
+        "M269 attribution-debt cancellation and stage advance",
         (
-            "zg361_we_m269_publish_signed_result_effect",
             "zg361_we_m269_begin_attribution_debt_cancel_effect",
             "zg361_we_m269_ack_attribution_debt_cancel_effect",
             "zg361_we_m269_audit_attribution_debt_advance_effect",
@@ -7772,9 +7789,14 @@ EFFECT_GROUPS = (
         _due_debt_effect_names(355, 356),
     ),
     EffectGroup(
-        "zg361_workforce_endgame_023b_al_m360_m361_due_debt_effects.txt",
-        "AL M360-M361 due-debt consumers",
-        _due_debt_effect_names(360, 361),
+        "zg361_workforce_endgame_023b_al_m360_due_debt_effects.txt",
+        "AL M360 collective due-debt consumer",
+        _due_debt_effect_names(360),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_023c_al_m361_due_debt_effects.txt",
+        "AL M361 charter due-debt consumer",
+        _due_debt_effect_names(361),
     ),
     EffectGroup(
         "zg361_workforce_endgame_024a_abandoned_ac_cleanup_effects.txt",
@@ -7790,20 +7812,61 @@ EFFECT_GROUPS = (
         ),
     ),
     EffectGroup(
-        "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
-        "manager collective N/A and portfolio finalization",
+        "zg361_workforce_endgame_024c_manager_collective_cleanup_effects.txt",
+        "manager collective N/A finalization and cleanup",
+        ("zg361_we_finalize_manager_collective_na_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_024d_portfolio_finalize_effects.txt",
+        "cross-domain portfolio finalization",
+        ("zg361_we_finalize_portfolio_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_025a_ab_lifecycle_control_effects.txt",
+        "AB domain initialization authorized AI and launch lifecycle",
         (
-            "zg361_we_finalize_manager_collective_na_effect",
-            "zg361_we_finalize_portfolio_effect",
+            "zg361_we_ab_initialize_effect",
+            "zg361_we_ab_run_authorized_ai_effect",
+            "zg361_we_ab_launch_effect",
         ),
     ),
-    EffectGroup("zg361_workforce_endgame_025_ab_control_effects.txt", "AB domain controls", _domain_control_effect_names("ab")),
+    EffectGroup(
+        "zg361_workforce_endgame_025b_ab_subject_read_effects.txt",
+        "AB subject-visible revision read",
+        ("zg361_we_ab_subject_read_effect",),
+    ),
     EffectGroup("zg361_workforce_endgame_026_ab_deadline_stage01_03_effects.txt", "AB stage 01-03 deadlines", _deadline_effect_names("ab", 1, 2, 3)),
     EffectGroup("zg361_workforce_endgame_027_ab_deadline_stage04_06_effects.txt", "AB stage 04-06 deadlines", _deadline_effect_names("ab", 4, 5, 6)),
-    EffectGroup("zg361_workforce_endgame_028_ac_control_effects.txt", "AC domain controls", _domain_control_effect_names("ac")),
+    EffectGroup(
+        "zg361_workforce_endgame_028a_ac_lifecycle_control_effects.txt",
+        "AC domain initialization authorized AI and launch lifecycle",
+        (
+            "zg361_we_ac_initialize_effect",
+            "zg361_we_ac_run_authorized_ai_effect",
+            "zg361_we_ac_launch_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_028b_ac_subject_read_effects.txt",
+        "AC subject-visible revision read",
+        ("zg361_we_ac_subject_read_effect",),
+    ),
     EffectGroup("zg361_workforce_endgame_029_ac_deadline_stage01_03_effects.txt", "AC stage 01-03 deadlines", _deadline_effect_names("ac", 1, 2, 3)),
     EffectGroup("zg361_workforce_endgame_030_ac_deadline_stage04_06_effects.txt", "AC stage 04-06 deadlines", _deadline_effect_names("ac", 4, 5, 6)),
-    EffectGroup("zg361_workforce_endgame_031_ad_control_effects.txt", "AD domain controls", _domain_control_effect_names("ad")),
+    EffectGroup(
+        "zg361_workforce_endgame_031a_ad_lifecycle_control_effects.txt",
+        "AD domain initialization authorized AI and launch lifecycle",
+        (
+            "zg361_we_ad_initialize_effect",
+            "zg361_we_ad_run_authorized_ai_effect",
+            "zg361_we_ad_launch_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_031b_ad_subject_read_effects.txt",
+        "AD subject-visible revision read",
+        ("zg361_we_ad_subject_read_effect",),
+    ),
     EffectGroup("zg361_workforce_endgame_032_ad_deadline_stage01_03_effects.txt", "AD stage 01-03 deadlines", _deadline_effect_names("ad", 1, 2, 3)),
     EffectGroup("zg361_workforce_endgame_033a_ad_deadline_stage04_05_effects.txt", "AD stage 04-05 deadlines", _deadline_effect_names("ad", 4, 5)),
     EffectGroup("zg361_workforce_endgame_033b_ad_deadline_stage06_effects.txt", "B2 closure AD stage 06 deadline", _deadline_effect_names("ad", 6)),
@@ -7815,7 +7878,8 @@ EFFECT_GROUPS = (
         ("zg361_we_al_run_authorized_ai_effect", "zg361_we_al_launch_effect"),
     ),
     EffectGroup("zg361_workforce_endgame_035a_al_stage01_deadline_effects.txt", "B2 closure AL stage 01 deadline", _deadline_effect_names("al", 1)),
-    EffectGroup("zg361_workforce_endgame_035b_al_stage04_05_deadline_effects.txt", "AL stage 04-05 deadlines", _deadline_effect_names("al", 4, 5)),
+    EffectGroup("zg361_workforce_endgame_035b_al_stage04_m360_deadline_effects.txt", "AL stage 04 M360 collective deadline", _deadline_effect_names("al", 4)),
+    EffectGroup("zg361_workforce_endgame_035c_al_stage05_m361_deadline_effects.txt", "AL stage 05 M361 charter deadline", _deadline_effect_names("al", 5)),
     EffectGroup("zg361_workforce_endgame_036_ab_m242_m243_effects.txt", "AB stage 01 mechanisms M242-M243", _mechanism_effect_names(242, 243)),
     EffectGroup("zg361_workforce_endgame_037_ab_m244_m245_effects.txt", "AB stage 02 mechanisms M244-M245", _mechanism_effect_names(244, 245)),
     EffectGroup("zg361_workforce_endgame_038_ab_m246_m247_effects.txt", "AB stage 03 mechanisms M246-M247", _mechanism_effect_names(246, 247)),
@@ -7940,9 +8004,14 @@ EVENT_GROUPS = (
         (356, 5356, 6356),
     ),
     EventGroup(
-        "zg361_workforce_endgame_event_011_al_collective_charter_events.txt",
-        "AL M360-M361 collective and charter choices",
-        (360, 361),
+        "zg361_workforce_endgame_event_011a_al_m360_collective_events.txt",
+        "AL M360 collective choice",
+        (360,),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_011b_al_m361_charter_events.txt",
+        "AL M361 charter choice",
+        (361,),
     ),
     EventGroup(
         "zg361_workforce_endgame_event_012_m264_handoff_events.txt",
@@ -7990,9 +8059,14 @@ EVENT_GROUPS = (
         (4801, 4901),
     ),
     EventGroup(
-        "zg361_workforce_endgame_event_021_al_deadline_stage04_05_events.txt",
-        "AL stage 04-05 deadlines and relays",
-        (4804, 4904, 4805, 4905),
+        "zg361_workforce_endgame_event_021a_al_stage04_m360_deadline_events.txt",
+        "AL stage 04 M360 collective deadline and relay",
+        (4804, 4904),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_021b_al_stage05_m361_deadline_events.txt",
+        "AL stage 05 M361 charter deadline and relay",
+        (4805, 4905),
     ),
     EventGroup(
         "zg361_workforce_endgame_event_022_ac_future_transitions_events.txt",
@@ -8020,9 +8094,14 @@ EVENT_GROUPS = (
         (5370, 5371, 5372, 5373),
     ),
     EventGroup(
-        "zg361_workforce_endgame_event_027_m269_attribution_events.txt",
-        "M269 attribution cancellation audit and result publication",
-        (5374, 5375, 5376, 5378),
+        "zg361_workforce_endgame_event_027a_m269_attribution_debt_cancellation_events.txt",
+        "M269 attribution-debt cancellation and stage-advance relays",
+        (5374, 5375, 5376),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_027b_m269_signed_result_publication_events.txt",
+        "M269 signed attribution-result publication relay",
+        (5378,),
     ),
     EventGroup(
         "zg361_workforce_endgame_event_028_m275_remediation_events.txt",
@@ -8060,9 +8139,14 @@ EVENT_GROUPS = (
         (6269, 6274, 6275),
     ),
     EventGroup(
-        "zg361_workforce_endgame_event_035_al_collective_charter_debt_events.txt",
-        "AL collective and charter due-debt callbacks",
-        (6360, 6361),
+        "zg361_workforce_endgame_event_035a_al_m360_collective_debt_events.txt",
+        "AL M360 collective due-debt callback",
+        (6360,),
+    ),
+    EventGroup(
+        "zg361_workforce_endgame_event_035b_al_m361_charter_debt_events.txt",
+        "AL M361 charter due-debt callback",
+        (6361,),
     ),
 )
 
@@ -8159,6 +8243,7 @@ def top_level_effect_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]
 
 def _validate_effect_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
     source_names = tuple(name for name, _ in source_blocks)
+    source_rank = {name: rank for rank, name in enumerate(source_names)}
     configured_names = tuple(name for group in EFFECT_GROUPS for name in group.effect_names)
     filenames = tuple(group.filename for group in EFFECT_GROUPS)
     if len(source_names) != HISTORICAL_EFFECT_COUNT:
@@ -8170,13 +8255,25 @@ def _validate_effect_groups(source_blocks: tuple[tuple[str, str], ...]) -> None:
         raise ValueError("workforce/endgame source contains duplicate top-level effects")
     if len(filenames) != len(set(filenames)):
         raise ValueError("workforce/endgame effect shard filenames must be unique")
-    if source_names != configured_names:
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("workforce/endgame effect groups contain duplicate effect names")
+    if set(source_names) != set(configured_names):
         missing = sorted(set(source_names) - set(configured_names))
         unexpected = sorted(set(configured_names) - set(source_names))
         raise ValueError(
-            "workforce/endgame effect groups must preserve exact source order and coverage; "
+            "workforce/endgame effect groups must preserve exact source coverage; "
             f"missing={missing}, unexpected={unexpected}"
         )
+    for group in EFFECT_GROUPS:
+        ranks = tuple(source_rank[name] for name in group.effect_names)
+        if ranks != tuple(sorted(ranks)):
+            raise ValueError(f"{group.filename} must preserve source order within its purpose shard")
+    # Purpose groups may join lifecycle blocks emitted around a separately owned
+    # subject-read block. Reordering all blocks by their frozen source rank must
+    # still reconstruct the byte-identical 324-block historical aggregate.
+    reconstructed_names = tuple(sorted(configured_names, key=source_rank.__getitem__))
+    if reconstructed_names != source_names:
+        raise ValueError("workforce/endgame effect shards cannot reconstruct global source order")
     b2_closure = set(B2_EFFECT_CLOSURE_NAMES)
     if len(B2_EFFECT_CLOSURE_NAMES) != 40 or len(b2_closure) != 40:
         raise ValueError("B2 workforce closure must contain exactly 40 unique effects")
@@ -8973,7 +9070,11 @@ def unexpected_effect_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
         for path in rendered
         if path.parent == effects_dir and path.name != LEGACY_EFFECT_FILENAME
     }
-    return tuple(sorted(set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected))
+    unexpected = set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected
+    # Keep retired purpose-boundary owners as an explicit --check failure even
+    # if a future shard glob is narrowed and would otherwise stop seeing them.
+    unexpected.update(path for path in RETIRED_EFFECT_PATHS if path.is_file())
+    return tuple(sorted(unexpected))
 
 
 def unexpected_event_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
@@ -8982,6 +9083,7 @@ def unexpected_event_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
     unexpected = set(events_dir.glob(EVENT_SHARD_GLOB)) - expected
     if LEGACY_EVENT_PATH.is_file():
         unexpected.add(LEGACY_EVENT_PATH)
+    unexpected.update(path for path in RETIRED_EVENT_PATHS if path.is_file())
     return tuple(sorted(unexpected))
 
 

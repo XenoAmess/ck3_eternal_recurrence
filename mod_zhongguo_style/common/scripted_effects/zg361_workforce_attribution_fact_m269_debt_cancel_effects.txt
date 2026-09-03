@@ -1,0 +1,153 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_attribution_fact.py
+# readiness: ck3-script-static-ready-not-live
+
+# PURPOSE: cancel attribution after an exact #269 route-C debt.
+
+zg361_workforce_attribution_fact_cancel_from_m269_debt_effect = {
+    remove_variable = zg361_workforce_attribution_fact_status
+    remove_variable = zg361_workforce_attribution_fact_red_code
+    if = {
+        limit = { has_variable = zg361_workforce_attribution_fact_cycle has_variable = zg361_workforce_attribution_fact_case }
+        save_temporary_scope_value_as = {
+            name = zg361_workforce_attribution_fact_expected_m269_debt_id
+            value = {
+                value = var:zg361_workforce_attribution_fact_cycle multiply = 1000000
+                add = { value = var:zg361_workforce_attribution_fact_case multiply = 1000 }
+                add = 269
+            }
+        }
+        save_temporary_scope_value_as = {
+            name = zg361_workforce_attribution_fact_expected_m269_debt_due_cycle
+            value = { value = var:zg361_workforce_attribution_fact_cycle add = 1 }
+        }
+    }
+    if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_consumed
+            has_variable = zg361_workforce_attribution_fact_canceled
+            has_variable = zg361_workforce_attribution_fact_cancel_owner
+            has_variable = zg361_workforce_attribution_fact_cancel_subject
+            has_variable = zg361_workforce_attribution_fact_cancel_cycle
+            has_variable = zg361_workforce_attribution_fact_cancel_case
+            has_variable = zg361_workforce_attribution_fact_cancel_reason
+            has_variable = zg361_workforce_attribution_fact_cancel_debt_id
+            has_variable = zg361_workforce_attribution_fact_cancel_debt_due_cycle
+            has_variable = zg361_workforce_attribution_fact_cancel_debt_escalation_count
+            has_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_owner
+            has_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_subject
+            has_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_cycle
+            has_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_case
+            has_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_state
+            has_variable = zg361_workforce_attribution_fact_cancel_m269_receipt_choice
+            var:zg361_workforce_attribution_fact_consumed = 1
+            var:zg361_workforce_attribution_fact_canceled = 1
+            var:zg361_workforce_attribution_fact_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_subject = this
+            var:zg361_workforce_attribution_fact_cancel_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_cancel_subject = this
+            var:zg361_workforce_attribution_fact_cancel_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_workforce_attribution_fact_cancel_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_workforce_attribution_fact_cancel_reason = 1
+            var:zg361_workforce_attribution_fact_cancel_debt_id = scope:zg361_workforce_attribution_fact_expected_m269_debt_id
+            var:zg361_workforce_attribution_fact_cancel_debt_due_cycle = scope:zg361_workforce_attribution_fact_expected_m269_debt_due_cycle
+            var:zg361_workforce_attribution_fact_cancel_debt_escalation_count = 0
+            var:zg361_workforce_attribution_fact_cancel_m269_receipt_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_cancel_m269_receipt_subject = this
+            var:zg361_workforce_attribution_fact_cancel_m269_receipt_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_workforce_attribution_fact_cancel_m269_receipt_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_workforce_attribution_fact_cancel_m269_receipt_state = 5
+            var:zg361_workforce_attribution_fact_cancel_m269_receipt_choice = 3
+        }
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 2 }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_signature_committed
+            var:zg361_workforce_attribution_fact_signature_committed = 1
+            var:zg361_workforce_attribution_fact_state = 2
+            var:zg361_workforce_attribution_fact_consumed = 0
+            var:zg361_workforce_attribution_fact_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_subject = this
+            has_variable = zg361_we_m269_write_owner
+            has_variable = zg361_we_m269_write_subject
+            has_variable = zg361_we_m269_write_cycle
+            has_variable = zg361_we_m269_write_case
+            has_variable = zg361_we_m269_write_state
+            has_variable = zg361_we_m269_choice
+            has_variable = zg361_we_m269_business_object_created
+            has_variable = zg361_we_m269_receipt_owner
+            has_variable = zg361_we_m269_receipt_subject
+            has_variable = zg361_we_m269_receipt_cycle
+            has_variable = zg361_we_m269_receipt_case
+            has_variable = zg361_we_m269_receipt_state
+            has_variable = zg361_we_m269_receipt_choice
+            has_variable = zg361_we_m269_debt_owner
+            has_variable = zg361_we_m269_debt_subject
+            has_variable = zg361_we_m269_debt_cycle
+            has_variable = zg361_we_m269_debt_case
+            has_variable = zg361_we_m269_debt_state
+            has_variable = zg361_we_m269_debt_type_code
+            has_variable = zg361_we_m269_debt_id
+            has_variable = zg361_we_m269_debt_consumer_contract
+            has_variable = zg361_we_m269_debt_due_cycle
+            has_variable = zg361_we_m269_debt_open
+            has_variable = zg361_we_m269_debt_consumed
+            has_variable = zg361_we_m269_debt_escalation_count
+            has_variable = zg361_we_m269_debt_visible_to_settlement
+            var:zg361_we_m269_write_owner = $OWNER$
+            var:zg361_we_m269_write_subject = this
+            var:zg361_we_m269_write_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_we_m269_write_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_we_m269_write_state = 5
+            var:zg361_we_m269_choice = 3
+            var:zg361_we_m269_business_object_created = 0
+            var:zg361_we_m269_receipt_owner = $OWNER$
+            var:zg361_we_m269_receipt_subject = this
+            var:zg361_we_m269_receipt_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_we_m269_receipt_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_we_m269_receipt_state = 5
+            var:zg361_we_m269_receipt_choice = 3
+            var:zg361_we_m269_debt_owner = $OWNER$
+            var:zg361_we_m269_debt_subject = this
+            var:zg361_we_m269_debt_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_we_m269_debt_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_we_m269_debt_state = 5
+            var:zg361_we_m269_debt_type_code = 269
+            var:zg361_we_m269_debt_consumer_contract = 269
+            var:zg361_we_m269_debt_due_cycle = scope:zg361_workforce_attribution_fact_expected_m269_debt_due_cycle
+            var:zg361_we_m269_debt_open = 1
+            var:zg361_we_m269_debt_consumed = 0
+            var:zg361_we_m269_debt_escalation_count = 0
+            var:zg361_we_m269_debt_visible_to_settlement = 1
+        }
+        if = {
+            limit = { var:zg361_we_m269_debt_id = scope:zg361_workforce_attribution_fact_expected_m269_debt_id }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_owner value = $OWNER$ }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_subject value = this }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_cycle value = var:zg361_workforce_attribution_fact_cycle }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_case value = var:zg361_workforce_attribution_fact_case }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_debt_id value = var:zg361_we_m269_debt_id }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_debt_due_cycle value = var:zg361_we_m269_debt_due_cycle }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_debt_escalation_count value = var:zg361_we_m269_debt_escalation_count }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_m269_receipt_owner value = var:zg361_we_m269_receipt_owner }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_m269_receipt_subject value = var:zg361_we_m269_receipt_subject }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_m269_receipt_cycle value = var:zg361_we_m269_receipt_cycle }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_m269_receipt_case value = var:zg361_we_m269_receipt_case }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_m269_receipt_state value = var:zg361_we_m269_receipt_state }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_m269_receipt_choice value = var:zg361_we_m269_receipt_choice }
+            set_variable = { name = zg361_workforce_attribution_fact_cancel_reason value = 1 }
+            set_variable = { name = zg361_workforce_attribution_fact_canceled value = 1 }
+            set_variable = { name = zg361_workforce_attribution_fact_state value = 3 }
+            set_variable = { name = zg361_workforce_attribution_fact_status value = 1 }
+            set_variable = { name = zg361_workforce_attribution_fact_consumed value = 1 } # cancel/consume marker is last
+        }
+        else = {
+            set_variable = { name = zg361_workforce_attribution_fact_status value = 4 }
+            set_variable = { name = zg361_workforce_attribution_fact_red_code value = 26932 }
+        }
+    }
+    else = {
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_attribution_fact_red_code value = 26931 }
+    }
+}

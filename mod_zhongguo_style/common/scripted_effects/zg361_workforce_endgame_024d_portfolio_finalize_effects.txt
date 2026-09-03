@@ -1,0 +1,62 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: cross-domain portfolio finalization.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_finalize_portfolio_effect = {
+	set_variable = { name = zg361_we_portfolio_closed value = 0 }
+	set_variable = { name = zg361_we_portfolio_status value = 4 }
+	set_variable = { name = zg361_we_final_operation_check value = var:zg361_we_operation_used }
+	set_variable = { name = zg361_we_final_gold_check value = var:zg361_we_gold_available }
+	change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_reserved }
+	change_variable = { name = zg361_we_final_gold_check add = var:zg361_we_gold_paid }
+	set_variable = { name = zg361_we_final_hours_check value = var:zg361_we_hours_available }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_output }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_on_call }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_meeting }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_leave }
+	change_variable = { name = zg361_we_final_hours_check add = var:zg361_we_hours_governance }
+	set_variable = { name = zg361_we_final_shadow_hc_check value = var:zg361_we_shadow_hc_available }
+	change_variable = { name = zg361_we_final_shadow_hc_check add = var:zg361_we_shadow_hc_active }
+	set_variable = { name = zg361_we_final_formal_hc_check value = var:zg361_ch_hc_available }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reserved }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_occupied }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_frozen }
+	change_variable = { name = zg361_we_final_formal_hc_check add = var:zg361_ch_hc_reclaimed }
+	set_variable = { name = zg361_we_final_conservation_ok value = 0 }
+	if = {
+		limit = {
+			var:zg361_we_operation_used >= 0
+			var:zg361_we_operation_used <= var:zg361_we_operation_total
+			var:zg361_we_gold_available >= 0
+			var:zg361_we_gold_reserved >= 0
+			var:zg361_we_gold_paid >= 0
+			var:zg361_we_hours_available >= 0
+			var:zg361_we_hours_output >= 0
+			var:zg361_we_hours_on_call >= 0
+			var:zg361_we_hours_meeting >= 0
+			var:zg361_we_hours_leave >= 0
+			var:zg361_we_hours_governance >= 0
+			var:zg361_we_shadow_hc_available >= 0
+			var:zg361_we_shadow_hc_active >= 0
+			var:zg361_ch_hc_available >= 0
+			var:zg361_ch_hc_reserved >= 0
+			var:zg361_ch_hc_occupied >= 0
+			var:zg361_ch_hc_frozen >= 0
+			var:zg361_ch_hc_reclaimed >= 0
+			var:zg361_we_final_operation_check = 40
+			var:zg361_we_final_gold_check = var:zg361_we_gold_total
+			var:zg361_we_final_hours_check = var:zg361_we_hours_total
+			var:zg361_we_final_shadow_hc_check = var:zg361_we_shadow_hc_total
+			var:zg361_we_final_formal_hc_check = var:zg361_ch_hc_authorized
+		}
+		set_variable = { name = zg361_we_final_conservation_ok value = 1 }
+		set_variable = { name = zg361_we_portfolio_closed value = 1 }
+		set_variable = { name = zg361_we_portfolio_status value = 6 }
+		debug_log = "ZG361WE: workforce/endgame portfolio closed static runtime"
+	}
+	else = {
+		set_variable = { name = zg361_we_last_red_code value = 9099 }
+		set_variable = { name = zg361_we_runtime_status value = 4 }
+		debug_log = "ZG361WE RED: final conservation failed; portfolio remains open"
+	}
+}

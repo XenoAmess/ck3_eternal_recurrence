@@ -1,6 +1,8 @@
 ﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_attribution_fact.py
 # readiness: ck3-script-static-ready-not-live
 
+# PURPOSE: collect the player signature or dispatch the AI signature next frame.
+
 namespace = zg361workforceattributionfact
 
 zg361workforceattributionfact.1 = {
@@ -85,9 +87,6 @@ zg361workforceattributionfact.1 = {
 
 }
 
-# Both player and AI approvers are dispatched from a later carrier
-# event, so every variable frozen by the arm effect is from a prior
-# frame.  The carrier is scheduled exactly once by a successful arm.
 zg361workforceattributionfact.2 = {
     type = character_event
     hidden = yes
@@ -105,22 +104,4 @@ zg361workforceattributionfact.2 = {
         set_variable = { name = zg361_workforce_attribution_fact_signature_dispatch_issued value = 1 }
         zg361_workforce_attribution_fact_dispatch_signature_effect = yes
     }
-}
-
-# Cross-package ACK carrier.  The probation producer ran in the prior
-# frame; only this event may verify its frozen read-side tuple.
-zg361workforceattributionfact.3 = {
-    type = character_event
-    hidden = yes
-    trigger = {
-        has_variable = zg361_workforce_attribution_fact_dispatch_committed
-        has_variable = zg361_workforce_attribution_fact_dispatch_pending
-        has_variable = zg361_workforce_attribution_fact_consumed
-        has_variable = zg361_workforce_attribution_fact_subject
-        var:zg361_workforce_attribution_fact_dispatch_committed = 1
-        var:zg361_workforce_attribution_fact_dispatch_pending = 1
-        var:zg361_workforce_attribution_fact_consumed = 0
-        var:zg361_workforce_attribution_fact_subject = this
-    }
-    immediate = { zg361_workforce_attribution_fact_ack_probation_publish_effect = yes }
 }

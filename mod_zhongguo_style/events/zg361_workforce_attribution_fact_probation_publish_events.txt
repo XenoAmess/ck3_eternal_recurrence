@@ -1,0 +1,22 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_attribution_fact.py
+# readiness: ck3-script-static-ready-not-live
+
+# PURPOSE: acknowledge the later probation publication on its next-frame carrier.
+
+namespace = zg361workforceattributionfact
+
+zg361workforceattributionfact.3 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_attribution_fact_dispatch_committed
+        has_variable = zg361_workforce_attribution_fact_dispatch_pending
+        has_variable = zg361_workforce_attribution_fact_consumed
+        has_variable = zg361_workforce_attribution_fact_subject
+        var:zg361_workforce_attribution_fact_dispatch_committed = 1
+        var:zg361_workforce_attribution_fact_dispatch_pending = 1
+        var:zg361_workforce_attribution_fact_consumed = 0
+        var:zg361_workforce_attribution_fact_subject = this
+    }
+    immediate = { zg361_workforce_attribution_fact_ack_probation_publish_effect = yes }
+}

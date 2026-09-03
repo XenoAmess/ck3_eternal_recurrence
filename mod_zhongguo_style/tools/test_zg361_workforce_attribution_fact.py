@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """L0 contracts for the isolated Workforce attribution-signature package.
 
@@ -8,9 +8,12 @@ They do not claim loader, paused-snapshot or live-game evidence.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
+import tempfile
 import unittest
+from unittest.mock import patch
 
 import gen_zg361_workforce_attribution_fact as generator
 
@@ -18,8 +21,14 @@ import gen_zg361_workforce_attribution_fact as generator
 MOD_ROOT = Path(__file__).resolve().parents[1]
 PREFIX = generator.PREFIX
 NAMESPACE = generator.NAMESPACE
-EFFECTS_PATH = MOD_ROOT / "common/scripted_effects" / f"{PREFIX}_effects.txt"
-EVENTS_PATH = MOD_ROOT / "events" / f"{PREFIX}_events.txt"
+EFFECT_PATHS = tuple(
+    MOD_ROOT / "common" / "scripted_effects" / group.filename
+    for group in generator.EFFECT_GROUPS
+)
+EVENT_PATHS = tuple(
+    MOD_ROOT / "events" / group.filename
+    for group in generator.EVENT_GROUPS
+)
 SPEC_PATH = MOD_ROOT / "docs/zg361_workforce_attribution_fact_runtime_spec.md"
 
 
@@ -60,8 +69,8 @@ def block(text: str, name: str) -> str:
 class WorkforceAttributionFactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
-        cls.events = read(EVENTS_PATH)
+        cls.effects = "\n".join(read(path) for path in EFFECT_PATHS)
+        cls.events = "\n".join(read(path) for path in EVENT_PATHS)
         cls.spec = read(SPEC_PATH) if SPEC_PATH.is_file() else ""
 
     def test_01_policy_table_conserves_and_preserves_slot_order(self) -> None:
@@ -94,14 +103,168 @@ class WorkforceAttributionFactTests(unittest.TestCase):
 
     def test_03_generator_owns_only_new_projection_files(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(11, len(rendered))
-        self.assertEqual({EFFECTS_PATH, EVENTS_PATH}, {path for path in rendered if path.suffix == ".txt"})
+        self.assertEqual(14, len(rendered))
+        self.assertEqual(
+            {*EFFECT_PATHS, *EVENT_PATHS},
+            {path for path in rendered if path.suffix == ".txt"},
+        )
         for path, payload in rendered.items():
             self.assertTrue(path.name.startswith(PREFIX))
             self.assertTrue(payload.startswith(generator.BOM))
             self.assertEqual(payload, path.read_bytes(), path)
         self.assertNotIn(MOD_ROOT / "tools/gen_361_workforce_endgame_runtime.py", rendered)
         self.assertNotIn(MOD_ROOT / "tools/gen_zg361_workforce_probation_fact.py", rendered)
+
+    def test_03a_purpose_shards_preserve_both_frozen_aggregates(self) -> None:
+        effect_aggregate = generator.render_effects()
+        self.assertEqual(generator.HISTORICAL_EFFECT_BYTES, len(effect_aggregate))
+        self.assertEqual(
+            generator.HISTORICAL_EFFECT_SHA256,
+            hashlib.sha256(effect_aggregate).hexdigest(),
+        )
+        historical_effects = generator.top_level_blocks(effect_aggregate)
+        emitted_effects = tuple(
+            row
+            for payload in generator.render_effect_parts().values()
+            for row in generator.top_level_blocks(payload)
+        )
+        self.assertEqual(generator.HISTORICAL_EFFECT_COUNT, len(historical_effects))
+        self.assertEqual(historical_effects, emitted_effects)
+
+        event_aggregate = generator.render_events()
+        self.assertEqual(generator.HISTORICAL_EVENT_BYTES, len(event_aggregate))
+        self.assertEqual(
+            generator.HISTORICAL_EVENT_SHA256,
+            hashlib.sha256(event_aggregate).hexdigest(),
+        )
+        historical_events = generator.top_level_blocks(event_aggregate)
+        emitted_events = tuple(
+            row
+            for payload in generator.render_event_parts().values()
+            for row in generator.top_level_blocks(payload)
+        )
+        self.assertEqual(generator.HISTORICAL_EVENT_COUNT, len(historical_events))
+        self.assertEqual(historical_events, emitted_events)
+
+    def test_03b_seed_closure_is_an_exact_complete_shard_union(self) -> None:
+        effect_closure = set(generator.SEED_EFFECT_CLOSURE_NAMES)
+        selected_effect_groups = [
+            group
+            for group in generator.EFFECT_GROUPS
+            if effect_closure.intersection(group.effect_names)
+        ]
+        self.assertEqual(5, len(effect_closure))
+        self.assertEqual(2, len(selected_effect_groups))
+        self.assertEqual(
+            effect_closure,
+            {
+                name
+                for group in selected_effect_groups
+                for name in group.effect_names
+            },
+        )
+        self.assertEqual(
+            set(generator.DEFERRED_EFFECT_NAMES),
+            {
+                name
+                for group in generator.EFFECT_GROUPS
+                if group not in selected_effect_groups
+                for name in group.effect_names
+            },
+        )
+
+        event_closure = set(generator.SEED_EVENT_CLOSURE_NAMES)
+        selected_event_groups = [
+            group
+            for group in generator.EVENT_GROUPS
+            if event_closure.intersection(group.event_names)
+        ]
+        self.assertEqual(2, len(event_closure))
+        self.assertEqual(1, len(selected_event_groups))
+        self.assertEqual(
+            event_closure,
+            {
+                name
+                for group in selected_event_groups
+                for name in group.event_names
+            },
+        )
+        self.assertEqual(
+            set(generator.DEFERRED_EVENT_NAMES),
+            {
+                name
+                for group in generator.EVENT_GROUPS
+                if group not in selected_event_groups
+                for name in group.event_names
+            },
+        )
+
+    def test_03c_effect_target_and_hard_limit_have_distinct_semantics(self) -> None:
+        source_names = generator.EFFECT_GROUPS[0].effect_names
+        repeated_names = source_names * 2 + source_names[:3]
+        reportable_groups = (
+            generator.EffectGroup(
+                "reportable_effects.txt", "reportable purpose", repeated_names
+            ),
+        )
+        with (
+            patch.object(generator, "EFFECT_GROUPS", reportable_groups),
+            patch.object(generator, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
+        ):
+            generator._validate_effect_size_policy()
+            self.assertEqual(reportable_groups, generator.effect_target_deviations())
+
+        over_hard_names = source_names * 6
+        over_hard_groups = (
+            generator.EffectGroup(
+                "oversized_effects.txt", "oversized purpose", over_hard_names
+            ),
+        )
+        with (
+            patch.object(generator, "EFFECT_GROUPS", over_hard_groups),
+            patch.object(generator, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
+        ):
+            with self.assertRaisesRegex(ValueError, "hard-limit exceptions"):
+                generator._validate_effect_size_policy()
+        with (
+            patch.object(generator, "EFFECT_GROUPS", over_hard_groups),
+            patch.object(
+                generator,
+                "EFFECT_HARD_LIMIT_EXCEPTIONS",
+                {
+                    "oversized_effects.txt": (
+                        "the purpose cannot be separated",
+                        "artifacts/ck3-live/oversized-shard-report.json",
+                    )
+                },
+            ),
+        ):
+            generator._validate_effect_size_policy()
+
+    def test_03d_legacy_monoliths_are_not_outputs_and_are_detected(self) -> None:
+        rendered = generator.outputs()
+        self.assertNotIn(generator.LEGACY_EFFECT_PATH, rendered)
+        self.assertNotIn(generator.LEGACY_EVENT_PATH, rendered)
+        self.assertFalse(generator.LEGACY_EFFECT_PATH.exists())
+        self.assertFalse(generator.LEGACY_EVENT_PATH.exists())
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            effects_dir = root / "common" / "scripted_effects"
+            events_dir = root / "events"
+            effects_dir.mkdir(parents=True)
+            events_dir.mkdir(parents=True)
+            legacy_effect = effects_dir / generator.LEGACY_EFFECT_FILENAME
+            legacy_event = events_dir / generator.LEGACY_EVENT_FILENAME
+            legacy_effect.write_bytes(b"legacy")
+            legacy_event.write_bytes(b"legacy")
+            self.assertEqual(
+                (legacy_effect,),
+                generator.unexpected_effect_paths({}, effects_dir),
+            )
+            self.assertEqual(
+                (legacy_event,),
+                generator.unexpected_event_paths({}, events_dir),
+            )
 
     def test_04_generated_ck3_blocks_are_balanced(self) -> None:
         for name, text in (("effects", self.effects), ("events", self.events)):
@@ -296,7 +459,8 @@ class WorkforceAttributionFactTests(unittest.TestCase):
 
     def test_15_public_result_adapter_dispatches_without_same_chain_ack(self) -> None:
         publish = block(self.effects, f"{PREFIX}_publish_result_effect")
-        header = self.effects[: self.effects.index(f"{PREFIX}_dispatch_signature_effect")]
+        aggregate = generator.render_effects().decode("utf-8-sig")
+        header = aggregate[: aggregate.index(f"{PREFIX}_dispatch_signature_effect")]
         self.assertIn(f"{PREFIX}_publish_result_effect = {{ OWNER = <same AD owner> }}", header)
         self.assertNotIn("BPS_2 = <", header)
         self.assertIn(

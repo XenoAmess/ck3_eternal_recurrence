@@ -1,0 +1,11 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AL M360 collective due-debt callback.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.6360 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m360_consume_due_debt_effect = yes }
+}

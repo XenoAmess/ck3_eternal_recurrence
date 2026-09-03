@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Generate the isolated Workforce #269 attribution-signature fact package.
 
@@ -13,6 +13,8 @@ over the three sealed votes; no random or equal-share fallback exists.
 from __future__ import annotations
 
 import argparse
+import hashlib
+from dataclasses import dataclass
 from pathlib import Path
 import textwrap
 from typing import Final
@@ -43,6 +45,94 @@ LANGUAGES: Final[tuple[str, ...]] = (
     "simp_chinese",
     "spanish",
 )
+
+LEGACY_EFFECT_FILENAME: Final[str] = f"{PREFIX}_effects.txt"
+LEGACY_EVENT_FILENAME: Final[str] = f"{PREFIX}_events.txt"
+LEGACY_EFFECT_PATH = (
+    MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+)
+LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
+EFFECT_SHARD_GLOB: Final[str] = f"{PREFIX}*_effects.txt"
+EVENT_SHARD_GLOB: Final[str] = f"{PREFIX}*_events.txt"
+HISTORICAL_EFFECT_COUNT: Final[int] = 7
+HISTORICAL_EFFECT_BYTES: Final[int] = 96536
+HISTORICAL_EFFECT_SHA256: Final[str] = (
+    "f541b448b84327147caab66d30c46c2090025fd4332366bdd5e13daf5cc023a4"
+)
+HISTORICAL_EVENT_COUNT: Final[int] = 3
+HISTORICAL_EVENT_BYTES: Final[int] = 6116
+HISTORICAL_EVENT_SHA256: Final[str] = (
+    "bd8215c385113f4f63a6fdf4adcc001804ae58a70ffb16b6a0f993cbaad4d60c"
+)
+EFFECT_TARGET_MAX: Final[int] = 10
+EFFECT_HARD_MAX: Final[int] = 20
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class EventGroup:
+    filename: str
+    purpose: str
+    event_names: tuple[str, ...]
+
+
+# The five seed-reachable definitions are a two-shard exact union: signature
+# collection plus the independent #269 debt-cancellation path.  The remaining
+# publish/ACK pair belongs to the later probation handoff and stays selectable
+# as one complete purpose shard.
+EFFECT_GROUPS: Final[tuple[EffectGroup, ...]] = (
+    EffectGroup(
+        f"{PREFIX}_signature_effects.txt",
+        "arm, dispatch, resolve, and sign the attribution allocation",
+        (
+            f"{PREFIX}_dispatch_signature_effect",
+            f"{PREFIX}_resolve_ai_signature_effect",
+            f"{PREFIX}_sign_effect",
+            f"{PREFIX}_begin_signature_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_probation_publish_effects.txt",
+        "publish the signed result to probation and acknowledge its frozen tuple",
+        (
+            f"{PREFIX}_publish_result_effect",
+            f"{PREFIX}_ack_probation_publish_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_m269_debt_cancel_effects.txt",
+        "cancel attribution after an exact #269 route-C debt",
+        (f"{PREFIX}_cancel_from_m269_debt_effect",),
+    ),
+)
+
+EVENT_GROUPS: Final[tuple[EventGroup, ...]] = (
+    EventGroup(
+        f"{PREFIX}_signature_events.txt",
+        "collect the player signature or dispatch the AI signature next frame",
+        (f"{NAMESPACE}.1", f"{NAMESPACE}.2"),
+    ),
+    EventGroup(
+        f"{PREFIX}_probation_publish_events.txt",
+        "acknowledge the later probation publication on its next-frame carrier",
+        (f"{NAMESPACE}.3",),
+    ),
+)
+
+SEED_EFFECT_CLOSURE_NAMES: Final[tuple[str, ...]] = (
+    *EFFECT_GROUPS[0].effect_names,
+    *EFFECT_GROUPS[2].effect_names,
+)
+SEED_EVENT_CLOSURE_NAMES: Final[tuple[str, ...]] = EVENT_GROUPS[0].event_names
+DEFERRED_EFFECT_NAMES: Final[tuple[str, ...]] = EFFECT_GROUPS[1].effect_names
+DEFERRED_EVENT_NAMES: Final[tuple[str, ...]] = EVENT_GROUPS[1].event_names
 
 # Each policy names the lead interviewer.  The numbers are explicit signed
 # responsibility, not a hidden default or an approximation of one third.
@@ -111,6 +201,8 @@ def _policy_guard() -> str:
 
 
 def render_effects() -> bytes:
+    """Render the frozen historical aggregate for parity validation only."""
+
     template = r'''
     # ZhongGuo 361 Workforce #269 attribution-signature fact.
     # Public ABI 1 (current scope = candidate/subject):
@@ -1433,7 +1525,238 @@ def render_effects() -> bytes:
     return generated(rendered)
 
 
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in attribution fact script")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced attribution fact script block")
+        index += 1
+    raise ValueError("unterminated attribution fact script block")
+
+
+def top_level_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level assignment blocks, ignoring comments/strings."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (
+            text[index].isalnum() or text[index] in "_."
+        ):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_historical_aggregate(
+    *,
+    label: str,
+    aggregate: bytes,
+    source_blocks: tuple[tuple[str, str], ...],
+    expected_bytes: int,
+    expected_sha256: str,
+    expected_count: int,
+) -> tuple[str, ...]:
+    if len(aggregate) != expected_bytes:
+        raise ValueError(
+            f"Workforce attribution {label} aggregate byte count drifted: "
+            f"expected {expected_bytes}, found {len(aggregate)}"
+        )
+    aggregate_sha256 = hashlib.sha256(aggregate).hexdigest()
+    if aggregate_sha256 != expected_sha256:
+        raise ValueError(
+            f"Workforce attribution {label} aggregate SHA-256 drifted: "
+            f"expected {expected_sha256}, found {aggregate_sha256}"
+        )
+    source_names = tuple(name for name, _block in source_blocks)
+    if len(source_names) != expected_count:
+        raise ValueError(
+            f"Workforce attribution {label} aggregate must contain "
+            f"{expected_count} top-level definitions, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError(
+            f"Workforce attribution {label} aggregate contains duplicate definitions"
+        )
+    return source_names
+
+
+def _validate_effect_groups(
+    aggregate: bytes, source_blocks: tuple[tuple[str, str], ...]
+) -> None:
+    source_names = _validate_historical_aggregate(
+        label="effect",
+        aggregate=aggregate,
+        source_blocks=source_blocks,
+        expected_bytes=HISTORICAL_EFFECT_BYTES,
+        expected_sha256=HISTORICAL_EFFECT_SHA256,
+        expected_count=HISTORICAL_EFFECT_COUNT,
+    )
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce attribution effect shard filenames must be unique")
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("Workforce attribution purpose groups duplicate an effect")
+    if configured_names != source_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "Workforce attribution purpose groups must preserve the exact "
+            f"historical effect order; missing={missing}, extra={extra}"
+        )
+    seed_closure = set(SEED_EFFECT_CLOSURE_NAMES)
+    selected = [
+        group for group in EFFECT_GROUPS
+        if seed_closure.intersection(group.effect_names)
+    ]
+    mixed = [
+        group.filename
+        for group in selected
+        if not set(group.effect_names).issubset(seed_closure)
+    ]
+    selected_names = {
+        name for group in selected for name in group.effect_names
+    }
+    deferred = set(source_names) - seed_closure
+    if (
+        len(seed_closure) != 5
+        or len(selected) != 2
+        or mixed
+        or selected_names != seed_closure
+        or deferred != set(DEFERRED_EFFECT_NAMES)
+        or len(deferred) != 2
+    ):
+        raise ValueError(
+            "Workforce attribution seed effects must be an exact two-shard "
+            f"5/7 union; mixed={mixed}, missing={sorted(seed_closure - selected_names)}, "
+            f"extra={sorted(selected_names - seed_closure)}, "
+            f"deferred={sorted(deferred)}"
+        )
+
+    _validate_effect_size_policy()
+
+
+def _validate_effect_size_policy() -> None:
+    for group in EFFECT_GROUPS:
+        if not group.effect_names:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+
+    over_hard = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "Workforce attribution hard-limit exceptions must exactly match "
+            f"shards above {EFFECT_HARD_MAX} effects"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without both "
+                "a reason and CK3 live evidence"
+            )
+
+
+def effect_target_deviations() -> tuple[EffectGroup, ...]:
+    """Return reportable >10 shards without treating 11-20 as invalid."""
+
+    return tuple(
+        group
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_TARGET_MAX
+    )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards with every effect definition byte-identical."""
+
+    aggregate = render_effects()
+    source_blocks = top_level_blocks(aggregate)
+    _validate_effect_groups(aggregate, source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
+
+
 def render_events() -> bytes:
+    """Render the frozen historical event aggregate for parity validation."""
+
     option_rows: list[str] = []
     for policy, shares in ALLOCATION_POLICIES.items():
         option_rows.append(
@@ -1540,6 +1863,85 @@ def render_events() -> bytes:
     )
 
 
+def _validate_event_groups(
+    aggregate: bytes, source_blocks: tuple[tuple[str, str], ...]
+) -> None:
+    source_names = _validate_historical_aggregate(
+        label="event",
+        aggregate=aggregate,
+        source_blocks=source_blocks,
+        expected_bytes=HISTORICAL_EVENT_BYTES,
+        expected_sha256=HISTORICAL_EVENT_SHA256,
+        expected_count=HISTORICAL_EVENT_COUNT,
+    )
+    configured_names = tuple(
+        name for group in EVENT_GROUPS for name in group.event_names
+    )
+    filenames = tuple(group.filename for group in EVENT_GROUPS)
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce attribution event shard filenames must be unique")
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("Workforce attribution purpose groups duplicate an event")
+    if configured_names != source_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "Workforce attribution purpose groups must preserve the exact "
+            f"historical event order; missing={missing}, extra={extra}"
+        )
+    for group in EVENT_GROUPS:
+        if not group.event_names:
+            raise ValueError(f"{group.filename} must contain at least one event")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+
+    seed_closure = set(SEED_EVENT_CLOSURE_NAMES)
+    selected = [
+        group for group in EVENT_GROUPS
+        if seed_closure.intersection(group.event_names)
+    ]
+    mixed = [
+        group.filename
+        for group in selected
+        if not set(group.event_names).issubset(seed_closure)
+    ]
+    selected_names = {
+        name for group in selected for name in group.event_names
+    }
+    deferred = set(source_names) - seed_closure
+    if (
+        len(seed_closure) != 2
+        or len(selected) != 1
+        or mixed
+        or selected_names != seed_closure
+        or deferred != set(DEFERRED_EVENT_NAMES)
+        or len(deferred) != 1
+    ):
+        raise ValueError(
+            "Workforce attribution seed events must be an exact one-shard "
+            f"2/3 union; mixed={mixed}, missing={sorted(seed_closure - selected_names)}, "
+            f"extra={sorted(selected_names - seed_closure)}, "
+            f"deferred={sorted(deferred)}"
+        )
+
+
+def render_event_parts() -> dict[str, bytes]:
+    """Render purpose shards with every event definition byte-identical."""
+
+    aggregate = render_events()
+    source_blocks = top_level_blocks(aggregate)
+    _validate_event_groups(aggregate, source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            f"namespace = {NAMESPACE}\n\n"
+            + "\n\n".join(by_name[name] for name in group.event_names)
+        )
+        for group in EVENT_GROUPS
+    }
+
+
 LOCALIZATION_EN: Final[dict[str, str]] = {
     "1.title": "Sign the Interview Accountability Split",
     "1.desc": (
@@ -1583,15 +1985,48 @@ def render_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_contract()
-    rendered = {
-        MOD_ROOT / "common/scripted_effects" / f"{PREFIX}_effects.txt": render_effects(),
-        MOD_ROOT / "events" / f"{PREFIX}_events.txt": render_events(),
-    }
+    rendered: dict[Path, bytes] = {}
+    rendered.update(
+        {
+            MOD_ROOT / "common" / "scripted_effects" / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
+    rendered.update(
+        {
+            MOD_ROOT / "events" / filename: payload
+            for filename, payload in render_event_parts().items()
+        }
+    )
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / f"{PREFIX}_l_{language}.yml"
         ] = render_localization(language)
     return rendered
+
+
+def unexpected_effect_paths(
+    rendered: dict[Path, bytes], effects_dir: Path | None = None
+) -> tuple[Path, ...]:
+    effects_dir = effects_dir or MOD_ROOT / "common" / "scripted_effects"
+    expected = {path for path in rendered if path.parent == effects_dir}
+    return tuple(sorted(set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected))
+
+
+def unexpected_event_paths(
+    rendered: dict[Path, bytes], events_dir: Path | None = None
+) -> tuple[Path, ...]:
+    events_dir = events_dir or MOD_ROOT / "events"
+    expected = {path for path in rendered if path.parent == events_dir}
+    return tuple(sorted(set(events_dir.glob(EVENT_SHARD_GLOB)) - expected))
+
+
+def print_effect_target_deviations() -> None:
+    for group in effect_target_deviations():
+        print(
+            f"WARN: {group.filename} has {len(group.effect_names)} effects; "
+            f"target is 1-{EFFECT_TARGET_MAX}"
+        )
 
 
 def main() -> int:
@@ -1600,18 +2035,34 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    unexpected_effects = unexpected_effect_paths(rendered)
+    unexpected_events = unexpected_event_paths(rendered)
     if args.check:
-        if stale:
+        if stale or unexpected_effects or unexpected_events:
             print("RED: stale Workforce attribution fact generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in unexpected_effects:
+                print(
+                    f"{path.relative_to(MOD_ROOT)} "
+                    "(unexpected effect shard or legacy monolith)"
+                )
+            for path in unexpected_events:
+                print(
+                    f"{path.relative_to(MOD_ROOT)} "
+                    "(unexpected event shard or legacy monolith)"
+                )
             return 1
         print(f"GREEN: {len(rendered)} Workforce attribution fact files are current ({READINESS})")
+        print_effect_target_deviations()
         return 0
+    for path in (*unexpected_effects, *unexpected_events):
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
     print(f"GREEN: generated {len(rendered)} Workforce attribution fact runtime files")
+    print_effect_target_deviations()
     return 0
 
 

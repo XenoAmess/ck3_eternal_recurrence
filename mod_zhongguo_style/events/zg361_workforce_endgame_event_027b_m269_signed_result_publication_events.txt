@@ -1,0 +1,14 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M269 signed attribution-result publication relay.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+namespace = zg361we
+
+zg361we.5378 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		set_variable = { name = zg361_we_m269_result_relay_queued value = 0 }
+		zg361_we_m269_publish_signed_result_effect = yes
+	}
+}

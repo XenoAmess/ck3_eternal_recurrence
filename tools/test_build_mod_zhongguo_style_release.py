@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Unit tests for the ZhongGuo 361 Style deterministic release builder."""
 
 from __future__ import annotations
@@ -34,9 +34,9 @@ DESCRIPTOR = (
 )
 WORKFORCE_LEGACY_EFFECT_FILENAME = "zg361_workforce_endgame_runtime_effects.txt"
 WORKFORCE_SHARD_GLOB = "zg361_workforce_endgame_*_effects.txt"
-WORKFORCE_SHARD_COUNT = 76
+WORKFORCE_SHARD_COUNT = 83
 WORKFORCE_EFFECT_COUNT = 324
-WORKFORCE_EVENT_SHARD_COUNT = 35
+WORKFORCE_EVENT_SHARD_COUNT = 39
 WORKFORCE_EVENT_COUNT = 149
 
 

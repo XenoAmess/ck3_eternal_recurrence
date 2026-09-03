@@ -1,0 +1,15 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: AB subject-visible revision read.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_ab_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_ab_subject
+				ACTIVE_VAR = zg361_case_ab_active
+			}
+		}
+		set_variable = { name = zg361_we_ab_subject_seen_revision value = var:zg361_we_ab_visible_revision }
+	}
+}

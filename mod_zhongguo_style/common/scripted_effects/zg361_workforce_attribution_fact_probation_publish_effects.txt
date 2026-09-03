@@ -1,0 +1,412 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_attribution_fact.py
+# readiness: ck3-script-static-ready-not-live
+
+# PURPOSE: publish the signed result to probation and acknowledge its frozen tuple.
+
+zg361_workforce_attribution_fact_publish_result_effect = {
+    remove_variable = zg361_workforce_attribution_fact_status
+    remove_variable = zg361_workforce_attribution_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_attribution_bps_1
+            has_variable = zg361_workforce_attribution_fact_attribution_bps_2
+            has_variable = zg361_workforce_attribution_fact_attribution_bps_3
+        }
+        save_temporary_scope_value_as = {
+            name = zg361_workforce_attribution_fact_frozen_total_bps
+            value = {
+                value = var:zg361_workforce_attribution_fact_attribution_bps_1
+                add = var:zg361_workforce_attribution_fact_attribution_bps_2
+                add = var:zg361_workforce_attribution_fact_attribution_bps_3
+            }
+        }
+    }
+    if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_consumed
+            has_variable = zg361_workforce_attribution_fact_owner
+            has_variable = zg361_workforce_attribution_fact_subject
+            has_variable = zg361_workforce_attribution_fact_cycle
+            has_variable = zg361_workforce_attribution_fact_case
+            has_variable = zg361_workforce_attribution_fact_receipt_id
+            has_variable = zg361_workforce_attribution_fact_receipt_hash
+            has_variable = zg361_workforce_attribution_fact_consume_owner
+            has_variable = zg361_workforce_attribution_fact_consume_subject
+            has_variable = zg361_workforce_attribution_fact_consume_hire_cycle
+            has_variable = zg361_workforce_attribution_fact_consume_hire_case
+            has_variable = zg361_workforce_attribution_fact_consume_result_owner
+            has_variable = zg361_workforce_attribution_fact_consume_result_subject
+            has_variable = zg361_workforce_attribution_fact_consume_result_cycle
+            has_variable = zg361_workforce_attribution_fact_consume_result_case
+            has_variable = zg361_workforce_attribution_fact_consume_result_state
+            has_variable = zg361_workforce_attribution_fact_consume_result_settlement_receipt
+            has_variable = zg361_workforce_attribution_fact_consume_result_grade
+            has_variable = zg361_workforce_attribution_fact_consume_result_reason
+            has_variable = zg361_workforce_attribution_fact_consume_result_kpi
+            has_variable = zg361_workforce_attribution_fact_consume_result_rank
+            has_variable = zg361_workforce_attribution_fact_consume_attribution_receipt_id
+            has_variable = zg361_workforce_attribution_fact_consume_attribution_receipt_hash
+            has_variable = zg361_workforce_attribution_fact_consume_probation_receipt_id
+            has_variable = zg361_workforce_attribution_fact_consume_probation_receipt_hash
+            has_variable = zg361_result_case_owner
+            has_variable = zg361_result_cycle_serial
+            has_variable = zg361_result_case_serial
+            has_variable = zg361_result_case_state
+            has_variable = zg361_result_settlement_posted_serial
+            has_variable = zg361_result_grade
+            has_variable = zg361_result_grade_reason
+            has_variable = zg361_result_kpi_frozen
+            has_variable = zg361_result_rank_frozen
+            var:zg361_workforce_attribution_fact_consumed = 1
+            var:zg361_workforce_attribution_fact_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_subject = this
+            var:zg361_workforce_attribution_fact_consume_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_consume_subject = this
+            var:zg361_workforce_attribution_fact_consume_hire_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_workforce_attribution_fact_consume_hire_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_workforce_attribution_fact_consume_result_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_consume_result_subject = this
+            var:zg361_workforce_attribution_fact_consume_result_cycle = var:zg361_result_cycle_serial
+            var:zg361_workforce_attribution_fact_consume_result_case = var:zg361_result_case_serial
+            var:zg361_workforce_attribution_fact_consume_result_state = var:zg361_result_case_state
+            var:zg361_workforce_attribution_fact_consume_result_settlement_receipt = var:zg361_result_settlement_posted_serial
+            var:zg361_workforce_attribution_fact_consume_result_grade = var:zg361_result_grade
+            var:zg361_workforce_attribution_fact_consume_result_reason = var:zg361_result_grade_reason
+            var:zg361_workforce_attribution_fact_consume_result_kpi = var:zg361_result_kpi_frozen
+            var:zg361_workforce_attribution_fact_consume_result_rank = var:zg361_result_rank_frozen
+            var:zg361_workforce_attribution_fact_consume_attribution_receipt_id = var:zg361_workforce_attribution_fact_receipt_id
+            var:zg361_workforce_attribution_fact_consume_attribution_receipt_hash = var:zg361_workforce_attribution_fact_receipt_hash
+            var:zg361_result_case_owner = $OWNER$
+        }
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 2 }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_dispatch_committed
+            has_variable = zg361_workforce_attribution_fact_dispatch_pending
+            has_variable = zg361_workforce_attribution_fact_consumed
+            has_variable = zg361_workforce_attribution_fact_dispatch_owner
+            has_variable = zg361_workforce_attribution_fact_dispatch_subject
+            has_variable = zg361_workforce_attribution_fact_dispatch_hire_cycle
+            has_variable = zg361_workforce_attribution_fact_dispatch_hire_case
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_owner
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_subject
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_cycle
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_case
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_state
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_settlement_receipt
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_grade
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_reason
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_kpi
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_rank
+            has_variable = zg361_workforce_attribution_fact_dispatch_attribution_receipt_id
+            has_variable = zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash
+            has_variable = zg361_result_case_owner
+            has_variable = zg361_result_cycle_serial
+            has_variable = zg361_result_case_serial
+            has_variable = zg361_result_case_state
+            has_variable = zg361_result_settlement_posted_serial
+            has_variable = zg361_result_grade
+            has_variable = zg361_result_grade_reason
+            has_variable = zg361_result_kpi_frozen
+            has_variable = zg361_result_rank_frozen
+            var:zg361_workforce_attribution_fact_dispatch_committed = 1
+            var:zg361_workforce_attribution_fact_dispatch_pending = 1
+            var:zg361_workforce_attribution_fact_consumed = 0
+            var:zg361_workforce_attribution_fact_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_subject = this
+            var:zg361_workforce_attribution_fact_dispatch_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_dispatch_subject = this
+            var:zg361_workforce_attribution_fact_dispatch_hire_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_workforce_attribution_fact_dispatch_hire_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_workforce_attribution_fact_dispatch_result_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_dispatch_result_subject = this
+            var:zg361_workforce_attribution_fact_dispatch_result_cycle = var:zg361_result_cycle_serial
+            var:zg361_workforce_attribution_fact_dispatch_result_case = var:zg361_result_case_serial
+            var:zg361_workforce_attribution_fact_dispatch_result_state = var:zg361_result_case_state
+            var:zg361_workforce_attribution_fact_dispatch_result_settlement_receipt = var:zg361_result_settlement_posted_serial
+            var:zg361_workforce_attribution_fact_dispatch_result_grade = var:zg361_result_grade
+            var:zg361_workforce_attribution_fact_dispatch_result_reason = var:zg361_result_grade_reason
+            var:zg361_workforce_attribution_fact_dispatch_result_kpi = var:zg361_result_kpi_frozen
+            var:zg361_workforce_attribution_fact_dispatch_result_rank = var:zg361_result_rank_frozen
+            var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_id = var:zg361_workforce_attribution_fact_receipt_id
+            var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash = var:zg361_workforce_attribution_fact_receipt_hash
+            var:zg361_result_case_owner = $OWNER$
+        }
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 5 }
+        trigger_event = { id = zg361workforceattributionfact.3 days = 1 }
+    }
+    else_if = {
+        limit = {
+            trigger_if = { limit = { has_variable = zg361_workforce_attribution_fact_dispatch_committed } var:zg361_workforce_attribution_fact_dispatch_committed = 0 }
+            trigger_else = { always = yes }
+            has_variable = zg361_workforce_attribution_fact_signature_committed
+            has_variable = zg361_workforce_attribution_fact_state
+            has_variable = zg361_workforce_attribution_fact_consumed
+            has_variable = zg361_workforce_attribution_fact_owner
+            has_variable = zg361_workforce_attribution_fact_subject
+            has_variable = zg361_workforce_attribution_fact_cycle
+            has_variable = zg361_workforce_attribution_fact_case
+            has_variable = zg361_workforce_attribution_fact_signature_actor
+            has_variable = zg361_workforce_attribution_fact_final_approver
+            has_variable = zg361_workforce_attribution_fact_signature_mode
+            has_variable = zg361_workforce_attribution_fact_signature_tie_rule
+            has_variable = zg361_workforce_attribution_fact_receipt_id
+            has_variable = zg361_workforce_attribution_fact_receipt_hash
+            has_variable = zg361_workforce_attribution_fact_receipt_signer
+            has_variable = zg361_workforce_attribution_fact_receipt_interviewer_1
+            has_variable = zg361_workforce_attribution_fact_receipt_interviewer_2
+            has_variable = zg361_workforce_attribution_fact_receipt_interviewer_3
+            has_variable = zg361_workforce_attribution_fact_receipt_evidence_1
+            has_variable = zg361_workforce_attribution_fact_receipt_evidence_2
+            has_variable = zg361_workforce_attribution_fact_receipt_evidence_3
+            has_variable = zg361_workforce_attribution_fact_interviewer_1
+            has_variable = zg361_workforce_attribution_fact_interviewer_2
+            has_variable = zg361_workforce_attribution_fact_interviewer_3
+            has_variable = zg361_workforce_attribution_fact_evidence_1
+            has_variable = zg361_workforce_attribution_fact_evidence_2
+            has_variable = zg361_workforce_attribution_fact_evidence_3
+            has_variable = zg361_workforce_attribution_fact_attribution_bps_1
+            has_variable = zg361_workforce_attribution_fact_attribution_bps_2
+            has_variable = zg361_workforce_attribution_fact_attribution_bps_3
+            has_variable = zg361_workforce_attribution_fact_attribution_total_bps
+            has_variable = zg361_result_case_owner
+            has_variable = zg361_result_cycle_serial
+            has_variable = zg361_result_case_serial
+            has_variable = zg361_result_case_state
+            has_variable = zg361_result_settlement_posted_serial
+            has_variable = zg361_result_grade
+            has_variable = zg361_result_grade_reason
+            has_variable = zg361_result_kpi_frozen
+            has_variable = zg361_result_rank_frozen
+            var:zg361_workforce_attribution_fact_signature_committed = 1
+            var:zg361_workforce_attribution_fact_state = 2
+            var:zg361_workforce_attribution_fact_consumed = 0
+            var:zg361_workforce_attribution_fact_owner = $OWNER$
+            var:zg361_workforce_attribution_fact_subject = this
+            var:zg361_workforce_attribution_fact_signature_actor = var:zg361_workforce_attribution_fact_final_approver
+            var:zg361_workforce_attribution_fact_receipt_signer = var:zg361_workforce_attribution_fact_final_approver
+            var:zg361_workforce_attribution_fact_signature_policy_version = 1
+            var:zg361_workforce_attribution_fact_signature_policy_basis = 1
+            var:zg361_workforce_attribution_fact_receipt_policy_version = 1
+            var:zg361_workforce_attribution_fact_receipt_policy_basis = 1
+            var:zg361_workforce_attribution_fact_receipt_signature_mode = var:zg361_workforce_attribution_fact_signature_mode
+            var:zg361_workforce_attribution_fact_receipt_tie_rule = var:zg361_workforce_attribution_fact_signature_tie_rule
+            var:zg361_workforce_attribution_fact_receipt_interviewer_1 = var:zg361_workforce_attribution_fact_interviewer_1
+            var:zg361_workforce_attribution_fact_receipt_interviewer_2 = var:zg361_workforce_attribution_fact_interviewer_2
+            var:zg361_workforce_attribution_fact_receipt_interviewer_3 = var:zg361_workforce_attribution_fact_interviewer_3
+            var:zg361_workforce_attribution_fact_receipt_evidence_1 = var:zg361_workforce_attribution_fact_evidence_1
+            var:zg361_workforce_attribution_fact_receipt_evidence_2 = var:zg361_workforce_attribution_fact_evidence_2
+            var:zg361_workforce_attribution_fact_receipt_evidence_3 = var:zg361_workforce_attribution_fact_evidence_3
+            scope:zg361_workforce_attribution_fact_frozen_total_bps = 10000
+            var:zg361_workforce_attribution_fact_attribution_total_bps = 10000
+            var:zg361_workforce_attribution_fact_attribution_bps_1 >= 0
+            var:zg361_workforce_attribution_fact_attribution_bps_2 >= 0
+            var:zg361_workforce_attribution_fact_attribution_bps_3 >= 0
+            var:zg361_result_case_owner = $OWNER$
+            var:zg361_result_cycle_serial > var:zg361_workforce_attribution_fact_cycle
+            var:zg361_result_case_serial > 0
+            OR = { var:zg361_result_case_state = 3 var:zg361_result_case_state = 5 }
+            var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+            OR = { var:zg361_result_grade = 1 var:zg361_result_grade = 2 var:zg361_result_grade = 3 }
+            has_variable = zg361_we_m267_candidate_frozen
+            has_variable = zg361_we_m267_interviewer_1
+            has_variable = zg361_we_m267_interviewer_2
+            has_variable = zg361_we_m267_interviewer_3
+            has_variable = zg361_we_m267_vote_evidence_1
+            has_variable = zg361_we_m267_vote_evidence_2
+            has_variable = zg361_we_m267_vote_evidence_3
+            has_variable = zg361_we_m272_offer_candidate
+            has_variable = zg361_we_m272_offer_approver
+            var:zg361_we_m267_candidate_frozen = this
+            var:zg361_we_m267_interviewer_1 = var:zg361_workforce_attribution_fact_interviewer_1
+            var:zg361_we_m267_interviewer_2 = var:zg361_workforce_attribution_fact_interviewer_2
+            var:zg361_we_m267_interviewer_3 = var:zg361_workforce_attribution_fact_interviewer_3
+            var:zg361_we_m267_vote_evidence_1 = var:zg361_workforce_attribution_fact_evidence_1
+            var:zg361_we_m267_vote_evidence_2 = var:zg361_workforce_attribution_fact_evidence_2
+            var:zg361_we_m267_vote_evidence_3 = var:zg361_workforce_attribution_fact_evidence_3
+            var:zg361_we_m272_offer_candidate = this
+            var:zg361_we_m272_offer_approver = var:zg361_workforce_attribution_fact_final_approver
+        }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_owner value = $OWNER$ }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_subject value = this }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_hire_cycle value = var:zg361_workforce_attribution_fact_cycle }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_hire_case value = var:zg361_workforce_attribution_fact_case }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_owner value = $OWNER$ }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_subject value = this }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_cycle value = var:zg361_result_cycle_serial }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_case value = var:zg361_result_case_serial }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_state value = var:zg361_result_case_state }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_settlement_receipt value = var:zg361_result_settlement_posted_serial }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_grade value = var:zg361_result_grade }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_reason value = var:zg361_result_grade_reason }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_kpi value = var:zg361_result_kpi_frozen }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_result_rank value = var:zg361_result_rank_frozen }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_signature_actor value = var:zg361_workforce_attribution_fact_signature_actor }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_attribution_receipt_id value = var:zg361_workforce_attribution_fact_receipt_id }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash value = var:zg361_workforce_attribution_fact_receipt_hash }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_bps_1 value = var:zg361_workforce_attribution_fact_attribution_bps_1 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_bps_2 value = var:zg361_workforce_attribution_fact_attribution_bps_2 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_bps_3 value = var:zg361_workforce_attribution_fact_attribution_bps_3 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_evidence_1 value = var:zg361_workforce_attribution_fact_evidence_1 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_evidence_2 value = var:zg361_workforce_attribution_fact_evidence_2 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_evidence_3 value = var:zg361_workforce_attribution_fact_evidence_3 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_pending value = 1 }
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 5 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_committed value = 1 } # dispatch receipt commit marker is last
+        zg361_workforce_probation_fact_publish_from_result_effect = {
+            OWNER = $OWNER$
+            ATTRIBUTION_BPS_2 = var:zg361_workforce_attribution_fact_attribution_bps_2
+            ATTRIBUTION_BPS_3 = var:zg361_workforce_attribution_fact_attribution_bps_3
+        }
+        trigger_event = { id = zg361workforceattributionfact.3 days = 1 }
+        debug_log = "ZG361WAF: signed attribution dispatched; probation ACK deferred to D+1"
+    }
+    else = {
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_attribution_fact_red_code value = 26921 }
+    }
+}
+
+zg361_workforce_attribution_fact_ack_probation_publish_effect = {
+    remove_variable = zg361_workforce_attribution_fact_status
+    remove_variable = zg361_workforce_attribution_fact_red_code
+    if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_consumed
+            has_variable = zg361_workforce_attribution_fact_consume_owner
+            has_variable = zg361_workforce_attribution_fact_consume_subject
+            has_variable = zg361_workforce_attribution_fact_consume_attribution_receipt_id
+            has_variable = zg361_workforce_attribution_fact_consume_attribution_receipt_hash
+            var:zg361_workforce_attribution_fact_consumed = 1
+            var:zg361_workforce_attribution_fact_consume_owner = var:zg361_workforce_attribution_fact_dispatch_owner
+            var:zg361_workforce_attribution_fact_consume_subject = this
+            var:zg361_workforce_attribution_fact_consume_attribution_receipt_id = var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_id
+            var:zg361_workforce_attribution_fact_consume_attribution_receipt_hash = var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash
+        }
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 2 }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_workforce_attribution_fact_dispatch_committed
+            has_variable = zg361_workforce_attribution_fact_dispatch_pending
+            has_variable = zg361_workforce_attribution_fact_consumed
+            has_variable = zg361_workforce_attribution_fact_owner
+            has_variable = zg361_workforce_attribution_fact_subject
+            has_variable = zg361_workforce_attribution_fact_cycle
+            has_variable = zg361_workforce_attribution_fact_case
+            has_variable = zg361_workforce_attribution_fact_receipt_id
+            has_variable = zg361_workforce_attribution_fact_receipt_hash
+            has_variable = zg361_workforce_attribution_fact_dispatch_owner
+            has_variable = zg361_workforce_attribution_fact_dispatch_subject
+            has_variable = zg361_workforce_attribution_fact_dispatch_hire_cycle
+            has_variable = zg361_workforce_attribution_fact_dispatch_hire_case
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_owner
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_subject
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_cycle
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_case
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_state
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_settlement_receipt
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_grade
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_reason
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_kpi
+            has_variable = zg361_workforce_attribution_fact_dispatch_result_rank
+            has_variable = zg361_workforce_attribution_fact_dispatch_attribution_receipt_id
+            has_variable = zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash
+            has_variable = zg361_workforce_attribution_fact_dispatch_bps_1
+            has_variable = zg361_workforce_attribution_fact_dispatch_bps_2
+            has_variable = zg361_workforce_attribution_fact_dispatch_bps_3
+            has_variable = zg361_workforce_attribution_fact_dispatch_evidence_1
+            has_variable = zg361_workforce_attribution_fact_dispatch_evidence_2
+            has_variable = zg361_workforce_attribution_fact_dispatch_evidence_3
+            has_variable = zg361_workforce_probation_fact_state
+            has_variable = zg361_workforce_probation_fact_adapter_status
+            has_variable = zg361_workforce_probation_fact_owner
+            has_variable = zg361_workforce_probation_fact_subject
+            has_variable = zg361_workforce_probation_fact_hire_cycle
+            has_variable = zg361_workforce_probation_fact_hire_case
+            has_variable = zg361_workforce_probation_fact_source_result_owner
+            has_variable = zg361_workforce_probation_fact_source_result_subject
+            has_variable = zg361_workforce_probation_fact_source_result_cycle
+            has_variable = zg361_workforce_probation_fact_source_result_case
+            has_variable = zg361_workforce_probation_fact_source_result_state
+            has_variable = zg361_workforce_probation_fact_source_result_settlement_receipt
+            has_variable = zg361_workforce_probation_fact_source_result_grade
+            has_variable = zg361_workforce_probation_fact_source_result_reason
+            has_variable = zg361_workforce_probation_fact_source_result_kpi
+            has_variable = zg361_workforce_probation_fact_source_result_rank
+            has_variable = zg361_workforce_probation_fact_attribution_bps_1
+            has_variable = zg361_workforce_probation_fact_attribution_bps_2
+            has_variable = zg361_workforce_probation_fact_attribution_bps_3
+            has_variable = zg361_workforce_probation_fact_outcome_dimension_1
+            has_variable = zg361_workforce_probation_fact_outcome_dimension_2
+            has_variable = zg361_workforce_probation_fact_outcome_dimension_3
+            has_variable = zg361_workforce_probation_fact_attribution_receipt_id
+            has_variable = zg361_workforce_probation_fact_attribution_receipt_hash
+            var:zg361_workforce_attribution_fact_dispatch_committed = 1
+            var:zg361_workforce_attribution_fact_dispatch_pending = 1
+            var:zg361_workforce_attribution_fact_consumed = 0
+            var:zg361_workforce_attribution_fact_owner = var:zg361_workforce_attribution_fact_dispatch_owner
+            var:zg361_workforce_attribution_fact_subject = this
+            var:zg361_workforce_attribution_fact_dispatch_subject = this
+            var:zg361_workforce_attribution_fact_dispatch_hire_cycle = var:zg361_workforce_attribution_fact_cycle
+            var:zg361_workforce_attribution_fact_dispatch_hire_case = var:zg361_workforce_attribution_fact_case
+            var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_id = var:zg361_workforce_attribution_fact_receipt_id
+            var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash = var:zg361_workforce_attribution_fact_receipt_hash
+            var:zg361_workforce_probation_fact_state >= 2
+            var:zg361_workforce_probation_fact_state <= 4
+            OR = { var:zg361_workforce_probation_fact_adapter_status = 1 var:zg361_workforce_probation_fact_adapter_status = 2 var:zg361_workforce_probation_fact_adapter_status = 3 var:zg361_workforce_probation_fact_adapter_status = 4 }
+            var:zg361_workforce_probation_fact_owner = var:zg361_workforce_attribution_fact_dispatch_owner
+            var:zg361_workforce_probation_fact_subject = this
+            var:zg361_workforce_probation_fact_hire_cycle = var:zg361_workforce_attribution_fact_dispatch_hire_cycle
+            var:zg361_workforce_probation_fact_hire_case = var:zg361_workforce_attribution_fact_dispatch_hire_case
+            var:zg361_workforce_probation_fact_source_result_owner = var:zg361_workforce_attribution_fact_dispatch_result_owner
+            var:zg361_workforce_probation_fact_source_result_subject = this
+            var:zg361_workforce_probation_fact_source_result_cycle = var:zg361_workforce_attribution_fact_dispatch_result_cycle
+            var:zg361_workforce_probation_fact_source_result_case = var:zg361_workforce_attribution_fact_dispatch_result_case
+            var:zg361_workforce_probation_fact_source_result_state = var:zg361_workforce_attribution_fact_dispatch_result_state
+            var:zg361_workforce_probation_fact_source_result_settlement_receipt = var:zg361_workforce_attribution_fact_dispatch_result_settlement_receipt
+            var:zg361_workforce_probation_fact_source_result_grade = var:zg361_workforce_attribution_fact_dispatch_result_grade
+            var:zg361_workforce_probation_fact_source_result_reason = var:zg361_workforce_attribution_fact_dispatch_result_reason
+            var:zg361_workforce_probation_fact_source_result_kpi = var:zg361_workforce_attribution_fact_dispatch_result_kpi
+            var:zg361_workforce_probation_fact_source_result_rank = var:zg361_workforce_attribution_fact_dispatch_result_rank
+            var:zg361_workforce_probation_fact_attribution_bps_1 = var:zg361_workforce_attribution_fact_dispatch_bps_1
+            var:zg361_workforce_probation_fact_attribution_bps_2 = var:zg361_workforce_attribution_fact_dispatch_bps_2
+            var:zg361_workforce_probation_fact_attribution_bps_3 = var:zg361_workforce_attribution_fact_dispatch_bps_3
+            var:zg361_workforce_probation_fact_outcome_dimension_1 = var:zg361_workforce_attribution_fact_dispatch_evidence_1
+            var:zg361_workforce_probation_fact_outcome_dimension_2 = var:zg361_workforce_attribution_fact_dispatch_evidence_2
+            var:zg361_workforce_probation_fact_outcome_dimension_3 = var:zg361_workforce_attribution_fact_dispatch_evidence_3
+            var:zg361_workforce_probation_fact_attribution_receipt_id > 0
+            var:zg361_workforce_probation_fact_attribution_receipt_hash > 0
+        }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_owner value = var:zg361_workforce_attribution_fact_dispatch_owner }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_subject value = this }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_hire_cycle value = var:zg361_workforce_attribution_fact_dispatch_hire_cycle }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_hire_case value = var:zg361_workforce_attribution_fact_dispatch_hire_case }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_owner value = var:zg361_workforce_attribution_fact_dispatch_result_owner }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_subject value = this }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_cycle value = var:zg361_workforce_attribution_fact_dispatch_result_cycle }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_case value = var:zg361_workforce_attribution_fact_dispatch_result_case }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_state value = var:zg361_workforce_attribution_fact_dispatch_result_state }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_settlement_receipt value = var:zg361_workforce_attribution_fact_dispatch_result_settlement_receipt }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_grade value = var:zg361_workforce_attribution_fact_dispatch_result_grade }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_reason value = var:zg361_workforce_attribution_fact_dispatch_result_reason }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_kpi value = var:zg361_workforce_attribution_fact_dispatch_result_kpi }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_result_rank value = var:zg361_workforce_attribution_fact_dispatch_result_rank }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_attribution_receipt_id value = var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_id }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_attribution_receipt_hash value = var:zg361_workforce_attribution_fact_dispatch_attribution_receipt_hash }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_probation_receipt_id value = var:zg361_workforce_probation_fact_attribution_receipt_id }
+        set_variable = { name = zg361_workforce_attribution_fact_consume_probation_receipt_hash value = var:zg361_workforce_probation_fact_attribution_receipt_hash }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_pending value = 0 }
+        set_variable = { name = zg361_workforce_attribution_fact_dispatch_acked value = 1 }
+        set_variable = { name = zg361_workforce_attribution_fact_state value = 3 }
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 1 }
+        set_variable = { name = zg361_workforce_attribution_fact_consumed value = 1 } # consume marker is last
+        debug_log = "ZG361WAF: D+1 probation ACK consumed the exact signed attribution/result tuple"
+    }
+    else = {
+        set_variable = { name = zg361_workforce_attribution_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_attribution_fact_red_code value = 26922 }
+        debug_log = "ZG361WAF RED 26922: probation ACK did not match the frozen dispatch tuple"
+    }
+}
