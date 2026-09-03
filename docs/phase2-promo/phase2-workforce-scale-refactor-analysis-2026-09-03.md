@@ -93,6 +93,12 @@ bytes depend on call formatting and generated headers. The important invariant
 is that the 324 original effect symbols remain unchanged; the helper trigger
 symbols are additive and namespaced.
 
+The same estimate lowers the four pathological effect blocks to approximately
+171 KB, 170 KB, 121 KB, and 113 KB respectively (before exact formatting),
+instead of 478/470/336/319 KB. The helper definitions themselves stay near
+108/104/94 KB. This reduces both total duplicated AST and the maximum
+single-definition size; a file-only split would not provide either property.
+
 ## Validation plan
 
 1. Regenerate in a disposable output directory and assert byte-for-byte
@@ -117,4 +123,3 @@ symbols are additive and namespaced.
 5. If the candidate still stalls at 881, retain this evidence and bisect the
    corrected balanced stub variants (B1/B2/B5/B6/B7) before attempting any
    further semantic rewrite.
-
