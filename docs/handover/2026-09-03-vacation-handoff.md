@@ -156,6 +156,8 @@ production loop 均未晋级。
 - [x] Phase2 evidence index 已收录诊断矩阵与正式 r3；JSON SHA `CE11D266E6808E582BEC5B3659E0359CCE71204D9545F08C5A1A041C13A7F580`，MD SHA `892CACBA91A6C88453AD2CEC587AA82D7F5971D2CCEADD6C63055420FE4FE7BA`。
 - [x] 宣传工具 checkout 已更新并与远端主线一致；没有启动 TTS/render，也没有生成占位 MP4。
 - [x] G2 已按用户要求暂缓；open_kaishek 工作树 clean。
+- [x] B1 正式拆分与证据主提交 `4aea7afe3f6d3f4f82f7551869aba8faeae0c66b`；非强推 merge
+  `89808bb5799d651847b14460e38c4369e94209f7` 已推送，分支与远端同步。
 - [ ] 下一位接班人重新开始前，先确认工作区 dirty/untracked 清单，不要覆盖或清理上述 disposable artifact。
 
 这就是当前可以安全交出的边界：正式 B1 startup/full-entry checkpoint 已 GREEN，失败与修复证据齐全、现场已收尾；但 delayed-path、seed、native/production loop、8/8 素材与两部最终宣传视频仍未完成。
