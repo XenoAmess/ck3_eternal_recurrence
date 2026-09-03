@@ -57,10 +57,11 @@
     ]
   },
   "candidate": {
-    "projection": "phase2-seed-entry-production-closure-20260904-r5",
+    "projection": "phase2-seed-entry-production-closure-20260904-r6",
     "expected_file_count": 249,
-    "expected_overlay_file_count": 114,
+    "expected_overlay_file_count": 115,
     "expected_effect_files": 72,
+    "expected_inherited_hotfix_files": 1,
     "expected_event_files": 35,
     "expected_court_position_files": 2,
     "expected_localization_files": 5,
@@ -77,22 +78,34 @@
     "expected_effect_files_over_target": 0,
     "expected_effect_files_over_hard_max": 0,
     "effect_boundary_exceptions": [],
+    "inherited_effect_boundary_exceptions": [
+      {
+        "path": "common/scripted_effects/zg361_b1_runtime_effects.txt",
+        "definitions": 41,
+        "reason": "Grandfathered B1 owner file: r8 live exposed a legacy-save optional-object read bug; this hotfix changes only the existing provider body, while all B2+ purpose shards remain at or below 10 effects.",
+        "live_evidence": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-seed-r8-20260904-071527/artifacts-live/runner-report.json",
+        "live_evidence_sha256": "bdafa114402225ac0a3fb4db74c7ecc9544ee15f263b5147d55523a63b617a5f"
+      }
+    ],
+    "inherited_hotfix_files": [
+      "common/scripted_effects/zg361_b1_runtime_effects.txt"
+    ],
     "expected_inherited_additional_triggers": [
       "zg361_can_calibrate_demote_trigger",
       "zg361_is_current_liege_review_record_trigger",
       "zg361_is_elimination_candidate_trigger"
     ],
-    "expected_bytes": 12097988,
-    "source_tree_sha256": "4ca201101641b0a29d4821954165c2bf23cc2b40e307c37565ab9e8348b3d8e1",
-    "formal_overlay_tree_sha256": "f292d07d534c974fa6752512eeca9a451d93c4be7bb6f98e4188f7a98b21a562",
+    "expected_bytes": 12098441,
+    "source_tree_sha256": "cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd",
+    "formal_overlay_tree_sha256": "8f905d02762fb5b2e422dfa389b8231e97b3745441827e270ed7fe30cb69cfd9",
     "file_list_sha256": "7b2e5178c9327e1236806243ebb044c543c5e2a6ff7dc03917391a736a58cbe3",
-    "projection_manifest_sha256": "50ac17da1082e247bdfd74b7b5d7970058dcf69982b1fef77a0651fa88aad0cb",
+    "projection_manifest_sha256": "d16c1911cc0a76cb4d8df63d9a6e6d1e2c3f9ec57ea1bdd40ef75900a0c9bb30",
     "ck3_launch": "NOT_RUN_BY_BUILDER",
     "live_status": "pending"
   },
   "overlay": {
-    "bytes": 2939546,
-    "inventory_sha256": "6c2da60e81cb431360ada28165724946fca18042f3d2983544aafde80ac09ebe",
+    "bytes": 3195132,
+    "inventory_sha256": "00cc8d9ef5f21025cca60390692de8c9b0438c34eee8d2ba25530eeafc8e2d44",
     "files": []
   },
   "forbidden_paths": [

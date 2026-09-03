@@ -9587,7 +9587,12 @@ def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
     matches: list[dict[str, object]] = []
     for index, line in enumerate(lines):
         lowered = line.lower()
-        context_lines = lines[max(0, index - 2) : index + 3]
+        # A ``Script system error!`` line is a record header: its error detail
+        # and script stack follow it.  Looking backward lets the preceding,
+        # unrelated record lend a project token to a vanilla error when the two
+        # records are adjacent (observed in the r8 seed live artifact).
+        context_start = index if "script system error" in lowered else max(0, index - 2)
+        context_lines = lines[context_start : index + 3]
         context = " ".join(context_lines).lower()
         attributed_line = any(
             token in lowered for token in PROJECT_TOKENS
@@ -9608,7 +9613,7 @@ def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
                     "category": category,
                     "line_number": index + 1,
                     "line": line,
-                    "context_start_line": max(1, index - 1),
+                    "context_start_line": context_start + 1,
                     "context": context_lines,
                     "project_attributed_line": attributed_line,
                     "project_attributed_context": attributed_context,

@@ -495,6 +495,71 @@ def _owner_rows(
     return rows
 
 
+def inherited_hotfix_rows(
+    canonical_source: Path,
+    baseline_source: Path,
+    contract: Mapping[str, Any],
+) -> list[dict[str, object]]:
+    """Return reviewed whole-file fixes for providers inherited from baseline.
+
+    These rows are not new B2 purpose shards.  They replace an existing B1
+    owner file byte-for-byte while requiring its provider boundary to remain
+    unchanged.  The boundary exception contract records the live reason for
+    carrying a grandfathered file with more than the B2 hard maximum.
+    """
+
+    candidate = _mapping(contract.get("candidate"), "candidate")
+    paths = tuple(
+        _relative(value, "candidate.inherited_hotfix_files")
+        for value in _strings(
+            candidate.get("inherited_hotfix_files"),
+            "candidate.inherited_hotfix_files",
+        )
+    )
+    if len(paths) != len(set(paths)):
+        raise SeedClosureError("candidate.inherited_hotfix_files contains duplicates")
+    rows: list[dict[str, object]] = []
+    for relative in paths:
+        if not relative.startswith("common/scripted_effects/"):
+            raise SeedClosureError(
+                f"inherited hotfix is not an effect owner file: {relative}"
+            )
+        canonical_path = canonical_source / PurePosixPath(relative)
+        baseline_path = baseline_source / PurePosixPath(relative)
+        if not canonical_path.is_file() or not baseline_path.is_file():
+            raise SeedClosureError(
+                f"inherited hotfix owner is missing from canonical/baseline: {relative}"
+            )
+        canonical_data, canonical_blocks = closure_utils._blocks(
+            canonical_path, relative
+        )
+        baseline_data, baseline_blocks = closure_utils._blocks(
+            baseline_path, relative
+        )
+        canonical_names = tuple(block.name for block in canonical_blocks)
+        baseline_names = tuple(block.name for block in baseline_blocks)
+        if canonical_names != baseline_names:
+            raise SeedClosureError(
+                f"inherited hotfix changed provider boundaries: {relative}"
+            )
+        if canonical_data == baseline_data:
+            raise SeedClosureError(
+                f"inherited hotfix no longer differs from baseline: {relative}"
+            )
+        rows.append(
+            {
+                "path": relative,
+                "kind": "effect",
+                "definitions": len(canonical_names),
+                "definition_names": list(canonical_names),
+                "bytes": len(canonical_data),
+                "sha256": sha256_bytes(canonical_data),
+                "inherited_baseline_hotfix": True,
+            }
+        )
+    return rows
+
+
 def _localization_provider_map(root: Path) -> tuple[dict[str, str], dict[str, list[str]]]:
     providers: dict[str, str] = {}
     duplicates: dict[str, list[str]] = {}
@@ -676,6 +741,18 @@ def select_overlay(
             kind="court_position",
         ),
     ]
+    hotfix_rows = inherited_hotfix_rows(
+        canonical_source, baseline_source, contract
+    )
+    selected_paths = {str(row["path"]) for row in rows}
+    hotfix_collisions = sorted(
+        str(row["path"]) for row in hotfix_rows if row["path"] in selected_paths
+    )
+    if hotfix_collisions:
+        raise SeedClosureError(
+            f"inherited hotfix duplicated a new closure owner: {hotfix_collisions}"
+        )
+    rows.extend(hotfix_rows)
     delta_loc_keys, loc_rows = localization_requirements(
         canonical_source,
         baseline_source,
@@ -686,8 +763,22 @@ def select_overlay(
     rows.extend(loc_rows)
     rows.sort(key=lambda row: str(row["path"]))
     candidate = _mapping(contract.get("candidate"), "candidate")
+    expected_inherited_hotfix_files = _integer(
+        candidate.get("expected_inherited_hotfix_files"),
+        "candidate.expected_inherited_hotfix_files",
+    )
+    if len(hotfix_rows) != expected_inherited_hotfix_files:
+        raise SeedClosureError(
+            "inherited hotfix file count drifted: "
+            f"{len(hotfix_rows)} != {expected_inherited_hotfix_files}"
+        )
+    purpose_rows = [
+        row
+        for row in rows
+        if row.get("inherited_baseline_hotfix") is not True
+    ]
     counts_by_kind = {
-        kind: sum(1 for row in rows if row["kind"] == kind)
+        kind: sum(1 for row in purpose_rows if row["kind"] == kind)
         for kind in ("effect", "event", "court_position", "localization")
     }
     expected_by_kind = {
@@ -730,6 +821,7 @@ def select_overlay(
         "effect_names": sorted(delta_effects),
         "event_ids": sorted(delta_events),
         "court_position_names": sorted(delta_positions),
+        "inherited_hotfix_files": [dict(row) for row in hotfix_rows],
         "reachable_triggers": sorted(closure.triggers),
     }
 
@@ -838,7 +930,19 @@ def validate_boundaries(
             "reason": reason,
             "live_evidence": live_evidence,
         }
-    effect_rows = [dict(row) for row in overlay_rows if row["kind"] == "effect"]
+    all_effect_rows = [
+        dict(row) for row in overlay_rows if row["kind"] == "effect"
+    ]
+    effect_rows = [
+        row
+        for row in all_effect_rows
+        if row.get("inherited_baseline_hotfix") is not True
+    ]
+    inherited_hotfix_rows = [
+        row
+        for row in all_effect_rows
+        if row.get("inherited_baseline_hotfix") is True
+    ]
     over_target = [row for row in effect_rows if int(row["definitions"]) > target]
     over_hard = [row for row in effect_rows if int(row["definitions"]) > hard_max]
     expected_over_target = _integer(
@@ -863,6 +967,67 @@ def validate_boundaries(
             f"expected_over_target={expected_over_target}, "
             f"expected_over_hard={expected_over_hard}"
         )
+    expected_hotfixes = _integer(
+        candidate.get("expected_inherited_hotfix_files"),
+        "candidate.expected_inherited_hotfix_files",
+    )
+    inherited_exception_rows = candidate.get("inherited_effect_boundary_exceptions")
+    if not isinstance(inherited_exception_rows, list) or not all(
+        isinstance(row, dict) for row in inherited_exception_rows
+    ):
+        raise SeedClosureError(
+            "candidate.inherited_effect_boundary_exceptions must be a list of objects"
+        )
+    inherited_exceptions: dict[str, dict[str, object]] = {}
+    for index, raw_row in enumerate(inherited_exception_rows):
+        row = _mapping(
+            raw_row, f"candidate.inherited_effect_boundary_exceptions[{index}]"
+        )
+        path = _relative(row.get("path"), f"inherited exception {index}.path")
+        definitions = _integer(
+            row.get("definitions"), f"inherited exception {index}.definitions"
+        )
+        reason = _string(row.get("reason"), f"inherited exception {index}.reason")
+        live_evidence = _string(
+            row.get("live_evidence"), f"inherited exception {index}.live_evidence"
+        )
+        live_evidence_sha256 = _digest(
+            row.get("live_evidence_sha256"),
+            f"inherited exception {index}.live_evidence_sha256",
+        )
+        if path in inherited_exceptions:
+            raise SeedClosureError(
+                f"duplicate inherited effect boundary exception: {path}"
+            )
+        inherited_exceptions[path] = {
+            "path": path,
+            "definitions": definitions,
+            "reason": reason,
+            "live_evidence": live_evidence,
+            "live_evidence_sha256": live_evidence_sha256,
+        }
+    inherited_observed = {
+        str(row["path"]): int(row["definitions"])
+        for row in inherited_hotfix_rows
+    }
+    inherited_expected = {
+        path: int(row["definitions"])
+        for path, row in inherited_exceptions.items()
+    }
+    if (
+        len(inherited_hotfix_rows) != expected_hotfixes
+        or inherited_observed != inherited_expected
+        or any(
+            definitions <= hard_max
+            for definitions in inherited_observed.values()
+        )
+    ):
+        raise SeedClosureError(
+            "inherited effect boundary exception failed: "
+            f"observed={inherited_observed}, "
+            f"exceptions={list(inherited_exceptions.values())}, "
+            f"expected_files={expected_hotfixes}"
+        )
     inherited_over_hard: list[dict[str, object]] = []
     base_effects = baseline_source / "common/scripted_effects"
     if base_effects.is_dir():
@@ -879,9 +1044,16 @@ def validate_boundaries(
         "target": target,
         "hard_max": hard_max,
         "max_observed": max(int(row["definitions"]) for row in effect_rows),
+        "whole_overlay_max_observed": max(
+            int(row["definitions"]) for row in all_effect_rows
+        ),
         "over_target": over_target,
         "over_hard_max": over_hard,
         "exceptions": list(exceptions.values()),
+        "inherited_hotfixes": inherited_hotfix_rows,
+        "inherited_effect_boundary_exceptions": list(
+            inherited_exceptions.values()
+        ),
         "inherited_r3_grandfathered": inherited_over_hard,
     }
 
@@ -1123,10 +1295,16 @@ def copy_overlay(
         for path in candidate_source.rglob("*")
         if path.is_file()
     }
-    paths = {str(row["path"]) for row in rows}
-    overlap = sorted(paths & baseline_paths)
-    if overlap:
-        raise SeedClosureError(f"seed overlay collides with frozen r3 paths: {overlap}")
+    illegal_overlap = sorted(
+        str(row["path"])
+        for row in rows
+        if str(row["path"]) in baseline_paths
+        and row.get("inherited_baseline_hotfix") is not True
+    )
+    if illegal_overlap:
+        raise SeedClosureError(
+            f"seed overlay collides with frozen r3 paths: {illegal_overlap}"
+        )
     for row in rows:
         relative = str(row["path"])
         source = canonical_source / PurePosixPath(relative)
@@ -1375,11 +1553,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT / "_runtime/phase2-seed-entry-production-closure-20260904-r5-final",
+        default=ROOT / "_runtime/phase2-seed-entry-production-closure-20260904-r6-final",
     )
     parser.add_argument(
         "--projection-name",
-        default="phase2-seed-entry-production-closure-20260904-r5",
+        default="phase2-seed-entry-production-closure-20260904-r6",
     )
     parser.add_argument("--contract", type=Path, default=CONTRACT_PATH)
     parser.add_argument("--baseline-root", type=Path)

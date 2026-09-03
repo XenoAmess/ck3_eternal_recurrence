@@ -2268,6 +2268,20 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.effects, "zg361_b1_freeze_135_145_policy_effect"
         )
         midcycle = top_level_block(self.effects, "zg361_b1_midcycle_dispatcher_effect")
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        previous_object_guard = initialize[
+            initialize.index("name = zg361_b1_previous_band_object_available value = 0") :
+            initialize.index("name = zg361_b1_previous_final_grade value = 0")
+        ]
+        self.assertIn("trigger_if = {", previous_object_guard)
+        self.assertIn("trigger_else = { always = no }", previous_object_guard)
+        for field in ("available", "id", "owner", "subject", "cycle", "case", "state"):
+            self.assertIn(
+                f"has_variable = zg361_b1_band_order_object_{field}",
+                previous_object_guard,
+            )
         for field in ("owner", "subject", "cycle", "case", "state"):
             self.assertIn(f"zg361_b1_band_order_batch_{field}", band)
             self.assertIn(f"zg361_b1_band_order_object_{field}", band)

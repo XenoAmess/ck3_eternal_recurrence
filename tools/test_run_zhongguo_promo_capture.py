@@ -4919,6 +4919,18 @@ def main() -> int:
             for match in r4_parser_matches
         )
 
+        r8_adjacent_vanilla_bytes = (
+            b"[07:22:09][E][jomini_eventmanager.cpp:119]: "
+            b"'zga_acceptance.13' does not have a valid namespace\n"
+            b"[07:22:09][E][pdx_persistent_reader.cpp:216]: "
+            b"Unknown event: zga_acceptance.13\n"
+            b"[07:22:12][E][jomini_script_system.cpp:303]: Script system error!\n"
+            b"  Error: untyped trigger [ Scoped vanilla character is not valid ]\n"
+            b"  Script location: file: gfx/court_scene/scene_cultures/"
+            b"00_default_cultures.txt line: 2\n"
+        )
+        assert capture._loader_error_matches(r8_adjacent_vanilla_bytes) == []
+
         quiet_artifacts = temporary_root / "quiet-loader-artifacts"
         quiet_artifacts.mkdir()
         quiet_scan = capture.scan_loader_error_log(

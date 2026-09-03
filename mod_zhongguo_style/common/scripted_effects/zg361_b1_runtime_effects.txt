@@ -797,9 +797,21 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_previous_band_object_available value = 0 }
 	if = {
 		limit = {
-			var:zg361_b1_band_order_object_available = 1
-			var:zg361_b1_band_order_object_subject = this
-			var:zg361_b1_band_order_object_state = 1
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_band_order_object_available
+					has_variable = zg361_b1_band_order_object_id
+					has_variable = zg361_b1_band_order_object_owner
+					has_variable = zg361_b1_band_order_object_subject
+					has_variable = zg361_b1_band_order_object_cycle
+					has_variable = zg361_b1_band_order_object_case
+					has_variable = zg361_b1_band_order_object_state
+				}
+				var:zg361_b1_band_order_object_available = 1
+				var:zg361_b1_band_order_object_subject = this
+				var:zg361_b1_band_order_object_state = 1
+			}
+			trigger_else = { always = no }
 		}
 		set_variable = { name = zg361_b1_previous_band_object_available value = 1 }
 		set_variable = { name = zg361_b1_previous_band_object_id value = var:zg361_b1_band_order_object_id }

@@ -112,6 +112,10 @@ def main() -> int:
     assert "NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }" in maybe_begin
     assert "add_character_flag = zga_phase2_seed_bootstrap_started" in maybe_begin
     assert "trigger_event = zga_phase2_seed.100" in maybe_begin
+    assert maybe_begin.index(
+        "add_character_flag = zga_phase2_seed_bootstrap_started"
+    ) < maybe_begin.index("trigger_event = zga_phase2_seed.100")
+    assert "remove_character_flag = zga_phase2_seed_bootstrap_started" not in fixture_text
     assert "save_scope_as = zga_phase2_seed_player" in effects
     assert "liege = {" in effects
     assert "trigger_event = zga_phase2_seed.101" in effects
