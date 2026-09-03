@@ -1,0 +1,181 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_appointment_fact.py
+# PURPOSE: consume the native receipt through Workforce #274 and expose its public wrapper.
+
+zg361_workforce_appointment_fact_consume_workforce_m274_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_workforce_appointment_fact_receipt_active
+            var:zg361_workforce_appointment_fact_receipt_active = 1
+            var:zg361_workforce_appointment_fact_receipt_consumed = 0
+            var:zg361_workforce_appointment_fact_receipt_published = 1
+            var:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+            var:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+            var:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+            var:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+            var:zg361_workforce_appointment_fact_receipt_state = 4
+            var:zg361_workforce_appointment_fact_receipt_native_callback_seen = 1
+            var:zg361_workforce_appointment_fact_receipt_native_holder_postcondition_seen = 1
+            OR = {
+                AND = {
+                    var:zg361_workforce_appointment_fact_receipt_position_still_active = 1
+                    has_court_position = zg361_workforce_appointment_fact_court_position
+                    is_court_position_employer = {
+                        court_position = zg361_workforce_appointment_fact_court_position
+                        who = $TICKET_OWNER$
+                    }
+                }
+                AND = {
+                    var:zg361_workforce_appointment_fact_receipt_position_still_active = 0
+                    var:zg361_workforce_appointment_fact_receipt_position_released_by_package = 1
+                    NOT = { has_court_position = zg361_workforce_appointment_fact_court_position }
+                }
+            }
+        }
+        if = {
+            limit = {
+                OR = {
+                    AND = {
+                        has_variable = zg361_workforce_appointment_fact_workforce_consumer_ack
+                        var:zg361_workforce_appointment_fact_workforce_consumer_ack = 1
+                    }
+                    AND = {
+                        has_variable = zg361_we_m274_business_object_created
+                        var:zg361_we_m274_business_object_created = 1
+                        var:zg361_we_m274_object_owner = $TICKET_OWNER$
+                        var:zg361_we_m274_object_subject = $TICKET_SUBJECT$
+                        var:zg361_we_m274_object_cycle = $TICKET_CYCLE$
+                        var:zg361_we_m274_object_case = $TICKET_CASE$
+                        var:zg361_we_m274_object_state = 4
+                        var:zg361_we_m274_object_consumed = 1
+                        var:zg361_we_m274_native_appointment_confirmed = 1
+                        var:zg361_we_m274_appointed_character = $TICKET_SUBJECT$
+                        var:zg361_we_m274_position_type_id = var:zg361_workforce_appointment_fact_receipt_position_type_id
+                        var:zg361_we_m274_position_receipt_id = var:zg361_workforce_appointment_fact_receipt_id
+                        var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_appointment_fact_receipt_hash
+                        var:zg361_we_ad_external_appointment_consumed = 1
+                        var:zg361_we_ad_external_appointment_ready = 0
+                    }
+                }
+            }
+            set_variable = { name = zg361_workforce_appointment_fact_workforce_consumer_ack value = 1 }
+        }
+        else = {
+            zg361_we_m274_route_a_effect = {
+                TICKET_OWNER = $TICKET_OWNER$
+                TICKET_SUBJECT = $TICKET_SUBJECT$
+                TICKET_CYCLE = $TICKET_CYCLE$
+                TICKET_CASE = $TICKET_CASE$
+            }
+            if = {
+                limit = {
+                    has_variable = zg361_we_runtime_applied
+                    var:zg361_we_runtime_applied = 1
+                    var:zg361_we_m274_native_appointment_confirmed = 1
+                    var:zg361_we_m274_appointed_character = $TICKET_SUBJECT$
+                    var:zg361_we_m274_position_type_id = var:zg361_workforce_appointment_fact_receipt_position_type_id
+                    var:zg361_we_m274_position_receipt_id = var:zg361_workforce_appointment_fact_receipt_id
+                    var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_appointment_fact_receipt_hash
+                    var:zg361_we_ad_external_appointment_consumed = 1
+                    var:zg361_we_ad_external_appointment_ready = 0
+                }
+                set_variable = { name = zg361_workforce_appointment_fact_workforce_consumer_ack value = 1 }
+            }
+        }
+        if = {
+            limit = {
+                has_variable = zg361_workforce_appointment_fact_workforce_consumer_ack
+                var:zg361_workforce_appointment_fact_workforce_consumer_ack = 1
+            }
+            if = {
+                limit = {
+                    var:zg361_workforce_appointment_fact_receipt_position_still_active = 1
+                    has_court_position = zg361_workforce_appointment_fact_court_position
+                    is_court_position_employer = {
+                        court_position = zg361_workforce_appointment_fact_court_position
+                        who = $TICKET_OWNER$
+                    }
+                }
+                zg361_workforce_appointment_fact_release_bounded_position_effect = {
+                    EXPECTED_OWNER = $TICKET_OWNER$
+                    RELEASE_REASON = 1
+                }
+            }
+            if = {
+                limit = {
+                    var:zg361_workforce_appointment_fact_receipt_position_still_active = 0
+                    var:zg361_workforce_appointment_fact_receipt_position_released_by_package = 1
+                    NOT = { has_court_position = zg361_workforce_appointment_fact_court_position }
+                }
+                set_variable = { name = zg361_workforce_appointment_fact_receipt_position_release_joined_by_consumer value = 1 }
+                set_variable = { name = zg361_workforce_appointment_fact_receipt_consumed value = 1 }
+                set_variable = { name = zg361_workforce_appointment_fact_receipt_consumed_operation value = 274 }
+                set_variable = { name = zg361_workforce_appointment_fact_status value = 6 }
+                set_variable = { name = zg361_we_runtime_applied value = 1 }
+            }
+            else = {
+                remove_variable = zg361_we_runtime_applied
+                set_variable = { name = zg361_workforce_appointment_fact_status value = 5 }
+                set_variable = { name = zg361_workforce_appointment_fact_red_code value = 27407 }
+            }
+        }
+        else = {
+            remove_variable = zg361_we_runtime_applied
+            set_variable = { name = zg361_workforce_appointment_fact_status value = 5 }
+            set_variable = { name = zg361_workforce_appointment_fact_red_code value = 27406 }
+        }
+    }
+    else = {
+        remove_variable = zg361_we_runtime_applied
+        set_variable = { name = zg361_workforce_appointment_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_appointment_fact_red_code value = 27406 }
+    }
+}
+
+zg361_workforce_appointment_fact_m274_appoint_and_consume_effect = {
+    remove_variable = zg361_workforce_appointment_fact_status
+    remove_variable = zg361_workforce_appointment_fact_red_code
+    remove_variable = zg361_we_runtime_applied
+    if = {
+        limit = {
+            has_variable = zg361_workforce_appointment_fact_receipt_active
+            var:zg361_workforce_appointment_fact_receipt_active = 1
+            var:zg361_workforce_appointment_fact_receipt_consumed = 1
+            var:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+            var:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+            var:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+            var:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+            var:zg361_workforce_appointment_fact_receipt_state = 4
+            var:zg361_workforce_appointment_fact_receipt_result = 1
+            var:zg361_we_m274_native_appointment_confirmed = 1
+            var:zg361_we_m274_position_receipt_id = var:zg361_workforce_appointment_fact_receipt_id
+            var:zg361_we_m274_position_receipt_hash = var:zg361_workforce_appointment_fact_receipt_hash
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_status value = 2 }
+    }
+    else = {
+        zg361_workforce_appointment_fact_request_native_appointment_effect = {
+            TICKET_OWNER = $TICKET_OWNER$
+            TICKET_SUBJECT = $TICKET_SUBJECT$
+            TICKET_CYCLE = $TICKET_CYCLE$
+            TICKET_CASE = $TICKET_CASE$
+        }
+        if = {
+            limit = {
+                has_variable = zg361_workforce_appointment_fact_receipt_active
+                var:zg361_workforce_appointment_fact_receipt_active = 1
+                var:zg361_workforce_appointment_fact_receipt_consumed = 0
+                var:zg361_workforce_appointment_fact_receipt_published = 1
+                var:zg361_workforce_appointment_fact_receipt_owner = $TICKET_OWNER$
+                var:zg361_workforce_appointment_fact_receipt_subject = $TICKET_SUBJECT$
+                var:zg361_workforce_appointment_fact_receipt_cycle = $TICKET_CYCLE$
+                var:zg361_workforce_appointment_fact_receipt_case = $TICKET_CASE$
+            }
+            zg361_workforce_appointment_fact_consume_workforce_m274_effect = {
+                TICKET_OWNER = $TICKET_OWNER$
+                TICKET_SUBJECT = $TICKET_SUBJECT$
+                TICKET_CYCLE = $TICKET_CYCLE$
+                TICKET_CASE = $TICKET_CASE$
+            }
+        }
+    }
+}

@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -58,7 +60,7 @@ def localization_keys(source: str) -> set[str]:
 class AppointmentFactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = text(gen.EFFECTS_PATH)
+        cls.effects = gen.render_effects().decode("utf-8-sig")
         cls.events = text(gen.EVENTS_PATH)
         cls.position = text(gen.POSITION_PATH)
         cls.spec = text(gen.SPEC_PATH)
@@ -67,9 +69,9 @@ class AppointmentFactTests(unittest.TestCase):
         gen.validate_contract()
         self.assertEqual(gen.POSITION_TYPE_ID, 3_612_741)
         self.assertEqual(gen.SOURCE_KIND_COURT_POSITION, 1)
-        self.assertEqual(len(gen.outputs()), 13)
+        self.assertEqual(len(gen.outputs()), 17)
         expected = {
-            gen.EFFECTS_PATH,
+            *gen.effect_paths(),
             gen.EVENTS_PATH,
             gen.POSITION_PATH,
             gen.SPEC_PATH,
@@ -88,8 +90,112 @@ class AppointmentFactTests(unittest.TestCase):
             self.assertTrue(path.exists(), path)
             self.assertEqual(path.read_bytes(), payload, path)
             self.assertTrue(payload.startswith(gen.BOM), path)
-        for path in (gen.EFFECTS_PATH, gen.EVENTS_PATH, gen.POSITION_PATH):
+        for path in (*gen.effect_paths(), gen.EVENTS_PATH, gen.POSITION_PATH):
             self.assertTrue(text(path).startswith(gen.HEADER.rstrip()), path)
+        self.assertFalse(gen.LEGACY_EFFECT_PATH.exists())
+
+    def test_effect_purpose_shards_preserve_canonical_aggregate_blocks(self) -> None:
+        aggregate = gen.render_effects()
+        self.assertEqual(gen.CANONICAL_EFFECT_BYTES, len(aggregate))
+        self.assertEqual(
+            gen.CANONICAL_EFFECT_SHA256,
+            hashlib.sha256(aggregate).hexdigest(),
+        )
+        source_blocks = gen.top_level_blocks(aggregate)
+        self.assertEqual(gen.CANONICAL_EFFECT_COUNT, len(source_blocks))
+        self.assertEqual(51_862, gen.RETIRED_MONOLITH_EFFECT_BYTES)
+        self.assertEqual(
+            "886bfd5ec9e15aa744f8bd39e55f9cb3dbd652f4d5b6c2e0eecfaa8197fecc4c",
+            gen.RETIRED_MONOLITH_EFFECT_SHA256,
+        )
+        self.assertEqual(
+            (5, 1, 1, 2, 1),
+            tuple(len(group.effect_names) for group in gen.EFFECT_GROUPS),
+        )
+        self.assertTrue(
+            all(
+                1 <= len(group.effect_names) <= gen.EFFECT_TARGET_MAX
+                for group in gen.EFFECT_GROUPS
+            )
+        )
+        self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
+        source_by_name = dict(source_blocks)
+        shard_blocks: dict[str, str] = {}
+        for filename, payload in gen.render_effect_parts().items():
+            self.assertTrue(payload.startswith(gen.BOM), filename)
+            for name, body in gen.top_level_blocks(payload):
+                self.assertNotIn(name, shard_blocks)
+                shard_blocks[name] = body
+        self.assertEqual(source_by_name, shard_blocks)
+
+    def test_old_monolith_and_unknown_prefix_shards_are_rejected(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="zg361-appointment-shards-") as temp:
+            effects_dir = Path(temp)
+            declared = effects_dir / gen.EFFECT_GROUPS[0].filename
+            legacy = effects_dir / gen.LEGACY_EFFECT_FILENAME
+            unknown = effects_dir / f"{gen.PREFIX}_unknown_effects.txt"
+            for path in (declared, legacy, unknown):
+                path.write_bytes(gen.BOM + b"probe_effect = {}\n")
+            unexpected = gen.unexpected_effect_paths(gen.outputs(), effects_dir)
+            self.assertEqual((legacy, unknown), unexpected)
+
+    def test_seal_and_publish_is_an_acyclic_two_phase_state_machine(self) -> None:
+        seal_name = f"{gen.PREFIX}_seal_and_publish_effect"
+        publisher = block(self.effects, seal_name)
+        self.assertEqual(1, publisher.count(f"{seal_name} = {{"))
+        self.assertEqual(5, self.effects.count(f"{seal_name} = {{"))
+        ready_write = (
+            f"set_variable = {{ name = {gen.PREFIX}_seal_continuation_ready value = 1 }}"
+        )
+        ready_remove = f"remove_variable = {gen.PREFIX}_seal_continuation_ready"
+        self.assertEqual(2, publisher.count(ready_write))
+        self.assertEqual(2, publisher.count(ready_remove))
+        receipt_write = publisher.index(
+            f"set_variable = {{ name = {gen.PREFIX}_receipt_active value = 1 }}"
+        )
+        clear_pending = publisher.index(
+            f"{gen.PREFIX}_clear_pending_intent_effect = yes", receipt_write
+        )
+        pending_ready = publisher.index(ready_write, clear_pending)
+        continuation_remove = publisher.index(ready_remove, pending_ready)
+        submit = publisher.index("zg361_we_submit_ad_appointment_receipt_effect = {")
+        self.assertLess(receipt_write, clear_pending)
+        self.assertLess(clear_pending, pending_ready)
+        self.assertLess(pending_ready, continuation_remove)
+        self.assertLess(continuation_remove, submit)
+        second_pass = publisher[continuation_remove:submit]
+        for needle in (
+            f"has_variable = {gen.PREFIX}_receipt_active",
+            f"var:{gen.PREFIX}_receipt_owner = $TICKET_OWNER$",
+            f"var:{gen.PREFIX}_receipt_subject = $TICKET_SUBJECT$",
+            f"var:{gen.PREFIX}_receipt_cycle = $TICKET_CYCLE$",
+            f"var:{gen.PREFIX}_receipt_case = $TICKET_CASE$",
+            f"var:{gen.PREFIX}_receipt_native_callback_seen = 1",
+            f"var:{gen.PREFIX}_receipt_native_holder_postcondition_seen = 1",
+        ):
+            self.assertIn(needle, second_pass)
+
+    def test_all_four_nonrecursive_publisher_calls_keep_the_frozen_tuple(self) -> None:
+        seal_call = f"{gen.PREFIX}_seal_and_publish_effect = {{"
+        request = block(
+            self.effects, f"{gen.PREFIX}_request_native_appointment_effect"
+        )
+        audit = block(self.effects, f"{gen.PREFIX}_audit_pending_effect")
+        self.assertEqual(2, request.count(seal_call))
+        self.assertEqual(2, audit.count(seal_call))
+        for field in ("OWNER", "SUBJECT", "CYCLE", "CASE"):
+            self.assertGreaterEqual(request.count(f"TICKET_{field} = $TICKET_{field}$"), 2)
+        for prefix in ("pending", "receipt"):
+            self.assertIn(
+                f"TICKET_OWNER = var:{gen.PREFIX}_{prefix}_owner", audit
+            )
+            self.assertIn(
+                f"TICKET_CYCLE = var:{gen.PREFIX}_{prefix}_cycle", audit
+            )
+            self.assertIn(
+                f"TICKET_CASE = var:{gen.PREFIX}_{prefix}_case", audit
+            )
+        self.assertEqual(2, audit.count("TICKET_SUBJECT = this"))
 
     def test_nine_language_structure_and_only_zh_en_are_authored(self) -> None:
         self.assertEqual(len(gen.LANGUAGES), 9)

@@ -1,0 +1,112 @@
+﻿# GENERATED FILE -- edit tools/gen_zg361_workforce_appointment_fact.py
+# PURPOSE: manage pending intent, native callbacks, audit scheduling, and bounded release.
+
+zg361_workforce_appointment_fact_clear_pending_intent_effect = {
+    remove_variable = zg361_workforce_appointment_fact_pending_open
+    remove_variable = zg361_workforce_appointment_fact_pending_owner
+    remove_variable = zg361_workforce_appointment_fact_pending_subject
+    remove_variable = zg361_workforce_appointment_fact_pending_cycle
+    remove_variable = zg361_workforce_appointment_fact_pending_case
+    remove_variable = zg361_workforce_appointment_fact_pending_state
+    remove_variable = zg361_workforce_appointment_fact_pending_title
+    remove_variable = zg361_workforce_appointment_fact_pending_title_tier
+    remove_variable = zg361_workforce_appointment_fact_pending_hc_case
+    remove_variable = zg361_workforce_appointment_fact_pending_hc_reserved
+    remove_variable = zg361_workforce_appointment_fact_pending_offer_object
+    remove_variable = zg361_workforce_appointment_fact_pending_candidate_object
+    remove_variable = zg361_workforce_appointment_fact_eligibility_open
+}
+
+zg361_workforce_appointment_fact_schedule_audit_effect = {
+    if = {
+        limit = {
+            OR = {
+                NOT = { has_variable = zg361_workforce_appointment_fact_audit_scheduled }
+                var:zg361_workforce_appointment_fact_audit_scheduled = 0
+            }
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_audit_scheduled value = 1 }
+        trigger_event = { id = zg361workforceappointmentfact.9001 days = 1 }
+    }
+}
+
+zg361_workforce_appointment_fact_on_native_position_received_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_workforce_appointment_fact_pending_open
+            var:zg361_workforce_appointment_fact_pending_open = 1
+            has_variable = zg361_workforce_appointment_fact_pending_owner
+            has_variable = zg361_workforce_appointment_fact_pending_subject
+            var:zg361_workforce_appointment_fact_pending_subject = this
+            scope:liege = var:zg361_workforce_appointment_fact_pending_owner
+            has_court_position = zg361_workforce_appointment_fact_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_appointment_fact_court_position
+                who = scope:liege
+            }
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_native_callback_seen value = 1 }
+        set_variable = { name = zg361_workforce_appointment_fact_native_callback_owner value = scope:liege }
+        set_variable = { name = zg361_workforce_appointment_fact_native_callback_subject value = this }
+        set_variable = { name = zg361_workforce_appointment_fact_native_callback_position_type_id value = 3612741 }
+        set_variable = { name = zg361_workforce_appointment_fact_position_active value = 1 }
+        zg361_workforce_appointment_fact_schedule_audit_effect = yes
+    }
+}
+
+zg361_workforce_appointment_fact_on_native_position_ended_effect = {
+    set_variable = { name = zg361_workforce_appointment_fact_position_active value = 0 }
+    set_variable = { name = zg361_workforce_appointment_fact_position_end_reason value = $END_REASON$ }
+    if = {
+        limit = {
+            has_variable = zg361_workforce_appointment_fact_receipt_active
+            var:zg361_workforce_appointment_fact_receipt_active = 1
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_receipt_position_still_active value = 0 }
+    }
+}
+
+zg361_workforce_appointment_fact_release_bounded_position_effect = {
+    remove_variable = zg361_workforce_appointment_fact_release_command_dispatched
+    remove_variable = zg361_workforce_appointment_fact_release_command_owner
+    if = {
+        limit = {
+            has_court_position = zg361_workforce_appointment_fact_court_position
+            is_court_position_employer = {
+                court_position = zg361_workforce_appointment_fact_court_position
+                who = $EXPECTED_OWNER$
+            }
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_settlement_release_requested value = 1 }
+        set_variable = { name = zg361_workforce_appointment_fact_settlement_release_reason value = $RELEASE_REASON$ }
+        set_variable = { name = zg361_workforce_appointment_fact_release_command_dispatched value = 1 }
+        set_variable = { name = zg361_workforce_appointment_fact_release_command_owner value = $EXPECTED_OWNER$ }
+        revoke_court_position = zg361_workforce_appointment_fact_court_position
+    }
+    if = {
+        limit = {
+            has_variable = zg361_workforce_appointment_fact_release_command_dispatched
+            var:zg361_workforce_appointment_fact_release_command_dispatched = 1
+            var:zg361_workforce_appointment_fact_release_command_owner = $EXPECTED_OWNER$
+            NOT = { has_court_position = zg361_workforce_appointment_fact_court_position }
+        }
+        set_variable = { name = zg361_workforce_appointment_fact_position_active value = 0 }
+        if = {
+            limit = {
+                has_variable = zg361_workforce_appointment_fact_receipt_active
+                var:zg361_workforce_appointment_fact_receipt_active = 1
+                var:zg361_workforce_appointment_fact_receipt_owner = $EXPECTED_OWNER$
+            }
+            set_variable = { name = zg361_workforce_appointment_fact_receipt_position_still_active value = 0 }
+            set_variable = { name = zg361_workforce_appointment_fact_receipt_position_released_by_package value = 1 }
+            set_variable = { name = zg361_workforce_appointment_fact_receipt_position_release_reason value = $RELEASE_REASON$ }
+        }
+        else = {
+            set_variable = { name = zg361_workforce_appointment_fact_pending_position_released_by_package value = 1 }
+        }
+    }
+    else = {
+        set_variable = { name = zg361_workforce_appointment_fact_status value = 5 }
+        set_variable = { name = zg361_workforce_appointment_fact_red_code value = 27407 }
+    }
+}

@@ -13,6 +13,8 @@ receipt identifiers, and hashes are not part of the public ABI.
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
+import hashlib
 from pathlib import Path
 from typing import Final
 
@@ -28,7 +30,26 @@ POSITION_TYPE_ID: Final[int] = 3_612_741
 SOURCE_KIND_COURT_POSITION: Final[int] = 1
 AUDIT_EVENT_ID: Final[int] = 9001
 
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / f"{PREFIX}_effects.txt"
+LEGACY_EFFECT_FILENAME: Final[str] = f"{PREFIX}_effects.txt"
+LEGACY_EFFECT_PATH = (
+    MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+)
+# Compatibility name for callers that assert the retired aggregate is absent.
+# outputs() owns purpose shards only.
+EFFECTS_PATH = LEGACY_EFFECT_PATH
+EFFECT_SHARD_GLOB: Final[str] = f"{PREFIX}*_effects.txt"
+RETIRED_MONOLITH_EFFECT_BYTES: Final[int] = 51_862
+RETIRED_MONOLITH_EFFECT_SHA256: Final[str] = (
+    "886bfd5ec9e15aa744f8bd39e55f9cb3dbd652f4d5b6c2e0eecfaa8197fecc4c"
+)
+CANONICAL_EFFECT_COUNT: Final[int] = 10
+CANONICAL_EFFECT_BYTES: Final[int] = 54_003
+CANONICAL_EFFECT_SHA256: Final[str] = (
+    "02bdec0e15c3fc47e99ff4c63a30cf73c7d4ed578fc68ed05feec8d34f5adc9a"
+)
+EFFECT_TARGET_MAX: Final[int] = 10
+EFFECT_HARD_MAX: Final[int] = 20
+EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
 EVENTS_PATH = MOD_ROOT / "events" / f"{PREFIX}_events.txt"
 POSITION_PATH = (
     MOD_ROOT
@@ -50,6 +71,51 @@ LANGUAGES: Final[tuple[str, ...]] = (
     "russian",
     "simp_chinese",
     "spanish",
+)
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
+
+
+EFFECT_GROUPS: Final[tuple[EffectGroup, ...]] = (
+    EffectGroup(
+        f"{PREFIX}_native_lifecycle_effects.txt",
+        "manage pending intent, native callbacks, audit scheduling, and bounded release",
+        (
+            f"{PREFIX}_clear_pending_intent_effect",
+            f"{PREFIX}_schedule_audit_effect",
+            f"{PREFIX}_on_native_position_received_effect",
+            f"{PREFIX}_on_native_position_ended_effect",
+            f"{PREFIX}_release_bounded_position_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_receipt_publication_effects.txt",
+        "seal and publish the callback-backed immutable appointment receipt",
+        (f"{PREFIX}_seal_and_publish_effect",),
+    ),
+    EffectGroup(
+        f"{PREFIX}_native_request_effects.txt",
+        "preflight and dispatch the one real native appointment request",
+        (f"{PREFIX}_request_native_appointment_effect",),
+    ),
+    EffectGroup(
+        f"{PREFIX}_workforce_consume_effects.txt",
+        "consume the native receipt through Workforce #274 and expose its public wrapper",
+        (
+            f"{PREFIX}_consume_workforce_m274_effect",
+            f"{PREFIX}_m274_appoint_and_consume_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_audit_reconciliation_effects.txt",
+        "reconcile delayed callbacks and save-load without inventing success",
+        (f"{PREFIX}_audit_pending_effect",),
+    ),
 )
 
 
@@ -158,6 +224,8 @@ def render_court_position() -> bytes:
 
 
 def render_effects() -> bytes:
+    """Render the semantic aggregate used for shard-parity validation."""
+
     return generated(
         f"""
 # Public subject-scope ABI (same tuple as Workforce #274):
@@ -295,6 +363,7 @@ def render_effects() -> bytes:
 {PREFIX}_seal_and_publish_effect = {{
     remove_variable = {PREFIX}_status
     remove_variable = {PREFIX}_red_code
+    remove_variable = {PREFIX}_seal_continuation_ready
     if = {{
         limit = {{
             has_variable = {PREFIX}_receipt_active
@@ -310,89 +379,7 @@ def render_effects() -> bytes:
             var:{PREFIX}_receipt_native_callback_seen = 1
             var:{PREFIX}_receipt_native_holder_postcondition_seen = 1
         }}
-        if = {{
-            limit = {{ var:{PREFIX}_receipt_published = 0 }}
-            if = {{
-                limit = {{
-                    OR = {{
-                        $TICKET_SUBJECT$ = {{
-                            has_court_position = {POSITION_KEY}
-                            is_court_position_employer = {{
-                                court_position = {POSITION_KEY}
-                                who = $TICKET_OWNER$
-                            }}
-                            primary_title = var:{PREFIX}_receipt_title
-                            var:{PREFIX}_receipt_title = {{ holder = $TICKET_SUBJECT$ }}
-                        }}
-                        AND = {{
-                            var:{PREFIX}_receipt_position_still_active = 0
-                            var:{PREFIX}_receipt_position_released_by_package = 1
-                            $TICKET_SUBJECT$ = {{
-                                NOT = {{ has_court_position = {POSITION_KEY} }}
-                                primary_title = var:{PREFIX}_receipt_title
-                                var:{PREFIX}_receipt_title = {{ holder = $TICKET_SUBJECT$ }}
-                            }}
-                        }}
-                    }}
-                    zg361_case_kernel_full_guard_trigger = {{
-                        OWNER_VAR = zg361_case_ad_owner
-                        SUBJECT_VAR = zg361_case_ad_subject
-                        CYCLE_VAR = zg361_case_ad_cycle_serial
-                        CASE_VAR = zg361_case_ad_case_serial
-                        STATE_VAR = zg361_case_ad_state
-                        ACTIVE_VAR = zg361_case_ad_active
-                        EXPECTED_OWNER = $TICKET_OWNER$
-                        EXPECTED_SUBJECT = $TICKET_SUBJECT$
-                        EXPECTED_CYCLE = $TICKET_CYCLE$
-                        EXPECTED_CASE = $TICKET_CASE$
-                        EXPECTED_STATE = 4
-                    }}
-                }}
-                zg361_we_submit_ad_appointment_receipt_effect = {{
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    APPOINTING_OWNER = $TICKET_OWNER$
-                    APPOINTMENT_CONFIRMED = 1
-                    POSITION_TYPE_ID = {POSITION_TYPE_ID}
-                    POSITION_RECEIPT_ID = var:{PREFIX}_receipt_id
-                    POSITION_RECEIPT_HASH = var:{PREFIX}_receipt_hash
-                }}
-                if = {{
-                    limit = {{
-                        has_variable = zg361_we_adapter_status
-                        var:zg361_we_adapter_status = 1
-                        var:zg361_we_ad_external_position_type_id = {POSITION_TYPE_ID}
-                        var:zg361_we_ad_external_position_receipt_id = var:{PREFIX}_receipt_id
-                        var:zg361_we_ad_external_position_receipt_hash = var:{PREFIX}_receipt_hash
-                        var:zg361_we_ad_appointment_receipt_owner = $TICKET_OWNER$
-                        var:zg361_we_ad_appointment_receipt_subject = $TICKET_SUBJECT$
-                        var:zg361_we_ad_appointment_receipt_cycle = $TICKET_CYCLE$
-                        var:zg361_we_ad_appointment_receipt_case = $TICKET_CASE$
-                        var:zg361_we_ad_appointment_receipt_state = 4
-                    }}
-                    set_variable = {{ name = {PREFIX}_receipt_published value = 1 }}
-                    set_variable = {{ name = {PREFIX}_status value = 1 }}
-                }}
-                else = {{
-                    set_variable = {{ name = {PREFIX}_status value = 5 }}
-                    set_variable = {{ name = {PREFIX}_red_code value = 27405 }}
-                }}
-            }}
-            else = {{
-                set_variable = {{ name = {PREFIX}_status value = 4 }}
-                set_variable = {{ name = {PREFIX}_red_code value = 27404 }}
-            }}
-        }}
-        else_if = {{
-            limit = {{ var:{PREFIX}_receipt_published = 1 }}
-            set_variable = {{ name = {PREFIX}_status value = 1 }}
-        }}
-        else = {{
-            set_variable = {{ name = {PREFIX}_status value = 4 }}
-            set_variable = {{ name = {PREFIX}_red_code value = 27404 }}
-        }}
+        set_variable = {{ name = {PREFIX}_seal_continuation_ready value = 1 }}
     }}
     else_if = {{
         limit = {{
@@ -478,16 +465,124 @@ def render_effects() -> bytes:
         set_variable = {{ name = {PREFIX}_receipt_id value = {{ value = $TICKET_CASE$ multiply = 1000 add = 274 }} }}
         set_variable = {{ name = {PREFIX}_receipt_hash value = {{ value = $TICKET_CASE$ multiply = 100000 add = $TICKET_CYCLE$ multiply = 10 add = {SOURCE_KIND_COURT_POSITION} }} }}
         {PREFIX}_clear_pending_intent_effect = yes
-        {PREFIX}_seal_and_publish_effect = {{
-            TICKET_OWNER = $TICKET_OWNER$
-            TICKET_SUBJECT = $TICKET_SUBJECT$
-            TICKET_CYCLE = $TICKET_CYCLE$
-            TICKET_CASE = $TICKET_CASE$
-        }}
+        set_variable = {{ name = {PREFIX}_seal_continuation_ready value = 1 }}
     }}
     else = {{
         set_variable = {{ name = {PREFIX}_status value = 4 }}
         set_variable = {{ name = {PREFIX}_red_code value = 27404 }}
+    }}
+    # The former implementation recursively called this same scripted effect
+    # after sealing.  Keep the exact second-pass receipt validation and publish
+    # semantics, but execute them as an explicit acyclic continuation.
+    if = {{
+        limit = {{
+            has_variable = {PREFIX}_seal_continuation_ready
+            var:{PREFIX}_seal_continuation_ready = 1
+        }}
+        remove_variable = {PREFIX}_seal_continuation_ready
+        if = {{
+            limit = {{
+                has_variable = {PREFIX}_receipt_active
+                var:{PREFIX}_receipt_active = 1
+                var:{PREFIX}_receipt_owner = $TICKET_OWNER$
+                var:{PREFIX}_receipt_subject = $TICKET_SUBJECT$
+                var:{PREFIX}_receipt_cycle = $TICKET_CYCLE$
+                var:{PREFIX}_receipt_case = $TICKET_CASE$
+                var:{PREFIX}_receipt_state = 4
+                var:{PREFIX}_receipt_result = 1
+                var:{PREFIX}_receipt_position_type_id = {POSITION_TYPE_ID}
+                var:{PREFIX}_receipt_position_source_kind = {SOURCE_KIND_COURT_POSITION}
+                var:{PREFIX}_receipt_native_callback_seen = 1
+                var:{PREFIX}_receipt_native_holder_postcondition_seen = 1
+            }}
+            if = {{
+                limit = {{ var:{PREFIX}_receipt_published = 0 }}
+                if = {{
+                    limit = {{
+                        OR = {{
+                            $TICKET_SUBJECT$ = {{
+                                has_court_position = {POSITION_KEY}
+                                is_court_position_employer = {{
+                                    court_position = {POSITION_KEY}
+                                    who = $TICKET_OWNER$
+                                }}
+                                primary_title = var:{PREFIX}_receipt_title
+                                var:{PREFIX}_receipt_title = {{ holder = $TICKET_SUBJECT$ }}
+                            }}
+                            AND = {{
+                                var:{PREFIX}_receipt_position_still_active = 0
+                                var:{PREFIX}_receipt_position_released_by_package = 1
+                                $TICKET_SUBJECT$ = {{
+                                    NOT = {{ has_court_position = {POSITION_KEY} }}
+                                    primary_title = var:{PREFIX}_receipt_title
+                                    var:{PREFIX}_receipt_title = {{ holder = $TICKET_SUBJECT$ }}
+                                }}
+                            }}
+                        }}
+                        zg361_case_kernel_full_guard_trigger = {{
+                            OWNER_VAR = zg361_case_ad_owner
+                            SUBJECT_VAR = zg361_case_ad_subject
+                            CYCLE_VAR = zg361_case_ad_cycle_serial
+                            CASE_VAR = zg361_case_ad_case_serial
+                            STATE_VAR = zg361_case_ad_state
+                            ACTIVE_VAR = zg361_case_ad_active
+                            EXPECTED_OWNER = $TICKET_OWNER$
+                            EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                            EXPECTED_CYCLE = $TICKET_CYCLE$
+                            EXPECTED_CASE = $TICKET_CASE$
+                            EXPECTED_STATE = 4
+                        }}
+                    }}
+                    zg361_we_submit_ad_appointment_receipt_effect = {{
+                        TICKET_OWNER = $TICKET_OWNER$
+                        TICKET_SUBJECT = $TICKET_SUBJECT$
+                        TICKET_CYCLE = $TICKET_CYCLE$
+                        TICKET_CASE = $TICKET_CASE$
+                        APPOINTING_OWNER = $TICKET_OWNER$
+                        APPOINTMENT_CONFIRMED = 1
+                        POSITION_TYPE_ID = {POSITION_TYPE_ID}
+                        POSITION_RECEIPT_ID = var:{PREFIX}_receipt_id
+                        POSITION_RECEIPT_HASH = var:{PREFIX}_receipt_hash
+                    }}
+                    if = {{
+                        limit = {{
+                            has_variable = zg361_we_adapter_status
+                            var:zg361_we_adapter_status = 1
+                            var:zg361_we_ad_external_position_type_id = {POSITION_TYPE_ID}
+                            var:zg361_we_ad_external_position_receipt_id = var:{PREFIX}_receipt_id
+                            var:zg361_we_ad_external_position_receipt_hash = var:{PREFIX}_receipt_hash
+                            var:zg361_we_ad_appointment_receipt_owner = $TICKET_OWNER$
+                            var:zg361_we_ad_appointment_receipt_subject = $TICKET_SUBJECT$
+                            var:zg361_we_ad_appointment_receipt_cycle = $TICKET_CYCLE$
+                            var:zg361_we_ad_appointment_receipt_case = $TICKET_CASE$
+                            var:zg361_we_ad_appointment_receipt_state = 4
+                        }}
+                        set_variable = {{ name = {PREFIX}_receipt_published value = 1 }}
+                        set_variable = {{ name = {PREFIX}_status value = 1 }}
+                    }}
+                    else = {{
+                        set_variable = {{ name = {PREFIX}_status value = 5 }}
+                        set_variable = {{ name = {PREFIX}_red_code value = 27405 }}
+                    }}
+                }}
+                else = {{
+                    set_variable = {{ name = {PREFIX}_status value = 4 }}
+                    set_variable = {{ name = {PREFIX}_red_code value = 27404 }}
+                }}
+            }}
+            else_if = {{
+                limit = {{ var:{PREFIX}_receipt_published = 1 }}
+                set_variable = {{ name = {PREFIX}_status value = 1 }}
+            }}
+            else = {{
+                set_variable = {{ name = {PREFIX}_status value = 4 }}
+                set_variable = {{ name = {PREFIX}_red_code value = 27404 }}
+            }}
+        }}
+        else = {{
+            set_variable = {{ name = {PREFIX}_status value = 4 }}
+            set_variable = {{ name = {PREFIX}_red_code value = 27404 }}
+        }}
     }}
 }}
 
@@ -1062,6 +1157,173 @@ def render_effects() -> bytes:
     )
 
 
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated generated appointment-fact string")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced generated appointment-fact block")
+        index += 1
+    raise ValueError("unterminated generated appointment-fact block")
+
+
+def top_level_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level assignments while ignoring comments and strings."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (
+            text[index].isalnum() or text[index] in "_."
+        ):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(
+    aggregate: bytes, source_blocks: tuple[tuple[str, str], ...]
+) -> None:
+    if len(aggregate) != CANONICAL_EFFECT_BYTES:
+        raise ValueError(
+            "Workforce appointment-fact canonical aggregate byte count drifted: "
+            f"{len(aggregate)} != {CANONICAL_EFFECT_BYTES}"
+        )
+    digest = hashlib.sha256(aggregate).hexdigest()
+    if digest != CANONICAL_EFFECT_SHA256:
+        raise ValueError(
+            "Workforce appointment-fact canonical aggregate SHA-256 drifted: "
+            f"{digest} != {CANONICAL_EFFECT_SHA256}"
+        )
+    source_names = tuple(name for name, _block in source_blocks)
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != CANONICAL_EFFECT_COUNT:
+        raise ValueError(
+            "Workforce appointment-fact canonical aggregate must contain exactly "
+            f"{CANONICAL_EFFECT_COUNT} effects, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("Workforce appointment-fact aggregate duplicates an effect")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce appointment-fact shard filenames must be unique")
+    if configured_names != source_names:
+        raise ValueError(
+            "Workforce appointment-fact purpose groups must preserve the exact "
+            f"10-effect aggregate order; missing={sorted(set(source_names) - set(configured_names))}, "
+            f"extra={sorted(set(configured_names) - set(source_names))}"
+        )
+    for group in EFFECT_GROUPS:
+        if not group.effect_names:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+    over_hard = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "Workforce appointment-fact hard-limit exceptions must exactly match "
+            f"shards above {EFFECT_HARD_MAX} effects"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without both a "
+                "reason and CK3 live evidence"
+            )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards with every aggregate effect block byte-identical."""
+
+    aggregate = render_effects()
+    source_blocks = top_level_blocks(aggregate)
+    _validate_effect_groups(aggregate, source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
+
+
+def effect_paths() -> tuple[Path, ...]:
+    return tuple(
+        MOD_ROOT / "common" / "scripted_effects" / group.filename
+        for group in EFFECT_GROUPS
+    )
+
+
 def render_events() -> bytes:
     return generated(
         f"""
@@ -1301,11 +1563,16 @@ py tools/validate_local.py
 
 def outputs() -> dict[Path, bytes]:
     rendered: dict[Path, bytes] = {
-        EFFECTS_PATH: render_effects(),
         EVENTS_PATH: render_events(),
         POSITION_PATH: render_court_position(),
         SPEC_PATH: render_spec(),
     }
+    rendered.update(
+        {
+            MOD_ROOT / "common" / "scripted_effects" / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
     for language in LANGUAGES:
         rendered[
             MOD_ROOT
@@ -1323,11 +1590,22 @@ def validate_contract() -> None:
         raise ValueError("court-position source kind is frozen at 1")
     if len(LANGUAGES) != 9 or len(set(LANGUAGES)) != 9:
         raise ValueError("exactly nine localization structures are required")
-    effects = render_effects().decode("utf-8-sig")
+    aggregate = render_effects()
+    source_blocks = top_level_blocks(aggregate)
+    _validate_effect_groups(aggregate, source_blocks)
+    effects = aggregate.decode("utf-8-sig")
     if effects.count("appoint_court_position = {") != 1:
         raise ValueError("the package must own exactly one native appointment action")
     if effects.count("APPOINTMENT_CONFIRMED = 1") != 1:
         raise ValueError("the native callback finalizer must publish one hard-coded confirmation")
+    seal_name = f"{PREFIX}_seal_and_publish_effect"
+    seal = dict(source_blocks)[seal_name]
+    if seal.count(f"{seal_name} = {{") != 1:
+        raise ValueError("appointment receipt publication must have no recursive self-call")
+    if effects.count(f"{seal_name} = {{") != 5:
+        raise ValueError("appointment receipt publisher must keep four callers plus one definition")
+    if seal.count(f"name = {PREFIX}_seal_continuation_ready value = 1") != 2:
+        raise ValueError("both exact seal entry states must enter the acyclic continuation")
     for alias in (
         "zg361_we_ad_external_position_type_id",
         "zg361_we_ad_external_position_receipt_id",
@@ -1337,15 +1615,36 @@ def validate_contract() -> None:
             raise ValueError(f"request package must not write legacy alias directly: {alias}")
 
 
+def unexpected_effect_paths(
+    rendered: dict[Path, bytes], effects_dir: Path | None = None
+) -> tuple[Path, ...]:
+    effects_dir = effects_dir or MOD_ROOT / "common" / "scripted_effects"
+    expected_names = {group.filename for group in EFFECT_GROUPS}
+    return tuple(
+        sorted(
+            path
+            for path in effects_dir.glob(EFFECT_SHARD_GLOB)
+            if path.name not in expected_names
+        )
+    )
+
+
 def write_outputs(*, check: bool) -> None:
+    rendered = outputs()
     stale: list[str] = []
-    for path, payload in outputs().items():
+    unexpected = unexpected_effect_paths(rendered)
+    for path, payload in rendered.items():
         if check:
             if not path.exists() or path.read_bytes() != payload:
                 stale.append(str(path.relative_to(MOD_ROOT)))
             continue
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+    if check:
+        stale.extend(str(path.relative_to(MOD_ROOT)) for path in unexpected)
+    else:
+        for path in unexpected:
+            path.unlink()
     if stale:
         raise SystemExit("stale generated files:\n" + "\n".join(stale))
 
