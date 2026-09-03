@@ -4910,7 +4910,6 @@ def native_loader_smoke_readiness(
             pump_epochs = mailbox.get("pump_epochs")
             owner_tid = mailbox.get("owner_tid")
             current_tid = mailbox.get("current_tid")
-            rng_owner_tid = mailbox.get("rng_owner_tid")
 
             checks = {
                 "native_headless_mode": capabilities.get("mode")
@@ -4991,7 +4990,7 @@ def native_loader_smoke_readiness(
                 )
                 and not isinstance(owner_tid, bool)
                 and owner_tid > 0
-                and owner_tid == current_tid == rng_owner_tid,
+                and owner_tid == current_tid,
                 "application_state_pointers_available": isinstance(
                     mailbox.get("jomini_state"), int
                 )

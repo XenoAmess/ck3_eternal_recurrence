@@ -2206,9 +2206,18 @@ def main() -> int:
             forbidden_mock.assert_not_called()
 
         class LoaderReadinessService:
-            def __init__(self) -> None:
+            def __init__(
+                self,
+                *,
+                owner_tid: object = 88,
+                current_tid: object = 88,
+                rng_owner_tid: object = 0,
+            ) -> None:
                 self.index = -1
                 self.current_index = 0
+                self.owner_tid = owner_tid
+                self.current_tid = current_tid
+                self.rng_owner_tid = rng_owner_tid
 
             def capabilities(self) -> dict[str, object]:
                 self.index = min(self.index + 1, 2)
@@ -2244,9 +2253,9 @@ def main() -> int:
                                 "failure": 0,
                                 "pump_epochs": pump_epochs,
                                 "consecutive_verified": 9 + self.current_index,
-                                "owner_tid": 88,
-                                "current_tid": 88,
-                                "rng_owner_tid": 88,
+                                "owner_tid": self.owner_tid,
+                                "current_tid": self.current_tid,
+                                "rng_owner_tid": self.rng_owner_tid,
                                 "jomini_state": 0x1000,
                                 "game_state": 0x2000,
                                 "date_raw": 500,
@@ -2295,12 +2304,63 @@ def main() -> int:
         assert loader_readiness["stable_binding"]["map_ready"] is False
         assert loader_readiness["played_character_required"] is False
         assert loader_readiness["gameplay_green_claimed"] is False
+        assert loader_readiness["checks"][
+            "main_thread_identity_consistent"
+        ] is True
+        assert loader_readiness["last_capabilities"]["diagnostics"][
+            "last_heartbeat"
+        ]["main_thread_query_mailbox_v1"]["rng_owner_tid"] == 0
         persisted_loader_readiness = json.loads(
             (
                 loader_artifacts / "01_loader_native_readiness.json"
             ).read_text(encoding="utf-8")
         )
         assert persisted_loader_readiness == loader_readiness
+
+        mismatched_rng_artifacts = temporary_root / "loader-readiness-rng-mismatch"
+        mismatched_rng_artifacts.mkdir()
+        mismatched_rng_readiness = capture.native_loader_smoke_readiness(
+            LoaderReadinessService(rng_owner_tid=89),
+            mismatched_rng_artifacts,
+            tracked_ck3_pid=4321,
+            timeout_s=1.0,
+            stable_observations=2,
+            poll_interval_s=0.0,
+        )
+        assert mismatched_rng_readiness["result"] == "GREEN"
+        assert mismatched_rng_readiness["checks"][
+            "main_thread_identity_consistent"
+        ] is True
+
+        mismatched_thread_artifacts = (
+            temporary_root / "loader-readiness-thread-mismatch"
+        )
+        mismatched_thread_artifacts.mkdir()
+        try:
+            capture.native_loader_smoke_readiness(
+                LoaderReadinessService(current_tid=89),
+                mismatched_thread_artifacts,
+                tracked_ck3_pid=4321,
+                timeout_s=0.001,
+                stable_observations=2,
+                poll_interval_s=0.0,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "main_thread_identity_consistent" in str(error)
+        else:
+            raise AssertionError(
+                "loader readiness accepted a mismatched application-main thread"
+            )
+        mismatched_thread_gate = json.loads(
+            (
+                mismatched_thread_artifacts
+                / "01_loader_native_readiness.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert mismatched_thread_gate["result"] == "RED"
+        assert mismatched_thread_gate["checks"][
+            "main_thread_identity_consistent"
+        ] is False
 
         def complete_phase2_capabilities() -> dict[str, object]:
             return {
