@@ -407,12 +407,28 @@ class AppointmentFactTests(unittest.TestCase):
         )
         self.assertLess(route_index, release_index)
         self.assertLess(release_index, consumed_index)
-        self.assertIn(f"revoke_court_position = {gen.POSITION_KEY}", release)
+        scalar_revoke = f"revoke_court_position = {gen.POSITION_KEY}"
+        self.assertNotIn(scalar_revoke, release)
+        self.assertEqual(release.count("revoke_court_position = {"), 1)
         dispatch_index = release.index("release_command_dispatched value = 1")
-        revoke_index = release.index(f"revoke_court_position = {gen.POSITION_KEY}")
+        save_subject_index = release.index(
+            f"save_scope_as = {gen.RELEASE_SUBJECT_SCOPE}"
+        )
+        employer_scope_index = release.index("$EXPECTED_OWNER$ = {")
+        revoke_index = release.index("revoke_court_position = {")
+        recipient_index = release.index(
+            f"recipient = scope:{gen.RELEASE_SUBJECT_SCOPE}", revoke_index
+        )
+        position_index = release.index(
+            f"court_position = {gen.POSITION_KEY}", revoke_index
+        )
         proof_index = release.index("receipt_position_released_by_package value = 1")
-        self.assertLess(dispatch_index, revoke_index)
-        self.assertLess(revoke_index, proof_index)
+        self.assertLess(dispatch_index, save_subject_index)
+        self.assertLess(save_subject_index, employer_scope_index)
+        self.assertLess(employer_scope_index, revoke_index)
+        self.assertLess(revoke_index, recipient_index)
+        self.assertLess(recipient_index, position_index)
+        self.assertLess(position_index, proof_index)
         self.assertIn("NOT = { has_court_position", consume)
         self.assertIn("receipt_position_release_joined_by_consumer value = 1", consume)
         self.assertIn("receipt_position_released_by_package = 1", consume)

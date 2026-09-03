@@ -81,7 +81,13 @@ zg361_workforce_appointment_fact_release_bounded_position_effect = {
         set_variable = { name = zg361_workforce_appointment_fact_settlement_release_reason value = $RELEASE_REASON$ }
         set_variable = { name = zg361_workforce_appointment_fact_release_command_dispatched value = 1 }
         set_variable = { name = zg361_workforce_appointment_fact_release_command_owner value = $EXPECTED_OWNER$ }
-        revoke_court_position = zg361_workforce_appointment_fact_court_position
+        save_scope_as = zg361_workforce_appointment_fact_release_subject
+        $EXPECTED_OWNER$ = {
+            revoke_court_position = {
+                recipient = scope:zg361_workforce_appointment_fact_release_subject
+                court_position = zg361_workforce_appointment_fact_court_position
+            }
+        }
     }
     if = {
         limit = {

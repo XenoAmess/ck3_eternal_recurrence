@@ -26,6 +26,7 @@ HEADER = "# GENERATED FILE -- edit tools/gen_zg361_workforce_appointment_fact.py
 PREFIX: Final[str] = "zg361_workforce_appointment_fact"
 NAMESPACE: Final[str] = "zg361workforceappointmentfact"
 POSITION_KEY: Final[str] = f"{PREFIX}_court_position"
+RELEASE_SUBJECT_SCOPE: Final[str] = f"{PREFIX}_release_subject"
 POSITION_TYPE_ID: Final[int] = 3_612_741
 SOURCE_KIND_COURT_POSITION: Final[int] = 1
 AUDIT_EVENT_ID: Final[int] = 9001
@@ -43,9 +44,9 @@ RETIRED_MONOLITH_EFFECT_SHA256: Final[str] = (
     "886bfd5ec9e15aa744f8bd39e55f9cb3dbd652f4d5b6c2e0eecfaa8197fecc4c"
 )
 CANONICAL_EFFECT_COUNT: Final[int] = 10
-CANONICAL_EFFECT_BYTES: Final[int] = 54_003
+CANONICAL_EFFECT_BYTES: Final[int] = 54_251
 CANONICAL_EFFECT_SHA256: Final[str] = (
-    "02bdec0e15c3fc47e99ff4c63a30cf73c7d4ed578fc68ed05feec8d34f5adc9a"
+    "7e0dc93c37a896f3e6dba2a749c746ac7438a608818255fce26897f921bebf11"
 )
 EFFECT_TARGET_MAX: Final[int] = 10
 EFFECT_HARD_MAX: Final[int] = 20
@@ -326,7 +327,13 @@ def render_effects() -> bytes:
         set_variable = {{ name = {PREFIX}_settlement_release_reason value = $RELEASE_REASON$ }}
         set_variable = {{ name = {PREFIX}_release_command_dispatched value = 1 }}
         set_variable = {{ name = {PREFIX}_release_command_owner value = $EXPECTED_OWNER$ }}
-        revoke_court_position = {POSITION_KEY}
+        save_scope_as = {RELEASE_SUBJECT_SCOPE}
+        $EXPECTED_OWNER$ = {{
+            revoke_court_position = {{
+                recipient = scope:{RELEASE_SUBJECT_SCOPE}
+                court_position = {POSITION_KEY}
+            }}
+        }}
     }}
     if = {{
         limit = {{
@@ -1596,6 +1603,35 @@ def validate_contract() -> None:
     effects = aggregate.decode("utf-8-sig")
     if effects.count("appoint_court_position = {") != 1:
         raise ValueError("the package must own exactly one native appointment action")
+    scalar_revoke = f"revoke_court_position = {POSITION_KEY}"
+    if scalar_revoke in effects:
+        raise ValueError("native court-position revocation must not use scalar syntax")
+    if effects.count("revoke_court_position = {") != 1:
+        raise ValueError("the package must own exactly one composite native revoke action")
+    release = dict(source_blocks)[f"{PREFIX}_release_bounded_position_effect"]
+    save_subject_index = release.find(f"save_scope_as = {RELEASE_SUBJECT_SCOPE}")
+    employer_scope_index = release.find("$EXPECTED_OWNER$ = {", save_subject_index)
+    revoke_index = release.find("revoke_court_position = {", employer_scope_index)
+    recipient_index = release.find(
+        f"recipient = scope:{RELEASE_SUBJECT_SCOPE}", revoke_index
+    )
+    position_index = release.find(
+        f"court_position = {POSITION_KEY}", recipient_index
+    )
+    release_indexes = (
+        save_subject_index,
+        employer_scope_index,
+        revoke_index,
+        recipient_index,
+        position_index,
+    )
+    if any(index < 0 for index in release_indexes) or release_indexes != tuple(
+        sorted(release_indexes)
+    ):
+        raise ValueError(
+            "bounded release must save the holder, enter the expected employer, "
+            "and issue recipient/position composite revoke in order"
+        )
     if effects.count("APPOINTMENT_CONFIRMED = 1") != 1:
         raise ValueError("the native callback finalizer must publish one hard-coded confirmation")
     seal_name = f"{PREFIX}_seal_and_publish_effect"
