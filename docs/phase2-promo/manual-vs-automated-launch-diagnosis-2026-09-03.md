@@ -54,3 +54,9 @@
 不再重复同一 sandbox 形态的启动。下一次 CK3 串行实验应在真实交互 `xenoa / WinSta0\\Default` 环境中，固定 EXE、source、profile、CWD 和参数，先做无 mod/无 bridge 的 A/B；随后才做带 bridge 的 Phase2 seed。若需要保留完整 Steam/Paradox handoff，则另做 launcher-aware capture，并把 session 参数视为输入证据而不是隐式假设。
 
 在上述 A/B 之前，Phase2 的真实素材计数保持 `0/8`，两条最终视频保持未生成；这不是因为玩家无法启动 CK3，而是因为自动采集链尚未通过其生产级启动门。
+
+## 30 分钟 watchdog 对照（已结束；monolith control）
+
+`formal-phase2-full-exact-1800-20260903` 的 1800 秒观察窗口已经结束。挂载目标是未拆分 monolith（264 files / 15,937,535 bytes），不是 exact A+B；report SHA-256 为 `241254233107098CF5F385F1C4472D94CA3E1C8D93D6CFFF869A8C38C0F7A79A`。它以 `timeout` 结束在 `Total of : 881`，没有 Frontend/history marker，`error.log=0`，CK3 exit `1`，cleanup proven；因此只能作为非拆分 control，不能证明 split 通过。
+
+B7 workforce stub 的 300 秒观察也在 `Total of : 881` 结束，Frontend/history 均未到达，仍为 RED。7200 秒续测已取消。后续采用 [`phase2-incremental-startup-batch-plan-2026-09-03.md`](phase2-incremental-startup-batch-plan-2026-09-03.md)；第 1 批 `core-current` 当前停在源码配套 preflight（旧冻结导出缺命名 projection API，刷新导出与 `run_zhongguo_phase2`/`native_session` 常量不配套），`ck3_launch_attempted=false`，因此尚未启动 CK3。

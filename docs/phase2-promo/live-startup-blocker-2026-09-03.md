@@ -71,3 +71,9 @@ userdir 启动。参数拼接已在第二次尝试中校正为单一 `-userdir=<
 为排除“空 isolated userdir 初始化”因素，将已知有历史运行记录的 `C:\Users\xenoa\Documents\Paradox Interactive\Crusader Kings III` 复制到
 `Z:\ck3_mod_rewrite\_runtime\phase2-seed-20260903\userdir-cloned-history-01`，原目录未改动；随后使用 Steam 库原始 EXE、`-gdpr-compliant` 与 `-nographics` 做无 Mod 裸启动。进程约 1.16 秒后仍以
 `C0000005 @ ck3+0x1DABD89` 退出，崩溃工件位于该隔离目录的 `crashes\ck3_20260903_064242\`。历史配置/缓存副本没有改变故障地址，因此不能把问题归因于空用户目录；在外部桌面或安装状态改变前，不再重复同类 userdir 复制试验。
+
+## 30 分钟完整投影实测（已结束；monolith control）
+
+`formal-phase2-full-exact-1800-20260903` 已结束。实际挂载的是未拆分 monolith（264 files，15,937,535 bytes），并非 exact A+B；report SHA-256 为 `241254233107098CF5F385F1C4472D94CA3E1C8D93D6CFFF869A8C38C0F7A79A`。结果为 `timeout`，最后 marker 为 `Total of : 881`，没有 `Frontend` 或 `End loading of history`，`error.log=0`，CK3 exit `1`，cleanup 已证明。它是非拆分 control，不能作为 split 功能通过证据。
+
+B7 workforce stub 的 300 秒轮次同样停在 `Total of : 881`，Frontend/history 均为 false，仍记为 RED。7200 秒续测已取消，不会创建对应 run。后续按 [`phase2-incremental-startup-batch-plan-2026-09-03.md`](phase2-incremental-startup-batch-plan-2026-09-03.md) 执行；当前第 1 批 `core-current` 只完成离线 preflight，因源码配套问题（旧冻结导出缺命名 projection API；刷新导出与 `run_zhongguo_phase2`/`native_session` 常量不配套）未启动 CK3，`ck3_launch_attempted=false`。
