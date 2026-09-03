@@ -18,6 +18,24 @@ gate or RED action raises `Phase2ChoreographyBlocked` and never creates a clean
 gate for that span.  This module does not register a producer or start/stop a
 recorder.
 
+For a quick, read-only handoff view of both editorial cuts, run
+`zhongguo_phase2_promo_delivery_queue.py` with the two generated runbooks:
+
+```powershell
+py tools/zhongguo_phase2_promo_delivery_queue.py `
+  --character-runbook <CHARACTER_RUNBOOK> `
+  --institution-runbook <INSTITUTION_RUNBOOK> `
+  --capture-root <GREEN_OR_PENDING_CAPTURE_ROOT> `
+  --output <QUEUE_REPORT_JSON> `
+  --text
+```
+
+The report lists each canonical span's producer/handler/query/postcondition,
+the first missing dependency for each independent cut, and a relative time
+range after the dependency is satisfied.  A missing or fixture-only capture
+stays `RED / BLOCKED`; this command never starts CK3, TTS, FFmpeg, or a media
+export, and it never upgrades a fixture into promotional footage.
+
 The pre-record seed proof is schema v2.  It queries
 `query-loaded-feature-manifest-v1` on the same paused snapshot and binds its
 snapshot ID, public/native revisions and date before checking every span's
