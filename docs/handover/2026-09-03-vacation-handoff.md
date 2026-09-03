@@ -2,7 +2,7 @@
 
 **原交接时间：** 2026-09-03 20:45（Asia/Shanghai）
 
-**接班执行更新：** 2026-09-04 01:39（Asia/Shanghai）
+**接班执行更新：** 2026-09-04 01:46（Asia/Shanghai）
 
 **工作树：** `Z:\ck3_mod_rewrite\_root-promo-split-20260902`
 
@@ -167,8 +167,8 @@ production loop 均未晋级。
   `89808bb5799d651847b14460e38c4369e94209f7` 已推送，分支与远端同步。
 - [x] B2 正式用途分片提交 `e1297f83738fd61d53812406b26e23637201d2c5` 已推送；25 片均为 `1–9` effect，当前没有超限例外。
 - [x] Workforce effect 的 76 片实现与静态证据已由 `76fbf436a023f7d022f3eab6581e43fc632be3d0` 提交并推送；当前没有新 CK3 live。
-- [x] Workforce event 已实现 35 个用途片，149/149 unique、每片 1–7，B2 19 events=7 片精确并集；静态/release 矩阵 GREEN。
-  实现提交与 CK3 live 尚待完成。
+- [x] Workforce event 已实现 35 个用途片，149/149 unique、每片 1–7，B2 19 events=7 片精确并集；静态/release 矩阵 GREEN；
+  提交 `0865589cb7ef37160e50247f0fdeb1f27a03fe54` 已推送。CK3 live 尚待完成。
 - [ ] 下一位接班人重新开始前，先确认工作区 dirty/untracked 清单，不要覆盖或清理上述 disposable artifact。
 
 这就是当前可以安全交出的边界：正式 B1 startup/full-entry checkpoint 已 GREEN，失败与修复证据齐全、现场已收尾；但 delayed-path、seed、native/production loop、8/8 素材与两部最终宣传视频仍未完成。
