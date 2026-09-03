@@ -31,6 +31,8 @@ from .runtime import (
     NATIVE_BRIDGE_PIPE_ENV,
     launch,
     native_bridge_launch_config_from_environment,
+    _process_identity,
+    _same_executable,
     stop_tracked,
     utc_now,
     validate_native_bridge_launch_config,
@@ -53,6 +55,12 @@ NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 # generic native-session and all existing callers keep their original
 # ``-continuelastsave``/checkpoint behavior when this is unset.
 NATIVE_SESSION_FRONTEND_MARKER = "Setting idler 'Frontend'"
+NATIVE_SESSION_FRONTEND_HISTORY_MARKER = "End loading of history"
+NATIVE_SESSION_FRONTEND_GUI_MARKER = (
+    'Loading of "gui/frontend_main.gui" is complete'
+)
+NATIVE_SESSION_FRONTEND_WINDOW_TITLE = "Crusader Kings III"
+NATIVE_SESSION_FRONTEND_WM_NULL_TIMEOUT_MILLISECONDS = 100
 NATIVE_SESSION_FRONTEND_FIRST_EVIDENCE_FILENAME = "frontend-first-warmup.json"
 NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS = 180.0
 _BRIDGE_ENVIRONMENT_KEYS = (
@@ -174,6 +182,269 @@ def _minimize_process_windows(
         time.sleep(min(poll_interval_seconds, deadline - now))
 
 
+def _frontend_log_signals(payload: bytes | str) -> dict[str, bool]:
+    """Extract the append-only signals used by the frontend-first warm-up.
+
+    The idler line is the historical success marker.  Some no-bridge starts
+    reach the menu without emitting that line, however, so the fallback uses
+    two independent log milestones and then authenticates the live window.
+    Keeping this parser pure makes the fallback easy to test without a game
+    process and avoids treating a partial/malformed log as ready.
+    """
+
+    if isinstance(payload, bytes):
+        text = payload.decode("utf-8", errors="replace")
+    else:
+        text = str(payload)
+    idler_seen = NATIVE_SESSION_FRONTEND_MARKER in text
+    history_end_seen = NATIVE_SESSION_FRONTEND_HISTORY_MARKER in text
+    frontend_gui_complete = NATIVE_SESSION_FRONTEND_GUI_MARKER in text
+    return {
+        "idler_marker": idler_seen,
+        "history_end": history_end_seen,
+        "frontend_gui_complete": frontend_gui_complete,
+        "fallback_ready": history_end_seen and frontend_gui_complete,
+    }
+
+
+def _probe_frontend_window_responsiveness(
+    hwnd: int,
+    *,
+    timeout_milliseconds: int = NATIVE_SESSION_FRONTEND_WM_NULL_TIMEOUT_MILLISECONDS,
+) -> tuple[bool, int, bool]:
+    """Read-only ``WM_NULL`` responsiveness probe for one exact HWND.
+
+    This intentionally duplicates the tiny Win32 probe instead of importing
+    the visual driver.  A native session must stay independent of screenshots,
+    OCR and input modules; ``WM_NULL`` only asks whether the target window's
+    message loop is servicing a no-op message.
+    """
+
+    import ctypes
+    from ctypes import wintypes
+
+    if (
+        isinstance(timeout_milliseconds, bool)
+        or not isinstance(timeout_milliseconds, int)
+        or timeout_milliseconds <= 0
+    ):
+        raise AgentError("frontend window probe timeout must be positive")
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    send_message_timeout = user32.SendMessageTimeoutW
+    send_message_timeout.argtypes = (
+        wintypes.HWND,
+        wintypes.UINT,
+        wintypes.WPARAM,
+        wintypes.LPARAM,
+        wintypes.UINT,
+        wintypes.UINT,
+        ctypes.POINTER(ctypes.c_size_t),
+    )
+    send_message_timeout.restype = ctypes.c_ssize_t
+    is_hung_app_window = user32.IsHungAppWindow
+    is_hung_app_window.argtypes = (wintypes.HWND,)
+    is_hung_app_window.restype = wintypes.BOOL
+    result = ctypes.c_size_t()
+    # WM_NULL = 0; SMTO_BLOCK | SMTO_ABORTIFHUNG | SMTO_ERRORONEXIT = 35.
+    ctypes.set_last_error(0)
+    responded = bool(
+        send_message_timeout(
+            hwnd,
+            0,
+            0,
+            0,
+            35,
+            timeout_milliseconds,
+            ctypes.byref(result),
+        )
+    )
+    last_error = int(ctypes.get_last_error())
+    hung = bool(is_hung_app_window(hwnd))
+    return responded, last_error, hung
+
+
+def _authenticated_frontend_window(
+    handle: object, spec: EnvironmentSpec
+) -> dict[str, object]:
+    """Return authenticated, responsive CK3 frontend-window evidence.
+
+    Every check is read-only.  The process identity is tied to the exact
+    ``SessionHandle`` creation timestamp and executable, then the HWND is
+    rechecked for visibility, ownership and the canonical CK3 title before a
+    ``WM_NULL`` probe.  Transient startup races return ``ready=False`` so the
+    caller can keep polling rather than accepting an unrelated window.
+    """
+
+    process = getattr(handle, "process", None)
+    raw_pid = getattr(process, "pid", None)
+    try:
+        pid = int(raw_pid)
+    except (TypeError, ValueError):
+        return {"ready": False, "reason": "missing_process_pid"}
+    if pid <= 0:
+        return {"ready": False, "reason": "invalid_process_pid", "pid": pid}
+
+    poll = getattr(process, "poll", None)
+    if callable(poll):
+        try:
+            exit_code = poll()
+        except Exception as error:
+            return {
+                "ready": False,
+                "pid": pid,
+                "reason": "process_poll_failed",
+                "error": f"{type(error).__name__}: {error}",
+            }
+        if exit_code is not None:
+            return {
+                "ready": False,
+                "pid": pid,
+                "reason": "process_exited",
+                "process_exit_code": exit_code,
+            }
+
+    expected_executable = Path(spec.game_exe).resolve()
+    expected_creation = getattr(handle, "ck3_creation_date", None)
+    if not isinstance(expected_creation, str) or not expected_creation:
+        return {
+            "ready": False,
+            "pid": pid,
+            "reason": "missing_handle_creation_date",
+        }
+    try:
+        identity = _process_identity(pid)
+    except Exception as error:
+        return {
+            "ready": False,
+            "pid": pid,
+            "reason": "process_identity_unavailable",
+            "error": f"{type(error).__name__}: {error}",
+        }
+    if identity is None:
+        return {
+            "ready": False,
+            "pid": pid,
+            "reason": "process_identity_missing",
+        }
+
+    identity_pid = identity.get("pid")
+    identity_parent_pid = identity.get("parent_pid")
+    identity_name = str(identity.get("name") or "")
+    identity_executable = str(identity.get("executable") or "")
+    identity_creation = identity.get("creation_date")
+    identity_ok = (
+        identity_pid == pid
+        and identity_parent_pid == os.getpid()
+        and identity_name.casefold() == "ck3.exe"
+        and bool(identity_executable)
+        and _same_executable(identity_executable, expected_executable)
+        and identity_creation == expected_creation
+    )
+    evidence: dict[str, object] = {
+        "ready": False,
+        "pid": pid,
+        "expected_executable": str(expected_executable),
+        "expected_creation_date": expected_creation,
+        "identity": identity,
+        "identity_authenticated": identity_ok,
+    }
+    if not identity_ok:
+        evidence["reason"] = "process_identity_mismatch"
+        return evidence
+
+    image_path = getattr(process, "image_path", None)
+    if not callable(image_path):
+        evidence["reason"] = "process_handle_image_unavailable"
+        return evidence
+    try:
+        handle_executable = Path(image_path()).resolve()
+    except Exception as error:
+        evidence["reason"] = "process_handle_image_unavailable"
+        evidence["error"] = f"{type(error).__name__}: {error}"
+        return evidence
+    if not _same_executable(handle_executable, expected_executable):
+        evidence["reason"] = "process_handle_image_mismatch"
+        evidence["handle_executable"] = str(handle_executable)
+        return evidence
+    evidence["handle_executable"] = str(handle_executable)
+
+    try:
+        import win32gui
+        import win32process
+
+        windows = _visible_process_windows(pid)
+    except Exception as error:
+        evidence["reason"] = "window_enumeration_unavailable"
+        evidence["error"] = f"{type(error).__name__}: {error}"
+        return evidence
+
+    expected_title = " ".join(NATIVE_SESSION_FRONTEND_WINDOW_TITLE.split())
+    candidates: list[dict[str, object]] = []
+    for raw_hwnd in windows:
+        try:
+            hwnd = int(raw_hwnd)
+            if not win32gui.IsWindow(hwnd) or not win32gui.IsWindowVisible(hwnd):
+                continue
+            _thread_id, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+            if int(window_pid) != pid:
+                continue
+            title = str(win32gui.GetWindowText(hwnd) or "")
+            normalized_title = " ".join(title.split())
+            if normalized_title != expected_title:
+                continue
+            try:
+                responded, last_error, hung = _probe_frontend_window_responsiveness(
+                    hwnd
+                )
+            except Exception as error:
+                candidate = {
+                    "hwnd": hwnd,
+                    "pid": pid,
+                    "title": title,
+                    "wm_null_responded": False,
+                    "is_hung_app_window": None,
+                    "reason": "responsiveness_probe_unavailable",
+                    "error": f"{type(error).__name__}: {error}",
+                }
+                candidates.append(candidate)
+                continue
+            candidate = {
+                "hwnd": hwnd,
+                "pid": pid,
+                "title": title,
+                "wm_null_responded": responded,
+                "wm_null_last_error": last_error,
+                "is_hung_app_window": hung,
+                "responsive": responded and not hung,
+            }
+            candidates.append(candidate)
+            if responded and not hung:
+                evidence.update(
+                    {
+                        "ready": True,
+                        "reason": "authenticated_responsive_frontend",
+                        "window": candidate,
+                    }
+                )
+                return evidence
+        except Exception as error:
+            candidates.append(
+                {
+                    "hwnd": raw_hwnd,
+                    "pid": pid,
+                    "reason": "window_identity_check_failed",
+                    "error": f"{type(error).__name__}: {error}",
+                }
+            )
+    evidence["reason"] = (
+        "frontend_window_not_found"
+        if not candidates
+        else "frontend_window_not_responsive"
+    )
+    evidence["windows"] = candidates
+    return evidence
+
+
 def _validate_frontend_first_load_save_name(value: object) -> str:
     """Validate the save basename used by the opt-in frontend-first path.
 
@@ -290,38 +561,68 @@ def _wait_for_frontend_marker(
     poll_interval_seconds: float,
     stop_event: threading.Event | None,
 ) -> dict[str, object]:
-    """Wait for CK3's first clean ``Frontend`` idler marker.
+    """Wait for CK3's first clean frontend evidence.
 
     ``launch`` clears the isolated ``debug.log`` before creating CK3, so a
-    marker observed here belongs to this warm-up process.  The helper only
-    reads the append-only log and process state; it never inspects the desktop
-    or sends input.
+    marker observed here belongs to this warm-up process.  The historical
+    ``Setting idler 'Frontend'`` marker remains the fast path.  On no-bridge
+    starts that reach the menu without that line, the fallback requires both
+    the history and frontend-GUI completion lines plus an authenticated,
+    responsive CK3 window.  The helper never sends gameplay input.
     """
 
     started = time.monotonic()
     deadline = started + timeout_seconds
-    marker_bytes = NATIVE_SESSION_FRONTEND_MARKER.encode("ascii")
     log_path = (spec.profile_dir / "logs" / "debug.log").resolve()
     polls = 0
     last_log_size = 0
     last_read_error: str | None = None
+    last_signals: dict[str, bool] = {
+        "idler_marker": False,
+        "history_end": False,
+        "frontend_gui_complete": False,
+        "fallback_ready": False,
+    }
+    last_window_evidence: dict[str, object] | None = None
     while True:
         polls += 1
         try:
             payload = log_path.read_bytes()
             last_log_size = len(payload)
             last_read_error = None
-            if marker_bytes in payload:
+            last_signals = _frontend_log_signals(payload)
+            if last_signals["idler_marker"]:
                 elapsed = round(max(0.0, time.monotonic() - started), 3)
                 return {
                     "marker": NATIVE_SESSION_FRONTEND_MARKER,
+                    "mode": "idler-marker",
                     "path": str(log_path),
                     "seen": True,
                     "polls": polls,
                     "log_bytes": last_log_size,
                     "elapsed_seconds": elapsed,
                     "observed_at": utc_now(),
+                    "signals": last_signals,
                 }
+            if last_signals["fallback_ready"]:
+                last_window_evidence = _authenticated_frontend_window(
+                    handle, spec
+                )
+                if last_window_evidence.get("ready") is True:
+                    elapsed = round(max(0.0, time.monotonic() - started), 3)
+                    return {
+                        "marker": NATIVE_SESSION_FRONTEND_MARKER,
+                        "mode": "log-and-authenticated-window",
+                        "fallback": True,
+                        "path": str(log_path),
+                        "seen": True,
+                        "polls": polls,
+                        "log_bytes": last_log_size,
+                        "elapsed_seconds": elapsed,
+                        "observed_at": utc_now(),
+                        "signals": last_signals,
+                        "window": last_window_evidence,
+                    }
         except FileNotFoundError:
             # CK3 may create the log a little after resume.  Keep polling
             # within the explicit warm-up bound instead of treating that
@@ -343,17 +644,19 @@ def _wait_for_frontend_marker(
                 "log_bytes": last_log_size,
                 "process_exit_code": process_exit_code,
                 "last_read_error": last_read_error,
+                "signals": last_signals,
+                "window": last_window_evidence,
                 "elapsed_seconds": round(
                     max(0.0, time.monotonic() - started), 3
                 ),
             }
             raise AgentError(
-                "frontend-first warm-up CK3 exited before the Frontend marker: "
+                "frontend-first warm-up CK3 exited before frontend evidence: "
                 f"{detail}"
             )
         if stop_event is not None and stop_event.is_set():
             raise AgentError(
-                "frontend-first warm-up cancelled before the Frontend marker"
+                "frontend-first warm-up cancelled before frontend evidence"
             )
         now = time.monotonic()
         if now >= deadline:
@@ -364,10 +667,12 @@ def _wait_for_frontend_marker(
                 "polls": polls,
                 "log_bytes": last_log_size,
                 "last_read_error": last_read_error,
+                "signals": last_signals,
+                "window": last_window_evidence,
                 "elapsed_seconds": round(max(0.0, now - started), 3),
             }
             raise AgentError(
-                "frontend-first warm-up timed out before the Frontend marker: "
+                "frontend-first warm-up timed out before frontend evidence: "
                 f"{detail}"
             )
         time.sleep(min(poll_interval_seconds, max(0.0, deadline - now)))

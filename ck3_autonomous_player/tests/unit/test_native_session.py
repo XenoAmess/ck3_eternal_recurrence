@@ -23,6 +23,8 @@ from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.native_session import (  # noqa: E402
     NATIVE_SESSION_FRONTEND_MARKER,
     NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
+    _frontend_log_signals,
+    _wait_for_frontend_marker,
     _native_session_locked,
     native_session,
     validate_episode_seed_for_state,
@@ -158,10 +160,110 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.spec = SimpleNamespace(
             state_dir=root,
             profile_dir=root / "profile",
+            game_exe=root / "ck3.exe",
         )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_frontend_log_signals_accept_bytes_and_require_both_fallback_lines(
+        self,
+    ) -> None:
+        history_only = (
+            "End loading of history\n"
+            "still compiling interface\n"
+        ).encode("utf-8")
+        signals = _frontend_log_signals(history_only)
+        self.assertFalse(signals["idler_marker"])
+        self.assertTrue(signals["history_end"])
+        self.assertFalse(signals["frontend_gui_complete"])
+        self.assertFalse(signals["fallback_ready"])
+
+        complete = (
+            history_only.decode("utf-8")
+            + 'Loading of "gui/frontend_main.gui" is complete\n'
+        )
+        signals = _frontend_log_signals(complete)
+        self.assertTrue(signals["fallback_ready"])
+
+        fast_path = _frontend_log_signals(
+            f"{NATIVE_SESSION_FRONTEND_MARKER} with NO init options\n"
+        )
+        self.assertTrue(fast_path["idler_marker"])
+        self.assertTrue(fast_path["fallback_ready"] is False)
+
+    def test_frontend_wait_fallback_authenticates_window_after_log_milestones(
+        self,
+    ) -> None:
+        log_path = self.spec.profile_dir / "logs" / "debug.log"
+        log_path.parent.mkdir(parents=True)
+        log_path.write_text(
+            "End loading of history\n"
+            'Loading of "gui/frontend_main.gui" is complete\n',
+            encoding="utf-8",
+        )
+        process = mock.Mock()
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        window = {
+            "ready": True,
+            "reason": "authenticated_responsive_frontend",
+            "pid": 4242,
+            "handle_executable": str(self.spec.game_exe),
+        }
+        with mock.patch(
+            "xar_autoplayer.native_session._authenticated_frontend_window",
+            return_value=window,
+        ) as authenticate:
+            evidence = _wait_for_frontend_marker(
+                handle,
+                SimpleNamespace(
+                    profile_dir=self.spec.profile_dir,
+                    game_exe=self.spec.game_exe,
+                ),
+                timeout_seconds=1.0,
+                poll_interval_seconds=0.001,
+                stop_event=None,
+            )
+
+        authenticate.assert_called_once_with(
+            handle,
+            mock.ANY,
+        )
+        self.assertTrue(evidence["seen"])
+        self.assertTrue(evidence["fallback"])
+        self.assertEqual(evidence["mode"], "log-and-authenticated-window")
+        self.assertEqual(evidence["window"], window)
+
+    def test_frontend_wait_does_not_accept_fallback_without_authenticated_window(
+        self,
+    ) -> None:
+        log_path = self.spec.profile_dir / "logs" / "debug.log"
+        log_path.parent.mkdir(parents=True)
+        log_path.write_text(
+            "End loading of history\n"
+            'Loading of "gui/frontend_main.gui" is complete\n',
+            encoding="utf-8",
+        )
+        process = mock.Mock()
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        with mock.patch(
+            "xar_autoplayer.native_session._authenticated_frontend_window",
+            return_value={"ready": False, "reason": "frontend_window_not_found"},
+        ), self.assertRaisesRegex(
+            AgentError, "timed out before frontend evidence"
+        ):
+            _wait_for_frontend_marker(
+                handle,
+                SimpleNamespace(
+                    profile_dir=self.spec.profile_dir,
+                    game_exe=self.spec.game_exe,
+                ),
+                timeout_seconds=0.005,
+                poll_interval_seconds=0.001,
+                stop_event=None,
+            )
 
     def test_episode_seed_preflight_binds_metadata_to_exact_bytes(self) -> None:
         payload = b"immutable next episode seed"
