@@ -75,6 +75,15 @@ SHA-256 为 `F19609136D13574411AA3993A65A8B2600EBB4707E908C53CD729638F1870C37`�
 该运行的 6,960 条 `error.log` 记录均为 unused-variable 诊断，没有 unknown effect、
 parser 或 missing-loc 错误；它们不应被误报为导致停滞的解析故障。
 
+右半 blocks `162–323` 的同条件独占运行也已完成：
+`_runtime/formal-phase2-workforce-right-full-20260903/report.json`，报告
+SHA-256 `B6ACC4AC0671FCF3F7514F10C444311A4BFA6618A98059C79EB674D4742E89AA`。
+该投影（264 files / 14,282,642 bytes）取得 `result=frontend`、完整 history
+标记、退出码 0 和 `cleanup_proven=true`，启动总时长 59.540873 秒；6,928 条
+诊断同样全部是 unused-variable。左右半单独均可启动，而两半合并的完整 workforce
+投影仍在 `Total881` 后停滞，故下一步定位目标改为左右半之间的组合/跨文件交互，而非
+某一侧单独的 block。
+
 ## 依赖解除后的时间估计
 
 这是条件 ETA，不是承诺的日历时间：
