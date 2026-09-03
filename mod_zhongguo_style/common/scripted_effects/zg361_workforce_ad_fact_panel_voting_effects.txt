@@ -1,0 +1,314 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_ad_fact_runtime.py
+# readiness: ck3-script-core-wired-static-ready-not-live
+
+# PURPOSE: dispatch, record, resolve, and finalize the three interview votes.
+
+zg361_wad_dispatch_next_vote_effect = {
+	if = {
+		limit = { var:zg361_wad_panel_active = 1 var:zg361_wad_panel_source_subject = this }
+		save_scope_as = zg361_wad_panel_subject_scope
+		if = {
+			limit = { var:zg361_wad_panel_vote_count = 0 }
+			var:zg361_wad_panel_source_interviewer_1 = {
+				save_scope_as = zg361_wad_panel_actor_scope
+				if = { limit = { is_ai = no } trigger_event = { id = zg361wad.11 } }
+				else = { zg361_wad_resolve_ai_panel_vote_1_effect = yes }
+			}
+		}
+		else_if = {
+			limit = { var:zg361_wad_panel_vote_count = 1 }
+			var:zg361_wad_panel_source_interviewer_2 = {
+				save_scope_as = zg361_wad_panel_actor_scope
+				if = { limit = { is_ai = no } trigger_event = { id = zg361wad.12 } }
+				else = { zg361_wad_resolve_ai_panel_vote_2_effect = yes }
+			}
+		}
+		else_if = {
+			limit = { var:zg361_wad_panel_vote_count = 2 }
+			var:zg361_wad_panel_source_interviewer_3 = {
+				save_scope_as = zg361_wad_panel_actor_scope
+				if = { limit = { is_ai = no } trigger_event = { id = zg361wad.13 } }
+				else = { zg361_wad_resolve_ai_panel_vote_3_effect = yes }
+			}
+		}
+	}
+}
+
+zg361_wad_submit_panel_vote_1_effect = {
+	remove_variable = zg361_wad_runtime_status
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+			$VOTER$ = { zg361_is_celestial_liege_trigger = yes }
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_source_owner = $TICKET_OWNER$
+			var:zg361_wad_panel_source_subject = this
+			var:zg361_wad_panel_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_panel_source_case = $TICKET_CASE$
+			var:zg361_wad_panel_vote_count = 0
+			var:zg361_wad_panel_source_interviewer_1 = $VOTER$
+			NOT = { has_variable = zg361_wad_panel_source_vote_1 }
+			NOT = { has_variable = zg361_wad_panel_source_vote_evidence_1 }
+			$VOTE$ >= 1
+			$VOTE$ <= 3
+		}
+		$TICKET_OWNER$ = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_vote_receipt_1_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_panel_source_vote_1 value = $VOTE$ }
+		set_variable = { name = zg361_wad_panel_source_vote_evidence_1 value = scope:zg361_wad_vote_receipt_1_value }
+		set_variable = { name = zg361_wad_panel_vote_receipt_actor_1 value = $VOTER$ }
+		change_variable = { name = zg361_wad_panel_vote_count add = 1 }
+		set_variable = { name = zg361_wad_runtime_status value = 1 }
+		zg361_wad_dispatch_next_vote_effect = yes
+	}
+}
+
+zg361_wad_submit_panel_vote_2_effect = {
+	remove_variable = zg361_wad_runtime_status
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+			$VOTER$ = { zg361_is_celestial_liege_trigger = yes }
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_source_owner = $TICKET_OWNER$
+			var:zg361_wad_panel_source_subject = this
+			var:zg361_wad_panel_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_panel_source_case = $TICKET_CASE$
+			var:zg361_wad_panel_vote_count = 1
+			var:zg361_wad_panel_source_interviewer_2 = $VOTER$
+			NOT = { has_variable = zg361_wad_panel_source_vote_2 }
+			NOT = { has_variable = zg361_wad_panel_source_vote_evidence_2 }
+			$VOTE$ >= 1
+			$VOTE$ <= 3
+		}
+		$TICKET_OWNER$ = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_vote_receipt_2_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_panel_source_vote_2 value = $VOTE$ }
+		set_variable = { name = zg361_wad_panel_source_vote_evidence_2 value = scope:zg361_wad_vote_receipt_2_value }
+		set_variable = { name = zg361_wad_panel_vote_receipt_actor_2 value = $VOTER$ }
+		change_variable = { name = zg361_wad_panel_vote_count add = 1 }
+		set_variable = { name = zg361_wad_runtime_status value = 1 }
+		zg361_wad_dispatch_next_vote_effect = yes
+	}
+}
+
+zg361_wad_submit_panel_vote_3_effect = {
+	remove_variable = zg361_wad_runtime_status
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 1
+			}
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }
+			$VOTER$ = { zg361_is_celestial_liege_trigger = yes }
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_source_owner = $TICKET_OWNER$
+			var:zg361_wad_panel_source_subject = this
+			var:zg361_wad_panel_source_cycle = $TICKET_CYCLE$
+			var:zg361_wad_panel_source_case = $TICKET_CASE$
+			var:zg361_wad_panel_vote_count = 2
+			var:zg361_wad_panel_source_interviewer_3 = $VOTER$
+			NOT = { has_variable = zg361_wad_panel_source_vote_3 }
+			NOT = { has_variable = zg361_wad_panel_source_vote_evidence_3 }
+			$VOTE$ >= 1
+			$VOTE$ <= 3
+		}
+		$TICKET_OWNER$ = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_vote_receipt_3_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_panel_source_vote_3 value = $VOTE$ }
+		set_variable = { name = zg361_wad_panel_source_vote_evidence_3 value = scope:zg361_wad_vote_receipt_3_value }
+		set_variable = { name = zg361_wad_panel_vote_receipt_actor_3 value = $VOTER$ }
+		change_variable = { name = zg361_wad_panel_vote_count add = 1 }
+		set_variable = { name = zg361_wad_runtime_status value = 1 }
+		zg361_wad_finalize_panel_source_effect = yes
+	}
+}
+
+zg361_wad_resolve_ai_panel_vote_1_effect = {
+	if = {
+		limit = {
+			is_ai = yes
+			zg361_is_celestial_liege_trigger = yes
+			exists = scope:zg361_wad_panel_subject_scope
+			this = scope:zg361_wad_panel_actor_scope
+		}
+		save_temporary_scope_as = zg361_wad_panel_ai_actor_scope
+		if = {
+			limit = { stewardship >= 12 }
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_1_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 3
+				}
+			}
+		}
+		else_if = {
+			limit = { stewardship >= 8 }
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_1_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 2
+				}
+			}
+		}
+		else = {
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_1_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 1
+				}
+			}
+		}
+	}
+}
+
+zg361_wad_resolve_ai_panel_vote_2_effect = {
+	if = {
+		limit = {
+			is_ai = yes
+			zg361_is_celestial_liege_trigger = yes
+			exists = scope:zg361_wad_panel_subject_scope
+			this = scope:zg361_wad_panel_actor_scope
+		}
+		save_temporary_scope_as = zg361_wad_panel_ai_actor_scope
+		if = {
+			limit = { stewardship >= 12 }
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_2_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 3
+				}
+			}
+		}
+		else_if = {
+			limit = { stewardship >= 8 }
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_2_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 2
+				}
+			}
+		}
+		else = {
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_2_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 1
+				}
+			}
+		}
+	}
+}
+
+zg361_wad_resolve_ai_panel_vote_3_effect = {
+	if = {
+		limit = {
+			is_ai = yes
+			zg361_is_celestial_liege_trigger = yes
+			exists = scope:zg361_wad_panel_subject_scope
+			this = scope:zg361_wad_panel_actor_scope
+		}
+		save_temporary_scope_as = zg361_wad_panel_ai_actor_scope
+		if = {
+			limit = { stewardship >= 12 }
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_3_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 3
+				}
+			}
+		}
+		else_if = {
+			limit = { stewardship >= 8 }
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_3_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 2
+				}
+			}
+		}
+		else = {
+			scope:zg361_wad_panel_subject_scope = {
+				zg361_wad_submit_panel_vote_3_effect = {
+					TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+					VOTER = scope:zg361_wad_panel_ai_actor_scope VOTE = 1
+				}
+			}
+		}
+	}
+}
+
+zg361_wad_finalize_panel_source_effect = {
+	if = {
+		limit = {
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_vote_count = 3
+			has_variable = zg361_wad_panel_source_vote_1
+			has_variable = zg361_wad_panel_source_vote_2
+			has_variable = zg361_wad_panel_source_vote_3
+			has_variable = zg361_wad_panel_source_vote_evidence_1
+			has_variable = zg361_wad_panel_source_vote_evidence_2
+			has_variable = zg361_wad_panel_source_vote_evidence_3
+			var:zg361_wad_panel_vote_receipt_actor_1 = var:zg361_wad_panel_source_interviewer_1
+			var:zg361_wad_panel_vote_receipt_actor_2 = var:zg361_wad_panel_source_interviewer_2
+			var:zg361_wad_panel_vote_receipt_actor_3 = var:zg361_wad_panel_source_interviewer_3
+			NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_2 }
+			NOT = { var:zg361_wad_panel_source_vote_evidence_1 = var:zg361_wad_panel_source_vote_evidence_3 }
+			NOT = { var:zg361_wad_panel_source_vote_evidence_2 = var:zg361_wad_panel_source_vote_evidence_3 }
+		}
+		set_variable = { name = zg361_wad_panel_source_consumed value = 0 }
+		set_variable = { name = zg361_wad_panel_source_disposition value = 1 }
+		set_variable = { name = zg361_wad_panel_active value = 0 }
+		var:zg361_wad_panel_source_owner = {
+			if = { limit = { NOT = { has_variable = zg361_wad_receipt_serial } } set_variable = { name = zg361_wad_receipt_serial value = 0 } }
+			change_variable = { name = zg361_wad_receipt_serial add = 1 }
+			save_scope_value_as = { name = zg361_wad_panel_source_id_value value = var:zg361_wad_receipt_serial }
+		}
+		set_variable = { name = zg361_wad_panel_source_id value = scope:zg361_wad_panel_source_id_value }
+		set_variable = { name = zg361_wad_panel_source_hash value = { value = var:zg361_wad_panel_source_id multiply = 1000000 add = { value = var:zg361_wad_panel_source_cycle multiply = 10000 } add = { value = var:zg361_wad_panel_source_case multiply = 10 } add = var:zg361_wad_panel_source_disposition } }
+		set_variable = { name = zg361_wad_panel_source_pending value = 1 } # source commit last
+		zg361_we_resume_m267_from_panel_source_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+		}
+	}
+}

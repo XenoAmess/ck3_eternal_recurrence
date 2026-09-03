@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -15,8 +18,11 @@ import gen_361_workforce_ad_fact_runtime as gen
 
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_ad_fact_runtime_effects.txt"
-EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_ad_fact_runtime_events.txt"
+EFFECT_PATHS = tuple(
+    MOD_ROOT / "common" / "scripted_effects" / group.filename
+    for group in gen.EFFECT_GROUPS
+)
+EVENTS_PATH = gen.EVENTS_PATH
 SPEC_PATH = MOD_ROOT / "docs" / "361-workforce-ad-fact-runtime-spec.md"
 
 EXPECTED_LEGACY = {
@@ -64,7 +70,7 @@ def block(text: str, name: str) -> str:
 class WorkforceAdFactRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effects = "\n".join(read(path) for path in EFFECT_PATHS)
         cls.events = read(EVENTS_PATH)
         cls.spec = read(SPEC_PATH) if SPEC_PATH.is_file() else ""
 
@@ -76,8 +82,11 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
 
     def test_generator_owns_only_new_projection_files(self) -> None:
         rendered = gen.outputs()
-        self.assertEqual(11, len(rendered))
-        self.assertEqual({EFFECTS_PATH, EVENTS_PATH}, {path for path in rendered if path.suffix == ".txt"})
+        self.assertEqual(14, len(rendered))
+        self.assertEqual(
+            {*EFFECT_PATHS, EVENTS_PATH},
+            {path for path in rendered if path.suffix == ".txt"},
+        )
         for path, payload in rendered.items():
             self.assertTrue(path.name.startswith("zg361_workforce_ad_fact_"))
             self.assertTrue(payload.startswith(gen.BOM))
@@ -86,6 +95,90 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
             MOD_ROOT / "tools" / "gen_361_workforce_endgame_runtime.py",
             rendered,
         )
+
+    def test_effect_purpose_shards_preserve_the_frozen_aggregate(self) -> None:
+        aggregate = gen.render_effects()
+        self.assertEqual(gen.HISTORICAL_EFFECT_BYTES, len(aggregate))
+        self.assertEqual(
+            gen.HISTORICAL_EFFECT_SHA256,
+            hashlib.sha256(aggregate).hexdigest(),
+        )
+        historical_blocks = gen.top_level_blocks(aggregate)
+        emitted_blocks = tuple(
+            block_row
+            for payload in gen.render_effect_parts().values()
+            for block_row in gen.top_level_blocks(payload)
+        )
+        self.assertEqual(gen.HISTORICAL_EFFECT_COUNT, len(historical_blocks))
+        self.assertEqual(historical_blocks, emitted_blocks)
+        self.assertEqual(
+            [5, 5, 8, 3],
+            [len(group.effect_names) for group in gen.EFFECT_GROUPS],
+        )
+        self.assertEqual((), gen.effect_target_deviations())
+        self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
+        self.assertTrue(
+            all(
+                1 <= len(group.effect_names) <= gen.EFFECT_TARGET_MAX
+                for group in gen.EFFECT_GROUPS
+            )
+        )
+
+    def test_target_deviation_is_reportable_but_only_hard_limit_needs_exception(self) -> None:
+        aggregate = gen.render_effects()
+        source_blocks = gen.top_level_blocks(aggregate)
+        source_names = tuple(name for name, _block in source_blocks)
+        target_deviation_groups = (
+            gen.EffectGroup("first_effects.txt", "first purpose", source_names[:11]),
+            gen.EffectGroup("second_effects.txt", "second purpose", source_names[11:]),
+        )
+        with (
+            patch.object(gen, "EFFECT_GROUPS", target_deviation_groups),
+            patch.object(gen, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
+        ):
+            gen._validate_effect_groups(aggregate, source_blocks)
+            self.assertEqual(
+                (target_deviation_groups[0],),
+                gen.effect_target_deviations(),
+            )
+
+        over_hard = (
+            gen.EffectGroup("oversized_effects.txt", "one purpose", source_names),
+        )
+        with (
+            patch.object(gen, "EFFECT_GROUPS", over_hard),
+            patch.object(gen, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
+        ):
+            with self.assertRaisesRegex(ValueError, "hard-limit exceptions"):
+                gen._validate_effect_groups(aggregate, source_blocks)
+        with (
+            patch.object(gen, "EFFECT_GROUPS", over_hard),
+            patch.object(
+                gen,
+                "EFFECT_HARD_LIMIT_EXCEPTIONS",
+                {
+                    "oversized_effects.txt": (
+                        "the purpose cannot be separated",
+                        "artifacts/ck3-live/oversized-shard-report.json",
+                    )
+                },
+            ),
+        ):
+            gen._validate_effect_groups(aggregate, source_blocks)
+
+    def test_legacy_monolith_is_not_an_output_and_is_detected_as_stale(self) -> None:
+        rendered = gen.outputs()
+        self.assertNotIn(gen.LEGACY_EFFECT_PATH, rendered)
+        self.assertFalse(gen.LEGACY_EFFECT_PATH.exists())
+        with tempfile.TemporaryDirectory() as temporary:
+            effects_dir = Path(temporary) / "common" / "scripted_effects"
+            effects_dir.mkdir(parents=True)
+            legacy = effects_dir / gen.LEGACY_EFFECT_FILENAME
+            legacy.write_bytes(b"legacy")
+            self.assertEqual(
+                (legacy,),
+                gen.unexpected_effect_paths({}, effects_dir),
+            )
 
     def test_generated_braces_are_balanced(self) -> None:
         for name, text in (("effects", self.effects), ("events", self.events)):

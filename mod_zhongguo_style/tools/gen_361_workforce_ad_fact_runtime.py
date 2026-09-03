@@ -10,6 +10,8 @@ exact-tuple callbacks; neither generator edits the other's generated files.
 from __future__ import annotations
 
 import argparse
+import hashlib
+from dataclasses import dataclass
 from pathlib import Path
 
 
@@ -29,6 +31,83 @@ LANGUAGES = (
     "polish",
     "russian",
     "spanish",
+)
+
+LEGACY_EFFECT_FILENAME = "zg361_workforce_ad_fact_runtime_effects.txt"
+LEGACY_EFFECT_PATH = (
+    MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+)
+EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_ad_fact_runtime_events.txt"
+EFFECT_SHARD_GLOB = "zg361_workforce_ad_fact_*_effects.txt"
+HISTORICAL_EFFECT_COUNT = 21
+HISTORICAL_EFFECT_BYTES = 51216
+HISTORICAL_EFFECT_SHA256 = (
+    "aeede7d639750cccabe478575f3df5d5b8a27c61ac1eb34d1dc4e8bc370e38c6"
+)
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# A future shard above the hard limit is valid only when this map names that
+# exact file and preserves both the engineering reason and CK3 live evidence.
+# The current four-purpose split has no target deviations or exceptions.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
+
+
+# Keep the four user-visible AD fact workflows independently selectable.  The
+# order below is also the exact historical aggregate order, so concatenating
+# the definition blocks reconstructs the old 21-effect source without drift.
+EFFECT_GROUPS = (
+    EffectGroup(
+        "zg361_workforce_ad_fact_referral_effects.txt",
+        "open, attribute, dispatch, submit, or decline one real referral",
+        (
+            "zg361_wad_begin_referral_source_effect",
+            "zg361_wad_select_real_referrer_effect",
+            "zg361_wad_dispatch_referral_response_effect",
+            "zg361_wad_submit_referral_effect",
+            "zg361_wad_decline_referral_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_ad_fact_panel_setup_effects.txt",
+        "open one interview panel, select its three seats, and freeze it",
+        (
+            "zg361_wad_begin_panel_source_effect",
+            "zg361_wad_select_panel_slot_1_effect",
+            "zg361_wad_select_panel_slot_2_effect",
+            "zg361_wad_select_panel_slot_3_effect",
+            "zg361_wad_freeze_real_panel_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_ad_fact_panel_voting_effects.txt",
+        "dispatch, record, resolve, and finalize the three interview votes",
+        (
+            "zg361_wad_dispatch_next_vote_effect",
+            "zg361_wad_submit_panel_vote_1_effect",
+            "zg361_wad_submit_panel_vote_2_effect",
+            "zg361_wad_submit_panel_vote_3_effect",
+            "zg361_wad_resolve_ai_panel_vote_1_effect",
+            "zg361_wad_resolve_ai_panel_vote_2_effect",
+            "zg361_wad_resolve_ai_panel_vote_3_effect",
+            "zg361_wad_finalize_panel_source_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_ad_fact_offer_response_effects.txt",
+        "open and record the subject-owned offer acceptance or refusal",
+        (
+            "zg361_wad_begin_offer_response_source_effect",
+            "zg361_wad_accept_offer_effect",
+            "zg361_wad_refuse_offer_effect",
+        ),
+    ),
 )
 
 
@@ -316,6 +395,8 @@ zg361_wad_resolve_ai_panel_vote___S___effect = {
 
 
 def render_effects() -> bytes:
+    """Render the frozen historical aggregate for parity validation only."""
+
     validate_contract()
     panel_slots = "\n\n".join(render_panel_slot(slot) for slot in (1, 2, 3))
     vote_effects = "\n\n".join(render_vote_effect(slot) for slot in (1, 2, 3))
@@ -945,6 +1026,184 @@ zg361_wad_refuse_offer_effect = {
     return generated(body)
 
 
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in generated AD fact script")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced generated AD fact script block")
+        index += 1
+    raise ValueError("unterminated generated AD fact script block")
+
+
+def top_level_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level assignment blocks, ignoring comments/strings."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (
+            text[index].isalnum() or text[index] in "_."
+        ):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(
+    aggregate: bytes, source_blocks: tuple[tuple[str, str], ...]
+) -> None:
+    if len(aggregate) != HISTORICAL_EFFECT_BYTES:
+        raise ValueError(
+            "Workforce AD historical effect aggregate byte count drifted: "
+            f"expected {HISTORICAL_EFFECT_BYTES}, found {len(aggregate)}"
+        )
+    aggregate_sha256 = hashlib.sha256(aggregate).hexdigest()
+    if aggregate_sha256 != HISTORICAL_EFFECT_SHA256:
+        raise ValueError(
+            "Workforce AD historical effect aggregate SHA-256 drifted: "
+            f"expected {HISTORICAL_EFFECT_SHA256}, found {aggregate_sha256}"
+        )
+
+    source_names = tuple(name for name, _block in source_blocks)
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != HISTORICAL_EFFECT_COUNT:
+        raise ValueError(
+            f"Workforce AD aggregate must contain {HISTORICAL_EFFECT_COUNT} "
+            f"top-level effects, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("Workforce AD aggregate contains duplicate effects")
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce AD effect shard filenames must be unique")
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("Workforce AD purpose groups contain duplicate effects")
+    if configured_names != source_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "Workforce AD purpose groups must preserve the exact historical "
+            f"21-effect order; missing={missing}, extra={extra}"
+        )
+    for group in EFFECT_GROUPS:
+        count = len(group.effect_names)
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+        if count < 1:
+            raise ValueError(
+                f"{group.filename} must contain at least one effect"
+            )
+
+    over_hard = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "Workforce AD hard-limit exceptions must exactly match shards "
+            f"above {EFFECT_HARD_MAX} effects"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without both "
+                "a reason and CK3 live evidence"
+            )
+
+
+def effect_target_deviations() -> tuple[EffectGroup, ...]:
+    """Return reportable >10 shards without treating 11-20 as invalid."""
+
+    return tuple(
+        group
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_TARGET_MAX
+    )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render four purpose shards with every definition block byte-identical."""
+
+    aggregate = render_effects()
+    source_blocks = top_level_blocks(aggregate)
+    _validate_effect_groups(aggregate, source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
+
+
 def render_vote_event(slot: int) -> str:
     options = []
     for letter, vote in zip("abc", (3, 2, 1)):
@@ -1092,14 +1351,35 @@ def render_localization(language: str) -> bytes:
 def outputs() -> dict[Path, bytes]:
     validate_contract()
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_ad_fact_runtime_effects.txt": render_effects(),
-        MOD_ROOT / "events" / "zg361_workforce_ad_fact_runtime_events.txt": render_events(),
+        EVENTS_PATH: render_events(),
     }
+    rendered.update(
+        {
+            MOD_ROOT / "common" / "scripted_effects" / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / f"zg361_workforce_ad_fact_l_{language}.yml"
         ] = render_localization(language)
     return rendered
+
+
+def unexpected_effect_paths(
+    rendered: dict[Path, bytes], effects_dir: Path | None = None
+) -> tuple[Path, ...]:
+    effects_dir = effects_dir or MOD_ROOT / "common" / "scripted_effects"
+    expected = {path for path in rendered if path.parent == effects_dir}
+    return tuple(sorted(set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected))
+
+
+def print_effect_target_deviations() -> None:
+    for group in effect_target_deviations():
+        print(
+            f"WARN: {group.filename} has {len(group.effect_names)} effects; "
+            f"target is 1-{EFFECT_TARGET_MAX}"
+        )
 
 
 def main() -> int:
@@ -1108,18 +1388,28 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    unexpected_effects = unexpected_effect_paths(rendered)
     if args.check:
-        if stale:
+        if stale or unexpected_effects:
             print("RED: stale Workforce AD fact generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in unexpected_effects:
+                print(
+                    f"{path.relative_to(MOD_ROOT)} "
+                    "(unexpected effect shard or legacy monolith)"
+                )
             return 1
         print(f"GREEN: {len(rendered)} Workforce AD fact files are current ({READINESS})")
+        print_effect_target_deviations()
         return 0
+    for path in unexpected_effects:
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
     print(f"GREEN: generated {len(rendered)} Workforce AD fact runtime files")
+    print_effect_target_deviations()
     return 0
 
 
