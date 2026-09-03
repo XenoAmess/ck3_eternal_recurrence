@@ -55,6 +55,11 @@ DEFAULT_NATIVE_READINESS_TIMEOUT_SECONDS = 300.0
 DEFAULT_EVENT_TIMEOUT_SECONDS = 300.0
 DEFAULT_BINDING_TIMEOUT_SECONDS = 300.0
 DEFAULT_KEYBOARD_WATCHDOG_INTERVAL_SECONDS = 15.0
+DEFAULT_FRONTEND_FIRST_TIMEOUT_SECONDS = 180.0
+# Shader caches can live on a slow/networked volume.  Provenance must never
+# turn a preflight into an unbounded recursive walk, so retain a deterministic
+# bounded sample and state explicitly when it was truncated.
+CACHE_PROVENANCE_SCAN_LIMIT = 512
 PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_KEY = (
     "phase2_wrapper_consumer_edge_observer_v1"
 )
@@ -65,6 +70,172 @@ GIT_SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 PIPE_PREFIX = "\\\\.\\pipe\\"
 WINDOWS_ENGLISH_US_HKL = 0x04090409
 WM_INPUTLANGCHANGEREQUEST = 0x0050
+STEAM_CK3_APP_ID = "1158310"
+REPOSITORY_GAME_DIR = Path(__file__).resolve().parents[1] / "Crusader Kings III"
+STEAM_GAME_INSTALL_DIR_NAME = "Crusader Kings III"
+# Keep automatic resolution conservative: a repository copy can be useful for
+# static fixtures, but it is not a supported launch target.  It must be passed
+# explicitly through ``--game-dir``/``XAR_CK3_GAME_DIR`` so a missing Steam
+# install cannot silently send a live run into the wrong tree.
+AUTOMATIC_GAME_DIR_REQUIRES_STEAM = True
+_STEAM_VDF_PATH_PATTERN = re.compile(
+    r'(?im)^\s*"path"\s+"(?P<path>[^"]+)"'
+)
+_STEAM_INSTALL_DIR_PATTERN = re.compile(
+    r'(?im)^\s*"installdir"\s+"(?P<name>[^"]+)"'
+)
+
+
+def _game_dir_is_valid(path: Path) -> bool:
+    """Return whether a directory contains the exact CK3 launch inputs."""
+
+    return (
+        (path / "binaries" / "ck3.exe").is_file()
+        and (path / "game" / "common" / "game_rules" / "00_game_rules.txt").is_file()
+    )
+
+
+def _steam_library_roots() -> list[Path]:
+    """Discover Steam library roots without changing any user configuration."""
+
+    candidates: list[Path] = []
+    explicit_steam = os.environ.get("XAR_STEAM_DIR")
+    if explicit_steam:
+        candidates.append(Path(os.path.expandvars(explicit_steam)).expanduser())
+    # The normal Windows installation locations are cheap to probe.  A
+    # registry read is intentionally avoided here so the resolver remains
+    # deterministic in the frozen runner and in offline unit tests.
+    candidates.extend(
+        Path(value)
+        for value in (
+            os.path.join(os.environ.get("ProgramFiles(x86)", "C:/Program Files (x86)"), "Steam"),
+            os.path.join(os.environ.get("ProgramFiles", "C:/Program Files"), "Steam"),
+        )
+    )
+    # Some managed hosts expose the Steam library on a mounted drive while
+    # leaving the primary Steam client on C:.  Probe the conventional
+    # ``<drive>:\\SteamLibrary`` leaf as a read-only fallback.
+    if os.name == "nt":
+        candidates.extend(Path(f"{drive}:\\SteamLibrary") for drive in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+    roots: list[Path] = []
+    seen: set[str] = set()
+
+    def add(path: Path) -> None:
+        resolved = path.expanduser().resolve()
+        key = str(resolved).casefold()
+        if key not in seen:
+            seen.add(key)
+            roots.append(resolved)
+
+    for candidate in candidates:
+        candidate = candidate.expanduser().resolve()
+        add(candidate)
+        vdf = candidate / "steamapps" / "libraryfolders.vdf"
+        if not vdf.is_file():
+            continue
+        try:
+            text = vdf.read_text(encoding="utf-8-sig")
+        except (OSError, UnicodeError):
+            continue
+        for match in _STEAM_VDF_PATH_PATTERN.finditer(text):
+            add(Path(match.group("path").replace("\\\\", "\\")))
+    return roots
+
+
+def resolve_ck3_game_dir(
+    requested: Path | None = None,
+) -> tuple[Path, str, tuple[dict[str, object], ...]]:
+    """Select CK3's actual Steam install while preserving explicit paths.
+
+    A CLI ``--game-dir`` or ``XAR_CK3_GAME_DIR`` override is authoritative and
+    is never replaced.  Automatic discovery is used only when neither is
+    supplied; every candidate and the selected source are returned for the
+    immutable runner report.
+    """
+
+    if requested is not None:
+        selected = Path(requested).expanduser().resolve()
+        return (
+            selected,
+            "explicit-cli",
+            (
+                {
+                    "path": str(selected),
+                    "source": "explicit-cli",
+                    "valid": _game_dir_is_valid(selected),
+                },
+            ),
+        )
+    env_override = os.environ.get("XAR_CK3_GAME_DIR")
+    if env_override:
+        selected = Path(os.path.expandvars(env_override)).expanduser().resolve()
+        return (
+            selected,
+            "explicit-env",
+            (
+                {
+                    "path": str(selected),
+                    "source": "explicit-env",
+                    "valid": _game_dir_is_valid(selected),
+                },
+            ),
+        )
+
+    candidates: list[dict[str, object]] = []
+    seen: set[str] = set()
+
+    def record(path: Path, source: str) -> None:
+        resolved = path.expanduser().resolve()
+        key = str(resolved).casefold()
+        if key in seen:
+            return
+        seen.add(key)
+        candidates.append(
+            {
+                "path": str(resolved),
+                "source": source,
+                "valid": _game_dir_is_valid(resolved),
+            }
+        )
+
+    for library in _steam_library_roots():
+        steamapps = library / "steamapps"
+        manifest = steamapps / f"appmanifest_{STEAM_CK3_APP_ID}.acf"
+        install_name = STEAM_GAME_INSTALL_DIR_NAME
+        if manifest.is_file():
+            try:
+                manifest_text = manifest.read_text(encoding="utf-8-sig")
+            except (OSError, UnicodeError):
+                manifest_text = ""
+            match = _STEAM_INSTALL_DIR_PATTERN.search(manifest_text)
+            if match is not None and match.group("name").strip():
+                install_name = match.group("name").strip()
+        record(
+            steamapps / "common" / install_name,
+            "steam-library",
+        )
+
+    repository = REPOSITORY_GAME_DIR.expanduser().resolve()
+    # Retain the repository candidate as evidence, but never select it during
+    # automatic resolution.  The old fallback made a typo/missing Steam
+    # library look like a valid launch and was the exact failure mode seen in
+    # the Phase2 frozen runner.  An operator who intentionally wants the copy
+    # must provide it explicitly via one of the overrides above.
+    record(repository, "repository-not-selected")
+    for candidate in candidates:
+        if candidate["valid"] is True:
+            return Path(str(candidate["path"])), str(candidate["source"]), tuple(candidates)
+    raise SeedCaptureError(
+        "automatic CK3 game discovery found no valid SteamLibrary install; "
+        "pass --game-dir (or XAR_CK3_GAME_DIR) only when an explicit path is "
+        "intended",
+        {
+            "automatic_requires_steam": AUTOMATIC_GAME_DIR_REQUIRES_STEAM,
+            "repository_candidate": str(repository),
+            "candidates": candidates,
+        },
+    )
 
 
 class SeedCaptureError(RuntimeError):
@@ -86,6 +257,17 @@ class CaptureConfig:
     bridge_dll: Path
     bridge_injector: Path
     pipe_name: str
+    # ``game_dir`` remains an explicit field for API callers.  CLI callers may
+    # omit it and use ``resolve_ck3_game_dir``; the selected source/candidates
+    # are retained as immutable provenance rather than silently rewriting a
+    # caller-provided path.
+    game_dir_source: str = "explicit-cli"
+    game_dir_candidates: tuple[dict[str, object], ...] = ()
+    # Optional immutable bundle manifest emitted by the Release bridge build.
+    # When supplied it is checked against the selected DLL/injector before a
+    # launch and copied into the receipt as build provenance.  Leaving it
+    # unset preserves API compatibility for synthetic/unit callers.
+    bridge_bundle_manifest: Path | None = None
     seed_contract: Path | None = None
     loader_timeout_seconds: float = DEFAULT_LOADER_TIMEOUT_SECONDS
     native_readiness_timeout_seconds: float = (
@@ -108,6 +290,15 @@ class CaptureConfig:
     # cached heartbeats without inspecting the desktop or sending UI/gameplay
     # input.  This mode deliberately does not attempt seed capture.
     native_observer_only: bool = False
+    # Optional profile settings template.  When unset, the runner only
+    # inspects the real local CK3 profile for provenance; it never copies
+    # operator-specific high/ultra renderer values.  A known-GREEN template
+    # must be pinned explicitly for an isolated run.
+    profile_settings_template: Path | None = None
+    frontend_first_load_save_name: str | None = None
+    frontend_first_timeout_seconds: float = (
+        DEFAULT_FRONTEND_FIRST_TIMEOUT_SECONDS
+    )
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
@@ -131,6 +322,17 @@ class CaptureConfig:
                 if self.acceptance_observer_manifest is not None
                 else None
             ),
+            profile_settings_template=(
+                self.profile_settings_template.resolve()
+                if self.profile_settings_template is not None
+                else None
+            ),
+            bridge_bundle_manifest=(
+                self.bridge_bundle_manifest.resolve()
+                if self.bridge_bundle_manifest is not None
+                else None
+            ),
+            frontend_first_load_save_name=self.frontend_first_load_save_name,
         )
 
     @property
@@ -198,6 +400,134 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _bridge_artifact_row(path: Path, label: str) -> dict[str, object]:
+    """Return the immutable identity of one bridge artifact."""
+
+    if not path.is_file():
+        raise SeedCaptureError(f"{label} is missing: {path}")
+    return {
+        "path": str(path.resolve()),
+        "bytes": path.stat().st_size,
+        "sha256": sha256_file(path).upper(),
+    }
+
+
+def bridge_bundle_provenance(config: CaptureConfig) -> dict[str, object] | None:
+    """Validate and project an optional Release bridge bundle manifest.
+
+    A binary hash alone cannot establish how a bridge was built.  If the
+    Release build emitted ``bundle-manifest.json``, bind its source commit,
+    configuration, feature flags, compiler and adjacent DLL/injector hashes
+    to the seed receipt.  The manifest is advisory when omitted for backwards
+    compatibility; supplying a malformed or non-Release manifest is a typed
+    preflight error rather than a best-effort guess.
+    """
+
+    manifest_path = config.bridge_bundle_manifest
+    if manifest_path is None:
+        return None
+    if not manifest_path.is_file():
+        raise SeedCaptureError(
+            f"bridge bundle manifest is missing: {manifest_path}"
+        )
+    try:
+        payload = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise SeedCaptureError(
+            f"cannot read bridge bundle manifest {manifest_path}: {error}"
+        ) from error
+    if not isinstance(payload, dict):
+        raise SeedCaptureError("bridge bundle manifest root must be an object")
+    build = payload.get("build")
+    artifacts = payload.get("artifacts")
+    if not isinstance(build, dict) or not isinstance(artifacts, dict):
+        raise SeedCaptureError(
+            "bridge bundle manifest must contain build and artifacts objects"
+        )
+    configuration = build.get("configuration")
+    if configuration != "Release":
+        raise SeedCaptureError(
+            "Phase2 seed capture requires a Release bridge bundle; "
+            f"manifest configuration={configuration!r}"
+        )
+    dll_row = artifacts.get("dll")
+    injector_row = artifacts.get("injector")
+    if not isinstance(dll_row, dict) or not isinstance(injector_row, dict):
+        raise SeedCaptureError(
+            "bridge bundle manifest artifacts.dll/injector are malformed"
+        )
+    selected_dll = _bridge_artifact_row(config.bridge_dll, "bridge DLL")
+    selected_injector = _bridge_artifact_row(
+        config.bridge_injector, "bridge injector"
+    )
+
+    def manifest_identity(row: dict[str, object], label: str) -> tuple[str, int]:
+        digest = row.get("sha256")
+        size = row.get("bytes")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-fA-F]{64}", digest):
+            raise SeedCaptureError(
+                f"bridge bundle manifest {label} SHA-256 is malformed"
+            )
+        if isinstance(size, bool) or not isinstance(size, int) or size <= 0:
+            raise SeedCaptureError(
+                f"bridge bundle manifest {label} size is malformed"
+            )
+        return digest.upper(), size
+
+    expected_dll = manifest_identity(dll_row, "DLL")
+    expected_injector = manifest_identity(injector_row, "injector")
+    matches = {
+        "dll_sha256": selected_dll["sha256"] == expected_dll[0],
+        "dll_bytes": selected_dll["bytes"] == expected_dll[1],
+        "injector_sha256": selected_injector["sha256"] == expected_injector[0],
+        "injector_bytes": selected_injector["bytes"] == expected_injector[1],
+    }
+    if not all(matches.values()):
+        raise SeedCaptureError(
+            "selected bridge artifacts do not match the Release bundle manifest",
+            {
+                "manifest": str(manifest_path.resolve()),
+                "selected": {"dll": selected_dll, "injector": selected_injector},
+                "manifest_artifacts": {"dll": dll_row, "injector": injector_row},
+                "matches": matches,
+            },
+        )
+    pe_imports = artifacts.get("pe_imports")
+    if isinstance(pe_imports, dict) and pe_imports.get("debug_crt_present") is True:
+        raise SeedCaptureError(
+            "Release bridge bundle manifest reports debug CRT imports"
+        )
+    source = payload.get("source")
+    source = source if isinstance(source, dict) else {}
+    cmake_flags = payload.get("cmake_flags")
+    cmake_flags = cmake_flags if isinstance(cmake_flags, dict) else None
+    return {
+        "manifest_path": str(manifest_path.resolve()),
+        "manifest_sha256": sha256_file(manifest_path).upper(),
+        "kind": payload.get("kind"),
+        "status": payload.get("status"),
+        "source_git_sha": source.get("git_head"),
+        "source_fingerprint_sha256": source.get("fingerprint_sha256"),
+        "build_dir": build.get("build_dir"),
+        "build_type": configuration,
+        "generator": build.get("generator"),
+        "compiler": build.get("compiler"),
+        "built_at_local": payload.get("built_at_local"),
+        "compile_link": build.get("compile_link"),
+        "tests_ran": build.get("tests_ran"),
+        "cmake_flags": cmake_flags,
+        "dll": selected_dll,
+        "injector": selected_injector,
+        "manifest_artifacts": {"dll": dll_row, "injector": injector_row},
+        "debug_crt_present": (
+            pe_imports.get("debug_crt_present")
+            if isinstance(pe_imports, dict)
+            else None
+        ),
+        "matches": matches,
+    }
+
+
 def write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
@@ -206,6 +536,397 @@ def write_json(path: Path, value: object) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def _settings_file_is_full(path: Path) -> bool:
+    """Recognize a real CK3 renderer settings file, not the tiny bootstrap."""
+
+    try:
+        text = path.read_text(encoding="utf-8-sig")
+        size = path.stat().st_size
+    except (OSError, UnicodeError):
+        return False
+    # The runner's intentional bootstrap is ~375 bytes/14 lines.  A file
+    # written by CK3 after a normal launcher run contains the renderer and
+    # system option sections and is materially larger.  Keep this heuristic
+    # conservative; it only decides whether an isolated copy is useful and
+    # never changes the user's profile.
+    return (
+        size > 1024
+        and len(text.splitlines()) >= 20
+        and '"game"={' in text
+        and '"Graphics"={' in text
+        and '"System"={' in text
+    )
+
+
+def _profile_settings_candidates(config: CaptureConfig) -> list[tuple[Path, str]]:
+    """Return only explicitly selected settings templates.
+
+    The real profile is intentionally *not* a default copy source: its
+    renderer/GPU values are operator-specific and can differ from the known
+    formal baseline.  It is inspected and recorded separately below.
+    """
+
+    candidates: list[tuple[Path, str]] = []
+    if config.profile_settings_template is not None:
+        candidates.append((config.profile_settings_template, "explicit-config"))
+    env_template = os.environ.get("XAR_CK3_SETTINGS_TEMPLATE")
+    if env_template:
+        candidates.append(
+            (
+                Path(os.path.expandvars(env_template)).expanduser(),
+                "explicit-env",
+            )
+        )
+    unique: list[tuple[Path, str]] = []
+    seen: set[str] = set()
+    for path, source in candidates:
+        resolved = path.expanduser().resolve()
+        key = str(resolved).casefold()
+        if key not in seen:
+            seen.add(key)
+            unique.append((resolved, source))
+    return unique
+
+
+def _real_profile_settings_path() -> Path:
+    override = os.environ.get("XAR_REAL_CK3_PROFILE")
+    if override:
+        return (
+            Path(os.path.expandvars(override)).expanduser()
+            / "pdx_settings.txt"
+        ).resolve()
+    return (
+        Path.home()
+        / "Documents"
+        / "Paradox Interactive"
+        / "Crusader Kings III"
+        / "pdx_settings.txt"
+    ).resolve()
+
+
+def _directory_provenance(path: Path) -> dict[str, Any]:
+    """Describe a cache tree with a bounded, honest metadata scan.
+
+    ``Path.rglob`` over the real CK3 shader cache was observed to take tens of
+    seconds on the mounted Steam volume.  This function is called during
+    profile preflight, so an unbounded walk would itself become a startup
+    failure.  We walk directories with ``os.scandir`` and retain at most
+    ``CACHE_PROVENANCE_SCAN_LIMIT`` regular-file rows.  ``complete`` and
+    ``scanned_*`` distinguish a complete small tree from a truncated sample;
+    no partial count is presented as the cache's total size.
+    """
+
+    root = Path(path).expanduser().resolve()
+    rows: list[dict[str, object]] = []
+    scanned_bytes = 0
+    visited_directories = 0
+    scan_error: str | None = None
+    truncated = False
+    pending: list[Path] = [root] if root.is_dir() else []
+    while pending and not truncated:
+        current = pending.pop()
+        visited_directories += 1
+        try:
+            with os.scandir(current) as stream:
+                entries = sorted(stream, key=lambda entry: entry.name.casefold())
+        except OSError as error:
+            scan_error = f"{type(error).__name__}: {error}"
+            continue
+        for entry in entries:
+            try:
+                if entry.is_dir(follow_symlinks=False):
+                    pending.append(Path(entry.path))
+                    continue
+                if not entry.is_file(follow_symlinks=False):
+                    continue
+                if len(rows) >= CACHE_PROVENANCE_SCAN_LIMIT:
+                    truncated = True
+                    break
+                stat = entry.stat(follow_symlinks=False)
+            except OSError as error:
+                scan_error = f"{type(error).__name__}: {error}"
+                continue
+            size = int(stat.st_size)
+            scanned_bytes += size
+            # ``entry.path`` is rooted below ``root`` and symlinks are not
+            # followed, so a lexical relative path avoids an extra networked
+            # ``resolve()`` call for every cache file.
+            relative = os.path.relpath(entry.path, root).replace("\\", "/")
+            rows.append(
+                {
+                    "path": relative,
+                    "bytes": size,
+                    "mtime_ns": int(stat.st_mtime_ns),
+                }
+            )
+    # A deterministic ordering is important even though directory traversal is
+    # stack-based; it also makes the signature stable across equivalent trees.
+    rows.sort(key=lambda row: str(row["path"]).casefold())
+    canonical = json.dumps(
+        rows, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    exists = root.is_dir()
+    return {
+        "path": str(root),
+        "exists": exists,
+        "complete": bool(exists and not truncated and scan_error is None),
+        "truncated": truncated,
+        "scan_limit": CACHE_PROVENANCE_SCAN_LIMIT,
+        "scanned_file_count": len(rows),
+        "scanned_bytes": scanned_bytes,
+        # Keep legacy aliases for consumers that only display a count/hash;
+        # ``complete`` tells them whether these are totals or a bounded sample.
+        "file_count": len(rows),
+        "bytes": scanned_bytes,
+        "visited_directories": visited_directories,
+        "signature_sha256": hashlib.sha256(canonical).hexdigest(),
+        "algorithm": (
+            "sha256(canonical-json[path,bytes,mtime_ns])-bounded-scandir"
+        ),
+        "scan_error": scan_error,
+    }
+
+
+def prepare_profile_settings(config: CaptureConfig) -> dict[str, Any]:
+    """Apply an explicitly pinned full settings template, if supplied.
+
+    The isolated bootstrap intentionally writes a small deterministic settings
+    file.  A real user's ``pdx_settings.txt`` contains machine/GPU-specific
+    choices and is therefore inspected for provenance but never copied by
+    default.  Callers can pin a known-good file with
+    ``--profile-settings-template`` (or ``XAR_CK3_SETTINGS_TEMPLATE``); the
+    source remains read-only and the copied bytes are verified.
+    """
+
+    destination = (config.profile_dir / "pdx_settings.txt").resolve()
+    evidence: dict[str, Any] = {
+        "schema_version": 1,
+        "result": "NOT_AVAILABLE",
+        "strategy": "explicit-full-settings-template-only",
+        "template_required_for_copy": True,
+        "auto_copy": False,
+        "cache_copy": False,
+        "destination": str(destination),
+        "source": None,
+        "source_kind": None,
+        "source_sha256": None,
+        "source_bytes": None,
+        "destination_sha256": None,
+        "destination_bytes": None,
+        "preserved_existing": False,
+        "auto_candidate": None,
+        "auto_shadercache": None,
+        "selected_shadercache": None,
+        "failure_reason": None,
+    }
+
+    if destination.is_file() and _settings_file_is_full(destination):
+        destination_profile = destination.parent
+        evidence.update(
+            {
+                "result": "PRESERVED",
+                "preserved_existing": True,
+                "destination_bytes": destination.stat().st_size,
+                "destination_sha256": sha256_file(destination),
+                "selected_shadercache": _directory_provenance(
+                    destination_profile / "shadercache"
+                ),
+            }
+        )
+        return evidence
+
+    explicit_sources = {
+        "explicit-config",
+        "explicit-env",
+    }
+    explicit_candidates = _profile_settings_candidates(config)
+    auto_path = _real_profile_settings_path()
+    auto_full = auto_path.is_file() and _settings_file_is_full(auto_path)
+    auto_candidate: dict[str, object] = {
+        "path": str(auto_path),
+        "exists": auto_path.is_file(),
+        "full_settings": auto_full,
+        "selected": False,
+        "reason": (
+            "operator-specific source requires explicit pin"
+            if auto_full
+            else "no full settings file available"
+        ),
+    }
+    if auto_full:
+        auto_candidate.update(
+            {
+                "bytes": auto_path.stat().st_size,
+                "sha256": sha256_file(auto_path),
+            }
+        )
+    evidence["auto_candidate"] = auto_candidate
+    evidence["auto_shadercache"] = _directory_provenance(
+        auto_path.parent / "shadercache"
+    )
+    for source_path, source_kind in explicit_candidates:
+        if not source_path.is_file() or not _settings_file_is_full(source_path):
+            if source_kind in explicit_sources:
+                raise SeedCaptureError(
+                    "explicit profile settings template is missing or not a "
+                    f"full CK3 settings file: {source_path}"
+                )
+            continue
+        try:
+            source_bytes = source_path.stat().st_size
+            source_sha256 = sha256_file(source_path)
+            if source_path == destination:
+                # Already handled above when full; retain a defensive branch
+                # for a file that changes between checks.
+                evidence.update(
+                    {
+                        "result": "PRESERVED",
+                        "preserved_existing": True,
+                        "source": str(source_path),
+                        "source_kind": source_kind,
+                        "source_bytes": source_bytes,
+                        "source_sha256": source_sha256,
+                        "destination_bytes": source_bytes,
+                        "destination_sha256": source_sha256,
+                        "selected_shadercache": _directory_provenance(
+                            source_path.parent / "shadercache"
+                        ),
+                    }
+                )
+                return evidence
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_path, destination)
+            evidence.update(
+                {
+                    "result": "GREEN",
+                    "source": str(source_path),
+                    "source_kind": source_kind,
+                    "source_bytes": source_bytes,
+                    "source_sha256": source_sha256,
+                    "destination_bytes": destination.stat().st_size,
+                    "destination_sha256": sha256_file(destination),
+                    "selected_shadercache": _directory_provenance(
+                        source_path.parent / "shadercache"
+                    ),
+                }
+            )
+            return evidence
+        except OSError as error:
+            if source_kind in explicit_sources:
+                raise SeedCaptureError(
+                    f"could not copy explicit profile settings template: {error}"
+                ) from error
+            evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+
+    if auto_full:
+        evidence["result"] = "AVAILABLE_NOT_SELECTED"
+    evidence["destination_bytes"] = (
+        destination.stat().st_size if destination.is_file() else None
+    )
+    if destination.is_file():
+        try:
+            evidence["destination_sha256"] = sha256_file(destination)
+        except OSError as error:
+            evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+    evidence["selected_shadercache"] = _directory_provenance(
+        destination.parent / "shadercache"
+    )
+    return evidence
+
+
+def _validate_frontend_first_save_name(value: object) -> str:
+    """Validate the basename shared by the warm-up copy and ``-loadsave``."""
+
+    if (
+        not isinstance(value, str)
+        or not value
+        or Path(value).name != value
+        or Path(value).suffix
+        or any(character in value for character in ("/", "\\", "\0"))
+    ):
+        raise SeedCaptureError(
+            "frontend-first load save name must be one basename without "
+            "a path or extension"
+        )
+    return value
+
+
+def prepare_frontend_first_save(
+    config: CaptureConfig, old_save: Path
+) -> dict[str, Any] | None:
+    """Materialize the selected seed under ``save games`` for ``-loadsave``.
+
+    The legacy Phase2 path keeps the root ``last_save.ck3`` copy for
+    ``-continuelastsave``.  ``-loadsave=<name>`` resolves a basename in the
+    profile's ``save games`` directory, so an opt-in frontend-first run needs
+    an explicit second copy there.  A pre-existing byte-identical file is
+    retained; a conflicting file is rejected instead of being overwritten.
+    """
+
+    if config.frontend_first_load_save_name is None:
+        return None
+    name = _validate_frontend_first_save_name(
+        config.frontend_first_load_save_name
+    )
+    source = Path(old_save).resolve()
+    if not source.is_file() or source.stat().st_size <= 0:
+        raise SeedCaptureError(
+            f"frontend-first source save is unavailable: {source}"
+        )
+    target_root = (config.profile_dir / "save games").resolve()
+    target = (target_root / f"{name}.ck3").resolve()
+    try:
+        target.relative_to(target_root)
+    except ValueError as error:
+        raise SeedCaptureError(
+            "frontend-first save target escaped the isolated profile"
+        ) from error
+    source_size = source.stat().st_size
+    source_sha256 = sha256_file(source)
+    result = "COPIED"
+    if target.exists():
+        if not target.is_file():
+            raise SeedCaptureError(
+                f"frontend-first save target is not a regular file: {target}"
+            )
+        if (
+            target.stat().st_size != source_size
+            or sha256_file(target) != source_sha256
+        ):
+            raise SeedCaptureError(
+                "frontend-first save target already exists with different "
+                f"bytes: {target}"
+            )
+        result = "PRESERVED"
+    else:
+        target_root.mkdir(parents=True, exist_ok=True)
+        try:
+            shutil.copy2(source, target)
+        except OSError as error:
+            raise SeedCaptureError(
+                f"could not copy frontend-first save into isolated profile: {error}"
+            ) from error
+    target_size = target.stat().st_size
+    target_sha256 = sha256_file(target)
+    if target_size != source_size or target_sha256 != source_sha256:
+        raise SeedCaptureError(
+            "frontend-first save copy failed immutable byte verification: "
+            f"{target}"
+        )
+    return {
+        "result": result,
+        "name": name,
+        "load_save_name": name,
+        "source": str(source),
+        "source_bytes": source_size,
+        "source_sha256": source_sha256,
+        "path": str(target),
+        "bytes": target_size,
+        "sha256": target_sha256,
+        "immutable": True,
+    }
 
 
 def _run_open_kaishek_seed_preflight(
@@ -490,6 +1211,8 @@ def validate_config(config: CaptureConfig) -> None:
         "bridge DLL": config.bridge_dll,
         "bridge injector": config.bridge_injector,
     }
+    if config.bridge_bundle_manifest is not None:
+        required_files["bridge bundle manifest"] = config.bridge_bundle_manifest
     for label, path in required_files.items():
         if not isinstance(path, Path) or not path.is_file():
             raise SeedCaptureError(f"{label} is missing: {path}")
@@ -512,6 +1235,8 @@ def validate_config(config: CaptureConfig) -> None:
         )
     if GIT_SHA_PATTERN.fullmatch(config.frozen_git_sha) is None:
         raise SeedCaptureError("frozen git SHA must be exactly 40 hexadecimal digits")
+    if not isinstance(config.game_dir_source, str) or not config.game_dir_source:
+        raise SeedCaptureError("game directory provenance source is missing")
     if not config.pipe_name.startswith(PIPE_PREFIX):
         raise SeedCaptureError("bridge pipe must be an explicit Windows named pipe")
     timings = {
@@ -521,12 +1246,30 @@ def validate_config(config: CaptureConfig) -> None:
         "binding timeout": config.binding_timeout_seconds,
         "keyboard watchdog interval": config.keyboard_watchdog_interval_seconds,
     }
-    if any(not math.isfinite(value) or value <= 0 for value in timings.values()):
+    if config.frontend_first_load_save_name is not None:
+        timings["frontend-first timeout"] = config.frontend_first_timeout_seconds
+    if any(
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(float(value))
+        or value <= 0
+        for value in timings.values()
+    ):
         raise SeedCaptureError(f"capture timing values must be positive: {timings}")
     if config.loader_timeout_seconds <= LOADER_FATAL_STALL_SECONDS:
         raise SeedCaptureError(
             "loader timeout must leave room for the fixed 45-second parser stall gate"
         )
+    if config.frontend_first_load_save_name is not None:
+        _validate_frontend_first_save_name(config.frontend_first_load_save_name)
+    if config.profile_settings_template is not None and not isinstance(
+        config.profile_settings_template, Path
+    ):
+        raise SeedCaptureError("profile settings template path is malformed")
+    if config.bridge_bundle_manifest is not None and not isinstance(
+        config.bridge_bundle_manifest, Path
+    ):
+        raise SeedCaptureError("bridge bundle manifest path is malformed")
     if _is_relative_to(config.attempt_dir, config.clean_source):
         raise SeedCaptureError("attempt directory must be outside the clean source")
     if _is_relative_to(config.artifacts_dir, config.clean_source):
@@ -1338,6 +2081,11 @@ def run_preflight(
         "finished_at_utc": None,
         "report_path": str((artifacts / "preflight.json").resolve()),
         "frozen_git_commit": config.frozen_git_sha,
+        "game_dir": {
+            "selected": str(config.game_dir),
+            "source": config.game_dir_source,
+            "candidates": list(config.game_dir_candidates),
+        },
         "paths": {
             "clean_source": str(config.clean_source),
             "source_zip": str(config.source_zip),
@@ -1357,6 +2105,11 @@ def run_preflight(
                 if config.acceptance_observer_manifest is not None
                 else None
             ),
+            "bridge_bundle_manifest": (
+                str(config.bridge_bundle_manifest)
+                if config.bridge_bundle_manifest is not None
+                else None
+            ),
         },
         "desktop_interaction": False,
         "mcp_only": True,
@@ -1372,6 +2125,11 @@ def run_preflight(
         "source_identity": None,
         "external_dependencies": None,
         "bootstrap": None,
+        "profile_settings": {
+            "result": "NOT_RUN",
+            "strategy": "explicit-full-settings-template-only",
+            "reason": "no-launch preflight does not mutate the isolated profile",
+        },
         "bridge": None,
         "list_domain_observer_gate": None,
         "static_preflight": None,
@@ -1483,6 +2241,10 @@ def run_preflight(
             dependency_paths["acceptance_observer_manifest"] = (
                 config.acceptance_observer_manifest
             )
+        if config.bridge_bundle_manifest is not None:
+            dependency_paths["bridge_bundle_manifest"] = (
+                config.bridge_bundle_manifest
+            )
         dependency_hashes_before = {
             name: sha256_file(path) for name, path in dependency_paths.items()
         }
@@ -1545,6 +2307,7 @@ def run_preflight(
             "injector_sha256": sha256_file(config.bridge_injector),
             "visual_fallback": False,
         }
+        bridge_identity["release_bundle"] = bridge_bundle_provenance(config)
         identity_fn = getattr(zgrun, "native_bridge_preflight_identity", None)
         if callable(identity_fn):
             bridge_identity["runtime_identity"] = identity_fn(bridge)
@@ -1903,6 +2666,11 @@ def run_capture(
         "result": "RED",
         "started_at_utc": utc_now(),
         "frozen_git_commit": config.frozen_git_sha,
+        "game_dir": {
+            "selected": str(config.game_dir),
+            "source": config.game_dir_source,
+            "candidates": list(config.game_dir_candidates),
+        },
         "paths": {
             "clean_source": str(config.clean_source),
             "source_zip": str(config.source_zip),
@@ -1920,6 +2688,11 @@ def run_capture(
             "acceptance_observer_manifest": (
                 str(config.acceptance_observer_manifest)
                 if config.acceptance_observer_manifest is not None
+                else None
+            ),
+            "bridge_bundle_manifest": (
+                str(config.bridge_bundle_manifest)
+                if config.bridge_bundle_manifest is not None
                 else None
             ),
         },
@@ -1942,6 +2715,11 @@ def run_capture(
             "loader_fatal_stall_seconds": LOADER_FATAL_STALL_SECONDS,
             "native_readiness_seconds": config.native_readiness_timeout_seconds,
             "total_event_wait_seconds": config.event_timeout_seconds,
+            "frontend_first_seconds": (
+                config.frontend_first_timeout_seconds
+                if config.frontend_first_load_save_name is not None
+                else None
+            ),
         },
         "source_identity": None,
         "external_dependencies": None,
@@ -1966,6 +2744,16 @@ def run_capture(
         "clean_source_unchanged": None,
         "logs_copy": None,
         "open_kaishek_preflight": None,
+        "profile_settings": None,
+        "frontend_first_warmup": {
+            "enabled": config.frontend_first_load_save_name is not None,
+            "load_save_name": config.frontend_first_load_save_name,
+            "timeout_seconds": (
+                config.frontend_first_timeout_seconds
+                if config.frontend_first_load_save_name is not None
+                else None
+            ),
+        },
         "failure_reason": None,
         "failure_evidence": None,
     }
@@ -2073,6 +2861,10 @@ def run_capture(
             dependency_paths["acceptance_observer_manifest"] = (
                 config.acceptance_observer_manifest
             )
+        if config.bridge_bundle_manifest is not None:
+            dependency_paths["bridge_bundle_manifest"] = (
+                config.bridge_bundle_manifest
+            )
         dependency_hashes_before = {
             name: sha256_file(path) for name, path in dependency_paths.items()
         }
@@ -2155,8 +2947,12 @@ def run_capture(
             "manifest": bootstrap.get("manifest"),
             "single_mount_contract": True,
         }
+        report["profile_settings"] = prepare_profile_settings(config)
         shutil.copy2(old_save, config.profile_dir / "save games" / "autosave.ck3")
         shutil.copy2(old_save, config.profile_dir / "last_save.ck3")
+        report["frontend_first_warmup"]["save_materialization"] = (
+            prepare_frontend_first_save(config, old_save)
+        )
         acceptance.configure_runtime_userdir(config.profile_dir)
         spec = zgrun.make_spec(config.state_dir, config.game_dir)
         bridge = zgrun.resolve_native_bridge_config(
@@ -2168,6 +2964,7 @@ def run_capture(
             "injector": str(config.bridge_injector),
             "injector_sha256": sha256_file(config.bridge_injector),
             "pipe": config.pipe_name,
+            "release_bundle": bridge_bundle_provenance(config),
         }
         write_json(
             artifacts / "preflight.json",
@@ -2190,7 +2987,19 @@ def run_capture(
             },
         )
 
-        supervisor = zgrun.start_phase2_native_session_supervisor(spec, bridge)
+        supervisor_options: dict[str, object] = {}
+        if config.frontend_first_load_save_name is not None:
+            supervisor_options = {
+                "frontend_first_load_save_name": (
+                    config.frontend_first_load_save_name
+                ),
+                "frontend_first_timeout_seconds": (
+                    config.frontend_first_timeout_seconds
+                ),
+            }
+        supervisor = zgrun.start_phase2_native_session_supervisor(
+            spec, bridge, **supervisor_options
+        )
         driver = active_runtime.driver_factory(
             bridge.pipe_name,
             state_dir=spec.state_dir,
@@ -2467,6 +3276,16 @@ def run_capture(
             except BaseException as error:
                 report["cleanup_error"] = f"{type(error).__name__}: {error}"
                 _flip_red(report, str(report["cleanup_error"]))
+            session_state = supervisor.get("session_state")
+            session_report = (
+                session_state.get("report")
+                if isinstance(session_state, dict)
+                else None
+            )
+            if isinstance(session_report, dict):
+                warmup = session_report.get("frontend_first_warmup")
+                if isinstance(report.get("frontend_first_warmup"), dict):
+                    report["frontend_first_warmup"]["session_report"] = warmup
         if driver is not None:
             try:
                 driver.close()
@@ -2580,9 +3399,24 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
     parser.add_argument("--artifacts-dir", type=Path, required=True)
     parser.add_argument("--source-zip", type=Path, required=True)
     parser.add_argument("--git-sha", required=True)
-    parser.add_argument("--game-dir", type=Path, required=True)
+    parser.add_argument(
+        "--game-dir",
+        type=Path,
+        help=(
+            "explicit CK3 install; when omitted, discover the actual Steam "
+            "library install and retain its provenance"
+        ),
+    )
     parser.add_argument("--bridge-dll", type=Path, required=True)
     parser.add_argument("--injector", type=Path, required=True)
+    parser.add_argument(
+        "--bridge-bundle-manifest",
+        type=Path,
+        help=(
+            "optional Release bridge bundle-manifest.json; when supplied, "
+            "build/source/feature provenance and artifact hashes are verified"
+        ),
+    )
     parser.add_argument("--pipe", required=True)
     parser.add_argument("--seed-contract", type=Path)
     parser.add_argument(
@@ -2609,6 +3443,27 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         "--keyboard-watchdog-interval-seconds",
         type=float,
         default=DEFAULT_KEYBOARD_WATCHDOG_INTERVAL_SECONDS,
+    )
+    parser.add_argument(
+        "--profile-settings-template",
+        type=Path,
+        help=(
+            "optional full pdx_settings.txt template for the fresh isolated "
+            "profile; source is read-only"
+        ),
+    )
+    parser.add_argument(
+        "--frontend-first-load-save-name",
+        help=(
+            "opt-in Phase2 startup: launch without a save argument, wait for "
+            "Frontend, stop, then load this save basename on the same pipe"
+        ),
+    )
+    parser.add_argument(
+        "--frontend-first-timeout-seconds",
+        type=float,
+        default=180.0,
+        help="bounded Frontend marker wait for --frontend-first-load-save-name",
     )
     parser.add_argument(
         "--preflight-only",
@@ -2638,16 +3493,22 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         help="native-team seam manifest bound to this source and bridge build",
     )
     args = parser.parse_args(argv)
+    selected_game_dir, game_dir_source, game_dir_candidates = resolve_ck3_game_dir(
+        args.game_dir
+    )
     return CaptureConfig(
         clean_source=args.clean_source,
         attempt_dir=args.attempt_dir,
         artifacts_dir=args.artifacts_dir,
         source_zip=args.source_zip,
         frozen_git_sha=args.git_sha,
-        game_dir=args.game_dir,
+        game_dir=selected_game_dir,
         bridge_dll=args.bridge_dll,
         bridge_injector=args.injector,
         pipe_name=args.pipe,
+        bridge_bundle_manifest=args.bridge_bundle_manifest,
+        game_dir_source=game_dir_source,
+        game_dir_candidates=game_dir_candidates,
         seed_contract=args.seed_contract,
         loader_timeout_seconds=args.loader_timeout_seconds,
         native_readiness_timeout_seconds=(
@@ -2662,13 +3523,23 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         acceptance_observer_manifest=args.acceptance_observer_manifest,
         preflight_only=args.preflight_only,
         native_observer_only=args.native_observer_only,
+        profile_settings_template=args.profile_settings_template,
+        frontend_first_load_save_name=args.frontend_first_load_save_name,
+        frontend_first_timeout_seconds=args.frontend_first_timeout_seconds,
     )
 
 
 def main(argv: list[str] | None = None) -> int:
-    config = parse_args(argv)
     try:
+        # Automatic game-directory discovery intentionally raises before a
+        # CaptureConfig can be built when no Steam install is present.  Keep
+        # that typed RED concise for CLI callers (argparse's own SystemExit
+        # behaviour for --help/invalid syntax remains unchanged).
+        config = parse_args(argv)
         report = run_preflight(config) if config.preflight_only else run_capture(config)
+    except SeedCaptureError as error:
+        print(f"seed capture preflight failed: {type(error).__name__}: {error}")
+        return 2
     except BaseException as error:
         print(f"seed capture preflight failed: {type(error).__name__}: {error}")
         return 2

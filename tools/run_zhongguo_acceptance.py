@@ -118,7 +118,10 @@ from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
 )
 from xar_autoplayer.environment import EnvironmentSpec, make_spec
 from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
-from xar_autoplayer.native_session import native_session
+from xar_autoplayer.native_session import (
+    NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
+    native_session,
+)
 from xar_autoplayer.runtime import (
     NativeBridgeLaunchConfig,
     launch as launch_native_ck3,
@@ -5106,8 +5109,19 @@ def native_loader_smoke_readiness(
 def start_phase2_native_session_supervisor(
     spec: EnvironmentSpec,
     native_bridge: NativeBridgeLaunchConfig,
+    *,
+    frontend_first_load_save_name: str | None = None,
+    frontend_first_timeout_seconds: float = (
+        NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
+    ),
 ) -> dict[str, object]:
     """Start the production pure-native lifecycle owner for phase two only."""
+
+    _validate_phase2_frontend_first_options(
+        frontend_first_load_save_name,
+        frontend_first_timeout_seconds,
+        phase2_runtime_mode=True,
+    )
 
     stop_event = threading.Event()
     session_done = threading.Event()
@@ -5115,6 +5129,14 @@ def start_phase2_native_session_supervisor(
 
     def supervise() -> None:
         try:
+            native_session_options: dict[str, object] = {}
+            if frontend_first_load_save_name is not None:
+                native_session_options = {
+                    "frontend_first_load_save_name": frontend_first_load_save_name,
+                    "frontend_first_timeout_seconds": float(
+                        frontend_first_timeout_seconds
+                    ),
+                }
             session_state["report"] = native_session(
                 spec,
                 timeout_seconds=PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
@@ -5129,6 +5151,7 @@ def start_phase2_native_session_supervisor(
                 # Eternal Recurrence singleton profile; restore relaunches were
                 # already unconditionally verified-prepared-profile=False.
                 verify_prepared_profile=False,
+                **native_session_options,
             )
         except BaseException as error:
             session_state["error"] = f"{type(error).__name__}: {error}"
@@ -5146,7 +5169,61 @@ def start_phase2_native_session_supervisor(
         "session_done": session_done,
         "session_state": session_state,
         "session_thread": session_thread,
+        "frontend_first_load_save_name": frontend_first_load_save_name,
+        "frontend_first_timeout_seconds": (
+            float(frontend_first_timeout_seconds)
+            if frontend_first_load_save_name is not None
+            else None
+        ),
+        "frontend_first_enabled": frontend_first_load_save_name is not None,
+        "frontend_first_evidence_path": (
+            str(
+                (
+                    spec.state_dir
+                    / "native-session"
+                    / "frontend-first-warmup.json"
+                ).resolve()
+            )
+            if frontend_first_load_save_name is not None
+            else None
+        ),
     }
+
+
+def _validate_phase2_frontend_first_options(
+    load_save_name: str | None,
+    timeout_seconds: float,
+    *,
+    phase2_runtime_mode: bool,
+) -> None:
+    """Validate the opt-in startup choreography before creating any outputs."""
+
+    if load_save_name is None:
+        return
+    if not phase2_runtime_mode:
+        raise acceptance.RunnerError(
+            "frontend-first warm-up is only available for phase-two runtime modes"
+        )
+    if (
+        not isinstance(load_save_name, str)
+        or not load_save_name
+        or Path(load_save_name).name != load_save_name
+        or Path(load_save_name).suffix
+        or any(character in load_save_name for character in ("/", "\\", "\0"))
+    ):
+        raise acceptance.RunnerError(
+            "phase-two frontend-first load save name must be one basename "
+            "without a path or extension"
+        )
+    if (
+        isinstance(timeout_seconds, bool)
+        or not isinstance(timeout_seconds, (int, float))
+        or not math.isfinite(float(timeout_seconds))
+        or timeout_seconds <= 0
+    ):
+        raise acceptance.RunnerError(
+            "phase-two frontend-first timeout must be finite and positive"
+        )
 
 
 def wait_for_phase2_native_session_binding(
@@ -5175,6 +5252,23 @@ def wait_for_phase2_native_session_binding(
     write_json(evidence_path, evidence)
     if timeout_s <= 0 or poll_interval_s < 0:
         raise ValueError("phase-two supervisor readiness timing is invalid")
+    frontend_first_enabled = supervisor.get("frontend_first_enabled") is True
+    frontend_first_evidence_path: Path | None = None
+    if frontend_first_enabled:
+        raw_evidence_path = supervisor.get("frontend_first_evidence_path")
+        if not isinstance(raw_evidence_path, str) or not raw_evidence_path:
+            raise ValueError(
+                "phase-two frontend-first supervisor lacks its evidence path"
+            )
+        frontend_first_evidence_path = Path(raw_evidence_path).resolve()
+        evidence["frontend_first"] = {
+            "enabled": True,
+            "load_save_name": supervisor.get("frontend_first_load_save_name"),
+            "evidence_path": str(frontend_first_evidence_path),
+            "warmup": None,
+        }
+    else:
+        evidence["frontend_first"] = {"enabled": False}
     session_done = supervisor.get("session_done")
     session_state = supervisor.get("session_state")
     session_thread = supervisor.get("session_thread")
@@ -5198,6 +5292,38 @@ def wait_for_phase2_native_session_binding(
                     )
                 )
             try:
+                frontend_warmup: dict[str, object] | None = None
+                if frontend_first_enabled:
+                    try:
+                        assert frontend_first_evidence_path is not None
+                        loaded_warmup = json.loads(
+                            frontend_first_evidence_path.read_text(
+                                encoding="utf-8"
+                            )
+                        )
+                        if not isinstance(loaded_warmup, dict):
+                            raise TypeError("warm-up evidence is not an object")
+                        frontend_warmup = loaded_warmup
+                        evidence["frontend_first"]["warmup"] = loaded_warmup
+                        warmup_status = loaded_warmup.get("status")
+                        if warmup_status == "failed":
+                            raise acceptance.RunnerError(
+                                "frontend-first warm-up failed: "
+                                + str(loaded_warmup.get("failure_reason"))
+                            )
+                        if warmup_status != "ready":
+                            last_error = (
+                                "frontend-first warm-up status is "
+                                f"{warmup_status!r}"
+                            )
+                            if poll_interval_s:
+                                time.sleep(poll_interval_s)
+                            continue
+                    except FileNotFoundError:
+                        last_error = "frontend-first warm-up evidence is pending"
+                        if poll_interval_s:
+                            time.sleep(poll_interval_s)
+                        continue
                 capabilities = service.capabilities()
                 if not isinstance(capabilities, dict):
                     raise TypeError("capabilities response is not an object")
@@ -5226,12 +5352,37 @@ def wait_for_phase2_native_session_binding(
                     "positive_bridge_pid": isinstance(bridge_pid, int)
                     and not isinstance(bridge_pid, bool)
                     and bridge_pid > 0,
-                    "initial_connection_generation_one": isinstance(
-                        connection_generation, int
-                    )
-                    and not isinstance(connection_generation, bool)
-                    and connection_generation == 1,
                 }
+                if frontend_first_enabled:
+                    expected_final_pid = (
+                        frontend_warmup.get("final_pid")
+                        if isinstance(frontend_warmup, dict)
+                        else None
+                    )
+                    checks.update(
+                        {
+                            "frontend_first_warmup_ready": isinstance(
+                                frontend_warmup, dict
+                            )
+                            and frontend_warmup.get("status") == "ready",
+                            "frontend_first_final_pid_matches": isinstance(
+                                expected_final_pid, int
+                            )
+                            and not isinstance(expected_final_pid, bool)
+                            and bridge_pid == expected_final_pid,
+                            "frontend_first_generation_after_warmup": isinstance(
+                                connection_generation, int
+                            )
+                            and not isinstance(connection_generation, bool)
+                            and connection_generation >= 2,
+                        }
+                    )
+                else:
+                    checks[
+                        "initial_connection_generation_one"
+                    ] = isinstance(connection_generation, int) and not isinstance(
+                        connection_generation, bool
+                    ) and connection_generation == 1
                 if all(checks.values()):
                     binding = {
                         "bridge_pid": bridge_pid,
@@ -5245,6 +5396,11 @@ def wait_for_phase2_native_session_binding(
                 last_error = ", ".join(
                     label for label, passed in checks.items() if not passed
                 )
+            except acceptance.RunnerError:
+                # A typed warm-up failure is terminal.  Do not convert it to
+                # a generic binding timeout while the supervisor is already
+                # known to have failed.
+                raise
             except Exception as error:
                 last_error = f"{type(error).__name__}: {error}"
             if poll_interval_s:
@@ -15053,12 +15209,22 @@ def run_cell(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_frontend_first_load_save_name: str | None = None,
+    phase2_frontend_first_timeout_seconds: float = (
+        NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
+    ),
     runtime_source: Path = SOURCE,
     runtime_identity: dict[str, object] | None = None,
     phase2_seed_install: dict[str, object] | None = None,
     phase2_seed_contract_path: Path | None = None,
     phase2_source_checkpoint_registry: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
+    phase2_runtime_mode = phase2_live_batch or phase2_promo_capture
+    _validate_phase2_frontend_first_options(
+        phase2_frontend_first_load_save_name,
+        phase2_frontend_first_timeout_seconds,
+        phase2_runtime_mode=phase2_runtime_mode,
+    )
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
@@ -15146,7 +15312,6 @@ def run_cell(
     phase2_legal_consent: dict[str, object] | None = None
     phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
     phase2_promo_producer_error: dict[str, object] | None = None
-    phase2_runtime_mode = phase2_live_batch or phase2_promo_capture
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
@@ -15194,8 +15359,18 @@ def run_cell(
         )
         title_navigation_service = GameplayBridgeService(native_driver)
         if phase2_runtime_mode:
+            phase2_supervisor_options: dict[str, object] = {}
+            if phase2_frontend_first_load_save_name is not None:
+                phase2_supervisor_options = {
+                    "frontend_first_load_save_name": (
+                        phase2_frontend_first_load_save_name
+                    ),
+                    "frontend_first_timeout_seconds": (
+                        phase2_frontend_first_timeout_seconds
+                    ),
+                }
             phase2_supervisor = start_phase2_native_session_supervisor(
-                spec, native_bridge
+                spec, native_bridge, **phase2_supervisor_options
             )
             phase2_initial_binding = wait_for_phase2_native_session_binding(
                 title_navigation_service,
@@ -15704,6 +15879,15 @@ def run_cell(
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
         "phase2_promo_capture": phase2_promo_capture,
+        "phase2_frontend_first": {
+            "enabled": phase2_frontend_first_load_save_name is not None,
+            "load_save_name": phase2_frontend_first_load_save_name,
+            "timeout_seconds": (
+                phase2_frontend_first_timeout_seconds
+                if phase2_frontend_first_load_save_name is not None
+                else None
+            ),
+        },
         "phase2_promo_capture_complete": phase2_promo_capture_complete,
         "promo_capture_mode": (
             recorder.contract.mode
@@ -15779,6 +15963,13 @@ def run_cell(
                     if isinstance(native_cleanup.get("session_report"), dict)
                     else None
                 ),
+                "frontend_first_warmup": (
+                    native_cleanup.get("session_report", {}).get(
+                        "frontend_first_warmup"
+                    )
+                    if isinstance(native_cleanup.get("session_report"), dict)
+                    else None
+                ),
                 "cleanup": native_cleanup,
             }
             if phase2_runtime_mode
@@ -15816,6 +16007,10 @@ def main(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_frontend_first_load_save_name: str | None = None,
+    phase2_frontend_first_timeout_seconds: float = (
+        NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
+    ),
     workshop_cache_source: str | None = None,
     workshop_manifest: str | None = None,
     bridge_dll: str | None = None,
@@ -15839,6 +16034,11 @@ def main(
             "--promo-capture, --phase2-promo-capture, --promo-camera-probe, "
             "--loader-smoke and --phase2-live-batch are mutually exclusive"
         )
+    _validate_phase2_frontend_first_options(
+        phase2_frontend_first_load_save_name,
+        phase2_frontend_first_timeout_seconds,
+        phase2_runtime_mode=phase2_live_batch or phase2_promo_capture,
+    )
     # Do not let the sequel mode fall through to the legacy visual scenario.
     # A real phase-two choreography must be registered explicitly before any
     # preflight, profile write, CK3 launch, or FFmpeg process is attempted.
@@ -15954,6 +16154,12 @@ def main(
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
+        phase2_frontend_first_load_save_name=(
+            phase2_frontend_first_load_save_name
+        ),
+        phase2_frontend_first_timeout_seconds=(
+            phase2_frontend_first_timeout_seconds
+        ),
         runtime_source=runtime_source,
         runtime_identity=runtime_identity,
         phase2_seed_contract_path=phase2_seed_contract_path,
@@ -16131,6 +16337,19 @@ if __name__ == "__main__":
         ),
     )
     parser.add_argument(
+        "--phase2-frontend-first-load-save-name",
+        help=(
+            "opt-in Phase2 startup: launch without a save argument, wait for "
+            "Frontend, stop, then load this save basename on the same pipe"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-frontend-first-timeout-seconds",
+        type=float,
+        default=NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
+        help="bounded Frontend marker wait for the Phase2 opt-in startup",
+    )
+    parser.add_argument(
         "--workshop-cache-source",
         help="verified fresh CK3 Workshop cache leaf used instead of the development source",
     )
@@ -16179,6 +16398,12 @@ if __name__ == "__main__":
                 promo_camera_probe=arguments.promo_camera_probe,
                 loader_smoke=arguments.loader_smoke,
                 phase2_live_batch=arguments.phase2_live_batch,
+                phase2_frontend_first_load_save_name=(
+                    arguments.phase2_frontend_first_load_save_name
+                ),
+                phase2_frontend_first_timeout_seconds=(
+                    arguments.phase2_frontend_first_timeout_seconds
+                ),
                 workshop_cache_source=arguments.workshop_cache_source,
                 workshop_manifest=arguments.workshop_manifest,
                 bridge_dll=arguments.bridge_dll,

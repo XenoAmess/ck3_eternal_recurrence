@@ -173,6 +173,7 @@ class FakeZhongguoRunner:
         self.keyboard_green = keyboard_green
         self.process_exit = process_exit
         self.supervisor: dict[str, object] | None = None
+        self.supervisor_options: dict[str, object] = {}
         self.isolated = FakeIsolated()
         self.EXPECTED_EXE_SHA256 = sha256(executable)
 
@@ -228,9 +229,10 @@ class FakeZhongguoRunner:
         )
 
     def start_phase2_native_session_supervisor(
-        self, _spec: object, _bridge: object
+        self, _spec: object, _bridge: object, **kwargs: object
     ) -> dict[str, object]:
         self.calls.append("supervisor-start")
+        self.supervisor_options = dict(kwargs)
         self.supervisor = {
             "stop_event": threading.Event(),
             "session_done": threading.Event(),
@@ -557,6 +559,227 @@ class FakeTime:
 
     def sleep(self, seconds: float) -> None:
         self.value += seconds
+
+
+def _write_full_settings(path: Path, *, lines: int = 24) -> None:
+    body = [
+        '"game"={',
+        '\t"cloud_save"={ version=0 enabled=no }',
+        '}',
+        '"Graphics"={',
+        '\t"display_mode"={ version=0 value="fullscreen" }',
+        '}',
+        '"System"={',
+        '\t"language"={ version=0 value="l_simp_chinese" }',
+        '}',
+    ]
+    body.extend(f'"padding_{index}"={{ version=0 value={index} }}' for index in range(lines))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(body) + "\n", encoding="utf-8")
+
+
+def test_game_dir_resolution_prefers_steam_and_preserves_explicit() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        steam = root / "SteamLibrary"
+        install = steam / "steamapps" / "common" / "CK3-Actual"
+        (install / "binaries").mkdir(parents=True)
+        (install / "game" / "common" / "game_rules").mkdir(parents=True)
+        (install / "binaries" / "ck3.exe").write_bytes(b"exe")
+        (install / "game" / "common" / "game_rules" / "00_game_rules.txt").write_text(
+            "rules = {}\n", encoding="utf-8"
+        )
+        apps = steam / "steamapps"
+        (apps / "appmanifest_1158310.acf").write_text(
+            '"AppState" {\n\t"installdir" "CK3-Actual"\n}\n',
+            encoding="utf-8",
+        )
+        previous_game = os.environ.pop("XAR_CK3_GAME_DIR", None)
+        previous_steam = os.environ.get("XAR_STEAM_DIR")
+        os.environ["XAR_STEAM_DIR"] = str(steam)
+        try:
+            selected, source, candidates = capture.resolve_ck3_game_dir()
+            require(selected == install.resolve(), "Steam install was not selected")
+            require(source == "steam-library", "Steam provenance was not recorded")
+            require(
+                any(row["path"] == str(install.resolve()) and row["valid"] is True for row in candidates),
+                "valid Steam candidate was not retained",
+            )
+            explicit = root / "operator-custom"
+            selected_explicit, source_explicit, rows_explicit = capture.resolve_ck3_game_dir(explicit)
+            require(selected_explicit == explicit.resolve(), "explicit game path was replaced")
+            require(source_explicit == "explicit-cli", "explicit path provenance drifted")
+            require(rows_explicit[0]["valid"] is False, "invalid explicit path was silently substituted")
+        finally:
+            if previous_game is not None:
+                os.environ["XAR_CK3_GAME_DIR"] = previous_game
+            if previous_steam is None:
+                os.environ.pop("XAR_STEAM_DIR", None)
+            else:
+                os.environ["XAR_STEAM_DIR"] = previous_steam
+
+
+def test_game_dir_resolution_never_falls_back_to_repository() -> None:
+    """A missing Steam install must be a typed RED, not a repo-path launch."""
+
+    previous_game = os.environ.pop("XAR_CK3_GAME_DIR", None)
+    original_roots = capture._steam_library_roots
+    capture._steam_library_roots = lambda: []
+    try:
+        try:
+            capture.resolve_ck3_game_dir()
+        except capture.SeedCaptureError as error:
+            require(
+                "no valid SteamLibrary install" in str(error),
+                "automatic game-dir failure was not typed",
+            )
+            require(
+                error.evidence.get("automatic_requires_steam") is True,
+                "repository fallback evidence was not recorded",
+            )
+        else:
+            raise AssertionError("automatic resolver silently selected repository copy")
+    finally:
+        capture._steam_library_roots = original_roots
+        if previous_game is not None:
+            os.environ["XAR_CK3_GAME_DIR"] = previous_game
+
+
+def test_profile_settings_requires_explicit_template_and_records_auto_candidate() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        fixture = Fixture(root)
+        template = root / "known-good" / "pdx_settings.txt"
+        _write_full_settings(template)
+        config = replace(fixture.config(), profile_settings_template=template)
+        evidence = capture.prepare_profile_settings(config)
+        require(evidence["result"] == "GREEN", "explicit settings template was not copied")
+        destination = config.profile_dir / "pdx_settings.txt"
+        require(destination.is_file(), "settings destination was not created")
+        require(evidence["destination_sha256"] == sha256(destination), "settings hash evidence drifted")
+
+        auto_root = root / "operator-profile"
+        auto_settings = auto_root / "pdx_settings.txt"
+        _write_full_settings(auto_settings)
+        previous_auto = os.environ.get("XAR_REAL_CK3_PROFILE")
+        os.environ["XAR_REAL_CK3_PROFILE"] = str(auto_root)
+        try:
+            fresh = replace(fixture.config(), attempt_dir=root / "attempt-auto")
+            fresh = replace(fresh, artifacts_dir=fresh.attempt_dir / "artifacts")
+            auto_evidence = capture.prepare_profile_settings(fresh)
+        finally:
+            if previous_auto is None:
+                os.environ.pop("XAR_REAL_CK3_PROFILE", None)
+            else:
+                os.environ["XAR_REAL_CK3_PROFILE"] = previous_auto
+        require(
+            auto_evidence["result"] == "AVAILABLE_NOT_SELECTED",
+            "operator settings were copied without an explicit pin",
+        )
+        require(
+            auto_evidence["auto_candidate"]["selected"] is False,
+            "auto settings candidate was not marked unselected",
+        )
+        require(
+            not (fresh.profile_dir / "pdx_settings.txt").exists(),
+            "implicit profile settings copy changed isolated state",
+        )
+
+
+def test_release_bridge_bundle_provenance_binds_pair_and_rejects_debug() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        fixture = Fixture(root)
+        manifest = root / "bridge-bundle.json"
+        payload = {
+            "schema_version": 1,
+            "kind": "offline_native_bridge_fresh_bundle_audit",
+            "status": "built_skip_tests",
+            "built_at_local": "2026-09-03T10:52:00+08:00",
+            "source": {
+                "git_head": "b" * 40,
+                "fingerprint_sha256": "c" * 64,
+            },
+            "build": {
+                "build_dir": str(root / "release-build"),
+                "generator": "Ninja",
+                "configuration": "Release",
+                "compiler": "MSVC",
+                "compile_link": "success",
+                "tests_ran": False,
+            },
+            "cmake_flags": {"XAR_CK3_ENABLE_PHASE2": False},
+            "artifacts": {
+                "dll": {
+                    "path": str(fixture.dll),
+                    "bytes": fixture.dll.stat().st_size,
+                    "sha256": sha256(fixture.dll).upper(),
+                },
+                "injector": {
+                    "path": str(fixture.injector),
+                    "bytes": fixture.injector.stat().st_size,
+                    "sha256": sha256(fixture.injector).upper(),
+                },
+                "pe_imports": {"debug_crt_present": False},
+            },
+        }
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+        config = replace(fixture.config(), bridge_bundle_manifest=manifest)
+        provenance = capture.bridge_bundle_provenance(config)
+        require(isinstance(provenance, dict), "Release provenance was not returned")
+        require(provenance["build_type"] == "Release", "build type was not bound")
+        require(provenance["matches"] == {
+            "dll_sha256": True,
+            "dll_bytes": True,
+            "injector_sha256": True,
+            "injector_bytes": True,
+        }, "bridge pair hash/size match was not recorded")
+        payload["build"]["configuration"] = "Debug"
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+        try:
+            capture.bridge_bundle_provenance(config)
+        except capture.SeedCaptureError as error:
+            require("requires a Release bridge bundle" in str(error), "Debug bundle rejection was mistyped")
+        else:
+            raise AssertionError("Debug bridge bundle was accepted")
+
+
+def test_phase2_frontend_first_options_reach_seed_supervisor() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        fixture = Fixture(root)
+        calls: list[str] = []
+        previous_auto = os.environ.get("XAR_REAL_CK3_PROFILE")
+        os.environ["XAR_REAL_CK3_PROFILE"] = str(root / "no-auto-profile")
+        try:
+            config = replace(
+                fixture.config(),
+                frontend_first_load_save_name="phase2_seed",
+                frontend_first_timeout_seconds=12.5,
+            )
+            runtime = fixture.runtime(calls)
+            report = capture.run_capture(config, runtime=runtime)
+        finally:
+            if previous_auto is None:
+                os.environ.pop("XAR_REAL_CK3_PROFILE", None)
+            else:
+                os.environ["XAR_REAL_CK3_PROFILE"] = previous_auto
+        require(report["result"] == "GREEN", "frontend-first fake capture was RED")
+        zgrun = runtime.zgrun
+        require(
+            zgrun.supervisor_options
+            == {
+                "frontend_first_load_save_name": "phase2_seed",
+                "frontend_first_timeout_seconds": 12.5,
+            },
+            "frontend-first options did not reach the phase2 supervisor",
+        )
+        require(
+            report["frontend_first_warmup"]["save_materialization"]["load_save_name"]
+            == "phase2_seed",
+            "frontend-first save was not materialized under the requested basename",
+        )
+        require("supervisor-start" in calls, "phase2 supervisor was not started")
 
 
 def test_green_capture() -> None:
@@ -1479,6 +1702,7 @@ def test_static_contract() -> None:
         "--git-sha",
         "--bridge-dll",
         "--injector",
+        "--bridge-bundle-manifest",
         "--pipe",
         "--preflight-only",
         "--list-domain-observer-gate",
@@ -1496,6 +1720,8 @@ def test_static_contract() -> None:
         "native_session_probe",
         "_phase2_native_session_probe(",
         "driver.close()",
+        "AUTOMATIC_GAME_DIR_REQUIRES_STEAM",
+        "CACHE_PROVENANCE_SCAN_LIMIT",
     ):
         require(token in source, f"runner contract token missing: {token}")
     require(
@@ -1519,6 +1745,11 @@ def test_static_contract() -> None:
 
 
 def main() -> int:
+    test_game_dir_resolution_prefers_steam_and_preserves_explicit()
+    test_game_dir_resolution_never_falls_back_to_repository()
+    test_profile_settings_requires_explicit_template_and_records_auto_candidate()
+    test_release_bridge_bundle_provenance_binds_pair_and_rejects_debug()
+    test_phase2_frontend_first_options_reach_seed_supervisor()
     test_green_capture()
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()

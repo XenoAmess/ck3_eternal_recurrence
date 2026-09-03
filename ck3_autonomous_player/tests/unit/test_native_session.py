@@ -21,6 +21,8 @@ from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.environment import write_json_atomic  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.native_session import (  # noqa: E402
+    NATIVE_SESSION_FRONTEND_MARKER,
+    NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
     _native_session_locked,
     native_session,
     validate_episode_seed_for_state,
@@ -54,6 +56,17 @@ class NativeSessionModeTests(unittest.TestCase):
                 "verify_prepared_profile"
             ].default,
             True,
+        )
+        self.assertIsNone(
+            inspect.signature(native_session).parameters[
+                "frontend_first_load_save_name"
+            ].default
+        )
+        self.assertEqual(
+            inspect.signature(native_session).parameters[
+                "frontend_first_timeout_seconds"
+            ].default,
+            NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
         )
 
     def test_explicit_profile_verification_opt_out_reaches_locked_owner(
@@ -227,6 +240,137 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         lines = output.getvalue().splitlines()
         self.assertTrue(any('"type": "native_session_ready"' in line for line in lines))
         self.assertTrue(any('"type": "native_session_status"' in line for line in lines))
+
+    def test_frontend_first_warmup_loads_save_on_same_pipe(self) -> None:
+        process_one = mock.Mock()
+        process_one.pid = 4801
+        process_one.poll.return_value = None
+        process_two = mock.Mock()
+        process_two.pid = 4802
+        process_two.poll.return_value = None
+        first_handle = SimpleNamespace(process=process_one)
+        second_handle = SimpleNamespace(process=process_two)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-first-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        save_path = self.spec.profile_dir / "save games" / "last_save.ck3"
+        save_path.parent.mkdir(parents=True)
+        save_path.write_bytes(b"frozen frontend-first save")
+        shutdown = {"ok": True, "contract_errors": []}
+        marker = {
+            "marker": NATIVE_SESSION_FRONTEND_MARKER,
+            "path": str(self.spec.profile_dir / "logs" / "debug.log"),
+            "seen": True,
+        }
+        output = io.StringIO()
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch",
+            side_effect=(first_handle, second_handle),
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            side_effect=(shutdown, shutdown),
+        ) as stop_mock, mock.patch(
+            "xar_autoplayer.native_session._wait_for_frontend_marker",
+            return_value=marker,
+        ) as wait_marker_mock, mock.patch(
+            "xar_autoplayer.native_session._process_windows_minimized",
+            return_value=None,
+        ):
+            report = _native_session_locked(
+                self.spec,
+                config,
+                5.0,
+                input_stream=io.StringIO("stop\n"),
+                output_stream=output,
+                poll_interval_seconds=0.001,
+                verify_prepared_profile=False,
+                frontend_first_load_save_name="last_save",
+                frontend_first_timeout_seconds=1.0,
+            )
+
+        self.assertEqual(
+            launch_mock.call_args_list,
+            [
+                mock.call(
+                    self.spec,
+                    native_bridge=None,
+                    verify_prepared_profile=False,
+                ),
+                mock.call(
+                    self.spec,
+                    native_bridge=config,
+                    load_save_name="last_save",
+                    verify_prepared_profile=False,
+                ),
+            ],
+        )
+        wait_marker_mock.assert_called_once()
+        self.assertEqual(
+            stop_mock.call_args_list,
+            [
+                mock.call(first_handle, require_running=False),
+                mock.call(second_handle, require_running=False),
+            ],
+        )
+        warmup = report["frontend_first_warmup"]
+        self.assertIsInstance(warmup, dict)
+        self.assertEqual(warmup["status"], "ready")
+        self.assertEqual(warmup["warmup_pid"], 4801)
+        self.assertEqual(warmup["final_pid"], 4802)
+        self.assertEqual(warmup["pipe"], config.pipe_name)
+        self.assertEqual(warmup["load_save_name"], "last_save")
+        self.assertEqual(
+            warmup["warmup_bridge"],
+            {"mode": "disabled", "dll_injection": False, "mcp": False},
+        )
+        self.assertEqual(warmup["final_launch"]["native_bridge_mode"], "native-headless")
+        self.assertEqual(report["restart_count"], 0)
+        self.assertEqual(report["pid"], 4802)
+        evidence_path = (
+            self.spec.state_dir
+            / "native-session"
+            / "frontend-first-warmup.json"
+        )
+        evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+        self.assertEqual(evidence["status"], "ready")
+        self.assertEqual(evidence["final_pid"], 4802)
+        lines = output.getvalue().splitlines()
+        self.assertTrue(
+            any(
+                '"type": "native_session_frontend_first_warmup_started"'
+                in line
+                for line in lines
+            )
+        )
+        self.assertTrue(
+            any('"type": "native_session_ready"' in line for line in lines)
+        )
+
+    def test_frontend_first_rejects_missing_target_before_launch(self) -> None:
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-first-missing-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        with mock.patch("xar_autoplayer.native_session.launch") as launch_mock:
+            with self.assertRaisesRegex(
+                AgentError, "frontend-first load save is unavailable"
+            ):
+                _native_session_locked(
+                    self.spec,
+                    config,
+                    1.0,
+                    input_stream=None,
+                    output_stream=None,
+                    poll_interval_seconds=0.001,
+                    frontend_first_load_save_name="missing",
+                )
+        launch_mock.assert_not_called()
 
     def test_pre_set_stop_event_uses_tracked_cleanup_once(self) -> None:
         process = mock.Mock()
