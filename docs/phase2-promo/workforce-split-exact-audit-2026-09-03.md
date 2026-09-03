@@ -72,10 +72,13 @@ cross-file references, or a valid split. The exact BOM-correct full split is
 the only candidate arm that can answer that question, and its RED
 `Total of : 881` result is recorded in the exact-candidate section below.
 
-## Thirty-minute full-run plan (pending result)
+## Thirty-minute full-run plan (closed; monolith control only)
 
-This is a queued plan, not a claimed run. It must remain behind the serial CK3
-gate and must not overwrite the frozen artifacts above.
+The queued plan below was not fulfilled against the exact A+B target. The
+completed `formal-phase2-full-exact-1800-20260903` run mounted the unsplit
+monolith, so it is retained as a non-split control and does not answer the
+exact-split acceptance question. It remained behind the serial CK3 gate and
+did not overwrite the frozen artifacts above.
 
 * **T+0 to T+3:** freeze the exact candidate tree, source SHA, executable SHA,
   DLC/load order, disposable `-userdir`, and projection tree hash; verify the
@@ -91,9 +94,10 @@ gate and must not overwrite the frozen artifacts above.
   `Total of : 881` stall, missing history marker, nonzero exit, or incomplete
   cleanup is RED and must be retained as a failed attempt.
 
-**Status: PENDING.** No valid thirty-minute A+B run is attributed to this
-audit; the already completed exact run remains the functional evidence and is
-RED.
+**Status: CLOSED for the monolith control.** No valid thirty-minute A+B run is
+attributed to this audit; the already completed byte-exact A+B run remains the
+functional acceptance evidence and is RED. The separate B7 300-second stub
+run is also RED at `Total of : 881` and is only a threshold diagnostic.
 
 ### Attempt observed after the plan (invalid target)
 
