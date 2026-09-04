@@ -189,7 +189,11 @@ def _career_hook_ready() -> bool:
         and _mapping(source.get("integration"), "career integration").get(
             "native_provider_wiring"
         )
-        == "pending"
+        == "complete_default_off_until_live"
+        and _mapping(source.get("native_provider"), "career native provider").get(
+            "shared_wiring"
+        )
+        == "default_off_complete_not_advertised"
         and callable(route_b.query_career_hc_if_available)
     )
 
@@ -277,7 +281,7 @@ def build_preflight(
                 _runner_seam_ready()
             ),
             "real_product_route_b_is_present": _real_product_route_ready(),
-            "career_hc_hook_respects_unpublished_provider": _career_hook_ready(),
+            "career_hc_hook_respects_default_off_provider": _career_hook_ready(),
             "documentation_records_scalar_scope_boundary": DOC_PATH.is_file()
             and "cycle/case" in DOC_PATH.read_text(encoding="utf-8"),
             "module_has_no_launcher_or_process_surface": _no_launch_source_ready(),

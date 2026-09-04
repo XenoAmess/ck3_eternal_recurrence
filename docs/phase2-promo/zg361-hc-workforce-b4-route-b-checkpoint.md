@@ -70,8 +70,9 @@ calling it. When that capability is not advertised, the artifact records
 `status=not_available`, `provider_observed=false`, and no synthetic partition.
 If it is advertised, the hook requires the same paused revision, date and
 owner/subject/cycle/case as the Workforce result plus the real state-4,
-choice-2 receipt. The career provider's exact-build native wiring remains
-pending at this commit.
+choice-2 receipt. The career provider's exact-build native wiring is complete,
+but remains default-off and unadvertised until this paused live checkpoint is
+proven.
 
 ## Remaining live checkpoint
 
