@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_projects_metrics_action_cell",
+  "span_id": "phase2_projects_metrics",
+  "producer_key": "projects-metrics",
+  "readiness": "static-ready-live-pending",
+  "query_action_postcondition": {
+    "pre_query": "query_zhongguo_projects_metrics_postcondition_v1",
+    "action": "life-advance",
+    "post_query": "query_zhongguo_projects_metrics_postcondition_v1",
+    "action_ack_is_business_postcondition": false,
+    "provider_observed_postcondition_required": true,
+    "terminal_condition": "same_cp26_receipt_consumed_by_committed_p3m229_result"
+  },
+  "cell": {
+    "module": "tools/zg361_phase2_projects_metrics_action_cell.py",
+    "preflight": "preflight_projects_metrics_gameplay_action_cell",
+    "run": "run_projects_metrics_gameplay_action_cell",
+    "service_implementation": "xar_autoplayer.bridge.service.GameplayBridgeService",
+    "required_methods": [
+      "capabilities",
+      "snapshot",
+      "execute_step",
+      "query_zhongguo_projects_metrics_postcondition_v1"
+    ]
+  },
+  "existing_provider": {
+    "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+    "contract": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_projects_metrics_postcondition_contract.py",
+    "schema": "ck3_autonomous_player/schemas/zhongguo-projects-metrics-postcondition-v1.schema.json",
+    "abi": "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json",
+    "source_contract": "ck3_autonomous_player/native_bridge/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json",
+    "current_status": "static_and_fixture_ready_not_live",
+    "currently_advertised_by_default_adapter": false
+  },
+  "exact_live_checkpoint": {
+    "played_character_role": "project_subject",
+    "owner_role": "distinct_bounded_ai_project_owner",
+    "map_paused": true,
+    "active_player_event": false,
+    "product_source_state": "zg361cp.26 route A or B contribution receipt prepared for the same subject and cycle",
+    "provider_pre_state": "unavailable with project_source_not_found before the P3 initializer copies the CP receipt",
+    "result_state": "zg361p3.229 has not yet committed its metrics result",
+    "atomicity_note": "P3 initialization and authorized AI #229 routing run in one effect call, so source-ready/result-pending is not required to be a separately observable paused frame",
+    "also_supported_pre_state": "an observable source-ready/result-pending provider frame, if one is supplied by a future production path"
+  },
+  "postcondition": {
+    "later_paused_frame_required": true,
+    "stable_player_and_connection_required": true,
+    "same_source_identity_required": true,
+    "same_contribution_receipt_id_and_revision_required": true,
+    "source_result_contribution_metrics_identity_equal": true,
+    "metrics_source_receipt_matches_contribution": true,
+    "metrics_revision_positive": true,
+    "dictionary_key_allowlist": [
+      "metric_dictionary_subject_v1",
+      "metric_dictionary_manager_v1"
+    ],
+    "provider_readiness_ready": true,
+    "result_operation_committed": true
+  },
+  "visual_checkpoint_boundary": {
+    "source_event": "zg361cp.26",
+    "result_event": "zg361p3.229",
+    "event_root_role": "project_owner",
+    "same_cell_as_background_provider": false,
+    "reason": "both visible events require the non-AI played character to be owner, while provider v1 intentionally reads only the played subject under a distinct owner",
+    "future_visual_integration": "capture_projects_metrics remains a separate owner-visible source/result capture and must not be represented as this subject-bound business cell"
+  },
+  "known_live_gaps": [
+    {
+      "id": "provider-capability-withheld",
+      "blocking": true,
+      "evidence": "default 1.19.0.6 adapter does not advertise the provider until paused live acceptance exists"
+    },
+    {
+      "id": "cp26-prepared-p3-not-started-seed-missing",
+      "blocking": true,
+      "evidence": "no frozen save or fixture currently establishes an AI-owner/player-subject CP26 receipt before the P3 initializer copies it and performs P3M229"
+    },
+    {
+      "id": "central-stage-order",
+      "blocking": true,
+      "evidence": "central runtime dispatches metrics stage 7 before credit/project stage 8, so a first central cycle cannot itself create CP26 before opening P3 for that same cycle"
+    },
+    {
+      "id": "no-live-postcondition-artifact",
+      "blocking": true,
+      "evidence": "no real paused provider response has yet proven the CP26 to P3M229 receipt lineage"
+    }
+  ],
+  "future_runner_integration": {
+    "formal_registry_modified": false,
+    "runner": "tools/run_zhongguo_promo_capture.py",
+    "span_handler": "capture_projects_metrics",
+    "entrypoint": "after a production seed restores the CP26-prepared/P3-not-started subject checkpoint and before any visual owner-role switch",
+    "required_live_sequence": [
+      "restore hash-bound checkpoint",
+      "run non-mutating preflight",
+      "run bounded life-advance cell",
+      "persist provider-observed sidecar",
+      "run owner-visible source/result capture as a separate checkpoint"
+    ]
+  },
+  "no_launch_boundary": {
+    "ck3_started": false,
+    "gameplay_action_executed": false,
+    "business_postcondition_claimed": false,
+    "live_proof_claimed": false,
+    "formal_runner_registry_modified": false
+  }
+}
