@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_career_hc_workforce_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "source": {
+    "base_commit": "ce458af71a2a44decc085766720082a8b724edb8",
+    "candidate_commit": "6a6473ac5b4e9afcb406915cd1f61b5cf619a40a",
+    "native_source_fingerprint_sha256": "C640BEDF73A1789D1E28CBD41F60A86E12E08F643345E99B5D666DCC599DA39C",
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "7CF8F2D408AD6841F3199B770DE2DB92CA6DF49BCBD77A307E056D86585A9C22",
+      "ck3_autonomous_player/native_bridge/tools/build_fresh.ps1": "34BA65E6E311475C7F560194706F958C84C3B40B3983BD168EB5B01729742263",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_career_hc_workforce_postcondition_v1.hpp": "E9DB907EB1C0DB71BF0EE7B8486B697CCDCE4ED3DDF8A0A515E50F2DC87DF72F",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_career_hc_workforce_postcondition_v1_mailbox.hpp": "083DB807C0B5BCB90C2AD6106EE23CF80F8045117E7A55147597B5549F27A1DB",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp": "5E247DF42197CB9B07CE7EE7DB4D247735F67757DF1E27B321739A3F86044DFD",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_career_hc_workforce_postcondition_v1.cpp": "2BC9C7EA2C1D4907961AE021F1C910433FF493F76A0ED35B14705809307797D2",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp": "37C9E49E0A7F7FBB14DDC46FB0F08FAF8A42C0FFC1F94F71C9E87C57574262E8",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp": "1DE9BBAD2A10A77FF779BD9010199FC38B178FF5A84AE310EAA8E09E3A57D1C0",
+      "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "2934D2F730650564F5E4DB28F6B1AAF6B5495FF7163F5362B339DDB57D2A737F",
+      "ck3_autonomous_player/native_bridge/src/bridge.cpp": "F06AF7B985E7D8B29DE62B0323B4A7283433D3233A3ADB90752FB22D609AF1AB",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "2662AABD13C07A14AEA1AEEE59DB7A8289BDEDB87EB3E5361F3E3BB4F2F78B91",
+      "ck3_autonomous_player/native_bridge/src/game_adapter.cpp": "C93C3BFB198AC3AA3685C085E05A885E12F68DE51C584B04E43A64D703F16DF9",
+      "ck3_autonomous_player/native_bridge/src/game_adapter_test.cpp": "C21204756211747259E46DAC1DDFE550D4BA53DE85BE451FA699EEAAE2163E98",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_career_hc_workforce_postcondition_v1_test.cpp": "125F9BC9EED0D9FFB08A6A4A0F7F2A00A196932F461D2611F43143685850ECF5",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_career_hc_workforce_postcondition_v1_mailbox_test.cpp": "334D6614BF5DB34E2C077FDD85C38EBA637B7625EBEA026A0D49569E365C0B23",
+      "ck3_autonomous_player/native_bridge/research/zhongguo_career_hc_workforce_postcondition_v1_abi.json": "AD1CC96A8BB6F3736D5DD69E9B4525ED33A54ABAB72A5F6C6863A1A08F383496",
+      "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_career_hc_workforce_postcondition_v1_source_contract.json": "F0B7F4B5AB34FD1B11556152AF9161DB8DCA5B659825093176AC3CB64D4B1561",
+      "ck3_autonomous_player/schemas/zhongguo-career-hc-workforce-postcondition-v1.schema.json": "453B9A93FDE9D472AA82C687BB2FD3DB4FBEF06D315AB91DCC4E167FA2F5B6C5",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_career_hc_workforce_postcondition_contract.py": "398210553C74FDEFA800B77F1287570598E4C2C4C73BE35F243BEC889BC14C76",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "ED91FD5A10FBDA4E0079E2F96F4106C8F78390AA383BFF2139386882B66C8027",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": "892C077A9C6650AC611B50B51B8511C781CB763A3E62AE6F766977B557179DAA",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": "432752C42FBC9579C36044FCF28E8CD21FF2CD3153DCC2DFA9D515C002A1BB2D",
+      "tools/zg361_phase2_hc_workforce_b6_action_cell.py": "7F48C4D3B0081C934AD50FEDDD9EACF72D7108732E35522609D12838C151255A",
+      "tools/preflight_zg361_phase2_hc_workforce_b6.py": "C4D0895A66902D00B7EF8227F0B2ECF6233CFCBCC6A2D91F0D0B95E99BF8878F",
+      "tools/zg361_phase2_hc_workforce_route_b_checkpoint.py": "DA2FC9CAABCB99B7355D895221A1B7F939673A9003AA4C2B34A1A8F3502BDCA4",
+      "tools/zg361_phase2_hc_workforce_route_b_checkpoint_contract.json": "A0A0FC4C2644E4EF403FF1766DB9CA53CF47C37DA4CE0F3C70AF6308023AFB98",
+      "tools/zg361_phase2_hc_workforce_route_b_checkpoint_preflight.py": "6588EB864C1C1EAEE4057B3F39A0569F93F31C642ED57EAB974D0EE458CC6FBC",
+      "tools/verify_zg361_career_hc_workforce_no_launch_candidate.py": "2F9E8A231790172FCD616E79C9A59FD82705C91CB65BC3D7B1D7AD835559207D"
+    }
+  },
+  "build": {
+    "configuration": "Release",
+    "generator": "Ninja",
+    "compiler": "MSVC 19.51.36248.0",
+    "candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1=ON",
+    "projects_metrics_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=OFF",
+    "artifact_directory": "Z:/ck3_mod_rewrite_process_assets/zg361/career-hc-workforce-provider-private-candidate-6a6473a-20260904T062648Z",
+    "bridge": {
+      "path": "Z:/ck3_mod_rewrite_process_assets/zg361/career-hc-workforce-provider-private-candidate-6a6473a-20260904T062648Z/xar_ck3_bridge.dll",
+      "bytes": 2352640,
+      "sha256": "9EE39CAE349180806FA2631805539EFC704C45401A2EB11F7F781F4EE671E7AC"
+    },
+    "injector": {
+      "path": "Z:/ck3_mod_rewrite_process_assets/zg361/career-hc-workforce-provider-private-candidate-6a6473a-20260904T062648Z/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "751D178F692EA029F84A0D4DDA00BDA09C2DB2F85AFAD49833BE0DF8D3C9A994"
+    },
+    "cmake_cache_path": "Z:/ck3_mod_rewrite_process_assets/zg361/career-hc-workforce-provider-private-candidate-6a6473a-20260904T062648Z/CMakeCache.txt",
+    "cmake_cache_sha256": "EE8D067DD6CC5453A2DD0F971EA72E223BB4490C019FEF9F75462D3F674EB2BC"
+  },
+  "tests": {
+    "default_full_native": {
+      "result": "GREEN",
+      "passed": 92,
+      "failed": 0,
+      "candidate_switch": "OFF",
+      "build_path": "Z:/b6hci2",
+      "bridge_sha256": "05857D9BDB2212A286445B884B2D66FCEF7792013F9283791896B3D7C3A96C0C"
+    },
+    "candidate_full_native": {
+      "result": "GREEN",
+      "passed": 92,
+      "failed": 0,
+      "candidate_switch": "ON",
+      "build_path": "Z:/b6hcic"
+    },
+    "candidate_focused_native": {
+      "result": "GREEN",
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "xar_ck3_native_bridge_adapter_registry",
+        "xar_ck3_native_bridge_zhongguo_career_hc_workforce_postcondition_v1",
+        "xar_ck3_native_bridge_zhongguo_career_hc_workforce_postcondition_v1_mailbox"
+      ]
+    },
+    "focused_python": {
+      "result": "GREEN",
+      "summary": "34 passed, 7 subtests passed"
+    }
+  },
+  "ck3_executable_path": "Z:/ck3_mod_rewrite/Crusader Kings III/binaries/ck3.exe",
+  "ck3_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "mailbox": {
+    "slot": "permitted_executor_sexvigintary",
+    "fixed_slot_index": 26,
+    "allowlist_count": 14,
+    "new_slot_allocated": false,
+    "query_thread": "paused_application_main_mailbox"
+  },
+  "event_binding": {
+    "event_definition_key": "zg361we.360",
+    "route": "B",
+    "native_option_index": 1,
+    "option_number": 2,
+    "workforce_required_fact_count": 13,
+    "same_paused_revision_join_required": true,
+    "career_hc_provider_default_off": true
+  },
+  "live_attempt": {
+    "attempt_id": "zg361-career-hc-workforce-6a6473a-20260904T062648Z",
+    "path": "Z:/ck3_mod_rewrite_process_assets/zg361/career-hc-workforce-provider-live-attempt-6a6473a-20260904T062648Z",
+    "status": "absent",
+    "started": false,
+    "consumed": false,
+    "checkpoint": "current cumulative projection; workforce transition fixture active; real zg361we.360 open before route-B selection; exact owner and distinct subject frozen; paused without date advance"
+  },
+  "static_preflight_command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/verify_zg361_career_hc_workforce_no_launch_candidate.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_career_hc_workforce_postcondition_v1_no_launch_candidate_20260904.json --check",
+  "formal_runner_registry_modified": false,
+  "ck3_started": false,
+  "live_proof_claimed": false,
+  "action_ack_is_business_postcondition": false,
+  "production_advertisement_ready": false
+}
