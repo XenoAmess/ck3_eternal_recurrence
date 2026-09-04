@@ -62,3 +62,29 @@ and bound receipt where:
 The existing Incident-X full-entry artifact proves candidate loading through a
 paused rendered map only. It does not prove this action or its X/Y/Z
 provider-observed postcondition.
+
+## Deterministic capture and execution seam
+
+`tools/zg361_phase2_incident_checkpoint_seam.py` is the narrow integration
+point. `capture_current_received_self_incident_checkpoint_v1` accepts only an
+already visible paused/map-ready `zg361.50`; it performs the native event-window
+query, proves option 1 and the received-self identities, invokes the native
+checkpoint save, re-reads the same frame, and freezes the exact bytes under a
+content-addressed filename. It never advances gameplay or creates the event.
+
+The durable receipt contains the raw provider/UI query, all three same-frame
+snapshot bindings, the native save materialization, player/subject/owner/date,
+checkpoint bytes and SHA-256, and the exact seed/capture lineage. Loose legacy
+receipts are rejected. A receipt-aware no-launch preflight must also receive
+the expected seed lineage ID; self-declared lineage is insufficient.
+
+`run_received_self_incident_checkpoint_action_cell` is the later live runner
+seam. It restores only those exact bytes with fixture, console, and generic
+rebind all disabled; re-observes the exact `zg361.50` provider/UI state after
+the clean restart; then delegates to the existing Incident action cell. GREEN
+requires that cell's X/Y/Z terminal/KPI matrix and its typed wrong-owner ACL
+denial. Restore ACK or option ACK alone cannot satisfy the seam.
+
+No receipt or action artifact was produced while implementing this plumbing,
+so readiness remains **static-ready-live-pending** until a real capture and
+live action run are retained.

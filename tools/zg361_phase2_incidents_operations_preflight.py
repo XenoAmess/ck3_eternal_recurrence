@@ -11,7 +11,6 @@ for a real run.  It never launches CK3 and never promotes an ACK to evidence.
 from __future__ import annotations
 
 import argparse
-from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
@@ -40,12 +39,14 @@ from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (  # noqa:
     ZHONGGUO_INCIDENT_SNAPSHOT_V1_EXECUTABLE_SHA256,
     ZHONGGUO_INCIDENT_SNAPSHOT_V1_GAME_VERSION,
 )
+from zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
+    SOURCE_CHECKPOINT_KIND,
+    IncidentCheckpointSeamError,
+    load_received_self_incident_checkpoint_receipt,
+)
 
 
 PREFLIGHT_KIND: Final = "zg361_phase2_incidents_operations_preflight"
-SOURCE_CHECKPOINT_KIND: Final = (
-    "zg361_phase2_incidents_operations_source_checkpoint_v1"
-)
 CURRENT_READINESS: Final = "static-ready-live-pending"
 SPAN_ID: Final = "phase2_incidents_operations"
 PRODUCER_KEY: Final = "incidents-operations"
@@ -113,14 +114,6 @@ def _json(path: Path, label: str) -> Mapping[str, object]:
     if not isinstance(value, Mapping):
         raise IncidentsOperationsPreflightError(f"{label} root must be an object")
     return value
-
-
-def _positive_int(value: object) -> bool:
-    return (
-        isinstance(value, int)
-        and not isinstance(value, bool)
-        and 1 <= value <= 2**31 - 1
-    )
 
 
 def _static_cell_contract() -> dict[str, object]:
@@ -257,76 +250,18 @@ def _validate_incident_x_live_report(path: Path) -> dict[str, object]:
     }
 
 
-def _validate_source_checkpoint(path: Path) -> dict[str, object]:
-    payload = _json(path, "incidents-operations source checkpoint receipt")
-    checkpoint = payload.get("checkpoint")
-    query = payload.get("event_context_query")
-    owner = payload.get("owner_character_id")
-    player = payload.get("player_character_id")
-    instance = payload.get("event_instance_id")
-    checkpoint_path: Path | None = None
-    checkpoint_record: dict[str, object] | None = None
-    if isinstance(checkpoint, Mapping) and isinstance(checkpoint.get("path"), str):
-        raw_path = Path(str(checkpoint["path"]))
-        checkpoint_path = (
-            raw_path if raw_path.is_absolute() else path.parent / raw_path
-        ).resolve()
-        if checkpoint_path.is_file():
-            checkpoint_record = _record(checkpoint_path)
-    checks = {
-        "schema_v1": payload.get("schema_version") == 1,
-        "kind_exact": payload.get("kind") == SOURCE_CHECKPOINT_KIND,
-        "real_ck3_green": payload.get("result") == "GREEN"
-        and payload.get("evidence_class") == "real_ck3",
-        "no_fixture_or_console": payload.get("fixture_used") is False
-        and payload.get("console_used") is False,
-        "provider_and_ui_observed": payload.get("provider_observed") is True
-        and payload.get("ui_state_verified") is True,
-        "span_binding_exact": payload.get("span_id") == SPAN_ID
-        and payload.get("producer_key") == PRODUCER_KEY
-        and payload.get("handler") == HANDLER,
-        "paused_map_ready": payload.get("paused") is True
-        and payload.get("map_ready") is True,
-        "received_self_distinct_owner": _positive_int(owner)
-        and _positive_int(player)
-        and owner != player,
-        "exact_entry_identity": payload.get("source_event_definition_key")
-        == INCIDENT_TRIGGER_EVENT_DEFINITION_KEY
-        and _positive_int(instance)
-        and payload.get("option_number") == INCIDENT_TRIGGER_OPTION_NUMBER,
-        "root_and_saved_owner_exact": payload.get("event_root_character_id")
-        == player
-        and payload.get("notice_owner_character_id") == owner,
-        "event_context_query_exact": isinstance(query, Mapping)
-        and query.get("capability")
-        == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
-        and query.get("status") == "available"
-        and query.get("event_definition_key")
-        == INCIDENT_TRIGGER_EVENT_DEFINITION_KEY
-        and query.get("event_instance_id") == instance
-        and query.get("root_character_id") == player
-        and query.get("notice_owner_character_id") == owner
-        and query.get("option_number") == INCIDENT_TRIGGER_OPTION_NUMBER
-        and query.get("option_shown") is True
-        and query.get("option_enabled") is True,
-        "checkpoint_bytes_bound": checkpoint_record is not None
-        and isinstance(checkpoint, Mapping)
-        and checkpoint.get("bytes") == checkpoint_record["bytes"]
-        and str(checkpoint.get("sha256", "")).upper()
-        == checkpoint_record["sha256"],
-    }
-    if not all(checks.values()):
-        raise IncidentsOperationsPreflightError(
-            "incidents-operations source checkpoint is not action-ready"
+def _validate_source_checkpoint(
+    path: Path, *, expected_seed_lineage_id: str
+) -> dict[str, object]:
+    try:
+        return load_received_self_incident_checkpoint_receipt(
+            path, expected_seed_lineage_id=expected_seed_lineage_id
         )
-    return {
-        "receipt": _record(path),
-        "checkpoint": checkpoint_record,
-        "owner_character_id": owner,
-        "player_character_id": player,
-        "event_instance_id": instance,
-        "checks": checks,
-    }
+    except IncidentCheckpointSeamError as error:
+        raise IncidentsOperationsPreflightError(
+            "incidents-operations source checkpoint is not action-ready: "
+            f"{error.reason_code}"
+        ) from error
 
 
 def build_preflight(
@@ -335,6 +270,7 @@ def build_preflight(
     incident_x_closure_contract_path: Path = INCIDENT_X_CLOSURE_CONTRACT_PATH,
     incident_x_live_report_path: Path = DEFAULT_INCIDENT_X_LIVE_REPORT,
     source_checkpoint_receipt_path: Path | None = None,
+    expected_seed_lineage_id: str | None = None,
 ) -> dict[str, object]:
     """Build one no-launch report without changing the readiness level."""
 
@@ -349,8 +285,16 @@ def build_preflight(
     if source_checkpoint_receipt_path is None:
         blockers.append("received_self_incident_source_checkpoint_pending")
     else:
+        if not (
+            isinstance(expected_seed_lineage_id, str)
+            and bool(expected_seed_lineage_id)
+        ):
+            raise IncidentsOperationsPreflightError(
+                "expected seed lineage ID is required with a source checkpoint"
+            )
         source_checkpoint = _validate_source_checkpoint(
-            source_checkpoint_receipt_path
+            source_checkpoint_receipt_path,
+            expected_seed_lineage_id=expected_seed_lineage_id,
         )
 
     return {
@@ -380,6 +324,9 @@ def build_preflight(
             "owner_must_differ_from_player": True,
             "checkpoint_bytes_and_sha256_required": True,
             "event_context_provider_receipt_required": True,
+            "same_frame_query_and_native_save_required": True,
+            "seed_and_capture_lineage_required": True,
+            "restore_then_reobserve_before_action_required": True,
         },
         "next_action": (
             "Capture the exact paused zg361.50 received-self checkpoint, then run "
@@ -406,12 +353,14 @@ def main() -> int:
         default=DEFAULT_INCIDENT_X_LIVE_REPORT,
     )
     parser.add_argument("--source-checkpoint-receipt", type=Path)
+    parser.add_argument("--expected-seed-lineage-id")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     try:
         report = build_preflight(
             incident_x_live_report_path=args.incident_x_live_report,
             source_checkpoint_receipt_path=args.source_checkpoint_receipt,
+            expected_seed_lineage_id=args.expected_seed_lineage_id,
         )
     except IncidentsOperationsPreflightError as error:
         print(f"RED_STATIC: {error}")

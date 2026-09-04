@@ -118,6 +118,9 @@ class IncidentsOperationsPreflightTests(unittest.TestCase):
             return preflight.build_preflight(
                 incident_x_live_report_path=live,
                 source_checkpoint_receipt_path=receipt_path,
+                expected_seed_lineage_id=(
+                    "zg361-phase2-seed-unit" if receipt_path is not None else None
+                ),
             )
 
     def test_current_contracts_and_live_entry_leave_only_checkpoint_pending(
@@ -142,43 +145,21 @@ class IncidentsOperationsPreflightTests(unittest.TestCase):
             ["proves_gameplay_action"]
         )
 
-    def test_exact_received_self_checkpoint_makes_live_run_ready_not_live(
+    def test_legacy_flat_checkpoint_shape_cannot_make_live_run_ready(
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             checkpoint = root / "incident-source.ck3"
             checkpoint.write_bytes(b"real-ck3-checkpoint-fixture")
-            report = self.build(
-                root,
-                checkpoint_receipt=source_checkpoint_receipt(checkpoint),
-            )
-        self.assertEqual(report["status"], "READY_FOR_LIVE_RUN")
-        self.assertEqual(report["readiness"], "static-ready-live-pending")
-        self.assertTrue(report["live_run_ready"])
-        self.assertEqual(report["live_gameplay_result"], "pending")
-        self.assertEqual(report["blockers"], [])
-        self.assertEqual(
-            report["source_checkpoint"]["owner_character_id"], OWNER
-        )
-        self.assertEqual(
-            report["source_checkpoint"]["player_character_id"], PLAYER
-        )
-
-    def test_owner_self_checkpoint_is_rejected(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            checkpoint = root / "incident-source.ck3"
-            checkpoint.write_bytes(b"checkpoint")
-            receipt = source_checkpoint_receipt(checkpoint)
-            receipt["owner_character_id"] = PLAYER
-            receipt["notice_owner_character_id"] = PLAYER
-            receipt["event_context_query"]["notice_owner_character_id"] = PLAYER
             with self.assertRaisesRegex(
                 preflight.IncidentsOperationsPreflightError,
-                "not action-ready",
+                "incident_source_capture_lineage_invalid",
             ):
-                self.build(root, checkpoint_receipt=receipt)
+                self.build(
+                    root,
+                    checkpoint_receipt=source_checkpoint_receipt(checkpoint),
+                )
 
     def test_ack_only_shape_cannot_be_declared_by_preflight(self) -> None:
         contract = preflight._static_cell_contract()
