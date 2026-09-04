@@ -204,9 +204,14 @@ def overlay_paths(contract: Mapping[str, Any]) -> tuple[str, ...]:
     ]
     for owner in ("normal_exit", "probation", "rehire"):
         row = _dependency(contract, owner)
+        effect_files = row.get("effect_files")
+        paths.extend(
+            _strings(effect_files, f"{owner}.effect_files")
+            if effect_files is not None
+            else (_string(row.get("effect_file"), f"{owner}.effect_file"),)
+        )
         paths.extend(
             (
-                _string(row.get("effect_file"), f"{owner}.effect_file"),
                 _string(row.get("event_file"), f"{owner}.event_file"),
                 _string(row.get("localization_file"), f"{owner}.localization_file"),
             )
@@ -613,23 +618,30 @@ def validate_file_boundaries(
         raise B2ClosureError("B2 effect shard total changed")
     dependency_effect_rows: list[dict[str, object]] = []
     for owner in ("normal_exit", "probation", "rehire"):
-        relative = _string(_dependency(contract, owner).get("effect_file"), f"{owner}.effect_file")
-        data, blocks = _blocks(root / PurePosixPath(relative), relative)
-        count = len(blocks)
-        if count < 1 or count > hard_max:
-            raise B2ClosureError(
-                f"{owner} effect owner violates the hard maximum {hard_max}: {count}"
-            )
-        dependency_effect_rows.append(
-            {
-                "path": relative,
-                "definitions": count,
-                "target_1_to_10": count <= target,
-                "hard_max_20": count <= hard_max,
-                "bytes": len(data),
-                "sha256": sha256_bytes(data),
-            }
+        row = _dependency(contract, owner)
+        effect_files = row.get("effect_files")
+        relatives = (
+            _strings(effect_files, f"{owner}.effect_files")
+            if effect_files is not None
+            else (_string(row.get("effect_file"), f"{owner}.effect_file"),)
         )
+        for relative in relatives:
+            data, blocks = _blocks(root / PurePosixPath(relative), relative)
+            count = len(blocks)
+            if count < 1 or count > hard_max:
+                raise B2ClosureError(
+                    f"{owner} effect owner violates the hard maximum {hard_max}: {count}"
+                )
+            dependency_effect_rows.append(
+                {
+                    "path": relative,
+                    "definitions": count,
+                    "target_1_to_10": count <= target,
+                    "hard_max_20": count <= hard_max,
+                    "bytes": len(data),
+                    "sha256": sha256_bytes(data),
+                }
+            )
     return {
         "status": "GREEN",
         "target": target,

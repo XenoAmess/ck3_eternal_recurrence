@@ -27,8 +27,15 @@ class Phase2B2ClosureCandidateTests(unittest.TestCase):
 
     def _copy_static_closure_view(self, destination: Path) -> Path:
         paths = list(closure.overlay_paths(self.contract))
-        case_kernel = self.contract["dependencies"]["case_kernel"]["file"]
-        paths.append(case_kernel)
+        case_kernel = self.contract["dependencies"]["case_kernel"]
+        frozen_kernel = (
+            self.baseline_root / "source" / PurePosixPath(case_kernel["file"])
+        )
+        paths.extend(
+            [case_kernel["file"]]
+            if frozen_kernel.is_file()
+            else case_kernel["canonical_fallback_files"]
+        )
         for relative in paths:
             frozen = self.baseline_root / "source" / PurePosixPath(relative)
             source = frozen if frozen.is_file() else closure.MOD_ROOT / PurePosixPath(relative)
@@ -41,7 +48,7 @@ class Phase2B2ClosureCandidateTests(unittest.TestCase):
     def test_contract_cardinalities_and_generator_selection(self) -> None:
         self.assertTrue(Path(closure.__file__).read_bytes().startswith(closure.BOM))
         self.assertTrue(Path(__file__).read_bytes().startswith(closure.BOM))
-        self.assertEqual(60, len(closure.overlay_paths(self.contract)))
+        self.assertEqual(62, len(closure.overlay_paths(self.contract)))
         effects, events = closure.expected_closure(self.contract)
         self.assertEqual(71, len(effects))
         self.assertEqual(28, len(events))

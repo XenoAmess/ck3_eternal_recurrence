@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Repository-wide static release checks run before CK3 acceptance."""
 
 import importlib.util

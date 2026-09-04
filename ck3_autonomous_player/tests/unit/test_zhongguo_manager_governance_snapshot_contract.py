@@ -485,7 +485,7 @@ class ZhongguoManagerGovernanceSnapshotContractTests(unittest.TestCase):
         )
         self.assertEqual(
             abi["integration_state"]["bounded_ai_manager_native_selector"],
-            "not_yet_bound_in_production",
+            "exact_build_native_bound_static_not_live",
         )
 
 

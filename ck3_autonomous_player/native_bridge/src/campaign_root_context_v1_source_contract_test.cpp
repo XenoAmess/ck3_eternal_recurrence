@@ -105,7 +105,8 @@ int main(int argc, char **argv) {
                     "typed_unavailable"}) ||
       !ContainsAll(common_mailbox_header,
                    {"twenty-six fixed slots", "permitted_executor_nonary",
-                    "permitted_executor_duodenary"}) ||
+                    "permitted_executor_duodenary",
+                    "permitted_executor_sexvigintary"}) ||
       !ContainsAll(common_mailbox_source,
                    {"environment.permitted_executor_nonary",
                     "mailbox.permitted_executor_nonary"}) ||

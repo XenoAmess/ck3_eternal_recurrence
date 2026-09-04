@@ -16,8 +16,8 @@
     "file_list_sha256": "0ef1c558dc02d0fc770e06546b4cdfbe1b4c7d3d21d4838ec122340ad0ccc746"
   },
   "candidate": {
-    "expected_file_count": 119,
-    "expected_overlay_file_count": 60,
+    "expected_file_count": 121,
+    "expected_overlay_file_count": 62,
     "expected_b2_effect_count": 152,
     "expected_b2_event_count": 23,
     "expected_dependency_effect_closure_count": 71,
@@ -67,6 +67,11 @@
   "dependencies": {
     "case_kernel": {
       "file": "common/scripted_effects/zg361_case_kernel_effects.txt",
+      "canonical_fallback_files": [
+        "common/scripted_effects/zg361_case_kernel_001_shared_helpers_effects.txt",
+        "common/scripted_effects/zg361_case_kernel_031_domain_ad_recruitment_funnel_effects.txt",
+        "common/scripted_effects/zg361_case_kernel_039_domain_al_constitution_case_effects.txt"
+      ],
       "already_in_baseline": true,
       "reachable_effects": [
         "zg361_case_ad_advance_05_effect",
@@ -199,7 +204,11 @@
       "referenced_localization_keys": 3
     },
     "probation": {
-      "effect_file": "common/scripted_effects/zg361_workforce_probation_fact_effects.txt",
+      "effect_files": [
+        "common/scripted_effects/zg361_workforce_probation_fact_consumption_effects.txt",
+        "common/scripted_effects/zg361_workforce_probation_fact_ledger_arm_effects.txt",
+        "common/scripted_effects/zg361_workforce_probation_fact_outcome_publish_effects.txt"
+      ],
       "reachable_effects": [
         "zg361_workforce_probation_fact_finalize_consumption_receipt_effect",
         "zg361_workforce_probation_fact_materialize_and_consume_effect",
