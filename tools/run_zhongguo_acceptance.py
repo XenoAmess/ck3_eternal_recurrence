@@ -123,6 +123,10 @@ from zg361_phase2_promotion_compensation_action_cell import (
     SOURCE_OPTION_NUMBER as PROMOTION_COMPENSATION_SOURCE_OPTION,
     run_promotion_compensation_gameplay_action_cell,
 )
+from zg361_phase2_promotion_source_checkpoint_capture import (
+    CAPTURE_ARTIFACT_KIND as PROMOTION_SOURCE_CAPTURE_ARTIFACT_KIND,
+    capture_promotion_source_checkpoint_v2,
+)
 from zg361_phase2_loader_stage import (
     LoaderStageError,
     wait_for_phase2_seed_loader_stage,
@@ -728,6 +732,20 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
     "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
 }
+PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
+    "paused_snapshot",
+    "map_ready_state",
+    "played_character_state",
+    "active_event_state",
+    "save_checkpoint",
+    "current_event_context",
+)
+PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS = (
+    "current_event_context",
+)
+PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
+    "save_checkpoint",
+)
 PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",
     "map_ready_state",
@@ -7277,6 +7295,7 @@ def phase2_runtime_capability_preflight(
     *,
     tracked_ck3_pid: int,
     managed_restore_supervisor: bool = False,
+    focused_promotion_source_capture: bool = False,
     focused_b2_same_checkpoint: bool = False,
     focused_hc_workforce_route_b: bool = False,
     focused_endgame_source_capture: bool = False,
@@ -7285,57 +7304,36 @@ def phase2_runtime_capability_preflight(
     """Fail before navigation unless the selected Phase2 MCP surface exists."""
 
     evidence_path = artifacts / "02_phase2_mcp_capabilities.json"
-    bridge_labels = (
-        PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
-        if focused_incident_source_capture
-        else (
+    if focused_incident_source_capture:
+        bridge_labels = (
+            PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        )
+        query_labels = PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
+    elif focused_endgame_source_capture:
+        bridge_labels = (
             PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
-            if focused_endgame_source_capture
-            else (
-                PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS
-                if focused_hc_workforce_route_b
-                else (
-                    PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
-                    if focused_b2_same_checkpoint
-                    else tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
-                )
-            )
         )
-    )
-    query_labels = (
-        PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
-        if focused_incident_source_capture
-        else (
-            PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
-            if focused_endgame_source_capture
-            else (
-                PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS
-                if focused_hc_workforce_route_b
-                else (
-                    PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
-                    if focused_b2_same_checkpoint
-                    else tuple(PHASE2_REQUIRED_QUERY_FLAGS)
-                )
-            )
+        query_labels = PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
+    elif focused_promotion_source_capture:
+        bridge_labels = (
+            PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
         )
-    )
-    action_labels = (
-        PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
-        if focused_incident_source_capture
-        else (
-            PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
-            if focused_endgame_source_capture
-            else (
-                PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_ACTION_STEP_LABELS
-                if focused_hc_workforce_route_b
-                else (
-                    PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
-                    if focused_b2_same_checkpoint
-                    else tuple(PHASE2_REQUIRED_ACTION_STEPS)
-                )
-            )
-        )
-    )
+        query_labels = PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
+    elif focused_hc_workforce_route_b:
+        bridge_labels = PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        query_labels = PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_ACTION_STEP_LABELS
+    elif focused_b2_same_checkpoint:
+        bridge_labels = PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        query_labels = PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
+    else:
+        bridge_labels = tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
+        query_labels = tuple(PHASE2_REQUIRED_QUERY_FLAGS)
+        action_labels = tuple(PHASE2_REQUIRED_ACTION_STEPS)
     required_bridge_capabilities = {
         label: PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
         for label in bridge_labels
@@ -7352,20 +7350,17 @@ def phase2_runtime_capability_preflight(
         "scope": (
             "focused_incident_source_capture_mcp_capability_profile"
             if focused_incident_source_capture
-            else (
-                "focused_endgame_source_capture_mcp_capability_profile"
-                if focused_endgame_source_capture
-                else (
-                    "focused_hc_workforce_route_b_mcp_capability_profile"
-                    if focused_hc_workforce_route_b
-                    else (
-                        "complete_phase2_mcp_capability_profile"
-                        if not focused_b2_same_checkpoint
-                        else "focused_b2_same_checkpoint_mcp_capability_profile"
-                    )
-                )
-            )
+            else "focused_endgame_source_capture_mcp_capability_profile"
+            if focused_endgame_source_capture
+            else "focused_promotion_source_checkpoint_capture_mcp_capability_profile"
+            if focused_promotion_source_capture
+            else "focused_hc_workforce_route_b_mcp_capability_profile"
+            if focused_hc_workforce_route_b
+            else "focused_b2_same_checkpoint_mcp_capability_profile"
+            if focused_b2_same_checkpoint
+            else "complete_phase2_mcp_capability_profile"
         ),
+        "focused_promotion_source_capture": focused_promotion_source_capture,
         "focused_b2_same_checkpoint": focused_b2_same_checkpoint,
         "focused_hc_workforce_route_b": focused_hc_workforce_route_b,
         "focused_endgame_source_capture": focused_endgame_source_capture,
@@ -12517,6 +12512,7 @@ def run_loader_gate(
     tracked_ck3_pid: int,
     phase2_live_batch: bool,
     managed_restore_supervisor: bool = False,
+    phase2_promotion_source_capture_live: bool = False,
     phase2_promo_capture: bool = False,
     phase2_b2_same_checkpoint: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
@@ -12528,6 +12524,7 @@ def run_loader_gate(
 
     managed_phase2 = (
         phase2_live_batch
+        or phase2_promotion_source_capture_live
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
         or phase2_hc_workforce_route_b_live
@@ -12543,31 +12540,21 @@ def run_loader_gate(
         "mode": (
             "phase2_incident_source_checkpoint_capture"
             if phase2_incident_source_checkpoint_capture
-            else (
-                "phase2_endgame_source_capture_live"
-                if phase2_endgame_source_capture_live
-                else (
-                    "phase2_hc_workforce_route_b_capture_live"
-                    if phase2_hc_workforce_route_b_capture_live
-                    else (
-                        "phase2_hc_workforce_route_b_live"
-                        if phase2_hc_workforce_route_b_live
-                        else (
-                            "phase2_promo_capture"
-                            if phase2_promo_capture
-                            else (
-                                "phase2_b2_same_checkpoint"
-                                if phase2_b2_same_checkpoint
-                                else (
-                                    "phase2_live_batch"
-                                    if phase2_live_batch
-                                    else "loader_smoke_only"
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+            else "phase2_endgame_source_capture_live"
+            if phase2_endgame_source_capture_live
+            else "phase2_promotion_source_checkpoint_live"
+            if phase2_promotion_source_capture_live
+            else "phase2_hc_workforce_route_b_capture_live"
+            if phase2_hc_workforce_route_b_capture_live
+            else "phase2_hc_workforce_route_b_live"
+            if phase2_hc_workforce_route_b_live
+            else "phase2_promo_capture"
+            if phase2_promo_capture
+            else "phase2_b2_same_checkpoint"
+            if phase2_b2_same_checkpoint
+            else "phase2_live_batch"
+            if phase2_live_batch
+            else "loader_smoke_only"
         ),
         "tracked_ck3_pid": tracked_ck3_pid,
         "append_only_loader_stage": None,
@@ -12623,6 +12610,9 @@ def run_loader_gate(
                 artifacts,
                 tracked_ck3_pid=tracked_ck3_pid,
                 managed_restore_supervisor=managed_restore_supervisor,
+                focused_promotion_source_capture=(
+                    phase2_promotion_source_capture_live
+                ),
                 focused_b2_same_checkpoint=phase2_b2_same_checkpoint,
                 focused_hc_workforce_route_b=(
                     phase2_hc_workforce_route_b_live
@@ -18567,6 +18557,8 @@ def run_cell(
     native_bridge: NativeBridgeLaunchConfig,
     promo_capture: bool = False,
     phase2_promo_capture: bool = False,
+    phase2_promotion_source_capture_live: bool = False,
+    phase2_promotion_source_capture_timeout_seconds: float = 300.0,
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
@@ -18602,6 +18594,7 @@ def run_cell(
 ) -> dict[str, object]:
     phase2_runtime_mode = (
         phase2_live_batch
+        or phase2_promotion_source_capture_live
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
         or phase2_hc_workforce_route_b_live
@@ -18609,6 +18602,10 @@ def run_cell(
         or phase2_endgame_source_capture_live
         or phase2_incident_source_checkpoint_capture
     )
+    if phase2_promotion_source_capture_timeout_seconds <= 0:
+        raise acceptance.RunnerError(
+            "promotion source capture timeout must be positive"
+        )
     _validate_phase2_frontend_first_options(
         phase2_frontend_first_load_save_name,
         phase2_frontend_first_timeout_seconds,
@@ -18646,7 +18643,8 @@ def run_cell(
             else None
         ),
         include_acceptance_fixture=not (
-            phase2_promo_capture
+            phase2_promotion_source_capture_live
+            or phase2_promo_capture
             or phase2_b2_same_checkpoint
             or phase2_hc_workforce_route_b_live
             or phase2_hc_workforce_route_b_capture_live
@@ -18709,7 +18707,8 @@ def run_cell(
     # suspended/inject/resume lifecycle.
     loader_gate_enabled = (
         loader_smoke
-        or phase2_live_batch or phase2_promo_capture
+        or (phase2_live_batch or phase2_promo_capture)
+        or phase2_promotion_source_capture_live
         or phase2_b2_same_checkpoint
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
@@ -18746,7 +18745,8 @@ def run_cell(
                     bootstrap,
                     artifacts,
                     product_only_runtime=(
-                        phase2_promo_capture
+                        phase2_promotion_source_capture_live
+                        or phase2_promo_capture
                         or phase2_b2_same_checkpoint
                         or phase2_hc_workforce_route_b_live
                         or phase2_hc_workforce_route_b_capture_live
@@ -18804,13 +18804,24 @@ def run_cell(
                 "started managed phase-two native_session supervisor on CK3 "
                 f"PID {tracked_ck3_pid} and {native_bridge.pipe_name}"
             )
-            try:
-                phase2_legal_consent = handle_phase2_optional_legal_consent(
-                    userdir, artifacts
-                )
-            except Phase2LegalConsentBlocked as error:
-                phase2_legal_consent = dict(error.evidence)
-                raise
+            if phase2_promotion_source_capture_live:
+                # This entry is intentionally native-query/save only.  A
+                # blocking legal modal therefore produces ordinary MCP
+                # readiness RED instead of being dismissed through OCR.
+                phase2_legal_consent = {
+                    "result": "NOT_QUERIED",
+                    "scope": "promotion_source_capture_native_only",
+                    "ocr_used": False,
+                    "coordinates_used": False,
+                }
+            else:
+                try:
+                    phase2_legal_consent = handle_phase2_optional_legal_consent(
+                        userdir, artifacts
+                    )
+                except Phase2LegalConsentBlocked as error:
+                    phase2_legal_consent = dict(error.evidence)
+                    raise
         else:
             lock_stack.enter_context(exclusive_launch_lock(spec.game_exe))
             lock_stack.enter_context(
@@ -18838,6 +18849,9 @@ def run_cell(
                 tracked_ck3_pid=tracked_ck3_pid,
                 phase2_live_batch=phase2_live_batch,
                 managed_restore_supervisor=phase2_supervisor is not None,
+                phase2_promotion_source_capture_live=(
+                    phase2_promotion_source_capture_live
+                ),
                 phase2_promo_capture=phase2_promo_capture,
                 phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
                 phase2_hc_workforce_route_b_live=(
@@ -18946,6 +18960,83 @@ def run_cell(
                 raise acceptance.RunnerError(
                     "endgame source capture returned without a real source receipt"
                 )
+        elif phase2_promotion_source_capture_live:
+            if not (
+                isinstance(phase2_seed_install_evidence, dict)
+                and isinstance(
+                    phase2_seed_install_evidence.get("contract"), dict
+                )
+                and isinstance(phase2_initial_binding, dict)
+                and isinstance(loader_gate_evidence, dict)
+                and loader_gate_evidence.get("result") == "GREEN"
+            ):
+                raise acceptance.RunnerError(
+                    "promotion source capture lacks its seed, session binding, "
+                    "or loader gate"
+                )
+            targets = bootstrap.get("targets")
+            target_names = set(targets) if isinstance(targets, Mapping) else set()
+            enabled_mods = bootstrap.get("enabled_mods")
+            enabled_mod_rows = (
+                [str(value) for value in enabled_mods]
+                if isinstance(enabled_mods, list)
+                else []
+            )
+            if (
+                "fixture" in target_names
+                or any("fixture" in value.lower() for value in enabled_mod_rows)
+            ):
+                raise acceptance.RunnerError(
+                    "promotion source capture requires a product-only runtime"
+                )
+            seed_contract = dict(phase2_seed_install_evidence["contract"])
+            seed_lineage_id = _phase2_seed_lineage_id(seed_contract)
+            managed_session = {
+                "schema_version": 1,
+                "kind": "zg361_phase2_managed_product_session",
+                "result": "GREEN",
+                "managed_native_session": True,
+                "product_only_runtime": True,
+                "acceptance_fixture_loaded": False,
+                "same_pid_gameplay_continuation_authorized": True,
+                "tracked_ck3_pid": tracked_ck3_pid,
+                "connection_generation": int(
+                    phase2_initial_binding["connection_generation"]
+                ),
+                "seed_lineage_id": seed_lineage_id,
+                "game_version": game_version,
+                "executable_sha256": executable_before,
+            }
+            capture_lineage = {
+                "seed_lineage_id": seed_lineage_id,
+                "evidence_class": "real_ck3",
+                "session_kind": "managed_product_session",
+                "product_only_runtime": True,
+                "tracked_ck3_pid": tracked_ck3_pid,
+                "connection_generation": int(
+                    phase2_initial_binding["connection_generation"]
+                ),
+                "game_version": game_version,
+                "executable_sha256": executable_before,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+                "generic_character_rebind_used": False,
+            }
+            evidence = capture_promotion_source_checkpoint_v2(
+                title_navigation_service,
+                checkpoint_root=artifacts / "promotion-source-checkpoints",
+                capture_artifact_path=(
+                    artifacts / "04_promotion_source_checkpoint_capture_v2.json"
+                ),
+                seed_lineage_id=seed_lineage_id,
+                capture_lineage=capture_lineage,
+                managed_product_session=managed_session,
+                timeout_seconds=(
+                    phase2_promotion_source_capture_timeout_seconds
+                ),
+            )
         elif phase2_promo_capture:
             gameplay_acceptance_executed = True
             if recorder is None:
@@ -19418,6 +19509,7 @@ def run_cell(
                 and not promo_camera_probe
                 and not loader_smoke
                 and not phase2_live_batch
+                and not phase2_promotion_source_capture_live
                 and not phase2_promo_capture
                 and not phase2_b2_same_checkpoint
                 and not phase2_endgame_source_capture_live
@@ -19549,6 +19641,14 @@ def run_cell(
         and evidence.get("phase2_acceptance_complete") is False
         and evidence.get("full_phase2_acceptance_claimed") is False
     )
+    phase2_promotion_source_capture_complete = (
+        phase2_promotion_source_capture_live
+        and result == "GREEN"
+        and evidence.get("kind") == PROMOTION_SOURCE_CAPTURE_ARTIFACT_KIND
+        and evidence.get("result") == "GREEN"
+        and evidence.get("incomplete_for_canonical_4_entry_registry") is True
+        and evidence.get("canonical_registry_ready") is False
+    )
     phase2_hc_workforce_route_b_complete = (
         phase2_hc_workforce_route_b_live
         and result == "GREEN"
@@ -19666,6 +19766,9 @@ def run_cell(
         "promo_camera_probe_only": promo_camera_probe,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
+        "phase2_promotion_source_capture_live": (
+            phase2_promotion_source_capture_live
+        ),
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
         "phase2_hc_workforce_route_b_live": (
@@ -19693,6 +19796,9 @@ def run_cell(
             ),
         },
         "phase2_promo_capture_complete": phase2_promo_capture_complete,
+        "phase2_promotion_source_capture_complete": (
+            phase2_promotion_source_capture_complete
+        ),
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete
         ),
@@ -19724,31 +19830,21 @@ def run_cell(
         "native_session_liveness_scope": (
             "phase2_post_restore_supervisor_liveness"
             if phase2_live_batch
-            else (
-                "not_applicable_phase2_promo_capture"
-                if phase2_promo_capture
-                else (
-                    "matrix_owns_final_shutdown_no_post_stop_liveness_gate"
-                    if phase2_b2_same_checkpoint
-                    else (
-                        "route_b_capture_owns_fixture_activation_and_freeze"
-                        if phase2_hc_workforce_route_b_capture_live
-                        else (
-                            "route_b_scenario_owns_registry_restore_and_replay"
-                            if phase2_hc_workforce_route_b_live
-                            else (
-                                "incident_capture_owns_read_only_wait_and_native_save"
-                                if phase2_incident_source_checkpoint_capture
-                                else (
-                                    "capture_only_no_restore_liveness_claim"
-                                    if phase2_endgame_source_capture_live
-                                    else None
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+            else "source_capture_owns_no_gameplay_or_registry_complete_claim"
+            if phase2_promotion_source_capture_live
+            else "not_applicable_phase2_promo_capture"
+            if phase2_promo_capture
+            else "matrix_owns_final_shutdown_no_post_stop_liveness_gate"
+            if phase2_b2_same_checkpoint
+            else "route_b_capture_owns_fixture_activation_and_freeze"
+            if phase2_hc_workforce_route_b_capture_live
+            else "route_b_scenario_owns_registry_restore_and_replay"
+            if phase2_hc_workforce_route_b_live
+            else "incident_capture_owns_read_only_wait_and_native_save"
+            if phase2_incident_source_checkpoint_capture
+            else "capture_only_no_restore_liveness_claim"
+            if phase2_endgame_source_capture_live
+            else None
         ),
         "zg361_50_case_cell_executed": (
             isinstance(evidence.get("incident_gameplay_action_cell"), dict)
@@ -19759,6 +19855,7 @@ def run_cell(
                 False
                 if loader_smoke
                 or phase2_live_batch
+                or phase2_promotion_source_capture_live
                 or phase2_promo_capture
                 or phase2_incident_source_checkpoint_capture
                 else None
@@ -19842,6 +19939,7 @@ def run_cell(
                 "not_queried_mcp_only"
                 if loader_smoke
                 or phase2_live_batch
+                or phase2_promotion_source_capture_live
                 or phase2_b2_same_checkpoint
                 or phase2_hc_workforce_route_b_live
                 or phase2_hc_workforce_route_b_capture_live
@@ -19870,6 +19968,8 @@ def main(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_promotion_source_capture_live: bool = False,
+    phase2_promotion_source_capture_timeout_seconds: float = 300.0,
     phase2_b2_same_checkpoint: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
@@ -19906,6 +20006,7 @@ def main(
             promo_camera_probe,
             loader_smoke,
             phase2_live_batch,
+            phase2_promotion_source_capture_live,
             phase2_b2_same_checkpoint,
             phase2_hc_workforce_route_b_live,
             phase2_hc_workforce_route_b_capture_live,
@@ -19917,6 +20018,7 @@ def main(
         raise acceptance.RunnerError(
             "--promo-capture, --phase2-promo-capture, --promo-camera-probe, "
             "--loader-smoke, --phase2-live-batch and "
+            "--phase2-promotion-source-checkpoint-live, "
             "--phase2-b2-same-checkpoint, and "
             "--phase2-hc-workforce-route-b-live, and "
             "--phase2-hc-workforce-route-b-capture-live, and "
@@ -19925,6 +20027,7 @@ def main(
         )
     phase2_runtime_mode = (
         phase2_live_batch
+        or phase2_promotion_source_capture_live
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
         or phase2_hc_workforce_route_b_live
@@ -20229,11 +20332,12 @@ def main(
     native_bridge = resolve_native_bridge_config(
         bridge_dll, bridge_injector, bridge_pipe
     )
-    # Every managed Phase2 gameplay mode now performs the owner-authorized
-    # legal-modal OCR gate after binding.  Only loader-smoke stops before that
-    # boundary, so every other runtime mode must prove the desktop stack before
-    # launch instead of discovering a missing OCR dependency inside CK3.
+    # Managed gameplay modes perform the owner-authorized legal-modal OCR gate.
+    # The source-checkpoint capture is instead a native query/save probe: any
+    # modal leaves MCP readiness RED and is never clicked by this entrypoint.
     require_visual_tools = not loader_smoke
+    if phase2_promotion_source_capture_live:
+        require_visual_tools = False
     runtime_identity = preflight(
         runtime_source,
         manifest_path,
@@ -20243,6 +20347,7 @@ def main(
     if preflight_only:
         if (
             phase2_live_batch
+            or phase2_promotion_source_capture_live
             or phase2_promo_capture
             or phase2_b2_same_checkpoint
             or phase2_hc_workforce_route_b_capture_live
@@ -20258,7 +20363,9 @@ def main(
                 runtime_source=runtime_source,
                 workshop_manifest=manifest_path,
                 product_only_runtime=(
-                    phase2_promo_capture or phase2_b2_same_checkpoint
+                    phase2_promotion_source_capture_live
+                    or phase2_promo_capture
+                    or phase2_b2_same_checkpoint
                     or phase2_hc_workforce_route_b_live
                     or phase2_hc_workforce_route_b_capture_live
                     or phase2_endgame_source_capture_live
@@ -20318,6 +20425,12 @@ def main(
         native_bridge=native_bridge,
         promo_capture=promo_capture,
         phase2_promo_capture=phase2_promo_capture,
+        phase2_promotion_source_capture_live=(
+            phase2_promotion_source_capture_live
+        ),
+        phase2_promotion_source_capture_timeout_seconds=(
+            phase2_promotion_source_capture_timeout_seconds
+        ),
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
@@ -20415,6 +20528,30 @@ def main(
     if phase2_promo_capture and phase2_promo_capture_complete_claim is not True:
         result = "RED"
         reason = "phase-two promo capture lacks a complete canonical eight-span proof"
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    phase2_promotion_source_capture_complete_claim = (
+        phase2_promotion_source_capture_live
+        and report.get("result") == "GREEN"
+        and report.get("phase2_promotion_source_capture_live") is True
+        and report.get("phase2_promotion_source_capture_complete") is True
+        and report.get("gameplay_acceptance_executed") is False
+        and report.get("gameplay_green_claimed") is False
+        and phase2_scenario.get("kind")
+        == PROMOTION_SOURCE_CAPTURE_ARTIFACT_KIND
+        and phase2_scenario.get("result") == "GREEN"
+        and phase2_scenario.get("incomplete_for_canonical_4_entry_registry")
+        is True
+        and phase2_scenario.get("canonical_registry_ready") is False
+    )
+    if (
+        phase2_promotion_source_capture_live
+        and phase2_promotion_source_capture_complete_claim is not True
+    ):
+        result = "RED"
+        reason = (
+            "promotion source capture lacks one real, explicitly incomplete "
+            "schema-2 merge input"
+        )
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
     b2_matrix_value = phase2_scenario.get("b2_same_checkpoint_matrix")
     b2_matrix = b2_matrix_value if isinstance(b2_matrix_value, dict) else {}
@@ -20591,12 +20728,16 @@ def main(
         phase2_hc_workforce_route_b_capture_complete_claim = False
         phase2_endgame_source_capture_complete_claim = False
         phase2_incident_source_checkpoint_capture_complete_claim = False
+        phase2_promotion_source_capture_complete_claim = False
     matrix = {
         "schema_version": 1,
         "result": result,
         "error_reason": error_reason,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
+        "phase2_promotion_source_capture_live": (
+            phase2_promotion_source_capture_live
+        ),
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
         "phase2_hc_workforce_route_b_live": (
@@ -20612,6 +20753,9 @@ def main(
             phase2_incident_source_checkpoint_capture
         ),
         "phase2_promo_capture_complete": phase2_promo_capture_complete_claim,
+        "phase2_promotion_source_capture_complete": (
+            phase2_promotion_source_capture_complete_claim
+        ),
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete_claim
         ),
@@ -20629,7 +20773,9 @@ def main(
         ),
         "loader_gate_executed": (
             loader_smoke
-            or phase2_live_batch or phase2_promo_capture
+            or phase2_live_batch
+            or phase2_promotion_source_capture_live
+            or phase2_promo_capture
             or phase2_b2_same_checkpoint
             or phase2_hc_workforce_route_b_live
             or phase2_hc_workforce_route_b_capture_live
@@ -20649,35 +20795,24 @@ def main(
         "gameplay_green_claimed": (
             result == "GREEN"
             and (
-                (
-                    phase2_complete_claim
-                    if phase2_live_batch
-                    else (
-                        phase2_promo_capture_complete_claim
-                        if phase2_promo_capture
-                        else (
-                            phase2_b2_same_checkpoint_complete_claim
-                            if phase2_b2_same_checkpoint
-                            else (
-                                phase2_hc_workforce_route_b_complete_claim
-                                if phase2_hc_workforce_route_b_live
-                                else (
-                                    phase2_hc_workforce_route_b_capture_complete_claim
-                                    if phase2_hc_workforce_route_b_capture_live
-                                    else (
-                                        False
-                                        if (
-                                            phase2_endgame_source_capture_live
-                                            or phase2_incident_source_checkpoint_capture
-                                        )
-                                        else report.get("gameplay_green_claimed")
-                                        is True
-                                    )
-                                )
-                            )
-                        )
-                    )
+                phase2_complete_claim
+                if phase2_live_batch
+                else False
+                if phase2_promotion_source_capture_live
+                else phase2_promo_capture_complete_claim
+                if phase2_promo_capture
+                else phase2_b2_same_checkpoint_complete_claim
+                if phase2_b2_same_checkpoint
+                else phase2_hc_workforce_route_b_complete_claim
+                if phase2_hc_workforce_route_b_live
+                else phase2_hc_workforce_route_b_capture_complete_claim
+                if phase2_hc_workforce_route_b_capture_live
+                else False
+                if (
+                    phase2_endgame_source_capture_live
+                    or phase2_incident_source_checkpoint_capture
                 )
+                else report.get("gameplay_green_claimed") is True
             )
         ),
         "cell": report,
@@ -20692,6 +20827,8 @@ def main(
         heading = "ZHONGGUO 361 MCP-ASSISTED LOADER SMOKE"
     elif phase2_live_batch:
         heading = "ZHONGGUO 361 PHASE-TWO LIVE BATCH"
+    elif phase2_promotion_source_capture_live:
+        heading = "ZHONGGUO 361 PROMOTION SOURCE CHECKPOINT CAPTURE"
     elif phase2_promo_capture:
         heading = "ZHONGGUO 361 PHASE-TWO PROMO CAPTURE"
     elif phase2_endgame_source_capture_live:
@@ -20718,6 +20855,17 @@ def main(
         print("gameplay GREEN claim    NONE")
     elif phase2_live_batch and matrix["gameplay_green_claimed"] is not True:
         print("phase-two acceptance    INCOMPLETE / RED")
+        print("gameplay GREEN claim    NONE")
+    elif phase2_promotion_source_capture_live:
+        print(
+            "promotion source entry  "
+            + (
+                "GREEN"
+                if matrix["phase2_promotion_source_capture_complete"] is True
+                else "INCOMPLETE / RED"
+            )
+        )
+        print("canonical registry     INCOMPLETE (1/4)")
         print("gameplay GREEN claim    NONE")
     elif phase2_b2_same_checkpoint:
         print(
@@ -20822,6 +20970,21 @@ if __name__ == "__main__":
             "scenario; the exact-build B3 selector is wired, while remaining "
             "live product checkpoints still force RED until observed"
         ),
+    )
+    parser.add_argument(
+        "--phase2-promotion-source-checkpoint-live",
+        action="store_true",
+        help=(
+            "in a managed product-only session, wait for real zg361pp.147 "
+            "option 1 and emit its single schema-2 checkpoint merge input; "
+            "does not select the option or claim a complete registry"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-promotion-source-checkpoint-timeout-seconds",
+        type=float,
+        default=300.0,
+        help="bounded native wait for the exact promotion source event",
     )
     parser.add_argument(
         "--phase2-b2-same-checkpoint",
@@ -20996,6 +21159,12 @@ if __name__ == "__main__":
                 promo_camera_probe=arguments.promo_camera_probe,
                 loader_smoke=arguments.loader_smoke,
                 phase2_live_batch=arguments.phase2_live_batch,
+                phase2_promotion_source_capture_live=(
+                    arguments.phase2_promotion_source_checkpoint_live
+                ),
+                phase2_promotion_source_capture_timeout_seconds=(
+                    arguments.phase2_promotion_source_checkpoint_timeout_seconds
+                ),
                 phase2_b2_same_checkpoint=(
                     arguments.phase2_b2_same_checkpoint
                 ),

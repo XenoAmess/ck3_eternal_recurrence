@@ -104,6 +104,25 @@ py tools/zhongguo_phase2_source_checkpoint_registry.py `
 capture manifest 必须是 `zg361_phase2_source_checkpoint_capture_manifest` schema 2，按 Promotion、Projects、Incident、
 Endgame 固定顺序包含四项。每项必须直接携带既有 checkpoint 的绝对路径、字节数、SHA-256、save lineage，以及同一次实机观察产生的
 provider/UI GREEN source receipt；assembler 不补默认值、不生成事件、不启动 CK3，也不把 fixture、console 或占位数据提升为真实证据。
+
+Promotion 的第一条真实输入可由显式 live 入口单独采集：
+
+```powershell
+py tools/run_zhongguo_acceptance.py `
+  --phase2-promotion-source-checkpoint-live `
+  --phase2-seed-contract <READY_SEED_CONTRACT.json> `
+  --phase2-frontend-first-load-save-name <SAVE_AT_ZG361PP_147_OPTION1>
+```
+
+该模式只在受管、product-only session 中等待并原生查询 `zg361pp.147`；要求 played owner 同时是事件 root 与保存的
+`zg361_pp_prompt_owner`，并绑定保存的 subject/case/cycle/mechanism/state、option 1 的 shown/enabled、同一 paused frame、
+原生存档 bytes/SHA/date/seed lineage。它不会点击 option，不加载 fixture，不使用 console/generic character rebind，也不把
+ACK 当作事件或业务状态。产物是 schema-2 的单条可追加输入，固定
+`captured_handlers=[capture_promotion_compensation]`、`entry_index=0`、
+`merge_operation=append_exact_entries_without_rewrite`，同时必须写明
+`incomplete_for_canonical_4_entry_registry=true` 与 `canonical_registry_ready=false`。剩余三条真实输入缺一不可；只有
+canonical assembler 按固定四条 handler 顺序验证并归档后，才可得到正式 registry。静态检查使用
+`py tools/preflight_zg361_phase2_promotion_source_checkpoint_capture.py`，该检查不启动 CK3、不实例化 service、不写 checkpoint。
 Incident 项还必须携带 strict `received_self_incident_checkpoint_receipt`：它证明 exact `zg361.50`、暂停且 map-ready、
 player=root=subject、distinct saved notice owner、option 1 shown/enabled、同帧 native save，以及同一 bytes/hash/lineage/date 绑定。
 assembler 将其归档进 registry；正式 preflight 会再次验证完整 receipt，并与当前 paused player 和 seed 中的 Incident owner 交叉绑定。

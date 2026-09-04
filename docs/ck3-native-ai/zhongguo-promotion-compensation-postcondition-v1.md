@@ -81,6 +81,19 @@ MSVC 静态接线验证包含共享 DLL、provider fixture、mailbox 与主 mail
 - [static-confirmed] source/result 必须保持同一 connection generation 与 played owner，且 snapshot revision、native revision 均推进；最终业务 GREEN 仍只由本 provider 读取到的 #147 choice receipt 与 posted compensation receipt 给出。action ACK 只证明提交已接受。
 - [live-pending] exact-build adapter 仍默认不 advertise capability；正式 preflight 会因此 fail closed。仓库内未写入或合成 checkpoint，必须取得上述真实 paused source/result artifact 后才能升级 production-live。
 
+### Promotion source checkpoint capture 入口（schema 2，live-pending）
+
+- `--phase2-promotion-source-checkpoint-live` 是独立的只读观察 + 原生保存入口；它仅在受管 product-only session 中等待真实
+  `zg361pp.147`，验证 option 1 shown/enabled、played/root/saved owner 一致，以及保存的
+  owner/subject/case/cycle/mechanism/state 六个 scope。它不选择 option，因此不产生 action ACK。
+- 每次成功只输出 `capture_promotion_compensation` 一条真实 entry，冻结 absolute checkpoint path、bytes、SHA-256、`date_raw`、
+  owner/subject、seed lineage、PID/connection generation 与 query/save 前后同帧 binding。
+- 此产物明确是 canonical registry 的确定性 merge 输入，不是完整 registry：
+  `incomplete_for_canonical_4_entry_registry=true`、`canonical_registry_ready=false`。必须再取得 Projects、Incident、Endgame
+  三条真实 entry，并由 `zhongguo_phase2_source_checkpoint_registry.py` 按固定顺序组装，禁止复制或伪造后三条。
+- no-launch 入口为 `py tools/preflight_zg361_phase2_promotion_source_checkpoint_capture.py`；它只核对代码/合同，固定报告
+  `ck3_started=false`。provider descriptor 继续 default-off，单条 source capture 不提升 provider 或完整 action cell 的 live readiness。
+
 ## open_kaishek 同步输入
 
 open_kaishek 必须同步以下语义，而不是只放宽 JSON：
