@@ -27,6 +27,16 @@ ZHONGGUO_CAREER_HC_WORKFORCE_V1_CASE_KIND: Final = (
 ZHONGGUO_CAREER_HC_WORKFORCE_V1_BACKEND_ID: Final = (
     "ck3-1.19.0.6-native-zhongguo-career-hc-workforce-postcondition-v1"
 )
+ZHONGGUO_CAREER_HC_WORKFORCE_V1_SOURCE_BACKEND_ID: Final = "native-headless"
+ZHONGGUO_CAREER_HC_WORKFORCE_V1_CONSUMER_ID: Final = (
+    "xar-autoplayer-zhongguo-career-hc-workforce-postcondition-v1"
+)
+ZHONGGUO_CAREER_HC_WORKFORCE_V1_ALLOWLIST_ID: Final = (
+    "zg361-m360-route-b-career-hc-ledger-v1"
+)
+ZHONGGUO_CAREER_HC_WORKFORCE_V1_EXECUTABLE_SHA256: Final = (
+    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+)
 
 _NONCE_RE: Final = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,63}\Z")
 _TYPED_KEYS: Final = {"status", "value", "unavailable_reason"}
@@ -63,6 +73,19 @@ _READINESS_KEYS: Final = {
     "same_frame_ready",
     "ready",
 }
+_PROVENANCE_KEYS: Final = {
+    "game_version",
+    "executable_sha256",
+    "backend_id",
+    "consumer_id",
+    "allowlist_id",
+    "variable_context_for_scope_rva",
+    "variable_identifier_table_rva",
+    "variable_identifier_lookup_rva",
+    "variable_identifier_name_rva",
+    "character_storage_slot_rva",
+    "character_fallback_slot_rva",
+}
 _FRAME_KEYS: Final = {
     "schema_version",
     "status",
@@ -81,6 +104,7 @@ _FRAME_KEYS: Final = {
     "career_hc_partition",
     "route_b_cost",
     "readiness",
+    "provenance",
     "unavailable_reason",
 }
 
@@ -225,9 +249,24 @@ def normalize_native_zhongguo_career_hc_workforce_v1(
         != QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
         or frame["case_kind"] != ZHONGGUO_CAREER_HC_WORKFORCE_V1_CASE_KIND
         or frame["source_backend_id"]
-        != ZHONGGUO_CAREER_HC_WORKFORCE_V1_BACKEND_ID
+        != ZHONGGUO_CAREER_HC_WORKFORCE_V1_SOURCE_BACKEND_ID
     ):
         raise ValueError("provider provenance changed")
+    provenance = _exact(frame["provenance"], _PROVENANCE_KEYS, "provenance")
+    if provenance != {
+        "game_version": "1.19.0.6",
+        "executable_sha256": ZHONGGUO_CAREER_HC_WORKFORCE_V1_EXECUTABLE_SHA256,
+        "backend_id": ZHONGGUO_CAREER_HC_WORKFORCE_V1_BACKEND_ID,
+        "consumer_id": ZHONGGUO_CAREER_HC_WORKFORCE_V1_CONSUMER_ID,
+        "allowlist_id": ZHONGGUO_CAREER_HC_WORKFORCE_V1_ALLOWLIST_ID,
+        "variable_context_for_scope_rva": "0x3329A40",
+        "variable_identifier_table_rva": "0x3B971A0",
+        "variable_identifier_lookup_rva": "0x3B97020",
+        "variable_identifier_name_rva": "0x3B97090",
+        "character_storage_slot_rva": "0x570C130",
+        "character_fallback_slot_rva": "0x570C138",
+    }:
+        raise ValueError("exact-build provider provenance changed")
     if frame["request_nonce"] != expected_query.request_nonce:
         raise ValueError("request nonce changed")
     if (
@@ -358,6 +397,7 @@ __all__ = [
     "QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP",
     "QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP_PREFIX",
     "ZHONGGUO_CAREER_HC_WORKFORCE_V1_BACKEND_ID",
+    "ZHONGGUO_CAREER_HC_WORKFORCE_V1_SOURCE_BACKEND_ID",
     "ZHONGGUO_CAREER_HC_WORKFORCE_V1_CASE_KIND",
     "ZhongguoCareerHcWorkforceQueryV1",
     "normalize_native_zhongguo_career_hc_workforce_v1",

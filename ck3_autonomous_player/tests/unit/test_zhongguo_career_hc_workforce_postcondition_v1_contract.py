@@ -3,8 +3,11 @@ from __future__ import annotations
 import copy
 import json
 from pathlib import Path
+import re
 import sys
 import unittest
+
+import jsonschema
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -21,6 +24,35 @@ from xar_autoplayer.bridge.zhongguo_career_hc_workforce_postcondition_contract i
     parse_query_zhongguo_career_hc_workforce_v1_step,
     query_zhongguo_career_hc_workforce_v1_step,
 )
+
+BRIDGE = ROOT / "ck3_autonomous_player" / "native_bridge"
+HEADER = BRIDGE / "include" / "xar_bridge" / (
+    "zhongguo_career_hc_workforce_postcondition_v1.hpp"
+)
+NATIVE_SOURCE = BRIDGE / "src" / (
+    "zhongguo_career_hc_workforce_postcondition_v1.cpp"
+)
+SERIALIZER = BRIDGE / "src" / (
+    "zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp"
+)
+MAILBOX = BRIDGE / "src" / (
+    "zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp"
+)
+SHARED_MAILBOX = BRIDGE / "include" / "xar_bridge" / (
+    "main_thread_query_mailbox_v1.hpp"
+)
+SHARED_BRIDGE = BRIDGE / "src" / "bridge.cpp"
+GAME_ADAPTER = BRIDGE / "src" / "game_adapter.cpp"
+CK3_ADAPTER = BRIDGE / "src" / "ck3_11906_adapter.cpp"
+ABI = BRIDGE / "research" / (
+    "zhongguo_career_hc_workforce_postcondition_v1_abi.json"
+)
+SCHEMA = ROOT / "ck3_autonomous_player" / "schemas" / (
+    "zhongguo-career-hc-workforce-postcondition-v1.schema.json"
+)
+NATIVE_DRIVER = SRC / "xar_autoplayer" / "bridge" / "native_driver.py"
+SERVICE = SRC / "xar_autoplayer" / "bridge" / "service.py"
+MCP_SERVER = SRC / "xar_autoplayer" / "bridge" / "mcp_server.py"
 
 
 def typed(value: object) -> dict[str, object]:
@@ -39,7 +71,7 @@ def frame() -> dict[str, object]:
         "status": "available",
         "capability": QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
         "case_kind": ZHONGGUO_CAREER_HC_WORKFORCE_V1_CASE_KIND,
-        "source_backend_id": ZHONGGUO_CAREER_HC_WORKFORCE_V1_BACKEND_ID,
+        "source_backend_id": "native-headless",
         "request_nonce": "b6.route-b.post",
         "snapshot_revision": 88,
         "date_raw": 123456,
@@ -79,6 +111,24 @@ def frame() -> dict[str, object]:
             "same_frame_ready": True,
             "ready": True,
         },
+        "provenance": {
+            "game_version": "1.19.0.6",
+            "executable_sha256": (
+                "2D00FF3101EF70B566F2FCBAE292F092"
+                "63199C80E9DC8F139B82D7D96F83DB86"
+            ),
+            "backend_id": ZHONGGUO_CAREER_HC_WORKFORCE_V1_BACKEND_ID,
+            "consumer_id": (
+                "xar-autoplayer-zhongguo-career-hc-workforce-postcondition-v1"
+            ),
+            "allowlist_id": "zg361-m360-route-b-career-hc-ledger-v1",
+            "variable_context_for_scope_rva": "0x3329A40",
+            "variable_identifier_table_rva": "0x3B971A0",
+            "variable_identifier_lookup_rva": "0x3B97020",
+            "variable_identifier_name_rva": "0x3B97090",
+            "character_storage_slot_rva": "0x570C130",
+            "character_fallback_slot_rva": "0x570C138",
+        },
         "unavailable_reason": None,
     }
 
@@ -113,6 +163,8 @@ class CareerHcWorkforcePostconditionContractTests(unittest.TestCase):
         self.assertEqual(result["status"], "available")
         self.assertTrue(result["m360_receipt"]["provider_observed"])
         self.assertTrue(result["career_hc_partition"]["provider_observed"])
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator(schema).validate(result)
 
     def test_wrong_case_identity_is_rejected(self) -> None:
         value = frame()
@@ -157,8 +209,61 @@ class CareerHcWorkforcePostconditionContractTests(unittest.TestCase):
         self.assertEqual(
             contract["readiness"], "static_and_fixture_ready_live_pending"
         )
-        self.assertEqual(contract["integration"]["native_provider_wiring"], "pending")
+        self.assertEqual(
+            contract["integration"]["native_provider_wiring"],
+            "complete_default_off_until_live",
+        )
         self.assertFalse(contract["integration"]["formal_runner_registry_modified"])
+
+    def test_exact_build_fixed_allowlist_and_public_request_are_frozen(self) -> None:
+        abi = json.loads(ABI.read_text(encoding="utf-8"))
+        header = HEADER.read_text(encoding="utf-8")
+        self.assertEqual(abi["game_version"], "1.19.0.6")
+        self.assertEqual(len(abi["allowlist"]), 14)
+        for variable in abi["allowlist"]:
+            self.assertIn(f'"{variable}"', header)
+        request_block = re.search(
+            r"struct ZhongguoCareerHcWorkforcePostconditionRequestV1 "
+            r"\{(?P<body>.*?)\};",
+            header,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(request_block)
+        body = request_block.group("body")
+        for forbidden in abi["request"]["forbidden_inputs"]:
+            self.assertNotIn(forbidden, body)
+
+    def test_reader_serializer_mailbox_and_default_off_wiring(self) -> None:
+        source = NATIVE_SOURCE.read_text(encoding="utf-8")
+        serializer = SERIALIZER.read_text(encoding="utf-8")
+        mailbox = MAILBOX.read_text(encoding="utf-8")
+        shared_mailbox = SHARED_MAILBOX.read_text(encoding="utf-8")
+        shared_bridge = SHARED_BRIDGE.read_text(encoding="utf-8")
+        game_adapter = GAME_ADAPTER.read_text(encoding="utf-8")
+        native_driver = NATIVE_DRIVER.read_text(encoding="utf-8")
+        service = SERVICE.read_text(encoding="utf-8")
+        mcp = MCP_SERVER.read_text(encoding="utf-8")
+        for token in (
+            "first != second", "receipt_not_recorded",
+            "postcondition_incomplete", "m360_route_b_receipt_ready",
+            "career_hc_conservation_ready", "route_b_manager_cost_zero_ready",
+        ):
+            self.assertIn(token, source)
+        self.assertIn('\\"provenance\\"', serializer)
+        self.assertIn("ExecuteZhongguoCareerHcWorkforceMailboxQueryV1", mailbox)
+        self.assertIn("permitted_executor_sexvigintary", shared_mailbox)
+        self.assertIn("ZhongguoCareerHcWorkforceResultFrame", shared_bridge)
+        self.assertIn(
+            "ParseZhongguoCareerHcWorkforcePostconditionV1Step(step)",
+            game_adapter,
+        )
+        self.assertIn("_execute_zhongguo_career_hc_workforce_v1_query", native_driver)
+        self.assertIn("query_zhongguo_career_hc_workforce_postcondition_v1", service)
+        self.assertIn("ck3_query_zhongguo_career_hc_workforce_postcondition_v1", mcp)
+        self.assertNotIn(
+            QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
+            CK3_ADAPTER.read_text(encoding="utf-8"),
+        )
 
 
 if __name__ == "__main__":

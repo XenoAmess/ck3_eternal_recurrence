@@ -40,6 +40,7 @@
 #include "xar_bridge/zhongguo_manager_governance_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_promotion_compensation_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_projects_metrics_postcondition_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_career_hc_workforce_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_production_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1_mailbox.hpp"
@@ -3379,6 +3380,36 @@ std::string ZhongguoProjectsMetricsResultFrame(
   return result;
 }
 
+std::string ZhongguoCareerHcWorkforceResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::ZhongguoCareerHcWorkforcePostconditionV1 &snapshot) {
+  const auto payload = xar::ck3_11906::
+      SerializeZhongguoCareerHcWorkforcePostconditionV1(snapshot);
+  if (payload.empty()) return {};
+  const std::string_view status =
+      snapshot.status == xar::game::
+                             ZhongguoCareerHcWorkforcePostconditionStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"query-zhongguo-career-hc-workforce-postcondition-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"zhongguo_career_hc_workforce_postcondition\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string ZhongguoIncidentSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoIncidentSnapshotV1 &snapshot) {
@@ -4305,6 +4336,9 @@ public:
     environment.permitted_executor_quinquevigintary =
         &xar::ck3_11906::
             ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1;
+    environment.permitted_executor_sexvigintary =
+        &xar::ck3_11906::
+            ExecuteZhongguoCareerHcWorkforceMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -4472,6 +4506,7 @@ struct WorkerState {
   std::uint64_t zhongguo_workforce_normal_exit_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_promotion_compensation_query_sequence = 0;
   std::uint64_t zhongguo_projects_metrics_query_sequence = 0;
+  std::uint64_t zhongguo_career_hc_workforce_query_sequence = 0;
   std::uint64_t loaded_feature_manifest_query_sequence = 0;
   std::uint64_t pending_character_interaction_context_query_sequence = 0;
   std::uint64_t event_window_context_query_sequence = 0;
@@ -4572,6 +4607,8 @@ void RunConnectedSession(
       state.zhongguo_promotion_compensation_query_sequence;
   auto &zhongguo_projects_metrics_query_sequence =
       state.zhongguo_projects_metrics_query_sequence;
+  auto &zhongguo_career_hc_workforce_query_sequence =
+      state.zhongguo_career_hc_workforce_query_sequence;
   auto &loaded_feature_manifest_query_sequence =
       state.loaded_feature_manifest_query_sequence;
   auto &pending_character_interaction_context_query_sequence =
@@ -5028,6 +5065,128 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "application-main projects/metrics result was not "
+                      "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (
+            step == xar::ck3_11906::
+                        kZhongguoCareerHcWorkforcePostconditionV1Step) {
+          xar::ck3_11906::ZhongguoCareerHcWorkforcePostconditionRequestV1 request{};
+          std::int32_t requested_owner_character_id = -1;
+          if (!xar::ck3_11906::
+                  ParseZhongguoCareerHcWorkforcePostconditionRequestV1(
+                      incoming.payload, request,
+                      requested_owner_character_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo career-HC/workforce request is malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo career-HC/workforce revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.played_character_id ==
+                    requested_owner_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo career-HC/workforce snapshot changed "
+                            "or is not ready"));
+            } else {
+              xar::ck3_11906::
+                  ZhongguoCareerHcWorkforceMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment = xar::ck3_11906::
+                  BindZhongguoCareerHcWorkforceNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request = std::move(request);
+              query.requested_owner_character_id =
+                  requested_owner_character_id;
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecuteZhongguoCareerHcWorkforceMailboxQueryV1,
+                  &query, query.ticket);
+              if (submit !=
+                  xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main career-HC/workforce executor is "
+                    "unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main career-HC/workforce executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kZhongguoCareerHcWorkforceV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kZhongguoCareerHcWorkforceV1ExecutingWaitSliceMilliseconds);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            ZhongguoCareerHcWorkforceMailboxCompletionV1::
+                                                completed &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoCareerHcWorkforceResultFrame(
+                      request_id,
+                      zhongguo_career_hc_workforce_query_sequence + 1,
+                      query.result);
+                  if (!response.empty())
+                    ++zhongguo_career_hc_workforce_query_sequence;
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      ZhongguoCareerHcWorkforceFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main career-HC/workforce result was not "
                       "reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);

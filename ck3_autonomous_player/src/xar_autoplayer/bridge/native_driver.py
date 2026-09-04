@@ -182,6 +182,14 @@ from .zhongguo_projects_metrics_postcondition_contract import (
     normalize_native_zhongguo_projects_metrics_v1,
     parse_query_zhongguo_projects_metrics_v1_step,
 )
+from .zhongguo_career_hc_workforce_postcondition_contract import (
+    QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
+    QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP,
+    QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP_PREFIX,
+    ZhongguoCareerHcWorkforceQueryV1,
+    normalize_native_zhongguo_career_hc_workforce_v1,
+    parse_query_zhongguo_career_hc_workforce_v1_step,
+)
 from .zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_STEP,
@@ -1620,6 +1628,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_career_hc_workforce_v1_query_supported": (
+                QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "zhongguo_workforce_collective_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
@@ -1963,6 +1975,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_projects_metrics_v1_query_supported": (
                 QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_career_hc_workforce_v1_query_supported": (
+                QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "zhongguo_workforce_collective_snapshot_v1_query_supported": (
@@ -3273,6 +3289,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo projects/metrics v1 query step"
             )
+        zhongguo_career_hc_workforce_query = (
+            parse_query_zhongguo_career_hc_workforce_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP_PREFIX
+            )
+            and zhongguo_career_hc_workforce_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo career-HC/workforce v1 query step"
+            )
         zhongguo_workforce_collective_query = (
             parse_query_zhongguo_workforce_collective_snapshot_v1_step(step)
         )
@@ -3595,6 +3624,22 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_projects_metrics_v1_query(
                 zhongguo_projects_metrics_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_career_hc_workforce_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL does not advertise the ZhongGuo "
+                    "career-HC/workforce postcondition query"
+                )
+            return self._execute_zhongguo_career_hc_workforce_v1_query(
+                zhongguo_career_hc_workforce_query,
                 expected_revision=expected_revision,
             )
         if zhongguo_workforce_collective_query is not None:
@@ -9028,6 +9073,152 @@ class NativeHeadlessGameplayDriver:
 
 
 
+    def _execute_zhongguo_career_hc_workforce_v1_query(
+        self,
+        query: ZhongguoCareerHcWorkforceQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one paused, played-subject career-HC/workforce receipt."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce query requires a "
+                "paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo career-HC/workforce starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce query lacks an "
+                "int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        snapshot_id = starting.get("snapshot_id")
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce query lacks its "
+                "paused snapshot binding"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_career_hc_workforce_postcondition",
+            "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce query returned a "
+                "malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce query lacks "
+                "query_sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_career_hc_workforce_v1(
+                result.get(
+                    "zhongguo_career_hc_workforce_postcondition"
+                ),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce frame is malformed: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce envelope status "
+                "disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_played = current.get("played_character")
+        current_player_id = (
+            current_played.get("character_id")
+            if isinstance(current_played, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo career-HC/workforce query crossed a "
+                "snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_career_hc_workforce_postcondition": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
+
+
+
+
     def _execute_zhongguo_workforce_collective_snapshot_v1_query(
         self,
         query: ZhongguoWorkforceCollectiveQueryV1,
@@ -14255,12 +14446,26 @@ class ConfiguredHybridFallbackDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo projects/metrics v1 query step"
             )
+        zhongguo_career_hc_workforce_query = (
+            parse_query_zhongguo_career_hc_workforce_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP_PREFIX
+            )
+            and zhongguo_career_hc_workforce_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo career-HC/workforce v1 query step"
+            )
         if (
             zhongguo_ai_owned_case_query is not None
             or zhongguo_result_case_query is not None
             or zhongguo_b2_pip_query is not None
             or zhongguo_promotion_compensation_query is not None
             or zhongguo_projects_metrics_query is not None
+            or zhongguo_career_hc_workforce_query is not None
             or zhongguo_workforce_collective_query is not None
             or zhongguo_workforce_normal_exit_query is not None
             or zhongguo_incident_query is not None
@@ -14318,6 +14523,10 @@ class ConfiguredHybridFallbackDriver:
                     )
                 )
             )
+            if zhongguo_career_hc_workforce_query is not None:
+                required_capability = (
+                    QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
+                )
             if (
                 required_capability not in native_bridge_capabilities
             ):

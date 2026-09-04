@@ -128,6 +128,13 @@ from .zhongguo_projects_metrics_postcondition_contract import (
     parse_query_zhongguo_projects_metrics_v1_step,
     query_zhongguo_projects_metrics_v1_step,
 )
+from .zhongguo_career_hc_workforce_postcondition_contract import (
+    QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
+    QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP,
+    normalize_native_zhongguo_career_hc_workforce_v1,
+    parse_query_zhongguo_career_hc_workforce_v1_step,
+    query_zhongguo_career_hc_workforce_v1_step,
+)
 from .zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_STEP,
@@ -3238,6 +3245,191 @@ class GameplayBridgeService:
                 "expected_revision": expected_revision,
             },
         }
+
+    def query_zhongguo_career_hc_workforce_postcondition_v1(
+        self,
+        request_nonce: str,
+        *,
+        expected_revision: int,
+        owner_character_id: int,
+    ) -> dict[str, object]:
+        """Read the paused player's correlated career-HC/workforce receipt."""
+        if (
+            isinstance(owner_character_id, bool)
+            or not isinstance(owner_character_id, int)
+            or not 1 <= owner_character_id <= 2**31 - 1
+        ):
+            raise ValueError("owner_character_id must be a positive int32")
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        snapshot = self.snapshot()
+        revision = snapshot.get("revision")
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        played = snapshot.get("played_character")
+        player_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        hello = (
+            diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        )
+        if (
+            snapshot.get("paused") is not True
+            or revision != expected_revision
+            or isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo career-HC/workforce query lacks one stable "
+                "paused player binding"
+            )
+        step = query_zhongguo_career_hc_workforce_v1_step(
+            owner_character_id, request_nonce
+        )
+        query = parse_query_zhongguo_career_hc_workforce_v1_step(step)
+        if query is None:  # pragma: no cover - builder/parser invariant
+            raise AssertionError(
+                "career-HC/workforce query builder violated v1"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(capabilities, list)
+            and QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
+            in capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend does not advertise the ZhongGuo "
+                "career-HC/workforce postcondition query"
+            )
+        result = self.execute_step(step, expected_revision=expected_revision)
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_career_hc_workforce_postcondition",
+            "backend_id", "queried_snapshot_id", "queried_revision",
+            "queried_native_revision", "queried_connection_generation",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+            or result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+            or result.get("queried_connection_generation")
+            != connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo career-HC/workforce backend result is not bound "
+                "to the requested paused frame"
+            )
+        try:
+            normalized = normalize_native_zhongguo_career_hc_workforce_v1(
+                result.get(
+                    "zhongguo_career_hc_workforce_postcondition"
+                ),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "ZhongGuo career-HC/workforce result is malformed: "
+                f"{error}"
+            ) from error
+        current = self.snapshot()
+        current_diagnostics = current.get("diagnostics")
+        current_played = current.get("played_character")
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and isinstance(current_played, dict)
+            and current_played.get("character_id") == player_character_id
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation")
+            == connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo career-HC/workforce query crossed its paused "
+                "snapshot binding"
+            )
+        bridge_version = (
+            diagnostics.get("bridge_version")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if not isinstance(bridge_version, str) or not bridge_version:
+            bridge_version = (
+                hello.get("bridge_version") if isinstance(hello, dict) else None
+            )
+        game_adapter_id = (
+            hello.get("game_adapter_id") if isinstance(hello, dict) else None
+        )
+        return {
+            **normalized,
+            "source_backend_id": "native-headless",
+            "build": {
+                "version": "1.19.0.6",
+                "exe_sha256": (
+                    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+                ),
+            },
+            "source": {
+                "bridge_version": bridge_version,
+                "game_adapter_id": game_adapter_id,
+                "backend_id": result.get("backend_id"),
+                "connection_generation": connection_generation,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+            },
+            "binding": {
+                "request_nonce": query.request_nonce,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "connection_generation": connection_generation,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+                "subject_character_id": player_character_id,
+                "owner_character_id": owner_character_id,
+                "expected_revision": expected_revision,
+            },
+        }
+
+
 
     def query_zhongguo_workforce_collective_snapshot_v1(
         self,

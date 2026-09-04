@@ -38,6 +38,15 @@
     "subject_allowlist_count": 14,
     "caller_selected_variable_names": false
   },
+  "native_provider": {
+    "abi": "ck3_autonomous_player/native_bridge/research/zhongguo_career_hc_workforce_postcondition_v1_abi.json",
+    "schema": "ck3_autonomous_player/schemas/zhongguo-career-hc-workforce-postcondition-v1.schema.json",
+    "mailbox_fixed_slot": "permitted_executor_sexvigintary",
+    "two_complete_allowlist_reads": true,
+    "same_frame_before_after": true,
+    "shared_wiring": "default_off_complete_not_advertised",
+    "typed_unavailable": true
+  },
   "generated_sources": [
     "mod_zhongguo_style/tools/gen_361_career_hc_runtime.py",
     "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
@@ -61,7 +70,7 @@
     "cell": "tools/zg361_phase2_hc_workforce_b6_action_cell.py",
     "service_method": "query_zhongguo_career_hc_workforce_postcondition_v1",
     "formal_runner_registry_modified": false,
-    "native_provider_wiring": "pending",
+    "native_provider_wiring": "complete_default_off_until_live",
     "live_checkpoint": "after workforce transition fixture activation and before selecting zg361we.360 route B"
   }
 }

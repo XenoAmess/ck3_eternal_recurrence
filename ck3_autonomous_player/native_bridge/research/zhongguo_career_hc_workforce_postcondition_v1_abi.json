@@ -1,0 +1,82 @@
+{
+  "contract": "zhongguo_career_hc_workforce_postcondition_v1",
+  "status": "static_and_fixture_ready_not_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-zhongguo-career-hc-workforce-postcondition-v1",
+  "step": "query-zhongguo-career-hc-workforce-postcondition-v1",
+  "case_kind": "zhongguo.career-hc.workforce.route-b-no-hc-debit",
+  "mailbox_fixed_slot": "permitted_executor_sexvigintary",
+  "advertisement": "default_off_until_paused_live_evidence",
+  "request": {
+    "public_inputs": ["request_nonce", "expected_revision", "owner_character_id"],
+    "forbidden_inputs": [
+      "subject_character_id", "variable_name", "receipt_state", "receipt_choice",
+      "bucket_name", "character_selector", "arbitrary_extra_field"
+    ]
+  },
+  "subject_acl": {
+    "scope": "paused_played_character_only",
+    "subject_source": "same_frame_snapshot.played_character_id",
+    "owner_source": "zg361_we_m360_receipt_owner",
+    "owner_filter": "actual_receipt_owner_equals_required_owner_and_differs_from_player",
+    "owner_scope_read": false,
+    "third_party_subject_read": false
+  },
+  "native_variable_abi": {
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "numeric_kind": 1,
+    "character_kind": 4,
+    "fixed_scale": 100000
+  },
+  "allowlist": [
+    "zg361_we_m360_receipt_owner",
+    "zg361_we_m360_receipt_subject",
+    "zg361_we_m360_receipt_cycle",
+    "zg361_we_m360_receipt_case",
+    "zg361_we_m360_receipt_state",
+    "zg361_we_m360_receipt_choice",
+    "zg361_ch_hc_authorized",
+    "zg361_ch_hc_available",
+    "zg361_ch_hc_reserved",
+    "zg361_ch_hc_occupied",
+    "zg361_ch_hc_frozen",
+    "zg361_ch_hc_reclaimed",
+    "zg361_ch_hc_conserved",
+    "zg361_we_al_external_collective_manager_cost_total"
+  ],
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox",
+    "two_complete_allowlist_reads": true,
+    "frame_before_after_equal": true,
+    "raw_rows_first_second_equal": true,
+    "engine_pointers_retained": false
+  },
+  "green_gate": {
+    "receipt_identity": "exact owner_filter plus played_subject plus positive cycle_and_case",
+    "route_b": "m360_receipt_state_equals_4_and_choice_equals_2",
+    "partition": "six_nonnegative_HC_fields_available",
+    "conservation": "available_plus_reserved_plus_occupied_plus_frozen_plus_reclaimed_equals_authorized_and_conserved_equals_true",
+    "manager_cost": "manager_cost_total_equals_zero",
+    "ack_semantics": "accepted_or_submitted_ack_is_not_an_input_and_cannot_produce_green"
+  },
+  "typed_negatives": {
+    "all_receipt_fields_absent": "receipt_not_recorded",
+    "partial_or_wrong_receipt_or_ledger": "postcondition_incomplete",
+    "double_read_or_frame_drift": "state_changed",
+    "wrong_owner_filter": "owner_filter_mismatch",
+    "missing_or_wrong_typed_field": "typed_unavailable_and_top_level_unavailable"
+  },
+  "unsupported_claims": [
+    "production_live_acceptance",
+    "event_visibility_or_option_selection",
+    "arbitrary_variable_or_character_query",
+    "workforce_collective_transition_postcondition",
+    "ACK_as_business_result"
+  ]
+}

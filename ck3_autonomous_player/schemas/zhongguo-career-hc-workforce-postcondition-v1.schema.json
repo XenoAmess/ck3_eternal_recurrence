@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-career-hc-workforce-postcondition-v1.schema.json",
+  "title": "ZhongGuo career HC workforce route-B postcondition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "capability", "case_kind", "source_backend_id",
+    "request_nonce", "snapshot_revision", "date_raw", "paused",
+    "player_character_id", "subject_character_id", "requested_owner_character_id",
+    "m360_identity", "m360_receipt", "career_hc_partition", "route_b_cost",
+    "readiness", "provenance", "unavailable_reason"
+  ],
+  "$defs": {
+    "fieldUnavailableReason": {
+      "enum": ["variable_absent", "value_type_mismatch", "value_out_of_range", "postcondition_unavailable"]
+    },
+    "topLevelUnavailableReason": {
+      "enum": [
+        "unsupported_build", "requires_application_main", "requires_paused",
+        "map_not_ready", "owner_filter_mismatch", "variable_context_unavailable",
+        "receipt_not_recorded", "postcondition_incomplete", "state_changed", "internal_error"
+      ]
+    },
+    "typedInteger": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldUnavailableReason"}
+          }
+        }
+      ]
+    },
+    "typedBoolean": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"}, "value": {"type": "boolean"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"}, "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldUnavailableReason"}
+          }
+        }
+      ]
+    },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "capability": {"const": "game.command.query-zhongguo-career-hc-workforce-postcondition-v1"},
+    "case_kind": {"const": "zhongguo.career-hc.workforce.route-b-no-hc-debit"},
+    "source_backend_id": {"const": "native-headless"},
+    "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+    "snapshot_revision": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "paused": {"const": true},
+    "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "subject_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "requested_owner_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "m360_identity": {"$ref": "#/$defs/identity"},
+    "m360_receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "choice", "provider_observed"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "choice": {"$ref": "#/$defs/typedInteger"},
+        "provider_observed": {"type": "boolean"}
+      }
+    },
+    "career_hc_partition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorized", "available", "reserved", "occupied", "frozen", "reclaimed", "conserved", "provider_observed"],
+      "properties": {
+        "authorized": {"$ref": "#/$defs/typedInteger"},
+        "available": {"$ref": "#/$defs/typedInteger"},
+        "reserved": {"$ref": "#/$defs/typedInteger"},
+        "occupied": {"$ref": "#/$defs/typedInteger"},
+        "frozen": {"$ref": "#/$defs/typedInteger"},
+        "reclaimed": {"$ref": "#/$defs/typedInteger"},
+        "conserved": {"$ref": "#/$defs/typedBoolean"},
+        "provider_observed": {"type": "boolean"}
+      }
+    },
+    "route_b_cost": {
+      "type": "object", "additionalProperties": false,
+      "required": ["manager_cost_total", "provider_observed"],
+      "properties": {
+        "manager_cost_total": {"$ref": "#/$defs/typedInteger"},
+        "provider_observed": {"type": "boolean"}
+      }
+    },
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "player_subject_binding_ready", "owner_binding_ready", "m360_identity_ready",
+        "m360_route_b_receipt_ready", "career_hc_partition_ready",
+        "career_hc_conservation_ready", "route_b_manager_cost_zero_ready",
+        "same_frame_ready", "ready"
+      ],
+      "properties": {
+        "player_subject_binding_ready": {"type": "boolean"},
+        "owner_binding_ready": {"type": "boolean"},
+        "m360_identity_ready": {"type": "boolean"},
+        "m360_route_b_receipt_ready": {"type": "boolean"},
+        "career_hc_partition_ready": {"type": "boolean"},
+        "career_hc_conservation_ready": {"type": "boolean"},
+        "route_b_manager_cost_zero_ready": {"type": "boolean"},
+        "same_frame_ready": {"type": "boolean"},
+        "ready": {"type": "boolean"}
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "game_version", "executable_sha256", "backend_id", "consumer_id", "allowlist_id",
+        "variable_context_for_scope_rva", "variable_identifier_table_rva",
+        "variable_identifier_lookup_rva", "variable_identifier_name_rva",
+        "character_storage_slot_rva", "character_fallback_slot_rva"
+      ],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+        "backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-career-hc-workforce-postcondition-v1"},
+        "consumer_id": {"const": "xar-autoplayer-zhongguo-career-hc-workforce-postcondition-v1"},
+        "allowlist_id": {"const": "zg361-m360-route-b-career-hc-ledger-v1"},
+        "variable_context_for_scope_rva": {"const": "0x3329A40"},
+        "variable_identifier_table_rva": {"const": "0x3B971A0"},
+        "variable_identifier_lookup_rva": {"const": "0x3B97020"},
+        "variable_identifier_name_rva": {"const": "0x3B97090"},
+        "character_storage_slot_rva": {"const": "0x570C130"},
+        "character_fallback_slot_rva": {"const": "0x570C138"}
+      }
+    },
+    "unavailable_reason": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/topLevelUnavailableReason"}]}
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "available"}}},
+    "then": {"properties": {"unavailable_reason": {"type": "null"}}},
+    "else": {"properties": {"unavailable_reason": {"$ref": "#/$defs/topLevelUnavailableReason"}}}
+  }]
+}

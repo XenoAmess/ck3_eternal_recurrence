@@ -30,6 +30,23 @@ SOURCE_CONTRACT = (
     / "zhongguo_career_hc_workforce_postcondition_v1_source_contract.json"
 )
 ACTION_CELL = ROOT / "tools" / "zg361_phase2_hc_workforce_b6_action_cell.py"
+NATIVE_BRIDGE = ROOT / "ck3_autonomous_player" / "native_bridge"
+NATIVE_HEADER = NATIVE_BRIDGE / "include" / "xar_bridge" / (
+    "zhongguo_career_hc_workforce_postcondition_v1.hpp"
+)
+NATIVE_SOURCE = NATIVE_BRIDGE / "src" / (
+    "zhongguo_career_hc_workforce_postcondition_v1.cpp"
+)
+NATIVE_SERIALIZER = NATIVE_BRIDGE / "src" / (
+    "zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp"
+)
+NATIVE_MAILBOX = NATIVE_BRIDGE / "src" / (
+    "zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp"
+)
+CK3_ADAPTER = NATIVE_BRIDGE / "src" / "ck3_11906_adapter.cpp"
+SHARED_BRIDGE = NATIVE_BRIDGE / "src" / "bridge.cpp"
+SERVICE = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "service.py"
+MCP_SERVER = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "mcp_server.py"
 ROUTE_B_EFFECT = (
     ROOT
     / "mod_zhongguo_style"
@@ -46,6 +63,14 @@ def run_preflight() -> dict[str, object]:
     contract = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
     route_b = ROUTE_B_EFFECT.read_text(encoding="utf-8-sig")
     action_cell = ACTION_CELL.read_text(encoding="utf-8")
+    native_header = NATIVE_HEADER.read_text(encoding="utf-8")
+    native_source = NATIVE_SOURCE.read_text(encoding="utf-8")
+    native_serializer = NATIVE_SERIALIZER.read_text(encoding="utf-8")
+    native_mailbox = NATIVE_MAILBOX.read_text(encoding="utf-8")
+    ck3_adapter = CK3_ADAPTER.read_text(encoding="utf-8")
+    shared_bridge = SHARED_BRIDGE.read_text(encoding="utf-8")
+    service = SERVICE.read_text(encoding="utf-8")
+    mcp_server = MCP_SERVER.read_text(encoding="utf-8")
     career_shards = sorted(CAREER_EFFECTS.glob("zg361_career_hc_[0-9][0-9][0-9]_*.txt"))
     counts = {
         path.name: len(top_level_effect_entries(path.read_bytes()))
@@ -72,10 +97,37 @@ def run_preflight() -> dict[str, object]:
             "formal_runner_registry_modified"
         )
         is False,
-        "native_provider_wiring_remains_pending": contract.get("integration", {}).get(
+        "native_provider_wiring_complete_default_off": contract.get("integration", {}).get(
             "native_provider_wiring"
         )
-        == "pending",
+        == "complete_default_off_until_live",
+        "native_reader_fixed_allowlist": (
+            "kZhongguoCareerHcWorkforcePostconditionV1VariableAllowlist"
+            in native_header
+            and "first != second" in native_source
+            and "variable_name" not in native_header
+        ),
+        "native_typed_serializer_has_exact_provenance": all(
+            token in native_serializer
+            for token in (
+                "native-headless",
+                "kZhongguoCareerHcWorkforcePostconditionV1BackendId",
+                "character_fallback_slot_rva",
+            )
+        ),
+        "mailbox_slot_26_and_transport_wired": (
+            "ExecuteZhongguoCareerHcWorkforceMailboxQueryV1" in native_mailbox
+            and "permitted_executor_sexvigintary" in shared_bridge
+            and "ZhongguoCareerHcWorkforceResultFrame" in shared_bridge
+        ),
+        "service_and_mcp_wired": (
+            "def query_zhongguo_career_hc_workforce_postcondition_v1(" in service
+            and "def ck3_query_zhongguo_career_hc_workforce_postcondition_v1("
+            in mcp_server
+        ),
+        "semantic_capability_default_off_until_live": (
+            QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY not in ck3_adapter
+        ),
         "cell_requires_provider_postcondition": (
             "provider_postcondition_observed" in action_cell
             and "action_ack_is_business_postcondition" in action_cell
@@ -129,7 +181,7 @@ def run_preflight() -> dict[str, object]:
             "subject-session rebind without date advance"
         ),
         "live_completion_requires": (
-            "wire and advertise the fixed provider, execute route B once, then "
+            "advertise the statically wired fixed provider, execute route B once, then "
             "capture one paused subject-side frame containing the exact state-4/"
             "choice-2 receipt, conserved six-bucket career-HC ledger, and zero "
             "manager cost"

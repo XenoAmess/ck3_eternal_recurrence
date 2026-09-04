@@ -11646,6 +11646,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_zhongguo_b2_pip_snapshot_v1",
                     "ck3_query_zhongguo_promotion_compensation_postcondition_v1",
                     "ck3_query_zhongguo_projects_metrics_postcondition_v1",
+                    "ck3_query_zhongguo_career_hc_workforce_postcondition_v1",
                     "ck3_activate_zhongguo_scoreboard_v1",
                     "ck3_query_zhongguo_incident_snapshot_v1",
                     "ck3_query_zhongguo_manager_governance_snapshot_v1",

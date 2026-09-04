@@ -31,14 +31,16 @@ The B6 postcondition therefore observes a conserved career-HC partition rather
 than inventing a headcount transition that the product does not perform.
 
 This is static product-source evidence, not a live CK3 outcome. The exact-build
-native provider still has to be wired and exercised before the claim may move
-past `live-pending`.
+native provider, serializer, slot-26 mailbox transport, native driver, service
+and MCP query are now wired and fixture-tested. Its semantic capability remains
+absent from the default adapter advertisement until a paused live query proves
+the reader, so the claim remains `live-pending`.
 
 ## Integration point
 
 - Contract/normalizer:
   `xar_autoplayer.bridge.zhongguo_career_hc_workforce_postcondition_contract`
-- Proposed fixed capability:
+- Fixed, currently default-off capability:
   `game.command.query-zhongguo-career-hc-workforce-postcondition-v1`
 - Service seam:
   `query_zhongguo_career_hc_workforce_postcondition_v1(request_nonce, expected_revision, owner_character_id)`
@@ -47,8 +49,9 @@ past `live-pending`.
 - No-launch preflight:
   `py tools/preflight_zg361_phase2_hc_workforce_b6.py`
 
-The formal runner registry is intentionally unchanged. The provider must remain
-unadvertised until its exact-build native reader and service facade exist.
+The formal runner registry is intentionally unchanged. The provider remains
+unadvertised until the live checkpoint below proves a complete provider frame;
+an ACK cannot enable or satisfy it.
 
 ## Required live checkpoint
 
