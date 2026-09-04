@@ -509,9 +509,12 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # Independent vanilla Find Secrets hook opportunity.  Option 1 spends
         # gold and fabricates a hook; option 2 only grants the one typed third
         # party a decaying opinion modifier toward root.  The same exact event
-        # can recur on this seed; two distinct live dates have been observed,
-        # so only two contract-matching occurrences are admitted.
+        # can recur on this seed.  The second council-task delivery moved by
+        # ten days between R35 and R57 while every semantic field stayed
+        # exact, so its observed date envelope is bounded independently from
+        # the strict two-occurrence cap.
         "date_raw": (53148768, 53152656),
+        "date_raw_range": (53148768, 53152896),
         "max_occurrences": 2,
         "root_character_id": 29037,
         "character_scopes": {

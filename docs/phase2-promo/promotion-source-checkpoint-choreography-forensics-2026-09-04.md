@@ -419,3 +419,29 @@ Promotion and choreography/preflight tests pass normal and optimized at 10/10
 and 6/6 respectively; the no-launch preflight is GREEN. This was another
 post-loader contract RED, not a file-size or loader-performance signal, so it
 does not authorize another effect-file split.
+
+## R57: bounded recurrence date for the Find Secrets hook offer
+
+R57 ran from pushed commit `34da1c5` and passed frontend-first plus the final
+loader. It drained B2 PIP, `tgp_china_yearly.0010`, and the first
+`spymaster_task.0381`, then failed closed before action on the second `.0381`
+because `date_raw=53152896` was outside the old discrete date set. The frame
+retained the fixed councillor/root/target identities, five saved-scope names
+and types, and two shown/enabled native options 0/1. Its only new role value
+was a valid non-player `character_to_hook=29363`. The `.0005` event did not
+occur in this randomized run, so the R56 role-contract correction remains
+live pending rather than claimed closed.
+
+R35 observed the same second delivery at `53152656`; the exact 1.19.0.6
+Find Secrets event is periodically selected and chooses `character_to_hook`
+in `immediate`. The `.0381` contract now admits only the live-observed date
+envelope `53148768..53152896`, while retaining its strict maximum of two
+occurrences and all semantic identity/option checks. Focused normal and
+optimized regressions are both 16/16 GREEN and no-launch preflight is GREEN.
+
+R57 outer report/evidence-index SHA-256 values are
+`A8F5A7E5A6F3D9D5D2C5287903A97B0A2D202B1E5987E68986524165656A9A1A`
+and `9D57471CB05BEE7523FBB35094C3D28ABD4C89F640C00D609CBE8DF279497401`.
+All three final logs still contain zero B2 unset-variable reads; cleanup was
+GREEN and CK3 count returned to zero. This remains a post-loader timeline
+contract RED and provides no basis for another effect-file size split.

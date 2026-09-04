@@ -338,7 +338,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 instance_id, option_count, date, revision = (
                     (381, 2, 53148768, 37)
                     if self.stage == "hook_offer"
-                    else (382, 2, 53152656, 40)
+                    else (382, 2, 53152896, 40)
                 )
             elif self.stage == "no_secrets":
                 instance_id, option_count, date, revision = 399, 2, 53148768, 38
