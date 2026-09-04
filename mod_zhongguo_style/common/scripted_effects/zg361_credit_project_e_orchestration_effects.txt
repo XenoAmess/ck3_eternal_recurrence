@@ -1,0 +1,211 @@
+﻿# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py
+# ZhongGuo 361 E/I/J/R credit and project runtime.
+# PURPOSE: domain E initialization, read, AI and launch adapters.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_cp_e_initialize_effect = {
+	set_variable = { name = zg361_cp_e_operation_total value = 6 }
+	set_variable = { name = zg361_cp_e_operation_used value = 0 }
+	set_variable = { name = zg361_cp_e_visible_revision value = 0 }
+	remove_variable = zg361_cp_resource_race
+	remove_variable = zg361_cp_m30_visible_value
+	remove_variable = zg361_cp_effort_ledger
+	remove_variable = zg361_cp_m26_visible_value
+	remove_variable = zg361_cp_signed_contribution
+	remove_variable = zg361_cp_m27_visible_value
+	remove_variable = zg361_cp_sponsor_credit
+	remove_variable = zg361_cp_m31_visible_value
+	remove_variable = zg361_cp_credit_claim
+	remove_variable = zg361_cp_m28_visible_value
+	remove_variable = zg361_cp_metric_audit
+	remove_variable = zg361_cp_m29_visible_value
+}
+
+# Assessed-only adapter. A count or baron may read their own case revision,
+# but receives no authority to open cases, reserve capacity or assess anyone.
+zg361_cp_e_subject_read_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_subject_self_guard_trigger = {
+				SUBJECT_VAR = zg361_case_e_subject
+				ACTIVE_VAR = zg361_case_e_active
+			}
+		}
+		set_variable = { name = zg361_cp_e_subject_seen_revision value = var:zg361_cp_e_visible_revision }
+	}
+}
+
+zg361_cp_e_run_authorized_ai_effect = {
+	# Authorized exception: landed, living celestial duke+ managers only.
+	# AI execution is background-only; it never opens a character event.
+	if = {
+		limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_portfolio_deferred }
+					var:zg361_cp_portfolio_deferred = 1
+				}
+				trigger_else = { always = no }
+			}
+			zg361_cp_m30_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		else = {
+			zg361_cp_m30_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_portfolio_deferred }
+					var:zg361_cp_portfolio_deferred = 1
+				}
+				trigger_else = { always = no }
+			}
+			zg361_cp_m26_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		else = {
+			zg361_cp_m26_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_portfolio_deferred }
+					var:zg361_cp_portfolio_deferred = 1
+				}
+				trigger_else = { always = no }
+			}
+			zg361_cp_m27_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		else = {
+			zg361_cp_m27_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_portfolio_deferred }
+					var:zg361_cp_portfolio_deferred = 1
+				}
+				trigger_else = { always = no }
+			}
+			zg361_cp_m31_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		else = {
+			zg361_cp_m31_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_portfolio_deferred }
+					var:zg361_cp_portfolio_deferred = 1
+				}
+				trigger_else = { always = no }
+			}
+			zg361_cp_m28_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		else = {
+			zg361_cp_m28_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_portfolio_deferred }
+					var:zg361_cp_portfolio_deferred = 1
+				}
+				trigger_else = { always = no }
+			}
+			zg361_cp_m29_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		else = {
+			zg361_cp_m29_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+	}
+}
+
+# Subject-scope entry; ROOT remains the eligible direct manager.
+zg361_cp_e_launch_effect = {
+	zg361_case_e_open_effect = yes
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_case_kernel_applied }
+				var:zg361_case_kernel_applied = 1
+			}
+			trigger_else = { always = no }
+		}
+
+		zg361_cp_initialize_portfolio_effect = yes
+		zg361_cp_e_initialize_effect = yes
+		var:zg361_case_e_owner = { save_scope_as = zg361_cp_e_owner }
+		save_scope_as = zg361_cp_e_subject
+		save_scope_value_as = { name = zg361_cp_e_cycle value = var:zg361_case_e_cycle_serial }
+		save_scope_value_as = { name = zg361_cp_e_case value = var:zg361_case_e_case_serial }
+		if = {
+			limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+			zg361_cp_e_run_authorized_ai_effect = yes
+		}
+		else_if = {
+			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+			scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.30 } }
+		}
+	}
+}

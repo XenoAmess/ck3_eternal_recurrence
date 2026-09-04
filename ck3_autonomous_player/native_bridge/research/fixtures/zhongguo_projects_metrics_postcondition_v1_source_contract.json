@@ -10,8 +10,9 @@
     "mod_zhongguo_style/tools/gen_361_phase3_metrics_delivery_runtime.py"
   ],
   "generated_outputs": [
-    "mod_zhongguo_style/common/scripted_effects/zg361_credit_project_runtime_effects.txt",
-    "mod_zhongguo_style/common/scripted_effects/zg361_phase3_metrics_delivery_runtime_effects.txt"
+    "mod_zhongguo_style/common/scripted_effects/zg361_credit_project_m026_effort_ledger_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_phase3_portfolio_lifecycle_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_phase3_aa_m229_metric_dictionary_owner_effects.txt"
   ],
   "required_invariants": [
     "cp26_a_b_only_mint_positive_monotonic_receipt_id",

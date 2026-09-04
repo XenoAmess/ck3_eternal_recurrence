@@ -24,8 +24,25 @@ GAME_ADAPTER = BRIDGE / "src" / "game_adapter.cpp"
 CK3_ADAPTER = BRIDGE / "src" / "ck3_11906_adapter.cpp"
 CP_GENERATOR = ROOT / "mod_zhongguo_style" / "tools" / "gen_361_credit_project_runtime.py"
 P3_GENERATOR = ROOT / "mod_zhongguo_style" / "tools" / "gen_361_phase3_metrics_delivery_runtime.py"
-CP_PRODUCT = ROOT / "mod_zhongguo_style" / "common" / "scripted_effects" / "zg361_credit_project_runtime_effects.txt"
-P3_PRODUCT = ROOT / "mod_zhongguo_style" / "common" / "scripted_effects" / "zg361_phase3_metrics_delivery_runtime_effects.txt"
+CP_PRODUCT = (
+    ROOT
+    / "mod_zhongguo_style"
+    / "common"
+    / "scripted_effects"
+    / "zg361_credit_project_m026_effort_ledger_effects.txt"
+)
+P3_PRODUCTS = (
+    ROOT
+    / "mod_zhongguo_style"
+    / "common"
+    / "scripted_effects"
+    / "zg361_phase3_portfolio_lifecycle_effects.txt",
+    ROOT
+    / "mod_zhongguo_style"
+    / "common"
+    / "scripted_effects"
+    / "zg361_phase3_aa_m229_metric_dictionary_owner_effects.txt",
+)
 
 
 class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
@@ -70,7 +87,9 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
 
     def test_p3_freezes_and_m229_backlinks_exact_cp_receipt(self) -> None:
         generator = P3_GENERATOR.read_text(encoding="utf-8")
-        product = P3_PRODUCT.read_text(encoding="utf-8-sig")
+        product = "\n".join(
+            path.read_text(encoding="utf-8-sig") for path in P3_PRODUCTS
+        )
         frozen_id = (
             "set_variable = { name = zg361_p3_project_source_contribution_receipt_id "
             "value = var:zg361_cp_m26_contribution_receipt_id }"

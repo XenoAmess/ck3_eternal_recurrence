@@ -8,11 +8,14 @@ It is not CK3 parser, paused-snapshot, MCP, fixture-live or production evidence.
 
 from __future__ import annotations
 
+import hashlib
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 TOOLS = Path(__file__).resolve().parent
@@ -23,7 +26,7 @@ import gen_361_credit_project_runtime as gen
 import zg361_phase3_credit_project_model as model
 
 
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_credit_project_runtime_effects.txt"
+EFFECTS_PATHS = gen.effect_output_paths()
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_credit_project_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-phase3-credit-project-ck3-runtime-spec.md"
 EXPECTED_IDS = set(range(26, 32)) | set(range(54, 69)) | set(range(129, 135))
@@ -36,6 +39,10 @@ ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
 
 def read(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
+
+
+def read_effects() -> str:
+    return "\n".join(read(path) for path in EFFECTS_PATHS)
 
 
 def block(text: str, name: str) -> str:
@@ -54,6 +61,11 @@ def block(text: str, name: str) -> str:
             if opened and depth == 0:
                 return text[start : index + 1]
     raise AssertionError(f"unbalanced block {name}")
+
+
+def top_level_effect_blocks(text: str) -> list[tuple[str, str]]:
+    names = re.findall(r"(?m)^([a-z0-9_]+) = \{$", text)
+    return [(name, block(text, name)) for name in names]
 
 
 def option_block(event: str, name: str) -> str:
@@ -89,7 +101,7 @@ def loc_rows(path: Path) -> dict[str, str]:
 class RegistryAndGenerationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effects = read_effects()
         cls.events = read(EVENTS_PATH)
         cls.spec = read(SPEC_PATH)
         cls.specs = gen.by_id()
@@ -128,11 +140,12 @@ class RegistryAndGenerationTests(unittest.TestCase):
 
     def test_outputs_are_exactly_the_independent_package(self) -> None:
         outputs = gen.outputs()
-        self.assertEqual(len(outputs), 11)
+        self.assertEqual(len(outputs), 46)
+        effect_names = {filename for filename, _purpose, _sections in gen.effect_shard_sections()}
         self.assertEqual(
             {path.name for path in outputs},
             {
-                "zg361_credit_project_runtime_effects.txt",
+                *effect_names,
                 "zg361_credit_project_runtime_events.txt",
                 *(f"zg361_credit_project_l_{language}.yml" for language in gen.LANGUAGES),
             },
@@ -142,6 +155,44 @@ class RegistryAndGenerationTests(unittest.TestCase):
             self.assertNotIn("b1_runtime", str(path))
             self.assertNotIn("b2_runtime", str(path))
             self.assertNotIn("case_kernel", path.name)
+
+    def test_effect_shards_obey_small_file_boundary_and_purpose_contract(self) -> None:
+        self.assertEqual(gen.EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+        total = 0
+        for path in EFFECTS_PATHS:
+            text = read(path)
+            count = len(top_level_effect_blocks(text))
+            with self.subTest(path=path.name):
+                self.assertGreaterEqual(count, 1)
+                self.assertLessEqual(count, gen.EFFECT_TARGET_MAX)
+                self.assertLessEqual(count, gen.EFFECT_HARD_MAX)
+                self.assertIn("# PURPOSE:", text)
+            total += count
+        self.assertEqual(total, 156)
+        self.assertEqual(max(len(top_level_effect_blocks(read(path))) for path in EFFECTS_PATHS), 8)
+
+    def test_shards_preserve_legacy_effect_bodies_and_order_exactly(self) -> None:
+        legacy_bytes = gen.render_effects()
+        self.assertEqual(len(legacy_bytes), 1_307_062)
+        self.assertEqual(
+            hashlib.sha256(legacy_bytes).hexdigest(),
+            "3529d8b5581fa958ef72e22d2e3be0842d659de76cea97d2b40d5fbcc2e2f0df",
+        )
+        legacy = legacy_bytes.decode("utf-8-sig")
+        self.assertEqual(top_level_effect_blocks(read_effects()), top_level_effect_blocks(legacy))
+
+    def test_retired_monolith_is_absent_and_sync_refuses_or_removes_it(self) -> None:
+        self.assertFalse(gen.legacy_effect_path().exists())
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            with mock.patch.object(gen, "MOD_ROOT", root):
+                legacy = gen.legacy_effect_path()
+                legacy.parent.mkdir(parents=True)
+                legacy.write_bytes(gen.generated("zg361_cp_stale_effect = { }"))
+                self.assertIn(legacy, gen.sync_outputs(check=True))
+                self.assertTrue(legacy.exists())
+                self.assertEqual(gen.sync_outputs(check=False), [])
+                self.assertFalse(legacy.exists())
 
     def test_generator_check_mode_is_green(self) -> None:
         result = subprocess.run(
@@ -161,7 +212,7 @@ class RegistryAndGenerationTests(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(gen.BOM))
 
     def test_generated_script_braces_balance(self) -> None:
-        for path in (EFFECTS_PATH, EVENTS_PATH):
+        for path in (*EFFECTS_PATHS, EVENTS_PATH):
             with self.subTest(path=path):
                 text = read(path)
                 self.assertEqual(text.count("{"), text.count("}"))
@@ -189,7 +240,7 @@ class RegistryAndGenerationTests(unittest.TestCase):
 class ReceiptAndConsumerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effects = read_effects()
         cls.events = read(EVENTS_PATH)
         cls.specs = gen.by_id()
 
@@ -437,7 +488,7 @@ class ReceiptAndConsumerTests(unittest.TestCase):
 class PolicyDebtLifecycleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effects = read_effects()
         cls.events = read(EVENTS_PATH)
 
     def test_each_due_consumer_strongly_validates_debt_receipt_choice_and_due_cycle(self) -> None:
@@ -649,7 +700,7 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
 class RoleAndLedgerInvariantTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effects = read_effects()
 
     def test_public_entry_is_duke_plus_manager_and_direct_subject_only(self) -> None:
         entry = block(self.effects, "zg361_cp_open_portfolio_effect")
@@ -924,7 +975,7 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
                 self.assertEqual(rows["simp_chinese"][f"zg361cp.{mid}.c"], gen.DEFER_ROUTE_CN)
 
     def test_generated_headers_and_namespace_are_stable(self) -> None:
-        effects = read(EFFECTS_PATH)
+        effects = read_effects()
         events = read(EVENTS_PATH)
         self.assertTrue(effects.startswith(gen.HEADER))
         self.assertTrue(events.startswith(gen.HEADER + "namespace = zg361cp"))
@@ -945,7 +996,7 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
         self.assertIn("同周期 finalizer 不释放容量", spec)
 
     def test_no_out_of_scope_generated_mechanism_ids(self) -> None:
-        effects = read(EFFECTS_PATH)
+        effects = read_effects()
         events = read(EVENTS_PATH)
         defined = {int(mid) for mid in re.findall(r"^zg361_cp_m(\d+)_consume_effect = \{$", effects, re.MULTILINE)}
         event_ids = {int(mid) for mid in re.findall(r"^zg361cp\.(\d+) = \{$", events, re.MULTILINE)}

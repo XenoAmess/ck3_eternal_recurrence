@@ -31,6 +31,13 @@ LANGUAGES = (
     "russian",
     "spanish",
 )
+EFFECTS_DIR = Path("common") / "scripted_effects"
+LEGACY_EFFECT_FILENAME = "zg361_credit_project_runtime_effects.txt"
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# Any future hard-limit exception must carry both an engineering reason and a
+# concrete CK3 live artifact. The current B8 layout has no exception.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
 
 
 @dataclass(frozen=True)
@@ -241,6 +248,12 @@ EXPECTED_IDS = (
     | set(range(62, 69))
     | set(range(129, 135))
 )
+
+
+def effect_filename_for(spec: Mechanism) -> str:
+    """Return the stable, purpose-named shard owned by one mechanism."""
+
+    return f"zg361_credit_project_m{spec.mid:03d}_{spec.field}_effects.txt"
 
 
 def generated(text: str) -> bytes:
@@ -1569,6 +1582,13 @@ zg361_cp_finalize_portfolio_effect = {
 
 
 def render_effects() -> bytes:
+    """Render the pre-sharding logical stream for byte-for-byte regression tests.
+
+    This payload is deliberately not emitted. Keeping the canonical stream in
+    memory lets tests prove sharding changes only file boundaries, not any
+    top-level effect body or its order.
+    """
+
     validate_specs()
     sections = [
         "# ZhongGuo 361 E/I/J/R credit and project runtime.\n"
@@ -1586,6 +1606,81 @@ def render_effects() -> bytes:
         for choice in (1, 2, 3):
             sections.append(render_route(spec, choice))
     return generated("\n\n".join(sections))
+
+
+def effect_shard_sections() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
+    """Partition the logical effect stream into small purpose-owned files."""
+
+    validate_specs()
+    shards: list[tuple[str, str, tuple[str, ...]]] = [
+        (
+            "zg361_credit_project_portfolio_lifecycle_effects.txt",
+            "portfolio lifecycle and public entry",
+            (render_portfolio_entries(),),
+        ),
+    ]
+    for domain in ("e", "i", "j", "r"):
+        debt_sections = tuple(
+            render_due_debt_consumer(spec)
+            for spec in MECHANISMS
+            if spec.domain == domain
+        )
+        if domain == "r":
+            debt_sections += (render_due_debt_aggregate(),)
+        shards.append(
+            (
+                f"zg361_credit_project_{domain}_policy_debt_effects.txt",
+                f"domain {domain.upper()} deferred-policy debt settlement",
+                debt_sections,
+            )
+        )
+    for domain in ("e", "i", "j", "r"):
+        shards.append(
+            (
+                f"zg361_credit_project_{domain}_orchestration_effects.txt",
+                f"domain {domain.upper()} initialization, read, AI and launch adapters",
+                (
+                    render_domain_init(domain),
+                    render_subject_read(domain),
+                    render_ai(domain),
+                    render_launch(domain),
+                ),
+            )
+        )
+    for spec in MECHANISMS:
+        shards.append(
+            (
+                effect_filename_for(spec),
+                f"mechanism {spec.mid:03d} {spec.field} consumer and routes",
+                (
+                    render_consumer(spec),
+                    *(render_route(spec, choice) for choice in (1, 2, 3)),
+                ),
+            )
+        )
+    return tuple(shards)
+
+
+def render_effect_shards() -> dict[Path, bytes]:
+    rendered: dict[Path, bytes] = {}
+    for filename, purpose, sections in effect_shard_sections():
+        preamble = (
+            "# ZhongGuo 361 E/I/J/R credit and project runtime.\n"
+            f"# PURPOSE: {purpose}.\n"
+            f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed."
+        )
+        rendered[MOD_ROOT / EFFECTS_DIR / filename] = generated(
+            "\n\n".join((preamble, *sections))
+        )
+    return rendered
+
+
+def effect_output_paths() -> tuple[Path, ...]:
+    return tuple(render_effect_shards())
+
+
+def legacy_effect_path() -> Path:
+    return MOD_ROOT / EFFECTS_DIR / LEGACY_EFFECT_FILENAME
 
 
 def event_guard(spec: Mechanism) -> str:
@@ -1772,7 +1867,7 @@ def render_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_credit_project_runtime_effects.txt": render_effects(),
+        **render_effect_shards(),
         MOD_ROOT / "events" / "zg361_credit_project_runtime_events.txt": render_events(),
     }
     for language in LANGUAGES:
@@ -1780,18 +1875,32 @@ def outputs() -> dict[Path, bytes]:
     return rendered
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
+def sync_outputs(*, check: bool) -> list[Path]:
+    """Check or materialize outputs while refusing the retired monolith."""
+
+    rendered = outputs()
     drift: list[Path] = []
-    for path, payload in outputs().items():
-        if args.check:
+    for path, payload in rendered.items():
+        if check:
             if not path.exists() or path.read_bytes() != payload:
                 drift.append(path)
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(payload)
+    legacy = legacy_effect_path()
+    if legacy.exists():
+        if check:
+            drift.append(legacy)
+        else:
+            legacy.unlink()
+    return drift
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+    drift = sync_outputs(check=args.check)
     if args.check:
         if drift:
             for path in drift:

@@ -6,13 +6,21 @@
 
 生成结果：
 
-- `common/scripted_effects/zg361_credit_project_runtime_effects.txt`
+- `common/scripted_effects/zg361_credit_project_portfolio_lifecycle_effects.txt`
+- `common/scripted_effects/zg361_credit_project_{e,i,j,r}_{orchestration,policy_debt}_effects.txt`
+- `common/scripted_effects/zg361_credit_project_mNNN_<purpose>_effects.txt`（每项机制一个 consumer + A/B/C routes）
 - `events/zg361_credit_project_runtime_events.txt`
 - `localization/*/zg361_credit_project_l_*.yml`
 
 专测：`tools/test_gen_361_credit_project_runtime.py`
 
 Python 参考合同仍为 `tools/zg361_phase3_credit_project_model.py`；本包没有修改该模型、B1、B2、scoreboard、shared case kernel、on_action 或任何中央派发文件。
+
+## Effect 文件边界与证据
+
+旧 `zg361_credit_project_runtime_effects.txt` 单文件约 1.31 MB、含 156 个顶层 effect，现已退役。生成器按用途产出 36 个 shard：portfolio lifecycle 1 个、四域 policy-debt 4 个、四域 orchestration 4 个、27 项机制各 1 个。每个文件含 4–8 个 effect，最大文件小于 54 KB；没有超过 10 个、也没有需要实机例外说明的文件。
+
+`--check` 会把旧 monolith 残留判作 drift，普通生成会在全部 shard 写出后删除该旧文件。专测还把 36 个 shard 按生成顺序拼接，并逐个比较全部 156 个顶层 effect 的名称、顺序与完整定义体，确保拆分只改变文件边界。这个约束用于降低加载边界风险和提升故障定位性；它本身不构成“此前启动问题由文件过大造成”的因果证据，本包仍保持 static-ready / not live，后续加载性能结论必须来自真实 CK3 artifact。
 
 ## 语义权威与冲突裁决
 

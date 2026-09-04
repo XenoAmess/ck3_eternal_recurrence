@@ -1,0 +1,732 @@
+﻿# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py
+# ZhongGuo 361 E/I/J/R credit and project runtime.
+# PURPOSE: domain I deferred-policy debt settlement.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+# #054 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m54_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m54_debt_owner
+			has_variable = zg361_cp_m54_debt_subject
+			has_variable = zg361_cp_m54_debt_cycle
+			has_variable = zg361_cp_m54_debt_case
+			has_variable = zg361_cp_m54_debt_state
+			has_variable = zg361_cp_m54_debt_mechanism
+			has_variable = zg361_cp_m54_debt_due_cycle
+			has_variable = zg361_cp_m54_debt_status
+			has_variable = zg361_cp_m54_debt_audit_state
+			has_variable = zg361_cp_m54_debt_business_object_created
+			has_variable = zg361_cp_m54_receipt_owner
+			has_variable = zg361_cp_m54_receipt_subject
+			has_variable = zg361_cp_m54_receipt_cycle
+			has_variable = zg361_cp_m54_receipt_case
+			has_variable = zg361_cp_m54_receipt_state
+			has_variable = zg361_cp_m54_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m54_debt_status = 1
+			var:zg361_cp_m54_debt_audit_state = 1
+			var:zg361_cp_m54_debt_business_object_created = 0
+			var:zg361_cp_m54_debt_mechanism = 54
+			var:zg361_cp_m54_debt_owner = root
+			var:zg361_cp_m54_debt_subject = this
+			var:zg361_cp_m54_receipt_owner = var:zg361_cp_m54_debt_owner
+			var:zg361_cp_m54_receipt_subject = var:zg361_cp_m54_debt_subject
+			var:zg361_cp_m54_receipt_cycle = var:zg361_cp_m54_debt_cycle
+			var:zg361_cp_m54_receipt_case = var:zg361_cp_m54_debt_case
+			var:zg361_cp_m54_receipt_state = var:zg361_cp_m54_debt_state
+			var:zg361_cp_m54_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m54_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m54_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m54_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m54_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m54_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m54_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m54_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m54_debt_status
+			has_variable = zg361_cp_m54_debt_settled_by
+			has_variable = zg361_cp_m54_debt_settled_cycle
+			var:zg361_cp_m54_debt_status = 2
+			var:zg361_cp_m54_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m54_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m54_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m54_debt_owner
+			has_variable = zg361_cp_m54_debt_subject
+			has_variable = zg361_cp_m54_debt_due_cycle
+			has_variable = zg361_cp_m54_debt_status
+			var:zg361_cp_m54_debt_status = 1
+			var:zg361_cp_m54_debt_owner = root
+			var:zg361_cp_m54_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m54_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m54_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m54_debt_status var:zg361_cp_m54_debt_status = 1 }
+		set_variable = { name = zg361_cp_m54_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60054 }
+	}
+}
+
+# #055 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m55_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m55_debt_owner
+			has_variable = zg361_cp_m55_debt_subject
+			has_variable = zg361_cp_m55_debt_cycle
+			has_variable = zg361_cp_m55_debt_case
+			has_variable = zg361_cp_m55_debt_state
+			has_variable = zg361_cp_m55_debt_mechanism
+			has_variable = zg361_cp_m55_debt_due_cycle
+			has_variable = zg361_cp_m55_debt_status
+			has_variable = zg361_cp_m55_debt_audit_state
+			has_variable = zg361_cp_m55_debt_business_object_created
+			has_variable = zg361_cp_m55_receipt_owner
+			has_variable = zg361_cp_m55_receipt_subject
+			has_variable = zg361_cp_m55_receipt_cycle
+			has_variable = zg361_cp_m55_receipt_case
+			has_variable = zg361_cp_m55_receipt_state
+			has_variable = zg361_cp_m55_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m55_debt_status = 1
+			var:zg361_cp_m55_debt_audit_state = 1
+			var:zg361_cp_m55_debt_business_object_created = 0
+			var:zg361_cp_m55_debt_mechanism = 55
+			var:zg361_cp_m55_debt_owner = root
+			var:zg361_cp_m55_debt_subject = this
+			var:zg361_cp_m55_receipt_owner = var:zg361_cp_m55_debt_owner
+			var:zg361_cp_m55_receipt_subject = var:zg361_cp_m55_debt_subject
+			var:zg361_cp_m55_receipt_cycle = var:zg361_cp_m55_debt_cycle
+			var:zg361_cp_m55_receipt_case = var:zg361_cp_m55_debt_case
+			var:zg361_cp_m55_receipt_state = var:zg361_cp_m55_debt_state
+			var:zg361_cp_m55_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m55_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m55_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m55_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m55_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m55_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m55_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m55_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m55_debt_status
+			has_variable = zg361_cp_m55_debt_settled_by
+			has_variable = zg361_cp_m55_debt_settled_cycle
+			var:zg361_cp_m55_debt_status = 2
+			var:zg361_cp_m55_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m55_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m55_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m55_debt_owner
+			has_variable = zg361_cp_m55_debt_subject
+			has_variable = zg361_cp_m55_debt_due_cycle
+			has_variable = zg361_cp_m55_debt_status
+			var:zg361_cp_m55_debt_status = 1
+			var:zg361_cp_m55_debt_owner = root
+			var:zg361_cp_m55_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m55_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m55_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m55_debt_status var:zg361_cp_m55_debt_status = 1 }
+		set_variable = { name = zg361_cp_m55_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60055 }
+	}
+}
+
+# #056 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m56_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m56_debt_owner
+			has_variable = zg361_cp_m56_debt_subject
+			has_variable = zg361_cp_m56_debt_cycle
+			has_variable = zg361_cp_m56_debt_case
+			has_variable = zg361_cp_m56_debt_state
+			has_variable = zg361_cp_m56_debt_mechanism
+			has_variable = zg361_cp_m56_debt_due_cycle
+			has_variable = zg361_cp_m56_debt_status
+			has_variable = zg361_cp_m56_debt_audit_state
+			has_variable = zg361_cp_m56_debt_business_object_created
+			has_variable = zg361_cp_m56_receipt_owner
+			has_variable = zg361_cp_m56_receipt_subject
+			has_variable = zg361_cp_m56_receipt_cycle
+			has_variable = zg361_cp_m56_receipt_case
+			has_variable = zg361_cp_m56_receipt_state
+			has_variable = zg361_cp_m56_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m56_debt_status = 1
+			var:zg361_cp_m56_debt_audit_state = 1
+			var:zg361_cp_m56_debt_business_object_created = 0
+			var:zg361_cp_m56_debt_mechanism = 56
+			var:zg361_cp_m56_debt_owner = root
+			var:zg361_cp_m56_debt_subject = this
+			var:zg361_cp_m56_receipt_owner = var:zg361_cp_m56_debt_owner
+			var:zg361_cp_m56_receipt_subject = var:zg361_cp_m56_debt_subject
+			var:zg361_cp_m56_receipt_cycle = var:zg361_cp_m56_debt_cycle
+			var:zg361_cp_m56_receipt_case = var:zg361_cp_m56_debt_case
+			var:zg361_cp_m56_receipt_state = var:zg361_cp_m56_debt_state
+			var:zg361_cp_m56_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m56_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m56_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m56_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m56_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m56_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m56_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m56_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m56_debt_status
+			has_variable = zg361_cp_m56_debt_settled_by
+			has_variable = zg361_cp_m56_debt_settled_cycle
+			var:zg361_cp_m56_debt_status = 2
+			var:zg361_cp_m56_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m56_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m56_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m56_debt_owner
+			has_variable = zg361_cp_m56_debt_subject
+			has_variable = zg361_cp_m56_debt_due_cycle
+			has_variable = zg361_cp_m56_debt_status
+			var:zg361_cp_m56_debt_status = 1
+			var:zg361_cp_m56_debt_owner = root
+			var:zg361_cp_m56_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m56_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m56_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m56_debt_status var:zg361_cp_m56_debt_status = 1 }
+		set_variable = { name = zg361_cp_m56_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60056 }
+	}
+}
+
+# #057 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m57_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m57_debt_owner
+			has_variable = zg361_cp_m57_debt_subject
+			has_variable = zg361_cp_m57_debt_cycle
+			has_variable = zg361_cp_m57_debt_case
+			has_variable = zg361_cp_m57_debt_state
+			has_variable = zg361_cp_m57_debt_mechanism
+			has_variable = zg361_cp_m57_debt_due_cycle
+			has_variable = zg361_cp_m57_debt_status
+			has_variable = zg361_cp_m57_debt_audit_state
+			has_variable = zg361_cp_m57_debt_business_object_created
+			has_variable = zg361_cp_m57_receipt_owner
+			has_variable = zg361_cp_m57_receipt_subject
+			has_variable = zg361_cp_m57_receipt_cycle
+			has_variable = zg361_cp_m57_receipt_case
+			has_variable = zg361_cp_m57_receipt_state
+			has_variable = zg361_cp_m57_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m57_debt_status = 1
+			var:zg361_cp_m57_debt_audit_state = 1
+			var:zg361_cp_m57_debt_business_object_created = 0
+			var:zg361_cp_m57_debt_mechanism = 57
+			var:zg361_cp_m57_debt_owner = root
+			var:zg361_cp_m57_debt_subject = this
+			var:zg361_cp_m57_receipt_owner = var:zg361_cp_m57_debt_owner
+			var:zg361_cp_m57_receipt_subject = var:zg361_cp_m57_debt_subject
+			var:zg361_cp_m57_receipt_cycle = var:zg361_cp_m57_debt_cycle
+			var:zg361_cp_m57_receipt_case = var:zg361_cp_m57_debt_case
+			var:zg361_cp_m57_receipt_state = var:zg361_cp_m57_debt_state
+			var:zg361_cp_m57_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m57_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m57_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m57_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m57_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m57_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m57_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m57_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m57_debt_status
+			has_variable = zg361_cp_m57_debt_settled_by
+			has_variable = zg361_cp_m57_debt_settled_cycle
+			var:zg361_cp_m57_debt_status = 2
+			var:zg361_cp_m57_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m57_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m57_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m57_debt_owner
+			has_variable = zg361_cp_m57_debt_subject
+			has_variable = zg361_cp_m57_debt_due_cycle
+			has_variable = zg361_cp_m57_debt_status
+			var:zg361_cp_m57_debt_status = 1
+			var:zg361_cp_m57_debt_owner = root
+			var:zg361_cp_m57_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m57_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m57_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m57_debt_status var:zg361_cp_m57_debt_status = 1 }
+		set_variable = { name = zg361_cp_m57_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60057 }
+	}
+}
+
+# #058 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m58_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m58_debt_owner
+			has_variable = zg361_cp_m58_debt_subject
+			has_variable = zg361_cp_m58_debt_cycle
+			has_variable = zg361_cp_m58_debt_case
+			has_variable = zg361_cp_m58_debt_state
+			has_variable = zg361_cp_m58_debt_mechanism
+			has_variable = zg361_cp_m58_debt_due_cycle
+			has_variable = zg361_cp_m58_debt_status
+			has_variable = zg361_cp_m58_debt_audit_state
+			has_variable = zg361_cp_m58_debt_business_object_created
+			has_variable = zg361_cp_m58_receipt_owner
+			has_variable = zg361_cp_m58_receipt_subject
+			has_variable = zg361_cp_m58_receipt_cycle
+			has_variable = zg361_cp_m58_receipt_case
+			has_variable = zg361_cp_m58_receipt_state
+			has_variable = zg361_cp_m58_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m58_debt_status = 1
+			var:zg361_cp_m58_debt_audit_state = 1
+			var:zg361_cp_m58_debt_business_object_created = 0
+			var:zg361_cp_m58_debt_mechanism = 58
+			var:zg361_cp_m58_debt_owner = root
+			var:zg361_cp_m58_debt_subject = this
+			var:zg361_cp_m58_receipt_owner = var:zg361_cp_m58_debt_owner
+			var:zg361_cp_m58_receipt_subject = var:zg361_cp_m58_debt_subject
+			var:zg361_cp_m58_receipt_cycle = var:zg361_cp_m58_debt_cycle
+			var:zg361_cp_m58_receipt_case = var:zg361_cp_m58_debt_case
+			var:zg361_cp_m58_receipt_state = var:zg361_cp_m58_debt_state
+			var:zg361_cp_m58_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m58_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m58_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m58_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m58_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m58_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m58_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m58_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m58_debt_status
+			has_variable = zg361_cp_m58_debt_settled_by
+			has_variable = zg361_cp_m58_debt_settled_cycle
+			var:zg361_cp_m58_debt_status = 2
+			var:zg361_cp_m58_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m58_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m58_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m58_debt_owner
+			has_variable = zg361_cp_m58_debt_subject
+			has_variable = zg361_cp_m58_debt_due_cycle
+			has_variable = zg361_cp_m58_debt_status
+			var:zg361_cp_m58_debt_status = 1
+			var:zg361_cp_m58_debt_owner = root
+			var:zg361_cp_m58_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m58_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m58_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m58_debt_status var:zg361_cp_m58_debt_status = 1 }
+		set_variable = { name = zg361_cp_m58_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60058 }
+	}
+}
+
+# #059 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m59_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m59_debt_owner
+			has_variable = zg361_cp_m59_debt_subject
+			has_variable = zg361_cp_m59_debt_cycle
+			has_variable = zg361_cp_m59_debt_case
+			has_variable = zg361_cp_m59_debt_state
+			has_variable = zg361_cp_m59_debt_mechanism
+			has_variable = zg361_cp_m59_debt_due_cycle
+			has_variable = zg361_cp_m59_debt_status
+			has_variable = zg361_cp_m59_debt_audit_state
+			has_variable = zg361_cp_m59_debt_business_object_created
+			has_variable = zg361_cp_m59_receipt_owner
+			has_variable = zg361_cp_m59_receipt_subject
+			has_variable = zg361_cp_m59_receipt_cycle
+			has_variable = zg361_cp_m59_receipt_case
+			has_variable = zg361_cp_m59_receipt_state
+			has_variable = zg361_cp_m59_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m59_debt_status = 1
+			var:zg361_cp_m59_debt_audit_state = 1
+			var:zg361_cp_m59_debt_business_object_created = 0
+			var:zg361_cp_m59_debt_mechanism = 59
+			var:zg361_cp_m59_debt_owner = root
+			var:zg361_cp_m59_debt_subject = this
+			var:zg361_cp_m59_receipt_owner = var:zg361_cp_m59_debt_owner
+			var:zg361_cp_m59_receipt_subject = var:zg361_cp_m59_debt_subject
+			var:zg361_cp_m59_receipt_cycle = var:zg361_cp_m59_debt_cycle
+			var:zg361_cp_m59_receipt_case = var:zg361_cp_m59_debt_case
+			var:zg361_cp_m59_receipt_state = var:zg361_cp_m59_debt_state
+			var:zg361_cp_m59_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m59_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m59_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m59_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m59_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m59_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m59_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m59_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m59_debt_status
+			has_variable = zg361_cp_m59_debt_settled_by
+			has_variable = zg361_cp_m59_debt_settled_cycle
+			var:zg361_cp_m59_debt_status = 2
+			var:zg361_cp_m59_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m59_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m59_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m59_debt_owner
+			has_variable = zg361_cp_m59_debt_subject
+			has_variable = zg361_cp_m59_debt_due_cycle
+			has_variable = zg361_cp_m59_debt_status
+			var:zg361_cp_m59_debt_status = 1
+			var:zg361_cp_m59_debt_owner = root
+			var:zg361_cp_m59_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m59_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m59_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m59_debt_status var:zg361_cp_m59_debt_status = 1 }
+		set_variable = { name = zg361_cp_m59_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60059 }
+	}
+}
+
+# #060 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m60_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m60_debt_owner
+			has_variable = zg361_cp_m60_debt_subject
+			has_variable = zg361_cp_m60_debt_cycle
+			has_variable = zg361_cp_m60_debt_case
+			has_variable = zg361_cp_m60_debt_state
+			has_variable = zg361_cp_m60_debt_mechanism
+			has_variable = zg361_cp_m60_debt_due_cycle
+			has_variable = zg361_cp_m60_debt_status
+			has_variable = zg361_cp_m60_debt_audit_state
+			has_variable = zg361_cp_m60_debt_business_object_created
+			has_variable = zg361_cp_m60_receipt_owner
+			has_variable = zg361_cp_m60_receipt_subject
+			has_variable = zg361_cp_m60_receipt_cycle
+			has_variable = zg361_cp_m60_receipt_case
+			has_variable = zg361_cp_m60_receipt_state
+			has_variable = zg361_cp_m60_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m60_debt_status = 1
+			var:zg361_cp_m60_debt_audit_state = 1
+			var:zg361_cp_m60_debt_business_object_created = 0
+			var:zg361_cp_m60_debt_mechanism = 60
+			var:zg361_cp_m60_debt_owner = root
+			var:zg361_cp_m60_debt_subject = this
+			var:zg361_cp_m60_receipt_owner = var:zg361_cp_m60_debt_owner
+			var:zg361_cp_m60_receipt_subject = var:zg361_cp_m60_debt_subject
+			var:zg361_cp_m60_receipt_cycle = var:zg361_cp_m60_debt_cycle
+			var:zg361_cp_m60_receipt_case = var:zg361_cp_m60_debt_case
+			var:zg361_cp_m60_receipt_state = var:zg361_cp_m60_debt_state
+			var:zg361_cp_m60_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m60_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m60_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m60_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m60_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m60_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m60_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m60_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m60_debt_status
+			has_variable = zg361_cp_m60_debt_settled_by
+			has_variable = zg361_cp_m60_debt_settled_cycle
+			var:zg361_cp_m60_debt_status = 2
+			var:zg361_cp_m60_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m60_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m60_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m60_debt_owner
+			has_variable = zg361_cp_m60_debt_subject
+			has_variable = zg361_cp_m60_debt_due_cycle
+			has_variable = zg361_cp_m60_debt_status
+			var:zg361_cp_m60_debt_status = 1
+			var:zg361_cp_m60_debt_owner = root
+			var:zg361_cp_m60_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m60_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m60_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m60_debt_status var:zg361_cp_m60_debt_status = 1 }
+		set_variable = { name = zg361_cp_m60_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60060 }
+	}
+}
+
+# #061 next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m61_consume_due_policy_debt_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_m61_debt_owner
+			has_variable = zg361_cp_m61_debt_subject
+			has_variable = zg361_cp_m61_debt_cycle
+			has_variable = zg361_cp_m61_debt_case
+			has_variable = zg361_cp_m61_debt_state
+			has_variable = zg361_cp_m61_debt_mechanism
+			has_variable = zg361_cp_m61_debt_due_cycle
+			has_variable = zg361_cp_m61_debt_status
+			has_variable = zg361_cp_m61_debt_audit_state
+			has_variable = zg361_cp_m61_debt_business_object_created
+			has_variable = zg361_cp_m61_receipt_owner
+			has_variable = zg361_cp_m61_receipt_subject
+			has_variable = zg361_cp_m61_receipt_cycle
+			has_variable = zg361_cp_m61_receipt_case
+			has_variable = zg361_cp_m61_receipt_state
+			has_variable = zg361_cp_m61_receipt_choice
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_m61_debt_status = 1
+			var:zg361_cp_m61_debt_audit_state = 1
+			var:zg361_cp_m61_debt_business_object_created = 0
+			var:zg361_cp_m61_debt_mechanism = 61
+			var:zg361_cp_m61_debt_owner = root
+			var:zg361_cp_m61_debt_subject = this
+			var:zg361_cp_m61_receipt_owner = var:zg361_cp_m61_debt_owner
+			var:zg361_cp_m61_receipt_subject = var:zg361_cp_m61_debt_subject
+			var:zg361_cp_m61_receipt_cycle = var:zg361_cp_m61_debt_cycle
+			var:zg361_cp_m61_receipt_case = var:zg361_cp_m61_debt_case
+			var:zg361_cp_m61_receipt_state = var:zg361_cp_m61_debt_state
+			var:zg361_cp_m61_receipt_choice = 3
+			root.var:zg361_review_serial = var:zg361_cp_m61_debt_due_cycle
+		}
+		root = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		set_variable = { name = zg361_cp_m61_debt_status value = 2 }
+		set_variable = { name = zg361_cp_m61_debt_audit_state value = 3 }
+		set_variable = { name = zg361_cp_m61_debt_settled_by value = root }
+		set_variable = { name = zg361_cp_m61_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_cp_m61_debt_performance_sink value = 1 }
+		set_variable = { name = zg361_cp_m61_debt_consumer_status value = 1 }
+		change_variable = { name = zg361_cp_policy_debt_open_n add = -1 }
+		change_variable = { name = zg361_cp_policy_debt_settled_n add = 1 }
+	}
+	else_if = {
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {
+			has_variable = zg361_cp_m61_debt_status
+			has_variable = zg361_cp_m61_debt_settled_by
+			has_variable = zg361_cp_m61_debt_settled_cycle
+			var:zg361_cp_m61_debt_status = 2
+			var:zg361_cp_m61_debt_settled_by = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial >= var:zg361_cp_m61_debt_settled_cycle
+		}
+		set_variable = { name = zg361_cp_m61_debt_consumer_status value = 2 }
+	}
+	else_if = {
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {
+			has_variable = zg361_cp_m61_debt_owner
+			has_variable = zg361_cp_m61_debt_subject
+			has_variable = zg361_cp_m61_debt_due_cycle
+			has_variable = zg361_cp_m61_debt_status
+			var:zg361_cp_m61_debt_status = 1
+			var:zg361_cp_m61_debt_owner = root
+			var:zg361_cp_m61_debt_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = { has_variable = zg361_review_serial }
+			root.var:zg361_review_serial < var:zg361_cp_m61_debt_due_cycle
+		}
+		set_variable = { name = zg361_cp_m61_debt_consumer_status value = 5 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+	}
+	else_if = {
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = { has_variable = zg361_cp_m61_debt_status var:zg361_cp_m61_debt_status = 1 }
+		set_variable = { name = zg361_cp_m61_debt_consumer_status value = 3 }
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60061 }
+	}
+}
