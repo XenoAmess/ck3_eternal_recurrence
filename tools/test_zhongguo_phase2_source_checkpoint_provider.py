@@ -18,9 +18,14 @@ from zhongguo_phase2_event_choreography import (  # noqa: E402
 )
 from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
     CHECKPOINT_REQUIRED_HANDLERS,
+    INCIDENT_STRICT_RECEIPT_FIELD,
     SOURCE_CHECKPOINT_REGISTRY_KIND,
+    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
     Phase2SourceCheckpointError,
     Phase2SourceCheckpointProvider,
+)
+from test_zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
+    strict_incident_checkpoint,
 )
 
 
@@ -34,19 +39,28 @@ def _registry(root: Path) -> dict[str, object]:
     entries = []
     for index, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
         plan = plans[handler]
-        path = (root / f"{index}-{plan.span_id}.ck3").resolve()
-        path.write_bytes(f"real-checkpoint-{index}".encode("ascii"))
+        strict_receipt = None
+        if handler == "capture_incidents_operations":
+            strict_receipt, path = strict_incident_checkpoint(
+                root, seed_lineage_id=seed_lineage_id
+            )
+            owner = int(strict_receipt["owner_character_id"])
+            player = int(strict_receipt["player_character_id"])
+            date_raw = int(strict_receipt["date_raw"])
+        else:
+            path = (root / f"{index}-{plan.span_id}.ck3").resolve()
+            path.write_bytes(f"real-checkpoint-{index}".encode("ascii"))
+            owner = 9100 + index
+            player = 9001
+            date_raw = 700 + index
         sha = hashlib.sha256(path.read_bytes()).hexdigest().upper()
-        owner = 9100 + index
-        player = 9001
-        entries.append(
-            {
+        row = {
                 "span_id": plan.span_id,
                 "handler": handler,
                 "source_event_definition_key": plan.source_event,
                 "owner_character_id": owner,
                 "player_character_id": player,
-                "date_raw": 700 + index,
+                "date_raw": date_raw,
                 "checkpoint": {
                     "path": str(path),
                     "bytes": path.stat().st_size,
@@ -64,14 +78,27 @@ def _registry(root: Path) -> dict[str, object]:
                     "event_definition_key": plan.source_event,
                     "owner_character_id": owner,
                     "player_character_id": player,
-                    "date_raw": 700 + index,
+                    "date_raw": date_raw,
                     "checkpoint_sha256": sha,
                     "save_lineage_id": seed_lineage_id,
                 },
             }
-        )
+        if strict_receipt is not None:
+            receipt_path = root / "strict-incident-input" / "receipt.json"
+            row[INCIDENT_STRICT_RECEIPT_FIELD] = {
+                "kind": (
+                    "zg361_phase2_incidents_operations_"
+                    "source_checkpoint_receipt"
+                ),
+                "path": str(receipt_path.resolve()),
+                "bytes": receipt_path.stat().st_size,
+                "sha256": hashlib.sha256(
+                    receipt_path.read_bytes()
+                ).hexdigest().upper(),
+            }
+        entries.append(row)
     return {
-        "schema_version": 1,
+        "schema_version": SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
         "registry_kind": SOURCE_CHECKPOINT_REGISTRY_KIND,
         "result": "GREEN",
         "evidence_class": "real_ck3",
@@ -123,6 +150,10 @@ class Phase2SourceCheckpointProviderTests(unittest.TestCase):
         self.assertEqual(preflight["required_handlers"], list(CHECKPOINT_REQUIRED_HANDLERS))
         self.assertEqual(preflight["entry_count"], 4)
         self.assertTrue(preflight["restore_interface_available"])
+        self.assertEqual(
+            preflight["incident_received_self_checkpoint"]["readiness"],
+            "captured-real-checkpoint",
+        )
 
     def test_restore_passes_one_registered_entry_without_generic_rebind(self) -> None:
         calls = []
@@ -207,6 +238,48 @@ class Phase2SourceCheckpointProviderTests(unittest.TestCase):
             self.assertEqual(
                 raised.exception.evidence["required_binding"],
                 "played_subject_with_distinct_notice_owner",
+            )
+
+    def test_incident_requires_strict_receipt_and_cross_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _registry(Path(temporary))
+            incident = next(
+                row
+                for row in registry["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            del incident[INCIDENT_STRICT_RECEIPT_FIELD]
+            provider = Phase2SourceCheckpointProvider(
+                registry,
+                restore_registered_checkpoint=lambda _entry: {},
+                expected_seed_lineage_id="seed-lineage-unit",
+            )
+            with self.assertRaises(Phase2SourceCheckpointError) as raised:
+                provider.preflight()
+            self.assertEqual(
+                raised.exception.reason_code,
+                "incident_source_checkpoint_receipt_missing",
+            )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _registry(Path(temporary))
+            incident = next(
+                row
+                for row in registry["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            incident["date_raw"] = int(incident["date_raw"]) + 1
+            incident["source_receipt"]["date_raw"] = incident["date_raw"]
+            provider = Phase2SourceCheckpointProvider(
+                registry,
+                restore_registered_checkpoint=lambda _entry: {},
+                expected_seed_lineage_id="seed-lineage-unit",
+            )
+            with self.assertRaises(Phase2SourceCheckpointError) as raised:
+                provider.preflight()
+            self.assertEqual(
+                raised.exception.reason_code,
+                "incident_source_checkpoint_registry_binding_mismatch",
             )
 
 

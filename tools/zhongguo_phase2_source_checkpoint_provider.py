@@ -10,17 +10,25 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import hashlib
+import json
 from pathlib import Path
 import re
 from typing import Callable, Final, Mapping
 
+from zg361_phase2_incident_checkpoint_seam import (
+    IncidentCheckpointSeamError,
+    validate_received_self_incident_checkpoint_receipt,
+)
 from zhongguo_phase2_event_choreography import Phase2EventSequencePlan
 
 
 SOURCE_CHECKPOINT_REGISTRY_KIND: Final = (
     "zg361_phase2_canonical_source_checkpoint_registry"
 )
-SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION: Final = 1
+SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION: Final = 2
+INCIDENT_STRICT_RECEIPT_FIELD: Final = (
+    "received_self_incident_checkpoint_receipt"
+)
 CHECKPOINT_REQUIRED_HANDLERS: Final = (
     "capture_promotion_compensation",
     "capture_projects_metrics",
@@ -51,6 +59,7 @@ class Phase2SourceCheckpoint:
     sha256: str
     save_lineage_id: str
     source_receipt: Mapping[str, object]
+    strict_incident_receipt: Mapping[str, object] | None
 
 
 RestoreRegisteredCheckpoint = Callable[
@@ -68,6 +77,104 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def _strict_incident_receipt(
+    value: object,
+    *,
+    seed_lineage_id: str,
+    checkpoint_path: Path,
+    checkpoint_bytes: object,
+    checkpoint_sha256: str,
+    owner_character_id: object,
+    player_character_id: object,
+    date_raw: object,
+    event_definition_key: object,
+) -> dict[str, object]:
+    locator = dict(value) if isinstance(value, Mapping) else {}
+    raw_path = locator.get("path")
+    path = Path(raw_path).resolve() if isinstance(raw_path, str) else Path()
+    expected_bytes = locator.get("bytes")
+    expected_sha256 = str(locator.get("sha256", "")).upper()
+    locator_valid = (
+        locator.get("kind")
+        == "zg361_phase2_incidents_operations_source_checkpoint_receipt"
+        and isinstance(raw_path, str)
+        and path.is_absolute()
+        and path.is_file()
+        and _positive_int(expected_bytes)
+        and path.stat().st_size == expected_bytes
+        and re.fullmatch(r"[0-9A-F]{64}", expected_sha256) is not None
+        and _sha256(path) == expected_sha256
+    )
+    if not locator_valid:
+        raise Phase2SourceCheckpointError(
+            "incident_source_checkpoint_receipt_invalid",
+            {
+                "receipt_locator": locator,
+                "expected_seed_lineage_id": seed_lineage_id,
+            },
+        )
+    try:
+        raw_receipt = json.loads(path.read_text(encoding="utf-8-sig"))
+        summary = validate_received_self_incident_checkpoint_receipt(
+            raw_receipt,
+            expected_seed_lineage_id=seed_lineage_id,
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise Phase2SourceCheckpointError(
+            "incident_source_checkpoint_receipt_unreadable",
+            {
+                "receipt_path": str(path),
+                "message": f"{type(error).__name__}: {error}",
+            },
+        ) from error
+    except IncidentCheckpointSeamError as error:
+        raise Phase2SourceCheckpointError(
+            "incident_source_checkpoint_receipt_invalid",
+            {
+                "receipt_path": str(path),
+                "upstream_reason_code": error.reason_code,
+                "upstream_evidence": error.evidence,
+            },
+        ) from error
+
+    strict_checkpoint = summary["checkpoint"]
+    assert isinstance(strict_checkpoint, Mapping)
+    cross_binding_valid = (
+        Path(str(strict_checkpoint.get("path"))).resolve() == checkpoint_path
+        and strict_checkpoint.get("bytes") == checkpoint_bytes
+        and strict_checkpoint.get("sha256") == checkpoint_sha256
+        and strict_checkpoint.get("save_lineage_id") == seed_lineage_id
+        and summary.get("owner_character_id") == owner_character_id
+        and summary.get("player_character_id") == player_character_id
+        and summary.get("subject_character_id") == player_character_id
+        and summary.get("date_raw") == date_raw
+        and event_definition_key == "zg361.50"
+    )
+    if not cross_binding_valid:
+        raise Phase2SourceCheckpointError(
+            "incident_source_checkpoint_registry_binding_mismatch",
+            {
+                "receipt_path": str(path),
+                "registry_checkpoint_path": str(checkpoint_path),
+                "registry_checkpoint_bytes": checkpoint_bytes,
+                "registry_checkpoint_sha256": checkpoint_sha256,
+                "registry_owner_character_id": owner_character_id,
+                "registry_player_character_id": player_character_id,
+                "registry_date_raw": date_raw,
+                "registry_event_definition_key": event_definition_key,
+                "strict_receipt_summary": summary,
+            },
+        )
+    return {
+        **summary,
+        "receipt": {
+            "path": str(path),
+            "bytes": int(expected_bytes),
+            "sha256": expected_sha256,
+        },
+    }
 
 
 def _entry(
@@ -139,6 +246,37 @@ def _entry(
                 "source_receipt": receipt,
             },
         )
+    strict_incident_receipt = None
+    if row.get("handler") == "capture_incidents_operations":
+        if not isinstance(row.get(INCIDENT_STRICT_RECEIPT_FIELD), Mapping):
+            raise Phase2SourceCheckpointError(
+                "incident_source_checkpoint_receipt_missing",
+                {
+                    "span_id": row.get("span_id"),
+                    "handler": row.get("handler"),
+                    "required_field": INCIDENT_STRICT_RECEIPT_FIELD,
+                },
+            )
+        strict_incident_receipt = _strict_incident_receipt(
+            row[INCIDENT_STRICT_RECEIPT_FIELD],
+            seed_lineage_id=seed_lineage_id,
+            checkpoint_path=path,
+            checkpoint_bytes=expected_bytes,
+            checkpoint_sha256=expected_sha,
+            owner_character_id=owner,
+            player_character_id=player,
+            date_raw=date_raw,
+            event_definition_key=event_key,
+        )
+    elif INCIDENT_STRICT_RECEIPT_FIELD in row:
+        raise Phase2SourceCheckpointError(
+            "incident_source_checkpoint_receipt_misrouted",
+            {
+                "span_id": row.get("span_id"),
+                "handler": row.get("handler"),
+                "unexpected_field": INCIDENT_STRICT_RECEIPT_FIELD,
+            },
+        )
     return Phase2SourceCheckpoint(
         span_id=str(row["span_id"]),
         handler=str(row["handler"]),
@@ -151,6 +289,7 @@ def _entry(
         sha256=expected_sha,
         save_lineage_id=seed_lineage_id,
         source_receipt=receipt,
+        strict_incident_receipt=strict_incident_receipt,
     )
 
 
@@ -201,6 +340,31 @@ class Phase2SourceCheckpointProvider:
             )
         assert isinstance(seed_lineage_id, str)
         assert isinstance(rows, list)
+        raw_incident_rows = [
+            row
+            for row in rows
+            if isinstance(row, Mapping)
+            and row.get("handler") == "capture_incidents_operations"
+        ]
+        if any(
+            row.get("owner_character_id") == row.get("player_character_id")
+            for row in raw_incident_rows
+        ):
+            raise Phase2SourceCheckpointError(
+                "incident_checkpoint_owner_equals_player",
+                {
+                    "incident_entries": [
+                        {
+                            "owner_character_id": row.get("owner_character_id"),
+                            "player_character_id": row.get("player_character_id"),
+                        }
+                        for row in raw_incident_rows
+                    ],
+                    "required_binding": (
+                        "played_subject_with_distinct_notice_owner"
+                    ),
+                },
+            )
         entries = [_entry(row, seed_lineage_id=seed_lineage_id) for row in rows]
         handlers = tuple(entry.handler for entry in entries)
         if handlers != CHECKPOINT_REQUIRED_HANDLERS or len(set(handlers)) != len(handlers):
@@ -211,35 +375,19 @@ class Phase2SourceCheckpointProvider:
                     "observed_handlers": list(handlers),
                 },
             )
-        if any(
-            entry.handler == "capture_incidents_operations"
-            and entry.owner_character_id == entry.player_character_id
-            for entry in entries
-        ):
-            raise Phase2SourceCheckpointError(
-                "incident_checkpoint_owner_equals_player",
-                {
-                    "incident_entries": [
-                        {
-                            "owner_character_id": entry.owner_character_id,
-                            "player_character_id": entry.player_character_id,
-                        }
-                        for entry in entries
-                        if entry.handler == "capture_incidents_operations"
-                    ],
-                    "required_binding": (
-                        "played_subject_with_distinct_notice_owner"
-                    ),
-                },
-            )
         self._entries = {entry.handler: entry for entry in entries}
+        incident = self._entries["capture_incidents_operations"]
+        assert isinstance(incident.strict_incident_receipt, Mapping)
         return {
-            "schema_version": 1,
+            "schema_version": SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
             "result": "GREEN",
             "registry_kind": SOURCE_CHECKPOINT_REGISTRY_KIND,
             "seed_lineage_id": seed_lineage_id,
             "required_handlers": list(CHECKPOINT_REQUIRED_HANDLERS),
             "entry_count": len(entries),
+            "incident_received_self_checkpoint": dict(
+                incident.strict_incident_receipt
+            ),
             "restore_interface_available": callable(
                 self.restore_registered_checkpoint
             ),
@@ -332,6 +480,7 @@ class Phase2SourceCheckpointProvider:
 
 __all__ = [
     "CHECKPOINT_REQUIRED_HANDLERS",
+    "INCIDENT_STRICT_RECEIPT_FIELD",
     "SOURCE_CHECKPOINT_REGISTRY_KIND",
     "SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION",
     "Phase2SourceCheckpoint",

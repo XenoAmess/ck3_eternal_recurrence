@@ -85,6 +85,25 @@ the clean restart; then delegates to the existing Incident action cell. GREEN
 requires that cell's X/Y/Z terminal/KPI matrix and its typed wrong-owner ACL
 denial. Restore ACK or option ACK alone cannot satisfy the seam.
 
+The formal Phase2 source-checkpoint registry now uses schema 2. Its Incident
+entry must contain a `received_self_incident_checkpoint_receipt` locator. The
+registry assembler first validates the complete strict receipt, requires its
+checkpoint path/bytes/SHA-256, lineage, date, player/subject and distinct owner
+to equal the Incident capture-manifest row, then copies the checkpoint and a
+path-normalized receipt into the registry archive. The runner provider opens
+and revalidates that archived receipt before recording. Its final preflight
+also requires the receipt player to equal the paused runtime player and the
+receipt owner to equal the seed's `incident_owner_character_id`. A loose
+provider/UI GREEN receipt remains necessary for the common four-span registry
+shape but is not sufficient for Incident.
+
+This connects the strict capture seam to the production eight-span route
+without changing the action semantics: `capture_incidents_operations` still
+runs the existing Incident X/Y/Z gameplay cell, whose GREEN includes the
+provider-observed terminal/KPI matrix and the explicit wrong-owner
+`owner_filter_mismatch` negative control. Neither restore ACK nor action ACK is
+accepted as result evidence.
+
 No receipt or action artifact was produced while implementing this plumbing,
 so readiness remains **static-ready-live-pending** until a real capture and
 live action run are retained.

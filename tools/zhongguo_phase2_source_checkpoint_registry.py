@@ -19,12 +19,17 @@ import shutil
 import sys
 from typing import Final, Mapping
 
+from zg361_phase2_incident_checkpoint_seam import (
+    IncidentCheckpointSeamError,
+    validate_received_self_incident_checkpoint_receipt,
+)
 from zhongguo_phase2_event_choreography import (
     PHASE2_EVENT_SEQUENCE_PLANS,
     Phase2EventSequencePlan,
 )
 from zhongguo_phase2_source_checkpoint_provider import (
     CHECKPOINT_REQUIRED_HANDLERS,
+    INCIDENT_STRICT_RECEIPT_FIELD,
     SOURCE_CHECKPOINT_REGISTRY_KIND,
     SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
 )
@@ -39,6 +44,7 @@ SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND: Final = (
     "zg361_phase2_source_checkpoint_capture_manifest"
 )
 _SHA256: Final = re.compile(r"^[0-9A-Fa-f]{64}$")
+_CAPTURE_MANIFEST_SCHEMA_VERSION: Final = 2
 
 
 class Phase2SourceCheckpointRegistryBuildError(RuntimeError):
@@ -113,6 +119,95 @@ def _source_receipt(
     return receipt
 
 
+def _validate_strict_incident_receipt(
+    value: object,
+    *,
+    source_checkpoint: Path,
+    owner_character_id: int,
+    player_character_id: int,
+    date_raw: int,
+    checkpoint_sha256: str,
+    seed_lineage_id: str,
+) -> dict[str, object]:
+    receipt = deepcopy(dict(value)) if isinstance(value, Mapping) else {}
+    try:
+        summary = validate_received_self_incident_checkpoint_receipt(
+            receipt,
+            expected_seed_lineage_id=seed_lineage_id,
+        )
+    except IncidentCheckpointSeamError as error:
+        raise Phase2SourceCheckpointRegistryBuildError(
+            "incident_source_checkpoint_receipt_invalid",
+            {
+                "upstream_reason_code": error.reason_code,
+                "upstream_evidence": error.evidence,
+            },
+        ) from error
+    checkpoint = summary["checkpoint"]
+    assert isinstance(checkpoint, Mapping)
+    valid = (
+        Path(str(checkpoint.get("path"))).resolve() == source_checkpoint
+        and checkpoint.get("bytes") == source_checkpoint.stat().st_size
+        and checkpoint.get("sha256") == checkpoint_sha256
+        and checkpoint.get("save_lineage_id") == seed_lineage_id
+        and summary.get("owner_character_id") == owner_character_id
+        and summary.get("player_character_id") == player_character_id
+        and summary.get("subject_character_id") == player_character_id
+        and summary.get("date_raw") == date_raw
+    )
+    if not valid:
+        raise Phase2SourceCheckpointRegistryBuildError(
+            "incident_source_checkpoint_registry_binding_mismatch",
+            {
+                "source_checkpoint": str(source_checkpoint),
+                "checkpoint_sha256": checkpoint_sha256,
+                "owner_character_id": owner_character_id,
+                "player_character_id": player_character_id,
+                "date_raw": date_raw,
+                "strict_receipt_summary": summary,
+            },
+        )
+    return receipt
+
+
+def _archive_strict_incident_receipt(
+    receipt: Mapping[str, object],
+    *,
+    checkpoint_target: Path,
+    seed_lineage_id: str,
+) -> dict[str, object]:
+    durable = deepcopy(dict(receipt))
+    checkpoint = durable.get("checkpoint")
+    if not isinstance(checkpoint, dict):
+        raise Phase2SourceCheckpointRegistryBuildError(
+            "incident_source_checkpoint_receipt_invalid",
+            {"checkpoint": checkpoint},
+        )
+    checkpoint["path"] = str(checkpoint_target.resolve())
+    validate_received_self_incident_checkpoint_receipt(
+        durable,
+        expected_seed_lineage_id=seed_lineage_id,
+    )
+    payload = (
+        json.dumps(durable, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    ).encode("utf-8")
+    target = checkpoint_target.with_suffix(".strict-receipt.json")
+    if target.exists():
+        if not target.is_file() or target.read_bytes() != payload:
+            raise Phase2SourceCheckpointRegistryBuildError(
+                "incident_source_checkpoint_receipt_archive_collision",
+                {"receipt_path": str(target)},
+            )
+    else:
+        target.write_bytes(payload)
+    return {
+        "kind": "zg361_phase2_incidents_operations_source_checkpoint_receipt",
+        "path": str(target.resolve()),
+        "bytes": len(payload),
+        "sha256": hashlib.sha256(payload).hexdigest().upper(),
+    }
+
+
 class Phase2SourceCheckpointRegistryBuilder:
     """Freeze the four required live source checkpoints in canonical order."""
 
@@ -159,6 +254,9 @@ class Phase2SourceCheckpointRegistryBuilder:
         player_character_id: int,
         date_raw: int,
         source_receipt: Mapping[str, object],
+        strict_incident_source_checkpoint_receipt: (
+            Mapping[str, object] | None
+        ) = None,
     ) -> dict[str, object]:
         expected_handler = self.next_required_handler
         canonical_plan = _PLAN_BY_HANDLER.get(plan.handler)
@@ -215,6 +313,22 @@ class Phase2SourceCheckpointRegistryBuilder:
             )
         source_bytes = source.stat().st_size
         source_sha256 = _sha256(source)
+        strict_receipt = None
+        if plan.handler == "capture_incidents_operations":
+            strict_receipt = _validate_strict_incident_receipt(
+                strict_incident_source_checkpoint_receipt,
+                source_checkpoint=source,
+                owner_character_id=owner_character_id,
+                player_character_id=player_character_id,
+                date_raw=date_raw,
+                checkpoint_sha256=source_sha256,
+                seed_lineage_id=self.seed_lineage_id,
+            )
+        elif strict_incident_source_checkpoint_receipt is not None:
+            raise Phase2SourceCheckpointRegistryBuildError(
+                "incident_source_checkpoint_receipt_misrouted",
+                {"handler": plan.handler},
+            )
         receipt = _source_receipt(
             source_receipt,
             plan=plan,
@@ -274,6 +388,14 @@ class Phase2SourceCheckpointRegistryBuilder:
             },
             "source_receipt": receipt,
         }
+        if strict_receipt is not None:
+            entry[INCIDENT_STRICT_RECEIPT_FIELD] = (
+                _archive_strict_incident_receipt(
+                    strict_receipt,
+                    checkpoint_target=target,
+                    seed_lineage_id=self.seed_lineage_id,
+                )
+            )
         self._entries.append(entry)
         return deepcopy(entry)
 
@@ -351,7 +473,7 @@ def build_registry_from_capture_manifest(
     capture_lineage = manifest.get("capture_lineage")
     entries = manifest.get("entries")
     header_valid = (
-        manifest.get("schema_version") == 1
+        manifest.get("schema_version") == _CAPTURE_MANIFEST_SCHEMA_VERSION
         and manifest.get("kind") == SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND
         and manifest.get("result") == "GREEN"
         and manifest.get("evidence_class") == "real_ck3"
@@ -451,6 +573,11 @@ def build_registry_from_capture_manifest(
                 raw["source_receipt"]
                 if isinstance(raw.get("source_receipt"), Mapping)
                 else {}
+            ),
+            strict_incident_source_checkpoint_receipt=(
+                raw[INCIDENT_STRICT_RECEIPT_FIELD]
+                if isinstance(raw.get(INCIDENT_STRICT_RECEIPT_FIELD), Mapping)
+                else None
             ),
         )
     return builder.write(registry_path)

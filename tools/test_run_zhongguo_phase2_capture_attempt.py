@@ -14,6 +14,13 @@ if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
 
 from run_zhongguo_phase2_capture_attempt import prepare_plan  # noqa: E402
+from test_zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
+    strict_incident_checkpoint,
+)
+from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
+    INCIDENT_STRICT_RECEIPT_FIELD,
+    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+)
 
 
 NOW = dt.datetime(2026, 9, 2, 12, 0, tzinfo=dt.timezone.utc)
@@ -54,7 +61,7 @@ def _seed(*, ready: bool) -> dict[str, object]:
         "domain_query_matrix": {
             "schema_version": 1,
             "b2_pip_owner_character_id": 2 if ready else None,
-            "incident_owner_character_id": 3 if ready else None,
+            "incident_owner_character_id": 8052 if ready else None,
             "workforce_owner_character_id": 4 if ready else None,
             "ai_owned_case_owner_character_id": 5 if ready else None,
             "ai_owned_case_subject_character_id": 6 if ready else None,
@@ -73,11 +80,21 @@ def _source_registry(root: Path) -> Path:
     )
     entries = []
     for index, (span, handler, event, owner, player) in enumerate(specs):
-        checkpoint = _write(root / f"source-{index}.ck3", f"checkpoint-{index}")
+        strict_receipt = None
+        if handler == "capture_incidents_operations":
+            strict_receipt, checkpoint = strict_incident_checkpoint(
+                root, seed_lineage_id=lineage
+            )
+            owner = int(strict_receipt["owner_character_id"])
+            player = int(strict_receipt["player_character_id"])
+            date_raw = int(strict_receipt["date_raw"])
+        else:
+            checkpoint = _write(
+                root / f"source-{index}.ck3", f"checkpoint-{index}"
+            )
+            date_raw = 100 + index
         digest = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
-        date_raw = 100 + index
-        entries.append(
-            {
+        row = {
                 "span_id": span,
                 "handler": handler,
                 "source_event_definition_key": event,
@@ -106,11 +123,24 @@ def _source_registry(root: Path) -> Path:
                     "save_lineage_id": lineage,
                 },
             }
-        )
+        if strict_receipt is not None:
+            receipt_path = root / "strict-incident-input" / "receipt.json"
+            row[INCIDENT_STRICT_RECEIPT_FIELD] = {
+                "kind": (
+                    "zg361_phase2_incidents_operations_"
+                    "source_checkpoint_receipt"
+                ),
+                "path": str(receipt_path.resolve()),
+                "bytes": receipt_path.stat().st_size,
+                "sha256": hashlib.sha256(
+                    receipt_path.read_bytes()
+                ).hexdigest().upper(),
+            }
+        entries.append(row)
     return _write(
         root / "source-checkpoints.json",
         {
-            "schema_version": 1,
+            "schema_version": SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
             "registry_kind": "zg361_phase2_canonical_source_checkpoint_registry",
             "result": "GREEN",
             "evidence_class": "real_ck3",

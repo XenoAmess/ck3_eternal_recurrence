@@ -150,6 +150,9 @@ def _source_checkpoint_gate(
     checks = {
         "registry_preflight_green": False,
         "seed_lineage_bound": expected_lineage is not None,
+        "incident_strict_received_self_bound": False,
+        "incident_owner_matches_seed": False,
+        "incident_ack_not_result_evidence": False,
     }
     error: dict[str, object] | None = None
     try:
@@ -159,6 +162,30 @@ def _source_checkpoint_gate(
             expected_seed_lineage_id=expected_lineage,
         ).preflight()
         checks["registry_preflight_green"] = preflight.get("result") == "GREEN"
+        incident = preflight.get("incident_received_self_checkpoint")
+        domain = seed.get("domain_query_matrix")
+        checks["incident_strict_received_self_bound"] = (
+            isinstance(incident, Mapping)
+            and incident.get("readiness") == "captured-real-checkpoint"
+            and incident.get("subject_character_id")
+            == incident.get("player_character_id")
+            and incident.get("owner_character_id")
+            != incident.get("player_character_id")
+        )
+        checks["incident_owner_matches_seed"] = (
+            isinstance(incident, Mapping)
+            and isinstance(domain, Mapping)
+            and incident.get("owner_character_id")
+            == domain.get("incident_owner_character_id")
+        )
+        incident_checks = (
+            incident.get("checks") if isinstance(incident, Mapping) else None
+        )
+        checks["incident_ack_not_result_evidence"] = (
+            isinstance(incident_checks, Mapping)
+            and incident_checks.get("action_ack_used_as_state_evidence")
+            is False
+        )
     except Phase2SourceCheckpointError as caught:
         error = caught.evidence
     row.update(record=_record(path), checks=checks, error=error)
@@ -429,6 +456,10 @@ def prepare_plan(
             "paused map bound to tracked PID",
             "04_phase2_seed_loaded.json schema_version=2 GREEN",
             "all eight loaded-feature requirements GREEN",
+            (
+                "Incident strict zg361.50 receipt bound to registry, "
+                "seed owner and ACK-free result contract"
+            ),
             "all eight default handlers available",
         ],
         "managed_session_handoff": {

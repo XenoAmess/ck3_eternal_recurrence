@@ -4680,6 +4680,25 @@ def main() -> int:
                 "y": {"kind": "incident"},
                 "z": {"kind": "incident"},
             },
+            "acl_profiles": {
+                "wrong_owner_character_id": 99,
+                "responses": {
+                    profile: {
+                        "status": "unavailable",
+                        "unavailable_reason": "owner_filter_mismatch",
+                    }
+                    for profile in ("x", "y", "z")
+                },
+            },
+            "checks": {
+                "entry_event_identity_bound": True,
+                "entry_option_materialized": True,
+                "ack_not_used_as_result": True,
+                "xyz_terminal_same_frame_ready": True,
+                "xyz_profile_probe_receipts_frozen": True,
+                "xyz_mixed_na_incident_matrix": True,
+                "wrong_owner_acl_typed_red": True,
+            },
         }
         b2_action_evidence = {
             "schema_version": 1,

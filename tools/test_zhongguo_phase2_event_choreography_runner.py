@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from types import SimpleNamespace
 import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -25,7 +26,12 @@ from zhongguo_phase2_event_choreography import (  # noqa: E402
 )
 from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
     CHECKPOINT_REQUIRED_HANDLERS,
+    INCIDENT_STRICT_RECEIPT_FIELD,
     SOURCE_CHECKPOINT_REGISTRY_KIND,
+    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+)
+from test_zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
+    strict_incident_checkpoint,
 )
 
 
@@ -73,19 +79,28 @@ def _checkpoint_registry(root: Path) -> dict[str, object]:
     entries = []
     for index, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
         plan = phase2_event_sequence_plan(handler)
-        path = (root / f"{index}.ck3").resolve()
-        path.write_bytes(f"checkpoint-{index}".encode("ascii"))
+        strict_receipt = None
+        if handler == "capture_incidents_operations":
+            strict_receipt, path = strict_incident_checkpoint(
+                root, seed_lineage_id="seed-unit"
+            )
+            owner = int(strict_receipt["owner_character_id"])
+            player = int(strict_receipt["player_character_id"])
+            date_raw = int(strict_receipt["date_raw"])
+        else:
+            path = (root / f"{index}.ck3").resolve()
+            path.write_bytes(f"checkpoint-{index}".encode("ascii"))
+            owner = 9200 + index
+            player = 9001
+            date_raw = 800 + index
         sha = hashlib.sha256(path.read_bytes()).hexdigest().upper()
-        owner = 9200 + index
-        player = 9001
-        entries.append(
-            {
+        row = {
                 "span_id": plan.span_id,
                 "handler": handler,
                 "source_event_definition_key": plan.source_event,
                 "owner_character_id": owner,
                 "player_character_id": player,
-                "date_raw": 800 + index,
+                "date_raw": date_raw,
                 "checkpoint": {
                     "path": str(path),
                     "bytes": path.stat().st_size,
@@ -103,14 +118,27 @@ def _checkpoint_registry(root: Path) -> dict[str, object]:
                     "event_definition_key": plan.source_event,
                     "owner_character_id": owner,
                     "player_character_id": player,
-                    "date_raw": 800 + index,
+                    "date_raw": date_raw,
                     "checkpoint_sha256": sha,
                     "save_lineage_id": "seed-unit",
                 },
             }
-        )
+        if strict_receipt is not None:
+            receipt_path = root / "strict-incident-input" / "receipt.json"
+            row[INCIDENT_STRICT_RECEIPT_FIELD] = {
+                "kind": (
+                    "zg361_phase2_incidents_operations_"
+                    "source_checkpoint_receipt"
+                ),
+                "path": str(receipt_path.resolve()),
+                "bytes": receipt_path.stat().st_size,
+                "sha256": hashlib.sha256(
+                    receipt_path.read_bytes()
+                ).hexdigest().upper(),
+            }
+        entries.append(row)
     return {
-        "schema_version": 1,
+        "schema_version": SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
         "registry_kind": SOURCE_CHECKPOINT_REGISTRY_KIND,
         "result": "GREEN",
         "evidence_class": "real_ck3",
@@ -123,6 +151,132 @@ def _checkpoint_registry(root: Path) -> dict[str, object]:
 
 
 class Phase2EventChoreographyRunnerTests(unittest.TestCase):
+    @staticmethod
+    def _incident_seed_contract(*, incident_owner: int) -> dict[str, object]:
+        return {
+            "domain_query_matrix": {
+                "schema_version": 1,
+                "b2_pip_owner_character_id": 8101,
+                "incident_owner_character_id": incident_owner,
+                "workforce_owner_character_id": 8103,
+                "ai_owned_case_owner_character_id": 8104,
+                "ai_owned_case_subject_character_id": 8105,
+            }
+        }
+
+    def test_formal_preflight_binds_strict_incident_receipt_to_runner(self) -> None:
+        class RestoreService(_Service):
+            def restore_phase2_span_source_checkpoint_v1(self, **_kwargs):
+                return {}
+
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _checkpoint_registry(Path(temporary))
+            incident = next(
+                row
+                for row in registry["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            player = int(incident["player_character_id"])
+            owner = int(incident["owner_character_id"])
+            runtime_snapshot = _snapshot()
+            runtime_snapshot["played_character"]["character_id"] = player
+            context = SimpleNamespace(
+                seed_contract=self._incident_seed_contract(
+                    incident_owner=owner
+                ),
+                source_checkpoint_registry=registry,
+                recorder=SimpleNamespace(
+                    phase2_capture_lineage={"seed_lineage_id": "seed-unit"}
+                ),
+            )
+            result = capture._Phase2RealEventChoreographyService(
+                RestoreService()
+            ).preflight_source_checkpoints(
+                context, {"paused_snapshot": runtime_snapshot}
+            )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(
+            result["incident_runner_binding"]["required_postcondition"],
+            "incident_xyz_terminal_kpi_plus_wrong_owner_typed_red",
+        )
+        self.assertFalse(
+            result["incident_runner_binding"][
+                "action_ack_is_result_evidence"
+            ]
+        )
+
+    def test_formal_preflight_rejects_seed_owner_not_bound_to_strict_receipt(
+        self,
+    ) -> None:
+        class RestoreService(_Service):
+            def restore_phase2_span_source_checkpoint_v1(self, **_kwargs):
+                return {}
+
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _checkpoint_registry(Path(temporary))
+            incident = next(
+                row
+                for row in registry["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            runtime_snapshot = _snapshot()
+            runtime_snapshot["played_character"]["character_id"] = incident[
+                "player_character_id"
+            ]
+            context = SimpleNamespace(
+                seed_contract=self._incident_seed_contract(
+                    incident_owner=8199
+                ),
+                source_checkpoint_registry=registry,
+                recorder=SimpleNamespace(
+                    phase2_capture_lineage={"seed_lineage_id": "seed-unit"}
+                ),
+            )
+            with self.assertRaises(Phase2EventChoreographyError) as raised:
+                capture._Phase2RealEventChoreographyService(
+                    RestoreService()
+                ).preflight_source_checkpoints(
+                    context, {"paused_snapshot": runtime_snapshot}
+                )
+        self.assertEqual(
+            raised.exception.reason_code,
+            "incident_source_checkpoint_runner_binding_red",
+        )
+
+    def test_incident_runner_rejects_ack_only_green_without_provider_proof(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            ack_only = {
+                "schema_version": 1,
+                "result": "GREEN",
+                "selection_submissions": [
+                    {"ack": {"accepted": True, "status": "submitted"}}
+                ],
+                "checks": {"ack_not_used_as_result": False},
+            }
+            with mock.patch.object(
+                capture,
+                "run_incident_xyz_gameplay_action_cell",
+                return_value=ack_only,
+            ):
+                with self.assertRaises(capture.acceptance.RunnerError):
+                    capture.run_phase2_incident_gameplay_action_cell(
+                        _Service(),
+                        artifacts,
+                        owner_character_id=8052,
+                    )
+            self.assertEqual(
+                json.loads(
+                    (
+                        artifacts
+                        / "05_phase2_incident_xyz_gameplay_action_cell.json"
+                    ).read_text(encoding="utf-8-sig")
+                ),
+                ack_only,
+            )
+
     def test_required_source_without_real_registry_is_explicit_red(self) -> None:
         service = _Service()
         adapter = capture._Phase2RealEventChoreographyService(service)

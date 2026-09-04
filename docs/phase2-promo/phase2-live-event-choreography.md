@@ -101,8 +101,12 @@ py tools/zhongguo_phase2_source_checkpoint_registry.py `
   --output <NEW_SOURCE_CHECKPOINT_REGISTRY.json>
 ```
 
-capture manifest 必须是 `zg361_phase2_source_checkpoint_capture_manifest` schema 1，按 Promotion、Projects、Incident、
+capture manifest 必须是 `zg361_phase2_source_checkpoint_capture_manifest` schema 2，按 Promotion、Projects、Incident、
 Endgame 固定顺序包含四项。每项必须直接携带既有 checkpoint 的绝对路径、字节数、SHA-256、save lineage，以及同一次实机观察产生的
 provider/UI GREEN source receipt；assembler 不补默认值、不生成事件、不启动 CK3，也不把 fixture、console 或占位数据提升为真实证据。
+Incident 项还必须携带 strict `received_self_incident_checkpoint_receipt`：它证明 exact `zg361.50`、暂停且 map-ready、
+player=root=subject、distinct saved notice owner、option 1 shown/enabled、同帧 native save，以及同一 bytes/hash/lineage/date 绑定。
+assembler 将其归档进 registry；正式 preflight 会再次验证完整 receipt，并与当前 paused player 和 seed 中的 Incident owner 交叉绑定。
+ACK 不作为结果证据，后续 GREEN 仍必须来自 Incident X/Y/Z terminal/KPI provider postcondition 与 wrong-owner typed RED。
 生成后的 registry 仍须作为 `run_zhongguo_acceptance.py --phase2-promo-capture` 的
 `--phase2-source-checkpoint-registry` 输入，由正式 runner 在录制前再次核对字节、lineage、恢复接口和恢复后的 exact event identity。

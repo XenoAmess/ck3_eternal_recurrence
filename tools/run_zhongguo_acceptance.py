@@ -1215,6 +1215,76 @@ class _Phase2RealEventChoreographyService:
                     "source_checkpoint_preflight": preflight,
                 },
             )
+        incident_checkpoint = preflight.get(
+            "incident_received_self_checkpoint"
+        )
+        runtime_snapshot = _runtime.get("paused_snapshot")
+        played = (
+            runtime_snapshot.get("played_character")
+            if isinstance(runtime_snapshot, Mapping)
+            else None
+        )
+        player_character_id = (
+            played.get("character_id") if isinstance(played, Mapping) else None
+        )
+        try:
+            owners = _phase2_domain_query_contract(
+                (
+                    dict(context.seed_contract)
+                    if isinstance(context.seed_contract, Mapping)
+                    else {}
+                ),
+                player_character_id=(
+                    int(player_character_id)
+                    if isinstance(player_character_id, int)
+                    and not isinstance(player_character_id, bool)
+                    else 0
+                ),
+            )
+        except acceptance.RunnerError as error:
+            raise Phase2EventChoreographyError(
+                "incident_source_checkpoint_runner_binding_red",
+                {"message": str(error)},
+            ) from error
+        if not (
+            isinstance(incident_checkpoint, Mapping)
+            and incident_checkpoint.get("readiness")
+            == "captured-real-checkpoint"
+            and incident_checkpoint.get("player_character_id")
+            == player_character_id
+            and incident_checkpoint.get("subject_character_id")
+            == player_character_id
+            and incident_checkpoint.get("owner_character_id")
+            == owners["incident_owner_character_id"]
+            and incident_checkpoint.get("owner_character_id")
+            != player_character_id
+        ):
+            raise Phase2EventChoreographyError(
+                "incident_source_checkpoint_runner_binding_red",
+                {
+                    "runtime_player_character_id": player_character_id,
+                    "seed_incident_owner_character_id": owners[
+                        "incident_owner_character_id"
+                    ],
+                    "incident_checkpoint": incident_checkpoint,
+                },
+            )
+        preflight["incident_runner_binding"] = {
+            "result": "GREEN",
+            "span_id": "phase2_incidents_operations",
+            "source_event_definition_key": "zg361.50",
+            "player_character_id": player_character_id,
+            "subject_character_id": player_character_id,
+            "owner_character_id": owners["incident_owner_character_id"],
+            "owner_distinct_from_player": True,
+            "checkpoint_bytes_hash_lineage_bound": True,
+            "provider_ui_receipt_bound": True,
+            "option_one_shown_enabled_bound": True,
+            "action_ack_is_result_evidence": False,
+            "required_postcondition": (
+                "incident_xyz_terminal_kpi_plus_wrong_owner_typed_red"
+            ),
+        }
         return preflight
 
     def _restore_registered_source(
@@ -8297,10 +8367,31 @@ def run_phase2_incident_gameplay_action_cell(
             "phase-two Incident X/Y/Z gameplay action cell RED: "
             f"{error.reason}"
         ) from error
-    if not isinstance(evidence, dict) or evidence.get("result") != "GREEN":
+    incident_checks = (
+        evidence.get("checks") if isinstance(evidence, dict) else None
+    )
+    required_checks = {
+        "entry_event_identity_bound",
+        "entry_option_materialized",
+        "ack_not_used_as_result",
+        "xyz_terminal_same_frame_ready",
+        "xyz_profile_probe_receipts_frozen",
+        "xyz_mixed_na_incident_matrix",
+        "wrong_owner_acl_typed_red",
+    }
+    if not (
+        isinstance(evidence, dict)
+        and evidence.get("result") == "GREEN"
+        and isinstance(incident_checks, Mapping)
+        and all(incident_checks.get(key) is True for key in required_checks)
+        and isinstance(evidence.get("terminal_profiles"), Mapping)
+        and isinstance(evidence.get("acl_profiles"), Mapping)
+    ):
+        if isinstance(evidence, dict):
+            write_json(evidence_path, evidence)
         raise acceptance.RunnerError(
-            "phase-two Incident X/Y/Z gameplay action cell returned a "
-            "non-GREEN result"
+            "phase-two Incident X/Y/Z gameplay action cell lacks its "
+            "provider terminal/KPI or wrong-owner typed-RED proof"
         )
     write_json(evidence_path, evidence)
     return evidence

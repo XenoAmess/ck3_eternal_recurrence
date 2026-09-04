@@ -29,6 +29,12 @@ from zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
     Phase2SourceCheckpointRegistryBuilder,
     build_registry_from_capture_manifest,
 )
+from test_zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
+    CaptureAndActionService,
+)
+from zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
+    capture_current_received_self_incident_checkpoint_v1,
+)
 
 
 SEED_LINEAGE_ID = "phase2-seed-live-unit"
@@ -71,6 +77,31 @@ def source_receipt(
     }
 
 
+def strict_incident_checkpoint(
+    root: Path, *, seed_lineage_id: str
+) -> tuple[dict[str, object], Path]:
+    capture_root = root / "strict-incident-input"
+    capture_root.mkdir(parents=True, exist_ok=True)
+    receipt = capture_current_received_self_incident_checkpoint_v1(
+        CaptureAndActionService(capture_root),
+        checkpoint_root=capture_root / "checkpoints",
+        receipt_path=capture_root / "receipt.json",
+        seed_lineage_id=seed_lineage_id,
+        capture_lineage={
+            "seed_lineage_id": seed_lineage_id,
+            "evidence_class": "real_ck3",
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+            "generic_character_rebind_used": False,
+        },
+    )
+    checkpoint = receipt["checkpoint"]
+    assert isinstance(checkpoint, dict)
+    return receipt, Path(str(checkpoint["path"]))
+
+
 def record_all(
     builder: Phase2SourceCheckpointRegistryBuilder,
     source_root: Path,
@@ -78,25 +109,38 @@ def record_all(
     entries = []
     for ordinal, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
         plan = PLANS[handler]
-        source = source_root / f"source-{ordinal}.ck3"
-        source.write_bytes(f"real-ck3-checkpoint-{ordinal}".encode("ascii"))
+        strict_receipt = None
+        if handler == "capture_incidents_operations":
+            strict_receipt, source = strict_incident_checkpoint(
+                source_root, seed_lineage_id=SEED_LINEAGE_ID
+            )
+            owner = int(strict_receipt["owner_character_id"])
+            player = int(strict_receipt["player_character_id"])
+            date_raw = int(strict_receipt["date_raw"])
+        else:
+            source = source_root / f"source-{ordinal}.ck3"
+            source.write_bytes(
+                f"real-ck3-checkpoint-{ordinal}".encode("ascii")
+            )
+            owner = 9100 + ordinal
+            player = 9001
+            date_raw = 720 + ordinal
         sha256 = hashlib.sha256(source.read_bytes()).hexdigest().upper()
-        owner = 9100 + ordinal
-        player = 9001
         entries.append(
             builder.record(
                 plan,
                 source_checkpoint=source,
                 owner_character_id=owner,
                 player_character_id=player,
-                date_raw=720 + ordinal,
+                date_raw=date_raw,
                 source_receipt=source_receipt(
                     plan=plan,
                     owner_character_id=owner,
                     player_character_id=player,
-                    date_raw=720 + ordinal,
+                    date_raw=date_raw,
                     checkpoint_sha256=sha256,
                 ),
+                strict_incident_source_checkpoint_receipt=strict_receipt,
             )
         )
     return entries
@@ -106,14 +150,24 @@ def capture_manifest(root: Path) -> Path:
     entries = []
     for ordinal, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
         plan = PLANS[handler]
-        checkpoint = root / f"observed-{ordinal}.ck3"
-        checkpoint.write_bytes(f"observed-checkpoint-{ordinal}".encode("ascii"))
+        strict_receipt = None
+        if handler == "capture_incidents_operations":
+            strict_receipt, checkpoint = strict_incident_checkpoint(
+                root, seed_lineage_id=SEED_LINEAGE_ID
+            )
+            owner = int(strict_receipt["owner_character_id"])
+            player = int(strict_receipt["player_character_id"])
+            date_raw = int(strict_receipt["date_raw"])
+        else:
+            checkpoint = root / f"observed-{ordinal}.ck3"
+            checkpoint.write_bytes(
+                f"observed-checkpoint-{ordinal}".encode("ascii")
+            )
+            owner = 9200 + ordinal
+            player = 9001
+            date_raw = 820 + ordinal
         sha256 = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
-        owner = 9200 + ordinal
-        player = 9001
-        date_raw = 820 + ordinal
-        entries.append(
-            {
+        row = {
                 "span_id": plan.span_id,
                 "handler": handler,
                 "source_event_definition_key": plan.source_event,
@@ -134,12 +188,14 @@ def capture_manifest(root: Path) -> Path:
                     checkpoint_sha256=sha256,
                 ),
             }
-        )
+        if strict_receipt is not None:
+            row["received_self_incident_checkpoint_receipt"] = strict_receipt
+        entries.append(row)
     path = root / "capture-manifest.json"
     path.write_text(
         json.dumps(
             {
-                "schema_version": 1,
+                "schema_version": 2,
                 "kind": SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND,
                 "result": "GREEN",
                 "evidence_class": "real_ck3",
@@ -195,6 +251,23 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
             self.assertNotEqual(
                 incident["owner_character_id"],
                 incident["player_character_id"],
+            )
+            strict_locator = incident[
+                "received_self_incident_checkpoint_receipt"
+            ]
+            strict_path = Path(strict_locator["path"])
+            self.assertTrue(strict_path.is_file())
+            self.assertEqual(strict_path.stat().st_size, strict_locator["bytes"])
+            self.assertEqual(
+                hashlib.sha256(strict_path.read_bytes()).hexdigest().upper(),
+                strict_locator["sha256"],
+            )
+            archived_strict = json.loads(
+                strict_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                archived_strict["checkpoint"]["path"],
+                incident["checkpoint"]["path"],
             )
             self.assertEqual(
                 json.loads(registry_path.read_text(encoding="utf-8")),
@@ -464,6 +537,31 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
             self.assertEqual(
                 raised.exception.reason_code,
                 "source_checkpoint_capture_manifest_header_invalid",
+            )
+
+    def test_capture_manifest_incident_requires_strict_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root)
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            incident = next(
+                row
+                for row in payload["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            del incident["received_self_incident_checkpoint_receipt"]
+            manifest.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(
+                Phase2SourceCheckpointRegistryBuildError
+            ) as raised:
+                build_registry_from_capture_manifest(
+                    manifest,
+                    checkpoint_root=root / "frozen",
+                    registry_path=root / "registry.json",
+                )
+            self.assertEqual(
+                raised.exception.reason_code,
+                "incident_source_checkpoint_receipt_invalid",
             )
 
 
