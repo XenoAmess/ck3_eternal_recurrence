@@ -126,7 +126,7 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             _normalize(value)
 
-    def test_frozen_source_contract_excludes_crashing_preview_path(self) -> None:
+    def test_frozen_source_contract_requires_live_proven_leaf_context(self) -> None:
         fixture_path = (
             ROOT
             / "native_bridge"
@@ -135,7 +135,10 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
             / "raiktor_surrender_truce_v1_source_contract.json"
         )
         contract = json.loads(fixture_path.read_text(encoding="utf-8"))
-        self.assertEqual(contract["readiness"]["stage"], "fixture-confirmed/static-ready")
+        self.assertEqual(
+            contract["readiness"]["stage"],
+            "private-live/default-production-static-ready",
+        )
         self.assertTrue(contract["readiness"]["live_shape_probe_required"])
         self.assertTrue(contract["readiness"]["public_wire_complete"])
         self.assertEqual(
@@ -145,13 +148,31 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
         self.assertFalse(contract["readiness"]["production_live"])
         self.assertTrue(contract["read_contract"]["evaluated_days_public_wire"])
         self.assertFalse(contract["read_contract"]["expiry_observable"])
+        self.assertTrue(
+            contract["read_contract"]["requires_synchronous_native_leaf_context"]
+        )
+        self.assertTrue(
+            contract["read_contract"]
+            ["requires_leaf_evaluation_context_from_offset_0x28"]
+        )
+        self.assertEqual(contract["attacker_defeat_pointer_shape"]["root_span"], {
+            "capacity": 13,
+            "count": 12,
+        })
+        self.assertEqual(
+            contract["attacker_defeat_pointer_shape"]["scripted_child_index"], 7
+        )
+        self.assertEqual(contract["private_live_evidence"]["evaluated_days"], 1_825)
+        self.assertFalse(
+            contract["private_live_evidence"]["default_production_binary_validated"]
+        )
         source = (
             ROOT
             / "native_bridge"
             / "src"
             / "raiktor_surrender_truce_v1.cpp"
         ).read_text(encoding="utf-8")
-        for forbidden in contract["forbidden_production_paths"][:5]:
+        for forbidden in contract["forbidden_production_paths"][:4]:
             self.assertNotIn(forbidden, source)
         self.assertNotIn("24LL", source)
         self.assertNotIn("expiry_date_raw", source)

@@ -11,7 +11,7 @@
     },
     {
       "path": "native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json",
-      "sha256": "E168CA7B6382B2CCBD8D0619220ADF82A8AE79E525D9CE6E149CCFF9C0F86368",
+      "sha256": "DF720CD33D3606634378A5CFF20D77227B82A35265269789BDE4A51CFF988E0D",
       "semantic_contract": "truce publishes stable nonnegative evaluated_days on the public terms wire; persisted expiry remains explicitly unavailable"
     },
     {

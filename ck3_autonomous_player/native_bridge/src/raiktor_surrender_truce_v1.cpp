@@ -21,12 +21,16 @@ constexpr std::size_t kContextScopeCountOffset = 0x6C;
 constexpr std::size_t kTruceDurationScriptValueOffset = 0x108;
 constexpr std::size_t kLoadedEffectSlot11Offset = 11 * sizeof(void *);
 
-constexpr std::int32_t kDefeatRootCapacity = 19;
-constexpr std::int32_t kDefeatRootCount = 14;
-constexpr std::size_t kDefeatRootTruceScriptIndex = 9;
-constexpr std::int32_t kScriptDefaultCapacity = 6;
-constexpr std::int32_t kScriptDefaultCount = 5;
-constexpr std::size_t kScriptDefaultHiddenIndex = 2;
+// Exact 1.19.0.6 loaded shape captured twice on the same paused r2 frame.
+// The authored source path is attacker_defeat root[7] -> default child[1]
+// -> context child[0] -> CAddTruce.  These replace the pre-live 19/14/index-9
+// hypothesis; any drift remains fail-closed.
+constexpr std::int32_t kDefeatRootCapacity = 13;
+constexpr std::int32_t kDefeatRootCount = 12;
+constexpr std::size_t kDefeatRootTruceScriptIndex = 7;
+constexpr std::int32_t kScriptDefaultCapacity = 4;
+constexpr std::int32_t kScriptDefaultCount = 4;
+constexpr std::size_t kScriptDefaultHiddenIndex = 1;
 
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
 thread_local RaiktorTrucePrivateShapeCaptureV1 g_private_shape_capture{};
@@ -1045,10 +1049,6 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
   }
   XAR_G2_SHAPE_VALUE(root_count, root_count);
-#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
-  CaptureTargetedIndex7ForG2(environment, access, request, root_children,
-                            root_count);
-#endif
   if (root_children == nullptr) {
     XAR_G2_SHAPE_STAGE("root_children_null");
     return RaiktorSurrenderTruceFailureV1::root_shape_drift;
@@ -1437,6 +1437,102 @@ ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
   return result;
 }
 #endif
+
+RaiktorSurrenderTruceObservationV1
+ObserveRaiktorSurrenderTruceLeafContextV1(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    const RaiktorSurrenderTruceRequestV1 &request,
+    void *expected_truce_effect) noexcept {
+  RaiktorSurrenderTruceObservationV1 result;
+  const auto fail = [&result](RaiktorSurrenderTruceFailureV1 failure) {
+    result.status = RaiktorSurrenderTruceStatusV1::unavailable;
+    result.failure = failure;
+    return result;
+  };
+  if (!EnvironmentIsExact(environment)) {
+    return fail(RaiktorSurrenderTruceFailureV1::unsupported_build);
+  }
+  void *native_evaluation_context = nullptr;
+  if (access.read_frame == nullptr || request.effect_context == nullptr ||
+      request.evaluation_context == nullptr ||
+      expected_truce_effect == nullptr ||
+      !ReadValue(access, request.effect_context, 0x28,
+                 native_evaluation_context) ||
+      native_evaluation_context != request.evaluation_context) {
+    return fail(RaiktorSurrenderTruceFailureV1::invalid_request);
+  }
+
+  RaiktorSurrenderTruceFrameV1 first;
+  if (!access.read_frame(access.context, &first)) {
+    return fail(RaiktorSurrenderTruceFailureV1::first_frame_unavailable);
+  }
+  result.frame = first;
+  if (!first.paused) {
+    return fail(RaiktorSurrenderTruceFailureV1::frame_not_paused);
+  }
+  if (!first.exact_raiktor_claim_cb) {
+    return fail(RaiktorSurrenderTruceFailureV1::wrong_casus_belli);
+  }
+  if (!FrameIdentityIsValid(first)) {
+    return fail(RaiktorSurrenderTruceFailureV1::invalid_frame_identity);
+  }
+
+  ResolvedTruceNodeV1 first_node;
+  auto shape_failure = ResolveUniqueTruceNode(
+      environment, access, request, first.attacker_defeat_root, first_node);
+  if (shape_failure != RaiktorSurrenderTruceFailureV1::none) {
+    return fail(shape_failure);
+  }
+  if (first_node.node != expected_truce_effect) {
+    return fail(RaiktorSurrenderTruceFailureV1::caddtruce_not_unique);
+  }
+  result.pointer_shape_verified = true;
+
+  const auto first_days = environment.evaluate_duration_days(
+      first_node.duration_script_value, request.effect_context,
+      request.evaluation_context);
+  const auto second_days = environment.evaluate_duration_days(
+      first_node.duration_script_value, request.effect_context,
+      request.evaluation_context);
+  if (first_days < 0 || second_days < 0) {
+    return fail(RaiktorSurrenderTruceFailureV1::duration_negative);
+  }
+  if (first_days != second_days) {
+    return fail(RaiktorSurrenderTruceFailureV1::duration_unstable);
+  }
+  result.evaluator_double_read_stable = true;
+
+  ResolvedTruceNodeV1 second_node;
+  shape_failure = ResolveUniqueTruceNode(
+      environment, access, request, first.attacker_defeat_root, second_node);
+  if (shape_failure != RaiktorSurrenderTruceFailureV1::none ||
+      second_node.node != first_node.node ||
+      second_node.duration_script_value != first_node.duration_script_value) {
+    return fail(shape_failure == RaiktorSurrenderTruceFailureV1::none
+                    ? RaiktorSurrenderTruceFailureV1::root_shape_drift
+                    : shape_failure);
+  }
+
+  RaiktorSurrenderTruceFrameV1 second;
+  if (!access.read_frame(access.context, &second)) {
+    return fail(RaiktorSurrenderTruceFailureV1::second_frame_unavailable);
+  }
+  if (!second.paused) {
+    return fail(RaiktorSurrenderTruceFailureV1::frame_not_paused);
+  }
+  if (second != first) {
+    return fail(RaiktorSurrenderTruceFailureV1::frame_changed);
+  }
+
+  result.status = RaiktorSurrenderTruceStatusV1::available;
+  result.failure = RaiktorSurrenderTruceFailureV1::none;
+  result.owner_character_id = first.primary_attacker_character_id;
+  result.toward_character_id = first.primary_defender_character_id;
+  result.evaluated_days = first_days;
+  result.same_frame_stable = true;
+  return result;
+}
 
 std::string_view RaiktorSurrenderTruceFailureReasonV1(
     RaiktorSurrenderTruceFailureV1 failure) noexcept {

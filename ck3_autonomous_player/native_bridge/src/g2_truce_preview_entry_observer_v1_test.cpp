@@ -44,7 +44,7 @@ void Capture(void *opaque, std::uintptr_t effect,
 int main() {
   using namespace xar::bridge;
 
-  static_assert(!kG2TrucePreviewEntryObserverInstalledByDefaultV1);
+  static_assert(kG2TrucePreviewEntryObserverInstalledByDefaultV1);
   static_assert(kG2TrucePreviewEntryPatchRvaV1 == 0x2E87155);
   static_assert(kG2TrucePreviewEntryContinueRvaV1 == 0x2E87165);
   static_assert(kG2AddTruceEffectNormalVtableRvaV1 == 0x4461CA8);

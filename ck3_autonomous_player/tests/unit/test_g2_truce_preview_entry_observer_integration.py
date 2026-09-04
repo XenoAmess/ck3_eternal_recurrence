@@ -81,7 +81,7 @@ class G2TrucePreviewEntryObserverIntegrationTest(unittest.TestCase):
         self.assertTrue(observer["read_only"])
         self.assertFalse(observer["advertised"])
 
-    def test_shared_wiring_has_default_off_and_no_public_capability(self) -> None:
+    def test_shared_wiring_installs_production_hook_without_public_action(self) -> None:
         cmake = CMAKE.read_text(encoding="utf-8")
         bridge = BRIDGE_CPP.read_text(encoding="utf-8")
         driver = NATIVE_DRIVER.read_text(encoding="utf-8")
@@ -93,6 +93,18 @@ class G2TrucePreviewEntryObserverIntegrationTest(unittest.TestCase):
         self.assertIn("src/g2_truce_preview_entry_observer_v1.cpp", cmake)
         self.assertIn("xar_ck3_g2_truce_preview_entry_observer_v1_test", cmake)
         self.assertIn("g2_truce_preview_entry_observer_v1.hpp", bridge)
+        self.assertIn(
+            "constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = true",
+            bridge,
+        )
+        observer_header = (
+            NATIVE / "include" / "xar_bridge" /
+            "g2_truce_preview_entry_observer_v1.hpp"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "kG2TrucePreviewEntryObserverInstalledByDefaultV1 = true",
+            observer_header,
+        )
         self.assertIn('"private_build\\":true,\\"read_only\\":true,\\"advertised\\":false', bridge)
         self.assertIn("g2_truce_preview_entry_observer_enabled", bridge)
         self.assertIn('"private_observers"', driver)

@@ -43,17 +43,19 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
 
     def test_runtime_capture_calls_only_the_source_correlated_index7_helper(self) -> None:
         resolver = RESOLVER.read_text(encoding="utf-8")
-        resolve = resolver.index("ResolveUniqueTruceNode(")
-        runtime_call = resolver.index("CaptureTargetedIndex7ForG2(", resolve)
-        stale_gate = resolver.index('XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', runtime_call)
-        self.assertLess(runtime_call, stale_gate)
-        self.assertEqual(resolver.count("CaptureTargetedIndex7ForG2("), 3)
+        private_leaf = resolver.index(
+            "ObserveRaiktorSurrenderTrucePrivateLeafContextV1("
+        )
+        runtime_call = resolver.index("CaptureTargetedIndex7ForG2(", private_leaf)
+        private_leaf_end = resolver.index("\n}\n#endif", runtime_call)
+        self.assertLess(runtime_call, private_leaf_end)
+        self.assertEqual(resolver.count("CaptureTargetedIndex7ForG2("), 2)
         self.assertEqual(resolver.count("CaptureLoadedScriptedCandidatesForG2("), 1)
         self.assertEqual(resolver.count("CapturePrivateNestedContainerForG2("), 5)
         self.assertIn("constexpr std::size_t kRootIndex = 7", resolver)
         self.assertIn("constexpr std::size_t kHiddenIndex = 1", resolver)
-        self.assertNotIn("CaptureLoadedScriptedCandidatesForG2(", resolver[runtime_call:stale_gate])
-        self.assertNotIn("CapturePrivateNestedContainerForG2(", resolver[runtime_call:stale_gate])
+        self.assertNotIn("CaptureLoadedScriptedCandidatesForG2(", resolver[runtime_call:private_leaf_end])
+        self.assertNotIn("CapturePrivateNestedContainerForG2(", resolver[runtime_call:private_leaf_end])
 
     def test_targeted_helper_reads_no_siblings_and_calls_only_duration_evaluator(self) -> None:
         resolver = RESOLVER.read_text(encoding="utf-8")
@@ -155,11 +157,14 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             "RaiktorTruceAppendPrivateEvaluatorBoundaryV1", header
         )
 
-    def test_production_contract_and_mutation_surfaces_are_unchanged(self) -> None:
+    def test_production_contract_uses_the_live_proven_shape_without_mutation(self) -> None:
         resolver = RESOLVER.read_text(encoding="utf-8")
-        self.assertIn("kDefeatRootCapacity = 19", resolver)
-        self.assertIn("kDefeatRootCount = 14", resolver)
-        self.assertIn("kDefeatRootTruceScriptIndex = 9", resolver)
+        self.assertIn("kDefeatRootCapacity = 13", resolver)
+        self.assertIn("kDefeatRootCount = 12", resolver)
+        self.assertIn("kDefeatRootTruceScriptIndex = 7", resolver)
+        self.assertIn("kScriptDefaultCapacity = 4", resolver)
+        self.assertIn("kScriptDefaultCount = 4", resolver)
+        self.assertIn("kScriptDefaultHiddenIndex = 1", resolver)
         begin = resolver.index("void CaptureTargetedIndex7ForG2(")
         end = resolver.index("#endif", begin)
         helper = resolver[begin:end]
@@ -171,6 +176,20 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             "Execute",
         ):
             self.assertNotIn(forbidden, helper)
+
+    def test_default_reader_uses_the_proven_synchronous_leaf_seam(self) -> None:
+        resolver = RESOLVER.read_text(encoding="utf-8")
+        writer = WRITER.read_text(encoding="utf-8")
+        begin = resolver.index("ObserveRaiktorSurrenderTruceLeafContextV1(")
+        end = resolver.index("\n}\n\nstd::string_view", begin)
+        reader = resolver[begin:end]
+        self.assertIn("ResolveUniqueTruceNode(", reader)
+        self.assertIn("first_node.node != expected_truce_effect", reader)
+        self.assertIn("ReadValue(access, request.effect_context, 0x28", reader)
+        self.assertEqual(reader.count("environment.evaluate_duration_days("), 2)
+        self.assertIn("ReadRaiktorTruceLeafPreviewContextV1", writer)
+        self.assertIn("ObserveRaiktorSurrenderTruceLeafContextV1", writer)
+        self.assertIn("ReadRaiktorTruceDurationViaNativeLeafPreviewV1", writer)
 
     def test_v2_uses_only_the_transient_native_leaf_preview_context(self) -> None:
         cmake = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8")

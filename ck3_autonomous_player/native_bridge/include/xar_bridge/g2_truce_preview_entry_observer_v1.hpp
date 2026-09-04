@@ -14,7 +14,7 @@ inline constexpr std::uintptr_t kG2TrucePreviewEntryContinueRvaV1 = 0x2E87165;
 inline constexpr std::size_t kG2TrucePreviewEntryPatchBytesV1 = 16;
 inline constexpr std::uintptr_t kG2AddTruceEffectNormalVtableRvaV1 = 0x4461CA8;
 inline constexpr std::uintptr_t kG2AddTruceEffectForcedVtableRvaV1 = 0x4461D70;
-inline constexpr bool kG2TrucePreviewEntryObserverInstalledByDefaultV1 = false;
+inline constexpr bool kG2TrucePreviewEntryObserverInstalledByDefaultV1 = true;
 
 enum G2TrucePreviewEntryObserverFailureV1 : std::uint32_t {
   g2_truce_preview_entry_observer_failure_none = 0,

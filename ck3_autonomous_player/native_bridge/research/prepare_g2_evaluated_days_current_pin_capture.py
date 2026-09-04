@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Verify and freeze the current-pin private G2 evaluated-days live command.
+"""Verify and freeze a current-pin G2 evaluated-days live command.
 
 This is a no-launch preflight.  It verifies every immutable input, the exact
 evaluator bytes, the root/open_kaishek pin, candidate/default build options,
-private binary markers, the cold checkpoint anchor, a fresh attempt path, and
-an empty CK3/injector process inventory.  It then emits one PowerShell command
-that runs exactly two read-only terms queries and always postprocesses the
-private JSONL with the dedicated analyzer.
+binary markers, the cold checkpoint anchor, a fresh attempt path, and an empty
+CK3/injector process inventory.  Private candidates also postprocess their
+JSONL; a production leaf-context candidate emits only the existing read-only
+dual-query runner command.
 """
 
 from __future__ import annotations
@@ -34,6 +34,7 @@ DEFAULT_MANIFEST = (
 EXPECTED_SCHEMAS = {
     "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v1",
     "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v2",
+    "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v3",
 }
 PRIVATE_CAPTURE_SCHEMA = "xar.ck3.g2_truce_private_capture.v3"
 PRIVATE_BOUNDARY_SCHEMA = "xar.ck3.g2_truce_private_evaluator_boundary.v1"
@@ -124,6 +125,16 @@ def validate_manifest_contract(manifest: dict[str, Any]) -> None:
             "private_capture_schema": PRIVATE_CAPTURE_SCHEMA,
             "boundary_schema": PRIVATE_BOUNDARY_SCHEMA,
         }
+    elif candidate_kind == "production_leaf_context_v1":
+        expected_build = {
+            "private_capture_option": "OFF",
+            "leaf_context_capture_option": "OFF",
+            "native_callsite_observer_option": "OFF",
+            "preview_entry_diagnostics_option": "OFF",
+            "preview_entry_installed_by_default": True,
+            "private_capture_schema": PRIVATE_CAPTURE_SCHEMA,
+            "boundary_schema": PRIVATE_BOUNDARY_SCHEMA,
+        }
     elif candidate_kind != "direct_v1":
         raise ValueError("unknown private candidate kind")
     if build != expected_build:
@@ -139,7 +150,7 @@ def validate_manifest_contract(manifest: dict[str, Any]) -> None:
     }:
         raise ValueError("read-only dual-query contract changed")
     capture = _mapping(manifest.get("capture_contract"), "capture_contract")
-    if capture != {
+    expected_capture = {
         "group_count": 2,
         "rows_per_group": [
             "pre_call",
@@ -152,8 +163,19 @@ def validate_manifest_contract(manifest: dict[str, Any]) -> None:
         "duration_offset": "0x108",
         "evaluator_rva": "0x3373000",
         "requires_equal_nonnegative_results": True,
-    }:
-        raise ValueError("private capture contract changed")
+    }
+    if candidate_kind == "production_leaf_context_v1":
+        expected_capture = {
+            "terms_query_count": 2,
+            "expected_evaluated_days": 1825,
+            "evaluated_days_source": (
+                "public raiktor_surrender.truce_evaluated_days"
+            ),
+            "requires_equal_nonnegative_results": True,
+            "private_capture_sidecar": False,
+        }
+    if capture != expected_capture:
+        raise ValueError("capture contract changed")
     boundaries = _mapping(manifest.get("boundaries"), "boundaries")
     if not boundaries or any(value is not False for value in boundaries.values()):
         raise ValueError("static/readiness boundaries must all remain false")
@@ -218,11 +240,8 @@ def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, st
     timeouts = _mapping(manifest["timeouts"], "timeouts")
     python = Path(str(paths["python"])).resolve()
     runner = _resolve_repo_path(paths["runner"], repo_root)
-    analyzer = _resolve_repo_path(paths["analyzer"], repo_root)
     attempt = Path(str(paths["fresh_attempt"])).resolve()
-    sidecar = attempt / "g2-evaluated-days-private-v3.jsonl"
     runner_report = attempt / "report.json"
-    analysis_report = attempt / "evaluated-days-private-analysis.json"
     runner_arguments = [
         python,
         "-B",
@@ -254,6 +273,22 @@ def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, st
         "--readiness-timeout",
         timeouts["readiness_seconds"],
     ]
+    runner_command = " ".join(
+        ["&", *(_ps_quote(item) for item in runner_arguments)]
+    )
+    if manifest.get("candidate_kind") == "production_leaf_context_v1":
+        return {
+            "runner": runner_command,
+            "analyzer": "",
+            "combined": runner_command,
+            "private_jsonl": "",
+            "runner_report": str(runner_report),
+            "analysis_report": "",
+        }
+
+    analyzer = _resolve_repo_path(paths["analyzer"], repo_root)
+    sidecar = attempt / "g2-evaluated-days-private-v3.jsonl"
+    analysis_report = attempt / "evaluated-days-private-analysis.json"
     analyzer_arguments = [
         python,
         "-B",
@@ -271,7 +306,6 @@ def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, st
         "--expected-date-raw",
         identity["date_raw"],
     ]
-    runner_command = " ".join(["&", *(_ps_quote(item) for item in runner_arguments)])
     analyzer_command = " ".join(
         ["&", *(_ps_quote(item) for item in analyzer_arguments)]
     )
@@ -312,6 +346,63 @@ def _write_json_atomic(path: Path, value: object) -> None:
     os.replace(temporary, path)
 
 
+def _production_receipt_is_exact(path: Path) -> bool:
+    try:
+        receipt = _mapping(
+            json.loads(path.read_text(encoding="utf-8-sig")), "private receipt"
+        )
+        exact_build = _mapping(receipt.get("exact_build"), "receipt exact_build")
+        paused = _mapping(receipt.get("paused_binding"), "receipt paused_binding")
+        capture = _mapping(receipt.get("private_capture"), "receipt capture")
+        cleanup = _mapping(receipt.get("cleanup"), "receipt cleanup")
+        source = _mapping(receipt.get("source_invariant"), "receipt source")
+        boundaries = _mapping(receipt.get("boundaries"), "receipt boundaries")
+        queries = receipt.get("read_only_queries")
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+        return False
+    return (
+        receipt.get("schema")
+        == "xar.ck3.g2_evaluated_days_leaf_context_v2_private_live.v1"
+        and receipt.get("status")
+        == "GREEN_PRIVATE_EVALUATED_DAYS_PUBLIC_UNCHANGED"
+        and exact_build.get("game_executable_sha256")
+        == "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        and paused.get("war_id") == 50_331_699
+        and paused.get("character_id") == 29_829
+        and paused.get("date_raw") == 53_223_936
+        and paused.get("paused_before_between_after") is True
+        and paused.get("same_snapshot_before_between_after") is True
+        and isinstance(queries, list)
+        and len(queries) == 2
+        and all(
+            isinstance(row, dict)
+            and row.get("step") == "query-war-termination-terms-v1-50331699"
+            and row.get("status") == "available"
+            and row.get("accepted") is True
+            for row in queries
+        )
+        and capture.get("row_count") == 8
+        and capture.get("group_count") == 2
+        and capture.get("evaluated_days") == 1825
+        and capture.get("exact_path")
+        == "root[7].default.children[1].children[0].children[0]"
+        and capture.get("truce_vtable_rva") == "0x4461CA8"
+        and capture.get("duration_offset_from_truce") == 0x108
+        and capture.get("evaluator_function_rva") == "0x3373000"
+        and cleanup.get("ok") is True
+        and cleanup.get("cleanup_proven") is True
+        and source.get("unchanged") is True
+        and boundaries.get("mutation_commands_sent") is False
+        and boundaries.get("time_advanced") is False
+        and boundaries.get("public_wire_promoted") is False
+        and boundaries.get("public_readiness_promoted") is False
+        and boundaries.get("actual_expiry_observable") is False
+        and boundaries.get("decision_ready") is False
+        and boundaries.get("automatic_surrender_ready") is False
+        and boundaries.get("gen034_closed") is False
+    )
+
+
 def run_preflight(
     manifest_path: Path,
     report_path: Path,
@@ -338,7 +429,6 @@ def run_preflight(
     resolved = {
         "python": Path(str(paths["python"])).resolve(),
         "runner": _resolve_repo_path(paths["runner"], repo_root),
-        "analyzer": _resolve_repo_path(paths["analyzer"], repo_root),
         "checkpoint": Path(str(paths["source_checkpoint"])).resolve(),
         "driver_state": Path(str(paths["source_driver_state"])).resolve(),
         "game_executable": Path(str(paths["game_dir"])).resolve()
@@ -347,11 +437,26 @@ def run_preflight(
         "bridge_dll": Path(str(paths["bridge_dll"])).resolve(),
         "bridge_injector": Path(str(paths["bridge_injector"])).resolve(),
         "source_zip": Path(str(paths["source_zip"])).resolve(),
-        "private_cmake_cache": Path(str(paths["private_cmake_cache"])).resolve(),
-        "default_cmake_cache": Path(str(paths["default_cmake_cache"])).resolve(),
-        "default_bridge_dll": Path(str(paths["default_bridge_dll"])).resolve(),
         "open_kaishek_jar": Path(str(paths["open_kaishek_jar"])).resolve(),
     }
+    if candidate_kind == "production_leaf_context_v1":
+        resolved["candidate_cmake_cache"] = Path(
+            str(paths["candidate_cmake_cache"])
+        ).resolve()
+        resolved["private_live_receipt"] = _resolve_repo_path(
+            paths["private_live_receipt"], repo_root
+        )
+    else:
+        resolved["analyzer"] = _resolve_repo_path(paths["analyzer"], repo_root)
+        resolved["private_cmake_cache"] = Path(
+            str(paths["private_cmake_cache"])
+        ).resolve()
+        resolved["default_cmake_cache"] = Path(
+            str(paths["default_cmake_cache"])
+        ).resolve()
+        resolved["default_bridge_dll"] = Path(
+            str(paths["default_bridge_dll"])
+        ).resolve()
     if candidate_kind == "leaf_context_v2":
         resolved["context_lifetime_live_red"] = _resolve_repo_path(
             paths["context_lifetime_live_red"], repo_root
@@ -379,26 +484,37 @@ def run_preflight(
         for relative, expected_hash in source_expected.items()
     }
 
-    private_cache = (
-        resolved["private_cmake_cache"].read_text(encoding="utf-8-sig")
-        if resolved["private_cmake_cache"].is_file()
-        else ""
-    )
-    default_cache = (
-        resolved["default_cmake_cache"].read_text(encoding="utf-8-sig")
-        if resolved["default_cmake_cache"].is_file()
-        else ""
-    )
-    private_bytes = (
+    candidate_bytes = (
         resolved["bridge_dll"].read_bytes()
         if resolved["bridge_dll"].is_file()
         else b""
     )
-    default_bytes = (
-        resolved["default_bridge_dll"].read_bytes()
-        if resolved["default_bridge_dll"].is_file()
-        else b""
-    )
+    if candidate_kind == "production_leaf_context_v1":
+        private_cache = ""
+        default_cache = (
+            resolved["candidate_cmake_cache"].read_text(encoding="utf-8-sig")
+            if resolved["candidate_cmake_cache"].is_file()
+            else ""
+        )
+        private_bytes = b""
+        default_bytes = candidate_bytes
+    else:
+        private_cache = (
+            resolved["private_cmake_cache"].read_text(encoding="utf-8-sig")
+            if resolved["private_cmake_cache"].is_file()
+            else ""
+        )
+        default_cache = (
+            resolved["default_cmake_cache"].read_text(encoding="utf-8-sig")
+            if resolved["default_cmake_cache"].is_file()
+            else ""
+        )
+        private_bytes = candidate_bytes
+        default_bytes = (
+            resolved["default_bridge_dll"].read_bytes()
+            if resolved["default_bridge_dll"].is_file()
+            else b""
+        )
     anchor: dict[str, Any] = {}
     anchor_error: str | None = None
     try:
@@ -447,27 +563,56 @@ def run_preflight(
             context_lifetime_error = f"{type(error).__name__}: {error}"
     open_external = _mapping(open_report.get("external"), "open report external")
     last_checkpoint = _mapping(anchor.get("last_checkpoint"), "driver checkpoint")
+    production_candidate = candidate_kind == "production_leaf_context_v1"
+    private_receipt_exact = (
+        not production_candidate
+        or _production_receipt_is_exact(resolved["private_live_receipt"])
+    )
+    production_header = (
+        repo_root
+        / "ck3_autonomous_player"
+        / "native_bridge"
+        / "include"
+        / "xar_bridge"
+        / "g2_truce_preview_entry_observer_v1.hpp"
+    )
+    production_bridge = (
+        repo_root
+        / "ck3_autonomous_player"
+        / "native_bridge"
+        / "src"
+        / "bridge.cpp"
+    )
+    production_hook_enabled = not production_candidate or (
+        production_header.is_file()
+        and production_bridge.is_file()
+        and "kG2TrucePreviewEntryObserverInstalledByDefaultV1 = true"
+        in production_header.read_text(encoding="utf-8")
+        and "constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = true"
+        in production_bridge.read_text(encoding="utf-8")
+    )
     checks = {
         "all_input_hashes": all(hash_checks.values()),
         "all_candidate_source_hashes": all(source_checks.values()),
-        "private_option_on": _cache_value(
+        "private_option_on": production_candidate
+        or _cache_value(
             private_cache, "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1"
-        )
-        == ("OFF" if candidate_kind == "leaf_context_v2" else "ON"),
+        ) == ("OFF" if candidate_kind == "leaf_context_v2" else "ON"),
         "private_leaf_context_option_on": (
-            candidate_kind != "leaf_context_v2"
+            production_candidate
+            or candidate_kind != "leaf_context_v2"
             or _cache_value(
                 private_cache,
                 "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2",
             )
             == "ON"
         ),
-        "private_passive_observer_off": _cache_value(
+        "private_passive_observer_off": production_candidate or _cache_value(
             private_cache,
             "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
         )
         == "OFF",
-        "private_preview_observer_off": _cache_value(
+        "private_preview_observer_off": production_candidate or _cache_value(
             private_cache,
             "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1",
         )
@@ -480,13 +625,27 @@ def run_preflight(
             default_cache, "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2"
         )
         in (None, "OFF"),
-        "private_markers_present": PRIVATE_CAPTURE_SCHEMA.encode("ascii")
-        in private_bytes
-        and PRIVATE_BOUNDARY_SCHEMA.encode("ascii") in private_bytes
-        and PRIVATE_CAPTURE_ENVIRONMENT.encode("utf-16le") in private_bytes,
+        "private_markers_present": production_candidate
+        or (
+            PRIVATE_CAPTURE_SCHEMA.encode("ascii") in private_bytes
+            and PRIVATE_BOUNDARY_SCHEMA.encode("ascii") in private_bytes
+            and PRIVATE_CAPTURE_ENVIRONMENT.encode("utf-16le") in private_bytes
+        ),
         "default_markers_absent": PRIVATE_CAPTURE_SCHEMA.encode("ascii")
         not in default_bytes
         and PRIVATE_BOUNDARY_SCHEMA.encode("ascii") not in default_bytes,
+        "production_all_private_options_off": not production_candidate
+        or all(
+            _cache_value(default_cache, option) == "OFF"
+            for option in (
+                "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1",
+                "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2",
+                "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
+                "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1",
+            )
+        ),
+        "production_hook_installed_by_default": production_hook_enabled,
+        "private_live_receipt_exact": private_receipt_exact,
         "driver_v2_identity": anchor.get("format_version") == 2
         and anchor.get("episode_character_id") == identity["character_id"]
         and last_checkpoint.get("episode_character_id") == identity["character_id"]
@@ -512,7 +671,11 @@ def run_preflight(
     commands = build_commands(manifest, repo_root=repo_root)
     ok = all(checks.values()) and anchor_error is None and inventory_error is None
     payload = {
-        "schema": "xar.ck3.g2_evaluated_days_current_pin_preflight.v1",
+        "schema": (
+            "xar.ck3.g2_evaluated_days_production_preflight.v1"
+            if production_candidate
+            else "xar.ck3.g2_evaluated_days_current_pin_preflight.v1"
+        ),
         "status": "ready-to-run" if ok else "red",
         "ok": ok,
         "ck3_started": False,

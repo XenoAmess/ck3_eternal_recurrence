@@ -45,8 +45,8 @@ struct Fixture {
   std::array<std::byte, 0x60> private_default_effect{};
   std::array<std::byte, 0x60> private_hidden{};
   std::array<std::byte, 0x80> private_context_effect{};
-  std::array<void *, 19> root_children{};
-  std::array<void *, 6> default_children{};
+  std::array<void *, 13> root_children{};
+  std::array<void *, 4> default_children{};
   std::array<void *, 4> private_default_children{};
   std::array<void *, 1> private_hidden_children{};
   std::array<void *, 1> private_context_children{};
@@ -64,6 +64,12 @@ struct Fixture {
   bool fail_first_frame = false;
   bool fail_second_frame = false;
   bool drift_second_frame = false;
+  bool require_leaf_context =
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+      true;
+#else
+      false;
+#endif
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
   std::array<RaiktorTrucePrivateEvaluatorBoundaryV1, 3>
       evaluator_boundaries{};
@@ -75,16 +81,16 @@ struct Fixture {
     root_vtable[11] = reinterpret_cast<void *>(0x1);
     Store(unknown, 0x00, static_cast<void *>(unknown_vtable.data()));
     root_children.fill(unknown.data());
-    root_children[9] = scripted.data();
+    root_children[7] = scripted.data();
     default_children.fill(unknown.data());
-    default_children[2] = hidden.data();
+    default_children[1] = hidden.data();
     hidden_children[0] = context_effect.data();
     context_children[0] = truce.data();
 
     Store(root, 0x00, static_cast<void *>(root_vtable.data()));
     Store(root, 0x40, static_cast<void *>(root_children.data()));
-    Store(root, 0x48, std::int32_t{19});
-    Store(root, 0x4C, std::int32_t{14});
+    Store(root, 0x48, std::int32_t{13});
+    Store(root, 0x4C, std::int32_t{12});
     Store(scripted, 0x00, static_cast<void *>(scripted_vtable.data()));
     Store(scripted, 0x60, static_cast<void *>(scripted_template.data()));
     Store(scripted, 0x94, std::int32_t{0});
@@ -95,8 +101,8 @@ struct Fixture {
     Store(default_effect, 0x00, static_cast<void *>(root_vtable.data()));
     Store(default_effect, 0x40,
           static_cast<void *>(default_children.data()));
-    Store(default_effect, 0x48, std::int32_t{6});
-    Store(default_effect, 0x4C, std::int32_t{5});
+    Store(default_effect, 0x48, std::int32_t{4});
+    Store(default_effect, 0x4C, std::int32_t{4});
     Store(hidden, 0x00, static_cast<void *>(hidden_vtable.data()));
     Store(hidden, 0x40, static_cast<void *>(hidden_children.data()));
     Store(hidden, 0x48, std::int32_t{1});
@@ -168,6 +174,9 @@ struct Fixture {
     return {effect_context.data(), effect_context.data() + 0x28};
 #endif
   }
+  RaiktorSurrenderTruceRequestV1 LeafRequest() {
+    return {effect_context.data(), Load<void *>(effect_context, 0x28)};
+  }
 };
 
 Fixture *g_fixture = nullptr;
@@ -191,11 +200,10 @@ std::int32_t Evaluate(void *script_value, void *effect_context,
   if (g_fixture == nullptr ||
       script_value != g_fixture->truce.data() + 0x108 ||
       effect_context != g_fixture->effect_context.data() ||
-#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
-      evaluation_context != g_fixture->evaluation_context.data()) {
-#else
-      evaluation_context != g_fixture->effect_context.data() + 0x28) {
-#endif
+      evaluation_context !=
+          (g_fixture->require_leaf_context
+               ? static_cast<void *>(g_fixture->evaluation_context.data())
+               : static_cast<void *>(g_fixture->effect_context.data() + 0x28))) {
     return -1;
   }
   ++g_fixture->evaluator_calls;
@@ -314,12 +322,12 @@ int main() {
     fixture.root_children[7] = fixture.private_scripted.data();
     Store(fixture.root, 0x48, std::int32_t{13});
     Store(fixture.root, 0x4C, std::int32_t{12});
-    const auto value = ObserveRaiktorSurrenderTruceV1(
-        fixture.Environment(), fixture.Access(), fixture.Request());
+    const auto value = ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+        fixture.Environment(), fixture.Access(), fixture.Request(),
+        fixture.truce.data());
     const auto &capture = LastRaiktorTrucePrivateShapeCaptureV1();
-    if (!ExpectFailure(value,
-                       RaiktorSurrenderTruceFailureV1::root_shape_drift,
-                       "private targeted evaluator") ||
+    if (value.status != RaiktorSurrenderTruceStatusV1::available ||
+        value.failure != RaiktorSurrenderTruceFailureV1::none ||
         capture.targeted_index7_status != "complete" ||
         capture.evaluator_capture_status != "complete" ||
         capture.duration_script_value !=
@@ -335,7 +343,7 @@ int main() {
         capture.evaluator_second_days != 1825 ||
         capture.evaluator_call_count != 2 ||
         !capture.evaluator_nonnegative || !capture.evaluator_stable ||
-        fixture.evaluator_calls != 2 || fixture.frame_reads != 1 ||
+        fixture.evaluator_calls != 2 || fixture.frame_reads != 2 ||
         fixture.evaluator_boundary_count != 3 ||
         fixture.evaluator_boundaries[0].stage != "pre_call" ||
         fixture.evaluator_boundaries[0].completed_call_count != 0 ||
@@ -378,8 +386,9 @@ int main() {
     fixture.fixture_stop_after_pre_call = true;
     Store(fixture.root, 0x48, std::int32_t{13});
     Store(fixture.root, 0x4C, std::int32_t{12});
-    const auto value = ObserveRaiktorSurrenderTruceV1(
-        fixture.Environment(), fixture.Access(), fixture.Request());
+    const auto value = ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+        fixture.Environment(), fixture.Access(), fixture.Request(),
+        fixture.truce.data());
     const auto &capture = LastRaiktorTrucePrivateShapeCaptureV1();
     if (!ExpectFailure(value,
                        RaiktorSurrenderTruceFailureV1::root_shape_drift,
@@ -397,6 +406,37 @@ int main() {
     }
   }
 #endif
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    fixture.require_leaf_context = true;
+    const auto value = ObserveRaiktorSurrenderTruceLeafContextV1(
+        fixture.Environment(), fixture.Access(), fixture.LeafRequest(),
+        fixture.truce.data());
+    if (value.status != RaiktorSurrenderTruceStatusV1::available ||
+        value.failure != RaiktorSurrenderTruceFailureV1::none ||
+        value.evaluated_days != 1825 || !value.pointer_shape_verified ||
+        !value.evaluator_double_read_stable || !value.same_frame_stable ||
+        value.expiry_observable || fixture.evaluator_calls != 2 ||
+        fixture.frame_reads != 2) {
+      std::cerr << "production leaf-context observation failed\n";
+      return 1;
+    }
+  }
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    fixture.require_leaf_context = true;
+    const auto value = ObserveRaiktorSurrenderTruceLeafContextV1(
+        fixture.Environment(), fixture.Access(), fixture.LeafRequest(),
+        fixture.unknown.data());
+    if (!ExpectFailure(value,
+                       RaiktorSurrenderTruceFailureV1::caddtruce_not_unique,
+                       "production leaf target mismatch") ||
+        fixture.evaluator_calls != 0 || fixture.frame_reads != 1) {
+      return 1;
+    }
+  }
   {
     Fixture fixture;
     g_fixture = &fixture;
@@ -447,7 +487,7 @@ int main() {
           RaiktorSurrenderTruceFailureV1::root_shape_drift, "root span") ||
       !ShapeDrift(
           [](Fixture &fixture) {
-            fixture.default_children[1] = fixture.hidden.data();
+            fixture.default_children[2] = fixture.hidden.data();
           },
           RaiktorSurrenderTruceFailureV1::caddtruce_not_unique,
           "duplicate hidden path") ||

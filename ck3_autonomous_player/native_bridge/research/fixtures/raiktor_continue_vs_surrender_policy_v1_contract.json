@@ -9,7 +9,7 @@
   "frozen_inputs": [
     {
       "path": "docs/ck3-native-ai/war-termination.md",
-      "sha256": "E22EDE53DAE46F329FF3EBD0231B26F510FEBEB9E5AED2BD052608673DE48849",
+      "sha256": "8CAB4EED5E62D63121E13323405B9B2A17B707F56DC8B563346957962F076764",
       "semantic_contract": "exact-build options, original AI termination tree, Raiktor terms and six-domain readiness boundaries"
     },
     {
@@ -19,7 +19,7 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json",
-      "sha256": "05C3C40180FCFEC6E33C5DB627287C7FCF361C5B5228374D953BD5119DAD3C79",
+      "sha256": "C83DE7B0176935E9BBA69C7FBC29E28282735F0F0977218CF7E941E3969D9D1C",
       "semantic_contract": "claims base plus gold, prestige, PoW, favor, truce and honestly generic war-bound current observation; automatic surrender remains false"
     },
     {

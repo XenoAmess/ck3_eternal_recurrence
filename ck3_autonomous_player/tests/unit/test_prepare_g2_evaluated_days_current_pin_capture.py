@@ -156,6 +156,159 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
         manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
         return manifest, repo
 
+    def _production_fixture(
+        self, root: Path
+    ) -> tuple[dict[str, object], Path]:
+        manifest, repo = self._fixture(root)
+        paths = manifest["paths"]
+        bridge = Path(paths["bridge_dll"])
+        cache = Path(paths["private_cmake_cache"])
+        bridge.write_bytes(b"production-default")
+        cache.write_text(
+            "\n".join(
+                f"{option}:BOOL=OFF"
+                for option in (
+                    "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1",
+                    "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2",
+                    "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
+                    "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1",
+                )
+            ),
+            encoding="utf-8",
+        )
+        receipt = repo / "private-live-receipt.json"
+        receipt.write_text(
+            json.dumps(
+                {
+                    "schema": (
+                        "xar.ck3.g2_evaluated_days_leaf_context_v2_"
+                        "private_live.v1"
+                    ),
+                    "status": (
+                        "GREEN_PRIVATE_EVALUATED_DAYS_PUBLIC_UNCHANGED"
+                    ),
+                    "exact_build": {
+                        "game_executable_sha256": (
+                            "2D00FF3101EF70B566F2FCBAE292F0926"
+                            "3199C80E9DC8F139B82D7D96F83DB86"
+                        )
+                    },
+                    "paused_binding": {
+                        "war_id": 50_331_699,
+                        "character_id": 29_829,
+                        "date_raw": 53_223_936,
+                        "paused_before_between_after": True,
+                        "same_snapshot_before_between_after": True,
+                    },
+                    "read_only_queries": [
+                        {
+                            "step": "query-war-termination-terms-v1-50331699",
+                            "status": "available",
+                            "accepted": True,
+                        },
+                        {
+                            "step": "query-war-termination-terms-v1-50331699",
+                            "status": "available",
+                            "accepted": True,
+                        },
+                    ],
+                    "private_capture": {
+                        "row_count": 8,
+                        "group_count": 2,
+                        "evaluated_days": 1825,
+                        "exact_path": (
+                            "root[7].default.children[1].children[0].children[0]"
+                        ),
+                        "truce_vtable_rva": "0x4461CA8",
+                        "duration_offset_from_truce": 0x108,
+                        "evaluator_function_rva": "0x3373000",
+                    },
+                    "cleanup": {"ok": True, "cleanup_proven": True},
+                    "source_invariant": {"unchanged": True},
+                    "boundaries": {
+                        "mutation_commands_sent": False,
+                        "time_advanced": False,
+                        "public_wire_promoted": False,
+                        "public_readiness_promoted": False,
+                        "actual_expiry_observable": False,
+                        "decision_ready": False,
+                        "automatic_surrender_ready": False,
+                        "gen034_closed": False,
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+        observer_header = (
+            repo
+            / "ck3_autonomous_player/native_bridge/include/xar_bridge/"
+            "g2_truce_preview_entry_observer_v1.hpp"
+        )
+        observer_bridge = (
+            repo / "ck3_autonomous_player/native_bridge/src/bridge.cpp"
+        )
+        observer_header.parent.mkdir(parents=True, exist_ok=True)
+        observer_bridge.parent.mkdir(parents=True, exist_ok=True)
+        observer_header.write_text(
+            "kG2TrucePreviewEntryObserverInstalledByDefaultV1 = true",
+            encoding="utf-8",
+        )
+        observer_bridge.write_text(
+            "constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = true",
+            encoding="utf-8",
+        )
+        manifest["schema"] = (
+            "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v3"
+        )
+        manifest["candidate_kind"] = "production_leaf_context_v1"
+        manifest["build_contract"] = {
+            "private_capture_option": "OFF",
+            "leaf_context_capture_option": "OFF",
+            "native_callsite_observer_option": "OFF",
+            "preview_entry_diagnostics_option": "OFF",
+            "preview_entry_installed_by_default": True,
+            "private_capture_schema": PREFLIGHT.PRIVATE_CAPTURE_SCHEMA,
+            "boundary_schema": PREFLIGHT.PRIVATE_BOUNDARY_SCHEMA,
+        }
+        manifest["capture_contract"] = {
+            "terms_query_count": 2,
+            "expected_evaluated_days": 1825,
+            "evaluated_days_source": (
+                "public raiktor_surrender.truce_evaluated_days"
+            ),
+            "requires_equal_nonnegative_results": True,
+            "private_capture_sidecar": False,
+        }
+        paths["candidate_cmake_cache"] = str(cache)
+        paths["private_live_receipt"] = "private-live-receipt.json"
+        for name in (
+            "analyzer",
+            "private_cmake_cache",
+            "default_cmake_cache",
+            "default_bridge_dll",
+        ):
+            paths.pop(name)
+        files = {
+            "python": Path(paths["python"]),
+            "runner": repo / paths["runner"],
+            "checkpoint": Path(paths["source_checkpoint"]),
+            "driver_state": Path(paths["source_driver_state"]),
+            "game_executable": Path(paths["game_dir"]) / "binaries/ck3.exe",
+            "bridge_dll": bridge,
+            "bridge_injector": Path(paths["bridge_injector"]),
+            "source_zip": Path(paths["source_zip"]),
+            "open_kaishek_jar": Path(paths["open_kaishek_jar"]),
+            "candidate_cmake_cache": cache,
+            "private_live_receipt": receipt,
+        }
+        manifest["sha256"] = {
+            name: _sha256(path) for name, path in files.items()
+        }
+        (root / "manifest.json").write_text(
+            json.dumps(manifest), encoding="utf-8"
+        )
+        return manifest, repo
+
     @staticmethod
     def _open_audit(**_: object) -> dict[str, object]:
         return {
@@ -301,6 +454,51 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
         self.assertIn(PREFLIGHT.PRIVATE_CAPTURE_ENVIRONMENT, combined)
         for forbidden in ("surrender-war", "offer-white-peace", "enforce-demands", "life-advance"):
             self.assertNotIn(forbidden, combined)
+
+    def test_production_candidate_emits_only_the_read_only_runner(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            manifest, repo = self._production_fixture(root)
+            PREFLIGHT.validate_manifest_contract(manifest)
+            commands = PREFLIGHT.build_commands(manifest, repo_root=repo)
+            combined = commands["combined"]
+            self.assertEqual(combined.count("runner.py"), 1)
+            self.assertEqual(combined.count("--war-id"), 1)
+            self.assertNotIn("analyzer", combined)
+            self.assertNotIn(PREFLIGHT.PRIVATE_CAPTURE_ENVIRONMENT, combined)
+            self.assertEqual(commands["private_jsonl"], "")
+            for forbidden in (
+                "surrender-war",
+                "offer-white-peace",
+                "enforce-demands",
+                "life-advance",
+            ):
+                self.assertNotIn(forbidden, combined)
+
+    def test_production_candidate_preflight_requires_default_off_build(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            _, repo = self._production_fixture(root)
+            report = PREFLIGHT.run_preflight(
+                root / "manifest.json",
+                root / "preflight.json",
+                repo_root=repo,
+                process_inventory=lambda: {
+                    "counts": {"ck3.exe": 0, "xar_ck3_bridge_injector.exe": 0},
+                    "all_zero": True,
+                },
+                open_audit=self._open_audit,
+                evaluator_verify=lambda _exe, _contract: [],
+            )
+            self.assertTrue(report["ok"])
+            self.assertEqual(
+                report["schema"],
+                "xar.ck3.g2_evaluated_days_production_preflight.v1",
+            )
+            self.assertTrue(report["checks"]["production_all_private_options_off"])
+            self.assertTrue(report["checks"]["production_hook_installed_by_default"])
+            self.assertTrue(report["checks"]["private_live_receipt_exact"])
+            self.assertEqual(report["artifacts"]["private_jsonl"], "")
 
     def test_full_preflight_green_with_exact_fixture(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

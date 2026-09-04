@@ -97,7 +97,7 @@ option(
 
 option(
   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
-  "Install the private exact-vtable G2 truce preview traversal observer"
+  "Emit private diagnostics for the exact-vtable G2 truce preview observer"
   OFF
 )
 
@@ -527,6 +527,7 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_event_window_context_v1_test
     src/battle_terminal_journal_v1.cpp
     src/ck3_11906.cpp
+    src/g2_truce_preview_entry_observer_v1.cpp
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
     src/event_window_context_v1.cpp
@@ -562,6 +563,7 @@ if(BUILD_TESTING)
     src/battle_terminal_transition_v1_mailbox.cpp
     src/battle_transition_v1_mailbox.cpp
     src/ck3_11906.cpp
+    src/g2_truce_preview_entry_observer_v1.cpp
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
     src/ck3_11906_test.cpp
@@ -602,6 +604,7 @@ if(BUILD_TESTING)
     src/pending_character_interaction_context_v1_mailbox.cpp
     src/ck3_11906_adapter.cpp
     src/ck3_11906.cpp
+    src/g2_truce_preview_entry_observer_v1.cpp
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
     src/combat_v3.cpp

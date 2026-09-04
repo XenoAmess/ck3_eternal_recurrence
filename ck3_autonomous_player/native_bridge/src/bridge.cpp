@@ -133,11 +133,10 @@ constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = true;
 #else
 constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = false;
 #endif
-#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
+// The exact preview-entry hook is now the production reader's synchronous
+// access to the native leaf context.  The compile option below only controls
+// the private diagnostic object emitted later in HeartbeatFrame.
 constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = true;
-#else
-constexpr bool kG2TrucePreviewEntryObserverEnabledV1 = false;
-#endif
 static_assert(!(kStartupFailureContainmentEnabledV1 &&
                 kStartupParticle2StageRecorderEnabledV1));
 static_assert(!kStartupWidgetNullFlagCallGuardEnabledV1 ||

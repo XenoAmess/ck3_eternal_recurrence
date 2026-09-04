@@ -12,42 +12,42 @@ CMAKE = ROOT / "native_bridge" / "CMakeLists.txt"
 
 
 class G2TruceEvaluatorContextPointerFixTests(unittest.TestCase):
-    def test_private_adapter_loads_pointer_and_default_keeps_old_path(self) -> None:
+    def test_default_adapter_uses_the_native_leaf_pointer(self) -> None:
         source = BRIDGE.read_text(encoding="utf-8")
-        private_begin = source.index(
-            "#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)",
-            source.index("bool ReadRaiktorSurrenderTruceDuration("),
+        callback_begin = source.index(
+            "void ReadRaiktorTruceLeafPreviewContextV1("
         )
-        private_end = source.index("#endif", private_begin)
-        block = source[private_begin:private_end]
-        self.assertIn("LoadAt<void *>(effect_context, 0x28)", block)
-        self.assertIn("if (evaluation_context == nullptr)", block)
-        self.assertIn("DestroyWarEffectContext(bindings, effect_context)", block)
+        callback_end = source.index(
+            "bool ReadRaiktorTruceDurationViaNativeLeafPreviewV1(",
+            callback_begin,
+        )
+        block = source[callback_begin:callback_end]
+        self.assertIn("LoadAt<void *>(context, 0x28)", block)
         self.assertIn(
-            "static_cast<std::byte *>(effect_context) + 0x28", block
+            "ObserveRaiktorSurrenderTruceLeafContextV1", block
         )
-        request = source.index(
-            "const RaiktorSurrenderTruceRequestV1 request{",
-            private_end,
-        )
-        self.assertIn(
-            "effect_context, evaluation_context",
-            source[request : request + 140],
-        )
-
-    def test_private_observer_accepts_only_non_null_opaque_context(self) -> None:
-        source = OBSERVER.read_text(encoding="utf-8")
-        validation = source[
-            source.index("if (access.read_frame == nullptr") :
-            source.index("RaiktorSurrenderTruceFrameV1 first;")
+        reader = source[
+            source.index("bool ReadRaiktorSurrenderTruceDuration(") :
+            source.index("bool DryPreviewWarExitEffect(")
         ]
-        self.assertIn("XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1", validation)
+        self.assertIn(
+            "ReadRaiktorTruceDurationViaNativeLeafPreviewV1(", reader
+        )
+        self.assertNotIn("static_cast<std::byte *>(effect_context) + 0x28", reader)
+
+    def test_production_observer_binds_the_exact_leaf_context_pair(self) -> None:
+        source = OBSERVER.read_text(encoding="utf-8")
+        begin = source.index("ObserveRaiktorSurrenderTruceLeafContextV1(")
+        validation = source[
+            source.index("if (access.read_frame == nullptr", begin) :
+            source.index("RaiktorSurrenderTruceFrameV1 first;", begin)
+        ]
         self.assertIn("request.evaluation_context == nullptr", validation)
         self.assertIn(
-            "request.evaluation_context !=\n"
-            "          reinterpret_cast<void *>(effect_context + 0x28)",
+            "ReadValue(access, request.effect_context, 0x28",
             validation,
         )
+        self.assertIn("native_evaluation_context != request.evaluation_context", validation)
 
     def test_fixture_covers_null_no_go_and_stable_double_return(self) -> None:
         source = FIXTURE.read_text(encoding="utf-8")

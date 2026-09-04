@@ -9061,8 +9061,11 @@ int main() {
           "conditional_favor_hook_application") ==
           termination_terms.raiktor_surrender
               ->unobserved_dynamic_effects.end() ||
+      // This aggregate fixture does not execute the exact preview-entry
+      // detour.  The production reader must therefore remain unavailable;
+      // the dedicated leaf-context fixture below covers the successful path.
       xar::ck3_11906::LastRaiktorSurrenderTruceFailureForOfflineReFixture() !=
-          xar::ck3_11906::RaiktorSurrenderTruceFailureV1::unsupported_build ||
+          xar::ck3_11906::RaiktorSurrenderTruceFailureV1::invalid_request ||
       g_character_claim_read_calls != claim_reads_before_raiktor + 4 ||
       g_character_claim_destroy_calls !=
           claim_destroys_before_raiktor + 3 ||

@@ -152,6 +152,17 @@ struct RaiktorSurrenderTruceObservationV1 {
   bool expiry_observable = false;
 };
 
+// Production read entry.  This must be called synchronously from the exact
+// CAddTruce preview-entry hook while the native leaf wrapper is alive.
+// expected_truce_effect binds that transient call to the exact authored
+// attacker-defeat path before either evaluator read is made.
+RaiktorSurrenderTruceObservationV1
+ObserveRaiktorSurrenderTruceLeafContextV1(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    const RaiktorSurrenderTruceRequestV1 &request,
+    void *expected_truce_effect) noexcept;
+
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
 // One-off staged evidence for the private GEN-034 reader. This type and its
 // accessor do not exist in the default production DLL or on the MCP wire.

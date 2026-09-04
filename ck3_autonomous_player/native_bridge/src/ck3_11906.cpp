@@ -4276,6 +4276,75 @@ bool ReadRaiktorTruceProductionFrame(
   return true;
 }
 
+struct RaiktorTruceLeafContextReaderV1 {
+  const RaiktorSurrenderTruceNativeEnvironmentV1 *environment = nullptr;
+  const RaiktorSurrenderTruceAccessV1 *access = nullptr;
+  RaiktorSurrenderTruceObservationV1 *output = nullptr;
+  bool completed = false;
+};
+
+void ReadRaiktorTruceLeafPreviewContextV1(
+    void *opaque, std::uintptr_t effect_this,
+    std::uintptr_t preview_context,
+    std::uintptr_t preview_collector) noexcept {
+  auto *const reader = static_cast<RaiktorTruceLeafContextReaderV1 *>(opaque);
+  if (reader == nullptr || reader->completed || reader->environment == nullptr ||
+      reader->access == nullptr || reader->output == nullptr ||
+      effect_this == 0 || preview_context == 0 || preview_collector == 0) {
+    return;
+  }
+  void *const context = reinterpret_cast<void *>(preview_context);
+  void *const evaluation_context = LoadAt<void *>(context, 0x28);
+  if (evaluation_context == nullptr) return;
+  const RaiktorSurrenderTruceRequestV1 request{context, evaluation_context};
+  const auto observation = ObserveRaiktorSurrenderTruceLeafContextV1(
+      *reader->environment, *reader->access, request,
+      reinterpret_cast<void *>(effect_this));
+  if (observation.status == RaiktorSurrenderTruceStatusV1::available &&
+      observation.failure == RaiktorSurrenderTruceFailureV1::none) {
+    *reader->output = observation;
+    reader->completed = true;
+  }
+}
+
+bool ReadRaiktorTruceDurationViaNativeLeafPreviewV1(
+    const Bindings &bindings, void *loaded_effect, void *effect_context,
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    RaiktorSurrenderTruceObservationV1 &output) noexcept {
+  if (loaded_effect == nullptr || effect_context == nullptr ||
+      bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0) {
+    return false;
+  }
+  EffectPreviewCollectorStorage collector_storage{};
+  void *const collector = collector_storage.bytes.data();
+  if (bindings.construct_effect_preview_collector(collector) != collector) {
+    return false;
+  }
+  const auto collector_vtable = LoadAt<std::uintptr_t>(collector, 0x00);
+  if (collector_vtable != bindings.effect_preview_collector_vtable) {
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+
+  RaiktorTruceLeafContextReaderV1 reader{&environment, &access, &output, false};
+  if (!xar::bridge::ArmG2TrucePreviewEntryCaptureV1(
+          ReadRaiktorTruceLeafPreviewContextV1, &reader)) {
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+  // The exact 0x3380170 traversal constructs the root wrapper, and its
+  // 0x3380840 child dispatcher constructs the transient leaf wrapper.  The
+  // evaluator is read twice synchronously before that leaf call returns.
+  bindings.traverse_loaded_effect(loaded_effect, effect_context, collector);
+  xar::bridge::DisarmG2TrucePreviewEntryCaptureV1();
+  bindings.destroy_effect_preview_collector(collector);
+  return reader.completed;
+}
+
 #if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
 struct G2TruceLeafContextCaptureV2 {
   const RaiktorSurrenderTruceNativeEnvironmentV1 *environment = nullptr;
@@ -4380,13 +4449,11 @@ bool ReadRaiktorSurrenderTruceDuration(
       bindings.destroy_effect_context_array_row == nullptr ||
       bindings.evaluate_truce_duration_days == nullptr ||
       bindings.truce_effect_vtable == 0 ||
-      bindings.truce_effect_vtable < kTruceEffectVtableRva
-#if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
-      || bindings.construct_effect_preview_collector == nullptr ||
+      bindings.truce_effect_vtable < kTruceEffectVtableRva ||
+      bindings.construct_effect_preview_collector == nullptr ||
       bindings.destroy_effect_preview_collector == nullptr ||
       bindings.traverse_loaded_effect == nullptr ||
       bindings.effect_preview_collector_vtable == 0
-#endif
       ) {
     return false;
   }
@@ -4411,10 +4478,6 @@ bool ReadRaiktorSurrenderTruceDuration(
     DestroyWarEffectContext(bindings, effect_context);
     return false;
   }
-#else
-  // Preserve the production/default-OFF path byte-for-byte semantically.
-  void *const evaluation_context =
-      static_cast<std::byte *>(effect_context) + 0x28;
 #endif
 
   RaiktorTruceProductionFrameContext frame_context{
@@ -4459,10 +4522,16 @@ bool ReadRaiktorSurrenderTruceDuration(
       private_shape.evaluator_effect_context);
   evaluation_context = reinterpret_cast<void *>(
       private_shape.evaluator_evaluation_context);
-#else
+#elif defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
   const RaiktorSurrenderTruceRequestV1 request{
       effect_context, evaluation_context};
   output = ObserveRaiktorSurrenderTruceV1(environment, access, request);
+#else
+  (void)ReadRaiktorTruceDurationViaNativeLeafPreviewV1(
+      bindings,
+      static_cast<std::byte *>(casus_belli) +
+          kWarEffectAttackerDefeatOffset,
+      effect_context, environment, access, output);
 #endif
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
   g_last_raiktor_surrender_truce_failure = output.failure;

@@ -73,14 +73,18 @@ def validate_pointer_contract(value: object) -> dict[str, bool]:
         "exact_build": contract.get("game_version") == EXPECTED_GAME_VERSION
         and contract.get("ck3_exe_sha256") == EXPECTED_EXECUTABLE_SHA256,
         "unique_caddtruce": shape.get("terminal") == "unique CAddTruce"
-        and shape.get("unique_hidden_child_index") == 2
-        and _map(shape.get("root_span")) == {"capacity": 19, "count": 14}
-        and _map(shape.get("default_span")) == {"capacity": 6, "count": 5}
+        and shape.get("scripted_child_index") == 7
+        and shape.get("unique_hidden_child_index") == 1
+        and _map(shape.get("root_span")) == {"capacity": 13, "count": 12}
+        and _map(shape.get("default_span")) == {"capacity": 4, "count": 4}
         and _map(shape.get("hidden_span")) == {"capacity": 1, "count": 1}
         and _map(shape.get("context_span")) == {"capacity": 1, "count": 1}
         and shape.get("context_scope_count") == 1,
         "double_nonnegative_read": read.get("duration_evaluator_reads") == 2
-        and read.get("requires_equal_non_negative_days") is True,
+        and read.get("requires_equal_non_negative_days") is True
+        and read.get("requires_synchronous_native_leaf_context") is True
+        and read.get("requires_leaf_evaluation_context_from_offset_0x28") is True
+        and read.get("requires_preview_entry_target_match") is True,
         "same_paused_frame": read.get("requires_paused") is True
         and read.get("requires_identical_before_after_frame") is True,
         "expiry_not_claimed": read.get("expiry_observable") is False
