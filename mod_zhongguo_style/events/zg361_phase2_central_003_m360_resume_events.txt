@@ -1,0 +1,123 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+namespace = zg361p2c
+
+# PURPOSE: typed owner-facing M360 resume boundary.
+
+zg361p2c.7 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                exists = scope:zg361_p2c_m360_resume_ticket_owner
+                exists = scope:zg361_p2c_m360_resume_ticket_subject
+                exists = scope:zg361_p2c_m360_resume_ticket_serial
+                exists = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                exists = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                exists = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                exists = scope:zg361_p2c_m360_resume_ticket_al_case
+                this = scope:zg361_p2c_m360_resume_ticket_owner
+                has_variable = zg361_p2c_active
+                has_variable = zg361_p2c_stage
+                var:zg361_p2c_active = 1
+                var:zg361_p2c_stage = 11
+                has_variable = zg361_p2c_m360_resume_pending
+                has_variable = zg361_p2c_m360_resume_serial
+                has_variable = zg361_p2c_m360_resume_owner
+                has_variable = zg361_p2c_m360_resume_subject
+                has_variable = zg361_p2c_m360_resume_p2c_cycle
+                has_variable = zg361_p2c_m360_resume_p2c_case
+                has_variable = zg361_p2c_m360_resume_al_cycle
+                has_variable = zg361_p2c_m360_resume_al_case
+                var:zg361_p2c_m360_resume_pending = 1
+                var:zg361_p2c_m360_resume_serial = scope:zg361_p2c_m360_resume_ticket_serial
+                var:zg361_p2c_m360_resume_owner = this
+                var:zg361_p2c_m360_resume_subject = scope:zg361_p2c_m360_resume_ticket_subject
+                var:zg361_p2c_m360_resume_p2c_cycle = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                var:zg361_p2c_m360_resume_p2c_case = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                var:zg361_p2c_m360_resume_al_cycle = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                var:zg361_p2c_m360_resume_al_case = scope:zg361_p2c_m360_resume_ticket_al_case
+                var:zg361_p2c_cycle = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                var:zg361_p2c_case_serial = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                var:zg361_p2c_subject = scope:zg361_p2c_m360_resume_ticket_subject
+            }
+            if = {
+                limit = {
+                    var:zg361_p2c_m360_source_status = 1
+                    var:zg361_p2c_m360_source_owner = this
+                    var:zg361_p2c_m360_source_subject = scope:zg361_p2c_m360_resume_ticket_subject
+                    var:zg361_p2c_m360_source_p2c_cycle = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                    var:zg361_p2c_m360_source_p2c_case = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                    var:zg361_p2c_m360_source_al_cycle = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                    var:zg361_p2c_m360_source_al_case = scope:zg361_p2c_m360_resume_ticket_al_case
+                    scope:zg361_p2c_m360_resume_ticket_subject = {
+                        zg361_case_kernel_full_guard_trigger = {
+                            OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+                            CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+                            STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+                            EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                            EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                            EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                            EXPECTED_STATE = 4
+                        }
+                    }
+                }
+                remove_variable = zg361_p2c_m360_resume_pending
+                set_variable = { name = zg361_p2c_stage_11_status value = 1 }
+                set_variable = { name = zg361_p2c_stage_status value = 1 }
+                set_variable = { name = zg361_p2c_wait_reason value = 0 }
+                scope:zg361_p2c_m360_resume_ticket_subject = {
+                    zg361_we_resume_m360_from_central_source_effect = {
+                        TICKET_OWNER = root
+                        TICKET_SUBJECT = this
+                        TICKET_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                        TICKET_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                    }
+                }
+                zg361_p2c_mark_lane_busy_effect = yes
+            }
+            else_if = {
+                limit = {
+                    scope:zg361_p2c_m360_resume_ticket_subject = {
+                        OR = {
+                            zg361_case_kernel_receipt_is_current_trigger = {
+                                RECEIPT_OWNER_VAR = zg361_we_m360_receipt_owner RECEIPT_SUBJECT_VAR = zg361_we_m360_receipt_subject
+                                RECEIPT_CYCLE_VAR = zg361_we_m360_receipt_cycle RECEIPT_CASE_VAR = zg361_we_m360_receipt_case
+                                RECEIPT_STATE_VAR = zg361_we_m360_receipt_state RECEIPT_CHOICE_VAR = zg361_we_m360_receipt_choice
+                                EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                                EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                                EXPECTED_STATE = 4 EXPECTED_CHOICE = 1
+                            }
+                            zg361_case_kernel_receipt_is_current_trigger = {
+                                RECEIPT_OWNER_VAR = zg361_we_m360_receipt_owner RECEIPT_SUBJECT_VAR = zg361_we_m360_receipt_subject
+                                RECEIPT_CYCLE_VAR = zg361_we_m360_receipt_cycle RECEIPT_CASE_VAR = zg361_we_m360_receipt_case
+                                RECEIPT_STATE_VAR = zg361_we_m360_receipt_state RECEIPT_CHOICE_VAR = zg361_we_m360_receipt_choice
+                                EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                                EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                                EXPECTED_STATE = 4 EXPECTED_CHOICE = 2
+                            }
+                            zg361_case_kernel_receipt_is_current_trigger = {
+                                RECEIPT_OWNER_VAR = zg361_we_m360_receipt_owner RECEIPT_SUBJECT_VAR = zg361_we_m360_receipt_subject
+                                RECEIPT_CYCLE_VAR = zg361_we_m360_receipt_cycle RECEIPT_CASE_VAR = zg361_we_m360_receipt_case
+                                RECEIPT_STATE_VAR = zg361_we_m360_receipt_state RECEIPT_CHOICE_VAR = zg361_we_m360_receipt_choice
+                                EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                                EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                                EXPECTED_STATE = 4 EXPECTED_CHOICE = 3
+                            }
+                        }
+                    }
+                }
+                remove_variable = zg361_p2c_m360_resume_pending
+                set_variable = { name = zg361_p2c_stage_11_status value = 1 }
+                set_variable = { name = zg361_p2c_stage_status value = 1 }
+                set_variable = { name = zg361_p2c_wait_reason value = 0 }
+                debug_log = "ZG361P2C: consumed M360 resume ticket ignored"
+            }
+            else = {
+                remove_variable = zg361_p2c_m360_resume_pending
+                zg361_p2c_record_red_effect = { CODE = 1195 STAGE_VAR = zg361_p2c_stage_11_status }
+            }
+        }
+        else = { debug_log = "ZG361P2C: stale or replayed M360 resume ticket ignored" }
+    }
+}

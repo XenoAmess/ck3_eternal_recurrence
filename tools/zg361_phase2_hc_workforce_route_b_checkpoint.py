@@ -56,11 +56,6 @@ WORKFORCE_REQUIRED_FACTS: Final = (
     "each_cohort_exception_zero",
     "each_cohort_manager_cost_zero",
     "collective_totals_conserved",
-    "three_cycle_history_strictly_ordered",
-    "m357_m358_m359_receipts_distinct_per_cycle",
-    "m361_charter_gate_ready",
-    "m361_evidence_count_3",
-    "m361_effective_cycle_is_next_cycle",
 )
 
 _SHA256_RE: Final = re.compile(r"[0-9a-fA-F]{64}\Z")
@@ -803,6 +798,8 @@ def run_route_b_and_collect_postconditions(
         "readiness": READINESS,
         "checkpoint_sha256": checkpoint.get("sha256"),
         "action_ack_is_business_postcondition": False,
+        "provider_seal_scope": "m360_current_cycle_route_b",
+        "m361_charter_required": False,
         "workforce_required_facts": {
             fact: False for fact in WORKFORCE_REQUIRED_FACTS
         },
@@ -860,7 +857,18 @@ def run_route_b_and_collect_postconditions(
             subject_character_id=subject,
             evidence_path=evidence_directory / "route_b_workforce_provider.json",
             max_timeline_steps=0,
+            require_m361_charter=False,
         )
+        workforce_projection = workforce.get("postcondition")
+        if not (
+            isinstance(workforce_projection, Mapping)
+            and workforce.get("m361_charter_required") is False
+            and workforce_projection.get("m361_charter_required") is False
+        ):
+            _fail(
+                "workforce_provider_scope_drifted",
+                provider=workforce,
+            )
         identity = _case_identity(workforce)
         if (
             identity.owner_character_id != owner

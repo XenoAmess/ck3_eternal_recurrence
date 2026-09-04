@@ -1,16 +1,19 @@
 # `hc-workforce` Route-B capture producer: production choreography audit
 
-Status: **offline-audited / capture-entry RED / live-pending**
+Status: **reachability blocker resolved offline / capture-entry live-pending**
 
-Audit base: canonical commit `1341251`. This audit did not start CK3, did not
+Original audit base: canonical commit `1341251`; mechanism resolution base:
+`f526c6a`. This work did not start CK3, did not
 modify the shared runner, did not write product variables, and did not treat an
 option ACK or fixture output as a business result.
 
 ## Conclusion
 
-The current Route-B capture producer cannot reach a real pre-B
-`zg361we.360` frame from the registered canonical seed by its implemented
-choreography.
+The previously proven production reachability blocker is resolved in source:
+Central no longer prepares and consumes M360 READY in one effect invocation.
+It now freezes an exact owner/subject/P2C-cycle-case/AL-cycle-case ticket,
+enters typed WAIT `360411`, and schedules hidden `zg361p2c.7` for D+1. The
+READY frame is therefore a real, pause/save/restore-capable production frame.
 
 This is not evidence that the product event or provider is broken. It is a
 specific reachability gap between the seed and the capture entry:
@@ -19,16 +22,16 @@ specific reachability gap between the seed and the capture entry:
 2. the producer performs no timeline advance after restoring that seed;
 3. the transition fixture is shown only after AL is state 4 and Central's
    M360 source is already READY;
-4. the Central stage-11 effect prepares that source and immediately calls the
-   production resume seam in the same effect invocation; and
-5. with the seed's owner still AI, the resume seam synchronously consumes the
-   READY source through Route A instead of exposing `zg361we.360`.
+4. the Central stage-11 effect prepares that source, persists the typed resume
+   ticket, and returns without calling the product resume seam; and
+5. on D+1, unchanged product semantics resume: an AI owner takes Route A,
+   while a player owner sees the genuine `zg361we.360` choice card.
 
-There is therefore no script-proven stable rendered frame satisfying the
-current fixture gate (`owner is AI`, `source_status=1`, no queued M360 event)
-on the natural path from this seed. A new live attempt with the current entry
-would be expected to stop at the fixture-event wait; it must not be described
-as a Route-B product RED.
+The transition fixture now additionally requires the exact pending production
+ticket. It can transport player identity during this D+1 boundary, but still
+writes no product fact and cannot satisfy the business postcondition. This is
+offline reachability evidence only: the canonical seed still needs genuine
+timeline/domain progress before the boundary can be captured live.
 
 ## Frozen seed evidence
 
@@ -90,7 +93,9 @@ on the played subject before it can create `zga_phase2_workforce.1`:
 - the AL owner is alive, AI, and an eligible celestial liege;
 - on that owner, `zg361_p2c_m360_source_status=1`, source owner is itself,
   source subject is the played subject, and source AL cycle/case equal the
-  subject's active AL tuple.
+  subject's active AL tuple; and
+- the owner carries `zg361_p2c_m360_resume_pending=1` plus the same exact
+  owner/subject/P2C-cycle-case/AL-cycle-case ticket.
 
 The canonical seed proves none of the AL/source conditions; its real Workforce
 provider instead reports that no case variable context is available.
@@ -144,46 +149,51 @@ The AL case then waits with `zg361_we_portfolio_status=5` and
 `zg361_we_awaiting_al_357_359=1` for the real B1 #357 and B2 #358/#359
 receipts.
 
-Once those receipts exist, one stage-11 pump executes this exact order:
+Once those receipts exist, stage 11 and its new dated ticket execute this
+exact order:
 
 1. `zg361_b2_submit_completed_al_receipts_effect` verifies and publishes the
    three external receipts and advances the exact AL tuple to state 4;
 2. `zg361_p2c_prepare_m360_source_effect` freezes the three-manager source and
    may set `zg361_p2c_m360_source_status=1`;
-3. in the same `if` branch, status 1 immediately calls
-   `zg361_we_resume_m360_from_central_source_effect`;
-4. the resume seam schedules the AL stage-04 deadline; when ticket owner is
+3. status 1 calls `zg361_p2c_schedule_m360_resume_effect`, which persists the
+   exact tuple, sets stage/status WAIT `360411`, and schedules `zg361p2c.7`
+   for D+1 without calling the product resume;
+4. on D+1, `.7` revalidates the exact ticket and source, then calls
+   `zg361_we_resume_m360_from_central_source_effect` in subject scope;
+5. the resume seam schedules the AL stage-04 deadline; when ticket owner is
    AI it materializes and applies M360 Route A, otherwise it writes
    `zg361_we_m360_event_queued=1` plus the owner/subject/cycle/case tuple and
    triggers the real `zg361we.360`.
 
-For this seed the observed owner `32904` is AI. Consequently the natural
-status-1 branch chooses step 4's AI Route A. The fixture cannot run between
-steps 2 and 3 because those are synchronous statements within one effect, not
-separate dated events.
+For this seed the observed owner `32904` is AI. The natural path still chooses
+AI Route A at D+1, preserving production semantics. Before D+1, however, the
+played subject can observe the exact READY + pending-ticket frame; the fixture
+can make the same owner the player and let the unchanged product expose the
+real `.360`. If a genuine M360 receipt already consumed the ticket, delayed
+`.7` recognizes that receipt and no-ops rather than replaying the action.
 
-### Three-cycle provider maturity
+### M360 seal versus M361 maturity
 
-Even reaching any first-cycle `.360` is not enough for this capture producer
-to publish its strict registry. The existing postcondition verifier requires
-the current M360 receipt to be backed by a mature, strictly ordered three-cycle
-Workforce history and a ready M361 charter gate. Therefore a usable source
-must either already contain two prior genuine history cycles or genuinely run
-earlier cycles before capturing Route B in the third. The current provider is
-case-unavailable and cannot prove such prior history; the observed B1 cycle 1
-makes assuming it unsafe.
+The earlier capture contract incorrectly made the first/current M360 Route-B
+proof depend on a future three-cycle M361 charter gate. Product runtime itself
+defines cycles one/two (and a non-top third cycle) as the honest state-8
+history-accruing terminal. B4 therefore now invokes the same provider verifier
+with explicit `require_m361_charter=false`: it requires the complete current
+M360 receipt/collective/cohort conservation, and accepts AL state 8 or the
+already-mature state 5. The verifier's default remains strict and still
+requires ordered three-cycle history plus a ready M361 charter for callers
+that are actually proving `.361` maturity.
 
-The exact re-open date and choices for three complete review/Central/Workforce
-cycles cannot be derived from the current provider packet. No finite calendar
-duration from date `53146920` to a provider-sealable pre-B frame is therefore
-claimed.
+No history or charter value is synthesized. Their observed status remains in
+the evidence, but B4 makes no maturity claim.
 
 ## Post-action provider seal
 
 After selecting Route B, the ACK must retain
 `business_receipt_claimed=false`. The fixture's typed `.3` handoff must return
 play to subject `29037` without a date change. Only then may the existing
-Workforce query seal the numeric cycle/case identity and all 13 fact groups:
+Workforce query seal the numeric cycle/case identity and all 8 current-cycle fact groups:
 
 1. exact owner/subject/cycle/case;
 2. M360 receipt state 4, choice 2;
@@ -193,17 +203,9 @@ Workforce query seal the numeric cycle/case identity and all 13 fact groups:
 6. every cohort's exception count is zero;
 7. every cohort's manager cost is zero;
 8. aggregate members/quota/forced/exception/cost conserve the cohort totals,
-   with total quota in 1..6;
-9. exactly three strictly increasing history cycles ending at the current
-   cycle;
-10. each history slot has distinct positive #357/#358/#359 receipt IDs and
-    hashes;
-11. the M361 charter gate is ready in the same AL case at state 5;
-12. charter evidence count is 3, ready, and not yet consumed; and
-13. adopted cycle equals current cycle, effective cycle equals current+1, with
-    positive prepared report and charter IDs.
+   with total quota in 1..6.
 
-All provider readiness flags, including `same_frame_ready`, must be true. The
+All current-cycle provider readiness flags, including `same_frame_ready`, must be true. The
 query frame must remain paused, played as the subject, and match the last
 provider revision/date. Numeric cycle/case values are deliberately not guessed
 from the pre-action generic event scopes; they become checkpoint identity only
@@ -225,23 +227,20 @@ The current evidence does not prove:
 - that three distinct M360-ready managers and total quota 1..6 will exist;
 - that the required Career/HC partition and all stages 1-10 will close rather
   than WAIT/N/A/RED;
-- that two earlier, genuine Workforce history cycles exist (the current
-  provider cannot expose a Workforce case);
 - the exact B1 calibration/publication date, annual re-open dates, domain
   choices, or total elapsed days; or
 - whether fixture activation restore will expose a pending B2 card, although
   the frozen seed frame itself had no active event.
 
-The shortest honest construction is an acceptance-only **earlier typed owner
-handoff** at a real pre-resume WAIT boundary, before a stage-11 pump can prepare
-and immediately consume the source. It must bind the exact Central/AL tuple,
-must not write any `zg361_*` fact, and must leave all receipt/source creation to
-the shipped product. Alternatively, supply a real checkpoint already played
-as the exact owner with two mature history cycles and resume the genuine third
-cycle. Neither entry exists or is proven by this audit.
+The shortest honest construction now uses the shipped typed WAIT boundary. A
+managed live session must advance the canonical seed through real B1
+publication and Central stages 1–11, pause while the exact resume ticket is
+pending, allow the transition fixture to change only played-character
+identity, and freeze the real `.360` before option B. The fixture must leave
+all receipt/source creation to the shipped product.
 
 Until one of those paths produces a paused real `zg361we.360` with option B
-shown/enabled and the post-action 13-fact seal, readiness remains
+shown/enabled and the post-action 8-fact current-cycle seal, readiness remains
 `static-ready-live-pending` and the strict checkpoint registry remains absent.
 
 ## Offline verification

@@ -114,7 +114,10 @@ def _contract_ready(contract: Mapping[str, Any]) -> bool:
         is True
         and postcondition.get("required_fact_count")
         == len(route_b.WORKFORCE_REQUIRED_FACTS)
-        == 13
+        == 8
+        and postcondition.get("provider_seal_scope")
+        == "m360_current_cycle_route_b"
+        and postcondition.get("m361_charter_required") is False
         and postcondition.get("action_ack_is_business_postcondition") is False
         and postcondition.get("career_hc_capability")
         == route_b.CAREER_CAPABILITY
@@ -266,7 +269,7 @@ def build_preflight(
                 "real zg361we.360 as exact owner before option B"
             ),
             "required_after_action": (
-                "Workforce 13 facts seal owner/subject/cycle/case; career-HC is "
+                "Workforce 8 current-cycle facts seal owner/subject/cycle/case; career-HC is "
                 "joined only if its fixed capability is advertised"
             ),
             "required_restore_proof": (

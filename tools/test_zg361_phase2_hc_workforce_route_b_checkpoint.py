@@ -220,6 +220,7 @@ def action_ack() -> dict[str, object]:
 def workforce_proof(*, case: int = CASE) -> dict[str, object]:
     return {
         "result": "GREEN",
+        "m361_charter_required": False,
         "paused_queries": [
             {
                 "revision": 30,
@@ -233,6 +234,7 @@ def workforce_proof(*, case: int = CASE) -> dict[str, object]:
             "cycle_serial": CYCLE,
             "case_serial": case,
             "route": "B",
+            "m361_charter_required": False,
         },
     }
 
@@ -487,6 +489,10 @@ class PostconditionJoinTests(unittest.TestCase):
         self.assertEqual(CYCLE, result["case_identity"]["cycle_serial"])
         self.assertEqual(CASE, result["case_identity"]["case_serial"])
         self.assertFalse(result["action_ack_is_business_postcondition"])
+        self.assertEqual(
+            "m360_current_cycle_route_b", result["provider_seal_scope"]
+        )
+        self.assertFalse(result["m361_charter_required"])
 
     def test_joins_advertised_career_provider_on_same_revision_and_case(self) -> None:
         service = SubjectService(advertise_career=True)

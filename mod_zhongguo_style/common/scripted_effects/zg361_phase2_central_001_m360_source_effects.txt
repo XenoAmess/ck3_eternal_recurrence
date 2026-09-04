@@ -44,6 +44,13 @@ remove_variable = zg361_p2c_m360_source_status
     remove_variable = zg361_p2c_m360_source_c3_mg_case
     remove_variable = zg361_p2c_m360_source_c3_mg_snapshot_source_serial
     remove_variable = zg361_p2c_m360_source_c3_mg_snapshot_revision
+    remove_variable = zg361_p2c_m360_resume_pending
+    remove_variable = zg361_p2c_m360_resume_owner
+    remove_variable = zg361_p2c_m360_resume_subject
+    remove_variable = zg361_p2c_m360_resume_p2c_cycle
+    remove_variable = zg361_p2c_m360_resume_p2c_case
+    remove_variable = zg361_p2c_m360_resume_al_cycle
+    remove_variable = zg361_p2c_m360_resume_al_case
     set_variable = { name = zg361_p2c_m360_source_status value = 0 }
     set_variable = { name = zg361_p2c_m360_source_reason value = 0 }
 }

@@ -211,8 +211,12 @@ def workforce_response(route: str) -> dict[str, object]:
         },
         "charter_gate": charter,
         "readiness": {
+            "player_subject_binding_ready": True,
+            "owner_binding_ready": True,
+            "case_identity_ready": True,
             "m360_receipt_projection_ready": True,
             "collective_lifecycle_ready": True,
+            "cohort_identity_ready": True,
             "cohort_conservation_ready": True,
             "route_conservation_ready": True,
             "history_ledger_ready": True,
@@ -223,6 +227,55 @@ def workforce_response(route: str) -> dict[str, object]:
             "ready": True,
         },
     }
+
+
+def first_cycle_route_b_response() -> dict[str, object]:
+    response = copy.deepcopy(workforce_response("B"))
+    al_case = response["al_case"]
+    assert isinstance(al_case, dict)
+    al_case["state"] = available(8)
+    al_case["active"] = available(False)
+    response["history"] = {
+        "status": "partial",
+        "count": available(1),
+        "effective_count": 1,
+        "slots": [
+            history_slot(2),
+            {
+                key: unavailable("lifecycle_not_reached")
+                for key in history_slot(0)
+            },
+            {
+                key: unavailable("lifecycle_not_reached")
+                for key in history_slot(0)
+            },
+        ],
+    }
+    mature_charter = response["charter_gate"]
+    assert isinstance(mature_charter, dict)
+    response["charter_gate"] = {
+        "status": "not_eligible",
+        **{
+            key: unavailable("lifecycle_not_reached")
+            for key in mature_charter
+            if key != "status"
+        },
+    }
+    charter = response["charter_gate"]
+    assert isinstance(charter, dict)
+    charter.update(
+        {
+            "portfolio_status": available(8),
+            "portfolio_closed": available(True),
+            "terminal_history_accruing": available(True),
+            "portfolio_history_cycle_count": available(1),
+            "terminal_success": available(False),
+        }
+    )
+    readiness = response["readiness"]
+    assert isinstance(readiness, dict)
+    readiness["three_cycle_ready"] = False
+    return response
 
 
 class FakeOwnerService:
@@ -557,6 +610,57 @@ class WorkforcePhase2ActionTests(unittest.TestCase):
                 self.assertEqual(result["postcondition"]["history_cycles"], [38, 39, 40])
                 self.assertEqual(result["postcondition"]["charter_status"], "ready")
                 self.assertTrue(all(query[3] for query in service.queries))
+
+    def test_current_cycle_route_b_seal_does_not_require_future_m361_maturity(self) -> None:
+        immature = first_cycle_route_b_response()
+        with self.assertRaisesRegex(
+            WorkforceActionCellBlocked, "M361 charter has not matured"
+        ):
+            prove_m360_postcondition(
+                FakeSubjectService([copy.deepcopy(immature)]),
+                route="B",
+                owner_character_id=OWNER,
+                subject_character_id=SUBJECT,
+                settle_polls=0,
+                poll_interval_s=0,
+            )
+        result = prove_m360_postcondition(
+            FakeSubjectService([immature]),
+            route="B",
+            owner_character_id=OWNER,
+            subject_character_id=SUBJECT,
+            settle_polls=0,
+            poll_interval_s=0,
+            require_m361_charter=False,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertFalse(result["m361_charter_required"])
+        self.assertFalse(result["postcondition"]["m361_charter_required"])
+        self.assertEqual(result["postcondition"]["al_state"], 8)
+        self.assertEqual(
+            result["postcondition"]["history_status_observed"], "partial"
+        )
+        self.assertEqual(
+            result["postcondition"]["charter_status_observed"], "not_eligible"
+        )
+
+    def test_current_cycle_route_b_rejects_a_fabricated_history_terminal(self) -> None:
+        response = first_cycle_route_b_response()
+        charter = response["charter_gate"]
+        assert isinstance(charter, dict)
+        charter["terminal_success"] = available(True)
+        with self.assertRaisesRegex(
+            WorkforceActionCellError, "terminal terminal_success drifted"
+        ):
+            prove_m360_postcondition(
+                FakeSubjectService([response]),
+                route="B",
+                owner_character_id=OWNER,
+                subject_character_id=SUBJECT,
+                settle_polls=0,
+                poll_interval_s=0,
+                require_m361_charter=False,
+            )
 
     def test_join_requires_explicit_owner_to_subject_rebind(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -14,6 +14,8 @@ from zg361_phase2_hc_workforce_route_b_checkpoint_registry import (
     write_route_b_checkpoint_registry,
 )
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def _ordered(source: str, tokens: tuple[str, ...]) -> bool:
     positions = [source.find(token) for token in tokens]
@@ -25,6 +27,21 @@ def _ordered(source: str, tokens: tuple[str, ...]) -> bool:
 def run_preflight() -> dict[str, object]:
     scenario_source = inspect.getsource(
         runner.run_phase2_hc_workforce_route_b_checkpoint_capture_scenario
+    )
+    stage_source = (
+        ROOT
+        / "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_009_stage11_workforce_endgame_effects.txt"
+    ).read_text(encoding="utf-8-sig")
+    resume_event_source = (
+        ROOT
+        / "mod_zhongguo_style/events/zg361_phase2_central_003_m360_resume_events.txt"
+    ).read_text(encoding="utf-8-sig")
+    fixture_source = (
+        ROOT
+        / "tools/fixtures/zg361_phase2_workforce_action/common/scripted_guis/zga_phase2_workforce_guis.txt"
+    ).read_text(encoding="utf-8-sig")
+    checkpoint_source = inspect.getsource(
+        __import__("zg361_phase2_hc_workforce_route_b_checkpoint")
     )
     checks = {
         "explicit_capture_live_mode_registered": (
@@ -72,6 +89,39 @@ def run_preflight() -> dict[str, object]:
         "strict_registry_writer_available": callable(
             write_route_b_checkpoint_registry
         ),
+        "production_ready_has_typed_d1_wait_boundary": (
+            _ordered(
+                stage_source,
+                (
+                    "zg361_p2c_prepare_m360_source_effect = yes",
+                    "zg361_p2c_schedule_m360_resume_effect = yes",
+                ),
+            )
+            and "zg361_p2c_m360_resume_pending value = 1" in stage_source
+            and "zg361_p2c_wait_reason value = 360411" in stage_source
+            and "id = zg361p2c.7 days = 1" in stage_source
+            and "zg361_we_resume_m360_from_central_source_effect" not in stage_source
+        ),
+        "d1_ticket_resumes_real_product_in_subject_scope": (
+            "this = scope:zg361_p2c_m360_resume_ticket_owner"
+            in resume_event_source
+            and "scope:zg361_p2c_m360_resume_ticket_subject = {"
+            in resume_event_source
+            and "zg361_we_resume_m360_from_central_source_effect = {"
+            in resume_event_source
+            and "EXPECTED_CHOICE = 2" in resume_event_source
+        ),
+        "transition_fixture_requires_production_ticket": (
+            "var:zg361_p2c_m360_resume_pending = 1" in fixture_source
+            and "var:zg361_p2c_m360_resume_owner = this" in fixture_source
+            and "var:zg361_p2c_m360_resume_subject = root" in fixture_source
+        ),
+        "b4_seals_current_m360_without_claiming_m361": (
+            "require_m361_charter=False" in checkpoint_source
+            and '"provider_seal_scope": "m360_current_cycle_route_b"'
+            in checkpoint_source
+            and '"m361_charter_required": False' in checkpoint_source
+        ),
     }
     failed = [name for name, passed in checks.items() if passed is not True]
     return {
@@ -95,9 +145,10 @@ def run_preflight() -> dict[str, object]:
             "--phase2-hc-workforce-route-b-registry-output",
         ],
         "remaining_live_checkpoint": (
-            "run the explicit managed capture mode against the canonical paused "
-            "seed; preserve its real pre-B archive, provider-sealed registry, "
-            "and GREEN capture artifact"
+            "advance the canonical paused seed through genuine product stages "
+            "to typed WAIT 360411, then run the explicit managed capture mode; "
+            "preserve its real pre-B archive, provider-sealed registry, and "
+            "GREEN capture artifact"
         ),
     }
 

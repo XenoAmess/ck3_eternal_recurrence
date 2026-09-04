@@ -80,7 +80,7 @@ OFF, the candidate capability remains preprocessor-guarded, the default
 projection withholds it, the frozen cache opted in against the exact executable,
 and every pinned file and binary hash matches. It also rechecks B4's exact
 `zg361we.360` route B interface: native option index 1, submitted option 2,
-13 Workforce facts, same-paused-revision join, and ACK-not-result semantics.
+8 current-cycle Workforce facts, same-paused-revision join, and ACK-not-result semantics.
 It does not create an attempt directory, inspect or start processes, inject a
 DLL, or modify the formal runner.
 
@@ -95,7 +95,7 @@ subject, date, event instance, save bytes and product/fixture hashes; submit B
 once; retain the option response as ACK only; then query both providers on the
 same paused revision after rebinding to the subject without date advance.
 
-GREEN requires B4's 13 Workforce facts plus this provider's exact state-4,
+GREEN requires B4's 8 current-cycle Workforce facts plus this provider's exact state-4,
 choice-2 M360 receipt, six available/reserved/occupied/frozen/reclaimed/
 authorized buckets, a true conservation result, and manager cost zero. Until
 that retained live frame exists, readiness and production advertisement remain

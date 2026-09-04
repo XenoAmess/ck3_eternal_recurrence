@@ -23,9 +23,9 @@ READINESS = "static-ready"
 LEGACY_EFFECT_FILENAME = "zg361_phase2_central_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
-HISTORICAL_EFFECT_BYTES = 126_981
-HISTORICAL_EFFECT_SHA256 = "1E39A1DDBECC8C68BEF95B11B13AE287016746D5ABC1B3EBA6C1BB5EA9BB2D39"
-HISTORICAL_EFFECT_COUNT = 32
+HISTORICAL_EFFECT_BYTES = 132_001
+HISTORICAL_EFFECT_SHA256 = "C1A03DD1E410CB2C65FC992FAE3DB453ED44BDD7B3EAF810D82352AC9B0D6FF1"
+HISTORICAL_EFFECT_COUNT = 33
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
 # A future shard above the hard principle is allowed only when this map names
@@ -35,9 +35,9 @@ EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
 LEGACY_EVENT_FILENAME = "zg361_phase2_central_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_phase2_central_*_events.txt"
-HISTORICAL_EVENT_BYTES = 12_440
-HISTORICAL_EVENT_SHA256 = "BFDC761091DA43D1950FFDD29EE727B3F049CD0A0A1F7DBCFDA5BE7511CD1859"
-HISTORICAL_EVENT_COUNT = 6
+HISTORICAL_EVENT_BYTES = 20_548
+HISTORICAL_EVENT_SHA256 = "84B8FAEAC837A00AFBD993D36F86433DCF71E53E9E92C84A95C24AB31B2673F0"
+HISTORICAL_EVENT_COUNT = 7
 EVENT_TARGET_MAX = 10
 
 
@@ -163,9 +163,10 @@ EFFECT_GROUPS = (
     ),
     EffectGroup(
         "zg361_phase2_central_009_stage11_workforce_endgame_effects.txt",
-        "workforce adapter and workforce endgame stage",
+        "workforce adapter, typed M360 resume boundary and workforce endgame stage",
         (
             "zg361_p2c_call_workforce_adapter_effect",
+            "zg361_p2c_schedule_m360_resume_effect",
             "zg361_p2c_stage_11_workforce_endgame_effect",
         ),
     ),
@@ -187,6 +188,11 @@ EVENT_GROUPS = (
         "zg361_phase2_central_002_m275_requisition_events.txt",
         "M275 requisition source, consume and verification frames",
         ("zg361p2c.4", "zg361p2c.5", "zg361p2c.6"),
+    ),
+    EventGroup(
+        "zg361_phase2_central_003_m360_resume_events.txt",
+        "typed owner-facing M360 resume boundary",
+        ("zg361p2c.7",),
     ),
 )
 
@@ -530,6 +536,13 @@ def m360_clear_source_lines() -> str:
             for cohort in (1, 2, 3)
             for field in M360_FREEZE_COHORT_FIELDS
         ),
+        "zg361_p2c_m360_resume_pending",
+        "zg361_p2c_m360_resume_owner",
+        "zg361_p2c_m360_resume_subject",
+        "zg361_p2c_m360_resume_p2c_cycle",
+        "zg361_p2c_m360_resume_p2c_case",
+        "zg361_p2c_m360_resume_al_cycle",
+        "zg361_p2c_m360_resume_al_case",
     ]
     return "\n".join(f"remove_variable = {field}" for field in fields)
 
@@ -2060,6 +2073,82 @@ zg361_p2c_call_workforce_adapter_effect = {
     zg361_we_open_portfolio_effect = { SUBJECT = var:zg361_p2c_subject }
 }
 
+# READY is a durable owner-facing state, not a same-effect transient.  This
+# exact D+1 ticket leaves one paused/saveable frame between source preparation
+# and the product's normal AI Route-A / player Route-A-B-C branch.  Re-entry on
+# the same tuple is idempotent and never advances the ticket serial.
+zg361_p2c_schedule_m360_resume_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_p2c_m360_source_status
+            has_variable = zg361_p2c_m360_source_owner
+            has_variable = zg361_p2c_m360_source_subject
+            has_variable = zg361_p2c_m360_source_p2c_cycle
+            has_variable = zg361_p2c_m360_source_p2c_case
+            has_variable = zg361_p2c_m360_source_al_cycle
+            has_variable = zg361_p2c_m360_source_al_case
+            var:zg361_p2c_m360_source_status = 1
+            var:zg361_p2c_m360_source_owner = this
+            var:zg361_p2c_m360_source_subject = var:zg361_p2c_subject
+            var:zg361_p2c_m360_source_p2c_cycle = var:zg361_p2c_cycle
+            var:zg361_p2c_m360_source_p2c_case = var:zg361_p2c_case_serial
+            var:zg361_p2c_m360_source_al_cycle = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial
+            var:zg361_p2c_m360_source_al_case = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+        }
+        if = {
+            limit = { NOT = { has_variable = zg361_p2c_m360_resume_pending } }
+            if = { limit = { NOT = { has_variable = zg361_p2c_m360_resume_serial } } set_variable = { name = zg361_p2c_m360_resume_serial value = 0 } }
+            change_variable = { name = zg361_p2c_m360_resume_serial add = 1 }
+            set_variable = { name = zg361_p2c_m360_resume_pending value = 1 }
+            set_variable = { name = zg361_p2c_m360_resume_owner value = this }
+            set_variable = { name = zg361_p2c_m360_resume_subject value = var:zg361_p2c_subject }
+            set_variable = { name = zg361_p2c_m360_resume_p2c_cycle value = var:zg361_p2c_cycle }
+            set_variable = { name = zg361_p2c_m360_resume_p2c_case value = var:zg361_p2c_case_serial }
+            set_variable = { name = zg361_p2c_m360_resume_al_cycle value = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial }
+            set_variable = { name = zg361_p2c_m360_resume_al_case value = var:zg361_p2c_subject.var:zg361_case_al_case_serial }
+            save_scope_as = zg361_p2c_m360_resume_ticket_owner
+            var:zg361_p2c_subject = { save_scope_as = zg361_p2c_m360_resume_ticket_subject }
+            save_scope_value_as = { name = zg361_p2c_m360_resume_ticket_serial value = var:zg361_p2c_m360_resume_serial }
+            save_scope_value_as = { name = zg361_p2c_m360_resume_ticket_p2c_cycle value = var:zg361_p2c_cycle }
+            save_scope_value_as = { name = zg361_p2c_m360_resume_ticket_p2c_case value = var:zg361_p2c_case_serial }
+            save_scope_value_as = { name = zg361_p2c_m360_resume_ticket_al_cycle value = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial }
+            save_scope_value_as = { name = zg361_p2c_m360_resume_ticket_al_case value = var:zg361_p2c_subject.var:zg361_case_al_case_serial }
+            trigger_event = { id = zg361p2c.7 days = 1 }
+        }
+        else_if = {
+            limit = {
+                var:zg361_p2c_m360_resume_pending = 1
+                var:zg361_p2c_m360_resume_owner = this
+                var:zg361_p2c_m360_resume_subject = var:zg361_p2c_subject
+                var:zg361_p2c_m360_resume_p2c_cycle = var:zg361_p2c_cycle
+                var:zg361_p2c_m360_resume_p2c_case = var:zg361_p2c_case_serial
+                var:zg361_p2c_m360_resume_al_cycle = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial
+                var:zg361_p2c_m360_resume_al_case = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+            }
+            # Exact replay retains the already scheduled D+1 boundary.
+        }
+        else = { zg361_p2c_record_red_effect = { CODE = 1194 STAGE_VAR = zg361_p2c_stage_11_status } }
+        if = {
+            limit = {
+                has_variable = zg361_p2c_m360_resume_pending
+                var:zg361_p2c_m360_resume_pending = 1
+                var:zg361_p2c_m360_resume_owner = this
+                var:zg361_p2c_m360_resume_subject = var:zg361_p2c_subject
+                var:zg361_p2c_m360_resume_p2c_cycle = var:zg361_p2c_cycle
+                var:zg361_p2c_m360_resume_p2c_case = var:zg361_p2c_case_serial
+                var:zg361_p2c_m360_resume_al_cycle = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial
+                var:zg361_p2c_m360_resume_al_case = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+            }
+            set_variable = { name = zg361_p2c_stage_11_status value = 5 }
+            set_variable = { name = zg361_p2c_stage_status value = 5 }
+            set_variable = { name = zg361_p2c_wait_reason value = 360411 }
+            set_variable = { name = zg361_p2c_ui_lane_busy value = 0 }
+            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+    }
+    else = { zg361_p2c_record_red_effect = { CODE = 1193 STAGE_VAR = zg361_p2c_stage_11_status } }
+}
+
 # Stage 11: ordinary assessed counts/barons are valid initial Workforce
 # subjects.  Only the domain's later #360/#361 resume guard may require a
 # manager subject.  status 5 is a real external wait, never completion.
@@ -2171,15 +2260,7 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
             zg361_p2c_prepare_m360_source_effect = yes
             if = {
                 limit = { var:zg361_p2c_m360_source_status = 1 }
-                zg361_we_resume_m360_from_central_source_effect = {
-                    TICKET_OWNER = root
-                    TICKET_SUBJECT = var:zg361_p2c_subject
-                    TICKET_CYCLE = var:zg361_p2c_cycle
-                    TICKET_CASE = var:zg361_p2c_subject.var:zg361_case_al_case_serial
-                }
-                set_variable = { name = zg361_p2c_stage_status value = 1 }
-                zg361_p2c_mark_lane_busy_effect = yes
-                zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+                zg361_p2c_schedule_m360_resume_effect = yes
             }
             else_if = {
                 limit = { var:zg361_p2c_m360_source_status = 5 }
@@ -2746,6 +2827,129 @@ zg361p2c.6 = {
         else = { debug_log = "ZG361P2C: stale or replayed M275 runner verification ignored" }
     }
 }
+
+# D+1 M360 resume boundary.  The event is rooted on the frozen Central owner,
+# but calls the product ABI in the frozen subject scope as required by that
+# ABI.  A real receipt produced by an earlier player handoff makes this ticket
+# a harmless consumed replay; no ACK or fixture flag is accepted here.
+zg361p2c.7 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                exists = scope:zg361_p2c_m360_resume_ticket_owner
+                exists = scope:zg361_p2c_m360_resume_ticket_subject
+                exists = scope:zg361_p2c_m360_resume_ticket_serial
+                exists = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                exists = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                exists = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                exists = scope:zg361_p2c_m360_resume_ticket_al_case
+                this = scope:zg361_p2c_m360_resume_ticket_owner
+                has_variable = zg361_p2c_active
+                has_variable = zg361_p2c_stage
+                var:zg361_p2c_active = 1
+                var:zg361_p2c_stage = 11
+                has_variable = zg361_p2c_m360_resume_pending
+                has_variable = zg361_p2c_m360_resume_serial
+                has_variable = zg361_p2c_m360_resume_owner
+                has_variable = zg361_p2c_m360_resume_subject
+                has_variable = zg361_p2c_m360_resume_p2c_cycle
+                has_variable = zg361_p2c_m360_resume_p2c_case
+                has_variable = zg361_p2c_m360_resume_al_cycle
+                has_variable = zg361_p2c_m360_resume_al_case
+                var:zg361_p2c_m360_resume_pending = 1
+                var:zg361_p2c_m360_resume_serial = scope:zg361_p2c_m360_resume_ticket_serial
+                var:zg361_p2c_m360_resume_owner = this
+                var:zg361_p2c_m360_resume_subject = scope:zg361_p2c_m360_resume_ticket_subject
+                var:zg361_p2c_m360_resume_p2c_cycle = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                var:zg361_p2c_m360_resume_p2c_case = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                var:zg361_p2c_m360_resume_al_cycle = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                var:zg361_p2c_m360_resume_al_case = scope:zg361_p2c_m360_resume_ticket_al_case
+                var:zg361_p2c_cycle = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                var:zg361_p2c_case_serial = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                var:zg361_p2c_subject = scope:zg361_p2c_m360_resume_ticket_subject
+            }
+            if = {
+                limit = {
+                    var:zg361_p2c_m360_source_status = 1
+                    var:zg361_p2c_m360_source_owner = this
+                    var:zg361_p2c_m360_source_subject = scope:zg361_p2c_m360_resume_ticket_subject
+                    var:zg361_p2c_m360_source_p2c_cycle = scope:zg361_p2c_m360_resume_ticket_p2c_cycle
+                    var:zg361_p2c_m360_source_p2c_case = scope:zg361_p2c_m360_resume_ticket_p2c_case
+                    var:zg361_p2c_m360_source_al_cycle = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                    var:zg361_p2c_m360_source_al_case = scope:zg361_p2c_m360_resume_ticket_al_case
+                    scope:zg361_p2c_m360_resume_ticket_subject = {
+                        zg361_case_kernel_full_guard_trigger = {
+                            OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+                            CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+                            STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+                            EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                            EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                            EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                            EXPECTED_STATE = 4
+                        }
+                    }
+                }
+                remove_variable = zg361_p2c_m360_resume_pending
+                set_variable = { name = zg361_p2c_stage_11_status value = 1 }
+                set_variable = { name = zg361_p2c_stage_status value = 1 }
+                set_variable = { name = zg361_p2c_wait_reason value = 0 }
+                scope:zg361_p2c_m360_resume_ticket_subject = {
+                    zg361_we_resume_m360_from_central_source_effect = {
+                        TICKET_OWNER = root
+                        TICKET_SUBJECT = this
+                        TICKET_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle
+                        TICKET_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                    }
+                }
+                zg361_p2c_mark_lane_busy_effect = yes
+            }
+            else_if = {
+                limit = {
+                    scope:zg361_p2c_m360_resume_ticket_subject = {
+                        OR = {
+                            zg361_case_kernel_receipt_is_current_trigger = {
+                                RECEIPT_OWNER_VAR = zg361_we_m360_receipt_owner RECEIPT_SUBJECT_VAR = zg361_we_m360_receipt_subject
+                                RECEIPT_CYCLE_VAR = zg361_we_m360_receipt_cycle RECEIPT_CASE_VAR = zg361_we_m360_receipt_case
+                                RECEIPT_STATE_VAR = zg361_we_m360_receipt_state RECEIPT_CHOICE_VAR = zg361_we_m360_receipt_choice
+                                EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                                EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                                EXPECTED_STATE = 4 EXPECTED_CHOICE = 1
+                            }
+                            zg361_case_kernel_receipt_is_current_trigger = {
+                                RECEIPT_OWNER_VAR = zg361_we_m360_receipt_owner RECEIPT_SUBJECT_VAR = zg361_we_m360_receipt_subject
+                                RECEIPT_CYCLE_VAR = zg361_we_m360_receipt_cycle RECEIPT_CASE_VAR = zg361_we_m360_receipt_case
+                                RECEIPT_STATE_VAR = zg361_we_m360_receipt_state RECEIPT_CHOICE_VAR = zg361_we_m360_receipt_choice
+                                EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                                EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                                EXPECTED_STATE = 4 EXPECTED_CHOICE = 2
+                            }
+                            zg361_case_kernel_receipt_is_current_trigger = {
+                                RECEIPT_OWNER_VAR = zg361_we_m360_receipt_owner RECEIPT_SUBJECT_VAR = zg361_we_m360_receipt_subject
+                                RECEIPT_CYCLE_VAR = zg361_we_m360_receipt_cycle RECEIPT_CASE_VAR = zg361_we_m360_receipt_case
+                                RECEIPT_STATE_VAR = zg361_we_m360_receipt_state RECEIPT_CHOICE_VAR = zg361_we_m360_receipt_choice
+                                EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                                EXPECTED_CYCLE = scope:zg361_p2c_m360_resume_ticket_al_cycle EXPECTED_CASE = scope:zg361_p2c_m360_resume_ticket_al_case
+                                EXPECTED_STATE = 4 EXPECTED_CHOICE = 3
+                            }
+                        }
+                    }
+                }
+                remove_variable = zg361_p2c_m360_resume_pending
+                set_variable = { name = zg361_p2c_stage_11_status value = 1 }
+                set_variable = { name = zg361_p2c_stage_status value = 1 }
+                set_variable = { name = zg361_p2c_wait_reason value = 0 }
+                debug_log = "ZG361P2C: consumed M360 resume ticket ignored"
+            }
+            else = {
+                remove_variable = zg361_p2c_m360_resume_pending
+                zg361_p2c_record_red_effect = { CODE = 1195 STAGE_VAR = zg361_p2c_stage_11_status }
+            }
+        }
+        else = { debug_log = "ZG361P2C: stale or replayed M360 resume ticket ignored" }
+    }
+}
 '''
 
 
@@ -2851,7 +3055,7 @@ def render_localization(language: str, header: str) -> str:
 
 
 def render_spec() -> str:
-    return """# 361 二期中央串行调度层：CK3 runtime 合同
+    return f"""# 361 二期中央串行调度层：CK3 runtime 合同
 
 Readiness: `static-ready`
 
@@ -2908,6 +3112,10 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 - READY 同时要求每名 manager 的 exact B1 source、六槽以内真实 #357 candidate，以及同一 Central cycle 的 MG F/m036
   terminal snapshot；`team_n/member_count`、`team_bottom_n/quota` 与 snapshot 的 B1 source serial 必须一致。冻结后任一
   manager、B1 source id/hash/quota 或 MG case/revision 漂移立即 RED，绝不重选。
+- READY 后中央先写 owner/subject/P2C cycle-case/AL cycle-case 的 exact pending ticket，并停在 typed WAIT 360411；
+  `zg361p2c.7` 到 D+1 才在 subject scope 调用产品 resume。这个真实帧可暂停、保存和恢复；正常 AI owner 仍在 D+1
+  自动走 Route A，玩家 owner 仍由产品弹出同一 `.360` 三选项。receipt 已被真实产品消费时，旧 ticket 只清 pending，
+  不重复 resume；fixture/ACK 均不是消费证据。
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。
 - #275-A runner-up 招聘是独立于 stage 11 的 Central 产品入口：旧 AD 案 D+90 到期后只排
   `zg361p2c.4`，再以三个自然帧完成 canonical source commit → Workforce consume → Central verify/close。
@@ -2942,14 +3150,15 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 ## 6. 生成式 whole-file 分片权威
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
-  `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1`，最大为 9。32 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 126,981 bytes，SHA-256
-  `1E39A1DDBECC8C68BEF95B11B13AE287016746D5ABC1B3EBA6C1BB5EA9BB2D39`。
-- Central event 已拆为两个各含 3 个定义的用途 shard：
+  `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 3 / 1`，最大为 9。33 个顶层 effect block 与冻结聚合逐字节、
+  顺序和定义集合一致；冻结聚合为 {HISTORICAL_EFFECT_BYTES:,} bytes，SHA-256
+  `{HISTORICAL_EFFECT_SHA256}`。
+- Central event 已拆为三个用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
-  `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`。6 个 event block
-  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 12,440 bytes，SHA-256
-  `BFDC761091DA43D1950FFDD29EE727B3F049CD0A0A1F7DBCFDA5BE7511CD1859`。
+  `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`，
+  `zg361_phase2_central_003_m360_resume_events.txt` 只含 `zg361p2c.7`。7 个 event block
+  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 {HISTORICAL_EVENT_BYTES:,} bytes，SHA-256
+  `{HISTORICAL_EVENT_SHA256}`。
 - 旧 `zg361_phase2_central_runtime_effects.txt` 与 `zg361_phase2_central_runtime_events.txt` 已退役；
   生成器不再输出它们，`--check` 会拒绝旧单体或其他 stale shard。
 - exact seed whole-file 闭包只选择 M275 的

@@ -80,7 +80,9 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
                 "option_number": 2,
             },
             "postcondition_contract": {
-                "required_fact_count": 13,
+                "required_fact_count": 8,
+                "provider_seal_scope": "m360_current_cycle_route_b",
+                "m361_charter_required": False,
                 "action_ack_is_business_postcondition": False,
                 "career_hc_capability": CAPABILITY,
                 "same_paused_revision_join_required": True,

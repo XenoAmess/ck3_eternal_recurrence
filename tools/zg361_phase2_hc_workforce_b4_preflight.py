@@ -86,11 +86,6 @@ EXPECTED_POSTCONDITION_FACTS = (
     "each_cohort_exception_zero",
     "each_cohort_manager_cost_zero",
     "collective_totals_conserved",
-    "three_cycle_history_strictly_ordered",
-    "m357_m358_m359_receipts_distinct_per_cycle",
-    "m361_charter_gate_ready",
-    "m361_evidence_count_3",
-    "m361_effective_cycle_is_next_cycle",
 )
 EXPECTED_FIXTURE_FILES = (
     "descriptor.mod",
@@ -226,6 +221,9 @@ def _provider_contract_ready(contract: Mapping[str, Any]) -> bool:
         facts == EXPECTED_POSTCONDITION_FACTS
         and postcondition.get("provider")
         == "query_zhongguo_workforce_collective_snapshot_v1"
+        and postcondition.get("provider_seal_scope")
+        == "m360_current_cycle_route_b"
+        and postcondition.get("m361_charter_required") is False
         and abi.get("contract") == "zhongguo_workforce_collective_snapshot_v1"
         and abi.get("status") == "static_and_fixture_ready_not_live"
         and abi.get("capability") == service.get("query_capability")
@@ -264,6 +262,7 @@ def _runner_and_fixture_ready(contract: Mapping[str, Any]) -> bool:
         and "def run_phase2_workforce_m360_gameplay_action_cell(" in runner_text
         and "set_player_character = scope:zga_phase2_workforce_owner" in event_text
         and "set_player_character = scope:zga_phase2_workforce_subject" in event_text
+        and "var:zg361_p2c_m360_resume_pending = 1" in event_text
         and "zg361_we_resume_m360_from_central_source_effect = {" in event_text
     )
 
@@ -391,7 +390,7 @@ def build_preflight(
                     "action_ack_is_business_receipt"
                 )
                 is False
-                and len(EXPECTED_POSTCONDITION_FACTS) == 13
+                and len(EXPECTED_POSTCONDITION_FACTS) == 8
             ),
         }
         report["checks"] = checks

@@ -27,6 +27,12 @@ STAGE_11 = (
     / "scripted_effects"
     / "zg361_phase2_central_009_stage11_workforce_endgame_effects.txt"
 )
+RESUME_EVENT = (
+    ROOT
+    / "mod_zhongguo_style"
+    / "events"
+    / "zg361_phase2_central_003_m360_resume_events.txt"
+)
 RESUME = (
     ROOT
     / "mod_zhongguo_style"
@@ -122,11 +128,13 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
             "is_ai = yes",
             "var:zg361_p2c_m360_source_status = 1",
             "var:zg361_p2c_m360_source_subject = root",
+            "var:zg361_p2c_m360_resume_pending = 1",
+            "var:zg361_p2c_m360_resume_subject = root",
             "trigger_event = zga_phase2_workforce.1",
         ):
             self.assertIn(token, fixture)
 
-    def test_central_prepares_and_resumes_in_one_stage_invocation(self) -> None:
+    def test_central_prepares_then_arms_a_durable_d1_resume_boundary(self) -> None:
         stage = read(STAGE_11)
         awaiting_branch = stage[
             stage.index("zg361_b2_submit_completed_al_receipts_effect = {") :
@@ -138,18 +146,25 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
                     "zg361_b2_submit_completed_al_receipts_effect = {",
                     "zg361_p2c_prepare_m360_source_effect = yes",
                     "limit = { var:zg361_p2c_m360_source_status = 1 }",
-                    "zg361_we_resume_m360_from_central_source_effect = {",
+                    "zg361_p2c_schedule_m360_resume_effect = yes",
                 ),
             )
         )
-        between = awaiting_branch[
-            awaiting_branch.index(
-                "zg361_p2c_prepare_m360_source_effect = yes"
-            ) : awaiting_branch.index(
-                "zg361_we_resume_m360_from_central_source_effect = {"
-            )
-        ]
-        self.assertNotIn("trigger_event", between)
+        self.assertNotIn(
+            "zg361_we_resume_m360_from_central_source_effect", stage
+        )
+        resume_event = read(RESUME_EVENT)
+        self.assertIn("zg361p2c.7 = {", resume_event)
+        self.assertIn("id = zg361p2c.7 days = 1", read(STAGE_11))
+        self.assertIn(
+            "scope:zg361_p2c_m360_resume_ticket_subject = {",
+            resume_event,
+        )
+        self.assertIn(
+            "zg361_we_resume_m360_from_central_source_effect = {",
+            resume_event,
+        )
+        self.assertIn("EXPECTED_CHOICE = 2", resume_event)
 
     def test_resume_routes_ai_before_it_can_queue_the_player_event(self) -> None:
         resume = read(RESUME)
@@ -178,7 +193,7 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
         self.assertIn("trigger_event = { id = zg361b1.110 days = 1 }", effects)
         self.assertIn("trigger_event = { id = zg361b1.111 days = 1 }", effects)
 
-    def test_registry_seal_still_requires_13_facts_and_three_cycles(self) -> None:
+    def test_b4_seal_requires_eight_current_cycle_facts_not_m361_maturity(self) -> None:
         checkpoint = read(CHECKPOINT)
         start = checkpoint.index("WORKFORCE_REQUIRED_FACTS: Final = (")
         end = checkpoint.index("\n)", start)
@@ -187,7 +202,7 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
             for line in checkpoint[start:end].splitlines()[1:]
             if line.strip().startswith('"')
         ]
-        self.assertEqual(len(facts), 13)
+        self.assertEqual(len(facts), 8)
         action = read(WORKFORCE_ACTION)
         for token in (
             'history.get("status") == "three_cycle"',
@@ -196,17 +211,21 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
             'charter.get("status") == "ready"',
             '("evidence_count", 3)',
             '("effective_cycle_serial", cycle + 1)',
+            "require_m361_charter: bool = True",
+            "if not require_m361_charter:",
         ):
             self.assertIn(token, action)
+        self.assertIn("require_m361_charter=False", checkpoint)
+        self.assertIn('"provider_seal_scope": "m360_current_cycle_route_b"', checkpoint)
 
     def test_audit_keeps_the_live_boundary_explicit(self) -> None:
         audit = read(AUDIT)
         for token in (
-            "capture-entry RED",
+            "reachability blocker resolved offline",
             "workforce_collective_ready=false",
-            "same effect invocation",
+            "typed WAIT `360411`",
             "ACK must retain",
-            "13 fact groups",
+            "8 current-cycle fact groups",
             "Remaining unknowns",
             "static-ready-live-pending",
         ):

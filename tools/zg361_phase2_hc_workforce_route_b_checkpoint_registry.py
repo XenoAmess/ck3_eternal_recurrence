@@ -296,6 +296,8 @@ def _parse_registry(
         and sealed.get("result") == "GREEN"
         and str(sealed.get("checkpoint_sha256", "")).lower() == expected_sha
         and sealed.get("action_ack_is_business_postcondition") is False
+        and sealed.get("provider_seal_scope") == "m360_current_cycle_route_b"
+        and sealed.get("m361_charter_required") is False
         and isinstance(facts, Mapping)
         and set(facts) == set(WORKFORCE_REQUIRED_FACTS)
         and all(facts.get(name) is True for name in WORKFORCE_REQUIRED_FACTS)
@@ -307,6 +309,8 @@ def _parse_registry(
         and action_binding.get("subject_character_id") == subject
         and action_binding.get("date_raw") == date_raw
         and workforce.get("result") == "GREEN"
+        and workforce.get("m361_charter_required") is False
+        and workforce_projection.get("m361_charter_required") is False
         and workforce_projection.get("owner_character_id") == owner
         and workforce_projection.get("subject_character_id") == subject
         and workforce_projection.get("cycle_serial") == identity.cycle_serial

@@ -9,7 +9,9 @@ save, and does not claim a provider result.
 Use the current cumulative product projection already materialized by
 `bootstrap_userdir`. Install the existing isolated Workforce transition
 fixture with `install_phase2_workforce_action_fixture`, restore that fixture
-activation, and select its typed subject-to-owner transition. Once
+activation, advance the real product to Central's exact typed WAIT `360411`
+with a pending D+1 M360 resume ticket, and select the fixture's typed
+subject-to-owner transition. Once
 `wait_for_phase2_exact_event` observes the real `zg361we.360` window with the
 exact owner played, call the new functions in this order:
 
@@ -40,8 +42,8 @@ index 1) to be shown and enabled, alongside the full three-option surface and
 the exact distinct owner/subject scopes.
 
 Freezing alone does not publish a registry. The producer executes Route B
-once, requires the existing Workforce provider to prove all 13 postcondition
-facts and seal cycle/case identity, restores the pre-B checkpoint, and only
+once, requires the existing Workforce provider to prove all 8 current-cycle
+postcondition facts and seal cycle/case identity, restores the pre-B checkpoint, and only
 then calls `write_route_b_checkpoint_registry`. The writer reuses the strict
 replay consumer as its validator and refuses missing provider evidence,
 ACK-only evidence, changed checkpoint bytes, or an existing output file. The
@@ -82,7 +84,7 @@ crossing the CK3 launch boundary, the runner verifies:
 - the freeze happened on `zg361we.360` before option 2 and the typed
   subject-to-owner transition retained the same date;
 - the native save receipt matches the archive and exact owner;
-- all 13 Workforce facts are provider-sealed to one owner/subject/cycle/case;
+- all 8 current-cycle Workforce facts are provider-sealed to one owner/subject/cycle/case;
 - the option response remains an ACK with
   `business_receipt_claimed=false`;
 - registry seed lineage and source Git commit match the requested run.
@@ -147,7 +149,7 @@ values as `pending_post_action_workforce_provider`; it does not infer them
 from source text, caller input or the option ACK.
 
 After Route B, the existing received-self Workforce provider supplies the
-owner/subject/cycle/case identity together with all 13 required facts. That
+owner/subject/cycle/case identity together with all 8 required facts. That
 provider result seals the numeric identity onto the checkpoint evidence. A
 restore proves the same bytes, date, owner, event definition and option
 surface. Runtime event-instance IDs are retained in each frame but are not
@@ -159,7 +161,10 @@ the new provider identity to the sealed owner/subject/cycle/case tuple.
 ## Provider join
 
 `run_route_b_and_collect_postconditions` retains the option response only as
-an ACK and invokes `prove_m360_postcondition` for the 13 Workforce facts. The
+an ACK and invokes `prove_m360_postcondition(require_m361_charter=False)` for
+the 8 current-cycle Workforce facts. This B4 seal accepts the product's honest
+state-8 history-accruing close and does not claim three-cycle/M361 maturity;
+the verifier's default strict mode still proves those later-cycle gates. The
 owner-to-subject transition must be the typed `zga_phase2_workforce.3` path and
 must preserve the frozen date.
 

@@ -130,7 +130,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 23)
+        self.assertEqual(len(rendered), 24)
         allowed = {
             *{
                 f"common/scripted_effects/{group.filename}"
@@ -171,8 +171,8 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             for block_row in generator.top_level_effect_blocks(parts[group.filename])
         )
         self.assertEqual(source_blocks, projected_blocks)
-        self.assertEqual(32, len(projected_blocks))
-        self.assertEqual(32, len({name for name, _body in projected_blocks}))
+        self.assertEqual(33, len(projected_blocks))
+        self.assertEqual(33, len({name for name, _body in projected_blocks}))
 
     def test_effect_shards_obey_purpose_and_size_contract(self) -> None:
         self.assertEqual(10, len(generator.EFFECT_GROUPS))
@@ -215,14 +215,14 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             self.assertEqual(len(names), offset)
             return tuple(result)
 
-        target_overages = groups((11, 11, 10))
+        target_overages = groups((11, 11, 11))
         with (
             mock.patch.object(generator, "EFFECT_GROUPS", target_overages),
             mock.patch.object(generator, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
         ):
             generator._validate_effect_groups(source, source_blocks)
 
-        hard_overage = groups((21, 11))
+        hard_overage = groups((21, 12))
         oversized_filename = hard_overage[0].filename
         with (
             mock.patch.object(generator, "EFFECT_GROUPS", hard_overage),
@@ -290,6 +290,10 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             ("zg361p2c.4", "zg361p2c.5", "zg361p2c.6"),
             generator.EVENT_GROUPS[1].event_names,
         )
+        self.assertEqual(
+            ("zg361p2c.7",),
+            generator.EVENT_GROUPS[2].event_names,
+        )
         for group in generator.EVENT_GROUPS:
             with self.subTest(filename=group.filename):
                 self.assertLessEqual(len(group.event_names), 10)
@@ -313,7 +317,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_generated_spec_records_the_whole_file_shard_authority(self) -> None:
         self.assertIn("## 6. 生成式 whole-file 分片权威", self.spec)
-        self.assertIn("3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1", self.spec)
+        self.assertIn("3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 3 / 1", self.spec)
         self.assertIn("最大为 9", self.spec)
         self.assertIn(generator.HISTORICAL_EFFECT_SHA256, self.spec)
         self.assertIn(generator.HISTORICAL_EVENT_SHA256, self.spec)
@@ -321,6 +325,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn(generator.LEGACY_EVENT_FILENAME, self.spec)
         self.assertIn(generator.EFFECT_GROUPS[1].filename, self.spec)
         self.assertIn(generator.EVENT_GROUPS[1].filename, self.spec)
+        self.assertIn(generator.EVENT_GROUPS[2].filename, self.spec)
         self.assertIn("`2E+3V`", self.spec)
 
     def test_generated_script_braces_and_event_namespace(self) -> None:
@@ -328,7 +333,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         assert_balanced(self, self.triggers, "central triggers")
         assert_balanced(self, self.events, "central events")
         self.assertIn("namespace = zg361p2c", self.events)
-        self.assertEqual(len(re.findall(r"(?m)^zg361p2c\.\d+\s*=", self.events)), 6)
+        self.assertEqual(len(re.findall(r"(?m)^zg361p2c\.\d+\s*=", self.events)), 7)
 
     def test_publish_hook_is_after_b1_publish_and_flag_clear(self) -> None:
         annual = block(self.core, "zg361_apply_pending_grades_effect")
@@ -674,14 +679,38 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         terminal_prefix = prepare.split("# Consumed, RED and structural N/A are terminal", 1)[1]
         self.assertNotIn("ordered_in_list", terminal_prefix.split("else_if = {", 1)[0])
 
-    def test_m360_ready_only_uses_gated_workforce_resume(self) -> None:
+    def test_m360_ready_arms_typed_d1_boundary_before_product_resume(self) -> None:
         body = block(self.effects, "zg361_p2c_stage_11_workforce_endgame_effect")
         prepared = body.index("zg361_p2c_prepare_m360_source_effect = yes")
         ready = body.index("var:zg361_p2c_m360_source_status = 1", prepared)
-        resume = body.index("zg361_we_resume_m360_from_central_source_effect = {", ready)
+        scheduled = body.index("zg361_p2c_schedule_m360_resume_effect = yes", ready)
         self.assertLess(prepared, ready)
-        self.assertLess(ready, resume)
-        self.assertNotIn("zg361_p2c_call_workforce_adapter_effect = yes", body[prepared:resume])
+        self.assertLess(ready, scheduled)
+        self.assertNotIn("zg361_we_resume_m360_from_central_source_effect", body)
+        self.assertNotIn("zg361_p2c_call_workforce_adapter_effect = yes", body[prepared:scheduled])
+        schedule = block(self.effects, "zg361_p2c_schedule_m360_resume_effect")
+        for token in (
+            "zg361_p2c_m360_resume_pending value = 1",
+            "zg361_p2c_m360_resume_owner value = this",
+            "zg361_p2c_m360_resume_subject value = var:zg361_p2c_subject",
+            "zg361_p2c_m360_resume_p2c_cycle value = var:zg361_p2c_cycle",
+            "zg361_p2c_m360_resume_p2c_case value = var:zg361_p2c_case_serial",
+            "zg361_p2c_stage_11_status value = 5",
+            "zg361_p2c_wait_reason value = 360411",
+            "id = zg361p2c.7 days = 1",
+        ):
+            self.assertIn(token, schedule)
+        resume_event = block(self.events, "zg361p2c.7")
+        self.assertIn("this = scope:zg361_p2c_m360_resume_ticket_owner", resume_event)
+        self.assertIn("var:zg361_p2c_active = 1", resume_event)
+        self.assertIn("var:zg361_p2c_stage = 11", resume_event)
+        self.assertIn("scope:zg361_p2c_m360_resume_ticket_subject = {", resume_event)
+        self.assertIn("zg361_we_resume_m360_from_central_source_effect = {", resume_event)
+        self.assertIn("EXPECTED_CHOICE = 2", resume_event)
+        self.assertLess(
+            resume_event.index("remove_variable = zg361_p2c_m360_resume_pending"),
+            resume_event.index("zg361_we_resume_m360_from_central_source_effect = {"),
+        )
         self.assertIn("zg361_we_finalize_manager_collective_na_effect = {", body)
         self.assertIn("REASON = 360362", body)
         self.assertIn("REASON = 360410", body)
@@ -801,13 +830,13 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             external,
         )
         prepared = body.index("zg361_p2c_prepare_m360_source_effect = yes", verified)
-        resume = body.index(
-            "zg361_we_resume_m360_from_central_source_effect = {",
+        scheduled = body.index(
+            "zg361_p2c_schedule_m360_resume_effect = yes",
             prepared,
         )
         self.assertLess(producer, verified)
         self.assertLess(verified, prepared)
-        self.assertLess(prepared, resume)
+        self.assertLess(prepared, scheduled)
         producer_prefix = body[external:producer]
         self.assertIn(
             "var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }",
@@ -845,7 +874,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("else = { set_variable = { name = zg361_p2c_ui_lane_busy value = 0 } }", lane)
         summary = block(self.events, "zg361p2c.2")
         self.assertIn("is_ai = no", summary)
-        self.assertEqual(self.events.count("hidden = yes"), 5)
+        self.assertEqual(self.events.count("hidden = yes"), 6)
         self.assertEqual(self.events.count("title = zg361_p2c_summary_title"), 1)
 
     def test_localization_keys_exist_in_all_nine_files(self) -> None:

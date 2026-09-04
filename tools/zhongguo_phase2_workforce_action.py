@@ -669,6 +669,7 @@ def _assert_m360_product(
     route: Route,
     owner: int,
     subject: int,
+    require_m361_charter: bool = True,
 ) -> dict[str, object]:
     if response.get("status") != "available":
         raise _WorkforceNotMature(
@@ -683,13 +684,25 @@ def _assert_m360_product(
     al_case = response.get("al_case")
     cycle = _integer(_typed_value(al_case, "cycle_serial", "al_case"), "al_case.cycle", minimum=1)
     case = _positive_int(_typed_value(al_case, "case_serial", "al_case"), "al_case.case")
+    al_state = _integer(_typed_value(al_case, "state", "al_case"), "al_case.state", minimum=1)
+    if require_m361_charter:
+        if al_state == 8:
+            raise _WorkforceNotMature(
+                "M360 closed honestly but the M361 charter has not matured"
+            )
+        _require(al_state == 5, "al_case state drifted")
+    else:
+        _require(
+            al_state in {5, 8},
+            "current-cycle M360 result is neither charter-ready nor an honest history-accruing terminal",
+        )
     _assert_identity_group(
         al_case,
         owner=owner,
         subject=subject,
         cycle=cycle,
         case=case,
-        state=5,
+        state=al_state,
         label="al_case",
     )
     collective = response.get("collective")
@@ -819,6 +832,67 @@ def _assert_m360_product(
             "route C debt is not due next cycle",
         )
 
+    readiness = response.get("readiness")
+    _require(isinstance(readiness, dict), "Workforce readiness is not an object")
+    assert isinstance(readiness, dict)
+    current_cycle_readiness = (
+        "player_subject_binding_ready", "owner_binding_ready",
+        "case_identity_ready",
+        "m360_receipt_projection_ready", "collective_lifecycle_ready",
+        "cohort_identity_ready", "cohort_conservation_ready",
+        "route_conservation_ready", "history_ledger_ready",
+        "history_order_ready", "charter_gate_lifecycle_ready",
+        "same_frame_ready", "ready",
+    )
+    for key in current_cycle_readiness:
+        _require(readiness.get(key) is True, f"Workforce readiness {key} is false")
+
+    if not require_m361_charter:
+        history = response.get("history")
+        charter = response.get("charter_gate")
+        if al_state == 8:
+            _require(isinstance(history, dict), "history is not an object")
+            _require(isinstance(charter, dict), "charter_gate is not an object")
+            assert isinstance(history, dict) and isinstance(charter, dict)
+            history_count = _integer(
+                _typed_value(history, "count", "history"),
+                "history.count",
+                minimum=1,
+            )
+            _require(history_count <= 3, "history.count exceeds three slots")
+            _require(
+                history.get("status") in {"partial", "three_cycle"}
+                and history.get("effective_count") == history_count,
+                "history-accruing terminal has an inconsistent ledger count",
+            )
+            for key, expected in (
+                ("portfolio_status", 8),
+                ("portfolio_closed", True),
+                ("terminal_history_accruing", True),
+                ("portfolio_history_cycle_count", history_count),
+                ("terminal_success", False),
+            ):
+                _require(
+                    _typed_value(charter, key, "charter_gate") == expected,
+                    f"history-accruing terminal {key} drifted",
+                )
+        return {
+            "owner_character_id": owner,
+            "subject_character_id": subject,
+            "cycle_serial": cycle,
+            "case_serial": case,
+            "al_state": al_state,
+            "route": route,
+            "route_phase": ROUTE_PHASE[route],
+            "m361_charter_required": False,
+            "history_status_observed": (
+                history.get("status") if isinstance(history, dict) else None
+            ),
+            "charter_status_observed": (
+                charter.get("status") if isinstance(charter, dict) else None
+            ),
+        }
+
     history = response.get("history")
     _require(isinstance(history, dict), "history is not an object")
     assert isinstance(history, dict)
@@ -877,15 +951,7 @@ def _assert_m360_product(
     _positive_int(_typed_value(charter, "prepared_report_id", "charter_gate"), "charter_gate report")
     _positive_int(_typed_value(charter, "prepared_charter_id", "charter_gate"), "charter_gate charter")
 
-    readiness = response.get("readiness")
-    _require(isinstance(readiness, dict), "Workforce readiness is not an object")
-    assert isinstance(readiness, dict)
-    for key in (
-        "m360_receipt_projection_ready", "collective_lifecycle_ready",
-        "cohort_conservation_ready", "route_conservation_ready",
-        "history_ledger_ready", "history_order_ready", "three_cycle_ready",
-        "charter_gate_lifecycle_ready", "same_frame_ready", "ready",
-    ):
+    for key in ("three_cycle_ready",):
         _require(readiness.get(key) is True, f"Workforce readiness {key} is false")
     return {
         "owner_character_id": owner,
@@ -894,6 +960,8 @@ def _assert_m360_product(
         "case_serial": case,
         "route": route,
         "route_phase": ROUTE_PHASE[route],
+        "al_state": al_state,
+        "m361_charter_required": True,
         "history_cycles": slot_cycles,
         "charter_status": "ready",
         "charter_effective_cycle": cycle + 1,
@@ -998,8 +1066,9 @@ def prove_m360_postcondition(
     max_timeline_steps: int = 0,
     timeline_timeout_s: float = 10.0,
     poll_interval_s: float = 0.05,
+    require_m361_charter: bool = True,
 ) -> dict[str, object]:
-    """Prove receipt + route object + three cycles + ready #361 gate.
+    """Prove an M360 product result, optionally including the mature #361 gate.
 
     Every provider request is issued from a paused frame.  Optional timeline
     progress is bounded one observed date transition at a time; an unrelated
@@ -1025,6 +1094,7 @@ def prove_m360_postcondition(
         "owner_character_id": owner,
         "subject_character_id": subject,
         "action_ack_used_as_receipt": False,
+        "m361_charter_required": require_m361_charter,
         "paused_queries": [],
         "timeline_steps": [],
         "business_receipt": None,
@@ -1067,7 +1137,11 @@ def prove_m360_postcondition(
                     _require(isinstance(response, dict), "Workforce query returned a non-object")
                     assert isinstance(response, dict)
                     projection = _assert_m360_product(
-                        response, route=route, owner=owner, subject=subject
+                        response,
+                        route=route,
+                        owner=owner,
+                        subject=subject,
+                        require_m361_charter=require_m361_charter,
                     )
                 except _WorkforceNotMature as error:
                     last_error = str(error)

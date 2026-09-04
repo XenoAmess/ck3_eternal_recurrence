@@ -120,6 +120,8 @@ def make_registry(checkpoint_path: Path) -> dict[str, object]:
         "result": "GREEN",
         "checkpoint_sha256": sha256,
         "action_ack_is_business_postcondition": False,
+        "provider_seal_scope": "m360_current_cycle_route_b",
+        "m361_charter_required": False,
         "workforce_required_facts": {
             name: True for name in WORKFORCE_REQUIRED_FACTS
         },
@@ -136,11 +138,13 @@ def make_registry(checkpoint_path: Path) -> dict[str, object]:
         },
         "workforce_provider": {
             "result": "GREEN",
+            "m361_charter_required": False,
             "postcondition": {
                 "owner_character_id": OWNER,
                 "subject_character_id": SUBJECT,
                 "cycle_serial": CYCLE,
                 "case_serial": CASE,
+                "m361_charter_required": False,
             },
         },
         "career_hc_provider": {

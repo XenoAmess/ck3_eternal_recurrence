@@ -46,13 +46,11 @@
       "each_cohort_forced_equals_quota",
       "each_cohort_exception_zero",
       "each_cohort_manager_cost_zero",
-      "collective_totals_conserved",
-      "three_cycle_history_strictly_ordered",
-      "m357_m358_m359_receipts_distinct_per_cycle",
-      "m361_charter_gate_ready",
-      "m361_evidence_count_3",
-      "m361_effective_cycle_is_next_cycle"
-    ]
+      "collective_totals_conserved"
+    ],
+    "provider_seal_scope": "m360_current_cycle_route_b",
+    "m361_charter_required": false,
+    "m361_maturity_policy": "three-cycle history and the M361 charter remain separate later-cycle product gates"
   },
   "seed_and_runner": {
     "default_seed_contract": "tools/zg361_phase2_seed_contract.json",
@@ -73,6 +71,7 @@
       "played character switches to the exact owner without date advance",
       "real zg361we.360 is active with three shown enabled options",
       "AL case is state 4 and the central M360 source is ready",
+      "central owner carries an exact pending D+1 M360 resume ticket",
       "checkpoint is saved before any route option is selected"
     ],
     "post_action_observations": [

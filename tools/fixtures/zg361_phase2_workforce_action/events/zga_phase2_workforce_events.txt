@@ -25,6 +25,14 @@ zga_phase2_workforce.1 = {
 			zg361_is_celestial_liege_trigger = yes
 			has_variable = zg361_p2c_m360_source_status
 			var:zg361_p2c_m360_source_status = 1
+			has_variable = zg361_p2c_m360_resume_pending
+			var:zg361_p2c_m360_resume_pending = 1
+			var:zg361_p2c_m360_resume_owner = this
+			var:zg361_p2c_m360_resume_subject = root
+			var:zg361_p2c_m360_resume_p2c_cycle = var:zg361_p2c_cycle
+			var:zg361_p2c_m360_resume_p2c_case = var:zg361_p2c_case_serial
+			var:zg361_p2c_m360_resume_al_cycle = root.var:zg361_case_al_cycle_serial
+			var:zg361_p2c_m360_resume_al_case = root.var:zg361_case_al_case_serial
 		}
 	}
 	immediate = {
@@ -68,6 +76,12 @@ zga_phase2_workforce.2 = {
 					var:zg361_case_al_state = 4
 					var:zg361_case_al_active = 1
 				}
+				has_variable = zg361_p2c_m360_resume_pending
+				var:zg361_p2c_m360_resume_pending = 1
+				var:zg361_p2c_m360_resume_owner = this
+				var:zg361_p2c_m360_resume_subject = scope:zga_phase2_workforce_subject
+				var:zg361_p2c_m360_resume_p2c_cycle = var:zg361_p2c_cycle
+				var:zg361_p2c_m360_resume_p2c_case = var:zg361_p2c_case_serial
 			}
 			save_scope_as = zga_phase2_workforce_owner
 			scope:zga_phase2_workforce_subject = {

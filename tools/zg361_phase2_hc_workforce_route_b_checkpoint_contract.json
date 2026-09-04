@@ -46,7 +46,9 @@
   },
   "postcondition_contract": {
     "workforce_provider": "query_zhongguo_workforce_collective_snapshot_v1",
-    "required_fact_count": 13,
+    "required_fact_count": 8,
+    "provider_seal_scope": "m360_current_cycle_route_b",
+    "m361_charter_required": false,
     "action_ack_is_business_postcondition": false,
     "career_hc_capability": "game.command.query-zhongguo-career-hc-workforce-postcondition-v1",
     "career_hc_policy": "query only when capability is advertised; otherwise record typed not_available without fabricating values",

@@ -191,7 +191,10 @@ def verify_career_hc_workforce_no_launch_candidate(
                 "native_option_index": 1,
                 "option_number": 2,
             }
-            and postcondition.get("required_fact_count") == 13
+            and postcondition.get("required_fact_count") == 8
+            and postcondition.get("provider_seal_scope")
+            == "m360_current_cycle_route_b"
+            and postcondition.get("m361_charter_required") is False
             and postcondition.get("action_ack_is_business_postcondition") is False
             and postcondition.get("career_hc_capability") == CAPABILITY
             and postcondition.get("same_paused_revision_join_required") is True

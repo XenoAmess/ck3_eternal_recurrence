@@ -55,6 +55,10 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 - READY 同时要求每名 manager 的 exact B1 source、六槽以内真实 #357 candidate，以及同一 Central cycle 的 MG F/m036
   terminal snapshot；`team_n/member_count`、`team_bottom_n/quota` 与 snapshot 的 B1 source serial 必须一致。冻结后任一
   manager、B1 source id/hash/quota 或 MG case/revision 漂移立即 RED，绝不重选。
+- READY 后中央先写 owner/subject/P2C cycle-case/AL cycle-case 的 exact pending ticket，并停在 typed WAIT 360411；
+  `zg361p2c.7` 到 D+1 才在 subject scope 调用产品 resume。这个真实帧可暂停、保存和恢复；正常 AI owner 仍在 D+1
+  自动走 Route A，玩家 owner 仍由产品弹出同一 `.360` 三选项。receipt 已被真实产品消费时，旧 ticket 只清 pending，
+  不重复 resume；fixture/ACK 均不是消费证据。
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。
 - #275-A runner-up 招聘是独立于 stage 11 的 Central 产品入口：旧 AD 案 D+90 到期后只排
   `zg361p2c.4`，再以三个自然帧完成 canonical source commit → Workforce consume → Central verify/close。
@@ -89,14 +93,15 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 ## 6. 生成式 whole-file 分片权威
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
-  `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1`，最大为 9。32 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 126,981 bytes，SHA-256
-  `1E39A1DDBECC8C68BEF95B11B13AE287016746D5ABC1B3EBA6C1BB5EA9BB2D39`。
-- Central event 已拆为两个各含 3 个定义的用途 shard：
+  `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 3 / 1`，最大为 9。33 个顶层 effect block 与冻结聚合逐字节、
+  顺序和定义集合一致；冻结聚合为 132,001 bytes，SHA-256
+  `C1A03DD1E410CB2C65FC992FAE3DB453ED44BDD7B3EAF810D82352AC9B0D6FF1`。
+- Central event 已拆为三个用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
-  `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`。6 个 event block
-  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 12,440 bytes，SHA-256
-  `BFDC761091DA43D1950FFDD29EE727B3F049CD0A0A1F7DBCFDA5BE7511CD1859`。
+  `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`，
+  `zg361_phase2_central_003_m360_resume_events.txt` 只含 `zg361p2c.7`。7 个 event block
+  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 20,548 bytes，SHA-256
+  `84B8FAEAC837A00AFBD993D36F86433DCF71E53E9E92C84A95C24AB31B2673F0`。
 - 旧 `zg361_phase2_central_runtime_effects.txt` 与 `zg361_phase2_central_runtime_events.txt` 已退役；
   生成器不再输出它们，`--check` 会拒绝旧单体或其他 stale shard。
 - exact seed whole-file 闭包只选择 M275 的
