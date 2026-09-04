@@ -1,6 +1,25 @@
 # B3 exact trigger 显式 AND 生产候选（2026-09-04）
 
-状态：**GREEN_NO_LAUNCH / production-candidate-live-pending**。本工作包没有启动 CK3，未生成 gameplay 或宣传素材；只有 CK3 排他调度者可以执行文末唯一命令。
+状态：**Frontend loader GREEN / full acceptance RED**。排他调度者已经执行一次文末命令；显式 AND 候选恢复了 Frontend，但没有进入 Load Save/In Game，未执行 gameplay，也未生成宣传素材。原命令已经消费，不得再次执行或复用 pipe、userdir、artifacts 根。
+
+## Live verdict
+
+实机 artifact：
+
+`Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\artifacts-live`
+
+- 303 个 database callbacks：`123.801s`；Frontend：`125.965s`。
+- terminal：`save_resume_red / frontend_without_load_save`，`299.845s`，Frontend quiet `173.88s`。
+- zero-argument provider、unknown trigger、unknown effect、parser error：全部 0。
+- 已知非终止噪声：unrecognized loc `952`、set-but-never-used `13,990`、used-but-never-set `90`。
+- native cleanup 的全部 checks 为 true、failed checks 为空、最终 CK3 process count 为 0；protected storage 与 source/product/runtime trees 均未改变。
+- outer report SHA-256：`f0abc5f24505019061b986db8992ca0ddd95c0d584c6c9f24b5d4bf6bb9b9b70`
+- evidence index SHA-256：`a6049d099759571921a5e81a0634517e25c91e5a0452aaba0d583041f6bfce5f`
+- cell report SHA-256：`9a9ae5c6f52aab6fc99f6d44d918c9556a8c43bcef25c430583097d8846b9e17`
+- final error SHA-256：`5acd90c8c74a82014abe065b33cb51d6bdef2df6298c0e83d9e296333b818a9d`
+- fail-closed `live-verdict.json` SHA-256：`abb706b08d6dcf8319bf7046567f27a28049d745fef4be104cb5cdeb38d260a2`
+
+`tools/postprocess_zg361_b3_exact_and_wrapper_live.py` 对 no-launch manifest、projection、outer/cell/evidence、error/debug、loader gate 和 append-only progress 的完整 SHA-256 fail-closed，并精确断言上述阶段、时间、噪声、单文件 delta、参数 ABI 与 cleanup。后处理结果为 `GREEN_EVIDENCE`，其含义只是在冻结的 CK3 1.19.0.6/r5 投影上闭合“exact trigger AST shape 敏感且显式 AND 是最小修复”这一结论；整体 acceptance 仍为 RED。
 
 ## 为什么只改这一处
 
@@ -14,7 +33,7 @@ ABI-safe V1/V2 实机互斥隔离已经把启动差异缩到 `zg361_p2c_m360_fro
 
 因此本候选只做一个 AST-shape 变量：在生成器中把 exact trigger 原来的顶层隐式 AND 正文原样嵌入一个显式 `AND = { ... }`。没有增加 `always = no`，没有删除、增加或改写任何业务条件、参数、嵌套 `candidate_ready` 调用或三个产品调用点。该实验检验的是 CK3 对这段 trigger AST 形状的加载行为，不把文件大小或文件边界宣称为根因；此前 r5 A/B/B/A 实机也没有给出稳定的文件体量收益。
 
-候选提交为 `4d3c284749f217aac1a2b291721ebd30a2c84a0a`，分支为 `codex/b3-exact-and-wrapper-20260904`。只有新候选实机到达 Frontend 后，才允许合入 canonical；RED 时保留 artifact 并继续 exact 正文内二分。
+候选提交为 `4d3c284749f217aac1a2b291721ebd30a2c84a0a`，分支为 `codex/b3-exact-and-wrapper-20260904`。新候选已到达 Frontend，因此 loader 修复具备合入 canonical 的实机依据；这不等于 B3 gameplay、Phase2 或 T0 完成。
 
 ## 单变量与 ABI 证明
 
@@ -53,4 +72,4 @@ freezer 先对旧 exact block 执行唯一确定的 wrapper 变换，再要求�
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_3807cfd9441d07411928006105d1cc17 --phase2-seed-contract Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\product-source --phase2-product-projection b3-r5-exact-trigger-explicit-and-4d3c284 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\artifacts-live --discard-userdir
 ```
 
-该命令只能执行一次；pipe、userdir 与 artifacts 根不得复用。Frontend GREEN 只证明 loader 假设，不等于 B3 gameplay 或 T0 全量 GREEN。
+该命令已经执行并消费；pipe、userdir 与 artifacts 根不得复用。Frontend GREEN 只证明 loader 假设，不等于 B3 gameplay 或 T0 全量 GREEN。
