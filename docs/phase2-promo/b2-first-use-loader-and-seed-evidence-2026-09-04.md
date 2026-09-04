@@ -147,3 +147,33 @@ footage、两条宣传片或 T0 已完成。下一业务门是 B3 typed selector
 B3 manager 新增层已由 `4890b17998df1c5586beb36011d283c1a111f388` 按用途拆为 **7 个 effect 分片 / 43 effects**；单片最大
 `10`，没有超过 `20` 的例外。r22 没有 loader performance RED，因此不需要再拆；下一项是在这份冻结边界上推进 B3 typed
 selector/provider。
+
+## p2s10：更宽产品树重新暴露同层条件非短路
+
+当前显式-AND 产品树的 seed 刷新 attempt 位于 `Z:\p2s10a`。`runner-report.json` SHA-256 为
+`77E4927BB84F304245CF2987125E30D5B55D5E3CB29D87BAB558CFB702D51BCB`；产品树 SHA-256 为
+`D94C2D5D23E9AD254F4B20988FBF3C8E08408BAA61070BD85F42B2D2FCBEA35D`。本轮先在 `109.396 s` 达到 frontend，随后进入
+seed 的首个 B2 result；因此不是 loader stall 或单文件体量 RED。最终唯一失败是
+`93 ZhongGuo-attributed loader error signature(s) found`。
+
+冻结扫描 `02_loader_error_scan.json` SHA-256 为
+`7958C5A40C8721195A67BABE46F1AC92D24E1BECA1878DF868BA57B6AF4EFF5B`；完整 `error.log` 为
+`3,737,679 bytes`、SHA-256
+`377B7B5DB1C1CCA169209212872BB7ED0D683EAFE72878DA9A35F727E791CA87`。93 条均由同一个事实解释：同一
+`limit` / `AND` / `OR` 内的 `has_variable` 不会阻止同级 `var:` 被求值。分布为：
+
+- 19 个 policy-debt arm 各产生 fetch-variable、unset-scope、invalid-comparison 三条，共 `57`；
+- result-frozen 中首次不存在的 remand、metric、三个 PIP object-active 与三个 `pip_state` 比较共 `27`；
+- #069/#072/#081 business-object open 各因首次不存在的 `object_active` 产生三条，共 `9`。
+
+生成器修复把要求完整状态的分支改为
+`trigger_if.limit = { <整组 has_variable> }` 后才执行 `var:` 比较，并以 `trigger_else = { always = no }` 拒绝不完整元组；
+“缺失或不是当前值”的 business-object 条件则只在同字段存在时由嵌套 `trigger_if` 读取。此前已进入当前生成器的 PIP lifecycle
+双层 `if` 同样由回归测试锁定。原版同形用法见 CK3 1.19.0.6
+`game/events/dlc/tgp/tgp_china_career_events.txt:207-218` 与
+`game/common/scripted_effects/00_councillor_effects.txt:418-428`。
+
+文件边界没有为了修复而回并：B2 仍为 **25 个用途分片 / 152 effects**，单文件最多 `9`，无超过 `20` 的例外。
+本修复当前仅为 static-ready；必须用包含新生成结果的同一完整产品树重新执行 seed live，确认 loader error scan 为 0，才可把
+p2s10 这一门改写为 GREEN。首次到期 owner 的 `management_debt` 是否需要 first-write 分支不属于本轮 93 条，现无当前路径实证，
+按必要性规则仅保留为后续实际命中时的定位入口。

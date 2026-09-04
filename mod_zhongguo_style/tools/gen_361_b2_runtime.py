@@ -429,13 +429,21 @@ zg361_b2_consume_due_policy_debts_effect = {
 ''']
     for mechanism_id in CORE_IDS:
         key = f"{mechanism_id:03d}"
+        # CK3 evaluates sibling conditions eagerly.  The inner trigger_if is
+        # the lazy boundary for the entire optional debt tuple; has_variable
+        # beside a var: comparison in this limit would still read an unset var.
         sections.append(f'''\tif = {{
 \t\tlimit = {{
-\t\t\thas_variable = zg361_b2_m{key}_policy_debt_active
-\t\t\tvar:zg361_b2_m{key}_policy_debt_active = 1
-\t\t\thas_variable = zg361_b2_m{key}_policy_debt_due_cycle
-\t\t\tvar:zg361_result_cycle_serial >= var:zg361_b2_m{key}_policy_debt_due_cycle
-\t\t\thas_variable = zg361_b2_m{key}_policy_debt_owner
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\thas_variable = zg361_b2_m{key}_policy_debt_active
+\t\t\t\t\thas_variable = zg361_b2_m{key}_policy_debt_due_cycle
+\t\t\t\t\thas_variable = zg361_b2_m{key}_policy_debt_owner
+\t\t\t\t}}
+\t\t\t\tvar:zg361_b2_m{key}_policy_debt_active = 1
+\t\t\t\tvar:zg361_result_cycle_serial >= var:zg361_b2_m{key}_policy_debt_due_cycle
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = no }}
 \t\t}}
 \t\tvar:zg361_b2_m{key}_policy_debt_owner = {{
 \t\t\tchange_variable = {{ name = zg361_b2_management_debt add = 1 }}
@@ -460,6 +468,8 @@ zg361_b2_consume_due_policy_debts_effect = {
             if mechanism_id in (358, 359)
             else ""
         )
+        # Both optional object fields use a nested trigger_if so a first-use
+        # missing value satisfies the OR without evaluating the var: sibling.
         open_business_object_body = f'''\tif = {{
 \t\tlimit = {{ var:zg361_b2_m{key}_route = 3 }}
 \t\tzg361_b2_m{key}_post_policy_debt_effect = yes
@@ -468,11 +478,17 @@ zg361_b2_consume_due_policy_debts_effect = {
 \t\tlimit = {{
 \t\t\tOR = {{
 \t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
-\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = {object_case} }}
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
+\t\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = {object_case} }}
+\t\t\t\t}}
 \t\t\t}}
 \t\t\tOR = {{
 \t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_active }}
-\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = zg361_b2_m{key}_object_active }}
+\t\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
+\t\t\t\t}}
 \t\t\t}}
 \t\t}}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = {object_owner} }}
@@ -791,10 +807,17 @@ zg361_b2_on_result_frozen_effect = {
 		# reviewer never writes a grade in the old case.
 		if = {
 			limit = {
-				has_variable = zg361_b2_m079_remand_active
-				var:zg361_b2_m079_remand_active = 1
-				var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
-				var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b2_m079_remand_active
+						has_variable = zg361_b2_m079_remand_owner
+						has_variable = zg361_b2_m079_remand_cycle
+					}
+					var:zg361_b2_m079_remand_active = 1
+					var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
+					var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
+				}
+				trigger_else = { always = no }
 			}
 			set_variable = { name = zg361_b2_m079_remand_active value = 0 }
 			set_variable = { name = zg361_b2_m079_remand_consumer_case value = var:zg361_result_case_serial }
@@ -805,23 +828,44 @@ zg361_b2_on_result_frozen_effect = {
 		# frozen suppressor and does not rewrite the old evidence.
 		if = {
 			limit = {
-				has_variable = zg361_b2_m080_state
-				OR = {
-					var:zg361_b2_m080_state = 3
-					var:zg361_b2_m080_state = 4
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b2_m080_state
+						has_variable = zg361_b2_m080_owner
+						has_variable = zg361_b2_m080_cycle
+					}
+					OR = {
+						var:zg361_b2_m080_state = 3
+						var:zg361_b2_m080_state = 4
+					}
+					var:zg361_b2_m080_owner = var:zg361_result_case_owner
+					var:zg361_result_cycle_serial > var:zg361_b2_m080_cycle
 				}
-				var:zg361_b2_m080_owner = var:zg361_result_case_owner
-				var:zg361_result_cycle_serial > var:zg361_b2_m080_cycle
+				trigger_else = { always = no }
 			}
 			set_variable = { name = zg361_b2_m080_consumer_case value = var:zg361_result_case_serial }
 			if = {
-				limit = { var:zg361_b2_m080_metric_repaired = 1 }
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_b2_m080_metric_repaired }
+						var:zg361_b2_m080_metric_repaired = 1
+					}
+					trigger_else = { always = no }
+				}
 				set_variable = { name = zg361_b2_m080_repair_verified value = 1 }
 			}
 			else_if = {
 				limit = {
-					var:zg361_b2_m080_suppressed = 1
-					var:zg361_result_grade_reason = var:zg361_b2_m080_defect_type
+					trigger_if = {
+						limit = {
+							has_variable = zg361_b2_m080_suppressed
+							has_variable = zg361_b2_m080_defect_type
+							has_variable = zg361_result_grade_reason
+						}
+						var:zg361_b2_m080_suppressed = 1
+						var:zg361_result_grade_reason = var:zg361_b2_m080_defect_type
+					}
+					trigger_else = { always = no }
 				}
 				set_variable = { name = zg361_b2_m080_repeated_after_suppression value = 1 }
 				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }

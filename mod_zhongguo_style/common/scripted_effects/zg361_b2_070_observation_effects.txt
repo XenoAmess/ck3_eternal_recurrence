@@ -45,11 +45,17 @@ zg361_b2_m070_open_business_object_effect = {
 		limit = {
 			OR = {
 				NOT = { has_variable = zg361_b2_m070_object_receipt_case }
-				NOT = { var:zg361_b2_m070_object_receipt_case = var:zg361_b2_case_serial }
+				trigger_if = {
+					limit = { has_variable = zg361_b2_m070_object_receipt_case }
+					NOT = { var:zg361_b2_m070_object_receipt_case = var:zg361_b2_case_serial }
+				}
 			}
 			OR = {
 				NOT = { has_variable = zg361_b2_m070_object_active }
-				NOT = { var:zg361_b2_m070_object_active = 1 }
+				trigger_if = {
+					limit = { has_variable = zg361_b2_m070_object_active }
+					NOT = { var:zg361_b2_m070_object_active = 1 }
+				}
 			}
 		}
 		set_variable = { name = zg361_b2_m070_object_owner value = var:zg361_b2_case_owner }

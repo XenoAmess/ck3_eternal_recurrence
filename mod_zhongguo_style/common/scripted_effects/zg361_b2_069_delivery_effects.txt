@@ -45,11 +45,17 @@ zg361_b2_m069_open_business_object_effect = {
 		limit = {
 			OR = {
 				NOT = { has_variable = zg361_b2_m069_object_receipt_case }
-				NOT = { var:zg361_b2_m069_object_receipt_case = var:zg361_b2_case_serial }
+				trigger_if = {
+					limit = { has_variable = zg361_b2_m069_object_receipt_case }
+					NOT = { var:zg361_b2_m069_object_receipt_case = var:zg361_b2_case_serial }
+				}
 			}
 			OR = {
 				NOT = { has_variable = zg361_b2_m069_object_active }
-				NOT = { var:zg361_b2_m069_object_active = 1 }
+				trigger_if = {
+					limit = { has_variable = zg361_b2_m069_object_active }
+					NOT = { var:zg361_b2_m069_object_active = 1 }
+				}
 			}
 		}
 		set_variable = { name = zg361_b2_m069_object_owner value = var:zg361_b2_case_owner }
@@ -127,10 +133,17 @@ zg361_b2_on_result_frozen_effect = {
 		# reviewer never writes a grade in the old case.
 		if = {
 			limit = {
-				has_variable = zg361_b2_m079_remand_active
-				var:zg361_b2_m079_remand_active = 1
-				var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
-				var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b2_m079_remand_active
+						has_variable = zg361_b2_m079_remand_owner
+						has_variable = zg361_b2_m079_remand_cycle
+					}
+					var:zg361_b2_m079_remand_active = 1
+					var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
+					var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
+				}
+				trigger_else = { always = no }
 			}
 			set_variable = { name = zg361_b2_m079_remand_active value = 0 }
 			set_variable = { name = zg361_b2_m079_remand_consumer_case value = var:zg361_result_case_serial }
@@ -141,23 +154,44 @@ zg361_b2_on_result_frozen_effect = {
 		# frozen suppressor and does not rewrite the old evidence.
 		if = {
 			limit = {
-				has_variable = zg361_b2_m080_state
-				OR = {
-					var:zg361_b2_m080_state = 3
-					var:zg361_b2_m080_state = 4
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b2_m080_state
+						has_variable = zg361_b2_m080_owner
+						has_variable = zg361_b2_m080_cycle
+					}
+					OR = {
+						var:zg361_b2_m080_state = 3
+						var:zg361_b2_m080_state = 4
+					}
+					var:zg361_b2_m080_owner = var:zg361_result_case_owner
+					var:zg361_result_cycle_serial > var:zg361_b2_m080_cycle
 				}
-				var:zg361_b2_m080_owner = var:zg361_result_case_owner
-				var:zg361_result_cycle_serial > var:zg361_b2_m080_cycle
+				trigger_else = { always = no }
 			}
 			set_variable = { name = zg361_b2_m080_consumer_case value = var:zg361_result_case_serial }
 			if = {
-				limit = { var:zg361_b2_m080_metric_repaired = 1 }
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_b2_m080_metric_repaired }
+						var:zg361_b2_m080_metric_repaired = 1
+					}
+					trigger_else = { always = no }
+				}
 				set_variable = { name = zg361_b2_m080_repair_verified value = 1 }
 			}
 			else_if = {
 				limit = {
-					var:zg361_b2_m080_suppressed = 1
-					var:zg361_result_grade_reason = var:zg361_b2_m080_defect_type
+					trigger_if = {
+						limit = {
+							has_variable = zg361_b2_m080_suppressed
+							has_variable = zg361_b2_m080_defect_type
+							has_variable = zg361_result_grade_reason
+						}
+						var:zg361_b2_m080_suppressed = 1
+						var:zg361_result_grade_reason = var:zg361_b2_m080_defect_type
+					}
+					trigger_else = { always = no }
 				}
 				set_variable = { name = zg361_b2_m080_repeated_after_suppression value = 1 }
 				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }

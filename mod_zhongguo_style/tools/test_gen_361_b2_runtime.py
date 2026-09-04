@@ -191,10 +191,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 261_337)
+        self.assertEqual(len(historical_bytes), 267_063)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "f23fff74fd8f45eae9be9c446db71532ef4578d46ffeb602087310222810f8b9",
+            "dfd410b1a38c4fad6b89f022c9f0d560c5bc353ea0719af948914f6bfdc7d018",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1745,18 +1745,103 @@ class B2CK3RuntimeTests(unittest.TestCase):
         frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
         for mechanism_id in CORE_IDS:
             key = f"{mechanism_id:03d}"
+            active = f"zg361_b2_m{key}_policy_debt_active"
+            due_cycle = f"zg361_b2_m{key}_policy_debt_due_cycle"
+            owner = f"zg361_b2_m{key}_policy_debt_owner"
             self.assertIn(
-                f"has_variable = zg361_b2_m{key}_policy_debt_active", debts
+                "\t\t\ttrigger_if = {\n"
+                "\t\t\t\tlimit = {\n"
+                f"\t\t\t\t\thas_variable = {active}\n"
+                f"\t\t\t\t\thas_variable = {due_cycle}\n"
+                f"\t\t\t\t\thas_variable = {owner}\n"
+                "\t\t\t\t}\n"
+                f"\t\t\t\tvar:{active} = 1\n"
+                f"\t\t\t\tvar:zg361_result_cycle_serial >= var:{due_cycle}\n"
+                "\t\t\t}\n"
+                "\t\t\ttrigger_else = { always = no }",
+                debts,
+            )
+            self.assertNotRegex(
+                debts,
+                rf"has_variable = {re.escape(active)}\s+var:{re.escape(active)}",
             )
             opened = top_level_block(
                 self.effects, f"zg361_b2_m{key}_open_business_object_effect"
             )
-            self.assertIn(
-                f"NOT = {{ has_variable = zg361_b2_m{key}_object_active }}",
+            self.assertRegex(
                 opened,
+                rf"NOT = \{{ has_variable = zg361_b2_m{key}_object_active \}}\s+"
+                rf"trigger_if = \{{\s+"
+                rf"limit = \{{ has_variable = zg361_b2_m{key}_object_active \}}\s+"
+                rf"NOT = \{{ var:zg361_b2_m{key}_object_active = 1 \}}",
             )
-        self.assertIn("has_variable = zg361_b2_m079_remand_active", frozen)
-        self.assertIn("has_variable = zg361_b2_m080_state", frozen)
+            self.assertRegex(
+                opened,
+                rf"NOT = \{{ has_variable = zg361_b2_m{key}_object_receipt_case \}}\s+"
+                rf"trigger_if = \{{\s+"
+                rf"limit = \{{ has_variable = zg361_b2_m{key}_object_receipt_case \}}\s+"
+                rf"NOT = \{{ var:zg361_b2_m{key}_object_receipt_case = ",
+            )
+            for suffix in ("object_active", "object_receipt_case"):
+                variable = f"zg361_b2_m{key}_{suffix}"
+                self.assertNotRegex(
+                    opened,
+                    rf"NOT = \{{ has_variable = {re.escape(variable)} \}}\s+"
+                    rf"NOT = \{{ var:{re.escape(variable)}",
+                )
+
+        self.assertIn(
+            "\t\t\t\ttrigger_if = {\n"
+            "\t\t\t\t\tlimit = {\n"
+            "\t\t\t\t\t\thas_variable = zg361_b2_m079_remand_active\n"
+            "\t\t\t\t\t\thas_variable = zg361_b2_m079_remand_owner\n"
+            "\t\t\t\t\t\thas_variable = zg361_b2_m079_remand_cycle\n"
+            "\t\t\t\t\t}\n"
+            "\t\t\t\t\tvar:zg361_b2_m079_remand_active = 1\n"
+            "\t\t\t\t\tvar:zg361_b2_m079_remand_owner = var:zg361_result_case_owner\n"
+            "\t\t\t\t\tvar:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle\n"
+            "\t\t\t\t}\n"
+            "\t\t\t\ttrigger_else = { always = no }",
+            frozen,
+        )
+        self.assertIn(
+            "\t\t\t\ttrigger_if = {\n"
+            "\t\t\t\t\tlimit = {\n"
+            "\t\t\t\t\t\thas_variable = zg361_b2_m080_state\n"
+            "\t\t\t\t\t\thas_variable = zg361_b2_m080_owner\n"
+            "\t\t\t\t\t\thas_variable = zg361_b2_m080_cycle\n"
+            "\t\t\t\t\t}\n"
+            "\t\t\t\t\tOR = {\n"
+            "\t\t\t\t\t\tvar:zg361_b2_m080_state = 3\n"
+            "\t\t\t\t\t\tvar:zg361_b2_m080_state = 4\n"
+            "\t\t\t\t\t}",
+            frozen,
+        )
+        for variable in (
+            "zg361_b2_m079_remand_active",
+            "zg361_b2_m080_state",
+        ):
+            self.assertNotRegex(
+                frozen,
+                rf"has_variable = {re.escape(variable)}\s+(?:OR = \{{\s+)?var:{re.escape(variable)}",
+            )
+
+        for mechanism_id in (15, 16, 17):
+            variable = f"zg361_b2_m{mechanism_id:03d}_object_active"
+            self.assertIn(
+                f"limit = {{ has_variable = {variable} }}\n"
+                "\t\t\tif = {\n"
+                f"\t\t\t\tlimit = {{ var:{variable} = 1 }}",
+                frozen,
+            )
+        self.assertIn(
+            "limit = { has_variable = zg361_b2_pip_state }\n"
+            "\t\t\tif = {\n"
+            "\t\t\t\tlimit = {\n"
+            "\t\t\t\t\tOR = {\n"
+            "\t\t\t\t\t\tvar:zg361_b2_pip_state = 1",
+            frozen,
+        )
 
     def test_358_route_b_aggravates_with_an_actual_bounded_receipt(self) -> None:
         aggravate = top_level_block(
