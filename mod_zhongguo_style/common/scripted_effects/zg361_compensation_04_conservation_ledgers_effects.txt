@@ -1,0 +1,104 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_04_conservation_ledgers_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_ae_recalculate_statement_effect = {
+    if = {
+        limit = {
+            var:zg361_comp_ae_statement_initialized = 0
+            var:zg361_comp_m278_consumed = 1
+            var:zg361_comp_m279_consumed = 1
+            var:zg361_comp_m280_consumed = 1
+        }
+        set_variable = {
+            name = zg361_comp_ae_extra_month_prorated
+            value = {
+                value = var:zg361_comp_m279_amount
+                multiply = var:zg361_comp_m280_proration_bps
+                divide = 10000
+                floor = yes
+            }
+        }
+        if = {
+            limit = {
+                var:zg361_comp_m279_contract_kind = 2
+                var:zg361_comp_ae_frozen_performance_grade < 375
+            }
+            set_variable = { name = zg361_comp_ae_extra_month_prorated value = 0 }
+        }
+        else_if = {
+            limit = { var:zg361_comp_m279_contract_kind = 3 }
+            set_variable = { name = zg361_comp_ae_extra_month_prorated value = 0 }
+        }
+        set_variable = { name = zg361_comp_ae_statement_payable value = var:zg361_comp_ae_statement_base }
+        change_variable = { name = zg361_comp_ae_statement_payable add = var:zg361_comp_ae_extra_month_prorated }
+        set_variable = { name = zg361_comp_ae_statement_paid value = 0 }
+        set_variable = { name = zg361_comp_ae_statement_owed value = var:zg361_comp_ae_statement_payable }
+        set_variable = { name = zg361_comp_ae_statement_returned value = 0 }
+        set_variable = { name = zg361_comp_ae_statement_initialized value = 1 }
+    }
+    # Mechanism 278 is necessarily consumed before 279/280 finish the
+    # formula. Refresh its consumer-facing account snapshot after every
+    # recalculation instead of freezing the pre-initialization zeroes.
+    set_variable = { name = zg361_comp_m278_promised value = var:zg361_comp_ae_statement_payable }
+    set_variable = { name = zg361_comp_m278_paid value = var:zg361_comp_ae_statement_paid }
+    set_variable = { name = zg361_comp_m278_owed value = var:zg361_comp_ae_statement_owed }
+    set_variable = { name = zg361_comp_m278_returned value = var:zg361_comp_ae_statement_returned }
+    set_variable = { name = zg361_comp_ae_statement_rhs value = var:zg361_comp_ae_statement_paid }
+    change_variable = { name = zg361_comp_ae_statement_rhs add = var:zg361_comp_ae_statement_owed }
+    change_variable = { name = zg361_comp_ae_statement_rhs add = { value = 0 subtract = var:zg361_comp_ae_statement_returned } }
+    set_variable = { name = zg361_comp_ae_statement_conserved value = 0 }
+    if = {
+        limit = { var:zg361_comp_ae_statement_rhs = var:zg361_comp_ae_statement_payable }
+        set_variable = { name = zg361_comp_ae_statement_conserved value = 1 }
+    }
+}
+
+zg361_comp_af_recalculate_units_effect = {
+    if = {
+        limit = { var:zg361_comp_af_periods_processed = 0 }
+        set_variable = { name = zg361_comp_af_total_units value = var:zg361_comp_af_grant_base_units }
+        change_variable = { name = zg361_comp_af_total_units add = var:zg361_comp_af_conversion_units }
+        if = {
+            limit = { var:zg361_comp_m292_consumed = 1 var:zg361_comp_m292_risk_kind = 3 }
+            set_variable = { name = zg361_comp_af_total_units value = var:zg361_comp_af_conversion_units }
+        }
+        set_variable = { name = zg361_comp_af_service_bps value = 5000 }
+        if = {
+            limit = { var:zg361_comp_m297_consumed = 1 }
+            set_variable = { name = zg361_comp_af_service_bps value = var:zg361_comp_m297_service_bps }
+        }
+        set_variable = {
+            name = zg361_comp_af_service_original
+            value = {
+                value = var:zg361_comp_af_total_units
+                multiply = var:zg361_comp_af_service_bps
+                divide = 10000
+                floor = yes
+            }
+        }
+        set_variable = {
+            name = zg361_comp_af_performance_original
+            value = {
+                value = var:zg361_comp_af_total_units
+                subtract = var:zg361_comp_af_service_original
+            }
+        }
+        set_variable = { name = zg361_comp_af_unvested_service value = var:zg361_comp_af_service_original }
+        set_variable = { name = zg361_comp_af_unvested_performance value = var:zg361_comp_af_performance_original }
+    }
+    zg361_comp_af_check_conservation_effect = yes
+}
+
+zg361_comp_af_check_conservation_effect = {
+    set_variable = { name = zg361_comp_af_unit_accounted value = var:zg361_comp_af_unvested_service }
+    change_variable = { name = zg361_comp_af_unit_accounted add = var:zg361_comp_af_unvested_performance }
+    change_variable = { name = zg361_comp_af_unit_accounted add = var:zg361_comp_af_vested_units }
+    change_variable = { name = zg361_comp_af_unit_accounted add = var:zg361_comp_af_forfeited_units }
+    change_variable = { name = zg361_comp_af_unit_accounted add = var:zg361_comp_af_repurchased_units }
+    set_variable = { name = zg361_comp_af_unit_conserved value = 0 }
+    if = {
+        limit = { var:zg361_comp_af_unit_accounted = var:zg361_comp_af_total_units }
+        set_variable = { name = zg361_comp_af_unit_conserved value = 1 }
+    }
+}

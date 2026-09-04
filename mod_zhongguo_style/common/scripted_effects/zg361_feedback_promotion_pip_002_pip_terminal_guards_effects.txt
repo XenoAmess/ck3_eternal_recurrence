@@ -1,0 +1,79 @@
+﻿# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.py
+# PURPOSE: PIP first-failure and clean-graduation terminal guards.
+
+zg361_pp_m188_skip_first_failure_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_w_owner
+				SUBJECT_VAR = zg361_case_w_subject
+				CYCLE_VAR = zg361_case_w_cycle_serial
+				CASE_VAR = zg361_case_w_case_serial
+				STATE_VAR = zg361_case_w_state
+				ACTIVE_VAR = zg361_case_w_active
+				EXPECTED_OWNER = var:zg361_case_w_owner
+				EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_w_cycle_serial
+				EXPECTED_CASE = var:zg361_case_w_case_serial
+				EXPECTED_STATE = 4
+			}
+			var:zg361_pp_m187_graduation_status = 2
+			var:zg361_b2_pip_state = 4
+			var:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
+			var:zg361_pp_m188_receipt_active = 0
+		}
+		set_variable = { name = zg361_pp_m188_receipt_owner value = var:zg361_case_w_owner }
+		set_variable = { name = zg361_pp_m188_receipt_subject value = this }
+		set_variable = { name = zg361_pp_m188_receipt_cycle value = var:zg361_case_w_cycle_serial }
+		set_variable = { name = zg361_pp_m188_receipt_case value = var:zg361_case_w_case_serial }
+		set_variable = { name = zg361_pp_m188_receipt_state value = 4 }
+		set_variable = { name = zg361_pp_m188_receipt_route value = 0 }
+		set_variable = { name = zg361_pp_m188_receipt_active value = 1 }
+		set_variable = { name = zg361_pp_m188_route value = 0 }
+		set_variable = { name = zg361_pp_m188_relapse_window value = 0 }
+		set_variable = { name = zg361_pp_m188_relapse_status value = 0 }
+		set_variable = { name = zg361_pp_m188_skipped_first_failure value = 1 }
+		set_variable = { name = zg361_pp_m188_visible_outcome_code value = 4 }
+		set_variable = { name = zg361_pp_m188_audit_1_state value = 2 }
+		set_variable = { name = zg361_pp_m188_audit_1_consumed value = 1 }
+		zg361_pp_m188_consume_effect = yes
+	}
+}
+
+zg361_pp_m189_skip_no_relapse_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_w_owner
+				SUBJECT_VAR = zg361_case_w_subject
+				CYCLE_VAR = zg361_case_w_cycle_serial
+				CASE_VAR = zg361_case_w_case_serial
+				STATE_VAR = zg361_case_w_state
+				ACTIVE_VAR = zg361_case_w_active
+				EXPECTED_OWNER = var:zg361_case_w_owner
+				EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_w_cycle_serial
+				EXPECTED_CASE = var:zg361_case_w_case_serial
+				EXPECTED_STATE = 4
+			}
+			var:zg361_pp_m188_audit_1_consumed = 1
+			var:zg361_pp_m188_relapse_status = 2
+			var:zg361_pp_m189_receipt_active = 0
+		}
+		set_variable = { name = zg361_pp_m189_receipt_owner value = var:zg361_case_w_owner }
+		set_variable = { name = zg361_pp_m189_receipt_subject value = this }
+		set_variable = { name = zg361_pp_m189_receipt_cycle value = var:zg361_case_w_cycle_serial }
+		set_variable = { name = zg361_pp_m189_receipt_case value = var:zg361_case_w_case_serial }
+		set_variable = { name = zg361_pp_m189_receipt_state value = 4 }
+		set_variable = { name = zg361_pp_m189_receipt_route value = 0 }
+		set_variable = { name = zg361_pp_m189_receipt_active value = 1 }
+		set_variable = { name = zg361_pp_m189_route value = 0 }
+		set_variable = { name = zg361_pp_m189_terminal_fork value = 0 }
+		set_variable = { name = zg361_pp_m189_terminal_code value = 0 }
+		set_variable = { name = zg361_pp_m189_skipped_no_relapse value = 1 }
+		set_variable = { name = zg361_pp_m189_visible_outcome_code value = 4 }
+		set_variable = { name = zg361_pp_m189_audit_1_state value = 2 }
+		set_variable = { name = zg361_pp_m189_audit_1_consumed value = 1 }
+		zg361_pp_m189_consume_effect = yes
+	}
+}

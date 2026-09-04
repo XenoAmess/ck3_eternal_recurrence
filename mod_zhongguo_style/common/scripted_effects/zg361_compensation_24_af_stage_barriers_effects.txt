@@ -1,0 +1,142 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_24_af_stage_barriers_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_af_try_advance_01_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 1
+            }
+            var:zg361_comp_m290_consumed = 1
+            var:zg361_comp_m291_consumed = 1
+            var:zg361_comp_m292_consumed = 1
+
+        }
+        zg361_case_af_advance_01_effect = {
+            TICKET_OWNER = var:zg361_case_af_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_af_cycle_serial
+            TICKET_CASE = var:zg361_case_af_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 3 }
+        }
+    }
+}
+
+zg361_comp_af_try_advance_02_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 2
+            }
+            var:zg361_comp_m293_consumed = 1
+            var:zg361_comp_m294_consumed = 1
+
+        }
+        zg361_case_af_advance_02_effect = {
+            TICKET_OWNER = var:zg361_case_af_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_af_cycle_serial
+            TICKET_CASE = var:zg361_case_af_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 3 }
+        }
+    }
+}
+
+zg361_comp_af_try_advance_03_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_comp_m295_consumed = 1
+            var:zg361_comp_m296_consumed = 1
+
+        }
+        zg361_case_af_advance_03_effect = {
+            TICKET_OWNER = var:zg361_case_af_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_af_cycle_serial
+            TICKET_CASE = var:zg361_case_af_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_schedule_first_vest_effect = yes
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 3 }
+        }
+    }
+}
+
+zg361_comp_af_try_advance_05_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 5
+            }
+            var:zg361_comp_m299_consumed = 1
+            var:zg361_comp_m300_consumed = 1
+            var:zg361_comp_af_repurchase_resolved = 1
+            var:zg361_comp_af_unit_conserved = 1
+        }
+        zg361_case_af_advance_05_effect = {
+            TICKET_OWNER = var:zg361_case_af_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_af_cycle_serial
+            TICKET_CASE = var:zg361_case_af_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_portfolio_case_closed_effect = { DOMAIN = 3 }
+        if = { limit = { is_ai = no var:zg361_case_af_owner = { is_ai = no } } trigger_event = { id = zg361comp.904 days = 1 } }
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 3 }
+        }
+    }
+}

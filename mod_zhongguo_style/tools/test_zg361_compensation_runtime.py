@@ -9,6 +9,7 @@ They are static-ready evidence only; they do not claim CK3 or MCP live proof.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
 import unittest
@@ -18,11 +19,12 @@ import zg361_phase2_compensation_model as model
 
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
-EFFECTS_PATH = (
-    MOD_ROOT
-    / "common"
-    / "scripted_effects"
-    / "zg361_generated_compensation_runtime_effects.txt"
+EFFECTS_PATHS = tuple(
+    MOD_ROOT / "common" / "scripted_effects" / filename
+    for filename, _names in generator.EFFECT_GROUPS
+)
+LEGACY_EFFECTS_PATH = (
+    MOD_ROOT / "common" / "scripted_effects" / generator.LEGACY_EFFECT_FILENAME
 )
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_generated_compensation_runtime_events.txt"
 LANGUAGES = (
@@ -126,7 +128,11 @@ def assert_balanced(test: unittest.TestCase, text: str, label: str) -> None:
 class CompensationRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = EFFECTS_PATH.read_text(encoding="utf-8-sig")
+        cls.effect_parts = {
+            filename: path.read_text(encoding="utf-8-sig")
+            for (filename, _names), path in zip(generator.EFFECT_GROUPS, EFFECTS_PATHS)
+        }
+        cls.effects = "\n\n".join(cls.effect_parts.values())
         cls.events = EVENTS_PATH.read_text(encoding="utf-8-sig")
 
     def test_trigger_arithmetic_never_uses_a_value_block_rhs(self) -> None:
@@ -200,9 +206,12 @@ class CompensationRuntimeTests(unittest.TestCase):
             },
         )
 
-    def test_exact_11_outputs_are_current_bom_localized_and_isolated(self) -> None:
+    def test_exact_35_outputs_are_current_bom_localized_and_isolated(self) -> None:
         expected = {
-            "common/scripted_effects/zg361_generated_compensation_runtime_effects.txt",
+            *(
+                f"common/scripted_effects/{filename}"
+                for filename, _names in generator.EFFECT_GROUPS
+            ),
             "events/zg361_generated_compensation_runtime_events.txt",
             *(
                 f"localization/{language}/zg361_compensation_runtime_l_{language}.yml"
@@ -212,7 +221,7 @@ class CompensationRuntimeTests(unittest.TestCase):
         rendered = generator.outputs()
         actual = {path.relative_to(MOD_ROOT).as_posix() for path in rendered}
         self.assertEqual(actual, expected)
-        self.assertEqual(len(rendered), 11)
+        self.assertEqual(len(rendered), 35)
         self.assertEqual(sum(path.suffix == ".yml" for path in rendered), 9)
         for path, payload in rendered.items():
             with self.subTest(path=path.relative_to(MOD_ROOT)):
@@ -265,6 +274,52 @@ class CompensationRuntimeTests(unittest.TestCase):
             "docs/361-compensation-lti-ck3-runtime-spec.md",
         ):
             self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(generator.BOM))
+
+    def test_effects_are_complete_byte_identical_ordered_purpose_shards(self) -> None:
+        self.assertEqual(len(generator.EFFECT_GROUPS), 25)
+        self.assertEqual(generator.EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+        self.assertFalse(LEGACY_EFFECTS_PATH.exists())
+
+        historical_bytes = generator.render_effects()
+        self.assertEqual(len(historical_bytes), 603_363)
+        self.assertEqual(
+            hashlib.sha256(historical_bytes).hexdigest(),
+            "0be5605cced1b15986125a938081b8eaaaf437be297d727bf4dbf1f70b3e29eb",
+        )
+        historical = historical_bytes.decode("utf-8-sig")
+        historical_names = re.findall(
+            r"(?m)^(zg361_comp_[a-z0-9_]+_effect)\s*=\s*\{",
+            historical,
+        )
+        configured_names = [
+            name for _filename, names in generator.EFFECT_GROUPS for name in names
+        ]
+        self.assertEqual(len(historical_names), 148)
+        self.assertEqual(len(set(historical_names)), 148)
+        self.assertEqual(configured_names, historical_names)
+
+        for filename, expected_names in generator.EFFECT_GROUPS:
+            with self.subTest(filename=filename):
+                self.assertGreaterEqual(len(expected_names), 1)
+                self.assertLessEqual(len(expected_names), generator.EFFECT_TARGET_MAX)
+                self.assertLessEqual(len(expected_names), generator.EFFECT_HARD_MAX)
+                path = MOD_ROOT / "common" / "scripted_effects" / filename
+                self.assertTrue(
+                    path.read_bytes().startswith(
+                        generator.BOM + generator.HEADER.encode("utf-8")
+                    )
+                )
+                part = self.effect_parts[filename]
+                actual_names = re.findall(
+                    r"(?m)^(zg361_comp_[a-z0-9_]+_effect)\s*=\s*\{",
+                    part,
+                )
+                self.assertEqual(actual_names, list(expected_names))
+                for name in expected_names:
+                    self.assertEqual(
+                        top_level_block(part, name),
+                        top_level_block(historical, name),
+                    )
 
     def test_generator_is_deterministic_and_all_nine_localizations_have_bom_key_parity(self) -> None:
         first = generator.outputs()

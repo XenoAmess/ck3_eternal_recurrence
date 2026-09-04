@@ -1,0 +1,284 @@
+﻿# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.py
+# PURPOSE: portfolio integration adapter.
+
+zg361_pp_manager_portfolio_adapter_effect = {
+	remove_variable = zg361_pp_runtime_applied
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			trigger_if = {
+				limit = { has_variable = zg361_pp_portfolio_queue_active }
+				var:zg361_pp_portfolio_queue_active = 0
+			}
+			trigger_else = { always = yes }
+			any_vassal = { zg361_is_reviewable_vassal_trigger = yes }
+		}
+		save_temporary_scope_as = zg361_pp_portfolio_manager
+		ordered_vassal = {
+			limit = { zg361_is_reviewable_vassal_trigger = yes liege = scope:zg361_pp_portfolio_manager }
+			order_by = stewardship
+			position = 0
+			save_temporary_scope_as = zg361_pp_portfolio_subject
+		}
+		if = {
+			limit = { exists = scope:zg361_pp_portfolio_subject }
+			scope:zg361_pp_portfolio_subject = {
+				if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_t_portfolio_done_cycle }
+						var:zg361_pp_t_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m146_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m147_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m148_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m149_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m150_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m151_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m151_audit_2_state = 1 }
+						NOT = { var:zg361_pp_m152_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m153_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m154_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m155_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m156_audit_1_state = 1 }
+					}
+					zg361_pp_open_t_case_effect = yes
+				}
+				else_if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_u_portfolio_done_cycle }
+						var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m157_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m158_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m159_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m163_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m164_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m165_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m161_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m162_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m166_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m160_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m167_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m168_audit_1_state = 1 }
+						NOT = {
+							has_variable = zg361_result_case_owner
+							var:zg361_result_case_owner = root
+							has_variable = zg361_result_cycle_serial
+							var:zg361_result_cycle_serial = root.var:zg361_review_serial
+							has_variable = zg361_result_case_serial
+							has_variable = zg361_result_case_state
+							var:zg361_result_case_state >= 3
+							has_variable = zg361_result_grade
+							var:zg361_result_grade >= 2
+							has_variable = zg361_result_grade_reason
+						}
+					}
+					# Only a delivered 3.5/3.75 result may create a promotion packet.
+					set_variable = { name = zg361_pp_u_skipped_not_eligible_cycle value = root.var:zg361_review_serial }
+					set_variable = { name = zg361_pp_u_portfolio_done_cycle value = root.var:zg361_review_serial }
+				}
+				else_if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_u_portfolio_done_cycle }
+						var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m157_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m158_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m159_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m163_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m164_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m165_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m161_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m162_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m166_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m160_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m167_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m168_audit_1_state = 1 }
+					}
+					zg361_pp_open_u_case_effect = yes
+				}
+				else_if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_v_portfolio_done_cycle }
+						var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m169_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m170_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m171_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m172_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m173_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m174_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m175_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m176_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m177_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m178_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m179_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m180_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m180_audit_2_state = 1 }
+						NOT = {
+							var:zg361_pp_m160_prescreen_pass = 1
+							var:zg361_pp_m160_packet_candidate_consumed = this
+							var:zg361_pp_m160_promotion_slot_status = 1
+						}
+					}
+					# No U prescreen winner means no panel, vote or phantom promotion slot.
+					set_variable = { name = zg361_pp_v_skipped_no_winner_cycle value = root.var:zg361_review_serial }
+					set_variable = { name = zg361_pp_v_portfolio_done_cycle value = root.var:zg361_review_serial }
+				}
+				else_if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_v_portfolio_done_cycle }
+						var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m169_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m170_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m171_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m172_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m173_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m174_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m175_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m176_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m177_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m178_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m179_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m180_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m180_audit_2_state = 1 }
+					}
+					zg361_pp_open_v_case_effect = yes
+				}
+				else_if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_w_portfolio_done_cycle }
+						var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m181_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m182_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m183_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m184_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m185_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m186_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m187_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m188_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m189_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m190_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m191_audit_1_state = 1 }
+						NOT = {
+							has_variable = zg361_result_case_owner
+							var:zg361_result_case_owner = root
+							has_variable = zg361_result_cycle_serial
+							var:zg361_result_cycle_serial = root.var:zg361_review_serial
+							has_variable = zg361_result_case_serial
+							has_variable = zg361_result_case_state
+							var:zg361_result_case_state >= 3
+							has_variable = zg361_result_grade
+							var:zg361_result_grade = 1
+							has_variable = zg361_result_grade_reason
+							has_variable = zg361_result_kpi_frozen
+							has_variable = zg361_result_rank_frozen
+							has_variable = zg361_b2_pip_gate_owner
+							var:zg361_b2_pip_gate_owner = root
+							has_variable = zg361_b2_pip_gate_subject
+							var:zg361_b2_pip_gate_subject = this
+							has_variable = zg361_b2_pip_gate_cycle
+							var:zg361_b2_pip_gate_cycle = var:zg361_result_cycle_serial
+							has_variable = zg361_b2_pip_gate_case
+							var:zg361_b2_pip_gate_case = var:zg361_result_case_serial
+							var:zg361_b2_pip_gate_status = 1
+							has_variable = zg361_b2_pip_owner
+							var:zg361_b2_pip_owner = root
+							has_variable = zg361_b2_pip_subject
+							var:zg361_b2_pip_subject = this
+							has_variable = zg361_b2_pip_cycle
+							var:zg361_b2_pip_cycle = var:zg361_result_cycle_serial
+							has_variable = zg361_b2_pip_case
+							var:zg361_b2_pip_case = var:zg361_result_case_serial
+							OR = {
+								var:zg361_b2_pip_state = 1
+								var:zg361_b2_pip_state = 2
+								var:zg361_b2_pip_state = 3
+								var:zg361_b2_pip_state = 4
+								var:zg361_b2_pip_state = 5
+							}
+							var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case
+						}
+					}
+					# Only a delivered 3.25 result may enter PIP; other grades create no PIP object.
+					set_variable = { name = zg361_pp_w_skipped_not_applicable_cycle value = root.var:zg361_review_serial }
+					set_variable = { name = zg361_pp_w_portfolio_done_cycle value = root.var:zg361_review_serial }
+				}
+				else_if = {
+					limit = {
+						NOT = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_w_portfolio_done_cycle }
+						var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_review_serial
+					}
+					trigger_else = { always = no }
+				}
+						NOT = { var:zg361_pp_m181_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m182_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m183_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m184_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m185_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m186_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m187_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m188_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m189_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m190_audit_1_state = 1 }
+						NOT = { var:zg361_pp_m191_audit_1_state = 1 }
+					}
+					zg361_pp_open_w_case_effect = yes
+				}
+				else_if = {
+					limit = { trigger_if = {
+	limit = { has_variable = zg361_pp_t_portfolio_done_cycle }
+	var:zg361_pp_t_portfolio_done_cycle = root.var:zg361_review_serial
+}
+trigger_else = { always = no }
+				trigger_if = {
+	limit = { has_variable = zg361_pp_u_portfolio_done_cycle }
+	var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_review_serial
+}
+trigger_else = { always = no }
+				trigger_if = {
+	limit = { has_variable = zg361_pp_v_portfolio_done_cycle }
+	var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_review_serial
+}
+trigger_else = { always = no }
+				trigger_if = {
+	limit = { has_variable = zg361_pp_w_portfolio_done_cycle }
+	var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_review_serial
+}
+trigger_else = { always = no } }
+					scope:zg361_pp_portfolio_manager = { set_variable = { name = zg361_pp_portfolio_complete_cycle value = var:zg361_review_serial } }
+				}
+			}
+		}
+	}
+}

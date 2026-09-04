@@ -1,0 +1,593 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_03_af_payments_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_af_pay_cash_alternative_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m292_cash_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m292_cash_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m292_cash_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m292_cash_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m292_cash_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 7
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m292_cash_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m292_cash_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m292_cash_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m292_cash_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m292_cash_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 3
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m292_cash_treasury_status = 1
+            var:zg361_comp_m292_cash_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m292_cash_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m292_cash_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 1
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m292_cash_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m292_cash_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 1
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m292_cash_treasury_status = 2
+            var:zg361_comp_m292_cash_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 7
+            remove_short_term_gold = 3
+        }
+        add_gold = 10
+        set_variable = { name = zg361_comp_m292_cash_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m292_cash_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m292_cash_recipient value = this }
+            set_variable = { name = zg361_comp_m292_cash_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m292_cash_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m292_cash_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m292_cash_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_m292_cash_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_m292_cash_frozen_state value = 1 }
+        set_variable = { name = zg361_comp_m292_cash_gross value = 10 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
+zg361_comp_af_pay_conversion_remainder_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash6_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash6_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash6_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 4
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash6_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash6_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash6_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 2
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash6_treasury_status = 1
+            var:zg361_comp_m293_cash6_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash6_treasury_status = 2
+            var:zg361_comp_m293_cash6_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 4
+            remove_short_term_gold = 2
+        }
+        add_gold = 6
+        set_variable = { name = zg361_comp_m293_cash6_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_recipient value = this }
+            set_variable = { name = zg361_comp_m293_cash6_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_state value = 2 }
+        set_variable = { name = zg361_comp_m293_cash6_gross value = 6 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
+zg361_comp_af_pay_unconverted_bonus_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash10_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash10_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash10_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 7
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash10_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash10_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash10_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 3
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash10_treasury_status = 1
+            var:zg361_comp_m293_cash10_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash10_treasury_status = 2
+            var:zg361_comp_m293_cash10_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 7
+            remove_short_term_gold = 3
+        }
+        add_gold = 10
+        set_variable = { name = zg361_comp_m293_cash10_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_recipient value = this }
+            set_variable = { name = zg361_comp_m293_cash10_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_state value = 2 }
+        set_variable = { name = zg361_comp_m293_cash10_gross value = 10 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
+zg361_comp_af_pay_buyback_now_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m300_buyback_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m300_buyback_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m300_buyback_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m300_buyback_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m300_buyback_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+                AMOUNT = 7
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m300_buyback_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m300_buyback_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m300_buyback_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m300_buyback_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m300_buyback_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+                AMOUNT = 3
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m300_buyback_treasury_status = 1
+            var:zg361_comp_m300_buyback_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m300_buyback_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m300_buyback_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m300_buyback_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m300_buyback_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m300_buyback_treasury_status = 2
+            var:zg361_comp_m300_buyback_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 7
+            remove_short_term_gold = 3
+        }
+        add_gold = 10
+        set_variable = { name = zg361_comp_m300_buyback_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m300_buyback_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m300_buyback_recipient value = this }
+            set_variable = { name = zg361_comp_m300_buyback_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m300_buyback_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m300_buyback_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m300_buyback_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_m300_buyback_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_m300_buyback_frozen_state value = 5 }
+        set_variable = { name = zg361_comp_m300_buyback_gross value = 10 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
+zg361_comp_af_pay_buyback_later_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_af_buyback_later_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_af_buyback_later_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_af_buyback_later_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_af_buyback_later_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_af_buyback_later_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+                AMOUNT = 7
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_af_buyback_later_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_af_buyback_later_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_af_buyback_later_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_af_buyback_later_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_af_buyback_later_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+                AMOUNT = 3
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_af_buyback_later_treasury_status = 1
+            var:zg361_comp_af_buyback_later_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_af_buyback_later_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_af_buyback_later_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_af_buyback_later_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_af_buyback_later_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 5
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_af_buyback_later_treasury_status = 2
+            var:zg361_comp_af_buyback_later_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 7
+            remove_short_term_gold = 3
+        }
+        add_gold = 10
+        set_variable = { name = zg361_comp_af_buyback_later_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_af_buyback_later_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_af_buyback_later_recipient value = this }
+            set_variable = { name = zg361_comp_af_buyback_later_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_af_buyback_later_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_af_buyback_later_frozen_subject value = this }
+            set_variable = { name = zg361_comp_af_buyback_later_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_af_buyback_later_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_af_buyback_later_frozen_state value = 5 }
+        set_variable = { name = zg361_comp_af_buyback_later_gross value = 10 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}

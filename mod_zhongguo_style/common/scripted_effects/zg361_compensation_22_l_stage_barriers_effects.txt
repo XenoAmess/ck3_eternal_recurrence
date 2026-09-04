@@ -1,0 +1,165 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_22_l_stage_barriers_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_l_try_advance_01_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                EXPECTED_OWNER = var:zg361_case_l_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_l_cycle_serial
+                EXPECTED_CASE = var:zg361_case_l_case_serial
+                EXPECTED_STATE = 1
+            }
+            var:zg361_comp_m082_consumed = 1
+            var:zg361_comp_m083_consumed = 1
+            var:zg361_comp_m084_consumed = 1
+
+        }
+        zg361_case_l_advance_01_effect = {
+            TICKET_OWNER = var:zg361_case_l_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_l_cycle_serial
+            TICKET_CASE = var:zg361_case_l_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 1 }
+        }
+    }
+}
+
+zg361_comp_l_try_advance_02_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                EXPECTED_OWNER = var:zg361_case_l_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_l_cycle_serial
+                EXPECTED_CASE = var:zg361_case_l_case_serial
+                EXPECTED_STATE = 2
+            }
+            var:zg361_comp_m085_consumed = 1
+            var:zg361_comp_m086_consumed = 1
+
+        }
+        zg361_case_l_advance_02_effect = {
+            TICKET_OWNER = var:zg361_case_l_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_l_cycle_serial
+            TICKET_CASE = var:zg361_case_l_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 1 }
+        }
+    }
+}
+
+zg361_comp_l_try_advance_03_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                EXPECTED_OWNER = var:zg361_case_l_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_l_cycle_serial
+                EXPECTED_CASE = var:zg361_case_l_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_comp_m087_consumed = 1
+            var:zg361_comp_m088_consumed = 1
+            var:zg361_comp_m089_consumed = 1
+
+        }
+        zg361_case_l_advance_03_effect = {
+            TICKET_OWNER = var:zg361_case_l_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_l_cycle_serial
+            TICKET_CASE = var:zg361_case_l_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_schedule_deadline_effect = {
+            OWNER_VAR = zg361_case_l_owner
+            SUBJECT_VAR = zg361_case_l_subject
+            CYCLE_VAR = zg361_case_l_cycle_serial
+            CASE_VAR = zg361_case_l_case_serial
+            STATE_VAR = zg361_case_l_state
+            ACTIVE_VAR = zg361_case_l_active
+            DEADLINE_OWNER_VAR = zg361_comp_l_deferred_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_l_deferred_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_l_deferred_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_l_deferred_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_l_deferred_deadline_state
+            DEADLINE_DAYS_VAR = zg361_comp_l_deferred_deadline_days
+            DEADLINE_PENDING_VAR = zg361_comp_l_deferred_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_l_deferred_deadline_expired
+            TICKET_OWNER = var:zg361_case_l_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_l_cycle_serial
+            TICKET_CASE = var:zg361_case_l_case_serial
+            TICKET_STATE = 4
+            DAYS = 365
+            EVENT = zg361comp.100
+        }
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 1 }
+        }
+    }
+}
+
+zg361_comp_l_try_advance_04_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                EXPECTED_OWNER = var:zg361_case_l_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_l_cycle_serial
+                EXPECTED_CASE = var:zg361_case_l_case_serial
+                EXPECTED_STATE = 4
+            }
+            var:zg361_comp_m090_consumed = 1
+            var:zg361_comp_m091_consumed = 1
+            var:zg361_comp_l_deferred_resolved = 1
+            var:zg361_comp_l_bonus_conserved = 1
+        }
+        zg361_case_l_advance_04_effect = {
+            TICKET_OWNER = var:zg361_case_l_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_l_cycle_serial
+            TICKET_CASE = var:zg361_case_l_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_portfolio_case_closed_effect = { DOMAIN = 1 }
+        if = { limit = { is_ai = no var:zg361_case_l_owner = { is_ai = no } } trigger_event = { id = zg361comp.900 days = 1 } }
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 1 }
+        }
+    }
+}

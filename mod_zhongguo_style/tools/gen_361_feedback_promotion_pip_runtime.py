@@ -22,6 +22,12 @@ HEADER = "# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.
 READINESS = "static-ready"
 PREFIX = "zg361_pp"
 EVENT_NAMESPACE = "zg361pp"
+LEGACY_EFFECT_FILENAME = "zg361_feedback_promotion_pip_runtime_effects.txt"
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# Any future hard-limit exception must carry both an engineering reason and a
+# concrete CK3 live artifact.  The current B7 layout has no exception.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
 
 
 @dataclass(frozen=True)
@@ -50,6 +56,13 @@ class MechanismSpec:
     c_en: str
     deadlines: tuple[int, ...]
     consumer: str
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
 
 
 DOMAINS: tuple[DomainSpec, ...] = (
@@ -312,6 +325,148 @@ RESPONSE_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
         "subject_disclosure_refused",
     ),
 }
+
+
+MECHANISM_LIFECYCLE_GROUPS: tuple[tuple[int, ...], ...] = (
+    # T: feedback bargaining and promise debt.
+    (146, 147),
+    (148,),
+    (149, 150),
+    (151,),
+    (152, 153),
+    (154,),
+    (155, 156),
+    # U: promotion nomination and prescreen.
+    (157, 158),
+    (159, 160),
+    (161, 162),
+    (163, 164),
+    (165, 166),
+    (167, 168),
+    # V: promotion panels and review politics.
+    (169, 170),
+    (171, 172),
+    (173, 174),
+    (175, 176),
+    (177, 178),
+    (179, 180),
+    # W: PIP initiation, graduation and relapse.
+    (181, 182),
+    (183, 184),
+    (185, 186),
+    (187, 188),
+    (189, 190),
+    (191,),
+)
+
+
+def _mechanism_lifecycle_effect_names(
+    mechanism_ids: tuple[int, ...],
+) -> tuple[str, ...]:
+    names: list[str] = []
+    for mechanism_id in mechanism_ids:
+        names.append(f"zg361_pp_m{mechanism_id:03d}_manager_apply_effect")
+        if mechanism_id in SUBJECT_RESPONSE_IDS:
+            names.extend(
+                (
+                    f"zg361_pp_m{mechanism_id:03d}_subject_response_effect",
+                    f"zg361_pp_m{mechanism_id:03d}_resume_after_subject_effect",
+                )
+            )
+        names.extend(
+            (
+                f"zg361_pp_m{mechanism_id:03d}_core_effect",
+                f"zg361_pp_m{mechanism_id:03d}_consume_effect",
+            )
+        )
+        names.extend(
+            f"zg361_pp_m{mechanism_id:03d}_schedule_audit_{index}_effect"
+            for index, _days in enumerate(
+                MECHANISM_BY_ID[mechanism_id].deadlines, start=1
+            )
+        )
+    return tuple(names)
+
+
+def _build_effect_groups() -> tuple[EffectGroup, ...]:
+    """Build ordered B7 purpose shards from the historical call surface."""
+
+    groups: list[EffectGroup] = []
+
+    def add(slug: str, purpose: str, names: tuple[str, ...]) -> None:
+        ordinal = len(groups) + 1
+        groups.append(
+            EffectGroup(
+                filename=(
+                    "zg361_feedback_promotion_pip_"
+                    f"{ordinal:03d}_{slug}_effects.txt"
+                ),
+                purpose=purpose,
+                effect_names=names,
+            )
+        )
+
+    add(
+        "portfolio_adapter",
+        "portfolio integration adapter",
+        ("zg361_pp_manager_portfolio_adapter_effect",),
+    )
+    add(
+        "pip_terminal_guards",
+        "PIP first-failure and clean-graduation terminal guards",
+        (
+            "zg361_pp_m188_skip_first_failure_effect",
+            "zg361_pp_m189_skip_no_relapse_effect",
+        ),
+    )
+
+    for domain in DOMAINS:
+        stage_spans = (
+            ((1,), (2, 3), (4,))
+            if len(domain.stages) == 4
+            else ((1,), (2, 3), (4, 5))
+        )
+        for span_index, states in enumerate(stage_spans):
+            names: list[str] = []
+            if span_index == 0:
+                names.append(f"zg361_pp_open_{domain.key}_case_effect")
+            for state in states:
+                names.extend(
+                    (
+                        f"zg361_pp_schedule_{domain.key}_stage_{state:02d}_effect",
+                        f"zg361_pp_dispatch_{domain.key}_stage_{state:02d}_effect",
+                        f"zg361_pp_{domain.key}_try_advance_{state:02d}_effect",
+                        f"zg361_pp_{domain.key}_timeout_stage_{state:02d}_effect",
+                    )
+                )
+            if span_index == len(stage_spans) - 1:
+                names.append(f"zg361_pp_resolve_{domain.key}_outcome_effect")
+            stage_slug = "_".join(f"{state:02d}" for state in states)
+            add(
+                f"{domain.key}_stages_{stage_slug}",
+                f"{domain.code} case stages {', '.join(map(str, states))}",
+                tuple(names),
+            )
+
+    for mechanism_ids in MECHANISM_LIFECYCLE_GROUPS:
+        first = mechanism_ids[0]
+        last = mechanism_ids[-1]
+        domain = DOMAIN_BY_ID[first]
+        if any(DOMAIN_BY_ID[mid] != domain for mid in mechanism_ids):
+            raise ValueError("effect purpose shard crosses a T/U/V/W domain")
+        mechanism_slug = (
+            f"m{first:03d}" if first == last else f"m{first:03d}_m{last:03d}"
+        )
+        add(
+            f"{domain.key}_{mechanism_slug}_lifecycle",
+            f"{domain.code} mechanism lifecycle {first}"
+            + ("" if first == last else f"-{last}"),
+            _mechanism_lifecycle_effect_names(mechanism_ids),
+        )
+    return tuple(groups)
+
+
+EFFECT_GROUPS = _build_effect_groups()
 
 
 def validate_specs() -> None:
@@ -2657,6 +2812,13 @@ def render_outcome(domain: DomainSpec, completion_event: int) -> str:
 
 
 def render_effects() -> bytes:
+    """Render the frozen historical monolith for parity validation only.
+
+    Product output is emitted by :func:`render_effect_parts`.  Keeping this
+    aggregate in memory gives all purpose shards one byte-stable source of
+    truth while preserving the original top-level block order.
+    """
+
     sections = [
         "# ZhongGuo 361 T/U/V/W runtime: mechanisms 146--191.",
         "# Routes: 1 evidence-led; 2 political/extractive; 3 bounded policy debt.",
@@ -2683,6 +2845,169 @@ def render_effects() -> bytes:
         for index, days in enumerate(mechanism.deadlines, start=1):
             sections.append(render_audit_schedule(mechanism, index, days))
     return generated("\n\n".join(sections))
+
+
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in generated PP script")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced generated PP script block")
+        index += 1
+    raise ValueError("unterminated generated PP script block")
+
+
+def top_level_effect_blocks(
+    payload: bytes | str,
+) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level effect blocks, ignoring calls and comments."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (
+            text[index].isalnum() or text[index] in "_."
+        ):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        if name.startswith("zg361_pp_") and name.endswith("_effect"):
+            blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(
+    source_blocks: tuple[tuple[str, str], ...],
+) -> None:
+    source_names = tuple(name for name, _block in source_blocks)
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(source_names) != 275 or len(set(source_names)) != 275:
+        raise ValueError(
+            "feedback/promotion/PIP historical render must contain "
+            "275 unique top-level effects"
+        )
+    if len(EFFECT_GROUPS) != 39 or len(filenames) != len(set(filenames)):
+        raise ValueError(
+            "feedback/promotion/PIP runtime must remain split into "
+            "39 uniquely named purpose files"
+        )
+    if configured_names != source_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "feedback/promotion/PIP purpose map changed effect order or coverage: "
+            f"missing={missing}, extra={extra}"
+        )
+    for group in EFFECT_GROUPS:
+        count = len(group.effect_names)
+        if count < 1:
+            raise ValueError(f"empty PP purpose shard: {group.filename}")
+        if count > EFFECT_HARD_MAX:
+            exception = EFFECT_HARD_LIMIT_EXCEPTIONS.get(group.filename)
+            if (
+                exception is None
+                or len(exception) != 2
+                or not exception[0].strip()
+                or not exception[1].strip()
+            ):
+                raise ValueError(
+                    f"{group.filename} exceeds {EFFECT_HARD_MAX} effects "
+                    "without a reason and CK3 live-evidence reference"
+                )
+        elif count > EFFECT_TARGET_MAX:
+            raise ValueError(
+                f"{group.filename} exceeds the {EFFECT_TARGET_MAX}-effect "
+                "B7 target"
+            )
+    oversized = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != oversized:
+        raise ValueError(
+            "feedback/promotion/PIP hard-limit exceptions must exactly match "
+            f"oversized shards: exceptions={sorted(EFFECT_HARD_LIMIT_EXCEPTIONS)}, "
+            f"oversized={sorted(oversized)}"
+        )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render 39 purpose shards without changing any top-level block bytes."""
+
+    source_blocks = top_level_effect_blocks(render_effects())
+    _validate_effect_groups(source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
 
 
 def next_in_stage(mechanism_id: int) -> int | None:
@@ -3382,10 +3707,16 @@ LANGUAGES = (
 
 def outputs() -> dict[Path, bytes]:
     validate_specs()
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_feedback_promotion_pip_runtime_effects.txt": render_effects(),
         MOD_ROOT / "events" / "zg361_feedback_promotion_pip_runtime_events.txt": render_events(),
     }
+    rendered.update(
+        {
+            effects_dir / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
     for language in LANGUAGES:
         rendered[
             MOD_ROOT
@@ -3402,17 +3733,24 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    legacy_effect_path = (
+        MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+    )
     if args.check:
-        if stale:
+        if stale or legacy_effect_path.exists():
             print("RED: stale feedback/promotion/PIP generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            if legacy_effect_path.exists():
+                print(f"{legacy_effect_path.relative_to(MOD_ROOT)} (legacy monolith)")
             return 1
         print("GREEN: feedback/promotion/PIP generated files are current")
         return 0
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+    if legacy_effect_path.exists():
+        legacy_effect_path.unlink()
     print(f"GREEN: generated {len(rendered)} feedback/promotion/PIP runtime files")
     return 0
 

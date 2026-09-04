@@ -1,0 +1,294 @@
+﻿# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.py
+# PURPOSE: T case stages 2, 3.
+
+zg361_pp_schedule_t_stage_02_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_t_owner
+		SUBJECT_VAR = zg361_case_t_subject
+		CYCLE_VAR = zg361_case_t_cycle_serial
+		CASE_VAR = zg361_case_t_case_serial
+		STATE_VAR = zg361_case_t_state
+		ACTIVE_VAR = zg361_case_t_active
+		DEADLINE_OWNER_VAR = zg361_pp_t_stage_2_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_pp_t_stage_2_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_pp_t_stage_2_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_pp_t_stage_2_deadline_case
+		DEADLINE_STATE_VAR = zg361_pp_t_stage_2_deadline_state
+		DEADLINE_DAYS_VAR = zg361_pp_t_stage_2_deadline_days
+		DEADLINE_PENDING_VAR = zg361_pp_t_stage_2_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_pp_t_stage_2_deadline_expired
+		TICKET_OWNER = var:zg361_case_t_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_t_cycle_serial
+		TICKET_CASE = var:zg361_case_t_case_serial
+		TICKET_STATE = 2
+		DAYS = 180
+		EVENT = zg361pp.4002
+	}
+}
+
+zg361_pp_dispatch_t_stage_02_effect = {
+	if = {
+		limit = { var:zg361_case_t_owner = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		# Owner-authorized second AI exception: background resolver only, no GUI.
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_t_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_t_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m149_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_t_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_t_cycle_serial
+	TICKET_CASE = var:zg361_case_t_case_serial
+	TICKET_STATE = 2
+}
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_t_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_t_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m150_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_t_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_t_cycle_serial
+	TICKET_CASE = var:zg361_case_t_case_serial
+	TICKET_STATE = 2
+}
+		save_scope_as = zg361_pp_subject_prompt_subject
+var:zg361_case_t_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
+save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_t_cycle_serial }
+save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_t_case_serial }
+save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 2 }
+if = {
+	limit = { is_ai = yes }
+	zg361_pp_m151_subject_response_effect = { ROUTE = 1 }
+	zg361_pp_m151_resume_after_subject_effect = yes
+}
+else = { trigger_event = { id = zg361pp.5151 days = 1 } }
+	}
+	else_if = {
+		limit = { var:zg361_case_t_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+		# Exactly one visible decision is queued.  Each option schedules only the
+		# next card, so a 46-card popup storm is structurally impossible.
+		save_scope_as = zg361_pp_prompt_subject
+		var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
+		save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
+		save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
+		save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
+		save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 149 }
+		var:zg361_case_t_owner = { trigger_event = { id = zg361pp.149 days = 1 } }
+	}
+}
+
+zg361_pp_t_try_advance_02_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_t_owner
+				SUBJECT_VAR = zg361_case_t_subject
+				CYCLE_VAR = zg361_case_t_cycle_serial
+				CASE_VAR = zg361_case_t_case_serial
+				STATE_VAR = zg361_case_t_state
+				ACTIVE_VAR = zg361_case_t_active
+				EXPECTED_OWNER = var:zg361_case_t_owner
+				EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_t_cycle_serial
+				EXPECTED_CASE = var:zg361_case_t_case_serial
+				EXPECTED_STATE = 2
+			}
+			var:zg361_pp_m149_consumed = 1
+			var:zg361_pp_m150_consumed = 1
+			var:zg361_pp_m151_consumed = 1
+		}
+		zg361_case_t_advance_02_effect = {
+			TICKET_OWNER = var:zg361_case_t_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_t_cycle_serial
+			TICKET_CASE = var:zg361_case_t_case_serial
+		}
+		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_schedule_t_stage_03_effect = yes
+			zg361_pp_dispatch_t_stage_03_effect = yes }
+	}
+}
+
+zg361_pp_t_timeout_stage_02_effect = {
+	if = {
+		limit = { var:zg361_pp_m149_consumed = 0 }
+		zg361_pp_m149_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_t_stage_2_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_t_stage_2_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_t_stage_2_deadline_cycle
+			TICKET_CASE = var:zg361_pp_t_stage_2_deadline_case
+			TICKET_STATE = var:zg361_pp_t_stage_2_deadline_state
+		}
+	}
+	if = {
+		limit = { var:zg361_pp_m150_consumed = 0 }
+		zg361_pp_m150_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_t_stage_2_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_t_stage_2_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_t_stage_2_deadline_cycle
+			TICKET_CASE = var:zg361_pp_t_stage_2_deadline_case
+			TICKET_STATE = var:zg361_pp_t_stage_2_deadline_state
+		}
+	}
+	if = {
+		limit = { var:zg361_pp_m151_consumed = 0 }
+		zg361_pp_m151_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_t_stage_2_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_t_stage_2_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_t_stage_2_deadline_cycle
+			TICKET_CASE = var:zg361_pp_t_stage_2_deadline_case
+			TICKET_STATE = var:zg361_pp_t_stage_2_deadline_state
+		}
+	}
+	debug_log = "ZG361PP: exact T stage 2 deadline consumed"
+}
+
+zg361_pp_schedule_t_stage_03_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_t_owner
+		SUBJECT_VAR = zg361_case_t_subject
+		CYCLE_VAR = zg361_case_t_cycle_serial
+		CASE_VAR = zg361_case_t_case_serial
+		STATE_VAR = zg361_case_t_state
+		ACTIVE_VAR = zg361_case_t_active
+		DEADLINE_OWNER_VAR = zg361_pp_t_stage_3_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_pp_t_stage_3_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_pp_t_stage_3_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_pp_t_stage_3_deadline_case
+		DEADLINE_STATE_VAR = zg361_pp_t_stage_3_deadline_state
+		DEADLINE_DAYS_VAR = zg361_pp_t_stage_3_deadline_days
+		DEADLINE_PENDING_VAR = zg361_pp_t_stage_3_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_pp_t_stage_3_deadline_expired
+		TICKET_OWNER = var:zg361_case_t_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_t_cycle_serial
+		TICKET_CASE = var:zg361_case_t_case_serial
+		TICKET_STATE = 3
+		DAYS = 90
+		EVENT = zg361pp.4003
+	}
+}
+
+zg361_pp_dispatch_t_stage_03_effect = {
+	if = {
+		limit = { var:zg361_case_t_owner = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		# Owner-authorized second AI exception: background resolver only, no GUI.
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_t_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_t_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m152_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_t_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_t_cycle_serial
+	TICKET_CASE = var:zg361_case_t_case_serial
+	TICKET_STATE = 3
+}
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_t_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_t_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m153_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_t_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_t_cycle_serial
+	TICKET_CASE = var:zg361_case_t_case_serial
+	TICKET_STATE = 3
+}
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_t_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_t_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m154_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_t_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_t_cycle_serial
+	TICKET_CASE = var:zg361_case_t_case_serial
+	TICKET_STATE = 3
+}
+	}
+	else_if = {
+		limit = { var:zg361_case_t_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+		# Exactly one visible decision is queued.  Each option schedules only the
+		# next card, so a 46-card popup storm is structurally impossible.
+		save_scope_as = zg361_pp_prompt_subject
+		var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
+		save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
+		save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
+		save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
+		save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 152 }
+		var:zg361_case_t_owner = { trigger_event = { id = zg361pp.152 days = 1 } }
+	}
+}
+
+zg361_pp_t_try_advance_03_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_t_owner
+				SUBJECT_VAR = zg361_case_t_subject
+				CYCLE_VAR = zg361_case_t_cycle_serial
+				CASE_VAR = zg361_case_t_case_serial
+				STATE_VAR = zg361_case_t_state
+				ACTIVE_VAR = zg361_case_t_active
+				EXPECTED_OWNER = var:zg361_case_t_owner
+				EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_t_cycle_serial
+				EXPECTED_CASE = var:zg361_case_t_case_serial
+				EXPECTED_STATE = 3
+			}
+			var:zg361_pp_m152_consumed = 1
+			var:zg361_pp_m153_consumed = 1
+			var:zg361_pp_m154_consumed = 1
+		}
+		zg361_case_t_advance_03_effect = {
+			TICKET_OWNER = var:zg361_case_t_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_t_cycle_serial
+			TICKET_CASE = var:zg361_case_t_case_serial
+		}
+		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_schedule_t_stage_04_effect = yes
+			zg361_pp_dispatch_t_stage_04_effect = yes }
+	}
+}
+
+zg361_pp_t_timeout_stage_03_effect = {
+	if = {
+		limit = { var:zg361_pp_m152_consumed = 0 }
+		zg361_pp_m152_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_t_stage_3_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_t_stage_3_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_t_stage_3_deadline_cycle
+			TICKET_CASE = var:zg361_pp_t_stage_3_deadline_case
+			TICKET_STATE = var:zg361_pp_t_stage_3_deadline_state
+		}
+	}
+	if = {
+		limit = { var:zg361_pp_m153_consumed = 0 }
+		zg361_pp_m153_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_t_stage_3_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_t_stage_3_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_t_stage_3_deadline_cycle
+			TICKET_CASE = var:zg361_pp_t_stage_3_deadline_case
+			TICKET_STATE = var:zg361_pp_t_stage_3_deadline_state
+		}
+	}
+	if = {
+		limit = { var:zg361_pp_m154_consumed = 0 }
+		zg361_pp_m154_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_t_stage_3_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_t_stage_3_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_t_stage_3_deadline_cycle
+			TICKET_CASE = var:zg361_pp_t_stage_3_deadline_case
+			TICKET_STATE = var:zg361_pp_t_stage_3_deadline_state
+		}
+	}
+	debug_log = "ZG361PP: exact T stage 3 deadline consumed"
+}

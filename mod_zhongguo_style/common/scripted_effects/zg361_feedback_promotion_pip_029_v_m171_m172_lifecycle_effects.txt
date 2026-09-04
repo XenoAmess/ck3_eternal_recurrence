@@ -1,0 +1,723 @@
+﻿# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.py
+# PURPOSE: V mechanism lifecycle 171-172.
+
+zg361_pp_m171_manager_apply_effect = {
+	remove_variable = zg361_pp_runtime_applied
+	if = {
+		limit = {
+			root = { zg361_is_celestial_liege_trigger = yes }
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_v_owner
+				SUBJECT_VAR = zg361_case_v_subject
+				CYCLE_VAR = zg361_case_v_cycle_serial
+				CASE_VAR = zg361_case_v_case_serial
+				STATE_VAR = zg361_case_v_state
+				ACTIVE_VAR = zg361_case_v_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+		}
+		zg361_pp_m171_core_effect = {
+			ROUTE = $ROUTE$
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+		}
+	}
+}
+
+zg361_pp_m171_core_effect = {
+	save_temporary_scope_value_as = { name = zg361_pp_route value = $ROUTE$ }
+	remove_variable = zg361_pp_runtime_applied
+	set_variable = { name = zg361_pp_cost_owner value = var:zg361_case_v_owner }
+	if = {
+		limit = {
+			OR = { scope:zg361_pp_route = 1 scope:zg361_pp_route = 2 scope:zg361_pp_route = 3 }
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_v_owner
+				SUBJECT_VAR = zg361_case_v_subject
+				CYCLE_VAR = zg361_case_v_cycle_serial
+				CASE_VAR = zg361_case_v_case_serial
+				STATE_VAR = zg361_case_v_state
+				ACTIVE_VAR = zg361_case_v_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			var:zg361_pp_m171_receipt_active = 0
+			trigger_if = {
+				limit = { scope:zg361_pp_route = 1 }
+				var:zg361_pp_m170_selection_replay_ok = 1
+				var:zg361_pp_m170_panel_unique = 1
+				has_variable = zg361_pp_v_panel_pool_4
+				NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_1 }
+				NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_2 }
+				NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_3 }
+			}
+			trigger_else_if = {
+				limit = { scope:zg361_pp_route = 2 }
+				var:zg361_pp_m170_selection_replay_ok = 1
+				var:zg361_pp_m170_panel_unique = 1
+			}
+			trigger_else = { always = yes }
+			trigger_if = {
+				limit = { NOT = { scope:zg361_pp_route = 3 } }
+				var:zg361_pp_v_operation_capacity_available >= 1
+				var:zg361_pp_v_capacity_hours_available >= 1
+			}
+			trigger_else = { always = yes }
+			trigger_if = {
+				limit = { scope:zg361_pp_route = 1 }
+				always = yes
+			}
+			trigger_else = { always = yes }
+			trigger_if = {
+				limit = { scope:zg361_pp_route = 2 }
+				always = yes
+			}
+			trigger_else = { always = yes }
+			always = yes
+		}
+		if = {
+			limit = { NOT = { scope:zg361_pp_route = 3 } }
+			zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_v_owner
+			SUBJECT_VAR = zg361_case_v_subject
+			CYCLE_VAR = zg361_case_v_cycle_serial
+			CASE_VAR = zg361_case_v_case_serial
+			STATE_VAR = zg361_case_v_state
+			ACTIVE_VAR = zg361_case_v_active
+			REVISION_VAR = zg361_case_v_revision
+			TIMELINE_VAR = zg361_case_v_timeline_serial
+			FEEDBACK_VAR = zg361_case_v_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_v_last_operation
+			LAST_CHOICE_VAR = zg361_case_v_last_choice
+			RECEIPT_OWNER_VAR = zg361_pp_m171_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_pp_m171_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_pp_m171_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_pp_m171_receipt_case
+			RECEIPT_STATE_VAR = zg361_pp_m171_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_pp_m171_receipt_route
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = scope:zg361_pp_route
+			OPERATION_ID = 171
+			}
+		}
+		else = {
+			# Route C is a policy-debt receipt, not a disguised business mutation.  It
+			# deliberately does not call record_operation and therefore cannot change
+			# the case revision, last operation, resource ledger, or typed payload.
+			set_variable = { name = zg361_case_kernel_applied value = 1 }
+			set_variable = { name = zg361_pp_m171_receipt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_pp_m171_receipt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_pp_m171_receipt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_pp_m171_receipt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_pp_m171_receipt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_pp_m171_receipt_route value = 3 }
+		}
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			if = {
+				limit = { NOT = { scope:zg361_pp_route = 3 } }
+				zg361_case_kernel_reserve_transaction_effect = {
+					OWNER_VAR = zg361_case_v_owner
+					SUBJECT_VAR = zg361_case_v_subject
+					CYCLE_VAR = zg361_case_v_cycle_serial
+					CASE_VAR = zg361_case_v_case_serial
+					STATE_VAR = zg361_case_v_state
+					ACTIVE_VAR = zg361_case_v_active
+					REVISION_VAR = zg361_case_v_revision
+					AVAILABLE_VAR = zg361_pp_v_operation_capacity_available
+					RESERVED_VAR = zg361_pp_v_operation_capacity_reserved
+					RECEIPT_AMOUNT_VAR = zg361_pp_m171_operation_capacity_amount
+					RECEIPT_STATUS_VAR = zg361_pp_m171_operation_capacity_status
+					RECEIPT_OWNER_VAR = zg361_pp_m171_operation_capacity_owner
+					RECEIPT_CYCLE_VAR = zg361_pp_m171_operation_capacity_cycle
+					RECEIPT_CASE_VAR = zg361_pp_m171_operation_capacity_case
+					TICKET_OWNER = $TICKET_OWNER$
+					TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$
+					TICKET_CASE = $TICKET_CASE$
+					TICKET_STATE = $TICKET_STATE$
+					AMOUNT = 1
+				}
+				if = {
+					# Authority contract: route A remains an exact reservation (status 1);
+					# route B settles at operation time (status 2).
+					limit = { var:zg361_case_kernel_applied = 1 scope:zg361_pp_route = 2 }
+					zg361_case_kernel_settle_transaction_effect = {
+						OWNER_VAR = zg361_case_v_owner
+						SUBJECT_VAR = zg361_case_v_subject
+						CYCLE_VAR = zg361_case_v_cycle_serial
+						CASE_VAR = zg361_case_v_case_serial
+						STATE_VAR = zg361_case_v_state
+						ACTIVE_VAR = zg361_case_v_active
+						REVISION_VAR = zg361_case_v_revision
+						RESERVED_VAR = zg361_pp_v_operation_capacity_reserved
+						SETTLED_VAR = zg361_pp_v_operation_capacity_settled
+						RECEIPT_AMOUNT_VAR = zg361_pp_m171_operation_capacity_amount
+						RECEIPT_STATUS_VAR = zg361_pp_m171_operation_capacity_status
+						TICKET_OWNER = $TICKET_OWNER$
+						TICKET_SUBJECT = $TICKET_SUBJECT$
+						TICKET_CYCLE = $TICKET_CYCLE$
+						TICKET_CASE = $TICKET_CASE$
+						TICKET_STATE = $TICKET_STATE$
+					}
+				}
+				zg361_case_kernel_reserve_transaction_effect = {
+					OWNER_VAR = zg361_case_v_owner
+					SUBJECT_VAR = zg361_case_v_subject
+					CYCLE_VAR = zg361_case_v_cycle_serial
+					CASE_VAR = zg361_case_v_case_serial
+					STATE_VAR = zg361_case_v_state
+					ACTIVE_VAR = zg361_case_v_active
+					REVISION_VAR = zg361_case_v_revision
+					AVAILABLE_VAR = zg361_pp_v_capacity_hours_available
+					RESERVED_VAR = zg361_pp_v_capacity_hours_reserved
+					RECEIPT_AMOUNT_VAR = zg361_pp_m171_capacity_hours_amount
+					RECEIPT_STATUS_VAR = zg361_pp_m171_capacity_hours_status
+					RECEIPT_OWNER_VAR = zg361_pp_m171_capacity_hours_owner
+					RECEIPT_CYCLE_VAR = zg361_pp_m171_capacity_hours_cycle
+					RECEIPT_CASE_VAR = zg361_pp_m171_capacity_hours_case
+					TICKET_OWNER = $TICKET_OWNER$
+					TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$
+					TICKET_CASE = $TICKET_CASE$
+					TICKET_STATE = $TICKET_STATE$
+					AMOUNT = 1
+				}
+				if = {
+					# Authority contract: route A remains an exact reservation (status 1);
+					# route B settles at operation time (status 2).
+					limit = { var:zg361_case_kernel_applied = 1 scope:zg361_pp_route = 2 }
+					zg361_case_kernel_settle_transaction_effect = {
+						OWNER_VAR = zg361_case_v_owner
+						SUBJECT_VAR = zg361_case_v_subject
+						CYCLE_VAR = zg361_case_v_cycle_serial
+						CASE_VAR = zg361_case_v_case_serial
+						STATE_VAR = zg361_case_v_state
+						ACTIVE_VAR = zg361_case_v_active
+						REVISION_VAR = zg361_case_v_revision
+						RESERVED_VAR = zg361_pp_v_capacity_hours_reserved
+						SETTLED_VAR = zg361_pp_v_capacity_hours_settled
+						RECEIPT_AMOUNT_VAR = zg361_pp_m171_capacity_hours_amount
+						RECEIPT_STATUS_VAR = zg361_pp_m171_capacity_hours_status
+						TICKET_OWNER = $TICKET_OWNER$
+						TICKET_SUBJECT = $TICKET_SUBJECT$
+						TICKET_CYCLE = $TICKET_CYCLE$
+						TICKET_CASE = $TICKET_CASE$
+						TICKET_STATE = $TICKET_STATE$
+					}
+				}
+				if = {
+					limit = { scope:zg361_pp_route = 1 }
+
+				}
+				if = {
+					limit = { scope:zg361_pp_route = 2 }
+
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = { scope:zg361_pp_route = 1 }
+						var:zg361_pp_m171_operation_capacity_status = 1
+					}
+					trigger_else_if = {
+						limit = { scope:zg361_pp_route = 2 }
+						var:zg361_pp_m171_operation_capacity_status = 2
+					}
+					trigger_else = { always = yes }
+					trigger_if = {
+						limit = { scope:zg361_pp_route = 1 }
+						var:zg361_pp_m171_capacity_hours_status = 1
+					}
+					trigger_else_if = {
+						limit = { scope:zg361_pp_route = 2 }
+						var:zg361_pp_m171_capacity_hours_status = 2
+					}
+					trigger_else = { always = yes }
+					always = yes
+					always = yes
+				}
+				set_variable = { name = zg361_pp_m171_receipt_active value = 1 }
+				set_variable = { name = zg361_pp_m171_route value = scope:zg361_pp_route }
+				if = {
+					limit = { scope:zg361_pp_route = 1 }
+					set_variable = { name = zg361_pp_m171_panel_recusal value = 1 }
+					change_variable = { name = zg361_pp_v_evidence_led add = 1 }
+				}
+				else_if = {
+					limit = { scope:zg361_pp_route = 2 }
+					set_variable = { name = zg361_pp_m171_panel_recusal value = 2 }
+					change_variable = { name = zg361_pp_v_political add = 1 }
+				}
+				else = {
+					set_variable = { name = zg361_pp_m171_deferred value = 1 }
+					set_variable = { name = zg361_pp_m171_policy_debt_due_days value = 90 }
+					change_variable = { name = zg361_pp_v_policy_debt add = 1 }
+				}
+				if = {
+					limit = { NOT = { scope:zg361_pp_route = 3 } }
+					set_variable = { name = zg361_pp_m171_object_owner value = var:zg361_case_v_owner }
+					set_variable = { name = zg361_pp_m171_object_subject value = this }
+					set_variable = { name = zg361_pp_m171_object_cycle value = var:zg361_case_v_cycle_serial }
+					set_variable = { name = zg361_pp_m171_object_case value = var:zg361_case_v_case_serial }
+					set_variable = { name = zg361_pp_m171_object_state value = 1 }
+					set_variable = { name = zg361_pp_m171_conflicts_disclosed value = 1 }
+					set_variable = { name = zg361_pp_m171_recused_panelist value = var:zg361_pp_m170_panelist_1 }
+					set_variable = { name = zg361_pp_m171_replacement_panelist value = var:zg361_pp_v_panel_pool_4 }
+					set_variable = { name = zg361_pp_m171_active_panel_1 value = var:zg361_pp_v_panel_pool_4 }
+					set_variable = { name = zg361_pp_m171_active_panel_2 value = var:zg361_pp_m170_panelist_2 }
+					set_variable = { name = zg361_pp_m171_active_panel_3 value = var:zg361_pp_m170_panelist_3 }
+					set_variable = { name = zg361_pp_m171_active_panel_count value = 3 }
+					set_variable = { name = zg361_pp_m171_active_panel_revision value = { value = var:zg361_case_v_revision add = 1 } }
+					set_variable = { name = zg361_pp_m171_replacement_same_kind value = 1 }
+					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m171_conflicts_disclosed value = 0 } set_variable = { name = zg361_pp_m171_active_panel_1 value = var:zg361_pp_m170_panelist_1 } set_variable = { name = zg361_pp_m171_rereview_debt value = 1 } set_variable = { name = zg361_pp_m171_active_panel_revision value = { value = var:zg361_pp_m171_active_panel_revision add = 1 } } }
+
+				}
+
+				zg361_pp_m171_consume_effect = yes
+				zg361_pp_m171_schedule_audit_1_effect = yes
+				set_variable = { name = zg361_pp_runtime_applied value = 1 }
+			}
+		}
+	}
+}
+
+zg361_pp_m171_consume_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_v_owner
+				SUBJECT_VAR = zg361_case_v_subject
+				CYCLE_VAR = zg361_case_v_cycle_serial
+				CASE_VAR = zg361_case_v_case_serial
+				STATE_VAR = zg361_case_v_state
+				ACTIVE_VAR = zg361_case_v_active
+				EXPECTED_OWNER = var:zg361_pp_m171_receipt_owner
+				EXPECTED_SUBJECT = var:zg361_pp_m171_receipt_subject
+				EXPECTED_CYCLE = var:zg361_pp_m171_receipt_cycle
+				EXPECTED_CASE = var:zg361_pp_m171_receipt_case
+				EXPECTED_STATE = var:zg361_pp_m171_receipt_state
+			}
+			var:zg361_pp_m171_receipt_active = 1
+			var:zg361_pp_m171_consumed = 0
+			has_variable = zg361_pp_m171_route
+			always = yes
+			trigger_if = {
+				limit = { NOT = { var:zg361_pp_m171_route = 3 } }
+				has_variable = zg361_pp_m171_panel_recusal
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_pp_m171_consumed value = 1 }
+		set_variable = { name = zg361_pp_m171_consumer_revision value = var:zg361_case_v_revision }
+
+		if = { limit = { NOT = { var:zg361_pp_m171_route = 3 } } set_variable = { name = zg361_pp_m171_consumer_value value = var:zg361_pp_m171_panel_recusal } }
+		change_variable = { name = zg361_pp_v_completed add = 1 }
+		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
+		change_variable = { name = zg361_pp_v_resource_partition add = var:zg361_pp_v_operation_capacity_reserved }
+		change_variable = { name = zg361_pp_v_resource_partition add = var:zg361_pp_v_operation_capacity_settled }
+		set_variable = { name = zg361_pp_v_resource_conserved value = 0 }
+		if = { limit = { var:zg361_pp_v_resource_partition = var:zg361_pp_v_authorized } set_variable = { name = zg361_pp_v_resource_conserved value = 1 } }
+		set_variable = { name = zg361_pp_v_capacity_hours_partition value = var:zg361_pp_v_capacity_hours_available }
+		change_variable = { name = zg361_pp_v_capacity_hours_partition add = var:zg361_pp_v_capacity_hours_reserved }
+		change_variable = { name = zg361_pp_v_capacity_hours_partition add = var:zg361_pp_v_capacity_hours_settled }
+		set_variable = { name = zg361_pp_v_capacity_hours_conserved value = 0 }
+		if = { limit = { var:zg361_pp_v_capacity_hours_partition = var:zg361_pp_v_capacity_hours_authorized } set_variable = { name = zg361_pp_v_capacity_hours_conserved value = 1 } }
+		zg361_pp_v_try_advance_01_effect = yes
+	}
+}
+
+zg361_pp_m171_schedule_audit_1_effect = {
+	if = {
+		limit = { var:zg361_pp_m171_audit_1_state = 0 var:zg361_pp_m171_receipt_active = 1 }
+		set_variable = { name = zg361_pp_m171_audit_1_owner value = var:zg361_case_v_owner }
+		set_variable = { name = zg361_pp_m171_audit_1_subject value = this }
+		set_variable = { name = zg361_pp_m171_audit_1_cycle value = var:zg361_case_v_cycle_serial }
+		set_variable = { name = zg361_pp_m171_audit_1_case value = var:zg361_case_v_case_serial }
+		set_variable = { name = zg361_pp_m171_audit_1_expected_state value = 1 }
+		set_variable = { name = zg361_pp_m171_audit_1_state value = 1 }
+		if = {
+		limit = { var:zg361_pp_m171_route = 3 }
+		trigger_event = { id = zg361pp.2171 days = 90 }
+	}
+	else = { trigger_event = { id = zg361pp.2171 days = 30 } }
+	}
+}
+
+zg361_pp_m172_manager_apply_effect = {
+	remove_variable = zg361_pp_runtime_applied
+	if = {
+		limit = {
+			root = { zg361_is_celestial_liege_trigger = yes }
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_v_owner
+				SUBJECT_VAR = zg361_case_v_subject
+				CYCLE_VAR = zg361_case_v_cycle_serial
+				CASE_VAR = zg361_case_v_case_serial
+				STATE_VAR = zg361_case_v_state
+				ACTIVE_VAR = zg361_case_v_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+		}
+		zg361_pp_m172_core_effect = {
+			ROUTE = $ROUTE$
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+		}
+	}
+}
+
+zg361_pp_m172_core_effect = {
+	save_temporary_scope_value_as = { name = zg361_pp_route value = $ROUTE$ }
+	remove_variable = zg361_pp_runtime_applied
+	set_variable = { name = zg361_pp_cost_owner value = var:zg361_case_v_owner }
+	if = {
+		limit = {
+			OR = { scope:zg361_pp_route = 1 scope:zg361_pp_route = 2 scope:zg361_pp_route = 3 }
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_v_owner
+				SUBJECT_VAR = zg361_case_v_subject
+				CYCLE_VAR = zg361_case_v_cycle_serial
+				CASE_VAR = zg361_case_v_case_serial
+				STATE_VAR = zg361_case_v_state
+				ACTIVE_VAR = zg361_case_v_active
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			var:zg361_pp_m172_receipt_active = 0
+			trigger_if = {
+				limit = { scope:zg361_pp_route = 1 }
+				var:zg361_pp_m169_weight_check = 100
+				var:zg361_pp_m171_active_panel_count = 3
+				has_variable = zg361_pp_m171_active_panel_revision
+			}
+			trigger_else_if = {
+				limit = { scope:zg361_pp_route = 2 }
+				var:zg361_pp_m169_weight_check = 100
+				var:zg361_pp_m171_active_panel_count = 3
+				has_variable = zg361_pp_m171_active_panel_revision
+			}
+			trigger_else = { always = yes }
+			trigger_if = {
+				limit = { NOT = { scope:zg361_pp_route = 3 } }
+				var:zg361_pp_v_operation_capacity_available >= 1
+				var:zg361_pp_v_capacity_hours_available >= 1
+			}
+			trigger_else = { always = yes }
+			trigger_if = {
+				limit = { scope:zg361_pp_route = 1 }
+				always = yes
+			}
+			trigger_else = { always = yes }
+			trigger_if = {
+				limit = { scope:zg361_pp_route = 2 }
+				always = yes
+			}
+			trigger_else = { always = yes }
+			always = yes
+		}
+		if = {
+			limit = { NOT = { scope:zg361_pp_route = 3 } }
+			zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_v_owner
+			SUBJECT_VAR = zg361_case_v_subject
+			CYCLE_VAR = zg361_case_v_cycle_serial
+			CASE_VAR = zg361_case_v_case_serial
+			STATE_VAR = zg361_case_v_state
+			ACTIVE_VAR = zg361_case_v_active
+			REVISION_VAR = zg361_case_v_revision
+			TIMELINE_VAR = zg361_case_v_timeline_serial
+			FEEDBACK_VAR = zg361_case_v_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_v_last_operation
+			LAST_CHOICE_VAR = zg361_case_v_last_choice
+			RECEIPT_OWNER_VAR = zg361_pp_m172_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_pp_m172_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_pp_m172_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_pp_m172_receipt_case
+			RECEIPT_STATE_VAR = zg361_pp_m172_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_pp_m172_receipt_route
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+			TICKET_STATE = $TICKET_STATE$
+			CHOICE = scope:zg361_pp_route
+			OPERATION_ID = 172
+			}
+		}
+		else = {
+			# Route C is a policy-debt receipt, not a disguised business mutation.  It
+			# deliberately does not call record_operation and therefore cannot change
+			# the case revision, last operation, resource ledger, or typed payload.
+			set_variable = { name = zg361_case_kernel_applied value = 1 }
+			set_variable = { name = zg361_pp_m172_receipt_owner value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_pp_m172_receipt_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_pp_m172_receipt_cycle value = $TICKET_CYCLE$ }
+			set_variable = { name = zg361_pp_m172_receipt_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_pp_m172_receipt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_pp_m172_receipt_route value = 3 }
+		}
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			if = {
+				limit = { NOT = { scope:zg361_pp_route = 3 } }
+				zg361_case_kernel_reserve_transaction_effect = {
+					OWNER_VAR = zg361_case_v_owner
+					SUBJECT_VAR = zg361_case_v_subject
+					CYCLE_VAR = zg361_case_v_cycle_serial
+					CASE_VAR = zg361_case_v_case_serial
+					STATE_VAR = zg361_case_v_state
+					ACTIVE_VAR = zg361_case_v_active
+					REVISION_VAR = zg361_case_v_revision
+					AVAILABLE_VAR = zg361_pp_v_operation_capacity_available
+					RESERVED_VAR = zg361_pp_v_operation_capacity_reserved
+					RECEIPT_AMOUNT_VAR = zg361_pp_m172_operation_capacity_amount
+					RECEIPT_STATUS_VAR = zg361_pp_m172_operation_capacity_status
+					RECEIPT_OWNER_VAR = zg361_pp_m172_operation_capacity_owner
+					RECEIPT_CYCLE_VAR = zg361_pp_m172_operation_capacity_cycle
+					RECEIPT_CASE_VAR = zg361_pp_m172_operation_capacity_case
+					TICKET_OWNER = $TICKET_OWNER$
+					TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$
+					TICKET_CASE = $TICKET_CASE$
+					TICKET_STATE = $TICKET_STATE$
+					AMOUNT = 1
+				}
+				if = {
+					# Authority contract: route A remains an exact reservation (status 1);
+					# route B settles at operation time (status 2).
+					limit = { var:zg361_case_kernel_applied = 1 scope:zg361_pp_route = 2 }
+					zg361_case_kernel_settle_transaction_effect = {
+						OWNER_VAR = zg361_case_v_owner
+						SUBJECT_VAR = zg361_case_v_subject
+						CYCLE_VAR = zg361_case_v_cycle_serial
+						CASE_VAR = zg361_case_v_case_serial
+						STATE_VAR = zg361_case_v_state
+						ACTIVE_VAR = zg361_case_v_active
+						REVISION_VAR = zg361_case_v_revision
+						RESERVED_VAR = zg361_pp_v_operation_capacity_reserved
+						SETTLED_VAR = zg361_pp_v_operation_capacity_settled
+						RECEIPT_AMOUNT_VAR = zg361_pp_m172_operation_capacity_amount
+						RECEIPT_STATUS_VAR = zg361_pp_m172_operation_capacity_status
+						TICKET_OWNER = $TICKET_OWNER$
+						TICKET_SUBJECT = $TICKET_SUBJECT$
+						TICKET_CYCLE = $TICKET_CYCLE$
+						TICKET_CASE = $TICKET_CASE$
+						TICKET_STATE = $TICKET_STATE$
+					}
+				}
+				zg361_case_kernel_reserve_transaction_effect = {
+					OWNER_VAR = zg361_case_v_owner
+					SUBJECT_VAR = zg361_case_v_subject
+					CYCLE_VAR = zg361_case_v_cycle_serial
+					CASE_VAR = zg361_case_v_case_serial
+					STATE_VAR = zg361_case_v_state
+					ACTIVE_VAR = zg361_case_v_active
+					REVISION_VAR = zg361_case_v_revision
+					AVAILABLE_VAR = zg361_pp_v_capacity_hours_available
+					RESERVED_VAR = zg361_pp_v_capacity_hours_reserved
+					RECEIPT_AMOUNT_VAR = zg361_pp_m172_capacity_hours_amount
+					RECEIPT_STATUS_VAR = zg361_pp_m172_capacity_hours_status
+					RECEIPT_OWNER_VAR = zg361_pp_m172_capacity_hours_owner
+					RECEIPT_CYCLE_VAR = zg361_pp_m172_capacity_hours_cycle
+					RECEIPT_CASE_VAR = zg361_pp_m172_capacity_hours_case
+					TICKET_OWNER = $TICKET_OWNER$
+					TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$
+					TICKET_CASE = $TICKET_CASE$
+					TICKET_STATE = $TICKET_STATE$
+					AMOUNT = 1
+				}
+				if = {
+					# Authority contract: route A remains an exact reservation (status 1);
+					# route B settles at operation time (status 2).
+					limit = { var:zg361_case_kernel_applied = 1 scope:zg361_pp_route = 2 }
+					zg361_case_kernel_settle_transaction_effect = {
+						OWNER_VAR = zg361_case_v_owner
+						SUBJECT_VAR = zg361_case_v_subject
+						CYCLE_VAR = zg361_case_v_cycle_serial
+						CASE_VAR = zg361_case_v_case_serial
+						STATE_VAR = zg361_case_v_state
+						ACTIVE_VAR = zg361_case_v_active
+						REVISION_VAR = zg361_case_v_revision
+						RESERVED_VAR = zg361_pp_v_capacity_hours_reserved
+						SETTLED_VAR = zg361_pp_v_capacity_hours_settled
+						RECEIPT_AMOUNT_VAR = zg361_pp_m172_capacity_hours_amount
+						RECEIPT_STATUS_VAR = zg361_pp_m172_capacity_hours_status
+						TICKET_OWNER = $TICKET_OWNER$
+						TICKET_SUBJECT = $TICKET_SUBJECT$
+						TICKET_CYCLE = $TICKET_CYCLE$
+						TICKET_CASE = $TICKET_CASE$
+						TICKET_STATE = $TICKET_STATE$
+					}
+				}
+				if = {
+					limit = { scope:zg361_pp_route = 1 }
+
+				}
+				if = {
+					limit = { scope:zg361_pp_route = 2 }
+
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = { scope:zg361_pp_route = 1 }
+						var:zg361_pp_m172_operation_capacity_status = 1
+					}
+					trigger_else_if = {
+						limit = { scope:zg361_pp_route = 2 }
+						var:zg361_pp_m172_operation_capacity_status = 2
+					}
+					trigger_else = { always = yes }
+					trigger_if = {
+						limit = { scope:zg361_pp_route = 1 }
+						var:zg361_pp_m172_capacity_hours_status = 1
+					}
+					trigger_else_if = {
+						limit = { scope:zg361_pp_route = 2 }
+						var:zg361_pp_m172_capacity_hours_status = 2
+					}
+					trigger_else = { always = yes }
+					always = yes
+					always = yes
+				}
+				set_variable = { name = zg361_pp_m172_receipt_active value = 1 }
+				set_variable = { name = zg361_pp_m172_route value = scope:zg361_pp_route }
+				if = {
+					limit = { scope:zg361_pp_route = 1 }
+					set_variable = { name = zg361_pp_m172_decision_rule value = 1 }
+					change_variable = { name = zg361_pp_v_evidence_led add = 1 }
+				}
+				else_if = {
+					limit = { scope:zg361_pp_route = 2 }
+					set_variable = { name = zg361_pp_m172_decision_rule value = 2 }
+					change_variable = { name = zg361_pp_v_political add = 1 }
+				}
+				else = {
+					set_variable = { name = zg361_pp_m172_deferred value = 1 }
+					set_variable = { name = zg361_pp_m172_policy_debt_due_days value = 180 }
+					change_variable = { name = zg361_pp_v_policy_debt add = 1 }
+				}
+				if = {
+					limit = { NOT = { scope:zg361_pp_route = 3 } }
+					set_variable = { name = zg361_pp_m172_object_owner value = var:zg361_case_v_owner }
+					set_variable = { name = zg361_pp_m172_object_subject value = this }
+					set_variable = { name = zg361_pp_m172_object_cycle value = var:zg361_case_v_cycle_serial }
+					set_variable = { name = zg361_pp_m172_object_case value = var:zg361_case_v_case_serial }
+					set_variable = { name = zg361_pp_m172_object_state value = 2 }
+					set_variable = { name = zg361_pp_m172_rule_frozen_before_vote value = 1 }
+					set_variable = { name = zg361_pp_m172_decision_rule_code value = 2 }
+					set_variable = { name = zg361_pp_m172_veto_reason_required value = 1 }
+					set_variable = { name = zg361_pp_m172_expert_weight_consumed value = var:zg361_pp_m169_expert_weight }
+					set_variable = { name = zg361_pp_m172_external_weight_consumed value = var:zg361_pp_m169_external_weight }
+					set_variable = { name = zg361_pp_m172_panel_weight_check value = var:zg361_pp_m172_expert_weight_consumed }
+					change_variable = { name = zg361_pp_m172_panel_weight_check add = var:zg361_pp_m172_external_weight_consumed }
+					set_variable = { name = zg361_pp_m172_active_panel_revision_consumed value = var:zg361_pp_m171_active_panel_revision }
+					set_variable = { name = zg361_pp_m172_active_panel_count_consumed value = var:zg361_pp_m171_active_panel_count }
+					set_variable = { name = zg361_pp_m172_active_panel_1_consumed value = var:zg361_pp_m171_active_panel_1 }
+					set_variable = { name = zg361_pp_m172_active_panel_2_consumed value = var:zg361_pp_m171_active_panel_2 }
+					set_variable = { name = zg361_pp_m172_active_panel_3_consumed value = var:zg361_pp_m171_active_panel_3 }
+					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m172_decision_rule_code value = 3 } set_variable = { name = zg361_pp_m172_rule_drift_debt value = 1 } }
+
+				}
+
+				zg361_pp_m172_consume_effect = yes
+				zg361_pp_m172_schedule_audit_1_effect = yes
+				set_variable = { name = zg361_pp_runtime_applied value = 1 }
+			}
+		}
+	}
+}
+
+zg361_pp_m172_consume_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_v_owner
+				SUBJECT_VAR = zg361_case_v_subject
+				CYCLE_VAR = zg361_case_v_cycle_serial
+				CASE_VAR = zg361_case_v_case_serial
+				STATE_VAR = zg361_case_v_state
+				ACTIVE_VAR = zg361_case_v_active
+				EXPECTED_OWNER = var:zg361_pp_m172_receipt_owner
+				EXPECTED_SUBJECT = var:zg361_pp_m172_receipt_subject
+				EXPECTED_CYCLE = var:zg361_pp_m172_receipt_cycle
+				EXPECTED_CASE = var:zg361_pp_m172_receipt_case
+				EXPECTED_STATE = var:zg361_pp_m172_receipt_state
+			}
+			var:zg361_pp_m172_receipt_active = 1
+			var:zg361_pp_m172_consumed = 0
+			has_variable = zg361_pp_m172_route
+			always = yes
+			trigger_if = {
+				limit = { NOT = { var:zg361_pp_m172_route = 3 } }
+				has_variable = zg361_pp_m172_decision_rule
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_pp_m172_consumed value = 1 }
+		set_variable = { name = zg361_pp_m172_consumer_revision value = var:zg361_case_v_revision }
+
+		if = { limit = { NOT = { var:zg361_pp_m172_route = 3 } } set_variable = { name = zg361_pp_m172_consumer_value value = var:zg361_pp_m172_decision_rule } }
+		change_variable = { name = zg361_pp_v_completed add = 1 }
+		set_variable = { name = zg361_pp_v_resource_partition value = var:zg361_pp_v_operation_capacity_available }
+		change_variable = { name = zg361_pp_v_resource_partition add = var:zg361_pp_v_operation_capacity_reserved }
+		change_variable = { name = zg361_pp_v_resource_partition add = var:zg361_pp_v_operation_capacity_settled }
+		set_variable = { name = zg361_pp_v_resource_conserved value = 0 }
+		if = { limit = { var:zg361_pp_v_resource_partition = var:zg361_pp_v_authorized } set_variable = { name = zg361_pp_v_resource_conserved value = 1 } }
+		set_variable = { name = zg361_pp_v_capacity_hours_partition value = var:zg361_pp_v_capacity_hours_available }
+		change_variable = { name = zg361_pp_v_capacity_hours_partition add = var:zg361_pp_v_capacity_hours_reserved }
+		change_variable = { name = zg361_pp_v_capacity_hours_partition add = var:zg361_pp_v_capacity_hours_settled }
+		set_variable = { name = zg361_pp_v_capacity_hours_conserved value = 0 }
+		if = { limit = { var:zg361_pp_v_capacity_hours_partition = var:zg361_pp_v_capacity_hours_authorized } set_variable = { name = zg361_pp_v_capacity_hours_conserved value = 1 } }
+		zg361_pp_v_try_advance_02_effect = yes
+	}
+}
+
+zg361_pp_m172_schedule_audit_1_effect = {
+	if = {
+		limit = { var:zg361_pp_m172_audit_1_state = 0 var:zg361_pp_m172_receipt_active = 1 }
+		set_variable = { name = zg361_pp_m172_audit_1_owner value = var:zg361_case_v_owner }
+		set_variable = { name = zg361_pp_m172_audit_1_subject value = this }
+		set_variable = { name = zg361_pp_m172_audit_1_cycle value = var:zg361_case_v_cycle_serial }
+		set_variable = { name = zg361_pp_m172_audit_1_case value = var:zg361_case_v_case_serial }
+		set_variable = { name = zg361_pp_m172_audit_1_expected_state value = 2 }
+		set_variable = { name = zg361_pp_m172_audit_1_state value = 1 }
+		if = {
+		limit = { var:zg361_pp_m172_route = 3 }
+		trigger_event = { id = zg361pp.2172 days = 180 }
+	}
+	else = { trigger_event = { id = zg361pp.2172 days = 30 } }
+	}
+}

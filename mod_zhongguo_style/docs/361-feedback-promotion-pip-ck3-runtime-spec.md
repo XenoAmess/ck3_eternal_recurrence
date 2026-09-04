@@ -15,13 +15,25 @@
 本包只拥有以下独立文件：
 
 - `tools/gen_361_feedback_promotion_pip_runtime.py`；
-- `common/scripted_effects/zg361_feedback_promotion_pip_runtime_effects.txt`；
+- `common/scripted_effects/zg361_feedback_promotion_pip_001_*_effects.txt` 至
+  `zg361_feedback_promotion_pip_039_*_effects.txt`：按 portfolio adapter、T/U/V/W
+  阶段编排和相邻机制生命周期分成 39 个用途文件；每文件 1–10 个顶层 effect，
+  当前最大 10 个、最大文件 50,900 bytes，没有超过 20 个的例外；
 - `events/zg361_feedback_promotion_pip_runtime_events.txt`；
 - 九语言结构文件 `localization/*/zg361_feedback_promotion_pip_l_*.yml`；
 - `tools/test_zg361_feedback_promotion_pip_runtime.py`；
 - 本规格。
 
 它不修改 B1、B2、scoreboard、GUI、互动、on_action、共享 case kernel 或中央 dispatcher。简中、英文为本轮创作文案；法、德、日、韩、波、俄、西仅是英文结构占位，不算发布翻译。
+
+### 2026-09-04 文件边界取证
+
+旧生成物 `zg361_feedback_promotion_pip_runtime_effects.txt` 为 969,746 bytes，含
+275 个唯一顶层 effect。B7 将这个历史渲染保留为内存中的 parity 真源，并按用途
+投影为 39 个小文件；生成器逐 block 校验 275/275 覆盖、原始顺序和字节完全一致，
+`--check` 还会把旧单体残留判为 RED。这个改动落实“加载性能 RED 时优先试拆文件”
+的经验，但尚未进行新的 CK3 实机对照，因此只证明文件边界已经缩小，不能据此声称
+旧单体体量是任何启动故障的唯一根因。
 
 ## 二、唯一接线口与权限
 

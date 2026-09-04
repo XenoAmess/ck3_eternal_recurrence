@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 import subprocess
 import sys
@@ -17,7 +18,6 @@ import zg361_phase2_career_model as career
 
 TOOLS = Path(__file__).resolve().parent
 MOD_ROOT = TOOLS.parent
-EFFECTS = MOD_ROOT / "common" / "scripted_effects" / "zg361_feedback_promotion_pip_runtime_effects.txt"
 EVENTS = MOD_ROOT / "events" / "zg361_feedback_promotion_pip_runtime_events.txt"
 
 
@@ -55,8 +55,54 @@ def effect_block(source: str, name: str) -> str:
 class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = text(EFFECTS)
+        cls.effect_parts = {
+            group.filename: text(
+                MOD_ROOT / "common" / "scripted_effects" / group.filename
+            )
+            for group in gen.EFFECT_GROUPS
+        }
+        cls.effects = "\n\n".join(cls.effect_parts.values())
         cls.events = text(EVENTS)
+
+    def test_effects_are_complete_byte_identical_purpose_shards(self) -> None:
+        self.assertEqual(len(gen.EFFECT_GROUPS), 39)
+        self.assertEqual(gen.EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+        effects_dir = MOD_ROOT / "common" / "scripted_effects"
+        self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
+
+        historical = gen.render_effects()
+        self.assertEqual(len(historical), 969_746)
+        self.assertEqual(
+            hashlib.sha256(historical).hexdigest(),
+            "ee5d31d44321729b10ff635246c3b6f9e2318227ce671f688c193e50a9b287cd",
+        )
+        source_blocks = gen.top_level_effect_blocks(historical)
+        source_names = tuple(name for name, _block in source_blocks)
+        configured_names = tuple(
+            name
+            for group in gen.EFFECT_GROUPS
+            for name in group.effect_names
+        )
+        self.assertEqual(len(source_names), 275)
+        self.assertEqual(len(set(source_names)), 275)
+        self.assertEqual(configured_names, source_names)
+        source_by_name = dict(source_blocks)
+
+        for group in gen.EFFECT_GROUPS:
+            with self.subTest(filename=group.filename):
+                count = len(group.effect_names)
+                self.assertGreaterEqual(count, 1)
+                self.assertLessEqual(count, gen.EFFECT_TARGET_MAX)
+                self.assertLessEqual(count, gen.EFFECT_HARD_MAX)
+                payload = (effects_dir / group.filename).read_bytes()
+                self.assertTrue(payload.startswith(gen.BOM))
+                blocks = gen.top_level_effect_blocks(payload)
+                self.assertEqual(
+                    tuple(name for name, _block in blocks),
+                    group.effect_names,
+                )
+                for name, block in blocks:
+                    self.assertEqual(block, source_by_name[name])
 
     def test_exact_146_191_coverage_and_domain_partition(self) -> None:
         self.assertEqual(tuple(row.mechanism_id for row in gen.MECHANISMS), tuple(range(146, 192)))
@@ -1079,7 +1125,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
 
     def test_all_outputs_have_bom_and_only_owned_paths(self) -> None:
         outputs = gen.outputs()
-        self.assertEqual(len(outputs), 11)
+        self.assertEqual(len(outputs), 10 + len(gen.EFFECT_GROUPS))
         self.assertTrue(all(payload.startswith(gen.BOM) for payload in outputs.values()))
         self.assertTrue(all("gui" not in path.parts for path in outputs))
         self.assertTrue(all("zg361_feedback_promotion_pip" in path.name for path in outputs))
@@ -1129,6 +1175,32 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("GREEN", result.stdout)
+
+    def test_generator_check_rejects_legacy_effect_monolith(self) -> None:
+        legacy = (
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / gen.LEGACY_EFFECT_FILENAME
+        )
+        self.assertFalse(legacy.exists())
+        try:
+            legacy.write_bytes(gen.render_effects())
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(TOOLS / "gen_361_feedback_promotion_pip_runtime.py"),
+                    "--check",
+                ],
+                cwd=MOD_ROOT.parent,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn("legacy monolith", result.stdout)
+        finally:
+            legacy.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

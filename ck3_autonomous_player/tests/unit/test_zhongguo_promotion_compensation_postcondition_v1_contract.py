@@ -11,8 +11,23 @@ BRIDGE = ROOT / "ck3_autonomous_player" / "native_bridge"
 HEADER = BRIDGE / "include" / "xar_bridge" / "zhongguo_promotion_compensation_postcondition_v1.hpp"
 SOURCE = BRIDGE / "src" / "zhongguo_promotion_compensation_postcondition_v1.cpp"
 CONTRACT = BRIDGE / "research" / "zhongguo_promotion_compensation_postcondition_v1_abi.json"
-PP = ROOT / "mod_zhongguo_style" / "common" / "scripted_effects" / "zg361_feedback_promotion_pip_runtime_effects.txt"
-COMP = ROOT / "mod_zhongguo_style" / "common" / "scripted_effects" / "zg361_generated_compensation_runtime_effects.txt"
+EFFECTS_DIR = ROOT / "mod_zhongguo_style" / "common" / "scripted_effects"
+
+
+def feedback_product() -> str:
+    paths = sorted(
+        EFFECTS_DIR.glob("zg361_feedback_promotion_pip_[0-9][0-9][0-9]_*_effects.txt")
+    )
+    if not paths:
+        raise AssertionError("missing generated feedback/promotion/PIP effect shards")
+    return "\n\n".join(path.read_text(encoding="utf-8-sig") for path in paths)
+
+
+def compensation_product() -> str:
+    paths = sorted(EFFECTS_DIR.glob("zg361_compensation_*_effects.txt"))
+    if not paths:
+        raise AssertionError("missing generated compensation effect shards")
+    return "\n\n".join(path.read_text(encoding="utf-8-sig") for path in paths)
 
 
 class PromotionCompensationProviderContractTests(unittest.TestCase):
@@ -33,7 +48,7 @@ class PromotionCompensationProviderContractTests(unittest.TestCase):
             self.assertNotIn(forbidden, {"request_nonce", "expected_revision"})
 
     def test_choice_receipt_and_revision_are_real_product_fields(self) -> None:
-        product = PP.read_text(encoding="utf-8-sig")
+        product = feedback_product()
         for key in (
             "zg361_pp_m147_receipt_active",
             "zg361_pp_m147_consumed",
@@ -58,7 +73,7 @@ class PromotionCompensationProviderContractTests(unittest.TestCase):
 
     def test_all_compensation_receipts_have_identity_and_visible_revision(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
-        product = COMP.read_text(encoding="utf-8-sig")
+        product = compensation_product()
         for mechanism in contract["compensation_receipt_selector"]["mechanism_allowlist"]:
             prefix = f"zg361_comp_m{mechanism:03d}_"
             for suffix in contract["compensation_receipt_selector"]["fixed_suffixes"]:

@@ -6,9 +6,13 @@
 
 生成结果：
 
-- `common/scripted_effects/zg361_generated_compensation_runtime_effects.txt`
+- `common/scripted_effects/zg361_compensation_00_*_effects.txt` 至
+  `zg361_compensation_24_*_effects.txt`（25 份按基础设施、财务、案卷、阶段与屏障用途拆分的 effect 文件）
 - `events/zg361_generated_compensation_runtime_events.txt`
 - `localization/*/zg361_compensation_runtime_l_*.yml`（共 9 份；简中、英文原创；其余七语为日常开发期英文结构占位）
+
+25 份 effect 文件各含 1–9 个顶层 effect，目标上限 10、原则硬上限 20；当前没有例外。
+生成器保留拆分前 148 个 effect 的完整正文与全局顺序，并在 `--check` 时拒绝旧单体文件或过时分片残留。
 
 L0 合同：`tools/test_zg361_compensation_runtime.py`；既有领域模型：
 `tools/zg361_phase2_compensation_model.py`。模型与 CK3 投影现在共享精确的 33 ID、99 条 A/B/C 数值资源合同、
@@ -236,8 +240,8 @@ py mod_zhongguo_style/tools/test_zg361_phase2_compensation_model.py
 py mod_zhongguo_style/tools/test_zg361_case_kernel.py
 ```
 
-专用 L0 合同当前为 runtime 23 条、model 58 条，normal 与 `python -O` 均须 GREEN。它们固定检查 33 ID/阶段、
-99 条 A/B/C 数值资源、11 个生成结果的确定性与 BOM、9 语言 key parity、权限矩阵、每项 write-to-consumer、九个 no-object C 路线、
+专用 L0 合同当前为 runtime 27 条、model 58 条，normal 与 `python -O` 均须 GREEN。它们固定检查 33 ID/阶段、
+99 条 A/B/C 数值资源、35 个生成结果的确定性与 BOM、25 个 effect 分片的 148 段正文/全局顺序等价、9 语言 key parity、权限矩阵、每项 write-to-consumer、九个 no-object C 路线、
 五元 receipt/deadline、双付款预检、reserve/settle/refund/return、欠付/延期付款、L/AE/AF 三条守恒式、current delivered result 六元冻结、
 跨 L/AE/AF 同 subject/同结果、3.75/3.50 真值映射、Good Leaver 默认不加速、AF FIFO `7+3` 回购、单可见卡和
 AI 静默。七个非日常语言只是英文结构占位，不得称为完成翻译。

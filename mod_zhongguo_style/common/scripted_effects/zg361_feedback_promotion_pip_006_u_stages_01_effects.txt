@@ -1,0 +1,910 @@
+﻿# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.py
+# PURPOSE: U case stages 1.
+
+zg361_pp_open_u_case_effect = {
+	remove_variable = zg361_pp_runtime_applied
+	if = {
+		limit = {
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			has_variable = zg361_result_case_owner
+			var:zg361_result_case_owner = root
+			has_variable = zg361_result_cycle_serial
+			var:zg361_result_cycle_serial = root.var:zg361_review_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+			var:zg361_result_case_state >= 3
+			has_variable = zg361_result_grade
+			var:zg361_result_grade >= 2
+			has_variable = zg361_result_grade_reason
+			# Do not reuse this domain's receipt variables while any delayed
+			# audit is pending.  The portfolio adapter may skip to another
+			# domain and retry this one after the old receipt is terminal.
+			NOT = { var:zg361_pp_m157_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m158_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m159_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m163_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m164_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m165_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m161_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m162_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m166_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m160_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m167_audit_1_state = 1 }
+			NOT = { var:zg361_pp_m168_audit_1_state = 1 }
+		}
+		zg361_case_u_open_effect = yes
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_pp_u_authorized value = 12 }
+			set_variable = { name = zg361_pp_u_completed value = 0 }
+			set_variable = { name = zg361_pp_u_evidence_led value = 0 }
+			set_variable = { name = zg361_pp_u_political value = 0 }
+			set_variable = { name = zg361_pp_u_policy_debt value = 0 }
+			set_variable = { name = zg361_pp_u_operation_capacity_available value = 12 }
+			set_variable = { name = zg361_pp_u_operation_capacity_reserved value = 0 }
+			set_variable = { name = zg361_pp_u_operation_capacity_settled value = 0 }
+			remove_variable = zg361_pp_m157_audit_1_business_input
+		remove_variable = zg361_pp_m157_audit_1_case
+		remove_variable = zg361_pp_m157_audit_1_consumer_value
+		remove_variable = zg361_pp_m157_audit_1_cycle
+		remove_variable = zg361_pp_m157_audit_1_expected_state
+		remove_variable = zg361_pp_m157_audit_1_outcome
+		remove_variable = zg361_pp_m157_audit_1_owner
+		remove_variable = zg361_pp_m157_audit_1_subject
+		remove_variable = zg361_pp_m157_consumer_revision
+		remove_variable = zg361_pp_m157_consumer_value
+		remove_variable = zg361_pp_m157_eligibility_grade
+		remove_variable = zg361_pp_m157_eligible_at_nomination
+		remove_variable = zg361_pp_m157_manager_opinion_bound
+		remove_variable = zg361_pp_m157_nomination_access
+		remove_variable = zg361_pp_m157_nomination_slot_case
+		remove_variable = zg361_pp_m157_nomination_slot_cycle
+		remove_variable = zg361_pp_m157_nomination_slot_owner
+		remove_variable = zg361_pp_m157_object_case
+		remove_variable = zg361_pp_m157_object_cycle
+		remove_variable = zg361_pp_m157_object_owner
+		remove_variable = zg361_pp_m157_object_state
+		remove_variable = zg361_pp_m157_object_subject
+		remove_variable = zg361_pp_m157_operation_capacity_case
+		remove_variable = zg361_pp_m157_operation_capacity_cycle
+		remove_variable = zg361_pp_m157_operation_capacity_owner
+		remove_variable = zg361_pp_m157_packet_active
+		remove_variable = zg361_pp_m157_packet_candidate
+		remove_variable = zg361_pp_m157_packet_case
+		remove_variable = zg361_pp_m157_packet_cycle
+		remove_variable = zg361_pp_m157_packet_owner
+		remove_variable = zg361_pp_m157_packet_source
+		remove_variable = zg361_pp_m157_packet_status
+		remove_variable = zg361_pp_m157_policy_debt_due_days
+		remove_variable = zg361_pp_m157_receipt_case
+		remove_variable = zg361_pp_m157_receipt_cycle
+		remove_variable = zg361_pp_m157_receipt_owner
+		remove_variable = zg361_pp_m157_receipt_route
+		remove_variable = zg361_pp_m157_receipt_state
+		remove_variable = zg361_pp_m157_receipt_subject
+		remove_variable = zg361_pp_m157_route
+		remove_variable = zg361_pp_m157_sponsor_bound
+		set_variable = { name = zg361_pp_m157_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m157_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m157_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m157_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m157_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m157_consumed value = 0 }
+		set_variable = { name = zg361_pp_m157_deferred value = 0 }
+		set_variable = { name = zg361_pp_m157_nomination_slot_amount value = 0 }
+		set_variable = { name = zg361_pp_m157_nomination_slot_status value = 0 }
+		set_variable = { name = zg361_pp_m157_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m157_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m157_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m157_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m158_audit_1_business_input
+		remove_variable = zg361_pp_m158_audit_1_case
+		remove_variable = zg361_pp_m158_audit_1_consumer_value
+		remove_variable = zg361_pp_m158_audit_1_cycle
+		remove_variable = zg361_pp_m158_audit_1_expected_state
+		remove_variable = zg361_pp_m158_audit_1_outcome
+		remove_variable = zg361_pp_m158_audit_1_owner
+		remove_variable = zg361_pp_m158_audit_1_subject
+		remove_variable = zg361_pp_m158_consumer_revision
+		remove_variable = zg361_pp_m158_consumer_value
+		remove_variable = zg361_pp_m158_nomination_quota
+		remove_variable = zg361_pp_m158_object_case
+		remove_variable = zg361_pp_m158_object_cycle
+		remove_variable = zg361_pp_m158_object_owner
+		remove_variable = zg361_pp_m158_object_state
+		remove_variable = zg361_pp_m158_object_subject
+		remove_variable = zg361_pp_m158_operation_capacity_case
+		remove_variable = zg361_pp_m158_operation_capacity_cycle
+		remove_variable = zg361_pp_m158_operation_capacity_owner
+		remove_variable = zg361_pp_m158_packet_candidate_consumed
+		remove_variable = zg361_pp_m158_packet_case_consumed
+		remove_variable = zg361_pp_m158_policy_debt_due_days
+		remove_variable = zg361_pp_m158_quota_conserved
+		remove_variable = zg361_pp_m158_quota_partition
+		remove_variable = zg361_pp_m158_quota_remaining
+		remove_variable = zg361_pp_m158_quota_returned
+		remove_variable = zg361_pp_m158_quota_total
+		remove_variable = zg361_pp_m158_quota_used
+		remove_variable = zg361_pp_m158_rank
+		remove_variable = zg361_pp_m158_receipt_case
+		remove_variable = zg361_pp_m158_receipt_cycle
+		remove_variable = zg361_pp_m158_receipt_owner
+		remove_variable = zg361_pp_m158_receipt_route
+		remove_variable = zg361_pp_m158_receipt_state
+		remove_variable = zg361_pp_m158_receipt_subject
+		remove_variable = zg361_pp_m158_route
+		set_variable = { name = zg361_pp_m158_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m158_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m158_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m158_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m158_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m158_consumed value = 0 }
+		set_variable = { name = zg361_pp_m158_deferred value = 0 }
+		set_variable = { name = zg361_pp_m158_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m158_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m158_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m158_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m159_audit_1_business_input
+		remove_variable = zg361_pp_m159_audit_1_case
+		remove_variable = zg361_pp_m159_audit_1_consumer_value
+		remove_variable = zg361_pp_m159_audit_1_cycle
+		remove_variable = zg361_pp_m159_audit_1_expected_state
+		remove_variable = zg361_pp_m159_audit_1_outcome
+		remove_variable = zg361_pp_m159_audit_1_owner
+		remove_variable = zg361_pp_m159_audit_1_subject
+		remove_variable = zg361_pp_m159_consumer_revision
+		remove_variable = zg361_pp_m159_consumer_value
+		remove_variable = zg361_pp_m159_nomination_due_cycles
+		remove_variable = zg361_pp_m159_object_case
+		remove_variable = zg361_pp_m159_object_cycle
+		remove_variable = zg361_pp_m159_object_owner
+		remove_variable = zg361_pp_m159_object_state
+		remove_variable = zg361_pp_m159_object_subject
+		remove_variable = zg361_pp_m159_operation_capacity_case
+		remove_variable = zg361_pp_m159_operation_capacity_cycle
+		remove_variable = zg361_pp_m159_operation_capacity_owner
+		remove_variable = zg361_pp_m159_policy_debt_due_days
+		remove_variable = zg361_pp_m159_receipt_case
+		remove_variable = zg361_pp_m159_receipt_cycle
+		remove_variable = zg361_pp_m159_receipt_owner
+		remove_variable = zg361_pp_m159_receipt_route
+		remove_variable = zg361_pp_m159_receipt_state
+		remove_variable = zg361_pp_m159_receipt_subject
+		remove_variable = zg361_pp_m159_route
+		remove_variable = zg361_pp_m159_shelved_star
+		remove_variable = zg361_pp_m159_successor_plan
+		remove_variable = zg361_pp_m159_talent_debt
+		set_variable = { name = zg361_pp_m159_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m159_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m159_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m159_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m159_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m159_consumed value = 0 }
+		set_variable = { name = zg361_pp_m159_deferred value = 0 }
+		set_variable = { name = zg361_pp_m159_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m159_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m159_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m159_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m163_audit_1_business_input
+		remove_variable = zg361_pp_m163_audit_1_case
+		remove_variable = zg361_pp_m163_audit_1_consumer_value
+		remove_variable = zg361_pp_m163_audit_1_cycle
+		remove_variable = zg361_pp_m163_audit_1_expected_state
+		remove_variable = zg361_pp_m163_audit_1_outcome
+		remove_variable = zg361_pp_m163_audit_1_owner
+		remove_variable = zg361_pp_m163_audit_1_subject
+		remove_variable = zg361_pp_m163_consumer_revision
+		remove_variable = zg361_pp_m163_consumer_value
+		remove_variable = zg361_pp_m163_object_case
+		remove_variable = zg361_pp_m163_object_cycle
+		remove_variable = zg361_pp_m163_object_owner
+		remove_variable = zg361_pp_m163_object_state
+		remove_variable = zg361_pp_m163_object_subject
+		remove_variable = zg361_pp_m163_observation_window
+		remove_variable = zg361_pp_m163_operation_capacity_case
+		remove_variable = zg361_pp_m163_operation_capacity_cycle
+		remove_variable = zg361_pp_m163_operation_capacity_owner
+		remove_variable = zg361_pp_m163_policy_debt_due_days
+		remove_variable = zg361_pp_m163_receipt_case
+		remove_variable = zg361_pp_m163_receipt_cycle
+		remove_variable = zg361_pp_m163_receipt_owner
+		remove_variable = zg361_pp_m163_receipt_route
+		remove_variable = zg361_pp_m163_receipt_state
+		remove_variable = zg361_pp_m163_receipt_subject
+		remove_variable = zg361_pp_m163_route
+		remove_variable = zg361_pp_m163_window_audit_diff
+		remove_variable = zg361_pp_m163_window_cycles
+		remove_variable = zg361_pp_m163_window_frozen_cycle
+		set_variable = { name = zg361_pp_m163_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m163_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m163_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m163_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m163_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m163_consumed value = 0 }
+		set_variable = { name = zg361_pp_m163_deferred value = 0 }
+		set_variable = { name = zg361_pp_m163_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m163_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m163_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m163_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m164_attribution_debt
+		remove_variable = zg361_pp_m164_audit_1_business_input
+		remove_variable = zg361_pp_m164_audit_1_case
+		remove_variable = zg361_pp_m164_audit_1_consumer_value
+		remove_variable = zg361_pp_m164_audit_1_cycle
+		remove_variable = zg361_pp_m164_audit_1_expected_state
+		remove_variable = zg361_pp_m164_audit_1_outcome
+		remove_variable = zg361_pp_m164_audit_1_owner
+		remove_variable = zg361_pp_m164_audit_1_subject
+		remove_variable = zg361_pp_m164_candidate_share
+		remove_variable = zg361_pp_m164_consumer_revision
+		remove_variable = zg361_pp_m164_consumer_value
+		remove_variable = zg361_pp_m164_cross_team_evidence
+		remove_variable = zg361_pp_m164_object_case
+		remove_variable = zg361_pp_m164_object_cycle
+		remove_variable = zg361_pp_m164_object_owner
+		remove_variable = zg361_pp_m164_object_state
+		remove_variable = zg361_pp_m164_object_subject
+		remove_variable = zg361_pp_m164_operation_capacity_case
+		remove_variable = zg361_pp_m164_operation_capacity_cycle
+		remove_variable = zg361_pp_m164_operation_capacity_owner
+		remove_variable = zg361_pp_m164_peer_share
+		remove_variable = zg361_pp_m164_policy_debt_due_days
+		remove_variable = zg361_pp_m164_receipt_case
+		remove_variable = zg361_pp_m164_receipt_cycle
+		remove_variable = zg361_pp_m164_receipt_owner
+		remove_variable = zg361_pp_m164_receipt_route
+		remove_variable = zg361_pp_m164_receipt_state
+		remove_variable = zg361_pp_m164_receipt_subject
+		remove_variable = zg361_pp_m164_route
+		remove_variable = zg361_pp_m164_share_check
+		set_variable = { name = zg361_pp_m164_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m164_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m164_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m164_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m164_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m164_consumed value = 0 }
+		set_variable = { name = zg361_pp_m164_deferred value = 0 }
+		set_variable = { name = zg361_pp_m164_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m164_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m164_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m164_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m165_audit_1_business_input
+		remove_variable = zg361_pp_m165_audit_1_case
+		remove_variable = zg361_pp_m165_audit_1_consumer_value
+		remove_variable = zg361_pp_m165_audit_1_cycle
+		remove_variable = zg361_pp_m165_audit_1_expected_state
+		remove_variable = zg361_pp_m165_audit_1_outcome
+		remove_variable = zg361_pp_m165_audit_1_owner
+		remove_variable = zg361_pp_m165_audit_1_subject
+		remove_variable = zg361_pp_m165_authority_bound
+		remove_variable = zg361_pp_m165_capacity_hours_case
+		remove_variable = zg361_pp_m165_capacity_hours_cycle
+		remove_variable = zg361_pp_m165_capacity_hours_owner
+		remove_variable = zg361_pp_m165_consumer_revision
+		remove_variable = zg361_pp_m165_consumer_value
+		remove_variable = zg361_pp_m165_dual_payment_conserved
+		remove_variable = zg361_pp_m165_exit_condition_bound
+		remove_variable = zg361_pp_m165_level_debt
+		remove_variable = zg361_pp_m165_next_level_trial
+		remove_variable = zg361_pp_m165_object_case
+		remove_variable = zg361_pp_m165_object_cycle
+		remove_variable = zg361_pp_m165_object_owner
+		remove_variable = zg361_pp_m165_object_state
+		remove_variable = zg361_pp_m165_object_subject
+		remove_variable = zg361_pp_m165_operation_capacity_case
+		remove_variable = zg361_pp_m165_operation_capacity_cycle
+		remove_variable = zg361_pp_m165_operation_capacity_owner
+		remove_variable = zg361_pp_m165_personal_paid
+		remove_variable = zg361_pp_m165_policy_debt_due_days
+		remove_variable = zg361_pp_m165_receipt_case
+		remove_variable = zg361_pp_m165_receipt_cycle
+		remove_variable = zg361_pp_m165_receipt_owner
+		remove_variable = zg361_pp_m165_receipt_route
+		remove_variable = zg361_pp_m165_receipt_state
+		remove_variable = zg361_pp_m165_receipt_subject
+		remove_variable = zg361_pp_m165_route
+		remove_variable = zg361_pp_m165_subject_received
+		remove_variable = zg361_pp_m165_treasury_paid
+		remove_variable = zg361_pp_m165_trial_due_days
+		set_variable = { name = zg361_pp_m165_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m165_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m165_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m165_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m165_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m165_capacity_hours_amount value = 0 }
+		set_variable = { name = zg361_pp_m165_capacity_hours_status value = 0 }
+		set_variable = { name = zg361_pp_m165_consumed value = 0 }
+		set_variable = { name = zg361_pp_m165_deferred value = 0 }
+		set_variable = { name = zg361_pp_m165_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m165_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m165_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m165_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m158_quota_conserved
+		remove_variable = zg361_pp_m158_quota_partition
+		remove_variable = zg361_pp_m158_quota_remaining
+		remove_variable = zg361_pp_m158_quota_used
+		remove_variable = zg361_pp_m161_audit_1_business_input
+		remove_variable = zg361_pp_m161_audit_1_case
+		remove_variable = zg361_pp_m161_audit_1_consumer_value
+		remove_variable = zg361_pp_m161_audit_1_cycle
+		remove_variable = zg361_pp_m161_audit_1_expected_state
+		remove_variable = zg361_pp_m161_audit_1_outcome
+		remove_variable = zg361_pp_m161_audit_1_owner
+		remove_variable = zg361_pp_m161_audit_1_subject
+		remove_variable = zg361_pp_m161_capacity_hours_case
+		remove_variable = zg361_pp_m161_capacity_hours_cycle
+		remove_variable = zg361_pp_m161_capacity_hours_owner
+		remove_variable = zg361_pp_m161_consumer_revision
+		remove_variable = zg361_pp_m161_consumer_value
+		remove_variable = zg361_pp_m161_fairness_debt
+		remove_variable = zg361_pp_m161_filler
+		remove_variable = zg361_pp_m161_filler_disclosed
+		remove_variable = zg361_pp_m161_filler_packet_candidate
+		remove_variable = zg361_pp_m161_main_packet_candidate
+		remove_variable = zg361_pp_m161_nomination_slot_case
+		remove_variable = zg361_pp_m161_nomination_slot_cycle
+		remove_variable = zg361_pp_m161_nomination_slot_owner
+		remove_variable = zg361_pp_m161_object_case
+		remove_variable = zg361_pp_m161_object_cycle
+		remove_variable = zg361_pp_m161_object_owner
+		remove_variable = zg361_pp_m161_object_state
+		remove_variable = zg361_pp_m161_object_subject
+		remove_variable = zg361_pp_m161_operation_capacity_case
+		remove_variable = zg361_pp_m161_operation_capacity_cycle
+		remove_variable = zg361_pp_m161_operation_capacity_owner
+		remove_variable = zg361_pp_m161_policy_debt_due_days
+		remove_variable = zg361_pp_m161_preparation_hours
+		remove_variable = zg361_pp_m161_quota_remaining_after
+		remove_variable = zg361_pp_m161_quota_used_after
+		remove_variable = zg361_pp_m161_receipt_case
+		remove_variable = zg361_pp_m161_receipt_cycle
+		remove_variable = zg361_pp_m161_receipt_owner
+		remove_variable = zg361_pp_m161_receipt_route
+		remove_variable = zg361_pp_m161_receipt_state
+		remove_variable = zg361_pp_m161_receipt_subject
+		remove_variable = zg361_pp_m161_route
+		remove_variable = zg361_pp_m161_sham_competition
+		set_variable = { name = zg361_pp_m161_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m161_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m161_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m161_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m161_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m161_capacity_hours_amount value = 0 }
+		set_variable = { name = zg361_pp_m161_capacity_hours_status value = 0 }
+		set_variable = { name = zg361_pp_m161_consumed value = 0 }
+		set_variable = { name = zg361_pp_m161_deferred value = 0 }
+		set_variable = { name = zg361_pp_m161_nomination_slot_amount value = 0 }
+		set_variable = { name = zg361_pp_m161_nomination_slot_status value = 0 }
+		set_variable = { name = zg361_pp_m161_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m161_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m161_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m161_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m162_admission_vote_frozen
+		remove_variable = zg361_pp_m162_audit_1_business_input
+		remove_variable = zg361_pp_m162_audit_1_case
+		remove_variable = zg361_pp_m162_audit_1_consumer_value
+		remove_variable = zg361_pp_m162_audit_1_cycle
+		remove_variable = zg361_pp_m162_audit_1_expected_state
+		remove_variable = zg361_pp_m162_audit_1_outcome
+		remove_variable = zg361_pp_m162_audit_1_owner
+		remove_variable = zg361_pp_m162_audit_1_subject
+		remove_variable = zg361_pp_m162_candidate_consumed
+		remove_variable = zg361_pp_m162_capability_review_open
+		remove_variable = zg361_pp_m162_consumer_revision
+		remove_variable = zg361_pp_m162_consumer_value
+		remove_variable = zg361_pp_m162_credibility_debt
+		remove_variable = zg361_pp_m162_exception_admitted
+		remove_variable = zg361_pp_m162_exception_slots_total
+		remove_variable = zg361_pp_m162_exception_slots_used
+		remove_variable = zg361_pp_m162_object_case
+		remove_variable = zg361_pp_m162_object_cycle
+		remove_variable = zg361_pp_m162_object_owner
+		remove_variable = zg361_pp_m162_object_state
+		remove_variable = zg361_pp_m162_object_subject
+		remove_variable = zg361_pp_m162_operation_capacity_case
+		remove_variable = zg361_pp_m162_operation_capacity_cycle
+		remove_variable = zg361_pp_m162_operation_capacity_owner
+		remove_variable = zg361_pp_m162_policy_debt_due_days
+		remove_variable = zg361_pp_m162_receipt_case
+		remove_variable = zg361_pp_m162_receipt_cycle
+		remove_variable = zg361_pp_m162_receipt_owner
+		remove_variable = zg361_pp_m162_receipt_route
+		remove_variable = zg361_pp_m162_receipt_state
+		remove_variable = zg361_pp_m162_receipt_subject
+		remove_variable = zg361_pp_m162_route
+		remove_variable = zg361_pp_m162_tenure_actual_days
+		remove_variable = zg361_pp_m162_tenure_exception
+		remove_variable = zg361_pp_m162_tenure_exception_slot_case
+		remove_variable = zg361_pp_m162_tenure_exception_slot_cycle
+		remove_variable = zg361_pp_m162_tenure_exception_slot_owner
+		remove_variable = zg361_pp_m162_tenure_met
+		remove_variable = zg361_pp_m162_tenure_required_days
+		set_variable = { name = zg361_pp_m162_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m162_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m162_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m162_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m162_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m162_consumed value = 0 }
+		set_variable = { name = zg361_pp_m162_deferred value = 0 }
+		set_variable = { name = zg361_pp_m162_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m162_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m162_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m162_tenure_exception_slot_amount value = 0 }
+		set_variable = { name = zg361_pp_m162_tenure_exception_slot_status value = 0 }
+		set_variable = { name = zg361_pp_m162_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m157_packet_active
+		remove_variable = zg361_pp_m157_packet_status
+		remove_variable = zg361_pp_m158_quota_conserved
+		remove_variable = zg361_pp_m158_quota_partition
+		remove_variable = zg361_pp_m158_quota_remaining
+		remove_variable = zg361_pp_m158_quota_used
+		remove_variable = zg361_pp_m166_audit_1_business_input
+		remove_variable = zg361_pp_m166_audit_1_case
+		remove_variable = zg361_pp_m166_audit_1_consumer_value
+		remove_variable = zg361_pp_m166_audit_1_cycle
+		remove_variable = zg361_pp_m166_audit_1_expected_state
+		remove_variable = zg361_pp_m166_audit_1_outcome
+		remove_variable = zg361_pp_m166_audit_1_owner
+		remove_variable = zg361_pp_m166_audit_1_subject
+		remove_variable = zg361_pp_m166_consumer_revision
+		remove_variable = zg361_pp_m166_consumer_value
+		remove_variable = zg361_pp_m166_nomination_slot_refunded
+		remove_variable = zg361_pp_m166_object_case
+		remove_variable = zg361_pp_m166_object_cycle
+		remove_variable = zg361_pp_m166_object_owner
+		remove_variable = zg361_pp_m166_object_state
+		remove_variable = zg361_pp_m166_object_subject
+		remove_variable = zg361_pp_m166_operation_capacity_case
+		remove_variable = zg361_pp_m166_operation_capacity_cycle
+		remove_variable = zg361_pp_m166_operation_capacity_owner
+		remove_variable = zg361_pp_m166_packet_active_after
+		remove_variable = zg361_pp_m166_packet_withdrawal
+		remove_variable = zg361_pp_m166_policy_debt_due_days
+		remove_variable = zg361_pp_m166_push_forward
+		remove_variable = zg361_pp_m166_quota_returned
+		remove_variable = zg361_pp_m166_readiness_risk
+		remove_variable = zg361_pp_m166_receipt_case
+		remove_variable = zg361_pp_m166_receipt_cycle
+		remove_variable = zg361_pp_m166_receipt_owner
+		remove_variable = zg361_pp_m166_receipt_route
+		remove_variable = zg361_pp_m166_receipt_state
+		remove_variable = zg361_pp_m166_receipt_subject
+		remove_variable = zg361_pp_m166_route
+		remove_variable = zg361_pp_m166_subject_response
+		remove_variable = zg361_pp_m166_verified_artifacts_reusable
+		remove_variable = zg361_pp_m166_withdraw_intent
+		remove_variable = zg361_pp_m166_withdrawn_before_prescreen
+		set_variable = { name = zg361_pp_m166_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m166_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m166_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m166_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m166_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m166_consumed value = 0 }
+		set_variable = { name = zg361_pp_m166_deferred value = 0 }
+		set_variable = { name = zg361_pp_m166_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m166_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m166_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m166_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m160_audit_1_business_input
+		remove_variable = zg361_pp_m160_audit_1_case
+		remove_variable = zg361_pp_m160_audit_1_consumer_value
+		remove_variable = zg361_pp_m160_audit_1_cycle
+		remove_variable = zg361_pp_m160_audit_1_expected_state
+		remove_variable = zg361_pp_m160_audit_1_outcome
+		remove_variable = zg361_pp_m160_audit_1_owner
+		remove_variable = zg361_pp_m160_audit_1_subject
+		remove_variable = zg361_pp_m160_boundary_pass
+		remove_variable = zg361_pp_m160_consumer_revision
+		remove_variable = zg361_pp_m160_consumer_value
+		remove_variable = zg361_pp_m160_cross_team_share_consumed
+		remove_variable = zg361_pp_m160_exception_vote_consumed
+		remove_variable = zg361_pp_m160_filler_consumed
+		remove_variable = zg361_pp_m160_object_case
+		remove_variable = zg361_pp_m160_object_cycle
+		remove_variable = zg361_pp_m160_object_owner
+		remove_variable = zg361_pp_m160_object_state
+		remove_variable = zg361_pp_m160_object_subject
+		remove_variable = zg361_pp_m160_operation_capacity_case
+		remove_variable = zg361_pp_m160_operation_capacity_cycle
+		remove_variable = zg361_pp_m160_operation_capacity_owner
+		remove_variable = zg361_pp_m160_packet_candidate_consumed
+		remove_variable = zg361_pp_m160_packet_score
+		remove_variable = zg361_pp_m160_policy_debt_due_days
+		remove_variable = zg361_pp_m160_political_cut
+		remove_variable = zg361_pp_m160_prescreen_pass
+		remove_variable = zg361_pp_m160_prescreen_rubric
+		remove_variable = zg361_pp_m160_promotion_boundary
+		remove_variable = zg361_pp_m160_promotion_slot_case
+		remove_variable = zg361_pp_m160_promotion_slot_cycle
+		remove_variable = zg361_pp_m160_promotion_slot_owner
+		remove_variable = zg361_pp_m160_quota_used_consumed
+		remove_variable = zg361_pp_m160_receipt_case
+		remove_variable = zg361_pp_m160_receipt_cycle
+		remove_variable = zg361_pp_m160_receipt_owner
+		remove_variable = zg361_pp_m160_receipt_route
+		remove_variable = zg361_pp_m160_receipt_state
+		remove_variable = zg361_pp_m160_receipt_subject
+		remove_variable = zg361_pp_m160_rejection_reason
+		remove_variable = zg361_pp_m160_route
+		remove_variable = zg361_pp_m160_rubric_level
+		remove_variable = zg361_pp_m160_rubric_material
+		remove_variable = zg361_pp_m160_rubric_strategy
+		remove_variable = zg361_pp_m160_trial_authority_consumed
+		remove_variable = zg361_pp_m160_window_consumed
+		remove_variable = zg361_pp_m160_withdrawal_status_consumed
+		set_variable = { name = zg361_pp_m160_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m160_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m160_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m160_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m160_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m160_consumed value = 0 }
+		set_variable = { name = zg361_pp_m160_deferred value = 0 }
+		set_variable = { name = zg361_pp_m160_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m160_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m160_promotion_slot_amount value = 0 }
+		set_variable = { name = zg361_pp_m160_promotion_slot_status value = 0 }
+		set_variable = { name = zg361_pp_m160_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m160_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m167_audit_1_business_input
+		remove_variable = zg361_pp_m167_audit_1_case
+		remove_variable = zg361_pp_m167_audit_1_consumer_value
+		remove_variable = zg361_pp_m167_audit_1_cycle
+		remove_variable = zg361_pp_m167_audit_1_expected_state
+		remove_variable = zg361_pp_m167_audit_1_outcome
+		remove_variable = zg361_pp_m167_audit_1_owner
+		remove_variable = zg361_pp_m167_audit_1_subject
+		remove_variable = zg361_pp_m167_competent
+		remove_variable = zg361_pp_m167_consumer_revision
+		remove_variable = zg361_pp_m167_consumer_value
+		remove_variable = zg361_pp_m167_object_case
+		remove_variable = zg361_pp_m167_object_cycle
+		remove_variable = zg361_pp_m167_object_owner
+		remove_variable = zg361_pp_m167_object_state
+		remove_variable = zg361_pp_m167_object_subject
+		remove_variable = zg361_pp_m167_observation_candidate
+		remove_variable = zg361_pp_m167_observation_due_cycle
+		remove_variable = zg361_pp_m167_observation_id
+		remove_variable = zg361_pp_m167_observation_settled
+		remove_variable = zg361_pp_m167_operation_capacity_case
+		remove_variable = zg361_pp_m167_operation_capacity_cycle
+		remove_variable = zg361_pp_m167_operation_capacity_owner
+		remove_variable = zg361_pp_m167_policy_debt_due_days
+		remove_variable = zg361_pp_m167_receipt_case
+		remove_variable = zg361_pp_m167_receipt_cycle
+		remove_variable = zg361_pp_m167_receipt_owner
+		remove_variable = zg361_pp_m167_receipt_route
+		remove_variable = zg361_pp_m167_receipt_state
+		remove_variable = zg361_pp_m167_receipt_subject
+		remove_variable = zg361_pp_m167_route
+		remove_variable = zg361_pp_m167_sponsor_credit
+		remove_variable = zg361_pp_m167_sponsor_credit_delta
+		remove_variable = zg361_pp_m167_sponsor_strength
+		set_variable = { name = zg361_pp_m167_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m167_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m167_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m167_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m167_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m167_consumed value = 0 }
+		set_variable = { name = zg361_pp_m167_deferred value = 0 }
+		set_variable = { name = zg361_pp_m167_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m167_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m167_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m167_visible_outcome_code value = 0 }
+		remove_variable = zg361_pp_m168_attempt_id
+		remove_variable = zg361_pp_m168_audit_1_business_input
+		remove_variable = zg361_pp_m168_audit_1_case
+		remove_variable = zg361_pp_m168_audit_1_consumer_value
+		remove_variable = zg361_pp_m168_audit_1_cycle
+		remove_variable = zg361_pp_m168_audit_1_expected_state
+		remove_variable = zg361_pp_m168_audit_1_outcome
+		remove_variable = zg361_pp_m168_audit_1_owner
+		remove_variable = zg361_pp_m168_audit_1_subject
+		remove_variable = zg361_pp_m168_competent
+		remove_variable = zg361_pp_m168_consumer_revision
+		remove_variable = zg361_pp_m168_consumer_value
+		remove_variable = zg361_pp_m168_difficulty
+		remove_variable = zg361_pp_m168_manager_hit_rate
+		remove_variable = zg361_pp_m168_object_case
+		remove_variable = zg361_pp_m168_object_cycle
+		remove_variable = zg361_pp_m168_object_owner
+		remove_variable = zg361_pp_m168_object_state
+		remove_variable = zg361_pp_m168_object_subject
+		remove_variable = zg361_pp_m168_observation_due_cycle
+		remove_variable = zg361_pp_m168_omitted_qualified
+		remove_variable = zg361_pp_m168_operation_capacity_case
+		remove_variable = zg361_pp_m168_operation_capacity_cycle
+		remove_variable = zg361_pp_m168_operation_capacity_owner
+		remove_variable = zg361_pp_m168_policy_debt_due_days
+		remove_variable = zg361_pp_m168_prescreen_pass_snapshot
+		remove_variable = zg361_pp_m168_receipt_case
+		remove_variable = zg361_pp_m168_receipt_cycle
+		remove_variable = zg361_pp_m168_receipt_owner
+		remove_variable = zg361_pp_m168_receipt_route
+		remove_variable = zg361_pp_m168_receipt_state
+		remove_variable = zg361_pp_m168_receipt_subject
+		remove_variable = zg361_pp_m168_risk_avoidance_debt
+		remove_variable = zg361_pp_m168_route
+		remove_variable = zg361_pp_m168_sample_pending
+		remove_variable = zg361_pp_m168_sample_settled
+		remove_variable = zg361_pp_m168_sponsor_observation_id
+		set_variable = { name = zg361_pp_m168_audit_1_business_settled value = 0 }
+		set_variable = { name = zg361_pp_m168_audit_1_consumed value = 0 }
+		set_variable = { name = zg361_pp_m168_audit_1_policy_debt_settled value = 0 }
+		set_variable = { name = zg361_pp_m168_audit_1_state value = 0 }
+		set_variable = { name = zg361_pp_m168_audit_revision value = 0 }
+		set_variable = { name = zg361_pp_m168_consumed value = 0 }
+		set_variable = { name = zg361_pp_m168_deferred value = 0 }
+		set_variable = { name = zg361_pp_m168_operation_capacity_amount value = 0 }
+		set_variable = { name = zg361_pp_m168_operation_capacity_status value = 0 }
+		set_variable = { name = zg361_pp_m168_receipt_active value = 0 }
+		set_variable = { name = zg361_pp_m168_visible_outcome_code value = 0 }
+		set_variable = { name = zg361_pp_u_stage_1_deadline_pending value = 0 }
+		set_variable = { name = zg361_pp_u_stage_1_deadline_expired value = 0 }
+		remove_variable = zg361_pp_u_stage_1_deadline_owner
+		remove_variable = zg361_pp_u_stage_1_deadline_subject
+		remove_variable = zg361_pp_u_stage_1_deadline_cycle
+		remove_variable = zg361_pp_u_stage_1_deadline_case
+		remove_variable = zg361_pp_u_stage_1_deadline_state
+		remove_variable = zg361_pp_u_stage_1_deadline_days
+		set_variable = { name = zg361_pp_u_stage_2_deadline_pending value = 0 }
+		set_variable = { name = zg361_pp_u_stage_2_deadline_expired value = 0 }
+		remove_variable = zg361_pp_u_stage_2_deadline_owner
+		remove_variable = zg361_pp_u_stage_2_deadline_subject
+		remove_variable = zg361_pp_u_stage_2_deadline_cycle
+		remove_variable = zg361_pp_u_stage_2_deadline_case
+		remove_variable = zg361_pp_u_stage_2_deadline_state
+		remove_variable = zg361_pp_u_stage_2_deadline_days
+		set_variable = { name = zg361_pp_u_stage_3_deadline_pending value = 0 }
+		set_variable = { name = zg361_pp_u_stage_3_deadline_expired value = 0 }
+		remove_variable = zg361_pp_u_stage_3_deadline_owner
+		remove_variable = zg361_pp_u_stage_3_deadline_subject
+		remove_variable = zg361_pp_u_stage_3_deadline_cycle
+		remove_variable = zg361_pp_u_stage_3_deadline_case
+		remove_variable = zg361_pp_u_stage_3_deadline_state
+		remove_variable = zg361_pp_u_stage_3_deadline_days
+		set_variable = { name = zg361_pp_u_stage_4_deadline_pending value = 0 }
+		set_variable = { name = zg361_pp_u_stage_4_deadline_expired value = 0 }
+		remove_variable = zg361_pp_u_stage_4_deadline_owner
+		remove_variable = zg361_pp_u_stage_4_deadline_subject
+		remove_variable = zg361_pp_u_stage_4_deadline_cycle
+		remove_variable = zg361_pp_u_stage_4_deadline_case
+		remove_variable = zg361_pp_u_stage_4_deadline_state
+		remove_variable = zg361_pp_u_stage_4_deadline_days
+		set_variable = { name = zg361_pp_u_nomination_slot_authorized value = 2 }
+		set_variable = { name = zg361_pp_u_nomination_slot_available value = 2 }
+		set_variable = { name = zg361_pp_u_nomination_slot_reserved value = 0 }
+		set_variable = { name = zg361_pp_u_nomination_slot_settled value = 0 }
+		set_variable = { name = zg361_pp_u_nomination_slot_conserved value = 1 }
+		set_variable = { name = zg361_pp_u_capacity_hours_authorized value = 2 }
+		set_variable = { name = zg361_pp_u_capacity_hours_available value = 2 }
+		set_variable = { name = zg361_pp_u_capacity_hours_reserved value = 0 }
+		set_variable = { name = zg361_pp_u_capacity_hours_settled value = 0 }
+		set_variable = { name = zg361_pp_u_capacity_hours_conserved value = 1 }
+		set_variable = { name = zg361_pp_u_tenure_exception_slot_authorized value = 1 }
+		set_variable = { name = zg361_pp_u_tenure_exception_slot_available value = 1 }
+		set_variable = { name = zg361_pp_u_tenure_exception_slot_reserved value = 0 }
+		set_variable = { name = zg361_pp_u_tenure_exception_slot_settled value = 0 }
+		set_variable = { name = zg361_pp_u_tenure_exception_slot_conserved value = 1 }
+		set_variable = { name = zg361_pp_u_promotion_slot_authorized value = 1 }
+		set_variable = { name = zg361_pp_u_promotion_slot_available value = 1 }
+		set_variable = { name = zg361_pp_u_promotion_slot_reserved value = 0 }
+		set_variable = { name = zg361_pp_u_promotion_slot_settled value = 0 }
+		set_variable = { name = zg361_pp_u_promotion_slot_conserved value = 1 }
+			# Freeze the delivered result identity and candidate boundary before
+			# nomination politics can move either one.
+			set_variable = { name = zg361_pp_u_result_owner value = var:zg361_result_case_owner }
+			set_variable = { name = zg361_pp_u_result_subject value = this }
+			set_variable = { name = zg361_pp_u_result_cycle value = var:zg361_result_cycle_serial }
+			set_variable = { name = zg361_pp_u_result_case value = var:zg361_result_case_serial }
+			set_variable = { name = zg361_pp_u_result_state value = var:zg361_result_case_state }
+			set_variable = { name = zg361_pp_u_frozen_grade value = var:zg361_result_grade }
+			set_variable = { name = zg361_pp_u_frozen_reason value = var:zg361_result_grade_reason }
+			set_variable = { name = zg361_pp_u_candidate_eligible value = 0 }
+			if = { limit = { var:zg361_pp_u_frozen_grade >= 2 } set_variable = { name = zg361_pp_u_candidate_eligible value = 1 } }
+			# Persistent shelving obligations are consumed once per later review cycle.
+			root = {
+				if = {
+					limit = {
+						trigger_if = {
+							limit = {
+								has_variable = zg361_pp_u_shelving_active
+								has_variable = zg361_pp_u_shelving_due_cycle
+								has_variable = zg361_pp_u_shelving_last_penalty_cycle
+								has_variable = zg361_pp_u_shelving_nominated
+							}
+							var:zg361_pp_u_shelving_active = 1
+							var:zg361_pp_u_shelving_nominated = 0
+							var:zg361_review_serial >= var:zg361_pp_u_shelving_due_cycle
+							NOT = { var:zg361_pp_u_shelving_last_penalty_cycle = var:zg361_review_serial }
+						}
+						trigger_else = { always = no }
+					}
+					set_variable = { name = zg361_pp_u_shelving_last_penalty_cycle value = var:zg361_review_serial }
+				}
+			}
+			# Matured #168 observations alter only the next cycle's quota, once and clamped.
+			if = {
+				limit = { root = { has_variable = zg361_pp_u_next_quota_pending var:zg361_pp_u_next_quota_pending = 1 } }
+				set_variable = {
+					name = zg361_pp_u_nomination_slot_authorized
+					value = { value = var:zg361_pp_u_nomination_slot_authorized add = root.var:zg361_pp_u_next_quota_delta min = 1 max = 3 }
+				}
+				set_variable = { name = zg361_pp_u_nomination_slot_available value = var:zg361_pp_u_nomination_slot_authorized }
+				root = {
+					set_variable = { name = zg361_pp_u_next_quota_pending value = 0 }
+					set_variable = { name = zg361_pp_u_next_quota_consumed_cycle value = var:zg361_review_serial }
+				}
+			}
+			# Freeze a distinct filler candidate before #161 can spend real quota/hours.
+			remove_variable = zg361_pp_m161_filler_candidate
+			save_temporary_scope_as = zg361_pp_u_main_candidate
+			root = {
+				ordered_vassal = {
+					limit = {
+						zg361_is_reviewable_vassal_trigger = yes
+						NOT = { this = scope:zg361_pp_u_main_candidate }
+					}
+					order_by = stewardship
+					position = 0
+					save_temporary_scope_as = zg361_pp_u_filler_candidate
+				}
+			}
+			if = { limit = { exists = scope:zg361_pp_u_filler_candidate } set_variable = { name = zg361_pp_m161_filler_candidate value = scope:zg361_pp_u_filler_candidate } }
+			root = { set_variable = { name = zg361_pp_portfolio_queue_active value = 1 } }
+			zg361_pp_schedule_u_stage_01_effect = yes
+			zg361_pp_dispatch_u_stage_01_effect = yes
+			set_variable = { name = zg361_pp_runtime_applied value = 1 }
+		}
+	}
+}
+
+zg361_pp_schedule_u_stage_01_effect = {
+	zg361_case_kernel_schedule_deadline_effect = {
+		OWNER_VAR = zg361_case_u_owner
+		SUBJECT_VAR = zg361_case_u_subject
+		CYCLE_VAR = zg361_case_u_cycle_serial
+		CASE_VAR = zg361_case_u_case_serial
+		STATE_VAR = zg361_case_u_state
+		ACTIVE_VAR = zg361_case_u_active
+		DEADLINE_OWNER_VAR = zg361_pp_u_stage_1_deadline_owner
+		DEADLINE_SUBJECT_VAR = zg361_pp_u_stage_1_deadline_subject
+		DEADLINE_CYCLE_VAR = zg361_pp_u_stage_1_deadline_cycle
+		DEADLINE_CASE_VAR = zg361_pp_u_stage_1_deadline_case
+		DEADLINE_STATE_VAR = zg361_pp_u_stage_1_deadline_state
+		DEADLINE_DAYS_VAR = zg361_pp_u_stage_1_deadline_days
+		DEADLINE_PENDING_VAR = zg361_pp_u_stage_1_deadline_pending
+		DEADLINE_EXPIRED_VAR = zg361_pp_u_stage_1_deadline_expired
+		TICKET_OWNER = var:zg361_case_u_owner
+		TICKET_SUBJECT = this
+		TICKET_CYCLE = var:zg361_case_u_cycle_serial
+		TICKET_CASE = var:zg361_case_u_case_serial
+		TICKET_STATE = 1
+		DAYS = 30
+		EVENT = zg361pp.4011
+	}
+}
+
+zg361_pp_dispatch_u_stage_01_effect = {
+	if = {
+		limit = { var:zg361_case_u_owner = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+		# Owner-authorized second AI exception: background resolver only, no GUI.
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m157_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_u_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_u_cycle_serial
+	TICKET_CASE = var:zg361_case_u_case_serial
+	TICKET_STATE = 1
+}
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m158_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_u_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_u_cycle_serial
+	TICKET_CASE = var:zg361_case_u_case_serial
+	TICKET_STATE = 1
+}
+		set_variable = { name = zg361_pp_ai_route value = 1 }
+if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+zg361_pp_m159_core_effect = {
+	ROUTE = var:zg361_pp_ai_route
+	TICKET_OWNER = var:zg361_case_u_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_u_cycle_serial
+	TICKET_CASE = var:zg361_case_u_case_serial
+	TICKET_STATE = 1
+}
+	}
+	else_if = {
+		limit = { var:zg361_case_u_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+		# Exactly one visible decision is queued.  Each option schedules only the
+		# next card, so a 46-card popup storm is structurally impossible.
+		save_scope_as = zg361_pp_prompt_subject
+		var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
+		save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
+		save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
+		save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
+		save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 157 }
+		var:zg361_case_u_owner = { trigger_event = { id = zg361pp.157 days = 1 } }
+	}
+}
+
+zg361_pp_u_try_advance_01_effect = {
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_u_owner
+				SUBJECT_VAR = zg361_case_u_subject
+				CYCLE_VAR = zg361_case_u_cycle_serial
+				CASE_VAR = zg361_case_u_case_serial
+				STATE_VAR = zg361_case_u_state
+				ACTIVE_VAR = zg361_case_u_active
+				EXPECTED_OWNER = var:zg361_case_u_owner
+				EXPECTED_SUBJECT = this
+				EXPECTED_CYCLE = var:zg361_case_u_cycle_serial
+				EXPECTED_CASE = var:zg361_case_u_case_serial
+				EXPECTED_STATE = 1
+			}
+			var:zg361_pp_m157_consumed = 1
+			var:zg361_pp_m158_consumed = 1
+			var:zg361_pp_m159_consumed = 1
+		}
+		zg361_case_u_advance_01_effect = {
+			TICKET_OWNER = var:zg361_case_u_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_u_cycle_serial
+			TICKET_CASE = var:zg361_case_u_case_serial
+		}
+		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_schedule_u_stage_02_effect = yes
+			zg361_pp_dispatch_u_stage_02_effect = yes }
+	}
+}
+
+zg361_pp_u_timeout_stage_01_effect = {
+	if = {
+		limit = { var:zg361_pp_m157_consumed = 0 }
+		zg361_pp_m157_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_u_stage_1_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_u_stage_1_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_u_stage_1_deadline_cycle
+			TICKET_CASE = var:zg361_pp_u_stage_1_deadline_case
+			TICKET_STATE = var:zg361_pp_u_stage_1_deadline_state
+		}
+	}
+	if = {
+		limit = { var:zg361_pp_m158_consumed = 0 }
+		zg361_pp_m158_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_u_stage_1_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_u_stage_1_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_u_stage_1_deadline_cycle
+			TICKET_CASE = var:zg361_pp_u_stage_1_deadline_case
+			TICKET_STATE = var:zg361_pp_u_stage_1_deadline_state
+		}
+	}
+	if = {
+		limit = { var:zg361_pp_m159_consumed = 0 }
+		zg361_pp_m159_core_effect = {
+			ROUTE = 3
+			TICKET_OWNER = var:zg361_pp_u_stage_1_deadline_owner
+			TICKET_SUBJECT = var:zg361_pp_u_stage_1_deadline_subject
+			TICKET_CYCLE = var:zg361_pp_u_stage_1_deadline_cycle
+			TICKET_CASE = var:zg361_pp_u_stage_1_deadline_case
+			TICKET_STATE = var:zg361_pp_u_stage_1_deadline_state
+		}
+	}
+	debug_log = "ZG361PP: exact U stage 1 deadline consumed"
+}

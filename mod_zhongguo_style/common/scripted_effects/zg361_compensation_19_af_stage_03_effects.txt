@@ -1,0 +1,401 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_19_af_stage_03_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_m295_manager_apply_effect = {
+    remove_variable = zg361_comp_runtime_applied
+    if = {
+        limit = {
+            root = {
+                zg361_is_celestial_liege_trigger = yes
+                # No is_ai=no gate: the project-authorized AI manager uses this
+                # same duke+ background resolver without opening player UI.
+            }
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = root
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+        }
+        zg361_comp_m295_core_effect = { ROUTE = $ROUTE$ }
+    }
+}
+
+zg361_comp_m295_core_effect = {
+    save_temporary_scope_value_as = { name = zg361_comp_route value = $ROUTE$ }
+    remove_variable = zg361_comp_runtime_applied
+    remove_variable = zg361_comp_financial_applied
+
+    if = {
+        limit = {
+            OR = {
+                scope:zg361_comp_route = 1
+                scope:zg361_comp_route = 2
+                scope:zg361_comp_route = 3
+            }
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+            has_variable = zg361_comp_m295_receipt_active
+            var:zg361_comp_m295_receipt_active = 0
+
+
+        }
+        zg361_case_kernel_record_operation_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            LAST_OPERATION_VAR = zg361_comp_af_last_operation
+            LAST_CHOICE_VAR = zg361_comp_af_last_route
+            RECEIPT_OWNER_VAR = zg361_comp_m295_receipt_owner
+            RECEIPT_SUBJECT_VAR = zg361_comp_m295_receipt_subject
+            RECEIPT_CYCLE_VAR = zg361_comp_m295_receipt_cycle
+            RECEIPT_CASE_VAR = zg361_comp_m295_receipt_case
+            RECEIPT_STATE_VAR = zg361_comp_m295_receipt_state
+            RECEIPT_CHOICE_VAR = zg361_comp_m295_receipt_route
+            TICKET_OWNER = var:zg361_case_af_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_af_cycle_serial
+            TICKET_CASE = var:zg361_case_af_case_serial
+            TICKET_STATE = 3
+            CHOICE = scope:zg361_comp_route
+            OPERATION_ID = 295
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            set_variable = { name = zg361_comp_financial_applied value = 1 }
+            if = {
+                limit = { var:zg361_comp_financial_applied = 1 }
+                set_variable = { name = zg361_comp_m295_receipt_active value = 1 }
+                set_variable = { name = zg361_comp_m295_route value = scope:zg361_comp_route }
+                set_variable = { name = zg361_comp_m295_value value = 0 }
+                if = { limit = { scope:zg361_comp_route = 1 } set_variable = { name = zg361_comp_m295_value value = 1 } }
+                else_if = { limit = { scope:zg361_comp_route = 2 } set_variable = { name = zg361_comp_m295_value value = -1 } }
+                zg361_comp_m295_consume_effect = yes
+                set_variable = { name = zg361_comp_last_disposition value = 1 }
+                set_variable = { name = zg361_comp_runtime_applied value = 1 }
+            }
+        }
+    }
+    else = {
+        if = {
+            limit = {
+                var:zg361_comp_m295_receipt_active = 1
+                var:zg361_comp_m295_receipt_owner = var:zg361_case_af_owner
+                var:zg361_comp_m295_receipt_subject = this
+                var:zg361_comp_m295_receipt_cycle = var:zg361_case_af_cycle_serial
+                var:zg361_comp_m295_receipt_case = var:zg361_case_af_case_serial
+                var:zg361_comp_m295_receipt_state = 3
+            }
+            if = {
+                limit = { var:zg361_comp_m295_receipt_route = scope:zg361_comp_route }
+                set_variable = { name = zg361_comp_last_disposition value = 2 }
+            }
+            else = {
+                set_variable = { name = zg361_comp_typed_red value = 3 }
+                set_variable = { name = zg361_comp_last_disposition value = -1 }
+            }
+        }
+        else = { set_variable = { name = zg361_comp_last_disposition value = 3 } }
+    }
+}
+
+zg361_comp_m295_consume_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_comp_m295_receipt_active = 1
+            var:zg361_comp_m295_consumed = 0
+        }
+        set_variable = { name = zg361_comp_m295_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m295_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m295_object_subject value = this }
+        set_variable = { name = zg361_comp_m295_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m295_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m295_object_state value = 3 }
+        set_variable = { name = zg361_comp_m295_object_route value = var:zg361_comp_m295_route }
+        set_variable = { name = zg361_comp_m295_visible_outcome value = var:zg361_comp_m295_route }
+        set_variable = { name = zg361_comp_m295_visible_revision value = var:zg361_case_af_revision }
+        set_variable = { name = zg361_comp_m295_cliff_days value = 365 }
+            if = { limit = { var:zg361_comp_m295_route = 2 } set_variable = { name = zg361_comp_m295_cliff_days value = 180 } }
+            else_if = { limit = { var:zg361_comp_m295_route = 3 } set_variable = { name = zg361_comp_m295_cliff_days value = 730 } }
+            set_variable = { name = zg361_comp_af_cliff_days value = var:zg361_comp_m295_cliff_days }
+
+
+
+        set_variable = { name = zg361_comp_m295_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m295_receipt_active = 1
+                var:zg361_comp_m295_consumed = 1
+                var:zg361_comp_m295_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m295_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 295 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m295_receipt_route }
+        }
+        zg361_comp_af_try_advance_03_effect = yes
+        debug_log = "ZG361COMP: consumed mechanism 295"
+    }
+}
+
+zg361_comp_m296_manager_apply_effect = {
+    remove_variable = zg361_comp_runtime_applied
+    if = {
+        limit = {
+            root = {
+                zg361_is_celestial_liege_trigger = yes
+                # No is_ai=no gate: the project-authorized AI manager uses this
+                # same duke+ background resolver without opening player UI.
+            }
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = root
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+        }
+        zg361_comp_m296_core_effect = { ROUTE = $ROUTE$ }
+    }
+}
+
+zg361_comp_m296_core_effect = {
+    save_temporary_scope_value_as = { name = zg361_comp_route value = $ROUTE$ }
+    remove_variable = zg361_comp_runtime_applied
+    remove_variable = zg361_comp_financial_applied
+
+    if = {
+        limit = {
+            OR = {
+                scope:zg361_comp_route = 1
+                scope:zg361_comp_route = 2
+                scope:zg361_comp_route = 3
+            }
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+            has_variable = zg361_comp_m296_receipt_active
+            var:zg361_comp_m296_receipt_active = 0
+
+
+        }
+        zg361_case_kernel_record_operation_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            LAST_OPERATION_VAR = zg361_comp_af_last_operation
+            LAST_CHOICE_VAR = zg361_comp_af_last_route
+            RECEIPT_OWNER_VAR = zg361_comp_m296_receipt_owner
+            RECEIPT_SUBJECT_VAR = zg361_comp_m296_receipt_subject
+            RECEIPT_CYCLE_VAR = zg361_comp_m296_receipt_cycle
+            RECEIPT_CASE_VAR = zg361_comp_m296_receipt_case
+            RECEIPT_STATE_VAR = zg361_comp_m296_receipt_state
+            RECEIPT_CHOICE_VAR = zg361_comp_m296_receipt_route
+            TICKET_OWNER = var:zg361_case_af_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_af_cycle_serial
+            TICKET_CASE = var:zg361_case_af_case_serial
+            TICKET_STATE = 3
+            CHOICE = scope:zg361_comp_route
+            OPERATION_ID = 296
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            set_variable = { name = zg361_comp_financial_applied value = 1 }
+            if = {
+                limit = { var:zg361_comp_financial_applied = 1 }
+                set_variable = { name = zg361_comp_m296_receipt_active value = 1 }
+                set_variable = { name = zg361_comp_m296_route value = scope:zg361_comp_route }
+                set_variable = { name = zg361_comp_m296_value value = 0 }
+                if = { limit = { scope:zg361_comp_route = 1 } set_variable = { name = zg361_comp_m296_value value = 1 } }
+                else_if = { limit = { scope:zg361_comp_route = 2 } set_variable = { name = zg361_comp_m296_value value = -1 } }
+                zg361_comp_m296_consume_effect = yes
+                set_variable = { name = zg361_comp_last_disposition value = 1 }
+                set_variable = { name = zg361_comp_runtime_applied value = 1 }
+            }
+        }
+    }
+    else = {
+        if = {
+            limit = {
+                var:zg361_comp_m296_receipt_active = 1
+                var:zg361_comp_m296_receipt_owner = var:zg361_case_af_owner
+                var:zg361_comp_m296_receipt_subject = this
+                var:zg361_comp_m296_receipt_cycle = var:zg361_case_af_cycle_serial
+                var:zg361_comp_m296_receipt_case = var:zg361_case_af_case_serial
+                var:zg361_comp_m296_receipt_state = 3
+            }
+            if = {
+                limit = { var:zg361_comp_m296_receipt_route = scope:zg361_comp_route }
+                set_variable = { name = zg361_comp_last_disposition value = 2 }
+            }
+            else = {
+                set_variable = { name = zg361_comp_typed_red value = 3 }
+                set_variable = { name = zg361_comp_last_disposition value = -1 }
+            }
+        }
+        else = { set_variable = { name = zg361_comp_last_disposition value = 3 } }
+    }
+}
+
+zg361_comp_m296_consume_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                EXPECTED_OWNER = var:zg361_case_af_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_af_cycle_serial
+                EXPECTED_CASE = var:zg361_case_af_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_comp_m296_receipt_active = 1
+            var:zg361_comp_m296_consumed = 0
+        }
+        set_variable = { name = zg361_comp_m296_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m296_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m296_object_subject value = this }
+        set_variable = { name = zg361_comp_m296_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m296_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m296_object_state value = 3 }
+        set_variable = { name = zg361_comp_m296_object_route value = var:zg361_comp_m296_route }
+        set_variable = { name = zg361_comp_m296_visible_outcome value = var:zg361_comp_m296_route }
+        set_variable = { name = zg361_comp_m296_visible_revision value = var:zg361_case_af_revision }
+        set_variable = { name = zg361_comp_m296_cadence_days value = 30 }
+            set_variable = { name = zg361_comp_m296_vesting_periods value = 12 }
+            if = { limit = { var:zg361_comp_m296_route = 2 } set_variable = { name = zg361_comp_m296_cadence_days value = 90 } set_variable = { name = zg361_comp_m296_vesting_periods value = 4 } }
+            else_if = { limit = { var:zg361_comp_m296_route = 3 } set_variable = { name = zg361_comp_m296_cadence_days value = 365 } set_variable = { name = zg361_comp_m296_vesting_periods value = 1 } }
+            set_variable = { name = zg361_comp_af_cadence_days value = var:zg361_comp_m296_cadence_days }
+            set_variable = { name = zg361_comp_af_vesting_periods value = var:zg361_comp_m296_vesting_periods }
+
+
+
+        set_variable = { name = zg361_comp_m296_consumed value = 1 }
+        if = {
+            limit = {
+                has_variable = zg361_pp_m147_receipt_active
+                var:zg361_pp_m147_receipt_active = 1
+                has_variable = zg361_pp_m147_consumed
+                var:zg361_pp_m147_consumed = 1
+                has_variable = zg361_pp_m147_receipt_owner
+                var:zg361_pp_m147_receipt_owner = var:zg361_comp_result_owner
+                has_variable = zg361_pp_m147_receipt_subject
+                var:zg361_pp_m147_receipt_subject = var:zg361_comp_result_subject
+                has_variable = zg361_pp_m147_receipt_cycle
+                var:zg361_pp_m147_receipt_cycle = var:zg361_comp_result_cycle
+                has_variable = zg361_pp_m147_receipt_serial
+                var:zg361_pp_m147_receipt_serial = var:zg361_comp_result_case
+                has_variable = zg361_pp_m147_receipt_revision
+                var:zg361_pp_m147_receipt_revision > 0
+                var:zg361_comp_m296_receipt_active = 1
+                var:zg361_comp_m296_consumed = 1
+                var:zg361_comp_m296_visible_revision > 0
+            }
+            set_variable = { name = zg361_comp_promotion_receipt_active value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_posted value = 1 }
+            set_variable = { name = zg361_comp_promotion_receipt_owner value = var:zg361_comp_result_owner }
+            set_variable = { name = zg361_comp_promotion_receipt_subject value = var:zg361_comp_result_subject }
+            set_variable = { name = zg361_comp_promotion_receipt_cycle value = var:zg361_comp_result_cycle }
+            set_variable = { name = zg361_comp_promotion_receipt_case value = var:zg361_comp_result_case }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_serial value = var:zg361_pp_m147_receipt_serial }
+            set_variable = { name = zg361_comp_promotion_receipt_choice_revision value = var:zg361_pp_m147_receipt_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_revision value = var:zg361_comp_m296_visible_revision }
+            set_variable = { name = zg361_comp_promotion_receipt_operation value = 296 }
+            set_variable = { name = zg361_comp_promotion_receipt_route value = var:zg361_comp_m296_receipt_route }
+        }
+        zg361_comp_af_try_advance_03_effect = yes
+        debug_log = "ZG361COMP: consumed mechanism 296"
+    }
+}

@@ -11,6 +11,7 @@ later integration hook or from a controlled fixture.
 from __future__ import annotations
 
 import argparse
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -115,6 +116,132 @@ STAGE_BY_ID = {
 FINANCIAL_IDS = frozenset({84, 86, 90, 281, 282, 289, 292, 293, 300})
 NO_OBJECT_ROUTE3_IDS = frozenset({84, 88, 90, 282, 283, 285, 288, 293, 300})
 RESULT_GRADE_RATINGS = {1: 325, 2: 350, 3: 375}
+LEGACY_EFFECT_FILENAME = "zg361_generated_compensation_runtime_effects.txt"
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# A future hard-limit exception must carry both an engineering reason and a
+# concrete CK3 live artifact.  The current compensation layout has none.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+
+
+def mechanism_effect_names(*mechanism_ids: int) -> tuple[str, ...]:
+    return tuple(
+        f"zg361_comp_m{mechanism_id:03d}_{suffix}_effect"
+        for mechanism_id in mechanism_ids
+        for suffix in ("manager_apply", "core", "consume")
+    )
+
+
+# Compensation effects are emitted in their historical top-level order, but
+# split by business purpose and state-machine stage.  The numeric prefixes make
+# that ordering visible and deterministic to both CK3 and reviewers.
+EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "zg361_compensation_00_foundation_effects.txt",
+        (
+            "zg361_comp_freeze_current_result_effect",
+            "zg361_comp_open_l_case_effect",
+            "zg361_comp_open_ae_case_effect",
+            "zg361_comp_open_af_case_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_01_l_award_accounting_effects.txt",
+        (
+            "zg361_comp_l_reserve_bonus_effect",
+            "zg361_comp_l_clawback_bonus_effect",
+            "zg361_comp_l_consume_deferred_effect",
+            "zg361_comp_l_check_conservation_effect",
+            "zg361_comp_l_pay_spot_effect",
+            "zg361_comp_l_pay_spot_bounded_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_02_ae_payments_effects.txt",
+        (
+            "zg361_comp_ae_pay_due_now_effect",
+            "zg361_comp_ae_pay_due_later_effect",
+            "zg361_comp_ae_pay_backpay_effect",
+            "zg361_comp_ae_pay_appeal_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_03_af_payments_effects.txt",
+        (
+            "zg361_comp_af_pay_cash_alternative_effect",
+            "zg361_comp_af_pay_conversion_remainder_effect",
+            "zg361_comp_af_pay_unconverted_bonus_effect",
+            "zg361_comp_af_pay_buyback_now_effect",
+            "zg361_comp_af_pay_buyback_later_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_04_conservation_ledgers_effects.txt",
+        (
+            "zg361_comp_ae_recalculate_statement_effect",
+            "zg361_comp_af_recalculate_units_effect",
+            "zg361_comp_af_check_conservation_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_05_ae_due_appeal_effects.txt",
+        (
+            "zg361_comp_ae_freeze_due_obligation_effect",
+            "zg361_comp_ae_consume_due_effect",
+            "zg361_comp_ae_subject_appeal_response_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_06_af_vesting_exit_effects.txt",
+        (
+            "zg361_comp_af_schedule_first_vest_effect",
+            "zg361_comp_af_schedule_next_vest_effect",
+            "zg361_comp_af_try_start_vesting_effect",
+            "zg361_comp_af_consume_vest_effect",
+            "zg361_comp_af_request_exit_effect",
+            "zg361_comp_af_consume_buyback_effect",
+        ),
+    ),
+    (
+        "zg361_compensation_07_portfolio_effects.txt",
+        (
+            "zg361_comp_portfolio_open_next_effect",
+            "zg361_comp_portfolio_apply_stage_effect",
+            "zg361_comp_portfolio_refresh_effect",
+            "zg361_comp_portfolio_notify_owner_effect",
+            "zg361_comp_portfolio_case_closed_effect",
+        ),
+    ),
+    ("zg361_compensation_08_l_stage_01_effects.txt", mechanism_effect_names(82, 83, 84)),
+    ("zg361_compensation_09_l_stage_02_effects.txt", mechanism_effect_names(85, 86)),
+    ("zg361_compensation_10_l_stage_03_effects.txt", mechanism_effect_names(87, 88, 89)),
+    ("zg361_compensation_11_l_stage_04_effects.txt", mechanism_effect_names(90, 91)),
+    ("zg361_compensation_12_ae_stage_01_effects.txt", mechanism_effect_names(278, 279, 280)),
+    ("zg361_compensation_13_ae_stage_02_effects.txt", mechanism_effect_names(281, 282)),
+    ("zg361_compensation_14_ae_stage_03_effects.txt", mechanism_effect_names(283, 284, 285)),
+    ("zg361_compensation_15_ae_stage_04_effects.txt", mechanism_effect_names(286, 287)),
+    ("zg361_compensation_16_ae_stage_05_effects.txt", mechanism_effect_names(288, 289)),
+    ("zg361_compensation_17_af_stage_01_effects.txt", mechanism_effect_names(290, 291, 292)),
+    ("zg361_compensation_18_af_stage_02_effects.txt", mechanism_effect_names(293, 294)),
+    ("zg361_compensation_19_af_stage_03_effects.txt", mechanism_effect_names(295, 296)),
+    ("zg361_compensation_20_af_stage_04_effects.txt", mechanism_effect_names(297, 298)),
+    ("zg361_compensation_21_af_stage_05_effects.txt", mechanism_effect_names(299, 300)),
+    (
+        "zg361_compensation_22_l_stage_barriers_effects.txt",
+        tuple(f"zg361_comp_l_try_advance_{state:02d}_effect" for state in range(1, 5)),
+    ),
+    (
+        "zg361_compensation_23_ae_stage_barriers_effects.txt",
+        tuple(f"zg361_comp_ae_try_advance_{state:02d}_effect" for state in range(1, 6)),
+    ),
+    (
+        "zg361_compensation_24_af_stage_barriers_effects.txt",
+        tuple(
+            f"zg361_comp_af_try_advance_{state:02d}_effect"
+            for state in (1, 2, 3, 5)
+        ),
+    ),
+)
 
 
 def clean(text: str) -> str:
@@ -2727,6 +2854,120 @@ def render_effects() -> bytes:
     return generated("\n\n".join(sections))
 
 
+def _top_level_effect_blocks(source: str) -> tuple[tuple[str, str], ...]:
+    """Return complete top-level compensation effect blocks in source order."""
+
+    matches = tuple(
+        re.finditer(
+            r"(?m)^(zg361_comp_[a-z0-9_]+_effect)\s*=\s*\{",
+            source,
+        )
+    )
+    blocks: list[tuple[str, str]] = []
+    for match in matches:
+        opening = source.index("{", match.start(), match.end())
+        depth = 0
+        quoted = False
+        escaped = False
+        commented = False
+        for index in range(opening, len(source)):
+            char = source[index]
+            if commented:
+                if char == "\n":
+                    commented = False
+                continue
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    quoted = False
+                continue
+            if char == "#":
+                commented = True
+            elif char == '"':
+                quoted = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    blocks.append((match.group(1), source[match.start() : index + 1]))
+                    break
+        else:
+            raise ValueError(
+                f"unterminated compensation effect block: {match.group(1)}"
+            )
+    return tuple(blocks)
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards without changing effect bodies or global order."""
+
+    historical = render_effects().decode("utf-8-sig")
+    historical_blocks = _top_level_effect_blocks(historical)
+    historical_names = tuple(name for name, _block in historical_blocks)
+    block_by_name = dict(historical_blocks)
+    configured_names = tuple(
+        name for _filename, names in EFFECT_GROUPS for name in names
+    )
+
+    if len(EFFECT_GROUPS) != 25:
+        raise ValueError("compensation runtime must remain split into 25 purpose files")
+    if len(historical_names) != 148 or len(set(historical_names)) != 148:
+        raise ValueError(
+            "compensation historical render must contain 148 unique effects"
+        )
+    if configured_names != historical_names:
+        missing = sorted(set(historical_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(historical_names))
+        raise ValueError(
+            "compensation purpose map must preserve every historical effect and "
+            f"its global order: missing={missing}, extra={extra}"
+        )
+
+    rendered: dict[str, bytes] = {}
+    for filename, names in EFFECT_GROUPS:
+        if not names:
+            raise ValueError(
+                f"compensation purpose file must contain at least one effect: {filename}"
+            )
+        if len(names) > EFFECT_HARD_MAX:
+            exception = EFFECT_HARD_LIMIT_EXCEPTIONS.get(filename)
+            if (
+                exception is None
+                or len(exception) != 2
+                or not exception[0].strip()
+                or not exception[1].strip()
+            ):
+                raise ValueError(
+                    "compensation purpose file exceeds "
+                    f"{EFFECT_HARD_MAX} effects without a reason and CK3 "
+                    f"live-evidence reference: {filename}"
+                )
+        body = "\n\n".join(block_by_name[name] for name in names)
+        rendered[filename] = generated(
+            f"# Compensation/LTI purpose shard: {filename}\n"
+            "# Honest boundary: generated CK3 source is static-ready until "
+            f"MCP-first live evidence exists.\n\n{body}"
+        )
+
+    exception_files = set(EFFECT_HARD_LIMIT_EXCEPTIONS)
+    oversized_files = {
+        filename
+        for filename, names in EFFECT_GROUPS
+        if len(names) > EFFECT_HARD_MAX
+    }
+    if exception_files != oversized_files:
+        raise ValueError(
+            "compensation hard-limit exceptions must exactly match oversized "
+            f"shards: exceptions={sorted(exception_files)}, "
+            f"oversized={sorted(oversized_files)}"
+        )
+    return rendered
+
+
 def render_english_localization() -> bytes:
     return localized(r'''l_english:
  zg361comp.1.t:0 "Compensation Portfolio"
@@ -2812,12 +3053,18 @@ def render_placeholder_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_specs()
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_compensation_runtime_effects.txt": render_effects(),
         MOD_ROOT / "events" / "zg361_generated_compensation_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_compensation_runtime_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_compensation_runtime_l_simp_chinese.yml": render_simp_chinese_localization(),
     }
+    rendered.update(
+        {
+            effects_dir / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
     for language in ("french", "german", "japanese", "korean", "polish", "russian", "spanish"):
         rendered[
             MOD_ROOT / "localization" / language / f"zg361_compensation_runtime_l_{language}.yml"
@@ -2831,17 +3078,33 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
+    expected_effect_paths = {
+        effects_dir / filename for filename, _names in EFFECT_GROUPS
+    }
+    effect_residues = sorted(
+        {
+            effects_dir / LEGACY_EFFECT_FILENAME,
+            *effects_dir.glob("zg361_compensation_*_effects.txt"),
+        }
+        - expected_effect_paths
+    )
+    effect_residues = [path for path in effect_residues if path.exists()]
     if args.check:
-        if stale:
+        if stale or effect_residues:
             print("RED: stale compensation/LTI generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in effect_residues:
+                print(f"{path.relative_to(MOD_ROOT)} (obsolete effect output)")
             return 1
         print("GREEN: compensation/LTI generated files are current")
         return 0
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+    for path in effect_residues:
+        path.unlink()
     print(f"GREEN: generated {len(rendered)} compensation/LTI runtime files")
     return 0
 

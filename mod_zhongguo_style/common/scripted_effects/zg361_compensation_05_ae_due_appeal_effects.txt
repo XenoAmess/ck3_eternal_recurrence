@@ -1,0 +1,110 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_05_ae_due_appeal_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_ae_freeze_due_obligation_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ae_owner
+                SUBJECT_VAR = zg361_case_ae_subject
+                CYCLE_VAR = zg361_case_ae_cycle_serial
+                CASE_VAR = zg361_case_ae_case_serial
+                STATE_VAR = zg361_case_ae_state
+                ACTIVE_VAR = zg361_case_ae_active
+                EXPECTED_OWNER = var:zg361_case_ae_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                EXPECTED_CASE = var:zg361_case_ae_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_comp_ae_due_resolved = 0
+            var:zg361_comp_ae_statement_owed >= 2
+        }
+        set_variable = { name = zg361_comp_ae_due_frozen_gross value = var:zg361_comp_ae_statement_owed }
+        set_variable = {
+            name = zg361_comp_ae_due_frozen_treasury
+            value = { value = var:zg361_comp_ae_due_frozen_gross multiply = 0.7 add = 0.5 floor = yes }
+        }
+        set_variable = {
+            name = zg361_comp_ae_due_frozen_personal
+            value = { value = var:zg361_comp_ae_due_frozen_gross subtract = var:zg361_comp_ae_due_frozen_treasury }
+        }
+        set_variable = { name = zg361_comp_ae_due_obligation_treasury_payer value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_personal_payer value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_recipient value = this }
+            set_variable = { name = zg361_comp_ae_due_obligation_approver value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_owner value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_subject value = this }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_cycle value = var:zg361_case_ae_cycle_serial }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_case value = var:zg361_case_ae_case_serial }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_state value = 3 }
+    }
+}
+
+zg361_comp_ae_consume_due_effect = {
+    save_temporary_scope_value_as = { name = zg361_comp_due_gross value = var:zg361_comp_ae_due_frozen_gross }
+    save_temporary_scope_value_as = {
+        name = zg361_comp_due_treasury
+        value = var:zg361_comp_ae_due_frozen_treasury
+    }
+    save_temporary_scope_value_as = {
+        name = zg361_comp_due_personal
+        value = var:zg361_comp_ae_due_frozen_personal
+    }
+    remove_variable = zg361_comp_financial_applied
+    if = {
+        limit = {
+            scope:zg361_comp_due_gross >= 2
+            scope:zg361_comp_due_treasury >= 1
+            scope:zg361_comp_due_personal >= 1
+            var:zg361_case_ae_owner = {
+                has_treasury = yes
+                treasury >= scope:zg361_comp_due_treasury
+                gold >= scope:zg361_comp_due_personal
+            }
+            var:zg361_comp_ae_treasury_available >= scope:zg361_comp_due_treasury
+            var:zg361_comp_ae_personal_available >= scope:zg361_comp_due_personal
+        }
+        zg361_comp_ae_pay_due_later_effect = yes
+    }
+    else_if = {
+        limit = { scope:zg361_comp_due_gross = 0 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+    if = {
+        limit = { var:zg361_comp_financial_applied = 1 }
+        change_variable = { name = zg361_comp_ae_statement_paid add = scope:zg361_comp_due_gross }
+        set_variable = { name = zg361_comp_ae_statement_owed value = 0 }
+    }
+    else = {
+        # Typed insufficient-funds RED: both real payer balances and the
+        # statement remain unchanged; the owed amount stays visible.
+        set_variable = { name = zg361_comp_ae_payment_red value = 1 }
+        set_variable = { name = zg361_comp_typed_red value = 4 }
+    }
+    set_variable = { name = zg361_comp_ae_due_resolved value = 1 }
+    zg361_comp_ae_recalculate_statement_effect = yes
+    zg361_comp_ae_try_advance_03_effect = yes
+}
+
+zg361_comp_ae_subject_appeal_response_effect = {
+    save_temporary_scope_value_as = { name = zg361_comp_subject_route value = $ROUTE$ }
+    if = {
+        limit = {
+            is_ai = no
+            zg361_case_kernel_subject_self_guard_trigger = {
+                SUBJECT_VAR = zg361_case_ae_subject
+                ACTIVE_VAR = zg361_case_ae_active
+            }
+            var:zg361_case_ae_state = 5
+            var:zg361_comp_ae_appeal_response_recorded = 0
+            OR = { scope:zg361_comp_subject_route = 1 scope:zg361_comp_subject_route = 2 }
+        }
+        set_variable = { name = zg361_comp_ae_appeal_response_recorded value = 1 }
+        set_variable = { name = zg361_comp_ae_appeal_requested value = 0 }
+        if = { limit = { scope:zg361_comp_subject_route = 1 } set_variable = { name = zg361_comp_ae_appeal_requested value = 1 } }
+            change_variable = { name = zg361_case_ae_feedback_revision add = 1 }
+            zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 2 }
+    }
+}
