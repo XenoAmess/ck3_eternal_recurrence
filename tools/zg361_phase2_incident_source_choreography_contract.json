@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_incident_source_production_choreography",
+  "forensics_base_commit": "fecd2f20b154b33c3c57ebc703564e21da5563da",
+  "readiness": "static-ready-live-pending",
+  "span_id": "phase2_incidents_operations",
+  "handler": "capture_incidents_operations",
+  "target_source": {
+    "event_definition_key": "zg361.50",
+    "option_number": 1,
+    "checkpoint_position": "paused before option submission",
+    "player_is_event_root_and_subject": true,
+    "notice_owner_must_be_distinct": true,
+    "player_character_id": 29037,
+    "notice_owner_character_id": 32904
+  },
+  "canonical_seed": {
+    "contract": "tools/zg361_phase2_seed_contract.json",
+    "status": "ready",
+    "bytes": 53517622,
+    "sha256": "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733",
+    "date_raw": 53146920,
+    "paused": true,
+    "map_ready": true,
+    "active_event": null,
+    "played_character_id": 29037,
+    "player_history_id": "han_6875",
+    "incident_owner_character_id": 32904,
+    "seed_event_closed_before_save": true
+  },
+  "retained_live_provider_evidence": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-seed-r9-20260904-074005/artifacts-live/provider-probes.json",
+    "sha256": "5e3f60ffc49d945b30805f6b2af6e33cad52a2d9a5c801886aaac35eef583058",
+    "b1_case": {
+      "owner_character_id": 32904,
+      "subject_character_id": 29037,
+      "cycle_serial": 1,
+      "case_serial": 1,
+      "state": 1,
+      "active": true,
+      "stage_key": "targets_open",
+      "receipt_key": "roster_lock"
+    },
+    "owner_eligibility": {
+      "owner_alive": true,
+      "owner_is_ai": true,
+      "government_key": "celestial_government",
+      "primary_title_tier_key": "hegemony",
+      "subject_is_direct_subject": true,
+      "authorized": true
+    },
+    "incident_seed_probe": {
+      "x_terminal_kind": "na",
+      "x_cycle_serial": 2,
+      "y_status": "unavailable",
+      "z_status": "unavailable",
+      "incident_profiles_ready": false
+    }
+  },
+  "timeline": {
+    "date_raw_units_per_day": 24,
+    "speed": 1,
+    "landmarks": [
+      {
+        "offset_days": 180,
+        "date_raw": 53151240,
+        "event": "zg361b1.100",
+        "visibility": "hidden",
+        "effect": "midcycle dispatcher"
+      },
+      {
+        "offset_days": 240,
+        "date_raw": 53152680,
+        "event": "zg361b1.101",
+        "visibility": "hidden",
+        "effect": "peer/self evidence window"
+      },
+      {
+        "offset_days": 241,
+        "date_raw": 53152704,
+        "event": "zg361b1.200",
+        "visibility": "conditional player event",
+        "allowed_option": 3
+      },
+      {
+        "offset_days": 300,
+        "date_raw": 53154120,
+        "event": "zg361b1.102",
+        "visibility": "hidden",
+        "effect": "freeze facts, rank, quota, open shadow"
+      },
+      {
+        "offset_days": 301,
+        "date_raw": 53154144,
+        "event": "zg361b1.201",
+        "visibility": "conditional player event",
+        "allowed_option": 1
+      },
+      {
+        "offset_days": 330,
+        "date_raw": 53154840,
+        "event": "zg361b1.103",
+        "visibility": "hidden",
+        "effect": "quota book submission"
+      },
+      {
+        "offset_days_min": 331,
+        "offset_days_max": 335,
+        "event": "zg361b1.110",
+        "visibility": "hidden",
+        "effect": "common-superior bank close"
+      },
+      {
+        "offset_days_min": 332,
+        "offset_days_max": 336,
+        "event": "zg361b1.111",
+        "visibility": "hidden",
+        "effect": "manager calibration entry"
+      }
+    ],
+    "conditional_hidden_delays": [
+      {
+        "event": "zg361b1.124",
+        "days": 1,
+        "purpose": "skip-level return"
+      },
+      {
+        "event": "zg361b1.121",
+        "days": 30,
+        "purpose": "per-subject pending observation"
+      },
+      {
+        "event": "zg361b1.125",
+        "days": 31,
+        "purpose": "owner pending watchdog"
+      },
+      {
+        "event": "zg361b1.123",
+        "days": 1,
+        "purpose": "last pending continuation"
+      },
+      {
+        "event": "zg361b1.122",
+        "days": 30,
+        "purpose": "single sealed-board reopen batch"
+      }
+    ],
+    "earliest_source_schedule_offset_days": 333,
+    "authored_delay_diagnostic_horizon_offset_days": 399,
+    "diagnostic_horizon_is_grade_guarantee": false
+  },
+  "allowed_player_choreography": [
+    {
+      "event_definition_key": "zg361b1.200",
+      "option_number": 3,
+      "conditional": true,
+      "reason": "authored conservative self-review subtracts 15 from the self score but cannot guarantee bottom rank"
+    },
+    {
+      "event_definition_key": "zg361b1.201",
+      "option_number": 1,
+      "conditional": true,
+      "reason": "accept the non-final shadow without adding a new calibration delta"
+    },
+    {
+      "event_definition_key": "zg361b1.126",
+      "option_number": 1,
+      "conditional": true,
+      "reason": "close only the exact subject-local publication notice if it precedes zg361.50"
+    }
+  ],
+  "strict_target_capture": {
+    "event_definition_key": "zg361.50",
+    "must_remain_unselected": true,
+    "option_1_shown": true,
+    "option_1_enabled": true,
+    "player_root_subject_equal": true,
+    "notice_owner_distinct": true,
+    "provider_ui_same_frame": true,
+    "checkpoint_bytes_sha256_date_seed_and_capture_lineage_required": true
+  },
+  "reachability": {
+    "production_graph_to_grade_settlement_intact": true,
+    "grade_325_schedules_target_after_days": 1,
+    "played_character_grade_325_observed": false,
+    "played_character_grade_325_guaranteed": false,
+    "status": "conditional-product-reachable-live-candidate-unproven",
+    "blocking_unknown": "the seed exposes no cohort, frozen KPI/rank/newcomer/quota, pending-grade, or final-grade observation for played character 29037",
+    "product_defect_proven": false
+  },
+  "honest_terminal_red": [
+    "player_not_grade_325",
+    "incident_source_identity_lost",
+    "unexpected_visible_event",
+    "production_ticket_stalled_past_authored_delay_horizon"
+  ],
+  "production_fix": {
+    "implemented": false,
+    "reason": "no product defect or unreachable graph is proved; forcing grade 1, reopening the event, or weakening the distinct-owner ACL would fabricate the source checkpoint"
+  },
+  "forbidden": [
+    "acceptance fixture mounted during continuation",
+    "console command",
+    "generic character rebind",
+    "OCR or coordinate input",
+    "generic close-any-one-option-event behavior",
+    "action ACK used as source or result evidence",
+    "synthetic pending grade or event injection"
+  ],
+  "production_effect_change": {
+    "files_added_or_modified": [],
+    "effect_file_target_1_to_10_engaged": false,
+    "effect_file_hard_max_20_engaged": false,
+    "exception": null
+  },
+  "no_launch": {
+    "ck3_started": false,
+    "shared_runner_modified": false,
+    "b3_artifact_modified": false,
+    "claim": "choreography derived from committed product event/effect graph and retained real seed/provider evidence only"
+  }
+}

@@ -3,6 +3,15 @@
 Status: **static-ready-live-pending**. This contract does not claim a live
 gameplay result.
 
+The seed-to-source production route and its honest candidate-selection blocker
+are frozen in
+`docs/phase2-promo/incident-source-checkpoint-production-choreography-2026-09-04.md`.
+The current seed contains a real active owner `32904` / player-subject `29037`
+B1 cycle, but no retained observation proves that the player will receive the
+3.25 bottom grade. The graph is therefore conditionally reachable; source
+capture must preserve a non-3.25 publication as RED rather than manufacture a
+notice.
+
 ## Authoritative binding
 
 The `phase2_incidents_operations` span starts from `zg361.50`. Its scripted
