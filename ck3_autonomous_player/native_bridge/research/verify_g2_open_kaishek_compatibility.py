@@ -213,14 +213,21 @@ _CLEANUP_ADAPTER_STRING_CONSTANTS = {
     "status": "STATUS",
     "root_integration_commit": "ROOT_INTEGRATION_COMMIT",
     "root_source_commit": "ROOT_SOURCE_COMMIT",
-    "root_candidate_source_commit": "ROOT_CANDIDATE_SOURCE_COMMIT",
+    "root_candidate_base_commit": "ROOT_CANDIDATE_BASE_COMMIT",
+    "root_actual_expiry_source_commit": "ROOT_ACTUAL_EXPIRY_SOURCE_COMMIT",
     "query_step": "QUERY_STEP",
+    "cleanup_capability_id": "CLEANUP_CAPABILITY_ID",
+    "cleanup_step_prefix": "CLEANUP_STEP_PREFIX",
     "retention_ticket_id": "RETENTION_TICKET_ID",
     "root_runner_sha256": "ROOT_RUNNER_SHA256",
     "root_manifest_sha256": "ROOT_MANIFEST_SHA256",
     "root_fixture_sha256": "ROOT_FIXTURE_SHA256",
-    "root_preflight_sha256": "ROOT_PREFLIGHT_SHA256",
-    "root_synthetic_receipt_sha256": "ROOT_SYNTHETIC_RECEIPT_SHA256",
+    "root_cleanup_contract_sha256": "ROOT_CLEANUP_CONTRACT_SHA256",
+    "root_cleanup_dispatch_source_contract_sha256": (
+        "ROOT_CLEANUP_DISPATCH_SOURCE_CONTRACT_SHA256"
+    ),
+    "candidate_dll_sha256": "CANDIDATE_DLL_SHA256",
+    "candidate_native_test_sha256": "CANDIDATE_NATIVE_TEST_SHA256",
 }
 _CLEANUP_ADAPTER_INT_CONSTANTS = {
     "war_id": "WAR_ID",
@@ -241,10 +248,20 @@ _CLEANUP_ADAPTER_BOOLEAN_CONSTANTS = {
     ),
     "cleanup_candidate_library_present": "CLEANUP_CANDIDATE_LIBRARY_PRESENT",
     "cleanup_query_dispatch_present": "CLEANUP_QUERY_DISPATCH_PRESENT",
+    "cleanup_query_private": "CLEANUP_QUERY_PRIVATE",
+    "cleanup_dispatch_live_tested": "CLEANUP_DISPATCH_LIVE_TESTED",
     "same_lifecycle_native_cleanup_required": (
         "SAME_LIFECYCLE_NATIVE_CLEANUP_REQUIRED"
     ),
     "old_war_absence_sufficient": "OLD_WAR_ABSENCE_SUFFICIENT",
+    "war_id_absence_admission_only": "WAR_ID_ABSENCE_ADMISSION_ONLY",
+    "destroyed_result_from_exact_stores": (
+        "DESTROYED_RESULT_FROM_EXACT_STORES"
+    ),
+    "external_cleanup_injection_allowed": (
+        "EXTERNAL_CLEANUP_INJECTION_ALLOWED"
+    ),
+    "adapter_issues_cleanup_query": "ADAPTER_ISSUES_CLEANUP_QUERY",
     "python_adapter_may_infer_cleanup": "PYTHON_ADAPTER_MAY_INFER_CLEANUP",
     "live_authorized": "LIVE_AUTHORIZED",
     "public_readiness_promoted": "PUBLIC_READINESS_PROMOTED",
@@ -718,11 +735,16 @@ def audit(
         "synthetic_fixture",
         "actual_expiry_query_dispatch_present",
         "cleanup_candidate_library_present",
+        "cleanup_query_dispatch_present",
+        "cleanup_query_private",
         "same_lifecycle_native_cleanup_required",
+        "war_id_absence_admission_only",
+        "destroyed_result_from_exact_stores",
+        "adapter_issues_cleanup_query",
     }
-    checks["fixture_cleanup_adapter_live_blocked"] = (
+    checks["fixture_cleanup_adapter_private_dispatch_bounded"] = (
         expected_cleanup.get("status")
-        == "GREEN_STATIC_ADAPTER_LIVE_BLOCKED_ON_CLEANUP_DISPATCH"
+        == "STATIC_READY_PRIVATE_DISPATCH_LIVE_NOT_RUN"
         and expected_cleanup.get("pre_termination_soldiers") == 598
         and expected_cleanup.get("post_termination_soldiers") == 0
         and expected_cleanup.get("proven_boundary_soldiers_lost") == 598
@@ -740,7 +762,7 @@ def audit(
         "mutation_sent": False,
         "paradox_opcode_added": False,
         "allowlist_changed": False,
-        "native_query_added": False,
+        "native_query_added": True,
         "readiness_promoted": True,
     }
 

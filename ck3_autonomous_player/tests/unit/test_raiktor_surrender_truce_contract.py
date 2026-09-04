@@ -70,7 +70,7 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
         )
         self.assertEqual(
             OPEN_KAISHEK_G2_PROFILE_COMMIT,
-            "1ca6a455d63d1ff6e92389c7fff5b39681863524",
+            "3c4e6982b5d821f1fcdb9c3ced2a581497c9a6eb",
         )
 
     def test_open_kaishek_binding_is_publicly_exported(self) -> None:
