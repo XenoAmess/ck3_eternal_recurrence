@@ -136,3 +136,43 @@ capability 与 derived query flag 两道 mandatory 门。完整 preflight 因此
 action step 时 preflight 可 GREEN；删除其 bridge capability 或把 query flag 置 false 时仍分别 fail closed。no-launch 验证为
 `Phase2FullCapabilityPreflightTests` 1/1 GREEN、`test_run_zhongguo_focused_b2.py` 16/16 GREEN，以及
 `test_run_zhongguo_promo_capture.py` GREEN；没有启动 CK3。
+
+## B3 manager-governance focused live runner（no-launch implementation）
+
+为避免 B3 实机被完整 Phase2 的四项 source registry、Incident、B2、Workforce 与 scoreboard 前置阻塞，runner 新增独立
+`--phase2-b3-manager-governance-live`。它不是 full-batch 的降级开关，而是只验收一个 B3 production gameplay primitive 的正式入口：
+
+1. 强制使用现有 managed frontend-first 启动和 ready seed；未提供
+   `--phase2-frontend-first-load-save-name` 时在 CK3 启动前 RED。
+2. loader 后运行专用 capability profile，仅要求 B3 真正使用的 12 个 bridge capabilities、5 个 derived query flags 与 2 个
+   materialized actions。`manager_governance_snapshot`、`manager_subordinate_selector`、`ai_owned_case_snapshot` 和相应 query flags
+   仍为 mandatory；`life-advance` 与 loaded-feature manifest 仍为 mandatory action。B2/Incident/Workforce/scoreboard/result-case/
+   promotion/source-registry surfaces 不被误列为本 focused cell 的依赖。
+3. `05_phase2_b3_manager_governance_live_scenario.json` 只执行 ready seed 证明、原生 typed manager/subordinate selector 及
+   `run_phase2_manager_governance_gameplay_action_cell`。它显式断言动作前后 paused/map-ready、同 tracked PID、同 connection
+   generation、同玩家，以及 provider-observed business postcondition；ACK 仍不得代替业务终态。
+4. `09_phase2_native_session_cleanup.json` 沿用 managed supervisor 的单 PID / 零 restore cleanup 合同。outer verdict 必须同时看到
+   scenario 全 checks GREEN、provider action GREEN 与 cleanup GREEN，才可设置
+   `phase2_b3_manager_governance_complete=true`；`phase2_acceptance_complete` 和 full Phase2 claim 始终为 false。
+
+正式命令形态如下；artifact root、pipe、DLL、injector 与 product projection 必须每轮换成已冻结的真实值：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py" `
+  --phase2-b3-manager-governance-live `
+  --phase2-frontend-first-load-save-name autosave `
+  --phase2-frontend-first-timeout-seconds 180 `
+  --phase2-seed-contract <ready-seed-contract> `
+  --phase2-product-source <immutable-product-source> `
+  --phase2-product-projection <projection-name> `
+  --phase2-product-projection-manifest <projection-manifest> `
+  --bridge-dll <exact-build-dll> `
+  --bridge-injector <paired-injector> `
+  --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<fresh-32hex> `
+  --artifacts-dir <fresh-short-artifact-root> `
+  --discard-userdir
+```
+
+本轮只完成 runner/static-ready 施工，没有启动 CK3，也没有生成新的 live artifact。回归覆盖 capability scope、selector 实际绑定、
+禁止旁路其他 gameplay cells、generation drift fail-closed、CLI 暴露/参数转发、frontend-first 强制门及 mode 互斥。此改动没有改变
+effect 产品文件，也没有出现新的 loader performance RED，因此不能据此把 effect 单文件体量认定为根因或触发拆分。

@@ -808,6 +808,31 @@ PHASE2_B2_REQUIRED_ACTION_STEP_LABELS = (
     "save_checkpoint",
     "loaded_feature_manifest",
 )
+PHASE2_B3_MANAGER_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
+    "paused_snapshot",
+    "map_ready_state",
+    "played_character_state",
+    "active_event_state",
+    "pause_timeline",
+    "resume_timeline",
+    "bounded_timeline_speed",
+    "current_event_context",
+    "loaded_feature_manifest",
+    "ai_owned_case_snapshot",
+    "manager_governance_snapshot",
+    "manager_subordinate_selector",
+)
+PHASE2_B3_MANAGER_REQUIRED_QUERY_FLAG_LABELS = (
+    "current_event_context",
+    "loaded_feature_manifest",
+    "ai_owned_case_snapshot",
+    "manager_governance_snapshot",
+    "manager_subordinate_selector",
+)
+PHASE2_B3_MANAGER_REQUIRED_ACTION_STEP_LABELS = (
+    "bounded_life_advance",
+    "loaded_feature_manifest",
+)
 PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",
     "map_ready_state",
@@ -7453,6 +7478,7 @@ def phase2_runtime_capability_preflight(
     managed_restore_supervisor: bool = False,
     focused_promotion_source_capture: bool = False,
     focused_b2_same_checkpoint: bool = False,
+    focused_b3_manager_governance: bool = False,
     focused_hc_workforce_route_b: bool = False,
     focused_endgame_source_capture: bool = False,
     focused_incident_source_capture: bool = False,
@@ -7478,6 +7504,10 @@ def phase2_runtime_capability_preflight(
         )
         query_labels = PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
         action_labels = PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
+    elif focused_b3_manager_governance:
+        bridge_labels = PHASE2_B3_MANAGER_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        query_labels = PHASE2_B3_MANAGER_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_B3_MANAGER_REQUIRED_ACTION_STEP_LABELS
     elif focused_hc_workforce_route_b:
         bridge_labels = PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS
         query_labels = PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS
@@ -7510,6 +7540,8 @@ def phase2_runtime_capability_preflight(
             if focused_endgame_source_capture
             else "focused_promotion_source_checkpoint_capture_mcp_capability_profile"
             if focused_promotion_source_capture
+            else "focused_b3_manager_governance_mcp_capability_profile"
+            if focused_b3_manager_governance
             else "focused_hc_workforce_route_b_mcp_capability_profile"
             if focused_hc_workforce_route_b
             else "focused_b2_same_checkpoint_mcp_capability_profile"
@@ -7518,6 +7550,7 @@ def phase2_runtime_capability_preflight(
         ),
         "focused_promotion_source_capture": focused_promotion_source_capture,
         "focused_b2_same_checkpoint": focused_b2_same_checkpoint,
+        "focused_b3_manager_governance": focused_b3_manager_governance,
         "focused_hc_workforce_route_b": focused_hc_workforce_route_b,
         "focused_endgame_source_capture": focused_endgame_source_capture,
         "focused_incident_source_capture": focused_incident_source_capture,
@@ -12671,6 +12704,7 @@ def run_loader_gate(
     phase2_promotion_source_capture_live: bool = False,
     phase2_promo_capture: bool = False,
     phase2_b2_same_checkpoint: bool = False,
+    phase2_b3_manager_governance_live: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
     phase2_endgame_source_capture_live: bool = False,
@@ -12683,6 +12717,7 @@ def run_loader_gate(
         or phase2_promotion_source_capture_live
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_b3_manager_governance_live
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
@@ -12708,6 +12743,8 @@ def run_loader_gate(
             if phase2_promo_capture
             else "phase2_b2_same_checkpoint"
             if phase2_b2_same_checkpoint
+            else "phase2_b3_manager_governance_live"
+            if phase2_b3_manager_governance_live
             else "phase2_live_batch"
             if phase2_live_batch
             else "loader_smoke_only"
@@ -12770,6 +12807,9 @@ def run_loader_gate(
                     phase2_promotion_source_capture_live
                 ),
                 focused_b2_same_checkpoint=phase2_b2_same_checkpoint,
+                focused_b3_manager_governance=(
+                    phase2_b3_manager_governance_live
+                ),
                 focused_hc_workforce_route_b=(
                     phase2_hc_workforce_route_b_live
                     or phase2_hc_workforce_route_b_capture_live
@@ -17854,6 +17894,198 @@ def run_phase2_b2_same_checkpoint_scenario(
         ) from error
 
 
+def run_phase2_b3_manager_governance_live_scenario(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+    seed_contract: dict[str, object],
+    typed_selector_provider: (
+        Callable[[GameplayBridgeService], Mapping[str, object]] | None
+    ) = None,
+) -> dict[str, object]:
+    """Run only the product B3 manager-governance action and postcondition."""
+
+    evidence_path = artifacts / (
+        "05_phase2_b3_manager_governance_live_scenario.json"
+    )
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_focused_b3_manager_governance_live",
+        "live_readiness": "live-pending",
+        "phase2_b3_manager_governance_complete": False,
+        "phase2_acceptance_complete": False,
+        "full_phase2_acceptance_claimed": False,
+        "gameplay_acceptance_executed": False,
+        "focused_gameplay_green_claimed": False,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "legacy_run_scenario_used": False,
+        "source_checkpoint_registry_used": False,
+        "incident_gameplay_action_cell_executed": False,
+        "b2_pip_gameplay_action_cell_executed": False,
+        "workforce_gameplay_action_cell_executed": False,
+        "scoreboard_gameplay_action_cell_executed": False,
+        "paused_readiness": None,
+        "seed_load_proof": None,
+        "loaded_feature_manifest": None,
+        "manager_governance_gameplay_action_cell": None,
+        "post_action_paused_binding": None,
+        "checks": {},
+        "failed_checks": [],
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        paused_snapshot = wait_for_phase2_paused_snapshot(
+            service,
+            artifacts,
+            tracked_ck3_pid=tracked_ck3_pid,
+        )
+        initial_binding = _phase2_paused_binding(
+            paused_snapshot,
+            label="focused B3 manager-governance baseline",
+        )
+        evidence["paused_readiness"] = {
+            "result": "GREEN",
+            "artifact": "04_phase2_paused_readiness.json",
+            "binding": initial_binding,
+        }
+        manifest = service.query_loaded_feature_manifest_v1(
+            expected_revision=int(initial_binding["revision"])
+        )
+        evidence["loaded_feature_manifest"] = manifest
+        if not (
+            isinstance(manifest, dict)
+            and manifest.get("loaded_feature_manifest_ready") is True
+        ):
+            raise acceptance.RunnerError(
+                "focused B3 loaded-feature manifest is not actionable"
+            )
+        evidence["seed_load_proof"] = prove_phase2_loaded_seed(
+            paused_snapshot,
+            seed_contract,
+            artifacts,
+            loaded_feature_manifest=manifest,
+        )
+
+        selector_provider = typed_selector_provider or (
+            query_phase2_b3_manager_subordinate_selector
+            if callable(
+                getattr(
+                    service,
+                    "query_zhongguo_manager_subordinate_selector_v1",
+                    None,
+                )
+            )
+            else None
+        )
+        manager_action = run_phase2_manager_governance_gameplay_action_cell(
+            service,
+            artifacts,
+            typed_selector_provider=selector_provider,
+        )
+        evidence["manager_governance_gameplay_action_cell"] = manager_action
+        evidence["gameplay_acceptance_executed"] = (
+            manager_action.get("gameplay_action_executed") is True
+        )
+        write_json(evidence_path, evidence)
+
+        final_snapshot = service.snapshot()
+        if not isinstance(final_snapshot, dict):
+            raise acceptance.RunnerError(
+                "focused B3 post-action snapshot is not an object"
+            )
+        final_binding = _phase2_paused_binding(
+            final_snapshot,
+            label="focused B3 manager-governance post-action",
+        )
+        evidence["post_action_paused_binding"] = final_binding
+        postcondition = manager_action.get("provider_observed_postcondition")
+        selector = manager_action.get("typed_selector")
+        runner_checks = manager_action.get("runner_checks")
+        checks = {
+            "initial_pid_matches_tracked": initial_binding["bridge_pid"]
+            == tracked_ck3_pid,
+            "post_action_pid_matches_tracked": final_binding["bridge_pid"]
+            == tracked_ck3_pid,
+            "same_connection_generation": final_binding[
+                "connection_generation"
+            ]
+            == initial_binding["connection_generation"],
+            "same_played_character": final_binding["player_character_id"]
+            == initial_binding["player_character_id"],
+            "paused_before_and_after": paused_snapshot.get("paused") is True
+            and final_snapshot.get("paused") is True,
+            "map_ready_before_and_after": paused_snapshot.get("map_ready")
+            is True
+            and final_snapshot.get("map_ready") is True,
+            "typed_selector_provider_observed": isinstance(selector, Mapping)
+            and selector.get("status") == "available"
+            and selector.get("selector_kind")
+            == PHASE2_B3_MANAGER_SELECTOR_KIND
+            and selector.get("provider_observed") is True,
+            "manager_action_green": manager_action.get("result") == "GREEN",
+            "gameplay_action_executed": manager_action.get(
+                "gameplay_action_executed"
+            )
+            is True,
+            "gameplay_action_complete": manager_action.get(
+                "gameplay_action_complete"
+            )
+            is True,
+            "ack_not_business_postcondition": manager_action.get(
+                "action_ack_is_business_postcondition"
+            )
+            is False,
+            "provider_postcondition_required": manager_action.get(
+                "provider_observed_postcondition_required"
+            )
+            is True,
+            "provider_postcondition_available": isinstance(
+                postcondition, Mapping
+            )
+            and postcondition.get("status") == "available",
+            "runner_checks_green": isinstance(runner_checks, Mapping)
+            and bool(runner_checks)
+            and all(value is True for value in runner_checks.values()),
+        }
+        failed = [name for name, passed in checks.items() if passed is not True]
+        evidence["checks"] = checks
+        evidence["failed_checks"] = failed
+        if failed:
+            raise acceptance.RunnerError(
+                "focused B3 manager-governance scenario RED: "
+                + ", ".join(failed)
+            )
+        evidence.update(
+            {
+                "result": "GREEN",
+                "live_readiness": "production-live primitive",
+                "phase2_b3_manager_governance_complete": True,
+                "focused_gameplay_green_claimed": True,
+                "failure_reason": None,
+            }
+        )
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["phase2_b3_manager_governance_complete"] = False
+        evidence["focused_gameplay_green_claimed"] = False
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"focused B3 manager-governance scenario failed: {error}"
+        ) from error
+
+
 def run_phase2_live_scenario(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -18719,6 +18951,7 @@ def run_cell(
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
     phase2_b2_same_checkpoint: bool = False,
+    phase2_b3_manager_governance_live: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
     phase2_endgame_source_capture_live: bool = False,
@@ -18754,6 +18987,7 @@ def run_cell(
         or phase2_promotion_source_capture_live
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_b3_manager_governance_live
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
@@ -18768,6 +19002,14 @@ def run_cell(
         phase2_frontend_first_timeout_seconds,
         phase2_runtime_mode=phase2_runtime_mode,
     )
+    if (
+        phase2_b3_manager_governance_live
+        and phase2_frontend_first_load_save_name is None
+    ):
+        raise acceptance.RunnerError(
+            "focused B3 manager-governance live mode requires the managed "
+            "frontend-first load-save option"
+        )
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
@@ -18803,6 +19045,7 @@ def run_cell(
             phase2_promotion_source_capture_live
             or phase2_promo_capture
             or phase2_b2_same_checkpoint
+            or phase2_b3_manager_governance_live
             or phase2_hc_workforce_route_b_live
             or phase2_hc_workforce_route_b_capture_live
             or phase2_endgame_source_capture_live
@@ -18867,6 +19110,7 @@ def run_cell(
         or (phase2_live_batch or phase2_promo_capture)
         or phase2_promotion_source_capture_live
         or phase2_b2_same_checkpoint
+        or phase2_b3_manager_governance_live
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
@@ -18905,6 +19149,7 @@ def run_cell(
                         phase2_promotion_source_capture_live
                         or phase2_promo_capture
                         or phase2_b2_same_checkpoint
+                        or phase2_b3_manager_governance_live
                         or phase2_hc_workforce_route_b_live
                         or phase2_hc_workforce_route_b_capture_live
                         or phase2_endgame_source_capture_live
@@ -19011,6 +19256,9 @@ def run_cell(
                 ),
                 phase2_promo_capture=phase2_promo_capture,
                 phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
+                phase2_b3_manager_governance_live=(
+                    phase2_b3_manager_governance_live
+                ),
                 phase2_hc_workforce_route_b_live=(
                     phase2_hc_workforce_route_b_live
                 ),
@@ -19390,6 +19638,37 @@ def run_cell(
                 raise acceptance.RunnerError(
                     "focused HC-workforce Route-B registry scenario returned RED"
                 )
+        elif phase2_b3_manager_governance_live:
+            if not (
+                isinstance(phase2_seed_install_evidence, dict)
+                and isinstance(
+                    phase2_seed_install_evidence.get("contract"), dict
+                )
+                and phase2_supervisor is not None
+            ):
+                raise acceptance.RunnerError(
+                    "focused B3 manager-governance runtime lacks its seed "
+                    "contract or supervisor"
+                )
+            evidence = run_phase2_b3_manager_governance_live_scenario(
+                title_navigation_service,
+                artifacts,
+                tracked_ck3_pid=tracked_ck3_pid,
+                seed_contract=dict(
+                    phase2_seed_install_evidence["contract"]
+                ),
+            )
+            gameplay_acceptance_executed = (
+                evidence.get("gameplay_acceptance_executed") is True
+            )
+            if (
+                evidence.get("phase2_b3_manager_governance_complete")
+                is not True
+            ):
+                raise acceptance.RunnerError(
+                    "focused B3 manager-governance scenario returned "
+                    "without a provider-observed business postcondition"
+                )
         elif phase2_b2_same_checkpoint:
             if not (
                 isinstance(phase2_seed_install_evidence, dict)
@@ -19540,27 +19819,22 @@ def run_cell(
                 )
         if phase2_supervisor is not None:
             try:
-                scenario_path = artifacts / (
+                scenario_filename = (
                     "05_phase2_incident_source_checkpoint_capture.json"
                     if phase2_incident_source_checkpoint_capture
-                    else (
-                        "05_endgame_source_capture.json"
-                        if phase2_endgame_source_capture_live
-                        else (
-                            "08_hc_workforce_route_b_capture_live.json"
-                            if phase2_hc_workforce_route_b_capture_live
-                            else (
-                                "08_hc_workforce_route_b_registry_live.json"
-                                if phase2_hc_workforce_route_b_live
-                                else (
-                                    "05_phase2_b2_same_checkpoint_scenario.json"
-                                    if phase2_b2_same_checkpoint
-                                    else "05_phase2_live_scenario.json"
-                                )
-                            )
-                        )
-                    )
+                    else "05_endgame_source_capture.json"
+                    if phase2_endgame_source_capture_live
+                    else "08_hc_workforce_route_b_capture_live.json"
+                    if phase2_hc_workforce_route_b_capture_live
+                    else "08_hc_workforce_route_b_registry_live.json"
+                    if phase2_hc_workforce_route_b_live
+                    else "05_phase2_b2_same_checkpoint_scenario.json"
+                    if phase2_b2_same_checkpoint
+                    else "05_phase2_b3_manager_governance_live_scenario.json"
+                    if phase2_b3_manager_governance_live
+                    else "05_phase2_live_scenario.json"
                 )
+                scenario_path = artifacts / scenario_filename
                 if scenario_path.is_file():
                     scenario_value = json.loads(
                         scenario_path.read_text(encoding="utf-8")
@@ -19682,6 +19956,7 @@ def run_cell(
                 and not phase2_promotion_source_capture_live
                 and not phase2_promo_capture
                 and not phase2_b2_same_checkpoint
+                and not phase2_b3_manager_governance_live
                 and not phase2_endgame_source_capture_live
                 and not phase2_incident_source_checkpoint_capture
             ):
@@ -19811,6 +20086,22 @@ def run_cell(
         and evidence.get("phase2_acceptance_complete") is False
         and evidence.get("full_phase2_acceptance_claimed") is False
     )
+    phase2_b3_manager_governance_complete = (
+        phase2_b3_manager_governance_live
+        and result == "GREEN"
+        and evidence.get("result") == "GREEN"
+        and evidence.get("phase2_b3_manager_governance_complete") is True
+        and evidence.get("phase2_acceptance_complete") is False
+        and evidence.get("full_phase2_acceptance_claimed") is False
+        and evidence.get("source_checkpoint_registry_used") is False
+        and evidence.get("incident_gameplay_action_cell_executed") is False
+        and evidence.get("b2_pip_gameplay_action_cell_executed") is False
+        and evidence.get("workforce_gameplay_action_cell_executed") is False
+        and evidence.get("scoreboard_gameplay_action_cell_executed") is False
+        and isinstance(evidence.get("checks"), Mapping)
+        and bool(evidence["checks"])
+        and all(value is True for value in evidence["checks"].values())
+    )
     phase2_promotion_source_capture_complete = (
         phase2_promotion_source_capture_live
         and result == "GREEN"
@@ -19886,6 +20177,10 @@ def run_cell(
                 and phase2_b2_same_checkpoint_complete
             )
             or (
+                phase2_b3_manager_governance_live
+                and phase2_b3_manager_governance_complete
+            )
+            or (
                 phase2_hc_workforce_route_b_live
                 and phase2_hc_workforce_route_b_complete
             )
@@ -19941,6 +20236,9 @@ def run_cell(
         ),
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
+        "phase2_b3_manager_governance_live": (
+            phase2_b3_manager_governance_live
+        ),
         "phase2_hc_workforce_route_b_live": (
             phase2_hc_workforce_route_b_live
         ),
@@ -19971,6 +20269,9 @@ def run_cell(
         ),
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete
+        ),
+        "phase2_b3_manager_governance_complete": (
+            phase2_b3_manager_governance_complete
         ),
         "phase2_hc_workforce_route_b_complete": (
             phase2_hc_workforce_route_b_complete
@@ -20006,6 +20307,8 @@ def run_cell(
             if phase2_promo_capture
             else "matrix_owns_final_shutdown_no_post_stop_liveness_gate"
             if phase2_b2_same_checkpoint
+            else "single_pid_generation_and_final_shutdown_owned_by_scenario"
+            if phase2_b3_manager_governance_live
             else "route_b_capture_owns_fixture_activation_and_freeze"
             if phase2_hc_workforce_route_b_capture_live
             else "route_b_scenario_owns_registry_restore_and_replay"
@@ -20027,6 +20330,7 @@ def run_cell(
                 or phase2_live_batch
                 or phase2_promotion_source_capture_live
                 or phase2_promo_capture
+                or phase2_b3_manager_governance_live
                 or phase2_incident_source_checkpoint_capture
                 else None
             )
@@ -20111,6 +20415,7 @@ def run_cell(
                 or phase2_live_batch
                 or phase2_promotion_source_capture_live
                 or phase2_b2_same_checkpoint
+                or phase2_b3_manager_governance_live
                 or phase2_hc_workforce_route_b_live
                 or phase2_hc_workforce_route_b_capture_live
                 or phase2_endgame_source_capture_live
@@ -20141,6 +20446,7 @@ def main(
     phase2_promotion_source_capture_live: bool = False,
     phase2_promotion_source_capture_timeout_seconds: float = 300.0,
     phase2_b2_same_checkpoint: bool = False,
+    phase2_b3_manager_governance_live: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
     phase2_endgame_source_capture_live: bool = False,
@@ -20179,6 +20485,7 @@ def main(
             phase2_live_batch,
             phase2_promotion_source_capture_live,
             phase2_b2_same_checkpoint,
+            phase2_b3_manager_governance_live,
             phase2_hc_workforce_route_b_live,
             phase2_hc_workforce_route_b_capture_live,
             phase2_endgame_source_capture_live,
@@ -20191,6 +20498,7 @@ def main(
             "--loader-smoke, --phase2-live-batch and "
             "--phase2-promotion-source-checkpoint-live, "
             "--phase2-b2-same-checkpoint, and "
+            "--phase2-b3-manager-governance-live, and "
             "--phase2-hc-workforce-route-b-live, and "
             "--phase2-hc-workforce-route-b-capture-live, and "
             "--phase2-endgame-source-capture-live, and "
@@ -20201,6 +20509,7 @@ def main(
         or phase2_promotion_source_capture_live
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_b3_manager_governance_live
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
@@ -20329,6 +20638,14 @@ def main(
             phase2_runtime_mode
         ),
     )
+    if (
+        phase2_b3_manager_governance_live
+        and phase2_frontend_first_load_save_name is None
+    ):
+        raise acceptance.RunnerError(
+            "focused B3 manager-governance live mode requires the managed "
+            "frontend-first load-save option"
+        )
     # Do not let the sequel mode fall through to the legacy visual scenario.
     # A real phase-two choreography must be registered explicitly before any
     # preflight, profile write, CK3 launch, or FFmpeg process is attempted.
@@ -20540,6 +20857,7 @@ def main(
             or phase2_promotion_source_capture_live
             or phase2_promo_capture
             or phase2_b2_same_checkpoint
+            or phase2_b3_manager_governance_live
             or phase2_hc_workforce_route_b_capture_live
             or phase2_endgame_source_capture_live
             or phase2_incident_source_checkpoint_capture
@@ -20556,6 +20874,7 @@ def main(
                     phase2_promotion_source_capture_live
                     or phase2_promo_capture
                     or phase2_b2_same_checkpoint
+                    or phase2_b3_manager_governance_live
                     or phase2_hc_workforce_route_b_live
                     or phase2_hc_workforce_route_b_capture_live
                     or phase2_endgame_source_capture_live
@@ -20625,6 +20944,9 @@ def main(
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
         phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
+        phase2_b3_manager_governance_live=(
+            phase2_b3_manager_governance_live
+        ),
         phase2_hc_workforce_route_b_live=(
             phase2_hc_workforce_route_b_live
         ),
@@ -20780,6 +21102,55 @@ def main(
             "A/B/C proof"
         )
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    b3_action_value = phase2_scenario.get(
+        "manager_governance_gameplay_action_cell"
+    )
+    b3_action = b3_action_value if isinstance(b3_action_value, dict) else {}
+    b3_checks_value = phase2_scenario.get("checks")
+    b3_checks = b3_checks_value if isinstance(b3_checks_value, dict) else {}
+    b3_cleanup_value = report.get("native_cleanup")
+    b3_cleanup = b3_cleanup_value if isinstance(b3_cleanup_value, dict) else {}
+    phase2_b3_manager_governance_complete_claim = (
+        phase2_b3_manager_governance_live
+        and report.get("result") == "GREEN"
+        and report.get("phase2_b3_manager_governance_live") is True
+        and report.get("phase2_b3_manager_governance_complete") is True
+        and report.get("gameplay_acceptance_executed") is True
+        and report.get("gameplay_green_claimed") is True
+        and phase2_scenario.get("result") == "GREEN"
+        and phase2_scenario.get("phase2_b3_manager_governance_complete")
+        is True
+        and phase2_scenario.get("phase2_acceptance_complete") is False
+        and phase2_scenario.get("full_phase2_acceptance_claimed") is False
+        and phase2_scenario.get("source_checkpoint_registry_used") is False
+        and phase2_scenario.get("incident_gameplay_action_cell_executed")
+        is False
+        and phase2_scenario.get("b2_pip_gameplay_action_cell_executed")
+        is False
+        and phase2_scenario.get("workforce_gameplay_action_cell_executed")
+        is False
+        and phase2_scenario.get("scoreboard_gameplay_action_cell_executed")
+        is False
+        and b3_action.get("result") == "GREEN"
+        and b3_action.get("gameplay_action_complete") is True
+        and b3_action.get("action_ack_is_business_postcondition") is False
+        and bool(b3_checks)
+        and all(value is True for value in b3_checks.values())
+        and b3_cleanup.get("result") == "GREEN"
+        and b3_cleanup.get("restore_expected") is False
+        and b3_cleanup.get("pid_lineage")
+        == [report.get("tracked_full_acceptance_pid")]
+    )
+    if (
+        phase2_b3_manager_governance_live
+        and phase2_b3_manager_governance_complete_claim is not True
+    ):
+        result = "RED"
+        reason = (
+            "focused B3 manager-governance report lacks its same-PID/"
+            "generation paused business postcondition or cleanup proof"
+        )
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
     route_b_checks = phase2_scenario.get("checks")
     route_b_checks = route_b_checks if isinstance(route_b_checks, dict) else {}
     phase2_hc_workforce_route_b_complete_claim = (
@@ -20917,6 +21288,7 @@ def main(
         # Never retain or print a focused completion claim after that gate
         # turns the overall attempt RED.
         phase2_b2_same_checkpoint_complete_claim = False
+        phase2_b3_manager_governance_complete_claim = False
         phase2_hc_workforce_route_b_complete_claim = False
         phase2_hc_workforce_route_b_capture_complete_claim = False
         phase2_endgame_source_capture_complete_claim = False
@@ -20933,6 +21305,9 @@ def main(
         ),
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
+        "phase2_b3_manager_governance_live": (
+            phase2_b3_manager_governance_live
+        ),
         "phase2_hc_workforce_route_b_live": (
             phase2_hc_workforce_route_b_live
         ),
@@ -20952,6 +21327,9 @@ def main(
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete_claim
         ),
+        "phase2_b3_manager_governance_complete": (
+            phase2_b3_manager_governance_complete_claim
+        ),
         "phase2_hc_workforce_route_b_complete": (
             phase2_hc_workforce_route_b_complete_claim
         ),
@@ -20970,6 +21348,7 @@ def main(
             or phase2_promotion_source_capture_live
             or phase2_promo_capture
             or phase2_b2_same_checkpoint
+            or phase2_b3_manager_governance_live
             or phase2_hc_workforce_route_b_live
             or phase2_hc_workforce_route_b_capture_live
             or phase2_endgame_source_capture_live
@@ -20996,6 +21375,8 @@ def main(
                 if phase2_promo_capture
                 else phase2_b2_same_checkpoint_complete_claim
                 if phase2_b2_same_checkpoint
+                else phase2_b3_manager_governance_complete_claim
+                if phase2_b3_manager_governance_live
                 else phase2_hc_workforce_route_b_complete_claim
                 if phase2_hc_workforce_route_b_live
                 else phase2_hc_workforce_route_b_capture_complete_claim
@@ -21034,6 +21415,8 @@ def main(
         heading = "ZHONGGUO 361 PHASE-TWO HC-WORKFORCE ROUTE-B"
     elif phase2_b2_same_checkpoint:
         heading = "ZHONGGUO 361 PHASE-TWO B2 SAME-CHECKPOINT"
+    elif phase2_b3_manager_governance_live:
+        heading = "ZHONGGUO 361 PHASE-TWO B3 MANAGER GOVERNANCE"
     else:
         heading = "ZHONGGUO 361 ACCEPTANCE"
     print(f"\n===== {heading} =====")
@@ -21066,6 +21449,16 @@ def main(
             + (
                 "GREEN"
                 if matrix["phase2_b2_same_checkpoint_complete"] is True
+                else "INCOMPLETE / RED"
+            )
+        )
+        print("full phase-two claim    NONE")
+    elif phase2_b3_manager_governance_live:
+        print(
+            "focused B3 manager      "
+            + (
+                "GREEN"
+                if matrix["phase2_b3_manager_governance_complete"] is True
                 else "INCOMPLETE / RED"
             )
         )
@@ -21186,6 +21579,16 @@ if __name__ == "__main__":
             "run the product-only focused B2 route: real Incident prelude, "
             "one frozen PIP checkpoint, accept/negotiate/refuse, four "
             "restores and five-PID cleanup; does not claim full Phase2"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-b3-manager-governance-live",
+        action="store_true",
+        help=(
+            "run only the product B3 typed manager/subordinate action and "
+            "provider-observed governance postcondition in one managed "
+            "PID/generation; does not require source registries or claim "
+            "full Phase2"
         ),
     )
     parser.add_argument(
@@ -21368,6 +21771,9 @@ if __name__ == "__main__":
                 ),
                 phase2_b2_same_checkpoint=(
                     arguments.phase2_b2_same_checkpoint
+                ),
+                phase2_b3_manager_governance_live=(
+                    arguments.phase2_b3_manager_governance_live
                 ),
                 phase2_hc_workforce_route_b_live=(
                     arguments.phase2_hc_workforce_route_b_live

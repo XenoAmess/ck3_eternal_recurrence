@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Focused static contracts for the Phase 2 B2 same-checkpoint route."""
+"""Focused static contracts for the Phase 2 B2 and B3 runner routes."""
 
 from __future__ import annotations
 
 import copy
+from contextlib import redirect_stdout
 import importlib.util
+import io
 import json
 from pathlib import Path
+import runpy
 import sys
 import tempfile
 import threading
@@ -121,6 +124,56 @@ def focused_green_cell_report() -> dict[str, object]:
     }
 
 
+def focused_b3_green_cell_report(pid: int = 5004) -> dict[str, object]:
+    scenario_checks = {
+        "initial_pid_matches_tracked": True,
+        "post_action_pid_matches_tracked": True,
+        "same_connection_generation": True,
+        "same_played_character": True,
+        "paused_before_and_after": True,
+        "map_ready_before_and_after": True,
+        "typed_selector_provider_observed": True,
+        "manager_action_green": True,
+        "gameplay_action_executed": True,
+        "gameplay_action_complete": True,
+        "ack_not_business_postcondition": True,
+        "provider_postcondition_required": True,
+        "provider_postcondition_available": True,
+        "runner_checks_green": True,
+    }
+    action = {
+        "result": "GREEN",
+        "gameplay_action_executed": True,
+        "gameplay_action_complete": True,
+        "action_ack_is_business_postcondition": False,
+    }
+    return {
+        "result": "GREEN",
+        "error_reason": None,
+        "tracked_full_acceptance_pid": pid,
+        "phase2_b3_manager_governance_live": True,
+        "phase2_b3_manager_governance_complete": True,
+        "gameplay_acceptance_executed": True,
+        "gameplay_green_claimed": True,
+        "native_cleanup": {
+            "result": "GREEN",
+            "restore_expected": False,
+            "pid_lineage": [pid],
+        },
+        "scenario_evidence": {
+            "result": "GREEN",
+            "phase2_b3_manager_governance_complete": True,
+            "phase2_acceptance_complete": False,
+            "full_phase2_acceptance_claimed": False,
+            "source_checkpoint_registry_used": False,
+            "incident_gameplay_action_cell_executed": False,
+            "b2_pip_gameplay_action_cell_executed": False,
+            "workforce_gameplay_action_cell_executed": False,
+            "scoreboard_gameplay_action_cell_executed": False,
+            "manager_governance_gameplay_action_cell": action,
+            "checks": scenario_checks,
+        },
+    }
 class CountingEvent(threading.Event):
     def __init__(self) -> None:
         super().__init__()
@@ -772,6 +825,432 @@ class FocusedB2MainTests(unittest.TestCase):
             self.assertFalse(rejected["phase2_b2_same_checkpoint_complete"])
             self.assertFalse(rejected["gameplay_green_claimed"])
             self.assertIn("focused B2 report lacks", rejected["error_reason"])
+
+
+class FocusedB3ManagerGovernanceTests(unittest.TestCase):
+    def test_capability_gate_requires_only_the_b3_runtime_surface(self) -> None:
+        pid = 8124
+        required_bridge = {
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
+            for label in capture.PHASE2_B3_MANAGER_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        }
+        required_steps = {
+            capture.PHASE2_REQUIRED_ACTION_STEPS[label]
+            for label in capture.PHASE2_B3_MANAGER_REQUIRED_ACTION_STEP_LABELS
+        }
+        capabilities: dict[str, object] = {
+            "mode": capture.NATIVE_BRIDGE_MODE,
+            "backend_id": capture.NATIVE_BRIDGE_MODE,
+            "visual_fallback": False,
+            "snapshot": True,
+            "wait_for_change": True,
+            "bridge_capabilities": sorted(required_bridge),
+            "action_steps": sorted(required_steps),
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": pid,
+                "connection_generation": 1,
+            },
+            "checkpoint_materialization": {"configured": True},
+            "native_session_control": {"configured": True},
+        }
+        for label in capture.PHASE2_B3_MANAGER_REQUIRED_QUERY_FLAG_LABELS:
+            capabilities[capture.PHASE2_REQUIRED_QUERY_FLAGS[label]] = True
+        service = SimpleNamespace(capabilities=lambda: capabilities)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            focused = capture.phase2_runtime_capability_preflight(
+                service,
+                artifacts,
+                tracked_ck3_pid=pid,
+                managed_restore_supervisor=True,
+                focused_b3_manager_governance=True,
+            )
+            missing_selector = copy.deepcopy(capabilities)
+            missing_selector[
+                capture.PHASE2_REQUIRED_QUERY_FLAGS[
+                    "manager_subordinate_selector"
+                ]
+            ] = False
+            with self.assertRaisesRegex(
+                capture.acceptance.RunnerError, "MCP capability RED"
+            ):
+                capture.phase2_runtime_capability_preflight(
+                    SimpleNamespace(
+                        capabilities=lambda: missing_selector
+                    ),
+                    artifacts,
+                    tracked_ck3_pid=pid,
+                    managed_restore_supervisor=True,
+                    focused_b3_manager_governance=True,
+                )
+
+        self.assertEqual(focused["result"], "GREEN")
+        self.assertEqual(
+            focused["scope"],
+            "focused_b3_manager_governance_mcp_capability_profile",
+        )
+        self.assertEqual(
+            set(focused["required_bridge_capabilities"]),
+            set(capture.PHASE2_B3_MANAGER_REQUIRED_BRIDGE_CAPABILITY_LABELS),
+        )
+        for unrelated in (
+            "b2_pip_snapshot",
+            "incident_snapshot",
+            "workforce_collective_snapshot",
+            "scoreboard_state_acl",
+            "scoreboard_action_transport",
+            "result_case_snapshot",
+            "promotion_compensation_postcondition",
+            "promotion_source_progress_transport",
+            "review_now_action_transport",
+        ):
+            self.assertNotIn(
+                unrelated, focused["required_bridge_capabilities"]
+            )
+
+    def test_scenario_uses_native_selector_and_only_b3_cell(self) -> None:
+        pid = 5004
+        generation = 7
+        initial = paused_snapshot(
+            snapshot_id="b3-initial",
+            revision=10,
+            date_raw=1000,
+            bridge_pid=pid,
+            connection_generation=generation,
+        )
+        selector_snapshot = paused_snapshot(
+            snapshot_id="b3-selector",
+            revision=11,
+            date_raw=1000,
+            bridge_pid=pid,
+            connection_generation=generation,
+        )
+        final = paused_snapshot(
+            snapshot_id="b3-final",
+            revision=12,
+            date_raw=1001,
+            bridge_pid=pid,
+            connection_generation=generation,
+        )
+        snapshots = iter((selector_snapshot, final))
+        selector_calls: list[tuple[str, int]] = []
+
+        class Service:
+            def query_loaded_feature_manifest_v1(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.manifest_revision = expected_revision
+                return {"loaded_feature_manifest_ready": True}
+
+            def snapshot(self) -> dict[str, object]:
+                return next(snapshots)
+
+            def query_zhongguo_manager_subordinate_selector_v1(
+                self,
+                request_nonce: str,
+                *,
+                expected_revision: int,
+            ) -> dict[str, object]:
+                selector_calls.append((request_nonce, expected_revision))
+                return {
+                    "status": "available",
+                    "selector_kind": capture.PHASE2_B3_MANAGER_SELECTOR_KIND,
+                    "provider_observed": True,
+                    "manager_character_id": 201,
+                    "subordinate_character_id": 202,
+                }
+
+        service = Service()
+        transition = {
+            "gameplay_action_executed": True,
+            "gameplay_action_complete": True,
+            "background_business_complete": True,
+            "action_ack_is_business_postcondition": False,
+        }
+        action = {
+            "result": "GREEN",
+            "gameplay_action_executed": True,
+            "gameplay_action_complete": True,
+            "action_ack_is_business_postcondition": False,
+            "transition": transition,
+            "postcondition": {"status": "available"},
+            "checks": {"provider_business_postcondition": True},
+        }
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_paused_snapshot",
+                return_value=initial,
+            ),
+            mock.patch.object(
+                capture,
+                "prove_phase2_loaded_seed",
+                return_value={"result": "GREEN"},
+            ),
+            mock.patch.object(
+                capture,
+                "run_b3_manager_governance_gameplay_action_cell",
+                return_value=action,
+            ) as action_cell,
+        ):
+            evidence = capture.run_phase2_b3_manager_governance_live_scenario(
+                service,
+                Path(temporary),
+                tracked_ck3_pid=pid,
+                seed_contract=seed_contract(),
+            )
+
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertTrue(evidence["phase2_b3_manager_governance_complete"])
+        self.assertFalse(evidence["phase2_acceptance_complete"])
+        self.assertFalse(evidence["source_checkpoint_registry_used"])
+        self.assertEqual(selector_calls, [("zg361.b3.manager.selector", 11)])
+        self.assertEqual(
+            action_cell.call_args.kwargs,
+            {"manager_character_id": 201, "subordinate_character_id": 202},
+        )
+        self.assertTrue(all(evidence["checks"].values()))
+        for key in (
+            "incident_gameplay_action_cell_executed",
+            "b2_pip_gameplay_action_cell_executed",
+            "workforce_gameplay_action_cell_executed",
+            "scoreboard_gameplay_action_cell_executed",
+        ):
+            self.assertFalse(evidence[key])
+
+    def test_scenario_fails_closed_on_connection_generation_drift(self) -> None:
+        pid = 5004
+        initial = paused_snapshot(
+            snapshot_id="b3-initial",
+            revision=10,
+            date_raw=1000,
+            bridge_pid=pid,
+            connection_generation=7,
+        )
+        final = paused_snapshot(
+            snapshot_id="b3-final",
+            revision=12,
+            date_raw=1001,
+            bridge_pid=pid,
+            connection_generation=8,
+        )
+        service = SimpleNamespace(
+            query_loaded_feature_manifest_v1=lambda **_kwargs: {
+                "loaded_feature_manifest_ready": True
+            },
+            snapshot=lambda: final,
+        )
+        manager_action = {
+            "result": "GREEN",
+            "gameplay_action_executed": True,
+            "gameplay_action_complete": True,
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "provider_observed_postcondition": {"status": "available"},
+            "typed_selector": {
+                "status": "available",
+                "selector_kind": capture.PHASE2_B3_MANAGER_SELECTOR_KIND,
+                "provider_observed": True,
+            },
+            "runner_checks": {"provider_business_postcondition": True},
+        }
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_paused_snapshot",
+                return_value=initial,
+            ),
+            mock.patch.object(
+                capture,
+                "prove_phase2_loaded_seed",
+                return_value={"result": "GREEN"},
+            ),
+            mock.patch.object(
+                capture,
+                "run_phase2_manager_governance_gameplay_action_cell",
+                return_value=manager_action,
+            ),
+        ):
+            artifacts = Path(temporary)
+            with self.assertRaisesRegex(
+                capture.acceptance.RunnerError,
+                "same_connection_generation",
+            ):
+                capture.run_phase2_b3_manager_governance_live_scenario(
+                    service,
+                    artifacts,
+                    tracked_ck3_pid=pid,
+                    seed_contract=seed_contract(),
+                )
+            persisted = json.loads(
+                (
+                    artifacts
+                    / "05_phase2_b3_manager_governance_live_scenario.json"
+                ).read_text(encoding="utf-8")
+            )
+        self.assertEqual(persisted["result"], "RED")
+        self.assertIn(
+            "same_connection_generation", persisted["failed_checks"]
+        )
+
+    def test_loader_gate_forwards_the_dedicated_b3_profile(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_seed_loader_stage",
+                return_value={"result": "GREEN"},
+            ),
+            mock.patch.object(
+                capture,
+                "native_loader_smoke_readiness",
+                return_value={"result": "GREEN"},
+            ),
+            mock.patch.object(
+                capture,
+                "phase2_runtime_capability_preflight",
+                return_value={"result": "GREEN"},
+            ) as capability_preflight,
+            mock.patch.object(
+                capture,
+                "scan_loader_error_log",
+                return_value={"result": "GREEN"},
+            ),
+            mock.patch.object(
+                capture, "verify_runtime_load_order", return_value=[]
+            ),
+        ):
+            root = Path(temporary)
+            artifacts = root / "artifacts"
+            userdir = root / "profile"
+            artifacts.mkdir()
+            userdir.mkdir()
+            evidence = capture.run_loader_gate(
+                SimpleNamespace(),
+                artifacts,
+                userdir,
+                {},
+                tracked_ck3_pid=5004,
+                phase2_live_batch=False,
+                managed_restore_supervisor=True,
+                phase2_b3_manager_governance_live=True,
+            )
+
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(evidence["mode"], "phase2_b3_manager_governance_live")
+        kwargs = capability_preflight.call_args.kwargs
+        self.assertTrue(kwargs["focused_b3_manager_governance"])
+        self.assertFalse(kwargs["focused_b2_same_checkpoint"])
+        self.assertTrue(kwargs["managed_restore_supervisor"])
+
+    def test_cli_and_main_forward_the_scoped_mode_without_registries(self) -> None:
+        output = io.StringIO()
+        with (
+            mock.patch.object(
+                sys,
+                "argv",
+                [str(Path(capture.__file__)), "--help"],
+            ),
+            redirect_stdout(output),
+            self.assertRaises(SystemExit) as help_exit,
+        ):
+            runpy.run_path(str(Path(capture.__file__)), run_name="__main__")
+        self.assertEqual(help_exit.exception.code, 0)
+        self.assertIn("--phase2-b3-manager-governance-live", output.getvalue())
+
+        green_report = focused_b3_green_cell_report()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            steam_root = root / "steam"
+            steam_root.mkdir()
+            dll = root / "bridge.dll"
+            injector = root / "injector.exe"
+            dll.write_bytes(b"focused-b3-test-dll")
+            injector.write_bytes(b"focused-b3-test-injector")
+            artifacts = root / "focused-b3-green"
+            with (
+                mock.patch.object(
+                    capture,
+                    "preflight",
+                    return_value={"native_bridge_runtime": {"ready": True}},
+                ),
+                mock.patch.object(
+                    capture.terminal,
+                    "steam_userdata_root",
+                    return_value=steam_root,
+                ),
+                mock.patch.object(
+                    capture.isolated,
+                    "steam_workshop_app_roots",
+                    return_value=[],
+                ),
+                mock.patch.object(capture.isolated, "registered_workshop_targets"),
+                mock.patch.object(capture.isolated, "ensure_test_paths_safe"),
+                mock.patch.object(
+                    capture.isolated, "protected_snapshot", return_value={}
+                ),
+                mock.patch.object(capture.isolated, "verify_protected_storage"),
+                mock.patch.object(capture, "write_evidence_index"),
+                mock.patch.object(
+                    capture, "run_cell", return_value=green_report
+                ) as run_cell,
+            ):
+                result = capture.main(
+                    artifacts_dir=str(artifacts),
+                    keep_userdir=True,
+                    phase2_b3_manager_governance_live=True,
+                    phase2_frontend_first_load_save_name="autosave",
+                    phase2_frontend_first_timeout_seconds=180,
+                    bridge_dll=str(dll),
+                    bridge_injector=str(injector),
+                    bridge_pipe=(capture.NATIVE_TITLE_PIPE_PREFIX + "c" * 32),
+                )
+                outer = json.loads(
+                    (artifacts / "report.json").read_text(encoding="utf-8")
+                )
+
+        self.assertEqual(result, 0)
+        forwarded = run_cell.call_args.kwargs
+        self.assertTrue(forwarded["phase2_b3_manager_governance_live"])
+        self.assertEqual(
+            forwarded["phase2_frontend_first_load_save_name"], "autosave"
+        )
+        self.assertEqual(
+            forwarded["phase2_frontend_first_timeout_seconds"], 180
+        )
+        self.assertIsNone(forwarded["phase2_source_checkpoint_registry"])
+        self.assertIsNone(
+            forwarded["phase2_scoreboard_surface_checkpoint_registry"]
+        )
+        self.assertEqual(outer["result"], "GREEN")
+        self.assertTrue(outer["phase2_b3_manager_governance_complete"])
+        self.assertFalse(outer["phase2_live_batch"])
+
+    def test_b3_mode_is_mutually_exclusive_with_full_and_b2(self) -> None:
+        for conflict in ("phase2_live_batch", "phase2_b2_same_checkpoint"):
+            with self.subTest(conflict=conflict):
+                with self.assertRaisesRegex(
+                    capture.acceptance.RunnerError, "mutually exclusive"
+                ):
+                    capture.main(
+                        preflight_only=True,
+                        phase2_b3_manager_governance_live=True,
+                        **{conflict: True},
+                    )
+
+    def test_b3_mode_requires_managed_frontend_first_load(self) -> None:
+        with self.assertRaisesRegex(
+            capture.acceptance.RunnerError,
+            "requires the managed frontend-first load-save option",
+        ):
+            capture.main(
+                preflight_only=True,
+                phase2_b3_manager_governance_live=True,
+            )
 
 
 class Phase2FullCapabilityPreflightTests(unittest.TestCase):
