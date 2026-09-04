@@ -260,6 +260,42 @@ from ..strategy import choose_one_life_turn, read_one_life_strategy
 class GameplayBridgeService:
     def __init__(self, driver: GameplayBridgeDriver) -> None:
         self.driver = driver
+        self._zhongguo_scoreboard_surface_preparer_v1 = None
+
+    def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
+        """Bind the runner-owned real product-checkpoint provider once."""
+
+        if not callable(preparer):
+            raise TypeError("scoreboard surface preparer must be callable")
+        if self._zhongguo_scoreboard_surface_preparer_v1 is not None:
+            raise BridgeUnavailableError(
+                "scoreboard surface preparer is already bound"
+            )
+        self._zhongguo_scoreboard_surface_preparer_v1 = preparer
+
+    def prepare_zhongguo_scoreboard_surface_v1(
+        self, surface_id: str
+    ) -> dict[str, object]:
+        """Prepare one real surface or return a typed unavailable receipt."""
+
+        preparer = self._zhongguo_scoreboard_surface_preparer_v1
+        if not callable(preparer):
+            return {
+                "schema_version": 1,
+                "surface_id": surface_id,
+                "status": "unavailable",
+                "failure_reason": (
+                    "scoreboard_surface_checkpoint_registry_missing"
+                ),
+                "provider_observed": False,
+                "action_ack_used_as_postcondition": False,
+            }
+        result = preparer(surface_id)
+        if not isinstance(result, dict):
+            raise BridgeUnavailableError(
+                "scoreboard surface preparer returned a non-object"
+            )
+        return result
 
     def capabilities(self) -> dict[str, object]:
         return self.driver.capabilities()

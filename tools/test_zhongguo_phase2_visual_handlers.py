@@ -306,6 +306,27 @@ class Phase2VisualHandlerTests(unittest.TestCase):
         self.assertTrue(result["surface_visible"])
         self.assertTrue(result["postcondition_green"])
 
+        def green_batch(_service, _artifacts):
+            open_row = _green_scoreboard(_service, _artifacts)
+            return {
+                "result": "GREEN",
+                "production_capability_advertised": True,
+                "candidate_batch_complete": True,
+                "all_postconditions_verified": True,
+                "all_expected_acl_denials_verified": True,
+                "action_matrix": {"received-only": [open_row]},
+            }
+
+        batch_result = Phase2VisualHandlerAdapter(
+            service, scoreboard_action_cell=green_batch
+        ).run_span(
+            _scenario(SCOREBOARD_HANDLER),
+            _context(_Recorder(), Path("unit-batch")),
+            _runtime(),
+        )
+        self.assertEqual(batch_result["result"], "GREEN")
+        self.assertTrue(batch_result["surface_visible"])
+
         def ack_only(_service, _artifacts):
             return {
                 "result": "RED",

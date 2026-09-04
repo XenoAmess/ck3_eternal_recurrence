@@ -223,12 +223,27 @@ def _event_surface(
 def _typed_scoreboard_visible(evidence: Mapping[str, object]) -> bool:
     if not (
         evidence.get("result") == "GREEN"
-        and evidence.get("verified_pass") is True
         and evidence.get("production_capability_advertised") is True
     ):
         return False
-    request = evidence.get("action_request")
-    later = evidence.get("later_query")
+    action_evidence: Mapping[str, object] = evidence
+    action_matrix = evidence.get("action_matrix")
+    if isinstance(action_matrix, Mapping):
+        received = action_matrix.get("received-only")
+        if not (
+            evidence.get("candidate_batch_complete") is True
+            and evidence.get("all_postconditions_verified") is True
+            and evidence.get("all_expected_acl_denials_verified") is True
+            and isinstance(received, list)
+            and received
+            and isinstance(received[-1], Mapping)
+        ):
+            return False
+        action_evidence = received[-1]
+    if action_evidence.get("verified_pass") is not True:
+        return False
+    request = action_evidence.get("action_request")
+    later = action_evidence.get("later_query")
     if not isinstance(request, Mapping) or request.get("action") != "open":
         return False
     widgets = later.get("widgets") if isinstance(later, Mapping) else None

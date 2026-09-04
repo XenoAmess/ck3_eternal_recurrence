@@ -5873,6 +5873,13 @@ def main() -> int:
         assert loader_matrix["gameplay_green_claimed"] is False
 
         phase2_launch_artifacts = temporary_root / "phase2-live-batch-launch-wiring"
+        scoreboard_surface_registry_path = (
+            temporary_root / "scoreboard-surface-registry.json"
+        )
+        scoreboard_surface_registry_path.write_text(
+            '{"registry_kind":"unit-scoreboard-surfaces"}\n',
+            encoding="utf-8",
+        )
         phase2_cell_report = {
             "result": "RED",
             "error_reason": "MCP capability RED: workforce collective missing",
@@ -5886,6 +5893,16 @@ def main() -> int:
             mock.patch.object(
                 capture, "preflight", return_value=runtime_identity
             ) as phase2_preflight,
+            mock.patch.object(
+                capture,
+                "load_phase2_seed_contract",
+                return_value={"source": {"sha256": "A" * 64}},
+            ),
+            mock.patch.object(
+                capture,
+                "validate_scoreboard_surface_checkpoint_registry",
+                return_value={"result": "GREEN"},
+            ) as scoreboard_registry_preflight,
             mock.patch.object(
                 capture.terminal,
                 "steam_userdata_root",
@@ -5917,6 +5934,9 @@ def main() -> int:
                 artifacts_dir=str(phase2_launch_artifacts),
                 keep_userdir=True,
                 phase2_live_batch=True,
+                phase2_scoreboard_surface_checkpoint_registry=str(
+                    scoreboard_surface_registry_path
+                ),
                 bridge_dll=str(dll),
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
@@ -5926,6 +5946,15 @@ def main() -> int:
             "require_visual_tools"
         ] is True
         assert phase2_run_cell.call_args.kwargs["phase2_live_batch"] is True
+        assert phase2_run_cell.call_args.kwargs[
+            "phase2_scoreboard_surface_checkpoint_registry"
+        ] == {"registry_kind": "unit-scoreboard-surfaces"}
+        scoreboard_registry_preflight.assert_called_once_with(
+            {"registry_kind": "unit-scoreboard-surfaces"},
+            expected_seed_lineage_id=(
+                "zg361-phase2-seed-" + "a" * 64
+            ),
+        )
         assert phase2_run_cell.call_args.kwargs["loader_smoke"] is False
         assert phase2_run_cell.call_args.kwargs["promo_capture"] is False
         assert phase2_run_cell.call_args.kwargs[

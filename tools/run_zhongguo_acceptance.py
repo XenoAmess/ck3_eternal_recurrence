@@ -198,6 +198,15 @@ from zhongguo_phase2_source_checkpoint_provider import (
     Phase2SourceCheckpointError,
     Phase2SourceCheckpointProvider,
 )
+from zhongguo_scoreboard_surface_checkpoint_provider import (
+    ScoreboardSurfaceCheckpointError,
+    ScoreboardSurfaceCheckpointProvider,
+    validate_scoreboard_surface_checkpoint_registry,
+)
+from zhongguo_scoreboard_surface_checkpoint_registry import (
+    ScoreboardSurfaceCheckpointRegistryBuilder,
+    capture_current_zhongguo_scoreboard_surface_v1,
+)
 
 import promo_real_character_contract as real_characters
 
@@ -1846,6 +1855,7 @@ def run_phase2_promo_capture_scenario(
     native_session_binding: Mapping[str, object] | None = None,
     loader_gate: Mapping[str, object] | None = None,
     source_checkpoint_registry: Mapping[str, object] | None = None,
+    scoreboard_surface_checkpoint_registry: Mapping[str, object] | None = None,
     capture_receipt_context: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Invoke only the explicitly registered sequel visual producer.
@@ -1895,6 +1905,16 @@ def run_phase2_promo_capture_scenario(
             capture_lineage=lineage,
             span_receipt_provider=span_receipts,
             seed_chain_provider=seed_chain,
+        )
+    if isinstance(scoreboard_surface_checkpoint_registry, Mapping):
+        if not isinstance(seed_contract, Mapping):
+            raise acceptance.RunnerError(
+                "scoreboard surface checkpoint provider requires seed contract"
+            )
+        bind_phase2_scoreboard_surface_checkpoint_provider(
+            title_navigation_service,
+            registry=scoreboard_surface_checkpoint_registry,
+            seed_contract=seed_contract,
         )
     producer_kwargs: dict[str, object] = {
         "title_navigation_service": title_navigation_service,
@@ -8127,6 +8147,60 @@ def run_phase2_scoreboard_gameplay_action_cell(
         raise acceptance.RunnerError(
             "phase-two scoreboard action cell returned an invalid result"
         )
+    return evidence
+
+
+def _phase2_seed_lineage_id(
+    seed_contract: Mapping[str, object],
+) -> str:
+    source = seed_contract.get("source")
+    source = source if isinstance(source, Mapping) else {}
+    sha256 = str(source.get("sha256", "")).lower()
+    if re.fullmatch(r"[0-9a-f]{64}", sha256) is None:
+        raise acceptance.RunnerError(
+            "scoreboard surface checkpoints require the exact seed SHA-256"
+        )
+    return f"zg361-phase2-seed-{sha256}"
+
+
+def bind_phase2_scoreboard_surface_checkpoint_provider(
+    service: GameplayBridgeService,
+    *,
+    registry: Mapping[str, object],
+    seed_contract: Mapping[str, object],
+) -> dict[str, object]:
+    """Preflight and bind the real product-state surface provider once."""
+
+    provider = ScoreboardSurfaceCheckpointProvider(
+        registry,
+        service=service,
+        expected_seed_lineage_id=_phase2_seed_lineage_id(seed_contract),
+    )
+    try:
+        preflight = provider.preflight()
+    except ScoreboardSurfaceCheckpointError as error:
+        raise acceptance.RunnerError(
+            "scoreboard surface checkpoint preflight RED "
+            f"[{error.reason_code}]"
+        ) from error
+    service.bind_zhongguo_scoreboard_surface_preparer_v1(
+        provider.prepare_zhongguo_scoreboard_surface_v1
+    )
+    return preflight
+
+
+def capture_phase2_scoreboard_surface_checkpoint(
+    service: GameplayBridgeService,
+    builder: ScoreboardSurfaceCheckpointRegistryBuilder,
+    surface_id: str,
+    evidence_path: Path,
+) -> dict[str, object]:
+    """Formal live producer seam for one already-reached product surface."""
+
+    evidence = capture_current_zhongguo_scoreboard_surface_v1(
+        service, builder, surface_id
+    )
+    write_json(evidence_path, evidence)
     return evidence
 
 
@@ -16048,6 +16122,9 @@ def run_phase2_live_scenario(
     b3_manager_typed_selector_provider: (
         Callable[[GameplayBridgeService], Mapping[str, object]] | None
     ) = None,
+    scoreboard_surface_checkpoint_registry: (
+        Mapping[str, object] | None
+    ) = None,
 ) -> dict[str, object]:
     """Run only MCP phase-two primitives; never fall back to phase-one UI."""
 
@@ -16076,6 +16153,7 @@ def run_phase2_live_scenario(
         "manager_governance_gameplay_action_cell": None,
         "workforce_collective_gameplay_action_cell": None,
         "scoreboard_gameplay_action_cell": None,
+        "scoreboard_surface_checkpoint_preflight": None,
         "post_incident_paused_binding": None,
         "b2_pip_prompt_readiness": None,
         "completed_gameplay_action_cells": [],
@@ -16123,6 +16201,15 @@ def run_phase2_live_scenario(
             loaded_feature_manifest=manifest,
         )
         evidence["seed_load_proof"] = seed_load_proof
+        if isinstance(scoreboard_surface_checkpoint_registry, Mapping):
+            evidence["scoreboard_surface_checkpoint_preflight"] = (
+                bind_phase2_scoreboard_surface_checkpoint_provider(
+                    service,
+                    registry=scoreboard_surface_checkpoint_registry,
+                    seed_contract=seed_contract,
+                )
+            )
+            write_json(evidence_path, evidence)
 
         owner_contract = _phase2_domain_query_contract(
             seed_contract,
@@ -16898,6 +16985,9 @@ def run_cell(
     phase2_seed_install: dict[str, object] | None = None,
     phase2_seed_contract_path: Path | None = None,
     phase2_source_checkpoint_registry: Mapping[str, object] | None = None,
+    phase2_scoreboard_surface_checkpoint_registry: (
+        Mapping[str, object] | None
+    ) = None,
 ) -> dict[str, object]:
     phase2_runtime_mode = (
         phase2_live_batch
@@ -17205,6 +17295,9 @@ def run_cell(
                     source_checkpoint_registry=(
                         phase2_source_checkpoint_registry
                     ),
+                    scoreboard_surface_checkpoint_registry=(
+                        phase2_scoreboard_surface_checkpoint_registry
+                    ),
                     capture_receipt_context={
                         "bootstrap": bootstrap,
                         "runtime_identity": runtime_identity,
@@ -17263,6 +17356,9 @@ def run_cell(
                 ),
                 userdir=userdir,
                 bootstrap=bootstrap,
+                scoreboard_surface_checkpoint_registry=(
+                    phase2_scoreboard_surface_checkpoint_registry
+                ),
             )
             gameplay_acceptance_executed = (
                 evidence.get("phase2_acceptance_complete") is True
@@ -17835,6 +17931,7 @@ def main(
     bridge_pipe: str | None = None,
     phase2_seed_contract: str | None = None,
     phase2_source_checkpoint_registry: str | None = None,
+    phase2_scoreboard_surface_checkpoint_registry: str | None = None,
     phase2_product_source: str | None = None,
     phase2_product_projection: str = "broad",
     phase2_product_projection_manifest: str | None = None,
@@ -17890,6 +17987,13 @@ def main(
     ) and not phase2_runtime_mode:
         raise acceptance.RunnerError(
             "phase-two product projection options require a Phase2 runtime mode"
+        )
+    if (
+        phase2_scoreboard_surface_checkpoint_registry is not None
+        and not (phase2_live_batch or phase2_promo_capture)
+    ):
+        raise acceptance.RunnerError(
+            "scoreboard surface checkpoint registry requires Phase2 live or promo mode"
         )
     if phase2_product_source is not None and workshop_cache_source is not None:
         raise acceptance.RunnerError(
@@ -17951,6 +18055,48 @@ def main(
                 "phase-two source checkpoint registry must be a JSON object"
             )
         source_checkpoint_registry_value = loaded_registry
+    scoreboard_surface_checkpoint_registry_value: (
+        Mapping[str, object] | None
+    ) = None
+    if phase2_scoreboard_surface_checkpoint_registry:
+        scoreboard_registry_path = Path(
+            phase2_scoreboard_surface_checkpoint_registry
+        ).expanduser().resolve()
+        try:
+            loaded_scoreboard_registry = json.loads(
+                scoreboard_registry_path.read_text(encoding="utf-8-sig")
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise acceptance.RunnerError(
+                "cannot load scoreboard surface checkpoint registry: "
+                f"{type(error).__name__}: {error}"
+            ) from error
+        if not isinstance(loaded_scoreboard_registry, dict):
+            raise acceptance.RunnerError(
+                "scoreboard surface checkpoint registry must be a JSON object"
+            )
+        scoreboard_surface_checkpoint_registry_value = (
+            loaded_scoreboard_registry
+        )
+        registry_seed_contract = load_phase2_seed_contract(
+            (
+                phase2_seed_contract_path
+                if phase2_seed_contract_path is not None
+                else PHASE2_SEED_CONTRACT_PATH
+            )
+        )
+        try:
+            validate_scoreboard_surface_checkpoint_registry(
+                scoreboard_surface_checkpoint_registry_value,
+                expected_seed_lineage_id=_phase2_seed_lineage_id(
+                    registry_seed_contract
+                ),
+            )
+        except ScoreboardSurfaceCheckpointError as error:
+            raise acceptance.RunnerError(
+                "scoreboard surface checkpoint registry RED "
+                f"[{error.reason_code}]"
+            ) from error
     native_bridge = resolve_native_bridge_config(
         bridge_dll, bridge_injector, bridge_pipe
     )
@@ -18056,6 +18202,9 @@ def main(
         phase2_seed_contract_path=phase2_seed_contract_path,
         phase2_source_checkpoint_registry=(
             source_checkpoint_registry_value
+        ),
+        phase2_scoreboard_surface_checkpoint_registry=(
+            scoreboard_surface_checkpoint_registry_value
         ),
     )
     result = report["result"]
@@ -18350,6 +18499,13 @@ if __name__ == "__main__":
         ),
     )
     parser.add_argument(
+        "--phase2-scoreboard-surface-checkpoint-registry",
+        help=(
+            "real-CK3 managed-capable/received-only product checkpoint "
+            "registry for the named-widget action matrix"
+        ),
+    )
+    parser.add_argument(
         "--phase2-product-source",
         help=(
             "optional exact historical Phase2 product tree; it is mounted "
@@ -18397,6 +18553,9 @@ if __name__ == "__main__":
                 phase2_seed_contract=arguments.phase2_seed_contract,
                 phase2_source_checkpoint_registry=(
                     arguments.phase2_source_checkpoint_registry
+                ),
+                phase2_scoreboard_surface_checkpoint_registry=(
+                    arguments.phase2_scoreboard_surface_checkpoint_registry
                 ),
                 phase2_product_source=arguments.phase2_product_source,
                 phase2_product_projection=(
