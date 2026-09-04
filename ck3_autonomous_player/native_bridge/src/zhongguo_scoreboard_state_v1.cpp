@@ -1568,6 +1568,38 @@ void SetPromotionProgressUnavailable(
   output.unavailable_reason.assign(reason);
 }
 
+std::string PromotionTopLevelProbeReason(
+    const ZhongguoPromotionSourceProgressNativeEnvironmentV1 &environment,
+    const ZhongguoPromotionSourceProgressAccessV1 &access) {
+  std::string reason{"widget_not_instantiated:top_level_probe="};
+  if (environment.offline_fixture_function_overrides) {
+    reason += "offline_fixture";
+    return reason;
+  }
+  void *context = nullptr;
+  void *owner = nullptr;
+  if (!ResolveGuiContextAndOwner(environment, access, context, owner)) {
+    reason += "gui_owner_unavailable";
+    return reason;
+  }
+  constexpr std::array<std::string_view, 3> comparison_names{
+      "zg361_scoreboard_window", "zg361_decision_bridge_window",
+      "zg361_mechanism_bridge_window"};
+  bool found_any = false;
+  for (const auto comparison : comparison_names) {
+    std::string name{comparison};
+    void *const widget = CallFindTopLevelWidget(
+        environment.find_top_level_widget, owner, &name);
+    if (widget != nullptr && WidgetNameEquals(access, widget, comparison)) {
+      if (found_any) reason.push_back(',');
+      reason.append(comparison);
+      found_any = true;
+    }
+  }
+  if (!found_any) reason += "none";
+  return reason;
+}
+
 bool FindPromotionProgressWidgets(
     const ZhongguoPromotionSourceProgressNativeEnvironmentV1 &environment,
     const ZhongguoPromotionSourceProgressAccessV1 &access,
@@ -1782,7 +1814,10 @@ ReadZhongguoPromotionSourceProgressV1(
       return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
     }
     if (!output.readiness.exact_widget_set_ready) {
-      SetPromotionProgressUnavailable(output, "widget_not_instantiated");
+      SetPromotionProgressUnavailable(
+          output, first[0] == nullptr
+                      ? PromotionTopLevelProbeReason(environment, access)
+                      : "widget_not_instantiated:promotion_root_present");
       return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
     }
     game::ZhongguoPromotionSourceProgressV1 second_state{};

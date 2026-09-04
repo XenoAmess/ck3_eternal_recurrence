@@ -101,3 +101,20 @@ and absent artifact root
 `Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-product-native-live-attempt-cac1e85-20260904T104203Z`.
 It has not been executed. Readiness stays `static-ready-live-pending` until the
 serial CK3 gate produces and reviews a real paused `zg361pp.147` artifact.
+
+## R9 top-level instantiation finding
+
+The later `f3af7e0` R9 attempt proved that the fixed query reached a stable
+paused played-owner frame but returned
+`widget_not_instantiated` for the promotion root and all four descendants. CK3
+did load the `.gui` asset, so asset loading alone is not evidence that a
+scripted top-level window has entered the GUI owner's searchable instance set.
+
+The follow-up candidate appends a fixed, read-only comparison to the existing
+unavailability string: it asks the same exact-build `FindTopLevelWidget` ABI
+for `zg361_scoreboard_window`, `zg361_decision_bridge_window`, and
+`zg361_mechanism_bridge_window`. Caller input cannot select names. This is a
+diagnostic distinction only: the promotion result remains unavailable and no
+action capability is promoted. The MSVC Release compensation-ON build at
+`Z:\b3probe-msvc2` passed 94/94 CTest; DLL SHA-256 is
+`3CC51415C225792A0D09E8B937A207D588BFD471C79220A301AF8C7DE553D9D6`.

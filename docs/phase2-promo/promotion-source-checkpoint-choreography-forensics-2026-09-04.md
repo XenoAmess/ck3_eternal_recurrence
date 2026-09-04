@@ -84,3 +84,23 @@ report. This diagnostic is covered in both normal and `-O` focused tests and
 does not relax the fail-closed gate. The next serial attempt is diagnostic: it
 must identify the exact missing runtime widget before any product/provider fix
 is selected.
+
+R9 supplied that missing detail. On the same 630-file product, all five fixed
+entries reported unavailable and the top-level promotion bridge itself was not
+instantiated. The exact reason was `widget_not_instantiated`; the unavailable
+list began with `zg361_promotion_source_bridge_window` and included all four
+descendants. The outer report SHA-256 is
+`F75F80155BC44CC898916C462C774DE7903BB47298F81EDDD2AEBBF7096A2F78`,
+the evidence index SHA-256 is
+`ABCD0F1BC10715C4D7D95D2F38088A5D6F8355429BA617E1227C2B8D33AD1A63`,
+and cleanup SHA-256 is
+`B448DD394AAB733974628E5058CC71D279940FFB96F22CB233C21F11731407D7`.
+
+Because an absent root cannot distinguish a promotion-only registration fault
+from a broader custom-window lookup mismatch, the next native candidate adds a
+read-only comparison probe for the fixed scoreboard, decision-bridge and
+mechanism-bridge top-level names. It changes only typed-unavailability detail;
+it neither executes an action nor weakens readiness. The compensation-ON MSVC
+build passed 94/94 CTest; its DLL and injector SHA-256 values are
+`3CC51415C225792A0D09E8B937A207D588BFD471C79220A301AF8C7DE553D9D6` and
+`8AA17A085D9D83A195D1122CED667CC1806ACA62B826E437768DBAB7B451A97D`.
