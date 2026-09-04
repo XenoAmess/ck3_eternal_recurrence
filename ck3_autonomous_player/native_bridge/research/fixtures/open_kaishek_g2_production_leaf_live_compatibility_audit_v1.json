@@ -1,0 +1,95 @@
+{
+  "schema": "xar.ck3.open_kaishek_g2_production_leaf_live_compatibility_audit.v1",
+  "status": "GREEN_STATIC",
+  "capability_stage": "production-live primitive",
+  "audited_at": "2026-09-04T15:15:00+08:00",
+  "root": {
+    "canonical_commit": "a37bfcc6fdc1c852c7f5e167449b68fc9b5c5c02",
+    "provider_commit": "a3c13246ef32b35e117b08dbb86f61986c1dabe3",
+    "production_candidate_commit": "0b0fbc047610a8ef25f47a59f7b42c83c176d69e"
+  },
+  "open_kaishek": {
+    "previous_commit": "320398b7f40ac049742ca78c095f24d1b8fce825",
+    "commit": "fadbb64c913653ff2e8cffe6897ab048698d1412",
+    "origin_main": "fadbb64c913653ff2e8cffe6897ab048698d1412",
+    "default_checkout_head": "fadbb64c913653ff2e8cffe6897ab048698d1412",
+    "clean": true,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 349377,
+    "jar_sha256": "2cc72f4e4fec26a45897f958980a906f811943f7c3561447b4e71dbf53cc35d3"
+  },
+  "live_evidence": {
+    "artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-production-leaf-1941c56-20260904\\live-production-leaf-dual-query-r1",
+    "report_file": "report.json",
+    "report_bytes": 120508263,
+    "report_sha256": "ad6eef83dcca07c3ae280f01cade6bbd0c1912ff0e086d797604d5f06c99f7c2",
+    "elapsed_seconds": 151.766,
+    "production_tree_sha256": "f4e63fffa6cf9332ba41eb5985d1cb72f280f4bf375a15473f4638f43cf944be",
+    "bridge_dll_sha256": "1acc24db476a7b1ecb4f0a98ef2e9a74d0e932cb74f5884622530d77246e3244",
+    "bridge_injector_sha256": "03ed1ee07ac58e1e6f7adde31518c732c1d60cdbffc3b50938d7e1cf84c877c5",
+    "first_query_sequence": 1,
+    "second_query_sequence": 2,
+    "evaluated_days": 1825,
+    "snapshot_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53223936,
+    "paused": true,
+    "normalized_queries_equal": true,
+    "time_advanced": false,
+    "mutation_commands": [],
+    "source_inputs_unchanged": true,
+    "cleanup_proven": true,
+    "ck3_processes_after_cleanup": 0
+  },
+  "public_contract": {
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "schema_changed": false,
+    "native_certified": true,
+    "runtime_certified": true,
+    "production_live": true,
+    "read_only": true
+  },
+  "closed_boundaries": {
+    "expiry_observable": false,
+    "termination_action_enabled": false,
+    "full_decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen_034_closed": false
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 136,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_domain_tests": 8,
+    "open_cli_smoke": "PASS",
+    "product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "root_compatibility_tests": 20,
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 37,
+      "all_checks": true
+    }
+  },
+  "t2_execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "parser_changed": false,
+    "validator_vocabulary_changed": false,
+    "ir_changed": false,
+    "runtime_handler_changed": false,
+    "cli_command_changed": false
+  }
+}

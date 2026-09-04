@@ -45,8 +45,10 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             report["checks"]["fixture_root_capability_matches_open_kaishek"]
         )
         self.assertFalse(report["external"]["available"])
-        self.assertFalse(report["readiness"]["native_certified"])
-        self.assertFalse(report["readiness"]["runtime_certified"])
+        self.assertEqual(report["readiness"]["stage"], "production-live primitive")
+        self.assertTrue(report["readiness"]["native_certified"])
+        self.assertTrue(report["readiness"]["runtime_certified"])
+        self.assertTrue(report["readiness"]["production_live"])
 
     def test_fixture_identity_sections_cannot_drift(self) -> None:
         fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))

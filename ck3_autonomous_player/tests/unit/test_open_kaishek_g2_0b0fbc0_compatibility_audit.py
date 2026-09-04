@@ -42,6 +42,10 @@ class OpenKaishekG2ProductionLeafCompatibilityAuditTests(unittest.TestCase):
         )
         self.assertEqual(
             self.report["open_kaishek"]["commit"],
+            "320398b7f40ac049742ca78c095f24d1b8fce825",
+        )
+        self.assertNotEqual(
+            self.report["open_kaishek"]["commit"],
             self.compatibility["root_binding"]["open_kaishek_commit"],
         )
         self.assertEqual(
@@ -83,13 +87,20 @@ class OpenKaishekG2ProductionLeafCompatibilityAuditTests(unittest.TestCase):
             "expiry_observable",
         ):
             self.assertFalse(provider[key])
-        for key in (
-            "private_leaf_reader_live_observed",
-            "default_production_leaf_reader_installed",
-            "default_production_binary_live_validated",
-            "expiry_observable",
-        ):
-            self.assertEqual(provider[key], fixture[key])
+        self.assertTrue(fixture["default_production_binary_live_validated"])
+        self.assertNotEqual(
+            provider["default_production_binary_live_validated"],
+            fixture["default_production_binary_live_validated"],
+        )
+        self.assertEqual(
+            provider["private_leaf_reader_live_observed"],
+            fixture["private_leaf_reader_live_observed"],
+        )
+        self.assertEqual(
+            provider["default_production_leaf_reader_installed"],
+            fixture["default_production_leaf_reader_installed"],
+        )
+        self.assertEqual(provider["expiry_observable"], fixture["expiry_observable"])
 
     def test_recorded_offline_verification_is_green(self) -> None:
         verification = self.report["verification"]

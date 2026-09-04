@@ -68,6 +68,10 @@ _PROVIDER_STRING_CONSTANTS = {
     "root_production_manifest_sha256": "ROOT_PRODUCTION_MANIFEST_SHA256",
     "root_provider_source_sha256": "ROOT_PROVIDER_SOURCE_SHA256",
     "root_provider_header_sha256": "ROOT_PROVIDER_HEADER_SHA256",
+    "production_live_report_sha256": "PRODUCTION_LIVE_REPORT_SHA256",
+    "production_tree_sha256": "PRODUCTION_TREE_SHA256",
+    "production_bridge_dll_sha256": "PRODUCTION_BRIDGE_DLL_SHA256",
+    "production_bridge_injector_sha256": "PRODUCTION_BRIDGE_INJECTOR_SHA256",
 }
 _PROVIDER_BOOLEAN_CONSTANTS = {
     "public_schema_changed": "PUBLIC_SCHEMA_CHANGED",
@@ -78,7 +82,12 @@ _PROVIDER_BOOLEAN_CONSTANTS = {
     "default_production_binary_live_validated": (
         "DEFAULT_PRODUCTION_BINARY_LIVE_VALIDATED"
     ),
+    "production_live_read_only_primitive": "PRODUCTION_LIVE_READ_ONLY_PRIMITIVE",
     "expiry_observable": "EXPIRY_OBSERVABLE",
+    "termination_action_enabled": "TERMINATION_ACTION_ENABLED",
+    "full_decision_ready": "FULL_DECISION_READY",
+    "automatic_surrender_ready": "AUTOMATIC_SURRENDER_READY",
+    "gen_034_closed": "GEN_034_CLOSED",
 }
 
 
@@ -256,7 +265,9 @@ def audit(
         expected_root.get("capability_id") == expected_open.get("capability_id")
     )
     checks["fixture_schema"] = fixture.get("schema") == "xar.ck3.g2_open_kaishek_compatibility.v1"
-    checks["fixture_static_status"] = fixture.get("status") == "static-observation-only"
+    checks["fixture_capability_status"] = (
+        fixture.get("status") == "production-live-read-only-primitive"
+    )
     for key in (
         "profile_id",
         "capability_id",
@@ -268,9 +279,9 @@ def audit(
         "runtime_certified",
     ):
         checks[f"fixture_{key}_present"] = key in expected_open
-    checks["fixture_certification_closed"] = (
-        expected_open.get("native_certified") is False
-        and expected_open.get("runtime_certified") is False
+    checks["fixture_duration_certification_live"] = (
+        expected_open.get("native_certified") is True
+        and expected_open.get("runtime_certified") is True
     )
     expected_provider = fixture.get("provider_transition", {})
     checks["fixture_provider_transition_shape"] = set(expected_provider) == {
@@ -283,8 +294,13 @@ def audit(
         and expected_provider.get("default_production_leaf_reader_installed")
         is True
         and expected_provider.get("default_production_binary_live_validated")
-        is False
+        is True
+        and expected_provider.get("production_live_read_only_primitive") is True
         and expected_provider.get("expiry_observable") is False
+        and expected_provider.get("termination_action_enabled") is False
+        and expected_provider.get("full_decision_ready") is False
+        and expected_provider.get("automatic_surrender_ready") is False
+        and expected_provider.get("gen_034_closed") is False
     )
     checks["fixture_boundaries_closed"] = fixture.get("boundaries") == {
         "ck3_started": False,
@@ -294,7 +310,7 @@ def audit(
         "paradox_opcode_added": False,
         "allowlist_changed": False,
         "native_query_added": False,
-        "readiness_promoted": False,
+        "readiness_promoted": True,
     }
 
     resolved_checkout = _resolve_checkout(fixture, checkout)
@@ -370,6 +386,11 @@ def audit(
         status = "GREEN_STATIC" if external["available"] else "GREEN_STATIC_NO_CHECKOUT"
     else:
         status = "RED"
+    native_certified = expected_open.get("native_certified") is True
+    runtime_certified = expected_open.get("runtime_certified") is True
+    production_live = (
+        expected_provider.get("production_live_read_only_primitive") is True
+    )
     report = {
         "schema": "xar.ck3.g2_open_kaishek_compatibility_audit.v1",
         "status": status,
@@ -380,10 +401,14 @@ def audit(
         "checks": checks,
         "errors": errors,
         "readiness": {
-            "stage": "static-ready" if all_checks else "static-blocked",
-            "native_certified": False,
-            "runtime_certified": False,
-            "production_live": False,
+            "stage": (
+                "production-live primitive"
+                if all_checks and production_live
+                else "static-blocked"
+            ),
+            "native_certified": native_certified,
+            "runtime_certified": runtime_certified,
+            "production_live": production_live,
         },
         "boundaries": boundaries,
     }

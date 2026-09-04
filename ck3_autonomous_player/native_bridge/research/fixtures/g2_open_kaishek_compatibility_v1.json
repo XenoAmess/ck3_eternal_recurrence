@@ -1,12 +1,12 @@
 {
   "schema": "xar.ck3.g2_open_kaishek_compatibility.v1",
-  "status": "static-observation-only",
-  "purpose": "Freeze the root/open_kaishek G2 truce capability identity and detect cross-repository drift without starting CK3 or adding a Paradox opcode.",
+  "status": "production-live-read-only-primitive",
+  "purpose": "Freeze the root/open_kaishek G2 truce capability identity and production-live duration certification while keeping expiry and termination actions closed.",
   "root_binding": {
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "320398b7f40ac049742ca78c095f24d1b8fce825"
+    "open_kaishek_commit": "fadbb64c913653ff2e8cffe6897ab048698d1412"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -35,8 +35,8 @@
     ],
     "read_only": true,
     "deterministic": true,
-    "native_certified": false,
-    "runtime_certified": false
+    "native_certified": true,
+    "runtime_certified": true
   },
   "provider_transition": {
     "root_provider_commit": "a3c13246ef32b35e117b08dbb86f61986c1dabe3",
@@ -45,11 +45,20 @@
     "root_production_manifest_sha256": "6b5783bca00a1b082aa5fec834ee73a95860535549b7525a616c82f178265c58",
     "root_provider_source_sha256": "5299c88f4cd7b27959e4518d5a48061ae0ef39ae629a2590c269a8fe912f397a",
     "root_provider_header_sha256": "e49d31f35fbb3f5bc713ea94cb9ff3e83ec9fa713772968a0dcffefd20200b2a",
+    "production_live_report_sha256": "ad6eef83dcca07c3ae280f01cade6bbd0c1912ff0e086d797604d5f06c99f7c2",
+    "production_tree_sha256": "f4e63fffa6cf9332ba41eb5985d1cb72f280f4bf375a15473f4638f43cf944be",
+    "production_bridge_dll_sha256": "1acc24db476a7b1ecb4f0a98ef2e9a74d0e932cb74f5884622530d77246e3244",
+    "production_bridge_injector_sha256": "03ed1ee07ac58e1e6f7adde31518c732c1d60cdbffc3b50938d7e1cf84c877c5",
     "public_schema_changed": false,
     "private_leaf_reader_live_observed": true,
     "default_production_leaf_reader_installed": true,
-    "default_production_binary_live_validated": false,
-    "expiry_observable": false
+    "default_production_binary_live_validated": true,
+    "production_live_read_only_primitive": true,
+    "expiry_observable": false,
+    "termination_action_enabled": false,
+    "full_decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen_034_closed": false
   },
   "boundaries": {
     "ck3_started": false,
@@ -59,6 +68,6 @@
     "paradox_opcode_added": false,
     "allowlist_changed": false,
     "native_query_added": false,
-    "readiness_promoted": false
+    "readiness_promoted": true
   }
 }

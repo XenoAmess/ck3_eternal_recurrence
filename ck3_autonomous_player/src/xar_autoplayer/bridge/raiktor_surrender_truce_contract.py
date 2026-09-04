@@ -42,14 +42,14 @@ PASSIVE_SOURCE_ZIP_SHA256 = (
 PASSIVE_CALL_RVAS = (0x2EDAF0F, 0x2EDB59E)
 
 # Cross-project compatibility binding maintained with the open_kaishek G2
-# profile.  This is descriptive metadata only: it does not promote the
-# native/runtime readiness gate or provide an evaluator value.
+# profile.  The profile certifies only the production-live evaluated-days
+# observation primitive; it does not promote expiry or any termination action.
 OPEN_KAISHEK_G2_CAPABILITY_ID: Final = (
     "game.command.query-g2-truce-evaluated-days-v1"
 )
 OPEN_KAISHEK_G2_PROFILE_ID: Final = "ck3-1.19.0.6-g2-truce-evaluator-v1"
 OPEN_KAISHEK_G2_PROFILE_COMMIT: Final = (
-    "320398b7f40ac049742ca78c095f24d1b8fce825"
+    "fadbb64c913653ff2e8cffe6897ab048698d1412"
 )
 
 
