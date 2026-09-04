@@ -94,9 +94,57 @@ The live gate remains open until a real `zg361we.356` source checkpoint, a
 real owner-visible `zg361we.361` result checkpoint/restore, and the same-lineage
 subject Workforce provider artifact all pass this seam.
 
+## Real `zg361we.356` source capture entry
+
+The formal runner also exposes an explicit capture-only mode for the missing
+fourth source entry. It mounts only the product, starts the managed session,
+and waits without timeline input for the expected owner/date frame. Once
+`zg361we.356` is visible, it requires the played character and root/saved owner
+scope to equal the requested owner, a distinct saved subject, the saved
+cycle/case scopes, and exactly three shown/enabled options in native order.
+It then performs only `save-checkpoint`, re-queries the same event binding, and
+checks the materialized bytes/SHA-256 before emitting any GREEN receipt.
+
+The input is a schema-2 `LIVE_PENDING` manifest with exactly the first three
+canonical source entries, including the Incident strict receipt. Its seed,
+exact game/EXE, product tree, enabled-mod set, and product-only capture lineage
+must match the running session. A successful capture writes:
+
+- `endgame-source-receipt.json` with the owner/date/subject/event surface and
+  native save receipt;
+- `phase2-source-checkpoint-capture-manifest.json` with all four real entries;
+- `phase2-source-checkpoint-registry.json` plus its content-addressed archived
+  checkpoints, assembled by the existing schema-2 registry builder.
+
+The capture result deliberately remains `readiness: live-pending` and never
+claims Phase2/gameplay completion. It uses no console, fixture, arbitrary
+rebind, option selection, or ACK as state evidence.
+
+Read-only prefix preflight (does not launch CK3):
+
+```powershell
+py tools/preflight_zg361_phase2_cross_cycle_endgame_source_capture.py `
+  --prefix <three-entry-live-pending-manifest.json> `
+  --expected-seed-lineage-id <zg361-phase2-seed-sha>
+```
+
+Explicit live invocation (the owner and date must be known checkpoint
+bindings, not values inferred after launch):
+
+```powershell
+py tools/run_zhongguo_acceptance.py `
+  --phase2-endgame-source-capture-live `
+  --phase2-endgame-source-capture-prefix <three-entry-manifest.json> `
+  --phase2-endgame-source-owner-character-id <character-id> `
+  --phase2-endgame-source-date-raw <date-raw> `
+  --phase2-seed-contract <ready-seed-contract.json> `
+  --artifacts-dir <new-artifact-directory>
+```
+
 Run the offline audit without launching CK3:
 
 ```powershell
 py tools/preflight_zg361_phase2_cross_cycle_endgame_rebind.py
 py -m unittest tools.test_zg361_phase2_cross_cycle_endgame_live_seam
+py tools/test_zg361_phase2_cross_cycle_endgame_source_capture.py
 ```
