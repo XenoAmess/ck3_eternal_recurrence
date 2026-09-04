@@ -15,6 +15,13 @@ SCRIPT = (
     / "research"
     / "analyze_g2_evaluated_days_private_capture.py"
 )
+ARTIFACT = (
+    ROOT.parents[0]
+    / "artifacts"
+    / "g2"
+    / "2026-09-04"
+    / "evaluated-days-current-pin-static-ready.json"
+)
 SPEC = importlib.util.spec_from_file_location(
     "analyze_g2_evaluated_days_private_capture", SCRIPT
 )
@@ -286,6 +293,22 @@ class G2EvaluatedDaysPrivateCaptureAnalyzerTests(unittest.TestCase):
             "ck3.exe",
         ):
             self.assertNotIn(forbidden, source)
+
+    def test_current_pin_candidate_stays_static_and_fail_closed(self) -> None:
+        evidence = json.loads(ARTIFACT.read_text(encoding="utf-8"))
+        self.assertEqual(
+            evidence["source"]["commit"],
+            "6145be50a1666c2392dd23edef7779507c3043d4",
+        )
+        self.assertEqual(
+            evidence["open_kaishek"]["head"],
+            evidence["open_kaishek"]["origin_main"],
+        )
+        self.assertTrue(evidence["private_candidate"]["private_capture_v3_marker_present"])
+        self.assertFalse(evidence["default_control"]["private_capture_v3_marker_present"])
+        self.assertEqual(evidence["private_candidate"]["native_fixture"], "GREEN")
+        self.assertEqual(evidence["private_candidate"]["game_access_fixture"], "PASS")
+        self.assertTrue(all(value is False for value in evidence["boundaries"].values()))
 
 
 if __name__ == "__main__":

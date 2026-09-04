@@ -1,0 +1,102 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_current_pin_static_ready.v1",
+  "status": "STATIC_READY_NO_LAUNCH",
+  "ok": true,
+  "source": {
+    "commit": "6145be50a1666c2392dd23edef7779507c3043d4",
+    "branch": "agent/g2-evaluator-capture-analyzer-20260904",
+    "clean_at_build": true,
+    "source_zip": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\frozen\\source-6145be50a1666c2392dd23edef7779507c3043d4.zip",
+    "source_zip_size": 82165214,
+    "source_zip_sha256": "A436EF402BF191E2CA3ED57501246776F2ED330B4C3BCB2283EEA2B196D8F715"
+  },
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "evaluator_rva": "0x3373000",
+    "call_sites": 2,
+    "static_verifier": "PASS: exact_build=1 evaluator=1 call_sites=2 read_only=1"
+  },
+  "open_kaishek": {
+    "checkout": "Z:\\workspace\\open_kaishek",
+    "head": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "origin_main": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "clean": true,
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "compatibility_result": "GREEN_STATIC",
+    "native_certified": false,
+    "runtime_certified": false
+  },
+  "build": {
+    "compiler": "MSVC 19.51.36248.0",
+    "configuration": "Release",
+    "private_option": "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1=ON",
+    "passive_observer": "OFF",
+    "preview_entry_observer": "OFF",
+    "directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\frozen",
+    "files": {
+      "xar_ck3_bridge.dll": {
+        "size": 2264576,
+        "sha256": "98F9F82E2D3F3A5B0EA2649E92C2148EDBF3859BF46C0126378E854BCA1E754C"
+      },
+      "xar_ck3_bridge_injector.exe": {
+        "size": 39936,
+        "sha256": "42452C6C43CCB88AD44FB05D25E225DDA68FEC38538E88B3F295685AE6A5B627"
+      },
+      "xar_ck3_raiktor_surrender_truce_v1_test.exe": {
+        "size": 43520,
+        "sha256": "70B767235500FDF25D5A5E2672CE863A3CDD65B961AF826C1D514166BDED600A"
+      },
+      "xar_ck3_game_access_test.exe": {
+        "size": 1252352,
+        "sha256": "F211369FE271BEC700DF453E79A7783968551BCAC12434C8ABB142D368A45678"
+      }
+    }
+  },
+  "default_control": {
+    "private_option": "OFF",
+    "bridge_sha256": "848F91B50766E7A3A6523DABA2D5AAA88FCD55233D5311CBB3801573714D6EA7",
+    "private_capture_v3_marker_present": false,
+    "private_evaluator_boundary_marker_present": false
+  },
+  "private_candidate": {
+    "private_capture_v3_marker_present": true,
+    "private_evaluator_boundary_marker_present": true,
+    "native_fixture": "GREEN",
+    "game_access_fixture": "PASS",
+    "analysis_consumer": "ck3_autonomous_player/native_bridge/research/analyze_g2_evaluated_days_private_capture.py",
+    "analysis_contract": "two groups of pre_call/post_call_1/post_call_2/capture.v3 on two same-frame read-only terms queries"
+  },
+  "frozen_identity": {
+    "war_id": 50331699,
+    "character_id": 29829,
+    "date_raw": 53223936,
+    "checkpoint_sha256": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state_sha256": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E"
+  },
+  "tests": {
+    "python_related_normal": "24 passed",
+    "python_related_optimized": "24 passed",
+    "analyzer_targeted": "9 passed",
+    "private_native_fixture": "GREEN",
+    "default_native_fixture": "GREEN",
+    "private_game_access_fixture": "PASS",
+    "python_compile": "GREEN",
+    "diff_check": "GREEN"
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "profile_prepared": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "public_wire_promoted": false,
+    "public_readiness_promoted": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  },
+  "next_step": "Reserve the exclusive CK3 slot, bind this frozen candidate and current open_kaishek preflight, run exactly two paused read-only terms queries, then classify the retained runner report and private JSONL with the committed analyzer."
+}

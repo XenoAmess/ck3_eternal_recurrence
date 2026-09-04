@@ -119,4 +119,19 @@ cleanup 与 source invariant 全部成立。
 `actual_expiry_observable`、`decision_ready`、`automatic_surrender_ready` 与 `gen034_closed` 固定保持 false。
 因此它是下一次 current-pin candidate 的验收消费者，不是 public readiness 提升。合成 GREEN、首次调用前退出、
 返回不等、跨 query 漂移、指针偏移错误、mutation/frame drift、malformed JSONL 与 no-launch source boundary 共
-8 个定向测试已通过；本包没有启动 CK3、附加进程或修改游戏状态。
+8 个逻辑定向测试与 1 个 frozen-candidate evidence contract 已通过；本包没有启动 CK3、附加进程或修改游戏状态。
+
+同一包随后从干净 `6145be50a1666c2392dd23edef7779507c3043d4` 构建了 current-pin Release
+候选与 default-OFF control。`open_kaishek` 保持 clean 且
+`HEAD == origin/main == 15ab978f879ed4562aacb74dacdaee702fbce54b`，兼容性 verifier 为
+`GREEN_STATIC`；exact-build evaluator verifier 仍为
+`PASS: exact_build=1 evaluator=1 call_sites=2 read_only=1`。private DLL 包含 v3 summary 与 durable
+boundary 两个标记，default DLL 两者均不包含；private/default native fixture、private game-access fixture
+全部 GREEN。冻结目录为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\frozen`，
+private DLL / injector / source ZIP SHA-256 分别为
+`98F9F82E…E754C / 42452C6C…5B627 / A436EF40…F715`。完整尺寸、哈希、测试与
+readiness 边界见
+[`evaluated-days-current-pin-static-ready.json`](../../artifacts/g2/2026-09-04/evaluated-days-current-pin-static-ready.json)。
+该 candidate 目前仅为 `STATIC_READY_NO_LAUNCH`：没有 CK3、profile、attach 或 mutation；下一动作仍是独占
+CK3 槽内的一次双 query capture，再用上述收口器判定，不能仅凭本静态构建提升 runtime certification。
