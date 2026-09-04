@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -247,6 +248,87 @@ class RouteBCheckpointRegistryTests(unittest.TestCase):
             "route_b_checkpoint_registry_lineage_mismatch",
             raised.exception.reason_code,
         )
+
+    def test_writer_publishes_only_a_strict_provider_sealed_registry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            checkpoint = root / "pre-route-b.ck3"
+            checkpoint.write_bytes(b"real-route-b-checkpoint")
+            expected = make_registry(checkpoint)
+            output = root / "registry.json"
+
+            written = registry.write_route_b_checkpoint_registry(
+                output,
+                seed_lineage_id=SEED_LINEAGE,
+                source_git_commit=SOURCE_COMMIT,
+                checkpoint_capture=expected["checkpoint_capture"],
+                sealed_postconditions=expected["sealed_postconditions"],
+            )
+
+            self.assertEqual(expected, written)
+            self.assertEqual(
+                expected,
+                json.loads(output.read_text(encoding="utf-8")),
+            )
+            self.assertEqual(
+                "GREEN",
+                self.provider(written).preflight(
+                    current_projection_binding=projection()
+                )["result"],
+            )
+
+    def test_writer_rejects_ack_without_workforce_provider_seal(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            checkpoint = root / "pre-route-b.ck3"
+            checkpoint.write_bytes(b"real-route-b-checkpoint")
+            expected = make_registry(checkpoint)
+            postconditions = copy.deepcopy(expected["sealed_postconditions"])
+            postconditions["workforce_provider"] = None
+            output = root / "registry.json"
+
+            with self.assertRaises(
+                registry.RouteBCheckpointRegistryError
+            ) as raised:
+                registry.write_route_b_checkpoint_registry(
+                    output,
+                    seed_lineage_id=SEED_LINEAGE,
+                    source_git_commit=SOURCE_COMMIT,
+                    checkpoint_capture=expected["checkpoint_capture"],
+                    sealed_postconditions=postconditions,
+                )
+
+            self.assertEqual(
+                "route_b_checkpoint_postconditions_invalid",
+                raised.exception.reason_code,
+            )
+            self.assertFalse(output.exists())
+
+    def test_writer_refuses_to_overwrite_a_registry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            checkpoint = root / "pre-route-b.ck3"
+            checkpoint.write_bytes(b"real-route-b-checkpoint")
+            expected = make_registry(checkpoint)
+            output = root / "registry.json"
+            output.write_text("preserve", encoding="utf-8")
+
+            with self.assertRaises(
+                registry.RouteBCheckpointRegistryError
+            ) as raised:
+                registry.write_route_b_checkpoint_registry(
+                    output,
+                    seed_lineage_id=SEED_LINEAGE,
+                    source_git_commit=SOURCE_COMMIT,
+                    checkpoint_capture=expected["checkpoint_capture"],
+                    sealed_postconditions=expected["sealed_postconditions"],
+                )
+
+            self.assertEqual(
+                "route_b_checkpoint_registry_already_exists",
+                raised.exception.reason_code,
+            )
+            self.assertEqual("preserve", output.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

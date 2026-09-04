@@ -1,8 +1,8 @@
 # `hc-workforce` B4 route-B checkpoint plumbing
 
-Status: **static-ready / live-pending**. The formal replay entry is now wired,
-but this package did not start CK3, did not capture or restore a save, and does
-not claim a provider result.
+Status: **static-ready / live-pending**. The formal capture and replay entries
+are wired, but this package did not start CK3, did not capture or restore a
+save, and does not claim a provider result.
 
 ## Exact integration point
 
@@ -21,10 +21,53 @@ exact owner played, call the new functions in this order:
 
 The functions live in
 `tools/zg361_phase2_hc_workforce_route_b_checkpoint.py`. The focused formal
-entry is `run_zhongguo_acceptance.py --phase2-hc-workforce-route-b-live`; it
-consumes, but never manufactures, a
+producer is
+`run_zhongguo_acceptance.py --phase2-hc-workforce-route-b-capture-live`; the
+separate `--phase2-hc-workforce-route-b-live` entry consumes a
 `zg361_hc_workforce_route_b_checkpoint_registry` through
 `tools/zg361_phase2_hc_workforce_route_b_checkpoint_registry.py`.
+
+## Strict checkpoint producer
+
+The producer starts only under the explicit
+`--phase2-hc-workforce-route-b-capture-live` mode. From the canonical paused
+seed it verifies the saved subject and date against the seed contract, binds
+the seed SHA-256 lineage, dynamically installs and activates the existing
+Workforce transition fixture, handles the canonical B2 prompt if present, and
+uses the typed subject-to-owner transition to reach the real `zg361we.360`.
+The freeze then queries the real event context and requires option B (native
+index 1) to be shown and enabled, alongside the full three-option surface and
+the exact distinct owner/subject scopes.
+
+Freezing alone does not publish a registry. The producer executes Route B
+once, requires the existing Workforce provider to prove all 13 postcondition
+facts and seal cycle/case identity, restores the pre-B checkpoint, and only
+then calls `write_route_b_checkpoint_registry`. The writer reuses the strict
+replay consumer as its validator and refuses missing provider evidence,
+ACK-only evidence, changed checkpoint bytes, or an existing output file. The
+career-HC provider remains default-off in this B4 producer.
+
+No-launch producer preflight:
+
+```powershell
+& .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py
+```
+
+The future explicit live command is:
+
+```powershell
+& .\tools\.venv\Scripts\python.exe tools/run_zhongguo_acceptance.py `
+  --phase2-hc-workforce-route-b-capture-live `
+  --phase2-hc-workforce-route-b-checkpoint-output <NEW_PRE_B_CK3> `
+  --phase2-hc-workforce-route-b-registry-output <NEW_REGISTRY_JSON> `
+  --phase2-seed-contract <CANONICAL_SEED_CONTRACT_JSON> `
+  --bridge-dll <EXACT_BUILD_DLL> `
+  --bridge-injector <EXACT_BUILD_INJECTOR>
+```
+
+Both output paths are mandatory, must differ, and must not exist. Supplying
+output paths without the explicit capture-live mode is rejected before bridge
+resolution or CK3 launch.
 
 ## Strict registry and replay entry
 
@@ -136,8 +179,8 @@ proven.
 The read-only artifact search performed for this entry found no qualified
 `zg361_hc_workforce_route_b_pre_action_checkpoint` or paired Route-B
 postcondition artifact under the current `zg361` process-assets tree. The next
-CK3 run must therefore capture one; an older B2 save, static preflight JSON, or
-product effect file is not a substitute.
+CK3 run must therefore execute the strict producer above; an older B2 save,
+static preflight JSON, or product effect file is not a substitute.
 
 That run must use a hash-bound current cumulative product projection,
 activate the existing Workforce fixture, and pause on the real
@@ -153,6 +196,8 @@ py tools/test_zg361_phase2_hc_workforce_route_b_checkpoint.py -q
 py tools/test_zg361_phase2_hc_workforce_route_b_checkpoint_preflight.py -q
 py tools/test_zg361_phase2_hc_workforce_route_b_checkpoint_registry.py -q
 & .\tools\.venv\Scripts\python.exe tools/test_zg361_phase2_hc_workforce_route_b_live_entry.py -q
+& .\tools\.venv\Scripts\python.exe tools/test_zg361_phase2_hc_workforce_route_b_capture_preflight.py -q
 py tools/zg361_phase2_hc_workforce_route_b_checkpoint_preflight.py
 & .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_live.py
+& .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py
 ```

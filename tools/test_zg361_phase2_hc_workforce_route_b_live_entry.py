@@ -45,6 +45,41 @@ class RestoreService:
         }
 
 
+class CaptureService:
+    def __init__(self) -> None:
+        self.snapshots = [
+            {
+                "paused": True,
+                "map_ready": True,
+                "snapshot_id": "canonical-seed",
+                "revision": 7,
+                "native_revision": 70,
+                "date_raw": DATE,
+                "played_character": {"character_id": SUBJECT},
+                "diagnostics": {
+                    "bridge_pid": 7711,
+                    "connection_generation": 4,
+                },
+            },
+            {
+                "paused": True,
+                "map_ready": True,
+                "snapshot_id": "fixture-active",
+                "revision": 8,
+                "native_revision": 80,
+                "date_raw": DATE,
+                "played_character": {"character_id": SUBJECT},
+                "diagnostics": {
+                    "bridge_pid": 7722,
+                    "connection_generation": 5,
+                },
+            },
+        ]
+
+    def snapshot(self) -> dict[str, object]:
+        return self.snapshots.pop(0)
+
+
 class Provider:
     def __init__(self, entry: RegisteredRouteBCheckpoint) -> None:
         self.entry = entry
@@ -64,6 +99,161 @@ class Provider:
 
 
 class RouteBLiveEntryTests(unittest.TestCase):
+    def test_capture_reaches_real_pre_b_then_seals_before_registry_write(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive = root / "pre-b.ck3"
+            registry = root / "pre-b-registry.json"
+            artifacts = root / "artifacts"
+            service = CaptureService()
+            sequence: list[str] = []
+            projection = {"source_git_commit": SOURCE_COMMIT}
+            transition = {"result": "GREEN"}
+            capture = {
+                "result": "GREEN",
+                "owner_character_id": OWNER,
+                "subject_character_id": SUBJECT,
+                "gameplay_action_executed": False,
+                "business_postcondition_claimed": False,
+                "checkpoint": {"sha256": CHECKPOINT_SHA},
+                "event_context": {
+                    "options": [
+                        {
+                            "native_option_index": 0,
+                            "shown": True,
+                            "enabled": True,
+                        },
+                        {
+                            "native_option_index": 1,
+                            "shown": True,
+                            "enabled": True,
+                        },
+                        {
+                            "native_option_index": 2,
+                            "shown": True,
+                            "enabled": True,
+                        },
+                    ]
+                },
+            }
+            sealed = {
+                "result": "GREEN",
+                "action_ack_is_business_postcondition": False,
+                "case_identity": {
+                    "owner_character_id": OWNER,
+                    "subject_character_id": SUBJECT,
+                    "cycle_serial": 16,
+                    "case_serial": 16056,
+                },
+            }
+
+            def step(label: str, value: object):
+                def invoke(*_args: object, **_kwargs: object) -> object:
+                    sequence.append(label)
+                    return value
+
+                return invoke
+
+            def write_registry(path: Path, **_kwargs: object) -> dict[str, object]:
+                sequence.append("registry")
+                path.write_text("{}", encoding="utf-8")
+                return {
+                    "registry_kind": (
+                        "zg361_hc_workforce_route_b_checkpoint_registry"
+                    )
+                }
+
+            seed = {
+                "source": {"sha256": "d" * 64},
+                "saved_state": {
+                    "played_character_id": SUBJECT,
+                    "date_raw": DATE,
+                },
+                "domain_query_matrix": {
+                    "workforce_owner_character_id": OWNER,
+                    "b2_pip_owner_character_id": OWNER,
+                },
+            }
+            with mock.patch.object(
+                runner,
+                "install_phase2_workforce_action_fixture",
+                side_effect=step("install", {"result": "GREEN"}),
+            ), mock.patch.object(
+                runner,
+                "bind_current_cumulative_projection",
+                side_effect=step("projection", projection),
+            ), mock.patch.object(
+                runner,
+                "_save_phase2_workforce_checkpoint",
+                side_effect=step(
+                    "activation-save", {"checkpoint": {"sha256": "b" * 64}}
+                ),
+            ), mock.patch.object(
+                runner,
+                "_restore_phase2_workforce_checkpoint",
+                side_effect=step("activation-restore", {"result": "GREEN"}),
+            ), mock.patch.object(
+                runner,
+                "wait_for_phase2_exact_event",
+                side_effect=[
+                    {"binding": {"event": "handoff"}},
+                    {"binding": {"event": "zg361we.360"}},
+                ],
+            ), mock.patch.object(
+                runner,
+                "select_typed_fixture_player_transition",
+                side_effect=step("subject-to-owner", transition),
+            ), mock.patch.object(
+                runner,
+                "freeze_route_b_pre_action_checkpoint",
+                side_effect=step("freeze", capture),
+            ), mock.patch.object(
+                runner,
+                "run_route_b_and_collect_postconditions",
+                side_effect=step("provider-seal", sealed),
+            ), mock.patch.object(
+                runner,
+                "restore_route_b_pre_action_checkpoint",
+                side_effect=step("pre-b-restore", {"result": "GREEN"}),
+            ), mock.patch.object(
+                runner,
+                "write_route_b_checkpoint_registry",
+                side_effect=write_registry,
+            ):
+                result = (
+                    runner.run_phase2_hc_workforce_route_b_checkpoint_capture_scenario(
+                        service,
+                        artifacts,
+                        userdir=root / "profile",
+                        bootstrap={},
+                        seed_contract=seed,
+                        source_git_commit=SOURCE_COMMIT,
+                        checkpoint_archive_path=archive,
+                        checkpoint_registry_path=registry,
+                    )
+                )
+
+            self.assertEqual("GREEN", result["result"])
+            self.assertEqual("fixture-live", result["readiness"])
+            self.assertFalse(result["action_ack_is_business_postcondition"])
+            self.assertEqual(
+                [
+                    "install",
+                    "projection",
+                    "activation-save",
+                    "activation-restore",
+                    "subject-to-owner",
+                    "freeze",
+                    "provider-seal",
+                    "pre-b-restore",
+                    "registry",
+                ],
+                sequence,
+            )
+            self.assertTrue(
+                result["checks"]["real_m360_option_b_shown_and_enabled"]
+            )
+
     def test_focused_capability_profile_excludes_unrelated_domains_and_b6(self) -> None:
         required_bridge = {
             runner.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
@@ -250,6 +440,33 @@ class RouteBLiveEntryTests(unittest.TestCase):
             with self.assertRaises(runner.acceptance.RunnerError) as raised:
                 runner.main(phase2_hc_workforce_route_b_live=True)
         self.assertIn("requires exactly one strict", str(raised.exception))
+        resolve_bridge.assert_not_called()
+
+    def test_capture_mode_requires_both_outputs_before_bridge_or_launch(self) -> None:
+        with mock.patch.object(
+            runner, "resolve_native_bridge_config"
+        ) as resolve_bridge:
+            with self.assertRaises(runner.acceptance.RunnerError) as raised:
+                runner.main(
+                    phase2_hc_workforce_route_b_capture_live=True,
+                    phase2_hc_workforce_route_b_checkpoint_output="pre-b.ck3",
+                )
+        self.assertIn("both checkpoint and registry", str(raised.exception))
+        resolve_bridge.assert_not_called()
+
+    def test_capture_outputs_cannot_implicitly_enable_live_mode(self) -> None:
+        with mock.patch.object(
+            runner, "resolve_native_bridge_config"
+        ) as resolve_bridge:
+            with self.assertRaises(runner.acceptance.RunnerError) as raised:
+                runner.main(
+                    phase2_hc_workforce_route_b_checkpoint_output="pre-b.ck3",
+                    phase2_hc_workforce_route_b_registry_output="registry.json",
+                )
+        self.assertIn(
+            "--phase2-hc-workforce-route-b-capture-live",
+            str(raised.exception),
+        )
         resolve_bridge.assert_not_called()
 
 

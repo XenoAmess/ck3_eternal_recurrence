@@ -12,6 +12,7 @@ from __future__ import annotations
 import copy
 from dataclasses import dataclass
 import hashlib
+import json
 from pathlib import Path
 import re
 from typing import Final, Mapping
@@ -451,10 +452,76 @@ class RouteBCheckpointRegistryProvider:
         return self._entry
 
 
+def write_route_b_checkpoint_registry(
+    output_path: Path,
+    *,
+    seed_lineage_id: str,
+    source_git_commit: str,
+    checkpoint_capture: Mapping[str, object],
+    sealed_postconditions: Mapping[str, object],
+) -> dict[str, object]:
+    """Validate and atomically publish one provider-sealed real checkpoint.
+
+    This writer deliberately has no ACK-only or partial-capture mode.  The
+    same strict consumer used by the formal replay validates the checkpoint
+    bytes, event/owner/subject/date binding and the complete Workforce
+    provider seal before a registry file can appear.
+    """
+
+    destination = Path(output_path).expanduser().resolve()
+    if destination.exists():
+        raise RouteBCheckpointRegistryError(
+            "route_b_checkpoint_registry_already_exists",
+            {"registry_path": str(destination)},
+        )
+    capture = copy.deepcopy(dict(checkpoint_capture))
+    sealed = copy.deepcopy(dict(sealed_postconditions))
+    value: dict[str, object] = {
+        "schema_version": ROUTE_B_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+        "registry_kind": ROUTE_B_CHECKPOINT_REGISTRY_KIND,
+        "result": "GREEN",
+        "evidence_class": "real_ck3",
+        "fixture_used": True,
+        "console_used": False,
+        "action_ack_is_business_postcondition": False,
+        "seed_lineage_id": seed_lineage_id,
+        "checkpoint_capture": capture,
+        "sealed_postconditions": sealed,
+    }
+    projection = capture.get("projection_binding")
+    RouteBCheckpointRegistryProvider(
+        value,
+        expected_seed_lineage_id=seed_lineage_id,
+        expected_source_git_commit=source_git_commit,
+    ).preflight(current_projection_binding=(
+        projection if isinstance(projection, Mapping) else None
+    ))
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f".{destination.name}.tmp")
+    if temporary.exists():
+        raise RouteBCheckpointRegistryError(
+            "route_b_checkpoint_registry_temporary_exists",
+            {"temporary_path": str(temporary)},
+        )
+    try:
+        temporary.write_text(
+            json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True)
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        temporary.replace(destination)
+    except BaseException:
+        temporary.unlink(missing_ok=True)
+        raise
+    return value
+
+
 __all__ = [
     "ROUTE_B_CHECKPOINT_REGISTRY_KIND",
     "ROUTE_B_CHECKPOINT_REGISTRY_SCHEMA_VERSION",
     "RegisteredRouteBCheckpoint",
     "RouteBCheckpointRegistryError",
     "RouteBCheckpointRegistryProvider",
+    "write_route_b_checkpoint_registry",
 ]
