@@ -1,0 +1,142 @@
+﻿# GENERATED FILE — edit tools/gen_361_case_kernel.py
+
+# AL: constitution_case; state 1 = facts_frozen
+zg361_case_al_open_effect = {
+	zg361_case_kernel_initialize_case_effect = {
+		MANAGER_CYCLE_VAR = zg361_review_serial
+		MANAGER_CASE_CURSOR_VAR = zg361_case_al_cursor
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		REVISION_VAR = zg361_case_al_revision
+		ACTIVE_VAR = zg361_case_al_active
+		TIMELINE_VAR = zg361_case_al_timeline_serial
+		FEEDBACK_VAR = zg361_case_al_feedback_revision
+		LAST_OPERATION_VAR = zg361_case_al_last_operation
+		LAST_CHOICE_VAR = zg361_case_al_last_choice
+		LAST_HOOK_VAR = zg361_case_al_last_hook
+		ENTRY_STATE = 1
+	}
+}
+
+# AL stage 1: facts_frozen -> quota_applied on multi_cycle_facts_frozen
+zg361_case_al_advance_01_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		REVISION_VAR = zg361_case_al_revision
+		ACTIVE_VAR = zg361_case_al_active
+		TIMELINE_VAR = zg361_case_al_timeline_serial
+		FEEDBACK_VAR = zg361_case_al_feedback_revision
+		LAST_HOOK_VAR = zg361_case_al_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+		NEXT_STATE = 2
+		HOOK_ID = 1
+		CLOSE_CASE = no
+	}
+}
+
+# AL stage 2: quota_applied -> appeal_returned on quota_applied
+zg361_case_al_advance_02_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		REVISION_VAR = zg361_case_al_revision
+		ACTIVE_VAR = zg361_case_al_active
+		TIMELINE_VAR = zg361_case_al_timeline_serial
+		FEEDBACK_VAR = zg361_case_al_feedback_revision
+		LAST_HOOK_VAR = zg361_case_al_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 2
+		NEXT_STATE = 3
+		HOOK_ID = 2
+		CLOSE_CASE = no
+	}
+}
+
+# AL stage 3: appeal_returned -> collective_action on appeal_quota_returned
+zg361_case_al_advance_03_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		REVISION_VAR = zg361_case_al_revision
+		ACTIVE_VAR = zg361_case_al_active
+		TIMELINE_VAR = zg361_case_al_timeline_serial
+		FEEDBACK_VAR = zg361_case_al_feedback_revision
+		LAST_HOOK_VAR = zg361_case_al_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+		NEXT_STATE = 4
+		HOOK_ID = 3
+		CLOSE_CASE = no
+	}
+}
+
+# AL stage 4: collective_action -> chartered on manager_collective_action
+zg361_case_al_advance_04_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		REVISION_VAR = zg361_case_al_revision
+		ACTIVE_VAR = zg361_case_al_active
+		TIMELINE_VAR = zg361_case_al_timeline_serial
+		FEEDBACK_VAR = zg361_case_al_feedback_revision
+		LAST_HOOK_VAR = zg361_case_al_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 4
+		NEXT_STATE = 5
+		HOOK_ID = 4
+		CLOSE_CASE = no
+	}
+}
+
+# AL stage 5: chartered -> reported on constitution_chartered
+zg361_case_al_advance_05_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_al_owner
+		SUBJECT_VAR = zg361_case_al_subject
+		CYCLE_VAR = zg361_case_al_cycle_serial
+		CASE_VAR = zg361_case_al_case_serial
+		STATE_VAR = zg361_case_al_state
+		REVISION_VAR = zg361_case_al_revision
+		ACTIVE_VAR = zg361_case_al_active
+		TIMELINE_VAR = zg361_case_al_timeline_serial
+		FEEDBACK_VAR = zg361_case_al_feedback_revision
+		LAST_HOOK_VAR = zg361_case_al_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 5
+		NEXT_STATE = 6
+		HOOK_ID = 5
+		CLOSE_CASE = yes
+	}
+}

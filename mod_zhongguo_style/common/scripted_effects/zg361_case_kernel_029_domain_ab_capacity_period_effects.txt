@@ -1,0 +1,166 @@
+﻿# GENERATED FILE — edit tools/gen_361_case_kernel.py
+
+# AB: capacity_period; state 1 = planned
+zg361_case_ab_open_effect = {
+	zg361_case_kernel_initialize_case_effect = {
+		MANAGER_CYCLE_VAR = zg361_review_serial
+		MANAGER_CASE_CURSOR_VAR = zg361_case_ab_cursor
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_OPERATION_VAR = zg361_case_ab_last_operation
+		LAST_CHOICE_VAR = zg361_case_ab_last_choice
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		ENTRY_STATE = 1
+	}
+}
+
+# AB stage 1: planned -> requested on capacity_planned
+zg361_case_ab_advance_01_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+		NEXT_STATE = 2
+		HOOK_ID = 1
+		CLOSE_CASE = no
+	}
+}
+
+# AB stage 2: requested -> decided on capacity_request_open
+zg361_case_ab_advance_02_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 2
+		NEXT_STATE = 3
+		HOOK_ID = 2
+		CLOSE_CASE = no
+	}
+}
+
+# AB stage 3: decided -> executed on capacity_decided
+zg361_case_ab_advance_03_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+		NEXT_STATE = 4
+		HOOK_ID = 3
+		CLOSE_CASE = no
+	}
+}
+
+# AB stage 4: executed -> compensated on capacity_executed
+zg361_case_ab_advance_04_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 4
+		NEXT_STATE = 5
+		HOOK_ID = 4
+		CLOSE_CASE = no
+	}
+}
+
+# AB stage 5: compensated -> normalized on compensation_due
+zg361_case_ab_advance_05_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 5
+		NEXT_STATE = 6
+		HOOK_ID = 5
+		CLOSE_CASE = no
+	}
+}
+
+# AB stage 6: normalized -> resolved on capacity_normalized
+zg361_case_ab_advance_06_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_ab_owner
+		SUBJECT_VAR = zg361_case_ab_subject
+		CYCLE_VAR = zg361_case_ab_cycle_serial
+		CASE_VAR = zg361_case_ab_case_serial
+		STATE_VAR = zg361_case_ab_state
+		REVISION_VAR = zg361_case_ab_revision
+		ACTIVE_VAR = zg361_case_ab_active
+		TIMELINE_VAR = zg361_case_ab_timeline_serial
+		FEEDBACK_VAR = zg361_case_ab_feedback_revision
+		LAST_HOOK_VAR = zg361_case_ab_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 6
+		NEXT_STATE = 7
+		HOOK_ID = 6
+		CLOSE_CASE = yes
+	}
+}

@@ -1,0 +1,304 @@
+﻿# GENERATED FILE — edit tools/gen_361_case_kernel.py
+# Shared 361 case kernel.  Callers must pass fixed variable names and frozen
+# ticket values; numbered domain behavior remains owned by domain generators.
+
+zg361_case_kernel_initialize_case_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_can_open_trigger = {
+				MANAGER_CYCLE_VAR = $MANAGER_CYCLE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+			}
+		}
+		root = {
+			if = {
+				limit = { NOT = { has_variable = $MANAGER_CASE_CURSOR_VAR$ } }
+				set_variable = { name = $MANAGER_CASE_CURSOR_VAR$ value = 0 }
+			}
+			change_variable = { name = $MANAGER_CASE_CURSOR_VAR$ add = 1 }
+		}
+		set_variable = { name = $OWNER_VAR$ value = root }
+		set_variable = { name = $SUBJECT_VAR$ value = this }
+		set_variable = { name = $CYCLE_VAR$ value = root.var:$MANAGER_CYCLE_VAR$ }
+		set_variable = { name = $CASE_VAR$ value = root.var:$MANAGER_CASE_CURSOR_VAR$ }
+		set_variable = { name = $STATE_VAR$ value = $ENTRY_STATE$ }
+		set_variable = { name = $REVISION_VAR$ value = 1 }
+		set_variable = { name = $ACTIVE_VAR$ value = 1 }
+		set_variable = { name = $TIMELINE_VAR$ value = 1 }
+		set_variable = { name = $FEEDBACK_VAR$ value = 1 }
+		set_variable = { name = $LAST_OPERATION_VAR$ value = 0 }
+		set_variable = { name = $LAST_CHOICE_VAR$ value = 0 }
+		set_variable = { name = $LAST_HOOK_VAR$ value = 0 }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+# Record one typed domain operation while the owning stage remains unchanged.
+# Each mechanism/route supplies its own six receipt variable names.
+zg361_case_kernel_record_operation_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			NOT = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = $RECEIPT_OWNER_VAR$
+					RECEIPT_SUBJECT_VAR = $RECEIPT_SUBJECT_VAR$
+					RECEIPT_CYCLE_VAR = $RECEIPT_CYCLE_VAR$
+					RECEIPT_CASE_VAR = $RECEIPT_CASE_VAR$
+					RECEIPT_STATE_VAR = $RECEIPT_STATE_VAR$
+					RECEIPT_CHOICE_VAR = $RECEIPT_CHOICE_VAR$
+					EXPECTED_OWNER = $TICKET_OWNER$
+					EXPECTED_SUBJECT = $TICKET_SUBJECT$
+					EXPECTED_CYCLE = $TICKET_CYCLE$
+					EXPECTED_CASE = $TICKET_CASE$
+					EXPECTED_STATE = $TICKET_STATE$
+					EXPECTED_CHOICE = $CHOICE$
+				}
+			}
+		}
+		set_variable = { name = $RECEIPT_OWNER_VAR$ value = $TICKET_OWNER$ }
+		set_variable = { name = $RECEIPT_SUBJECT_VAR$ value = $TICKET_SUBJECT$ }
+		set_variable = { name = $RECEIPT_CYCLE_VAR$ value = $TICKET_CYCLE$ }
+		set_variable = { name = $RECEIPT_CASE_VAR$ value = $TICKET_CASE$ }
+		set_variable = { name = $RECEIPT_STATE_VAR$ value = $TICKET_STATE$ }
+		set_variable = { name = $RECEIPT_CHOICE_VAR$ value = $CHOICE$ }
+		set_variable = { name = $LAST_OPERATION_VAR$ value = $OPERATION_ID$ }
+		set_variable = { name = $LAST_CHOICE_VAR$ value = $CHOICE$ }
+		change_variable = { name = $REVISION_VAR$ add = 1 }
+		change_variable = { name = $TIMELINE_VAR$ add = 1 }
+		change_variable = { name = $FEEDBACK_VAR$ add = 1 }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+# Only the shared stage dispatcher calls this helper.  Per-mechanism operations
+# record receipts but cannot advance the case by themselves.
+zg361_case_kernel_transition_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+		}
+		set_variable = { name = $STATE_VAR$ value = $NEXT_STATE$ }
+		set_variable = { name = $LAST_HOOK_VAR$ value = $HOOK_ID$ }
+		change_variable = { name = $REVISION_VAR$ add = 1 }
+		change_variable = { name = $TIMELINE_VAR$ add = 1 }
+		change_variable = { name = $FEEDBACK_VAR$ add = 1 }
+		if = {
+			limit = { always = $CLOSE_CASE$ }
+			set_variable = { name = $ACTIVE_VAR$ value = 0 }
+		}
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+# Bind a real delayed event to the frozen five-field identity.  The event must
+# call the expire helper before it invokes any domain due resolver.
+zg361_case_kernel_schedule_deadline_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			trigger_if = {
+				limit = { has_variable = $DEADLINE_PENDING_VAR$ }
+				var:$DEADLINE_PENDING_VAR$ = 0
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = $DEADLINE_OWNER_VAR$ value = $TICKET_OWNER$ }
+		set_variable = { name = $DEADLINE_SUBJECT_VAR$ value = $TICKET_SUBJECT$ }
+		set_variable = { name = $DEADLINE_CYCLE_VAR$ value = $TICKET_CYCLE$ }
+		set_variable = { name = $DEADLINE_CASE_VAR$ value = $TICKET_CASE$ }
+		set_variable = { name = $DEADLINE_STATE_VAR$ value = $TICKET_STATE$ }
+		set_variable = { name = $DEADLINE_DAYS_VAR$ value = $DAYS$ }
+		set_variable = { name = $DEADLINE_PENDING_VAR$ value = 1 }
+		set_variable = { name = $DEADLINE_EXPIRED_VAR$ value = 0 }
+		trigger_event = { id = $EVENT$ days = $DAYS$ }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+zg361_case_kernel_expire_deadline_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_deadline_is_current_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				DEADLINE_OWNER_VAR = $DEADLINE_OWNER_VAR$
+				DEADLINE_SUBJECT_VAR = $DEADLINE_SUBJECT_VAR$
+				DEADLINE_CYCLE_VAR = $DEADLINE_CYCLE_VAR$
+				DEADLINE_CASE_VAR = $DEADLINE_CASE_VAR$
+				DEADLINE_STATE_VAR = $DEADLINE_STATE_VAR$
+				DEADLINE_PENDING_VAR = $DEADLINE_PENDING_VAR$
+			}
+		}
+		set_variable = { name = $DEADLINE_PENDING_VAR$ value = 0 }
+		set_variable = { name = $DEADLINE_EXPIRED_VAR$ value = 1 }
+		change_variable = { name = $REVISION_VAR$ add = 1 }
+		change_variable = { name = $TIMELINE_VAR$ add = 1 }
+		change_variable = { name = $FEEDBACK_VAR$ add = 1 }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+# Resource journals are amount-agnostic: gold, HC, capacity, quota and vote
+# ledgers all use the same atomic reserve -> settle/refund contract.  Domain
+# consumers remain responsible for applying the matching CK3 gameplay effect.
+zg361_case_kernel_reserve_transaction_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			has_variable = $AVAILABLE_VAR$
+			var:$AVAILABLE_VAR$ >= $AMOUNT$
+			zg361_case_kernel_positive_amount_trigger = { AMOUNT = $AMOUNT$ }
+			trigger_if = {
+				limit = { has_variable = $RECEIPT_STATUS_VAR$ }
+				var:$RECEIPT_STATUS_VAR$ = 0
+			}
+			trigger_else = { always = yes }
+		}
+		if = {
+			limit = { NOT = { has_variable = $RESERVED_VAR$ } }
+			set_variable = { name = $RESERVED_VAR$ value = 0 }
+		}
+		change_variable = { name = $AVAILABLE_VAR$ add = { value = 0 subtract = $AMOUNT$ } }
+		change_variable = { name = $RESERVED_VAR$ add = $AMOUNT$ }
+		set_variable = { name = $RECEIPT_AMOUNT_VAR$ value = $AMOUNT$ }
+		set_variable = { name = $RECEIPT_STATUS_VAR$ value = 1 }
+		set_variable = { name = $RECEIPT_OWNER_VAR$ value = $TICKET_OWNER$ }
+		set_variable = { name = $RECEIPT_CYCLE_VAR$ value = $TICKET_CYCLE$ }
+		set_variable = { name = $RECEIPT_CASE_VAR$ value = $TICKET_CASE$ }
+		change_variable = { name = $REVISION_VAR$ add = 1 }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+zg361_case_kernel_settle_transaction_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			has_variable = $RESERVED_VAR$
+			has_variable = $RECEIPT_AMOUNT_VAR$
+			has_variable = $RECEIPT_STATUS_VAR$
+			var:$RECEIPT_STATUS_VAR$ = 1
+			var:$RESERVED_VAR$ >= var:$RECEIPT_AMOUNT_VAR$
+		}
+		if = {
+			limit = { NOT = { has_variable = $SETTLED_VAR$ } }
+			set_variable = { name = $SETTLED_VAR$ value = 0 }
+		}
+		change_variable = { name = $RESERVED_VAR$ add = { value = 0 subtract = var:$RECEIPT_AMOUNT_VAR$ } }
+		change_variable = { name = $SETTLED_VAR$ add = var:$RECEIPT_AMOUNT_VAR$ }
+		set_variable = { name = $RECEIPT_STATUS_VAR$ value = 2 }
+		change_variable = { name = $REVISION_VAR$ add = 1 }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}
+
+zg361_case_kernel_refund_transaction_effect = {
+	remove_variable = zg361_case_kernel_applied
+	if = {
+		limit = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = $OWNER_VAR$
+				SUBJECT_VAR = $SUBJECT_VAR$
+				CYCLE_VAR = $CYCLE_VAR$
+				CASE_VAR = $CASE_VAR$
+				STATE_VAR = $STATE_VAR$
+				ACTIVE_VAR = $ACTIVE_VAR$
+				EXPECTED_OWNER = $TICKET_OWNER$
+				EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$
+				EXPECTED_CASE = $TICKET_CASE$
+				EXPECTED_STATE = $TICKET_STATE$
+			}
+			has_variable = $AVAILABLE_VAR$
+			has_variable = $RECEIPT_AMOUNT_VAR$
+			has_variable = $RECEIPT_STATUS_VAR$
+			OR = {
+				var:$RECEIPT_STATUS_VAR$ = 1
+				var:$RECEIPT_STATUS_VAR$ = 2
+			}
+		}
+		if = {
+			limit = { var:$RECEIPT_STATUS_VAR$ = 1 }
+			change_variable = { name = $RESERVED_VAR$ add = { value = 0 subtract = var:$RECEIPT_AMOUNT_VAR$ } }
+		}
+		else = {
+			change_variable = { name = $SETTLED_VAR$ add = { value = 0 subtract = var:$RECEIPT_AMOUNT_VAR$ } }
+		}
+		change_variable = { name = $AVAILABLE_VAR$ add = var:$RECEIPT_AMOUNT_VAR$ }
+		set_variable = { name = $RECEIPT_STATUS_VAR$ value = 3 }
+		change_variable = { name = $REVISION_VAR$ add = 1 }
+		set_variable = { name = zg361_case_kernel_applied value = 1 }
+	}
+}

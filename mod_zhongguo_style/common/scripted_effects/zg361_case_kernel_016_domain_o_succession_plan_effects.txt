@@ -1,0 +1,142 @@
+﻿# GENERATED FILE — edit tools/gen_361_case_kernel.py
+
+# O: succession_plan; state 1 = role_identified
+zg361_case_o_open_effect = {
+	zg361_case_kernel_initialize_case_effect = {
+		MANAGER_CYCLE_VAR = zg361_review_serial
+		MANAGER_CASE_CURSOR_VAR = zg361_case_o_cursor
+		OWNER_VAR = zg361_case_o_owner
+		SUBJECT_VAR = zg361_case_o_subject
+		CYCLE_VAR = zg361_case_o_cycle_serial
+		CASE_VAR = zg361_case_o_case_serial
+		STATE_VAR = zg361_case_o_state
+		REVISION_VAR = zg361_case_o_revision
+		ACTIVE_VAR = zg361_case_o_active
+		TIMELINE_VAR = zg361_case_o_timeline_serial
+		FEEDBACK_VAR = zg361_case_o_feedback_revision
+		LAST_OPERATION_VAR = zg361_case_o_last_operation
+		LAST_CHOICE_VAR = zg361_case_o_last_choice
+		LAST_HOOK_VAR = zg361_case_o_last_hook
+		ENTRY_STATE = 1
+	}
+}
+
+# O stage 1: role_identified -> pool_ready on critical_role_identified
+zg361_case_o_advance_01_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_o_owner
+		SUBJECT_VAR = zg361_case_o_subject
+		CYCLE_VAR = zg361_case_o_cycle_serial
+		CASE_VAR = zg361_case_o_case_serial
+		STATE_VAR = zg361_case_o_state
+		REVISION_VAR = zg361_case_o_revision
+		ACTIVE_VAR = zg361_case_o_active
+		TIMELINE_VAR = zg361_case_o_timeline_serial
+		FEEDBACK_VAR = zg361_case_o_feedback_revision
+		LAST_HOOK_VAR = zg361_case_o_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+		NEXT_STATE = 2
+		HOOK_ID = 1
+		CLOSE_CASE = no
+	}
+}
+
+# O stage 2: pool_ready -> readiness_scored on candidate_pool_ready
+zg361_case_o_advance_02_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_o_owner
+		SUBJECT_VAR = zg361_case_o_subject
+		CYCLE_VAR = zg361_case_o_cycle_serial
+		CASE_VAR = zg361_case_o_case_serial
+		STATE_VAR = zg361_case_o_state
+		REVISION_VAR = zg361_case_o_revision
+		ACTIVE_VAR = zg361_case_o_active
+		TIMELINE_VAR = zg361_case_o_timeline_serial
+		FEEDBACK_VAR = zg361_case_o_feedback_revision
+		LAST_HOOK_VAR = zg361_case_o_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 2
+		NEXT_STATE = 3
+		HOOK_ID = 2
+		CLOSE_CASE = no
+	}
+}
+
+# O stage 3: readiness_scored -> trialed on readiness_scored
+zg361_case_o_advance_03_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_o_owner
+		SUBJECT_VAR = zg361_case_o_subject
+		CYCLE_VAR = zg361_case_o_cycle_serial
+		CASE_VAR = zg361_case_o_case_serial
+		STATE_VAR = zg361_case_o_state
+		REVISION_VAR = zg361_case_o_revision
+		ACTIVE_VAR = zg361_case_o_active
+		TIMELINE_VAR = zg361_case_o_timeline_serial
+		FEEDBACK_VAR = zg361_case_o_feedback_revision
+		LAST_HOOK_VAR = zg361_case_o_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+		NEXT_STATE = 4
+		HOOK_ID = 3
+		CLOSE_CASE = no
+	}
+}
+
+# O stage 4: trialed -> resolved on acting_trial_due
+zg361_case_o_advance_04_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_o_owner
+		SUBJECT_VAR = zg361_case_o_subject
+		CYCLE_VAR = zg361_case_o_cycle_serial
+		CASE_VAR = zg361_case_o_case_serial
+		STATE_VAR = zg361_case_o_state
+		REVISION_VAR = zg361_case_o_revision
+		ACTIVE_VAR = zg361_case_o_active
+		TIMELINE_VAR = zg361_case_o_timeline_serial
+		FEEDBACK_VAR = zg361_case_o_feedback_revision
+		LAST_HOOK_VAR = zg361_case_o_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 4
+		NEXT_STATE = 5
+		HOOK_ID = 4
+		CLOSE_CASE = no
+	}
+}
+
+# O stage 5: resolved -> handed_off on succession_resolved
+zg361_case_o_advance_05_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_o_owner
+		SUBJECT_VAR = zg361_case_o_subject
+		CYCLE_VAR = zg361_case_o_cycle_serial
+		CASE_VAR = zg361_case_o_case_serial
+		STATE_VAR = zg361_case_o_state
+		REVISION_VAR = zg361_case_o_revision
+		ACTIVE_VAR = zg361_case_o_active
+		TIMELINE_VAR = zg361_case_o_timeline_serial
+		FEEDBACK_VAR = zg361_case_o_feedback_revision
+		LAST_HOOK_VAR = zg361_case_o_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 5
+		NEXT_STATE = 6
+		HOOK_ID = 5
+		CLOSE_CASE = yes
+	}
+}

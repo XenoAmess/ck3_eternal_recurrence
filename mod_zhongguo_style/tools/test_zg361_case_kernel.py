@@ -4,11 +4,28 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+import hashlib
 import re
 import unittest
 
-from gen_361_case_kernel import EFFECTS_PATH, TRIGGERS_PATH, outputs
+from gen_361_case_kernel import (
+    EFFECT_GROUPS,
+    EFFECT_HARD_MAX,
+    EFFECT_PATHS,
+    EFFECT_SHARD_GLOB,
+    EFFECT_TARGET_MAX,
+    HEADER,
+    HISTORICAL_EFFECT_BYTES,
+    HISTORICAL_EFFECT_COUNT,
+    HISTORICAL_EFFECT_SHA256,
+    LEGACY_EFFECT_PATH,
+    SCRIPTED_EFFECTS_DIR,
+    TRIGGERS_PATH,
+    effect_outputs,
+    outputs,
+    render_legacy_effects,
+    validate_effect_groups,
+)
 from zg361_domain_data import DOMAIN_SPECS
 
 
@@ -32,7 +49,8 @@ class CaseKernelTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.rendered = outputs()
-        cls.effects = cls.rendered[EFFECTS_PATH]
+        cls.effect_shards = effect_outputs()
+        cls.effects = render_legacy_effects()
         cls.triggers = cls.rendered[TRIGGERS_PATH]
 
     def test_generated_files_are_current_and_bom_encoded(self) -> None:
@@ -41,6 +59,35 @@ class CaseKernelTests(unittest.TestCase):
                 self.assertTrue(path.exists())
                 self.assertEqual(path.read_text(encoding="utf-8-sig"), expected)
                 self.assertEqual(path.read_bytes()[:3], b"\xef\xbb\xbf")
+
+        self.assertFalse(LEGACY_EFFECT_PATH.exists())
+        self.assertEqual(set(SCRIPTED_EFFECTS_DIR.glob(EFFECT_SHARD_GLOB)), set(EFFECT_PATHS))
+
+    def test_effects_are_purpose_split_within_file_boundaries(self) -> None:
+        validate_effect_groups()
+        self.assertEqual(len(EFFECT_GROUPS), 39)
+        self.assertEqual(sum(len(group.effect_names) for group in EFFECT_GROUPS), HISTORICAL_EFFECT_COUNT)
+        for group, path in zip(EFFECT_GROUPS, EFFECT_PATHS, strict=True):
+            with self.subTest(path=path.name, purpose=group.purpose):
+                count = len(group.effect_names)
+                self.assertGreaterEqual(count, 1)
+                self.assertLessEqual(count, EFFECT_TARGET_MAX)
+                self.assertLessEqual(count, EFFECT_HARD_MAX)
+                actual_names = tuple(
+                    re.findall(r"(?m)^([a-z0-9_]+) = \{$", self.effect_shards[path])
+                )
+                self.assertEqual(actual_names, group.effect_names)
+
+    def test_split_preserves_historical_effect_bodies_and_order(self) -> None:
+        legacy = render_legacy_effects()
+        legacy_bytes = legacy.encode("utf-8-sig")
+        self.assertEqual(len(legacy_bytes), HISTORICAL_EFFECT_BYTES)
+        self.assertEqual(hashlib.sha256(legacy_bytes).hexdigest().upper(), HISTORICAL_EFFECT_SHA256)
+
+        reconstructed = self.effect_shards[EFFECT_PATHS[0]] + "".join(
+            self.effect_shards[path][len(HEADER) :] for path in EFFECT_PATHS[1:]
+        )
+        self.assertEqual(reconstructed, legacy)
 
     def test_every_domain_has_one_open_and_all_stage_dispatchers(self) -> None:
         for domain in DOMAIN_SPECS:

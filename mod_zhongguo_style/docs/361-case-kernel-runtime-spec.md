@@ -6,7 +6,9 @@
 
 生成结果：
 
-- `common/scripted_effects/zg361_case_kernel_effects.txt`
+- `common/scripted_effects/zg361_case_kernel_001_shared_helpers_effects.txt`
+- `common/scripted_effects/zg361_case_kernel_002_domain_a_review_case_effects.txt` 至
+  `zg361_case_kernel_039_domain_al_constitution_case_effects.txt`（按领域用途分片）
 - `common/scripted_triggers/zg361_case_kernel_triggers.txt`
 
 L0 合同：`tools/test_zg361_case_kernel.py`
@@ -29,6 +31,11 @@ L0 合同：`tools/test_zg361_case_kernel.py`
 生成器从 `zg361_domain_data.DOMAIN_SPECS` 为 A–AL 各生成一个固定开案 effect，并为状态图的每条合法边各生成一个
 stage dispatcher wrapper。wrapper 使用固定变量名，不依赖长期隐式 `ROOT/PREV` 传播；调用方必须显式提供冻结 ticket。
 
+旧版 172,748-byte 单体曾含 229 个顶层 effect。当前生成器把 8 个共享 helper 独立成一片，并让 A–AL 每个领域各占一片；
+39 个 effect 文件各含 5–8 个定义，均落在 1–10 目标内，也没有超过 20 的例外。生成器 `--check` 会拒绝旧单体、未知残留
+分片、缺失 BOM 和内容漂移；L0 还以旧单体的冻结 SHA-256 重建逻辑流，证明顶层 effect 正文与顺序未变。这个拆分是文件边界
+治理和后续加载取证条件，不把文件体量宣称为此前启动问题的已证实根因。
+
 编号机制仍需由各自领域生成器把 A/B/C 路径、业务对象、具体后果与 receipt 变量接入本内核。仅仅拥有共享内核不代表某一条机制
 已经实现，也不会改变 manifest 的 `domain_runtime` readiness。
 
@@ -39,8 +46,9 @@ stage dispatcher wrapper。wrapper 使用固定变量名，不依赖长期隐式
 
 ## 验收边界
 
-当前 10 项 L0 测试覆盖生成可复现、BOM、38 域入口和全部状态边、权限、不短路变量读取、五元 guard、operation/state 分权、
-deadline、事务原子性和退款封顶。`validate_local.py`、二期 CK3 wiring 与 release reproducibility 均已通过。
+当前 12 项 L0 测试覆盖生成可复现、BOM、用途分片边界、旧单体与陈旧分片残留、拆分前后正文/顺序等价、38 域入口和全部状态边、
+权限、不短路变量读取、五元 guard、operation/state 分权、deadline、事务原子性和退款封顶。既有 `validate_local.py`、二期 CK3
+wiring 与 release reproducibility 结论属于拆分前基线；拆分后的同类验收必须以新的测试记录为准。
 
 尚未完成：CK3 解析日志与真实 paused snapshot、MCP named action/query、跨存读档及长周期到期证据。因此当前只能写
 `CK3 script static-ready`，不得写 fixture-live 或 production-live。

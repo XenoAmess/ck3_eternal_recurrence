@@ -1,0 +1,118 @@
+﻿# GENERATED FILE — edit tools/gen_361_case_kernel.py
+
+# G: quota_book; state 1 = cohort_draft
+zg361_case_g_open_effect = {
+	zg361_case_kernel_initialize_case_effect = {
+		MANAGER_CYCLE_VAR = zg361_review_serial
+		MANAGER_CASE_CURSOR_VAR = zg361_case_g_cursor
+		OWNER_VAR = zg361_case_g_owner
+		SUBJECT_VAR = zg361_case_g_subject
+		CYCLE_VAR = zg361_case_g_cycle_serial
+		CASE_VAR = zg361_case_g_case_serial
+		STATE_VAR = zg361_case_g_state
+		REVISION_VAR = zg361_case_g_revision
+		ACTIVE_VAR = zg361_case_g_active
+		TIMELINE_VAR = zg361_case_g_timeline_serial
+		FEEDBACK_VAR = zg361_case_g_feedback_revision
+		LAST_OPERATION_VAR = zg361_case_g_last_operation
+		LAST_CHOICE_VAR = zg361_case_g_last_choice
+		LAST_HOOK_VAR = zg361_case_g_last_hook
+		ENTRY_STATE = 1
+	}
+}
+
+# G stage 1: cohort_draft -> cohort_locked on cycle_open
+zg361_case_g_advance_01_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_g_owner
+		SUBJECT_VAR = zg361_case_g_subject
+		CYCLE_VAR = zg361_case_g_cycle_serial
+		CASE_VAR = zg361_case_g_case_serial
+		STATE_VAR = zg361_case_g_state
+		REVISION_VAR = zg361_case_g_revision
+		ACTIVE_VAR = zg361_case_g_active
+		TIMELINE_VAR = zg361_case_g_timeline_serial
+		FEEDBACK_VAR = zg361_case_g_feedback_revision
+		LAST_HOOK_VAR = zg361_case_g_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 1
+		NEXT_STATE = 2
+		HOOK_ID = 1
+		CLOSE_CASE = no
+	}
+}
+
+# G stage 2: cohort_locked -> quota_computed on cohort_locked
+zg361_case_g_advance_02_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_g_owner
+		SUBJECT_VAR = zg361_case_g_subject
+		CYCLE_VAR = zg361_case_g_cycle_serial
+		CASE_VAR = zg361_case_g_case_serial
+		STATE_VAR = zg361_case_g_state
+		REVISION_VAR = zg361_case_g_revision
+		ACTIVE_VAR = zg361_case_g_active
+		TIMELINE_VAR = zg361_case_g_timeline_serial
+		FEEDBACK_VAR = zg361_case_g_feedback_revision
+		LAST_HOOK_VAR = zg361_case_g_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 2
+		NEXT_STATE = 3
+		HOOK_ID = 2
+		CLOSE_CASE = no
+	}
+}
+
+# G stage 3: quota_computed -> adjusted on quota_computed
+zg361_case_g_advance_03_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_g_owner
+		SUBJECT_VAR = zg361_case_g_subject
+		CYCLE_VAR = zg361_case_g_cycle_serial
+		CASE_VAR = zg361_case_g_case_serial
+		STATE_VAR = zg361_case_g_state
+		REVISION_VAR = zg361_case_g_revision
+		ACTIVE_VAR = zg361_case_g_active
+		TIMELINE_VAR = zg361_case_g_timeline_serial
+		FEEDBACK_VAR = zg361_case_g_feedback_revision
+		LAST_HOOK_VAR = zg361_case_g_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 3
+		NEXT_STATE = 4
+		HOOK_ID = 3
+		CLOSE_CASE = no
+	}
+}
+
+# G stage 4: adjusted -> published on calibration_complete
+zg361_case_g_advance_04_effect = {
+	zg361_case_kernel_transition_effect = {
+		OWNER_VAR = zg361_case_g_owner
+		SUBJECT_VAR = zg361_case_g_subject
+		CYCLE_VAR = zg361_case_g_cycle_serial
+		CASE_VAR = zg361_case_g_case_serial
+		STATE_VAR = zg361_case_g_state
+		REVISION_VAR = zg361_case_g_revision
+		ACTIVE_VAR = zg361_case_g_active
+		TIMELINE_VAR = zg361_case_g_timeline_serial
+		FEEDBACK_VAR = zg361_case_g_feedback_revision
+		LAST_HOOK_VAR = zg361_case_g_last_hook
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+		TICKET_STATE = 4
+		NEXT_STATE = 5
+		HOOK_ID = 4
+		CLOSE_CASE = yes
+	}
+}
