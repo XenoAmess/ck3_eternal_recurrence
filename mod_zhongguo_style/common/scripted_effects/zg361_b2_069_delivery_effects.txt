@@ -196,35 +196,53 @@ zg361_b2_on_result_frozen_effect = {
 		# latter must survive a later result freeze until its D+365 settlement and
 		# exact capacity release have closed.
 		set_variable = { name = zg361_b2_m014_state value = 0 }
+		# Jomini does not short-circuit sibling OR/NOT variable reads.  Collapse
+		# optional first-use state through nested existence gates instead.
+		set_variable = { name = zg361_b2_pip_lifecycle_clear value = 1 }
 		if = {
-			limit = {
-				OR = {
-					NOT = { has_variable = zg361_b2_m015_object_active }
-					NOT = { var:zg361_b2_m015_object_active = 1 }
-				}
-				OR = {
-					NOT = { has_variable = zg361_b2_m016_object_active }
-					NOT = { var:zg361_b2_m016_object_active = 1 }
-				}
-				OR = {
-					NOT = { has_variable = zg361_b2_m017_object_active }
-					NOT = { var:zg361_b2_m017_object_active = 1 }
-				}
-				OR = {
-					NOT = { has_variable = zg361_b2_pip_state }
-					NOT = {
-						OR = {
-							var:zg361_b2_pip_state = 1
-							var:zg361_b2_pip_state = 2
-							var:zg361_b2_pip_state = 4
-						}
+			limit = { has_variable = zg361_b2_m015_object_active }
+			if = {
+				limit = { var:zg361_b2_m015_object_active = 1 }
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
+			}
+		}
+		if = {
+			limit = { has_variable = zg361_b2_m016_object_active }
+			if = {
+				limit = { var:zg361_b2_m016_object_active = 1 }
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
+			}
+		}
+		if = {
+			limit = { has_variable = zg361_b2_m017_object_active }
+			if = {
+				limit = { var:zg361_b2_m017_object_active = 1 }
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
+			}
+		}
+		if = {
+			limit = { has_variable = zg361_b2_pip_state }
+			if = {
+				limit = {
+					OR = {
+						var:zg361_b2_pip_state = 1
+						var:zg361_b2_pip_state = 2
+						var:zg361_b2_pip_state = 4
 					}
 				}
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
 			}
-			set_variable = { name = zg361_b2_m015_state value = 0 }
-			set_variable = { name = zg361_b2_m016_state value = 0 }
-			set_variable = { name = zg361_b2_m017_state value = 0 }
 		}
+		if = {
+			limit = { has_variable = zg361_b2_pip_lifecycle_clear }
+			if = {
+				limit = { var:zg361_b2_pip_lifecycle_clear = 1 }
+				set_variable = { name = zg361_b2_m015_state value = 0 }
+				set_variable = { name = zg361_b2_m016_state value = 0 }
+				set_variable = { name = zg361_b2_m017_state value = 0 }
+			}
+		}
+		remove_variable = zg361_b2_pip_lifecycle_clear
 		set_variable = { name = zg361_b2_m069_state value = 0 }
 		set_variable = { name = zg361_b2_m069_receipt_serial value = 0 }
 		set_variable = { name = zg361_b2_m071_state value = 0 }

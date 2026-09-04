@@ -860,35 +860,53 @@ zg361_b2_on_result_frozen_effect = {
 		# latter must survive a later result freeze until its D+365 settlement and
 		# exact capacity release have closed.
 		set_variable = { name = zg361_b2_m014_state value = 0 }
+		# Jomini does not short-circuit sibling OR/NOT variable reads.  Collapse
+		# optional first-use state through nested existence gates instead.
+		set_variable = { name = zg361_b2_pip_lifecycle_clear value = 1 }
 		if = {
-			limit = {
-				OR = {
-					NOT = { has_variable = zg361_b2_m015_object_active }
-					NOT = { var:zg361_b2_m015_object_active = 1 }
-				}
-				OR = {
-					NOT = { has_variable = zg361_b2_m016_object_active }
-					NOT = { var:zg361_b2_m016_object_active = 1 }
-				}
-				OR = {
-					NOT = { has_variable = zg361_b2_m017_object_active }
-					NOT = { var:zg361_b2_m017_object_active = 1 }
-				}
-				OR = {
-					NOT = { has_variable = zg361_b2_pip_state }
-					NOT = {
-						OR = {
-							var:zg361_b2_pip_state = 1
-							var:zg361_b2_pip_state = 2
-							var:zg361_b2_pip_state = 4
-						}
+			limit = { has_variable = zg361_b2_m015_object_active }
+			if = {
+				limit = { var:zg361_b2_m015_object_active = 1 }
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
+			}
+		}
+		if = {
+			limit = { has_variable = zg361_b2_m016_object_active }
+			if = {
+				limit = { var:zg361_b2_m016_object_active = 1 }
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
+			}
+		}
+		if = {
+			limit = { has_variable = zg361_b2_m017_object_active }
+			if = {
+				limit = { var:zg361_b2_m017_object_active = 1 }
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
+			}
+		}
+		if = {
+			limit = { has_variable = zg361_b2_pip_state }
+			if = {
+				limit = {
+					OR = {
+						var:zg361_b2_pip_state = 1
+						var:zg361_b2_pip_state = 2
+						var:zg361_b2_pip_state = 4
 					}
 				}
+				set_variable = { name = zg361_b2_pip_lifecycle_clear value = 0 }
 			}
-			set_variable = { name = zg361_b2_m015_state value = 0 }
-			set_variable = { name = zg361_b2_m016_state value = 0 }
-			set_variable = { name = zg361_b2_m017_state value = 0 }
 		}
+		if = {
+			limit = { has_variable = zg361_b2_pip_lifecycle_clear }
+			if = {
+				limit = { var:zg361_b2_pip_lifecycle_clear = 1 }
+				set_variable = { name = zg361_b2_m015_state value = 0 }
+				set_variable = { name = zg361_b2_m016_state value = 0 }
+				set_variable = { name = zg361_b2_m017_state value = 0 }
+			}
+		}
+		remove_variable = zg361_b2_pip_lifecycle_clear
 		set_variable = { name = zg361_b2_m069_state value = 0 }
 		set_variable = { name = zg361_b2_m069_receipt_serial value = 0 }
 		set_variable = { name = zg361_b2_m071_state value = 0 }
@@ -1220,6 +1238,43 @@ zg361_b2_m015_open_pip_effect = {
 	# #182 and every later PP projection consume this frozen gate.  Presence of
 	# an evidence field is not evidence: forced-distribution 3.25 with a healthy
 	# absolute result therefore does not silently become a PIP.
+	# Optional lifecycle state is read only below its own existence gate; CK3
+	# evaluates every sibling comparison even when another sibling is false.
+	set_variable = { name = zg361_b2_pip_slot_available value = 1 }
+	if = {
+		limit = { has_variable = zg361_b2_m015_object_active }
+		if = {
+			limit = { var:zg361_b2_m015_object_active = 1 }
+			set_variable = { name = zg361_b2_pip_slot_available value = 0 }
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_b2_m016_object_active }
+		if = {
+			limit = { var:zg361_b2_m016_object_active = 1 }
+			set_variable = { name = zg361_b2_pip_slot_available value = 0 }
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_b2_m017_object_active }
+		if = {
+			limit = { var:zg361_b2_m017_object_active = 1 }
+			set_variable = { name = zg361_b2_pip_slot_available value = 0 }
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_b2_pip_state }
+		if = {
+			limit = {
+				OR = {
+					var:zg361_b2_pip_state = 1
+					var:zg361_b2_pip_state = 2
+					var:zg361_b2_pip_state = 4
+				}
+			}
+			set_variable = { name = zg361_b2_pip_slot_available value = 0 }
+		}
+	}
 	set_variable = { name = zg361_b2_pip_gate_owner value = var:zg361_b2_case_owner }
 	set_variable = { name = zg361_b2_pip_gate_subject value = this }
 	set_variable = { name = zg361_b2_pip_gate_cycle value = var:zg361_b2_case_cycle }
@@ -1262,18 +1317,11 @@ zg361_b2_m015_open_pip_effect = {
 		}
 	}
 	if = {
+		limit = { has_variable = zg361_b2_pip_slot_available }
+		if = {
 		limit = {
 			var:zg361_b2_pip_gate_status = 1
-			NOT = { var:zg361_b2_m015_object_active = 1 }
-			NOT = { var:zg361_b2_m016_object_active = 1 }
-			NOT = { var:zg361_b2_m017_object_active = 1 }
-			NOT = {
-				OR = {
-					var:zg361_b2_pip_state = 1
-					var:zg361_b2_pip_state = 2
-					var:zg361_b2_pip_state = 4
-				}
-			}
+			var:zg361_b2_pip_slot_available = 1
 		}
 		# A terminal earlier case may still have response/support/outcome fields.
 		# Clear the whole case-bound tuple before writing this new identity; the
@@ -1378,6 +1426,8 @@ zg361_b2_m015_open_pip_effect = {
 		limit = { var:zg361_b2_pip_gate_status = 1 }
 		set_variable = { name = zg361_b2_pip_gate_status value = 3 } # qualified but another PIP is active
 	}
+		}
+	remove_variable = zg361_b2_pip_slot_available
 }
 
 zg361_b2_accept_pip_effect = {

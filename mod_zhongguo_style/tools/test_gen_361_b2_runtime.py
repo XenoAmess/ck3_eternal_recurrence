@@ -189,10 +189,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 259_686)
+        self.assertEqual(len(historical_bytes), 261_337)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "d5b8c561ef44f19d2c990979f21af733078c8579dcc00541bb054ed6dd405e80",
+            "f23fff74fd8f45eae9be9c446db71532ef4578d46ffeb602087310222810f8b9",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1666,15 +1666,22 @@ class B2CK3RuntimeTests(unittest.TestCase):
     def test_active_pip_identity_survives_later_result_freezes(self) -> None:
         frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
         for mechanism_id in (15, 16, 17):
+            variable = f"zg361_b2_m{mechanism_id:03d}_object_active"
             self.assertIn(
-                f"NOT = {{ has_variable = zg361_b2_m{mechanism_id:03d}_object_active }}",
+                f"limit = {{ has_variable = {variable} }}",
                 frozen,
             )
             self.assertIn(
-                f"NOT = {{ var:zg361_b2_m{mechanism_id:03d}_object_active = 1 }}",
+                f"limit = {{ var:{variable} = 1 }}",
                 frozen,
             )
-        self.assertIn("NOT = { has_variable = zg361_b2_pip_state }", frozen)
+            self.assertNotIn(
+                f"NOT = {{ has_variable = {variable} }}",
+                frozen,
+            )
+        self.assertIn("limit = { has_variable = zg361_b2_pip_state }", frozen)
+        self.assertIn("zg361_b2_pip_lifecycle_clear value = 0", frozen)
+        self.assertIn("remove_variable = zg361_b2_pip_lifecycle_clear", frozen)
         for mechanism_id in (15, 16, 17):
             opened = top_level_block(
                 self.effects,
@@ -1701,6 +1708,33 @@ class B2CK3RuntimeTests(unittest.TestCase):
                 f"zg361_b2_m{mechanism_id:03d}_object_receipt_case = var:zg361_b2_pip_case",
                 consumed,
             )
+
+    def test_015_first_use_pip_slot_reads_are_existence_safe(self) -> None:
+        pip = top_level_block(self.effects, "zg361_b2_m015_open_pip_effect")
+        for mechanism_id in (15, 16, 17):
+            variable = f"zg361_b2_m{mechanism_id:03d}_object_active"
+            self.assertIn(
+                f"\tif = {{\n"
+                f"\t\tlimit = {{ has_variable = {variable} }}\n"
+                f"\t\tif = {{\n"
+                f"\t\t\tlimit = {{ var:{variable} = 1 }}",
+                pip,
+            )
+            self.assertNotIn(f"NOT = {{ var:{variable} = 1 }}", pip)
+        self.assertIn(
+            "\tif = {\n"
+            "\t\tlimit = { has_variable = zg361_b2_pip_state }\n"
+            "\t\tif = {\n"
+            "\t\t\tlimit = {\n"
+            "\t\t\t\tOR = {\n"
+            "\t\t\t\t\tvar:zg361_b2_pip_state = 1",
+            pip,
+        )
+        self.assertIn(
+            "limit = { has_variable = zg361_b2_pip_slot_available }", pip
+        )
+        self.assertIn("var:zg361_b2_pip_slot_available = 1", pip)
+        self.assertIn("remove_variable = zg361_b2_pip_slot_available", pip)
 
     def test_first_result_optional_state_reads_are_guarded(self) -> None:
         debts = top_level_block(
