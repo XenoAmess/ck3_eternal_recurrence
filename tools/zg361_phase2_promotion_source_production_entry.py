@@ -123,6 +123,30 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 4,
         "selected_native_option_index": 3,
     },
+    "ep3_governor_yearly.8010": {
+        # Independent vanilla governor bargain.  Accept/reverse can exchange
+        # hooks, candidacies, influence or gold (the reverse branch also runs
+        # an intrigue/diplomacy duel).  Refusal confines the mutation to the
+        # typed requesting governor's -10 opinion plus trait-dependent stress.
+        "date_raw": 53147520,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "governor": 29347,
+            "their_title_receiver": 30938,
+            "title_receiver": 29067,
+        },
+        "scope_types": {
+            "their_title": "landed_title",
+            "title": "landed_title",
+            "governor_request": "flag",
+            "governor_offer": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 7,
+        "option_count": 3,
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+    },
     "ep3_governor_yearly.8100": {
         # Independent vanilla yearly governor event observed on the same
         # immutable date as .8060 in a different run.  Authored option 3 is
@@ -133,9 +157,15 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "date_raw": 53147520,
         "root_character_id": 29037,
         "character_scopes": {
-            "governor": 28598,
-            "neighboring_promoted_char": 62537,
             "target_family_member": 31647,
+        },
+        # Vanilla chooses both roles with random_* selectors when the event
+        # fires.  R28/R49 observed 28598/62537 and 27181/36175 respectively,
+        # while the exact role names, types, fixed root-family target and
+        # authored option shape remained stable.
+        "unique_character_scope_excludes": {
+            "governor": (29037, 31647),
+            "neighboring_promoted_char": (29037, 31647),
         },
         "boolean_scopes": (),
         "saved_scope_count": 3,
@@ -189,7 +219,13 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # trait-dependent stress) and disposes of the temporary character.
         "date_raw": 53147520,
         "root_character_id": 29037,
-        "character_scopes": {"starving_lowborn": 16780004},
+        "character_scopes": {},
+        # The event creates this temporary character in its immediate block.
+        # R26/R47 observed different valid IDs (16780004/16780149), while the
+        # exact name/type/count/option shape remained stable.
+        "unique_character_scope_excludes": {
+            "starving_lowborn": (29037,),
+        },
         "boolean_scopes": (),
         "saved_scope_count": 1,
         "option_count": 3,
@@ -471,6 +507,47 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # current task and is the already-proven minimal side-effect path.
         "selected_option_number": 2,
         "selected_native_option_index": 1,
+    },
+    "spymaster_task.0342": {
+        # Vanilla Find Secrets discovery notification.  The secret and its
+        # participants are already fixed when the window opens; there is one
+        # authored acknowledgement, which reveals that exact secret to root.
+        "date_raw": 53152896,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "councillor": 27963,
+            "councillor_liege": 29037,
+            "target_character": 27051,
+            "active_councillor": 27963,
+            "secret_holder": 27051,
+        },
+        "scope_types": {"secret_to_reveal": "secret"},
+        "boolean_scopes": ("having_find_secrets_event",),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "spymaster_task.0346": {
+        # Vanilla Find Secrets lover-secret notification.  Like .0342, the
+        # discovery is already fixed when the window opens and exposes one
+        # acknowledgement, which reveals that exact secret to root.
+        "date_raw": 53152896,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "councillor": 27963,
+            "councillor_liege": 29037,
+            "target_character": 27051,
+            "active_councillor": 27963,
+            "secret_holder": 27051,
+            "lover": 45267,
+        },
+        "scope_types": {"secret_to_reveal": "secret"},
+        "boolean_scopes": ("having_find_secrets_event",),
+        "saved_scope_count": 8,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
     },
 }
 

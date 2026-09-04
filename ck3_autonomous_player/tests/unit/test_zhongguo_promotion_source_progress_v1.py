@@ -279,7 +279,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             if self.stage not in {
                 "pip", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
                 "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha",
-                "self_review", "succession"
+                "self_review", "secret_discovery", "lover_secret", "governor_bargain", "succession"
             }:
                 return super().snapshot()
             if self.stage == "pip":
@@ -310,6 +310,8 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 instance_id, option_count, date, revision = 8170, 4, 53147520, 32
             elif self.stage == "governor_yearly":
                 instance_id, option_count, date, revision = 8060, 4, 53147520, 33
+            elif self.stage == "governor_bargain":
+                instance_id, option_count, date, revision = 8010, 3, 53147520, 34
             elif self.stage == "pugnacious":
                 instance_id, option_count, date, revision = 8110, 4, 53147520, 34
             elif self.stage == "neighbor_governor":
@@ -330,8 +332,12 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 instance_id, option_count, date, revision = 40, 2, 53150880, 39
             elif self.stage == "self_review":
                 instance_id, option_count, date, revision = 200, 3, 53152728, 40
+            elif self.stage == "secret_discovery":
+                instance_id, option_count, date, revision = 342, 1, 53152896, 40
+            elif self.stage == "lover_secret":
+                instance_id, option_count, date, revision = 346, 1, 53152896, 41
             else:
-                instance_id, option_count, date, revision = 3060, 3, 53148072, 41
+                instance_id, option_count, date, revision = 3060, 3, 53148072, 42
             snapshot_option_count = (
                 3
                 if self.stage == "doppelganger"
@@ -372,7 +378,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             if self.stage not in {
                 "pip", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
                 "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha",
-                "self_review", "succession"
+                "self_review", "secret_discovery", "lover_secret", "governor_bargain", "succession"
             }:
                 return super().query_current_event_window_context_v1(
                     event_instance_id, expected_revision=expected_revision
@@ -421,7 +427,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 option_count = 2
             elif self.stage == "china_yearly":
                 key = "tgp_china_yearly.0010"
-                scopes = [_character_scope("starving_lowborn", 16780004)]
+                scopes = [_character_scope("starving_lowborn", 16780149)]
                 option_count = 3
             elif self.stage == "grieving_child":
                 key = "tgp_china_yearly.0005"
@@ -490,6 +496,18 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 key = "ep3_governor_yearly.8060"
                 scopes = []
                 option_count = 4
+            elif self.stage == "governor_bargain":
+                key = "ep3_governor_yearly.8010"
+                scopes = [
+                    _character_scope("governor", 29347),
+                    _character_scope("their_title_receiver", 30938),
+                    _opaque_scope("their_title", "landed_title"),
+                    _character_scope("title_receiver", 29067),
+                    _opaque_scope("title", "landed_title"),
+                    _opaque_scope("governor_request", "flag"),
+                    _opaque_scope("governor_offer", "flag"),
+                ]
+                option_count = 3
             elif self.stage == "pugnacious":
                 key = "ep3_governor_yearly.8110"
                 scopes = [
@@ -500,8 +518,8 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             elif self.stage == "neighbor_governor":
                 key = "ep3_governor_yearly.8100"
                 scopes = [
-                    _character_scope("governor", 28598),
-                    _character_scope("neighboring_promoted_char", 62537),
+                    _character_scope("governor", 27181),
+                    _character_scope("neighboring_promoted_char", 36175),
                     _character_scope("target_family_member", 31647),
                 ]
                 option_count = 3
@@ -561,6 +579,31 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                     _opaque_scope("zg361_b1_self_ticket_state", "value"),
                 ]
                 option_count = 3
+            elif self.stage == "secret_discovery":
+                key = "spymaster_task.0342"
+                scopes = [
+                    _character_scope("councillor", 27963),
+                    _character_scope("councillor_liege", 29037),
+                    _character_scope("target_character", 27051),
+                    _boolean_scope("having_find_secrets_event"),
+                    _character_scope("active_councillor", 27963),
+                    _character_scope("secret_holder", 27051),
+                    _opaque_scope("secret_to_reveal", "secret"),
+                ]
+                option_count = 1
+            elif self.stage == "lover_secret":
+                key = "spymaster_task.0346"
+                scopes = [
+                    _character_scope("councillor", 27963),
+                    _character_scope("councillor_liege", 29037),
+                    _character_scope("target_character", 27051),
+                    _boolean_scope("having_find_secrets_event"),
+                    _character_scope("active_councillor", 27963),
+                    _character_scope("secret_holder", 27051),
+                    _opaque_scope("secret_to_reveal", "secret"),
+                    _character_scope("lover", 45267),
+                ]
+                option_count = 1
             else:
                 key = "ep3_governor_yearly.3060"
                 scopes = [
@@ -666,6 +709,9 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 self.stage = "governor_yearly"
             elif self.stage == "governor_yearly":
                 assert option_number == 4
+                self.stage = "governor_bargain"
+            elif self.stage == "governor_bargain":
+                assert option_number == 3
                 self.stage = "pugnacious"
             elif self.stage == "pugnacious":
                 assert option_number == 2
@@ -692,6 +738,12 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 assert option_number == 2
                 self.stage = "self_review"
             elif self.stage == "self_review":
+                assert option_number == 1
+                self.stage = "secret_discovery"
+            elif self.stage == "secret_discovery":
+                assert option_number == 1
+                self.stage = "lover_secret"
+            elif self.stage == "lover_secret":
                 assert option_number == 1
                 self.stage = "succession"
             elif self.stage == "succession":
@@ -737,6 +789,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         "ep3_governor_yearly.8160",
         "ep3_governor_yearly.8170",
         "ep3_governor_yearly.8060",
+        "ep3_governor_yearly.8010",
         "ep3_governor_yearly.8110",
         "ep3_governor_yearly.8100",
         "tgp_dynastic_cycle_events.0040",
@@ -746,9 +799,11 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         "zg361.40",
         "spymaster_task.0381",
         "zg361b1.200",
+        "spymaster_task.0342",
+        "spymaster_task.0346",
         "ep3_governor_yearly.3060",
     ]
-    assert service.selected == [1, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 2, 4, 3, 4, 2, 2, 1, 2, 1, 4, 1]
+    assert service.selected == [1, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 2, 1, 1, 1, 4, 1]
 
 
 def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:

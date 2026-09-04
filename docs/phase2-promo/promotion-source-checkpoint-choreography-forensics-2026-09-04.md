@@ -275,3 +275,41 @@ both final videos remain incomplete.
   R39-R46 frontend-first times were approximately
   `157/169/151/157/163/164/159/159 s`. There is no file-size/load-time RED,
   so this evidence does not authorize another effect-file split.
+
+## R47–R52: stale purpose shard masked a current-core call
+
+R47 through R50 added exact source-reviewed contracts for `.0010`, `.0342`,
+`.8100`, and `.0346`. R51 then exhausted the 400-day gate after real B1 review
+publications but produced no `ZG361P2C` trace at all. This was not evidence for
+a longer business timeout: the current canonical
+`zg361_apply_pending_grades_effect` calls
+`zg361_p2c_on_review_published_effect`, while the loaded 630-file projection
+contained the older frozen-B2 definition of the same effect without that call.
+Name-only fixed-point closure saw an existing provider and could not detect the
+body drift.
+
+The B3 projection expander now regenerates the four existing purpose-grouped
+core shards from the current canonical monolith before resolving dependencies.
+Their 26 definitions are distributed `3/6/8/9` (maximum 9), and every emitted
+block must equal the canonical block. The refreshed product adds four newly
+reachable dependencies and is 634 files, tree SHA-256
+`6AB2B8E159ABEADAEE88AB44698FF859263906F3E807990436FB6DD6F1FB7824`;
+its closure is 3,706 effects, 988 events, 24 triggers, with no missing calls.
+Projection and closure-evidence SHA-256 values are
+`D99A74E9288D9C6D7655E7B54024047BF229B194D2F07E991FCAA31F1D4006B1`
+and `69D7CD0AB51EA0257D4225C60BD027C741E2F6812C9BA3969FC60EF06352150C`.
+
+This is concrete file-boundary evidence: a split product needs semantic body
+synchronization, not merely name closure. It is not a file-size performance
+finding. R50's one approximately 202-second frontend pass was followed by
+approximately 159 seconds in R51 and 142 seconds in R52; all three loaders were
+GREEN, so no additional size split is justified.
+
+R52 crossed the refreshed loader and stopped before acting on the new vanilla
+event `ep3_governor_yearly.8010`. Its exact governor/title/flag/saved-scope and
+three-option contract now selects authored option 3 after source review. The
+R51 and R52 report SHA-256 values are
+`718F9444063EB14F46D86627EBC5AEA43B4419E01EDD4F09C988AB6DA07A5C96`
+and `ECD2DFA8A7870096D370663F12A7FD220A1C029FF365B1B418E2F8C7A1450F9A`.
+Promotion `.146/.147`, the four-entry registry, footage, and final videos remain
+pending.

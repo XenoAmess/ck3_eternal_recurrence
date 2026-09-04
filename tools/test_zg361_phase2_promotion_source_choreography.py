@@ -63,6 +63,15 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
         )
         b1_events = text(MOD / "events" / "zg361_b1_runtime_events.txt")
         publication = text(
+            ROOT
+            / "tools"
+            / "frozen"
+            / "zg361_phase2_b2_core"
+            / "common"
+            / "scripted_effects"
+            / "zg361_core_review_cycle_effects.txt"
+        )
+        canonical_publication = text(
             MOD / "common" / "scripted_effects" / "zg361_effects.txt"
         )
         lifecycle = text(
@@ -93,7 +102,15 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
         self.assertIn("trigger_event = { id = zg361b1.102 days = 60 }", b1_events)
         self.assertIn("zg361_run_review_effect = yes", b1_events)
         self.assertIn("trigger_event = { id = zg361b1.103 days = 30 }", b1)
-        self.assertIn("zg361_p2c_on_review_published_effect = yes", publication)
+        # The inherited B2 shard predates the central hook.  B3 must source the
+        # current body from the canonical owner instead of mistaking the old
+        # same-name definition for a complete provider.
+        self.assertNotIn("zg361_p2c_on_review_published_effect = yes", publication)
+        self.assertIn(
+            "zg361_p2c_on_review_published_effect = yes", canonical_publication
+        )
+        expander = text(TOOLS / "expand_zg361_phase2_b3_projection_closure.py")
+        self.assertIn("synchronize_current_core_effect_shards", expander)
         self.assertIn("set_variable = { name = zg361_p2c_stage value = 1 }", lifecycle)
         self.assertIn("zg361_p2c_schedule_pump_effect = { DAYS = 2 }", lifecycle)
 

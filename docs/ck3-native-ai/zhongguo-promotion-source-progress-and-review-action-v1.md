@@ -24,7 +24,7 @@ flowchart LR
     K -. "ACK 不能证明 B1" .-> U["[unknown] action callback outcome"]
     K --> Q["[counter-policy] separately nonced paused progress query"]
     Q --> B["[counter-policy] played-owner B1 visible; action hidden; query revision advanced"]
-    B --> T["[static-confirmed] bounded <=400-day product timeline"]
+    B --> T["[static-confirmed] authored <=400-day B1 bound; live product topology required"]
     T --> E146["[counter-policy] independently queried paused zg361pp.146"]
     E146 --> O1["[counter-policy] select option 1 ACK / pending"]
     O1 -. "ACK 不能证明 delayed event" .-> U2["[unknown] m146 callback outcome"]
@@ -42,7 +42,7 @@ flowchart LR
 
 1. 绑定同 connection generation 与 played owner；若 B1/central/PP 已在真实产品中运行，直接续跑。
 2. 否则执行固定 review action，并以独立 progress query 证明 played-owner B1 active。
-3. 仅在无 event 时以 speed 1 推进，最多 400 天；任何非 `.146/.147` 的可见 event 都 typed RED，不猜选项。
+3. 仅在无 event 时以 speed 1 推进，最多 400 天；任何非 `.146/.147` 的可见 event 都 typed RED，不猜选项。这个期限只约束 authored B1 时间线，不能替代对实际产品 call graph / shard 正文同步的验证。
 4. 独立查询 `.146` 后选择 option 1；继续到至少 D+1，独立查询 paused `.147`。
 5. 交回既有 capture 保存仍未选择的 `.147`，核验六个 saved scopes、option 1 shown/enabled，以及 checkpoint bytes/SHA/date/seed/capture lineage。
 

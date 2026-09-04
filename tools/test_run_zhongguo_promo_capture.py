@@ -1851,6 +1851,35 @@ def main() -> int:
             "current_product_runtime_tree_available"
         ] is True
 
+        # A frozen save records the product that created it as provenance.  A
+        # later hash-bound product is allowed to load that save, and the live
+        # receipt binds the newer mounted tree independently after load.
+        drift_userdir = temporary_root / "seed-install-drift-profile"
+        drift_artifacts = temporary_root / "seed-install-drift-artifacts"
+        drift_userdir.mkdir()
+        drift_artifacts.mkdir()
+        drift_bootstrap = {
+            "tree_sha256": {"product": "3" * 64, "fixture": None},
+            "enabled_mods": [f"mod/{capture.PRODUCT_OUTER}"],
+        }
+        drift_install = capture.install_phase2_seed(
+            drift_userdir,
+            drift_bootstrap,
+            drift_artifacts,
+            observed_game_version=capture.EXPECTED_GAME_VERSION,
+            observed_executable_sha256=capture.EXPECTED_EXE_SHA256,
+            contract_path=ready_seed_path,
+            product_only_runtime=True,
+        )
+        assert drift_install["result"] == "GREEN"
+        assert drift_install["failed_checks"] == []
+        assert drift_install["checks"][
+            "current_product_tree_matches_seed_source"
+        ] is False
+        assert drift_install["runtime_tree_policy"][
+            "product_source_equality_required_for_capture"
+        ] is False
+
         invalid_ready_contract = copy.deepcopy(ready_seed_contract)
         invalid_ready_contract["blocker"] = "stale blocker"
         invalid_ready_path = temporary_root / "invalid-ready-seed-contract.json"

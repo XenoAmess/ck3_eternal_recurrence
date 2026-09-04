@@ -39,6 +39,57 @@ def write_localization_family(
 
 
 class ProjectionClosureExpansionTests(unittest.TestCase):
+    def test_current_core_shards_are_regenerated_before_closure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            groups = (
+                (expand.CURRENT_CORE_SHARDS[0], "zg361_appeal_effect"),
+                (expand.CURRENT_CORE_SHARDS[1], "zg361_elimination_effect"),
+                (expand.CURRENT_CORE_SHARDS[2], "zg361_result_effect"),
+                (expand.CURRENT_CORE_SHARDS[3], "zg361_review_effect"),
+            )
+            for relative, name in groups:
+                write(
+                    candidate,
+                    relative.as_posix(),
+                    f"{name} = {{\n    old = yes\n}}\n",
+                )
+            write(
+                canonical,
+                expand.CURRENT_CORE_SOURCE.as_posix(),
+                "\n\n".join(
+                    f"{name} = {{\n    current = yes\n"
+                    + (
+                        "    zg361_new_cross_boundary_effect = yes\n"
+                        if name == "zg361_review_effect"
+                        else ""
+                    )
+                    + "}"
+                    for _relative, name in groups
+                )
+                + "\n",
+            )
+
+            result = expand.synchronize_current_core_effect_shards(
+                candidate, canonical
+            )
+
+            self.assertTrue(result["green"])
+            self.assertTrue(result["applicable"])
+            self.assertEqual(4, result["definition_count"])
+            self.assertEqual(1, result["max_effects_per_file"])
+            self.assertTrue(result["canonical_blocks_exact"])
+            self.assertEqual(4, len(result["updated_files"]))
+            review = (candidate / expand.CURRENT_CORE_SHARDS[3]).read_text(
+                encoding="utf-8-sig"
+            )
+            self.assertIn("zg361_new_cross_boundary_effect = yes", review)
+            self.assertNotIn("old = yes", review)
+
     def test_scripted_widget_registration_copies_exact_gui_provider(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

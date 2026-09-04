@@ -20,15 +20,15 @@ PROMOTION_CAPABILITY = (
     "game.command.query-zhongguo-promotion-compensation-postcondition-v1"
 )
 RESULT_CASE_CAPABILITY = "game.command.query-zhongguo-result-case-snapshot-v1"
-PROJECTION_NAME = "b3-current-reachable-schema3-gui-f6068a9"
+PROJECTION_NAME = "b3-current-reachable-schema3-current-core"
 EXPECTED_PRODUCT_TREE = (
-    "9e75d8e55bbbf5170da3b40c8411dafc7387cf2a8b0f51c2f06c71b0856ee723"
+    "6ab2b8e159abeadaee88ab44698ff859263906f3e807990436fb6dd6f1fb7824"
 )
 EXPECTED_PROJECTION_SHA256 = (
-    "bfb837884b95803a2ee4c41d72fd90acf364c508188d27582fb937738005681a"
+    "d99a74e9288d9c6d7655e7b54024047bf229b194d2f07e991fcaa31f1d4006b1"
 )
 EXPECTED_CLOSURE_SHA256 = (
-    "f68d29e9558c0df44c18ffad6ac9b4db3f1003205cb76cea0c17eb0485c7af8b"
+    "69d7cd0ab51ea0257d4225c60bd027c741e2f6812c9ba3969fc60ef06352150c"
 )
 PIPE_TOKEN = re.compile(r"[0-9a-f]{32}\Z")
 MOUNT_PATH_LIMIT = 250
@@ -127,7 +127,7 @@ def verify_product(
     ):
         raise FreezeError("explicit-AND projection identity drifted")
     rows = projection.get("files")
-    if not isinstance(rows, list) or len(rows) != 630:
+    if not isinstance(rows, list) or len(rows) != 634:
         raise FreezeError("explicit-AND projection file inventory drifted")
     relative_paths: list[str] = []
     for row in rows:
@@ -147,6 +147,12 @@ def verify_product(
     closure = load_json(closure_path)
     localization = closure.get("localization_closure")
     widget_gui = closure.get("scripted_widget_gui_closure")
+    current_core = closure.get("current_core_effect_shards")
+    current_core_files = (
+        current_core.get("updated_files", [])
+        if isinstance(current_core, dict)
+        else []
+    )
     closure_checks = {
         "kind": closure.get("kind")
         == "zg361_phase2_b3_material_custom_call_closure_expansion",
@@ -156,8 +162,8 @@ def verify_product(
             str(closure.get("candidate_source", ""))
         ).resolve()
         == source.resolve(),
-        "effect_count": closure.get("final_effect_definition_count") == 3703,
-        "event_count": closure.get("final_event_definition_count") == 986,
+        "effect_count": closure.get("final_effect_definition_count") == 3706,
+        "event_count": closure.get("final_event_definition_count") == 988,
         "trigger_count": closure.get("final_trigger_definition_count") == 24,
         "no_missing_effects": closure.get("final_missing_effects") == [],
         "no_missing_events": closure.get("final_missing_events") == [],
@@ -174,6 +180,13 @@ def verify_product(
         and widget_gui.get("required_file_count") == 4
         and "gui/zg361_promotion_source_bridge.gui"
         in widget_gui.get("required_files", []),
+        "current_core_shards_green": isinstance(current_core, dict)
+        and current_core.get("green") is True
+        and current_core.get("canonical_blocks_exact") is True,
+        "current_core_shards_bounded": isinstance(current_core, dict)
+        and current_core.get("definition_count") == 26
+        and current_core.get("max_effects_per_file") == 9
+        and len(current_core_files) == 4,
     }
     if not all(closure_checks.values()):
         failed = [name for name, value in closure_checks.items() if not value]
@@ -486,7 +499,7 @@ def freeze(args: argparse.Namespace) -> dict[str, object]:
         str(runner),
         "--phase2-promotion-source-checkpoint-live",
         "--phase2-promotion-source-checkpoint-timeout-seconds",
-        "600",
+        "1200",
         "--bridge-dll",
         str(bridge_dll),
         "--bridge-injector",

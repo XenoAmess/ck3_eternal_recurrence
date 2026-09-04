@@ -5051,7 +5051,7 @@ def install_phase2_seed(
             },
             "source_current_equality_required_for_install": False,
             "product_only_capture": product_only_runtime,
-            "product_source_equality_required_for_capture": product_only_runtime,
+            "product_source_equality_required_for_capture": False,
             "post_load_current_runtime_gates": [
                 "runtime_mount_inventory",
                 "loaded_feature_manifest_v1",
@@ -5063,7 +5063,12 @@ def install_phase2_seed(
             "last_save": str(last_save),
         }
         evidence["checks"] = checks
-        failed = [label for label, passed in checks.items() if passed is not True]
+        informational_checks = {"current_product_tree_matches_seed_source"}
+        failed = [
+            label
+            for label, passed in checks.items()
+            if label not in informational_checks and passed is not True
+        ]
         evidence["failed_checks"] = failed
         if failed:
             raise acceptance.RunnerError(
@@ -5085,7 +5090,11 @@ def install_phase2_seed(
             == source_contract["sha256"],
         }
         checks.update(installed_checks)
-        failed = [label for label, passed in checks.items() if passed is not True]
+        failed = [
+            label
+            for label, passed in checks.items()
+            if label not in informational_checks and passed is not True
+        ]
         evidence["checks"] = checks
         evidence["failed_checks"] = failed
         if failed:
@@ -10320,13 +10329,18 @@ def _phase2_promo_receipt_sources(
         seed_install.get("result") != "GREEN"
         or enabled_mods != [f"mod/{PRODUCT_OUTER}"]
         or trees.get("fixture") is not None
-        or current_product_tree != seed_runtime.get("source_product_tree_sha256")
         or game_version != seed_runtime.get("game_version")
         or executable_sha256 != seed_runtime.get("executable_sha256")
     ):
         raise acceptance.RunnerError(
-            "phase-two span receipts require exact seed product tree, game/EXE, "
-            "and a product-only runtime mount"
+            "phase-two span receipts require a hash-bound current product tree, "
+            "exact game/EXE, and a product-only runtime mount"
+        )
+    if not isinstance(current_product_tree, str) or re.fullmatch(
+        r"[0-9a-fA-F]{64}", current_product_tree
+    ) is None:
+        raise acceptance.RunnerError(
+            "phase-two span receipts lack the current product tree identity"
         )
     source_git_commit = provenance.get("source_git_commit")
     if not isinstance(source_git_commit, str) or re.fullmatch(

@@ -34,6 +34,13 @@ LOCALIZATION_LINE = re.compile(r'^\s*([^\s:#]+):\d+\s+"(.*)"\s*$')
 SCRIPTED_WIDGET_REGISTRATION = re.compile(
     r"^\s*(gui/[^\s=]+\.gui)\s*=\s*[^\s#]+", re.MULTILINE
 )
+CURRENT_CORE_SOURCE = Path("common/scripted_effects/zg361_effects.txt")
+CURRENT_CORE_SHARDS = (
+    Path("common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt"),
+    Path("common/scripted_effects/zg361_core_elimination_effects.txt"),
+    Path("common/scripted_effects/zg361_core_result_delivery_effects.txt"),
+    Path("common/scripted_effects/zg361_core_review_cycle_effects.txt"),
+)
 B3_REACHABLE_LOCALIZATION_FAMILIES = (
     "zg361_career_hc",
     "zg361_career_learning",
@@ -334,6 +341,99 @@ def synchronize_scripted_widget_gui_files(
     }
 
 
+def synchronize_current_core_effect_shards(
+    candidate: Path, canonical: Path
+) -> dict[str, object]:
+    """Replace the inherited B2 core shards with current canonical bodies.
+
+    The B3 candidate inherits four purpose shards from the B2 seed closure.
+    Merely expanding missing providers cannot detect a changed body whose
+    definition name already exists in one of those shards.  Regenerate the
+    same <=10-effect boundary from the canonical monolith before computing the
+    B3 fixed point, so new cross-boundary calls become visible to the closure.
+    """
+
+    present = [relative for relative in CURRENT_CORE_SHARDS if (candidate / relative).is_file()]
+    if not present:
+        return {
+            "green": True,
+            "applicable": False,
+            "source": None,
+            "updated_files": [],
+            "definition_count": 0,
+            "max_effects_per_file": 0,
+            "canonical_blocks_exact": True,
+        }
+    if tuple(present) != CURRENT_CORE_SHARDS:
+        missing = [relative.as_posix() for relative in CURRENT_CORE_SHARDS if relative not in present]
+        raise freeze.FreezeError(
+            f"B3 current-core shard set is incomplete: missing={missing}"
+        )
+
+    source = canonical / CURRENT_CORE_SOURCE
+    if not source.is_file() or source.is_symlink():
+        raise freeze.FreezeError(f"canonical current-core owner is missing: {source}")
+    sys.path.insert(0, str(freeze.MOD_ROOT / "tools"))
+    from zg361_effect_sharding import top_level_effect_entries
+
+    canonical_entries = top_level_effect_entries(source.read_bytes())
+    canonical_by_name = {entry.name: entry for entry in canonical_entries}
+    if len(canonical_by_name) != len(canonical_entries):
+        raise freeze.FreezeError("canonical current-core owner has duplicate definitions")
+
+    shard_names: dict[Path, tuple[str, ...]] = {}
+    inherited_names: list[str] = []
+    for relative in CURRENT_CORE_SHARDS:
+        entries = top_level_effect_entries((candidate / relative).read_bytes())
+        names = tuple(entry.name for entry in entries)
+        if not 1 <= len(names) <= 10:
+            raise freeze.FreezeError(
+                f"B3 current-core shard violates the 1..10 boundary: {relative}: {len(names)}"
+            )
+        shard_names[relative] = names
+        inherited_names.extend(names)
+    if len(inherited_names) != len(set(inherited_names)):
+        raise freeze.FreezeError("B3 current-core shards contain duplicate definitions")
+    if set(inherited_names) != set(canonical_by_name):
+        raise freeze.FreezeError(
+            "B3 current-core shard union differs from the canonical current owner"
+        )
+
+    source_record = freeze.record(source, relative_to=canonical)
+    updated: list[dict[str, object]] = []
+    canonical_blocks_exact = True
+    for relative in CURRENT_CORE_SHARDS:
+        names = shard_names[relative]
+        header = (
+            "# GENERATED B3 CURRENT-CORE PROJECTION - DO NOT EDIT\n"
+            f"# Source: {CURRENT_CORE_SOURCE.as_posix()}\n"
+            f"# Source SHA-256: {source_record['sha256']}\n"
+            f"# Purpose boundary: {relative.stem.removeprefix('zg361_core_')}\n\n"
+        )
+        body = "\n\n".join(canonical_by_name[name].block.strip() for name in names) + "\n"
+        target = candidate / relative
+        target.write_bytes(BOM + (header + body).encode("utf-8"))
+        rendered = {
+            entry.name: entry.block.strip()
+            for entry in top_level_effect_entries(target.read_bytes())
+        }
+        canonical_blocks_exact = canonical_blocks_exact and all(
+            rendered.get(name) == canonical_by_name[name].block.strip()
+            for name in names
+        )
+        updated.append(freeze.record(target, relative_to=candidate))
+
+    return {
+        "green": canonical_blocks_exact,
+        "applicable": True,
+        "source": source_record,
+        "updated_files": updated,
+        "definition_count": len(inherited_names),
+        "max_effects_per_file": max(len(names) for names in shard_names.values()),
+        "canonical_blocks_exact": canonical_blocks_exact,
+    }
+
+
 def _provider_files(
     source: Path,
 ) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
@@ -385,6 +485,9 @@ def expand_projection_closure(
     canonical = canonical.resolve()
     if not candidate.is_dir() or not canonical.is_dir():
         raise freeze.FreezeError("candidate and canonical roots must exist")
+    current_core_effect_shards = synchronize_current_core_effect_shards(
+        candidate, canonical
+    )
     effect_providers, event_providers, trigger_providers = _provider_files(canonical)
     added_files: set[str] = set()
     rounds: list[dict[str, object]] = []
@@ -476,6 +579,7 @@ def expand_projection_closure(
     )
     green = (
         final_closure["green"] is True
+        and current_core_effect_shards["green"] is True
         and localization_closure["green"] is True
         and scripted_widget_gui_closure["green"] is True
     )
@@ -506,6 +610,7 @@ def expand_projection_closure(
         "final_missing_effects": final_missing_effects,
         "final_missing_events": final_missing_events,
         "final_missing_triggers": final_missing_triggers,
+        "current_core_effect_shards": current_core_effect_shards,
         "localization_closure": localization_closure,
         "scripted_widget_gui_closure": scripted_widget_gui_closure,
     }
