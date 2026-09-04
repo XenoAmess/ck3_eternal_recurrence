@@ -12,6 +12,7 @@
 #include "xar_bridge/zhongguo_incident_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_manager_governance_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_manager_subordinate_selector_v1.hpp"
+#include "xar_bridge/zhongguo_promotion_compensation_postcondition_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
@@ -33,6 +34,9 @@ constexpr std::size_t kCapabilityCount =
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+    + 1
+#endif
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1)
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
@@ -101,6 +105,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kZhongguoIncidentSnapshotV1Capability,
     ck3_11906::kZhongguoManagerGovernanceSnapshotV1Capability,
     ck3_11906::kZhongguoManagerSubordinateSelectorV1Capability,
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1)
+    ck3_11906::kZhongguoPromotionCompensationPostconditionV1Capability,
+#endif
     ck3_11906::kZhongguoScoreboardStateV1Capability,
     ck3_11906::kZhongguoScoreboardActionV1TransportCapability,
     ck3_11906::kZhongguoPromotionSourceProgressV1TransportCapability,

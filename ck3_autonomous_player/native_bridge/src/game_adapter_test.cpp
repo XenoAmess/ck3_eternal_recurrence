@@ -325,6 +325,20 @@ int main() {
                "game.command.activate-zhongguo-scoreboard-v1")) {
     return Fail("known adapter advertised the unclosed scoreboard action");
   }
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1)
+  if (!Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-promotion-compensation-postcondition-v1")) {
+    return Fail("private candidate omitted promotion/compensation provider");
+  }
+#else
+  if (Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-promotion-compensation-postcondition-v1")) {
+    return Fail(
+        "default adapter advertised unproven promotion/compensation provider");
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
   if (!Contains(
           known.capabilities,

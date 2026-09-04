@@ -109,6 +109,7 @@
     "mcp"
   ],
   "shared_wiring": "default_off_complete_not_advertised",
+  "private_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1",
   "default_adapter_advertised": false,
   "production_live_ready": false,
   "next_live_checkpoint": "paused zg361pp.147 option-1 request followed by zg361comp.1 and one provider-ready result on the same connection generation"

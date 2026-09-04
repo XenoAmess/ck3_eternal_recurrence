@@ -17,6 +17,7 @@ SHARED_MAILBOX = BRIDGE / "src" / "main_thread_query_mailbox_v1.cpp"
 SHARED_BRIDGE = BRIDGE / "src" / "bridge.cpp"
 GAME_ADAPTER = BRIDGE / "src" / "game_adapter.cpp"
 CK3_ADAPTER = BRIDGE / "src" / "ck3_11906_adapter.cpp"
+CMAKE = BRIDGE / "CMakeLists.txt"
 NATIVE_DRIVER = ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
 SERVICE = ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py"
 MCP_SERVER = ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"
@@ -166,6 +167,10 @@ class PromotionCompensationProviderContractTests(unittest.TestCase):
             "default_off_complete_not_advertised",
         )
         self.assertEqual(
+            source_contract["private_candidate_switch"],
+            "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1",
+        )
+        self.assertEqual(
             source_contract["allowlists"]["mechanism_ids"],
             abi["compensation_receipt_selector"]["mechanism_allowlist"],
         )
@@ -188,6 +193,7 @@ class PromotionCompensationProviderContractTests(unittest.TestCase):
         shared_bridge = SHARED_BRIDGE.read_text(encoding="utf-8")
         game_adapter = GAME_ADAPTER.read_text(encoding="utf-8")
         ck3_adapter = CK3_ADAPTER.read_text(encoding="utf-8")
+        cmake = CMAKE.read_text(encoding="utf-8")
         native_driver = NATIVE_DRIVER.read_text(encoding="utf-8")
         service = SERVICE.read_text(encoding="utf-8")
         mcp_server = MCP_SERVER.read_text(encoding="utf-8")
@@ -224,9 +230,34 @@ class PromotionCompensationProviderContractTests(unittest.TestCase):
         self.assertIn("expected_revision", public_tool.group("body"))
         for forbidden in ("owner_character_id", "subject_character_id", "variable_name"):
             self.assertNotIn(forbidden, public_tool.group("body"))
+        switch = (
+            "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1"
+        )
+        option = re.search(
+            rf"option\(\s*{switch}\s*.*?\s+OFF\s*\)", cmake, re.DOTALL
+        )
+        self.assertIsNotNone(option)
+        guarded_blocks = list(
+            re.finditer(
+                rf"#if defined\({switch}\)(?P<body>.*?)#endif",
+                ck3_adapter,
+                re.DOTALL,
+            )
+        )
+        self.assertGreaterEqual(len(guarded_blocks), 2)
+        capability = (
+            "ck3_11906::kZhongguoPromotionCompensationPostconditionV1Capability"
+        )
+        capability_blocks = [
+            match
+            for match in guarded_blocks
+            if capability in match.group("body")
+        ]
+        self.assertEqual(len(capability_blocks), 1)
+        guarded = capability_blocks[0]
         self.assertNotIn(
-            "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
-            ck3_adapter,
+            capability,
+            ck3_adapter[: guarded.start()] + ck3_adapter[guarded.end() :],
         )
 
 
