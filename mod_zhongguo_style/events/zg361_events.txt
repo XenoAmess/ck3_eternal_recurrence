@@ -228,6 +228,36 @@ zg361.51 = {
 			zg361_deliver_325_notice_effect = yes
 			debug_log = "ZG361P2: refused notice delivered by witness"
 		}
+		else_if = {
+			# Compatibility for the exact pre-identity-schema queued token proven by
+			# the r9 -> r20 live lineage. Mixed old/new tokens remain stale: only a
+			# wholly absent subject/witness extension may use the frozen four-tuple.
+			limit = {
+				exists = scope:zg361_notice_witness_owner
+				exists = scope:zg361_notice_witness_cycle
+				exists = scope:zg361_notice_witness_case
+				exists = scope:zg361_notice_witness_state
+				NOT = { exists = scope:zg361_notice_witness_subject }
+				NOT = { exists = scope:zg361_notice_witness }
+				NOT = { has_variable = zg361_result_delivery_witness }
+				has_variable = zg361_result_case_owner
+				var:zg361_result_case_owner = scope:zg361_notice_witness_owner
+				has_variable = zg361_result_cycle_serial
+				var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle
+				has_variable = zg361_result_case_serial
+				var:zg361_result_case_serial = scope:zg361_notice_witness_case
+				has_variable = zg361_result_case_state
+				var:zg361_result_case_state = scope:zg361_notice_witness_state
+				var:zg361_result_case_state = 2
+			}
+			save_scope_as = zg361_notice_witness_subject
+			scope:zg361_notice_witness_owner = { save_scope_as = zg361_notice_witness }
+			set_variable = { name = zg361_result_delivery_witness value = scope:zg361_notice_witness }
+			set_variable = { name = zg361_result_delivery_method value = 3 }
+			set_variable = { name = zg361_result_delivery_witness_receipt value = var:zg361_result_case_serial }
+			zg361_deliver_325_notice_effect = yes
+			debug_log = "ZG361P2: legacy witnessed-delivery token migrated and delivered"
+		}
 		else = {
 			debug_log = "ZG361P2: stale witnessed-delivery token ignored"
 		}

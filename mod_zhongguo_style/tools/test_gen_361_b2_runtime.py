@@ -1061,6 +1061,24 @@ class B2CK3RuntimeTests(unittest.TestCase):
             self.assertIn("stale", block)
         self.assertIn("zg361_result_delivery_witness", prompt)
         self.assertIn("zg361_result_delivery_witness_receipt", witness)
+        legacy = witness.split("else_if = {", 1)[1].split("else = {", 1)[0]
+        self.assertIn(
+            "NOT = { exists = scope:zg361_notice_witness_subject }", legacy
+        )
+        self.assertIn("NOT = { exists = scope:zg361_notice_witness }", legacy)
+        self.assertIn(
+            "NOT = { has_variable = zg361_result_delivery_witness }", legacy
+        )
+        for required_legacy_scope in ("owner", "cycle", "case", "state"):
+            self.assertIn(
+                f"exists = scope:zg361_notice_witness_{required_legacy_scope}",
+                legacy,
+            )
+        self.assertIn(
+            "scope:zg361_notice_witness_owner = { save_scope_as = zg361_notice_witness }",
+            legacy,
+        )
+        self.assertEqual(witness.count("zg361_deliver_325_notice_effect = yes"), 2)
         delivery = top_level_block(
             self.effects, "zg361_b2_m069_record_delivery_effect"
         )

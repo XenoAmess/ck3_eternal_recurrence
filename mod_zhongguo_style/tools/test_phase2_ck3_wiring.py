@@ -103,6 +103,39 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         self.assertIn("zg361_deliver_325_notice_effect = yes", witness)
         self.assertIn("stale witnessed-delivery token ignored", witness)
 
+    def test_witness_delivery_migrates_only_the_proven_legacy_token_shape(self) -> None:
+        witness = self.events.split("zg361.51 = {", 1)[1].split("zg361.52 = {", 1)[0]
+        legacy = witness.split("else_if = {", 1)[1].split("else = {", 1)[0]
+        for missing_extension in (
+            "NOT = { exists = scope:zg361_notice_witness_subject }",
+            "NOT = { exists = scope:zg361_notice_witness }",
+            "NOT = { has_variable = zg361_result_delivery_witness }",
+        ):
+            self.assertIn(missing_extension, legacy)
+        for required_legacy_scope in (
+            "zg361_notice_witness_owner",
+            "zg361_notice_witness_cycle",
+            "zg361_notice_witness_case",
+            "zg361_notice_witness_state",
+        ):
+            self.assertIn(f"exists = scope:{required_legacy_scope}", legacy)
+        for frozen_identity in (
+            "var:zg361_result_case_owner = scope:zg361_notice_witness_owner",
+            "var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle",
+            "var:zg361_result_case_serial = scope:zg361_notice_witness_case",
+            "var:zg361_result_case_state = scope:zg361_notice_witness_state",
+            "var:zg361_result_case_state = 2",
+        ):
+            self.assertIn(frozen_identity, legacy)
+        self.assertIn("save_scope_as = zg361_notice_witness_subject", legacy)
+        self.assertIn(
+            "scope:zg361_notice_witness_owner = { save_scope_as = zg361_notice_witness }",
+            legacy,
+        )
+        self.assertIn("zg361_deliver_325_notice_effect = yes", legacy)
+        self.assertIn("legacy witnessed-delivery token migrated and delivered", legacy)
+        self.assertEqual(witness.count("zg361_deliver_325_notice_effect = yes"), 2)
+
     def test_delivery_and_fourfold_settlement_are_idempotent(self) -> None:
         freeze = self.effects.split("zg361_freeze_result_case_effect = {", 1)[
             1
