@@ -15,6 +15,8 @@ receipts remain under this package's prefix.
 from __future__ import annotations
 
 import argparse
+import hashlib
+from dataclasses import dataclass
 from pathlib import Path
 import textwrap
 
@@ -175,6 +177,68 @@ LANGUAGES = (
     "polish",
     "russian",
     "spanish",
+)
+
+LEGACY_EFFECT_FILENAME = f"{PREFIX}_effects.txt"
+LEGACY_EFFECT_PATH = (
+    MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+)
+EFFECT_SHARD_GLOB = f"{PREFIX}_*_effects.txt"
+HISTORICAL_EFFECT_COUNT = 15
+HISTORICAL_EFFECT_BYTES = 205_410
+HISTORICAL_EFFECT_SHA256 = (
+    "b0ea0b735c2ab7ae16ec22fd25ecdf8f37b0c0e7c2a44150ec2c0eb25e6a450e"
+)
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+EFFECT_SCOPE_ABI = """# Scope ABI for all public hooks:
+#   current scope (this) = the real hired subject; $OWNER$ = the real #274 owner.
+#   ROOT is deliberately ignored and conveys no authority or identity.
+"""
+
+
+@dataclass(frozen=True)
+class EffectGroup:
+    filename: str
+    purpose: str
+    effect_names: tuple[str, ...]
+
+
+EFFECT_GROUPS = (
+    EffectGroup(
+        f"{PREFIX}_ledger_arm_effects.txt",
+        "maintain the three-generation ledger and arm a real native hire",
+        (
+            f"{PREFIX}_ensure_ledger_metadata_effect",
+            f"{PREFIX}_archive_current_to_slot_1_effect",
+            f"{PREFIX}_archive_current_to_slot_2_effect",
+            f"{PREFIX}_retire_current_projection_effect",
+            f"{PREFIX}_prepare_ledger_arm_effect",
+            f"{PREFIX}_arm_hire_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_outcome_publish_effects.txt",
+        "normalize real result, PIP, exit, and role-failure sources into one canonical outcome",
+        (
+            f"{PREFIX}_publish_from_result_effect",
+            f"{PREFIX}_publish_from_pip_settlement_effect",
+            f"{PREFIX}_publish_from_normal_exit_effect",
+            f"{PREFIX}_publish_from_role_failure_effect",
+            f"{PREFIX}_publish_canonical_effect",
+        ),
+    ),
+    EffectGroup(
+        f"{PREFIX}_consumption_effects.txt",
+        "materialize, schedule, retry, and finalize the Workforce consumption receipt",
+        (
+            f"{PREFIX}_materialize_and_consume_effect",
+            f"{PREFIX}_schedule_consume_effect",
+            f"{PREFIX}_schedule_consume_retry_effect",
+            f"{PREFIX}_finalize_consumption_receipt_effect",
+        ),
+    ),
 )
 
 LEGACY_ALIAS_TO_FACT = {
@@ -1957,6 +2021,168 @@ def render_effects() -> bytes:
     return generated(template)
 
 
+def _skip_comment(text: str, index: int) -> int:
+    newline = text.find("\n", index)
+    return len(text) if newline < 0 else newline + 1
+
+
+def _skip_quoted_string(text: str, index: int) -> int:
+    index += 1
+    escaped = False
+    while index < len(text):
+        char = text[index]
+        if escaped:
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            return index + 1
+        index += 1
+    raise ValueError("unterminated quoted string in probation fact script")
+
+
+def _block_end(text: str, index: int) -> int:
+    depth = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+            if depth < 0:
+                raise ValueError("unbalanced probation fact script block")
+        index += 1
+    raise ValueError("unterminated probation fact script block")
+
+
+def top_level_effect_blocks(payload: bytes | str) -> tuple[tuple[str, str], ...]:
+    """Return exact top-level effect blocks while ignoring comments and strings."""
+
+    text = (
+        payload.decode("utf-8-sig")
+        if isinstance(payload, bytes)
+        else payload.lstrip("\ufeff")
+    )
+    blocks: list[tuple[str, str]] = []
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char == "#":
+            index = _skip_comment(text, index)
+            continue
+        if char == '"':
+            index = _skip_quoted_string(text, index)
+            continue
+        if not (char.isalpha() or char == "_"):
+            index += 1
+            continue
+        start = index
+        index += 1
+        while index < len(text) and (text[index].isalnum() or text[index] == "_"):
+            index += 1
+        name = text[start:index]
+        cursor = index
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "=":
+            continue
+        cursor += 1
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        if cursor >= len(text) or text[cursor] != "{":
+            continue
+        end = _block_end(text, cursor)
+        blocks.append((name, text[start:end]))
+        index = end
+    return tuple(blocks)
+
+
+def _validate_effect_groups(
+    aggregate: bytes, source_blocks: tuple[tuple[str, str], ...]
+) -> None:
+    source_names = tuple(name for name, _block in source_blocks)
+    if len(aggregate) != HISTORICAL_EFFECT_BYTES:
+        raise ValueError(
+            "Workforce probation effect aggregate byte count drifted: "
+            f"expected {HISTORICAL_EFFECT_BYTES}, found {len(aggregate)}"
+        )
+    actual_sha256 = hashlib.sha256(aggregate).hexdigest()
+    if actual_sha256 != HISTORICAL_EFFECT_SHA256:
+        raise ValueError(
+            "Workforce probation effect aggregate SHA-256 drifted: "
+            f"expected {HISTORICAL_EFFECT_SHA256}, found {actual_sha256}"
+        )
+    if len(source_names) != HISTORICAL_EFFECT_COUNT:
+        raise ValueError(
+            "Workforce probation effect aggregate must contain "
+            f"{HISTORICAL_EFFECT_COUNT} top-level effects, found {len(source_names)}"
+        )
+    if len(source_names) != len(set(source_names)):
+        raise ValueError("Workforce probation aggregate contains duplicate effects")
+    configured_names = tuple(
+        name for group in EFFECT_GROUPS for name in group.effect_names
+    )
+    filenames = tuple(group.filename for group in EFFECT_GROUPS)
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("Workforce probation effect shard filenames must be unique")
+    if len(configured_names) != len(set(configured_names)):
+        raise ValueError("Workforce probation purpose groups duplicate an effect")
+    if configured_names != source_names:
+        missing = sorted(set(source_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(source_names))
+        raise ValueError(
+            "Workforce probation purpose groups must preserve exact historical "
+            f"effect order; missing={missing}, extra={extra}"
+        )
+    for group in EFFECT_GROUPS:
+        if not group.effect_names:
+            raise ValueError(f"{group.filename} must contain at least one effect")
+        if not group.purpose.strip():
+            raise ValueError(f"{group.filename} must declare a purpose")
+    over_hard = {
+        group.filename
+        for group in EFFECT_GROUPS
+        if len(group.effect_names) > EFFECT_HARD_MAX
+    }
+    if set(EFFECT_HARD_LIMIT_EXCEPTIONS) != over_hard:
+        raise ValueError(
+            "Workforce probation hard-limit exceptions must exactly match "
+            f"shards above {EFFECT_HARD_MAX} effects"
+        )
+    for filename in sorted(over_hard):
+        reason, live_evidence = EFFECT_HARD_LIMIT_EXCEPTIONS[filename]
+        if not reason.strip() or not live_evidence.strip():
+            raise ValueError(
+                f"{filename} exceeds {EFFECT_HARD_MAX} effects without both "
+                "a reason and CK3 live evidence"
+            )
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards with all 15 effect definitions byte-identical."""
+
+    aggregate = render_effects()
+    source_blocks = top_level_effect_blocks(aggregate)
+    _validate_effect_groups(aggregate, source_blocks)
+    by_name = dict(source_blocks)
+    return {
+        group.filename: generated(
+            f"# PURPOSE: {group.purpose}.\n"
+            f"{EFFECT_SCOPE_ABI}\n"
+            + "\n\n".join(by_name[name] for name in group.effect_names)
+        )
+        for group in EFFECT_GROUPS
+    }
+
+
 def render_events() -> bytes:
     return generated(
         r'''
@@ -2029,14 +2255,27 @@ def render_localization(language: str) -> bytes:
 def outputs() -> dict[Path, bytes]:
     validate_contract()
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / f"{PREFIX}_effects.txt": render_effects(),
-        MOD_ROOT / "events" / f"{PREFIX}_events.txt": render_events(),
+        MOD_ROOT / "common" / "scripted_effects" / filename: payload
+        for filename, payload in render_effect_parts().items()
     }
+    rendered[MOD_ROOT / "events" / f"{PREFIX}_events.txt"] = render_events()
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / f"{PREFIX}_l_{language}.yml"
         ] = render_localization(language)
     return rendered
+
+
+def unexpected_effect_paths(
+    rendered: dict[Path, bytes], effects_dir: Path | None = None
+) -> tuple[Path, ...]:
+    effects_dir = effects_dir or MOD_ROOT / "common" / "scripted_effects"
+    expected = {path for path in rendered if path.parent == effects_dir}
+    unexpected = set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected
+    legacy_path = effects_dir / LEGACY_EFFECT_FILENAME
+    if legacy_path.is_file():
+        unexpected.add(legacy_path)
+    return tuple(sorted(unexpected))
 
 
 def main() -> int:
@@ -2045,14 +2284,22 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    unexpected_effects = unexpected_effect_paths(rendered)
     if args.check:
-        if stale:
+        if stale or unexpected_effects:
             print("RED: stale Workforce probation fact generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in unexpected_effects:
+                print(
+                    f"{path.relative_to(MOD_ROOT)} "
+                    "(unexpected effect shard or legacy aggregate)"
+                )
             return 1
         print("GREEN: Workforce probation fact generated files are current")
         return 0
+    for path in unexpected_effects:
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)

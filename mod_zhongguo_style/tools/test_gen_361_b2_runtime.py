@@ -30,6 +30,7 @@ from gen_361_b2_runtime import (
     render_effects,
 )
 from zg361_b2_runtime_data import B2_BINDINGS
+import gen_zg361_workforce_probation_fact as probation_generator
 
 
 PLACEHOLDER_LANGUAGES = (
@@ -85,8 +86,9 @@ class B2CK3RuntimeTests(unittest.TestCase):
         }
         cls.effects = "\n\n".join(cls.effect_parts.values())
         cls.events = read("events/zg361_b2_runtime_events.txt")
-        cls.probation_effects = read(
-            "common/scripted_effects/zg361_workforce_probation_fact_effects.txt"
+        cls.probation_effects = "\n\n".join(
+            read(f"common/scripted_effects/{group.filename}")
+            for group in probation_generator.EFFECT_GROUPS
         )
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.core_events = read("events/zg361_events.txt")

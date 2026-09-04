@@ -8,15 +8,21 @@ does not claim parser, loader, paused-snapshot or live-game evidence.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
+import tempfile
 import unittest
+from unittest import mock
 
 import gen_zg361_workforce_probation_fact as generator
 
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
-EFFECTS_PATH = MOD_ROOT / "common/scripted_effects/zg361_workforce_probation_fact_effects.txt"
+EFFECT_PATHS = tuple(
+    MOD_ROOT / "common" / "scripted_effects" / group.filename
+    for group in generator.EFFECT_GROUPS
+)
 EVENTS_PATH = MOD_ROOT / "events/zg361_workforce_probation_fact_events.txt"
 SPEC_PATH = MOD_ROOT / "docs/zg361_workforce_probation_fact-ck3-runtime-spec.md"
 
@@ -80,7 +86,10 @@ def brace_balance(text: str) -> int:
 class WorkforceProbationFactTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = EFFECTS_PATH.read_text(encoding="utf-8-sig")
+        cls.effect_parts = tuple(
+            path.read_text(encoding="utf-8-sig") for path in EFFECT_PATHS
+        )
+        cls.effects = "\n\n".join(cls.effect_parts)
         cls.events = EVENTS_PATH.read_text(encoding="utf-8-sig")
         cls.spec = SPEC_PATH.read_text(encoding="utf-8-sig")
 
@@ -105,7 +114,13 @@ class WorkforceProbationFactTests(unittest.TestCase):
 
     def test_02_generated_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 11)
+        self.assertEqual(len(rendered), 13)
+        effects_dir = MOD_ROOT / "common" / "scripted_effects"
+        self.assertEqual(
+            {group.filename for group in generator.EFFECT_GROUPS},
+            {path.name for path in rendered if path.parent == effects_dir},
+        )
+        self.assertNotIn(generator.LEGACY_EFFECT_PATH, rendered)
         self.assertEqual(
             {path.parent.name for path in rendered if path.suffix == ".yml"},
             set(generator.LANGUAGES),
@@ -116,6 +131,51 @@ class WorkforceProbationFactTests(unittest.TestCase):
                 self.assertTrue(payload.startswith(generator.BOM))
                 self.assertTrue(path.is_file())
                 self.assertEqual(path.read_bytes(), payload)
+
+    def test_02a_effect_shards_are_exact_historical_block_projection(self) -> None:
+        aggregate = generator.render_effects()
+        self.assertEqual(generator.HISTORICAL_EFFECT_BYTES, len(aggregate))
+        self.assertEqual(
+            generator.HISTORICAL_EFFECT_SHA256,
+            hashlib.sha256(aggregate).hexdigest(),
+        )
+        source_blocks = generator.top_level_effect_blocks(aggregate)
+        parts = generator.render_effect_parts()
+        projected = tuple(
+            row
+            for group in generator.EFFECT_GROUPS
+            for row in generator.top_level_effect_blocks(parts[group.filename])
+        )
+        self.assertEqual(generator.HISTORICAL_EFFECT_COUNT, len(source_blocks))
+        self.assertEqual(source_blocks, projected)
+
+    def test_02b_effect_shards_obey_the_preferred_boundary(self) -> None:
+        self.assertEqual({}, generator.EFFECT_HARD_LIMIT_EXCEPTIONS)
+        self.assertEqual((6, 5, 4), tuple(
+            len(group.effect_names) for group in generator.EFFECT_GROUPS
+        ))
+        for group, path in zip(generator.EFFECT_GROUPS, EFFECT_PATHS, strict=True):
+            with self.subTest(filename=group.filename):
+                self.assertTrue(group.purpose.strip())
+                self.assertLessEqual(len(group.effect_names), generator.EFFECT_TARGET_MAX)
+                self.assertLessEqual(len(group.effect_names), generator.EFFECT_HARD_MAX)
+                self.assertEqual(
+                    len(group.effect_names),
+                    len(generator.top_level_effect_blocks(path.read_bytes())),
+                )
+
+    def test_02c_legacy_effect_aggregate_is_rejected_independently_of_glob(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="zg361-probation-legacy-") as name:
+            effects_dir = Path(name)
+            legacy_path = effects_dir / generator.LEGACY_EFFECT_FILENAME
+            legacy_path.write_bytes(b"legacy aggregate residue")
+            with mock.patch.object(
+                generator, "EFFECT_SHARD_GLOB", "future-narrow-shard-*.txt"
+            ):
+                self.assertEqual(
+                    (legacy_path,),
+                    generator.unexpected_effect_paths({}, effects_dir),
+                )
 
     def test_03_generated_ck3_files_are_balanced_and_top_level_unique(self) -> None:
         self.assertEqual(brace_balance(self.effects), 0)
