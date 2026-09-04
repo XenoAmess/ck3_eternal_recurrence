@@ -31,6 +31,9 @@ PLACEHOLDER_LANGUAGES = (
 )
 LOCALIZATION_LANGUAGES = AUTHORED_LANGUAGES + PLACEHOLDER_LANGUAGES
 LOCALIZATION_LINE = re.compile(r'^\s*([^\s:#]+):\d+\s+"(.*)"\s*$')
+SCRIPTED_WIDGET_REGISTRATION = re.compile(
+    r"^\s*(gui/[^\s=]+\.gui)\s*=\s*[^\s#]+", re.MULTILINE
+)
 B3_REACHABLE_LOCALIZATION_FAMILIES = (
     "zg361_career_hc",
     "zg361_career_learning",
@@ -284,6 +287,53 @@ def synchronize_b3_terminal_localization(
     return synchronize_b3_reachable_localization(candidate, canonical)
 
 
+def synchronize_scripted_widget_gui_files(
+    candidate: Path, canonical: Path
+) -> dict[str, object]:
+    """Copy exact GUI files named by the candidate's scripted-widget registry."""
+
+    registry_root = candidate / "gui" / "scripted_widgets"
+    required = sorted(
+        {
+            match.group(1)
+            for registry in registry_root.glob("*.txt")
+            if registry.is_file()
+            for match in SCRIPTED_WIDGET_REGISTRATION.finditer(
+                registry.read_text(encoding="utf-8-sig")
+            )
+        }
+    )
+    updated: list[str] = []
+    for relative in required:
+        source = canonical / Path(*relative.split("/"))
+        target = candidate / Path(*relative.split("/"))
+        if not source.is_file():
+            raise freeze.FreezeError(
+                f"canonical scripted-widget GUI is missing: {relative}"
+            )
+        if not target.is_file() or target.read_bytes() != source.read_bytes():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            updated.append(relative)
+    exact = all(
+        (candidate / Path(*relative.split("/"))).read_bytes()
+        == (canonical / Path(*relative.split("/"))).read_bytes()
+        for relative in required
+    )
+    return {
+        "green": exact,
+        "required_files": required,
+        "required_file_count": len(required),
+        "updated_files": [
+            freeze.record(
+                candidate / Path(*relative.split("/")), relative_to=candidate
+            )
+            for relative in updated
+        ],
+        "provider_files_exact": exact,
+    }
+
+
 def _provider_files(
     source: Path,
 ) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
@@ -408,6 +458,9 @@ def expand_projection_closure(
     localization_closure = synchronize_b3_reachable_localization(
         candidate, canonical
     )
+    scripted_widget_gui_closure = synchronize_scripted_widget_gui_files(
+        candidate, canonical
+    )
     final_closure = freeze.central_effect_call_closure(candidate)
     final_missing_effects = sorted(
         set(final_closure["missing_effects"])
@@ -424,6 +477,7 @@ def expand_projection_closure(
     green = (
         final_closure["green"] is True
         and localization_closure["green"] is True
+        and scripted_widget_gui_closure["green"] is True
     )
     evidence: dict[str, object] = {
         "schema_version": 3,
@@ -453,6 +507,7 @@ def expand_projection_closure(
         "final_missing_events": final_missing_events,
         "final_missing_triggers": final_missing_triggers,
         "localization_closure": localization_closure,
+        "scripted_widget_gui_closure": scripted_widget_gui_closure,
     }
     freeze.write_json(evidence_path.resolve(), evidence)
     if not green:

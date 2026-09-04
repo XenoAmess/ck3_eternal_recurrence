@@ -39,6 +39,41 @@ def write_localization_family(
 
 
 class ProjectionClosureExpansionTests(unittest.TestCase):
+    def test_scripted_widget_registration_copies_exact_gui_provider(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            write(
+                candidate,
+                "gui/scripted_widgets/zg361_scripted_widgets.txt",
+                "gui/zg361_promotion_source_bridge.gui = "
+                "zg361_promotion_source_bridge_window\n",
+            )
+            write(
+                canonical,
+                "gui/zg361_promotion_source_bridge.gui",
+                'window = { name = "zg361_promotion_source_bridge_window" }\n',
+            )
+
+            result = expand.synchronize_scripted_widget_gui_files(
+                candidate, canonical
+            )
+
+            self.assertTrue(result["green"])
+            self.assertEqual(1, result["required_file_count"])
+            self.assertEqual(1, len(result["updated_files"]))
+            self.assertEqual(
+                (
+                    canonical / "gui/zg361_promotion_source_bridge.gui"
+                ).read_bytes(),
+                (
+                    candidate / "gui/zg361_promotion_source_bridge.gui"
+                ).read_bytes(),
+            )
+
     def test_terminal_event_copies_generated_localization_fanout(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
