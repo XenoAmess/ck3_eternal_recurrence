@@ -265,7 +265,10 @@ def resolve_ck3_game_dir(
     # must provide it explicitly via one of the overrides above.
     record(repository, "repository-not-selected")
     for candidate in candidates:
-        if candidate["valid"] is True:
+        if (
+            candidate["valid"] is True
+            and candidate["source"] != "repository-not-selected"
+        ):
             return Path(str(candidate["path"])), str(candidate["source"]), tuple(candidates)
     raise SeedCaptureError(
         "automatic CK3 game discovery found no valid SteamLibrary install; "
