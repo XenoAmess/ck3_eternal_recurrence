@@ -2,11 +2,18 @@
 
 ## Status and boundary
 
-This package freezes one `static-ready-live-pending` candidate for a future,
-serial production capture of the real `zg361pp.147` promotion source. It does
-not start CK3, write a checkpoint, advertise either new production capability,
-or treat an action ACK as a business result. It changes no production source,
-formal runner, generated effect, or effect body.
+**Superseded.** This `366f30f` package is retained as immutable historical
+evidence, but it is no longer authorized for a serial live attempt. Canonical
+native and managed bridge sources advanced at `a01f8cb`, and the original
+strict verifier now honestly returns RED on exactly
+`frozen_source_files_match` and `native_source_fingerprint_matches`. The
+replacement is documented in
+[`zhongguo-promotion-source-production-capture-no-launch-refreeze-a01f8cb-2026-09-04.md`](zhongguo-promotion-source-production-capture-no-launch-refreeze-a01f8cb-2026-09-04.md).
+
+This historical package froze one `static-ready-live-pending` candidate for a
+future, serial production capture of the real `zg361pp.147` promotion source.
+It did not start CK3, write a checkpoint, advertise either new production
+capability, or treat an action ACK as a business result.
 
 The implementation baseline is integrated B7 commit
 `d53befaa4872662562f5db5d31757ca731e799e0`, observed from canonical
@@ -14,7 +21,7 @@ The implementation baseline is integrated B7 commit
 `1.19.0.6`, executable size `95,206,008` bytes and SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 
-## Frozen external candidate
+## Superseded external candidate
 
 The repository manifest is
 `ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_366f30f_20260904.json`.
@@ -63,9 +70,9 @@ contract rather than trusting descriptive manifest fields alone. It confirms:
 - neither a transport ACK nor an event-option ACK is accepted as the review,
   promotion, compensation or checkpoint postcondition.
 
-## Required production choreography
+## Historical production choreography
 
-The frozen entry accepts only the managed product path. It observes the played
+The frozen entry accepted only the managed product path. It observed the played
 owner and the same connection generation, invokes the exact review-now action
 when needed, waits for a real paused `zg361pp.146`, selects option index `1`,
 advances through the managed product service, and accepts only an independently
@@ -95,11 +102,11 @@ exception, both generators pass `--check`, and the two superseded monolith
 filenames are absent. This preserves the file-boundary/load-risk lesson as a
 live precondition instead of relying only on generated parity.
 
-## Single authorized CK3 command
+## Historical CK3 command (revoked)
 
-After the no-launch verifier is GREEN and the CK3 serial gate is acquired, the
-following is the only authorized launch command for this frozen attempt. It has
-not been executed by this package:
+The following command was never executed and is no longer authorized. It is
+retained only to preserve the append-only audit record; use the replacement
+manifest and command from the `a01f8cb` refreeze instead.
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-366f30f-20260904T082656Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-366f30f-20260904T082656Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-366f30f-20260904T082656Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_9de2ca28a89041abbe216fd9a56026ed" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\tools\zg361_phase2_seed_contract.json"
@@ -123,8 +130,7 @@ runner to own the CK3 lifecycle.
 - feedback/promotion/PIP and compensation generators: both `--check` GREEN;
 - `tools/validate_static.py`: GREEN.
 
-The machine preflight must additionally prove that neither `ck3.exe` nor the
-injector is running before it emits `READY_TO_SERIAL_LIVE`. Until the one real
-attempt produces its paused snapshot, save and schema-2 artifact, the honest
-status stays `static-ready-live-pending`; the result provider remains default
-off.
+At the time of this freeze, the machine preflight additionally proved that
+neither `ck3.exe` nor the injector was running before it emitted
+`READY_TO_SERIAL_LIVE`. That authorization was revoked by the native source
+advance described above; the result provider remained default off.

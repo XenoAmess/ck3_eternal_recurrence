@@ -1,0 +1,112 @@
+{
+  "schema_version": 2,
+  "kind": "zg361_promotion_source_capture_refreshed_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "extends": {
+    "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_366f30f_20260904.json",
+    "sha256": "4268B6D147D234536A03A98EC1F7A5E08DAAA7246DFF340B51FD42E2E94A8F98"
+  },
+  "source": {
+    "candidate_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
+    "native_source_fingerprint_sha256": "F37A113C77B7293857D813222B19E6FF3EA4DE8E61A097FFEA753C70F2651433",
+    "native_source_file_count": 298,
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "EF253A6394860CBDE0CBC9D161D9E65DFB7DAABC1A268A6BE600D87A75C17D69",
+      "ck3_autonomous_player/native_bridge/src/bridge.cpp": "64D222DFA0A4887CD519EA21FF874BF3DCCF82CEE4D12C0863D1CC1D0F106F98",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "B869C52ACEAAF8AE2FCABB2D73F10FF74275B0F2350C61C6055DA9DD96A8C5F5",
+      "ck3_autonomous_player/native_bridge/src/game_adapter.cpp": "745D239B0D0E50C4804FA4C8CF25E927828F762B4E8E7939FCFBC013BABC1518",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "96EE6C6062713EF101E41091D3309CB9FAE3E1BDB1564A6E827C172807DC215E",
+      "tools/verify_zg361_promotion_source_capture_no_launch_candidate_refresh.py": "1A336CFF05C6C1201516F4162EBAEF408DB2E532B418A60F7779D58E8760B866"
+    }
+  },
+  "build": {
+    "source_build_directory": "Z:\\b7psc-a01f8cb-refresh",
+    "artifact_directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z",
+    "cmake_cache_path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\\CMakeCache.txt",
+    "cmake_cache_bytes": 19888,
+    "cmake_cache_sha256": "1AC17D725987CB8802CC78BB369686656A242686D6088D78CBB6394DF2BD183B",
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\\xar_ck3_bridge.dll",
+      "bytes": 2425856,
+      "sha256": "CD152F935228F53CA9A51A5DB952D3DBF81A24C7ECFB6E6E14644931CDB4D138"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "372EDF62B8537F7B4C0E4C21603F707389974A431B70DB08B8CE9F93E5C7D296"
+    }
+  },
+  "tests": {
+    "full_native": {
+      "result": "GREEN",
+      "passed": 94,
+      "failed": 0
+    }
+  },
+  "supersession": {
+    "candidate_commit": "366f30f0e899650582a7f76c8f0043ecc37e4887",
+    "manifest_path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_366f30f_20260904.json",
+    "manifest_sha256": "4268B6D147D234536A03A98EC1F7A5E08DAAA7246DFF340B51FD42E2E94A8F98",
+    "reason": "canonical native and managed bridge sources advanced after the old freeze",
+    "old_candidate_result_on_current_source": "RED",
+    "old_failed_checks": [
+      "frozen_source_files_match",
+      "native_source_fingerprint_matches"
+    ]
+  },
+  "query_action_boundary": {
+    "query_production_advertised": false,
+    "action_production_advertised": false,
+    "transport_only_fail_closed": true,
+    "provider_default_off": true,
+    "readiness": "live-pending",
+    "ack_is_business_result": false
+  },
+  "effect_boundary": {
+    "feedback_promotion_pip": {
+      "file_count": 39,
+      "effect_count": 275,
+      "minimum_effects_per_file": 1,
+      "maximum_effects_per_file": 10,
+      "fingerprint_sha256": "94042BE37F3950D21F8B6AB39F9E1206B431A90CB9ACB51A6D9E814693B8CB4A"
+    },
+    "compensation": {
+      "file_count": 25,
+      "effect_count": 148,
+      "minimum_effects_per_file": 3,
+      "maximum_effects_per_file": 9,
+      "fingerprint_sha256": "9F7041818149A0F532CE1A6C217C77240F2C17019D63B3D0FD087619CBC29B5C"
+    }
+  },
+  "live_attempt": {
+    "attempt_id": "promotion-source-production-capture-live-attempt-a01f8cb-20260904T085119Z",
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-live-attempt-a01f8cb-20260904T085119Z",
+    "status": "absent",
+    "started": false,
+    "consumed": false
+  },
+  "live_command": {
+    "authorized_command_count": 1,
+    "runner_owns_ck3_lifecycle": true,
+    "execution_source_root": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902",
+    "seed_contract_path": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_seed_contract.json",
+    "seed_contract_sha256": "19B3451514FA4ED87836D03B5DEEB2D4AEC569A4714325E5C2164415E96563CC",
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\.venv\\Scripts\\python.exe",
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\run_zhongguo_acceptance.py",
+      "--artifacts-dir",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-live-attempt-a01f8cb-20260904T085119Z",
+      "--phase2-promotion-source-checkpoint-live",
+      "--phase2-promotion-source-checkpoint-timeout-seconds",
+      "600",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_38d097690e12445f810d29a20e8dcf81",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_seed_contract.json"
+    ]
+  }
+}

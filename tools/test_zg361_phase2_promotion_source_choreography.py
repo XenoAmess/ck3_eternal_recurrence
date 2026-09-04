@@ -155,7 +155,7 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
         self.assertEqual(suffix["steps"][1]["minimum_timeline_advance_days"], 1)
         self.assertEqual(suffix["steps"][-1]["action"], "save-checkpoint")
 
-    def test_runner_can_execute_suffix_but_not_the_product_decision_entry(self) -> None:
+    def test_runner_can_execute_suffix_and_product_decision_entry(self) -> None:
         runner = text(TOOLS / "run_zhongguo_acceptance.py")
         scoreboard = text(
             ROOT
@@ -178,7 +178,8 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
             '"bounded_life_advance": "life-advance"',
         ):
             self.assertIn(token, runner)
-        self.assertNotIn("zg361_review_now_decision", runner)
+        self.assertIn("enter_promotion_source_checkpoint_v1", runner)
+        self.assertIn("phase2_promotion_source_capture_live", runner)
         for action in (
             '"open"',
             '"switch-managed"',
@@ -189,8 +190,12 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
         ):
             self.assertIn(action, scoreboard)
         self.assertNotIn("review_now_decision", scoreboard)
-        self.assertFalse(
+        self.assertTrue(
             CONTRACT["unavailable_required_entry"]["phase2_runner_capability_present"]
+        )
+        self.assertEqual(
+            CONTRACT["unavailable_required_entry"]["status"],
+            "static-ready-default-off-live-pending",
         )
         self.assertIn("SOURCE_EVENT_DEFINITION_KEY: Final = \"zg361pp.147\"", action_cell)
         self.assertIn("SOURCE_OPTION_NUMBER: Final = 1", action_cell)
@@ -210,7 +215,7 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
             CONTRACT["ack_boundary"]["action_ack_is_business_postcondition"]
         )
         self.assertFalse(CONTRACT["no_launch"]["ck3_started"])
-        self.assertFalse(CONTRACT["no_launch"]["runner_modified"])
+        self.assertTrue(CONTRACT["no_launch"]["runner_modified"])
 
 
 if __name__ == "__main__":
