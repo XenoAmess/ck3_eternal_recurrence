@@ -9089,8 +9089,11 @@ def unexpected_effect_paths(rendered: dict[Path, bytes]) -> tuple[Path, ...]:
         if path.parent == effects_dir and path.name != LEGACY_EFFECT_FILENAME
     }
     unexpected = set(effects_dir.glob(EFFECT_SHARD_GLOB)) - expected
-    # Keep retired purpose-boundary owners as an explicit --check failure even
-    # if a future shard glob is narrowed and would otherwise stop seeing them.
+    # Keep the historical monolith and retired purpose-boundary owners as
+    # explicit --check failures even if a future shard glob is narrowed and
+    # would otherwise stop seeing them.
+    if LEGACY_EFFECT_PATH.is_file():
+        unexpected.add(LEGACY_EFFECT_PATH)
     unexpected.update(path for path in RETIRED_EFFECT_PATHS if path.is_file())
     return tuple(sorted(unexpected))
 

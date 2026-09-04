@@ -8,9 +8,11 @@ import hashlib
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from functools import lru_cache
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -258,6 +260,24 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertTrue(all(not path.exists() for path in gen.RETIRED_EVENT_PATHS))
         self.assertEqual((), gen.unexpected_effect_paths(gen.outputs()))
         self.assertEqual((), gen.unexpected_event_paths(gen.outputs()))
+
+    def test_04d0_legacy_effect_monolith_is_rejected_independently_of_shard_glob(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="zg361-workforce-legacy-residue-") as name:
+            root = Path(name)
+            effects_dir = root / "common" / "scripted_effects"
+            effects_dir.mkdir(parents=True)
+            legacy_path = effects_dir / gen.LEGACY_EFFECT_FILENAME
+            legacy_path.write_bytes(b"legacy monolith residue")
+            with (
+                mock.patch.object(gen, "MOD_ROOT", root),
+                mock.patch.object(gen, "LEGACY_EFFECT_PATH", legacy_path),
+                mock.patch.object(gen, "EFFECT_SHARD_GLOB", "future-narrow-shard-*.txt"),
+                mock.patch.object(gen, "RETIRED_EFFECT_PATHS", ()),
+            ):
+                self.assertEqual(
+                    (legacy_path,),
+                    gen.unexpected_effect_paths({}),
+                )
 
     def test_04d1_manager_cleanup_and_portfolio_finalize_are_separate_shards(self) -> None:
         groups = {group.filename: group for group in gen.EFFECT_GROUPS}
