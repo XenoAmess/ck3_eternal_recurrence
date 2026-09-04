@@ -348,3 +348,34 @@ leaf-context evaluator、public wire/readiness 或 action。
 不得申请下一次独占槽；即使这些 no-launch 前置全部 GREEN，也仍只代表 harness 候选可运行。
 `native_certified=false`、`runtime_certified=false`、`decision_ready=false`、
 `automatic_surrender_ready=false`，`GEN-034` 继续 unresolved。
+
+## 2026-09-04：heartbeat 修复候选重冻
+
+[static-ready / no launch] heartbeat framing 修复已作为 canonical `81cf89b` 合入，随后 current integration
+在 `48da012` 同步 open_kaishek pin 至 `f4ce25a1e0ea259b1fc58ca33a4caf2180e7d234`。private leaf-context 与
+default-OFF 两套 MSVC Release 构建都完成全部 463 个 target；两边的
+`raiktor_surrender_truce_v1`、native-callsite observer、preview-entry observer 三项 native test 各 3/3
+GREEN，相关 Python 合同、preflight、analyzer、context-lifetime 与跨仓审计在 normal/`-O` 下各 42 项 GREEN。
+
+构建后 canonical 只以前进 `b71b73c9a01604a5d1025d87e6f458f23103c707` 更新日报/周报；从 `48da012`
+到 `b71b73c` 的 native bridge、G2 合同和 G2 测试 diff 为空，因此最终 source ZIP 与 manifest pin
+`b71b73c`，并复用逐字节相同编译输入所得的 paired binaries。冻结目录为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-hbfix-b71b73c\frozen`；private DLL、injector、default DLL、
+source ZIP 的 SHA-256 分别为 `22BD3A5A…17DE`、`BF8917AE…D368`、`5F7C2F65…F5D2`、
+`E09E3C62…2821`。首次较长 build path 因新增长名称测试目标触发 MSVC object-path limit，未作为候选；
+缩短外部 build path 后同一构建完整通过。
+
+manifest 还新增了 `bridge.cpp` 与 heartbeat 回归测试本身的 source hash，避免只冻结 leaf evaluator 而遗漏
+本次真实故障点。open_kaishek audit 为 `GREEN_STATIC`，但其 `native_certified=false`、
+`runtime_certified=false` 不变。no-launch preflight 的全部 input/source hash、private/default option 与 marker、
+driver identity、exact evaluator bytes、exact leaf-context chain、open_kaishek pin、空 CK3/injector 进程槽和
+fresh attempt 均为 true；报告为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-hbfix-b71b73c\preflight-leaf-context-v2-heartbeat-fix-r1.json`，
+SHA-256 `DB970CBC7B4A54E9AF1FB11AEC10FC8225C68C09C6648FCFDC4792C74308A1FE`。冻结摘要见
+[`evaluated-days-leaf-context-v2-heartbeat-fix-static-ready.json`](../../artifacts/g2/2026-09-04/evaluated-days-leaf-context-v2-heartbeat-fix-static-ready.json)。
+
+preflight 给出的唯一 live 命令只允许 fresh attempt
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-hbfix-b71b73c\live-leaf-context-dual-query-r2`，仍只做同一 paused
+frame 的两次只读 terms query。该 GREEN 是修复后 harness 的静态前置，不是 live evaluator 结果；本步没有创建
+profile、启动或附加 CK3，也没有发送游戏命令。旧 r1 heartbeat artifact 保持 harness RED；public
+wire/readiness、expiry、决策、自动投降和 `GEN-034=unresolved` 均未提升。

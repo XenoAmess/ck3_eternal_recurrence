@@ -1,0 +1,88 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_leaf_context_v2_static_ready.v1",
+  "status": "STATIC_READY_WAITING_FOR_EXCLUSIVE_CK3_SLOT",
+  "candidate_source_commit": "b71b73c9a01604a5d1025d87e6f458f23103c707",
+  "candidate_root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-hbfix-b71b73c",
+  "build_provenance": {
+    "compiled_source_commit": "48da012fc50cab801ece71e26cb6155247be5a3f",
+    "frozen_source_commit": "b71b73c9a01604a5d1025d87e6f458f23103c707",
+    "diff_between_commits": [
+      "docs/autonomous-agent-progress/daily/2026-09-04.md",
+      "docs/autonomous-agent-progress/weekly/2026-W36.md"
+    ],
+    "native_or_g2_source_diff": false,
+    "private_release_all_targets_built": true,
+    "default_release_all_targets_built": true,
+    "private_leaf_context_capture": true,
+    "default_leaf_context_capture": false
+  },
+  "frozen": {
+    "private_bridge": {
+      "path": "frozen/xar_ck3_bridge.dll",
+      "sha256": "22BD3A5A22FFCD4B573C36514B56F63CB8B079DC3495ABC3851B77BD547117DE"
+    },
+    "injector": {
+      "path": "frozen/xar_ck3_bridge_injector.exe",
+      "sha256": "BF8917AE886404D8471642EF5BD8DC0A3D3774EAB820807B4C6F9D5BEC5CD368"
+    },
+    "default_bridge": {
+      "path": "frozen/default-xar_ck3_bridge.dll",
+      "sha256": "5F7C2F655EAD3B685F9C28E31F33A44E7314B7F399064414AB8DA99A6C91F5D2"
+    },
+    "private_cmake_cache": {
+      "path": "frozen/private-CMakeCache.txt",
+      "sha256": "C86A8C41AA0B5C4EC3620CE92880535E747FDA6D949940945C043C95EEB81F8B"
+    },
+    "default_cmake_cache": {
+      "path": "frozen/default-CMakeCache.txt",
+      "sha256": "22B3BAA45F17650895F261E648EDEC0EBABF0A99BCCE593970E1BA6E97FD68B0"
+    },
+    "source_zip": {
+      "path": "frozen/source-b71b73c9a01604a5d1025d87e6f458f23103c707.zip",
+      "sha256": "E09E3C620A5BB424E0393255FFA97DB6884581E13D565381B11B26D85E872821"
+    }
+  },
+  "tests": {
+    "focused_python_normal": "42 passed",
+    "focused_python_optimized": "42 passed",
+    "private_native_release": "3 passed",
+    "default_native_release": "3 passed",
+    "heartbeat_regression": "The leaf-context dependency enables the preview diagnostic compile branch; the child remains open for the common two-brace heartbeat terminator."
+  },
+  "preflight": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-hbfix-b71b73c\\preflight-leaf-context-v2-heartbeat-fix-r1.json",
+    "sha256": "DB970CBC7B4A54E9AF1FB11AEC10FC8225C68C09C6648FCFDC4792C74308A1FE",
+    "manifest_sha256": "6EA809378CBB2B151816FA401CA0A4B51DDF29716C1475B1824C582EABC67567",
+    "status": "ready-to-run",
+    "all_input_hashes": true,
+    "all_candidate_source_hashes": true,
+    "private_markers_present": true,
+    "default_markers_absent": true,
+    "exact_evaluator_bytes": true,
+    "exact_leaf_context_chain": true,
+    "open_kaishek_static_compatibility": true,
+    "exclusive_process_slot_empty": true,
+    "future_attempt_absent": true,
+    "preflight_did_not_prepare_or_launch": true
+  },
+  "open_kaishek": {
+    "commit": "f4ce25a1e0ea259b1fc58ca33a4caf2180e7d234",
+    "jar_sha256": "6C234C458E549F5FB30B9FCEDE4CC55C0EEB3C0A1C73E1CE926CA8C4711A4AA1",
+    "audit": "GREEN_STATIC",
+    "native_certified": false,
+    "runtime_certified": false
+  },
+  "next_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-hbfix-b71b73c\\live-leaf-context-dual-query-r2",
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "profile_prepared": false,
+    "mutation_enabled": false,
+    "public_wire_promoted": false,
+    "public_readiness_promoted": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  }
+}
