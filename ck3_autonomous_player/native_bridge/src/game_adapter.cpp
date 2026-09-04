@@ -460,6 +460,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix)) {
     capability = ck3_11906::kRaiktorActualTruceExpiryV1Capability;
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  } else if (capability.empty() && IsCanonicalPositiveIdStep(
+             step, ck3_11906::kRaiktorWarBoundLossCleanupV1StepPrefix)) {
+    capability = ck3_11906::kRaiktorWarBoundLossCleanupV1Capability;
+#endif
   } else if (capability.empty() && step.starts_with("surrender-war-")) {
     capability = "game.command.surrender-war-N";
   } else if (capability.empty() &&

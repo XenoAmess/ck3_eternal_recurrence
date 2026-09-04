@@ -1,6 +1,9 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
 
 #include "xar_bridge/ck3_11906.hpp"
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+#include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
+#endif
 #include "xar_bridge/title_map_navigation_v1.hpp"
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_case_snapshot_v1.hpp"
@@ -27,6 +30,9 @@ constexpr std::size_t kBaseCapabilityCount = 78;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+    + 1
+#endif
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
@@ -118,6 +124,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-war-termination-terms-v1-N",
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
     ck3_11906::kRaiktorActualTruceExpiryV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+    ck3_11906::kRaiktorWarBoundLossCleanupV1Capability,
 #endif
     "game.command.surrender-war-N",
     "game.command.offer-white-peace-N",
@@ -267,6 +276,17 @@ public:
     return ck3_11906::ReadRaiktorActualTruceExpiry(
         bindings_, toward_character_id, output);
   }
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  bool read_raiktor_war_bound_loss_cleanup(
+      const ck3_11906::RaiktorWarBoundLossBaselineV1 &baseline,
+      const ck3_11906::RaiktorWarBoundPostwarFrameV1 &first_postwar_frame,
+      const ck3_11906::RaiktorWarBoundPostwarFrameV1 &second_postwar_frame,
+      ck3_11906::RaiktorWarBoundLossResultV1 &output) const noexcept override {
+    return ck3_11906::ReadRaiktorWarBoundLossCleanupV1(
+        bindings_, baseline, first_postwar_frame, second_postwar_frame,
+        output);
+  }
+#endif
   ReadWarTerminationExitTermsResult read_war_termination_exit_terms(
       std::int32_t war_id,
       WarTerminationExitTermsSnapshot &output) const noexcept override {

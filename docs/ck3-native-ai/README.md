@@ -221,6 +221,10 @@
   `598` 冻结为 deterministic retention ticket；未来 receipt 必须在同 PID/connection/episode 内绑定唯一 termination
   submit、全 destroyed cleanup 与真实 persisted truce-row expiry。`04c1a00` 已补 default-OFF expiry query，后续适配边界见
   [g2-postwar-cleanup-expiry-adapter-2026-09-04.md](g2-postwar-cleanup-expiry-adapter-2026-09-04.md)；cleanup runtime dispatch
+  已作为 exact-build、default-OFF private candidate 接入同 connection 的
+  terms baseline → surrender ACK → exact-store cleanup 生命周期；candidate
+  DLL 与 source/ABI 已冻结，fixture/静态已 GREEN，尚未执行 CK3 live，故
+  public/action/automatic-surrender/GEN-034 仍全 false
   仍未接出，public/action readiness 与 `GEN-034` 不变。
 - [production-live read-only primitives + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
   冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；exact-build

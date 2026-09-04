@@ -9936,6 +9936,63 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(history_result, raised.exception.step_result)
         self.assertEqual(driver.take_snapshot()["war_termination_options"], [])
 
+    def test_private_war_bound_cleanup_dispatch_is_explicit_only(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        capability = (
+            "game.command.query-raiktor-war-bound-loss-cleanup-v1-N"
+        )
+        step = "query-raiktor-war-bound-loss-cleanup-v1-50331699"
+        endpoint.publish(_hello("game.state.snapshot", capability))
+        endpoint.publish(
+            _snapshot(
+                8,
+                played_character={"character_id": 29829, "alive": True},
+                active_wars=[],
+            )
+        )
+        self.assertNotIn(step, driver.capabilities()["action_steps"])
+        self.assertNotIn(capability, driver.capabilities()["action_steps"])
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "query_sequence": 1,
+                        "snapshot_revision": 8,
+                        "raiktor_war_bound_loss_cleanup": {},
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            step, expected_revision=int(driver.take_snapshot()["revision"])
+        )
+        self.assertEqual(result["step"], step)
+        request = next(
+            frame
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(request["expected_revision"], 8)
+        with self.assertRaisesRegex(UnsupportedStepError, "malformed"):
+            driver.execute_step(
+                "query-raiktor-war-bound-loss-cleanup-v1-050331699"
+            )
+
     def test_partial_termination_capabilities_never_advertise_an_action(
         self,
     ) -> None:

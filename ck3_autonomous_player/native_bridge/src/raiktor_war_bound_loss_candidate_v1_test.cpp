@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
 #include <vector>
 
 namespace {
@@ -79,6 +80,35 @@ bool MakeBaseline(RaiktorWarBoundLossBaselineV1 &baseline) {
   return FreezeRaiktorWarBoundLossBaselineV1(active, baseline);
 }
 
+xar::game::WarRaiktorWarBoundCurrentSnapshot TermsProjection() {
+  xar::game::WarRaiktorWarBoundCurrentSnapshot value;
+  value.date_raw = ActiveFrame().date_raw;
+  value.war_id = kWarId;
+  value.active_casus_belli_database_index = 411;
+  value.primary_attacker_character_id = kOwnerId;
+  value.primary_defender_character_id = 17'116;
+  value.owner_character_id = kOwnerId;
+  value.observed_current_soldiers = 598;
+  xar::game::WarRaiktorWarBoundRegimentSnapshot regiment;
+  regiment.persistent_regiment_id = 0x01000010;
+  regiment.bound_war_id = kWarId;
+  regiment.current_soldiers = 598;
+  regiment.composition_rows.resize(kWarBoundRegimentCompositionRowCount);
+  for (std::size_t ordinal = 0;
+       ordinal < kWarBoundRegimentCompositionRowCount; ++ordinal) {
+    regiment.composition_rows[ordinal].composition_ordinal =
+        static_cast<std::int32_t>(ordinal);
+  }
+  regiment.composition_rows[0].current_army_regiment_id = 0x02000020;
+  regiment.composition_rows[0].raised_carmy_id = 0x03000030;
+  regiment.composition_rows[0].current_soldiers = 400;
+  regiment.composition_rows[3].current_army_regiment_id = 0x02000021;
+  regiment.composition_rows[3].raised_carmy_id = 0x03000030;
+  regiment.composition_rows[3].current_soldiers = 198;
+  value.regiments.push_back(std::move(regiment));
+  return value;
+}
+
 } // namespace
 
 int main() {
@@ -89,6 +119,27 @@ int main() {
       baseline.frozen_active.proven_soldiers_lost != -1) {
     std::cerr << "measured pre-termination baseline freeze failed\n";
     return 1;
+  }
+
+  RaiktorWarBoundLossBaselineV1 projected_baseline;
+  if (!FreezeRaiktorWarBoundLossBaselineV1(
+          TermsProjection(), 7, projected_baseline) ||
+      projected_baseline.pre_termination_soldiers != 598 ||
+      projected_baseline.frozen_active.active_frame.snapshot_revision != 7 ||
+      projected_baseline.frozen_active.active_frame.native_revision != 7 ||
+      projected_baseline.frozen_active.regiments !=
+          baseline.frozen_active.regiments) {
+    std::cerr << "terms projection did not freeze the exact baseline\n";
+    return 1;
+  }
+  {
+    auto drifted = TermsProjection();
+    drifted.regiments[0].current_soldiers = 597;
+    RaiktorWarBoundLossBaselineV1 rejected;
+    if (FreezeRaiktorWarBoundLossBaselineV1(drifted, 7, rejected)) {
+      std::cerr << "per-regiment soldier drift was accepted\n";
+      return 1;
+    }
   }
 
   const auto postwar = PostwarFrame();
@@ -109,6 +160,18 @@ int main() {
       destroyed.source_specific_attribution_ready ||
       destroyed.termination_action_bound || destroyed.public_terms_ready) {
     std::cerr << "destroyed boundary proof failed\n";
+    return 1;
+  }
+  const std::string destroyed_wire =
+      SerializeRaiktorWarBoundLossCleanupV1(destroyed);
+  if (destroyed_wire.empty() ||
+      destroyed_wire.find("\"status\":\"destroyed\"") ==
+          std::string::npos ||
+      destroyed_wire.find("\"snapshot_revision\":96") ==
+          std::string::npos ||
+      destroyed_wire.find("\"proven_soldier_loss_observable\":false") ==
+          std::string::npos) {
+    std::cerr << "destroyed cleanup serialization overclaimed or drifted\n";
     return 1;
   }
 

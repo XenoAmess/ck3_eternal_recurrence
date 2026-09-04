@@ -40,6 +40,11 @@ from xar_autoplayer.bridge.raiktor_actual_truce_expiry_contract import (  # noqa
 from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (  # noqa: E402
     normalize_raiktor_war_bound_regiment,
 )
+from xar_autoplayer.bridge.raiktor_war_bound_loss_cleanup_contract import (  # noqa: E402
+    QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
+    QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX,
+    normalize_raiktor_war_bound_loss_cleanup_v1,
+)
 
 
 DEFAULT_MANIFEST = (
@@ -328,6 +333,56 @@ def _normalize_expiry_read(
     return normalized, sequence
 
 
+def _normalize_cleanup_read(
+    value: object,
+    *,
+    ticket: dict[str, object],
+    pre_binding: dict[str, object],
+    post_binding: dict[str, object],
+) -> dict[str, object]:
+    result = _object(value, "war-bound cleanup read")
+    step = QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX + str(
+        ticket["war_id"]
+    )
+    try:
+        normalized = normalize_raiktor_war_bound_loss_cleanup_v1(
+            result,
+            expected_step=step,
+            expected_war_id=_integer(ticket["war_id"], "ticket.war_id"),
+            expected_attacker_character_id=_integer(
+                ticket["character_id"], "ticket.character_id"
+            ),
+            expected_defender_character_id=_integer(
+                ticket["opponent_character_id"], "ticket.opponent_character_id"
+            ),
+            expected_active_public_revision=_integer(
+                pre_binding["revision"], "pre revision", minimum=1
+            ),
+            expected_active_native_revision=_integer(
+                pre_binding["native_revision"], "pre native_revision", minimum=1
+            ),
+            expected_active_date_raw=_integer(
+                pre_binding["date_raw"], "pre date_raw"
+            ),
+            expected_post_public_revision=_integer(
+                post_binding["revision"], "post revision", minimum=1
+            ),
+            expected_post_native_revision=_integer(
+                post_binding["native_revision"],
+                "post native_revision",
+                minimum=1,
+            ),
+            expected_post_date_raw=_integer(
+                post_binding["date_raw"], "post date_raw"
+            ),
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise AdapterError(
+            f"native war-bound cleanup read rejected: {error}"
+        ) from error
+    return _object(normalized.get("observation"), "cleanup observation")
+
+
 def build_postwar_receipt(
     *,
     ticket: dict[str, object],
@@ -336,6 +391,7 @@ def build_postwar_receipt(
     post_snapshots: object,
     cleanup_observation: object,
     expiry_reads: object,
+    cleanup_read: object | None = None,
 ) -> dict[str, object]:
     """Build and validate one private action-bound receipt from observed inputs."""
     pre_binding, _pre_observation, generations = _normalize_pre(ticket, pre)
@@ -502,6 +558,10 @@ def build_postwar_receipt(
         "private_capture": {
             "adapter_schema": ADAPTER_SCHEMA,
             "expiry_capability": QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY,
+            "cleanup_capability": (
+                QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY
+            ),
+            "cleanup_read": copy.deepcopy(cleanup_read),
             "expiry_reads": copy.deepcopy(read_values),
             "post_snapshots": copy.deepcopy(post_values),
         },
@@ -537,15 +597,19 @@ async def collect_after_surrender(
     ticket: dict[str, object],
     pre: object,
     termination_result: object,
-    cleanup_observation: object,
     authorize_private_live: bool = False,
 ) -> dict[str, object]:
     """Run only the post-surrender query tail on an existing MCP session."""
     if authorize_private_live is not True:
         raise AdapterError("private live postwar collector is default-OFF")
-    step = (
+    pre_binding, _pre_observation, _generations = _normalize_pre(ticket, pre)
+    expiry_step = (
         QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX
         + str(ticket["opponent_character_id"])
+    )
+    cleanup_step = (
+        QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX
+        + str(ticket["war_id"])
     )
     before_result = await client.call_tool("ck3_take_snapshot", {})
     before = _structured(before_result, "postwar snapshot before")
@@ -553,14 +617,25 @@ async def collect_after_surrender(
     if _war_row(before_binding, int(ticket["war_id"])) is not None:
         raise AdapterError("old full-generation WarID still exists before expiry query")
     revision = before_binding["revision"]
+    cleanup_result = await client.call_tool(
+        "ck3_execute_step",
+        {"step": cleanup_step, "expected_revision": revision},
+    )
+    cleanup_wire = _structured(cleanup_result, "native war-bound cleanup query")
+    cleanup_observation = _normalize_cleanup_read(
+        cleanup_wire,
+        ticket=ticket,
+        pre_binding=pre_binding,
+        post_binding=before_binding,
+    )
     first_result = await client.call_tool(
-        "ck3_execute_step", {"step": step, "expected_revision": revision}
+        "ck3_execute_step", {"step": expiry_step, "expected_revision": revision}
     )
     first = _structured(first_result, "first actual-expiry query")
     between_result = await client.call_tool("ck3_take_snapshot", {})
     between = _structured(between_result, "postwar snapshot between")
     second_result = await client.call_tool(
-        "ck3_execute_step", {"step": step, "expected_revision": revision}
+        "ck3_execute_step", {"step": expiry_step, "expected_revision": revision}
     )
     second = _structured(second_result, "second actual-expiry query")
     after_result = await client.call_tool("ck3_take_snapshot", {})
@@ -572,6 +647,7 @@ async def collect_after_surrender(
         post_snapshots=[before, between, after],
         cleanup_observation=cleanup_observation,
         expiry_reads=[first, second],
+        cleanup_read=cleanup_wire,
     )
 
 
@@ -669,6 +745,10 @@ def run_no_launch_preflight(
         "retention_runner",
         "actual_expiry_contract",
         "actual_expiry_source_contract",
+        "cleanup_contract",
+        "cleanup_dispatch_source_contract",
+        "candidate_dll",
+        "candidate_native_test",
     ):
         path = _resolve(paths[name], repo_root=repo_root)
         expected_hash = str(hashes.get(name, "")).upper()
@@ -691,6 +771,10 @@ def run_no_launch_preflight(
     source_contract = _load_object(
         checked["actual_expiry_source_contract"], "actual expiry source contract"
     )
+    cleanup_source_contract = _load_object(
+        checked["cleanup_dispatch_source_contract"],
+        "cleanup dispatch source contract",
+    )
     provider_checks = {
         "static_ready_live_pending": source_contract.get("status")
         == "static-ready_live-pending",
@@ -703,6 +787,18 @@ def run_no_launch_preflight(
             source_contract.get("green_contract"), "green_contract"
         ).get("requires_persisted_future_expiry")
         is True,
+        "cleanup_dispatch_exact_build": cleanup_source_contract.get(
+            "game_executable_sha256"
+        )
+        == EXPECTED_EXE_SHA256,
+        "cleanup_dispatch_default_off": cleanup_source_contract.get(
+            "default_enabled"
+        )
+        is False,
+        "cleanup_dispatch_source_hashes_green": cleanup_source_contract.get(
+            "source_hashes_green"
+        )
+        is True,
     }
     runtime_seam = _object(manifest.get("runtime_seam"), "runtime_seam")
     seam_checks = {
@@ -710,10 +806,22 @@ def run_no_launch_preflight(
             "actual_expiry_query_dispatch_present"
         )
         is True,
-        "cleanup_dispatch_absent": runtime_seam.get(
+        "cleanup_dispatch_present": runtime_seam.get(
             "war_bound_cleanup_query_dispatch_present"
         )
-        is False,
+        is True,
+        "baseline_from_terms": runtime_seam.get(
+            "baseline_frozen_from_same_connection_terms"
+        )
+        is True,
+        "surrender_ack_gate": runtime_seam.get(
+            "same_connection_surrender_ack_required"
+        )
+        is True,
+        "cleanup_read_consumed_once": runtime_seam.get(
+            "successful_cleanup_consumes_action_binding"
+        )
+        is True,
         "cleanup_input_required": runtime_seam.get(
             "same_lifecycle_native_cleanup_observation_required"
         )
@@ -724,7 +832,7 @@ def run_no_launch_preflight(
         raise AdapterError("CK3 appeared during adapter preflight")
     report = {
         "schema": PREFLIGHT_SCHEMA,
-        "status": "GREEN_STATIC_ADAPTER_LIVE_BLOCKED_ON_CLEANUP_DISPATCH",
+        "status": "GREEN_STATIC_LIFECYCLE_READY_LIVE_NOT_RUN",
         "ok": all(provider_checks.values()) and all(seam_checks.values()),
         "ck3_started_or_attached": False,
         "manifest": str(manifest_path.resolve()),
@@ -747,9 +855,9 @@ def run_no_launch_preflight(
             "gen034_closed": False,
         },
         "next_gate": (
-            "expose the existing default-OFF native war-bound cleanup reader "
-            "to the private lifecycle runner, then freeze a paired candidate "
-            "DLL before one exclusive action-bound live run"
+            "run one exclusive action-bound CK3 capture with this exact "
+            "candidate DLL; a native destroyed cleanup result plus two equal "
+            "persisted-expiry reads are still required"
         ),
     }
     output_path = output_path.resolve()

@@ -3,11 +3,16 @@
 #include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 
 #include <cstdint>
+#include <string>
 
 namespace xar::ck3_11906 {
 
 inline constexpr std::string_view kRaiktorWarBoundLossCandidateV1BackendId =
     "ck3-1.19.0.6-native-raiktor-war-bound-loss-candidate-v1";
+inline constexpr std::string_view kRaiktorWarBoundLossCleanupV1Capability =
+    "game.command.query-raiktor-war-bound-loss-cleanup-v1-N";
+inline constexpr std::string_view kRaiktorWarBoundLossCleanupV1StepPrefix =
+    "query-raiktor-war-bound-loss-cleanup-v1-";
 
 enum class RaiktorWarBoundLossStatusV1 : std::uint8_t {
   unavailable = 0,
@@ -66,6 +71,14 @@ bool FreezeRaiktorWarBoundLossBaselineV1(
     const RaiktorWarBoundRegimentObservationV1 &active,
     RaiktorWarBoundLossBaselineV1 &output) noexcept;
 
+// Converts the exact generic terms projection back into the strict v1
+// generation vector before retaining it. The transport/native revision is the
+// revision stamped on the terms result that actually exposed this baseline.
+bool FreezeRaiktorWarBoundLossBaselineV1(
+    const game::WarRaiktorWarBoundCurrentSnapshot &active,
+    std::uint64_t transport_native_revision,
+    RaiktorWarBoundLossBaselineV1 &output) noexcept;
+
 // Completes the paired read-only boundary. A surviving frozen persistent or
 // current generation publishes typed cleanup_still_alive and deliberately
 // leaves post/loss unavailable. Only complete destruction of every frozen
@@ -88,5 +101,11 @@ bool ReadRaiktorWarBoundLossCleanupV1(
     const RaiktorWarBoundPostwarFrameV1 &second_postwar_frame,
     RaiktorWarBoundLossResultV1 &output) noexcept;
 #endif
+
+// Serializes only the honest generic/source-unattributed cleanup observation.
+// Measured boundary loss remains private lifecycle metadata and is not added
+// to the public war-termination terms wire.
+std::string SerializeRaiktorWarBoundLossCleanupV1(
+    const RaiktorWarBoundLossResultV1 &value);
 
 } // namespace xar::ck3_11906

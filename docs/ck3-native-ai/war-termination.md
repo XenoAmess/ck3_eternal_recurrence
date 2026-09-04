@@ -2388,14 +2388,43 @@ The candidate source and native fixture are
 boundary fixture is
 `native_bridge/research/fixtures/raiktor_war_bound_loss_candidate_v1_source_contract.json`.
 `XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1` defaults OFF; the enabled
-native helper only invokes the existing read-only cleanup reader, retains no
-global state, submits no command, and advances no time. The default production
-wire, source-specific readiness, automatic surrender and `GEN-034` remain
-unchanged. A future exclusive runner must bind the retained pre checkpoint to
-one typed termination submission and the first stable postwar query before any
-causal or public capability promotion.
+native helper only invokes the existing read-only cleanup reader, submits no
+command, and advances no time. The later private lifecycle candidate retains
+one baseline only inside its current bridge connection and consumes it after
+one same-WarID surrender ACK plus successful cleanup read; that candidate state
+is absent from the default DLL. The default production wire, source-specific
+readiness, automatic surrender and `GEN-034` remain unchanged.
 The no-launch build/test receipt is
 `artifacts/g2/2026-09-04/war-bound-loss-candidate-v1-static.json`.
+
+### Private cleanup lifecycle dispatch (2026-09-04)
+
+[static-ready / compiled default-OFF candidate / live pending] The existing
+`ReadRaiktorWarBoundLossCleanupV1` is now reachable through private capability
+`game.command.query-raiktor-war-bound-loss-cleanup-v1-N` only when
+`XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=ON`. A successful Raiktor terms
+query reconstructs and freezes the exact generic current observation inside
+the bridge connection. The cleanup dispatch then requires a successful native
+`surrender-war-N` ACK for that same full-generation WarID. Every connection
+reset drops the baseline/action pair, and a successful cleanup response
+consumes the action binding.
+
+Old-WarID absence is only a postwar admission check. The result still comes
+from the existing exact-store reader, which double-samples retained
+CRegiment/CArmyRegiment/CArmy generations and can return either `destroyed` or
+`still_alive`; the receipt adapter accepts only all-destroyed. The wire keeps
+source attribution, authored-pre, source-specific loss and public terms false.
+The Python collector is default-OFF and itself issues the cleanup query before
+the two same-frame persisted-expiry queries, binding public and native
+revisions separately.
+
+The source/ABI ledger is
+`native_bridge/research/fixtures/g2_war_bound_cleanup_dispatch_v1_source_contract.json`;
+the live choreography and candidate hashes are in
+`g2-postwar-cleanup-expiry-adapter-2026-09-04.md`. MSVC candidate build and the
+focused native/Python suites are GREEN, but no CK3 run belongs to this package,
+so production-live, public/action readiness, automatic surrender and GEN-034
+remain false.
 
 ## 2026-09-04 persisted truce-expiry exact-build candidate
 

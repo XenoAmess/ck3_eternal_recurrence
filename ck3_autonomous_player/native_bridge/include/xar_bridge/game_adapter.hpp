@@ -2,6 +2,9 @@
 
 #include "xar_bridge/combat_v3.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+#include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
+#endif
 
 #include <cstdint>
 #include <memory>
@@ -115,6 +118,19 @@ public:
     output = {};
     return ReadRaiktorActualTruceExpiryResultV1::unavailable;
   }
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  virtual bool read_raiktor_war_bound_loss_cleanup(
+      const ck3_11906::RaiktorWarBoundLossBaselineV1 &baseline,
+      const ck3_11906::RaiktorWarBoundPostwarFrameV1 &first_postwar_frame,
+      const ck3_11906::RaiktorWarBoundPostwarFrameV1 &second_postwar_frame,
+      ck3_11906::RaiktorWarBoundLossResultV1 &output) const noexcept {
+    (void)baseline;
+    (void)first_postwar_frame;
+    (void)second_postwar_frame;
+    output = {};
+    return false;
+  }
+#endif
   virtual ReadWarTerminationExitTermsResult
   read_war_termination_exit_terms(
       std::int32_t war_id,
@@ -279,6 +295,17 @@ inline ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
     RaiktorActualTruceExpirySnapshotV1 &output) noexcept {
   return game.read_raiktor_actual_truce_expiry(toward_character_id, output);
 }
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+inline bool ReadRaiktorWarBoundLossCleanup(
+    const GameAdapter &game,
+    const ck3_11906::RaiktorWarBoundLossBaselineV1 &baseline,
+    const ck3_11906::RaiktorWarBoundPostwarFrameV1 &first_postwar_frame,
+    const ck3_11906::RaiktorWarBoundPostwarFrameV1 &second_postwar_frame,
+    ck3_11906::RaiktorWarBoundLossResultV1 &output) noexcept {
+  return game.read_raiktor_war_bound_loss_cleanup(
+      baseline, first_postwar_frame, second_postwar_frame, output);
+}
+#endif
 inline ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
     const GameAdapter &game, std::int32_t war_id,
     WarTerminationExitTermsSnapshot &output) noexcept {

@@ -1,7 +1,7 @@
 {
   "schema": "xar.ck3.g2_postwar_cleanup_expiry_adapter_manifest.v1",
-  "created_at": "2026-09-04T17:10:00+08:00",
-  "candidate_source_commit": "04c1a00f0599378dfa8810be14ce535b2ed17f21",
+  "created_at": "2026-09-04T18:20:00+08:00",
+  "candidate_source_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
   "default_off": true,
   "live_authorized": false,
   "public_readiness_promoted": false,
@@ -26,15 +26,23 @@
     "retention_runner": "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py",
     "actual_expiry_contract": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_actual_truce_expiry_contract.py",
     "actual_expiry_source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/g2_actual_truce_expiry_v1_source_contract.json",
-    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-postwar-cleanup-expiry-adapter-04c1a00-20260904\\live-r1"
+    "cleanup_contract": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",
+    "cleanup_dispatch_source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/g2_war_bound_cleanup_dispatch_v1_source_contract.json",
+    "candidate_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-dispatch-build-a01f8cb-r1\\xar_ck3_bridge.dll",
+    "candidate_native_test": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-dispatch-build-a01f8cb-r1\\xar_ck3_raiktor_war_bound_loss_candidate_v1_test.exe",
+    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-postwar-cleanup-expiry-dispatch-a01f8cb-20260904\\live-r1"
   },
   "sha256": {
-    "runner": "7D8A0E3CE8560B7153EC5E4A89407AA019D0EA20671254D1286351880AD5D80D",
+    "runner": "40696417F3BBD841E79116612697654C48868C90534BDFC0FDF43E161FDB47C8",
     "fixture": "5CE4B1D261B3C96123A7065947CE55F832E46D33CD69624A150C17D1F4A3E8CE",
     "retention_manifest": "21D5E530DF76D80EC5919F536276BCB0340A607D0C83DBBD73E6451B724D5E91",
     "retention_runner": "EA4B81A037C59B20F64E3E6800E9BEC7E4DE8EC856C1D0029639EDF620498E04",
     "actual_expiry_contract": "55FE165E5C001CD6858C4C47345FC8343DC270C9D77B7DB9678E2D5596CF405C",
-    "actual_expiry_source_contract": "9B71A5001453970DF851E7B0D908929F5B598A0EFCEAFC9ED7438A4D3BB214A3"
+    "actual_expiry_source_contract": "9B71A5001453970DF851E7B0D908929F5B598A0EFCEAFC9ED7438A4D3BB214A3",
+    "cleanup_contract": "11C7B77842676251BDB1516472CB15D4115105D4A7B3AB5B994B3430F5F48C61",
+    "cleanup_dispatch_source_contract": "1863E7B53D852B83F8FC3432E66C90EEE72E73ECFBCBDACC1F48E47C232AB4D9",
+    "candidate_dll": "5D366FA321DA436601819E52827210DEFE42D1FE14950380D3D2722D6B992FF5",
+    "candidate_native_test": "F7999CCA5AE9AC70E64515AFCE391049D9E318A9F32B701482FCF1E4996FFE88"
   },
   "query_contract": {
     "step": "query-raiktor-actual-truce-expiry-v1-36769",
@@ -50,11 +58,29 @@
   "runtime_seam": {
     "actual_expiry_query_dispatch_present": true,
     "war_bound_cleanup_candidate_library_present": true,
-    "war_bound_cleanup_query_dispatch_present": false,
+    "war_bound_cleanup_query_dispatch_present": true,
+    "baseline_frozen_from_same_connection_terms": true,
+    "same_connection_surrender_ack_required": true,
+    "successful_cleanup_consumes_action_binding": true,
     "same_lifecycle_native_cleanup_observation_required": true,
     "old_war_absence_alone_proves_destroyed_cleanup": false,
     "python_adapter_may_infer_cleanup": false,
     "exclusive_ck3_slot_required_for_live": true
+  },
+  "candidate_build": {
+    "configuration": "Release",
+    "compiler": "MSVC 19.51.36248.0",
+    "cmake_options": {
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": true,
+      "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": true
+    },
+    "compile_green": true,
+    "focused_ctest_green": true,
+    "focused_ctest_count": 2,
+    "default_off_compile_green": true,
+    "default_off_focused_ctest_green": true,
+    "default_off_focused_ctest_count": 2,
+    "ck3_started_or_attached": false
   },
   "receipt_boundaries": {
     "one_native_surrender_ack_required": true,

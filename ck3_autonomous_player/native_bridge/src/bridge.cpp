@@ -21,6 +21,9 @@
 #include "xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+#include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
+#endif
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp"
@@ -3507,6 +3510,31 @@ std::string RaiktorActualTruceExpiryResultFrame(
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+std::string RaiktorWarBoundLossCleanupResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::ck3_11906::RaiktorWarBoundLossResultV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeRaiktorWarBoundLossCleanupV1(snapshot);
+  if (payload.empty()) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.strict_cleanup.postwar_frame.native_revision);
+  result += ",\"raiktor_war_bound_loss_cleanup\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+#endif
+
 std::string ZhongguoIncidentSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoIncidentSnapshotV1 &snapshot) {
@@ -4338,6 +4366,16 @@ std::optional<std::int32_t> RaiktorActualTruceExpiryQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+std::optional<std::int32_t> RaiktorWarBoundLossCleanupQueryStep(
+    std::string_view step) noexcept {
+  const auto prefix =
+      xar::ck3_11906::kRaiktorWarBoundLossCleanupV1StepPrefix;
+  if (!step.starts_with(prefix)) return std::nullopt;
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+#endif
+
 std::optional<std::int32_t> SurrenderWarStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix = "surrender-war-";
@@ -4624,6 +4662,12 @@ struct WorkerState {
   std::uint64_t war_termination_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  std::uint64_t raiktor_war_bound_loss_cleanup_query_sequence = 0;
+  std::optional<xar::ck3_11906::RaiktorWarBoundLossBaselineV1>
+      raiktor_war_bound_loss_baseline;
+  bool raiktor_war_bound_loss_surrender_submitted = false;
+#endif
   std::uint64_t marriage_query_sequence = 0;
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
@@ -4741,6 +4785,14 @@ void RunConnectedSession(
   auto &raiktor_actual_truce_expiry_query_sequence =
       state.raiktor_actual_truce_expiry_query_sequence;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  auto &raiktor_war_bound_loss_cleanup_query_sequence =
+      state.raiktor_war_bound_loss_cleanup_query_sequence;
+  auto &raiktor_war_bound_loss_baseline =
+      state.raiktor_war_bound_loss_baseline;
+  auto &raiktor_war_bound_loss_surrender_submitted =
+      state.raiktor_war_bound_loss_surrender_submitted;
+#endif
   auto &marriage_query_sequence = state.marriage_query_sequence;
   auto &marriage_choices = state.marriage_choices;
 
@@ -4749,6 +4801,12 @@ void RunConnectedSession(
   // the latest checkpoint submission, even if CK3 itself did not change.
   previous_snapshot.reset();
   published_checkpoint_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  // A frozen generation vector is meaningful only inside the connection that
+  // delivered its terms receipt. Never carry it into a later MCP generation.
+  raiktor_war_bound_loss_baseline.reset();
+  raiktor_war_bound_loss_surrender_submitted = false;
+#endif
   ULONGLONG next_heartbeat = GetTickCount64();
   bool connected = true;
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
@@ -8236,6 +8294,129 @@ void RunConnectedSession(
             }
           }
         }
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+        else if (step.starts_with(
+                     xar::ck3_11906::
+                         kRaiktorWarBoundLossCleanupV1StepPrefix)) {
+          const auto war_id = RaiktorWarBoundLossCleanupQueryStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-raiktor-war-bound-loss-cleanup-v1-"
+                          "<war_id> step"));
+          } else if (!raiktor_war_bound_loss_baseline.has_value() ||
+                     raiktor_war_bound_loss_baseline->frozen_active.war_id !=
+                         war_id.value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "no same-connection frozen war-bound baseline for "
+                          "requested WarID"));
+          } else if (!raiktor_war_bound_loss_surrender_submitted) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "same-connection surrender ACK is required before "
+                          "war-bound cleanup"));
+          } else {
+            xar::game::Snapshot admission_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, admission_snapshot) ||
+                admission_snapshot != previous_snapshot.value()) {
+              connected = PublishSnapshot(
+                  pipe, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
+              if (connected) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "war-bound cleanup admission snapshot changed; "
+                              "retry after heartbeat"));
+              }
+            } else {
+              const bool frozen_war_absent = std::none_of(
+                  admission_snapshot.active_wars.begin(),
+                  admission_snapshot.active_wars.end(),
+                  [war_id](const auto &war) {
+                    return war.war_id == war_id.value();
+                  });
+              const auto &baseline =
+                  raiktor_war_bound_loss_baseline.value();
+              if (!admission_snapshot.paused || !frozen_war_absent ||
+                  !admission_snapshot.has_played_character ||
+                  !admission_snapshot.played_character_alive ||
+                  admission_snapshot.played_character_id !=
+                      baseline.frozen_active.owner_character_id) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              !frozen_war_absent
+                                  ? "frozen WarID remains active; cleanup is "
+                                    "not inferred"
+                                  : "war-bound cleanup query requires the "
+                                    "same living player on a paused postwar "
+                                    "frame"));
+              } else {
+                xar::ck3_11906::RaiktorWarBoundPostwarFrameV1 first_frame{};
+                first_frame.snapshot_revision = state_revision;
+                first_frame.native_revision = state_revision;
+                first_frame.date_raw = admission_snapshot.date_raw;
+                first_frame.paused = true;
+                first_frame.frozen_war_id = war_id.value();
+                first_frame.frozen_war_absent_from_active_wars = true;
+                xar::ck3_11906::RaiktorWarBoundLossResultV1 cleanup{};
+                const bool read = xar::game::ReadRaiktorWarBoundLossCleanup(
+                    game, baseline, first_frame, first_frame, cleanup);
+                xar::game::Snapshot completion_snapshot{};
+                if (!xar::game::ReadSnapshot(game, completion_snapshot) ||
+                    completion_snapshot != admission_snapshot) {
+                  connected = PublishSnapshot(
+                      pipe, game, previous_snapshot, state_revision,
+                      checkpoint_submission, published_checkpoint_sequence);
+                  if (connected) {
+                    connected = xar::bridge::WriteFrame(
+                        pipe, CommandResultFrame(
+                                  request_id, step, false,
+                                  "war-bound cleanup completion snapshot "
+                                  "changed; retry after heartbeat"));
+                  }
+                } else if (read) {
+                  const auto next_sequence =
+                      raiktor_war_bound_loss_cleanup_query_sequence + 1;
+                  connected = xar::bridge::WriteFrame(
+                      pipe, RaiktorWarBoundLossCleanupResultFrame(
+                                request_id, step, next_sequence, cleanup));
+                  if (connected) {
+                    raiktor_war_bound_loss_cleanup_query_sequence =
+                        next_sequence;
+                    // One exact-store cleanup observation belongs to one
+                    // retained pre/action/post lifecycle. A later query must
+                    // start from a newly frozen active-war baseline.
+                    raiktor_war_bound_loss_surrender_submitted = false;
+                  }
+                } else {
+                  std::string_view error =
+                      "CK3 exact-store war-bound cleanup read is unavailable";
+                  if (cleanup.failure ==
+                      xar::ck3_11906::RaiktorWarBoundLossFailureV1::
+                          invalid_pre_termination_baseline) {
+                    error = "frozen war-bound baseline is invalid";
+                  } else if (cleanup.failure ==
+                             xar::ck3_11906::RaiktorWarBoundLossFailureV1::
+                                 cleanup_contract_rejected) {
+                    error = "war-bound cleanup identity/state contract was "
+                            "rejected";
+                  }
+                  connected = xar::bridge::WriteFrame(
+                      pipe,
+                      CommandResultFrame(request_id, step, false, error));
+                }
+              }
+            }
+          }
+        }
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
         else if (step.starts_with(
                      xar::ck3_11906::
@@ -8390,6 +8571,29 @@ void RunConnectedSession(
                                   xar::game::ReadWarTerminationTermsResult::
                                       available,
                               state_revision));
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+                if (connected &&
+                    query_result ==
+                        xar::game::ReadWarTerminationTermsResult::available &&
+                    terms.raiktor_surrender.has_value() &&
+                    terms.raiktor_surrender
+                        ->generic_war_bound_current_observable) {
+                  xar::ck3_11906::RaiktorWarBoundLossBaselineV1 baseline{};
+                  if (xar::ck3_11906::FreezeRaiktorWarBoundLossBaselineV1(
+                          terms.raiktor_surrender
+                              ->generic_war_bound_current,
+                          state_revision, baseline)) {
+                    raiktor_war_bound_loss_baseline = std::move(baseline);
+                    raiktor_war_bound_loss_surrender_submitted = false;
+                  } else {
+                    raiktor_war_bound_loss_baseline.reset();
+                    raiktor_war_bound_loss_surrender_submitted = false;
+                  }
+                } else if (connected) {
+                  raiktor_war_bound_loss_baseline.reset();
+                  raiktor_war_bound_loss_surrender_submitted = false;
+                }
+#endif
               } else {
                 std::string_view error =
                     "CK3 war-termination terms query is unavailable";
@@ -8496,6 +8700,12 @@ void RunConnectedSession(
                 game, war_id.value());
             if (surrender_result ==
                 xar::game::SurrenderWarResult::submitted) {
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+              raiktor_war_bound_loss_surrender_submitted =
+                  raiktor_war_bound_loss_baseline.has_value() &&
+                  raiktor_war_bound_loss_baseline->frozen_active.war_id ==
+                      war_id.value();
+#endif
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));

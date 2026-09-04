@@ -103,6 +103,18 @@ def _expiry(sequence: int, *, expiry: int = 53_219_616) -> dict[str, object]:
     }
 
 
+def _cleanup_wire(active: dict[str, object], post: dict[str, object]) -> dict[str, object]:
+    observation = RUNNER._destroyed_cleanup_fixture(active, post)
+    observation["active_frame"]["snapshot_revision"] = 7
+    observation["postwar_frame"]["snapshot_revision"] = 8
+    return {
+        "step": f"query-raiktor-war-bound-loss-cleanup-v1-{WAR_ID}",
+        "accepted": True,
+        "query_sequence": 1,
+        "snapshot_revision": 8,
+        "raiktor_war_bound_loss_cleanup": observation,
+        "backend_id": "native-headless",
+    }
 def _inputs() -> dict[str, object]:
     active = _active()
     generations = RUNNER.retention._generation_vector(active)
@@ -162,7 +174,17 @@ class _FakeClient:
     def __init__(self, inputs: dict[str, object]) -> None:
         post = inputs["post_snapshots"]
         expiry = inputs["expiry_reads"]
-        self.responses = [post[0], expiry[0], post[1], expiry[1], post[2]]
+        cleanup = _cleanup_wire(
+            inputs["pre"]["war_bound_observation"], post[0]
+        )
+        self.responses = [
+            post[0],
+            cleanup,
+            expiry[0],
+            post[1],
+            expiry[1],
+            post[2],
+        ]
         self.calls: list[tuple[str, dict[str, object]]] = []
 
     async def call_tool(self, name: str, arguments: dict[str, object]):
@@ -250,7 +272,6 @@ class G2PostwarCleanupExpiryReceiptTests(unittest.TestCase):
                     ticket=inputs["ticket"],
                     pre=inputs["pre"],
                     termination_result=inputs["termination_result"],
-                    cleanup_observation=inputs["cleanup_observation"],
                 )
             )
         self.assertEqual(client.calls, [])
@@ -261,15 +282,26 @@ class G2PostwarCleanupExpiryReceiptTests(unittest.TestCase):
                 ticket=inputs["ticket"],
                 pre=inputs["pre"],
                 termination_result=inputs["termination_result"],
-                cleanup_observation=inputs["cleanup_observation"],
                 authorize_private_live=True,
             )
         )
         self.assertTrue(receipt["ticket_validation"]["ok"])
+        cleanup = receipt["post"]["war_bound_cleanup"]["native_observation"]
+        self.assertEqual(cleanup["active_frame"]["snapshot_revision"], 91)
+        self.assertEqual(cleanup["active_frame"]["native_revision"], 7)
+        self.assertEqual(cleanup["postwar_frame"]["snapshot_revision"], 96)
+        self.assertEqual(cleanup["postwar_frame"]["native_revision"], 8)
         self.assertEqual(
             client.calls,
             [
                 ("ck3_take_snapshot", {}),
+                (
+                    "ck3_execute_step",
+                    {
+                        "step": f"query-raiktor-war-bound-loss-cleanup-v1-{WAR_ID}",
+                        "expected_revision": 96,
+                    },
+                ),
                 (
                     "ck3_execute_step",
                     {
@@ -289,6 +321,24 @@ class G2PostwarCleanupExpiryReceiptTests(unittest.TestCase):
             ],
         )
 
+    def test_async_collector_rejects_cleanup_wire_revision_drift(self) -> None:
+        inputs = _inputs()
+        client = _FakeClient(inputs)
+        cleanup_wire = client.responses[1]
+        cleanup_wire["raiktor_war_bound_loss_cleanup"]["postwar_frame"][
+            "native_revision"
+        ] = 9
+        with self.assertRaisesRegex(RUNNER.AdapterError, "cleanup read rejected"):
+            asyncio.run(
+                RUNNER.collect_after_surrender(
+                    client,
+                    ticket=inputs["ticket"],
+                    pre=inputs["pre"],
+                    termination_result=inputs["termination_result"],
+                    authorize_private_live=True,
+                )
+            )
+
     def test_committed_manifest_is_default_off_and_hash_pinned(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         self.assertTrue(manifest["default_off"])
@@ -296,7 +346,7 @@ class G2PostwarCleanupExpiryReceiptTests(unittest.TestCase):
         self.assertFalse(manifest["public_readiness_promoted"])
         self.assertFalse(manifest["action_readiness_promoted"])
         self.assertFalse(manifest["gen034_closed"])
-        self.assertFalse(
+        self.assertTrue(
             manifest["runtime_seam"]["war_bound_cleanup_query_dispatch_present"]
         )
         for name in (
@@ -306,6 +356,10 @@ class G2PostwarCleanupExpiryReceiptTests(unittest.TestCase):
             "retention_runner",
             "actual_expiry_contract",
             "actual_expiry_source_contract",
+            "cleanup_contract",
+            "cleanup_dispatch_source_contract",
+            "candidate_dll",
+            "candidate_native_test",
         ):
             path = Path(manifest["paths"][name])
             if not path.is_absolute():

@@ -1,0 +1,76 @@
+{
+  "schema": "xar.ck3.g2_war_bound_cleanup_dispatch_source_contract.v1",
+  "status": "static-ready_live-pending",
+  "game_version": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "candidate_base_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
+  "default_enabled": false,
+  "cmake_options": {
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": true,
+    "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": true
+  },
+  "private_capability": "game.command.query-raiktor-war-bound-loss-cleanup-v1-N",
+  "source_hashes_green": true,
+  "source_files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "sha256": "388CBCAC538E0C8AAE15D181B2B166A8B1F990AE6107DC7FFEFA5079404FAB2F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_adapter.hpp",
+      "sha256": "A2C3E4493903DD3B382EA29DED53A2F65C2BB53B48DCAD0FA10C59BB6207CBCE"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp",
+      "sha256": "E244EEEBE78637D6DC43FF34297234955B1B6F3B1B12EE5E38DC2AF0B6D0CDEB"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "sha256": "EFE8992173718B8CA4071F32698690FEEFD42FF867C81A0CB417BC11BE939C82"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp",
+      "sha256": "E3C382FC17B988AC05EEE4392DF8613DCB625C9DC3485DB6A91D12E9216A5EA1"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "sha256": "5CD0CC6E1CF8789938134A7C46C452EF95B53C0211E0624805314945650297EA"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_loss_candidate_v1.cpp",
+      "sha256": "0C53A53B7AED692A3DAAA53257FE4AD097418AD4D1CE6466688D88BF3A1958C8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "sha256": "8085974A9B7B82C1C02A3EE1A73277E5FD6A69CFCE282443FE6945C1FFD0348B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",
+      "sha256": "11C7B77842676251BDB1516472CB15D4115105D4A7B3AB5B994B3430F5F48C61"
+    }
+  ],
+  "exact_native_store_contract": {
+    "persistent_regiment_store": "module+0x570CC88",
+    "current_regiment_store": "module+0x57BF4C8",
+    "current_army_store": "module+0x570C730",
+    "identity": "full-generation CRegiment/CArmyRegiment/CArmy IDs retained from one exact paused terms observation",
+    "cleanup": "ReadFrozenWarBoundRegimentCleanupObservation double-samples all three stores; WarID absence is admission only and never the destroyed result"
+  },
+  "lifecycle_contract": {
+    "baseline": "successful same-connection query-war-termination-terms-v1-N with generic current observation",
+    "action": "successful same-connection surrender-war-N ACK for the retained WarID",
+    "post": "paused same player, old full-generation WarID absent, stable admission/completion snapshot",
+    "read": "existing ReadRaiktorWarBoundLossCleanupV1 exact-store reader",
+    "consumption": "successful cleanup response consumes the one surrender binding",
+    "connection_reset": "baseline and action binding reset at every bridge connection generation"
+  },
+  "hard_boundaries": {
+    "read_only_cleanup_query": true,
+    "public_terms_ready": false,
+    "source_specific_attribution_ready": false,
+    "action_readiness_promoted": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false,
+    "production_live": false
+  }
+}

@@ -288,6 +288,11 @@ from .raiktor_actual_truce_expiry_contract import (
     normalize_raiktor_actual_truce_expiry_v1,
     parse_query_raiktor_actual_truce_expiry_v1_step,
 )
+from .raiktor_war_bound_loss_cleanup_contract import (
+    QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
+    QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX,
+    parse_query_raiktor_war_bound_loss_cleanup_v1_step,
+)
 from .active_combat_retreat_contract import (
     ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
     ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX,
@@ -3330,6 +3335,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed actual truce-expiry v1 query step"
             )
+        war_bound_loss_cleanup_war_id = (
+            parse_query_raiktor_war_bound_loss_cleanup_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX
+            )
+            and war_bound_loss_cleanup_war_id is None
+        ):
+            raise UnsupportedStepError(
+                "malformed war-bound loss cleanup v1 query step"
+            )
         zhongguo_workforce_collective_query = (
             parse_query_zhongguo_workforce_collective_snapshot_v1_step(step)
         )
@@ -3819,6 +3837,20 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise UnsupportedStepError(
                     "native DLL cannot query persisted truce expiry"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
+        if war_bound_loss_cleanup_war_id is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query exact-store war-bound cleanup"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -6167,10 +6199,14 @@ class NativeHeadlessGameplayDriver:
         actual_truce_expiry_toward = (
             parse_query_raiktor_actual_truce_expiry_v1_step(step)
         )
+        war_bound_loss_cleanup_war_id = (
+            parse_query_raiktor_war_bound_loss_cleanup_v1_step(step)
+        )
         internal_read_only_query = bool(
             termination_query_war_id is not None
             or termination_terms_query_war_id is not None
             or actual_truce_expiry_toward is not None
+            or war_bound_loss_cleanup_war_id is not None
             or parse_preview_move_army_step(step) is not None
             or parse_query_route_contact_horizon_step(step) is not None
         )
@@ -6214,6 +6250,15 @@ class NativeHeadlessGameplayDriver:
                     f"native actual truce-expiry result is malformed: {error}"
                 ) from error
             return {**raw, "actual_truce_expiry_proof": proof}
+        if war_bound_loss_cleanup_war_id is not None:
+            return self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=(
+                    QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY
+                ),
+                internal_semantic_snapshot=True,
+            )
         if step == QUERY_ARMY_STRENGTHS_STEP:
             return self._execute_army_strength_query(
                 starting=starting,
@@ -18850,6 +18895,14 @@ def _action_steps(
             # The post-result target may no longer appear in active wars.
             # Callers must supply the generation-safe prior opponent identity;
             # never leak the N template as an executable step.
+            continue
+        elif (
+            capability
+            == QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY
+        ):
+            # The old WarID is deliberately absent after termination. The
+            # private lifecycle runner supplies the exact retained generation;
+            # never expose the N template as an executable action.
             continue
         elif (
             WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED

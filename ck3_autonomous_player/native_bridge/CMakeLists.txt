@@ -693,6 +693,12 @@ if(BUILD_TESTING)
     target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
       XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=1)
   endif()
+  if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+    target_sources(xar_ck3_adapter_registry_test PRIVATE
+      src/raiktor_war_bound_loss_candidate_v1.cpp)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=1)
+  endif()
   if(MSVC)
     target_compile_options(xar_ck3_adapter_registry_test PRIVATE
       /W4 /permissive- /EHsc)
