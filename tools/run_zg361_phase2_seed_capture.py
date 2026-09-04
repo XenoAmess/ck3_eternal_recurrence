@@ -51,10 +51,10 @@ EXPECTED_ENABLED_MODS = (
 SEED_EVENT_DEFINITION_KEY = "zga_phase2_seed.1"
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
-        "98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3"
+        "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733"
     ),
     "event_definition_key": "zg361.4",
-    "calculated_event_id": 3320004,
+    "calculated_event_id": 3030004,
     "date_raw": 53147016,
     "root_character_id": 29037,
     "reviewing_superior_character_id": 32904,
