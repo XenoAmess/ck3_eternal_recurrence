@@ -1,0 +1,53 @@
+{
+  "contract": "zhongguo_promotion_source_progress_and_review_action_v1",
+  "status": "static_ready_default_off_live_pending",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "query_capability": "game.command.query-zhongguo-promotion-source-progress-v1",
+  "query_transport": "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+  "action_capability": "game.command.activate-zhongguo-review-now-v1",
+  "action_transport": "game.contract.zhongguo-review-now-action-v1-fail-closed",
+  "source_contract": "fixtures/zhongguo_promotion_source_progress_v1_source_contract.json",
+  "fixed_widgets": [
+    "zg361_promotion_source_bridge_window",
+    "zg361_promotion_source_review_now_action",
+    "zg361_promotion_source_b1_active",
+    "zg361_promotion_source_central_active",
+    "zg361_promotion_source_pp_active"
+  ],
+  "public_inputs": ["request_nonce", "expected_revision"],
+  "forbidden_inputs": [
+    "widget_name",
+    "character_id",
+    "variable_name",
+    "decision_name",
+    "scripted_gui_name"
+  ],
+  "action_semantics": {
+    "product_source": "zg361_review_now_decision",
+    "shared_business_trigger": "zg361_review_now_business_valid_trigger",
+    "cost": "150 prestige",
+    "one_shot_flag": "zg361_review_now_pending",
+    "existing_consumer": "zg361_review_now_bridge_gui -> zg361_b1_open_cycle_effect",
+    "ack_is_state_evidence": false,
+    "success_predicate": "a separately nonced later paused progress query advances query_sequence, retains connection/player, exposes B1 active, and hides review action"
+  },
+  "choreography": [
+    "fixed review action",
+    "independent B1 witness",
+    "bounded product timeline",
+    "paused zg361pp.146",
+    "select option 1 ACK pending",
+    "advance one day",
+    "independent paused zg361pp.147 query",
+    "native save"
+  ],
+  "readiness": {
+    "product_entry": "static_ready",
+    "native_query_and_action": "static_ready",
+    "runner_choreography": "static_ready",
+    "production_capability_advertised": false,
+    "production_live_ready": false,
+    "unique_live_prerequisite": "one product-only managed CK3 1.19.0.6 run must observe action -> independently observed B1 -> .146 option1 -> D+1 paused .147 -> native save"
+  }
+}

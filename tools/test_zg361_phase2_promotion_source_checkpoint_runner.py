@@ -93,7 +93,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             result[runner.PHASE2_REQUIRED_QUERY_FLAGS[label]] = True
         return result
 
-    def test_focused_preflight_requires_only_native_query_and_save(self) -> None:
+    def test_focused_preflight_requires_exact_entry_query_action_and_save(self) -> None:
         pid = 361147
         capabilities = self._capabilities(pid)
         service = types.SimpleNamespace(capabilities=lambda: capabilities)
@@ -116,10 +116,19 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             runner.QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY,
             required,
         )
-        self.assertNotIn("game.command.select-event-option-N", required)
-        self.assertNotIn("game.command.pause-map", required)
+        self.assertIn("game.command.select-event-option-N", required)
+        self.assertIn("game.command.pause-map", required)
+        self.assertIn(
+            runner.QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
+            required,
+        )
+        self.assertIn(
+            runner.ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+            required,
+        )
         self.assertEqual(
-            set(report["required_action_steps"].values()), {"save-checkpoint"}
+            set(report["required_action_steps"].values()),
+            {"save-checkpoint", "pause-map", "resume-map", "set-speed-1"},
         )
 
     def test_current_event_capability_absence_is_typed_red(self) -> None:
@@ -233,6 +242,18 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                         return_value=copy.deepcopy(captured),
                     )
                 )
+                entry = stack.enter_context(
+                    mock.patch.object(
+                        runner,
+                        "enter_promotion_source_checkpoint_v1",
+                        return_value={
+                            "schema_version": 1,
+                            "kind": "zg361_phase2_promotion_source_production_entry",
+                            "result": "GREEN",
+                            "readiness": "paused-real-zg361pp.147",
+                        },
+                    )
+                )
                 forbidden_launch = stack.enter_context(
                     mock.patch.object(runner, "launch_native_ck3")
                 )
@@ -256,6 +277,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             gate.call_args.kwargs["phase2_promotion_source_capture_live"]
         )
         capture.assert_called_once()
+        entry.assert_called_once()
+        self.assertEqual(entry.call_args.kwargs["timeout_seconds"], 12.5)
         self.assertEqual(capture.call_args.kwargs["timeout_seconds"], 12.5)
         session = capture.call_args.kwargs["managed_product_session"]
         lineage = capture.call_args.kwargs["capture_lineage"]

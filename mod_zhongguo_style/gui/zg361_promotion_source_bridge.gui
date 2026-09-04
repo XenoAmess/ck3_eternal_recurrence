@@ -1,0 +1,33 @@
+﻿# Exact named-widget surface for the production promotion source choreography.
+# It is intentionally off-screen and product-owned: no OCR, coordinates,
+# console, fixture, or caller-selected widget name participates.
+window = {
+	name = "zg361_promotion_source_bridge_window"
+	size = { 1 1 }
+	layer = tutorial
+	position = { -16 -16 }
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	button_standard = {
+		name = "zg361_promotion_source_review_now_action"
+		size = { 1 1 }
+		visible = "[GetScriptedGui('zg361_review_now_native_action_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		onclick = "[GetScriptedGui('zg361_review_now_native_action_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+	widget = {
+		name = "zg361_promotion_source_b1_active"
+		size = { 1 1 }
+		visible = "[GetScriptedGui('zg361_promotion_source_b1_active_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+	widget = {
+		name = "zg361_promotion_source_central_active"
+		size = { 1 1 }
+		visible = "[GetScriptedGui('zg361_promotion_source_central_active_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+	widget = {
+		name = "zg361_promotion_source_pp_active"
+		size = { 1 1 }
+		visible = "[GetScriptedGui('zg361_promotion_source_pp_active_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+}

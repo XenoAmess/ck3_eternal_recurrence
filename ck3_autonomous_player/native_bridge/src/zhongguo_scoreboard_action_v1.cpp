@@ -1,4 +1,5 @@
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
+#include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 
 #include <array>
 #include <charconv>
@@ -821,6 +822,153 @@ std::string SerializeZhongguoScoreboardActionAckV1(
       "\"consumer_id\":\"xar-autoplayer-zhongguo-scoreboard-action-v1\","
       "\"allowlist_id\":\"zg361-scoreboard-named-widget-action-v1\","
       "\"contract_stage\":\"exact_dispatch_ack_provider_revision_live_unverified\"}}";
+  return output;
+}
+
+bool DispatchZhongguoReviewNowActionNativeV1(
+    void *opaque_environment, std::string_view stable_identity,
+    std::string_view runtime_name, std::string_view instance_pointer,
+    std::string_view vtable_pointer, bool &native_handled) noexcept {
+  // The shared dispatcher does not derive semantic success from this enum; it
+  // only rejects the scoreboard-only two-phase `reopen` marker before running
+  // the exact widget/vtable/callback/modal admission checks.
+  return DispatchZhongguoScoreboardActionNativeV1(
+      opaque_environment, game::ZhongguoScoreboardActionV1::open,
+      stable_identity, runtime_name, instance_pointer, vtable_pointer,
+      native_handled);
+}
+
+bool ExecuteZhongguoReviewNowActionV1(
+    const game::ZhongguoReviewNowActionRequestV1 &request,
+    const game::ZhongguoPromotionSourceProgressV1 &source,
+    const ZhongguoReviewNowActionAccessV1 &access,
+    game::ZhongguoReviewNowActionAckV1 &ack) noexcept {
+  ack = {};
+  ack.request_nonce = request.request_nonce;
+  ack.source_revision = request.expected_revision;
+  ack.source_native_revision = request.expected_native_revision;
+  ack.source_connection_generation = request.expected_connection_generation;
+  ack.date_raw = source.date_raw;
+  ack.player_character_id = source.player_character_id;
+  const auto reject = [&](std::string_view reason) {
+    ack.rejection_reason.assign(reason);
+    return false;
+  };
+  if (!ValidNonce(request.request_nonce) || request.expected_revision == 0 ||
+      request.expected_native_revision == 0 ||
+      request.expected_connection_generation == 0 ||
+      request.expected_player_character_id <= 0 ||
+      source.status !=
+          game::ZhongguoPromotionSourceProgressStatusV1::available ||
+      !source.paused ||
+      source.snapshot_revision != request.expected_native_revision ||
+      source.player_character_id != request.expected_player_character_id ||
+      !source.readiness.query_ready ||
+      !source.readiness.exact_widget_set_ready) {
+    return reject("source_progress_unavailable");
+  }
+  for (std::size_t index = 0; index < source.widgets.size(); ++index) {
+    if (source.widgets[index].stable_identity !=
+            kZhongguoPromotionSourceProgressV1WidgetIdentities[index] ||
+        source.widgets[index].runtime_name !=
+            kZhongguoPromotionSourceProgressV1WidgetNames[index]) {
+      return reject("fixed_widget_allowlist_drifted");
+    }
+  }
+  bool action_exists = false;
+  bool action_visible = false;
+  bool action_enabled = false;
+  bool b1_visible = false;
+  bool central_visible = false;
+  bool pp_visible = false;
+  std::string_view instance;
+  std::string_view vtable;
+  const auto &target = source.widgets[1];
+  if (!AvailableBool(target.exists, action_exists) || !action_exists ||
+      !AvailableBool(target.effective_visible, action_visible) ||
+      !action_visible || !AvailableBool(target.enabled, action_enabled) ||
+      !action_enabled || !AvailableString(target.instance_pointer, instance) ||
+      !AvailableString(target.vtable_pointer, vtable)) {
+    return reject("review_now_action_not_available");
+  }
+  if (!AvailableBool(source.widgets[2].effective_visible, b1_visible) ||
+      !AvailableBool(source.widgets[3].effective_visible, central_visible) ||
+      !AvailableBool(source.widgets[4].effective_visible, pp_visible)) {
+    return reject("progress_witness_unavailable");
+  }
+  if (b1_visible || central_visible || pp_visible) {
+    return reject("promotion_pipeline_already_active");
+  }
+  if (access.dispatch == nullptr) {
+    return reject("action_dispatch_unavailable");
+  }
+  bool native_handled = false;
+  if (!access.dispatch(access.context, target.stable_identity,
+                       target.runtime_name, instance, vtable,
+                       native_handled)) {
+    return reject("action_dispatch_rejected");
+  }
+  ack.accepted = true;
+  ack.target.stable_identity = target.stable_identity;
+  ack.target.runtime_name = target.runtime_name;
+  ack.target.instance_pointer.assign(instance);
+  ack.target.vtable_pointer.assign(vtable);
+  ack.expected_postcondition =
+      "played_owner_b1_active_on_independent_paused_progress_query";
+  ack.native_handled = native_handled;
+  ack.postcondition_verified = false;
+  ack.rejection_reason.clear();
+  return true;
+}
+
+std::string SerializeZhongguoReviewNowActionAckV1(
+    const game::ZhongguoReviewNowActionAckV1 &ack) {
+  if (!ack.accepted || !ValidNonce(ack.request_nonce) ||
+      ack.source_revision == 0 || ack.source_native_revision == 0 ||
+      ack.source_connection_generation == 0 || ack.player_character_id <= 0 ||
+      ack.target.stable_identity !=
+          kZhongguoPromotionSourceProgressV1WidgetIdentities[1] ||
+      ack.target.runtime_name !=
+          kZhongguoPromotionSourceProgressV1WidgetNames[1] ||
+      !ValidPointer(ack.target.instance_pointer) ||
+      !ValidPointer(ack.target.vtable_pointer) ||
+      !ack.requires_independent_progress_query || ack.postcondition_verified ||
+      ack.expected_postcondition !=
+          "played_owner_b1_active_on_independent_paused_progress_query" ||
+      !ack.rejection_reason.empty()) {
+    return {};
+  }
+  std::string output =
+      "{\"schema_version\":1,\"status\":\"acknowledged_verification_pending\",";
+  output += "\"accepted\":true,\"capability\":";
+  AppendJsonString(output, kZhongguoReviewNowActionV1Capability);
+  output += ",\"step\":";
+  AppendJsonString(output, kZhongguoReviewNowActionV1Step);
+  output += ",\"request_nonce\":";
+  AppendJsonString(output, ack.request_nonce);
+  output += ",\"source\":{\"revision\":";
+  AppendNumber(output, ack.source_revision);
+  output += ",\"native_revision\":";
+  AppendNumber(output, ack.source_native_revision);
+  output += ",\"connection_generation\":";
+  AppendNumber(output, ack.source_connection_generation);
+  output += ",\"date_raw\":";
+  AppendSigned(output, ack.date_raw);
+  output += ",\"player_character_id\":";
+  AppendSigned(output, ack.player_character_id);
+  output += "},\"target\":{\"stable_identity\":";
+  AppendJsonString(output, ack.target.stable_identity);
+  output += ",\"runtime_name\":";
+  AppendJsonString(output, ack.target.runtime_name);
+  output += ",\"instance_pointer\":";
+  AppendJsonString(output, ack.target.instance_pointer);
+  output += ",\"vtable_pointer\":";
+  AppendJsonString(output, ack.target.vtable_pointer);
+  output += "},\"expected_postcondition\":{\"requires_independent_progress_query\":true,\"predicate\":";
+  AppendJsonString(output, ack.expected_postcondition);
+  output += "},\"native_handled\":";
+  output += ack.native_handled ? "true" : "false";
+  output += ",\"postcondition_verified\":false}";
   return output;
 }
 

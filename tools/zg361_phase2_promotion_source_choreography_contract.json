@@ -83,9 +83,11 @@
   ],
   "unavailable_required_entry": {
     "action": "activate zg361_review_now_decision by exact stable identity",
-    "phase2_runner_capability_present": false,
+    "phase2_runner_capability_present": true,
+    "status": "static-ready-default-off-live-pending",
+    "fixed_progress_witnesses": ["played-owner-b1", "central", "pp"],
     "scoreboard_action_is_substitute": false,
-    "reason": "the scoreboard allowlist only opens, switches, closes, or reopens zg361_scoreboard_modal"
+    "reason": "a dedicated fixed review-now widget action and fixed progress observer now exist; one exact-build managed product-only live artifact remains required"
   },
   "remaining_unknowns": [
     "the seed has no same-frame native proof that played character 29037 satisfies the celestial-liege trigger",
@@ -111,7 +113,7 @@
   },
   "no_launch": {
     "ck3_started": false,
-    "runner_modified": false,
-    "claim": "source path derived from committed event/effect graph, runner capability declarations, and existing seed artifacts only"
+    "runner_modified": true,
+    "claim": "static-ready source path and exact action/observer are wired; no CK3 process was started"
   }
 }

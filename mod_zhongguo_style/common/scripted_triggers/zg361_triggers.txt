@@ -16,6 +16,21 @@ zg361_is_reviewable_vassal_trigger = {
 	liege = { zg361_is_celestial_liege_trigger = yes }
 }
 
+# “立即开展绩效考核”决议与原生自动玩家入口共用同一业务合法性。
+# prestige 由各入口各自按同一个 150 成本核对；这里仅冻结业务前置，避免
+# 决议与无坐标 named-widget 入口日后发生语义漂移。
+zg361_review_now_business_valid_trigger = {
+	NOT = { has_character_flag = zg361_review_in_progress }
+	trigger_if = {
+		limit = { has_variable = zg361_last_settled_year }
+		NOT = { var:zg361_last_settled_year = current_year }
+	}
+	any_vassal = {
+		count >= 1
+		zg361_is_reviewable_vassal_trigger = yes
+	}
+}
+
 # 京察合法来宾：命令签发、活动开办与逾期追责必须共用这一口径。
 # 直属关系由调用处的 any_vassal / scope:host 约束，这里只定义人物资格。
 zg361_is_jingcha_eligible_guest_trigger = {

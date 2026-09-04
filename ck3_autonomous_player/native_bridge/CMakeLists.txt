@@ -285,6 +285,7 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_manager_subordinate_selector_v1_serializer.cpp
   src/zhongguo_promotion_compensation_postcondition_v1.cpp
   src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+  src/zhongguo_promotion_source_progress_v1_mailbox.cpp
   src/zhongguo_career_hc_workforce_postcondition_v1.cpp
   src/zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp
   src/zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp
@@ -638,6 +639,7 @@ if(BUILD_TESTING)
     src/zhongguo_manager_subordinate_selector_v1.cpp
     src/zhongguo_promotion_compensation_postcondition_v1.cpp
     src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+    src/zhongguo_promotion_source_progress_v1_mailbox.cpp
     src/zhongguo_career_hc_workforce_postcondition_v1.cpp
     src/zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp
     src/zhongguo_projects_metrics_postcondition_v1.cpp

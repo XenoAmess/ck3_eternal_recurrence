@@ -1,5 +1,7 @@
 # CK3 原生 AI 决策树索引
 
+- [static-ready, live pending] [天朝二期 Promotion source progress 与 review-now action](zhongguo-promotion-source-progress-and-review-action-v1.md)：冻结 1.19.0.6 exact build，提供 played-owner B1/central/PP 固定 widget 观测、真实 review action、`.146 option 1 -> D+1 -> paused .147 -> save` runner；ACK 不作状态证据，正式 capability 保持 default-off。
+
 ## 版本与证据边界
 
 - [static-confirmed] 本目录只绑定 CK3 `1.19.0.6` 的

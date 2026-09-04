@@ -25,6 +25,9 @@ from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
 
 RUNNER = ROOT / "tools/run_zhongguo_acceptance.py"
 CAPTURE = ROOT / "tools/zg361_phase2_promotion_source_checkpoint_capture.py"
+PRODUCTION_ENTRY = (
+    ROOT / "tools/zg361_phase2_promotion_source_production_entry.py"
+)
 ASSEMBLER = ROOT / "tools/zhongguo_phase2_source_checkpoint_registry.py"
 ADAPTER = (
     ROOT
@@ -50,6 +53,7 @@ def run_preflight() -> dict[str, object]:
     callable_report = build_no_launch_preflight()
     runner_source = RUNNER.read_text(encoding="utf-8-sig")
     capture_source = CAPTURE.read_text(encoding="utf-8-sig")
+    production_entry_source = PRODUCTION_ENTRY.read_text(encoding="utf-8-sig")
     assembler_source = ASSEMBLER.read_text(encoding="utf-8-sig")
     adapter_source = ADAPTER.read_text(encoding="utf-8-sig")
     focused_bridge_labels = _tuple_labels(
@@ -77,7 +81,7 @@ def run_preflight() -> dict[str, object]:
                 '"acceptance_fixture_loaded": False',
             )
         ),
-        "focused_profile_is_query_and_save_only": focused_bridge_labels
+        "focused_profile_has_exact_entry_query_action_and_save": focused_bridge_labels
         == (
             "paused_snapshot",
             "map_ready_state",
@@ -85,9 +89,41 @@ def run_preflight() -> dict[str, object]:
             "active_event_state",
             "save_checkpoint",
             "current_event_context",
+            "pause_timeline",
+            "resume_timeline",
+            "bounded_timeline_speed",
+            "event_option_action_ack",
+            "promotion_source_progress_transport",
+            "review_now_action_transport",
         )
         and focused_query_labels == ("current_event_context",)
-        and focused_action_labels == ("save_checkpoint",),
+        and focused_action_labels
+        == (
+            "save_checkpoint",
+            "pause_timeline",
+            "resume_timeline",
+            "bounded_timeline_speed",
+        ),
+        "runner_executes_exact_product_prefix": all(
+            token in runner_source
+            for token in (
+                "enter_promotion_source_checkpoint_v1(",
+                '"03_promotion_source_production_entry.json"',
+                "capture_promotion_source_checkpoint_v2(",
+            )
+        )
+        and all(
+            token in production_entry_source
+            for token in (
+                "query_zhongguo_promotion_source_progress_v1(",
+                "activate_zhongguo_review_now_v1(",
+                "verify_review_now_independent_postcondition_v1(",
+                "select_event_option(",
+                "if key != M146",
+                "if key == M147",
+                '"action_ack_used_as_state_evidence": False',
+            )
+        ),
         "exact_source_option_and_scopes_bound": all(
             token in capture_source
             for token in (
@@ -120,7 +156,7 @@ def run_preflight() -> dict[str, object]:
                 'CHECKPOINT_REQUIRED_HANDLERS',
             )
         ),
-        "fixture_console_and_ack_cannot_supply_state": all(
+        "fixture_console_and_ack_cannot_supply_checkpoint_state": all(
             token in capture_source
             for token in (
                 'lineage.get("fixture_used") is False',
@@ -129,12 +165,14 @@ def run_preflight() -> dict[str, object]:
                 '"event_option_action_executed": False',
             )
         )
-        and "select_event_option(" not in capture_source,
+        and "select_event_option(" not in capture_source
+        and '"fixture_used": False' in production_entry_source
+        and '"console_used": False' in production_entry_source,
         "result_provider_remains_default_off": PROVIDER_CAPABILITY
         not in adapter_source
         and "promotion_compensation_postcondition" not in focused_bridge_labels,
         "no_launch_path": all(
-            token not in capture_source
+            token not in capture_source + production_entry_source
             for token in (
                 "launch_native_ck3(",
                 "start_phase2_native_session_supervisor(",

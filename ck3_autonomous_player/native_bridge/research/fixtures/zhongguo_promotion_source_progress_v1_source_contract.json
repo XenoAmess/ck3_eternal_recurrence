@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "zhongguo_promotion_source_progress_v1_source_contract",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "evidence_class": "source_and_offline_fixture",
+  "product_files": [
+    "mod_zhongguo_style/common/decisions/zg361_decisions.txt",
+    "mod_zhongguo_style/common/scripted_triggers/zg361_triggers.txt",
+    "mod_zhongguo_style/common/scripted_guis/zg361_promotion_source_progress_guis.txt",
+    "mod_zhongguo_style/gui/zg361_promotion_source_bridge.gui"
+  ],
+  "native_sources": [
+    "include/xar_bridge/zhongguo_promotion_source_progress_v1.hpp",
+    "include/xar_bridge/zhongguo_promotion_source_progress_v1_mailbox.hpp",
+    "src/zhongguo_scoreboard_state_v1.cpp",
+    "src/zhongguo_scoreboard_action_v1.cpp",
+    "src/zhongguo_promotion_source_progress_v1_mailbox.cpp"
+  ],
+  "no_caller_selected_identity": true,
+  "typed_absence": "unavailable",
+  "query_thread": "paused_application_main",
+  "same_frame_double_read": true,
+  "ack_only": true,
+  "production_live_ready": false
+}

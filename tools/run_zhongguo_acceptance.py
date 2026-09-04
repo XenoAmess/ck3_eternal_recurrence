@@ -127,6 +127,9 @@ from zg361_phase2_promotion_source_checkpoint_capture import (
     CAPTURE_ARTIFACT_KIND as PROMOTION_SOURCE_CAPTURE_ARTIFACT_KIND,
     capture_promotion_source_checkpoint_v2,
 )
+from zg361_phase2_promotion_source_production_entry import (
+    enter_promotion_source_checkpoint_v1,
+)
 from zg361_phase2_loader_stage import (
     LoaderStageError,
     wait_for_phase2_seed_loader_stage,
@@ -190,6 +193,10 @@ from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
 )
 from xar_autoplayer.bridge.zhongguo_promotion_compensation_postcondition_contract import (
     QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY,
+)
+from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import (
+    ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+    QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
 )
 from xar_autoplayer.environment import (
     EnvironmentSpec,
@@ -694,6 +701,10 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "promotion_compensation_postcondition": (
         QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
     ),
+    "promotion_source_progress_transport": (
+        QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY
+    ),
+    "review_now_action_transport": ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
 }
 PHASE2_REQUIRED_QUERY_FLAGS = {
     "b2_pip_snapshot": "zhongguo_b2_pip_snapshot_v1_query_supported",
@@ -739,12 +750,21 @@ PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "active_event_state",
     "save_checkpoint",
     "current_event_context",
+    "pause_timeline",
+    "resume_timeline",
+    "bounded_timeline_speed",
+    "event_option_action_ack",
+    "promotion_source_progress_transport",
+    "review_now_action_transport",
 )
 PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS = (
     "current_event_context",
 )
 PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
     "save_checkpoint",
+    "pause_timeline",
+    "resume_timeline",
+    "bounded_timeline_speed",
 )
 PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",
@@ -19024,6 +19044,16 @@ def run_cell(
                 "console_used": False,
                 "generic_character_rebind_used": False,
             }
+            promotion_entry = enter_promotion_source_checkpoint_v1(
+                title_navigation_service,
+                timeout_seconds=(
+                    phase2_promotion_source_capture_timeout_seconds
+                ),
+            )
+            write_json(
+                artifacts / "03_promotion_source_production_entry.json",
+                promotion_entry,
+            )
             evidence = capture_promotion_source_checkpoint_v2(
                 title_navigation_service,
                 checkpoint_root=artifacts / "promotion-source-checkpoints",

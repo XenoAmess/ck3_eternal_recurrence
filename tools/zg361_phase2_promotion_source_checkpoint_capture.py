@@ -38,6 +38,9 @@ from zhongguo_phase2_source_checkpoint_provider import (
 from zhongguo_phase2_source_checkpoint_registry import (
     SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND,
 )
+from zg361_phase2_promotion_source_production_entry import (
+    enter_promotion_source_checkpoint_v1,
+)
 
 
 CAPTURE_ARTIFACT_KIND: Final = (
@@ -729,6 +732,9 @@ def build_no_launch_preflight() -> dict[str, object]:
         "exact_source_event": plan.source_event == SOURCE_EVENT_DEFINITION_KEY,
         "exact_option": SOURCE_OPTION_NUMBER == 1,
         "capture_callable": callable(capture_promotion_source_checkpoint_v2),
+        "production_entry_callable": callable(
+            enter_promotion_source_checkpoint_v1
+        ),
         "validator_callable": callable(
             validate_promotion_source_capture_artifact_v2
         ),
@@ -739,6 +745,11 @@ def build_no_launch_preflight() -> dict[str, object]:
         "result": "GREEN" if all(checks.values()) else "RED",
         "readiness": "static-ready-live-pending",
         "explicit_live_entrypoint": "capture_promotion_source_checkpoint_v2",
+        "production_entrypoint": "enter_promotion_source_checkpoint_v1",
+        "unique_live_prerequisite": (
+            "managed product-only review action -> independent B1 -> "
+            "zg361pp.146 option1 -> D+1 paused zg361pp.147 -> native save"
+        ),
         "source_event_definition_key": SOURCE_EVENT_DEFINITION_KEY,
         "source_option_number": SOURCE_OPTION_NUMBER,
         "product_session_required": True,

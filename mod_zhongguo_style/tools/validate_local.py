@@ -425,7 +425,26 @@ def check_runtime_invariants() -> None:
         re.M | re.S,
     )
     review_now_body = review_now.group("body") if review_now else ""
-    if len(re.findall(r"any_vassal\s*=\s*\{\s*count\s*>=\s*1", review_now_body)) != 2:
+    shared_review_validity = "zg361_review_now_business_valid_trigger = yes"
+    shared_review_trigger_valid = (
+        len(re.findall(re.escape(shared_review_validity), review_now_body)) == 2
+        and re.search(
+            r"zg361_review_now_business_valid_trigger\s*=\s*\{(?P<body>.*?)^\}",
+            triggers,
+            re.M | re.S,
+        )
+        is not None
+        and re.search(
+            r"any_vassal\s*=\s*\{\s*count\s*>=\s*1",
+            re.search(
+                r"zg361_review_now_business_valid_trigger\s*=\s*\{(?P<body>.*?)^\}",
+                triggers,
+                re.M | re.S,
+            ).group("body"),
+        )
+        is not None
+    )
+    if not shared_review_trigger_valid:
         err("review-now decision must accept one or more direct reviewable officials")
     if re.search(r"any_vassal\s*=\s*\{\s*count\s*>=\s*3", review_now_body):
         err("review-now decision must not exclude one-to-two-person cohorts")

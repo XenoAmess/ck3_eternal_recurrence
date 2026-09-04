@@ -10,6 +10,7 @@
 #include "xar_bridge/zhongguo_manager_governance_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_manager_subordinate_selector_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1.hpp"
@@ -22,7 +23,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 76;
+constexpr std::size_t kBaseCapabilityCount = 78;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
@@ -93,6 +94,8 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kZhongguoManagerSubordinateSelectorV1Capability,
     ck3_11906::kZhongguoScoreboardStateV1Capability,
     ck3_11906::kZhongguoScoreboardActionV1TransportCapability,
+    ck3_11906::kZhongguoPromotionSourceProgressV1TransportCapability,
+    ck3_11906::kZhongguoReviewNowActionV1TransportCapability,
     ck3_11906::kZhongguoWorkforceCollectiveSnapshotV1Capability,
     ck3_11906::kZhongguoAiOwnedCaseSnapshotV1Capability,
     ck3_11906::kZhongguoWorkforceNormalExitSnapshotV1Capability,

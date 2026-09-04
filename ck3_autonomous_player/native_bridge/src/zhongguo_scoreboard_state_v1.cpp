@@ -1,4 +1,5 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
+#include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 
 #include <windows.h>
 
@@ -1518,6 +1519,344 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     SetTopUnavailable(output, "internal_error");
     return game::ReadZhongguoScoreboardStateResultV1::unavailable;
   }
+}
+
+namespace {
+
+void InitializePromotionProgressWidget(
+    game::ZhongguoScoreboardWidgetStateV1 &widget, std::size_t index,
+    std::string_view reason) {
+  widget = {};
+  widget.stable_identity.assign(
+      kZhongguoPromotionSourceProgressV1WidgetIdentities[index]);
+  widget.runtime_name.assign(
+      kZhongguoPromotionSourceProgressV1WidgetNames[index]);
+  SetUnavailable(widget.instance_pointer, reason);
+  SetUnavailable(widget.vtable_pointer, reason);
+  SetUnavailable(widget.exists, reason);
+  UnavailableMany(reason, widget.local_visible, widget.effective_visible,
+                  widget.enabled, widget.focused, widget.modal_blocking,
+                  widget.screen_x, widget.screen_y, widget.screen_width,
+                  widget.screen_height, widget.scroll_min, widget.scroll_max,
+                  widget.scroll_value);
+}
+
+void InitializePromotionProgressEnvelope(
+    const ZhongguoPromotionSourceProgressRequestV1 &request,
+    const game::ZhongguoCaseFrameV1 *frame,
+    game::ZhongguoPromotionSourceProgressV1 &output) {
+  output = {};
+  output.request_nonce = request.request_nonce;
+  output.snapshot_revision = request.expected_snapshot_revision;
+  if (frame != nullptr) {
+    output.date_raw = frame->date_raw;
+    output.paused = frame->paused;
+    output.player_character_id = frame->played_character_id;
+  }
+  for (std::size_t index = 0; index < output.widgets.size(); ++index) {
+    InitializePromotionProgressWidget(output.widgets[index], index,
+                                      "snapshot_unavailable");
+  }
+}
+
+void SetPromotionProgressUnavailable(
+    game::ZhongguoPromotionSourceProgressV1 &output,
+    std::string_view reason, bool same_frame_ready = false) {
+  output.status = game::ZhongguoPromotionSourceProgressStatusV1::unavailable;
+  output.readiness = {};
+  output.readiness.same_frame_ready = same_frame_ready;
+  output.unavailable_reason.assign(reason);
+}
+
+bool FindPromotionProgressWidgets(
+    const ZhongguoPromotionSourceProgressNativeEnvironmentV1 &environment,
+    const ZhongguoPromotionSourceProgressAccessV1 &access,
+    std::array<void *, kZhongguoPromotionSourceProgressV1WidgetNames.size()>
+        &widgets) noexcept {
+  widgets = {};
+  void *context = nullptr;
+  void *owner = nullptr;
+  if (!ResolveGuiContextAndOwner(environment, access, context, owner)) {
+    return false;
+  }
+  if (environment.offline_fixture_function_overrides) {
+    if (access.find_fixed_widget == nullptr) return false;
+    for (std::size_t index = 0; index < widgets.size(); ++index) {
+      widgets[index] = access.find_fixed_widget(
+          access.context, kZhongguoPromotionSourceProgressV1WidgetNames[index]);
+    }
+    return true;
+  }
+  std::string window_name{
+      kZhongguoPromotionSourceProgressV1WidgetNames.front()};
+  void *window = CallFindTopLevelWidget(environment.find_top_level_widget,
+                                        owner, &window_name);
+  widgets[0] = window;
+  if (window == nullptr ||
+      !WidgetNameEquals(access, window,
+                        kZhongguoPromotionSourceProgressV1WidgetNames[0])) {
+    widgets[0] = nullptr;
+    return true;
+  }
+  for (std::size_t index = 1; index < widgets.size(); ++index) {
+    widgets[index] = FindDescendant(
+        access, window, kZhongguoPromotionSourceProgressV1WidgetNames[index]);
+  }
+  return true;
+}
+
+bool DecodePromotionProgressWidgets(
+    const ZhongguoPromotionSourceProgressAccessV1 &access,
+    const std::array<void *,
+                     kZhongguoPromotionSourceProgressV1WidgetNames.size()>
+        &pointers,
+    game::ZhongguoPromotionSourceProgressV1 &output) {
+  bool complete = true;
+  for (std::size_t index = 0; index < pointers.size(); ++index) {
+    auto &widget = output.widgets[index];
+    SetAvailable(widget.exists, pointers[index] != nullptr);
+    if (pointers[index] == nullptr) {
+      complete = false;
+      UnavailableMany("widget_not_instantiated", widget.instance_pointer,
+                      widget.vtable_pointer, widget.local_visible,
+                      widget.effective_visible, widget.enabled);
+    } else {
+      void *vtable = nullptr;
+      bool local = false;
+      bool effective = false;
+      bool enabled = false;
+      if (!ReadValue(access, pointers[index], 0, vtable) || vtable == nullptr ||
+          !ReadLocalVisible(access, pointers[index], local) ||
+          !ReadEffectiveVisible(access, pointers[index], effective) ||
+          !ReadEffectiveEnabled(access, pointers[index], enabled)) {
+        return false;
+      }
+      SetAvailable(widget.instance_pointer, FormatPointer(pointers[index]));
+      SetAvailable(widget.vtable_pointer, FormatPointer(vtable));
+      SetAvailable(widget.local_visible, local);
+      SetAvailable(widget.effective_visible, effective);
+      SetAvailable(widget.enabled, enabled);
+    }
+    SetUnavailable(widget.focused, "focus_owner_abi_not_frozen");
+    SetUnavailable(widget.modal_blocking, "modal_blocking_abi_not_frozen");
+    UnavailableMany("screen_rect_abi_not_frozen", widget.screen_x,
+                    widget.screen_y, widget.screen_width,
+                    widget.screen_height);
+    UnavailableMany("scroll_abi_not_frozen", widget.scroll_min,
+                    widget.scroll_max, widget.scroll_value);
+  }
+  output.readiness.exact_widget_set_ready = complete;
+  return true;
+}
+
+void AppendProgressJsonString(std::string &output, std::string_view value) {
+  constexpr char hex[] = "0123456789ABCDEF";
+  output.push_back('"');
+  for (const unsigned char current : value) {
+    if (current == '"' || current == '\\') {
+      output.push_back('\\');
+      output.push_back(static_cast<char>(current));
+    } else if (current < 0x20) {
+      output += "\\u00";
+      output.push_back(hex[(current >> 4U) & 0x0FU]);
+      output.push_back(hex[current & 0x0FU]);
+    } else {
+      output.push_back(static_cast<char>(current));
+    }
+  }
+  output.push_back('"');
+}
+
+template <typename Value, typename Append>
+void AppendProgressTyped(std::string &output,
+                         const game::ZhongguoTypedValueV1<Value> &field,
+                         Append append) {
+  output += "{\"status\":";
+  AppendProgressJsonString(output, field.available ? "available" : "unavailable");
+  output += ",\"value\":";
+  if (field.available && field.value.has_value()) {
+    append(output, *field.value);
+  } else {
+    output += "null";
+  }
+  output += ",\"unavailable_reason\":";
+  if (field.available) {
+    output += "null";
+  } else {
+    AppendProgressJsonString(output, field.unavailable_reason);
+  }
+  output.push_back('}');
+}
+
+void AppendProgressWidget(
+    std::string &output,
+    const game::ZhongguoScoreboardWidgetStateV1 &widget) {
+  output += "{\"stable_identity\":";
+  AppendProgressJsonString(output, widget.stable_identity);
+  output += ",\"runtime_name\":";
+  AppendProgressJsonString(output, widget.runtime_name);
+  output += ",\"instance_pointer\":";
+  AppendProgressTyped(output, widget.instance_pointer,
+                      [](std::string &target, const std::string &value) {
+                        AppendProgressJsonString(target, value);
+                      });
+  output += ",\"vtable_pointer\":";
+  AppendProgressTyped(output, widget.vtable_pointer,
+                      [](std::string &target, const std::string &value) {
+                        AppendProgressJsonString(target, value);
+                      });
+  output += ",\"exists\":";
+  AppendProgressTyped(output, widget.exists,
+                      [](std::string &target, bool value) {
+                        target += value ? "true" : "false";
+                      });
+  output += ",\"effective_visible\":";
+  AppendProgressTyped(output, widget.effective_visible,
+                      [](std::string &target, bool value) {
+                        target += value ? "true" : "false";
+                      });
+  output += ",\"enabled\":";
+  AppendProgressTyped(output, widget.enabled,
+                      [](std::string &target, bool value) {
+                        target += value ? "true" : "false";
+                      });
+  output.push_back('}');
+}
+
+} // namespace
+
+game::ReadZhongguoPromotionSourceProgressResultV1
+ReadZhongguoPromotionSourceProgressV1(
+    const ZhongguoPromotionSourceProgressNativeEnvironmentV1 &environment,
+    const ZhongguoPromotionSourceProgressAccessV1 &access,
+    const ZhongguoPromotionSourceProgressRequestV1 &request,
+    game::ZhongguoPromotionSourceProgressV1 &output) noexcept {
+  try {
+    InitializePromotionProgressEnvelope(request, nullptr, output);
+    if (request.expected_snapshot_revision == 0 ||
+        !ValidNonce(request.request_nonce) || !EnvironmentIsExact(environment)) {
+      SetPromotionProgressUnavailable(output, "unsupported_build");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    if (access.capture_frame == nullptr || access.is_main_thread == nullptr ||
+        !access.is_main_thread(access.context)) {
+      SetPromotionProgressUnavailable(output, "requires_application_main");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    if (environment.offline_fixture_function_overrides &&
+        (access.validate_character == nullptr ||
+         access.find_fixed_widget == nullptr ||
+         access.resolve_fixture_gui == nullptr)) {
+      SetPromotionProgressUnavailable(output, "fixture_access_incomplete");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    game::ZhongguoCaseFrameV1 before{};
+    if (!access.capture_frame(access.context, before)) {
+      SetPromotionProgressUnavailable(output, "state_changed");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    InitializePromotionProgressEnvelope(request, &before, output);
+    if (before.snapshot_revision != request.expected_snapshot_revision ||
+        !before.paused) {
+      SetPromotionProgressUnavailable(output, "requires_stable_paused_frame");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    if (!before.map_ready || !before.has_played_character ||
+        !before.played_character_alive || before.played_character_id <= 0 ||
+        !ValidateCharacter(environment, access, before.played_character_id)) {
+      SetPromotionProgressUnavailable(output, "played_owner_unavailable");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    output.readiness.player_binding_ready = true;
+    std::array<void *, kZhongguoPromotionSourceProgressV1WidgetNames.size()>
+        first{};
+    std::array<void *, kZhongguoPromotionSourceProgressV1WidgetNames.size()>
+        second{};
+    if (!FindPromotionProgressWidgets(environment, access, first)) {
+      SetPromotionProgressUnavailable(output, "gui_root_unavailable");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    output.readiness.gui_root_ready = true;
+    if (!DecodePromotionProgressWidgets(access, first, output)) {
+      SetPromotionProgressUnavailable(output, "widget_state_unavailable");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    if (!output.readiness.exact_widget_set_ready) {
+      SetPromotionProgressUnavailable(output, "widget_not_instantiated");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    game::ZhongguoPromotionSourceProgressV1 second_state{};
+    InitializePromotionProgressEnvelope(request, &before, second_state);
+    if (!FindPromotionProgressWidgets(environment, access, second) ||
+        !DecodePromotionProgressWidgets(access, second, second_state)) {
+      SetPromotionProgressUnavailable(output, "widget_state_unavailable");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    game::ZhongguoCaseFrameV1 after{};
+    if (!access.capture_frame(access.context, after) || before != after ||
+        first != second || output.widgets != second_state.widgets) {
+      SetPromotionProgressUnavailable(output, "state_changed");
+      return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+    }
+    output.readiness.same_frame_ready = true;
+    output.readiness.query_ready = true;
+    output.readiness.production_live_ready = false;
+    output.status = game::ZhongguoPromotionSourceProgressStatusV1::available;
+    output.unavailable_reason.clear();
+    return game::ReadZhongguoPromotionSourceProgressResultV1::available;
+  } catch (...) {
+    SetPromotionProgressUnavailable(output, "internal_error");
+    return game::ReadZhongguoPromotionSourceProgressResultV1::unavailable;
+  }
+}
+
+std::string SerializeZhongguoPromotionSourceProgressV1(
+    const game::ZhongguoPromotionSourceProgressV1 &progress) {
+  std::string output = "{\"schema_version\":1,\"status\":";
+  AppendProgressJsonString(
+      output,
+      progress.status == game::ZhongguoPromotionSourceProgressStatusV1::available
+          ? "available"
+          : "unavailable");
+  output += ",\"capability\":";
+  AppendProgressJsonString(output, kZhongguoPromotionSourceProgressV1Capability);
+  output += ",\"source_backend_id\":";
+  AppendProgressJsonString(output, kZhongguoPromotionSourceProgressV1BackendId);
+  output += ",\"request_nonce\":";
+  AppendProgressJsonString(output, progress.request_nonce);
+  output += ",\"snapshot_revision\":" +
+            std::to_string(progress.snapshot_revision);
+  output += ",\"date_raw\":" + std::to_string(progress.date_raw);
+  output += ",\"paused\":";
+  output += progress.paused ? "true" : "false";
+  output += ",\"player_character_id\":" +
+            std::to_string(progress.player_character_id);
+  output += ",\"widgets\":[";
+  for (std::size_t index = 0; index < progress.widgets.size(); ++index) {
+    if (index != 0) output.push_back(',');
+    AppendProgressWidget(output, progress.widgets[index]);
+  }
+  output += "]";
+  output += ",\"readiness\":{\"player_binding_ready\":";
+  output += progress.readiness.player_binding_ready ? "true" : "false";
+  output += ",\"gui_root_ready\":";
+  output += progress.readiness.gui_root_ready ? "true" : "false";
+  output += ",\"exact_widget_set_ready\":";
+  output += progress.readiness.exact_widget_set_ready ? "true" : "false";
+  output += ",\"same_frame_ready\":";
+  output += progress.readiness.same_frame_ready ? "true" : "false";
+  output += ",\"query_ready\":";
+  output += progress.readiness.query_ready ? "true" : "false";
+  output += ",\"production_live_ready\":";
+  output += progress.readiness.production_live_ready ? "true" : "false";
+  output += "},\"unavailable_reason\":";
+  if (progress.unavailable_reason.empty()) {
+    output += "null";
+  } else {
+    AppendProgressJsonString(output, progress.unavailable_reason);
+  }
+  output.push_back('}');
+  return output;
 }
 
 } // namespace xar::ck3_11906

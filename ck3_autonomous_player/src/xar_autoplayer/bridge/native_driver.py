@@ -174,6 +174,15 @@ from .zhongguo_promotion_compensation_postcondition_contract import (
     normalize_native_zhongguo_promotion_compensation_v1,
     parse_query_zhongguo_promotion_compensation_v1_step,
 )
+from .zhongguo_promotion_source_progress_contract import (
+    ACTIVATE_REVIEW_NOW_V1_STEP,
+    ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+    QUERY_PROMOTION_SOURCE_PROGRESS_V1_STEP,
+    QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
+    PromotionSourceProgressQueryV1,
+    ReviewNowActionRequestV1,
+    normalize_native_promotion_source_progress_v1,
+)
 from .zhongguo_projects_metrics_postcondition_contract import (
     QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY,
     QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP,
@@ -10129,6 +10138,190 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": snapshot_id,
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
+    def query_zhongguo_promotion_source_progress_v1(
+        self,
+        query: PromotionSourceProgressQueryV1,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read fixed product witnesses on one paused played-owner frame."""
+        if not isinstance(query, PromotionSourceProgressQueryV1):
+            raise ValueError("query must be a promotion source progress query")
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        played = starting.get("played_character")
+        player_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        native_revision = starting.get("native_revision")
+        date_raw = starting.get("date_raw")
+        if (
+            starting.get("paused") is not True
+            or starting.get("revision") != expected_revision
+            or query.owner_character_id != player_character_id
+            or isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or native_revision <= 0
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or connection_generation <= 0
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "promotion source progress binding is stale"
+            )
+        result = self._execute_primitive_step(
+            QUERY_PROMOTION_SOURCE_PROGRESS_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=(
+                QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_promotion_source_progress",
+            "production_capability_advertised", "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step") != QUERY_PROMOTION_SOURCE_PROGRESS_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+            or result.get("production_capability_advertised") is not False
+        ):
+            raise BridgeUnavailableError(
+                "promotion source progress returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if isinstance(query_sequence, bool) or not isinstance(
+            query_sequence, int
+        ) or query_sequence <= 0:
+            raise BridgeUnavailableError(
+                "promotion source progress lacks query_sequence"
+            )
+        try:
+            normalized = normalize_native_promotion_source_progress_v1(
+                result.get("zhongguo_promotion_source_progress"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"promotion source progress is malformed: {error}"
+            ) from error
+        ending = self.take_snapshot()
+        if not _same_paused_native_frame(starting, ending):
+            raise BridgeUnavailableError(
+                "promotion source progress crossed its paused frame"
+            )
+        return {
+            **result,
+            "zhongguo_promotion_source_progress": normalized,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
+    def activate_zhongguo_review_now_v1(
+        self,
+        request: ReviewNowActionRequestV1,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Dispatch the fixed review action; return verification-pending ACK."""
+        if not isinstance(request, ReviewNowActionRequestV1):
+            raise ValueError("request must be a review-now v1 request")
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        diagnostics = starting.get("diagnostics")
+        played = starting.get("played_character")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        player_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        if (
+            starting.get("paused") is not True
+            or starting.get("revision") != expected_revision
+            or starting.get("native_revision")
+            != request.expected_native_revision
+            or connection_generation != request.expected_connection_generation
+            or player_character_id != request.expected_player_character_id
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "review-now source binding is stale"
+            )
+        result = self._execute_primitive_step(
+            ACTIVATE_REVIEW_NOW_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+            request_fields={
+                "request_nonce": request.request_nonce,
+                "expected_public_revision": request.expected_revision,
+                "expected_native_revision": request.expected_native_revision,
+                "expected_connection_generation": (
+                    request.expected_connection_generation
+                ),
+                "expected_player_character_id": (
+                    request.expected_player_character_id
+                ),
+            },
+        )
+        expected_keys = {
+            "step", "accepted", "status", "request_nonce",
+            "action_sequence", "snapshot_revision", "rejection_reason",
+            "action_ack", "production_capability_advertised", "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step") != ACTIVATE_REVIEW_NOW_V1_STEP
+            or result.get("request_nonce") != request.request_nonce
+            or result.get("snapshot_revision")
+            != request.expected_native_revision
+            or result.get("production_capability_advertised") is not False
+        ):
+            raise BridgeUnavailableError(
+                "review-now action returned a malformed envelope"
+            )
+        accepted = result.get("accepted") is True
+        if accepted != (
+            result.get("status") == "acknowledged_verification_pending"
+            and isinstance(result.get("action_ack"), dict)
+            and result.get("rejection_reason") is None
+        ):
+            raise BridgeUnavailableError(
+                "review-now action ACK/unavailability disagrees"
+            )
+        ending = self.take_snapshot()
+        if not _same_paused_native_frame(starting, ending):
+            raise BridgeUnavailableError(
+                "review-now action crossed its paused frame"
+            )
+        return {
+            **result,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
             "queried_connection_generation": connection_generation,
         }
 

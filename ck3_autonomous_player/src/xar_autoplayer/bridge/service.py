@@ -121,6 +121,14 @@ from .zhongguo_promotion_compensation_postcondition_contract import (
     parse_query_zhongguo_promotion_compensation_v1_step,
     query_zhongguo_promotion_compensation_v1_step,
 )
+from .zhongguo_promotion_source_progress_contract import (
+    ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+    QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
+    build_review_now_action_v1_request,
+    parse_query_promotion_source_progress_v1_step,
+    query_promotion_source_progress_v1_step,
+    widget_visible,
+)
 from .zhongguo_projects_metrics_postcondition_contract import (
     QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY,
     QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP,
@@ -5058,6 +5066,158 @@ class GameplayBridgeService:
                 "expected_revision": expected_revision,
             },
         }
+
+    def query_zhongguo_promotion_source_progress_v1(
+        self,
+        request_nonce: str,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read fixed review/B1/central/PP witnesses on a paused frame."""
+        snapshot = self.snapshot()
+        diagnostics = snapshot.get("diagnostics")
+        played = snapshot.get("played_character")
+        player_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        native_revision = snapshot.get("native_revision")
+        if (
+            snapshot.get("paused") is not True
+            or snapshot.get("revision") != expected_revision
+            or isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or player_character_id <= 0
+            or isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or native_revision <= 0
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or connection_generation <= 0
+        ):
+            raise BridgeUnavailableError(
+                "promotion source progress lacks a stable paused player binding"
+            )
+        step = query_promotion_source_progress_v1_step(
+            player_character_id, request_nonce
+        )
+        query = parse_query_promotion_source_progress_v1_step(step)
+        if query is None:  # pragma: no cover - builder/parser invariant
+            raise AssertionError("promotion source progress query builder drifted")
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(capabilities, list)
+            and QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY
+            in capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend lacks the fail-closed promotion source observer"
+            )
+        executor = getattr(
+            self.driver, "query_zhongguo_promotion_source_progress_v1", None
+        )
+        if not callable(executor):
+            raise UnsupportedStepError(
+                "selected backend has no typed promotion source observer"
+            )
+        result = executor(query, expected_revision=expected_revision)
+        if (
+            not isinstance(result, dict)
+            or result.get("queried_snapshot_id") != snapshot.get("snapshot_id")
+            or result.get("queried_revision") != expected_revision
+            or result.get("queried_native_revision") != native_revision
+            or result.get("queried_connection_generation")
+            != connection_generation
+        ):
+            raise BridgeUnavailableError(
+                "promotion source progress is not bound to the requested frame"
+            )
+        progress = result.get("zhongguo_promotion_source_progress")
+        if not isinstance(progress, dict):
+            raise BridgeUnavailableError(
+                "promotion source progress payload is missing"
+            )
+        return {
+            **result,
+            "binding": {
+                "request_nonce": request_nonce,
+                "query_sequence": result.get("query_sequence"),
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": expected_revision,
+                "native_revision": native_revision,
+                "connection_generation": connection_generation,
+                "date_raw": snapshot.get("date_raw"),
+                "paused": True,
+                "player_character_id": player_character_id,
+            },
+        }
+
+    def activate_zhongguo_review_now_v1(
+        self,
+        request_nonce: str,
+        source_progress: dict[str, object],
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Dispatch exact review-now and keep success verification pending."""
+        binding = source_progress.get("binding")
+        progress = source_progress.get("zhongguo_promotion_source_progress")
+        if not isinstance(binding, dict) or not isinstance(progress, dict):
+            raise ValueError("source_progress must be a bound progress response")
+        if (
+            source_progress.get("status") != "available"
+            or not widget_visible(progress, 1)
+            or widget_visible(progress, 2)
+            or widget_visible(progress, 3)
+            or widget_visible(progress, 4)
+        ):
+            raise BridgeUnavailableError(
+                "review-now product action is not presently eligible"
+            )
+        request = build_review_now_action_v1_request(
+            request_nonce=request_nonce,
+            expected_revision=binding.get("query_sequence"),
+            expected_native_revision=binding.get("native_revision"),
+            expected_connection_generation=binding.get("connection_generation"),
+            expected_player_character_id=binding.get("player_character_id"),
+        )
+        snapshot = self.snapshot()
+        diagnostics = snapshot.get("diagnostics")
+        played = snapshot.get("played_character")
+        if (
+            snapshot.get("paused") is not True
+            or snapshot.get("revision") != expected_revision
+            or snapshot.get("snapshot_id") != binding.get("snapshot_id")
+            or snapshot.get("native_revision")
+            != request.expected_native_revision
+            or not isinstance(diagnostics, dict)
+            or diagnostics.get("connection_generation")
+            != request.expected_connection_generation
+            or not isinstance(played, dict)
+            or played.get("character_id")
+            != request.expected_player_character_id
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "review-now action source binding is stale"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(capabilities, list)
+            and ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY in capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend lacks the fail-closed review-now transport"
+            )
+        executor = getattr(self.driver, "activate_zhongguo_review_now_v1", None)
+        if not callable(executor):
+            raise UnsupportedStepError(
+                "selected backend has no typed review-now executor"
+            )
+        return executor(request, expected_revision=expected_revision)
 
     def activate_zhongguo_scoreboard_v1(
         self,

@@ -1,0 +1,81 @@
+﻿# ZhongGuo 361 promotion source production entry and read-only witnesses.
+# The action mirrors zg361_review_now_decision: the same shared business
+# trigger, the same 150 prestige cost, and the same one-shot pending flag.
+
+zg361_review_now_native_action_gui = {
+	scope = character
+
+	is_shown = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		zg361_review_now_business_valid_trigger = yes
+		prestige >= 150
+	}
+
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				zg361_is_celestial_liege_trigger = yes
+				has_game_rule = zg361_on
+				zg361_review_now_business_valid_trigger = yes
+				prestige >= 150
+			}
+			add_prestige = -150
+			add_character_flag = zg361_review_now_pending
+		}
+	}
+}
+
+zg361_promotion_source_b1_active_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zg361_review_in_progress
+		has_variable = zg361_b1_cycle_serial
+		has_variable = zg361_b1_cycle_state
+		var:zg361_b1_cycle_serial > 0
+		var:zg361_b1_cycle_state >= 1
+		var:zg361_b1_cycle_state <= 8
+	}
+}
+
+zg361_promotion_source_central_active_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = zg361_p2c_active
+		has_variable = zg361_p2c_b1_owner
+		has_variable = zg361_p2c_cycle
+		has_variable = zg361_p2c_subject
+		has_variable = zg361_p2c_stage
+		var:zg361_p2c_active = 1
+		var:zg361_p2c_b1_owner = this
+		var:zg361_p2c_cycle > 0
+		var:zg361_p2c_subject = { always = yes }
+		var:zg361_p2c_stage >= 1
+		var:zg361_p2c_stage <= 11
+	}
+}
+
+zg361_promotion_source_pp_active_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		OR = {
+			AND = {
+				has_variable = zg361_p2c_active
+				has_variable = zg361_p2c_b1_owner
+				has_variable = zg361_p2c_stage
+				var:zg361_p2c_active = 1
+				var:zg361_p2c_b1_owner = this
+				var:zg361_p2c_stage = 3
+			}
+			AND = {
+				has_variable = zg361_pp_portfolio_queue_active
+				var:zg361_pp_portfolio_queue_active = 1
+			}
+		}
+	}
+}

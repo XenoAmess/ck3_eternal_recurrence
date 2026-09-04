@@ -39,6 +39,7 @@
 #include "xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_manager_governance_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_promotion_compensation_postcondition_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_promotion_source_progress_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_projects_metrics_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_career_hc_workforce_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
@@ -407,7 +408,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
   result +=
-      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport\"";
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -3349,6 +3350,79 @@ std::string ZhongguoPromotionCompensationResultFrame(
   return result;
 }
 
+std::string ZhongguoPromotionSourceProgressResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::ZhongguoPromotionSourceProgressV1 &progress) {
+  const auto payload =
+      xar::ck3_11906::SerializeZhongguoPromotionSourceProgressV1(progress);
+  if (payload.empty()) return {};
+  const auto available =
+      progress.status ==
+      xar::game::ZhongguoPromotionSourceProgressStatusV1::available;
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"query-zhongguo-promotion-source-progress-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, available ? "available" : "unavailable");
+  result += ",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"snapshot_revision\":" + Number(progress.snapshot_revision);
+  result += ",\"zhongguo_promotion_source_progress\":" + payload;
+  result += ",\"production_capability_advertised\":";
+  result += xar::ck3_11906::
+                    kZhongguoPromotionSourceProgressV1ProductionCapabilityAdvertised
+                ? "true"
+                : "false";
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
+std::string ZhongguoReviewNowActionResultFrame(
+    std::string_view request_id, std::uint64_t action_sequence,
+    std::uint64_t snapshot_revision,
+    const xar::game::ZhongguoReviewNowActionRequestV1 &request,
+    const xar::game::ZhongguoReviewNowActionAckV1 &action) {
+  if (action_sequence == 0 || snapshot_revision == 0) return {};
+  const bool acknowledged = action.accepted && action.native_handled &&
+                            !action.postcondition_verified;
+  const auto payload = acknowledged
+                           ? xar::ck3_11906::
+                                 SerializeZhongguoReviewNowActionAckV1(action)
+                           : std::string{};
+  if ((acknowledged && payload.empty()) ||
+      (!acknowledged && action.rejection_reason.empty())) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"activate-zhongguo-review-now-v1\",\"accepted\":";
+  result += acknowledged ? "true" : "false";
+  result += ",\"status\":";
+  AppendJsonString(result, acknowledged
+                               ? "acknowledged_verification_pending"
+                               : "unavailable");
+  result += ",\"request_nonce\":";
+  AppendJsonString(result, request.request_nonce);
+  result += ",\"action_sequence\":" + Number(action_sequence);
+  result += ",\"snapshot_revision\":" + Number(snapshot_revision);
+  result += ",\"rejection_reason\":";
+  if (acknowledged) result += "null";
+  else AppendJsonString(result, action.rejection_reason);
+  result += ",\"action_ack\":" + (acknowledged ? payload : "null");
+  result += ",\"production_capability_advertised\":";
+  result += xar::ck3_11906::
+                    kZhongguoReviewNowActionV1ProductionCapabilityAdvertised
+                ? "true"
+                : "false";
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string ZhongguoProjectsMetricsResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoProjectsMetricsPostconditionV1 &snapshot) {
@@ -4338,6 +4412,8 @@ public:
     environment.permitted_executor_sexvigintary =
         &xar::ck3_11906::
             ExecuteZhongguoCareerHcWorkforceMailboxQueryV1;
+    environment.permitted_executor_septemvigintary =
+        &xar::ck3_11906::ExecuteZhongguoPromotionSourceMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -4504,6 +4580,8 @@ struct WorkerState {
   std::uint64_t zhongguo_ai_owned_case_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_workforce_normal_exit_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_promotion_compensation_query_sequence = 0;
+  std::uint64_t zhongguo_promotion_source_progress_query_sequence = 0;
+  std::uint64_t zhongguo_review_now_action_sequence = 0;
   std::uint64_t zhongguo_projects_metrics_query_sequence = 0;
   std::uint64_t zhongguo_career_hc_workforce_query_sequence = 0;
   std::uint64_t loaded_feature_manifest_query_sequence = 0;
@@ -4604,6 +4682,10 @@ void RunConnectedSession(
       state.zhongguo_workforce_normal_exit_snapshot_query_sequence;
   auto &zhongguo_promotion_compensation_query_sequence =
       state.zhongguo_promotion_compensation_query_sequence;
+  auto &zhongguo_promotion_source_progress_query_sequence =
+      state.zhongguo_promotion_source_progress_query_sequence;
+  auto &zhongguo_review_now_action_sequence =
+      state.zhongguo_review_now_action_sequence;
   auto &zhongguo_projects_metrics_query_sequence =
       state.zhongguo_projects_metrics_query_sequence;
   auto &zhongguo_career_hc_workforce_query_sequence =
@@ -5924,6 +6006,109 @@ void RunConnectedSession(
               }
             }
           }
+        } else if (step == xar::ck3_11906::
+                               kZhongguoPromotionSourceProgressV1Step) {
+          xar::ck3_11906::ZhongguoPromotionSourceProgressRequestV1 request{};
+          std::int32_t requested_owner_character_id = -1;
+          if (!xar::ck3_11906::ParseZhongguoPromotionSourceProgressRequestV1(
+                  incoming.payload, request, requested_owner_character_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo promotion source progress request is malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo promotion source progress revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.played_character_id !=
+                    requested_owner_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo promotion source progress binding changed or is not ready"));
+            } else {
+              xar::ck3_11906::
+                  ZhongguoPromotionSourceProgressMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment = xar::ck3_11906::
+                  BindZhongguoScoreboardNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                      true);
+              query.request = std::move(request);
+              query.requested_owner_character_id =
+                  requested_owner_character_id;
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteZhongguoPromotionSourceMailboxV1,
+                  &query, query.ticket);
+              if (submit !=
+                  xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "application-main promotion source progress executor is unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kZhongguoPromotionSourceProgressV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                   timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kZhongguoPromotionSourceProgressV1ExecutingWaitSliceMilliseconds);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    (query.completion == xar::ck3_11906::
+                                             ZhongguoPromotionSourceMailboxCompletionV1::
+                                                 completed_available ||
+                     query.completion == xar::ck3_11906::
+                                             ZhongguoPromotionSourceMailboxCompletionV1::
+                                                 completed_unavailable) &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoPromotionSourceProgressResultFrame(
+                      request_id,
+                      zhongguo_promotion_source_progress_query_sequence + 1,
+                      query.result);
+                  if (!response.empty())
+                    ++zhongguo_promotion_source_progress_query_sequence;
+                }
+                if (response.empty()) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      xar::ck3_11906::ZhongguoPromotionSourceFailureMessageV1(
+                          wait, query.completion, completion_snapshot_stable));
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main promotion source progress result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
         } else if (step ==
                    xar::ck3_11906::kZhongguoIncidentSnapshotV1Step) {
           xar::ck3_11906::ZhongguoIncidentSnapshotRequestV1 request{};
@@ -6587,6 +6772,121 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main ZhongGuo scoreboard action result "
                       "was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step ==
+                   xar::ck3_11906::kZhongguoReviewNowActionV1Step) {
+          xar::game::ZhongguoReviewNowActionRequestV1 request{};
+          if (!xar::ck3_11906::ParseZhongguoReviewNowActionRequestV1(
+                  incoming.payload, request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo review-now action request is malformed"));
+          } else if (request.expected_native_revision != state_revision ||
+                     request.expected_revision !=
+                         zhongguo_promotion_source_progress_query_sequence) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo review-now action source revision is stale"));
+          } else if (request.expected_connection_generation !=
+                     connection_generation) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo review-now action connection generation is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.played_character_id !=
+                    request.expected_player_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo review-now action binding changed or is not ready"));
+            } else {
+              xar::ck3_11906::ZhongguoReviewNowActionMailboxContextV1 action{};
+              action.mailbox = &g_main_thread_query_mailbox_v1;
+              action.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              action.environment = xar::ck3_11906::
+                  BindZhongguoScoreboardNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                      true);
+              action.dispatch_environment = xar::ck3_11906::
+                  BindZhongguoScoreboardActionDispatchEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                      true);
+              action.request = std::move(request);
+              action.expected_snapshot = current_snapshot;
+              action.action_access.context = &action.dispatch_environment;
+              action.action_access.dispatch =
+                  &xar::ck3_11906::DispatchZhongguoReviewNowActionNativeV1;
+              // A native handled result is dispatch ACK only.  The next
+              // separately nonced paused progress query must advance its
+              // query_sequence and expose the played-owner B1 witness.
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteZhongguoPromotionSourceMailboxV1,
+                  &action, action.ticket);
+              if (submit !=
+                  xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "application-main review-now action executor is unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, action.ticket,
+                    xar::ck3_11906::
+                        kZhongguoPromotionSourceProgressV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                   timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, action.ticket,
+                      xar::ck3_11906::
+                          kZhongguoPromotionSourceProgressV1ExecutingWaitSliceMilliseconds);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    (action.completion == xar::ck3_11906::
+                                              ZhongguoPromotionSourceMailboxCompletionV1::
+                                                  completed_available ||
+                     action.completion == xar::ck3_11906::
+                                              ZhongguoPromotionSourceMailboxCompletionV1::
+                                                  completed_unavailable) &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoReviewNowActionResultFrame(
+                      request_id, zhongguo_review_now_action_sequence + 1,
+                      state_revision, action.request, action.result);
+                  if (!response.empty()) ++zhongguo_review_now_action_sequence;
+                }
+                if (response.empty()) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      xar::ck3_11906::ZhongguoPromotionSourceFailureMessageV1(
+                          wait, action.completion, completion_snapshot_stable));
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, action.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main review-now action result was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
