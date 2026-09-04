@@ -1111,6 +1111,24 @@ runner 实现出的物理路径长度触发，**不是 effect 单文件体量回
 该故障。完整账本见
 [`phase2-promo/b3-exact-trigger-frontend-first-no-launch-2026-09-04.md`](phase2-promo/b3-exact-trigger-frontend-first-no-launch-2026-09-04.md)。
 
+### B3 seed refresh：source commit 不能替代外部产品新鲜度（2026-09-04）
+
+随后 explicit-AND seed refresh 再次提供了一个与 loader performance 分账的反例。Frontend-first 在 `109.396s` 通过
+authenticated responsive window 回退门，final PID 又完成 303 个 database nodes、`load_save` 和三次稳定的
+`paused=true / map_ready=true` native readiness；实际 mount 最长路径仅 `154`，没有 PhysFS 长路径错误。runner 最终 RED
+来自更晚的 seed fixture 首用链：31 个未初始化 `var:` 读取点各产生 fetch-unset / unset-scope / invalid-LHS 三联，共 93 条。
+
+直接原因是 `--product-source` 指向从旧 r5 诊断树派生的外部冻结产品，四个命中文件仍是 pre-`05e1410` 字节；clean
+source 虽冻结在较新 commit，也不会自动刷新独立传入的 product。current `05e1410` 在同一 trigger 容器并列
+`has_variable` 与 `var:` 的形态也不能作为下一轮准入，因为本页引用的 r8/r9 实机和
+[grammar/pitfalls.md](grammar/pitfalls.md) 已证明同级条件不提供 lazy 短路。下一轮必须先把 generator 改为外层
+`trigger_if`/等价 lazy 分支，再从 current canonical 重建 cumulative product，并在 no-launch 阶段核对关键 generated
+providers 与当前输出一致；不得仅凭 runner source commit、archive equivalence 或 projection 自洽宣称产品新鲜。
+
+该轮 warm-up/final 两 PID cleanup、source/runtime immutability 均 GREEN，审计后 CK3 进程为 0；它不生成新 seed，也不触发
+effect 文件 size A/B。完整的 93 条聚合、哈希和 claim boundary 见
+[`phase2-promo/b3-explicit-and-seed-refresh-live-red-2026-09-04.md`](phase2-promo/b3-explicit-and-seed-refresh-live-red-2026-09-04.md)。
+
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑
