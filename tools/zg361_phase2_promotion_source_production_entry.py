@@ -549,6 +549,28 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "sway_outcome.2001": {
+        # Vanilla diplomatic-misunderstanding outcome for the seed's existing
+        # sway scheme.  The event has one unavoidable acknowledgement: the
+        # typed target loses 10 opinion of the played owner and the already
+        # failed sway scheme ends.  Bind the complete live scope/option shape
+        # before accepting that bounded outcome.
+        "date_raw": 53153952,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "owner": 29037,
+            "target": 27051,
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "artifact": "artifact",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 4,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
 
 

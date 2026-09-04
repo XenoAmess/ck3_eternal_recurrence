@@ -313,3 +313,21 @@ R51 and R52 report SHA-256 values are
 and `ECD2DFA8A7870096D370663F12A7FD220A1C029FF365B1B418E2F8C7A1450F9A`.
 Promotion `.146/.147`, the four-entry registry, footage, and final videos remain
 pending.
+
+## R53: exact sway outcome interrupt
+
+R53 ran from pushed commit `8c3a649` and crossed both frontend-first and the
+final 634-file product loader. It stopped before mutation on
+`sway_outcome.2001` at `date_raw=53153952`, event instance 19. The live frame
+contained played root/owner 29037, target 27051, opaque scheme and artifact
+scopes, four saved scopes total, and one shown/enabled native option 0.
+
+The 1.19.0.6 source gives this event only that acknowledgement: target loses
+10 opinion of owner and the already failed sway scheme ends. The new contract
+therefore accepts authored option 1 only after the entire observed frame
+matches. Focused normal and optimized test runs are both 14/14 GREEN. The
+outer report and evidence-index SHA-256 values are
+`70EA021201EF013A8548BF2C0DE786221CA5E3E3B1941A8403C013B363F0BEB0`
+and `CDCE31833582F7A042B6CA9E25F30D32FAA175C87EDF8E632C91E0029524AEAC`.
+Cleanup was GREEN. The run stopped before review publication, so it does not
+yet provide live evidence for the restored current-core P2C hook.
