@@ -2,13 +2,14 @@
 
 ## Result
 
-[static-ready / formal no-launch / serial live pending] The corrected R2 candidate
-is bound to runtime source `4da52808301ba16e92f5097c69ab541f4938d587`,
+[production-live primitive / private default-OFF] The corrected R3 candidate
+is bound to runtime source `e72f9fa302811a823479635648eb008a6f5d8418`,
 the exact CK3 `1.19.0.6` executable, one native DLL, one 86-file production
 projection, and one unique cold-checkpoint command. The formal preflight
-returned `READY_TO_SERIAL_LIVE`; it did not prepare a profile, start CK3, or
-attach the injector. Before/after inventories both contained zero `ck3.exe`
-and zero `xar_ck3_bridge_injector.exe` processes.
+returned `READY_TO_SERIAL_LIVE` without starting CK3. The authorized serial
+run then returned `GREEN_ACTION_BOUND_POSTWAR_RETENTION_EXPIRY`: one private
+surrender, exact-store cleanup and two equal persisted-expiry reads completed
+in the same paused CK3 lifecycle. Final process inventory was empty.
 
 The frozen manifest is
 `ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_cleanup_expiry_current_pin_live_manifest.json`.
@@ -19,19 +20,20 @@ The future live runner is
 
 Formal artifact root:
 
-`Z:\ck3_mod_rewrite_process_assets\zg361\g2-cleanup-formal-4da5280-r2-20260904`
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-cleanup-formal-e72f9fa-r3-20260904`
 
 | Artifact | Size | SHA-256 |
 | --- | ---: | --- |
-| `no-launch-preflight.json` | 16,472 | `11D4109E387E0D4FCC4C371FFF097EB05308112C0769EB0D7B016E5E5DC2CF0C` |
-| `frozen-candidate-manifest.json` | 12,574 | `83D04FD8E3E24918ACB1C5B617401397763E87C997F7BD75E45389BE7896D19E` |
-| `live-r1-case-mismatch-report.json` | 5,461 | `F120638D4B50050A9B43687E6DA5C16C4DA32DCDA542BBFB6AFEB6358B55DF5F` |
+| `no-launch-preflight.json` | 16,417 | `ADBBC7F83D1F4B65B9364B001EB8E319689EBF20C52DF3C404383FD6CD70F616` |
+| `frozen-candidate-manifest.json` | 12,574 | `2113032784CC3ACC5DA14557C14315B0AEC9AF03CDC15654739A3C54704F96DA` |
+| `live-r3/report.json` | 214,389,654 | `44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0` |
+| `live-r3/state/native-session/driver-state.json` | 7,619,559 | `BFFBFCD9D7E7FE9524E34BC0601792C2DB68478D5EDDFD3BAA983C1156F034A0` |
 | `xar_ck3_bridge.dll` | 2,466,304 | `4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B` |
 | `xar_ck3_bridge_injector.exe` | 39,936 | `43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D` |
 | `CMakeCache.txt` | 19,223 | `2647ADE26116BB5E27017361B7F3981F3CF0FFA12D53B7D73E820C8DD14C4A3F` |
 | `native-ctest.txt` | 37,508 | `EF7001A319FC4661C6A3113283CB505F729E088CAD87884140203CE421CB192E` |
-| source ZIP | 83,905,147 | `C124711B719DD4D9967584CC9C9EE33EFD7C50460DFF48CA4D8B726479EBA273` |
-| product manifest | 15,864 | `284E162CEFB7A15A77CC11FD7DB4D7B429C4F40A8EEF2FCA453BC2C6B614BFF5` |
+| source ZIP | 83,920,174 | `DAAFC38FF30B5B5518BB9B5E4607D860768B6C6BEC43C5611B6264225A8E38B6` |
+| product manifest | 15,864 | `83F442CC27DC144AAA4E1F0E996B7D7E00B43BC0CE91226AEA17798200ABB219` |
 | product ZIP | 2,728,187 | `DC43D4376C42DB4FB5DBA41EA36BD4BE5529A3F77CE98D337A5C2A1DE4133E3A` |
 
 The product row above is informational; the committed manifest is the
@@ -59,13 +61,21 @@ uppercase. The base runner compared those strings directly and raised
 creating the session thread. The retained report has `session=null`; CK3 and
 the injector both remained at zero. This is a harness RED, not capability RED.
 
-R2 applies the minimum evidence-backed correction: both operands are validated
-and normalized as 64 hexadecimal digits before equality comparison. The
-focused regression proves lowercase/uppercase equality and still rejects a
-different digest. The fresh `live-r2` directory remains absent, so the command
-below can be executed once without reusing R1 state. The focused runner,
-preflight, receipt, cleanup, expiry-contract and `open_kaishek 37cab82`
-compatibility set is `28/28 GREEN`.
+R2 applied the minimum case-normalization correction and entered the exact
+paused war, but stopped after two successful terms queries. It had not sent a
+surrender: the private runner omitted
+`required_capability=game.command.surrender-war-N`, so the driver correctly
+rejected the literal because surrender is deliberately absent from public
+`action_steps`. MCP TaskGroup teardown wrapped that leaf as an
+`ExceptionGroup`. The immutable R2 report is retained as harness RED and is
+not cleanup/expiry capability evidence.
+
+R3 adds only the missing private capability argument and a behavior regression
+that proves the private path is used while public actions stay closed. The
+focused runner/preflight set is `8/8 GREEN`; the wider G2 selection was
+`136/137`, with the sole unrelated RED being an older ABI file-hash contract
+for `game_adapter.hpp`. The formal R3 no-launch preflight was GREEN before the
+one authorized serial execution.
 
 ## Why the candidate was rebuilt
 
@@ -78,7 +88,8 @@ tested. Canonical then advanced to `549076f`; native and mod-product bytes did
 not change, but the G2 Python runtime pin in
 `raiktor_surrender_truce_contract.py` did. The final source/product package was
 advanced again through the current `open_kaishek` pin `37cab82` and the
-observed R1 runner correction at `4da5280`. The already tested DLL remains
+observed R1 runner correction at `4da5280`, then to the private-call fix at
+`e72f9fa`. The already tested DLL remains
 byte-exact because its complete native source set is unchanged, and the
 production tree remains the same 86-file hash.
 
@@ -88,7 +99,7 @@ candidate `7d50c2d3b739221e216c5158a04b6d18bf6b3587`), but the G2 receipt
 does not query or consume a B7 promotion observation. Therefore
 `required_as_g2_runtime_input=false` and `new_freeze_required=false`. Runtime
 drift after `549076f` led to this replacement freeze. Any native, product or G2
-runtime dependency change after `4da5280` invalidates R2; native drift also
+runtime dependency change after `e72f9fa` invalidates R3; native drift also
 requires a new DLL.
 
 ## Exact build and product binding
@@ -106,7 +117,7 @@ the adapter registry, and the current B3-native source. The exact CK3 EXE
 SHA-256 remains
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 
-The release manifest is format 2, records Git source `4da5280`, and verifies
+The release manifest is format 2, records Git source `e72f9fa`, and verifies
 every one of its 86 staged files. The live runner additionally checks the
 prepared short-path production tree against the frozen tree hash before its
 session thread can start. Thus a later mod/product drift becomes pre-launch
@@ -114,7 +125,7 @@ RED rather than a run against different content.
 
 ## Fresh short path and evidence rule
 
-The unique R2 command is stored as an argv vector in the committed manifest and
+The unique R3 command is stored as an argv vector in the committed manifest and
 rendered into the preflight report. It directly restores the exact in-war
 checkpoint and driver state; there is no lobby replay and no OCR. It is still
 default-OFF and requires the explicit `--authorize-private-live` argument.
@@ -136,15 +147,23 @@ WarID disappearance is only admission to step 4. It is never converted into
 mixed-generation, unstable, or mismatched result is capability RED and must be
 retained as such.
 
-## Remaining G2 iteration
+## Authorized live result and remaining G2 iteration
 
-This package adds no production-live evidence. The next G2 step is the single
-serial action-bound live command from the manifest. A GREEN receipt would
-unlock comparison-layer consumption of observed cleanup and actual expiry, but
-would still leave public action readiness, automatic surrender, and `GEN-034`
-open. `GEN-034` also needs the wider continue/white-peace/surrender comparison,
-budget/campaign inputs, and remaining source-specific attribution before an
-automatic choice can be claimed.
+R3 completed in 176.682 seconds. It submitted exactly one
+`surrender-war-50331699` command. On the stable paused successor frame the old
+WarID was absent, then the exact reader reported all frozen generations
+`destroyed`, current soldiers `598 -> 0`, and proven boundary loss `598`.
+Two relation-store reads for opponent `36769` agreed on actual expiry raw date
+`53267736`; the receipt explicitly records `formula_derived=false` and
+`post_application_persisted_relation_state`. Ticket validation passed all 19
+checks, source checkpoint/driver-state hashes were unchanged, and cleanup
+reported `tree_gone=true` and `driver_closed=true`.
+
+This closes the same-lifecycle private cleanup/actual-expiry live gate and
+unlocks comparison-layer consumption. It does not make surrender a public
+action and does not complete automatic policy. The next G2 step is the wider
+continue/white-peace/surrender comparison using budget/campaign inputs and the
+remaining source-specific attribution needed for `GEN-034`.
 
 Current boundaries are therefore all false:
 `source_specific_attribution_ready`, `public_readiness_promoted`,
