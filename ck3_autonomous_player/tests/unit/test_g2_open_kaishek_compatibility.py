@@ -27,6 +27,9 @@ parse_postwar_cleanup_expiry_adapter_source = (
 )
 parse_ck3_profile_source = MODULE.parse_ck3_profile_source
 parse_projects_metrics_source = MODULE.parse_projects_metrics_source
+parse_promotion_compensation_candidate_source = (
+    MODULE.parse_promotion_compensation_candidate_source
+)
 parse_promotion_source_transport = MODULE.parse_promotion_source_transport
 parse_war_bound_loss_source = MODULE.parse_war_bound_loss_source
 
@@ -130,6 +133,12 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
         projects = parse_projects_metrics_source(
             checkout / projects_expected["source"]
         )
+        promotion_candidate_expected = fixture[
+            "promotion_compensation_candidate"
+        ]
+        promotion_candidate = parse_promotion_compensation_candidate_source(
+            checkout / promotion_candidate_expected["source"]
+        )
         promotion_expected = fixture["promotion_source_transport"]
         promotion = parse_promotion_source_transport(
             checkout / promotion_expected["source"]
@@ -179,6 +188,14 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             {
                 key: value
                 for key, value in promotion_expected.items()
+                if key != "source"
+            },
+        )
+        self.assertEqual(
+            promotion_candidate,
+            {
+                key: value
+                for key, value in promotion_candidate_expected.items()
                 if key != "source"
             },
         )

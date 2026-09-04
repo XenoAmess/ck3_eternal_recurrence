@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "b10b762eefaaf13eb53ded19b88a553d940aed24"
+    "open_kaishek_commit": "6b9e9c239430c5f364465f5a027d90de14464129"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -98,6 +98,23 @@
     "checkpoint_absent_invariant": "cp26_ready_p3_absent_exposes_no_p3_result",
     "default_candidate_enabled": false,
     "production_live": false
+  },
+  "promotion_compensation_candidate": {
+    "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionProfile.java",
+    "capability_id": "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
+    "root_commit": "cac1e85b616827a9ae11d755dd71f119325e6f3f",
+    "root_source_contract_sha256": "98ab5f09bb44d6d5cb1062fea64e6fdf9e41cf160f64ecd8d5a644b9086ef627",
+    "private_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1",
+    "default_switch_enabled": false,
+    "default_adapter_advertised": false,
+    "private_candidate_advertises": true,
+    "candidate_live_tested": false,
+    "public_api_changed": false,
+    "production_live": false,
+    "descriptor_read_only": true,
+    "descriptor_deterministic": true,
+    "descriptor_native_certified": false,
+    "descriptor_runtime_certified": false
   },
   "promotion_source_transport": {
     "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoPromotionSourceTransportCapabilityProfile.java",

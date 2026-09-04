@@ -139,6 +139,31 @@ _PROJECTS_BOOLEAN_CONSTANTS = {
     "default_candidate_enabled": "PROJECTS_METRICS_DEFAULT_CANDIDATE_ENABLED",
     "production_live": "PROJECTS_METRICS_PRODUCTION_LIVE",
 }
+_PROMOTION_COMPENSATION_CANDIDATE_STRING_CONSTANTS = {
+    "root_commit": "PROMOTION_COMPENSATION_ROOT_COMMIT",
+    "root_source_contract_sha256": (
+        "PROMOTION_COMPENSATION_SOURCE_CONTRACT_SHA256"
+    ),
+    "private_candidate_switch": (
+        "PROMOTION_COMPENSATION_PRIVATE_CANDIDATE_SWITCH"
+    ),
+}
+_PROMOTION_COMPENSATION_CANDIDATE_BOOLEAN_CONSTANTS = {
+    "default_switch_enabled": (
+        "PROMOTION_COMPENSATION_DEFAULT_SWITCH_ENABLED"
+    ),
+    "default_adapter_advertised": (
+        "PROMOTION_COMPENSATION_DEFAULT_ADAPTER_ADVERTISED"
+    ),
+    "private_candidate_advertises": (
+        "PROMOTION_COMPENSATION_PRIVATE_CANDIDATE_ADVERTISES"
+    ),
+    "candidate_live_tested": (
+        "PROMOTION_COMPENSATION_CANDIDATE_LIVE_TESTED"
+    ),
+    "public_api_changed": "PROMOTION_COMPENSATION_PUBLIC_API_CHANGED",
+    "production_live": "PROMOTION_COMPENSATION_PRODUCTION_LIVE",
+}
 _PROMOTION_STRING_CONSTANTS = {
     "profile_id": "ID",
     "query_capability_id": "QUERY_CAPABILITY_ID",
@@ -426,6 +451,44 @@ def parse_projects_metrics_source(path: Path) -> dict[str, str | bool]:
     return values
 
 
+def parse_promotion_compensation_candidate_source(
+    path: Path,
+) -> dict[str, str | bool]:
+    """Extract the default-OFF/private-ON provider advertisement boundary."""
+
+    source = path.read_text(encoding="utf-8")
+    values = _parse_java_constants(
+        source,
+        strings=_PROMOTION_COMPENSATION_CANDIDATE_STRING_CONSTANTS,
+        booleans=_PROMOTION_COMPENSATION_CANDIDATE_BOOLEAN_CONSTANTS,
+    )
+    capability = re.search(
+        r"PROMOTION_COMPENSATION\s*=\s*descriptor\(\s*\"([^\"]+)\"",
+        source,
+    )
+    if capability is None:
+        raise ValueError("promotion compensation capability ID is missing")
+    descriptor = re.search(
+        r"return\s+new\s+CapabilityDescriptor\(id,\s*ID,\s*"
+        r"fields,\s*invariants,\s*(true|false),\s*(true|false),\s*"
+        r"(true|false),\s*(true|false)\s*\)",
+        source,
+    )
+    if descriptor is None:
+        raise ValueError("business postcondition descriptor helper is missing")
+    flags = tuple(value == "true" for value in descriptor.groups())
+    values.update(
+        {
+            "capability_id": capability.group(1),
+            "descriptor_read_only": flags[0],
+            "descriptor_deterministic": flags[1],
+            "descriptor_native_certified": flags[2],
+            "descriptor_runtime_certified": flags[3],
+        }
+    )
+    return values
+
+
 def _parse_named_capability(
     source: str, name: str, capability_constant: str
 ) -> dict[str, object]:
@@ -673,6 +736,40 @@ def audit(
         and expected_projects.get("default_candidate_enabled") is False
         and expected_projects.get("production_live") is False
     )
+    expected_promotion_candidate = fixture.get(
+        "promotion_compensation_candidate", {}
+    )
+    checks["fixture_promotion_compensation_candidate_shape"] = set(
+        expected_promotion_candidate
+    ) == {
+        "source",
+        "capability_id",
+        "descriptor_read_only",
+        "descriptor_deterministic",
+        "descriptor_native_certified",
+        "descriptor_runtime_certified",
+        *_PROMOTION_COMPENSATION_CANDIDATE_STRING_CONSTANTS,
+        *_PROMOTION_COMPENSATION_CANDIDATE_BOOLEAN_CONSTANTS,
+    }
+    checks["fixture_promotion_compensation_candidate_bounded"] = (
+        expected_promotion_candidate.get("private_candidate_advertises")
+        is True
+        and expected_promotion_candidate.get("descriptor_read_only") is True
+        and expected_promotion_candidate.get("descriptor_deterministic")
+        is True
+        and all(
+            expected_promotion_candidate.get(key) is False
+            for key in (
+                "default_switch_enabled",
+                "default_adapter_advertised",
+                "candidate_live_tested",
+                "public_api_changed",
+                "production_live",
+                "descriptor_native_certified",
+                "descriptor_runtime_certified",
+            )
+        )
+    )
     expected_promotion = fixture.get("promotion_source_transport", {})
     checks["fixture_promotion_transport_shape"] = set(expected_promotion) == {
         "source",
@@ -782,6 +879,9 @@ def audit(
         ck3_profile_path = resolved_checkout / expected_open["ck3_profile_source"]
         war_loss_path = resolved_checkout / expected_war_loss["source"]
         projects_path = resolved_checkout / expected_projects["source"]
+        promotion_candidate_path = (
+            resolved_checkout / expected_promotion_candidate["source"]
+        )
         promotion_path = resolved_checkout / expected_promotion["source"]
         expiry_path = resolved_checkout / expected_expiry["source"]
         cleanup_path = resolved_checkout / expected_cleanup["source"]
@@ -852,6 +952,28 @@ def audit(
         except (OSError, ValueError) as error:
             checks["projects_metrics_source_parse"] = False
             errors.append(f"projects-metrics-source: {type(error).__name__}: {error}")
+        try:
+            promotion_candidate = parse_promotion_compensation_candidate_source(
+                promotion_candidate_path
+            )
+            checks["promotion_compensation_candidate_source_parse"] = True
+            _equal(
+                checks,
+                "promotion_compensation_candidate_metadata_matches",
+                promotion_candidate,
+                {
+                    key: value
+                    for key, value in expected_promotion_candidate.items()
+                    if key != "source"
+                },
+            )
+            external["promotion_compensation_candidate"] = promotion_candidate
+        except (OSError, ValueError) as error:
+            checks["promotion_compensation_candidate_source_parse"] = False
+            errors.append(
+                "promotion-compensation-candidate-source: "
+                f"{type(error).__name__}: {error}"
+            )
         try:
             promotion = parse_promotion_source_transport(promotion_path)
             checks["promotion_transport_source_parse"] = True

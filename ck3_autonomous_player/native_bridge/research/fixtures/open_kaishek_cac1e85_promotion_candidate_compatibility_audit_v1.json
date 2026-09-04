@@ -1,0 +1,95 @@
+{
+  "schema": "xar.ck3.open_kaishek_promotion_compensation_candidate_compatibility_audit.v1",
+  "status": "STATIC_READY_PRIVATE_CANDIDATE_DEFAULT_OFF_LIVE_NOT_RUN",
+  "audited_at": "2026-09-04T20:30:00+08:00",
+  "root": {
+    "canonical_commit": "cac1e85b616827a9ae11d755dd71f119325e6f3f",
+    "source_contract_sha256": "98ab5f09bb44d6d5cb1062fea64e6fdf9e41cf160f64ecd8d5a644b9086ef627"
+  },
+  "open_kaishek": {
+    "previous_commit": "b10b762eefaaf13eb53ded19b88a553d940aed24",
+    "commit": "6b9e9c239430c5f364465f5a027d90de14464129",
+    "origin_main": "6b9e9c239430c5f364465f5a027d90de14464129",
+    "default_checkout_head": "6b9e9c239430c5f364465f5a027d90de14464129",
+    "clean": true,
+    "metadata_change_required": true,
+    "parser_change_required": false,
+    "validator_change_required": false,
+    "ir_change_required": false,
+    "runtime_change_required": false,
+    "public_api_change_required": false,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 348438,
+    "jar_sha256": "10dfab8aa729d3b696c518bd532fde7535dc1605150045828b650546864bd9cf"
+  },
+  "promotion_compensation_candidate": {
+    "capability_id": "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
+    "private_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1",
+    "default_switch_enabled": false,
+    "default_adapter_advertised": false,
+    "private_candidate_advertises": true,
+    "descriptor_read_only": true,
+    "descriptor_deterministic": true,
+    "descriptor_native_certified": false,
+    "descriptor_runtime_certified": false,
+    "candidate_live_tested": false,
+    "public_api_changed": false,
+    "production_live": false,
+    "product_corpus_paths_changed": 0
+  },
+  "native_static_verification": {
+    "generator": "Visual Studio 18 2026",
+    "platform": "x64",
+    "compiler": "MSVC 19.51.36248.0",
+    "default_off": {
+      "cmake_option": false,
+      "registry_tests": 1,
+      "registry_failures": 0,
+      "test_executable_bytes": 775680,
+      "test_executable_sha256": "923af23a14d0ccfba30f69821fff91623a1f561a7883e3b436555d53a294cfe0"
+    },
+    "explicit_on": {
+      "cmake_option": true,
+      "registry_tests": 1,
+      "registry_failures": 0,
+      "test_executable_bytes": 775680,
+      "test_executable_sha256": "0ec401f0bf1b48c7e2fd7e0a7cc68cdb248ffa21487dd9b7cdec13a10092fafc"
+    }
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_fixture_preflight": "GREEN_STATIC",
+    "open_cli_smoke": "PASS",
+    "root_focused_tests_before_audit": 18,
+    "zhongguo_product_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23950036,
+      "sha256": "07b5f10093fd7c33415515fb7ddafe03b55dc9ba752620a0746b3a182f21db93"
+    },
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 63,
+      "all_checks": true
+    }
+  },
+  "execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "parser_vocabulary_changed": false,
+    "validator_profile_changed": false,
+    "ir_changed": false,
+    "open_runtime_handler_changed": false,
+    "public_capability_changed": false,
+    "production_readiness_promoted": false
+  }
+}
