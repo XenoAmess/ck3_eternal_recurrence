@@ -285,8 +285,14 @@ class FocusedB2ScenarioTests(unittest.TestCase):
 
 class FocusedB2ResultContinuationTests(unittest.TestCase):
     class Service:
-        def __init__(self, event_key: str = "zg361.4") -> None:
+        def __init__(
+            self,
+            event_key: str = "zg361.4",
+            *,
+            event_date_raw: int = 1001,
+        ) -> None:
             self.event_key = event_key
+            self.event_date_raw = event_date_raw
             self.revision = 10
             self.paused = True
             self.speed = 5
@@ -298,7 +304,7 @@ class FocusedB2ResultContinuationTests(unittest.TestCase):
                 "snapshot_id": f"native:{self.revision}",
                 "revision": self.revision,
                 "native_revision": self.revision,
-                "date_raw": 1001 if self.event_visible else 1000,
+                "date_raw": self.event_date_raw if self.event_visible else 1000,
                 "paused": self.paused,
                 "speed": self.speed,
                 "map_ready": True,
@@ -308,7 +314,14 @@ class FocusedB2ResultContinuationTests(unittest.TestCase):
                     "connection_generation": 7,
                 },
                 "active_event": (
-                    {"instance_id": 77, "option_count": 4}
+                    {
+                        "instance_id": 77,
+                        "option_count": (
+                            3
+                            if self.event_key == capture.B2_PIP_EVENT_DEFINITION_KEY
+                            else 4
+                        ),
+                    }
                     if self.event_visible
                     else None
                 ),
@@ -347,7 +360,11 @@ class FocusedB2ResultContinuationTests(unittest.TestCase):
                             "shown": True,
                             "enabled": True,
                         }
-                        for index in range(4)
+                        for index in range(
+                            3
+                            if self.event_key == capture.B2_PIP_EVENT_DEFINITION_KEY
+                            else 4
+                        )
                     ],
                 },
             }
@@ -436,6 +453,31 @@ class FocusedB2ResultContinuationTests(unittest.TestCase):
             [row["status"] for row in evidence["submissions"][:2]],
             ["submitted", "already_running"],
         )
+
+    def test_exact_b2_prompt_one_day_later_is_preserved_without_selection(self) -> None:
+        service = self.Service(
+            event_key=capture.B2_PIP_EVENT_DEFINITION_KEY,
+            event_date_raw=1000 + capture.CK3_DATE_RAW_HOURS_PER_DAY,
+        )
+        service.speed = 1
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence = capture.run_phase2_b2_result_continuation_prelude(
+                service,
+                Path(temporary),
+                baseline_binding=capture._phase2_paused_binding(
+                    service.snapshot(), label="test B2 prompt baseline"
+                ),
+                poll_interval_s=0,
+            )
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(evidence["continuation_mode"], "b2_prompt_already_visible")
+        self.assertEqual(
+            evidence["event_identity"]["event_definition_key"],
+            capture.B2_PIP_EVENT_DEFINITION_KEY,
+        )
+        self.assertEqual(evidence["post_binding"]["date_raw"], 1024)
+        self.assertEqual(service.selected, [])
+        self.assertTrue(service.paused)
 
     def test_unexpected_visible_event_fails_without_selection(self) -> None:
         service = self.Service(event_key="vanilla.999")

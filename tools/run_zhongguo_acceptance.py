@@ -202,6 +202,10 @@ NATIVE_LOADER_READINESS_TIMEOUT_S = 300.0
 NATIVE_LOADER_STABLE_OBSERVATIONS = 3
 PHASE2_PAUSED_READINESS_TIMEOUT_S = 300.0
 PHASE2_B2_PROMPT_TIMEOUT_S = 120.0
+# Native ``date_raw`` is measured in hours.  The focused B2 route permits at
+# most seven game days while waiting for the exact result/PIP event identity.
+CK3_DATE_RAW_HOURS_PER_DAY = 24
+PHASE2_B2_EVENT_WAIT_MAX_DAYS = 7
 PHASE2_SUPERVISOR_READINESS_TIMEOUT_S = 300.0
 PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S = 21600.0
 # The native bridge can bind before the CK3 window has a capturable desktop
@@ -9629,7 +9633,9 @@ def wait_for_phase2_b2_pip_prompt(
                 or isinstance(date_raw, bool)
                 or not isinstance(date_raw, int)
                 or date_raw < starting_date
-                or date_raw > starting_date + 7
+                or date_raw
+                > starting_date
+                + PHASE2_B2_EVENT_WAIT_MAX_DAYS * CK3_DATE_RAW_HOURS_PER_DAY
                 or player != expected_player
                 or pid != expected_pid
                 or generation != expected_generation
@@ -15070,14 +15076,15 @@ def run_phase2_b2_result_continuation_prelude(
     timeout_s: float = 45.0,
     poll_interval_s: float = 0.1,
 ) -> dict[str, object]:
-    """Select the real pending ``zg361.4`` result before the B2 PIP card."""
+    """Reach the B2 PIP card, selecting a pending ``zg361.4`` when needed."""
 
     evidence_path = artifacts / "05_phase2_b2_result_continuation_prelude.json"
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
         "scope": "product_only_pending_witnessed_result_continuation",
-        "expected_event_definition_key": "zg361.4",
+        "accepted_event_definition_keys": ["zg361.4", B2_PIP_EVENT_DEFINITION_KEY],
+        "continuation_mode": None,
         "selected_option_number": 1,
         "baseline_binding": baseline_binding,
         "mcp_only": True,
@@ -15172,7 +15179,9 @@ def run_phase2_b2_result_continuation_prelude(
             or isinstance(date_raw, bool)
             or not isinstance(date_raw, int)
             or date_raw < starting_date
-            or date_raw > starting_date + 7
+            or date_raw
+            > starting_date
+            + PHASE2_B2_EVENT_WAIT_MAX_DAYS * CK3_DATE_RAW_HOURS_PER_DAY
             or player != expected_player
             or pid != expected_pid
             or generation != expected_generation
@@ -15207,6 +15216,21 @@ def run_phase2_b2_result_continuation_prelude(
                 identity = query_event_definition_identity(service, snapshot)
                 evidence["event_identity"] = identity
                 observed_key = identity.get("event_definition_key")
+                if observed_key == B2_PIP_EVENT_DEFINITION_KEY:
+                    if active_event.get("option_count") != 3:
+                        fail(
+                            "phase-two B2 prompt already visible but does not "
+                            "have the exact three-option product shape"
+                        )
+                    evidence["continuation_mode"] = "b2_prompt_already_visible"
+                    evidence["post_binding"] = _phase2_paused_binding(
+                        snapshot,
+                        label="phase-two B2 already-visible prompt",
+                    )
+                    evidence["result"] = "GREEN"
+                    evidence["failure_reason"] = None
+                    write_json(evidence_path, evidence)
+                    return evidence
                 if observed_key != "zg361.4":
                     fail(
                         "phase-two B2 result-continuation encountered an "
@@ -15277,6 +15301,7 @@ def run_phase2_b2_result_continuation_prelude(
                             "date_raw_after": after.get("date_raw"),
                         }
                         evidence["post_binding"] = post_binding
+                        evidence["continuation_mode"] = "zg361_4_option_1_selected"
                         evidence["result"] = "GREEN"
                         evidence["failure_reason"] = None
                         write_json(evidence_path, evidence)
@@ -15396,10 +15421,10 @@ def run_phase2_b2_same_checkpoint_scenario(
         )
         evidence["domain_owner_contract"] = owner_contract
 
-        # The B2-specific seed is captured after the genuine witnessed-delivery
-        # receipt has been adapted into B2. Product-only continuation therefore
-        # owns exactly one remaining result card: zg361.4 option 1. No unrelated
-        # visible event is guessed or auto-cleared.
+        # Depending on the exact save boundary, the product-only seed either owns
+        # the genuine zg361.4 result card or has already advanced to the exact B2
+        # prompt. Both identities are native-query bound; no unrelated visible
+        # event is guessed or auto-cleared.
         result_continuation = run_phase2_b2_result_continuation_prelude(
             service,
             artifacts,
