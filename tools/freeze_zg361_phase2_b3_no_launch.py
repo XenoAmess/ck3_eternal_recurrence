@@ -464,6 +464,9 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     static_commands = (
+        [python, "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py", "--check"],
+        [python, "mod_zhongguo_style/tools/test_zg361_phase2_central_runtime.py"],
+        [python, "-O", "mod_zhongguo_style/tools/test_zg361_phase2_central_runtime.py"],
         [python, "mod_zhongguo_style/tools/gen_361_manager_governance_runtime.py", "--check"],
         [python, "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"],
         [python, "-O", "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"],
