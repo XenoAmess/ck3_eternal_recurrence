@@ -94,6 +94,13 @@
     "result_operation_committed": "m229_consumed_tuple_choice_and_visible_projection_consistent",
     "production_live_ready": false
   },
+  "private_candidate": {
+    "cmake_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1",
+    "default": false,
+    "advertises_read_only_query_only_when_enabled": true,
+    "production_advertisement_promoted": false,
+    "paused_live_artifact": "absent"
+  },
   "typed_negatives": {
     "source_marker_absent": "project_source_not_found",
     "source_marker_not_one": "project_source_not_ready",

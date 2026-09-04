@@ -325,6 +325,19 @@ int main() {
                "game.command.activate-zhongguo-scoreboard-v1")) {
     return Fail("known adapter advertised the unclosed scoreboard action");
   }
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
+  if (!Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-projects-metrics-postcondition-v1")) {
+    return Fail("private candidate omitted projects/metrics provider");
+  }
+#else
+  if (Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-projects-metrics-postcondition-v1")) {
+    return Fail("default adapter advertised unproven projects/metrics provider");
+  }
+#endif
   for (auto left = known.capabilities.begin(); left != known.capabilities.end();
        ++left) {
     if (std::find(left + 1, known.capabilities.end(), *left) !=

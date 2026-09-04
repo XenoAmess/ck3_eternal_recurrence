@@ -19,6 +19,7 @@ ADAPTER = (
     ROOT
     / "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp"
 )
+CMAKE = ROOT / "ck3_autonomous_player/native_bridge/CMakeLists.txt"
 SERVICE = ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py"
 CENTRAL = ROOT / "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
 CP_EVENTS = ROOT / "mod_zhongguo_style/events/zg361_credit_project_runtime_events.txt"
@@ -28,6 +29,7 @@ P3_EVENTS = (
 )
 
 CAPABILITY = "game.command.query-zhongguo-projects-metrics-postcondition-v1"
+PRIVATE_SWITCH = "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1"
 
 
 def _event_block(text: str, event_id: str, next_id: str | None) -> str:
@@ -50,6 +52,7 @@ def audit_projects_metrics_action_cell_contract(
     contract_path = root / CONTRACT.relative_to(ROOT)
     abi_path = root / ABI.relative_to(ROOT)
     adapter_path = root / ADAPTER.relative_to(ROOT)
+    cmake_path = root / CMAKE.relative_to(ROOT)
     service_path = root / SERVICE.relative_to(ROOT)
     central_path = root / CENTRAL.relative_to(ROOT)
     cp_path = root / CP_EVENTS.relative_to(ROOT)
@@ -57,6 +60,7 @@ def audit_projects_metrics_action_cell_contract(
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     abi = json.loads(abi_path.read_text(encoding="utf-8"))
     adapter = adapter_path.read_text(encoding="utf-8")
+    cmake = cmake_path.read_text(encoding="utf-8")
     service = service_path.read_text(encoding="utf-8")
     central = central_path.read_text(encoding="utf-8-sig")
     cp_event = _event_block(
@@ -70,6 +74,19 @@ def audit_projects_metrics_action_cell_contract(
     ).read_text(encoding="utf-8")
     stage_7 = central.find('(7, "metrics_delivery", "zg361_p3_open_portfolio_effect")')
     stage_8 = central.find('(8, "credit_project", "zg361_cp_open_portfolio_effect")')
+    guarded_capability = (
+        f"#if defined({PRIVATE_SWITCH})" in adapter
+        and "ck3_11906::kZhongguoProjectsMetricsPostconditionV1Capability"
+        in adapter
+    )
+    adapter_default_projection = adapter
+    guarded_start = adapter.find(f"#if defined({PRIVATE_SWITCH})")
+    if guarded_start >= 0:
+        guarded_end = adapter.find("#endif", guarded_start)
+        if guarded_end >= 0:
+            adapter_default_projection = (
+                adapter[:guarded_start] + adapter[guarded_end + len("#endif") :]
+            )
     checks = {
         "contract_identity": contract.get("kind")
         == "zg361_phase2_projects_metrics_action_cell"
@@ -87,7 +104,14 @@ def audit_projects_metrics_action_cell_contract(
         "service_reuses_existing_provider": (
             "def query_zhongguo_projects_metrics_postcondition_v1(" in service
         ),
-        "provider_capability_still_withheld": CAPABILITY not in adapter,
+        "provider_capability_still_withheld_by_default": (
+            CAPABILITY not in adapter_default_projection
+        ),
+        "private_candidate_switch_is_default_off": (
+            f"option(\n  {PRIVATE_SWITCH}" in cmake
+            and "\n  OFF\n)" in cmake[cmake.find(PRIVATE_SWITCH) :][:500]
+            and guarded_capability
+        ),
         "cp26_visible_event_is_owner_only": (
             "is_ai = no" in cp_event
             and "this = scope:zg361_cp_e_owner" in cp_event

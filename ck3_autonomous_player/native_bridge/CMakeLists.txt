@@ -65,6 +65,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1
+  "Advertise the read-only projects/metrics provider only in a private paused-live candidate"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1
   "Write the private GEN-034 truce reader result before production reset"
   OFF
@@ -321,6 +327,14 @@ if(XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1)
   # is reviewed and production promotion is made as a separate source change.
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
+  # Private candidate-only exposure of the already wired read-only provider.
+  # The default build remains unadvertised until a retained paused-live
+  # source -> action -> provider-result artifact is reviewed separately.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)

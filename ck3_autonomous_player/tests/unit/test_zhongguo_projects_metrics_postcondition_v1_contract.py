@@ -22,6 +22,7 @@ SERVICE = ROOT / "ck3_autonomous_player" / "src" / "xar_autoplayer" / "bridge" /
 MCP_SERVER = ROOT / "ck3_autonomous_player" / "src" / "xar_autoplayer" / "bridge" / "mcp_server.py"
 GAME_ADAPTER = BRIDGE / "src" / "game_adapter.cpp"
 CK3_ADAPTER = BRIDGE / "src" / "ck3_11906_adapter.cpp"
+CMAKE = BRIDGE / "CMakeLists.txt"
 CP_GENERATOR = ROOT / "mod_zhongguo_style" / "tools" / "gen_361_credit_project_runtime.py"
 P3_GENERATOR = ROOT / "mod_zhongguo_style" / "tools" / "gen_361_phase3_metrics_delivery_runtime.py"
 CP_PRODUCT = (
@@ -143,6 +144,10 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
             source_contract["shared_wiring"],
             "default_off_complete_not_advertised",
         )
+        self.assertEqual(
+            source_contract["private_candidate_switch"],
+            "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1",
+        )
         self.assertIn('\\"source_contribution_receipt_revision\\"', serializer)
         self.assertIn('\\"character_fallback_slot_rva\\"', serializer)
 
@@ -155,6 +160,7 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
         mcp_server = MCP_SERVER.read_text(encoding="utf-8")
         game_adapter = GAME_ADAPTER.read_text(encoding="utf-8")
         ck3_adapter = CK3_ADAPTER.read_text(encoding="utf-8")
+        cmake = CMAKE.read_text(encoding="utf-8")
         self.assertIn("ExecuteZhongguoProjectsMetricsMailboxQueryV1", mailbox)
         self.assertIn("permitted_executor_quattuorvigintary", shared_mailbox)
         self.assertIn("ExecuteZhongguoProjectsMetricsMailboxQueryV1", shared_bridge)
@@ -168,9 +174,29 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
         self.assertIn(
             '"zhongguo_projects_metrics_v1_query_supported": (', native_driver
         )
-        self.assertNotIn(
-            "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+        switch = "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1"
+        option = re.search(
+            rf"option\(\s*{switch}\s*.*?\s+OFF\s*\)", cmake, re.DOTALL
+        )
+        self.assertIsNotNone(option)
+        guarded_blocks = list(re.finditer(
+            rf"#if defined\({switch}\)(?P<body>.*?)#endif",
             ck3_adapter,
+            re.DOTALL,
+        ))
+        self.assertGreaterEqual(len(guarded_blocks), 2)
+        capability = (
+            "ck3_11906::kZhongguoProjectsMetricsPostconditionV1Capability"
+        )
+        capability_blocks = [
+            match for match in guarded_blocks
+            if capability in match.group("body")
+        ]
+        self.assertEqual(len(capability_blocks), 1)
+        guarded = capability_blocks[0]
+        self.assertNotIn(
+            capability,
+            ck3_adapter[: guarded.start()] + ck3_adapter[guarded.end() :],
         )
 
 

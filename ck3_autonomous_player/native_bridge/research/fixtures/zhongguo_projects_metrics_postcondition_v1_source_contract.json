@@ -26,5 +26,7 @@
     "fixture_is_not_production_live"
   ],
   "mailbox_fixed_slot": "permitted_executor_quattuorvigintary",
-  "shared_wiring": "default_off_complete_not_advertised"
+  "shared_wiring": "default_off_complete_not_advertised",
+  "private_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1",
+  "private_candidate_scope": "read_only_provider_advertisement_for_one_paused_live_attempt"
 }

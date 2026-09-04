@@ -13,6 +13,7 @@
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_result_case_snapshot_v1.hpp"
+#include "xar_bridge/zhongguo_projects_metrics_postcondition_v1.hpp"
 
 #include <array>
 #include <memory>
@@ -20,7 +21,13 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 76> kCapabilities{
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
+constexpr std::size_t kCapabilityCount = 77;
+#else
+constexpr std::size_t kCapabilityCount = 76;
+#endif
+
+constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -83,6 +90,9 @@ constexpr std::array<std::string_view, 76> kCapabilities{
     ck3_11906::kZhongguoWorkforceCollectiveSnapshotV1Capability,
     ck3_11906::kZhongguoAiOwnedCaseSnapshotV1Capability,
     ck3_11906::kZhongguoWorkforceNormalExitSnapshotV1Capability,
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
+    ck3_11906::kZhongguoProjectsMetricsPostconditionV1Capability,
+#endif
     "game.command.query-loaded-feature-manifest-v1",
     "game.command.query-pending-character-interaction-context-v1",
     "game.command.query-current-event-window-context-v1",
