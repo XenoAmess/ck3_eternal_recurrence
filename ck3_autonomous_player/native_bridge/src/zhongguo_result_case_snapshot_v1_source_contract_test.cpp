@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
            "ExecuteZhongguoResultCaseSnapshotMailboxQueryV1"},
           "mailbox") ||
       !require_tokens(adapter,
-                      {"kBaseCapabilityCount = 76",
+                      {"kBaseCapabilityCount = 78",
                        "std::array<std::string_view, kCapabilityCount>",
                        "kZhongguoResultCaseSnapshotV1Capability"},
                       "adapter") ||
