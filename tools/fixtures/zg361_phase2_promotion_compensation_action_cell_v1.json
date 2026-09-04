@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "cell_id": "zg361.phase2.promotion-compensation.action.v1",
+  "span": "promotion-compensation",
+  "readiness": "live-pending",
+  "production_live": false,
+  "formal_runner_registered": false,
+  "action": {
+    "source_event_definition_key": "zg361pp.147",
+    "option_number": 1,
+    "result_event_definition_key": "zg361comp.1",
+    "action_ack_is_business_postcondition": false
+  },
+  "source_checkpoint": {
+    "paused": true,
+    "map_ready": true,
+    "played_character_is_root_and_owner": true,
+    "required_saved_character_scopes": [
+      "zg361_pp_prompt_owner",
+      "zg361_pp_prompt_subject"
+    ],
+    "required_saved_scalar_scopes": [
+      "zg361_pp_prompt_case",
+      "zg361_pp_prompt_cycle",
+      "zg361_pp_prompt_mechanism",
+      "zg361_pp_prompt_state"
+    ],
+    "expected_option_count": 3
+  },
+  "result_checkpoint": {
+    "paused": true,
+    "map_ready": true,
+    "expected_event_definition_key": "zg361comp.1",
+    "same_connection_generation": true,
+    "same_played_owner": true,
+    "snapshot_revision_advanced": true
+  },
+  "required_bridge_capabilities": [
+    "game.command.query-current-event-window-context-v1",
+    "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
+    "game.command.select-event-option-N"
+  ],
+  "business_green_requires": [
+    "provider_ready",
+    "source_and_result_event_frames_bound",
+    "provider_owner_and_subject_match_action_request",
+    "promotion_choice_option_matches_action_request",
+    "source_result_frozen_choice_compensation_same_case",
+    "promotion_and_compensation_receipt_serials_equal",
+    "compensation_receipt_posted",
+    "action_ack_not_used_as_business_postcondition"
+  ],
+  "live_blocker": "exact-build adapter capability remains default-off until a paused source/result artifact is captured"
+}
