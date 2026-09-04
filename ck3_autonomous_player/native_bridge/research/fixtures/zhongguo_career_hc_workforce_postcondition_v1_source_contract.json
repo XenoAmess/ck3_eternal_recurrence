@@ -1,0 +1,67 @@
+{
+  "contract": "zhongguo_career_hc_workforce_postcondition_v1_source_contract",
+  "readiness": "static_and_fixture_ready_live_pending",
+  "capability": "game.command.query-zhongguo-career-hc-workforce-postcondition-v1",
+  "case_kind": "zhongguo.career-hc.workforce.route-b-no-hc-debit",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "public_inputs": [
+    "request_nonce",
+    "expected_revision",
+    "owner_character_id"
+  ],
+  "subject_binding": "paused_received_self",
+  "selected_action": {
+    "event_definition_key": "zg361we.360",
+    "route": "B",
+    "native_option_index": 1,
+    "option_number": 2,
+    "product_effect": "zg361_we_m360_route_b_effect"
+  },
+  "provider_allowlist": {
+    "subject_variables": [
+      "zg361_we_m360_receipt_owner",
+      "zg361_we_m360_receipt_subject",
+      "zg361_we_m360_receipt_cycle",
+      "zg361_we_m360_receipt_case",
+      "zg361_we_m360_receipt_state",
+      "zg361_we_m360_receipt_choice",
+      "zg361_ch_hc_authorized",
+      "zg361_ch_hc_available",
+      "zg361_ch_hc_reserved",
+      "zg361_ch_hc_occupied",
+      "zg361_ch_hc_frozen",
+      "zg361_ch_hc_reclaimed",
+      "zg361_ch_hc_conserved",
+      "zg361_we_al_external_collective_manager_cost_total"
+    ],
+    "subject_allowlist_count": 14,
+    "caller_selected_variable_names": false
+  },
+  "generated_sources": [
+    "mod_zhongguo_style/tools/gen_361_career_hc_runtime.py",
+    "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+  ],
+  "generated_outputs": [
+    "mod_zhongguo_style/common/scripted_effects/zg361_career_hc_015_n_lifecycle_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_059_al_m360_route_b_effects.txt"
+  ],
+  "required_invariants": [
+    "route_b_receipt_is_state_4_choice_2",
+    "route_b_effect_has_no_zg361_ch_hc_read_or_write",
+    "career_hc_buckets_are_nonnegative",
+    "available_plus_reserved_plus_occupied_plus_frozen_plus_reclaimed_equals_authorized",
+    "career_hc_conserved_equals_true",
+    "route_b_manager_cost_total_equals_zero",
+    "receipt_partition_and_cost_are_read_in_one_paused_frame",
+    "action_ack_is_never_a_business_postcondition",
+    "fixture_output_is_not_production_live"
+  ],
+  "integration": {
+    "cell": "tools/zg361_phase2_hc_workforce_b6_action_cell.py",
+    "service_method": "query_zhongguo_career_hc_workforce_postcondition_v1",
+    "formal_runner_registry_modified": false,
+    "native_provider_wiring": "pending",
+    "live_checkpoint": "after workforce transition fixture activation and before selecting zg361we.360 route B"
+  }
+}
