@@ -1,5 +1,11 @@
 # Promotion source capture: final cleanup-dispatch-aware no-launch freeze (`7d50c2d`)
 
+> Superseded on 2026-09-04 by the product/native dual-build freeze at
+> `1c69658`. This historical candidate is now honestly RED: canonical product
+> source, native descriptor source, and the formal runner advanced. Its own
+> source fingerprints were not refreshed or weakened; use
+> `zhongguo-promotion-source-product-native-freeze-1c69658-2026-09-04.md`.
+
 ## Result and boundary
 
 The B7 promotion-source candidate is refrozen on

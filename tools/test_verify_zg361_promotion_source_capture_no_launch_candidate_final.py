@@ -37,21 +37,29 @@ class FinalPromotionSourceNoLaunchCandidateTest(unittest.TestCase):
                 path, source_root=ROOT, running_process_names=[]
             )
 
-    def test_final_candidate_is_ready_for_one_serial_live_attempt(self) -> None:
+    def test_final_candidate_is_superseded_fail_closed(self) -> None:
         report = self.verify(self.manifest)
-        self.assertEqual(report["result"], "READY_TO_SERIAL_LIVE")
-        self.assertEqual(report["failed_checks"], [])
+        self.assertEqual(report["result"], "RED")
+        self.assertEqual(
+            report["failed_checks"],
+            [
+                "frozen_source_files_match",
+                "native_source_fingerprint_matches",
+                "supersession_is_explicit_and_fail_closed",
+                "a01_candidate_superseded_fail_closed",
+            ],
+        )
         self.assertFalse(report["ck3_started"])
         self.assertFalse(report["live_proof_claimed"])
         self.assertFalse(report["production_advertisement_ready"])
 
-    def test_a01_supersession_drift_is_exact(self) -> None:
+    def test_later_runner_drift_invalidates_historical_exact_list(self) -> None:
         report = self.verify(self.manifest)
         self.assertEqual(
             report["superseded_drifted_files"],
-            sorted(SUPERSEDED_DRIFTED_FILES),
+            sorted((*SUPERSEDED_DRIFTED_FILES, "tools/run_zhongguo_acceptance.py")),
         )
-        self.assertTrue(report["checks"]["a01_candidate_superseded_fail_closed"])
+        self.assertFalse(report["checks"]["a01_candidate_superseded_fail_closed"])
 
     def test_rejects_extends_or_supersession_tampering(self) -> None:
         changed = copy.deepcopy(self.manifest)

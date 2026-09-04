@@ -1,0 +1,196 @@
+{
+  "schema_version": 4,
+  "kind": "zg361_promotion_source_product_native_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "extends": {
+    "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_7d50c2d_20260904.json",
+    "sha256": "E778470FF5733E0E5A737F192B82B1B29F52DF2CBBAB5BA7D0BE46C40B13AE5A"
+  },
+  "source": {
+    "candidate_commit": "1c696588dfdb02f9be051220db06cf303f3f9f99",
+    "native_build_source_commit": "cac1e85b616827a9ae11d755dd71f119325e6f3f",
+    "native_source_equivalent_to_candidate": true,
+    "native_source_fingerprint_sha256": "18738E1C38A542E5B3AE8CE8179D29366DC5CE39D7DAF2C5BCBB71B8664CBB81",
+    "native_source_file_count": 298,
+    "product_source_fingerprint_sha256": "C6860A0986E30F8D78621D1F26E345C45FEA2476FEED3CBB1E7956293C2F3E29",
+    "product_source_file_count": 975,
+    "product_source_bytes": 81920855,
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "0F871589014C9FE3F0D93AA8072AD830A2AB10D9BCAD64FE5F9138AD5FA6063E",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "62B157E11777A41C4C7A7272643948187BC2F09194D9649069AAFCB0ED0673B9",
+      "ck3_autonomous_player/native_bridge/src/game_adapter_test.cpp": "104CA6A3E38A8AE73EAAF75FF252F9C7EE51FE0FE64BA5C36D744F5E2CACBE8F",
+      "tools/run_zhongguo_acceptance.py": "C737547F103D8068A64E77721A5C8EAF7FE6625AB074014F14EDF9C1DCDA4548",
+      "tools/verify_zg361_promotion_source_product_native_no_launch_candidate.py": "BCF7C742C89A170DEF0318DFEAE6361E4FAA5D61FC34B8AE6417ACEB665BF385"
+    },
+    "frozen_product_files": {
+      "mod_zhongguo_style/common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt": "BB771A488FECC9FC131A20C562AB621D432414FA864E838C35D7E28520D7E411",
+      "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py": "C7BD96044F8F5509406DDEA477DD53D8B1A54F2E056935D0731E498B4741EFCD",
+      "mod_zhongguo_style/tools/test_zg361_phase2_central_runtime.py": "409DC94F3B6B7F820BF8A466998223342BD1968BED5436726149D156C952B58B"
+    }
+  },
+  "build": {
+    "source_build_directory": "Z:\\b7pnf-cac1e85-default-r2",
+    "artifact_directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z",
+    "cmake_cache_path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z\\CMakeCache.txt",
+    "cmake_cache_bytes": 20072,
+    "cmake_cache_sha256": "6DCFB0D07DEE6F9B4A9682504A57E9C057BEE00BBF58C127AF593D48994E3268",
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge.dll",
+      "bytes": 2425856,
+      "sha256": "BB10E12E0A166B9E405FE6E712F352D178377909EF5B672D3108E68A4001F4D7"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "FBCD994CDE7934AC9B34D08551397CDBBB0677C038B098EADD9E183E3B7AC1C5"
+    },
+    "ctest_log": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z\\native-ctest.txt",
+      "bytes": 18767,
+      "sha256": "2F64ABECF0BAC21FF0DEB95186060BE3BB34B2926DB224C6EE6DC9EFBDEAB7E8"
+    },
+    "capability_flags": {
+      "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF"
+    }
+  },
+  "live_candidate_build": {
+    "source_build_directory": "Z:\\b7pnf-cac1e85-comp-on-r2",
+    "artifact_directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z",
+    "cmake_cache_path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z\\CMakeCache.txt",
+    "cmake_cache_bytes": 20071,
+    "cmake_cache_sha256": "C2F07C2ABC428DD102B135C6D2B48F4447B70B46D1C915E717680CB401018404",
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge.dll",
+      "bytes": 2425856,
+      "sha256": "1A787A9F7D8429DB7E8B4DCE3879E59FB1D793BAF5A1BAEE07D8E915F286BCD1"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "FB73AFBD8CFF64F26F2B3FA3E1C46C9B6ADCF52193403DD56D06AB8D319EB870"
+    },
+    "ctest_log": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z\\native-ctest.txt",
+      "bytes": 18767,
+      "sha256": "06391F9A741E932A22ACACE7A6C188F46B739DFADDB03CE0E652B3F3983B7CF1"
+    },
+    "capability_flags": {
+      "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "ON",
+      "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF"
+    }
+  },
+  "tests": {
+    "full_native": {
+      "result": "GREEN",
+      "passed": 94,
+      "failed": 0
+    },
+    "live_candidate_full_native": {
+      "result": "GREEN",
+      "passed": 94,
+      "failed": 0
+    }
+  },
+  "product_validation": {
+    "validate_local": "GREEN",
+    "feedback_promotion_pip_generator_check": "GREEN",
+    "compensation_generator_check": "GREEN",
+    "phase2_central_runtime_generator_check": "GREEN"
+  },
+  "build_boundary": {
+    "default_build_production_advertised": false,
+    "default_build_provider_advertised": false,
+    "live_build_candidate_only": true,
+    "live_build_production_advertised": false,
+    "live_build_provider_advertised": true,
+    "candidate_flag": "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1",
+    "candidate_flag_is_default": false
+  },
+  "supersession": {
+    "candidate_commit": "7d50c2d3b739221e216c5158a04b6d18bf6b3587",
+    "manifest_path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_7d50c2d_20260904.json",
+    "manifest_sha256": "E778470FF5733E0E5A737F192B82B1B29F52DF2CBBAB5BA7D0BE46C40B13AE5A",
+    "reason": "canonical product source advanced through the B3 explicit-AND sequence and native descriptor advertising became an explicit private candidate gate",
+    "old_candidate_result_on_current_source": "RED",
+    "old_failed_checks": [
+      "frozen_source_files_match",
+      "native_source_fingerprint_matches",
+      "supersession_is_explicit_and_fail_closed",
+      "a01_candidate_superseded_fail_closed"
+    ]
+  },
+  "live_attempt": {
+    "attempt_id": "promotion-source-product-native-live-attempt-cac1e85-20260904T104203Z",
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-live-attempt-cac1e85-20260904T104203Z",
+    "status": "absent",
+    "started": false,
+    "consumed": false
+  },
+  "live_command": {
+    "authorized_command_count": 1,
+    "runner_owns_ck3_lifecycle": true,
+    "execution_source_root": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902",
+    "seed_contract_path": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_seed_contract.json",
+    "seed_contract_sha256": "19B3451514FA4ED87836D03B5DEEB2D4AEC569A4714325E5C2164415E96563CC",
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\.venv\\Scripts\\python.exe",
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\run_zhongguo_acceptance.py",
+      "--artifacts-dir",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-live-attempt-cac1e85-20260904T104203Z",
+      "--phase2-promotion-source-checkpoint-live",
+      "--phase2-promotion-source-checkpoint-timeout-seconds",
+      "600",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-compensation-on-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_73b910c45fd64f098cc2d6791eaaba52",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_seed_contract.json"
+    ]
+  }
+}
