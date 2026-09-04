@@ -24,7 +24,7 @@ class PromotionCompensationNoLaunchPreflightTests(unittest.TestCase):
         self.assertFalse(report["ck3_started"])
         self.assertFalse(report["ck3_launch_attempted"])
         self.assertFalse(report["provider_live_result_claimed"])
-        self.assertFalse(report["formal_runner_registered"])
+        self.assertTrue(report["formal_runner_registered"])
         self.assertEqual(report["failed_checks"], [])
         self.assertTrue(all(report["checks"].values()))
         source = report["source_checkpoint"]
@@ -37,6 +37,11 @@ class PromotionCompensationNoLaunchPreflightTests(unittest.TestCase):
             "typed_unavailable_is_reader_and_schema_enforced",
             "mailbox_and_shared_bridge_are_wired",
             "driver_service_and_mcp_are_wired",
+            "formal_runner_registration_exact",
+            "formal_runner_registry_and_driver_are_wired",
+            "capture_choreography_uses_exact_action_provider",
+            "event_plan_uses_exact_source_and_result",
+            "source_checkpoint_provider_is_real_read_only",
             "ack_is_excluded_from_provider_evidence",
         ):
             self.assertTrue(report["checks"][check])

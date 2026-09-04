@@ -4,7 +4,16 @@
   "span": "promotion-compensation",
   "readiness": "live-pending",
   "production_live": false,
-  "formal_runner_registered": false,
+  "formal_runner_registered": true,
+  "runner_registration": {
+    "cell_id": "promotion_compensation_gameplay_action_and_postcondition_matrix",
+    "handler": "capture_promotion_compensation",
+    "source_checkpoint_provider": "Phase2SourceCheckpointProvider",
+    "source_checkpoint_evidence_class": "real_ck3",
+    "fixture_checkpoint_allowed": false,
+    "console_checkpoint_allowed": false,
+    "provider_capability_default_advertised": false
+  },
   "action": {
     "source_event_definition_key": "zg361pp.147",
     "option_number": 1,

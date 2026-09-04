@@ -253,6 +253,91 @@ def _enter_common_run_cell_patches(
 
 
 class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
+    def test_promotion_compensation_transition_waits_for_exact_result(self) -> None:
+        service = object()
+        action_request = {"owner_character_id": 9001}
+        action_ack = {
+            "accepted": True,
+            "status": "submitted",
+            "result": "GREEN",
+        }
+        exact_event = {
+            "binding": {"player_character_id": 9001, "revision": 42},
+            "identity": {"event_definition_key": "zg361comp.1"},
+        }
+        with mock.patch.object(
+            capture,
+            "wait_for_phase2_exact_event",
+            return_value=exact_event,
+        ) as wait:
+            result = capture._phase2_promotion_compensation_advance_to_result(
+                service, action_request, action_ack
+            )
+
+        wait.assert_called_once_with(
+            service,
+            expected_definition_key="zg361comp.1",
+            expected_player_character_id=9001,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["result_event_definition_key"], "zg361comp.1")
+        self.assertFalse(result["action_ack_is_business_postcondition"])
+        self.assertEqual(result["event"], exact_event)
+        self.assertNotIn("action_ack", result)
+
+    def test_promotion_span_is_owned_by_independent_action_cell(self) -> None:
+        service = mock.Mock()
+        service.snapshot.return_value = {"snapshot_id": "source"}
+        choreographer = mock.Mock()
+        driver = capture._Phase2AcceptanceActionSpanDriver(
+            service, event_choreographer=choreographer
+        )
+        scenario = next(
+            item
+            for item in PHASE2_CAPTURE_SCENARIOS
+            if item.handler == capture.PROMOTION_HANDLER
+        )
+        context = SimpleNamespace(seed_contract={}, artifacts=TOOLS)
+        action_evidence = {
+            "result": "GREEN",
+            "action_ack_is_business_postcondition": False,
+            "provider_postcondition": {"status": "available"},
+        }
+        with (
+            mock.patch.object(
+                capture,
+                "_phase2_paused_binding",
+                return_value={"player_character_id": 9001, "revision": 17},
+            ),
+            mock.patch.object(
+                capture,
+                "_phase2_domain_query_contract",
+                return_value={},
+            ),
+            mock.patch.object(
+                capture,
+                "run_promotion_compensation_gameplay_action_cell",
+                return_value=action_evidence,
+            ) as action_cell,
+            mock.patch.object(
+                capture,
+                "_phase2_promo_visible_scenario_surface",
+                return_value={"event_definition_key": "zg361comp.1"},
+            ),
+        ):
+            result = driver.run_span(scenario, context, {})
+
+        action_cell.assert_called_once_with(
+            service,
+            advance_to_result=(
+                capture._phase2_promotion_compensation_advance_to_result
+            ),
+        )
+        choreographer.present_post_action_events.assert_not_called()
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["action_cell"], action_evidence)
+        self.assertIn(capture.PROMOTION_HANDLER, driver.available_handlers())
+
     def test_inline_loaded_seed_handoff_binds_owner_session_before_capture(self) -> None:
         snapshot = {
             "snapshot_id": "phase2-seed:10",

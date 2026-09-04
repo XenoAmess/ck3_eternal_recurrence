@@ -74,6 +74,13 @@ MSVC 静态接线验证包含共享 DLL、provider fixture、mailbox 与主 mail
 
 所需 source checkpoint 固定为：同一 connection generation 上 paused、map-ready 的 `zg361pp.147`，played character 同时是 event root 与 owner，保存的 `zg361_pp_prompt_owner / zg361_pp_prompt_subject / zg361_pp_prompt_case / zg361_pp_prompt_cycle / zg361_pp_prompt_mechanism / zg361_pp_prompt_state` 完整，且恰有 3 个选项。随后提交 option 1，等待 `zg361comp.1` paused result event，再以推进后的 native revision 查询一次 provider；只有 provider `readiness.ready=true` 且 option number、owner/subject 与 action request 同源，才可形成 live GREEN。
 
+## Phase2 正式 runner 接入
+
+- [static-confirmed] `promotion_compensation_gameplay_action_and_postcondition_matrix` 已进入正式 Phase2 domain cell registry；promo span 的唯一 gameplay entrypoint 是 `run_promotion_compensation_gameplay_action_cell`，不再使用通用事件 ACK/快照推进器冒充业务验证。
+- [static-confirmed] source 固定为真实 `zg361pp.147` 的 option 1，result 固定为 `zg361comp.1`。source 只能来自 `Phase2SourceCheckpointProvider` 已登记的 `real_ck3` checkpoint：必须校验实文件大小、SHA-256、seed lineage、provider/UI receipt，并明确拒绝 fixture、console 和 generic character rebind。
+- [static-confirmed] source/result 必须保持同一 connection generation 与 played owner，且 snapshot revision、native revision 均推进；最终业务 GREEN 仍只由本 provider 读取到的 #147 choice receipt 与 posted compensation receipt 给出。action ACK 只证明提交已接受。
+- [live-pending] exact-build adapter 仍默认不 advertise capability；正式 preflight 会因此 fail closed。仓库内未写入或合成 checkpoint，必须取得上述真实 paused source/result artifact 后才能升级 production-live。
+
 ## open_kaishek 同步输入
 
 open_kaishek 必须同步以下语义，而不是只放宽 JSON：

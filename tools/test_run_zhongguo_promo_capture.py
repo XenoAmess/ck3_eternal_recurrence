@@ -3601,14 +3601,41 @@ def main() -> int:
             "incident_xyz_snapshot_query_matrix",
             "workforce_collective_and_three_cycle_matrix",
             "ai_owned_case_matrix",
+            "promotion_compensation_gameplay_action_and_postcondition_matrix",
             "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
         ]
         assert capture._phase2_unimplemented_domain_cells() == []
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
+            "promotion_compensation_gameplay_action_and_postcondition_matrix",
             "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
         )
+        promotion_registration = capture.PHASE2_DOMAIN_CELL_REGISTRY[
+            "promotion_compensation_gameplay_action_and_postcondition_matrix"
+        ]
+        assert promotion_registration == {
+            "implementation": "wired",
+            "handler_implementation": "wired",
+            "readiness": "live-pending",
+            "required_capability": (
+                capture.QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+            ),
+            "required_query_flag": (
+                "zhongguo_promotion_compensation_v1_query_supported"
+            ),
+            "source_checkpoint_handler": capture.PROMOTION_HANDLER,
+            "source_event_definition_key": "zg361pp.147",
+            "source_option_number": 1,
+            "result_event_definition_key": "zg361comp.1",
+            "provider_status": (
+                "native-provider-wired-default-off-live-pending"
+            ),
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "observation_only": False,
+            "gameplay_action_complete": False,
+        }
         manager_registration = capture.PHASE2_DOMAIN_CELL_REGISTRY[
             "manager_governance_gameplay_action_and_postcondition_matrix"
         ]

@@ -8,9 +8,10 @@ GREEN is emitted only after the existing native-headless
 ``zhongguo_promotion_compensation_postcondition_v1`` provider observes the
 promotion choice and the posted compensation receipt from one immutable case.
 
-This module is deliberately not registered in the formal runner yet.  Its
-default readiness remains ``live-pending`` until the provider is advertised
-by an exact-build adapter and a paused CK3 artifact exercises this cell.
+The formal Phase2 promo runner owns this cell only after restoring a qualified
+real-CK3 ``zg361pp.147`` checkpoint.  Its default readiness remains
+``live-pending`` until the provider is advertised by the exact-build adapter
+and a paused CK3 artifact exercises the source/result path.
 """
 
 from __future__ import annotations

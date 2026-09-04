@@ -109,6 +109,12 @@ from zg361_phase2_b3_manager_governance_action_cell import (
     B3ManagerGovernanceActionCellError,
     run_b3_manager_governance_gameplay_action_cell,
 )
+from zg361_phase2_promotion_compensation_action_cell import (
+    RESULT_EVENT_DEFINITION_KEY as PROMOTION_COMPENSATION_RESULT_EVENT,
+    SOURCE_EVENT_DEFINITION_KEY as PROMOTION_COMPENSATION_SOURCE_EVENT,
+    SOURCE_OPTION_NUMBER as PROMOTION_COMPENSATION_SOURCE_OPTION,
+    run_promotion_compensation_gameplay_action_cell,
+)
 from zg361_phase2_loader_stage import (
     LoaderStageError,
     wait_for_phase2_seed_loader_stage,
@@ -140,6 +146,9 @@ from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
     ZHONGGUO_RESULT_CASE_KIND_V1,
+)
+from xar_autoplayer.bridge.zhongguo_promotion_compensation_postcondition_contract import (
+    QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY,
 )
 from xar_autoplayer.environment import (
     EnvironmentSpec,
@@ -637,6 +646,9 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
         ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
     ),
     "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
+    "promotion_compensation_postcondition": (
+        QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+    ),
 }
 PHASE2_REQUIRED_QUERY_FLAGS = {
     "b2_pip_snapshot": "zhongguo_b2_pip_snapshot_v1_query_supported",
@@ -662,6 +674,9 @@ PHASE2_REQUIRED_QUERY_FLAGS = {
     "loaded_feature_manifest": "loaded_feature_manifest_v1_query_supported",
     "current_event_context": "current_event_window_context_v1_query_supported",
     "result_case_snapshot": "zhongguo_result_case_snapshot_v1_query_supported",
+    "promotion_compensation_postcondition": (
+        "zhongguo_promotion_compensation_v1_query_supported"
+    ),
 }
 PHASE2_REQUIRED_ACTION_STEPS = {
     "pause_timeline": "pause-map",
@@ -761,6 +776,26 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
         "observation_only": True,
         "gameplay_action_complete": True,
     },
+    "promotion_compensation_gameplay_action_and_postcondition_matrix": {
+        "implementation": "wired",
+        "handler_implementation": "wired",
+        "readiness": "live-pending",
+        "required_capability": (
+            QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY
+        ),
+        "required_query_flag": (
+            "zhongguo_promotion_compensation_v1_query_supported"
+        ),
+        "source_checkpoint_handler": PROMOTION_HANDLER,
+        "source_event_definition_key": PROMOTION_COMPENSATION_SOURCE_EVENT,
+        "source_option_number": PROMOTION_COMPENSATION_SOURCE_OPTION,
+        "result_event_definition_key": PROMOTION_COMPENSATION_RESULT_EVENT,
+        "provider_status": "native-provider-wired-default-off-live-pending",
+        "action_ack_is_business_postcondition": False,
+        "provider_observed_postcondition_required": True,
+        "observation_only": False,
+        "gameplay_action_complete": False,
+    },
     "manager_governance_gameplay_action_and_postcondition_matrix": {
         "implementation": "wired",
         "handler_implementation": "wired",
@@ -804,6 +839,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
     },
 }
 PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
+    "promotion_compensation_gameplay_action_and_postcondition_matrix",
     "manager_governance_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
 )
@@ -1509,11 +1545,12 @@ class _Phase2RealEventChoreographyService:
 
 
 class _Phase2AcceptanceActionSpanDriver:
-    """Expose the four already-wired acceptance action cells as promo spans."""
+    """Expose formally wired acceptance action cells as promo spans."""
 
     _HANDLERS = (
         "capture_receipt_appeal_pip",
         "capture_manager_governance",
+        PROMOTION_HANDLER,
         "capture_hc_workforce",
         "capture_incidents_operations",
     )
@@ -1569,6 +1606,11 @@ class _Phase2AcceptanceActionSpanDriver:
                 context.artifacts,
                 owner_character_id=owners["ai_owned_case_owner_character_id"],
                 subject_character_id=owners["ai_owned_case_subject_character_id"],
+            )
+        elif handler == PROMOTION_HANDLER:
+            evidence = run_promotion_compensation_gameplay_action_cell(
+                self.service,
+                advance_to_result=_phase2_promotion_compensation_advance_to_result,
             )
         elif handler == "capture_incidents_operations":
             evidence = run_phase2_incident_gameplay_action_cell(
@@ -1661,6 +1703,35 @@ def _phase2_promo_advance_to_result(
     return {"result": "GREEN", "provider_observed": True, **result}
 
 
+def _phase2_promotion_compensation_advance_to_result(
+    service: GameplayBridgeService,
+    action_request: Mapping[str, object],
+    _action_ack: Mapping[str, object],
+) -> Mapping[str, object]:
+    """Wait for the exact result event; never promote an action ACK to proof."""
+
+    owner_character_id = action_request.get("owner_character_id")
+    if (
+        isinstance(owner_character_id, bool)
+        or not isinstance(owner_character_id, int)
+        or owner_character_id <= 0
+    ):
+        raise Phase2VisualHandlerError(
+            "promotion_compensation_action_owner_unavailable"
+        )
+    result = wait_for_phase2_exact_event(
+        service,
+        expected_definition_key=PROMOTION_COMPENSATION_RESULT_EVENT,
+        expected_player_character_id=owner_character_id,
+    )
+    return {
+        "result": "GREEN",
+        "result_event_definition_key": PROMOTION_COMPENSATION_RESULT_EVENT,
+        "action_ack_is_business_postcondition": False,
+        "event": result,
+    }
+
+
 def _phase2_promo_event_postcondition(
     _service: GameplayBridgeService,
     plan: object,
@@ -1702,11 +1773,11 @@ def _make_default_phase2_promo_span_driver(
         scoreboard_action_cell=run_phase2_scoreboard_gameplay_action_cell,
         advance_to_result={
             handler: _phase2_promo_advance_to_result
-            for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER, ENDGAME_HANDLER)
+            for handler in (PROJECTS_HANDLER, ENDGAME_HANDLER)
         },
         postcondition_verifiers={
             handler: _phase2_promo_event_postcondition
-            for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER, ENDGAME_HANDLER)
+            for handler in (PROJECTS_HANDLER, ENDGAME_HANDLER)
         },
     )
     composite = CompositePhase2SpanDriver(
@@ -16520,16 +16591,17 @@ def run_phase2_live_scenario(
             ]
             write_json(evidence_path, evidence)
 
-        # The scoreboard action handler and independent provider-observed
-        # modal/page/ACL postconditions are wired.  The remaining RED is the
-        # missing pair of real product-surface checkpoints/preparer plus the
-        # intentionally unadvertised production capability; an ACK is never
-        # counted as the business postcondition.
+        # Promotion/compensation and scoreboard action handlers are wired.
+        # The remaining RED includes their intentionally unadvertised native
+        # capabilities and missing real product checkpoints; an ACK is never
+        # counted as either business postcondition.
         raise acceptance.RunnerError(
             "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
             "actions and B2/Incident/Workforce/AI-owned observations passed, "
-            "but B3 manager governance remains provider-pending until its "
-            "typed AI manager selector is bound, while the scoreboard "
+            "but promotion/compensation remains live-pending until a real "
+            "zg361pp.147 checkpoint and the default-off provider are live, "
+            "B3 manager governance remains provider-pending until its typed "
+            "AI manager selector is bound, while the scoreboard "
             "named-widget action/postcondition handler is static-wired but "
             "live-pending on its product-surface checkpoints/preparer"
         )

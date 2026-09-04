@@ -27,6 +27,12 @@ CONTRACT = (
     ROOT
     / "tools/fixtures/zg361_phase2_promotion_compensation_action_cell_v1.json"
 )
+RUNNER = ROOT / "tools/run_zhongguo_acceptance.py"
+CAPTURE_CHOREOGRAPHY = ROOT / "tools/zhongguo_phase2_capture_choreography.py"
+EVENT_CHOREOGRAPHY = ROOT / "tools/zhongguo_phase2_event_choreography.py"
+SOURCE_CHECKPOINT_PROVIDER = (
+    ROOT / "tools/zhongguo_phase2_source_checkpoint_provider.py"
+)
 ABI = (
     ROOT
     / "ck3_autonomous_player/native_bridge/research/"
@@ -127,9 +133,20 @@ def run_preflight() -> dict[str, object]:
     action = contract.get("action")
     source_checkpoint = contract.get("source_checkpoint")
     result_checkpoint = contract.get("result_checkpoint")
+    runner_registration = contract.get("runner_registration")
     required = contract.get("required_bridge_capabilities")
     source_text = SOURCE_EVENTS.read_text(encoding="utf-8-sig")
     result_text = RESULT_EVENTS.read_text(encoding="utf-8-sig")
+    runner_text = RUNNER.read_text(encoding="utf-8-sig")
+    capture_choreography_text = CAPTURE_CHOREOGRAPHY.read_text(
+        encoding="utf-8-sig"
+    )
+    event_choreography_text = EVENT_CHOREOGRAPHY.read_text(
+        encoding="utf-8-sig"
+    )
+    source_checkpoint_provider_text = SOURCE_CHECKPOINT_PROVIDER.read_text(
+        encoding="utf-8-sig"
+    )
     adapter_text = ADAPTER.read_text(encoding="utf-8-sig")
     service_text = SERVICE.read_text(encoding="utf-8-sig")
     header_text = HEADER.read_text(encoding="utf-8-sig")
@@ -171,7 +188,22 @@ def run_preflight() -> dict[str, object]:
         "readiness_is_live_pending": contract.get("readiness")
         == IMPLEMENTATION_READINESS
         and contract.get("production_live") is False
-        and contract.get("formal_runner_registered") is False,
+        and contract.get("formal_runner_registered") is True,
+        "formal_runner_registration_exact": isinstance(
+            runner_registration, Mapping
+        )
+        and runner_registration.get("cell_id")
+        == "promotion_compensation_gameplay_action_and_postcondition_matrix"
+        and runner_registration.get("handler")
+        == "capture_promotion_compensation"
+        and runner_registration.get("source_checkpoint_provider")
+        == "Phase2SourceCheckpointProvider"
+        and runner_registration.get("source_checkpoint_evidence_class")
+        == "real_ck3"
+        and runner_registration.get("fixture_checkpoint_allowed") is False
+        and runner_registration.get("console_checkpoint_allowed") is False
+        and runner_registration.get("provider_capability_default_advertised")
+        is False,
         "action_contract_exact": isinstance(action, Mapping)
         and action.get("source_event_definition_key")
         == SOURCE_EVENT_DEFINITION_KEY
@@ -211,6 +243,54 @@ def run_preflight() -> dict[str, object]:
         == "static_fixture_and_shared_wiring_ready_default_off_not_live",
         "default_adapter_remains_unadvertised": PROVIDER_CAPABILITY
         not in adapter_text,
+        "formal_runner_registry_and_driver_are_wired": all(
+            token in runner_text
+            for token in (
+                '"promotion_compensation_gameplay_action_and_postcondition_matrix"',
+                "QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY",
+                '"zhongguo_promotion_compensation_v1_query_supported"',
+                '"source_checkpoint_handler": PROMOTION_HANDLER',
+                '"source_event_definition_key": PROMOTION_COMPENSATION_SOURCE_EVENT',
+                '"source_option_number": PROMOTION_COMPENSATION_SOURCE_OPTION',
+                '"result_event_definition_key": PROMOTION_COMPENSATION_RESULT_EVENT',
+                "run_promotion_compensation_gameplay_action_cell(",
+                "advance_to_result=_phase2_promotion_compensation_advance_to_result",
+                '"action_ack_is_business_postcondition": False',
+            )
+        ),
+        "capture_choreography_uses_exact_action_provider": all(
+            token in capture_choreography_text
+            for token in (
+                '"capture_promotion_compensation"',
+                '"run_promotion_compensation_gameplay_action_cell"',
+                '"zg361pp.147"',
+                '"zg361comp.1"',
+                '"query-zhongguo-promotion-compensation-postcondition-v1"',
+            )
+        ),
+        "event_plan_uses_exact_source_and_result": all(
+            token in event_choreography_text
+            for token in (
+                '"capture_promotion_compensation"',
+                '"zg361pp.147"',
+                '"zg361comp.1"',
+            )
+        ),
+        "source_checkpoint_provider_is_real_read_only": all(
+            token in source_checkpoint_provider_text
+            for token in (
+                '"capture_promotion_compensation"',
+                'receipt.get("evidence_class") == "real_ck3"',
+                'receipt.get("fixture_used") is False',
+                'receipt.get("console_used") is False',
+                "path.is_file()",
+                "_sha256(path) == expected_sha",
+                'receipt.get("generic_character_rebind_used") is False',
+                'entry.source_event_definition_key == plan.source_event',
+            )
+        )
+        and "write_bytes" not in source_checkpoint_provider_text
+        and "write_text" not in source_checkpoint_provider_text,
         "provider_source_contract_is_frozen": (
             source_contract.get("contract")
             == "zhongguo_promotion_compensation_postcondition_v1_source_contract"
@@ -334,7 +414,7 @@ def run_preflight() -> dict[str, object]:
         "ck3_started": False,
         "ck3_launch_attempted": False,
         "provider_live_result_claimed": False,
-        "formal_runner_registered": False,
+        "formal_runner_registered": True,
         "provider_source_contract": str(SOURCE_CONTRACT.relative_to(ROOT)),
         "next_live_checkpoint": source_contract.get("next_live_checkpoint"),
         "source_checkpoint": source_checkpoint,
