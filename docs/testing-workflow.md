@@ -346,8 +346,14 @@ probe；项目校验与 `--validate-only` 现在只在存在 `video_clip`（或�
   （用户已批准，不恢复；工坊更新时 Steam 会重下复原）。
 - **CK3 PhysFS 会拒绝过长的 disposable mod 路径**：2026-08-26 的 paused event-window Attempt1 使用长度 99 的
   默认 root，`error.log` 对四个 fixture localization 路径报告 `path is over 250 characters long`，CK3 在事件出现前
-  以 code 1 退出。live runner 的默认 root/stage 必须为最长 localization 文件预留到完整路径严格小于 250 字符，并在
-  启动前按实际 root 枚举校验；默认前缀应保持短小。调用者指定的目录超限时，改用显式短 `--state-dir`，不要继续启动。
+  以 code 1 退出。2026-09-04 的 B3 frontend-first 又复现了同一边界：runner 把冻结产品投影到
+  `<artifact-root>_native_state/profile/mod-content/zhongguo_361` 后，long root 的 565-file 实际 mount 最长物理路径为
+  `264` 字符；`error.log` 点名的 `zg361_feedback_promotion_pip_038_w_m189_m190_lifecycle_effects.txt` 实际路径为
+  `255` 字符并给出同一 `path is over 250 characters long and will likely cause a crash on open`，进程约 5 秒即 code 1
+  退出、未到 Frontend。把**同一 565-file immutable product** 投影到 short root 后，最长实际路径降为 `197`，则成功
+  到达 Frontend、重启加载 `autosave` 并取得 `map_ready=true`。因此 live runner 的默认 root/stage 必须为最长内容文件
+  预留到完整路径严格小于 250 字符；启动前要枚举最终 materialized mount 的完整物理路径，不能只校验 source 或 artifact
+  目录本身。调用者指定的目录超限时，改用显式短 `--state-dir` / artifact root，不要继续启动。
 - **事件脚本 flag 必须按 exact parser token 映射，不能用邻近 GUI 字段猜名**：同日 Attempt2 的 path gate 以最长
   243 字符通过，generic event 真实加载且日志没有 unknown/`is_cancel_option` parser error，但旧 bridge 把
   `CEventOption+0x478` / `CEventWindowData+0x2C` 的 `timeout_option` index 错标为 cancel，导致 authored
@@ -1079,6 +1085,31 @@ provider 承载 `zg361_p2c_mark_lane_busy_effect` / `zg361_p2c_schedule_pump_eff
 违规 0。以后只有在同一候选已经排除更早 parser/material/call-graph 首错，且剩余症状是纯 loader-performance RED 时，才执行
 只改变顶层定义文件边界的同条件 A/B。B3 完整证据见
 [`phase2-promo/b3-manager-first-live-startup-red-2026-09-04.md`](phase2-promo/b3-manager-first-live-startup-red-2026-09-04.md)。
+
+同日 frontend-first autosave 对同一显式 `AND` immutable product 又提供了物理路径单变量对照。long artifact root
+`Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-frontend-first-1beb8d1-20260904T101416Z\artifacts-live`
+实现出的 native mount 含 565 个文件，最长完整路径为 `264`；CK3 对其中一条 `255` 字符路径发出 PhysFS `over 250`
+错误，warm-up 在约 `5.16s` 内退出且没有 Frontend。该轮 outer/cell/final-error SHA-256 分别为
+`6BD454F9DA8023DC07EAA9B45D10D88DAF8A0BF7B91118A936CC27FCB1706F92`、
+`A338CFADA9D2978B2DA1C4DFE14CC58257EF2256F1D474BC7A239CB662EABB75`、
+`290F7205483A4DECC74A9BF513B1842007FBC4F752F00E74700EB3980A2450E6`。该 artifact 必须保留为
+**harness/path-length RED**；因启动/session 未建立，其 native cleanup 也是 RED，不能隐藏为产品 cleanup GREEN。
+
+short-root replay `Z:\ck3_mod_rewrite_process_assets\zg361\b3j-ff-1817` 未修改产品内容、定义边界或 565-file 集合，只把
+实际 mount 最长路径降为 `197`。warm-up 在 `121.449s` 到达 Frontend，首 PID 受管退出；同一 pipe 的第二 PID 成功加载
+已安装 `autosave.ck3`（`53,517,622 B`，SHA-256
+`BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733`），随后 loader readiness 为 GREEN、paused
+snapshot `map_ready=true`，native cleanup 与 protected storage 均通过。outer/cell SHA-256 为
+`FC8AF93D63B0201198B26BA00935FEE312702CCD2B35CB5044F401070272DD3E` /
+`4ED6C3B0FBB96598D6C35103B48720F695C41C14678BE4A20EA4794E65AB79F2`；native session/readiness SHA-256 为
+`CDDB8388B8962F1F8967BEAF5C22B0B229D533B1F3494AC940D619E633017C84` /
+`3C222B0008386DA39C5E4C0A36E66F58C50B2F90A938B5D9129667CCC0BE1597`。
+
+short-root 外层最终仍在更晚的 MCP capability gate 因缺少 promotion-compensation/result-case query 而 RED，所以它只关闭
+`Frontend → autosave → paused map` 的启动链，不是完整 B3 acceptance 或 gameplay GREEN。这组对照证明 long-root 失败由
+runner 实现出的物理路径长度触发，**不是 effect 单文件体量回归**；同一产品在不拆文件的情况下仅缩短 mount root 即跨过
+该故障。完整账本见
+[`phase2-promo/b3-exact-trigger-frontend-first-no-launch-2026-09-04.md`](phase2-promo/b3-exact-trigger-frontend-first-no-launch-2026-09-04.md)。
 
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
