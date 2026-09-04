@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_hc_workforce_route_b_checkpoint",
+  "span_id": "phase2_hc_workforce",
+  "producer_key": "hc-workforce",
+  "readiness": "static-ready-live-pending",
+  "route": {
+    "event_definition_key": "zg361we.360",
+    "route": "B",
+    "native_option_index": 1,
+    "option_number": 2
+  },
+  "module": "tools/zg361_phase2_hc_workforce_route_b_checkpoint.py",
+  "entrypoints": {
+    "projection_binding": "bind_current_cumulative_projection",
+    "freeze": "freeze_route_b_pre_action_checkpoint",
+    "postcondition": "run_route_b_and_collect_postconditions",
+    "restore": "restore_route_b_pre_action_checkpoint",
+    "career_hook": "query_career_hc_if_available"
+  },
+  "service_methods": [
+    "capabilities",
+    "snapshot",
+    "query_current_event_window_context_v1",
+    "select_event_option",
+    "query_zhongguo_workforce_collective_snapshot_v1",
+    "execute_step",
+    "save_checkpoint",
+    "restore_checkpoint"
+  ],
+  "checkpoint_contract": {
+    "stage": "after typed subject-to-owner transition exposes real zg361we.360 and before selecting option B",
+    "requires_current_cumulative_product_tree_hash": true,
+    "requires_transition_fixture_tree_hash": true,
+    "requires_native_checkpoint_path_size_sha256_date_owner": true,
+    "archives_verified_bytes_before_action": true,
+    "rejects_existing_archive_target": true,
+    "restore_requires_same_size_sha256_date_owner_event": true
+  },
+  "case_identity_contract": {
+    "owner_subject_observed_before_save": true,
+    "cycle_case_available_before_action": false,
+    "cycle_case_unavailability_reason": "generic event saved scopes expose existence but not numeric scalar identity",
+    "cycle_case_source": "post-action query_zhongguo_workforce_collective_snapshot_v1",
+    "restored_replay_must_match_owner_subject_cycle_case": true
+  },
+  "postcondition_contract": {
+    "workforce_provider": "query_zhongguo_workforce_collective_snapshot_v1",
+    "required_fact_count": 13,
+    "action_ack_is_business_postcondition": false,
+    "career_hc_capability": "game.command.query-zhongguo-career-hc-workforce-postcondition-v1",
+    "career_hc_policy": "query only when capability is advertised; otherwise record typed not_available without fabricating values",
+    "same_paused_revision_join_required": true
+  },
+  "existing_runner_seam": {
+    "runner": "tools/run_zhongguo_acceptance.py",
+    "fixture_install": "install_phase2_workforce_action_fixture",
+    "subject_to_owner_transition": "select_typed_fixture_player_transition",
+    "real_event_wait": "wait_for_phase2_exact_event",
+    "formal_registry_modified": false
+  },
+  "no_launch_boundary": {
+    "preflight_starts_ck3": false,
+    "preflight_instantiates_service": false,
+    "preflight_saves_or_restores": false,
+    "checkpoint_captured": false,
+    "postcondition_observed": false,
+    "live_claimed": false
+  }
+}
