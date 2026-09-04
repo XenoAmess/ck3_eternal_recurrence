@@ -16,6 +16,7 @@ sys.path.insert(0, str(TOOLS))
 from zg361_phase2_cross_cycle_endgame_action_cell import (  # noqa: E402
     CrossCycleEndgameCellError,
     EndgameSubjectProofSession,
+    PRODUCTION_SUBJECT_TRANSITION_MODE,
     run_cross_cycle_endgame_action_cell,
 )
 from zg361_phase2_cross_cycle_endgame_preflight import (  # noqa: E402
@@ -203,10 +204,20 @@ class FakeOwnerService:
 
 
 class FakeSubjectService:
-    def __init__(self, *, due_cycle: int = CYCLE + 1, status: str = "ready") -> None:
+    def __init__(
+        self,
+        *,
+        due_cycle: int = CYCLE + 1,
+        status: str = "ready",
+        owner_is_ai: bool = True,
+        b1_cycle: int = CYCLE,
+    ) -> None:
         self.due_cycle = due_cycle
         self.status = status
+        self.owner_is_ai = owner_is_ai
+        self.b1_cycle = b1_cycle
         self.queries: list[dict[str, object]] = []
+        self.ai_owner_queries: list[dict[str, object]] = []
 
     def snapshot(self) -> dict[str, object]:
         return {
@@ -272,6 +283,64 @@ class FakeSubjectService:
             "readiness": {"ready": True},
         }
 
+    def query_zhongguo_ai_owned_case_snapshot_v1(
+        self,
+        owner_character_id: int,
+        subject_character_id: int,
+        request_nonce: str,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        self.ai_owner_queries.append(
+            {
+                "owner_character_id": owner_character_id,
+                "subject_character_id": subject_character_id,
+                "request_nonce": request_nonce,
+                "expected_revision": expected_revision,
+            }
+        )
+        return {
+            "status": "available",
+            "case_kind": "zhongguo.b1.performance",
+            "unavailable_reason": None,
+            "player_character_id": SUBJECT,
+            "subject_character_id": SUBJECT,
+            "requested_owner_character_id": OWNER,
+            "binding": {
+                "snapshot_id": "subject:result:30",
+                "revision": 30,
+                "native_revision": 130,
+                "date_raw": RESULT_DATE,
+                "player_character_id": SUBJECT,
+                "subject_character_id": SUBJECT,
+                "owner_character_id": OWNER,
+            },
+            "owner_eligibility": {
+                "owner_character_id": available(OWNER),
+                "owner_alive": available(True),
+                "owner_is_ai": available(self.owner_is_ai),
+                "government_key": available("celestial_government"),
+                "subject_immediate_liege_character_id": available(OWNER),
+                "subject_is_direct_subject": available(True),
+                "authorized": available(True),
+            },
+            "case": {
+                "owner_character_id": available(OWNER),
+                "subject_character_id": available(SUBJECT),
+                "cycle_serial": available(self.b1_cycle),
+                "state": available(8),
+                "active": available(False),
+            },
+            "route": {
+                "kind": available("authorized_ai_background"),
+                "visible_event_allowed": available(False),
+                "owner_is_ai": available(True),
+                "manager_eligible": available(True),
+                "direct_subject_eligible": available(True),
+            },
+            "readiness": {"ready": True},
+        }
+
 
 def completion(service: FakeOwnerService, _binding: object) -> dict[str, object]:
     service.complete()
@@ -309,6 +378,36 @@ def subject_session(
             "restored_checkpoint_sha256": CHECKPOINT_SHA,
             "save_lineage_id": LINEAGE,
             "typed_event_fixture_used": True,
+            "business_state_fixture_used": False,
+            "console_used": False,
+            "generic_character_rebind_used": False,
+        },
+    )
+
+
+def production_subject_session(
+    result: object,
+    *,
+    owner_is_ai: bool = True,
+    b1_cycle: int = CYCLE,
+) -> EndgameSubjectProofSession:
+    return EndgameSubjectProofSession(
+        service=FakeSubjectService(owner_is_ai=owner_is_ai, b1_cycle=b1_cycle),
+        transition_receipt={
+            "result": "GREEN",
+            "transition_mode": PRODUCTION_SUBJECT_TRANSITION_MODE,
+            "checkpoint_restore_observed": True,
+            "action_ack_only": False,
+            "from_player_character_id": OWNER,
+            "to_player_character_id": SUBJECT,
+            "date_raw": RESULT_DATE,
+            "restored_checkpoint_sha256": CHECKPOINT_SHA,
+            "subject_checkpoint_sha256": "D" * 64,
+            "save_lineage_id": LINEAGE,
+            "product_only": True,
+            "official_ui_switch_observed": True,
+            "fixture_used": False,
+            "typed_event_fixture_used": False,
             "business_state_fixture_used": False,
             "console_used": False,
             "generic_character_rebind_used": False,
@@ -364,6 +463,61 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
             36101,
         )
         self.assertEqual(service.selections, [(1, 3561, 10)])
+
+    def test_product_subject_checkpoint_requires_workforce_and_ai_owner_providers(self) -> None:
+        service = FakeOwnerService()
+        result = run_cross_cycle_endgame_action_cell(
+            service,
+            source_checkpoint_restore=source_restore(),
+            completion_executor=completion,
+            subject_session_factory=production_subject_session,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertTrue(result["production_subject_checkpoint_used"])
+        self.assertEqual(
+            result["subject_transition_receipt"]["transition_mode"],
+            PRODUCTION_SUBJECT_TRANSITION_MODE,
+        )
+        self.assertFalse(
+            result["subject_transition_receipt"]["typed_event_fixture_used"]
+        )
+        self.assertTrue(result["production_ai_owner_proof"]["owner_is_ai"])
+        self.assertEqual(
+            result["production_ai_owner_proof"]["terminal_cycle_serial"], CYCLE
+        )
+        self.assertTrue(result["provider_observed_postcondition"])
+
+    def test_product_subject_checkpoint_rejects_non_ai_owner(self) -> None:
+        service = FakeOwnerService()
+        with self.assertRaises(CrossCycleEndgameCellError) as caught:
+            run_cross_cycle_endgame_action_cell(
+                service,
+                source_checkpoint_restore=source_restore(),
+                completion_executor=completion,
+                subject_session_factory=lambda result: production_subject_session(
+                    result, owner_is_ai=False
+                ),
+            )
+        self.assertEqual(
+            caught.exception.reason_code,
+            "production_ai_owner_provider_unavailable",
+        )
+
+    def test_product_subject_checkpoint_rejects_wrong_b1_cycle(self) -> None:
+        service = FakeOwnerService()
+        with self.assertRaises(CrossCycleEndgameCellError) as caught:
+            run_cross_cycle_endgame_action_cell(
+                service,
+                source_checkpoint_restore=source_restore(),
+                completion_executor=completion,
+                subject_session_factory=lambda result: production_subject_session(
+                    result, b1_cycle=CYCLE - 1
+                ),
+            )
+        self.assertEqual(
+            caught.exception.reason_code,
+            "production_ai_owner_provider_unavailable",
+        )
 
     def test_ack_only_completion_is_rejected(self) -> None:
         service = FakeOwnerService()
@@ -493,7 +647,18 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
             contract["service_contract"]["same_player_same_frame_join_supported"]
         )
         self.assertEqual(
-            len(contract["current_audit"]["why_live_pending"]), 3
+            contract["production_subject_checkpoint_seam"]["transition_mode"],
+            PRODUCTION_SUBJECT_TRANSITION_MODE,
+        )
+        self.assertFalse(
+            contract["production_subject_checkpoint_seam"]["fixture_used"]
+        )
+        self.assertEqual(
+            contract["service_contract"]["production_owner_ai_query"],
+            "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+        )
+        self.assertEqual(
+            len(contract["current_audit"]["why_live_pending"]), 4
         )
 
 

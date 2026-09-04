@@ -44,10 +44,32 @@
     "business_state_fixture_used": false,
     "ack_or_visibility_can_green": false
   },
+  "production_subject_checkpoint_seam": {
+    "module": "zg361_phase2_cross_cycle_endgame_production_subject",
+    "bind": "bind_product_subject_checkpoint_session",
+    "transition_mode": "ck3_single_player_switch_character_ui",
+    "input": "materialized product-only paused checkpoint captured after the ordinary CK3 Switch Character UI moves the exact #361 subject into the played slot without date advance",
+    "required_lineage": [
+      "parent result checkpoint SHA-256 equals the owner-visible zg361we.361 checkpoint",
+      "subject checkpoint bytes and SHA-256 are verified locally",
+      "save lineage, owner, subject and result date equal the owner-visible result binding"
+    ],
+    "independent_provider_proof": [
+      "received-self Workforce collective provider exposes the same AL case, #360 route-C debt and #361 charter",
+      "AI-owned B1 provider proves the distinct owner is alive, AI, celestial, authorized and the played subject's immediate liege",
+      "AI-owned B1 cycle equals the terminal Workforce cycle"
+    ],
+    "fixture_used": false,
+    "generic_character_rebind_used": false,
+    "console_used": false,
+    "action_ack_can_green": false,
+    "runner_dependency": "the formal runner still needs a proven managed implementation of the ordinary CK3 single-player Switch Character UI plus product-only checkpoint capture; this package does not add that UI primitive"
+  },
   "service_contract": {
     "owner_event_query": "game.command.query-current-event-window-context-v1",
     "source_action": "game.command.select-event-option-N",
     "subject_business_query": "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+    "production_owner_ai_query": "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
     "workforce_subject_acl": "paused_played_character_received_self",
     "owner_event_surface": "paused_played_owner",
     "same_player_same_frame_join_supported": false
@@ -92,8 +114,9 @@
         "checkpoint_bytes_and_sha256",
         "save_lineage_id",
         "exact_owner_subject_and_date",
-        "same_sha256_restored_for_subject_proof",
-        "provider_observed_owner_to_subject_transition",
+        "legacy typed fixture restores the same SHA-256, or a product-only subject checkpoint records that owner-visible SHA-256 as its verified parent",
+        "played subject is observed on the unchanged result date",
+        "production path independently proves the former played owner is now an authorized AI owner",
         "generic_character_rebind_used_false"
       ]
     }
@@ -104,11 +127,12 @@
     "formal_handler_owner": "_Phase2CrossCycleEndgameSpanDriver",
     "source_checkpoint_selection": "registered real-CK3 source registry entry, absolute file size/SHA and receipt verified read-only",
     "replacement_integration_point": "dedicated ENDGAME_HANDLER owner in _make_default_phase2_promo_span_driver; generic visual adapter retains only promotion and projects",
-    "result_presentation": "typed subject provider proof, fixture disable, then hash-identical product-only owner-visible zg361we.361 restore",
+    "result_presentation": "owner-visible zg361we.361 checkpoint remains the verified parent; production proof uses its product-only played-subject child checkpoint plus Workforce and AI-owner providers, while the old typed fixture route remains acceptance-only",
     "why_live_pending": [
       "canonical real zg361we.356 source checkpoint is not yet registered",
-      "real owner-visible zg361we.361 checkpoint has not passed the typed fixture restore",
-      "no real paused provider artifact has passed this cell"
+      "real owner-visible zg361we.361 checkpoint has not yet produced a no-fixture product-only played-subject child checkpoint",
+      "the ordinary CK3 single-player Switch Character UI has no managed exact-build live receipt yet",
+      "no real paused Workforce plus AI-owner provider artifact has passed the production branch of this cell"
     ]
   },
   "no_launch_boundary": {

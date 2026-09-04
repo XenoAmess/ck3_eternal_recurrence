@@ -4,7 +4,8 @@
 The visible ``zg361we.356`` and ``zg361we.361`` events are owner-facing, while
 the existing Workforce provider is deliberately received-self and therefore
 must be queried while the case subject is played.  This cell joins those two
-surfaces through one hash-identical result checkpoint.  It never upgrades the
+surfaces through the verified owner-result/played-subject checkpoint lineage.
+It never upgrades the
 ``#356`` option ACK, a transition callback, or a character-switch ACK into the
 business postcondition: GREEN requires the subject-side provider to expose the
 route-C debt and the prepared/consumed #361 charter for the same case.
@@ -37,6 +38,15 @@ SELECT_EVENT_OPTION_CAPABILITY: Final = "game.command.select-event-option-N"
 WORKFORCE_QUERY_CAPABILITY: Final = (
     "game.command.query-zhongguo-workforce-collective-snapshot-v1"
 )
+AI_OWNER_QUERY_CAPABILITY: Final = (
+    "game.command.query-zhongguo-ai-owned-case-snapshot-v1"
+)
+AI_OWNER_CASE_KIND: Final = "zhongguo.b1.performance"
+AI_OWNER_BACKGROUND_ROUTE: Final = "authorized_ai_background"
+PRODUCTION_SUBJECT_TRANSITION_MODE: Final = (
+    "ck3_single_player_switch_character_ui"
+)
+FIXTURE_SUBJECT_TRANSITION_MODE: Final = "typed_event_fixture"
 
 _OWNER_SCOPE: Final = "zg361_we_al_owner"
 _SUBJECT_SCOPE: Final = "zg361_we_al_subject"
@@ -73,6 +83,15 @@ class EndgameSubjectService(Protocol):
         *,
         expected_revision: int,
         owner_character_id: int,
+    ) -> dict[str, object]: ...
+
+    def query_zhongguo_ai_owned_case_snapshot_v1(
+        self,
+        owner_character_id: int,
+        subject_character_id: int,
+        request_nonce: str,
+        *,
+        expected_revision: int | None = None,
     ) -> dict[str, object]: ...
 
 
@@ -458,9 +477,11 @@ def _validate_subject_transition(
             transition_receipt=receipt,
             result_binding=asdict(result),
         )
-    valid = (
+    transition_mode = receipt.get("transition_mode")
+    if transition_mode is None and receipt.get("typed_event_fixture_used") is True:
+        transition_mode = FIXTURE_SUBJECT_TRANSITION_MODE
+    common = (
         receipt.get("result") == "GREEN"
-        and receipt.get("provider_observed") is True
         and receipt.get("action_ack_only") is False
         and receipt.get("from_player_character_id") == result.owner_character_id
         and receipt.get("to_player_character_id") == result.subject_character_id
@@ -468,18 +489,116 @@ def _validate_subject_transition(
         and str(receipt.get("restored_checkpoint_sha256", "")).upper()
         == result.result_checkpoint_sha256
         and receipt.get("save_lineage_id") == result.save_lineage_id
-        and receipt.get("typed_event_fixture_used") is True
         and receipt.get("business_state_fixture_used") is False
         and receipt.get("console_used") is False
         and receipt.get("generic_character_rebind_used") is False
     )
+    fixture_valid = (
+        transition_mode == FIXTURE_SUBJECT_TRANSITION_MODE
+        and receipt.get("provider_observed") is True
+        and receipt.get("typed_event_fixture_used") is True
+    )
+    subject_checkpoint_sha = str(
+        receipt.get("subject_checkpoint_sha256", "")
+    ).upper()
+    production_valid = (
+        transition_mode == PRODUCTION_SUBJECT_TRANSITION_MODE
+        and receipt.get("checkpoint_restore_observed") is True
+        and receipt.get("product_only") is True
+        and receipt.get("official_ui_switch_observed") is True
+        and receipt.get("typed_event_fixture_used") is False
+        and receipt.get("fixture_used") is False
+        and _SHA256_RE.fullmatch(subject_checkpoint_sha) is not None
+    )
+    valid = common and (fixture_valid or production_valid)
     if not valid:
         _fail(
             "subject_proof_transition_not_green",
             transition_receipt=receipt,
             result_binding=asdict(result),
         )
-    return receipt
+    return {**receipt, "transition_mode": transition_mode}
+
+
+def _validate_ai_owner_postcondition(
+    response: object,
+    *,
+    subject_binding: Mapping[str, object],
+    owner: int,
+    subject: int,
+    terminal_cycle: int,
+) -> dict[str, object]:
+    provider = dict(response) if isinstance(response, Mapping) else {}
+    readiness = provider.get("readiness")
+    binding = provider.get("binding")
+    eligibility = provider.get("owner_eligibility")
+    case = provider.get("case")
+    route = provider.get("route")
+    valid = (
+        provider.get("status") == "available"
+        and provider.get("case_kind") == AI_OWNER_CASE_KIND
+        and provider.get("unavailable_reason") is None
+        and provider.get("player_character_id") == subject
+        and provider.get("subject_character_id") == subject
+        and provider.get("requested_owner_character_id") == owner
+        and isinstance(readiness, Mapping)
+        and readiness.get("ready") is True
+        and isinstance(binding, Mapping)
+        and binding.get("snapshot_id") == subject_binding["snapshot_id"]
+        and binding.get("revision") == subject_binding["revision"]
+        and binding.get("native_revision") == subject_binding["native_revision"]
+        and binding.get("date_raw") == subject_binding["date_raw"]
+        and binding.get("player_character_id") == subject
+        and binding.get("subject_character_id") == subject
+        and binding.get("owner_character_id") == owner
+        and _typed(eligibility, "owner_character_id", "owner_eligibility")
+        == owner
+        and _typed(eligibility, "owner_alive", "owner_eligibility") is True
+        and _typed(eligibility, "owner_is_ai", "owner_eligibility") is True
+        and _typed(eligibility, "government_key", "owner_eligibility")
+        == "celestial_government"
+        and _typed(
+            eligibility,
+            "subject_immediate_liege_character_id",
+            "owner_eligibility",
+        )
+        == owner
+        and _typed(
+            eligibility, "subject_is_direct_subject", "owner_eligibility"
+        )
+        is True
+        and _typed(eligibility, "authorized", "owner_eligibility") is True
+        and _typed(case, "owner_character_id", "ai_owned_b1_case") == owner
+        and _typed(case, "subject_character_id", "ai_owned_b1_case") == subject
+        and _typed(case, "cycle_serial", "ai_owned_b1_case") == terminal_cycle
+        and _typed(case, "state", "ai_owned_b1_case") == 8
+        and _typed(case, "active", "ai_owned_b1_case") is False
+        and _typed(route, "kind", "ai_owned_b1_route")
+        == AI_OWNER_BACKGROUND_ROUTE
+        and _typed(route, "visible_event_allowed", "ai_owned_b1_route")
+        is False
+        and _typed(route, "owner_is_ai", "ai_owned_b1_route") is True
+        and _typed(route, "manager_eligible", "ai_owned_b1_route") is True
+        and _typed(route, "direct_subject_eligible", "ai_owned_b1_route")
+        is True
+    )
+    if not valid:
+        _fail(
+            "production_ai_owner_provider_unavailable",
+            subject_binding=dict(subject_binding),
+            terminal_cycle_serial=terminal_cycle,
+            provider=provider,
+        )
+    return {
+        "provider_observed": True,
+        "action_ack_only": False,
+        "owner_character_id": owner,
+        "subject_character_id": subject,
+        "terminal_cycle_serial": terminal_cycle,
+        "owner_alive": True,
+        "owner_is_ai": True,
+        "subject_is_direct_subject": True,
+    }
 
 
 def _validate_workforce_postcondition(
@@ -774,6 +893,24 @@ def run_cross_cycle_endgame_action_cell(
         owner=owner,
         subject=subject,
     )
+    production_ai_owner_response: dict[str, object] | None = None
+    production_ai_owner_proof: dict[str, object] | None = None
+    if transition["transition_mode"] == PRODUCTION_SUBJECT_TRANSITION_MODE:
+        production_ai_owner_response = (
+            proof_session.service.query_zhongguo_ai_owned_case_snapshot_v1(
+                owner,
+                subject,
+                f"{request_nonce[:48]}.owner-ai",
+                expected_revision=int(subject_binding["revision"]),
+            )
+        )
+        production_ai_owner_proof = _validate_ai_owner_postcondition(
+            production_ai_owner_response,
+            subject_binding=subject_binding,
+            owner=owner,
+            subject=subject,
+            terminal_cycle=int(postcondition["terminal_cycle_serial"]),
+        )
     return {
         "schema_version": 1,
         "cell_id": "phase2_cross_cycle_endgame_query_action_postcondition",
@@ -793,13 +930,21 @@ def run_cross_cycle_endgame_action_cell(
         "result_event_visible": True,
         "subject_transition_receipt": transition,
         "subject_provider_response": provider,
+        "production_subject_checkpoint_used": (
+            transition["transition_mode"] == PRODUCTION_SUBJECT_TRANSITION_MODE
+        ),
+        "production_ai_owner_provider_response": production_ai_owner_response,
+        "production_ai_owner_proof": production_ai_owner_proof,
         "postcondition": postcondition,
     }
 
 
 __all__ = [
+    "AI_OWNER_BACKGROUND_ROUTE",
+    "AI_OWNER_CASE_KIND",
     "CompletionExecutor",
     "CrossCycleEndgameCellError",
+    "AI_OWNER_QUERY_CAPABILITY",
     "EndgameOwnerService",
     "EndgameResultBinding",
     "EndgameSubjectProofSession",
@@ -807,6 +952,8 @@ __all__ = [
     "EndgameVisibleBinding",
     "HANDLER",
     "M360_REQUIRED_ROUTE",
+    "FIXTURE_SUBJECT_TRANSITION_MODE",
+    "PRODUCTION_SUBJECT_TRANSITION_MODE",
     "PRODUCER_KEY",
     "QUERY_EVENT_CAPABILITY",
     "RESULT_EVENT",
