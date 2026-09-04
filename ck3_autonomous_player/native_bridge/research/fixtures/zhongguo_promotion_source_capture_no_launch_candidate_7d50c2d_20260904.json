@@ -1,0 +1,135 @@
+{
+  "schema_version": 3,
+  "kind": "zg361_promotion_source_capture_final_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "extends": {
+    "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_a01f8cb_20260904.json",
+    "sha256": "CE33DAB589FF02EBABCE7928233935B41E6D0EEE8C68E27BF4F6AC8697DA6A30"
+  },
+  "source": {
+    "cleanup_dispatch_base_commit": "ff89dcdbefb9d8fc86ce4722df847946e96d0e81",
+    "candidate_commit": "7d50c2d3b739221e216c5158a04b6d18bf6b3587",
+    "native_source_fingerprint_sha256": "EF9FF55AC41E231EAD78049E412A66A0AACAC85A9814BE16B25DFB23A052CCF1",
+    "native_source_file_count": 298,
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "388CBCAC538E0C8AAE15D181B2B166A8B1F990AE6107DC7FFEFA5079404FAB2F",
+      "ck3_autonomous_player/native_bridge/src/bridge.cpp": "EFE8992173718B8CA4071F32698690FEEFD42FF867C81A0CB417BC11BE939C82",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "E3C382FC17B988AC05EEE4392DF8613DCB625C9DC3485DB6A91D12E9216A5EA1",
+      "ck3_autonomous_player/native_bridge/src/game_adapter.cpp": "5CD0CC6E1CF8789938134A7C46C452EF95B53C0211E0624805314945650297EA",
+      "ck3_autonomous_player/native_bridge/src/war_termination_same_frame_source_contract_test.cpp": "A64771BCF2BDF763E1F44942910256FDB766049469DA01D4DEB877700884110A",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "8085974A9B7B82C1C02A3EE1A73277E5FD6A69CFCE282443FE6945C1FFD0348B",
+      "tools/verify_zg361_promotion_source_capture_no_launch_candidate_final.py": "ADE37A76782A389EE848C656C9526888E2A33A7BCA38879505DD96B3FF6F4CAE"
+    }
+  },
+  "build": {
+    "source_build_directory": "Z:\\b7psc-ff89dcd-final-r2",
+    "artifact_directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z",
+    "cmake_cache_path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\\CMakeCache.txt",
+    "cmake_cache_bytes": 19916,
+    "cmake_cache_sha256": "3FCA92EA6F70086808D7C3F01329480BA158602A95AE50297A57A7D504DD7A52",
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\\xar_ck3_bridge.dll",
+      "bytes": 2425856,
+      "sha256": "BC7E4CDAB5F8ED8ACF1C6D8C3E64C28DEC6355C4CC039609A254F847B5A67B7B"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "D4C3E0315F256AE91AA215EC2285845D23E465D17D06AAF9D768C62E9FF92429"
+    },
+    "ctest_log": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\\native-ctest.txt",
+      "bytes": 18765,
+      "sha256": "B3F5BF2E26882534BF65000E00146D849254B43C0F1ED29816AD390318485963"
+    }
+  },
+  "tests": {
+    "initial_fresh_configuration": {
+      "result": "RED",
+      "cause": "ambient PATH selected Cygwin Ninja for MSVC; no source was compiled"
+    },
+    "first_fresh_native_ctest_without_reference_junction": {
+      "result": "RED",
+      "passed": 86,
+      "failed": 8,
+      "cause": "fresh worktree lacked the gitignored read-only Crusader Kings III reference directory"
+    },
+    "second_native_ctest_after_reference_junction": {
+      "result": "RED",
+      "passed": 93,
+      "failed": 1,
+      "cause": "war-termination source-contract branch isolation did not stop at the new cleanup dispatch"
+    },
+    "full_native": {
+      "result": "GREEN",
+      "passed": 94,
+      "failed": 0
+    }
+  },
+  "supersession": {
+    "candidate_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
+    "manifest_path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_promotion_source_capture_no_launch_candidate_a01f8cb_20260904.json",
+    "manifest_sha256": "CE33DAB589FF02EBABCE7928233935B41E6D0EEE8C68E27BF4F6AC8697DA6A30",
+    "reason": "private G2 cleanup dispatch advanced canonical native and managed bridge sources",
+    "old_candidate_result_on_current_source": "RED",
+    "old_failed_checks": [
+      "frozen_source_files_match",
+      "native_source_fingerprint_matches"
+    ]
+  },
+  "query_action_boundary": {
+    "query_production_advertised": false,
+    "action_production_advertised": false,
+    "transport_only_fail_closed": true,
+    "provider_default_off": true,
+    "readiness": "live-pending",
+    "ack_is_business_result": false
+  },
+  "effect_boundary": {
+    "feedback_promotion_pip": {
+      "file_count": 39,
+      "effect_count": 275,
+      "minimum_effects_per_file": 1,
+      "maximum_effects_per_file": 10,
+      "fingerprint_sha256": "94042BE37F3950D21F8B6AB39F9E1206B431A90CB9ACB51A6D9E814693B8CB4A"
+    },
+    "compensation": {
+      "file_count": 25,
+      "effect_count": 148,
+      "minimum_effects_per_file": 3,
+      "maximum_effects_per_file": 9,
+      "fingerprint_sha256": "9F7041818149A0F532CE1A6C217C77240F2C17019D63B3D0FD087619CBC29B5C"
+    }
+  },
+  "live_attempt": {
+    "attempt_id": "promotion-source-production-capture-live-attempt-7d50c2d-20260904T095918Z",
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-live-attempt-7d50c2d-20260904T095918Z",
+    "status": "absent",
+    "started": false,
+    "consumed": false
+  },
+  "live_command": {
+    "authorized_command_count": 1,
+    "runner_owns_ck3_lifecycle": true,
+    "execution_source_root": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902",
+    "seed_contract_path": "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_seed_contract.json",
+    "seed_contract_sha256": "19B3451514FA4ED87836D03B5DEEB2D4AEC569A4714325E5C2164415E96563CC",
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\.venv\\Scripts\\python.exe",
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\run_zhongguo_acceptance.py",
+      "--artifacts-dir",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-live-attempt-7d50c2d-20260904T095918Z",
+      "--phase2-promotion-source-checkpoint-live",
+      "--phase2-promotion-source-checkpoint-timeout-seconds",
+      "600",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_d1c5a4e578b043a88a0d9e2b6cf77134",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_seed_contract.json"
+    ]
+  }
+}

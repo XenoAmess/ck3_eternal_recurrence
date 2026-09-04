@@ -2,10 +2,16 @@
 
 ## Result
 
-The B7 promotion-source production capture candidate is refrozen against
-canonical `a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396` and is
-`READY_TO_SERIAL_LIVE`. This work did not start CK3, create a checkpoint,
-advertise a production provider, or treat an ACK as a business result.
+**Superseded.** The B7 promotion-source production capture candidate was
+refrozen against canonical
+`a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396`, but private G2 cleanup dispatch
+at `ff89dcd` subsequently advanced the native and managed bridge sources. Its
+strict verifier now returns RED on exactly `frozen_source_files_match` and
+`native_source_fingerprint_matches`. The final replacement is documented in
+[`zhongguo-promotion-source-production-capture-no-launch-final-7d50c2d-2026-09-04.md`](zhongguo-promotion-source-production-capture-no-launch-final-7d50c2d-2026-09-04.md).
+
+This historical work did not start CK3, create a checkpoint, advertise a
+production provider, or treat an ACK as a business result.
 
 The repository manifest is a compact schema-2 overlay:
 
@@ -89,15 +95,13 @@ No effect content changed. The preflight re-counted all relevant shards:
 Both families meet the requested 1-10 target and the 20-effect hard principle;
 there is no exception requiring live evidence.
 
-## Single authorized future command
+## Historical command (revoked)
 
-Only the following runner-owned command is frozen for the future CK3 serial
-gate. It has not been executed:
+The following runner-owned command was never executed and is now revoked. It
+is retained only as append-only evidence:
 
 ```powershell
 & "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-a01f8cb-20260904T085119Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_38d097690e12445f810d29a20e8dcf81" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\zg361_phase2_seed_contract.json"
 ```
 
-The candidate remains `static-ready-live-pending`; only a real paused
-production snapshot, saved game and reviewed schema-2 artifact may change that
-status.
+The candidate no longer has machine authorization after the source advance.
