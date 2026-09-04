@@ -207,21 +207,29 @@ zg361.51 = {
 	immediate = {
 		if = {
 			limit = {
-				exists = scope:zg361_notice_witness_owner
-				exists = scope:zg361_notice_witness_subject
-				exists = scope:zg361_notice_witness
-				this = scope:zg361_notice_witness_subject
-				has_variable = zg361_result_case_owner
-				var:zg361_result_case_owner = scope:zg361_notice_witness_owner
-				has_variable = zg361_result_cycle_serial
-				var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle
-				has_variable = zg361_result_case_serial
-				var:zg361_result_case_serial = scope:zg361_notice_witness_case
-				has_variable = zg361_result_case_state
-				var:zg361_result_case_state = scope:zg361_notice_witness_state
-				var:zg361_result_case_state = 2
-				has_variable = zg361_result_delivery_witness
-				var:zg361_result_delivery_witness = scope:zg361_notice_witness
+				trigger_if = {
+					limit = {
+						exists = scope:zg361_notice_witness_owner
+						exists = scope:zg361_notice_witness_subject
+						exists = scope:zg361_notice_witness
+						exists = scope:zg361_notice_witness_cycle
+						exists = scope:zg361_notice_witness_case
+						exists = scope:zg361_notice_witness_state
+						has_variable = zg361_result_case_owner
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_case_state
+						has_variable = zg361_result_delivery_witness
+					}
+					this = scope:zg361_notice_witness_subject
+					var:zg361_result_case_owner = scope:zg361_notice_witness_owner
+					var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle
+					var:zg361_result_case_serial = scope:zg361_notice_witness_case
+					var:zg361_result_case_state = scope:zg361_notice_witness_state
+					var:zg361_result_case_state = 2
+					var:zg361_result_delivery_witness = scope:zg361_notice_witness
+				}
+				trigger_else = { always = no }
 			}
 			set_variable = { name = zg361_result_delivery_method value = 3 }
 			set_variable = { name = zg361_result_delivery_witness_receipt value = var:zg361_result_case_serial }
@@ -233,22 +241,35 @@ zg361.51 = {
 			# the r9 -> r20 live lineage. Mixed old/new tokens remain stale: only a
 			# wholly absent subject/witness extension may use the frozen four-tuple.
 			limit = {
-				exists = scope:zg361_notice_witness_owner
-				exists = scope:zg361_notice_witness_cycle
-				exists = scope:zg361_notice_witness_case
-				exists = scope:zg361_notice_witness_state
+				is_ai = no
 				NOT = { exists = scope:zg361_notice_witness_subject }
 				NOT = { exists = scope:zg361_notice_witness }
 				NOT = { has_variable = zg361_result_delivery_witness }
-				has_variable = zg361_result_case_owner
-				var:zg361_result_case_owner = scope:zg361_notice_witness_owner
-				has_variable = zg361_result_cycle_serial
-				var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle
-				has_variable = zg361_result_case_serial
-				var:zg361_result_case_serial = scope:zg361_notice_witness_case
-				has_variable = zg361_result_case_state
-				var:zg361_result_case_state = scope:zg361_notice_witness_state
-				var:zg361_result_case_state = 2
+				NOT = { has_variable = zg361_result_delivery_witness_receipt }
+				trigger_if = {
+					limit = {
+						exists = scope:zg361_notice_witness_owner
+						exists = scope:zg361_notice_witness_cycle
+						exists = scope:zg361_notice_witness_case
+						exists = scope:zg361_notice_witness_state
+						has_variable = zg361_result_case_owner
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_case_state
+						has_variable = zg361_result_grade
+						has_variable = zg361_result_settlement_posted_serial
+						has_variable = zg361_result_delivery_method
+					}
+					var:zg361_result_case_owner = scope:zg361_notice_witness_owner
+					var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle
+					var:zg361_result_case_serial = scope:zg361_notice_witness_case
+					var:zg361_result_case_state = scope:zg361_notice_witness_state
+					var:zg361_result_case_state = 2
+					var:zg361_result_grade = 1
+					var:zg361_result_settlement_posted_serial = 0
+					var:zg361_result_delivery_method = 3
+				}
+				trigger_else = { always = no }
 			}
 			save_scope_as = zg361_notice_witness_subject
 			scope:zg361_notice_witness_owner = { save_scope_as = zg361_notice_witness }

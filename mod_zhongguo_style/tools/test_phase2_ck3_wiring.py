@@ -105,11 +105,26 @@ class Phase2Ck3WiringTests(unittest.TestCase):
 
     def test_witness_delivery_migrates_only_the_proven_legacy_token_shape(self) -> None:
         witness = self.events.split("zg361.51 = {", 1)[1].split("zg361.52 = {", 1)[0]
-        legacy = witness.split("else_if = {", 1)[1].split("else = {", 1)[0]
+        strict, legacy = witness.split("else_if = {", 1)
+        self.assertIn("trigger_if = {", strict)
+        self.assertIn("trigger_else = { always = no }", strict)
+        for strict_saved_scope in (
+            "zg361_notice_witness_owner",
+            "zg361_notice_witness_subject",
+            "zg361_notice_witness",
+            "zg361_notice_witness_cycle",
+            "zg361_notice_witness_case",
+            "zg361_notice_witness_state",
+        ):
+            self.assertIn(
+                f"exists = scope:{strict_saved_scope}",
+                strict,
+            )
         for missing_extension in (
             "NOT = { exists = scope:zg361_notice_witness_subject }",
             "NOT = { exists = scope:zg361_notice_witness }",
             "NOT = { has_variable = zg361_result_delivery_witness }",
+            "NOT = { has_variable = zg361_result_delivery_witness_receipt }",
         ):
             self.assertIn(missing_extension, legacy)
         for required_legacy_scope in (
@@ -125,14 +140,34 @@ class Phase2Ck3WiringTests(unittest.TestCase):
             "var:zg361_result_case_serial = scope:zg361_notice_witness_case",
             "var:zg361_result_case_state = scope:zg361_notice_witness_state",
             "var:zg361_result_case_state = 2",
+            "var:zg361_result_grade = 1",
+            "var:zg361_result_settlement_posted_serial = 0",
+            "var:zg361_result_delivery_method = 3",
         ):
             self.assertIn(frozen_identity, legacy)
-        self.assertIn("save_scope_as = zg361_notice_witness_subject", legacy)
-        self.assertIn(
+        for required_result in (
+            "zg361_result_case_owner",
+            "zg361_result_cycle_serial",
+            "zg361_result_case_serial",
+            "zg361_result_case_state",
+            "zg361_result_grade",
+            "zg361_result_settlement_posted_serial",
+            "zg361_result_delivery_method",
+        ):
+            self.assertIn(f"has_variable = {required_result}", legacy)
+        self.assertIn("is_ai = no", legacy)
+        self.assertEqual(witness.count("trigger_if = {"), 2)
+        self.assertEqual(witness.count("trigger_else = { always = no }"), 2)
+        migration_order = (
+            "save_scope_as = zg361_notice_witness_subject",
             "scope:zg361_notice_witness_owner = { save_scope_as = zg361_notice_witness }",
-            legacy,
+            "set_variable = { name = zg361_result_delivery_witness value = scope:zg361_notice_witness }",
+            "set_variable = { name = zg361_result_delivery_method value = 3 }",
+            "set_variable = { name = zg361_result_delivery_witness_receipt value = var:zg361_result_case_serial }",
+            "zg361_deliver_325_notice_effect = yes",
         )
-        self.assertIn("zg361_deliver_325_notice_effect = yes", legacy)
+        for earlier, later in zip(migration_order, migration_order[1:]):
+            self.assertLess(legacy.index(earlier), legacy.index(later))
         self.assertIn("legacy witnessed-delivery token migrated and delivered", legacy)
         self.assertEqual(witness.count("zg361_deliver_325_notice_effect = yes"), 2)
 
