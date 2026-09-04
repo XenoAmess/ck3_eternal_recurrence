@@ -7,7 +7,8 @@
 `Scripted trigger should have no arguments`。因此下文第一版的 terminal 结果只能保存为失败候选证据，不能与 r4/r5 比较。
 
 替代候选 `b3i-fecd2f2-trigger-abi-false-20260904-084813Z` 仍由首项 `always = no` 恒假，但在同一 `AND` 内用原合法表达式
-显式引用全部 3/12 个 `$PARAM$`；exact provider 继续把 owner/P2C cycle/case 三参数转发给 candidate provider。它是当前唯一可运行候选。
+显式引用全部 3/12 个 `$PARAM$`；exact provider 继续把 owner/P2C cycle/case 三参数转发给 candidate provider。实机已经在 material
+错误为 0 的前提下恢复 Frontend：高置信支持两个原真实正文中至少一个导致/促成 r5 terminal loader RED，但尚未隔离到具体 trigger 或表达式。
 
 ## 目的与边界
 
@@ -155,11 +156,28 @@ sidecar：
 - `projection.json` SHA-256：`2f4c17be61ad69d3ddf2742557f4ab982602c3b5abdbcca57eac3f30b89227b6`；
 - `open-kaishek-preflight.json` SHA-256：`cfcd12b94618143c71c96f60cbfc9058f46d292d7b332e5b2680ef7829e43ab8`。
 
-唯一 v2 live 命令：
+v2 已执行的唯一 live 命令（禁止重跑）：
 
 ```powershell
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_927e9842f6a54496abf29588dd4b93bd --phase2-seed-contract Z:\ck3_mod_rewrite\_worktrees\b3-trigger-closure-r5\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\product --phase2-product-projection b3-trigger-body-abi-consuming-false-diagnostic-fecd2f2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\artifacts-live --discard-userdir
 ```
 
-v2 只有在六条 provider 参数错误为 0 时，Frontend/terminal 结果才可进入 body 归因。无论结果如何，`always = no` 都不能合回源码，
-也不能用于 Phase2 gameplay、readiness 或宣传素材。
+### v2 live 验收与判定
+
+- loader sequence：303 callbacks 首次完成 `123.635s`；Frontend `127.688s`；terminal `299.979s`，状态
+  `save_resume_red` / `frontend_without_load_save`。因此 Frontend 里程碑 GREEN，但完整 acceptance 仍 RED；
+- 全部冻结 `.log` 中 `Scripted trigger should have no arguments`、`Unknown trigger`、`Unknown effect`、`Parser Error` 均为 0；
+- 已知非 terminal 噪声为 `Unrecognized loc key=952`、set-but-never-used `13,992`、used-but-never-set `90`；
+- cleanup GREEN、最终 CK3 process count 0、protected storage unchanged；
+- outer report SHA-256：`604e3ac5c880e0488166715f6d995a350070a11dcd1fc0adc15b385939f9ed9f`；
+- cell report SHA-256：`a4f27bb4e883749b45dd69a59b7e69ef16175f57ff5d2cd837f045745323f9f7`；
+- evidence index SHA-256：`fa7da9f16c4c823dcbf0df384d0ba2d83b1cf796c84a8dab539c5b82c1d3e0db`；
+- `final_error.log` SHA-256：`031d72f6ef1efbe171badc99cc0c7b9ea5d8d153e08ece62d57af9c87b60f539`；
+- 机器可读 `abi-diagnostic-live-verdict.json` 为 `GREEN_EVIDENCE`，SHA-256
+  `cb50061bdf18cd0bb99914258cc18ad8cbb199b942f8a5e2a145c48253c95f1c`。
+
+在 r4→r5 仅新增真实 trigger provider、ABBA 不支持文件边界、v1 被排除为 ABI 失真、v2 ABI 与 caller surface 保真且无 material/parser
+错误的控制链下，双正文改成恒 false 后恢复 Frontend，高置信支持**两个真实正文中至少一个**与 r5 terminal loader RED 有因果关系。
+当前试验同时替换两个正文，无法区分 candidate 与 exact，更不能指定具体表达式；下一步必须做单 trigger 复原的正交 live。
+
+`always = no` 不能合回源码，也不能用于 Phase2 gameplay、readiness 或宣传素材。
