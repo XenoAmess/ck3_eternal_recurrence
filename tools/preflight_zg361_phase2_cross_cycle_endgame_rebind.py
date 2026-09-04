@@ -33,6 +33,10 @@ PROVIDER_ABI_PATH = (
 SERVICE_PATH = (
     ROOT / "ck3_autonomous_player" / "src" / "xar_autoplayer" / "bridge" / "service.py"
 )
+RUNNER_PATH = ROOT / "tools" / "run_zhongguo_acceptance.py"
+SOURCE_PROVIDER_PATH = (
+    ROOT / "tools" / "zhongguo_phase2_source_checkpoint_provider.py"
+)
 M356_PATH = (
     ROOT / "mod_zhongguo_style" / "events"
     / "zg361_workforce_endgame_event_010_m356_outcome_timing_events.txt"
@@ -158,7 +162,6 @@ def build_preflight() -> dict[str, object]:
             "required_checkpoint": "real owner-visible zg361we.361 paused save",
             "blockers": [
                 "real zg361we.356 source checkpoint is not registered",
-                "typed result-session fixture restore is not wired into the formal runner",
                 "same-lineage subject Workforce provider artifact has not been captured",
             ],
         },
@@ -175,6 +178,8 @@ def build_preflight() -> dict[str, object]:
         contract = _json(CONTRACT_PATH)
         abi = _json(PROVIDER_ABI_PATH)
         service_source = SERVICE_PATH.read_text(encoding="utf-8")
+        runner_source = RUNNER_PATH.read_text(encoding="utf-8")
+        source_provider = SOURCE_PROVIDER_PATH.read_text(encoding="utf-8")
         checks = {
             "exact_build_frozen": (
                 seam.EXACT_GAME_VERSION == "1.19.0.6"
@@ -221,6 +226,26 @@ def build_preflight() -> dict[str, object]:
             "ack_and_visibility_cannot_green": (
                 "query_zhongguo_workforce_collective_snapshot_v1"
                 in inspect.getsource(run_cross_cycle_endgame_action_cell)
+            ),
+            "formal_runner_owns_exact_endgame_cell": (
+                "class _Phase2CrossCycleEndgameSpanDriver:" in runner_source
+                and "run_exact_build_cross_cycle_endgame_seam(" in runner_source
+                and "for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER)"
+                in runner_source
+                and "source_checkpoint_origin\": \"registered_real_ck3_read_only"
+                in runner_source
+            ),
+            "source_checkpoint_discovery_is_read_only_and_hash_bound": (
+                "path.is_file()" in source_provider
+                and "_sha256(path) == expected_sha" in source_provider
+                and "def save_checkpoint" not in source_provider
+                and "fixture_used\") is False" in source_provider
+            ),
+            "result_restore_returns_to_product_only_visible_361": (
+                "disable_phase2_endgame_rebind_fixture(" in runner_source
+                and "cross-cycle endgame product-only result presentation"
+                in runner_source
+                and 'expected_definition_key="zg361we.361"' in runner_source
             ),
         }
         report["checks"] = checks

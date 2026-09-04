@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
+import re
 from typing import Final, Mapping, Protocol
 
 from zhongguo_phase2_promo_producer import (
@@ -154,14 +155,29 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "phase2_cross_cycle_endgame",
         "cross-cycle-endgame",
         "capture_cross_cycle_endgame",
-        "event-window option cell (workforce/endgame runtime)",
+        "run_exact_build_cross_cycle_endgame_seam",
         ("all_under_heaven", "merit_admin"),
         ("All Under Heaven",),
         ("zg361we.356", "zg361we.361"),
         ("event_window:zg361we.356", "event_window:zg361we.361"),
-        ("query-zhongguo-workforce-collective-snapshot-v1", "query-loaded-feature-manifest-v1"),
-        ("set-speed-1", "resume-map", "pause-map", "select-event-option-N"),
-        "the terminal event is bound to the carried debt/default-change cycle",
+        (
+            "query-current-event-window-context-v1",
+            "query-zhongguo-workforce-collective-snapshot-v1",
+            "query-loaded-feature-manifest-v1",
+        ),
+        (
+            "select-event-option-N",
+            "set-speed-1",
+            "resume-map",
+            "pause-map",
+            "save-checkpoint",
+            "restore-checkpoint",
+            "typed-endgame-owner-subject-transition",
+        ),
+        (
+            "same-lineage played subject Workforce provider proves route C, "
+            "carried debt/default cycle and M361 charter after owner-visible 361"
+        ),
     ),
 )
 
@@ -462,19 +478,80 @@ def run_phase2_capture_choreography(
                 "bridge_pid",
                 "connection_generation",
             )
-            if any(
+            session_changed = any(
                 pre_receipt.get(field) != post_receipt.get(field)
                 for field in identity_fields
-            ):
-                raise Phase2ChoreographyBlocked(
-                    "span_session_changed_during_action",
-                    {
-                        "span_id": scenario.span_id,
-                        "pre": pre_receipt,
-                        "post": post_receipt,
-                    },
+            )
+            managed_transition = result.get("managed_session_transition")
+            if session_changed:
+                transition = (
+                    dict(managed_transition)
+                    if isinstance(managed_transition, Mapping)
+                    else {}
                 )
-            if (
+                source_binding = transition.get("source")
+                result_binding = transition.get("result_surface")
+                source_binding = (
+                    dict(source_binding)
+                    if isinstance(source_binding, Mapping)
+                    else {}
+                )
+                result_binding = (
+                    dict(result_binding)
+                    if isinstance(result_binding, Mapping)
+                    else {}
+                )
+                restore_count = transition.get("restore_count")
+                checkpoint_sha = str(
+                    transition.get("checkpoint_sha256", "")
+                ).upper()
+                expected_lineage = lineage.get("seed_lineage_id")
+                managed_transition_valid = (
+                    scenario.handler == "capture_cross_cycle_endgame"
+                    and transition.get("schema_version") == 1
+                    and transition.get("result") == "GREEN"
+                    and transition.get("transition_kind")
+                    == "cross_cycle_endgame_exact_result_checkpoint"
+                    and transition.get("handler") == scenario.handler
+                    and restore_count == 2
+                    and source_binding.get("bridge_pid")
+                    == pre_receipt.get("bridge_pid")
+                    and source_binding.get("connection_generation")
+                    == pre_receipt.get("connection_generation")
+                    and result_binding.get("bridge_pid")
+                    == post_receipt.get("bridge_pid")
+                    and result_binding.get("connection_generation")
+                    == post_receipt.get("connection_generation")
+                    and isinstance(
+                        source_binding.get("connection_generation"), int
+                    )
+                    and not isinstance(
+                        source_binding.get("connection_generation"), bool
+                    )
+                    and result_binding.get("connection_generation")
+                    == source_binding.get("connection_generation") + 2
+                    and re.fullmatch(r"[0-9A-F]{64}", checkpoint_sha)
+                    is not None
+                    and transition.get("save_lineage_id")
+                    == expected_lineage
+                    and transition.get("provider_observed") is True
+                    and transition.get("action_ack_only") is False
+                    and transition.get("typed_event_fixture_used") is True
+                    and transition.get("business_state_fixture_used") is False
+                    and transition.get("console_used") is False
+                    and transition.get("generic_character_rebind_used") is False
+                )
+                if not managed_transition_valid:
+                    raise Phase2ChoreographyBlocked(
+                        "span_session_changed_during_action",
+                        {
+                            "span_id": scenario.span_id,
+                            "pre": pre_receipt,
+                            "post": post_receipt,
+                            "managed_session_transition": transition,
+                        },
+                    )
+            if not session_changed and (
                 int(post_receipt["revision"]) < int(pre_receipt["revision"])
                 or int(post_receipt["native_revision"])
                 < int(pre_receipt["native_revision"])

@@ -470,7 +470,7 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
         self.assertEqual(caught.exception.reason_code, "required_capability_missing")
         self.assertFalse(caught.exception.evidence["action_executed"])
 
-    def test_contract_records_acl_gap_and_unclosed_live_boundaries(self) -> None:
+    def test_contract_records_runner_seam_acl_gap_and_live_boundaries(self) -> None:
         contract = json.loads(
             (TOOLS / "zg361_phase2_cross_cycle_endgame_action_contract.json").read_text(
                 encoding="utf-8"
@@ -483,7 +483,7 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
         self.assertEqual(contract["readiness"], "static-ready-live-pending")
-        self.assertFalse(
+        self.assertTrue(
             contract["current_audit"]["formal_runner_integration_modified"]
         )
         self.assertEqual(
@@ -493,7 +493,7 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
             contract["service_contract"]["same_player_same_frame_join_supported"]
         )
         self.assertEqual(
-            len(contract["current_audit"]["why_live_pending"]), 4
+            len(contract["current_audit"]["why_live_pending"]), 3
         )
 
 

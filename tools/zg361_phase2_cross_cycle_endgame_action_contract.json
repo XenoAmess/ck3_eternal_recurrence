@@ -99,13 +99,14 @@
     }
   },
   "current_audit": {
-    "formal_runner_integration_modified": false,
+    "formal_runner_integration_modified": true,
     "existing_generic_event_postcondition": "revision_and_same_player_only_not_business_complete",
-    "existing_endgame_packet_adapter": "assumes event and received-self workforce query share owner player/frame, which conflicts with distinct owner/subject ACL",
-    "replacement_integration_point": "ENDGAME_HANDLER entries in _make_default_phase2_promo_span_driver advance_to_result and postcondition_verifiers",
+    "formal_handler_owner": "_Phase2CrossCycleEndgameSpanDriver",
+    "source_checkpoint_selection": "registered real-CK3 source registry entry, absolute file size/SHA and receipt verified read-only",
+    "replacement_integration_point": "dedicated ENDGAME_HANDLER owner in _make_default_phase2_promo_span_driver; generic visual adapter retains only promotion and projects",
+    "result_presentation": "typed subject provider proof, fixture disable, then hash-identical product-only owner-visible zg361we.361 restore",
     "why_live_pending": [
       "canonical real zg361we.356 source checkpoint is not yet registered",
-      "exact-build seam is implemented but not wired into the formal runner registry",
       "real owner-visible zg361we.361 checkpoint has not passed the typed fixture restore",
       "no real paused provider artifact has passed this cell"
     ]
@@ -114,6 +115,6 @@
     "ck3_started": false,
     "gameplay_action_executed": false,
     "live_proof_claimed": false,
-    "runner_registry_modified": false
+    "runner_registry_modified": true
   }
 }

@@ -223,6 +223,8 @@ class Phase2PromoCaptureContext:
     native_session_binding: Mapping[str, object] | None = None
     loader_gate: Mapping[str, object] | None = None
     source_checkpoint_registry: Mapping[str, object] | None = None
+    isolated_userdir: Path | None = None
+    runtime_bootstrap: Mapping[str, object] | None = None
 
 
 class RuntimeProbe(Protocol):
@@ -408,6 +410,8 @@ class Phase2PromoProducerScaffold:
         native_session_binding: Mapping[str, object] | None = None,
         loader_gate: Mapping[str, object] | None = None,
         source_checkpoint_registry: Mapping[str, object] | None = None,
+        isolated_userdir: Path | None = None,
+        runtime_bootstrap: Mapping[str, object] | None = None,
     ) -> Phase2PromoCaptureContext:
         if not isinstance(artifacts, Path):
             self._red(
@@ -498,6 +502,20 @@ class Phase2PromoProducerScaffold:
                     f"{name} could not be copied",
                     evidence={"exception_type": type(error).__name__},
                 )
+        if isolated_userdir is not None and not isinstance(isolated_userdir, Path):
+            self._red(
+                "isolated_userdir_invalid",
+                "isolated_userdir must be a pathlib.Path when supplied",
+                evidence={"actual_type": type(isolated_userdir).__name__},
+            )
+        if runtime_bootstrap is not None and not isinstance(
+            runtime_bootstrap, Mapping
+        ):
+            self._red(
+                "runtime_bootstrap_invalid",
+                "runtime_bootstrap must be a mapping when supplied",
+                evidence={"actual_type": type(runtime_bootstrap).__name__},
+            )
         return Phase2PromoCaptureContext(
             stream=stream,
             artifacts=artifacts,
@@ -514,6 +532,16 @@ class Phase2PromoProducerScaffold:
             source_checkpoint_registry=optional_snapshots[
                 "source_checkpoint_registry"
             ],
+            isolated_userdir=(
+                isolated_userdir.resolve()
+                if isinstance(isolated_userdir, Path)
+                else None
+            ),
+            runtime_bootstrap=(
+                deepcopy(dict(runtime_bootstrap))
+                if isinstance(runtime_bootstrap, Mapping)
+                else None
+            ),
         )
 
     def _validate_runtime(
@@ -650,6 +678,8 @@ class Phase2PromoProducerScaffold:
         native_session_binding: Mapping[str, object] | None = None,
         loader_gate: Mapping[str, object] | None = None,
         source_checkpoint_registry: Mapping[str, object] | None = None,
+        isolated_userdir: Path | None = None,
+        runtime_bootstrap: Mapping[str, object] | None = None,
     ) -> dict[str, object]:
         """Perform only dependency validation and evidence hand-off.
 
@@ -670,6 +700,8 @@ class Phase2PromoProducerScaffold:
             native_session_binding=native_session_binding,
             loader_gate=loader_gate,
             source_checkpoint_registry=source_checkpoint_registry,
+            isolated_userdir=isolated_userdir,
+            runtime_bootstrap=runtime_bootstrap,
         )
         runtime = self._validate_runtime(context)
         if self.choreography is None:

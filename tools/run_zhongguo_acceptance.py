@@ -44,6 +44,9 @@ FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
 PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE = (
     ROOT / "tools" / "fixtures" / "zg361_phase2_workforce_action"
 )
+PHASE2_ENDGAME_REBIND_FIXTURE_SOURCE = (
+    ROOT / "tools" / "fixtures" / "zg361_phase2_cross_cycle_endgame_rebind"
+)
 AUTOPLAYER_SOURCE = ROOT / "ck3_autonomous_player" / "src"
 TITLE_NAVIGATION_RESEARCH = (
     ROOT / "ck3_autonomous_player" / "native_bridge" / "research"
@@ -123,6 +126,14 @@ from zhongguo_phase2_workforce_action import (
     M360_EVENT_DEFINITION_KEY,
     run_m360_action_and_postcondition,
     select_typed_fixture_player_transition,
+)
+from zg361_phase2_cross_cycle_endgame_live_seam import (
+    ActivatedResultSession,
+    EXACT_EXE_SHA256 as ENDGAME_EXACT_EXE_SHA256,
+    EXACT_GAME_VERSION as ENDGAME_EXACT_GAME_VERSION,
+    TRANSITION_EVENT as PHASE2_ENDGAME_REBIND_FIXTURE_EVENT,
+    TRANSITION_FIXTURE_ID as PHASE2_ENDGAME_REBIND_FIXTURE_ID,
+    run_exact_build_cross_cycle_endgame_seam,
 )
 from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
@@ -421,6 +432,9 @@ PRODUCT_OUTER = "zg361_acceptance.mod"
 FIXTURE_OUTER = "zga_acceptance_fixture.mod"
 PHASE2_WORKFORCE_ACTION_FIXTURE_OUTER = (
     "zga_phase2_workforce_action_fixture.mod"
+)
+PHASE2_ENDGAME_REBIND_FIXTURE_OUTER = (
+    "zga_phase2_cross_cycle_endgame_rebind_fixture.mod"
 )
 PHASE2_WORKFORCE_ACTION_FIXTURE_EVENT = "zga_phase2_workforce.1"
 PHASE2_WORKFORCE_SWITCH_BACK_EVENT = "zga_phase2_workforce.3"
@@ -1140,6 +1154,17 @@ class _Phase2RealEventChoreographyService:
 
     def __init__(self, service: GameplayBridgeService) -> None:
         self.service = service
+        self._registered_source_restores: dict[str, dict[str, object]] = {}
+
+    def take_registered_source_restore(self, handler: str) -> dict[str, object]:
+        """Consume the exact real-checkpoint restore staged for one span."""
+
+        restored = self._registered_source_restores.pop(handler, None)
+        if restored is None:
+            raise Phase2EventChoreographyError(
+                "registered_source_restore_not_staged", {"handler": handler}
+            )
+        return restored
 
     def _source_checkpoint_restore_available(self) -> bool:
         restore = getattr(
@@ -1372,6 +1397,8 @@ class _Phase2RealEventChoreographyService:
                     "observed_binding": binding,
                 },
             )
+        if plan.handler == ENDGAME_HANDLER:
+            self._registered_source_restores[plan.handler] = dict(restored)
         return {
             **self._common(plan),
             "event_definition_key": expected["event_definition_key"],
@@ -1724,6 +1751,256 @@ class _Phase2AcceptanceActionSpanDriver:
         }
 
 
+class _Phase2CrossCycleEndgameSpanDriver:
+    """Run the exact 356 -> 360C -> 361 -> subject-provider promo cell."""
+
+    _HANDLERS = (ENDGAME_HANDLER,)
+
+    def __init__(
+        self,
+        service: GameplayBridgeService,
+        *,
+        source_choreography: _Phase2RealEventChoreographyService,
+    ) -> None:
+        self.service = service
+        self.source_choreography = source_choreography
+
+    def available_handlers(self) -> tuple[str, ...]:
+        return self._HANDLERS
+
+    def run_span(
+        self,
+        scenario: object,
+        context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        handler = str(getattr(scenario, "handler"))
+        if handler != ENDGAME_HANDLER:
+            raise Phase2VisualHandlerError(
+                "handler_not_owned", {"handler": handler}
+            )
+        if not isinstance(context.isolated_userdir, Path) or not isinstance(
+            context.runtime_bootstrap, Mapping
+        ):
+            raise Phase2VisualHandlerError(
+                "endgame_result_session_lifecycle_unavailable",
+                {
+                    "isolated_userdir_available": isinstance(
+                        context.isolated_userdir, Path
+                    ),
+                    "runtime_bootstrap_available": isinstance(
+                        context.runtime_bootstrap, Mapping
+                    ),
+                },
+            )
+        seed_runtime = (
+            context.seed_contract.get("runtime")
+            if isinstance(context.seed_contract, Mapping)
+            else None
+        )
+        build_identity = {
+            "game_version": (
+                seed_runtime.get("game_version")
+                if isinstance(seed_runtime, Mapping)
+                else None
+            ),
+            "game_exe_sha256": (
+                seed_runtime.get("executable_sha256")
+                if isinstance(seed_runtime, Mapping)
+                else None
+            ),
+        }
+        if not (
+            build_identity["game_version"] == ENDGAME_EXACT_GAME_VERSION
+            and str(build_identity["game_exe_sha256"] or "").upper()
+            == ENDGAME_EXACT_EXE_SHA256
+        ):
+            raise Phase2VisualHandlerError(
+                "endgame_exact_build_identity_unavailable", build_identity
+            )
+
+        source_restore = self.source_choreography.take_registered_source_restore(
+            handler
+        )
+        start_snapshot = self.service.snapshot()
+        if not isinstance(start_snapshot, dict):
+            raise acceptance.RunnerError(
+                "cross-cycle endgame source snapshot is not an object"
+            )
+        start_binding = _phase2_paused_binding(
+            start_snapshot, label="cross-cycle endgame source binding"
+        )
+        fixture_install: dict[str, object] | None = None
+        activation_restore: dict[str, object] | None = None
+        activation_result: object | None = None
+
+        def activate(result: object) -> ActivatedResultSession:
+            nonlocal fixture_install, activation_restore, activation_result
+            activation_result = result
+            fixture_install = install_phase2_endgame_rebind_fixture(
+                context.isolated_userdir,
+                dict(context.runtime_bootstrap),
+                context.artifacts,
+            )
+            activation_restore = _restore_phase2_endgame_result_checkpoint(
+                self.service,
+                result_binding=result,
+                expected_fixture_enabled=True,
+                label="cross-cycle endgame typed result-session activation",
+            )
+            return ActivatedResultSession(
+                service=self.service,
+                restore_receipt={
+                    "result": "GREEN",
+                    "provider_observed": True,
+                    "action_ack_only": False,
+                    "transition_fixture_id": PHASE2_ENDGAME_REBIND_FIXTURE_ID,
+                    "typed_event_fixture_used": True,
+                    "business_state_fixture_used": False,
+                    "console_used": False,
+                    "generic_character_rebind_used": False,
+                    "checkpoint_sha256": getattr(
+                        result, "result_checkpoint_sha256"
+                    ),
+                    "save_lineage_id": getattr(result, "save_lineage_id"),
+                    "event_definition_key": "zg361we.361",
+                    "owner_character_id": getattr(
+                        result, "owner_character_id"
+                    ),
+                    "player_character_id": getattr(
+                        result, "owner_character_id"
+                    ),
+                    "subject_character_id": getattr(
+                        result, "subject_character_id"
+                    ),
+                    "date_raw": getattr(result, "result_date_raw"),
+                    "game_version": ENDGAME_EXACT_GAME_VERSION,
+                    "game_exe_sha256": ENDGAME_EXACT_EXE_SHA256,
+                    "restore": activation_restore,
+                },
+            )
+
+        evidence_directory = (
+            context.artifacts / "phase2_cross_cycle_endgame_action_cell"
+        )
+        evidence_directory.mkdir(parents=True, exist_ok=True)
+        try:
+            action_cell = run_exact_build_cross_cycle_endgame_seam(
+                self.service,
+                source_checkpoint_restore=source_restore,
+                build_identity=build_identity,
+                activate_result_session=activate,
+                evidence_directory=evidence_directory,
+            )
+        except BaseException:
+            if fixture_install is not None:
+                disable_phase2_endgame_rebind_fixture(
+                    context.isolated_userdir, fixture_install, context.artifacts
+                )
+            raise
+        if not (
+            isinstance(action_cell, Mapping)
+            and action_cell.get("result") == "GREEN"
+            and action_cell.get("provider_observed_postcondition") is True
+            and action_cell.get("action_ack_is_business_postcondition") is False
+        ):
+            if fixture_install is not None:
+                disable_phase2_endgame_rebind_fixture(
+                    context.isolated_userdir, fixture_install, context.artifacts
+                )
+            raise Phase2VisualHandlerError(
+                "cross_cycle_endgame_action_cell_not_green",
+                {
+                    "action_cell": (
+                        dict(action_cell)
+                        if isinstance(action_cell, Mapping)
+                        else None
+                    )
+                },
+            )
+        if fixture_install is None or activation_result is None:
+            if fixture_install is not None:
+                disable_phase2_endgame_rebind_fixture(
+                    context.isolated_userdir, fixture_install, context.artifacts
+                )
+            raise Phase2VisualHandlerError(
+                "endgame_result_session_was_not_activated"
+            )
+        fixture_disable = disable_phase2_endgame_rebind_fixture(
+            context.isolated_userdir, fixture_install, context.artifacts
+        )
+        final_restore = _restore_phase2_endgame_result_checkpoint(
+            self.service,
+            result_binding=activation_result,
+            expected_fixture_enabled=False,
+            label="cross-cycle endgame product-only result presentation",
+        )
+        final_snapshot = self.service.snapshot()
+        if not isinstance(final_snapshot, dict):
+            raise acceptance.RunnerError(
+                "cross-cycle endgame final snapshot is not an object"
+            )
+        end_binding = _phase2_paused_binding(
+            final_snapshot, label="cross-cycle endgame final owner binding"
+        )
+        visible = _phase2_promo_visible_scenario_surface(self.service, scenario)
+        save_lineage_id = getattr(activation_result, "save_lineage_id")
+        result_checkpoint_sha256 = getattr(
+            activation_result, "result_checkpoint_sha256"
+        )
+        session_transition = {
+            "schema_version": 1,
+            "result": "GREEN",
+            "transition_kind": (
+                "cross_cycle_endgame_exact_result_checkpoint"
+            ),
+            "handler": ENDGAME_HANDLER,
+            "restore_count": 2,
+            "source": {
+                "bridge_pid": start_binding["bridge_pid"],
+                "connection_generation": start_binding[
+                    "connection_generation"
+                ],
+            },
+            "result_surface": {
+                "bridge_pid": end_binding["bridge_pid"],
+                "connection_generation": end_binding[
+                    "connection_generation"
+                ],
+            },
+            "checkpoint_sha256": result_checkpoint_sha256,
+            "save_lineage_id": save_lineage_id,
+            "provider_observed": True,
+            "action_ack_only": False,
+            "typed_event_fixture_used": True,
+            "business_state_fixture_used": False,
+            "console_used": False,
+            "generic_character_rebind_used": False,
+        }
+        evidence = {
+            "schema_version": 1,
+            "result": "GREEN",
+            "readiness": "static-ready-live-pending",
+            "surface_visible": True,
+            "postcondition_green": True,
+            "handler": ENDGAME_HANDLER,
+            "source_checkpoint_origin": "registered_real_ck3_read_only",
+            "source_checkpoint_restore": source_restore,
+            "action_cell": dict(action_cell),
+            "fixture_install": fixture_install,
+            "fixture_disable": fixture_disable,
+            "activation_restore": activation_restore,
+            "final_product_only_restore": final_restore,
+            "visible_surface": visible,
+            "managed_session_transition": session_transition,
+        }
+        write_json(
+            context.artifacts / "phase2_cross_cycle_endgame_runner_cell.json",
+            evidence,
+        )
+        return evidence
+
+
 def _phase2_promo_visible_scenario_surface(
     service: GameplayBridgeService, scenario: object
 ) -> dict[str, object]:
@@ -1835,24 +2112,28 @@ def _make_default_phase2_promo_span_driver(
     context: Phase2PromoCaptureContext,
 ) -> SequencedPhase2SpanDriver:
     service = context.title_navigation_service
+    real_events = _Phase2RealEventChoreographyService(service)
     event_choreographer = Phase2EventChoreographer(
-        _Phase2RealEventChoreographyService(service)
+        real_events
     )
     visual = Phase2VisualHandlerAdapter(
         service,
         scoreboard_action_cell=run_phase2_scoreboard_gameplay_action_cell,
         advance_to_result={
             handler: _phase2_promo_advance_to_result
-            for handler in (PROJECTS_HANDLER, ENDGAME_HANDLER)
+            for handler in (PROJECTS_HANDLER,)
         },
         postcondition_verifiers={
             handler: _phase2_promo_event_postcondition
-            for handler in (PROJECTS_HANDLER, ENDGAME_HANDLER)
+            for handler in (PROJECTS_HANDLER,)
         },
     )
     composite = CompositePhase2SpanDriver(
         _Phase2AcceptanceActionSpanDriver(
             service, event_choreographer=event_choreographer
+        ),
+        _Phase2CrossCycleEndgameSpanDriver(
+            service, source_choreography=real_events
         ),
         visual,
     )
@@ -1998,6 +2279,8 @@ def run_phase2_promo_capture_scenario(
     source_checkpoint_registry: Mapping[str, object] | None = None,
     scoreboard_surface_checkpoint_registry: Mapping[str, object] | None = None,
     capture_receipt_context: Mapping[str, object] | None = None,
+    isolated_userdir: Path | None = None,
+    runtime_bootstrap: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Invoke only the explicitly registered sequel visual producer.
 
@@ -2072,6 +2355,8 @@ def run_phase2_promo_capture_scenario(
         ("native_session_binding", native_session_binding),
         ("loader_gate", loader_gate),
         ("source_checkpoint_registry", source_checkpoint_registry),
+        ("isolated_userdir", isolated_userdir),
+        ("runtime_bootstrap", runtime_bootstrap),
     ):
         if value is not None:
             producer_kwargs[name] = value
@@ -9318,6 +9603,286 @@ def install_phase2_workforce_action_fixture(
         raise acceptance.RunnerError(
             f"phase-two Workforce action fixture install failed: {error}"
         ) from error
+
+
+def install_phase2_endgame_rebind_fixture(
+    userdir: Path,
+    bootstrap: dict[str, object],
+    artifacts: Path,
+) -> dict[str, object]:
+    """Enable the fixed-target endgame event fixture for one managed reload."""
+
+    evidence_path = artifacts / "phase2_endgame_rebind_fixture_install.json"
+    source = PHASE2_ENDGAME_REBIND_FIXTURE_SOURCE.resolve()
+    target = (
+        userdir / "mod-content" / PHASE2_ENDGAME_REBIND_FIXTURE_ID
+    ).resolve()
+    outer = (userdir / "mod" / PHASE2_ENDGAME_REBIND_FIXTURE_OUTER).resolve()
+    dlc_load = (userdir / "dlc_load.json").resolve()
+    required = (
+        "common/scripted_guis/zga_phase2_endgame_rebind_guis.txt",
+        "descriptor.mod",
+        "events/zga_phase2_endgame_rebind_events.txt",
+        "gui/scripted_widgets/zga_phase2_endgame_rebind_scripted_widgets.txt",
+        "gui/zga_phase2_endgame_rebind_bridge.gui",
+        "localization/english/zga_phase2_endgame_rebind_l_english.yml",
+        (
+            "localization/simp_chinese/"
+            "zga_phase2_endgame_rebind_l_simp_chinese.yml"
+        ),
+    )
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_cross_cycle_endgame_typed_rebind_fixture_install",
+        "transition_fixture_id": PHASE2_ENDGAME_REBIND_FIXTURE_ID,
+        "transition_event": PHASE2_ENDGAME_REBIND_FIXTURE_EVENT,
+        "acceptance_only": True,
+        "release_included": False,
+        "business_state_fixture_used": False,
+        "generic_character_rebind_used": False,
+        "console_used": False,
+        "source": str(source),
+        "target": str(target),
+        "outer_descriptor": str(outer),
+        "source_tree_sha256": None,
+        "target_tree_sha256": None,
+        "enabled_mods_before": None,
+        "enabled_mods_after": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        if not source.is_dir() or any(
+            not (source / relative).is_file() for relative in required
+        ):
+            raise acceptance.RunnerError(
+                "phase-two endgame rebind fixture source is incomplete"
+            )
+        source_snapshot = isolated.tree_snapshot(source)
+        if tuple(sorted(source_snapshot)) != tuple(sorted(required)):
+            raise acceptance.RunnerError(
+                "phase-two endgame rebind fixture has an unexpected file set"
+            )
+        for relative in required:
+            if not (source / relative).read_bytes().startswith(b"\xef\xbb\xbf"):
+                raise acceptance.RunnerError(
+                    "phase-two endgame rebind fixture lacks UTF-8 BOM: "
+                    + relative
+                )
+        if target.exists() or outer.exists():
+            raise acceptance.RunnerError(
+                "phase-two endgame rebind fixture target already exists"
+            )
+        userdir_root = userdir.resolve()
+        if not isolated.is_relative_to(target, userdir_root) or not (
+            isolated.is_relative_to(outer, userdir_root)
+        ):
+            raise acceptance.RunnerError(
+                "phase-two endgame rebind fixture target escaped the isolated userdir"
+            )
+        load_value = json.loads(dlc_load.read_text(encoding="utf-8-sig"))
+        enabled = (
+            load_value.get("enabled_mods")
+            if isinstance(load_value, dict)
+            else None
+        )
+        expected_before = bootstrap.get("enabled_mods")
+        if not (
+            isinstance(enabled, list)
+            and all(isinstance(value, str) for value in enabled)
+            and enabled == expected_before
+        ):
+            raise acceptance.RunnerError(
+                "isolated enabled-mod baseline drifted before endgame fixture"
+            )
+        fixture_mod = f"mod/{PHASE2_ENDGAME_REBIND_FIXTURE_OUTER}"
+        if fixture_mod in enabled:
+            raise acceptance.RunnerError(
+                "phase-two endgame rebind fixture was already enabled"
+            )
+        shutil.copytree(source, target)
+        isolated.write_outer_descriptor(
+            target / "descriptor.mod", outer, target
+        )
+        target_snapshot = isolated.tree_snapshot(target)
+        if target_snapshot != source_snapshot:
+            raise acceptance.RunnerError(
+                "phase-two endgame rebind fixture copy changed bytes"
+            )
+        enabled_after = [*enabled, fixture_mod]
+        load_value["enabled_mods"] = enabled_after
+        write_json(dlc_load, load_value)
+        evidence.update(
+            {
+                "result": "GREEN",
+                "source_tree_sha256": isolated.snapshot_digest(
+                    source_snapshot
+                ),
+                "target_tree_sha256": isolated.snapshot_digest(
+                    target_snapshot
+                ),
+                "enabled_mods_before": list(enabled),
+                "enabled_mods_after": enabled_after,
+                "failure_reason": None,
+            }
+        )
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two endgame rebind fixture install failed: {error}"
+        ) from error
+
+
+def disable_phase2_endgame_rebind_fixture(
+    userdir: Path,
+    install_receipt: Mapping[str, object],
+    artifacts: Path,
+) -> dict[str, object]:
+    """Restore the product-only mod list; leave fixture bytes dormant."""
+
+    evidence_path = artifacts / "phase2_endgame_rebind_fixture_disable.json"
+    dlc_load = (userdir / "dlc_load.json").resolve()
+    current = json.loads(dlc_load.read_text(encoding="utf-8-sig"))
+    enabled = current.get("enabled_mods") if isinstance(current, dict) else None
+    before = install_receipt.get("enabled_mods_before")
+    after = install_receipt.get("enabled_mods_after")
+    if not (
+        install_receipt.get("result") == "GREEN"
+        and isinstance(before, list)
+        and isinstance(after, list)
+        and isinstance(enabled, list)
+        and enabled == after
+        and all(isinstance(value, str) for value in before)
+    ):
+        raise acceptance.RunnerError(
+            "phase-two endgame rebind fixture disable binding is RED"
+        )
+    current["enabled_mods"] = list(before)
+    write_json(dlc_load, current)
+    verification = json.loads(dlc_load.read_text(encoding="utf-8-sig"))
+    if not (
+        isinstance(verification, dict)
+        and verification.get("enabled_mods") == before
+    ):
+        raise acceptance.RunnerError(
+            "phase-two endgame product-only mod list was not restored"
+        )
+    receipt = {
+        "schema_version": 1,
+        "result": "GREEN",
+        "scope": "phase2_cross_cycle_endgame_fixture_disable",
+        "transition_fixture_id": PHASE2_ENDGAME_REBIND_FIXTURE_ID,
+        "enabled_mods_before": list(enabled),
+        "enabled_mods_after": list(before),
+        "fixture_enabled_for_next_restart": False,
+        "fixture_bytes_left_dormant": True,
+        "business_state_fixture_used": False,
+        "console_used": False,
+    }
+    write_json(evidence_path, receipt)
+    return receipt
+
+
+def _restore_phase2_endgame_result_checkpoint(
+    service: GameplayBridgeService,
+    *,
+    result_binding: object,
+    expected_fixture_enabled: bool,
+    label: str,
+) -> dict[str, object]:
+    """Restore the latest #361 save and verify its exact typed binding."""
+
+    owner = getattr(result_binding, "owner_character_id", None)
+    subject = getattr(result_binding, "subject_character_id", None)
+    date_raw = getattr(result_binding, "result_date_raw", None)
+    checkpoint_sha256 = str(
+        getattr(result_binding, "result_checkpoint_sha256", "")
+    ).upper()
+    save_lineage_id = getattr(result_binding, "save_lineage_id", None)
+    if not (
+        isinstance(owner, int)
+        and not isinstance(owner, bool)
+        and owner > 0
+        and isinstance(subject, int)
+        and not isinstance(subject, bool)
+        and subject > 0
+        and isinstance(date_raw, int)
+        and not isinstance(date_raw, bool)
+        and re.fullmatch(r"[0-9A-F]{64}", checkpoint_sha256) is not None
+        and isinstance(save_lineage_id, str)
+        and bool(save_lineage_id)
+    ):
+        raise acceptance.RunnerError(f"{label} result binding is invalid")
+    before_snapshot = service.snapshot()
+    if not isinstance(before_snapshot, dict):
+        raise acceptance.RunnerError(f"{label} pre-restore snapshot is not an object")
+    before = _phase2_paused_binding(
+        before_snapshot, label=f"{label} pre-restore"
+    )
+    result = service.restore_checkpoint(
+        expected_revision=int(before["revision"])
+    )
+    restored = _phase2_checkpoint_payload(result, status="restored", label=label)
+    lifecycle_value = result.get("lifecycle")
+    lifecycle = lifecycle_value if isinstance(lifecycle_value, dict) else {}
+    after_snapshot = service.snapshot()
+    if not isinstance(after_snapshot, dict):
+        raise acceptance.RunnerError(f"{label} post-restore snapshot is not an object")
+    after = _phase2_paused_binding(
+        after_snapshot, label=f"{label} post-restore"
+    )
+    event = wait_for_phase2_exact_event(
+        service,
+        expected_definition_key="zg361we.361",
+        expected_player_character_id=owner,
+    )
+    checks = {
+        "pid_changed": after["bridge_pid"] != before["bridge_pid"],
+        "generation_advanced_once": after["connection_generation"]
+        == before["connection_generation"] + 1,
+        "lifecycle_previous_pid_matches": lifecycle.get("previous_pid")
+        == before["bridge_pid"],
+        "lifecycle_pid_matches": lifecycle.get("pid") == after["bridge_pid"],
+        "lifecycle_intent_restore": lifecycle.get("lifecycle_intent")
+        == "restore",
+        "owner_restored": after["player_character_id"] == owner,
+        "date_restored": after["date_raw"] == date_raw,
+        "sha256_preserved": str(restored.get("sha256", "")).upper()
+        == checkpoint_sha256,
+        "event_restored": event["identity"].get("event_definition_key")
+        == "zg361we.361",
+    }
+    failed = [name for name, passed in checks.items() if passed is not True]
+    if failed:
+        raise acceptance.RunnerError(
+            f"{label} restore lineage RED: " + ", ".join(failed)
+        )
+    return {
+        "schema_version": 1,
+        "result": "GREEN",
+        "provider_observed": True,
+        "action_ack_only": False,
+        "event_definition_key": "zg361we.361",
+        "owner_character_id": owner,
+        "subject_character_id": subject,
+        "player_character_id": owner,
+        "date_raw": date_raw,
+        "checkpoint_sha256": checkpoint_sha256,
+        "save_lineage_id": save_lineage_id,
+        "fixture_enabled_for_restart": expected_fixture_enabled,
+        "before": before,
+        "after": after,
+        "restored_checkpoint": restored,
+        "lifecycle": lifecycle,
+        "event": event,
+        "checks": checks,
+    }
 
 
 def _phase2_checkpoint_payload(
@@ -17467,6 +18032,8 @@ def run_cell(
                         "game_version": game_version,
                         "executable_sha256": executable_before,
                     },
+                    isolated_userdir=userdir,
+                    runtime_bootstrap=bootstrap,
                 )
             except BaseException as error:
                 # Keep a producer's typed RED envelope in the durable report

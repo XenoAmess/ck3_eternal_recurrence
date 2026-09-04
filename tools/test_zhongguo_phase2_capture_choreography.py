@@ -326,6 +326,104 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
         self.assertEqual(raised.exception.reason_code, "span_session_changed_during_action")
         self.assertEqual(recorder.calls, [])
 
+    def test_v2_allows_only_typed_endgame_two_restore_transition(self) -> None:
+        endgame = PHASE2_CAPTURE_SCENARIOS[-1]
+
+        class EndgameDriver(_Driver):
+            def __init__(self, *, generic_rebind_used: bool) -> None:
+                super().__init__()
+                self.generic_rebind_used = generic_rebind_used
+
+            def run_span(self, scenario, context, runtime):
+                result = dict(super().run_span(scenario, context, runtime))
+                if scenario.handler == "capture_cross_cycle_endgame":
+                    result["managed_session_transition"] = {
+                        "schema_version": 1,
+                        "result": "GREEN",
+                        "transition_kind": (
+                            "cross_cycle_endgame_exact_result_checkpoint"
+                        ),
+                        "handler": scenario.handler,
+                        "restore_count": 2,
+                        "source": {
+                            "bridge_pid": 5008,
+                            "connection_generation": 108,
+                        },
+                        "result_surface": {
+                            "bridge_pid": 6008,
+                            "connection_generation": 110,
+                        },
+                        "checkpoint_sha256": "A" * 64,
+                        "save_lineage_id": "seed-1",
+                        "provider_observed": True,
+                        "action_ack_only": False,
+                        "typed_event_fixture_used": True,
+                        "business_state_fixture_used": False,
+                        "console_used": False,
+                        "generic_character_rebind_used": self.generic_rebind_used,
+                    }
+                return result
+
+        def exercise(*, generic_rebind_used: bool):
+            temporary = tempfile.TemporaryDirectory()
+            self.addCleanup(temporary.cleanup)
+            root = Path(temporary.name)
+            recorder = _Recorder()
+            recorder.phase2_capture_lineage = {"seed_lineage_id": "seed-1"}
+
+            def receipt(scenario, phase: str) -> dict[str, object]:
+                span_index = PHASE2_CAPTURE_SCENARIOS.index(scenario) + 1
+                endgame_post = scenario is endgame and phase == "post"
+                pid = 6008 if endgame_post else 5000 + span_index
+                generation = 110 if endgame_post else 100 + span_index
+                return {
+                    "schema_version": 1,
+                    "result": "GREEN",
+                    "span_id": scenario.span_id,
+                    "phase": phase,
+                    "session_id": f"session-{pid}-{generation}",
+                    "bridge_pid": pid,
+                    "connection_generation": generation,
+                    "snapshot_id": f"snapshot-{span_index}-{phase}",
+                    "revision": (
+                        1 if endgame_post else span_index * 10 + (phase == "post")
+                    ),
+                    "native_revision": (
+                        1
+                        if endgame_post
+                        else 1000 + span_index * 10 + (phase == "post")
+                    ),
+                    "checkpoint": {
+                        "path": str((root / f"{scenario.span_id}-{phase}.ck3").resolve()),
+                        "bytes": 1,
+                        "sha256": f"{span_index:064x}",
+                        "save_lineage_id": "seed-1",
+                    },
+                }
+
+            recorder.phase2_span_receipt_provider = receipt
+            return root, recorder, EndgameDriver(
+                generic_rebind_used=generic_rebind_used
+            )
+
+        root, recorder, driver = exercise(generic_rebind_used=False)
+        evidence = run_phase2_capture_choreography(
+            _context(recorder, root), _runtime(), driver
+        )
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(len(recorder.calls), 8)
+
+        root, recorder, driver = exercise(generic_rebind_used=True)
+        with self.assertRaises(Phase2ChoreographyBlocked) as raised:
+            run_phase2_capture_choreography(
+                _context(recorder, root), _runtime(), driver
+            )
+        self.assertEqual(
+            raised.exception.reason_code,
+            "span_session_changed_during_action",
+        )
+        self.assertEqual(len(recorder.calls), 7)
+
 
 if __name__ == "__main__":
     unittest.main()

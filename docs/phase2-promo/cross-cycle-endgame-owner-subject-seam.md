@@ -58,20 +58,37 @@ respects the project file-boundary rule; no product effect shard was changed.
 
 ## Formal runner integration point
 
-The formal registry remains untouched in this package. The integration point
-is the `cross-cycle-endgame` handler in
-`_make_default_phase2_promo_span_driver`:
+The formal Phase2 runner now assigns `capture_cross_cycle_endgame` to
+`_Phase2CrossCycleEndgameSpanDriver`; the generic visual event adapter no
+longer owns that handler. The integration in
+`_make_default_phase2_promo_span_driver` does the following:
 
-- replace its generic `advance_to_result` path with
-  `run_exact_build_cross_cycle_endgame_seam`;
+- consumes only the already registered `zg361we.356` source restore cached by
+  the source choreographer. The registry provider reads an absolute save,
+  verifies its size/SHA-256, real-CK3 receipt, owner, date and seed lineage;
+  this path cannot create or mutate a source checkpoint;
+- calls `run_exact_build_cross_cycle_endgame_seam` rather than the old generic
+  `advance_to_result`/event-visibility verifier;
 - supply a lifecycle-only `activate_result_session(result_binding)` callback
   that installs the named fixture into the isolated userdir and restores the
   checkpoint named by the result binding;
 - preserve the source checkpoint's `save_lineage_id` and return a restore
   receipt containing exact build, checkpoint SHA, owner, subject, date, and
   fixture identity;
-- persist the returned provider response and postcondition as the span's live
-  artifact.
+- require the subject-side Workforce provider postcondition, then disable the
+  fixture and restore the hash-identical owner-visible `zg361we.361` result so
+  the recorder's clean hold remains a real product surface;
+- admit exactly two managed restore generations inside this one span. The
+  span-session contract checks the exact handler, result checkpoint hash,
+  seed lineage, start/end PID generations, typed fixture and provider proof;
+  a generic rebind, console use, business-state fixture or ACK-only result is
+  still RED.
+
+The runner writes `phase2_cross_cycle_endgame_runner_cell.json` beside the
+other capture evidence. Its readiness label remains
+`static-ready-live-pending`: formal wiring does not become live evidence until
+the user-supplied source registry contains a qualifying real checkpoint and a
+paused run captures the final provider artifact.
 
 The live gate remains open until a real `zg361we.356` source checkpoint, a
 real owner-visible `zg361we.361` result checkpoint/restore, and the same-lineage
