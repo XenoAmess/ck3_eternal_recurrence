@@ -396,6 +396,10 @@ class Fixture:
         product.mkdir(parents=True)
         seed_fixture.mkdir(parents=True)
         (product / "descriptor.mod").write_text("name=product\n", encoding="utf-8")
+        for relative in capture.CRITICAL_B2_PRODUCT_PATHS:
+            provider = product / relative
+            provider.parent.mkdir(parents=True, exist_ok=True)
+            provider.write_bytes(f"fixture:{relative}\n".encode("utf-8"))
         (seed_fixture / "descriptor.mod").write_text(
             "name=fixture\n", encoding="utf-8"
         )
@@ -1917,6 +1921,99 @@ def test_no_launch_preflight_green_does_not_cross_native_boundary() -> None:
         require(persisted == report, "preflight artifact differs from return value")
 
 
+def test_no_launch_preflight_rejects_stale_critical_b2_product_source() -> None:
+    """A stale staged product must fail before isolated materialization."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        staged_product = fixture.root / "stale-product"
+        shutil.copytree(fixture.clean / "mod_zhongguo_style", staged_product)
+        stale_relative = capture.CRITICAL_B2_PRODUCT_PATHS[0]
+        (staged_product / stale_relative).write_bytes(b"stale-generated-provider\n")
+        calls: list[str] = []
+        report = capture.run_preflight(
+            replace(
+                fixture.config(),
+                product_source_override=staged_product,
+            ),
+            runtime=fixture.runtime(calls),
+            _allow_fixture_static_skip=True,
+        )
+        require(report["result"] == "RED", "stale B2 product false-GREENed")
+        require("bootstrap" not in calls, "stale B2 product reached bootstrap")
+        require(
+            report["checks"]["critical_b2_product_byte_equivalence"] == "RED",
+            "stale B2 source did not type the failed check",
+        )
+        evidence = report["critical_b2_product_byte_equivalence"]
+        require(isinstance(evidence, dict), "stale B2 evidence is missing")
+        require(
+            evidence.get("mismatches")
+            == [
+                {
+                    "path": stale_relative,
+                    "target": "product_source",
+                    "reason": "bytes-differ",
+                }
+            ],
+            "stale B2 source mismatch was not exact",
+        )
+        artifact = json.loads(
+            (fixture.artifacts / "critical-b2-product-byte-equivalence.json")
+            .read_text(encoding="utf-8")
+        )
+        require(artifact == evidence, "stale B2 artifact differs from report")
+        require("supervisor-start" not in calls, "stale B2 source started CK3")
+
+
+def test_no_launch_preflight_rejects_stale_mounted_critical_b2_product() -> None:
+    """A bootstrap copy drift must fail before runtime tree acceptance/launch."""
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        runtime = fixture.runtime(calls)
+        original_bootstrap = runtime.zgrun.bootstrap_userdir
+        stale_relative = capture.CRITICAL_B2_PRODUCT_PATHS[1]
+
+        def stale_bootstrap(
+            profile: Path, product_source: Path, **kwargs: object
+        ) -> dict[str, object]:
+            result = original_bootstrap(profile, product_source, **kwargs)
+            targets = result["targets"]
+            require(isinstance(targets, dict), "fake bootstrap targets malformed")
+            mounted = Path(targets["product"])
+            (mounted / stale_relative).write_bytes(b"stale-mounted-provider\n")
+            return result
+
+        runtime.zgrun.bootstrap_userdir = stale_bootstrap
+        report = capture.run_preflight(
+            fixture.config(),
+            runtime=runtime,
+            _allow_fixture_static_skip=True,
+        )
+        require(report["result"] == "RED", "stale mounted B2 file false-GREENed")
+        require("bootstrap" in calls, "mounted-byte test did not reach bootstrap")
+        require(
+            report["checks"]["critical_b2_product_byte_equivalence"] == "RED",
+            "stale mounted B2 file did not type the failed check",
+        )
+        evidence = report["critical_b2_product_byte_equivalence"]
+        require(isinstance(evidence, dict), "mounted B2 evidence is missing")
+        require(
+            evidence.get("mismatches")
+            == [
+                {
+                    "path": stale_relative,
+                    "target": "mounted_product",
+                    "reason": "bytes-differ",
+                }
+            ],
+            "stale mounted B2 mismatch was not exact",
+        )
+        require("supervisor-start" not in calls, "stale mounted B2 file started CK3")
+
+
 def _install_list_domain_contract(fixture: Fixture) -> Path:
     source = Path(capture.__file__).with_name(
         "zg361_phase2_list_domain_acceptance_contract.json"
@@ -2446,6 +2543,8 @@ def main() -> int:
     test_named_product_projection_requires_manifest_before_runtime()
     test_stale_bootstrap_cannot_silently_downgrade_named_projection()
     test_no_launch_preflight_green_does_not_cross_native_boundary()
+    test_no_launch_preflight_rejects_stale_critical_b2_product_source()
+    test_no_launch_preflight_rejects_stale_mounted_critical_b2_product()
     test_list_domain_observer_pending_is_typed_no_launch_red()
     test_list_domain_observer_manifest_binds_frozen_no_launch_inputs()
     test_no_launch_preflight_missing_static_gate_is_red_without_fixture_override()

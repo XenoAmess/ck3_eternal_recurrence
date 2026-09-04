@@ -48,6 +48,18 @@ EXPECTED_ENABLED_MODS = (
     "mod/zg361_acceptance.mod",
     "mod/zga_acceptance_fixture.mod",
 )
+# These are the four generated B2 providers that produced the 93 first-use
+# optional-variable diagnostics in the explicit-AND seed refresh.  A full
+# cumulative B3+ seed run must never mount an older copy while claiming a
+# newer clean-source commit.  Keep the paths narrow and evidence-backed: this
+# is a byte-equivalence gate for the observed stale-product failure, not a
+# second whole-tree release verifier.
+CRITICAL_B2_PRODUCT_PATHS = (
+    "common/scripted_effects/zg361_b2_debt_consumers_effects.txt",
+    "common/scripted_effects/zg361_b2_069_delivery_effects.txt",
+    "common/scripted_effects/zg361_b2_072_access_audit_effects.txt",
+    "common/scripted_effects/zg361_b2_081_projection_access_effects.txt",
+)
 SEED_EVENT_DEFINITION_KEY = "zga_phase2_seed.1"
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
@@ -574,6 +586,117 @@ def write_json(path: Path, value: object) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def verify_critical_b2_product_bytes(
+    config: CaptureConfig,
+    *,
+    mounted_product: Path | None = None,
+) -> dict[str, Any]:
+    """Prove the four failure-relevant B2 providers equal clean source bytes.
+
+    The first call checks the external/staged product before projection.  The
+    second call adds the actual isolated product target returned by bootstrap,
+    closing the gap where a correct source could still materialize a stale or
+    incomplete mount.  Direct byte comparison is intentional; SHA-256 and
+    sizes are retained only as operator-readable provenance.
+    """
+
+    clean_root = config.clean_source / "mod_zhongguo_style"
+    targets = {"product_source": config.product_source}
+    if mounted_product is not None:
+        targets["mounted_product"] = mounted_product.resolve()
+
+    rows: list[dict[str, Any]] = []
+    mismatches: list[dict[str, str]] = []
+    for relative in CRITICAL_B2_PRODUCT_PATHS:
+        clean_path = clean_root / relative
+        clean_exists = clean_path.is_file()
+        clean_bytes = clean_path.read_bytes() if clean_exists else None
+        clean_identity = {
+            "path": str(clean_path.resolve()),
+            "exists": clean_exists,
+            "bytes": len(clean_bytes) if clean_bytes is not None else None,
+            "sha256": (
+                hashlib.sha256(clean_bytes).hexdigest()
+                if clean_bytes is not None
+                else None
+            ),
+        }
+        comparisons: dict[str, dict[str, Any]] = {}
+        for target_name, target_root in targets.items():
+            target_path = target_root / relative
+            target_exists = target_path.is_file()
+            target_bytes = target_path.read_bytes() if target_exists else None
+            byte_identical = (
+                clean_bytes is not None
+                and target_bytes is not None
+                and target_bytes == clean_bytes
+            )
+            comparisons[target_name] = {
+                "path": str(target_path.resolve()),
+                "exists": target_exists,
+                "bytes": len(target_bytes) if target_bytes is not None else None,
+                "sha256": (
+                    hashlib.sha256(target_bytes).hexdigest()
+                    if target_bytes is not None
+                    else None
+                ),
+                "byte_identical_to_clean_source": byte_identical,
+            }
+            if not byte_identical:
+                mismatches.append(
+                    {
+                        "path": relative,
+                        "target": target_name,
+                        "reason": (
+                            "clean-source-file-missing"
+                            if clean_bytes is None
+                            else "target-file-missing"
+                            if target_bytes is None
+                            else "bytes-differ"
+                        ),
+                    }
+                )
+        rows.append(
+            {
+                "path": relative,
+                "clean_source": clean_identity,
+                "comparisons": comparisons,
+            }
+        )
+
+    return {
+        "schema_version": 1,
+        "kind": "zg361_critical_b2_product_byte_equivalence",
+        "result": "GREEN" if not mismatches else "RED",
+        "required_paths": list(CRITICAL_B2_PRODUCT_PATHS),
+        "checked_targets": list(targets),
+        "all_byte_identical": not mismatches,
+        "mismatches": mismatches,
+        "files": rows,
+    }
+
+
+def enforce_critical_b2_product_bytes(
+    config: CaptureConfig,
+    artifacts: Path,
+    *,
+    mounted_product: Path | None = None,
+) -> dict[str, Any]:
+    """Persist and enforce the critical B2 source/product/mount contract."""
+
+    evidence = verify_critical_b2_product_bytes(
+        config,
+        mounted_product=mounted_product,
+    )
+    write_json(artifacts / "critical-b2-product-byte-equivalence.json", evidence)
+    if evidence["result"] != "GREEN":
+        raise SeedCaptureError(
+            "critical B2 product files are not byte-identical to clean source",
+            evidence,
+        )
+    return evidence
 
 
 def _settings_file_is_full(path: Path) -> bool:
@@ -2705,6 +2828,7 @@ def run_preflight(
         "driver_opened": False,
         "checks": {},
         "source_identity": None,
+        "critical_b2_product_byte_equivalence": None,
         "external_dependencies": None,
         "bootstrap": None,
         "profile_settings": {
@@ -2789,6 +2913,16 @@ def run_preflight(
         }
         report["source_identity"] = source_identity
         report["checks"]["source_archive_equivalence"] = "GREEN"
+
+        try:
+            report["critical_b2_product_byte_equivalence"] = (
+                enforce_critical_b2_product_bytes(config, artifacts)
+            )
+        except SeedCaptureError as error:
+            report["critical_b2_product_byte_equivalence"] = error.evidence
+            report["checks"]["critical_b2_product_byte_equivalence"] = "RED"
+            raise
+        report["checks"]["critical_b2_product_byte_equivalence"] = "GREEN"
 
         base_contract = json.loads(config.seed_contract.read_text(encoding="utf-8"))
         report["seed_contract_status"] = base_contract.get("status")
@@ -2930,6 +3064,19 @@ def run_preflight(
         bootstrap_targets = {
             name: Path(path).resolve() for name, path in raw_targets.items()
         }
+        try:
+            report["critical_b2_product_byte_equivalence"] = (
+                enforce_critical_b2_product_bytes(
+                    config,
+                    artifacts,
+                    mounted_product=bootstrap_targets["product"],
+                )
+            )
+        except SeedCaptureError as error:
+            report["critical_b2_product_byte_equivalence"] = error.evidence
+            report["checks"]["critical_b2_product_byte_equivalence"] = "RED"
+            raise
+        report["checks"]["critical_b2_product_byte_equivalence"] = "GREEN"
         initial_runtime_trees = {
             name: zgrun.isolated.tree_snapshot(path)
             for name, path in bootstrap_targets.items()
@@ -3313,6 +3460,7 @@ def run_capture(
             ),
         },
         "source_identity": None,
+        "critical_b2_product_byte_equivalence": None,
         "external_dependencies": None,
         "list_domain_observer_gate": None,
         "bridge": None,
@@ -3416,6 +3564,13 @@ def run_capture(
             "archive_source_equivalence": archive_equivalence,
         }
         report["source_identity"] = source_identity
+        try:
+            report["critical_b2_product_byte_equivalence"] = (
+                enforce_critical_b2_product_bytes(config, artifacts)
+            )
+        except SeedCaptureError as error:
+            report["critical_b2_product_byte_equivalence"] = error.evidence
+            raise
         active_runtime = active_runtime or load_runtime(config)
         acceptance = active_runtime.acceptance
         zgrun = active_runtime.zgrun
@@ -3518,6 +3673,17 @@ def run_capture(
         bootstrap_targets = {
             name: Path(path).resolve() for name, path in raw_targets.items()
         }
+        try:
+            report["critical_b2_product_byte_equivalence"] = (
+                enforce_critical_b2_product_bytes(
+                    config,
+                    artifacts,
+                    mounted_product=bootstrap_targets["product"],
+                )
+            )
+        except SeedCaptureError as error:
+            report["critical_b2_product_byte_equivalence"] = error.evidence
+            raise
         initial_runtime_trees = {
             name: zgrun.isolated.tree_snapshot(path)
             for name, path in bootstrap_targets.items()
