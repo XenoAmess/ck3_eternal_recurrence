@@ -22,6 +22,8 @@ FIXTURE_PATH = MODULE.FIXTURE_PATH
 audit = MODULE.audit
 parse_capability_source = MODULE.parse_capability_source
 parse_ck3_profile_source = MODULE.parse_ck3_profile_source
+parse_projects_metrics_source = MODULE.parse_projects_metrics_source
+parse_war_bound_loss_source = MODULE.parse_war_bound_loss_source
 
 
 def _configured_checkout() -> Path:
@@ -115,6 +117,14 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             checkout / open_data["capability_source"]
         )
         build = parse_ck3_profile_source(checkout / open_data["ck3_profile_source"])
+        war_loss_expected = fixture["war_bound_loss_candidate"]
+        war_loss = parse_war_bound_loss_source(
+            checkout / war_loss_expected["source"]
+        )
+        projects_expected = fixture["projects_metrics_delta"]
+        projects = parse_projects_metrics_source(
+            checkout / projects_expected["source"]
+        )
         for key in (
             "profile_id",
             "capability_id",
@@ -131,6 +141,22 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
         )
         self.assertEqual(build["game_version"], open_data["game_version"])
         self.assertEqual(build["exe_sha256"], open_data["exe_sha256"])
+        self.assertEqual(
+            war_loss,
+            {
+                key: value
+                for key, value in war_loss_expected.items()
+                if key != "source"
+            },
+        )
+        self.assertEqual(
+            projects,
+            {
+                key: value
+                for key, value in projects_expected.items()
+                if key != "source"
+            },
+        )
 
 
 if __name__ == "__main__":

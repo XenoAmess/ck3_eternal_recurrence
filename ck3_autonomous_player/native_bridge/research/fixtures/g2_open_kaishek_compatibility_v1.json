@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "fadbb64c913653ff2e8cffe6897ab048698d1412"
+    "open_kaishek_commit": "a54164625b3ebb7d738d16236ca3080686fa9984"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -59,6 +59,45 @@
     "full_decision_ready": false,
     "automatic_surrender_ready": false,
     "gen_034_closed": false
+  },
+  "war_bound_loss_candidate": {
+    "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/G2WarBoundLossCandidateMetadata.java",
+    "id": "ck3-1.19.0.6-g2-war-bound-loss-candidate-v1",
+    "root_integration_commit": "714be35d1e4420889e92775be10d7826b2508da1",
+    "root_candidate_commit": "2911ed72b6179a5c8a19649deedfa919d235beb1",
+    "root_static_artifact_sha256": "6b85024d6964dd715d88f502c5d21bc6987a7debad2a309955e25f3334ddc991",
+    "root_source_contract_sha256": "d97b47faca7d161983f960eace025bc1b8ef948ac198c3aaca12d71c3375da15",
+    "root_header_sha256": "2da1310487fcf5dfe175ed491fa82eb8b46195bec3919d1b8021f32c4cdc5e7f",
+    "root_source_sha256": "4a1fb99b5d668a0b9fcbadbc2d1a37876b27ca6ee542dcdc62fb03ae361df7fc",
+    "frozen_pre_termination_soldiers": 598,
+    "destroyed_post_termination_soldiers": 0,
+    "proven_boundary_soldiers_lost": 598,
+    "default_enabled": false,
+    "read_only": true,
+    "public_capability_added": false,
+    "public_wire_changed": false,
+    "source_specific_attribution_ready": false,
+    "termination_action_bound": false,
+    "surrender_causality_proven": false,
+    "public_terms_ready": false,
+    "automatic_surrender_ready": false,
+    "production_live": false,
+    "gen_034_resolved": false
+  },
+  "projects_metrics_delta": {
+    "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionProfile.java",
+    "capability_id": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+    "root_commit": "953634265ebf298cec3f2cf3065060e577dc8d17",
+    "root_source_contract_sha256": "362e9e88ff0a2ac8a7ec5cd396959a7200ed9f4f6d8519c953fe1798b903f0f2",
+    "root_abi_sha256": "c0135b790089de3807ae2139431c3cd1df3867d61408e36cd64df17b5dc4fadd",
+    "root_schema_sha256": "3763b17f937d4c36c5643a41d54ccd449cd23a8f5f94cddb4a4edbed7bbdbfd4",
+    "root_python_contract_sha256": "468d4ce43a28606148290b00b715f04dc33ba7f5bf95299949afe37b66b37195",
+    "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
+    "checkpoint_state_required": true,
+    "checkpoint_state_field": "checkpoint_state",
+    "checkpoint_absent_invariant": "cp26_ready_p3_absent_exposes_no_p3_result",
+    "default_candidate_enabled": false,
+    "production_live": false
   },
   "boundaries": {
     "ck3_started": false,

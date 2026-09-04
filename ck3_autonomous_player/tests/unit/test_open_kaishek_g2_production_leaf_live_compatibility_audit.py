@@ -45,6 +45,10 @@ class OpenKaishekG2ProductionLeafLiveCompatibilityAuditTests(unittest.TestCase):
         )
         self.assertEqual(
             self.report["open_kaishek"]["commit"],
+            "fadbb64c913653ff2e8cffe6897ab048698d1412",
+        )
+        self.assertNotEqual(
+            self.report["open_kaishek"]["commit"],
             self.compatibility["root_binding"]["open_kaishek_commit"],
         )
         self.assertEqual(

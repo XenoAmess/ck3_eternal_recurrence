@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Audit the frozen root/open_kaishek G2 binding without launching CK3.
+"""Audit the current root/open_kaishek compatibility pin without CK3.
 
 The verifier is deliberately source-level.  It checks the root's descriptive
-binding against the companion Java profile and exact-build profile, then (when
-the external checkout is available) checks its source files and read-only Git
-refs.  It never starts or attaches to CK3 and never changes a Paradox opcode
-allow-list.
+G2 binding, default-OFF war-loss metadata, and projects-metrics schema delta
+against the companion Java profiles.  When the external checkout is available,
+it also checks source files and read-only Git refs.  It never starts or attaches
+to CK3 and never changes a Paradox opcode allow-list.
 """
 
 from __future__ import annotations
@@ -61,6 +61,10 @@ _JAVA_BOOLEAN_CONSTANT_RE = re.compile(
     r"(?m)^\s*public\s+static\s+final\s+boolean\s+{name}\s*=\s*"
     r"(true|false)\s*;"
 )
+_JAVA_INT_CONSTANT_RE = re.compile(
+    r"(?m)^\s*public\s+static\s+final\s+int\s+{name}\s*=\s*"
+    r"([0-9]+)\s*;"
+)
 _PROVIDER_STRING_CONSTANTS = {
     "root_provider_commit": "ROOT_PROVIDER_COMMIT",
     "root_production_candidate_commit": "ROOT_PRODUCTION_CANDIDATE_COMMIT",
@@ -88,6 +92,50 @@ _PROVIDER_BOOLEAN_CONSTANTS = {
     "full_decision_ready": "FULL_DECISION_READY",
     "automatic_surrender_ready": "AUTOMATIC_SURRENDER_READY",
     "gen_034_closed": "GEN_034_CLOSED",
+}
+_WAR_LOSS_STRING_CONSTANTS = {
+    "id": "ID",
+    "root_integration_commit": "ROOT_INTEGRATION_COMMIT",
+    "root_candidate_commit": "ROOT_CANDIDATE_COMMIT",
+    "root_static_artifact_sha256": "ROOT_STATIC_ARTIFACT_SHA256",
+    "root_source_contract_sha256": "ROOT_SOURCE_CONTRACT_SHA256",
+    "root_header_sha256": "ROOT_HEADER_SHA256",
+    "root_source_sha256": "ROOT_SOURCE_SHA256",
+}
+_WAR_LOSS_INT_CONSTANTS = {
+    "frozen_pre_termination_soldiers": "FROZEN_PRE_TERMINATION_SOLDIERS",
+    "destroyed_post_termination_soldiers": (
+        "DESTROYED_POST_TERMINATION_SOLDIERS"
+    ),
+    "proven_boundary_soldiers_lost": "PROVEN_BOUNDARY_SOLDIERS_LOST",
+}
+_WAR_LOSS_BOOLEAN_CONSTANTS = {
+    "default_enabled": "DEFAULT_ENABLED",
+    "read_only": "READ_ONLY",
+    "public_capability_added": "PUBLIC_CAPABILITY_ADDED",
+    "public_wire_changed": "PUBLIC_WIRE_CHANGED",
+    "source_specific_attribution_ready": "SOURCE_SPECIFIC_ATTRIBUTION_READY",
+    "termination_action_bound": "TERMINATION_ACTION_BOUND",
+    "surrender_causality_proven": "SURRENDER_CAUSALITY_PROVEN",
+    "public_terms_ready": "PUBLIC_TERMS_READY",
+    "automatic_surrender_ready": "AUTOMATIC_SURRENDER_READY",
+    "production_live": "PRODUCTION_LIVE",
+    "gen_034_resolved": "GEN_034_RESOLVED",
+}
+_PROJECTS_STRING_CONSTANTS = {
+    "root_commit": "PROJECTS_METRICS_ROOT_COMMIT",
+    "root_source_contract_sha256": "PROJECTS_METRICS_SOURCE_CONTRACT_SHA256",
+    "root_abi_sha256": "PROJECTS_METRICS_ABI_SHA256",
+    "root_schema_sha256": "PROJECTS_METRICS_SCHEMA_SHA256",
+    "root_python_contract_sha256": (
+        "PROJECTS_METRICS_PYTHON_CONTRACT_SHA256"
+    ),
+    "allowlist_id": "PROJECTS_METRICS_ALLOWLIST_ID",
+}
+_PROJECTS_BOOLEAN_CONSTANTS = {
+    "checkpoint_state_required": "PROJECTS_METRICS_CHECKPOINT_STATE_REQUIRED",
+    "default_candidate_enabled": "PROJECTS_METRICS_DEFAULT_CANDIDATE_ENABLED",
+    "production_live": "PROJECTS_METRICS_PRODUCTION_LIVE",
 }
 
 
@@ -166,6 +214,80 @@ def parse_ck3_profile_source(path: Path) -> dict[str, str]:
         if match is None:
             raise ValueError(f"open_kaishek build constant {name} is missing")
         values[name.lower()] = match.group(1)
+    return values
+
+
+def _parse_java_constants(
+    source: str,
+    *,
+    strings: dict[str, str],
+    integers: dict[str, str] | None = None,
+    booleans: dict[str, str] | None = None,
+) -> dict[str, str | int | bool]:
+    values: dict[str, str | int | bool] = {}
+    for key, name in strings.items():
+        match = re.search(
+            _JAVA_BUILD_CONSTANT_RE.pattern.format(name=re.escape(name)), source
+        )
+        if match is None:
+            raise ValueError(f"open_kaishek constant {name} is missing")
+        values[key] = match.group(1)
+    for key, name in (integers or {}).items():
+        match = re.search(
+            _JAVA_INT_CONSTANT_RE.pattern.format(name=re.escape(name)), source
+        )
+        if match is None:
+            raise ValueError(f"open_kaishek constant {name} is missing")
+        values[key] = int(match.group(1))
+    for key, name in (booleans or {}).items():
+        match = re.search(
+            _JAVA_BOOLEAN_CONSTANT_RE.pattern.format(name=re.escape(name)), source
+        )
+        if match is None:
+            raise ValueError(f"open_kaishek constant {name} is missing")
+        values[key] = match.group(1) == "true"
+    return values
+
+
+def parse_war_bound_loss_source(path: Path) -> dict[str, str | int | bool]:
+    """Extract the default-OFF war-bound loss candidate metadata."""
+
+    source = path.read_text(encoding="utf-8")
+    return _parse_java_constants(
+        source,
+        strings=_WAR_LOSS_STRING_CONSTANTS,
+        integers=_WAR_LOSS_INT_CONSTANTS,
+        booleans=_WAR_LOSS_BOOLEAN_CONSTANTS,
+    )
+
+
+def parse_projects_metrics_source(path: Path) -> dict[str, str | bool]:
+    """Extract the public checkpoint-state delta and internal source pins."""
+
+    source = path.read_text(encoding="utf-8")
+    values = _parse_java_constants(
+        source,
+        strings=_PROJECTS_STRING_CONSTANTS,
+        booleans=_PROJECTS_BOOLEAN_CONSTANTS,
+    )
+    capability = re.search(
+        r"PROJECTS_METRICS\s*=\s*descriptor\(\s*\"([^\"]+)\"", source
+    )
+    if capability is None:
+        raise ValueError("projects metrics capability ID is missing")
+    checkpoint_field = "checkpoint_state"
+    checkpoint_invariant = "cp26_ready_p3_absent_exposes_no_p3_result"
+    if f'"{checkpoint_field}"' not in source:
+        raise ValueError("projects metrics checkpoint_state field is missing")
+    if f'"{checkpoint_invariant}"' not in source:
+        raise ValueError("projects metrics checkpoint invariant is missing")
+    values.update(
+        {
+            "capability_id": capability.group(1),
+            "checkpoint_state_field": checkpoint_field,
+            "checkpoint_absent_invariant": checkpoint_invariant,
+        }
+    )
     return values
 
 
@@ -302,6 +424,38 @@ def audit(
         and expected_provider.get("automatic_surrender_ready") is False
         and expected_provider.get("gen_034_closed") is False
     )
+    expected_war_loss = fixture.get("war_bound_loss_candidate", {})
+    checks["fixture_war_loss_shape"] = set(expected_war_loss) == {
+        "source",
+        *_WAR_LOSS_STRING_CONSTANTS,
+        *_WAR_LOSS_INT_CONSTANTS,
+        *_WAR_LOSS_BOOLEAN_CONSTANTS,
+    }
+    checks["fixture_war_loss_contract_bounded"] = (
+        expected_war_loss.get("frozen_pre_termination_soldiers") == 598
+        and expected_war_loss.get("destroyed_post_termination_soldiers") == 0
+        and expected_war_loss.get("proven_boundary_soldiers_lost") == 598
+        and expected_war_loss.get("read_only") is True
+        and all(
+            expected_war_loss.get(key) is False
+            for key in _WAR_LOSS_BOOLEAN_CONSTANTS
+            if key != "read_only"
+        )
+    )
+    expected_projects = fixture.get("projects_metrics_delta", {})
+    checks["fixture_projects_metrics_shape"] = set(expected_projects) == {
+        "source",
+        "capability_id",
+        "checkpoint_state_field",
+        "checkpoint_absent_invariant",
+        *_PROJECTS_STRING_CONSTANTS,
+        *_PROJECTS_BOOLEAN_CONSTANTS,
+    }
+    checks["fixture_projects_metrics_bounded"] = (
+        expected_projects.get("checkpoint_state_required") is True
+        and expected_projects.get("default_candidate_enabled") is False
+        and expected_projects.get("production_live") is False
+    )
     checks["fixture_boundaries_closed"] = fixture.get("boundaries") == {
         "ck3_started": False,
         "process_attached": False,
@@ -327,6 +481,8 @@ def audit(
         external["status"] = "checked"
         capability_path = resolved_checkout / expected_open["capability_source"]
         ck3_profile_path = resolved_checkout / expected_open["ck3_profile_source"]
+        war_loss_path = resolved_checkout / expected_war_loss["source"]
+        projects_path = resolved_checkout / expected_projects["source"]
         try:
             capability = parse_capability_source(capability_path)
             checks["capability_source_parse"] = True
@@ -360,6 +516,40 @@ def audit(
         except (OSError, ValueError) as error:
             checks["ck3_profile_source_parse"] = False
             errors.append(f"ck3-profile-source: {type(error).__name__}: {error}")
+        try:
+            war_loss = parse_war_bound_loss_source(war_loss_path)
+            checks["war_loss_source_parse"] = True
+            _equal(
+                checks,
+                "war_loss_metadata_matches",
+                war_loss,
+                {
+                    key: value
+                    for key, value in expected_war_loss.items()
+                    if key != "source"
+                },
+            )
+            external["war_bound_loss_candidate"] = war_loss
+        except (OSError, ValueError) as error:
+            checks["war_loss_source_parse"] = False
+            errors.append(f"war-loss-source: {type(error).__name__}: {error}")
+        try:
+            projects = parse_projects_metrics_source(projects_path)
+            checks["projects_metrics_source_parse"] = True
+            _equal(
+                checks,
+                "projects_metrics_delta_matches",
+                projects,
+                {
+                    key: value
+                    for key, value in expected_projects.items()
+                    if key != "source"
+                },
+            )
+            external["projects_metrics_delta"] = projects
+        except (OSError, ValueError) as error:
+            checks["projects_metrics_source_parse"] = False
+            errors.append(f"projects-metrics-source: {type(error).__name__}: {error}")
 
         head, head_error = _git_ref(resolved_checkout, "HEAD")
         origin, origin_error = _git_ref(resolved_checkout, "origin/main")
