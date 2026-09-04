@@ -43,3 +43,9 @@
 - 制度群像版：`_runtime/phase2-dual-runbooks-20260903-0800/institution-runbook.json`，`RED / footage_pending`，SHA-256 `6A3FD533B0656722CF8296224A286586F5AF8B568ECDA6C7B9B3A157007BF2BF`。
 
 这一步只生成了可复现的制作计划，没有启动 CK3、TTS、FFmpeg，也没有导出或发布媒体。两版 authoring ledger 均已静态验证 GREEN；正式 MP4 仍等待真实 CK3 八段 clean spans。
+
+## 2026-09-04 source reuse 复核
+
+本轮对现有 B2/B3 live artifacts、历史 capture timeline、两版 project/review plan 与 source-checkpoint 合同做了不启动 CK3 的只读复核。结论仍为：**可入片二期 source span `0/8`，目标 MP4 `0/2`**。B2 r22 的 same-checkpoint GREEN 可作为动作复现依据，但没有 promo timeline 或媒体；B3 短路径 artifact 只证明到达 paused map，业务前 capability gate 仍为 RED；历史录屏没有任何当前八段 span ID。它们均不得升级为成片素材。
+
+逐段缺口、四项 registry 覆盖和 B3 业务 GREEN 后的精确开拍条件见 [`final-video-source-reuse-audit-2026-09-04.md`](final-video-source-reuse-audit-2026-09-04.md)。因为现有 artifact 不含同一真实 lineage 的四份 checkpoint receipt，本轮未生成 source registry，也未生成任何伪素材。
