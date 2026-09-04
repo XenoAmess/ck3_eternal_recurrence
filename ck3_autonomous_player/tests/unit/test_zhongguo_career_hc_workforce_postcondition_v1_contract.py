@@ -53,6 +53,7 @@ SCHEMA = ROOT / "ck3_autonomous_player" / "schemas" / (
 NATIVE_DRIVER = SRC / "xar_autoplayer" / "bridge" / "native_driver.py"
 SERVICE = SRC / "xar_autoplayer" / "bridge" / "service.py"
 MCP_SERVER = SRC / "xar_autoplayer" / "bridge" / "mcp_server.py"
+PRIVATE_SWITCH = "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1"
 
 
 def typed(value: object) -> dict[str, object]:
@@ -260,9 +261,23 @@ class CareerHcWorkforcePostconditionContractTests(unittest.TestCase):
         self.assertIn("_execute_zhongguo_career_hc_workforce_v1_query", native_driver)
         self.assertIn("query_zhongguo_career_hc_workforce_postcondition_v1", service)
         self.assertIn("ck3_query_zhongguo_career_hc_workforce_postcondition_v1", mcp)
+        adapter = CK3_ADAPTER.read_text(encoding="utf-8")
+        candidate = re.search(
+            rf"#if defined\({PRIVATE_SWITCH}\).*?"
+            r"kZhongguoCareerHcWorkforcePostconditionV1Capability.*?#endif",
+            adapter,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(candidate)
+        default_projection = re.sub(
+            rf"#if defined\({PRIVATE_SWITCH}\).*?#endif",
+            "",
+            adapter,
+            flags=re.DOTALL,
+        )
         self.assertNotIn(
             QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
-            CK3_ADAPTER.read_text(encoding="utf-8"),
+            default_projection,
         )
 
 

@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
+set(
+  XAR_CK3_EXECUTABLE_PATH
+  "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+  CACHE FILEPATH
+  "Exact-build CK3 executable used only by read-only source-contract tests"
+)
+
 # Ninja discovers MSVC header dependencies by matching /showIncludes output.
 # CMake 4.3 can misdecode the Simplified-Chinese prefix as mojibake while
 # cl.exe and Ninja exchange UTF-8, leaving every object with zero header deps.
@@ -67,6 +74,12 @@ option(
 option(
   XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1
   "Advertise the read-only projects/metrics provider only in a private paused-live candidate"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1
+  "Advertise the read-only career-HC/workforce provider only in a private paused-live candidate"
   OFF
 )
 
@@ -338,6 +351,14 @@ if(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
   # source -> action -> provider-result artifact is reviewed separately.
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
+  # Private candidate-only exposure of the already wired read-only provider.
+  # The default build remains unadvertised until the B4 route-B checkpoint
+  # yields a retained provider frame and the promotion is reviewed separately.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
@@ -624,6 +645,14 @@ if(BUILD_TESTING)
     UNICODE
     _UNICODE
   )
+  if(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=1)
+  endif()
+  if(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1=1)
+  endif()
   if(MSVC)
     target_compile_options(xar_ck3_adapter_registry_test PRIVATE
       /W4 /permissive- /EHsc)
@@ -2070,7 +2099,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/main_thread_query_mailbox_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/main_thread_query_mailbox_v1_source_contract.json
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/main-thread-query-mailbox.md
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
@@ -2127,7 +2156,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/war_entry_assessments_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/war_entry_assessments_v1_golden.json
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/war-declaration.md
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
@@ -2341,7 +2370,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/startup_particle2_stage_recorder_v1.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/startup_particle2_stage_recorder_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/startup_particle2_stage_recorder_v1_source_contract.json
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
@@ -2373,7 +2402,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/startup_particle2_null_guard_v1.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/startup_particle2_null_guard_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/startup_particle2_null_guard_v1_source_contract.json
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
   )
 
   add_executable(xar_ck3_startup_particle2_consumer_null_guard_v1_test
@@ -2403,7 +2432,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/startup_particle2_consumer_null_guard_v1.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/startup_particle2_consumer_null_guard_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/startup_particle2_consumer_null_guard_v1_source_contract.json
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
@@ -2434,7 +2463,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/startup_dx11_render_context_draw_guard_v1.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/startup_dx11_render_context_draw_guard_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/startup_dx11_render_context_draw_guard_v1_source_contract.json
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
@@ -2465,7 +2494,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/startup_localize_current_root_guard_v1.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/startup_localize_current_root_guard_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/startup_localize_current_root_guard_v1_source_contract.json
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )

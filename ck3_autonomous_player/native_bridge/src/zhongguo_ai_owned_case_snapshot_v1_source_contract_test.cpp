@@ -97,7 +97,8 @@ int main(int argc, char **argv) {
            "typed_available", "typed_unavailable"}) &&
       ContainsAll(
           adapter,
-          {"constexpr std::size_t kCapabilityCount = 76",
+          {"kBaseCapabilityCount = 76",
+           "std::array<std::string_view, kCapabilityCount>",
            "kZhongguoAiOwnedCaseSnapshotV1Capability"}) &&
       ContainsAll(
           game_adapter,

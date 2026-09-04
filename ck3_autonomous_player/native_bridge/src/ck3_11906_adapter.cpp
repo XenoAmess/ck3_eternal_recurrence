@@ -5,6 +5,7 @@
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_case_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1.hpp"
+#include "xar_bridge/zhongguo_career_hc_workforce_postcondition_v1.hpp"
 #include "xar_bridge/zhongguo_incident_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_manager_governance_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_manager_subordinate_selector_v1.hpp"
@@ -21,11 +22,16 @@
 namespace xar::game {
 namespace {
 
+constexpr std::size_t kBaseCapabilityCount = 76;
+constexpr std::size_t kCapabilityCount =
+    kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
-constexpr std::size_t kCapabilityCount = 77;
-#else
-constexpr std::size_t kCapabilityCount = 76;
+    + 1
 #endif
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
+    + 1
+#endif
+    ;
 
 constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.state.snapshot",
@@ -92,6 +98,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kZhongguoWorkforceNormalExitSnapshotV1Capability,
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
     ck3_11906::kZhongguoProjectsMetricsPostconditionV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
+    ck3_11906::kZhongguoCareerHcWorkforcePostconditionV1Capability,
 #endif
     "game.command.query-loaded-feature-manifest-v1",
     "game.command.query-pending-character-interaction-context-v1",

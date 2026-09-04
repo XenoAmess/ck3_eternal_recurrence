@@ -338,6 +338,20 @@ int main() {
     return Fail("default adapter advertised unproven projects/metrics provider");
   }
 #endif
+#if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
+  if (!Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-career-hc-workforce-postcondition-v1")) {
+    return Fail("private candidate omitted career-HC/workforce provider");
+  }
+#else
+  if (Contains(
+          known.capabilities,
+          "game.command.query-zhongguo-career-hc-workforce-postcondition-v1")) {
+    return Fail(
+        "default adapter advertised unproven career-HC/workforce provider");
+  }
+#endif
   for (auto left = known.capabilities.begin(); left != known.capabilities.end();
        ++left) {
     if (std::find(left + 1, known.capabilities.end(), *left) !=

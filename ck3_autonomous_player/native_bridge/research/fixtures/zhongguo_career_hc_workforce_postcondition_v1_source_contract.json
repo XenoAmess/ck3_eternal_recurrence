@@ -5,6 +5,16 @@
   "case_kind": "zhongguo.career-hc.workforce.route-b-no-hc-debit",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "allowlist_count": 14,
+  "mailbox_fixed_slot_index": 26,
+  "adapter_capability_counts": {
+    "default": 76,
+    "projects_metrics_only": 77,
+    "career_hc_workforce_only": 77,
+    "both_private_candidates": 78
+  },
+  "private_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1",
+  "private_candidate_default": false,
   "public_inputs": [
     "request_nonce",
     "expected_revision",

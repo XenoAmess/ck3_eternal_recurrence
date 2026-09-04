@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 import sys
 
 
@@ -45,6 +46,7 @@ NATIVE_MAILBOX = NATIVE_BRIDGE / "src" / (
 )
 CK3_ADAPTER = NATIVE_BRIDGE / "src" / "ck3_11906_adapter.cpp"
 SHARED_BRIDGE = NATIVE_BRIDGE / "src" / "bridge.cpp"
+CMAKE = NATIVE_BRIDGE / "CMakeLists.txt"
 SERVICE = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "service.py"
 MCP_SERVER = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "mcp_server.py"
 ROUTE_B_EFFECT = (
@@ -57,6 +59,16 @@ ROUTE_B_EFFECT = (
 CAREER_EFFECTS = (
     ROOT / "mod_zhongguo_style" / "common" / "scripted_effects"
 )
+PRIVATE_SWITCH = "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1"
+
+
+def _default_adapter_projection(source: str) -> str:
+    return re.sub(
+        rf"#if defined\({PRIVATE_SWITCH}\).*?#endif",
+        "",
+        source,
+        flags=re.DOTALL,
+    )
 
 
 def run_preflight() -> dict[str, object]:
@@ -69,6 +81,7 @@ def run_preflight() -> dict[str, object]:
     native_mailbox = NATIVE_MAILBOX.read_text(encoding="utf-8")
     ck3_adapter = CK3_ADAPTER.read_text(encoding="utf-8")
     shared_bridge = SHARED_BRIDGE.read_text(encoding="utf-8")
+    cmake = CMAKE.read_text(encoding="utf-8")
     service = SERVICE.read_text(encoding="utf-8")
     mcp_server = MCP_SERVER.read_text(encoding="utf-8")
     career_shards = sorted(CAREER_EFFECTS.glob("zg361_career_hc_[0-9][0-9][0-9]_*.txt"))
@@ -93,6 +106,17 @@ def run_preflight() -> dict[str, object]:
         == "static_and_fixture_ready_live_pending",
         "query_capability_exact": contract.get("capability")
         == QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
+        "source_contract_counts_current": (
+            contract.get("allowlist_count") == 14
+            and contract.get("mailbox_fixed_slot_index") == 26
+            and contract.get("adapter_capability_counts")
+            == {
+                "default": 76,
+                "projects_metrics_only": 77,
+                "career_hc_workforce_only": 77,
+                "both_private_candidates": 78,
+            }
+        ),
         "runner_registry_untouched_by_contract": contract.get("integration", {}).get(
             "formal_runner_registry_modified"
         )
@@ -125,8 +149,24 @@ def run_preflight() -> dict[str, object]:
             and "def ck3_query_zhongguo_career_hc_workforce_postcondition_v1("
             in mcp_server
         ),
+        "private_candidate_switch_is_default_off": (
+            re.search(
+                rf"option\(\s*{PRIVATE_SWITCH}\s*.*?\s+OFF\s*\)",
+                cmake,
+                re.DOTALL,
+            )
+            is not None
+            and re.search(
+                rf"#if defined\({PRIVATE_SWITCH}\).*?"
+                r"kZhongguoCareerHcWorkforcePostconditionV1Capability.*?#endif",
+                ck3_adapter,
+                re.DOTALL,
+            )
+            is not None
+        ),
         "semantic_capability_default_off_until_live": (
-            QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY not in ck3_adapter
+            QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY
+            not in _default_adapter_projection(ck3_adapter)
         ),
         "cell_requires_provider_postcondition": (
             "provider_postcondition_observed" in action_cell

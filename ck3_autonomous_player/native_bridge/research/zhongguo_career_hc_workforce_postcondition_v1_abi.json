@@ -8,6 +8,12 @@
   "case_kind": "zhongguo.career-hc.workforce.route-b-no-hc-debit",
   "mailbox_fixed_slot": "permitted_executor_sexvigintary",
   "advertisement": "default_off_until_paused_live_evidence",
+  "private_candidate": {
+    "cmake_switch": "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1",
+    "default": false,
+    "scope": "read_only_provider_advertisement_for_one_paused_live_attempt",
+    "production_advertisement_promoted": false
+  },
   "request": {
     "public_inputs": ["request_nonce", "expected_revision", "owner_character_id"],
     "forbidden_inputs": [

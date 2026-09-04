@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$BuildDir,
+    [string]$Ck3ExecutablePath,
     [ValidateSet("Debug", "Release", "RelWithDebInfo", "MinSizeRel")]
     [string]$Configuration = "Release",
     [switch]$SkipTests,
@@ -97,6 +98,13 @@ if ([string]::IsNullOrWhiteSpace($BuildDir)) {
     $BuildDir = Join-Path (Get-Location).Path $BuildDir
 }
 $buildDirPath = [System.IO.Path]::GetFullPath($BuildDir)
+$resolvedCk3ExecutablePath = $null
+if (-not [string]::IsNullOrWhiteSpace($Ck3ExecutablePath)) {
+    $resolvedCk3ExecutablePath = [System.IO.Path]::GetFullPath($Ck3ExecutablePath)
+    if (-not (Test-Path -LiteralPath $resolvedCk3ExecutablePath -PathType Leaf)) {
+        throw "CK3 source-contract executable is missing: $resolvedCk3ExecutablePath"
+    }
+}
 
 # The helper deliberately refuses every pre-existing path. The production
 # failure this prevents was caused by a public Bindings layout change being
@@ -122,6 +130,7 @@ $plan = [ordered]@{
     dependency_header = "ck3_11906.hpp"
     dependency_objects = $dependencyObjects
     tests_enabled = (-not $SkipTests)
+    ck3_executable_path = $resolvedCk3ExecutablePath
 }
 
 if ($PlanOnly) {
@@ -189,12 +198,16 @@ try {
     # CMake/Ninja parses cl.exe /showIncludes output. Code page 936 previously
     # produced a mojibake msvc_deps_prefix and zero recorded header dependencies.
     $env:VSLANG = "1033"
-    Invoke-CheckedCommand -FilePath $cmake -Arguments @(
+    $configureArguments = @(
         "-S", $sourceDir,
         "-B", $buildDirPath,
         "-G", "Ninja",
         "-DCMAKE_BUILD_TYPE=$Configuration"
     )
+    if ($null -ne $resolvedCk3ExecutablePath) {
+        $configureArguments += "-DXAR_CK3_EXECUTABLE_PATH=$resolvedCk3ExecutablePath"
+    }
+    Invoke-CheckedCommand -FilePath $cmake -Arguments $configureArguments
     $msvcDependencyPrefixMode = Repair-NinjaMsvcDependencyPrefix `
         -BuildRoot $buildDirPath `
         -CompilerPath $compiler

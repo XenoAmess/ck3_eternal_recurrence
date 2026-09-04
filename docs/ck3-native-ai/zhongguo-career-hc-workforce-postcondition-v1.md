@@ -52,9 +52,12 @@ The application-main mailbox uses fixed slot 26,
 bridge dispatch, native driver, service facade and MCP surface are implemented.
 The exact semantic capability
 `game.command.query-zhongguo-career-hc-workforce-postcondition-v1` is
-deliberately absent from `ck3_11906_adapter.cpp`, so normal capability checks
-fail closed until live evidence exists. This is a default-off provider, not a
-production-live primitive.
+excluded from the default adapter projection, so normal capability checks fail
+closed until live evidence exists. A private build may opt in with
+`XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1=ON`; the CMake
+option defaults to `OFF` and only changes capability advertisement for one
+paused live attempt. This is a default-off provider, not a production-live
+primitive.
 
 Machine-readable details are in
 `ck3_autonomous_player/native_bridge/research/zhongguo_career_hc_workforce_postcondition_v1_abi.json`
