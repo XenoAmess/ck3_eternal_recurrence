@@ -2,11 +2,12 @@
 """Audit the current root/open_kaishek compatibility pin without CK3.
 
 The verifier is deliberately source-level.  It checks the root's descriptive
-G2 binding, default-OFF war-loss/actual-expiry metadata, projects-metrics
-schema delta, and promotion-source fail-closed transports against the
-companion Java profiles.  When the external checkout is available, it also
-checks source files and read-only Git refs.  It never starts or attaches to
-CK3 and never changes a Paradox opcode allow-list.
+G2 binding, default-OFF war-loss/actual-expiry metadata, the fixture-only
+postwar cleanup/expiry adapter, projects-metrics schema delta, and
+promotion-source fail-closed transports against the companion Java profiles.
+When the external checkout is available, it also checks source files and
+read-only Git refs.  It never starts or attaches to CK3 and never changes a
+Paradox opcode allow-list.
 """
 
 from __future__ import annotations
@@ -201,6 +202,55 @@ _ACTUAL_EXPIRY_BOOLEAN_CONSTANTS = {
     "retention_live_authorized": "RETENTION_LIVE_AUTHORIZED",
     "termination_action_bound": "TERMINATION_ACTION_BOUND",
     "actual_expiry_observable": "ACTUAL_EXPIRY_OBSERVABLE",
+    "decision_ready": "DECISION_READY",
+    "automatic_surrender_ready": "AUTOMATIC_SURRENDER_READY",
+    "gen_034_resolved": "GEN_034_RESOLVED",
+}
+_CLEANUP_ADAPTER_STRING_CONSTANTS = {
+    "id": "ID",
+    "manifest_schema": "MANIFEST_SCHEMA",
+    "fixture_schema": "FIXTURE_SCHEMA",
+    "status": "STATUS",
+    "root_integration_commit": "ROOT_INTEGRATION_COMMIT",
+    "root_source_commit": "ROOT_SOURCE_COMMIT",
+    "root_candidate_source_commit": "ROOT_CANDIDATE_SOURCE_COMMIT",
+    "query_step": "QUERY_STEP",
+    "retention_ticket_id": "RETENTION_TICKET_ID",
+    "root_runner_sha256": "ROOT_RUNNER_SHA256",
+    "root_manifest_sha256": "ROOT_MANIFEST_SHA256",
+    "root_fixture_sha256": "ROOT_FIXTURE_SHA256",
+    "root_preflight_sha256": "ROOT_PREFLIGHT_SHA256",
+    "root_synthetic_receipt_sha256": "ROOT_SYNTHETIC_RECEIPT_SHA256",
+}
+_CLEANUP_ADAPTER_INT_CONSTANTS = {
+    "war_id": "WAR_ID",
+    "player_character_id": "PLAYER_CHARACTER_ID",
+    "primary_defender_character_id": "PRIMARY_DEFENDER_CHARACTER_ID",
+    "pre_termination_soldiers": "PRE_TERMINATION_SOLDIERS",
+    "post_termination_soldiers": "POST_TERMINATION_SOLDIERS",
+    "proven_boundary_soldiers_lost": "PROVEN_BOUNDARY_SOLDIERS_LOST",
+}
+_CLEANUP_ADAPTER_BOOLEAN_CONSTANTS = {
+    "metadata_only": "METADATA_ONLY",
+    "default_enabled": "DEFAULT_ENABLED",
+    "synthetic_fixture": "SYNTHETIC_FIXTURE",
+    "fixture_is_live": "FIXTURE_IS_LIVE",
+    "public_capability_added": "PUBLIC_CAPABILITY_ADDED",
+    "actual_expiry_query_dispatch_present": (
+        "ACTUAL_EXPIRY_QUERY_DISPATCH_PRESENT"
+    ),
+    "cleanup_candidate_library_present": "CLEANUP_CANDIDATE_LIBRARY_PRESENT",
+    "cleanup_query_dispatch_present": "CLEANUP_QUERY_DISPATCH_PRESENT",
+    "same_lifecycle_native_cleanup_required": (
+        "SAME_LIFECYCLE_NATIVE_CLEANUP_REQUIRED"
+    ),
+    "old_war_absence_sufficient": "OLD_WAR_ABSENCE_SUFFICIENT",
+    "python_adapter_may_infer_cleanup": "PYTHON_ADAPTER_MAY_INFER_CLEANUP",
+    "live_authorized": "LIVE_AUTHORIZED",
+    "public_readiness_promoted": "PUBLIC_READINESS_PROMOTED",
+    "action_readiness_promoted": "ACTION_READINESS_PROMOTED",
+    "runtime_cleanup_ready": "RUNTIME_CLEANUP_READY",
+    "source_specific_attribution_ready": "SOURCE_SPECIFIC_ATTRIBUTION_READY",
     "decision_ready": "DECISION_READY",
     "automatic_surrender_ready": "AUTOMATIC_SURRENDER_READY",
     "gen_034_resolved": "GEN_034_RESOLVED",
@@ -427,6 +477,20 @@ def parse_actual_truce_expiry_source(
     )
 
 
+def parse_postwar_cleanup_expiry_adapter_source(
+    path: Path,
+) -> dict[str, str | int | bool]:
+    """Extract fixture-only cleanup/expiry adapter pins and closed gates."""
+
+    source = path.read_text(encoding="utf-8")
+    return _parse_java_constants(
+        source,
+        strings=_CLEANUP_ADAPTER_STRING_CONSTANTS,
+        integers=_CLEANUP_ADAPTER_INT_CONSTANTS,
+        booleans=_CLEANUP_ADAPTER_BOOLEAN_CONSTANTS,
+    )
+
+
 def _git_ref(checkout: Path, ref: str) -> tuple[str | None, str | None]:
     """Return a read-only Git ref and an error string, if any."""
 
@@ -642,6 +706,33 @@ def audit(
             if key != "read_only"
         )
     )
+    expected_cleanup = fixture.get("postwar_cleanup_expiry_adapter", {})
+    checks["fixture_cleanup_adapter_shape"] = set(expected_cleanup) == {
+        "source",
+        *_CLEANUP_ADAPTER_STRING_CONSTANTS,
+        *_CLEANUP_ADAPTER_INT_CONSTANTS,
+        *_CLEANUP_ADAPTER_BOOLEAN_CONSTANTS,
+    }
+    cleanup_true_keys = {
+        "metadata_only",
+        "synthetic_fixture",
+        "actual_expiry_query_dispatch_present",
+        "cleanup_candidate_library_present",
+        "same_lifecycle_native_cleanup_required",
+    }
+    checks["fixture_cleanup_adapter_live_blocked"] = (
+        expected_cleanup.get("status")
+        == "GREEN_STATIC_ADAPTER_LIVE_BLOCKED_ON_CLEANUP_DISPATCH"
+        and expected_cleanup.get("pre_termination_soldiers") == 598
+        and expected_cleanup.get("post_termination_soldiers") == 0
+        and expected_cleanup.get("proven_boundary_soldiers_lost") == 598
+        and all(expected_cleanup.get(key) is True for key in cleanup_true_keys)
+        and all(
+            expected_cleanup.get(key) is False
+            for key in _CLEANUP_ADAPTER_BOOLEAN_CONSTANTS
+            if key not in cleanup_true_keys
+        )
+    )
     checks["fixture_boundaries_closed"] = fixture.get("boundaries") == {
         "ck3_started": False,
         "process_attached": False,
@@ -671,6 +762,7 @@ def audit(
         projects_path = resolved_checkout / expected_projects["source"]
         promotion_path = resolved_checkout / expected_promotion["source"]
         expiry_path = resolved_checkout / expected_expiry["source"]
+        cleanup_path = resolved_checkout / expected_cleanup["source"]
         try:
             capability = parse_capability_source(capability_path)
             checks["capability_source_parse"] = True
@@ -775,6 +867,25 @@ def audit(
             checks["actual_expiry_source_parse"] = False
             errors.append(
                 f"actual-expiry-source: {type(error).__name__}: {error}"
+            )
+        try:
+            cleanup = parse_postwar_cleanup_expiry_adapter_source(cleanup_path)
+            checks["cleanup_adapter_source_parse"] = True
+            _equal(
+                checks,
+                "cleanup_adapter_metadata_matches",
+                cleanup,
+                {
+                    key: value
+                    for key, value in expected_cleanup.items()
+                    if key != "source"
+                },
+            )
+            external["postwar_cleanup_expiry_adapter"] = cleanup
+        except (OSError, ValueError) as error:
+            checks["cleanup_adapter_source_parse"] = False
+            errors.append(
+                f"cleanup-adapter-source: {type(error).__name__}: {error}"
             )
 
         head, head_error = _git_ref(resolved_checkout, "HEAD")

@@ -22,6 +22,9 @@ FIXTURE_PATH = MODULE.FIXTURE_PATH
 audit = MODULE.audit
 parse_capability_source = MODULE.parse_capability_source
 parse_actual_truce_expiry_source = MODULE.parse_actual_truce_expiry_source
+parse_postwar_cleanup_expiry_adapter_source = (
+    MODULE.parse_postwar_cleanup_expiry_adapter_source
+)
 parse_ck3_profile_source = MODULE.parse_ck3_profile_source
 parse_projects_metrics_source = MODULE.parse_projects_metrics_source
 parse_promotion_source_transport = MODULE.parse_promotion_source_transport
@@ -135,6 +138,10 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
         expiry = parse_actual_truce_expiry_source(
             checkout / expiry_expected["source"]
         )
+        cleanup_expected = fixture["postwar_cleanup_expiry_adapter"]
+        cleanup = parse_postwar_cleanup_expiry_adapter_source(
+            checkout / cleanup_expected["source"]
+        )
         for key in (
             "profile_id",
             "capability_id",
@@ -180,6 +187,14 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             {
                 key: value
                 for key, value in expiry_expected.items()
+                if key != "source"
+            },
+        )
+        self.assertEqual(
+            cleanup,
+            {
+                key: value
+                for key, value in cleanup_expected.items()
                 if key != "source"
             },
         )

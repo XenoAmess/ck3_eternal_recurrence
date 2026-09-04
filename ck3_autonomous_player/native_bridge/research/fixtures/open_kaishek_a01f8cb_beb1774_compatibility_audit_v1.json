@@ -1,0 +1,93 @@
+{
+  "schema": "xar.ck3.open_kaishek_g2_postwar_cleanup_expiry_adapter_compatibility_audit.v1",
+  "status": "GREEN_STATIC_ADAPTER_LIVE_BLOCKED_ON_CLEANUP_DISPATCH",
+  "audited_at": "2026-09-04T17:34:00+08:00",
+  "root": {
+    "canonical_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
+    "source_commit": "beb17743a6440650eec2ca9c0bf270733bce2527",
+    "actual_expiry_candidate_commit": "04c1a00f0599378dfa8810be14ce535b2ed17f21"
+  },
+  "open_kaishek": {
+    "previous_commit": "1394dca6976c79913da740367898c0fd35e102e7",
+    "commit": "1ca6a455d63d1ff6e92389c7fff5b39681863524",
+    "origin_main": "1ca6a455d63d1ff6e92389c7fff5b39681863524",
+    "default_checkout_head": "1ca6a455d63d1ff6e92389c7fff5b39681863524",
+    "clean": true,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 348438,
+    "jar_sha256": "10dfab8aa729d3b696c518bd532fde7535dc1605150045828b650546864bd9cf"
+  },
+  "postwar_cleanup_expiry_adapter": {
+    "open_kaishek_change_required": true,
+    "metadata_only": true,
+    "capability_descriptor_added": false,
+    "manifest_schema": "xar.ck3.g2_postwar_cleanup_expiry_adapter_manifest.v1",
+    "fixture_schema": "xar.ck3.g2_postwar_cleanup_expiry_adapter_fixture.v1",
+    "root_runner_sha256": "7d8a0e3ce8560b7153ec5e4a89407aa019d0ea20671254d1286351880ad5d80d",
+    "root_manifest_sha256": "7ce021720d0749288142040da5233f7bbdddd5a2f3b8ac187df1f72770b5a051",
+    "root_fixture_sha256": "5ce4b1d261b3c96123a7065947ce55f832e46d33cd69624a150c17d1f4a3e8ce",
+    "root_preflight_sha256": "da4b52f29cbb3dec478061877080c674ae11f08c80a13dbe353b6ca170fa6adf",
+    "root_synthetic_receipt_sha256": "66e09371be876f5bf4a8e97bccb8be8b0e19398894fa7b88a0056fdf2e49e4d1",
+    "actual_expiry_query_dispatch_present": true,
+    "cleanup_candidate_library_present": true,
+    "cleanup_query_dispatch_present": false,
+    "same_lifecycle_native_cleanup_required": true,
+    "old_war_absence_sufficient": false,
+    "python_adapter_may_infer_cleanup": false,
+    "synthetic_fixture": true,
+    "fixture_is_live": false,
+    "public_capability_added": false,
+    "live_authorized": false,
+    "public_readiness_promoted": false,
+    "action_readiness_promoted": false,
+    "runtime_cleanup_ready": false,
+    "source_specific_attribution_ready": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen_034_resolved": false
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_cleanup_adapter_metadata_tests": 3,
+    "open_cli_smoke": "PASS",
+    "root_focused_tests": 16,
+    "root_audit_tests": 3,
+    "main_product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "zhongguo_product_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23949962,
+      "sha256": "b495ff1e75bc622d2fc0b9af818de1c0ff01910ae35a795a4c3bde3262ab0cd7"
+    },
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 59,
+      "all_checks": true
+    }
+  },
+  "t2_execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "parser_vocabulary_changed": false,
+    "ir_changed": false,
+    "runtime_handler_changed": false,
+    "cli_command_changed": false,
+    "capability_promoted": false,
+    "readiness_promoted": false
+  }
+}
