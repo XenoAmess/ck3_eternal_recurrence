@@ -1540,3 +1540,22 @@ closed. Existing bridge observation sinks are preallocated atomics/rings; do
 not add callback-side file I/O or a production detour merely to explain the
 current two-node timeout. The current bounded evidence is the typed parser
 replay above plus the static callback contract.
+
+### Pre-bootstrap 可见事件必须逐项登记，且不得缩短 seed 总等待
+
+`Z:\p2o\a` 在同一冻结 checkpoint 上于第 77 个推进日遇到原版
+`spymaster_task.0381`。这类可见事件不能按 `spymaster_task.*`、原版 namespace
+或“任意非 seed 事件”泛化忽略。当前 seed waiter 只登记该精确 key，并同时绑定
+source-save SHA、日期、root、typed `character_to_hook` 与完整两项 option shape；
+选择原版中代价最低但仍有 `+30 grateful_opinion` 副作用的 option 2。其他事件或任一
+身份漂移仍在操作前 RED，错误 ACK 也不得通过。
+
+登记事件关闭后必须恢复时间线，并继续使用进入 waiter 时建立的原始 total deadline；
+不得另设五秒 post-drain 截止，也不得在每次事件后重置总时钟。证据文件按事件类型分开，
+并在最终 timeout 中保留已处理 key 的有序列表，以允许多个已登记前置事件连续出现。
+
+这项处理不是 seed 修复。同轮 `debug.log` 已先记录 fixture 正等待 witnessed delivery，
+随后产品 `zg361.51` 报 `stale witnessed-delivery token ignored`，checkpoint 的 result case
+仍停在 state 2；原版事件只是次生打断。下一 blocker 是 stale carrier / delivery
+state-2 transition。完整边界、artifact hashes 与 CK3-free 回归见
+[`phase2-promo/b3-prebootstrap-spymaster-event-2026-09-04.md`](phase2-promo/b3-prebootstrap-spymaster-event-2026-09-04.md)。

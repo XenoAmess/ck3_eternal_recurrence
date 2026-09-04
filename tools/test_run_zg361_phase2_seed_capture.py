@@ -1439,6 +1439,255 @@ class KnownPredecessorService:
         }
 
 
+def _known_vanilla_context(
+    *,
+    event_key: str = "spymaster_task.0381",
+    root_character_id: int = 29037,
+    character_to_hook_id: int = 44001,
+    second_option_fallback: bool = False,
+) -> dict[str, object]:
+    expected = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 8,
+        "date_raw": expected["date_raw"],
+        "current_event_instance_id": 20,
+        "window_match_count": 1,
+        "event_definition_key": event_key,
+        "calculated_event_id": 880381,
+        "root_scope": {
+            "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": root_character_id,
+            }
+        },
+        "saved_scopes": [
+            {
+                "name": "character_to_hook",
+                "scope": {
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_to_hook_id,
+                    }
+                },
+            }
+        ],
+        "options": [
+            {
+                "rendered_index": index,
+                "native_option_index": index,
+                "shown": True,
+                "enabled": True,
+                "fallback": second_option_fallback and index == 1,
+                "cancel": False,
+            }
+            for index in range(2)
+        ],
+    }
+
+
+class KnownVanillaPrebootstrapService:
+    def __init__(
+        self,
+        *,
+        event_key: str = "spymaster_task.0381",
+        root_character_id: int = 29037,
+        character_to_hook_id: int = 44001,
+        second_option_fallback: bool = False,
+        reaches_seed: bool = True,
+        wrong_selection_ack: bool = False,
+    ) -> None:
+        self.state = "vanilla"
+        self.revision = 8
+        self.paused = True
+        self.event_key = event_key
+        self.root_character_id = root_character_id
+        self.character_to_hook_id = character_to_hook_id
+        self.second_option_fallback = second_option_fallback
+        self.reaches_seed = reaches_seed
+        self.wrong_selection_ack = wrong_selection_ack
+        self.selections: list[tuple[int, int, int]] = []
+        self.steps: list[str] = []
+
+    def snapshot(self) -> dict[str, object]:
+        expected = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT
+        if self.state == "vanilla":
+            active_event: dict[str, object] | None = {
+                "source": "native",
+                "instance_id": 20,
+                "option_count": 2,
+            }
+        elif self.state == "seed":
+            active_event = {
+                "source": "native",
+                "instance_id": 21,
+                "option_count": 1,
+            }
+        else:
+            active_event = None
+        return {
+            "revision": self.revision,
+            "date_raw": expected["date_raw"],
+            "paused": self.paused,
+            "map_ready": True,
+            "speed": 1,
+            "active_event": active_event,
+        }
+
+    def query_current_event_window_context_v1(
+        self, event_instance_id: int, **_kwargs: object
+    ) -> dict[str, object]:
+        if self.state == "vanilla":
+            require(event_instance_id == 20, "wrong vanilla instance queried")
+            return {
+                "current_event_window_context": _known_vanilla_context(
+                    event_key=self.event_key,
+                    root_character_id=self.root_character_id,
+                    character_to_hook_id=self.character_to_hook_id,
+                    second_option_fallback=self.second_option_fallback,
+                )
+            }
+        require(event_instance_id == 21, "wrong seed instance queried")
+        return {
+            "current_event_window_context": {
+                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+            }
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        self.selections.append(
+            (option_number, event_instance_id, expected_revision)
+        )
+        require(self.state == "vanilla", "vanilla event selected twice")
+        self.state = "seed" if self.reaches_seed else "empty"
+        self.revision += 1
+        selected_index = 0 if self.wrong_selection_ack else 1
+        return {
+            "step": "select-event-option-2",
+            "accepted": True,
+            "status": "submitted",
+            "option_number": 2,
+            "option_index": selected_index,
+            "event_selection": {
+                "postcondition_verified": True,
+                "old_event_instance_id": 20,
+                "new_event_instance_id": 21 if self.reaches_seed else None,
+                "selected_option_number": 2,
+                "selected_native_option_index": selected_index,
+            },
+        }
+
+    def execute_step(
+        self, step: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        require(expected_revision == self.revision, "stale timeline revision")
+        self.steps.append(step)
+        if step == "resume-map":
+            self.paused = False
+        return {"accepted": True}
+
+
+class RegisteredPrebootstrapSequenceService:
+    """Expose the product card, exact vanilla interruption, then the seed."""
+
+    def __init__(self) -> None:
+        self.state = "product"
+        self.revision = 5
+        self.selections: list[tuple[int, int, int]] = []
+
+    def snapshot(self) -> dict[str, object]:
+        if self.state == "product":
+            date_raw = capture.KNOWN_PRE_BOOTSTRAP_EVENT["date_raw"]
+            active_event = {
+                "source": "native",
+                "instance_id": 10,
+                "option_count": 4,
+            }
+        elif self.state == "vanilla":
+            date_raw = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT["date_raw"]
+            active_event = {
+                "source": "native",
+                "instance_id": 20,
+                "option_count": 2,
+            }
+        else:
+            date_raw = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT["date_raw"]
+            active_event = {
+                "source": "native",
+                "instance_id": 21,
+                "option_count": 1,
+            }
+        return {
+            "revision": self.revision,
+            "date_raw": date_raw,
+            "paused": True,
+            "map_ready": True,
+            "speed": 1,
+            "active_event": active_event,
+        }
+
+    def query_current_event_window_context_v1(
+        self, event_instance_id: int, **_kwargs: object
+    ) -> dict[str, object]:
+        if self.state == "product":
+            require(event_instance_id == 10, "wrong product event queried")
+            return {"current_event_window_context": _known_predecessor_context()}
+        if self.state == "vanilla":
+            require(event_instance_id == 20, "wrong vanilla event queried")
+            return {"current_event_window_context": _known_vanilla_context()}
+        require(event_instance_id == 21, "wrong seed event queried")
+        return {
+            "current_event_window_context": {
+                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+            }
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        self.selections.append(
+            (option_number, event_instance_id, expected_revision)
+        )
+        if self.state == "product":
+            require(option_number == 1, "product option drifted")
+            old_id, new_id, selected_index = 10, 20, 0
+            self.state = "vanilla"
+        else:
+            require(self.state == "vanilla", "unexpected sequence selection")
+            require(option_number == 2, "vanilla option drifted")
+            old_id, new_id, selected_index = 20, 21, 1
+            self.state = "seed"
+        self.revision += 1
+        return {
+            "step": f"select-event-option-{option_number}",
+            "accepted": True,
+            "status": "submitted",
+            "option_number": option_number,
+            "option_index": selected_index,
+            "event_selection": {
+                "postcondition_verified": True,
+                "old_event_instance_id": old_id,
+                "new_event_instance_id": new_id,
+                "selected_option_number": option_number,
+                "selected_native_option_index": selected_index,
+            },
+        }
+
+
 def test_exact_known_predecessor_is_drained_once() -> None:
     with tempfile.TemporaryDirectory() as raw:
         artifacts = Path(raw)
@@ -1508,6 +1757,243 @@ def test_calculated_event_id_is_observed_but_not_an_identity_gate() -> None:
             "calculated_event_id" not in drain["identity_checks"],
             "unstable engine ID remained an identity check",
         )
+
+
+def test_exact_vanilla_prebootstrap_event_uses_option_two() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownVanillaPrebootstrapService()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT[
+                "source_save_sha256"
+            ],
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        require(
+            snapshot["active_event"]
+            == {"source": "native", "instance_id": 21, "option_count": 1},
+            "waiter did not reach the seed after the vanilla interruption",
+        )
+        require(
+            service.selections == [(2, 20, 8)],
+            "spymaster_task.0381 was not closed exactly once with option 2",
+        )
+        drain = json.loads(
+            (
+                artifacts / "known-pre-bootstrap-vanilla-event-drain.json"
+            ).read_text(encoding="utf-8")
+        )
+        require(
+            drain["state"] == "known_pre_bootstrap_vanilla_event_drained"
+            and drain["result"] == "GREEN",
+            "exact vanilla drain lacks typed GREEN evidence",
+        )
+        require(
+            all(drain["identity_checks"].values())
+            and all(drain["selection_checks"].values()),
+            "vanilla drain did not retain all identity and ACK gates",
+        )
+        require(
+            drain["wait_policy"] == "continue_under_original_total_deadline",
+            "vanilla drain silently introduced a short secondary deadline",
+        )
+
+
+def test_multiple_registered_prebootstrap_events_are_supported() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = RegisteredPrebootstrapSequenceService()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_EVENT[
+                "source_save_sha256"
+            ],
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        require(
+            snapshot["active_event"]["instance_id"] == 21,
+            "registered event sequence did not reach the seed",
+        )
+        require(
+            service.selections == [(1, 10, 5), (2, 20, 6)],
+            "registered events were not drained in their explicit option order",
+        )
+        require(
+            (artifacts / "known-pre-bootstrap-event-drain.json").is_file()
+            and (
+                artifacts / "known-pre-bootstrap-vanilla-event-drain.json"
+            ).is_file(),
+            "one registered event drain overwrote or omitted the other",
+        )
+
+
+def test_vanilla_prebootstrap_identity_and_option_shape_fail_closed() -> None:
+    expected_save = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT[
+        "source_save_sha256"
+    ]
+    for root_id, character_to_hook_id, option_fallback, source_save, failed_check in (
+        (99999, 44001, False, expected_save, "root_character_id"),
+        (
+            29037,
+            29037,
+            False,
+            expected_save,
+            "character_to_hook_excludes_known_principals",
+        ),
+        (
+            29037,
+            32904,
+            False,
+            expected_save,
+            "character_to_hook_excludes_known_principals",
+        ),
+        (29037, 44001, True, expected_save, "authored_options_exact"),
+        (29037, 44001, False, "0" * 64, "source_save_sha256"),
+    ):
+        with tempfile.TemporaryDirectory() as raw:
+            artifacts = Path(raw)
+            service = KnownVanillaPrebootstrapService(
+                root_character_id=root_id,
+                character_to_hook_id=character_to_hook_id,
+                second_option_fallback=option_fallback,
+            )
+            try:
+                capture.wait_for_bootstrap_event(
+                    service,
+                    artifacts,
+                    bridge_unavailable_error=FakeBridgeUnavailableError,
+                    timeout_seconds=10.0,
+                    source_save_sha256=source_save,
+                    clock=FakeTime().clock,
+                    sleeper=lambda _seconds: None,
+                )
+                raise AssertionError("drifted vanilla interruption was selected")
+            except capture.SeedCaptureError as error:
+                require(
+                    error.evidence["state"]
+                    == "known_pre_bootstrap_vanilla_event_identity_mismatch",
+                    "vanilla identity mismatch lacks its typed RED state",
+                )
+                require(
+                    error.evidence["identity_checks"][failed_check] is False,
+                    f"expected failed identity check was not preserved: {failed_check}",
+                )
+            require(
+                not service.selections,
+                "identity-drifted vanilla event crossed the action boundary",
+            )
+
+
+def test_unregistered_vanilla_event_remains_unexpected_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        service = KnownVanillaPrebootstrapService(event_key="spymaster_task.0399")
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                Path(raw),
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=10.0,
+                source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT[
+                    "source_save_sha256"
+                ],
+                clock=FakeTime().clock,
+                sleeper=lambda _seconds: None,
+            )
+            raise AssertionError("unregistered vanilla event was ignored")
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence["state"] == "unexpected_visible_event"
+                and error.evidence["observed_event_definition_key"]
+                == "spymaster_task.0399",
+                "unregistered vanilla event did not retain explicit RED evidence",
+            )
+        require(not service.selections, "unregistered vanilla event was selected")
+
+
+def test_vanilla_drain_keeps_original_deadline_and_resumes_timeline() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        service = KnownVanillaPrebootstrapService(reaches_seed=False)
+        fake_time = FakeTime()
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                Path(raw),
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=0.35,
+                source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT[
+                    "source_save_sha256"
+                ],
+                clock=fake_time.clock,
+                sleeper=fake_time.sleep,
+            )
+            raise AssertionError("missing seed escaped the original total deadline")
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence["state"]
+                == "bootstrap_event_timeout_after_known_prebootstrap_events",
+                "post-drain timeout lacks its typed terminal",
+            )
+            require(
+                error.evidence["known_pre_bootstrap_vanilla_event_drained"] is True
+                and error.evidence["drained_pre_bootstrap_events"]
+                == ["spymaster_task.0381"],
+                "post-drain timeout lost the exact event history",
+            )
+            require(
+                error.evidence["wait_policy"]
+                == "original_total_deadline_not_reset_by_drains",
+                "post-drain timeout used an undeclared secondary deadline",
+            )
+        require(
+            fake_time.value >= 0.35,
+            "event drain truncated the configured total wait",
+        )
+        require(
+            "resume-map" in service.steps,
+            "timeline remained paused after the incidental event closed",
+        )
+
+
+def test_vanilla_selection_ack_must_confirm_native_option_two() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownVanillaPrebootstrapService(wrong_selection_ack=True)
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                artifacts,
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=10.0,
+                source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT[
+                    "source_save_sha256"
+                ],
+                clock=FakeTime().clock,
+                sleeper=lambda _seconds: None,
+            )
+            raise AssertionError("wrong native option index false-GREENed")
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence["state"]
+                == "known_pre_bootstrap_vanilla_event_selection_red",
+                "wrong option ACK lacks its typed RED state",
+            )
+            require(
+                error.evidence["selection_checks"]["option_index"] is False
+                and error.evidence["selection_checks"][
+                    "selected_native_option_index"
+                ]
+                is False,
+                "wrong native option index was not exposed",
+            )
 
 
 def test_pause_revision_race_reloads_snapshot_and_retries() -> None:
@@ -2535,6 +3021,12 @@ def main() -> int:
     test_native_session_process_exit_cleanup()
     test_exact_known_predecessor_is_drained_once()
     test_calculated_event_id_is_observed_but_not_an_identity_gate()
+    test_exact_vanilla_prebootstrap_event_uses_option_two()
+    test_multiple_registered_prebootstrap_events_are_supported()
+    test_vanilla_prebootstrap_identity_and_option_shape_fail_closed()
+    test_unregistered_vanilla_event_remains_unexpected_red()
+    test_vanilla_drain_keeps_original_deadline_and_resumes_timeline()
+    test_vanilla_selection_ack_must_confirm_native_option_two()
     test_pause_revision_race_reloads_snapshot_and_retries()
     test_known_predecessor_identity_drift_fails_closed()
     test_total_event_deadline()
