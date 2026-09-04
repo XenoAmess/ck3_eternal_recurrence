@@ -1012,12 +1012,28 @@ effect 文件 / 314 definitions，单片最大 10，`>10=0 / >20=0`；旧 B1 41-
 SHA-256 为 `0887BD8249AE5A54108EB557B5371160BD33C13DA37EED4264DB5DA7A7C07A3E`。
 
 提交 `05e1410bf21b6efdab1492a5919c76a047f2934f` 在 generator 内加入 first-use `has_variable` 门，并让缺失 active 字段按 inactive
-处理；B2 仍保持 25 个用途 effect 文件 / 152 effects / 每文件不超过 10。修复后的 r8 product 为
+处理；B2 仍保持 25 个用途 effect 文件 / 152 effects / 单文件最大 9。修复后的 r8 product 为
 **252 files / 12,104,708 bytes**，tree SHA-256
 `C2E3DEEC48DC31294414FBF140EAF2D0603F3F4B6A5F34AF9C3EC9BBCEBB42CD`。r14 seed 随后完成 GREEN，且项目错误扫描
 `matches=[]`、quiet window `16.247 s`；scan SHA-256
 `EB517B003D216EB17D2C272F4E623E00ACE27CA1D3CE4CA7A2A7598AA5C449F1`。这证明 first-use 修复后的 r8 tree 可完整加载并进入
-seed，不证明 focused B2 四路业务已 GREEN。
+seed，不证明 focused B2 业务已通过外层 runner。
+
+最新 r20 seed 位于
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-b2-r20-20260904-121400\artifacts-live`。candidate contract SHA-256 为
+`FD055093617AA78858BB47F6F9F2BE4AA2E1B66ED4CABE4983B5418C6C99B7E7`；checkpoint 为 `57,377,533 bytes` / SHA-256
+`96D1919D569E6F3EA115BF21882B0F4372246812B1E1F630F3AED44968D49335`，稳定身份 date/player/B2 owner 为
+`53147016 / 29037 / 32904`。loader scan GREEN，SHA-256
+`BC6C3A21EAED4A1957AB87BED187B6D6302ADD556C508D07AE1A681DB4158D9B`；完整日志 SHA-256
+`B49857293AA260148EF19431A8481A50F5FDC6D9181BA8F4CB7A45BC593A0092`，quiet `16.232 s`、0 matches，invalid-left / fetch /
+unset / m016 均为 0；cleanup、source 与 runtime tree immutable。
+
+r21 进一步证明同一 checkpoint 的 scenario 与 A/B/C matrix 本身 GREEN：4 次 restart、5 个 PID、cleanup、driver close、locks
+release 全部通过，matrix SHA-256 为 `22F8C8D07DA573457F1EBD67E70EF4CED1ACE8594210AAA562F0C02859EE49C7`。但外层 report
+`6C03CFFE91EB4BCC829F3C6B74D22B1312886161F184100DA7B395C1250ED237` 为 RED，因为 generic project diagnostics 把初始 loader
+日志中已有的 5,607 条静态 liveness 行当成 blocking；同轮 loader scan 已 GREEN，这些行不是业务执行中新出现的 runtime 错误或
+loader performance RED。遇到这种分层不一致时，必须记录为 harness classification inconsistency，并以最小分类修复后的外层重跑为
+最终 gate；不得只凭内部 scenario/matrix GREEN 宣称整个 focused runner GREEN。r22 回执仍待完成。
 
 同一 source save SHA-256 `BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733` 在两个新进程中，对同一
 `zg361.4` 分别报告 `calculated_event_id=3030004` 与 `2990004`，而 event key、instance、date、root/superior 与 options 均稳定。
@@ -1026,7 +1042,8 @@ seed，不证明 focused B2 四路业务已 GREEN。
 profile/cache 准备也必须与 loader 用时分账。当前复用的 lightweight DX11 cache 位于
 `_runtime/formal-ab-current-buildoff-20260903/profile/shadercache`，为 **4,960 files / 216,650,070 bytes**。cache 复制、哈希与
 isolated userdir 建立发生在 CK3 启动前，只计作 preparation；CK3 loader 时间从进程启动/loader-stage 开始。若 preparation 慢，
-先缩小或复用已冻结 cache，不得误判为 mod loader RED，也不得因此盲拆 effect。完整回执与 focused B2 待填边界见
+先缩小或复用已冻结 cache，不得误判为 mod loader RED，也不得因此盲拆 effect。B3 同样执行文件边界规则：新 manager 层为
+7 个用途 effect 分片 / 43 effects / 单片最大 10，没有超过 20 的例外。完整回执与 focused B2 分层状态见
 [`phase2-promo/b2-first-use-loader-and-seed-evidence-2026-09-04.md`](phase2-promo/b2-first-use-loader-and-seed-evidence-2026-09-04.md)。
 
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
